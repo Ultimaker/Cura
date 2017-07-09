@@ -148,67 +148,29 @@ Cura.MachineAction
                                         text: catalog.i18nc("@label", "Build Plate Shape")
                                     }
 
-                                    ComboBox
+                                    Loader
                                     {
                                         id: shapeComboBox
-                                        model: ListModel
-                                        {
-                                            id: shapesModel
-                                            Component.onCompleted:
-                                            {
-                                                // Options come in as a string-representation of an OrderedDict
-                                                var options = machineShapeProvider.properties.options.match(/^OrderedDict\(\[\((.*)\)\]\)$/);
-                                                if(options)
-                                                {
-                                                    options = options[1].split("), (")
-                                                    for(var i = 0; i < options.length; i++)
-                                                    {
-                                                        var option = options[i].substring(1, options[i].length - 1).split("', '")
-                                                        shapesModel.append({text: option[1], value: option[0]});
-                                                    }
-                                                }
-                                            }
-                                        }
-                                        currentIndex:
-                                        {
-                                            var currentValue = machineShapeProvider.properties.value;
-                                            var index = 0;
-                                            for(var i = 0; i < shapesModel.count; i++)
-                                            {
-                                                if(shapesModel.get(i).value == currentValue) {
-                                                    index = i;
-                                                    break;
-                                                }
-                                            }
-                                            return index
-                                        }
-                                        onActivated:
-                                        {
-                                            if(machineShapeProvider.properties.value != shapesModel.get(index).value)
-                                            {
-                                                machineShapeProvider.setPropertyValue("value", shapesModel.get(index).value);
-                                                manager.forceUpdate();
-                                            }
-                                        }
+                                        sourceComponent: comboBoxWithOptions
+                                        property var propertyProvider: machineShapeProvider
+                                        property bool forceUpdateOnChange: true
                                     }
                                 }
-                                CheckBox
+                                Loader
                                 {
                                     id: centerIsZeroCheckBox
-                                    text: catalog.i18nc("@option:check", "Machine Center is Zero")
-                                    checked: String(machineCenterIsZeroProvider.properties.value).toLowerCase() != 'false'
-                                    onClicked:
-                                    {
-                                            machineCenterIsZeroProvider.setPropertyValue("value", checked);
-                                            manager.forceUpdate();
-                                    }
+                                    sourceComponent: simpleCheckBox
+                                    property string label: catalog.i18nc("@option:check", "Machine Center is Zero")
+                                    property var propertyProvider: machineCenterIsZeroProvider
+                                    property bool forceUpdateOnChange: true
                                 }
-                                CheckBox
+                                Loader
                                 {
                                     id: heatedBedCheckBox
-                                    text: catalog.i18nc("@option:check", "Heated Bed")
-                                    checked: String(machineHeatedBedProvider.properties.value).toLowerCase() != 'false'
-                                    onClicked: machineHeatedBedProvider.setPropertyValue("value", checked)
+                                    sourceComponent: simpleCheckBox
+                                    property string label: catalog.i18nc("@option:check", "Heated Bed")
+                                    property var propertyProvider: machineHeatedBedProvider
+                                    property bool forceUpdateOnChange: true
                                 }
                             }
 
@@ -221,44 +183,13 @@ Cura.MachineAction
                                     text: catalog.i18nc("@label", "GCode Flavor")
                                 }
 
-                                ComboBox
+                                Loader
                                 {
-                                    model: ListModel
-                                    {
-                                        id: flavorModel
-                                        Component.onCompleted:
-                                        {
-                                            // Options come in as a string-representation of an OrderedDict
-                                            var options = machineGCodeFlavorProvider.properties.options.match(/^OrderedDict\(\[\((.*)\)\]\)$/);
-                                            if(options)
-                                            {
-                                                options = options[1].split("), (")
-                                                for(var i = 0; i < options.length; i++)
-                                                {
-                                                    var option = options[i].substring(1, options[i].length - 1).split("', '")
-                                                    flavorModel.append({text: option[1], value: option[0]});
-                                                }
-                                            }
-                                        }
-                                    }
-                                    currentIndex:
-                                    {
-                                        var currentValue = machineGCodeFlavorProvider.properties.value;
-                                        var index = 0;
-                                        for(var i = 0; i < flavorModel.count; i++)
-                                        {
-                                            if(flavorModel.get(i).value == currentValue) {
-                                                index = i;
-                                                break;
-                                            }
-                                        }
-                                        return index
-                                    }
-                                    onActivated:
-                                    {
-                                        machineGCodeFlavorProvider.setPropertyValue("value", flavorModel.get(index).value);
-                                        manager.updateHasMaterialsMetadata();
-                                    }
+                                    id: gcodeFlavorComboBox
+                                    sourceComponent: comboBoxWithOptions
+                                    property var propertyProvider: machineGCodeFlavorProvider
+                                    property bool forceUpdateOnChange: true
+                                    property string afterOnActivate: "manager.updateHasMaterialsMetadata()"
                                 }
                             }
                         }
@@ -649,10 +580,41 @@ Cura.MachineAction
 
     Component
     {
+        id: simpleCheckBox
+        UM.TooltipArea
+        {
+            height: checkBox.height
+            width: checkBox.width
+            text: propertyProvider.properties.description
+
+            property bool _forceUpdateOnChange: (typeof(forceUpdateOnChange) === 'undefined') ? false: forceUpdateOnChange
+
+            CheckBox
+            {
+                id: checkBox
+                text: label
+                checked: String(propertyProvider.properties.value).toLowerCase() != 'false'
+                onClicked:
+                {
+                        propertyProvider.setPropertyValue("value", checked);
+                        if(_forceUpdateOnChange)
+                        {
+                            manager.forceUpdate();
+                        }
+                }
+
+            }
+        }
+    }
+
+    Component
+    {
         id: numericTextFieldWithUnit
-        Item {
+        UM.TooltipArea
+        {
             height: textField.height
             width: textField.width
+            text: propertyProvider.properties.description
 
             property bool _allowNegative: (typeof(allowNegative) === 'undefined') ? false : allowNegative
             property bool _forceUpdateOnChange: (typeof(forceUpdateOnChange) === 'undefined') ? false: forceUpdateOnChange
@@ -690,13 +652,78 @@ Cura.MachineAction
         }
     }
 
+    Component
+    {
+        id: comboBoxWithOptions
+        UM.TooltipArea
+        {
+            height: comboBox.height
+            width: comboBox.width
+            text: propertyProvider.properties.description
+
+            property bool _forceUpdateOnChange: (typeof(forceUpdateOnChange) === 'undefined') ? false: forceUpdateOnChange
+            property string _afterOnActivate: (typeof(afterOnActivate) === 'undefined') ? "": afterOnActivate
+
+            ComboBox
+            {
+                id: comboBox
+                model: ListModel
+                {
+                    id: optionsModel
+                    Component.onCompleted:
+                    {
+                        // Options come in as a string-representation of an OrderedDict
+                        var options = propertyProvider.properties.options.match(/^OrderedDict\(\[\((.*)\)\]\)$/);
+                        if(options)
+                        {
+                            options = options[1].split("), (")
+                            for(var i = 0; i < options.length; i++)
+                            {
+                                var option = options[i].substring(1, options[i].length - 1).split("', '")
+                                optionsModel.append({text: option[1], value: option[0]});
+                            }
+                        }
+                    }
+                }
+                currentIndex:
+                {
+                    var currentValue = propertyProvider.properties.value;
+                    var index = 0;
+                    for(var i = 0; i < optionsModel.count; i++)
+                    {
+                        if(optionsModel.get(i).value == currentValue) {
+                            index = i;
+                            break;
+                        }
+                    }
+                    return index
+                }
+                onActivated:
+                {
+                    if(propertyProvider.properties.value != optionsModel.get(index).value)
+                    {
+                        propertyProvider.setPropertyValue("value", optionsModel.get(index).value);
+                        if(_forceUpdateOnChange)
+                        {
+                            manager.forceUpdate();
+                        }
+                        if(_afterOnActivate != "")
+                        {
+                            eval(_afterOnActivate);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     UM.SettingPropertyProvider
     {
         id: machineWidthProvider
 
         containerStackId: Cura.MachineManager.activeMachineId
         key: "machine_width"
-        watchedProperties: [ "value" ]
+        watchedProperties: [ "value", "description" ]
         storeIndex: manager.containerIndex
     }
 
@@ -706,7 +733,7 @@ Cura.MachineAction
 
         containerStackId: Cura.MachineManager.activeMachineId
         key: "machine_depth"
-        watchedProperties: [ "value" ]
+        watchedProperties: [ "value", "description" ]
         storeIndex: manager.containerIndex
     }
 
@@ -716,7 +743,7 @@ Cura.MachineAction
 
         containerStackId: Cura.MachineManager.activeMachineId
         key: "machine_height"
-        watchedProperties: [ "value" ]
+        watchedProperties: [ "value", "description" ]
         storeIndex: manager.containerIndex
     }
 
@@ -726,7 +753,7 @@ Cura.MachineAction
 
         containerStackId: Cura.MachineManager.activeMachineId
         key: "machine_shape"
-        watchedProperties: [ "value", "options" ]
+        watchedProperties: [ "value", "options", "description" ]
         storeIndex: manager.containerIndex
     }
 
@@ -736,7 +763,7 @@ Cura.MachineAction
 
         containerStackId: Cura.MachineManager.activeMachineId
         key: "machine_heated_bed"
-        watchedProperties: [ "value" ]
+        watchedProperties: [ "value", "description" ]
         storeIndex: manager.containerIndex
     }
 
@@ -746,7 +773,7 @@ Cura.MachineAction
 
         containerStackId: Cura.MachineManager.activeMachineId
         key: "machine_center_is_zero"
-        watchedProperties: [ "value" ]
+        watchedProperties: [ "value", "description" ]
         storeIndex: manager.containerIndex
     }
 
@@ -756,7 +783,7 @@ Cura.MachineAction
 
         containerStackId: Cura.MachineManager.activeMachineId
         key: "machine_gcode_flavor"
-        watchedProperties: [ "value", "options" ]
+        watchedProperties: [ "value", "options", "description" ]
         storeIndex: manager.containerIndex
     }
 
@@ -766,7 +793,7 @@ Cura.MachineAction
 
         containerStackId: Cura.MachineManager.activeMachineId
         key: "material_diameter"
-        watchedProperties: [ "value" ]
+        watchedProperties: [ "value", "description" ]
         storeIndex: manager.containerIndex
     }
 
@@ -776,7 +803,7 @@ Cura.MachineAction
 
         containerStackId: Cura.MachineManager.activeMachineId
         key: "machine_nozzle_size"
-        watchedProperties: [ "value" ]
+        watchedProperties: [ "value", "description" ]
         storeIndex: manager.containerIndex
     }
 
@@ -786,7 +813,7 @@ Cura.MachineAction
 
         containerStackId: Cura.MachineManager.activeMachineId
         key: "machine_extruder_count"
-        watchedProperties: [ "value" ]
+        watchedProperties: [ "value", "description" ]
         storeIndex: manager.containerIndex
     }
 
@@ -796,7 +823,7 @@ Cura.MachineAction
 
         containerStackId: Cura.MachineManager.activeMachineId
         key: "gantry_height"
-        watchedProperties: [ "value" ]
+        watchedProperties: [ "value", "description" ]
         storeIndex: manager.containerIndex
     }
 
@@ -806,7 +833,7 @@ Cura.MachineAction
 
         containerStackId: Cura.MachineManager.activeMachineId
         key: "machine_head_with_fans_polygon"
-        watchedProperties: [ "value" ]
+        watchedProperties: [ "value", "description" ]
         storeIndex: manager.containerIndex
     }
 
@@ -817,7 +844,7 @@ Cura.MachineAction
 
         containerStackId: Cura.MachineManager.activeMachineId
         key: "machine_start_gcode"
-        watchedProperties: [ "value" ]
+        watchedProperties: [ "value", "description" ]
         storeIndex: manager.containerIndex
     }
 
@@ -827,7 +854,7 @@ Cura.MachineAction
 
         containerStackId: Cura.MachineManager.activeMachineId
         key: "machine_end_gcode"
-        watchedProperties: [ "value" ]
+        watchedProperties: [ "value", "description" ]
         storeIndex: manager.containerIndex
     }
 
@@ -837,7 +864,7 @@ Cura.MachineAction
 
         containerStackId: settingsTabs.currentIndex > 0 ? Cura.MachineManager.activeStackId : ""
         key: "machine_nozzle_size"
-        watchedProperties: [ "value" ]
+        watchedProperties: [ "value", "description" ]
         storeIndex: manager.containerIndex
     }
 
@@ -847,7 +874,7 @@ Cura.MachineAction
 
         containerStackId: settingsTabs.currentIndex > 0 ? Cura.MachineManager.activeStackId : ""
         key: "machine_nozzle_offset_x"
-        watchedProperties: [ "value" ]
+        watchedProperties: [ "value", "description" ]
         storeIndex: manager.containerIndex
     }
 
@@ -857,7 +884,7 @@ Cura.MachineAction
 
         containerStackId: settingsTabs.currentIndex > 0 ? Cura.MachineManager.activeStackId : ""
         key: "machine_nozzle_offset_y"
-        watchedProperties: [ "value" ]
+        watchedProperties: [ "value", "description" ]
         storeIndex: manager.containerIndex
     }
 
@@ -867,7 +894,7 @@ Cura.MachineAction
 
         containerStackId: settingsTabs.currentIndex > 0 ? Cura.MachineManager.activeStackId : ""
         key: "machine_extruder_start_code"
-        watchedProperties: [ "value" ]
+        watchedProperties: [ "value", "description" ]
         storeIndex: manager.containerIndex
     }
 
@@ -877,7 +904,7 @@ Cura.MachineAction
 
         containerStackId: settingsTabs.currentIndex > 0 ? Cura.MachineManager.activeStackId : ""
         key: "machine_extruder_end_code"
-        watchedProperties: [ "value" ]
+        watchedProperties: [ "value", "description" ]
         storeIndex: manager.containerIndex
     }
 }
