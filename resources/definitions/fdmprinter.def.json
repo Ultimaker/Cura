@@ -828,7 +828,7 @@
                         "initial_layer_line_width_factor":
                         {
                             "label": "Initial Layer Line Width",
-                            "description": "Factor of the line width on the first layer. Only applies to skin and walls.",
+                            "description": "Multiplier of the line width on the first layer. Doesn't apply to brim, raft and skirt.",
                             "type": "float",
                             "unit": "%",
                             "default_value": 100.0,
