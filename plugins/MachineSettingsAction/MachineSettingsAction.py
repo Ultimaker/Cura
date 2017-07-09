@@ -280,3 +280,86 @@ class MachineSettingsAction(MachineAction):
             self._global_container_stack.material = ContainerRegistry.getInstance().getEmptyInstanceContainer()
 
         Application.getInstance().globalContainerStackChanged.emit()
+
+    @pyqtSlot()
+    def updateMaterialForDiameter(self):
+        # Updates the material container to a material that matches the material diameter set for the printer
+        if not self._global_container_stack:
+            return
+
+        if not self._global_container_stack.getMetaDataEntry("has_materials", False):
+            return
+
+        machine_extruder_count = self._global_container_stack.getProperty("machine_extruder_count", "value")
+        if machine_extruder_count > 1:
+            material = ExtruderManager.getInstance().getActiveExtruderStack().material
+        else:
+            material = self._global_container_stack.material
+        material_diameter = material.getProperty("material_diameter", "value")
+        if not material_diameter: # in case of "empty" material
+            material_diameter = 0
+        material_approximate_diameter = str(round(material_diameter))
+
+        definition_changes = self._global_container_stack.definitionChanges
+        machine_diameter = definition_changes.getProperty("material_diameter", "value")
+        if not machine_diameter:
+            machine_diameter = self._global_container_stack.definition.getProperty("material_diameter", "value")
+        machine_approximate_diameter = str(round(machine_diameter))
+
+        if material_approximate_diameter != machine_approximate_diameter:
+            Logger.log("i", "The the currently active material(s) do not match the diameter set for the printer. Finding alternatives.")
+
+            if machine_extruder_count > 1:
+                stacks = ExtruderManager.getInstance().getExtruderStacks()
+            else:
+                stacks = [self._global_container_stack]
+
+            if self._global_container_stack.getMetaDataEntry("has_machine_materials", False):
+                materials_definition = self._global_container_stack.definition.getId()
+                has_material_variants = self._global_container_stack.getMetaDataEntry("has_variants", False)
+            else:
+                materials_definition = "fdmprinter"
+                has_material_variants = False
+
+            for stack in stacks:
+                old_material = stack.material
+                search_criteria = {
+                    "type": "material",
+                    "approximate_diameter": machine_approximate_diameter,
+                    "material": old_material.getMetaDataEntry("material", "value"),
+                    "supplier": old_material.getMetaDataEntry("supplier", "value"),
+                    "color_name": old_material.getMetaDataEntry("color_name", "value"),
+                    "definition": materials_definition
+                }
+                if has_material_variants:
+                    search_criteria["variant"] = stack.variant.getId()
+
+                if old_material.getId() == "empty":
+                    search_criteria.pop("material", None)
+                    search_criteria.pop("supplier", None)
+                    search_criteria.pop("definition", None)
+                    search_criteria["id"] = stack.getMetaDataEntry("preferred_material")
+
+                materials = self._container_registry.findInstanceContainers(**search_criteria)
+                if not materials:
+                    # Same material with new diameter is not found, search for generic version of the same material type
+                    search_criteria.pop("supplier", None)
+                    search_criteria["color_name"] = "Generic"
+                    materials = self._container_registry.findInstanceContainers(**search_criteria)
+                if not materials:
+                    # Generic material with new diameter is not found, search for preferred material
+                    search_criteria.pop("color_name", None)
+                    search_criteria.pop("material", None)
+                    search_criteria["id"] = stack.getMetaDataEntry("preferred_material")
+                    materials = self._container_registry.findInstanceContainers(**search_criteria)
+                if not materials:
+                    # Preferrd material with new diameter is not found, search for any material
+                    search_criteria.pop("id", None)
+                    materials = self._container_registry.findInstanceContainers(**search_criteria)
+                if not materials:
+                    # Just use empty material as a final fallback
+                    materials = [ContainerRegistry.getInstance().getEmptyInstanceContainer()]
+
+                Logger.log("i", "Selecting new material: %s" % materials[0].getId())
+
+                stack.material = materials[0]
