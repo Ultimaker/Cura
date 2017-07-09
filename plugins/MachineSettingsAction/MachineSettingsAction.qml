@@ -348,24 +348,13 @@ Cura.MachineAction
                                 text: catalog.i18nc("@label", "Start Gcode")
                                 font.bold: true
                             }
-                            TextArea
+                            Loader
                             {
                                 id: machineStartGcodeField
-                                width: parent.width
-                                height: parent.height - y
-                                font: UM.Theme.getFont("fixed")
-                                text: machineStartGcodeProvider.properties.value
-                                onActiveFocusChanged:
-                                {
-                                    if(!activeFocus)
-                                    {
-                                        machineStartGcodeProvider.setPropertyValue("value", machineStartGcodeField.text)
-                                    }
-                                }
-                                Component.onCompleted:
-                                {
-                                    wrapMode = TextEdit.NoWrap;
-                                }
+                                sourceComponent: gcodeTextArea
+                                property int areaWidth: parent.width
+                                property int areaHeight: parent.height - y
+                                property string settingKey: "machine_start_gcode"
                             }
                         }
 
@@ -377,24 +366,13 @@ Cura.MachineAction
                                 text: catalog.i18nc("@label", "End Gcode")
                                 font.bold: true
                             }
-                            TextArea
+                            Loader
                             {
                                 id: machineEndGcodeField
-                                width: parent.width
-                                height: parent.height - y
-                                font: UM.Theme.getFont("fixed")
-                                text: machineEndGcodeProvider.properties.value
-                                onActiveFocusChanged:
-                                {
-                                    if(!activeFocus)
-                                    {
-                                        machineEndGcodeProvider.setPropertyValue("value", machineEndGcodeField.text)
-                                    }
-                                }
-                                Component.onCompleted:
-                                {
-                                    wrapMode = TextEdit.NoWrap;
-                                }
+                                sourceComponent: gcodeTextArea
+                                property int areaWidth: parent.width
+                                property int areaHeight: parent.height - y
+                                property string settingKey: "machine_end_gcode"
                             }
                         }
                     }
@@ -526,25 +504,15 @@ Cura.MachineAction
                                     text: catalog.i18nc("@label", "Extruder Start Gcode")
                                     font.bold: true
                                 }
-                                TextArea
+                                Loader
                                 {
                                     id: extruderStartGcodeField
-                                    width: parent.width
-                                    height: parent.height - y
-                                    font: UM.Theme.getFont("fixed")
-                                    text: (extruderStartGcodeProvider.properties.value) ? extruderStartGcodeProvider.properties.value : ""
-                                    onActiveFocusChanged:
-                                    {
-                                        if(!activeFocus)
-                                        {
-                                            extruderStartGcodeProvider.setPropertyValue("value", extruderStartGcodeField.text)
-                                        }
-                                    }
-                                    Component.onCompleted:
-                                    {
-                                        wrapMode = TextEdit.NoWrap;
-                                    }
-                                }
+                                    sourceComponent: gcodeTextArea
+                                    property int areaWidth: parent.width
+                                    property int areaHeight: parent.height - y
+                                    property string settingKey: "machine_extruder_start_code"
+                                    property bool isExtruderSetting: true
+                            }
                             }
                             Column {
                                 height: parent.height
@@ -554,24 +522,14 @@ Cura.MachineAction
                                     text: catalog.i18nc("@label", "Extruder End Gcode")
                                     font.bold: true
                                 }
-                                TextArea
+                                Loader
                                 {
                                     id: extruderEndGcodeField
-                                    width: parent.width
-                                    height: parent.height - y
-                                    font: UM.Theme.getFont("fixed")
-                                    text: (extruderEndGcodeProvider.properties.value) ? extruderEndGcodeProvider.properties.value : ""
-                                    onActiveFocusChanged:
-                                    {
-                                        if(!activeFocus)
-                                        {
-                                            extruderEndGcodeProvider.setPropertyValue("value", extruderEndGcodeField.text)
-                                        }
-                                    }
-                                    Component.onCompleted:
-                                    {
-                                        wrapMode = TextEdit.NoWrap;
-                                    }
+                                    sourceComponent: gcodeTextArea
+                                    property int areaWidth: parent.width
+                                    property int areaHeight: parent.height - y
+                                    property string settingKey: "machine_extruder_end_code"
+                                    property bool isExtruderSetting: true
                                 }
                             }
                         }
@@ -782,6 +740,60 @@ Cura.MachineAction
         }
     }
 
+    Component
+    {
+        id: gcodeTextArea
+
+        UM.TooltipArea
+        {
+            height: gcodeArea.height
+            width: gcodeArea.width
+            text: propertyProvider.properties.description
+
+            property bool _isExtruderSetting: (typeof(isExtruderSetting) === 'undefined') ? false: isExtruderSetting
+
+            UM.SettingPropertyProvider
+            {
+                id: propertyProvider
+
+                containerStackId: {
+                    if(_isExtruderSetting)
+                    {
+                        if(settingsTabs.currentIndex > 0)
+                        {
+                            return Cura.MachineManager.activeStackId;
+                        }
+                        return "";
+                    }
+                    return Cura.MachineManager.activeMachineId;
+                }
+                key: settingKey
+                watchedProperties: [ "value", "description" ]
+                storeIndex: manager.containerIndex
+            }
+
+            TextArea
+            {
+                id: gcodeArea
+                width: areaWidth
+                height: areaHeight
+                font: UM.Theme.getFont("fixed")
+                text: (propertyProvider.properties.value) ? propertyProvider.properties.value : ""
+                onActiveFocusChanged:
+                {
+                    if(!activeFocus)
+                    {
+                        propertyProvider.setPropertyValue("value", gcodeField.text)
+                    }
+                }
+                Component.onCompleted:
+                {
+                    wrapMode = TextEdit.NoWrap;
+                }
+            }
+        }
+    }
+
     UM.SettingPropertyProvider
     {
         id: machineExtruderCountProvider
@@ -798,47 +810,6 @@ Cura.MachineAction
 
         containerStackId: Cura.MachineManager.activeMachineId
         key: "machine_head_with_fans_polygon"
-        watchedProperties: [ "value", "description" ]
-        storeIndex: manager.containerIndex
-    }
-
-
-    UM.SettingPropertyProvider
-    {
-        id: machineStartGcodeProvider
-
-        containerStackId: Cura.MachineManager.activeMachineId
-        key: "machine_start_gcode"
-        watchedProperties: [ "value", "description" ]
-        storeIndex: manager.containerIndex
-    }
-
-    UM.SettingPropertyProvider
-    {
-        id: machineEndGcodeProvider
-
-        containerStackId: Cura.MachineManager.activeMachineId
-        key: "machine_end_gcode"
-        watchedProperties: [ "value", "description" ]
-        storeIndex: manager.containerIndex
-    }
-
-    UM.SettingPropertyProvider
-    {
-        id: extruderStartGcodeProvider
-
-        containerStackId: settingsTabs.currentIndex > 0 ? Cura.MachineManager.activeStackId : ""
-        key: "machine_extruder_start_code"
-        watchedProperties: [ "value", "description" ]
-        storeIndex: manager.containerIndex
-    }
-
-    UM.SettingPropertyProvider
-    {
-        id: extruderEndGcodeProvider
-
-        containerStackId: settingsTabs.currentIndex > 0 ? Cura.MachineManager.activeStackId : ""
-        key: "machine_extruder_end_code"
         watchedProperties: [ "value", "description" ]
         storeIndex: manager.containerIndex
     }
