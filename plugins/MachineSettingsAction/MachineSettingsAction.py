@@ -250,30 +250,33 @@ class MachineSettingsAction(MachineAction):
             return
 
         definition = self._global_container_stack.getBottom()
-        if definition.getProperty("machine_gcode_flavor", "value") == "UltiGCode" and not definition.getMetaDataEntry("has_materials", False):
-            has_materials = self._global_container_stack.getProperty("machine_gcode_flavor", "value") != "UltiGCode"
+        if definition.getProperty("machine_gcode_flavor", "value") != "UltiGCode" or definition.getMetaDataEntry("has_materials", False):
+            # In other words: only continue for the UM2 (extended), but not for the UM2+
+            return
 
-            material_container = self._global_container_stack.material
-            material_index = self._global_container_stack.getContainerIndex(material_container)
+        has_materials = self._global_container_stack.getProperty("machine_gcode_flavor", "value") != "UltiGCode"
 
-            if has_materials:
-                if "has_materials" in self._global_container_stack.getMetaData():
-                    self._global_container_stack.setMetaDataEntry("has_materials", True)
-                else:
-                    self._global_container_stack.addMetaDataEntry("has_materials", True)
+        material_container = self._global_container_stack.material
+        material_index = self._global_container_stack.getContainerIndex(material_container)
 
-                # Set the material container to a sane default
-                if material_container.getId() == "empty_material":
-                    search_criteria = { "type": "material", "definition": "fdmprinter", "id": "*pla*"}
-                    containers = self._container_registry.findInstanceContainers(**search_criteria)
-                    if containers:
-                        self._global_container_stack.replaceContainer(material_index, containers[0])
+        if has_materials:
+            if "has_materials" in self._global_container_stack.getMetaData():
+                self._global_container_stack.setMetaDataEntry("has_materials", True)
             else:
-                # The metadata entry is stored in an ini, and ini files are parsed as strings only.
-                # Because any non-empty string evaluates to a boolean True, we have to remove the entry to make it False.
-                if "has_materials" in self._global_container_stack.getMetaData():
-                    self._global_container_stack.removeMetaDataEntry("has_materials")
+                self._global_container_stack.addMetaDataEntry("has_materials", True)
 
-                self._global_container_stack.material = ContainerRegistry.getInstance().getEmptyInstanceContainer()
+            # Set the material container to a sane default
+            if material_container.getId() == "empty_material":
+                search_criteria = { "type": "material", "definition": "fdmprinter", "id": "*pla*"}
+                containers = self._container_registry.findInstanceContainers(**search_criteria)
+                if containers:
+                    self._global_container_stack.replaceContainer(material_index, containers[0])
+        else:
+            # The metadata entry is stored in an ini, and ini files are parsed as strings only.
+            # Because any non-empty string evaluates to a boolean True, we have to remove the entry to make it False.
+            if "has_materials" in self._global_container_stack.getMetaData():
+                self._global_container_stack.removeMetaDataEntry("has_materials")
 
-            Application.getInstance().globalContainerStackChanged.emit()
+            self._global_container_stack.material = ContainerRegistry.getInstance().getEmptyInstanceContainer()
+
+        Application.getInstance().globalContainerStackChanged.emit()
