@@ -257,7 +257,6 @@ class MachineSettingsAction(MachineAction):
         has_materials = self._global_container_stack.getProperty("machine_gcode_flavor", "value") != "UltiGCode"
 
         material_container = self._global_container_stack.material
-        material_index = self._global_container_stack.getContainerIndex(material_container)
 
         if has_materials:
             if "has_materials" in self._global_container_stack.getMetaData():
@@ -266,11 +265,11 @@ class MachineSettingsAction(MachineAction):
                 self._global_container_stack.addMetaDataEntry("has_materials", True)
 
             # Set the material container to a sane default
-            if material_container.getId() == "empty_material":
-                search_criteria = { "type": "material", "definition": "fdmprinter", "id": "*pla*"}
-                containers = self._container_registry.findInstanceContainers(**search_criteria)
-                if containers:
-                    self._global_container_stack.replaceContainer(material_index, containers[0])
+            if material_container.getId() == "empty":
+                search_criteria = { "type": "material", "definition": "fdmprinter", "id": self._global_container_stack.getMetaDataEntry("preferred_material")}
+                materials = self._container_registry.findInstanceContainers(**search_criteria)
+                if materials:
+                    self._global_container_stack.material = materials[0]
         else:
             # The metadata entry is stored in an ini, and ini files are parsed as strings only.
             # Because any non-empty string evaluates to a boolean True, we have to remove the entry to make it False.
