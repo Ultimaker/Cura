@@ -105,7 +105,7 @@ Cura.MachineAction
                                 {
                                     id: buildAreaWidthField
                                     sourceComponent: numericTextFieldWithUnit
-                                    property var propertyProvider: machineWidthProvider
+                                    property string settingKey: "machine_width"
                                     property string unit: catalog.i18nc("@label", "mm")
                                     property bool forceUpdateOnChange: true
                                 }
@@ -118,7 +118,7 @@ Cura.MachineAction
                                 {
                                     id: buildAreaDepthField
                                     sourceComponent: numericTextFieldWithUnit
-                                    property var propertyProvider: machineDepthProvider
+                                    property string settingKey: "machine_depth"
                                     property string unit: catalog.i18nc("@label", "mm")
                                     property bool forceUpdateOnChange: true
                                 }
@@ -131,7 +131,7 @@ Cura.MachineAction
                                 {
                                     id: buildAreaHeightField
                                     sourceComponent: numericTextFieldWithUnit
-                                    property var propertyProvider: machineHeightProvider
+                                    property string settingKey: "machine_height"
                                     property string unit: catalog.i18nc("@label", "mm")
                                     property bool forceUpdateOnChange: true
                                 }
@@ -152,7 +152,7 @@ Cura.MachineAction
                                     {
                                         id: shapeComboBox
                                         sourceComponent: comboBoxWithOptions
-                                        property var propertyProvider: machineShapeProvider
+                                        property string settingKey: "machine_shape"
                                         property bool forceUpdateOnChange: true
                                     }
                                 }
@@ -161,7 +161,7 @@ Cura.MachineAction
                                     id: centerIsZeroCheckBox
                                     sourceComponent: simpleCheckBox
                                     property string label: catalog.i18nc("@option:check", "Machine Center is Zero")
-                                    property var propertyProvider: machineCenterIsZeroProvider
+                                    property string settingKey: "machine_center_is_zero"
                                     property bool forceUpdateOnChange: true
                                 }
                                 Loader
@@ -169,7 +169,7 @@ Cura.MachineAction
                                     id: heatedBedCheckBox
                                     sourceComponent: simpleCheckBox
                                     property string label: catalog.i18nc("@option:check", "Heated Bed")
-                                    property var propertyProvider: machineHeatedBedProvider
+                                    property var settingKey: "machine_heated_bed"
                                     property bool forceUpdateOnChange: true
                                 }
                             }
@@ -187,7 +187,7 @@ Cura.MachineAction
                                 {
                                     id: gcodeFlavorComboBox
                                     sourceComponent: comboBoxWithOptions
-                                    property var propertyProvider: machineGCodeFlavorProvider
+                                    property string settingKey: "machine_gcode_flavor"
                                     property bool forceUpdateOnChange: true
                                     property string afterOnActivate: "manager.updateHasMaterialsMetadata()"
                                 }
@@ -270,7 +270,7 @@ Cura.MachineAction
                                 {
                                     id: gantryHeightField
                                     sourceComponent: numericTextFieldWithUnit
-                                    property var propertyProvider: gantryHeightProvider
+                                    property string settingKey: "gantry_height"
                                     property string unit: catalog.i18nc("@label", "mm")
                                 }
 
@@ -313,7 +313,7 @@ Cura.MachineAction
                                 {
                                     id: materialDiameterField
                                     sourceComponent: numericTextFieldWithUnit
-                                    property var propertyProvider: materialDiameterProvider
+                                    property string settingKey: "material_diameter"
                                     property string unit: catalog.i18nc("@label", "mm")
                                 }
                                 Label
@@ -326,7 +326,7 @@ Cura.MachineAction
                                     id: nozzleSizeField
                                     visible: !Cura.MachineManager.hasVariants && machineExtruderCountProvider.properties.value == 1
                                     sourceComponent: numericTextFieldWithUnit
-                                    property var propertyProvider: machineNozzleSizeProvider
+                                    property string settingKey: "machine_nozzle_size"
                                     property string unit: catalog.i18nc("@label", "mm")
                                 }
                             }
@@ -476,7 +476,8 @@ Cura.MachineAction
                                 id: extruderNozzleSizeField
                                 visible: !Cura.MachineManager.hasVariants
                                 sourceComponent: numericTextFieldWithUnit
-                                property var propertyProvider: extruderNozzleSizeProvider
+                                property string settingKey: "machine_nozzle_size"
+                                property bool isExtruderSetting: true
                                 property string unit: catalog.i18nc("@label", "mm")
                             }
 
@@ -488,8 +489,9 @@ Cura.MachineAction
                             {
                                 id: extruderOffsetXField
                                 sourceComponent: numericTextFieldWithUnit
-                                property var propertyProvider: extruderOffsetXProvider
+                                property string settingKey: "machine_nozzle_offset_x"
                                 property string unit: catalog.i18nc("@label", "mm")
+                                property bool isExtruderSetting: true
                                 property bool forceUpdateOnChange: true
                                 property bool allowNegative: true
                             }
@@ -501,8 +503,9 @@ Cura.MachineAction
                             {
                                 id: extruderOffsetYField
                                 sourceComponent: numericTextFieldWithUnit
-                                property var propertyProvider: extruderOffsetYProvider
+                                property string settingKey: "machine_nozzle_offset_y"
                                 property string unit: catalog.i18nc("@label", "mm")
+                                property bool isExtruderSetting: true
                                 property bool forceUpdateOnChange: true
                                 property bool allowNegative: true
                             }
@@ -587,7 +590,28 @@ Cura.MachineAction
             width: checkBox.width
             text: propertyProvider.properties.description
 
+            property bool _isExtruderSetting: (typeof(isExtruderSetting) === 'undefined') ? false: isExtruderSetting
             property bool _forceUpdateOnChange: (typeof(forceUpdateOnChange) === 'undefined') ? false: forceUpdateOnChange
+
+            UM.SettingPropertyProvider
+            {
+                id: propertyProvider
+
+                containerStackId: {
+                    if(_isExtruderSetting)
+                    {
+                        if(settingsTabs.currentIndex > 0)
+                        {
+                            return Cura.MachineManager.activeStackId;
+                        }
+                        return "";
+                    }
+                    return Cura.MachineManager.activeMachineId;
+                }
+                key: settingKey
+                watchedProperties: [ "value", "description" ]
+                storeIndex: manager.containerIndex
+            }
 
             CheckBox
             {
@@ -602,7 +626,6 @@ Cura.MachineAction
                             manager.forceUpdate();
                         }
                 }
-
             }
         }
     }
@@ -616,8 +639,29 @@ Cura.MachineAction
             width: textField.width
             text: propertyProvider.properties.description
 
+            property bool _isExtruderSetting: (typeof(isExtruderSetting) === 'undefined') ? false: isExtruderSetting
             property bool _allowNegative: (typeof(allowNegative) === 'undefined') ? false : allowNegative
             property bool _forceUpdateOnChange: (typeof(forceUpdateOnChange) === 'undefined') ? false: forceUpdateOnChange
+
+            UM.SettingPropertyProvider
+            {
+                id: propertyProvider
+
+                containerStackId: {
+                    if(_isExtruderSetting)
+                    {
+                        if(settingsTabs.currentIndex > 0)
+                        {
+                            return Cura.MachineManager.activeStackId;
+                        }
+                        return "";
+                    }
+                    return Cura.MachineManager.activeMachineId;
+                }
+                key: settingKey
+                watchedProperties: [ "value", "description" ]
+                storeIndex: manager.containerIndex
+            }
 
             TextField
             {
@@ -661,8 +705,29 @@ Cura.MachineAction
             width: comboBox.width
             text: propertyProvider.properties.description
 
+            property bool _isExtruderSetting: (typeof(isExtruderSetting) === 'undefined') ? false: isExtruderSetting
             property bool _forceUpdateOnChange: (typeof(forceUpdateOnChange) === 'undefined') ? false: forceUpdateOnChange
             property string _afterOnActivate: (typeof(afterOnActivate) === 'undefined') ? "": afterOnActivate
+
+            UM.SettingPropertyProvider
+            {
+                id: propertyProvider
+
+                containerStackId: {
+                    if(_isExtruderSetting)
+                    {
+                        if(settingsTabs.currentIndex > 0)
+                        {
+                            return Cura.MachineManager.activeStackId;
+                        }
+                        return "";
+                    }
+                    return Cura.MachineManager.activeMachineId;
+                }
+                key: settingKey
+                watchedProperties: [ "value", "options", "description" ]
+                storeIndex: manager.containerIndex
+            }
 
             ComboBox
             {
@@ -719,110 +784,10 @@ Cura.MachineAction
 
     UM.SettingPropertyProvider
     {
-        id: machineWidthProvider
-
-        containerStackId: Cura.MachineManager.activeMachineId
-        key: "machine_width"
-        watchedProperties: [ "value", "description" ]
-        storeIndex: manager.containerIndex
-    }
-
-    UM.SettingPropertyProvider
-    {
-        id: machineDepthProvider
-
-        containerStackId: Cura.MachineManager.activeMachineId
-        key: "machine_depth"
-        watchedProperties: [ "value", "description" ]
-        storeIndex: manager.containerIndex
-    }
-
-    UM.SettingPropertyProvider
-    {
-        id: machineHeightProvider
-
-        containerStackId: Cura.MachineManager.activeMachineId
-        key: "machine_height"
-        watchedProperties: [ "value", "description" ]
-        storeIndex: manager.containerIndex
-    }
-
-    UM.SettingPropertyProvider
-    {
-        id: machineShapeProvider
-
-        containerStackId: Cura.MachineManager.activeMachineId
-        key: "machine_shape"
-        watchedProperties: [ "value", "options", "description" ]
-        storeIndex: manager.containerIndex
-    }
-
-    UM.SettingPropertyProvider
-    {
-        id: machineHeatedBedProvider
-
-        containerStackId: Cura.MachineManager.activeMachineId
-        key: "machine_heated_bed"
-        watchedProperties: [ "value", "description" ]
-        storeIndex: manager.containerIndex
-    }
-
-    UM.SettingPropertyProvider
-    {
-        id: machineCenterIsZeroProvider
-
-        containerStackId: Cura.MachineManager.activeMachineId
-        key: "machine_center_is_zero"
-        watchedProperties: [ "value", "description" ]
-        storeIndex: manager.containerIndex
-    }
-
-    UM.SettingPropertyProvider
-    {
-        id: machineGCodeFlavorProvider
-
-        containerStackId: Cura.MachineManager.activeMachineId
-        key: "machine_gcode_flavor"
-        watchedProperties: [ "value", "options", "description" ]
-        storeIndex: manager.containerIndex
-    }
-
-    UM.SettingPropertyProvider
-    {
-        id: materialDiameterProvider
-
-        containerStackId: Cura.MachineManager.activeMachineId
-        key: "material_diameter"
-        watchedProperties: [ "value", "description" ]
-        storeIndex: manager.containerIndex
-    }
-
-    UM.SettingPropertyProvider
-    {
-        id: machineNozzleSizeProvider
-
-        containerStackId: Cura.MachineManager.activeMachineId
-        key: "machine_nozzle_size"
-        watchedProperties: [ "value", "description" ]
-        storeIndex: manager.containerIndex
-    }
-
-    UM.SettingPropertyProvider
-    {
         id: machineExtruderCountProvider
 
         containerStackId: Cura.MachineManager.activeMachineId
         key: "machine_extruder_count"
-        watchedProperties: [ "value", "description" ]
-        storeIndex: manager.containerIndex
-    }
-
-    UM.SettingPropertyProvider
-    {
-        id: gantryHeightProvider
-
-        containerStackId: Cura.MachineManager.activeMachineId
-        key: "gantry_height"
         watchedProperties: [ "value", "description" ]
         storeIndex: manager.containerIndex
     }
@@ -854,36 +819,6 @@ Cura.MachineAction
 
         containerStackId: Cura.MachineManager.activeMachineId
         key: "machine_end_gcode"
-        watchedProperties: [ "value", "description" ]
-        storeIndex: manager.containerIndex
-    }
-
-    UM.SettingPropertyProvider
-    {
-        id: extruderNozzleSizeProvider
-
-        containerStackId: settingsTabs.currentIndex > 0 ? Cura.MachineManager.activeStackId : ""
-        key: "machine_nozzle_size"
-        watchedProperties: [ "value", "description" ]
-        storeIndex: manager.containerIndex
-    }
-
-    UM.SettingPropertyProvider
-    {
-        id: extruderOffsetXProvider
-
-        containerStackId: settingsTabs.currentIndex > 0 ? Cura.MachineManager.activeStackId : ""
-        key: "machine_nozzle_offset_x"
-        watchedProperties: [ "value", "description" ]
-        storeIndex: manager.containerIndex
-    }
-
-    UM.SettingPropertyProvider
-    {
-        id: extruderOffsetYProvider
-
-        containerStackId: settingsTabs.currentIndex > 0 ? Cura.MachineManager.activeStackId : ""
-        key: "machine_nozzle_offset_y"
         watchedProperties: [ "value", "description" ]
         storeIndex: manager.containerIndex
     }
