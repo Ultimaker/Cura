@@ -48,8 +48,8 @@ class MachineSettingsAction(MachineAction):
     def _onContainerRemoved(self, container):
         # Remove definition_changes containers when a stack is removed
         if container.getMetaDataEntry("type") in ["machine", "extruder_train"]:
-            definition_changes_container = container.findContainer({"type": "definition_changes"})
-            if not definition_changes_container:
+            definition_changes_container = container.definitionChanges
+            if definition_changes_container.id == "empty":
                 return
 
             self._container_registry.removeContainer(definition_changes_container.getId())
@@ -59,8 +59,8 @@ class MachineSettingsAction(MachineAction):
             return
 
         # Make sure there is a definition_changes container to store the machine settings
-        definition_changes_container = self._global_container_stack.findContainer({"type": "definition_changes"})
-        if not definition_changes_container:
+        definition_changes_container = self._global_container_stack.definitionChanges
+        if definition_changes_container.id == "empty":
             definition_changes_container = self._createDefinitionChangesContainer(self._global_container_stack, self._global_container_stack.getName() + "_settings")
 
         # Notify the UI in which container to store the machine settings data
@@ -85,8 +85,8 @@ class MachineSettingsAction(MachineAction):
             return
 
         # Make sure there is a definition_changes container to store the machine settings
-        definition_changes_container = extruder_container_stack.findContainer({"type": "definition_changes"})
-        if not definition_changes_container:
+        definition_changes_container = extruder_container_stack.definitionChanges
+        if definition_changes_container.id == "empty":
             definition_changes_container = self._createDefinitionChangesContainer(extruder_container_stack, extruder_container_stack.getId() + "_settings")
 
         # Notify the UI in which container to store the machine settings data
@@ -140,8 +140,8 @@ class MachineSettingsAction(MachineAction):
         machine_manager = Application.getInstance().getMachineManager()
         extruder_manager = ExtruderManager.getInstance()
 
-        definition_changes_container = self._global_container_stack.findContainer({"type": "definition_changes"})
-        if not self._global_container_stack or not definition_changes_container:
+        definition_changes_container = self._global_container_stack.definitionChanges
+        if not self._global_container_stack or definition_changes_container.id == "empty":
             return
 
         previous_extruder_count = self._global_container_stack.getProperty("machine_extruder_count", "value")
