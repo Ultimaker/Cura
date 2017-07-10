@@ -285,28 +285,36 @@ Cura.MachineAction
                                 Label
                                 {
                                     text: catalog.i18nc("@label", "Number of Extruders")
-                                    visible: extruderCountComboBox.visible
+                                    visible: extruderCountControl.visible
                                 }
 
-                                ComboBox
+                                UM.TooltipArea
                                 {
-                                    id: extruderCountComboBox
+                                    id: extruderCountControl
                                     visible: manager.definedExtruderCount > 1
-                                    model: ListModel
+                                    height: extruderCountComboBox.height
+                                    width: extruderCountComboBox.width
+                                    text: machineExtruderCountProvider.properties.description
+
+                                    ComboBox
                                     {
-                                        id: extruderCountModel
-                                        Component.onCompleted:
+                                        id: extruderCountComboBox
+                                        model: ListModel
                                         {
-                                            for(var i = 0; i < manager.definedExtruderCount; i++)
+                                            id: extruderCountModel
+                                            Component.onCompleted:
                                             {
-                                                extruderCountModel.append({text: String(i + 1), value: i});
+                                                for(var i = 0; i < manager.definedExtruderCount; i++)
+                                                {
+                                                    extruderCountModel.append({text: String(i + 1), value: i});
+                                                }
                                             }
                                         }
-                                    }
-                                    currentIndex: machineExtruderCountProvider.properties.value - 1
-                                    onActivated:
-                                    {
-                                        manager.setMachineExtruderCount(index + 1);
+                                        currentIndex: machineExtruderCountProvider.properties.value - 1
+                                        onActivated:
+                                        {
+                                            manager.setMachineExtruderCount(index + 1);
+                                        }
                                     }
                                 }
 
@@ -867,7 +875,7 @@ Cura.MachineAction
 
         containerStackId: Cura.MachineManager.activeMachineId
         key: "machine_head_with_fans_polygon"
-        watchedProperties: [ "value", "description" ]
+        watchedProperties: [ "value" ]
         storeIndex: manager.containerIndex
     }
 }
