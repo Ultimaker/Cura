@@ -38,6 +38,8 @@ class MachineSettingsAction(MachineAction):
         Application.getInstance().globalContainerStackChanged.connect(self._onGlobalContainerChanged)
         ExtruderManager.getInstance().activeExtruderChanged.connect(self._onActiveExtruderStackChanged)
 
+        self._empty_container = self._container_registry.getEmptyInstanceContainer()
+
         self._backend = Application.getInstance().getBackend()
 
     def _onContainerAdded(self, container):
@@ -49,7 +51,7 @@ class MachineSettingsAction(MachineAction):
         # Remove definition_changes containers when a stack is removed
         if container.getMetaDataEntry("type") in ["machine", "extruder_train"]:
             definition_changes_container = container.definitionChanges
-            if definition_changes_container.id == "empty":
+            if definition_changes_container == self._empty_container:
                 return
 
             self._container_registry.removeContainer(definition_changes_container.getId())
@@ -60,7 +62,7 @@ class MachineSettingsAction(MachineAction):
 
         # Make sure there is a definition_changes container to store the machine settings
         definition_changes_container = self._global_container_stack.definitionChanges
-        if definition_changes_container.id == "empty":
+        if definition_changes_container == self._empty_container:
             definition_changes_container = self._createDefinitionChangesContainer(self._global_container_stack, self._global_container_stack.getName() + "_settings")
 
         # Notify the UI in which container to store the machine settings data
@@ -86,7 +88,7 @@ class MachineSettingsAction(MachineAction):
 
         # Make sure there is a definition_changes container to store the machine settings
         definition_changes_container = extruder_container_stack.definitionChanges
-        if definition_changes_container.id == "empty":
+        if definition_changes_container == self._empty_container:
             definition_changes_container = self._createDefinitionChangesContainer(extruder_container_stack, extruder_container_stack.getId() + "_settings")
 
         # Notify the UI in which container to store the machine settings data
@@ -141,7 +143,7 @@ class MachineSettingsAction(MachineAction):
         extruder_manager = ExtruderManager.getInstance()
 
         definition_changes_container = self._global_container_stack.definitionChanges
-        if not self._global_container_stack or definition_changes_container.id == "empty":
+        if not self._global_container_stack or definition_changes_container == self._empty_container:
             return
 
         previous_extruder_count = self._global_container_stack.getProperty("machine_extruder_count", "value")
@@ -265,7 +267,7 @@ class MachineSettingsAction(MachineAction):
                 self._global_container_stack.addMetaDataEntry("has_materials", True)
 
             # Set the material container to a sane default
-            if material_container.getId() == "empty":
+            if material_container == self._empty_container:
                 search_criteria = { "type": "material", "definition": "fdmprinter", "id": self._global_container_stack.getMetaDataEntry("preferred_material")}
                 materials = self._container_registry.findInstanceContainers(**search_criteria)
                 if materials:
@@ -333,7 +335,7 @@ class MachineSettingsAction(MachineAction):
                 if has_material_variants:
                     search_criteria["variant"] = stack.variant.getId()
 
-                if old_material.getId() == "empty":
+                if old_material == self._empty_container:
                     search_criteria.pop("material", None)
                     search_criteria.pop("supplier", None)
                     search_criteria.pop("definition", None)
@@ -357,7 +359,7 @@ class MachineSettingsAction(MachineAction):
                     materials = self._container_registry.findInstanceContainers(**search_criteria)
                 if not materials:
                     # Just use empty material as a final fallback
-                    materials = [ContainerRegistry.getInstance().getEmptyInstanceContainer()]
+                    materials = [self._empty_container]
 
                 Logger.log("i", "Selecting new material: %s" % materials[0].getId())
 
