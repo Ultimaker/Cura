@@ -8,7 +8,6 @@ from typing import Any, Optional
 from PyQt5.QtCore import pyqtProperty, pyqtSignal, QObject
 from UM.FlameProfiler import pyqtSlot
 
-import cura.CuraApplication #To get the setting version.
 from UM.Decorators import override
 from UM.Logger import Logger
 from UM.Settings.ContainerStack import ContainerStack, InvalidContainerStackError
@@ -48,6 +47,7 @@ class CuraContainerStack(ContainerStack):
 
         self.containersChanged.connect(self._onContainersChanged)
 
+        import cura.CuraApplication #Here to prevent circular imports.
         self.addMetaDataEntry("setting_version", cura.CuraApplication.CuraApplication.SettingVersion)
 
     # This is emitted whenever the containersChanged signal from the ContainerStack base class is emitted.
