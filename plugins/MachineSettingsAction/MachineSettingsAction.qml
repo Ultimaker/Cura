@@ -189,7 +189,7 @@ Cura.MachineAction
                                     sourceComponent: comboBoxWithOptions
                                     property string settingKey: "machine_gcode_flavor"
                                     property bool forceUpdateOnChange: true
-                                    property string afterOnActivate: "manager.updateHasMaterialsMetadata()"
+                                    property var afterOnActivate: manager.updateHasMaterialsMetadata
                                 }
                             }
                         }
@@ -329,7 +329,7 @@ Cura.MachineAction
                                     property string settingKey: "material_diameter"
                                     property string unit: catalog.i18nc("@label", "mm")
                                     property string tooltip: catalog.i18nc("@tooltip", "The nominal diameter of filament supported by the printer. The exact diameter will be overridden by the material and/or the profile.")
-                                    property string afterOnEditingFinished: "manager.updateMaterialForDiameter()"
+                                    property var afterOnEditingFinished: manager.updateMaterialForDiameter
                                 }
                                 Label
                                 {
@@ -587,8 +587,8 @@ Cura.MachineAction
 
             property bool _isExtruderSetting: (typeof(isExtruderSetting) === 'undefined') ? false: isExtruderSetting
             property bool _allowNegative: (typeof(allowNegative) === 'undefined') ? false : allowNegative
-            property string _afterOnEditingFinished: (typeof(afterOnEditingFinished) === 'undefined') ? "": afterOnEditingFinished
-            property bool _forceUpdateOnChange: (typeof(forceUpdateOnChange) === 'undefined') ? false: forceUpdateOnChange
+            property var _afterOnEditingFinished: (typeof(afterOnEditingFinished) === 'undefined') ? undefined : afterOnEditingFinished
+            property bool _forceUpdateOnChange: (typeof(forceUpdateOnChange) === 'undefined') ? false : forceUpdateOnChange
             property string _tooltip: (typeof(tooltip) === 'undefined') ? propertyProvider.properties.description : tooltip
 
             UM.SettingPropertyProvider
@@ -630,9 +630,9 @@ Cura.MachineAction
                                 ExtruderManager.setActiveExtruderIndex(extruderIndex)
                             }
                         }
-                        if(_afterOnEditingFinished != "")
+                        if(_afterOnEditingFinished)
                         {
-                            eval(_afterOnEditingFinished);
+                            _afterOnEditingFinished();
                         }
                     }
                 }
@@ -657,9 +657,9 @@ Cura.MachineAction
             width: comboBox.width
             text: _tooltip
 
-            property bool _isExtruderSetting: (typeof(isExtruderSetting) === 'undefined') ? false: isExtruderSetting
-            property bool _forceUpdateOnChange: (typeof(forceUpdateOnChange) === 'undefined') ? false: forceUpdateOnChange
-            property string _afterOnActivate: (typeof(afterOnActivate) === 'undefined') ? "": afterOnActivate
+            property bool _isExtruderSetting: (typeof(isExtruderSetting) === 'undefined') ? false : isExtruderSetting
+            property bool _forceUpdateOnChange: (typeof(forceUpdateOnChange) === 'undefined') ? false : forceUpdateOnChange
+            property var _afterOnActivate: (typeof(afterOnActivate) === 'undefined') ? undefined : afterOnActivate
             property string _tooltip: (typeof(tooltip) === 'undefined') ? propertyProvider.properties.description : tooltip
 
             UM.SettingPropertyProvider
@@ -725,9 +725,9 @@ Cura.MachineAction
                         {
                             manager.forceUpdate();
                         }
-                        if(_afterOnActivate != "")
+                        if(_afterOnActivate)
                         {
-                            eval(_afterOnActivate);
+                            _afterOnActivate();
                         }
                     }
                 }
