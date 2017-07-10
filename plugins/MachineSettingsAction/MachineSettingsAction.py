@@ -30,7 +30,6 @@ class MachineSettingsAction(MachineAction):
 
         self._global_container_stack = None
         self._container_index = 0
-        self._extruder_container_index = 0
 
         self._container_registry = ContainerRegistry.getInstance()
         self._container_registry.containerAdded.connect(self._onContainerAdded)
@@ -91,12 +90,6 @@ class MachineSettingsAction(MachineAction):
         if definition_changes_container == self._empty_container:
             definition_changes_container = self._createDefinitionChangesContainer(extruder_container_stack, extruder_container_stack.getId() + "_settings")
 
-        # Notify the UI in which container to store the machine settings data
-        container_index = extruder_container_stack.getContainerIndex(definition_changes_container)
-        if container_index != self._extruder_container_index:
-            self._extruder_container_index = container_index
-            self.extruderContainerIndexChanged.emit()
-
     def _createDefinitionChangesContainer(self, container_stack, container_name, container_index = None):
         definition_changes_container = InstanceContainer(container_name)
         definition = container_stack.getBottom()
@@ -114,13 +107,6 @@ class MachineSettingsAction(MachineAction):
     @pyqtProperty(int, notify = containerIndexChanged)
     def containerIndex(self):
         return self._container_index
-
-    extruderContainerIndexChanged = pyqtSignal()
-
-    @pyqtProperty(int, notify = extruderContainerIndexChanged)
-    def extruderContainerIndex(self):
-        return self._extruder_container_index
-
 
     def _onGlobalContainerChanged(self):
         self._global_container_stack = Application.getInstance().getGlobalContainerStack()
