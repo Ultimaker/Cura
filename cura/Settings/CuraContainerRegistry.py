@@ -340,10 +340,8 @@ class CuraContainerRegistry(ContainerRegistry):
     #   \return the ID of the active material or the empty string
     def _activeMaterialId(self):
         global_container_stack = Application.getInstance().getGlobalContainerStack()
-        if global_container_stack:
-            material = global_container_stack.findContainer({"type": "material"})
-            if material:
-                return material.getId()
+        if global_container_stack and global_container_stack.material:
+            return global_container_stack.material.getId()
         return ""
 
     ##  Returns true if the current machien requires its own quality profiles
