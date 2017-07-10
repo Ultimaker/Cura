@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: Cura 2.6\n"
 "Report-Msgid-Bugs-To: r.dulek@ultimaker.com\n"
 "POT-Creation-Date: 2017-06-26 09:44+0800\n"
-"PO-Revision-Date: 2017-07-08 19:53+0800\n"
+"PO-Revision-Date: 2017-07-10 09:36+0800\n"
 "Last-Translator: PCDotFan <pcdotfan@aliyun.com>\n"
 "Language-Team: PCDotFan <pc@edu.ax>\n"
 "Lang-Code: zh\n"
@@ -136,7 +136,7 @@ msgstr "显示更新日志"
 #: /home/ruben/Projects/Cura/plugins/ProfileFlattener/__init__.py:12
 msgctxt "@label"
 msgid "Profile flatener"
-msgstr "配置整理器"
+msgstr "Profile flatener"
 
 #: /home/ruben/Projects/Cura/plugins/ProfileFlattener/__init__.py:15
 msgctxt "@info:whatsthis"
@@ -146,12 +146,12 @@ msgstr "Create a flattend quality changes profile."
 #: /home/ruben/Projects/Cura/plugins/ProfileFlattener/ProfileFlattener.py:20
 msgctxt "@item:inmenu"
 msgid "Flatten active settings"
-msgstr "整理已生效设置"
+msgstr "Flatten active settings"
 
 #: /home/ruben/Projects/Cura/plugins/ProfileFlattener/ProfileFlattener.py:32
 msgctxt "@info:status"
 msgid "Profile has been flattened & activated."
-msgstr "配置文件现已整理完毕且被应用生效。"
+msgstr "Profile has been flattened & activated."
 
 #: /home/ruben/Projects/Cura/plugins/USBPrinting/__init__.py:13
 msgctxt "@label"
