@@ -1135,6 +1135,14 @@
                     "limit_to_extruder": "wall_0_extruder_nr",
                     "settable_per_mesh": true
                 },
+                "fill_outline_gaps": {
+                    "label": "Print Thin Walls",
+                    "description": "Print pieces of the model which are horizontally thinner than the nozzle size.",
+                    "type": "bool",
+                    "default_value": "false",
+                    "limit_to_extruder": "wall_0_extruder_nr",
+                    "settable_per_mesh": true
+                },
                 "xy_offset":
                 {
                     "label": "Horizontal Expansion",
@@ -1350,7 +1358,7 @@
                 "skin_overlap":
                 {
                     "label": "Skin Overlap Percentage",
-                    "description": "The amount of overlap between the skin and the walls. A slight overlap allows the walls to connect firmly to the skin.",
+                    "description": "The amount of overlap between the skin and the walls as a percentage of the line width. A slight overlap allows the walls to connect firmly to the skin. This is a percentage of the average line widths of the skin lines and the innermost wall.",
                     "unit": "%",
                     "type": "float",
                     "default_value": 5,
@@ -3428,6 +3436,47 @@
                     "maximum_value_warning": "10 * machine_nozzle_size",
                     "enabled": "support_enable",
                     "settable_per_mesh": true
+                },
+                "support_infill_sparse_thickness":
+                {
+                    "label": "Support Infill Layer Thickness",
+                    "description": "The thickness per layer of support infill material. This value should always be a multiple of the layer height and is otherwise rounded.",
+                    "unit": "mm",
+                    "type": "float",
+                    "default_value": 0.1,
+                    "minimum_value": "resolveOrValue('layer_height')",
+                    "maximum_value_warning": "0.75 * machine_nozzle_size",
+                    "maximum_value": "resolveOrValue('layer_height') * 8",
+                    "value": "resolveOrValue('layer_height')",
+                    "enabled": "support_enable and support_infill_rate > 0",
+                    "limit_to_extruder": "support_infill_extruder_nr",
+                    "settable_per_mesh": false
+                },
+                "gradual_support_infill_steps":
+                {
+                    "label": "Gradual Support Infill Steps",
+                    "description": "Number of times to reduce the support infill density by half when getting further below top surfaces. Areas which are closer to top surfaces get a higher density, up to the Support Infill Density.",
+                    "default_value": 0,
+                    "type": "int",
+                    "minimum_value": "0",
+                    "maximum_value_warning": "5",
+                    "maximum_value": "999999 if support_line_distance == 0 else (20 - math.log(support_line_distance) / math.log(2))",
+                    "enabled": "support_enable and support_infill_rate > 0",
+                    "limit_to_extruder": "support_infill_extruder_nr",
+                    "settable_per_mesh": false
+                },
+                "gradual_support_infill_step_height":
+                {
+                    "label": "Gradual Support Infill Step Height",
+                    "description": "The height of support infill of a given density before switching to half the density.",
+                    "unit": "mm",
+                    "type": "float",
+                    "default_value": 1.5,
+                    "minimum_value": "0.0001",
+                    "minimum_value_warning": "3 * resolveOrValue('layer_height')",
+                    "enabled": "support_enable and support_infill_rate > 0 and gradual_support_infill_steps > 0",
+                    "limit_to_extruder": "support_infill_extruder_nr",
+                    "settable_per_mesh": false
                 },
                 "support_interface_enable":
                 {

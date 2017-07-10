@@ -157,7 +157,7 @@ class MachineManager(QObject):
                 if str(index) == extruder.getMetaDataEntry("position"):
                     matching_extruder = extruder
                     break
-            if matching_extruder and matching_extruder.findContainer({"type": "variant"}).getName() != hotend_id:
+            if matching_extruder and matching_extruder.variant.getName() != hotend_id:
                 # Save the material that needs to be changed. Multiple changes will be handled by the callback.
                 self._auto_hotends_changed[str(index)] = containers[0].getId()
                 self._printer_output_devices[0].materialHotendChangedMessage(self._materialHotendChangedCallback)
@@ -181,11 +181,10 @@ class MachineManager(QObject):
                     matching_extruder = extruder
                     break
 
-            if matching_extruder and matching_extruder.findContainer({"type": "material"}).getMetaDataEntry("GUID") != material_id:
+            if matching_extruder and matching_extruder.material.getMetaDataEntry("GUID") != material_id:
                 # Save the material that needs to be changed. Multiple changes will be handled by the callback.
-                variant_container = matching_extruder.findContainer({"type": "variant"})
-                if self._global_container_stack.getBottom().getMetaDataEntry("has_variants") and variant_container:
-                    variant_id = self.getQualityVariantId(self._global_container_stack.getBottom(), variant_container)
+                if self._global_container_stack.getBottom().getMetaDataEntry("has_variants") and matching_extruder.variant:
+                    variant_id = self.getQualityVariantId(self._global_container_stack.getBottom(), matching_extruder.variant)
                     for container in containers:
                         if container.getMetaDataEntry("variant") == variant_id:
                             self._auto_materials_changed[str(index)] = container.getId()
@@ -507,9 +506,8 @@ class MachineManager(QObject):
         result = []
         if ExtruderManager.getInstance().getActiveGlobalAndExtruderStacks() is not None:
             for stack in ExtruderManager.getInstance().getActiveGlobalAndExtruderStacks():
-                variant_container = stack.findContainer({"type": "variant"})
-                if variant_container and variant_container != self._empty_variant_container:
-                    result.append(variant_container.getId())
+                if stack.variant and stack.variant != self._empty_variant_container:
+                    result.append(stack.variant.getId())
 
         return result
 

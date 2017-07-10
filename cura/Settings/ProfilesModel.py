@@ -107,9 +107,9 @@ class ProfilesModel(InstanceContainersModel):
                     continue
 
             #Quality has no value for layer height either. Get the layer height from somewhere lower in the stack.
-            skip_until_container = global_container_stack.findContainer({"type": "material"})
+            skip_until_container = global_container_stack.material
             if not skip_until_container: #No material in stack.
-                skip_until_container = global_container_stack.findContainer({"type": "variant"})
+                skip_until_container = global_container_stack.variant
                 if not skip_until_container: #No variant in stack.
                     skip_until_container = global_container_stack.getBottom()
             item["layer_height"] = str(global_container_stack.getRawProperty("layer_height", "value", skip_until_container = skip_until_container.getId())) + unit #Fall through to the currently loaded material.

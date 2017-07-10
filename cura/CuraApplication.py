@@ -268,35 +268,37 @@ class CuraApplication(QtApplication):
             ContainerRegistry.getInstance().load()
 
         # set the setting version for Preferences
-        Preferences.getInstance().addPreference("metadata/setting_version", CuraApplication.SettingVersion)
+        preferences = Preferences.getInstance()
+        preferences.addPreference("metadata/setting_version", 0)
+        preferences.setValue("metadata/setting_version", self.SettingVersion) #Don't make it equal to the default so that the setting version always gets written to the file.
 
-        Preferences.getInstance().addPreference("cura/active_mode", "simple")
+        preferences.addPreference("cura/active_mode", "simple")
 
-        Preferences.getInstance().addPreference("cura/categories_expanded", "")
-        Preferences.getInstance().addPreference("cura/jobname_prefix", True)
-        Preferences.getInstance().addPreference("view/center_on_select", True)
-        Preferences.getInstance().addPreference("mesh/scale_to_fit", False)
-        Preferences.getInstance().addPreference("mesh/scale_tiny_meshes", True)
-        Preferences.getInstance().addPreference("cura/dialog_on_project_save", True)
-        Preferences.getInstance().addPreference("cura/asked_dialog_on_project_save", False)
-        Preferences.getInstance().addPreference("cura/choice_on_profile_override", "always_ask")
-        Preferences.getInstance().addPreference("cura/choice_on_open_project", "always_ask")
+        preferences.addPreference("cura/categories_expanded", "")
+        preferences.addPreference("cura/jobname_prefix", True)
+        preferences.addPreference("view/center_on_select", True)
+        preferences.addPreference("mesh/scale_to_fit", False)
+        preferences.addPreference("mesh/scale_tiny_meshes", True)
+        preferences.addPreference("cura/dialog_on_project_save", True)
+        preferences.addPreference("cura/asked_dialog_on_project_save", False)
+        preferences.addPreference("cura/choice_on_profile_override", "always_ask")
+        preferences.addPreference("cura/choice_on_open_project", "always_ask")
 
-        Preferences.getInstance().addPreference("cura/currency", "€")
-        Preferences.getInstance().addPreference("cura/material_settings", "{}")
+        preferences.addPreference("cura/currency", "€")
+        preferences.addPreference("cura/material_settings", "{}")
 
-        Preferences.getInstance().addPreference("view/invert_zoom", False)
+        preferences.addPreference("view/invert_zoom", False)
 
         for key in [
             "dialog_load_path",  # dialog_save_path is in LocalFileOutputDevicePlugin
             "dialog_profile_path",
             "dialog_material_path"]:
 
-            Preferences.getInstance().addPreference("local_file/%s" % key, os.path.expanduser("~/"))
+            preferences.addPreference("local_file/%s" % key, os.path.expanduser("~/"))
 
-        Preferences.getInstance().setDefault("local_file/last_used_type", "text/x-gcode")
+        preferences.setDefault("local_file/last_used_type", "text/x-gcode")
 
-        Preferences.getInstance().setDefault("general/visible_settings", """
+        preferences.setDefault("general/visible_settings", """
             machine_settings
             resolution
                 layer_height
