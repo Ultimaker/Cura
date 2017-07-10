@@ -70,7 +70,7 @@
         "machine_start_gcode": { "default_value": "" },
         "machine_end_gcode": { "default_value": "" },
         "prime_tower_position_x": { "default_value": 175 },
-        "prime_tower_position_y": { "default_value": 177 },
+        "prime_tower_position_y": { "value": "machine_depth - prime_tower_size - (brim_width if adhesion_type == 'brim' else (raft_margin if adhesion_type == 'raft' else (skirt_gap if adhesion_type == 'skirt' else 0))) - 1" },
         "prime_tower_wipe_enabled": { "default_value": false },
 
         "prime_blob_enable": { "enabled": true },
