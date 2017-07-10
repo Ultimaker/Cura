@@ -268,7 +268,8 @@ class CuraApplication(QtApplication):
             ContainerRegistry.getInstance().load()
 
         # set the setting version for Preferences
-        Preferences.getInstance().addPreference("metadata/setting_version", CuraApplication.SettingVersion)
+        Preferences.getInstance().addPreference("metadata/setting_version", 0)
+        Preferences.getInstance().setValue("metadata/setting_version", self.SettingVersion) #Don't make it equal to the default so that the setting version always gets written to the file.
 
         Preferences.getInstance().addPreference("cura/active_mode", "simple")
 
