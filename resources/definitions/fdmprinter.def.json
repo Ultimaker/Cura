@@ -215,7 +215,7 @@
                     "default_value": 3,
                     "type": "float",
                     "settable_per_mesh": false,
-                    "settable_per_extruder": false,
+                    "settable_per_extruder": true,
                     "settable_per_meshgroup": false
                 },
                 "machine_nozzle_expansion_angle":
