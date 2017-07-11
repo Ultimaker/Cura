@@ -164,7 +164,7 @@ Cura.MachineAction
                                 id: gcodeFlavorComboBox
                                 sourceComponent: comboBoxWithOptions
                                 property string settingKey: "machine_gcode_flavor"
-                                property string label: catalog.i18nc("@label", "GCode flavor")
+                                property string label: catalog.i18nc("@label", "Gcode flavor")
                                 property bool forceUpdateOnChange: true
                                 property var afterOnActivate: manager.updateHasMaterialsMetadata
                             }
