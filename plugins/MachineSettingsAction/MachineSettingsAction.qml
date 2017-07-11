@@ -83,7 +83,7 @@ Cura.MachineAction
                         Column
                         {
                             width: settingsTabs.columnWidth
-                            spacing: UM.Theme.getSize("default_margin").height
+                            spacing: UM.Theme.getSize("default_lining").height
 
                             Label
                             {
@@ -91,109 +91,83 @@ Cura.MachineAction
                                 font.bold: true
                             }
 
-                            Grid
+                            Item { width: UM.Theme.getSize("default_margin").width; height: UM.Theme.getSize("default_margin").height }
+
+                            Loader
                             {
-                                columns: 2
-                                columnSpacing: UM.Theme.getSize("default_margin").width
-                                rowSpacing: UM.Theme.getSize("default_lining").width
+                                id: buildAreaWidthField
+                                sourceComponent: numericTextFieldWithUnit
+                                property string settingKey: "machine_width"
+                                property string label: catalog.i18nc("@label", "X (Width)")
+                                property string unit: catalog.i18nc("@label", "mm")
+                                property bool forceUpdateOnChange: true
+                            }
 
-                                Label
-                                {
-                                    text: catalog.i18nc("@label", "X (Width)")
-                                }
-                                Loader
-                                {
-                                    id: buildAreaWidthField
-                                    sourceComponent: numericTextFieldWithUnit
-                                    property string settingKey: "machine_width"
-                                    property string unit: catalog.i18nc("@label", "mm")
-                                    property bool forceUpdateOnChange: true
-                                }
+                            Loader
+                            {
+                                id: buildAreaDepthField
+                                sourceComponent: numericTextFieldWithUnit
+                                property string settingKey: "machine_depth"
+                                property string label: catalog.i18nc("@label", "Y (Depth)")
+                                property string unit: catalog.i18nc("@label", "mm")
+                                property bool forceUpdateOnChange: true
+                            }
 
-                                Label
-                                {
-                                    text: catalog.i18nc("@label", "Y (Depth)")
-                                }
-                                Loader
-                                {
-                                    id: buildAreaDepthField
-                                    sourceComponent: numericTextFieldWithUnit
-                                    property string settingKey: "machine_depth"
-                                    property string unit: catalog.i18nc("@label", "mm")
-                                    property bool forceUpdateOnChange: true
-                                }
+                            Loader
+                            {
+                                id: buildAreaHeightField
+                                sourceComponent: numericTextFieldWithUnit
+                                property string settingKey: "machine_height"
+                                property string label: catalog.i18nc("@label", "Z (Height)")
+                                property string unit: catalog.i18nc("@label", "mm")
+                                property bool forceUpdateOnChange: true
+                            }
 
-                                Label
-                                {
-                                    text: catalog.i18nc("@label", "Z (Height)")
-                                }
-                                Loader
-                                {
-                                    id: buildAreaHeightField
-                                    sourceComponent: numericTextFieldWithUnit
-                                    property string settingKey: "machine_height"
-                                    property string unit: catalog.i18nc("@label", "mm")
-                                    property bool forceUpdateOnChange: true
-                                }
+                            Item { width: UM.Theme.getSize("default_margin").width; height: UM.Theme.getSize("default_margin").height }
 
-                                Item { width: UM.Theme.getSize("default_margin").width; height: UM.Theme.getSize("default_margin").height }
-                                Item { width: UM.Theme.getSize("default_margin").width; height: UM.Theme.getSize("default_margin").height }
+                            Loader
+                            {
+                                id: shapeComboBox
+                                sourceComponent: comboBoxWithOptions
+                                property string settingKey: "machine_shape"
+                                property string label: catalog.i18nc("@label", "Build plate shape")
+                                property bool forceUpdateOnChange: true
+                            }
 
-                                Label
-                                {
-                                    text: catalog.i18nc("@label", "Build Plate Shape")
-                                }
+                            Loader
+                            {
+                                id: centerIsZeroCheckBox
+                                sourceComponent: simpleCheckBox
+                                property string settingKey: "machine_center_is_zero"
+                                property string label: catalog.i18nc("@option:check", "Origin at center")
+                                property bool forceUpdateOnChange: true
+                            }
+                            Loader
+                            {
+                                id: heatedBedCheckBox
+                                sourceComponent: simpleCheckBox
+                                property var settingKey: "machine_heated_bed"
+                                property string label: catalog.i18nc("@option:check", "Heated bed")
+                                property bool forceUpdateOnChange: true
+                            }
 
-                                Loader
-                                {
-                                    id: shapeComboBox
-                                    sourceComponent: comboBoxWithOptions
-                                    property string settingKey: "machine_shape"
-                                    property bool forceUpdateOnChange: true
-                                }
+                            Item { width: UM.Theme.getSize("default_margin").width; height: UM.Theme.getSize("default_margin").height }
 
-                                Loader
-                                {
-                                    id: centerIsZeroCheckBox
-                                    sourceComponent: simpleCheckBox
-                                    property string label: catalog.i18nc("@option:check", "Machine Center is Zero")
-                                    property string settingKey: "machine_center_is_zero"
-                                    property bool forceUpdateOnChange: true
-                                }
-                                Item { width: UM.Theme.getSize("default_margin").width; height: UM.Theme.getSize("default_margin").height }
-                                Loader
-                                {
-                                    id: heatedBedCheckBox
-                                    sourceComponent: simpleCheckBox
-                                    property string label: catalog.i18nc("@option:check", "Heated Bed")
-                                    property var settingKey: "machine_heated_bed"
-                                    property bool forceUpdateOnChange: true
-                                }
-                                Item { width: UM.Theme.getSize("default_margin").width; height: UM.Theme.getSize("default_margin").height }
-
-                                Item { width: UM.Theme.getSize("default_margin").width; height: UM.Theme.getSize("default_margin").height }
-                                Item { width: UM.Theme.getSize("default_margin").width; height: UM.Theme.getSize("default_margin").height }
-
-                                Label
-                                {
-                                    text: catalog.i18nc("@label", "GCode Flavor")
-                                }
-
-                                Loader
-                                {
-                                    id: gcodeFlavorComboBox
-                                    sourceComponent: comboBoxWithOptions
-                                    property string settingKey: "machine_gcode_flavor"
-                                    property bool forceUpdateOnChange: true
-                                    property var afterOnActivate: manager.updateHasMaterialsMetadata
-                                }
+                            Loader
+                            {
+                                id: gcodeFlavorComboBox
+                                sourceComponent: comboBoxWithOptions
+                                property string settingKey: "machine_gcode_flavor"
+                                property string label: catalog.i18nc("@label", "GCode flavor")
+                                property bool forceUpdateOnChange: true
+                                property var afterOnActivate: manager.updateHasMaterialsMetadata
                             }
                         }
 
                         Column
                         {
                             width: settingsTabs.columnWidth
-                            spacing: UM.Theme.getSize("default_margin").height
+                            spacing: UM.Theme.getSize("default_lining").height
 
                             Label
                             {
@@ -201,97 +175,79 @@ Cura.MachineAction
                                 font.bold: true
                             }
 
-                            Grid
+                            Item { width: UM.Theme.getSize("default_margin").width; height: UM.Theme.getSize("default_margin").height }
+
+                            Loader
                             {
-                                columns: 2
-                                columnSpacing: UM.Theme.getSize("default_margin").width
-                                rowSpacing: UM.Theme.getSize("default_lining").width
+                                id: printheadXMinField
+                                sourceComponent: headPolygonTextField
+                                property string label: catalog.i18nc("@label", "X min")
+                                property string tooltip: catalog.i18nc("@tooltip", "Distance from the left of the printhead to the center of the nozzle. Used to prevent colissions between previous prints and the printhead when printing \"One at a Time\".")
+                                property string axis: "x"
+                                property string side: "min"
+                            }
 
-                                Label
-                                {
-                                    text: catalog.i18nc("@label", "X min")
-                                }
-                                Loader
-                                {
-                                    id: printheadXMinField
-                                    sourceComponent: headPolygonTextField
-                                    property string axis: "x"
-                                    property string side: "min"
-                                    property string tooltip: catalog.i18nc("@tooltip", "Distance from the left of the printhead to the center of the nozzle. Used to prevent colissions between previous prints and the printhead when printing \"One at a Time\".")
-                                }
+                            Loader
+                            {
+                                id: printheadYMinField
+                                sourceComponent: headPolygonTextField
+                                property string label: catalog.i18nc("@label", "Y min")
+                                property string tooltip: catalog.i18nc("@tooltip", "Distance from the front of the printhead to the center of the nozzle. Used to prevent colissions between previous prints and the printhead when printing \"One at a Time\".")
+                                property string axis: "y"
+                                property string side: "min"
+                            }
 
-                                Label
-                                {
-                                    text: catalog.i18nc("@label", "Y min")
-                                }
-                                Loader
-                                {
-                                    id: printheadYMinField
-                                    sourceComponent: headPolygonTextField
-                                    property string axis: "y"
-                                    property string side: "min"
-                                    property string tooltip: catalog.i18nc("@tooltip", "Distance from the front of the printhead to the center of the nozzle. Used to prevent colissions between previous prints and the printhead when printing \"One at a Time\".")
-                                }
+                            Loader
+                            {
+                                id: printheadXMaxField
+                                sourceComponent: headPolygonTextField
+                                property string label: catalog.i18nc("@label", "X max")
+                                property string tooltip: catalog.i18nc("@tooltip", "Distance from the right of the printhead to the center of the nozzle. Used to prevent colissions between previous prints and the printhead when printing \"One at a Time\".")
+                                property string axis: "x"
+                                property string side: "max"
+                            }
 
-                                Label
-                                {
-                                    text: catalog.i18nc("@label", "X max")
-                                }
-                                Loader
-                                {
-                                    id: printheadXMaxField
-                                    sourceComponent: headPolygonTextField
-                                    property string axis: "x"
-                                    property string side: "max"
-                                    property string tooltip: catalog.i18nc("@tooltip", "Distance from the right of the printhead to the center of the nozzle. Used to prevent colissions between previous prints and the printhead when printing \"One at a Time\".")
-                                }
+                            Loader
+                            {
+                                id: printheadYMaxField
+                                sourceComponent: headPolygonTextField
+                                property string label: catalog.i18nc("@label", "Y max")
+                                property string tooltip: catalog.i18nc("@tooltip", "Distance from the rear of the printhead to the center of the nozzle. Used to prevent colissions between previous prints and the printhead when printing \"One at a Time\".")
+                                property string axis: "y"
+                                property string side: "max"
+                            }
 
-                                Label
-                                {
-                                    text: catalog.i18nc("@label", "Y max")
-                                }
-                                Loader
-                                {
-                                    id: printheadYMaxField
-                                    sourceComponent: headPolygonTextField
-                                    property string axis: "y"
-                                    property string side: "max"
-                                    property string tooltip: catalog.i18nc("@tooltip", "Distance from the rear of the printhead to the center of the nozzle. Used to prevent colissions between previous prints and the printhead when printing \"One at a Time\".")
-                                }
+                            Item { width: UM.Theme.getSize("default_margin").width; height: UM.Theme.getSize("default_margin").height }
 
-                                Item { width: UM.Theme.getSize("default_margin").width; height: UM.Theme.getSize("default_margin").height }
-                                Item { width: UM.Theme.getSize("default_margin").width; height: UM.Theme.getSize("default_margin").height }
+                            Loader
+                            {
+                                id: gantryHeightField
+                                sourceComponent: numericTextFieldWithUnit
+                                property string settingKey: "gantry_height"
+                                property string label: catalog.i18nc("@label", "Gantry height")
+                                property string unit: catalog.i18nc("@label", "mm")
+                                property string tooltip: catalog.i18nc("@tooltip", "The height difference between the tip of the nozzle and the gantry system (X and Y axes). Used to prevent collisions between previous prints and the gantry when printing \"One at a Time\".")
+                            }
 
-                                Label
+                            Item { width: UM.Theme.getSize("default_margin").width; height: UM.Theme.getSize("default_margin").height }
+
+                            UM.TooltipArea
+                            {
+                                id: extruderCountControl
+                                visible: manager.definedExtruderCount > 1
+                                height: childrenRect.height
+                                width: childrenRect.width
+                                text: machineExtruderCountProvider.properties.description
+
+                                Row
                                 {
-                                    text: catalog.i18nc("@label", "Gantry height")
-                                }
-                                Loader
-                                {
-                                    id: gantryHeightField
-                                    sourceComponent: numericTextFieldWithUnit
-                                    property string settingKey: "gantry_height"
-                                    property string unit: catalog.i18nc("@label", "mm")
-                                    property string tooltip: catalog.i18nc("@tooltip", "The height difference between the tip of the nozzle and the gantry system (X and Y axes). Used to prevent collisions between previous prints and the gantry when printing \"One at a Time\".")
-                                }
+                                    spacing: UM.Theme.getSize("default_margin").width
 
-                                Item { width: UM.Theme.getSize("default_margin").width; height: UM.Theme.getSize("default_margin").height }
-                                Item { width: UM.Theme.getSize("default_margin").width; height: UM.Theme.getSize("default_margin").height }
-
-                                Label
-                                {
-                                    text: catalog.i18nc("@label", "Number of Extruders")
-                                    visible: extruderCountControl.visible
-                                }
-
-                                UM.TooltipArea
-                                {
-                                    id: extruderCountControl
-                                    visible: manager.definedExtruderCount > 1
-                                    height: extruderCountComboBox.height
-                                    width: extruderCountComboBox.width
-                                    text: machineExtruderCountProvider.properties.description
-
+                                    Label
+                                    {
+                                        text: catalog.i18nc("@label", "Number of Extruders")
+                                        anchors.verticalCenter: extruderCountComboBox.verticalCenter
+                                    }
                                     ComboBox
                                     {
                                         id: extruderCountComboBox
@@ -313,33 +269,26 @@ Cura.MachineAction
                                         }
                                     }
                                 }
+                            }
 
-                                Label
-                                {
-                                    text: catalog.i18nc("@label", "Material Diameter")
-                                }
-                                Loader
-                                {
-                                    id: materialDiameterField
-                                    sourceComponent: numericTextFieldWithUnit
-                                    property string settingKey: "material_diameter"
-                                    property string unit: catalog.i18nc("@label", "mm")
-                                    property string tooltip: catalog.i18nc("@tooltip", "The nominal diameter of filament supported by the printer. The exact diameter will be overridden by the material and/or the profile.")
-                                    property var afterOnEditingFinished: manager.updateMaterialForDiameter
-                                }
-                                Label
-                                {
-                                    text: catalog.i18nc("@label", "Nozzle size")
-                                    visible: nozzleSizeField.visible
-                                }
-                                Loader
-                                {
-                                    id: nozzleSizeField
-                                    visible: !Cura.MachineManager.hasVariants && machineExtruderCountProvider.properties.value == 1
-                                    sourceComponent: numericTextFieldWithUnit
-                                    property string settingKey: "machine_nozzle_size"
-                                    property string unit: catalog.i18nc("@label", "mm")
-                                }
+                            Loader
+                            {
+                                id: materialDiameterField
+                                sourceComponent: numericTextFieldWithUnit
+                                property string settingKey: "material_diameter"
+                                property string unit: catalog.i18nc("@label", "mm")
+                                property string tooltip: catalog.i18nc("@tooltip", "The nominal diameter of filament supported by the printer. The exact diameter will be overridden by the material and/or the profile.")
+                                property var afterOnEditingFinished: manager.updateMaterialForDiameter
+                                property string label: catalog.i18nc("@label", "Material diameter")
+                            }
+                            Loader
+                            {
+                                id: nozzleSizeField
+                                visible: !Cura.MachineManager.hasVariants && machineExtruderCountProvider.properties.value == 1
+                                sourceComponent: numericTextFieldWithUnit
+                                property string settingKey: "machine_nozzle_size"
+                                property string label: catalog.i18nc("@label", "Nozzle size")
+                                property string unit: catalog.i18nc("@label", "mm")
                             }
                         }
                     }
@@ -413,7 +362,7 @@ Cura.MachineAction
 
                     Column
                     {
-                        spacing: UM.Theme.getSize("default_margin").width
+                        spacing: UM.Theme.getSize("default_lining").width
 
                         Label
                         {
@@ -421,56 +370,44 @@ Cura.MachineAction
                             font.bold: true
                         }
 
-                        Grid
+                        Item { width: UM.Theme.getSize("default_margin").width; height: UM.Theme.getSize("default_margin").height }
+
+                        Loader
                         {
-                            columns: 2
-                            columnSpacing: UM.Theme.getSize("default_margin").width
-                            rowSpacing: UM.Theme.getSize("default_lining").width
-
-                            Label
-                            {
-                                text: catalog.i18nc("@label", "Nozzle size")
-                                visible: extruderNozzleSizeField.visible
-                            }
-                            Loader
-                            {
-                                id: extruderNozzleSizeField
-                                visible: !Cura.MachineManager.hasVariants
-                                sourceComponent: numericTextFieldWithUnit
-                                property string settingKey: "machine_nozzle_size"
-                                property bool isExtruderSetting: true
-                                property string unit: catalog.i18nc("@label", "mm")
-                            }
-
-                            Label
-                            {
-                                text: catalog.i18nc("@label", "Nozzle offset X")
-                            }
-                            Loader
-                            {
-                                id: extruderOffsetXField
-                                sourceComponent: numericTextFieldWithUnit
-                                property string settingKey: "machine_nozzle_offset_x"
-                                property string unit: catalog.i18nc("@label", "mm")
-                                property bool isExtruderSetting: true
-                                property bool forceUpdateOnChange: true
-                                property bool allowNegative: true
-                            }
-                            Label
-                            {
-                                text: catalog.i18nc("@label", "Nozzle offset Y")
-                            }
-                            Loader
-                            {
-                                id: extruderOffsetYField
-                                sourceComponent: numericTextFieldWithUnit
-                                property string settingKey: "machine_nozzle_offset_y"
-                                property string unit: catalog.i18nc("@label", "mm")
-                                property bool isExtruderSetting: true
-                                property bool forceUpdateOnChange: true
-                                property bool allowNegative: true
-                            }
+                            id: extruderNozzleSizeField
+                            visible: !Cura.MachineManager.hasVariants
+                            sourceComponent: numericTextFieldWithUnit
+                            property string settingKey: "machine_nozzle_size"
+                            property string label: catalog.i18nc("@label", "Nozzle size")
+                            property string unit: catalog.i18nc("@label", "mm")
+                            property bool isExtruderSetting: true
                         }
+
+                        Loader
+                        {
+                            id: extruderOffsetXField
+                            sourceComponent: numericTextFieldWithUnit
+                            property string settingKey: "machine_nozzle_offset_x"
+                            property string label: catalog.i18nc("@label", "Nozzle offset X")
+                            property string unit: catalog.i18nc("@label", "mm")
+                            property bool isExtruderSetting: true
+                            property bool forceUpdateOnChange: true
+                            property bool allowNegative: true
+                        }
+
+                        Loader
+                        {
+                            id: extruderOffsetYField
+                            sourceComponent: numericTextFieldWithUnit
+                            property string settingKey: "machine_nozzle_offset_y"
+                            property string label: catalog.i18nc("@label", "Nozzle offset Y")
+                            property string unit: catalog.i18nc("@label", "mm")
+                            property bool isExtruderSetting: true
+                            property bool forceUpdateOnChange: true
+                            property bool allowNegative: true
+                        }
+
+                        Item { width: UM.Theme.getSize("default_margin").width; height: UM.Theme.getSize("default_margin").height }
 
                         Row
                         {
@@ -577,14 +514,15 @@ Cura.MachineAction
         id: numericTextFieldWithUnit
         UM.TooltipArea
         {
-            height: textField.height
-            width: textField.width
+            height: childrenRect.height
+            width: childrenRect.width
             text: _tooltip
 
             property bool _isExtruderSetting: (typeof(isExtruderSetting) === 'undefined') ? false: isExtruderSetting
             property bool _allowNegative: (typeof(allowNegative) === 'undefined') ? false : allowNegative
             property var _afterOnEditingFinished: (typeof(afterOnEditingFinished) === 'undefined') ? undefined : afterOnEditingFinished
             property bool _forceUpdateOnChange: (typeof(forceUpdateOnChange) === 'undefined') ? false : forceUpdateOnChange
+            property string _label: (typeof(label) === 'undefined') ? "" : label
             property string _tooltip: (typeof(tooltip) === 'undefined') ? propertyProvider.properties.description : tooltip
 
             UM.SettingPropertyProvider
@@ -607,39 +545,58 @@ Cura.MachineAction
                 storeIndex: manager.containerIndex
             }
 
-            TextField
+            Row
             {
-                id: textField
-                text: (propertyProvider.properties.value) ? propertyProvider.properties.value : ""
-                validator: RegExpValidator { regExp: _allowNegative ? /-?[0-9\.]{0,6}/ : /[0-9\.]{0,6}/ }
-                onEditingFinished:
+                spacing: UM.Theme.getSize("default_margin").width
+
+                Label
                 {
-                    if (propertyProvider && text != propertyProvider.properties.value)
+                    text: _label
+                    visible: _label != ""
+                    anchors.verticalCenter: textFieldWithUnit.verticalCenter
+                }
+
+                Item
+                {
+                    width: textField.width
+                    height: textField.height
+
+                    id: textFieldWithUnit
+                    TextField
                     {
-                        propertyProvider.setPropertyValue("value", text);
-                        if(_forceUpdateOnChange)
+                        id: textField
+                        text: (propertyProvider.properties.value) ? propertyProvider.properties.value : ""
+                        validator: RegExpValidator { regExp: _allowNegative ? /-?[0-9\.]{0,6}/ : /[0-9\.]{0,6}/ }
+                        onEditingFinished:
                         {
-                            var extruderIndex = ExtruderManager.activeExtruderIndex;
-                            manager.forceUpdate();
-                            if(ExtruderManager.activeExtruderIndex != extruderIndex)
+                            if (propertyProvider && text != propertyProvider.properties.value)
                             {
-                                ExtruderManager.setActiveExtruderIndex(extruderIndex)
+                                propertyProvider.setPropertyValue("value", text);
+                                if(_forceUpdateOnChange)
+                                {
+                                    var extruderIndex = ExtruderManager.activeExtruderIndex;
+                                    manager.forceUpdate();
+                                    if(ExtruderManager.activeExtruderIndex != extruderIndex)
+                                    {
+                                        ExtruderManager.setActiveExtruderIndex(extruderIndex)
+                                    }
+                                }
+                                if(_afterOnEditingFinished)
+                                {
+                                    _afterOnEditingFinished();
+                                }
                             }
                         }
-                        if(_afterOnEditingFinished)
-                        {
-                            _afterOnEditingFinished();
-                        }
+                    }
+
+                    Label
+                    {
+                        text: unit
+                        anchors.right: textField.right
+                        anchors.rightMargin: y - textField.y
+                        anchors.verticalCenter: textField.verticalCenter
                     }
                 }
-            }
-
-            Label
-            {
-                text: unit
-                anchors.right: textField.right
-                anchors.rightMargin: y - textField.y
-                anchors.verticalCenter: textField.verticalCenter
             }
         }
     }
@@ -649,13 +606,14 @@ Cura.MachineAction
         id: comboBoxWithOptions
         UM.TooltipArea
         {
-            height: comboBox.height
-            width: comboBox.width
+            height: childrenRect.height
+            width: childrenRect.width
             text: _tooltip
 
             property bool _isExtruderSetting: (typeof(isExtruderSetting) === 'undefined') ? false : isExtruderSetting
             property bool _forceUpdateOnChange: (typeof(forceUpdateOnChange) === 'undefined') ? false : forceUpdateOnChange
             property var _afterOnActivate: (typeof(afterOnActivate) === 'undefined') ? undefined : afterOnActivate
+            property string _label: (typeof(label) === 'undefined') ? "" : label
             property string _tooltip: (typeof(tooltip) === 'undefined') ? propertyProvider.properties.description : tooltip
 
             UM.SettingPropertyProvider
@@ -678,52 +636,63 @@ Cura.MachineAction
                 storeIndex: manager.containerIndex
             }
 
-            ComboBox
+            Row
             {
-                id: comboBox
-                model: ListModel
+                spacing: UM.Theme.getSize("default_margin").width
+
+                Label
                 {
-                    id: optionsModel
-                    Component.onCompleted:
+                    text: _label
+                    visible: _label != ""
+                    anchors.verticalCenter: textFieldWithUnit.verticalCenter
+                }
+                ComboBox
+                {
+                    id: comboBox
+                    model: ListModel
                     {
-                        // Options come in as a string-representation of an OrderedDict
-                        var options = propertyProvider.properties.options.match(/^OrderedDict\(\[\((.*)\)\]\)$/);
-                        if(options)
+                        id: optionsModel
+                        Component.onCompleted:
                         {
-                            options = options[1].split("), (")
-                            for(var i = 0; i < options.length; i++)
+                            // Options come in as a string-representation of an OrderedDict
+                            var options = propertyProvider.properties.options.match(/^OrderedDict\(\[\((.*)\)\]\)$/);
+                            if(options)
                             {
-                                var option = options[i].substring(1, options[i].length - 1).split("', '")
-                                optionsModel.append({text: option[1], value: option[0]});
+                                options = options[1].split("), (")
+                                for(var i = 0; i < options.length; i++)
+                                {
+                                    var option = options[i].substring(1, options[i].length - 1).split("', '")
+                                    optionsModel.append({text: option[1], value: option[0]});
+                                }
                             }
                         }
                     }
-                }
-                currentIndex:
-                {
-                    var currentValue = propertyProvider.properties.value;
-                    var index = 0;
-                    for(var i = 0; i < optionsModel.count; i++)
+                    currentIndex:
                     {
-                        if(optionsModel.get(i).value == currentValue) {
-                            index = i;
-                            break;
+                        var currentValue = propertyProvider.properties.value;
+                        var index = 0;
+                        for(var i = 0; i < optionsModel.count; i++)
+                        {
+                            if(optionsModel.get(i).value == currentValue) {
+                                index = i;
+                                break;
+                            }
                         }
+                        return index
                     }
-                    return index
-                }
-                onActivated:
-                {
-                    if(propertyProvider.properties.value != optionsModel.get(index).value)
+                    onActivated:
                     {
-                        propertyProvider.setPropertyValue("value", optionsModel.get(index).value);
-                        if(_forceUpdateOnChange)
+                        if(propertyProvider.properties.value != optionsModel.get(index).value)
                         {
-                            manager.forceUpdate();
-                        }
-                        if(_afterOnActivate)
-                        {
-                            _afterOnActivate();
+                            propertyProvider.setPropertyValue("value", optionsModel.get(index).value);
+                            if(_forceUpdateOnChange)
+                            {
+                                manager.forceUpdate();
+                            }
+                            if(_afterOnActivate)
+                            {
+                                _afterOnActivate();
+                            }
                         }
                     }
                 }
@@ -795,49 +764,69 @@ Cura.MachineAction
             width: textField.width
             text: tooltip
 
-            TextField
+            property string _label: (typeof(label) === 'undefined') ? "" : label
+
+            Row
             {
-                id: textField
-                text:
+                spacing: UM.Theme.getSize("default_margin").width
+
+                Label
                 {
-                    var polygon = JSON.parse(machineHeadPolygonProvider.properties.value);
-                    var item = (axis == "x") ? 0 : 1
-                    var result = polygon[0][item];
-                    for(var i = 1; i < polygon.length; i++) {
-                        if (side == "min") {
-                            result = Math.min(result, polygon[i][item]);
-                        } else {
-                            result = Math.max(result, polygon[i][item]);
+                    text: _label
+                    visible: _label != ""
+                    anchors.verticalCenter: textFieldWithUnit.verticalCenter
+                }
+
+                Item
+                {
+                    width: textField.width
+                    height: textField.height
+
+                    TextField
+                    {
+                        id: textField
+                        text:
+                        {
+                            var polygon = JSON.parse(machineHeadPolygonProvider.properties.value);
+                            var item = (axis == "x") ? 0 : 1
+                            var result = polygon[0][item];
+                            for(var i = 1; i < polygon.length; i++) {
+                                if (side == "min") {
+                                    result = Math.min(result, polygon[i][item]);
+                                } else {
+                                    result = Math.max(result, polygon[i][item]);
+                                }
+                            }
+                            result = Math.abs(result);
+                            printHeadPolygon[axis][side] = result;
+                            return result;
+                        }
+                        validator: RegExpValidator { regExp: /[0-9\.]{0,6}/ }
+                        onEditingFinished:
+                        {
+                            printHeadPolygon[axis][side] = parseFloat(textField.text);
+                            var polygon = [];
+                            polygon.push([-printHeadPolygon["x"]["min"], printHeadPolygon["y"]["max"]]);
+                            polygon.push([-printHeadPolygon["x"]["min"],-printHeadPolygon["y"]["min"]]);
+                            polygon.push([ printHeadPolygon["x"]["max"], printHeadPolygon["y"]["max"]]);
+                            polygon.push([ printHeadPolygon["x"]["max"],-printHeadPolygon["y"]["mìn"]]);
+                            var polygon_string = JSON.stringify(polygon);
+                            if(polygon_string != machineHeadPolygonProvider.properties.value)
+                            {
+                                machineHeadPolygonProvider.setPropertyValue("value", polygon_string);
+                                manager.forceUpdate();
+                            }
                         }
                     }
-                    result = Math.abs(result);
-                    printHeadPolygon[axis][side] = result;
-                    return result;
-                }
-                validator: RegExpValidator { regExp: /[0-9\.]{0,6}/ }
-                onEditingFinished:
-                {
-                    printHeadPolygon[axis][side] = parseFloat(textField.text);
-                    var polygon = [];
-                    polygon.push([-printHeadPolygon["x"]["min"], printHeadPolygon["y"]["max"]]);
-                    polygon.push([-printHeadPolygon["x"]["min"],-printHeadPolygon["y"]["min"]]);
-                    polygon.push([ printHeadPolygon["x"]["max"], printHeadPolygon["y"]["max"]]);
-                    polygon.push([ printHeadPolygon["x"]["max"],-printHeadPolygon["y"]["mìn"]]);
-                    var polygon_string = JSON.stringify(polygon);
-                    if(polygon_string != machineHeadPolygonProvider.properties.value)
+
+                    Label
                     {
-                        machineHeadPolygonProvider.setPropertyValue("value", polygon_string);
-                        manager.forceUpdate();
+                        text: catalog.i18nc("@label", "mm")
+                        anchors.right: textField.right
+                        anchors.rightMargin: y - textField.y
+                        anchors.verticalCenter: textField.verticalCenter
                     }
                 }
-            }
-
-            Label
-            {
-                text: catalog.i18nc("@label", "mm")
-                anchors.right: textField.right
-                anchors.rightMargin: y - textField.y
-                anchors.verticalCenter: textField.verticalCenter
             }
         }
     }
