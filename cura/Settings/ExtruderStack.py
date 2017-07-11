@@ -25,6 +25,8 @@ class ExtruderStack(CuraContainerStack):
 
         self.addMetaDataEntry("type", "extruder_train") # For backward compatibility
 
+        self.propertiesChanged.connect(self._onPropertiesChanged)
+
     ##  Overridden from ContainerStack
     #
     #   This will set the next stack and ensure that we register this stack as an extruder.
@@ -84,6 +86,22 @@ class ExtruderStack(CuraContainerStack):
         stacks = ContainerRegistry.getInstance().findContainerStacks(id=self.getMetaDataEntry("machine", ""))
         if stacks:
             self.setNextStack(stacks[0])
+
+    def _onPropertiesChanged(self, key, properties):
+        # When there is a setting that is not settable per extruder that depends on a value from a setting that is,
+        # we do not always get properly informed that we should re-evaluate the setting. So make sure to indicate
+        # something changed for those settings.
+        definitions = self.getNextStack().definition.findDefinitions(key = key)
+        if definitions:
+            has_global_dependencies = False
+            for relation in definitions[0].relations:
+                if not getattr(relation.target, "settable_per_extruder", True):
+                    has_global_dependencies = True
+                    break
+
+            if has_global_dependencies:
+                self.getNextStack().propertiesChanged.emit(key, properties)
+
 
 extruder_stack_mime = MimeType(
     name = "application/x-cura-extruderstack",
