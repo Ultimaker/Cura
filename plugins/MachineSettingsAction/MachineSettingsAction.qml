@@ -31,11 +31,17 @@ Cura.MachineAction
         target: dialog ? dialog : null
         ignoreUnknownSignals: true
         // Any which way this action dialog is dismissed, make sure it is properly finished
-        onNextClicked: manager.onFinishAction()
-        onBackClicked: manager.onFinishAction()
-        onAccepted: manager.onFinishAction()
-        onRejected: manager.onFinishAction()
-        onClosing: manager.onFinishAction()
+        onNextClicked: finishAction()
+        onBackClicked: finishAction()
+        onAccepted: finishAction()
+        onRejected: finishAction()
+        onClosing: finishAction()
+    }
+
+    function finishAction()
+    {
+        forceActiveFocus();
+        manager.onFinishAction();
     }
 
     anchors.fill: parent;
