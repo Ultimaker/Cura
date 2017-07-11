@@ -4446,8 +4446,8 @@
                             "resolve": "max(extruderValues('prime_tower_wall_thickness'))",
                             "minimum_value": "0.001",
                             "minimum_value_warning": "2 * min(extruderValues('prime_tower_line_width')) - 0.0001",
-                            "maximum_value_warning": "resolveOrValue('prime_tower_size') / 2",
-                            "enabled": "resolveOrValue('prime_tower_enable')",
+                            "maximum_value_warning": "prime_tower_size / 2",
+                            "enabled": "prime_tower_enable",
                             "settable_per_mesh": false,
                             "settable_per_extruder": false
                         }
