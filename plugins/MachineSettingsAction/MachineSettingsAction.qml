@@ -135,27 +135,23 @@ Cura.MachineAction
                                     property string unit: catalog.i18nc("@label", "mm")
                                     property bool forceUpdateOnChange: true
                                 }
-                            }
 
-                            Column
-                            {
-                                Row
+                                Item { width: UM.Theme.getSize("default_margin").width; height: UM.Theme.getSize("default_margin").height }
+                                Item { width: UM.Theme.getSize("default_margin").width; height: UM.Theme.getSize("default_margin").height }
+
+                                Label
                                 {
-                                    spacing: UM.Theme.getSize("default_margin").width
-
-                                    Label
-                                    {
-                                        text: catalog.i18nc("@label", "Build Plate Shape")
-                                    }
-
-                                    Loader
-                                    {
-                                        id: shapeComboBox
-                                        sourceComponent: comboBoxWithOptions
-                                        property string settingKey: "machine_shape"
-                                        property bool forceUpdateOnChange: true
-                                    }
+                                    text: catalog.i18nc("@label", "Build Plate Shape")
                                 }
+
+                                Loader
+                                {
+                                    id: shapeComboBox
+                                    sourceComponent: comboBoxWithOptions
+                                    property string settingKey: "machine_shape"
+                                    property bool forceUpdateOnChange: true
+                                }
+
                                 Loader
                                 {
                                     id: centerIsZeroCheckBox
@@ -164,6 +160,7 @@ Cura.MachineAction
                                     property string settingKey: "machine_center_is_zero"
                                     property bool forceUpdateOnChange: true
                                 }
+                                Item { width: UM.Theme.getSize("default_margin").width; height: UM.Theme.getSize("default_margin").height }
                                 Loader
                                 {
                                     id: heatedBedCheckBox
@@ -172,11 +169,10 @@ Cura.MachineAction
                                     property var settingKey: "machine_heated_bed"
                                     property bool forceUpdateOnChange: true
                                 }
-                            }
+                                Item { width: UM.Theme.getSize("default_margin").width; height: UM.Theme.getSize("default_margin").height }
 
-                            Row
-                            {
-                                spacing: UM.Theme.getSize("default_margin").width
+                                Item { width: UM.Theme.getSize("default_margin").width; height: UM.Theme.getSize("default_margin").height }
+                                Item { width: UM.Theme.getSize("default_margin").width; height: UM.Theme.getSize("default_margin").height }
 
                                 Label
                                 {
