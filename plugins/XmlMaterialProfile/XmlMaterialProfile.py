@@ -8,7 +8,6 @@ import xml.etree.ElementTree as ET
 
 from UM.Resources import Resources
 from UM.Logger import Logger
-from UM.Util import parseBool
 from cura.CuraApplication import CuraApplication
 
 import UM.Dictionary
@@ -485,7 +484,7 @@ class XmlMaterialProfile(InstanceContainer):
                 common_setting_values[self.__material_settings_setting_map[key]] = entry.text
             elif key in self.__unmapped_settings:
                 if key == "hardware compatible":
-                    common_compatibility = parseBool(entry.text)
+                    common_compatibility = self._parseCompatibleValue(entry.text)
             else:
                 Logger.log("d", "Unsupported material setting %s", key)
         self._cached_values = common_setting_values # from InstanceContainer ancestor
@@ -505,7 +504,7 @@ class XmlMaterialProfile(InstanceContainer):
                     machine_setting_values[self.__material_settings_setting_map[key]] = entry.text
                 elif key in self.__unmapped_settings:
                     if key == "hardware compatible":
-                        machine_compatibility = parseBool(entry.text)
+                        machine_compatibility = self._parseCompatibleValue(entry.text)
                 else:
                     Logger.log("d", "Unsupported material setting %s", key)
 
@@ -568,7 +567,7 @@ class XmlMaterialProfile(InstanceContainer):
                             hotend_setting_values[self.__material_settings_setting_map[key]] = entry.text
                         elif key in self.__unmapped_settings:
                             if key == "hardware compatible":
-                                hotend_compatibility = parseBool(entry.text)
+                                hotend_compatibility = self._parseCompatibleValue(entry.text)
                         else:
                             Logger.log("d", "Unsupported material setting %s", key)
 
@@ -608,6 +607,10 @@ class XmlMaterialProfile(InstanceContainer):
             return "%s %s" % (color_name, material_name)
         else:
             return material_name
+
+    ##  Parse the value of the "material compatible" property.
+    def _parseCompatibleValue(self, value: str):
+        return value in {"yes", "unknown"}
 
     # Map XML file setting names to internal names
     __material_settings_setting_map = {
