@@ -1738,7 +1738,7 @@ msgstr "不在配置文件中"
 msgctxt "@action:label"
 msgid "%1 override"
 msgid_plural "%1 overrides"
-msgstr[0] "％1 重写（Override）"
+msgstr[0] "%1 重写（Override）"
 
 #: /home/ruben/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:231
 msgctxt "@action:label"
@@ -2183,7 +2183,7 @@ msgstr "每米成本"
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/MaterialView.qml:227
 msgctxt "@label"
 msgid "This material is linked to %1 and shares some of its properties."
-msgstr "此耗材与 ％1 相关联，并共享其某些属性。"
+msgstr "此耗材与 %1 相关联，并共享其某些属性。"
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/MaterialView.qml:234
 msgctxt "@label"
@@ -3577,7 +3577,7 @@ msgstr "100%"
 #: /home/ruben/Projects/Cura/resources/qml/SidebarSimple.qml:228
 msgctxt "@label"
 msgid "Solid (100%) infill will make your model completely solid."
-msgstr "完全（100％）填充将使您的模型处于完全实心状态。"
+msgstr "完全（100%）填充将使您的模型处于完全实心状态。"
 
 #: /home/ruben/Projects/Cura/resources/qml/SidebarSimple.qml:232
 msgctxt "@label"
@@ -3643,7 +3643,7 @@ msgstr "需要帮助以改善您的打印？ 阅读 <a href=‘%1’>Ultimaker �
 msgctxt "@label"
 msgid "Print Selected Model with %1"
 msgid_plural "Print Selected Models With %1"
-msgstr[0] "用 ％1 打印所选模型"
+msgstr[0] "用 %1 打印所选模型"
 
 #: /home/ruben/Projects/Cura/resources/qml/AskOpenAsProjectOrModelsDialog.qml:20
 msgctxt "@title:window"
