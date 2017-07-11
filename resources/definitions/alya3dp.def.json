@@ -39,7 +39,7 @@
         "machine_head_shape_max_y": {
             "default_value": 35
         },
-        "machine_nozzle_gantry_distance": {
+        "gantry_height": {
             "default_value": 55
         },
         "machine_gcode_flavor": {
