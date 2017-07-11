@@ -910,21 +910,25 @@ class BuildVolume(SceneNode):
         if adhesion_type == "skirt":
             skirt_distance = self._getSettingFromAdhesionExtruder("skirt_gap")
             skirt_line_count = self._getSettingFromAdhesionExtruder("skirt_line_count")
-            bed_adhesion_size = skirt_distance + (skirt_line_count * self._getSettingFromAdhesionExtruder("skirt_brim_line_width"))
+            bed_adhesion_size = skirt_distance + (skirt_line_count * self._getSettingFromAdhesionExtruder("skirt_brim_line_width")) * self._getSettingFromAdhesionExtruder("initial_layer_line_width_factor") / 100.0
             if len(ExtruderManager.getInstance().getUsedExtruderStacks()) > 1:
                 adhesion_extruder_nr = int(self._global_container_stack.getProperty("adhesion_extruder_nr", "value"))
                 extruder_values = ExtruderManager.getInstance().getAllExtruderValues("skirt_brim_line_width")
+                line_width_factors = ExtruderManager.getInstance().getAllExtruderValues("initial_layer_line_width_factor")
                 del extruder_values[adhesion_extruder_nr]  # Remove the value of the adhesion extruder nr.
-                for value in extruder_values:
-                    bed_adhesion_size += value
+                del line_width_factors[adhesion_extruder_nr]
+                for i in range(min(len(extruder_values), len(line_width_factors))):
+                    bed_adhesion_size += extruder_values[i] * line_width_factors[i] / 100.0
         elif adhesion_type == "brim":
-            bed_adhesion_size = self._getSettingFromAdhesionExtruder("brim_line_count") * self._getSettingFromAdhesionExtruder("skirt_brim_line_width")
+            bed_adhesion_size = self._getSettingFromAdhesionExtruder("brim_line_count") * self._getSettingFromAdhesionExtruder("skirt_brim_line_width") * self._getSettingFromAdhesionExtruder("initial_layer_line_width_factor") / 100.0
             if self._global_container_stack.getProperty("machine_extruder_count", "value") > 1:
                 adhesion_extruder_nr = int(self._global_container_stack.getProperty("adhesion_extruder_nr", "value"))
                 extruder_values = ExtruderManager.getInstance().getAllExtruderValues("skirt_brim_line_width")
+                line_width_factors = ExtruderManager.getInstance().getAllExtruderValues("initial_layer_line_width_factor")
                 del extruder_values[adhesion_extruder_nr]  # Remove the value of the adhesion extruder nr.
-                for value in extruder_values:
-                    bed_adhesion_size += value
+                del line_width_factors[adhesion_extruder_nr]
+                for i in range(min(len(extruder_values), len(line_width_factors))):
+                    bed_adhesion_size += extruder_values[i] * line_width_factors[i] / 100.0
         elif adhesion_type == "raft":
             bed_adhesion_size = self._getSettingFromAdhesionExtruder("raft_margin")
         elif adhesion_type == "none":
@@ -960,7 +964,7 @@ class BuildVolume(SceneNode):
     def _clamp(self, value, min_value, max_value):
         return max(min(value, max_value), min_value)
 
-    _skirt_settings = ["adhesion_type", "skirt_gap", "skirt_line_count", "skirt_brim_line_width", "brim_width", "brim_line_count", "raft_margin", "draft_shield_enabled", "draft_shield_dist"]
+    _skirt_settings = ["adhesion_type", "skirt_gap", "skirt_line_count", "skirt_brim_line_width", "brim_width", "brim_line_count", "raft_margin", "draft_shield_enabled", "draft_shield_dist", "initial_layer_line_width_factor"]
     _raft_settings = ["adhesion_type", "raft_base_thickness", "raft_interface_thickness", "raft_surface_layers", "raft_surface_thickness", "raft_airgap", "layer_0_z_overlap"]
     _extra_z_settings = ["retraction_hop_enabled", "retraction_hop"]
     _prime_settings = ["extruder_prime_pos_x", "extruder_prime_pos_y", "extruder_prime_pos_z", "prime_blob_enable"]
