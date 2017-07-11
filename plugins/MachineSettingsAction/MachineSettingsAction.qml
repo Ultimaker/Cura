@@ -41,7 +41,7 @@ Cura.MachineAction
     anchors.fill: parent;
     Item
     {
-        id: bedLevelMachineAction
+        id: machineSettingsAction
         anchors.fill: parent;
 
         UM.I18nCatalog { id: catalog; name: "cura"; }
@@ -233,7 +233,6 @@ Cura.MachineAction
 
                             UM.TooltipArea
                             {
-                                id: extruderCountControl
                                 visible: manager.definedExtruderCount > 1
                                 height: childrenRect.height
                                 width: childrenRect.width
@@ -246,6 +245,8 @@ Cura.MachineAction
                                     Label
                                     {
                                         text: catalog.i18nc("@label", "Number of Extruders")
+                                        elide: Text.ElideRight
+                                        width: Math.max(0, settingsTabs.columnWidth - 2 * UM.Theme.getSize("default_margin").width - extruderCountComboBox.width)
                                         anchors.verticalCenter: extruderCountComboBox.verticalCenter
                                     }
                                     ComboBox
@@ -553,6 +554,8 @@ Cura.MachineAction
                 {
                     text: _label
                     visible: _label != ""
+                    elide: Text.ElideRight
+                    width: Math.max(0, settingsTabs.columnWidth - 2 * UM.Theme.getSize("default_margin").width - textFieldWithUnit.width)
                     anchors.verticalCenter: textFieldWithUnit.verticalCenter
                 }
 
@@ -644,7 +647,9 @@ Cura.MachineAction
                 {
                     text: _label
                     visible: _label != ""
-                    anchors.verticalCenter: textFieldWithUnit.verticalCenter
+                    elide: Text.ElideRight
+                    width: Math.max(0, settingsTabs.columnWidth - 2 * UM.Theme.getSize("default_margin").width - comboBox.width)
+                    anchors.verticalCenter: comboBox.verticalCenter
                 }
                 ComboBox
                 {
@@ -774,11 +779,14 @@ Cura.MachineAction
                 {
                     text: _label
                     visible: _label != ""
+                    elide: Text.ElideRight
+                    width: Math.max(0, settingsTabs.columnWidth - 2 * UM.Theme.getSize("default_margin").width - textFieldWithUnit.width)
                     anchors.verticalCenter: textFieldWithUnit.verticalCenter
                 }
 
                 Item
                 {
+                    id: textFieldWithUnit
                     width: textField.width
                     height: textField.height
 
