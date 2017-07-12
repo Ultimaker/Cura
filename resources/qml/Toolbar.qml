@@ -74,7 +74,8 @@ Item
         Repeater
         {
             id: extruders
-            model: Cura.ExtrudersModel { id: extrudersModel }
+            property var _model: Cura.ExtrudersModel { id: extrudersModel }
+            model: _model.items.length > 1 ? _model : 0
             ExtruderButton { extruder: model }
         }
     }
