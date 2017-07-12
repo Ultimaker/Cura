@@ -266,7 +266,7 @@ class USBPrinterOutputDeviceManager(QObject, OutputDevicePlugin, Extension):
                 pass
         else:
             if only_list_usb:
-                base_list = base_list + glob.glob("/dev/tty*USB*") + glob.glob("/dev/ttyACM*") + glob.glob("/dev/cu.*usb*") + glob.glob("/dev/cu.*USB*") + glob.glob("/dev/tty.wchusb*") + glob.glob("/dev/cu.wchusb*")
+                base_list = base_list + glob.glob("/dev/ttyUSB*") + glob.glob("/dev/ttyACM*") + glob.glob("/dev/cu.usb*") + glob.glob("/dev/tty.wchusb*") + glob.glob("/dev/cu.wchusb*")
                 base_list = filter(lambda s: "Bluetooth" not in s, base_list) # Filter because mac sometimes puts them in the list
             else:
                 base_list = base_list + glob.glob("/dev/ttyUSB*") + glob.glob("/dev/ttyACM*") + glob.glob("/dev/cu.*") + glob.glob("/dev/tty.usb*") + glob.glob("/dev/tty.wchusb*") + glob.glob("/dev/cu.wchusb*") + glob.glob("/dev/rfcomm*") + glob.glob("/dev/serial/by-id/*")
