@@ -19,7 +19,7 @@
           "default_value": "\n;start extruder_2\n\nM117 printing...\n"
         },
         "machine_extruder_end_code": {
-           "default_value": "\nM104 T2 S160\n;end extruder_2\n"
+           "default_value": "\nM104 T2 S120\n;end extruder_2\n"
         },
 
         "machine_extruder_start_pos_abs": { "default_value": true },
