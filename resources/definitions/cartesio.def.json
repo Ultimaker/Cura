@@ -50,6 +50,7 @@
         "prime_tower_wall_thickness": { "resolve": 0.7 },
         "prime_tower_position_x": { "default_value": 50 },
         "prime_tower_position_y": { "default_value": 150 },
+        "prime_blob_enable": { "default_value": false },
         "machine_max_feedrate_z": { "default_value": 20 },
         "machine_disallowed_areas": { "default_value": [
             [[215, 135], [-215, 135], [-215, 75], [215, 75]]
