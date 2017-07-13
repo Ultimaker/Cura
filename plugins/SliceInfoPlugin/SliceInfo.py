@@ -31,7 +31,7 @@ catalog = i18nCatalog("cura")
 #       The data is only sent when the user in question gave permission to do so. All data is anonymous and
 #       no model files are being sent (Just a SHA256 hash of the model).
 class SliceInfo(Extension):
-    info_url = "http://stats.ultimaker.com/api/cura"
+    info_url = "https://stats.ultimaker.com/api/cura"
 
     def __init__(self):
         super().__init__()
