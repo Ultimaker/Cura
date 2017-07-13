@@ -32,9 +32,11 @@ Item {
     property var stackLevels: propertyProvider.stackLevels
     property var stackLevel: stackLevels[0]
 
+    signal focusReceived()
+    signal setActiveFocusToNextSetting(bool forward)
     signal contextMenuRequested()
-    signal showTooltip(string text);
-    signal hideTooltip();
+    signal showTooltip(string text)
+    signal hideTooltip()
     signal showAllHiddenInheritedSettings(string category_id)
     property string tooltipText:
     {
@@ -140,7 +142,7 @@ Item {
             {
                 id: linkedSettingIcon;
 
-                visible: Cura.MachineManager.activeStackId != Cura.MachineManager.activeMachineId && (!definition.settable_per_extruder || definition.limit_to_extruder != "-1") && base.showLinkedSettingIcon
+                visible: Cura.MachineManager.activeStackId != Cura.MachineManager.activeMachineId && (!definition.settable_per_extruder || globalPropertyProvider.properties.limit_to_extruder != "-1") && base.showLinkedSettingIcon
 
                 height: parent.height;
                 width: height;

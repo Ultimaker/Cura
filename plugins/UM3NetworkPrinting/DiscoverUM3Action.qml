@@ -12,7 +12,6 @@ Cura.MachineAction
     anchors.fill: parent;
     property var selectedPrinter: null
     property bool completeProperties: true
-    property var connectingToPrinter: null
 
     Connections
     {
@@ -33,9 +32,8 @@ Cura.MachineAction
         if(base.selectedPrinter && base.completeProperties)
         {
             var printerKey = base.selectedPrinter.getKey()
-            if(connectingToPrinter != printerKey) {
-                // prevent an infinite loop
-                connectingToPrinter = printerKey;
+            if(manager.getStoredKey() != printerKey)
+            {
                 manager.setKey(printerKey);
                 completed();
             }
@@ -342,6 +340,8 @@ Cura.MachineAction
                 {
                     regExp: /[a-zA-Z0-9\.\-\_]*/
                 }
+
+                onAccepted: btnOk.clicked()
             }
         }
 
@@ -355,6 +355,7 @@ Cura.MachineAction
                 }
             },
             Button {
+                id: btnOk
                 text: catalog.i18nc("@action:button", "Ok")
                 onClicked:
                 {

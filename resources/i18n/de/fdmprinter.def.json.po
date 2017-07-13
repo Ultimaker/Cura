@@ -2,17 +2,18 @@
 # Copyright (C) 2017 Ultimaker
 # This file is distributed under the same license as the Cura package.
 # Ruben Dulek <r.dulek@ultimaker.com>, 2017.
-#
-#, fuzzy
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: Cura 2.5\n"
-"Report-Msgid-Bugs-To: http://github.com/Ultimaker/Cura\n"
-"POT-Creation-Date: 2017-03-27 17:27+0000\n"
-"PO-Revision-Date: 2017-04-04 11:27+0200\n"
+"Project-Id-Version: Cura 2.6\n"
+"Report-Msgid-Bugs-To: r.dulek@ultimaker.com\n"
+"POT-Creation-Date: 2017-05-30 15:32+0000\n"
+"PO-Revision-Date: 2017-06-07 16:04+0200\n"
 "Last-Translator: Bothof <info@bothof.nl>\n"
-"Language-Team: Bothof <info@bothof.nl>\n"
-"Language: de\n"
+"Language-Team: German\n"
+"Language: German\n"
+"Lang-Code: de\n"
+"Country-Code: DE\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -678,8 +679,28 @@ msgstr "Stützstruktur Schnittstelle Linienbreite"
 
 #: fdmprinter.def.json
 msgctxt "support_interface_line_width description"
-msgid "Width of a single support interface line."
-msgstr "Die Breite einer Linienbreite einer einzelnen Stützstruktur-Schnittstelle."
+msgid "Width of a single line of support roof or floor."
+msgstr "Die Breite einer einzelnen Stützdach- oder Bodenlinie."
+
+#: fdmprinter.def.json
+msgctxt "support_roof_line_width label"
+msgid "Support Roof Line Width"
+msgstr "Breite der Stützdachlinie"
+
+#: fdmprinter.def.json
+msgctxt "support_roof_line_width description"
+msgid "Width of a single support roof line."
+msgstr "Die Breite einer einzelnen Stützdachlinie."
+
+#: fdmprinter.def.json
+msgctxt "support_bottom_line_width label"
+msgid "Support Floor Line Width"
+msgstr "Stützstruktur Boden Linienbreite"
+
+#: fdmprinter.def.json
+msgctxt "support_bottom_line_width description"
+msgid "Width of a single support floor line."
+msgstr "Die Breite einer Linienbreite eines einzelnen Bodens."
 
 #: fdmprinter.def.json
 msgctxt "prime_tower_line_width label"
@@ -1082,14 +1103,54 @@ msgid "A list of integer line directions to use. Elements from the list are used
 msgstr "Eine Liste von Ganzzahl-Linienrichtungen für die Verwendung. Elemente aus der Liste werden während des Aufbaus der Schichten sequentiell verwendet und wenn das Listenende erreicht wird, beginnt die Liste von vorne. Die Listenobjekte werden durch Kommas getrennt und die gesamte Liste ist in eckige Klammern gesetzt. Standardmäßig ist eine leere Liste vorhanden, was bedeutet, dass herkömmliche Standardwinkel (45- und 135-Grad für die Linien- und Zickzack-Muster und 45-Grad für alle anderen Muster) verwendet werden."
 
 #: fdmprinter.def.json
-msgctxt "sub_div_rad_mult label"
-msgid "Cubic Subdivision Radius"
-msgstr "Radius Würfel-Unterbereich"
+msgctxt "spaghetti_infill_enabled label"
+msgid "Spaghetti Infill"
+msgstr "Spaghetti-Füllung"
 
 #: fdmprinter.def.json
-msgctxt "sub_div_rad_mult description"
-msgid "A multiplier on the radius from the center of each cube to check for the boundary of the model, as to decide whether this cube should be subdivided. Larger values lead to more subdivisions, i.e. more small cubes."
-msgstr "Ein Multiplikator des Radius von der Mitte jedes Würfels, um die Modellbegrenzungen zu überprüfen und um zu entscheiden, ob dieser Würfel unterteilt werden sollte. Höhere Werte führen zu mehr Unterbereichen, d. h. mehr kleinen Würfeln."
+msgctxt "spaghetti_infill_enabled description"
+msgid "Print the infill every so often, so that the filament will curl up chaotically inside the object. This reduces print time, but the behaviour is rather unpredictable."
+msgstr "Drucken Sie die Füllung hier und da, sodass sich das Filament innerhalb des Objekts „chaotisch“ ringelt. Das reduziert die Druckdauer, allerdings ist das Verhalten eher unabsehbar."
+
+#: fdmprinter.def.json
+msgctxt "spaghetti_max_infill_angle label"
+msgid "Spaghetti Maximum Infill Angle"
+msgstr "Maximaler Spaghetti-Füllungswinkel"
+
+#: fdmprinter.def.json
+msgctxt "spaghetti_max_infill_angle description"
+msgid "The maximum angle w.r.t. the Z axis of the inside of the print for areas which are to be filled with spaghetti infill afterwards. Lowering this value causes more angled parts in your model to be filled on each layer."
+msgstr "Der maximale Winkel bezüglich der Z-Achse im Druckinnenbereich für Bereiche, die anschließend mit Spaghetti-Füllung zu füllen sind. Die Reduzierung dieses Wertes für dazu, dass stärker gewinkelte Teile in Ihrem Modell in jeder Schicht gefüllt werden."
+
+#: fdmprinter.def.json
+msgctxt "spaghetti_max_height label"
+msgid "Spaghetti Infill Maximum Height"
+msgstr "Maximale Höhe der Spaghetti-Füllung"
+
+#: fdmprinter.def.json
+msgctxt "spaghetti_max_height description"
+msgid "The maximum height of inside space which can be combined and filled from the top."
+msgstr "Die maximale Höhe des Innenraums, die kombiniert und von oben gefüllt werden kann."
+
+#: fdmprinter.def.json
+msgctxt "spaghetti_inset label"
+msgid "Spaghetti Inset"
+msgstr "Spaghetti-Einfügung"
+
+#: fdmprinter.def.json
+msgctxt "spaghetti_inset description"
+msgid "The offset from the walls from where the spaghetti infill will be printed."
+msgstr "Der Versatz von den Wänden, von denen aus die Spaghetti-Füllung gedruckt wird."
+
+#: fdmprinter.def.json
+msgctxt "spaghetti_flow label"
+msgid "Spaghetti Flow"
+msgstr "Spaghetti-Durchfluss"
+
+#: fdmprinter.def.json
+msgctxt "spaghetti_flow description"
+msgid "Adjusts the density of the spaghetti infill. Note that the Infill Density only controls the line spacing of the filling pattern, not the amount of extrusion for spaghetti infill."
+msgstr "Justiert die Dichte der Spathetti-Füllung. Beachten Sie, dass die Fülldichte nur die Linienabstände des Füllmusters steuert und nicht die Menge der Extrusion für die Spaghetti-Füllung."
 
 #: fdmprinter.def.json
 msgctxt "sub_div_rad_add label"
@@ -1213,23 +1274,23 @@ msgstr "Expandieren Sie Außenhautbereiche der oberen und/oder unteren Außenhau
 
 #: fdmprinter.def.json
 msgctxt "expand_upper_skins label"
-msgid "Expand Upper Skins"
-msgstr "Obere Außenhaut expandieren"
+msgid "Expand Top Skins Into Infill"
+msgstr "Außenhaut oben in Füllung expandieren"
 
 #: fdmprinter.def.json
 msgctxt "expand_upper_skins description"
-msgid "Expand upper skin areas (areas with air above) so that they support infill above."
+msgid "Expand the top skin areas (areas with air above) so that they support infill above."
 msgstr "Expandiert die oberen Außenhautbereiche (Bereiche mit Luft darüber), sodass sie die Füllung darüber stützen."
 
 #: fdmprinter.def.json
 msgctxt "expand_lower_skins label"
-msgid "Expand Lower Skins"
-msgstr "Untere Außenhaut expandieren"
+msgid "Expand Bottom Skins Into Infill"
+msgstr "Außenhaut unten in Füllung expandieren"
 
 #: fdmprinter.def.json
 msgctxt "expand_lower_skins description"
-msgid "Expand lower skin areas (areas with air below) so that they are anchored by the infill layers above and below."
-msgstr "Expandiert die unteren Außenhautbereiche (Bereiche mit Luft darunter), sodass sie durch die Füllungsschichten darüber und darunter verankert werden."
+msgid "Expand the bottom skin areas (areas with air below) so that they are anchored by the infill layers above and below."
+msgstr "Expandiert die Außenhautbodenbereiche (Bereiche mit Luft darunter), sodass sie durch die Füllungsschichten darüber und darunter verankert werden."
 
 #: fdmprinter.def.json
 msgctxt "expand_skins_expand_distance label"
@@ -1638,8 +1699,28 @@ msgstr "Stützstruktur-Schnittstellengeschwindigkeit"
 
 #: fdmprinter.def.json
 msgctxt "speed_support_interface description"
-msgid "The speed at which the roofs and bottoms of support are printed. Printing the them at lower speeds can improve overhang quality."
-msgstr "Die Geschwindigkeit, mit der die Dächer und Böden der Stützstruktur gedruckt wird. Durch das Drucken bei einer geringeren Geschwindigkeit, kann die Qualität der Überhänge verbessert werden."
+msgid "The speed at which the roofs and floors of support are printed. Printing them at lower speeds can improve overhang quality."
+msgstr "Die Geschwindigkeit, mit der die Dächer und Böden der Stützstruktur gedruckt werden. Durch das Drucken bei einer geringeren Geschwindigkeit kann die Qualität der Überhänge verbessert werden."
+
+#: fdmprinter.def.json
+msgctxt "speed_support_roof label"
+msgid "Support Roof Speed"
+msgstr "Stützdachgeschwindigkeit"
+
+#: fdmprinter.def.json
+msgctxt "speed_support_roof description"
+msgid "The speed at which the roofs of support are printed. Printing them at lower speeds can improve overhang quality."
+msgstr "Die Geschwindigkeit, mit der die Dächer der Stützstruktur gedruckt werden. Durch das Drucken bei einer geringeren Geschwindigkeit kann die Qualität der Überhänge verbessert werden."
+
+#: fdmprinter.def.json
+msgctxt "speed_support_bottom label"
+msgid "Support Floor Speed"
+msgstr "Geschwindigkeit Bodenstruktur"
+
+#: fdmprinter.def.json
+msgctxt "speed_support_bottom description"
+msgid "The speed at which the floor of support is printed. Printing it at lower speed can improve adhesion of support on top of your model."
+msgstr "Die Geschwindigkeit, mit der die Böden der Stützstruktur gedruckt werden. Durch das Drucken bei einer geringeren Geschwindigkeit kann die Haftung des Stützdachs Ihres Modells verbessert werden."
 
 #: fdmprinter.def.json
 msgctxt "speed_prime_tower label"
@@ -1838,8 +1919,28 @@ msgstr "Beschleunigung Stützstrukturschnittstelle"
 
 #: fdmprinter.def.json
 msgctxt "acceleration_support_interface description"
-msgid "The acceleration with which the roofs and bottoms of support are printed. Printing them at lower accelerations can improve overhang quality."
-msgstr "Die Beschleunigung, mit der die Dächer und Böden der Stützstruktur gedruckt wird. Durch das Drucken bei einer geringeren Geschwindigkeit kann die Qualität der Überhänge verbessert werden."
+msgid "The acceleration with which the roofs and floors of support are printed. Printing them at lower acceleration can improve overhang quality."
+msgstr "Die Beschleunigung, mit der die Böden der Stützstruktur gedruckt wird. Durch das Drucken bei einer geringeren Beschleunigung kann die Qualität der Überhänge verbessert werden."
+
+#: fdmprinter.def.json
+msgctxt "acceleration_support_roof label"
+msgid "Support Roof Acceleration"
+msgstr "Beschleunigung Dachstruktur"
+
+#: fdmprinter.def.json
+msgctxt "acceleration_support_roof description"
+msgid "The acceleration with which the roofs of support are printed. Printing them at lower acceleration can improve overhang quality."
+msgstr "Die Beschleunigung, mit der die Dächer der Stützstruktur gedruckt werden. Durch das Drucken bei einer geringeren Beschleunigung kann die Qualität der Überhänge verbessert werden."
+
+#: fdmprinter.def.json
+msgctxt "acceleration_support_bottom label"
+msgid "Support Floor Acceleration"
+msgstr "Beschleunigung Bodenstruktur"
+
+#: fdmprinter.def.json
+msgctxt "acceleration_support_bottom description"
+msgid "The acceleration with which the floors of support are printed. Printing them at lower acceleration can improve adhesion of support on top of your model."
+msgstr "Die Beschleunigung, mit der die Böden der Stützstruktur gedruckt werden. Durch das Drucken bei einer geringeren Beschleunigung kann die Haftung des Stützdachs verbessert werden."
 
 #: fdmprinter.def.json
 msgctxt "acceleration_prime_tower label"
@@ -1998,8 +2099,28 @@ msgstr "Ruckfunktion Stützstruktur-Schnittstelle"
 
 #: fdmprinter.def.json
 msgctxt "jerk_support_interface description"
-msgid "The maximum instantaneous velocity change with which the roofs and bottoms of support are printed."
+msgid "The maximum instantaneous velocity change with which the roofs and floors of support are printed."
 msgstr "Die maximale unmittelbare Geschwindigkeitsänderung, mit der die Dächer und Böden der Stützstruktur gedruckt werden."
+
+#: fdmprinter.def.json
+msgctxt "jerk_support_roof label"
+msgid "Support Roof Jerk"
+msgstr "Ruckfunktion für Dachstruktur"
+
+#: fdmprinter.def.json
+msgctxt "jerk_support_roof description"
+msgid "The maximum instantaneous velocity change with which the roofs of support are printed."
+msgstr "Die maximale unmittelbare Geschwindigkeitsänderung, mit der die Dächer der Stützstruktur gedruckt werden."
+
+#: fdmprinter.def.json
+msgctxt "jerk_support_bottom label"
+msgid "Support Floor Jerk"
+msgstr "Ruckfunktion für Bodenstruktur"
+
+#: fdmprinter.def.json
+msgctxt "jerk_support_bottom description"
+msgid "The maximum instantaneous velocity change with which the floors of support are printed."
+msgstr "Die maximale unmittelbare Geschwindigkeitsänderung, mit der die Böden der Stützstruktur gedruckt werden."
 
 #: fdmprinter.def.json
 msgctxt "jerk_prime_tower label"
@@ -2328,13 +2449,13 @@ msgstr "Stützstruktur"
 
 #: fdmprinter.def.json
 msgctxt "support_enable label"
-msgid "Enable Support"
-msgstr "Stützstruktur aktivieren"
+msgid "Generate Support"
+msgstr "Stützstruktur generieren"
 
 #: fdmprinter.def.json
 msgctxt "support_enable description"
-msgid "Enable support structures. These structures support parts of the model with severe overhangs."
-msgstr "Es werden Stützstrukturen aktiviert. Diese Strukturen stützen Teile des Modells mit großen Überhängen."
+msgid "Generate structures to support parts of the model which have overhangs. Without these structures, such parts would collapse during printing."
+msgstr "Damit werden Strukturen zur Unterstützung von Modellteilen mit Überhängen generiert. Ohne diese Strukturen würden solche Teile während des Druckvorgangs zusammenfallen."
 
 #: fdmprinter.def.json
 msgctxt "support_extruder_nr label"
@@ -2373,8 +2494,28 @@ msgstr "Extruder für Stützstruktur-Schnittstelle"
 
 #: fdmprinter.def.json
 msgctxt "support_interface_extruder_nr description"
-msgid "The extruder train to use for printing the roofs and bottoms of the support. This is used in multi-extrusion."
-msgstr "Das für das Drucken der Dächer und Böden der Stützstruktur verwendete Extruder-Element. Diese wird für die Mehrfach-Extrusion benutzt."
+msgid "The extruder train to use for printing the roofs and floors of the support. This is used in multi-extrusion."
+msgstr "Das für das Drucken der Dächer und Böden der Stützstruktur verwendete Extruder-Element. Dieses wird für die Mehrfach-Extrusion benutzt."
+
+#: fdmprinter.def.json
+msgctxt "support_roof_extruder_nr label"
+msgid "Support Roof Extruder"
+msgstr "Extruder für Dachstruktur"
+
+#: fdmprinter.def.json
+msgctxt "support_roof_extruder_nr description"
+msgid "The extruder train to use for printing the roofs of the support. This is used in multi-extrusion."
+msgstr "Das für das Drucken der Stützdachstruktur verwendete Extruder-Element. Dieses wird für die Mehrfach-Extrusion benutzt."
+
+#: fdmprinter.def.json
+msgctxt "support_bottom_extruder_nr label"
+msgid "Support Floor Extruder"
+msgstr "Extruder für Bodenstruktur"
+
+#: fdmprinter.def.json
+msgctxt "support_bottom_extruder_nr description"
+msgid "The extruder train to use for printing the floors of the support. This is used in multi-extrusion."
+msgstr "Das für das Drucken der Stützstruktur der Böden verwendete Extruder-Element. Dieses wird für die Mehrfach-Extrusion benutzt."
 
 #: fdmprinter.def.json
 msgctxt "support_type label"
@@ -2553,8 +2694,18 @@ msgstr "Stufenhöhe der Stützstruktur"
 
 #: fdmprinter.def.json
 msgctxt "support_bottom_stair_step_height description"
-msgid "The height of the steps of the stair-like bottom of support resting on the model. A low value makes the support harder to remove, but too high values can lead to unstable support structures."
-msgstr "Die Höhe der Stufen der treppenförmigen Unterlage für die Stützstruktur des Modells. Ein niedriger Wert kann das Entfernen der Stützstruktur erschweren, ein zu hoher Wert kann jedoch zu instabilen Stützstrukturen führen."
+msgid "The height of the steps of the stair-like bottom of support resting on the model. A low value makes the support harder to remove, but too high values can lead to unstable support structures. Set to zero to turn off the stair-like behaviour."
+msgstr "Die Höhe der Stufen der treppenförmigen Unterlage für die Stützstruktur des Modells. Ein niedriger Wert kann das Entfernen der Stützstruktur erschweren, ein zu hoher Wert kann jedoch zu instabilen Stützstrukturen führen. Auf Null einstellen, um das Stufenverhalten zu deaktivieren."
+
+#: fdmprinter.def.json
+msgctxt "support_bottom_stair_step_width label"
+msgid "Support Stair Step Maximum Width"
+msgstr "Max. Stufenhöhe der Stützstruktur"
+
+#: fdmprinter.def.json
+msgctxt "support_bottom_stair_step_width description"
+msgid "The maximum width of the steps of the stair-like bottom of support resting on the model. A low value makes the support harder to remove, but too high values can lead to unstable support structures."
+msgstr "Die maximale Breite der Stufen der treppenförmigen Unterlage für die Stützstruktur des Modells. Ein niedriger Wert kann das Entfernen der Stützstruktur erschweren, ein zu hoher Wert kann jedoch zu instabilen Stützstrukturen führen."
 
 #: fdmprinter.def.json
 msgctxt "support_join_distance label"
@@ -2587,6 +2738,26 @@ msgid "Generate a dense interface between the model and the support. This will c
 msgstr "Es wird eine dichte Schnittstelle zwischen dem Modell und der Stützstruktur generiert. Das erstellt eine Außenhaut oben auf der Stützstruktur, auf der das Modell gedruckt wird, und unten auf der Stützstruktur, wo diese auf dem Modell ruht."
 
 #: fdmprinter.def.json
+msgctxt "support_roof_enable label"
+msgid "Enable Support Roof"
+msgstr "Stützdach aktivieren"
+
+#: fdmprinter.def.json
+msgctxt "support_roof_enable description"
+msgid "Generate a dense slab of material between the top of support and the model. This will create a skin between the model and support."
+msgstr "Es wird eine dichte Materialschicht zwischen der Stützdachstruktur und dem Modell generiert. Das erstellt eine Außenhaut zwischen dem Modell und der Stützstruktur."
+
+#: fdmprinter.def.json
+msgctxt "support_bottom_enable label"
+msgid "Enable Support Floor"
+msgstr "Stützboden aktivieren"
+
+#: fdmprinter.def.json
+msgctxt "support_bottom_enable description"
+msgid "Generate a dense slab of material between the bottom of the support and the model. This will create a skin between the model and support."
+msgstr "Es wird eine dichte Materialschicht zwischen dem Boden der Stützstruktur und dem Modell generiert. Das erstellt eine Außenhaut zwischen dem Modell und der Stützstruktur."
+
+#: fdmprinter.def.json
 msgctxt "support_interface_height label"
 msgid "Support Interface Thickness"
 msgstr "Dicke der Stützstrukturschnittstelle"
@@ -2608,13 +2779,13 @@ msgstr "Die Dicke des Stützdachs. Dies steuert die Menge an dichten Schichten o
 
 #: fdmprinter.def.json
 msgctxt "support_bottom_height label"
-msgid "Support Bottom Thickness"
-msgstr "Dicke des Stützbodens"
+msgid "Support Floor Thickness"
+msgstr "Dicke der Bodenstruktur"
 
 #: fdmprinter.def.json
 msgctxt "support_bottom_height description"
-msgid "The thickness of the support bottoms. This controls the number of dense layers are printed on top of places of a model on which support rests."
-msgstr "Die Dicke des Stützbodens. Dies steuert die Anzahl der dichten Schichten, die oben an einem Modell gedruckt werden, auf dem die Stützstruktur aufsitzt."
+msgid "The thickness of the support floors. This controls the number of dense layers that are printed on top of places of a model on which support rests."
+msgstr "Die Dicke der Stützböden. Dies steuert die Anzahl der dichten Schichten, die oben an einem Modell gedruckt werden, auf dem die Stützstruktur aufsitzt."
 
 #: fdmprinter.def.json
 msgctxt "support_interface_skip_height label"
@@ -2623,8 +2794,8 @@ msgstr "Auflösung Stützstrukturschnittstelle"
 
 #: fdmprinter.def.json
 msgctxt "support_interface_skip_height description"
-msgid "When checking where there's model above the support, take steps of the given height. Lower values will slice slower, while higher values may cause normal support to be printed in some places where there should have been support interface."
-msgstr "Bei der Überprüfung, wo sich das Modell über der Stützstruktur befindet, verwenden Sie Schritte der entsprechenden Höhe. Niedrigere Werte schneiden langsamer, während höhere Werte dazu führen können, dass die normale Stützstruktur an einigen Stellen gedruckt wird, wo sie als Stützstrukturschnittstelle gedruckt werden sollte."
+msgid "When checking where there's model above and below the support, take steps of the given height. Lower values will slice slower, while higher values may cause normal support to be printed in some places where there should have been support interface."
+msgstr "Bei der Überprüfung, wo sich das Modell über und unter der Stützstruktur befindet, verwenden Sie Schritte der entsprechenden Höhe. Niedrigere Werte schneiden langsamer, während höhere Werte dazu führen können, dass die normale Stützstruktur an einigen Stellen gedruckt wird, wo sie als Stützstrukturschnittstelle gedruckt werden sollte."
 
 #: fdmprinter.def.json
 msgctxt "support_interface_density label"
@@ -2633,18 +2804,48 @@ msgstr "Dichte Stützstrukturschnittstelle"
 
 #: fdmprinter.def.json
 msgctxt "support_interface_density description"
-msgid "Adjusts the density of the roofs and bottoms of the support structure. A higher value results in better overhangs, but the supports are harder to remove."
-msgstr "Die Dichte des Stützstrukturdachs und -bodens wird eingestellt. Ein höherer Wert führt zu besseren Überhängen, aber die Stützstrukturen sind schwieriger zu entfernen."
+msgid "Adjusts the density of the roofs and floors of the support structure. A higher value results in better overhangs, but the supports are harder to remove."
+msgstr "Die Dichte der Stützstrukturdächer und -böden wird eingestellt. Ein höherer Wert führt zu besseren Überhängen, aber die Stützstrukturen sind schwieriger zu entfernen."
 
 #: fdmprinter.def.json
-msgctxt "support_interface_line_distance label"
-msgid "Support Interface Line Distance"
-msgstr "Stützstrukturschnittstelle Linienlänge"
+msgctxt "support_roof_density label"
+msgid "Support Roof Density"
+msgstr "Dichte der Dachstruktur"
 
 #: fdmprinter.def.json
-msgctxt "support_interface_line_distance description"
-msgid "Distance between the printed support interface lines. This setting is calculated by the Support Interface Density, but can be adjusted separately."
-msgstr "Der Abstand zwischen den gedruckten Stützstrukturschnittstellenlinien. Diese Einstellung wird anhand der Dichte der Stützstrukturschnittstelle berechnet, kann aber auch separat eingestellt werden."
+msgctxt "support_roof_density description"
+msgid "The density of the roofs of the support structure. A higher value results in better overhangs, but the supports are harder to remove."
+msgstr "Die Dichte der Stützstrukturdächer wird eingestellt. Ein höherer Wert führt zu besseren Überhängen, aber die Stützstrukturen sind schwieriger zu entfernen."
+
+#: fdmprinter.def.json
+msgctxt "support_roof_line_distance label"
+msgid "Support Roof Line Distance"
+msgstr "Linienabstand der Dachstruktur"
+
+#: fdmprinter.def.json
+msgctxt "support_roof_line_distance description"
+msgid "Distance between the printed support roof lines. This setting is calculated by the Support Roof Density, but can be adjusted separately."
+msgstr "Der Abstand zwischen den gedruckten Stützdachlinien. Diese Einstellung wird anhand der Dichte der Stützstruktur berechnet, kann aber auch separat eingestellt werden."
+
+#: fdmprinter.def.json
+msgctxt "support_bottom_density label"
+msgid "Support Floor Density"
+msgstr "Dichte der Bodenstruktur"
+
+#: fdmprinter.def.json
+msgctxt "support_bottom_density description"
+msgid "The density of the floors of the support structure. A higher value results in better adhesion of the support on top of the model."
+msgstr "Die Dichte der Stützstrukturböden wird eingestellt. Ein höherer Wert führt zu einer besseren Haftung der Stützstruktur oben am Modell."
+
+#: fdmprinter.def.json
+msgctxt "support_bottom_line_distance label"
+msgid "Support Floor Line Distance"
+msgstr "Linienabstand der Bodenstruktur"
+
+#: fdmprinter.def.json
+msgctxt "support_bottom_line_distance description"
+msgid "Distance between the printed support floor lines. This setting is calculated by the Support Floor Density, but can be adjusted separately."
+msgstr "Der Abstand zwischen den gedruckten Stützstrukturbodenlinien. Diese Einstellung wird anhand der Dichte des Stützstrukturboden berechnet, kann aber auch separat eingestellt werden."
 
 #: fdmprinter.def.json
 msgctxt "support_interface_pattern label"
@@ -2683,6 +2884,86 @@ msgstr "Konzentrisch 3D"
 
 #: fdmprinter.def.json
 msgctxt "support_interface_pattern option zigzag"
+msgid "Zig Zag"
+msgstr "Zickzack"
+
+#: fdmprinter.def.json
+msgctxt "support_roof_pattern label"
+msgid "Support Roof Pattern"
+msgstr "Muster des Stützdachs"
+
+#: fdmprinter.def.json
+msgctxt "support_roof_pattern description"
+msgid "The pattern with which the roofs of the support are printed."
+msgstr "Das Muster, mit dem die Dächer der Stützstruktur gedruckt werden."
+
+#: fdmprinter.def.json
+msgctxt "support_roof_pattern option lines"
+msgid "Lines"
+msgstr "Linien"
+
+#: fdmprinter.def.json
+msgctxt "support_roof_pattern option grid"
+msgid "Grid"
+msgstr "Gitter"
+
+#: fdmprinter.def.json
+msgctxt "support_roof_pattern option triangles"
+msgid "Triangles"
+msgstr "Dreiecke"
+
+#: fdmprinter.def.json
+msgctxt "support_roof_pattern option concentric"
+msgid "Concentric"
+msgstr "Konzentrisch"
+
+#: fdmprinter.def.json
+msgctxt "support_roof_pattern option concentric_3d"
+msgid "Concentric 3D"
+msgstr "Konzentrisch 3D"
+
+#: fdmprinter.def.json
+msgctxt "support_roof_pattern option zigzag"
+msgid "Zig Zag"
+msgstr "Zickzack"
+
+#: fdmprinter.def.json
+msgctxt "support_bottom_pattern label"
+msgid "Support Floor Pattern"
+msgstr "Muster der Bodenstruktur"
+
+#: fdmprinter.def.json
+msgctxt "support_bottom_pattern description"
+msgid "The pattern with which the floors of the support are printed."
+msgstr "Das Muster, mit dem die Unterseiten der Stützstruktur gedruckt werden."
+
+#: fdmprinter.def.json
+msgctxt "support_bottom_pattern option lines"
+msgid "Lines"
+msgstr "Linien"
+
+#: fdmprinter.def.json
+msgctxt "support_bottom_pattern option grid"
+msgid "Grid"
+msgstr "Gitter"
+
+#: fdmprinter.def.json
+msgctxt "support_bottom_pattern option triangles"
+msgid "Triangles"
+msgstr "Dreiecke"
+
+#: fdmprinter.def.json
+msgctxt "support_bottom_pattern option concentric"
+msgid "Concentric"
+msgstr "Konzentrisch"
+
+#: fdmprinter.def.json
+msgctxt "support_bottom_pattern option concentric_3d"
+msgid "Concentric 3D"
+msgstr "Konzentrisch 3D"
+
+#: fdmprinter.def.json
+msgctxt "support_bottom_pattern option zigzag"
 msgid "Zig Zag"
 msgstr "Zickzack"
 
@@ -2735,6 +3016,16 @@ msgstr "Druckplattenhaftung"
 msgctxt "platform_adhesion description"
 msgid "Adhesion"
 msgstr "Haftung"
+
+#: fdmprinter.def.json
+msgctxt "prime_blob_enable label"
+msgid "Enable Prime Blob"
+msgstr "Einzugstropfen aktivieren"
+
+#: fdmprinter.def.json
+msgctxt "prime_blob_enable description"
+msgid "Whether to prime the filament with a blob before printing. Turning this setting on will ensure that the extruder will have material ready at the nozzle before printing. Printing Brim or Skirt can act like priming too, in which case turning this setting off saves some time."
+msgstr "Diese Funktion legt fest, ob das Filament vor dem Drucken mit einem Tropfen eingezogen wird. Wenn diese Funktion aktiviert ist, stellt der Extruder vor dem Drucken an der Düse Material bereit. Der Brim- oder Skirt-Druck kann ebenfalls als Einzug wirken; in diesem Fall kann das Ausschalten dieser Funktion Zeit einsparen."
 
 #: fdmprinter.def.json
 msgctxt "extruder_prime_pos_x label"
@@ -3409,6 +3700,56 @@ msgid "Determines which infill mesh is inside the infill of another infill mesh.
 msgstr "Hier wird festgelegt, welche Mesh-Füllung in der Füllung einer anderen Mesh-Füllung ist. Eine Mesh-Füllung mit einer höheren Reihenfolge ändert die Füllung der Mesh-Füllungen mit niedrigerer Reihenfolge und normalen Meshes."
 
 #: fdmprinter.def.json
+msgctxt "cutting_mesh label"
+msgid "Cutting Mesh"
+msgstr "Mesh beschneiden"
+
+#: fdmprinter.def.json
+msgctxt "cutting_mesh description"
+msgid "Limit the volume of this mesh to within other meshes. You can use this to make certain areas of one mesh print with different settings and with a whole different extruder."
+msgstr "Beschränkt die Menge dieses Meshs innerhalb der anderen Meshes. Sie können diese Funktion verwenden, um bestimmte Bereiche eines Mesh-Drucks mit unterschiedlichen Einstellungen und einem völlig anderen Extruder zu produzieren."
+
+#: fdmprinter.def.json
+msgctxt "mold_enabled label"
+msgid "Mold"
+msgstr "Form"
+
+#: fdmprinter.def.json
+msgctxt "mold_enabled description"
+msgid "Print models as a mold, which can be cast in order to get a model which resembles the models on the build plate."
+msgstr "Damit werden Modelle als Form gedruckt, die gegossen werden kann, um ein Modell zu erhalten, das den Modellen des Druckbetts ähnelt."
+
+#: fdmprinter.def.json
+msgctxt "mold_width label"
+msgid "Minimal Mold Width"
+msgstr "Mindestbreite der Form"
+
+#: fdmprinter.def.json
+msgctxt "mold_width description"
+msgid "The minimal distance between the ouside of the mold and the outside of the model."
+msgstr "Der Mindestabstand zwischen der Außenseite der Form und der Außenseite des Modells."
+
+#: fdmprinter.def.json
+msgctxt "mold_roof_height label"
+msgid "Mold Roof Height"
+msgstr "Dachhöhe der Form"
+
+#: fdmprinter.def.json
+msgctxt "mold_roof_height description"
+msgid "The height above horizontal parts in your model which to print mold."
+msgstr "Bezeichnet die Höhe über horizontalen Teilen Ihres Modell, in der die Form gedruckt wird."
+
+#: fdmprinter.def.json
+msgctxt "mold_angle label"
+msgid "Mold Angle"
+msgstr "Formwinkel"
+
+#: fdmprinter.def.json
+msgctxt "mold_angle description"
+msgid "The angle of overhang of the outer walls created for the mold. 0° will make the outer shell of the mold vertical, while 90° will make the outside of the model follow the contour of the model."
+msgstr "Dies bezeichnet den Winkel des Überhangs der für die Form erstellten Außenwände. 0 Grad ergibt eine vertikale Außenhaut der Form, während 90 Grad dazu führt, dass die Außenseite des Modells der Modellkontur folgt."
+
+#: fdmprinter.def.json
 msgctxt "support_mesh label"
 msgid "Support Mesh"
 msgstr "Stütznetz"
@@ -3417,6 +3758,16 @@ msgstr "Stütznetz"
 msgctxt "support_mesh description"
 msgid "Use this mesh to specify support areas. This can be used to generate support structure."
 msgstr "Dieses Netz wird verwendet, um festzulegen, welche Bereiche gestützt werden sollen. Dies kann verwendet werden, um eine Stützstruktur zu errichten."
+
+#: fdmprinter.def.json
+msgctxt "support_mesh_drop_down label"
+msgid "Drop Down Support Mesh"
+msgstr "Stütznetz ablegen"
+
+#: fdmprinter.def.json
+msgctxt "support_mesh_drop_down description"
+msgid "Make support everywhere below the support mesh, so that there's no overhang in the support mesh."
+msgstr "Sorgt für Unterstützung überall unterhalb des Stütznetzes, sodass kein Überhang im Stütznetz vorhanden ist."
 
 #: fdmprinter.def.json
 msgctxt "anti_overhang_mesh label"
@@ -3460,8 +3811,18 @@ msgstr "Spiralisieren der äußeren Konturen"
 
 #: fdmprinter.def.json
 msgctxt "magic_spiralize description"
-msgid "Spiralize smooths out the Z move of the outer edge. This will create a steady Z increase over the whole print. This feature turns a solid model into a single walled print with a solid bottom. This feature used to be called Joris in older versions."
-msgstr "Durch Spiralisieren wird die Z-Bewegung der äußeren Kante geglättet. Dies führt zu einem konstanten Z-Anstieg des gesamten Drucks. Diese Funktion wandelt ein solides Modell in einen Druck mit Einzelwänden und einem soliden Boden um. Diese Funktion wurde bei den Vorversionen „Joris“ genannt."
+msgid "Spiralize smooths out the Z move of the outer edge. This will create a steady Z increase over the whole print. This feature turns a solid model into a single walled print with a solid bottom. This feature should only be enabled when each layer only contains a single part."
+msgstr "Durch Spiralisieren wird die Z-Bewegung der äußeren Kante geglättet. Dies führt zu einem konstanten Z-Anstieg des gesamten Drucks. Diese Funktion wandelt ein solides Modell in einen Druck mit Einzelwänden und einem soliden Boden um. Diese Funktion sollte nur aktiviert werden, wenn jede Schicht nur ein einzelnes Teil enthält."
+
+#: fdmprinter.def.json
+msgctxt "smooth_spiralized_contours label"
+msgid "Smooth Spiralized Contours"
+msgstr "Spiralisieren der äußeren Konturen glätten"
+
+#: fdmprinter.def.json
+msgctxt "smooth_spiralized_contours description"
+msgid "Smooth the spiralized contours to reduce the visibility of the Z seam (the Z-seam should be barely visible on the print but will still be visible in the layer view). Note that smoothing will tend to blur fine surface details."
+msgstr "Glättet die spiralförmigen Konturen, um die Sichtbarkeit der Z-Naht zu reduzieren (die Z-Naht sollte auf dem Druck kaum sichtbar sein, ist jedoch in der Schichtenansicht erkennbar). Beachten Sie, dass das Glätten dazu neigt, feine Oberflächendetails zu verwischen."
 
 #: fdmprinter.def.json
 msgctxt "experimental label"
@@ -3999,6 +4360,90 @@ msgstr "Matrix Netzdrehung"
 msgctxt "mesh_rotation_matrix description"
 msgid "Transformation matrix to be applied to the model when loading it from file."
 msgstr "Transformationsmatrix, die beim Laden aus der Datei auf das Modell angewandt wird."
+
+#~ msgctxt "support_interface_line_width description"
+#~ msgid "Width of a single support interface line."
+#~ msgstr "Die Breite einer Linienbreite einer einzelnen Stützstruktur-Schnittstelle."
+
+#~ msgctxt "sub_div_rad_mult label"
+#~ msgid "Cubic Subdivision Radius"
+#~ msgstr "Radius Würfel-Unterbereich"
+
+#~ msgctxt "sub_div_rad_mult description"
+#~ msgid "A multiplier on the radius from the center of each cube to check for the boundary of the model, as to decide whether this cube should be subdivided. Larger values lead to more subdivisions, i.e. more small cubes."
+#~ msgstr "Ein Multiplikator des Radius von der Mitte jedes Würfels, um die Modellbegrenzungen zu überprüfen und um zu entscheiden, ob dieser Würfel unterteilt werden sollte. Höhere Werte führen zu mehr Unterbereichen, d. h. mehr kleinen Würfeln."
+
+#~ msgctxt "expand_upper_skins label"
+#~ msgid "Expand Upper Skins"
+#~ msgstr "Obere Außenhaut expandieren"
+
+#~ msgctxt "expand_upper_skins description"
+#~ msgid "Expand upper skin areas (areas with air above) so that they support infill above."
+#~ msgstr "Expandiert die oberen Außenhautbereiche (Bereiche mit Luft darüber), sodass sie die Füllung darüber stützen."
+
+#~ msgctxt "expand_lower_skins label"
+#~ msgid "Expand Lower Skins"
+#~ msgstr "Untere Außenhaut expandieren"
+
+#~ msgctxt "expand_lower_skins description"
+#~ msgid "Expand lower skin areas (areas with air below) so that they are anchored by the infill layers above and below."
+#~ msgstr "Expandiert die unteren Außenhautbereiche (Bereiche mit Luft darunter), sodass sie durch die Füllungsschichten darüber und darunter verankert werden."
+
+#~ msgctxt "speed_support_interface description"
+#~ msgid "The speed at which the roofs and bottoms of support are printed. Printing the them at lower speeds can improve overhang quality."
+#~ msgstr "Die Geschwindigkeit, mit der die Dächer und Böden der Stützstruktur gedruckt wird. Durch das Drucken bei einer geringeren Geschwindigkeit, kann die Qualität der Überhänge verbessert werden."
+
+#~ msgctxt "acceleration_support_interface description"
+#~ msgid "The acceleration with which the roofs and bottoms of support are printed. Printing them at lower accelerations can improve overhang quality."
+#~ msgstr "Die Beschleunigung, mit der die Dächer und Böden der Stützstruktur gedruckt wird. Durch das Drucken bei einer geringeren Geschwindigkeit kann die Qualität der Überhänge verbessert werden."
+
+#~ msgctxt "jerk_support_interface description"
+#~ msgid "The maximum instantaneous velocity change with which the roofs and bottoms of support are printed."
+#~ msgstr "Die maximale unmittelbare Geschwindigkeitsänderung, mit der die Dächer und Böden der Stützstruktur gedruckt werden."
+
+#~ msgctxt "support_enable label"
+#~ msgid "Enable Support"
+#~ msgstr "Stützstruktur aktivieren"
+
+#~ msgctxt "support_enable description"
+#~ msgid "Enable support structures. These structures support parts of the model with severe overhangs."
+#~ msgstr "Es werden Stützstrukturen aktiviert. Diese Strukturen stützen Teile des Modells mit großen Überhängen."
+
+#~ msgctxt "support_interface_extruder_nr description"
+#~ msgid "The extruder train to use for printing the roofs and bottoms of the support. This is used in multi-extrusion."
+#~ msgstr "Das für das Drucken der Dächer und Böden der Stützstruktur verwendete Extruder-Element. Diese wird für die Mehrfach-Extrusion benutzt."
+
+#~ msgctxt "support_bottom_stair_step_height description"
+#~ msgid "The height of the steps of the stair-like bottom of support resting on the model. A low value makes the support harder to remove, but too high values can lead to unstable support structures."
+#~ msgstr "Die Höhe der Stufen der treppenförmigen Unterlage für die Stützstruktur des Modells. Ein niedriger Wert kann das Entfernen der Stützstruktur erschweren, ein zu hoher Wert kann jedoch zu instabilen Stützstrukturen führen."
+
+#~ msgctxt "support_bottom_height label"
+#~ msgid "Support Bottom Thickness"
+#~ msgstr "Dicke des Stützbodens"
+
+#~ msgctxt "support_bottom_height description"
+#~ msgid "The thickness of the support bottoms. This controls the number of dense layers are printed on top of places of a model on which support rests."
+#~ msgstr "Die Dicke des Stützbodens. Dies steuert die Anzahl der dichten Schichten, die oben an einem Modell gedruckt werden, auf dem die Stützstruktur aufsitzt."
+
+#~ msgctxt "support_interface_skip_height description"
+#~ msgid "When checking where there's model above the support, take steps of the given height. Lower values will slice slower, while higher values may cause normal support to be printed in some places where there should have been support interface."
+#~ msgstr "Bei der Überprüfung, wo sich das Modell über der Stützstruktur befindet, verwenden Sie Schritte der entsprechenden Höhe. Niedrigere Werte schneiden langsamer, während höhere Werte dazu führen können, dass die normale Stützstruktur an einigen Stellen gedruckt wird, wo sie als Stützstrukturschnittstelle gedruckt werden sollte."
+
+#~ msgctxt "support_interface_density description"
+#~ msgid "Adjusts the density of the roofs and bottoms of the support structure. A higher value results in better overhangs, but the supports are harder to remove."
+#~ msgstr "Die Dichte des Stützstrukturdachs und -bodens wird eingestellt. Ein höherer Wert führt zu besseren Überhängen, aber die Stützstrukturen sind schwieriger zu entfernen."
+
+#~ msgctxt "support_interface_line_distance label"
+#~ msgid "Support Interface Line Distance"
+#~ msgstr "Stützstrukturschnittstelle Linienlänge"
+
+#~ msgctxt "support_interface_line_distance description"
+#~ msgid "Distance between the printed support interface lines. This setting is calculated by the Support Interface Density, but can be adjusted separately."
+#~ msgstr "Der Abstand zwischen den gedruckten Stützstrukturschnittstellenlinien. Diese Einstellung wird anhand der Dichte der Stützstrukturschnittstelle berechnet, kann aber auch separat eingestellt werden."
+
+#~ msgctxt "magic_spiralize description"
+#~ msgid "Spiralize smooths out the Z move of the outer edge. This will create a steady Z increase over the whole print. This feature turns a solid model into a single walled print with a solid bottom. This feature used to be called Joris in older versions."
+#~ msgstr "Durch Spiralisieren wird die Z-Bewegung der äußeren Kante geglättet. Dies führt zu einem konstanten Z-Anstieg des gesamten Drucks. Diese Funktion wandelt ein solides Modell in einen Druck mit Einzelwänden und einem soliden Boden um. Diese Funktion wurde bei den Vorversionen „Joris“ genannt."
 
 #~ msgctxt "material_print_temperature description"
 #~ msgid "The temperature used for printing. Set at 0 to pre-heat the printer manually."

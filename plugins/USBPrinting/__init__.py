@@ -8,14 +8,6 @@ i18n_catalog = i18nCatalog("cura")
 
 def getMetaData():
     return {
-        "type": "extension",
-        "plugin": {
-            "name": i18n_catalog.i18nc("@label", "USB printing"),
-            "author": "Ultimaker",
-            "version": "1.0",
-            "api": 3,
-            "description": i18n_catalog.i18nc("@info:whatsthis","Accepts G-Code and sends them to a printer. Plugin can also update firmware.")
-        }
     }
 
 def register(app):

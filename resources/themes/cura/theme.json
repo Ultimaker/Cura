@@ -1,4 +1,7 @@
 {
+    "metadata": {
+        "name": "Ultimaker"
+    },
     "fonts": {
         "large": {
             "size": 1.25,
@@ -288,6 +291,8 @@
         "button_icon": [2.5, 2.5],
         "button_lining": [0, 0],
 
+        "topbar_button": [17, 4],
+
         "button_tooltip": [1.0, 1.3],
         "button_tooltip_arrow": [0.25, 0.25],
 
@@ -329,6 +334,8 @@
 
         "infill_button_margin": [0.5, 0.5],
 
-        "jobspecs_line": [2.0, 2.0]
+        "jobspecs_line": [2.0, 2.0],
+
+        "info_button": [0.6, 0.6]
     }
 }

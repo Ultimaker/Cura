@@ -14,8 +14,8 @@ UM.Dialog
     id: base
     title: catalog.i18nc("@title:window", "Discard or Keep changes")
 
-    width: 800 * Screen.devicePixelRatio
-    height: 400 * Screen.devicePixelRatio
+    width: 800
+    height: 400
     property var changesModel: Cura.UserChangesModel{ id: userChangesModel}
     onVisibilityChanged:
     {
@@ -36,9 +36,14 @@ UM.Dialog
         }
     }
 
-    Column
+    Row
     {
-        anchors.fill: parent
+        id: infoTextRow
+        height: childrenRect.height
+        anchors.margins: UM.Theme.getSize("default_margin").width
+        anchors.left: parent.left
+        anchors.right: parent.right
+        anchors.top: parent.top
         spacing: UM.Theme.getSize("default_margin").width
 
         UM.I18nCatalog
@@ -47,29 +52,25 @@ UM.Dialog
             name: "cura"
         }
 
-        Row
+        Label
         {
-            height: childrenRect.height
+            text: catalog.i18nc("@text:window", "You have customized some profile settings.\nWould you like to keep or discard those settings?")
             anchors.margins: UM.Theme.getSize("default_margin").width
-            anchors.left: parent.left
-            anchors.right: parent.right
-            spacing: UM.Theme.getSize("default_margin").width
-
-            Label
-            {
-                text: catalog.i18nc("@text:window", "You have customized some profile settings.\nWould you like to keep or discard those settings?")
-                anchors.margins: UM.Theme.getSize("default_margin").width
-                font: UM.Theme.getFont("default")
-                wrapMode: Text.WordWrap
-            }
+            wrapMode: Text.WordWrap
         }
+    }
 
+    Item
+    {
+        anchors.margins: UM.Theme.getSize("default_margin").width
+        anchors.top: infoTextRow.bottom
+        anchors.bottom: optionRow.top
+        anchors.left: parent.left
+        anchors.right: parent.right
         TableView
         {
-            anchors.margins: UM.Theme.getSize("default_margin").width
-            anchors.left: parent.left
-            anchors.right: parent.right
-            height: base.height - 150 * Screen.devicePixelRatio
+            anchors.fill: parent
+            height: base.height - 150
             id: tableView
             Component
             {
@@ -132,92 +133,96 @@ UM.Dialog
 
             model: base.changesModel
         }
+    }
 
-        Item
+    Item
+    {
+        id: optionRow
+        anchors.bottom: buttonsRow.top
+        anchors.right: parent.right
+        anchors.left: parent.left
+        anchors.margins: UM.Theme.getSize("default_margin").width
+        height: childrenRect.height
+
+        ComboBox
         {
-            anchors.right: parent.right
-            anchors.left: parent.left
-            anchors.margins: UM.Theme.getSize("default_margin").width
-            height:childrenRect.height
+            id: discardOrKeepProfileChangesDropDownButton
+            width: 300
 
-            ComboBox
+            model: ListModel
             {
-                id: discardOrKeepProfileChangesDropDownButton
-                width: 300
+                id: discardOrKeepProfileListModel
 
-                model: ListModel
-                {
-                    id: discardOrKeepProfileListModel
-
-                    Component.onCompleted: {
-                        append({ text: catalog.i18nc("@option:discardOrKeep", "Always ask me this"), code: "always_ask" })
-                        append({ text: catalog.i18nc("@option:discardOrKeep", "Discard and never ask again"), code: "always_discard" })
-                        append({ text: catalog.i18nc("@option:discardOrKeep", "Keep and never ask again"), code: "always_keep" })
-                    }
+                Component.onCompleted: {
+                    append({ text: catalog.i18nc("@option:discardOrKeep", "Always ask me this"), code: "always_ask" })
+                    append({ text: catalog.i18nc("@option:discardOrKeep", "Discard and never ask again"), code: "always_discard" })
+                    append({ text: catalog.i18nc("@option:discardOrKeep", "Keep and never ask again"), code: "always_keep" })
                 }
+            }
 
-                onActivated:
-                {
-                    var code = model.get(index).code;
-                    UM.Preferences.setValue("cura/choice_on_profile_override", code);
+            onActivated:
+            {
+                var code = model.get(index).code;
+                UM.Preferences.setValue("cura/choice_on_profile_override", code);
 
-                    if (code == "always_keep") {
-                        keepButton.enabled = true;
-                        discardButton.enabled = false;
-                    }
-                    else if (code == "always_discard") {
-                        keepButton.enabled = false;
-                        discardButton.enabled = true;
-                    }
-                    else {
-                        keepButton.enabled = true;
-                        discardButton.enabled = true;
-                    }
+                if (code == "always_keep") {
+                    keepButton.enabled = true;
+                    discardButton.enabled = false;
+                }
+                else if (code == "always_discard") {
+                    keepButton.enabled = false;
+                    discardButton.enabled = true;
+                }
+                else {
+                    keepButton.enabled = true;
+                    discardButton.enabled = true;
                 }
             }
         }
+    }
 
-        Item
+    Item
+    {
+        id: buttonsRow
+        anchors.bottom: parent.bottom
+        anchors.right: parent.right
+        anchors.left: parent.left
+        anchors.margins: UM.Theme.getSize("default_margin").width
+        height: childrenRect.height
+
+        Button
         {
+            id: discardButton
+            text: catalog.i18nc("@action:button", "Discard");
             anchors.right: parent.right
+            onClicked:
+            {
+                CuraApplication.discardOrKeepProfileChangesClosed("discard")
+                base.hide()
+            }
+            isDefault: true
+        }
+
+        Button
+        {
+            id: keepButton
+            text: catalog.i18nc("@action:button", "Keep");
+            anchors.right: discardButton.left
+            anchors.rightMargin: UM.Theme.getSize("default_margin").width
+            onClicked:
+            {
+                CuraApplication.discardOrKeepProfileChangesClosed("keep")
+                base.hide()
+            }
+        }
+
+        Button
+        {
+            id: createNewProfileButton
+            text: catalog.i18nc("@action:button", "Create New Profile");
             anchors.left: parent.left
-            anchors.margins: UM.Theme.getSize("default_margin").width
-            height: childrenRect.height
-
-            Button
-            {
-                id: discardButton
-                text: catalog.i18nc("@action:button", "Discard");
-                anchors.right: parent.right
-                onClicked:
-                {
-                    CuraApplication.discardOrKeepProfileChangesClosed("discard")
-                    base.hide()
-                }
-                isDefault: true
-            }
-
-            Button
-            {
-                id: keepButton
-                text: catalog.i18nc("@action:button", "Keep");
-                anchors.right: discardButton.left
-                anchors.rightMargin: UM.Theme.getSize("default_margin").width
-                onClicked:
-                {
-                    CuraApplication.discardOrKeepProfileChangesClosed("keep")
-                    base.hide()
-                }
-            }
-
-            Button
-            {
-                id: createNewProfileButton
-                text: catalog.i18nc("@action:button", "Create New Profile");
-                anchors.left: parent.left
-                action: Cura.Actions.addProfile
-                onClicked: base.hide()
-            }
+            action: Cura.Actions.addProfile
+            onClicked: base.hide()
         }
     }
 }

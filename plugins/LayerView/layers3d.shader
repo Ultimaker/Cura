@@ -130,9 +130,9 @@ geometry41core =
             // fixed size for movements
             size_x = 0.05;
         } else {
-            size_x = v_line_dim[0].x / 2 + 0.01;  // radius, and make it nicely overlapping
+            size_x = v_line_dim[1].x / 2 + 0.01;  // radius, and make it nicely overlapping
         }
-        size_y = v_line_dim[0].y / 2 + 0.01;
+        size_y = v_line_dim[1].y / 2 + 0.01;
 
         g_vertex_delta = gl_in[1].gl_Position - gl_in[0].gl_Position;
         g_vertex_normal_horz_head = normalize(vec3(-g_vertex_delta.x, -g_vertex_delta.y, -g_vertex_delta.z));

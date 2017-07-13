@@ -1,5 +1,5 @@
-// Copyright (c) 2016 Ultimaker B.V.
-// Cura is released under the terms of the AGPLv3 or higher.
+//Copyright (c) 2017 Ultimaker B.V.
+//Cura is released under the terms of the AGPLv3 or higher.
 
 import QtQuick 2.1
 import QtQuick.Controls 1.1
@@ -14,11 +14,17 @@ UM.ManagementPage
 
     title: catalog.i18nc("@title:tab", "Materials");
 
-    model: UM.InstanceContainersModel
+    Component.onCompleted:
+    {
+        // Workaround to make sure all of the items are visible
+        objectList.positionViewAtBeginning();
+    }
+
+    model: Cura.MaterialsModel
     {
         filter:
         {
-            var result = { "type": "material", "approximate_diameter": Math.round(materialDiameterProvider.properties.value) }
+            var result = { "type": "material", "approximate_diameter": Math.round(materialDiameterProvider.properties.value).toString() }
             if(Cura.MachineManager.filterMaterialsByMachine)
             {
                 result.definition = Cura.MachineManager.activeQualityDefinitionId;
@@ -81,6 +87,7 @@ UM.ManagementPage
             anchors.fill: parent;
             onClicked:
             {
+                forceActiveFocus();
                 if(!parent.ListView.isCurrentItem)
                 {
                     parent.ListView.view.currentIndex = index;
@@ -91,9 +98,11 @@ UM.ManagementPage
     }
 
     activeId: Cura.MachineManager.activeMaterialId
-    activeIndex: {
+    activeIndex: getIndexById(activeId)
+    function getIndexById(material_id)
+    {
         for(var i = 0; i < model.rowCount(); i++) {
-            if (model.getItem(i).id == Cura.MachineManager.activeMaterialId) {
+            if (model.getItem(i).id == material_id) {
                 return i;
             }
         }
@@ -130,8 +139,28 @@ UM.ManagementPage
             enabled: base.currentItem != null && base.currentItem.id != Cura.MachineManager.activeMaterialId && Cura.MachineManager.hasMaterials
             onClicked:
             {
+                forceActiveFocus();
                 Cura.MachineManager.setActiveMaterial(base.currentItem.id)
                 currentItem = base.model.getItem(base.objectList.currentIndex) // Refresh the current item.
+            }
+        },
+        Button
+        {
+            text: catalog.i18nc("@action:button", "Create")
+            iconName: "list-add"
+            onClicked:
+            {
+                forceActiveFocus();
+                var material_id = Cura.ContainerManager.createMaterial()
+                if(material_id == "")
+                {
+                    return
+                }
+                if(Cura.MachineManager.hasMaterials)
+                {
+                    Cura.MachineManager.setActiveMaterial(material_id)
+                }
+                base.objectList.currentIndex = base.getIndexById(material_id);
             }
         },
         Button
@@ -141,6 +170,7 @@ UM.ManagementPage
             enabled: base.currentItem != null
             onClicked:
             {
+                forceActiveFocus();
                 var base_file = Cura.ContainerManager.getContainerMetaDataEntry(base.currentItem.id, "base_file")
                 // We need to copy the base container instead of the specific variant.
                 var material_id = base_file == "" ? Cura.ContainerManager.duplicateMaterial(base.currentItem.id): Cura.ContainerManager.duplicateMaterial(base_file)
@@ -152,6 +182,7 @@ UM.ManagementPage
                 {
                     Cura.MachineManager.setActiveMaterial(material_id)
                 }
+                base.objectList.currentIndex = base.getIndexById(material_id);
             }
         },
         Button
@@ -159,20 +190,32 @@ UM.ManagementPage
             text: catalog.i18nc("@action:button", "Remove");
             iconName: "list-remove";
             enabled: base.currentItem != null && !base.currentItem.readOnly && !Cura.ContainerManager.isContainerUsed(base.currentItem.id)
-            onClicked: confirmDialog.open()
+            onClicked:
+            {
+                forceActiveFocus();
+                confirmDialog.open();
+            }
         },
         Button
         {
             text: catalog.i18nc("@action:button", "Import");
             iconName: "document-import";
-            onClicked: importDialog.open();
+            onClicked:
+            {
+                forceActiveFocus();
+                importDialog.open();
+            }
             visible: true;
         },
         Button
         {
             text: catalog.i18nc("@action:button", "Export")
             iconName: "document-export"
-            onClicked: exportDialog.open()
+            onClicked:
+            {
+                forceActiveFocus();
+                exportDialog.open();
+            }
             enabled: currentItem != null
         }
     ]
@@ -206,6 +249,8 @@ UM.ManagementPage
 
             properties: materialProperties
             containerId: base.currentItem != null ? base.currentItem.id : ""
+
+            property alias pane: base
         }
 
         QtObject
@@ -223,6 +268,7 @@ UM.ManagementPage
 
             property real density: 0.0;
             property real diameter: 0.0;
+            property string approximate_diameter: "0";
 
             property real spool_cost: 0.0;
             property real spool_weight: 0.0;
@@ -250,6 +296,10 @@ UM.ManagementPage
                 for(var i in containers)
                 {
                     Cura.ContainerManager.removeContainer(containers[i])
+                }
+                if(base.objectList.currentIndex > 0)
+                {
+                    base.objectList.currentIndex--;
                 }
                 currentItem = base.model.getItem(base.objectList.currentIndex) // Refresh the current item.
             }
@@ -363,11 +413,13 @@ UM.ManagementPage
             {
                 materialProperties.density = currentItem.metadata.properties.density ? currentItem.metadata.properties.density : 0.0;
                 materialProperties.diameter = currentItem.metadata.properties.diameter ? currentItem.metadata.properties.diameter : 0.0;
+                materialProperties.approximate_diameter = currentItem.metadata.approximate_diameter ? currentItem.metadata.approximate_diameter : "0";
             }
             else
             {
                 materialProperties.density = 0.0;
                 materialProperties.diameter = 0.0;
+                materialProperties.approximate_diameter = "0";
             }
 
         }

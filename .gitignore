@@ -11,6 +11,10 @@ resources/firmware
 resources/materials
 LC_MESSAGES
 .cache
+*.qmlc
+
+#MacOS
+.DS_Store
 
 # Editors and IDEs.
 *kdev*
@@ -26,16 +30,15 @@ cura.desktop
 .pydevproject
 .settings
 
-# Debian packaging
-debian*
-
 #Externally located plug-ins.
 plugins/Doodle3D-cura-plugin
 plugins/GodMode
 plugins/PostProcessingPlugin
 plugins/X3GWriter
 plugins/FlatProfileExporter
+plugins/ProfileFlattener
 plugins/cura-god-mode-plugin
+plugins/cura-big-flame-graph
 
 #Build stuff
 CMakeCache.txt

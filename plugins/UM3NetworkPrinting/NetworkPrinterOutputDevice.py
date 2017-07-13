@@ -178,6 +178,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         self._last_command = ""
 
         self._compressing_print = False
+        self._monitor_view_qml_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "MonitorItem.qml")
 
         printer_type = self._properties.get(b"machine", b"").decode("utf-8")
         if printer_type.startswith("9511"):
@@ -187,8 +188,17 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         else:
             self._updatePrinterType("unknown")
 
+        Application.getInstance().getOutputDeviceManager().outputDevicesChanged.connect(self._onOutputDevicesChanged)
+
     def _onNetworkAccesibleChanged(self, accessible):
         Logger.log("d", "Network accessible state changed to: %s", accessible)
+
+    ##  Triggered when the output device manager changes devices.
+    #
+    #   This is how we can detect that our device is no longer active now.
+    def _onOutputDevicesChanged(self):
+        if self.getId() not in Application.getInstance().getOutputDeviceManager().getOutputDeviceIds():
+            self.stopCamera()
 
     def _onAuthenticationTimer(self):
         self._authentication_counter += 1
@@ -306,8 +316,11 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
     def _stopCamera(self):
         self._camera_timer.stop()
         if self._image_reply:
-            self._image_reply.abort()
-            self._image_reply.downloadProgress.disconnect(self._onStreamDownloadProgress)
+            try:
+                self._image_reply.abort()
+                self._image_reply.downloadProgress.disconnect(self._onStreamDownloadProgress)
+            except RuntimeError:
+                pass  # It can happen that the wrapped c++ object is already deleted.
             self._image_reply = None
             self._image_request = None
 
@@ -612,7 +625,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
     #   is ignored.
     #   \param kwargs Keyword arguments.
     def requestWrite(self, nodes, file_name = None, filter_by_machine = False, file_handler = None, **kwargs):
-        if self._printer_state != "idle":
+        if self._printer_state not in ["idle", ""]:
             self._error_message = Message(
                 i18n_catalog.i18nc("@info:status", "Unable to start a new print job, printer is busy. Current printer status is %s.") % self._printer_state)
             self._error_message.show()
@@ -638,7 +651,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
                     if self._json_printer_state["heads"][0]["extruders"][index]["hotend"]["id"] == "":
                         Logger.log("e", "No cartridge loaded in slot %s, unable to start print", index + 1)
                         self._error_message = Message(
-                            i18n_catalog.i18nc("@info:status", "Unable to start a new print job. No PrinterCore loaded in slot {0}".format(index + 1)))
+                            i18n_catalog.i18nc("@info:status", "Unable to start a new print job. No Printcore loaded in slot {0}".format(index + 1)))
                         self._error_message.show()
                         return
                     if self._json_printer_state["heads"][0]["extruders"][index]["active_material"]["guid"] == "":

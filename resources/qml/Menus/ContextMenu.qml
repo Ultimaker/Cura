@@ -81,8 +81,6 @@ Menu
 
         title: catalog.i18ncp("@title:window", "Multiply Selected Model", "Multiply Selected Models", UM.Selection.selectionCount)
 
-        width: 400 * Screen.devicePixelRatio
-        height: 80 * Screen.devicePixelRatio
 
         onAccepted: CuraActions.multiplySelection(copiesField.value)
 
@@ -91,6 +89,11 @@ Menu
         {
             copiesField.value = 1;
             copiesField.focus = true;
+        }
+
+        onVisibleChanged:
+        {
+            copiesField.forceActiveFocus();
         }
 
         standardButtons: StandardButton.Ok | StandardButton.Cancel
@@ -108,6 +111,7 @@ Menu
             SpinBox
             {
                 id: copiesField
+                focus: true
                 minimumValue: 1
                 maximumValue: 99
             }

@@ -142,6 +142,7 @@ Item
 
         style: UM.Theme.styles.scrollview;
         flickableItem.flickableDirection: Flickable.VerticalFlick;
+        __wheelAreaScrollSpeed: 75; // Scroll three lines in one scroll event
 
         ListView
         {
@@ -154,7 +155,7 @@ Item
                 id: definitionsModel;
                 containerId: Cura.MachineManager.activeDefinitionId
                 visibilityHandler: UM.SettingPreferenceVisibilityHandler { }
-                exclude: ["machine_settings", "command_line_settings", "infill_mesh", "infill_mesh_order", "support_mesh", "anti_overhang_mesh"] // TODO: infill_mesh settigns are excluded hardcoded, but should be based on the fact that settable_globally, settable_per_meshgroup and settable_per_extruder are false.
+                exclude: ["machine_settings", "command_line_settings", "infill_mesh", "infill_mesh_order", "cutting_mesh", "support_mesh", "anti_overhang_mesh"] // TODO: infill_mesh settigns are excluded hardcoded, but should be based on the fact that settable_globally, settable_per_meshgroup and settable_per_extruder are false.
                 expanded: CuraApplication.expandedCategories
                 onExpandedChanged:
                 {
@@ -168,6 +169,8 @@ Item
                 onVisibilityChanged: Cura.SettingInheritanceManager.forceUpdate()
             }
 
+            property var indexWithFocus: -1
+
             delegate: Loader
             {
                 id: delegate
@@ -179,7 +182,7 @@ Item
                 Behavior on opacity { NumberAnimation { duration: 100 } }
                 enabled:
                 {
-                    if(!ExtruderManager.activeExtruderStackId && ExtruderManager.extruderCount > 0)
+                    if(!ExtruderManager.activeExtruderStackId && machineExtruderCount.properties.value > 1)
                     {
                         // disable all controls on the global tab, except categories
                         return model.type == "category"
@@ -195,7 +198,7 @@ Item
                 //Qt5.4.2 and earlier has a bug where this causes a crash: https://bugreports.qt.io/browse/QTBUG-35989
                 //In addition, while it works for 5.5 and higher, the ordering of the actual combo box drop down changes,
                 //causing nasty issues when selecting different options. So disable asynchronous loading of enum type completely.
-                asynchronous: model.type != "enum" && model.type != "extruder"
+                asynchronous: model.type != "enum" && model.type != "extruder" && model.type != "optional_extruder"
                 active: model.type != undefined
 
                 source:
@@ -218,6 +221,8 @@ Item
                             return "SettingTextField.qml"
                         case "category":
                             return "SettingCategory.qml"
+                        case "optional_extruder":
+                            return "SettingOptionalExtruder.qml"
                         default:
                             return "SettingUnknown.qml"
                     }
@@ -296,10 +301,52 @@ Item
                         }
                         Cura.SettingInheritanceManager.manualRemoveOverride(category_id)
                     }
+                    onFocusReceived:
+                    {
+                        contents.indexWithFocus = index;
+                        animateContentY.from = contents.contentY;
+                        contents.positionViewAtIndex(index, ListView.Contain);
+                        animateContentY.to = contents.contentY;
+                        animateContentY.running = true;
+                    }
+                    onSetActiveFocusToNextSetting:
+                    {
+                        if(forward == undefined || forward)
+                        {
+                            contents.currentIndex = contents.indexWithFocus + 1;
+                            while(contents.currentItem && contents.currentItem.height <= 0)
+                            {
+                                contents.currentIndex++;
+                            }
+                            if(contents.currentItem)
+                            {
+                                contents.currentItem.item.focusItem.forceActiveFocus();
+                            }
+                        }
+                        else
+                        {
+                            contents.currentIndex = contents.indexWithFocus - 1;
+                            while(contents.currentItem && contents.currentItem.height <= 0)
+                            {
+                                contents.currentIndex--;
+                            }
+                            if(contents.currentItem)
+                            {
+                                contents.currentItem.item.focusItem.forceActiveFocus();
+                            }
+                        }
+                    }
                 }
             }
 
             UM.I18nCatalog { id: catalog; name: "cura"; }
+
+            NumberAnimation {
+                id: animateContentY
+                target: contents
+                property: "contentY"
+                duration: 50
+            }
 
             add: Transition {
                 SequentialAnimation {

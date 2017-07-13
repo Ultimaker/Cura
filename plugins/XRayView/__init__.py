@@ -8,13 +8,6 @@ catalog = i18nCatalog("cura")
 
 def getMetaData():
     return {
-        "plugin": {
-            "name": catalog.i18nc("@label", "X-Ray View"),
-            "author": "Ultimaker",
-            "version": "1.0",
-            "description": catalog.i18nc("@info:whatsthis", "Provides the X-Ray view."),
-            "api": 3
-        },
         "view": {
             "name": catalog.i18nc("@item:inlistbox", "X-Ray"),
             "weight": 1

@@ -86,6 +86,8 @@ UM.PreferencesPage
         centerOnSelectCheckbox.checked = boolCheck(UM.Preferences.getValue("view/center_on_select"))
         UM.Preferences.resetPreference("view/invert_zoom");
         invertZoomCheckbox.checked = boolCheck(UM.Preferences.getValue("view/invert_zoom"))
+        UM.Preferences.resetPreference("view/zoom_to_mouse");
+        zoomToMouseCheckbox.checked = boolCheck(UM.Preferences.getValue("view/zoom_to_mouse"))
         UM.Preferences.resetPreference("view/top_layer_count");
         topLayerCountCheckbox.checked = boolCheck(UM.Preferences.getValue("view/top_layer_count"))
 
@@ -152,6 +154,8 @@ UM.PreferencesPage
                             append({ text: "Suomi", code: "fi" })
                             append({ text: "Français", code: "fr" })
                             append({ text: "Italiano", code: "it" })
+                            append({ text: "日本語", code: "jp" })
+                            append({ text: "한국어", code: "ko" })
                             append({ text: "Nederlands", code: "nl" })
                             append({ text: "Português do Brasil", code: "ptbr" })
                             append({ text: "Русский", code: "ru" })
@@ -217,7 +221,11 @@ UM.PreferencesPage
                         id: themeList
 
                         Component.onCompleted: {
-                            append({ text: catalog.i18nc("@item:inlistbox", "Ultimaker"), code: "cura" })
+                            var themes = UM.Theme.getThemes()
+                            for (var i = 0; i < themes.length; i++)
+                            {
+                                append({ text: themes[i].name.toString(), code: themes[i].id.toString() });
+                            }
                         }
                     }
 
@@ -231,6 +239,7 @@ UM.PreferencesPage
                                 return i
                             }
                         }
+                        return 0;
                     }
                     onActivated: UM.Preferences.setValue("general/theme", model.get(index).code)
 
@@ -254,7 +263,7 @@ UM.PreferencesPage
 
 
 
-	        Label
+            Label
             {
                 id: languageCaption
 
@@ -322,7 +331,7 @@ UM.PreferencesPage
             UM.TooltipArea {
                 width: childrenRect.width;
                 height: childrenRect.height;
-                text: catalog.i18nc("@info:tooltip","Moves the camera so the model is in the center of the view when an model is selected")
+                text: catalog.i18nc("@info:tooltip","Moves the camera so the model is in the center of the view when a model is selected")
 
                 CheckBox
                 {
@@ -330,7 +339,6 @@ UM.PreferencesPage
                     text: catalog.i18nc("@action:button","Center camera when item is selected");
                     checked: boolCheck(UM.Preferences.getValue("view/center_on_select"))
                     onClicked: UM.Preferences.setValue("view/center_on_select",  checked)
-                    enabled: Qt.platform.os != "windows" // Hack: disable the feature on windows as it's broken for pyqt 5.7.1.
                 }
             }
 
@@ -345,6 +353,20 @@ UM.PreferencesPage
                     text: catalog.i18nc("@action:button","Invert the direction of camera zoom.");
                     checked: boolCheck(UM.Preferences.getValue("view/invert_zoom"))
                     onClicked: UM.Preferences.setValue("view/invert_zoom",  checked)
+                }
+            }
+
+            UM.TooltipArea {
+                width: childrenRect.width;
+                height: childrenRect.height;
+                text: catalog.i18nc("@info:tooltip", "Should zooming move in the direction of the mouse?")
+
+                CheckBox
+                {
+                    id: zoomToMouseCheckbox
+                    text: catalog.i18nc("@action:button", "Zoom toward mouse direction");
+                    checked: boolCheck(UM.Preferences.getValue("view/zoom_to_mouse"))
+                    onClicked: UM.Preferences.setValue("view/zoom_to_mouse", checked)
                 }
             }
 

@@ -11,6 +11,7 @@ import Cura 1.0 as Cura
 
 Item
 {
+    id: base
     width: {
         if (UM.LayerView.compatibilityMode) {
             return UM.Theme.getSize("layerview_menu_size_compatibility").width;
@@ -25,8 +26,12 @@ Item
             return UM.Theme.getSize("layerview_menu_size").height + UM.LayerView.extruderCount * (UM.Theme.getSize("layerview_row").height + UM.Theme.getSize("layerview_row_spacing").height)
         }
     }
+    property var buttonTarget: {
+        var force_binding = parent.y; // ensure this gets reevaluated when the panel moves
+        return base.mapFromItem(parent.parent, parent.buttonTarget.x, parent.buttonTarget.y);
+    }
 
-    Rectangle {
+    UM.PointingRectangle {
         id: layerViewMenu
         anchors.left: parent.left
         anchors.top: parent.top
@@ -34,6 +39,11 @@ Item
         height: parent.height
         z: slider.z - 1
         color: UM.Theme.getColor("tool_panel_background")
+        borderWidth: UM.Theme.getSize("default_lining").width
+        borderColor: UM.Theme.getColor("lining")
+
+        target: parent.buttonTarget
+        arrowSize: UM.Theme.getSize("default_arrow").width
 
         ColumnLayout {
             id: view_settings
@@ -43,7 +53,8 @@ Item
             property bool show_helpers: UM.Preferences.getValue("layerview/show_helpers")
             property bool show_skin: UM.Preferences.getValue("layerview/show_skin")
             property bool show_infill: UM.Preferences.getValue("layerview/show_infill")
-            property bool show_legend: UM.LayerView.compatibilityMode || UM.Preferences.getValue("layerview/layer_view_type") == 1
+            // if we are in compatibility mode, we only show the "line type"
+            property bool show_legend: UM.LayerView.compatibilityMode ? 1 : UM.Preferences.getValue("layerview/layer_view_type") == 1
             property bool only_show_top_layers: UM.Preferences.getValue("view/only_show_top_layers")
             property int top_layer_count: UM.Preferences.getValue("view/top_layer_count")
 
@@ -107,27 +118,23 @@ Item
                 visible: !UM.LayerView.compatibilityMode
                 style: UM.Theme.styles.combobox
 
-                property int layer_view_type: UM.Preferences.getValue("layerview/layer_view_type")
-                currentIndex: layer_view_type  // index matches type_id
-                onActivated: {
-                    // Combobox selection
-                    var type_id = index;
-                    UM.Preferences.setValue("layerview/layer_view_type", type_id);
-                    updateLegend(type_id);
-                }
-                onModelChanged: {
-                    updateLegend(UM.Preferences.getValue("layerview/layer_view_type"));
+                onActivated:
+                {
+                    UM.Preferences.setValue("layerview/layer_view_type", index);
                 }
 
-                // Update visibility of legend.
-                function updateLegend(type_id) {
-                    if (UM.LayerView.compatibilityMode || (type_id == 1)) {
-                        // Line type
-                        view_settings.show_legend = true;
-                    } else {
-                        view_settings.show_legend = false;
-                    }
+                Component.onCompleted:
+                {
+                    currentIndex = UM.LayerView.compatibilityMode ? 1 : UM.Preferences.getValue("layerview/layer_view_type");
+                    updateLegends(currentIndex);
                 }
+
+                function updateLegends(type_id)
+                {
+                    // update visibility of legends
+                    view_settings.show_legend = UM.LayerView.compatibilityMode || (type_id == 1);
+                }
+
             }
 
             Label
@@ -153,7 +160,8 @@ Item
                 target: UM.Preferences
                 onPreferenceChanged:
                 {
-                    layerTypeCombobox.layer_view_type = UM.Preferences.getValue("layerview/layer_view_type");
+                    layerTypeCombobox.currentIndex = UM.LayerView.compatibilityMode ? 1 : UM.Preferences.getValue("layerview/layer_view_type");
+                    layerTypeCombobox.updateLegends(layerTypeCombobox.currentIndex);
                     view_settings.extruder_opacities = UM.Preferences.getValue("layerview/extruder_opacities").split("|");
                     view_settings.show_travel_moves = UM.Preferences.getValue("layerview/show_travel_moves");
                     view_settings.show_helpers = UM.Preferences.getValue("layerview/show_helpers");
@@ -273,17 +281,18 @@ Item
                     {
                         typesLegenModelNoCheck.append({
                             label: catalog.i18nc("@label", "Top / Bottom"),
-                            colorId:  "layerview_skin"
+                            colorId: "layerview_skin",
                         });
                         typesLegenModelNoCheck.append({
                             label: catalog.i18nc("@label", "Inner Wall"),
-                            colorId:  "layerview_inset_x"
+                            colorId: "layerview_inset_x",
                         });
                     }
                 }
 
                 Label {
                     text: label
+                    visible: view_settings.show_legend
                     Rectangle {
                         anchors.verticalCenter: parent.verticalCenter
                         anchors.right: parent.right
@@ -523,26 +532,19 @@ Item
                 target: Qt.point(0, slider.activeHandle.y + slider.activeHandle.height / 2)
                 arrowSize: UM.Theme.getSize("default_arrow").width
 
-                height: (Math.floor(UM.Theme.getSize("slider_handle").height + UM.Theme.getSize("default_margin").height) / 2) * 2 // Make sure height has an integer middle so drawing a pointy border is easier
+                height: UM.Theme.getSize("slider_handle").height + UM.Theme.getSize("default_margin").height
                 width: valueLabel.width + UM.Theme.getSize("default_margin").width
                 Behavior on height { NumberAnimation { duration: 50; } }
 
-                color: UM.Theme.getColor("lining");
+                color: UM.Theme.getColor("tool_panel_background")
+                borderColor: UM.Theme.getColor("lining")
+                borderWidth: UM.Theme.getSize("default_lining").width
 
                 visible: slider.layersVisible
 
-                UM.PointingRectangle
+                MouseArea //Catch all mouse events (so scene doesnt handle them)
                 {
-                    color: UM.Theme.getColor("tool_panel_background")
-                    target: Qt.point(0, height / 2 + UM.Theme.getSize("default_lining").width)
-                    arrowSize: UM.Theme.getSize("default_arrow").width
                     anchors.fill: parent
-                    anchors.margins: UM.Theme.getSize("default_lining").width
-
-                    MouseArea //Catch all mouse events (so scene doesnt handle them)
-                    {
-                        anchors.fill: parent
-                    }
                 }
 
                 TextField
