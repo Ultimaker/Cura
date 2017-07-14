@@ -711,7 +711,8 @@
                             "type": "float",
                             "value": "line_width",
                             "limit_to_extruder": "topmost_skin_extruder_nr",
-                            "settable_per_mesh": true
+                            "settable_per_mesh": true,
+                            "enabled": "topmost_skin_layer_count > 0 and top_layers > 0"
                         },
                         "skin_line_width":
                         {
@@ -967,7 +968,8 @@
                     "type": "int",
                     "value": "0 if infill_sparse_density == 100 else 1",
                     "limit_to_extruder": "topmost_skin_extruder_nr",
-                    "settable_per_mesh": true
+                    "settable_per_mesh": true,
+                    "enabled": "top_layers > 0"
                 },
                 "topmost_skin_pattern":
                 {
@@ -982,7 +984,8 @@
                     },
                     "default_value": "lines",
                     "limit_to_extruder": "topmost_skin_extruder_nr",
-                    "settable_per_mesh": true
+                    "settable_per_mesh": true,
+                    "enabled": "topmost_skin_layer_count > 0 and top_layers > 0"
                 },
                 "top_bottom_extruder_nr":
                 {
@@ -2072,7 +2075,8 @@
                             "default_value": 25,
                             "value": "speed_print / 60 * 25",
                             "limit_to_extruder": "topmost_skin_extruder_nr",
-                            "settable_per_mesh": true
+                            "settable_per_mesh": true,
+                            "enabled": "topmost_skin_layer_count > 0 and top_layers > 0"
                         },
                         "speed_topbottom":
                         {
@@ -2425,7 +2429,7 @@
                             "maximum_value_warning": "10000",
                             "default_value": 3000,
                             "value": "acceleration_print",
-                            "enabled": "resolveOrValue('acceleration_enabled')",
+                            "enabled": "resolveOrValue('acceleration_enabled') and topmost_skin_layer_count > 0 and top_layers > 0",
                             "limit_to_extruder": "topmost_skin_extruder_nr",
                             "settable_per_mesh": true
                         },
@@ -2728,7 +2732,7 @@
                             "maximum_value_warning": "50",
                             "default_value": 20,
                             "value": "jerk_print",
-                            "enabled": "resolveOrValue('jerk_enabled')",
+                            "enabled": "resolveOrValue('jerk_enabled') and topmost_skin_layer_count > 0 and top_layers > 0",
                             "limit_to_extruder": "topmost_skin_extruder_nr",
                             "settable_per_mesh": true
                         },
