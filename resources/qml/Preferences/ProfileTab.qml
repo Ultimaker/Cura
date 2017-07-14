@@ -37,7 +37,7 @@ Tab
                     anchors.left: parent.left
                     anchors.leftMargin: UM.Theme.getSize("default_margin").width
                     anchors.right: parent.right
-                    text: styleData.value
+                    text: (styleData.value.substr(0,1) == "=") ? catalog.i18nc("@info:status", "Calculated") : styleData.value
                     font.strikeout: styleData.column == 1 && quality == Cura.MachineManager.globalQualityId && setting.user_value != ""
                     font.italic: setting.profile_value_source == "quality_changes" || (quality == Cura.MachineManager.globalQualityId && setting.user_value != "")
                     opacity: font.strikeout ? 0.5 : 1
