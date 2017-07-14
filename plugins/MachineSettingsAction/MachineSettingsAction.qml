@@ -70,7 +70,7 @@ Cura.MachineAction
             anchors.top: pageTitle.bottom
             anchors.topMargin: UM.Theme.getSize("default_margin").height
 
-            property real columnWidth: Math.floor((width - 3 * UM.Theme.getSize("default_margin").width) / 2)
+            property real columnWidth: ((width - 3 * UM.Theme.getSize("default_margin").width) / 2) | 0
 
             Tab
             {
