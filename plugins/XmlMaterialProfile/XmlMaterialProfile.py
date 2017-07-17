@@ -129,6 +129,8 @@ class XmlMaterialProfile(InstanceContainer):
         builder.start("metadata")
 
         metadata = copy.deepcopy(self.getMetaData())
+        # setting_version is derived from the "version" tag in the schema, so don't serialize it into a file
+        ignore_metadata_keys = ignore_metadata_keys + ["setting_version"]
         # remove the keys that we want to ignore in the metadata
         for key in ignore_metadata_keys:
             if key in metadata:
