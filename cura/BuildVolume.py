@@ -746,7 +746,12 @@ class BuildVolume(SceneNode):
                 #The build volume is defined as the union of the area that all extruders can reach, so we need to know the relative offset to all extruders.
                 for other_extruder in ExtruderManager.getInstance().getActiveExtruderStacks():
                     other_offset_x = other_extruder.getProperty("machine_nozzle_offset_x", "value")
-                    other_offset_y = -other_extruder.getProperty("machine_nozzle_offset_y", "value")
+                    if other_offset_x is None:
+                        other_offset_x = 0
+                    other_offset_y = other_extruder.getProperty("machine_nozzle_offset_y", "value")
+                    if other_offset_y is None:
+                        other_offset_y = 0
+                    other_offset_y = -other_offset_y
                     left_unreachable_border = min(left_unreachable_border, other_offset_x - offset_x)
                     right_unreachable_border = max(right_unreachable_border, other_offset_x - offset_x)
                     top_unreachable_border = min(top_unreachable_border, other_offset_y - offset_y)
