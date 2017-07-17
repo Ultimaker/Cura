@@ -24,6 +24,7 @@ from cura import LayerPolygon
 
 import numpy
 from time import time
+from cura.Settings.ExtrudersModel import ExtrudersModel
 catalog = i18nCatalog("cura")
 
 
@@ -174,7 +175,11 @@ class ProcessSlicedLayersJob(Job):
             material_color_map = numpy.zeros((len(extruders), 4), dtype=numpy.float32)
             for extruder in extruders:
                 position = int(extruder.getMetaDataEntry("position", default="0"))  # Get the position
-                color_code = extruder.material.getMetaDataEntry("color_code", default="#e0e000")
+                try:
+                    default_color = ExtrudersModel.defaultColors[position]
+                except KeyError:
+                    default_color = "#e0e000"
+                color_code = extruder.material.getMetaDataEntry("color_code", default=default_color)
                 color = colorCodeToRGBA(color_code)
                 material_color_map[position, :] = color
         else:
