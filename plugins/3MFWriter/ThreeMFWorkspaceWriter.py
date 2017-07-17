@@ -69,7 +69,7 @@ class ThreeMFWorkspaceWriter(WorkspaceWriter):
     #   \param archive The archive to write to.
     @staticmethod
     def _writeContainerToArchive(container, archive):
-        if type(container) == type(ContainerRegistry.getInstance().getEmptyInstanceContainer()):
+        if isinstance(container, type(ContainerRegistry.getInstance().getEmptyInstanceContainer())):
             return  # Empty file, do nothing.
 
         file_suffix = ContainerRegistry.getMimeTypeForContainer(type(container)).preferredSuffix
@@ -87,14 +87,9 @@ class ThreeMFWorkspaceWriter(WorkspaceWriter):
         file_in_archive = zipfile.ZipInfo(file_name)
         # For some reason we have to set the compress type of each file as well (it doesn't keep the type of the entire archive)
         file_in_archive.compress_type = zipfile.ZIP_DEFLATED
-        if type(container) == ContainerStack and (container.getMetaDataEntry("network_authentication_id") or container.getMetaDataEntry("network_authentication_key")):
-            # TODO: Hack
-            # Create a shallow copy of the container, so we can filter out the network auth (if any)
-            container_copy = copy.deepcopy(container)
-            container_copy.removeMetaDataEntry("network_authentication_id")
-            container_copy.removeMetaDataEntry("network_authentication_key")
-            serialized_data = container_copy.serialize()
-        else:
-            serialized_data = container.serialize()
+
+        # Do not include the network authentication keys
+        ignore_keys = ["network_authentication_id", "network_authentication_key"]
+        serialized_data = container.serialize(ignore_metadata_keys = ignore_keys)
 
         archive.writestr(file_in_archive, serialized_data)
