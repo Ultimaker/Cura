@@ -833,7 +833,8 @@
                             "unit": "%",
                             "default_value": 100.0,
                             "minimum_value": "0.001",
-                            "settable_per_mesh": true
+                            "settable_per_mesh": false,
+                            "settable_per_extruder": true
                         }
                     }
                 }
