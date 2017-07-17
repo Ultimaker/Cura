@@ -424,7 +424,7 @@ class XmlMaterialProfile(InstanceContainer):
         meta_data = {}
         meta_data["type"] = "material"
         meta_data["base_file"] = self.id
-        meta_data["status"] = "unknown"  # TODO: Add material verfication
+        meta_data["status"] = "unknown"  # TODO: Add material verification
 
         common_setting_values = {}
 
