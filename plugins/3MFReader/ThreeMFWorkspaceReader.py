@@ -305,9 +305,6 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         #               In this case, you can either create a new one, or safely override the existing one.
         #
         # Default values
-        for k, v in self._resolve_strategies.items():
-            if v is None:
-                self._resolve_strategies[k] = "new"
 
         return WorkspaceReader.PreReadResult.accepted
 
