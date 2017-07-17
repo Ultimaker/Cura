@@ -962,7 +962,7 @@
                 {
                     "label": "Roofing Layers",
                     "description": "The number of top most skin layers. Usually only one top most layer is sufficient to generate higher quality top surfaces.",
-                    "default_value": 1,
+                    "default_value": 0,
                     "minimum_value": "0",
                     "maximum_value_warning": "top_layers - 1",
                     "type": "int",
