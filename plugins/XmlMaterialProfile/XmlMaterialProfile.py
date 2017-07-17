@@ -433,10 +433,12 @@ class XmlMaterialProfile(InstanceContainer):
             inherited = self._resolveInheritance(inherits.text)
             data = self._mergeXML(inherited, data)
 
+        # set setting_version in metadata
         if "version" in data.attrib:
             meta_data["setting_version"] = self.xmlVersionToSettingVersion(data.attrib["version"])
         else:
             meta_data["setting_version"] = self.xmlVersionToSettingVersion("1.2") #1.2 and lower didn't have that version number there yet.
+
         metadata = data.iterfind("./um:metadata/*", self.__namespaces)
         for entry in metadata:
             tag_name = _tag_without_namespace(entry)
@@ -455,6 +457,11 @@ class XmlMaterialProfile(InstanceContainer):
                 meta_data["material"] = material.text
                 meta_data["color_name"] = color.text
                 continue
+
+            # setting_version is derived from the "version" tag in the schema earlier, so don't set it here
+            if tag_name == "setting_version":
+                continue
+
             meta_data[tag_name] = entry.text
 
             if tag_name in self.__material_metadata_setting_map:
