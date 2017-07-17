@@ -109,7 +109,7 @@ class XmlMaterialProfile(InstanceContainer):
     ##  Overridden from InstanceContainer
     # base file: common settings + supported machines
     # machine / variant combination: only changes for itself.
-    def serialize(self):
+    def serialize(self, ignore_metadata_keys=[]):
         registry = ContainerRegistry.getInstance()
 
         base_file = self.getMetaDataEntry("base_file", "")
@@ -129,6 +129,10 @@ class XmlMaterialProfile(InstanceContainer):
         builder.start("metadata")
 
         metadata = copy.deepcopy(self.getMetaData())
+        # remove the keys that we want to ignore in the metadata
+        for key in ignore_metadata_keys:
+            if key in metadata:
+                del metadata[key]
         properties = metadata.pop("properties", {})
 
         # Metadata properties that should not be serialized.
