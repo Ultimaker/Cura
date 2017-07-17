@@ -755,7 +755,7 @@ Cura.MachineAction
                 {
                     if(!activeFocus)
                     {
-                        propertyProvider.setPropertyValue("value", gcodeField.text)
+                        propertyProvider.setPropertyValue("value", gcodeArea.text)
                     }
                 }
                 Component.onCompleted:
