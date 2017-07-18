@@ -304,7 +304,7 @@
                     "options":
                     {
                         "RepRap (Marlin/Sprinter)": "Marlin",
-                        "RepRap (Volumatric)": "Marlin (Volumetric)",
+                        "RepRap (Volumetric)": "Marlin (Volumetric)",
                         "RepRap (RepRap)": "RepRap",
                         "UltiGCode": "Ultimaker 2",
                         "Griffin": "Griffin",
