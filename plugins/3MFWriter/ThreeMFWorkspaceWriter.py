@@ -90,6 +90,6 @@ class ThreeMFWorkspaceWriter(WorkspaceWriter):
 
         # Do not include the network authentication keys
         ignore_keys = ["network_authentication_id", "network_authentication_key"]
-        serialized_data = container.serialize(ignore_metadata_keys = ignore_keys)
+        serialized_data = container.serialize(ignored_metadata_keys = ignore_keys)
 
         archive.writestr(file_in_archive, serialized_data)
