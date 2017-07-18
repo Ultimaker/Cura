@@ -383,7 +383,7 @@ msgstr ""
 
 msgctxt "coasting_enable label"
 msgid "Enable Coasting"
-msgstr "Włącz (Coasting) "
+msgstr "Włącz (Coasting)"
 
 msgctxt "coasting_min_volume description"
 msgid ""
@@ -675,7 +675,7 @@ msgstr ""
 
 msgctxt "draft_shield_enabled label"
 msgid "Enable Draft Shield"
-msgstr "Aktywować przedniej szyby(Draft Shield)"
+msgstr "Aktywować przedniej szyby (Draft Shield)"
 
 msgctxt "draft_shield_height description"
 msgid ""
@@ -1137,7 +1137,7 @@ msgstr ""
 
 msgctxt "jerk_infill label"
 msgid "Infill Jerk"
-msgstr "Wypełnienie Funkcja szarpnięcie(jerk)"
+msgstr "Wypełnienie Funkcja szarpnięcie (jerk)"
 
 msgctxt "jerk_layer_0 description"
 msgid "The print maximum instantaneous velocity change for the initial layer."
@@ -1145,7 +1145,7 @@ msgstr "Maksymalna zmiana chwilowej prędkości dla pierwszej warstwy."
 
 msgctxt "jerk_layer_0 label"
 msgid "Initial Layer Jerk"
-msgstr "Funkcja szarpnięcie(jerk) pierwszej warstwie"
+msgstr "Funkcja szarpnięcie (jerk) pierwszej warstwie"
 
 msgctxt "jerk_prime_tower description"
 msgid ""
@@ -1207,7 +1207,7 @@ msgstr "Maksymalna szybkość zmiany chwilowej, z jaką są drukowane podłoża.
 
 msgctxt "jerk_support_bottom label"
 msgid "Support Floor Jerk"
-msgstr "Funkcja szarpnięcie(jerk) struktury podłoża"
+msgstr "Funkcja szarpnięcie (jerk) struktury podłoża"
 
 msgctxt "jerk_support_infill description"
 msgid ""
@@ -1219,7 +1219,7 @@ msgstr ""
 
 msgctxt "jerk_support_infill label"
 msgid "Support Infill Jerk"
-msgstr "Funkcja szarpnięcie(jerk) konstrukcja nośna wypełniania"
+msgstr "Funkcja szarpnięcie (jerk) konstrukcja nośna wypełniania"
 
 msgctxt "jerk_support_interface description"
 msgid ""
@@ -1231,7 +1231,7 @@ msgstr ""
 
 msgctxt "jerk_support_interface label"
 msgid "Support Interface Jerk"
-msgstr "Funkcja szarpnięcie(jerk) interfejs konstrukcja nośna"
+msgstr "Funkcja szarpnięcie (jerk) interfejs konstrukcja nośna"
 
 msgctxt "jerk_support_roof description"
 msgid ""
@@ -1243,7 +1243,7 @@ msgstr ""
 
 msgctxt "jerk_support_roof label"
 msgid "Support Roof Jerk"
-msgstr "Funkcja szarpnięcie(jerk) do konstrukcji dachu"
+msgstr "Funkcja szarpnięcie (jerk) do konstrukcji dachu"
 
 msgctxt "jerk_topbottom description"
 msgid ""
@@ -1254,7 +1254,7 @@ msgstr ""
 
 msgctxt "jerk_topbottom label"
 msgid "Top/Bottom Jerk"
-msgstr "Funkcja szarpnięcie(jerk) górnej / dolnej warstwy"
+msgstr "Funkcja szarpnięcie (jerk) górnej / dolnej warstwy"
 
 msgctxt "jerk_travel description"
 msgid ""
@@ -1282,7 +1282,7 @@ msgstr "Maksymalna różnica prędkości chwilowej z którego ściany są drukow
 
 msgctxt "jerk_wall label"
 msgid "Wall Jerk"
-msgstr "Funkcja szarpnięcie(jerk) ścianki"
+msgstr "Funkcja szarpnięcie (jerk) ścianki"
 
 msgctxt "jerk_wall_0 description"
 msgid ""
@@ -1294,7 +1294,7 @@ msgstr ""
 
 msgctxt "jerk_wall_0 label"
 msgid "Outer Wall Jerk"
-msgstr "Funkcja szarpnięcie(jerk) zewnątrz ścianki"
+msgstr "Funkcja szarpnięcie (jerk) zewnątrz ścianki"
 
 msgctxt "jerk_wall_x description"
 msgid ""
@@ -1306,7 +1306,7 @@ msgstr ""
 
 msgctxt "jerk_wall_x label"
 msgid "Inner Wall Jerk"
-msgstr "Funkcja szarpnięcie(jerk) wewnętrznej ściance"
+msgstr "Funkcja szarpnięcie (jerk) wewnętrznej ściance"
 
 msgctxt "layer_0_z_overlap description"
 msgid ""
@@ -1508,7 +1508,7 @@ msgstr "Urządzenie głowica wielokąta"
 
 msgctxt "machine_head_with_fans_polygon description"
 msgid "A 2D silhouette of the print head (fan caps included)."
-msgstr "2D kontur głowicy drukującej (CAPS wentylatora w zestawie)."
+msgstr "2D kontur głowicy drukującej (caps wentylatora w zestawie)."
 
 msgctxt "machine_head_with_fans_polygon label"
 msgid "Machine head & Fan polygon"
@@ -1608,7 +1608,7 @@ msgstr "Maksymalna prędkość Z"
 
 msgctxt "machine_max_jerk_e description"
 msgid "Default jerk for the motor of the filament."
-msgstr "Domyślny szarpnięcie dla silnika filamentu"
+msgstr "Domyślny szarpnięcie dla silnika filamentu."
 
 msgctxt "machine_max_jerk_e label"
 msgid "Default Filament Jerk"
@@ -1620,7 +1620,7 @@ msgstr "Domyślny szarpnięcie za ruch w płaszczyźnie poziomej."
 
 msgctxt "machine_max_jerk_xy label"
 msgid "Default X-Y Jerk"
-msgstr "Domyślna X Y Jerk"
+msgstr "Domyślna X-Y Jerk"
 
 msgctxt "machine_max_jerk_z description"
 msgid "Default jerk for the motor of the Z-direction."
@@ -2705,7 +2705,7 @@ msgstr "Funkcja jerk, z którym tratwa zostanie wydrukowany."
 
 msgctxt "raft_jerk label"
 msgid "Raft Print Jerk"
-msgstr "Funkcja szarpnięcie(jerk) Tratwa Drukuj"
+msgstr "Funkcja szarpnięcie (jerk) Tratwa Drukuj"
 
 msgctxt "raft_margin description"
 msgid ""
@@ -2747,11 +2747,11 @@ msgstr "Szybkość wentylatora górnej warstwy tratwy"
 
 msgctxt "raft_surface_jerk description"
 msgid "The jerk with which the top raft layers are printed."
-msgstr "Przyśpieszenie(jerk), z którym są drukowane górne warstwy tratwy."
+msgstr "Przyśpieszenie (jerk), z którym są drukowane górne warstwy tratwy."
 
 msgctxt "raft_surface_jerk label"
 msgid "Raft Top Print Jerk"
-msgstr "Góra tratwy przyśpieszenie (Jerk)"
+msgstr "Góra tratwy przyśpieszenie (jerk)"
 
 msgctxt "raft_surface_layers description"
 msgid ""
@@ -3124,7 +3124,7 @@ msgstr "Szerokość pojedynczej linii Skirt lub Brim"
 
 msgctxt "skirt_brim_line_width label"
 msgid "Skirt/Brim Line Width"
-msgstr "Skirt(Spódnica)-/Brim(rondo)-Szerokość linii"
+msgstr "Skirt- (spódnica) / Brim- (rondo) Szerokość linii"
 
 msgctxt "skirt_brim_minimal_length description"
 msgid ""
@@ -3377,7 +3377,7 @@ msgstr ""
 
 msgctxt "speed_support label"
 msgid "Support Speed"
-msgstr "Prędkość podpór."
+msgstr "Prędkość podpór"
 
 msgctxt "speed_support_bottom description"
 msgid ""
@@ -3441,7 +3441,7 @@ msgstr "Prędkość, w jakiej wykonywane są przemieszczenia."
 
 msgctxt "speed_travel label"
 msgid "Travel Speed"
-msgstr "Szybkość  przemieszczania."
+msgstr "Szybkość  przemieszczania"
 
 msgctxt "speed_travel_layer_0 description"
 msgid ""
