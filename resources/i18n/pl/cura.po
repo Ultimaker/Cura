@@ -3476,7 +3476,7 @@ msgstr "Włącz drukowanie obrysu lub tratwy. Spowoduje to dodanie płaskiej pow
 #: /home/ruben/Projects/Cura/resources/qml/SidebarSimple.qml:511
 msgctxt "@label"
 msgid "Need help improving your prints?<br>Read the <a href='%1'>Ultimaker Troubleshooting Guides</a>"
-msgstr "Potrzebujesz pomocy w ulepszaniu wydruków?<br>Przeczytać<a href='%1'>Instrukcje dotyczące rozwiązywania problemów z Ultimaker</a>"
+msgstr "Potrzebujesz pomocy w ulepszaniu wydruków?<br>Przeczytać <a href='%1'>Instrukcje dotyczące rozwiązywania problemów z Ultimaker</a>"
 
 #: /home/ruben/Projects/Cura/resources/qml/ExtruderButton.qml:16
 msgctxt "@label"
