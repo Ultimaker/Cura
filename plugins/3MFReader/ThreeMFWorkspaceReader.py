@@ -56,6 +56,9 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
 
         self._id_mapping = {}
 
+        # In Cura 2.5 and 2.6, the empty profiles used to have those long names
+        self._old_empty_profile_id_dict = {"empty_%s" % k: "empty" for k in ["material", "variant"]}
+
     ##  Get a unique name based on the old_id. This is different from directly calling the registry in that it caches results.
     #   This has nothing to do with speed, but with getting consistent new naming for instances & objects.
     def getNewId(self, old_id):
@@ -249,6 +252,11 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             # Check if there are any changes at all in any of the container stacks.
             id_list = self._getContainerIdListFromSerialized(serialized)
             for index, container_id in enumerate(id_list):
+                # take into account the old empty container IDs
+                container_id = self._old_empty_profile_id_dict.get(container_id, container_id)
+                # HACK: there used to be 5, now we have one more 5 - definition changes
+                if len(id_list) == 6 and index == 5:
+                    index = 6
                 if global_stack.getContainer(index).getId() != container_id:
                     machine_conflict = True
                     break
@@ -282,6 +290,11 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                 # check if there are any changes at all in any of the container stacks.
                 id_list = self._getContainerIdListFromSerialized(serialized)
                 for index, container_id in enumerate(id_list):
+                    # take into account the old empty container IDs
+                    container_id = self._old_empty_profile_id_dict.get(container_id, container_id)
+                    # HACK: there used to be 5, now we have one more 5 - definition changes
+                    if len(id_list) == 6 and index == 5:
+                        index = 6
                     if existing_extruder_stack.getContainer(index).getId() != container_id:
                         machine_conflict = True
                         break
