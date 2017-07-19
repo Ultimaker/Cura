@@ -3269,6 +3269,30 @@
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
+                "support_skip_some_zags":
+                {
+                    "label": "Skip Some ZigZags Connections",
+                    "description": "Skip some ZigZags connections to make the support structure easier to break.",
+                    "type": "bool",
+                    "default_value": false,
+                    "enabled": "support_enable and (support_pattern == 'zigzag')",
+                    "limit_to_extruder": "support_infill_extruder_nr",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
+                },
+                "support_zag_skip_count":
+                {
+                    "label": "ZigZag Connection Skip Count",
+                    "description": "Skip one in every N connection lines to make the support structure easier to break.",
+                    "type": "int",
+                    "default_value": 6,
+                    "minimum_value": "1",
+                    "minimum_value_warning": "3",
+                    "enabled": "support_enable and (support_pattern == 'zigzag') and support_skip_some_zags",
+                    "limit_to_extruder": "support_infill_extruder_nr",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
+                },
                 "support_infill_rate":
                 {
                     "label": "Support Density",
