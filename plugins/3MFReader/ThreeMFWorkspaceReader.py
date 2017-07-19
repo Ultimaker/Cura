@@ -241,17 +241,50 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         # To simplify this, only check if the global stack exists or not
         container_id = self._stripFileToId(global_stack_file)
         serialized = archive.open(global_stack_file).read().decode("utf-8")
-        if machine_name == "":
-            machine_name = self._getMachineNameFromSerializedStack(serialized)
+        machine_name = self._getMachineNameFromSerializedStack(serialized)
         stacks = self._container_registry.findContainerStacks(id = container_id)
         if stacks:
+            global_stack = stacks[0]
             containers_found_dict["machine"] = True
             # Check if there are any changes at all in any of the container stacks.
             id_list = self._getContainerIdListFromSerialized(serialized)
             for index, container_id in enumerate(id_list):
-                if stacks[0].getContainer(index).getId() != container_id:
+                if global_stack.getContainer(index).getId() != container_id:
                     machine_conflict = True
+                    break
         Job.yieldThread()
+
+        # if the global stack is found, we check if there are conflicts in the extruder stacks
+        if containers_found_dict["machine"] and not machine_conflict:
+            for extruder_stack_file in extruder_stack_files:
+                container_id = self._stripFileToId(extruder_stack_file)
+                serialized = archive.open(extruder_stack_file).read().decode("utf-8")
+                parser = configparser.ConfigParser()
+                parser.read_string(serialized)
+
+                # The check should be done for the extruder stack that's associated with the existing global stack,
+                # and those extruder stacks may have different IDs.
+                # So we check according to the positions
+
+                position = str(parser["metadata"]["position"])
+                if position not in global_stack.extruders:
+                    # The extruder position defined in the project doesn't exist in this global stack.
+                    # We can say that it is a machine conflict, but it is very hard to override the machine in this
+                    # case because we need to override the existing extruders and add the non-existing extruders.
+                    #
+                    # HACK:
+                    # To make this simple, we simply say that there is no machine conflict and create a new machine
+                    # by default.
+                    machine_conflict = False
+                    break
+
+                existing_extruder_stack = global_stack.extruders[position]
+                # check if there are any changes at all in any of the container stacks.
+                id_list = self._getContainerIdListFromSerialized(serialized)
+                for index, container_id in enumerate(id_list):
+                    if existing_extruder_stack.getContainer(index).getId() != container_id:
+                        machine_conflict = True
+                        break
 
         num_visible_settings = 0
         try:
