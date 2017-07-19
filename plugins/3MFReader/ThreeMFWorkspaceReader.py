@@ -129,6 +129,10 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         instance_container_list = []
         material_container_list = []
 
+        resolve_strategy_keys = ["machine", "material", "quality_changes"]
+        self._resolve_strategies = {k: None for k in resolve_strategy_keys}
+        containers_found_dict = {k: False for k in resolve_strategy_keys}
+
         #
         # Read definition containers
         #
@@ -176,8 +180,10 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                 container_id = self._stripFileToId(material_container_file)
                 materials = self._container_registry.findInstanceContainers(id=container_id)
                 material_labels.append(self._getMaterialLabelFromSerialized(archive.open(material_container_file).read().decode("utf-8")))
-                if materials and not materials[0].isReadOnly():  # Only non readonly materials can be in conflict
-                    material_conflict = True
+                if materials:
+                    containers_found_dict["material"] = True
+                    if not materials[0].isReadOnly():  # Only non readonly materials can be in conflict
+                        material_conflict = True
                 Job.yieldThread()
 
         # Check if any quality_changes instance container is in conflict.
@@ -205,6 +211,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                 # Check if quality changes already exists.
                 quality_changes = self._container_registry.findInstanceContainers(id = container_id)
                 if quality_changes:
+                    containers_found_dict["quality_changes"] = True
                     # Check if there really is a conflict by comparing the values
                     if quality_changes[0] != instance_container:
                         quality_changes_conflict = True
@@ -227,21 +234,24 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         # Load ContainerStack files and ExtruderStack files
         global_stack_file, extruder_stack_files = self._determineGlobalAndExtruderStackFiles(
             file_name, cura_file_names)
-        self._resolve_strategies = {"machine": None, "quality_changes": None, "material": None}
         machine_conflict = False
-        for container_stack_file in [global_stack_file] + extruder_stack_files:
-            container_id = self._stripFileToId(container_stack_file)
-            serialized = archive.open(container_stack_file).read().decode("utf-8")
-            if machine_name == "":
-                machine_name = self._getMachineNameFromSerializedStack(serialized)
-            stacks = self._container_registry.findContainerStacks(id = container_id)
-            if stacks:
-                # Check if there are any changes at all in any of the container stacks.
-                id_list = self._getContainerIdListFromSerialized(serialized)
-                for index, container_id in enumerate(id_list):
-                    if stacks[0].getContainer(index).getId() != container_id:
-                        machine_conflict = True
-            Job.yieldThread()
+        # Because there can be cases as follows:
+        #  - the global stack exists but some/all of the extruder stacks DON'T exist
+        #  - the global stack DOESN'T exist but some/all of the extruder stacks exist
+        # To simplify this, only check if the global stack exists or not
+        container_id = self._stripFileToId(global_stack_file)
+        serialized = archive.open(global_stack_file).read().decode("utf-8")
+        if machine_name == "":
+            machine_name = self._getMachineNameFromSerializedStack(serialized)
+        stacks = self._container_registry.findContainerStacks(id = container_id)
+        if stacks:
+            containers_found_dict["machine"] = True
+            # Check if there are any changes at all in any of the container stacks.
+            id_list = self._getContainerIdListFromSerialized(serialized)
+            for index, container_id in enumerate(id_list):
+                if stacks[0].getContainer(index).getId() != container_id:
+                    machine_conflict = True
+        Job.yieldThread()
 
         num_visible_settings = 0
         try:
@@ -301,10 +311,14 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         #  - new:       create a new container
         #  - override:  override the existing container
         #  - None:      There is no conflict, which means containers with the same IDs may or may not be there already.
-        #               If they are there, there is no conflict between the them.
-        #               In this case, you can either create a new one, or safely override the existing one.
+        #               If there is an existing container, there is no conflict between the them, and default to "override"
+        #               If there is no existing container, default to "new"
         #
         # Default values
+        for key, strategy in self._resolve_strategies.items():
+            if key not in containers_found_dict or strategy is not None:
+                continue
+            self._resolve_strategies[key] = "override" if containers_found_dict[key] else "new"
 
         return WorkspaceReader.PreReadResult.accepted
 
