@@ -582,47 +582,43 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         # --
         # load global stack file
         try:
-            # Check if a stack by this ID already exists;
-            container_stacks = self._container_registry.findContainerStacks(id = global_stack_id_original)
-            if container_stacks:
+            if self._resolve_strategies["machine"] == "override":
+                container_stacks = self._container_registry.findContainerStacks(id = global_stack_id_original)
                 stack = container_stacks[0]
 
-                if self._resolve_strategies["machine"] == "override":
-                    # TODO: HACK
-                    # There is a machine, check if it has authentication data. If so, keep that data.
-                    network_authentication_id = container_stacks[0].getMetaDataEntry("network_authentication_id")
-                    network_authentication_key = container_stacks[0].getMetaDataEntry("network_authentication_key")
-                    container_stacks[0].deserialize(archive.open(global_stack_file).read().decode("utf-8"))
-                    if network_authentication_id:
-                        container_stacks[0].addMetaDataEntry("network_authentication_id", network_authentication_id)
-                    if network_authentication_key:
-                        container_stacks[0].addMetaDataEntry("network_authentication_key", network_authentication_key)
-                elif self._resolve_strategies["machine"] == "new":
-                    stack = GlobalStack(global_stack_id_new)
-                    stack.deserialize(archive.open(global_stack_file).read().decode("utf-8"))
+                # HACK
+                # There is a machine, check if it has authentication data. If so, keep that data.
+                network_authentication_id = container_stacks[0].getMetaDataEntry("network_authentication_id")
+                network_authentication_key = container_stacks[0].getMetaDataEntry("network_authentication_key")
+                container_stacks[0].deserialize(archive.open(global_stack_file).read().decode("utf-8"))
+                if network_authentication_id:
+                    container_stacks[0].addMetaDataEntry("network_authentication_id", network_authentication_id)
+                if network_authentication_key:
+                    container_stacks[0].addMetaDataEntry("network_authentication_key", network_authentication_key)
 
-                    # Ensure a unique ID and name
-                    stack._id = global_stack_id_new
-
-                    # Extruder stacks are "bound" to a machine. If we add the machine as a new one, the id of the
-                    # bound machine also needs to change.
-                    if stack.getMetaDataEntry("machine", None):
-                        stack.setMetaDataEntry("machine", global_stack_id_new)
-
-                    # Only machines need a new name, stacks may be non-unique
-                    stack.setName(self._container_registry.uniqueName(stack.getName()))
-                    container_stacks_added.append(stack)
-                    self._container_registry.addContainer(stack)
-                else:
-                    Logger.log("w", "Resolve strategy of %s for machine is not supported", self._resolve_strategies["machine"])
-            else:
-                # no existing container stack, so we create a new one
+            elif self._resolve_strategies["machine"] == "new":
+                # create a new global stack
                 stack = GlobalStack(global_stack_id_new)
                 # Deserialize stack by converting read data from bytes to string
                 stack.deserialize(archive.open(global_stack_file).read().decode("utf-8"))
+
+                # Ensure a unique ID and name
+                stack._id = global_stack_id_new
+
+                # Extruder stacks are "bound" to a machine. If we add the machine as a new one, the id of the
+                # bound machine also needs to change.
+                if stack.getMetaDataEntry("machine", None):
+                    stack.setMetaDataEntry("machine", global_stack_id_new)
+
+                # Only machines need a new name, stacks may be non-unique
+                stack.setName(self._container_registry.uniqueName(stack.getName()))
+
                 container_stacks_added.append(stack)
                 self._container_registry.addContainer(stack)
                 containers_added.append(stack)
+            else:
+                Logger.log("e", "Resolve strategy of %s for machine is not supported",
+                           self._resolve_strategies["machine"])
 
             global_stack = stack
             Job.yieldThread()
@@ -636,73 +632,43 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         # --
         # load extruder stack files
         try:
-            for index, extruder_stack_file in enumerate(extruder_stack_files):
+            for extruder_stack_file in extruder_stack_files:
                 container_id = self._stripFileToId(extruder_stack_file)
                 extruder_file_content = archive.open(extruder_stack_file, "r").read().decode("utf-8")
 
-                container_stacks = self._container_registry.findContainerStacks(id = container_id)
-                if container_stacks:
-                    # this container stack already exists, try to resolve
+                if self._resolve_strategies["machine"] == "override":
+                    container_stacks = self._container_registry.findContainerStacks(id = container_id)
                     stack = container_stacks[0]
 
-                    if self._resolve_strategies["machine"] == "override":
-                        # NOTE: This is the same code as those in the lower part
-                        # deserialize new extruder stack over the current ones
-                        stack = self._overrideExtruderStack(global_stack, extruder_file_content)
+                    # deserialize new extruder stack over the current ones
+                    stack = self._overrideExtruderStack(global_stack, extruder_file_content)
 
-                    elif self._resolve_strategies["machine"] == "new":
-                        # create a new extruder stack from this one
-                        new_id = extruder_stack_id_map[container_id]
-                        stack = ExtruderStack(new_id)
+                elif self._resolve_strategies["machine"] == "new":
+                    new_id = extruder_stack_id_map[container_id]
+                    stack = ExtruderStack(new_id)
 
-                        # HACK: the global stack can have a new name, so we need to make sure that this extruder stack
-                        #       references to the new name instead of the old one. Normally, this can be done after
-                        #       deserialize() by setting the metadata, but in the case of ExtruderStack, deserialize()
-                        #       also does addExtruder() to its machine stack, so we have to make sure that it's pointing
-                        #       to the right machine BEFORE deserialization.
-                        extruder_config = configparser.ConfigParser()
-                        extruder_config.read_string(extruder_file_content)
-                        extruder_config.set("metadata", "machine", global_stack_id_new)
-                        tmp_string_io = io.StringIO()
-                        extruder_config.write(tmp_string_io)
-                        extruder_file_content = tmp_string_io.getvalue()
+                    # HACK: the global stack can have a new name, so we need to make sure that this extruder stack
+                    #       references to the new name instead of the old one. Normally, this can be done after
+                    #       deserialize() by setting the metadata, but in the case of ExtruderStack, deserialize()
+                    #       also does addExtruder() to its machine stack, so we have to make sure that it's pointing
+                    #       to the right machine BEFORE deserialization.
+                    extruder_config = configparser.ConfigParser()
+                    extruder_config.read_string(extruder_file_content)
+                    extruder_config.set("metadata", "machine", global_stack_id_new)
+                    tmp_string_io = io.StringIO()
+                    extruder_config.write(tmp_string_io)
+                    extruder_file_content = tmp_string_io.getvalue()
 
-                        stack.deserialize(extruder_file_content)
+                    stack.deserialize(extruder_file_content)
 
-                        # Ensure a unique ID and name
-                        stack._id = new_id
+                    # Ensure a unique ID and name
+                    stack._id = new_id
 
-                        self._container_registry.addContainer(stack)
-                        extruder_stacks_added.append(stack)
-                        containers_added.append(stack)
+                    self._container_registry.addContainer(stack)
+                    extruder_stacks_added.append(stack)
+                    containers_added.append(stack)
                 else:
-                    # No extruder stack with the same ID can be found
-                    if self._resolve_strategies["machine"] == "override":
-                        # deserialize new extruder stack over the current ones
-                        stack = self._overrideExtruderStack(global_stack, extruder_file_content)
-
-                    elif self._resolve_strategies["machine"] == "new":
-                        # container not found, create a new one
-                        stack = ExtruderStack(container_id)
-
-                        # HACK: the global stack can have a new name, so we need to make sure that this extruder stack
-                        #       references to the new name instead of the old one. Normally, this can be done after
-                        #       deserialize() by setting the metadata, but in the case of ExtruderStack, deserialize()
-                        #       also does addExtruder() to its machine stack, so we have to make sure that it's pointing
-                        #       to the right machine BEFORE deserialization.
-                        extruder_config = configparser.ConfigParser()
-                        extruder_config.read_string(extruder_file_content)
-                        extruder_config.set("metadata", "machine", global_stack_id_new)
-                        tmp_string_io = io.StringIO()
-                        extruder_config.write(tmp_string_io)
-                        extruder_file_content = tmp_string_io.getvalue()
-
-                        stack.deserialize(extruder_file_content)
-                        self._container_registry.addContainer(stack)
-                        extruder_stacks_added.append(stack)
-                        containers_added.append(stack)
-                    else:
-                        Logger.log("w", "Unknown resolve strategy: %s" % str(self._resolve_strategies["machine"]))
+                    Logger.log("w", "Unknown resolve strategy: %s", self._resolve_strategies["machine"])
 
                 extruder_stacks.append(stack)
         except:
