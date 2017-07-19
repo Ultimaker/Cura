@@ -683,9 +683,6 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                 extruder_file_content = archive.open(extruder_stack_file, "r").read().decode("utf-8")
 
                 if self._resolve_strategies["machine"] == "override":
-                    container_stacks = self._container_registry.findContainerStacks(id = container_id)
-                    stack = container_stacks[0]
-
                     # deserialize new extruder stack over the current ones
                     stack = self._overrideExtruderStack(global_stack, extruder_file_content)
 
