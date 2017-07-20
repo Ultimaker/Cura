@@ -193,7 +193,7 @@ Cura.MachineAction
                     wrapMode: Text.WordWrap
                     //: Tips label
                     //TODO: get actual link from webteam
-                    text: catalog.i18nc("@label", "If your printer is not listed, read the <a href='%1'>network-printing troubleshooting guide</a>").arg("https://ultimaker.com/en/troubleshooting");
+                    text: catalog.i18nc("@label", "If your printer is not listed, read the <a href='%1'>network printing troubleshooting guide</a>").arg("https://ultimaker.com/en/troubleshooting");
                     onLinkActivated: Qt.openUrlExternally(link)
                 }
 
