@@ -4303,11 +4303,11 @@ msgstr "Dolny/Górny Wzór"
 
 msgctxt "top_bottom_pattern option concentric"
 msgid "Concentric"
-msgstr "koncentryczny"
+msgstr "Koncentryczny"
 
 msgctxt "top_bottom_pattern option lines"
 msgid "Lines"
-msgstr "liniowy"
+msgstr "Liniowy"
 
 msgctxt "top_bottom_pattern option zigzag"
 msgid "Zig Zag"
