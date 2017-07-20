@@ -256,6 +256,9 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                 container_id = self._old_empty_profile_id_dict.get(container_id, container_id)
                 # HACK: there used to be 5, now we have one more 5 - definition changes
                 if len(id_list) == 6 and index == 5:
+                    if global_stack.getContainer(5).getId() != "empty":
+                        machine_conflict = True
+                        break
                     index = 6
                 if global_stack.getContainer(index).getId() != container_id:
                     machine_conflict = True
@@ -294,6 +297,9 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                     container_id = self._old_empty_profile_id_dict.get(container_id, container_id)
                     # HACK: there used to be 5, now we have one more 5 - definition changes
                     if len(id_list) == 6 and index == 5:
+                        if existing_extruder_stack.getContainer(5).getId() != "empty":
+                            machine_conflict = True
+                            break
                         index = 6
                     if existing_extruder_stack.getContainer(index).getId() != container_id:
                         machine_conflict = True
