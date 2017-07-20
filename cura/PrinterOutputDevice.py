@@ -144,7 +144,7 @@ class PrinterOutputDevice(QObject, OutputDevice):
         return self._control_item
 
     def _createControlViewFromQML(self):
-        path = QUrl.fromLocalFile(self._monitor_view_qml_path)
+        path = QUrl.fromLocalFile(self._control_view_qml_path)
 
         # Because of garbage collection we need to keep this referenced by python.
         self._control_component = QQmlComponent(Application.getInstance()._engine, path)
