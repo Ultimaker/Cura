@@ -426,7 +426,6 @@ class ExtruderManager(QObject):
         support_enabled = False
         support_bottom_enabled = False
         support_roof_enabled = False
-        support_interface_enable = False
         scene_root = Application.getInstance().getController().getScene().getRoot()
         meshes = [node for node in DepthFirstIterator(scene_root) if type(node) is SceneNode and node.isSelectable()] #Only use the nodes that will be printed.
         for mesh in meshes:
@@ -444,7 +443,6 @@ class ExtruderManager(QObject):
             support_enabled |= stack_to_use.getProperty("support_enable", "value")
             support_bottom_enabled |= stack_to_use.getProperty("support_bottom_enable", "value")
             support_roof_enabled |= stack_to_use.getProperty("support_roof_enable", "value")
-            support_interface_enable |= stack_to_use.getProperty("support_interface_enable", "value")
 
             # Check limit to extruders
             limit_to_extruder_feature_list = ["wall_extruder_nr",
@@ -476,8 +474,6 @@ class ExtruderManager(QObject):
                 used_extruder_stack_ids.add(self.extruderIds[str(global_stack.getProperty("support_bottom_extruder_nr", "value"))])
             if support_roof_enabled:
                 used_extruder_stack_ids.add(self.extruderIds[str(global_stack.getProperty("support_roof_extruder_nr", "value"))])
-            if support_interface_enable:
-                used_extruder_stack_ids.add(self.extruderIds[str(global_stack.getProperty("support_interface_enable", "value"))])
 
         #The platform adhesion extruder. Not used if using none.
         if global_stack.getProperty("adhesion_type", "value") != "none":
