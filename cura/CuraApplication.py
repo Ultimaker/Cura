@@ -348,6 +348,7 @@ class CuraApplication(QtApplication):
                 print_sequence
                 infill_mesh
                 cutting_mesh
+                support_mesh
             experimental
         """.replace("\n", ";").replace(" ", ""))
 
