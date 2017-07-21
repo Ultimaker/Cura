@@ -177,7 +177,7 @@ class ProcessSlicedLayersJob(Job):
                 position = int(extruder.getMetaDataEntry("position", default="0"))  # Get the position
                 try:
                     default_color = ExtrudersModel.defaultColors[position]
-                except KeyError:
+                except IndexError:
                     default_color = "#e0e000"
                 color_code = extruder.material.getMetaDataEntry("color_code", default=default_color)
                 color = colorCodeToRGBA(color_code)
