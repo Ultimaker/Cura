@@ -863,9 +863,11 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             container_list = container_string.split(",")
             container_ids = [container_id for container_id in container_list if container_id != ""]
 
-        if len(container_ids) == 5:
+        # HACK: there used to be 6 containers numbering from 0 to 5 in a stack,
+        #       now we have 7: index 5 becomes "definition_changes"
+        if len(container_ids) == 6:
             # Hack; We used to not save the definition changes. Fix this.
-            container_ids.insert(4, "empty")
+            container_ids.insert(5, "empty")
 
         return container_ids
 
