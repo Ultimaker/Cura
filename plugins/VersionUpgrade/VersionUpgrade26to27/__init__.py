@@ -53,7 +53,7 @@ def getMetaData():
             },
             "definition_changes": {
                 "get_version": upgrade.getCfgVersion,
-                "location": {"./machine_instances"}
+                "location": {"./definition_changes"}
             }
         }
     }
