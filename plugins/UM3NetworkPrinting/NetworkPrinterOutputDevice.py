@@ -179,7 +179,6 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
 
         self._compressing_print = False
         self._monitor_view_qml_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "MonitorItem.qml")
-
         printer_type = self._properties.get(b"machine", b"").decode("utf-8")
         if printer_type.startswith("9511"):
             self._updatePrinterType("ultimaker3_extended")
