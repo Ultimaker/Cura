@@ -881,5 +881,3 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         metadata = data.iterfind("./um:metadata/um:name/um:label", {"um": "http://www.ultimaker.com/material"})
         for entry in metadata:
             return entry.text
-        pass
-
