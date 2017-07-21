@@ -455,7 +455,7 @@ class ExtruderManager(QObject):
                                               ]
             wall_extruder_nr = None
             for extruder_nr_feature_name in limit_to_extruder_feature_list:
-                extruder_nr = global_stack.getProperty(extruder_nr_feature_name, "value")
+                extruder_nr = int(global_stack.getProperty(extruder_nr_feature_name, "value"))
                 if extruder_nr == -1:
                     # outer and inner wall extruder numbers should first inherit from the wall extruder number
                     if extruder_nr_feature_name in ["wall_0_extruder_nr", "wall_x_extruder_nr"]:
