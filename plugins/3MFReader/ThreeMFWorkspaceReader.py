@@ -254,9 +254,6 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             for index, container_id in enumerate(id_list):
                 # take into account the old empty container IDs
                 container_id = self._old_empty_profile_id_dict.get(container_id, container_id)
-                # HACK: there used to be 5, now we have one more 5 - definition changes
-                if len(id_list) == 6 and index == 5:
-                    index = 6
                 if global_stack.getContainer(index).getId() != container_id:
                     machine_conflict = True
                     break
@@ -292,9 +289,6 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                 for index, container_id in enumerate(id_list):
                     # take into account the old empty container IDs
                     container_id = self._old_empty_profile_id_dict.get(container_id, container_id)
-                    # HACK: there used to be 5, now we have one more 5 - definition changes
-                    if len(id_list) == 6 and index == 5:
-                        index = 6
                     if existing_extruder_stack.getContainer(index).getId() != container_id:
                         machine_conflict = True
                         break
@@ -868,6 +862,10 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             container_string = parser["general"].get("containers", "")
             container_list = container_string.split(",")
             container_ids = [container_id for container_id in container_list if container_id != ""]
+
+        if len(container_ids) == 5:
+            # Hack; We used to not save the definition changes. Fix this.
+            container_ids.insert(4, "empty")
 
         return container_ids
 
