@@ -157,19 +157,6 @@ Item {
             width: parent.width
             height: parent.height
 
-            UM.RecolorImage
-            {
-                id: timeIcon
-                anchors.right: timeSpecPerFeatureTooltipArea.left
-                anchors.rightMargin: UM.Theme.getSize("default_margin").width/2
-                anchors.verticalCenter: parent.verticalCenter
-                width: UM.Theme.getSize("save_button_specs_icons").width
-                height: UM.Theme.getSize("save_button_specs_icons").height
-                sourceSize.width: width
-                sourceSize.height: width
-                color: UM.Theme.getColor("text_subtext")
-                source: UM.Theme.getIcon("print_time")
-            }
             UM.TooltipArea
             {
                 id: timeSpecPerFeatureTooltipArea
@@ -205,10 +192,25 @@ Item {
                 anchors.rightMargin: UM.Theme.getSize("default_margin").width
                 anchors.verticalCenter: parent.verticalCenter
 
+                UM.RecolorImage
+                {
+                    id: timeIcon
+                    anchors.left: parent.left
+                    anchors.top: parent.top
+                    anchors.verticalCenter: parent.verticalCenter
+                    width: UM.Theme.getSize("save_button_specs_icons").width
+                    height: UM.Theme.getSize("save_button_specs_icons").height
+                    sourceSize.width: width
+                    sourceSize.height: width
+                    color: UM.Theme.getColor("text_subtext")
+                    source: UM.Theme.getIcon("print_time")
+                }
+
                 Text
                 {
                     id: timeSpec
-                    anchors.left: parent.left
+                    anchors.left: timeIcon.right
+                    anchors.leftMargin: UM.Theme.getSize("default_margin").width / 2
                     anchors.top: parent.top
                     font: UM.Theme.getFont("small")
                     color: UM.Theme.getColor("text_subtext")

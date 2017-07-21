@@ -254,12 +254,6 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             for index, container_id in enumerate(id_list):
                 # take into account the old empty container IDs
                 container_id = self._old_empty_profile_id_dict.get(container_id, container_id)
-                # HACK: there used to be 5, now we have one more 5 - definition changes
-                if len(id_list) == 6 and index == 5:
-                    if global_stack.getContainer(5).getId() != "empty":
-                        machine_conflict = True
-                        break
-                    index = 6
                 if global_stack.getContainer(index).getId() != container_id:
                     machine_conflict = True
                     break
@@ -295,12 +289,6 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                 for index, container_id in enumerate(id_list):
                     # take into account the old empty container IDs
                     container_id = self._old_empty_profile_id_dict.get(container_id, container_id)
-                    # HACK: there used to be 5, now we have one more 5 - definition changes
-                    if len(id_list) == 6 and index == 5:
-                        if existing_extruder_stack.getContainer(5).getId() != "empty":
-                            machine_conflict = True
-                            break
-                        index = 6
                     if existing_extruder_stack.getContainer(index).getId() != container_id:
                         machine_conflict = True
                         break
@@ -875,6 +863,12 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             container_list = container_string.split(",")
             container_ids = [container_id for container_id in container_list if container_id != ""]
 
+        # HACK: there used to be 6 containers numbering from 0 to 5 in a stack,
+        #       now we have 7: index 5 becomes "definition_changes"
+        if len(container_ids) == 6:
+            # Hack; We used to not save the definition changes. Fix this.
+            container_ids.insert(5, "empty")
+
         return container_ids
 
     def _getMachineNameFromSerializedStack(self, serialized):
@@ -887,5 +881,3 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         metadata = data.iterfind("./um:metadata/um:name/um:label", {"um": "http://www.ultimaker.com/material"})
         for entry in metadata:
             return entry.text
-        pass
-

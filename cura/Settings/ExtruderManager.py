@@ -434,19 +434,39 @@ class ExtruderManager(QObject):
                 extruder_stack_id = self.extruderIds["0"]
             used_extruder_stack_ids.add(extruder_stack_id)
 
-            #Get whether any of them use support.
-            per_mesh_stack = mesh.callDecoration("getStack")
-            if per_mesh_stack:
-                support_enabled |= per_mesh_stack.getProperty("support_enable", "value")
-                support_bottom_enabled |= per_mesh_stack.getProperty("support_bottom_enable", "value")
-                support_roof_enabled |= per_mesh_stack.getProperty("support_roof_enable", "value")
-            else: #Take the setting from the build extruder stack.
-                extruder_stack = container_registry.findContainerStacks(id = extruder_stack_id)[0]
-                support_enabled |= extruder_stack.getProperty("support_enable", "value")
-                support_bottom_enabled |= extruder_stack.getProperty("support_bottom_enable", "value")
-                support_roof_enabled |= extruder_stack.getProperty("support_roof_enable", "value")
+            # Get whether any of them use support.
+            stack_to_use = mesh.callDecoration("getStack")  # if there is a per-mesh stack, we use it
+            if not stack_to_use:
+                # if there is no per-mesh stack, we use the build extruder for this mesh
+                stack_to_use = container_registry.findContainerStacks(id = extruder_stack_id)[0]
 
-        #The support extruders.
+            support_enabled |= stack_to_use.getProperty("support_enable", "value")
+            support_bottom_enabled |= stack_to_use.getProperty("support_bottom_enable", "value")
+            support_roof_enabled |= stack_to_use.getProperty("support_roof_enable", "value")
+
+            # Check limit to extruders
+            limit_to_extruder_feature_list = ["wall_extruder_nr",
+                                              "wall_0_extruder_nr",
+                                              "wall_x_extruder_nr",
+                                              "top_bottom_extruder_nr",
+                                              "infill_extruder_nr",
+                                              ]
+            wall_extruder_nr = None
+            for extruder_nr_feature_name in limit_to_extruder_feature_list:
+                extruder_nr = int(global_stack.getProperty(extruder_nr_feature_name, "value"))
+                if extruder_nr == -1:
+                    # outer and inner wall extruder numbers should first inherit from the wall extruder number
+                    if extruder_nr_feature_name in ["wall_0_extruder_nr", "wall_x_extruder_nr"]:
+                        extruder_nr = wall_extruder_nr
+                    else:
+                        extruder_nr = 0
+
+                used_extruder_stack_ids.add(self.extruderIds[str(extruder_nr)])
+
+                if extruder_nr_feature_name == "wall_extruder_nr":
+                    wall_extruder_nr = extruder_nr
+
+        # Check support extruders
         if support_enabled:
             used_extruder_stack_ids.add(self.extruderIds[str(global_stack.getProperty("support_infill_extruder_nr", "value"))])
             used_extruder_stack_ids.add(self.extruderIds[str(global_stack.getProperty("support_extruder_nr_layer_0", "value"))])
