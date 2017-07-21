@@ -324,6 +324,7 @@ class CuraApplication(QtApplication):
                 jerk_print
                 jerk_travel
             travel
+                force_first
             cooling
                 cool_fan_enabled
             support

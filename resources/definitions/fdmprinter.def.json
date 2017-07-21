@@ -2929,6 +2929,17 @@
                     "settable_per_extruder": true,
                     "settable_per_meshgroup": true
                 },
+                "force_first":
+                {
+                    "label": "Start Layer with this Mesh",
+                    "description": "Start each layer by printing this model rather than other models. In multi-extrusion this model will be printed first when we switch to the extruder with which this model is printed. This setting doesn't affect when we switch to a different extruder.",
+                    "type": "bool",
+                    "default_value": false,
+                    "settable_per_mesh": true,
+                    "settable_per_extruder": false,
+                    "settable_per_meshgroup": false,
+                    "settable_globally": false
+                },
                 "retraction_hop_enabled": {
                     "label": "Z Hop When Retracted",
                     "description": "Whenever a retraction is done, the build plate is lowered to create clearance between the nozzle and the print. It prevents the nozzle from hitting the print during travel moves, reducing the chance to knock the print from the build plate.",
