@@ -313,15 +313,16 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         return True
 
     def _stopCamera(self):
-        self._camera_timer.stop()
-        if self._image_reply:
-            try:
-                self._image_reply.abort()
-                self._image_reply.downloadProgress.disconnect(self._onStreamDownloadProgress)
-            except RuntimeError:
-                pass  # It can happen that the wrapped c++ object is already deleted.
-            self._image_reply = None
-            self._image_request = None
+        if self._camera_timer.isActive():
+            self._camera_timer.stop()
+            if self._image_reply:
+                try:
+                    self._image_reply.abort()
+                    self._image_reply.downloadProgress.disconnect(self._onStreamDownloadProgress)
+                except RuntimeError:
+                    pass  # It can happen that the wrapped c++ object is already deleted.
+                self._image_reply = None
+                self._image_request = None
 
     def _startCamera(self):
         if self._use_stream:
