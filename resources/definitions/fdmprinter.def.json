@@ -3472,7 +3472,7 @@
                     "description": "The height of support infill of a given density before switching to half the density.",
                     "unit": "mm",
                     "type": "float",
-                    "default_value": 1.5,
+                    "default_value": 1,
                     "minimum_value": "0.0001",
                     "minimum_value_warning": "3 * resolveOrValue('layer_height')",
                     "enabled": "support_enable and support_infill_rate > 0 and gradual_support_infill_steps > 0",
