@@ -104,6 +104,11 @@ class VersionUpgrade26to27(VersionUpgrade):
             parser["metadata"] = {}
         parser["metadata"]["setting_version"] = "2"
 
+        #Renamed setting value for g-code flavour.
+        if "values" in parser and "machine_gcode_flavor" in parser["values"]:
+            if parser["values"]["machine_gcode_flavor"] == "RepRap (Volumatric)":
+                parser["values"]["machine_gcode_flavor"] = "RepRap (Volumetric)"
+
         # Re-serialise the file.
         output = io.StringIO()
         parser.write(output)
