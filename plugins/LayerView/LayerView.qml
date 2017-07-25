@@ -142,6 +142,7 @@ Item
                 id: compatibilityModeLabel
                 anchors.left: parent.left
                 text: catalog.i18nc("@label","Compatibility Mode")
+                color: UM.Theme.getColor("text")
                 visible: UM.LayerView.compatibilityMode
                 Layout.fillWidth: true
                 Layout.preferredHeight: UM.Theme.getSize("layerview_row").height
