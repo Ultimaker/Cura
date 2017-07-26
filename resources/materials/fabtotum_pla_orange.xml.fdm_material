@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<fdmmaterial xmlns="http://www.ultimaker.com/material">
+  <metadata>
+    <name>
+      <brand>FABtotum</brand>
+      <material>PLA</material>
+      <color>Solid Orange</color>
+    </name>
+    <color_code>#ff5500</color_code>
+	<description>FABtotum PLA orange profile.</description>
+    <adhesion_info>Recommended nozzle temperature: 190...200C, bed temperature: 40...50C, layer fan: on, adhesion type: skirt.</adhesion_info>
+  </metadata>
+  <properties>
+    <diameter>1.75</diameter>
+    <density>1.24</density>
+  </properties>
+  <settings>
+    <setting key="print temperature">200.0</setting>
+    <setting key="heated bed temperature">40.0</setting>
+  </settings>
+</fdmmaterial>

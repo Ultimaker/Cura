@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<fdmmaterial xmlns="http://www.ultimaker.com/material">
+  <metadata>
+    <name>
+      <brand>FABtotum</brand>
+      <material>ABS</material>
+      <color>Carbon Black</color>
+    </name>
+    <color_code>#000000</color_code>
+	<description>FABtotum ABS black profile.</description>
+    <adhesion_info>Recommended nozzle temperature: 250...260C, bed temperature: 90...100C, layer fan: off...50%, adhesion type: raft.</adhesion_info>
+  </metadata>
+  <properties>
+    <density>1.1</density>
+    <diameter>1.75</diameter>
+  </properties>
+  <settings>
+    <setting key="print temperature">250.0</setting>
+    <setting key="heated bed temperature">95.0</setting>
+  </settings>
+</fdmmaterial>

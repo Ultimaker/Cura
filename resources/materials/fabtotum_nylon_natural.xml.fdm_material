@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<fdmmaterial xmlns="http://www.ultimaker.com/material">
+  <metadata>
+    <name>
+      <brand>FABtotum</brand>
+      <material>Nylon</material>
+      <color>Natural</color>
+    </name>
+    <color_code>#d0d0d0</color_code>
+	<description>FABtotum Nylon transparent profile.</description>
+    <adhesion_info>Recommended nozzle temperature: 250...260C, bed temperature: 80...90C, layer fan: off, adhesion type: raft.</adhesion_info>
+  </metadata>
+  <properties>
+    <density>1.14</density>
+    <diameter>1.75</diameter>
+  </properties>
+  <settings>
+    <setting key="print temperature">255.0</setting>
+    <setting key="heated bed temperature">90.0</setting>
+  </settings>
+</fdmmaterial>
