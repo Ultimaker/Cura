@@ -95,12 +95,12 @@ UM.Dialog
                 Label
                 {
                     text: catalog.i18nc("@action:label", "Type")
-                    width: parent.width / 3
+                    width: (parent.width / 3) | 0
                 }
                 Label
                 {
                     text: Cura.MachineManager.activeDefinitionName
-                    width: parent.width / 3
+                    width: (parent.width / 3) | 0
                 }
             }
             Row
@@ -110,12 +110,12 @@ UM.Dialog
                 Label
                 {
                     text: catalog.i18nc("@action:label", "Name")
-                    width: parent.width / 3
+                    width: (parent.width / 3) | 0
                 }
                 Label
                 {
                     text: Cura.MachineManager.activeMachineName
-                    width: parent.width / 3
+                    width: (parent.width / 3) | 0
                 }
             }
 
@@ -142,12 +142,12 @@ UM.Dialog
                         Label
                         {
                             text: catalog.i18nc("@action:label", "%1 & material").arg(Cura.MachineManager.activeDefinitionVariantsName)
-                            width: parent.width / 3
+                            width: (parent.width / 3) | 0
                         }
                         Label
                         {
                             text: Cura.MachineManager.activeVariantNames[index] + ", " + modelData
-                            width: parent.width / 3
+                            width: (parent.width / 3) | 0
                         }
                     }
                 }
@@ -170,12 +170,12 @@ UM.Dialog
                 Label
                 {
                     text: catalog.i18nc("@action:label", "Not in profile")
-                    width: parent.width / 3
+                    width: (parent.width / 3) | 0
                 }
                 Label
                 {
                     text: catalog.i18ncp("@action:label", "%1 override", "%1 overrides", Cura.MachineManager.numUserSettings).arg(Cura.MachineManager.numUserSettings)
-                    width: parent.width / 3
+                    width: (parent.width / 3) | 0
                 }
                 visible: Cura.MachineManager.numUserSettings
             }
@@ -186,12 +186,12 @@ UM.Dialog
                 Label
                 {
                     text: catalog.i18nc("@action:label", "Name")
-                    width: parent.width / 3
+                    width: (parent.width / 3) | 0
                 }
                 Label
                 {
                     text: Cura.MachineManager.activeQualityName
-                    width: parent.width / 3
+                    width: (parent.width / 3) | 0
                 }
 
             }
@@ -214,12 +214,12 @@ UM.Dialog
                 Label
                 {
                     text: catalog.i18nc("@action:label", "Visible settings:")
-                    width: parent.width / 3
+                    width: (parent.width / 3) | 0
                 }
                 Label
                 {
                     text: catalog.i18nc("@action:label", "%1 out of %2" ).arg(definitionsModel.visibleCount).arg(Cura.MachineManager.totalNumberOfSettings)
-                    width: parent.width / 3
+                    width: (parent.width / 3) | 0
                 }
             }
 

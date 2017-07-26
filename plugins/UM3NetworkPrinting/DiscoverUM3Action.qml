@@ -114,7 +114,7 @@ Cura.MachineAction
 
             Column
             {
-                width: parent.width * 0.5
+                width: (parent.width * 0.5) | 0
                 spacing: UM.Theme.getSize("default_margin").height
 
                 ScrollView
@@ -200,7 +200,7 @@ Cura.MachineAction
             }
             Column
             {
-                width: parent.width * 0.5
+                width: (parent.width * 0.5) | 0
                 visible: base.selectedPrinter ? true : false
                 spacing: UM.Theme.getSize("default_margin").height
                 Label
@@ -218,13 +218,13 @@ Cura.MachineAction
                     columns: 2
                     Label
                     {
-                        width: parent.width * 0.5
+                        width: (parent.width * 0.5) | 0
                         wrapMode: Text.WordWrap
                         text: catalog.i18nc("@label", "Type")
                     }
                     Label
                     {
-                        width: parent.width * 0.5
+                        width: (parent.width * 0.5) | 0
                         wrapMode: Text.WordWrap
                         text:
                         {
@@ -249,25 +249,25 @@ Cura.MachineAction
                     }
                     Label
                     {
-                        width: parent.width * 0.5
+                        width: (parent.width * 0.5) | 0
                         wrapMode: Text.WordWrap
                         text: catalog.i18nc("@label", "Firmware version")
                     }
                     Label
                     {
-                        width: parent.width * 0.5
+                        width: (parent.width * 0.5) | 0
                         wrapMode: Text.WordWrap
                         text: base.selectedPrinter ? base.selectedPrinter.firmwareVersion : ""
                     }
                     Label
                     {
-                        width: parent.width * 0.5
+                        width: (parent.width * 0.5) | 0
                         wrapMode: Text.WordWrap
                         text: catalog.i18nc("@label", "Address")
                     }
                     Label
                     {
-                        width: parent.width * 0.5
+                        width: (parent.width * 0.5) | 0
                         wrapMode: Text.WordWrap
                         text: base.selectedPrinter ? base.selectedPrinter.ipAddress : ""
                     }
