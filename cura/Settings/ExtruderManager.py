@@ -448,6 +448,7 @@ class ExtruderManager(QObject):
             limit_to_extruder_feature_list = ["wall_extruder_nr",
                                               "wall_0_extruder_nr",
                                               "wall_x_extruder_nr",
+                                              "roofing_extruder_nr",
                                               "top_bottom_extruder_nr",
                                               "infill_extruder_nr",
                                               ]
