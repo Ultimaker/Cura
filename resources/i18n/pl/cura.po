@@ -277,7 +277,6 @@ msgid "Failed to eject {0}. Another program may be using the drive."
 msgstr "Nie można wysunąć {0}. Inny program może używać dysku."
 
 #: /home/ruben/Projects/Cura/plugins/RemovableDriveOutputDevice/__init__.py:12
-#, fuzzy
 msgctxt "@label"
 msgid "Removable Drive Output Device Plugin"
 msgstr "Usuwana wtyczka urządzenia wyjściowego napędu"
@@ -516,7 +515,6 @@ msgid "Post Processing"
 msgstr "Przetwarzanie "
 
 #: /home/ruben/Projects/Cura/plugins/PostProcessingPlugin/__init__.py:16
-#, fuzzy
 msgctxt "Description of plugin"
 msgid "Extension that allows for user created scripts for post processing"
 msgstr "Rozszerzenie, które pozwala tworzyć skrypty dla użytkowników po przetworzeniu"
@@ -810,7 +808,6 @@ msgid "Make sure the g-code is suitable for your printer and printer configurati
 msgstr "Przed wysłaniem pliku upewnij się, że G-code jest odpowiedni do konfiguracji drukarki. Przedstawienie G-kodu może nie być dokładne."
 
 #: /home/ruben/Projects/Cura/plugins/CuraProfileWriter/__init__.py:12
-#, fuzzy
 msgctxt "@label"
 msgid "Cura Profile Writer"
 msgstr "Pisarz Profili Cura"
@@ -833,7 +830,6 @@ msgid "3MF Writer"
 msgstr "3MF Writer"
 
 #: /home/ruben/Projects/Cura/plugins/3MFWriter/__init__.py:22
-#, fuzzy
 msgctxt "@info:whatsthis"
 msgid "Provides support for writing 3MF files."
 msgstr "Zapewnia obsługę pisania plików 3MF."
@@ -2709,7 +2705,6 @@ msgid "Programming language"
 msgstr "Język programowania"
 
 #: /home/ruben/Projects/Cura/resources/qml/AboutDialog.qml:124
-#, fuzzy
 msgctxt "@label"
 msgid "GUI framework"
 msgstr "Framework GUI"
