@@ -824,7 +824,6 @@ msgid "Cura Profile"
 msgstr "Profile Cura"
 
 #: /home/ruben/Projects/Cura/plugins/3MFWriter/__init__.py:19
-#, fuzzy
 msgctxt "@label"
 msgid "3MF Writer"
 msgstr "3MF Writer"
@@ -2710,16 +2709,14 @@ msgid "GUI framework"
 msgstr "Framework GUI"
 
 #: /home/ruben/Projects/Cura/resources/qml/AboutDialog.qml:125
-#, fuzzy
 msgctxt "@label"
 msgid "GUI framework bindings"
-msgstr "GUI framework bindings"
+msgstr "Powiązania Frameworka GUI"
 
 #: /home/ruben/Projects/Cura/resources/qml/AboutDialog.qml:126
-#, fuzzy
 msgctxt "@label"
 msgid "C/C++ Binding library"
-msgstr "C/C++ Binding library"
+msgstr "Biblioteka Powiązań C/C++"
 
 #: /home/ruben/Projects/Cura/resources/qml/AboutDialog.qml:127
 msgctxt "@label"
@@ -2752,16 +2749,14 @@ msgid "Serial communication library"
 msgstr "Biblioteka komunikacji szeregowej"
 
 #: /home/ruben/Projects/Cura/resources/qml/AboutDialog.qml:133
-#, fuzzy
 msgctxt "@label"
 msgid "ZeroConf discovery library"
-msgstr "ZeroConf discovery library"
+msgstr "Bilbiotek poszukująca Zeroconf"
 
 #: /home/ruben/Projects/Cura/resources/qml/AboutDialog.qml:134
-#, fuzzy
 msgctxt "@label"
 msgid "Polygon clipping library"
-msgstr "Polygon clipping library"
+msgstr "Biblioteka edytująca pola"
 
 #: /home/ruben/Projects/Cura/resources/qml/AboutDialog.qml:136
 msgctxt "@label"
@@ -2830,10 +2825,9 @@ msgid "This setting is always shared between all extruders. Changing it here wil
 msgstr "To ustawienie jest zawsze dzielone między wszystkie ekstrudery. Zmiana jego wartości tutaj spowoduje  zmianę dla wszystkich ekstruderów"
 
 #: /home/ruben/Projects/Cura/resources/qml/Settings/SettingItem.qml:158
-#, fuzzy
 msgctxt "@label"
 msgid "The value is resolved from per-extruder values "
-msgstr "The value is resolved from per-extruder values "
+msgstr "Wartość jest pobierana z osobna dla każdego ekstrudera "
 
 #: /home/ruben/Projects/Cura/resources/qml/Settings/SettingItem.qml:184
 msgctxt "@label"
