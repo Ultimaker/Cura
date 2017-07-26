@@ -76,14 +76,8 @@ class CuraEngineBackend(QObject, Backend):
         self._scene = Application.getInstance().getController().getScene()
         self._scene.sceneChanged.connect(self._onSceneChanged)
 
-        # Triggers for when to (re)start slicing:
-        self._global_container_stack = None
-        Application.getInstance().globalContainerStackChanged.connect(self._onGlobalStackChanged)
-        self._onGlobalStackChanged()
-
-        self._active_extruder_stack = None
-        ExtruderManager.getInstance().activeExtruderChanged.connect(self._onActiveExtruderChanged)
-        self._onActiveExtruderChanged()
+        # trigger auto-slicing on error check finished
+        Application.getInstance().getMachineManager().stacksValidationFinished.connect(self._onStackErrorCheckFinished)
 
         # Listeners for receiving messages from the back-end.
         self._message_handlers["cura.proto.Layer"] = self._onLayerMessage
@@ -277,16 +271,17 @@ class CuraEngineBackend(QObject, Backend):
             return
 
         if job.getResult() == StartSliceJob.StartJobResult.SettingError:
+            global_container_stack = Application.getInstance().getGlobalContainerStack()
             if Application.getInstance().platformActivity:
-                extruders = list(ExtruderManager.getInstance().getMachineExtruders(self._global_container_stack.getId()))
+                extruders = list(ExtruderManager.getInstance().getMachineExtruders(global_container_stack.getId()))
                 error_keys = []
                 for extruder in extruders:
                     error_keys.extend(extruder.getErrorKeys())
                 if not extruders:
-                    error_keys = self._global_container_stack.getErrorKeys()
+                    error_keys = global_container_stack.getErrorKeys()
                 error_labels = set()
                 for key in error_keys:
-                    for stack in [self._global_container_stack] + extruders: #Search all container stacks for the definition of this setting. Some are only in an extruder stack.
+                    for stack in [global_container_stack] + extruders: #Search all container stacks for the definition of this setting. Some are only in an extruder stack.
                         definitions = stack.getBottom().findDefinitions(key = key)
                         if definitions:
                             break #Found it! No need to continue search.
@@ -425,14 +420,9 @@ class CuraEngineBackend(QObject, Backend):
             # With manually having to slice, we want to clear the old invalid layer data.
             self._clearLayerData()
 
-    ##  A setting has changed, so check if we must reslice.
-    #
-    #   \param instance The setting instance that has changed.
-    #   \param property The property of the setting instance that has changed.
-    def _onSettingChanged(self, instance, property):
-        if property == "value": # Only reslice if the value has changed.
-            self.needsSlicing()
-            self._onChanged()
+    def _onStackErrorCheckFinished(self):
+        self.needsSlicing()
+        self._onChanged()
 
     ##  Called when a sliced layer data message is received from the engine.
     #
@@ -584,43 +574,6 @@ class CuraEngineBackend(QObject, Backend):
             if self._process:
                 Logger.log("d", "Backend quit with return code %s. Resetting process and socket.", self._process.wait())
                 self._process = None
-
-    ##  Called when the global container stack changes
-    def _onGlobalStackChanged(self):
-        if self._global_container_stack:
-            self._global_container_stack.propertyChanged.disconnect(self._onSettingChanged)
-            self._global_container_stack.containersChanged.disconnect(self._onChanged)
-            extruders = list(ExtruderManager.getInstance().getMachineExtruders(self._global_container_stack.getId()))
-            if extruders:
-                for extruder in extruders:
-                    extruder.propertyChanged.disconnect(self._onSettingChanged)
-
-        self._global_container_stack = Application.getInstance().getGlobalContainerStack()
-
-        if self._global_container_stack:
-            self._global_container_stack.propertyChanged.connect(self._onSettingChanged)  # Note: Only starts slicing when the value changed.
-            self._global_container_stack.containersChanged.connect(self._onChanged)
-            extruders = list(ExtruderManager.getInstance().getMachineExtruders(self._global_container_stack.getId()))
-            if extruders:
-                for extruder in extruders:
-                    extruder.propertyChanged.connect(self._onSettingChanged)
-            self._onActiveExtruderChanged()
-            self._onChanged()
-
-    def _onActiveExtruderChanged(self):
-        if self._global_container_stack:
-            # Connect all extruders of the active machine. This might cause a few connects that have already happend,
-            # but that shouldn't cause issues as only new / unique connections are added.
-            extruders = list(ExtruderManager.getInstance().getMachineExtruders(self._global_container_stack.getId()))
-            if extruders:
-                for extruder in extruders:
-                    extruder.propertyChanged.connect(self._onSettingChanged)
-        if self._active_extruder_stack:
-            self._active_extruder_stack.containersChanged.disconnect(self._onChanged)
-
-        self._active_extruder_stack = ExtruderManager.getInstance().getActiveExtruderStack()
-        if self._active_extruder_stack:
-            self._active_extruder_stack.containersChanged.connect(self._onChanged)
 
     def _onProcessLayersFinished(self, job):
         self._process_layers_job = None

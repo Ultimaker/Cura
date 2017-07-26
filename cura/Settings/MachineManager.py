@@ -115,6 +115,7 @@ class MachineManager(QObject):
     activeStackValueChanged = pyqtSignal()  # Emitted whenever a value inside the active stack is changed.
     activeStackValidationChanged = pyqtSignal()  # Emitted whenever a validation inside active container is changed
     stacksValidationChanged = pyqtSignal()  # Emitted whenever a validation is changed
+    stacksValidationFinished = pyqtSignal()  # Emitted whenever a validation is finished
 
     blurSettings = pyqtSignal() # Emitted to force fields in the advanced sidebar to un-focus, so they update properly
 
@@ -305,6 +306,7 @@ class MachineManager(QObject):
         self._stacks_have_errors = self._checkStacksHaveErrors()
         if old_stacks_have_errors != self._stacks_have_errors:
             self.stacksValidationChanged.emit()
+        self.stacksValidationFinished.emit()
 
     def _onActiveExtruderStackChanged(self):
         self.blurSettings.emit()  # Ensure no-one has focus.
