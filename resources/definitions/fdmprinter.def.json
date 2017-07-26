@@ -1384,12 +1384,23 @@
                         "tetrahedral": "Tetrahedral",
                         "concentric": "Concentric",
                         "concentric_3d": "Concentric 3D",
-                        "zigzag": "Zig Zag"
+                        "zigzag": "Zig Zag",
+                        "cross": "Cross",
+                        "cross_3d": "Cross 3D"
                     },
                     "default_value": "grid",
                     "enabled": "infill_sparse_density > 0",
                     "value": "'lines' if infill_sparse_density > 25 else 'grid'",
                     "limit_to_extruder": "infill_extruder_nr",
+                    "settable_per_mesh": true
+                },
+                "zig_zaggify_infill":
+                {
+                    "label": "Connect Infill Lines",
+                    "description": "Connect the ends where the infill pattern meets the inner wall using a lines which follows the shape of the inner wall. Enabling this setting can make the infill adhere to the walls better and reduces the effects on infill on the quality of vertical surfaces. Disabling this setting reduces the amount of material used.",
+                    "type": "bool",
+                    "default_value": true,
+                    "enabled": "infill_pattern == 'cross' or infill_pattern == 'cross_3d'",
                     "settable_per_mesh": true
                 },
                 "infill_angles":
