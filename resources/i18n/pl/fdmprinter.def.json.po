@@ -1771,7 +1771,7 @@ msgstr "Początk. G-code"
 
 msgctxt "machine_use_extruder_offset_to_offset_coords description"
 msgid "Apply the extruder offset to the coordinate system."
-msgstr "Zastosuj przesunięcie głowicy względem ."
+msgstr "Zastosuj przesunięcie głowicy względem."
 
 msgctxt "machine_use_extruder_offset_to_offset_coords label"
 msgid "Offset With Extruder"
