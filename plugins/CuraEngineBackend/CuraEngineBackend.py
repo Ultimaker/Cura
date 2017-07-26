@@ -77,7 +77,7 @@ class CuraEngineBackend(QObject, Backend):
         self._scene.sceneChanged.connect(self._onSceneChanged)
 
         # trigger auto-slicing on error check finished
-        Application.getInstance().getMachineManager().stacksValidationFinished.connect(self._onStackErrorCheckFinished)
+        Application.getInstance().stacksValidationFinished.connect(self._onStackErrorCheckFinished)
 
         # Listeners for receiving messages from the back-end.
         self._message_handlers["cura.proto.Layer"] = self._onLayerMessage
