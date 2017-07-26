@@ -305,6 +305,7 @@ class MachineManager(QObject):
         self._stacks_have_errors = self._checkStacksHaveErrors()
         if old_stacks_have_errors != self._stacks_have_errors:
             self.stacksValidationChanged.emit()
+        Application.getInstance().stacksValidationFinished.emit()
 
     def _onActiveExtruderStackChanged(self):
         self.blurSettings.emit()  # Ensure no-one has focus.
