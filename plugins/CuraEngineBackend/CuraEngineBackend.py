@@ -453,8 +453,9 @@ class CuraEngineBackend(QObject, Backend):
 
     def _onStackErrorCheckFinished(self):
         self._is_error_check_scheduled = False
-        self.needsSlicing()
-        self._onChanged()
+        if self._need_slicing:
+            self.needsSlicing()
+            self._onChanged()
 
     ##  Called when a sliced layer data message is received from the engine.
     #
