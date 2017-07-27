@@ -1174,14 +1174,6 @@
                     "enabled": "wall_0_extruder_nr == wall_x_extruder_nr",
                     "settable_per_mesh": true
                 },
-                "optimize_wall_printing_order":
-                {
-                    "label": "Optimize Wall Printing Order",
-                    "description": "Optimize the order in which walls are printed so as to reduce the number of retractions and the distance travelled. Most parts will benefit from this being enabled but some may actually take longer so please compare the print time estimates with and without optimization.",
-                    "type": "bool",
-                    "default_value": true,
-                    "settable_per_mesh": true
-                },
                 "alternate_extra_perimeter":
                 {
                     "label": "Alternate Extra Wall",
@@ -4972,6 +4964,14 @@
             "description": "experimental!",
             "children":
             {
+                "optimize_wall_printing_order":
+                {
+                    "label": "Optimize Wall Printing Order",
+                    "description": "Optimize the order in which walls are printed so as to reduce the number of retractions and the distance travelled. Most parts will benefit from this being enabled but some may actually take longer so please compare the print time estimates with and without optimization.",
+                    "type": "bool",
+                    "default_value": false,
+                    "settable_per_mesh": true
+                },
                 "draft_shield_enabled":
                 {
                     "label": "Enable Draft Shield",
