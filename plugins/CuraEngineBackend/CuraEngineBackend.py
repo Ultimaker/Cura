@@ -619,9 +619,8 @@ class CuraEngineBackend(QObject, Backend):
             self._global_container_stack.containersChanged.disconnect(self._onChanged)
             extruders = list(ExtruderManager.getInstance().getMachineExtruders(self._global_container_stack.getId()))
 
-            if extruders:
-                for extruder in extruders:
-                    extruder.propertyChanged.disconnect(self._onSettingChanged)
+            for extruder in extruders:
+                extruder.propertyChanged.disconnect(self._onSettingChanged)
 
         self._global_container_stack = Application.getInstance().getGlobalContainerStack()
 
@@ -629,9 +628,8 @@ class CuraEngineBackend(QObject, Backend):
             self._global_container_stack.propertyChanged.connect(self._onSettingChanged)  # Note: Only starts slicing when the value changed.
             self._global_container_stack.containersChanged.connect(self._onChanged)
             extruders = list(ExtruderManager.getInstance().getMachineExtruders(self._global_container_stack.getId()))
-            if extruders:
-                for extruder in extruders:
-                    extruder.propertyChanged.connect(self._onSettingChanged)
+            for extruder in extruders:
+                extruder.propertyChanged.connect(self._onSettingChanged)
             self._onActiveExtruderChanged()
             self._onChanged()
 
@@ -640,9 +638,8 @@ class CuraEngineBackend(QObject, Backend):
             # Connect all extruders of the active machine. This might cause a few connects that have already happend,
             # but that shouldn't cause issues as only new / unique connections are added.
             extruders = list(ExtruderManager.getInstance().getMachineExtruders(self._global_container_stack.getId()))
-            if extruders:
-                for extruder in extruders:
-                    extruder.propertyChanged.connect(self._onSettingChanged)
+            for extruder in extruders:
+                extruder.propertyChanged.connect(self._onSettingChanged)
         if self._active_extruder_stack:
             self._active_extruder_stack.containersChanged.disconnect(self._onChanged)
 
