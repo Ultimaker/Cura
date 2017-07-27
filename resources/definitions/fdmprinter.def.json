@@ -2079,8 +2079,8 @@
                         },
                         "speed_roofing":
                         {
-                            "label": "Roofing Speed",
-                            "description": "The speed at which roofing layers are printed.",
+                            "label": "Top Surface Infill Speed",
+                            "description": "The speed at which top surface infill layers are printed.",
                             "unit": "mm/s",
                             "type": "float",
                             "minimum_value": "0.1",
@@ -2434,8 +2434,8 @@
                         },
                         "acceleration_roofing":
                         {
-                            "label": "Roofing Acceleration",
-                            "description": "The acceleration with which roofing layers are printed.",
+                            "label": "Top Surface Infill Acceleration",
+                            "description": "The acceleration with which top surface infill layers are printed.",
                             "unit": "mm/s²",
                             "type": "float",
                             "minimum_value": "0.1",
@@ -2738,8 +2738,8 @@
                         },
                         "jerk_roofing":
                         {
-                            "label": "Roofing Jerk",
-                            "description": "The maximum instantaneous velocity change with which roofing layers are printed.",
+                            "label": "Top Surface Infill Jerk",
+                            "description": "The maximum instantaneous velocity change with which top surface infill layers are printed.",
                             "unit": "mm/s",
                             "type": "float",
                             "minimum_value": "0.1",
