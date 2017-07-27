@@ -21,15 +21,7 @@ def getMetaData():
     else:
         workspace_extension = "curaproject.3mf"
 
-    metaData = {
-        "plugin": {
-            "name": i18n_catalog.i18nc("@label", "3MF Writer"),
-            "author": "Ultimaker",
-            "version": "1.0",
-            "description": i18n_catalog.i18nc("@info:whatsthis", "Provides support for writing 3MF files."),
-            "api": 3
-        }
-    }
+    metaData = {}
 
     if "3MFWriter.ThreeMFWriter" in sys.modules:
         metaData["mesh_writer"] = {

@@ -12,13 +12,6 @@ catalog = i18nCatalog("cura")
 
 def getMetaData():
     return {
-        "plugin": {
-            "name": catalog.i18nc("@label", "Ultimaker machine actions"),
-            "author": "Ultimaker",
-            "version": "1.0",
-            "description": catalog.i18nc("@info:whatsthis", "Provides machine actions for Ultimaker machines (such as bed leveling wizard, selecting upgrades, etc)"),
-            "api": 3
-        }
     }
 
 def register(app):

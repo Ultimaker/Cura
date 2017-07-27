@@ -622,6 +622,8 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
         self._sendCommand("M140 S0")
         self._sendCommand("M104 S0")
         self._sendCommand("M107")
+        self.homeHead()
+        self.homeBed()
         self._sendCommand("M84")
         self._is_printing = False
         self._is_paused = False

@@ -1,5 +1,5 @@
-// Copyright (c) 2016 Ultimaker B.V.
-// Uranium is released under the terms of the AGPLv3 or higher.
+// Copyright (c) 2017 Ultimaker B.V.
+// Cura is released under the terms of the AGPLv3 or higher.
 
 import QtQuick 2.1
 import QtQuick.Controls 1.3
@@ -16,8 +16,8 @@ TabView
 
     property bool editingEnabled: false;
     property string currency: UM.Preferences.getValue("cura/currency") ? UM.Preferences.getValue("cura/currency") : "€"
-    property real firstColumnWidth: width * 0.45
-    property real secondColumnWidth: width * 0.45
+    property real firstColumnWidth: (width * 0.45) | 0
+    property real secondColumnWidth: (width * 0.45) | 0
     property string containerId: ""
     property var materialPreferenceValues: UM.Preferences.getValue("cura/material_settings") ? JSON.parse(UM.Preferences.getValue("cura/material_settings")) : {}
 
@@ -53,7 +53,7 @@ TabView
             flickableItem.flickableDirection: Flickable.VerticalFlick
             frameVisible: true
 
-            property real columnWidth: Math.floor(viewport.width * 0.5) - UM.Theme.getSize("default_margin").width
+            property real columnWidth: (viewport.width * 0.5 - UM.Theme.getSize("default_margin").width) | 0
 
             Flow
             {
@@ -115,8 +115,8 @@ TabView
                         id: colorSelector
                         color: properties.color_code
 
-                        width: colorLabel.height * 0.75
-                        height: colorLabel.height * 0.75
+                        width: (colorLabel.height * 0.75) | 0
+                        height: (colorLabel.height * 0.75) | 0
                         border.width: UM.Theme.getSize("default_lining").height
 
                         anchors.verticalCenter: parent.verticalCenter
@@ -168,8 +168,15 @@ TabView
                     {
                         // This does not use a SettingPropertyProvider, because we need to make the change to all containers
                         // which derive from the same base_file
-                        base.setMetaDataEntry("approximate_diameter", properties.approximate_diameter, Math.round(value).toString());
+                        var old_diameter = Cura.ContainerManager.getContainerProperty(base.containerId, "material_diameter", "value").toString();
+                        var old_approximate_diameter = Cura.ContainerManager.getContainerMetaDataEntry(base.containerId, "approximate_diameter");
+                        base.setMetaDataEntry("approximate_diameter", old_approximate_diameter, Math.round(value).toString());
                         base.setMetaDataEntry("properties/diameter", properties.diameter, value);
+                        var new_approximate_diameter = Cura.ContainerManager.getContainerMetaDataEntry(base.containerId, "approximate_diameter");
+                        if (Cura.MachineManager.filterMaterialsByMachine && new_approximate_diameter != Cura.MachineManager.activeMachine.approximateMaterialDiameter)
+                        {
+                            Cura.MaterialManager.showMaterialWarningMessage(base.containerId, old_diameter);
+                        }
                         Cura.ContainerManager.setContainerProperty(base.containerId, "material_diameter", "value", value);
                     }
                     onValueChanged: updateCostPerMeter()

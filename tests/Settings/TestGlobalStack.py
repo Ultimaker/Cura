@@ -12,6 +12,7 @@ from UM.Settings.InstanceContainer import InstanceContainer #To test against the
 from UM.Settings.SettingInstance import InstanceState
 import UM.Settings.ContainerRegistry
 import UM.Settings.ContainerStack
+import UM.Settings.SettingDefinition #To add settings to the definition.
 
 ##  Fake container registry that always provides all containers you ask of.
 @pytest.yield_fixture()
@@ -85,6 +86,31 @@ def test_addExtruder(global_stack):
     #     with pytest.raises(TooManyExtrudersError): #Should be limited to 2 extruders because of machine_extruder_count.
     #         global_stack.addExtruder(unittest.mock.MagicMock())
     assert len(global_stack.extruders) == 2 #Didn't add the faulty extruder.
+
+##  Tests getting the approximate material diameter.
+@pytest.mark.parametrize("diameter, approximate_diameter", [
+    #Some real-life cases that are common in printers.
+    (2.85, 3),
+    (1.75, 2),
+    (3.0, 3),
+    (2.0, 2),
+    #Exceptional cases.
+    (0, 0),
+    (-10.1, -10),
+    (-1, -1),
+    (9000.1, 9000)
+])
+def test_approximateMaterialDiameter(diameter, approximate_diameter, global_stack):
+    global_stack.definition = DefinitionContainer(container_id = "TestDefinition")
+    material_diameter = UM.Settings.SettingDefinition.SettingDefinition(key = "material_diameter", container = global_stack.definition)
+    material_diameter.addSupportedProperty("value", UM.Settings.SettingDefinition.DefinitionPropertyType.Any, default = diameter)
+    global_stack.definition.definitions.append(material_diameter)
+    assert float(global_stack.approximateMaterialDiameter) == approximate_diameter
+
+##  Tests getting the material diameter when there is no material diameter.
+def test_approximateMaterialDiameterNoDiameter(global_stack):
+    global_stack.definition = DefinitionContainer(container_id = "TestDefinition")
+    assert global_stack.approximateMaterialDiameter == "-1"
 
 #Tests setting user changes profiles to invalid containers.
 @pytest.mark.parametrize("container", [

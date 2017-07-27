@@ -8,13 +8,6 @@ i18n_catalog = i18nCatalog("cura")
 
 def getMetaData():
     return {
-        "plugin": {
-            "name": i18n_catalog.i18nc("@label", "G-code Reader"),
-            "author": "Victor Larchenko",
-            "version": "1.0",
-            "description": i18n_catalog.i18nc("@info:whatsthis", "Allows loading and displaying G-code files."),
-            "api": 3
-        },
         "mesh_reader": [
             {
                 "extension": "gcode",

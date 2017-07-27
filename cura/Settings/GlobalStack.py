@@ -1,7 +1,7 @@
 # Copyright (c) 2017 Ultimaker B.V.
 # Cura is released under the terms of the AGPLv3 or higher.
 
-from typing import Any, Dict
+from typing import Any, Dict, Optional
 
 from PyQt5.QtCore import pyqtProperty
 
@@ -41,6 +41,17 @@ class GlobalStack(CuraContainerStack):
     @classmethod
     def getLoadingPriority(cls) -> int:
         return 2
+
+    def getConfigurationTypeFromSerialized(self, serialized: str) -> Optional[str]:
+        configuration_type = None
+        try:
+            parser = self._readAndValidateSerialized(serialized)
+            configuration_type = parser["metadata"].get("type")
+            if configuration_type == "machine":
+                configuration_type = "machine_stack"
+        except Exception as e:
+            Logger.log("e", "Could not get configuration type: %s", e)
+        return configuration_type
 
     ##  Add an extruder to the list of extruders of this stack.
     #
@@ -106,6 +117,21 @@ class GlobalStack(CuraContainerStack):
     @override(ContainerStack)
     def setNextStack(self, next_stack: ContainerStack) -> None:
         raise Exceptions.InvalidOperationError("Global stack cannot have a next stack!")
+
+    ##  Gets the approximate filament diameter that the machine requires.
+    #
+    #   The approximate material diameter is the material diameter rounded to
+    #   the nearest millimetre.
+    #
+    #   If the machine has no requirement for the diameter, -1 is returned.
+    #
+    #   \return The approximate filament diameter for the printer, as a string.
+    @pyqtProperty(str)
+    def approximateMaterialDiameter(self) -> str:
+        material_diameter = self.definition.getProperty("material_diameter", "value")
+        if material_diameter is None:
+            return "-1"
+        return str(round(float(material_diameter))) #Round, then convert back to string.
 
     # protected:
 

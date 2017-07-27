@@ -76,7 +76,14 @@ class CuraEngineBackend(QObject, Backend):
         self._scene = Application.getInstance().getController().getScene()
         self._scene.sceneChanged.connect(self._onSceneChanged)
 
-        # Triggers for when to (re)start slicing:
+        # Triggers for auto-slicing. Auto-slicing is triggered as follows:
+        #  - auto-slicing is started with a timer
+        #  - whenever there is a value change, we start the timer
+        #  - sometimes an error check can get scheduled for a value change, in that case, we ONLY want to start the
+        #    auto-slicing timer when that error check is finished
+        #  If there is an error check, it will set the "_is_error_check_scheduled" flag, stop the auto-slicing timer,
+        #  and only wait for the error check to be finished to start the auto-slicing timer again.
+        #
         self._global_container_stack = None
         Application.getInstance().globalContainerStackChanged.connect(self._onGlobalStackChanged)
         self._onGlobalStackChanged()
@@ -84,6 +91,12 @@ class CuraEngineBackend(QObject, Backend):
         self._active_extruder_stack = None
         ExtruderManager.getInstance().activeExtruderChanged.connect(self._onActiveExtruderChanged)
         self._onActiveExtruderChanged()
+
+        Application.getInstance().stacksValidationFinished.connect(self._onStackErrorCheckFinished)
+
+        # A flag indicating if an error check was scheduled
+        # If so, we will stop the auto-slice timer and start upon the error check
+        self._is_error_check_scheduled = False
 
         # Listeners for receiving messages from the back-end.
         self._message_handlers["cura.proto.Layer"] = self._onLayerMessage
@@ -426,11 +439,21 @@ class CuraEngineBackend(QObject, Backend):
             self._clearLayerData()
 
     ##  A setting has changed, so check if we must reslice.
-    #
-    #   \param instance The setting instance that has changed.
-    #   \param property The property of the setting instance that has changed.
+    # \param instance The setting instance that has changed.
+    # \param property The property of the setting instance that has changed.
     def _onSettingChanged(self, instance, property):
-        if property == "value": # Only reslice if the value has changed.
+        if property == "value":  # Only reslice if the value has changed.
+            self.needsSlicing()
+            self._onChanged()
+
+        elif property == "validationState":
+            if self._use_timer:
+                self._is_error_check_scheduled = True
+                self._change_timer.stop()
+
+    def _onStackErrorCheckFinished(self):
+        self._is_error_check_scheduled = False
+        if self._need_slicing:
             self.needsSlicing()
             self._onChanged()
 
@@ -525,7 +548,12 @@ class CuraEngineBackend(QObject, Backend):
     def _onChanged(self, *args, **kwargs):
         self.needsSlicing()
         if self._use_timer:
-            self._change_timer.start()
+            # if the error check is scheduled, wait for the error check finish signal to trigger auto-slice,
+            # otherwise business as usual
+            if self._is_error_check_scheduled:
+                self._change_timer.stop()
+            else:
+                self._change_timer.start()
 
     ##  Called when the back-end connects to the front-end.
     def _onBackendConnected(self):
@@ -591,9 +619,9 @@ class CuraEngineBackend(QObject, Backend):
             self._global_container_stack.propertyChanged.disconnect(self._onSettingChanged)
             self._global_container_stack.containersChanged.disconnect(self._onChanged)
             extruders = list(ExtruderManager.getInstance().getMachineExtruders(self._global_container_stack.getId()))
-            if extruders:
-                for extruder in extruders:
-                    extruder.propertyChanged.disconnect(self._onSettingChanged)
+
+            for extruder in extruders:
+                extruder.propertyChanged.disconnect(self._onSettingChanged)
 
         self._global_container_stack = Application.getInstance().getGlobalContainerStack()
 
@@ -601,9 +629,8 @@ class CuraEngineBackend(QObject, Backend):
             self._global_container_stack.propertyChanged.connect(self._onSettingChanged)  # Note: Only starts slicing when the value changed.
             self._global_container_stack.containersChanged.connect(self._onChanged)
             extruders = list(ExtruderManager.getInstance().getMachineExtruders(self._global_container_stack.getId()))
-            if extruders:
-                for extruder in extruders:
-                    extruder.propertyChanged.connect(self._onSettingChanged)
+            for extruder in extruders:
+                extruder.propertyChanged.connect(self._onSettingChanged)
             self._onActiveExtruderChanged()
             self._onChanged()
 
@@ -612,9 +639,8 @@ class CuraEngineBackend(QObject, Backend):
             # Connect all extruders of the active machine. This might cause a few connects that have already happend,
             # but that shouldn't cause issues as only new / unique connections are added.
             extruders = list(ExtruderManager.getInstance().getMachineExtruders(self._global_container_stack.getId()))
-            if extruders:
-                for extruder in extruders:
-                    extruder.propertyChanged.connect(self._onSettingChanged)
+            for extruder in extruders:
+                extruder.propertyChanged.connect(self._onSettingChanged)
         if self._active_extruder_stack:
             self._active_extruder_stack.containersChanged.disconnect(self._onChanged)
 

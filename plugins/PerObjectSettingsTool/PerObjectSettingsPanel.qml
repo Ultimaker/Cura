@@ -110,10 +110,10 @@ Item {
 
                         Button
                         {
-                            width: UM.Theme.getSize("setting").height / 2;
-                            height: UM.Theme.getSize("setting").height;
+                            width: (UM.Theme.getSize("setting").height / 2) | 0
+                            height: UM.Theme.getSize("setting").height
 
-                            onClicked: addedSettingsModel.setVisible(model.key, false);
+                            onClicked: addedSettingsModel.setVisible(model.key, false)
 
                             style: ButtonStyle
                             {

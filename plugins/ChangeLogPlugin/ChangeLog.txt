@@ -1,6 +1,10 @@
+[2.6.1]
+*New profiles
+The Polypropylene material is added and supported with the Ultimaker 3. Support for CPE+ and PC with 0.8mm nozzles is added as well.
+
 [2.6.0]
 *Cura versions
-Cura 2.6 beta has local version folders, which means the new version won’t overwrite the existing configuration and profiles from older versions, but can create a new folder instead. You can now safely check out new beta versions and, if necessary, start up an older version without the danger of losing your profiles.
+Cura 2.6 has local version folders, which means the new version won’t overwrite the existing configuration and profiles from older versions, but can create a new folder instead. You can now safely check out new beta versions and, if necessary, start up an older version without the danger of losing your profiles.
 
 *Better support adhesion
 We’ve added extra support settings to allow the creation of improved support profiles with better PVA/PLA adhesion. The Support Interface settings, such as speed and density, are now split up into Support Roof and Support Floor settings.
@@ -9,7 +13,7 @@ We’ve added extra support settings to allow the creation of improved support p
 Custom third-party printers and Ultimaker modifications now have multi-extrusion support. Thanks to Aldo Hoeben for this feature.
 
 *Model auto-arrange
-We’ve improved placing multiple models or multiplying the same ones, making it easier to arrange your build plate. If there’s not enough build plate space or the model is placed beyond the build plate, you can rectify this by selecting ‘Arrange all models’ in the context menu or by pressing Command+R (MacOS) or Ctrl+R (Windows and Linux). Cura 2.6 beta will then find a better solution for model positioning.
+We’ve improved placing multiple models or multiplying the same ones, making it easier to arrange your build plate. If there’s not enough build plate space or the model is placed beyond the build plate, you can rectify this by selecting ‘Arrange all models’ in the context menu or by pressing Command+R (MacOS) or Ctrl+R (Windows and Linux). Cura 2.6 will then find a better solution for model positioning.
 
 *Gradual infill
 You can now find the Gradual Infill button in Recommended mode. This setting makes the infill concentrated near the top of the model – so that we can save time and material for the lower parts of the model. This functionality is especially useful when printing with flexible materials.
@@ -42,27 +46,16 @@ It’s a lot simpler to save and open files, and Cura will know if it’s a proj
 If you have a custom theme, you can now apply it more easily in the preferences screen.
 
 *Time estimates per feature
-<<<<<<< HEAD
-You can hover over the print time estimate in the lower right corner to see how the printing time is divided over the printing features (walls, infill, etc.).
-=======
 You can hover over the print time estimate in the lower right corner to see how the printing time is divided over the printing features (walls, infill, etc.). Thanks to 14bitVoid for this feature.
->>>>>>> 2.6
 
 *Invert the direction of camera zoom
 We’ve added an option to invert mouse direction for a better user experience.
 
 *Olsson block upgrade
-<<<<<<< HEAD
-Ultimaker 2 users can now specify if they have the Olsson block installed on their machine.
-
-*OctoPrint plugin
-Cura 2.6 beta allows users to send prints to OctoPrint.
-=======
 Ultimaker 2 users can now specify if they have the Olsson block installed on their machine. Thanks to Aldo Hoeben for this feature.
 
 *OctoPrint plugin
-Cura 2.6 beta allows users to send prints to OctoPrint. Thanks to Aldo Hoeben for this feature.
->>>>>>> 2.6
+Cura 2.6 allows users to send prints to OctoPrint. Thanks to Aldo Hoeben for this feature.
 
 *Bug fixes
 - Post Processing plugin

@@ -218,24 +218,29 @@ class ContainerManager(QObject):
         entries = entry_name.split("/")
         entry_name = entries.pop()
 
+        sub_item_changed = False
         if entries:
             root_name = entries.pop(0)
             root = container.getMetaDataEntry(root_name)
 
             item = root
-            for entry in entries:
+            for _ in range(len(entries)):
                 item = item.get(entries.pop(0), { })
 
+            if item[entry_name] != entry_value:
+                sub_item_changed = True
             item[entry_name] = entry_value
 
             entry_name = root_name
             entry_value = root
 
         container.setMetaDataEntry(entry_name, entry_value)
+        if sub_item_changed: #If it was only a sub-item that has changed then the setMetaDataEntry won't correctly notice that something changed, and we must manually signal that the metadata changed.
+            container.metaDataChanged.emit(container)
 
         return True
 
-    ##  Set a setting property value of the specified container.
+    ##  Set a setting property of the specified container.
     #
     #   This will set the specified property of the specified setting of the container
     #   and all containers that share the same base_file (if any). The latter only
@@ -268,6 +273,29 @@ class ContainerManager(QObject):
                 sibbling_container.setProperty(setting_key, property_name, property_value)
 
         return True
+
+    ##  Get a setting property of the specified container.
+    #
+    #   This will get the specified property of the specified setting of the
+    #   specified container.
+    #
+    #   \param container_id The ID of the container to get the setting property
+    #   of.
+    #   \param setting_key The key of the setting to get the property of.
+    #   \param property_name The property to obtain.
+    #   \return The value of the specified property. The type of this property
+    #   value depends on the type of the property. For instance, the "value"
+    #   property of an integer setting will be a Python int, but the "value"
+    #   property of an enum setting will be a Python str.
+    @pyqtSlot(str, str, str, result = QVariant)
+    def getContainerProperty(self, container_id: str, setting_key: str, property_name: str):
+        containers = self._container_registry.findContainers(id = container_id)
+        if not containers:
+            Logger.log("w", "Could not get properties of container %s because it was not found.", container_id)
+            return ""
+        container = containers[0]
+
+        return container.getProperty(setting_key, property_name)
 
     ##  Set the name of the specified container.
     @pyqtSlot(str, str, result = bool)

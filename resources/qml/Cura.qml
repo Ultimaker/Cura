@@ -1,4 +1,4 @@
-// Copyright (c) 2015 Ultimaker B.V.
+// Copyright (c) 2017 Ultimaker B.V.
 // Cura is released under the terms of the AGPLv3 or higher.
 
 import QtQuick 2.2
@@ -18,7 +18,24 @@ UM.MainWindow
     //: Cura application window title
     title: catalog.i18nc("@title:window","Cura");
     viewportRect: Qt.rect(0, 0, (base.width - sidebar.width) / base.width, 1.0)
-    property bool monitoringPrint: false
+    property bool showPrintMonitor: false
+
+    Connections
+    {
+        target: Printer
+        onShowPrintMonitor:
+        {
+            if (show)
+            {
+                topbar.startMonitoringPrint()
+            }
+            else
+            {
+                topbar.stopMonitoringPrint()
+            }
+        }
+    }
+
     Component.onCompleted:
     {
         CuraApplication.setMinimumWindowSize(UM.Theme.getSize("window_minimum_size"))
@@ -261,29 +278,28 @@ UM.MainWindow
                     if (drop.urls.length > 0)
                     {
                         // As the drop area also supports plugins, first check if it's a plugin that was dropped.
-                        if(drop.urls.length == 1)
+                        if (drop.urls.length == 1)
                         {
-                            if(PluginRegistry.isPluginFile(drop.urls[0]))
+                            if (PluginRegistry.isPluginFile(drop.urls[0]))
                             {
                                 // Try to install plugin & close.
                                 var result = PluginRegistry.installPlugin(drop.urls[0]);
-                                pluginInstallDialog.text = result.message
-                                if(result.status == "ok")
+                                pluginInstallDialog.text = result.message;
+                                if (result.status == "ok")
                                 {
-                                    pluginInstallDialog.icon = StandardIcon.Information
+                                    pluginInstallDialog.icon = StandardIcon.Information;
                                 }
-                                else if(result.status == "duplicate")
+                                else if (result.status == "duplicate")
                                 {
-                                    pluginInstallDialog.icon = StandardIcon.Warning
+                                    pluginInstallDialog.icon = StandardIcon.Warning;
                                 }
                                 else
                                 {
-                                    pluginInstallDialog.icon = StandardIcon.Critical
+                                    pluginInstallDialog.icon = StandardIcon.Critical;
                                 }
                                 pluginInstallDialog.open();
                                 return;
                             }
-
                         }
 
                         openDialog.handleOpenFileUrls(drop.urls);
@@ -307,9 +323,14 @@ UM.MainWindow
             {
                 id: view_panel
 
-                anchors.top: viewModeButton.bottom
-                anchors.topMargin: UM.Theme.getSize("default_margin").height;
+                property bool hugBottom: parent.height < viewModeButton.y + viewModeButton.height + height + UM.Theme.getSize("default_margin").height
+
+                anchors.bottom: parent.bottom // panel is always anchored to the bottom only, because dynamically switching between bottom and top results in stretching the height
+                anchors.bottomMargin: hugBottom ? 0 : parent.height - (viewModeButton.y + viewModeButton.height + height + UM.Theme.getSize("default_margin").height)
                 anchors.left: viewModeButton.left;
+                anchors.leftMargin: hugBottom ? viewModeButton.width + UM.Theme.getSize("default_margin").width : 0
+
+                property var buttonTarget: Qt.point(viewModeButton.x + viewModeButton.width / 2, viewModeButton.y + viewModeButton.height / 2)
 
                 height: childrenRect.height;
 
@@ -325,7 +346,8 @@ UM.MainWindow
                 tooltip: '';
                 anchors
                 {
-                    top: parent.top;
+                    top: topbar.bottom;
+                    topMargin: UM.Theme.getSize("default_margin").height;
                     left: parent.left;
                 }
                 action: Cura.Actions.open;
@@ -367,19 +389,30 @@ UM.MainWindow
                 }
             }
 
+            Topbar
+            {
+                id: topbar
+                anchors.left:parent.left
+                anchors.right: parent.right
+                anchors.top: parent.top
+                monitoringPrint: base.showPrintMonitor
+                onStartMonitoringPrint: base.showPrintMonitor = true
+                onStopMonitoringPrint: base.showPrintMonitor = false
+            }
+
             Sidebar
             {
                 id: sidebar;
 
                 anchors
                 {
-                    top: parent.top;
+                    top: topbar.bottom;
                     bottom: parent.bottom;
                     right: parent.right;
                 }
                 z: 1
-                onMonitoringPrintChanged: base.monitoringPrint = monitoringPrint
                 width: UM.Theme.getSize("sidebar").width;
+                monitoringPrint: base.showPrintMonitor
             }
 
             Button
@@ -408,13 +441,13 @@ UM.MainWindow
                 color: UM.Theme.getColor("viewport_overlay")
                 anchors
                 {
-                    top: parent.top
+                    top: topbar.bottom
                     bottom: parent.bottom
                     left:parent.left
                     right: sidebar.left
                 }
                 visible: opacity > 0
-                opacity: base.monitoringPrint ? 0.75 : 0
+                opacity: base.showPrintMonitor ? 0.75 : 0
 
                 Behavior on opacity { NumberAnimation { duration: 100; } }
 
@@ -429,12 +462,10 @@ UM.MainWindow
             Loader
             {
                 sourceComponent: Cura.MachineManager.printerOutputDevices.length > 0 ? Cura.MachineManager.printerOutputDevices[0].monitorItem: null
-                visible: base.monitoringPrint
+                visible: base.showPrintMonitor
                 anchors.horizontalCenter: parent.horizontalCenter
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.horizontalCenterOffset: - UM.Theme.getSize("sidebar").width / 2
-
-
             }
 
             UM.MessageStack

@@ -10,13 +10,6 @@ upgrade = VersionUpgrade.VersionUpgrade22to24()
 
 def getMetaData():
     return {
-        "plugin": {
-            "name": catalog.i18nc("@label", "Version Upgrade 2.2 to 2.4"),
-            "author": "Ultimaker",
-            "version": "1.0",
-            "description": catalog.i18nc("@info:whatsthis", "Upgrades configurations from Cura 2.2 to Cura 2.4."),
-            "api": 3
-        },
         "version_upgrade": {
             # From                         To                 Upgrade function
             ("machine_instance", 2000000): ("machine_stack",  3000000, upgrade.upgradeMachineInstance),
