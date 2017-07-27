@@ -701,7 +701,7 @@
                         },
                         "roofing_line_width":
                         {
-                            "label": "Top Surface Infill Line Width",
+                            "label": "Top Surface Skin Line Width",
                             "description": "Width of a single line of the areas at the top of the print.",
                             "unit": "mm",
                             "minimum_value": "0.001",
@@ -949,7 +949,7 @@
                 },
                 "roofing_extruder_nr":
                 {
-                    "label": "Top Surface Infill Extruder",
+                    "label": "Top Surface Skin Extruder",
                     "description": "The extruder train used for printing the top most skin. This is used in multi-extrusion.",
                     "type": "optional_extruder",
                     "default_value": "-1",
@@ -962,7 +962,7 @@
                 },
                 "roofing_layer_count":
                 {
-                    "label": "Top Surface Infill Layers",
+                    "label": "Top Surface Skin Layers",
                     "description": "The number of top most skin layers. Usually only one top most layer is sufficient to generate higher quality top surfaces.",
                     "default_value": 0,
                     "minimum_value": "0",
@@ -975,7 +975,7 @@
                 },
                 "roofing_pattern":
                 {
-                    "label": "Top Surface Infill Pattern",
+                    "label": "Top Surface Skin Pattern",
                     "description": "The pattern of the top most layers.",
                     "type": "enum",
                     "options":
@@ -992,8 +992,8 @@
                 },
                 "roofing_angles":
                 {
-                    "label": "Top Surface Infill Line Directions",
-                    "description": "A list of integer line directions to use when the top surface infill layers use the lines or zig zag pattern. Elements from the list are used sequentially as the layers progress and when the end of the list is reached, it starts at the beginning again. The list items are separated by commas and the whole list is contained in square brackets. Default is an empty list which means use the traditional default angles (45 and 135 degrees).",
+                    "label": "Top Surface Skin Line Directions",
+                    "description": "A list of integer line directions to use when the top surface skin layers use the lines or zig zag pattern. Elements from the list are used sequentially as the layers progress and when the end of the list is reached, it starts at the beginning again. The list items are separated by commas and the whole list is contained in square brackets. Default is an empty list which means use the traditional default angles (45 and 135 degrees).",
                     "type": "[int]",
                     "default_value": "[ ]",
                     "value": "skin_angles",
@@ -2102,8 +2102,8 @@
                         },
                         "speed_roofing":
                         {
-                            "label": "Top Surface Infill Speed",
-                            "description": "The speed at which top surface infill layers are printed.",
+                            "label": "Top Surface Skin Speed",
+                            "description": "The speed at which top surface skin layers are printed.",
                             "unit": "mm/s",
                             "type": "float",
                             "minimum_value": "0.1",
@@ -2457,8 +2457,8 @@
                         },
                         "acceleration_roofing":
                         {
-                            "label": "Top Surface Infill Acceleration",
-                            "description": "The acceleration with which top surface infill layers are printed.",
+                            "label": "Top Surface Skin Acceleration",
+                            "description": "The acceleration with which top surface skin layers are printed.",
                             "unit": "mm/s²",
                             "type": "float",
                             "minimum_value": "0.1",
@@ -2761,8 +2761,8 @@
                         },
                         "jerk_roofing":
                         {
-                            "label": "Top Surface Infill Jerk",
-                            "description": "The maximum instantaneous velocity change with which top surface infill layers are printed.",
+                            "label": "Top Surface Skin Jerk",
+                            "description": "The maximum instantaneous velocity change with which top surface skin layers are printed.",
                             "unit": "mm/s",
                             "type": "float",
                             "minimum_value": "0.1",
