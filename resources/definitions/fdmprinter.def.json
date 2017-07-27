@@ -968,7 +968,7 @@
                     "minimum_value": "0",
                     "maximum_value_warning": "top_layers - 1",
                     "type": "int",
-                    "value": "0 if infill_sparse_density == 100 else 1",
+                    "value": "0",
                     "limit_to_extruder": "roofing_extruder_nr",
                     "settable_per_mesh": true,
                     "enabled": "top_layers > 0"
