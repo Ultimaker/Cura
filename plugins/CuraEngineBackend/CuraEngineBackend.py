@@ -611,8 +611,8 @@ class CuraEngineBackend(QObject, Backend):
             if self._process:
                 Logger.log("d", "Backend quit with return code %s. Resetting process and socket.", self._process.wait())
                 self._process = None
-                ##  Called when the global container stack changes
 
+    ##  Called when the global container stack changes
     def _onGlobalStackChanged(self):
         if self._global_container_stack:
             self._global_container_stack.propertyChanged.disconnect(self._onSettingChanged)
