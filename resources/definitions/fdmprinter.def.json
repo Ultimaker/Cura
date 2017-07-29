@@ -4091,7 +4091,7 @@
                 "z_offset_layer_0":
                 {
                     "label": "Initial Layer Z Offset",
-                    "description": "The extruder is offset from the height of the first layer by this amount. It can be positive or negative. Some filament types adhere to the build plate better if the extruder is raised slightly.",
+                    "description": "The extruder is offset from the normal height of the first layer by this amount. It can be positive (raised) or negative (lowered). Some filament types adhere to the build plate better if the extruder is raised slightly.",
                     "unit": "mm",
                     "type": "float",
                     "default_value": 0,
@@ -4102,7 +4102,7 @@
                 "z_offset_taper_layers":
                 {
                     "label": "Z Offset Taper Layers",
-                    "description": "Number of layers over which the Z offset is reduced to 0. A value of 0 means that the Z offset is not changed.",
+                    "description": "When non-zero, the Z offset is reduced to 0 over that many layers. A value of 0 means that the Z offset remains constant for all the layers in the print.",
                     "type": "int",
                     "default_value": 0,
                     "minimum_value": "0",
