@@ -4090,7 +4090,7 @@
                 },
                 "z_offset_layer_0":
                 {
-                    "label": "Initial Layer Z Offset.",
+                    "label": "Initial Layer Z Offset",
                     "description": "The extruder is offset from the height of the first layer by this amount. It can be positive or negative. Some filament types adhere to the build plate better if the extruder is raised slightly.",
                     "unit": "mm",
                     "type": "float",
