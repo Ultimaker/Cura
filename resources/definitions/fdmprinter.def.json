@@ -4088,6 +4088,28 @@
                     "settable_per_extruder": true,
                     "limit_to_extruder": "adhesion_extruder_nr"
                 },
+                "z_offset_layer_0":
+                {
+                    "label": "Initial Layer Z Offset.",
+                    "description": "The extruder is offset from the height of the first layer by this amount. It can be positive or negative. Some filament types adhere to the build plate better if the extruder is raised slightly.",
+                    "unit": "mm",
+                    "type": "float",
+                    "default_value": 0,
+                    "enabled": "resolveOrValue('adhesion_type') != 'raft'",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false
+                },
+                "z_offset_taper_layers":
+                {
+                    "label": "Z Offset Taper Layers",
+                    "description": "Number of layers over which the Z offset is reduced to 0. A value of 0 means that the Z offset is not changed.",
+                    "type": "int",
+                    "default_value": 0,
+                    "minimum_value": "0",
+                    "enabled": "resolveOrValue('adhesion_type') != 'raft'",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false
+                },
                 "raft_margin":
                 {
                     "label": "Raft Extra Margin",
