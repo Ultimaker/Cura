@@ -3181,7 +3181,7 @@
                 "cool_fan_speed_0":
                 {
                     "label": "Initial Fan Speed",
-                    "description": "The speed at which the fans spin at the start of the print. In subsequent layers the fan speed is gradually increased up to the layer corresponding to Regular Fan Speed at Height.",
+                    "description": "The speed at which the fans spin when Initial Fan Speed at Height is reached. In subsequent layers the fan speed is gradually increased up to the layer corresponding to Regular Fan Speed at Height.",
                     "unit": "%",
                     "type": "float",
                     "minimum_value": "0",
@@ -3190,6 +3190,32 @@
                     "enabled": "cool_fan_enabled",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
+                },
+                "cool_fan_min_at_height":
+                {
+                    "label": "Initial Fan Speed at Height",
+                    "description": "The height at which the fans spin at Initial Fan Speed. The fans are off below this height.",
+                    "unit": "mm",
+                    "type": "float",
+                    "default_value": 0,
+                    "value": "0",
+                    "minimum_value": "0",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true,
+                    "children":
+                    {
+                        "cool_fan_min_layer":
+                        {
+                            "label": "Initial Fan Speed at Layer",
+                            "description": "The layer at which the fans spin at Initial Fan Speed. If Initial Fan Speed at Height is set, this value is calculated and rounded to a whole number.",
+                            "type": "int",
+                            "default_value": 0,
+                            "minimum_value": "0",
+                            "value": "max(0, int(math.floor((cool_fan_min_at_height - resolveOrValue('layer_height_0')) / resolveOrValue('layer_height')) + 2))",
+                            "settable_per_mesh": false,
+                            "settable_per_extruder": true
+                        }
+                    }
                 },
                 "cool_fan_full_at_height":
                 {
