@@ -3404,8 +3404,8 @@
                 },
                 "support_skip_some_zags":
                 {
-                    "label": "Skip Some ZigZags Connections",
-                    "description": "Skip some ZigZags connections to make the support structure easier to break.",
+                    "label": "Skip Some Support Line Connections",
+                    "description": "Skip some support line connections to make the support structure easier to break away.",
                     "type": "bool",
                     "default_value": false,
                     "enabled": "support_enable and (support_pattern == 'zigzag')",
@@ -3415,8 +3415,8 @@
                 },
                 "support_zag_skip_count":
                 {
-                    "label": "ZigZag Connection Skip Count",
-                    "description": "Skip one in every N connection lines to make the support structure easier to break.",
+                    "label": "Support Line Connection Skip Chunk Size",
+                    "description": "Skip one in every N connection lines to make the support structure easier to break away.",
                     "type": "int",
                     "default_value": 6,
                     "minimum_value": "1",
