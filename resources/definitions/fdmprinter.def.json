@@ -1088,29 +1088,6 @@
                         }
                     }
                 },
-                "top_reference_wall":
-                {
-                    "label": "Top Reference Wall",
-                    "description": "The number of the wall of the layers above a layer to consider as infill for that layer. Reducing this number reduces the skin on slanted top faces of the input model. Increasing this number causes walls on consecutive layers to be supported better.",
-                    "minimum_value": "0",
-                    "maximum_value": "wall_line_count",
-                    "default_value": 2,
-                    "type": "int",
-                    "value": "wall_line_count",
-                    "limit_to_extruder": "top_bottom_extruder_nr",
-                    "settable_per_mesh": true
-                },
-                "bottom_reference_wall":
-                {
-                    "label": "Bottom Reference Wall",
-                    "description": "The number of the wall of the layers below a layer to consider as infill for that layer. Reducing this number reduces the skin on overhanging faces of the input model.",
-                    "minimum_value": "0",
-                    "maximum_value": "wall_line_count",
-                    "default_value": 0,
-                    "type": "int",
-                    "limit_to_extruder": "top_bottom_extruder_nr",
-                    "settable_per_mesh": true
-                },
                 "top_bottom_pattern":
                 {
                     "label": "Top/Bottom Pattern",
