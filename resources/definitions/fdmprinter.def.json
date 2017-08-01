@@ -3209,9 +3209,9 @@
                             "label": "Initial Fan Speed at Layer",
                             "description": "The layer at which the fans spin at Initial Fan Speed. If Initial Fan Speed at Height is set, this value is calculated and rounded to a whole number.",
                             "type": "int",
-                            "default_value": 0,
-                            "minimum_value": "0",
-                            "value": "max(0, int(math.floor((cool_fan_min_at_height - resolveOrValue('layer_height_0')) / resolveOrValue('layer_height')) + 2))",
+                            "default_value": 1,
+                            "minimum_value": "1",
+                            "value": "max(1, int(math.floor((cool_fan_min_at_height - resolveOrValue('layer_height_0')) / resolveOrValue('layer_height')) + 2))",
                             "settable_per_mesh": false,
                             "settable_per_extruder": true
                         }
