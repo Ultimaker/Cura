@@ -238,10 +238,16 @@ Item
                     when: model.settable_per_extruder || (inheritStackProvider.properties.limit_to_extruder != null && inheritStackProvider.properties.limit_to_extruder >= 0);
                     value:
                     {
+                        // associate this binding with Cura.MachineManager.activeMachineId in the beginning so this
+                        // binding will be triggered when activeMachineId is changed too.
+                        // Otherwise, if this value only depends on the extruderIds, it won't get updated when the
+                        // machine gets changed.
+                        var activeMachineId = Cura.MachineManager.activeMachineId;
+
                         if(!model.settable_per_extruder || machineExtruderCount.properties.value == 1)
                         {
                             //Not settable per extruder or there only is global, so we must pick global.
-                            return Cura.MachineManager.activeMachineId;
+                            return activeMachineId;
                         }
                         if(inheritStackProvider.properties.limit_to_extruder != null && inheritStackProvider.properties.limit_to_extruder >= 0)
                         {
@@ -254,7 +260,7 @@ Item
                             return ExtruderManager.activeExtruderStackId;
                         }
                         //No extruder tab is selected. Pick the global stack. Shouldn't happen any more since we removed the global tab.
-                        return Cura.MachineManager.activeMachineId;
+                        return activeMachineId;
                     }
                 }
 
@@ -266,32 +272,6 @@ Item
                     containerStackId: Cura.MachineManager.activeMachineId
                     key: model.key
                     watchedProperties: [ "limit_to_extruder" ]
-
-                    // When the activeMachineId got changed, the binding for limit_to_extruder which updates
-                    // provider.containerStackId doesn't get triggered. This handle makes sure that will happen.
-                    onContainerStackIdChanged:
-                    {
-                        if(!model.settable_per_extruder || machineExtruderCount.properties.value == 1)
-                        {
-                            //Not settable per extruder or there only is global, so we must pick global.
-                            provider.containerStackId = Cura.MachineManager.activeMachineId;
-                            return;
-                        }
-                        if(inheritStackProvider.properties.limit_to_extruder != null && inheritStackProvider.properties.limit_to_extruder >= 0)
-                        {
-                            //We have limit_to_extruder, so pick that stack.
-                            provider.containerStackId = ExtruderManager.extruderIds[String(inheritStackProvider.properties.limit_to_extruder)];
-                            return;
-                        }
-                        if(ExtruderManager.activeExtruderStackId)
-                        {
-                            //We're on an extruder tab. Pick the current extruder.
-                            provider.containerStackId = ExtruderManager.activeExtruderStackId;
-                            return;
-                        }
-                        //No extruder tab is selected. Pick the global stack. Shouldn't happen any more since we removed the global tab.
-                        provider.containerStackId = Cura.MachineManager.activeMachineId;
-                    }
                 }
 
                 UM.SettingPropertyProvider
