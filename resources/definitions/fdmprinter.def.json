@@ -1106,7 +1106,8 @@
                     "description": "The number of the wall of the layers below a layer to consider as infill for that layer. Reducing this number reduces the skin on overhanging faces of the input model. Increasing this number causes bridges to attach better to the walls of the previous layer. Zero means the outline of the layer is used.",
                     "minimum_value": "0",
                     "maximum_value": "wall_line_count",
-                    "default_value": 0,
+                    "default_value": 2,
+                    "value": "wall_line_count",
                     "type": "int",
                     "limit_to_extruder": "top_bottom_extruder_nr",
                     "settable_per_mesh": true
@@ -1843,7 +1844,7 @@
                     "unit": "mm/s",
                     "type": "float",
                     "default_value": 25,
-                    "minimum_value": "0",
+                    "minimum_value": "0.0001",
                     "minimum_value_warning": "1",
                     "maximum_value": "machine_max_feedrate_e",
                     "maximum_value_warning": "70",
@@ -1859,7 +1860,7 @@
                             "unit": "mm/s",
                             "type": "float",
                             "default_value": 25,
-                            "minimum_value": "0",
+                            "minimum_value": "0.0001",
                             "maximum_value": "machine_max_feedrate_e",
                             "minimum_value_warning": "1",
                             "maximum_value_warning": "70",
@@ -1875,7 +1876,7 @@
                             "unit": "mm/s",
                             "type": "float",
                             "default_value": 25,
-                            "minimum_value": "0",
+                            "minimum_value": "0.0001",
                             "maximum_value": "machine_max_feedrate_e",
                             "minimum_value_warning": "1",
                             "maximum_value_warning": "70",
@@ -4988,6 +4989,14 @@
             "description": "experimental!",
             "children":
             {
+                "optimize_wall_printing_order":
+                {
+                    "label": "Optimize Wall Printing Order",
+                    "description": "Optimize the order in which walls are printed so as to reduce the number of retractions and the distance travelled. Most parts will benefit from this being enabled but some may actually take longer so please compare the print time estimates with and without optimization.",
+                    "type": "bool",
+                    "default_value": false,
+                    "settable_per_mesh": true
+                },
                 "draft_shield_enabled":
                 {
                     "label": "Enable Draft Shield",
