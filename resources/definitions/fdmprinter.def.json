@@ -1106,7 +1106,8 @@
                     "description": "The number of the wall of the layers below a layer to consider as infill for that layer. Reducing this number reduces the skin on overhanging faces of the input model. Increasing this number causes bridges to attach better to the walls of the previous layer. Zero means the outline of the layer is used.",
                     "minimum_value": "0",
                     "maximum_value": "wall_line_count",
-                    "default_value": 0,
+                    "default_value": 2,
+                    "value": "wall_line_count",
                     "type": "int",
                     "limit_to_extruder": "top_bottom_extruder_nr",
                     "settable_per_mesh": true
