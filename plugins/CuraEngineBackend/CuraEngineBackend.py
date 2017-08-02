@@ -88,10 +88,6 @@ class CuraEngineBackend(QObject, Backend):
         Application.getInstance().globalContainerStackChanged.connect(self._onGlobalStackChanged)
         self._onGlobalStackChanged()
 
-        self._active_extruder_stack = None
-        ExtruderManager.getInstance().activeExtruderChanged.connect(self._onActiveExtruderChanged)
-        self._onActiveExtruderChanged()
-
         Application.getInstance().stacksValidationFinished.connect(self._onStackErrorCheckFinished)
 
         # A flag indicating if an error check was scheduled
@@ -622,6 +618,7 @@ class CuraEngineBackend(QObject, Backend):
 
             for extruder in extruders:
                 extruder.propertyChanged.disconnect(self._onSettingChanged)
+                extruder.containersChanged.disconnect(self._onChanged)
 
         self._global_container_stack = Application.getInstance().getGlobalContainerStack()
 
@@ -631,22 +628,8 @@ class CuraEngineBackend(QObject, Backend):
             extruders = list(ExtruderManager.getInstance().getMachineExtruders(self._global_container_stack.getId()))
             for extruder in extruders:
                 extruder.propertyChanged.connect(self._onSettingChanged)
-            self._onActiveExtruderChanged()
+                extruder.containersChanged.connect(self._onChanged)
             self._onChanged()
-
-    def _onActiveExtruderChanged(self):
-        if self._global_container_stack:
-            # Connect all extruders of the active machine. This might cause a few connects that have already happend,
-            # but that shouldn't cause issues as only new / unique connections are added.
-            extruders = list(ExtruderManager.getInstance().getMachineExtruders(self._global_container_stack.getId()))
-            for extruder in extruders:
-                extruder.propertyChanged.connect(self._onSettingChanged)
-        if self._active_extruder_stack:
-            self._active_extruder_stack.containersChanged.disconnect(self._onChanged)
-
-        self._active_extruder_stack = ExtruderManager.getInstance().getActiveExtruderStack()
-        if self._active_extruder_stack:
-            self._active_extruder_stack.containersChanged.connect(self._onChanged)
 
     def _onProcessLayersFinished(self, job):
         self._process_layers_job = None
