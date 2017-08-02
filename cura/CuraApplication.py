@@ -367,6 +367,12 @@ class CuraApplication(QtApplication):
     def _onEngineCreated(self):
         self._engine.addImageProvider("camera", CameraImageProvider.CameraImageProvider())
 
+    ## The "Quit" button click event handler.
+    @pyqtSlot()
+    def closeApplication(self):
+        Logger.log("i", "Close application")
+        self._main_window.close()
+
     ## A reusable dialogbox
     #
     showMessageBox = pyqtSignal(str, str, str, str, int, int, arguments = ["title", "text", "informativeText", "detailedText", "buttons", "icon"])
