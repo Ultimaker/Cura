@@ -166,7 +166,10 @@ class CuraStackBuilder:
     @classmethod
     def createDefinitionChangesContainer(cls, container_stack, container_name, container_index = None):
         from cura.CuraApplication import CuraApplication
-        definition_changes_container = InstanceContainer(container_name)
+
+        unique_container_name = ContainerRegistry.getInstance().uniqueName(container_name)
+
+        definition_changes_container = InstanceContainer(unique_container_name)
         definition = container_stack.getBottom()
         definition_changes_container.setDefinition(definition)
         definition_changes_container.addMetaDataEntry("type", "definition_changes")
