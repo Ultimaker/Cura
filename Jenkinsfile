@@ -21,7 +21,7 @@ parallel_nodes(['linux && cura', 'windows && cura']) {
 
                 // Ensure CMake is setup. Note that since this is Python code we do not really "build" it.
                 def uranium_dir = get_workspace_dir("Ultimaker/Uranium/${branch}")
-                cmake("..", "-DCMAKE_PREFIX_PATH=${env.CURA_ENVIRONMENT_PATH}/${branch} -DCMAKE_BUILD_TYPE=Release -DURANIUM_DIR=${uranium_dir}")
+                cmake("..", "-DCMAKE_PREFIX_PATH=\"${env.CURA_ENVIRONMENT_PATH}/${branch}\" -DCMAKE_BUILD_TYPE=Release -DURANIUM_DIR=\"${uranium_dir}\"")
             }
 
             // Try and run the unit tests. If this stage fails, we consider the build to be "unstable".
