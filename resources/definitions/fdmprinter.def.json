@@ -1091,7 +1091,7 @@
                 "top_reference_wall":
                 {
                     "label": "Top Reference Wall",
-                    "description": "The number of the wall of the layers above a layer to consider as infill for that layer. Reducing this number reduces the skin on slanted top faces of the input model. Increasing this number causes walls on consecutive layers to be supported better. Zero means the outline of the layer is used.",
+                    "description": "The number of the wall of the layers above a layer to consider as infill for that layer. Reducing this number reduces the skin on slanted top faces of the input model. Increasing this number causes walls on consecutive layers to be supported better.",
                     "minimum_value": "0",
                     "maximum_value": "wall_line_count",
                     "default_value": 2,
@@ -1103,7 +1103,7 @@
                 "bottom_reference_wall":
                 {
                     "label": "Bottom Reference Wall",
-                    "description": "The number of the wall of the layers below a layer to consider as infill for that layer. Reducing this number reduces the skin on overhanging faces of the input model. Increasing this number causes bridges to attach better to the walls of the previous layer. Zero means the outline of the layer is used.",
+                    "description": "The number of the wall of the layers below a layer to consider as infill for that layer. Reducing this number reduces the skin on overhanging faces of the input model.",
                     "minimum_value": "0",
                     "maximum_value": "wall_line_count",
                     "default_value": 0,
