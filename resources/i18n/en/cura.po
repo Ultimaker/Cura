@@ -12,11 +12,11 @@ msgstr ""
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
 "Language: English\n"
-"Lang-Code: en\n"
-"Country-Code: US\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Lang-Code: en\n"
+"Country-Code: US\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.py:28
@@ -112,22 +112,17 @@ msgstr "Connected via USB"
 #: /home/ruben/Projects/Cura/plugins/USBPrinting/USBPrinterOutputDevice.py:153
 msgctxt "@info:status"
 msgid "Unable to start a new job because the printer is busy or not connected."
-msgstr ""
-"Unable to start a new job because the printer is busy or not connected."
+msgstr "Unable to start a new job because the printer is busy or not connected."
 
 #: /home/ruben/Projects/Cura/plugins/USBPrinting/USBPrinterOutputDevice.py:456
 msgctxt "@info:status"
-msgid ""
-"This printer does not support USB printing because it uses UltiGCode flavor."
-msgstr ""
-"This printer does not support USB printing because it uses UltiGCode flavor."
+msgid "This printer does not support USB printing because it uses UltiGCode flavor."
+msgstr "This printer does not support USB printing because it uses UltiGCode flavor."
 
 #: /home/ruben/Projects/Cura/plugins/USBPrinting/USBPrinterOutputDevice.py:460
 msgctxt "@info:status"
-msgid ""
-"Unable to start a new job because the printer does not support usb printing."
-msgstr ""
-"Unable to start a new job because the printer does not support usb printing."
+msgid "Unable to start a new job because the printer does not support usb printing."
+msgstr "Unable to start a new job because the printer does not support usb printing."
 
 #: /home/ruben/Projects/Cura/plugins/USBPrinting/USBPrinterOutputDeviceManager.py:108
 msgctxt "@info"
@@ -221,10 +216,8 @@ msgstr "Print over network"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/NetworkPrinterOutputDevice.py:156
 msgctxt "@info:status"
-msgid ""
-"Access to the printer requested. Please approve the request on the printer"
-msgstr ""
-"Access to the printer requested. Please approve the request on the printer"
+msgid "Access to the printer requested. Please approve the request on the printer"
+msgstr "Access to the printer requested. Please approve the request on the printer"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/NetworkPrinterOutputDevice.py:157
 msgctxt "@info:status"
@@ -267,10 +260,8 @@ msgstr "Send access request to the printer"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/NetworkPrinterOutputDevice.py:358
 msgctxt "@info:status"
-msgid ""
-"Connected over the network. Please approve the access request on the printer."
-msgstr ""
-"Connected over the network. Please approve the access request on the printer."
+msgid "Connected over the network. Please approve the access request on the printer."
+msgstr "Connected over the network. Please approve the access request on the printer."
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/NetworkPrinterOutputDevice.py:365
 msgctxt "@info:status"
@@ -299,22 +290,14 @@ msgstr "The connection with the network was lost."
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/NetworkPrinterOutputDevice.py:481
 msgctxt "@info:status"
-msgid ""
-"The connection with the printer was lost. Check your printer to see if it is "
-"connected."
-msgstr ""
-"The connection with the printer was lost. Check your printer to see if it is "
-"connected."
+msgid "The connection with the printer was lost. Check your printer to see if it is connected."
+msgstr "The connection with the printer was lost. Check your printer to see if it is connected."
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/NetworkPrinterOutputDevice.py:630
 #, python-format
 msgctxt "@info:status"
-msgid ""
-"Unable to start a new print job, printer is busy. Current printer status is "
-"%s."
-msgstr ""
-"Unable to start a new print job, printer is busy. Current printer status is "
-"%s."
+msgid "Unable to start a new print job, printer is busy. Current printer status is %s."
+msgstr "Unable to start a new print job, printer is busy. Current printer status is %s."
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/NetworkPrinterOutputDevice.py:654
 #, python-brace-format
@@ -338,8 +321,7 @@ msgstr "Not enough material for spool {0}."
 #, python-brace-format
 msgctxt "@label"
 msgid "Different PrintCore (Cura: {0}, Printer: {1}) selected for extruder {2}"
-msgstr ""
-"Different PrintCore (Cura: {0}, Printer: {1}) selected for extruder {2}"
+msgstr "Different PrintCore (Cura: {0}, Printer: {1}) selected for extruder {2}"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/NetworkPrinterOutputDevice.py:694
 #, python-brace-format
@@ -350,12 +332,8 @@ msgstr "Different material (Cura: {0}, Printer: {1}) selected for extruder {2}"
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/NetworkPrinterOutputDevice.py:702
 #, python-brace-format
 msgctxt "@label"
-msgid ""
-"PrintCore {0} is not properly calibrated. XY calibration needs to be "
-"performed on the printer."
-msgstr ""
-"PrintCore {0} is not properly calibrated. XY calibration needs to be "
-"performed on the printer."
+msgid "PrintCore {0} is not properly calibrated. XY calibration needs to be performed on the printer."
+msgstr "PrintCore {0} is not properly calibrated. XY calibration needs to be performed on the printer."
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/NetworkPrinterOutputDevice.py:707
 msgctxt "@label"
@@ -364,14 +342,8 @@ msgstr "Are you sure you wish to print with the selected configuration?"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/NetworkPrinterOutputDevice.py:708
 msgctxt "@label"
-msgid ""
-"There is a mismatch between the configuration or calibration of the printer "
-"and Cura. For the best result, always slice for the PrintCores and materials "
-"that are inserted in your printer."
-msgstr ""
-"There is a mismatch between the configuration or calibration of the printer "
-"and Cura. For the best result, always slice for the PrintCores and materials "
-"that are inserted in your printer."
+msgid "There is a mismatch between the configuration or calibration of the printer and Cura. For the best result, always slice for the PrintCores and materials that are inserted in your printer."
+msgstr "There is a mismatch between the configuration or calibration of the printer and Cura. For the best result, always slice for the PrintCores and materials that are inserted in your printer."
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/NetworkPrinterOutputDevice.py:714
 msgctxt "@window:title"
@@ -436,14 +408,8 @@ msgstr "Would you like to use your current printer configuration in Cura?"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/NetworkPrinterOutputDevice.py:1179
 msgctxt "@label"
-msgid ""
-"The PrintCores and/or materials on your printer differ from those within "
-"your current project. For the best result, always slice for the PrintCores "
-"and materials that are inserted in your printer."
-msgstr ""
-"The PrintCores and/or materials on your printer differ from those within "
-"your current project. For the best result, always slice for the PrintCores "
-"and materials that are inserted in your printer."
+msgid "The PrintCores and/or materials on your printer differ from those within your current project. For the best result, always slice for the PrintCores and materials that are inserted in your printer."
+msgstr "The PrintCores and/or materials on your printer differ from those within your current project. For the best result, always slice for the PrintCores and materials that are inserted in your printer."
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/DiscoverUM3Action.py:19
 msgctxt "@action"
@@ -452,14 +418,8 @@ msgstr "Connect via Network"
 
 #: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/SolidWorksReader.py:172
 msgctxt "@info:status"
-msgid ""
-"Errors appeared while opening your SolidWorks file!             Please "
-"check, whether it is possible to open your file in SolidWorks itself without "
-"any problems as well!"
-msgstr ""
-"Errors appeared while opening your SolidWorks file!             Please "
-"check, whether it is possible to open your file in SolidWorks itself without "
-"any problems as well!"
+msgid "Errors appeared while opening your SolidWorks file!             Please check, whether it is possible to open your file in SolidWorks itself without any problems as well!"
+msgstr "Errors appeared while opening your SolidWorks file!             Please check, whether it is possible to open your file in SolidWorks itself without any problems as well!"
 
 #: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/__init__.py:31
 msgctxt "@item:inlistbox"
@@ -483,12 +443,8 @@ msgstr "Error while starting %s!"
 
 #: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/CommonComReader.py:207
 msgctxt "@info:status"
-msgid ""
-"Please keep in mind, that you have to reopen your SolidWorks file manually! "
-"Reloading the model won't work!"
-msgstr ""
-"Please keep in mind, that you have to reopen your SolidWorks file manually! "
-"Reloading the model won't work!"
+msgid "Please keep in mind, that you have to reopen your SolidWorks file manually! Reloading the model won't work!"
+msgstr "Please keep in mind, that you have to reopen your SolidWorks file manually! Reloading the model won't work!"
 
 #: /home/ruben/Projects/Cura/plugins/PostProcessingPlugin/PostProcessingPlugin.py:24
 msgid "Modify G-Code"
@@ -496,12 +452,8 @@ msgstr "Modify G-Code"
 
 #: /home/ruben/Projects/Cura/plugins/SliceInfoPlugin/SliceInfo.py:43
 msgctxt "@info"
-msgid ""
-"Cura collects anonymised slicing statistics. You can disable this in the "
-"preferences."
-msgstr ""
-"Cura collects anonymised slicing statistics. You can disable this in the "
-"preferences."
+msgid "Cura collects anonymised slicing statistics. You can disable this in the preferences."
+msgstr "Cura collects anonymised slicing statistics. You can disable this in the preferences."
 
 #: /home/ruben/Projects/Cura/plugins/SliceInfoPlugin/SliceInfo.py:44
 msgctxt "@action:button"
@@ -557,38 +509,24 @@ msgstr "GIF Image"
 #: /home/ruben/Projects/Cura/plugins/CuraEngineBackend/CuraEngineBackend.py:281
 #: /home/ruben/Projects/Cura/cura/Settings/MachineManager.py:108
 msgctxt "@info:status"
-msgid ""
-"The selected material is incompatible with the selected machine or "
-"configuration."
-msgstr ""
-"The selected material is incompatible with the selected machine or "
-"configuration."
+msgid "The selected material is incompatible with the selected machine or configuration."
+msgstr "The selected material is incompatible with the selected machine or configuration."
 
 #: /home/ruben/Projects/Cura/plugins/CuraEngineBackend/CuraEngineBackend.py:308
 #, python-brace-format
 msgctxt "@info:status"
-msgid ""
-"Unable to slice with the current settings. The following settings have "
-"errors: {0}"
-msgstr ""
-"Unable to slice with the current settings. The following settings have "
-"errors: {0}"
+msgid "Unable to slice with the current settings. The following settings have errors: {0}"
+msgstr "Unable to slice with the current settings. The following settings have errors: {0}"
 
 #: /home/ruben/Projects/Cura/plugins/CuraEngineBackend/CuraEngineBackend.py:317
 msgctxt "@info:status"
-msgid ""
-"Unable to slice because the prime tower or prime position(s) are invalid."
-msgstr ""
-"Unable to slice because the prime tower or prime position(s) are invalid."
+msgid "Unable to slice because the prime tower or prime position(s) are invalid."
+msgstr "Unable to slice because the prime tower or prime position(s) are invalid."
 
 #: /home/ruben/Projects/Cura/plugins/CuraEngineBackend/CuraEngineBackend.py:325
 msgctxt "@info:status"
-msgid ""
-"Nothing to slice because none of the models fit the build volume. Please "
-"scale or rotate models to fit."
-msgstr ""
-"Nothing to slice because none of the models fit the build volume. Please "
-"scale or rotate models to fit."
+msgid "Nothing to slice because none of the models fit the build volume. Please scale or rotate models to fit."
+msgstr "Nothing to slice because none of the models fit the build volume. Please scale or rotate models to fit."
 
 #: /home/ruben/Projects/Cura/plugins/CuraEngineBackend/ProcessSlicedLayersJob.py:65
 #: /home/ruben/Projects/Cura/plugins/CuraEngineBackend/ProcessSlicedLayersJob.py:238
@@ -656,12 +594,8 @@ msgstr "Parsing G-code"
 
 #: /home/ruben/Projects/Cura/plugins/GCodeReader/GCodeReader.py:365
 msgctxt "@info:generic"
-msgid ""
-"Make sure the g-code is suitable for your printer and printer configuration "
-"before sending the file to it. The g-code representation may not be accurate."
-msgstr ""
-"Make sure the g-code is suitable for your printer and printer configuration "
-"before sending the file to it. The g-code representation may not be accurate."
+msgid "Make sure the g-code is suitable for your printer and printer configuration before sending the file to it. The g-code representation may not be accurate."
+msgstr "Make sure the g-code is suitable for your printer and printer configuration before sending the file to it. The g-code representation may not be accurate."
 
 #: /home/ruben/Projects/Cura/plugins/CuraProfileWriter/__init__.py:14
 #: /home/ruben/Projects/Cura/plugins/CuraProfileReader/__init__.py:14
@@ -737,12 +671,8 @@ msgstr "File Already Exists"
 #: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:113
 #, python-brace-format
 msgctxt "@label"
-msgid ""
-"The file <filename>{0}</filename> already exists. Are you sure you want to "
-"overwrite it?"
-msgstr ""
-"The file <filename>{0}</filename> already exists. Are you sure you want to "
-"overwrite it?"
+msgid "The file <filename>{0}</filename> already exists. Are you sure you want to overwrite it?"
+msgstr "The file <filename>{0}</filename> already exists. Are you sure you want to overwrite it?"
 
 #: /home/ruben/Projects/Cura/cura/Settings/ContainerManager.py:801
 msgctxt "@label"
@@ -756,12 +686,8 @@ msgstr "Custom Material"
 
 #: /home/ruben/Projects/Cura/cura/Settings/MaterialManager.py:24
 msgctxt "@info:status Has a cancel button next to it."
-msgid ""
-"The selected material diameter causes the material to become incompatible "
-"with the current printer."
-msgstr ""
-"The selected material diameter causes the material to become incompatible "
-"with the current printer."
+msgid "The selected material diameter causes the material to become incompatible with the current printer."
+msgstr "The selected material diameter causes the material to become incompatible with the current printer."
 
 #: /home/ruben/Projects/Cura/cura/Settings/MaterialManager.py:25
 msgctxt "@action:button"
@@ -776,20 +702,14 @@ msgstr "Undo changing the material diameter."
 #: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:143
 #, python-brace-format
 msgctxt "@info:status"
-msgid ""
-"Failed to export profile to <filename>{0}</filename>: <message>{1}</message>"
-msgstr ""
-"Failed to export profile to <filename>{0}</filename>: <message>{1}</message>"
+msgid "Failed to export profile to <filename>{0}</filename>: <message>{1}</message>"
+msgstr "Failed to export profile to <filename>{0}</filename>: <message>{1}</message>"
 
 #: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:148
 #, python-brace-format
 msgctxt "@info:status"
-msgid ""
-"Failed to export profile to <filename>{0}</filename>: Writer plugin reported "
-"failure."
-msgstr ""
-"Failed to export profile to <filename>{0}</filename>: Writer plugin reported "
-"failure."
+msgid "Failed to export profile to <filename>{0}</filename>: Writer plugin reported failure."
+msgstr "Failed to export profile to <filename>{0}</filename>: Writer plugin reported failure."
 
 #: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:151
 #, python-brace-format
@@ -803,12 +723,8 @@ msgstr "Exported profile to <filename>{0}</filename>"
 #: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:242
 #, python-brace-format
 msgctxt "@info:status"
-msgid ""
-"Failed to import profile from <filename>{0}</filename>: <message>{1}</"
-"message>"
-msgstr ""
-"Failed to import profile from <filename>{0}</filename>: <message>{1}</"
-"message>"
+msgid "Failed to import profile from <filename>{0}</filename>: <message>{1}</message>"
+msgstr "Failed to import profile from <filename>{0}</filename>: <message>{1}</message>"
 
 #: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:210
 #: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:246
@@ -841,12 +757,8 @@ msgstr "Could not find a quality type {0} for the current configuration."
 
 #: /home/ruben/Projects/Cura/cura/BuildVolume.py:95
 msgctxt "@info:status"
-msgid ""
-"The build volume height has been reduced due to the value of the \"Print "
-"Sequence\" setting to prevent the gantry from colliding with printed models."
-msgstr ""
-"The build volume height has been reduced due to the value of the \"Print "
-"Sequence\" setting to prevent the gantry from colliding with printed models."
+msgid "The build volume height has been reduced due to the value of the \"Print Sequence\" setting to prevent the gantry from colliding with printed models."
+msgstr "The build volume height has been reduced due to the value of the \"Print Sequence\" setting to prevent the gantry from colliding with printed models."
 
 #: /home/ruben/Projects/Cura/cura/MultiplyObjectsJob.py:34
 msgctxt "@info:status"
@@ -862,15 +774,11 @@ msgstr "Crash Report"
 msgctxt "@label"
 msgid ""
 "<p>A fatal exception has occurred that we could not recover from!</p>\n"
-"        <p>Please use the information below to post a bug report at <a href="
-"\"http://github.com/Ultimaker/Cura/issues\">http://github.com/Ultimaker/Cura/"
-"issues</a></p>\n"
+"        <p>Please use the information below to post a bug report at <a href=\"http://github.com/Ultimaker/Cura/issues\">http://github.com/Ultimaker/Cura/issues</a></p>\n"
 "    "
 msgstr ""
 "<p>A fatal exception has occurred that we could not recover from!</p>\n"
-"        <p>Please use the information below to post a bug report at <a href="
-"\"http://github.com/Ultimaker/Cura/issues\">http://github.com/Ultimaker/Cura/"
-"issues</a></p>\n"
+"        <p>Please use the information below to post a bug report at <a href=\"http://github.com/Ultimaker/Cura/issues\">http://github.com/Ultimaker/Cura/issues</a></p>\n"
 "    "
 
 #: /home/ruben/Projects/Cura/cura/CrashHandler.py:112
@@ -895,9 +803,7 @@ msgstr "Loading interface..."
 
 #: /home/ruben/Projects/Cura/cura/CuraApplication.py:815
 #, python-format
-msgctxt ""
-"@info 'width', 'depth' and 'height' are variable names that must NOT be "
-"translated; just translate the format of ##x##x## mm."
+msgctxt "@info 'width', 'depth' and 'height' are variable names that must NOT be translated; just translate the format of ##x##x## mm."
 msgid "%(width).1f x %(depth).1f x %(height).1f mm"
 msgstr "%(width).1f x %(depth).1f x %(height).1f mm"
 
@@ -989,14 +895,8 @@ msgstr "X min"
 
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:191
 msgctxt "@tooltip"
-msgid ""
-"Distance from the left of the printhead to the center of the nozzle. Used to "
-"prevent colissions between previous prints and the printhead when printing "
-"\"One at a Time\"."
-msgstr ""
-"Distance from the left of the printhead to the center of the nozzle. Used to "
-"prevent colissions between previous prints and the printhead when printing "
-"\"One at a Time\"."
+msgid "Distance from the left of the printhead to the center of the nozzle. Used to prevent colissions between previous prints and the printhead when printing \"One at a Time\"."
+msgstr "Distance from the left of the printhead to the center of the nozzle. Used to prevent colissions between previous prints and the printhead when printing \"One at a Time\"."
 
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:200
 msgctxt "@label"
@@ -1005,14 +905,8 @@ msgstr "Y min"
 
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:201
 msgctxt "@tooltip"
-msgid ""
-"Distance from the front of the printhead to the center of the nozzle. Used "
-"to prevent colissions between previous prints and the printhead when "
-"printing \"One at a Time\"."
-msgstr ""
-"Distance from the front of the printhead to the center of the nozzle. Used "
-"to prevent colissions between previous prints and the printhead when "
-"printing \"One at a Time\"."
+msgid "Distance from the front of the printhead to the center of the nozzle. Used to prevent colissions between previous prints and the printhead when printing \"One at a Time\"."
+msgstr "Distance from the front of the printhead to the center of the nozzle. Used to prevent colissions between previous prints and the printhead when printing \"One at a Time\"."
 
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:210
 msgctxt "@label"
@@ -1021,14 +915,8 @@ msgstr "X max"
 
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:211
 msgctxt "@tooltip"
-msgid ""
-"Distance from the right of the printhead to the center of the nozzle. Used "
-"to prevent colissions between previous prints and the printhead when "
-"printing \"One at a Time\"."
-msgstr ""
-"Distance from the right of the printhead to the center of the nozzle. Used "
-"to prevent colissions between previous prints and the printhead when "
-"printing \"One at a Time\"."
+msgid "Distance from the right of the printhead to the center of the nozzle. Used to prevent colissions between previous prints and the printhead when printing \"One at a Time\"."
+msgstr "Distance from the right of the printhead to the center of the nozzle. Used to prevent colissions between previous prints and the printhead when printing \"One at a Time\"."
 
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:220
 msgctxt "@label"
@@ -1037,14 +925,8 @@ msgstr "Y max"
 
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:221
 msgctxt "@tooltip"
-msgid ""
-"Distance from the rear of the printhead to the center of the nozzle. Used to "
-"prevent colissions between previous prints and the printhead when printing "
-"\"One at a Time\"."
-msgstr ""
-"Distance from the rear of the printhead to the center of the nozzle. Used to "
-"prevent colissions between previous prints and the printhead when printing "
-"\"One at a Time\"."
+msgid "Distance from the rear of the printhead to the center of the nozzle. Used to prevent colissions between previous prints and the printhead when printing \"One at a Time\"."
+msgstr "Distance from the rear of the printhead to the center of the nozzle. Used to prevent colissions between previous prints and the printhead when printing \"One at a Time\"."
 
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:233
 msgctxt "@label"
@@ -1053,14 +935,8 @@ msgstr "Gantry height"
 
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:235
 msgctxt "@tooltip"
-msgid ""
-"The height difference between the tip of the nozzle and the gantry system (X "
-"and Y axes). Used to prevent collisions between previous prints and the "
-"gantry when printing \"One at a Time\"."
-msgstr ""
-"The height difference between the tip of the nozzle and the gantry system (X "
-"and Y axes). Used to prevent collisions between previous prints and the "
-"gantry when printing \"One at a Time\"."
+msgid "The height difference between the tip of the nozzle and the gantry system (X and Y axes). Used to prevent collisions between previous prints and the gantry when printing \"One at a Time\"."
+msgstr "The height difference between the tip of the nozzle and the gantry system (X and Y axes). Used to prevent collisions between previous prints and the gantry when printing \"One at a Time\"."
 
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:253
 msgctxt "@label"
@@ -1069,12 +945,8 @@ msgstr "Number of Extruders"
 
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:287
 msgctxt "@tooltip"
-msgid ""
-"The nominal diameter of filament supported by the printer. The exact "
-"diameter will be overridden by the material and/or the profile."
-msgstr ""
-"The nominal diameter of filament supported by the printer. The exact "
-"diameter will be overridden by the material and/or the profile."
+msgid "The nominal diameter of filament supported by the printer. The exact diameter will be overridden by the material and/or the profile."
+msgstr "The nominal diameter of filament supported by the printer. The exact diameter will be overridden by the material and/or the profile."
 
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:289
 msgctxt "@label"
@@ -1244,19 +1116,11 @@ msgstr "Connect to Networked Printer"
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/DiscoverUM3Action.qml:65
 msgctxt "@label"
 msgid ""
-"To print directly to your printer over the network, please make sure your "
-"printer is connected to the network using a network cable or by connecting "
-"your printer to your WIFI network. If you don't connect Cura with your "
-"printer, you can still use a USB drive to transfer g-code files to your "
-"printer.\n"
+"To print directly to your printer over the network, please make sure your printer is connected to the network using a network cable or by connecting your printer to your WIFI network. If you don't connect Cura with your printer, you can still use a USB drive to transfer g-code files to your printer.\n"
 "\n"
 "Select your printer from the list below:"
 msgstr ""
-"To print directly to your printer over the network, please make sure your "
-"printer is connected to the network using a network cable or by connecting "
-"your printer to your WIFI network. If you don't connect Cura with your "
-"printer, you can still use a USB drive to transfer g-code files to your "
-"printer.\n"
+"To print directly to your printer over the network, please make sure your printer is connected to the network using a network cable or by connecting your printer to your WIFI network. If you don't connect Cura with your printer, you can still use a USB drive to transfer g-code files to your printer.\n"
 "\n"
 "Select your printer from the list below:"
 
@@ -1287,12 +1151,8 @@ msgstr "Refresh"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/DiscoverUM3Action.qml:196
 msgctxt "@label"
-msgid ""
-"If your printer is not listed, read the <a href='%1'>network printing "
-"troubleshooting guide</a>"
-msgstr ""
-"If your printer is not listed, read the <a href='%1'>network printing "
-"troubleshooting guide</a>"
+msgid "If your printer is not listed, read the <a href='%1'>network printing troubleshooting guide</a>"
+msgstr "If your printer is not listed, read the <a href='%1'>network printing troubleshooting guide</a>"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/DiscoverUM3Action.qml:223
 msgctxt "@label"
@@ -1565,16 +1425,8 @@ msgstr "Depth (mm)"
 
 #: /home/ruben/Projects/Cura/plugins/ImageReader/ConfigUI.qml:126
 msgctxt "@info:tooltip"
-msgid ""
-"By default, white pixels represent high points on the mesh and black pixels "
-"represent low points on the mesh. Change this option to reverse the behavior "
-"such that black pixels represent high points on the mesh and white pixels "
-"represent low points on the mesh."
-msgstr ""
-"By default, white pixels represent high points on the mesh and black pixels "
-"represent low points on the mesh. Change this option to reverse the behavior "
-"such that black pixels represent high points on the mesh and white pixels "
-"represent low points on the mesh."
+msgid "By default, white pixels represent high points on the mesh and black pixels represent low points on the mesh. Change this option to reverse the behavior such that black pixels represent high points on the mesh and white pixels represent low points on the mesh."
+msgstr "By default, white pixels represent high points on the mesh and black pixels represent low points on the mesh. Change this option to reverse the behavior such that black pixels represent high points on the mesh and white pixels represent low points on the mesh."
 
 #: /home/ruben/Projects/Cura/plugins/ImageReader/ConfigUI.qml:139
 msgctxt "@item:inlistbox"
@@ -1792,25 +1644,13 @@ msgstr "Build Plate Leveling"
 
 #: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/BedLevelMachineAction.qml:38
 msgctxt "@label"
-msgid ""
-"To make sure your prints will come out great, you can now adjust your "
-"buildplate. When you click 'Move to Next Position' the nozzle will move to "
-"the different positions that can be adjusted."
-msgstr ""
-"To make sure your prints will come out great, you can now adjust your "
-"buildplate. When you click 'Move to Next Position' the nozzle will move to "
-"the different positions that can be adjusted."
+msgid "To make sure your prints will come out great, you can now adjust your buildplate. When you click 'Move to Next Position' the nozzle will move to the different positions that can be adjusted."
+msgstr "To make sure your prints will come out great, you can now adjust your buildplate. When you click 'Move to Next Position' the nozzle will move to the different positions that can be adjusted."
 
 #: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/BedLevelMachineAction.qml:47
 msgctxt "@label"
-msgid ""
-"For every position; insert a piece of paper under the nozzle and adjust the "
-"print build plate height. The print build plate height is right when the "
-"paper is slightly gripped by the tip of the nozzle."
-msgstr ""
-"For every position; insert a piece of paper under the nozzle and adjust the "
-"print build plate height. The print build plate height is right when the "
-"paper is slightly gripped by the tip of the nozzle."
+msgid "For every position; insert a piece of paper under the nozzle and adjust the print build plate height. The print build plate height is right when the paper is slightly gripped by the tip of the nozzle."
+msgstr "For every position; insert a piece of paper under the nozzle and adjust the print build plate height. The print build plate height is right when the paper is slightly gripped by the tip of the nozzle."
 
 #: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/BedLevelMachineAction.qml:62
 msgctxt "@action:button"
@@ -1829,23 +1669,13 @@ msgstr "Upgrade Firmware"
 
 #: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UpgradeFirmwareMachineAction.qml:38
 msgctxt "@label"
-msgid ""
-"Firmware is the piece of software running directly on your 3D printer. This "
-"firmware controls the step motors, regulates the temperature and ultimately "
-"makes your printer work."
-msgstr ""
-"Firmware is the piece of software running directly on your 3D printer. This "
-"firmware controls the step motors, regulates the temperature and ultimately "
-"makes your printer work."
+msgid "Firmware is the piece of software running directly on your 3D printer. This firmware controls the step motors, regulates the temperature and ultimately makes your printer work."
+msgstr "Firmware is the piece of software running directly on your 3D printer. This firmware controls the step motors, regulates the temperature and ultimately makes your printer work."
 
 #: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UpgradeFirmwareMachineAction.qml:48
 msgctxt "@label"
-msgid ""
-"The firmware shipping with new printers works, but new versions tend to have "
-"more features and improvements."
-msgstr ""
-"The firmware shipping with new printers works, but new versions tend to have "
-"more features and improvements."
+msgid "The firmware shipping with new printers works, but new versions tend to have more features and improvements."
+msgstr "The firmware shipping with new printers works, but new versions tend to have more features and improvements."
 
 #: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UpgradeFirmwareMachineAction.qml:62
 msgctxt "@action:button"
@@ -1879,12 +1709,8 @@ msgstr "Check Printer"
 
 #: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UMOCheckupMachineAction.qml:39
 msgctxt "@label"
-msgid ""
-"It's a good idea to do a few sanity checks on your Ultimaker. You can skip "
-"this step if you know your machine is functional"
-msgstr ""
-"It's a good idea to do a few sanity checks on your Ultimaker. You can skip "
-"this step if you know your machine is functional"
+msgid "It's a good idea to do a few sanity checks on your Ultimaker. You can skip this step if you know your machine is functional"
+msgstr "It's a good idea to do a few sanity checks on your Ultimaker. You can skip this step if you know your machine is functional"
 
 #: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UMOCheckupMachineAction.qml:53
 msgctxt "@action:button"
@@ -2248,10 +2074,8 @@ msgstr "Theme:"
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:272
 msgctxt "@label"
-msgid ""
-"You will need to restart the application for these changes to have effect."
-msgstr ""
-"You will need to restart the application for these changes to have effect."
+msgid "You will need to restart the application for these changes to have effect."
+msgstr "You will need to restart the application for these changes to have effect."
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:289
 msgctxt "@info:tooltip"
@@ -2270,12 +2094,8 @@ msgstr "Viewport behavior"
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:319
 msgctxt "@info:tooltip"
-msgid ""
-"Highlight unsupported areas of the model in red. Without support these areas "
-"will not print properly."
-msgstr ""
-"Highlight unsupported areas of the model in red. Without support these areas "
-"will not print properly."
+msgid "Highlight unsupported areas of the model in red. Without support these areas will not print properly."
+msgstr "Highlight unsupported areas of the model in red. Without support these areas will not print properly."
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:328
 msgctxt "@option:check"
@@ -2284,12 +2104,8 @@ msgstr "Display overhang"
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:335
 msgctxt "@info:tooltip"
-msgid ""
-"Moves the camera so the model is in the center of the view when a model is "
-"selected"
-msgstr ""
-"Moves the camera so the model is in the center of the view when a model is "
-"selected"
+msgid "Moves the camera so the model is in the center of the view when a model is selected"
+msgstr "Moves the camera so the model is in the center of the view when a model is selected"
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:340
 msgctxt "@action:button"
@@ -2318,10 +2134,8 @@ msgstr "Zoom toward mouse direction"
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:377
 msgctxt "@info:tooltip"
-msgid ""
-"Should models on the platform be moved so that they no longer intersect?"
-msgstr ""
-"Should models on the platform be moved so that they no longer intersect?"
+msgid "Should models on the platform be moved so that they no longer intersect?"
+msgstr "Should models on the platform be moved so that they no longer intersect?"
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:382
 msgctxt "@option:check"
@@ -2375,12 +2189,8 @@ msgstr "Scale large models"
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:464
 msgctxt "@info:tooltip"
-msgid ""
-"An model may appear extremely small if its unit is for example in meters "
-"rather than millimeters. Should these models be scaled up?"
-msgstr ""
-"An model may appear extremely small if its unit is for example in meters "
-"rather than millimeters. Should these models be scaled up?"
+msgid "An model may appear extremely small if its unit is for example in meters rather than millimeters. Should these models be scaled up?"
+msgstr "An model may appear extremely small if its unit is for example in meters rather than millimeters. Should these models be scaled up?"
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:469
 msgctxt "@option:check"
@@ -2389,12 +2199,8 @@ msgstr "Scale extremely small models"
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:478
 msgctxt "@info:tooltip"
-msgid ""
-"Should a prefix based on the printer name be added to the print job name "
-"automatically?"
-msgstr ""
-"Should a prefix based on the printer name be added to the print job name "
-"automatically?"
+msgid "Should a prefix based on the printer name be added to the print job name automatically?"
+msgstr "Should a prefix based on the printer name be added to the print job name automatically?"
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:483
 msgctxt "@option:check"
@@ -2438,14 +2244,8 @@ msgstr "Always import models"
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:564
 msgctxt "@info:tooltip"
-msgid ""
-"When you have made changes to a profile and switched to a different one, a "
-"dialog will be shown asking whether you want to keep your modifications or "
-"not, or you can choose a default behaviour and never show that dialog again."
-msgstr ""
-"When you have made changes to a profile and switched to a different one, a "
-"dialog will be shown asking whether you want to keep your modifications or "
-"not, or you can choose a default behaviour and never show that dialog again."
+msgid "When you have made changes to a profile and switched to a different one, a dialog will be shown asking whether you want to keep your modifications or not, or you can choose a default behaviour and never show that dialog again."
+msgstr "When you have made changes to a profile and switched to a different one, a dialog will be shown asking whether you want to keep your modifications or not, or you can choose a default behaviour and never show that dialog again."
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:573
 msgctxt "@label"
@@ -2469,14 +2269,8 @@ msgstr "Check for updates on start"
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:644
 msgctxt "@info:tooltip"
-msgid ""
-"Should anonymous data about your print be sent to Ultimaker? Note, no "
-"models, IP addresses or other personally identifiable information is sent or "
-"stored."
-msgstr ""
-"Should anonymous data about your print be sent to Ultimaker? Note, no "
-"models, IP addresses or other personally identifiable information is sent or "
-"stored."
+msgid "Should anonymous data about your print be sent to Ultimaker? Note, no models, IP addresses or other personally identifiable information is sent or stored."
+msgstr "Should anonymous data about your print be sent to Ultimaker? Note, no models, IP addresses or other personally identifiable information is sent or stored."
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:649
 msgctxt "@option:check"
@@ -2588,12 +2382,8 @@ msgstr "Discard current changes"
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/ProfilesPage.qml:190
 msgctxt "@action:label"
-msgid ""
-"This profile uses the defaults specified by the printer, so it has no "
-"settings/overrides in the list below."
-msgstr ""
-"This profile uses the defaults specified by the printer, so it has no "
-"settings/overrides in the list below."
+msgid "This profile uses the defaults specified by the printer, so it has no settings/overrides in the list below."
+msgstr "This profile uses the defaults specified by the printer, so it has no settings/overrides in the list below."
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/ProfilesPage.qml:197
 msgctxt "@action:label"
@@ -2642,9 +2432,7 @@ msgid "Materials"
 msgstr "Materials"
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/MaterialsPage.qml:116
-msgctxt ""
-"@action:label %1 is printer name, %2 is how this printer names variants, %3 "
-"is variant name"
+msgctxt "@action:label %1 is printer name, %2 is how this printer names variants, %3 is variant name"
 msgid "Printer: %1, %2: %3"
 msgstr "Printer: %1, %2: %3"
 
@@ -2671,10 +2459,8 @@ msgstr "Import Material"
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/MaterialsPage.qml:320
 msgctxt "@info:status"
-msgid ""
-"Could not import material <filename>%1</filename>: <message>%2</message>"
-msgstr ""
-"Could not import material <filename>%1</filename>: <message>%2</message>"
+msgid "Could not import material <filename>%1</filename>: <message>%2</message>"
+msgstr "Could not import material <filename>%1</filename>: <message>%2</message>"
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/MaterialsPage.qml:324
 msgctxt "@info:status"
@@ -2689,10 +2475,8 @@ msgstr "Export Material"
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/MaterialsPage.qml:362
 msgctxt "@info:status"
-msgid ""
-"Failed to export material to <filename>%1</filename>: <message>%2</message>"
-msgstr ""
-"Failed to export material to <filename>%1</filename>: <message>%2</message>"
+msgid "Failed to export material to <filename>%1</filename>: <message>%2</message>"
+msgstr "Failed to export material to <filename>%1</filename>: <message>%2</message>"
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/MaterialsPage.qml:368
 msgctxt "@info:status"
@@ -2922,13 +2706,11 @@ msgstr "Configure setting visiblity..."
 #: /home/ruben/Projects/Cura/resources/qml/Settings/SettingCategory.qml:123
 msgctxt "@label"
 msgid ""
-"Some hidden settings use values different from their normal calculated "
-"value.\n"
+"Some hidden settings use values different from their normal calculated value.\n"
 "\n"
 "Click to make these settings visible."
 msgstr ""
-"Some hidden settings use values different from their normal calculated "
-"value.\n"
+"Some hidden settings use values different from their normal calculated value.\n"
 "\n"
 "Click to make these settings visible."
 
@@ -2944,12 +2726,8 @@ msgstr "Affected By"
 
 #: /home/ruben/Projects/Cura/resources/qml/Settings/SettingItem.qml:157
 msgctxt "@label"
-msgid ""
-"This setting is always shared between all extruders. Changing it here will "
-"change the value for all extruders"
-msgstr ""
-"This setting is always shared between all extruders. Changing it here will "
-"change the value for all extruders"
+msgid "This setting is always shared between all extruders. Changing it here will change the value for all extruders"
+msgstr "This setting is always shared between all extruders. Changing it here will change the value for all extruders"
 
 #: /home/ruben/Projects/Cura/resources/qml/Settings/SettingItem.qml:160
 msgctxt "@label"
@@ -2970,13 +2748,11 @@ msgstr ""
 #: /home/ruben/Projects/Cura/resources/qml/Settings/SettingItem.qml:284
 msgctxt "@label"
 msgid ""
-"This setting is normally calculated, but it currently has an absolute value "
-"set.\n"
+"This setting is normally calculated, but it currently has an absolute value set.\n"
 "\n"
 "Click to restore the calculated value."
 msgstr ""
-"This setting is normally calculated, but it currently has an absolute value "
-"set.\n"
+"This setting is normally calculated, but it currently has an absolute value set.\n"
 "\n"
 "Click to restore the calculated value."
 
@@ -2996,21 +2772,13 @@ msgstr ""
 
 #: /home/ruben/Projects/Cura/resources/qml/Sidebar.qml:455
 msgctxt "@tooltip"
-msgid ""
-"<b>Recommended Print Setup</b><br/><br/>Print with the recommended settings "
-"for the selected printer, material and quality."
-msgstr ""
-"<b>Recommended Print Setup</b><br/><br/>Print with the recommended settings "
-"for the selected printer, material and quality."
+msgid "<b>Recommended Print Setup</b><br/><br/>Print with the recommended settings for the selected printer, material and quality."
+msgstr "<b>Recommended Print Setup</b><br/><br/>Print with the recommended settings for the selected printer, material and quality."
 
 #: /home/ruben/Projects/Cura/resources/qml/Sidebar.qml:460
 msgctxt "@tooltip"
-msgid ""
-"<b>Custom Print Setup</b><br/><br/>Print with finegrained control over every "
-"last bit of the slicing process."
-msgstr ""
-"<b>Custom Print Setup</b><br/><br/>Print with finegrained control over every "
-"last bit of the slicing process."
+msgid "<b>Custom Print Setup</b><br/><br/>Print with finegrained control over every last bit of the slicing process."
+msgstr "<b>Custom Print Setup</b><br/><br/>Print with finegrained control over every last bit of the slicing process."
 
 #: /home/ruben/Projects/Cura/resources/qml/Menus/MaterialMenu.qml:35
 msgctxt "@title:menuitem %1 is the automatically selected material"
@@ -3088,12 +2856,8 @@ msgstr "Build plate"
 
 #: /home/ruben/Projects/Cura/resources/qml/PrintMonitor.qml:278
 msgctxt "@tooltip"
-msgid ""
-"The target temperature of the heated bed. The bed will heat up or cool down "
-"towards this temperature. If this is 0, the bed heating is turned off."
-msgstr ""
-"The target temperature of the heated bed. The bed will heat up or cool down "
-"towards this temperature. If this is 0, the bed heating is turned off."
+msgid "The target temperature of the heated bed. The bed will heat up or cool down towards this temperature. If this is 0, the bed heating is turned off."
+msgstr "The target temperature of the heated bed. The bed will heat up or cool down towards this temperature. If this is 0, the bed heating is turned off."
 
 #: /home/ruben/Projects/Cura/resources/qml/PrintMonitor.qml:310
 msgctxt "@tooltip"
@@ -3117,14 +2881,8 @@ msgstr "Pre-heat"
 
 #: /home/ruben/Projects/Cura/resources/qml/PrintMonitor.qml:610
 msgctxt "@tooltip of pre-heat"
-msgid ""
-"Heat the bed in advance before printing. You can continue adjusting your "
-"print while it is heating, and you won't have to wait for the bed to heat up "
-"when you're ready to print."
-msgstr ""
-"Heat the bed in advance before printing. You can continue adjusting your "
-"print while it is heating, and you won't have to wait for the bed to heat up "
-"when you're ready to print."
+msgid "Heat the bed in advance before printing. You can continue adjusting your print while it is heating, and you won't have to wait for the bed to heat up when you're ready to print."
+msgstr "Heat the bed in advance before printing. You can continue adjusting your print while it is heating, and you won't have to wait for the bed to heat up when you're ready to print."
 
 #: /home/ruben/Projects/Cura/resources/qml/PrintMonitor.qml:643
 msgctxt "@label"
@@ -3385,14 +3143,8 @@ msgstr "Open file(s)"
 
 #: /home/ruben/Projects/Cura/resources/qml/OpenFilesIncludingProjectsDialog.qml:64
 msgctxt "@text:window"
-msgid ""
-"We have found one or more project file(s) within the files you have "
-"selected. You can open only one project file at a time. We suggest to only "
-"import models from those files. Would you like to proceed?"
-msgstr ""
-"We have found one or more project file(s) within the files you have "
-"selected. You can open only one project file at a time. We suggest to only "
-"import models from those files. Would you like to proceed?"
+msgid "We have found one or more project file(s) within the files you have selected. You can open only one project file at a time. We suggest to only import models from those files. Would you like to proceed?"
+msgstr "We have found one or more project file(s) within the files you have selected. You can open only one project file at a time. We suggest to only import models from those files. Would you like to proceed?"
 
 #: /home/ruben/Projects/Cura/resources/qml/OpenFilesIncludingProjectsDialog.qml:99
 msgctxt "@action:button"
@@ -3498,12 +3250,8 @@ msgstr "New project"
 
 #: /home/ruben/Projects/Cura/resources/qml/Cura.qml:532
 msgctxt "@info:question"
-msgid ""
-"Are you sure you want to start a new project? This will clear the build "
-"plate and any unsaved settings."
-msgstr ""
-"Are you sure you want to start a new project? This will clear the build "
-"plate and any unsaved settings."
+msgid "Are you sure you want to start a new project? This will clear the build plate and any unsaved settings."
+msgstr "Are you sure you want to start a new project? This will clear the build plate and any unsaved settings."
 
 #: /home/ruben/Projects/Cura/resources/qml/Cura.qml:750
 msgctxt "@window:title"
@@ -3517,14 +3265,8 @@ msgstr "Open File(s)"
 
 #: /home/ruben/Projects/Cura/resources/qml/Cura.qml:760
 msgctxt "@text:window"
-msgid ""
-"We have found one or more G-Code files within the files you have selected. "
-"You can only open one G-Code file at a time. If you want to open a G-Code "
-"file, please just select only one."
-msgstr ""
-"We have found one or more G-Code files within the files you have selected. "
-"You can only open one G-Code file at a time. If you want to open a G-Code "
-"file, please just select only one."
+msgid "We have found one or more G-Code files within the files you have selected. You can only open one G-Code file at a time. If you want to open a G-Code file, please just select only one."
+msgstr "We have found one or more G-Code files within the files you have selected. You can only open one G-Code file at a time. If you want to open a G-Code file, please just select only one."
 
 #: /home/ruben/Projects/Cura/resources/qml/WorkspaceSummaryDialog.qml:14
 msgctxt "@title:window"
@@ -3608,10 +3350,8 @@ msgstr "Gradual"
 
 #: /home/ruben/Projects/Cura/resources/qml/SidebarSimple.qml:244
 msgctxt "@label"
-msgid ""
-"Gradual infill will gradually increase the amount of infill towards the top."
-msgstr ""
-"Gradual infill will gradually increase the amount of infill towards the top."
+msgid "Gradual infill will gradually increase the amount of infill towards the top."
+msgstr "Gradual infill will gradually increase the amount of infill towards the top."
 
 #: /home/ruben/Projects/Cura/resources/qml/SidebarSimple.qml:267
 msgctxt "@label"
@@ -3620,12 +3360,8 @@ msgstr "Generate Support"
 
 #: /home/ruben/Projects/Cura/resources/qml/SidebarSimple.qml:300
 msgctxt "@label"
-msgid ""
-"Generate structures to support parts of the model which have overhangs. "
-"Without these structures, such parts would collapse during printing."
-msgstr ""
-"Generate structures to support parts of the model which have overhangs. "
-"Without these structures, such parts would collapse during printing."
+msgid "Generate structures to support parts of the model which have overhangs. Without these structures, such parts would collapse during printing."
+msgstr "Generate structures to support parts of the model which have overhangs. Without these structures, such parts would collapse during printing."
 
 #: /home/ruben/Projects/Cura/resources/qml/SidebarSimple.qml:317
 msgctxt "@label"
@@ -3634,14 +3370,8 @@ msgstr "Support Extruder"
 
 #: /home/ruben/Projects/Cura/resources/qml/SidebarSimple.qml:391
 msgctxt "@label"
-msgid ""
-"Select which extruder to use for support. This will build up supporting "
-"structures below the model to prevent the model from sagging or printing in "
-"mid air."
-msgstr ""
-"Select which extruder to use for support. This will build up supporting "
-"structures below the model to prevent the model from sagging or printing in "
-"mid air."
+msgid "Select which extruder to use for support. This will build up supporting structures below the model to prevent the model from sagging or printing in mid air."
+msgstr "Select which extruder to use for support. This will build up supporting structures below the model to prevent the model from sagging or printing in mid air."
 
 #: /home/ruben/Projects/Cura/resources/qml/SidebarSimple.qml:416
 msgctxt "@label"
@@ -3650,21 +3380,13 @@ msgstr "Build Plate Adhesion"
 
 #: /home/ruben/Projects/Cura/resources/qml/SidebarSimple.qml:462
 msgctxt "@label"
-msgid ""
-"Enable printing a brim or raft. This will add a flat area around or under "
-"your object which is easy to cut off afterwards."
-msgstr ""
-"Enable printing a brim or raft. This will add a flat area around or under "
-"your object which is easy to cut off afterwards."
+msgid "Enable printing a brim or raft. This will add a flat area around or under your object which is easy to cut off afterwards."
+msgstr "Enable printing a brim or raft. This will add a flat area around or under your object which is easy to cut off afterwards."
 
 #: /home/ruben/Projects/Cura/resources/qml/SidebarSimple.qml:515
 msgctxt "@label"
-msgid ""
-"Need help improving your prints?<br>Read the <a href='%1'>Ultimaker "
-"Troubleshooting Guides</a>"
-msgstr ""
-"Need help improving your prints?<br>Read the <a href='%1'>Ultimaker "
-"Troubleshooting Guides</a>"
+msgid "Need help improving your prints?<br>Read the <a href='%1'>Ultimaker Troubleshooting Guides</a>"
+msgstr "Need help improving your prints?<br>Read the <a href='%1'>Ultimaker Troubleshooting Guides</a>"
 
 #: /home/ruben/Projects/Cura/resources/qml/ExtruderButton.qml:16
 msgctxt "@label %1 is filled in with the name of an extruder"
@@ -3680,12 +3402,8 @@ msgstr "Open project file"
 
 #: /home/ruben/Projects/Cura/resources/qml/AskOpenAsProjectOrModelsDialog.qml:71
 msgctxt "@text:window"
-msgid ""
-"This is a Cura project file. Would you like to open it as a project or "
-"import the models from it?"
-msgstr ""
-"This is a Cura project file. Would you like to open it as a project or "
-"import the models from it?"
+msgid "This is a Cura project file. Would you like to open it as a project or import the models from it?"
+msgstr "This is a Cura project file. Would you like to open it as a project or import the models from it?"
 
 #: /home/ruben/Projects/Cura/resources/qml/AskOpenAsProjectOrModelsDialog.qml:95
 msgctxt "@action:button"
@@ -3721,24 +3439,18 @@ msgstr "Profile:"
 #: /home/ruben/Projects/Cura/resources/qml/SidebarHeader.qml:376
 msgctxt "@tooltip"
 msgid ""
-"Some setting/override values are different from the values stored in the "
-"profile.\n"
+"Some setting/override values are different from the values stored in the profile.\n"
 "\n"
 "Click to open the profile manager."
 msgstr ""
-"Some setting/override values are different from the values stored in the "
-"profile.\n"
+"Some setting/override values are different from the values stored in the profile.\n"
 "\n"
 "Click to open the profile manager."
 
 #: MachineSettingsAction/plugin.json
 msgctxt "description"
-msgid ""
-"Provides a way to change machine settings (such as build volume, nozzle "
-"size, etc)"
-msgstr ""
-"Provides a way to change machine settings (such as build volume, nozzle "
-"size, etc)"
+msgid "Provides a way to change machine settings (such as build volume, nozzle size, etc)"
+msgstr "Provides a way to change machine settings (such as build volume, nozzle size, etc)"
 
 #: MachineSettingsAction/plugin.json
 msgctxt "name"
@@ -3807,10 +3519,8 @@ msgstr "Profile flatener"
 
 #: USBPrinting/plugin.json
 msgctxt "description"
-msgid ""
-"Accepts G-Code and sends them to a printer. Plugin can also update firmware."
-msgstr ""
-"Accepts G-Code and sends them to a printer. Plugin can also update firmware."
+msgid "Accepts G-Code and sends them to a printer. Plugin can also update firmware."
+msgstr "Accepts G-Code and sends them to a printer. Plugin can also update firmware."
 
 #: USBPrinting/plugin.json
 msgctxt "name"
@@ -3849,12 +3559,8 @@ msgstr "UM3 Network Connection"
 
 #: CuraSolidWorksPlugin/plugin.json
 msgctxt "description"
-msgid ""
-"Gives you the possibility to open certain files via SolidWorks itself. These "
-"are then converted and loaded into Cura"
-msgstr ""
-"Gives you the possibility to open certain files via SolidWorks itself. These "
-"are then converted and loaded into Cura"
+msgid "Gives you the possibility to open certain files via SolidWorks itself. These are then converted and loaded into Cura"
+msgstr "Gives you the possibility to open certain files via SolidWorks itself. These are then converted and loaded into Cura"
 
 #: CuraSolidWorksPlugin/plugin.json
 msgctxt "name"
@@ -4063,12 +3769,8 @@ msgstr "3MF Writer"
 
 #: UltimakerMachineActions/plugin.json
 msgctxt "description"
-msgid ""
-"Provides machine actions for Ultimaker machines (such as bed leveling "
-"wizard, selecting upgrades, etc)"
-msgstr ""
-"Provides machine actions for Ultimaker machines (such as bed leveling "
-"wizard, selecting upgrades, etc)"
+msgid "Provides machine actions for Ultimaker machines (such as bed leveling wizard, selecting upgrades, etc)"
+msgstr "Provides machine actions for Ultimaker machines (such as bed leveling wizard, selecting upgrades, etc)"
 
 #: UltimakerMachineActions/plugin.json
 msgctxt "name"

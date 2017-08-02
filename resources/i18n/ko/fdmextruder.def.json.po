@@ -2,21 +2,21 @@
 # Copyright (C) 2017 Ultimaker
 # This file is distributed under the same license as the Cura package.
 # Ruben Dulek <r.dulek@ultimaker.com>, 2017.
-#
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: Cura 2.6\n"
+"Project-Id-Version: Cura 2.7\n"
 "Report-Msgid-Bugs-To: r.dulek@ultimaker.com\n"
-"POT-Creation-Date: 2017-05-30 15:32+0000\n"
+"POT-Creation-Date: 2017-08-02 16:53+0000\n"
 "PO-Revision-Date: 2017-06-19 17:36+0900\n"
 "Last-Translator: None\n"
 "Language-Team: None\n"
 "Language: ko\n"
-"Lang-Code: ko\n"
-"Country-Code: KR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Lang-Code: ko\n"
+"Country-Code: KR\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Generator: Poedit 2.0.1\n"
 
@@ -39,6 +39,16 @@ msgstr "압출기 "
 msgctxt "extruder_nr description"
 msgid "The extruder train used for printing. This is used in multi-extrusion."
 msgstr "인쇄에 사용되는 압출기 트레인. 이것은 다중 압출에 사용됩니다. "
+
+#: fdmextruder.def.json
+msgctxt "machine_nozzle_id label"
+msgid "Nozzle ID"
+msgstr ""
+
+#: fdmextruder.def.json
+msgctxt "machine_nozzle_id description"
+msgid "The nozzle ID for an extruder train, such as \"AA 0.4\" and \"BB 0.8\"."
+msgstr ""
 
 #: fdmextruder.def.json
 msgctxt "machine_nozzle_size label"
