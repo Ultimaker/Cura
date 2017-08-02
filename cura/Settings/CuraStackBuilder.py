@@ -93,7 +93,7 @@ class CuraStackBuilder:
         if "definition_changes" in kwargs:
             stack.setDefinitionChangesById(kwargs["definition_changes"])
         else:
-            stack.setDefinitionChanges(cls._createDefinitionChangesContainer(stack, new_stack_id + "_settings"))
+            stack.setDefinitionChanges(cls.createDefinitionChangesContainer(stack, new_stack_id + "_settings"))
 
         if "variant" in kwargs:
             stack.setVariantById(kwargs["variant"])
@@ -142,7 +142,7 @@ class CuraStackBuilder:
         if "definition_changes" in kwargs:
             stack.setDefinitionChangesById(kwargs["definition_changes"])
         else:
-            stack.setDefinitionChanges(cls._createDefinitionChangesContainer(stack, new_stack_id + "_settings"))
+            stack.setDefinitionChanges(cls.createDefinitionChangesContainer(stack, new_stack_id + "_settings"))
 
         if "variant" in kwargs:
             stack.setVariantById(kwargs["variant"])
@@ -163,7 +163,7 @@ class CuraStackBuilder:
         return stack
 
     @classmethod
-    def _createDefinitionChangesContainer(cls, container_stack, container_name, container_index = None):
+    def createDefinitionChangesContainer(cls, container_stack, container_name, container_index = None):
         from cura.CuraApplication import CuraApplication
         definition_changes_container = InstanceContainer(container_name)
         definition = container_stack.getBottom()
