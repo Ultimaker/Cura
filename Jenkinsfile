@@ -15,7 +15,7 @@ parallel_nodes(['linux && cura', 'windows && cura']) {
             // Perform the "build". Since Uranium is Python code, this basically only ensures CMake is setup.
             stage('Build') {
                 def branch = env.BRANCH_NAME
-                if(!(branch =~ /^2.\d+$/)) {
+                if(branch != "master" && !fileExists("${env.CURA_ENVIRONMENT_PATH}/${branch})) {
                     branch = "master"
                 }
 
