@@ -466,6 +466,8 @@ UM.MainWindow
                 anchors.horizontalCenter: parent.horizontalCenter
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.horizontalCenterOffset: - UM.Theme.getSize("sidebar").width / 2
+                property real maximumWidth: viewportOverlay.width
+                property real maximumHeight: viewportOverlay.height
             }
 
             UM.MessageStack
