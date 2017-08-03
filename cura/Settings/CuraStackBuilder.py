@@ -93,6 +93,8 @@ class CuraStackBuilder:
         # assume the material and variant have already been set.
         if "definition_changes" in kwargs:
             stack.setDefinitionChangesById(kwargs["definition_changes"])
+        else:
+            stack.setDefinitionChanges(cls.createDefinitionChangesContainer(stack, new_stack_id + "_settings"))
 
         if "variant" in kwargs:
             stack.setVariantById(kwargs["variant"])
@@ -140,6 +142,8 @@ class CuraStackBuilder:
         # assume the material and variant have already been set.
         if "definition_changes" in kwargs:
             stack.setDefinitionChangesById(kwargs["definition_changes"])
+        else:
+            stack.setDefinitionChanges(cls.createDefinitionChangesContainer(stack, new_stack_id + "_settings"))
 
         if "variant" in kwargs:
             stack.setVariantById(kwargs["variant"])
@@ -158,3 +162,20 @@ class CuraStackBuilder:
         registry.addContainer(user_container)
 
         return stack
+
+    @classmethod
+    def createDefinitionChangesContainer(cls, container_stack, container_name, container_index = None):
+        from cura.CuraApplication import CuraApplication
+
+        unique_container_name = ContainerRegistry.getInstance().uniqueName(container_name)
+
+        definition_changes_container = InstanceContainer(unique_container_name)
+        definition = container_stack.getBottom()
+        definition_changes_container.setDefinition(definition)
+        definition_changes_container.addMetaDataEntry("type", "definition_changes")
+        definition_changes_container.addMetaDataEntry("setting_version", CuraApplication.SettingVersion)
+
+        ContainerRegistry.getInstance().addContainer(definition_changes_container)
+        container_stack.definitionChanges = definition_changes_container
+
+        return definition_changes_container

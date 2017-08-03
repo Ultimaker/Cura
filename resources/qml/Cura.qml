@@ -632,7 +632,7 @@ UM.MainWindow
     Connections
     {
         target: Cura.Actions.quit
-        onTriggered: base.visible = false;
+        onTriggered: CuraApplication.closeApplication();
     }
 
     Connections

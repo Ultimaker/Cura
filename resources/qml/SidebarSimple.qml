@@ -416,6 +416,7 @@ Item
             text: catalog.i18nc("@label", "Build Plate Adhesion");
             font: UM.Theme.getFont("default");
             color: UM.Theme.getColor("text");
+            elide: Text.ElideRight
         }
 
         CheckBox
