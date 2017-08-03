@@ -3381,7 +3381,7 @@
                 },
                 "support_skip_some_zags":
                 {
-                    "label": "Skip Some Support Line Connections",
+                    "label": "Break Up Support In Chunks",
                     "description": "Skip some support line connections to make the support structure easier to break away. This setting is applicable to the Zig Zag support infill pattern.",
                     "type": "bool",
                     "default_value": false,
@@ -3392,7 +3392,7 @@
                 },
                 "support_skip_zag_per_mm":
                 {
-                    "label": "Support Line Skip Frequency",
+                    "label": "Support Chunk Size",
                     "description": "To skip one connection line in every N mm to make the support structure easier to break away.",
                     "type": "float",
                     "value": "support_line_distance * 5",
@@ -3406,7 +3406,7 @@
                     {
                         "support_zag_skip_count":
                         {
-                            "label": "Support Chunk Size",
+                            "label": "Support Chunk Line Count",
                             "description": "Skip one in every N connection lines to make the support structure easier to break away.",
                             "type": "int",
                             "default_value": 5,
