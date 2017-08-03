@@ -10,13 +10,14 @@
         "category": "Other",
         "file_formats": "text/x-gcode",
         "platform": "kemiq_q2.stl",
-		"has_machine_quality": true,
+        "has_machine_quality": true,
         "has_materials": true
     },
 
     "overrides": {
-        "machine_name": { "default_value": "Kemiq Q2 Gama" },
-		
+        "machine_name": { 
+            "default_value": "Kemiq Q2 Gama" 
+        },
         "machine_width": {
             "default_value": 190
         },
@@ -29,13 +30,13 @@
         "machine_heated_bed": {
             "default_value": false
         },
-		"machine_center_is_zero": {
+        "machine_center_is_zero": {
             "default_value": false
         },
-		"material_diameter": {
+        "material_diameter": {
             "default_value": 1.75
         },
-		"machine_nozzle_size": {
+        "machine_nozzle_size": {
             "default_value": 0.4
         },
         "machine_nozzle_heat_up_speed": {
