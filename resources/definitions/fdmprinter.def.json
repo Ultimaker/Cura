@@ -3395,6 +3395,7 @@
                     "label": "Support Chunk Size",
                     "description": "To skip one connection line in every N mm to make the support structure easier to break away.",
                     "type": "float",
+                    "unit": "mm",
                     "value": "support_line_distance * 5",
                     "minimum_value": "0",
                     "minimum_value_warning": "support_line_distance",
