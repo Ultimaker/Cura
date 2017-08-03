@@ -6,7 +6,7 @@ Specify print settings of the top-most layers separately in order to improve pri
 An experimental function that enables features to be printed up to two times smaller than the nozzle size.
 
 *Ironing (a.k.a. Neosanding)
-An experimental function that enables the heated nozzle to travel over printed top layers without extrusion to create a smooth finish.
+An experimental function that enables the heated nozzle to travel over printed top layers without extrusion to create a smooth finish. Made after an idea by Neotko.
 
 *Gradual support infill
 Supports will print faster and with less material while improving overhang quality.
