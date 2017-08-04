@@ -65,10 +65,10 @@ Item
             id: infillListView
             property int activeIndex:
             {
-                var density = parseInt(infillDensity.properties.value);
-                var steps = parseInt(infillSteps.properties.value);
                 for(var i = 0; i < infillModel.count; ++i)
                 {
+                    var density = parseInt(infillDensity.properties.value);
+                    var steps = parseInt(infillSteps.properties.value);
                     if(density > infillModel.get(i).percentageMin && density <= infillModel.get(i).percentageMax && steps > infillModel.get(i).stepsMin && steps <= infillModel.get(i).stepsMax)
                     {
                         return i;
@@ -518,6 +518,41 @@ Item
             color: UM.Theme.getColor("text");
             linkColor: UM.Theme.getColor("text_link")
             onLinkActivated: Qt.openUrlExternally(link)
+        }
+    }
+
+    UM.SettingPropertyProvider
+    {
+        id: infillExtruderNumber
+
+        containerStackId: Cura.MachineManager.activeStackId
+        key: "infill_extruder_nr"
+        watchedProperties: [ "value" ]
+        storeIndex: 0
+    }
+
+    Binding
+    {
+        target: infillDensity
+        property: "containerStackId"
+        value:
+        {
+            var activeMachineId = Cura.MachineManager.activeMachineId;
+            if (machineExtruderCount.properties.value > 1)
+            {
+                var infillExtruderNr = parseInt(infillExtruderNumber.properties.value);
+                if (infillExtruderNr >= 0)
+                {
+                    activeMachineId = ExtruderManager.extruderIds[infillExtruderNumber.properties.value];
+                }
+                else if (ExtruderManager.activeExtruderStackId)
+                {
+                    activeMachineId = ExtruderManager.activeExtruderStackId;
+                }
+            }
+
+            infillSteps.containerStackId = activeMachineId;
+            return activeMachineId;
         }
     }
 
