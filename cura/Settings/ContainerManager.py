@@ -333,11 +333,29 @@ class ContainerManager(QObject):
     @pyqtSlot(str, result = bool)
     def isContainerUsed(self, container_id):
         Logger.log("d", "Checking if container %s is currently used", container_id)
-        containers = self._container_registry.findContainerStacks()
-        for stack in containers:
-            if container_id in [child.getId() for child in stack.getContainers()]:
-                Logger.log("d", "The container is in use by %s", stack.getId())
-                return True
+        # check if this is a material container. If so, check if any material with the same GUID is being used by any
+        # stacks.
+        container_ids_to_check = [container_id]
+        container_results = self._container_registry.findInstanceContainers(id = container_id)
+        if container_results:
+            this_container = container_results[0]
+            container_guid = this_container.getMetaDataEntry("GUID")
+            # FIXME: only material containers have GUIDs, but to make it safer, metadata/material is also checked.
+            #        but note that this is not a proper way to check whether a container is a material container.
+            #        there should be a better way to do this
+            is_material = container_guid and this_container.getMetaDataEntry("material")
+            if is_material:
+                # check all material container IDs with the same guid
+                material_containers = self._container_registry.findInstanceContainers(GUID = container_guid)
+                if material_containers:
+                    container_ids_to_check = [container.getId() for container in material_containers]
+
+        all_stacks = self._container_registry.findContainerStacks()
+        for stack in all_stacks:
+            for container_id in container_ids_to_check:
+                if container_id in [child.getId() for child in stack.getContainers()]:
+                    Logger.log("d", "The container is in use by %s", stack.getId())
+                    return True
         return False
 
     @pyqtSlot(str, result = str)
