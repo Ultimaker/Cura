@@ -205,7 +205,7 @@ Item
                     Layout.preferredHeight: UM.Theme.getSize("layerview_row").height + UM.Theme.getSize("default_lining").height
                     Layout.preferredWidth: UM.Theme.getSize("layerview_row").width
                     style: UM.Theme.styles.checkbox
-                    Text
+                    Label
                     {
                         text: model.name
                         elide: Text.ElideRight
@@ -272,7 +272,7 @@ Item
                     Layout.preferredHeight: UM.Theme.getSize("layerview_row").height + UM.Theme.getSize("default_lining").height
                     Layout.preferredWidth: UM.Theme.getSize("layerview_row").width
                     style: UM.Theme.styles.checkbox
-                    Text
+                    Label
                     {
                         text: label
                         elide: Text.ElideRight

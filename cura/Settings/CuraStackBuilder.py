@@ -76,6 +76,8 @@ class CuraStackBuilder:
         stack.setName(definition.getName())
         stack.setDefinition(definition)
         stack.addMetaDataEntry("position", definition.getMetaDataEntry("position"))
+        if "next_stack" in kwargs: #Add stacks before containers are added, since they may trigger a setting update.
+            stack.setNextStack(kwargs["next_stack"])
 
         user_container = InstanceContainer(new_stack_id + "_user")
         user_container.addMetaDataEntry("type", "user")
@@ -85,9 +87,6 @@ class CuraStackBuilder:
         user_container.setDefinition(machine_definition)
 
         stack.setUserChanges(user_container)
-
-        if "next_stack" in kwargs:
-            stack.setNextStack(kwargs["next_stack"])
 
         # Important! The order here matters, because that allows the stack to
         # assume the material and variant have already been set.
