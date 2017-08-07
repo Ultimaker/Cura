@@ -91,6 +91,8 @@ class ExtruderStack(CuraContainerStack):
         # When there is a setting that is not settable per extruder that depends on a value from a setting that is,
         # we do not always get properly informed that we should re-evaluate the setting. So make sure to indicate
         # something changed for those settings.
+        if not self.getNextStack():
+            return #There are no global settings to depend on.
         definitions = self.getNextStack().definition.findDefinitions(key = key)
         if definitions:
             has_global_dependencies = False
