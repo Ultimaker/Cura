@@ -997,7 +997,7 @@
                     "type": "[int]",
                     "default_value": "[ ]",
                     "value": "skin_angles",
-                    "enabled": "roofing_pattern != 'concentric'",
+                    "enabled": "roofing_pattern != 'concentric' and roofing_layer_count > 0 and top_layers > 0",
                     "limit_to_extruder": "roofing_extruder_nr",
                     "settable_per_mesh": true
                 },
