@@ -11,7 +11,7 @@ msgstr ""
 "PO-Revision-Date: 2017-08-03 16:14+0200\n"
 "Last-Translator: 'Jaguś' Paweł Jagusiak and Andrzej 'anraf1001' Rafalski\n"
 "Language-Team: reprapy.pl\n"
-"Language: pl\n"
+"Language: Polish\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -937,7 +937,7 @@ msgstr "Wysokość ramy"
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:235
 msgctxt "@tooltip"
 msgid "The height difference between the tip of the nozzle and the gantry system (X and Y axes). Used to prevent collisions between previous prints and the gantry when printing \"One at a Time\"."
-msgstr "Różnica w wysokości pomiędzy końcówką dyszy i systemem suwnym (osie X i Y).  Używane do unikania kolizji z poprzednimi wydrukami podczas drukowania \"Jeden na Raz\"."
+msgstr "Różnica w wysokości pomiędzy końcówką dyszy i systemem suwnym (osie X i Y). Używane do unikania kolizji z poprzednimi wydrukami podczas drukowania \"Jeden na Raz\"."
 
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:253
 msgctxt "@label"
@@ -2728,7 +2728,7 @@ msgstr "Pod wpływem"
 #: /home/ruben/Projects/Cura/resources/qml/Settings/SettingItem.qml:157
 msgctxt "@label"
 msgid "This setting is always shared between all extruders. Changing it here will change the value for all extruders"
-msgstr "To ustawienie jest zawsze dzielone między wszystkie ekstrudery. Zmiana jego wartości tutaj spowoduje  zmianę dla wszystkich ekstruderów"
+msgstr "To ustawienie jest zawsze dzielone między wszystkie ekstrudery. Zmiana jego wartości tutaj spowoduje zmianę dla wszystkich ekstruderów"
 
 #: /home/ruben/Projects/Cura/resources/qml/Settings/SettingItem.qml:160
 msgctxt "@label"
@@ -3069,7 +3069,7 @@ msgstr "Zresetuj wszystkie przekształcenia modelu"
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:323
 msgctxt "@action:inmenu menubar:file"
 msgid "&Open File(s)..."
-msgstr "&Otwórz  plik(i)..."
+msgstr "&Otwórz plik(i)..."
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:331
 msgctxt "@action:inmenu menubar:file"
@@ -3404,7 +3404,7 @@ msgstr "Otwórz plik projektu"
 #: /home/ruben/Projects/Cura/resources/qml/AskOpenAsProjectOrModelsDialog.qml:71
 msgctxt "@text:window"
 msgid "This is a Cura project file. Would you like to open it as a project or import the models from it?"
-msgstr "Jest to plik projektu Cura. Czy chcesz otworzyć go jako projekt, czy  zaimportować z niego modele?"
+msgstr "Jest to plik projektu Cura. Czy chcesz otworzyć go jako projekt, czy zaimportować z niego modele?"
 
 #: /home/ruben/Projects/Cura/resources/qml/AskOpenAsProjectOrModelsDialog.qml:95
 msgctxt "@action:button"
