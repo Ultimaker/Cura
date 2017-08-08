@@ -15,9 +15,8 @@
     },
 
     "overrides": {
-        "machine_name": { 
-            "default_value": "Kemiq Q2 Gama" 
-        },
+        "machine_name": { "default_value": "Kemiq Q2 Gama" },
+
         "machine_width": {
             "default_value": 190
         },
