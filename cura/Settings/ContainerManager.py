@@ -348,8 +348,8 @@ class ContainerManager(QObject):
 
         all_stacks = self._container_registry.findContainerStacks()
         for stack in all_stacks:
-            for container_id in container_ids_to_check:
-                if container_id in [child.getId() for child in stack.getContainers()]:
+            for used_container_id in container_ids_to_check:
+                if used_container_id in [child.getId() for child in stack.getContainers()]:
                     Logger.log("d", "The container is in use by %s", stack.getId())
                     return True
         return False
