@@ -119,6 +119,12 @@ class CuraApplication(QtApplication):
 
     Q_ENUMS(ResourceTypes)
 
+    # FIXME: This signal belongs to the MachineManager, but the CuraEngineBackend plugin requires on it.
+    #        Because plugins are initialized before the ContainerRegistry, putting this signal in MachineManager
+    #        will make it initialized before ContainerRegistry does, and it won't find the active machine, thus
+    #        Cura will always show the Add Machine Dialog upon start.
+    stacksValidationFinished = pyqtSignal()  # Emitted whenever a validation is finished
+
     def __init__(self):
         # this list of dir names will be used by UM to detect an old cura directory
         for dir_name in ["extruders", "machine_instances", "materials", "plugins", "quality", "user", "variants"]:
@@ -276,7 +282,7 @@ class CuraApplication(QtApplication):
 
         preferences.addPreference("cura/categories_expanded", "")
         preferences.addPreference("cura/jobname_prefix", True)
-        preferences.addPreference("view/center_on_select", True)
+        preferences.addPreference("view/center_on_select", False)
         preferences.addPreference("mesh/scale_to_fit", False)
         preferences.addPreference("mesh/scale_tiny_meshes", True)
         preferences.addPreference("cura/dialog_on_project_save", True)
@@ -360,6 +366,12 @@ class CuraApplication(QtApplication):
 
     def _onEngineCreated(self):
         self._engine.addImageProvider("camera", CameraImageProvider.CameraImageProvider())
+
+    ## The "Quit" button click event handler.
+    @pyqtSlot()
+    def closeApplication(self):
+        Logger.log("i", "Close application")
+        self._main_window.close()
 
     ## A reusable dialogbox
     #
@@ -806,7 +818,7 @@ class CuraApplication(QtApplication):
 
     @pyqtProperty(str, notify = sceneBoundingBoxChanged)
     def getSceneBoundingBoxString(self):
-        return self._i18n_catalog.i18nc("@info", "%(width).1f x %(depth).1f x %(height).1f mm") % {'width' : self._scene_bounding_box.width.item(), 'depth': self._scene_bounding_box.depth.item(), 'height' : self._scene_bounding_box.height.item()}
+        return self._i18n_catalog.i18nc("@info 'width', 'depth' and 'height' are variable names that must NOT be translated; just translate the format of ##x##x## mm.", "%(width).1f x %(depth).1f x %(height).1f mm") % {'width' : self._scene_bounding_box.width.item(), 'depth': self._scene_bounding_box.depth.item(), 'height' : self._scene_bounding_box.height.item()}
 
     def updatePlatformActivity(self, node = None):
         count = 0

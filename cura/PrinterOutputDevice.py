@@ -65,6 +65,11 @@ class PrinterOutputDevice(QObject, OutputDevice):
         self._monitor_view_qml_path = ""
         self._monitor_component = None
         self._monitor_item = None
+
+        self._control_view_qml_path = ""
+        self._control_component = None
+        self._control_item = None
+
         self._qml_context = None
 
     def requestWrite(self, nodes, file_name = None, filter_by_machine = False, file_handler = None):
@@ -130,6 +135,29 @@ class PrinterOutputDevice(QObject, OutputDevice):
             self._createMonitorViewFromQML()
 
         return self._monitor_item
+
+    @pyqtProperty(QObject, constant=True)
+    def controlItem(self):
+        if not self._control_component:
+            self._createControlViewFromQML()
+
+        return self._control_item
+
+    def _createControlViewFromQML(self):
+        path = QUrl.fromLocalFile(self._control_view_qml_path)
+
+        # Because of garbage collection we need to keep this referenced by python.
+        self._control_component = QQmlComponent(Application.getInstance()._engine, path)
+
+        # Check if the context was already requested before (Printer output device might have multiple items in the future)
+        if self._qml_context is None:
+            self._qml_context = QQmlContext(Application.getInstance()._engine.rootContext())
+            self._qml_context.setContextProperty("OutputDevice", self)
+
+        self._control_item = self._control_component.create(self._qml_context)
+        if self._control_item is None:
+            Logger.log("e", "QQmlComponent status %s", self._control_component.status())
+            Logger.log("e", "QQmlComponent error string %s", self._control_component.errorString())
 
     def _createMonitorViewFromQML(self):
         path = QUrl.fromLocalFile(self._monitor_view_qml_path)

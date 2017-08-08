@@ -66,7 +66,7 @@ UM.ManagementPage
         visible: base.currentItem != null
         anchors.fill: parent
 
-        Text
+        Label
         {
             id: machineName
             text: base.currentItem && base.currentItem.name ? base.currentItem.name : ""
@@ -146,34 +146,34 @@ UM.ManagementPage
             property var connectedPrinter: printerConnected ? Cura.MachineManager.printerOutputDevices[0] : null
             property bool printerAcceptsCommands: printerConnected && Cura.MachineManager.printerOutputDevices[0].acceptsCommands
 
-            Text
+            Label
             {
                 text: catalog.i18nc("@label", "Printer type:")
                 visible: base.currentItem && "definition_name" in base.currentItem.metadata
             }
-            Text
+            Label
             {
                 text: (base.currentItem && "definition_name" in base.currentItem.metadata) ? base.currentItem.metadata.definition_name : ""
             }
-            Text
+            Label
             {
                 text: catalog.i18nc("@label", "Connection:")
                 visible: base.currentItem && base.currentItem.id == Cura.MachineManager.activeMachineId
             }
-            Text
+            Label
             {
-                width: parent.width * 0.7
+                width: (parent.width * 0.7) | 0
                 text: machineInfo.printerConnected ? machineInfo.connectedPrinter.connectionText : catalog.i18nc("@info:status", "The printer is not connected.")
                 visible: base.currentItem && base.currentItem.id == Cura.MachineManager.activeMachineId
                 wrapMode: Text.WordWrap
             }
-            Text
+            Label
             {
                 text: catalog.i18nc("@label", "State:")
                 visible: base.currentItem && base.currentItem.id == Cura.MachineManager.activeMachineId && machineInfo.printerAcceptsCommands
             }
             Label {
-                width: parent.width * 0.7
+                width: (parent.width * 0.7) | 0
                 text:
                 {
                     if(!machineInfo.printerConnected || !machineInfo.printerAcceptsCommands) {

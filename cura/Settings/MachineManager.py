@@ -91,6 +91,8 @@ class MachineManager(QObject):
 
         self._printer_output_devices = []
         Application.getInstance().getOutputDeviceManager().outputDevicesChanged.connect(self._onOutputDevicesChanged)
+        # There might already be some output devices by the time the signal is connected
+        self._onOutputDevicesChanged()
 
         if active_machine_id != "" and ContainerRegistry.getInstance().findContainerStacks(id = active_machine_id):
             # An active machine was saved, so restore it.
@@ -305,6 +307,7 @@ class MachineManager(QObject):
         self._stacks_have_errors = self._checkStacksHaveErrors()
         if old_stacks_have_errors != self._stacks_have_errors:
             self.stacksValidationChanged.emit()
+        Application.getInstance().stacksValidationFinished.emit()
 
     def _onActiveExtruderStackChanged(self):
         self.blurSettings.emit()  # Ensure no-one has focus.

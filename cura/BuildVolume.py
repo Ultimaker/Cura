@@ -527,6 +527,10 @@ class BuildVolume(SceneNode):
             self._updateExtraZClearance()
             rebuild_me = True
 
+        if setting_key in self._limit_to_extruder_settings:
+            self._updateDisallowedAreas()
+            rebuild_me = True
+
         if rebuild_me:
             self.rebuild()
 
@@ -746,7 +750,12 @@ class BuildVolume(SceneNode):
                 #The build volume is defined as the union of the area that all extruders can reach, so we need to know the relative offset to all extruders.
                 for other_extruder in ExtruderManager.getInstance().getActiveExtruderStacks():
                     other_offset_x = other_extruder.getProperty("machine_nozzle_offset_x", "value")
-                    other_offset_y = -other_extruder.getProperty("machine_nozzle_offset_y", "value")
+                    if other_offset_x is None:
+                        other_offset_x = 0
+                    other_offset_y = other_extruder.getProperty("machine_nozzle_offset_y", "value")
+                    if other_offset_y is None:
+                        other_offset_y = 0
+                    other_offset_y = -other_offset_y
                     left_unreachable_border = min(left_unreachable_border, other_offset_x - offset_x)
                     right_unreachable_border = max(right_unreachable_border, other_offset_x - offset_x)
                     top_unreachable_border = min(top_unreachable_border, other_offset_y - offset_y)
@@ -899,6 +908,7 @@ class BuildVolume(SceneNode):
         if not self._global_container_stack:
             return 0
         container_stack = self._global_container_stack
+        used_extruders = ExtruderManager.getInstance().getUsedExtruderStacks()
 
         # If we are printing one at a time, we need to add the bed adhesion size to the disallowed areas of the objects
         if container_stack.getProperty("print_sequence", "value") == "one_at_a_time":
@@ -909,24 +919,18 @@ class BuildVolume(SceneNode):
             skirt_distance = self._getSettingFromAdhesionExtruder("skirt_gap")
             skirt_line_count = self._getSettingFromAdhesionExtruder("skirt_line_count")
             bed_adhesion_size = skirt_distance + (skirt_line_count * self._getSettingFromAdhesionExtruder("skirt_brim_line_width")) * self._getSettingFromAdhesionExtruder("initial_layer_line_width_factor") / 100.0
-            if len(ExtruderManager.getInstance().getUsedExtruderStacks()) > 1:
-                adhesion_extruder_nr = int(self._global_container_stack.getProperty("adhesion_extruder_nr", "value"))
-                extruder_values = ExtruderManager.getInstance().getAllExtruderValues("skirt_brim_line_width")
-                line_width_factors = ExtruderManager.getInstance().getAllExtruderValues("initial_layer_line_width_factor")
-                del extruder_values[adhesion_extruder_nr]  # Remove the value of the adhesion extruder nr.
-                del line_width_factors[adhesion_extruder_nr]
-                for i in range(min(len(extruder_values), len(line_width_factors))):
-                    bed_adhesion_size += extruder_values[i] * line_width_factors[i] / 100.0
+            if len(used_extruders) > 1:
+                for extruder_stack in used_extruders:
+                    bed_adhesion_size += extruder_stack.getProperty("skirt_brim_line_width", "value") * extruder_stack.getProperty("initial_layer_line_width_factor", "value") / 100.0
+                #We don't create an additional line for the extruder we're printing the skirt with.
+                bed_adhesion_size -= self._getSettingFromAdhesionExtruder("skirt_brim_line_width", "value") * self._getSettingFromAdhesionExtruder("initial_layer_line_width_factor", "value") / 100.0
         elif adhesion_type == "brim":
             bed_adhesion_size = self._getSettingFromAdhesionExtruder("brim_line_count") * self._getSettingFromAdhesionExtruder("skirt_brim_line_width") * self._getSettingFromAdhesionExtruder("initial_layer_line_width_factor") / 100.0
             if self._global_container_stack.getProperty("machine_extruder_count", "value") > 1:
-                adhesion_extruder_nr = int(self._global_container_stack.getProperty("adhesion_extruder_nr", "value"))
-                extruder_values = ExtruderManager.getInstance().getAllExtruderValues("skirt_brim_line_width")
-                line_width_factors = ExtruderManager.getInstance().getAllExtruderValues("initial_layer_line_width_factor")
-                del extruder_values[adhesion_extruder_nr]  # Remove the value of the adhesion extruder nr.
-                del line_width_factors[adhesion_extruder_nr]
-                for i in range(min(len(extruder_values), len(line_width_factors))):
-                    bed_adhesion_size += extruder_values[i] * line_width_factors[i] / 100.0
+                for extruder_stack in used_extruders:
+                    bed_adhesion_size += extruder_stack.getProperty("skirt_brim_line_width", "value") * extruder_stack.getProperty("initial_layer_line_width_factor", "value") / 100.0
+                #We don't create an additional line for the extruder we're printing the brim with.
+                bed_adhesion_size -= self._getSettingFromAdhesionExtruder("skirt_brim_line_width", "value") * self._getSettingFromAdhesionExtruder("initial_layer_line_width_factor", "value") / 100.0
         elif adhesion_type == "raft":
             bed_adhesion_size = self._getSettingFromAdhesionExtruder("raft_margin")
         elif adhesion_type == "none":
@@ -946,7 +950,6 @@ class BuildVolume(SceneNode):
 
         move_from_wall_radius = 0  # Moves that start from outer wall.
         move_from_wall_radius = max(move_from_wall_radius, max(self._getSettingFromAllExtruders("infill_wipe_dist")))
-        used_extruders = ExtruderManager.getInstance().getUsedExtruderStacks()
         avoid_enabled_per_extruder = [stack.getProperty("travel_avoid_other_parts","value") for stack in used_extruders]
         travel_avoid_distance_per_extruder = [stack.getProperty("travel_avoid_distance", "value") for stack in used_extruders]
         for avoid_other_parts_enabled, avoid_distance in zip(avoid_enabled_per_extruder, travel_avoid_distance_per_extruder): #For each extruder (or just global).
@@ -970,3 +973,4 @@ class BuildVolume(SceneNode):
     _ooze_shield_settings = ["ooze_shield_enabled", "ooze_shield_dist"]
     _distance_settings = ["infill_wipe_dist", "travel_avoid_distance", "support_offset", "support_enable", "travel_avoid_other_parts"]
     _extruder_settings = ["support_enable", "support_bottom_enable", "support_roof_enable", "support_infill_extruder_nr", "support_extruder_nr_layer_0", "support_bottom_extruder_nr", "support_roof_extruder_nr", "brim_line_count", "adhesion_extruder_nr", "adhesion_type"] #Settings that can affect which extruders are used.
+    _limit_to_extruder_settings = ["wall_extruder_nr", "wall_0_extruder_nr", "wall_x_extruder_nr", "top_bottom_extruder_nr", "infill_extruder_nr", "support_infill_extruder_nr", "support_extruder_nr_layer_0", "support_bottom_extruder_nr", "support_roof_extruder_nr", "adhesion_extruder_nr"]

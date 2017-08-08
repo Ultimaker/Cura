@@ -16,6 +16,7 @@ from UM.Logger import Logger
 
 from cura.CuraApplication import CuraApplication
 from cura.Settings.ExtruderManager import ExtruderManager
+from cura.Settings.CuraStackBuilder import CuraStackBuilder
 
 import UM.i18n
 catalog = UM.i18n.i18nCatalog("cura")
@@ -62,7 +63,8 @@ class MachineSettingsAction(MachineAction):
         # Make sure there is a definition_changes container to store the machine settings
         definition_changes_container = self._global_container_stack.definitionChanges
         if definition_changes_container == self._empty_container:
-            definition_changes_container = self._createDefinitionChangesContainer(self._global_container_stack, self._global_container_stack.getName() + "_settings")
+            definition_changes_container = CuraStackBuilder.createDefinitionChangesContainer(
+                self._global_container_stack, self._global_container_stack.getName() + "_settings")
 
         # Notify the UI in which container to store the machine settings data
         container_index = self._global_container_stack.getContainerIndex(definition_changes_container)
@@ -88,19 +90,8 @@ class MachineSettingsAction(MachineAction):
         # Make sure there is a definition_changes container to store the machine settings
         definition_changes_container = extruder_container_stack.definitionChanges
         if definition_changes_container == self._empty_container:
-            definition_changes_container = self._createDefinitionChangesContainer(extruder_container_stack, extruder_container_stack.getId() + "_settings")
-
-    def _createDefinitionChangesContainer(self, container_stack, container_name, container_index = None):
-        definition_changes_container = InstanceContainer(container_name)
-        definition = container_stack.getBottom()
-        definition_changes_container.setDefinition(definition)
-        definition_changes_container.addMetaDataEntry("type", "definition_changes")
-        definition_changes_container.addMetaDataEntry("setting_version", CuraApplication.SettingVersion)
-
-        self._container_registry.addContainer(definition_changes_container)
-        container_stack.definitionChanges = definition_changes_container
-
-        return definition_changes_container
+            definition_changes_container = CuraStackBuilder.createDefinitionChangesContainer(
+                extruder_container_stack, extruder_container_stack.getId() + "_settings")
 
     containerIndexChanged = pyqtSignal()
 

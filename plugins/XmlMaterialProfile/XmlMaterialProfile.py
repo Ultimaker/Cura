@@ -3,7 +3,7 @@
 
 import copy
 import io
-from typing import Optional
+from typing import List, Optional
 import xml.etree.ElementTree as ET
 
 from UM.Resources import Resources
@@ -109,7 +109,7 @@ class XmlMaterialProfile(InstanceContainer):
     ##  Overridden from InstanceContainer
     # base file: common settings + supported machines
     # machine / variant combination: only changes for itself.
-    def serialize(self):
+    def serialize(self, ignored_metadata_keys: Optional[List] = None):
         registry = ContainerRegistry.getInstance()
 
         base_file = self.getMetaDataEntry("base_file", "")
@@ -129,6 +129,14 @@ class XmlMaterialProfile(InstanceContainer):
         builder.start("metadata")
 
         metadata = copy.deepcopy(self.getMetaData())
+        # setting_version is derived from the "version" tag in the schema, so don't serialize it into a file
+        if ignored_metadata_keys is None:
+            ignored_metadata_keys = []
+        ignored_metadata_keys = ignored_metadata_keys + ["setting_version"]
+        # remove the keys that we want to ignore in the metadata
+        for key in ignored_metadata_keys:
+            if key in metadata:
+                del metadata[key]
         properties = metadata.pop("properties", {})
 
         # Metadata properties that should not be serialized.
@@ -420,7 +428,7 @@ class XmlMaterialProfile(InstanceContainer):
         meta_data = {}
         meta_data["type"] = "material"
         meta_data["base_file"] = self.id
-        meta_data["status"] = "unknown"  # TODO: Add material verfication
+        meta_data["status"] = "unknown"  # TODO: Add material verification
 
         common_setting_values = {}
 
@@ -429,10 +437,12 @@ class XmlMaterialProfile(InstanceContainer):
             inherited = self._resolveInheritance(inherits.text)
             data = self._mergeXML(inherited, data)
 
+        # set setting_version in metadata
         if "version" in data.attrib:
             meta_data["setting_version"] = self.xmlVersionToSettingVersion(data.attrib["version"])
         else:
             meta_data["setting_version"] = self.xmlVersionToSettingVersion("1.2") #1.2 and lower didn't have that version number there yet.
+
         metadata = data.iterfind("./um:metadata/*", self.__namespaces)
         for entry in metadata:
             tag_name = _tag_without_namespace(entry)
@@ -451,6 +461,11 @@ class XmlMaterialProfile(InstanceContainer):
                 meta_data["material"] = material.text
                 meta_data["color_name"] = color.text
                 continue
+
+            # setting_version is derived from the "version" tag in the schema earlier, so don't set it here
+            if tag_name == "setting_version":
+                continue
+
             meta_data[tag_name] = entry.text
 
             if tag_name in self.__material_metadata_setting_map:

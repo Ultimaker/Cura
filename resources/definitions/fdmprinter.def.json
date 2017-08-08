@@ -304,7 +304,7 @@
                     "options":
                     {
                         "RepRap (Marlin/Sprinter)": "Marlin",
-                        "RepRap (Volumatric)": "Marlin (Volumetric)",
+                        "RepRap (Volumetric)": "Marlin (Volumetric)",
                         "RepRap (RepRap)": "RepRap",
                         "UltiGCode": "Ultimaker 2",
                         "Griffin": "Griffin",
@@ -699,6 +699,21 @@
                                 }
                             }
                         },
+                        "roofing_line_width":
+                        {
+                            "label": "Top Surface Skin Line Width",
+                            "description": "Width of a single line of the areas at the top of the print.",
+                            "unit": "mm",
+                            "minimum_value": "0.001",
+                            "minimum_value_warning": "0.1 + 0.4 * machine_nozzle_size",
+                            "maximum_value_warning": "2 * machine_nozzle_size",
+                            "default_value": 0.4,
+                            "type": "float",
+                            "value": "skin_line_width",
+                            "limit_to_extruder": "roofing_extruder_nr",
+                            "settable_per_mesh": true,
+                            "enabled": "roofing_layer_count > 0 and top_layers > 0"
+                        },
                         "skin_line_width":
                         {
                             "label": "Top/Bottom Line Width",
@@ -833,7 +848,9 @@
                             "unit": "%",
                             "default_value": 100.0,
                             "minimum_value": "0.001",
-                            "settable_per_mesh": true
+                            "maximum_value_warning": "150",
+                            "settable_per_mesh": false,
+                            "settable_per_extruder": true
                         }
                     }
                 }
@@ -853,7 +870,6 @@
                     "description": "The extruder train used for printing the walls. This is used in multi-extrusion.",
                     "type": "optional_extruder",
                     "default_value": "-1",
-                    "value": "-1",
                     "settable_per_mesh": true,
                     "settable_per_extruder": false,
                     "settable_per_meshgroup": true,
@@ -931,13 +947,66 @@
                     "limit_to_extruder": "wall_0_extruder_nr",
                     "settable_per_mesh": true
                 },
+                "roofing_extruder_nr":
+                {
+                    "label": "Top Surface Skin Extruder",
+                    "description": "The extruder train used for printing the top most skin. This is used in multi-extrusion.",
+                    "type": "optional_extruder",
+                    "default_value": "-1",
+                    "value": "top_bottom_extruder_nr",
+                    "settable_per_mesh": true,
+                    "settable_per_extruder": false,
+                    "settable_per_meshgroup": true,
+                    "settable_globally": true,
+                    "enabled": "machine_extruder_count > 1 and roofing_layer_count > 0 and top_layers > 0"
+                },
+                "roofing_layer_count":
+                {
+                    "label": "Top Surface Skin Layers",
+                    "description": "The number of top most skin layers. Usually only one top most layer is sufficient to generate higher quality top surfaces.",
+                    "default_value": 0,
+                    "minimum_value": "0",
+                    "maximum_value_warning": "top_layers - 1",
+                    "type": "int",
+                    "value": "0",
+                    "limit_to_extruder": "roofing_extruder_nr",
+                    "settable_per_mesh": true,
+                    "enabled": "top_layers > 0"
+                },
+                "roofing_pattern":
+                {
+                    "label": "Top Surface Skin Pattern",
+                    "description": "The pattern of the top most layers.",
+                    "type": "enum",
+                    "options":
+                    {
+                        "lines": "Lines",
+                        "concentric": "Concentric",
+                        "zigzag": "Zig Zag"
+                    },
+                    "default_value": "lines",
+                    "value": "top_bottom_pattern",
+                    "limit_to_extruder": "roofing_extruder_nr",
+                    "settable_per_mesh": true,
+                    "enabled": "roofing_layer_count > 0 and top_layers > 0"
+                },
+                "roofing_angles":
+                {
+                    "label": "Top Surface Skin Line Directions",
+                    "description": "A list of integer line directions to use when the top surface skin layers use the lines or zig zag pattern. Elements from the list are used sequentially as the layers progress and when the end of the list is reached, it starts at the beginning again. The list items are separated by commas and the whole list is contained in square brackets. Default is an empty list which means use the traditional default angles (45 and 135 degrees).",
+                    "type": "[int]",
+                    "default_value": "[ ]",
+                    "value": "skin_angles",
+                    "enabled": "roofing_pattern != 'concentric'",
+                    "limit_to_extruder": "roofing_extruder_nr",
+                    "settable_per_mesh": true
+                },
                 "top_bottom_extruder_nr":
                 {
                     "label": "Top/Bottom Extruder",
                     "description": "The extruder train used for printing the top and bottom skin. This is used in multi-extrusion.",
                     "type": "optional_extruder",
                     "default_value": "-1",
-                    "value": "-1",
                     "settable_per_mesh": true,
                     "settable_per_extruder": false,
                     "settable_per_meshgroup": true,
@@ -1243,7 +1312,6 @@
                     "description": "The extruder train used for printing infill. This is used in multi-extrusion.",
                     "type": "optional_extruder",
                     "default_value": "-1",
-                    "value": "-1",
                     "settable_per_mesh": true,
                     "settable_per_extruder": false,
                     "settable_per_meshgroup": true,
@@ -1752,7 +1820,7 @@
                     "unit": "mm/s",
                     "type": "float",
                     "default_value": 25,
-                    "minimum_value": "0",
+                    "minimum_value": "0.0001",
                     "minimum_value_warning": "1",
                     "maximum_value": "machine_max_feedrate_e",
                     "maximum_value_warning": "70",
@@ -1768,7 +1836,7 @@
                             "unit": "mm/s",
                             "type": "float",
                             "default_value": 25,
-                            "minimum_value": "0",
+                            "minimum_value": "0.0001",
                             "maximum_value": "machine_max_feedrate_e",
                             "minimum_value_warning": "1",
                             "maximum_value_warning": "70",
@@ -1784,7 +1852,7 @@
                             "unit": "mm/s",
                             "type": "float",
                             "default_value": 25,
-                            "minimum_value": "0",
+                            "minimum_value": "0.0001",
                             "maximum_value": "machine_max_feedrate_e",
                             "minimum_value_warning": "1",
                             "maximum_value_warning": "70",
@@ -2008,6 +2076,21 @@
                                     "settable_per_mesh": true
                                 }
                             }
+                        },
+                        "speed_roofing":
+                        {
+                            "label": "Top Surface Skin Speed",
+                            "description": "The speed at which top surface skin layers are printed.",
+                            "unit": "mm/s",
+                            "type": "float",
+                            "minimum_value": "0.1",
+                            "maximum_value": "math.sqrt(machine_max_feedrate_x ** 2 + machine_max_feedrate_y ** 2)",
+                            "maximum_value_warning": "150",
+                            "default_value": 25,
+                            "value": "speed_topbottom",
+                            "limit_to_extruder": "roofing_extruder_nr",
+                            "settable_per_mesh": true,
+                            "enabled": "roofing_layer_count > 0 and top_layers > 0"
                         },
                         "speed_topbottom":
                         {
@@ -2334,6 +2417,21 @@
                                 }
                             }
                         },
+                        "acceleration_roofing":
+                        {
+                            "label": "Top Surface Skin Acceleration",
+                            "description": "The acceleration with which top surface skin layers are printed.",
+                            "unit": "mm/s²",
+                            "type": "float",
+                            "minimum_value": "0.1",
+                            "minimum_value_warning": "100",
+                            "maximum_value_warning": "10000",
+                            "default_value": 3000,
+                            "value": "acceleration_topbottom",
+                            "enabled": "resolveOrValue('acceleration_enabled') and roofing_layer_count > 0 and top_layers > 0",
+                            "limit_to_extruder": "roofing_extruder_nr",
+                            "settable_per_mesh": true
+                        },
                         "acceleration_topbottom":
                         {
                             "label": "Top/Bottom Acceleration",
@@ -2607,6 +2705,20 @@
                                     "settable_per_mesh": true
                                 }
                             }
+                        },
+                        "jerk_roofing":
+                        {
+                            "label": "Top Surface Skin Jerk",
+                            "description": "The maximum instantaneous velocity change with which top surface skin layers are printed.",
+                            "unit": "mm/s",
+                            "type": "float",
+                            "minimum_value": "0.1",
+                            "maximum_value_warning": "50",
+                            "default_value": 20,
+                            "value": "jerk_topbottom",
+                            "enabled": "resolveOrValue('jerk_enabled') and roofing_layer_count > 0 and top_layers > 0",
+                            "limit_to_extruder": "roofing_extruder_nr",
+                            "settable_per_mesh": true
                         },
                         "jerk_topbottom":
                         {
@@ -3223,6 +3335,30 @@
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
+                "support_skip_some_zags":
+                {
+                    "label": "Skip Some ZigZags Connections",
+                    "description": "Skip some ZigZags connections to make the support structure easier to break.",
+                    "type": "bool",
+                    "default_value": false,
+                    "enabled": "support_enable and (support_pattern == 'zigzag')",
+                    "limit_to_extruder": "support_infill_extruder_nr",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
+                },
+                "support_zag_skip_count":
+                {
+                    "label": "ZigZag Connection Skip Count",
+                    "description": "Skip one in every N connection lines to make the support structure easier to break.",
+                    "type": "int",
+                    "default_value": 6,
+                    "minimum_value": "1",
+                    "minimum_value_warning": "3",
+                    "enabled": "support_enable and (support_pattern == 'zigzag') and support_skip_some_zags",
+                    "limit_to_extruder": "support_infill_extruder_nr",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
+                },
                 "support_infill_rate":
                 {
                     "label": "Support Density",
@@ -3427,7 +3563,7 @@
                     "description": "The height of support infill of a given density before switching to half the density.",
                     "unit": "mm",
                     "type": "float",
-                    "default_value": 1.5,
+                    "default_value": 1,
                     "minimum_value": "0.0001",
                     "minimum_value_warning": "3 * resolveOrValue('layer_height')",
                     "enabled": "support_enable and support_infill_rate > 0 and gradual_support_infill_steps > 0",
@@ -3866,7 +4002,7 @@
                             "default_value": 20,
                             "minimum_value": "0",
                             "maximum_value_warning": "50 / skirt_brim_line_width",
-                            "value": "math.ceil(brim_width / skirt_brim_line_width)",
+                            "value": "math.ceil(brim_width / (skirt_brim_line_width * initial_layer_line_width_factor / 100.0))",
                             "enabled": "resolveOrValue('adhesion_type') == 'brim'",
                             "settable_per_mesh": false,
                             "settable_per_extruder": true,
@@ -4417,6 +4553,7 @@
                     "unit": "mm",
                     "enabled": "resolveOrValue('prime_tower_enable')",
                     "default_value": 200,
+                    "value": "machine_width - max(extruderValue(adhesion_extruder_nr, 'brim_width') * extruderValue(adhesion_extruder_nr, 'initial_layer_line_width_factor') / 100 if adhesion_type == 'brim' else (extruderValue(adhesion_extruder_nr, 'raft_margin') if adhesion_type == 'raft' else (extruderValue(adhesion_extruder_nr, 'skirt_gap') if adhesion_type == 'skirt' else 0)), max(extruderValues('travel_avoid_distance'))) - max(extruderValues('support_offset')) - sum(extruderValues('skirt_brim_line_width')) * extruderValue(adhesion_extruder_nr, 'initial_layer_line_width_factor') / 100 - 1",
                     "maximum_value": "machine_width / 2 if machine_center_is_zero else machine_width",
                     "minimum_value": "resolveOrValue('prime_tower_size') - machine_width / 2 if machine_center_is_zero else resolveOrValue('prime_tower_size')",
                     "settable_per_mesh": false,
@@ -4430,6 +4567,7 @@
                     "unit": "mm",
                     "enabled": "resolveOrValue('prime_tower_enable')",
                     "default_value": 200,
+                    "value": "machine_depth - prime_tower_size - max(extruderValue(adhesion_extruder_nr, 'brim_width') * extruderValue(adhesion_extruder_nr, 'initial_layer_line_width_factor') / 100 if adhesion_type == 'brim' else (extruderValue(adhesion_extruder_nr, 'raft_margin') if adhesion_type == 'raft' else (extruderValue(adhesion_extruder_nr, 'skirt_gap') if adhesion_type == 'skirt' else 0)), max(extruderValues('travel_avoid_distance'))) - max(extruderValues('support_offset')) - sum(extruderValues('skirt_brim_line_width')) * extruderValue(adhesion_extruder_nr, 'initial_layer_line_width_factor') / 100 - 1",
                     "maximum_value": "machine_depth / 2 - resolveOrValue('prime_tower_size') if machine_center_is_zero else machine_depth - resolveOrValue('prime_tower_size')",
                     "minimum_value": "machine_depth / -2 if machine_center_is_zero else 0",
                     "settable_per_mesh": false,
@@ -4783,6 +4921,14 @@
             "description": "experimental!",
             "children":
             {
+                "optimize_wall_printing_order":
+                {
+                    "label": "Optimize Wall Printing Order",
+                    "description": "Optimize the order in which walls are printed so as to reduce the number of retractions and the distance travelled. Most parts will benefit from this being enabled but some may actually take longer so please compare the print time estimates with and without optimization.",
+                    "type": "bool",
+                    "default_value": false,
+                    "settable_per_mesh": true
+                },
                 "draft_shield_enabled":
                 {
                     "label": "Enable Draft Shield",

@@ -1,3 +1,83 @@
+[2.7.0]
+*Top surface skin
+Specify print settings of the top-most layers separately in order to improve print duration and achieve higher quality top surfaces.
+
+*Print thin walls
+An experimental function that enables features to be printed up to two times smaller than the nozzle size.
+
+*Ironing (a.k.a. Neosanding)
+An experimental function that enables the heated nozzle to travel over printed top layers without extrusion to create a smooth finish. Made after an idea by Neotko.
+
+*Gradual support infill
+Supports will print faster and with less material while improving overhang quality.
+
+*Support infill layer thickness
+Users are able to configure “Support infill layer thickness” for thicker support layers.
+
+*Relative Z seam
+A function that positions the Z seam relative to the bounding box of the model, so that the seam stays at the same location no matter what the position of the object is.
+
+*Prime tower purge
+In order to prevent under extrusion when printing a prime tower, and to prevent a prime tower failing half way through a job, a feature has been added to wipe off oozed/purged material in the middle of a hollow prime tower before starting to print the next layer of it. The amount of material to purge can be specified in the “Prime Tower Purge Volume” setting.
+
+*First layer line width
+A multiplier setting for the line width of the first layer of a print. Multiplying line width gives fewer lines but with greater width, which improves build plate adhesion.
+
+*Pause standby and resume temperature
+Turn off the nozzle when printing with extended pauses to prevent burned filament and nozzle clogging. At the end of a pause, the nozzle will reach printing temperature before resuming a print.
+
+*Extruder per feature
+Assign specific print features (walls, infill, skin, etc.) to a specific nozzle. A possible application of this would be to print an outer shell of an object with a fine nozzle at a greater level of detail while using a larger second nozzle to print infill faster.
+
+*Dark theme
+A dark theme for Cura. Select this theme to reduce eyestrain when working in dark environments. Activate it by selecting “Preferences > Themes > Dark".
+
+*Top navigation bar redesign
+The top bar user interface been improved so that “Prepare” and “Print” have moved from the right side of the interface to the left side.
+
+*New keyboard shortcuts
+Models can now be manipulated on the build plate using hotkeys Q, A, Z, W, and tab keys. Q selects “move”, A selects “scale”, Z selects “rotate”, and W selects “mirror”. Use the tab key to navigate between interfaces.
+
+*Plugin browser
+Easily download and install plugins using an integrated plugin browser. Go to “Extensions > Plugin Browser > Browse plugins” to select it.
+
+*Import SolidWorks files as STL
+A new plugin that enables SolidWorks compatible .SLDPRT files to be imported directly into Cura, where they are automatically converted to .STL format. This plugin can be found in the plugin browser.
+
+*Zoom towards mouse cursor position
+Cura preferences now include an option to zoom towards the cursor position on screen.
+
+*Increased scroll speed in setting lists
+The scroll speed in the setting lists is now three times faster than previous versions.
+
+*Extra tooltips
+Extra tooltips have been added to clarify the machine settings.
+
+*Polish now supported
+Polish language support added. This can be selected in the preferences menu.
+
+*Bug fixes
+- Cura project Mac extensions
+- Crashes when adding printers
+- Jerk fixes
+- Z-hop over-extrusion
+
+
+*3rd party printers
+- Peopoly Moai
+- DiscoEasy200
+- Cartesio
+- EasyArt Ares
+- 3Dator
+- Rigid3D
+- Type A Series 1
+- HelloBEEPrusa
+
+[2.6.2]
+
+*Bug fixes
+- Fixed an issue with Cura crashing on older versions of MacOS.
+
 [2.6.1]
 *New profiles
 The Polypropylene material is added and supported with the Ultimaker 3. Support for CPE+ and PC with 0.8mm nozzles is added as well.

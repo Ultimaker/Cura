@@ -16,8 +16,8 @@ TabView
 
     property bool editingEnabled: false;
     property string currency: UM.Preferences.getValue("cura/currency") ? UM.Preferences.getValue("cura/currency") : "€"
-    property real firstColumnWidth: width * 0.45
-    property real secondColumnWidth: width * 0.45
+    property real firstColumnWidth: (width * 0.45) | 0
+    property real secondColumnWidth: (width * 0.45) | 0
     property string containerId: ""
     property var materialPreferenceValues: UM.Preferences.getValue("cura/material_settings") ? JSON.parse(UM.Preferences.getValue("cura/material_settings")) : {}
 
@@ -53,7 +53,7 @@ TabView
             flickableItem.flickableDirection: Flickable.VerticalFlick
             frameVisible: true
 
-            property real columnWidth: Math.floor(viewport.width * 0.5) - UM.Theme.getSize("default_margin").width
+            property real columnWidth: (viewport.width * 0.5 - UM.Theme.getSize("default_margin").width) | 0
 
             Flow
             {
@@ -115,8 +115,8 @@ TabView
                         id: colorSelector
                         color: properties.color_code
 
-                        width: colorLabel.height * 0.75
-                        height: colorLabel.height * 0.75
+                        width: (colorLabel.height * 0.75) | 0
+                        height: (colorLabel.height * 0.75) | 0
                         border.width: UM.Theme.getSize("default_lining").height
 
                         anchors.verticalCenter: parent.verticalCenter
