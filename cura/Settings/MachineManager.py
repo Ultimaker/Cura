@@ -916,6 +916,8 @@ class MachineManager(QObject):
             global_quality = quality_manager.findQualityByQualityType(quality_type, global_machine_definition, [], global_quality = True)
         else:
             global_quality = quality_manager.findQualityByQualityType(quality_type, global_machine_definition, [material])
+        if not global_quality:
+            global_quality = self._empty_quality_container
 
         # Find the values for each extruder.
         extruder_stacks = ExtruderManager.getInstance().getActiveExtruderStacks()
