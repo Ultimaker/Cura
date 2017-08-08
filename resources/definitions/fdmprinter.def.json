@@ -2106,21 +2106,6 @@
                             "limit_to_extruder": "top_bottom_extruder_nr",
                             "settable_per_mesh": true
                         },
-                        "speed_ironing":
-                        {
-                            "label": "Ironing Speed",
-                            "description": "The speed at which to pass over the top surface.",
-                            "type": "float",
-                            "unit": "mm/s",
-                            "default_value": 20.0,
-                            "value": "speed_roofing * 20 / 30",
-                            "minimum_value": "0.001",
-                            "maximum_value": "math.sqrt(machine_max_feedrate_x ** 2 + machine_max_feedrate_y ** 2)",
-                            "maximum_value_warning": "100",
-                            "enabled": "ironing_enabled",
-                            "limit_to_extruder": "top_bottom_extruder_nr",
-                            "settable_per_mesh": true
-                        },
                         "speed_support":
                         {
                             "label": "Support Speed",
@@ -2462,21 +2447,6 @@
                             "limit_to_extruder": "top_bottom_extruder_nr",
                             "settable_per_mesh": true
                         },
-                        "acceleration_ironing":
-                        {
-                            "label": "Ironing Acceleration",
-                            "description": "The acceleration with which ironing is performed.",
-                            "unit": "mm/s²",
-                            "type": "float",
-                            "minimum_value": "0.1",
-                            "minimum_value_warning": "100",
-                            "maximum_value_warning": "10000",
-                            "default_value": 3000,
-                            "value": "acceleration_roofing",
-                            "enabled": "resolveOrValue('acceleration_enabled') and ironing_enabled",
-                            "limit_to_extruder": "top_bottom_extruder_nr",
-                            "settable_per_mesh": true
-                        },
                         "acceleration_support":
                         {
                             "label": "Support Acceleration",
@@ -2761,20 +2731,6 @@
                             "default_value": 20,
                             "value": "jerk_print",
                             "enabled": "resolveOrValue('jerk_enabled')",
-                            "limit_to_extruder": "top_bottom_extruder_nr",
-                            "settable_per_mesh": true
-                        },
-                        "jerk_ironing":
-                        {
-                            "label": "Ironing Jerk",
-                            "description": "The maximum instantaneous velocity change while performing ironing.",
-                            "unit": "mm/s",
-                            "type": "float",
-                            "minimum_value": "0.1",
-                            "maximum_value_warning": "50",
-                            "default_value": 20,
-                            "value": "jerk_roofing",
-                            "enabled": "resolveOrValue('jerk_enabled') and ironing_enabled",
                             "limit_to_extruder": "top_bottom_extruder_nr",
                             "settable_per_mesh": true
                         },
@@ -5718,6 +5674,50 @@
                     "minimum_value_warning": "0",
                     "maximum_value_warning": "wall_line_width_0",
                     "enabled": "ironing_enabled",
+                    "limit_to_extruder": "top_bottom_extruder_nr",
+                    "settable_per_mesh": true
+                },
+                "speed_ironing":
+                {
+                    "label": "Ironing Speed",
+                    "description": "The speed at which to pass over the top surface.",
+                    "type": "float",
+                    "unit": "mm/s",
+                    "default_value": 20.0,
+                    "value": "speed_topbottom * 20 / 30",
+                    "minimum_value": "0.001",
+                    "maximum_value": "math.sqrt(machine_max_feedrate_x ** 2 + machine_max_feedrate_y ** 2)",
+                    "maximum_value_warning": "100",
+                    "enabled": "ironing_enabled",
+                    "limit_to_extruder": "top_bottom_extruder_nr",
+                    "settable_per_mesh": true
+                },
+                "acceleration_ironing":
+                {
+                    "label": "Ironing Acceleration",
+                    "description": "The acceleration with which ironing is performed.",
+                    "unit": "mm/s²",
+                    "type": "float",
+                    "minimum_value": "0.1",
+                    "minimum_value_warning": "100",
+                    "maximum_value_warning": "10000",
+                    "default_value": 3000,
+                    "value": "acceleration_topbottom",
+                    "enabled": "resolveOrValue('acceleration_enabled') and ironing_enabled",
+                    "limit_to_extruder": "top_bottom_extruder_nr",
+                    "settable_per_mesh": true
+                },
+                "jerk_ironing":
+                {
+                    "label": "Ironing Jerk",
+                    "description": "The maximum instantaneous velocity change while performing ironing.",
+                    "unit": "mm/s",
+                    "type": "float",
+                    "minimum_value": "0.1",
+                    "maximum_value_warning": "50",
+                    "default_value": 20,
+                    "value": "jerk_topbottom",
+                    "enabled": "resolveOrValue('jerk_enabled') and ironing_enabled",
                     "limit_to_extruder": "top_bottom_extruder_nr",
                     "settable_per_mesh": true
                 }
