@@ -333,11 +333,25 @@ class ContainerManager(QObject):
     @pyqtSlot(str, result = bool)
     def isContainerUsed(self, container_id):
         Logger.log("d", "Checking if container %s is currently used", container_id)
-        containers = self._container_registry.findContainerStacks()
-        for stack in containers:
-            if container_id in [child.getId() for child in stack.getContainers()]:
-                Logger.log("d", "The container is in use by %s", stack.getId())
-                return True
+        # check if this is a material container. If so, check if any material with the same GUID is being used by any
+        # stacks.
+        container_ids_to_check = [container_id]
+        container_results = self._container_registry.findInstanceContainers(id = container_id, type = "material")
+        if container_results:
+            this_container = container_results[0]
+            container_guid = this_container.getMetaDataEntry("GUID")
+            # check all material container IDs with the same GUID
+            material_containers = self._container_registry.findInstanceContainers(GUID = container_guid,
+                                                                                  type = "material")
+            if material_containers:
+                container_ids_to_check = [container.getId() for container in material_containers]
+
+        all_stacks = self._container_registry.findContainerStacks()
+        for stack in all_stacks:
+            for used_container_id in container_ids_to_check:
+                if used_container_id in [child.getId() for child in stack.getContainers()]:
+                    Logger.log("d", "The container is in use by %s", stack.getId())
+                    return True
         return False
 
     @pyqtSlot(str, result = str)
