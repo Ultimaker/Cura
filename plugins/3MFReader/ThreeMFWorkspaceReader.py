@@ -225,6 +225,8 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                 if definition_changes:
                     if definition_changes[0] != instance_container:
                         definition_changes_conflict = True
+                else:
+                    definition_changes_conflict = True
             elif container_type == "user":
                 num_user_settings += len(instance_container._instances)
             elif container_type in self._ignored_instance_container_types:
