@@ -4109,6 +4109,7 @@
                     "unit": "mm",
                     "type": "float",
                     "default_value": 5,
+                    "minimum_value": "0",
                     "minimum_value_warning": "raft_interface_line_width",
                     "enabled": "resolveOrValue('adhesion_type') == 'raft'",
                     "limit_to_extruder": "adhesion_extruder_nr",
