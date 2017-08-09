@@ -4035,6 +4035,20 @@
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
+                "raft_smoothing":
+                {
+                    "label": "Raft Smoothing",
+                    "description": "This setting control how much inner corners in the raft outline are rounded. Inward corners are rounded to a semi circle with a radius equal to the value given here. This setting also removes holes in the raft outline which are smaller than such a circle.",
+                    "unit": "mm",
+                    "type": "float",
+                    "default_value": 5,
+                    "minimum_value": "0",
+                    "minimum_value_warning": "raft_interface_line_width",
+                    "enabled": "resolveOrValue('adhesion_type') == 'raft'",
+                    "limit_to_extruder": "adhesion_extruder_nr",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
+                },
                 "raft_airgap":
                 {
                     "label": "Raft Air Gap",
