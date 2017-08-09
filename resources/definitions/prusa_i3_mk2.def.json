@@ -31,8 +31,6 @@
         "retraction_retract_speed": { "default_value": 35 },
         "retraction_prime_speed": { "default_value": 35 },
         "adhesion_type": { "default_value": "skirt" },
-        "machine_nozzle_heat_up_speed": { "default_value": 2 },
-        "machine_nozzle_cool_down_speed": { "default_value": 2 },
         "machine_head_with_fans_polygon": { "default_value": [[-31,31],[34,31],[34,-40],[-31,-40]] },
         "gantry_height": { "default_value": 28 },
         "machine_max_feedrate_z": { "default_value": 12 },
