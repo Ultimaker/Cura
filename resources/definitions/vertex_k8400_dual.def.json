@@ -70,12 +70,6 @@
         "gantry_height": {
             "default_value": 18
         },
-        "machine_nozzle_heat_up_speed": {
-            "default_value": 2
-        },
-        "machine_nozzle_cool_down_speed": {
-            "default_value": 2
-        },
         "machine_extruder_count": {
             "default_value": 2
         },

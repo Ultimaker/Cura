@@ -37,12 +37,6 @@
         "material_diameter": {
             "default_value": 2.85
         },
-        "machine_nozzle_heat_up_speed": {
-            "default_value": 2
-        },
-        "machine_nozzle_cool_down_speed": {
-            "default_value": 2
-        },
         "machine_head_polygon": {
             "default_value": [
                 [-75, -18],
