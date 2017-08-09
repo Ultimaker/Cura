@@ -341,7 +341,8 @@ class ContainerManager(QObject):
             this_container = container_results[0]
             container_guid = this_container.getMetaDataEntry("GUID")
             # check all material container IDs with the same GUID
-            material_containers = self._container_registry.findInstanceContainers(GUID = container_guid,
+            material_containers = self._container_registry.findInstanceContainers(id = container_id,
+                                                                                  GUID = container_guid,
                                                                                   type = "material")
             if material_containers:
                 container_ids_to_check = [container.getId() for container in material_containers]
