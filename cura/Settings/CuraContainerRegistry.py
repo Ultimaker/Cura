@@ -292,10 +292,18 @@ class CuraContainerRegistry(ContainerRegistry):
             profile.setDefinition(ContainerRegistry.getInstance().findDefinitionContainers(id="fdmprinter")[0])
             quality_type_criteria["definition"] = "fdmprinter"
 
+        machine_definition = Application.getInstance().getGlobalContainerStack().getBottom()
+        del quality_type_criteria["definition"]
+        materials = None
+        if "material" in quality_type_criteria:
+            materials = ContainerRegistry.getInstance().findInstanceContainers(id = quality_type_criteria["material"])
+            del quality_type_criteria["material"]
+
         # Check to make sure the imported profile actually makes sense in context of the current configuration.
         # This prevents issues where importing a "draft" profile for a machine without "draft" qualities would report as
         # successfully imported but then fail to show up.
-        qualities = self.findInstanceContainers(**quality_type_criteria)
+        from cura.QualityManager import QualityManager
+        qualities = QualityManager.getInstance()._getFilteredContainersForStack(machine_definition, materials, **quality_type_criteria)
         if not qualities:
             return catalog.i18nc("@info:status", "Could not find a quality type {0} for the current configuration.", quality_type)
 
