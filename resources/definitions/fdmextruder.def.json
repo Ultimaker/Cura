@@ -5,8 +5,8 @@
     "metadata":
     {
         "type": "extruder",
-        "author": "Ultimaker B.V.",
-        "manufacturer": "Ultimaker",
+        "author": "Ultimaker",
+        "manufacturer": "Ultimaker B.V.",
         "setting_version": 1,
         "visible": false
     },

@@ -229,7 +229,10 @@ class XmlMaterialProfile(InstanceContainer):
                 product = definition_id
 
             builder.start("machine")
-            builder.start("machine_identifier", { "manufacturer": definition.getMetaDataEntry("manufacturer", ""), "product":  product})
+            builder.start("machine_identifier", {
+                "manufacturer": container.getMetaDataEntry("machine_manufacturer", definition.getMetaDataEntry("manufacturer", "Unknown")),
+                "product":  product
+            })
             builder.end("machine_identifier")
 
             for instance in container.findInstances():
@@ -540,6 +543,8 @@ class XmlMaterialProfile(InstanceContainer):
 
                 definition = definitions[0]
 
+                machine_manufacturer = identifier.get("manufacturer", definition.getMetaDataEntry("manufacturer", "Unknown")) #If the XML material doesn't specify a manufacturer, use the one in the actual printer definition.
+
                 if machine_compatibility:
                     new_material_id = self.id + "_" + machine_id
 
@@ -551,6 +556,7 @@ class XmlMaterialProfile(InstanceContainer):
                     new_material.setDefinition(definition)
                     # Don't use setMetadata, as that overrides it for all materials with same base file
                     new_material.getMetaData()["compatible"] = machine_compatibility
+                    new_material.getMetaData()["machine_manufacturer"] = machine_manufacturer
 
                     new_material.setCachedValues(cached_machine_setting_properties)
 
@@ -597,6 +603,7 @@ class XmlMaterialProfile(InstanceContainer):
                     new_hotend_material.addMetaDataEntry("variant", variant_containers[0].id)
                     # Don't use setMetadata, as that overrides it for all materials with same base file
                     new_hotend_material.getMetaData()["compatible"] = hotend_compatibility
+                    new_hotend_material.getMetaData()["machine_manufacturer"] = machine_manufacturer
 
                     cached_hotend_setting_properties = cached_machine_setting_properties.copy()
                     cached_hotend_setting_properties.update(hotend_setting_values)
