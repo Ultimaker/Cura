@@ -489,6 +489,7 @@ class BuildVolume(SceneNode):
 
             self._updateDisallowedAreas()
             self._updateRaftThickness()
+            self._updateExtraZClearance()
 
             if self._engine_ready:
                 self.rebuild()
@@ -546,6 +547,8 @@ class BuildVolume(SceneNode):
     #   would hit performance.
     def _updateDisallowedAreasAndRebuild(self):
         self._updateDisallowedAreas()
+        self._updateRaftThickness()
+        self._updateExtraZClearance()
         self.rebuild()
 
     def _updateDisallowedAreas(self):
