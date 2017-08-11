@@ -2,13 +2,13 @@
 # Copyright (C) 2017 Ultimaker
 # This file is distributed under the same license as the Cura package.
 # Ruben Dulek <r.dulek@ultimaker.com>, 2017.
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: Cura 2.7\n"
 "Report-Msgid-Bugs-To: r.dulek@ultimaker.com\n"
 "POT-Creation-Date: 2017-08-02 16:53+0000\n"
-"PO-Revision-Date: 2017-06-23 16:16+0900\n"
+"PO-Revision-Date: 2017-08-08 23:38+0900\n"
 "Last-Translator: None\n"
 "Language-Team: None\n"
 "Language: ko\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Poedit 2.0.2\n"
+"X-Generator: Poedit 2.0.3\n"
 
 #: fdmprinter.def.json
 msgctxt "machine_settings label"
@@ -405,7 +405,7 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "machine_nozzle_id description"
 msgid "The nozzle ID for an extruder train, such as \"AA 0.4\" and \"BB 0.8\"."
-msgstr ""
+msgstr "\"AA 0.4\"및 \"BB 0.8\"과 같은 압출기 트레인의 노즐 ID. "
 
 #: fdmprinter.def.json
 msgctxt "machine_nozzle_size label"
@@ -655,7 +655,7 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "roofing_line_width description"
 msgid "Width of a single line of the areas at the top of the print."
-msgstr ""
+msgstr "인쇄 상단 부분의 한 줄 너비. "
 
 #: fdmprinter.def.json
 msgctxt "skin_line_width label"
@@ -745,7 +745,7 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "initial_layer_line_width_factor description"
 msgid "Multiplier of the line width on the first layer. Increasing this could improve bed adhesion."
-msgstr ""
+msgstr "첫 번째 레이어의 선 너비 승수입니다. 이것을 늘리면 침대 접착력을 향상시킬 수 있습니다. "
 
 #: fdmprinter.def.json
 msgctxt "shell label"
@@ -755,7 +755,7 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "shell description"
 msgid "Shell"
-msgstr "껍질 "
+msgstr "겉면 "
 
 #: fdmprinter.def.json
 msgctxt "wall_extruder_nr label"
@@ -765,7 +765,7 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "wall_extruder_nr description"
 msgid "The extruder train used for printing the walls. This is used in multi-extrusion."
-msgstr ""
+msgstr "벽을 인쇄하는 데 사용되는 압출기 트레인. 이것은 다중 압출에 사용됩니다. "
 
 #: fdmprinter.def.json
 msgctxt "wall_0_extruder_nr label"
@@ -775,7 +775,7 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "wall_0_extruder_nr description"
 msgid "The extruder train used for printing the outer wall. This is used in multi-extrusion."
-msgstr ""
+msgstr "외벽 인쇄에 사용되는 압출기 트레인. 이것은 다중 압출에 사용됩니다. "
 
 #: fdmprinter.def.json
 msgctxt "wall_x_extruder_nr label"
@@ -785,7 +785,7 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "wall_x_extruder_nr description"
 msgid "The extruder train used for printing the inner walls. This is used in multi-extrusion."
-msgstr ""
+msgstr "내벽 인쇄에 사용되는 압출기 트레인. 이것은 다중 압출에 사용됩니다. "
 
 #: fdmprinter.def.json
 msgctxt "wall_thickness label"
@@ -795,7 +795,7 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "wall_thickness description"
 msgid "The thickness of the walls in the horizontal direction. This value divided by the wall line width defines the number of walls."
-msgstr ""
+msgstr "가로 방향의 벽 두께입니다. 이 값을 벽 선 너비로 나눈 값은 벽의 수를 정의합니다. "
 
 #: fdmprinter.def.json
 msgctxt "wall_line_count label"
@@ -825,7 +825,7 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "roofing_extruder_nr description"
 msgid "The extruder train used for printing the top most skin. This is used in multi-extrusion."
-msgstr ""
+msgstr "압출기 트레인은 최상층의 스킨을 인쇄하는 데 사용됩니다. 이것은 다중 압출에 사용됩니다. "
 
 #: fdmprinter.def.json
 msgctxt "roofing_layer_count label"
@@ -835,7 +835,7 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "roofing_layer_count description"
 msgid "The number of top most skin layers. Usually only one top most layer is sufficient to generate higher quality top surfaces."
-msgstr ""
+msgstr "최상층의 스킨 층의 수. 일반적으로 고품질 맨 위 표면을 생성하는 데 최상위 레이어 하나만 있으면 충분합니다. "
 
 #: fdmprinter.def.json
 msgctxt "roofing_pattern label"
@@ -845,7 +845,7 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "roofing_pattern description"
 msgid "The pattern of the top most layers."
-msgstr ""
+msgstr "최상위 레이어의 패턴입니다. "
 
 #: fdmprinter.def.json
 msgctxt "roofing_pattern option lines"
@@ -870,7 +870,7 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "roofing_angles description"
 msgid "A list of integer line directions to use when the top surface skin layers use the lines or zig zag pattern. Elements from the list are used sequentially as the layers progress and when the end of the list is reached, it starts at the beginning again. The list items are separated by commas and the whole list is contained in square brackets. Default is an empty list which means use the traditional default angles (45 and 135 degrees)."
-msgstr ""
+msgstr "상단 표면 스킨 층이 선 또는 지그재그 패턴을 사용할 때 사용할 정수선 방향 목록. 목록의 요소는 레이어가 진행됨에 따라 순차적으로 사용되며 목록의 끝에 도달하면 처음부터 다시 시작됩니다. 목록 항목은 쉼표로 구분되며 전체 목록은 대괄호로 묶여 있습니다. 기본값은 전통적인 기본 각도 (45도 및 135도)를 사용하는 빈 목록입니다. "
 
 #: fdmprinter.def.json
 msgctxt "top_bottom_extruder_nr label"
@@ -880,7 +880,7 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "top_bottom_extruder_nr description"
 msgid "The extruder train used for printing the top and bottom skin. This is used in multi-extrusion."
-msgstr ""
+msgstr "상단 및 하단 스킨 인쇄에 사용되는 압출기 트레인. 이것은 다중 압출에 사용됩니다. "
 
 #: fdmprinter.def.json
 msgctxt "top_bottom_thickness label"
@@ -1080,7 +1080,7 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "fill_outline_gaps description"
 msgid "Print pieces of the model which are horizontally thinner than the nozzle size."
-msgstr ""
+msgstr "노즐 크기보다 수평으로 더 얇은 모델 조각을 인쇄하십시오. "
 
 #: fdmprinter.def.json
 msgctxt "xy_offset label"
@@ -1100,7 +1100,7 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "xy_offset_layer_0 description"
 msgid "Amount of offset applied to all polygons in the first layer. A negative value can compensate for squishing of the first layer known as \"elephant's foot\"."
-msgstr ""
+msgstr "첫 번째 레이어의 모든 다각형에 적용된 오프셋의 양입니다. 음수 값은 \"코끼리의 발\"이라고 알려진 첫 번째 레이어의 스퀴 싱을 보완 할 수 있습니다. "
 
 #: fdmprinter.def.json
 msgctxt "z_seam_type label"
@@ -1155,7 +1155,7 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "z_seam_relative description"
 msgid "When enabled, the z seam coordinates are relative to each part's centre. When disabled, the coordinates define an absolute position on the build plate."
-msgstr ""
+msgstr "활성화 된 경우 z 심 좌표는 각 부품의 중심을 기준으로합니다. 비활성화 된 경우 좌표는 빌드 플레이트의 절대 위치를 정의합니다. "
 
 #: fdmprinter.def.json
 msgctxt "skin_no_small_gaps_heuristic label"
@@ -1185,7 +1185,7 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "infill_extruder_nr description"
 msgid "The extruder train used for printing infill. This is used in multi-extrusion."
-msgstr ""
+msgstr "충전용 인쇄에 사용되는 압출기 트레인. 이것은 다중 압출에 사용됩니다."
 
 #: fdmprinter.def.json
 msgctxt "infill_sparse_density label"
@@ -1310,7 +1310,7 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "skin_overlap description"
 msgid "The amount of overlap between the skin and the walls as a percentage of the line width. A slight overlap allows the walls to connect firmly to the skin. This is a percentage of the average line widths of the skin lines and the innermost wall."
-msgstr ""
+msgstr "선 두께의 백분율로 스킨과 벽 사이의 겹치는 정도입니다. 약간 겹치면 벽이 피부에 단단히 연결됩니다. 이것은 스킨 라인과 가장 안쪽 벽의 평균 라인 폭의 백분율입니다. "
 
 #: fdmprinter.def.json
 msgctxt "skin_overlap_mm label"
@@ -1810,7 +1810,7 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "speed_ironing description"
 msgid "The speed at which to pass over the top surface."
-msgstr ""
+msgstr "상단 표면을 통과하는 속도. "
 
 #: fdmprinter.def.json
 msgctxt "speed_support label"
@@ -2030,7 +2030,7 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "acceleration_roofing description"
 msgid "The acceleration with which top surface skin layers are printed."
-msgstr ""
+msgstr "상단 표면 스킨 층이 인쇄되는 가속도. "
 
 #: fdmprinter.def.json
 msgctxt "acceleration_topbottom label"
@@ -2050,7 +2050,7 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "acceleration_ironing description"
 msgid "The acceleration with which ironing is performed."
-msgstr ""
+msgstr "다림질이 수행되는 가속도. "
 
 #: fdmprinter.def.json
 msgctxt "acceleration_support label"
@@ -2230,7 +2230,7 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "jerk_roofing description"
 msgid "The maximum instantaneous velocity change with which top surface skin layers are printed."
-msgstr ""
+msgstr "상단 표면 스킨 층이 인쇄되는 최대 순간 속도 변화. "
 
 #: fdmprinter.def.json
 msgctxt "jerk_topbottom label"
@@ -2250,7 +2250,7 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "jerk_ironing description"
 msgid "The maximum instantaneous velocity change while performing ironing."
-msgstr ""
+msgstr "다림질을하는 동안 최대 순간 속도 변화. "
 
 #: fdmprinter.def.json
 msgctxt "jerk_support label"
@@ -2785,7 +2785,7 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "support_skip_some_zags description"
 msgid "Skip some ZigZags connections to make the support structure easier to break."
-msgstr ""
+msgstr "지그재그 연결을 건너 뛰면 지원 구조를 쉽게 끊을 수 있습니다. "
 
 #: fdmprinter.def.json
 msgctxt "support_zag_skip_count label"
@@ -2795,7 +2795,7 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "support_zag_skip_count description"
 msgid "Skip one in every N connection lines to make the support structure easier to break."
-msgstr ""
+msgstr "지원 구조를 쉽게 깨뜨릴 수 있도록 N 개의 연결 라인마다 하나씩 건너 뜁니다. "
 
 #: fdmprinter.def.json
 msgctxt "support_infill_rate label"
@@ -2935,7 +2935,7 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "support_infill_sparse_thickness description"
 msgid "The thickness per layer of support infill material. This value should always be a multiple of the layer height and is otherwise rounded."
-msgstr ""
+msgstr "충전재 층의 두께. 이 값은 항상 레이어 높이의 배수 여야하며 반올림됩니다. "
 
 #: fdmprinter.def.json
 msgctxt "gradual_support_infill_steps label"
@@ -2945,7 +2945,7 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "gradual_support_infill_steps description"
 msgid "Number of times to reduce the support infill density by half when getting further below top surfaces. Areas which are closer to top surfaces get a higher density, up to the Support Infill Density."
-msgstr ""
+msgstr "상단 표면 아래로 올라갈 때 지원 충전 밀도를 반으로 줄이는 횟수입니다. 상단 표면에 더 가까운 영역은 Support Infill Density까지 더 높은 밀도를 갖습니다. "
 
 #: fdmprinter.def.json
 msgctxt "gradual_support_infill_step_height label"
@@ -2955,7 +2955,7 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "gradual_support_infill_step_height description"
 msgid "The height of support infill of a given density before switching to half the density."
-msgstr ""
+msgstr "밀도의 절반으로 전환하기 전에 주어진 밀도의 지지체 충전 높이. "
 
 #: fdmprinter.def.json
 msgctxt "support_interface_enable label"
@@ -3777,7 +3777,7 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "prime_tower_purge_volume description"
 msgid "Amount of filament to be purged when wiping on the prime tower. Purging is useful for compensating the filament lost by oozing during inactivity of the nozzle."
-msgstr ""
+msgstr "프라임 타워에서 닦을 때 제거 할 필라멘트의 양. 퍼지는 노즐이 작동하지 않을 때 새어 나와 분실 된 필라멘트를 보정하는 데 유용합니다. "
 
 #: fdmprinter.def.json
 msgctxt "ooze_shield_enabled label"
@@ -4222,7 +4222,7 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "spaghetti_infill_stepped description"
 msgid "Whether to print spaghetti infill in steps or extrude all the infill filament at the end of the print."
-msgstr ""
+msgstr "스파게티 필링을 단계별로 인쇄할지 또는 인쇄가 끝날 때 모든 필 필라멘트를 돌출 시킬지 여부. "
 
 #: fdmprinter.def.json
 msgctxt "spaghetti_max_infill_angle label"
@@ -4272,7 +4272,7 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "spaghetti_infill_extra_volume description"
 msgid "A correction term to adjust the total volume being extruded each time when filling spaghetti."
-msgstr ""
+msgstr "스파게티를 채울 때마다 압출되는 총 부피를 조정하는 보정 용어. "
 
 #: fdmprinter.def.json
 msgctxt "support_conical_enabled label"
@@ -4619,7 +4619,7 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "ironing_enabled description"
 msgid "Go over the top surface one additional time, but without extruding material. This is meant to melt the plastic on top further, creating a smoother surface."
-msgstr ""
+msgstr "상단 표면을 한 번 더 이동 시키되 재료를 돌출시키지 마십시오. 이것은 플라스틱을 맨 위에 더 녹여 부드러운 표면을 만듭니다. "
 
 #: fdmprinter.def.json
 msgctxt "ironing_pattern label"
@@ -4629,7 +4629,7 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "ironing_pattern description"
 msgid "The pattern to use for ironing top surfaces."
-msgstr ""
+msgstr "윗면을 다림질 할 때 사용하는 패턴. "
 
 #: fdmprinter.def.json
 msgctxt "ironing_pattern option concentric"
@@ -4649,7 +4649,7 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "ironing_line_spacing description"
 msgid "The distance between the lines of ironing."
-msgstr ""
+msgstr "다림질 라인 사이의 거리. "
 
 #: fdmprinter.def.json
 msgctxt "ironing_flow label"
@@ -4659,7 +4659,7 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "ironing_flow description"
 msgid "The amount of material, relative to a normal skin line, to extrude during ironing. Keeping the nozzle filled helps filling some of the crevices of the top surface, but too much results in overextrusion and blips on the side of the surface."
-msgstr ""
+msgstr "다림질하는 동안 보통의 피부 라인을 기준으로 한 재료의 양. 노즐을 가득 채우면 윗면의 틈새가 채워지지만 표면의 과도한 돌출과 틈이 너무 많이 생깁니다. "
 
 #: fdmprinter.def.json
 msgctxt "ironing_inset label"
@@ -4669,7 +4669,7 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "ironing_inset description"
 msgid "A distance to keep from the edges of the model. Ironing all the way to the edge of the mesh may result in a jagged edge on your print."
-msgstr ""
+msgstr "모델 가장자리에서 떨어지지 않는 거리. 메쉬 가장자리까지 다림질하면 인쇄물의 가장자리가 고르지 않을 수 있습니다. "
 
 #: fdmprinter.def.json
 msgctxt "command_line_settings label"
