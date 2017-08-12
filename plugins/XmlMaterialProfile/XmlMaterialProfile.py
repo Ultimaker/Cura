@@ -635,14 +635,21 @@ class XmlMaterialProfile(InstanceContainer):
                     ContainerRegistry.getInstance().addContainer(new_hotend_material)
 
     def _addSettingElement(self, builder, instance):
-        try:
+        key = instance.definition.key
+        if key in self.__material_settings_setting_map.values():
+            # Setting has a key in the stabndard namespace
             key = UM.Dictionary.findKey(self.__material_settings_setting_map, instance.definition.key)
-        except ValueError:
+            tag_name = "setting"
+        elif key not in self.__material_properties_setting_map.values() and key not in self.__material_metadata_setting_map.values():
+            # Setting is not in the standard namespace, and not a material property (eg diameter) or metadata (eg GUID)
+            tag_name = "cura:setting"
+        else:
+            # Skip material properties (eg diameter) or metadata (eg GUID)
             return
 
-        builder.start("setting", { "key": key })
+        builder.start(tag_name, { "key": key })
         builder.data(str(instance.value))
-        builder.end("setting")
+        builder.end(tag_name)
 
     def _profile_name(self, material_name, color_name):
         if color_name != "Generic":
