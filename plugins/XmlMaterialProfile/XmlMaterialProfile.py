@@ -123,6 +123,7 @@ class XmlMaterialProfile(InstanceContainer):
 
         root = builder.start("fdmmaterial",
                              {"xmlns": "http://www.ultimaker.com/material",
+                              "xmlns:cura": "http://www.ultimaker.com/cura",
                               "version": self.CurrentFdmMaterialVersion})
 
         ## Begin Metadata Block
@@ -505,6 +506,13 @@ class XmlMaterialProfile(InstanceContainer):
                     common_compatibility = self._parseCompatibleValue(entry.text)
             else:
                 Logger.log("d", "Unsupported material setting %s", key)
+
+        # Add namespaced Cura-specific settings
+        settings = data.iterfind("./um:settings/cura:setting", self.__namespaces)
+        for entry in settings:
+            key = entry.get("key")
+            common_setting_values[key] = entry.text
+
         self._cached_values = common_setting_values # from InstanceContainer ancestor
 
         meta_data["compatible"] = common_compatibility
@@ -525,6 +533,12 @@ class XmlMaterialProfile(InstanceContainer):
                         machine_compatibility = self._parseCompatibleValue(entry.text)
                 else:
                     Logger.log("d", "Unsupported material setting %s", key)
+
+            # Add namespaced Cura-specific settings
+            settings = machine.iterfind("./cura:setting", self.__namespaces)
+            for entry in settings:
+                key = entry.get("key")
+                machine_setting_values[key] = entry.text
 
             cached_machine_setting_properties = common_setting_values.copy()
             cached_machine_setting_properties.update(machine_setting_values)
@@ -591,6 +605,12 @@ class XmlMaterialProfile(InstanceContainer):
                                 hotend_compatibility = self._parseCompatibleValue(entry.text)
                         else:
                             Logger.log("d", "Unsupported material setting %s", key)
+
+                    # Add namespaced Cura-specific settings
+                    settings = hotend.iterfind("./cura:setting", self.__namespaces)
+                    for entry in settings:
+                        key = entry.get("key")
+                        hotend_setting_values[key] = entry.text
 
                     new_hotend_id = self.id + "_" + machine_id + "_" + hotend_id.replace(" ", "_")
 
@@ -671,7 +691,8 @@ class XmlMaterialProfile(InstanceContainer):
 
     # Map of recognised namespaces with a proper prefix.
     __namespaces = {
-        "um": "http://www.ultimaker.com/material"
+        "um": "http://www.ultimaker.com/material",
+        "cura": "http://www.ultimaker.com/cura"
     }
 
 ##  Helper function for pretty-printing XML because ETree is stupid
