@@ -15,6 +15,7 @@ from PyQt5.QtQml import QQmlComponent, QQmlContext
 import json
 import os
 import tempfile
+import platform
 
 i18n_catalog = i18nCatalog("cura")
 
@@ -43,7 +44,14 @@ class PluginBrowser(QObject, Extension):
 
         self._is_downloading = False
 
-        self._request_header = [b"User-Agent", str.encode("%s - %s" % (Application.getInstance().getApplicationName(), Application.getInstance().getVersion()))]
+        self._request_header = [b"User-Agent",
+                                str.encode("%s\%s (%s %s)" % (Application.getInstance().getApplicationName(),
+                                                              Application.getInstance().getVersion(),
+                                                              platform.system(),
+                                                              platform.machine(),
+                                                             )
+                                          )
+                               ]
 
         # Installed plugins are really installed after reboot. In order to prevent the user from downloading the
         # same file over and over again, we keep track of the upgraded plugins.
