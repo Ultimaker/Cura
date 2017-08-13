@@ -2250,6 +2250,14 @@
                             "maximum_value_warning": "300",
                             "settable_per_mesh": true
                         },
+                        "speed_print_layer_0_only_for_walls":
+                        {
+                            "label": "Only Use For Walls",
+                            "description": "Only use the Initial Layer Print Speed for the walls and not for the other features (e.g. skin).",
+                            "type": "bool",
+                            "default_value": false,
+                            "settable_per_mesh": true
+                        },
                         "speed_travel_layer_0":
                         {
                             "label": "Initial Layer Travel Speed",
