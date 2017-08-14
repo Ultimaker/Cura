@@ -23,10 +23,6 @@ Item {
 
     UM.I18nCatalog { id: catalog; name:"cura"}
 
-    property variant printMaterialLengths: PrintInformation.materialLengths
-    property variant printMaterialWeights: PrintInformation.materialWeights
-    property variant printMaterialCosts: PrintInformation.materialCosts
-
     height: childrenRect.height
 
     Connections

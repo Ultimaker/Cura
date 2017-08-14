@@ -27,6 +27,9 @@ Rectangle
 
     property variant printDuration: PrintInformation.currentPrintTime
     property variant printDurationPerFeature: PrintInformation.printTimesPerFeature
+    property variant printMaterialLengths: PrintInformation.materialLengths
+    property variant printMaterialWeights: PrintInformation.materialWeights
+    property variant printMaterialCosts: PrintInformation.materialCosts
 
     color: UM.Theme.getColor("sidebar")
     UM.I18nCatalog { id: catalog; name:"cura"}
