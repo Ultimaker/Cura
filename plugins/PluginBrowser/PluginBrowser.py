@@ -22,7 +22,7 @@ i18n_catalog = i18nCatalog("cura")
 class PluginBrowser(QObject, Extension):
     def __init__(self, parent = None):
         super().__init__(parent)
-        self.addMenuItem(i18n_catalog.i18n("Browse plugins"), self.browsePlugins)
+        self.addMenuItem(i18n_catalog.i18nc("@menuitem", "Browse plugins"), self.browsePlugins)
         self._api_version = 1
         self._api_url = "http://software.ultimaker.com/cura/v%s/" % self._api_version
 
