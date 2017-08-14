@@ -449,7 +449,7 @@ Rectangle
                 id: timeSpec
                 anchors.left: parent.left
                 anchors.bottom: parent.bottom
-                font: UM.Theme.getFont("small")
+                font: UM.Theme.getFont("large")
                 color: UM.Theme.getColor("text_subtext")
                 text: (!base.printDuration || !base.printDuration.valid) ? catalog.i18nc("@label", "00h 00min") : base.printDuration.getDisplayString(UM.DurationFormat.Short)
             }
@@ -459,7 +459,7 @@ Rectangle
             id: timeSpecDescription
             anchors.left: parent.left
             anchors.bottom: lengthSpec.top
-            font: UM.Theme.getFont("small")
+            font: UM.Theme.getFont("very_small")
             color: UM.Theme.getColor("text_subtext")
             text: catalog.i18nc("@description", "Print time")
         }
@@ -468,7 +468,7 @@ Rectangle
             id: lengthSpec
             anchors.left: parent.left
             anchors.bottom: parent.bottom
-            font: UM.Theme.getFont("small")
+            font: UM.Theme.getFont("very_small")
             color: UM.Theme.getColor("text_subtext")
             text:
             {
