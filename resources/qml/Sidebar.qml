@@ -414,16 +414,14 @@ Rectangle
             id: timeSpecsRow
             anchors.left: parent.left
             anchors.bottom: filamentSpecsRow.top
-            width: childrenRect.width
-            height: childrenRect.height
 
             UM.TooltipArea
             {
                 id: timeSpecPerFeatureTooltipArea
-                width: childrenRect.width
-                height: childrenRect.height
+                width: timeSpec.width
+                height: timeSpec.height
                 anchors.left: parent.left
-                anchors.verticalCenter: parent.verticalCenter
+                anchors.bottom: parent.bottom
 
                 text: {
                     var order = ["inset_0", "inset_x", "skin", "infill", "support_infill", "support_interface", "support", "travel", "retract", "none"];
@@ -475,7 +473,7 @@ Rectangle
             {
                 id: lengthSpec
                 anchors.left: parent.left
-                anchors.verticalCenter: parent.verticalCenter
+                anchors.bottom: parent.bottom
                 font: UM.Theme.getFont("small")
                 color: UM.Theme.getColor("text_subtext")
                 text:
