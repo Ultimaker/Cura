@@ -52,7 +52,7 @@ Item {
         anchors.leftMargin: UM.Theme.getSize("default_margin").width
 
         color: UM.Theme.getColor("text")
-        font: UM.Theme.getFont("large")
+        font: UM.Theme.getFont("default_bold")
         text: statusText;
     }
 
