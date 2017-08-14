@@ -1,4 +1,4 @@
-// Copyright (c) 2015 Ultimaker B.V.
+// Copyright (c) 2017 Ultimaker B.V.
 // Cura is released under the terms of the AGPLv3 or higher.
 
 import QtQuick 2.2
@@ -22,12 +22,6 @@ Item {
     }
 
     UM.I18nCatalog { id: catalog; name:"cura"}
-
-    property variant printDuration: PrintInformation.currentPrintTime
-    property variant printDurationPerFeature: PrintInformation.printTimesPerFeature
-    property variant printMaterialLengths: PrintInformation.materialLengths
-    property variant printMaterialWeights: PrintInformation.materialWeights
-    property variant printMaterialCosts: PrintInformation.materialCosts
 
     height: childrenRect.height
 
@@ -143,139 +137,5 @@ Item {
         font: UM.Theme.getFont("small")
         color: UM.Theme.getColor("text_subtext")
         text: CuraApplication.getSceneBoundingBoxString
-    }
-
-    Rectangle
-    {
-        id: specsRow
-        anchors.top: boundingSpec.bottom
-        anchors.right: parent.right
-        height: UM.Theme.getSize("jobspecs_line").height
-
-        Item
-        {
-            width: parent.width
-            height: parent.height
-
-            UM.TooltipArea
-            {
-                id: timeSpecPerFeatureTooltipArea
-                text: {
-                    var order = ["inset_0", "inset_x", "skin", "infill", "support_infill", "support_interface", "support", "travel", "retract", "none"];
-                    var visible_names = {
-                        "inset_0": catalog.i18nc("@tooltip", "Outer Wall"),
-                        "inset_x": catalog.i18nc("@tooltip", "Inner Walls"),
-                        "skin": catalog.i18nc("@tooltip", "Skin"),
-                        "infill": catalog.i18nc("@tooltip", "Infill"),
-                        "support_infill": catalog.i18nc("@tooltip", "Support Infill"),
-                        "support_interface": catalog.i18nc("@tooltip", "Support Interface"),
-                        "support": catalog.i18nc("@tooltip", "Support"),
-                        "travel": catalog.i18nc("@tooltip", "Travel"),
-                        "retract": catalog.i18nc("@tooltip", "Retractions"),
-                        "none": catalog.i18nc("@tooltip", "Other")
-                    };
-                    var result = "";
-                    for(var feature in order)
-                    {
-                        feature = order[feature];
-                        if(base.printDurationPerFeature[feature] && base.printDurationPerFeature[feature].totalSeconds > 0)
-                        {
-                            result += "<br/>" + visible_names[feature] + ": " + base.printDurationPerFeature[feature].getDisplayString(UM.DurationFormat.Short);
-                        }
-                    }
-                    result = result.replace(/^\<br\/\>/, ""); // remove newline before first item
-                    return result;
-                }
-                width: childrenRect.width
-                height: childrenRect.height
-                anchors.right: lengthIcon.left
-                anchors.rightMargin: UM.Theme.getSize("default_margin").width
-                anchors.verticalCenter: parent.verticalCenter
-
-                UM.RecolorImage
-                {
-                    id: timeIcon
-                    anchors.left: parent.left
-                    anchors.top: parent.top
-                    anchors.verticalCenter: parent.verticalCenter
-                    width: UM.Theme.getSize("save_button_specs_icons").width
-                    height: UM.Theme.getSize("save_button_specs_icons").height
-                    sourceSize.width: width
-                    sourceSize.height: width
-                    color: UM.Theme.getColor("text_subtext")
-                    source: UM.Theme.getIcon("print_time")
-                }
-
-                Text
-                {
-                    id: timeSpec
-                    anchors.left: timeIcon.right
-                    anchors.leftMargin: UM.Theme.getSize("default_margin").width / 2
-                    anchors.top: parent.top
-                    font: UM.Theme.getFont("small")
-                    color: UM.Theme.getColor("text_subtext")
-                    text: (!base.printDuration || !base.printDuration.valid) ? catalog.i18nc("@label", "00h 00min") : base.printDuration.getDisplayString(UM.DurationFormat.Short)
-                }
-            }
-            UM.RecolorImage
-            {
-                id: lengthIcon
-                anchors.right: lengthSpec.left
-                anchors.rightMargin: UM.Theme.getSize("default_margin").width/2
-                anchors.verticalCenter: parent.verticalCenter
-                width: UM.Theme.getSize("save_button_specs_icons").width
-                height: UM.Theme.getSize("save_button_specs_icons").height
-                sourceSize.width: width
-                sourceSize.height: width
-                color: UM.Theme.getColor("text_subtext")
-                source: UM.Theme.getIcon("category_material")
-            }
-            Text
-            {
-                id: lengthSpec
-                anchors.right: parent.right
-                anchors.verticalCenter: parent.verticalCenter
-                font: UM.Theme.getFont("small")
-                color: UM.Theme.getColor("text_subtext")
-                text:
-                {
-                    var lengths = [];
-                    var weights = [];
-                    var costs = [];
-                    var someCostsKnown = false;
-                    if(base.printMaterialLengths) {
-                        for(var index = 0; index < base.printMaterialLengths.length; index++)
-                        {
-                            if(base.printMaterialLengths[index] > 0)
-                            {
-                                lengths.push(base.printMaterialLengths[index].toFixed(2));
-                                weights.push(String(Math.floor(base.printMaterialWeights[index])));
-                                var cost = base.printMaterialCosts[index] == undefined ? 0 : base.printMaterialCosts[index].toFixed(2);
-                                costs.push(cost);
-                                if(cost > 0)
-                                {
-                                    someCostsKnown = true;
-                                }
-                            }
-                        }
-                    }
-                    if(lengths.length == 0)
-                    {
-                        lengths = ["0.00"];
-                        weights = ["0"];
-                        costs = ["0.00"];
-                    }
-                    if(someCostsKnown)
-                    {
-                        return catalog.i18nc("@label", "%1 m / ~ %2 g / ~ %4 %3").arg(lengths.join(" + "))
-                                .arg(weights.join(" + ")).arg(costs.join(" + ")).arg(UM.Preferences.getValue("cura/currency"));
-                    }
-                    else
-                    {
-                        return catalog.i18nc("@label", "%1 m / ~ %2 g").arg(lengths.join(" + ")).arg(weights.join(" + "));
-                    }
-                }
-            }
-        }
     }
 }
