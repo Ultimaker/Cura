@@ -409,110 +409,94 @@ Rectangle
         anchors.leftMargin: UM.Theme.getSize("default_margin").width
         anchors.bottomMargin: UM.Theme.getSize("default_margin").height
 
-        Rectangle
+        UM.TooltipArea
         {
-            id: timeSpecsRow
+            id: timeSpecPerFeatureTooltipArea
+            width: timeSpec.width
+            height: timeSpec.height
             anchors.left: parent.left
-            anchors.bottom: filamentSpecsRow.top
+            anchors.bottom: lengthSpec.top
 
-            UM.TooltipArea
-            {
-                id: timeSpecPerFeatureTooltipArea
-                width: timeSpec.width
-                height: timeSpec.height
-                anchors.left: parent.left
-                anchors.bottom: parent.bottom
-
-                text: {
-                    var order = ["inset_0", "inset_x", "skin", "infill", "support_infill", "support_interface", "support", "travel", "retract", "none"];
-                    var visible_names = {
-                        "inset_0": catalog.i18nc("@tooltip", "Outer Wall"),
-                        "inset_x": catalog.i18nc("@tooltip", "Inner Walls"),
-                        "skin": catalog.i18nc("@tooltip", "Skin"),
-                        "infill": catalog.i18nc("@tooltip", "Infill"),
-                        "support_infill": catalog.i18nc("@tooltip", "Support Infill"),
-                        "support_interface": catalog.i18nc("@tooltip", "Support Interface"),
-                        "support": catalog.i18nc("@tooltip", "Support"),
-                        "travel": catalog.i18nc("@tooltip", "Travel"),
-                        "retract": catalog.i18nc("@tooltip", "Retractions"),
-                        "none": catalog.i18nc("@tooltip", "Other")
-                    };
-                    var result = "";
-                    for(var feature in order)
-                    {
-                        feature = order[feature];
-                        if(base.printDurationPerFeature[feature] && base.printDurationPerFeature[feature].totalSeconds > 0)
-                        {
-                            result += "<br/>" + visible_names[feature] + ": " + base.printDurationPerFeature[feature].getDisplayString(UM.DurationFormat.Short);
-                        }
-                    }
-                    result = result.replace(/^\<br\/\>/, ""); // remove newline before first item
-                    return result;
-                }
-
-                Text
+            text: {
+                var order = ["inset_0", "inset_x", "skin", "infill", "support_infill", "support_interface", "support", "travel", "retract", "none"];
+                var visible_names = {
+                    "inset_0": catalog.i18nc("@tooltip", "Outer Wall"),
+                    "inset_x": catalog.i18nc("@tooltip", "Inner Walls"),
+                    "skin": catalog.i18nc("@tooltip", "Skin"),
+                    "infill": catalog.i18nc("@tooltip", "Infill"),
+                    "support_infill": catalog.i18nc("@tooltip", "Support Infill"),
+                    "support_interface": catalog.i18nc("@tooltip", "Support Interface"),
+                    "support": catalog.i18nc("@tooltip", "Support"),
+                    "travel": catalog.i18nc("@tooltip", "Travel"),
+                    "retract": catalog.i18nc("@tooltip", "Retractions"),
+                    "none": catalog.i18nc("@tooltip", "Other")
+                };
+                var result = "";
+                for(var feature in order)
                 {
-                    id: timeSpec
-                    anchors.left: parent.left
-                    anchors.bottom: parent.bottom
-                    font: UM.Theme.getFont("small")
-                    color: UM.Theme.getColor("text_subtext")
-                    text: (!base.printDuration || !base.printDuration.valid) ? catalog.i18nc("@label", "00h 00min") : base.printDuration.getDisplayString(UM.DurationFormat.Short)
+                    feature = order[feature];
+                    if(base.printDurationPerFeature[feature] && base.printDurationPerFeature[feature].totalSeconds > 0)
+                    {
+                        result += "<br/>" + visible_names[feature] + ": " + base.printDurationPerFeature[feature].getDisplayString(UM.DurationFormat.Short);
+                    }
                 }
+                result = result.replace(/^\<br\/\>/, ""); // remove newline before first item
+                return result;
             }
-        }
-        Rectangle
-        {
-            id: filamentSpecsRow
-            anchors.left: parent.left
-            anchors.bottom: parent.bottom
-            width: childrenRect.width
-            height: childrenRect.height
 
             Text
             {
-                id: lengthSpec
+                id: timeSpec
                 anchors.left: parent.left
                 anchors.bottom: parent.bottom
                 font: UM.Theme.getFont("small")
                 color: UM.Theme.getColor("text_subtext")
-                text:
-                {
-                    var lengths = [];
-                    var weights = [];
-                    var costs = [];
-                    var someCostsKnown = false;
-                    if(base.printMaterialLengths) {
-                        for(var index = 0; index < base.printMaterialLengths.length; index++)
+                text: (!base.printDuration || !base.printDuration.valid) ? catalog.i18nc("@label", "00h 00min") : base.printDuration.getDisplayString(UM.DurationFormat.Short)
+            }
+        }
+        Text
+        {
+            id: lengthSpec
+            anchors.left: parent.left
+            anchors.bottom: parent.bottom
+            font: UM.Theme.getFont("small")
+            color: UM.Theme.getColor("text_subtext")
+            text:
+            {
+                var lengths = [];
+                var weights = [];
+                var costs = [];
+                var someCostsKnown = false;
+                if(base.printMaterialLengths) {
+                    for(var index = 0; index < base.printMaterialLengths.length; index++)
+                    {
+                        if(base.printMaterialLengths[index] > 0)
                         {
-                            if(base.printMaterialLengths[index] > 0)
+                            lengths.push(base.printMaterialLengths[index].toFixed(2));
+                            weights.push(String(Math.floor(base.printMaterialWeights[index])));
+                            var cost = base.printMaterialCosts[index] == undefined ? 0 : base.printMaterialCosts[index].toFixed(2);
+                            costs.push(cost);
+                            if(cost > 0)
                             {
-                                lengths.push(base.printMaterialLengths[index].toFixed(2));
-                                weights.push(String(Math.floor(base.printMaterialWeights[index])));
-                                var cost = base.printMaterialCosts[index] == undefined ? 0 : base.printMaterialCosts[index].toFixed(2);
-                                costs.push(cost);
-                                if(cost > 0)
-                                {
-                                    someCostsKnown = true;
-                                }
+                                someCostsKnown = true;
                             }
                         }
                     }
-                    if(lengths.length == 0)
-                    {
-                        lengths = ["0.00"];
-                        weights = ["0"];
-                        costs = ["0.00"];
-                    }
-                    if(someCostsKnown)
-                    {
-                        return catalog.i18nc("@label", "%1 m / ~ %2 g / ~ %4 %3").arg(lengths.join(" + "))
-                                .arg(weights.join(" + ")).arg(costs.join(" + ")).arg(UM.Preferences.getValue("cura/currency"));
-                    }
-                    else
-                    {
-                        return catalog.i18nc("@label", "%1 m / ~ %2 g").arg(lengths.join(" + ")).arg(weights.join(" + "));
-                    }
+                }
+                if(lengths.length == 0)
+                {
+                    lengths = ["0.00"];
+                    weights = ["0"];
+                    costs = ["0.00"];
+                }
+                if(someCostsKnown)
+                {
+                    return catalog.i18nc("@label", "%1 m / ~ %2 g / ~ %4 %3").arg(lengths.join(" + "))
+                            .arg(weights.join(" + ")).arg(costs.join(" + ")).arg(UM.Preferences.getValue("cura/currency"));
+                }
+                else
+                {
+                    return catalog.i18nc("@label", "%1 m / ~ %2 g").arg(lengths.join(" + ")).arg(weights.join(" + "));
                 }
             }
         }
