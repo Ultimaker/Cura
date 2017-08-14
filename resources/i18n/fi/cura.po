@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: Cura 2.7\n"
 "Report-Msgid-Bugs-To: r.dulek@ultimaker.com\n"
 "POT-Creation-Date: 2017-08-02 16:53+0000\n"
-"PO-Revision-Date: 2017-06-07 16:04+0200\n"
+"PO-Revision-Date: 2017-08-11 14:30+0200\n"
 "Last-Translator: Bothof <info@bothof.nl>\n"
 "Language-Team: Finnish\n"
 "Language: Finnish\n"
@@ -56,7 +56,7 @@ msgstr "Doodle3D-tulostus"
 #: /home/ruben/Projects/Cura/plugins/Doodle3D-cura-plugin/PrinterConnection.py:37
 msgctxt "@action:button"
 msgid "Print with Doodle3D"
-msgstr ""
+msgstr "Tulostus Doodle3D:n avulla"
 
 #: /home/ruben/Projects/Cura/plugins/Doodle3D-cura-plugin/PrinterConnection.py:38
 msgctxt "@info:tooltip"
@@ -320,7 +320,7 @@ msgstr "Kelalle {0} ei ole tarpeeksi materiaalia."
 #, python-brace-format
 msgctxt "@label"
 msgid "Different PrintCore (Cura: {0}, Printer: {1}) selected for extruder {2}"
-msgstr ""
+msgstr "Eri PrintCore (Cura: {0}, tulostin: {1}) valittu suulakkeelle {2}"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/NetworkPrinterOutputDevice.py:694
 #, python-brace-format
@@ -332,7 +332,7 @@ msgstr "Eri materiaali (Cura: {0}, tulostin: {1}) valittu suulakkeelle {2}"
 #, python-brace-format
 msgctxt "@label"
 msgid "PrintCore {0} is not properly calibrated. XY calibration needs to be performed on the printer."
-msgstr ""
+msgstr "Print Core -tulostusydintä {0} ei ole kalibroitu oikein. Tulostimen XY-kalibrointi tulee suorittaa."
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/NetworkPrinterOutputDevice.py:707
 msgctxt "@label"
@@ -408,7 +408,7 @@ msgstr "Haluatko käyttää nykyistä tulostimen määritystä Curassa?"
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/NetworkPrinterOutputDevice.py:1179
 msgctxt "@label"
 msgid "The PrintCores and/or materials on your printer differ from those within your current project. For the best result, always slice for the PrintCores and materials that are inserted in your printer."
-msgstr ""
+msgstr "Tulostimen PrintCoret tai materiaalit eivät vastaa tulostettavan projektin asetuksia. Parhaat tulokset saavutetaan viipaloimalla aina tulostimeen asetetuille PrintCoreille ja materiaaleille."
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/DiscoverUM3Action.py:19
 msgctxt "@action"
@@ -418,32 +418,32 @@ msgstr "Yhdistä verkon kautta"
 #: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/SolidWorksReader.py:172
 msgctxt "@info:status"
 msgid "Errors appeared while opening your SolidWorks file!             Please check, whether it is possible to open your file in SolidWorks itself without any problems as well!"
-msgstr ""
+msgstr "SolidWorks-tiedostoa avattaessa ilmeni virheitä!             Tarkista, voiko tiedoston avata SolidWorks-ohjelmistossa ilman ongelmia."
 
 #: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/__init__.py:31
 msgctxt "@item:inlistbox"
 msgid "SolidWorks part file"
-msgstr ""
+msgstr "SolidWorks-osatiedosto"
 
 #: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/__init__.py:35
 msgctxt "@item:inlistbox"
 msgid "SolidWorks assembly file"
-msgstr ""
+msgstr "SolidWorks-kokoonpanotiedosto"
 
 #: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/ConfigDialog.py:21
 msgid "Configure"
-msgstr ""
+msgstr "Määritä"
 
 #: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/CommonComReader.py:129
 #, python-format
 msgctxt "@info:status"
 msgid "Error while starting %s!"
-msgstr ""
+msgstr "%s:n käynnistyksen aikana ilmeni virhe!"
 
 #: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/CommonComReader.py:207
 msgctxt "@info:status"
 msgid "Please keep in mind, that you have to reopen your SolidWorks file manually! Reloading the model won't work!"
-msgstr ""
+msgstr "Muista, että SolidWorks-tiedosto on avattava uudelleen manuaalisesti. Mallin lataaminen uudelleen ei toimi."
 
 #: /home/ruben/Projects/Cura/plugins/PostProcessingPlugin/PostProcessingPlugin.py:24
 msgid "Modify G-Code"
@@ -452,7 +452,7 @@ msgstr "Muokkaa GCode-arvoa"
 #: /home/ruben/Projects/Cura/plugins/SliceInfoPlugin/SliceInfo.py:43
 msgctxt "@info"
 msgid "Cura collects anonymised slicing statistics. You can disable this in the preferences."
-msgstr ""
+msgstr "Cura kerää anonyymejä viipalointiin liittyviä tilastotietoja. Tämän voi poistaa käytöstä asetuksien kautta."
 
 #: /home/ruben/Projects/Cura/plugins/SliceInfoPlugin/SliceInfo.py:44
 msgctxt "@action:button"
@@ -569,12 +569,12 @@ msgstr "Suutin"
 
 #: /home/ruben/Projects/Cura/plugins/PluginBrowser/PluginBrowser.py:25
 msgid "Browse plugins"
-msgstr ""
+msgstr "Selaa laajennuksia"
 
 #: /home/ruben/Projects/Cura/plugins/PluginBrowser/PluginBrowser.py:120
 msgctxt "@window:title"
 msgid "Plugin browser"
-msgstr ""
+msgstr "Lisäosien selain"
 
 #: /home/ruben/Projects/Cura/plugins/SolidView/__init__.py:12
 msgctxt "@item:inmenu"
@@ -686,17 +686,17 @@ msgstr "Mukautettu materiaali"
 #: /home/ruben/Projects/Cura/cura/Settings/MaterialManager.py:24
 msgctxt "@info:status Has a cancel button next to it."
 msgid "The selected material diameter causes the material to become incompatible with the current printer."
-msgstr ""
+msgstr "Valitun materiaalin halkaisijan vuoksi materiaali ei sovellu käytettäväksi nykyisen tulostimen kanssa."
 
 #: /home/ruben/Projects/Cura/cura/Settings/MaterialManager.py:25
 msgctxt "@action:button"
 msgid "Undo"
-msgstr ""
+msgstr "Kumoa"
 
 #: /home/ruben/Projects/Cura/cura/Settings/MaterialManager.py:25
 msgctxt "@action"
 msgid "Undo changing the material diameter."
-msgstr ""
+msgstr "Kumoa materiaalin halkaisijan muutokset."
 
 #: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:143
 #, python-brace-format
@@ -775,10 +775,7 @@ msgid ""
 "<p>A fatal exception has occurred that we could not recover from!</p>\n"
 "        <p>Please use the information below to post a bug report at <a href=\"http://github.com/Ultimaker/Cura/issues\">http://github.com/Ultimaker/Cura/issues</a></p>\n"
 "    "
-msgstr ""
-"<p>Tapahtui vakava poikkeus, josta palautuminen ei onnistunut!</p>\n"
-"       <p>Tee virheraportti alla olevien tietojen perusteella osoitteessa <a href=\"http://github.com/Ultimaker/Cura/issues\">http://github.com/Ultimaker/Cura/issues</a></p>\n"
-"    "
+msgstr "<p>Tapahtui vakava poikkeus, josta palautuminen ei onnistunut!</p>\n       <p>Tee virheraportti alla olevien tietojen perusteella osoitteessa <a href=\"http://github.com/Ultimaker/Cura/issues\">http://github.com/Ultimaker/Cura/issues</a></p>\n    "
 
 #: /home/ruben/Projects/Cura/cura/CrashHandler.py:112
 msgctxt "@action:button"
@@ -804,7 +801,7 @@ msgstr "Ladataan käyttöliittymää..."
 #, python-format
 msgctxt "@info 'width', 'depth' and 'height' are variable names that must NOT be translated; just translate the format of ##x##x## mm."
 msgid "%(width).1f x %(depth).1f x %(height).1f mm"
-msgstr ""
+msgstr "%(width).1f x %(depth).1f x %(height).1f mm"
 
 #: /home/ruben/Projects/Cura/cura/CuraApplication.py:1285
 #, python-brace-format
@@ -865,22 +862,22 @@ msgstr "Z (korkeus)"
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:139
 msgctxt "@label"
 msgid "Build plate shape"
-msgstr ""
+msgstr "Alustan muoto"
 
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:148
 msgctxt "@option:check"
 msgid "Origin at center"
-msgstr ""
+msgstr "Alkukohta keskellä"
 
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:156
 msgctxt "@option:check"
 msgid "Heated bed"
-msgstr ""
+msgstr "Lämmitettävä pöytä"
 
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:167
 msgctxt "@label"
 msgid "Gcode flavor"
-msgstr ""
+msgstr "GCode-tyyppi"
 
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:180
 msgctxt "@label"
@@ -895,7 +892,7 @@ msgstr "X väh."
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:191
 msgctxt "@tooltip"
 msgid "Distance from the left of the printhead to the center of the nozzle. Used to prevent colissions between previous prints and the printhead when printing \"One at a Time\"."
-msgstr ""
+msgstr "Etäisyys tulostuspään vasemmalta puolelta suuttimen keskikohtaan. Käytetään estämään aiempien tulosteiden ja tulostuspään yhteentörmäyksiä, kun tulostetaan yksi kerrallaan."
 
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:200
 msgctxt "@label"
@@ -905,7 +902,7 @@ msgstr "Y väh."
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:201
 msgctxt "@tooltip"
 msgid "Distance from the front of the printhead to the center of the nozzle. Used to prevent colissions between previous prints and the printhead when printing \"One at a Time\"."
-msgstr ""
+msgstr "Etäisyys tulostuspään etupuolelta suuttimen keskikohtaan. Käytetään estämään aiempien tulosteiden ja tulostuspään yhteentörmäyksiä, kun tulostetaan yksi kerrallaan."
 
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:210
 msgctxt "@label"
@@ -915,7 +912,7 @@ msgstr "X enint."
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:211
 msgctxt "@tooltip"
 msgid "Distance from the right of the printhead to the center of the nozzle. Used to prevent colissions between previous prints and the printhead when printing \"One at a Time\"."
-msgstr ""
+msgstr "Etäisyys tulostuspään oikealta puolelta suuttimen keskikohtaan. Käytetään estämään aiempien tulosteiden ja tulostuspään yhteentörmäyksiä, kun tulostetaan yksi kerrallaan."
 
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:220
 msgctxt "@label"
@@ -925,7 +922,7 @@ msgstr "Y enint."
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:221
 msgctxt "@tooltip"
 msgid "Distance from the rear of the printhead to the center of the nozzle. Used to prevent colissions between previous prints and the printhead when printing \"One at a Time\"."
-msgstr ""
+msgstr "Etäisyys tulostuspään takapuolelta suuttimen keskikohtaan. Käytetään estämään aiempien tulosteiden ja tulostuspään yhteentörmäyksiä, kun tulostetaan yksi kerrallaan."
 
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:233
 msgctxt "@label"
@@ -935,7 +932,7 @@ msgstr "Korokkeen korkeus"
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:235
 msgctxt "@tooltip"
 msgid "The height difference between the tip of the nozzle and the gantry system (X and Y axes). Used to prevent collisions between previous prints and the gantry when printing \"One at a Time\"."
-msgstr ""
+msgstr "Suuttimen kärjen ja korokejärjestelmän (X- ja Y-akselit) välinen korkeusero. Käytetään estämään aiempien tulosteiden ja korokkeen yhteentörmäyksiä, kun tulostetaan yksi kerrallaan."
 
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:253
 msgctxt "@label"
@@ -945,12 +942,12 @@ msgstr "Suulakkeiden määrä"
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:287
 msgctxt "@tooltip"
 msgid "The nominal diameter of filament supported by the printer. The exact diameter will be overridden by the material and/or the profile."
-msgstr ""
+msgstr "Tulostimen tukema tulostuslangan nimellinen halkaisija. Materiaali ja/tai profiili korvaa tarkan halkaisijan."
 
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:289
 msgctxt "@label"
 msgid "Material diameter"
-msgstr ""
+msgstr "Materiaalin halkaisija"
 
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:297
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:388
@@ -966,7 +963,7 @@ msgstr "Aloita GCode"
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:325
 msgctxt "@tooltip"
 msgid "Gcode commands to be executed at the very start."
-msgstr ""
+msgstr "GCode-komennot, jotka suoritetaan aivan alussa."
 
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:334
 msgctxt "@label"
@@ -976,7 +973,7 @@ msgstr "Lopeta GCode"
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:344
 msgctxt "@tooltip"
 msgid "Gcode commands to be executed at the very end."
-msgstr ""
+msgstr "GCode-komennot, jotka suoritetaan aivan lopussa."
 
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:376
 msgctxt "@label"
@@ -1023,26 +1020,6 @@ msgstr "Tulosta kohteeseen %1"
 msgctxt "@label"
 msgid "Extruder Temperature: %1/%2°C"
 msgstr "Suulakkeen lämpötila: %1/%2 °C"
-
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-# 
-#: /home/ruben/Projects/Cura/plugins/Doodle3D-cura-plugin/ControlWindow.qml:45
-msgctxt "@label"
-msgid ""
-msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-09-13 17:41+0200\n"
-"PO-Revision-Date: 2016-09-29 13:44+0200\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: \n"
-"MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
 
 #: /home/ruben/Projects/Cura/plugins/Doodle3D-cura-plugin/ControlWindow.qml:46
 msgctxt "@label"
@@ -1133,10 +1110,7 @@ msgid ""
 "To print directly to your printer over the network, please make sure your printer is connected to the network using a network cable or by connecting your printer to your WIFI network. If you don't connect Cura with your printer, you can still use a USB drive to transfer g-code files to your printer.\n"
 "\n"
 "Select your printer from the list below:"
-msgstr ""
-"Tulosta suoraan tulostimeen verkon kautta yhdistämällä tulostin verkkoon verkkokaapelilla tai yhdistämällä tulostin Wi-Fi-verkkoon. Jos Curaa ei yhdistetä tulostimeen, GCode-tiedostot voidaan silti siirtää tulostimeen USB-aseman avulla.\n"
-"\n"
-"Valitse tulostin alla olevasta luettelosta:"
+msgstr "Tulosta suoraan tulostimeen verkon kautta yhdistämällä tulostin verkkoon verkkokaapelilla tai yhdistämällä tulostin Wi-Fi-verkkoon. Jos Curaa ei yhdistetä tulostimeen, GCode-tiedostot voidaan silti siirtää tulostimeen USB-aseman avulla.\n\nValitse tulostin alla olevasta luettelosta:"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/DiscoverUM3Action.qml:75
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/MachinesPage.qml:44
@@ -1166,7 +1140,7 @@ msgstr "Päivitä"
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/DiscoverUM3Action.qml:196
 msgctxt "@label"
 msgid "If your printer is not listed, read the <a href='%1'>network printing troubleshooting guide</a>"
-msgstr ""
+msgstr "Jos tulostinta ei ole luettelossa, lue <a href='%1'>verkkotulostuksen vianetsintäopas</a>"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/DiscoverUM3Action.qml:223
 msgctxt "@label"
@@ -1242,27 +1216,27 @@ msgstr "Aktivoi määritys"
 #: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/ConfigDialog.qml:20
 msgctxt "@title:window"
 msgid "Cura SolidWorks Plugin Configuration"
-msgstr ""
+msgstr "Cura SolidWorks -laajennuksen määritys"
 
 #: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/ConfigDialog.qml:44
 msgctxt "@action:label"
 msgid "Default quality of the exported STL:"
-msgstr ""
+msgstr "Viedyn STL:n oletuslaatu:"
 
 #: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/ConfigDialog.qml:79
 msgctxt "@option:curaSolidworksStlQuality"
 msgid "Always ask"
-msgstr ""
+msgstr "Kysy aina"
 
 #: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/ConfigDialog.qml:80
 msgctxt "@option:curaSolidworksStlQuality"
 msgid "Always use Fine quality"
-msgstr ""
+msgstr "Käytä aina hienoa laatua"
 
 #: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/ConfigDialog.qml:81
 msgctxt "@option:curaSolidworksStlQuality"
 msgid "Always use Coarse quality"
-msgstr ""
+msgstr "Käytä aina karkeaa laatua"
 
 #: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/ConfigDialog.qml:92
 #: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/ExportSTLUI.qml:88
@@ -1274,27 +1248,27 @@ msgstr "OK"
 #: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/ExportSTLUI.qml:20
 msgctxt "@title:window"
 msgid "Import SolidWorks File as STL..."
-msgstr ""
+msgstr "Tuo SolidWorks-tiedosto STL-muodossa..."
 
 #: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/ExportSTLUI.qml:43
 msgctxt "@info:tooltip"
 msgid "Quality of the Exported STL"
-msgstr ""
+msgstr "Viedyn STL:n laatu"
 
 #: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/ExportSTLUI.qml:48
 msgctxt "@action:label"
 msgid "Quality"
-msgstr ""
+msgstr "Laatu"
 
 #: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/ExportSTLUI.qml:62
 msgctxt "@option:curaSolidworksStlQuality"
 msgid "Coarse"
-msgstr ""
+msgstr "Karkea"
 
 #: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/ExportSTLUI.qml:63
 msgctxt "@option:curaSolidworksStlQuality"
 msgid "Fine"
-msgstr ""
+msgstr "Hieno"
 
 #: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/ExportSTLUI.qml:78
 #: /home/ruben/Projects/Cura/resources/qml/AskOpenAsProjectOrModelsDialog.qml:81
@@ -1613,27 +1587,27 @@ msgstr "Avaa"
 #: /home/ruben/Projects/Cura/plugins/PluginBrowser/PluginBrowser.qml:11
 msgctxt "@title:window"
 msgid "Find & Update plugins"
-msgstr ""
+msgstr "Etsi ja päivitä laajennuksia"
 
 #: /home/ruben/Projects/Cura/plugins/PluginBrowser/PluginBrowser.qml:25
 msgctxt "@label"
 msgid "Here you can find a list of Third Party plugins."
-msgstr ""
+msgstr "Tässä on luettelo muiden valmistajien laajennuksista."
 
 #: /home/ruben/Projects/Cura/plugins/PluginBrowser/PluginBrowser.qml:143
 msgctxt "@action:button"
 msgid "Upgrade"
-msgstr ""
+msgstr "Päivitä"
 
 #: /home/ruben/Projects/Cura/plugins/PluginBrowser/PluginBrowser.qml:145
 msgctxt "@action:button"
 msgid "Installed"
-msgstr ""
+msgstr "Asennettu"
 
 #: /home/ruben/Projects/Cura/plugins/PluginBrowser/PluginBrowser.qml:147
 msgctxt "@action:button"
 msgid "Download"
-msgstr ""
+msgstr "Lataa"
 
 #: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UM2UpgradeSelectionMachineAction.qml:25
 #: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UMOUpgradeSelectionMachineAction.qml:25
@@ -1888,9 +1862,7 @@ msgctxt "@text:window"
 msgid ""
 "You have customized some profile settings.\n"
 "Would you like to keep or discard those settings?"
-msgstr ""
-"Olet mukauttanut profiilin asetuksia.\n"
-"Haluatko säilyttää vai hylätä nämä asetukset?"
+msgstr "Olet mukauttanut profiilin asetuksia.\nHaluatko säilyttää vai hylätä nämä asetukset?"
 
 #: /home/ruben/Projects/Cura/resources/qml/DiscardOrKeepProfileChangesDialog.qml:110
 msgctxt "@title:column"
@@ -2038,7 +2010,7 @@ msgstr "Tarkista kaikki"
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/ProfileTab.qml:40
 msgctxt "@info:status"
 msgid "Calculated"
-msgstr ""
+msgstr "Laskettu"
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/ProfileTab.qml:53
 msgctxt "@title:column"
@@ -2139,12 +2111,12 @@ msgstr "Käännä kameran zoomin suunta päinvastaiseksi."
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:363
 msgctxt "@info:tooltip"
 msgid "Should zooming move in the direction of the mouse?"
-msgstr ""
+msgstr "Tuleeko zoomauksen siirtyä hiiren suuntaan?"
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:368
 msgctxt "@action:button"
 msgid "Zoom toward mouse direction"
-msgstr ""
+msgstr "Zoomaa hiiren suuntaan"
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:377
 msgctxt "@info:tooltip"
@@ -2593,9 +2565,7 @@ msgctxt "@info:credit"
 msgid ""
 "Cura is developed by Ultimaker B.V. in cooperation with the community.\n"
 "Cura proudly uses the following open source projects:"
-msgstr ""
-"Cura-ohjelman on kehittänyt Ultimaker B.V. yhteistyössä käyttäjäyhteisön kanssa.\n"
-"Cura hyödyntää seuraavia avoimeen lähdekoodiin perustuvia projekteja:"
+msgstr "Cura-ohjelman on kehittänyt Ultimaker B.V. yhteistyössä käyttäjäyhteisön kanssa.\nCura hyödyntää seuraavia avoimeen lähdekoodiin perustuvia projekteja:"
 
 #: /home/ruben/Projects/Cura/resources/qml/AboutDialog.qml:118
 msgctxt "@label"
@@ -2645,7 +2615,7 @@ msgstr "Data Interchange Format"
 #: /home/ruben/Projects/Cura/resources/qml/AboutDialog.qml:128
 msgctxt "@label"
 msgid "Support library for scientific computing"
-msgstr ""
+msgstr "Tieteellisen laskennan tukikirjasto"
 
 #: /home/ruben/Projects/Cura/resources/qml/AboutDialog.qml:129
 msgctxt "@label"
@@ -2723,10 +2693,7 @@ msgid ""
 "Some hidden settings use values different from their normal calculated value.\n"
 "\n"
 "Click to make these settings visible."
-msgstr ""
-"Jotkin piilotetut asetukset käyttävät arvoja, jotka eroavat normaaleista lasketuista arvoista.\n"
-"\n"
-"Tee asetuksista näkyviä napsauttamalla."
+msgstr "Jotkin piilotetut asetukset käyttävät arvoja, jotka eroavat normaaleista lasketuista arvoista.\n\nTee asetuksista näkyviä napsauttamalla."
 
 #: /home/ruben/Projects/Cura/resources/qml/Settings/SettingItem.qml:62
 msgctxt "@label Header for list of settings."
@@ -2754,10 +2721,7 @@ msgid ""
 "This setting has a value that is different from the profile.\n"
 "\n"
 "Click to restore the value of the profile."
-msgstr ""
-"Tämän asetuksen arvo eroaa profiilin arvosta.\n"
-"\n"
-"Palauta profiilin arvo napsauttamalla."
+msgstr "Tämän asetuksen arvo eroaa profiilin arvosta.\n\nPalauta profiilin arvo napsauttamalla."
 
 #: /home/ruben/Projects/Cura/resources/qml/Settings/SettingItem.qml:284
 msgctxt "@label"
@@ -2765,10 +2729,7 @@ msgid ""
 "This setting is normally calculated, but it currently has an absolute value set.\n"
 "\n"
 "Click to restore the calculated value."
-msgstr ""
-"Tämä asetus on normaalisti laskettu, mutta sillä on tällä hetkellä absoluuttinen arvo.\n"
-"\n"
-"Palauta laskettu arvo napsauttamalla."
+msgstr "Tämä asetus on normaalisti laskettu, mutta sillä on tällä hetkellä absoluuttinen arvo.\n\nPalauta laskettu arvo napsauttamalla."
 
 #: /home/ruben/Projects/Cura/resources/qml/Sidebar.qml:112
 msgctxt "@label:listbox"
@@ -2780,9 +2741,7 @@ msgctxt "@label:listbox"
 msgid ""
 "Print Setup disabled\n"
 "G-code files cannot be modified"
-msgstr ""
-"Tulostuksen asennus ei käytössä\n"
-"G-code-tiedostoja ei voida muokata"
+msgstr "Tulostuksen asennus ei käytössä\nG-code-tiedostoja ei voida muokata"
 
 #: /home/ruben/Projects/Cura/resources/qml/Sidebar.qml:455
 msgctxt "@tooltip"
@@ -2807,7 +2766,7 @@ msgstr "&Näytä"
 #: /home/ruben/Projects/Cura/resources/qml/Menus/NozzleMenu.qml:26
 msgctxt "@title:menuitem %1 is the nozzle currently loaded in the printer"
 msgid "Automatic: %1"
-msgstr ""
+msgstr "Automaattinen: %1"
 
 #: /home/ruben/Projects/Cura/resources/qml/Menus/ContextMenu.qml:25
 msgctxt "@label"
@@ -3107,7 +3066,7 @@ msgstr "Määritä asetusten näkyvyys..."
 #: /home/ruben/Projects/Cura/resources/qml/SaveButton.qml:27
 msgctxt "@label:PrintjobStatus"
 msgid "Please load a 3D model"
-msgstr ""
+msgstr "Lataa 3D-malli"
 
 #: /home/ruben/Projects/Cura/resources/qml/SaveButton.qml:33
 msgctxt "@label:PrintjobStatus"
@@ -3270,7 +3229,7 @@ msgstr "Haluatko varmasti aloittaa uuden projektin? Se tyhjentää alustan ja ka
 #: /home/ruben/Projects/Cura/resources/qml/Cura.qml:750
 msgctxt "@window:title"
 msgid "Install Plugin"
-msgstr ""
+msgstr "Asenna laajennus"
 
 #: /home/ruben/Projects/Cura/resources/qml/Cura.qml:757
 msgctxt "@title:window"
@@ -3305,12 +3264,12 @@ msgstr "Älä näytä projektin yhteenvetoa tallennettaessa"
 #: /home/ruben/Projects/Cura/resources/qml/Topbar.qml:47
 msgctxt "@title:tab"
 msgid "Prepare"
-msgstr ""
+msgstr "Valmistele"
 
 #: /home/ruben/Projects/Cura/resources/qml/Topbar.qml:60
 msgctxt "@title:tab"
 msgid "Print"
-msgstr ""
+msgstr "Tulosta"
 
 #: /home/ruben/Projects/Cura/resources/qml/SidebarSimple.qml:41
 msgctxt "@label"
@@ -3406,8 +3365,8 @@ msgstr "Tarvitsetko apua tulosteiden parantamiseen?<br>Lue <a href='%1'>Ultimake
 msgctxt "@label %1 is filled in with the name of an extruder"
 msgid "Print Selected Model with %1"
 msgid_plural "Print Selected Models with %1"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Tulosta valittu malli asetuksella %1"
+msgstr[1] "Tulosta valitut mallit asetuksella %1"
 
 #: /home/ruben/Projects/Cura/resources/qml/AskOpenAsProjectOrModelsDialog.qml:20
 msgctxt "@title:window"
@@ -3456,350 +3415,347 @@ msgid ""
 "Some setting/override values are different from the values stored in the profile.\n"
 "\n"
 "Click to open the profile manager."
-msgstr ""
-"Jotkut asetusten ja ohitusten arvot eroavat profiiliin tallennetuista arvoista.\n"
-"\n"
-"Avaa profiilin hallinta napsauttamalla."
+msgstr "Jotkut asetusten ja ohitusten arvot eroavat profiiliin tallennetuista arvoista.\n\nAvaa profiilin hallinta napsauttamalla."
 
 #: MachineSettingsAction/plugin.json
 msgctxt "description"
 msgid "Provides a way to change machine settings (such as build volume, nozzle size, etc)"
-msgstr ""
+msgstr "Toiminnon avulla voidaan vaihtaa laitteen asetuksia (esim. tulostustilavuus, suuttimen koko yms.)"
 
 #: MachineSettingsAction/plugin.json
 msgctxt "name"
 msgid "Machine Settings action"
-msgstr ""
+msgstr "Laitteen asetukset -toiminto"
 
 #: XRayView/plugin.json
 msgctxt "description"
 msgid "Provides the X-Ray view."
-msgstr ""
+msgstr "Näyttää kerrosnäkymän."
 
 #: XRayView/plugin.json
 msgctxt "name"
 msgid "X-Ray View"
-msgstr ""
+msgstr "Kerrosnäkymä"
 
 #: X3DReader/plugin.json
 msgctxt "description"
 msgid "Provides support for reading X3D files."
-msgstr ""
+msgstr "Tukee X3D-tiedostojen lukemista."
 
 #: X3DReader/plugin.json
 msgctxt "name"
 msgid "X3D Reader"
-msgstr ""
+msgstr "X3D-lukija"
 
 #: GCodeWriter/plugin.json
 msgctxt "description"
 msgid "Writes GCode to a file."
-msgstr ""
+msgstr "Kirjoittaa GCodea tiedostoon."
 
 #: GCodeWriter/plugin.json
 msgctxt "name"
 msgid "GCode Writer"
-msgstr ""
+msgstr "GCode-kirjoitin"
 
 #: cura-god-mode-plugin/src/GodMode/plugin.json
 msgctxt "description"
 msgid "Dump the contents of all settings to a HTML file."
-msgstr ""
+msgstr "Vedosta kaikkien asetusten sisällöt HTML-tiedostoon."
 
 #: cura-god-mode-plugin/src/GodMode/plugin.json
 msgctxt "name"
 msgid "God Mode"
-msgstr ""
+msgstr "Jumala-tila"
 
 #: ChangeLogPlugin/plugin.json
 msgctxt "description"
 msgid "Shows changes since latest checked version."
-msgstr ""
+msgstr "Näyttää viimeisimmän tarkistetun version jälkeen tapahtuneet muutokset."
 
 #: ChangeLogPlugin/plugin.json
 msgctxt "name"
 msgid "Changelog"
-msgstr ""
+msgstr "Muutosloki"
 
 #: ProfileFlattener/plugin.json
 msgctxt "description"
 msgid "Create a flattend quality changes profile."
-msgstr ""
+msgstr "Luo tasoitettu laatumuutosten profiili."
 
 #: ProfileFlattener/plugin.json
 msgctxt "name"
 msgid "Profile flatener"
-msgstr ""
+msgstr "Profiilin tasoitus"
 
 #: USBPrinting/plugin.json
 msgctxt "description"
 msgid "Accepts G-Code and sends them to a printer. Plugin can also update firmware."
-msgstr ""
+msgstr "Hyväksyy GCode-määrittelyt ja lähettää ne tulostimeen. Lisäosa voi myös päivittää laiteohjelmiston."
 
 #: USBPrinting/plugin.json
 msgctxt "name"
 msgid "USB printing"
-msgstr ""
+msgstr "USB-tulostus"
 
 #: X3GWriter/plugin.json
 msgctxt "description"
 msgid "Provides support for writing X3G files"
-msgstr ""
+msgstr "Tukee X3G-tiedostojen kirjoittamista."
 
 #: X3GWriter/plugin.json
 msgctxt "name"
 msgid "X3G Writer"
-msgstr ""
+msgstr "X3G-kirjoitin"
 
 #: RemovableDriveOutputDevice/plugin.json
 msgctxt "description"
 msgid "Provides removable drive hotplugging and writing support."
-msgstr ""
+msgstr "Tukee irrotettavan aseman kytkemistä lennossa ja sille kirjoittamista."
 
 #: RemovableDriveOutputDevice/plugin.json
 msgctxt "name"
 msgid "Removable Drive Output Device Plugin"
-msgstr ""
+msgstr "Irrotettavan aseman tulostusvälineen laajennus"
 
 #: UM3NetworkPrinting/plugin.json
 msgctxt "description"
 msgid "Manages network connections to Ultimaker 3 printers"
-msgstr ""
+msgstr "Ultimaker 3 -tulostimien verkkoyhteyksien hallinta"
 
 #: UM3NetworkPrinting/plugin.json
 msgctxt "name"
 msgid "UM3 Network Connection"
-msgstr ""
+msgstr "UM3-verkkoyhteys"
 
 #: CuraSolidWorksPlugin/plugin.json
 msgctxt "description"
 msgid "Gives you the possibility to open certain files via SolidWorks itself. These are then converted and loaded into Cura"
-msgstr ""
+msgstr "Mahdollistaa tiettyjen tiedostojen avaamisen SolidWorks-ohjelmiston kautta. Tämän jälkeen tiedostot muunnetaan ja ladataan Curaan."
 
 #: CuraSolidWorksPlugin/plugin.json
 msgctxt "name"
 msgid "SolidWorks Integration"
-msgstr ""
+msgstr "SolidWorks-integrointi"
 
 #: PostProcessingPlugin/plugin.json
 msgctxt "description"
 msgid "Extension that allows for user created scripts for post processing"
-msgstr ""
+msgstr "Lisäosa, jonka avulla käyttäjät voivat luoda komentosarjoja jälkikäsittelyä varten"
 
 #: PostProcessingPlugin/plugin.json
 msgctxt "name"
 msgid "Post Processing"
-msgstr ""
+msgstr "Jälkikäsittely"
 
 #: AutoSave/plugin.json
 msgctxt "description"
 msgid "Automatically saves Preferences, Machines and Profiles after changes."
-msgstr ""
+msgstr "Tallentaa automaattisesti lisäasetukset, koneet ja profiilit muutosten jälkeen."
 
 #: AutoSave/plugin.json
 msgctxt "name"
 msgid "Auto Save"
-msgstr ""
+msgstr "Automaattitallennus"
 
 #: SliceInfoPlugin/plugin.json
 msgctxt "description"
 msgid "Submits anonymous slice info. Can be disabled through preferences."
-msgstr ""
+msgstr "Lähettää anonyymiä viipalointitietoa. Voidaan lisäasetuksista kytkeä pois käytöstä."
 
 #: SliceInfoPlugin/plugin.json
 msgctxt "name"
 msgid "Slice info"
-msgstr ""
+msgstr "Viipalointitiedot"
 
 #: XmlMaterialProfile/plugin.json
 msgctxt "description"
 msgid "Provides capabilities to read and write XML-based material profiles."
-msgstr ""
+msgstr "Mahdollistaa XML-pohjaisten materiaaliprofiilien lukemisen ja kirjoittamisen."
 
 #: XmlMaterialProfile/plugin.json
 msgctxt "name"
 msgid "Material Profiles"
-msgstr ""
+msgstr "Materiaaliprofiilit"
 
 #: LegacyProfileReader/plugin.json
 msgctxt "description"
 msgid "Provides support for importing profiles from legacy Cura versions."
-msgstr ""
+msgstr "Tukee profiilien tuontia aikaisemmista Cura-versioista."
 
 #: LegacyProfileReader/plugin.json
 msgctxt "name"
 msgid "Legacy Cura Profile Reader"
-msgstr ""
+msgstr "Aikaisempien Cura-profiilien lukija"
 
 #: GCodeProfileReader/plugin.json
 msgctxt "description"
 msgid "Provides support for importing profiles from g-code files."
-msgstr ""
+msgstr "Tukee profiilien tuontia GCode-tiedostoista."
 
 #: GCodeProfileReader/plugin.json
 msgctxt "name"
 msgid "GCode Profile Reader"
-msgstr ""
+msgstr "GCode-profiilin lukija"
 
 #: LayerView/plugin.json
 msgctxt "description"
 msgid "Provides the Layer view."
-msgstr ""
+msgstr "Näyttää kerrosnäkymän."
 
 #: LayerView/plugin.json
 msgctxt "name"
 msgid "Layer View"
-msgstr ""
+msgstr "Kerrosnäkymä"
 
 #: VersionUpgrade/VersionUpgrade25to26/plugin.json
 msgctxt "description"
 msgid "Upgrades configurations from Cura 2.5 to Cura 2.6."
-msgstr ""
+msgstr "Päivittää kokoonpanon versiosta Cura 2.5 versioon Cura 2.6."
 
 #: VersionUpgrade/VersionUpgrade25to26/plugin.json
 msgctxt "name"
 msgid "Version Upgrade 2.5 to 2.6"
-msgstr ""
+msgstr "Päivitys versiosta 2.5 versioon 2.6"
 
 #: VersionUpgrade/VersionUpgrade26to27/plugin.json
 msgctxt "description"
 msgid "Upgrades configurations from Cura 2.6 to Cura 2.7."
-msgstr ""
+msgstr "Päivittää kokoonpanon versiosta Cura 2.6 versioon Cura 2.7."
 
 #: VersionUpgrade/VersionUpgrade26to27/plugin.json
 msgctxt "name"
 msgid "Version Upgrade 2.6 to 2.7"
-msgstr ""
+msgstr "Päivitys versiosta 2.6 versioon 2.7"
 
 #: VersionUpgrade/VersionUpgrade21to22/plugin.json
 msgctxt "description"
 msgid "Upgrades configurations from Cura 2.1 to Cura 2.2."
-msgstr ""
+msgstr "Päivittää kokoonpanon versiosta Cura 2.1 versioon Cura 2.2."
 
 #: VersionUpgrade/VersionUpgrade21to22/plugin.json
 msgctxt "name"
 msgid "Version Upgrade 2.1 to 2.2"
-msgstr ""
+msgstr "Päivitys versiosta 2.1 versioon 2.2"
 
 #: VersionUpgrade/VersionUpgrade22to24/plugin.json
 msgctxt "description"
 msgid "Upgrades configurations from Cura 2.2 to Cura 2.4."
-msgstr ""
+msgstr "Päivittää kokoonpanon versiosta Cura 2.2 versioon Cura 2.4."
 
 #: VersionUpgrade/VersionUpgrade22to24/plugin.json
 msgctxt "name"
 msgid "Version Upgrade 2.2 to 2.4"
-msgstr ""
+msgstr "Päivitys versiosta 2.2 versioon 2.4"
 
 #: ImageReader/plugin.json
 msgctxt "description"
 msgid "Enables ability to generate printable geometry from 2D image files."
-msgstr ""
+msgstr "Mahdollistaa tulostettavien geometrioiden luomisen 2D-kuvatiedostoista."
 
 #: ImageReader/plugin.json
 msgctxt "name"
 msgid "Image Reader"
-msgstr ""
+msgstr "Kuvanlukija"
 
 #: CuraEngineBackend/plugin.json
 msgctxt "description"
 msgid "Provides the link to the CuraEngine slicing backend."
-msgstr ""
+msgstr "Linkki CuraEngine-viipalointiin taustalla."
 
 #: CuraEngineBackend/plugin.json
 msgctxt "name"
 msgid "CuraEngine Backend"
-msgstr ""
+msgstr "CuraEngine-taustaosa"
 
 #: PerObjectSettingsTool/plugin.json
 msgctxt "description"
 msgid "Provides the Per Model Settings."
-msgstr ""
+msgstr "Mallikohtaisten asetusten muokkaus."
 
 #: PerObjectSettingsTool/plugin.json
 msgctxt "name"
 msgid "Per Model Settings Tool"
-msgstr ""
+msgstr "Mallikohtaisten asetusten työkalu"
 
 #: 3MFReader/plugin.json
 msgctxt "description"
 msgid "Provides support for reading 3MF files."
-msgstr ""
+msgstr "Tukee 3MF-tiedostojen lukemista."
 
 #: 3MFReader/plugin.json
 msgctxt "name"
 msgid "3MF Reader"
-msgstr ""
+msgstr "3MF-lukija"
 
 #: PluginBrowser/plugin.json
 msgctxt "description"
 msgid "Find, manage and install new plugins."
-msgstr ""
+msgstr "Etsi, hallinnoi ja asenna uusia laajennuksia."
 
 #: PluginBrowser/plugin.json
 msgctxt "name"
 msgid "Plugin Browser"
-msgstr ""
+msgstr "Lisäosien selain"
 
 #: SolidView/plugin.json
 msgctxt "description"
 msgid "Provides a normal solid mesh view."
-msgstr ""
+msgstr "Näyttää normaalin kiinteän verkkonäkymän."
 
 #: SolidView/plugin.json
 msgctxt "name"
 msgid "Solid View"
-msgstr ""
+msgstr "Kiinteä näkymä"
 
 #: GCodeReader/plugin.json
 msgctxt "description"
 msgid "Allows loading and displaying G-code files."
-msgstr ""
+msgstr "Mahdollistaa GCode-tiedostojen lataamisen ja näyttämisen."
 
 #: GCodeReader/plugin.json
 msgctxt "name"
 msgid "G-code Reader"
-msgstr ""
+msgstr "GCode-lukija"
 
 #: CuraProfileWriter/plugin.json
 msgctxt "description"
 msgid "Provides support for exporting Cura profiles."
-msgstr ""
+msgstr "Tukee Cura-profiilien vientiä."
 
 #: CuraProfileWriter/plugin.json
 msgctxt "name"
 msgid "Cura Profile Writer"
-msgstr ""
+msgstr "Cura-profiilin kirjoitin"
 
 #: 3MFWriter/plugin.json
 msgctxt "description"
 msgid "Provides support for writing 3MF files."
-msgstr ""
+msgstr "Tukee 3MF-tiedostojen kirjoittamista."
 
 #: 3MFWriter/plugin.json
 msgctxt "name"
 msgid "3MF Writer"
-msgstr ""
+msgstr "3MF-kirjoitin"
 
 #: UltimakerMachineActions/plugin.json
 msgctxt "description"
 msgid "Provides machine actions for Ultimaker machines (such as bed leveling wizard, selecting upgrades, etc)"
-msgstr ""
+msgstr "Ultimaker-laitteiden toimintojen käyttö (esim. pöydän tasaaminen, päivitysten valinta yms.)"
 
 #: UltimakerMachineActions/plugin.json
 msgctxt "name"
 msgid "Ultimaker machine actions"
-msgstr ""
+msgstr "Ultimaker-laitteen toiminnot"
 
 #: CuraProfileReader/plugin.json
 msgctxt "description"
 msgid "Provides support for importing Cura profiles."
-msgstr ""
+msgstr "Tukee Cura-profiilien tuontia."
 
 #: CuraProfileReader/plugin.json
 msgctxt "name"
 msgid "Cura Profile Reader"
-msgstr ""
+msgstr "Cura-profiilin lukija"
 
 #~ msgctxt "@label"
 #~ msgid "Machine Settings action"

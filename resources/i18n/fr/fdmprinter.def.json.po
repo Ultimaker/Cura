@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: Cura 2.7\n"
 "Report-Msgid-Bugs-To: r.dulek@ultimaker.com\n"
 "POT-Creation-Date: 2017-08-02 16:53+0000\n"
-"PO-Revision-Date: 2017-06-07 16:04+0200\n"
+"PO-Revision-Date: 2017-08-11 14:31+0200\n"
 "Last-Translator: Bothof <info@bothof.nl>\n"
 "Language-Team: French\n"
 "Language: French\n"
@@ -41,7 +41,7 @@ msgstr "Le nom du modèle de votre imprimante 3D."
 #: fdmprinter.def.json
 msgctxt "machine_show_variants label"
 msgid "Show Machine Variants"
-msgstr ""
+msgstr "Afficher les variantes de la machine"
 
 #: fdmprinter.def.json
 msgctxt "machine_show_variants description"
@@ -58,9 +58,7 @@ msgctxt "machine_start_gcode description"
 msgid ""
 "Gcode commands to be executed at the very start - separated by \n"
 "."
-msgstr ""
-"Commandes Gcode à exécuter au tout début, séparées par \n"
-"."
+msgstr "Commandes Gcode à exécuter au tout début, séparées par \n."
 
 #: fdmprinter.def.json
 msgctxt "machine_end_gcode label"
@@ -72,9 +70,7 @@ msgctxt "machine_end_gcode description"
 msgid ""
 "Gcode commands to be executed at the very end - separated by \n"
 "."
-msgstr ""
-"Commandes Gcode à exécuter à la toute fin, séparées par \n"
-"."
+msgstr "Commandes Gcode à exécuter à la toute fin, séparées par \n."
 
 #: fdmprinter.def.json
 msgctxt "material_guid label"
@@ -89,7 +85,7 @@ msgstr "GUID du matériau. Cela est configuré automatiquement. "
 #: fdmprinter.def.json
 msgctxt "material_bed_temp_wait label"
 msgid "Wait for Build Plate Heatup"
-msgstr ""
+msgstr "Attendre le chauffage du plateau"
 
 #: fdmprinter.def.json
 msgctxt "material_bed_temp_wait description"
@@ -99,7 +95,7 @@ msgstr "Insérer ou non une commande pour attendre que la température du platea
 #: fdmprinter.def.json
 msgctxt "material_print_temp_wait label"
 msgid "Wait for Nozzle Heatup"
-msgstr ""
+msgstr "Attendre le chauffage de la buse"
 
 #: fdmprinter.def.json
 msgctxt "material_print_temp_wait description"
@@ -109,7 +105,7 @@ msgstr "Attendre ou non que la température de la buse soit atteinte au démarra
 #: fdmprinter.def.json
 msgctxt "material_print_temp_prepend label"
 msgid "Include Material Temperatures"
-msgstr ""
+msgstr "Inclure les températures du matériau"
 
 #: fdmprinter.def.json
 msgctxt "material_print_temp_prepend description"
@@ -119,7 +115,7 @@ msgstr "Inclure ou non les commandes de température de la buse au début du gco
 #: fdmprinter.def.json
 msgctxt "material_bed_temp_prepend label"
 msgid "Include Build Plate Temperature"
-msgstr ""
+msgstr "Inclure la température du plateau"
 
 #: fdmprinter.def.json
 msgctxt "material_bed_temp_prepend description"
@@ -129,7 +125,7 @@ msgstr "Inclure ou non les commandes de température du plateau au début du gco
 #: fdmprinter.def.json
 msgctxt "machine_width label"
 msgid "Machine Width"
-msgstr ""
+msgstr "Largeur de la machine"
 
 #: fdmprinter.def.json
 msgctxt "machine_width description"
@@ -139,7 +135,7 @@ msgstr "La largeur (sens X) de la zone imprimable."
 #: fdmprinter.def.json
 msgctxt "machine_depth label"
 msgid "Machine Depth"
-msgstr ""
+msgstr "Profondeur de la machine"
 
 #: fdmprinter.def.json
 msgctxt "machine_depth description"
@@ -149,7 +145,7 @@ msgstr "La profondeur (sens Y) de la zone imprimable."
 #: fdmprinter.def.json
 msgctxt "machine_shape label"
 msgid "Build Plate Shape"
-msgstr ""
+msgstr "Forme du plateau"
 
 #: fdmprinter.def.json
 msgctxt "machine_shape description"
@@ -169,7 +165,7 @@ msgstr "Elliptique"
 #: fdmprinter.def.json
 msgctxt "machine_height label"
 msgid "Machine Height"
-msgstr ""
+msgstr "Hauteur de la machine"
 
 #: fdmprinter.def.json
 msgctxt "machine_height description"
@@ -179,7 +175,7 @@ msgstr "La hauteur (sens Z) de la zone imprimable."
 #: fdmprinter.def.json
 msgctxt "machine_heated_bed label"
 msgid "Has Heated Build Plate"
-msgstr ""
+msgstr "A un plateau chauffé"
 
 #: fdmprinter.def.json
 msgctxt "machine_heated_bed description"
@@ -189,7 +185,7 @@ msgstr "Si la machine a un plateau chauffé présent."
 #: fdmprinter.def.json
 msgctxt "machine_center_is_zero label"
 msgid "Is Center Origin"
-msgstr ""
+msgstr "Est l'origine du centre"
 
 #: fdmprinter.def.json
 msgctxt "machine_center_is_zero description"
@@ -309,17 +305,17 @@ msgstr "Le type de gcode à générer."
 #: fdmprinter.def.json
 msgctxt "machine_gcode_flavor option RepRap (Marlin/Sprinter)"
 msgid "Marlin"
-msgstr ""
+msgstr "Marlin"
 
 #: fdmprinter.def.json
 msgctxt "machine_gcode_flavor option RepRap (Volumetric)"
 msgid "Marlin (Volumetric)"
-msgstr ""
+msgstr "Marlin (Volumétrique)"
 
 #: fdmprinter.def.json
 msgctxt "machine_gcode_flavor option RepRap (RepRap)"
 msgid "RepRap"
-msgstr ""
+msgstr "RepRap"
 
 #: fdmprinter.def.json
 msgctxt "machine_gcode_flavor option UltiGCode"
@@ -404,12 +400,12 @@ msgstr "La différence de hauteur entre la pointe de la buse et le système de p
 #: fdmprinter.def.json
 msgctxt "machine_nozzle_id label"
 msgid "Nozzle ID"
-msgstr ""
+msgstr "ID buse"
 
 #: fdmprinter.def.json
 msgctxt "machine_nozzle_id description"
 msgid "The nozzle ID for an extruder train, such as \"AA 0.4\" and \"BB 0.8\"."
-msgstr ""
+msgstr "ID buse pour un train d'extrudeuse, comme « AA 0.4 » et « BB 0.8 »."
 
 #: fdmprinter.def.json
 msgctxt "machine_nozzle_size label"
@@ -654,12 +650,12 @@ msgstr "Largeur d'une seule ligne de la paroi pour toutes les lignes de paroi, �
 #: fdmprinter.def.json
 msgctxt "roofing_line_width label"
 msgid "Top Surface Skin Line Width"
-msgstr ""
+msgstr "Largeur de ligne de couche extérieure de la surface supérieure"
 
 #: fdmprinter.def.json
 msgctxt "roofing_line_width description"
 msgid "Width of a single line of the areas at the top of the print."
-msgstr ""
+msgstr "Largeur d'une seule ligne de la zone en haut de l'impression."
 
 #: fdmprinter.def.json
 msgctxt "skin_line_width label"
@@ -744,12 +740,12 @@ msgstr "Largeur d'une seule ligne de tour primaire."
 #: fdmprinter.def.json
 msgctxt "initial_layer_line_width_factor label"
 msgid "Initial Layer Line Width"
-msgstr ""
+msgstr "Largeur de ligne couche initiale"
 
 #: fdmprinter.def.json
 msgctxt "initial_layer_line_width_factor description"
 msgid "Multiplier of the line width on the first layer. Increasing this could improve bed adhesion."
-msgstr ""
+msgstr "Multiplicateur de la largeur de la ligne sur la première couche. Augmenter le multiplicateur peut améliorer l'adhésion au plateau."
 
 #: fdmprinter.def.json
 msgctxt "shell label"
@@ -764,32 +760,32 @@ msgstr "Coque"
 #: fdmprinter.def.json
 msgctxt "wall_extruder_nr label"
 msgid "Wall Extruder"
-msgstr ""
+msgstr "Extrudeuse de paroi"
 
 #: fdmprinter.def.json
 msgctxt "wall_extruder_nr description"
 msgid "The extruder train used for printing the walls. This is used in multi-extrusion."
-msgstr ""
+msgstr "Le train d'extrudeuse utilisé pour l'impression des parois. Cela est utilisé en multi-extrusion."
 
 #: fdmprinter.def.json
 msgctxt "wall_0_extruder_nr label"
 msgid "Outer Wall Extruder"
-msgstr ""
+msgstr "Extrudeuse de paroi externe"
 
 #: fdmprinter.def.json
 msgctxt "wall_0_extruder_nr description"
 msgid "The extruder train used for printing the outer wall. This is used in multi-extrusion."
-msgstr ""
+msgstr "Le train d'extrudeuse utilisé pour l'impression des parois externes. Cela est utilisé en multi-extrusion."
 
 #: fdmprinter.def.json
 msgctxt "wall_x_extruder_nr label"
 msgid "Inner Walls Extruder"
-msgstr ""
+msgstr "Extrudeuse de parois internes"
 
 #: fdmprinter.def.json
 msgctxt "wall_x_extruder_nr description"
 msgid "The extruder train used for printing the inner walls. This is used in multi-extrusion."
-msgstr ""
+msgstr "Le train d'extrudeuse utilisé pour l'impression des parois internes. Cela est utilisé en multi-extrusion."
 
 #: fdmprinter.def.json
 msgctxt "wall_thickness label"
@@ -799,7 +795,7 @@ msgstr "Épaisseur de la paroi"
 #: fdmprinter.def.json
 msgctxt "wall_thickness description"
 msgid "The thickness of the walls in the horizontal direction. This value divided by the wall line width defines the number of walls."
-msgstr ""
+msgstr "Épaisseur des parois en sens horizontal. Cette valeur divisée par la largeur de la ligne de la paroi définit le nombre de parois."
 
 #: fdmprinter.def.json
 msgctxt "wall_line_count label"
@@ -824,67 +820,67 @@ msgstr "Distance d'un déplacement inséré après la paroi extérieure, pour mi
 #: fdmprinter.def.json
 msgctxt "roofing_extruder_nr label"
 msgid "Top Surface Skin Extruder"
-msgstr ""
+msgstr "Extrudeuse de couche extérieure de la surface supérieure"
 
 #: fdmprinter.def.json
 msgctxt "roofing_extruder_nr description"
 msgid "The extruder train used for printing the top most skin. This is used in multi-extrusion."
-msgstr ""
+msgstr "Le train d'extrudeuse utilisé pour l'impression de la couche extérieure supérieure. Cela est utilisé en multi-extrusion."
 
 #: fdmprinter.def.json
 msgctxt "roofing_layer_count label"
 msgid "Top Surface Skin Layers"
-msgstr ""
+msgstr "Couches extérieures de la surface supérieure"
 
 #: fdmprinter.def.json
 msgctxt "roofing_layer_count description"
 msgid "The number of top most skin layers. Usually only one top most layer is sufficient to generate higher quality top surfaces."
-msgstr ""
+msgstr "Nombre de couches extérieures supérieures. En général, une seule couche supérieure est suffisante pour générer des surfaces supérieures de qualité."
 
 #: fdmprinter.def.json
 msgctxt "roofing_pattern label"
 msgid "Top Surface Skin Pattern"
-msgstr ""
+msgstr "Motif de couche extérieure de surface supérieure"
 
 #: fdmprinter.def.json
 msgctxt "roofing_pattern description"
 msgid "The pattern of the top most layers."
-msgstr ""
+msgstr "Le motif des couches supérieures."
 
 #: fdmprinter.def.json
 msgctxt "roofing_pattern option lines"
 msgid "Lines"
-msgstr ""
+msgstr "Lignes"
 
 #: fdmprinter.def.json
 msgctxt "roofing_pattern option concentric"
 msgid "Concentric"
-msgstr ""
+msgstr "Concentrique"
 
 #: fdmprinter.def.json
 msgctxt "roofing_pattern option zigzag"
 msgid "Zig Zag"
-msgstr ""
+msgstr "Zig Zag"
 
 #: fdmprinter.def.json
 msgctxt "roofing_angles label"
 msgid "Top Surface Skin Line Directions"
-msgstr ""
+msgstr "Sens de lignes de couche extérieure de surface supérieure"
 
 #: fdmprinter.def.json
 msgctxt "roofing_angles description"
 msgid "A list of integer line directions to use when the top surface skin layers use the lines or zig zag pattern. Elements from the list are used sequentially as the layers progress and when the end of the list is reached, it starts at the beginning again. The list items are separated by commas and the whole list is contained in square brackets. Default is an empty list which means use the traditional default angles (45 and 135 degrees)."
-msgstr ""
+msgstr "Une liste de sens de ligne (exprimés en nombres entiers) à utiliser lorsque les couches extérieures de la surface supérieure utilisent le motif en lignes ou en zig zag. Les éléments de la liste sont utilisés de manière séquentielle à mesure de l'avancement des couches. La liste reprend depuis le début lorsque la fin est atteinte. Les éléments de la liste sont séparés par des virgules et la liste entière est encadrée entre crochets. La valeur par défaut est une liste vide, ce qui signifie que les angles traditionnels par défaut seront utilisés (45 et 135 degrés)."
 
 #: fdmprinter.def.json
 msgctxt "top_bottom_extruder_nr label"
 msgid "Top/Bottom Extruder"
-msgstr ""
+msgstr "Extrudeuse du dessus/dessous"
 
 #: fdmprinter.def.json
 msgctxt "top_bottom_extruder_nr description"
 msgid "The extruder train used for printing the top and bottom skin. This is used in multi-extrusion."
-msgstr ""
+msgstr "Le train d'extrudeuse utilisé pour l'impression de la couche extérieure du haut et du bas. Cela est utilisé en multi-extrusion."
 
 #: fdmprinter.def.json
 msgctxt "top_bottom_thickness label"
@@ -1079,12 +1075,12 @@ msgstr "Partout"
 #: fdmprinter.def.json
 msgctxt "fill_outline_gaps label"
 msgid "Print Thin Walls"
-msgstr ""
+msgstr "Imprimer parois fines"
 
 #: fdmprinter.def.json
 msgctxt "fill_outline_gaps description"
 msgid "Print pieces of the model which are horizontally thinner than the nozzle size."
-msgstr ""
+msgstr "Imprimer les parties du modèle qui sont horizontalement plus fines que la taille de la buse."
 
 #: fdmprinter.def.json
 msgctxt "xy_offset label"
@@ -1099,12 +1095,12 @@ msgstr "Le décalage appliqué à tous les polygones dans chaque couche. Une val
 #: fdmprinter.def.json
 msgctxt "xy_offset_layer_0 label"
 msgid "Initial Layer Horizontal Expansion"
-msgstr ""
+msgstr "Expansion horizontale de la couche initiale"
 
 #: fdmprinter.def.json
 msgctxt "xy_offset_layer_0 description"
 msgid "Amount of offset applied to all polygons in the first layer. A negative value can compensate for squishing of the first layer known as \"elephant's foot\"."
-msgstr ""
+msgstr "Le décalage appliqué à tous les polygones dans la première couche. Une valeur négative peut compenser l'écrasement de la première couche, appelé « patte d'éléphant »."
 
 #: fdmprinter.def.json
 msgctxt "z_seam_type label"
@@ -1154,12 +1150,12 @@ msgstr "Coordonnée Y de la position près de laquelle démarrer l'impression de
 #: fdmprinter.def.json
 msgctxt "z_seam_relative label"
 msgid "Z Seam Relative"
-msgstr ""
+msgstr "Relatif à la jointure en Z"
 
 #: fdmprinter.def.json
 msgctxt "z_seam_relative description"
 msgid "When enabled, the z seam coordinates are relative to each part's centre. When disabled, the coordinates define an absolute position on the build plate."
-msgstr ""
+msgstr "Si cette option est activée, les coordonnées de la jointure z sont relatives au centre de chaque partie. Si elle est désactivée, les coordonnées définissent une position absolue sur le plateau."
 
 #: fdmprinter.def.json
 msgctxt "skin_no_small_gaps_heuristic label"
@@ -1184,12 +1180,12 @@ msgstr "Remplissage"
 #: fdmprinter.def.json
 msgctxt "infill_extruder_nr label"
 msgid "Infill Extruder"
-msgstr ""
+msgstr "Extrudeuse de remplissage"
 
 #: fdmprinter.def.json
 msgctxt "infill_extruder_nr description"
 msgid "The extruder train used for printing infill. This is used in multi-extrusion."
-msgstr ""
+msgstr "Le train d'extrudeuse utilisé pour l'impression du remplissage. Cela est utilisé en multi-extrusion."
 
 #: fdmprinter.def.json
 msgctxt "infill_sparse_density label"
@@ -1314,7 +1310,7 @@ msgstr "Pourcentage de chevauchement de la couche extérieure"
 #: fdmprinter.def.json
 msgctxt "skin_overlap description"
 msgid "The amount of overlap between the skin and the walls as a percentage of the line width. A slight overlap allows the walls to connect firmly to the skin. This is a percentage of the average line widths of the skin lines and the innermost wall."
-msgstr ""
+msgstr "Le montant de chevauchement entre la couche extérieure et les parois en pourcentage de la largeur de ligne. Un chevauchement faible permet aux parois de se connecter fermement à la couche extérieure. Ce montant est un pourcentage des largeurs moyennes des lignes de la couche extérieure et de la paroi la plus intérieure."
 
 #: fdmprinter.def.json
 msgctxt "skin_overlap_mm label"
@@ -1789,12 +1785,12 @@ msgstr "La vitesse à laquelle toutes les parois internes seront imprimées. L�
 #: fdmprinter.def.json
 msgctxt "speed_roofing label"
 msgid "Top Surface Skin Speed"
-msgstr ""
+msgstr "Vitesse de la couche extérieure de la surface supérieure"
 
 #: fdmprinter.def.json
 msgctxt "speed_roofing description"
 msgid "The speed at which top surface skin layers are printed."
-msgstr ""
+msgstr "La vitesse à laquelle les couches extérieures de la surface supérieure sont imprimées."
 
 #: fdmprinter.def.json
 msgctxt "speed_topbottom label"
@@ -1809,12 +1805,12 @@ msgstr "La vitesse à laquelle les couches du dessus/dessous sont imprimées."
 #: fdmprinter.def.json
 msgctxt "speed_ironing label"
 msgid "Ironing Speed"
-msgstr ""
+msgstr "Vitesse d'étirage"
 
 #: fdmprinter.def.json
 msgctxt "speed_ironing description"
 msgid "The speed at which to pass over the top surface."
-msgstr ""
+msgstr "La vitesse à laquelle passer sur la surface supérieure."
 
 #: fdmprinter.def.json
 msgctxt "speed_support label"
@@ -2029,12 +2025,12 @@ msgstr "L'accélération selon laquelle toutes les parois intérieures sont impr
 #: fdmprinter.def.json
 msgctxt "acceleration_roofing label"
 msgid "Top Surface Skin Acceleration"
-msgstr ""
+msgstr "Accélération de couche extérieure de surface supérieure"
 
 #: fdmprinter.def.json
 msgctxt "acceleration_roofing description"
 msgid "The acceleration with which top surface skin layers are printed."
-msgstr ""
+msgstr "La vitesse à laquelle les couches extérieures de surface supérieure sont imprimées."
 
 #: fdmprinter.def.json
 msgctxt "acceleration_topbottom label"
@@ -2049,12 +2045,12 @@ msgstr "L'accélération selon laquelle les couches du dessus/dessous sont impri
 #: fdmprinter.def.json
 msgctxt "acceleration_ironing label"
 msgid "Ironing Acceleration"
-msgstr ""
+msgstr "Accélération d'étirage"
 
 #: fdmprinter.def.json
 msgctxt "acceleration_ironing description"
 msgid "The acceleration with which ironing is performed."
-msgstr ""
+msgstr "L'accélération selon laquelle l'étirage est effectué."
 
 #: fdmprinter.def.json
 msgctxt "acceleration_support label"
@@ -2229,12 +2225,12 @@ msgstr "Le changement instantané maximal de vitesse selon lequel les parois int
 #: fdmprinter.def.json
 msgctxt "jerk_roofing label"
 msgid "Top Surface Skin Jerk"
-msgstr ""
+msgstr "Saccade de couches extérieures de la surface supérieure"
 
 #: fdmprinter.def.json
 msgctxt "jerk_roofing description"
 msgid "The maximum instantaneous velocity change with which top surface skin layers are printed."
-msgstr ""
+msgstr "Le changement instantané maximal de vitesse selon lequel les couches extérieures de surface supérieure sont imprimées."
 
 #: fdmprinter.def.json
 msgctxt "jerk_topbottom label"
@@ -2249,12 +2245,12 @@ msgstr "Le changement instantané maximal de vitesse selon lequel les couches du
 #: fdmprinter.def.json
 msgctxt "jerk_ironing label"
 msgid "Ironing Jerk"
-msgstr ""
+msgstr "Saccade d'étirage"
 
 #: fdmprinter.def.json
 msgctxt "jerk_ironing description"
 msgid "The maximum instantaneous velocity change while performing ironing."
-msgstr ""
+msgstr "Le changement instantané maximal de vitesse lors de l'étirage."
 
 #: fdmprinter.def.json
 msgctxt "jerk_support label"
@@ -2784,22 +2780,22 @@ msgstr "Relie les zigzags. Cela augmente la solidité des supports en zigzag."
 #: fdmprinter.def.json
 msgctxt "support_skip_some_zags label"
 msgid "Skip Some ZigZags Connections"
-msgstr ""
+msgstr "Ignorer certaines connexions ZigZag"
 
 #: fdmprinter.def.json
 msgctxt "support_skip_some_zags description"
 msgid "Skip some ZigZags connections to make the support structure easier to break."
-msgstr ""
+msgstr "Ignorer certaines connexions ZigZag pour rendre la structure de support plus facile à casser."
 
 #: fdmprinter.def.json
 msgctxt "support_zag_skip_count label"
 msgid "ZigZag Connection Skip Count"
-msgstr ""
+msgstr "Nombre d'omissions de connexion ZigZag"
 
 #: fdmprinter.def.json
 msgctxt "support_zag_skip_count description"
 msgid "Skip one in every N connection lines to make the support structure easier to break."
-msgstr ""
+msgstr "Ignorer une ligne de connexion sur N pour rendre la structure de support plus facile à casser."
 
 #: fdmprinter.def.json
 msgctxt "support_infill_rate label"
@@ -2934,32 +2930,32 @@ msgstr "Le décalage appliqué à tous les polygones pour chaque couche. Une val
 #: fdmprinter.def.json
 msgctxt "support_infill_sparse_thickness label"
 msgid "Support Infill Layer Thickness"
-msgstr ""
+msgstr "Épaisseur de la couche de remplissage de support"
 
 #: fdmprinter.def.json
 msgctxt "support_infill_sparse_thickness description"
 msgid "The thickness per layer of support infill material. This value should always be a multiple of the layer height and is otherwise rounded."
-msgstr ""
+msgstr "L'épaisseur par couche de matériau de remplissage de support. Cette valeur doit toujours être un multiple de la hauteur de la couche et arrondie."
 
 #: fdmprinter.def.json
 msgctxt "gradual_support_infill_steps label"
 msgid "Gradual Support Infill Steps"
-msgstr ""
+msgstr "Étapes de remplissage graduel du support"
 
 #: fdmprinter.def.json
 msgctxt "gradual_support_infill_steps description"
 msgid "Number of times to reduce the support infill density by half when getting further below top surfaces. Areas which are closer to top surfaces get a higher density, up to the Support Infill Density."
-msgstr ""
+msgstr "Nombre de fois pour réduire la densité de remplissage du support de moitié en poursuivant sous les surfaces du dessus. Les zones qui sont plus proches des surfaces du dessus possèdent une densité plus élevée, jusqu'à la Densité de remplissage du support."
 
 #: fdmprinter.def.json
 msgctxt "gradual_support_infill_step_height label"
 msgid "Gradual Support Infill Step Height"
-msgstr ""
+msgstr "Hauteur d'étape de remplissage graduel du support"
 
 #: fdmprinter.def.json
 msgctxt "gradual_support_infill_step_height description"
 msgid "The height of support infill of a given density before switching to half the density."
-msgstr ""
+msgstr "La hauteur de remplissage de support d'une densité donnée avant de passer à la moitié de la densité."
 
 #: fdmprinter.def.json
 msgctxt "support_interface_enable label"
@@ -3341,9 +3337,7 @@ msgctxt "skirt_gap description"
 msgid ""
 "The horizontal distance between the skirt and the first layer of the print.\n"
 "This is the minimum distance, multiple skirt lines will extend outwards from this distance."
-msgstr ""
-"La distance horizontale entre la jupe et la première couche de l’impression.\n"
-"Il s’agit de la distance minimale séparant la jupe de l’objet. Si la jupe a d’autres lignes, celles-ci s’étendront vers l’extérieur."
+msgstr "La distance horizontale entre la jupe et la première couche de l’impression.\nIl s’agit de la distance minimale séparant la jupe de l’objet. Si la jupe a d’autres lignes, celles-ci s’étendront vers l’extérieur."
 
 #: fdmprinter.def.json
 msgctxt "skirt_brim_minimal_length label"
@@ -3778,12 +3772,12 @@ msgstr "Après un changement d'extrudeuse, essuie le matériau qui suinte de la 
 #: fdmprinter.def.json
 msgctxt "prime_tower_purge_volume label"
 msgid "Prime Tower Purge Volume"
-msgstr ""
+msgstr "Volume de purge de la tour primaire"
 
 #: fdmprinter.def.json
 msgctxt "prime_tower_purge_volume description"
 msgid "Amount of filament to be purged when wiping on the prime tower. Purging is useful for compensating the filament lost by oozing during inactivity of the nozzle."
-msgstr ""
+msgstr "Quantité de filament à purger lors de l'essuyage de la tour primaire. La purge est utile pour compenser le filament perdu par la suinte pendant l'inactivité de la buse."
 
 #: fdmprinter.def.json
 msgctxt "ooze_shield_enabled label"
@@ -4223,12 +4217,12 @@ msgstr "Imprime régulièrement le remplissage afin que les filaments s'enroulen
 #: fdmprinter.def.json
 msgctxt "spaghetti_infill_stepped label"
 msgid "Spaghetti Infill Stepping"
-msgstr ""
+msgstr "Étapes de remplissage en spaghettis"
 
 #: fdmprinter.def.json
 msgctxt "spaghetti_infill_stepped description"
 msgid "Whether to print spaghetti infill in steps or extrude all the infill filament at the end of the print."
-msgstr ""
+msgstr "Imprimer le remplissage en spaghettis étape par étape ou bien extruder tout le filament de remplissage à la fin de l'impression."
 
 #: fdmprinter.def.json
 msgctxt "spaghetti_max_infill_angle label"
@@ -4273,12 +4267,12 @@ msgstr "Ajuste la densité du remplissage en spaghettis. Veuillez noter que la d
 #: fdmprinter.def.json
 msgctxt "spaghetti_infill_extra_volume label"
 msgid "Spaghetti Infill Extra Volume"
-msgstr ""
+msgstr "Volume supplémentaire de remplissage en spaghettis"
 
 #: fdmprinter.def.json
 msgctxt "spaghetti_infill_extra_volume description"
 msgid "A correction term to adjust the total volume being extruded each time when filling spaghetti."
-msgstr ""
+msgstr "Terme de correction permettant d'ajuster le volume total extrudé à chaque fois lors du remplissage en spaghettis."
 
 #: fdmprinter.def.json
 msgctxt "support_conical_enabled label"
@@ -4510,9 +4504,7 @@ msgctxt "wireframe_up_half_speed description"
 msgid ""
 "Distance of an upward move which is extruded with half speed.\n"
 "This can cause better adhesion to previous layers, while not heating the material in those layers too much. Only applies to Wire Printing."
-msgstr ""
-"Distance d’un déplacement ascendant qui est extrudé à mi-vitesse.\n"
-"Cela peut permettre une meilleure adhérence aux couches précédentes sans surchauffer le matériau dans ces couches. Uniquement applicable à l'impression filaire."
+msgstr "Distance d’un déplacement ascendant qui est extrudé à mi-vitesse.\nCela peut permettre une meilleure adhérence aux couches précédentes sans surchauffer le matériau dans ces couches. Uniquement applicable à l'impression filaire."
 
 #: fdmprinter.def.json
 msgctxt "wireframe_top_jump label"
@@ -4622,62 +4614,62 @@ msgstr "Distance entre la buse et les lignes descendantes horizontalement. Un es
 #: fdmprinter.def.json
 msgctxt "ironing_enabled label"
 msgid "Enable Ironing"
-msgstr ""
+msgstr "Activer l'étirage"
 
 #: fdmprinter.def.json
 msgctxt "ironing_enabled description"
 msgid "Go over the top surface one additional time, but without extruding material. This is meant to melt the plastic on top further, creating a smoother surface."
-msgstr ""
+msgstr "Aller au-dessus de la surface supérieure une fois supplémentaire, mais sans extruder de matériau. Cela signifie de faire fondre le plastique en haut un peu plus, pour créer une surface lisse."
 
 #: fdmprinter.def.json
 msgctxt "ironing_pattern label"
 msgid "Ironing Pattern"
-msgstr ""
+msgstr "Motif d'étirage"
 
 #: fdmprinter.def.json
 msgctxt "ironing_pattern description"
 msgid "The pattern to use for ironing top surfaces."
-msgstr ""
+msgstr "Le motif à utiliser pour étirer les surfaces supérieures."
 
 #: fdmprinter.def.json
 msgctxt "ironing_pattern option concentric"
 msgid "Concentric"
-msgstr ""
+msgstr "Concentrique"
 
 #: fdmprinter.def.json
 msgctxt "ironing_pattern option zigzag"
 msgid "Zig Zag"
-msgstr ""
+msgstr "Zig Zag"
 
 #: fdmprinter.def.json
 msgctxt "ironing_line_spacing label"
 msgid "Ironing Line Spacing"
-msgstr ""
+msgstr "Interligne de l'étirage"
 
 #: fdmprinter.def.json
 msgctxt "ironing_line_spacing description"
 msgid "The distance between the lines of ironing."
-msgstr ""
+msgstr "La distance entre les lignes d'étirage."
 
 #: fdmprinter.def.json
 msgctxt "ironing_flow label"
 msgid "Ironing Flow"
-msgstr ""
+msgstr "Flux d'étirage"
 
 #: fdmprinter.def.json
 msgctxt "ironing_flow description"
 msgid "The amount of material, relative to a normal skin line, to extrude during ironing. Keeping the nozzle filled helps filling some of the crevices of the top surface, but too much results in overextrusion and blips on the side of the surface."
-msgstr ""
+msgstr "La quantité de matériau, relative à une ligne de couche extérieure normale, à extruder pendant l'étirage. Le fait de garder la buse pleine aide à remplir certaines des crevasses de la surface supérieure ; mais si la quantité est trop importante, cela entraînera une surextrusion et l'apparition de coupures sur le côté de la surface."
 
 #: fdmprinter.def.json
 msgctxt "ironing_inset label"
 msgid "Ironing Inset"
-msgstr ""
+msgstr "Insert d'étirage"
 
 #: fdmprinter.def.json
 msgctxt "ironing_inset description"
 msgid "A distance to keep from the edges of the model. Ironing all the way to the edge of the mesh may result in a jagged edge on your print."
-msgstr ""
+msgstr "Distance à garder à partir des bords du modèle. Étirer jusqu'au bord de la maille peut entraîner l'apparition d'un bord denté sur votre impression."
 
 #: fdmprinter.def.json
 msgctxt "command_line_settings label"
