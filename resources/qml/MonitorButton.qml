@@ -81,7 +81,6 @@ Item
     }
 
     property bool activity: CuraApplication.platformActivity;
-    property int totalHeight: childrenRect.height + UM.Theme.getSize("default_margin").height
     property string fileBaseName
     property string statusText:
     {

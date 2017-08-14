@@ -397,8 +397,8 @@ Rectangle
         width: parent.width
         height: UM.Theme.getSize("sidebar_lining").height
         color: UM.Theme.getColor("sidebar_lining")
-        anchors.bottom: saveButton.top
-        anchors.bottomMargin: UM.Theme.getSize("default_margin").height
+        anchors.bottom: printSpecs.top
+        anchors.bottomMargin: UM.Theme.getSize("default_margin").height * 2 + UM.Theme.getSize("progressbar").height + UM.Theme.getFont("default_bold").pixelSize
     }
 
     Rectangle
@@ -408,6 +408,7 @@ Rectangle
         anchors.bottom: parent.bottom
         anchors.leftMargin: UM.Theme.getSize("default_margin").width
         anchors.bottomMargin: UM.Theme.getSize("default_margin").height
+        height: childrenRect.height
 
         UM.TooltipArea
         {
@@ -517,7 +518,8 @@ Rectangle
     {
         id: saveButton
         implicitWidth: base.width
-        implicitHeight: totalHeight
+        anchors.top: footerSeparator.bottom
+        anchors.topMargin: UM.Theme.getSize("default_margin").height
         anchors.bottom: parent.bottom
         visible: !monitoringPrint
     }
@@ -526,7 +528,8 @@ Rectangle
     {
         id: monitorButton
         implicitWidth: base.width
-        implicitHeight: totalHeight
+        anchors.top: footerSeparator.bottom
+        anchors.topMargin: UM.Theme.getSize("default_margin").height
         anchors.bottom: parent.bottom
         visible: monitoringPrint
     }
