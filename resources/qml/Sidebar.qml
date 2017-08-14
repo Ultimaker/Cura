@@ -415,7 +415,7 @@ Rectangle
             width: timeSpec.width
             height: timeSpec.height
             anchors.left: parent.left
-            anchors.bottom: lengthSpec.top
+            anchors.bottom: timeSpecDescription.top
 
             text: {
                 var order = ["inset_0", "inset_x", "skin", "infill", "support_infill", "support_interface", "support", "travel", "retract", "none"];
@@ -453,6 +453,15 @@ Rectangle
                 color: UM.Theme.getColor("text_subtext")
                 text: (!base.printDuration || !base.printDuration.valid) ? catalog.i18nc("@label", "00h 00min") : base.printDuration.getDisplayString(UM.DurationFormat.Short)
             }
+        }
+        Text
+        {
+            id: timeSpecDescription
+            anchors.left: parent.left
+            anchors.bottom: lengthSpec.top
+            font: UM.Theme.getFont("small")
+            color: UM.Theme.getColor("text_subtext")
+            text: catalog.i18nc("@description", "Print time")
         }
         Text
         {
