@@ -154,14 +154,14 @@ msgstr "Çıkarılabilir Sürücüye Kaydediliyor {0}"
 #, python-brace-format
 msgctxt "@info:progress"
 msgid "Saving to Removable Drive <filename>{0}</filename>"
-msgstr "Çıkarılabilir Sürücüye Kaydediliyor <dosya adı>{0}</dosya adı>"
+msgstr "Çıkarılabilir Sürücüye Kaydediliyor <filename>{0}</filename>"
 
 #: /home/ruben/Projects/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:99
 #: /home/ruben/Projects/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:102
 #, python-brace-format
 msgctxt "@info:status"
 msgid "Could not save to <filename>{0}</filename>: <message>{1}</message>"
-msgstr "<dosya adı>{0}</dosya adı>na kaydedilemedi: <ileti>{1}</ileti>"
+msgstr "<filename>{0}</filename>na kaydedilemedi: <message>{1}</message>"
 
 #: /home/ruben/Projects/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:132
 #, python-brace-format
@@ -671,7 +671,7 @@ msgstr "Dosya Zaten Mevcut"
 #, python-brace-format
 msgctxt "@label"
 msgid "The file <filename>{0}</filename> already exists. Are you sure you want to overwrite it?"
-msgstr "Dosya <dosya adı>{0}</dosya adı> zaten mevcut. Üstüne yazmak istediğinizden emin misiniz?"
+msgstr "Dosya <filename>{0}</filename> zaten mevcut. Üstüne yazmak istediğinizden emin misiniz?"
 
 #: /home/ruben/Projects/Cura/cura/Settings/ContainerManager.py:801
 msgctxt "@label"
@@ -702,19 +702,19 @@ msgstr "Malzeme çapını değiştirme işlemini geri al."
 #, python-brace-format
 msgctxt "@info:status"
 msgid "Failed to export profile to <filename>{0}</filename>: <message>{1}</message>"
-msgstr "Profilin <dosya adı>{0}</dosya adı>na aktarımı başarısız oldu: <ileti>{1}</ileti>"
+msgstr "Profilin <filename>{0}</filename>na aktarımı başarısız oldu: <message>{1}</message>"
 
 #: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:148
 #, python-brace-format
 msgctxt "@info:status"
 msgid "Failed to export profile to <filename>{0}</filename>: Writer plugin reported failure."
-msgstr "Profilin <dosya adı>{0}</dosya adı>na aktarımı başarısız oldu: Yazıcı uzantı hata bildirdi."
+msgstr "Profilin <filename>{0}</filename>na aktarımı başarısız oldu: Yazıcı uzantı hata bildirdi."
 
 #: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:151
 #, python-brace-format
 msgctxt "@info:status"
 msgid "Exported profile to <filename>{0}</filename>"
-msgstr "Profil <Dosya adı>{0}</dosya adı>na aktarıldı"
+msgstr "Profil <filename>{0}</filename>na aktarıldı"
 
 #: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:177
 #: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:199
@@ -723,7 +723,7 @@ msgstr "Profil <Dosya adı>{0}</dosya adı>na aktarıldı"
 #, python-brace-format
 msgctxt "@info:status"
 msgid "Failed to import profile from <filename>{0}</filename>: <message>{1}</message>"
-msgstr "<dosya adı>{0}</dosya adı>dan profil içe aktarımı başarısız oldu: <ileti>{1}</ileti>"
+msgstr "<filename>{0}</filename>dan profil içe aktarımı başarısız oldu: <message>{1}</message>"
 
 #: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:210
 #: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:246
@@ -775,7 +775,7 @@ msgid ""
 "<p>A fatal exception has occurred that we could not recover from!</p>\n"
 "        <p>Please use the information below to post a bug report at <a href=\"http://github.com/Ultimaker/Cura/issues\">http://github.com/Ultimaker/Cura/issues</a></p>\n"
 "    "
-msgstr "<p>Kurtulunamayan ciddi bir olağanüstü durum oluştu!</p>\n        <p>Yazılım hatası raporunu <a href=\"http://github.com/Ultimaker/Cura/issues\">http://github.com/Ultimaker/Cura/issues</a></p> adresine gönderirken aşağıdaki bilgileri kullanınız\n    "
+msgstr "<p>Kurtulunamayan ciddi bir olağanüstü durum oluştu!</p>\n        <p>Yazılım hatası raporunu <a href=\"http://github.com/Ultimaker/Cura/issues\">http://github.com/Ultimaker/Cura/issues</a> adresine gönderirken aşağıdaki bilgileri kullanınız</p>\n"
 
 #: /home/ruben/Projects/Cura/cura/CrashHandler.py:112
 msgctxt "@action:button"
@@ -801,7 +801,7 @@ msgstr "Arayüz yükleniyor..."
 #, python-format
 msgctxt "@info 'width', 'depth' and 'height' are variable names that must NOT be translated; just translate the format of ##x##x## mm."
 msgid "%(width).1f x %(depth).1f x %(height).1f mm"
-msgstr "%(genişlik).1f x %(derinlik).1f x %(uzunluk).1f mm"
+msgstr "%(width).1f x %(depth).1f x %(height).1f mm"
 
 #: /home/ruben/Projects/Cura/cura/CuraApplication.py:1285
 #, python-brace-format
@@ -1020,26 +1020,6 @@ msgstr "Şuraya yazdır: %1"
 msgctxt "@label"
 msgid "Extruder Temperature: %1/%2°C"
 msgstr "Ekstruder Sıcaklığı: %1/%2°C"
-
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
-#: /home/ruben/Projects/Cura/plugins/Doodle3D-cura-plugin/ControlWindow.qml:45
-msgctxt "@label"
-msgid ""
-msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-09-13 17:41+0200\n"
-"PO-Revision-Date: 2016-09-29 13:44+0200\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: \n"
-"MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
 
 #: /home/ruben/Projects/Cura/plugins/Doodle3D-cura-plugin/ControlWindow.qml:46
 msgctxt "@label"
@@ -2466,12 +2446,12 @@ msgstr "Malzemeyi İçe Aktar"
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/MaterialsPage.qml:320
 msgctxt "@info:status"
 msgid "Could not import material <filename>%1</filename>: <message>%2</message>"
-msgstr "Malzeme aktarılamadı<dosya adı>%1</dosya adı>: <ileti>%2</ileti>"
+msgstr "Malzeme aktarılamadı <filename>%1</filename>: <message>%2</message>"
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/MaterialsPage.qml:324
 msgctxt "@info:status"
 msgid "Successfully imported material <filename>%1</filename>"
-msgstr "Malzeme başarıyla aktarıldı <dosya adı>%1</dosya adı>"
+msgstr "Malzeme başarıyla aktarıldı <filename>%1</filename>"
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/MaterialsPage.qml:343
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/MaterialsPage.qml:358
@@ -2482,12 +2462,12 @@ msgstr "Malzemeyi Dışa Aktar"
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/MaterialsPage.qml:362
 msgctxt "@info:status"
 msgid "Failed to export material to <filename>%1</filename>: <message>%2</message>"
-msgstr "Malzemenin dışa aktarımı başarısız oldu <dosya adı>%1</dosya adı>: <ileti>%2</ileti>"
+msgstr "Malzemenin dışa aktarımı başarısız oldu <filename>%1</filename>: <message>%2</message>"
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/MaterialsPage.qml:368
 msgctxt "@info:status"
 msgid "Successfully exported material to <filename>%1</filename>"
-msgstr "Malzeme başarıyla dışa aktarıldı <dosya adı>%1</dosya adı>"
+msgstr "Malzeme başarıyla dışa aktarıldı <filename>%1</filename>"
 
 #: /home/ruben/Projects/Cura/resources/qml/AddMachineDialog.qml:18
 #: /home/ruben/Projects/Cura/resources/qml/Cura.qml:822
