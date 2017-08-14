@@ -445,27 +445,17 @@ class ExtruderManager(QObject):
             support_roof_enabled |= stack_to_use.getProperty("support_roof_enable", "value")
 
             # Check limit to extruders
-            limit_to_extruder_feature_list = ["wall_extruder_nr",
-                                              "wall_0_extruder_nr",
+            limit_to_extruder_feature_list = ["wall_0_extruder_nr",
                                               "wall_x_extruder_nr",
                                               "roofing_extruder_nr",
                                               "top_bottom_extruder_nr",
                                               "infill_extruder_nr",
                                               ]
-            wall_extruder_nr = None
             for extruder_nr_feature_name in limit_to_extruder_feature_list:
                 extruder_nr = int(global_stack.getProperty(extruder_nr_feature_name, "value"))
                 if extruder_nr == -1:
-                    # outer and inner wall extruder numbers should first inherit from the wall extruder number
-                    if extruder_nr_feature_name in ["wall_0_extruder_nr", "wall_x_extruder_nr"]:
-                        extruder_nr = wall_extruder_nr
-                    else:
-                        extruder_nr = 0
-
+                    continue
                 used_extruder_stack_ids.add(self.extruderIds[str(extruder_nr)])
-
-                if extruder_nr_feature_name == "wall_extruder_nr":
-                    wall_extruder_nr = extruder_nr
 
         # Check support extruders
         if support_enabled:
