@@ -452,7 +452,7 @@ msgstr "G-code wijzigen"
 #: /home/ruben/Projects/Cura/plugins/SliceInfoPlugin/SliceInfo.py:43
 msgctxt "@info"
 msgid "Cura collects anonymised slicing statistics. You can disable this in the preferences."
-msgstr "Cura verzamelt geanonimiseerde slicing-statistieken. Dit kan bij de voorkeuren worden uitgeschakeld"
+msgstr "Cura verzamelt geanonimiseerde slicing-statistieken. Dit kan bij de voorkeuren worden uitgeschakeld."
 
 #: /home/ruben/Projects/Cura/plugins/SliceInfoPlugin/SliceInfo.py:44
 msgctxt "@action:button"
@@ -569,7 +569,7 @@ msgstr "Nozzle"
 
 #: /home/ruben/Projects/Cura/plugins/PluginBrowser/PluginBrowser.py:25
 msgid "Browse plugins"
-msgstr "Door invoegtoepassingen bladeren"
+msgstr "Vind invoegtoepassingen"
 
 #: /home/ruben/Projects/Cura/plugins/PluginBrowser/PluginBrowser.py:120
 msgctxt "@window:title"
@@ -867,7 +867,7 @@ msgstr "Vorm van het platform"
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:148
 msgctxt "@option:check"
 msgid "Origin at center"
-msgstr "Centraal beginpunt"
+msgstr "Centraal oorsprongpunt"
 
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:156
 msgctxt "@option:check"
@@ -892,7 +892,7 @@ msgstr "X min"
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:191
 msgctxt "@tooltip"
 msgid "Distance from the left of the printhead to the center of the nozzle. Used to prevent colissions between previous prints and the printhead when printing \"One at a Time\"."
-msgstr "Afstand van de linkerkant van de printkop tot het midden van de nozzle. Wordt tijdens 'een voor een'-printen gebruikt om botsingen tussen eerder geprinte voorwerpen en de printkop te voorkomen."
+msgstr "Afstand van de linkerkant van de printkop tot het midden van de nozzle. Wordt tijdens \"een voor een\"-printen gebruikt om botsingen tussen eerder geprinte voorwerpen en de printkop te voorkomen."
 
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:200
 msgctxt "@label"
@@ -902,7 +902,7 @@ msgstr "Y min"
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:201
 msgctxt "@tooltip"
 msgid "Distance from the front of the printhead to the center of the nozzle. Used to prevent colissions between previous prints and the printhead when printing \"One at a Time\"."
-msgstr "Afstand van de voorkant van de printkop tot het midden van de nozzle. Wordt tijdens 'een voor een'-printen gebruikt om botsingen tussen eerder geprinte voorwerpen en de printkop te voorkomen."
+msgstr "Afstand van de voorkant van de printkop tot het midden van de nozzle. Wordt tijdens \"een voor een\"-printen gebruikt om botsingen tussen eerder geprinte voorwerpen en de printkop te voorkomen."
 
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:210
 msgctxt "@label"
@@ -912,7 +912,7 @@ msgstr "X max"
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:211
 msgctxt "@tooltip"
 msgid "Distance from the right of the printhead to the center of the nozzle. Used to prevent colissions between previous prints and the printhead when printing \"One at a Time\"."
-msgstr "Afstand van de rechterkant van de printkop tot het midden van de nozzle. Wordt tijdens 'een voor een'-printen gebruikt om botsingen tussen eerder geprinte voorwerpen en de printkop te voorkomen."
+msgstr "Afstand van de rechterkant van de printkop tot het midden van de nozzle. Wordt tijdens \"een voor een\"-printen gebruikt om botsingen tussen eerder geprinte voorwerpen en de printkop te voorkomen."
 
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:220
 msgctxt "@label"
@@ -922,7 +922,7 @@ msgstr "Y max"
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:221
 msgctxt "@tooltip"
 msgid "Distance from the rear of the printhead to the center of the nozzle. Used to prevent colissions between previous prints and the printhead when printing \"One at a Time\"."
-msgstr "Afstand van de achterkant van de printkop tot het midden van de nozzle. Wordt tijdens 'een voor een'-printen gebruikt om botsingen tussen eerder geprinte voorwerpen en de printkop te voorkomen."
+msgstr "Afstand van de achterkant van de printkop tot het midden van de nozzle. Wordt tijdens \"een voor een\"-printen gebruikt om botsingen tussen eerder geprinte voorwerpen en de printkop te voorkomen."
 
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:233
 msgctxt "@label"
@@ -932,7 +932,7 @@ msgstr "Hoogte rijbrug"
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:235
 msgctxt "@tooltip"
 msgid "The height difference between the tip of the nozzle and the gantry system (X and Y axes). Used to prevent collisions between previous prints and the gantry when printing \"One at a Time\"."
-msgstr "Het hoogteverschil tussen de punt van de nozzle en het rijbrugsysteem (X- en Y-as). Wordt tijdens 'een voor een'-printen gebruikt om botsingen tussen eerder geprinte voorwerpen en het rijbrugsysteem te voorkomen"
+msgstr "Het hoogteverschil tussen de punt van de nozzle en het rijbrugsysteem (X- en Y-as). Wordt tijdens \"een voor een\"-printen gebruikt om botsingen tussen eerder geprinte voorwerpen en het rijbrugsysteem te voorkomen"
 
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:253
 msgctxt "@label"
@@ -3485,7 +3485,7 @@ msgstr "Dump de inhoud van alle instellingen naar een HTML-bestand."
 #: cura-god-mode-plugin/src/GodMode/plugin.json
 msgctxt "name"
 msgid "God Mode"
-msgstr "God-modus"
+msgstr "Godmodus"
 
 #: ChangeLogPlugin/plugin.json
 msgctxt "description"
@@ -3580,7 +3580,7 @@ msgstr "Automatisch Opslaan"
 #: SliceInfoPlugin/plugin.json
 msgctxt "description"
 msgid "Submits anonymous slice info. Can be disabled through preferences."
-msgstr "Verzendt anoniem slice-informatie. Dit kan bij de voorkeuren worden uitgeschakeld."
+msgstr "Verzendt anonieme slice-informatie. Dit kan bij de voorkeuren worden uitgeschakeld."
 
 #: SliceInfoPlugin/plugin.json
 msgctxt "name"

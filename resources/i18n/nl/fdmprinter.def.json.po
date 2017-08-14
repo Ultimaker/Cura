@@ -185,7 +185,7 @@ msgstr "Hiermee geeft u aan of een verwarmd platform aanwezig is."
 #: fdmprinter.def.json
 msgctxt "machine_center_is_zero label"
 msgid "Is Center Origin"
-msgstr "Is centraal oorsprongpunt"
+msgstr "Is oorsprongpunt centraal"
 
 #: fdmprinter.def.json
 msgctxt "machine_center_is_zero description"
@@ -400,12 +400,12 @@ msgstr "Het hoogteverschil tussen de punt van de nozzle en het rijbrugsysteem (X
 #: fdmprinter.def.json
 msgctxt "machine_nozzle_id label"
 msgid "Nozzle ID"
-msgstr "Nozzle-id"
+msgstr "Nozzle-ID"
 
 #: fdmprinter.def.json
 msgctxt "machine_nozzle_id description"
 msgid "The nozzle ID for an extruder train, such as \"AA 0.4\" and \"BB 0.8\"."
-msgstr "De nozzle-id voor een extruder train, bijvoorbeeld 'AA 0.4' en 'BB 0.8'."
+msgstr "De nozzle-ID voor een extruder train, bijvoorbeeld \"AA 0.4\" en \"BB 0.8\"."
 
 #: fdmprinter.def.json
 msgctxt "machine_nozzle_size label"
