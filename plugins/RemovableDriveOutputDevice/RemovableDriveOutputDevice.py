@@ -86,7 +86,7 @@ class RemovableDriveOutputDevice(OutputDevice):
             job.progress.connect(self._onProgress)
             job.finished.connect(self._onFinished)
 
-            message = Message(catalog.i18nc("@info:progress", "Saving to Removable Drive <filename>{0}</filename>").format(self.getName()), 0, False, -1)
+            message = Message(catalog.i18nc("@info:progress Don't translate the XML tags <filename>!", "Saving to Removable Drive <filename>{0}</filename>").format(self.getName()), 0, False, -1)
             message.show()
 
             self.writeStarted.emit(self)
@@ -96,10 +96,10 @@ class RemovableDriveOutputDevice(OutputDevice):
             job.start()
         except PermissionError as e:
             Logger.log("e", "Permission denied when trying to write to %s: %s", file_name, str(e))
-            raise OutputDeviceError.PermissionDeniedError(catalog.i18nc("@info:status", "Could not save to <filename>{0}</filename>: <message>{1}</message>").format(file_name, str(e))) from e
+            raise OutputDeviceError.PermissionDeniedError(catalog.i18nc("@info:status Don't translate the XML tags <filename> or <message>!", "Could not save to <filename>{0}</filename>: <message>{1}</message>").format(file_name, str(e))) from e
         except OSError as e:
             Logger.log("e", "Operating system would not let us write to %s: %s", file_name, str(e))
-            raise OutputDeviceError.WriteRequestFailedError(catalog.i18nc("@info:status", "Could not save to <filename>{0}</filename>: <message>{1}</message>").format(file_name, str(e))) from e
+            raise OutputDeviceError.WriteRequestFailedError(catalog.i18nc("@info:status Don't translate the XML tags <filename> or <message>!", "Could not save to <filename>{0}</filename>: <message>{1}</message>").format(file_name, str(e))) from e
 
     ##  Generate a file name automatically for the specified nodes to be saved
     #   in.

@@ -110,7 +110,7 @@ class CuraContainerRegistry(ContainerRegistry):
         if not Platform.isWindows():
             if os.path.exists(file_name):
                 result = QMessageBox.question(None, catalog.i18nc("@title:window", "File Already Exists"),
-                                              catalog.i18nc("@label", "The file <filename>{0}</filename> already exists. Are you sure you want to overwrite it?").format(file_name))
+                                              catalog.i18nc("@label Don't translate the XML tag <filename>!", "The file <filename>{0}</filename> already exists. Are you sure you want to overwrite it?").format(file_name))
                 if result == QMessageBox.No:
                     return
         found_containers = []
@@ -140,15 +140,15 @@ class CuraContainerRegistry(ContainerRegistry):
             success = profile_writer.write(file_name, found_containers)
         except Exception as e:
             Logger.log("e", "Failed to export profile to %s: %s", file_name, str(e))
-            m = Message(catalog.i18nc("@info:status", "Failed to export profile to <filename>{0}</filename>: <message>{1}</message>", file_name, str(e)), lifetime = 0)
+            m = Message(catalog.i18nc("@info:status Don't translate the XML tags <filename> or <message>!", "Failed to export profile to <filename>{0}</filename>: <message>{1}</message>", file_name, str(e)), lifetime = 0)
             m.show()
             return
         if not success:
             Logger.log("w", "Failed to export profile to %s: Writer plugin reported failure.", file_name)
-            m = Message(catalog.i18nc("@info:status", "Failed to export profile to <filename>{0}</filename>: Writer plugin reported failure.", file_name), lifetime = 0)
+            m = Message(catalog.i18nc("@info:status Don't translate the XML tag <filename>!", "Failed to export profile to <filename>{0}</filename>: Writer plugin reported failure.", file_name), lifetime = 0)
             m.show()
             return
-        m = Message(catalog.i18nc("@info:status", "Exported profile to <filename>{0}</filename>", file_name))
+        m = Message(catalog.i18nc("@info:status Don't translate the XML tag <filename>!", "Exported profile to <filename>{0}</filename>", file_name))
         m.show()
 
     ##  Gets the plugin object matching the criteria
@@ -174,7 +174,7 @@ class CuraContainerRegistry(ContainerRegistry):
     def importProfile(self, file_name):
         Logger.log("d", "Attempting to import profile %s", file_name)
         if not file_name:
-            return { "status": "error", "message": catalog.i18nc("@info:status", "Failed to import profile from <filename>{0}</filename>: <message>{1}</message>", file_name, "Invalid path")}
+            return { "status": "error", "message": catalog.i18nc("@info:status Don't translate the XML tags <filename> or <message>!", "Failed to import profile from <filename>{0}</filename>: <message>{1}</message>", file_name, "Invalid path")}
 
         plugin_registry = PluginRegistry.getInstance()
         extension = file_name.split(".")[-1]
@@ -196,7 +196,7 @@ class CuraContainerRegistry(ContainerRegistry):
             except Exception as e:
                 # Note that this will fail quickly. That is, if any profile reader throws an exception, it will stop reading. It will only continue reading if the reader returned None.
                 Logger.log("e", "Failed to import profile from %s: %s while using profile reader. Got exception %s", file_name,profile_reader.getPluginId(), str(e))
-                return { "status": "error", "message": catalog.i18nc("@info:status", "Failed to import profile from <filename>{0}</filename>: <message>{1}</message>", file_name, str(e))}
+                return { "status": "error", "message": catalog.i18nc("@info:status Don't translate the XML tags <filename> or <message>!", "Failed to import profile from <filename>{0}</filename>: <message>{1}</message>", file_name, str(e))}
             if profile_or_list: # Success!
                 name_seed = os.path.splitext(os.path.basename(file_name))[0]
                 new_name = self.uniqueName(name_seed)
@@ -205,7 +205,7 @@ class CuraContainerRegistry(ContainerRegistry):
 
                     result = self._configureProfile(profile, name_seed, new_name)
                     if result is not None:
-                        return {"status": "error", "message": catalog.i18nc("@info:status", "Failed to import profile from <filename>{0}</filename>: <message>{1}</message>", file_name, result)}
+                        return {"status": "error", "message": catalog.i18nc("@info:status Don't translate the XML tags <filename> or <message>!", "Failed to import profile from <filename>{0}</filename>: <message>{1}</message>", file_name, result)}
 
                     return {"status": "ok", "message": catalog.i18nc("@info:status", "Successfully imported profile {0}", profile.getName())}
                 else:
@@ -239,7 +239,7 @@ class CuraContainerRegistry(ContainerRegistry):
 
                         result = self._configureProfile(profile, profile_id, new_name)
                         if result is not None:
-                            return {"status": "error", "message": catalog.i18nc("@info:status", "Failed to import profile from <filename>{0}</filename>: <message>{1}</message>", file_name, result)}
+                            return {"status": "error", "message": catalog.i18nc("@info:status Don't translate the XML tags <filename> or <message>!", "Failed to import profile from <filename>{0}</filename>: <message>{1}</message>", file_name, result)}
 
                         profile_index += 1
 
