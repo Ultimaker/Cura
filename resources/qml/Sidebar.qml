@@ -504,12 +504,12 @@ Rectangle
                 }
                 if(someCostsKnown)
                 {
-                    return catalog.i18nc("@label", "%1 m / ~ %2 g / ~ %4 %3").arg(lengths.join(" + "))
+                    return catalog.i18nc("@label", "%1m / ~ %2g / ~ %4 %3").arg(lengths.join(" + "))
                             .arg(weights.join(" + ")).arg(costs.join(" + ")).arg(UM.Preferences.getValue("cura/currency"));
                 }
                 else
                 {
-                    return catalog.i18nc("@label", "%1 m / ~ %2 g").arg(lengths.join(" + ")).arg(weights.join(" + "));
+                    return catalog.i18nc("@label", "%1m / ~ %2g").arg(lengths.join(" + ")).arg(weights.join(" + "));
                 }
             }
         }
