@@ -154,7 +154,7 @@ msgstr "Enregistrer sur un lecteur amovible {0}"
 #, python-brace-format
 msgctxt "@info:progress"
 msgid "Saving to Removable Drive <filename>{0}</filename>"
-msgstr "Enregistrement sur le lecteur amovible <nomfichier>{0}</nomfichier>"
+msgstr "Enregistrement sur le lecteur amovible <filename>{0}</filename>"
 
 #: /home/ruben/Projects/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:99
 #: /home/ruben/Projects/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:102
@@ -1020,26 +1020,6 @@ msgstr "Imprimer sur : %1"
 msgctxt "@label"
 msgid "Extruder Temperature: %1/%2°C"
 msgstr "Température de l'extrudeuse : %1/%2 °C"
-
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
-#: /home/ruben/Projects/Cura/plugins/Doodle3D-cura-plugin/ControlWindow.qml:45
-msgctxt "@label"
-msgid ""
-msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-09-13 17:41+0200\n"
-"PO-Revision-Date: 2016-09-29 13:44+0200\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: \n"
-"MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
 
 #: /home/ruben/Projects/Cura/plugins/Doodle3D-cura-plugin/ControlWindow.qml:46
 msgctxt "@label"
@@ -2466,12 +2446,12 @@ msgstr "Importer un matériau"
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/MaterialsPage.qml:320
 msgctxt "@info:status"
 msgid "Could not import material <filename>%1</filename>: <message>%2</message>"
-msgstr "Impossible d'importer le matériau <nomfichier>%1</nomfichier> : <message>%2</message>"
+msgstr "Impossible d'importer le matériau <filename>%1</filename> : <message>%2</message>"
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/MaterialsPage.qml:324
 msgctxt "@info:status"
 msgid "Successfully imported material <filename>%1</filename>"
-msgstr "Matériau <nomfichier>%1</nomfichier> importé avec succès"
+msgstr "Matériau <filename>%1</filename> importé avec succès"
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/MaterialsPage.qml:343
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/MaterialsPage.qml:358
@@ -2482,12 +2462,12 @@ msgstr "Exporter un matériau"
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/MaterialsPage.qml:362
 msgctxt "@info:status"
 msgid "Failed to export material to <filename>%1</filename>: <message>%2</message>"
-msgstr "Échec de l'export de matériau vers <nomfichier>%1</nomfichier> : <message>%2</message>"
+msgstr "Échec de l'export de matériau vers <filename>%1</filename> : <message>%2</message>"
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/MaterialsPage.qml:368
 msgctxt "@info:status"
 msgid "Successfully exported material to <filename>%1</filename>"
-msgstr "Matériau exporté avec succès vers <nomfichier>%1</nomfichier>"
+msgstr "Matériau exporté avec succès vers <filename>%1</filename>"
 
 #: /home/ruben/Projects/Cura/resources/qml/AddMachineDialog.qml:18
 #: /home/ruben/Projects/Cura/resources/qml/Cura.qml:822
@@ -2585,7 +2565,7 @@ msgctxt "@info:credit"
 msgid ""
 "Cura is developed by Ultimaker B.V. in cooperation with the community.\n"
 "Cura proudly uses the following open source projects:"
-msgstr "Cura a été développé par Ultimaker B.V. en coopération avec la communauté Ultimaker. \nCura est fier d'utiliser les projets open source suivants :"
+msgstr "Cura a été développé par Ultimaker B.V. en coopération avec la communauté Ultimaker.\nCura est fier d'utiliser les projets open source suivants :"
 
 #: /home/ruben/Projects/Cura/resources/qml/AboutDialog.qml:118
 msgctxt "@label"
