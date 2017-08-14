@@ -1021,26 +1021,6 @@ msgctxt "@label"
 msgid "Extruder Temperature: %1/%2°C"
 msgstr "Temperatura estrusore: %1/%2°C"
 
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
-#: /home/ruben/Projects/Cura/plugins/Doodle3D-cura-plugin/ControlWindow.qml:45
-msgctxt "@label"
-msgid ""
-msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-09-13 17:41+0200\n"
-"PO-Revision-Date: 2016-09-29 13:44+0200\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: \n"
-"MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
-
 #: /home/ruben/Projects/Cura/plugins/Doodle3D-cura-plugin/ControlWindow.qml:46
 msgctxt "@label"
 msgid "Bed Temperature: %1/%2°C"
@@ -1160,7 +1140,7 @@ msgstr "Aggiorna"
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/DiscoverUM3Action.qml:196
 msgctxt "@label"
 msgid "If your printer is not listed, read the <a href='%1'>network printing troubleshooting guide</a>"
-msgstr "Se la stampante non è nell’elenco, leggere la <a href=’%1’>guida alla risoluzione dei problemi per la stampa in rete</a>"
+msgstr "Se la stampante non è nell’elenco, leggere la <a href='%1'>guida alla risoluzione dei problemi per la stampa in rete</a>"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/DiscoverUM3Action.qml:223
 msgctxt "@label"
@@ -2786,7 +2766,7 @@ msgstr "&Visualizza"
 #: /home/ruben/Projects/Cura/resources/qml/Menus/NozzleMenu.qml:26
 msgctxt "@title:menuitem %1 is the nozzle currently loaded in the printer"
 msgid "Automatic: %1"
-msgstr "Automatico %1"
+msgstr "Automatico: %1"
 
 #: /home/ruben/Projects/Cura/resources/qml/Menus/ContextMenu.qml:25
 msgctxt "@label"
