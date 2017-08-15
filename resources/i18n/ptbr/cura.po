@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: Cura 2.7\n"
 "Report-Msgid-Bugs-To: r.dulek@ultimaker.com\n"
 "POT-Creation-Date: 2017-08-02 16:53+0000\n"
-"PO-Revision-Date: 2017-06-13 18:20-0300\n"
+"PO-Revision-Date: 2017-08-15 07:20-0300\n"
 "Last-Translator: Cláudio Sampaio <patola@makerlinux.com.br>\n"
 "Language-Team: Cláudio Sampaio <patola@makerlinux.com.br> and CoderSquirrel <jasaneschio@gmail.com>\n"
 "Language: Brazillian Portuguese\n"
@@ -57,7 +57,7 @@ msgstr "Impressão Doodle3D"
 #: /home/ruben/Projects/Cura/plugins/Doodle3D-cura-plugin/PrinterConnection.py:37
 msgctxt "@action:button"
 msgid "Print with Doodle3D"
-msgstr ""
+msgstr "Imprimir com Doodle3D"
 
 #: /home/ruben/Projects/Cura/plugins/Doodle3D-cura-plugin/PrinterConnection.py:38
 msgctxt "@info:tooltip"
@@ -77,7 +77,7 @@ msgstr "Habilitar dispositivos de escaneamento..."
 #: /home/ruben/Projects/Cura/plugins/ChangeLogPlugin/ChangeLog.py:35
 msgctxt "@item:inmenu"
 msgid "Show Changelog"
-msgstr "Mostrar registro de alterações"
+msgstr "Exibir registro de alterações"
 
 #: /home/ruben/Projects/Cura/plugins/ProfileFlattener/ProfileFlattener.py:20
 msgctxt "@item:inmenu"
@@ -409,7 +409,7 @@ msgstr "Deseja usar a configuração atual de sua impressora no Cura?"
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/NetworkPrinterOutputDevice.py:1179
 msgctxt "@label"
 msgid "The PrintCores and/or materials on your printer differ from those within your current project. For the best result, always slice for the PrintCores and materials that are inserted in your printer."
-msgstr ""
+msgstr "Os PrintCores e/ou materiais da sua impressora diferem dos que estão dentro de seu projeto atual. Para melhores resultados, sempre fatie para os PrintCores e materiais que estão na sua impressora."
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/DiscoverUM3Action.py:19
 msgctxt "@action"
@@ -419,32 +419,32 @@ msgstr "Conectar pela rede"
 #: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/SolidWorksReader.py:172
 msgctxt "@info:status"
 msgid "Errors appeared while opening your SolidWorks file!             Please check, whether it is possible to open your file in SolidWorks itself without any problems as well!"
-msgstr ""
+msgstr "Erros apareceram ao abrir seu arquivo SolidWorks!              Por favor verifique se é possível abrir seu arquivo no próprio SolidWorks sem problema também!"
 
 #: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/__init__.py:31
 msgctxt "@item:inlistbox"
 msgid "SolidWorks part file"
-msgstr ""
+msgstr "Arquivo de parte de SolidWorks"
 
 #: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/__init__.py:35
 msgctxt "@item:inlistbox"
 msgid "SolidWorks assembly file"
-msgstr ""
+msgstr "Arquivo de montagem de SolidWorks"
 
 #: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/ConfigDialog.py:21
 msgid "Configure"
-msgstr ""
+msgstr "Configure"
 
 #: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/CommonComReader.py:129
 #, python-format
 msgctxt "@info:status"
 msgid "Error while starting %s!"
-msgstr ""
+msgstr "Erro ao iniciar %s!"
 
 #: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/CommonComReader.py:207
 msgctxt "@info:status"
 msgid "Please keep in mind, that you have to reopen your SolidWorks file manually! Reloading the model won't work!"
-msgstr ""
+msgstr "Por favor tenha em mente que você precisa reabrir seu arquivo Solidworks manualmente! Recarregar o modelo não irá funcionar!"
 
 #: /home/ruben/Projects/Cura/plugins/PostProcessingPlugin/PostProcessingPlugin.py:24
 msgid "Modify G-Code"
@@ -453,7 +453,7 @@ msgstr "Modificar G-Code"
 #: /home/ruben/Projects/Cura/plugins/SliceInfoPlugin/SliceInfo.py:43
 msgctxt "@info"
 msgid "Cura collects anonymised slicing statistics. You can disable this in the preferences."
-msgstr ""
+msgstr "O Cura coleta estatística de fatiamento anonimizadas. Você pode desabilitar isso nas preferências."
 
 #: /home/ruben/Projects/Cura/plugins/SliceInfoPlugin/SliceInfo.py:44
 msgctxt "@action:button"
@@ -570,12 +570,12 @@ msgstr "Bico"
 
 #: /home/ruben/Projects/Cura/plugins/PluginBrowser/PluginBrowser.py:25
 msgid "Browse plugins"
-msgstr ""
+msgstr "Navegar por plugins"
 
 #: /home/ruben/Projects/Cura/plugins/PluginBrowser/PluginBrowser.py:120
 msgctxt "@window:title"
 msgid "Plugin browser"
-msgstr ""
+msgstr "Navegador de Plugin"
 
 #: /home/ruben/Projects/Cura/plugins/SolidView/__init__.py:12
 msgctxt "@item:inmenu"
@@ -687,17 +687,17 @@ msgstr "Material Personalizado"
 #: /home/ruben/Projects/Cura/cura/Settings/MaterialManager.py:24
 msgctxt "@info:status Has a cancel button next to it."
 msgid "The selected material diameter causes the material to become incompatible with the current printer."
-msgstr ""
+msgstr "O diâmetro de material selecionado faz com que o material se torne incompatível com a impressora atual."
 
 #: /home/ruben/Projects/Cura/cura/Settings/MaterialManager.py:25
 msgctxt "@action:button"
 msgid "Undo"
-msgstr ""
+msgstr "Desfazer"
 
 #: /home/ruben/Projects/Cura/cura/Settings/MaterialManager.py:25
 msgctxt "@action"
 msgid "Undo changing the material diameter."
-msgstr ""
+msgstr "Desfaz a mudança no diâmetro do material."
 
 #: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:143
 #, python-brace-format
@@ -768,7 +768,7 @@ msgstr "Multiplicando e colocando objetos"
 #: /home/ruben/Projects/Cura/cura/CrashHandler.py:54
 msgctxt "@title:window"
 msgid "Crash Report"
-msgstr "Relatório de Quebra"
+msgstr "Relatório de Problema"
 
 #: /home/ruben/Projects/Cura/cura/CrashHandler.py:79
 msgctxt "@label"
@@ -805,7 +805,7 @@ msgstr "Carregando interface..."
 #, python-format
 msgctxt "@info 'width', 'depth' and 'height' are variable names that must NOT be translated; just translate the format of ##x##x## mm."
 msgid "%(width).1f x %(depth).1f x %(height).1f mm"
-msgstr ""
+msgstr "%(width).1f x %(depth).1f x %(height).1f mm"
 
 #: /home/ruben/Projects/Cura/cura/CuraApplication.py:1285
 #, python-brace-format
@@ -866,22 +866,22 @@ msgstr "Z (Altura)"
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:139
 msgctxt "@label"
 msgid "Build plate shape"
-msgstr ""
+msgstr "Forma da plataforma de impressão"
 
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:148
 msgctxt "@option:check"
 msgid "Origin at center"
-msgstr ""
+msgstr "Origem no centro"
 
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:156
 msgctxt "@option:check"
 msgid "Heated bed"
-msgstr ""
+msgstr "Mesa aquecida"
 
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:167
 msgctxt "@label"
 msgid "Gcode flavor"
-msgstr ""
+msgstr "Sabor de G-Code"
 
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:180
 msgctxt "@label"
@@ -896,7 +896,7 @@ msgstr "X mín."
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:191
 msgctxt "@tooltip"
 msgid "Distance from the left of the printhead to the center of the nozzle. Used to prevent colissions between previous prints and the printhead when printing \"One at a Time\"."
-msgstr ""
+msgstr "Distância da esquerda da cabeça de impressão ao centro do bico. Usado para prevenir colisões entre impressões anteriores e a cabeça ao imprimir \"Um de cada Vez\"."
 
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:200
 msgctxt "@label"
@@ -906,7 +906,7 @@ msgstr "Y mín."
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:201
 msgctxt "@tooltip"
 msgid "Distance from the front of the printhead to the center of the nozzle. Used to prevent colissions between previous prints and the printhead when printing \"One at a Time\"."
-msgstr ""
+msgstr "Distância da frente da cabeça de impressão ao centro do bico. Usado para prevenir colisões entre impressões anteriores e a cabeça ao imprimir \"Um de cada Vez\"."
 
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:210
 msgctxt "@label"
@@ -916,7 +916,7 @@ msgstr "X máx."
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:211
 msgctxt "@tooltip"
 msgid "Distance from the right of the printhead to the center of the nozzle. Used to prevent colissions between previous prints and the printhead when printing \"One at a Time\"."
-msgstr ""
+msgstr "Distância da direita da cabeça de impressão ao centro do bico. Usado para prevenir colisões entre impressões anteriores e a cabeça ao imprimir \"Um de cada Vez\"."
 
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:220
 msgctxt "@label"
@@ -926,7 +926,7 @@ msgstr "Y máx."
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:221
 msgctxt "@tooltip"
 msgid "Distance from the rear of the printhead to the center of the nozzle. Used to prevent colissions between previous prints and the printhead when printing \"One at a Time\"."
-msgstr ""
+msgstr "Distância da traseira da cabeça de impressão ao centro do bico. Usado para prevenir colisões entre impressões anteriores e a cabeça ao imprimir \"Um de cada Vez\"."
 
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:233
 msgctxt "@label"
@@ -936,7 +936,7 @@ msgstr "Altura do eixo"
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:235
 msgctxt "@tooltip"
 msgid "The height difference between the tip of the nozzle and the gantry system (X and Y axes). Used to prevent collisions between previous prints and the gantry when printing \"One at a Time\"."
-msgstr ""
+msgstr "A diferença de altura entre a ponta do bico e o sistema de eixos X e Y. Usado para prevenir colisões entre impressões e a cabeça ao imprimir \"Um de cada Vez\"."
 
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:253
 msgctxt "@label"
@@ -946,12 +946,12 @@ msgstr "Número de Extrusores"
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:287
 msgctxt "@tooltip"
 msgid "The nominal diameter of filament supported by the printer. The exact diameter will be overridden by the material and/or the profile."
-msgstr ""
+msgstr "O diâmetro nominal do filamento suportado pela impressora. O diâmetro exato será sobrepujado pelo material e/ou perfil."
 
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:289
 msgctxt "@label"
 msgid "Material diameter"
-msgstr ""
+msgstr "Diâmetro do material"
 
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:297
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:388
@@ -967,7 +967,7 @@ msgstr "G-Code Inicial"
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:325
 msgctxt "@tooltip"
 msgid "Gcode commands to be executed at the very start."
-msgstr ""
+msgstr "Comandos de G-Code a serem executados no início da impressão."
 
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:334
 msgctxt "@label"
@@ -977,7 +977,7 @@ msgstr "G-Code Final"
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:344
 msgctxt "@tooltip"
 msgid "Gcode commands to be executed at the very end."
-msgstr ""
+msgstr "Comandos de G-Code a serem executados no final da impressão."
 
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:376
 msgctxt "@label"
@@ -1024,26 +1024,6 @@ msgstr "Imprimir em: %1"
 msgctxt "@label"
 msgid "Extruder Temperature: %1/%2°C"
 msgstr "Temperatura do Extrusor: %1/%2°C"
-
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-# 
-#: /home/ruben/Projects/Cura/plugins/Doodle3D-cura-plugin/ControlWindow.qml:45
-msgctxt "@label"
-msgid ""
-msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-01-23 10:41-0300\n"
-"PO-Revision-Date: 2017-06-12 18:30-0300\n"
-"Last-Translator: Cláudio Sampaio <patola@gmail.com>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: ptbr\n"
-"MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
 
 #: /home/ruben/Projects/Cura/plugins/Doodle3D-cura-plugin/ControlWindow.qml:46
 msgctxt "@label"
@@ -1167,7 +1147,7 @@ msgstr "Atualizar"
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/DiscoverUM3Action.qml:196
 msgctxt "@label"
 msgid "If your printer is not listed, read the <a href='%1'>network printing troubleshooting guide</a>"
-msgstr ""
+msgstr "Se sua impressora não está listada, leia o <a href='%1'>guia de resolução de problemas de impressão em rede</a>"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/DiscoverUM3Action.qml:223
 msgctxt "@label"
@@ -1243,27 +1223,27 @@ msgstr "Ativar Configuração"
 #: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/ConfigDialog.qml:20
 msgctxt "@title:window"
 msgid "Cura SolidWorks Plugin Configuration"
-msgstr ""
+msgstr "Configuração do Plugin de Solidworks do Cura"
 
 #: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/ConfigDialog.qml:44
 msgctxt "@action:label"
 msgid "Default quality of the exported STL:"
-msgstr ""
+msgstr "Qualidade default do STL exportado:"
 
 #: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/ConfigDialog.qml:79
 msgctxt "@option:curaSolidworksStlQuality"
 msgid "Always ask"
-msgstr ""
+msgstr "Sempre perguntar"
 
 #: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/ConfigDialog.qml:80
 msgctxt "@option:curaSolidworksStlQuality"
 msgid "Always use Fine quality"
-msgstr ""
+msgstr "Sempre usar qualidade Alta"
 
 #: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/ConfigDialog.qml:81
 msgctxt "@option:curaSolidworksStlQuality"
 msgid "Always use Coarse quality"
-msgstr ""
+msgstr "Sempre usar qualidade Baixa"
 
 #: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/ConfigDialog.qml:92
 #: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/ExportSTLUI.qml:88
@@ -1275,33 +1255,33 @@ msgstr "Ok"
 #: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/ExportSTLUI.qml:20
 msgctxt "@title:window"
 msgid "Import SolidWorks File as STL..."
-msgstr ""
+msgstr "Importar Arquivo SolidWorks como STL..."
 
 #: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/ExportSTLUI.qml:43
 msgctxt "@info:tooltip"
 msgid "Quality of the Exported STL"
-msgstr ""
+msgstr "Qualidade do STL Exportado"
 
 #: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/ExportSTLUI.qml:48
 msgctxt "@action:label"
 msgid "Quality"
-msgstr ""
+msgstr "Qualidade"
 
 #: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/ExportSTLUI.qml:62
 msgctxt "@option:curaSolidworksStlQuality"
 msgid "Coarse"
-msgstr ""
+msgstr "Baixa"
 
 #: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/ExportSTLUI.qml:63
 msgctxt "@option:curaSolidworksStlQuality"
 msgid "Fine"
-msgstr ""
+msgstr "Alta"
 
 #: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/ExportSTLUI.qml:78
 #: /home/ruben/Projects/Cura/resources/qml/AskOpenAsProjectOrModelsDialog.qml:81
 msgctxt "@text:window"
 msgid "Remember my choice"
-msgstr "Lembrar de minha escolha"
+msgstr "Lembrar minha escolha"
 
 #: /home/ruben/Projects/Cura/plugins/PostProcessingPlugin/PostProcessingPlugin.qml:18
 msgctxt "@title:window"
@@ -1356,32 +1336,32 @@ msgstr "Modo de Compatibilidade"
 #: /home/ruben/Projects/Cura/plugins/LayerView/LayerView.qml:210
 msgctxt "@label"
 msgid "Show Travels"
-msgstr "Mostrar Viagens"
+msgstr "Exibir Percursos"
 
 #: /home/ruben/Projects/Cura/plugins/LayerView/LayerView.qml:216
 msgctxt "@label"
 msgid "Show Helpers"
-msgstr "Mostrar Assistentes"
+msgstr "Exibir Assistentes"
 
 #: /home/ruben/Projects/Cura/plugins/LayerView/LayerView.qml:222
 msgctxt "@label"
 msgid "Show Shell"
-msgstr "Mostrar Perímetro"
+msgstr "Exibir Perímetro"
 
 #: /home/ruben/Projects/Cura/plugins/LayerView/LayerView.qml:228
 msgctxt "@label"
 msgid "Show Infill"
-msgstr "Mostrar Preenchimento"
+msgstr "Exibir Preenchimento"
 
 #: /home/ruben/Projects/Cura/plugins/LayerView/LayerView.qml:264
 msgctxt "@label"
 msgid "Only Show Top Layers"
-msgstr "Somente Mostrar Camadas Superiores"
+msgstr "Somente Exibir Camadas Superiores"
 
 #: /home/ruben/Projects/Cura/plugins/LayerView/LayerView.qml:273
 msgctxt "@label"
 msgid "Show 5 Detailed Layers On Top"
-msgstr "Mostrar 5 Camadas Superiores Detalhadas"
+msgstr "Exibir 5 Camadas Superiores Detalhadas"
 
 #: /home/ruben/Projects/Cura/plugins/LayerView/LayerView.qml:284
 msgctxt "@label"
@@ -1482,7 +1462,7 @@ msgstr "Filtrar..."
 #: /home/ruben/Projects/Cura/plugins/PerObjectSettingsTool/PerObjectSettingsPanel.qml:245
 msgctxt "@label:checkbox"
 msgid "Show all"
-msgstr "Mostrar tudo"
+msgstr "Exibir tudo"
 
 #: /home/ruben/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:13
 msgctxt "@title:window"
@@ -1614,27 +1594,27 @@ msgstr "Abrir"
 #: /home/ruben/Projects/Cura/plugins/PluginBrowser/PluginBrowser.qml:11
 msgctxt "@title:window"
 msgid "Find & Update plugins"
-msgstr ""
+msgstr "Buscar & Atualizar plugins"
 
 #: /home/ruben/Projects/Cura/plugins/PluginBrowser/PluginBrowser.qml:25
 msgctxt "@label"
 msgid "Here you can find a list of Third Party plugins."
-msgstr ""
+msgstr "Aqui você pode encontrar uma lista de plugins de Terceiros."
 
 #: /home/ruben/Projects/Cura/plugins/PluginBrowser/PluginBrowser.qml:143
 msgctxt "@action:button"
 msgid "Upgrade"
-msgstr ""
+msgstr "Atualizar"
 
 #: /home/ruben/Projects/Cura/plugins/PluginBrowser/PluginBrowser.qml:145
 msgctxt "@action:button"
 msgid "Installed"
-msgstr ""
+msgstr "Instalado"
 
 #: /home/ruben/Projects/Cura/plugins/PluginBrowser/PluginBrowser.qml:147
 msgctxt "@action:button"
 msgid "Download"
-msgstr ""
+msgstr "Baixar"
 
 #: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UM2UpgradeSelectionMachineAction.qml:25
 #: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UMOUpgradeSelectionMachineAction.qml:25
@@ -1949,7 +1929,7 @@ msgstr "Informação"
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/MaterialView.qml:68
 msgctxt "@label"
 msgid "Display Name"
-msgstr "Mostrar Nome"
+msgstr "Exibir Nome"
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/MaterialView.qml:78
 msgctxt "@label"
@@ -2170,7 +2150,7 @@ msgstr "Automaticamente fazer os modelos caírem na mesa de impressão."
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:407
 msgctxt "@info:tooltip"
 msgid "Show caution message in gcode reader."
-msgstr "Mostrar mensagem de advertência no leitor de g-code."
+msgstr "Exibir mensagem de advertência no leitor de g-code."
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:416
 msgctxt "@option:check"
@@ -2230,7 +2210,7 @@ msgstr "Um resumo deve ser exibido ao salvar um arquivo de projeto?"
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:496
 msgctxt "@option:check"
 msgid "Show summary dialog when saving project"
-msgstr "Mostrar diálogo de resumo ao salvar projeto"
+msgstr "Exibir diálogo de resumo ao salvar projeto"
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:505
 msgctxt "@info:tooltip"
@@ -2475,12 +2455,12 @@ msgstr "Importar Material"
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/MaterialsPage.qml:320
 msgctxt "@info:status"
 msgid "Could not import material <filename>%1</filename>: <message>%2</message>"
-msgstr "Não foi possível importar material<nombrearchivo>%1</nombrearchivo>: <mensaje>%2</mensaje>"
+msgstr "Não foi possível importar material<filename>%1</filename>: <message>%2</message>"
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/MaterialsPage.qml:324
 msgctxt "@info:status"
 msgid "Successfully imported material <filename>%1</filename>"
-msgstr "Material <nombrearchivo>%1</nombrearchivo> importado com sucesso"
+msgstr "Material <filename>%1</filename> importado com sucesso"
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/MaterialsPage.qml:343
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/MaterialsPage.qml:358
@@ -2491,12 +2471,12 @@ msgstr "Exportar Material"
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/MaterialsPage.qml:362
 msgctxt "@info:status"
 msgid "Failed to export material to <filename>%1</filename>: <message>%2</message>"
-msgstr "Falha ao exportar material para <nombrearchivo>%1</nombrearchivo>: <mensaje>%2</mensaje>"
+msgstr "Falha ao exportar material para <filename>%1</filename>: <message>%2</message>"
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/MaterialsPage.qml:368
 msgctxt "@info:status"
 msgid "Successfully exported material to <filename>%1</filename>"
-msgstr "Material <nombrearchivo>%1</nombrearchivo> exportado com sucesso"
+msgstr "Material <filename>%1</filename> exportado com sucesso"
 
 #: /home/ruben/Projects/Cura/resources/qml/AddMachineDialog.qml:18
 #: /home/ruben/Projects/Cura/resources/qml/Cura.qml:822
@@ -2780,6 +2760,8 @@ msgid ""
 "Print Setup disabled\n"
 "G-code files cannot be modified"
 msgstr ""
+"Configuração de Impressão desabilitada\n"
+"Arquivos G-Code não podem ser modificados"
 
 #: /home/ruben/Projects/Cura/resources/qml/Sidebar.qml:455
 msgctxt "@tooltip"
@@ -2804,7 +2786,7 @@ msgstr "&Ver"
 #: /home/ruben/Projects/Cura/resources/qml/Menus/NozzleMenu.qml:26
 msgctxt "@title:menuitem %1 is the nozzle currently loaded in the printer"
 msgid "Automatic: %1"
-msgstr ""
+msgstr "Automático: %1"
 
 #: /home/ruben/Projects/Cura/resources/qml/Menus/ContextMenu.qml:25
 msgctxt "@label"
@@ -3104,7 +3086,7 @@ msgstr "Configurar a visibilidade dos ajustes..."
 #: /home/ruben/Projects/Cura/resources/qml/SaveButton.qml:27
 msgctxt "@label:PrintjobStatus"
 msgid "Please load a 3D model"
-msgstr ""
+msgstr "Por favor carregue um modelo 3D"
 
 #: /home/ruben/Projects/Cura/resources/qml/SaveButton.qml:33
 msgctxt "@label:PrintjobStatus"
@@ -3302,12 +3284,12 @@ msgstr "Não exibir resumo do projeto ao salvar novamente"
 #: /home/ruben/Projects/Cura/resources/qml/Topbar.qml:47
 msgctxt "@title:tab"
 msgid "Prepare"
-msgstr ""
+msgstr "Preparar"
 
 #: /home/ruben/Projects/Cura/resources/qml/Topbar.qml:60
 msgctxt "@title:tab"
 msgid "Print"
-msgstr ""
+msgstr "Imprimir"
 
 #: /home/ruben/Projects/Cura/resources/qml/SidebarSimple.qml:41
 msgctxt "@label"
@@ -3403,8 +3385,8 @@ msgstr "Precisa de ajuda para melhorar sua impressões?<br>Leia os <a href='%1'>
 msgctxt "@label %1 is filled in with the name of an extruder"
 msgid "Print Selected Model with %1"
 msgid_plural "Print Selected Models with %1"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Imprimir Modelo Selecionado com %1"
+msgstr[1] "Imprimir Modelos Selecionados com %1"
 
 #: /home/ruben/Projects/Cura/resources/qml/AskOpenAsProjectOrModelsDialog.qml:20
 msgctxt "@title:window"
@@ -3461,342 +3443,342 @@ msgstr ""
 #: MachineSettingsAction/plugin.json
 msgctxt "description"
 msgid "Provides a way to change machine settings (such as build volume, nozzle size, etc)"
-msgstr ""
+msgstr "Provê um modo de alterar as configurações da máquina (tais como volume de impressão, tamanho de bico, etc)"
 
 #: MachineSettingsAction/plugin.json
 msgctxt "name"
 msgid "Machine Settings action"
-msgstr ""
+msgstr "Ação de Configurações de Máquina"
 
 #: XRayView/plugin.json
 msgctxt "description"
 msgid "Provides the X-Ray view."
-msgstr ""
+msgstr "Provê a visão de Raios-X."
 
 #: XRayView/plugin.json
 msgctxt "name"
 msgid "X-Ray View"
-msgstr ""
+msgstr "Visão de Raios-X"
 
 #: X3DReader/plugin.json
 msgctxt "description"
 msgid "Provides support for reading X3D files."
-msgstr ""
+msgstr "Provê suporte à leitura de arquivos X3D."
 
 #: X3DReader/plugin.json
 msgctxt "name"
 msgid "X3D Reader"
-msgstr ""
+msgstr "Leitor de X3D"
 
 #: GCodeWriter/plugin.json
 msgctxt "description"
 msgid "Writes GCode to a file."
-msgstr ""
+msgstr "Escreve G-Code para aquivo."
 
 #: GCodeWriter/plugin.json
 msgctxt "name"
 msgid "GCode Writer"
-msgstr ""
+msgstr "Gerador de G-Code"
 
 #: cura-god-mode-plugin/src/GodMode/plugin.json
 msgctxt "description"
 msgid "Dump the contents of all settings to a HTML file."
-msgstr ""
+msgstr "Descarrega o conteúdo de todas as configurações em um arquivo HTML."
 
 #: cura-god-mode-plugin/src/GodMode/plugin.json
 msgctxt "name"
 msgid "God Mode"
-msgstr ""
+msgstr "Modo Deus"
 
 #: ChangeLogPlugin/plugin.json
 msgctxt "description"
 msgid "Shows changes since latest checked version."
-msgstr ""
+msgstr "Mostra alterações desde a última versão verificada."
 
 #: ChangeLogPlugin/plugin.json
 msgctxt "name"
 msgid "Changelog"
-msgstr ""
+msgstr "Registro de Alterações"
 
 #: ProfileFlattener/plugin.json
 msgctxt "description"
 msgid "Create a flattend quality changes profile."
-msgstr ""
+msgstr "Cria um perfil de alterações achatado."
 
 #: ProfileFlattener/plugin.json
 msgctxt "name"
 msgid "Profile flatener"
-msgstr ""
+msgstr "Achatador de Perfil"
 
 #: USBPrinting/plugin.json
 msgctxt "description"
 msgid "Accepts G-Code and sends them to a printer. Plugin can also update firmware."
-msgstr ""
+msgstr "Aceita G-Code e o envia a uma impressora. O plugin também pode atualizar o firmware."
 
 #: USBPrinting/plugin.json
 msgctxt "name"
 msgid "USB printing"
-msgstr ""
+msgstr "Impressão USB"
 
 #: X3GWriter/plugin.json
 msgctxt "description"
 msgid "Provides support for writing X3G files"
-msgstr ""
+msgstr "Provê suporte à escrita de arquivos X3G"
 
 #: X3GWriter/plugin.json
 msgctxt "name"
 msgid "X3G Writer"
-msgstr ""
+msgstr "Gerador de X3G"
 
 #: RemovableDriveOutputDevice/plugin.json
 msgctxt "description"
 msgid "Provides removable drive hotplugging and writing support."
-msgstr ""
+msgstr "Provê suporte a escrita e reconhecimento de drives a quente."
 
 #: RemovableDriveOutputDevice/plugin.json
 msgctxt "name"
 msgid "Removable Drive Output Device Plugin"
-msgstr ""
+msgstr "Plugin de Dispositivo de Escrita Removível"
 
 #: UM3NetworkPrinting/plugin.json
 msgctxt "description"
 msgid "Manages network connections to Ultimaker 3 printers"
-msgstr ""
+msgstr "Gerencia conexões de rede a impressoras Ultimaker 3"
 
 #: UM3NetworkPrinting/plugin.json
 msgctxt "name"
 msgid "UM3 Network Connection"
-msgstr ""
+msgstr "Conexão de Rede UM3"
 
 #: CuraSolidWorksPlugin/plugin.json
 msgctxt "description"
 msgid "Gives you the possibility to open certain files via SolidWorks itself. These are then converted and loaded into Cura"
-msgstr ""
+msgstr "Te dá a possibilidade de abrir certos arquivos via o próprio SolidWorks. Tais são convertidos e carregados no Cura"
 
 #: CuraSolidWorksPlugin/plugin.json
 msgctxt "name"
 msgid "SolidWorks Integration"
-msgstr ""
+msgstr "Integração ao SolidWorks"
 
 #: PostProcessingPlugin/plugin.json
 msgctxt "description"
 msgid "Extension that allows for user created scripts for post processing"
-msgstr ""
+msgstr "Extensão que permite scripts criados por usuários para pós-processamento"
 
 #: PostProcessingPlugin/plugin.json
 msgctxt "name"
 msgid "Post Processing"
-msgstr ""
+msgstr "Pós-processamento"
 
 #: AutoSave/plugin.json
 msgctxt "description"
 msgid "Automatically saves Preferences, Machines and Profiles after changes."
-msgstr ""
+msgstr "Automaticamente salva Preferências, Máquinas e Perfis após alterações."
 
 #: AutoSave/plugin.json
 msgctxt "name"
 msgid "Auto Save"
-msgstr ""
+msgstr "Auto Salvar"
 
 #: SliceInfoPlugin/plugin.json
 msgctxt "description"
 msgid "Submits anonymous slice info. Can be disabled through preferences."
-msgstr ""
+msgstr "Submete informações de fatiamento anônimas. Pode ser desabilitado nas preferências."
 
 #: SliceInfoPlugin/plugin.json
 msgctxt "name"
 msgid "Slice info"
-msgstr ""
+msgstr "Informação de fatiamento"
 
 #: XmlMaterialProfile/plugin.json
 msgctxt "description"
 msgid "Provides capabilities to read and write XML-based material profiles."
-msgstr ""
+msgstr "Provê capacidade de ler e escrever perfis de material baseado em XML."
 
 #: XmlMaterialProfile/plugin.json
 msgctxt "name"
 msgid "Material Profiles"
-msgstr ""
+msgstr "Perfis de Material"
 
 #: LegacyProfileReader/plugin.json
 msgctxt "description"
 msgid "Provides support for importing profiles from legacy Cura versions."
-msgstr ""
+msgstr "Provê suporte a importação de perfis de versões legadas do Cura."
 
 #: LegacyProfileReader/plugin.json
 msgctxt "name"
 msgid "Legacy Cura Profile Reader"
-msgstr ""
+msgstr "Leitor de Perfis de Cura Legado"
 
 #: GCodeProfileReader/plugin.json
 msgctxt "description"
 msgid "Provides support for importing profiles from g-code files."
-msgstr ""
+msgstr "Provê suporte a importar perfis de arquivos G-Code."
 
 #: GCodeProfileReader/plugin.json
 msgctxt "name"
 msgid "GCode Profile Reader"
-msgstr ""
+msgstr "Leitor de Perfis de G-Code"
 
 #: LayerView/plugin.json
 msgctxt "description"
 msgid "Provides the Layer view."
-msgstr ""
+msgstr "Provê a visão de Camadas."
 
 #: LayerView/plugin.json
 msgctxt "name"
 msgid "Layer View"
-msgstr ""
+msgstr "Visão de Camadas"
 
 #: VersionUpgrade/VersionUpgrade25to26/plugin.json
 msgctxt "description"
 msgid "Upgrades configurations from Cura 2.5 to Cura 2.6."
-msgstr ""
+msgstr "Atualiza configurações do Cura 2.5 para o Cura 2.6."
 
 #: VersionUpgrade/VersionUpgrade25to26/plugin.json
 msgctxt "name"
 msgid "Version Upgrade 2.5 to 2.6"
-msgstr ""
+msgstr "Atualização de Versão de 2.5 para 2.6"
 
 #: VersionUpgrade/VersionUpgrade26to27/plugin.json
 msgctxt "description"
 msgid "Upgrades configurations from Cura 2.6 to Cura 2.7."
-msgstr ""
+msgstr "Atualiza configurações do Cura 2.6 para o Cura 2.7."
 
 #: VersionUpgrade/VersionUpgrade26to27/plugin.json
 msgctxt "name"
 msgid "Version Upgrade 2.6 to 2.7"
-msgstr ""
+msgstr "Atualização de Versão de 2.6 para 2.7"
 
 #: VersionUpgrade/VersionUpgrade21to22/plugin.json
 msgctxt "description"
 msgid "Upgrades configurations from Cura 2.1 to Cura 2.2."
-msgstr ""
+msgstr "Atualiza configurações do Cura 2.1 para o Cura 2.2."
 
 #: VersionUpgrade/VersionUpgrade21to22/plugin.json
 msgctxt "name"
 msgid "Version Upgrade 2.1 to 2.2"
-msgstr ""
+msgstr "Atualização de Versão de 2.1 para 2.2"
 
 #: VersionUpgrade/VersionUpgrade22to24/plugin.json
 msgctxt "description"
 msgid "Upgrades configurations from Cura 2.2 to Cura 2.4."
-msgstr ""
+msgstr "Atualiza configurações do Cura 2.2 para o Cura 2.4."
 
 #: VersionUpgrade/VersionUpgrade22to24/plugin.json
 msgctxt "name"
 msgid "Version Upgrade 2.2 to 2.4"
-msgstr ""
+msgstr "Atualização de Versão de 2.2 para 2.4"
 
 #: ImageReader/plugin.json
 msgctxt "description"
 msgid "Enables ability to generate printable geometry from 2D image files."
-msgstr ""
+msgstr "Habilita a geração de geometria imprimível de arquivos de imagem 2D."
 
 #: ImageReader/plugin.json
 msgctxt "name"
 msgid "Image Reader"
-msgstr ""
+msgstr "Leitor de Imagens"
 
 #: CuraEngineBackend/plugin.json
 msgctxt "description"
 msgid "Provides the link to the CuraEngine slicing backend."
-msgstr ""
+msgstr "Provê a ligação ao backend de fatiamento CuraEngine."
 
 #: CuraEngineBackend/plugin.json
 msgctxt "name"
 msgid "CuraEngine Backend"
-msgstr ""
+msgstr "CuraEngine Backend"
 
 #: PerObjectSettingsTool/plugin.json
 msgctxt "description"
 msgid "Provides the Per Model Settings."
-msgstr ""
+msgstr "Provê Ajustes Por Modelo."
 
 #: PerObjectSettingsTool/plugin.json
 msgctxt "name"
 msgid "Per Model Settings Tool"
-msgstr ""
+msgstr "Ferramenta de Ajustes Por Modelo"
 
 #: 3MFReader/plugin.json
 msgctxt "description"
 msgid "Provides support for reading 3MF files."
-msgstr ""
+msgstr "Provê suporte à leitura de arquivos 3MF."
 
 #: 3MFReader/plugin.json
 msgctxt "name"
 msgid "3MF Reader"
-msgstr ""
+msgstr "Leitor de 3MF"
 
 #: PluginBrowser/plugin.json
 msgctxt "description"
 msgid "Find, manage and install new plugins."
-msgstr ""
+msgstr "Busca, gerencia e instala novos plugins."
 
 #: PluginBrowser/plugin.json
 msgctxt "name"
 msgid "Plugin Browser"
-msgstr ""
+msgstr "Navegador de Plugin"
 
 #: SolidView/plugin.json
 msgctxt "description"
 msgid "Provides a normal solid mesh view."
-msgstr ""
+msgstr "Provê uma visualização de malha sólida normal."
 
 #: SolidView/plugin.json
 msgctxt "name"
 msgid "Solid View"
-msgstr ""
+msgstr "Visão Sólida"
 
 #: GCodeReader/plugin.json
 msgctxt "description"
 msgid "Allows loading and displaying G-code files."
-msgstr ""
+msgstr "Permite carregar e exibir arquivos G-Code."
 
 #: GCodeReader/plugin.json
 msgctxt "name"
 msgid "G-code Reader"
-msgstr ""
+msgstr "Leitor de G-Code"
 
 #: CuraProfileWriter/plugin.json
 msgctxt "description"
 msgid "Provides support for exporting Cura profiles."
-msgstr ""
+msgstr "Provê suporte à exportação de perfis do Cura."
 
 #: CuraProfileWriter/plugin.json
 msgctxt "name"
 msgid "Cura Profile Writer"
-msgstr ""
+msgstr "Gravador de Perfis do Cura"
 
 #: 3MFWriter/plugin.json
 msgctxt "description"
 msgid "Provides support for writing 3MF files."
-msgstr ""
+msgstr "Provê suporte à escrita de arquivos 3MF."
 
 #: 3MFWriter/plugin.json
 msgctxt "name"
 msgid "3MF Writer"
-msgstr ""
+msgstr "Gerador de 3MF"
 
 #: UltimakerMachineActions/plugin.json
 msgctxt "description"
 msgid "Provides machine actions for Ultimaker machines (such as bed leveling wizard, selecting upgrades, etc)"
-msgstr ""
+msgstr "Provê ações de máquina para Ultimaker (tais como assistente de nivelamento de mesa, seleção de atualizações, etc)"
 
 #: UltimakerMachineActions/plugin.json
 msgctxt "name"
 msgid "Ultimaker machine actions"
-msgstr ""
+msgstr "Ações de máquina Ultimaker"
 
 #: CuraProfileReader/plugin.json
 msgctxt "description"
 msgid "Provides support for importing Cura profiles."
-msgstr ""
+msgstr "Provê suporte à importação de perfis do Cura."
 
 #: CuraProfileReader/plugin.json
 msgctxt "name"
 msgid "Cura Profile Reader"
-msgstr ""
+msgstr "Leitor de Perfis do Cura"
 
 #~ msgctxt "@label"
 #~ msgid "Machine Settings action"
@@ -4226,7 +4208,7 @@ msgstr ""
 
 #~ msgctxt "@label"
 #~ msgid "Need help improving your prints? Read the <a href='%1'>Ultimaker Troubleshooting Guides</a>"
-#~ msgstr "Precisa de ajuda para melhorar suas impressões? Leia o <a href=”%1”>Guia de Solução de Problemas da Ultimaker</a>."
+#~ msgstr "Precisa de ajuda para melhorar suas impressões? Leia o <a href='%1'>Guia de Solução de Problemas da Ultimaker</a>."
 
 #~ msgctxt "@info:status"
 #~ msgid "Connected over the network to {0}. Please approve the access request on the printer."
