@@ -17,6 +17,7 @@ from .WorkspaceDialog import WorkspaceDialog
 
 import xml.etree.ElementTree as ET
 
+from cura.Settings.CuraStackBuilder import CuraStackBuilder
 from cura.Settings.ExtruderManager import ExtruderManager
 from cura.Settings.ExtruderStack import ExtruderStack
 from cura.Settings.GlobalStack import GlobalStack
@@ -665,6 +666,9 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                 Logger.log("e", "Resolve strategy of %s for machine is not supported",
                            self._resolve_strategies["machine"])
 
+            # Create a new definition_changes container if it was empty
+            if stack.definitionChanges == self._container_registry.getEmptyInstanceContainer():
+                stack.setDefinitionChanges(CuraStackBuilder.createDefinitionChangesContainer(stack, stack._id + "_settings"))
             global_stack = stack
             Job.yieldThread()
         except:
@@ -721,6 +725,10 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                         containers_added.append(stack)
                     else:
                         Logger.log("w", "Unknown resolve strategy: %s", self._resolve_strategies["machine"])
+
+                    # Create a new definition_changes container if it was empty
+                    if stack.definitionChanges == self._container_registry.getEmptyInstanceContainer():
+                        stack.setDefinitionChanges(CuraStackBuilder.createDefinitionChangesContainer(stack, stack._id + "_settings"))
 
                     extruder_stacks.append(stack)
             except:
