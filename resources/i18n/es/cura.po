@@ -801,7 +801,7 @@ msgstr "Cargando interfaz..."
 #, python-format
 msgctxt "@info 'width', 'depth' and 'height' are variable names that must NOT be translated; just translate the format of ##x##x## mm."
 msgid "%(width).1f x %(depth).1f x %(height).1f mm"
-msgstr "%(an.).1f x %(pr.).1f x %(al.).1f mm"
+msgstr "%(width).1f x %(depth).1f x %(height).1f mm"
 
 #: /home/ruben/Projects/Cura/cura/CuraApplication.py:1285
 #, python-brace-format
@@ -1020,26 +1020,6 @@ msgstr "Imprimir en: %1"
 msgctxt "@label"
 msgid "Extruder Temperature: %1/%2°C"
 msgstr "Temperatura del extrusor: %1/%2 °C"
-
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
-#: /home/ruben/Projects/Cura/plugins/Doodle3D-cura-plugin/ControlWindow.qml:45
-msgctxt "@label"
-msgid ""
-msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-09-13 17:41+0200\n"
-"PO-Revision-Date: 2016-09-29 13:44+0200\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: \n"
-"MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
 
 #: /home/ruben/Projects/Cura/plugins/Doodle3D-cura-plugin/ControlWindow.qml:46
 msgctxt "@label"
@@ -2466,12 +2446,12 @@ msgstr "Importar material"
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/MaterialsPage.qml:320
 msgctxt "@info:status"
 msgid "Could not import material <filename>%1</filename>: <message>%2</message>"
-msgstr "No se pudo importar el material en <nombrearchivo>%1</nombrearchivo>: <mensaje>%2</mensaje>."
+msgstr "No se pudo importar el material en <filename>%1</filename>: <message>%2</message>."
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/MaterialsPage.qml:324
 msgctxt "@info:status"
 msgid "Successfully imported material <filename>%1</filename>"
-msgstr "El material se ha importado correctamente en <nombrearchivo>%1</nombrearchivo>."
+msgstr "El material se ha importado correctamente en <filename>%1</filename>."
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/MaterialsPage.qml:343
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/MaterialsPage.qml:358
@@ -2482,12 +2462,12 @@ msgstr "Exportar material"
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/MaterialsPage.qml:362
 msgctxt "@info:status"
 msgid "Failed to export material to <filename>%1</filename>: <message>%2</message>"
-msgstr "Se ha producido un error al exportar el material a <nombrearchivo>%1</nombrearchivo>: <mensaje>%2</mensaje>."
+msgstr "Se ha producido un error al exportar el material a <filename>%1</filename>: <message>%2</message>."
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/MaterialsPage.qml:368
 msgctxt "@info:status"
 msgid "Successfully exported material to <filename>%1</filename>"
-msgstr "El material se ha exportado correctamente a <nombrearchivo>%1</nombrearchivo>."
+msgstr "El material se ha exportado correctamente a <filename>%1</filename>."
 
 #: /home/ruben/Projects/Cura/resources/qml/AddMachineDialog.qml:18
 #: /home/ruben/Projects/Cura/resources/qml/Cura.qml:822
@@ -4205,7 +4185,7 @@ msgstr "Lector de perfiles de Cura"
 
 #~ msgctxt "@label"
 #~ msgid "Need help improving your prints? Read the <a href='%1'>Ultimaker Troubleshooting Guides</a>"
-#~ msgstr "¿Necesita mejorar sus impresiones? Lea las <a href=”%1”>Guías de solución de problemas de Ultimaker</a>."
+#~ msgstr "¿Necesita mejorar sus impresiones? Lea las <a href='%1'>Guías de solución de problemas de Ultimaker</a>."
 
 #~ msgctxt "@info:status"
 #~ msgid "Connected over the network to {0}. Please approve the access request on the printer."
