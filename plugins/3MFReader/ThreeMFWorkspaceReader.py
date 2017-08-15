@@ -656,9 +656,6 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                 if stack.getMetaDataEntry("machine", None):
                     stack.setMetaDataEntry("machine", global_stack_id_new)
 
-                # Only machines need a new name, stacks may be non-unique
-                stack.setName(global_stack_id_new)
-
                 container_stacks_added.append(stack)
                 self._container_registry.addContainer(stack)
                 containers_added.append(stack)
