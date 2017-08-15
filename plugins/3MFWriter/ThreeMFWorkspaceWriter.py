@@ -2,11 +2,9 @@ from UM.Workspace.WorkspaceWriter import WorkspaceWriter
 from UM.Application import Application
 from UM.Preferences import Preferences
 from UM.Settings.ContainerRegistry import ContainerRegistry
-from UM.Settings.ContainerStack import ContainerStack
 from cura.Settings.ExtruderManager import ExtruderManager
 import zipfile
 from io import StringIO
-import copy
 import configparser
 
 
