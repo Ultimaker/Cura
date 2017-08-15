@@ -334,8 +334,6 @@
 
         "infill_button_margin": [0.5, 0.5],
 
-        "jobspecs_line": [2.0, 2.0],
-
-        "info_button": [0.6, 0.6]
+        "jobspecs_line": [2.0, 2.0]
     }
 }
