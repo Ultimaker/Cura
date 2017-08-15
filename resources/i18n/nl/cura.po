@@ -1940,7 +1940,7 @@ msgstr "Informatie"
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/MaterialView.qml:68
 msgctxt "@label"
 msgid "Display Name"
-msgstr "Naam Weergeven"
+msgstr "Naam"
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/MaterialView.qml:78
 msgctxt "@label"
