@@ -221,7 +221,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             elif container_type == "definition_changes":
                 definition_name = instance_container.getName()
                 num_settings_overriden_by_definition_changes += len(instance_container._instances)
-                definition_changes = self._container_registry.findDefinitionContainers(id = container_id)
+                definition_changes = self._container_registry.findInstanceContainers(id = container_id)
                 containers_found_dict["definition_changes"] = True
                 if definition_changes:
                     if definition_changes[0] != instance_container:
