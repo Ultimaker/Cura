@@ -2482,12 +2482,12 @@ msgstr "Exportar material"
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/MaterialsPage.qml:362
 msgctxt "@info:status"
 msgid "Failed to export material to <filename>%1</filename>: <message>%2</message>"
-msgstr "Se ha producido un error al exportar el material a <nombrearchivo>%1</nombrearchivo>: <mensaje>%2</mensaje>."
+msgstr "Se ha producido un error al exportar el material a <filename>%1</filename>: <message>%2</message>."
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/MaterialsPage.qml:368
 msgctxt "@info:status"
 msgid "Successfully exported material to <filename>%1</filename>"
-msgstr "El material se ha exportado correctamente a <nombrearchivo>%1</nombrearchivo>."
+msgstr "El material se ha exportado correctamente a <filename>%1</filename>."
 
 #: /home/ruben/Projects/Cura/resources/qml/AddMachineDialog.qml:18
 #: /home/ruben/Projects/Cura/resources/qml/Cura.qml:822
