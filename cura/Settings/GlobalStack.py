@@ -61,6 +61,12 @@ class GlobalStack(CuraContainerStack):
     #                                            already have the maximum number of extruders.
     def addExtruder(self, extruder: ContainerStack) -> None:
         extruder_count = self.getProperty("machine_extruder_count", "value")
+
+        if extruder_count <= 1:
+            Logger.log("i", "Not adding extruder[%s] to [%s] because it is a single-extrusion machine.",
+                       extruder.id, self.id)
+            return
+
         if extruder_count and len(self._extruders) + 1 > extruder_count:
             Logger.log("w", "Adding extruder {meta} to {id} but its extruder count is {count}".format(id = self.id, count = extruder_count, meta = str(extruder.getMetaData())))
             return
@@ -73,7 +79,9 @@ class GlobalStack(CuraContainerStack):
         if any(item.getId() == extruder.id for item in self._extruders.values()):
             Logger.log("w", "Extruder [%s] has already been added to this stack [%s]", extruder.id, self._id)
             return
+
         self._extruders[position] = extruder
+        Logger.log("i", "Extruder[%s] added to [%s] at position [%s]", extruder.id, self.id, position)
 
     ##  Overridden from ContainerStack
     #
