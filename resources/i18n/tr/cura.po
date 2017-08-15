@@ -775,7 +775,10 @@ msgid ""
 "<p>A fatal exception has occurred that we could not recover from!</p>\n"
 "        <p>Please use the information below to post a bug report at <a href=\"http://github.com/Ultimaker/Cura/issues\">http://github.com/Ultimaker/Cura/issues</a></p>\n"
 "    "
-msgstr "<p>Kurtulunamayan ciddi bir olağanüstü durum oluştu!</p>\n        <p>Yazılım hatası raporunu <a href=\"http://github.com/Ultimaker/Cura/issues\">http://github.com/Ultimaker/Cura/issues</a> adresine gönderirken aşağıdaki bilgileri kullanınız</p>\n"
+msgstr ""
+"<p>Kurtulunamayan ciddi bir olağanüstü durum oluştu!</p>\n"
+"        <p>Yazılım hatası raporunu <a href=\"http://github.com/Ultimaker/Cura/issues\">http://github.com/Ultimaker/Cura/issues</a> adresine gönderirken aşağıdaki bilgileri kullanınız</p>\n"
+"    "
 
 #: /home/ruben/Projects/Cura/cura/CrashHandler.py:112
 msgctxt "@action:button"
