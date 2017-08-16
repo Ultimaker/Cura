@@ -182,6 +182,9 @@ class SliceInfo(Extension):
 
             data["print_settings"] = print_settings
 
+            # Send the name of the output device type that is used.
+            data["output_to"] = type(output_device).__name__
+
             # Convert data to bytes
             binary_data = json.dumps(data).encode("utf-8")
 
