@@ -190,122 +190,15 @@ Rectangle
         }
         ExclusiveGroup { id: modeMenuGroup; }
 
-        Label
+        ListView
         {
-            id: toggleLeftText
-            anchors.right: modeToggleSwitch.left
-            anchors.rightMargin: UM.Theme.getSize("default_margin").width
-            anchors.verticalCenter: parent.verticalCenter
-            text: ""
-            color:
-            {
-                if(toggleLeftTextMouseArea.containsMouse)
-                {
-                    return UM.Theme.getColor("mode_switch_text_hover");
-                }
-                else if(!modeToggleSwitch.checked)
-                {
-                    return UM.Theme.getColor("mode_switch_text_checked");
-                }
-                else
-                {
-                    return UM.Theme.getColor("mode_switch_text");
-                }
-            }
-            font: UM.Theme.getFont("default")
-
-            MouseArea
-            {
-                id: toggleLeftTextMouseArea
-                hoverEnabled: true
-                anchors.fill: parent
-                onClicked:
-                {
-                    modeToggleSwitch.checked = false;
-                }
-
-                Component.onCompleted:
-                {
-                    clicked.connect(modeToggleSwitch.clicked)
-                }
-            }
-        }
-
-        Switch
-        {
-            id: modeToggleSwitch
-            checked: false
-            anchors.right: toggleRightText.left
-            anchors.rightMargin: UM.Theme.getSize("default_margin").width
-            anchors.verticalCenter: parent.verticalCenter
-
-            property bool _hovered: modeToggleSwitchMouseArea.containsMouse || toggleLeftTextMouseArea.containsMouse || toggleRightTextMouseArea.containsMouse
-
-            MouseArea
-            {
-                id: modeToggleSwitchMouseArea
-                anchors.fill: parent
-                hoverEnabled: true
-                acceptedButtons: Qt.NoButton
-            }
-
-            onCheckedChanged:
-            {
-                var index = 0;
-                if (checked)
-                {
-                    index = 1;
-                }
-                updateActiveMode(index);
-            }
-
-            function updateActiveMode(index)
-            {
-                base.currentModeIndex = index;
-                UM.Preferences.setValue("cura/active_mode", index);
-            }
-
-            style: UM.Theme.styles.mode_switch
-        }
-
-        Label
-        {
-            id: toggleRightText
-            anchors.right: parent.right
-            anchors.verticalCenter: parent.verticalCenter
-            text: ""
-            color:
-            {
-                if(toggleRightTextMouseArea.containsMouse)
-                {
-                    return UM.Theme.getColor("mode_switch_text_hover");
-                }
-                else if(modeToggleSwitch.checked)
-                {
-                    return UM.Theme.getColor("mode_switch_text_checked");
-                }
-                else
-                {
-                    return UM.Theme.getColor("mode_switch_text");
-                }
-            }
-            font: UM.Theme.getFont("default")
-
-            MouseArea
-            {
-                id: toggleRightTextMouseArea
-                hoverEnabled: true
-                anchors.fill: parent
-                onClicked:
-                {
-                    modeToggleSwitch.checked = true;
-                }
-
-                Component.onCompleted:
-                {
-                    clicked.connect(modeToggleSwitch.clicked)
-                }
-            }
+            id: modesList
+            property var index: 0
+            model: modesListModel
+            delegate: wizardDelegate
+            anchors.top: parent.top
+            anchors.left: parent.left
+            width: parent.width
         }
     }
 
@@ -581,14 +474,10 @@ Rectangle
         })
         sidebarContents.push({ "item": modesListModel.get(base.currentModeIndex).item, "immediate": true });
 
-        toggleLeftText.text = modesListModel.get(0).text;
-        toggleRightText.text = modesListModel.get(1).text;
-
-        var index = parseInt(UM.Preferences.getValue("cura/active_mode"));
-        if (index)
+        var index = parseInt(UM.Preferences.getValue("cura/active_mode"))
+        if(index)
         {
             currentModeIndex = index;
-            modeToggleSwitch.checked = index > 0;
         }
     }
 
