@@ -1510,6 +1510,44 @@
                     "limit_to_extruder": "infill_extruder_nr",
                     "settable_per_mesh": true
                 },
+                "skin_preshrink":
+                {
+                    "label": "Skin Pre-Shrink Distance",
+                    "description": "The distance the skins are shrunk before considering them for skin expansion. Every skin area smaller than this value will disappear. This can help in limiting the amount of time and material spent on printing top/bottom skin at slanted surfaces in the model.",
+                    "unit": "mm",
+                    "type": "float",
+                    "default_value": 0,
+                    "minimum_value": "0",
+                    "limit_to_extruder": "top_bottom_extruder_nr",
+                    "settable_per_mesh": true,
+                    "children":
+                    {
+                        "top_skin_preshrink":
+                        {
+                            "label": "Top Skin Pre-Shrink Distance",
+                            "description": "The distance the top skins are shrunk before considering them for skin expansion. Every skin area smaller than this value will disappear. This can help in limiting the amount of time and material spent on printing top skin at slanted surfaces in the model.",
+                            "unit": "mm",
+                            "type": "float",
+                            "default_value": 0,
+                            "value": "skin_preshrink",
+                            "minimum_value": "0",
+                            "limit_to_extruder": "top_bottom_extruder_nr",
+                            "settable_per_mesh": true
+                        },
+                        "bottom_skin_preshrink":
+                        {
+                            "label": "Bottom Skin Pre-Shrink Distance",
+                            "description": "The distance the bottom skins are shrunk before considering them for skin expansion. Every skin area smaller than this value will disappear. This can help in limiting the amount of time and material spent on printing bottom skin at slanted surfaces in the model.",
+                            "unit": "mm",
+                            "type": "float",
+                            "default_value": 0,
+                            "value": "skin_preshrink",
+                            "minimum_value": "0",
+                            "limit_to_extruder": "top_bottom_extruder_nr",
+                            "settable_per_mesh": true
+                        }
+                    }
+                },
                 "expand_skins_into_infill":
                 {
                     "label": "Expand Skins Into Infill",
