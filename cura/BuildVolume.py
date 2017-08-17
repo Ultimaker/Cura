@@ -1,4 +1,4 @@
-# Copyright (c) 2016 Ultimaker B.V.
+# Copyright (c) 2017 Ultimaker B.V.
 # Cura is released under the terms of the AGPLv3 or higher.
 
 from cura.Settings.ExtruderManager import ExtruderManager
@@ -60,7 +60,7 @@ class BuildVolume(SceneNode):
 
         self._plate_mesh = None
         self._grid_mesh = None
-        self._grid_shader = None
+        self._plate_shader = None
 
         self._disallowed_areas = []
         self._disallowed_area_mesh = None
@@ -170,13 +170,13 @@ class BuildVolume(SceneNode):
 
         if not self._shader:
             self._shader = OpenGL.getInstance().createShaderProgram(Resources.getPath(Resources.Shaders, "default.shader"))
-            self._grid_shader = OpenGL.getInstance().createShaderProgram(Resources.getPath(Resources.Shaders, "grid.shader"))
+            self._plate_shader = OpenGL.getInstance().createShaderProgram(Resources.getPath(Resources.Shaders, "color.shader"))
             theme = Application.getInstance().getTheme()
-            self._grid_shader.setUniformValue("u_buildplateColor", Color(*theme.getColor("buildplate").getRgb()))
+            self._plate_shader.setUniformValue("u_color", Color(*theme.getColor("buildplate").getRgb()))
 
         renderer.queueNode(self, mode = RenderBatch.RenderMode.Lines)
         renderer.queueNode(self, mesh = self._origin_mesh)
-        renderer.queueNode(self, mesh = self._plate_mesh, shader = self._grid_shader, backface_cull = True)
+        renderer.queueNode(self, mesh = self._plate_mesh, shader = self._plate_shader, backface_cull = True)
         renderer.queueNode(self, mesh = self._grid_mesh, mode = RenderBatch.RenderMode.Lines, transparent = True)
         if self._disallowed_area_mesh:
             renderer.queueNode(self, mesh = self._disallowed_area_mesh, shader = self._shader, transparent = True, backface_cull = True, sort = -9)
@@ -308,6 +308,7 @@ class BuildVolume(SceneNode):
             for y in range(0, int(math.floor(min_d)), -major_grid_size):
                 mb.addLine(Vector(min_w, min_h, y), Vector(max_w, min_h, y), color = self._grid_color)
 
+            #More fine grained grid.
             minor_grid_size = 1
             for x in range(0, int(math.ceil(max_w)), minor_grid_size):
                 if x % major_grid_size == 0: #Don't overlap with the major grid.
