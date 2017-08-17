@@ -56,6 +56,7 @@ class BuildVolume(SceneNode):
         self._origin_line_length = 20
         self._origin_line_width = 0.5
 
+        self._plate_mesh = None
         self._grid_mesh = None
         self._grid_shader = None
 
@@ -173,7 +174,8 @@ class BuildVolume(SceneNode):
 
         renderer.queueNode(self, mode = RenderBatch.RenderMode.Lines)
         renderer.queueNode(self, mesh = self._origin_mesh)
-        renderer.queueNode(self, mesh = self._grid_mesh, shader = self._grid_shader, backface_cull = True)
+        renderer.queueNode(self, mesh = self._plate_mesh, shader = self._grid_shader, backface_cull = True)
+        renderer.queueNode(self, mesh = self._grid_mesh, mode = RenderBatch.RenderMode.Lines)
         if self._disallowed_area_mesh:
             renderer.queueNode(self, mesh = self._disallowed_area_mesh, shader = self._shader, transparent = True, backface_cull = True, sort = -9)
 
@@ -246,6 +248,7 @@ class BuildVolume(SceneNode):
             self._z_axis_color = Color(*theme.getColor("z_axis").getRgb())
             self._disallowed_area_color = Color(*theme.getColor("disallowed_area").getRgb())
             self._error_area_color = Color(*theme.getColor("error_area").getRgb())
+            self._grid_color = Color(*theme.getColor("buildplate_grid").getRgb())
 
         min_w = -self._width / 2
         max_w = self._width / 2
@@ -276,7 +279,7 @@ class BuildVolume(SceneNode):
 
             self.setMeshData(mb.build())
 
-            # Build plate grid mesh
+            # Build plate surface.
             mb = MeshBuilder()
             mb.addQuad(
                 Vector(min_w, min_h - z_fight_distance, min_d),
@@ -288,6 +291,20 @@ class BuildVolume(SceneNode):
             for n in range(0, 6):
                 v = mb.getVertex(n)
                 mb.setVertexUVCoordinates(n, v[0], v[2])
+            self._plate_mesh = mb.build()
+
+            #Build plate grid mesh.
+            major_grid_size = 10 #In millimetres.
+            mb = MeshBuilder()
+            for x in range(0, int(math.ceil(max_w)), major_grid_size):
+                mb.addLine(Vector(x, min_h, min_d), Vector(x, min_h, max_d), color = self._grid_color)
+            for x in range(0, int(math.floor(min_w)), -major_grid_size): #Start from 0 in both cases, so you need to do this in two for loops.
+                mb.addLine(Vector(x, min_h, min_d), Vector(x, min_h, max_d), color = self._grid_color)
+            for y in range(0, int(math.ceil(max_d)), major_grid_size):
+                mb.addLine(Vector(min_w, min_h, y), Vector(max_w, min_h, y), color = self._grid_color)
+            for y in range(0, int(math.floor(min_d)), -major_grid_size):
+                mb.addLine(Vector(min_w, min_h, y), Vector(max_w, min_h, y), color = self._grid_color)
+
             self._grid_mesh = mb.build()
 
         else:
