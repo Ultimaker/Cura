@@ -177,7 +177,7 @@ class BuildVolume(SceneNode):
         renderer.queueNode(self, mode = RenderBatch.RenderMode.Lines)
         renderer.queueNode(self, mesh = self._origin_mesh)
         renderer.queueNode(self, mesh = self._plate_mesh, shader = self._grid_shader, backface_cull = True)
-        renderer.queueNode(self, mesh = self._grid_mesh, mode = RenderBatch.RenderMode.Lines)
+        renderer.queueNode(self, mesh = self._grid_mesh, mode = RenderBatch.RenderMode.Lines, transparent = True)
         if self._disallowed_area_mesh:
             renderer.queueNode(self, mesh = self._disallowed_area_mesh, shader = self._shader, transparent = True, backface_cull = True, sort = -9)
 
