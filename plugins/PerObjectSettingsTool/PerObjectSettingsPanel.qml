@@ -1,4 +1,4 @@
-// Copyright (c) 2016 Ultimaker B.V.
+// Copyright (c) 2017 Ultimaker B.V.
 // Uranium is released under the terms of the AGPLv3 or higher.
 
 import QtQuick 2.2
@@ -38,6 +38,7 @@ Item {
                 height: parent.height
                 width: UM.Theme.getSize("setting").width + UM.Theme.getSize("setting").height
                 style: UM.Theme.styles.scrollview
+
                 ListView
                 {
                     id: contents
@@ -66,6 +67,7 @@ Item {
                             property var definition: model
                             property var settingDefinitionsModel: addedSettingsModel
                             property var propertyProvider: provider
+                            property var globalPropertyProvider: inheritStackProvider
 
                             //Qt5.4.2 and earlier has a bug where this causes a crash: https://bugreports.qt.io/browse/QTBUG-35989
                             //In addition, while it works for 5.5 and higher, the ordering of the actual combo box drop down changes,
@@ -142,6 +144,16 @@ Item {
                             watchedProperties: [ "value", "enabled", "validationState" ]
                             storeIndex: 0
                             removeUnusedValue: false
+                        }
+
+                        // Specialty provider that only watches global_inherits (we cant filter on what property changed we get events
+                        // so we bypass that to make a dedicated provider).
+                        UM.SettingPropertyProvider
+                        {
+                            id: inheritStackProvider
+                            containerStackId: Cura.MachineManager.activeMachineId
+                            key: model.key
+                            watchedProperties: [ "limit_to_extruder" ]
                         }
                     }
                 }
