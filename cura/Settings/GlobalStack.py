@@ -67,10 +67,6 @@ class GlobalStack(CuraContainerStack):
                        extruder.id, self.id)
             return
 
-        if extruder_count and len(self._extruders) + 1 > extruder_count:
-            Logger.log("w", "Adding extruder {meta} to {id} but its extruder count is {count}".format(id = self.id, count = extruder_count, meta = str(extruder.getMetaData())))
-            return
-
         position = extruder.getMetaDataEntry("position")
         if position is None:
             Logger.log("w", "No position defined for extruder {extruder}, cannot add it to stack {stack}", extruder = extruder.id, stack = self.id)
