@@ -44,6 +44,7 @@ class BuildVolume(SceneNode):
         self._z_axis_color = None
         self._disallowed_area_color = None
         self._error_area_color = None
+        self._grid_color = None
 
         self._width = 0
         self._height = 0
