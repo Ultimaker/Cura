@@ -45,6 +45,7 @@ class BuildVolume(SceneNode):
         self._disallowed_area_color = None
         self._error_area_color = None
         self._grid_color = None
+        self._grid_minor_color = None
 
         self._width = 0
         self._height = 0
@@ -250,6 +251,7 @@ class BuildVolume(SceneNode):
             self._disallowed_area_color = Color(*theme.getColor("disallowed_area").getRgb())
             self._error_area_color = Color(*theme.getColor("error_area").getRgb())
             self._grid_color = Color(*theme.getColor("buildplate_grid").getRgb())
+            self._grid_minor_color = Color(*theme.getColor("buildplate_grid_minor").getRgb())
 
         min_w = -self._width / 2
         max_w = self._width / 2
@@ -305,6 +307,24 @@ class BuildVolume(SceneNode):
                 mb.addLine(Vector(min_w, min_h, y), Vector(max_w, min_h, y), color = self._grid_color)
             for y in range(0, int(math.floor(min_d)), -major_grid_size):
                 mb.addLine(Vector(min_w, min_h, y), Vector(max_w, min_h, y), color = self._grid_color)
+
+            minor_grid_size = 1
+            for x in range(0, int(math.ceil(max_w)), minor_grid_size):
+                if x % major_grid_size == 0: #Don't overlap with the major grid.
+                    pass
+                mb.addLine(Vector(x, min_h, min_d), Vector(x, min_h, max_d), color = self._grid_minor_color)
+            for x in range(0, int(math.floor(min_w)), -minor_grid_size):
+                if x % major_grid_size == 0:
+                    pass
+                mb.addLine(Vector(x, min_h, min_d), Vector(x, min_h, max_d), color = self._grid_minor_color)
+            for y in range(0, int(math.ceil(max_d)), minor_grid_size):
+                if y % major_grid_size == 0:
+                    pass
+                mb.addLine(Vector(min_w, min_h, y), Vector(max_w, min_h, y), color = self._grid_minor_color)
+            for y in range(0, int(math.floor(min_d)), -minor_grid_size):
+                if y % major_grid_size == 0:
+                    pass
+                mb.addLine(Vector(min_w, min_h, y), Vector(max_w, min_h, y), color = self._grid_minor_color)
 
             self._grid_mesh = mb.build()
 
