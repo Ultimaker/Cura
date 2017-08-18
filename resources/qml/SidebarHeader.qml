@@ -160,7 +160,7 @@ Column
         visible: !extruderSelectionRow.visible
     }
 
-//Print core row
+    // Print core row
     Item
     {
         id: printCoreRow
@@ -199,7 +199,8 @@ Column
             menu: NozzleMenu { extruderIndex: base.currentExtruderIndex }
         }
     }
-//Material Row
+
+    // Material Row
     Item
     {
         id: materialRow
@@ -254,7 +255,8 @@ Column
             menu: MaterialMenu { extruderIndex: base.currentExtruderIndex }
         }
     }
-//Material info row
+
+    // Material info row
     Item
     {
         id: materialInfoRow
@@ -286,10 +288,14 @@ Column
                 anchors.bottom: parent.bottom
                 color:
                 {
-                    if (! Cura.MachineManager.isActiveQualitySupported)
+                    if (!Cura.MachineManager.isActiveQualitySupported)
+                    {
                         UM.Theme.getColor("setting_validation_error");
+                    }
                     else
+                    {
                         UM.Theme.getColor("text");
+                    }
                 }
 
                 MouseArea
@@ -309,13 +315,13 @@ Column
                     {
 
                         var content = catalog.i18nc("@tooltip", "Click to check the material compatibility on Ultimaker.com.");
-                            base.showTooltip(
-                                materialInfoRow,
-                                Qt.point(- UM.Theme.getSize("default_margin").width,0),
-                                catalog.i18nc("@tooltip", content)
-                            );
+                        base.showTooltip(
+                            materialInfoRow,
+                            Qt.point(-UM.Theme.getSize("default_margin").width, 0),
+                            catalog.i18nc("@tooltip", content)
+                        );
                     }
-                    onExited:base.hideTooltip();
+                    onExited: base.hideTooltip();
                 }
             }
 
@@ -331,7 +337,7 @@ Column
                 //sourceSize.height: width + 5
 
                 color: UM.Theme.getColor("setting_control_text")
-                visible: ! Cura.MachineManager.isActiveQualitySupported
+                visible: !Cura.MachineManager.isActiveQualitySupported
             }
         }
     }

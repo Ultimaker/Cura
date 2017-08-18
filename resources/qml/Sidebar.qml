@@ -244,7 +244,7 @@ Rectangle
                 }
                 return result;
             }
-            enabled: !header.currentExtruderVisible || header.currentExtruderIndex  > -1
+            enabled: !header.currentExtruderVisible || header.currentExtruderIndex > -1
 
             width: parent.width * 0.7 + UM.Theme.getSize("default_margin").width
             height: UM.Theme.getSize("setting_control").height
@@ -252,7 +252,7 @@ Rectangle
             tooltip: Cura.MachineManager.activeQualityName
             style: UM.Theme.styles.sidebar_header_button
             activeFocusOnPress: true;
-            property var valueWarning: ! Cura.MachineManager.isActiveQualitySupported
+            property var valueWarning: !Cura.MachineManager.isActiveQualitySupported
             menu: ProfileMenu { }
 
             UM.SimpleButton
@@ -278,7 +278,7 @@ Rectangle
                 onEntered:
                 {
                     var content = catalog.i18nc("@tooltip","Some setting/override values are different from the values stored in the profile.\n\nClick to open the profile manager.")
-                    base.showTooltip(globalProfileRow, Qt.point(- UM.Theme.getSize("default_margin").width, 0),  content)
+                    base.showTooltip(globalProfileRow, Qt.point(-UM.Theme.getSize("default_margin").width, 0),  content)
                 }
                 onExited: base.hideTooltip()
             }
