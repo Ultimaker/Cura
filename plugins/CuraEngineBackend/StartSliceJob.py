@@ -1,4 +1,4 @@
-# Copyright (c) 2015 Ultimaker B.V.
+# Copyright (c) 2017 Ultimaker B.V.
 # Cura is released under the terms of the AGPLv3 or higher.
 
 import numpy
@@ -306,25 +306,26 @@ class StartSliceJob(Job):
     #   \param message object_lists message to put the per object settings in
     def _handlePerObjectSettings(self, node, message):
         stack = node.callDecoration("getStack")
-        # Check if the node has a stack attached to it and the stack has any settings in the top container.
-        if stack:
-            # Check all settings for relations, so we can also calculate the correct values for dependant settings.
-            changed_setting_keys = set(stack.getTop().getAllKeys())
-            for key in stack.getTop().getAllKeys():
-                instance = stack.getTop().getInstance(key)
-                self._addRelations(changed_setting_keys, instance.definition.relations)
-                Job.yieldThread()
+        if not stack: # Check if the node has a stack attached to it and the stack has any settings in the top container.
+            return
 
-            # Ensure that the engine is aware what the build extruder is
-            if stack.getProperty("machine_extruder_count", "value") > 1:
-                changed_setting_keys.add("extruder_nr")
+        # Check all settings for relations, so we can also calculate the correct values for dependent settings.
+        changed_setting_keys = set(stack.getTop().getAllKeys())
+        for key in stack.getTop().getAllKeys():
+            instance = stack.getTop().getInstance(key)
+            self._addRelations(changed_setting_keys, instance.definition.relations)
+            Job.yieldThread()
 
-            # Get values for all changed settings
-            for key in changed_setting_keys:
-                setting = message.addRepeatedMessage("settings")
-                setting.name = key
-                setting.value = str(stack.getProperty(key, "value")).encode("utf-8")
-                Job.yieldThread()
+        # Ensure that the engine is aware what the build extruder is
+        if stack.getProperty("machine_extruder_count", "value") > 1:
+            changed_setting_keys.add("extruder_nr")
+
+        # Get values for all changed settings
+        for key in changed_setting_keys:
+            setting = message.addRepeatedMessage("settings")
+            setting.name = key
+            setting.value = str(stack.getProperty(key, "value")).encode("utf-8")
+            Job.yieldThread()
 
     ##  Recursive function to put all settings that require eachother for value changes in a list
     #   \param relations_set \type{set} Set of keys (strings) of settings that are influenced
