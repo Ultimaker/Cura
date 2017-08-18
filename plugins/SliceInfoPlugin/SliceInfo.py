@@ -69,7 +69,15 @@ class SliceInfo(Extension):
             else:
                 data["active_mode"] = "custom"
 
-            data["machine_settings_changed_by_user"] = global_container_stack.definitionChanges.getId() != "empty"
+            definition_changes = global_container_stack.definitionChanges
+            machine_settings_changed_by_user = False
+            if definition_changes.getId() != "empty":
+                # Now a definition_changes container will always be created for a stack,
+                # so we also need to check if there is any instance in the definition_changes container
+                if definition_changes.getAllKeys():
+                    machine_settings_changed_by_user = True
+
+            data["machine_settings_changed_by_user"] = machine_settings_changed_by_user
             data["language"] = Preferences.getInstance().getValue("general/language")
             data["os"] = {"type": platform.system(), "version": platform.version()}
 

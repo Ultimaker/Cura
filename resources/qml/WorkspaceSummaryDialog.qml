@@ -230,11 +230,11 @@ UM.Dialog
             }
         }
 
-
         CheckBox
         {
             id: dontShowAgainCheckbox
-            anchors.bottom: parent.bottom
+            anchors.bottom: cancel_button.top
+            anchors.bottomMargin: UM.Theme.getSize("default_margin").height
             anchors.left: parent.left
 
             text: catalog.i18nc("@action:label", "Don't show project summary on save again")
