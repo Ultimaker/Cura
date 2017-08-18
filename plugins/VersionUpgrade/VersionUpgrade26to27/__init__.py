@@ -12,7 +12,7 @@ def getMetaData():
     return {
         "version_upgrade": {
             # From                          To                             Upgrade function
-            ("machine_stack", 3000000):     ("machine_stack", 3000002,     upgrade.upgradeStack),
+            ("machine_stack", 3000001):     ("machine_stack", 3000002,     upgrade.upgradeStack),
             ("extruder_train", 3000000):    ("extruder_train", 3000002,    upgrade.upgradeStack),
 
             # In 2.6.x, Preferences are saved with "version = 4" and no setting_version.
