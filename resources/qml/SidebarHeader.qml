@@ -15,6 +15,7 @@ Column
     id: base;
 
     property int currentExtruderIndex: ExtruderManager.activeExtruderIndex;
+    property bool currentExtruderVisible: extrudersList.visible;
 
     spacing: UM.Theme.getSize("default_margin").height
 
@@ -159,10 +160,104 @@ Column
         visible: !extruderSelectionRow.visible
     }
 
+//Print core row
     Item
     {
-        id: variantRow
-        
+        id: printCoreRow
+        height: UM.Theme.getSize("sidebar_setup").height
+        visible: Cura.MachineManager.hasVariants && !sidebar.monitoringPrint && !sidebar.hideSettings
+
+        anchors
+        {
+            left: parent.left
+            leftMargin: UM.Theme.getSize("default_margin").width
+            right: parent.right
+            rightMargin: UM.Theme.getSize("default_margin").width
+        }
+
+        Text
+        {
+            id: printCoreLabel
+            text: Cura.MachineManager.activeDefinitionVariantsName;
+            width: parent.width * 0.45 - UM.Theme.getSize("default_margin").width
+            font: UM.Theme.getFont("default");
+            color: UM.Theme.getColor("text");
+        }
+
+        ToolButton {
+            id: printCoreSelection
+            text: Cura.MachineManager.activeVariantName
+            tooltip: Cura.MachineManager.activeVariantName;
+            visible: Cura.MachineManager.hasVariants
+
+            height: UM.Theme.getSize("setting_control").height
+            width: parent.width * 0.7 + UM.Theme.getSize("default_margin").width
+            anchors.right: parent.right
+            style: UM.Theme.styles.sidebar_header_button
+            activeFocusOnPress: true;
+
+            menu: NozzleMenu { extruderIndex: base.currentExtruderIndex }
+        }
+    }
+//Material Row
+    Item
+    {
+        id: materialRow
+        height: UM.Theme.getSize("sidebar_setup").height
+        visible: Cura.MachineManager.hasMaterials && !sidebar.monitoringPrint && !sidebar.hideSettings
+
+        anchors
+        {
+            left: parent.left
+            leftMargin: UM.Theme.getSize("default_margin").width
+            right: parent.right
+            rightMargin: UM.Theme.getSize("default_margin").width
+        }
+
+        Text
+        {
+            id: materialLabel
+            text: catalog.i18nc("@label","Material");
+            width: parent.width * 0.45 - UM.Theme.getSize("default_margin").width
+            font: UM.Theme.getFont("default");
+            color: UM.Theme.getColor("text");
+        }
+
+        ToolButton {
+            id: materialSelection
+            text: Cura.MachineManager.activeMaterialName
+            tooltip: Cura.MachineManager.activeMaterialName
+            visible: Cura.MachineManager.hasMaterials
+            property var valueError:
+            {
+                var data = Cura.ContainerManager.getContainerMetaDataEntry(Cura.MachineManager.activeMaterialId, "compatible")
+                if(data == "False")
+                {
+                    return true
+                }
+                else
+                {
+                    return false
+                }
+
+            }
+            property var valueWarning: ! Cura.MachineManager.isActiveQualitySupported
+
+            enabled: !extrudersList.visible || base.currentExtruderIndex  > -1
+
+            height: UM.Theme.getSize("setting_control").height
+            width: parent.width * 0.7 + UM.Theme.getSize("default_margin").width
+            anchors.right: parent.right
+            style: UM.Theme.styles.sidebar_header_button
+            activeFocusOnPress: true;
+
+            menu: MaterialMenu { extruderIndex: base.currentExtruderIndex }
+        }
+    }
+//Material info row
+    Item
+    {
+        id: materialInfoRow
         height: UM.Theme.getSize("sidebar_setup").height
         visible: (Cura.MachineManager.hasVariants || Cura.MachineManager.hasMaterials) && !sidebar.monitoringPrint && !sidebar.hideSettings
 
@@ -174,209 +269,69 @@ Column
             rightMargin: UM.Theme.getSize("default_margin").width
         }
 
-        Text
-        {
-            id: variantLabel
-            width: parent.width * 0.30
-
-            anchors.verticalCenter: parent.verticalCenter
-            anchors.left: variantRow.left
-
-            font: UM.Theme.getFont("default");
-            color: UM.Theme.getColor("text");
-
-            text:
-            {
-                var label;
-                if(Cura.MachineManager.hasVariants && Cura.MachineManager.hasMaterials)
-                {
-                    label = "%1 & %2".arg(Cura.MachineManager.activeDefinitionVariantsName).arg(catalog.i18nc("@label","Material"));
-                }
-                else if(Cura.MachineManager.hasVariants)
-                {
-                    label = Cura.MachineManager.activeDefinitionVariantsName;
-                }
-                else
-                {
-                    label = catalog.i18nc("@label","Material");
-                }
-                return "%1:".arg(label);
-            }
-        }
-
-        Button
-        {
-            id: materialInfoButton
-            height: parent.height * 0.60
-            width: height
-
-            anchors.right: materialVariantContainer.left
-            anchors.rightMargin: UM.Theme.getSize("default_margin").width
-            anchors.verticalCenter: parent.verticalCenter
-
-            visible: extrudersList.visible
-
-            text: "i"
-            style: UM.Theme.styles.info_button
-
-            onClicked:
-            {
-                // open the material URL with web browser
-                var version = UM.Application.version;
-                var machineName = Cura.MachineManager.activeMachine.definition.id;
-
-                var url = "https://ultimaker.com/materialcompatibility/" + version + "/" + machineName;
-                Qt.openUrlExternally(url);
-            }
-
-            onHoveredChanged:
-            {
-                if (hovered)
-                {
-                    var content = catalog.i18nc("@tooltip", "Click to check the material compatibility on Ultimaker.com.");
-                    base.showTooltip(
-                        extruderSelectionRow, Qt.point(0, extruderSelectionRow.height + variantRow.height / 2), catalog.i18nc("@tooltip", content)
-                    );
-                }
-                else
-                {
-                    base.hideTooltip();
-                }
-            }
-        }
-
         Item
         {
-            id: materialVariantContainer
-
-            anchors.verticalCenter: parent.verticalCenter
+            height: UM.Theme.getSize("sidebar_setup").height
             anchors.right: parent.right
+            width: parent.width * 0.7 + UM.Theme.getSize("default_margin").width
 
-            width: parent.width * 0.55 + UM.Theme.getSize("default_margin").width
-            height: UM.Theme.getSize("setting_control").height
-
-            ToolButton {
-                id: variantSelection
-                text: Cura.MachineManager.activeVariantName
-                tooltip: Cura.MachineManager.activeVariantName;
-                visible: Cura.MachineManager.hasVariants
-                enabled: !extrudersList.visible || base.currentExtruderIndex  > -1
-
-                height: UM.Theme.getSize("setting_control").height
-                width: materialSelection.visible ? (parent.width - UM.Theme.getSize("default_margin").width) / 2 : parent.width
-                anchors.left: parent.left
-                style: UM.Theme.styles.sidebar_header_button
-                activeFocusOnPress: true;
-
-                menu: NozzleMenu { extruderIndex: base.currentExtruderIndex }
-            }
-
-            ToolButton {
-                id: materialSelection
-                text: Cura.MachineManager.activeMaterialName
-                tooltip: Cura.MachineManager.activeMaterialName
-                visible: Cura.MachineManager.hasMaterials
-                property var valueError:
-                {
-                    var data = Cura.ContainerManager.getContainerMetaDataEntry(Cura.MachineManager.activeMaterialId, "compatible")
-                    if(data == "False")
-                    {
-                        return true
-                    }
-                    else
-                    {
-                        return false
-                    }
-
-                }
-                property var valueWarning: ! Cura.MachineManager.isActiveQualitySupported
-
-                enabled: !extrudersList.visible || base.currentExtruderIndex  > -1
-
-                height: UM.Theme.getSize("setting_control").height
-                width: variantSelection.visible ? (parent.width - UM.Theme.getSize("default_margin").width) / 2 : parent.width
-                anchors.right: parent.right
-                style: UM.Theme.styles.sidebar_header_button
-                activeFocusOnPress: true;
-
-                menu: MaterialMenu { extruderIndex: base.currentExtruderIndex }
-            }
-        }
-    }
-
-    Row
-    {
-        id: globalProfileRow
-        height: UM.Theme.getSize("sidebar_setup").height
-        visible: !sidebar.monitoringPrint && !sidebar.hideSettings
-
-        anchors
-        {
-            left: parent.left
-            leftMargin: UM.Theme.getSize("default_margin").width
-            right: parent.right
-            rightMargin: UM.Theme.getSize("default_margin").width
-        }
-
-
-        Text
-        {
-            id: globalProfileLabel
-            text: catalog.i18nc("@label","Profile:");
-            width: parent.width * 0.45 - UM.Theme.getSize("default_margin").width
-            font: UM.Theme.getFont("default");
-            color: UM.Theme.getColor("text");
-        }
-
-        ToolButton
-        {
-            id: globalProfileSelection
-            text: {
-                var result = Cura.MachineManager.activeQualityName;
-                if (Cura.MachineManager.activeQualityLayerHeight > 0) {
-                    result += " <font color=\"" + UM.Theme.getColor("text_detail") + "\">";
-                    result += " - ";
-                    result += Cura.MachineManager.activeQualityLayerHeight + "mm";
-                    result += "</font>";
-                }
-                return result;
-            }
-            enabled: !extrudersList.visible || base.currentExtruderIndex  > -1
-
-            width: parent.width * 0.55 + UM.Theme.getSize("default_margin").width
-            height: UM.Theme.getSize("setting_control").height
-            tooltip: Cura.MachineManager.activeQualityName
-            style: UM.Theme.styles.sidebar_header_button
-            activeFocusOnPress: true;
-            property var valueWarning: ! Cura.MachineManager.isActiveQualitySupported
-            menu: ProfileMenu { }
-
-            UM.SimpleButton
+            Text
             {
-                id: customisedSettings
+                id: materialInfoLabel
+                wrapMode: Text.WordWrap
+                text: catalog.i18nc("@label","Check material compability");
+                font: UM.Theme.getFont("default");
+                verticalAlignment: Text.AlignVCenter
+                anchors.top: parent.top
+                anchors.bottom: parent.bottom
+                color:
+                {
+                    if (! Cura.MachineManager.isActiveQualitySupported)
+                        UM.Theme.getColor("setting_validation_error");
+                    else
+                        UM.Theme.getColor("text");
+                }
 
-                visible: Cura.MachineManager.hasUserSettings
-                height: parent.height * 0.6
-                width: parent.height * 0.6
+                MouseArea
+                {
+                    anchors.fill: parent
+                    hoverEnabled: true
+                    onClicked:
+                    {
+                        // open the material URL with web browser
+                        var version = UM.Application.version;
+                        var machineName = Cura.MachineManager.activeMachine.definition.id;
 
-                anchors.verticalCenter: parent.verticalCenter
+                        var url = "https://ultimaker.com/materialcompatibility/" + version + "/" + machineName;
+                        Qt.openUrlExternally(url);
+                    }
+                    onEntered:
+                    {
+
+                        var content = catalog.i18nc("@tooltip", "Click to check the material compatibility on Ultimaker.com.");
+                            base.showTooltip(
+                                materialInfoRow,
+                                Qt.point(- UM.Theme.getSize("default_margin").width,0),
+                                catalog.i18nc("@tooltip", content)
+                            );
+                    }
+                    onExited:base.hideTooltip();
+                }
+            }
+
+            UM.RecolorImage
+            {
+                id: warningImage
                 anchors.right: parent.right
-                anchors.rightMargin: UM.Theme.getSize("setting_preferences_button_margin").width - UM.Theme.getSize("default_margin").width
+                anchors.verticalCenter: parent.Bottom
+                source: UM.Theme.getIcon("warning")
+                width: UM.Theme.getSize("section_icon").width
+                height: UM.Theme.getSize("section_icon").height
+                //sourceSize.width: width + 5
+                //sourceSize.height: width + 5
 
-                color: hovered ? UM.Theme.getColor("setting_control_button_hover") : UM.Theme.getColor("setting_control_button");
-                iconSource: UM.Theme.getIcon("star");
-
-                onClicked:
-                {
-                    forceActiveFocus();
-                    Cura.Actions.manageProfiles.trigger()
-                }
-                onEntered:
-                {
-                    var content = catalog.i18nc("@tooltip","Some setting/override values are different from the values stored in the profile.\n\nClick to open the profile manager.")
-                    base.showTooltip(globalProfileRow, Qt.point(0, globalProfileRow.height / 2),  content)
-                }
-                onExited: base.hideTooltip()
+                color: UM.Theme.getColor("setting_control_text")
+                visible: ! Cura.MachineManager.isActiveQualitySupported
             }
         }
     }
