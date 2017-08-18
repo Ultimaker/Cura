@@ -144,7 +144,7 @@
         "mode_switch_text_hover": [255, 255, 255, 255],
         "mode_switch_text_checked": [12, 169, 227, 255],
 
-        "tooltip": [12, 169, 227, 255],
+        "tooltip": [40, 40, 40, 255],
         "tooltip_text": [255, 255, 255, 255],
 
         "message_background": [255, 255, 255, 255],
