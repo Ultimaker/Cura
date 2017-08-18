@@ -310,9 +310,10 @@ class StartSliceJob(Job):
             return
 
         # Check all settings for relations, so we can also calculate the correct values for dependent settings.
-        changed_setting_keys = set(stack.getTop().getAllKeys())
-        for key in stack.getTop().getAllKeys():
-            instance = stack.getTop().getInstance(key)
+        top_of_stack = stack.getTop() #Cache for efficiency.
+        changed_setting_keys = set(top_of_stack.getAllKeys())
+        for key in top_of_stack.getAllKeys():
+            instance = top_of_stack.getInstance(key)
             self._addRelations(changed_setting_keys, instance.definition.relations)
             Job.yieldThread()
 
