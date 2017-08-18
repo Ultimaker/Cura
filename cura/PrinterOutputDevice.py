@@ -163,6 +163,8 @@ class PrinterOutputDevice(QObject, OutputDevice):
             Logger.log("e", "QQmlComponent error string %s", self._control_component.errorString())
 
     def _createMonitorViewFromQML(self):
+        if not self._monitor_view_qml_path:
+            return
         path = QUrl.fromLocalFile(self._monitor_view_qml_path)
 
         # Because of garbage collection we need to keep this referenced by python.
