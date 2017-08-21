@@ -168,18 +168,18 @@ Rectangle
                 style: ButtonStyle {
                     background: Rectangle {
                         border.width: UM.Theme.getSize("default_lining").width
-                        border.color: control.checked ? UM.Theme.getColor("toggle_checked_border") :
-                                          control.pressed ? UM.Theme.getColor("toggle_active_border") :
-                                          control.hovered ? UM.Theme.getColor("toggle_hovered_border") : UM.Theme.getColor("toggle_unchecked_border")
-                        color: control.checked ? UM.Theme.getColor("toggle_checked") :
-                                   control.pressed ? UM.Theme.getColor("toggle_active") :
-                                   control.hovered ? UM.Theme.getColor("toggle_hovered") : UM.Theme.getColor("toggle_unchecked")
+                        border.color: (control.checked || control.pressed) ? UM.Theme.getColor("action_button_active_border") :
+                                          control.hovered ? UM.Theme.getColor("action_button_hovered_border") :
+                                          UM.Theme.getColor("action_button_border")
+                        color: (control.checked || control.pressed) ? UM.Theme.getColor("action_button_active") :
+                                   control.hovered ? UM.Theme.getColor("action_button_hovered") :
+                                   UM.Theme.getColor("action_button")
                         Behavior on color { ColorAnimation { duration: 50; } }
                         Label {
                             anchors.centerIn: parent
-                            color: control.checked ? UM.Theme.getColor("toggle_checked_text") :
-                                       control.pressed ? UM.Theme.getColor("toggle_active_text") :
-                                       control.hovered ? UM.Theme.getColor("toggle_hovered_text") : UM.Theme.getColor("toggle_unchecked_text")
+                            color: (control.checked || control.pressed) ? UM.Theme.getColor("action_button_active_text") :
+                                       control.hovered ? UM.Theme.getColor("action_button_hovered_text") :
+                                       UM.Theme.getColor("action_button_text")
                             font: UM.Theme.getFont("default")
                             text: control.text;
                         }
