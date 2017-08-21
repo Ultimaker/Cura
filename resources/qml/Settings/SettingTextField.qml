@@ -39,13 +39,10 @@ SettingItem
             switch(propertyProvider.properties.validationState)
             {
                 case "ValidatorState.Exception":
-                    return UM.Theme.getColor("setting_validation_error")
                 case "ValidatorState.MinimumError":
-                    return UM.Theme.getColor("setting_validation_error")
                 case "ValidatorState.MaximumError":
                     return UM.Theme.getColor("setting_validation_error")
                 case "ValidatorState.MinimumWarning":
-                    return UM.Theme.getColor("setting_validation_warning")
                 case "ValidatorState.MaximumWarning":
                     return UM.Theme.getColor("setting_validation_warning")
                 case "ValidatorState.Valid":
