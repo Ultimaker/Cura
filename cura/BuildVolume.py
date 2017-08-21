@@ -301,30 +301,23 @@ class BuildVolume(SceneNode):
             mb = MeshBuilder()
             for x in range(0, int(math.ceil(max_w)), MAJOR_GRID_SIZE):
                 mb.addLine(Vector(x, min_h, min_d), Vector(x, min_h, max_d), color = self._grid_color)
-            for x in range(0, int(math.floor(min_w)), -MAJOR_GRID_SIZE): #Start from 0 in both cases, so you need to do this in two for loops.
-                mb.addLine(Vector(x, min_h, min_d), Vector(x, min_h, max_d), color = self._grid_color)
+                #Start from 0 in both cases, so you need to do this in two for loops.
+                mb.addLine(Vector(-x, min_h, min_d), Vector(-x, min_h, max_d), color = self._grid_color)
             for y in range(0, int(math.ceil(max_d)), MAJOR_GRID_SIZE):
                 mb.addLine(Vector(min_w, min_h, y), Vector(max_w, min_h, y), color = self._grid_color)
-            for y in range(0, int(math.floor(min_d)), -MAJOR_GRID_SIZE):
-                mb.addLine(Vector(min_w, min_h, y), Vector(max_w, min_h, y), color = self._grid_color)
+                mb.addLine(Vector(min_w, min_h, -y), Vector(max_w, min_h, -y), color = self._grid_color)
 
             #More fine grained grid.
             for x in range(0, int(math.ceil(max_w)), MINOR_GRID_SIZE):
                 if x % MAJOR_GRID_SIZE == 0: #Don't overlap with the major grid.
                     pass
                 mb.addLine(Vector(x, min_h, min_d), Vector(x, min_h, max_d), color = self._grid_minor_color)
-            for x in range(0, int(math.floor(min_w)), -MINOR_GRID_SIZE):
-                if x % MAJOR_GRID_SIZE == 0:
-                    pass
-                mb.addLine(Vector(x, min_h, min_d), Vector(x, min_h, max_d), color = self._grid_minor_color)
+                mb.addLine(Vector(-x, min_h, min_d), Vector(-x, min_h, max_d), color = self._grid_minor_color)
             for y in range(0, int(math.ceil(max_d)), MINOR_GRID_SIZE):
                 if y % MAJOR_GRID_SIZE == 0:
                     pass
                 mb.addLine(Vector(min_w, min_h, y), Vector(max_w, min_h, y), color = self._grid_minor_color)
-            for y in range(0, int(math.floor(min_d)), -MINOR_GRID_SIZE):
-                if y % MAJOR_GRID_SIZE == 0:
-                    pass
-                mb.addLine(Vector(min_w, min_h, y), Vector(max_w, min_h, y), color = self._grid_minor_color)
+                mb.addLine(Vector(min_w, min_h, -y), Vector(max_w, min_h, -y), color = self._grid_minor_color)
 
             self._grid_mesh = mb.build()
 
