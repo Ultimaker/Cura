@@ -301,7 +301,25 @@ QtObject {
                         sourceSize.width: width
                         sourceSize.height: width
                         visible: control.menu != null;
-                        color: Theme.getColor("button_text")
+                        color:
+                        {
+                            if(control.checkable && control.checked && control.hovered)
+                            {
+                                return Theme.getColor("button_text_active_hover");
+                            }
+                            else if(control.pressed || (control.checkable && control.checked))
+                            {
+                                return Theme.getColor("button_text_active");
+                            }
+                            else if(control.hovered)
+                            {
+                                return Theme.getColor("button_text_hover");
+                            }
+                            else
+                            {
+                                return Theme.getColor("button_text");
+                            }
+                        }
                         source: Theme.getIcon("arrow_bottom")
                     }
                 }
@@ -314,7 +332,25 @@ QtObject {
                     source: control.iconSource;
                     width: Theme.getSize("button_icon").width;
                     height: Theme.getSize("button_icon").height;
-                    color: Theme.getColor("button_text")
+                    color:
+                    {
+                        if(control.checkable && control.checked && control.hovered)
+                        {
+                            return Theme.getColor("button_text_active_hover");
+                        }
+                        else if(control.pressed || (control.checkable && control.checked))
+                        {
+                            return Theme.getColor("button_text_active");
+                        }
+                        else if(control.hovered)
+                        {
+                            return Theme.getColor("button_text_hover");
+                        }
+                        else
+                        {
+                            return Theme.getColor("button_text");
+                        }
+                    }
 
                     sourceSize: Theme.getSize("button_icon")
                 }
