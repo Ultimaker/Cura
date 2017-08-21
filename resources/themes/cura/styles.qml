@@ -291,7 +291,6 @@ QtObject {
 
                     UM.RecolorImage {
                         id: tool_button_arrow
-                        opacity: !control.enabled ? 0.2 : 1.0
                         anchors.right: parent.right;
                         anchors.rightMargin: (Theme.getSize("button").width - Theme.getSize("button_icon").width) / 4
                         anchors.bottom: parent.bottom;
