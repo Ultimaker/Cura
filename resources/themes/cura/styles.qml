@@ -81,9 +81,17 @@ QtObject {
                 border.width: Theme.getSize("default_lining").width
                 border.color:
                 {
-                    if (control_enabled)
+                    if (control.enabled)
                     {
-                        if (control.hovered)
+                        if (control.valueError)
+                        {
+                            return Theme.getColor("setting_validation_error_border");
+                        }
+                        else if (control.valueWarning)
+                        {
+                            return Theme.getColor("setting_validation_warning_border");
+                        }
+                        else if (control.hovered)
                         {
                             return Theme.getColor("setting_control_border_highlight");
                         }
