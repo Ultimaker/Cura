@@ -334,7 +334,7 @@ class BuildVolume(SceneNode):
             mb.addArc(max_w, Vector.Unit_Y, center = (0, max_h, 0),  color = self._volume_outline_color)
             self.setMeshData(mb.build().getTransformed(scale_matrix))
 
-            # Build plate grid mesh
+            # Build plate surface.
             mb = MeshBuilder()
             mb.addVertex(0, min_h - z_fight_distance, 0)
             mb.addArc(max_w, Vector.Unit_Y, center = Vector(0, min_h - z_fight_distance, 0))
@@ -348,7 +348,26 @@ class BuildVolume(SceneNode):
             for n in range(0, mb.getVertexCount()):
                 v = mb.getVertex(n)
                 mb.setVertexUVCoordinates(n, v[0], v[2] * aspect)
-            self._grid_mesh = mb.build().getTransformed(scale_matrix)
+            self._plate_mesh = mb.build().getTransformed(scale_matrix)
+
+            #Build plate grid mesh.
+            #We need to constrain the length of the lines to the build plate ellipsis. Time to get out the calculator!
+            mb = MeshBuilder()
+            for x in range(0, int(math.ceil(max_w)), MAJOR_GRID_SIZE):
+                #x / max_w is the fraction along the build plate we have progressed, counting from the centre.
+                #So x / max_w is sin(a), where a is the angle towards an endpoint of the grid line from the centre.
+                #So math.asin(x / max_w) is a.
+                #So math.cos(math.asin(x / max_w)) is half of the length of the grid line on a unit circle, which scales between 0 and 1.
+                length_factor = math.cos(math.asin(x / max_w))
+                mb.addLine(Vector(x, min_h, min_d * length_factor), Vector(x, min_h, max_d * length_factor), color = self._grid_color)
+                #Start from 0 in both cases, so you need to do this in two for loops.
+                mb.addLine(Vector(-x, min_h, min_d * length_factor), Vector(-x, min_h, max_d * length_factor), color = self._grid_color)
+            for y in range(0, int(math.ceil(max_d)), MAJOR_GRID_SIZE):
+                length_factor = math.sin(math.acos(y / max_d))
+                mb.addLine(Vector(min_w * length_factor, min_h, y), Vector(max_w * length_factor, min_h, y), color = self._grid_color)
+                mb.addLine(Vector(min_w * length_factor, min_h, -y), Vector(max_w * length_factor, min_h, -y), color = self._grid_color)
+
+            self._grid_mesh = mb.build()
 
         # Indication of the machine origin
         if self._global_container_stack.getProperty("machine_center_is_zero", "value"):
