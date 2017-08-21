@@ -246,7 +246,7 @@ QtObject {
 
                     target: Qt.point(parent.x, y + height/2)
                     arrowSize: Theme.getSize("button_tooltip_arrow").width
-                    color: Theme.getColor("tooltip")
+                    color: Theme.getColor("button_tooltip")
                     opacity: control.hovered ? 1.0 : 0.0;
 
                     width: control.hovered ? button_tip.width + Theme.getSize("button_tooltip").width : 0
