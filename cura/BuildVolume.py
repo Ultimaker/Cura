@@ -367,6 +367,20 @@ class BuildVolume(SceneNode):
                 mb.addLine(Vector(min_w * length_factor, min_h, y), Vector(max_w * length_factor, min_h, y), color = self._grid_color)
                 mb.addLine(Vector(min_w * length_factor, min_h, -y), Vector(max_w * length_factor, min_h, -y), color = self._grid_color)
 
+            #More fine grained grid.
+            for x in range(0, int(math.ceil(max_w)), MINOR_GRID_SIZE):
+                if x % MAJOR_GRID_SIZE == 0: #Don't overlap with the major grid.
+                    pass
+                length_factor = math.cos(math.asin(x / max_w))
+                mb.addLine(Vector(x, min_h, min_d * length_factor), Vector(x, min_h, max_d * length_factor), color = self._grid_minor_color)
+                mb.addLine(Vector(-x, min_h, min_d * length_factor), Vector(-x, min_h, max_d * length_factor), color = self._grid_minor_color)
+            for y in range(0, int(math.ceil(max_d)), MINOR_GRID_SIZE):
+                if y % MAJOR_GRID_SIZE == 0:
+                    pass
+                length_factor = math.sin(math.acos(y / max_d))
+                mb.addLine(Vector(min_w * length_factor, min_h, y), Vector(max_w * length_factor, min_h, y), color = self._grid_minor_color)
+                mb.addLine(Vector(min_w * length_factor, min_h, -y), Vector(max_w * length_factor, min_h, -y), color = self._grid_minor_color)
+
             self._grid_mesh = mb.build()
 
         # Indication of the machine origin
