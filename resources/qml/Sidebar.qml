@@ -430,7 +430,7 @@ Rectangle
                 anchors.left: parent.left
                 anchors.bottom: parent.bottom
                 font: UM.Theme.getFont("large")
-                color: UM.Theme.getColor("text_subtext")
+                color: UM.Theme.getColor("text_emphasis")
                 text: (!base.printDuration || !base.printDuration.valid) ? catalog.i18nc("@label", "00h 00min") : base.printDuration.getDisplayString(UM.DurationFormat.Short)
             }
         }
