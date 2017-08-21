@@ -27,8 +27,9 @@ import math
 
 from typing import List
 
-# Setting for clearance around the prime
-PRIME_CLEARANCE = 6.5
+PRIME_CLEARANCE = 6.5 #Setting for clearance around the prime.
+MAJOR_GRID_SIZE = 10 #Size of the grid cells.
+MINOR_GRID_SIZE = 1
 
 
 ##  Build volume is a special kind of node that is responsible for rendering the printable area & disallowed areas.
@@ -297,33 +298,31 @@ class BuildVolume(SceneNode):
             self._plate_mesh = mb.build()
 
             #Build plate grid mesh.
-            major_grid_size = 10 #In millimetres.
             mb = MeshBuilder()
-            for x in range(0, int(math.ceil(max_w)), major_grid_size):
+            for x in range(0, int(math.ceil(max_w)), MAJOR_GRID_SIZE):
                 mb.addLine(Vector(x, min_h, min_d), Vector(x, min_h, max_d), color = self._grid_color)
-            for x in range(0, int(math.floor(min_w)), -major_grid_size): #Start from 0 in both cases, so you need to do this in two for loops.
+            for x in range(0, int(math.floor(min_w)), -MAJOR_GRID_SIZE): #Start from 0 in both cases, so you need to do this in two for loops.
                 mb.addLine(Vector(x, min_h, min_d), Vector(x, min_h, max_d), color = self._grid_color)
-            for y in range(0, int(math.ceil(max_d)), major_grid_size):
+            for y in range(0, int(math.ceil(max_d)), MAJOR_GRID_SIZE):
                 mb.addLine(Vector(min_w, min_h, y), Vector(max_w, min_h, y), color = self._grid_color)
-            for y in range(0, int(math.floor(min_d)), -major_grid_size):
+            for y in range(0, int(math.floor(min_d)), -MAJOR_GRID_SIZE):
                 mb.addLine(Vector(min_w, min_h, y), Vector(max_w, min_h, y), color = self._grid_color)
 
             #More fine grained grid.
-            minor_grid_size = 1
-            for x in range(0, int(math.ceil(max_w)), minor_grid_size):
-                if x % major_grid_size == 0: #Don't overlap with the major grid.
+            for x in range(0, int(math.ceil(max_w)), MINOR_GRID_SIZE):
+                if x % MAJOR_GRID_SIZE == 0: #Don't overlap with the major grid.
                     pass
                 mb.addLine(Vector(x, min_h, min_d), Vector(x, min_h, max_d), color = self._grid_minor_color)
-            for x in range(0, int(math.floor(min_w)), -minor_grid_size):
-                if x % major_grid_size == 0:
+            for x in range(0, int(math.floor(min_w)), -MINOR_GRID_SIZE):
+                if x % MAJOR_GRID_SIZE == 0:
                     pass
                 mb.addLine(Vector(x, min_h, min_d), Vector(x, min_h, max_d), color = self._grid_minor_color)
-            for y in range(0, int(math.ceil(max_d)), minor_grid_size):
-                if y % major_grid_size == 0:
+            for y in range(0, int(math.ceil(max_d)), MINOR_GRID_SIZE):
+                if y % MAJOR_GRID_SIZE == 0:
                     pass
                 mb.addLine(Vector(min_w, min_h, y), Vector(max_w, min_h, y), color = self._grid_minor_color)
-            for y in range(0, int(math.floor(min_d)), -minor_grid_size):
-                if y % major_grid_size == 0:
+            for y in range(0, int(math.floor(min_d)), -MINOR_GRID_SIZE):
+                if y % MAJOR_GRID_SIZE == 0:
                     pass
                 mb.addLine(Vector(min_w, min_h, y), Vector(max_w, min_h, y), color = self._grid_minor_color)
 
