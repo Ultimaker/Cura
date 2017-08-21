@@ -114,7 +114,7 @@ QtObject {
                     height: Theme.getSize("standard_arrow").height
                     sourceSize.width: width
                     sourceSize.height: width
-                    color: control.enabled ? Theme.getColor("setting_category_text") : Theme.getColor("setting_control_disabled_text")
+                    color: control.enabled ? Theme.getColor("setting_category_text") : Theme.getColor("setting_category_disabled_text")
                     source: Theme.getIcon("arrow_bottom")
                 }
                 Label {
@@ -458,7 +458,29 @@ QtObject {
                         anchors.verticalCenter: parent.verticalCenter
                         anchors.left: parent.left
                         anchors.leftMargin: Theme.getSize("default_margin").width
-                        color: Theme.getColor("setting_category_text")
+                        color:
+                        {
+                            if(!control.enabled)
+                            {
+                                return Theme.getColor("setting_category_disabled_text");
+                            }
+                            else if((control.hovered || control.activeFocus) && control.checkable && control.checked)
+                            {
+                                return Theme.getColor("setting_category_active_hover_text");
+                            }
+                            else if(control.pressed || (control.checkable && control.checked))
+                            {
+                                return Theme.getColor("setting_category_active_text");
+                            }
+                            else if(control.hovered || control.activeFocus)
+                            {
+                                return Theme.getColor("setting_category_hover_text");
+                            }
+                            else
+                            {
+                                return Theme.getColor("setting_category_text");
+                            }
+                        }
                         source: control.iconSource;
                         width: Theme.getSize("section_icon").width;
                         height: Theme.getSize("section_icon").height;
@@ -476,7 +498,29 @@ QtObject {
                     }
                     text: control.text;
                     font: Theme.getFont("setting_category");
-                    color: Theme.getColor("setting_category_text");
+                    color:
+                    {
+                        if(!control.enabled)
+                        {
+                            return Theme.getColor("setting_category_disabled_text");
+                        }
+                        else if((control.hovered || control.activeFocus) && control.checkable && control.checked)
+                        {
+                            return Theme.getColor("setting_category_active_hover_text");
+                        }
+                        else if(control.pressed || (control.checkable && control.checked))
+                        {
+                            return Theme.getColor("setting_category_active_text");
+                        }
+                        else if(control.hovered || control.activeFocus)
+                        {
+                            return Theme.getColor("setting_category_hover_text");
+                        }
+                        else
+                        {
+                            return Theme.getColor("setting_category_text");
+                        }
+                    }
                     fontSizeMode: Text.HorizontalFit;
                     minimumPointSize: 8
                 }
@@ -489,7 +533,29 @@ QtObject {
                     height: Theme.getSize("standard_arrow").height
                     sourceSize.width: width
                     sourceSize.height: width
-                    color: Theme.getColor("setting_category_text")
+                    color:
+                    {
+                        if(!control.enabled)
+                        {
+                            return Theme.getColor("setting_category_disabled_text");
+                        }
+                        else if((control.hovered || control.activeFocus) && control.checkable && control.checked)
+                        {
+                            return Theme.getColor("setting_category_active_hover_text");
+                        }
+                        else if(control.pressed || (control.checkable && control.checked))
+                        {
+                            return Theme.getColor("setting_category_active_text");
+                        }
+                        else if(control.hovered || control.activeFocus)
+                        {
+                            return Theme.getColor("setting_category_hover_text");
+                        }
+                        else
+                        {
+                            return Theme.getColor("setting_category_text");
+                        }
+                    }
                     source: control.checked ? Theme.getIcon("arrow_bottom") : Theme.getIcon("arrow_left")
                 }
             }
