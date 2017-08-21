@@ -44,7 +44,7 @@ Rectangle
             iconSource: UM.Theme.getIcon("tab_settings");
             property color overlayColor: "transparent"
             property string overlayIconSource: ""
-            text: catalog.i18nc("@title:tab","Prepare")
+            text: catalog.i18nc("@title:tab", "Prepare")
             checkable: true
             checked: !base.monitoringPrint
             exclusiveGroup: sidebarHeaderBarGroup
@@ -197,7 +197,7 @@ Rectangle
                 Label
                 {
                     id: sidebarComboBoxLabel
-                    color: UM.Theme.getColor("text_reversed")
+                    color: UM.Theme.getColor("sidebar_header_text_active")
                     text: control.text;
                     elide: Text.ElideRight;
                     anchors.left: parent.left;

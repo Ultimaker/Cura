@@ -210,7 +210,21 @@ QtObject {
                         anchors.leftMargin: Theme.getSize("default_margin").width
                         anchors.verticalCenter: parent.verticalCenter;
                         font: UM.Theme.getFont("large");
-                        color: UM.Theme.getColor("text_reversed")
+                        color:
+                        {
+                            if(control.hovered)
+                            {
+                                return UM.Theme.getColor("sidebar_header_text_hover");
+                            }
+                            if(control.checked)
+                            {
+                                return UM.Theme.getColor("sidebar_header_text_active");
+                            }
+                            else
+                            {
+                                return UM.Theme.getColor("sidebar_header_text_inactive");
+                            }
+                        }
                     }
                 }
             }
