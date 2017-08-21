@@ -769,7 +769,9 @@ QtObject {
                 width: Theme.getSize("slider_handle").width;
                 height: Theme.getSize("slider_handle").height;
                 color: control.hovered ? Theme.getColor("slider_handle_hover") : Theme.getColor("slider_handle");
-                radius: Theme.getSize("slider_handle").width/2;
+                border.width: Theme.getSize("default_lining").width
+                border.color: control.hovered ? Theme.getColor("slider_handle_hover_border") : Theme.getColor("slider_handle_border")
+                radius: Theme.getSize("slider_handle").width / 2; //Round.
                 Behavior on color { ColorAnimation { duration: 50; } }
             }
         }
