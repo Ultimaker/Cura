@@ -447,7 +447,7 @@ UM.MainWindow
                     right: sidebar.left
                 }
                 visible: opacity > 0
-                opacity: base.showPrintMonitor ? 0.75 : 0
+                opacity: base.showPrintMonitor ? 1 : 0
 
                 Behavior on opacity { NumberAnimation { duration: 100; } }
 
