@@ -114,6 +114,10 @@ class VersionUpgrade25to26(VersionUpgrade):
         parser.write(output)
         return [filename], [output.getvalue()]
 
+    ##  Upgrades a machine stack from version 2.5 to 2.6
+    #
+    #   \param serialised The serialised form of a quality profile.
+    #   \param filename The name of the file to upgrade.
     def upgradeMachineStack(self, serialised, filename):
         parser = configparser.ConfigParser(interpolation=None)
         parser.read_string(serialised)
