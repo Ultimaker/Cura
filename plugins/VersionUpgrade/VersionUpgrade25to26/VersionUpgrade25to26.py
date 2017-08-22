@@ -190,6 +190,7 @@ class VersionUpgrade25to26(VersionUpgrade):
             if machine_id != parser["metadata"]["machine"]:
                 continue
             has_extruders = True
+            break
 
         return has_extruders
 
