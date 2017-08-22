@@ -221,6 +221,8 @@
         "volume_outline": [12, 169, 227, 255],
         "buildplate": [244, 244, 244, 255],
         "buildplate_alt": [204, 204, 204, 255],
+        "buildplate_grid": [129, 131, 134, 255],
+        "buildplate_grid_minor": [129, 131, 134, 31],
 
         "convex_hull": [35, 35, 35, 127],
         "disallowed_area": [0, 0, 0, 40],
