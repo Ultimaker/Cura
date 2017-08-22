@@ -31,6 +31,18 @@
         },
         "gantry_height": {
             "default_value": 30
+        },
+        "acceleration_enabled": {
+            "default_value": true
+        },
+        "acceleration_print": {
+            "default_value": 500
+        },
+        "jerk_enabled": {
+            "default_value": true
+        },
+        "jerk_print": {
+            "default_value": 20
         }
     }
 }

@@ -57,7 +57,7 @@ Rectangle
             id: showMonitor
             height: UM.Theme.getSize("sidebar_header").height
             onClicked: base.startMonitoringPrint()
-            text: catalog.i18nc("@title:tab", "Print")
+            text: catalog.i18nc("@title:tab", "Monitor")
             iconSource: printerConnected ? UM.Theme.getIcon("tab_monitor_with_status") : UM.Theme.getIcon("tab_monitor")
             property color overlayColor:
             {
