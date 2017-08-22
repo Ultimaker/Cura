@@ -248,6 +248,7 @@ Rectangle
 
             width: parent.width * 0.7 + UM.Theme.getSize("default_margin").width
             height: UM.Theme.getSize("setting_control").height
+            anchors.left: globalProfileLabel.right
             anchors.right: parent.right
             tooltip: Cura.MachineManager.activeQualityName
             style: UM.Theme.styles.sidebar_header_button
