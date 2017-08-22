@@ -151,9 +151,42 @@ Item {
                         UM.SettingPropertyProvider
                         {
                             id: inheritStackProvider
-                            containerStackId: Cura.MachineManager.activeMachineId
+                            containerStackId: UM.ActiveTool.properties.getValue("ContainerID")
                             key: model.key
                             watchedProperties: [ "limit_to_extruder" ]
+                        }
+
+                        Binding
+                        {
+                            target: provider
+                            property: "containerStackId"
+                            when: model.settable_per_extruder || (inheritStackProvider.properties.limit_to_extruder != null && inheritStackProvider.properties.limit_to_extruder >= 0);
+                            value:
+                            {
+                                // associate this binding with Cura.MachineManager.activeMachineId in the beginning so this
+                                // binding will be triggered when activeMachineId is changed too.
+                                // Otherwise, if this value only depends on the extruderIds, it won't get updated when the
+                                // machine gets changed.
+                                var activeMachineId = Cura.MachineManager.activeMachineId;
+
+                                if(!model.settable_per_extruder || machineExtruderCount.properties.value == 1)
+                                {
+                                    //Not settable per extruder or there only is global, so we must pick global.
+                                    return activeMachineId;
+                                }
+                                if(inheritStackProvider.properties.limit_to_extruder != null && inheritStackProvider.properties.limit_to_extruder >= 0)
+                                {
+                                    //We have limit_to_extruder, so pick that stack.
+                                    return ExtruderManager.extruderIds[String(inheritStackProvider.properties.limit_to_extruder)];
+                                }
+                                if(ExtruderManager.activeExtruderStackId)
+                                {
+                                    //We're on an extruder tab. Pick the current extruder.
+                                    return ExtruderManager.activeExtruderStackId;
+                                }
+                                //No extruder tab is selected. Pick the global stack. Shouldn't happen any more since we removed the global tab.
+                                return activeMachineId;
+                            }
                         }
                     }
                 }

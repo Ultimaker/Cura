@@ -114,6 +114,10 @@ class VersionUpgrade25to26(VersionUpgrade):
         parser.write(output)
         return [filename], [output.getvalue()]
 
+    ##  Upgrades a machine stack from version 2.5 to 2.6
+    #
+    #   \param serialised The serialised form of a quality profile.
+    #   \param filename The name of the file to upgrade.
     def upgradeMachineStack(self, serialised, filename):
         parser = configparser.ConfigParser(interpolation=None)
         parser.read_string(serialised)
@@ -127,7 +131,7 @@ class VersionUpgrade25to26(VersionUpgrade):
 
         if definition_container_id == "custom" and not self._checkCustomFdmPrinterHasExtruderStack(machine_id):
             # go through all extruders and make sure that this custom FDM printer has 8 extruder stacks.
-            self._getNextUniqueCustomFdmPrinterExtruderStackIdIndex()
+            self._acquireNextUniqueCustomFdmPrinterExtruderStackIdIndex()
             for position in range(8):
                 self._createCustomFdmPrinterExtruderStack(machine_id, position, quality_container_id, material_container_id)
 
@@ -141,7 +145,8 @@ class VersionUpgrade25to26(VersionUpgrade):
 
         return [filename], [output.getvalue()]
 
-    def _getNextUniqueCustomFdmPrinterExtruderStackIdIndex(self):
+    ##  Acquires the next unique extruder stack index number for the Custom FDM Printer.
+    def _acquireNextUniqueCustomFdmPrinterExtruderStackIdIndex(self):
         extruder_stack_dir = Resources.getPath(CuraApplication.ResourceTypes.ExtruderStack)
         file_name_list = os.listdir(extruder_stack_dir)
         file_name_list = [os.path.basename(file_name) for file_name in file_name_list]
@@ -185,6 +190,7 @@ class VersionUpgrade25to26(VersionUpgrade):
             if machine_id != parser["metadata"]["machine"]:
                 continue
             has_extruders = True
+            break
 
         return has_extruders
 

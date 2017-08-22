@@ -548,7 +548,17 @@ class XmlMaterialProfile(InstanceContainer):
                 if machine_compatibility:
                     new_material_id = self.id + "_" + machine_id
 
-                    new_material = XmlMaterialProfile(new_material_id)
+                    # The child or derived material container may already exist. This can happen when a material in a
+                    # project file and the a material in Cura have the same ID.
+                    # In the case if a derived material already exists, override that material container because if
+                    # the data in the parent material has been changed, the derived ones should be updated too.
+                    found_materials = ContainerRegistry.getInstance().findInstanceContainers(id = new_material_id)
+                    is_new_material = False
+                    if found_materials:
+                        new_material = found_materials[0]
+                    else:
+                        new_material = XmlMaterialProfile(new_material_id)
+                        is_new_material = True
 
                     # Update the private directly, as we want to prevent the lookup that is done when using setName
                     new_material._name = self.getName()
@@ -562,7 +572,8 @@ class XmlMaterialProfile(InstanceContainer):
 
                     new_material._dirty = False
 
-                    ContainerRegistry.getInstance().addContainer(new_material)
+                    if is_new_material:
+                        ContainerRegistry.getInstance().addContainer(new_material)
 
                 hotends = machine.iterfind("./um:hotend", self.__namespaces)
                 for hotend in hotends:
@@ -594,7 +605,15 @@ class XmlMaterialProfile(InstanceContainer):
 
                     new_hotend_id = self.id + "_" + machine_id + "_" + hotend_id.replace(" ", "_")
 
-                    new_hotend_material = XmlMaterialProfile(new_hotend_id)
+                    # Same as machine compatibility, keep the derived material containers consistent with the parent
+                    # material
+                    found_materials = ContainerRegistry.getInstance().findInstanceContainers(id = new_hotend_id)
+                    is_new_material = False
+                    if found_materials:
+                        new_hotend_material = found_materials[0]
+                    else:
+                        new_hotend_material = XmlMaterialProfile(new_hotend_id)
+                        is_new_material = True
 
                     # Update the private directly, as we want to prevent the lookup that is done when using setName
                     new_hotend_material._name = self.getName()
@@ -612,7 +631,8 @@ class XmlMaterialProfile(InstanceContainer):
 
                     new_hotend_material._dirty = False
 
-                    ContainerRegistry.getInstance().addContainer(new_hotend_material)
+                    if is_new_material:
+                        ContainerRegistry.getInstance().addContainer(new_hotend_material)
 
     def _addSettingElement(self, builder, instance):
         try:
