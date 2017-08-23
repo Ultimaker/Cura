@@ -45,10 +45,10 @@ Item {
 
     Text {
         id: statusLabel
-        width: parent.width - 2 * UM.Theme.getSize("default_margin").width
+        width: parent.width - 2 * UM.Theme.getSize("sidebar_margin").width
         anchors.top: parent.top
         anchors.left: parent.left
-        anchors.leftMargin: UM.Theme.getSize("default_margin").width
+        anchors.leftMargin: UM.Theme.getSize("sidebar_margin").width
 
         color: UM.Theme.getColor("text")
         font: UM.Theme.getFont("default_bold")
@@ -57,12 +57,12 @@ Item {
 
     Rectangle {
         id: progressBar
-        width: parent.width - 2 * UM.Theme.getSize("default_margin").width
+        width: parent.width - 2 * UM.Theme.getSize("sidebar_margin").width
         height: UM.Theme.getSize("progressbar").height
         anchors.top: statusLabel.bottom
-        anchors.topMargin: UM.Theme.getSize("default_margin").height/4
+        anchors.topMargin: UM.Theme.getSize("sidebar_margin").height/4
         anchors.left: parent.left
-        anchors.leftMargin: UM.Theme.getSize("default_margin").width
+        anchors.leftMargin: UM.Theme.getSize("sidebar_margin").width
         radius: UM.Theme.getSize("progressbar_radius").width
         color: UM.Theme.getColor("progressbar_background")
 
@@ -92,14 +92,14 @@ Item {
         width: base.width
         height: saveToButton.height
         anchors.top: progressBar.bottom
-        anchors.topMargin: UM.Theme.getSize("default_margin").height
+        anchors.topMargin: UM.Theme.getSize("sidebar_margin").height
         anchors.left: parent.left
 
         Row {
             id: additionalComponentsRow
             anchors.top: parent.top
             anchors.right: saveToButton.visible ? saveToButton.left : parent.right
-            anchors.rightMargin: UM.Theme.getSize("default_margin").width
+            anchors.rightMargin: UM.Theme.getSize("sidebar_margin").width
 
             spacing: UM.Theme.getSize("default_margin").width
         }
@@ -141,7 +141,7 @@ Item {
 
             anchors.top: parent.top
             anchors.right: parent.right
-            anchors.rightMargin: UM.Theme.getSize("default_margin").width
+            anchors.rightMargin: UM.Theme.getSize("sidebar_margin").width
 
             // 1 = not started, 5 = disabled
             text: [1, 5].indexOf(UM.Backend.state) != -1 ? catalog.i18nc("@label:Printjob", "Prepare") : catalog.i18nc("@label:Printjob", "Cancel")
@@ -183,7 +183,7 @@ Item {
 
                     Behavior on color { ColorAnimation { duration: 50; } }
 
-                    implicitWidth: actualLabel.contentWidth + (UM.Theme.getSize("default_margin").width * 2)
+                    implicitWidth: actualLabel.contentWidth + (UM.Theme.getSize("sidebar_margin").width * 2)
 
                     Label {
                         id: actualLabel
@@ -221,7 +221,7 @@ Item {
 
             anchors.top: parent.top
             anchors.right: deviceSelectionMenu.visible ? deviceSelectionMenu.left : parent.right
-            anchors.rightMargin: deviceSelectionMenu.visible ? -3 * UM.Theme.getSize("default_lining").width : UM.Theme.getSize("default_margin").width
+            anchors.rightMargin: deviceSelectionMenu.visible ? -3 * UM.Theme.getSize("default_lining").width : UM.Theme.getSize("sidebar_margin").width
 
             text: UM.OutputDeviceManager.activeDeviceShortDescription
             onClicked:
@@ -258,7 +258,7 @@ Item {
 
                     Behavior on color { ColorAnimation { duration: 50; } }
 
-                    implicitWidth: actualLabel.contentWidth + (UM.Theme.getSize("default_margin").width * 2)
+                    implicitWidth: actualLabel.contentWidth + (UM.Theme.getSize("sidebar_margin").width * 2)
 
                     Label {
                         id: actualLabel
@@ -288,7 +288,7 @@ Item {
             anchors.top: parent.top
             anchors.right: parent.right
 
-            anchors.rightMargin: UM.Theme.getSize("default_margin").width
+            anchors.rightMargin: UM.Theme.getSize("sidebar_margin").width
             width: UM.Theme.getSize("save_button_save_to_button").height
             height: UM.Theme.getSize("save_button_save_to_button").height
             // 3 = Done, 5 = Disabled
