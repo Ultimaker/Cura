@@ -29,10 +29,10 @@ SettingItem
                 case "ValidatorState.Exception":
                 case "ValidatorState.MinimumError":
                 case "ValidatorState.MaximumError":
-                    return UM.Theme.getColor("setting_validation_error_border");
+                    return UM.Theme.getColor("setting_validation_error");
                 case "ValidatorState.MinimumWarning":
                 case "ValidatorState.MaximumWarning":
-                    return UM.Theme.getColor("setting_validation_warning_border");
+                    return UM.Theme.getColor("setting_validation_warning");
             }
             //Validation is OK.
             if(hovered || input.activeFocus)
@@ -52,10 +52,10 @@ SettingItem
                 case "ValidatorState.Exception":
                 case "ValidatorState.MinimumError":
                 case "ValidatorState.MaximumError":
-                    return UM.Theme.getColor("setting_validation_error")
+                    return UM.Theme.getColor("setting_validation_error_background")
                 case "ValidatorState.MinimumWarning":
                 case "ValidatorState.MaximumWarning":
-                    return UM.Theme.getColor("setting_validation_warning")
+                    return UM.Theme.getColor("setting_validation_warning_background")
                 case "ValidatorState.Valid":
                     return UM.Theme.getColor("setting_validation_ok")
 
