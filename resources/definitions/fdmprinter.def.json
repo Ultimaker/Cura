@@ -4925,7 +4925,8 @@
                     "label": "Use Relative Extrusion",
                     "description": "Use relative extrusion rather than absolute extrusion. Before, Cura always used absolute extrusion. Most printers can cope with either relative or absolute extrusion.",
                     "type": "bool",
-                    "default_value": "machine_gcode_flavor==\"RepRap (RepRap)\"",
+                    "default_value": false,
+                    "value": "machine_gcode_flavor==\"RepRap (RepRap)\"",
                     "enabled": true,
                     "settable_per_mesh": false,
                     "settable_per_extruder": false
