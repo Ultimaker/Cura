@@ -101,7 +101,7 @@ Rectangle
         height: visible ? UM.Theme.getSize("sidebar_lining").height : 0
         color: UM.Theme.getColor("sidebar_lining")
         anchors.top: header.bottom
-        anchors.topMargin: visible ? UM.Theme.getSize("default_margin").height : 0
+        anchors.topMargin: visible ? UM.Theme.getSize("sidebar_margin").height : 0
     }
 
     onCurrentModeIndexChanged:
@@ -117,10 +117,10 @@ Rectangle
         id: settingsModeLabel
         text: !hideSettings ? catalog.i18nc("@label:listbox", "Print Setup") : catalog.i18nc("@label:listbox","Print Setup disabled\nG-code files cannot be modified");
         anchors.left: parent.left
-        anchors.leftMargin: UM.Theme.getSize("default_margin").width;
+        anchors.leftMargin: UM.Theme.getSize("sidebar_margin").width
         anchors.top: headerSeparator.bottom
-        anchors.topMargin: UM.Theme.getSize("default_margin").height
-        width: parent.width * 0.45 - 2 * UM.Theme.getSize("default_margin").width
+        anchors.topMargin: UM.Theme.getSize("sidebar_margin").height
+        width: parent.width * 0.45 - 2 * UM.Theme.getSize("sidebar_margin").width
         font: UM.Theme.getFont("large")
         color: UM.Theme.getColor("text")
         visible: !monitoringPrint
@@ -133,9 +133,9 @@ Rectangle
         width: parent.width * 0.55
         height: UM.Theme.getSize("sidebar_header_mode_toggle").height
         anchors.right: parent.right
-        anchors.rightMargin: UM.Theme.getSize("default_margin").width
+        anchors.rightMargin: UM.Theme.getSize("sidebar_margin").width
         anchors.top: headerSeparator.bottom
-        anchors.topMargin: UM.Theme.getSize("default_margin").height
+        anchors.topMargin: UM.Theme.getSize("sidebar_margin").height
         visible: !monitoringPrint && !hideSettings
         Component{
             id: wizardDelegate
@@ -211,18 +211,18 @@ Rectangle
         anchors
         {
             top: settingsModeSelection.bottom
-            topMargin: UM.Theme.getSize("default_margin").width
+            topMargin: UM.Theme.getSize("sidebar_margin").height
             left: parent.left
-            leftMargin: UM.Theme.getSize("default_margin").width
+            leftMargin: UM.Theme.getSize("sidebar_margin").width
             right: parent.right
-            rightMargin: UM.Theme.getSize("default_margin").width
+            rightMargin: UM.Theme.getSize("sidebar_margin").width
         }
 
         Text
         {
             id: globalProfileLabel
             text: catalog.i18nc("@label","Profile:");
-            width: parent.width * 0.45 - UM.Theme.getSize("default_margin").width
+            width: parent.width * 0.45 - UM.Theme.getSize("sidebar_margin").width
             font: UM.Theme.getFont("default");
             color: UM.Theme.getColor("text");
             verticalAlignment: Text.AlignVCenter
@@ -246,7 +246,7 @@ Rectangle
             }
             enabled: !header.currentExtruderVisible || header.currentExtruderIndex > -1
 
-            width: parent.width * 0.7 + UM.Theme.getSize("default_margin").width
+            width: parent.width * 0.7 + UM.Theme.getSize("sidebar_margin").width
             height: UM.Theme.getSize("setting_control").height
             anchors.right: parent.right
             tooltip: Cura.MachineManager.activeQualityName
@@ -265,7 +265,7 @@ Rectangle
 
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.right: parent.right
-                anchors.rightMargin: UM.Theme.getSize("setting_preferences_button_margin").width - UM.Theme.getSize("default_margin").width
+                anchors.rightMargin: UM.Theme.getSize("setting_preferences_button_margin").width - UM.Theme.getSize("sidebar_margin").width
 
                 color: hovered ? UM.Theme.getColor("setting_control_button_hover") : UM.Theme.getColor("setting_control_button");
                 iconSource: UM.Theme.getIcon("star");
@@ -278,7 +278,7 @@ Rectangle
                 onEntered:
                 {
                     var content = catalog.i18nc("@tooltip","Some setting/override values are different from the values stored in the profile.\n\nClick to open the profile manager.")
-                    base.showTooltip(globalProfileRow, Qt.point(-UM.Theme.getSize("default_margin").width, 0),  content)
+                    base.showTooltip(globalProfileRow, Qt.point(-UM.Theme.getSize("sidebar_margin").width, 0),  content)
                 }
                 onExited: base.hideTooltip()
             }
@@ -291,7 +291,7 @@ Rectangle
 
         anchors.bottom: footerSeparator.top
         anchors.top: globalProfileRow.bottom
-        anchors.topMargin: UM.Theme.getSize("default_margin").height
+        anchors.topMargin: UM.Theme.getSize("sidebar_margin").height
         anchors.left: base.left
         anchors.right: base.right
         visible: !monitoringPrint && !hideSettings
@@ -377,7 +377,7 @@ Rectangle
         height: UM.Theme.getSize("sidebar_lining").height
         color: UM.Theme.getColor("sidebar_lining")
         anchors.bottom: printSpecs.top
-        anchors.bottomMargin: UM.Theme.getSize("default_margin").height * 2 + UM.Theme.getSize("progressbar").height + UM.Theme.getFont("default_bold").pixelSize
+        anchors.bottomMargin: UM.Theme.getSize("sidebar_margin").height * 2 + UM.Theme.getSize("progressbar").height + UM.Theme.getFont("default_bold").pixelSize
     }
 
     Rectangle
@@ -385,8 +385,8 @@ Rectangle
         id: printSpecs
         anchors.left: parent.left
         anchors.bottom: parent.bottom
-        anchors.leftMargin: UM.Theme.getSize("default_margin").width
-        anchors.bottomMargin: UM.Theme.getSize("default_margin").height
+        anchors.leftMargin: UM.Theme.getSize("sidebar_margin").width
+        anchors.bottomMargin: UM.Theme.getSize("sidebar_margin").height
         height: childrenRect.height
 
         UM.TooltipArea
@@ -498,7 +498,7 @@ Rectangle
         id: saveButton
         implicitWidth: base.width
         anchors.top: footerSeparator.bottom
-        anchors.topMargin: UM.Theme.getSize("default_margin").height
+        anchors.topMargin: UM.Theme.getSize("sidebar_margin").height
         anchors.bottom: parent.bottom
         visible: !monitoringPrint
     }
@@ -508,7 +508,7 @@ Rectangle
         id: monitorButton
         implicitWidth: base.width
         anchors.top: footerSeparator.bottom
-        anchors.topMargin: UM.Theme.getSize("default_margin").height
+        anchors.topMargin: UM.Theme.getSize("sidebar_margin").height
         anchors.bottom: parent.bottom
         visible: monitoringPrint
     }

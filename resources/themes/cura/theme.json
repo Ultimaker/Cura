@@ -251,6 +251,7 @@
         "logo": [9.5, 2.0],
 
         "sidebar": [35.0, 10.0],
+        "sidebar_margin": [1.71, 1.43],
         "sidebar_header": [0.0, 4.0],
         "sidebar_header_highlight": [0.25, 0.25],
         "sidebar_header_mode_toggle": [0.0, 2.0],

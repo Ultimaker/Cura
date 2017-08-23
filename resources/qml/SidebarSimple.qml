@@ -1,4 +1,4 @@
-// Copyright (c) 2016 Ultimaker B.V.
+// Copyright (c) 2017 Ultimaker B.V.
 // Cura is released under the terms of the AGPLv3 or higher.
 
 import QtQuick 2.2
@@ -30,8 +30,8 @@ Item
         id: infillCellLeft
         anchors.top: parent.top
         anchors.left: parent.left
-        anchors.topMargin: UM.Theme.getSize("default_margin").height
-        width: base.width * .45 - UM.Theme.getSize("default_margin").width
+        anchors.topMargin: UM.Theme.getSize("sidebar_margin").height
+        width: base.width * .45 - UM.Theme.getSize("sidebar_margin").width
         height: childrenRect.height
 
         Text
@@ -42,9 +42,9 @@ Item
             font: UM.Theme.getFont("default");
             color: UM.Theme.getColor("text");
             anchors.top: parent.top
-            anchors.topMargin: UM.Theme.getSize("default_margin").height
+            anchors.topMargin: UM.Theme.getSize("sidebar_margin").height
             anchors.left: parent.left
-            anchors.leftMargin: UM.Theme.getSize("default_margin").width
+            anchors.leftMargin: UM.Theme.getSize("sidebar_margin").width
         }
     }
 
@@ -55,7 +55,7 @@ Item
         height: childrenRect.height;
         width: base.width * .55
 
-        spacing: UM.Theme.getSize("default_margin").width
+        spacing: UM.Theme.getSize("sidebar_margin").width
 
         anchors.left: infillCellLeft.right
         anchors.top: infillCellLeft.top
@@ -88,7 +88,7 @@ Item
                 {
                     id: infillIconLining
 
-                    width: (infillCellRight.width - ((infillModel.count - 1)  * UM.Theme.getSize("default_margin").width)) / (infillModel.count);
+                    width: (infillCellRight.width - ((infillModel.count - 1)  * UM.Theme.getSize("sidebar_margin").width)) / (infillModel.count);
                     height: width
 
                     border.color:
@@ -169,7 +169,7 @@ Item
                 Text
                 {
                     id: infillLabel
-                    width: (infillCellRight.width - ((infillModel.count - 1)  * UM.Theme.getSize("default_margin").width)) / (infillModel.count);
+                    width: (infillCellRight.width - ((infillModel.count - 1)  * UM.Theme.getSize("sidebar_margin").width)) / (infillModel.count);
                     horizontalAlignment: Text.AlignHCenter
                     verticalAlignment: Text.AlignVCenter
                     wrapMode: Text.WordWrap
@@ -252,7 +252,7 @@ Item
     {
         id: helpersCell
         anchors.top: infillCellRight.bottom
-        anchors.topMargin: UM.Theme.getSize("default_margin").height * 2
+        anchors.topMargin: UM.Theme.getSize("sidebar_margin").height * 2
         anchors.left: parent.left
         anchors.right: parent.right
         height: childrenRect.height
@@ -261,9 +261,9 @@ Item
         {
             id: enableSupportLabel
             anchors.left: parent.left
-            anchors.leftMargin: UM.Theme.getSize("default_margin").width
+            anchors.leftMargin: UM.Theme.getSize("sidebar_margin").width
             anchors.verticalCenter: enableSupportCheckBox.verticalCenter
-            width: parent.width * .45 - 3 * UM.Theme.getSize("default_margin").width
+            width: parent.width * .45 - 3 * UM.Theme.getSize("sidebar_margin").width
             text: catalog.i18nc("@label", "Generate Support");
             font: UM.Theme.getFont("default");
             color: UM.Theme.getColor("text");
@@ -276,7 +276,7 @@ Item
 
             anchors.top: parent.top
             anchors.left: enableSupportLabel.right
-            anchors.leftMargin: UM.Theme.getSize("default_margin").width
+            anchors.leftMargin: UM.Theme.getSize("sidebar_margin").width
 
             style: UM.Theme.styles.checkbox;
             enabled: base.settingsEnabled
@@ -311,9 +311,9 @@ Item
             id: supportExtruderLabel
             visible: (supportEnabled.properties.value == "True") && (machineExtruderCount.properties.value > 1)
             anchors.left: parent.left
-            anchors.leftMargin: UM.Theme.getSize("default_margin").width
+            anchors.leftMargin: UM.Theme.getSize("sidebar_margin").width
             anchors.verticalCenter: supportExtruderCombobox.verticalCenter
-            width: parent.width * .45 - 3 * UM.Theme.getSize("default_margin").width
+            width: parent.width * .45 - 3 * UM.Theme.getSize("sidebar_margin").width
             text: catalog.i18nc("@label", "Support Extruder");
             font: UM.Theme.getFont("default");
             color: UM.Theme.getColor("text");
@@ -344,7 +344,7 @@ Item
             {
                 if ((supportEnabled.properties.value == "True") && (machineExtruderCount.properties.value > 1))
                 {
-                    return UM.Theme.getSize("default_margin").height;
+                    return UM.Theme.getSize("sidebar_margin").height;
                 }
                 else
                 {
@@ -352,7 +352,7 @@ Item
                 }
             }
             anchors.left: supportExtruderLabel.right
-            anchors.leftMargin: UM.Theme.getSize("default_margin").width
+            anchors.leftMargin: UM.Theme.getSize("sidebar_margin").width
             width: parent.width * .55
             height:
             {
@@ -410,9 +410,9 @@ Item
         {
             id: adhesionHelperLabel
             anchors.left: parent.left
-            anchors.leftMargin: UM.Theme.getSize("default_margin").width
+            anchors.leftMargin: UM.Theme.getSize("sidebar_margin").width
             anchors.verticalCenter: adhesionCheckBox.verticalCenter
-            width: parent.width * .45 - 3 * UM.Theme.getSize("default_margin").width
+            width: parent.width * .45 - 3 * UM.Theme.getSize("sidebar_margin").width
             text: catalog.i18nc("@label", "Build Plate Adhesion");
             font: UM.Theme.getFont("default");
             color: UM.Theme.getColor("text");
@@ -425,9 +425,9 @@ Item
             property alias _hovered: adhesionMouseArea.containsMouse
 
             anchors.top: supportExtruderCombobox.bottom
-            anchors.topMargin: UM.Theme.getSize("default_margin").height * 2
+            anchors.topMargin: UM.Theme.getSize("sidebar_margin").height * 2
             anchors.left: adhesionHelperLabel.right
-            anchors.leftMargin: UM.Theme.getSize("default_margin").width
+            anchors.leftMargin: UM.Theme.getSize("sidebar_margin").width
 
             //: Setting enable printing build-plate adhesion helper checkbox
             style: UM.Theme.styles.checkbox;
@@ -500,7 +500,7 @@ Item
     {
         id: tipsCell
         anchors.top: helpersCell.bottom
-        anchors.topMargin: UM.Theme.getSize("default_margin").height * 2
+        anchors.topMargin: UM.Theme.getSize("sidebar_margin").height * 2
         anchors.left: parent.left
         width: parent.width
         height: childrenRect.height
@@ -508,9 +508,9 @@ Item
         Text
         {
             anchors.left: parent.left
-            anchors.leftMargin: UM.Theme.getSize("default_margin").width
+            anchors.leftMargin: UM.Theme.getSize("sidebar_margin").width
             anchors.right: parent.right
-            anchors.rightMargin: UM.Theme.getSize("default_margin").width
+            anchors.rightMargin: UM.Theme.getSize("sidebar_margin").width
             wrapMode: Text.WordWrap
             //: Tips label
             text: catalog.i18nc("@label", "Need help improving your prints?<br>Read the <a href='%1'>Ultimaker Troubleshooting Guides</a>").arg("https://ultimaker.com/en/troubleshooting") + "<img src='%1'></img>".arg(UM.Theme.getIcon("play"))

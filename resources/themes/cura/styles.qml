@@ -363,9 +363,9 @@ QtObject {
             background: Rectangle {
                 anchors.fill: parent;
                 anchors.left: parent.left
-                anchors.leftMargin: Theme.getSize("default_margin").width
+                anchors.leftMargin: Theme.getSize("sidebar_margin").width
                 anchors.right: parent.right
-                anchors.rightMargin: Theme.getSize("default_margin").width
+                anchors.rightMargin: Theme.getSize("sidebar_margin").width
                 implicitHeight: Theme.getSize("section").height;
                 color: {
                     if(control.color) {
@@ -413,7 +413,7 @@ QtObject {
                     UM.RecolorImage {
                         anchors.verticalCenter: parent.verticalCenter
                         anchors.left: parent.left
-                        anchors.leftMargin: Theme.getSize("default_margin").width
+                        anchors.leftMargin: Theme.getSize("sidebar_margin").width
                         color:
                         {
                             if(!control.enabled)
@@ -448,7 +448,7 @@ QtObject {
                 Label {
                     anchors {
                         left: icon.right;
-                        leftMargin: Theme.getSize("default_lining").width;
+                        leftMargin: Theme.getSize("default_margin").width;
                         right: parent.right;
                         verticalCenter: parent.verticalCenter;
                     }
@@ -792,7 +792,7 @@ QtObject {
                 }
                 Behavior on color { ColorAnimation { duration: 50; } }
 
-                implicitWidth: actualLabel.contentWidth + (UM.Theme.getSize("default_margin").width * 2)
+                implicitWidth: actualLabel.contentWidth + (UM.Theme.getSize("sidebar_margin").width * 2)
 
                 Label
                 {
