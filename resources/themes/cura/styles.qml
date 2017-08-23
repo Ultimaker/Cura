@@ -17,11 +17,11 @@ QtObject {
                     {
                         if(control.valueError)
                         {
-                            return Theme.getColor("setting_validation_error");
+                            return Theme.getColor("setting_validation_error_background");
                         }
                         else if(control.valueWarning)
                         {
-                            return Theme.getColor("setting_validation_warning");
+                            return Theme.getColor("setting_validation_warning_background");
                         }
                         else
                         {
@@ -41,11 +41,11 @@ QtObject {
                     {
                         if (control.valueError)
                         {
-                            return Theme.getColor("setting_validation_error_border");
+                            return Theme.getColor("setting_validation_error");
                         }
                         else if (control.valueWarning)
                         {
-                            return Theme.getColor("setting_validation_warning_border");
+                            return Theme.getColor("setting_validation_warning");
                         }
                         else if (control.hovered)
                         {
