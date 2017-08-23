@@ -43,14 +43,14 @@ Rectangle
 
         onTriggered:
         {
-            base.showTooltip(base, {x:1, y:item.y}, text);
+            base.showTooltip(base, {x: 0, y: item.y}, text);
         }
     }
 
     function showTooltip(item, position, text)
     {
         tooltip.text = text;
-        position = item.mapToItem(base, position.x, position.y);
+        position = item.mapToItem(base, position.x - UM.Theme.getSize("default_arrow").width, position.y);
         tooltip.show(position);
     }
 

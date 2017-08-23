@@ -297,7 +297,7 @@ Item
                         contextMenu.provider = provider
                         contextMenu.popup();
                     }
-                    onShowTooltip: base.showTooltip(delegate, { x: 0, y: delegate.height / 2 }, text)
+                    onShowTooltip: base.showTooltip(delegate, { x: -UM.Theme.getSize("default_arrow").width, y: delegate.height / 2 }, text)
                     onHideTooltip: base.hideTooltip()
                     onShowAllHiddenInheritedSettings:
                     {
