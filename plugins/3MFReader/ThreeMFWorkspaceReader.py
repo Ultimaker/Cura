@@ -832,8 +832,9 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
 
             # replace old material in global and extruder stacks with new
             self._replaceStackMaterialWithNew(global_stack, old_to_new_material_dict)
-            for each_extruder_stack in extruder_stacks:
-                self._replaceStackMaterialWithNew(each_extruder_stack, old_to_new_material_dict)
+            if extruder_stacks:
+                for each_extruder_stack in extruder_stacks:
+                    self._replaceStackMaterialWithNew(each_extruder_stack, old_to_new_material_dict)
 
         if extruder_stacks:
             for stack in extruder_stacks:
@@ -899,6 +900,8 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                     best_matching_old_material_id = old_parent_material_id
 
         if best_matching_old_material_id is None:
+            Logger.log("w", "Cannot find any matching old material ID for stack [%s] material [%s]. Something can go wrong",
+                       stack.getId(), old_material_id_in_stack)
             return
 
         # find the new material container
