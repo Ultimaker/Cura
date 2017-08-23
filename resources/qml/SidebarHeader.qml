@@ -281,22 +281,12 @@ Column
             {
                 id: materialInfoLabel
                 wrapMode: Text.WordWrap
-                text: catalog.i18nc("@label","Check material compability");
+                text: catalog.i18nc("@label", "Check material compability");
                 font: UM.Theme.getFont("default");
                 verticalAlignment: Text.AlignVCenter
                 anchors.top: parent.top
                 anchors.bottom: parent.bottom
-                color:
-                {
-                    if (!Cura.MachineManager.isActiveQualitySupported)
-                    {
-                        UM.Theme.getColor("setting_validation_error");
-                    }
-                    else
-                    {
-                        UM.Theme.getColor("text");
-                    }
-                }
+                color: UM.Theme.getColor("text")
 
                 MouseArea
                 {
