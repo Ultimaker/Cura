@@ -814,29 +814,26 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                                 each_extruder_stack.definitionChanges = each_changes_container
 
         if self._resolve_strategies["material"] == "new":
+            # the actual material instance container can have an ID such as
+            #  <material>_<machine>_<variant>
+            # which cannot be determined immediately, so here we use a HACK to find the right new material
+            # instance ID:
+            #  - get the old material IDs for all material
+            #  - find the old material with the longest common prefix in ID, that's the old material
+            #  - update the name by replacing the old prefix with the new
+            #  - find the new material container and set it to the stack
+            old_to_new_material_dict = {}
             for each_material in material_containers:
-                old_material = global_stack.material
+                # find the material's old name
+                for old_id, new_id in self._id_mapping.items():
+                    if each_material.getId() == new_id:
+                        old_to_new_material_dict[old_id] = each_material
+                        break
 
-                # check if the old material container has been renamed to this material container ID
-                # if the container hasn't been renamed, we do nothing.
-                new_id = self._id_mapping.get(old_material.getId())
-                if new_id is None or new_id != each_material.getId():
-                    continue
-
-                if old_material.getId() in self._id_mapping:
-                    global_stack.material = each_material
-
-                for each_extruder_stack in extruder_stacks:
-                    old_material = each_extruder_stack.material
-
-                    # check if the old material container has been renamed to this material container ID
-                    # if the container hasn't been renamed, we do nothing.
-                    new_id = self._id_mapping.get(old_material.getId())
-                    if new_id is None or new_id != each_material.getId():
-                        continue
-
-                    if old_material.getId() in self._id_mapping:
-                        each_extruder_stack.material = each_material
+            # replace old material in global and extruder stacks with new
+            self._replaceStackMaterialWithNew(global_stack, old_to_new_material_dict)
+            for each_extruder_stack in extruder_stacks:
+                self._replaceStackMaterialWithNew(each_extruder_stack, old_to_new_material_dict)
 
         if extruder_stacks:
             for stack in extruder_stacks:
@@ -860,6 +857,29 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         if nodes is None:
             nodes = []
         return nodes
+
+    def _replaceStackMaterialWithNew(self, stack, old_new_material_dict):
+        old_material_id_in_stack = stack.material.getId()
+        best_matching_old_material_id = None
+        best_matching_old_meterial_prefix_length = -1
+        for old_parent_material_id in old_new_material_dict:
+            if len(old_parent_material_id) < best_matching_old_meterial_prefix_length:
+                continue
+            if len(old_parent_material_id) <= len(old_material_id_in_stack):
+                if old_parent_material_id == old_material_id_in_stack[0:len(old_parent_material_id)]:
+                    best_matching_old_meterial_prefix_length = len(old_parent_material_id)
+                    best_matching_old_material_id = old_parent_material_id
+
+        if best_matching_old_material_id is None:
+            return
+
+        new_material_id = old_new_material_dict[best_matching_old_material_id].getId() + old_material_id_in_stack[len(best_matching_old_material_id):]
+        new_material_containers = self._container_registry.findInstanceContainers(id = new_material_id, type = "material")
+        if not new_material_containers:
+            Logger.log("e", "Cannot find new material container [%s]", new_material_id)
+            return
+
+        stack.material = new_material_containers[0]
 
     def _stripFileToId(self, file):
         mime_type = MimeTypeDatabase.getMimeTypeForFile(file)
