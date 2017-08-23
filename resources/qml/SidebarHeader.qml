@@ -160,46 +160,6 @@ Column
         visible: !extruderSelectionRow.visible
     }
 
-    // Print core row
-    Item
-    {
-        id: printCoreRow
-        height: UM.Theme.getSize("sidebar_setup").height
-        visible: Cura.MachineManager.hasVariants && !sidebar.monitoringPrint && !sidebar.hideSettings
-
-        anchors
-        {
-            left: parent.left
-            leftMargin: UM.Theme.getSize("default_margin").width
-            right: parent.right
-            rightMargin: UM.Theme.getSize("default_margin").width
-        }
-
-        Text
-        {
-            id: printCoreLabel
-            text: Cura.MachineManager.activeDefinitionVariantsName;
-            width: parent.width * 0.45 - UM.Theme.getSize("default_margin").width
-            font: UM.Theme.getFont("default");
-            color: UM.Theme.getColor("text");
-        }
-
-        ToolButton {
-            id: printCoreSelection
-            text: Cura.MachineManager.activeVariantName
-            tooltip: Cura.MachineManager.activeVariantName;
-            visible: Cura.MachineManager.hasVariants
-
-            height: UM.Theme.getSize("setting_control").height
-            width: parent.width * 0.7 + UM.Theme.getSize("default_margin").width
-            anchors.right: parent.right
-            style: UM.Theme.styles.sidebar_header_button
-            activeFocusOnPress: true;
-
-            menu: NozzleMenu { extruderIndex: base.currentExtruderIndex }
-        }
-    }
-
     // Material Row
     Item
     {
@@ -253,6 +213,46 @@ Column
             activeFocusOnPress: true;
 
             menu: MaterialMenu { extruderIndex: base.currentExtruderIndex }
+        }
+    }
+
+    // Print core row
+    Item
+    {
+        id: printCoreRow
+        height: UM.Theme.getSize("sidebar_setup").height
+        visible: Cura.MachineManager.hasVariants && !sidebar.monitoringPrint && !sidebar.hideSettings
+
+        anchors
+        {
+            left: parent.left
+            leftMargin: UM.Theme.getSize("default_margin").width
+            right: parent.right
+            rightMargin: UM.Theme.getSize("default_margin").width
+        }
+
+        Text
+        {
+            id: printCoreLabel
+            text: Cura.MachineManager.activeDefinitionVariantsName;
+            width: parent.width * 0.45 - UM.Theme.getSize("default_margin").width
+            font: UM.Theme.getFont("default");
+            color: UM.Theme.getColor("text");
+        }
+
+        ToolButton {
+            id: printCoreSelection
+            text: Cura.MachineManager.activeVariantName
+            tooltip: Cura.MachineManager.activeVariantName;
+            visible: Cura.MachineManager.hasVariants
+
+            height: UM.Theme.getSize("setting_control").height
+            width: parent.width * 0.7 + UM.Theme.getSize("default_margin").width
+            anchors.right: parent.right
+            style: UM.Theme.styles.sidebar_header_button
+            activeFocusOnPress: true;
+
+            menu: NozzleMenu { extruderIndex: base.currentExtruderIndex }
         }
     }
 
