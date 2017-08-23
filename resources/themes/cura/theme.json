@@ -64,7 +64,6 @@
         "text_inactive": [255, 255, 255, 88],
         "text_hover": [255, 255, 255, 204],
         "text_pressed": [255, 255, 255, 204],
-        "text_reversed": [255, 255, 255, 255],
         "text_subtext": [255, 255, 255, 172],
         "text_emphasis": [255, 255, 255, 255],
 

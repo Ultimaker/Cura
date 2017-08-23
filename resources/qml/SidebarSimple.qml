@@ -133,7 +133,7 @@ Item
                         color: {
                             if(infillListView.activeIndex == index)
                             {
-                                return UM.Theme.getColor("text_reversed")
+                                return UM.Theme.getColor("text_emphasis")
                             }
                             if(!base.settingsEnabled)
                             {

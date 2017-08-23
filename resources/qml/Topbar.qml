@@ -88,7 +88,7 @@ Rectangle
                     case "offline":
                         return UM.Theme.getColor("status_offline");
                     default:
-                        return UM.Theme.getColor("text_reversed");
+                        return UM.Theme.getColor("text_emphasis");
                 }
             }
             property string overlayIconSource:
@@ -191,7 +191,7 @@ Rectangle
                     height: UM.Theme.getSize("standard_arrow").height
                     sourceSize.width: width
                     sourceSize.height: width
-                    color: UM.Theme.getColor("text_reversed")
+                    color: UM.Theme.getColor("text_emphasis")
                     source: UM.Theme.getIcon("arrow_bottom")
                 }
                 Label

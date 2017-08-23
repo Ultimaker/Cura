@@ -140,7 +140,7 @@ QtObject {
                     UM.RecolorImage
                     {
                         id: icon
-                        color: UM.Theme.getColor("text_reversed")
+                        color: UM.Theme.getColor("text_emphasis")
                         opacity: !control.enabled ? 0.2 : 1.0
                         source: control.iconSource
                         width: Theme.getSize("button_icon").width
