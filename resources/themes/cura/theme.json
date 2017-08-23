@@ -66,6 +66,8 @@
         "text_pressed": [255, 255, 255, 204],
         "text_subtext": [255, 255, 255, 172],
         "text_emphasis": [255, 255, 255, 255],
+        "text_scene": [39, 44, 48, 255],
+        "text_scene_hover": [43, 48, 52, 255],
 
         "error": [212, 31, 53, 255],
         "sidebar_header_bar": [39, 44, 48, 255],
