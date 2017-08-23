@@ -36,7 +36,7 @@ A dark theme for Cura. Select this theme to reduce eyestrain when working in dar
 The top bar user interface been improved so that “Prepare” and “Print” have moved from the right side of the interface to the left side.
 
 *New keyboard shortcuts
-Models can now be manipulated on the build plate using hotkeys Q, A, Z, W, and tab keys. Q selects “move”, A selects “scale”, Z selects “rotate”, and W selects “mirror”. Use the tab key to navigate between interfaces.
+Models can now be manipulated on the build plate using hotkeys Q, A, Z, W, and tab keys. Q selects “move”, A selects “scale”, Z selects “rotate”, and W selects “mirror”. Use the tab key to navigate between settings.
 
 *Plugin browser
 Easily download and install plugins using an integrated plugin browser. Go to “Extensions > Plugin Browser > Browse plugins” to select it.
@@ -61,7 +61,7 @@ Polish language support added. This can be selected in the preferences menu.
 - Crashes when adding printers
 - Jerk fixes
 - Z-hop over-extrusion
-
+- Material diameter in machine settings
 
 *3rd party printers
 - Peopoly Moai

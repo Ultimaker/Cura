@@ -204,6 +204,9 @@ class VersionUpgrade25to26(VersionUpgrade):
         # create a definition changes container for this stack
         definition_changes_parser = self._getCustomFdmPrinterDefinitionChanges(stack_id)
         definition_changes_id = definition_changes_parser["general"]["name"]
+        # create a user settings container
+        user_settings_parser = self._getCustomFdmPrinterUserSettings(stack_id)
+        user_settings_id = user_settings_parser["general"]["name"]
 
         parser = configparser.ConfigParser()
         parser.add_section("general")
@@ -217,7 +220,7 @@ class VersionUpgrade25to26(VersionUpgrade):
         parser["metadata"]["position"] = str(position)
 
         parser.add_section("containers")
-        parser["containers"]["0"] = "empty"
+        parser["containers"]["0"] = user_settings_id
         parser["containers"]["1"] = "empty_quality_changes"
         parser["containers"]["2"] = quality_id
         parser["containers"]["3"] = material_id
@@ -229,15 +232,22 @@ class VersionUpgrade25to26(VersionUpgrade):
         definition_changes_parser.write(definition_changes_output)
         definition_changes_filename = quote_plus(definition_changes_id) + ".inst.cfg"
 
+        user_settings_output = io.StringIO()
+        user_settings_parser.write(user_settings_output)
+        user_settings_filename = quote_plus(user_settings_id) + ".inst.cfg"
+
         extruder_output = io.StringIO()
         parser.write(extruder_output)
         extruder_filename = quote_plus(stack_id) + ".extruder.cfg"
 
         extruder_stack_dir = Resources.getPath(CuraApplication.ResourceTypes.ExtruderStack)
         definition_changes_dir = Resources.getPath(CuraApplication.ResourceTypes.DefinitionChangesContainer)
+        user_settings_dir = Resources.getPath(CuraApplication.ResourceTypes.UserInstanceContainer)
 
         with open(os.path.join(definition_changes_dir, definition_changes_filename), "w") as f:
             f.write(definition_changes_output.getvalue())
+        with open(os.path.join(user_settings_dir, user_settings_filename), "w") as f:
+            f.write(user_settings_output.getvalue())
         with open(os.path.join(extruder_stack_dir, extruder_filename), "w") as f:
             f.write(extruder_output.getvalue())
 
@@ -256,6 +266,28 @@ class VersionUpgrade25to26(VersionUpgrade):
 
         parser.add_section("metadata")
         parser["metadata"]["type"] = "definition_changes"
+        parser["metadata"]["setting_version"] = str(1)
+
+        parser.add_section("values")
+
+        return parser
+
+    ##  Creates a user settings container which doesn't contain anything for the Custom FDM Printers.
+    #   The container ID will be automatically generated according to the given stack name.
+    def _getCustomFdmPrinterUserSettings(self, stack_id: str):
+        # For the extruder stacks created in the upgrade, also create user_settings containers so the user changes
+        # will be saved.
+        user_settings_id = stack_id + "_user"
+
+        parser = configparser.ConfigParser()
+        parser.add_section("general")
+        parser["general"]["version"] = str(2)
+        parser["general"]["name"] = user_settings_id
+        parser["general"]["definition"] = "custom"
+
+        parser.add_section("metadata")
+        parser["metadata"]["extruder"] = stack_id
+        parser["metadata"]["type"] = "user"
         parser["metadata"]["setting_version"] = str(1)
 
         parser.add_section("values")
