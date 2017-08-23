@@ -4922,8 +4922,8 @@
                 },
                 "relative_extrusion":
                 {
-                    "label": "Use Relative Extrusion",
-                    "description": "Use relative extrusion rather than absolute extrusion. Before, Cura always used absolute extrusion. Most printers can cope with either relative or absolute extrusion.",
+                    "label": "Relative Extrusion",
+                    "description": "Use relative extrusion rather than absolute extrusion. Using relative E-steps makes for easier post-processing of the Gcode. However, it's not supported by all printers and it may produce very slight deviations in the amount of deposited material compared to absolute E-steps.",
                     "type": "bool",
                     "default_value": false,
                     "value": "machine_gcode_flavor==\"RepRap (RepRap)\"",
