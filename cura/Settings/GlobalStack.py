@@ -11,6 +11,7 @@ from UM.MimeTypeDatabase import MimeType, MimeTypeDatabase
 from UM.Settings.ContainerStack import ContainerStack
 from UM.Settings.SettingInstance import InstanceState
 from UM.Settings.ContainerRegistry import ContainerRegistry
+from UM.Settings.Interfaces import PropertyEvaluationContext
 from UM.Logger import Logger
 
 from . import Exceptions
@@ -91,7 +92,7 @@ class GlobalStack(CuraContainerStack):
     #
     #   \return The value of the property for the specified setting, or None if not found.
     @override(ContainerStack)
-    def getProperty(self, key: str, property_name: str) -> Any:
+    def getProperty(self, key: str, property_name: str, context: Optional[PropertyEvaluationContext] = None) -> Any:
         if not self.definition.findDefinitions(key = key):
             return None
 
@@ -103,17 +104,24 @@ class GlobalStack(CuraContainerStack):
             if resolve is not None:
                 return resolve
 
+        if context is None:
+            context = PropertyEvaluationContext()
+        context.pushContainer(self)
+
         # Handle the "limit_to_extruder" property.
         limit_to_extruder = super().getProperty(key, "limit_to_extruder")
         if limit_to_extruder is not None and limit_to_extruder != "-1" and limit_to_extruder in self._extruders:
             if super().getProperty(key, "settable_per_extruder"):
-                result = self._extruders[str(limit_to_extruder)].getProperty(key, property_name)
+                result = self._extruders[str(limit_to_extruder)].getProperty(key, property_name, context)
                 if result is not None:
+                    context.popContainer()
                     return result
             else:
                 Logger.log("e", "Setting {setting} has limit_to_extruder but is not settable per extruder!", setting = key)
 
-        return super().getProperty(key, property_name)
+        result = super().getProperty(key, property_name, context)
+        context.popContainer()
+        return result
 
     ##  Overridden from ContainerStack
     #
