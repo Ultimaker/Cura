@@ -248,25 +248,30 @@ Item
         }
     }
 
-    Item
+    Grid
     {
         id: helpersCell
         anchors.top: infillCellRight.bottom
         anchors.topMargin: UM.Theme.getSize("default_margin").height * 2
         anchors.left: parent.left
+        anchors.leftMargin: UM.Theme.getSize("default_margin").width
         anchors.right: parent.right
-        height: childrenRect.height
+        anchors.rightMargin: UM.Theme.getSize("default_margin").width
+
+        columns: 2
+        columnSpacing: UM.Theme.getSize("default_margin").width
+        rowSpacing: UM.Theme.getSize("default_lining").height
 
         Text
         {
             id: enableSupportLabel
-            anchors.left: parent.left
-            anchors.leftMargin: UM.Theme.getSize("default_margin").width
-            anchors.verticalCenter: enableSupportCheckBox.verticalCenter
-            width: parent.width * .45 - 3 * UM.Theme.getSize("default_margin").width
-            text: catalog.i18nc("@label", "Generate Support");
-            font: UM.Theme.getFont("default");
-            color: UM.Theme.getColor("text");
+            visible: enableSupportCheckBox.visible
+            height: enableSupportCheckBox.height
+            width: base.width * .45 - 3 * UM.Theme.getSize("default_margin").width
+            text: catalog.i18nc("@label", "Generate Support")
+            font: UM.Theme.getFont("default")
+            color: UM.Theme.getColor("text")
+            verticalAlignment: Text.AlignVCenter
         }
 
         CheckBox
@@ -274,14 +279,11 @@ Item
             id: enableSupportCheckBox
             property alias _hovered: enableSupportMouseArea.containsMouse
 
-            anchors.top: parent.top
-            anchors.left: enableSupportLabel.right
-            anchors.leftMargin: UM.Theme.getSize("default_margin").width
-
-            style: UM.Theme.styles.checkbox;
+            style: UM.Theme.styles.checkbox
             enabled: base.settingsEnabled
+            visible: supportEnabled.properties.enabled == "True"
 
-            checked: supportEnabled.properties.value == "True";
+            checked: supportEnabled.properties.value == "True"
 
             MouseArea
             {
@@ -296,7 +298,7 @@ Item
                 }
                 onEntered:
                 {
-                    base.showTooltip(enableSupportCheckBox, Qt.point(-enableSupportCheckBox.x, 0),
+                    base.showTooltip(enableSupportCheckBox, Qt.point(-enableSupportCheckBox.x - UM.Theme.getSize("default_margin").width, 0),
                         catalog.i18nc("@label", "Generate structures to support parts of the model which have overhangs. Without these structures, such parts would collapse during printing."));
                 }
                 onExited:
@@ -309,20 +311,20 @@ Item
         Text
         {
             id: supportExtruderLabel
-            visible: (supportEnabled.properties.value == "True") && (machineExtruderCount.properties.value > 1)
-            anchors.left: parent.left
-            anchors.leftMargin: UM.Theme.getSize("default_margin").width
-            anchors.verticalCenter: supportExtruderCombobox.verticalCenter
-            width: parent.width * .45 - 3 * UM.Theme.getSize("default_margin").width
-            text: catalog.i18nc("@label", "Support Extruder");
-            font: UM.Theme.getFont("default");
-            color: UM.Theme.getColor("text");
+            visible: supportExtruderCombobox.visible
+            height: supportExtruderCombobox.height
+
+            width: base.width * .45 - 3 * UM.Theme.getSize("default_margin").width
+            text: catalog.i18nc("@label", "Support Extruder")
+            font: UM.Theme.getFont("default")
+            color: UM.Theme.getColor("text")
+            verticalAlignment: Text.AlignVCenter
         }
 
         ComboBox
         {
             id: supportExtruderCombobox
-            visible: (supportEnabled.properties.value == "True") && (machineExtruderCount.properties.value > 1)
+            visible: height > 0
             model: extruderModel
 
             property string color_override: ""  // for manually setting values
@@ -339,20 +341,6 @@ Item
 
             textRole: 'text'  // this solves that the combobox isn't populated in the first time Cura is started
 
-            anchors.top: enableSupportCheckBox.bottom
-            anchors.topMargin:
-            {
-                if ((supportEnabled.properties.value == "True") && (machineExtruderCount.properties.value > 1))
-                {
-                    return UM.Theme.getSize("default_margin").height;
-                }
-                else
-                {
-                    return 0;
-                }
-            }
-            anchors.left: supportExtruderLabel.right
-            anchors.leftMargin: UM.Theme.getSize("default_margin").width
             width: parent.width * .55
             height:
             {
@@ -387,7 +375,7 @@ Item
                 acceptedButtons: Qt.NoButton
                 onEntered:
                 {
-                    base.showTooltip(supportExtruderCombobox, Qt.point(-supportExtruderCombobox.x, 0),
+                    base.showTooltip(supportExtruderCombobox, Qt.point(-supportExtruderCombobox.x - UM.Theme.getSize("default_margin").width, 0),
                         catalog.i18nc("@label", "Select which extruder to use for support. This will build up supporting structures below the model to prevent the model from sagging or printing in mid air."));
                 }
                 onExited:
@@ -409,14 +397,14 @@ Item
         Text
         {
             id: adhesionHelperLabel
-            anchors.left: parent.left
-            anchors.leftMargin: UM.Theme.getSize("default_margin").width
-            anchors.verticalCenter: adhesionCheckBox.verticalCenter
-            width: parent.width * .45 - 3 * UM.Theme.getSize("default_margin").width
-            text: catalog.i18nc("@label", "Build Plate Adhesion");
-            font: UM.Theme.getFont("default");
-            color: UM.Theme.getColor("text");
+            visible: adhesionCheckBox.visible
+            height: adhesionCheckBox.height
+            width: base.width * .45 - 3 * UM.Theme.getSize("default_margin").width
+            text: catalog.i18nc("@label", "Build Plate Adhesion")
+            font: UM.Theme.getFont("default")
+            color: UM.Theme.getColor("text")
             elide: Text.ElideRight
+            verticalAlignment: Text.AlignVCenter
         }
 
         CheckBox
@@ -424,14 +412,10 @@ Item
             id: adhesionCheckBox
             property alias _hovered: adhesionMouseArea.containsMouse
 
-            anchors.top: supportExtruderCombobox.bottom
-            anchors.topMargin: UM.Theme.getSize("default_margin").height * 2
-            anchors.left: adhesionHelperLabel.right
-            anchors.leftMargin: UM.Theme.getSize("default_margin").width
-
             //: Setting enable printing build-plate adhesion helper checkbox
             style: UM.Theme.styles.checkbox;
             enabled: base.settingsEnabled
+            visible: platformAdhesionType.properties.enabled == "True"
 
             checked: platformAdhesionType.properties.value != "skirt" && platformAdhesionType.properties.value != "none"
 
@@ -459,7 +443,7 @@ Item
                 }
                 onEntered:
                 {
-                    base.showTooltip(adhesionCheckBox, Qt.point(-adhesionCheckBox.x, 0),
+                    base.showTooltip(adhesionCheckBox, Qt.point(-adhesionCheckBox.x - UM.Theme.getSize("default_margin").width, 0),
                         catalog.i18nc("@label", "Enable printing a brim or raft. This will add a flat area around or under your object which is easy to cut off afterwards."));
                 }
                 onExited:
@@ -582,7 +566,7 @@ Item
 
         containerStackId: Cura.MachineManager.activeMachineId
         key: "adhesion_type"
-        watchedProperties: [ "value" ]
+        watchedProperties: [ "value", "enabled" ]
         storeIndex: 0
     }
 
@@ -592,7 +576,7 @@ Item
 
         containerStackId: Cura.MachineManager.activeMachineId
         key: "support_enable"
-        watchedProperties: [ "value", "description" ]
+        watchedProperties: [ "value", "enabled", "description" ]
         storeIndex: 0
     }
 
