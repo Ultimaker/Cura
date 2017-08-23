@@ -179,10 +179,10 @@ Item {
                                     //We have limit_to_extruder, so pick that stack.
                                     return ExtruderManager.extruderIds[String(inheritStackProvider.properties.limit_to_extruder)];
                                 }
-                                if(ExtruderManager.activeExtruderStackId)
+                                if(UM.ActiveTool.properties.getValue("ContainerID"))
                                 {
                                     //We're on an extruder tab. Pick the current extruder.
-                                    return ExtruderManager.activeExtruderStackId;
+                                    return UM.ActiveTool.properties.getValue("ContainerID");
                                 }
                                 //No extruder tab is selected. Pick the global stack. Shouldn't happen any more since we removed the global tab.
                                 return activeMachineId;
