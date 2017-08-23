@@ -858,7 +858,35 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             nodes = []
         return nodes
 
+    ##  HACK: Replaces the material container in the given stack with a newly created material container.
+    #         This function is used when the user chooses to resolve material conflicts by creating new ones.
     def _replaceStackMaterialWithNew(self, stack, old_new_material_dict):
+        # The material containers in the project file are 'parent' material such as "generic_pla",
+        # but a material container used in a global/extruder stack is a 'child' material,
+        # such as "generic_pla_ultimaker3_AA_0.4", which can be formalised as the following:
+        #
+        #    <material_name>_<machine_name>_<variant_name>
+        #
+        # In the project loading, when a user chooses to resolve material conflicts by creating new ones,
+        # the old 'parent' material ID and the new 'parent' material ID are known, but not the child material IDs.
+        # In this case, the global stack and the extruder stacks need to use the newly created material, but the
+        # material containers they use are 'child' material. So, here, we need to find the right 'child' material for
+        # the stacks.
+        #
+        # This hack approach works as follows:
+        #   - No matter there is a child material or not, the actual material we are looking for has the prefix
+        #     "<material_name>", which is the old material name. For the material in a stack, we know that the new
+        #     material's ID will be "<new_material_name>_blabla..", so we just need to replace the old material ID
+        #     with the new one to get the new 'child' material.
+        #   - Because the material containers have IDs such as "m #nn", if we use simple prefix matching, there can
+        #     be a problem in the following scenario:
+        #        - there are two materials in the project file, namely "m #1" and "m #11"
+        #        - the child materials in use are for example: "m #1_um3_aa04", "m #11_um3_aa04"
+        #        - if we only check for a simple prefix match, then "m #11_um3_aa04" will match with "m #1", but they
+        #          are not the same material
+        #     To avoid this, when doing the prefix matching, we use the result with the longest mactching prefix.
+
+        # find the old material ID
         old_material_id_in_stack = stack.material.getId()
         best_matching_old_material_id = None
         best_matching_old_meterial_prefix_length = -1
@@ -873,12 +901,14 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         if best_matching_old_material_id is None:
             return
 
+        # find the new material container
         new_material_id = old_new_material_dict[best_matching_old_material_id].getId() + old_material_id_in_stack[len(best_matching_old_material_id):]
         new_material_containers = self._container_registry.findInstanceContainers(id = new_material_id, type = "material")
         if not new_material_containers:
             Logger.log("e", "Cannot find new material container [%s]", new_material_id)
             return
 
+        # replace the material in the given stack
         stack.material = new_material_containers[0]
 
     def _stripFileToId(self, file):
