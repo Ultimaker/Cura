@@ -736,6 +736,7 @@ QtObject {
     property Component text_field: Component {
         TextFieldStyle {
             textColor: Theme.getColor("setting_control_text");
+            placeholderTextColor: Theme.getColor("setting_control_text")
             font: Theme.getFont("default");
 
             background: Rectangle

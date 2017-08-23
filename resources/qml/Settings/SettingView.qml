@@ -62,6 +62,7 @@ Item
             style: TextFieldStyle
             {
                 textColor: UM.Theme.getColor("setting_control_text");
+                placeholderTextColor: UM.Theme.getColor("setting_control_text")
                 font: UM.Theme.getFont("default");
                 background: Item {}
             }
