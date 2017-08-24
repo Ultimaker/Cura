@@ -818,29 +818,27 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                                 each_extruder_stack.definitionChanges = each_changes_container
 
         if self._resolve_strategies["material"] == "new":
+            # the actual material instance container can have an ID such as
+            #  <material>_<machine>_<variant>
+            # which cannot be determined immediately, so here we use a HACK to find the right new material
+            # instance ID:
+            #  - get the old material IDs for all material
+            #  - find the old material with the longest common prefix in ID, that's the old material
+            #  - update the name by replacing the old prefix with the new
+            #  - find the new material container and set it to the stack
+            old_to_new_material_dict = {}
             for each_material in material_containers:
-                old_material = global_stack.material
+                # find the material's old name
+                for old_id, new_id in self._id_mapping.items():
+                    if each_material.getId() == new_id:
+                        old_to_new_material_dict[old_id] = each_material
+                        break
 
-                # check if the old material container has been renamed to this material container ID
-                # if the container hasn't been renamed, we do nothing.
-                new_id = self._id_mapping.get(old_material.getId())
-                if new_id is None or new_id != each_material.getId():
-                    continue
-
-                if old_material.getId() in self._id_mapping:
-                    global_stack.material = each_material
-
+            # replace old material in global and extruder stacks with new
+            self._replaceStackMaterialWithNew(global_stack, old_to_new_material_dict)
+            if extruder_stacks:
                 for each_extruder_stack in extruder_stacks:
-                    old_material = each_extruder_stack.material
-
-                    # check if the old material container has been renamed to this material container ID
-                    # if the container hasn't been renamed, we do nothing.
-                    new_id = self._id_mapping.get(old_material.getId())
-                    if new_id is None or new_id != each_material.getId():
-                        continue
-
-                    if old_material.getId() in self._id_mapping:
-                        each_extruder_stack.material = each_material
+                    self._replaceStackMaterialWithNew(each_extruder_stack, old_to_new_material_dict)
 
         if extruder_stacks:
             for stack in extruder_stacks:
@@ -864,6 +862,61 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         if nodes is None:
             nodes = []
         return nodes
+
+    ##  HACK: Replaces the material container in the given stack with a newly created material container.
+    #         This function is used when the user chooses to resolve material conflicts by creating new ones.
+    def _replaceStackMaterialWithNew(self, stack, old_new_material_dict):
+        # The material containers in the project file are 'parent' material such as "generic_pla",
+        # but a material container used in a global/extruder stack is a 'child' material,
+        # such as "generic_pla_ultimaker3_AA_0.4", which can be formalised as the following:
+        #
+        #    <material_name>_<machine_name>_<variant_name>
+        #
+        # In the project loading, when a user chooses to resolve material conflicts by creating new ones,
+        # the old 'parent' material ID and the new 'parent' material ID are known, but not the child material IDs.
+        # In this case, the global stack and the extruder stacks need to use the newly created material, but the
+        # material containers they use are 'child' material. So, here, we need to find the right 'child' material for
+        # the stacks.
+        #
+        # This hack approach works as follows:
+        #   - No matter there is a child material or not, the actual material we are looking for has the prefix
+        #     "<material_name>", which is the old material name. For the material in a stack, we know that the new
+        #     material's ID will be "<new_material_name>_blabla..", so we just need to replace the old material ID
+        #     with the new one to get the new 'child' material.
+        #   - Because the material containers have IDs such as "m #nn", if we use simple prefix matching, there can
+        #     be a problem in the following scenario:
+        #        - there are two materials in the project file, namely "m #1" and "m #11"
+        #        - the child materials in use are for example: "m #1_um3_aa04", "m #11_um3_aa04"
+        #        - if we only check for a simple prefix match, then "m #11_um3_aa04" will match with "m #1", but they
+        #          are not the same material
+        #     To avoid this, when doing the prefix matching, we use the result with the longest mactching prefix.
+
+        # find the old material ID
+        old_material_id_in_stack = stack.material.getId()
+        best_matching_old_material_id = None
+        best_matching_old_meterial_prefix_length = -1
+        for old_parent_material_id in old_new_material_dict:
+            if len(old_parent_material_id) < best_matching_old_meterial_prefix_length:
+                continue
+            if len(old_parent_material_id) <= len(old_material_id_in_stack):
+                if old_parent_material_id == old_material_id_in_stack[0:len(old_parent_material_id)]:
+                    best_matching_old_meterial_prefix_length = len(old_parent_material_id)
+                    best_matching_old_material_id = old_parent_material_id
+
+        if best_matching_old_material_id is None:
+            Logger.log("w", "Cannot find any matching old material ID for stack [%s] material [%s]. Something can go wrong",
+                       stack.getId(), old_material_id_in_stack)
+            return
+
+        # find the new material container
+        new_material_id = old_new_material_dict[best_matching_old_material_id].getId() + old_material_id_in_stack[len(best_matching_old_material_id):]
+        new_material_containers = self._container_registry.findInstanceContainers(id = new_material_id, type = "material")
+        if not new_material_containers:
+            Logger.log("e", "Cannot find new material container [%s]", new_material_id)
+            return
+
+        # replace the material in the given stack
+        stack.material = new_material_containers[0]
 
     def _stripFileToId(self, file):
         mime_type = MimeTypeDatabase.getMimeTypeForFile(file)

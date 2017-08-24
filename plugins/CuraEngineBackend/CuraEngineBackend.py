@@ -427,6 +427,7 @@ class CuraEngineBackend(QObject, Backend):
 
     ##  Convenient function: set need_slicing, emit state and clear layer data
     def needsSlicing(self):
+        self.stopSlicing()
         self._need_slicing = True
         self.processingProgress.emit(0.0)
         self.backendStateChange.emit(BackendState.NotStarted)
