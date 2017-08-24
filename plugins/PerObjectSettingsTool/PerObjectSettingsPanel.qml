@@ -135,6 +135,8 @@ Item {
                             }
                         }
 
+                        // Specialty provider that only watches global_inherits (we cant filter on what property changed we get events
+                        // so we bypass that to make a dedicated provider).
                         UM.SettingPropertyProvider
                         {
                             id: provider
@@ -146,8 +148,6 @@ Item {
                             removeUnusedValue: false
                         }
 
-                        // Specialty provider that only watches global_inherits (we cant filter on what property changed we get events
-                        // so we bypass that to make a dedicated provider).
                         UM.SettingPropertyProvider
                         {
                             id: inheritStackProvider
@@ -156,36 +156,22 @@ Item {
                             watchedProperties: [ "limit_to_extruder" ]
                         }
 
-                        Binding
+                        Connections
                         {
-                            target: provider
-                            property: "containerStackId"
-                            when: model.settable_per_extruder || (inheritStackProvider.properties.limit_to_extruder != null && inheritStackProvider.properties.limit_to_extruder >= 0);
-                            value:
+                            target: UM.ActiveTool
+                            onPropertiesChanged:
                             {
-                                // associate this binding with Cura.MachineManager.activeMachineId in the beginning so this
-                                // binding will be triggered when activeMachineId is changed too.
-                                // Otherwise, if this value only depends on the extruderIds, it won't get updated when the
-                                // machine gets changed.
-                                var activeMachineId = Cura.MachineManager.activeMachineId;
-
-                                if(!model.settable_per_extruder || machineExtruderCount.properties.value == 1)
+                                // the values cannot be bound with UM.ActiveTool.properties.getValue() calls,
+                                // so here we connect to the signal and update the those values.
+                                if (typeof UM.ActiveTool.properties.getValue("SelectedObjectId") !== "undefined")
                                 {
-                                    //Not settable per extruder or there only is global, so we must pick global.
-                                    return activeMachineId;
+                                    addedSettingsModel.visibilityHandler.selectedObjectId = UM.ActiveTool.properties.getValue("SelectedObjectId");
                                 }
-                                if(inheritStackProvider.properties.limit_to_extruder != null && inheritStackProvider.properties.limit_to_extruder >= 0)
+                                if (typeof UM.ActiveTool.properties.getValue("ContainerID") !== "undefined")
                                 {
-                                    //We have limit_to_extruder, so pick that stack.
-                                    return ExtruderManager.extruderIds[String(inheritStackProvider.properties.limit_to_extruder)];
+                                    provider.containerStackId = UM.ActiveTool.properties.getValue("ContainerID");
+                                    inheritStackProvider.containerStackId = UM.ActiveTool.properties.getValue("ContainerID");
                                 }
-                                if(UM.ActiveTool.properties.getValue("ContainerID"))
-                                {
-                                    //We're on an extruder tab. Pick the current extruder.
-                                    return UM.ActiveTool.properties.getValue("ContainerID");
-                                }
-                                //No extruder tab is selected. Pick the global stack. Shouldn't happen any more since we removed the global tab.
-                                return activeMachineId;
                             }
                         }
                     }
