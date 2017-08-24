@@ -148,10 +148,9 @@ QtObject {
 
                         sourceSize: Theme.getSize("button_icon")
                     }
-                    UM.RecolorImage
+                    Image
                     {
                         visible: control.overlayIconSource != ""
-                        color: control.overlayColor
                         opacity: !control.enabled ? 0.2 : 1.0
                         source: control.overlayIconSource
                         width: Theme.getSize("button_icon").width
