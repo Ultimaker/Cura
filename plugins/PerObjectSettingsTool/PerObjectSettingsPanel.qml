@@ -165,12 +165,23 @@ Item {
                                 // so here we connect to the signal and update the those values.
                                 if (typeof UM.ActiveTool.properties.getValue("SelectedObjectId") !== "undefined")
                                 {
-                                    addedSettingsModel.visibilityHandler.selectedObjectId = UM.ActiveTool.properties.getValue("SelectedObjectId");
+                                    const selectedObjectId = UM.ActiveTool.properties.getValue("SelectedObjectId");
+                                    if (addedSettingsModel.visibilityHandler.selectedObjectId != selectedObjectId)
+                                    {
+                                        addedSettingsModel.visibilityHandler.selectedObjectId = selectedObjectId;
+                                    }
                                 }
                                 if (typeof UM.ActiveTool.properties.getValue("ContainerID") !== "undefined")
                                 {
-                                    provider.containerStackId = UM.ActiveTool.properties.getValue("ContainerID");
-                                    inheritStackProvider.containerStackId = UM.ActiveTool.properties.getValue("ContainerID");
+                                    const containerId = UM.ActiveTool.properties.getValue("ContainerID");
+                                    if (provider.containerStackId != containerId)
+                                    {
+                                        provider.containerStackId = containerId;
+                                    }
+                                    if (inheritStackProvider.containerStackId != containerId)
+                                    {
+                                        inheritStackProvider.containerStackId = containerId;
+                                    }
                                 }
                             }
                         }

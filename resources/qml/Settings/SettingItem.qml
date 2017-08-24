@@ -142,7 +142,7 @@ Item {
             {
                 id: linkedSettingIcon;
 
-                visible: Cura.MachineManager.activeStackId != Cura.MachineManager.activeMachineId && (!definition.settable_per_extruder || globalPropertyProvider.properties.limit_to_extruder != "-1") && base.showLinkedSettingIcon
+                visible: Cura.MachineManager.activeStackId != Cura.MachineManager.activeMachineId && (!definition.settable_per_extruder || String(globalPropertyProvider.properties.limit_to_extruder) != "-1") && base.showLinkedSettingIcon
 
                 height: parent.height;
                 width: height;
@@ -222,7 +222,7 @@ Item {
                     }
 
                     // If the setting does not have a limit_to_extruder property (or is -1), use the active stack.
-                    if(globalPropertyProvider.properties.limit_to_extruder == null || globalPropertyProvider.properties.limit_to_extruder == -1)
+                    if(globalPropertyProvider.properties.limit_to_extruder == null || String(globalPropertyProvider.properties.limit_to_extruder) == "-1")
                     {
                         return Cura.SettingInheritanceManager.settingsWithInheritanceWarning.indexOf(definition.key) >= 0;
                     }
@@ -232,7 +232,7 @@ Item {
                         // Observed when loading workspace, probably when SettingItems are removed.
                         return false;
                     }
-                    return Cura.SettingInheritanceManager.getOverridesForExtruder(definition.key, globalPropertyProvider.properties.limit_to_extruder).indexOf(definition.key) >= 0;
+                    return Cura.SettingInheritanceManager.getOverridesForExtruder(definition.key, String(globalPropertyProvider.properties.limit_to_extruder)).indexOf(definition.key) >= 0;
                 }
 
                 height: parent.height;
