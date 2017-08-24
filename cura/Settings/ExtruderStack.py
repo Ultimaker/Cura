@@ -65,12 +65,14 @@ class ExtruderStack(CuraContainerStack):
             context = PropertyEvaluationContext()
         context.pushContainer(self)
 
-        if not super().getProperty(key, "settable_per_extruder"):
+        if not super().getProperty(key, "settable_per_extruder", context):
             result = self.getNextStack().getProperty(key, property_name, context)
             context.popContainer()
             return result
 
-        limit_to_extruder = super().getProperty(key, "limit_to_extruder")
+        limit_to_extruder = super().getProperty(key, "limit_to_extruder", context)
+        if limit_to_extruder is not None:
+            limit_to_extruder = str(limit_to_extruder)
         if (limit_to_extruder is not None and limit_to_extruder != "-1") and self.getMetaDataEntry("position") != str(limit_to_extruder):
             if str(limit_to_extruder) in self.getNextStack().extruders:
                 result = self.getNextStack().extruders[str(limit_to_extruder)].getProperty(key, property_name, context)

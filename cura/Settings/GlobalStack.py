@@ -99,7 +99,7 @@ class GlobalStack(CuraContainerStack):
         # Handle the "resolve" property.
         if self._shouldResolve(key, property_name):
             self._resolving_settings.add(key)
-            resolve = super().getProperty(key, "resolve")
+            resolve = super().getProperty(key, "resolve", context)
             self._resolving_settings.remove(key)
             if resolve is not None:
                 return resolve
@@ -109,9 +109,11 @@ class GlobalStack(CuraContainerStack):
         context.pushContainer(self)
 
         # Handle the "limit_to_extruder" property.
-        limit_to_extruder = super().getProperty(key, "limit_to_extruder")
+        limit_to_extruder = super().getProperty(key, "limit_to_extruder", context)
+        if limit_to_extruder is not None:
+            limit_to_extruder = str(limit_to_extruder)
         if limit_to_extruder is not None and limit_to_extruder != "-1" and limit_to_extruder in self._extruders:
-            if super().getProperty(key, "settable_per_extruder"):
+            if super().getProperty(key, "settable_per_extruder", context):
                 result = self._extruders[str(limit_to_extruder)].getProperty(key, property_name, context)
                 if result is not None:
                     context.popContainer()
