@@ -1,31 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg width="18px" height="18px" viewBox="0 0 18 18" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <!-- Generator: Sketch 46.2 (44496) - http://www.bohemiancoding.com/sketch -->
-    <title>stopped aborted</title>
-    <desc>Created with Sketch.</desc>
-    <defs>
-        <rect id="path-1" x="1" y="1" width="16" height="16" rx="8"></rect>
-        <rect id="path-2" x="3.58838835" y="-0.661611652" width="1" height="7.5"></rect>
-        <rect id="path-3" x="3.41161165" y="-0.661611652" width="1" height="7.5"></rect>
-    </defs>
-    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="stopped-aborted">
-            <g id="Rectangle-45-Copy-158">
-                <use fill="#D0021B" fill-rule="evenodd" xlink:href="#path-1"></use>
-                <rect stroke="#272C30" stroke-width="1" x="0.5" y="0.5" width="17" height="17" rx="8.5"></rect>
-            </g>
-            <g id="Group-13" transform="translate(5.000000, 6.000000)">
-                <g id="Group-12">
-                    <g id="Rectangle-8" transform="translate(4.088388, 3.088388) rotate(45.000000) translate(-4.088388, -3.088388) ">
-                        <use fill="#FFFFFF" fill-rule="evenodd" xlink:href="#path-2"></use>
-                        <rect stroke="#FFFFFF" stroke-width="0.5" x="3.33838835" y="-0.911611652" width="1.25" height="8"></rect>
-                    </g>
-                    <g id="Rectangle-8" transform="translate(3.911612, 3.088388) rotate(135.000000) translate(-3.911612, -3.088388) ">
-                        <use fill="#FFFFFF" fill-rule="evenodd" xlink:href="#path-3"></use>
-                        <rect stroke="#FFFFFF" stroke-width="0.5" x="3.16161165" y="-0.911611652" width="1.25" height="8"></rect>
-                    </g>
-                </g>
-            </g>
-        </g>
-    </g>
+<svg width="18px" height="18px" viewBox="0 0 18 18" version="1.1" xmlns="http://www.w3.org/2000/svg">
+    <circle fill="#D0021B" cx="9" cy="9" r="8.5" stroke="#272C30" />
+    <line x1="6" y1="6" x2="12" y2="12" stroke-width="2" stroke="#FFFFFF" />
+    <line x1="6" y1="12" x2="12" y2="6" stroke-width="2" stroke="#FFFFFF" />
 </svg>
