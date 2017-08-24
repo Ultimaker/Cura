@@ -12,10 +12,7 @@
                 <use fill="#10CB00" fill-rule="evenodd" xlink:href="#path-1"></use>
                 <rect stroke="#272C30" stroke-width="1" x="0.5" y="0.5" width="17" height="17" rx="8.5"></rect>
             </g>
-            <g id="Group" transform="translate(4.500000, 6.000000)" fill="#FFFFFF">
-                <rect id="Rectangle-589-Copy-3" x="4.51005051" y="-0.459797975" width="1.97989899" height="7.91959595"></rect>
-                <rect id="Rectangle-589-Copy-2" x="0.302943725" y="2.86862915" width="3.39411255" height="2.2627417"></rect>
-            </g>
+            <polygon id="Path" fill="#FFFFFF" points="8.115 12.535 4.935 9.3525 6.35 7.9375 8.1175 9.705 11.6525 6.1725 13.0675 7.5875"></polygon>
         </g>
     </g>
 </svg>
