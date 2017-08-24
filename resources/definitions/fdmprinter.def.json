@@ -4095,8 +4095,7 @@
                     "unit": "mm",
                     "type": "float",
                     "default_value": 0,
-                    "minimum_value": "-layer_height_0 * 0.5",
-                    "minimum_value_warning": "-layer_height_0 * 0.2",
+                    "minimum_value_warning": "0",
                     "maximum_value_warning": "layer_height_0",
                     "enabled": "resolveOrValue('adhesion_type') != 'raft'",
                     "settable_per_mesh": false,
@@ -4108,7 +4107,7 @@
                     "description": "When non-zero, the Z offset is reduced to 0 over that many layers. A value of 0 means that the Z offset remains constant for all the layers in the print.",
                     "type": "int",
                     "default_value": 0,
-                    "minimum_value": "0 if z_offset_layer_0 <= 0 or z_offset_taper_layers == 0 else max(1, round(5 * z_offset_layer_0 / layer_height + 0.5))",
+                    "minimum_value": "0",
                     "enabled": "resolveOrValue('adhesion_type') != 'raft' and z_offset_layer_0 != 0",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false
