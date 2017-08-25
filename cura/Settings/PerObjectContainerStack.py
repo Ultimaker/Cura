@@ -1,7 +1,6 @@
 from typing import Any, Optional
 
 from UM.Decorators import override
-from UM.Logger import Logger
 from UM.Settings.Interfaces import PropertyEvaluationContext
 from UM.Settings.ContainerStack import ContainerStack
 
@@ -40,10 +39,7 @@ class PerObjectContainerStack(ContainerStack):
                 if result is not None:
                     context.popContainer()
                     return result
-            else:
-                Logger.log("e", "Setting {setting} has limit_to_extruder but is not settable per extruder!", setting = key)
 
         result = super().getProperty(key, property_name, context)
         context.popContainer()
         return result
-
