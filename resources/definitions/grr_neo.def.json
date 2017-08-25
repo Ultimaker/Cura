@@ -7,7 +7,6 @@
         "visible": true,
         "author": "Simon Cor",
         "manufacturer": "German RepRap",
-        "category": "Other",
         "file_formats": "text/x-gcode",
         "icon": "icon_ultimaker.png",
         "platform": "grr_neo_platform.stl"

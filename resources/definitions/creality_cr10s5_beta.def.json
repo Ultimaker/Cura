@@ -7,7 +7,6 @@
         "visible": true,
         "author": "Michael Wildermuth",
         "manufacturer": "Creality3D",
-        "category": "Other",
         "file_formats": "text/x-gcode"
     },
     "overrides": {
