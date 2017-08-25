@@ -252,7 +252,6 @@ Rectangle
             tooltip: Cura.MachineManager.activeQualityName
             style: UM.Theme.styles.sidebar_header_button
             activeFocusOnPress: true;
-            property var valueWarning: !Cura.MachineManager.isActiveQualitySupported
             menu: ProfileMenu { }
 
             UM.SimpleButton
