@@ -51,3 +51,16 @@ class PerObjectContainerStack(ContainerStack):
         result = super().getProperty(key, property_name, context)
         context.popContainer()
         return result
+
+    @override(ContainerStack)
+    def setNextStack(self, stack: ContainerStack):
+        super().setNextStack(stack)
+
+        # trigger signal to re-evaluate all default settings
+        for key, instance in self.getContainer(0)._instances.items():
+            # only evaluate default settings
+            if instance.state != InstanceState.Default:
+                continue
+
+            self._collectPropertyChanges(key, "value")
+        self._emitCollectedPropertyChanges()
