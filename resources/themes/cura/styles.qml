@@ -1,4 +1,4 @@
-// Copyright (c) 2015 Ultimaker B.V.
+// Copyright (c) 2017 Ultimaker B.V.
 // Cura is released under the terms of the AGPLv3 or higher.
 
 import QtQuick 2.1
@@ -128,35 +128,34 @@ QtObject {
 
             label: Item
             {
-
-                implicitHeight: Theme.getSize("button_icon").height
+                implicitHeight: Theme.getSize("topbar_button_icon").height
                 implicitWidth: Theme.getSize("topbar_button").width;
                 Item
                 {
                     anchors.horizontalCenter: parent.horizontalCenter
                     anchors.verticalCenter: parent.verticalCenter;
                     width: childrenRect.width
-                    height: Theme.getSize("button_icon").height
+                    height: Theme.getSize("topbar_button_icon").height
                     UM.RecolorImage
                     {
                         id: icon
                         color: UM.Theme.getColor("text_emphasis")
                         opacity: !control.enabled ? 0.2 : 1.0
                         source: control.iconSource
-                        width: Theme.getSize("button_icon").width
-                        height: Theme.getSize("button_icon").height
+                        width: Theme.getSize("topbar_button_icon").width
+                        height: Theme.getSize("topbar_button_icon").height
 
-                        sourceSize: Theme.getSize("button_icon")
+                        sourceSize: Theme.getSize("topbar_button_icon")
                     }
                     Image
                     {
                         visible: control.overlayIconSource != ""
                         opacity: !control.enabled ? 0.2 : 1.0
                         source: control.overlayIconSource
-                        width: Theme.getSize("button_icon").width
-                        height: Theme.getSize("button_icon").height
+                        width: Theme.getSize("topbar_button_icon").width
+                        height: Theme.getSize("topbar_button_icon").height
 
-                        sourceSize: Theme.getSize("button_icon")
+                        sourceSize: Theme.getSize("topbar_button_icon")
                     }
                     Label
                     {
