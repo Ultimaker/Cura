@@ -327,7 +327,7 @@ Column
                 //sourceSize.height: width + 5
 
                 color: UM.Theme.getColor("setting_validation_warning")
-                visible: !Cura.MachineManager.isActiveQualitySupported
+                visible: !Cura.MachineManager.isCurrentSetupSupported
             }
         }
     }
