@@ -1228,7 +1228,8 @@
                     {
                         "back": "User Specified",
                         "shortest": "Shortest",
-                        "random": "Random"
+                        "random": "Random",
+                        "sharpest_corner": "Sharpest Corner"
                     },
                     "default_value": "shortest",
                     "limit_to_extruder": "wall_0_extruder_nr",
@@ -1271,7 +1272,7 @@
                         "z_seam_corner_any":   "Any Corner"
                     },
                     "default_value": "z_seam_corner_inner",
-                    "enabled": "z_seam_type == 'back'",
+                    "enabled": "z_seam_type == 'back' or z_seam_type == 'sharpest_corner'",
                     "limit_to_extruder": "wall_0_extruder_nr",
                     "settable_per_mesh": true
                 },
