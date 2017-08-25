@@ -1272,7 +1272,7 @@
                         "z_seam_corner_any":   "Any Corner"
                     },
                     "default_value": "z_seam_corner_inner",
-                    "enabled": "z_seam_type == 'back' or z_seam_type == 'sharpest_corner'",
+                    "enabled": "z_seam_type != 'random'",
                     "limit_to_extruder": "wall_0_extruder_nr",
                     "settable_per_mesh": true
                 },
