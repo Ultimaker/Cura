@@ -158,6 +158,15 @@ Item {
 
                         Connections
                         {
+                            target: inheritStackProvider
+                            onPropertiesChanged:
+                            {
+                                provider.forcePropertiesChanged();
+                            }
+                        }
+
+                        Connections
+                        {
                             target: UM.ActiveTool
                             onPropertiesChanged:
                             {
