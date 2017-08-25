@@ -3,6 +3,7 @@ from typing import Any, Optional
 from UM.Decorators import override
 from UM.Settings.Interfaces import PropertyEvaluationContext
 from UM.Settings.ContainerStack import ContainerStack
+from UM.Settings.SettingInstance import InstanceState
 
 
 class PerObjectContainerStack(ContainerStack):
@@ -16,6 +17,13 @@ class PerObjectContainerStack(ContainerStack):
         # this import has to be here otherwise there will be a circular import loop
         from cura.CuraApplication import CuraApplication
         global_stack = CuraApplication.getInstance().getGlobalContainerStack()
+
+        # Return the user defined value if present, otherwise, evaluate the value according to the default routine.
+        if self.getContainer(0).hasProperty(key, property_name):
+            if self.getContainer(0)._instances[key].state == InstanceState.User:
+                result = super().getProperty(key, property_name, context)
+                context.popContainer()
+                return result
 
         # Handle the "limit_to_extruder" property.
         limit_to_extruder = super().getProperty(key, "limit_to_extruder", context)
