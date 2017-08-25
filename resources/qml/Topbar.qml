@@ -90,8 +90,6 @@ Rectangle
                         return UM.Theme.getIcon("tab_status_paused")
                     case "error":
                         return UM.Theme.getIcon("tab_status_stopped")
-                    case "offline":
-                        return UM.Theme.getIcon("tab_status_offline")
                     default:
                         return ""
                 }
