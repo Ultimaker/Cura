@@ -1228,7 +1228,10 @@
                     {
                         "back": "User Specified",
                         "shortest": "Shortest",
-                        "random": "Random"
+                        "random": "Random",
+                        "most_curvature_convex":  "Most Convex Region",
+                        "most_curvature_concave": "Most Concave Region",
+                        "most_curvature":         "Most Curved Region"
                     },
                     "default_value": "shortest",
                     "limit_to_extruder": "wall_0_extruder_nr",
