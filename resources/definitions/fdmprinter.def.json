@@ -1260,14 +1260,14 @@
                 },
                 "z_seam_corner":
                 {
-                    "label": "Z Seam Corner Preference",
-                    "description": "Control whether corners on the model outline influence the position of the Z-seam.",
+                    "label": "Seam Corner Preference",
+                    "description": "Control whether corners on the model outline influence the position of the seam.",
                     "type": "enum",
                     "options":
                     {
                         "z_seam_corner_none":  "Ignore Corners",
                         "z_seam_corner_inner": "Inner Corners",
-                        "z_seam_corner_outer": "Outer corners",
+                        "z_seam_corner_outer": "Outer Corners",
                         "z_seam_corner_any":   "Any Corner"
                     },
                     "default_value": "z_seam_corner_inner",
