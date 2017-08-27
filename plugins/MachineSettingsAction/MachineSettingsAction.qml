@@ -233,6 +233,7 @@ Cura.MachineAction
                                 property string label: catalog.i18nc("@label", "Gantry height")
                                 property string unit: catalog.i18nc("@label", "mm")
                                 property string tooltip: catalog.i18nc("@tooltip", "The height difference between the tip of the nozzle and the gantry system (X and Y axes). Used to prevent collisions between previous prints and the gantry when printing \"One at a Time\".")
+                                property bool forceUpdateOnChange: true
                             }
 
                             Item { width: UM.Theme.getSize("default_margin").width; height: UM.Theme.getSize("default_margin").height }
