@@ -7,7 +7,7 @@ from UM.Decorators import override
 from UM.MimeTypeDatabase import MimeType, MimeTypeDatabase
 from UM.Settings.ContainerStack import ContainerStack
 from UM.Settings.ContainerRegistry import ContainerRegistry
-from UM.Settings.Interfaces import ContainerInterface
+from UM.Settings.Interfaces import ContainerInterface, PropertyEvaluationContext
 
 from . import Exceptions
 from .CuraContainerStack import CuraContainerStack
@@ -57,21 +57,32 @@ class ExtruderStack(CuraContainerStack):
     #   \throws Exceptions.NoGlobalStackError Raised when trying to get a property from an extruder without
     #                                         having a next stack set.
     @override(ContainerStack)
-    def getProperty(self, key: str, property_name: str) -> Any:
+    def getProperty(self, key: str, property_name: str, context: Optional[PropertyEvaluationContext] = None) -> Any:
         if not self._next_stack:
             raise Exceptions.NoGlobalStackError("Extruder {id} is missing the next stack!".format(id = self.id))
 
-        if not super().getProperty(key, "settable_per_extruder"):
-            return self.getNextStack().getProperty(key, property_name)
+        if context is None:
+            context = PropertyEvaluationContext()
+        context.pushContainer(self)
 
-        limit_to_extruder = super().getProperty(key, "limit_to_extruder")
+        if not super().getProperty(key, "settable_per_extruder", context):
+            result = self.getNextStack().getProperty(key, property_name, context)
+            context.popContainer()
+            return result
+
+        limit_to_extruder = super().getProperty(key, "limit_to_extruder", context)
+        if limit_to_extruder is not None:
+            limit_to_extruder = str(limit_to_extruder)
         if (limit_to_extruder is not None and limit_to_extruder != "-1") and self.getMetaDataEntry("position") != str(limit_to_extruder):
             if str(limit_to_extruder) in self.getNextStack().extruders:
-                result = self.getNextStack().extruders[str(limit_to_extruder)].getProperty(key, property_name)
+                result = self.getNextStack().extruders[str(limit_to_extruder)].getProperty(key, property_name, context)
                 if result is not None:
+                    context.popContainer()
                     return result
 
-        return super().getProperty(key, property_name)
+        result = super().getProperty(key, property_name, context)
+        context.popContainer()
+        return result
 
     @override(CuraContainerStack)
     def _getMachineDefinition(self) -> ContainerInterface:
