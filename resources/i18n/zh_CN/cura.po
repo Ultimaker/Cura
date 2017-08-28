@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: Cura 2.7\n"
 "Report-Msgid-Bugs-To: r.dulek@ultimaker.com\n"
 "POT-Creation-Date: 2017-08-02 16:53+0000\n"
-"PO-Revision-Date: 2017-08-16 08:30+0200\n"
+"PO-Revision-Date: 2017-08-28 11:00+0200\n"
 "Last-Translator: Bothof <info@bothof.nl>\n"
 "Language-Team: PCDotFan <pc@edu.ax>, Bothof <info@bothof.nl>\n"
 "Language: zh_CN\n"
@@ -56,7 +56,7 @@ msgstr "Doodle3D 打印"
 #: /home/ruben/Projects/Cura/plugins/Doodle3D-cura-plugin/PrinterConnection.py:37
 msgctxt "@action:button"
 msgid "Print with Doodle3D"
-msgstr ""
+msgstr "使用 Doodle3D 打印"
 
 #: /home/ruben/Projects/Cura/plugins/Doodle3D-cura-plugin/PrinterConnection.py:38
 msgctxt "@info:tooltip"
@@ -320,7 +320,7 @@ msgstr "线轴 {0} 上没有足够的材料。"
 #, python-brace-format
 msgctxt "@label"
 msgid "Different PrintCore (Cura: {0}, Printer: {1}) selected for extruder {2}"
-msgstr ""
+msgstr "不同的打印头（Cura： {0}，打印机： 为挤出机 {2} 选择了 {1})"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/NetworkPrinterOutputDevice.py:694
 #, python-brace-format
@@ -332,7 +332,7 @@ msgstr "您为挤出机 {2} 选择了不同的材料（Cura：{0}，打印机：
 #, python-brace-format
 msgctxt "@label"
 msgid "PrintCore {0} is not properly calibrated. XY calibration needs to be performed on the printer."
-msgstr ""
+msgstr "打印头 {0} 未正确校准。 需要在打印机上执行 XY 校准。"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/NetworkPrinterOutputDevice.py:707
 msgctxt "@label"
@@ -408,7 +408,7 @@ msgstr "您想在 Cura 中使用当前的打印机配置吗？"
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/NetworkPrinterOutputDevice.py:1179
 msgctxt "@label"
 msgid "The PrintCores and/or materials on your printer differ from those within your current project. For the best result, always slice for the PrintCores and materials that are inserted in your printer."
-msgstr ""
+msgstr "打印机上的打印头和/或材料与当前项目中的不同。 为获得最佳打印效果，请始终使用已插入打印机的打印头和材料进行切片。"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/DiscoverUM3Action.py:19
 msgctxt "@action"
@@ -418,32 +418,32 @@ msgstr "通过网络连接"
 #: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/SolidWorksReader.py:172
 msgctxt "@info:status"
 msgid "Errors appeared while opening your SolidWorks file!             Please check, whether it is possible to open your file in SolidWorks itself without any problems as well!"
-msgstr ""
+msgstr "打开 SolidWorks 文件时发生错误！             请检查能否在 SolidWorks 中正常打开文件而不出现任何问题！"
 
 #: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/__init__.py:31
 msgctxt "@item:inlistbox"
 msgid "SolidWorks part file"
-msgstr ""
+msgstr "SolidWorks 零件文件"
 
 #: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/__init__.py:35
 msgctxt "@item:inlistbox"
 msgid "SolidWorks assembly file"
-msgstr ""
+msgstr "SolidWorks 组件文件"
 
 #: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/ConfigDialog.py:21
 msgid "Configure"
-msgstr ""
+msgstr "配置"
 
 #: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/CommonComReader.py:129
 #, python-format
 msgctxt "@info:status"
 msgid "Error while starting %s!"
-msgstr ""
+msgstr "启动 %s 时发生错误！"
 
 #: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/CommonComReader.py:207
 msgctxt "@info:status"
 msgid "Please keep in mind, that you have to reopen your SolidWorks file manually! Reloading the model won't work!"
-msgstr ""
+msgstr "请记住，您必须手动重新打开 SolidWorks 文件！ 重新加载模型将无法正常工作！"
 
 #: /home/ruben/Projects/Cura/plugins/PostProcessingPlugin/PostProcessingPlugin.py:24
 msgid "Modify G-Code"
@@ -452,7 +452,7 @@ msgstr "修改 G-Code 文件"
 #: /home/ruben/Projects/Cura/plugins/SliceInfoPlugin/SliceInfo.py:43
 msgctxt "@info"
 msgid "Cura collects anonymised slicing statistics. You can disable this in the preferences."
-msgstr ""
+msgstr "Cura 收集匿名切片统计资料。 您可以在偏好设置中禁用此选项。"
 
 #: /home/ruben/Projects/Cura/plugins/SliceInfoPlugin/SliceInfo.py:44
 msgctxt "@action:button"
@@ -569,12 +569,12 @@ msgstr "喷嘴"
 
 #: /home/ruben/Projects/Cura/plugins/PluginBrowser/PluginBrowser.py:25
 msgid "Browse plugins"
-msgstr ""
+msgstr "浏览插件"
 
 #: /home/ruben/Projects/Cura/plugins/PluginBrowser/PluginBrowser.py:120
 msgctxt "@window:title"
 msgid "Plugin browser"
-msgstr ""
+msgstr "插件浏览器"
 
 #: /home/ruben/Projects/Cura/plugins/SolidView/__init__.py:12
 msgctxt "@item:inmenu"
@@ -686,17 +686,17 @@ msgstr "自定义材料"
 #: /home/ruben/Projects/Cura/cura/Settings/MaterialManager.py:24
 msgctxt "@info:status Has a cancel button next to it."
 msgid "The selected material diameter causes the material to become incompatible with the current printer."
-msgstr ""
+msgstr "所选材料直径导致材料与当前打印机不兼容。"
 
 #: /home/ruben/Projects/Cura/cura/Settings/MaterialManager.py:25
 msgctxt "@action:button"
 msgid "Undo"
-msgstr ""
+msgstr "撤销"
 
 #: /home/ruben/Projects/Cura/cura/Settings/MaterialManager.py:25
 msgctxt "@action"
 msgid "Undo changing the material diameter."
-msgstr ""
+msgstr "撤销更改材料直径。"
 
 #: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:143
 #, python-brace-format
@@ -775,9 +775,7 @@ msgid ""
 "<p>A fatal exception has occurred that we could not recover from!</p>\n"
 "        <p>Please use the information below to post a bug report at <a href=\"http://github.com/Ultimaker/Cura/issues\">http://github.com/Ultimaker/Cura/issues</a></p>\n"
 "    "
-msgstr ""
-"<p>发生了致命错误，我们无法恢复！</p>\n"
-"        <p>请在以下网址中使用下方的信息提交错误报告：<a href=\"http://github.com/Ultimaker/Cura/issues\">http://github.com/Ultimaker/Cura/issues</a></p>"
+msgstr "<p>发生了致命错误，我们无法恢复！</p>\n        <p>请在以下网址中使用下方的信息提交错误报告：<a href=\"http://github.com/Ultimaker/Cura/issues\">http://github.com/Ultimaker/Cura/issues</a></p>"
 
 #: /home/ruben/Projects/Cura/cura/CrashHandler.py:112
 msgctxt "@action:button"
@@ -803,7 +801,7 @@ msgstr "正在载入界面…"
 #, python-format
 msgctxt "@info 'width', 'depth' and 'height' are variable names that must NOT be translated; just translate the format of ##x##x## mm."
 msgid "%(width).1f x %(depth).1f x %(height).1f mm"
-msgstr ""
+msgstr "%(宽).1f x %(深).1f x %(高).1f mm"
 
 #: /home/ruben/Projects/Cura/cura/CuraApplication.py:1285
 #, python-brace-format
@@ -864,22 +862,22 @@ msgstr "Z (高度)"
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:139
 msgctxt "@label"
 msgid "Build plate shape"
-msgstr ""
+msgstr "打印平台形状"
 
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:148
 msgctxt "@option:check"
 msgid "Origin at center"
-msgstr ""
+msgstr "置中"
 
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:156
 msgctxt "@option:check"
 msgid "Heated bed"
-msgstr ""
+msgstr "加热床"
 
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:167
 msgctxt "@label"
 msgid "Gcode flavor"
-msgstr ""
+msgstr "GCode 类型"
 
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:180
 msgctxt "@label"
@@ -894,7 +892,7 @@ msgstr "X 最小值"
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:191
 msgctxt "@tooltip"
 msgid "Distance from the left of the printhead to the center of the nozzle. Used to prevent colissions between previous prints and the printhead when printing \"One at a Time\"."
-msgstr ""
+msgstr "打印头左侧至喷嘴中心的距离。 用于防止“排队”打印时之前的打印品与打印头发生碰撞。"
 
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:200
 msgctxt "@label"
@@ -904,7 +902,7 @@ msgstr "Y 最小值"
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:201
 msgctxt "@tooltip"
 msgid "Distance from the front of the printhead to the center of the nozzle. Used to prevent colissions between previous prints and the printhead when printing \"One at a Time\"."
-msgstr ""
+msgstr "打印头前端至喷嘴中心的距离。 用于防止“排队”打印时之前的打印品与打印头发生碰撞。"
 
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:210
 msgctxt "@label"
@@ -914,7 +912,7 @@ msgstr "X 最大值"
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:211
 msgctxt "@tooltip"
 msgid "Distance from the right of the printhead to the center of the nozzle. Used to prevent colissions between previous prints and the printhead when printing \"One at a Time\"."
-msgstr ""
+msgstr "打印头右侧至喷嘴中心的距离。 用于防止“排队”打印时之前的打印品与打印头发生碰撞。"
 
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:220
 msgctxt "@label"
@@ -924,7 +922,7 @@ msgstr "Y 最大值"
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:221
 msgctxt "@tooltip"
 msgid "Distance from the rear of the printhead to the center of the nozzle. Used to prevent colissions between previous prints and the printhead when printing \"One at a Time\"."
-msgstr ""
+msgstr "打印头后部至喷嘴中心的距离。 用于防止“排队”打印时之前的打印品与打印头发生碰撞。"
 
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:233
 msgctxt "@label"
@@ -934,7 +932,7 @@ msgstr "十字轴高度"
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:235
 msgctxt "@tooltip"
 msgid "The height difference between the tip of the nozzle and the gantry system (X and Y axes). Used to prevent collisions between previous prints and the gantry when printing \"One at a Time\"."
-msgstr ""
+msgstr "喷嘴尖端与十字轴系统（X 轴和 Y 轴）之间的高度差。 用于防止“排队”打印时之前的打印品与十字轴发生碰撞。"
 
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:253
 msgctxt "@label"
@@ -944,12 +942,12 @@ msgstr "挤出机数目"
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:287
 msgctxt "@tooltip"
 msgid "The nominal diameter of filament supported by the printer. The exact diameter will be overridden by the material and/or the profile."
-msgstr ""
+msgstr "打印机所支持耗材的公称直径。 材料和/或配置文件将覆盖精确直径。"
 
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:289
 msgctxt "@label"
 msgid "Material diameter"
-msgstr ""
+msgstr "材料直径"
 
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:297
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:388
@@ -965,7 +963,7 @@ msgstr "GCode 开始部分"
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:325
 msgctxt "@tooltip"
 msgid "Gcode commands to be executed at the very start."
-msgstr ""
+msgstr "将在开始时执行的 Gcode 命令。"
 
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:334
 msgctxt "@label"
@@ -975,7 +973,7 @@ msgstr "GCode 结束部分"
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:344
 msgctxt "@tooltip"
 msgid "Gcode commands to be executed at the very end."
-msgstr ""
+msgstr "将在结束时执行的 Gcode 命令。"
 
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:376
 msgctxt "@label"
@@ -1117,10 +1115,7 @@ msgid ""
 "To print directly to your printer over the network, please make sure your printer is connected to the network using a network cable or by connecting your printer to your WIFI network. If you don't connect Cura with your printer, you can still use a USB drive to transfer g-code files to your printer.\n"
 "\n"
 "Select your printer from the list below:"
-msgstr ""
-"要通过网络向打印机发送打印请求，请确保您的打印机已通过网线或 WIFI 连接到网络。若您不能连接 Cura 与打印机，您仍然可以使用 USB 设备将 G-code 文件传输到打印机。\n"
-"\n"
-"从以下列表中选择您的打印机："
+msgstr "要通过网络向打印机发送打印请求，请确保您的打印机已通过网线或 WIFI 连接到网络。若您不能连接 Cura 与打印机，您仍然可以使用 USB 设备将 G-code 文件传输到打印机。\n\n从以下列表中选择您的打印机："
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/DiscoverUM3Action.qml:75
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/MachinesPage.qml:44
@@ -1150,7 +1145,7 @@ msgstr "刷新"
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/DiscoverUM3Action.qml:196
 msgctxt "@label"
 msgid "If your printer is not listed, read the <a href='%1'>network printing troubleshooting guide</a>"
-msgstr ""
+msgstr "如果您的打印机未列出，请阅读<a href='%1'>网络打印故障排除指南</a>"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/DiscoverUM3Action.qml:223
 msgctxt "@label"
@@ -1226,27 +1221,27 @@ msgstr "应用配置"
 #: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/ConfigDialog.qml:20
 msgctxt "@title:window"
 msgid "Cura SolidWorks Plugin Configuration"
-msgstr ""
+msgstr "Cura SolidWorks 插件配置"
 
 #: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/ConfigDialog.qml:44
 msgctxt "@action:label"
 msgid "Default quality of the exported STL:"
-msgstr ""
+msgstr "导出 STL 的默认质量："
 
 #: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/ConfigDialog.qml:79
 msgctxt "@option:curaSolidworksStlQuality"
 msgid "Always ask"
-msgstr ""
+msgstr "总是询问"
 
 #: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/ConfigDialog.qml:80
 msgctxt "@option:curaSolidworksStlQuality"
 msgid "Always use Fine quality"
-msgstr ""
+msgstr "总是使用精细品质"
 
 #: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/ConfigDialog.qml:81
 msgctxt "@option:curaSolidworksStlQuality"
 msgid "Always use Coarse quality"
-msgstr ""
+msgstr "总是使用粗糙品质"
 
 #: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/ConfigDialog.qml:92
 #: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/ExportSTLUI.qml:88
@@ -1258,27 +1253,27 @@ msgstr "确定"
 #: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/ExportSTLUI.qml:20
 msgctxt "@title:window"
 msgid "Import SolidWorks File as STL..."
-msgstr ""
+msgstr "导入 SolidWorks 文件为 STL..."
 
 #: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/ExportSTLUI.qml:43
 msgctxt "@info:tooltip"
 msgid "Quality of the Exported STL"
-msgstr ""
+msgstr "导出 STL 的质量"
 
 #: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/ExportSTLUI.qml:48
 msgctxt "@action:label"
 msgid "Quality"
-msgstr ""
+msgstr "质量"
 
 #: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/ExportSTLUI.qml:62
 msgctxt "@option:curaSolidworksStlQuality"
 msgid "Coarse"
-msgstr ""
+msgstr "粗糙"
 
 #: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/ExportSTLUI.qml:63
 msgctxt "@option:curaSolidworksStlQuality"
 msgid "Fine"
-msgstr ""
+msgstr "精细"
 
 #: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/ExportSTLUI.qml:78
 #: /home/ruben/Projects/Cura/resources/qml/AskOpenAsProjectOrModelsDialog.qml:81
@@ -1595,27 +1590,27 @@ msgstr "打开"
 #: /home/ruben/Projects/Cura/plugins/PluginBrowser/PluginBrowser.qml:11
 msgctxt "@title:window"
 msgid "Find & Update plugins"
-msgstr ""
+msgstr "查找与更新插件"
 
 #: /home/ruben/Projects/Cura/plugins/PluginBrowser/PluginBrowser.qml:25
 msgctxt "@label"
 msgid "Here you can find a list of Third Party plugins."
-msgstr ""
+msgstr "您可以在这里找到第三方插件列表。"
 
 #: /home/ruben/Projects/Cura/plugins/PluginBrowser/PluginBrowser.qml:143
 msgctxt "@action:button"
 msgid "Upgrade"
-msgstr ""
+msgstr "升级"
 
 #: /home/ruben/Projects/Cura/plugins/PluginBrowser/PluginBrowser.qml:145
 msgctxt "@action:button"
 msgid "Installed"
-msgstr ""
+msgstr "已安装"
 
 #: /home/ruben/Projects/Cura/plugins/PluginBrowser/PluginBrowser.qml:147
 msgctxt "@action:button"
 msgid "Download"
-msgstr ""
+msgstr "下载"
 
 #: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UM2UpgradeSelectionMachineAction.qml:25
 #: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UMOUpgradeSelectionMachineAction.qml:25
@@ -1870,9 +1865,7 @@ msgctxt "@text:window"
 msgid ""
 "You have customized some profile settings.\n"
 "Would you like to keep or discard those settings?"
-msgstr ""
-"您已自定义某些配置文件设置。\n"
-"您想保留或舍弃这些设置吗？"
+msgstr "您已自定义某些配置文件设置。\n您想保留或舍弃这些设置吗？"
 
 #: /home/ruben/Projects/Cura/resources/qml/DiscardOrKeepProfileChangesDialog.qml:110
 msgctxt "@title:column"
@@ -2020,7 +2013,7 @@ msgstr "全部勾选"
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/ProfileTab.qml:40
 msgctxt "@info:status"
 msgid "Calculated"
-msgstr ""
+msgstr "已计算"
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/ProfileTab.qml:53
 msgctxt "@title:column"
@@ -2121,12 +2114,12 @@ msgstr "反转视角变焦方向。"
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:363
 msgctxt "@info:tooltip"
 msgid "Should zooming move in the direction of the mouse?"
-msgstr ""
+msgstr "是否跟随鼠标方向进行缩放？"
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:368
 msgctxt "@action:button"
 msgid "Zoom toward mouse direction"
-msgstr ""
+msgstr "跟随鼠标方向缩放"
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:377
 msgctxt "@info:tooltip"
@@ -2575,9 +2568,7 @@ msgctxt "@info:credit"
 msgid ""
 "Cura is developed by Ultimaker B.V. in cooperation with the community.\n"
 "Cura proudly uses the following open source projects:"
-msgstr ""
-"Cura 由 Ultimaker B.V. 与社区合作开发。\n"
-"Cura 使用以下开源项目："
+msgstr "Cura 由 Ultimaker B.V. 与社区合作开发。\nCura 使用以下开源项目："
 
 #: /home/ruben/Projects/Cura/resources/qml/AboutDialog.qml:118
 msgctxt "@label"
@@ -2627,7 +2618,7 @@ msgstr "数据交换格式"
 #: /home/ruben/Projects/Cura/resources/qml/AboutDialog.qml:128
 msgctxt "@label"
 msgid "Support library for scientific computing"
-msgstr ""
+msgstr "科学计算支持库"
 
 #: /home/ruben/Projects/Cura/resources/qml/AboutDialog.qml:129
 msgctxt "@label"
@@ -2705,10 +2696,7 @@ msgid ""
 "Some hidden settings use values different from their normal calculated value.\n"
 "\n"
 "Click to make these settings visible."
-msgstr ""
-"一些隐藏设置正在使用有别于一般设置的计算值。\n"
-"\n"
-"单击以使这些设置可见。"
+msgstr "一些隐藏设置正在使用有别于一般设置的计算值。\n\n单击以使这些设置可见。"
 
 #: /home/ruben/Projects/Cura/resources/qml/Settings/SettingItem.qml:62
 msgctxt "@label Header for list of settings."
@@ -2736,10 +2724,7 @@ msgid ""
 "This setting has a value that is different from the profile.\n"
 "\n"
 "Click to restore the value of the profile."
-msgstr ""
-"此设置的值与配置文件不同。\n"
-"\n"
-"单击以恢复配置文件的值。"
+msgstr "此设置的值与配置文件不同。\n\n单击以恢复配置文件的值。"
 
 #: /home/ruben/Projects/Cura/resources/qml/Settings/SettingItem.qml:284
 msgctxt "@label"
@@ -2747,10 +2732,7 @@ msgid ""
 "This setting is normally calculated, but it currently has an absolute value set.\n"
 "\n"
 "Click to restore the calculated value."
-msgstr ""
-"此设置通常可被自动计算，但其当前已被绝对定义。\n"
-"\n"
-"单击以恢复自动计算的值。"
+msgstr "此设置通常可被自动计算，但其当前已被绝对定义。\n\n单击以恢复自动计算的值。"
 
 #: /home/ruben/Projects/Cura/resources/qml/Sidebar.qml:112
 msgctxt "@label:listbox"
@@ -2762,9 +2744,7 @@ msgctxt "@label:listbox"
 msgid ""
 "Print Setup disabled\n"
 "G-code files cannot be modified"
-msgstr ""
-"打印设置已禁用\n"
-"G-code 文件无法被修改"
+msgstr "打印设置已禁用\nG-code 文件无法被修改"
 
 #: /home/ruben/Projects/Cura/resources/qml/Sidebar.qml:455
 msgctxt "@tooltip"
@@ -2789,7 +2769,7 @@ msgstr "视图(&V)"
 #: /home/ruben/Projects/Cura/resources/qml/Menus/NozzleMenu.qml:26
 msgctxt "@title:menuitem %1 is the nozzle currently loaded in the printer"
 msgid "Automatic: %1"
-msgstr ""
+msgstr "自动： %1"
 
 #: /home/ruben/Projects/Cura/resources/qml/Menus/ContextMenu.qml:25
 msgctxt "@label"
@@ -3084,7 +3064,7 @@ msgstr "配置设定可见性..."
 #: /home/ruben/Projects/Cura/resources/qml/SaveButton.qml:27
 msgctxt "@label:PrintjobStatus"
 msgid "Please load a 3D model"
-msgstr ""
+msgstr "请载入一个 3D 模型"
 
 #: /home/ruben/Projects/Cura/resources/qml/SaveButton.qml:33
 msgctxt "@label:PrintjobStatus"
@@ -3247,7 +3227,7 @@ msgstr "你确定要开始一个新项目吗？这将清除打印平台及任何
 #: /home/ruben/Projects/Cura/resources/qml/Cura.qml:750
 msgctxt "@window:title"
 msgid "Install Plugin"
-msgstr ""
+msgstr "安装插件"
 
 #: /home/ruben/Projects/Cura/resources/qml/Cura.qml:757
 msgctxt "@title:window"
@@ -3282,12 +3262,12 @@ msgstr "保存时不再显示项目摘要"
 #: /home/ruben/Projects/Cura/resources/qml/Topbar.qml:47
 msgctxt "@title:tab"
 msgid "Prepare"
-msgstr ""
+msgstr "准备"
 
 #: /home/ruben/Projects/Cura/resources/qml/Topbar.qml:60
 msgctxt "@title:tab"
 msgid "Print"
-msgstr ""
+msgstr "打印"
 
 #: /home/ruben/Projects/Cura/resources/qml/SidebarSimple.qml:41
 msgctxt "@label"
@@ -3383,7 +3363,7 @@ msgstr "需要帮助改善您的打印？阅读 <a href=‘%1’>Ultimaker 故�
 msgctxt "@label %1 is filled in with the name of an extruder"
 msgid "Print Selected Model with %1"
 msgid_plural "Print Selected Models with %1"
-msgstr[0] ""
+msgstr[0] "用 %1 打印所选模型"
 
 #: /home/ruben/Projects/Cura/resources/qml/AskOpenAsProjectOrModelsDialog.qml:20
 msgctxt "@title:window"
@@ -3432,350 +3412,347 @@ msgid ""
 "Some setting/override values are different from the values stored in the profile.\n"
 "\n"
 "Click to open the profile manager."
-msgstr ""
-"某些设置/重写值与存储在配置文件中的值不同。\n"
-"\n"
-"点击打开配置文件管理器。"
+msgstr "某些设置/重写值与存储在配置文件中的值不同。\n\n点击打开配置文件管理器。"
 
 #: MachineSettingsAction/plugin.json
 msgctxt "description"
 msgid "Provides a way to change machine settings (such as build volume, nozzle size, etc)"
-msgstr ""
+msgstr "提供更改打印机设置（如成形空间体积、喷嘴口径等）的方法"
 
 #: MachineSettingsAction/plugin.json
 msgctxt "name"
 msgid "Machine Settings action"
-msgstr ""
+msgstr "打印机设置操作"
 
 #: XRayView/plugin.json
 msgctxt "description"
 msgid "Provides the X-Ray view."
-msgstr ""
+msgstr "提供透视视图。"
 
 #: XRayView/plugin.json
 msgctxt "name"
 msgid "X-Ray View"
-msgstr ""
+msgstr "透视视图"
 
 #: X3DReader/plugin.json
 msgctxt "description"
 msgid "Provides support for reading X3D files."
-msgstr ""
+msgstr "支持读取 X3D 文件。"
 
 #: X3DReader/plugin.json
 msgctxt "name"
 msgid "X3D Reader"
-msgstr ""
+msgstr "X3D 读取器"
 
 #: GCodeWriter/plugin.json
 msgctxt "description"
 msgid "Writes GCode to a file."
-msgstr ""
+msgstr "将 GCode 写入至文件。"
 
 #: GCodeWriter/plugin.json
 msgctxt "name"
 msgid "GCode Writer"
-msgstr ""
+msgstr "GCode 写入器"
 
 #: cura-god-mode-plugin/src/GodMode/plugin.json
 msgctxt "description"
 msgid "Dump the contents of all settings to a HTML file."
-msgstr ""
+msgstr "将所有设置内容转储至 HTML 文件。"
 
 #: cura-god-mode-plugin/src/GodMode/plugin.json
 msgctxt "name"
 msgid "God Mode"
-msgstr ""
+msgstr "God 模式"
 
 #: ChangeLogPlugin/plugin.json
 msgctxt "description"
 msgid "Shows changes since latest checked version."
-msgstr ""
+msgstr "显示最新版本改动。"
 
 #: ChangeLogPlugin/plugin.json
 msgctxt "name"
 msgid "Changelog"
-msgstr ""
+msgstr "更新日志"
 
 #: ProfileFlattener/plugin.json
 msgctxt "description"
 msgid "Create a flattend quality changes profile."
-msgstr ""
+msgstr "创建一份合并质量变化配置文件。"
 
 #: ProfileFlattener/plugin.json
 msgctxt "name"
 msgid "Profile flatener"
-msgstr ""
+msgstr "配置文件合并器"
 
 #: USBPrinting/plugin.json
 msgctxt "description"
 msgid "Accepts G-Code and sends them to a printer. Plugin can also update firmware."
-msgstr ""
+msgstr "接受 G-Code 并将其发送到一台打印机。 插件也可以更新固件。"
 
 #: USBPrinting/plugin.json
 msgctxt "name"
 msgid "USB printing"
-msgstr ""
+msgstr "USB 联机打印"
 
 #: X3GWriter/plugin.json
 msgctxt "description"
 msgid "Provides support for writing X3G files"
-msgstr ""
+msgstr "提供对写入 X3G 文件的支持"
 
 #: X3GWriter/plugin.json
 msgctxt "name"
 msgid "X3G Writer"
-msgstr ""
+msgstr "X3G 写入器"
 
 #: RemovableDriveOutputDevice/plugin.json
 msgctxt "description"
 msgid "Provides removable drive hotplugging and writing support."
-msgstr ""
+msgstr "提供可移动磁盘热插拔和写入文件的支持。"
 
 #: RemovableDriveOutputDevice/plugin.json
 msgctxt "name"
 msgid "Removable Drive Output Device Plugin"
-msgstr ""
+msgstr "可移动磁盘输出设备插件"
 
 #: UM3NetworkPrinting/plugin.json
 msgctxt "description"
 msgid "Manages network connections to Ultimaker 3 printers"
-msgstr ""
+msgstr "管理与 Ultimaker 3 打印机的网络连接"
 
 #: UM3NetworkPrinting/plugin.json
 msgctxt "name"
 msgid "UM3 Network Connection"
-msgstr ""
+msgstr "UM3 网络连接"
 
 #: CuraSolidWorksPlugin/plugin.json
 msgctxt "description"
 msgid "Gives you the possibility to open certain files via SolidWorks itself. These are then converted and loaded into Cura"
-msgstr ""
+msgstr "让您可以通过 SolidWorks 自身打开特定文件。 随后会将这些文件进行转换并载入 Cura"
 
 #: CuraSolidWorksPlugin/plugin.json
 msgctxt "name"
 msgid "SolidWorks Integration"
-msgstr ""
+msgstr "SolidWorks 集成"
 
 #: PostProcessingPlugin/plugin.json
 msgctxt "description"
 msgid "Extension that allows for user created scripts for post processing"
-msgstr ""
+msgstr "扩展程序（允许用户创建脚本进行后期处理）"
 
 #: PostProcessingPlugin/plugin.json
 msgctxt "name"
 msgid "Post Processing"
-msgstr ""
+msgstr "后期处理"
 
 #: AutoSave/plugin.json
 msgctxt "description"
 msgid "Automatically saves Preferences, Machines and Profiles after changes."
-msgstr ""
+msgstr "更改后自动保存首选项、机器和配置文件。"
 
 #: AutoSave/plugin.json
 msgctxt "name"
 msgid "Auto Save"
-msgstr ""
+msgstr "自动保存"
 
 #: SliceInfoPlugin/plugin.json
 msgctxt "description"
 msgid "Submits anonymous slice info. Can be disabled through preferences."
-msgstr ""
+msgstr "提交匿名切片信息。 可以通过偏好设置禁用。"
 
 #: SliceInfoPlugin/plugin.json
 msgctxt "name"
 msgid "Slice info"
-msgstr ""
+msgstr "切片信息"
 
 #: XmlMaterialProfile/plugin.json
 msgctxt "description"
 msgid "Provides capabilities to read and write XML-based material profiles."
-msgstr ""
+msgstr "提供读取和写入基于 XML 的材料配置文件的功能。"
 
 #: XmlMaterialProfile/plugin.json
 msgctxt "name"
 msgid "Material Profiles"
-msgstr ""
+msgstr "材料配置文件"
 
 #: LegacyProfileReader/plugin.json
 msgctxt "description"
 msgid "Provides support for importing profiles from legacy Cura versions."
-msgstr ""
+msgstr "支持从 Cura 旧版本导入配置文件。"
 
 #: LegacyProfileReader/plugin.json
 msgctxt "name"
 msgid "Legacy Cura Profile Reader"
-msgstr ""
+msgstr "旧版 Cura 配置文件读取器"
 
 #: GCodeProfileReader/plugin.json
 msgctxt "description"
 msgid "Provides support for importing profiles from g-code files."
-msgstr ""
+msgstr "提供了从 GCode 文件中导入配置文件的支持。"
 
 #: GCodeProfileReader/plugin.json
 msgctxt "name"
 msgid "GCode Profile Reader"
-msgstr ""
+msgstr "GCode 配置文件读取器"
 
 #: LayerView/plugin.json
 msgctxt "description"
 msgid "Provides the Layer view."
-msgstr ""
+msgstr "提供分层视图。"
 
 #: LayerView/plugin.json
 msgctxt "name"
 msgid "Layer View"
-msgstr ""
+msgstr "分层视图"
 
 #: VersionUpgrade/VersionUpgrade25to26/plugin.json
 msgctxt "description"
 msgid "Upgrades configurations from Cura 2.5 to Cura 2.6."
-msgstr ""
+msgstr "将配置从 Cura 2.5 版本升级至 2.6 版本。"
 
 #: VersionUpgrade/VersionUpgrade25to26/plugin.json
 msgctxt "name"
 msgid "Version Upgrade 2.5 to 2.6"
-msgstr ""
+msgstr "版本自 2.5 升级到 2.6"
 
 #: VersionUpgrade/VersionUpgrade26to27/plugin.json
 msgctxt "description"
 msgid "Upgrades configurations from Cura 2.6 to Cura 2.7."
-msgstr ""
+msgstr "将配置从 Cura 2.6 版本升级至 2.7 版本。"
 
 #: VersionUpgrade/VersionUpgrade26to27/plugin.json
 msgctxt "name"
 msgid "Version Upgrade 2.6 to 2.7"
-msgstr ""
+msgstr "版本自 2.6 升级到 2.7"
 
 #: VersionUpgrade/VersionUpgrade21to22/plugin.json
 msgctxt "description"
 msgid "Upgrades configurations from Cura 2.1 to Cura 2.2."
-msgstr ""
+msgstr "将配置从 Cura 2.1 版本升级至 2.2 版本。"
 
 #: VersionUpgrade/VersionUpgrade21to22/plugin.json
 msgctxt "name"
 msgid "Version Upgrade 2.1 to 2.2"
-msgstr ""
+msgstr "版本自 2.1 升级到 2.2"
 
 #: VersionUpgrade/VersionUpgrade22to24/plugin.json
 msgctxt "description"
 msgid "Upgrades configurations from Cura 2.2 to Cura 2.4."
-msgstr ""
+msgstr "将配置从 Cura 2.2 版本升级至 2.4 版本。"
 
 #: VersionUpgrade/VersionUpgrade22to24/plugin.json
 msgctxt "name"
 msgid "Version Upgrade 2.2 to 2.4"
-msgstr ""
+msgstr "版本自 2.2 升级到 2.4"
 
 #: ImageReader/plugin.json
 msgctxt "description"
 msgid "Enables ability to generate printable geometry from 2D image files."
-msgstr ""
+msgstr "支持从 2D 图像文件生成可打印几何模型的能力。"
 
 #: ImageReader/plugin.json
 msgctxt "name"
 msgid "Image Reader"
-msgstr ""
+msgstr "图像读取器"
 
 #: CuraEngineBackend/plugin.json
 msgctxt "description"
 msgid "Provides the link to the CuraEngine slicing backend."
-msgstr ""
+msgstr "提供 CuraEngine 切片后端的路径。"
 
 #: CuraEngineBackend/plugin.json
 msgctxt "name"
 msgid "CuraEngine Backend"
-msgstr ""
+msgstr "CuraEngine 后端"
 
 #: PerObjectSettingsTool/plugin.json
 msgctxt "description"
 msgid "Provides the Per Model Settings."
-msgstr ""
+msgstr "提供对每个模型的单独设置。"
 
 #: PerObjectSettingsTool/plugin.json
 msgctxt "name"
 msgid "Per Model Settings Tool"
-msgstr ""
+msgstr "单一模型设置工具"
 
 #: 3MFReader/plugin.json
 msgctxt "description"
 msgid "Provides support for reading 3MF files."
-msgstr ""
+msgstr "提供对读取 3MF 格式文件的支持。"
 
 #: 3MFReader/plugin.json
 msgctxt "name"
 msgid "3MF Reader"
-msgstr ""
+msgstr "3MF 读取器"
 
 #: PluginBrowser/plugin.json
 msgctxt "description"
 msgid "Find, manage and install new plugins."
-msgstr ""
+msgstr "查找、管理和安装新插件。"
 
 #: PluginBrowser/plugin.json
 msgctxt "name"
 msgid "Plugin Browser"
-msgstr ""
+msgstr "插件浏览器"
 
 #: SolidView/plugin.json
 msgctxt "description"
 msgid "Provides a normal solid mesh view."
-msgstr ""
+msgstr "提供一个基本的实体网格视图。"
 
 #: SolidView/plugin.json
 msgctxt "name"
 msgid "Solid View"
-msgstr ""
+msgstr "实体视图"
 
 #: GCodeReader/plugin.json
 msgctxt "description"
 msgid "Allows loading and displaying G-code files."
-msgstr ""
+msgstr "允许加载和显示 G-code 文件。"
 
 #: GCodeReader/plugin.json
 msgctxt "name"
 msgid "G-code Reader"
-msgstr ""
+msgstr "G-code 读取器"
 
 #: CuraProfileWriter/plugin.json
 msgctxt "description"
 msgid "Provides support for exporting Cura profiles."
-msgstr ""
+msgstr "提供了对导出 Cura 配置文件的支持。"
 
 #: CuraProfileWriter/plugin.json
 msgctxt "name"
 msgid "Cura Profile Writer"
-msgstr ""
+msgstr "Cura 配置文件写入器"
 
 #: 3MFWriter/plugin.json
 msgctxt "description"
 msgid "Provides support for writing 3MF files."
-msgstr ""
+msgstr "提供对写入 3MF 文件的支持。"
 
 #: 3MFWriter/plugin.json
 msgctxt "name"
 msgid "3MF Writer"
-msgstr ""
+msgstr "3MF 写入器"
 
 #: UltimakerMachineActions/plugin.json
 msgctxt "description"
 msgid "Provides machine actions for Ultimaker machines (such as bed leveling wizard, selecting upgrades, etc)"
-msgstr ""
+msgstr "为 Ultimaker 打印机提供操作选项(如平台调平向导、选择升级等)"
 
 #: UltimakerMachineActions/plugin.json
 msgctxt "name"
 msgid "Ultimaker machine actions"
-msgstr ""
+msgstr "Ultimaker 打印机操作"
 
 #: CuraProfileReader/plugin.json
 msgctxt "description"
 msgid "Provides support for importing Cura profiles."
-msgstr ""
+msgstr "提供了对导入 Cura 配置文件的支持。"
 
 #: CuraProfileReader/plugin.json
 msgctxt "name"
 msgid "Cura Profile Reader"
-msgstr ""
+msgstr "Cura 配置文件读取器"
 
 #~ msgctxt "@label"
 #~ msgid "Machine Settings action"
