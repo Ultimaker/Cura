@@ -161,6 +161,7 @@ UM.PreferencesPage
                             append({ text: "Português do Brasil", code: "ptbr" })
                             append({ text: "Русский", code: "ru" })
                             append({ text: "Türkçe", code: "tr" })
+                            append({ text: "简体中文", code: "zh_CN" })
 
                             var date_object = new Date();
                             if (date_object.getUTCMonth() == 8 && date_object.getUTCDate() == 19) //Only add Pirate on the 19th of September.
