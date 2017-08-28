@@ -130,7 +130,7 @@ Item {
             id: settingControls
 
             height: parent.height / 2
-            spacing: UM.Theme.getSize("sidebar_margin").width / 2
+            spacing: UM.Theme.getSize("sidebar_margin").height / 2
 
             anchors {
                 right: controlContainer.left
