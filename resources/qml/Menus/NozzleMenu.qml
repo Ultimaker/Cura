@@ -30,12 +30,15 @@ Menu
         visible: printerConnected && Cura.MachineManager.printerOutputDevices[0].hotendIds.length > extruderIndex
         onTriggered:
         {
+            var activeExtruderIndex = ExtruderManager.activeExtruderIndex;
+            ExtruderManager.setActiveExtruderIndex(extruderIndex);
             var hotendId = Cura.MachineManager.printerOutputDevices[0].hotendIds[extruderIndex];
             var itemIndex = nozzleInstantiator.model.find("name", hotendId);
             if(itemIndex > -1)
             {
-                Cura.MachineManager.setActiveVariant(nozzleInstantiator.model.getItem(itemIndex).id)
+                Cura.MachineManager.setActiveVariant(nozzleInstantiator.model.getItem(itemIndex).id);
             }
+            ExtruderManager.setActiveExtruderIndex(activeExtruderIndex);
         }
     }
 
@@ -56,11 +59,17 @@ Menu
             }
         }
         MenuItem {
-            text: model.name;
-            checkable: true;
-            checked: model.id == Cura.MachineManager.activeVariantId;
+            text: model.name
+            checkable: true
+            checked: model.id == Cura.MachineManager.allActiveVariantIds[ExtruderManager.extruderIds[extruderIndex]]
             exclusiveGroup: group
-            onTriggered: Cura.MachineManager.setActiveVariant(model.id)
+            onTriggered:
+            {
+                var activeExtruderIndex = ExtruderManager.activeExtruderIndex;
+                ExtruderManager.setActiveExtruderIndex(extruderIndex);
+                Cura.MachineManager.setActiveVariant(model.id);
+                ExtruderManager.setActiveExtruderIndex(activeExtruderIndex);
+            }
         }
         onObjectAdded: menu.insertItem(index, object)
         onObjectRemoved: menu.removeItem(object)

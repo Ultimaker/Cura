@@ -6,7 +6,6 @@
     "metadata": {
         "visible": true,
         "manufacturer": "Velleman",
-        "category": "Other",
         "file_formats": "text/x-gcode",
         "icon": "icon_ultimaker2",
         "platform": "Vertex_build_panel.stl",

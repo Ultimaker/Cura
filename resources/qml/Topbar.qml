@@ -57,8 +57,40 @@ Rectangle
             id: showMonitor
             height: UM.Theme.getSize("sidebar_header").height
             onClicked: base.startMonitoringPrint()
-            text: catalog.i18nc("@title:tab", "Print")
-            iconSource: UM.Theme.getIcon("tab_monitor")
+            text: catalog.i18nc("@title:tab", "Monitor")
+            iconSource: printerConnected ? UM.Theme.getIcon("tab_monitor_with_status") : UM.Theme.getIcon("tab_monitor")
+            property color overlayColor:
+            {
+                if(!printerAcceptsCommands)
+                {
+                    return UM.Theme.getColor("status_unknown");
+                }
+
+                if(Cura.MachineManager.printerOutputDevices[0].printerState == "maintenance")
+                {
+                    return UM.Theme.getColor("status_busy");
+                }
+                switch(Cura.MachineManager.printerOutputDevices[0].jobState)
+                {
+                    case "printing":
+                    case "pre_print":
+                    case "wait_cleanup":
+                    case "pausing":
+                    case "resuming":
+                        return UM.Theme.getColor("status_busy");
+                    case "ready":
+                    case "":
+                        return UM.Theme.getColor("status_ready");
+                    case "paused":
+                        return UM.Theme.getColor("status_paused");
+                    case "error":
+                        return UM.Theme.getColor("status_stopped");
+                    case "offline":
+                        return UM.Theme.getColor("status_offline");
+                    default:
+                        return UM.Theme.getColor("text_reversed");
+                }
+            }
             property string overlayIconSource:
             {
                 if(!printerConnected)

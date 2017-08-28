@@ -7,7 +7,6 @@
         "visible": true,
         "author": "Dagoma",
         "manufacturer": "Dagoma",
-        "category": "Other",
         "file_formats": "text/x-gcode",
         "icon": "icon_ultimaker2.png",
         "platform": "discoeasy200.stl",

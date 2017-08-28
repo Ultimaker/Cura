@@ -50,12 +50,11 @@ Third party plugins
 * [X3G Writer](https://github.com/Ghostkeeper/X3GWriter): Adds support for exporting X3G files.
 * [Auto orientation](https://github.com/nallath/CuraOrientationPlugin): Calculate the optimal orientation for a model.
 * [OctoPrint Plugin](https://github.com/fieldofview/OctoPrintPlugin): Send printjobs directly to OctoPrint and monitor their progress in Cura.
-* [WirelessPrinting Plugin](https://github.com/probonopd/WirelessPrinting): Print wirelessly from Cura to your 3D printer connected to an ESP8266 module.
 * [Electric Print Cost Calculator Plugin](https://github.com/zoff99/ElectricPrintCostCalculator): Calculate the electric costs of a print.
 
 Making profiles for other printers
 ----------------------------------
-There are two ways of doing it. You can either use the generator [here](http://quillford.github.io/CuraProfileMaker/) or you can use [this](https://github.com/Ultimaker/Cura/blob/master/resources/definitions/ultimaker_original.def.json) as a template.
+If your make of printer is not in the list of supported printers, and using the "Custom FDM Printer" does not offer enough flexibility, you can use [this](https://github.com/Ultimaker/Cura/blob/master/resources/definitions/ultimaker_original.def.json) as a template.
 
 * Change the machine ID to something unique
 * Change the machine_name to your printer's name
@@ -63,11 +62,11 @@ There are two ways of doing it. You can either use the generator [here](http://q
 * Set your machine's dimensions with machine_width, machine_depth, and machine_height
 * If your printer's origin is in the center of the bed, set machine_center_is_zero to true.
 * Set your print head dimensions with the machine_head_shape parameters
-* Set the nozzle offset with machine_nozzle_offset_x and machine_nozzle_offset_y
 * Set the start and end gcode in machine_start_gcode and machine_end_gcode
-* If your printer has a heated bed, set visible to true under material_bed_temperature
 
 Once you are done, put the profile you have made into resources/definitions, or in definitions in your cura profile folder.
+
+If you want to make a definition for a multi-extrusion printer, have a look at [this](https://github.com/Ultimaker/Cura/blob/master/resources/definitions/ultimaker_original_dual.def.json) as a template, along with the two extruder definitions it references [here](https://github.com/Ultimaker/Cura/blob/master/resources/extruders/ultimaker_original_dual_1st.def.json) and [here](https://github.com/Ultimaker/Cura/blob/master/resources/extruders/ultimaker_original_dual_2nd.def.json)
 
 Translating Cura
 ----------------
