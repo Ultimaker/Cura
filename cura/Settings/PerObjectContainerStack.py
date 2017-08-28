@@ -1,5 +1,6 @@
 from typing import Any, Optional
 
+from UM.Application import Application
 from UM.Decorators import override
 from UM.Settings.Interfaces import PropertyEvaluationContext
 from UM.Settings.ContainerStack import ContainerStack
@@ -14,9 +15,7 @@ class PerObjectContainerStack(ContainerStack):
             context = PropertyEvaluationContext()
         context.pushContainer(self)
 
-        # this import has to be here otherwise there will be a circular import loop
-        from cura.CuraApplication import CuraApplication
-        global_stack = CuraApplication.getInstance().getGlobalContainerStack()
+        global_stack = Application.getInstance().getGlobalContainerStack()
 
         # Return the user defined value if present, otherwise, evaluate the value according to the default routine.
         if self.getContainer(0).hasProperty(key, property_name):
