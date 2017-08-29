@@ -940,7 +940,7 @@
                     "settable_per_extruder": false,
                     "settable_per_meshgroup": true,
                     "settable_globally": true,
-                    "enabled": "machine_extruder_count > 1 and roofing_layer_count > 0 and top_layers > 0"
+                    "enabled": "machine_extruder_count > 1 and max(extruderValues('roofing_layer_count')) > 0 and max(extruderValues('top_layers')) > 0"
                 },
                 "roofing_layer_count":
                 {
