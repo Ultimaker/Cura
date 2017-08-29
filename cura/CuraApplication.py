@@ -205,6 +205,8 @@ class CuraApplication(QtApplication):
         super().__init__(name = "cura", version = CuraVersion, buildtype = CuraBuildType,
                          tray_icon_name = "cura-icon-32.png")
 
+        self.default_theme = "cura-light"
+
         self.setWindowIcon(QIcon(Resources.getPath(Resources.Images, "cura-icon.png")))
 
         self.setRequiredPlugins([
