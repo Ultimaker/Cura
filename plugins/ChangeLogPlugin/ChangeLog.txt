@@ -56,6 +56,9 @@ Extra tooltips have been added to clarify the machine settings.
 *Polish now supported
 Polish language support added. This can be selected in the preferences menu.
 
+*Chinese now supported
+Chinese language support added. This can be selected in the preferences menu.
+
 *Bug fixes
 - Cura project Mac extensions
 - Crashes when adding printers
