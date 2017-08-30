@@ -18,7 +18,6 @@ Item {
     property var backend: CuraApplication.getBackend();
     property bool activity: CuraApplication.platformActivity;
 
-    property int totalHeight: childrenRect.height + UM.Theme.getSize("default_margin").height
     property string fileBaseName
     property string statusText:
     {
@@ -52,7 +51,7 @@ Item {
         anchors.leftMargin: UM.Theme.getSize("default_margin").width
 
         color: UM.Theme.getColor("text")
-        font: UM.Theme.getFont("large")
+        font: UM.Theme.getFont("default_bold")
         text: statusText;
     }
 

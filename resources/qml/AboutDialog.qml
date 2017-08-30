@@ -22,15 +22,15 @@ UM.Dialog
     Image
     {
         id: logo
-        width: base.minimumWidth * 0.85
-        height: width * (1/4.25)
+        width: (base.minimumWidth * 0.85) | 0
+        height: (width * (1/4.25)) | 0
 
         source: UM.Theme.getImage("logo")
 
         sourceSize.width: width
         sourceSize.height: height
         anchors.top: parent.top
-        anchors.topMargin: (base.minimumWidth - width) / 2
+        anchors.topMargin: ((base.minimumWidth - width) / 2) | 0
         anchors.horizontalCenter: parent.horizontalCenter
 
         UM.I18nCatalog{id: catalog; name:"cura"}
@@ -44,7 +44,7 @@ UM.Dialog
         font: UM.Theme.getFont("large")
         anchors.right : logo.right
         anchors.top: logo.bottom
-        anchors.topMargin: UM.Theme.getSize("default_margin").height / 2
+        anchors.topMargin: (UM.Theme.getSize("default_margin").height / 2) | 0
     }
 
     Label

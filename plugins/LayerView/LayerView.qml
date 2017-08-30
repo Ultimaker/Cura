@@ -63,14 +63,18 @@ Item
             anchors.left: parent.left
             anchors.leftMargin: UM.Theme.getSize("default_margin").width
             spacing: UM.Theme.getSize("layerview_row_spacing").height
+            anchors.right: parent.right
+            anchors.rightMargin: UM.Theme.getSize("default_margin").width * 2
 
             Label
             {
                 id: layersLabel
                 anchors.left: parent.left
                 text: catalog.i18nc("@label","View Mode: Layers")
-                font.bold: true
+                font: UM.Theme.getFont("default_bold");
                 color: UM.Theme.getColor("text")
+                Layout.fillWidth: true
+                elide: Text.ElideMiddle;
             }
 
             Label
@@ -86,6 +90,7 @@ Item
                 id: layerViewTypesLabel
                 anchors.left: parent.left
                 text: catalog.i18nc("@label","Color scheme")
+                font: UM.Theme.getFont("default");
                 visible: !UM.LayerView.compatibilityMode
                 Layout.fillWidth: true
                 color: UM.Theme.getColor("text")
@@ -117,6 +122,8 @@ Item
                 model: layerViewTypes
                 visible: !UM.LayerView.compatibilityMode
                 style: UM.Theme.styles.combobox
+                anchors.right: parent.right
+                anchors.rightMargin: 10
 
                 onActivated:
                 {
@@ -142,6 +149,8 @@ Item
                 id: compatibilityModeLabel
                 anchors.left: parent.left
                 text: catalog.i18nc("@label","Compatibility Mode")
+                font: UM.Theme.getFont("default")
+                color: UM.Theme.getColor("text")
                 visible: UM.LayerView.compatibilityMode
                 Layout.fillWidth: true
                 Layout.preferredHeight: UM.Theme.getSize("layerview_row").height
@@ -175,17 +184,18 @@ Item
             Repeater {
                 model: Cura.ExtrudersModel{}
                 CheckBox {
+                    id: extrudersModelCheckBox
                     checked: view_settings.extruder_opacities[index] > 0.5 || view_settings.extruder_opacities[index] == undefined || view_settings.extruder_opacities[index] == ""
                     onClicked: {
                         view_settings.extruder_opacities[index] = checked ? 1.0 : 0.0
                         UM.Preferences.setValue("layerview/extruder_opacities", view_settings.extruder_opacities.join("|"));
                     }
-                    text: model.name
                     visible: !UM.LayerView.compatibilityMode
                     enabled: index + 1 <= 4
                     Rectangle {
                         anchors.verticalCenter: parent.verticalCenter
-                        anchors.right: parent.right
+                        anchors.right: extrudersModelCheckBox.right
+                        anchors.rightMargin: UM.Theme.getSize("default_margin").width
                         width: UM.Theme.getSize("layerview_legend_size").width
                         height: UM.Theme.getSize("layerview_legend_size").height
                         color: model.color
@@ -197,6 +207,18 @@ Item
                     Layout.preferredHeight: UM.Theme.getSize("layerview_row").height + UM.Theme.getSize("default_lining").height
                     Layout.preferredWidth: UM.Theme.getSize("layerview_row").width
                     style: UM.Theme.styles.checkbox
+                    Label
+                    {
+                        text: model.name
+                        elide: Text.ElideRight
+                        color: UM.Theme.getColor("text")
+                        font: UM.Theme.getFont("default")
+                        anchors.verticalCenter: parent.verticalCenter
+                        anchors.left: extrudersModelCheckBox.left;
+                        anchors.right: extrudersModelCheckBox.right;
+                        anchors.leftMargin: UM.Theme.getSize("checkbox").width + UM.Theme.getSize("default_margin").width /2
+                        anchors.rightMargin: UM.Theme.getSize("default_margin").width * 2
+                    }
                 }
             }
 
@@ -233,14 +255,15 @@ Item
                 }
 
                 CheckBox {
+                    id: legendModelCheckBox
                     checked: model.initialValue
                     onClicked: {
                         UM.Preferences.setValue(model.preference, checked);
                     }
-                    text: label
                     Rectangle {
                         anchors.verticalCenter: parent.verticalCenter
-                        anchors.right: parent.right
+                        anchors.right: legendModelCheckBox.right
+                        anchors.rightMargin: UM.Theme.getSize("default_margin").width
                         width: UM.Theme.getSize("layerview_legend_size").width
                         height: UM.Theme.getSize("layerview_legend_size").height
                         color: UM.Theme.getColor(model.colorId)
@@ -252,6 +275,18 @@ Item
                     Layout.preferredHeight: UM.Theme.getSize("layerview_row").height + UM.Theme.getSize("default_lining").height
                     Layout.preferredWidth: UM.Theme.getSize("layerview_row").width
                     style: UM.Theme.styles.checkbox
+                    Label
+                    {
+                        text: label
+                        font: UM.Theme.getFont("default")
+                        elide: Text.ElideRight
+                        color: UM.Theme.getColor("text")
+                        anchors.verticalCenter: parent.verticalCenter
+                        anchors.left: legendModelCheckBox.left;
+                        anchors.right: legendModelCheckBox.right;
+                        anchors.leftMargin: UM.Theme.getSize("checkbox").width + UM.Theme.getSize("default_margin").width /2
+                        anchors.rightMargin: UM.Theme.getSize("default_margin").width * 2
+                    }
                 }
             }
 
@@ -293,9 +328,11 @@ Item
                 Label {
                     text: label
                     visible: view_settings.show_legend
+                    id: typesLegendModelLabel
                     Rectangle {
                         anchors.verticalCenter: parent.verticalCenter
-                        anchors.right: parent.right
+                        anchors.right: typesLegendModelLabel.right
+                        anchors.rightMargin: UM.Theme.getSize("default_margin").width
                         width: UM.Theme.getSize("layerview_legend_size").width
                         height: UM.Theme.getSize("layerview_legend_size").height
                         color: UM.Theme.getColor(model.colorId)
@@ -307,6 +344,7 @@ Item
                     Layout.preferredHeight: UM.Theme.getSize("layerview_row").height + UM.Theme.getSize("default_lining").height
                     Layout.preferredWidth: UM.Theme.getSize("layerview_row").width
                     color: UM.Theme.getColor("text")
+                    font: UM.Theme.getFont("default")
                 }
             }
         }

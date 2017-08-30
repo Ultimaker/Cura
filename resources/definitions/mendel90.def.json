@@ -7,7 +7,6 @@
     {
         "visible": true,
         "author": "Bo Herrmannsen",
-        "category": "Other",
         "manufacturer": "Nophead",
         "file_formats": "text/x-gcode",
         "platform": "mendel90_platform.stl",
@@ -61,12 +60,6 @@
         },
         "machine_heat_zone_length": { 
             "default_value": 16
-        },
-        "machine_nozzle_heat_up_speed": { 
-            "default_value": 2.0 
-        },
-        "machine_nozzle_cool_down_speed": { 
-            "default_value": 2.0 
         },
         "machine_gcode_flavor": {
             "default_value": "RepRap (Marlin/Sprinter)"

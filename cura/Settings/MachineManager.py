@@ -91,6 +91,8 @@ class MachineManager(QObject):
 
         self._printer_output_devices = []
         Application.getInstance().getOutputDeviceManager().outputDevicesChanged.connect(self._onOutputDevicesChanged)
+        # There might already be some output devices by the time the signal is connected
+        self._onOutputDevicesChanged()
 
         if active_machine_id != "" and ContainerRegistry.getInstance().findContainerStacks(id = active_machine_id):
             # An active machine was saved, so restore it.
@@ -305,6 +307,7 @@ class MachineManager(QObject):
         self._stacks_have_errors = self._checkStacksHaveErrors()
         if old_stacks_have_errors != self._stacks_have_errors:
             self.stacksValidationChanged.emit()
+        Application.getInstance().stacksValidationFinished.emit()
 
     def _onActiveExtruderStackChanged(self):
         self.blurSettings.emit()  # Ensure no-one has focus.
@@ -498,16 +501,6 @@ class MachineManager(QObject):
                 variant_container = stack.variant
                 if variant_container and variant_container != self._empty_variant_container:
                     result.append(variant_container.getName())
-
-        return result
-
-    @pyqtProperty("QVariantList", notify = activeVariantChanged)
-    def activeMaterialIds(self):
-        result = []
-        if ExtruderManager.getInstance().getActiveGlobalAndExtruderStacks() is not None:
-            for stack in ExtruderManager.getInstance().getActiveGlobalAndExtruderStacks():
-                if stack.variant and stack.variant != self._empty_variant_container:
-                    result.append(stack.variant.getId())
 
         return result
 
@@ -913,6 +906,8 @@ class MachineManager(QObject):
             global_quality = quality_manager.findQualityByQualityType(quality_type, global_machine_definition, [], global_quality = True)
         else:
             global_quality = quality_manager.findQualityByQualityType(quality_type, global_machine_definition, [material])
+        if not global_quality:
+            global_quality = self._empty_quality_container
 
         # Find the values for each extruder.
         extruder_stacks = ExtruderManager.getInstance().getActiveExtruderStacks()
@@ -926,6 +921,8 @@ class MachineManager(QObject):
                 quality_changes = quality_changes_list[0]
             else:
                 quality_changes = global_quality_changes
+            if not quality_changes:
+                quality_changes = self._empty_quality_changes_container
 
             material = stack.material
             quality = quality_manager.findQualityByQualityType(quality_type, global_machine_definition, [material])

@@ -7,7 +7,6 @@
         "visible": true,
         "author": "tvlgiao",
         "manufacturer": "3DMaker",
-        "category": "Other",
         "file_formats": "text/x-gcode;application/x-stl-ascii;application/x-stl-binary;application/x-wavefront-obj",
         "icon": "icon_ultimaker2.png",
         "platform": "makerstarter_platform.stl"
@@ -32,12 +31,6 @@
         },
         "machine_nozzle_size": {
             "default_value": 0.4
-        },
-        "machine_nozzle_heat_up_speed": {
-            "default_value": 2
-        },
-        "machine_nozzle_cool_down_speed": {
-            "default_value": 2
         },
         "gantry_height": {
             "default_value": 55

@@ -20,9 +20,16 @@ Rectangle
     // Is there an output device for this printer?
     property bool printerConnected: Cura.MachineManager.printerOutputDevices.length != 0
     property bool printerAcceptsCommands: printerConnected && Cura.MachineManager.printerOutputDevices[0].acceptsCommands
-    property int backendState: UM.Backend.state;
+    property var connectedPrinter: Cura.MachineManager.printerOutputDevices.length >= 1 ? Cura.MachineManager.printerOutputDevices[0] : null
+    property int backendState: UM.Backend.state
 
     property bool monitoringPrint: false
+
+    property variant printDuration: PrintInformation.currentPrintTime
+    property variant printDurationPerFeature: PrintInformation.printTimesPerFeature
+    property variant printMaterialLengths: PrintInformation.materialLengths
+    property variant printMaterialWeights: PrintInformation.materialWeights
+    property variant printMaterialCosts: PrintInformation.materialCosts
 
     color: UM.Theme.getColor("sidebar")
     UM.I18nCatalog { id: catalog; name:"cura"}
@@ -183,121 +190,98 @@ Rectangle
         }
         ExclusiveGroup { id: modeMenuGroup; }
 
-        Label
+        ListView
         {
-            id: toggleLeftText
-            anchors.right: modeToggleSwitch.left
-            anchors.rightMargin: UM.Theme.getSize("default_margin").width
-            anchors.verticalCenter: parent.verticalCenter
-            text: ""
-            color:
-            {
-                if(toggleLeftTextMouseArea.containsMouse)
-                {
-                    return UM.Theme.getColor("mode_switch_text_hover");
-                }
-                else if(!modeToggleSwitch.checked)
-                {
-                    return UM.Theme.getColor("mode_switch_text_checked");
-                }
-                else
-                {
-                    return UM.Theme.getColor("mode_switch_text");
-                }
-            }
-            font: UM.Theme.getFont("default")
+            id: modesList
+            property var index: 0
+            model: modesListModel
+            delegate: wizardDelegate
+            anchors.top: parent.top
+            anchors.left: parent.left
+            width: parent.width
+        }
+    }
 
-            MouseArea
-            {
-                id: toggleLeftTextMouseArea
-                hoverEnabled: true
-                anchors.fill: parent
-                onClicked:
-                {
-                    modeToggleSwitch.checked = false;
-                }
+    Item
+    {
+        id: globalProfileRow
+        height: UM.Theme.getSize("sidebar_setup").height
+        visible: !sidebar.monitoringPrint && !sidebar.hideSettings
 
-                Component.onCompleted:
-                {
-                    clicked.connect(modeToggleSwitch.clicked)
-                }
-            }
+        anchors
+        {
+            top: settingsModeSelection.bottom
+            topMargin: UM.Theme.getSize("default_margin").width
+            left: parent.left
+            leftMargin: UM.Theme.getSize("default_margin").width
+            right: parent.right
+            rightMargin: UM.Theme.getSize("default_margin").width
         }
 
-        Switch
+        Text
         {
-            id: modeToggleSwitch
-            checked: false
-            anchors.right: toggleRightText.left
-            anchors.rightMargin: UM.Theme.getSize("default_margin").width
-            anchors.verticalCenter: parent.verticalCenter
-
-            property bool _hovered: modeToggleSwitchMouseArea.containsMouse || toggleLeftTextMouseArea.containsMouse || toggleRightTextMouseArea.containsMouse
-
-            MouseArea
-            {
-                id: modeToggleSwitchMouseArea
-                anchors.fill: parent
-                hoverEnabled: true
-                acceptedButtons: Qt.NoButton
-            }
-
-            onCheckedChanged:
-            {
-                var index = 0;
-                if (checked)
-                {
-                    index = 1;
-                }
-                updateActiveMode(index);
-            }
-
-            function updateActiveMode(index)
-            {
-                base.currentModeIndex = index;
-                UM.Preferences.setValue("cura/active_mode", index);
-            }
-
-            style: UM.Theme.styles.mode_switch
+            id: globalProfileLabel
+            text: catalog.i18nc("@label","Profile:");
+            width: parent.width * 0.45 - UM.Theme.getSize("default_margin").width
+            font: UM.Theme.getFont("default");
+            color: UM.Theme.getColor("text");
+            verticalAlignment: Text.AlignVCenter
+            anchors.top: parent.top
+            anchors.bottom: parent.bottom
         }
 
-        Label
+        ToolButton
         {
-            id: toggleRightText
+            id: globalProfileSelection
+
+            text: {
+                var result = Cura.MachineManager.activeQualityName;
+                if (Cura.MachineManager.activeQualityLayerHeight > 0) {
+                    result += " <font color=\"" + UM.Theme.getColor("text_detail") + "\">";
+                    result += " - ";
+                    result += Cura.MachineManager.activeQualityLayerHeight + "mm";
+                    result += "</font>";
+                }
+                return result;
+            }
+            enabled: !header.currentExtruderVisible || header.currentExtruderIndex > -1
+
+            width: parent.width * 0.7 + UM.Theme.getSize("default_margin").width
+            height: UM.Theme.getSize("setting_control").height
+            anchors.left: globalProfileLabel.right
             anchors.right: parent.right
-            anchors.verticalCenter: parent.verticalCenter
-            text: ""
-            color:
-            {
-                if(toggleRightTextMouseArea.containsMouse)
-                {
-                    return UM.Theme.getColor("mode_switch_text_hover");
-                }
-                else if(modeToggleSwitch.checked)
-                {
-                    return UM.Theme.getColor("mode_switch_text_checked");
-                }
-                else
-                {
-                    return UM.Theme.getColor("mode_switch_text");
-                }
-            }
-            font: UM.Theme.getFont("default")
+            tooltip: Cura.MachineManager.activeQualityName
+            style: UM.Theme.styles.sidebar_header_button
+            activeFocusOnPress: true;
+            property var valueWarning: !Cura.MachineManager.isActiveQualitySupported
+            menu: ProfileMenu { }
 
-            MouseArea
+            UM.SimpleButton
             {
-                id: toggleRightTextMouseArea
-                hoverEnabled: true
-                anchors.fill: parent
+                id: customisedSettings
+
+                visible: Cura.MachineManager.hasUserSettings
+                height: parent.height * 0.6
+                width: parent.height * 0.6
+
+                anchors.verticalCenter: parent.verticalCenter
+                anchors.right: parent.right
+                anchors.rightMargin: UM.Theme.getSize("setting_preferences_button_margin").width - UM.Theme.getSize("default_margin").width
+
+                color: hovered ? UM.Theme.getColor("setting_control_button_hover") : UM.Theme.getColor("setting_control_button");
+                iconSource: UM.Theme.getIcon("star");
+
                 onClicked:
                 {
-                    modeToggleSwitch.checked = true;
+                    forceActiveFocus();
+                    Cura.Actions.manageProfiles.trigger()
                 }
-
-                Component.onCompleted:
+                onEntered:
                 {
-                    clicked.connect(modeToggleSwitch.clicked)
+                    var content = catalog.i18nc("@tooltip","Some setting/override values are different from the values stored in the profile.\n\nClick to open the profile manager.")
+                    base.showTooltip(globalProfileRow, Qt.point(-UM.Theme.getSize("default_margin").width, 0),  content)
                 }
+                onExited: base.hideTooltip()
             }
         }
     }
@@ -307,7 +291,7 @@ Rectangle
         id: sidebarContents
 
         anchors.bottom: footerSeparator.top
-        anchors.top: settingsModeSelection.bottom
+        anchors.top: globalProfileRow.bottom
         anchors.topMargin: UM.Theme.getSize("default_margin").height
         anchors.left: base.left
         anchors.right: base.right
@@ -344,12 +328,48 @@ Rectangle
 
     Loader
     {
+        id: controlItem
         anchors.bottom: footerSeparator.top
         anchors.top: headerSeparator.bottom
         anchors.left: base.left
         anchors.right: base.right
-        source: monitoringPrint ? "PrintMonitor.qml": "SidebarContents.qml"
-   }
+        sourceComponent:
+        {
+            if(monitoringPrint && connectedPrinter != null)
+            {
+                if(connectedPrinter.controlItem != null)
+                {
+                    return connectedPrinter.controlItem
+                }
+            }
+            return null
+        }
+    }
+
+    Loader
+    {
+        anchors.bottom: footerSeparator.top
+        anchors.top: headerSeparator.bottom
+        anchors.left: base.left
+        anchors.right: base.right
+        source:
+        {
+            if(controlItem.sourceComponent == null)
+            {
+                if(monitoringPrint)
+                {
+                    return "PrintMonitor.qml"
+                } else
+                {
+                    return "SidebarContents.qml"
+                }
+            }
+            else
+            {
+                return ""
+            }
+        }
+    }
 
     Rectangle
     {
@@ -357,8 +377,119 @@ Rectangle
         width: parent.width
         height: UM.Theme.getSize("sidebar_lining").height
         color: UM.Theme.getColor("sidebar_lining")
-        anchors.bottom: saveButton.top
+        anchors.bottom: printSpecs.top
+        anchors.bottomMargin: UM.Theme.getSize("default_margin").height * 2 + UM.Theme.getSize("progressbar").height + UM.Theme.getFont("default_bold").pixelSize
+    }
+
+    Rectangle
+    {
+        id: printSpecs
+        anchors.left: parent.left
+        anchors.bottom: parent.bottom
+        anchors.leftMargin: UM.Theme.getSize("default_margin").width
         anchors.bottomMargin: UM.Theme.getSize("default_margin").height
+        height: childrenRect.height
+
+        UM.TooltipArea
+        {
+            id: timeSpecPerFeatureTooltipArea
+            width: timeSpec.width
+            height: timeSpec.height
+            anchors.left: parent.left
+            anchors.bottom: timeSpecDescription.top
+
+            text: {
+                var order = ["inset_0", "inset_x", "skin", "infill", "support_infill", "support_interface", "support", "travel", "retract", "none"];
+                var visible_names = {
+                    "inset_0": catalog.i18nc("@tooltip", "Outer Wall"),
+                    "inset_x": catalog.i18nc("@tooltip", "Inner Walls"),
+                    "skin": catalog.i18nc("@tooltip", "Skin"),
+                    "infill": catalog.i18nc("@tooltip", "Infill"),
+                    "support_infill": catalog.i18nc("@tooltip", "Support Infill"),
+                    "support_interface": catalog.i18nc("@tooltip", "Support Interface"),
+                    "support": catalog.i18nc("@tooltip", "Support"),
+                    "travel": catalog.i18nc("@tooltip", "Travel"),
+                    "retract": catalog.i18nc("@tooltip", "Retractions"),
+                    "none": catalog.i18nc("@tooltip", "Other")
+                };
+                var result = "";
+                for(var feature in order)
+                {
+                    feature = order[feature];
+                    if(base.printDurationPerFeature[feature] && base.printDurationPerFeature[feature].totalSeconds > 0)
+                    {
+                        result += "<br/>" + visible_names[feature] + ": " + base.printDurationPerFeature[feature].getDisplayString(UM.DurationFormat.Short);
+                    }
+                }
+                result = result.replace(/^\<br\/\>/, ""); // remove newline before first item
+                return result;
+            }
+
+            Text
+            {
+                id: timeSpec
+                anchors.left: parent.left
+                anchors.bottom: parent.bottom
+                font: UM.Theme.getFont("large")
+                color: UM.Theme.getColor("text_subtext")
+                text: (!base.printDuration || !base.printDuration.valid) ? catalog.i18nc("@label", "00h 00min") : base.printDuration.getDisplayString(UM.DurationFormat.Short)
+            }
+        }
+        Text
+        {
+            id: timeSpecDescription
+            anchors.left: parent.left
+            anchors.bottom: lengthSpec.top
+            font: UM.Theme.getFont("very_small")
+            color: UM.Theme.getColor("text_subtext")
+            text: catalog.i18nc("@description", "Print time")
+        }
+        Text
+        {
+            id: lengthSpec
+            anchors.left: parent.left
+            anchors.bottom: parent.bottom
+            font: UM.Theme.getFont("very_small")
+            color: UM.Theme.getColor("text_subtext")
+            text:
+            {
+                var lengths = [];
+                var weights = [];
+                var costs = [];
+                var someCostsKnown = false;
+                if(base.printMaterialLengths) {
+                    for(var index = 0; index < base.printMaterialLengths.length; index++)
+                    {
+                        if(base.printMaterialLengths[index] > 0)
+                        {
+                            lengths.push(base.printMaterialLengths[index].toFixed(2));
+                            weights.push(String(Math.floor(base.printMaterialWeights[index])));
+                            var cost = base.printMaterialCosts[index] == undefined ? 0 : base.printMaterialCosts[index].toFixed(2);
+                            costs.push(cost);
+                            if(cost > 0)
+                            {
+                                someCostsKnown = true;
+                            }
+                        }
+                    }
+                }
+                if(lengths.length == 0)
+                {
+                    lengths = ["0.00"];
+                    weights = ["0"];
+                    costs = ["0.00"];
+                }
+                if(someCostsKnown)
+                {
+                    return catalog.i18nc("@label", "%1m / ~ %2g / ~ %4 %3").arg(lengths.join(" + "))
+                            .arg(weights.join(" + ")).arg(costs.join(" + ")).arg(UM.Preferences.getValue("cura/currency"));
+                }
+                else
+                {
+                    return catalog.i18nc("@label", "%1m / ~ %2g").arg(lengths.join(" + ")).arg(weights.join(" + "));
+                }
+            }
+        }
     }
 
     // SaveButton and MonitorButton are actually the bottom footer panels.
@@ -367,7 +498,8 @@ Rectangle
     {
         id: saveButton
         implicitWidth: base.width
-        implicitHeight: totalHeight
+        anchors.top: footerSeparator.bottom
+        anchors.topMargin: UM.Theme.getSize("default_margin").height
         anchors.bottom: parent.bottom
         visible: !monitoringPrint
     }
@@ -376,7 +508,8 @@ Rectangle
     {
         id: monitorButton
         implicitWidth: base.width
-        implicitHeight: totalHeight
+        anchors.top: footerSeparator.bottom
+        anchors.topMargin: UM.Theme.getSize("default_margin").height
         anchors.bottom: parent.bottom
         visible: monitoringPrint
     }
@@ -425,14 +558,10 @@ Rectangle
         })
         sidebarContents.push({ "item": modesListModel.get(base.currentModeIndex).item, "immediate": true });
 
-        toggleLeftText.text = modesListModel.get(0).text;
-        toggleRightText.text = modesListModel.get(1).text;
-
-        var index = parseInt(UM.Preferences.getValue("cura/active_mode"));
-        if (index)
+        var index = parseInt(UM.Preferences.getValue("cura/active_mode"))
+        if(index)
         {
             currentModeIndex = index;
-            modeToggleSwitch.checked = index > 0;
         }
     }
 

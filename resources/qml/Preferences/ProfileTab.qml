@@ -51,14 +51,14 @@ Tab
         {
             role: "label"
             title: catalog.i18nc("@title:column", "Setting")
-            width: parent.width * 0.4
+            width: (parent.width * 0.4) | 0
             delegate: itemDelegate
         }
         TableViewColumn
         {
             role: "profile_value"
             title: catalog.i18nc("@title:column", "Profile")
-            width: parent.width * 0.18
+            width: (parent.width * 0.18) | 0
             delegate: itemDelegate
         }
         TableViewColumn
@@ -66,14 +66,14 @@ Tab
             role: "user_value"
             title: catalog.i18nc("@title:column", "Current");
             visible: quality == Cura.MachineManager.globalQualityId
-            width: parent.width * 0.18
+            width: (parent.width * 0.18) | 0
             delegate: itemDelegate
         }
         TableViewColumn
         {
             role: "unit"
             title: catalog.i18nc("@title:column", "Unit")
-            width: parent.width * 0.14
+            width: (parent.width * 0.14) | 0
             delegate: itemDelegate
         }
 

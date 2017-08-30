@@ -6,7 +6,6 @@
     "metadata": {
         "author": "Unimatech",
         "manufacturer": "Unimatech",
-        "category": "Other",
         "file_formats": "text/x-gcode",
         "icon": "icon_ultimaker2.png"
     },
@@ -33,12 +32,6 @@
         },
         "material_diameter": {
             "default_value": 1.75
-        },
-        "machine_nozzle_heat_up_speed": {
-            "default_value": 2
-        },
-        "machine_nozzle_cool_down_speed": {
-            "default_value": 2
         },
         "gantry_height": {
             "default_value": 55

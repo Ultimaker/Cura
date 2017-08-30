@@ -1,4 +1,4 @@
-// Copyright (c) 2016 Ultimaker B.V.
+// Copyright (c) 2017 Ultimaker B.V.
 // Uranium is released under the terms of the AGPLv3 or higher.
 
 import QtQuick 2.2
@@ -38,6 +38,7 @@ Item {
                 height: parent.height
                 width: UM.Theme.getSize("setting").width + UM.Theme.getSize("setting").height
                 style: UM.Theme.styles.scrollview
+
                 ListView
                 {
                     id: contents
@@ -66,6 +67,7 @@ Item {
                             property var definition: model
                             property var settingDefinitionsModel: addedSettingsModel
                             property var propertyProvider: provider
+                            property var globalPropertyProvider: inheritStackProvider
 
                             //Qt5.4.2 and earlier has a bug where this causes a crash: https://bugreports.qt.io/browse/QTBUG-35989
                             //In addition, while it works for 5.5 and higher, the ordering of the actual combo box drop down changes,
@@ -110,10 +112,10 @@ Item {
 
                         Button
                         {
-                            width: UM.Theme.getSize("setting").height / 2;
-                            height: UM.Theme.getSize("setting").height;
+                            width: (UM.Theme.getSize("setting").height / 2) | 0
+                            height: UM.Theme.getSize("setting").height
 
-                            onClicked: addedSettingsModel.setVisible(model.key, false);
+                            onClicked: addedSettingsModel.setVisible(model.key, false)
 
                             style: ButtonStyle
                             {
@@ -133,6 +135,8 @@ Item {
                             }
                         }
 
+                        // Specialty provider that only watches global_inherits (we cant filter on what property changed we get events
+                        // so we bypass that to make a dedicated provider).
                         UM.SettingPropertyProvider
                         {
                             id: provider
@@ -142,6 +146,53 @@ Item {
                             watchedProperties: [ "value", "enabled", "validationState" ]
                             storeIndex: 0
                             removeUnusedValue: false
+                        }
+
+                        UM.SettingPropertyProvider
+                        {
+                            id: inheritStackProvider
+                            containerStackId: UM.ActiveTool.properties.getValue("ContainerID")
+                            key: model.key
+                            watchedProperties: [ "limit_to_extruder" ]
+                        }
+
+                        Connections
+                        {
+                            target: inheritStackProvider
+                            onPropertiesChanged:
+                            {
+                                provider.forcePropertiesChanged();
+                            }
+                        }
+
+                        Connections
+                        {
+                            target: UM.ActiveTool
+                            onPropertiesChanged:
+                            {
+                                // the values cannot be bound with UM.ActiveTool.properties.getValue() calls,
+                                // so here we connect to the signal and update the those values.
+                                if (typeof UM.ActiveTool.properties.getValue("SelectedObjectId") !== "undefined")
+                                {
+                                    const selectedObjectId = UM.ActiveTool.properties.getValue("SelectedObjectId");
+                                    if (addedSettingsModel.visibilityHandler.selectedObjectId != selectedObjectId)
+                                    {
+                                        addedSettingsModel.visibilityHandler.selectedObjectId = selectedObjectId;
+                                    }
+                                }
+                                if (typeof UM.ActiveTool.properties.getValue("ContainerID") !== "undefined")
+                                {
+                                    const containerId = UM.ActiveTool.properties.getValue("ContainerID");
+                                    if (provider.containerStackId != containerId)
+                                    {
+                                        provider.containerStackId = containerId;
+                                    }
+                                    if (inheritStackProvider.containerStackId != containerId)
+                                    {
+                                        inheritStackProvider.containerStackId = containerId;
+                                    }
+                                }
+                            }
                         }
                     }
                 }

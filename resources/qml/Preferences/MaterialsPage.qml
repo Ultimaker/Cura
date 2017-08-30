@@ -53,21 +53,21 @@ UM.ManagementPage
 
         Row
         {
-            spacing: UM.Theme.getSize("default_margin").width / 2;
-            anchors.left: parent.left;
-            anchors.leftMargin: UM.Theme.getSize("default_margin").width;
-            anchors.right: parent.right;
+            spacing: (UM.Theme.getSize("default_margin").width / 2) | 0
+            anchors.left: parent.left
+            anchors.leftMargin: UM.Theme.getSize("default_margin").width
+            anchors.right: parent.right
             Rectangle
             {
-                width: parent.height * 0.8
-                height: parent.height * 0.8
+                width: (parent.height * 0.8) | 0
+                height: (parent.height * 0.8) | 0
                 color: model.metadata.color_code
                 border.color: isCurrentItem ? palette.highlightedText : palette.text;
                 anchors.verticalCenter: parent.verticalCenter
             }
             Label
             {
-                width: parent.width * 0.3
+                width: (parent.width * 0.3) | 0
                 text: model.metadata.material
                 elide: Text.ElideRight
                 font.italic: model.id == activeId
@@ -317,11 +317,11 @@ UM.ManagementPage
                 var result = Cura.ContainerManager.importContainer(fileUrl)
 
                 messageDialog.title = catalog.i18nc("@title:window", "Import Material")
-                messageDialog.text = catalog.i18nc("@info:status", "Could not import material <filename>%1</filename>: <message>%2</message>").arg(fileUrl).arg(result.message)
+                messageDialog.text = catalog.i18nc("@info:status Don't translate the XML tags <filename> or <message>!", "Could not import material <filename>%1</filename>: <message>%2</message>").arg(fileUrl).arg(result.message)
                 if(result.status == "success")
                 {
                     messageDialog.icon = StandardIcon.Information
-                    messageDialog.text = catalog.i18nc("@info:status", "Successfully imported material <filename>%1</filename>").arg(fileUrl)
+                    messageDialog.text = catalog.i18nc("@info:status Don't translate the XML tag <filename>!", "Successfully imported material <filename>%1</filename>").arg(fileUrl)
                     currentItem = base.model.getItem(base.objectList.currentIndex)
                 }
                 else if(result.status == "duplicate")
@@ -359,13 +359,13 @@ UM.ManagementPage
                 if(result.status == "error")
                 {
                     messageDialog.icon = StandardIcon.Critical
-                    messageDialog.text = catalog.i18nc("@info:status", "Failed to export material to <filename>%1</filename>: <message>%2</message>").arg(fileUrl).arg(result.message)
+                    messageDialog.text = catalog.i18nc("@info:status Don't translate the XML tags <filename> and <message>!", "Failed to export material to <filename>%1</filename>: <message>%2</message>").arg(fileUrl).arg(result.message)
                     messageDialog.open()
                 }
                 else if(result.status == "success")
                 {
                     messageDialog.icon = StandardIcon.Information
-                    messageDialog.text = catalog.i18nc("@info:status", "Successfully exported material to <filename>%1</filename>").arg(result.path)
+                    messageDialog.text = catalog.i18nc("@info:status Don't translate the XML tag <filename>!", "Successfully exported material to <filename>%1</filename>").arg(result.path)
                     messageDialog.open()
                 }
                 CuraApplication.setDefaultPath("dialog_material_path", folder)

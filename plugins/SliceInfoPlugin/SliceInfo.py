@@ -69,15 +69,26 @@ class SliceInfo(Extension):
             else:
                 data["active_mode"] = "custom"
 
-            data["machine_settings_changed_by_user"] = global_container_stack.definitionChanges.getId() != "empty"
+            definition_changes = global_container_stack.definitionChanges
+            machine_settings_changed_by_user = False
+            if definition_changes.getId() != "empty":
+                # Now a definition_changes container will always be created for a stack,
+                # so we also need to check if there is any instance in the definition_changes container
+                if definition_changes.getAllKeys():
+                    machine_settings_changed_by_user = True
+
+            data["machine_settings_changed_by_user"] = machine_settings_changed_by_user
             data["language"] = Preferences.getInstance().getValue("general/language")
             data["os"] = {"type": platform.system(), "version": platform.version()}
 
             data["active_machine"] = {"definition_id": global_container_stack.definition.getId(), "manufacturer": global_container_stack.definition.getMetaData().get("manufacturer","")}
 
             data["extruders"] = []
-            extruders = list(ExtruderManager.getInstance().getMachineExtruders(global_container_stack.getId()))
-            extruders = sorted(extruders, key = lambda extruder: extruder.getMetaDataEntry("position"))
+            extruder_count = len(global_container_stack.extruders)
+            extruders = []
+            if extruder_count > 1:
+                extruders = list(ExtruderManager.getInstance().getMachineExtruders(global_container_stack.getId()))
+                extruders = sorted(extruders, key = lambda extruder: extruder.getMetaDataEntry("position"))
 
             if not extruders:
                 extruders = [global_container_stack]
@@ -178,6 +189,9 @@ class SliceInfo(Extension):
             print_settings["print_sequence"] = global_container_stack.getProperty("print_sequence", "value")
 
             data["print_settings"] = print_settings
+
+            # Send the name of the output device type that is used.
+            data["output_to"] = type(output_device).__name__
 
             # Convert data to bytes
             binary_data = json.dumps(data).encode("utf-8")

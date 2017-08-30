@@ -229,7 +229,10 @@ class XmlMaterialProfile(InstanceContainer):
                 product = definition_id
 
             builder.start("machine")
-            builder.start("machine_identifier", { "manufacturer": definition.getMetaDataEntry("manufacturer", ""), "product":  product})
+            builder.start("machine_identifier", {
+                "manufacturer": container.getMetaDataEntry("machine_manufacturer", definition.getMetaDataEntry("manufacturer", "Unknown")),
+                "product":  product
+            })
             builder.end("machine_identifier")
 
             for instance in container.findInstances():
@@ -540,10 +543,22 @@ class XmlMaterialProfile(InstanceContainer):
 
                 definition = definitions[0]
 
+                machine_manufacturer = identifier.get("manufacturer", definition.getMetaDataEntry("manufacturer", "Unknown")) #If the XML material doesn't specify a manufacturer, use the one in the actual printer definition.
+
                 if machine_compatibility:
                     new_material_id = self.id + "_" + machine_id
 
-                    new_material = XmlMaterialProfile(new_material_id)
+                    # The child or derived material container may already exist. This can happen when a material in a
+                    # project file and the a material in Cura have the same ID.
+                    # In the case if a derived material already exists, override that material container because if
+                    # the data in the parent material has been changed, the derived ones should be updated too.
+                    found_materials = ContainerRegistry.getInstance().findInstanceContainers(id = new_material_id)
+                    is_new_material = False
+                    if found_materials:
+                        new_material = found_materials[0]
+                    else:
+                        new_material = XmlMaterialProfile(new_material_id)
+                        is_new_material = True
 
                     # Update the private directly, as we want to prevent the lookup that is done when using setName
                     new_material._name = self.getName()
@@ -551,12 +566,14 @@ class XmlMaterialProfile(InstanceContainer):
                     new_material.setDefinition(definition)
                     # Don't use setMetadata, as that overrides it for all materials with same base file
                     new_material.getMetaData()["compatible"] = machine_compatibility
+                    new_material.getMetaData()["machine_manufacturer"] = machine_manufacturer
 
                     new_material.setCachedValues(cached_machine_setting_properties)
 
                     new_material._dirty = False
 
-                    ContainerRegistry.getInstance().addContainer(new_material)
+                    if is_new_material:
+                        ContainerRegistry.getInstance().addContainer(new_material)
 
                 hotends = machine.iterfind("./um:hotend", self.__namespaces)
                 for hotend in hotends:
@@ -588,7 +605,15 @@ class XmlMaterialProfile(InstanceContainer):
 
                     new_hotend_id = self.id + "_" + machine_id + "_" + hotend_id.replace(" ", "_")
 
-                    new_hotend_material = XmlMaterialProfile(new_hotend_id)
+                    # Same as machine compatibility, keep the derived material containers consistent with the parent
+                    # material
+                    found_materials = ContainerRegistry.getInstance().findInstanceContainers(id = new_hotend_id)
+                    is_new_material = False
+                    if found_materials:
+                        new_hotend_material = found_materials[0]
+                    else:
+                        new_hotend_material = XmlMaterialProfile(new_hotend_id)
+                        is_new_material = True
 
                     # Update the private directly, as we want to prevent the lookup that is done when using setName
                     new_hotend_material._name = self.getName()
@@ -597,6 +622,7 @@ class XmlMaterialProfile(InstanceContainer):
                     new_hotend_material.addMetaDataEntry("variant", variant_containers[0].id)
                     # Don't use setMetadata, as that overrides it for all materials with same base file
                     new_hotend_material.getMetaData()["compatible"] = hotend_compatibility
+                    new_hotend_material.getMetaData()["machine_manufacturer"] = machine_manufacturer
 
                     cached_hotend_setting_properties = cached_machine_setting_properties.copy()
                     cached_hotend_setting_properties.update(hotend_setting_values)
@@ -605,7 +631,8 @@ class XmlMaterialProfile(InstanceContainer):
 
                     new_hotend_material._dirty = False
 
-                    ContainerRegistry.getInstance().addContainer(new_hotend_material)
+                    if is_new_material:
+                        ContainerRegistry.getInstance().addContainer(new_hotend_material)
 
     def _addSettingElement(self, builder, instance):
         try:
