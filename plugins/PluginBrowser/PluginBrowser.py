@@ -191,6 +191,8 @@ class PluginBrowser(QObject, Extension):
     def installPlugin(self, file_path):
         if not file_path.startswith("/"):
             location = "/" + file_path  # Ensure that it starts with a /, as otherwise it doesn't work on windows.
+        else:
+            location = file_path
         result = PluginRegistry.getInstance().installPlugin("file://" + location)
 
         self._newly_installed_plugin_ids.append(result["id"])
