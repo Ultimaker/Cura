@@ -1262,14 +1262,14 @@
                 "z_seam_corner":
                 {
                     "label": "Seam Corner Preference",
-                    "description": "Control whether corners on the model outline influence the position of the seam.",
+                    "description": "Control whether corners on the model outline influence the position of the seam. None means that corners have no influence on the seam position. Hide Seam makes the seam more likely to occur on an inside corner. Expose Seam makes the seam more likely to occur on an outside corner. Hide or Expose Seam makes the seam more likely to occur at an inside or outside corner.",
                     "type": "enum",
                     "options":
                     {
-                        "z_seam_corner_none":  "Ignore Corners",
-                        "z_seam_corner_inner": "Inner Corners",
-                        "z_seam_corner_outer": "Outer Corners",
-                        "z_seam_corner_any":   "Any Corner"
+                        "z_seam_corner_none":  "None",
+                        "z_seam_corner_inner": "Hide Seam",
+                        "z_seam_corner_outer": "Expose Seam",
+                        "z_seam_corner_any":   "Hide or Expose Seam"
                     },
                     "default_value": "z_seam_corner_inner",
                     "enabled": "z_seam_type != 'random'",
