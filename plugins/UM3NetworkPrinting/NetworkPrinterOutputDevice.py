@@ -12,6 +12,7 @@ import UM.Settings.ContainerRegistry
 import UM.Version #To compare firmware version numbers.
 
 from cura.PrinterOutputDevice import PrinterOutputDevice, ConnectionState
+from cura.Settings.ContainerManager import ContainerManager
 import cura.Settings.ExtruderManager
 
 from PyQt5.QtNetwork import QHttpMultiPart, QHttpPart, QNetworkRequest, QNetworkAccessManager, QNetworkReply
@@ -915,6 +916,13 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
                 xml_data = container.serialize()
                 if xml_data == "" or xml_data is None:
                     continue
+
+                names = ContainerManager.getInstance().getLinkedMaterials(container.getId())
+                if names:
+                    # There are other materials that share this GUID.
+                    if not container.isReadOnly():
+                        continue  # If it's not readonly, it's created by user, so skip it.
+
                 material_multi_part = QHttpMultiPart(QHttpMultiPart.FormDataType)
 
                 material_part = QHttpPart()
