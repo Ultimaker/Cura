@@ -11,6 +11,8 @@ UM.Dialog
     title: catalog.i18nc("@title:window", "Find & Update plugins")
     width: 600
     height: 450
+    minimumWidth: 350
+    minimumHeight: 350
     Item
     {
         anchors.fill: parent
@@ -58,7 +60,7 @@ UM.Dialog
             id: bottomBar
             width: parent.width
             height: closeButton.height
-            anchors.bottom:parent.bottom
+            anchors.bottom: parent.bottom
             anchors.left: parent.left
             ProgressBar
             {
@@ -177,6 +179,84 @@ UM.Dialog
 
             }
         }
-    UM.I18nCatalog { id: catalog; name:"cura" }
+        UM.I18nCatalog { id: catalog; name: "cura" }
+
+        Connections
+        {
+            target: manager
+            onShowLicenseDialog:
+            {
+                licenseDialog.pluginName = manager.getLicenseDialogPluginName();
+                licenseDialog.licenseContent = manager.getLicenseDialogLicenseContent();
+                licenseDialog.pluginFileLocation = manager.getLicenseDialogPluginFileLocation();
+                licenseDialog.show();
+            }
+        }
+
+        UM.Dialog
+        {
+            id: licenseDialog
+            title: catalog.i18nc("@title:window", "Plugin License Agreement")
+
+            minimumWidth: UM.Theme.getSize("modal_window_minimum").width
+            minimumHeight: UM.Theme.getSize("modal_window_minimum").height
+            width: minimumWidth
+            height: minimumHeight
+
+            property var pluginName;
+            property var licenseContent;
+            property var pluginFileLocation;
+
+            Item
+            {
+                anchors.fill: parent
+
+                Label
+                {
+                    id: licenseTitle
+                    anchors.top: parent.top
+                    anchors.left: parent.left
+                    anchors.right: parent.right
+                    text: licenseDialog.pluginName + catalog.i18nc("@label", " plugin contains a license.\nYou need to accept this license to install this plugin.\nDo you agree with the terms below?")
+                    wrapMode: Text.Wrap
+                }
+
+                TextArea
+                {
+                    id: licenseText
+                    anchors.top: licenseTitle.bottom
+                    anchors.bottom: parent.bottom
+                    anchors.left: parent.left
+                    anchors.right: parent.right
+                    anchors.topMargin: UM.Theme.getSize("default_margin").height
+                    readOnly: true
+                    text: licenseDialog.licenseContent != null ? licenseDialog.licenseContent : ""
+                }
+            }
+
+            rightButtons: [
+                Button
+                {
+                    id: acceptButton
+                    anchors.margins: UM.Theme.getSize("default_margin").width
+                    text: catalog.i18nc("@action:button", "Accept")
+                    onClicked:
+                    {
+                        licenseDialog.close();
+                        manager.installPlugin(licenseDialog.pluginFileLocation);
+                    }
+                },
+                Button
+                {
+                    id: declineButton
+                    anchors.margins: UM.Theme.getSize("default_margin").width
+                    text: catalog.i18nc("@action:button", "Decline")
+                    onClicked:
+                    {
+                        licenseDialog.close();
+                    }
+                }
+            ]
+        }
     }
 }

@@ -7,6 +7,7 @@ from UM.Qt.ListModel import ListModel
 from UM.PluginRegistry import PluginRegistry
 from UM.Application import Application
 from UM.Version import Version
+from UM.Message import Message
 
 from PyQt5.QtNetwork import QNetworkAccessManager, QNetworkRequest, QNetworkReply
 from PyQt5.QtCore import QUrl, QObject, Qt, pyqtProperty, pyqtSignal, pyqtSlot
@@ -16,6 +17,7 @@ import json
 import os
 import tempfile
 import platform
+import zipfile
 
 i18n_catalog = i18nCatalog("cura")
 
@@ -57,6 +59,30 @@ class PluginBrowser(QObject, Extension):
         # same file over and over again, we keep track of the upgraded plugins.
         self._newly_installed_plugin_ids = []
 
+        # variables for the license agreement dialog
+        self._license_dialog_plugin_name = ""
+        self._license_dialog_license_content = ""
+        self._license_dialog_plugin_file_location = ""
+
+    showLicenseDialog = pyqtSignal()
+
+    @pyqtSlot(result = str)
+    def getLicenseDialogPluginName(self):
+        return self._license_dialog_plugin_name
+
+    @pyqtSlot(result = str)
+    def getLicenseDialogPluginFileLocation(self):
+        return self._license_dialog_plugin_file_location
+
+    @pyqtSlot(result = str)
+    def getLicenseDialogLicenseContent(self):
+        return self._license_dialog_license_content
+
+    def openLicenseDialog(self, plugin_name, license_content, plugin_file_location):
+        self._license_dialog_plugin_name = plugin_name
+        self._license_dialog_license_content = license_content
+        self._license_dialog_plugin_file_location = plugin_file_location
+        self.showLicenseDialog.emit()
 
     pluginsMetadataChanged = pyqtSignal()
     onDownloadProgressChanged = pyqtSignal()
@@ -71,7 +97,7 @@ class PluginBrowser(QObject, Extension):
         self.requestPluginList()
 
         if not self._dialog:
-            self._createDialog()
+            self._dialog = self._createDialog("PluginBrowser.qml")
         self._dialog.show()
 
     @pyqtSlot()
@@ -82,19 +108,20 @@ class PluginBrowser(QObject, Extension):
         self._plugin_list_request.setRawHeader(*self._request_header)
         self._network_manager.get(self._plugin_list_request)
 
-    def _createDialog(self):
-        Logger.log("d", "PluginBrowser")
+    def _createDialog(self, qml_name):
+        Logger.log("d", "Creating dialog [%s]", qml_name)
 
-        path = QUrl.fromLocalFile(os.path.join(PluginRegistry.getInstance().getPluginPath(self.getPluginId()), "PluginBrowser.qml"))
+        path = QUrl.fromLocalFile(os.path.join(PluginRegistry.getInstance().getPluginPath(self.getPluginId()), qml_name))
         self._qml_component = QQmlComponent(Application.getInstance()._engine, path)
 
         # We need access to engine (although technically we can't)
         self._qml_context = QQmlContext(Application.getInstance()._engine.rootContext())
         self._qml_context.setContextProperty("manager", self)
-        self._dialog = self._qml_component.create(self._qml_context)
-        if self._dialog is None:
+        dialog = self._qml_component.create(self._qml_context)
+        if dialog is None:
             Logger.log("e", "QQmlComponent status %s", self._qml_component.status())
             Logger.log("e", "QQmlComponent errorString %s", self._qml_component.errorString())
+        return dialog
 
     def setIsDownloading(self, is_downloading):
         if self._is_downloading != is_downloading:
@@ -117,17 +144,61 @@ class PluginBrowser(QObject, Extension):
                 self._temp_plugin_file.write(self._download_plugin_reply.readAll())
                 self._temp_plugin_file.close()
 
-                # open as read
-                if not location.startswith("/"):
-                    location = "/" + location # Ensure that it starts with a /, as otherwise it doesn't work on windows.
-                result = PluginRegistry.getInstance().installPlugin("file://" + location)
+                self._checkPluginLicenseOrInstall(location)
+                return
 
-                self._newly_installed_plugin_ids.append(result["id"])
-                self.pluginsMetadataChanged.emit()
+    ##  Checks if the downloaded plugin ZIP file contains a license file or not.
+    #   If it does, it will show a popup dialog displaying the license to the user. The plugin will be installed if the
+    #   user accepts the license.
+    #   If there is no license file, the plugin will be directory installed.
+    def _checkPluginLicenseOrInstall(self, file_path):
+        with zipfile.ZipFile(file_path, "r") as zip_ref:
+            plugin_id = None
+            for file in zip_ref.infolist():
+                if file.filename.endswith("/"):
+                    plugin_id = file.filename.strip("/")
+                    break
 
-                Application.getInstance().messageBox(i18n_catalog.i18nc("@window:title", "Plugin browser"), result["message"])
+            if plugin_id is None:
+                msg = i18n_catalog.i18nc("@info:status", "Failed to get plugin ID from <filename>{0}</filename>", file_path)
+                self._progress_message = Message(msg, lifetime=0, dismissable=False)
+                return
 
-                self._temp_plugin_file.close()  # Plugin was installed, delete temp file
+            # find a potential license file
+            plugin_root_dir = plugin_id + "/"
+            license_file = None
+            for f in zip_ref.infolist():
+                # skip directories (with file_size = 0) and files not in the plugin directory
+                if f.file_size == 0 or not f.filename.startswith(plugin_root_dir):
+                    continue
+                file_name = os.path.basename(f.filename).lower()
+                file_base_name, file_ext = os.path.splitext(file_name)
+                if file_base_name in ["license", "licence"]:
+                    license_file = f.filename
+                    break
+
+            # show a dialog for user to read and accept/decline the license
+            if license_file is not None:
+                Logger.log("i", "Found license file for plugin [%s], showing the license dialog to the user", plugin_id)
+                license_content = zip_ref.read(license_file).decode('utf-8')
+                self.openLicenseDialog(plugin_id, license_content, file_path)
+                return
+
+        # there is no license file, directly install the plugin
+        self.installPlugin(file_path)
+
+    @pyqtSlot(str)
+    def installPlugin(self, file_path):
+        if not file_path.startswith("/"):
+            location = "/" + file_path  # Ensure that it starts with a /, as otherwise it doesn't work on windows.
+        else:
+            location = file_path
+        result = PluginRegistry.getInstance().installPlugin("file://" + location)
+
+        self._newly_installed_plugin_ids.append(result["id"])
+        self.pluginsMetadataChanged.emit()
+
+        Application.getInstance().messageBox(i18n_catalog.i18nc("@window:title", "Plugin browser"), result["message"])
 
     @pyqtProperty(int, notify = onDownloadProgressChanged)
     def downloadProgress(self):
