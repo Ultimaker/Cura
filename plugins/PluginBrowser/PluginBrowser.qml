@@ -11,6 +11,8 @@ UM.Dialog
     title: catalog.i18nc("@title:window", "Find & Update plugins")
     width: 600
     height: 450
+    minimumWidth: 350
+    minimumHeight: 350
     Item
     {
         anchors.fill: parent
