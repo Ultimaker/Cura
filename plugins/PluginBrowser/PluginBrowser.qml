@@ -228,7 +228,7 @@ UM.Dialog
                     anchors.right: parent.right
                     anchors.topMargin: UM.Theme.getSize("default_margin").height
                     readOnly: true
-                    text: licenseDialog.licenseContent
+                    text: licenseDialog.licenseContent != null ? licenseDialog.licenseContent : ""
                 }
             }
 
