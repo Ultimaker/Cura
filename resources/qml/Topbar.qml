@@ -57,7 +57,6 @@ Rectangle
             id: showSettings
             height: UM.Theme.getSize("sidebar_header").height
             onClicked: base.stopMonitoringPrint()
-            iconSource: UM.Theme.getIcon("tab_settings");
             property color overlayColor: "transparent"
             property string overlayIconSource: ""
             text: catalog.i18nc("@title:tab","Prepare")
@@ -74,76 +73,6 @@ Rectangle
             height: UM.Theme.getSize("sidebar_header").height
             onClicked: base.startMonitoringPrint()
             text: catalog.i18nc("@title:tab", "Monitor")
-            iconSource: printerConnected ? UM.Theme.getIcon("tab_monitor_with_status") : UM.Theme.getIcon("tab_monitor")
-            property color overlayColor:
-            {
-                if(!printerAcceptsCommands)
-                {
-                    return UM.Theme.getColor("status_unknown");
-                }
-
-                if(Cura.MachineManager.printerOutputDevices[0].printerState == "maintenance")
-                {
-                    return UM.Theme.getColor("status_busy");
-                }
-                switch(Cura.MachineManager.printerOutputDevices[0].jobState)
-                {
-                    case "printing":
-                    case "pre_print":
-                    case "wait_cleanup":
-                    case "pausing":
-                    case "resuming":
-                        return UM.Theme.getColor("status_busy");
-                    case "ready":
-                    case "":
-                        return UM.Theme.getColor("status_ready");
-                    case "paused":
-                        return UM.Theme.getColor("status_paused");
-                    case "error":
-                        return UM.Theme.getColor("status_stopped");
-                    case "offline":
-                        return UM.Theme.getColor("status_offline");
-                    default:
-                        return UM.Theme.getColor("text_reversed");
-                }
-            }
-            property string overlayIconSource:
-            {
-                if(!printerConnected)
-                {
-                    return "";
-                }
-                else if(!printerAcceptsCommands)
-                {
-                    return UM.Theme.getIcon("tab_status_unknown");
-                }
-
-                if(Cura.MachineManager.printerOutputDevices[0].printerState == "maintenance")
-                {
-                    return UM.Theme.getIcon("tab_status_busy");
-                }
-
-                switch(Cura.MachineManager.printerOutputDevices[0].jobState)
-                {
-                    case "printing":
-                    case "pre_print":
-                    case "wait_cleanup":
-                    case "pausing":
-                    case "resuming":
-                        return UM.Theme.getIcon("tab_status_busy");
-                    case "ready":
-                    case "":
-                        return UM.Theme.getIcon("tab_status_connected")
-                    case "paused":
-                        return UM.Theme.getIcon("tab_status_paused")
-                    case "error":
-                        return UM.Theme.getIcon("tab_status_stopped")
-                    case "offline":
-                        return UM.Theme.getIcon("tab_status_offline")
-                    default:
-                        return ""
-                }
-            }
 
             checkable: true
             checked: base.monitoringPrint
@@ -155,12 +84,102 @@ Rectangle
         ExclusiveGroup { id: sidebarHeaderBarGroup }
     }
 
+    UM.RecolorImage
+    {
+        id: machineIcon
+        width: UM.Theme.getSize("button_icon").width //TODO: Once the light design is merged, the theme defines a different size for the top bar icons.
+        height: UM.Theme.getSize("button_icon").height
+        anchors.verticalCenter: parent.verticalCenter
+        anchors.right: machineSelection.left
+        anchors.rightMargin: UM.Theme.getSize("default_margin").width //TODO: With the light design comes a different margin here.
+
+        source: printerConnected ? UM.Theme.getIcon("tab_monitor_with_status") : UM.Theme.getIcon("tab_monitor")
+    }
+
+    UM.RecolorImage
+    {
+        id: machineStatusIcon
+        width: machineIcon.width
+        height: machineIcon.height
+        anchors.fill: machineIcon
+
+        source:
+        {
+            if(!printerConnected)
+            {
+                return "";
+            }
+            else if(!printerAcceptsCommands)
+            {
+                return UM.Theme.getIcon("tab_status_unknown");
+            }
+
+            if(Cura.MachineManager.printerOutputDevices[0].printerState == "maintenance")
+            {
+                return UM.Theme.getIcon("tab_status_busy");
+            }
+
+            switch(Cura.MachineManager.printerOutputDevices[0].jobState)
+            {
+                case "printing":
+                case "pre_print":
+                case "wait_cleanup":
+                case "pausing":
+                case "resuming":
+                    return UM.Theme.getIcon("tab_status_busy");
+                case "ready":
+                case "":
+                    return UM.Theme.getIcon("tab_status_connected")
+                case "paused":
+                    return UM.Theme.getIcon("tab_status_paused")
+                case "error":
+                    return UM.Theme.getIcon("tab_status_stopped")
+                case "offline":
+                    return UM.Theme.getIcon("tab_status_offline")
+                default:
+                    return ""
+            }
+        }
+        color: //TODO: In the light design, this is no longer coloured but takes the colour from the SVG icon.
+        {
+            if(!printerAcceptsCommands)
+            {
+                return UM.Theme.getColor("status_unknown");
+            }
+
+            if(Cura.MachineManager.printerOutputDevices[0].printerState == "maintenance")
+            {
+                return UM.Theme.getColor("status_busy");
+            }
+            switch(Cura.MachineManager.printerOutputDevices[0].jobState)
+            {
+                case "printing":
+                case "pre_print":
+                case "wait_cleanup":
+                case "pausing":
+                case "resuming":
+                    return UM.Theme.getColor("status_busy");
+                case "ready":
+                case "":
+                    return UM.Theme.getColor("status_ready");
+                case "paused":
+                    return UM.Theme.getColor("status_paused");
+                case "error":
+                    return UM.Theme.getColor("status_stopped");
+                case "offline":
+                    return UM.Theme.getColor("status_offline");
+                default:
+                    return UM.Theme.getColor("text_reversed");
+            }
+        }
+    }
+
     ToolButton
     {
         id: machineSelection
         text: Cura.MachineManager.activeMachineName
 
-        width: UM.Theme.getSize("sidebar").width;
+        width: UM.Theme.getSize("sidebar").width - machineIcon.width - UM.Theme.getSize("default_margin").width * 2 //TODO: The light design has a different margin here.
         height: UM.Theme.getSize("sidebar_header").height
         tooltip: Cura.MachineManager.activeMachineName
 
