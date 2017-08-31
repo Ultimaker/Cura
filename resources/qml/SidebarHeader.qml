@@ -92,49 +92,26 @@ Column
 
                 style: ButtonStyle
                 {
-                    background: Rectangle
+                    background: Item
                     {
-                        border.width: UM.Theme.getSize("default_lining").width
-                        border.color: control.checked ? UM.Theme.getColor("tab_checked_border") :
-                                      control.pressed ? UM.Theme.getColor("tab_active_border") :
-                                      control.hovered ? UM.Theme.getColor("tab_hovered_border") : UM.Theme.getColor("tab_unchecked_border")
-                        color: control.checked ? UM.Theme.getColor("tab_checked") :
-                               control.pressed ? UM.Theme.getColor("tab_active") :
-                               control.hovered ? UM.Theme.getColor("tab_hovered") : UM.Theme.getColor("tab_unchecked")
-                        Behavior on color { ColorAnimation { duration: 50; } }
-
                         Rectangle
                         {
-                            id: highlight
-                            visible: control.checked
-                            anchors.left: parent.left
-                            anchors.right: parent.right
-                            anchors.top: parent.top
-                            height: UM.Theme.getSize("sidebar_header_highlight").height
-                            color: UM.Theme.getColor("sidebar_header_bar")
-                        }
-
-                        Rectangle
-                        {
-                            id: swatch
-                            visible: index > -1
-                            height: UM.Theme.getSize("setting_control").height / 2
-                            width: height
-                            anchors.left: parent.left
-                            anchors.leftMargin: (parent.height - height) / 2
-                            anchors.verticalCenter: parent.verticalCenter
-
-                            color: model.color
+                            anchors.fill: parent
                             border.width: UM.Theme.getSize("default_lining").width
-                            border.color: UM.Theme.getColor("setting_control_border")
+                            border.color: control.checked ? UM.Theme.getColor("tab_checked_border") :
+                                          control.pressed ? UM.Theme.getColor("tab_active_border") :
+                                          control.hovered ? UM.Theme.getColor("tab_hovered_border") : UM.Theme.getColor("tab_unchecked_border")
+                            color: control.checked ? UM.Theme.getColor("tab_checked") :
+                                   control.pressed ? UM.Theme.getColor("tab_active") :
+                                   control.hovered ? UM.Theme.getColor("tab_hovered") : UM.Theme.getColor("tab_unchecked")
+                            Behavior on color { ColorAnimation { duration: 50; } }
                         }
 
                         Text
                         {
+                            id: extruderStaticText
                             anchors.verticalCenter: parent.verticalCenter
-                            anchors.left: swatch.visible ? swatch.right : parent.left
-                            anchors.leftMargin: swatch.visible ? UM.Theme.getSize("default_margin").width / 2 : UM.Theme.getSize("default_margin").width
-                            anchors.right: parent.right
+                            anchors.right: parent.horizontalCenter
                             anchors.rightMargin: UM.Theme.getSize("default_margin").width / 2
 
                             color: control.checked ? UM.Theme.getColor("tab_checked_text") :
@@ -142,11 +119,76 @@ Column
                                    control.hovered ? UM.Theme.getColor("tab_hovered_text") : UM.Theme.getColor("tab_unchecked_text")
 
                             font: UM.Theme.getFont("default")
-                            text: control.text
+                            text: catalog.i18nc("@label", "Extruder")
+                            visible: width < (control.width - UM.Theme.getSize("default_margin").width) / 2
                             elide: Text.ElideRight
                         }
+
+                        Item
+                        {
+                            anchors.verticalCenter: parent.verticalCenter
+                            anchors.left: !extruderStaticText.visible ? parent.left : parent.horizontalCenter
+                            anchors.leftMargin: !extruderStaticText.visible ? (parent.width - width) / 2 : UM.Theme.getSize("default_margin").width / 2
+
+                            property var sizeToUse:
+                            {
+                                var minimumWidth = control.width < UM.Theme.getSize("button").width ? control.width : UM.Theme.getSize("button").width;
+                                var minimumHeight = control.height < UM.Theme.getSize("button").height ? control.height : UM.Theme.getSize("button").height;
+                                var minimumSize = minimumWidth < minimumHeight ? minimumWidth : minimumHeight;
+                                minimumSize -= UM.Theme.getSize("default_margin").width;
+                                return minimumSize;
+                            }
+
+                            width: sizeToUse
+                            height: sizeToUse
+
+                            UM.RecolorImage {
+                                id: mainCircle
+                                anchors.fill: parent
+
+                                sourceSize.width: parent.width
+                                sourceSize.height: parent.width
+                                source: UM.Theme.getIcon("extruder_button")
+
+                                color: control.checked ? UM.Theme.getColor("setting_category_text") : UM.Theme.getColor("setting_control_disabled_text")
+                            }
+
+                            Text
+                            {
+                                anchors.centerIn: parent
+                                text: index + 1;
+                                color: control.checked ? UM.Theme.getColor("tab_checked_text") :
+                                       control.pressed ? UM.Theme.getColor("tab_active_text") :
+                                       control.hovered ? UM.Theme.getColor("tab_hovered_text") : UM.Theme.getColor("tab_unchecked_text")
+                                font: UM.Theme.getFont("default_bold")
+                            }
+
+                            // Material colour circle
+                            // Only draw the filling colour of the material inside the SVG border.
+                            Rectangle
+                            {
+                                anchors
+                                {
+                                    right: parent.right
+                                    top: parent.top
+                                    rightMargin: parent.sizeToUse * 0.04
+                                    topMargin: parent.sizeToUse * 0.04
+                                }
+
+                                color: model.color
+
+                                width: parent.width * 0.27
+                                height: parent.height * 0.27
+                                radius: width / 2
+
+                                border.width: 0
+                                border.color: "transparent"
+
+                                opacity: !control.checked ? 0.6 : 1.0
+                            }
+                        }
                     }
-                    label: Item { }
+                    label: Item {}
                 }
             }
         }
