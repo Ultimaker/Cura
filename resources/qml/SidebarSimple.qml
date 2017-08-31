@@ -488,14 +488,16 @@ Item
                 anchors.topMargin: UM.Theme.getSize("sidebar_margin").height * 2
                 anchors.left: parent.left
                 width: parent.width
-                height: childrenRect.height
+                height: tipsText.contentHeight * tipsText.lineCount
 
                 Text
                 {
+                    id: tipsText
                     anchors.left: parent.left
                     anchors.leftMargin: UM.Theme.getSize("sidebar_margin").width
                     anchors.right: parent.right
                     anchors.rightMargin: UM.Theme.getSize("sidebar_margin").width
+                    anchors.top: parent.top
                     wrapMode: Text.WordWrap
                     //: Tips label
                     text: catalog.i18nc("@label", "Need help improving your prints?<br>Read the <a href='%1'>Ultimaker Troubleshooting Guides</a>").arg("https://ultimaker.com/en/troubleshooting") + "<img src='%1'></img>".arg(UM.Theme.getIcon("play"))
