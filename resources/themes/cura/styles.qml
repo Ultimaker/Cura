@@ -156,22 +156,23 @@ QtObject {
                     height: Theme.getSize("button_icon").height
                     UM.RecolorImage
                     {
+                        visible: control.iconSource != ""
                         id: icon
                         color: UM.Theme.getColor("text_reversed")
                         opacity: !control.enabled ? 0.2 : 1.0
                         source: control.iconSource
-                        width: Theme.getSize("button_icon").width
+                        width: visible ? Theme.getSize("button_icon").width : 0
                         height: Theme.getSize("button_icon").height
 
                         sourceSize: Theme.getSize("button_icon")
                     }
                     UM.RecolorImage
                     {
-                        visible: control.overlayIconSource != ""
+                        visible: control.overlayIconSource != "" && control.iconSource != ""
                         color: control.overlayColor
                         opacity: !control.enabled ? 0.2 : 1.0
                         source: control.overlayIconSource
-                        width: Theme.getSize("button_icon").width
+                        width: visible ? Theme.getSize("button_icon").width : 0
                         height: Theme.getSize("button_icon").height
 
                         sourceSize: Theme.getSize("button_icon")
@@ -180,7 +181,7 @@ QtObject {
                     {
                         text: control.text;
                         anchors.left: icon.right
-                        anchors.leftMargin: Theme.getSize("default_margin").width
+                        anchors.leftMargin: icon.visible ? Theme.getSize("default_margin").width : 0
                         anchors.verticalCenter: parent.verticalCenter;
                         font: UM.Theme.getFont("large");
                         color: UM.Theme.getColor("text_reversed")
