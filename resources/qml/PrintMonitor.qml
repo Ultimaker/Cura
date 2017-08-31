@@ -94,13 +94,46 @@ Column
                         anchors.top: parent.top
                         anchors.margins: UM.Theme.getSize("default_margin").width
                     }
+
+                    Text //Target temperature.
+                    {
+                        id: extruderTargetTemperature
+                        text: (connectedPrinter != null && connectedPrinter.hotendIds[index] != null && connectedPrinter.targetHotendTemperatures[index] != null) ? Math.round(connectedPrinter.targetHotendTemperatures[index]) + "°C" : ""
+                        font: UM.Theme.getFont("small")
+                        color: UM.Theme.getColor("text_inactive")
+                        anchors.right: parent.right
+                        anchors.rightMargin: UM.Theme.getSize("default_margin").width
+                        anchors.bottom: extruderTemperature.bottom
+
+                        MouseArea //For tooltip.
+                        {
+                            id: extruderTargetTemperatureTooltipArea
+                            hoverEnabled: true
+                            anchors.fill: parent
+                            onHoveredChanged:
+                            {
+                                if (containsMouse)
+                                {
+                                    base.showTooltip(
+                                        base,
+                                        {x: 0, y: extruderTargetTemperature.mapToItem(base, 0, -parent.height / 4).y},
+                                        catalog.i18nc("@tooltip", "The target temperature of the hotend. The hotend will heat up or cool down towards this temperature. If this is 0, the hotend heating is turned off.")
+                                    );
+                                }
+                                else
+                                {
+                                    base.hideTooltip();
+                                }
+                            }
+                        }
+                    }
                     Text //Temperature indication.
                     {
                         id: extruderTemperature
                         text: (connectedPrinter != null && connectedPrinter.hotendIds[index] != null && connectedPrinter.hotendTemperatures[index] != null) ? Math.round(connectedPrinter.hotendTemperatures[index]) + "°C" : ""
                         color: UM.Theme.getColor("text")
                         font: UM.Theme.getFont("large")
-                        anchors.right: parent.right
+                        anchors.right: extruderTargetTemperature.left
                         anchors.top: parent.top
                         anchors.margins: UM.Theme.getSize("default_margin").width
 
@@ -116,7 +149,7 @@ Column
                                     base.showTooltip(
                                         base,
                                         {x: 0, y: parent.mapToItem(base, 0, -parent.height / 4).y},
-                                        catalog.i18nc("@tooltip", "The current temperature of this extruder.")
+                                        catalog.i18nc("@tooltip", "The current temperature of this hotend.")
                                     );
                                 }
                                 else
