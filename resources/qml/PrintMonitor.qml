@@ -87,7 +87,7 @@ Column
 
                     Text //Extruder name.
                     {
-                        text: ExtruderManager.getExtruderName(index) != "" ? ExtruderManager.getExtruderName(index) : catalog.i18nc("@label", "Hotend")
+                        text: ExtruderManager.getExtruderName(index) != "" ? ExtruderManager.getExtruderName(index) : catalog.i18nc("@label", "Extruder")
                         color: UM.Theme.getColor("text")
                         font: UM.Theme.getFont("default")
                         anchors.left: parent.left
@@ -149,7 +149,7 @@ Column
                                     base.showTooltip(
                                         base,
                                         {x: 0, y: parent.mapToItem(base, 0, -parent.height / 4).y},
-                                        catalog.i18nc("@tooltip", "The current temperature of this hotend.")
+                                        catalog.i18nc("@tooltip", "The current temperature of this extruder.")
                                     );
                                 }
                                 else
