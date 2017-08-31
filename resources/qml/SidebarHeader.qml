@@ -24,21 +24,41 @@ Column
 
     Item
     {
+        height: UM.Theme.getSize("default_margin").height / 4
+        width: height
+        visible: extruderSelectionRow.visible
+    }
+
+    Label
+    {
+        id: extruderSelectionLabel
+        anchors
+        {
+            left: parent.left
+            leftMargin: UM.Theme.getSize("default_margin").width
+            right: parent.right
+            rightMargin: UM.Theme.getSize("default_margin").width
+        }
+        height: UM.Theme.getSize("sidebar_tabs").height / 3
+        text: catalog.i18nc("@label", "Extruder configuration")
+        font: UM.Theme.getFont("default_bold")
+        color: UM.Theme.getColor("text")
+        visible: extruderSelectionRow.visible
+    }
+
+    Item
+    {
         id: extruderSelectionRow
         width: parent.width
         height: UM.Theme.getSize("sidebar_tabs").height
         visible: machineExtruderCount.properties.value > 1 && !sidebar.monitoringPrint
 
-        Rectangle
+        anchors
         {
-            id: extruderSeparator
-            visible: machineExtruderCount.properties.value > 1 && !sidebar.monitoringPrint
-
-            width: parent.width
-            height: parent.height
-            color: UM.Theme.getColor("sidebar_lining")
-
-            anchors.top: extruderSelectionRow.top
+            left: parent.left
+            leftMargin: UM.Theme.getSize("default_margin").width
+            right: parent.right
+            rightMargin: UM.Theme.getSize("default_margin").width
         }
 
         ListView
@@ -53,8 +73,10 @@ Column
             anchors
             {
                 left: parent.left
+                leftMargin: UM.Theme.getSize("default_margin").width / 2
                 right: parent.right
-                bottom: extruderSelectionRow.bottom
+                rightMargin: UM.Theme.getSize("default_margin").width / 2
+                verticalCenter: parent.verticalCenter
             }
 
             ExclusiveGroup { id: extruderMenuGroup; }
@@ -98,93 +120,106 @@ Column
                         {
                             anchors.fill: parent
                             border.width: UM.Theme.getSize("default_lining").width
-                            border.color: control.checked ? UM.Theme.getColor("tab_checked_border") :
-                                          control.pressed ? UM.Theme.getColor("tab_active_border") :
-                                          control.hovered ? UM.Theme.getColor("tab_hovered_border") : UM.Theme.getColor("tab_unchecked_border")
-                            color: control.checked ? UM.Theme.getColor("tab_checked") :
-                                   control.pressed ? UM.Theme.getColor("tab_active") :
-                                   control.hovered ? UM.Theme.getColor("tab_hovered") : UM.Theme.getColor("tab_unchecked")
+                            border.color: control.checked ? UM.Theme.getColor("toggle_checked_border") :
+                                          control.pressed ? UM.Theme.getColor("toggle_active_border") :
+                                          control.hovered ? UM.Theme.getColor("toggle_hovered_border") : UM.Theme.getColor("toggle_unchecked_border")
+                            color: control.checked ? UM.Theme.getColor("toggle_checked") :
+                                   control.pressed ? UM.Theme.getColor("toggle_active") :
+                                   control.hovered ? UM.Theme.getColor("toggle_hovered") : UM.Theme.getColor("toggle_unchecked")
                             Behavior on color { ColorAnimation { duration: 50; } }
-                        }
-
-                        Text
-                        {
-                            id: extruderStaticText
-                            anchors.verticalCenter: parent.verticalCenter
-                            anchors.right: parent.horizontalCenter
-                            anchors.rightMargin: UM.Theme.getSize("default_margin").width / 2
-
-                            color: control.checked ? UM.Theme.getColor("tab_checked_text") :
-                                   control.pressed ? UM.Theme.getColor("tab_active_text") :
-                                   control.hovered ? UM.Theme.getColor("tab_hovered_text") : UM.Theme.getColor("tab_unchecked_text")
-
-                            font: UM.Theme.getFont("default")
-                            text: catalog.i18nc("@label", "Extruder")
-                            visible: width < (control.width - UM.Theme.getSize("default_margin").width) / 2
-                            elide: Text.ElideRight
                         }
 
                         Item
                         {
-                            anchors.verticalCenter: parent.verticalCenter
-                            anchors.left: !extruderStaticText.visible ? parent.left : parent.horizontalCenter
-                            anchors.leftMargin: !extruderStaticText.visible ? (parent.width - width) / 2 : UM.Theme.getSize("default_margin").width / 2
-
-                            property var sizeToUse:
-                            {
-                                var minimumWidth = control.width < UM.Theme.getSize("button").width ? control.width : UM.Theme.getSize("button").width;
-                                var minimumHeight = control.height < UM.Theme.getSize("button").height ? control.height : UM.Theme.getSize("button").height;
-                                var minimumSize = minimumWidth < minimumHeight ? minimumWidth : minimumHeight;
-                                minimumSize -= UM.Theme.getSize("default_margin").width;
-                                return minimumSize;
+                            id: extruderButtonFace
+                            anchors.centerIn: parent
+                            width: {
+                                var extruderTextWidth = extruderStaticText.visible ? extruderStaticText.width : 0;
+                                var iconWidth = extruderIconItem.width;
+                                return extruderTextWidth + iconWidth + UM.Theme.getSize("default_margin").width / 4;
                             }
 
-                            width: sizeToUse
-                            height: sizeToUse
-
-                            UM.RecolorImage {
-                                id: mainCircle
-                                anchors.fill: parent
-
-                                sourceSize.width: parent.width
-                                sourceSize.height: parent.width
-                                source: UM.Theme.getIcon("extruder_button")
-
-                                color: control.checked ? UM.Theme.getColor("setting_category_text") : UM.Theme.getColor("setting_control_disabled_text")
-                            }
-
+                            // Static text "Extruder"
                             Text
                             {
-                                anchors.centerIn: parent
-                                text: index + 1;
-                                color: control.checked ? UM.Theme.getColor("tab_checked_text") :
-                                       control.pressed ? UM.Theme.getColor("tab_active_text") :
-                                       control.hovered ? UM.Theme.getColor("tab_hovered_text") : UM.Theme.getColor("tab_unchecked_text")
-                                font: UM.Theme.getFont("default_bold")
+                                id: extruderStaticText
+                                anchors.verticalCenter: parent.verticalCenter
+                                anchors.left: parent.left
+
+                                color: control.checked ? UM.Theme.getColor("toggle_checked_text") :
+                                       control.pressed ? UM.Theme.getColor("toggle_active_text") :
+                                       control.hovered ? UM.Theme.getColor("toggle_hovered_text") : UM.Theme.getColor("toggle_unchecked_text")
+
+                                font: UM.Theme.getFont("default")
+                                text: catalog.i18nc("@label", "Extruder")
+                                visible: width < (control.width - extruderIconItem.width - UM.Theme.getSize("default_margin").width)
+                                elide: Text.ElideRight
                             }
 
-                            // Material colour circle
-                            // Only draw the filling colour of the material inside the SVG border.
-                            Rectangle
+                            // Everthing for the extruder icon
+                            Item
                             {
-                                anchors
+                                id: extruderIconItem
+                                anchors.verticalCenter: parent.verticalCenter
+                                anchors.right: parent.right
+
+                                property var sizeToUse:
                                 {
-                                    right: parent.right
-                                    top: parent.top
-                                    rightMargin: parent.sizeToUse * 0.04
-                                    topMargin: parent.sizeToUse * 0.04
+                                    var minimumWidth = control.width < UM.Theme.getSize("button").width ? control.width : UM.Theme.getSize("button").width;
+                                    var minimumHeight = control.height < UM.Theme.getSize("button").height ? control.height : UM.Theme.getSize("button").height;
+                                    var minimumSize = minimumWidth < minimumHeight ? minimumWidth : minimumHeight;
+                                    minimumSize -= UM.Theme.getSize("default_margin").width;
+                                    return minimumSize;
                                 }
 
-                                color: model.color
+                                width: sizeToUse
+                                height: sizeToUse
 
-                                width: parent.width * 0.27
-                                height: parent.height * 0.27
-                                radius: width / 2
+                                UM.RecolorImage {
+                                    id: mainCircle
+                                    anchors.fill: parent
 
-                                border.width: 0
-                                border.color: "transparent"
+                                    sourceSize.width: parent.width
+                                    sourceSize.height: parent.width
+                                    source: UM.Theme.getIcon("extruder_button")
 
-                                opacity: !control.checked ? 0.6 : 1.0
+                                    color: extruderNumberText.color
+                                }
+
+                                Text
+                                {
+                                    id: extruderNumberText
+                                    anchors.centerIn: parent
+                                    text: index + 1;
+                                    color: control.checked ? UM.Theme.getColor("toggle_checked_text") :
+                                           control.pressed ? UM.Theme.getColor("toggle_active_text") :
+                                           control.hovered ? UM.Theme.getColor("toggle_hovered_text") : UM.Theme.getColor("toggle_unchecked_text")
+                                    font: UM.Theme.getFont("default_bold")
+                                }
+
+                                // Material colour circle
+                                // Only draw the filling colour of the material inside the SVG border.
+                                Rectangle
+                                {
+                                    anchors
+                                    {
+                                        right: parent.right
+                                        top: parent.top
+                                        rightMargin: parent.sizeToUse * 0.04
+                                        topMargin: parent.sizeToUse * 0.04
+                                    }
+
+                                    color: model.color
+
+                                    width: parent.width * 0.27
+                                    height: parent.height * 0.27
+                                    radius: width / 2
+
+                                    border.width: 0
+                                    border.color: "transparent"
+
+                                    opacity: !control.checked ? 0.6 : 1.0
+                                }
                             }
                         }
                     }
