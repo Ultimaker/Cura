@@ -23,7 +23,7 @@ Item
 
     Component.onCompleted: PrintInformation.enabled = true
     Component.onDestruction: PrintInformation.enabled = false
-    UM.I18nCatalog { id: catalog; name:"cura"}
+    UM.I18nCatalog { id: catalog; name: "cura" }
 
     Item
     {
@@ -31,7 +31,7 @@ Item
         anchors.top: parent.top
         anchors.left: parent.left
         anchors.topMargin: UM.Theme.getSize("sidebar_margin").height
-        width: base.width * .45 - UM.Theme.getSize("sidebar_margin").width
+        width: UM.Theme.getSize("sidebar").width * .45 - UM.Theme.getSize("sidebar_margin").width
         height: childrenRect.height
 
         Text
@@ -53,7 +53,7 @@ Item
         id: infillCellRight
 
         height: childrenRect.height;
-        width: base.width * .55
+        width: UM.Theme.getSize("sidebar").width * .55
 
         spacing: UM.Theme.getSize("sidebar_margin").width
 
@@ -248,239 +248,227 @@ Item
         }
     }
 
-    Item
+    Text
     {
-        id: helpersCell
+        id: enableSupportLabel
+        anchors.left: parent.left
+        anchors.leftMargin: UM.Theme.getSize("sidebar_margin").width
+        anchors.verticalCenter: enableSupportCheckBox.verticalCenter
+        text: catalog.i18nc("@label", "Generate Support");
+        font: UM.Theme.getFont("default");
+        color: UM.Theme.getColor("text");
+    }
+
+    CheckBox
+    {
+        id: enableSupportCheckBox
+        property alias _hovered: enableSupportMouseArea.containsMouse
+
         anchors.top: infillCellRight.bottom
         anchors.topMargin: UM.Theme.getSize("sidebar_margin").height * 2
+        anchors.left: infillCellRight.left
+        anchors.leftMargin: UM.Theme.getSize("sidebar_margin").width
+
+        style: UM.Theme.styles.checkbox;
+        enabled: base.settingsEnabled
+
+        checked: supportEnabled.properties.value == "True";
+
+        MouseArea
+        {
+            id: enableSupportMouseArea
+            anchors.fill: parent
+            hoverEnabled: true
+            enabled: true
+            onClicked:
+            {
+                // The value is a string "True" or "False"
+                supportEnabled.setPropertyValue("value", supportEnabled.properties.value != "True");
+            }
+            onEntered:
+            {
+                base.showTooltip(enableSupportCheckBox, Qt.point(-enableSupportCheckBox.x, 0),
+                    catalog.i18nc("@label", "Generate structures to support parts of the model which have overhangs. Without these structures, such parts would collapse during printing."));
+            }
+            onExited:
+            {
+                base.hideTooltip();
+            }
+        }
+    }
+
+    Text
+    {
+        id: supportExtruderLabel
+        visible: (supportEnabled.properties.value == "True") && (machineExtruderCount.properties.value > 1)
         anchors.left: parent.left
-        anchors.right: parent.right
-        height: childrenRect.height
+        anchors.leftMargin: UM.Theme.getSize("sidebar_margin").width
+        anchors.verticalCenter: supportExtruderCombobox.verticalCenter
+        text: catalog.i18nc("@label", "Support Extruder");
+        font: UM.Theme.getFont("default");
+        color: UM.Theme.getColor("text");
+    }
 
-        Text
+    ComboBox
+    {
+        id: supportExtruderCombobox
+        visible: (supportEnabled.properties.value == "True") && (machineExtruderCount.properties.value > 1)
+        model: extruderModel
+
+        property string color_override: ""  // for manually setting values
+        property string color:  // is evaluated automatically, but the first time is before extruderModel being filled
         {
-            id: enableSupportLabel
-            anchors.left: parent.left
-            anchors.leftMargin: UM.Theme.getSize("sidebar_margin").width
-            anchors.verticalCenter: enableSupportCheckBox.verticalCenter
-            width: parent.width * .45 - 3 * UM.Theme.getSize("sidebar_margin").width
-            text: catalog.i18nc("@label", "Generate Support");
-            font: UM.Theme.getFont("default");
-            color: UM.Theme.getColor("text");
+            var current_extruder = extruderModel.get(currentIndex);
+            color_override = "";
+            if (current_extruder === undefined) {
+                return "";
+            }
+            var model_color = current_extruder.color;
+            return (model_color) ? model_color : "";
         }
 
-        CheckBox
+        textRole: 'text'  // this solves that the combobox isn't populated in the first time Cura is started
+
+        anchors.top: enableSupportCheckBox.bottom
+        anchors.topMargin:
         {
-            id: enableSupportCheckBox
-            property alias _hovered: enableSupportMouseArea.containsMouse
+            if ((supportEnabled.properties.value == "True") && (machineExtruderCount.properties.value > 1))
+            {
+                return UM.Theme.getSize("sidebar_margin").height;
+            }
+            else
+            {
+                return 0;
+            }
+        }
+        anchors.left: infillCellRight.left
+        anchors.leftMargin: UM.Theme.getSize("sidebar_margin").width
+        width: UM.Theme.getSize("sidebar").width * .55
+        height:
+        {
+            if ((supportEnabled.properties.value == "True") && (machineExtruderCount.properties.value > 1))
+            {
+                // default height when control is enabled
+                return UM.Theme.getSize("setting_control").height;
+            }
+            else
+            {
+                return 0;
+            }
+        }
+        Behavior on height { NumberAnimation { duration: 100 } }
 
-            anchors.top: parent.top
-            anchors.left: enableSupportLabel.right
-            anchors.leftMargin: UM.Theme.getSize("sidebar_margin").width
+        style: UM.Theme.styles.combobox_color
+        enabled: base.settingsEnabled
+        property alias _hovered: supportExtruderMouseArea.containsMouse
 
-            style: UM.Theme.styles.checkbox;
+        currentIndex: supportExtruderNr.properties !== null ? parseFloat(supportExtruderNr.properties.value) : 0
+        onActivated:
+        {
+            // Send the extruder nr as a string.
+            supportExtruderNr.setPropertyValue("value", String(index));
+        }
+        MouseArea
+        {
+            id: supportExtruderMouseArea
+            anchors.fill: parent
+            hoverEnabled: true
             enabled: base.settingsEnabled
-
-            checked: supportEnabled.properties.value == "True";
-
-            MouseArea
+            acceptedButtons: Qt.NoButton
+            onEntered:
             {
-                id: enableSupportMouseArea
-                anchors.fill: parent
-                hoverEnabled: true
-                enabled: true
-                onClicked:
-                {
-                    // The value is a string "True" or "False"
-                    supportEnabled.setPropertyValue("value", supportEnabled.properties.value != "True");
-                }
-                onEntered:
-                {
-                    base.showTooltip(enableSupportCheckBox, Qt.point(-enableSupportCheckBox.x, 0),
-                        catalog.i18nc("@label", "Generate structures to support parts of the model which have overhangs. Without these structures, such parts would collapse during printing."));
-                }
-                onExited:
-                {
-                    base.hideTooltip();
-                }
+                base.showTooltip(supportExtruderCombobox, Qt.point(-supportExtruderCombobox.x, 0),
+                    catalog.i18nc("@label", "Select which extruder to use for support. This will build up supporting structures below the model to prevent the model from sagging or printing in mid air."));
+            }
+            onExited:
+            {
+                base.hideTooltip();
             }
         }
 
-        Text
+        function updateCurrentColor()
         {
-            id: supportExtruderLabel
-            visible: (supportEnabled.properties.value == "True") && (machineExtruderCount.properties.value > 1)
-            anchors.left: parent.left
-            anchors.leftMargin: UM.Theme.getSize("sidebar_margin").width
-            anchors.verticalCenter: supportExtruderCombobox.verticalCenter
-            width: parent.width * .45 - 3 * UM.Theme.getSize("sidebar_margin").width
-            text: catalog.i18nc("@label", "Support Extruder");
-            font: UM.Theme.getFont("default");
-            color: UM.Theme.getColor("text");
+            var current_extruder = extruderModel.get(currentIndex);
+            if (current_extruder !== undefined) {
+                supportExtruderCombobox.color_override = current_extruder.color;
+            }
         }
 
-        ComboBox
+    }
+
+    Text
+    {
+        id: adhesionHelperLabel
+        anchors.left: parent.left
+        anchors.leftMargin: UM.Theme.getSize("sidebar_margin").width
+        anchors.verticalCenter: adhesionCheckBox.verticalCenter
+        text: catalog.i18nc("@label", "Build Plate Adhesion");
+        font: UM.Theme.getFont("default");
+        color: UM.Theme.getColor("text");
+        elide: Text.ElideRight
+    }
+
+    CheckBox
+    {
+        id: adhesionCheckBox
+        property alias _hovered: adhesionMouseArea.containsMouse
+
+        anchors.top: supportExtruderCombobox.bottom
+        anchors.topMargin: UM.Theme.getSize("sidebar_margin").height * 2
+        anchors.left: infillCellRight.left
+        anchors.leftMargin: UM.Theme.getSize("sidebar_margin").width
+
+        //: Setting enable printing build-plate adhesion helper checkbox
+        style: UM.Theme.styles.checkbox;
+        enabled: base.settingsEnabled
+
+        checked: platformAdhesionType.properties.value != "skirt" && platformAdhesionType.properties.value != "none"
+
+        MouseArea
         {
-            id: supportExtruderCombobox
-            visible: (supportEnabled.properties.value == "True") && (machineExtruderCount.properties.value > 1)
-            model: extruderModel
-
-            property string color_override: ""  // for manually setting values
-            property string color:  // is evaluated automatically, but the first time is before extruderModel being filled
-            {
-                var current_extruder = extruderModel.get(currentIndex);
-                color_override = "";
-                if (current_extruder === undefined) {
-                    return "";
-                }
-                var model_color = current_extruder.color;
-                return (model_color) ? model_color : "";
-            }
-
-            textRole: 'text'  // this solves that the combobox isn't populated in the first time Cura is started
-
-            anchors.top: enableSupportCheckBox.bottom
-            anchors.topMargin:
-            {
-                if ((supportEnabled.properties.value == "True") && (machineExtruderCount.properties.value > 1))
-                {
-                    return UM.Theme.getSize("sidebar_margin").height;
-                }
-                else
-                {
-                    return 0;
-                }
-            }
-            anchors.left: supportExtruderLabel.right
-            anchors.leftMargin: UM.Theme.getSize("sidebar_margin").width
-            width: parent.width * .55
-            height:
-            {
-                if ((supportEnabled.properties.value == "True") && (machineExtruderCount.properties.value > 1))
-                {
-                    // default height when control is enabled
-                    return UM.Theme.getSize("setting_control").height;
-                }
-                else
-                {
-                    return 0;
-                }
-            }
-            Behavior on height { NumberAnimation { duration: 100 } }
-
-            style: UM.Theme.styles.combobox_color
+            id: adhesionMouseArea
+            anchors.fill: parent
+            hoverEnabled: true
             enabled: base.settingsEnabled
-            property alias _hovered: supportExtruderMouseArea.containsMouse
-
-            currentIndex: supportExtruderNr.properties !== null ? parseFloat(supportExtruderNr.properties.value) : 0
-            onActivated:
+            onClicked:
             {
-                // Send the extruder nr as a string.
-                supportExtruderNr.setPropertyValue("value", String(index));
-            }
-            MouseArea
-            {
-                id: supportExtruderMouseArea
-                anchors.fill: parent
-                hoverEnabled: true
-                enabled: base.settingsEnabled
-                acceptedButtons: Qt.NoButton
-                onEntered:
+                var adhesionType = "skirt";
+                if(!parent.checked)
                 {
-                    base.showTooltip(supportExtruderCombobox, Qt.point(-supportExtruderCombobox.x, 0),
-                        catalog.i18nc("@label", "Select which extruder to use for support. This will build up supporting structures below the model to prevent the model from sagging or printing in mid air."));
-                }
-                onExited:
-                {
-                    base.hideTooltip();
-                }
-            }
-
-            function updateCurrentColor()
-            {
-                var current_extruder = extruderModel.get(currentIndex);
-                if (current_extruder !== undefined) {
-                    supportExtruderCombobox.color_override = current_extruder.color;
-                }
-            }
-
-        }
-
-        Text
-        {
-            id: adhesionHelperLabel
-            anchors.left: parent.left
-            anchors.leftMargin: UM.Theme.getSize("sidebar_margin").width
-            anchors.verticalCenter: adhesionCheckBox.verticalCenter
-            width: parent.width * .45 - 3 * UM.Theme.getSize("sidebar_margin").width
-            text: catalog.i18nc("@label", "Build Plate Adhesion");
-            font: UM.Theme.getFont("default");
-            color: UM.Theme.getColor("text");
-            elide: Text.ElideRight
-        }
-
-        CheckBox
-        {
-            id: adhesionCheckBox
-            property alias _hovered: adhesionMouseArea.containsMouse
-
-            anchors.top: supportExtruderCombobox.bottom
-            anchors.topMargin: UM.Theme.getSize("sidebar_margin").height * 2
-            anchors.left: adhesionHelperLabel.right
-            anchors.leftMargin: UM.Theme.getSize("sidebar_margin").width
-
-            //: Setting enable printing build-plate adhesion helper checkbox
-            style: UM.Theme.styles.checkbox;
-            enabled: base.settingsEnabled
-
-            checked: platformAdhesionType.properties.value != "skirt" && platformAdhesionType.properties.value != "none"
-
-            MouseArea
-            {
-                id: adhesionMouseArea
-                anchors.fill: parent
-                hoverEnabled: true
-                enabled: base.settingsEnabled
-                onClicked:
-                {
-                    var adhesionType = "skirt";
-                    if(!parent.checked)
+                    // Remove the "user" setting to see if the rest of the stack prescribes a brim or a raft
+                    platformAdhesionType.removeFromContainer(0);
+                    adhesionType = platformAdhesionType.properties.value;
+                    if(adhesionType == "skirt")
                     {
-                        // Remove the "user" setting to see if the rest of the stack prescribes a brim or a raft
-                        platformAdhesionType.removeFromContainer(0);
-                        adhesionType = platformAdhesionType.properties.value;
-                        if(adhesionType == "skirt")
-                        {
-                            // If the rest of the stack doesn't prescribe an adhesion-type, default to a brim
-                            adhesionType = "brim";
-                        }
+                        // If the rest of the stack doesn't prescribe an adhesion-type, default to a brim
+                        adhesionType = "brim";
                     }
-                    platformAdhesionType.setPropertyValue("value", adhesionType);
                 }
-                onEntered:
-                {
-                    base.showTooltip(adhesionCheckBox, Qt.point(-adhesionCheckBox.x, 0),
-                        catalog.i18nc("@label", "Enable printing a brim or raft. This will add a flat area around or under your object which is easy to cut off afterwards."));
-                }
-                onExited:
-                {
-                    base.hideTooltip();
-                }
+                platformAdhesionType.setPropertyValue("value", adhesionType);
+            }
+            onEntered:
+            {
+                base.showTooltip(adhesionCheckBox, Qt.point(-adhesionCheckBox.x, 0),
+                    catalog.i18nc("@label", "Enable printing a brim or raft. This will add a flat area around or under your object which is easy to cut off afterwards."));
+            }
+            onExited:
+            {
+                base.hideTooltip();
             }
         }
+    }
 
-        ListModel
-        {
-            id: extruderModel
-            Component.onCompleted: populateExtruderModel()
-        }
+    ListModel
+    {
+        id: extruderModel
+        Component.onCompleted: populateExtruderModel()
+    }
 
-        //: Model used to populate the extrudelModel
-        Cura.ExtrudersModel
-        {
-            id: extruders
-            onModelChanged: populateExtruderModel()
-        }
+    //: Model used to populate the extrudelModel
+    Cura.ExtrudersModel
+    {
+        id: extruders
+        onModelChanged: populateExtruderModel()
     }
 
     function populateExtruderModel()
@@ -499,7 +487,7 @@ Item
     Item
     {
         id: tipsCell
-        anchors.top: helpersCell.bottom
+        anchors.top: adhesionCheckBox.bottom
         anchors.topMargin: UM.Theme.getSize("sidebar_margin").height * 2
         anchors.left: parent.left
         width: parent.width
