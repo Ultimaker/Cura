@@ -97,7 +97,7 @@ Rectangle
     Rectangle {
         id: headerSeparator
         width: parent.width
-        visible: !monitoringPrint && !hideSettings
+        visible: settingsModeSelection.visible && header.visible
         height: visible ? UM.Theme.getSize("sidebar_lining").height : 0
         color: UM.Theme.getColor("sidebar_lining")
         anchors.top: header.bottom
