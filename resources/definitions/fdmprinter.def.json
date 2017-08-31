@@ -4923,7 +4923,7 @@
                 "relative_extrusion":
                 {
                     "label": "Relative Extrusion",
-                    "description": "Use relative extrusion rather than absolute extrusion. Using relative E-steps makes for easier post-processing of the Gcode. However, it's not supported by all printers and it may produce very slight deviations in the amount of deposited material compared to absolute E-steps.",
+                    "description": "Use relative extrusion rather than absolute extrusion. Using relative E-steps makes for easier post-processing of the Gcode. However, it's not supported by all printers and it may produce very slight deviations in the amount of deposited material compared to absolute E-steps. Irrespective of this setting, the extrusion mode will always be set to absolute before the start and end Gcode are output.",
                     "type": "bool",
                     "default_value": false,
                     "value": "machine_gcode_flavor==\"RepRap (RepRap)\"",
