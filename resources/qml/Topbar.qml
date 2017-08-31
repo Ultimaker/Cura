@@ -29,9 +29,25 @@ Rectangle
         name:"cura"
     }
 
+    Image
+    {
+        id: logo
+        anchors.left: parent.left
+        anchors.leftMargin: UM.Theme.getSize("default_margin").width
+        anchors.verticalCenter: parent.verticalCenter
+
+        source: UM.Theme.getImage("logo");
+        width: UM.Theme.getSize("logo").width;
+        height: UM.Theme.getSize("logo").height;
+
+        sourceSize.width: width;
+        sourceSize.height: height;
+    }
+
     Row
     {
-        anchors.left: parent.left
+        anchors.left: logo.right
+        anchors.leftMargin: UM.Theme.getSize("default_margin").width
         anchors.right: machineSelection.left
         anchors.rightMargin: UM.Theme.getSize("default_margin").width
         spacing: UM.Theme.getSize("default_margin").width
