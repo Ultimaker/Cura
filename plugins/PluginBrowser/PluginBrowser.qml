@@ -198,8 +198,8 @@ UM.Dialog
             id: licenseDialog
             title: catalog.i18nc("@title:window", "Plugin License Agreement")
 
-            minimumWidth: UM.Theme.getSize("modal_window_minimum").width
-            minimumHeight: UM.Theme.getSize("modal_window_minimum").height
+            minimumWidth: UM.Theme.getSize("license_window_minimum").width
+            minimumHeight: UM.Theme.getSize("license_window_minimum").height
             width: minimumWidth
             height: minimumHeight
 
