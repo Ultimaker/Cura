@@ -90,7 +90,7 @@
         "button_text_active": [255, 255, 255, 255],
         "button_text_active_hover": [255, 255, 255, 255],
         "button_disabled": [24, 41, 77, 255],
-        "button_disabled_text": [70, 84, 113, 51],
+        "button_disabled_text": [255, 255, 255, 101],
 
         "button_tooltip": [12, 169, 227, 255],
         "button_tooltip_border": [24, 41, 77, 255],

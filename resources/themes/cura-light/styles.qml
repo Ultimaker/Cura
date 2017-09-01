@@ -482,7 +482,7 @@ QtObject {
                     id: category_arrow
                     anchors.verticalCenter: parent.verticalCenter
                     anchors.right: parent.right
-                    anchors.rightMargin: Theme.getSize("default_margin").width * 2 - width / 2
+                    anchors.rightMargin: Theme.getSize("default_margin").width * 3 - width / 2
                     width: Theme.getSize("standard_arrow").width
                     height: Theme.getSize("standard_arrow").height
                     sourceSize.width: width
