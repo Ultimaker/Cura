@@ -390,6 +390,7 @@ Rectangle
         anchors.leftMargin: UM.Theme.getSize("default_margin").width
         anchors.bottomMargin: UM.Theme.getSize("default_margin").height
         height: childrenRect.height
+        visible: !monitoringPrint
 
         UM.TooltipArea
         {
