@@ -1531,8 +1531,8 @@
                 },
                 "skin_preshrink":
                 {
-                    "label": "Skin Pre-Shrink Distance",
-                    "description": "The distance the skins are shrunk before considering them for skin expansion. Every skin area smaller than this value will disappear. This can help in limiting the amount of time and material spent on printing top/bottom skin at slanted surfaces in the model.",
+                    "label": "Skin Removal Width",
+                    "description": "The largest width of skin areas which are to be removed. Every skin area smaller than this value will disappear. This can help in limiting the amount of time and material spent on printing top/bottom skin at slanted surfaces in the model.",
                     "unit": "mm",
                     "type": "float",
                     "default_value": 0,
@@ -1543,8 +1543,8 @@
                     {
                         "top_skin_preshrink":
                         {
-                            "label": "Top Skin Pre-Shrink Distance",
-                            "description": "The distance the top skins are shrunk before considering them for skin expansion. Every skin area smaller than this value will disappear. This can help in limiting the amount of time and material spent on printing top skin at slanted surfaces in the model.",
+                            "label": "Top Skin Removal Width",
+                            "description": "The largest width of top skin areas which are to be removed. Every skin area smaller than this value will disappear. This can help in limiting the amount of time and material spent on printing top skin at slanted surfaces in the model.",
                             "unit": "mm",
                             "type": "float",
                             "default_value": 0,
@@ -1555,8 +1555,8 @@
                         },
                         "bottom_skin_preshrink":
                         {
-                            "label": "Bottom Skin Pre-Shrink Distance",
-                            "description": "The distance the bottom skins are shrunk before considering them for skin expansion. Every skin area smaller than this value will disappear. This can help in limiting the amount of time and material spent on printing bottom skin at slanted surfaces in the model.",
+                            "label": "Bottom Skin Removal Width",
+                            "description": "The largest width of bottom skin areas which are to be removed. Every skin area smaller than this value will disappear. This can help in limiting the amount of time and material spent on printing bottom skin at slanted surfaces in the model.",
                             "unit": "mm",
                             "type": "float",
                             "default_value": 0,
