@@ -229,7 +229,11 @@ class StartSliceJob(Job):
 
         return result
 
-    def _expandGcodeTokens(self, key, value, settings):
+    ##  Replace setting tokens in a piece of g-code.
+    #   \param value A piece of g-code to replace tokens in.
+    #   \param settings A dictionary of tokens to replace and their respective
+    #   replacement strings.
+    def _expandGcodeTokens(self, value: str, settings: dict):
         try:
             # any setting can be used as a token
             fmt = GcodeStartEndFormatter()
@@ -251,8 +255,8 @@ class StartSliceJob(Job):
             settings["material_guid"] = material_instance_container.getMetaDataEntry("GUID", "")
 
         #Replace the setting tokens in start and end g-code.
-        settings["machine_extruder_start_code"] = self._expandGcodeTokens("machine_extruder_start_code", settings["machine_extruder_start_code"], settings)
-        settings["machine_extruder_end_code"] = self._expandGcodeTokens("machine_extruder_end_code", settings["machine_extruder_end_code"], settings)
+        settings["machine_extruder_start_code"] = self._expandGcodeTokens(settings["machine_extruder_start_code"], settings)
+        settings["machine_extruder_end_code"] = self._expandGcodeTokens(settings["machine_extruder_end_code"], settings)
 
         for key, value in settings.items():
             # Do not send settings that are not settable_per_extruder.
@@ -291,8 +295,8 @@ class StartSliceJob(Job):
         settings["material_print_temp_prepend"] = all(("{" + setting + "}" not in start_gcode for setting in print_temperature_settings))
 
         #Replace the setting tokens in start and end g-code.
-        settings["machine_start_gcode"] = self._expandGcodeTokens("machine_start_gcode", settings["machine_start_gcode"], settings)
-        settings["machine_end_gcode"] = self._expandGcodeTokens("machine_end_gcode", settings["machine_end_gcode"], settings)
+        settings["machine_start_gcode"] = self._expandGcodeTokens(settings["machine_start_gcode"], settings)
+        settings["machine_end_gcode"] = self._expandGcodeTokens(settings["machine_end_gcode"], settings)
 
         for key, value in settings.items(): #Add all submessages for each individual setting.
             setting_message = self._slice_message.getMessage("global_settings").addRepeatedMessage("settings")
