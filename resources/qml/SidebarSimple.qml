@@ -277,7 +277,6 @@ Item
                 anchors.top: infillCellRight.bottom
                 anchors.topMargin: UM.Theme.getSize("sidebar_margin").height * 2
                 anchors.left: infillCellRight.left
-                anchors.leftMargin: UM.Theme.getSize("sidebar_margin").width
 
                 style: UM.Theme.styles.checkbox;
                 enabled: base.settingsEnabled
@@ -352,7 +351,6 @@ Item
                     }
                 }
                 anchors.left: infillCellRight.left
-                anchors.leftMargin: UM.Theme.getSize("sidebar_margin").width
                 width: UM.Theme.getSize("sidebar").width * .55
                 height:
                 {
@@ -426,7 +424,6 @@ Item
                 anchors.top: supportExtruderCombobox.bottom
                 anchors.topMargin: UM.Theme.getSize("sidebar_margin").height * 2
                 anchors.left: infillCellRight.left
-                anchors.leftMargin: UM.Theme.getSize("sidebar_margin").width
 
                 //: Setting enable printing build-plate adhesion helper checkbox
                 style: UM.Theme.styles.checkbox;
