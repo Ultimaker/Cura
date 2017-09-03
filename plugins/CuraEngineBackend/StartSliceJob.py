@@ -224,7 +224,18 @@ class StartSliceJob(Job):
 
         material_instance_container = stack.findContainer({"type": "material"})
 
+        settings = {}
         for key in stack.getAllKeys():
+            settings[key] = stack.getProperty(key, "value")
+            Job.yieldThread()
+
+        settings["print_bed_temperature"] = settings["material_bed_temperature"] #Renamed settings.
+        settings["print_temperature"] = settings["material_print_temperature"]
+        settings["time"] = time.strftime("%H:%M:%S") #Some extra settings.
+        settings["date"] = time.strftime("%d-%m-%Y")
+        settings["day"] = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"][int(time.strftime("%w"))]
+
+        for key, value in settings.items():
             # Do not send settings that are not settable_per_extruder.
             if not stack.getProperty(key, "settable_per_extruder"):
                 continue
@@ -233,6 +244,8 @@ class StartSliceJob(Job):
             if key == "material_guid" and material_instance_container:
                 # Also send the material GUID. This is a setting in fdmprinter, but we have no interface for it.
                 setting.value = str(material_instance_container.getMetaDataEntry("GUID", "")).encode("utf-8")
+            elif key == "machine_extruder_start_code" or key == "machine_extruder_end_code":
+                setting.value = self._expandGcodeTokens(key, value, settings)
             else:
                 setting.value = str(stack.getProperty(key, "value")).encode("utf-8")
             Job.yieldThread()
@@ -278,7 +291,7 @@ class StartSliceJob(Job):
         for key, value in settings.items(): #Add all submessages for each individual setting.
             setting_message = self._slice_message.getMessage("global_settings").addRepeatedMessage("settings")
             setting_message.name = key
-            if key == "machine_start_gcode" or key == "machine_end_gcode" or key == "machine_extruder_start_code" or key == "machine_extruder_end_code": #If it's a g-code message, use special formatting.
+            if key == "machine_start_gcode" or key == "machine_end_gcode": #If it's a g-code message, use special formatting.
                 setting_message.value = self._expandGcodeTokens(key, value, settings)
             else:
                 setting_message.value = str(value).encode("utf-8")
