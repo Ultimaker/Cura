@@ -208,6 +208,27 @@ class StartSliceJob(Job):
     def isCancelled(self):
         return self._is_cancelled
 
+    ##  Creates a dictionary of tokens to replace in g-code pieces.
+    #
+    #   This indicates what should be replaced in the start and end g-codes.
+    #   \param stack The stack to get the settings from to replace the tokens
+    #   with.
+    #   \return A dictionary of replacement tokens to the values they should be
+    #   replaced with.
+    def _buildReplacementTokens(self, stack) -> dict:
+        result = {}
+        for key in stack.getAllKeys():
+            result[key] = stack.getProperty(key, "value")
+            Job.yieldThread()
+
+        result["print_bed_temperature"] = result["material_bed_temperature"] #Renamed settings.
+        result["print_temperature"] = result["material_print_temperature"]
+        result["time"] = time.strftime("%H:%M:%S") #Some extra settings.
+        result["date"] = time.strftime("%d-%m-%Y")
+        result["day"] = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"][int(time.strftime("%w"))]
+
+        return result
+
     def _expandGcodeTokens(self, key, value, settings):
         try:
             # any setting can be used as a token
@@ -222,18 +243,16 @@ class StartSliceJob(Job):
         message = self._slice_message.addRepeatedMessage("extruders")
         message.id = int(stack.getMetaDataEntry("position"))
 
+        settings = self._buildReplacementTokens(stack)
+
+        #Also send the material GUID. This is a setting in fdmprinter, but we have no interface for it.
         material_instance_container = stack.findContainer({"type": "material"})
+        if material_instance_container:
+            settings["material_guid"] = material_instance_container.getMetaDataEntry("GUID", "")
 
-        settings = {}
-        for key in stack.getAllKeys():
-            settings[key] = stack.getProperty(key, "value")
-            Job.yieldThread()
-
-        settings["print_bed_temperature"] = settings["material_bed_temperature"] #Renamed settings.
-        settings["print_temperature"] = settings["material_print_temperature"]
-        settings["time"] = time.strftime("%H:%M:%S") #Some extra settings.
-        settings["date"] = time.strftime("%d-%m-%Y")
-        settings["day"] = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"][int(time.strftime("%w"))]
+        #Replace the setting tokens in start and end g-code.
+        settings["machine_extruder_start_code"] = self._expandGcodeTokens("machine_extruder_start_code", settings["machine_extruder_start_code"], settings)
+        settings["machine_extruder_end_code"] = self._expandGcodeTokens("machine_extruder_end_code", settings["machine_extruder_end_code"], settings)
 
         for key, value in settings.items():
             # Do not send settings that are not settable_per_extruder.
@@ -241,13 +260,7 @@ class StartSliceJob(Job):
                 continue
             setting = message.getMessage("settings").addRepeatedMessage("settings")
             setting.name = key
-            if key == "material_guid" and material_instance_container:
-                # Also send the material GUID. This is a setting in fdmprinter, but we have no interface for it.
-                setting.value = str(material_instance_container.getMetaDataEntry("GUID", "")).encode("utf-8")
-            elif key == "machine_extruder_start_code" or key == "machine_extruder_end_code":
-                setting.value = self._expandGcodeTokens(key, value, settings)
-            else:
-                setting.value = str(stack.getProperty(key, "value")).encode("utf-8")
+            setting.value = str(value).encode("utf-8")
             Job.yieldThread()
 
     ##  Create extruder message from global stack
@@ -268,11 +281,7 @@ class StartSliceJob(Job):
     #   The settings are taken from the global stack. This does not include any
     #   per-extruder settings or per-object settings.
     def _buildGlobalSettingsMessage(self, stack):
-        keys = stack.getAllKeys()
-        settings = {}
-        for key in keys:
-            settings[key] = stack.getProperty(key, "value")
-            Job.yieldThread()
+        settings = self._buildReplacementTokens(stack)
 
         start_gcode = settings["machine_start_gcode"]
         #Pre-compute material material_bed_temp_prepend and material_print_temp_prepend
@@ -281,20 +290,14 @@ class StartSliceJob(Job):
         print_temperature_settings = {"material_print_temperature", "material_print_temperature_layer_0", "default_material_print_temperature", "material_initial_print_temperature", "material_final_print_temperature", "material_standby_temperature"}
         settings["material_print_temp_prepend"] = all(("{" + setting + "}" not in start_gcode for setting in print_temperature_settings))
 
-        settings["print_bed_temperature"] = settings["material_bed_temperature"]
-        settings["print_temperature"] = settings["material_print_temperature"]
-
-        settings["time"] = time.strftime('%H:%M:%S')
-        settings["date"] = time.strftime('%d-%m-%Y')
-        settings["day"] = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'][int(time.strftime('%w'))]
+        #Replace the setting tokens in start and end g-code.
+        settings["machine_start_gcode"] = self._expandGcodeTokens("machine_start_gcode", settings["machine_start_gcode"], settings)
+        settings["machine_end_gcode"] = self._expandGcodeTokens("machine_end_gcode", settings["machine_end_gcode"], settings)
 
         for key, value in settings.items(): #Add all submessages for each individual setting.
             setting_message = self._slice_message.getMessage("global_settings").addRepeatedMessage("settings")
             setting_message.name = key
-            if key == "machine_start_gcode" or key == "machine_end_gcode": #If it's a g-code message, use special formatting.
-                setting_message.value = self._expandGcodeTokens(key, value, settings)
-            else:
-                setting_message.value = str(value).encode("utf-8")
+            setting_message.value = str(value).encode("utf-8")
             Job.yieldThread()
 
     ##  Sends for some settings which extruder they should fallback to if not
@@ -356,3 +359,4 @@ class StartSliceJob(Job):
 
             relations_set.add(relation.target.key)
             self._addRelations(relations_set, relation.target.relations)
+
