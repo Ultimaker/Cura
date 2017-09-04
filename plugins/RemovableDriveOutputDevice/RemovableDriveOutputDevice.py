@@ -123,8 +123,17 @@ class RemovableDriveOutputDevice(OutputDevice):
     def _onFinished(self, job):
         if self._stream:
             # Explicitly closing the stream flushes the write-buffer
-            self._stream.close()
-            self._stream = None
+            try:
+                self._stream.close()
+                self._stream = None
+            except:
+                Logger.logException("w", "An execption occured while trying to write to removable drive.")
+                message = Message(catalog.i18nc("@info:status", "Could not save to removable drive {0}: {1}").format(self.getName(),
+                                                                                                       str(
+                                                                                                           job.getError())))
+                message.show()
+                self.writeError.emit(self)
+                return
 
         self._writing = False
         self.writeFinished.emit(self)
