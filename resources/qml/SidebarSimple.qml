@@ -422,7 +422,7 @@ Item
                 property alias _hovered: adhesionMouseArea.containsMouse
 
                 anchors.top: supportExtruderCombobox.bottom
-                anchors.topMargin: UM.Theme.getSize("sidebar_margin").height * 2
+                anchors.topMargin: UM.Theme.getSize("sidebar_margin").height
                 anchors.left: infillCellRight.left
 
                 //: Setting enable printing build-plate adhesion helper checkbox
