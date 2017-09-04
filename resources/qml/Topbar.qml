@@ -73,7 +73,8 @@ Rectangle
             height: UM.Theme.getSize("sidebar_header").height
             onClicked: base.startMonitoringPrint()
             text: catalog.i18nc("@title:tab", "Monitor")
-
+            property color overlayColor: "transparent"
+            property string overlayIconSource: ""
             checkable: true
             checked: base.monitoringPrint
             exclusiveGroup: sidebarHeaderBarGroup
