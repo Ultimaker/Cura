@@ -3015,7 +3015,7 @@
                     "unit": "mm",
                     "type": "float",
                     "default_value": 0.0,
-                    "minimum_value": "0",
+                    "minimum_value": "machine_width / -2 if machine_center_is_zero else 0",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true,
                     "settable_per_meshgroup": true
@@ -3027,7 +3027,7 @@
                     "unit": "mm",
                     "type": "float",
                     "default_value": 0.0,
-                    "minimum_value": "0",
+                    "minimum_value": "machine_depth / -2 if machine_center_is_zero else 0",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true,
                     "settable_per_meshgroup": true
