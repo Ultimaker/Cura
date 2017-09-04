@@ -756,6 +756,8 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
 
         self._createNetworkManager()
 
+        self._last_response_time = time()  # Ensure we reset the time when trying to connect (again)
+
         self.setConnectionState(ConnectionState.connecting)
         self._update()  # Manually trigger the first update, as we don't want to wait a few secs before it starts.
         if not self._use_stream:

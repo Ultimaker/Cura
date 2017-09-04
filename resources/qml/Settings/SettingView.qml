@@ -1,4 +1,4 @@
-// Copyright (c) 2015 Ultimaker B.V.
+// Copyright (c) 2017 Ultimaker B.V.
 // Uranium is released under the terms of the AGPLv3 or higher.
 
 import QtQuick 2.2
@@ -42,9 +42,9 @@ Item
         {
             top: parent.top
             left: parent.left
-            leftMargin: UM.Theme.getSize("default_margin").width
+            leftMargin: UM.Theme.getSize("sidebar_margin").width
             right: parent.right
-            rightMargin: UM.Theme.getSize("default_margin").width
+            rightMargin: UM.Theme.getSize("sidebar_margin").width
         }
         height: visible ? UM.Theme.getSize("setting_control").height : 0
         Behavior on height { NumberAnimation { duration: 100 } }
@@ -55,13 +55,14 @@ Item
 
             anchors.left: parent.left
             anchors.right: clearFilterButton.left
-            anchors.rightMargin: UM.Theme.getSize("default_margin").width
+            anchors.rightMargin: UM.Theme.getSize("sidebar_margin").width
 
             placeholderText: catalog.i18nc("@label:textbox", "Search...")
 
             style: TextFieldStyle
             {
                 textColor: UM.Theme.getColor("setting_control_text");
+                placeholderTextColor: UM.Theme.getColor("setting_control_text")
                 font: UM.Theme.getFont("default");
                 background: Item {}
             }
@@ -118,7 +119,7 @@ Item
 
             anchors.verticalCenter: parent.verticalCenter
             anchors.right: parent.right
-            anchors.rightMargin: UM.Theme.getSize("default_margin").width
+            anchors.rightMargin: UM.Theme.getSize("sidebar_margin").width
 
             color: UM.Theme.getColor("setting_control_button")
             hoverColor: UM.Theme.getColor("setting_control_button_hover")
@@ -137,7 +138,7 @@ Item
         anchors.bottom: parent.bottom;
         anchors.right: parent.right;
         anchors.left: parent.left;
-        anchors.topMargin: filterContainer.visible ? UM.Theme.getSize("default_margin").width : 0
+        anchors.topMargin: filterContainer.visible ? UM.Theme.getSize("sidebar_margin").height : 0
         Behavior on anchors.topMargin { NumberAnimation { duration: 100 } }
 
         style: UM.Theme.styles.scrollview;
@@ -296,7 +297,7 @@ Item
                         contextMenu.provider = provider
                         contextMenu.popup();
                     }
-                    onShowTooltip: base.showTooltip(delegate, { x: 0, y: delegate.height / 2 }, text)
+                    onShowTooltip: base.showTooltip(delegate, { x: -UM.Theme.getSize("default_arrow").width, y: delegate.height / 2 }, text)
                     onHideTooltip: base.hideTooltip()
                     onShowAllHiddenInheritedSettings:
                     {

@@ -649,6 +649,23 @@ class MachineManager(QObject):
                 return Util.parseBool(quality.getMetaDataEntry("supported", True))
         return False
 
+    ##  Returns whether there is anything unsupported in the current set-up.
+    #
+    #   The current set-up signifies the global stack and all extruder stacks,
+    #   so this indicates whether there is any container in any of the container
+    #   stacks that is not marked as supported.
+    @pyqtProperty(bool, notify = activeQualityChanged)
+    def isCurrentSetupSupported(self) -> bool:
+        if not self._global_container_stack:
+            return False
+        for stack in [self._global_container_stack] + list(self._global_container_stack.extruders.values()):
+            for container in stack.getContainers():
+                if not container:
+                    return False
+                if not Util.parseBool(container.getMetaDataEntry("supported", True)):
+                    return False
+        return True
+
     ##  Get the Quality ID associated with the currently active extruder
     #   Note that this only returns the "quality", not the "quality_changes"
     #   \returns QualityID (string) if found, empty string otherwise

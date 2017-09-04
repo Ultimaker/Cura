@@ -47,7 +47,7 @@ class PluginBrowser(QObject, Extension):
         self._is_downloading = False
 
         self._request_header = [b"User-Agent",
-                                str.encode("%s\%s (%s %s)" % (Application.getInstance().getApplicationName(),
+                                str.encode("%s/%s (%s %s)" % (Application.getInstance().getApplicationName(),
                                                               Application.getInstance().getVersion(),
                                                               platform.system(),
                                                               platform.machine(),
