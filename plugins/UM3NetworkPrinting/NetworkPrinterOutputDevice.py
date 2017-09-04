@@ -12,6 +12,7 @@ import UM.Settings.ContainerRegistry
 import UM.Version #To compare firmware version numbers.
 
 from cura.PrinterOutputDevice import PrinterOutputDevice, ConnectionState
+from cura.Settings.ContainerManager import ContainerManager
 import cura.Settings.ExtruderManager
 
 from PyQt5.QtNetwork import QHttpMultiPart, QHttpPart, QNetworkRequest, QNetworkAccessManager, QNetworkReply
@@ -312,6 +313,18 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         self.targetBedTemperatureChanged.emit()
         return True
 
+    ##  Updates the target hotend temperature from the printer, and emit a signal if it was changed.
+    #
+    #   /param index The index of the hotend.
+    #   /param temperature The new target temperature of the hotend.
+    #   /return boolean, True if the temperature was changed, false if the new temperature has the same value as the already stored temperature
+    def _updateTargetHotendTemperature(self, index, temperature):
+        if self._target_hotend_temperatures[index] == temperature:
+            return False
+        self._target_hotend_temperatures[index] = temperature
+        self.targetHotendTemperaturesChanged.emit()
+        return True
+
     def _stopCamera(self):
         if self._camera_timer.isActive():
             self._camera_timer.stop()
@@ -534,8 +547,9 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
     def _spliceJSONData(self):
         # Check for hotend temperatures
         for index in range(0, self._num_extruders):
-            temperature = self._json_printer_state["heads"][0]["extruders"][index]["hotend"]["temperature"]["current"]
-            self._setHotendTemperature(index, temperature)
+            temperatures = self._json_printer_state["heads"][0]["extruders"][index]["hotend"]["temperature"]
+            self._setHotendTemperature(index, temperatures["current"])
+            self._updateTargetHotendTemperature(index, temperatures["target"])
             try:
                 material_id = self._json_printer_state["heads"][0]["extruders"][index]["active_material"]["guid"]
             except KeyError:
@@ -547,10 +561,9 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
                 hotend_id = ""
             self._setHotendId(index, hotend_id)
 
-        bed_temperature = self._json_printer_state["bed"]["temperature"]["current"]
-        self._setBedTemperature(bed_temperature)
-        target_bed_temperature = self._json_printer_state["bed"]["temperature"]["target"]
-        self._updateTargetBedTemperature(target_bed_temperature)
+        bed_temperatures = self._json_printer_state["bed"]["temperature"]
+        self._setBedTemperature(bed_temperatures["current"])
+        self._updateTargetBedTemperature(bed_temperatures["target"])
 
         head_x = self._json_printer_state["heads"][0]["position"]["x"]
         head_y = self._json_printer_state["heads"][0]["position"]["y"]
@@ -743,6 +756,8 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
 
         self._createNetworkManager()
 
+        self._last_response_time = time()  # Ensure we reset the time when trying to connect (again)
+
         self.setConnectionState(ConnectionState.connecting)
         self._update()  # Manually trigger the first update, as we don't want to wait a few secs before it starts.
         if not self._use_stream:
@@ -915,6 +930,13 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
                 xml_data = container.serialize()
                 if xml_data == "" or xml_data is None:
                     continue
+
+                names = ContainerManager.getInstance().getLinkedMaterials(container.getId())
+                if names:
+                    # There are other materials that share this GUID.
+                    if not container.isReadOnly():
+                        continue  # If it's not readonly, it's created by user, so skip it.
+
                 material_multi_part = QHttpMultiPart(QHttpMultiPart.FormDataType)
 
                 material_part = QHttpPart()

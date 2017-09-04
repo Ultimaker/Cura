@@ -1,4 +1,4 @@
-// Copyright (c) 2015 Ultimaker B.V.
+// Copyright (c) 2017 Ultimaker B.V.
 // Cura is released under the terms of the AGPLv3 or higher.
 
 import QtQuick 2.2
@@ -71,7 +71,7 @@ Item
                 id: layersLabel
                 anchors.left: parent.left
                 text: catalog.i18nc("@label","View Mode: Layers")
-                font.bold: true
+                font: UM.Theme.getFont("default_bold");
                 color: UM.Theme.getColor("text")
                 Layout.fillWidth: true
                 elide: Text.ElideMiddle;
@@ -90,6 +90,7 @@ Item
                 id: layerViewTypesLabel
                 anchors.left: parent.left
                 text: catalog.i18nc("@label","Color scheme")
+                font: UM.Theme.getFont("default");
                 visible: !UM.LayerView.compatibilityMode
                 Layout.fillWidth: true
                 color: UM.Theme.getColor("text")
@@ -148,6 +149,7 @@ Item
                 id: compatibilityModeLabel
                 anchors.left: parent.left
                 text: catalog.i18nc("@label","Compatibility Mode")
+                font: UM.Theme.getFont("default")
                 color: UM.Theme.getColor("text")
                 visible: UM.LayerView.compatibilityMode
                 Layout.fillWidth: true
@@ -210,6 +212,7 @@ Item
                         text: model.name
                         elide: Text.ElideRight
                         color: UM.Theme.getColor("text")
+                        font: UM.Theme.getFont("default")
                         anchors.verticalCenter: parent.verticalCenter
                         anchors.left: extrudersModelCheckBox.left;
                         anchors.right: extrudersModelCheckBox.right;
@@ -275,6 +278,7 @@ Item
                     Label
                     {
                         text: label
+                        font: UM.Theme.getFont("default")
                         elide: Text.ElideRight
                         color: UM.Theme.getColor("text")
                         anchors.verticalCenter: parent.verticalCenter
@@ -340,6 +344,7 @@ Item
                     Layout.preferredHeight: UM.Theme.getSize("layerview_row").height + UM.Theme.getSize("default_lining").height
                     Layout.preferredWidth: UM.Theme.getSize("layerview_row").width
                     color: UM.Theme.getColor("text")
+                    font: UM.Theme.getFont("default")
                 }
             }
         }
@@ -487,6 +492,8 @@ Item
                 anchors.horizontalCenter: parent.horizontalCenter
                 radius: parent.handleRadius
                 color: parent.upperHandleColor
+                border.width: UM.Theme.getSize("default_lining").width
+                border.color: UM.Theme.getColor("slider_handle_border")
 
                 visible: slider.layersVisible
 
@@ -526,6 +533,8 @@ Item
                 anchors.horizontalCenter: parent.horizontalCenter
                 radius: parent.handleRadius
                 color: parent.lowerHandleColor
+                border.width: UM.Theme.getSize("default_lining").width
+                border.color: UM.Theme.getColor("slider_handle_border")
 
                 visible: slider.layersVisible
 

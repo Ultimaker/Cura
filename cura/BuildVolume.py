@@ -174,7 +174,7 @@ class BuildVolume(SceneNode):
             self._plate_shader = OpenGL.getInstance().createShaderProgram(Resources.getPath(Resources.Shaders, "color.shader"))
             theme = Application.getInstance().getTheme()
             self._plate_shader.setUniformValue("u_color", Color(*theme.getColor("buildplate").getRgb()))
-            self._plate_shader.setUniformValue("u_z_bias", 0.01)
+            self._plate_shader.setUniformValue("u_z_bias", 0.000001)
 
         renderer.queueNode(self, mode = RenderBatch.RenderMode.Lines)
         renderer.queueNode(self, mesh = self._origin_mesh)

@@ -7,7 +7,6 @@
         "visible": true,
         "author": "rikky",
         "manufacturer": "101Hero",
-        "category": "Other",
         "machine_extruder_trains":
         {
             "0": "fdmextruder"

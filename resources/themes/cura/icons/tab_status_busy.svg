@@ -1,4 +1,9 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 30">
-  <path
-     d="M 22.5 0 A 7.5 7.5 0 0 0 15 7.5 A 7.5 7.5 0 0 0 22.5 15 A 7.5 7.5 0 0 0 30 7.5 A 7.5 7.5 0 0 0 22.5 0 z M 18.5 6 A 1.5 1.5 0 0 1 20 7.5 A 1.5 1.5 0 0 1 18.5 9 A 1.5 1.5 0 0 1 17 7.5 A 1.5 1.5 0 0 1 18.5 6 z M 22.5 6 A 1.5 1.5 0 0 1 24 7.5 A 1.5 1.5 0 0 1 22.5 9 A 1.5 1.5 0 0 1 21 7.5 A 1.5 1.5 0 0 1 22.5 6 z M 26.5 6 A 1.5 1.5 0 0 1 28 7.5 A 1.5 1.5 0 0 1 26.5 9 A 1.5 1.5 0 0 1 25 7.5 A 1.5 1.5 0 0 1 26.5 6 z " />
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="35px" height="28px" viewBox="0 0 35 28" version="1.1" xmlns="http://www.w3.org/2000/svg">
+    <g transform="translate(15.5, 4)">
+        <circle fill="#0CA9E3" cx="9" cy="9" r="8.5" stroke="#272C30" />
+        <circle fill="#FFFFFF" cx="4" cy="9" r="1.75" />
+        <circle fill="#FFFFFF" cx="9" cy="9" r="1.75" />
+        <circle fill="#FFFFFF" cx="14" cy="9" r="1.75" />
+    </g>
 </svg>

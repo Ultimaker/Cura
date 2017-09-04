@@ -233,13 +233,16 @@ class QualityManager:
         filter_by_material = False
 
         machine_definition = self.getParentMachineDefinition(machine_definition)
+        criteria["definition"] = machine_definition.getId()
+        found_containers_with_machine_definition = ContainerRegistry.getInstance().findInstanceContainers(**criteria)
         whole_machine_definition = self.getWholeMachineDefinition(machine_definition)
         if whole_machine_definition.getMetaDataEntry("has_machine_quality"):
             definition_id = machine_definition.getMetaDataEntry("quality_definition", whole_machine_definition.getId())
             criteria["definition"] = definition_id
 
             filter_by_material = whole_machine_definition.getMetaDataEntry("has_materials")
-        else:
+        # only fall back to "fdmprinter" when there is no container for this machine
+        elif not found_containers_with_machine_definition:
             criteria["definition"] = "fdmprinter"
 
         # Stick the material IDs in a set

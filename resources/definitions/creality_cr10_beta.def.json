@@ -1,13 +1,12 @@
 {
-    "id": "creality-cr10",
-    "name": "Creality CR-10",
+    "id": "creality-cr10_beta",
+    "name": "Creality CR-10 Beta",
     "version": 2,
     "inherits": "fdmprinter",
     "metadata": {
         "visible": true,
         "author": "Michael Wildermuth",
         "manufacturer": "Creality3D",
-        "category": "Other",
         "file_formats": "text/x-gcode"
     },
     "overrides": {
@@ -19,6 +18,48 @@
         },
         "machine_depth": {
             "default_value": 300
+        },
+        "material_diameter": {
+            "default_value": 1.75
+        },
+        "machine_nozzle_size": {
+            "default_value": 0.4
+        },
+        "layer_height": {
+            "default_value": 0.2
+        },
+        "layer_height_0": {
+            "default_value": 0.2
+        },
+        "top_bottom_thickness": {
+            "default_value": 0.6
+        },
+        "top_bottom_pattern": {
+            "default_value": "concentric"
+        },
+        "infill_pattern": {
+            "value": "'triangles'"
+        },
+        "retraction_enable": {
+            "default_value": true
+        },
+        "retraction_amount": {
+            "default_value": 5
+        },
+        "retraction_speed": {
+            "default_value": 40
+        },
+        "cool_min_layer_time": {
+            "default_value": 15
+        },
+        "adhesion_type": {
+            "default_value": "skirt"
+        },
+        "skirt_line_count": {
+            "default_value": 4
+        },
+        "skirt_gap": {
+            "default_value": 5
         },
         "machine_start_gcode": {
             "default_value": "G21 ;metric values\nG90 ;absolute Positioning\nG28 ; home all axes\nG1 Z5 F3000 ; lift\nG1 X20 Y2 F1500 ; avoid binder clips\nG1 Z0.2 F3000 ; get ready to prime\nG92 E0 ; reset extrusion distance\nG1 X120 E10 F600 ; prime nozzle\nG1 X150 F5000 ; quick wipe"
@@ -38,10 +79,16 @@
         "acceleration_print": {
             "default_value": 500
         },
+        "acceleration_travel": {
+            "default_value": 500
+        },
         "jerk_enabled": {
             "default_value": true
         },
         "jerk_print": {
+            "default_value": 20
+        },
+        "jerk_travel": {
             "default_value": 20
         }
     }

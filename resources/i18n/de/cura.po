@@ -84,7 +84,7 @@ msgstr "Einstellungen Glätten aktiv"
 #: /home/ruben/Projects/Cura/plugins/ProfileFlattener/ProfileFlattener.py:32
 msgctxt "@info:status"
 msgid "Profile has been flattened & activated."
-msgstr "Das Profil wurde geglättet und aktiviert"
+msgstr "Das Profil wurde geglättet und aktiviert."
 
 #: /home/ruben/Projects/Cura/plugins/USBPrinting/USBPrinterOutputDevice.py:26
 msgctxt "@item:inmenu"

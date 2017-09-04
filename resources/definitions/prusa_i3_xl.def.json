@@ -7,7 +7,6 @@
         "visible": true,
         "author": "guigashm",
         "manufacturer": "Prusajr",
-        "category": "Other",
         "file_formats": "text/x-gcode",
         "icon": "icon_ultimaker2.png",
         "platform": "prusai3_xl_platform.stl"

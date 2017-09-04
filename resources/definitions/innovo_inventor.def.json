@@ -7,7 +7,6 @@
         "visible": true,
         "author": "Adam Rumjahn",
         "manufacturer": "Innovo",
-        "category": "Other",
         "file_formats": "text/x-gcode",
         "platform": "inventor_platform.stl",
         "platform_offset": [-180, -0.25, 160]

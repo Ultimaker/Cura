@@ -1,4 +1,7 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 30">
-  <path
-     d="M 22.5 0 A 7.5 7.5 0 0 0 15 7.5 A 7.5 7.5 0 0 0 22.5 15 A 7.5 7.5 0 0 0 30 7.5 A 7.5 7.5 0 0 0 22.5 0 z M 25.546875 4.3027344 L 26.974609 5.7011719 C 25.518609 7.1841719 23.732266 9.0172656 22.072266 10.697266 L 18.5 7.21875 L 19.859375 5.8398438 L 21.994141 7.9199219 L 25.546875 4.3027344 z " />
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="35px" height="28px" viewBox="0 0 35 28" version="1.1" xmlns="http://www.w3.org/2000/svg">
+    <g transform="translate(15.5, 4)">
+        <circle fill="#10CB00" cx="9" cy="9" r="8.5" stroke="#272C30" />
+        <polyline fill="none" stroke="#FFFFFF" stroke-width="2" points="5.643,8.645 8.116,11.12 12.36,6.88" />
+    </g>
 </svg>

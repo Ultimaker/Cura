@@ -1,0 +1,23 @@
+{
+    "id": "creality-cr10s4_beta",
+    "name": "Creality CR-10 S4 Beta",
+    "version": 2,
+    "inherits": "creality_cr10_beta",
+    "metadata": {
+        "visible": true,
+        "author": "Michael Wildermuth",
+        "manufacturer": "Creality3D",
+        "file_formats": "text/x-gcode"
+    },
+    "overrides": {
+        "machine_width": {
+            "default_value": 400
+        },
+        "machine_height": {
+            "default_value": 400
+        },
+        "machine_depth": {
+            "default_value": 400
+        }
+    }
+}
