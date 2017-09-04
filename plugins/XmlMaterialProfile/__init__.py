@@ -20,6 +20,7 @@ def getMetaData():
         },
         "version_upgrade": {
             ("materials", 1000000): ("materials", 1000002, upgrader.upgradeMaterial),
+            ("materials", 1000000): ("materials", 1000002, upgrader.upgradeMaterial),
         },
         "sources": {
             "materials": {
