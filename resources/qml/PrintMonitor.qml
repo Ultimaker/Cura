@@ -388,7 +388,7 @@ Column
             anchors.bottomMargin: UM.Theme.getSize("default_margin").height
             width: UM.Theme.getSize("setting_control").width
             height: UM.Theme.getSize("setting_control").height
-
+            visible: connectedPrinter != null ? connectedPrinter.canPreHeatBed: true
             Rectangle //Highlight of input field.
             {
                 anchors.fill: parent
@@ -511,6 +511,7 @@ Column
         {
             id: preheatButton
             height: UM.Theme.getSize("setting_control").height
+            visible: connectedPrinter != null ? connectedPrinter.canPreHeatBed: true
             enabled:
             {
                 if (!preheatTemperatureControl.enabled)
