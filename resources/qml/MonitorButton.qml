@@ -220,7 +220,7 @@ Item
             property bool userClicked: false
             property string lastJobState: ""
 
-            visible: printerConnected
+            visible: printerConnected && Cura.MachineManager.printerOutputDevices[0].canPause
             enabled: (!userClicked) && printerConnected && Cura.MachineManager.printerOutputDevices[0].acceptsCommands &&
                      (["paused", "printing"].indexOf(Cura.MachineManager.printerOutputDevices[0].jobState) >= 0)
 
@@ -261,7 +261,7 @@ Item
         {
             id: abortButton
 
-            visible: printerConnected
+            visible: printerConnected && Cura.MachineManager.printerOutputDevices[0].canAbort
             enabled: printerConnected && Cura.MachineManager.printerOutputDevices[0].acceptsCommands &&
                      (["paused", "printing", "pre_print"].indexOf(Cura.MachineManager.printerOutputDevices[0].jobState) >= 0)
 
