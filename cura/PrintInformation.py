@@ -227,7 +227,7 @@ class PrintInformation(QObject):
         # when a file is opened using the terminal; the filename comes from _onFileLoaded and still contains its
         # extension. This cuts the extension off if necessary.
         name = os.path.splitext(name)[0]
-
+        name = self.createJobName(name)
         if self._job_name != name and (self._job_name == "" or name == ""):
             self._job_name = name
             self.jobNameChanged.emit()
