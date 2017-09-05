@@ -102,15 +102,7 @@ QtObject {
                     anchors.fill: parent;
                     property bool down: control.pressed || (control.checkable && control.checked);
 
-                    color: {
-                        if(control.pressed || (control.checkable && control.checked)) {
-                            return Theme.getColor("sidebar_header_active");
-                        } else if(control.hovered) {
-                            return Theme.getColor("sidebar_header_hover");
-                        } else {
-                            return Theme.getColor("sidebar_header_bar");
-                        }
-                    }
+                    color: "transparent"
                     Behavior on color { ColorAnimation { duration: 50; } }
 
                     Rectangle {
@@ -165,20 +157,20 @@ QtObject {
                         anchors.left: icon.right
                         anchors.leftMargin: icon.visible ? Theme.getSize("default_margin").width : 0
                         anchors.verticalCenter: parent.verticalCenter;
-                        font: UM.Theme.getFont("large");
+                        font: control.checked ? UM.Theme.getFont("large") : UM.Theme.getFont("large_nonbold")
                         color:
                         {
                             if(control.hovered)
                             {
-                                return UM.Theme.getColor("sidebar_header_text_hover");
+                                return UM.Theme.getColor("topbar_button_text_hovered");
                             }
                             if(control.checked)
                             {
-                                return UM.Theme.getColor("sidebar_header_text_active");
+                                return UM.Theme.getColor("topbar_button_text_active");
                             }
                             else
                             {
-                                return UM.Theme.getColor("sidebar_header_text_inactive");
+                                return UM.Theme.getColor("topbar_button_text_inactive");
                             }
                         }
                     }
