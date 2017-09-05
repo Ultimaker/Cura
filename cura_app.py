@@ -60,7 +60,7 @@ def get_cura_dir_path():
     elif Platform.isLinux():
         return os.path.expanduser("~/.local/share/cura")
     elif Platform.isOSX():
-        return os.path.expanduser("~/Library/Application Support/cura")
+        return os.path.expanduser("~/Library/Logs/cura")
 
 
 if hasattr(sys, "frozen"):
