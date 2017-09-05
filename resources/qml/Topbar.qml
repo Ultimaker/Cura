@@ -47,7 +47,7 @@ Rectangle
     Row
     {
         anchors.left: logo.right
-        anchors.leftMargin: UM.Theme.getSize("default_margin").width
+        anchors.leftMargin: UM.Theme.getSize("topbar_logo_right_margin").width
         anchors.right: machineSelection.left
         anchors.rightMargin: UM.Theme.getSize("default_margin").width
         spacing: UM.Theme.getSize("default_margin").width
