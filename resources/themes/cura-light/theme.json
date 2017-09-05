@@ -310,7 +310,7 @@
 
         "topbar_logo_right_margin": [3, 0],
         "topbar_button": [8, 4],
-        "topbar_button_icon": [3.125, 2.5],
+        "topbar_button_icon": [1.2, 1.2],
 
         "button_tooltip": [1.0, 1.3],
         "button_tooltip_arrow": [0.25, 0.25],

@@ -64,53 +64,21 @@ Rectangle
             checked: !base.monitoringPrint
             exclusiveGroup: sidebarHeaderBarGroup
 
-            style:  UM.Theme.styles.topbar_header_tab
+            style: UM.Theme.styles.topbar_header_tab
         }
 
         Button
         {
             id: showMonitor
+            width: UM.Theme.getSize("topbar_button").width
             height: UM.Theme.getSize("sidebar_header").height
             onClicked: base.startMonitoringPrint()
             text: catalog.i18nc("@title:tab", "Monitor")
-            iconSource: UM.Theme.getIcon("tab_monitor")
-            property color overlayColor:
-            {
-                if(!printerAcceptsCommands)
-                {
-                    return UM.Theme.getColor("status_unknown");
-                }
-
-                if(Cura.MachineManager.printerOutputDevices[0].printerState == "maintenance")
-                {
-                    return UM.Theme.getColor("status_busy");
-                }
-                switch(Cura.MachineManager.printerOutputDevices[0].jobState)
-                {
-                    case "printing":
-                    case "pre_print":
-                    case "wait_cleanup":
-                    case "pausing":
-                    case "resuming":
-                        return UM.Theme.getColor("status_busy");
-                    case "ready":
-                    case "":
-                        return UM.Theme.getColor("status_ready");
-                    case "paused":
-                        return UM.Theme.getColor("status_paused");
-                    case "error":
-                        return UM.Theme.getColor("status_stopped");
-                    case "offline":
-                        return UM.Theme.getColor("status_offline");
-                    default:
-                        return UM.Theme.getColor("text_reversed");
-                }
-            }
-            property string overlayIconSource:
+            property string iconSource:
             {
                 if(!printerConnected)
                 {
-                    return "";
+                    return UM.Theme.getIcon("tab_status_unknown");
                 }
                 else if(!printerAcceptsCommands)
                 {
@@ -138,7 +106,7 @@ Rectangle
                     case "error":
                         return UM.Theme.getIcon("tab_status_stopped")
                     default:
-                        return ""
+                        return UM.Theme.getIcon("tab_status_unknown")
                 }
             }
 
@@ -146,7 +114,7 @@ Rectangle
             checked: base.monitoringPrint
             exclusiveGroup: sidebarHeaderBarGroup
 
-            style:  UM.Theme.styles.topbar_header_tab
+            style: UM.Theme.styles.topbar_header_tab_no_overlay
         }
 
         ExclusiveGroup { id: sidebarHeaderBarGroup }
@@ -215,7 +183,7 @@ Rectangle
                     text: control.text;
                     elide: Text.ElideRight;
                     anchors.left: parent.left;
-                    anchors.leftMargin: UM.Theme.getSize("default_margin").width
+                    anchors.leftMargin: UM.Theme.getSize("default_margin").width * 2
                     anchors.right: downArrow.left;
                     anchors.rightMargin: control.rightMargin;
                     anchors.verticalCenter: parent.verticalCenter;
