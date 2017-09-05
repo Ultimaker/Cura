@@ -297,6 +297,7 @@
         "button_icon": [2.5, 2.5],
         "button_lining": [0, 0],
 
+        "topbar_logo_right_margin": [3, 0],
         "topbar_button": [8, 4],
         "topbar_button_icon": [3.125, 2.5],
 

@@ -116,10 +116,10 @@ QtObject {
                     Rectangle {
                         id: underline;
 
-                        anchors.left: parent.left
-                        anchors.right: parent.right
+                        anchors.horizontalCenter: parent.horizontalCenter
                         anchors.bottom: parent.bottom
-                        height: UM.Theme.getSize("sidebar_header_highlight").height
+                        width: Theme.getSize("topbar_button").width
+                        height: Theme.getSize("sidebar_header_highlight").height
                         color: control.checked ? UM.Theme.getColor("sidebar_header_highlight") : UM.Theme.getColor("sidebar_header_highlight_hover")
                         visible: control.hovered || control.checked
                     }
