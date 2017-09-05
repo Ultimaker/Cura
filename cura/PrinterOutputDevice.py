@@ -71,6 +71,9 @@ class PrinterOutputDevice(QObject, OutputDevice):
         self._control_item = None
 
         self._qml_context = None
+        self._can_pause = True
+        self._can_abort = True
+        self._can_pre_heat_bed = True
 
     def requestWrite(self, nodes, file_name = None, filter_by_machine = False, file_handler = None):
         raise NotImplementedError("requestWrite needs to be implemented")
@@ -125,6 +128,21 @@ class PrinterOutputDevice(QObject, OutputDevice):
 
     # Signal to be emitted when some drastic change occurs in the remaining time (not when the time just passes on normally).
     preheatBedRemainingTimeChanged = pyqtSignal()
+
+    # Does the printer support pre-heating the bed at all
+    @pyqtProperty(bool, constant=True)
+    def canPreHeatBed(self):
+        return self._can_pre_heat_bed
+
+    # Does the printer support pause at all
+    @pyqtProperty(bool,  constant=True)
+    def canPause(self):
+        return self._can_pause
+
+    # Does the printer support abort at all
+    @pyqtProperty(bool, constant=True)
+    def canAbort(self):
+        return self._can_abort
 
     @pyqtProperty(QObject, constant=True)
     def monitorItem(self):

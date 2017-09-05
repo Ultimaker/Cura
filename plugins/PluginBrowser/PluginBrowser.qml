@@ -9,10 +9,10 @@ UM.Dialog
     id: base
 
     title: catalog.i18nc("@title:window", "Find & Update plugins")
-    width: 600
-    height: 450
-    minimumWidth: 350
-    minimumHeight: 350
+    width: 600 * Screen.devicePixelRatio
+    height: 450 * Screen.devicePixelRatio
+    minimumWidth: 350 * Screen.devicePixelRatio
+    minimumHeight: 350 * Screen.devicePixelRatio
     Item
     {
         anchors.fill: parent
@@ -198,8 +198,8 @@ UM.Dialog
             id: licenseDialog
             title: catalog.i18nc("@title:window", "Plugin License Agreement")
 
-            minimumWidth: UM.Theme.getSize("modal_window_minimum").width
-            minimumHeight: UM.Theme.getSize("modal_window_minimum").height
+            minimumWidth: UM.Theme.getSize("license_window_minimum").width
+            minimumHeight: UM.Theme.getSize("license_window_minimum").height
             width: minimumWidth
             height: minimumHeight
 

@@ -17,7 +17,7 @@ Column
     property int currentExtruderIndex: ExtruderManager.activeExtruderIndex;
     property bool currentExtruderVisible: extrudersList.visible;
 
-    spacing: UM.Theme.getSize("default_margin").height
+    spacing: UM.Theme.getSize("sidebar_margin").height
 
     signal showTooltip(Item item, point location, string text)
     signal hideTooltip()
@@ -133,9 +133,9 @@ Column
                         {
                             anchors.verticalCenter: parent.verticalCenter
                             anchors.left: swatch.visible ? swatch.right : parent.left
-                            anchors.leftMargin: swatch.visible ? UM.Theme.getSize("default_margin").width / 2 : UM.Theme.getSize("default_margin").width
+                            anchors.leftMargin: swatch.visible ? UM.Theme.getSize("sidebar_margin").width / 2 : UM.Theme.getSize("sidebar_margin").width
                             anchors.right: parent.right
-                            anchors.rightMargin: UM.Theme.getSize("default_margin").width / 2
+                            anchors.rightMargin: UM.Theme.getSize("sidebar_margin").width / 2
 
                             color: control.checked ? UM.Theme.getColor("tab_checked_text") :
                                    control.pressed ? UM.Theme.getColor("tab_active_text") :
@@ -155,7 +155,7 @@ Column
     Item
     {
         id: variantRowSpacer
-        height: UM.Theme.getSize("default_margin").height / 4
+        height: UM.Theme.getSize("sidebar_margin").height / 4
         width: height
         visible: !extruderSelectionRow.visible
     }
@@ -170,9 +170,9 @@ Column
         anchors
         {
             left: parent.left
-            leftMargin: UM.Theme.getSize("default_margin").width
+            leftMargin: UM.Theme.getSize("sidebar_margin").width
             right: parent.right
-            rightMargin: UM.Theme.getSize("default_margin").width
+            rightMargin: UM.Theme.getSize("sidebar_margin").width
         }
 
         Text
@@ -207,7 +207,7 @@ Column
             enabled: !extrudersList.visible || base.currentExtruderIndex  > -1
 
             height: UM.Theme.getSize("setting_control").height
-            width: parent.width * 0.7 + UM.Theme.getSize("default_margin").width
+            width: parent.width * 0.7 + UM.Theme.getSize("sidebar_margin").width
             anchors.right: parent.right
             style: UM.Theme.styles.sidebar_header_button
             activeFocusOnPress: true;
@@ -226,9 +226,9 @@ Column
         anchors
         {
             left: parent.left
-            leftMargin: UM.Theme.getSize("default_margin").width
+            leftMargin: UM.Theme.getSize("sidebar_margin").width
             right: parent.right
-            rightMargin: UM.Theme.getSize("default_margin").width
+            rightMargin: UM.Theme.getSize("sidebar_margin").width
         }
 
         Text
@@ -247,7 +247,7 @@ Column
             visible: Cura.MachineManager.hasVariants
 
             height: UM.Theme.getSize("setting_control").height
-            width: parent.width * 0.7 + UM.Theme.getSize("default_margin").width
+            width: parent.width * 0.7 + UM.Theme.getSize("sidebar_margin").width
             anchors.right: parent.right
             style: UM.Theme.styles.sidebar_header_button
             activeFocusOnPress: true;
@@ -266,37 +266,27 @@ Column
         anchors
         {
             left: parent.left
-            leftMargin: UM.Theme.getSize("default_margin").width
+            leftMargin: UM.Theme.getSize("sidebar_margin").width
             right: parent.right
-            rightMargin: UM.Theme.getSize("default_margin").width
+            rightMargin: UM.Theme.getSize("sidebar_margin").width
         }
 
         Item
         {
             height: UM.Theme.getSize("sidebar_setup").height
             anchors.right: parent.right
-            width: parent.width * 0.7 + UM.Theme.getSize("default_margin").width
+            width: parent.width * 0.7 + UM.Theme.getSize("sidebar_margin").width
 
             Text
             {
                 id: materialInfoLabel
                 wrapMode: Text.WordWrap
-                text: catalog.i18nc("@label","Check material compability");
+                text: catalog.i18nc("@label", "Check material compability");
                 font: UM.Theme.getFont("default");
                 verticalAlignment: Text.AlignVCenter
                 anchors.top: parent.top
                 anchors.bottom: parent.bottom
-                color:
-                {
-                    if (!Cura.MachineManager.isActiveQualitySupported)
-                    {
-                        UM.Theme.getColor("setting_validation_error");
-                    }
-                    else
-                    {
-                        UM.Theme.getColor("text");
-                    }
-                }
+                color: UM.Theme.getColor("text")
 
                 MouseArea
                 {
@@ -317,7 +307,7 @@ Column
                         var content = catalog.i18nc("@tooltip", "Click to check the material compatibility on Ultimaker.com.");
                         base.showTooltip(
                             materialInfoRow,
-                            Qt.point(-UM.Theme.getSize("default_margin").width, 0),
+                            Qt.point(-UM.Theme.getSize("sidebar_margin").width, 0),
                             catalog.i18nc("@tooltip", content)
                         );
                     }
@@ -336,8 +326,8 @@ Column
                 //sourceSize.width: width + 5
                 //sourceSize.height: width + 5
 
-                color: UM.Theme.getColor("setting_control_text")
-                visible: !Cura.MachineManager.isActiveQualitySupported
+                color: UM.Theme.getColor("setting_validation_warning")
+                visible: !Cura.MachineManager.isCurrentSetupSupported
             }
         }
     }

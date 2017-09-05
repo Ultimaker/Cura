@@ -59,7 +59,7 @@ Rectangle
             onClicked: base.stopMonitoringPrint()
             property color overlayColor: "transparent"
             property string overlayIconSource: ""
-            text: catalog.i18nc("@title:tab","Prepare")
+            text: catalog.i18nc("@title:tab", "Prepare")
             checkable: true
             checked: !base.monitoringPrint
             exclusiveGroup: sidebarHeaderBarGroup
@@ -227,13 +227,13 @@ Rectangle
                     height: UM.Theme.getSize("standard_arrow").height
                     sourceSize.width: width
                     sourceSize.height: width
-                    color: UM.Theme.getColor("text_reversed")
+                    color: UM.Theme.getColor("text_emphasis")
                     source: UM.Theme.getIcon("arrow_bottom")
                 }
                 Label
                 {
                     id: sidebarComboBoxLabel
-                    color: UM.Theme.getColor("text_reversed")
+                    color: UM.Theme.getColor("sidebar_header_text_active")
                     text: control.text;
                     elide: Text.ElideRight;
                     anchors.left: parent.left;

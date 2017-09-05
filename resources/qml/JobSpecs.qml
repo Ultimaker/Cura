@@ -86,7 +86,7 @@ Item {
                             height: UM.Theme.getSize("save_button_specs_icons").height;
                             sourceSize.width: width;
                             sourceSize.height: width;
-                            color: control.hovered ? UM.Theme.getColor("setting_control_button_hover") : UM.Theme.getColor("text");
+                            color: control.hovered ? UM.Theme.getColor("text_scene_hover") : UM.Theme.getColor("text_scene");
                             source: UM.Theme.getIcon("pencil");
                         }
                     }
@@ -116,7 +116,7 @@ Item {
                     regExp: /^[^\\ \/ \*\?\|\[\]]*$/
                 }
                 style: TextFieldStyle{
-                    textColor: UM.Theme.getColor("setting_control_text");
+                    textColor: UM.Theme.getColor("text_scene");
                     font: UM.Theme.getFont("default_bold");
                     background: Rectangle {
                         opacity: 0
@@ -135,7 +135,7 @@ Item {
         height: UM.Theme.getSize("jobspecs_line").height
         verticalAlignment: Text.AlignVCenter
         font: UM.Theme.getFont("small")
-        color: UM.Theme.getColor("text_subtext")
+        color: UM.Theme.getColor("text_scene")
         text: CuraApplication.getSceneBoundingBoxString
     }
 }

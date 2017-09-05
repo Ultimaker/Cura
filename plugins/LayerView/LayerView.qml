@@ -1,4 +1,4 @@
-// Copyright (c) 2015 Ultimaker B.V.
+// Copyright (c) 2017 Ultimaker B.V.
 // Cura is released under the terms of the AGPLv3 or higher.
 
 import QtQuick 2.2
@@ -492,6 +492,8 @@ Item
                 anchors.horizontalCenter: parent.horizontalCenter
                 radius: parent.handleRadius
                 color: parent.upperHandleColor
+                border.width: UM.Theme.getSize("default_lining").width
+                border.color: UM.Theme.getColor("slider_handle_border")
 
                 visible: slider.layersVisible
 
@@ -531,6 +533,8 @@ Item
                 anchors.horizontalCenter: parent.horizontalCenter
                 radius: parent.handleRadius
                 color: parent.lowerHandleColor
+                border.width: UM.Theme.getSize("default_lining").width
+                border.color: UM.Theme.getColor("slider_handle_border")
 
                 visible: slider.layersVisible
 

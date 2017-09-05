@@ -328,14 +328,15 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
     def _stopCamera(self):
         if self._camera_timer.isActive():
             self._camera_timer.stop()
-            if self._image_reply:
-                try:
-                    self._image_reply.abort()
-                    self._image_reply.downloadProgress.disconnect(self._onStreamDownloadProgress)
-                except RuntimeError:
-                    pass  # It can happen that the wrapped c++ object is already deleted.
-                self._image_reply = None
-                self._image_request = None
+
+        if self._image_reply:
+            try:
+                self._image_reply.abort()
+                self._image_reply.downloadProgress.disconnect(self._onStreamDownloadProgress)
+            except RuntimeError:
+                pass  # It can happen that the wrapped c++ object is already deleted.
+            self._image_reply = None
+            self._image_request = None
 
     def _startCamera(self):
         if self._use_stream:
@@ -755,6 +756,8 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
             self.close()  # Close previous connection
 
         self._createNetworkManager()
+
+        self._last_response_time = time()  # Ensure we reset the time when trying to connect (again)
 
         self.setConnectionState(ConnectionState.connecting)
         self._update()  # Manually trigger the first update, as we don't want to wait a few secs before it starts.

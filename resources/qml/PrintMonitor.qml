@@ -353,7 +353,7 @@ Column
         Rectangle //Input field for pre-heat temperature.
         {
             id: preheatTemperatureControl
-            color: !enabled ? UM.Theme.getColor("setting_control_disabled") : showError ? UM.Theme.getColor("setting_validation_error") : UM.Theme.getColor("setting_validation_ok")
+            color: !enabled ? UM.Theme.getColor("setting_control_disabled") : showError ? UM.Theme.getColor("setting_validation_error_background") : UM.Theme.getColor("setting_validation_ok")
             property var showError:
             {
                 if(bedTemperature.properties.maximum_value != "None" && bedTemperature.properties.maximum_value <  parseInt(preheatTemperatureInput.text))
@@ -388,7 +388,7 @@ Column
             anchors.bottomMargin: UM.Theme.getSize("default_margin").height
             width: UM.Theme.getSize("setting_control").width
             height: UM.Theme.getSize("setting_control").height
-
+            visible: connectedPrinter != null ? connectedPrinter.canPreHeatBed: true
             Rectangle //Highlight of input field.
             {
                 anchors.fill: parent
@@ -511,6 +511,7 @@ Column
         {
             id: preheatButton
             height: UM.Theme.getSize("setting_control").height
+            visible: connectedPrinter != null ? connectedPrinter.canPreHeatBed: true
             enabled:
             {
                 if (!preheatTemperatureControl.enabled)

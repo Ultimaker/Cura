@@ -205,6 +205,8 @@ class CuraApplication(QtApplication):
         super().__init__(name = "cura", version = CuraVersion, buildtype = CuraBuildType,
                          tray_icon_name = "cura-icon-32.png")
 
+        self.default_theme = "cura-light"
+
         self.setWindowIcon(QIcon(Resources.getPath(Resources.Images, "cura-icon.png")))
 
         self.setRequiredPlugins([
@@ -486,7 +488,7 @@ class CuraApplication(QtApplication):
             f.write(data)
 
 
-    @pyqtSlot(str, result = QUrl)
+    @pyqtSlot(str, result=QUrl)
     def getDefaultPath(self, key):
         default_path = Preferences.getInstance().getValue("local_file/%s" % key)
         return QUrl.fromLocalFile(default_path)
@@ -1126,7 +1128,7 @@ class CuraApplication(QtApplication):
 
     expandedCategoriesChanged = pyqtSignal()
 
-    @pyqtProperty("QStringList", notify = expandedCategoriesChanged)
+    @pyqtProperty("QStringList", notify=expandedCategoriesChanged)
     def expandedCategories(self):
         return Preferences.getInstance().getValue("cura/categories_expanded").split(";")
 

@@ -824,7 +824,7 @@ Cura.MachineAction
                             polygon.push([-printHeadPolygon["x"]["min"], printHeadPolygon["y"]["max"]]);
                             polygon.push([-printHeadPolygon["x"]["min"],-printHeadPolygon["y"]["min"]]);
                             polygon.push([ printHeadPolygon["x"]["max"], printHeadPolygon["y"]["max"]]);
-                            polygon.push([ printHeadPolygon["x"]["max"],-printHeadPolygon["y"]["mìn"]]);
+                            polygon.push([ printHeadPolygon["x"]["max"],-printHeadPolygon["y"]["min"]]);
                             var polygon_string = JSON.stringify(polygon);
                             if(polygon_string != machineHeadPolygonProvider.properties.value)
                             {

@@ -1228,7 +1228,8 @@
                     {
                         "back": "User Specified",
                         "shortest": "Shortest",
-                        "random": "Random"
+                        "random": "Random",
+                        "sharpest_corner": "Sharpest Corner"
                     },
                     "default_value": "shortest",
                     "limit_to_extruder": "wall_0_extruder_nr",
@@ -1255,6 +1256,23 @@
                     "default_value": 100.0,
                     "value": "machine_depth * 3",
                     "enabled": "z_seam_type == 'back'",
+                    "limit_to_extruder": "wall_0_extruder_nr",
+                    "settable_per_mesh": true
+                },
+                "z_seam_corner":
+                {
+                    "label": "Seam Corner Preference",
+                    "description": "Control whether corners on the model outline influence the position of the seam. None means that corners have no influence on the seam position. Hide Seam makes the seam more likely to occur on an inside corner. Expose Seam makes the seam more likely to occur on an outside corner. Hide or Expose Seam makes the seam more likely to occur at an inside or outside corner.",
+                    "type": "enum",
+                    "options":
+                    {
+                        "z_seam_corner_none":  "None",
+                        "z_seam_corner_inner": "Hide Seam",
+                        "z_seam_corner_outer": "Expose Seam",
+                        "z_seam_corner_any":   "Hide or Expose Seam"
+                    },
+                    "default_value": "z_seam_corner_inner",
+                    "enabled": "z_seam_type != 'random'",
                     "limit_to_extruder": "wall_0_extruder_nr",
                     "settable_per_mesh": true
                 },
@@ -2997,7 +3015,7 @@
                     "unit": "mm",
                     "type": "float",
                     "default_value": 0.0,
-                    "minimum_value": "0",
+                    "minimum_value": "machine_width / -2 if machine_center_is_zero else 0",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true,
                     "settable_per_meshgroup": true
@@ -3009,7 +3027,7 @@
                     "unit": "mm",
                     "type": "float",
                     "default_value": 0.0,
-                    "minimum_value": "0",
+                    "minimum_value": "machine_depth / -2 if machine_center_is_zero else 0",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true,
                     "settable_per_meshgroup": true
