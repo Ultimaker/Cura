@@ -326,6 +326,9 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         return True
 
     def _stopCamera(self):
+        self._stream_buffer = b""
+        self._stream_buffer_start_index = -1
+
         if self._camera_timer.isActive():
             self._camera_timer.stop()
 
@@ -1165,6 +1168,12 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         if self._image_reply is None:
             return
         self._stream_buffer += self._image_reply.readAll()
+
+        if len(self._stream_buffer) > 2000000: # No single camera frame should be 2 Mb or larger
+            Logger.log("w", "MJPEG buffer exceeds reasonable size. Restarting stream...")
+            self._stopCamera() # resets stream buffer and start index
+            self._startCamera()
+            return
 
         if self._stream_buffer_start_index == -1:
             self._stream_buffer_start_index = self._stream_buffer.indexOf(b'\xff\xd8')

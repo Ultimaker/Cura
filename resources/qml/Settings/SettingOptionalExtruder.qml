@@ -116,29 +116,10 @@ SettingItem
             }
             label: Item
             {
-                Rectangle
-                {
-                    id: swatch
-                    height: UM.Theme.getSize("setting_control").height / 2
-                    width: height
-
-                    anchors.verticalCenter: parent.verticalCenter
-
-                    border.width: UM.Theme.getSize("default_lining").width
-                    border.color: enabled ? UM.Theme.getColor("setting_control_border") : UM.Theme.getColor("setting_control_disabled_border")
-
-                    color: control.color
-                }
                 Label
                 {
-                    anchors
-                    {
-                        left: swatch.right;
-                        right: arrow.left;
-                        verticalCenter: parent.verticalCenter
-                        margins: UM.Theme.getSize("default_lining").width
-                    }
-                    width: parent.width - swatch.width;
+                    anchors.verticalCenter: parent.verticalCenter
+                    width: parent.width - swatch.width - arrow.width;
 
                     text: control.currentText
                     font: UM.Theme.getFont("default")
@@ -146,6 +127,25 @@ SettingItem
 
                     elide: Text.ElideRight
                     verticalAlignment: Text.AlignVCenter
+                }
+                Rectangle
+                {
+                    id: swatch
+                    height: UM.Theme.getSize("setting_control").height / 2
+                    width: height
+
+                    anchors
+                    {
+                        right: arrow.left;
+                        verticalCenter: parent.verticalCenter
+                        margins: UM.Theme.getSize("default_margin").width / 4
+                    }
+
+                    border.width: UM.Theme.getSize("default_lining").width * 2
+                    border.color: enabled ? UM.Theme.getColor("setting_control_border") : UM.Theme.getColor("setting_control_disabled_border")
+                    radius: width / 2
+
+                    color: control.color
                 }
                 UM.RecolorImage
                 {

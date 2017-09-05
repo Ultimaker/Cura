@@ -97,36 +97,36 @@ SettingItem
             }
             label: Item
             {
+                Label
+                {
+                    id: extruderText
+                    anchors.verticalCenter: parent.verticalCenter
+
+                    text: control.currentText
+                    font: UM.Theme.getFont("default")
+                    color: enabled ? UM.Theme.getColor("setting_control_text") : UM.Theme.getColor("setting_control_disabled_text")
+
+                    elide: Text.ElideLeft
+                    verticalAlignment: Text.AlignVCenter
+                }
                 Rectangle
                 {
                     id: swatch
                     height: UM.Theme.getSize("setting_control").height / 2
                     width: height
 
-                    anchors.verticalCenter: parent.verticalCenter
-
-                    border.width: UM.Theme.getSize("default_lining").width
-                    border.color: enabled ? UM.Theme.getColor("setting_control_border") : UM.Theme.getColor("setting_control_disabled_border")
-
-                    color: control.color
-                }
-                Label
-                {
                     anchors
                     {
-                        left: swatch.right;
-                        right: arrow.left;
+                        right: arrow.left
                         verticalCenter: parent.verticalCenter
-                        margins: UM.Theme.getSize("default_lining").width
+                        margins: UM.Theme.getSize("default_margin").width / 4
                     }
-                    width: parent.width - swatch.width;
 
-                    text: control.currentText
-                    font: UM.Theme.getFont("default")
-                    color: enabled ? UM.Theme.getColor("setting_control_text") : UM.Theme.getColor("setting_control_disabled_text")
+                    border.width: UM.Theme.getSize("default_lining").width * 2
+                    border.color: enabled ? UM.Theme.getColor("setting_control_border") : UM.Theme.getColor("setting_control_disabled_border")
+                    radius: width / 2
 
-                    elide: Text.ElideRight
-                    verticalAlignment: Text.AlignVCenter
+                    color: control.color
                 }
                 UM.RecolorImage
                 {
