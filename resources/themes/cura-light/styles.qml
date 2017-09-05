@@ -612,24 +612,11 @@ QtObject {
             }
             label: Item
             {
-                Rectangle
-                {
-                    id: swatch
-                    height: UM.Theme.getSize("setting_control").height / 2
-                    width: height
-                    anchors.left: parent.left
-                    anchors.leftMargin: UM.Theme.getSize("default_lining").width
-                    anchors.verticalCenter: parent.verticalCenter
-
-                    color: if (control.color_override != "") {return control.color_override} else {return control.color;}
-                    border.width: UM.Theme.getSize("default_lining").width
-                    border.color: !enabled ? UM.Theme.getColor("setting_control_disabled_border") : UM.Theme.getColor("setting_control_border")
-                }
                 Label
                 {
-                    anchors.left: swatch.right
+                    anchors.left: parent.left
                     anchors.leftMargin: UM.Theme.getSize("default_lining").width
-                    anchors.right: downArrow.left
+                    anchors.right: swatch.left
                     anchors.rightMargin: UM.Theme.getSize("default_lining").width
                     anchors.verticalCenter: parent.verticalCenter
 
@@ -640,7 +627,25 @@ QtObject {
                     elide: Text.ElideRight
                     verticalAlignment: Text.AlignVCenter
                 }
+                Rectangle
+                {
+                    id: swatch
+                    height: UM.Theme.getSize("setting_control").height / 2
+                    width: height
 
+                    anchors
+                    {
+                        right: downArrow.left;
+                        verticalCenter: parent.verticalCenter
+                        margins: UM.Theme.getSize("default_margin").width / 4
+                    }
+
+                    border.width: UM.Theme.getSize("default_lining").width * 2
+                    border.color: enabled ? UM.Theme.getColor("setting_control_border") : UM.Theme.getColor("setting_control_disabled_border")
+                    radius: width / 2
+
+                    color: if (control.color_override != "") {return control.color_override} else {return control.color;}
+                }
                 UM.RecolorImage
                 {
                     id: downArrow
