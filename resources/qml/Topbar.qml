@@ -16,7 +16,7 @@ Rectangle
     anchors.left: parent.left
     anchors.right: parent.right
     height: UM.Theme.getSize("sidebar_header").height
-    color: UM.Theme.getColor("sidebar_header_bar")
+    color: "transparent"
 
     property bool printerConnected: Cura.MachineManager.printerOutputDevices.length != 0
     property bool printerAcceptsCommands: printerConnected && Cura.MachineManager.printerOutputDevices[0].acceptsCommands
@@ -29,9 +29,25 @@ Rectangle
         name:"cura"
     }
 
+    Image
+    {
+        id: logo
+        anchors.left: parent.left
+        anchors.leftMargin: UM.Theme.getSize("default_margin").width
+        anchors.verticalCenter: parent.verticalCenter
+
+        source: UM.Theme.getImage("logo");
+        width: UM.Theme.getSize("logo").width;
+        height: UM.Theme.getSize("logo").height;
+
+        sourceSize.width: width;
+        sourceSize.height: height;
+    }
+
     Row
     {
-        anchors.left: parent.left
+        anchors.left: logo.right
+        anchors.leftMargin: UM.Theme.getSize("topbar_logo_right_margin").width
         anchors.right: machineSelection.left
         anchors.rightMargin: UM.Theme.getSize("default_margin").width
         spacing: UM.Theme.getSize("default_margin").width
@@ -41,7 +57,6 @@ Rectangle
             id: showSettings
             height: UM.Theme.getSize("sidebar_header").height
             onClicked: base.stopMonitoringPrint()
-            iconSource: UM.Theme.getIcon("tab_settings");
             property color overlayColor: "transparent"
             property string overlayIconSource: ""
             text: catalog.i18nc("@title:tab", "Prepare")
@@ -49,53 +64,21 @@ Rectangle
             checked: !base.monitoringPrint
             exclusiveGroup: sidebarHeaderBarGroup
 
-            style:  UM.Theme.styles.topbar_header_tab
+            style: UM.Theme.styles.topbar_header_tab
         }
 
         Button
         {
             id: showMonitor
+            width: UM.Theme.getSize("topbar_button").width
             height: UM.Theme.getSize("sidebar_header").height
             onClicked: base.startMonitoringPrint()
             text: catalog.i18nc("@title:tab", "Monitor")
-            iconSource: UM.Theme.getIcon("tab_monitor")
-            property color overlayColor:
-            {
-                if(!printerAcceptsCommands)
-                {
-                    return UM.Theme.getColor("status_unknown");
-                }
-
-                if(Cura.MachineManager.printerOutputDevices[0].printerState == "maintenance")
-                {
-                    return UM.Theme.getColor("status_busy");
-                }
-                switch(Cura.MachineManager.printerOutputDevices[0].jobState)
-                {
-                    case "printing":
-                    case "pre_print":
-                    case "wait_cleanup":
-                    case "pausing":
-                    case "resuming":
-                        return UM.Theme.getColor("status_busy");
-                    case "ready":
-                    case "":
-                        return UM.Theme.getColor("status_ready");
-                    case "paused":
-                        return UM.Theme.getColor("status_paused");
-                    case "error":
-                        return UM.Theme.getColor("status_stopped");
-                    case "offline":
-                        return UM.Theme.getColor("status_offline");
-                    default:
-                        return UM.Theme.getColor("text_reversed");
-                }
-            }
-            property string overlayIconSource:
+            property string iconSource:
             {
                 if(!printerConnected)
                 {
-                    return "";
+                    return UM.Theme.getIcon("tab_status_unknown");
                 }
                 else if(!printerAcceptsCommands)
                 {
@@ -124,7 +107,7 @@ Rectangle
                     case "error":
                         return UM.Theme.getIcon("tab_status_stopped")
                     default:
-                        return ""
+                        return UM.Theme.getIcon("tab_status_unknown")
                 }
             }
 
@@ -132,18 +115,19 @@ Rectangle
             checked: base.monitoringPrint
             exclusiveGroup: sidebarHeaderBarGroup
 
-            style:  UM.Theme.styles.topbar_header_tab
+            style: UM.Theme.styles.topbar_header_tab_no_overlay
         }
 
         ExclusiveGroup { id: sidebarHeaderBarGroup }
     }
+
 
     ToolButton
     {
         id: machineSelection
         text: Cura.MachineManager.activeMachineName
 
-        width: UM.Theme.getSize("sidebar").width;
+        width: UM.Theme.getSize("sidebar").width
         height: UM.Theme.getSize("sidebar_header").height
         tooltip: Cura.MachineManager.activeMachineName
 
@@ -200,7 +184,7 @@ Rectangle
                     text: control.text;
                     elide: Text.ElideRight;
                     anchors.left: parent.left;
-                    anchors.leftMargin: UM.Theme.getSize("default_margin").width
+                    anchors.leftMargin: UM.Theme.getSize("default_margin").width * 2
                     anchors.right: downArrow.left;
                     anchors.rightMargin: control.rightMargin;
                     anchors.verticalCenter: parent.verticalCenter;
