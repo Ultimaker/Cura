@@ -17,7 +17,7 @@ Column
     property int currentExtruderIndex: ExtruderManager.activeExtruderIndex;
     property bool currentExtruderVisible: extrudersList.visible;
 
-    spacing: UM.Theme.getSize("sidebar_margin").height / 2
+    spacing: UM.Theme.getSize("sidebar_margin").width * 0.9
 
     signal showTooltip(Item item, point location, string text)
     signal hideTooltip()
@@ -58,10 +58,10 @@ Column
         anchors
         {
             left: parent.left
-            leftMargin: UM.Theme.getSize("default_margin").width * 1.4
+            leftMargin: UM.Theme.getSize("sidebar_margin").width * 0.7
             right: parent.right
-            rightMargin: UM.Theme.getSize("default_margin").width * 1.4
-            topMargin: UM.Theme.getSize("default_margin").height
+            rightMargin: UM.Theme.getSize("sidebar_margin").width * 0.7
+            topMargin: UM.Theme.getSize("sidebar_margin").height
         }
 
         ListView
