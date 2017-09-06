@@ -123,8 +123,7 @@ Column
                         {
                             anchors.fill: parent
                             border.width: UM.Theme.getSize("default_lining").width
-                            border.color: (control.checked || control.pressed) ? UM.Theme.getColor("action_button_active_border") :
-                                          control.hovered ? UM.Theme.getColor("action_button_hovered_border") :
+                            border.color: control.hovered ? UM.Theme.getColor("action_button_hovered_border") :
                                           UM.Theme.getColor("action_button_border")
                             color: (control.checked || control.pressed) ? UM.Theme.getColor("action_button_active") :
                                    control.hovered ? UM.Theme.getColor("action_button_hovered") :
@@ -369,7 +368,7 @@ Column
                 //sourceSize.width: width + 5
                 //sourceSize.height: width + 5
 
-                color: UM.Theme.getColor("setting_validation_warning")
+                color: UM.Theme.getColor("material_compatibility_warning")
                 visible: !Cura.MachineManager.isCurrentSetupSupported
             }
 
