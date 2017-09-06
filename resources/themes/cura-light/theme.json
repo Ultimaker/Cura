@@ -173,7 +173,7 @@
         "setting_validation_error_background": [255, 57, 14, 255],
         "setting_validation_error": [127, 127, 127, 255],
         "setting_validation_warning_background": [255, 186, 15, 255],
-        "setting_validation_warning": [127, 127, 127, 255],
+        "setting_validation_warning": [0, 0, 0, 255],
         "setting_validation_ok": [255, 255, 255, 255],
 
         "progressbar_background": [245, 245, 245, 255],
