@@ -188,7 +188,7 @@
         "slider_handle_hover": [77, 182, 226, 255],
         "slider_text_background": [255, 255, 255, 255],
 
-        "checkbox": [39, 44, 48, 255],
+        "checkbox": [255, 255, 255, 255],
         "checkbox_hover": [68, 72, 75, 255],
         "checkbox_border": [64, 69, 72, 255],
         "checkbox_border_hover": [12, 169, 227, 255],
