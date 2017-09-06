@@ -125,6 +125,8 @@ class CuraApplication(QtApplication):
     #        Cura will always show the Add Machine Dialog upon start.
     stacksValidationFinished = pyqtSignal()  # Emitted whenever a validation is finished
 
+    syncConfigurationFromPrinter = pyqtSignal()  # Emitted when the user wants to sync configuration from printer
+
     def __init__(self):
         # this list of dir names will be used by UM to detect an old cura directory
         for dir_name in ["extruders", "machine_instances", "materials", "plugins", "quality", "user", "variants"]:
@@ -1393,3 +1395,7 @@ class CuraApplication(QtApplication):
                     node = node.getParent()
 
                 Selection.add(node)
+
+    @pyqtSlot()
+    def startSyncingConfigurationFromPrinter(self):
+        self.syncConfigurationFromPrinter.emit()

@@ -57,17 +57,18 @@ Button
         {
             right: parent.right
             top: parent.top
-            margins: UM.Theme.getSize("extruder_button_material_margin").width
+            rightMargin: UM.Theme.getSize("extruder_button_material_margin").width
+            topMargin: UM.Theme.getSize("extruder_button_material_margin").height
         }
 
         color: model.color
 
-        width: UM.Theme.getSize("extruder_button_material_size").width
-        height: UM.Theme.getSize("extruder_button_material_size").height
+        width: UM.Theme.getSize("extruder_button_material").width
+        height: UM.Theme.getSize("extruder_button_material").height
         radius: width / 2
 
-        border.width: 0
-        border.color: "transparent"
+        border.width: 1
+        border.color: UM.Theme.getColor("extruder_button_material_border")
 
         opacity: !base.enabled ? 0.2 : 1.0
     }

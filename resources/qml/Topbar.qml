@@ -111,10 +111,11 @@ Rectangle
                 {
                     case "printing":
                     case "pre_print":
-                    case "wait_cleanup":
                     case "pausing":
                     case "resuming":
                         return UM.Theme.getIcon("tab_status_busy");
+                    case "wait_cleanup":
+                        return UM.Theme.getIcon("tab_status_finished");
                     case "ready":
                     case "":
                         return UM.Theme.getIcon("tab_status_connected")

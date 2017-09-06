@@ -96,6 +96,11 @@
         "button_tooltip_border": [24, 41, 77, 255],
         "button_tooltip_text": [24, 41, 77, 255],
 
+        "extruder_button_material_border": [255, 255, 255, 255],
+
+        "sync_button_text": [120, 120, 120, 255],
+        "sync_button_text_hovered": [0, 0, 0, 255],
+
         "tab_checked": [255, 255, 255, 255],
         "tab_checked_border": [255, 255, 255, 255],
         "tab_checked_text": [24, 41, 77, 255],
@@ -261,8 +266,8 @@
         "default_arrow": [0.8, 0.8],
         "logo": [9.5, 2.0],
 
-        "extruder_button_material_margin": [0.875, 0.875],
-        "extruder_button_material_size": [0.68, 0.68],
+        "extruder_button_material_margin": [0.50, 0.9],
+        "extruder_button_material": [0.75, 0.75],
 
         "sidebar": [35.0, 10.0],
         "sidebar_margin": [1.71, 1.43],
