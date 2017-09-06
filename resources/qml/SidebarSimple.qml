@@ -40,7 +40,7 @@ Item
                 id: infillCellLeft
                 anchors.top: parent.top
                 anchors.left: parent.left
-                anchors.topMargin: UM.Theme.getSize("sidebar_margin").height
+                anchors.topMargin: UM.Theme.getSize("sidebar_margin").height * 0.8
                 width: UM.Theme.getSize("sidebar").width * .45 - UM.Theme.getSize("sidebar_margin").width
                 height: childrenRect.height
 
@@ -275,7 +275,7 @@ Item
                 property alias _hovered: enableSupportMouseArea.containsMouse
 
                 anchors.top: infillCellRight.bottom
-                anchors.topMargin: UM.Theme.getSize("sidebar_margin").height * 2
+                anchors.topMargin: UM.Theme.getSize("sidebar_margin").height
                 anchors.left: infillCellRight.left
 
                 style: UM.Theme.styles.checkbox;

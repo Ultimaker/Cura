@@ -17,48 +17,51 @@ Column
     property int currentExtruderIndex: ExtruderManager.activeExtruderIndex;
     property bool currentExtruderVisible: extrudersList.visible;
 
-    spacing: UM.Theme.getSize("sidebar_margin").height
+    spacing: UM.Theme.getSize("sidebar_margin").width * 0.9
 
     signal showTooltip(Item item, point location, string text)
     signal hideTooltip()
 
     Item
     {
-        height: UM.Theme.getSize("default_margin").height / 4
-        width: height
-        visible: extruderSelectionRow.visible
-    }
-
-    Label
-    {
-        id: extruderSelectionLabel
         anchors
         {
             left: parent.left
-            leftMargin: UM.Theme.getSize("default_margin").width
             right: parent.right
-            rightMargin: UM.Theme.getSize("default_margin").width
         }
-        height: UM.Theme.getSize("sidebar_tabs").height / 3
-        text: catalog.i18nc("@label", "Extruder configuration")
-        font: UM.Theme.getFont("default_bold")
-        color: UM.Theme.getColor("text")
         visible: extruderSelectionRow.visible
+        height: UM.Theme.getSize("default_lining").height
+        width: height
+    }
+
+    Item
+    {
+        anchors
+        {
+            left: parent.left
+            leftMargin: UM.Theme.getSize("sidebar_margin").width
+            right: parent.right
+            rightMargin: UM.Theme.getSize("sidebar_margin").width
+        }
+        visible: extruderSelectionRow.visible
+        height: UM.Theme.getSize("default_lining").hieght
+        width: height
     }
 
     Item
     {
         id: extruderSelectionRow
         width: parent.width
-        height: UM.Theme.getSize("sidebar_tabs").height
+        height: UM.Theme.getSize("sidebar_tabs").height * 2 / 3
         visible: machineExtruderCount.properties.value > 1 && !sidebar.monitoringPrint
 
         anchors
         {
             left: parent.left
-            leftMargin: UM.Theme.getSize("default_margin").width
+            leftMargin: UM.Theme.getSize("sidebar_margin").width * 0.7
             right: parent.right
-            rightMargin: UM.Theme.getSize("default_margin").width
+            rightMargin: UM.Theme.getSize("sidebar_margin").width * 0.7
+            topMargin: UM.Theme.getSize("sidebar_margin").height
         }
 
         ListView
@@ -136,7 +139,7 @@ Column
                             width: {
                                 var extruderTextWidth = extruderStaticText.visible ? extruderStaticText.width : 0;
                                 var iconWidth = extruderIconItem.width;
-                                return extruderTextWidth + iconWidth + UM.Theme.getSize("default_margin").width / 4;
+                                return extruderTextWidth + iconWidth + UM.Theme.getSize("default_margin").width / 2;
                             }
 
                             // Static text "Extruder"
@@ -150,7 +153,7 @@ Column
                                        control.hovered ? UM.Theme.getColor("action_button_hovered_text") :
                                        UM.Theme.getColor("action_button_text")
 
-                                font: UM.Theme.getFont("default")
+                                font: control.checked ? UM.Theme.getFont("default_bold") : UM.Theme.getFont("default")
                                 text: catalog.i18nc("@label", "Extruder")
                                 visible: width < (control.width - extruderIconItem.width - UM.Theme.getSize("default_margin").width)
                                 elide: Text.ElideRight
@@ -168,7 +171,7 @@ Column
                                     var minimumWidth = control.width < UM.Theme.getSize("button").width ? control.width : UM.Theme.getSize("button").width;
                                     var minimumHeight = control.height < UM.Theme.getSize("button").height ? control.height : UM.Theme.getSize("button").height;
                                     var minimumSize = minimumWidth < minimumHeight ? minimumWidth : minimumHeight;
-                                    minimumSize -= UM.Theme.getSize("default_margin").width;
+                                    minimumSize -= UM.Theme.getSize("default_margin").width / 2;
                                     return minimumSize;
                                 }
 
@@ -205,18 +208,18 @@ Column
                                     {
                                         right: parent.right
                                         top: parent.top
-                                        rightMargin: parent.sizeToUse * 0.04
-                                        topMargin: parent.sizeToUse * 0.04
+                                        rightMargin: parent.sizeToUse * 0.01
+                                        topMargin: parent.sizeToUse * 0.05
                                     }
 
                                     color: model.color
 
-                                    width: parent.width * 0.27
-                                    height: parent.height * 0.27
+                                    width: parent.width * 0.35
+                                    height: parent.height * 0.35
                                     radius: width / 2
 
-                                    border.width: 0
-                                    border.color: "transparent"
+                                    border.width: 1
+                                    border.color: UM.Theme.getColor("extruder_button_material_border")
 
                                     opacity: !control.checked ? 0.6 : 1.0
                                 }
@@ -337,7 +340,7 @@ Column
     Item
     {
         id: materialInfoRow
-        height: UM.Theme.getSize("sidebar_setup").height
+        height: UM.Theme.getSize("sidebar_setup").height / 2
         visible: (Cura.MachineManager.hasVariants || Cura.MachineManager.hasMaterials) && !sidebar.monitoringPrint && !sidebar.hideSettings
 
         anchors
@@ -358,10 +361,11 @@ Column
             {
                 id: materialInfoLabel
                 wrapMode: Text.WordWrap
-                text: catalog.i18nc("@label", "Check material compability");
+                text: catalog.i18nc("@label", "Check material compability")
                 font: UM.Theme.getFont("default");
-                verticalAlignment: Text.AlignVCenter
+                verticalAlignment: Text.AlignTop
                 anchors.top: parent.top
+                anchors.right: parent.right
                 anchors.bottom: parent.bottom
                 color: UM.Theme.getColor("text")
 
