@@ -17,7 +17,7 @@ Column
     property int currentExtruderIndex: ExtruderManager.activeExtruderIndex;
     property bool currentExtruderVisible: extrudersList.visible;
 
-    spacing: UM.Theme.getSize("sidebar_margin").height
+    spacing: UM.Theme.getSize("sidebar_margin").height / 2
 
     signal showTooltip(Item item, point location, string text)
     signal hideTooltip()
@@ -27,26 +27,25 @@ Column
         anchors
         {
             left: parent.left
+            right: parent.right
+        }
+        visible: extruderSelectionRow.visible
+        height: UM.Theme.getSize("default_lining").height
+        width: height
+    }
+
+    Item
+    {
+        anchors
+        {
+            left: parent.left
             leftMargin: UM.Theme.getSize("sidebar_margin").width
             right: parent.right
             rightMargin: UM.Theme.getSize("sidebar_margin").width
-            topMargin: UM.Theme.getSize("default_margin").height
         }
         visible: extruderSelectionRow.visible
-        height: syncMachineButton.height + UM.Theme.getSize("sidebar_margin").height / 2
-
-        Label
-        {
-            id: extruderSelectionLabel
-            anchors.verticalCenter: parent.verticalCenter
-            anchors.left: parent.left
-
-            height: UM.Theme.getSize("sidebar_tabs").height / 3
-            text: catalog.i18nc("@label", "Extruder configuration")
-            font: UM.Theme.getFont("large")
-            color: UM.Theme.getColor("text")
-            visible: extruderSelectionRow.visible
-        }
+        height: UM.Theme.getSize("default_lining").hieght
+        width: height
     }
 
     Item
@@ -59,9 +58,10 @@ Column
         anchors
         {
             left: parent.left
-            leftMargin: UM.Theme.getSize("default_margin").width * 1.5
+            leftMargin: UM.Theme.getSize("default_margin").width * 1.4
             right: parent.right
-            rightMargin: UM.Theme.getSize("default_margin").width * 1.5
+            rightMargin: UM.Theme.getSize("default_margin").width * 1.4
+            topMargin: UM.Theme.getSize("default_margin").height
         }
 
         ListView
