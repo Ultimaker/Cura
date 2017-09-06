@@ -26,7 +26,6 @@ class DiscoverUM3Action(MachineAction):
         self.__additional_components_view = None
 
         Application.getInstance().engineCreatedSignal.connect(self._createAdditionalComponentsView)
-        Application.getInstance().syncConfigurationFromPrinter.connect(self.loadConfigurationFromPrinter)
 
         self._last_zeroconf_event_time = time.time()
         self._zeroconf_change_grace_period = 0.25 # Time to wait after a zeroconf service change before allowing a zeroconf reset
