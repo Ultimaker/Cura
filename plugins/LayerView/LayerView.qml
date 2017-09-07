@@ -64,26 +64,7 @@ Item
             anchors.leftMargin: UM.Theme.getSize("default_margin").width
             spacing: UM.Theme.getSize("layerview_row_spacing").height
             anchors.right: parent.right
-            anchors.rightMargin: UM.Theme.getSize("default_margin").width * 2
-
-            Label
-            {
-                id: layersLabel
-                anchors.left: parent.left
-                text: catalog.i18nc("@label","View Mode: Layers")
-                font: UM.Theme.getFont("default_bold");
-                color: UM.Theme.getColor("text")
-                Layout.fillWidth: true
-                elide: Text.ElideMiddle;
-            }
-
-            Label
-            {
-                id: spaceLabel
-                anchors.left: parent.left
-                text: " "
-                font.pointSize: 0.5
-            }
+            anchors.rightMargin: UM.Theme.getSize("default_margin").width
 
             Label
             {
@@ -355,7 +336,7 @@ Item
             id: slider
             width: handleSize
             height: parent.height - 2*UM.Theme.getSize("slider_layerview_margin").height
-            anchors.top: parent.top
+            anchors.top: parent.bottom
             anchors.topMargin: UM.Theme.getSize("slider_layerview_margin").height
             anchors.right: layerViewMenu.right
             anchors.rightMargin: UM.Theme.getSize("slider_layerview_margin").width
@@ -569,10 +550,10 @@ Item
 
             UM.PointingRectangle
             {
-                x: parent.width + UM.Theme.getSize("slider_layerview_background").width / 2;
+                x: parent.width - UM.Theme.getSize("slider_layerview_background").width / 2 - width;
                 y: Math.floor(slider.activeHandle.y + slider.activeHandle.height / 2 - height / 2);
 
-                target: Qt.point(0, slider.activeHandle.y + slider.activeHandle.height / 2)
+                target: Qt.point(parent.width, slider.activeHandle.y + slider.activeHandle.height / 2)
                 arrowSize: UM.Theme.getSize("default_arrow").width
 
                 height: UM.Theme.getSize("slider_handle").height + UM.Theme.getSize("default_margin").height
