@@ -196,4 +196,39 @@ Rectangle
 
         menu: PrinterMenu { }
     }
+
+    Button
+    {
+        id: viewModeButton
+
+        anchors
+        {
+            verticalCenter: parent.verticalCenter
+            right: parent.right
+            rightMargin: UM.Theme.getSize("sidebar").width + UM.Theme.getSize("default_margin").width
+        }
+        text: catalog.i18nc("@action:button", "View Mode")
+        iconSource: UM.Theme.getIcon("viewmode")
+
+        style: UM.Theme.styles.tool_button
+        tooltip: "";
+        enabled: !PrintInformation.preSliced
+        menu: ViewMenu { }
+    }
+
+    Loader
+    {
+        id: view_panel
+
+        anchors.top: viewModeButton.bottom
+        anchors.topMargin: UM.Theme.getSize("default_margin").height
+        anchors.right: viewModeButton.right
+
+        property var buttonTarget: Qt.point(viewModeButton.x + viewModeButton.width / 2, viewModeButton.y + viewModeButton.height / 2)
+
+        height: childrenRect.height;
+
+        source: UM.ActiveView.valid ? UM.ActiveView.activeViewPanel : "";
+    }
+
 }
