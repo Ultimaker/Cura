@@ -123,7 +123,7 @@
         "tab_active_text": [24, 41, 77, 255],
         "tab_background": [245, 245, 245, 255],
 
-        "action_button": [242, 242, 242, 255],
+        "action_button": [255, 255, 255, 255],
         "action_button_text": [0, 0, 0, 255],
         "action_button_border": [127, 127, 127, 255],
         "action_button_hovered": [255, 255, 255, 255],
@@ -189,7 +189,7 @@
         "slider_text_background": [255, 255, 255, 255],
 
         "checkbox": [255, 255, 255, 255],
-        "checkbox_hover": [68, 72, 75, 255],
+        "checkbox_hover": [255, 255, 255, 255],
         "checkbox_border": [64, 69, 72, 255],
         "checkbox_border_hover": [12, 169, 227, 255],
         "checkbox_mark": [119, 122, 124, 255],
