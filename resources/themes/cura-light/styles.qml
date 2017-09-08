@@ -90,36 +90,100 @@ QtObject {
         }
     }
 
+    property Component topbar_header_tab_no_overlay: Component {
+        ButtonStyle {
+            background: Rectangle {
+                implicitHeight: Theme.getSize("topbar_button").height
+                implicitWidth: Theme.getSize("topbar_button").width
+                color: "transparent"
+                anchors.fill: parent
+
+                Rectangle
+                {
+                    id: underline
+
+                    anchors.left: parent.left
+                    anchors.right: parent.right
+                    anchors.bottom: parent.bottom
+                    width: parent.width
+                    height: Theme.getSize("sidebar_header_highlight").height
+                    color: control.checked ? UM.Theme.getColor("sidebar_header_highlight") : "transparent"
+                    visible: control.hovered || control.checked
+                }
+            }
+
+            label: Rectangle {
+                implicitHeight: Theme.getSize("topbar_button_icon").height
+                implicitWidth: Theme.getSize("topbar_button").width
+                color: "transparent"
+                anchors.fill: parent
+
+                Item
+                {
+                    anchors.centerIn: parent
+                    width: textLabel.width + icon.width + Theme.getSize("default_margin").width / 2
+                    Label
+                    {
+                        id: textLabel
+                        text: control.text
+                        anchors.right: icon.visible ? icon.left : parent.right
+                        anchors.rightMargin: icon.visible ? Theme.getSize("default_margin").width / 2 : 0
+                        anchors.verticalCenter: parent.verticalCenter;
+                        font: control.checked ? UM.Theme.getFont("large") : UM.Theme.getFont("large_nonbold")
+                        color:
+                        {
+                            if(control.hovered)
+                            {
+                                return UM.Theme.getColor("topbar_button_text_hovered");
+                            }
+                            if(control.checked)
+                            {
+                                return UM.Theme.getColor("topbar_button_text_active");
+                            }
+                            else
+                            {
+                                return UM.Theme.getColor("topbar_button_text_inactive");
+                            }
+                        }
+                    }
+                    Image
+                    {
+                        id: icon
+                        visible: control.iconSource != ""
+                        anchors.right: parent.right
+                        anchors.verticalCenter: parent.verticalCenter
+                        opacity: !control.enabled ? 0.2 : 1.0
+                        source: control.iconSource
+                        width: visible ? Theme.getSize("topbar_button_icon").width : 0
+                        height: Theme.getSize("topbar_button_icon").height
+
+                        sourceSize: Theme.getSize("topbar_button_icon")
+                    }
+                }
+            }
+        }
+    }
+
     property Component topbar_header_tab: Component {
         ButtonStyle {
             background: Item {
-                implicitWidth: Theme.getSize("topbar_button").width;
-                implicitHeight: Theme.getSize("topbar_button").height;
+                implicitHeight: Theme.getSize("topbar_button").height
+                implicitWidth: Theme.getSize("topbar_button").width + Theme.getSize("topbar_button_icon").width
 
                 Rectangle {
                     id: buttonFace;
-
                     anchors.fill: parent;
-                    property bool down: control.pressed || (control.checkable && control.checked);
 
-                    color: {
-                        if(control.pressed || (control.checkable && control.checked)) {
-                            return Theme.getColor("sidebar_header_active");
-                        } else if(control.hovered) {
-                            return Theme.getColor("sidebar_header_hover");
-                        } else {
-                            return Theme.getColor("sidebar_header_bar");
-                        }
-                    }
+                    color: "transparent"
                     Behavior on color { ColorAnimation { duration: 50; } }
 
                     Rectangle {
                         id: underline;
 
-                        anchors.left: parent.left
-                        anchors.right: parent.right
+                        anchors.horizontalCenter: parent.horizontalCenter
                         anchors.bottom: parent.bottom
-                        height: UM.Theme.getSize("sidebar_header_highlight").height
+                        width: Theme.getSize("topbar_button").width + Theme.getSize("topbar_button_icon").width
+                        height: Theme.getSize("sidebar_header_highlight").height
                         color: control.checked ? UM.Theme.getColor("sidebar_header_highlight") : UM.Theme.getColor("sidebar_header_highlight_hover")
                         visible: control.hovered || control.checked
                     }
@@ -129,56 +193,59 @@ QtObject {
             label: Item
             {
                 implicitHeight: Theme.getSize("topbar_button_icon").height
-                implicitWidth: Theme.getSize("topbar_button").width;
+                implicitWidth: Theme.getSize("topbar_button").width + Theme.getSize("topbar_button_icon").width
                 Item
                 {
                     anchors.horizontalCenter: parent.horizontalCenter
                     anchors.verticalCenter: parent.verticalCenter;
                     width: childrenRect.width
                     height: Theme.getSize("topbar_button_icon").height
-                    UM.RecolorImage
-                    {
-                        id: icon
-                        color: UM.Theme.getColor("text_emphasis")
-                        opacity: !control.enabled ? 0.2 : 1.0
-                        source: control.iconSource
-                        width: Theme.getSize("topbar_button_icon").width
-                        height: Theme.getSize("topbar_button_icon").height
-
-                        sourceSize: Theme.getSize("topbar_button_icon")
-                    }
-                    Image
-                    {
-                        visible: control.overlayIconSource != ""
-                        opacity: !control.enabled ? 0.2 : 1.0
-                        source: control.overlayIconSource
-                        width: Theme.getSize("topbar_button_icon").width
-                        height: Theme.getSize("topbar_button_icon").height
-
-                        sourceSize: Theme.getSize("topbar_button_icon")
-                    }
                     Label
                     {
                         text: control.text;
-                        anchors.left: icon.right
-                        anchors.leftMargin: Theme.getSize("default_margin").width
+                        anchors.right: (icon.visible || overlayIcon.visible) ? icon.left : parent.right
+                        anchors.rightMargin: (icon.visible || overlayIcon.visible) ? Theme.getSize("default_margin").width : 0
                         anchors.verticalCenter: parent.verticalCenter;
-                        font: UM.Theme.getFont("large");
+                        font: control.checked ? UM.Theme.getFont("large") : UM.Theme.getFont("large_nonbold")
                         color:
                         {
                             if(control.hovered)
                             {
-                                return UM.Theme.getColor("sidebar_header_text_hover");
+                                return UM.Theme.getColor("topbar_button_text_hovered");
                             }
                             if(control.checked)
                             {
-                                return UM.Theme.getColor("sidebar_header_text_active");
+                                return UM.Theme.getColor("topbar_button_text_active");
                             }
                             else
                             {
-                                return UM.Theme.getColor("sidebar_header_text_inactive");
+                                return UM.Theme.getColor("topbar_button_text_inactive");
                             }
                         }
+                    }
+                    UM.RecolorImage
+                    {
+                        visible: control.iconSource != ""
+                        id: icon
+                        color: UM.Theme.getColor("text_emphasis")
+                        opacity: !control.enabled ? 0.2 : 1.0
+                        source: control.iconSource
+                        width: visible ? Theme.getSize("topbar_button_icon").width : 0
+                        height: Theme.getSize("topbar_button_icon").height
+
+                        sourceSize: Theme.getSize("topbar_button_icon")
+                    }
+                    UM.RecolorImage
+                    {
+                        id: overlayIcon
+                        visible: control.overlayIconSource != "" && control.iconSource != ""
+                        color: control.overlayColor
+                        opacity: !control.enabled ? 0.2 : 1.0
+                        source: control.overlayIconSource
+                        width: visible ? Theme.getSize("topbar_button_icon").width : 0
+                        height: Theme.getSize("topbar_button_icon").height
+
+                        sourceSize: Theme.getSize("topbar_button_icon")
                     }
                 }
             }
@@ -242,6 +309,8 @@ QtObject {
                     }
                     Behavior on color { ColorAnimation { duration: 50; } }
 
+                    border.width: (control.hasOwnProperty("needBorder") && control.needBorder) ? 2 : 0
+                    border.color: Theme.getColor("tool_button_border")
 
                     UM.RecolorImage {
                         id: tool_button_arrow
@@ -612,24 +681,11 @@ QtObject {
             }
             label: Item
             {
-                Rectangle
-                {
-                    id: swatch
-                    height: UM.Theme.getSize("setting_control").height / 2
-                    width: height
-                    anchors.left: parent.left
-                    anchors.leftMargin: UM.Theme.getSize("default_lining").width
-                    anchors.verticalCenter: parent.verticalCenter
-
-                    color: if (control.color_override != "") {return control.color_override} else {return control.color;}
-                    border.width: UM.Theme.getSize("default_lining").width
-                    border.color: !enabled ? UM.Theme.getColor("setting_control_disabled_border") : UM.Theme.getColor("setting_control_border")
-                }
                 Label
                 {
-                    anchors.left: swatch.right
+                    anchors.left: parent.left
                     anchors.leftMargin: UM.Theme.getSize("default_lining").width
-                    anchors.right: downArrow.left
+                    anchors.right: swatch.left
                     anchors.rightMargin: UM.Theme.getSize("default_lining").width
                     anchors.verticalCenter: parent.verticalCenter
 
@@ -640,7 +696,25 @@ QtObject {
                     elide: Text.ElideRight
                     verticalAlignment: Text.AlignVCenter
                 }
+                Rectangle
+                {
+                    id: swatch
+                    height: UM.Theme.getSize("setting_control").height / 2
+                    width: height
 
+                    anchors
+                    {
+                        right: downArrow.left;
+                        verticalCenter: parent.verticalCenter
+                        margins: UM.Theme.getSize("default_margin").width / 4
+                    }
+
+                    border.width: UM.Theme.getSize("default_lining").width * 2
+                    border.color: enabled ? UM.Theme.getColor("setting_control_border") : UM.Theme.getColor("setting_control_disabled_border")
+                    radius: width / 2
+
+                    color: if (control.color_override != "") {return control.color_override} else {return control.color;}
+                }
                 UM.RecolorImage
                 {
                     id: downArrow

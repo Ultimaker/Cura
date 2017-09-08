@@ -90,10 +90,15 @@ class BuildVolume(SceneNode):
         #Objects loaded at the moment. We are connected to the property changed events of these objects.
         self._scene_objects = set()
 
-        self._change_timer = QTimer()
-        self._change_timer.setInterval(100)
-        self._change_timer.setSingleShot(True)
-        self._change_timer.timeout.connect(self._onChangeTimerFinished)
+        self._scene_change_timer = QTimer()
+        self._scene_change_timer.setInterval(100)
+        self._scene_change_timer.setSingleShot(True)
+        self._scene_change_timer.timeout.connect(self._onSceneChangeTimerFinished)
+
+        self._setting_change_timer = QTimer()
+        self._setting_change_timer.setInterval(100)
+        self._setting_change_timer.setSingleShot(True)
+        self._setting_change_timer.timeout.connect(self._onSettingChangeTimerFinished)
 
         self._build_volume_message = Message(catalog.i18nc("@info:status",
             "The build volume height has been reduced due to the value of the"
@@ -104,15 +109,19 @@ class BuildVolume(SceneNode):
         # activeQualityChanged is always emitted after setActiveVariant, setActiveMaterial and setActiveQuality.
         # Therefore this works.
         Application.getInstance().getMachineManager().activeQualityChanged.connect(self._onStackChanged)
+
         # This should also ways work, and it is semantically more correct,
         # but it does not update the disallowed areas after material change
         Application.getInstance().getMachineManager().activeStackChanged.connect(self._onStackChanged)
 
+        # list of settings which were updated
+        self._changed_settings_since_last_rebuild = []
+
     def _onSceneChanged(self, source):
         if self._global_container_stack:
-            self._change_timer.start()
+            self._scene_change_timer.start()
 
-    def _onChangeTimerFinished(self):
+    def _onSceneChangeTimerFinished(self):
         root = Application.getInstance().getController().getScene().getRoot()
         new_scene_objects = set(node for node in BreadthFirstIterator(root) if node.callDecoration("isSliceable"))
         if new_scene_objects != self._scene_objects:
@@ -562,42 +571,67 @@ class BuildVolume(SceneNode):
         self._engine_ready = True
         self.rebuild()
 
+    def _onSettingChangeTimerFinished(self):
+        rebuild_me = False
+        update_disallowed_areas = False
+        update_raft_thickness = False
+        update_extra_z_clearance = True
+        for setting_key in self._changed_settings_since_last_rebuild:
+            if setting_key == "print_sequence":
+                machine_height = self._global_container_stack.getProperty("machine_height", "value")
+                if Application.getInstance().getGlobalContainerStack().getProperty("print_sequence",
+                                                                                   "value") == "one_at_a_time" and len(
+                        self._scene_objects) > 1:
+                    self._height = min(self._global_container_stack.getProperty("gantry_height", "value"),
+                                       machine_height)
+                    if self._height < machine_height:
+                        self._build_volume_message.show()
+                    else:
+                        self._build_volume_message.hide()
+                else:
+                    self._height = self._global_container_stack.getProperty("machine_height", "value")
+                    self._build_volume_message.hide()
+                rebuild_me = True
+
+            if setting_key in self._skirt_settings or setting_key in self._prime_settings or setting_key in self._tower_settings or setting_key == "print_sequence" or setting_key in self._ooze_shield_settings or setting_key in self._distance_settings or setting_key in self._extruder_settings:
+                update_disallowed_areas = True
+                rebuild_me = True
+
+            if setting_key in self._raft_settings:
+                update_raft_thickness = True
+                rebuild_me = True
+
+            if setting_key in self._extra_z_settings:
+                update_extra_z_clearance = True
+                rebuild_me = True
+
+            if setting_key in self._limit_to_extruder_settings:
+                update_disallowed_areas = True
+                rebuild_me = True
+
+        # We only want to update all of them once.
+        if update_disallowed_areas:
+            self._updateDisallowedAreas()
+
+        if update_raft_thickness:
+            self._updateRaftThickness()
+
+        if update_extra_z_clearance:
+            self._updateExtraZClearance()
+
+        if rebuild_me:
+            self.rebuild()
+
+        # We just did a rebuild, reset the list.
+        self._changed_settings_since_last_rebuild = []
+
     def _onSettingPropertyChanged(self, setting_key: str, property_name: str):
         if property_name != "value":
             return
 
-        rebuild_me = False
-        if setting_key == "print_sequence":
-            machine_height = self._global_container_stack.getProperty("machine_height", "value")
-            if Application.getInstance().getGlobalContainerStack().getProperty("print_sequence", "value") == "one_at_a_time" and len(self._scene_objects) > 1:
-                self._height = min(self._global_container_stack.getProperty("gantry_height", "value"), machine_height)
-                if self._height < machine_height:
-                    self._build_volume_message.show()
-                else:
-                    self._build_volume_message.hide()
-            else:
-                self._height = self._global_container_stack.getProperty("machine_height", "value")
-                self._build_volume_message.hide()
-            rebuild_me = True
-
-        if setting_key in self._skirt_settings or setting_key in self._prime_settings or setting_key in self._tower_settings or setting_key == "print_sequence" or setting_key in self._ooze_shield_settings or setting_key in self._distance_settings or setting_key in self._extruder_settings:
-            self._updateDisallowedAreas()
-            rebuild_me = True
-
-        if setting_key in self._raft_settings:
-            self._updateRaftThickness()
-            rebuild_me = True
-
-        if setting_key in self._extra_z_settings:
-            self._updateExtraZClearance()
-            rebuild_me = True
-
-        if setting_key in self._limit_to_extruder_settings:
-            self._updateDisallowedAreas()
-            rebuild_me = True
-
-        if rebuild_me:
-            self.rebuild()
+        if setting_key not in self._changed_settings_since_last_rebuild:
+            self._changed_settings_since_last_rebuild.append(setting_key)
+            self._setting_change_timer.start()
 
     def hasErrors(self) -> bool:
         return self._has_errors

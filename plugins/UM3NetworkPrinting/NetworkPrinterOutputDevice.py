@@ -326,16 +326,20 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         return True
 
     def _stopCamera(self):
+        self._stream_buffer = b""
+        self._stream_buffer_start_index = -1
+
         if self._camera_timer.isActive():
             self._camera_timer.stop()
-            if self._image_reply:
-                try:
-                    self._image_reply.abort()
-                    self._image_reply.downloadProgress.disconnect(self._onStreamDownloadProgress)
-                except RuntimeError:
-                    pass  # It can happen that the wrapped c++ object is already deleted.
-                self._image_reply = None
-                self._image_request = None
+
+        if self._image_reply:
+            try:
+                self._image_reply.abort()
+                self._image_reply.downloadProgress.disconnect(self._onStreamDownloadProgress)
+            except RuntimeError:
+                pass  # It can happen that the wrapped c++ object is already deleted.
+            self._image_reply = None
+            self._image_request = None
 
     def _startCamera(self):
         if self._use_stream:
@@ -1095,8 +1099,11 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
                             global_container_stack.setMetaDataEntry("network_authentication_id", self._authentication_id)
                         else:
                             global_container_stack.addMetaDataEntry("network_authentication_id", self._authentication_id)
-                    Application.getInstance().saveStack(global_container_stack)  # Force save so we are sure the data is not lost.
-                    Logger.log("i", "Authentication succeeded for id %s and key %s", self._authentication_id, self._getSafeAuthKey())
+                        Logger.log("i", "Authentication succeeded for id %s and key %s", self._authentication_id, self._getSafeAuthKey())
+                        Application.getInstance().saveStack(global_container_stack)  # Force save so we are sure the data is not lost.
+                    else:
+                        Logger.log("w", "Unable to save authentication for id %s and key %s", self._authentication_id, self._getSafeAuthKey())
+
                 else:  # Got a response that we didn't expect, so something went wrong.
                     Logger.log("e", "While trying to authenticate, we got an unexpected response: %s", reply.attribute(QNetworkRequest.HttpStatusCodeAttribute))
                     self.setAuthenticationState(AuthState.NotAuthenticated)
@@ -1164,6 +1171,12 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         if self._image_reply is None:
             return
         self._stream_buffer += self._image_reply.readAll()
+
+        if len(self._stream_buffer) > 2000000: # No single camera frame should be 2 Mb or larger
+            Logger.log("w", "MJPEG buffer exceeds reasonable size. Restarting stream...")
+            self._stopCamera() # resets stream buffer and start index
+            self._startCamera()
+            return
 
         if self._stream_buffer_start_index == -1:
             self._stream_buffer_start_index = self._stream_buffer.indexOf(b'\xff\xd8')

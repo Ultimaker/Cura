@@ -121,7 +121,7 @@ Rectangle
         anchors.leftMargin: UM.Theme.getSize("sidebar_margin").width
         anchors.top: headerSeparator.bottom
         anchors.topMargin: UM.Theme.getSize("sidebar_margin").height
-        width: parent.width * 0.45 - 2 * UM.Theme.getSize("sidebar_margin").width
+        width: parent.width * 0.45
         font: UM.Theme.getFont("large")
         color: UM.Theme.getColor("text")
         visible: !monitoringPrint
@@ -181,7 +181,7 @@ Rectangle
                             color: (control.checked || control.pressed) ? UM.Theme.getColor("action_button_active_text") :
                                        control.hovered ? UM.Theme.getColor("action_button_hovered_text") :
                                        UM.Theme.getColor("action_button_text")
-                            font: UM.Theme.getFont("default")
+                            font: (control.checked || control.pressed) ? UM.Theme.getFont("default_bold") : UM.Theme.getFont("default")
                             text: control.text;
                         }
                     }
@@ -223,7 +223,7 @@ Rectangle
         {
             id: globalProfileLabel
             text: catalog.i18nc("@label","Profile:");
-            width: parent.width * 0.45 - UM.Theme.getSize("sidebar_margin").width
+            width: parent.width * 0.45 - UM.Theme.getSize("sidebar_margin").width - 2
             font: UM.Theme.getFont("default");
             color: UM.Theme.getColor("text");
             verticalAlignment: Text.AlignVCenter
@@ -247,7 +247,7 @@ Rectangle
             }
             enabled: !header.currentExtruderVisible || header.currentExtruderIndex > -1
 
-            width: parent.width * 0.7 + UM.Theme.getSize("sidebar_margin").width
+            width: parent.width * 0.55
             height: UM.Theme.getSize("setting_control").height
             anchors.left: globalProfileLabel.right
             anchors.right: parent.right

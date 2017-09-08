@@ -76,11 +76,12 @@ class PrintInformation(QObject):
         if self._backend:
             self._backend.printDurationMessage.connect(self._onPrintDurationMessage)
 
-        self._job_name = ""
+        self._base_name = ""
         self._abbr_machine = ""
+        self._job_name = ""
 
         Application.getInstance().globalContainerStackChanged.connect(self._setAbbreviatedMachineName)
-        Application.getInstance().fileLoaded.connect(self.setJobName)
+        Application.getInstance().fileLoaded.connect(self.setBaseName)
 
         Preferences.getInstance().preferenceChanged.connect(self._onPreferencesChanged)
 
@@ -221,15 +222,8 @@ class PrintInformation(QObject):
 
     @pyqtSlot(str)
     def setJobName(self, name):
-        # Ensure that we don't use entire path but only filename
-        name = os.path.basename(name)
-
-        # when a file is opened using the terminal; the filename comes from _onFileLoaded and still contains its
-        # extension. This cuts the extension off if necessary.
-        name = os.path.splitext(name)[0]
-        if self._job_name != name:
-            self._job_name = name
-            self.jobNameChanged.emit()
+        self._job_name = name
+        self.jobNameChanged.emit()
 
     jobNameChanged = pyqtSignal()
 
@@ -237,21 +231,43 @@ class PrintInformation(QObject):
     def jobName(self):
         return self._job_name
 
-    @pyqtSlot(str, result = str)
-    def createJobName(self, base_name):
-        if base_name == "":
-            return ""
-        base_name = self._stripAccents(base_name)
+    def _updateJobName(self):
+        if self._base_name == "":
+            self._job_name = ""
+            self.jobNameChanged.emit()
+            return
+
+        base_name = self._stripAccents(self._base_name)
         self._setAbbreviatedMachineName()
         if self._pre_sliced:
-            return catalog.i18nc("@label", "Pre-sliced file {0}", base_name)
+            self._job_name = catalog.i18nc("@label", "Pre-sliced file {0}", base_name)
         elif Preferences.getInstance().getValue("cura/jobname_prefix"):
             # Don't add abbreviation if it already has the exact same abbreviation.
             if base_name.startswith(self._abbr_machine + "_"):
-                return base_name
-            return self._abbr_machine + "_" + base_name
+                self._job_name = base_name
+            else:
+                self._job_name = self._abbr_machine + "_" + base_name
         else:
-            return base_name
+            self._job_name = base_name
+
+        self.jobNameChanged.emit()
+
+    @pyqtProperty(str)
+    def baseName(self):
+        return self._base_name
+
+    @pyqtSlot(str)
+    def setBaseName(self, base_name):
+        # Ensure that we don't use entire path but only filename
+        name = os.path.basename(base_name)
+
+        # when a file is opened using the terminal; the filename comes from _onFileLoaded and still contains its
+        # extension. This cuts the extension off if necessary.
+        name = os.path.splitext(name)[0]
+
+        if self._base_name == "" and self._base_name != name:
+            self._base_name = name
+            self._updateJobName()
 
     ##  Created an acronymn-like abbreviated machine name from the currently active machine name
     #   Called each time the global stack is switched
@@ -276,4 +292,4 @@ class PrintInformation(QObject):
 
     ##  Utility method that strips accents from characters (eg: â -> a)
     def _stripAccents(self, str):
-       return ''.join(char for char in unicodedata.normalize('NFD', str) if unicodedata.category(char) != 'Mn')
+        return ''.join(char for char in unicodedata.normalize('NFD', str) if unicodedata.category(char) != 'Mn')
