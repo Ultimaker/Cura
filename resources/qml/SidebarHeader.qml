@@ -377,7 +377,7 @@ Column
             {
                 id: materialInfoLabel
                 wrapMode: Text.WordWrap
-                text: catalog.i18nc("@label", "Check material compability")
+                text: catalog.i18nc("@label", "Check material compatibility")
                 font: UM.Theme.getFont("default");
                 verticalAlignment: Text.AlignTop
                 anchors.top: parent.top
