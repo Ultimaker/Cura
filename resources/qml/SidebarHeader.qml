@@ -400,7 +400,6 @@ Column
                     }
                     onEntered:
                     {
-
                         var content = catalog.i18nc("@tooltip", "Click to check the material compatibility on Ultimaker.com.");
                         base.showTooltip(
                             materialInfoRow,
