@@ -122,7 +122,7 @@ Column
                         Rectangle
                         {
                             anchors.fill: parent
-                            border.width: UM.Theme.getSize("default_lining").width
+                            border.width: control.checked ? UM.Theme.getSize("default_lining").width * 2 : UM.Theme.getSize("default_lining").width
                             border.color: (control.checked || control.pressed) ? UM.Theme.getColor("action_button_active_border") :
                                           control.hovered ? UM.Theme.getColor("action_button_hovered_border") :
                                           UM.Theme.getColor("action_button_border")
