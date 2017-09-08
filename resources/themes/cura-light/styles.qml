@@ -309,6 +309,8 @@ QtObject {
                     }
                     Behavior on color { ColorAnimation { duration: 50; } }
 
+                    border.width: (control.hasOwnProperty("needBorder") && control.needBorder) ? 2 : 0
+                    border.color: Theme.getColor("tool_button_border")
 
                     UM.RecolorImage {
                         id: tool_button_arrow
