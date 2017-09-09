@@ -166,7 +166,7 @@ UM.PreferencesPage
                             var date_object = new Date();
                             if (date_object.getUTCMonth() == 8 && date_object.getUTCDate() == 19) //Only add Pirate on the 19th of September.
                             {
-                                append({ text: "Pirate", code: "7s" })
+                                append({ text: "Pirate", code: "en_7S" })
                             }
                         }
                     }
