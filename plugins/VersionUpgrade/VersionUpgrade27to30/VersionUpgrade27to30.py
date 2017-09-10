@@ -9,6 +9,23 @@ from UM.VersionUpgrade import VersionUpgrade #We're inheriting from this.
 _renamed_themes = {
     "cura": "cura-light"
 }
+_renamed_i18n = {
+    "7s": "en_7S",
+    "de": "de_DE",
+    "en": "en_US",
+    "es": "es_ES",
+    "fi": "fi_FI",
+    "fr": "fr_FR",
+    "hu": "hu_HU",
+    "it": "it_IT",
+    "jp": "ja_JP",
+    "ko": "ko_KR",
+    "nl": "nl_NL",
+    "pl": "pl_PL",
+    "ptbr": "pt_BR",
+    "ru": "ru_RU",
+    "tr": "tr_TR"
+}
 
 class VersionUpgrade27to30(VersionUpgrade):
     ##  Gets the version number from a CFG file in Uranium's 2.7 format.
@@ -49,6 +66,11 @@ class VersionUpgrade27to30(VersionUpgrade):
         if "theme" in parser["general"]:
             if parser["general"]["theme"] in _renamed_themes:
                 parser["general"]["theme"] = _renamed_themes[parser["general"]["theme"]]
+
+        #Renamed languages.
+        if "language" in parser["general"]:
+            if parser["general"]["language"] in _renamed_i18n:
+                parser["general"]["language"] = _renamed_i18n[parser["general"]["language"]]
 
         # Re-serialise the file.
         output = io.StringIO()
