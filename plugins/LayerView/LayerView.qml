@@ -31,6 +31,8 @@ Item
         return base.mapFromItem(parent.parent, parent.buttonTarget.x, parent.buttonTarget.y);
     }
 
+    visible: !parent.parent.monitoringPrint
+
     UM.PointingRectangle {
         id: layerViewMenu
         anchors.right: parent.right
