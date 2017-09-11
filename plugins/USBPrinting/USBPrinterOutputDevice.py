@@ -622,8 +622,9 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
         self._sendCommand("M140 S0")
         self._sendCommand("M104 S0")
         self._sendCommand("M107")
+        # Home XY to prevent nozzle resting on aborted print
+        # Don't home bed because it may crash the printhead into the print on printers that home on the bottom
         self.homeHead()
-        self.homeBed()
         self._sendCommand("M84")
         self._is_printing = False
         self._is_paused = False

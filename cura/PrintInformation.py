@@ -265,7 +265,8 @@ class PrintInformation(QObject):
         # extension. This cuts the extension off if necessary.
         name = os.path.splitext(name)[0]
 
-        if self._base_name == "" and self._base_name != name:
+        # name is "" when I first had some meshes and afterwards I deleted them so the naming should start again
+        if name == "" or (self._base_name == "" and self._base_name != name):
             self._base_name = name
             self._updateJobName()
 

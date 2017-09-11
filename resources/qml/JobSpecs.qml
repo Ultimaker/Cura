@@ -43,7 +43,7 @@ Item {
         }
         if (activity == false){
             //When there is no mesh in the buildplate; the printJobTextField is set to an empty string so it doesn't set an empty string as a jobName (which is later used for saving the file)
-            PrintInformation.setJobName('')
+            PrintInformation.setBaseName('')
         }
     }
 
