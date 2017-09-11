@@ -282,7 +282,7 @@
         "default_arrow": [0.8, 0.8],
         "logo": [7.6, 1.6],
 
-        "extruder_button_material_margin": [0.50, 0.9],
+        "extruder_button_material_margin": [0.70, 0.9],
         "extruder_button_material": [0.75, 0.75],
 
         "sidebar": [35.0, 10.0],
