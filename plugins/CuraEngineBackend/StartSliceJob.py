@@ -17,6 +17,7 @@ from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 
 from UM.Settings.Validator import ValidatorState
 from UM.Settings.SettingRelation import RelationType
+from cura.Settings.CuraContainerStack import CuraContainerStack
 
 from UM.Mesh.MeshData import transformVertices
 
@@ -162,7 +163,16 @@ class StartSliceJob(Job):
             # Adapt layer_height and material_flow for a slanted gantry
             gantry_angle = self._scene.getRoot().callDecoration("getGantryAngle")
             if gantry_angle: # not 0 or None
-                stack = copy.deepcopy(stack) # act on a copy of the stack, so these changes don't cause a reslice
+                # Act on a copy of the stack, so these changes don't cause a reslice
+                _stack = CuraContainerStack(stack.getId() + "_temp")
+                index = 0
+                for container in stack.getContainers():
+                    if container.isReadOnly():
+                        _stack.replaceContainer(index, container)
+                    else:
+                        _stack.replaceContainer(index, copy.deepcopy(container))
+                    index = index + 1
+                stack = _stack
                 layer_height = stack.getProperty("layer_height", "value")
                 stack.setProperty("layer_height", "value", layer_height / math.sin(gantry_angle))
                 flow = stack.getProperty("material_flow", "value")
@@ -176,9 +186,18 @@ class StartSliceJob(Job):
             if stack.getProperty("machine_extruder_count", "value") > 1:
                 for extruder_stack in ExtruderManager.getInstance().getMachineExtruders(stack.getId()):
                     if gantry_angle: # not 0 or None
-                        extruder_stack = copy.deepcopy(extruder_stack) # act on a copy of the stack, so these changes don't cause a reslice
+                        # Act on a copy of the stack, so these changes don't cause a reslice
+                        _extruder_stack = ContainerStack(extruder_stack.getId() + "_temp")
+                        index = 0
+                        for container in reversed(extruder_stack.getContainers()):
+                            if container.isReadOnly():
+                                _stack.replaceContainer(index, container)
+                            else:
+                                _stack.replaceContainer(index, copy.deepcopy(container))
+                            index = index + 1
+                        extruder_stack = _extruder_stack
                         flow = stack.getProperty("material_flow", "value")
-                        stack.setProperty("material_flow", "value", flow * math.sin(gantry_angle))
+                        extruder_stack.setProperty("material_flow", "value", flow * math.sin(gantry_angle))
                     self._buildExtruderMessage(extruder_stack)
             else:
                 self._buildExtruderMessageFromGlobalStack(stack)
