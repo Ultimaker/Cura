@@ -5,6 +5,8 @@ import numpy
 from string import Formatter
 from enum import IntEnum
 import time
+import copy
+import math
 
 from UM.Job import Job
 from UM.Application import Application
@@ -157,6 +159,15 @@ class StartSliceJob(Job):
                 self.setResult(StartJobResult.NothingToSlice)
                 return
 
+            # Adapt layer_height and material_flow for a slanted gantry
+            gantry_angle = self._scene.getRoot().callDecoration("getGantryAngle")
+            if gantry_angle: # not 0 or None
+                stack = copy.deepcopy(stack) # act on a copy of the stack, so these changes don't cause a reslice
+                layer_height = stack.getProperty("layer_height", "value")
+                stack.setProperty("layer_height", "value", layer_height / math.sin(gantry_angle))
+                flow = stack.getProperty("material_flow", "value")
+                stack.setProperty("material_flow", "value", flow * math.sin(gantry_angle))
+
             self._buildGlobalSettingsMessage(stack)
             self._buildGlobalInheritsStackMessage(stack)
 
@@ -164,6 +175,10 @@ class StartSliceJob(Job):
             # Single extruder machines only use the global stack to store setting values
             if stack.getProperty("machine_extruder_count", "value") > 1:
                 for extruder_stack in ExtruderManager.getInstance().getMachineExtruders(stack.getId()):
+                    if gantry_angle: # not 0 or None
+                        extruder_stack = copy.deepcopy(extruder_stack) # act on a copy of the stack, so these changes don't cause a reslice
+                        flow = stack.getProperty("material_flow", "value")
+                        stack.setProperty("material_flow", "value", flow * math.sin(gantry_angle))
                     self._buildExtruderMessage(extruder_stack)
             else:
                 self._buildExtruderMessageFromGlobalStack(stack)
@@ -184,7 +199,8 @@ class StartSliceJob(Job):
                     verts = verts.dot(rot_scale)
                     verts += translate
 
-                    verts = transformVertices(verts, transform_matrix)
+                    if transform_matrix:
+                        verts = transformVertices(verts, transform_matrix)
 
                     # Convert from Y up axes to Z up axes. Equals a 90 degree rotation.
                     verts[:, [1, 2]] = verts[:, [2, 1]]
