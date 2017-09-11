@@ -385,7 +385,6 @@ QtObject {
             background: Rectangle {
                 implicitWidth: Theme.getSize("message").width - (Theme.getSize("default_margin").width * 2)
                 implicitHeight: Theme.getSize("progressbar").height
-                radius: Theme.getSize("progressbar_radius").width
                 color: control.hasOwnProperty("backgroundColor") ? control.backgroundColor : Theme.getColor("progressbar_background")
             }
             progress: Rectangle {
