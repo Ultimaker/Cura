@@ -354,8 +354,6 @@ class StartSliceJob(Job):
 
             setting.value = str(limited_stack.getProperty(key, "value")).encode("utf-8")
 
-            Logger.log("d", "key=%s value=%s", key, setting.value)
-
             Job.yieldThread()
 
     ##  Recursive function to put all settings that require each other for value changes in a list
