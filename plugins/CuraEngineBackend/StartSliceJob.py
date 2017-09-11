@@ -16,6 +16,8 @@ from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 from UM.Settings.Validator import ValidatorState
 from UM.Settings.SettingRelation import RelationType
 
+from UM.Mesh.MeshData import transformVertices
+
 from cura.OneAtATimeIterator import OneAtATimeIterator
 from cura.Settings.ExtruderManager import ExtruderManager
 
@@ -166,6 +168,8 @@ class StartSliceJob(Job):
             else:
                 self._buildExtruderMessageFromGlobalStack(stack)
 
+            transform_matrix = self._scene.getRoot().callDecoration("getTransformMatrix")
+
             for group in object_groups:
                 group_message = self._slice_message.addRepeatedMessage("object_lists")
                 if group[0].getParent().callDecoration("isGroup"):
@@ -179,6 +183,8 @@ class StartSliceJob(Job):
                     verts = mesh_data.getVertices()
                     verts = verts.dot(rot_scale)
                     verts += translate
+
+                    verts = transformVertices(verts, transform_matrix)
 
                     # Convert from Y up axes to Z up axes. Equals a 90 degree rotation.
                     verts[:, [1, 2]] = verts[:, [2, 1]]
