@@ -334,8 +334,6 @@ class StartSliceJob(Job):
             self._addRelations(changed_setting_keys, instance.definition.relations)
             Job.yieldThread()
 
-        Logger.log("d", "changed_setting_keys=%s", changed_setting_keys)
-
         # Ensure that the engine is aware what the build extruder is.
         if stack.getProperty("machine_extruder_count", "value") > 1:
             changed_setting_keys.add("extruder_nr")
@@ -353,8 +351,6 @@ class StartSliceJob(Job):
                 limited_stack = stack
 
             setting.value = str(limited_stack.getProperty(key, "value")).encode("utf-8")
-
-            Logger.log("d", "key=%s value=%s", key, setting.value)
 
             Job.yieldThread()
 

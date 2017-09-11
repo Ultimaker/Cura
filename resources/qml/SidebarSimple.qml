@@ -261,6 +261,7 @@ Item
             Text
             {
                 id: enableSupportLabel
+                visible: enableSupportCheckBox.visible
                 anchors.left: parent.left
                 anchors.leftMargin: UM.Theme.getSize("sidebar_margin").width
                 anchors.verticalCenter: enableSupportCheckBox.verticalCenter
@@ -281,6 +282,7 @@ Item
                 style: UM.Theme.styles.checkbox;
                 enabled: base.settingsEnabled
 
+                visible: supportEnabled.properties.enabled == "True"
                 checked: supportEnabled.properties.value == "True";
 
                 MouseArea
@@ -309,7 +311,7 @@ Item
             Text
             {
                 id: supportExtruderLabel
-                visible: (supportEnabled.properties.value == "True") && (machineExtruderCount.properties.value > 1)
+                visible: supportExtruderCombobox.visible
                 anchors.left: parent.left
                 anchors.leftMargin: UM.Theme.getSize("sidebar_margin").width
                 anchors.verticalCenter: supportExtruderCombobox.verticalCenter
@@ -321,7 +323,7 @@ Item
             ComboBox
             {
                 id: supportExtruderCombobox
-                visible: (supportEnabled.properties.value == "True") && (machineExtruderCount.properties.value > 1)
+                visible: enableSupportCheckBox.visible && (supportEnabled.properties.value == "True") && (machineExtruderCount.properties.value > 1)
                 model: extruderModel
 
                 property string color_override: ""  // for manually setting values
@@ -407,6 +409,7 @@ Item
             Text
             {
                 id: adhesionHelperLabel
+                visible: adhesionCheckBox.visible
                 anchors.left: parent.left
                 anchors.leftMargin: UM.Theme.getSize("sidebar_margin").width
                 anchors.verticalCenter: adhesionCheckBox.verticalCenter
@@ -421,7 +424,7 @@ Item
                 id: adhesionCheckBox
                 property alias _hovered: adhesionMouseArea.containsMouse
 
-                anchors.top: supportExtruderCombobox.bottom
+                anchors.top: enableSupportCheckBox.visible ? supportExtruderCombobox.bottom : infillCellRight.bottom
                 anchors.topMargin: UM.Theme.getSize("sidebar_margin").height
                 anchors.left: infillCellRight.left
 
@@ -429,6 +432,7 @@ Item
                 style: UM.Theme.styles.checkbox;
                 enabled: base.settingsEnabled
 
+                visible: platformAdhesionType.properties.enabled == "True"
                 checked: platformAdhesionType.properties.value != "skirt" && platformAdhesionType.properties.value != "none"
 
                 MouseArea
@@ -445,7 +449,7 @@ Item
                             // Remove the "user" setting to see if the rest of the stack prescribes a brim or a raft
                             platformAdhesionType.removeFromContainer(0);
                             adhesionType = platformAdhesionType.properties.value;
-                            if(adhesionType == "skirt")
+                            if(adhesionType == "skirt" || adhesionType == "none")
                             {
                                 // If the rest of the stack doesn't prescribe an adhesion-type, default to a brim
                                 adhesionType = "brim";
@@ -481,7 +485,7 @@ Item
             Item
             {
                 id: tipsCell
-                anchors.top: adhesionCheckBox.bottom
+                anchors.top: adhesionCheckBox.visible ? adhesionCheckBox.bottom : (enableSupportCheckBox.visible ? supportExtruderCombobox.bottom : infillCellRight.bottom)
                 anchors.topMargin: UM.Theme.getSize("sidebar_margin").height * 2
                 anchors.left: parent.left
                 width: parent.width
@@ -566,7 +570,7 @@ Item
 
                 containerStackId: Cura.MachineManager.activeMachineId
                 key: "adhesion_type"
-                watchedProperties: [ "value" ]
+                watchedProperties: [ "value", "enabled" ]
                 storeIndex: 0
             }
 
@@ -576,7 +580,7 @@ Item
 
                 containerStackId: Cura.MachineManager.activeMachineId
                 key: "support_enable"
-                watchedProperties: [ "value", "description" ]
+                watchedProperties: [ "value", "enabled", "description" ]
                 storeIndex: 0
             }
 
