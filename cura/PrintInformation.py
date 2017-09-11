@@ -80,7 +80,7 @@ class PrintInformation(QObject):
         self._abbr_machine = ""
         self._job_name = ""
 
-        Application.getInstance().globalContainerStackChanged.connect(self._setAbbreviatedMachineName)
+        Application.getInstance().globalContainerStackChanged.connect(self._updateJobName)
         Application.getInstance().fileLoaded.connect(self.setBaseName)
 
         Preferences.getInstance().preferenceChanged.connect(self._onPreferencesChanged)
