@@ -166,7 +166,7 @@
         "setting_control_highlight": [255, 255, 255, 0],
         "setting_control_border": [127, 127, 127, 255],
         "setting_control_border_highlight": [12, 169, 227, 255],
-        "setting_control_text": [127, 127, 127, 255],
+        "setting_control_text": [27, 27, 27, 255],
         "setting_control_depth_line": [127, 127, 127, 255],
         "setting_control_button": [127, 127, 127, 255],
         "setting_control_button_hover": [70, 84, 113, 255],
@@ -197,7 +197,7 @@
         "checkbox_border": [64, 69, 72, 255],
         "checkbox_border_hover": [12, 169, 227, 255],
         "checkbox_mark": [119, 122, 124, 255],
-        "checkbox_text": [166, 168, 169, 255],
+        "checkbox_text": [27, 27, 27, 255],
 
         "mode_switch": [255, 255, 255, 255],
         "mode_switch_hover": [255, 255, 255, 255],
@@ -225,7 +225,7 @@
         "message_progressbar_background": [255, 255, 255, 255],
         "message_progressbar_control": [12, 169, 227, 255],
 
-        "tool_panel_background": [31, 36, 39, 255],
+        "tool_panel_background": [255, 255, 255, 255],
 
         "status_offline": [0, 0, 0, 255],
         "status_ready": [0, 205, 0, 255],
