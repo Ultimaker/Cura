@@ -346,7 +346,7 @@ Item
             property real minimumRangeHandleSize: UM.Theme.getSize("slider_handle").width / 2
             property real trackThickness: UM.Theme.getSize("slider_groove").width
             property real trackRadius: trackThickness / 2
-            property real trackBorderWidth: UM.Theme.getSize("default_lining").width
+            property real trackBorderWidth: UM.Theme.getSize("default_lining").width / 2
             property color upperHandleColor: UM.Theme.getColor("slider_handle")
             property color lowerHandleColor: UM.Theme.getColor("slider_handle")
             property color rangeHandleColor: UM.Theme.getColor("slider_groove_fill")
@@ -474,8 +474,8 @@ Item
                 anchors.horizontalCenter: parent.horizontalCenter
                 radius: parent.handleRadius
                 color: parent.upperHandleColor
-                border.width: UM.Theme.getSize("default_lining").width
-                border.color: UM.Theme.getColor("slider_handle_border")
+                //border.width: UM.Theme.getSize("default_lining").width
+                //border.color: UM.Theme.getColor("slider_handle_border")
 
                 visible: slider.layersVisible
 
