@@ -327,6 +327,7 @@ class StartSliceJob(Job):
         # Check all settings for relations, so we can also calculate the correct values for dependent settings.
         top_of_stack = stack.getTop()  # Cache for efficiency.
         changed_setting_keys = set(top_of_stack.getAllKeys())
+
         for key in top_of_stack.getAllKeys():
             instance = top_of_stack.getInstance(key)
             self._addRelations(changed_setting_keys, instance.definition.relations)
@@ -349,6 +350,7 @@ class StartSliceJob(Job):
                 limited_stack = stack
 
             setting.value = str(limited_stack.getProperty(key, "value")).encode("utf-8")
+
             Job.yieldThread()
 
     ##  Recursive function to put all settings that require eachother for value changes in a list
