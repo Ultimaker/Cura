@@ -74,7 +74,7 @@ Item
                 font: UM.Theme.getFont("default");
                 visible: !UM.LayerView.compatibilityMode
                 Layout.fillWidth: true
-                color: UM.Theme.getColor("text")
+                color: UM.Theme.getColor("setting_control_text")
             }
 
             ListModel  // matches LayerView.py
@@ -193,7 +193,7 @@ Item
                     {
                         text: model.name
                         elide: Text.ElideRight
-                        color: UM.Theme.getColor("text")
+                        color: UM.Theme.getColor("button_text")
                         font: UM.Theme.getFont("default")
                         anchors.verticalCenter: parent.verticalCenter
                         anchors.left: extrudersModelCheckBox.left;
@@ -262,7 +262,7 @@ Item
                         text: label
                         font: UM.Theme.getFont("default")
                         elide: Text.ElideRight
-                        color: UM.Theme.getColor("text")
+                        color: UM.Theme.getColor("button_text")
                         anchors.verticalCenter: parent.verticalCenter
                         anchors.left: legendModelCheckBox.left;
                         anchors.right: legendModelCheckBox.right;
@@ -325,7 +325,7 @@ Item
                     Layout.fillWidth: true
                     Layout.preferredHeight: UM.Theme.getSize("layerview_row").height + UM.Theme.getSize("default_lining").height
                     Layout.preferredWidth: UM.Theme.getSize("layerview_row").width
-                    color: UM.Theme.getColor("text")
+                    color: UM.Theme.getColor("button_text")
                     font: UM.Theme.getFont("default")
                 }
             }

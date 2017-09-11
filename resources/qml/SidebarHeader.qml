@@ -122,7 +122,7 @@ Column
                         Rectangle
                         {
                             anchors.fill: parent
-                            border.width: UM.Theme.getSize("default_lining").width
+                            border.width: control.checked ? UM.Theme.getSize("default_lining").width * 2 : UM.Theme.getSize("default_lining").width
                             border.color: (control.checked || control.pressed) ? UM.Theme.getColor("action_button_active_border") :
                                           control.hovered ? UM.Theme.getColor("action_button_hovered_border") :
                                           UM.Theme.getColor("action_button_border")
@@ -369,7 +369,7 @@ Column
                 //sourceSize.width: width + 5
                 //sourceSize.height: width + 5
 
-                color: UM.Theme.getColor("setting_validation_warning")
+                color: UM.Theme.getColor("material_compatibility_warning")
                 visible: !Cura.MachineManager.isCurrentSetupSupported
             }
 
@@ -377,7 +377,7 @@ Column
             {
                 id: materialInfoLabel
                 wrapMode: Text.WordWrap
-                text: catalog.i18nc("@label", "Check material compability")
+                text: catalog.i18nc("@label", "Check material compatibility")
                 font: UM.Theme.getFont("default");
                 verticalAlignment: Text.AlignTop
                 anchors.top: parent.top
@@ -400,7 +400,6 @@ Column
                     }
                     onEntered:
                     {
-
                         var content = catalog.i18nc("@tooltip", "Click to check the material compatibility on Ultimaker.com.");
                         base.showTooltip(
                             materialInfoRow,
