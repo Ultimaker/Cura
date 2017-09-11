@@ -178,8 +178,9 @@ class BuildVolume(SceneNode):
             self._shader = OpenGL.getInstance().createShaderProgram(Resources.getPath(Resources.Shaders, "default.shader"))
             self._grid_shader = OpenGL.getInstance().createShaderProgram(Resources.getPath(Resources.Shaders, "grid.shader"))
             theme = Application.getInstance().getTheme()
-            self._grid_shader.setUniformValue("u_gridColor0", Color(*theme.getColor("buildplate").getRgb()))
-            self._grid_shader.setUniformValue("u_gridColor1", Color(*theme.getColor("buildplate_alt").getRgb()))
+            self._grid_shader.setUniformValue("u_plateColor", Color(*theme.getColor("buildplate").getRgb()))
+            self._grid_shader.setUniformValue("u_gridColor0", Color(*theme.getColor("buildplate_grid").getRgb()))
+            self._grid_shader.setUniformValue("u_gridColor1", Color(*theme.getColor("buildplate_grid_minor").getRgb()))
             self._grid_shader.setUniformValue("u_z_bias", 0.000001)
 
         renderer.queueNode(self, mode = RenderBatch.RenderMode.Lines)
