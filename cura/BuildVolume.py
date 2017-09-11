@@ -96,7 +96,7 @@ class BuildVolume(SceneNode):
         self._scene_change_timer.timeout.connect(self._onSceneChangeTimerFinished)
 
         self._setting_change_timer = QTimer()
-        self._setting_change_timer.setInterval(100)
+        self._setting_change_timer.setInterval(150)
         self._setting_change_timer.setSingleShot(True)
         self._setting_change_timer.timeout.connect(self._onSettingChangeTimerFinished)
 
