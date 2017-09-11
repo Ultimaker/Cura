@@ -328,12 +328,15 @@ class StartSliceJob(Job):
         top_of_stack = stack.getTop()  # Cache for efficiency.
         changed_setting_keys = set(top_of_stack.getAllKeys())
 
+        # Add all relations to changed settings as well.
         for key in top_of_stack.getAllKeys():
             instance = top_of_stack.getInstance(key)
             self._addRelations(changed_setting_keys, instance.definition.relations)
             Job.yieldThread()
 
-        # Ensure that the engine is aware what the build extruder is
+        Logger.log("d", "changed_setting_keys=%s", changed_setting_keys)
+
+        # Ensure that the engine is aware what the build extruder is.
         if stack.getProperty("machine_extruder_count", "value") > 1:
             changed_setting_keys.add("extruder_nr")
 
@@ -344,16 +347,18 @@ class StartSliceJob(Job):
             extruder = int(round(float(stack.getProperty(key, "limit_to_extruder"))))
 
             # Check if limited to a specific extruder, but not overridden by per-object settings.
-            if extruder >= 0 and key not in top_of_stack.getAllKeys():
+            if extruder >= 0 and key not in changed_setting_keys:
                 limited_stack = ExtruderManager.getInstance().getActiveExtruderStacks()[extruder]
             else:
                 limited_stack = stack
 
             setting.value = str(limited_stack.getProperty(key, "value")).encode("utf-8")
 
+            Logger.log("d", "key=%s value=%s", key, setting.value)
+
             Job.yieldThread()
 
-    ##  Recursive function to put all settings that require eachother for value changes in a list
+    ##  Recursive function to put all settings that require each other for value changes in a list
     #   \param relations_set \type{set} Set of keys (strings) of settings that are influenced
     #   \param relations list of relation objects that need to be checked.
     def _addRelations(self, relations_set, relations):
