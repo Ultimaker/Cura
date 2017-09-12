@@ -614,7 +614,7 @@ QtObject {
                 implicitHeight: Theme.getSize("setting_control").height;
                 implicitWidth: Theme.getSize("setting_control").width;
 
-                color: Theme.getColor("setting_control")
+                color: (control.hovered || controler._hovered) ? UM.Theme.getColor("setting_control_highlight") : UM.Theme.getColor("setting_control")
                 Behavior on color { ColorAnimation { duration: 50; } }
 
                 border.width: Theme.getSize("default_lining").width;
@@ -660,24 +660,11 @@ QtObject {
         {
             background: Rectangle
             {
-                color:
-                {
-                    if(!enabled)
-                    {
-                        return UM.Theme.getColor("setting_control_disabled");
-                    }
-                    if(control.hovered)
-                    {
-                        return UM.Theme.getColor("setting_control_highlight");
-                    }
-                    else
-                    {
-                        return UM.Theme.getColor("setting_control");
-                    }
-                }
+                color: !enabled ? UM.Theme.getColor("setting_control_disabled") : (control.hovered || controler._hovered) ? UM.Theme.getColor("setting_control_highlight") : UM.Theme.getColor("setting_control")
                 border.width: UM.Theme.getSize("default_lining").width
-                border.color: !enabled ? UM.Theme.getColor("setting_control_disabled_border") : control.hovered ? UM.Theme.getColor("setting_control_border_highlight") : UM.Theme.getColor("setting_control_border")
+                border.color: !enabled ? UM.Theme.getColor("setting_control_disabled_border") : (control.hovered || control._hovered) ? UM.Theme.getColor("setting_control_border_highlight") : UM.Theme.getColor("setting_control_border")
             }
+
             label: Item
             {
                 Label
@@ -695,6 +682,7 @@ QtObject {
                     elide: Text.ElideRight
                     verticalAlignment: Text.AlignVCenter
                 }
+
                 Rectangle
                 {
                     id: swatch
@@ -714,6 +702,7 @@ QtObject {
 
                     color: if (control.color_override != "") {return control.color_override} else {return control.color;}
                 }
+
                 UM.RecolorImage
                 {
                     id: downArrow
