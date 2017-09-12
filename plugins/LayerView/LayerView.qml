@@ -22,6 +22,8 @@ Item
     height: {
         if (UM.LayerView.compatibilityMode) {
             return UM.Theme.getSize("layerview_menu_size_compatibility").height;
+        } else if (UM.Preferences.getValue("layerview/layer_view_type") == 0) {
+            return UM.Theme.getSize("layerview_menu_size_material_color_mode").height + UM.LayerView.extruderCount * (UM.Theme.getSize("layerview_row").height + UM.Theme.getSize("layerview_row_spacing").height)
         } else {
             return UM.Theme.getSize("layerview_menu_size").height + UM.LayerView.extruderCount * (UM.Theme.getSize("layerview_row").height + UM.Theme.getSize("layerview_row_spacing").height)
         }
