@@ -358,7 +358,6 @@
         "tooltip_margins": [1.0, 1.0],
         "tooltip_arrow_margins": [2.0, 2.0],
 
-
         "save_button_text_margin": [0.3, 0.6],
         "save_button_save_to_button": [0.3, 2.7],
         "save_button_specs_icons": [1.4, 1.4],
@@ -372,6 +371,7 @@
         "message_button": [6.0, 1.8],
         "message_shadow": [0, 0],
         "message_margin": [0, 1.0],
+        "message_inner_margin": [1.5, 1.5],
 
         "infill_button_margin": [0.5, 0.5],
 
