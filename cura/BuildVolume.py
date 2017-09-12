@@ -27,9 +27,8 @@ import math
 
 from typing import List
 
-PRIME_CLEARANCE = 6.5 #Setting for clearance around the prime.
-MAJOR_GRID_SIZE = 10 #Size of the grid cells.
-MINOR_GRID_SIZE = 1
+# Setting for clearance around the prime
+PRIME_CLEARANCE = 6.5
 
 
 ##  Build volume is a special kind of node that is responsible for rendering the printable area & disallowed areas.
@@ -45,8 +44,6 @@ class BuildVolume(SceneNode):
         self._z_axis_color = None
         self._disallowed_area_color = None
         self._error_area_color = None
-        self._grid_color = None
-        self._grid_minor_color = None
 
         self._width = 0
         self._height = 0
@@ -59,9 +56,8 @@ class BuildVolume(SceneNode):
         self._origin_line_length = 20
         self._origin_line_width = 0.5
 
-        self._plate_mesh = None
         self._grid_mesh = None
-        self._plate_shader = None
+        self._grid_shader = None
 
         self._disallowed_areas = []
         self._disallowed_area_mesh = None
@@ -180,15 +176,15 @@ class BuildVolume(SceneNode):
 
         if not self._shader:
             self._shader = OpenGL.getInstance().createShaderProgram(Resources.getPath(Resources.Shaders, "default.shader"))
-            self._plate_shader = OpenGL.getInstance().createShaderProgram(Resources.getPath(Resources.Shaders, "color.shader"))
+            self._grid_shader = OpenGL.getInstance().createShaderProgram(Resources.getPath(Resources.Shaders, "grid.shader"))
             theme = Application.getInstance().getTheme()
-            self._plate_shader.setUniformValue("u_color", Color(*theme.getColor("buildplate").getRgb()))
-            self._plate_shader.setUniformValue("u_z_bias", 0.000001)
+            self._grid_shader.setUniformValue("u_plateColor", Color(*theme.getColor("buildplate").getRgb()))
+            self._grid_shader.setUniformValue("u_gridColor0", Color(*theme.getColor("buildplate_grid").getRgb()))
+            self._grid_shader.setUniformValue("u_gridColor1", Color(*theme.getColor("buildplate_grid_minor").getRgb()))
 
         renderer.queueNode(self, mode = RenderBatch.RenderMode.Lines)
         renderer.queueNode(self, mesh = self._origin_mesh)
-        renderer.queueNode(self, mesh = self._plate_mesh, shader = self._plate_shader, backface_cull = True)
-        renderer.queueNode(self, mesh = self._grid_mesh, mode = RenderBatch.RenderMode.Lines, transparent = True)
+        renderer.queueNode(self, mesh = self._grid_mesh, shader = self._grid_shader, backface_cull = True)
         if self._disallowed_area_mesh:
             renderer.queueNode(self, mesh = self._disallowed_area_mesh, shader = self._shader, transparent = True, backface_cull = True, sort = -9)
 
@@ -261,8 +257,6 @@ class BuildVolume(SceneNode):
             self._z_axis_color = Color(*theme.getColor("z_axis").getRgb())
             self._disallowed_area_color = Color(*theme.getColor("disallowed_area").getRgb())
             self._error_area_color = Color(*theme.getColor("error_area").getRgb())
-            self._grid_color = Color(*theme.getColor("buildplate_grid").getRgb())
-            self._grid_minor_color = Color(*theme.getColor("buildplate_grid_minor").getRgb())
 
         min_w = -self._width / 2
         max_w = self._width / 2
@@ -293,7 +287,7 @@ class BuildVolume(SceneNode):
 
             self.setMeshData(mb.build())
 
-            # Build plate surface.
+            # Build plate grid mesh
             mb = MeshBuilder()
             mb.addQuad(
                 Vector(min_w, min_h - z_fight_distance, min_d),
@@ -305,30 +299,6 @@ class BuildVolume(SceneNode):
             for n in range(0, 6):
                 v = mb.getVertex(n)
                 mb.setVertexUVCoordinates(n, v[0], v[2])
-            self._plate_mesh = mb.build()
-
-            #Build plate grid mesh.
-            mb = MeshBuilder()
-            for x in range(0, int(math.ceil(max_w)), MAJOR_GRID_SIZE):
-                mb.addLine(Vector(x, min_h, min_d), Vector(x, min_h, max_d), color = self._grid_color)
-                #Start from 0 in both cases, so you need to do this in two for loops.
-                mb.addLine(Vector(-x, min_h, min_d), Vector(-x, min_h, max_d), color = self._grid_color)
-            for y in range(0, int(math.ceil(max_d)), MAJOR_GRID_SIZE):
-                mb.addLine(Vector(min_w, min_h, y), Vector(max_w, min_h, y), color = self._grid_color)
-                mb.addLine(Vector(min_w, min_h, -y), Vector(max_w, min_h, -y), color = self._grid_color)
-
-            #More fine grained grid.
-            for x in range(0, int(math.ceil(max_w)), MINOR_GRID_SIZE):
-                if x % MAJOR_GRID_SIZE == 0: #Don't overlap with the major grid.
-                    pass
-                mb.addLine(Vector(x, min_h, min_d), Vector(x, min_h, max_d), color = self._grid_minor_color)
-                mb.addLine(Vector(-x, min_h, min_d), Vector(-x, min_h, max_d), color = self._grid_minor_color)
-            for y in range(0, int(math.ceil(max_d)), MINOR_GRID_SIZE):
-                if y % MAJOR_GRID_SIZE == 0:
-                    pass
-                mb.addLine(Vector(min_w, min_h, y), Vector(max_w, min_h, y), color = self._grid_minor_color)
-                mb.addLine(Vector(min_w, min_h, -y), Vector(max_w, min_h, -y), color = self._grid_minor_color)
-
             self._grid_mesh = mb.build()
 
         else:
@@ -344,7 +314,7 @@ class BuildVolume(SceneNode):
             mb.addArc(max_w, Vector.Unit_Y, center = (0, max_h, 0),  color = self._volume_outline_color)
             self.setMeshData(mb.build().getTransformed(scale_matrix))
 
-            # Build plate surface.
+            # Build plate grid mesh
             mb = MeshBuilder()
             mb.addVertex(0, min_h - z_fight_distance, 0)
             mb.addArc(max_w, Vector.Unit_Y, center = Vector(0, min_h - z_fight_distance, 0))
@@ -358,40 +328,7 @@ class BuildVolume(SceneNode):
             for n in range(0, mb.getVertexCount()):
                 v = mb.getVertex(n)
                 mb.setVertexUVCoordinates(n, v[0], v[2] * aspect)
-            self._plate_mesh = mb.build().getTransformed(scale_matrix)
-
-            #Build plate grid mesh.
-            #We need to constrain the length of the lines to the build plate ellipsis. Time to get out the calculator!
-            mb = MeshBuilder()
-            for x in range(0, int(math.ceil(max_w)), MAJOR_GRID_SIZE):
-                #x / max_w is the fraction along the build plate we have progressed, counting from the centre.
-                #So x / max_w is sin(a), where a is the angle towards an endpoint of the grid line from the centre.
-                #So math.asin(x / max_w) is a.
-                #So math.cos(math.asin(x / max_w)) is half of the length of the grid line on a unit circle, which scales between 0 and 1.
-                length_factor = math.cos(math.asin(x / max_w))
-                mb.addLine(Vector(x, min_h, min_d * length_factor), Vector(x, min_h, max_d * length_factor), color = self._grid_color)
-                #Start from 0 in both cases, so you need to do this in two for loops.
-                mb.addLine(Vector(-x, min_h, min_d * length_factor), Vector(-x, min_h, max_d * length_factor), color = self._grid_color)
-            for y in range(0, int(math.ceil(max_d)), MAJOR_GRID_SIZE):
-                length_factor = math.sin(math.acos(y / max_d))
-                mb.addLine(Vector(min_w * length_factor, min_h, y), Vector(max_w * length_factor, min_h, y), color = self._grid_color)
-                mb.addLine(Vector(min_w * length_factor, min_h, -y), Vector(max_w * length_factor, min_h, -y), color = self._grid_color)
-
-            #More fine grained grid.
-            for x in range(0, int(math.ceil(max_w)), MINOR_GRID_SIZE):
-                if x % MAJOR_GRID_SIZE == 0: #Don't overlap with the major grid.
-                    pass
-                length_factor = math.cos(math.asin(x / max_w))
-                mb.addLine(Vector(x, min_h, min_d * length_factor), Vector(x, min_h, max_d * length_factor), color = self._grid_minor_color)
-                mb.addLine(Vector(-x, min_h, min_d * length_factor), Vector(-x, min_h, max_d * length_factor), color = self._grid_minor_color)
-            for y in range(0, int(math.ceil(max_d)), MINOR_GRID_SIZE):
-                if y % MAJOR_GRID_SIZE == 0:
-                    pass
-                length_factor = math.sin(math.acos(y / max_d))
-                mb.addLine(Vector(min_w * length_factor, min_h, y), Vector(max_w * length_factor, min_h, y), color = self._grid_minor_color)
-                mb.addLine(Vector(min_w * length_factor, min_h, -y), Vector(max_w * length_factor, min_h, -y), color = self._grid_minor_color)
-
-            self._grid_mesh = mb.build()
+            self._grid_mesh = mb.build().getTransformed(scale_matrix)
 
         # Indication of the machine origin
         if self._global_container_stack.getProperty("machine_center_is_zero", "value"):

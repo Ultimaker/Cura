@@ -181,7 +181,7 @@ Rectangle
                             color: (control.checked || control.pressed) ? UM.Theme.getColor("action_button_active_text") :
                                        control.hovered ? UM.Theme.getColor("action_button_hovered_text") :
                                        UM.Theme.getColor("action_button_text")
-                            font: (control.checked || control.pressed) ? UM.Theme.getFont("default_little_big") : UM.Theme.getFont("default")
+                            font: UM.Theme.getFont("default")
                             text: control.text;
                         }
                     }
