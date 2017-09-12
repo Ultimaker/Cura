@@ -107,7 +107,7 @@ QtObject {
                     anchors.bottom: parent.bottom
                     width: parent.width
                     height: Theme.getSize("sidebar_header_highlight").height
-                    color: control.checked ? UM.Theme.getColor("sidebar_header_highlight") : "transparent"
+                    color: control.checked ? UM.Theme.getColor("sidebar_header_highlight") : UM.Theme.getColor("sidebar_header_highlight_hover")
                     visible: control.hovered || control.checked
                 }
             }
