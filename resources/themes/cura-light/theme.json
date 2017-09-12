@@ -1,6 +1,6 @@
 {
     "metadata": {
-        "name": "Light"
+        "name": "Ultimaker"
     },
 
     "fonts": {
@@ -166,7 +166,7 @@
 
         "setting_control": [255, 255, 255, 255],
         "setting_control_selected": [24, 41, 77, 255],
-        "setting_control_highlight": [255, 255, 255, 0],
+        "setting_control_highlight": [255, 255, 255, 255],
         "setting_control_border": [127, 127, 127, 255],
         "setting_control_border_highlight": [12, 169, 227, 255],
         "setting_control_text": [27, 27, 27, 255],
