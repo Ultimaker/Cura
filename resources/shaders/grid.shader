@@ -57,7 +57,6 @@ fragment41core =
     uniform lowp vec4 u_plateColor;
     uniform lowp vec4 u_gridColor0;
     uniform lowp vec4 u_gridColor1;
-    uniform lowp float u_z_bias; //Bias in the depth buffer for rendering this object (to make an object be rendered in front of or behind other objects).
 
     in lowp vec2 v_uvs;
     out vec4 frag_color;
@@ -77,14 +76,12 @@ fragment41core =
         float majorLine = min(majorGrid.x, majorGrid.y);
 
         frag_color = mix(minorGridColor, u_gridColor0, 1.0 - min(majorLine, 1.0));
-        gl_FragDepth = gl_FragCoord.z + u_z_bias;
     }
 
 [defaults]
 u_plateColor = [1.0, 1.0, 1.0, 1.0]
 u_gridColor0 = [0.96, 0.96, 0.96, 1.0]
 u_gridColor1 = [0.8, 0.8, 0.8, 1.0]
-u_z_bias = 0.0
 
 [bindings]
 u_modelViewProjectionMatrix = model_view_projection_matrix
