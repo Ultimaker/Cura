@@ -3366,7 +3366,8 @@
                         "triangles": "Triangles",
                         "concentric": "Concentric",
                         "concentric_3d": "Concentric 3D",
-                        "zigzag": "Zig Zag"
+                        "zigzag": "Zig Zag",
+                        "cross": "Cross"
                     },
                     "default_value": "zigzag",
                     "enabled": "support_enable",
