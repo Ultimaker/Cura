@@ -693,6 +693,7 @@ QtObject {
                     anchors.verticalCenter: parent.verticalCenter
                     anchors.margins: UM.Theme.getSize("default_margin").width / 4
                     radius: width / 2
+
                     color: (control.color_override !== "") ? control.color_override : control.color
                 }
 
