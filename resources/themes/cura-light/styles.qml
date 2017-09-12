@@ -614,7 +614,7 @@ QtObject {
                 implicitHeight: Theme.getSize("setting_control").height;
                 implicitWidth: Theme.getSize("setting_control").width;
 
-                color: (control.hovered || control._hovered) ? Theme.getColor("setting_control_highlight") : Theme.getColor("setting_control");
+                color: Theme.getColor("setting_control")
                 Behavior on color { ColorAnimation { duration: 50; } }
 
                 border.width: Theme.getSize("default_lining").width;
