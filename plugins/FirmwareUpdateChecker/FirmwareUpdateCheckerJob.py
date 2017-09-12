@@ -20,8 +20,9 @@ i18n_catalog = i18nCatalog("cura")
 
 ##  This job checks if there is an update available on the provided URL.
 class FirmwareUpdateCheckerJob(Job):
-    def __init__(self, silent = False, url = None):
+    def __init__(self, container = None, silent = False, url = None):
         super().__init__()
+        self._container = container
         self.silent = silent
         self._url = url
         self._download_url = None  # If an update was found, the download_url will be set to the location of the new version.
@@ -38,38 +39,44 @@ class FirmwareUpdateCheckerJob(Job):
             Logger.log("e", "Can not check for a new release. URL not set!")
             return
 
-        Logger.log("i", "Checking for new version of firmware")
         try:
             request = urllib.request.Request(self._url)
             current_version_file = urllib.request.urlopen(request)
             reader = codecs.getreader("utf-8")
 
-            # Nothing to parse, just get the string
-            # TODO: In the future may be done by parsing a JSON file
-            current_version = reader(current_version_file).readline().rstrip()
-            Logger.log("i", "Reading firmware version: %s" % current_version)
+            machine_name = self._container.getId()
 
-            # If it is the first time the version is checked, the checked_version is None
-            checked_version = Preferences.getInstance().getValue("info/latest_checked_firmware")
-            active_machine = Preferences.getInstance().getValue("cura/active_machine")
             # If it is not None, then we compare between the checked_version and the current_version
-            # Now we just do that if the active printer is Ultimaker 3 or Ultimaker 3 Extended
-            if ((active_machine == "Ultimaker 3 Extended") or (active_machine == "Ultimaker 3"))\
-                    and ((checked_version is None) or (checked_version != current_version)):
-                message = Message(i18n_catalog.i18nc("@info", "<b>New %s firmware available</b><br/><br/>To ensure that your "
-                                                              "%s is equiped with the latest features it is recommended "
-                                                              "to update the firmware regularly. This can be done on the "
-                                                              "%s (when connected to the network) or via USB."
-                                                     % (active_machine, active_machine, active_machine)))
-                message.addAction("download", i18n_catalog.i18nc("@action:button", "Download"), "[no_icon]", "[no_description]")
+            # Now we just do that if the active printer is Ultimaker 3 or Ultimaker 3 Extended or any
+            # other Ultimaker 3 that will come in the future
+            if (machine_name[0:11] == "Ultimaker 3"):
 
-                # If we do this in a cool way, the download url should be available in the JSON file
-                self._download_url = "https://ultimaker.com/en/resources/20500-upgrade-firmware"
-                message.actionTriggered.connect(self.actionTriggered)
-                # Sometimes it's shown, sometimes not
-                #message.show()
-                Application.getInstance().showMessage(message)
+                # Nothing to parse, just get the string
+                # TODO: In the future may be done by parsing a JSON file with diferent version for each printer model
+                current_version = reader(current_version_file).readline().rstrip()
+                Logger.log("i", "Reading firmware version of %s: %s" % (machine_name, current_version))
 
+                # If it is the first time the version is checked, the checked_version is None
+                checked_version = Preferences.getInstance().getValue("info/latest_checked_firmware")
+
+                # If the checked_version is '', it's because is the first time we check firmware and in this case
+                # we will not show the notification, but we will store it for the next time
+                if (checked_version != "") and (checked_version != current_version):
+                    message = Message(i18n_catalog.i18nc("@info", "<b>New %s firmware available</b><br/><br/>To ensure that your "
+                                                                  "%s is equiped with the latest features it is recommended "
+                                                                  "to update the firmware regularly. This can be done on the "
+                                                                  "%s (when connected to the network) or via USB."
+                                                         % (machine_name, machine_name, machine_name)))
+                    message.addAction("download", i18n_catalog.i18nc("@action:button", "Download"), "[no_icon]", "[no_description]")
+
+                    # If we do this in a cool way, the download url should be available in the JSON file
+                    self._download_url = "https://ultimaker.com/en/resources/20500-upgrade-firmware"
+                    message.actionTriggered.connect(self.actionTriggered)
+                    Application.getInstance().showMessage(message)
+
+                # The first time we want to store the current version, the notification will not be shown,
+                # because the new version of Cura will be release before the firmware and we don't want to
+                # notify the user when no new firmware version is available.
                 Preferences.getInstance().setValue("info/latest_checked_firmware", current_version)
 
         except Exception as e:

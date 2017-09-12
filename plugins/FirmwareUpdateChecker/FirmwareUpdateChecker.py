@@ -1,11 +1,14 @@
 # Copyright (c) 2015 Ultimaker B.V.
 # Cura is released under the terms of the AGPLv3 or higher.
-
+from UM.Application import Application
 from UM.Extension import Extension
 from UM.Preferences import Preferences
+from UM.Logger import Logger
 from UM.i18n import i18nCatalog
+from cura.Settings.GlobalStack import GlobalStack
 
 from .FirmwareUpdateCheckerJob import FirmwareUpdateCheckerJob
+from UM.Settings.ContainerRegistry import ContainerRegistry
 
 i18n_catalog = i18nCatalog("cura")
 
@@ -19,8 +22,18 @@ class FirmwareUpdateChecker(Extension):
     def __init__(self):
         super().__init__()
 
+        # Initialize the Preference called `latest_checked_firmware` that stores the last version
+        # checked for the UM3. In the future if we need to check other printers' firmware
         Preferences.getInstance().addPreference("info/latest_checked_firmware", "")
-        self.checkFirmwareVersion(True)
+
+        # Listen to a Signal that indicates a change in the active printer
+        ContainerRegistry.getInstance().containerAdded.connect(self._onContainerAdded)
+
+    def _onContainerAdded(self, container):
+        # Only take care when a new GlobaStack was added
+        if (isinstance(container, GlobalStack)):
+            Logger.log("i", "You have a '%s' in printer list. Let's check the firmware!" % container.getId())
+            self.checkFirmwareVersion(container, True)
 
     ##  Connect with software.ultimaker.com, load latest.version and check version info.
     #   If the version info is different from the current version, spawn a message to
@@ -28,6 +41,6 @@ class FirmwareUpdateChecker(Extension):
     #
     #   \param silent type(boolean) Suppresses messages other than "new version found" messages.
     #                               This is used when checking for a new firmware version at startup.
-    def checkFirmwareVersion(self, silent = False):
-        job = FirmwareUpdateCheckerJob(silent = silent, url = self.url)
+    def checkFirmwareVersion(self, container = None, silent = False):
+        job = FirmwareUpdateCheckerJob(container = container, silent = silent, url = self.url)
         job.start()
