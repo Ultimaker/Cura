@@ -1298,6 +1298,17 @@
                     "default_value": true,
                     "limit_to_extruder": "top_bottom_extruder_nr",
                     "settable_per_mesh": true
+                },
+                "skin_outline_count":
+                {
+                    "label": "Extra Skin Wall Count",
+                    "description": "Replaces the outermost part of the top/bottom pattern with a number of concentric lines. Using one or two lines improves roofs that start on infill material.",
+                    "default_value": 1,
+                    "minimum_value": "0",
+                    "maximum_value_warning": "10",
+                    "type": "int",
+                    "limit_to_extruder": "top_bottom_extruder_nr",
+                    "settable_per_mesh": true
                 }
             }
         },
@@ -5152,17 +5163,6 @@
                     "enabled": "coasting_enable",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
-                },
-                "skin_outline_count":
-                {
-                    "label": "Extra Skin Wall Count",
-                    "description": "Replaces the outermost part of the top/bottom pattern with a number of concentric lines. Using one or two lines improves roofs that start on infill material.",
-                    "default_value": 1,
-                    "minimum_value": "0",
-                    "maximum_value_warning": "10",
-                    "type": "int",
-                    "limit_to_extruder": "top_bottom_extruder_nr",
-                    "settable_per_mesh": true
                 },
                 "skin_alternate_rotation":
                 {
