@@ -153,7 +153,7 @@ Column
                                        control.hovered ? UM.Theme.getColor("action_button_hovered_text") :
                                        UM.Theme.getColor("action_button_text")
 
-                                font: control.checked ? UM.Theme.getFont("default_bold") : UM.Theme.getFont("default")
+                                font: UM.Theme.getFont("large_nonbold")
                                 text: catalog.i18nc("@label", "Extruder")
                                 visible: width < (control.width - extruderIconItem.width - UM.Theme.getSize("default_margin").width)
                                 elide: Text.ElideRight
@@ -351,14 +351,12 @@ Column
             rightMargin: UM.Theme.getSize("sidebar_margin").width
         }
 
-        Item
-        {
+        Item {
             height: UM.Theme.getSize("sidebar_setup").height
             anchors.right: parent.right
             width: parent.width * 0.7 + UM.Theme.getSize("sidebar_margin").width
 
-            UM.RecolorImage
-            {
+            UM.RecolorImage {
                 id: warningImage
                 anchors.right: materialInfoLabel.left
                 anchors.rightMargin: UM.Theme.getSize("default_margin").width
@@ -366,40 +364,33 @@ Column
                 source: UM.Theme.getIcon("warning")
                 width: UM.Theme.getSize("section_icon").width
                 height: UM.Theme.getSize("section_icon").height
-                //sourceSize.width: width + 5
-                //sourceSize.height: width + 5
-
                 color: UM.Theme.getColor("material_compatibility_warning")
                 visible: !Cura.MachineManager.isCurrentSetupSupported
             }
 
-            Text
-            {
+            Text {
                 id: materialInfoLabel
                 wrapMode: Text.WordWrap
-                text: catalog.i18nc("@label", "Check material compatibility")
-                font: UM.Theme.getFont("default");
+                text: catalog.i18nc("@label", "<a href='%1'>Check material compatibility</a>")
+                font: UM.Theme.getFont("default")
+                color: UM.Theme.getColor("text")
+                linkColor: UM.Theme.getColor("text_link")
                 verticalAlignment: Text.AlignTop
                 anchors.top: parent.top
                 anchors.right: parent.right
                 anchors.bottom: parent.bottom
-                color: UM.Theme.getColor("text")
 
-                MouseArea
-                {
+                MouseArea {
                     anchors.fill: parent
                     hoverEnabled: true
-                    onClicked:
-                    {
+                    onClicked: {
                         // open the material URL with web browser
                         var version = UM.Application.version;
                         var machineName = Cura.MachineManager.activeMachine.definition.id;
-
                         var url = "https://ultimaker.com/materialcompatibility/" + version + "/" + machineName;
                         Qt.openUrlExternally(url);
                     }
-                    onEntered:
-                    {
+                    onEntered: {
                         var content = catalog.i18nc("@tooltip", "Click to check the material compatibility on Ultimaker.com.");
                         base.showTooltip(
                             materialInfoRow,

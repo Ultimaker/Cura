@@ -22,10 +22,13 @@ Item
     height: {
         if (UM.LayerView.compatibilityMode) {
             return UM.Theme.getSize("layerview_menu_size_compatibility").height;
+        } else if (UM.Preferences.getValue("layerview/layer_view_type") == 0) {
+            return UM.Theme.getSize("layerview_menu_size_material_color_mode").height + UM.LayerView.extruderCount * (UM.Theme.getSize("layerview_row").height + UM.Theme.getSize("layerview_row_spacing").height)
         } else {
             return UM.Theme.getSize("layerview_menu_size").height + UM.LayerView.extruderCount * (UM.Theme.getSize("layerview_row").height + UM.Theme.getSize("layerview_row_spacing").height)
         }
     }
+
     property var buttonTarget: {
         var force_binding = parent.y; // ensure this gets reevaluated when the panel moves
         return base.mapFromItem(parent.parent, parent.buttonTarget.x, parent.buttonTarget.y);
@@ -43,9 +46,7 @@ Item
         color: UM.Theme.getColor("tool_panel_background")
         borderWidth: UM.Theme.getSize("default_lining").width
         borderColor: UM.Theme.getColor("lining")
-
-        target: parent.buttonTarget
-        arrowSize: UM.Theme.getSize("default_arrow").width
+        arrowSize: 0 // hide arrow until weird issue with first time rendering is fixed
 
         ColumnLayout {
             id: view_settings
@@ -418,6 +419,7 @@ Item
                 color: parent.trackColor
                 border.width: parent.trackBorderWidth;
                 border.color: parent.trackBorderColor;
+                visible: slider.layersVisible
             }
 
             Item {

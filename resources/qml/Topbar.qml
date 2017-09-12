@@ -156,18 +156,6 @@ Rectangle
                 }
                 Behavior on color { ColorAnimation { duration: 50; } }
 
-                Rectangle
-                {
-                    id: underline;
-
-                    anchors.left: parent.left
-                    anchors.right: parent.right
-                    anchors.bottom: parent.bottom
-                    height: UM.Theme.getSize("sidebar_header_highlight").height
-                    color: UM.Theme.getColor("sidebar_header_highlight_hover")
-                    visible: control.hovered || control.pressed
-                }
-
                 UM.RecolorImage
                 {
                     id: downArrow

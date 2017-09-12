@@ -1234,7 +1234,7 @@
                         "random": "Random",
                         "sharpest_corner": "Sharpest Corner"
                     },
-                    "default_value": "shortest",
+                    "default_value": "sharpest_corner",
                     "limit_to_extruder": "wall_0_extruder_nr",
                     "settable_per_mesh": true
                 },
@@ -1296,6 +1296,17 @@
                     "description": "When the model has small vertical gaps, about 5% extra computation time can be spent on generating top and bottom skin in these narrow spaces. In such case, disable the setting.",
                     "type": "bool",
                     "default_value": true,
+                    "limit_to_extruder": "top_bottom_extruder_nr",
+                    "settable_per_mesh": true
+                },
+                "skin_outline_count":
+                {
+                    "label": "Extra Skin Wall Count",
+                    "description": "Replaces the outermost part of the top/bottom pattern with a number of concentric lines. Using one or two lines improves roofs that start on infill material.",
+                    "default_value": 1,
+                    "minimum_value": "0",
+                    "maximum_value_warning": "10",
+                    "type": "int",
                     "limit_to_extruder": "top_bottom_extruder_nr",
                     "settable_per_mesh": true
                 }
@@ -1539,6 +1550,7 @@
                     "unit": "mm",
                     "type": "float",
                     "default_value": 0,
+                    "value": "wall_line_width_0 + (wall_line_count - 1) * wall_line_width_x",
                     "minimum_value": "0",
                     "limit_to_extruder": "top_bottom_extruder_nr",
                     "settable_per_mesh": true,
@@ -1575,7 +1587,7 @@
                     "label": "Expand Skins Into Infill",
                     "description": "Expand skin areas of top and/or bottom skin of flat surfaces. By default, skins stop under the wall lines that surround infill but this can lead to holes appearing when the infill density is low. This setting extends the skins beyond the wall lines so that the infill on the next layer rests on skin.",
                     "type": "bool",
-                    "default_value": false,
+                    "default_value": true,
                     "limit_to_extruder": "top_bottom_extruder_nr",
                     "settable_per_mesh": true,
                     "children":
@@ -1609,7 +1621,7 @@
                     "unit": "mm",
                     "type": "float",
                     "default_value": 2.8,
-                    "value": "infill_line_distance * 1.4",
+                    "value": "wall_line_width_0 + (wall_line_count - 1) * wall_line_width_x",
                     "minimum_value": "0",
                     "enabled": "expand_upper_skins or expand_lower_skins",
                     "limit_to_extruder": "top_bottom_extruder_nr",
@@ -1623,9 +1635,8 @@
                     "type": "float",
                     "minimum_value": "0",
                     "minimum_value_warning": "2",
-                    "maximum_value_warning": "45",
                     "maximum_value": "90",
-                    "default_value": 20,
+                    "default_value": 90,
                     "enabled": "expand_upper_skins or expand_lower_skins",
                     "limit_to_extruder": "top_bottom_extruder_nr",
                     "settable_per_mesh": true,
@@ -5152,17 +5163,6 @@
                     "enabled": "coasting_enable",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
-                },
-                "skin_outline_count":
-                {
-                    "label": "Extra Skin Wall Count",
-                    "description": "Replaces the outermost part of the top/bottom pattern with a number of concentric lines. Using one or two lines improves roofs that start on infill material.",
-                    "default_value": 0,
-                    "minimum_value": "0",
-                    "maximum_value_warning": "10",
-                    "type": "int",
-                    "limit_to_extruder": "top_bottom_extruder_nr",
-                    "settable_per_mesh": true
                 },
                 "skin_alternate_rotation":
                 {

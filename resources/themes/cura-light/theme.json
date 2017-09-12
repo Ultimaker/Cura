@@ -1,6 +1,6 @@
 {
     "metadata": {
-        "name": "Light"
+        "name": "Ultimaker"
     },
 
     "fonts": {
@@ -166,7 +166,7 @@
 
         "setting_control": [255, 255, 255, 255],
         "setting_control_selected": [24, 41, 77, 255],
-        "setting_control_highlight": [255, 255, 255, 0],
+        "setting_control_highlight": [255, 255, 255, 255],
         "setting_control_border": [127, 127, 127, 255],
         "setting_control_border_highlight": [12, 169, 227, 255],
         "setting_control_text": [27, 27, 27, 255],
@@ -217,17 +217,18 @@
 
         "tool_button_border": [39, 44, 48, 255],
 
-        "message_background": [24, 41, 77, 255],
-        "message_text": [255, 255, 255, 255],
-        "message_border": [24, 41, 77, 255],
-        "message_button": [255, 255, 255, 255],
+        "message_background": [255, 255, 255, 255],
+        "message_shadow": [0, 0, 0, 120],
+        "message_border": [127, 127, 127, 255],
+        "message_text": [0, 0, 0, 255],
+        "message_button": [12, 169, 227, 255],
         "message_button_hover": [12, 169, 227, 255],
-        "message_button_active": [32, 166, 219, 255],
-        "message_button_text": [24, 41, 77, 255],
+        "message_button_active": [12, 169, 227, 255],
+        "message_button_text": [255, 255, 255, 255],
         "message_button_text_hover": [255, 255, 255, 255],
         "message_button_text_active": [255, 255, 255, 255],
-        "message_progressbar_background": [255, 255, 255, 255],
-        "message_progressbar_control": [12, 169, 227, 255],
+        "message_progressbar_background": [200, 200, 200, 255],
+        "message_progressbar_control": [77, 182, 226, 255],
 
         "tool_panel_background": [255, 255, 255, 255],
 
@@ -331,9 +332,9 @@
         "button_tooltip": [1.0, 1.3],
         "button_tooltip_arrow": [0.25, 0.25],
 
-        "progressbar": [26.0, 0.8],
-        "progressbar_radius": [0.4, 0.4],
-        "progressbar_control": [8.0, 0.8],
+        "progressbar": [26.0, 0.4],
+        "progressbar_radius": [0, 0],
+        "progressbar_control": [8.0, 0.4],
 
         "scrollbar": [0.75, 0.5],
 
@@ -344,6 +345,7 @@
         "slider_layerview_margin": [1.0, 1.0],
 
         "layerview_menu_size": [15, 19.5],
+        "layerview_menu_size_material_color_mode": [15, 15.5],
         "layerview_menu_size_compatibility": [22, 22.0],
         "layerview_legend_size": [1.0, 1.0],
         "layerview_row": [11.0, 1.5],
@@ -355,6 +357,7 @@
         "tooltip_margins": [1.0, 1.0],
         "tooltip_arrow_margins": [2.0, 2.0],
 
+
         "save_button_text_margin": [0.3, 0.6],
         "save_button_save_to_button": [0.3, 2.7],
         "save_button_specs_icons": [1.4, 1.4],
@@ -364,8 +367,10 @@
         "wizard_progress": [10.0, 0.0],
 
         "message": [30.0, 5.0],
-        "message_close": [1.25, 1.25],
+        "message_close": [1, 1],
         "message_button": [6.0, 1.8],
+        "message_shadow": [0, 0],
+        "message_margin": [0, 1.0],
 
         "infill_button_margin": [0.5, 0.5],
 

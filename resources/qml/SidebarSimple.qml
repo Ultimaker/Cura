@@ -331,41 +331,19 @@ Item
                 {
                     var current_extruder = extruderModel.get(currentIndex);
                     color_override = "";
-                    if (current_extruder === undefined) {
-                        return "";
-                    }
-                    var model_color = current_extruder.color;
-                    return (model_color) ? model_color : "";
+                    if (current_extruder === undefined) return ""
+                    return (current_extruder.color) ? current_extruder.color : "";
                 }
 
-                textRole: 'text'  // this solves that the combobox isn't populated in the first time Cura is started
+                textRole: "text"  // this solves that the combobox isn't populated in the first time Cura is started
 
                 anchors.top: enableSupportCheckBox.bottom
-                anchors.topMargin:
-                {
-                    if ((supportEnabled.properties.value == "True") && (machineExtruderCount.properties.value > 1))
-                    {
-                        return UM.Theme.getSize("sidebar_margin").height;
-                    }
-                    else
-                    {
-                        return 0;
-                    }
-                }
+                anchors.topMargin: ((supportEnabled.properties.value === "True") && (machineExtruderCount.properties.value > 1)) ? UM.Theme.getSize("sidebar_margin").height : 0
                 anchors.left: infillCellRight.left
+
                 width: UM.Theme.getSize("sidebar").width * .55
-                height:
-                {
-                    if ((supportEnabled.properties.value == "True") && (machineExtruderCount.properties.value > 1))
-                    {
-                        // default height when control is enabled
-                        return UM.Theme.getSize("setting_control").height;
-                    }
-                    else
-                    {
-                        return 0;
-                    }
-                }
+                height: ((supportEnabled.properties.value == "True") && (machineExtruderCount.properties.value > 1)) ? UM.Theme.getSize("setting_control").height : 0
+
                 Behavior on height { NumberAnimation { duration: 100 } }
 
                 style: UM.Theme.styles.combobox_color
