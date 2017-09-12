@@ -219,6 +219,7 @@
 
         "message_background": [255, 255, 255, 255],
         "message_shadow": [0, 0, 0, 120],
+        "message_border": [127, 127, 127, 255],
         "message_text": [0, 0, 0, 255],
         "message_button": [12, 169, 227, 255],
         "message_button_hover": [12, 169, 227, 255],
