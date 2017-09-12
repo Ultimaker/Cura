@@ -1182,6 +1182,7 @@ class CuraApplication(QtApplication):
         group_node = SceneNode()
         group_decorator = GroupDecorator()
         group_node.addDecorator(group_decorator)
+        group_node.addDecorator(ConvexHullDecorator())
         group_node.setParent(self.getController().getScene().getRoot())
         group_node.setSelectable(True)
         center = Selection.getSelectionCenter()
