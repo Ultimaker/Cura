@@ -153,7 +153,7 @@ Column
                                        control.hovered ? UM.Theme.getColor("action_button_hovered_text") :
                                        UM.Theme.getColor("action_button_text")
 
-                                font: control.checked ? UM.Theme.getFont("default_bold") : UM.Theme.getFont("default")
+                                font: UM.Theme.getFont("large_nonbold")
                                 text: catalog.i18nc("@label", "Extruder")
                                 visible: width < (control.width - extruderIconItem.width - UM.Theme.getSize("default_margin").width)
                                 elide: Text.ElideRight
