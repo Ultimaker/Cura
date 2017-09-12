@@ -418,6 +418,7 @@ Item
                 color: parent.trackColor
                 border.width: parent.trackBorderWidth;
                 border.color: parent.trackBorderColor;
+                visible: slider.layersVisible
             }
 
             Item {
