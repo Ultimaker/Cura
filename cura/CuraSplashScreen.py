@@ -15,10 +15,10 @@ from UM.Application import Application
 class CuraSplashScreen(QSplashScreen):
     def __init__(self):
         super().__init__()
-        self._scale = round(QFontMetrics(QCoreApplication.instance().font()).ascent() / 12)
+        self._scale = 0.7
 
         splash_image = QPixmap(Resources.getPath(Resources.Images, "cura.png"))
-        self.setPixmap(splash_image.scaled(splash_image.size() * 0.5 * self._scale))
+        self.setPixmap(splash_image)
 
         self._current_message = ""
 
@@ -56,7 +56,7 @@ class CuraSplashScreen(QSplashScreen):
         font = QFont()  # Using system-default font here
         font.setPointSize(38)
         painter.setFont(font)
-        painter.drawText(230, 88, 330 * self._scale, 230 * self._scale, Qt.AlignHCenter | Qt.AlignBottom, version[0])
+        painter.drawText(230, 90, 330 * self._scale, 230 * self._scale, Qt.AlignHCenter | Qt.AlignBottom, version[0])
         if len(version) > 1:
             font.setPointSize(12)
             painter.setFont(font)
@@ -67,14 +67,14 @@ class CuraSplashScreen(QSplashScreen):
         pen.setWidth(4 * self._scale)
         pen.setColor(QColor(255, 255, 255, 255))
         painter.setPen(pen)
-        painter.drawArc(130, 495, 32 * self._scale, 32 * self._scale, self._loading_image_rotation_angle * 16, 300 * 16)
+        painter.drawArc(130, 380, 32 * self._scale, 32 * self._scale, self._loading_image_rotation_angle * 16, 300 * 16)
 
         # draw message text
         if self._current_message:
             font = QFont()  # Using system-default font here
             font.setPointSize(16)
             painter.setFont(font)
-            painter.drawText(200, 295, 330 * self._scale, 230 * self._scale, Qt.AlignLeft | Qt.AlignBottom,
+            painter.drawText(180, 240, 330 * self._scale, 230 * self._scale, Qt.AlignLeft | Qt.AlignBottom,
                              self._current_message)
 
         painter.restore()
