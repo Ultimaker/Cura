@@ -3,8 +3,8 @@
         "name": "Ultimaker Dark",
         "inherits": "cura-light"
     },
-    "colors": {
 
+    "colors": {
         "sidebar": [39, 44, 48, 255],
         "lining": [64, 69, 72, 255],
         "viewport_overlay": [0, 6, 9, 222],
@@ -169,10 +169,9 @@
 
         "viewport_background": [31, 36, 39, 255],
         "volume_outline": [1, 168, 230, 255],
-        "buildplate": [252, 252, 252, 255],
-        "buildplate_alt": [204, 204, 204, 255],
+        "buildplate": [169, 169, 169, 255],
         "buildplate_grid": [129, 131, 134, 255],
-        "buildplate_grid_minor": [129, 131, 134, 31],
+        "buildplate_grid_minor": [154, 154, 155, 255],
 
         "convex_hull": [35, 35, 35, 127],
         "disallowed_area": [0, 0, 0, 52],
