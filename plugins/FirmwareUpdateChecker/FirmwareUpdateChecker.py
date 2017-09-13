@@ -1,6 +1,6 @@
-# Copyright (c) 2015 Ultimaker B.V.
+# Copyright (c) 2017 Ultimaker B.V.
 # Cura is released under the terms of the AGPLv3 or higher.
-from UM.Application import Application
+
 from UM.Extension import Extension
 from UM.Preferences import Preferences
 from UM.Logger import Logger
@@ -33,9 +33,9 @@ class FirmwareUpdateChecker(Extension):
             ContainerRegistry.getInstance().containerAdded.connect(self._onContainerAdded)
 
     def _onContainerAdded(self, container):
-        # Only take care when a new GlobaStack was added
-        if (isinstance(container, GlobalStack)):
-            Logger.log("i", "You have a '%s' in printer list. Let's check the firmware!" % container.getId())
+        # Only take care when a new GlobalStack was added
+        if isinstance(container, GlobalStack):
+            Logger.log("i", "You have a '%s' in printer list. Let's check the firmware!", container.getId())
             self.checkFirmwareVersion(container, True)
 
     ##  Connect with software.ultimaker.com, load latest.version and check version info.

@@ -1,4 +1,4 @@
-# Copyright (c) 2015 Ultimaker B.V.
+# Copyright (c) 2017 Ultimaker B.V.
 # Cura is released under the terms of the AGPLv3 or higher.
 
 from UM.Preferences import Preferences
@@ -49,12 +49,12 @@ class FirmwareUpdateCheckerJob(Job):
             # If it is not None, then we compare between the checked_version and the current_version
             # Now we just do that if the active printer is Ultimaker 3 or Ultimaker 3 Extended or any
             # other Ultimaker 3 that will come in the future
-            if (machine_name[0:11] == "Ultimaker 3"):
+            if machine_name[0:11] == "Ultimaker 3":
 
                 # Nothing to parse, just get the string
                 # TODO: In the future may be done by parsing a JSON file with diferent version for each printer model
                 current_version = reader(current_version_file).readline().rstrip()
-                Logger.log("i", "Reading firmware version of %s: %s" % (machine_name, current_version))
+                Logger.log("i", "Reading firmware version of %s: %s", machine_name, current_version)
 
                 # If it is the first time the version is checked, the checked_version is None
                 checked_version = Preferences.getInstance().getValue("info/latest_checked_firmware")
@@ -80,7 +80,7 @@ class FirmwareUpdateCheckerJob(Job):
                 Preferences.getInstance().setValue("info/latest_checked_firmware", current_version)
 
         except Exception as e:
-            Logger.log("w", "Failed to check for new version: %s" % e)
+            Logger.log("w", "Failed to check for new version: %s", e)
             if not self.silent:
                 Message(i18n_catalog.i18nc("@info", "Could not access update information.")).show()
             return
