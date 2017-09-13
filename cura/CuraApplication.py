@@ -1293,7 +1293,7 @@ class CuraApplication(QtApplication):
                 message = Message(
                     self._i18n_catalog.i18nc("@info:status",
                                        "Only one G-code file can be loaded at a time. Skipped importing {0}",
-                                       filename))
+                                       filename), title = self._i18n_catalog.i18nc("@info:title", "Warning"))
                 message.show()
                 return
             # If file being loaded is non-slicable file, then prevent loading of any other files
@@ -1302,7 +1302,7 @@ class CuraApplication(QtApplication):
                 message = Message(
                     self._i18n_catalog.i18nc("@info:status",
                                        "Can't open any other file if G-code is loading. Skipped importing {0}",
-                                       filename))
+                                       filename), title = self._i18n_catalog.i18nc("@info:title", "Error"))
                 message.show()
                 return
 

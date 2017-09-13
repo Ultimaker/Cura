@@ -150,7 +150,7 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
     def printGCode(self, gcode_list):
         Logger.log("d", "Started printing g-code")
         if self._progress or self._connection_state != ConnectionState.connected:
-            self._error_message = Message(catalog.i18nc("@info:status", "Unable to start a new job because the printer is busy or not connected."))
+            self._error_message = Message(catalog.i18nc("@info:status", "Unable to start a new job because the printer is busy or not connected."), title = catalog.i18nc("@info:title", "Print Details"))
             self._error_message.show()
             Logger.log("d", "Printer is busy or not connected, aborting print")
             self.writeError.emit(self)
@@ -453,11 +453,11 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
         container_stack = Application.getInstance().getGlobalContainerStack()
 
         if container_stack.getProperty("machine_gcode_flavor", "value") == "UltiGCode":
-            self._error_message = Message(catalog.i18nc("@info:status", "This printer does not support USB printing because it uses UltiGCode flavor."))
+            self._error_message = Message(catalog.i18nc("@info:status", "This printer does not support USB printing because it uses UltiGCode flavor."), title = catalog.i18nc("@info:title", "USB Printing"))
             self._error_message.show()
             return
         elif not container_stack.getMetaDataEntry("supports_usb_connection"):
-            self._error_message = Message(catalog.i18nc("@info:status", "Unable to start a new job because the printer does not support usb printing."))
+            self._error_message = Message(catalog.i18nc("@info:status", "Unable to start a new job because the printer does not support usb printing."), title = catalog.i18nc("@info:title", "Warning"))
             self._error_message.show()
             return
 

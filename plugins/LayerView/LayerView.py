@@ -90,7 +90,8 @@ class LayerView(View):
         self._only_show_top_layers = bool(Preferences.getInstance().getValue("view/only_show_top_layers"))
         self._compatibility_mode = True  # for safety
 
-        self._wireprint_warning_message = Message(catalog.i18nc("@info:status", "Cura does not accurately display layers when Wire Printing is enabled"))
+        self._wireprint_warning_message = Message(catalog.i18nc("@info:status", "Cura does not accurately display layers when Wire Printing is enabled"),
+                                                  title = catalog.i18nc("@info:title", "Layer View"))
 
     def _resetSettings(self):
         self._layer_view_type = 0  # 0 is material color, 1 is color by linetype, 2 is speed
