@@ -35,7 +35,7 @@ class XmlMaterialProfile(InstanceContainer):
     #   \return The corresponding setting_version.
     def xmlVersionToSettingVersion(self, xml_version: str) -> int:
         if xml_version == "1.3":
-            return 2
+            return 3
         return 0 #Older than 1.3.
 
     def getInheritedFiles(self):
