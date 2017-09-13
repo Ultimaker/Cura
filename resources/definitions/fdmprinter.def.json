@@ -1545,8 +1545,8 @@
                 },
                 "skin_preshrink":
                 {
-                    "label": "Skin Pre-Shrink Distance",
-                    "description": "The distance the skins are shrunk before considering them for skin expansion. Every skin area smaller than this value will disappear. This can help in limiting the amount of time and material spent on printing top/bottom skin at slanted surfaces in the model.",
+                    "label": "Skin Removal Width",
+                    "description": "The largest width of skin areas which are to be removed. Every skin area smaller than this value will disappear. This can help in limiting the amount of time and material spent on printing top/bottom skin at slanted surfaces in the model.",
                     "unit": "mm",
                     "type": "float",
                     "default_value": 0,
@@ -1558,8 +1558,8 @@
                     {
                         "top_skin_preshrink":
                         {
-                            "label": "Top Skin Pre-Shrink Distance",
-                            "description": "The distance the top skins are shrunk before considering them for skin expansion. Every skin area smaller than this value will disappear. This can help in limiting the amount of time and material spent on printing top skin at slanted surfaces in the model.",
+                            "label": "Top Skin Removal Width",
+                            "description": "The largest width of top skin areas which are to be removed. Every skin area smaller than this value will disappear. This can help in limiting the amount of time and material spent on printing top skin at slanted surfaces in the model.",
                             "unit": "mm",
                             "type": "float",
                             "default_value": 0,
@@ -1570,8 +1570,8 @@
                         },
                         "bottom_skin_preshrink":
                         {
-                            "label": "Bottom Skin Pre-Shrink Distance",
-                            "description": "The distance the bottom skins are shrunk before considering them for skin expansion. Every skin area smaller than this value will disappear. This can help in limiting the amount of time and material spent on printing bottom skin at slanted surfaces in the model.",
+                            "label": "Bottom Skin Removal Width",
+                            "description": "The largest width of bottom skin areas which are to be removed. Every skin area smaller than this value will disappear. This can help in limiting the amount of time and material spent on printing bottom skin at slanted surfaces in the model.",
                             "unit": "mm",
                             "type": "float",
                             "default_value": 0,
@@ -1582,50 +1582,44 @@
                         }
                     }
                 },
-                "expand_skins_into_infill":
-                {
-                    "label": "Expand Skins Into Infill",
-                    "description": "Expand skin areas of top and/or bottom skin of flat surfaces. By default, skins stop under the wall lines that surround infill but this can lead to holes appearing when the infill density is low. This setting extends the skins beyond the wall lines so that the infill on the next layer rests on skin.",
-                    "type": "bool",
-                    "default_value": true,
-                    "limit_to_extruder": "top_bottom_extruder_nr",
-                    "settable_per_mesh": true,
-                    "children":
-                    {
-                        "expand_upper_skins":
-                        {
-                            "label": "Expand Top Skins Into Infill",
-                            "description": "Expand the top skin areas (areas with air above) so that they support infill above.",
-                            "type": "bool",
-                            "default_value": false,
-                            "value": "expand_skins_into_infill",
-                            "limit_to_extruder": "top_bottom_extruder_nr",
-                            "settable_per_mesh": true
-                        },
-                        "expand_lower_skins":
-                        {
-                            "label": "Expand Bottom Skins Into Infill",
-                            "description": "Expand the bottom skin areas (areas with air below) so that they are anchored by the infill layers above and below.",
-                            "type": "bool",
-                            "default_value": false,
-                            "limit_to_extruder": "top_bottom_extruder_nr",
-                            "value": "expand_skins_into_infill",
-                            "settable_per_mesh": true
-                        }
-                    }
-                },
                 "expand_skins_expand_distance":
                 {
                     "label": "Skin Expand Distance",
-                    "description": "The distance the skins are expanded into the infill. The default distance is enough to bridge the gap between the infill lines and will stop holes appearing in the skin where it meets the wall when the infill density is low. A smaller distance will often be sufficient.",
+                    "description": "The distance the skins are expanded into the infill. Higher values makes the skin attach better to the infill pattern and makes the walls on neighboring layers adhere better to the skin. Lower values save amount of material used.",
                     "unit": "mm",
                     "type": "float",
                     "default_value": 2.8,
                     "value": "wall_line_width_0 + (wall_line_count - 1) * wall_line_width_x",
-                    "minimum_value": "0",
-                    "enabled": "expand_upper_skins or expand_lower_skins",
+                    "minimum_value": "-skin_preshrink",
                     "limit_to_extruder": "top_bottom_extruder_nr",
-                    "settable_per_mesh": true
+                    "settable_per_mesh": true,
+                    "children":
+                    {
+                        "top_skin_expand_distance":
+                        {
+                            "label": "Top Skin Expand Distance",
+                            "description": "The distance the top skins are expanded into the infill. Higher values makes the skin attach better to the infill pattern and makes the walls on the layer above adhere better to the skin. Lower values save amount of material used.",
+                            "unit": "mm",
+                            "type": "float",
+                            "default_value": 2.8,
+                            "value": "expand_skins_expand_distance",
+                            "minimum_value": "-top_skin_preshrink",
+                            "limit_to_extruder": "top_bottom_extruder_nr",
+                            "settable_per_mesh": true
+                        },
+                        "bottom_skin_expand_distance":
+                        {
+                            "label": "Bottom Skin Expand Distance",
+                            "description": "The distance the bottom skins are expanded into the infill. Higher values makes the skin attach better to the infill pattern and makes the skin adhere better to the walls on the layer below. Lower values save amount of material used.",
+                            "unit": "mm",
+                            "type": "float",
+                            "default_value": 2.8,
+                            "value": "expand_skins_expand_distance",
+                            "minimum_value": "-bottom_skin_preshrink",
+                            "limit_to_extruder": "top_bottom_extruder_nr",
+                            "settable_per_mesh": true
+                        }
+                    }
                 },
                 "max_skin_angle_for_expansion":
                 {
@@ -1637,7 +1631,7 @@
                     "minimum_value_warning": "2",
                     "maximum_value": "90",
                     "default_value": 90,
-                    "enabled": "expand_upper_skins or expand_lower_skins",
+                    "enabled": "top_skin_expand_distance > 0 or bottom_skin_expand_distance > 0",
                     "limit_to_extruder": "top_bottom_extruder_nr",
                     "settable_per_mesh": true,
                     "children":
@@ -1651,7 +1645,7 @@
                             "default_value": 2.24,
                             "value": "top_layers * layer_height / math.tan(math.radians(max_skin_angle_for_expansion))",
                             "minimum_value": "0",
-                            "enabled": "expand_upper_skins or expand_lower_skins",
+                            "enabled": "top_skin_expand_distance > 0 or bottom_skin_expand_distance > 0",
                             "limit_to_extruder": "top_bottom_extruder_nr",
                             "settable_per_mesh": true
                         }
