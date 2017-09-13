@@ -15,6 +15,9 @@
         "border": [127, 127, 127, 255],
         "secondary": [241, 242, 242, 255],
 
+        "topbar_background_color": [0, 0, 0, 0],
+        "topbar_background_color_monitoring": [0, 0, 0, 255],
+
         "text": [255, 255, 255, 204],
         "text_detail": [255, 255, 255, 172],
         "text_link": [255, 255, 255, 127],
@@ -96,15 +99,15 @@
         "setting_category_active_hover_text": [255, 255, 255, 204],
         "setting_category_border": [39, 44, 48, 0],
         "setting_category_disabled_border": [39, 44, 48, 0],
-        "setting_category_hover_border": [39, 44, 48, 0],
+        "setting_category_hover_border": [12, 169, 227, 255],
         "setting_category_active_border": [39, 44, 48, 0],
-        "setting_category_active_hover_border": [39, 44, 48, 0],
+        "setting_category_active_hover_border": [12, 169, 227, 255],
 
         "setting_control": [43, 48, 52, 255],
         "setting_control_selected": [34, 39, 42, 38],
         "setting_control_highlight": [255, 255, 255, 0],
         "setting_control_border": [255, 255, 255, 38],
-        "setting_control_border_highlight": [255, 255, 255, 38],
+        "setting_control_border_highlight": [12, 169, 227, 255],
         "setting_control_text": [255, 255, 255, 181],
         "setting_control_button": [255, 255, 255, 127],
         "setting_control_button_hover": [255, 255, 255, 204],
