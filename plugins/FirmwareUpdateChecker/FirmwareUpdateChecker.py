@@ -26,8 +26,11 @@ class FirmwareUpdateChecker(Extension):
         # checked for the UM3. In the future if we need to check other printers' firmware
         Preferences.getInstance().addPreference("info/latest_checked_firmware", "")
 
-        # Listen to a Signal that indicates a change in the active printer
-        ContainerRegistry.getInstance().containerAdded.connect(self._onContainerAdded)
+        # Listen to a Signal that indicates a change in the list of printers, just if the user has enabled the
+        # 'check for updates' option
+        Preferences.getInstance().addPreference("info/automatic_update_check", True)
+        if Preferences.getInstance().getValue("info/automatic_update_check"):
+            ContainerRegistry.getInstance().containerAdded.connect(self._onContainerAdded)
 
     def _onContainerAdded(self, container):
         # Only take care when a new GlobaStack was added
