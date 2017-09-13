@@ -107,7 +107,7 @@ QtObject {
                     anchors.bottom: parent.bottom
                     width: parent.width
                     height: Theme.getSize("sidebar_header_highlight").height
-                    color: control.checked ? UM.Theme.getColor("sidebar_header_highlight") : "transparent"
+                    color: control.checked ? UM.Theme.getColor("sidebar_header_highlight") : UM.Theme.getColor("sidebar_header_highlight_hover")
                     visible: control.hovered || control.checked
                 }
             }
@@ -385,7 +385,6 @@ QtObject {
             background: Rectangle {
                 implicitWidth: Theme.getSize("message").width - (Theme.getSize("default_margin").width * 2)
                 implicitHeight: Theme.getSize("progressbar").height
-                radius: Theme.getSize("progressbar_radius").width
                 color: control.hasOwnProperty("backgroundColor") ? control.backgroundColor : Theme.getColor("progressbar_background")
             }
             progress: Rectangle {
@@ -611,17 +610,20 @@ QtObject {
 
     property Component combobox: Component {
         ComboBoxStyle {
+
             background: Rectangle {
                 implicitHeight: Theme.getSize("setting_control").height;
                 implicitWidth: Theme.getSize("setting_control").width;
 
-                color: (control.hovered || control._hovered) ? Theme.getColor("setting_control_highlight") : Theme.getColor("setting_control");
+                color: control.hovered ? UM.Theme.getColor("setting_control_highlight") : UM.Theme.getColor("setting_control")
                 Behavior on color { ColorAnimation { duration: 50; } }
 
                 border.width: Theme.getSize("default_lining").width;
-                border.color: (control.hovered || control._hovered) ? Theme.getColor("setting_control_border_highlight") : Theme.getColor("setting_control_border");
+                border.color: control.hovered ? Theme.getColor("setting_control_border_highlight") : Theme.getColor("setting_control_border");
             }
+
             label: Item {
+
                 Label {
                     anchors.left: parent.left;
                     anchors.leftMargin: Theme.getSize("default_lining").width
@@ -657,32 +659,18 @@ QtObject {
 
     // Combobox with items with colored rectangles
     property Component combobox_color: Component {
-        ComboBoxStyle
-        {
-            background: Rectangle
-            {
-                color:
-                {
-                    if(!enabled)
-                    {
-                        return UM.Theme.getColor("setting_control_disabled");
-                    }
-                    if(control.hovered)
-                    {
-                        return UM.Theme.getColor("setting_control_highlight");
-                    }
-                    else
-                    {
-                        return UM.Theme.getColor("setting_control");
-                    }
-                }
+
+        ComboBoxStyle {
+
+            background: Rectangle {
+                color: !enabled ? UM.Theme.getColor("setting_control_disabled") : control._hovered ? UM.Theme.getColor("setting_control_highlight") : UM.Theme.getColor("setting_control")
                 border.width: UM.Theme.getSize("default_lining").width
-                border.color: !enabled ? UM.Theme.getColor("setting_control_disabled_border") : control.hovered ? UM.Theme.getColor("setting_control_border_highlight") : UM.Theme.getColor("setting_control_border")
+                border.color: !enabled ? UM.Theme.getColor("setting_control_disabled_border") : control._hovered ? UM.Theme.getColor("setting_control_border_highlight") : UM.Theme.getColor("setting_control_border")
             }
-            label: Item
-            {
-                Label
-                {
+
+            label: Item {
+
+                Label {
                     anchors.left: parent.left
                     anchors.leftMargin: UM.Theme.getSize("default_lining").width
                     anchors.right: swatch.left
@@ -696,27 +684,21 @@ QtObject {
                     elide: Text.ElideRight
                     verticalAlignment: Text.AlignVCenter
                 }
-                Rectangle
-                {
+
+                Rectangle {
                     id: swatch
                     height: UM.Theme.getSize("setting_control").height / 2
                     width: height
-
-                    anchors
-                    {
-                        right: downArrow.left;
-                        verticalCenter: parent.verticalCenter
-                        margins: UM.Theme.getSize("default_margin").width / 4
-                    }
-
-                    border.width: UM.Theme.getSize("default_lining").width * 2
-                    border.color: enabled ? UM.Theme.getColor("setting_control_border") : UM.Theme.getColor("setting_control_disabled_border")
+                    anchors.right: downArrow.left
+                    anchors.verticalCenter: parent.verticalCenter
+                    anchors.margins: UM.Theme.getSize("default_margin").width / 4
                     radius: width / 2
-
-                    color: if (control.color_override != "") {return control.color_override} else {return control.color;}
+                    border.width: UM.Theme.getSize("default_lining").width
+                    border.color: UM.Theme.getColor("lining")
+                    color: (control.color_override !== "") ? control.color_override : control.color
                 }
-                UM.RecolorImage
-                {
+
+                UM.RecolorImage {
                     id: downArrow
                     anchors.right: parent.right
                     anchors.rightMargin: UM.Theme.getSize("default_lining").width * 2

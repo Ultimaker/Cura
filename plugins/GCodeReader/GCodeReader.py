@@ -251,7 +251,10 @@ class GCodeReader(MeshReader):
 
             self._clearValues()
 
-            self._message = Message(catalog.i18nc("@info:status", "Parsing G-code"), lifetime=0)
+            self._message = Message(catalog.i18nc("@info:status", "Parsing G-code"),
+                                    lifetime=0,
+                                    title = catalog.i18nc("@info:title", "G-code Details"))
+
             self._message.setProgress(0)
             self._message.show()
 
@@ -362,7 +365,9 @@ class GCodeReader(MeshReader):
         if Preferences.getInstance().getValue("gcodereader/show_caution"):
             caution_message = Message(catalog.i18nc(
                 "@info:generic",
-                "Make sure the g-code is suitable for your printer and printer configuration before sending the file to it. The g-code representation may not be accurate."), lifetime=0)
+                "Make sure the g-code is suitable for your printer and printer configuration before sending the file to it. The g-code representation may not be accurate."),
+                lifetime=0,
+                title = catalog.i18nc("@info:title", "G-code Details"))
             caution_message.show()
 
         # The "save/print" button's state is bound to the backend state.

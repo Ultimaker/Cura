@@ -161,7 +161,8 @@ class PluginBrowser(QObject, Extension):
 
             if plugin_id is None:
                 msg = i18n_catalog.i18nc("@info:status", "Failed to get plugin ID from <filename>{0}</filename>", file_path)
-                self._progress_message = Message(msg, lifetime=0, dismissable=False)
+                msg_title = i18n_catalog.i18nc("@info:tile", "Warning")
+                self._progress_message = Message(msg, lifetime=0, dismissable=False, title = msg_title)
                 return
 
             # find a potential license file

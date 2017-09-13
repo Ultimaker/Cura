@@ -261,6 +261,7 @@ Item
             Text
             {
                 id: enableSupportLabel
+                visible: enableSupportCheckBox.visible
                 anchors.left: parent.left
                 anchors.leftMargin: UM.Theme.getSize("sidebar_margin").width
                 anchors.verticalCenter: enableSupportCheckBox.verticalCenter
@@ -281,6 +282,7 @@ Item
                 style: UM.Theme.styles.checkbox;
                 enabled: base.settingsEnabled
 
+                visible: supportEnabled.properties.enabled == "True"
                 checked: supportEnabled.properties.value == "True";
 
                 MouseArea
@@ -309,7 +311,7 @@ Item
             Text
             {
                 id: supportExtruderLabel
-                visible: (supportEnabled.properties.value == "True") && (machineExtruderCount.properties.value > 1)
+                visible: supportExtruderCombobox.visible
                 anchors.left: parent.left
                 anchors.leftMargin: UM.Theme.getSize("sidebar_margin").width
                 anchors.verticalCenter: supportExtruderCombobox.verticalCenter
@@ -321,7 +323,7 @@ Item
             ComboBox
             {
                 id: supportExtruderCombobox
-                visible: (supportEnabled.properties.value == "True") && (machineExtruderCount.properties.value > 1)
+                visible: enableSupportCheckBox.visible && (supportEnabled.properties.value == "True") && (machineExtruderCount.properties.value > 1)
                 model: extruderModel
 
                 property string color_override: ""  // for manually setting values
@@ -329,41 +331,19 @@ Item
                 {
                     var current_extruder = extruderModel.get(currentIndex);
                     color_override = "";
-                    if (current_extruder === undefined) {
-                        return "";
-                    }
-                    var model_color = current_extruder.color;
-                    return (model_color) ? model_color : "";
+                    if (current_extruder === undefined) return ""
+                    return (current_extruder.color) ? current_extruder.color : "";
                 }
 
-                textRole: 'text'  // this solves that the combobox isn't populated in the first time Cura is started
+                textRole: "text"  // this solves that the combobox isn't populated in the first time Cura is started
 
                 anchors.top: enableSupportCheckBox.bottom
-                anchors.topMargin:
-                {
-                    if ((supportEnabled.properties.value == "True") && (machineExtruderCount.properties.value > 1))
-                    {
-                        return UM.Theme.getSize("sidebar_margin").height;
-                    }
-                    else
-                    {
-                        return 0;
-                    }
-                }
+                anchors.topMargin: ((supportEnabled.properties.value === "True") && (machineExtruderCount.properties.value > 1)) ? UM.Theme.getSize("sidebar_margin").height : 0
                 anchors.left: infillCellRight.left
+
                 width: UM.Theme.getSize("sidebar").width * .55
-                height:
-                {
-                    if ((supportEnabled.properties.value == "True") && (machineExtruderCount.properties.value > 1))
-                    {
-                        // default height when control is enabled
-                        return UM.Theme.getSize("setting_control").height;
-                    }
-                    else
-                    {
-                        return 0;
-                    }
-                }
+                height: ((supportEnabled.properties.value == "True") && (machineExtruderCount.properties.value > 1)) ? UM.Theme.getSize("setting_control").height : 0
+
                 Behavior on height { NumberAnimation { duration: 100 } }
 
                 style: UM.Theme.styles.combobox_color
@@ -407,6 +387,7 @@ Item
             Text
             {
                 id: adhesionHelperLabel
+                visible: adhesionCheckBox.visible
                 anchors.left: parent.left
                 anchors.leftMargin: UM.Theme.getSize("sidebar_margin").width
                 anchors.verticalCenter: adhesionCheckBox.verticalCenter
@@ -421,7 +402,7 @@ Item
                 id: adhesionCheckBox
                 property alias _hovered: adhesionMouseArea.containsMouse
 
-                anchors.top: supportExtruderCombobox.bottom
+                anchors.top: enableSupportCheckBox.visible ? supportExtruderCombobox.bottom : infillCellRight.bottom
                 anchors.topMargin: UM.Theme.getSize("sidebar_margin").height
                 anchors.left: infillCellRight.left
 
@@ -429,6 +410,7 @@ Item
                 style: UM.Theme.styles.checkbox;
                 enabled: base.settingsEnabled
 
+                visible: platformAdhesionType.properties.enabled == "True"
                 checked: platformAdhesionType.properties.value != "skirt" && platformAdhesionType.properties.value != "none"
 
                 MouseArea
@@ -445,7 +427,7 @@ Item
                             // Remove the "user" setting to see if the rest of the stack prescribes a brim or a raft
                             platformAdhesionType.removeFromContainer(0);
                             adhesionType = platformAdhesionType.properties.value;
-                            if(adhesionType == "skirt")
+                            if(adhesionType == "skirt" || adhesionType == "none")
                             {
                                 // If the rest of the stack doesn't prescribe an adhesion-type, default to a brim
                                 adhesionType = "brim";
@@ -481,7 +463,7 @@ Item
             Item
             {
                 id: tipsCell
-                anchors.top: adhesionCheckBox.bottom
+                anchors.top: adhesionCheckBox.visible ? adhesionCheckBox.bottom : (enableSupportCheckBox.visible ? supportExtruderCombobox.bottom : infillCellRight.bottom)
                 anchors.topMargin: UM.Theme.getSize("sidebar_margin").height * 2
                 anchors.left: parent.left
                 width: parent.width
@@ -566,7 +548,7 @@ Item
 
                 containerStackId: Cura.MachineManager.activeMachineId
                 key: "adhesion_type"
-                watchedProperties: [ "value" ]
+                watchedProperties: [ "value", "enabled" ]
                 storeIndex: 0
             }
 
@@ -576,7 +558,7 @@ Item
 
                 containerStackId: Cura.MachineManager.activeMachineId
                 key: "support_enable"
-                watchedProperties: [ "value", "description" ]
+                watchedProperties: [ "value", "enabled", "description" ]
                 storeIndex: 0
             }
 

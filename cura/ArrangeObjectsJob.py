@@ -27,7 +27,11 @@ class ArrangeObjectsJob(Job):
         self._min_offset = min_offset
 
     def run(self):
-        status_message = Message(i18n_catalog.i18nc("@info:status", "Finding new location for objects"), lifetime = 0, dismissable=False, progress = 0)
+        status_message = Message(i18n_catalog.i18nc("@info:status", "Finding new location for objects"),
+                                 lifetime = 0,
+                                 dismissable=False,
+                                 progress = 0,
+                                 title = i18n_catalog.i18nc("@info:title", "Finding Location"))
         status_message.show()
         arranger = Arrange.create(fixed_nodes = self._fixed_nodes)
 
@@ -82,5 +86,6 @@ class ArrangeObjectsJob(Job):
         status_message.hide()
 
         if not found_solution_for_all:
-            no_full_solution_message = Message(i18n_catalog.i18nc("@info:status", "Unable to find a location within the build volume for all objects"))
+            no_full_solution_message = Message(i18n_catalog.i18nc("@info:status", "Unable to find a location within the build volume for all objects"),
+                                               title = i18n_catalog.i18nc("@info:title", "Can't Find Location"))
             no_full_solution_message.show()

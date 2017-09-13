@@ -154,12 +154,12 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         self._authentication_id = None
         self._authentication_key = None
 
-        self._authentication_requested_message = Message(i18n_catalog.i18nc("@info:status", "Access to the printer requested. Please approve the request on the printer"), lifetime = 0, dismissable = False, progress = 0)
-        self._authentication_failed_message = Message(i18n_catalog.i18nc("@info:status", ""))
+        self._authentication_requested_message = Message(i18n_catalog.i18nc("@info:status", "Access to the printer requested. Please approve the request on the printer"), lifetime = 0, dismissable = False, progress = 0, title = i18n_catalog.i18nc("@info:title", "Connection status"))
+        self._authentication_failed_message = Message(i18n_catalog.i18nc("@info:status", ""), title = i18n_catalog.i18nc("@info:title", "Connection Status"))
         self._authentication_failed_message.addAction("Retry", i18n_catalog.i18nc("@action:button", "Retry"), None, i18n_catalog.i18nc("@info:tooltip", "Re-send the access request"))
         self._authentication_failed_message.actionTriggered.connect(self.requestAuthentication)
-        self._authentication_succeeded_message = Message(i18n_catalog.i18nc("@info:status", "Access to the printer accepted"))
-        self._not_authenticated_message = Message(i18n_catalog.i18nc("@info:status", "No access to print with this printer. Unable to send print job."))
+        self._authentication_succeeded_message = Message(i18n_catalog.i18nc("@info:status", "Access to the printer accepted"), title = i18n_catalog.i18nc("@info:title", "Connection Status"))
+        self._not_authenticated_message = Message(i18n_catalog.i18nc("@info:status", "No access to print with this printer. Unable to send print job."), title = i18n_catalog.i18nc("@info:title", "Connection Status"))
         self._not_authenticated_message.addAction("Request", i18n_catalog.i18nc("@action:button", "Request Access"), None, i18n_catalog.i18nc("@info:tooltip", "Send access request to the printer"))
         self._not_authenticated_message.actionTriggered.connect(self.requestAuthentication)
 
@@ -464,7 +464,8 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
                 self._connection_state_before_timeout = self._connection_state
                 self.setConnectionState(ConnectionState.error)
                 self._connection_message = Message(i18n_catalog.i18nc("@info:status",
-                                                                      "The connection with the network was lost."))
+                                                                      "The connection with the network was lost."),
+                                                   title = i18n_catalog.i18nc("@info:title", "Connection Status"))
                 self._connection_message.show()
 
                 if self._progress_message:
@@ -495,7 +496,8 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
                 # Go into timeout state.
                 Logger.log("d", "We did not receive a response for %0.1f seconds, so it seems the printer is no longer accessible.", time_since_last_response)
                 self._connection_state_before_timeout = self._connection_state
-                self._connection_message = Message(i18n_catalog.i18nc("@info:status", "The connection with the printer was lost. Check your printer to see if it is connected."))
+                self._connection_message = Message(i18n_catalog.i18nc("@info:status", "The connection with the printer was lost. Check your printer to see if it is connected."),
+                                                   title = i18n_catalog.i18nc("@info:title", "Connection Status"))
                 self._connection_message.show()
 
                 if self._progress_message:
@@ -644,7 +646,8 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
     def requestWrite(self, nodes, file_name = None, filter_by_machine = False, file_handler = None, **kwargs):
         if self._printer_state not in ["idle", ""]:
             self._error_message = Message(
-                i18n_catalog.i18nc("@info:status", "Unable to start a new print job, printer is busy. Current printer status is %s.") % self._printer_state)
+                i18n_catalog.i18nc("@info:status", "Unable to start a new print job, printer is busy. Current printer status is %s.") % self._printer_state,
+                title = i18n_catalog.i18nc("@info:title", "Printer Status"))
             self._error_message.show()
             return
         elif self._authentication_state != AuthState.Authenticated:
@@ -668,14 +671,16 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
                     if self._json_printer_state["heads"][0]["extruders"][index]["hotend"]["id"] == "":
                         Logger.log("e", "No cartridge loaded in slot %s, unable to start print", index + 1)
                         self._error_message = Message(
-                            i18n_catalog.i18nc("@info:status", "Unable to start a new print job. No Printcore loaded in slot {0}".format(index + 1)))
+                            i18n_catalog.i18nc("@info:status", "Unable to start a new print job. No Printcore loaded in slot {0}".format(index + 1)),
+                            title = i18n_catalog.i18nc("@info:title", "Error"))
                         self._error_message.show()
                         return
                     if self._json_printer_state["heads"][0]["extruders"][index]["active_material"]["guid"] == "":
                         Logger.log("e", "No material loaded in slot %s, unable to start print", index + 1)
                         self._error_message = Message(
                             i18n_catalog.i18nc("@info:status",
-                                               "Unable to start a new print job. No material loaded in slot {0}".format(index + 1)))
+                                               "Unable to start a new print job. No material loaded in slot {0}".format(index + 1)),
+                            title = i18n_catalog.i18nc("@info:title", "Error"))
                         self._error_message.show()
                         return
 
@@ -831,7 +836,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
     def startPrint(self):
         try:
             self._send_gcode_start = time()
-            self._progress_message = Message(i18n_catalog.i18nc("@info:status", "Sending data to printer"), 0, False, -1)
+            self._progress_message = Message(i18n_catalog.i18nc("@info:status", "Sending data to printer"), 0, False, -1, i18n_catalog.i18nc("@info:title", "Sending Data"))
             self._progress_message.addAction("Abort", i18n_catalog.i18nc("@action:button", "Cancel"), None, "")
             self._progress_message.actionTriggered.connect(self._progressMessageActionTrigger)
             self._progress_message.show()
@@ -900,7 +905,8 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
 
         except IOError:
             self._progress_message.hide()
-            self._error_message = Message(i18n_catalog.i18nc("@info:status", "Unable to send data to printer. Is another job still active?"))
+            self._error_message = Message(i18n_catalog.i18nc("@info:status", "Unable to send data to printer. Is another job still active?"),
+                                          title = i18n_catalog.i18nc("@info:title", "Warning"))
             self._error_message.show()
         except Exception as e:
             self._progress_message.hide()

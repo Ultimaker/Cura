@@ -140,15 +140,20 @@ class CuraContainerRegistry(ContainerRegistry):
             success = profile_writer.write(file_name, found_containers)
         except Exception as e:
             Logger.log("e", "Failed to export profile to %s: %s", file_name, str(e))
-            m = Message(catalog.i18nc("@info:status Don't translate the XML tags <filename> or <message>!", "Failed to export profile to <filename>{0}</filename>: <message>{1}</message>", file_name, str(e)), lifetime = 0)
+            m = Message(catalog.i18nc("@info:status Don't translate the XML tags <filename> or <message>!", "Failed to export profile to <filename>{0}</filename>: <message>{1}</message>", file_name, str(e)),
+                        lifetime = 0,
+                        title = catalog.i18nc("@info:title", "Error"))
             m.show()
             return
         if not success:
             Logger.log("w", "Failed to export profile to %s: Writer plugin reported failure.", file_name)
-            m = Message(catalog.i18nc("@info:status Don't translate the XML tag <filename>!", "Failed to export profile to <filename>{0}</filename>: Writer plugin reported failure.", file_name), lifetime = 0)
+            m = Message(catalog.i18nc("@info:status Don't translate the XML tag <filename>!", "Failed to export profile to <filename>{0}</filename>: Writer plugin reported failure.", file_name),
+                        lifetime = 0,
+                        title = catalog.i18nc("@info:title", "Error"))
             m.show()
             return
-        m = Message(catalog.i18nc("@info:status Don't translate the XML tag <filename>!", "Exported profile to <filename>{0}</filename>", file_name))
+        m = Message(catalog.i18nc("@info:status Don't translate the XML tag <filename>!", "Exported profile to <filename>{0}</filename>", file_name),
+                    title = catalog.i18nc("@info:title", "Export Details"))
         m.show()
 
     ##  Gets the plugin object matching the criteria

@@ -22,18 +22,23 @@ Item
     height: {
         if (UM.LayerView.compatibilityMode) {
             return UM.Theme.getSize("layerview_menu_size_compatibility").height;
+        } else if (UM.Preferences.getValue("layerview/layer_view_type") == 0) {
+            return UM.Theme.getSize("layerview_menu_size_material_color_mode").height + UM.LayerView.extruderCount * (UM.Theme.getSize("layerview_row").height + UM.Theme.getSize("layerview_row_spacing").height)
         } else {
             return UM.Theme.getSize("layerview_menu_size").height + UM.LayerView.extruderCount * (UM.Theme.getSize("layerview_row").height + UM.Theme.getSize("layerview_row_spacing").height)
         }
     }
+
     property var buttonTarget: {
         var force_binding = parent.y; // ensure this gets reevaluated when the panel moves
         return base.mapFromItem(parent.parent, parent.buttonTarget.x, parent.buttonTarget.y);
     }
 
+    visible: !parent.parent.monitoringPrint
+
     UM.PointingRectangle {
         id: layerViewMenu
-        anchors.left: parent.left
+        anchors.right: parent.right
         anchors.top: parent.top
         width: parent.width
         height: parent.height
@@ -41,9 +46,7 @@ Item
         color: UM.Theme.getColor("tool_panel_background")
         borderWidth: UM.Theme.getSize("default_lining").width
         borderColor: UM.Theme.getColor("lining")
-
-        target: parent.buttonTarget
-        arrowSize: UM.Theme.getSize("default_arrow").width
+        arrowSize: 0 // hide arrow until weird issue with first time rendering is fixed
 
         ColumnLayout {
             id: view_settings
@@ -64,26 +67,7 @@ Item
             anchors.leftMargin: UM.Theme.getSize("default_margin").width
             spacing: UM.Theme.getSize("layerview_row_spacing").height
             anchors.right: parent.right
-            anchors.rightMargin: UM.Theme.getSize("default_margin").width * 2
-
-            Label
-            {
-                id: layersLabel
-                anchors.left: parent.left
-                text: catalog.i18nc("@label","View Mode: Layers")
-                font: UM.Theme.getFont("default_bold");
-                color: UM.Theme.getColor("setting_control_text")
-                Layout.fillWidth: true
-                elide: Text.ElideMiddle;
-            }
-
-            Label
-            {
-                id: spaceLabel
-                anchors.left: parent.left
-                text: " "
-                font.pointSize: 0.5
-            }
+            anchors.rightMargin: UM.Theme.getSize("default_margin").width
 
             Label
             {
@@ -199,6 +183,7 @@ Item
                         width: UM.Theme.getSize("layerview_legend_size").width
                         height: UM.Theme.getSize("layerview_legend_size").height
                         color: model.color
+                        radius: width / 2
                         border.width: UM.Theme.getSize("default_lining").width
                         border.color: UM.Theme.getColor("lining")
                         visible: !view_settings.show_legend
@@ -211,7 +196,7 @@ Item
                     {
                         text: model.name
                         elide: Text.ElideRight
-                        color: UM.Theme.getColor("button_text")
+                        color: UM.Theme.getColor("setting_control_text")
                         font: UM.Theme.getFont("default")
                         anchors.verticalCenter: parent.verticalCenter
                         anchors.left: extrudersModelCheckBox.left;
@@ -280,7 +265,7 @@ Item
                         text: label
                         font: UM.Theme.getFont("default")
                         elide: Text.ElideRight
-                        color: UM.Theme.getColor("button_text")
+                        color: UM.Theme.getColor("setting_control_text")
                         anchors.verticalCenter: parent.verticalCenter
                         anchors.left: legendModelCheckBox.left;
                         anchors.right: legendModelCheckBox.right;
@@ -343,7 +328,7 @@ Item
                     Layout.fillWidth: true
                     Layout.preferredHeight: UM.Theme.getSize("layerview_row").height + UM.Theme.getSize("default_lining").height
                     Layout.preferredWidth: UM.Theme.getSize("layerview_row").width
-                    color: UM.Theme.getColor("button_text")
+                    color: UM.Theme.getColor("setting_control_text")
                     font: UM.Theme.getFont("default")
                 }
             }
@@ -354,7 +339,7 @@ Item
             id: slider
             width: handleSize
             height: parent.height - 2*UM.Theme.getSize("slider_layerview_margin").height
-            anchors.top: parent.top
+            anchors.top: parent.bottom
             anchors.topMargin: UM.Theme.getSize("slider_layerview_margin").height
             anchors.right: layerViewMenu.right
             anchors.rightMargin: UM.Theme.getSize("slider_layerview_margin").width
@@ -364,7 +349,7 @@ Item
             property real minimumRangeHandleSize: UM.Theme.getSize("slider_handle").width / 2
             property real trackThickness: UM.Theme.getSize("slider_groove").width
             property real trackRadius: trackThickness / 2
-            property real trackBorderWidth: UM.Theme.getSize("default_lining").width
+            property real trackBorderWidth: UM.Theme.getSize("default_lining").width / 2
             property color upperHandleColor: UM.Theme.getColor("slider_handle")
             property color lowerHandleColor: UM.Theme.getColor("slider_handle")
             property color rangeHandleColor: UM.Theme.getColor("slider_groove_fill")
@@ -434,6 +419,7 @@ Item
                 color: parent.trackColor
                 border.width: parent.trackBorderWidth;
                 border.color: parent.trackBorderColor;
+                visible: slider.layersVisible
             }
 
             Item {
@@ -492,8 +478,8 @@ Item
                 anchors.horizontalCenter: parent.horizontalCenter
                 radius: parent.handleRadius
                 color: parent.upperHandleColor
-                border.width: UM.Theme.getSize("default_lining").width
-                border.color: UM.Theme.getColor("slider_handle_border")
+                //border.width: UM.Theme.getSize("default_lining").width
+                //border.color: UM.Theme.getColor("slider_handle_border")
 
                 visible: slider.layersVisible
 
@@ -568,10 +554,10 @@ Item
 
             UM.PointingRectangle
             {
-                x: parent.width + UM.Theme.getSize("slider_layerview_background").width / 2;
+                x: parent.width - UM.Theme.getSize("slider_layerview_background").width / 2 - width;
                 y: Math.floor(slider.activeHandle.y + slider.activeHandle.height / 2 - height / 2);
 
-                target: Qt.point(0, slider.activeHandle.y + slider.activeHandle.height / 2)
+                target: Qt.point(parent.width, slider.activeHandle.y + slider.activeHandle.height / 2)
                 arrowSize: UM.Theme.getSize("default_arrow").width
 
                 height: UM.Theme.getSize("slider_handle").height + UM.Theme.getSize("default_margin").height

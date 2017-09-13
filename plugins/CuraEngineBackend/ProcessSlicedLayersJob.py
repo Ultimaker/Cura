@@ -235,7 +235,7 @@ class ProcessSlicedLayersJob(Job):
         if self.isRunning():
             if Application.getInstance().getController().getActiveView().getPluginId() == "LayerView":
                 if not self._progress:
-                    self._progress = Message(catalog.i18nc("@info:status", "Processing Layers"), 0, False, 0)
+                    self._progress = Message(catalog.i18nc("@info:status", "Processing Layers"), 0, False, 0, catalog.i18nc("@info:title", "Information"))
                 if self._progress.getProgress() != 100:
                     self._progress.show()
             else:

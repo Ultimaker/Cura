@@ -104,7 +104,7 @@ class CuraApplication(QtApplication):
     # SettingVersion represents the set of settings available in the machine/extruder definitions.
     # You need to make sure that this version number needs to be increased if there is any non-backwards-compatible
     # changes of the settings.
-    SettingVersion = 2
+    SettingVersion = 3
 
     class ResourceTypes:
         QmlFiles = Resources.UserType + 1
@@ -488,7 +488,7 @@ class CuraApplication(QtApplication):
             f.write(data)
 
 
-    @pyqtSlot(str, result=QUrl)
+    @pyqtSlot(str, result = QUrl)
     def getDefaultPath(self, key):
         default_path = Preferences.getInstance().getValue("local_file/%s" % key)
         return QUrl.fromLocalFile(default_path)
@@ -1128,7 +1128,7 @@ class CuraApplication(QtApplication):
 
     expandedCategoriesChanged = pyqtSignal()
 
-    @pyqtProperty("QStringList", notify=expandedCategoriesChanged)
+    @pyqtProperty("QStringList", notify = expandedCategoriesChanged)
     def expandedCategories(self):
         return Preferences.getInstance().getValue("cura/categories_expanded").split(";")
 
@@ -1182,6 +1182,7 @@ class CuraApplication(QtApplication):
         group_node = SceneNode()
         group_decorator = GroupDecorator()
         group_node.addDecorator(group_decorator)
+        group_node.addDecorator(ConvexHullDecorator())
         group_node.setParent(self.getController().getScene().getRoot())
         group_node.setSelectable(True)
         center = Selection.getSelectionCenter()
@@ -1292,7 +1293,7 @@ class CuraApplication(QtApplication):
                 message = Message(
                     self._i18n_catalog.i18nc("@info:status",
                                        "Only one G-code file can be loaded at a time. Skipped importing {0}",
-                                       filename))
+                                       filename), title = self._i18n_catalog.i18nc("@info:title", "Warning"))
                 message.show()
                 return
             # If file being loaded is non-slicable file, then prevent loading of any other files
@@ -1301,7 +1302,7 @@ class CuraApplication(QtApplication):
                 message = Message(
                     self._i18n_catalog.i18nc("@info:status",
                                        "Can't open any other file if G-code is loading. Skipped importing {0}",
-                                       filename))
+                                       filename), title = self._i18n_catalog.i18nc("@info:title", "Error"))
                 message.show()
                 return
 
