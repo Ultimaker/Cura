@@ -44,7 +44,7 @@ Item
             {
                 id: resolutionLabel
                 anchors.top: resolutionSlider.top
-                anchors.topMargin: UM.Theme.getSize("default_margin").height / 4
+                anchors.topMargin: UM.Theme.getSize("default_margin").height * 1.2
                 anchors.left: parent.left
                 anchors.leftMargin: UM.Theme.getSize("sidebar_margin").width
                 width: UM.Theme.getSize("sidebar").width * .45 - UM.Theme.getSize("sidebar_margin").width
@@ -57,9 +57,10 @@ Item
             Text
             {
                 id: speedLabel
-                anchors.bottom: resolutionSlider.bottom
+                anchors.top: resolutionLabel.bottom
                 anchors.left: parent.left
                 anchors.leftMargin: UM.Theme.getSize("sidebar_margin").width
+                anchors.topMargin: UM.Theme.getSize("default_margin").height * 1.5
 
                 text: catalog.i18nc("@label", "Print Speed")
                 font: UM.Theme.getFont("default")
@@ -94,7 +95,7 @@ Item
             {
                 id: resolutionSlider
                 anchors.top: parent.top
-                anchors.topMargin: UM.Theme.getSize("default_margin").height / 2
+                
                 anchors.left: infillCellRight.left
                 anchors.right: infillCellRight.right
                 width: UM.Theme.getSize("sidebar").width * .55
