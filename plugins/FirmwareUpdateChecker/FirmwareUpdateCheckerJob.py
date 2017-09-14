@@ -44,8 +44,8 @@ class FirmwareUpdateCheckerJob(Job):
             reader = codecs.getreader("utf-8")
 
             # get machine name from the definition container
-            machine_name = self._container.definition.getName().lower()
-            machine_name_parts = machine_name.split(" ")
+            machine_name = self._container.definition.getName()
+            machine_name_parts = machine_name.lower().split(" ")
 
             # If it is not None, then we compare between the checked_version and the current_version
             # Now we just do that if the active printer is Ultimaker 3 or Ultimaker 3 Extended or any
