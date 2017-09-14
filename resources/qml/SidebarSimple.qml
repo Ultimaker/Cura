@@ -35,12 +35,387 @@ Item
         {
             width: childrenRect.width
             height: childrenRect.height
+            color: UM.Theme.getColor("sidebar")
+
+            //
+            // Quality profile
+            //
+            Text
+            {
+                id: resolutionLabel
+                anchors.top: resolutionSlider.top
+                anchors.topMargin: UM.Theme.getSize("default_margin").height / 4
+                anchors.left: parent.left
+                anchors.leftMargin: UM.Theme.getSize("sidebar_margin").width
+                width: UM.Theme.getSize("sidebar").width * .45 - UM.Theme.getSize("sidebar_margin").width
+
+                text: catalog.i18nc("@label", "Layer Height")
+                font: UM.Theme.getFont("default")
+                color: UM.Theme.getColor("text")
+            }
+
+            Text
+            {
+                id: speedLabel
+                anchors.bottom: resolutionSlider.bottom
+                anchors.left: parent.left
+                anchors.leftMargin: UM.Theme.getSize("sidebar_margin").width
+
+                text: catalog.i18nc("@label", "Print Speed")
+                font: UM.Theme.getFont("default")
+                color: UM.Theme.getColor("text")
+            }
+
+            Text
+            {
+                id: speedLabelSlower
+                anchors.top: speedLabel.top
+                anchors.left: resolutionSlider.left
+
+                text: catalog.i18nc("@label", "Slower")
+                font: UM.Theme.getFont("default")
+                color: UM.Theme.getColor("text")
+                horizontalAlignment: Text.AlignLeft
+            }
+
+            Text
+            {
+                id: speedLabelFaster
+                anchors.top: speedLabel.top
+                anchors.right: resolutionSlider.right
+
+                text: catalog.i18nc("@label", "Faster")
+                font: UM.Theme.getFont("default")
+                color: UM.Theme.getColor("text")
+                horizontalAlignment: Text.AlignRight
+            }
+
+            Item
+            {
+                id: resolutionSlider
+                anchors.top: parent.top
+                anchors.topMargin: UM.Theme.getSize("default_margin").height / 2
+                anchors.left: infillCellRight.left
+                anchors.right: infillCellRight.right
+                width: UM.Theme.getSize("sidebar").width * .55
+                height: UM.Theme.getSize("quality_slider_bar").height * 30
+
+                property var model: Cura.ProfilesModel
+
+                Connections
+                {
+                    target: Cura.ProfilesModel
+                    onItemsChanged:
+                    {
+                        resolutionSlider.updateCurrentQualityIndex();
+                        resolutionSlider.updateBar();
+                    }
+                }
+
+                Connections
+                {
+                    target: Cura.MachineManager
+                    onActiveQualityChanged:
+                    {
+                        resolutionSlider.updateCurrentQualityIndex();
+                        resolutionSlider.updateBar();
+                    }
+                }
+
+                Component.onCompleted:
+                {
+                    updateCurrentQualityIndex();
+                    updateBar();
+                }
+
+                function updateCurrentQualityIndex()
+                {
+                    for (var i = 0; i < resolutionSlider.model.rowCount(); ++i)
+                    {
+                        if (Cura.MachineManager.activeQualityId == resolutionSlider.model.getItem(i).id)
+                        {
+                            if (resolutionSlider.currentQualityIndex != i)
+                            {
+                                resolutionSlider.currentQualityIndex = i;
+                            }
+                            return;
+                        }
+                    }
+                    resolutionSlider.currentQualityIndex = undefined;
+                }
+
+                function updateBar()
+                {
+                    fullRangeMax = Cura.ProfilesModel.rowCount();
+
+                    // set avaiableMin
+                    var foundAvaiableMin = false;
+                    for (var i = 0; i < Cura.ProfilesModel.rowCount(); ++i)
+                    {
+                        if (Cura.ProfilesModel.getItem(i).available)
+                        {
+                            avaiableMin = i;
+                            foundAvaiableMin = true;
+                            break;
+                        }
+                    }
+                    if (!foundAvaiableMin)
+                    {
+                        avaiableMin = undefined;
+                    }
+
+                    var foundAvaiableMax = false;
+                    for (var i = Cura.ProfilesModel.rowCount() - 1; i >= 0; --i)
+                    {
+                        if (Cura.ProfilesModel.getItem(i).available)
+                        {
+                            avaiableMax = i;
+                            foundAvaiableMax = true;
+                            break;
+                        }
+                    }
+                    if (!foundAvaiableMax)
+                    {
+                        avaiableMax = undefined;
+                    }
+
+                    currentHover = undefined;
+                    backgroundBar.requestPaint();
+                }
+
+                property var fullRangeMin: 0
+                property var fullRangeMax: model.rowCount()
+
+                property var avaiableMin
+                property var avaiableMax
+                property var currentQualityIndex
+                property var currentHover
+
+                //TODO: get from theme
+                property var barLeftRightMargin: 5
+                property var tickLeftRightMargin: 2
+                property var tickMargin: 15
+                property var tickThickness: 1
+                property var tickWidth: 1
+                property var tickHeight: 5
+                property var tickTextHeight: 8
+                property var totalTickCount: fullRangeMax - fullRangeMin
+                property var selectedCircleDiameter: 10
+
+                property var showQualityText: false
+
+                property var tickStepSize: (width - (barLeftRightMargin + tickLeftRightMargin) * 2) / (totalTickCount > 1 ?  totalTickCount - 1 : 1)
+                property var tickAreaList:
+                {
+                    var area_list = [];
+                    if (avaiableMin != undefined && avaiableMax != undefined)
+                    {
+                        for (var i = avaiableMin; i <= avaiableMax; ++i)
+                        {
+                            var start_x = (barLeftRightMargin + tickLeftRightMargin) + tickStepSize * (i - fullRangeMin);
+                            var diameter = tickStepSize * 0.9;
+                            start_x = start_x + tickWidth / 2 - (diameter / 2);
+                            var end_x = start_x + diameter;
+                            var start_y = height / 2 - diameter / 2;
+                            var end_y = start_y + diameter;
+
+                            var area = {"id": i,
+                                        "start_x": start_x, "end_x": end_x,
+                                        "start_y": start_y, "end_y": end_y,
+                                        };
+                            area_list.push(area);
+                        }
+                    }
+                    return area_list;
+                }
+
+                onCurrentHoverChanged:
+                {
+                    backgroundBar.requestPaint();
+                }
+                onCurrentQualityIndex:
+                {
+                    backgroundBar.requestPaint();
+                }
+
+                // background bar
+                Canvas
+                {
+                    id: backgroundBar
+                    anchors.fill: parent
+
+                    Timer {
+                        interval: 16
+                        running: true
+                        repeat: true
+                        onTriggered: backgroundBar.requestPaint()
+                    }
+
+                    onPaint:
+                    {
+                        var ctx = getContext("2d");
+                        ctx.reset();
+                        ctx.fillStyle = UM.Theme.getColor("quality_slider_unavailable");
+
+                        const bar_left_right_margin = resolutionSlider.barLeftRightMargin;
+                        const tick_left_right_margin = resolutionSlider.tickLeftRightMargin;
+                        const tick_margin = resolutionSlider.tickMargin;
+                        const bar_thickness = resolutionSlider.tickThickness;
+                        const tick_width = resolutionSlider.tickWidth;
+                        const tick_height = resolutionSlider.tickHeight;
+                        const tick_text_height = resolutionSlider.tickTextHeight;
+                        const selected_circle_diameter = resolutionSlider.selectedCircleDiameter;
+
+                        // draw unavailable bar
+                        const bar_top = parent.height / 2 - bar_thickness / 2;
+                        ctx.fillRect(bar_left_right_margin, bar_top, width - bar_left_right_margin * 2, bar_thickness);
+
+                        // draw unavailable ticks
+                        var total_tick_count = resolutionSlider.totalTickCount;
+                        const step_size = resolutionSlider.tickStepSize;
+                        var current_start_x = bar_left_right_margin + tick_left_right_margin;
+
+                        const tick_top = parent.height / 2 - tick_height / 2;
+
+                        for (var i = 0; i < total_tick_count; ++i)
+                        {
+                            ctx.fillRect(current_start_x, tick_top, tick_width, tick_height);
+                            current_start_x += step_size;
+                        }
+
+                        // draw available bar and ticks
+                        if (resolutionSlider.avaiableMin != undefined && resolutionSlider.avaiableMax != undefined)
+                        {
+                            current_start_x = (bar_left_right_margin + tick_left_right_margin) + step_size * (resolutionSlider.avaiableMin - resolutionSlider.fullRangeMin);
+                            ctx.fillStyle = UM.Theme.getColor("quality_slider_available");
+                            total_tick_count = resolutionSlider.avaiableMax - resolutionSlider.avaiableMin + 1;
+
+                            const available_bar_width = step_size * (total_tick_count - 1);
+                            ctx.fillRect(current_start_x, bar_top, available_bar_width, bar_thickness);
+
+                            for (var i = 0; i < total_tick_count; ++i)
+                            {
+                                ctx.fillRect(current_start_x, tick_top, tick_width, tick_height);
+                                current_start_x += step_size;
+                            }
+                        }
+
+                        // print the selected circle
+                        if (resolutionSlider.currentQualityIndex != undefined)
+                        {
+                            var circle_start_x = (bar_left_right_margin + tick_left_right_margin) + step_size * (resolutionSlider.currentQualityIndex - resolutionSlider.fullRangeMin);
+                            circle_start_x = circle_start_x + tick_width / 2 - selected_circle_diameter / 2;
+                            var circle_start_y = height / 2 - selected_circle_diameter / 2;
+                            ctx.fillStyle = UM.Theme.getColor("quality_slider_handle");
+                            ctx.beginPath();
+                            ctx.ellipse(circle_start_x, circle_start_y, selected_circle_diameter, selected_circle_diameter);
+                            ctx.fill();
+                            ctx.closePath();
+                        }
+
+                        // print the hovered circle
+                        if (resolutionSlider.currentHover != undefined && resolutionSlider.currentHover != resolutionSlider.currentQualityIndex)
+                        {
+                            var circle_start_x = (bar_left_right_margin + tick_left_right_margin) + step_size * (resolutionSlider.currentHover - resolutionSlider.fullRangeMin);
+                            circle_start_x = circle_start_x + tick_width / 2 - selected_circle_diameter / 2;
+                            var circle_start_y = height / 2 - selected_circle_diameter / 2;
+                            ctx.fillStyle = UM.Theme.getColor("quality_slider_handle_hover");
+                            ctx.beginPath();
+                            ctx.ellipse(circle_start_x, circle_start_y, selected_circle_diameter, selected_circle_diameter);
+                            ctx.fill();
+                            ctx.closePath();
+                        }
+
+                        // print layer height texts
+                        total_tick_count = resolutionSlider.totalTickCount;
+                        const step_size = resolutionSlider.tickStepSize;
+                        current_start_x = bar_left_right_margin + tick_left_right_margin;
+                        for (var i = 0; i < total_tick_count; ++i)
+                        {
+                            const text_top = parent.height / 2 - tick_height - tick_text_height;
+                            ctx.fillStyle = UM.Theme.getColor("quality_slider_text");
+
+                            ctx.font = "12px sans-serif";
+                            const string_length = resolutionSlider.model.getItem(i).layer_height_without_unit.length;
+                            const offset = string_length / 2 * 4;
+
+                            var start_x = current_start_x - offset;
+                            if (i == 0)
+                            {
+                                start_x = 0;
+                            }
+                            else if (i == total_tick_count - 1)
+                            {
+                                start_x = current_start_x - offset * 2;
+                            }
+
+                            ctx.fillText(resolutionSlider.model.getItem(i).layer_height_without_unit, start_x, text_top);
+                            current_start_x += step_size;
+                        }
+
+                        // print currently selected quality text
+                        if (resolutionSlider.showQualityText && resolutionSlider.currentQualityIndex != undefine)
+                        {
+                            const text_top = parent.height / 2 + tick_height + tick_text_height * 2;
+                            total_tick_count = resolutionSlider.totalTickCount;
+                            const step_size = resolutionSlider.tickStepSize;
+                            current_start_x = (tick_left_right_margin) + step_size * (resolutionSlider.currentQualityIndex - resolutionSlider.fullRangeMin);
+                            ctx.fillStyle = UM.Theme.getColor("quality_slider_text");
+                            ctx.fillText(resolutionSlider.model.getItem(resolutionSlider.currentQualityIndex).name, current_start_x - 6, text_top);
+                        }
+                    }
+
+                    MouseArea
+                    {
+                        anchors.fill: parent
+                        hoverEnabled: true
+
+                        onClicked:
+                        {
+                            for (var i = 0; i < resolutionSlider.tickAreaList.length; ++i)
+                            {
+                                var area = resolutionSlider.tickAreaList[i];
+                                if (area.start_x <= mouseX && mouseX <= area.end_x && area.start_y <= mouseY && mouseY <= area.end_y)
+                                {
+                                    resolutionSlider.currentHover = undefined;
+                                    resolutionSlider.currentQualityIndex = area.id;
+
+                                    Cura.MachineManager.setActiveQuality(resolutionSlider.model.getItem(resolutionSlider.currentQualityIndex).id);
+                                    return;
+                                }
+                            }
+                            resolutionSlider.currentHover = undefined;
+                        }
+                        onPositionChanged:
+                        {
+                            for (var i = 0; i < resolutionSlider.tickAreaList.length; ++i)
+                            {
+                                var area = resolutionSlider.tickAreaList[i];
+                                if (area.start_x <= mouseX && mouseX <= area.end_x && area.start_y <= mouseY && mouseY <= area.end_y)
+                                {
+                                    resolutionSlider.currentHover = area.id;
+                                    return;
+                                }
+                            }
+                            resolutionSlider.currentHover = undefined;
+                        }
+                        onExited:
+                        {
+                            resolutionSlider.currentHover = undefined;
+                        }
+                    }
+                }
+            }
+
+            //
+            // Infill
+            //
             Item
             {
                 id: infillCellLeft
-                anchors.top: parent.top
+                anchors.top: speedLabel.top
+                anchors.topMargin: UM.Theme.getSize("sidebar_margin").height * 1.2
                 anchors.left: parent.left
-                anchors.topMargin: UM.Theme.getSize("sidebar_margin").height * 0.8
                 width: UM.Theme.getSize("sidebar").width * .45 - UM.Theme.getSize("sidebar_margin").width
                 height: childrenRect.height
 
@@ -69,6 +444,7 @@ Item
 
                 anchors.left: infillCellLeft.right
                 anchors.top: infillCellLeft.top
+                anchors.topMargin: UM.Theme.getSize("sidebar_margin").height
 
                 Repeater
                 {
@@ -479,7 +855,7 @@ Item
                     anchors.top: parent.top
                     wrapMode: Text.WordWrap
                     //: Tips label
-                    text: catalog.i18nc("@label", "Need help improving your prints?<br>Read the <a href='%1'>Ultimaker Troubleshooting Guides</a>").arg("https://ultimaker.com/en/troubleshooting") + "<img src='%1'></img>".arg(UM.Theme.getIcon("play"))
+                    text: catalog.i18nc("@label", "Need help improving your prints?<br>Read the <a href='%1'>Ultimaker Troubleshooting Guides</a>").arg("https://ultimaker.com/en/troubleshooting")
                     font: UM.Theme.getFont("default");
                     color: UM.Theme.getColor("text");
                     linkColor: UM.Theme.getColor("text_link")

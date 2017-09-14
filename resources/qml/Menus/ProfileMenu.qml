@@ -22,6 +22,7 @@ Menu
             checked: Cura.MachineManager.activeQualityChangesId == "" && Cura.MachineManager.activeQualityType == model.metadata.quality_type
             exclusiveGroup: group
             onTriggered: Cura.MachineManager.setActiveQuality(model.id)
+            visible: model.available
         }
 
         onObjectAdded: menu.insertItem(index, object);

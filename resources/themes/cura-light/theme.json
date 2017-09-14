@@ -196,6 +196,12 @@
         "slider_handle_border": [39, 44, 48, 255],
         "slider_text_background": [255, 255, 255, 255],
 
+        "quality_slider_unavailable": [179, 179, 179, 255],
+        "quality_slider_available": [0, 0, 0, 255],
+        "quality_slider_handle": [0, 0, 0, 255],
+        "quality_slider_handle_hover": [127, 127, 127, 255],
+        "quality_slider_text": [0, 0, 0, 255],
+
         "checkbox": [255, 255, 255, 255],
         "checkbox_hover": [255, 255, 255, 255],
         "checkbox_border": [64, 69, 72, 255],
@@ -337,6 +343,8 @@
         "progressbar_control": [8.0, 0.4],
 
         "scrollbar": [0.75, 0.5],
+
+        "quality_slider_bar": [1, 0.2],
 
         "slider_groove": [0.3, 0.3],
         "slider_handle": [1.0, 1.0],
