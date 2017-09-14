@@ -2307,6 +2307,19 @@
                             "maximum_value_warning": "300",
                             "settable_per_mesh": true
                         },
+                        "speed_walls_layer_0":
+                        {
+                            "label": "Initial Layer Wall Speed",
+                            "description": "The speed used to print walls in the initial layer. Reducing this speed may increase adhesion to the build plate while still allowing the skin areas to be printed at a faster speed.",
+                            "unit": "mm/s",
+                            "type": "float",
+                            "default_value": 30,
+                            "value": "speed_print_layer_0",
+                            "minimum_value": "0.1",
+                            "maximum_value": "math.sqrt(machine_max_feedrate_x ** 2 + machine_max_feedrate_y ** 2)",
+                            "maximum_value_warning": "300",
+                            "settable_per_mesh": true
+                        },
                         "speed_travel_layer_0":
                         {
                             "label": "Initial Layer Travel Speed",
@@ -2648,6 +2661,21 @@
                             "enabled": "resolveOrValue('acceleration_enabled')",
                             "settable_per_mesh": true
                         },
+                        "acceleration_walls_layer_0":
+                        {
+                            "label": "Initial Layer Wall Acceleration",
+                            "description": "The acceleration during the printing of walls in the initial layer.",
+                            "unit": "mm/s",
+                            "type": "float",
+                            "default_value": 3000,
+                            "value": "acceleration_print_layer_0",
+                            "minimum_value": "0.1",
+                            "minimum_value_warning": "100",
+                            "maximum_value_warning": "10000",
+                            "enabled": "resolveOrValue('acceleration_enabled')",
+                            "settable_per_extruder": true,
+                            "settable_per_mesh": false
+                        },
                         "acceleration_travel_layer_0":
                         {
                             "label": "Initial Layer Travel Acceleration",
@@ -2925,10 +2953,24 @@
                             "enabled": "resolveOrValue('jerk_enabled')",
                             "settable_per_mesh": true
                         },
+                        "jerk_walls_layer_0":
+                        {
+                            "label": "Initial Layer Walls Jerk",
+                            "description": "The maximum instantaneous velocity change during the printing of walls in the initial layer.",
+                            "unit": "mm/s",
+                            "type": "float",
+                            "default_value": 20,
+                            "value": "jerk_print_layer_0",
+                            "minimum_value": "0.1",
+                            "maximum_value_warning": "50",
+                            "enabled": "resolveOrValue('jerk_enabled')",
+                            "settable_per_extruder": true,
+                            "settable_per_mesh": false
+                        },
                         "jerk_travel_layer_0":
                         {
                             "label": "Initial Layer Travel Jerk",
-                            "description": "The acceleration for travel moves in the initial layer.",
+                            "description": "The maximum instantaneous velocity change for travel moves in the initial layer.",
                             "unit": "mm/s",
                             "type": "float",
                             "default_value": 20,
