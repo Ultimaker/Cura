@@ -141,6 +141,8 @@
 
         "tool_panel_background": [39, 44, 48, 255],
 
+        "tool_button_border": [255, 255, 255, 38],
+
         "status_offline": [0, 0, 0, 255],
         "status_ready": [0, 205, 0, 255],
         "status_busy": [12, 169, 227, 255],
