@@ -143,6 +143,7 @@ Item
                         }
                     }
                     resolutionSlider.currentQualityIndex = undefined;
+                    backgroundBarUpdateTimer.start();
                 }
 
                 function updateBar()
@@ -246,9 +247,10 @@ Item
                     anchors.fill: parent
 
                     Timer {
-                        interval: 16
-                        running: true
-                        repeat: true
+                        id: backgroundBarUpdateTimer
+                        interval: 10
+                        running: false
+                        repeat: false
                         onTriggered: backgroundBar.requestPaint()
                     }
 
