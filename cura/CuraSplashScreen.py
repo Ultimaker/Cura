@@ -68,7 +68,6 @@ class CuraSplashScreen(QSplashScreen):
         pen.setWidth(6 * self._scale)
         pen.setColor(QColor(255, 255, 255, 255))
         painter.setPen(pen)
-        #painter.drawArc(100, 350, 32 * self._scale, 32 * self._scale, self._loading_image_rotation_angle * 16, 300 * 16)
         painter.drawArc(60, 350, 32 * self._scale, 32 * self._scale, self._loading_image_rotation_angle * 16, 300 * 16)
 
         # draw message text
@@ -76,7 +75,6 @@ class CuraSplashScreen(QSplashScreen):
             font = QFont()  # Using system-default font here
             font.setPointSize(16)
             painter.setFont(font)
-            #painter.drawText(150, 328, 316, 64,
             painter.drawText(100, 328, 260, 64,
                              Qt.AlignLeft | Qt.AlignVCenter | Qt.TextWordWrap,
                              self._current_message)
