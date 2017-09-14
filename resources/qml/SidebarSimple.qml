@@ -31,7 +31,7 @@ Item
         style: UM.Theme.styles.scrollview
         flickableItem.flickableDirection: Flickable.VerticalFlick
 
-        Item
+        Rectangle
         {
             width: childrenRect.width
             height: childrenRect.height
