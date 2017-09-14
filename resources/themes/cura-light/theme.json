@@ -221,7 +221,7 @@
         "tooltip": [68, 192, 255, 255],
         "tooltip_text": [255, 255, 255, 255],
 
-        "tool_button_border": [39, 44, 48, 255],
+        "tool_button_border": [255, 255, 255, 0],
 
         "message_background": [255, 255, 255, 255],
         "message_shadow": [0, 0, 0, 120],
@@ -337,6 +337,8 @@
 
         "button_tooltip": [1.0, 1.3],
         "button_tooltip_arrow": [0.25, 0.25],
+
+        "tool_button_border": [1.0, 0],
 
         "progressbar": [26.0, 0.4],
         "progressbar_radius": [0, 0],
