@@ -1354,7 +1354,7 @@
                             "default_value": 2,
                             "minimum_value": "0",
                             "minimum_value_warning": "infill_line_width",
-                            "value": "0 if infill_sparse_density == 0 else (infill_line_width * 100) / infill_sparse_density * (2 if infill_pattern == 'grid' else (3 if infill_pattern == 'triangles' or infill_pattern == 'cubic' or infill_pattern == 'cubicsubdiv' else (2 if infill_pattern == 'tetrahedral' or infill_pattern == 'quarter_cubic' else 1)))",
+                            "value": "0 if infill_sparse_density == 0 else (infill_line_width * 100) / infill_sparse_density * (2 if infill_pattern == 'grid' else (3 if infill_pattern == 'triangles' or infill_pattern == 'cubic' or infill_pattern == 'cubicsubdiv' else (2 if infill_pattern == 'tetrahedral' or infill_pattern == 'quarter_cubic' else (1 if infill_pattern == 'cross' or infill_pattern == 'cross_3d' else 1))))",
                             "limit_to_extruder": "infill_extruder_nr",
                             "settable_per_mesh": true
                         }
@@ -1376,12 +1376,23 @@
                         "quarter_cubic": "Quarter Cubic",
                         "concentric": "Concentric",
                         "concentric_3d": "Concentric 3D",
-                        "zigzag": "Zig Zag"
+                        "zigzag": "Zig Zag",
+                        "cross": "Cross",
+                        "cross_3d": "Cross 3D"
                     },
                     "default_value": "grid",
                     "enabled": "infill_sparse_density > 0",
                     "value": "'lines' if infill_sparse_density > 25 else 'grid'",
                     "limit_to_extruder": "infill_extruder_nr",
+                    "settable_per_mesh": true
+                },
+                "zig_zaggify_infill":
+                {
+                    "label": "Connect Infill Lines",
+                    "description": "Connect the ends where the infill pattern meets the inner wall using a lines which follows the shape of the inner wall. Enabling this setting can make the infill adhere to the walls better and reduces the effects on infill on the quality of vertical surfaces. Disabling this setting reduces the amount of material used.",
+                    "type": "bool",
+                    "default_value": true,
+                    "enabled": "infill_pattern == 'cross' or infill_pattern == 'cross_3d'",
                     "settable_per_mesh": true
                 },
                 "infill_angles":
@@ -3360,7 +3371,8 @@
                         "triangles": "Triangles",
                         "concentric": "Concentric",
                         "concentric_3d": "Concentric 3D",
-                        "zigzag": "Zig Zag"
+                        "zigzag": "Zig Zag",
+                        "cross": "Cross"
                     },
                     "default_value": "zigzag",
                     "enabled": "support_enable",
@@ -5166,6 +5178,30 @@
                     "default_value": false,
                     "enabled": "top_bottom_pattern != 'concentric'",
                     "limit_to_extruder": "top_bottom_extruder_nr",
+                    "settable_per_mesh": true
+                },
+                "cross_infill_pocket_size":
+                {
+                    "label": "Cross 3D Pocket Size",
+                    "description": "The size of pockets at four-way crossings in the cross 3D pattern at heights where the pattern is touching itself.",
+                    "unit": "mm",
+                    "type": "float",
+                    "default_value": 2.0,
+                    "value": "infill_line_distance",
+                    "minimum_value": "0",
+                    "maximum_value_warning": "infill_line_distance * math.sqrt(2)",
+                    "enabled": "infill_pattern == 'cross_3d'",
+                    "limit_to_extruder": "infill_extruder_nr",
+                    "settable_per_mesh": true
+                },
+                "cross_infill_apply_pockets_alternatingly":
+                {
+                    "label": "Alternate Cross 3D Pockets",
+                    "description": "Only apply pockets at half of the four-way crossings in the cross 3D pattern and alternate the location of the pockets between heights where the pattern is touching itself.",
+                    "type": "bool",
+                    "default_value": true,
+                    "enabled": "infill_pattern == 'cross_3d'",
+                    "limit_to_extruder": "infill_extruder_nr",
                     "settable_per_mesh": true
                 },
                 "spaghetti_infill_enabled":
