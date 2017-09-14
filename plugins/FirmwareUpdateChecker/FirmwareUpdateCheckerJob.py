@@ -13,7 +13,6 @@ import codecs
 from PyQt5.QtCore import QUrl
 from PyQt5.QtGui import QDesktopServices
 
-
 from UM.i18n import i18nCatalog
 i18n_catalog = i18nCatalog("cura")
 

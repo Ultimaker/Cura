@@ -17,7 +17,7 @@ i18n_catalog = i18nCatalog("cura")
 #  The plugin is currently only usable for applications maintained by Ultimaker. But it should be relatively easy
 #  to change it to work for other applications.
 class FirmwareUpdateChecker(Extension):
-    url = "http://software.ultimaker.com/jedi/releases/latest.version"
+    JEDI_VERSION_URL = "http://software.ultimaker.com/jedi/releases/latest.version"
 
     def __init__(self):
         super().__init__()
@@ -45,5 +45,5 @@ class FirmwareUpdateChecker(Extension):
     #   \param silent type(boolean) Suppresses messages other than "new version found" messages.
     #                               This is used when checking for a new firmware version at startup.
     def checkFirmwareVersion(self, container = None, silent = False):
-        job = FirmwareUpdateCheckerJob(container = container, silent = silent, url = self.url)
+        job = FirmwareUpdateCheckerJob(container = container, silent = silent, url = self.JEDI_VERSION_URL)
         job.start()
