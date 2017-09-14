@@ -43,13 +43,14 @@ class FirmwareUpdateCheckerJob(Job):
             current_version_file = urllib.request.urlopen(request)
             reader = codecs.getreader("utf-8")
 
-            machine_name = self._container.getId()
+            # get machine name from the definition container
+            machine_name = self._container.definition.getName().lower()
+            machine_name_parts = machine_name.split(" ")
 
             # If it is not None, then we compare between the checked_version and the current_version
             # Now we just do that if the active printer is Ultimaker 3 or Ultimaker 3 Extended or any
             # other Ultimaker 3 that will come in the future
-            if machine_name[0:11] == "Ultimaker 3":
-
+            if len(machine_name_parts) >= 2 and machine_name_parts[:2] == ["ultimaker", "3"]:
                 # Nothing to parse, just get the string
                 # TODO: In the future may be done by parsing a JSON file with diferent version for each printer model
                 current_version = reader(current_version_file).readline().rstrip()
