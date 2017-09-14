@@ -519,8 +519,8 @@ Item
                 anchors.horizontalCenter: parent.horizontalCenter
                 radius: parent.handleRadius
                 color: parent.lowerHandleColor
-                border.width: UM.Theme.getSize("default_lining").width
-                border.color: UM.Theme.getColor("slider_handle_border")
+//                border.width: UM.Theme.getSize("default_lining").width
+//                border.color: UM.Theme.getColor("slider_handle_border")
 
                 visible: slider.layersVisible
 

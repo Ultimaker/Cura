@@ -35,6 +35,8 @@ Item
         {
             width: childrenRect.width
             height: childrenRect.height
+            color: UM.Theme.getColor("sidebar")
+
             Item
             {
                 id: infillCellLeft
@@ -479,7 +481,7 @@ Item
                     anchors.top: parent.top
                     wrapMode: Text.WordWrap
                     //: Tips label
-                    text: catalog.i18nc("@label", "Need help improving your prints?<br>Read the <a href='%1'>Ultimaker Troubleshooting Guides</a>").arg("https://ultimaker.com/en/troubleshooting") + "<img src='%1'></img>".arg(UM.Theme.getIcon("play"))
+                    text: catalog.i18nc("@label", "Need help improving your prints?<br>Read the <a href='%1'>Ultimaker Troubleshooting Guides</a>").arg("https://ultimaker.com/en/troubleshooting")
                     font: UM.Theme.getFont("default");
                     color: UM.Theme.getColor("text");
                     linkColor: UM.Theme.getColor("text_link")
