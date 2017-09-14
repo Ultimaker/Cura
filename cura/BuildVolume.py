@@ -956,14 +956,14 @@ class BuildVolume(SceneNode):
         if adhesion_type == "skirt":
             skirt_distance = self._getSettingFromAdhesionExtruder("skirt_gap")
             skirt_line_count = self._getSettingFromAdhesionExtruder("skirt_line_count")
-            bed_adhesion_size = skirt_distance + (skirt_line_count * self._getSettingFromAdhesionExtruder("skirt_brim_line_width")) * self._getSettingFromAdhesionExtruder("initial_layer_line_width_factor") / 100.0
+            bed_adhesion_size = skirt_distance + (self._getSettingFromAdhesionExtruder("skirt_brim_line_width") * skirt_line_count) * self._getSettingFromAdhesionExtruder("initial_layer_line_width_factor") / 100.0
             if len(used_extruders) > 1:
                 for extruder_stack in used_extruders:
                     bed_adhesion_size += extruder_stack.getProperty("skirt_brim_line_width", "value") * extruder_stack.getProperty("initial_layer_line_width_factor", "value") / 100.0
                 #We don't create an additional line for the extruder we're printing the skirt with.
                 bed_adhesion_size -= self._getSettingFromAdhesionExtruder("skirt_brim_line_width", "value") * self._getSettingFromAdhesionExtruder("initial_layer_line_width_factor", "value") / 100.0
         elif adhesion_type == "brim":
-            bed_adhesion_size = self._getSettingFromAdhesionExtruder("brim_line_count") * self._getSettingFromAdhesionExtruder("skirt_brim_line_width") * self._getSettingFromAdhesionExtruder("initial_layer_line_width_factor") / 100.0
+            bed_adhesion_size = self._getSettingFromAdhesionExtruder("skirt_brim_line_width") * self._getSettingFromAdhesionExtruder("brim_line_count") *  self._getSettingFromAdhesionExtruder("initial_layer_line_width_factor") / 100.0
             if self._global_container_stack.getProperty("machine_extruder_count", "value") > 1:
                 for extruder_stack in used_extruders:
                     bed_adhesion_size += extruder_stack.getProperty("skirt_brim_line_width", "value") * extruder_stack.getProperty("initial_layer_line_width_factor", "value") / 100.0
