@@ -411,12 +411,109 @@ Item
             }
 
             //
+            // NEW Infill
+            //
+            Item
+            {
+                id: newInfillCellLeft
+                anchors.top: speedLabel.top
+                anchors.topMargin: UM.Theme.getSize("sidebar_margin").height * 1.2
+                anchors.left: parent.left
+                width: UM.Theme.getSize("sidebar").width * .45 - UM.Theme.getSize("sidebar_margin").width
+                height: UM.Theme.getSize("sidebar_margin").height
+
+                Text
+                {
+                    id: newInfillLabel
+                    //: Infill selection label
+                    text: catalog.i18nc("@label", "Infill");
+                    font: UM.Theme.getFont("default");
+                    color: UM.Theme.getColor("text");
+                    anchors.top: parent.top
+                    anchors.topMargin: UM.Theme.getSize("sidebar_margin").height
+                    anchors.left: parent.left
+                    anchors.leftMargin: UM.Theme.getSize("sidebar_margin").width
+                }
+            }
+
+            Item
+            {
+                id: newInfillCellRight
+
+                height: UM.Theme.getSize("sidebar_margin").height
+                width: UM.Theme.getSize("sidebar").width * .55
+
+                anchors.left: newInfillCellLeft.right
+                anchors.top: newInfillCellLeft.top
+                anchors.topMargin: UM.Theme.getSize("sidebar_margin").height
+
+                Text
+                {
+                    id: selectedInfillRateText
+                    anchors.top: parent.top
+                    anchors.left: infillSlider.left
+                    anchors.leftMargin: (infillSlider.value / infillSlider.stepSize) * (infillSlider.width / (infillSlider.maximumValue / infillSlider.stepSize)) - 9
+                    anchors.right: parent.right
+                    height: UM.Theme.getSize("sidebar_margin").height / 10
+                    text: "10%"
+                    horizontalAlignment: Text.AlignLeft
+                }
+
+                Slider
+                {
+                    id: infillSlider
+                    anchors.top: selectedInfillRateText.bottom
+                    anchors.left: parent.left
+                    height: UM.Theme.getSize("sidebar_margin").height * 5
+
+                    minimumValue: 0
+                    maximumValue: 100
+                    stepSize: 5
+                    tickmarksEnabled: true
+
+                    style: SliderStyle
+                    {
+                        groove: Rectangle {
+                            id: groove
+                            implicitWidth: 200
+                            implicitHeight: 2
+                            color: "gray"
+                            radius: 1
+                        }
+                        handle: Item
+                        {
+                            Rectangle {
+                                id: handleButton
+                                anchors.centerIn: parent
+                                color: control.hovered ? UM.Theme.getColor("quality_slider_handle_hover") : UM.Theme.getColor("quality_slider_handle")
+                                implicitWidth: 10
+                                implicitHeight: 10
+                                radius: 10
+                            }
+                        }
+                        tickmarks: Repeater {
+                            id: repeater
+                            model: control.maximumValue / control.stepSize + 1
+                            Rectangle {
+                                anchors.verticalCenter: parent.verticalCenter
+                                color: UM.Theme.getColor("quality_slider_available")
+                                width: 1
+                                height: 6
+                                y: 0
+                                x: styleData.handleWidth / 2 + index * ((repeater.width - styleData.handleWidth) / (repeater.count-1))
+                            }
+                        }
+                    }
+                }
+            }
+
+            //
             // Infill
             //
             Item
             {
                 id: infillCellLeft
-                anchors.top: speedLabel.top
+                anchors.top: newInfillCellRight.bottom
                 anchors.topMargin: UM.Theme.getSize("sidebar_margin").height * 1.2
                 anchors.left: parent.left
                 width: UM.Theme.getSize("sidebar").width * .45 - UM.Theme.getSize("sidebar_margin").width
