@@ -9,6 +9,8 @@ import QtQuick.Layouts 1.1
 import UM 1.2 as UM
 import Cura 1.0 as Cura
 
+import "../Menus"
+
 Item
 {
     id: base;
@@ -17,6 +19,88 @@ Item
     property bool findingSettings;
     signal showTooltip(Item item, point location, string text);
     signal hideTooltip();
+
+    Item
+    {
+        id: globalProfileRow
+        height: UM.Theme.getSize("sidebar_setup").height
+        visible: !sidebar.monitoringPrint && !sidebar.hideSettings
+
+        anchors
+        {
+            top: parent.top
+            left: parent.left
+            leftMargin: UM.Theme.getSize("sidebar_margin").width
+            right: parent.right
+            rightMargin: UM.Theme.getSize("sidebar_margin").width
+        }
+
+        Text
+        {
+            id: globalProfileLabel
+            text: catalog.i18nc("@label","Profile:");
+            width: parent.width * 0.45 - UM.Theme.getSize("sidebar_margin").width - 2
+            font: UM.Theme.getFont("default");
+            color: UM.Theme.getColor("text");
+            verticalAlignment: Text.AlignVCenter
+            anchors.top: parent.top
+            anchors.bottom: parent.bottom
+        }
+
+        ToolButton
+        {
+            id: globalProfileSelection
+
+            text: {
+                var result = Cura.MachineManager.activeQualityName;
+                if (Cura.MachineManager.activeQualityLayerHeight > 0) {
+                    result += " <font color=\"" + UM.Theme.getColor("text_detail") + "\">";
+                    result += " - ";
+                    result += Cura.MachineManager.activeQualityLayerHeight + "mm";
+                    result += "</font>";
+                }
+                return result;
+            }
+            enabled: !header.currentExtruderVisible || header.currentExtruderIndex > -1
+
+            width: parent.width * 0.55
+            height: UM.Theme.getSize("setting_control").height
+            anchors.left: globalProfileLabel.right
+            anchors.right: parent.right
+            tooltip: Cura.MachineManager.activeQualityName
+            style: UM.Theme.styles.sidebar_header_button
+            activeFocusOnPress: true;
+            menu: ProfileMenu { }
+
+            UM.SimpleButton
+            {
+                id: customisedSettings
+
+                visible: Cura.MachineManager.hasUserSettings
+                height: parent.height * 0.6
+                width: parent.height * 0.6
+
+                anchors.verticalCenter: parent.verticalCenter
+                anchors.right: parent.right
+                anchors.rightMargin: UM.Theme.getSize("setting_preferences_button_margin").width - UM.Theme.getSize("sidebar_margin").width
+
+                color: hovered ? UM.Theme.getColor("setting_control_button_hover") : UM.Theme.getColor("setting_control_button");
+                iconSource: UM.Theme.getIcon("star");
+
+                onClicked:
+                {
+                    forceActiveFocus();
+                    Cura.Actions.manageProfiles.trigger()
+                }
+                onEntered:
+                {
+                    var content = catalog.i18nc("@tooltip","Some setting/override values are different from the values stored in the profile.\n\nClick to open the profile manager.")
+                    base.showTooltip(globalProfileRow, Qt.point(-UM.Theme.getSize("sidebar_margin").width, 0),  content)
+                }
+                onExited: base.hideTooltip()
+            }
+        }
+    }
 
     Rectangle
     {
@@ -40,7 +124,8 @@ Item
 
         anchors
         {
-            top: parent.top
+            top: globalProfileRow.bottom
+            topMargin: UM.Theme.getSize("sidebar_margin").height
             left: parent.left
             leftMargin: UM.Theme.getSize("sidebar_margin").width
             right: parent.right

@@ -192,6 +192,12 @@
         "topbar_button_text_inactive": [255, 255, 255, 255],
         "topbar_button_text_active": [255, 255, 255, 255],
         "topbar_button_text_hovered": [255, 255, 255, 255],
-        "topbar_background_color_monitoring": [39, 44, 48, 255]
+        "topbar_background_color_monitoring": [39, 44, 48, 255],
+
+        "quality_slider_unavailable": [179, 179, 179, 255],
+        "quality_slider_available": [255, 255, 255, 255],
+        "quality_slider_handle": [255, 255, 255, 255],
+        "quality_slider_handle_hover": [127, 127, 127, 255],
+        "quality_slider_text": [255, 255, 255, 255]
     }
 }
