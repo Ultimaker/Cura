@@ -333,6 +333,7 @@ class CuraApplication(QtApplication):
                 jerk_print
                 jerk_travel
             travel
+                force_first
             cooling
                 cool_fan_enabled
             support
@@ -356,6 +357,7 @@ class CuraApplication(QtApplication):
                 print_sequence
                 infill_mesh
                 cutting_mesh
+                support_mesh
             experimental
         """.replace("\n", ";").replace(" ", ""))
 
