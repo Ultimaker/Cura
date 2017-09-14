@@ -10,6 +10,7 @@ resources/i18n/en_7S
 resources/i18n/x-test
 resources/firmware
 resources/materials
+CuraEngine.exe
 LC_MESSAGES
 .cache
 *.qmlc
