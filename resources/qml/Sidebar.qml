@@ -125,7 +125,6 @@ Rectangle
         font: UM.Theme.getFont("large")
         color: UM.Theme.getColor("text")
         visible: !monitoringPrint
-        elide: Text.ElideRight
     }
 
     Rectangle {
@@ -135,7 +134,17 @@ Rectangle
         height: UM.Theme.getSize("sidebar_header_mode_toggle").height
         anchors.right: parent.right
         anchors.rightMargin: UM.Theme.getSize("sidebar_margin").width
-        anchors.top: headerSeparator.bottom
+        anchors.top:
+        {
+            if (settingsModeLabel.contentWidth >= parent.width - width - UM.Theme.getSize("sidebar_margin").width)
+            {
+                return settingsModeLabel.bottom;
+            }
+            else
+            {
+                return headerSeparator.bottom;
+            }
+        }
         anchors.topMargin: UM.Theme.getSize("sidebar_margin").height
         visible: !monitoringPrint && !hideSettings
         Component{
