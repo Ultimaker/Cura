@@ -9,7 +9,6 @@ from UM.Scene.Iterator.BreadthFirstIterator import BreadthFirstIterator
 from UM.Math.Vector import Vector
 from UM.Scene.Selection import Selection
 from UM.Preferences import Preferences
-from UM.Logger import Logger
 
 from cura.ConvexHullDecorator import ConvexHullDecorator
 
