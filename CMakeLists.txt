@@ -51,7 +51,7 @@ if(NOT APPLE AND NOT WIN32)
             FILES_MATCHING PATTERN *.py)
     else()
         install(DIRECTORY cura
-            DESTINATION lib/python${PYTHON_VERSION_MAJOR}.${PYTHON_VERSION_MINOR}/site-packages/cura
+            DESTINATION lib/python${PYTHON_VERSION_MAJOR}.${PYTHON_VERSION_MINOR}/site-packages
             FILES_MATCHING PATTERN *.py)
     endif()
     install(FILES ${CMAKE_BINARY_DIR}/CuraVersion.py
