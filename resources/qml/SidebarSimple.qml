@@ -346,22 +346,11 @@ Item
                             }
                             else if (i == total_tick_count - 1)
                             {
-                                start_x = current_start_x - offset * 2;
+                                start_x = current_start_x - offset * 2.5;
                             }
 
                             ctx.fillText(resolutionSlider.model.getItem(i).layer_height_without_unit, start_x, text_top);
                             current_start_x += step_size;
-                        }
-
-                        // print currently selected quality text
-                        if (resolutionSlider.showQualityText && resolutionSlider.currentQualityIndex != undefine)
-                        {
-                            const text_top = parent.height / 2 + tick_height + tick_text_height * 2;
-                            total_tick_count = resolutionSlider.totalTickCount;
-                            const step_size = resolutionSlider.tickStepSize;
-                            current_start_x = (tick_left_right_margin) + step_size * (resolutionSlider.currentQualityIndex - resolutionSlider.fullRangeMin);
-                            ctx.fillStyle = UM.Theme.getColor("quality_slider_text");
-                            ctx.fillText(resolutionSlider.model.getItem(resolutionSlider.currentQualityIndex).name, current_start_x - 6, text_top);
                         }
                     }
 

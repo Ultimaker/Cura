@@ -45,11 +45,19 @@ if(NOT APPLE AND NOT WIN32)
             DESTINATION ${CMAKE_INSTALL_BINDIR}
             PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE GROUP_READ GROUP_EXECUTE WORLD_READ WORLD_EXECUTE
             RENAME cura)
-    install(DIRECTORY cura
+    if(EXISTS /etc/debian_version)
+        install(DIRECTORY cura
             DESTINATION lib/python${PYTHON_VERSION_MAJOR}/dist-packages
             FILES_MATCHING PATTERN *.py)
-    install(FILES ${CMAKE_BINARY_DIR}/CuraVersion.py
+        install(FILES ${CMAKE_BINARY_DIR}/CuraVersion.py
             DESTINATION lib/python${PYTHON_VERSION_MAJOR}/dist-packages/cura)
+    else()
+        install(DIRECTORY cura
+            DESTINATION lib/python${PYTHON_VERSION_MAJOR}.${PYTHON_VERSION_MINOR}/site-packages
+            FILES_MATCHING PATTERN *.py)
+        install(FILES ${CMAKE_BINARY_DIR}/CuraVersion.py
+            DESTINATION lib/python${PYTHON_VERSION_MAJOR}.${PYTHON_VERSION_MINOR}/site-packages/cura)
+    endif()
     install(FILES ${CMAKE_BINARY_DIR}/cura.desktop
             DESTINATION ${CMAKE_INSTALL_DATADIR}/applications)
     install(FILES ${CMAKE_SOURCE_DIR}/resources/images/cura-icon.png
