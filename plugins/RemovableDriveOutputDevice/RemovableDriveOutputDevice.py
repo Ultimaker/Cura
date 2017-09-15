@@ -60,7 +60,7 @@ class RemovableDriveOutputDevice(OutputDevice):
 
         if len(file_formats) == 0:
             Logger.log("e", "There are no file formats available to write with!")
-            raise OutputDeviceError.WriteRequestFailedError()
+            raise OutputDeviceError.WriteRequestFailedError(catalog.i18nc("There are no file formats available to write with!"))
 
         # Just take the first file format available.
         if file_handler is not None:
@@ -115,7 +115,7 @@ class RemovableDriveOutputDevice(OutputDevice):
                     name = child.getName()
                     if name:
                         return name
-        raise OutputDeviceError.WriteRequestFailedError("Could not find a file name when trying to write to {device}.".format(device = self.getName()))
+        raise OutputDeviceError.WriteRequestFailedError(catalog.i18nc("@info:status Don't translate the tag {device}!", "Could not find a file name when trying to write to {device}.").format(device = self.getName()))
 
     def _onProgress(self, job, progress):
         self.writeProgress.emit(self, progress)
