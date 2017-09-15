@@ -337,27 +337,20 @@ Rectangle
 
                     if(base.printDuration.valid && !base.printDuration.isTotalDurationZero)
                     {
+                        // All the time information for the different features is achieved
                         var print_time = PrintInformation.getFeaturePrintTimes()
 
-                        var valid_data = [];
+                        // A message is created and displayed when the user hover the time label
+                        var content = catalog.i18nc("@tooltip", "<b>Time information</b>")
                         for(var feature in print_time)
                         {
                             if(!print_time[feature].isTotalDurationZero)
                             {
-                                valid_data.push(feature + ": " + print_time[feature].getDisplayString(UM.DurationFormat.Short))
+                                content += "<br /><i>" + feature + "</i>: " + print_time[feature].getDisplayString(UM.DurationFormat.Short)
                             }
                         }
 
-                        var output = ""
-                        for(var counter = 0; counter < valid_data.length; counter++)
-                        {
-                            output += valid_data[counter];
-                            if(counter + 1 != valid_data.length)
-                                output += "\n"
-                        }
-
-                        var content = catalog.i18nc("@tooltip",output)
-                        base.showTooltip(parent, Qt.point(-UM.Theme.getSize("sidebar_margin").width, 0),  content)
+                        base.showTooltip(parent, Qt.point(-UM.Theme.getSize("sidebar_margin").width, 0), content)
                     }
                 }
                 onExited:
