@@ -44,10 +44,8 @@ Item
             {
                 id: resolutionLabel
                 anchors.top: resolutionSlider.top
-                anchors.topMargin: UM.Theme.getSize("default_margin").height * 1.2
                 anchors.left: parent.left
                 anchors.leftMargin: UM.Theme.getSize("sidebar_margin").width
-                width: UM.Theme.getSize("sidebar").width * .45 - UM.Theme.getSize("sidebar_margin").width
 
                 text: catalog.i18nc("@label", "Layer Height")
                 font: UM.Theme.getFont("default")
@@ -57,10 +55,9 @@ Item
             Text
             {
                 id: speedLabel
-                anchors.top: resolutionLabel.bottom
+                anchors.bottom: resolutionSlider.bottom
                 anchors.left: parent.left
                 anchors.leftMargin: UM.Theme.getSize("sidebar_margin").width
-                anchors.topMargin: UM.Theme.getSize("default_margin").height * 1.5
 
                 text: catalog.i18nc("@label", "Print Speed")
                 font: UM.Theme.getFont("default")
@@ -70,7 +67,7 @@ Item
             Text
             {
                 id: speedLabelSlower
-                anchors.top: speedLabel.top
+                anchors.bottom: speedLabel.bottom
                 anchors.left: resolutionSlider.left
 
                 text: catalog.i18nc("@label", "Slower")
@@ -82,7 +79,7 @@ Item
             Text
             {
                 id: speedLabelFaster
-                anchors.top: speedLabel.top
+                anchors.bottom: speedLabel.bottom
                 anchors.right: resolutionSlider.right
 
                 text: catalog.i18nc("@label", "Faster")
@@ -95,11 +92,11 @@ Item
             {
                 id: resolutionSlider
                 anchors.top: parent.top
-                
                 anchors.left: infillCellRight.left
                 anchors.right: infillCellRight.right
+
                 width: UM.Theme.getSize("sidebar").width * .55
-                height: UM.Theme.getSize("quality_slider_bar").height * 30
+                height: UM.Theme.getSize("quality_slider_bar").height * 20
 
                 property var model: Cura.ProfilesModel
 
