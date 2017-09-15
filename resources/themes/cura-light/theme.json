@@ -143,6 +143,14 @@
         "action_button_disabled_text": [127, 127, 127, 255],
         "action_button_disabled_border": [245, 245, 245, 255],
 
+        "print_button_ready": [12, 169, 227, 255],
+        "print_button_ready_border": [12, 169, 227, 255],
+        "print_button_ready_text": [255, 255, 255, 255],
+        "print_button_ready_hovered": [12, 169, 255, 255],
+        "print_button_ready_hovered_border": [12, 169, 227, 255],
+        "print_button_ready_pressed": [12, 169, 220, 255],
+        "print_button_ready_pressed_border": [12, 169, 227, 255],
+
         "scrollbar_background": [255, 255, 255, 255],
         "scrollbar_handle": [24, 41, 77, 255],
         "scrollbar_handle_hover": [12, 159, 227, 255],
@@ -295,7 +303,7 @@
         "extruder_button_material_margin": [0.70, 0.9],
         "extruder_button_material": [0.75, 0.75],
 
-        "sidebar": [35.0, 10.0],
+        "sidebar": [32.0, 10.0],
         "sidebar_margin": [1.71, 1.43],
         "sidebar_margin_thin": [0.71, 0.71],
         "sidebar_header": [0.0, 4.0],

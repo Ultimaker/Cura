@@ -16,7 +16,7 @@
         "secondary": [241, 242, 242, 255],
 
         "topbar_background_color": [0, 0, 0, 0],
-        "topbar_background_color_monitoring": [0, 0, 0, 255],
+        "topbar_background_color_monitoring": [39, 44, 48, 255],
 
         "topbar_button_text_active": [255, 255, 255, 255],
         "topbar_button_text_inactive": [128, 128, 128, 255],
@@ -36,7 +36,7 @@
         "error": [212, 31, 53, 255],
         "sidebar_header_bar": [39, 44, 48, 255],
         "sidebar_header_active": [39, 44, 48, 255],
-        "sidebar_header_hover": [39, 44, 48, 255],
+        "sidebar_header_hover": [68, 72, 75, 255],
         "sidebar_header_highlight": [68, 192, 255, 255],
         "sidebar_header_highlight_hover": [68, 192, 255, 255],
         "sidebar_header_text_active": [255, 255, 255, 255],
@@ -109,7 +109,7 @@
 
         "setting_control": [43, 48, 52, 255],
         "setting_control_selected": [34, 39, 42, 38],
-        "setting_control_highlight": [255, 255, 255, 0],
+        "setting_control_highlight": [43, 48, 52, 255],
         "setting_control_border": [255, 255, 255, 38],
         "setting_control_border_highlight": [12, 169, 227, 255],
         "setting_control_text": [255, 255, 255, 181],
@@ -128,9 +128,9 @@
         "progressbar_background": [255, 255, 255, 48],
         "progressbar_control": [255, 255, 255, 197],
 
-        "slider_groove": [245, 245, 245, 255],
+        "slider_groove": [127, 127, 127, 255],
         "slider_groove_border": [127, 127, 127, 255],
-        "slider_groove_fill": [127, 127, 127, 255],
+        "slider_groove_fill": [245, 245, 245, 255],
         "slider_handle": [255, 255, 255, 255],
         "slider_handle_hover": [77, 182, 226, 255],
         "slider_handle_border": [39, 44, 48, 255],
@@ -196,11 +196,6 @@
         "layerview_support_interface": [64, 192, 255, 255],
 
         "material_compatibility_warning": [255, 255, 255, 255],
-
-        "topbar_button_text_inactive": [255, 255, 255, 255],
-        "topbar_button_text_active": [255, 255, 255, 255],
-        "topbar_button_text_hovered": [255, 255, 255, 255],
-        "topbar_background_color_monitoring": [39, 44, 48, 255],
 
         "quality_slider_unavailable": [179, 179, 179, 255],
         "quality_slider_available": [255, 255, 255, 255],
