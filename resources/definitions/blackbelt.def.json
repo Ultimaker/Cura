@@ -1,0 +1,96 @@
+{
+    "id": "blackbelt",
+    "version": 2,
+    "name": "BLACKBELT 3D Printer",
+    "inherits": "fdmprinter",
+    "metadata": {
+        "visible": true,
+        "author": "fieldOfView",
+        "manufacturer": "BlackBelt 3D B.V.",
+        "category": "BLACKBELT 3D",
+        "platform": "blackbelt_platform.stl",
+        "platform_offset": [0, -1, 0],
+        "file_formats": "text/x-gcode"
+    },
+
+    "settings": {
+        "blackbelt_settings": {
+            "label": "BlackBelt",
+            "type": "category",
+            "description": "BlackBelt specific settings",
+            "icon": "category_machine",
+            "children":
+            {
+                "blackbelt_gantry_angle":
+                {
+                    "label": "Gantry Angle",
+                    "description": "The angle of the gantry relative to the build plate. Match this setting with the current printer configuration.",
+                    "unit": "°",
+                    "type": "enum",
+                    "options":
+                    {
+                        "15": "15°",
+                        "25": "25°",
+                        "35": "35°",
+                        "45": "45°"
+                    },
+                    "default_value": "45",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false
+                },
+                "blackbelt_nozzle_size":
+                {
+                    "label": "Nozzle Diameter",
+                    "description": "The inner diameter of the nozzle. Change this setting to match the nozzle inserted in the printhead.",
+                    "unit": "mm",
+                    "type": "float",
+                    "default_value": 0.4,
+                    "minimum_value": "0.001",
+                    "maximum_value_warning": "10",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
+                }
+            }
+        }
+    },
+
+    "overrides": {
+        "machine_name": {
+            "default_value": "BLACKBELT 3D Printer"
+        },
+        "machine_width": {
+            "default_value": 340
+        },
+        "machine_height": {
+            "default_value": 340,
+            "value": "485 * math.sin(math.radians(float(blackbelt_gantry_angle)))"
+        },
+        "machine_depth": {
+            "default_value": 99999
+        },
+        "machine_nozzle_size": {
+            "default_value": 0.4,
+            "value": "blackbelt_nozzle_size"
+        },
+        "material_diameter": {
+            "value": "1.75"
+        },
+        "machine_gcode_flavor": {
+            "default_value": "RepRap (Marlin/Sprinter)"
+        },
+
+        "support_enable": {
+            "enabled": false
+        },
+        "adhesion_type": {
+            "enabled": false,
+            "value": "'none'"
+        },
+        "print_sequence": {
+            "enabled": false
+        },
+        "wireframe_enabled": {
+            "enabled": false
+        }
+    }
+}
