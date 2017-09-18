@@ -10,6 +10,13 @@
         "category": "BLACKBELT 3D",
         "platform": "blackbelt_platform.stl",
         "platform_offset": [0, -2, 0],
+        "limit_buildvolume":
+        {
+            "depth":
+            {
+                "maximum": 320
+            }
+        },
         "file_formats": "text/x-gcode"
     },
 
