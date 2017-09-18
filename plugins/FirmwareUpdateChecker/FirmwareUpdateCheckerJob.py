@@ -54,30 +54,32 @@ class FirmwareUpdateCheckerJob(Job):
                 # Nothing to parse, just get the string
                 # TODO: In the future may be done by parsing a JSON file with diferent version for each printer model
                 current_version = reader(current_version_file).readline().rstrip()
-                Logger.log("i", "Reading firmware version of %s: %s", machine_name, current_version)
 
-                # If it is the first time the version is checked, the checked_version is None
+                # If it is the first time the version is checked, the checked_version is ''
                 checked_version = Preferences.getInstance().getValue("info/latest_checked_firmware")
 
                 # If the checked_version is '', it's because is the first time we check firmware and in this case
                 # we will not show the notification, but we will store it for the next time
+                Preferences.getInstance().setValue("info/latest_checked_firmware", current_version)
+                Logger.log("i", "Reading firmware version of %s: checked = %s - latest = %s", machine_name, checked_version, current_version)
+
+                # The first time we want to store the current version, the notification will not be shown,
+                # because the new version of Cura will be release before the firmware and we don't want to
+                # notify the user when no new firmware version is available.
                 if (checked_version != "") and (checked_version != current_version):
-                    message = Message(i18n_catalog.i18nc("@info", "<b>New %s firmware available</b><br/><br/>To ensure that your "
-                                                                  "%s is equiped with the latest features it is recommended "
-                                                                  "to update the firmware regularly. This can be done on the "
-                                                                  "%s (when connected to the network) or via USB."
-                                                         % (machine_name, machine_name, machine_name)))
+                    Logger.log("i", "SHOWING FIRMWARE UPDATE MESSAGE")
+                    message = Message(i18n_catalog.i18nc("@info", "To ensure that your %s is equipped with the latest "
+                                                                  "features it is recommended to update the firmware "
+                                                                  "regularly. This can be done on the %s (when connected "
+                                                                  "to the network) or via USB."
+                                                         % (machine_name, machine_name)),
+                                      title = i18n_catalog.i18nc("@info:title", "New %s firmware available" % machine_name))
                     message.addAction("download", i18n_catalog.i18nc("@action:button", "Download"), "[no_icon]", "[no_description]")
 
                     # If we do this in a cool way, the download url should be available in the JSON file
                     self._download_url = "https://ultimaker.com/en/resources/20500-upgrade-firmware"
                     message.actionTriggered.connect(self.actionTriggered)
-                    Application.getInstance().showMessage(message)
-
-                # The first time we want to store the current version, the notification will not be shown,
-                # because the new version of Cura will be release before the firmware and we don't want to
-                # notify the user when no new firmware version is available.
-                Preferences.getInstance().setValue("info/latest_checked_firmware", current_version)
+                    message.show()
 
         except Exception as e:
             Logger.log("w", "Failed to check for new version: %s", e)
