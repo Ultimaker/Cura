@@ -101,7 +101,7 @@ class PrintInformation(QObject):
         self._print_time_message_values = {}
 
         # Full fill message values using keys from _print_time_message_translations
-        for key in sorted(self._print_time_message_translations.keys()):
+        for key in self._print_time_message_translations.keys():
             self._print_time_message_values[key] = Duration(None, self)
 
 
