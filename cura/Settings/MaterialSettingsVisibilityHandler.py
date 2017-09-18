@@ -11,6 +11,7 @@ class MaterialSettingsVisibilityHandler(UM.Settings.Models.SettingVisibilityHand
             "default_material_print_temperature",
             "material_bed_temperature",
             "material_standby_temperature",
+            "material_flow_temp_graph",
             "cool_fan_speed",
             "retraction_amount",
             "retraction_speed",
