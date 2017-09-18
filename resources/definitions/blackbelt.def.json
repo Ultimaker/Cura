@@ -9,7 +9,7 @@
         "manufacturer": "BlackBelt 3D B.V.",
         "category": "BLACKBELT 3D",
         "platform": "blackbelt_platform.stl",
-        "platform_offset": [0, -1, 0],
+        "platform_offset": [0, -2, 0],
         "file_formats": "text/x-gcode"
     },
 
