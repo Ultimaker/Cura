@@ -73,14 +73,18 @@ class ThreeMFReader(MeshReader):
 
         return temp_mat
 
-    ##  Convenience function that converts a SceneNode object (as obtained from libSavitar) to a Uranium SceneNode.
-    #   \returns Uranium SceneNode.
+
+    ##  Convenience function that converts a SceneNode object (as obtained from libSavitar) to a Uranium scenenode.
+    #   \returns Uranium Scenen node.
     def _convertSavitarNodeToUMNode(self, savitar_node):
         um_node = SceneNode()
+<<<<<<< HEAD
 
         # Disable the auto-drop feature when loading a project file and processing the nodes for the first time
         um_node.setSetting("auto_drop", False)
 
+=======
+>>>>>>> parent of 11ebdf73... CURA-4269 disable auto-drop for first time loaded models from project files
         transformation = self._createMatrixFromTransformationString(savitar_node.getTransformation())
         um_node.setTransformation(transformation)
         mesh_builder = MeshBuilder()
