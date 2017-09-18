@@ -1,4 +1,4 @@
-# Copyright (c) 2015 Ultimaker B.V.
+# Copyright (c) 2017 Ultimaker B.V.
 # Cura is released under the terms of the AGPLv3 or higher.
 
 from UM.Backend.Backend import Backend, BackendState
@@ -196,19 +196,7 @@ class CuraEngineBackend(QObject, Backend):
             Logger.log("w", "Slice unnecessary, nothing has changed that needs reslicing.")
             return
 
-        self.printDurationMessage.emit({
-            "none": 0,
-            "inset_0": 0,
-            "inset_x": 0,
-            "skin": 0,
-            "support": 0,
-            "skirt": 0,
-            "infill": 0,
-            "support_infill": 0,
-            "travel": 0,
-            "retract": 0,
-            "support_interface": 0
-        }, [0])
+        Application.getInstance().getPrintInformation().setToZeroPrintInformation()
 
         self._stored_layer_data = []
         self._stored_optimized_layer_data = []
@@ -278,7 +266,7 @@ class CuraEngineBackend(QObject, Backend):
         if job.getResult() == StartSliceJob.StartJobResult.MaterialIncompatible:
             if Application.getInstance().platformActivity:
                 self._error_message = Message(catalog.i18nc("@info:status",
-                                            "The selected material is incompatible with the selected machine or configuration."), title = catalog.i18nc("@info:title", "Material Details"))
+                                            "The selected material is incompatible with the selected machine or configuration."), title = catalog.i18nc("@info:title", "Incompatible material"))
                 self._error_message.show()
                 self.backendStateChange.emit(BackendState.Error)
             else:
@@ -306,7 +294,7 @@ class CuraEngineBackend(QObject, Backend):
 
                 error_labels = ", ".join(error_labels)
                 self._error_message = Message(catalog.i18nc("@info:status", "Unable to slice with the current settings. The following settings have errors: {0}".format(error_labels)),
-                                              title = catalog.i18nc("@info:title", "Setting Details"))
+                                              title = catalog.i18nc("@info:title", "Invalid settings"))
                 self._error_message.show()
                 self.backendStateChange.emit(BackendState.Error)
             else:
@@ -514,29 +502,6 @@ class CuraEngineBackend(QObject, Backend):
     def _onGCodePrefixMessage(self, message):
         self._scene.gcode_list.insert(0, message.data.decode("utf-8", "replace"))
 
-    ##  Called when a print time message is received from the engine.
-    #
-    #   \param message The protobuf message containing the print time per feature and
-    #   material amount per extruder
-    def _onPrintTimeMaterialEstimates(self, message):
-        material_amounts = []
-        for index in range(message.repeatedMessageCount("materialEstimates")):
-            material_amounts.append(message.getRepeatedMessage("materialEstimates", index).material_amount)
-        feature_times = {
-            "none": message.time_none,
-            "inset_0": message.time_inset_0,
-            "inset_x": message.time_inset_x,
-            "skin": message.time_skin,
-            "support": message.time_support,
-            "skirt": message.time_skirt,
-            "infill": message.time_infill,
-            "support_infill": message.time_support_infill,
-            "travel": message.time_travel,
-            "retract": message.time_retract,
-            "support_interface": message.time_support_interface
-        }
-        self.printDurationMessage.emit(feature_times, material_amounts)
-
     ##  Creates a new socket connection.
     def _createSocket(self):
         super()._createSocket(os.path.abspath(os.path.join(PluginRegistry.getInstance().getPluginPath(self.getPluginId()), "Cura.proto")))
@@ -554,6 +519,38 @@ class CuraEngineBackend(QObject, Backend):
                 self._change_timer.stop()
             else:
                 self._change_timer.start()
+
+    ##  Called when a print time message is received from the engine.
+    #
+    #   \param message The protobuf message containing the print time per feature and
+    #   material amount per extruder
+    def _onPrintTimeMaterialEstimates(self, message):
+        material_amounts = []
+        for index in range(message.repeatedMessageCount("materialEstimates")):
+            material_amounts.append(message.getRepeatedMessage("materialEstimates", index).material_amount)
+
+        times = self._parseMessagePrintTimes(message)
+        self.printDurationMessage.emit(times, material_amounts)
+
+    ##  Called for parsing message to retrieve estimated time per feature
+    #
+    #   \param message The protobuf message containing the print time per feature
+    def _parseMessagePrintTimes(self, message):
+
+        result = {
+            "inset_0": message.time_inset_0,
+            "inset_x": message.time_inset_x,
+            "skin": message.time_skin,
+            "infill": message.time_infill,
+            "support_infill": message.time_support_infill,
+            "support_interface": message.time_support_interface,
+            "support": message.time_support,
+            "skirt": message.time_skirt,
+            "travel": message.time_travel,
+            "retract": message.time_retract,
+            "none": message.time_none
+        }
+        return result
 
     ##  Called when the back-end connects to the front-end.
     def _onBackendConnected(self):

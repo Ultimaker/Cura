@@ -238,22 +238,22 @@ Item {
                         if(!control.enabled)
                             return UM.Theme.getColor("action_button_disabled_border");
                         else if(control.pressed)
-                            return UM.Theme.getColor("action_button_active_border");
+                            return UM.Theme.getColor("print_button_ready_pressed_border");
                         else if(control.hovered)
-                            return UM.Theme.getColor("action_button_hovered_border");
+                            return UM.Theme.getColor("print_button_ready_hovered_border");
                         else
-                            return UM.Theme.getColor("action_button_border");
+                            return UM.Theme.getColor("print_button_ready_border");
                     }
                     color:
                     {
                         if(!control.enabled)
                             return UM.Theme.getColor("action_button_disabled");
                         else if(control.pressed)
-                            return UM.Theme.getColor("action_button_active");
+                            return UM.Theme.getColor("print_button_ready_pressed");
                         else if(control.hovered)
-                            return UM.Theme.getColor("action_button_hovered");
+                            return UM.Theme.getColor("print_button_ready_hovered");
                         else
-                            return UM.Theme.getColor("action_button");
+                            return UM.Theme.getColor("print_button_ready");
                     }
 
                     Behavior on color { ColorAnimation { duration: 50; } }
@@ -268,11 +268,11 @@ Item {
                             if(!control.enabled)
                                 return UM.Theme.getColor("action_button_disabled_text");
                             else if(control.pressed)
-                                return UM.Theme.getColor("action_button_active_text");
+                                return UM.Theme.getColor("print_button_ready_text");
                             else if(control.hovered)
-                                return UM.Theme.getColor("action_button_hovered_text");
+                                return UM.Theme.getColor("print_button_ready_text");
                             else
-                                return UM.Theme.getColor("action_button_text");
+                                return UM.Theme.getColor("print_button_ready_text");
                         }
                         font: UM.Theme.getFont("action_button")
                         text: control.text;

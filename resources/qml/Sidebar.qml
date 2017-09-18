@@ -26,7 +26,6 @@ Rectangle
     property bool monitoringPrint: false
 
     property variant printDuration: PrintInformation.currentPrintTime
-    property variant printDurationPerFeature: PrintInformation.printTimesPerFeature
     property variant printMaterialLengths: PrintInformation.materialLengths
     property variant printMaterialWeights: PrintInformation.materialWeights
     property variant printMaterialCosts: PrintInformation.materialCosts
@@ -314,54 +313,53 @@ Rectangle
         anchors.bottom: parent.bottom
         anchors.leftMargin: UM.Theme.getSize("sidebar_margin").width
         anchors.bottomMargin: UM.Theme.getSize("sidebar_margin").height
-        height: childrenRect.height
+        height: timeDetails.height + timeSpecDescription.height + lengthSpec.height
         visible: !monitoringPrint
 
-        UM.TooltipArea
+        Text
         {
-            id: timeSpecPerFeatureTooltipArea
-            width: timeSpec.width
-            height: timeSpec.height
+            id: timeDetails
             anchors.left: parent.left
             anchors.bottom: timeSpecDescription.top
+            font: UM.Theme.getFont("large")
+            color: UM.Theme.getColor("text_subtext")
+            text: (!base.printDuration || !base.printDuration.valid) ? catalog.i18nc("@label", "00h 00min") : base.printDuration.getDisplayString(UM.DurationFormat.Short)
 
-            text: {
-                var order = ["inset_0", "inset_x", "skin", "infill", "support_infill", "support_interface", "support", "travel", "retract", "none"];
-                var visible_names = {
-                    "inset_0": catalog.i18nc("@tooltip", "Outer Wall"),
-                    "inset_x": catalog.i18nc("@tooltip", "Inner Walls"),
-                    "skin": catalog.i18nc("@tooltip", "Skin"),
-                    "infill": catalog.i18nc("@tooltip", "Infill"),
-                    "support_infill": catalog.i18nc("@tooltip", "Support Infill"),
-                    "support_interface": catalog.i18nc("@tooltip", "Support Interface"),
-                    "support": catalog.i18nc("@tooltip", "Support"),
-                    "travel": catalog.i18nc("@tooltip", "Travel"),
-                    "retract": catalog.i18nc("@tooltip", "Retractions"),
-                    "none": catalog.i18nc("@tooltip", "Other")
-                };
-                var result = "";
-                for(var feature in order)
+            MouseArea
+            {
+                id: infillMouseArea
+                anchors.fill: parent
+                hoverEnabled: true
+                //enabled: base.settingsEnabled
+
+                onEntered:
                 {
-                    feature = order[feature];
-                    if(base.printDurationPerFeature[feature] && base.printDurationPerFeature[feature].totalSeconds > 0)
+
+                    if(base.printDuration.valid && !base.printDuration.isTotalDurationZero)
                     {
-                        result += "<br/>" + visible_names[feature] + ": " + base.printDurationPerFeature[feature].getDisplayString(UM.DurationFormat.Short);
+                        // All the time information for the different features is achieved
+                        var print_time = PrintInformation.getFeaturePrintTimes()
+
+                        // A message is created and displayed when the user hover the time label
+                        var content = catalog.i18nc("@tooltip", "<b>Time information</b>")
+                        for(var feature in print_time)
+                        {
+                            if(!print_time[feature].isTotalDurationZero)
+                            {
+                                content += "<br /><i>" + feature + "</i>: " + print_time[feature].getDisplayString(UM.DurationFormat.Short)
+                            }
+                        }
+
+                        base.showTooltip(parent, Qt.point(-UM.Theme.getSize("sidebar_margin").width, 0), content)
                     }
                 }
-                result = result.replace(/^\<br\/\>/, ""); // remove newline before first item
-                return result;
-            }
-
-            Text
-            {
-                id: timeSpec
-                anchors.left: parent.left
-                anchors.bottom: parent.bottom
-                font: UM.Theme.getFont("large")
-                color: UM.Theme.getColor("text_subtext")
-                text: (!base.printDuration || !base.printDuration.valid) ? catalog.i18nc("@label", "00h 00min") : base.printDuration.getDisplayString(UM.DurationFormat.Short)
+                onExited:
+                {
+                    base.hideTooltip();
+                }
             }
         }
+
         Text
         {
             id: timeSpecDescription
