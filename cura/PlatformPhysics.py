@@ -9,6 +9,7 @@ from UM.Scene.Iterator.BreadthFirstIterator import BreadthFirstIterator
 from UM.Math.Vector import Vector
 from UM.Scene.Selection import Selection
 from UM.Preferences import Preferences
+from UM.Logger import Logger
 
 from cura.ConvexHullDecorator import ConvexHullDecorator
 
@@ -41,9 +42,11 @@ class PlatformPhysics:
     def _onSceneChanged(self, source):
         self._change_timer.start()
 
-    def _onChangeTimerFinished(self):
+    def _onChangeTimerFinished(self, was_triggered_by_tool=False):
         if not self._enabled:
             return
+
+        Logger.log("d", "was_triggered_by_tool=%s", was_triggered_by_tool)
 
         root = self._controller.getScene().getRoot()
 
@@ -71,13 +74,14 @@ class PlatformPhysics:
             # Check if this is the first time a project file node was loaded (disable auto drop in that case), defaults to True
             should_auto_drop = node.getSetting("auto_drop", True)
 
+            # This should NOT happen if the scene change was triggered by a tool (like translate), only on project load
+            if was_triggered_by_tool:
+                should_auto_drop = True
+
             # If a node is grouped or it's loaded from a project file (auto-drop disabled), don't move it down
             if Preferences.getInstance().getValue("physics/automatic_drop_down") and not (node.getParent() and node.getParent().callDecoration("isGroup")) and node.isEnabled() and should_auto_drop:
                 z_offset = node.callDecoration("getZOffset") if node.getDecorator(ZOffsetDecorator.ZOffsetDecorator) else 0
                 move_vector = move_vector.set(y=-bbox.bottom + z_offset)
-
-            # Enable auto-drop after processing the project file node for the first time
-            node.setSetting("auto_drop", False)
 
             # If there is no convex hull for the node, start calculating it and continue.
             if not node.getDecorator(ConvexHullDecorator):
@@ -167,4 +171,4 @@ class PlatformPhysics:
                         node.removeDecorator(ZOffsetDecorator.ZOffsetDecorator)
 
         self._enabled = True
-        self._onChangeTimerFinished()
+        self._onChangeTimerFinished(True)
