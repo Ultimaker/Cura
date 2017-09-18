@@ -96,7 +96,7 @@ Item
                 anchors.right: infillCellRight.right
 
                 width: UM.Theme.getSize("sidebar").width * .55
-                height: UM.Theme.getSize("quality_slider_bar").height * 20
+                height: UM.Theme.getSize("quality_slider_bar").height * 25
 
                 property var model: Cura.ProfilesModel
 
