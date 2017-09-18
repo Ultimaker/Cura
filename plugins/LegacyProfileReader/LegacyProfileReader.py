@@ -141,4 +141,5 @@ class LegacyProfileReader(ProfileReader):
         profile.setDirty(True)
         profile.addMetaDataEntry("type", "quality_changes")
         profile.addMetaDataEntry("quality_type", "normal")
+        profile.addMetaDataEntry("setting_version", 2)
         return profile
