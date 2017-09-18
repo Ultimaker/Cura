@@ -7,7 +7,6 @@
         "visible": true,
         "author": "Claudio Sampaio (Patola)",
         "manufacturer": "Other",
-        "category": "Other",
         "file_formats": "text/x-gcode",
         "icon": "icon_ultimaker2",
         "platform": "kossel_platform.stl",

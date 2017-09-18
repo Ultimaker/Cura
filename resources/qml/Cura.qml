@@ -319,24 +319,6 @@ UM.MainWindow
                 }
             }
 
-            Loader
-            {
-                id: view_panel
-
-                property bool hugBottom: parent.height < viewModeButton.y + viewModeButton.height + height + UM.Theme.getSize("default_margin").height
-
-                anchors.bottom: parent.bottom // panel is always anchored to the bottom only, because dynamically switching between bottom and top results in stretching the height
-                anchors.bottomMargin: hugBottom ? 0 : parent.height - (viewModeButton.y + viewModeButton.height + height + UM.Theme.getSize("default_margin").height)
-                anchors.left: viewModeButton.left;
-                anchors.leftMargin: hugBottom ? viewModeButton.width + UM.Theme.getSize("default_margin").width : 0
-
-                property var buttonTarget: Qt.point(viewModeButton.x + viewModeButton.width / 2, viewModeButton.y + viewModeButton.height / 2)
-
-                height: childrenRect.height;
-
-                source: UM.ActiveView.valid ? UM.ActiveView.activeViewPanel : "";
-            }
-
             Button
             {
                 id: openFileButton;
@@ -352,28 +334,6 @@ UM.MainWindow
                 }
                 action: Cura.Actions.open;
             }
-
-            Image
-            {
-                id: logo
-                anchors
-                {
-                    left: parent.left
-                    leftMargin: UM.Theme.getSize("default_margin").width;
-                    bottom: parent.bottom
-                    bottomMargin: UM.Theme.getSize("default_margin").height;
-                }
-
-                source: UM.Theme.getImage("logo");
-                width: UM.Theme.getSize("logo").width;
-                height: UM.Theme.getSize("logo").height;
-                z: -1;
-
-                sourceSize.width: width;
-                sourceSize.height: height;
-            }
-
-
 
             Toolbar
             {
@@ -415,25 +375,6 @@ UM.MainWindow
                 monitoringPrint: base.showPrintMonitor
             }
 
-            Button
-            {
-                id: viewModeButton
-
-                anchors
-                {
-                    top: toolbar.bottom;
-                    topMargin: UM.Theme.getSize("window_margin").height;
-                    left: parent.left;
-                }
-                text: catalog.i18nc("@action:button","View Mode");
-                iconSource: UM.Theme.getIcon("viewmode");
-
-                style: UM.Theme.styles.tool_button;
-                tooltip: "";
-                enabled: !PrintInformation.preSliced
-                menu: ViewMenu { }
-            }
-
             Rectangle
             {
                 id: viewportOverlay
@@ -447,7 +388,7 @@ UM.MainWindow
                     right: sidebar.left
                 }
                 visible: opacity > 0
-                opacity: base.showPrintMonitor ? 0.75 : 0
+                opacity: base.showPrintMonitor ? 1 : 0
 
                 Behavior on opacity { NumberAnimation { duration: 100; } }
 

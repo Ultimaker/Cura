@@ -16,22 +16,41 @@ Rectangle
     anchors.left: parent.left
     anchors.right: parent.right
     height: UM.Theme.getSize("sidebar_header").height
-    color: UM.Theme.getColor("sidebar_header_bar")
+    color: base.monitoringPrint ? UM.Theme.getColor("topbar_background_color_monitoring") : UM.Theme.getColor("topbar_background_color")
+
+    Behavior on color { ColorAnimation { duration: 100; } }
 
     property bool printerConnected: Cura.MachineManager.printerOutputDevices.length != 0
     property bool printerAcceptsCommands: printerConnected && Cura.MachineManager.printerOutputDevices[0].acceptsCommands
     property bool monitoringPrint: false
     signal startMonitoringPrint()
     signal stopMonitoringPrint()
+
     UM.I18nCatalog
     {
         id: catalog
         name:"cura"
     }
 
+    Image
+    {
+        id: logo
+        anchors.left: parent.left
+        anchors.leftMargin: UM.Theme.getSize("default_margin").width
+        anchors.verticalCenter: parent.verticalCenter
+
+        source: UM.Theme.getImage("logo");
+        width: UM.Theme.getSize("logo").width;
+        height: UM.Theme.getSize("logo").height;
+
+        sourceSize.width: width;
+        sourceSize.height: height;
+    }
+
     Row
     {
-        anchors.left: parent.left
+        anchors.left: logo.right
+        anchors.leftMargin: UM.Theme.getSize("topbar_logo_right_margin").width
         anchors.right: machineSelection.left
         anchors.rightMargin: UM.Theme.getSize("default_margin").width
         spacing: UM.Theme.getSize("default_margin").width
@@ -41,80 +60,48 @@ Rectangle
             id: showSettings
             height: UM.Theme.getSize("sidebar_header").height
             onClicked: base.stopMonitoringPrint()
-            iconSource: UM.Theme.getIcon("tab_settings");
             property color overlayColor: "transparent"
             property string overlayIconSource: ""
-            text: catalog.i18nc("@title:tab","Prepare")
+            text: catalog.i18nc("@title:tab", "Prepare")
             checkable: true
             checked: !base.monitoringPrint
             exclusiveGroup: sidebarHeaderBarGroup
 
-            style:  UM.Theme.styles.topbar_header_tab
+            style: UM.Theme.styles.topbar_header_tab
         }
 
         Button
         {
             id: showMonitor
+            width: UM.Theme.getSize("topbar_button").width
             height: UM.Theme.getSize("sidebar_header").height
             onClicked: base.startMonitoringPrint()
-            text: catalog.i18nc("@title:tab", "Print")
-            iconSource: printerConnected ? UM.Theme.getIcon("tab_monitor_with_status") : UM.Theme.getIcon("tab_monitor")
-            property color overlayColor:
+            text: catalog.i18nc("@title:tab", "Monitor")
+            property string iconSource:
             {
-                if(!printerAcceptsCommands)
+                if (!printerConnected)
                 {
-                    return UM.Theme.getColor("status_unknown");
+                    return UM.Theme.getIcon("tab_status_unknown");
                 }
-
-                if(Cura.MachineManager.printerOutputDevices[0].printerState == "maintenance")
-                {
-                    return UM.Theme.getColor("status_busy");
-                }
-                switch(Cura.MachineManager.printerOutputDevices[0].jobState)
-                {
-                    case "printing":
-                    case "pre_print":
-                    case "wait_cleanup":
-                    case "pausing":
-                    case "resuming":
-                        return UM.Theme.getColor("status_busy");
-                    case "ready":
-                    case "":
-                        return UM.Theme.getColor("status_ready");
-                    case "paused":
-                        return UM.Theme.getColor("status_paused");
-                    case "error":
-                        return UM.Theme.getColor("status_stopped");
-                    case "offline":
-                        return UM.Theme.getColor("status_offline");
-                    default:
-                        return UM.Theme.getColor("text_reversed");
-                }
-            }
-            property string overlayIconSource:
-            {
-                if(!printerConnected)
-                {
-                    return "";
-                }
-                else if(!printerAcceptsCommands)
+                else if (!printerAcceptsCommands)
                 {
                     return UM.Theme.getIcon("tab_status_unknown");
                 }
 
-                if(Cura.MachineManager.printerOutputDevices[0].printerState == "maintenance")
+                if (Cura.MachineManager.printerOutputDevices[0].printerState == "maintenance")
                 {
                     return UM.Theme.getIcon("tab_status_busy");
                 }
 
-                switch(Cura.MachineManager.printerOutputDevices[0].jobState)
+                switch (Cura.MachineManager.printerOutputDevices[0].jobState)
                 {
                     case "printing":
                     case "pre_print":
-                    case "wait_cleanup":
                     case "pausing":
                     case "resuming":
                         return UM.Theme.getIcon("tab_status_busy");
+                    case "wait_cleanup":
+                        return UM.Theme.getIcon("tab_status_finished");
                     case "ready":
                     case "":
                         return UM.Theme.getIcon("tab_status_connected")
@@ -122,10 +109,8 @@ Rectangle
                         return UM.Theme.getIcon("tab_status_paused")
                     case "error":
                         return UM.Theme.getIcon("tab_status_stopped")
-                    case "offline":
-                        return UM.Theme.getIcon("tab_status_offline")
                     default:
-                        return ""
+                        return UM.Theme.getIcon("tab_status_unknown")
                 }
             }
 
@@ -133,7 +118,7 @@ Rectangle
             checked: base.monitoringPrint
             exclusiveGroup: sidebarHeaderBarGroup
 
-            style:  UM.Theme.styles.topbar_header_tab
+            style: UM.Theme.styles.topbar_header_tab_no_overlay
         }
 
         ExclusiveGroup { id: sidebarHeaderBarGroup }
@@ -144,7 +129,7 @@ Rectangle
         id: machineSelection
         text: Cura.MachineManager.activeMachineName
 
-        width: UM.Theme.getSize("sidebar").width;
+        width: UM.Theme.getSize("sidebar").width
         height: UM.Theme.getSize("sidebar_header").height
         tooltip: Cura.MachineManager.activeMachineName
 
@@ -159,27 +144,17 @@ Rectangle
                     if(control.pressed)
                     {
                         return UM.Theme.getColor("sidebar_header_active");
-                    } else if(control.hovered)
+                    }
+                    else if(control.hovered)
                     {
                         return UM.Theme.getColor("sidebar_header_hover");
-                    } else
+                    }
+                    else
                     {
                         return UM.Theme.getColor("sidebar_header_bar");
                     }
                 }
                 Behavior on color { ColorAnimation { duration: 50; } }
-
-                Rectangle
-                {
-                    id: underline;
-
-                    anchors.left: parent.left
-                    anchors.right: parent.right
-                    anchors.bottom: parent.bottom
-                    height: UM.Theme.getSize("sidebar_header_highlight").height
-                    color: UM.Theme.getColor("sidebar_header_highlight_hover")
-                    visible: control.hovered || control.pressed
-                }
 
                 UM.RecolorImage
                 {
@@ -191,17 +166,17 @@ Rectangle
                     height: UM.Theme.getSize("standard_arrow").height
                     sourceSize.width: width
                     sourceSize.height: width
-                    color: UM.Theme.getColor("text_reversed")
+                    color: UM.Theme.getColor("text_emphasis")
                     source: UM.Theme.getIcon("arrow_bottom")
                 }
                 Label
                 {
                     id: sidebarComboBoxLabel
-                    color: UM.Theme.getColor("text_reversed")
+                    color: UM.Theme.getColor("sidebar_header_text_active")
                     text: control.text;
                     elide: Text.ElideRight;
                     anchors.left: parent.left;
-                    anchors.leftMargin: UM.Theme.getSize("default_margin").width
+                    anchors.leftMargin: UM.Theme.getSize("default_margin").width * 2
                     anchors.right: downArrow.left;
                     anchors.rightMargin: control.rightMargin;
                     anchors.verticalCenter: parent.verticalCenter;
@@ -213,4 +188,60 @@ Rectangle
 
         menu: PrinterMenu { }
     }
+
+    ComboBox
+    {
+        id: viewModeButton
+        anchors
+        {
+            verticalCenter: parent.verticalCenter
+            right: parent.right
+            rightMargin: UM.Theme.getSize("sidebar").width + UM.Theme.getSize("default_margin").width
+        }
+        style: UM.Theme.styles.combobox
+        visible: !base.monitoringPrint
+
+        model: UM.ViewModel { }
+        textRole: "name"
+
+        onCurrentIndexChanged:
+        {
+            UM.Controller.setActiveView(model.getItem(currentIndex).id);
+
+            // Update the active flag
+            for (var i = 0; i < model.rowCount; ++i)
+            {
+                const is_active = i == currentIndex;
+                model.getItem(i).active = is_active;
+            }
+        }
+
+        currentIndex:
+        {
+            for (var i = 0; i < model.rowCount; ++i)
+            {
+                if (model.getItem(i).active)
+                {
+                    return i;
+                }
+            }
+            return 0;
+        }
+    }
+
+    Loader
+    {
+        id: view_panel
+
+        anchors.top: viewModeButton.bottom
+        anchors.topMargin: UM.Theme.getSize("default_margin").height
+        anchors.right: viewModeButton.right
+
+        property var buttonTarget: Qt.point(viewModeButton.x + viewModeButton.width / 2, viewModeButton.y + viewModeButton.height / 2)
+
+        height: childrenRect.height;
+
+        source: UM.ActiveView.valid ? UM.ActiveView.activeViewPanel : "";
+    }
+
 }

@@ -82,6 +82,17 @@ class QualityManager:
 
         return list(common_quality_types)
 
+    def findAllQualitiesForMachineAndMaterials(self, machine_definition: "DefinitionContainerInterface", material_containers: List[InstanceContainer]) -> List[InstanceContainer]:
+        # Determine the common set of quality types which can be
+        # applied to all of the materials for this machine.
+        quality_type_dict = self.__fetchQualityTypeDictForMaterial(machine_definition, material_containers[0])
+        qualities = set(quality_type_dict.values())
+        for material_container in material_containers[1:]:
+            next_quality_type_dict = self.__fetchQualityTypeDictForMaterial(machine_definition, material_container)
+            qualities.update(set(next_quality_type_dict.values()))
+
+        return list(qualities)
+
     ##  Fetches a dict of quality types names to quality profiles for a combination of machine and material.
     #
     #   \param machine_definition \type{DefinitionContainer} the machine definition.
@@ -121,7 +132,7 @@ class QualityManager:
     #   \param material_container \type{InstanceContainer} the material.
     #   \return \type{List[InstanceContainer]} the list of suitable qualities.
     def findAllQualitiesForMachineMaterial(self, machine_definition: "DefinitionContainerInterface", material_container: InstanceContainer) -> List[InstanceContainer]:
-        criteria = {"type": "quality" }
+        criteria = {"type": "quality"}
         result = self._getFilteredContainersForStack(machine_definition, [material_container], **criteria)
         if not result:
             basic_materials = self._getBasicMaterials(material_container)
@@ -233,13 +244,16 @@ class QualityManager:
         filter_by_material = False
 
         machine_definition = self.getParentMachineDefinition(machine_definition)
+        criteria["definition"] = machine_definition.getId()
+        found_containers_with_machine_definition = ContainerRegistry.getInstance().findInstanceContainers(**criteria)
         whole_machine_definition = self.getWholeMachineDefinition(machine_definition)
         if whole_machine_definition.getMetaDataEntry("has_machine_quality"):
             definition_id = machine_definition.getMetaDataEntry("quality_definition", whole_machine_definition.getId())
             criteria["definition"] = definition_id
 
             filter_by_material = whole_machine_definition.getMetaDataEntry("has_materials")
-        else:
+        # only fall back to "fdmprinter" when there is no container for this machine
+        elif not found_containers_with_machine_definition:
             criteria["definition"] = "fdmprinter"
 
         # Stick the material IDs in a set

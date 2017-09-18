@@ -105,7 +105,8 @@ class MachineManager(QObject):
         self._auto_hotends_changed = {}
 
         self._material_incompatible_message = Message(catalog.i18nc("@info:status",
-                                              "The selected material is incompatible with the selected machine or configuration."))
+                                              "The selected material is incompatible with the selected machine or configuration."),
+                                                title = catalog.i18nc("@info:title", "Incompatible Material"))
 
     globalContainerChanged = pyqtSignal() # Emitted whenever the global stack is changed (ie: when changing between printers, changing a global profile, but not when changing a value)
     activeMaterialChanged = pyqtSignal()
@@ -504,16 +505,6 @@ class MachineManager(QObject):
 
         return result
 
-    @pyqtProperty("QVariantList", notify = activeVariantChanged)
-    def activeMaterialIds(self):
-        result = []
-        if ExtruderManager.getInstance().getActiveGlobalAndExtruderStacks() is not None:
-            for stack in ExtruderManager.getInstance().getActiveGlobalAndExtruderStacks():
-                if stack.variant and stack.variant != self._empty_variant_container:
-                    result.append(stack.variant.getId())
-
-        return result
-
     @pyqtProperty("QVariantList", notify = activeMaterialChanged)
     def activeMaterialNames(self):
         result = []
@@ -658,6 +649,23 @@ class MachineManager(QObject):
             if quality:
                 return Util.parseBool(quality.getMetaDataEntry("supported", True))
         return False
+
+    ##  Returns whether there is anything unsupported in the current set-up.
+    #
+    #   The current set-up signifies the global stack and all extruder stacks,
+    #   so this indicates whether there is any container in any of the container
+    #   stacks that is not marked as supported.
+    @pyqtProperty(bool, notify = activeQualityChanged)
+    def isCurrentSetupSupported(self) -> bool:
+        if not self._global_container_stack:
+            return False
+        for stack in [self._global_container_stack] + list(self._global_container_stack.extruders.values()):
+            for container in stack.getContainers():
+                if not container:
+                    return False
+                if not Util.parseBool(container.getMetaDataEntry("supported", True)):
+                    return False
+        return True
 
     ##  Get the Quality ID associated with the currently active extruder
     #   Note that this only returns the "quality", not the "quality_changes"
