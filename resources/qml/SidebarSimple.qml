@@ -454,10 +454,11 @@ Item
                     id: infillSlider
 
                     anchors.top: selectedInfillRateText.bottom
-                    anchors.left: parent.left + UM.Theme.getSize("sidebar_margin").widt
+                    anchors.left: parent.left
+                    anchors.right: infillIcon.left
+                    anchors.rightMargin: UM.Theme.getSize("sidebar_margin").width
 
                     height: UM.Theme.getSize("sidebar_margin").height
-                    width: infillCellRight.width - infillIcon.width - UM.Theme.getSize("sidebar_margin").width
 
                     minimumValue: 0
                     maximumValue: 100
@@ -484,15 +485,13 @@ Item
                             radius: 1
                         }
 
-                        handle: Item {
-                            Rectangle {
-                                id: handleButton
-                                anchors.centerIn: parent
-                                color: control.enabled ? UM.Theme.getColor("quality_slider_available") : UM.Theme.getColor("quality_slider_unavailable")
-                                implicitWidth: 10
-                                implicitHeight: 10
-                                radius: 10
-                            }
+                        handle: Rectangle {
+                            id: handleButton
+                            anchors.centerIn: parent
+                            color: control.enabled ? UM.Theme.getColor("quality_slider_available") : UM.Theme.getColor("quality_slider_unavailable")
+                            implicitWidth: 10
+                            implicitHeight: 10
+                            radius: 10
                         }
 
                         tickmarks: Repeater {
@@ -512,6 +511,8 @@ Item
 
                 Item
                 {
+                    id: infillIcon
+
                     width: (infillCellRight.width / 5) - (UM.Theme.getSize("sidebar_margin").width)
                     height: width
 
@@ -548,7 +549,6 @@ Item
                                 visible: infillIconList.activeIndex == index
 
                                 UM.RecolorImage {
-                                    id: infillIcon
                                     anchors.fill: parent
                                     sourceSize.width: width
                                     sourceSize.height: width
@@ -602,6 +602,7 @@ Item
                         text: catalog.i18nc("@label", "Enable gradual")
                         font: UM.Theme.getFont("default")
                         color: UM.Theme.getColor("text")
+                        elide: Text.ElideRight
                     }
                 }
 
