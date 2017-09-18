@@ -91,17 +91,15 @@ class BlackBeltDecorator(SceneNodeDecorator):
     def calculateTransformData(self):
         global_stack = Application.getInstance().getGlobalContainerStack()
 
+        self._scene_front_offset = 0
         gantry_angle = global_stack.getProperty("blackbelt_gantry_angle", "value")
         if not gantry_angle:
             self._gantry_angle = 0
             self._transform_matrix = Matrix()
-            self._scene_front_offset = 0
             return
         self._gantry_angle = math.radians(float(gantry_angle))
 
         machine_depth = global_stack.getProperty("machine_depth", "value")
-        scene_bounding_box = Application.getInstance()._scene_bounding_box
-        self._scene_front_offset = scene_bounding_box.center.z + machine_depth * (1 - math.cos(self._gantry_angle) / 2) - scene_bounding_box.depth / 2
 
         matrix = Matrix()
         matrix.setColumn(1, [0, 1 / math.tan(self._gantry_angle), 1, (machine_depth / 2) * (2 - math.cos(self._gantry_angle))])
@@ -138,6 +136,9 @@ class BlackBeltDecorator(SceneNodeDecorator):
 
     def getTransformMatrix(self):
         return self._transform_matrix
+
+    def setSceneFrontOffset(self, front_offset):
+        self._scene_front_offset = front_offset
 
     def getSceneFrontOffset(self):
         return self._scene_front_offset

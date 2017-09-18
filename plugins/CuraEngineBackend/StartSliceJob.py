@@ -204,6 +204,8 @@ class StartSliceJob(Job):
 
             transform_matrix = self._scene.getRoot().callDecoration("getTransformMatrix")
 
+            front_offset = None
+
             for group in object_groups:
                 group_message = self._slice_message.addRepeatedMessage("object_lists")
                 if group[0].getParent().callDecoration("isGroup"):
@@ -220,6 +222,10 @@ class StartSliceJob(Job):
 
                     if transform_matrix:
                         verts = transformVertices(verts, transform_matrix)
+
+                        _front_offset = verts[:, 1].min()
+                        if front_offset is None or _front_offset < front_offset:
+                            front_offset = _front_offset
 
                     # Convert from Y up axes to Z up axes. Equals a 90 degree rotation.
                     verts[:, [1, 2]] = verts[:, [2, 1]]
@@ -239,6 +245,11 @@ class StartSliceJob(Job):
                     self._handlePerObjectSettings(object, obj)
 
                     Job.yieldThread()
+
+                # Store the front-most coordinate of the scene so the scene can be moved back into place post slicing
+                # TODO: this should be handled per mesh-group instead of per scene
+                # One-at-a-time printing should be disabled for slanted gantry printers for now
+                self._scene.getRoot().callDecoration("setSceneFrontOffset", front_offset)
 
         self.setResult(StartJobResult.Finished)
 
