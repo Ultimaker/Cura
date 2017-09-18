@@ -9,7 +9,6 @@ from UM.Scene.Iterator.BreadthFirstIterator import BreadthFirstIterator
 from UM.Math.Vector import Vector
 from UM.Scene.Selection import Selection
 from UM.Preferences import Preferences
-from UM.Logger import Logger
 
 from cura.ConvexHullDecorator import ConvexHullDecorator
 
@@ -45,8 +44,6 @@ class PlatformPhysics:
     def _onChangeTimerFinished(self, was_triggered_by_tool=False):
         if not self._enabled:
             return
-
-        Logger.log("d", "was_triggered_by_tool=%s", was_triggered_by_tool)
 
         root = self._controller.getScene().getRoot()
 
