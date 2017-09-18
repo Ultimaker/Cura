@@ -5756,6 +5756,16 @@
                     "limit_to_extruder": "top_bottom_extruder_nr",
                     "settable_per_mesh": true
                 },
+                "ironing_only_highest_layer":
+                {
+                    "label": "Iron Only Highest Layer",
+                    "description": "Only perform ironing on the very last layer of the mesh. This saves time if the lower layers don't need a smooth surface finish.",
+                    "type": "bool",
+                    "default_value": false,
+                    "enabled": "ironing_enabled",
+                    "limit_to_extruder": "top_bottom_extruder_nr",
+                    "settable_per_mesh": true
+                },
                 "ironing_pattern":
                 {
                     "label": "Ironing Pattern",

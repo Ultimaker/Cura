@@ -402,19 +402,21 @@ Item
             Item
             {
                 id: infillCellLeft
+
                 anchors.top: speedLabel.top
-                anchors.topMargin: UM.Theme.getSize("sidebar_margin").height * 1.2
+                anchors.topMargin: UM.Theme.getSize("sidebar_margin").height * 1.2 // FIXME better margin value
                 anchors.left: parent.left
+
                 width: UM.Theme.getSize("sidebar").width * .45 - UM.Theme.getSize("sidebar_margin").width
-                height: childrenRect.height
+                height: UM.Theme.getSize("sidebar_margin").height
 
                 Text
                 {
                     id: infillLabel
-                    //: Infill selection label
-                    text: catalog.i18nc("@label", "Infill");
-                    font: UM.Theme.getFont("default");
-                    color: UM.Theme.getColor("text");
+                    text: catalog.i18nc("@label", "Infill")
+                    font: UM.Theme.getFont("default")
+                    color: UM.Theme.getColor("text")
+
                     anchors.top: parent.top
                     anchors.topMargin: UM.Theme.getSize("sidebar_margin").height
                     anchors.left: parent.left
@@ -422,214 +424,246 @@ Item
                 }
             }
 
-            Row
+            Item
             {
                 id: infillCellRight
 
-                height: childrenRect.height;
+                height: infillSlider.height + enableGradualInfillCheckBox.height + (UM.Theme.getSize("sidebar_margin").height * 2)
                 width: UM.Theme.getSize("sidebar").width * .55
-
-                spacing: UM.Theme.getSize("sidebar_margin").width
 
                 anchors.left: infillCellLeft.right
                 anchors.top: infillCellLeft.top
                 anchors.topMargin: UM.Theme.getSize("sidebar_margin").height
 
-                Repeater
+                Text {
+                    id: selectedInfillRateText
+
+                    anchors.top: parent.top
+                    anchors.left: infillSlider.left
+                    anchors.leftMargin: (infillSlider.value / infillSlider.stepSize) * (infillSlider.width / (infillSlider.maximumValue / infillSlider.stepSize)) - 10
+                    anchors.right: parent.right
+
+                    text: infillSlider.value + "%"
+                    horizontalAlignment: Text.AlignLeft
+
+                    color: infillSlider.enabled ? UM.Theme.getColor("quality_slider_available") : UM.Theme.getColor("quality_slider_unavailable")
+                }
+
+                Slider
                 {
-                    id: infillListView
-                    property int activeIndex:
-                    {
-                        for(var i = 0; i < infillModel.count; ++i)
-                        {
-                            var density = parseInt(infillDensity.properties.value);
-                            var steps = parseInt(infillSteps.properties.value);
-                            if(density > infillModel.get(i).percentageMin && density <= infillModel.get(i).percentageMax && steps > infillModel.get(i).stepsMin && steps <= infillModel.get(i).stepsMax)
-                            {
-                                return i;
-                            }
-                        }
+                    id: infillSlider
 
-                        return -1;
+                    anchors.top: selectedInfillRateText.bottom
+                    anchors.left: parent.left + UM.Theme.getSize("sidebar_margin").widt
+
+                    height: UM.Theme.getSize("sidebar_margin").height
+                    width: infillCellRight.width - infillIcon.width - UM.Theme.getSize("sidebar_margin").width
+
+                    minimumValue: 0
+                    maximumValue: 100
+                    stepSize: 10
+                    tickmarksEnabled: true
+
+                    // disable slider when gradual support is enabled
+                    enabled: parseInt(infillSteps.properties.value) == 0
+
+                    // set initial value from stack
+                    value: parseInt(infillDensity.properties.value)
+
+                    onValueChanged: {
+                        infillDensity.setPropertyValue("value", infillSlider.value)
                     }
-                    model: infillModel;
 
-                    Item
+                    style: SliderStyle
                     {
-                        width: childrenRect.width;
-                        height: childrenRect.height;
+                        groove: Rectangle {
+                            id: groove
+                            implicitWidth: 200
+                            implicitHeight: 2
+                            color: control.enabled ? UM.Theme.getColor("quality_slider_available") : UM.Theme.getColor("quality_slider_unavailable")
+                            radius: 1
+                        }
 
-                        Rectangle
-                        {
-                            id: infillIconLining
-
-                            width: (infillCellRight.width - ((infillModel.count - 1)  * UM.Theme.getSize("sidebar_margin").width)) / (infillModel.count);
-                            height: width
-
-                            border.color:
-                            {
-                                if(!base.settingsEnabled)
-                                {
-                                    return UM.Theme.getColor("setting_control_disabled_border")
-                                }
-                                else if(infillListView.activeIndex == index)
-                                {
-                                    return UM.Theme.getColor("setting_control_selected")
-                                }
-                                else if(infillMouseArea.containsMouse)
-                                {
-                                    return UM.Theme.getColor("setting_control_border_highlight")
-                                }
-                                return UM.Theme.getColor("setting_control_border")
-                            }
-                            border.width: UM.Theme.getSize("default_lining").width
-                            color:
-                            {
-                                if(infillListView.activeIndex == index)
-                                {
-                                    if(!base.settingsEnabled)
-                                    {
-                                        return UM.Theme.getColor("setting_control_disabled_text")
-                                    }
-                                    return UM.Theme.getColor("setting_control_selected")
-                                }
-                                return "transparent"
-                            }
-
-                            UM.RecolorImage
-                            {
-                                id: infillIcon
-                                anchors.fill: parent;
-                                anchors.margins: 2
-
-                                sourceSize.width: width
-                                sourceSize.height: width
-                                source: UM.Theme.getIcon(model.icon);
-                                color: {
-                                    if(infillListView.activeIndex == index)
-                                    {
-                                        return UM.Theme.getColor("text_emphasis")
-                                    }
-                                    if(!base.settingsEnabled)
-                                    {
-                                        return UM.Theme.getColor("setting_control_disabled_text")
-                                    }
-                                    return UM.Theme.getColor("setting_control_disabled_text")
-                                }
-                            }
-
-                            MouseArea
-                            {
-                                id: infillMouseArea
-                                anchors.fill: parent
-                                hoverEnabled: true
-                                enabled: base.settingsEnabled
-                                onClicked: {
-                                    if (infillListView.activeIndex != index)
-                                    {
-                                        infillDensity.setPropertyValue("value", model.percentage)
-                                        infillSteps.setPropertyValue("value", model.steps)
-                                    }
-                                }
-                                onEntered:
-                                {
-                                    base.showTooltip(infillCellRight, Qt.point(-infillCellRight.x, 0), model.text);
-                                }
-                                onExited:
-                                {
-                                    base.hideTooltip();
-                                }
+                        handle: Item {
+                            Rectangle {
+                                id: handleButton
+                                anchors.centerIn: parent
+                                color: control.enabled ? UM.Theme.getColor("quality_slider_available") : UM.Theme.getColor("quality_slider_unavailable")
+                                implicitWidth: 10
+                                implicitHeight: 10
+                                radius: 10
                             }
                         }
-                        Text
-                        {
-                            id: infillLabel
-                            width: (infillCellRight.width - ((infillModel.count - 1)  * UM.Theme.getSize("sidebar_margin").width)) / (infillModel.count);
-                            horizontalAlignment: Text.AlignHCenter
-                            verticalAlignment: Text.AlignVCenter
-                            wrapMode: Text.WordWrap
-                            font: UM.Theme.getFont("default")
-                            anchors.top: infillIconLining.bottom
-                            anchors.horizontalCenter: infillIconLining.horizontalCenter
-                            color: infillListView.activeIndex == index ? UM.Theme.getColor("setting_control_text") : UM.Theme.getColor("setting_control_border")
-                            text: name
+
+                        tickmarks: Repeater {
+                            id: repeater
+                            model: control.maximumValue / control.stepSize + 1
+                            Rectangle {
+                                anchors.verticalCenter: parent.verticalCenter
+                                color: control.enabled ? UM.Theme.getColor("quality_slider_available") : UM.Theme.getColor("quality_slider_unavailable")
+                                width: 1
+                                height: 6
+                                y: 0
+                                x: styleData.handleWidth / 2 + index * ((repeater.width - styleData.handleWidth) / (repeater.count-1))
+                            }
                         }
                     }
                 }
 
+                Item
+                {
+                    width: (infillCellRight.width / 5) - (UM.Theme.getSize("sidebar_margin").width)
+                    height: width
+
+                    anchors.right: infillCellRight.right
+                    anchors.top: infillSlider.top
+
+                    // we loop over all density icons and only show the one that has the current density and steps
+                    Repeater
+                    {
+                        id: infillIconList
+                        model: infillModel
+
+                        property int activeIndex: {
+                            for (var i = 0; i < infillModel.count; i++) {
+                                var density = parseInt(infillDensity.properties.value)
+                                var steps = parseInt(infillSteps.properties.value)
+                                var infillModelItem = infillModel.get(i)
+
+                                if (density >= infillModelItem.percentageMin
+                                    && density <= infillModelItem.percentageMax
+                                    && steps >= infillModelItem.stepsMin
+                                    && steps <= infillModelItem.stepsMax){
+                                        return i
+                                    }
+                            }
+                            return -1
+                        }
+
+                        Item {
+                            anchors.fill: parent
+
+                            Rectangle {
+                                anchors.fill: parent
+                                visible: infillIconList.activeIndex == index
+
+                                UM.RecolorImage {
+                                    id: infillIcon
+                                    anchors.fill: parent
+                                    sourceSize.width: width
+                                    sourceSize.height: width
+                                    source: UM.Theme.getIcon(model.icon)
+                                    color: UM.Theme.getColor("quality_slider_available")
+                                }
+                            }
+                        }
+                    }
+                }
+
+                //  Gradual Support Infill Checkbox
+                CheckBox {
+                    id: enableGradualInfillCheckBox
+                    property alias _hovered: enableGradualInfillMouseArea.containsMouse
+
+                    anchors.top: infillSlider.bottom
+                    anchors.topMargin: UM.Theme.getSize("sidebar_margin").height
+                    anchors.left: infillCellRight.left
+
+                    style: UM.Theme.styles.checkbox
+                    enabled: base.settingsEnabled
+                    checked: parseInt(infillSteps.properties.value) > 0
+
+                    MouseArea {
+                        id: enableGradualInfillMouseArea
+
+                        anchors.fill: parent
+                        hoverEnabled: true
+                        enabled: true
+
+                        onClicked: {
+                            infillSteps.setPropertyValue("value", (parseInt(infillSteps.properties.value) == 0) ? 5 : 0)
+                            infillDensity.setPropertyValue("value", 90)
+                        }
+
+                        onEntered: {
+                            base.showTooltip(enableGradualInfillCheckBox, Qt.point(-infillCellRight.x, 0),
+                                catalog.i18nc("@label", "Gradual infill will gradually increase the amount of infill towards the top."))
+                        }
+
+                        onExited: {
+                            base.hideTooltip()
+                        }
+                    }
+
+                    Text {
+                        id: gradualInfillLabel
+                        anchors.left: enableGradualInfillCheckBox.right
+                        anchors.leftMargin: UM.Theme.getSize("sidebar_margin").width / 2 // FIXME better margin value
+                        text: catalog.i18nc("@label", "Enable gradual")
+                        font: UM.Theme.getFont("default")
+                        color: UM.Theme.getColor("text")
+                    }
+                }
+
+                //  Infill list model for mapping icon
                 ListModel
                 {
                     id: infillModel
-
                     Component.onCompleted:
                     {
                         infillModel.append({
-                            name: catalog.i18nc("@label", "0%"),
-                            percentage: 0,
-                            steps: 0,
                             percentageMin: -1,
                             percentageMax: 0,
                             stepsMin: -1,
                             stepsMax: 0,
-                            text: catalog.i18nc("@label", "Empty infill will leave your model hollow with low strength."),
                             icon: "hollow"
                         })
                         infillModel.append({
-                            name: catalog.i18nc("@label", "20%"),
-                            percentage: 20,
-                            steps: 0,
                             percentageMin: 0,
-                            percentageMax: 30,
+                            percentageMax: 40,
                             stepsMin: -1,
                             stepsMax: 0,
-                            text: catalog.i18nc("@label", "Light (20%) infill will give your model an average strength."),
                             icon: "sparse"
                         })
                         infillModel.append({
-                            name: catalog.i18nc("@label", "50%"),
-                            percentage: 50,
-                            steps: 0,
-                            percentageMin: 30,
-                            percentageMax: 70,
+                            percentageMin: 40,
+                            percentageMax: 89,
                             stepsMin: -1,
                             stepsMax: 0,
-                            text: catalog.i18nc("@label", "Dense (50%) infill will give your model an above average strength."),
                             icon: "dense"
                         })
                         infillModel.append({
-                            name: catalog.i18nc("@label", "100%"),
-                            percentage: 100,
-                            steps: 0,
-                            percentageMin: 70,
+                            percentageMin: 90,
                             percentageMax: 9999999999,
                             stepsMin: -1,
                             stepsMax: 0,
-                            text: catalog.i18nc("@label", "Solid (100%) infill will make your model completely solid."),
                             icon: "solid"
                         })
                         infillModel.append({
-                            name: catalog.i18nc("@label", "Gradual"),
-                            percentage: 90,
-                            steps: 5,
                             percentageMin: 0,
                             percentageMax: 9999999999,
-                            stepsMin: 0,
+                            stepsMin: 1,
                             stepsMax: 9999999999,
-                            infill_layer_height: 1.5,
-                            text: catalog.i18nc("@label", "Gradual infill will gradually increase the amount of infill towards the top."),
                             icon: "gradual"
                         })
                     }
                 }
             }
 
+            //
+            //  Enable support
+            //
             Text
             {
                 id: enableSupportLabel
                 visible: enableSupportCheckBox.visible
+
+                anchors.top: infillCellRight.bottom
+                anchors.topMargin: UM.Theme.getSize("sidebar_margin").height
                 anchors.left: parent.left
                 anchors.leftMargin: UM.Theme.getSize("sidebar_margin").width
                 anchors.verticalCenter: enableSupportCheckBox.verticalCenter
+
                 text: catalog.i18nc("@label", "Generate Support");
                 font: UM.Theme.getFont("default");
                 color: UM.Theme.getColor("text");
@@ -845,7 +879,6 @@ Item
                     anchors.rightMargin: UM.Theme.getSize("sidebar_margin").width
                     anchors.top: parent.top
                     wrapMode: Text.WordWrap
-                    //: Tips label
                     text: catalog.i18nc("@label", "Need help improving your prints?<br>Read the <a href='%1'>Ultimaker Troubleshooting Guides</a>").arg("https://ultimaker.com/en/troubleshooting")
                     font: UM.Theme.getFont("default");
                     color: UM.Theme.getColor("text");
@@ -864,35 +897,9 @@ Item
                 storeIndex: 0
             }
 
-            Binding
-            {
-                target: infillDensity
-                property: "containerStackId"
-                value:
-                {
-                    var activeMachineId = Cura.MachineManager.activeMachineId;
-                    if (machineExtruderCount.properties.value > 1)
-                    {
-                        var infillExtruderNr = parseInt(infillExtruderNumber.properties.value);
-                        if (infillExtruderNr >= 0)
-                        {
-                            activeMachineId = ExtruderManager.extruderIds[infillExtruderNumber.properties.value];
-                        }
-                        else if (ExtruderManager.activeExtruderStackId)
-                        {
-                            activeMachineId = ExtruderManager.activeExtruderStackId;
-                        }
-                    }
-
-                    infillSteps.containerStackId = activeMachineId;
-                    return activeMachineId;
-                }
-            }
-
             UM.SettingPropertyProvider
             {
                 id: infillDensity
-
                 containerStackId: Cura.MachineManager.activeStackId
                 key: "infill_sparse_density"
                 watchedProperties: [ "value" ]
@@ -902,10 +909,9 @@ Item
             UM.SettingPropertyProvider
             {
                 id: infillSteps
-
                 containerStackId: Cura.MachineManager.activeStackId
                 key: "gradual_infill_steps"
-                watchedProperties: [ "value" ]
+                watchedProperties: ["value"]
                 storeIndex: 0
             }
 

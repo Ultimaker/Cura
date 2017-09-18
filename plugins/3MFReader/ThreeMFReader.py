@@ -77,7 +77,10 @@ class ThreeMFReader(MeshReader):
     #   \returns Uranium SceneNode.
     def _convertSavitarNodeToUMNode(self, savitar_node):
         um_node = SceneNode()
-        um_node.setSetting("auto_drop", False)  # Disable the auto-drop feature when loading a project file and processing the nodes for the first time
+
+        # Disable the auto-drop feature when loading a project file and processing the nodes for the first time
+        um_node.setSetting("auto_drop", False)
+
         transformation = self._createMatrixFromTransformationString(savitar_node.getTransformation())
         um_node.setTransformation(transformation)
         mesh_builder = MeshBuilder()
