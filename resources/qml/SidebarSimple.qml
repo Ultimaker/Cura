@@ -403,8 +403,8 @@ Item
             {
                 id: infillCellLeft
 
-                anchors.top: speedLabel.top
-                anchors.topMargin: UM.Theme.getSize("sidebar_margin").height * 1.2 // FIXME better margin value
+                anchors.top: speedLabel.bottom
+                anchors.topMargin: UM.Theme.getSize("sidebar_margin").height
                 anchors.left: parent.left
 
                 width: UM.Theme.getSize("sidebar").width * .45 - UM.Theme.getSize("sidebar_margin").width
@@ -658,8 +658,8 @@ Item
                 id: enableSupportLabel
                 visible: enableSupportCheckBox.visible
 
-                anchors.top: infillCellRight.bottom
-                anchors.topMargin: UM.Theme.getSize("sidebar_margin").height
+                anchors.top: enableSupportCheckBox.top
+
                 anchors.left: parent.left
                 anchors.leftMargin: UM.Theme.getSize("sidebar_margin").width
                 anchors.verticalCenter: enableSupportCheckBox.verticalCenter
@@ -675,7 +675,7 @@ Item
                 property alias _hovered: enableSupportMouseArea.containsMouse
 
                 anchors.top: infillCellRight.bottom
-                anchors.topMargin: UM.Theme.getSize("sidebar_margin").height
+                anchors.topMargin: UM.Theme.getSize("sidebar_margin").height * 2
                 anchors.left: infillCellRight.left
 
                 style: UM.Theme.styles.checkbox;
