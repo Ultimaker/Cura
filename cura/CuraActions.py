@@ -36,6 +36,15 @@ class CuraActions(QObject):
         event = CallFunctionEvent(self._openUrl, [QUrl("http://github.com/Ultimaker/Cura/issues")], {})
         Application.getInstance().functionEvent(event)
 
+    ##  Reset camera position and direction to default
+    @pyqtSlot()
+    def homeCamera(self) -> None:
+        scene = Application.getInstance().getController().getScene()
+        camera = scene.getActiveCamera()
+        camera.setPosition(Vector(-80, 250, 700))
+        camera.setPerspective(True)
+        camera.lookAt(Vector(0, 0, 0))
+
     ##  Center all objects in the selection
     @pyqtSlot()
     def centerSelection(self) -> None:
