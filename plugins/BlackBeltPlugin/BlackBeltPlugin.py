@@ -9,7 +9,7 @@ from UM.Math.Vector import Vector
 from UM.i18n import i18nCatalog
 i18n_catalog = i18nCatalog("BlackBeltPlugin")
 
-from PyQt5.QtGui import QPixmap
+from . import BuildVolumePatches
 
 import math
 import os.path
@@ -21,6 +21,8 @@ class BlackBeltPlugin(Extension):
 
         self._application = Application.getInstance()
 
+        self._build_volume_patches = None
+
         self._global_container_stack = None
         self._application.globalContainerStackChanged.connect(self._onGlobalContainerStackChanged)
         self._onGlobalContainerStackChanged()
@@ -29,7 +31,7 @@ class BlackBeltPlugin(Extension):
         self._scene_root.addDecorator(BlackBeltDecorator())
         self._application.getBackend().slicingStarted.connect(self._onSlicingStarted)
 
-        self._application.engineCreatedSignal.connect(self._fixPreferences)
+        self._application.engineCreatedSignal.connect(self._onEngineCreated)
 
     def _onGlobalContainerStackChanged(self):
         if self._global_container_stack:
@@ -53,7 +55,11 @@ class BlackBeltPlugin(Extension):
             # This is a bit of a hack, but it seems quick enough.
             self._application.globalContainerStackChanged.emit()
 
-    def _fixPreferences(self):
+    def _onEngineCreated(self):
+        # Apply patches
+        self._build_volume_patches = BuildVolumePatches.BuildVolumePatches(self._application.getBuildVolume())
+
+        # Fix preferences
         preferences = Preferences.getInstance()
         visible_settings = preferences.getValue("general/visible_settings")
         if not visible_settings:

@@ -258,18 +258,12 @@ class BuildVolume(SceneNode):
             self._disallowed_area_color = Color(*theme.getColor("disallowed_area").getRgb())
             self._error_area_color = Color(*theme.getColor("error_area").getRgb())
 
-        # Get a dict from the machine metadata optionally overriding the build volume
-        # Note that CuraEngine is blissfully unaware of this; it is just what the user is shown in Cura
-        limit_buildvolume = self._global_container_stack.getMetaDataEntry("limit_buildvolume", {})
-        if not isinstance(limit_buildvolume, dict):
-            limit_buildvolume = {}
-
-        min_w = limit_buildvolume.get("width", {}).get("minimum",-self._width / 2)
-        max_w = limit_buildvolume.get("width", {}).get("maximum", self._width / 2)
-        min_h = limit_buildvolume.get("height", {}).get("minimum", 0.0)
-        max_h = limit_buildvolume.get("height", {}).get("maximum", self._height)
-        min_d = limit_buildvolume.get("depth", {}).get("minimum",-self._depth / 2)
-        max_d = limit_buildvolume.get("depth", {}).get("maximum", self._depth / 2)
+        min_w = -self._width / 2
+        max_w = self._width / 2
+        min_h = 0.0
+        max_h = self._height
+        min_d = -self._depth / 2
+        max_d = self._depth / 2
 
         z_fight_distance = 0.2 # Distance between buildplate and disallowed area meshes to prevent z-fighting
 
