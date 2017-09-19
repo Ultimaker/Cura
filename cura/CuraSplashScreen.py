@@ -3,7 +3,7 @@
 
 from threading import Thread, Event
 
-from PyQt5.QtCore import Qt, QCoreApplication
+from PyQt5.QtCore import Qt, QCoreApplication, QTimer
 from PyQt5.QtGui import QPixmap, QColor, QFont, QPen, QPainter
 from PyQt5.QtWidgets import QSplashScreen
 
@@ -24,10 +24,22 @@ class CuraSplashScreen(QSplashScreen):
         self._loading_image_rotation_angle = 0
 
         self._to_stop = False
+        self._change_timer = QTimer()
+        self._change_timer.setInterval(50)
+        self._change_timer.setSingleShot(False)
+        #self.timeoutSignal.connect(self._onTimeout)
+        self._change_timer.timeout.connect(self.updateLoadingImage)
 
     def show(self):
         super().show()
-        self._to_stop = False
+        self._change_timer.start()
+
+    def updateLoadingImage(self):
+        if self._to_stop:
+            return
+
+        self._loading_image_rotation_angle -= 10
+        self.repaint()
 
     def drawContents(self, painter):
         if self._to_stop:
@@ -55,6 +67,13 @@ class CuraSplashScreen(QSplashScreen):
             painter.drawText(252, 105, 330 * self._scale, 255 * self._scale, Qt.AlignLeft | Qt.AlignTop, version[1])
         painter.setPen(QColor(255, 255, 255, 255))
 
+        # draw the loading image
+        pen = QPen()
+        pen.setWidth(6 * self._scale)
+        pen.setColor(QColor(32, 166, 219, 255))
+        painter.setPen(pen)
+        painter.drawArc(60, 150, 32 * self._scale, 32 * self._scale, self._loading_image_rotation_angle * 16, 300 * 16)
+
         # draw message text
         if self._current_message:
             font = QFont()  # Using system-default font here
@@ -71,9 +90,9 @@ class CuraSplashScreen(QSplashScreen):
         super().drawContents(painter)
 
     def showMessage(self, message, *args, **kwargs):
+
         if self._to_stop:
             return
-
         self._current_message = message
         self.messageChanged.emit(message)
         QCoreApplication.flush()
@@ -82,4 +101,7 @@ class CuraSplashScreen(QSplashScreen):
     def close(self):
         # set stop flags
         self._to_stop = True
+        self._change_timer.stop()
         super().close()
+
+
