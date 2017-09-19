@@ -55,9 +55,9 @@ msgstr ""
 #: /home/ruben/Projects/Cura/plugins/Doodle3D-cura-plugin/Doodle3D/D3DCloudPrintOutputDevicePlugin.py:155
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/NetworkPrinterOutputDevice.py:840
 #: /home/ruben/Projects/Cura/plugins/CuraPrintClusterUpload/NetworkPrinterOutputDevice.py:822
-#: /home/ruben/Projects/Cura/plugins/CuraPrintClusterUpload/NetworkClusterPrinterOutputDevice.py:423
+#: /home/ruben/Projects/Cura/plugins/CuraPrintClusterUpload/NetworkClusterPrinterOutputDevice.py:428
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/DiscoverUM3Action.qml:350
-#: /home/ruben/Projects/Cura/plugins/CuraPrintClusterUpload/DiscoverUM3Action.qml:350
+#: /home/ruben/Projects/Cura/plugins/CuraPrintClusterUpload/DiscoverUM3Action.qml:367
 #: /home/ruben/Projects/Cura/plugins/CuraPrintClusterUpload/PrintWindow.qml:78
 #: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/ConfigDialog.qml:104
 #: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/ExportSTLUI.qml:99
@@ -545,59 +545,59 @@ msgctxt "@action"
 msgid "Connect via Network"
 msgstr "Collega tramite rete"
 
-#: /home/ruben/Projects/Cura/plugins/CuraPrintClusterUpload/NetworkClusterPrinterOutputDevice.py:102
+#: /home/ruben/Projects/Cura/plugins/CuraPrintClusterUpload/NetworkClusterPrinterOutputDevice.py:103
 msgid "This printer is not set up to host a group of connected Ultimaker 3 printers."
 msgstr ""
 
-#: /home/ruben/Projects/Cura/plugins/CuraPrintClusterUpload/NetworkClusterPrinterOutputDevice.py:103
+#: /home/ruben/Projects/Cura/plugins/CuraPrintClusterUpload/NetworkClusterPrinterOutputDevice.py:104
 #, python-brace-format
 msgctxt "Count is number of printers."
 msgid "This printer is the host for a group of {count} connected Ultimaker 3 printers."
 msgstr ""
 
-#: /home/ruben/Projects/Cura/plugins/CuraPrintClusterUpload/NetworkClusterPrinterOutputDevice.py:104
+#: /home/ruben/Projects/Cura/plugins/CuraPrintClusterUpload/NetworkClusterPrinterOutputDevice.py:105
 #, python-brace-format
 msgid "{printer_name} has finished printing '{job_name}'. Please collect the print and confirm clearing the build plate."
 msgstr ""
 
-#: /home/ruben/Projects/Cura/plugins/CuraPrintClusterUpload/NetworkClusterPrinterOutputDevice.py:105
+#: /home/ruben/Projects/Cura/plugins/CuraPrintClusterUpload/NetworkClusterPrinterOutputDevice.py:106
 #, python-brace-format
 msgid "{printer_name} is reserved to print '{job_name}'. Please change the printer's configuration to match the job, for it to start printing."
 msgstr ""
 
-#: /home/ruben/Projects/Cura/plugins/CuraPrintClusterUpload/NetworkClusterPrinterOutputDevice.py:191
+#: /home/ruben/Projects/Cura/plugins/CuraPrintClusterUpload/NetworkClusterPrinterOutputDevice.py:196
 msgctxt "@info:status"
 msgid "Sending new jobs (temporarily) blocked, still sending the previous print job."
 msgstr ""
 
-#: /home/ruben/Projects/Cura/plugins/CuraPrintClusterUpload/NetworkClusterPrinterOutputDevice.py:207
+#: /home/ruben/Projects/Cura/plugins/CuraPrintClusterUpload/NetworkClusterPrinterOutputDevice.py:212
 msgctxt "@info:status"
 msgid "Unable to send new print job: this 3D printer is not (yet) set up to host a group of connected Ultimaker 3 printers."
 msgstr ""
 
-#: /home/ruben/Projects/Cura/plugins/CuraPrintClusterUpload/NetworkClusterPrinterOutputDevice.py:420
+#: /home/ruben/Projects/Cura/plugins/CuraPrintClusterUpload/NetworkClusterPrinterOutputDevice.py:425
 #, python-brace-format
 msgctxt "@info:progress"
 msgid "Sending <filename>{file_name}</filename> to group {cluster_name}"
 msgstr ""
 
-#: /home/ruben/Projects/Cura/plugins/CuraPrintClusterUpload/NetworkClusterPrinterOutputDevice.py:493
+#: /home/ruben/Projects/Cura/plugins/CuraPrintClusterUpload/NetworkClusterPrinterOutputDevice.py:498
 #, python-brace-format
 msgctxt "@info:status"
 msgid "Sent {file_name} to group {cluster_name}."
 msgstr ""
 
-#: /home/ruben/Projects/Cura/plugins/CuraPrintClusterUpload/NetworkClusterPrinterOutputDevice.py:498
+#: /home/ruben/Projects/Cura/plugins/CuraPrintClusterUpload/NetworkClusterPrinterOutputDevice.py:503
 msgctxt "@action:button"
 msgid "Show print jobs"
 msgstr ""
 
-#: /home/ruben/Projects/Cura/plugins/CuraPrintClusterUpload/NetworkClusterPrinterOutputDevice.py:499
+#: /home/ruben/Projects/Cura/plugins/CuraPrintClusterUpload/NetworkClusterPrinterOutputDevice.py:504
 msgctxt "@info:tooltip"
 msgid "Opens the print jobs interface in your browser."
 msgstr ""
 
-#: /home/ruben/Projects/Cura/plugins/CuraPrintClusterUpload/NetworkClusterPrinterOutputDevice.py:515
+#: /home/ruben/Projects/Cura/plugins/CuraPrintClusterUpload/NetworkClusterPrinterOutputDevice.py:520
 #, python-brace-format
 msgctxt "@info:status"
 msgid "Unable to send print job to group {cluster_name}."
@@ -1495,33 +1495,33 @@ msgid "Address"
 msgstr "Indirizzo"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/DiscoverUM3Action.qml:280
-#: /home/ruben/Projects/Cura/plugins/CuraPrintClusterUpload/DiscoverUM3Action.qml:280
+#: /home/ruben/Projects/Cura/plugins/CuraPrintClusterUpload/DiscoverUM3Action.qml:297
 msgctxt "@label"
 msgid "The printer at this address has not yet responded."
 msgstr "La stampante a questo indirizzo non ha ancora risposto."
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/DiscoverUM3Action.qml:285
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/UM3InfoComponents.qml:38
-#: /home/ruben/Projects/Cura/plugins/CuraPrintClusterUpload/DiscoverUM3Action.qml:285
+#: /home/ruben/Projects/Cura/plugins/CuraPrintClusterUpload/DiscoverUM3Action.qml:302
 #: /home/ruben/Projects/Cura/plugins/CuraPrintClusterUpload/UM3InfoComponents.qml:38
 msgctxt "@action:button"
 msgid "Connect"
 msgstr "Collega"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/DiscoverUM3Action.qml:299
-#: /home/ruben/Projects/Cura/plugins/CuraPrintClusterUpload/DiscoverUM3Action.qml:299
+#: /home/ruben/Projects/Cura/plugins/CuraPrintClusterUpload/DiscoverUM3Action.qml:316
 msgctxt "@title:window"
 msgid "Printer Address"
 msgstr "Indirizzo stampante"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/DiscoverUM3Action.qml:329
-#: /home/ruben/Projects/Cura/plugins/CuraPrintClusterUpload/DiscoverUM3Action.qml:329
+#: /home/ruben/Projects/Cura/plugins/CuraPrintClusterUpload/DiscoverUM3Action.qml:346
 msgctxt "@alabel"
 msgid "Enter the IP address or hostname of your printer on the network."
 msgstr "Inserire l’indirizzo IP o l’hostname della stampante sulla rete."
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/DiscoverUM3Action.qml:359
-#: /home/ruben/Projects/Cura/plugins/CuraPrintClusterUpload/DiscoverUM3Action.qml:359
+#: /home/ruben/Projects/Cura/plugins/CuraPrintClusterUpload/DiscoverUM3Action.qml:376
 msgctxt "@action:button"
 msgid "Ok"
 msgstr "Ok"
@@ -1543,6 +1543,16 @@ msgstr "Carica la configurazione della stampante in Cura"
 msgctxt "@action:button"
 msgid "Activate Configuration"
 msgstr "Attiva la configurazione"
+
+#: /home/ruben/Projects/Cura/plugins/CuraPrintClusterUpload/DiscoverUM3Action.qml:284
+msgctxt "@label"
+msgid "This printer is not set up to host a group of connected Ultimaker 3 printers"
+msgstr ""
+
+#: /home/ruben/Projects/Cura/plugins/CuraPrintClusterUpload/DiscoverUM3Action.qml:287
+msgctxt "@label"
+msgid "This printer is the host for a group of %1 connected Ultimaker 3 printers"
+msgstr ""
 
 #: /home/ruben/Projects/Cura/plugins/CuraPrintClusterUpload/PrintWindow.qml:24
 msgctxt "@title:window"
