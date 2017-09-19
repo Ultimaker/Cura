@@ -47,9 +47,7 @@ class ThreeMFReader(MeshReader):
     def _createMatrixFromTransformationString(self, transformation):
         if transformation == "":
             return Matrix()
-
-        Logger.log("d", "raw_transformation=%s", transformation)
-
+        
         splitted_transformation = transformation.split()
         ## Transformation is saved as:
         ## M00 M01 M02 0.0
