@@ -3980,11 +3980,6 @@ msgid "UM3 Network Connection"
 msgstr ""
 
 #: CuraPrintClusterUpload/plugin.json
-msgctxt "description"
-msgid "Manages network connections to Ultimaker 3 printers"
-msgstr ""
-
-#: CuraPrintClusterUpload/plugin.json
 msgctxt "name"
 msgid "UM3 Network Connection (Cluster)"
 msgstr ""
