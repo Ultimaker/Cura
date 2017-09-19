@@ -26,7 +26,7 @@ class WorkspaceDialog(QObject):
         self._view = None
         self._qml_url = "WorkspaceDialog.qml"
         self._lock = threading.Lock()
-        self._default_strategy = "override"
+        self._default_strategy = None
         self._result = {"machine": self._default_strategy,
                         "quality_changes": self._default_strategy,
                         "definition_changes": self._default_strategy,
@@ -233,6 +233,11 @@ class WorkspaceDialog(QObject):
             self._result["quality_changes"] = None
         if "definition_changes" in self._result and not self._has_definition_changes_conflict:
             self._result["definition_changes"] = None
+
+        # If the machine needs to be re-created, the definition_changes should also be re-created.
+        if self._result["machine"] == "new" and self._result["definition_changes"] is None:
+            self._result["definition_changes"] = "new"
+
         if "material" in self._result and not self._has_material_conflict:
             self._result["material"] = None
         return self._result
