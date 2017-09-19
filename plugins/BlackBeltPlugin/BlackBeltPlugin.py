@@ -29,7 +29,6 @@ class BlackBeltPlugin(Extension):
 
         self._scene_root = self._application.getController().getScene().getRoot()
         self._scene_root.addDecorator(BlackBeltDecorator())
-        self._application.getBackend().slicingStarted.connect(self._onSlicingStarted)
 
         self._application.engineCreatedSignal.connect(self._onEngineCreated)
 
@@ -58,6 +57,8 @@ class BlackBeltPlugin(Extension):
     def _onEngineCreated(self):
         # Apply patches
         self._build_volume_patches = BuildVolumePatches.BuildVolumePatches(self._application.getBuildVolume())
+
+        self._application.getBackend().slicingStarted.connect(self._onSlicingStarted)
 
         # Fix preferences
         preferences = Preferences.getInstance()
