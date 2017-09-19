@@ -761,16 +761,6 @@ msgid "Shell"
 msgstr "Powłoka"
 
 #: fdmprinter.def.json
-msgctxt "wall_extruder_nr label"
-msgid "Wall Extruder"
-msgstr "Ekstruder Ściany"
-
-#: fdmprinter.def.json
-msgctxt "wall_extruder_nr description"
-msgid "The extruder train used for printing the walls. This is used in multi-extrusion."
-msgstr "Ekstruder używany do drukowania ścian. Używane w multi-esktruzji."
-
-#: fdmprinter.def.json
 msgctxt "wall_0_extruder_nr label"
 msgid "Outer Wall Extruder"
 msgstr "Esktruder Zewn. Ściany"
@@ -1131,6 +1121,11 @@ msgid "Random"
 msgstr "Losowe"
 
 #: fdmprinter.def.json
+msgctxt "z_seam_type option sharpest_corner"
+msgid "Sharpest Corner"
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "z_seam_x label"
 msgid "Z Seam X"
 msgstr "Szew X"
@@ -1151,6 +1146,36 @@ msgid "The Y coordinate of the position near where to start printing each part i
 msgstr "Współrzędna Y położenia, w pobliżu miejsca rozpoczęcia drukowania każdej warstwy."
 
 #: fdmprinter.def.json
+msgctxt "z_seam_corner label"
+msgid "Seam Corner Preference"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "z_seam_corner description"
+msgid "Control whether corners on the model outline influence the position of the seam. None means that corners have no influence on the seam position. Hide Seam makes the seam more likely to occur on an inside corner. Expose Seam makes the seam more likely to occur on an outside corner. Hide or Expose Seam makes the seam more likely to occur at an inside or outside corner."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "z_seam_corner option z_seam_corner_none"
+msgid "None"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "z_seam_corner option z_seam_corner_inner"
+msgid "Hide Seam"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "z_seam_corner option z_seam_corner_outer"
+msgid "Expose Seam"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "z_seam_corner option z_seam_corner_any"
+msgid "Hide or Expose Seam"
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "z_seam_relative label"
 msgid "Z Seam Relative"
 msgstr "Względny Szew Z"
@@ -1169,6 +1194,16 @@ msgstr "Zignoruj Małe Luki Z"
 msgctxt "skin_no_small_gaps_heuristic description"
 msgid "When the model has small vertical gaps, about 5% extra computation time can be spent on generating top and bottom skin in these narrow spaces. In such case, disable the setting."
 msgstr "Jeśli model ma małe, pionowe szczeliny, to można wykorzystać dodatkowe 5% mocy obliczeniowej do wygenerowania górnej i dolnej skóry w wąskich przestrzeniach. W takim wypadku, wyłącz tę opcję."
+
+#: fdmprinter.def.json
+msgctxt "skin_outline_count label"
+msgid "Extra Skin Wall Count"
+msgstr "Liczba Dod. Ścian na Skórze"
+
+#: fdmprinter.def.json
+msgctxt "skin_outline_count description"
+msgid "Replaces the outermost part of the top/bottom pattern with a number of concentric lines. Using one or two lines improves roofs that start on infill material."
+msgstr "Zastępuje najbardziej zewnętrzną część wzoru górnego/dolnego za pomocą kilku koncentrycznych linii. Korzystanie z jednej lub dwóch linii poprawia dachy, które zaczynają się na wypełnieniu."
 
 #: fdmprinter.def.json
 msgctxt "infill label"
@@ -1217,8 +1252,8 @@ msgstr "Wzór Wypełn."
 
 #: fdmprinter.def.json
 msgctxt "infill_pattern description"
-msgid "The pattern of the infill material of the print. The line and zig zag infill swap direction on alternate layers, reducing material cost. The grid, triangle, cubic, tetrahedral and concentric patterns are fully printed every layer. Cubic and tetrahedral infill change with every layer to provide a more equal distribution of strength over each direction."
-msgstr "Wzór materiału wypełniającego. Linia i zygzakowy wypełnienie zmienia kierunek na przemiennych warstwach zmniejszając koszt materiału. Wzory siatki, trójkątne, sześcienne, czworościenne i koncentryczne są w pełni drukowane na każdej warstwie. Wypełnienie sześcienne i czworościenne zmienia się co każdą warstwę, aby zapewnić równe rozłożenie siły w każdym kierunku."
+msgid "The pattern of the infill material of the print. The line and zig zag infill swap direction on alternate layers, reducing material cost. The grid, triangle, cubic, octet, quarter cubic and concentric patterns are fully printed every layer. Cubic, quarter cubic and octet infill change with every layer to provide a more equal distribution of strength over each direction."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "infill_pattern option grid"
@@ -1247,8 +1282,13 @@ msgstr "Podział sześcienny"
 
 #: fdmprinter.def.json
 msgctxt "infill_pattern option tetrahedral"
-msgid "Tetrahedral"
-msgstr "Czworościenny"
+msgid "Octet"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "infill_pattern option quarter_cubic"
+msgid "Quarter Cubic"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "infill_pattern option concentric"
@@ -1264,6 +1304,26 @@ msgstr "Koncentryczny 3D"
 msgctxt "infill_pattern option zigzag"
 msgid "Zig Zag"
 msgstr "Zygzak"
+
+#: fdmprinter.def.json
+msgctxt "infill_pattern option cross"
+msgid "Cross"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "infill_pattern option cross_3d"
+msgid "Cross 3D"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "zig_zaggify_infill label"
+msgid "Connect Infill Lines"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "zig_zaggify_infill description"
+msgid "Connect the ends where the infill pattern meets the inner wall using a lines which follows the shape of the inner wall. Enabling this setting can make the infill adhere to the walls better and reduces the effects on infill on the quality of vertical surfaces. Disabling this setting reduces the amount of material used."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "infill_angles label"
@@ -1386,34 +1446,34 @@ msgid "Don't generate areas of infill smaller than this (use skin instead)."
 msgstr "Nie generuj obszarów wypełnienia mniejszych niż to (zamiast tego używaj skóry)."
 
 #: fdmprinter.def.json
-msgctxt "expand_skins_into_infill label"
-msgid "Expand Skins Into Infill"
-msgstr "Rozszerz Powłokę Do Wypełn."
+msgctxt "skin_preshrink label"
+msgid "Skin Removal Width"
+msgstr ""
 
 #: fdmprinter.def.json
-msgctxt "expand_skins_into_infill description"
-msgid "Expand skin areas of top and/or bottom skin of flat surfaces. By default, skins stop under the wall lines that surround infill but this can lead to holes appearing when the infill density is low. This setting extends the skins beyond the wall lines so that the infill on the next layer rests on skin."
-msgstr "Rozszerz obszary powłoki na górze i/lub dole powierzchni płaskich. Domyślnie, powłoka kończy się na linii ściany otaczające wypełnienie, chociaż może to prowadzić do powstawania dziur kiedy gęstość wypełnienia jest niska. Ustawienie to rozciąga powłokę poza linię ściany, dzięki czemu wypełnienie na kolejnej warstwie osiada na powłoce."
+msgctxt "skin_preshrink description"
+msgid "The largest width of skin areas which are to be removed. Every skin area smaller than this value will disappear. This can help in limiting the amount of time and material spent on printing top/bottom skin at slanted surfaces in the model."
+msgstr ""
 
 #: fdmprinter.def.json
-msgctxt "expand_upper_skins label"
-msgid "Expand Top Skins Into Infill"
-msgstr "Rozszerz Górną Powłokę Do Wypełn."
+msgctxt "top_skin_preshrink label"
+msgid "Top Skin Removal Width"
+msgstr ""
 
 #: fdmprinter.def.json
-msgctxt "expand_upper_skins description"
-msgid "Expand the top skin areas (areas with air above) so that they support infill above."
-msgstr "Rozszerz górne obszary ścian (obszary, które mają ponad sobą powietrze) tak, aby wspomagały wypełnienie powyżej."
+msgctxt "top_skin_preshrink description"
+msgid "The largest width of top skin areas which are to be removed. Every skin area smaller than this value will disappear. This can help in limiting the amount of time and material spent on printing top skin at slanted surfaces in the model."
+msgstr ""
 
 #: fdmprinter.def.json
-msgctxt "expand_lower_skins label"
-msgid "Expand Bottom Skins Into Infill"
-msgstr "Rozszerz Dolną Powłokę Do Wypełn."
+msgctxt "bottom_skin_preshrink label"
+msgid "Bottom Skin Removal Width"
+msgstr ""
 
 #: fdmprinter.def.json
-msgctxt "expand_lower_skins description"
-msgid "Expand the bottom skin areas (areas with air below) so that they are anchored by the infill layers above and below."
-msgstr "Rozszerz dolną powłokę (obszary, pod którym jest powietrze) tak, aby zostały zakotwiczone o warstwy wypełniające powyżej i poniżej."
+msgctxt "bottom_skin_preshrink description"
+msgid "The largest width of bottom skin areas which are to be removed. Every skin area smaller than this value will disappear. This can help in limiting the amount of time and material spent on printing bottom skin at slanted surfaces in the model."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "expand_skins_expand_distance label"
@@ -1422,8 +1482,28 @@ msgstr "Odległość Rozsz. Powłoki"
 
 #: fdmprinter.def.json
 msgctxt "expand_skins_expand_distance description"
-msgid "The distance the skins are expanded into the infill. The default distance is enough to bridge the gap between the infill lines and will stop holes appearing in the skin where it meets the wall when the infill density is low. A smaller distance will often be sufficient."
-msgstr "Odległość na jaką powłoki zostają rozszerzone do wypełnienia. Domyślna odległość wystarcza, aby pokonać szczelinę między liniami wypełnienia i nie dopuścić do powstania dziur, gdzie spotyka się z powłoką, gdy gęstość wypełnienia jest niska. Mniejsza odległość będzie często wystarczająca."
+msgid "The distance the skins are expanded into the infill. Higher values makes the skin attach better to the infill pattern and makes the walls on neighboring layers adhere better to the skin. Lower values save amount of material used."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "top_skin_expand_distance label"
+msgid "Top Skin Expand Distance"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "top_skin_expand_distance description"
+msgid "The distance the top skins are expanded into the infill. Higher values makes the skin attach better to the infill pattern and makes the walls on the layer above adhere better to the skin. Lower values save amount of material used."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "bottom_skin_expand_distance label"
+msgid "Bottom Skin Expand Distance"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "bottom_skin_expand_distance description"
+msgid "The distance the bottom skins are expanded into the infill. Higher values makes the skin attach better to the infill pattern and makes the skin adhere better to the walls on the layer below. Lower values save amount of material used."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "max_skin_angle_for_expansion label"
@@ -1806,16 +1886,6 @@ msgid "The speed at which top/bottom layers are printed."
 msgstr "Szybkość, z jaką drukowane są górne/dolne warstwy."
 
 #: fdmprinter.def.json
-msgctxt "speed_ironing label"
-msgid "Ironing Speed"
-msgstr "Prędkość Prasowania"
-
-#: fdmprinter.def.json
-msgctxt "speed_ironing description"
-msgid "The speed at which to pass over the top surface."
-msgstr "Prędkość, z jaką drukarka przejeżdża nad górnymi powierzchniami."
-
-#: fdmprinter.def.json
 msgctxt "speed_support label"
 msgid "Support Speed"
 msgstr "Prędkość Podpór"
@@ -2046,16 +2116,6 @@ msgid "The acceleration with which top/bottom layers are printed."
 msgstr "Przyspieszenie, z jakim drukowane są górne/dolne warstwy."
 
 #: fdmprinter.def.json
-msgctxt "acceleration_ironing label"
-msgid "Ironing Acceleration"
-msgstr "Przyspieszenie Prasowania"
-
-#: fdmprinter.def.json
-msgctxt "acceleration_ironing description"
-msgid "The acceleration with which ironing is performed."
-msgstr "Przyspieszenie, z jakim przeprowadzane jest prasowanie."
-
-#: fdmprinter.def.json
 msgctxt "acceleration_support label"
 msgid "Support Acceleration"
 msgstr "Przyspieszenie Podpór"
@@ -2244,16 +2304,6 @@ msgstr "Zryw Góra/Dół"
 msgctxt "jerk_topbottom description"
 msgid "The maximum instantaneous velocity change with which top/bottom layers are printed."
 msgstr "Maksymalna zmiana prędkości chwilowej z jaką drukowane są górne/dolne warstwy."
-
-#: fdmprinter.def.json
-msgctxt "jerk_ironing label"
-msgid "Ironing Jerk"
-msgstr "Zryw Prasowania"
-
-#: fdmprinter.def.json
-msgctxt "jerk_ironing description"
-msgid "The maximum instantaneous velocity change while performing ironing."
-msgstr "Maksymalna nagła zmiana prędkości podczas przeprowadzania prasowania."
 
 #: fdmprinter.def.json
 msgctxt "jerk_support label"
@@ -2771,6 +2821,11 @@ msgid "Zig Zag"
 msgstr "Zygzak"
 
 #: fdmprinter.def.json
+msgctxt "support_pattern option cross"
+msgid "Cross"
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "support_connect_zigzags label"
 msgid "Connect Support ZigZags"
 msgstr "Połącz Zygzaki Podpory"
@@ -2782,23 +2837,33 @@ msgstr "Połącz Zygzaki. To zwiększa wytrzymałość zygzakowatej podpory."
 
 #: fdmprinter.def.json
 msgctxt "support_skip_some_zags label"
-msgid "Skip Some ZigZags Connections"
-msgstr "Pomijaj Niektóre Połączenia Zygzak"
+msgid "Break Up Support In Chunks"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "support_skip_some_zags description"
-msgid "Skip some ZigZags connections to make the support structure easier to break."
-msgstr "Pomijaj niektóre połączenia Zygzak, aby struktura podpór łatwiej się odrywała."
+msgid "Skip some support line connections to make the support structure easier to break away. This setting is applicable to the Zig Zag support infill pattern."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_skip_zag_per_mm label"
+msgid "Support Chunk Size"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_skip_zag_per_mm description"
+msgid "Leave out a connection between support lines once every N millimeter to make the support structure easier to break away."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "support_zag_skip_count label"
-msgid "ZigZag Connection Skip Count"
-msgstr "Ilość Pominięć Połącz. Zygzak"
+msgid "Support Chunk Line Count"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "support_zag_skip_count description"
-msgid "Skip one in every N connection lines to make the support structure easier to break."
-msgstr "Pomijaj jedno na każde N linii połączeń, aby struktury podpór łatwiej się odrywały."
+msgid "Skip one in every N connection lines to make the support structure easier to break away."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "support_infill_rate label"
@@ -3385,6 +3450,26 @@ msgid "Only print the brim on the outside of the model. This reduces the amount 
 msgstr "Drukuj obrys tylko na zewnątrz modelu. Zmniejsza to liczbę obrysu, który trzeba usunąć po wydruku, podczas gdy nie zmniejsza znacząco przyczepności do stołu."
 
 #: fdmprinter.def.json
+msgctxt "z_offset_layer_0 label"
+msgid "Initial Layer Z Offset"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "z_offset_layer_0 description"
+msgid "The extruder is offset from the normal height of the first layer by this amount. It can be positive (raised) or negative (lowered). Some filament types adhere to the build plate better if the extruder is raised slightly."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "z_offset_taper_layers label"
+msgid "Z Offset Taper Layers"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "z_offset_taper_layers description"
+msgid "When non-zero, the Z offset is reduced to 0 over that many layers. A value of 0 means that the Z offset remains constant for all the layers in the print."
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "raft_margin label"
 msgid "Raft Extra Margin"
 msgstr "Dod. Margines Tratwy"
@@ -3393,6 +3478,16 @@ msgstr "Dod. Margines Tratwy"
 msgctxt "raft_margin description"
 msgid "If the raft is enabled, this is the extra raft area around the model which is also given a raft. Increasing this margin will create a stronger raft while using more material and leaving less area for your print."
 msgstr "Jeśli tratwa jest włączona, jest to dodatkowy obszar tratwy wokół modelu, który ma również tratwę. Zwiększenie marginesu wzmocni tratwę przy wykorzystaniu z większej ilości materiału i pozostawi mniej miejsca na wydruk."
+
+#: fdmprinter.def.json
+msgctxt "raft_smoothing label"
+msgid "Raft Smoothing"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "raft_smoothing description"
+msgid "This setting control how much inner corners in the raft outline are rounded. Inward corners are rounded to a semi circle with a radius equal to the value given here. This setting also removes holes in the raft outline which are smaller than such a circle."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "raft_airgap label"
@@ -4070,6 +4165,16 @@ msgid "Smooth the spiralized contours to reduce the visibility of the Z seam (th
 msgstr "Wygładź spiralny kontur, aby zmniejszyć widoczność szwu Z (szew Z powinien być ledwo widoczny na wydruku, ale nadal będzie widoczny w widoku warstwy). Należy pamiętać, że wygładzanie będzie miało tendencję do rozmycia drobnych szczegółów powierzchni."
 
 #: fdmprinter.def.json
+msgctxt "relative_extrusion label"
+msgid "Relative Extrusion"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "relative_extrusion description"
+msgid "Use relative extrusion rather than absolute extrusion. Using relative E-steps makes for easier post-processing of the Gcode. However, it's not supported by all printers and it may produce very slight deviations in the amount of deposited material compared to absolute E-steps. Irrespective of this setting, the extrusion mode will always be set to absolute before any Gcode script is output."
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "experimental label"
 msgid "Experimental"
 msgstr "Eksperymentalne"
@@ -4078,6 +4183,16 @@ msgstr "Eksperymentalne"
 msgctxt "experimental description"
 msgid "experimental!"
 msgstr "eksperymentalne!"
+
+#: fdmprinter.def.json
+msgctxt "optimize_wall_printing_order label"
+msgid "Optimize Wall Printing Order"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "optimize_wall_printing_order description"
+msgid "Optimize the order in which walls are printed so as to reduce the number of retractions and the distance travelled. Most parts will benefit from this being enabled but some may actually take longer so please compare the print time estimates with and without optimization."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "draft_shield_enabled label"
@@ -4190,16 +4305,6 @@ msgid "The speed by which to move during coasting, relative to the speed of the 
 msgstr "Prędkość poruszania się podczas Wypływania, w stosunku do prędkości ścieżki ekstruzji. Zaleca się wartość nieco poniżej 100%, ponieważ podczas Wypływania ciśnienie w rurce bowden spada."
 
 #: fdmprinter.def.json
-msgctxt "skin_outline_count label"
-msgid "Extra Skin Wall Count"
-msgstr "Liczba Dod. Ścian na Skórze"
-
-#: fdmprinter.def.json
-msgctxt "skin_outline_count description"
-msgid "Replaces the outermost part of the top/bottom pattern with a number of concentric lines. Using one or two lines improves roofs that start on infill material."
-msgstr "Zastępuje najbardziej zewnętrzną część wzoru górnego/dolnego za pomocą kilku koncentrycznych linii. Korzystanie z jednej lub dwóch linii poprawia dachy, które zaczynają się na wypełnieniu."
-
-#: fdmprinter.def.json
 msgctxt "skin_alternate_rotation label"
 msgid "Alternate Skin Rotation"
 msgstr "Zmień Kierunek Skóry"
@@ -4208,6 +4313,26 @@ msgstr "Zmień Kierunek Skóry"
 msgctxt "skin_alternate_rotation description"
 msgid "Alternate the direction in which the top/bottom layers are printed. Normally they are printed diagonally only. This setting adds the X-only and Y-only directions."
 msgstr "Zmień kierunek, w jakim drukowane są górne/dolne warstwy. Zazwyczaj są one drukowane na ukos. Ustawienie to dodaje kierunek \"tylko X\" i \"tylko Y\"."
+
+#: fdmprinter.def.json
+msgctxt "cross_infill_pocket_size label"
+msgid "Cross 3D Pocket Size"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "cross_infill_pocket_size description"
+msgid "The size of pockets at four-way crossings in the cross 3D pattern at heights where the pattern is touching itself."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "cross_infill_apply_pockets_alternatingly label"
+msgid "Alternate Cross 3D Pockets"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "cross_infill_apply_pockets_alternatingly description"
+msgid "Only apply pockets at half of the four-way crossings in the cross 3D pattern and alternate the location of the pockets between heights where the pattern is touching itself."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "spaghetti_infill_enabled label"
@@ -4629,6 +4754,16 @@ msgid "Go over the top surface one additional time, but without extruding materi
 msgstr "Przejedź nad górną powierzchnią dodatkowy raz, ale bez ekstrudowania materiału. Topi to plastyk na górze, co powoduje gładszą powierzchnię."
 
 #: fdmprinter.def.json
+msgctxt "ironing_only_highest_layer label"
+msgid "Iron Only Highest Layer"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "ironing_only_highest_layer description"
+msgid "Only perform ironing on the very last layer of the mesh. This saves time if the lower layers don't need a smooth surface finish."
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "ironing_pattern label"
 msgid "Ironing Pattern"
 msgstr "Wzór Prasowania"
@@ -4677,6 +4812,36 @@ msgstr "Margines Prasowania"
 msgctxt "ironing_inset description"
 msgid "A distance to keep from the edges of the model. Ironing all the way to the edge of the mesh may result in a jagged edge on your print."
 msgstr "Odległość utrzymywana od krawędzi modelu. Prasowanie do końca krawędzi siatki może powodować zadarte krawędzie na wydruku."
+
+#: fdmprinter.def.json
+msgctxt "speed_ironing label"
+msgid "Ironing Speed"
+msgstr "Prędkość Prasowania"
+
+#: fdmprinter.def.json
+msgctxt "speed_ironing description"
+msgid "The speed at which to pass over the top surface."
+msgstr "Prędkość, z jaką drukarka przejeżdża nad górnymi powierzchniami."
+
+#: fdmprinter.def.json
+msgctxt "acceleration_ironing label"
+msgid "Ironing Acceleration"
+msgstr "Przyspieszenie Prasowania"
+
+#: fdmprinter.def.json
+msgctxt "acceleration_ironing description"
+msgid "The acceleration with which ironing is performed."
+msgstr "Przyspieszenie, z jakim przeprowadzane jest prasowanie."
+
+#: fdmprinter.def.json
+msgctxt "jerk_ironing label"
+msgid "Ironing Jerk"
+msgstr "Zryw Prasowania"
+
+#: fdmprinter.def.json
+msgctxt "jerk_ironing description"
+msgid "The maximum instantaneous velocity change while performing ironing."
+msgstr "Maksymalna nagła zmiana prędkości podczas przeprowadzania prasowania."
 
 #: fdmprinter.def.json
 msgctxt "command_line_settings label"
@@ -4737,6 +4902,66 @@ msgstr "Forma Obrotu Siatki"
 msgctxt "mesh_rotation_matrix description"
 msgid "Transformation matrix to be applied to the model when loading it from file."
 msgstr "Forma przesunięcia, która ma być zastosowana do modelu podczas ładowania z pliku."
+
+#~ msgctxt "wall_extruder_nr label"
+#~ msgid "Wall Extruder"
+#~ msgstr "Ekstruder Ściany"
+
+#~ msgctxt "wall_extruder_nr description"
+#~ msgid "The extruder train used for printing the walls. This is used in multi-extrusion."
+#~ msgstr "Ekstruder używany do drukowania ścian. Używane w multi-esktruzji."
+
+#~ msgctxt "infill_pattern description"
+#~ msgid "The pattern of the infill material of the print. The line and zig zag infill swap direction on alternate layers, reducing material cost. The grid, triangle, cubic, tetrahedral and concentric patterns are fully printed every layer. Cubic and tetrahedral infill change with every layer to provide a more equal distribution of strength over each direction."
+#~ msgstr "Wzór materiału wypełniającego. Linia i zygzakowy wypełnienie zmienia kierunek na przemiennych warstwach zmniejszając koszt materiału. Wzory siatki, trójkątne, sześcienne, czworościenne i koncentryczne są w pełni drukowane na każdej warstwie. Wypełnienie sześcienne i czworościenne zmienia się co każdą warstwę, aby zapewnić równe rozłożenie siły w każdym kierunku."
+
+#~ msgctxt "infill_pattern option tetrahedral"
+#~ msgid "Tetrahedral"
+#~ msgstr "Czworościenny"
+
+#~ msgctxt "expand_skins_into_infill label"
+#~ msgid "Expand Skins Into Infill"
+#~ msgstr "Rozszerz Powłokę Do Wypełn."
+
+#~ msgctxt "expand_skins_into_infill description"
+#~ msgid "Expand skin areas of top and/or bottom skin of flat surfaces. By default, skins stop under the wall lines that surround infill but this can lead to holes appearing when the infill density is low. This setting extends the skins beyond the wall lines so that the infill on the next layer rests on skin."
+#~ msgstr "Rozszerz obszary powłoki na górze i/lub dole powierzchni płaskich. Domyślnie, powłoka kończy się na linii ściany otaczające wypełnienie, chociaż może to prowadzić do powstawania dziur kiedy gęstość wypełnienia jest niska. Ustawienie to rozciąga powłokę poza linię ściany, dzięki czemu wypełnienie na kolejnej warstwie osiada na powłoce."
+
+#~ msgctxt "expand_upper_skins label"
+#~ msgid "Expand Top Skins Into Infill"
+#~ msgstr "Rozszerz Górną Powłokę Do Wypełn."
+
+#~ msgctxt "expand_upper_skins description"
+#~ msgid "Expand the top skin areas (areas with air above) so that they support infill above."
+#~ msgstr "Rozszerz górne obszary ścian (obszary, które mają ponad sobą powietrze) tak, aby wspomagały wypełnienie powyżej."
+
+#~ msgctxt "expand_lower_skins label"
+#~ msgid "Expand Bottom Skins Into Infill"
+#~ msgstr "Rozszerz Dolną Powłokę Do Wypełn."
+
+#~ msgctxt "expand_lower_skins description"
+#~ msgid "Expand the bottom skin areas (areas with air below) so that they are anchored by the infill layers above and below."
+#~ msgstr "Rozszerz dolną powłokę (obszary, pod którym jest powietrze) tak, aby zostały zakotwiczone o warstwy wypełniające powyżej i poniżej."
+
+#~ msgctxt "expand_skins_expand_distance description"
+#~ msgid "The distance the skins are expanded into the infill. The default distance is enough to bridge the gap between the infill lines and will stop holes appearing in the skin where it meets the wall when the infill density is low. A smaller distance will often be sufficient."
+#~ msgstr "Odległość na jaką powłoki zostają rozszerzone do wypełnienia. Domyślna odległość wystarcza, aby pokonać szczelinę między liniami wypełnienia i nie dopuścić do powstania dziur, gdzie spotyka się z powłoką, gdy gęstość wypełnienia jest niska. Mniejsza odległość będzie często wystarczająca."
+
+#~ msgctxt "support_skip_some_zags label"
+#~ msgid "Skip Some ZigZags Connections"
+#~ msgstr "Pomijaj Niektóre Połączenia Zygzak"
+
+#~ msgctxt "support_skip_some_zags description"
+#~ msgid "Skip some ZigZags connections to make the support structure easier to break."
+#~ msgstr "Pomijaj niektóre połączenia Zygzak, aby struktura podpór łatwiej się odrywała."
+
+#~ msgctxt "support_zag_skip_count label"
+#~ msgid "ZigZag Connection Skip Count"
+#~ msgstr "Ilość Pominięć Połącz. Zygzak"
+
+#~ msgctxt "support_zag_skip_count description"
+#~ msgid "Skip one in every N connection lines to make the support structure easier to break."
+#~ msgstr "Pomijaj jedno na każde N linii połączeń, aby struktury podpór łatwiej się odrywały."
 
 #~ msgctxt "machine_center_is_zero label"
 #~ msgid "Is center origin"
