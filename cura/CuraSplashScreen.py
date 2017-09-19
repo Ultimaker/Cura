@@ -3,7 +3,7 @@
 
 from threading import Thread, Event
 
-from PyQt5.QtCore import Qt
+from PyQt5.QtCore import Qt, QCoreApplication
 from PyQt5.QtGui import QPixmap, QColor, QFont, QPen, QPainter
 from PyQt5.QtWidgets import QSplashScreen
 
@@ -91,6 +91,7 @@ class CuraSplashScreen(QSplashScreen):
 
         self._current_message = message
         self.messageChanged.emit(message)
+        QCoreApplication.flush()
 
     def close(self):
         # set stop flags
@@ -105,7 +106,7 @@ class LoadingTickThread(Thread):
         super().__init__(daemon = True)
         self._splash = splash
         self._to_stop = False
-        self._time_interval = 0.05
+        self._time_interval = 0.1
         self._event = Event()
 
     def setToStop(self):
