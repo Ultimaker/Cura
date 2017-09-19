@@ -68,12 +68,8 @@ class FirmwareUpdateCheckerJob(Job):
                 # notify the user when no new firmware version is available.
                 if (checked_version != "") and (checked_version != current_version):
                     Logger.log("i", "SHOWING FIRMWARE UPDATE MESSAGE")
-                    message = Message(i18n_catalog.i18nc("@info", "To ensure that your %s is equipped with the latest "
-                                                                  "features it is recommended to update the firmware "
-                                                                  "regularly. This can be done on the %s (when connected "
-                                                                  "to the network) or via USB."
-                                                         % (machine_name, machine_name)),
-                                      title = i18n_catalog.i18nc("@info:title", "New %s firmware available" % machine_name))
+                    message = Message(i18n_catalog.i18nc("@info Don't translate {machine_name}, since it gets replaced by a printer name!", "To ensure that your {machine_name} is equipped with the latest features it is recommended to update the firmware regularly. This can be done on the {machine_name} (when connected to the network) or via USB.").format(machine_name = machine_name),
+                                      title = i18n_catalog.i18nc("@info:title The %s gets replaced with the printer name.", "New %s firmware available") % machine_name)
                     message.addAction("download", i18n_catalog.i18nc("@action:button", "Download"), "[no_icon]", "[no_description]")
 
                     # If we do this in a cool way, the download url should be available in the JSON file
