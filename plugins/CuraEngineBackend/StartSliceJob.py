@@ -5,8 +5,6 @@ import numpy
 from string import Formatter
 from enum import IntEnum
 import time
-import copy
-import math
 
 from UM.Job import Job
 from UM.Application import Application
@@ -17,9 +15,6 @@ from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 
 from UM.Settings.Validator import ValidatorState
 from UM.Settings.SettingRelation import RelationType
-from cura.Settings.CuraContainerStack import CuraContainerStack
-
-from UM.Mesh.MeshData import transformVertices
 
 from cura.OneAtATimeIterator import OneAtATimeIterator
 from cura.Settings.ExtruderManager import ExtruderManager
@@ -160,26 +155,6 @@ class StartSliceJob(Job):
                 self.setResult(StartJobResult.NothingToSlice)
                 return
 
-            # Adapt layer_height and material_flow for a slanted gantry
-            gantry_angle = self._scene.getRoot().callDecoration("getGantryAngle")
-            if gantry_angle: # not 0 or None
-                # Act on a copy of the stack, so these changes don't cause a reslice
-                _stack = CuraContainerStack(stack.getId() + "_temp")
-                index = 0
-                for container in stack.getContainers():
-                    if container.isReadOnly():
-                        _stack.replaceContainer(index, container)
-                    else:
-                        _stack.replaceContainer(index, copy.deepcopy(container))
-                    index = index + 1
-                stack = _stack
-                for key in ["layer_height", "layer_height_0"]:
-                    current_value = stack.getProperty(key, "value")
-                    stack.setProperty(key, "value", current_value / math.sin(gantry_angle))
-                for key in ["material_flow", "prime_tower_flow", "spaghetti_flow"]:
-                    current_value = stack.getProperty(key, "value")
-                    stack.setProperty(key, "value", current_value * math.sin(gantry_angle))
-
             self._buildGlobalSettingsMessage(stack)
             self._buildGlobalInheritsStackMessage(stack)
 
@@ -187,27 +162,9 @@ class StartSliceJob(Job):
             # Single extruder machines only use the global stack to store setting values
             if stack.getProperty("machine_extruder_count", "value") > 1:
                 for extruder_stack in ExtruderManager.getInstance().getMachineExtruders(stack.getId()):
-                    if gantry_angle: # not 0 or None
-                        # Act on a copy of the stack, so these changes don't cause a reslice
-                        _extruder_stack = ContainerStack(extruder_stack.getId() + "_temp")
-                        index = 0
-                        for container in reversed(extruder_stack.getContainers()):
-                            if container.isReadOnly():
-                                _stack.replaceContainer(index, container)
-                            else:
-                                _stack.replaceContainer(index, copy.deepcopy(container))
-                            index = index + 1
-                        extruder_stack = _extruder_stack
-                        for key in ["material_flow", "prime_tower_flow", "spaghetti_flow"]:
-                            current_value = extruder_stack.getProperty(key, "value")
-                            extruder_stack.setProperty(key, "value", current_value * math.sin(gantry_angle))
                     self._buildExtruderMessage(extruder_stack)
             else:
                 self._buildExtruderMessageFromGlobalStack(stack)
-
-            transform_matrix = self._scene.getRoot().callDecoration("getTransformMatrix")
-
-            front_offset = None
 
             for group in object_groups:
                 group_message = self._slice_message.addRepeatedMessage("object_lists")
@@ -222,13 +179,6 @@ class StartSliceJob(Job):
                     verts = mesh_data.getVertices()
                     verts = verts.dot(rot_scale)
                     verts += translate
-
-                    if transform_matrix:
-                        verts = transformVertices(verts, transform_matrix)
-
-                        _front_offset = verts[:, 1].min()
-                        if front_offset is None or _front_offset < front_offset:
-                            front_offset = _front_offset
 
                     # Convert from Y up axes to Z up axes. Equals a 90 degree rotation.
                     verts[:, [1, 2]] = verts[:, [2, 1]]
@@ -248,11 +198,6 @@ class StartSliceJob(Job):
                     self._handlePerObjectSettings(object, obj)
 
                     Job.yieldThread()
-
-                # Store the front-most coordinate of the scene so the scene can be moved back into place post slicing
-                # TODO: this should be handled per mesh-group instead of per scene
-                # One-at-a-time printing should be disabled for slanted gantry printers for now
-                self._scene.getRoot().callDecoration("setSceneFrontOffset", front_offset)
 
         self.setResult(StartJobResult.Finished)
 
