@@ -10,6 +10,7 @@ from UM.i18n import i18nCatalog
 i18n_catalog = i18nCatalog("BlackBeltPlugin")
 
 from . import BuildVolumePatches
+from . import CuraEngineBackendPatches
 
 import math
 import os.path
@@ -22,6 +23,7 @@ class BlackBeltPlugin(Extension):
         self._application = Application.getInstance()
 
         self._build_volume_patches = None
+        self._cura_engine_backend_patched = None
 
         self._global_container_stack = None
         self._application.globalContainerStackChanged.connect(self._onGlobalContainerStackChanged)
@@ -76,6 +78,7 @@ class BlackBeltPlugin(Extension):
     def _onEngineCreated(self):
         # Apply patches
         self._build_volume_patches = BuildVolumePatches.BuildVolumePatches(self._application.getBuildVolume())
+        self._cura_engine_backend_patched = CuraEngineBackendPatches.CuraEngineBackendPatches(self._application.getBackend())
 
         self._application.getBackend().slicingStarted.connect(self._onSlicingStarted)
 
