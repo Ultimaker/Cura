@@ -30,11 +30,15 @@ Item
     }
 
     property var buttonTarget: {
-        var force_binding = parent.y; // ensure this gets reevaluated when the panel moves
-        return base.mapFromItem(parent.parent, parent.buttonTarget.x, parent.buttonTarget.y);
+        if(parent != null)
+        {
+            var force_binding = parent.y; // ensure this gets reevaluated when the panel moves
+            return base.mapFromItem(parent.parent, parent.buttonTarget.x, parent.buttonTarget.y)
+        }
+        return Qt.point(0,0)
     }
 
-    visible: !parent.parent.monitoringPrint
+    visible: parent != null ? !parent.parent.monitoringPrint: true
 
     UM.PointingRectangle {
         id: layerViewMenu
