@@ -342,7 +342,7 @@ Item
         {
             id: slider
             width: handleSize
-            height: parent.height - 2*UM.Theme.getSize("slider_layerview_margin").height
+            height: UM.Theme.getSize("layerview_menu_size").height
             anchors.top: parent.bottom
             anchors.topMargin: UM.Theme.getSize("slider_layerview_margin").height
             anchors.right: layerViewMenu.right
