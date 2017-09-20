@@ -748,6 +748,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         # MUST get updated too.
         #
         if self._resolve_strategies["machine"] == "new":
+
             # A new machine was made, but it was serialized with the wrong user container. Fix that now.
             for container in user_instance_containers:
                 # replacing the container ID for user instance containers for the extruders

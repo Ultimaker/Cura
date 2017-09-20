@@ -125,11 +125,22 @@ class ProfilesModel(InstanceContainersModel):
         for key in reversed(tmp_all_quality_items.keys()):
             all_quality_items[key] = tmp_all_quality_items[key]
 
+        # First the suitable containers are set in the model
+        containers = []
         for data_item in all_quality_items.values():
-            item = data_item["suitable_container"]
-            if item is None:
-                item = data_item["all_containers"][0]
+            suitable_item = data_item["suitable_container"]
+            if suitable_item is None:
+                suitable_item = data_item["all_containers"][0]
+            containers.append(suitable_item)
 
+        # Once the suitable containers are collected, the rest of the containers are appended
+        for data_item in all_quality_items.values():
+            for item in data_item["all_containers"]:
+                if item not in containers:
+                    containers.append(item)
+
+        # Now all the containers are set
+        for item in containers:
             profile = container_registry.findContainers(id = item["id"])
             if not profile:
                 item["layer_height"] = "" #Can't update a profile that is unknown.
