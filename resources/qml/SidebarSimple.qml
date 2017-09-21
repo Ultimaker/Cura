@@ -53,7 +53,7 @@ Item
 
                 Component.onCompleted:
                 {
-                    qualityRow.updateAvailableTotalTicks()
+                    qualityRow.updateQualitySliderProperties()
                 }
 
                 Connections
@@ -61,17 +61,10 @@ Item
                     target: Cura.MachineManager
                     onActiveQualityChanged:
                     {
-                        qualityRow.updateAvailableTotalTicks()
+                        qualityRow.updateQualitySliderProperties()
                     }
                 }
 
-                /*
-                Component.onCompleted:
-                {
-                    updateCurrentQualityIndex();
-                    updateBar();
-                }
-                */
 
                 id: qualityRow
 
@@ -84,7 +77,7 @@ Item
                 property var sliderAvailableMax : 0
                 property var sliderMarginRight : 0
 
-                function updateAvailableTotalTicks()
+                function updateQualitySliderProperties()
                 {
                     qualityRow.totalTicks = Cura.ProfilesModel.rowCount() - 1 // minus one, because slider starts from 0
 
@@ -142,12 +135,6 @@ Item
 
                     qualityRow.sliderAvailableMin = availableMin
                     qualityRow.sliderAvailableMax = availableMax
-
-                    //console.log("==>>FIND.availableMin: " + availableMin)
-                    //console.log("==>>FIND.availableMax: " + availableMax)
-                    //console.log("==>>FIND.qualitySliderSelectedValue: " + qualitySliderSelectedValue)
-                    //console.log("==>>FIND.sliderMarginRightVALUE:  "+ sliderMarginRight)
-
                 }
 
                 height: UM.Theme.getSize("sidebar_margin").height
@@ -211,7 +198,7 @@ Item
                         height: 2
                         color: UM.Theme.getColor("quality_slider_unavailable")
                         //radius: parent.radius
-                        y: 8.5
+                        anchors.verticalCenter: qualityRowSlider.verticalCenter
                         x: 0
                     }
 
@@ -256,13 +243,14 @@ Item
                             //Draw Available line
                             groove: Rectangle {
                                 implicitHeight: 2
+                                anchors.verticalCenter: qualityRowSlider.verticalCenter
                                 color: UM.Theme.getColor("quality_slider_available")
                                 radius: 1
                             }
-
                             handle: Item {
                                 Rectangle {
                                     id: qualityhandleButton
+                                    anchors.verticalCenter: qualityRowSlider.verticalCenter
                                     anchors.centerIn: parent
                                     color: control.enabled ? UM.Theme.getColor("quality_slider_available") : UM.Theme.getColor("quality_slider_unavailable")
                                     implicitWidth: 10
