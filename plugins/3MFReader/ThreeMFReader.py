@@ -12,7 +12,6 @@ from UM.Mesh.MeshBuilder import MeshBuilder
 from UM.Mesh.MeshReader import MeshReader
 from UM.Scene.GroupDecorator import GroupDecorator
 from cura.Settings.SettingOverrideDecorator import SettingOverrideDecorator
-from cura.ZOffsetDecorator import ZOffsetDecorator
 from UM.Application import Application
 from cura.Settings.ExtruderManager import ExtruderManager
 from cura.QualityManager import QualityManager
@@ -47,7 +46,7 @@ class ThreeMFReader(MeshReader):
     def _createMatrixFromTransformationString(self, transformation):
         if transformation == "":
             return Matrix()
-        
+
         splitted_transformation = transformation.split()
         ## Transformation is saved as:
         ## M00 M01 M02 0.0
@@ -105,8 +104,8 @@ class ThreeMFReader(MeshReader):
         # Add the setting override decorator, so we can add settings to this node.
         if settings:
             um_node.addDecorator(SettingOverrideDecorator())
-            global_container_stack = Application.getInstance().getGlobalContainerStack()
 
+            global_container_stack = Application.getInstance().getGlobalContainerStack()
             # Ensure the correct next container for the SettingOverride decorator is set.
             if global_container_stack:
                 multi_extrusion = global_container_stack.getProperty("machine_extruder_count", "value") > 1
@@ -144,15 +143,12 @@ class ThreeMFReader(MeshReader):
         if len(um_node.getChildren()) > 0:
             group_decorator = GroupDecorator()
             um_node.addDecorator(group_decorator)
-
         um_node.setSelectable(True)
-
         if um_node.getMeshData():
             # Assuming that all nodes with mesh data are printable objects
             # affects (auto) slicing
             sliceable_decorator = SliceableObjectDecorator()
             um_node.addDecorator(sliceable_decorator)
-
         return um_node
 
     def read(self, file_name):
@@ -172,18 +168,10 @@ class ThreeMFReader(MeshReader):
 
                 transform_matrix = Matrix()
                 mesh_data = um_node.getMeshData()
-
                 if mesh_data is not None:
                     extents = mesh_data.getExtents()
                     center_vector = Vector(extents.center.x, extents.center.y, extents.center.z)
-
-                    # If the object in a saved project is below the bed, keep it that way
-                    if extents.minimum.z < 0.0:
-                        um_node.addDecorator(ZOffsetDecorator())
-                        um_node.callDecoration("setZOffset", extents.minimum.z)
-
                     transform_matrix.setByTranslation(center_vector)
-
                 transform_matrix.multiply(um_node.getLocalTransformation())
                 um_node.setTransformation(transform_matrix)
 
@@ -207,7 +195,7 @@ class ThreeMFReader(MeshReader):
                     translation_matrix.setByTranslation(translation_vector)
                     transformation_matrix.multiply(translation_matrix)
 
-                # Third step: 3MF also defines a unit, whereas Cura always assumes mm.
+                # Third step: 3MF also defines a unit, wheras Cura always assumes mm.
                 scale_matrix = Matrix()
                 scale_matrix.setByScaleVector(self._getScaleFromUnit(self._unit))
                 transformation_matrix.multiply(scale_matrix)
