@@ -75,6 +75,7 @@ class ProfilesModel(InstanceContainersModel):
         # The actual list of quality profiles come from the first extruder in the extruder list.
         result = QualityManager.getInstance().findAllQualitiesForMachineAndMaterials(global_stack_definition,
                                                                                      materials)
+
         for quality in QualityManager.getInstance().findAllUsableQualitiesForMachineAndExtruders(
                 global_container_stack, extruder_stacks):
             if quality not in result:

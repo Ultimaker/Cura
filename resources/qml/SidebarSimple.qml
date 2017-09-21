@@ -179,10 +179,8 @@ Item
                             anchors.top: parent.top
                             anchors.topMargin: UM.Theme.getSize("sidebar_margin").height / 2
                             color: UM.Theme.getColor("text")
-                            text:
-                            {
-                                return Cura.ProfilesModel.getItem(index).layer_height_without_unit
-                            }
+                            text: Cura.ProfilesModel.getItem(index).layer_height_without_unit
+
                             width: 1
                             x:
                             {
@@ -213,7 +211,7 @@ Item
                         height: 2
                         color: UM.Theme.getColor("quality_slider_unavailable")
                         //radius: parent.radius
-                        y: 9
+                        y: 8.5
                         x: 0
                     }
 
@@ -248,14 +246,10 @@ Item
 
                         value: qualityRow.qualitySliderSelectedValue
 
-                        width:{
-                            return qualityRow.qualitySliderStep * (qualityRow.availableTotalTicks)
-                        }
+                        width: qualityRow.qualitySliderStep * (qualityRow.availableTotalTicks)
 
                         anchors.right: parent.right
-                        anchors.rightMargin:{
-                            return qualityRow.sliderMarginRight
-                        }
+                        anchors.rightMargin:  qualityRow.sliderMarginRight
 
                         style: SliderStyle
                         {
@@ -265,6 +259,7 @@ Item
                                 color: UM.Theme.getColor("quality_slider_available")
                                 radius: 1
                             }
+
                             handle: Item {
                                 Rectangle {
                                     id: qualityhandleButton
@@ -334,7 +329,7 @@ Item
                 id: infillCellLeft
 
                 anchors.top: qualityRow.bottom
-                anchors.topMargin: UM.Theme.getSize("sidebar_margin").height
+                anchors.topMargin: UM.Theme.getSize("sidebar_margin").height * 2
                 anchors.left: parent.left
 
                 width: UM.Theme.getSize("sidebar").width * .45 - UM.Theme.getSize("sidebar_margin").width
@@ -386,6 +381,8 @@ Item
 
                     anchors.top: selectedInfillRateText.bottom
                     anchors.left: parent.left
+                    anchors.right: infillIcon.left
+                    anchors.rightMargin: UM.Theme.getSize("sidebar_margin").width
 
                     height: UM.Theme.getSize("sidebar_margin").height
                     width: infillCellRight.width - UM.Theme.getSize("sidebar_margin").width - style.handleWidth
