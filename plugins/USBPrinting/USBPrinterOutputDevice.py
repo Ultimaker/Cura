@@ -150,7 +150,7 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
     def printGCode(self, gcode_list):
         Logger.log("d", "Started printing g-code")
         if self._progress or self._connection_state != ConnectionState.connected:
-            self._error_message = Message(catalog.i18nc("@info:status", "Unable to start a new job because the printer is busy or not connected."), title = catalog.i18nc("@info:title", "Print Details"))
+            self._error_message = Message(catalog.i18nc("@info:status", "Unable to start a new job because the printer is busy or not connected."), title = catalog.i18nc("@info:title", "Printer Unavailable"))
             self._error_message.show()
             Logger.log("d", "Printer is busy or not connected, aborting print")
             self.writeError.emit(self)
