@@ -1389,7 +1389,7 @@
                 "zig_zaggify_infill":
                 {
                     "label": "Connect Infill Lines",
-                    "description": "Connect the ends where the infill pattern meets the inner wall using a lines which follows the shape of the inner wall. Enabling this setting can make the infill adhere to the walls better and reduces the effects on infill on the quality of vertical surfaces. Disabling this setting reduces the amount of material used.",
+                    "description": "Connect the ends where the infill pattern meets the inner wall using a line which follows the shape of the inner wall. Enabling this setting can make the infill adhere to the walls better and reduce the effects of infill on the quality of vertical surfaces. Disabling this setting reduces the amount of material used.",
                     "type": "bool",
                     "default_value": true,
                     "enabled": "infill_pattern == 'cross' or infill_pattern == 'cross_3d'",
