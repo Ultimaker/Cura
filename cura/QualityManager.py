@@ -61,8 +61,6 @@ class QualityManager:
             machine_definition = global_stack.definition
 
         result = self.findAllQualityChangesForMachine(machine_definition)
-        for extruder in self.findAllExtruderDefinitionsForMachine(machine_definition):
-            result.extend(self.findAllQualityChangesForExtruder(extruder))
         result = [quality_change for quality_change in result if quality_change.getName() == quality_changes_name]
         return result
 
@@ -151,7 +149,7 @@ class QualityManager:
         else:
             definition_id = "fdmprinter"
 
-        filter_dict = { "type": "quality_changes", "extruder": None, "definition": definition_id }
+        filter_dict = { "type": "quality_changes", "definition": definition_id }
         quality_changes_list = ContainerRegistry.getInstance().findInstanceContainers(**filter_dict)
         return quality_changes_list
 
