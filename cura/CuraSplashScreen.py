@@ -90,9 +90,9 @@ class CuraSplashScreen(QSplashScreen):
         super().drawContents(painter)
 
     def showMessage(self, message, *args, **kwargs):
-
         if self._to_stop:
             return
+
         self._current_message = message
         self.messageChanged.emit(message)
         QCoreApplication.flush()

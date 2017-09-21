@@ -27,4 +27,7 @@ Menu
         onObjectRemoved: menu.removeItem(object)
     }
     ExclusiveGroup { id: group; }
+
+    MenuSeparator {}
+    MenuItem { action: Cura.Actions.homeCamera; }
 }

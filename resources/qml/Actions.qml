@@ -17,6 +17,8 @@ Item
     property alias undo: undoAction;
     property alias redo: redoAction;
 
+    property alias homeCamera: homeCameraAction;
+
     property alias deleteSelection: deleteSelectionAction;
     property alias centerSelection: centerSelectionAction;
     property alias multiplySelection: multiplySelectionAction;
@@ -94,6 +96,13 @@ Item
         text: catalog.i18nc("@action:inmenu menubar:file","&Quit");
         iconName: "application-exit";
         shortcut: StandardKey.Quit;
+    }
+
+    Action
+    {
+        id: homeCameraAction;
+        text: catalog.i18nc("@action:inmenu menubar:view","&Reset camera position");
+        onTriggered: CuraActions.homeCamera();
     }
 
     Action
