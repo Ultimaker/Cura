@@ -153,7 +153,7 @@ class CuraContainerRegistry(ContainerRegistry):
             m.show()
             return
         m = Message(catalog.i18nc("@info:status Don't translate the XML tag <filename>!", "Exported profile to <filename>{0}</filename>", file_name),
-                    title = catalog.i18nc("@info:title", "Export Details"))
+                    title = catalog.i18nc("@info:title", "Export succeeded"))
         m.show()
 
     ##  Gets the plugin object matching the criteria
