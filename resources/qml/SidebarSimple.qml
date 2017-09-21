@@ -509,21 +509,23 @@ Item
                     }
                 }
 
-                Item
+                Rectangle
                 {
                     id: infillIcon
 
-                    width: (infillCellRight.width / 5) - (UM.Theme.getSize("sidebar_margin").width)
+                    width: (parent.width / 5) - (UM.Theme.getSize("sidebar_margin").width)
                     height: width
 
-                    anchors.right: infillCellRight.right
-                    anchors.top: infillSlider.top
+                    anchors.right: parent.right
+                    anchors.top: parent.top
+                    anchors.topMargin: UM.Theme.getSize("sidebar_margin").height / 2
 
                     // we loop over all density icons and only show the one that has the current density and steps
                     Repeater
                     {
                         id: infillIconList
                         model: infillModel
+                        anchors.fill: parent
 
                         property int activeIndex: {
                             for (var i = 0; i < infillModel.count; i++) {
@@ -541,20 +543,21 @@ Item
                             return -1
                         }
 
-                        Item {
+                        Rectangle
+                        {
                             anchors.fill: parent
+                            visible: infillIconList.activeIndex == index
 
-                            Rectangle {
+                            border.width: UM.Theme.getSize("default_lining").width
+                            border.color: UM.Theme.getColor("quality_slider_available")
+
+                            UM.RecolorImage {
                                 anchors.fill: parent
-                                visible: infillIconList.activeIndex == index
-
-                                UM.RecolorImage {
-                                    anchors.fill: parent
-                                    sourceSize.width: width
-                                    sourceSize.height: width
-                                    source: UM.Theme.getIcon(model.icon)
-                                    color: UM.Theme.getColor("quality_slider_available")
-                                }
+                                anchors.margins: 2
+                                sourceSize.width: width
+                                sourceSize.height: width
+                                source: UM.Theme.getIcon(model.icon)
+                                color: UM.Theme.getColor("quality_slider_unavailable")
                             }
                         }
                     }
