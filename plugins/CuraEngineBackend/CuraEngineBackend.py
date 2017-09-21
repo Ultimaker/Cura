@@ -195,8 +195,8 @@ class CuraEngineBackend(QObject, Backend):
             self.backendStateChange.emit(BackendState.Done)
             Logger.log("w", "Slice unnecessary, nothing has changed that needs reslicing.")
             return
-
-        Application.getInstance().getPrintInformation().setToZeroPrintInformation()
+        if Application.getInstance().getPrintInformation():
+            Application.getInstance().getPrintInformation().setToZeroPrintInformation()
 
         self._stored_layer_data = []
         self._stored_optimized_layer_data = []

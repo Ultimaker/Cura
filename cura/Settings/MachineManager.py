@@ -965,7 +965,7 @@ class MachineManager(QObject):
         if container_type == "quality":
             stack.quality.nameChanged.disconnect(self._onQualityNameChanged)
             stack.setQuality(container, postpone_emit = postpone_emit)
-            stack.qualityChanges.nameChanged.connect(self._onQualityNameChanged)
+            stack.quality.nameChanged.connect(self._onQualityNameChanged)
         elif container_type == "quality_changes" or container_type is None:
             # If the container is an empty container, we need to change the quality_changes.
             # Quality can never be set to empty.

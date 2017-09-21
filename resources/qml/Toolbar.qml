@@ -34,7 +34,15 @@ Item
             Button
             {
                 text: model.name
-                iconSource: UM.Theme.getIcon(model.icon);
+                iconSource:
+                {
+                    var result = UM.Theme.getIcon(model.icon)
+                    if(result == "")
+                    {
+                        return model.location + "/" + model.icon
+                    }
+                    return result
+                }
 
                 checkable: true;
                 checked: model.active;
