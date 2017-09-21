@@ -17,6 +17,7 @@ from cura.Settings.ExtruderManager import ExtruderManager
 from cura.QualityManager import QualityManager
 from UM.Scene.SceneNode import SceneNode
 from cura.SliceableObjectDecorator import SliceableObjectDecorator
+from cura.ZOffsetDecorator import ZOffsetDecorator
 
 MYPY = False
 
@@ -195,13 +196,18 @@ class ThreeMFReader(MeshReader):
                     translation_matrix.setByTranslation(translation_vector)
                     transformation_matrix.multiply(translation_matrix)
 
-                # Third step: 3MF also defines a unit, wheras Cura always assumes mm.
+                # Third step: 3MF also defines a unit, whereas Cura always assumes mm.
                 scale_matrix = Matrix()
                 scale_matrix.setByScaleVector(self._getScaleFromUnit(self._unit))
                 transformation_matrix.multiply(scale_matrix)
 
                 # Pre multiply the transformation with the loaded transformation, so the data is handled correctly.
                 um_node.setTransformation(um_node.getLocalTransformation().preMultiply(transformation_matrix))
+
+                # If the object in a saved project is below the bed, keep it that way
+                if um_node.getMeshData() != None and um_node.getMeshData().getExtents(um_node.getWorldTransformation()).minimum.y < 0:
+                    um_node.addDecorator(ZOffsetDecorator())
+                    um_node.callDecoration("setZOffset",um_node.getMeshData().getExtents(um_node.getWorldTransformation()).minimum.y)
 
                 result.append(um_node)
 
