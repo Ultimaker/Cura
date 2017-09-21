@@ -41,6 +41,10 @@ class CuraSplashScreen(QSplashScreen):
         self._loading_image_rotation_angle -= 10
         self.repaint()
 
+    # Override the mousePressEvent so the splashscreen doesn't disappear when clicked
+    def mousePressEvent(self, mouse_event):
+        pass
+
     def drawContents(self, painter):
         if self._to_stop:
             return
