@@ -165,7 +165,18 @@ Item
                             anchors.top: parent.top
                             anchors.topMargin: UM.Theme.getSize("sidebar_margin").height / 2
                             color: (Cura.MachineManager.activeMachine != null && Cura.ProfilesModel.getItem(index).available) ? UM.Theme.getColor("quality_slider_available") : UM.Theme.getColor("quality_slider_unavailable")
-                            text: Cura.MachineManager.activeMachine != null ? Cura.ProfilesModel.getItem(index).layer_height_without_unit : ""
+                            text:
+                            {
+                                var result = ""
+                                if(Cura.MachineManager.activeMachine != null){
+
+                                    var result = Cura.ProfilesModel.getItem(index).layer_height_without_unit
+
+                                    if(result == undefined)
+                                        result = ""
+                                }
+                                return result
+                            }
 
                             x: {
                                 // Make sure the text aligns correctly with each tick
@@ -244,14 +255,12 @@ Item
                             //Draw Available line
                             groove: Rectangle {
                                 implicitHeight: 2
-                                anchors.verticalCenter: qualitySlider.verticalCenter
                                 color: UM.Theme.getColor("quality_slider_available")
                                 radius: 1
                             }
                             handle: Item {
                                 Rectangle {
                                     id: qualityhandleButton
-                                    anchors.verticalCenter: qualitySlider.verticalCenter
                                     anchors.centerIn: parent
                                     color: control.enabled ? UM.Theme.getColor("quality_slider_available") : UM.Theme.getColor("quality_slider_unavailable")
                                     implicitWidth: 10
@@ -481,49 +490,6 @@ Item
                                 color: UM.Theme.getColor("quality_slider_unavailable")
                             }
                         }
-                    }
-
-                     MouseArea {
-                        id: enableGradualInfillMouseArea_1
-
-                        anchors.fill: parent
-                        hoverEnabled: true
-                        enabled: true
-
-                        onEntered: {
-
-                            var selectedStep = parseInt(infillSlider.value) / parseInt(infillSlider.stepSize)
-
-                            var tooltipText = ""
-
-                            if( enableGradualInfillCheckBox.checked){
-                                tooltipText = catalog.i18nc("@label", "Gradual infill will gradually increase the amount of infill towards the top.");
-                            }
-                            else{
-
-                                switch(selectedStep){
-                                case 0: tooltipText = catalog.i18nc("@label", "Empty infill will leave your model hollow with low strength."); break;
-                                case 1:
-                                case 2:
-                                case 3:
-                                case 4: tooltipText = catalog.i18nc("@label", "Light infill will give your model an average strength."); break;
-                                case 5:
-                                case 6:
-                                case 7:
-                                case 8: tooltipText = catalog.i18nc("@label", "Dense infill will give your model an above average strength."); break;
-                                case 9:
-                                case 10: tooltipText = catalog.i18nc("@label", "Solid infill will make your model completely solid."); break;
-                                }
-                            }
-
-                            if(tooltipText != "")
-                                base.showTooltip(base, Qt.point(0,infillCellRight.y + infillIcon.y),tooltipText)
-                        }
-
-                        onExited: {
-                            base.hideTooltip()
-                        }
-
                     }
                 }
 
