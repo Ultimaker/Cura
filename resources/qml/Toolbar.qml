@@ -34,28 +34,18 @@ Item
             Button
             {
                 text: model.name
-                iconSource:
-                {
-                    var result = UM.Theme.getIcon(model.icon)
-                    if(result == "")
-                    {
-                        return model.location + "/" + model.icon
-                    }
-                    return result
-                }
+                iconSource: (UM.Theme.getIcon(model.icon) != "") ? UM.Theme.getIcon(model.icon) : "file:///" + model.location + "/" + model.icon
+                checkable: true
+                checked: model.active
+                enabled: model.enabled && UM.Selection.hasSelection && UM.Controller.toolsEnabled
+                style: UM.Theme.styles.tool_button
 
-                checkable: true;
-                checked: model.active;
-                enabled: model.enabled && UM.Selection.hasSelection && UM.Controller.toolsEnabled;
-
-                style: UM.Theme.styles.tool_button;
-                onCheckedChanged:
-                {
-                    if(checked)
-                    {
+                onCheckedChanged: {
+                    if (checked) {
                         base.activeY = y
                     }
                 }
+
                 //Workaround since using ToolButton"s onClicked would break the binding of the checked property, instead
                 //just catch the click so we do not trigger that behaviour.
                 MouseArea
