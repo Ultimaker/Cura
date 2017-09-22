@@ -54,7 +54,7 @@ class ProfilesModel(InstanceContainersModel):
         global_container_stack = Application.getInstance().getGlobalContainerStack()
         if global_container_stack is None:
             return []
-        global_stack_definition = global_container_stack.getBottom()
+        # global_stack_definition = global_container_stack.getBottom()
 
         # Get the list of extruders and place the selected extruder at the front of the list.
         extruder_manager = ExtruderManager.getInstance()
@@ -64,23 +64,26 @@ class ProfilesModel(InstanceContainersModel):
             extruder_stacks.remove(active_extruder)
             extruder_stacks = [active_extruder] + extruder_stacks
 
-        if ExtruderManager.getInstance().getActiveExtruderStacks():
-            # Multi-extruder machine detected.
-            materials = [extruder.material for extruder in extruder_stacks]
-        else:
-            # Machine with one extruder.
-            materials = [global_container_stack.material]
+        # if ExtruderManager.getInstance().getActiveExtruderStacks():
+        #     # Multi-extruder machine detected.
+        #     materials = [extruder.material for extruder in extruder_stacks]
+        # else:
+        #     # Machine with one extruder.
+        #     materials = [global_container_stack.material]
+        #
+        # # Fetch the list of usable qualities across all extruders.
+        # # The actual list of quality profiles come from the first extruder in the extruder list.
+        # result = QualityManager.getInstance().findAllQualitiesForMachineAndMaterials(global_stack_definition,
+        #                                                                              materials)
+        #
+        # for quality in QualityManager.getInstance().findAllUsableQualitiesForMachineAndExtruders(
+        #         global_container_stack, extruder_stacks):
+        #     if quality not in result:
+        #         result.append(quality)
+        quality_list = QualityManager.getInstance().findAllUsableQualitiesForMachineAndExtruders(global_container_stack,
+                                                                                    extruder_stacks)
 
-        # Fetch the list of usable qualities across all extruders.
-        # The actual list of quality profiles come from the first extruder in the extruder list.
-        result = QualityManager.getInstance().findAllQualitiesForMachineAndMaterials(global_stack_definition,
-                                                                                     materials)
-
-        for quality in QualityManager.getInstance().findAllUsableQualitiesForMachineAndExtruders(
-                global_container_stack, extruder_stacks):
-            if quality not in result:
-                result.append(quality)
-        return result
+        return quality_list
 
     ##  Re-computes the items in this model, and adds the layer height role.
     def _recomputeItems(self):
@@ -93,12 +96,18 @@ class ProfilesModel(InstanceContainersModel):
         extruder_manager = ExtruderManager.getInstance()
         active_extruder = extruder_manager.getActiveExtruderStack()
         extruder_stacks = extruder_manager.getActiveExtruderStacks()
+        material = global_container_stack.material
         if active_extruder in extruder_stacks:
             extruder_stacks.remove(active_extruder)
             extruder_stacks = [active_extruder] + extruder_stacks
+            material = active_extruder.material
+
         # Get a list of available qualities for this machine and material
         qualities = QualityManager.getInstance().findAllUsableQualitiesForMachineAndExtruders(global_container_stack,
                                                                                               extruder_stacks)
+
+        all_qualities = QualityManager.getInstance().findAllQualitiesForMachineMaterial(global_container_stack.getBottom(), material)
+
         container_registry = ContainerRegistry.getInstance()
         machine_manager = Application.getInstance().getMachineManager()
 
@@ -125,12 +134,23 @@ class ProfilesModel(InstanceContainersModel):
         for key in reversed(tmp_all_quality_items.keys()):
             all_quality_items[key] = tmp_all_quality_items[key]
 
+        # First the suitable containers are set in the model
+        containers = []
         for data_item in all_quality_items.values():
-            item = data_item["suitable_container"]
-            if item is None:
-                item = data_item["all_containers"][0]
+            suitable_item = data_item["suitable_container"]
+            if suitable_item is None:
+                suitable_item = data_item["all_containers"][0]
+            containers.append(suitable_item)
 
-            profile = container_registry.findContainers(id = item["id"])
+        # Once the suitable containers are collected, the rest of the containers are appended
+        for data_item in all_quality_items.values():
+            for item in data_item["all_containers"]:
+                if item not in containers:
+                    containers.append(item)
+
+        # Now all the containers are set
+        for item in containers:
+            profile = container_registry.findContainers(id=item["id"])
             if not profile:
                 item["layer_height"] = ""  # Can't update a profile that is unknown.
                 item["available"] = False

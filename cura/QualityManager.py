@@ -64,6 +64,19 @@ class QualityManager:
         result = [quality_change for quality_change in result if quality_change.getName() == quality_changes_name]
         return result
 
+    ##  Fetch the list of available quality types for this machine definition.
+    #
+    #   \param machine_definition \type{DefinitionContainer}
+    #   \param material_containers \type{List[InstanceContainer]}
+    #   \return \type{List[str]}
+    def findAllQualityTypesForMachine(self, machine_definition: "DefinitionContainerInterface") -> List[str]:
+        # Determine the common set of quality types which can be
+        # applied to all of the materials for this machine.
+        quality_type_dict = self.__fetchQualityTypeDict(machine_definition)
+        common_quality_types = set(quality_type_dict.keys())
+
+        return list(common_quality_types)
+
     ##  Fetch the list of available quality types for this combination of machine definition and materials.
     #
     #   \param machine_definition \type{DefinitionContainer}
@@ -90,6 +103,18 @@ class QualityManager:
             qualities.update(set(next_quality_type_dict.values()))
 
         return list(qualities)
+
+    ##  Fetches a dict of quality types names to quality profiles for a combination of machine and material.
+    #
+    #   \param machine_definition \type{DefinitionContainer} the machine definition.
+    #   \param material \type{InstanceContainer} the material.
+    #   \return \type{Dict[str, InstanceContainer]} the dict of suitable quality type names mapping to qualities.
+    def __fetchQualityTypeDict(self, machine_definition: "DefinitionContainerInterface") -> Dict[str, InstanceContainer]:
+        qualities = self.findAllQualitiesForMachineMaterial(machine_definition, None)
+        quality_type_dict = {}
+        for quality in qualities:
+            quality_type_dict[quality.getMetaDataEntry("quality_type")] = quality
+        return quality_type_dict
 
     ##  Fetches a dict of quality types names to quality profiles for a combination of machine and material.
     #
