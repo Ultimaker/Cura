@@ -110,12 +110,11 @@ class ProfilesModel(InstanceContainersModel):
         # active machine and material, and later yield the right ones.
         tmp_all_quality_items = OrderedDict()
         for item in super()._recomputeItems():
-            profile = container_registry.findContainers(id = item["id"])
+            profile = container_registry.findContainers(id=item["id"])
             quality_type = profile[0].getMetaDataEntry("quality_type") if profile else ""
 
             if quality_type not in tmp_all_quality_items:
-                tmp_all_quality_items[quality_type] = {"suitable_container": None,
-                                                       "all_containers": []}
+                tmp_all_quality_items[quality_type] = {"suitable_container": None, "all_containers": []}
 
             tmp_all_quality_items[quality_type]["all_containers"].append(item)
             if tmp_all_quality_items[quality_type]["suitable_container"] is None and profile[0] in qualities:
@@ -142,9 +141,9 @@ class ProfilesModel(InstanceContainersModel):
 
         # Now all the containers are set
         for item in containers:
-            profile = container_registry.findContainers(id = item["id"])
+            profile = container_registry.findContainers(id=item["id"])
             if not profile:
-                item["layer_height"] = "" #Can't update a profile that is unknown.
+                item["layer_height"] = ""  # Can't update a profile that is unknown.
                 item["available"] = False
                 yield item
                 continue
@@ -152,13 +151,13 @@ class ProfilesModel(InstanceContainersModel):
             profile = profile[0]
             item["available"] = profile in qualities
 
-            #Easy case: This profile defines its own layer height.
+            # Easy case: This profile defines its own layer height.
             if profile.hasProperty("layer_height", "value"):
                 self._setItemLayerHeight(item, profile.getProperty("layer_height", "value"), unit)
                 yield item
                 continue
 
-            #Quality-changes profile that has no value for layer height. Get the corresponding quality profile and ask that profile.
+            # Quality-changes profile that has no value for layer height. Get the corresponding quality profile and ask that profile.
             quality_type = profile.getMetaDataEntry("quality_type", None)
             if quality_type:
                 quality_results = machine_manager.determineQualityAndQualityChangesForQualityType(quality_type)
