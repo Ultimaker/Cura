@@ -444,6 +444,10 @@ Column
 
                 Component.onCompleted:
                 {
+                    if (!bedTemperature.properties.value)
+                    {
+                        text = "";
+                    }
                     if ((bedTemperature.resolve != "None" && bedTemperature.resolve) && (bedTemperature.stackLevels[0] != 0) && (bedTemperature.stackLevels[0] != 1))
                     {
                         // We have a resolve function. Indicates that the setting is not settable per extruder and that
