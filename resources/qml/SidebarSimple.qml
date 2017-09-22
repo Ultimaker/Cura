@@ -164,9 +164,8 @@ Item
                             anchors.verticalCenter: parent.verticalCenter
                             anchors.top: parent.top
                             anchors.topMargin: UM.Theme.getSize("sidebar_margin").height / 2
-
-                            color: Cura.ProfilesModel.getItem(index).available ? UM.Theme.getColor("quality_slider_available") : UM.Theme.getColor("quality_slider_unavailable")
-                            text: Cura.ProfilesModel.getItem(index).layer_height_without_unit
+                            color: (Cura.MachineManager.activeMachine != null && Cura.ProfilesModel.getItem(index).available) ? UM.Theme.getColor("quality_slider_available") : UM.Theme.getColor("quality_slider_unavailable")
+                            text: Cura.MachineManager.activeMachine != null ? Cura.ProfilesModel.getItem(index).layer_height_without_unit : ""
 
                             x: {
                                 // Make sure the text aligns correctly with each tick
@@ -263,9 +262,14 @@ Item
                         }
 
                         onValueChanged: {
-                            // Prevent updating during view initializing. Trigger only if the value changed by user
-                            if (qualitySlider.value != qualityModel.activeQualityId) {
-                                qualitySliderChangeTimer.start()
+                            if(Cura.MachineManager.activeMachine != null)
+                            {
+                                //Prevent updating during view initializing. Trigger only if the value changed by user
+                                if(qualitySlider.value != qualityModel.activeQualityId)
+                                {
+                                    //start updating with short delay
+                                    qualitySliderChangeTimer.start();
+                                }
                             }
                         }
                     }
