@@ -166,7 +166,7 @@ Item
                             anchors.top: parent.top
                             anchors.topMargin: UM.Theme.getSize("sidebar_margin").height / 2
                             color: UM.Theme.getColor("text")
-                            text: Cura.ProfilesModel.getItem(index).layer_height_without_unit
+                            text: Cura.MachineManager.activeMachine != null ? Cura.ProfilesModel.getItem(index).layer_height_without_unit : ""
 
                             width: 1
                             x:
