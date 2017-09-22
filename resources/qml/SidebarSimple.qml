@@ -40,109 +40,110 @@ Item
             //
             // Quality profile
             //
-            Rectangle
+            Item
             {
-
-                Timer {
-                        id: qualitySliderChangeTimer
-                        interval: 50
-                        running: false
-                        repeat: false
-                        onTriggered: Cura.MachineManager.setActiveQuality(Cura.ProfilesModel.getItem(qualityRowSlider.value).id)
-                    }
-
-                Component.onCompleted:
-                {
-                    qualityRow.updateQualitySliderProperties()
-                }
-
-                Connections
-                {
-                    target: Cura.MachineManager
-                    onActiveQualityChanged:
-                    {
-                        qualityRow.updateQualitySliderProperties()
-                    }
-                }
-
-
                 id: qualityRow
 
-                property var totalTicks: 0
-                property var availableTotalTicks: 0
-                property var qualitySliderStep: qualityRow.totalTicks != 0 ? (base.width * 0.55) / (qualityRow.totalTicks) : 0
-                property var qualitySliderSelectedValue: 0
-
-                property var sliderAvailableMin : 0
-                property var sliderAvailableMax : 0
-                property var sliderMarginRight : 0
-
-                function updateQualitySliderProperties()
-                {
-                    qualityRow.totalTicks = Cura.ProfilesModel.rowCount() - 1 // minus one, because slider starts from 0
-
-                    var availableMin = -1
-                    var availableMax = -1
-
-                    for (var i = 0; i <= Cura.ProfilesModel.rowCount(); i++)
-                    {
-                        //Find slider range, min and max value
-                        if (availableMin == -1 && Cura.ProfilesModel.getItem(i).available)
-                        {
-                            availableMin = i
-                            availableMax = i
-                        }
-                        else if(Cura.ProfilesModel.getItem(i).available)
-                        {
-                            availableMax = i
-                        }
-
-                        //Find selected value
-                        if(Cura.MachineManager.activeQualityId == Cura.ProfilesModel.getItem(i).id)
-                        {
-                            qualitySliderSelectedValue = i
-                        }
-                    }
-
-                    if(availableMin !=-1)
-                    {
-                        availableTotalTicks =  availableMax - availableMin
-                    }
-                    else
-                    {
-                        availableTotalTicks = -1
-                    }
-
-                    qualitySliderStep = qualityRow.totalTicks != 0 ? (base.width * 0.55) / (qualityRow.totalTicks) : 0
-
-                    if(availableMin == -1)
-                    {
-                        sliderMarginRight = base.width * 0.55
-                    }
-                    else if (availableMin == 0 && availableMax == 0)
-                    {
-                        sliderMarginRight = base.width * 0.55
-                    }
-                    else if(availableMin == availableMax)
-                    {
-                        sliderMarginRight = (qualityRow.totalTicks - availableMin) * qualitySliderStep
-                    }
-                    else if(availableMin != availableMax)
-                    {
-                        sliderMarginRight = (qualityRow.totalTicks - availableMax) * qualitySliderStep
-                    }
-
-
-                    qualityRow.sliderAvailableMin = availableMin
-                    qualityRow.sliderAvailableMax = availableMax
-                }
-
                 height: UM.Theme.getSize("sidebar_margin").height
-
                 anchors.topMargin: UM.Theme.getSize("sidebar_margin").height
                 anchors.left: parent.left
                 anchors.leftMargin: UM.Theme.getSize("sidebar_margin").width
                 anchors.right: parent.right
+
+                Timer
+                {
+                    id: qualitySliderChangeTimer
+                    interval: 50
+                    running: false
+                    repeat: false
+                    onTriggered: Cura.MachineManager.setActiveQuality(Cura.ProfilesModel.getItem(qualitySlider.value).id)
+                }
+
+                Component.onCompleted: qualityModel.update()
+
+                Connections
+                {
+                    target: Cura.MachineManager
+                    onActiveQualityChanged: qualityModel.update()
+                }
+
+                ListModel
+                {
+                    id: qualityModel
+
+                    property var totalTicks: 0
+                    property var availableTotalTicks: 0
+                    property var qualitySliderStepWidth: qualityModel.totalTicks != 0 ? (base.width * 0.55) / (qualityModel.totalTicks) : 0
+                    property var activeQualityId: 0
+
+                    property var sliderAvailableMin : 0
+                    property var sliderAvailableMax : 0
+                    property var sliderMarginRight : 0
+
+                    function update () {
+                        qualityModel.clear()
+
+                        qualityModel.totalTicks = Cura.ProfilesModel.rowCount() - 1 // minus one, because slider starts from 0
+
+                        var availableMin = -1
+                        var availableMax = -1
+
+                        for (var i = 0; i <= Cura.ProfilesModel.rowCount(); i++) {
+                            var qualityItem = Cura.ProfilesModel.getItem(i)
+
+                            // Add each quality item to the UI quality model
+                            qualityModel.append(qualityItem)
+
+                            // Find slider range, min and max value
+                            if (qualityItem.available && availableMin == -1) {
+                                availableMin = i
+                                availableMax = i
+                            } else if (qualityItem.available) {
+                                availableMax = i
+                            }
+
+                            // Find selected value
+                            if(Cura.MachineManager.activeQualityId == qualityItem.id) {
+                                qualityModel.activeQualityId = i
+                            }
+                        }
+
+                        if (availableMin != -1) {
+                            qualityModel.availableTotalTicks = availableMax - availableMin
+                        } else {
+                            qualityModel.availableTotalTicks = -1
+                        }
+
+                        calculateSliderStepWidth(qualityModel.totalTicks)
+                        calculateSliderMargins(availableMin, availableMax)
+
+                        qualityModel.sliderAvailableMin = availableMin
+                        qualityModel.sliderAvailableMax = availableMax
+                    }
+
+                    function calculateSliderStepWidth (totalTicks) {
+                        qualityModel.qualitySliderStepWidth = totalTicks != 0 ? (base.width * 0.55) / (totalTicks) : 0
+                    }
+
+                    function calculateSliderMargins (availableMin, availableMax) {
+                        if(availableMin == -1)
+                        {
+                            qualityModel.sliderMarginRight = base.width * 0.55
+                        }
+                        else if (availableMin == 0 && availableMax == 0)
+                        {
+                            qualityModel.sliderMarginRight = base.width * 0.55
+                        }
+                        else if(availableMin == availableMax)
+                        {
+                            qualityModel.sliderMarginRight = (qualityModel.totalTicks - availableMin) * qualitySliderStepWidth
+                        }
+                        else if(availableMin != availableMax)
+                        {
+                            qualityModel.sliderMarginRight = (qualityModel.totalTicks - availableMax) * qualitySliderStepWidth
+                        }
+                    }
+                }
 
                 Text
                 {
@@ -159,7 +160,8 @@ Item
                     anchors.left: speedSlider.left
                     Repeater
                     {
-                        model: qualityRow.totalTicks + 1
+                        model: qualityModel
+
                         Text
                         {
                             anchors.verticalCenter: parent.verticalCenter
@@ -167,15 +169,8 @@ Item
                             anchors.topMargin: UM.Theme.getSize("sidebar_margin").height / 2
                             color: UM.Theme.getColor("text")
                             text: Cura.ProfilesModel.getItem(index).layer_height_without_unit
-
                             width: 1
-                            x:
-                            {
-                                if(index != qualityRow.totalTicks)
-                                    return (base.width * 0.55 / qualityRow.totalTicks) * index;
-                                else
-                                    return (base.width * 0.55 / qualityRow.totalTicks) * index - 15;
-                            }
+                            x: (index != qualityModel.totalTicks) ? (base.width * 0.55 / qualityModel.totalTicks) * index : (base.width * 0.55 / qualityModel.totalTicks) * index - 15
                         }
                     }
                 }
@@ -197,8 +192,7 @@ Item
                         width: base.width * 0.55
                         height: 2
                         color: UM.Theme.getColor("quality_slider_unavailable")
-                        //radius: parent.radius
-                        anchors.verticalCenter: qualityRowSlider.verticalCenter
+                        anchors.verticalCenter: qualitySlider.verticalCenter
                         x: 0
                     }
 
@@ -206,51 +200,52 @@ Item
                     Repeater
                     {
                         id: qualityRepeater
-                        model: qualityRow.totalTicks + 1
-                        Rectangle {
+                        model: qualityModel
+
+                        Rectangle
+                        {
                             anchors.verticalCenter: parent.verticalCenter
-                            color: qualityRow.availableTotalTicks != 0 ?  UM.Theme.getColor("quality_slider_available") : UM.Theme.getColor("quality_slider_unavailable")
+                            color: qualityModel.count > 1 ?  UM.Theme.getColor("quality_slider_available") : UM.Theme.getColor("quality_slider_unavailable")
                             width: 1
                             height: 6
                             y: 0
-                            x: qualityRow.qualitySliderStep * index
+                            x: qualityModel.qualitySliderStepWidth * index
                         }
                     }
 
 
                     Slider
                     {
-
-                        id: qualityRowSlider
+                        id: qualitySlider
                         height: UM.Theme.getSize("sidebar_margin").height
                         anchors.bottom: speedSlider.bottom
-                        enabled: qualityRow.availableTotalTicks != 0
+                        enabled: qualityModel.availableTotalTicks > 0
                         updateValueWhileDragging : false
 
-                        minimumValue: qualityRow.sliderAvailableMin
-                        maximumValue: qualityRow.sliderAvailableMax
+                        minimumValue: qualityModel.sliderAvailableMin
+                        maximumValue: qualityModel.sliderAvailableMax
                         stepSize: 1
 
-                        value: qualityRow.qualitySliderSelectedValue
+                        value: qualityModel.activeQualityId
 
-                        width: qualityRow.qualitySliderStep * (qualityRow.availableTotalTicks)
+                        width: qualityModel.qualitySliderStepWidth * qualityModel.availableTotalTicks
 
                         anchors.right: parent.right
-                        anchors.rightMargin:  qualityRow.sliderMarginRight
+                        anchors.rightMargin: qualityModel.sliderMarginRight
 
                         style: SliderStyle
                         {
                             //Draw Available line
                             groove: Rectangle {
                                 implicitHeight: 2
-                                anchors.verticalCenter: qualityRowSlider.verticalCenter
+                                anchors.verticalCenter: qualitySlider.verticalCenter
                                 color: UM.Theme.getColor("quality_slider_available")
                                 radius: 1
                             }
                             handle: Item {
                                 Rectangle {
                                     id: qualityhandleButton
-                                    anchors.verticalCenter: qualityRowSlider.verticalCenter
+                                    anchors.verticalCenter: qualitySlider.verticalCenter
                                     anchors.centerIn: parent
                                     color: control.enabled ? UM.Theme.getColor("quality_slider_available") : UM.Theme.getColor("quality_slider_unavailable")
                                     implicitWidth: 10
@@ -261,12 +256,9 @@ Item
                         }
 
                         onValueChanged: {
-
-                            //Prevent updating during view initializing. Trigger only if the value changed by user
-                            if(qualityRowSlider.value != qualityRow.qualitySliderSelectedValue)
-                            {
-                                //start updating with short delay
-                                qualitySliderChangeTimer.start();
+                            // Prevent updating during view initializing. Trigger only if the value changed by user
+                            if (qualitySlider.value != qualityModel.activeQualityId) {
+                                qualitySliderChangeTimer.start()
                             }
                         }
                     }
@@ -519,7 +511,7 @@ Item
                     Text {
                         id: gradualInfillLabel
                         anchors.left: enableGradualInfillCheckBox.right
-                        anchors.leftMargin: UM.Theme.getSize("sidebar_margin").width / 2 // FIXME better margin value
+                        anchors.leftMargin: UM.Theme.getSize("sidebar_margin").width / 2
                         text: catalog.i18nc("@label", "Enable gradual")
                         font: UM.Theme.getFont("default")
                         color: UM.Theme.getColor("text")
