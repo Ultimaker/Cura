@@ -53,7 +53,7 @@ Item
 
                 Component.onCompleted:
                 {
-                    qualityRow.updateAvailableTotalTicks()
+                    qualityRow.updateQualitySliderProperties()
                 }
 
                 Connections
@@ -61,17 +61,10 @@ Item
                     target: Cura.MachineManager
                     onActiveQualityChanged:
                     {
-                        qualityRow.updateAvailableTotalTicks()
+                        qualityRow.updateQualitySliderProperties()
                     }
                 }
 
-                /*
-                Component.onCompleted:
-                {
-                    updateCurrentQualityIndex();
-                    updateBar();
-                }
-                */
 
                 id: qualityRow
 
@@ -84,7 +77,7 @@ Item
                 property var sliderAvailableMax : 0
                 property var sliderMarginRight : 0
 
-                function updateAvailableTotalTicks()
+                function updateQualitySliderProperties()
                 {
                     qualityRow.totalTicks = Cura.ProfilesModel.rowCount() - 1 // minus one, because slider starts from 0
 
@@ -142,12 +135,6 @@ Item
 
                     qualityRow.sliderAvailableMin = availableMin
                     qualityRow.sliderAvailableMax = availableMax
-
-                    //console.log("==>>FIND.availableMin: " + availableMin)
-                    //console.log("==>>FIND.availableMax: " + availableMax)
-                    //console.log("==>>FIND.qualitySliderSelectedValue: " + qualitySliderSelectedValue)
-                    //console.log("==>>FIND.sliderMarginRightVALUE:  "+ sliderMarginRight)
-
                 }
 
                 height: UM.Theme.getSize("sidebar_margin").height
@@ -179,10 +166,8 @@ Item
                             anchors.top: parent.top
                             anchors.topMargin: UM.Theme.getSize("sidebar_margin").height / 2
                             color: UM.Theme.getColor("text")
-                            text:
-                            {
-                                return Cura.ProfilesModel.getItem(index).layer_height_without_unit
-                            }
+                            text: Cura.ProfilesModel.getItem(index).layer_height_without_unit
+
                             width: 1
                             x:
                             {
@@ -213,7 +198,7 @@ Item
                         height: 2
                         color: UM.Theme.getColor("quality_slider_unavailable")
                         //radius: parent.radius
-                        y: 9
+                        anchors.verticalCenter: qualityRowSlider.verticalCenter
                         x: 0
                     }
 
@@ -248,26 +233,24 @@ Item
 
                         value: qualityRow.qualitySliderSelectedValue
 
-                        width:{
-                            return qualityRow.qualitySliderStep * (qualityRow.availableTotalTicks)
-                        }
+                        width: qualityRow.qualitySliderStep * (qualityRow.availableTotalTicks)
 
                         anchors.right: parent.right
-                        anchors.rightMargin:{
-                            return qualityRow.sliderMarginRight
-                        }
+                        anchors.rightMargin:  qualityRow.sliderMarginRight
 
                         style: SliderStyle
                         {
                             //Draw Available line
                             groove: Rectangle {
                                 implicitHeight: 2
+                                anchors.verticalCenter: qualityRowSlider.verticalCenter
                                 color: UM.Theme.getColor("quality_slider_available")
                                 radius: 1
                             }
                             handle: Item {
                                 Rectangle {
                                     id: qualityhandleButton
+                                    anchors.verticalCenter: qualityRowSlider.verticalCenter
                                     anchors.centerIn: parent
                                     color: control.enabled ? UM.Theme.getColor("quality_slider_available") : UM.Theme.getColor("quality_slider_unavailable")
                                     implicitWidth: 10
@@ -334,7 +317,7 @@ Item
                 id: infillCellLeft
 
                 anchors.top: qualityRow.bottom
-                anchors.topMargin: UM.Theme.getSize("sidebar_margin").height
+                anchors.topMargin: UM.Theme.getSize("sidebar_margin").height * 2
                 anchors.left: parent.left
 
                 width: UM.Theme.getSize("sidebar").width * .45 - UM.Theme.getSize("sidebar_margin").width
@@ -386,6 +369,8 @@ Item
 
                     anchors.top: selectedInfillRateText.bottom
                     anchors.left: parent.left
+                    anchors.right: infillIcon.left
+                    anchors.rightMargin: UM.Theme.getSize("sidebar_margin").width
 
                     height: UM.Theme.getSize("sidebar_margin").height
                     width: infillCellRight.width - UM.Theme.getSize("sidebar_margin").width - style.handleWidth
@@ -442,19 +427,23 @@ Item
                     }
                 }
 
-                Item
+                Rectangle
                 {
-                    width: (infillCellRight.width / 5) - (UM.Theme.getSize("sidebar_margin").width)
+                    id: infillIcon
+
+                    width: (parent.width / 5) - (UM.Theme.getSize("sidebar_margin").width)
                     height: width
 
-                    anchors.right: infillCellRight.right
-                    anchors.top: infillSlider.top
+                    anchors.right: parent.right
+                    anchors.top: parent.top
+                    anchors.topMargin: UM.Theme.getSize("sidebar_margin").height / 2
 
                     // we loop over all density icons and only show the one that has the current density and steps
                     Repeater
                     {
                         id: infillIconList
                         model: infillModel
+                        anchors.fill: parent
 
                         property int activeIndex: {
                             for (var i = 0; i < infillModel.count; i++) {
@@ -472,21 +461,21 @@ Item
                             return -1
                         }
 
-                        Item {
+                        Rectangle
+                        {
                             anchors.fill: parent
+                            visible: infillIconList.activeIndex == index
 
-                            Rectangle {
+                            border.width: UM.Theme.getSize("default_lining").width
+                            border.color: UM.Theme.getColor("quality_slider_available")
+
+                            UM.RecolorImage {
                                 anchors.fill: parent
-                                visible: infillIconList.activeIndex == index
-
-                                UM.RecolorImage {
-                                    id: infillIcon
-                                    anchors.fill: parent
-                                    sourceSize.width: width
-                                    sourceSize.height: width
-                                    source: UM.Theme.getIcon(model.icon)
-                                    color: UM.Theme.getColor("quality_slider_available")
-                                }
+                                anchors.margins: 2
+                                sourceSize.width: width
+                                sourceSize.height: width
+                                source: UM.Theme.getIcon(model.icon)
+                                color: UM.Theme.getColor("quality_slider_unavailable")
                             }
                         }
                     }
