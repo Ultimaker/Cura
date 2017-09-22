@@ -204,10 +204,12 @@ class ThreeMFReader(MeshReader):
                 # Pre multiply the transformation with the loaded transformation, so the data is handled correctly.
                 um_node.setTransformation(um_node.getLocalTransformation().preMultiply(transformation_matrix))
 
-                # If the object in a saved project is below the bed, keep it that way
-                if um_node.getMeshData() != None and um_node.getMeshData().getExtents(um_node.getWorldTransformation()).minimum.y < 0:
-                    um_node.addDecorator(ZOffsetDecorator())
-                    um_node.callDecoration("setZOffset",um_node.getMeshData().getExtents(um_node.getWorldTransformation()).minimum.y)
+                # Check if the model is positioned below the build plate and honor that when loading project files.
+                if um_node.getMeshData() is not None:
+                    minimum_z_value = um_node.getMeshData().getExtents(um_node.getWorldTransformation()).minimum.y  # y is z in transformation coordinates
+                    if minimum_z_value < 0:
+                        um_node.addDecorator(ZOffsetDecorator())
+                        um_node.callDecoration("setZOffset", minimum_z_value)
 
                 result.append(um_node)
 
