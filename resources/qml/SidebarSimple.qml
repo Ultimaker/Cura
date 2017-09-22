@@ -491,49 +491,6 @@ Item
                             }
                         }
                     }
-
-                     MouseArea {
-                        id: enableGradualInfillMouseArea_1
-
-                        anchors.fill: parent
-                        hoverEnabled: true
-                        enabled: true
-
-                        onEntered: {
-
-                            var selectedStep = parseInt(infillSlider.value) / parseInt(infillSlider.stepSize)
-
-                            var tooltipText = ""
-
-                            if( enableGradualInfillCheckBox.checked){
-                                tooltipText = catalog.i18nc("@label", "Gradual infill will gradually increase the amount of infill towards the top.");
-                            }
-                            else{
-
-                                switch(selectedStep){
-                                case 0: tooltipText = catalog.i18nc("@label", "Empty infill will leave your model hollow with low strength."); break;
-                                case 1:
-                                case 2:
-                                case 3:
-                                case 4: tooltipText = catalog.i18nc("@label", "Light infill will give your model an average strength."); break;
-                                case 5:
-                                case 6:
-                                case 7:
-                                case 8: tooltipText = catalog.i18nc("@label", "Dense infill will give your model an above average strength."); break;
-                                case 9:
-                                case 10: tooltipText = catalog.i18nc("@label", "Solid infill will make your model completely solid."); break;
-                                }
-                            }
-
-                            if(tooltipText != "")
-                                base.showTooltip(base, Qt.point(0,infillCellRight.y + infillIcon.y),tooltipText)
-                        }
-
-                        onExited: {
-                            base.hideTooltip()
-                        }
-
-                    }
                 }
 
                 //  Gradual Support Infill Checkbox
