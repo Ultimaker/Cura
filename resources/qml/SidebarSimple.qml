@@ -261,12 +261,14 @@ Item
                         }
 
                         onValueChanged: {
-
-                            //Prevent updating during view initializing. Trigger only if the value changed by user
-                            if(qualityRowSlider.value != qualityRow.qualitySliderSelectedValue)
+                            if(Cura.MachineManager.activeMachine != null)
                             {
-                                //start updating with short delay
-                                qualitySliderChangeTimer.start();
+                                //Prevent updating during view initializing. Trigger only if the value changed by user
+                                if(qualityRowSlider.value != qualityRow.qualitySliderSelectedValue)
+                                {
+                                    //start updating with short delay
+                                    qualitySliderChangeTimer.start();
+                                }
                             }
                         }
                     }
