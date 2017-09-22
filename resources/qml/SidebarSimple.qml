@@ -126,13 +126,11 @@ Item
                     }
 
                     function calculateSliderMargins (availableMin, availableMax, totalTicks) {
-                        if (availableMin == -1) {
-                            qualityModel.qualitySliderMarginRight = base.width * 0.55
-                        } else if (availableMin == 0 && availableMax == 0) {
+                        if (availableMin == -1 || (availableMin == 0 && availableMax == 0)) {
                             qualityModel.qualitySliderMarginRight = base.width * 0.55
                         } else if (availableMin == availableMax) {
                             qualityModel.qualitySliderMarginRight = (totalTicks - availableMin) * qualitySliderStepWidth
-                        } else if (availableMin != availableMax) {
+                        } else {
                             qualityModel.qualitySliderMarginRight = (totalTicks - availableMax) * qualitySliderStepWidth
                         }
                     }
