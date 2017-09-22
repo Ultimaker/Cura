@@ -24,7 +24,6 @@ UM.MainWindow
     {
         target: Printer
         onShowPrintMonitor: {
-            console.log("show", show)
             if (show) {
                 topbar.startMonitoringPrint()
             } else {
