@@ -22,7 +22,16 @@ Rectangle
 
     property bool printerConnected: Cura.MachineManager.printerOutputDevices.length != 0
     property bool printerAcceptsCommands: printerConnected && Cura.MachineManager.printerOutputDevices[0].acceptsCommands
-    property bool monitoringPrint: false
+
+    // monitoring status
+    property bool monitoringPrint
+
+    // incoming signal
+    function monitoringChanged (isNowMonitoring) {
+        monitoringPrint = isNowMonitoring
+    }
+
+    // outgoing signal
     signal startMonitoringPrint()
     signal stopMonitoringPrint()
 
