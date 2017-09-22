@@ -73,17 +73,15 @@ Item
 
                     property var totalTicks: 0
                     property var availableTotalTicks: 0
-                    property var qualitySliderStepWidth: qualityModel.totalTicks != 0 ? (base.width * 0.55) / (qualityModel.totalTicks) : 0
                     property var activeQualityId: 0
 
-                    property var sliderAvailableMin : 0
-                    property var sliderAvailableMax : 0
-                    property var sliderMarginRight : 0
+                    property var qualitySliderStepWidth: qualityModel.totalTicks != 0 ? (base.width * 0.55) / (qualityModel.totalTicks) : 0
+                    property var qualitySliderAvailableMin : 0
+                    property var qualitySliderAvailableMax : 0
+                    property var qualitySliderMarginRight : 0
 
                     function update () {
-                        qualityModel.clear()
-
-                        qualityModel.totalTicks = Cura.ProfilesModel.rowCount() - 1 // minus one, because slider starts from 0
+                        reset()
 
                         var availableMin = -1
                         var availableMax = -1
@@ -117,8 +115,8 @@ Item
                         calculateSliderStepWidth(qualityModel.totalTicks)
                         calculateSliderMargins(availableMin, availableMax)
 
-                        qualityModel.sliderAvailableMin = availableMin
-                        qualityModel.sliderAvailableMax = availableMax
+                        qualityModel.qualitySliderAvailableMin = availableMin
+                        qualityModel.qualitySliderAvailableMax = availableMax
                     }
 
                     function calculateSliderStepWidth (totalTicks) {
@@ -128,20 +126,26 @@ Item
                     function calculateSliderMargins (availableMin, availableMax) {
                         if(availableMin == -1)
                         {
-                            qualityModel.sliderMarginRight = base.width * 0.55
+                            qualityModel.qualitySliderMarginRight = base.width * 0.55
                         }
                         else if (availableMin == 0 && availableMax == 0)
                         {
-                            qualityModel.sliderMarginRight = base.width * 0.55
+                            qualityModel.qualitySliderMarginRight = base.width * 0.55
                         }
                         else if(availableMin == availableMax)
                         {
-                            qualityModel.sliderMarginRight = (qualityModel.totalTicks - availableMin) * qualitySliderStepWidth
+                            qualityModel.qualitySliderMarginRight = (qualityModel.totalTicks - availableMin) * qualitySliderStepWidth
                         }
                         else if(availableMin != availableMax)
                         {
-                            qualityModel.sliderMarginRight = (qualityModel.totalTicks - availableMax) * qualitySliderStepWidth
+                            qualityModel.qualitySliderMarginRight = (qualityModel.totalTicks - availableMax) * qualitySliderStepWidth
                         }
+                    }
+
+                    function reset () {
+                        qualityModel.clear()
+                        qualityModel.totalTicks = Cura.ProfilesModel.rowCount() - 1 // minus one, because slider starts from 0
+                        qualityModel.availableTotalTicks = -1
                     }
                 }
 
@@ -222,8 +226,8 @@ Item
                         enabled: qualityModel.availableTotalTicks > 0
                         updateValueWhileDragging : false
 
-                        minimumValue: qualityModel.sliderAvailableMin
-                        maximumValue: qualityModel.sliderAvailableMax
+                        minimumValue: qualityModel.qualitySliderAvailableMin
+                        maximumValue: qualityModel.qualitySliderAvailableMax
                         stepSize: 1
 
                         value: qualityModel.activeQualityId
@@ -231,7 +235,7 @@ Item
                         width: qualityModel.qualitySliderStepWidth * qualityModel.availableTotalTicks
 
                         anchors.right: parent.right
-                        anchors.rightMargin: qualityModel.sliderMarginRight
+                        anchors.rightMargin: qualityModel.qualitySliderMarginRight
 
                         style: SliderStyle
                         {
