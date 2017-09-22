@@ -475,7 +475,7 @@ class MachineManager(QObject):
         return ""
 
     @pyqtProperty(QObject, notify = globalContainerChanged)
-    def activeMachine(self) -> "GlobalStack":
+    def activeMachine(self) -> Optional["GlobalStack"]:
         return self._global_container_stack
 
     @pyqtProperty(str, notify = activeStackChanged)
