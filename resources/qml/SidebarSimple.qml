@@ -40,74 +40,20 @@ Item
             //
             // Quality profile
             //
-            Text
+            Rectangle
             {
-                id: resolutionLabel
-                anchors.top: resolutionSlider.top
-                anchors.left: parent.left
-                anchors.leftMargin: UM.Theme.getSize("sidebar_margin").width
 
-                text: catalog.i18nc("@label", "Layer Height")
-                font: UM.Theme.getFont("default")
-                color: UM.Theme.getColor("text")
-            }
-
-            Text
-            {
-                id: speedLabel
-                anchors.bottom: resolutionSlider.bottom
-                anchors.left: parent.left
-                anchors.leftMargin: UM.Theme.getSize("sidebar_margin").width
-
-                text: catalog.i18nc("@label", "Print Speed")
-                font: UM.Theme.getFont("default")
-                color: UM.Theme.getColor("text")
-            }
-
-            Text
-            {
-                id: speedLabelSlower
-                anchors.bottom: speedLabel.bottom
-                anchors.left: resolutionSlider.left
-
-                text: catalog.i18nc("@label", "Slower")
-                font: UM.Theme.getFont("default")
-                color: UM.Theme.getColor("text")
-                horizontalAlignment: Text.AlignLeft
-            }
-
-            Text
-            {
-                id: speedLabelFaster
-                anchors.bottom: speedLabel.bottom
-                anchors.right: resolutionSlider.right
-
-                text: catalog.i18nc("@label", "Faster")
-                font: UM.Theme.getFont("default")
-                color: UM.Theme.getColor("text")
-                horizontalAlignment: Text.AlignRight
-            }
-
-            Item
-            {
-                id: resolutionSlider
-                anchors.top: parent.top
-                anchors.left: infillCellRight.left
-                anchors.right: infillCellRight.right
-
-                width: UM.Theme.getSize("sidebar").width * .55
-                height: UM.Theme.getSize("quality_slider_bar").height * 25
-
-                property var model: Cura.ProfilesModel
-
-                Connections
-                {
-                    target: Cura.ProfilesModel
-                    onItemsChanged:
-                    {
-                        resolutionSlider.updateCurrentQualityIndex();
-                        resolutionSlider.updateBar();
+                Timer {
+                        id: qualitySliderChangeTimer
+                        interval: 50
+                        running: false
+                        repeat: false
+                        onTriggered: Cura.MachineManager.setActiveQuality(Cura.ProfilesModel.getItem(qualityRowSlider.value).id)
                     }
+
+                Component.onCompleted:
+                {
+                    qualityRow.updateAvailableTotalTicks()
                 }
 
                 Connections
@@ -115,286 +61,270 @@ Item
                     target: Cura.MachineManager
                     onActiveQualityChanged:
                     {
-                        resolutionSlider.updateCurrentQualityIndex();
-                        resolutionSlider.updateBar();
+                        qualityRow.updateAvailableTotalTicks()
                     }
                 }
 
+                /*
                 Component.onCompleted:
                 {
                     updateCurrentQualityIndex();
                     updateBar();
                 }
+                */
 
-                function updateCurrentQualityIndex()
+                id: qualityRow
+
+                property var totalTicks: 0
+                property var availableTotalTicks: 0
+                property var qualitySliderStep: qualityRow.totalTicks != 0 ? (base.width * 0.55) / (qualityRow.totalTicks) : 0
+                property var qualitySliderSelectedValue: 0
+
+                property var sliderAvailableMin : 0
+                property var sliderAvailableMax : 0
+                property var sliderMarginRight : 0
+
+                function updateAvailableTotalTicks()
                 {
-                    for (var i = 0; i < resolutionSlider.model.rowCount(); ++i)
+                    qualityRow.totalTicks = Cura.ProfilesModel.rowCount() - 1 // minus one, because slider starts from 0
+
+                    var availableMin = -1
+                    var availableMax = -1
+
+                    for (var i = 0; i <= Cura.ProfilesModel.rowCount(); i++)
                     {
-                        if (Cura.MachineManager.activeQualityId == resolutionSlider.model.getItem(i).id)
+                        //Find slider range, min and max value
+                        if (availableMin == -1 && Cura.ProfilesModel.getItem(i).available)
                         {
-                            if (resolutionSlider.currentQualityIndex != i)
+                            availableMin = i
+                            availableMax = i
+                        }
+                        else if(Cura.ProfilesModel.getItem(i).available)
+                        {
+                            availableMax = i
+                        }
+
+                        //Find selected value
+                        if(Cura.MachineManager.activeQualityId == Cura.ProfilesModel.getItem(i).id)
+                        {
+                            qualitySliderSelectedValue = i
+                        }
+                    }
+
+                    if(availableMin !=-1)
+                    {
+                        availableTotalTicks =  availableMax - availableMin
+                    }
+                    else
+                    {
+                        availableTotalTicks = -1
+                    }
+
+                    qualitySliderStep = qualityRow.totalTicks != 0 ? (base.width * 0.55) / (qualityRow.totalTicks) : 0
+
+                    if(availableMin == -1)
+                    {
+                        sliderMarginRight = base.width * 0.55
+                    }
+                    else if (availableMin == 0 && availableMax == 0)
+                    {
+                        sliderMarginRight = base.width * 0.55
+                    }
+                    else if(availableMin == availableMax)
+                    {
+                        sliderMarginRight = (qualityRow.totalTicks - availableMin) * qualitySliderStep
+                    }
+                    else if(availableMin != availableMax)
+                    {
+                        sliderMarginRight = (qualityRow.totalTicks - availableMax) * qualitySliderStep
+                    }
+
+
+                    qualityRow.sliderAvailableMin = availableMin
+                    qualityRow.sliderAvailableMax = availableMax
+
+                    //console.log("==>>FIND.availableMin: " + availableMin)
+                    //console.log("==>>FIND.availableMax: " + availableMax)
+                    //console.log("==>>FIND.qualitySliderSelectedValue: " + qualitySliderSelectedValue)
+                    //console.log("==>>FIND.sliderMarginRightVALUE:  "+ sliderMarginRight)
+
+                }
+
+                height: UM.Theme.getSize("sidebar_margin").height
+
+                anchors.topMargin: UM.Theme.getSize("sidebar_margin").height
+                anchors.left: parent.left
+                anchors.leftMargin: UM.Theme.getSize("sidebar_margin").width
+                anchors.right: parent.right
+
+                Text
+                {
+                    id: qualityRowTitle
+                    text: catalog.i18nc("@label", "Layer Height")
+                    font: UM.Theme.getFont("default")
+                    color: UM.Theme.getColor("text")
+                }
+
+                //Show titles for the each quality slider ticks
+                Item
+                {
+                    y: -5;
+                    anchors.left: speedSlider.left
+                    Repeater
+                    {
+                        model: qualityRow.totalTicks + 1
+                        Text
+                        {
+                            anchors.verticalCenter: parent.verticalCenter
+                            anchors.top: parent.top
+                            anchors.topMargin: UM.Theme.getSize("sidebar_margin").height / 2
+                            color: UM.Theme.getColor("text")
+                            text:
                             {
-                                resolutionSlider.currentQualityIndex = i;
+                                return Cura.ProfilesModel.getItem(index).layer_height_without_unit
                             }
-                            return;
-                        }
-                    }
-                    resolutionSlider.currentQualityIndex = undefined;
-                    backgroundBarUpdateTimer.start();
-                }
-
-                function updateBar()
-                {
-                    fullRangeMax = Cura.ProfilesModel.rowCount();
-
-                    // set avaiableMin
-                    var foundAvaiableMin = false;
-                    for (var i = 0; i < Cura.ProfilesModel.rowCount(); ++i)
-                    {
-                        if (Cura.ProfilesModel.getItem(i).available)
-                        {
-                            avaiableMin = i;
-                            foundAvaiableMin = true;
-                            break;
-                        }
-                    }
-                    if (!foundAvaiableMin)
-                    {
-                        avaiableMin = undefined;
-                    }
-
-                    var foundAvaiableMax = false;
-                    for (var i = Cura.ProfilesModel.rowCount() - 1; i >= 0; --i)
-                    {
-                        if (Cura.ProfilesModel.getItem(i).available)
-                        {
-                            avaiableMax = i;
-                            foundAvaiableMax = true;
-                            break;
-                        }
-                    }
-                    if (!foundAvaiableMax)
-                    {
-                        avaiableMax = undefined;
-                    }
-
-                    currentHover = undefined;
-                    backgroundBar.requestPaint();
-                }
-
-                property var fullRangeMin: 0
-                property var fullRangeMax: model.rowCount()
-
-                property var avaiableMin
-                property var avaiableMax
-                property var currentQualityIndex
-                property var currentHover
-
-                //TODO: get from theme
-                property var barLeftRightMargin: 5
-                property var tickLeftRightMargin: 2
-                property var tickMargin: 15
-                property var tickThickness: 1
-                property var tickWidth: 1
-                property var tickHeight: 5
-                property var tickTextHeight: 8
-                property var totalTickCount: fullRangeMax - fullRangeMin
-                property var selectedCircleDiameter: 10
-
-                property var showQualityText: false
-
-                property var tickStepSize: (width - (barLeftRightMargin + tickLeftRightMargin) * 2) / (totalTickCount > 1 ?  totalTickCount - 1 : 1)
-                property var tickAreaList:
-                {
-                    var area_list = [];
-                    if (avaiableMin != undefined && avaiableMax != undefined)
-                    {
-                        for (var i = avaiableMin; i <= avaiableMax; ++i)
-                        {
-                            var start_x = (barLeftRightMargin + tickLeftRightMargin) + tickStepSize * (i - fullRangeMin);
-                            var diameter = tickStepSize * 0.9;
-                            start_x = start_x + tickWidth / 2 - (diameter / 2);
-                            var end_x = start_x + diameter;
-                            var start_y = height / 2 - diameter / 2;
-                            var end_y = start_y + diameter;
-
-                            var area = {"id": i,
-                                        "start_x": start_x, "end_x": end_x,
-                                        "start_y": start_y, "end_y": end_y,
-                                        };
-                            area_list.push(area);
-                        }
-                    }
-                    return area_list;
-                }
-
-                onCurrentHoverChanged:
-                {
-                    backgroundBar.requestPaint();
-                }
-                onCurrentQualityIndex:
-                {
-                    backgroundBar.requestPaint();
-                }
-
-                // background bar
-                Canvas
-                {
-                    id: backgroundBar
-                    anchors.fill: parent
-
-                    Timer {
-                        id: backgroundBarUpdateTimer
-                        interval: 10
-                        running: false
-                        repeat: false
-                        onTriggered: backgroundBar.requestPaint()
-                    }
-
-                    onPaint:
-                    {
-                        var ctx = getContext("2d");
-                        ctx.reset();
-                        ctx.fillStyle = UM.Theme.getColor("quality_slider_unavailable");
-
-                        const bar_left_right_margin = resolutionSlider.barLeftRightMargin;
-                        const tick_left_right_margin = resolutionSlider.tickLeftRightMargin;
-                        const tick_margin = resolutionSlider.tickMargin;
-                        const bar_thickness = resolutionSlider.tickThickness;
-                        const tick_width = resolutionSlider.tickWidth;
-                        const tick_height = resolutionSlider.tickHeight;
-                        const tick_text_height = resolutionSlider.tickTextHeight;
-                        const selected_circle_diameter = resolutionSlider.selectedCircleDiameter;
-
-                        // draw unavailable bar
-                        const bar_top = parent.height / 2 - bar_thickness / 2;
-                        ctx.fillRect(bar_left_right_margin, bar_top, width - bar_left_right_margin * 2, bar_thickness);
-
-                        // draw unavailable ticks
-                        var total_tick_count = resolutionSlider.totalTickCount;
-                        const step_size = resolutionSlider.tickStepSize;
-                        var current_start_x = bar_left_right_margin + tick_left_right_margin;
-
-                        const tick_top = parent.height / 2 - tick_height / 2;
-
-                        for (var i = 0; i < total_tick_count; ++i)
-                        {
-                            ctx.fillRect(current_start_x, tick_top, tick_width, tick_height);
-                            current_start_x += step_size;
-                        }
-
-                        // draw available bar and ticks
-                        if (resolutionSlider.avaiableMin != undefined && resolutionSlider.avaiableMax != undefined)
-                        {
-                            current_start_x = (bar_left_right_margin + tick_left_right_margin) + step_size * (resolutionSlider.avaiableMin - resolutionSlider.fullRangeMin);
-                            ctx.fillStyle = UM.Theme.getColor("quality_slider_available");
-                            total_tick_count = resolutionSlider.avaiableMax - resolutionSlider.avaiableMin + 1;
-
-                            const available_bar_width = step_size * (total_tick_count - 1);
-                            ctx.fillRect(current_start_x, bar_top, available_bar_width, bar_thickness);
-
-                            for (var i = 0; i < total_tick_count; ++i)
+                            width: 1
+                            x:
                             {
-                                ctx.fillRect(current_start_x, tick_top, tick_width, tick_height);
-                                current_start_x += step_size;
+                                if(index != qualityRow.totalTicks)
+                                    return (base.width * 0.55 / qualityRow.totalTicks) * index;
+                                else
+                                    return (base.width * 0.55 / qualityRow.totalTicks) * index - 15;
                             }
                         }
+                    }
+                }
 
-                        // print the selected circle
-                        if (resolutionSlider.currentQualityIndex != undefined)
-                        {
-                            var circle_start_x = (bar_left_right_margin + tick_left_right_margin) + step_size * (resolutionSlider.currentQualityIndex - resolutionSlider.fullRangeMin);
-                            circle_start_x = circle_start_x + tick_width / 2 - selected_circle_diameter / 2;
-                            var circle_start_y = height / 2 - selected_circle_diameter / 2;
-                            ctx.fillStyle = UM.Theme.getColor("quality_slider_handle");
-                            ctx.beginPath();
-                            ctx.ellipse(circle_start_x, circle_start_y, selected_circle_diameter, selected_circle_diameter);
-                            ctx.fill();
-                            ctx.closePath();
-                        }
+                //Print speed slider
+                Item
+                {
+                    id: speedSlider
+                    width: base.width * 0.55
+                    height: UM.Theme.getSize("sidebar_margin").height
+                    anchors.right: parent.right
+                    anchors.top: parent.top
+                    anchors.topMargin: UM.Theme.getSize("sidebar_margin").height
 
-                        // print the hovered circle
-                        if (resolutionSlider.currentHover != undefined && resolutionSlider.currentHover != resolutionSlider.currentQualityIndex)
-                        {
-                            var circle_start_x = (bar_left_right_margin + tick_left_right_margin) + step_size * (resolutionSlider.currentHover - resolutionSlider.fullRangeMin);
-                            circle_start_x = circle_start_x + tick_width / 2 - selected_circle_diameter / 2;
-                            var circle_start_y = height / 2 - selected_circle_diameter / 2;
-                            ctx.fillStyle = UM.Theme.getColor("quality_slider_handle_hover");
-                            ctx.beginPath();
-                            ctx.ellipse(circle_start_x, circle_start_y, selected_circle_diameter, selected_circle_diameter);
-                            ctx.fill();
-                            ctx.closePath();
-                        }
+                    // Draw Unavailable line
+                    Rectangle
+                    {
+                        id: groovechildrect
+                        width: base.width * 0.55
+                        height: 2
+                        color: UM.Theme.getColor("quality_slider_unavailable")
+                        //radius: parent.radius
+                        y: 9
+                        x: 0
+                    }
 
-                        // print layer height texts
-                        total_tick_count = resolutionSlider.totalTickCount;
-                        const step_size = resolutionSlider.tickStepSize;
-                        current_start_x = bar_left_right_margin + tick_left_right_margin;
-                        for (var i = 0; i < total_tick_count; ++i)
-                        {
-                            const text_top = parent.height / 2 - tick_height - tick_text_height;
-                            ctx.fillStyle = UM.Theme.getColor("quality_slider_text");
-
-                            ctx.font = "12px sans-serif";
-                            const string_length = resolutionSlider.model.getItem(i).layer_height_without_unit.length;
-                            const offset = string_length / 2 * 4;
-
-                            var start_x = current_start_x - offset;
-                            if (i == 0)
-                            {
-                                start_x = 0;
-                            }
-                            else if (i == total_tick_count - 1)
-                            {
-                                start_x = current_start_x - offset * 2.5;
-                            }
-
-                            ctx.fillText(resolutionSlider.model.getItem(i).layer_height_without_unit, start_x, text_top);
-                            current_start_x += step_size;
+                    // Draw ticks
+                    Repeater
+                    {
+                        id: qualityRepeater
+                        model: qualityRow.totalTicks + 1
+                        Rectangle {
+                            anchors.verticalCenter: parent.verticalCenter
+                            color: qualityRow.availableTotalTicks != 0 ?  UM.Theme.getColor("quality_slider_available") : UM.Theme.getColor("quality_slider_unavailable")
+                            width: 1
+                            height: 6
+                            y: 0
+                            x: qualityRow.qualitySliderStep * index
                         }
                     }
 
-                    MouseArea
+
+                    Slider
                     {
-                        anchors.fill: parent
-                        hoverEnabled: true
 
-                        onClicked:
+                        id: qualityRowSlider
+                        height: UM.Theme.getSize("sidebar_margin").height
+                        anchors.bottom: speedSlider.bottom
+                        enabled: qualityRow.availableTotalTicks != 0
+                        updateValueWhileDragging : false
+
+                        minimumValue: qualityRow.sliderAvailableMin
+                        maximumValue: qualityRow.sliderAvailableMax
+                        stepSize: 1
+
+                        value: qualityRow.qualitySliderSelectedValue
+
+                        width:{
+                            return qualityRow.qualitySliderStep * (qualityRow.availableTotalTicks)
+                        }
+
+                        anchors.right: parent.right
+                        anchors.rightMargin:{
+                            return qualityRow.sliderMarginRight
+                        }
+
+                        style: SliderStyle
                         {
-                            for (var i = 0; i < resolutionSlider.tickAreaList.length; ++i)
-                            {
-                                var area = resolutionSlider.tickAreaList[i];
-                                if (area.start_x <= mouseX && mouseX <= area.end_x && area.start_y <= mouseY && mouseY <= area.end_y)
-                                {
-                                    resolutionSlider.currentHover = undefined;
-                                    resolutionSlider.currentQualityIndex = area.id;
-
-                                    Cura.MachineManager.setActiveQuality(resolutionSlider.model.getItem(resolutionSlider.currentQualityIndex).id);
-                                    return;
+                            //Draw Available line
+                            groove: Rectangle {
+                                implicitHeight: 2
+                                color: UM.Theme.getColor("quality_slider_available")
+                                radius: 1
+                            }
+                            handle: Item {
+                                Rectangle {
+                                    id: qualityhandleButton
+                                    anchors.centerIn: parent
+                                    color: control.enabled ? UM.Theme.getColor("quality_slider_available") : UM.Theme.getColor("quality_slider_unavailable")
+                                    implicitWidth: 10
+                                    implicitHeight: 10
+                                    radius: 10
                                 }
                             }
-                            resolutionSlider.currentHover = undefined;
                         }
-                        onPositionChanged:
-                        {
-                            for (var i = 0; i < resolutionSlider.tickAreaList.length; ++i)
+
+                        onValueChanged: {
+
+                            //Prevent updating during view initializing. Trigger only if the value changed by user
+                            if(qualityRowSlider.value != qualityRow.qualitySliderSelectedValue)
                             {
-                                var area = resolutionSlider.tickAreaList[i];
-                                if (area.start_x <= mouseX && mouseX <= area.end_x && area.start_y <= mouseY && mouseY <= area.end_y)
-                                {
-                                    resolutionSlider.currentHover = area.id;
-                                    return;
-                                }
+                                //start updating with short delay
+                                qualitySliderChangeTimer.start();
                             }
-                            resolutionSlider.currentHover = undefined;
-                        }
-                        onExited:
-                        {
-                            resolutionSlider.currentHover = undefined;
                         }
                     }
+                }
+
+                Text
+                {
+                    id: speedLabel
+                    anchors.top: speedSlider.bottom
+
+                    anchors.left: parent.left
+
+                    text: catalog.i18nc("@label", "Print Speed")
+                    font: UM.Theme.getFont("default")
+                    color: UM.Theme.getColor("text")
+                }
+
+                Text
+                {
+                    anchors.bottom: speedLabel.bottom
+                    anchors.left: speedSlider.left
+
+                    text: catalog.i18nc("@label", "Slower")
+                    font: UM.Theme.getFont("default")
+                    color: UM.Theme.getColor("text")
+                    horizontalAlignment: Text.AlignLeft
+                }
+
+                Text
+                {
+                    anchors.bottom: speedLabel.bottom
+                    anchors.right: speedSlider.right
+
+                    text: catalog.i18nc("@label", "Faster")
+                    font: UM.Theme.getFont("default")
+                    color: UM.Theme.getColor("text")
+                    horizontalAlignment: Text.AlignRight
                 }
             }
+
+
 
             //
             // Infill
@@ -403,12 +333,11 @@ Item
             {
                 id: infillCellLeft
 
-                anchors.top: speedLabel.bottom
+                anchors.top: qualityRow.bottom
                 anchors.topMargin: UM.Theme.getSize("sidebar_margin").height
                 anchors.left: parent.left
 
                 width: UM.Theme.getSize("sidebar").width * .45 - UM.Theme.getSize("sidebar_margin").width
-                height: UM.Theme.getSize("sidebar_margin").height
 
                 Text
                 {
@@ -418,11 +347,13 @@ Item
                     color: UM.Theme.getColor("text")
 
                     anchors.top: parent.top
-                    anchors.topMargin: UM.Theme.getSize("sidebar_margin").height
+                    anchors.topMargin: UM.Theme.getSize("sidebar_margin").height * 1.7
                     anchors.left: parent.left
                     anchors.leftMargin: UM.Theme.getSize("sidebar_margin").width
                 }
             }
+
+
 
             Item
             {
@@ -438,7 +369,7 @@ Item
                 Text {
                     id: selectedInfillRateText
 
-                    anchors.top: parent.top
+                    //anchors.top: parent.top
                     anchors.left: infillSlider.left
                     anchors.leftMargin: (infillSlider.value / infillSlider.stepSize) * (infillSlider.width / (infillSlider.maximumValue / infillSlider.stepSize)) - 10
                     anchors.right: parent.right
@@ -455,10 +386,9 @@ Item
 
                     anchors.top: selectedInfillRateText.bottom
                     anchors.left: parent.left
-                    anchors.right: infillIcon.left
-                    anchors.rightMargin: UM.Theme.getSize("sidebar_margin").width
 
                     height: UM.Theme.getSize("sidebar_margin").height
+                    width: infillCellRight.width - UM.Theme.getSize("sidebar_margin").width - style.handleWidth
 
                     minimumValue: 0
                     maximumValue: 100
@@ -477,6 +407,7 @@ Item
 
                     style: SliderStyle
                     {
+
                         groove: Rectangle {
                             id: groove
                             implicitWidth: 200
@@ -485,13 +416,15 @@ Item
                             radius: 1
                         }
 
-                        handle: Rectangle {
-                            id: handleButton
-                            anchors.centerIn: parent
-                            color: control.enabled ? UM.Theme.getColor("quality_slider_available") : UM.Theme.getColor("quality_slider_unavailable")
-                            implicitWidth: 10
-                            implicitHeight: 10
-                            radius: 10
+                        handle: Item {
+                            Rectangle {
+                                id: handleButton
+                                anchors.centerIn: parent
+                                color: control.enabled ? UM.Theme.getColor("quality_slider_available") : UM.Theme.getColor("quality_slider_unavailable")
+                                implicitWidth: 10
+                                implicitHeight: 10
+                                radius: 10
+                            }
                         }
 
                         tickmarks: Repeater {
@@ -511,8 +444,6 @@ Item
 
                 Item
                 {
-                    id: infillIcon
-
                     width: (infillCellRight.width / 5) - (UM.Theme.getSize("sidebar_margin").width)
                     height: width
 
@@ -549,6 +480,7 @@ Item
                                 visible: infillIconList.activeIndex == index
 
                                 UM.RecolorImage {
+                                    id: infillIcon
                                     anchors.fill: parent
                                     sourceSize.width: width
                                     sourceSize.height: width
@@ -602,7 +534,6 @@ Item
                         text: catalog.i18nc("@label", "Enable gradual")
                         font: UM.Theme.getFont("default")
                         color: UM.Theme.getColor("text")
-                        elide: Text.ElideRight
                     }
                 }
 
@@ -659,8 +590,8 @@ Item
                 id: enableSupportLabel
                 visible: enableSupportCheckBox.visible
 
-                anchors.top: enableSupportCheckBox.top
-
+                anchors.top: infillCellRight.bottom
+                anchors.topMargin: UM.Theme.getSize("sidebar_margin").height
                 anchors.left: parent.left
                 anchors.leftMargin: UM.Theme.getSize("sidebar_margin").width
                 anchors.verticalCenter: enableSupportCheckBox.verticalCenter
@@ -676,7 +607,7 @@ Item
                 property alias _hovered: enableSupportMouseArea.containsMouse
 
                 anchors.top: infillCellRight.bottom
-                anchors.topMargin: UM.Theme.getSize("sidebar_margin").height * 2
+                anchors.topMargin: UM.Theme.getSize("sidebar_margin").height
                 anchors.left: infillCellRight.left
 
                 style: UM.Theme.styles.checkbox;
