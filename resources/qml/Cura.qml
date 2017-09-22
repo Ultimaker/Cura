@@ -23,17 +23,10 @@ UM.MainWindow
     Connections
     {
         target: Printer
-        onShowPrintMonitor:
-        {
-            topbar.monitoringChanged(show)
-
-            if (show)
-            {
-
+        onShowPrintMonitor: {
+            if (show) {
                 topbar.startMonitoringPrint()
-            }
-            else
-            {
+            } else {
                 topbar.stopMonitoringPrint()
             }
         }
@@ -352,17 +345,13 @@ UM.MainWindow
                 }
             }
 
-            function isMonitoringPrint () {
-                return base.showPrintMonitor
-            }
-
             Topbar
             {
                 id: topbar
                 anchors.left:parent.left
                 anchors.right: parent.right
                 anchors.top: parent.top
-                monitoringPrint: isMonitoringPrint()
+                monitoringPrint: base.showPrintMonitor
                 onStartMonitoringPrint: base.showPrintMonitor = true
                 onStopMonitoringPrint: base.showPrintMonitor = false
             }
