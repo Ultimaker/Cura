@@ -75,7 +75,7 @@ Item
                     property var availableTotalTicks: 0
                     property var activeQualityId: 0
 
-                    property var qualitySliderStepWidth: qualityModel.totalTicks != 0 ? (base.width * 0.55) / (qualityModel.totalTicks) : 0
+                    property var qualitySliderStepWidth: 0
                     property var qualitySliderAvailableMin : 0
                     property var qualitySliderAvailableMax : 0
                     property var qualitySliderMarginRight : 0
@@ -92,28 +92,30 @@ Item
                             // Add each quality item to the UI quality model
                             qualityModel.append(qualityItem)
 
-                            // Find slider range, min and max value
-                            if (qualityItem.available && availableMin == -1) {
-                                availableMin = i
-                                availableMax = i
-                            } else if (qualityItem.available) {
-                                availableMax = i
-                            }
-
-                            // Find selected value
-                            if(Cura.MachineManager.activeQualityId == qualityItem.id) {
+                            // Set selected value
+                            if (Cura.MachineManager.activeQualityId == qualityItem.id) {
                                 qualityModel.activeQualityId = i
                             }
+
+                            // Set min available
+                            if (qualityItem.available && availableMin == -1) {
+                                availableMin = i
+                            }
+
+                            // Set max available
+                            if (qualityItem.available) {
+                                availableMax = i
+                            }
                         }
 
+                        // Set total available ticks for active slider part
                         if (availableMin != -1) {
                             qualityModel.availableTotalTicks = availableMax - availableMin
-                        } else {
-                            qualityModel.availableTotalTicks = -1
                         }
 
+                        // Calculate slider values
                         calculateSliderStepWidth(qualityModel.totalTicks)
-                        calculateSliderMargins(availableMin, availableMax)
+                        calculateSliderMargins(availableMin, availableMax, qualityModel.totalTicks)
 
                         qualityModel.qualitySliderAvailableMin = availableMin
                         qualityModel.qualitySliderAvailableMax = availableMax
@@ -123,22 +125,15 @@ Item
                         qualityModel.qualitySliderStepWidth = totalTicks != 0 ? (base.width * 0.55) / (totalTicks) : 0
                     }
 
-                    function calculateSliderMargins (availableMin, availableMax) {
-                        if(availableMin == -1)
-                        {
+                    function calculateSliderMargins (availableMin, availableMax, totalTicks) {
+                        if (availableMin == -1) {
                             qualityModel.qualitySliderMarginRight = base.width * 0.55
-                        }
-                        else if (availableMin == 0 && availableMax == 0)
-                        {
+                        } else if (availableMin == 0 && availableMax == 0) {
                             qualityModel.qualitySliderMarginRight = base.width * 0.55
-                        }
-                        else if(availableMin == availableMax)
-                        {
-                            qualityModel.qualitySliderMarginRight = (qualityModel.totalTicks - availableMin) * qualitySliderStepWidth
-                        }
-                        else if(availableMin != availableMax)
-                        {
-                            qualityModel.qualitySliderMarginRight = (qualityModel.totalTicks - availableMax) * qualitySliderStepWidth
+                        } else if (availableMin == availableMax) {
+                            qualityModel.qualitySliderMarginRight = (totalTicks - availableMin) * qualitySliderStepWidth
+                        } else if (availableMin != availableMax) {
+                            qualityModel.qualitySliderMarginRight = (totalTicks - availableMax) * qualitySliderStepWidth
                         }
                     }
 
