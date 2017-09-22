@@ -165,7 +165,7 @@ Item
                             anchors.top: parent.top
                             anchors.topMargin: UM.Theme.getSize("sidebar_margin").height / 2
 
-                            color: UM.Theme.getColor("quality_slider_unavailable") ? UM.Theme.getColor("quality_slider_available") : UM.Theme.getColor("quality_slider_unavailable")
+                            color: Cura.ProfilesModel.getItem(index).available ? UM.Theme.getColor("quality_slider_available") : UM.Theme.getColor("quality_slider_unavailable")
                             text: Cura.ProfilesModel.getItem(index).layer_height_without_unit
 
                             x: {
