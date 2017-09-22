@@ -27,6 +27,7 @@ Item
 
     ScrollView
     {
+        visible: Cura.MachineManager.activeMachineName != "" // If no printers added then the view is invisible
         anchors.fill: parent
         style: UM.Theme.styles.scrollview
         flickableItem.flickableDirection: Flickable.VerticalFlick
