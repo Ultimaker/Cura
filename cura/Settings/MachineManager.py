@@ -497,8 +497,9 @@ class MachineManager(QObject):
     @pyqtProperty("QVariantList", notify=activeVariantChanged)
     def activeVariantNames(self):
         result = []
-        if ExtruderManager.getInstance().getActiveGlobalAndExtruderStacks() is not None:
-            for stack in ExtruderManager.getInstance().getActiveGlobalAndExtruderStacks():
+        active_stacks = ExtruderManager.getInstance().getActiveGlobalAndExtruderStacks()
+        if active_stacks is not None:
+            for stack in active_stacks:
                 variant_container = stack.variant
                 if variant_container and variant_container != self._empty_variant_container:
                     result.append(variant_container.getName())
@@ -508,8 +509,9 @@ class MachineManager(QObject):
     @pyqtProperty("QVariantList", notify = activeMaterialChanged)
     def activeMaterialNames(self):
         result = []
-        if ExtruderManager.getInstance().getActiveGlobalAndExtruderStacks() is not None:
-            for stack in ExtruderManager.getInstance().getActiveGlobalAndExtruderStacks():
+        active_stacks = ExtruderManager.getInstance().getActiveGlobalAndExtruderStacks()
+        if active_stacks is not None:
+            for stack in active_stacks:
                 material_container = stack.material
                 if material_container and material_container != self._empty_material_container:
                     result.append(material_container.getName())
@@ -526,33 +528,29 @@ class MachineManager(QObject):
 
     @pyqtProperty("QVariantMap", notify = activeVariantChanged)
     def allActiveVariantIds(self):
-        if not self._global_container_stack:
-            return {}
-
         result = {}
+        active_stacks = ExtruderManager.getInstance().getActiveExtruderStacks()
+        if active_stacks is not None: #If we have a global stack.
+            for stack in active_stacks:
+                variant_container = stack.variant
+                if not variant_container:
+                    continue
 
-        for stack in ExtruderManager.getInstance().getActiveGlobalAndExtruderStacks():
-            variant_container = stack.variant
-            if not variant_container:
-                continue
-
-            result[stack.getId()] = variant_container.getId()
+                result[stack.getId()] = variant_container.getId()
 
         return result
 
     @pyqtProperty("QVariantMap", notify = activeMaterialChanged)
     def allActiveMaterialIds(self):
-        if not self._global_container_stack:
-            return {}
-
         result = {}
+        active_stacks = ExtruderManager.getInstance().getActiveExtruderStacks()
+        if active_stacks is not None: #If we have a global stack.
+            for stack in active_stacks:
+                material_container = stack.material
+                if not material_container:
+                    continue
 
-        for stack in ExtruderManager.getInstance().getActiveGlobalAndExtruderStacks():
-            material_container = stack.material
-            if not material_container:
-                continue
-
-            result[stack.getId()] = material_container.getId()
+                result[stack.getId()] = material_container.getId()
 
         return result
 
