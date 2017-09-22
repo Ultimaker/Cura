@@ -16,6 +16,7 @@ Rectangle
 
     property int currentModeIndex;
     property bool hideSettings: PrintInformation.preSliced
+    property bool hideView: Cura.MachineManager.activeMachineName == ""
 
     // Is there an output device for this printer?
     property bool printerConnected: Cura.MachineManager.printerOutputDevices.length != 0
@@ -123,7 +124,7 @@ Rectangle
         width: parent.width * 0.45
         font: UM.Theme.getFont("large")
         color: UM.Theme.getColor("text")
-        visible: !monitoringPrint
+        visible: !monitoringPrint && !hideView
     }
 
     Rectangle {
@@ -145,7 +146,7 @@ Rectangle
             }
         }
         anchors.topMargin: UM.Theme.getSize("sidebar_margin").height
-        visible: !monitoringPrint && !hideSettings
+        visible: !monitoringPrint && !hideSettings && !hideView
         Component{
             id: wizardDelegate
             Button {
