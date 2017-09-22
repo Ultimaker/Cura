@@ -206,9 +206,10 @@ class ThreeMFReader(MeshReader):
 
                 # Check if the model is positioned below the build plate and honor that when loading project files.
                 if um_node.getMeshData() is not None:
-                    z_offset_value = um_node.getMeshData().getExtents(um_node.getWorldTransformation()).minimum.y
-                    um_node.addDecorator(ZOffsetDecorator())
-                    um_node.callDecoration("setZOffset", z_offset_value)
+                    minimum_z_value = um_node.getMeshData().getExtents(um_node.getWorldTransformation()).minimum.y  # y is z in transformation coordinates
+                    if minimum_z_value < 0:
+                        um_node.addDecorator(ZOffsetDecorator())
+                        um_node.callDecoration("setZOffset", minimum_z_value)
 
                 result.append(um_node)
 
