@@ -71,15 +71,23 @@ Rectangle
         {
             id: showSettings
             height: UM.Theme.getSize("sidebar_header").height
-            onClicked: base.stopMonitoringPrint()
-            property color overlayColor: "transparent"
-            property string overlayIconSource: ""
             text: catalog.i18nc("@title:tab", "Prepare")
             checkable: true
-            checked: !base.monitoringPrint
+            checked: isChecked()
             exclusiveGroup: sidebarHeaderBarGroup
-
             style: UM.Theme.styles.topbar_header_tab
+
+            onClicked: {
+                base.stopMonitoringPrint()
+                checked = Qt.binding(isChecked)
+            }
+
+            function isChecked () {
+                return !base.monitoringPrint
+            }
+
+            property color overlayColor: "transparent"
+            property string overlayIconSource: ""
         }
 
         Button
@@ -87,8 +95,21 @@ Rectangle
             id: showMonitor
             width: UM.Theme.getSize("topbar_button").width
             height: UM.Theme.getSize("sidebar_header").height
-            onClicked: base.startMonitoringPrint()
             text: catalog.i18nc("@title:tab", "Monitor")
+            checkable: true
+            checked: isChecked()
+            exclusiveGroup: sidebarHeaderBarGroup
+            style: UM.Theme.styles.topbar_header_tab_no_overlay
+
+            onClicked: {
+                base.startMonitoringPrint()
+                checked = Qt.binding(isChecked)
+            }
+
+            function isChecked () {
+                return base.monitoringPrint
+            }
+
             property string iconSource:
             {
                 if (!printerConnected)
@@ -125,12 +146,6 @@ Rectangle
                         return UM.Theme.getIcon("tab_status_unknown")
                 }
             }
-
-            checkable: true
-            checked: base.monitoringPrint
-            exclusiveGroup: sidebarHeaderBarGroup
-
-            style: UM.Theme.styles.topbar_header_tab_no_overlay
         }
 
         ExclusiveGroup { id: sidebarHeaderBarGroup }
