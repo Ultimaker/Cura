@@ -25,8 +25,11 @@ UM.MainWindow
         target: Printer
         onShowPrintMonitor:
         {
+            topbar.monitoringChanged(show)
+
             if (show)
             {
+
                 topbar.startMonitoringPrint()
             }
             else
@@ -349,13 +352,17 @@ UM.MainWindow
                 }
             }
 
+            function isMonitoringPrint () {
+                return base.showPrintMonitor
+            }
+
             Topbar
             {
                 id: topbar
                 anchors.left:parent.left
                 anchors.right: parent.right
                 anchors.top: parent.top
-                monitoringPrint: base.showPrintMonitor
+                monitoringPrint: isMonitoringPrint()
                 onStartMonitoringPrint: base.showPrintMonitor = true
                 onStopMonitoringPrint: base.showPrintMonitor = false
             }
