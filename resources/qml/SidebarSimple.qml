@@ -165,7 +165,18 @@ Item
                             anchors.top: parent.top
                             anchors.topMargin: UM.Theme.getSize("sidebar_margin").height / 2
                             color: (Cura.MachineManager.activeMachine != null && Cura.ProfilesModel.getItem(index).available) ? UM.Theme.getColor("quality_slider_available") : UM.Theme.getColor("quality_slider_unavailable")
-                            text: Cura.MachineManager.activeMachine != null ? Cura.ProfilesModel.getItem(index).layer_height_without_unit : ""
+                            text:
+                            {
+                                var result = ""
+                                if(Cura.MachineManager.activeMachine != null){
+
+                                    var result = Cura.ProfilesModel.getItem(index).layer_height_without_unit
+
+                                    if(result == undefined)
+                                        result = ""
+                                }
+                                return result
+                            }
 
                             x: {
                                 // Make sure the text aligns correctly with each tick
@@ -244,14 +255,12 @@ Item
                             //Draw Available line
                             groove: Rectangle {
                                 implicitHeight: 2
-                                anchors.verticalCenter: qualitySlider.verticalCenter
                                 color: UM.Theme.getColor("quality_slider_available")
                                 radius: 1
                             }
                             handle: Item {
                                 Rectangle {
                                     id: qualityhandleButton
-                                    anchors.verticalCenter: qualitySlider.verticalCenter
                                     anchors.centerIn: parent
                                     color: control.enabled ? UM.Theme.getColor("quality_slider_available") : UM.Theme.getColor("quality_slider_unavailable")
                                     implicitWidth: 10
