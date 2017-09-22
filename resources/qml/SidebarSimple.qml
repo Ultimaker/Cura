@@ -150,7 +150,7 @@ Item
                     color: UM.Theme.getColor("text")
                 }
 
-                //Show titles for the each quality slider ticks
+                // Show titles for the each quality slider ticks
                 Item
                 {
                     y: -5;
@@ -164,10 +164,20 @@ Item
                             anchors.verticalCenter: parent.verticalCenter
                             anchors.top: parent.top
                             anchors.topMargin: UM.Theme.getSize("sidebar_margin").height / 2
-                            color: UM.Theme.getColor("text")
+
+                            color: UM.Theme.getColor("quality_slider_unavailable") ? UM.Theme.getColor("quality_slider_available") : UM.Theme.getColor("quality_slider_unavailable")
                             text: Cura.ProfilesModel.getItem(index).layer_height_without_unit
-                            width: 1
-                            x: (index != qualityModel.totalTicks) ? (base.width * 0.55 / qualityModel.totalTicks) * index : (base.width * 0.55 / qualityModel.totalTicks) * index - 15
+
+                            x: {
+                                // Make sure the text aligns correctly with each tick
+                                if (index == 0) {
+                                    return (base.width * 0.55 / qualityModel.totalTicks) * index
+                                } else if (index == qualityModel.totalTicks) {
+                                    return (base.width * 0.55 / qualityModel.totalTicks) * index - width
+                                } else {
+                                    return (base.width * 0.55 / qualityModel.totalTicks) * index - (width / 2)
+                                }
+                            }
                         }
                     }
                 }
@@ -202,7 +212,7 @@ Item
                         Rectangle
                         {
                             anchors.verticalCenter: parent.verticalCenter
-                            color: qualityModel.count > 1 ?  UM.Theme.getColor("quality_slider_available") : UM.Theme.getColor("quality_slider_unavailable")
+                            color: Cura.ProfilesModel.getItem(index).available ? UM.Theme.getColor("quality_slider_available") : UM.Theme.getColor("quality_slider_unavailable")
                             width: 1
                             height: 6
                             y: 0
