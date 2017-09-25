@@ -138,8 +138,13 @@ Item
 
                     function reset () {
                         qualityModel.clear()
-                        qualityModel.totalTicks = Cura.ProfilesModel.rowCount() - 1 // minus one, because slider starts from 0
                         qualityModel.availableTotalTicks = -1
+
+                        // check, the ticks count cannot be less than zero
+                        if(Cura.ProfilesModel.rowCount() != 0)
+                            qualityModel.totalTicks = Cura.ProfilesModel.rowCount() - 1  // minus one, because slider starts from 0
+                        else
+                            qualityModel.totalTicks = 0
                     }
                 }
 
@@ -240,8 +245,8 @@ Item
                         enabled: qualityModel.availableTotalTicks > 0
                         updateValueWhileDragging : false
 
-                        minimumValue: qualityModel.qualitySliderAvailableMin
-                        maximumValue: qualityModel.qualitySliderAvailableMax
+                        minimumValue: qualityModel.qualitySliderAvailableMin >= 0 ? qualityModel.qualitySliderAvailableMin : 0
+                        maximumValue: qualityModel.qualitySliderAvailableMax >= 0 ? qualityModel.qualitySliderAvailableMax : 0
                         stepSize: 1
 
                         value: qualityModel.activeQualityId
