@@ -54,36 +54,36 @@ class ProfilesModel(InstanceContainersModel):
         global_container_stack = Application.getInstance().getGlobalContainerStack()
         if global_container_stack is None:
             return []
-        # global_stack_definition = global_container_stack.getBottom()
+        global_stack_definition = global_container_stack.getBottom()
 
         # Get the list of extruders and place the selected extruder at the front of the list.
         extruder_manager = ExtruderManager.getInstance()
         active_extruder = extruder_manager.getActiveExtruderStack()
         extruder_stacks = extruder_manager.getActiveExtruderStacks()
+        materials = [global_container_stack.material]
         if active_extruder in extruder_stacks:
             extruder_stacks.remove(active_extruder)
             extruder_stacks = [active_extruder] + extruder_stacks
+            materials = [extruder.material for extruder in extruder_stacks]
 
-        # if ExtruderManager.getInstance().getActiveExtruderStacks():
-        #     # Multi-extruder machine detected.
-        #     materials = [extruder.material for extruder in extruder_stacks]
-        # else:
-        #     # Machine with one extruder.
-        #     materials = [global_container_stack.material]
-        #
-        # # Fetch the list of usable qualities across all extruders.
-        # # The actual list of quality profiles come from the first extruder in the extruder list.
-        # result = QualityManager.getInstance().findAllQualitiesForMachineAndMaterials(global_stack_definition,
-        #                                                                              materials)
-        #
-        # for quality in QualityManager.getInstance().findAllUsableQualitiesForMachineAndExtruders(
-        #         global_container_stack, extruder_stacks):
-        #     if quality not in result:
-        #         result.append(quality)
-        quality_list = QualityManager.getInstance().findAllUsableQualitiesForMachineAndExtruders(global_container_stack,
-                                                                                    extruder_stacks)
+        # Fetch the list of usable qualities across all extruders.
+        # The actual list of quality profiles come from the first extruder in the extruder list.
+        result = QualityManager.getInstance().findAllUsableQualitiesForMachineAndExtruders(global_container_stack, extruder_stacks)
 
-        return quality_list
+        # The usable quality types are set
+        quality_type_set = set([x.getMetaDataEntry("quality_type") for x in result])
+
+        # Fetch all qualities available for this machine and the materials selected in extruders
+        all_qualities = QualityManager.getInstance().findAllQualitiesForMachineAndMaterials(global_stack_definition, materials)
+
+        # If in the all qualities there is some of them that are not available due to incompatibility with materials
+        # we also add it so that they will appear in the slide quality bar. However in recomputeItems will be marked as
+        # not available so they will be shown in gray
+        for quality in all_qualities:
+            if quality.getMetaDataEntry("quality_type") not in quality_type_set:
+                result.append(quality)
+
+        return result
 
     ##  Re-computes the items in this model, and adds the layer height role.
     def _recomputeItems(self):
@@ -96,20 +96,13 @@ class ProfilesModel(InstanceContainersModel):
         extruder_manager = ExtruderManager.getInstance()
         active_extruder = extruder_manager.getActiveExtruderStack()
         extruder_stacks = extruder_manager.getActiveExtruderStacks()
-        material = global_container_stack.material
         if active_extruder in extruder_stacks:
             extruder_stacks.remove(active_extruder)
             extruder_stacks = [active_extruder] + extruder_stacks
-            material = active_extruder.material
 
-        # Get a list of available qualities for this machine and material
+        # Get a list of usable/available qualities for this machine and material
         qualities = QualityManager.getInstance().findAllUsableQualitiesForMachineAndExtruders(global_container_stack,
                                                                                               extruder_stacks)
-
-        all_qualities = []
-        for extruder in extruder_stacks:
-            all_qualities.append(QualityManager.getInstance().findAllQualitiesForMachineMaterial(global_container_stack.getBottom(), extruder.material))
-        all_qualities2 = QualityManager.getInstance().findAllUsableQualitiesForMachineAndExtruders(global_container_stack, [])
 
         container_registry = ContainerRegistry.getInstance()
         machine_manager = Application.getInstance().getMachineManager()
@@ -129,7 +122,7 @@ class ProfilesModel(InstanceContainersModel):
                 tmp_all_quality_items[quality_type] = {"suitable_container": None, "all_containers": []}
 
             tmp_all_quality_items[quality_type]["all_containers"].append(item)
-            if tmp_all_quality_items[quality_type]["suitable_container"] is None and profile[0] in qualities:
+            if tmp_all_quality_items[quality_type]["suitable_container"] is None:
                 tmp_all_quality_items[quality_type]["suitable_container"] = item
 
         # reverse the ordering (finest first, coarsest last)
@@ -154,7 +147,7 @@ class ProfilesModel(InstanceContainersModel):
         for item in containers:
             profile = container_registry.findContainers(id=item["id"])
             if not profile:
-                item["layer_height"] = ""  # Can't update a profile that is unknown.
+                self._setItemLayerHeight(item, "", unit)
                 item["available"] = False
                 yield item
                 continue
