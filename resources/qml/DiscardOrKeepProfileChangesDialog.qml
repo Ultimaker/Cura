@@ -14,8 +14,8 @@ UM.Dialog
     id: base
     title: catalog.i18nc("@title:window", "Discard or Keep changes")
 
-    width: 800
-    height: 400
+    width: 800 * screenScaleFactor
+    height: 400 * screenScaleFactor
     property var changesModel: Cura.UserChangesModel{ id: userChangesModel}
     onVisibilityChanged:
     {

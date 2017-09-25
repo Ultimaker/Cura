@@ -408,8 +408,8 @@ Item
 
                         groove: Rectangle {
                             id: groove
-                            implicitWidth: 200
-                            implicitHeight: 2
+                            implicitWidth: 200 * screenScaleFactor
+                            implicitHeight: 2 * screenScaleFactor
                             color: control.enabled ? UM.Theme.getColor("quality_slider_available") : UM.Theme.getColor("quality_slider_unavailable")
                             radius: 1
                         }
@@ -419,8 +419,8 @@ Item
                                 id: handleButton
                                 anchors.centerIn: parent
                                 color: control.enabled ? UM.Theme.getColor("quality_slider_available") : UM.Theme.getColor("quality_slider_unavailable")
-                                implicitWidth: 10
-                                implicitHeight: 10
+                                implicitWidth: 10 * screenScaleFactor
+                                implicitHeight: 10 * screenScaleFactor
                                 radius: 10
                             }
                         }
@@ -431,8 +431,8 @@ Item
                             Rectangle {
                                 anchors.verticalCenter: parent.verticalCenter
                                 color: control.enabled ? UM.Theme.getColor("quality_slider_available") : UM.Theme.getColor("quality_slider_unavailable")
-                                width: 1
-                                height: 6
+                                width: 1 * screenScaleFactor
+                                height: 6 * screenScaleFactor
                                 y: 0
                                 x: styleData.handleWidth / 2 + index * ((repeater.width - styleData.handleWidth) / (repeater.count-1))
                             }
@@ -484,7 +484,7 @@ Item
 
                             UM.RecolorImage {
                                 anchors.fill: parent
-                                anchors.margins: 2
+                                anchors.margins: 2 * screenScaleFactor
                                 sourceSize.width: width
                                 sourceSize.height: width
                                 source: UM.Theme.getIcon(model.icon)
