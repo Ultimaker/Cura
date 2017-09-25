@@ -96,7 +96,45 @@
             "enabled": false,
             "value": "'none'"
         },
+        "z_offset_layer_0": {
+            "enabled": false
+        },
         "print_sequence": {
+            "enabled": false
+        },
+        "top_bottom_pattern_0": {
+            "enabled": false
+        },
+        "infill_pattern":
+        {
+            "options":
+            {
+                "grid": "Grid",
+                "lines": "Lines",
+                "triangles": "Triangles",
+                "cubic": "Cubic",
+                "cubicsubdiv": "Cubic Subdivision",
+                "tetrahedral": "Octet",
+                "quarter_cubic": "Quarter Cubic",
+                "zigzag": "Zig Zag",
+                "cross": "Cross",
+                "cross_3d": "Cross 3D"
+            }
+        },
+        "switch_extruder_retraction_amount":
+        {
+            "enabled": false
+        },
+        "switch_extruder_retraction_speeds":
+        {
+            "enabled": false
+        },
+        "mold_enabled":
+        {
+            "enabled": false
+        },
+        "magic_fuzzy_skin_enabled":
+        {
             "enabled": false
         },
         "wireframe_enabled": {
