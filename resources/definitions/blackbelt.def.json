@@ -89,6 +89,9 @@
         "support_enable": {
             "enabled": false
         },
+        "support_angle": {
+            "value": 90
+        },
         "adhesion_type": {
             "enabled": false,
             "value": "'none'"
