@@ -106,7 +106,10 @@ class ProfilesModel(InstanceContainersModel):
         qualities = QualityManager.getInstance().findAllUsableQualitiesForMachineAndExtruders(global_container_stack,
                                                                                               extruder_stacks)
 
-        all_qualities = QualityManager.getInstance().findAllQualitiesForMachineMaterial(global_container_stack.getBottom(), material)
+        all_qualities = []
+        for extruder in extruder_stacks:
+            all_qualities.append(QualityManager.getInstance().findAllQualitiesForMachineMaterial(global_container_stack.getBottom(), extruder.material))
+        all_qualities2 = QualityManager.getInstance().findAllUsableQualitiesForMachineAndExtruders(global_container_stack, [])
 
         container_registry = ContainerRegistry.getInstance()
         machine_manager = Application.getInstance().getMachineManager()
@@ -138,9 +141,8 @@ class ProfilesModel(InstanceContainersModel):
         containers = []
         for data_item in all_quality_items.values():
             suitable_item = data_item["suitable_container"]
-            if suitable_item is None:
-                suitable_item = data_item["all_containers"][0]
-            containers.append(suitable_item)
+            if suitable_item is not None:
+                containers.append(suitable_item)
 
         # Once the suitable containers are collected, the rest of the containers are appended
         for data_item in all_quality_items.values():
