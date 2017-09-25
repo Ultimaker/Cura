@@ -211,7 +211,7 @@ class CuraApplication(QtApplication):
 
         self.setRequiredPlugins([
             "CuraEngineBackend",
-            "MeshView",
+            "SolidView",
             "LayerView",
             "STLReader",
             "SelectionTool",
