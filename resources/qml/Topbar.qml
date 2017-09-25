@@ -77,6 +77,8 @@ Rectangle
             exclusiveGroup: sidebarHeaderBarGroup
             style: UM.Theme.styles.topbar_header_tab
 
+            // We use a Qt.binding to re-bind the checkbox state after manually setting it
+            // https://stackoverflow.com/questions/38798450/qt-5-7-qml-why-are-my-checkbox-property-bindings-disappearing
             onClicked: {
                 base.stopMonitoringPrint()
                 checked = Qt.binding(isChecked)
@@ -101,6 +103,8 @@ Rectangle
             exclusiveGroup: sidebarHeaderBarGroup
             style: UM.Theme.styles.topbar_header_tab_no_overlay
 
+            // We use a Qt.binding to re-bind the checkbox state after manually setting it
+            // https://stackoverflow.com/questions/38798450/qt-5-7-qml-why-are-my-checkbox-property-bindings-disappearing
             onClicked: {
                 base.startMonitoringPrint()
                 checked = Qt.binding(isChecked)
