@@ -1,15 +1,19 @@
 # Copyright (c) 2015 Ultimaker B.V.
 # Uranium is released under the terms of the AGPLv3 or higher.
 
+# Python build-ins
 import threading
 import time
 
+# Uranium/Messaging
 from UM.Message import Message
-from UM.OutputDevice.OutputDevicePlugin import OutputDevicePlugin
 from UM.Logger import Logger
 
+# Uranium/IO
+from UM.OutputDevice.OutputDevicePlugin import OutputDevicePlugin
 from . import RemovableDriveOutputDevice
-from UM.Logger import Logger
+
+# Uranium/l18n
 from UM.i18n import i18nCatalog
 catalog = i18nCatalog("cura")
 
