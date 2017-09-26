@@ -14,8 +14,8 @@ UM.Dialog
     //: About dialog title
     title: catalog.i18nc("@title:window","About Cura")
 
-    minimumWidth: 500
-    minimumHeight: 650
+    minimumWidth: 500 * screenScaleFactor
+    minimumHeight: 650 * screenScaleFactor
     width: minimumWidth
     height: minimumHeight
 
