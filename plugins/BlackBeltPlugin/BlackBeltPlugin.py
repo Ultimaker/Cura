@@ -53,22 +53,6 @@ class BlackBeltPlugin(Extension):
         if property_name != "value" or not self._global_container_stack.hasProperty("blackbelt_gantry_angle", "value"):
             return
 
-        if key == "machine_nozzle_size":
-            # Setting the nozzle size in Machine Settings should not break the
-            # inheritance of machine_nozzle_size from blackbelt_nozzle_size
-            nozzle_size = self._global_container_stack.getProperty(key, "value")
-
-            definition = self._global_container_stack.getBottom()
-            for container in self._global_container_stack.getContainers():
-                if container is definition:
-                    continue
-
-                if key in container.getAllKeys():
-                    container.removeInstance(key)
-
-            if nozzle_size != self._global_container_stack.getProperty("blackbelt_nozzle_size", "value"):
-                self._global_container_stack.setProperty("blackbelt_nozzle_size", "value", nozzle_size)
-
         elif key == "blackbelt_gantry_angle":
             # Setting the gantry angle changes the build volume.
             # Force rebuilding the build volume by reloading the global container stack.
@@ -90,7 +74,7 @@ class BlackBeltPlugin(Extension):
             return
 
         visible_settings_changed = False
-        for key in ["blackbelt_settings", "blackbelt_gantry_angle", "blackbelt_nozzle_size"]:
+        for key in ["blackbelt_settings"]:
             if key not in visible_settings:
                 visible_settings += ";%s" % key
                 visible_settings_changed = True

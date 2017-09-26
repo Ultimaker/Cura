@@ -17,6 +17,12 @@
                 "maximum": 320
             }
         },
+        "has_machine_materials": true,
+        "has_variants": true,
+        "preferred_variant": "*45_04*",
+        "preferred_quality": "*Normal*",
+        "preferred_material": "*ngen*",
+        "variants_name": "Setting",
         "file_formats": "text/x-gcode"
     },
 
@@ -44,18 +50,6 @@
                     "default_value": "45",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false
-                },
-                "blackbelt_nozzle_size":
-                {
-                    "label": "Nozzle Diameter",
-                    "description": "The inner diameter of the nozzle. Change this setting to match the nozzle inserted in the printhead.",
-                    "unit": "mm",
-                    "type": "float",
-                    "default_value": 0.4,
-                    "minimum_value": "0.001",
-                    "maximum_value_warning": "10",
-                    "settable_per_mesh": false,
-                    "settable_per_extruder": true
                 }
             }
         }
@@ -74,10 +68,6 @@
         },
         "machine_depth": {
             "default_value": 99999
-        },
-        "machine_nozzle_size": {
-            "default_value": 0.4,
-            "value": "blackbelt_nozzle_size"
         },
         "material_diameter": {
             "value": "1.75"
@@ -139,6 +129,28 @@
         },
         "wireframe_enabled": {
             "enabled": false
+        },
+
+        "layer_height_0": {
+            "value": "layer_height + 0.1"
+        },
+        "line_width": {
+            "value": "machine_nozzle_size"
+        },
+        "wall_line_width": {
+            "value": "line_width"
+        },
+        "wall_line_width_0": {
+            "value": "line_width + 0.1"
+        },
+        "skin_line_width": {
+            "value": "line_width + 0.2"
+        },
+        "skin_preshrink": {
+            "value": "2"
+        },
+        "expand_skins_expand_distance": {
+            "value": "0"
         }
     }
 }
