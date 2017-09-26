@@ -272,6 +272,28 @@ Cura.MachineAction
                         text: base.selectedPrinter ? base.selectedPrinter.ipAddress : ""
                     }
                 }
+
+                Label
+                {
+                    width: parent.width
+                    wrapMode: Text.WordWrap
+                    text:{
+                        // The property cluster size does not exist for older UM3 devices.
+                        if(base.selectedPrinter.clusterSize == null || base.selectedPrinter.clusterSize == 1)
+                        {
+                            return "";
+                        }
+                        else if (base.selectedPrinter.clusterSize === 0)
+                        {
+                            return catalog.i18nc("@label", "Cura Connect: This printer is not set up to host a group of connected Ultimaker 3 printers.");
+                        }
+                        else
+                        {
+                            return catalog.i18nc("@label", "Cura Connect: This printer is set up to host a group of %1 connected Ultimaker 3 printers".arg(base.selectedPrinter.clusterSize));
+                        }
+                    }
+
+                }
                 Label
                 {
                     width: parent.width
