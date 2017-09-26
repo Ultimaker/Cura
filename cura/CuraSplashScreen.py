@@ -10,7 +10,6 @@ from PyQt5.QtWidgets import QSplashScreen
 from UM.Resources import Resources
 from UM.Application import Application
 
-
 class CuraSplashScreen(QSplashScreen):
     def __init__(self):
         super().__init__()
@@ -61,7 +60,7 @@ class CuraSplashScreen(QSplashScreen):
 
         # draw version text
         font = QFont()  # Using system-default font here
-        font.setPointSize(28)
+        font.setPixelSize(37)
         painter.setFont(font)
         painter.drawText(220, 66, 330 * self._scale, 230 * self._scale, Qt.AlignLeft | Qt.AlignTop, version[0])
         if len(version) > 1:
@@ -81,7 +80,7 @@ class CuraSplashScreen(QSplashScreen):
         # draw message text
         if self._current_message:
             font = QFont()  # Using system-default font here
-            font.setPointSize(10)
+            font.setPixelSize(13)
             pen = QPen()
             pen.setColor(QColor(255, 255, 255, 255))
             painter.setPen(pen)
@@ -107,5 +106,3 @@ class CuraSplashScreen(QSplashScreen):
         self._to_stop = True
         self._change_timer.stop()
         super().close()
-
-
