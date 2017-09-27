@@ -393,7 +393,7 @@ Item
 
                     minimumValue: 0
                     maximumValue: 100
-                    stepSize: 10
+                    stepSize: (parseInt(infillDensity.properties.value) % 10 == 0) ? 10 : 1
                     tickmarksEnabled: true
 
                     // disable slider when gradual support is enabled
@@ -403,12 +403,12 @@ Item
                     value: parseInt(infillDensity.properties.value)
 
                     onValueChanged: {
+                        // Explicitly cast to string to make sure the value passed to Python is an integer.
                         infillDensity.setPropertyValue("value", String(parseInt(infillSlider.value)))
                     }
 
                     style: SliderStyle
                     {
-
                         groove: Rectangle {
                             id: groove
                             implicitWidth: 200
@@ -431,6 +431,18 @@ Item
                         tickmarks: Repeater {
                             id: repeater
                             model: control.maximumValue / control.stepSize + 1
+
+                            // check if a tick should be shown based on it's index and wether the infill density is a multiple of 10 (slider step size)
+                            function shouldShowTick (index) {
+                                if ((parseInt(infillDensity.properties.value) % 10 == 0)) {
+                                    return true
+                                } else if (index % 10 == 0) {
+                                    return true
+                                } else {
+                                    return false
+                                }
+                            }
+
                             Rectangle {
                                 anchors.verticalCenter: parent.verticalCenter
                                 color: control.enabled ? UM.Theme.getColor("quality_slider_available") : UM.Theme.getColor("quality_slider_unavailable")
@@ -438,6 +450,7 @@ Item
                                 height: 6
                                 y: 0
                                 x: styleData.handleWidth / 2 + index * ((repeater.width - styleData.handleWidth) / (repeater.count-1))
+                                visible: shouldShowTick(index)
                             }
                         }
                     }
