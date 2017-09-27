@@ -226,7 +226,7 @@ Item
                     Repeater
                     {
                         id: qualityRepeater
-                        model: qualityModel.availableTotalTicks > 0 ? qualityModel : 0
+                        model: qualityModel.totalTicks > 0 ? qualityModel : 0
 
                         Rectangle
                         {
