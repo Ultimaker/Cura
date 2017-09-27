@@ -340,10 +340,6 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
                 pass  # It can happen that the wrapped c++ object is already deleted.
             self._image_reply = None
             self._image_request = None
-        if self._use_stream:
-            # Reset image (To prevent old images from being displayed)
-            self._camera_image.fill(QColor(0, 0, 0))
-            self.newImage.emit()
 
     def _startCamera(self):
         if self._use_stream:
