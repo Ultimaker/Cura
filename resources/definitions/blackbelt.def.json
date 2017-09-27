@@ -132,6 +132,10 @@
                 "cross_3d": "Cross 3D"
             }
         },
+        "gradual_infill_steps":
+        {
+            "enabled": false
+        },
         "switch_extruder_retraction_amount":
         {
             "enabled": false
