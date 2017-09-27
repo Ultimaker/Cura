@@ -5,7 +5,7 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Cura 2.7\n"
+"Project-Id-Version: Cura 3.0\n"
 "Report-Msgid-Bugs-To: r.dulek@ultimaker.com\n"
 "POT-Creation-Date: 2017-08-02 16:53+0000\n"
 "PO-Revision-Date: 2017-09-27 12:27+0200\n"
@@ -4320,7 +4320,7 @@ msgstr "La taille de poches aux croisements à quatre branches dans le motif ent
 #: fdmprinter.def.json
 msgctxt "cross_infill_apply_pockets_alternatingly label"
 msgid "Alternate Cross 3D Pockets"
-msgstr "Poches entrecroisées 3D alternatives"
+msgstr "Alterner les poches entrecroisées 3D"
 
 #: fdmprinter.def.json
 msgctxt "cross_infill_apply_pockets_alternatingly description"

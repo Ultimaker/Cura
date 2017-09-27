@@ -488,7 +488,7 @@ msgstr "De gegevens worden naar de printer verzonden"
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/NetworkPrinterOutputDevice.py:839
 msgctxt "@info:title"
 msgid "Sending Data"
-msgstr "De gegevens worden verzonden"
+msgstr "Gegevens Verzenden"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/NetworkPrinterOutputDevice.py:908
 #: /home/ruben/Projects/Cura/plugins/CuraPrintClusterUpload/NetworkPrinterOutputDevice.py:890
@@ -1541,12 +1541,12 @@ msgstr "Configuratie Activeren"
 #: /home/ruben/Projects/Cura/plugins/CuraPrintClusterUpload/DiscoverUM3Action.qml:284
 msgctxt "@label"
 msgid "This printer is not set up to host a group of connected Ultimaker 3 printers"
-msgstr "Deze printer is niet ingesteld voor het hosten van een groep aangesloten Ultimaker 3-printers"
+msgstr "Deze printer is niet ingesteld voor het hosten van een groep aaneengesloten Ultimaker 3-printers"
 
 #: /home/ruben/Projects/Cura/plugins/CuraPrintClusterUpload/DiscoverUM3Action.qml:287
 msgctxt "@label"
 msgid "This printer is the host for a group of %1 connected Ultimaker 3 printers"
-msgstr "Deze printer is de host voor een groep van %1 aangesloten Ultimaker 3-printers"
+msgstr "Deze printer is de host voor een groep van %1 aaneengesloten Ultimaker 3-printers"
 
 #: /home/ruben/Projects/Cura/plugins/CuraPrintClusterUpload/PrintWindow.qml:24
 msgctxt "@title:window"
@@ -2954,7 +2954,7 @@ msgctxt "@info:credit"
 msgid ""
 "Cura is developed by Ultimaker B.V. in cooperation with the community.\n"
 "Cura proudly uses the following open source projects:"
-msgstr "Cura is ontwikkeld door Ultimaker B.V. in samenwerking met de community.\nCura is er trots op gebruik te maken van de volgende opensourceprojecten:"
+msgstr "Cura is ontwikkeld door Ultimaker B.V. in samenwerking met de community.\nCura maakt met trots gebruik van de volgende opensourceprojecten:"
 
 #: /home/ruben/Projects/Cura/resources/qml/AboutDialog.qml:118
 msgctxt "@label"
@@ -3057,7 +3057,7 @@ msgid ""
 "Some setting/override values are different from the values stored in the profile.\n"
 "\n"
 "Click to open the profile manager."
-msgstr "Sommige waarden voor instellingen/overschrijvingen zijn anders dan de waarden die in het profiel zijn opgeslagen.\n\nKlik om het profielbeheer te openen."
+msgstr "Sommige waarden of aanpassingen van instellingen zijn anders dan de waarden die in het profiel zijn opgeslagen.\n\nKlik om het profielbeheer te openen."
 
 #: /home/ruben/Projects/Cura/resources/qml/Settings/SettingView.qml:145
 msgctxt "@label:textbox"
@@ -3737,7 +3737,7 @@ msgstr "Met geleidelijke vulling neemt de hoeveelheid vulling naar boven toe."
 #: /home/ruben/Projects/Cura/resources/qml/SidebarSimple.qml:602
 msgctxt "@label"
 msgid "Enable gradual"
-msgstr "Geleidelijke vulling inschakelen"
+msgstr "Geleidelijke vulling"
 
 #: /home/ruben/Projects/Cura/resources/qml/SidebarSimple.qml:668
 msgctxt "@label"

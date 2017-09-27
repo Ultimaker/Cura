@@ -5,7 +5,7 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Cura 2.7\n"
+"Project-Id-Version: Cura 3.0\n"
 "Report-Msgid-Bugs-To: r.dulek@ultimaker.com\n"
 "POT-Creation-Date: 2017-08-02 16:53+0000\n"
 "PO-Revision-Date: 2017-09-27 12:27+0200\n"
@@ -1278,7 +1278,7 @@ msgstr "Kubische onderverdeling"
 #: fdmprinter.def.json
 msgctxt "infill_pattern option tetrahedral"
 msgid "Octet"
-msgstr "Achtvlak"
+msgstr "Octet"
 
 #: fdmprinter.def.json
 msgctxt "infill_pattern option quarter_cubic"
@@ -2833,7 +2833,7 @@ msgstr "Verbind de zigzaglijnen. Hiermee versterkt u de zigzag-supportstructuur.
 #: fdmprinter.def.json
 msgctxt "support_skip_some_zags label"
 msgid "Break Up Support In Chunks"
-msgstr "Supportstructuur in stukken breken"
+msgstr "Supportstructuur in Stukken Breken"
 
 #: fdmprinter.def.json
 msgctxt "support_skip_some_zags description"
@@ -2843,7 +2843,7 @@ msgstr "Sla enkele verbindingen tussen lijnen van de supportstructuur over zodat
 #: fdmprinter.def.json
 msgctxt "support_skip_zag_per_mm label"
 msgid "Support Chunk Size"
-msgstr "Grootte supportstuk"
+msgstr "Grootte Supportstuk"
 
 #: fdmprinter.def.json
 msgctxt "support_skip_zag_per_mm description"
@@ -2853,7 +2853,7 @@ msgstr "Sla elke N millimeter een verbinding tussen de lijnen van de supportstru
 #: fdmprinter.def.json
 msgctxt "support_zag_skip_count label"
 msgid "Support Chunk Line Count"
-msgstr "Aantal lijnen supportstuk"
+msgstr "Aantal Lijnen Supportstuk"
 
 #: fdmprinter.def.json
 msgctxt "support_zag_skip_count description"
@@ -3455,7 +3455,7 @@ msgstr "De extruder wordt in deze mate gecorrigeerd ten opzichte van de normale 
 #: fdmprinter.def.json
 msgctxt "z_offset_taper_layers label"
 msgid "Z Offset Taper Layers"
-msgstr "Z-offset Taps Toelopende Lagen"
+msgstr "Z-offset Aflopende Lagen"
 
 #: fdmprinter.def.json
 msgctxt "z_offset_taper_layers description"
@@ -4160,7 +4160,7 @@ msgstr "Maak de gespiraliseerde contouren vlak om de zichtbaarheid van de Z-naad
 #: fdmprinter.def.json
 msgctxt "relative_extrusion label"
 msgid "Relative Extrusion"
-msgstr "Relatieve extrusie"
+msgstr "Relatieve Extrusie"
 
 #: fdmprinter.def.json
 msgctxt "relative_extrusion description"
@@ -4325,7 +4325,7 @@ msgstr "Afwisselend luchtbellen in kruis 3D"
 #: fdmprinter.def.json
 msgctxt "cross_infill_apply_pockets_alternatingly description"
 msgid "Only apply pockets at half of the four-way crossings in the cross 3D pattern and alternate the location of the pockets between heights where the pattern is touching itself."
-msgstr "Laat alleen luchtbellen achter in de helft van de kruispunten in het kruis 3D-patroon en wisselt de plaats van de luchtbellen op punten waar het patroon zichzelf raakt."
+msgstr "Laat alleen luchtbellen achter in de helft van de kruispunten in het Kruis 3D-patroon en wisselt de plaats van de luchtbellen op punten waar het patroon zichzelf raakt."
 
 #: fdmprinter.def.json
 msgctxt "spaghetti_infill_enabled label"
@@ -4752,7 +4752,7 @@ msgstr "Alleen hoogste laag strijken"
 #: fdmprinter.def.json
 msgctxt "ironing_only_highest_layer description"
 msgid "Only perform ironing on the very last layer of the mesh. This saves time if the lower layers don't need a smooth surface finish."
-msgstr "Strijk alleen de allerlaatste laag van het raster. Dit bespaart tijd als de daaronder gelegen lagen geen glad oppervlak vereisen."
+msgstr "Strijk alleen de allerlaatste laag van het voorwerp. Dit bespaart tijd als de daaronder gelegen lagen geen glad oppervlak vereisen."
 
 #: fdmprinter.def.json
 msgctxt "ironing_pattern label"

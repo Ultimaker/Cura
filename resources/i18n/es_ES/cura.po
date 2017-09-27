@@ -5,7 +5,7 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Cura 2.7\n"
+"Project-Id-Version: Cura 3.0\n"
 "Report-Msgid-Bugs-To: r.dulek@ultimaker.com\n"
 "POT-Creation-Date: 2017-08-02 16:53+0000\n"
 "PO-Revision-Date: 2017-09-27 12:27+0200\n"
@@ -2900,12 +2900,12 @@ msgstr "Importar material"
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/MaterialsPage.qml:320
 msgctxt "@info:status Don't translate the XML tags <filename> or <message>!"
 msgid "Could not import material <filename>%1</filename>: <message>%2</message>"
-msgstr "No se pudo importar el material en <nombrearchivo>%1</nombrearchivo>: <mensaje>%2</mensaje>."
+msgstr "No se pudo importar el material en <filename>%1</filename>: <message>%2</message>."
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/MaterialsPage.qml:324
 msgctxt "@info:status Don't translate the XML tag <filename>!"
 msgid "Successfully imported material <filename>%1</filename>"
-msgstr "El material se ha importado correctamente en <nombrearchivo>%1</nombrearchivo>."
+msgstr "El material se ha importado correctamente en <filename>%1</filename>."
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/MaterialsPage.qml:343
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/MaterialsPage.qml:358
@@ -2916,12 +2916,12 @@ msgstr "Exportar material"
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/MaterialsPage.qml:362
 msgctxt "@info:status Don't translate the XML tags <filename> and <message>!"
 msgid "Failed to export material to <filename>%1</filename>: <message>%2</message>"
-msgstr "Se ha producido un error al exportar el material a <nombrearchivo>%1</nombrearchivo>: <mensaje>%2</mensaje>."
+msgstr "Se ha producido un error al exportar el material a <filename>%1</filename>: <message>%2</message>."
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/MaterialsPage.qml:368
 msgctxt "@info:status Don't translate the XML tag <filename>!"
 msgid "Successfully exported material to <filename>%1</filename>"
-msgstr "El material se ha exportado correctamente a <nombrearchivo>%1</nombrearchivo>."
+msgstr "El material se ha exportado correctamente a <filename>%1</filename>."
 
 #: /home/ruben/Projects/Cura/resources/qml/AddMachineDialog.qml:18
 #: /home/ruben/Projects/Cura/resources/qml/Cura.qml:766
@@ -3163,12 +3163,12 @@ msgstr "Tiempo de impresión"
 #: /home/ruben/Projects/Cura/resources/qml/Sidebar.qml:409
 msgctxt "@label"
 msgid "%1m / ~ %2g / ~ %4 %3"
-msgstr "%1m/~ %2g/~ %4 %3"
+msgstr "%1m / ~ %2g/ ~ %4 %3"
 
 #: /home/ruben/Projects/Cura/resources/qml/Sidebar.qml:414
 msgctxt "@label"
 msgid "%1m / ~ %2g"
-msgstr "%1m/~ %2g"
+msgstr "%1m / ~ %2g"
 
 #: /home/ruben/Projects/Cura/resources/qml/Sidebar.qml:476
 msgctxt "@tooltip"
