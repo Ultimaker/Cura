@@ -89,11 +89,10 @@ class GlobalStack(CuraContainerStack):
     #
     #   \param key The setting key to get the property of.
     #   \param property_name The property to get the value of.
-    #   \param skip_container The container ID to skip.
     #
     #   \return The value of the property for the specified setting, or None if not found.
     @override(ContainerStack)
-    def getProperty(self, key: str, property_name: str, context: Optional[PropertyEvaluationContext] = None, skip_container: str = None) -> Any:
+    def getProperty(self, key: str, property_name: str, context: Optional[PropertyEvaluationContext] = None) -> Any:
         if not self.definition.findDefinitions(key = key):
             return None
 
@@ -122,7 +121,7 @@ class GlobalStack(CuraContainerStack):
             else:
                 Logger.log("e", "Setting {setting} has limit_to_extruder but is not settable per extruder!", setting = key)
 
-        result = super().getProperty(key, property_name, context, skip_container)
+        result = super().getProperty(key, property_name, context)
         context.popContainer()
         return result
 
