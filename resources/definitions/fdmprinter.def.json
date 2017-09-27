@@ -4094,7 +4094,7 @@
                 "raft_smoothing":
                 {
                     "label": "Raft Smoothing",
-                    "description": "This setting control how much inner corners in the raft outline are rounded. Inward corners are rounded to a semi circle with a radius equal to the value given here. This setting also removes holes in the raft outline which are smaller than such a circle.",
+                    "description": "This setting controls how much inner corners in the raft outline are rounded. Inward corners are rounded to a semi circle with a radius equal to the value given here. This setting also removes holes in the raft outline which are smaller than such a circle.",
                     "unit": "mm",
                     "type": "float",
                     "default_value": 5,

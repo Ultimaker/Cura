@@ -213,7 +213,7 @@ Item
                     {
                         id: groovechildrect
                         width: base.width * 0.55
-                        height: 2
+                        height: 2 * screenScaleFactor
                         color: UM.Theme.getColor("quality_slider_unavailable")
                         anchors.verticalCenter: qualitySlider.verticalCenter
                         x: 0
@@ -229,8 +229,8 @@ Item
                         {
                             anchors.verticalCenter: parent.verticalCenter
                             color: Cura.ProfilesModel.getItem(index).available ? UM.Theme.getColor("quality_slider_available") : UM.Theme.getColor("quality_slider_unavailable")
-                            width: 1
-                            height: 6
+                            width: 1 * screenScaleFactor
+                            height: 6 * screenScaleFactor
                             y: 0
                             x: qualityModel.qualitySliderStepWidth * index
                         }
@@ -260,18 +260,18 @@ Item
                         {
                             //Draw Available line
                             groove: Rectangle {
-                                implicitHeight: 2
+                                implicitHeight: 2 * screenScaleFactor
                                 color: UM.Theme.getColor("quality_slider_available")
-                                radius: 1
+                                radius: 1 * screenScaleFactor
                             }
                             handle: Item {
                                 Rectangle {
                                     id: qualityhandleButton
                                     anchors.centerIn: parent
                                     color: control.enabled ? UM.Theme.getColor("quality_slider_available") : UM.Theme.getColor("quality_slider_unavailable")
-                                    implicitWidth: 10
-                                    implicitHeight: 10
-                                    radius: 10
+                                    implicitWidth: 10 * screenScaleFactor
+                                    implicitHeight: 10 * screenScaleFactor
+                                    radius: 10 * screenScaleFactor
                                 }
                             }
                         }
@@ -309,7 +309,7 @@ Item
 
                     text: catalog.i18nc("@label", "Slower")
                     font: UM.Theme.getFont("default")
-                    color: UM.Theme.getColor("text")
+                    color: (qualityModel.availableTotalTicks > 0) ? UM.Theme.getColor("quality_slider_available") : UM.Theme.getColor("quality_slider_unavailable")
                     horizontalAlignment: Text.AlignLeft
                 }
 
@@ -320,7 +320,7 @@ Item
 
                     text: catalog.i18nc("@label", "Faster")
                     font: UM.Theme.getFont("default")
-                    color: UM.Theme.getColor("text")
+                    color: (qualityModel.availableTotalTicks > 0) ? UM.Theme.getColor("quality_slider_available") : UM.Theme.getColor("quality_slider_unavailable")
                     horizontalAlignment: Text.AlignRight
                 }
             }
@@ -370,7 +370,7 @@ Item
 
                     //anchors.top: parent.top
                     anchors.left: infillSlider.left
-                    anchors.leftMargin: (infillSlider.value / infillSlider.stepSize) * (infillSlider.width / (infillSlider.maximumValue / infillSlider.stepSize)) - 10
+                    anchors.leftMargin: (infillSlider.value / infillSlider.stepSize) * (infillSlider.width / (infillSlider.maximumValue / infillSlider.stepSize)) - 10 * screenScaleFactor
                     anchors.right: parent.right
 
                     text: infillSlider.value + "%"
@@ -411,8 +411,8 @@ Item
                     {
                         groove: Rectangle {
                             id: groove
-                            implicitWidth: 200
-                            implicitHeight: 2
+                            implicitWidth: 200 * screenScaleFactor
+                            implicitHeight: 2 * screenScaleFactor
                             color: control.enabled ? UM.Theme.getColor("quality_slider_available") : UM.Theme.getColor("quality_slider_unavailable")
                             radius: 1
                         }
@@ -422,9 +422,9 @@ Item
                                 id: handleButton
                                 anchors.centerIn: parent
                                 color: control.enabled ? UM.Theme.getColor("quality_slider_available") : UM.Theme.getColor("quality_slider_unavailable")
-                                implicitWidth: 10
-                                implicitHeight: 10
-                                radius: 10
+                                implicitWidth: 10 * screenScaleFactor
+                                implicitHeight: 10 * screenScaleFactor
+                                radius: 10 * screenScaleFactor
                             }
                         }
 
@@ -446,8 +446,8 @@ Item
                             Rectangle {
                                 anchors.verticalCenter: parent.verticalCenter
                                 color: control.enabled ? UM.Theme.getColor("quality_slider_available") : UM.Theme.getColor("quality_slider_unavailable")
-                                width: 1
-                                height: 6
+                                width: 1 * screenScaleFactor
+                                height: 6 * screenScaleFactor
                                 y: 0
                                 x: styleData.handleWidth / 2 + index * ((repeater.width - styleData.handleWidth) / (repeater.count-1))
                                 visible: shouldShowTick(index)
@@ -500,7 +500,7 @@ Item
 
                             UM.RecolorImage {
                                 anchors.fill: parent
-                                anchors.margins: 2
+                                anchors.margins: 2 * screenScaleFactor
                                 sourceSize.width: width
                                 sourceSize.height: width
                                 source: UM.Theme.getIcon(model.icon)
@@ -516,7 +516,7 @@ Item
                     property alias _hovered: enableGradualInfillMouseArea.containsMouse
 
                     anchors.top: infillSlider.bottom
-                    anchors.topMargin: UM.Theme.getSize("sidebar_margin").height
+                    anchors.topMargin: UM.Theme.getSize("sidebar_margin").height / 2 // closer to slider since it belongs to the same category
                     anchors.left: infillCellRight.left
 
                     style: UM.Theme.styles.checkbox
@@ -609,7 +609,7 @@ Item
                 visible: enableSupportCheckBox.visible
 
                 anchors.top: infillCellRight.bottom
-                anchors.topMargin: UM.Theme.getSize("sidebar_margin").height
+                anchors.topMargin: UM.Theme.getSize("sidebar_margin").height * 1.5
                 anchors.left: parent.left
                 anchors.leftMargin: UM.Theme.getSize("sidebar_margin").width
                 anchors.verticalCenter: enableSupportCheckBox.verticalCenter
@@ -624,8 +624,7 @@ Item
                 id: enableSupportCheckBox
                 property alias _hovered: enableSupportMouseArea.containsMouse
 
-                anchors.top: infillCellRight.bottom
-                anchors.topMargin: UM.Theme.getSize("sidebar_margin").height
+                anchors.top: enableSupportLabel.top
                 anchors.left: infillCellRight.left
 
                 style: UM.Theme.styles.checkbox;
@@ -737,15 +736,19 @@ Item
             {
                 id: adhesionHelperLabel
                 visible: adhesionCheckBox.visible
-                anchors.left: parent.left
-                anchors.leftMargin: UM.Theme.getSize("sidebar_margin").width
-                anchors.right: infillCellLeft.right
-                anchors.rightMargin: UM.Theme.getSize("sidebar_margin").width
-                anchors.verticalCenter: adhesionCheckBox.verticalCenter
-                text: catalog.i18nc("@label", "Build Plate Adhesion");
-                font: UM.Theme.getFont("default");
-                color: UM.Theme.getColor("text");
+
+                text: catalog.i18nc("@label", "Build Plate Adhesion")
+                font: UM.Theme.getFont("default")
+                color: UM.Theme.getColor("text")
                 elide: Text.ElideRight
+
+                anchors {
+                    left: parent.left
+                    leftMargin: UM.Theme.getSize("sidebar_margin").width
+                    right: infillCellLeft.right
+                    rightMargin: UM.Theme.getSize("sidebar_margin").width
+                    verticalCenter: adhesionCheckBox.verticalCenter
+                }
             }
 
             CheckBox

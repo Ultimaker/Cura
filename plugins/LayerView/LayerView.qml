@@ -111,7 +111,7 @@ Item
                 visible: !UM.LayerView.compatibilityMode
                 style: UM.Theme.styles.combobox
                 anchors.right: parent.right
-                anchors.rightMargin: 10
+                anchors.rightMargin: 10 * screenScaleFactor
 
                 onActivated:
                 {
@@ -353,7 +353,7 @@ Item
             property real minimumRangeHandleSize: UM.Theme.getSize("slider_handle").width / 2
             property real trackThickness: UM.Theme.getSize("slider_groove").width
             property real trackRadius: trackThickness / 2
-            property real trackBorderWidth: UM.Theme.getSize("default_lining").width / 2
+            property real trackBorderWidth: UM.Theme.getSize("default_lining").width
             property color upperHandleColor: UM.Theme.getColor("slider_handle")
             property color lowerHandleColor: UM.Theme.getColor("slider_handle")
             property color rangeHandleColor: UM.Theme.getColor("slider_groove_fill")
@@ -602,7 +602,7 @@ Item
                     anchors.leftMargin: UM.Theme.getSize("default_margin").width / 2;
                     anchors.verticalCenter: parent.verticalCenter;
 
-                    width: Math.max(UM.Theme.getSize("line").width * maxValue.length + 2, 20);
+                    width: Math.max(UM.Theme.getSize("line").width * maxValue.length + 2 * screenScaleFactor, 20 * screenScaleFactor);
                     style: TextFieldStyle
                     {
                         textColor: UM.Theme.getColor("setting_control_text");

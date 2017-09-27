@@ -18,8 +18,8 @@ UM.Dialog
     id: base
 
     title: catalog.i18nc("@title:window", "Open project file")
-    width: 450
-    height: 150
+    width: 450 * screenScaleFactor
+    height: 150 * screenScaleFactor
 
     maximumHeight: height
     maximumWidth: width
@@ -61,10 +61,10 @@ UM.Dialog
     Column
     {
         anchors.fill: parent
-        anchors.leftMargin: 20
-        anchors.rightMargin: 20
-        anchors.bottomMargin: 20
-        spacing: 10
+        anchors.leftMargin: 20 * screenScaleFactor
+        anchors.rightMargin: 20 * screenScaleFactor
+        anchors.bottomMargin: 20 * screenScaleFactor
+        spacing: 10 * screenScaleFactor
 
         Label
         {

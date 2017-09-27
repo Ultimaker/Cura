@@ -9,10 +9,10 @@ UM.Dialog
     id: base
 
     title: catalog.i18nc("@title:window", "Find & Update plugins")
-    width: 600 * Screen.devicePixelRatio
-    height: 450 * Screen.devicePixelRatio
-    minimumWidth: 350 * Screen.devicePixelRatio
-    minimumHeight: 350 * Screen.devicePixelRatio
+    width: 600 * screenScaleFactor
+    height: 450 * screenScaleFactor
+    minimumWidth: 350 * screenScaleFactor
+    minimumHeight: 350 * screenScaleFactor
     Item
     {
         anchors.fill: parent
