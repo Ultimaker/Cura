@@ -354,8 +354,6 @@ Item
                 }
             }
 
-
-
             Item
             {
                 id: infillCellRight
@@ -405,7 +403,7 @@ Item
                     value: parseInt(infillDensity.properties.value)
 
                     onValueChanged: {
-                        infillDensity.setPropertyValue("value", infillSlider.value)
+                        infillDensity.setPropertyValue("value", String(parseInt(infillSlider.value)))
                     }
 
                     style: SliderStyle
@@ -829,7 +827,6 @@ Item
             UM.SettingPropertyProvider
             {
                 id: infillExtruderNumber
-
                 containerStackId: Cura.MachineManager.activeStackId
                 key: "infill_extruder_nr"
                 watchedProperties: [ "value" ]
