@@ -726,15 +726,19 @@ Item
             {
                 id: adhesionHelperLabel
                 visible: adhesionCheckBox.visible
-                anchors.left: parent.left
-                anchors.leftMargin: UM.Theme.getSize("sidebar_margin").width
-                anchors.right: infillCellLeft.right
-                anchors.rightMargin: UM.Theme.getSize("sidebar_margin").width
-                anchors.verticalCenter: adhesionCheckBox.verticalCenter
-                text: catalog.i18nc("@label", "Build Plate Adhesion");
-                font: UM.Theme.getFont("default");
-                color: UM.Theme.getColor("text");
+
+                text: catalog.i18nc("@label", "Build Plate Adhesion")
+                font: UM.Theme.getFont("default")
+                color: UM.Theme.getColor("text")
                 elide: Text.ElideRight
+
+                anchors {
+                    left: parent.left
+                    leftMargin: UM.Theme.getSize("sidebar_margin").width
+                    right: infillCellLeft.right
+                    rightMargin: UM.Theme.getSize("sidebar_margin").width
+                    verticalCenter: adhesionCheckBox.verticalCenter
+                }
             }
 
             CheckBox
