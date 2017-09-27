@@ -67,7 +67,7 @@ Item
             }
         }
 
-        Item { height: UM.Theme.getSize("default_margin").height; width: 1; visible: extruders.count > 0 }
+        Item { height: UM.Theme.getSize("default_margin").height; width: UM.Theme.getSize("default_lining").width; visible: extruders.count > 0 }
 
         Repeater
         {

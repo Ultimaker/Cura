@@ -156,8 +156,8 @@ SettingItem
                     source: UM.Theme.getIcon("arrow_bottom")
                     width: UM.Theme.getSize("standard_arrow").width
                     height: UM.Theme.getSize("standard_arrow").height
-                    sourceSize.width: width + 5
-                    sourceSize.height: width + 5
+                    sourceSize.width: width + 5 * screenScaleFactor
+                    sourceSize.height: width + 5 * screenScaleFactor
 
                     color: UM.Theme.getColor("setting_control_text")
                 }
