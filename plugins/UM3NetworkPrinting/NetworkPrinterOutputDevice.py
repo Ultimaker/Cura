@@ -17,7 +17,7 @@ import cura.Settings.ExtruderManager
 
 from PyQt5.QtNetwork import QHttpMultiPart, QHttpPart, QNetworkRequest, QNetworkAccessManager, QNetworkReply
 from PyQt5.QtCore import QUrl, QTimer, pyqtSignal, pyqtProperty, pyqtSlot, QCoreApplication
-from PyQt5.QtGui import QImage
+from PyQt5.QtGui import QImage, QColor
 from PyQt5.QtWidgets import QMessageBox
 
 import json
@@ -102,7 +102,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         self._target_bed_temperature = 0
         self._processing_preheat_requests = True
 
-        self.setPriority(2) # Make sure the output device gets selected above local file output
+        self.setPriority(3) # Make sure the output device gets selected above local file output
         self.setName(key)
         self.setShortDescription(i18n_catalog.i18nc("@action:button Preceded by 'Ready to'.", "Print over network"))
         self.setDescription(i18n_catalog.i18nc("@properties:tooltip", "Print over network"))
@@ -1007,7 +1007,8 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         reply_url = reply.url().toString()
 
         if reply.operation() == QNetworkAccessManager.GetOperation:
-            if "printer" in reply_url:  # Status update from printer.
+            # "printer" is also in "printers", therefore _api_prefix is added.
+            if self._api_prefix + "printer" in reply_url:  # Status update from printer.
                 if status_code == 200:
                     if self._connection_state == ConnectionState.connecting:
                         self.setConnectionState(ConnectionState.connected)
@@ -1025,7 +1026,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
                 else:
                     Logger.log("w", "We got an unexpected status (%s) while requesting printer state", status_code)
                     pass  # TODO: Handle errors
-            elif "print_job" in reply_url:  # Status update from print_job:
+            elif self._api_prefix + "print_job" in reply_url:  # Status update from print_job:
                 if status_code == 200:
                     try:
                         json_data = json.loads(bytes(reply.readAll()).decode("utf-8"))
