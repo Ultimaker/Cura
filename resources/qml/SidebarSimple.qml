@@ -208,7 +208,7 @@ Item
                     {
                         id: groovechildrect
                         width: base.width * 0.55
-                        height: 2
+                        height: 2 * screenScaleFactor
                         color: UM.Theme.getColor("quality_slider_unavailable")
                         anchors.verticalCenter: qualitySlider.verticalCenter
                         x: 0
@@ -224,8 +224,8 @@ Item
                         {
                             anchors.verticalCenter: parent.verticalCenter
                             color: Cura.ProfilesModel.getItem(index).available ? UM.Theme.getColor("quality_slider_available") : UM.Theme.getColor("quality_slider_unavailable")
-                            width: 1
-                            height: 6
+                            width: 1 * screenScaleFactor
+                            height: 6 * screenScaleFactor
                             y: 0
                             x: qualityModel.qualitySliderStepWidth * index
                         }
@@ -255,18 +255,18 @@ Item
                         {
                             //Draw Available line
                             groove: Rectangle {
-                                implicitHeight: 2
+                                implicitHeight: 2 * screenScaleFactor
                                 color: UM.Theme.getColor("quality_slider_available")
-                                radius: 1
+                                radius: 1 * screenScaleFactor
                             }
                             handle: Item {
                                 Rectangle {
                                     id: qualityhandleButton
                                     anchors.centerIn: parent
                                     color: control.enabled ? UM.Theme.getColor("quality_slider_available") : UM.Theme.getColor("quality_slider_unavailable")
-                                    implicitWidth: 10
-                                    implicitHeight: 10
-                                    radius: 10
+                                    implicitWidth: 10 * screenScaleFactor
+                                    implicitHeight: 10 * screenScaleFactor
+                                    radius: 10 * screenScaleFactor
                                 }
                             }
                         }
@@ -367,7 +367,7 @@ Item
 
                     //anchors.top: parent.top
                     anchors.left: infillSlider.left
-                    anchors.leftMargin: (infillSlider.value / infillSlider.stepSize) * (infillSlider.width / (infillSlider.maximumValue / infillSlider.stepSize)) - 10
+                    anchors.leftMargin: (infillSlider.value / infillSlider.stepSize) * (infillSlider.width / (infillSlider.maximumValue / infillSlider.stepSize)) - 10 * screenScaleFactor
                     anchors.right: parent.right
 
                     text: infillSlider.value + "%"
@@ -421,7 +421,7 @@ Item
                                 color: control.enabled ? UM.Theme.getColor("quality_slider_available") : UM.Theme.getColor("quality_slider_unavailable")
                                 implicitWidth: 10 * screenScaleFactor
                                 implicitHeight: 10 * screenScaleFactor
-                                radius: 10
+                                radius: 10 * screenScaleFactor
                             }
                         }
 
