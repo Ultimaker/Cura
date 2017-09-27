@@ -506,7 +506,7 @@ class ExtruderManager(QObject):
         result.extend(self.getActiveExtruderStacks())
         return result
 
-    ##  Returns the list of active extruder stacks.
+    ##  Returns the list of active extruder stacks, taking into account the machine extruder count.
     #
     #   \return \type{List[ContainerStack]} a list of
     def getActiveExtruderStacks(self) -> List["ExtruderStack"]:
@@ -516,7 +516,8 @@ class ExtruderManager(QObject):
         if global_stack and global_stack.getId() in self._extruder_trains:
             for extruder in sorted(self._extruder_trains[global_stack.getId()]):
                 result.append(self._extruder_trains[global_stack.getId()][extruder])
-        return result
+
+        return result[:global_stack.getProperty("machine_extruder_count", "value")]
 
     def __globalContainerStackChanged(self) -> None:
         global_container_stack = Application.getInstance().getGlobalContainerStack()

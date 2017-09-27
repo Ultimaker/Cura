@@ -30,7 +30,7 @@ Item {
         {
             // This is to ensure that the panel is first increasing in size up to 200 and then shows a scrollbar.
             // It kinda looks ugly otherwise (big panel, no content on it)
-            property int maximumHeight: 200 * Screen.devicePixelRatio
+            property int maximumHeight: 200 * screenScaleFactor
             height: Math.min(contents.count * (UM.Theme.getSize("section").height + UM.Theme.getSize("default_lining").height), maximumHeight)
 
             ScrollView
@@ -246,7 +246,7 @@ Item {
         id: settingPickDialog
 
         title: catalog.i18nc("@title:window", "Select Settings to Customize for this model")
-        width: Screen.devicePixelRatio * 360;
+        width: screenScaleFactor * 360;
 
         property string labelFilter: ""
 

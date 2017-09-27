@@ -39,7 +39,9 @@ class FirmwareUpdateCheckerJob(Job):
             return
 
         try:
-            request = urllib.request.Request(self._url)
+            application_name = Application.getInstance().getApplicationName()
+            headers = {"User-Agent": "%s - %s" % (application_name, Application.getInstance().getVersion())}
+            request = urllib.request.Request(self._url, headers = headers)
             current_version_file = urllib.request.urlopen(request)
             reader = codecs.getreader("utf-8")
 
