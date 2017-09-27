@@ -598,7 +598,7 @@ Item
                 visible: enableSupportCheckBox.visible
 
                 anchors.top: infillCellRight.bottom
-                anchors.topMargin: UM.Theme.getSize("sidebar_margin").height
+                anchors.topMargin: UM.Theme.getSize("sidebar_margin").height * 1.5
                 anchors.left: parent.left
                 anchors.leftMargin: UM.Theme.getSize("sidebar_margin").width
                 anchors.verticalCenter: enableSupportCheckBox.verticalCenter
@@ -613,8 +613,7 @@ Item
                 id: enableSupportCheckBox
                 property alias _hovered: enableSupportMouseArea.containsMouse
 
-                anchors.top: infillCellRight.bottom
-                anchors.topMargin: UM.Theme.getSize("sidebar_margin").height
+                anchors.top: enableSupportLabel.top
                 anchors.left: infillCellRight.left
 
                 style: UM.Theme.styles.checkbox;
