@@ -434,13 +434,10 @@ Item
 
                             // check if a tick should be shown based on it's index and wether the infill density is a multiple of 10 (slider step size)
                             function shouldShowTick (index) {
-                                if ((parseInt(infillDensity.properties.value) % 10 == 0)) {
+                                if ((parseInt(infillDensity.properties.value) % 10 == 0) || (index % 10 == 0)) {
                                     return true
-                                } else if (index % 10 == 0) {
-                                    return true
-                                } else {
-                                    return false
                                 }
+                                return false
                             }
 
                             Rectangle {
