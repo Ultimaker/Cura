@@ -90,9 +90,11 @@ class UserChangesModel(ListModel):
 
                 for container in containers:
                     if stack == global_stack:
-                        resolve = global_stack.getProperty(setting_key, "resolve")
-                        if resolve is not None:
-                            original_value = resolve
+
+                        #Find default value without checking user changed settings.
+                        default_value = global_stack.getProperty(setting_key, "value", skip_container = user_changes.getId())
+                        if default_value is not None:
+                            original_value = default_value
                             break
 
                     original_value = container.getProperty(setting_key, "value")
