@@ -493,7 +493,7 @@ Item
                             visible: infillIconList.activeIndex == index
 
                             border.width: UM.Theme.getSize("default_lining").width
-                            border.color: UM.Theme.getColor("quality_slider_available")
+                            border.color: UM.Theme.getColor("quality_slider_unavailable")
 
                             UM.RecolorImage {
                                 anchors.fill: parent
