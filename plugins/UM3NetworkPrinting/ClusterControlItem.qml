@@ -33,7 +33,7 @@ Component
         {
             id: printerGroupLabel
             anchors.top: activePrintersLabel.bottom
-            text: catalog.i18nc("@label", "PRINTER GROUP")
+            text: catalog.i18nc("@label", "Printer Group").toUpperCase()
             anchors.horizontalCenter: parent.horizontalCenter
             font: UM.Theme.getFont("very_small")
             opacity: 0.65
