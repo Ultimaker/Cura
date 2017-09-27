@@ -505,7 +505,7 @@ Item
                     property alias _hovered: enableGradualInfillMouseArea.containsMouse
 
                     anchors.top: infillSlider.bottom
-                    anchors.topMargin: UM.Theme.getSize("sidebar_margin").height
+                    anchors.topMargin: UM.Theme.getSize("sidebar_margin").height / 2 // closer to slider since it belongs to the same category
                     anchors.left: infillCellRight.left
 
                     style: UM.Theme.styles.checkbox
