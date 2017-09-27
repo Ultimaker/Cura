@@ -309,7 +309,7 @@ QtObject {
                     }
                     Behavior on color { ColorAnimation { duration: 50; } }
 
-                    border.width: (control.hasOwnProperty("needBorder") && control.needBorder) ? 2 : 0
+                    border.width: (control.hasOwnProperty("needBorder") && control.needBorder) ? 2 * screenScaleFactor : 0
                     border.color: Theme.getColor("tool_button_border")
 
                     UM.RecolorImage {
@@ -506,8 +506,8 @@ QtObject {
                         source: control.iconSource;
                         width: Theme.getSize("section_icon").width;
                         height: Theme.getSize("section_icon").height;
-                        sourceSize.width: width + 15
-                        sourceSize.height: width + 15
+                        sourceSize.width: width + 15 * screenScaleFactor
+                        sourceSize.height: width + 15 * screenScaleFactor
                     }
                 }
 
@@ -648,8 +648,8 @@ QtObject {
                     source: Theme.getIcon("arrow_bottom")
                     width: Theme.getSize("standard_arrow").width
                     height: Theme.getSize("standard_arrow").height
-                    sourceSize.width: width + 5
-                    sourceSize.height: width + 5
+                    sourceSize.width: width + 5 * screenScaleFactor
+                    sourceSize.height: width + 5 * screenScaleFactor
 
                     color: Theme.getColor("setting_control_text");
                 }
@@ -707,8 +707,8 @@ QtObject {
                     source: UM.Theme.getIcon("arrow_bottom")
                     width: UM.Theme.getSize("standard_arrow").width
                     height: UM.Theme.getSize("standard_arrow").height
-                    sourceSize.width: width + 5
-                    sourceSize.height: width + 5
+                    sourceSize.width: width + 5 * screenScaleFactor
+                    sourceSize.height: width + 5 * screenScaleFactor
 
                     color: UM.Theme.getColor("setting_control_text")
                 }
@@ -734,8 +734,8 @@ QtObject {
                 UM.RecolorImage {
                     anchors.verticalCenter: parent.verticalCenter
                     anchors.horizontalCenter: parent.horizontalCenter
-                    width: parent.width/2.5
-                    height: parent.height/2.5
+                    width: parent.width / 2.5
+                    height: parent.height / 2.5
                     sourceSize.width: width
                     sourceSize.height: width
                     color: Theme.getColor("checkbox_mark")

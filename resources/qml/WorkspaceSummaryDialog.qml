@@ -13,10 +13,12 @@ UM.Dialog
 {
     title: catalog.i18nc("@title:window", "Save Project")
 
-    width: 500
-    height: 400
+    minimumWidth: 500 * screenScaleFactor
+    minimumHeight: 400 * screenScaleFactor
+    width: minimumWidth
+    height: minimumHeight
 
-    property int spacerHeight: 10
+    property int spacerHeight: 10 * screenScaleFactor
 
     property bool dontShowAgain: true
 
@@ -63,7 +65,7 @@ UM.Dialog
         Column
         {
             anchors.fill: parent
-            spacing: 2
+            spacing: 2 * screenScaleFactor
             Label
             {
                 id: titleLabel

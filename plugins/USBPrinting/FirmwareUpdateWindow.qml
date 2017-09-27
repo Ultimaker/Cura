@@ -11,10 +11,10 @@ UM.Dialog
 {
     id: base;
 
-    width: 500 * Screen.devicePixelRatio;
-    minimumWidth: 500 * Screen.devicePixelRatio;
-    height: 100 * Screen.devicePixelRatio;
-    minimumHeight: 100 * Screen.devicePixelRatio;
+    width: minimumWidth;
+    minimumWidth: 500 * screenScaleFactor;
+    height: minimumHeight;
+    minimumHeight: 100 * screenScaleFactor;
 
     visible: true;
     modality: Qt.ApplicationModal;

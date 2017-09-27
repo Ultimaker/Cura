@@ -67,7 +67,7 @@ Button
         height: UM.Theme.getSize("extruder_button_material").height
         radius: width / 2
 
-        border.width: 1
+        border.width: UM.Theme.getSize("default_lining").width
         border.color: UM.Theme.getColor("extruder_button_material_border")
 
         opacity: !base.enabled ? 0.2 : 1.0

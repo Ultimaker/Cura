@@ -320,8 +320,8 @@ Cura.MachineAction
 
         title: catalog.i18nc("@title:window", "Printer Address")
 
-        minimumWidth: 400 * Screen.devicePixelRatio
-        minimumHeight: 120 * Screen.devicePixelRatio
+        minimumWidth: 400 * screenScaleFactor
+        minimumHeight: 120 * screenScaleFactor
         width: minimumWidth
         height: minimumHeight
 
