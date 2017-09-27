@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: Cura 3.0\n"
 "Report-Msgid-Bugs-To: r.dulek@ultimaker.com\n"
 "POT-Creation-Date: 2017-08-02 16:53+0000\n"
-"PO-Revision-Date: 2017-08-11 14:31+0200\n"
+"PO-Revision-Date: 2017-09-27 12:27+0200\n"
 "Last-Translator: Bothof <info@bothof.nl>\n"
 "Language-Team: Finnish\n"
 "Language: fi_FI\n"
@@ -56,9 +56,7 @@ msgctxt "machine_start_gcode description"
 msgid ""
 "Gcode commands to be executed at the very start - separated by \n"
 "."
-msgstr ""
-"GCode-komennot, jotka suoritetaan aivan alussa – eroteltuina merkillä \n"
-"."
+msgstr "GCode-komennot, jotka suoritetaan aivan alussa – eroteltuina merkillä \n."
 
 #: fdmprinter.def.json
 msgctxt "machine_end_gcode label"
@@ -70,9 +68,7 @@ msgctxt "machine_end_gcode description"
 msgid ""
 "Gcode commands to be executed at the very end - separated by \n"
 "."
-msgstr ""
-"GCode-komennot, jotka suoritetaan aivan lopussa – eroteltuina merkillä \n"
-"."
+msgstr "GCode-komennot, jotka suoritetaan aivan lopussa – eroteltuina merkillä \n."
 
 #: fdmprinter.def.json
 msgctxt "material_guid label"
@@ -1122,7 +1118,7 @@ msgstr "Satunnainen"
 #: fdmprinter.def.json
 msgctxt "z_seam_type option sharpest_corner"
 msgid "Sharpest Corner"
-msgstr ""
+msgstr "Terävin kulma"
 
 #: fdmprinter.def.json
 msgctxt "z_seam_x label"
@@ -1147,32 +1143,32 @@ msgstr "Y-koordinaatti kohdalle, jonka läheltä aloitetaan kunkin kerroksen osu
 #: fdmprinter.def.json
 msgctxt "z_seam_corner label"
 msgid "Seam Corner Preference"
-msgstr ""
+msgstr "Saumakulmien asetus"
 
 #: fdmprinter.def.json
 msgctxt "z_seam_corner description"
 msgid "Control whether corners on the model outline influence the position of the seam. None means that corners have no influence on the seam position. Hide Seam makes the seam more likely to occur on an inside corner. Expose Seam makes the seam more likely to occur on an outside corner. Hide or Expose Seam makes the seam more likely to occur at an inside or outside corner."
-msgstr ""
+msgstr "Määritä, vaikuttavatko mallin ulkolinjan kulmat sauman sijaintiin. Ei mitään tarkoittaa, että kulmilla ei ole vaikutusta sauman sijaintiin. Piilota sauma -valinnalla sauman sijainti sisäkulmassa on todennäköisempää. Paljasta sauma -valinnalla sauman sijainti ulkokulmassa on todennäköisempää. Piilota tai paljasta sauma -valinnalla sauman sijainti sisä- tai ulkokulmassa on todennäköisempää."
 
 #: fdmprinter.def.json
 msgctxt "z_seam_corner option z_seam_corner_none"
 msgid "None"
-msgstr ""
+msgstr "Ei mitään"
 
 #: fdmprinter.def.json
 msgctxt "z_seam_corner option z_seam_corner_inner"
 msgid "Hide Seam"
-msgstr ""
+msgstr "Piilota sauma"
 
 #: fdmprinter.def.json
 msgctxt "z_seam_corner option z_seam_corner_outer"
 msgid "Expose Seam"
-msgstr ""
+msgstr "Paljasta sauma"
 
 #: fdmprinter.def.json
 msgctxt "z_seam_corner option z_seam_corner_any"
 msgid "Hide or Expose Seam"
-msgstr ""
+msgstr "Piilota tai paljasta sauma"
 
 #: fdmprinter.def.json
 msgctxt "z_seam_relative label"
@@ -1252,7 +1248,7 @@ msgstr "Täyttökuvio"
 #: fdmprinter.def.json
 msgctxt "infill_pattern description"
 msgid "The pattern of the infill material of the print. The line and zig zag infill swap direction on alternate layers, reducing material cost. The grid, triangle, cubic, octet, quarter cubic and concentric patterns are fully printed every layer. Cubic, quarter cubic and octet infill change with every layer to provide a more equal distribution of strength over each direction."
-msgstr ""
+msgstr "Tulostettava täyttömateriaalin kuvio. Linja- ja siksak-täytöt vaihtavat suuntaa kerrosten välillä, mikä vähentää materiaalikustannuksia. Ristikko-, kolmio-, kuutio-, oktetti-, neljänneskuutio- ja samankeskinen-kuviot tulostetaan kokonaisuudessaan kuhunkin kerrokseen. Kuutio-, neljänneskuutio- ja oktettitäytöt muuttuvat kerroksittain, jotta vahvuus jakautuu tasaisemmin kussakin suunnassa."
 
 #: fdmprinter.def.json
 msgctxt "infill_pattern option grid"
@@ -1282,12 +1278,12 @@ msgstr "Kuution alajako"
 #: fdmprinter.def.json
 msgctxt "infill_pattern option tetrahedral"
 msgid "Octet"
-msgstr ""
+msgstr "Oktetti"
 
 #: fdmprinter.def.json
 msgctxt "infill_pattern option quarter_cubic"
 msgid "Quarter Cubic"
-msgstr ""
+msgstr "Neljänneskuutio"
 
 #: fdmprinter.def.json
 msgctxt "infill_pattern option concentric"
@@ -1307,22 +1303,22 @@ msgstr "Siksak"
 #: fdmprinter.def.json
 msgctxt "infill_pattern option cross"
 msgid "Cross"
-msgstr ""
+msgstr "Risti"
 
 #: fdmprinter.def.json
 msgctxt "infill_pattern option cross_3d"
 msgid "Cross 3D"
-msgstr ""
+msgstr "Risti 3D"
 
 #: fdmprinter.def.json
 msgctxt "zig_zaggify_infill label"
 msgid "Connect Infill Lines"
-msgstr ""
+msgstr "Yhdistä täyttölinjat"
 
 #: fdmprinter.def.json
 msgctxt "zig_zaggify_infill description"
 msgid "Connect the ends where the infill pattern meets the inner wall using a lines which follows the shape of the inner wall. Enabling this setting can make the infill adhere to the walls better and reduces the effects on infill on the quality of vertical surfaces. Disabling this setting reduces the amount of material used."
-msgstr ""
+msgstr "Yhdistä päät, joissa täyttökuvio kohtaa sisäseinämän käyttämällä linjoja, jotka seuraavat sisäseinämän muotoa. Tämän asetuksen ottaminen käyttöön voi saada täytön tarttumaan seinämiin paremmin ja vähentää täytön vaikutusta pystypintojen laatuun. Tämän asetuksen poistaminen käytöstä vähentää käytettävän materiaalin määrää."
 
 #: fdmprinter.def.json
 msgctxt "infill_angles label"
@@ -1447,32 +1443,32 @@ msgstr "Älä muodosta tätä pienempiä täyttöalueita (käytä sen sijaan pin
 #: fdmprinter.def.json
 msgctxt "skin_preshrink label"
 msgid "Skin Removal Width"
-msgstr ""
+msgstr "Pintakalvon poistoleveys"
 
 #: fdmprinter.def.json
 msgctxt "skin_preshrink description"
 msgid "The largest width of skin areas which are to be removed. Every skin area smaller than this value will disappear. This can help in limiting the amount of time and material spent on printing top/bottom skin at slanted surfaces in the model."
-msgstr ""
+msgstr "Suurin poistettavien pintakalvoalueiden leveys. Kaikki tätä arvoa pienemmät pintakalvoalueet poistuvat. Tästä voi olla apua mallin kaltevien pintojen ylä-/alapintakalvon tulostukseen käytettävän ajan ja materiaalin rajoittamisessa."
 
 #: fdmprinter.def.json
 msgctxt "top_skin_preshrink label"
 msgid "Top Skin Removal Width"
-msgstr ""
+msgstr "Yläpintakalvon poistoleveys"
 
 #: fdmprinter.def.json
 msgctxt "top_skin_preshrink description"
 msgid "The largest width of top skin areas which are to be removed. Every skin area smaller than this value will disappear. This can help in limiting the amount of time and material spent on printing top skin at slanted surfaces in the model."
-msgstr ""
+msgstr "Suurin poistettavien yläpintakalvoalueiden leveys. Kaikki tätä arvoa pienemmät pintakalvoalueet poistuvat. Tästä voi olla apua mallin kaltevien pintojen yläpintakalvon tulostukseen käytettävän ajan ja materiaalin rajoittamisessa."
 
 #: fdmprinter.def.json
 msgctxt "bottom_skin_preshrink label"
 msgid "Bottom Skin Removal Width"
-msgstr ""
+msgstr "Alapintakalvon poistoleveys"
 
 #: fdmprinter.def.json
 msgctxt "bottom_skin_preshrink description"
 msgid "The largest width of bottom skin areas which are to be removed. Every skin area smaller than this value will disappear. This can help in limiting the amount of time and material spent on printing bottom skin at slanted surfaces in the model."
-msgstr ""
+msgstr "Suurin poistettavien alapintakalvoalueiden leveys. Kaikki tätä arvoa pienemmät pintakalvoalueet poistuvat. Tästä voi olla apua mallin kaltevien pintojen alapintakalvon tulostukseen käytettävän ajan ja materiaalin rajoittamisessa."
 
 #: fdmprinter.def.json
 msgctxt "expand_skins_expand_distance label"
@@ -1482,27 +1478,27 @@ msgstr "Pintakalvon laajennuksen etäisyys"
 #: fdmprinter.def.json
 msgctxt "expand_skins_expand_distance description"
 msgid "The distance the skins are expanded into the infill. Higher values makes the skin attach better to the infill pattern and makes the walls on neighboring layers adhere better to the skin. Lower values save amount of material used."
-msgstr ""
+msgstr "Etäisyys, jonka verran pintakalvot laajentuvat täyttöön. Suuremmat arvot saavat pintakalvon kiinnittymään paremmin täyttökuvioon ja viereisten kerrosten seinämät tarttumaan paremmin pintakalvoon. Pienemmät arvot vähentävät käytettävän materiaalin määrää."
 
 #: fdmprinter.def.json
 msgctxt "top_skin_expand_distance label"
 msgid "Top Skin Expand Distance"
-msgstr ""
+msgstr "Yläpintakalvon laajennuksen etäisyys"
 
 #: fdmprinter.def.json
 msgctxt "top_skin_expand_distance description"
 msgid "The distance the top skins are expanded into the infill. Higher values makes the skin attach better to the infill pattern and makes the walls on the layer above adhere better to the skin. Lower values save amount of material used."
-msgstr ""
+msgstr "Etäisyys, jonka verran yläpintakalvot laajentuvat täyttöön. Suuremmat arvot saavat pintakalvon kiinnittymään paremmin täyttökuvioon ja yllä olevan kerroksen seinämät tarttumaan paremmin pintakalvoon. Pienemmät arvot vähentävät käytettävän materiaalin määrää."
 
 #: fdmprinter.def.json
 msgctxt "bottom_skin_expand_distance label"
 msgid "Bottom Skin Expand Distance"
-msgstr ""
+msgstr "Alapintakalvon laajennuksen etäisyys"
 
 #: fdmprinter.def.json
 msgctxt "bottom_skin_expand_distance description"
 msgid "The distance the bottom skins are expanded into the infill. Higher values makes the skin attach better to the infill pattern and makes the skin adhere better to the walls on the layer below. Lower values save amount of material used."
-msgstr ""
+msgstr "Etäisyys, jonka verran alapintakalvot laajentuvat täyttöön. Suuremmat arvot saavat pintakalvon kiinnittymään paremmin täyttökuvioon ja tarttumaan paremmin alla olevan kerroksen seinämiin. Pienemmät arvot vähentävät käytettävän materiaalin määrää."
 
 #: fdmprinter.def.json
 msgctxt "max_skin_angle_for_expansion label"
@@ -2822,7 +2818,7 @@ msgstr "Siksak"
 #: fdmprinter.def.json
 msgctxt "support_pattern option cross"
 msgid "Cross"
-msgstr ""
+msgstr "Risti"
 
 #: fdmprinter.def.json
 msgctxt "support_connect_zigzags label"
@@ -2837,32 +2833,32 @@ msgstr "Yhdistä siksakit. Tämä lisää siksak-tukirakenteen lujuutta."
 #: fdmprinter.def.json
 msgctxt "support_skip_some_zags label"
 msgid "Break Up Support In Chunks"
-msgstr ""
+msgstr "Riko tuki lohkoihin"
 
 #: fdmprinter.def.json
 msgctxt "support_skip_some_zags description"
 msgid "Skip some support line connections to make the support structure easier to break away. This setting is applicable to the Zig Zag support infill pattern."
-msgstr ""
+msgstr "Ohita jotkin tukilinjojen yhdistämiset, jotta tukirakenne on helpompi rikkoa. Tämä asetus soveltuu siksak-tukitäyttökuvioon."
 
 #: fdmprinter.def.json
 msgctxt "support_skip_zag_per_mm label"
 msgid "Support Chunk Size"
-msgstr ""
+msgstr "Tukilohkon koko"
 
 #: fdmprinter.def.json
 msgctxt "support_skip_zag_per_mm description"
 msgid "Leave out a connection between support lines once every N millimeter to make the support structure easier to break away."
-msgstr ""
+msgstr "Jätä tukilinjojen välinen yhdistäminen pois joka N. millimetri, jotta tukirakenne on helpompi rikkoa."
 
 #: fdmprinter.def.json
 msgctxt "support_zag_skip_count label"
 msgid "Support Chunk Line Count"
-msgstr ""
+msgstr "Tukilohkolinjaluku"
 
 #: fdmprinter.def.json
 msgctxt "support_zag_skip_count description"
 msgid "Skip one in every N connection lines to make the support structure easier to break away."
-msgstr ""
+msgstr "Ohita joka N. yhdistämislinja, jotta tukirakenne on helpompi rikkoa."
 
 #: fdmprinter.def.json
 msgctxt "support_infill_rate label"
@@ -3404,9 +3400,7 @@ msgctxt "skirt_gap description"
 msgid ""
 "The horizontal distance between the skirt and the first layer of the print.\n"
 "This is the minimum distance, multiple skirt lines will extend outwards from this distance."
-msgstr ""
-"Vaakasuora etäisyys helman ja tulosteen ensimmäisen kerroksen välillä.\n"
-"Tämä on minimietäisyys; useampia helmalinjoja käytettäessä ne ulottuvat tämän etäisyyden ulkopuolelle."
+msgstr "Vaakasuora etäisyys helman ja tulosteen ensimmäisen kerroksen välillä.\nTämä on minimietäisyys; useampia helmalinjoja käytettäessä ne ulottuvat tämän etäisyyden ulkopuolelle."
 
 #: fdmprinter.def.json
 msgctxt "skirt_brim_minimal_length label"
@@ -3451,22 +3445,22 @@ msgstr "Tulostaa reunuksen vain mallin ulkopuolelle. Tämä vähentää myöhemm
 #: fdmprinter.def.json
 msgctxt "z_offset_layer_0 label"
 msgid "Initial Layer Z Offset"
-msgstr ""
+msgstr "Alkukerroksen Z-siirtymä"
 
 #: fdmprinter.def.json
 msgctxt "z_offset_layer_0 description"
 msgid "The extruder is offset from the normal height of the first layer by this amount. It can be positive (raised) or negative (lowered). Some filament types adhere to the build plate better if the extruder is raised slightly."
-msgstr ""
+msgstr "Suulaketta siirretään ensimmäisen kerroksen normaalista korkeudesta tällä määrällä. Se voi olla positiivinen (nostettu) tai negatiivinen (laskettu). Jotkin tulostuslankatyypit tarttuvat alustaan paremmin, jos suulaketta nostetaan hieman."
 
 #: fdmprinter.def.json
 msgctxt "z_offset_taper_layers label"
 msgid "Z Offset Taper Layers"
-msgstr ""
+msgstr "Z-siirtymän kapenevat kerrokset"
 
 #: fdmprinter.def.json
 msgctxt "z_offset_taper_layers description"
 msgid "When non-zero, the Z offset is reduced to 0 over that many layers. A value of 0 means that the Z offset remains constant for all the layers in the print."
-msgstr ""
+msgstr "Kun tämä ei ole nolla, Z-siirtymä pienenee nollaan niin monen kerroksen matkalla. Kun arvo on 0, Z-siirtymä pysyy vakiona kaikille tulostuksen kerroksille."
 
 #: fdmprinter.def.json
 msgctxt "raft_margin label"
@@ -3481,12 +3475,12 @@ msgstr "Jos pohjaristikko on otettu käyttöön, tämä on ylimääräinen risti
 #: fdmprinter.def.json
 msgctxt "raft_smoothing label"
 msgid "Raft Smoothing"
-msgstr ""
+msgstr "Pohjaristikon tasoitus"
 
 #: fdmprinter.def.json
 msgctxt "raft_smoothing description"
 msgid "This setting control how much inner corners in the raft outline are rounded. Inward corners are rounded to a semi circle with a radius equal to the value given here. This setting also removes holes in the raft outline which are smaller than such a circle."
-msgstr ""
+msgstr "Tällä asetuksella säädetään, kuinka paljon pohjaristikon ulkolinjan sisäkulmia pyöristetään. Sisäpuoliset kulmat pyöristetään puoliympyräksi, jonka säde on yhtä suuri kuin tässä annettu arvo. Asetuksella myös poistetaan pohjaristikon ulkolinjan reiät, jotka ovat pienempiä kuin tällainen ympyrä."
 
 #: fdmprinter.def.json
 msgctxt "raft_airgap label"
@@ -4166,12 +4160,12 @@ msgstr "Vähennä Z-sauman näkyvyyttä tasoittamalla kierukoidut ääriviivat (
 #: fdmprinter.def.json
 msgctxt "relative_extrusion label"
 msgid "Relative Extrusion"
-msgstr ""
+msgstr "Suhteellinen pursotus"
 
 #: fdmprinter.def.json
 msgctxt "relative_extrusion description"
 msgid "Use relative extrusion rather than absolute extrusion. Using relative E-steps makes for easier post-processing of the Gcode. However, it's not supported by all printers and it may produce very slight deviations in the amount of deposited material compared to absolute E-steps. Irrespective of this setting, the extrusion mode will always be set to absolute before any Gcode script is output."
-msgstr ""
+msgstr "Käytä suhteellista pursotusta absoluuttisen pursotuksen sijaan. Suhteellisten E-askelten käyttö helpottaa Gcoden jälkikäsittelyä. Kaikki tulostimet eivät kuitenkaan tue sitä, ja se saattaa aiheuttaa hyvin vähäisiä poikkeamia materiaalin määrässä absoluuttisiin E-askeliin verrattuna. Tästä asetuksesta riippumatta pursotustila on aina absoluuttinen, ennen kuin mitään Gcode-komentosarjaa tuotetaan."
 
 #: fdmprinter.def.json
 msgctxt "experimental label"
@@ -4186,12 +4180,12 @@ msgstr "kokeellinen!"
 #: fdmprinter.def.json
 msgctxt "optimize_wall_printing_order label"
 msgid "Optimize Wall Printing Order"
-msgstr ""
+msgstr "Optimoi seinämien tulostusjärjestys"
 
 #: fdmprinter.def.json
 msgctxt "optimize_wall_printing_order description"
 msgid "Optimize the order in which walls are printed so as to reduce the number of retractions and the distance travelled. Most parts will benefit from this being enabled but some may actually take longer so please compare the print time estimates with and without optimization."
-msgstr ""
+msgstr "Optimoi seinämien tulostusjärjestys takaisinvetojen ja kuljetun etäisyyden vähentämiseksi. Useimmat osat hyötyvät tämän asetuksen käytöstä, mutta joissakin saattaa kestää kauemmin, joten vertaa tulostusajan arvioita optimointia käytettäessä ja ilman sitä."
 
 #: fdmprinter.def.json
 msgctxt "draft_shield_enabled label"
@@ -4316,22 +4310,22 @@ msgstr "Muuttaa ylä-/alakerrosten tulostussuuntaa. Normaalisti ne tulostetaan v
 #: fdmprinter.def.json
 msgctxt "cross_infill_pocket_size label"
 msgid "Cross 3D Pocket Size"
-msgstr ""
+msgstr "Risti 3D:n taskujen koko"
 
 #: fdmprinter.def.json
 msgctxt "cross_infill_pocket_size description"
 msgid "The size of pockets at four-way crossings in the cross 3D pattern at heights where the pattern is touching itself."
-msgstr ""
+msgstr "Taskujen koko nelisuuntaisissa risteyksissä risti 3D -kuviossa korkeuksissa, joissa kuvio koskettaa itseään."
 
 #: fdmprinter.def.json
 msgctxt "cross_infill_apply_pockets_alternatingly label"
 msgid "Alternate Cross 3D Pockets"
-msgstr ""
+msgstr "Vuoroittaiset risti 3D -taskut"
 
 #: fdmprinter.def.json
 msgctxt "cross_infill_apply_pockets_alternatingly description"
 msgid "Only apply pockets at half of the four-way crossings in the cross 3D pattern and alternate the location of the pockets between heights where the pattern is touching itself."
-msgstr ""
+msgstr "Käytä taskuja vain puolessa nelisuuntaisista risteyksistä risti 3D -kuviossa ja vuorottele taskujen sijainnit sellaisten korkeuksien välillä, joissa kuvio koskettaa itseään."
 
 #: fdmprinter.def.json
 msgctxt "spaghetti_infill_enabled label"
@@ -4633,9 +4627,7 @@ msgctxt "wireframe_up_half_speed description"
 msgid ""
 "Distance of an upward move which is extruded with half speed.\n"
 "This can cause better adhesion to previous layers, while not heating the material in those layers too much. Only applies to Wire Printing."
-msgstr ""
-"Puolella nopeudella pursotetun nousuliikkeen etäisyys.\n"
-"Se voi parantaa tarttuvuutta edellisiin kerroksiin kuumentamatta materiaalia liikaa kyseisissä kerroksissa. Koskee vain rautalankamallin tulostusta."
+msgstr "Puolella nopeudella pursotetun nousuliikkeen etäisyys.\nSe voi parantaa tarttuvuutta edellisiin kerroksiin kuumentamatta materiaalia liikaa kyseisissä kerroksissa. Koskee vain rautalankamallin tulostusta."
 
 #: fdmprinter.def.json
 msgctxt "wireframe_top_jump label"
@@ -4755,12 +4747,12 @@ msgstr "Yläpinnan läpikäynti yhden ylimääräisen kerran ilman materiaalin p
 #: fdmprinter.def.json
 msgctxt "ironing_only_highest_layer label"
 msgid "Iron Only Highest Layer"
-msgstr ""
+msgstr "Silitä vain korkein kerros"
 
 #: fdmprinter.def.json
 msgctxt "ironing_only_highest_layer description"
 msgid "Only perform ironing on the very last layer of the mesh. This saves time if the lower layers don't need a smooth surface finish."
-msgstr ""
+msgstr "Suorita silitys vain verkon viimeisessä kerroksessa. Tämä säästää aikaa, jos alemmat kerrokset eivät edellytä sileää pintaviimeistelyä."
 
 #: fdmprinter.def.json
 msgctxt "ironing_pattern label"
