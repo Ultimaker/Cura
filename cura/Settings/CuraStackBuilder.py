@@ -21,7 +21,7 @@ class CuraStackBuilder:
     #
     #   \return The new global stack or None if an error occurred.
     @classmethod
-    def createMachine(cls, name: str, definition_id: str) -> Optional[GlobalStack]:
+    def createMachine(cls, name: str, definition_id: str, default_name: str) -> Optional[GlobalStack]:
         registry = ContainerRegistry.getInstance()
         definitions = registry.findDefinitionContainers(id = definition_id)
         if not definitions:
@@ -29,20 +29,28 @@ class CuraStackBuilder:
             return None
 
         machine_definition = definitions[0]
-        name = registry.createUniqueName("machine", "", name, machine_definition.name)
+        generated_name = registry.createUniqueName("machine", "", default_name, machine_definition.name)
         # Make sure the new name does not collide with any definition or (quality) profile
         # createUniqueName() only looks at other stacks, but not at definitions or quality profiles
         # Note that we don't go for uniqueName() immediately because that function matches with ignore_case set to true
-        if registry.findContainers(id = name):
-            name = registry.uniqueName(name)
+        if registry.findContainers(id = generated_name):
+            generated_name = registry.uniqueName(generated_name)
 
         new_global_stack = cls.createGlobalStack(
-            new_stack_id = name,
+            new_stack_id = generated_name,
             definition = machine_definition,
             quality = "default",
             material = "default",
             variant = "default",
         )
+
+        # after creating a global stack can be set custom defined name
+        if(name != generated_name):
+            name = registry.createUniqueName("machine", "", name, machine_definition.name)
+            if registry.findContainers(id = name):
+                name = registry.uniqueName(name)
+
+            new_global_stack.setName(name)
 
         for extruder_definition in registry.findDefinitionContainers(machine = machine_definition.id):
             position = extruder_definition.getMetaDataEntry("position", None)
