@@ -164,6 +164,7 @@ Column
                         id: materialColor
                         width: materialName.height * 0.75
                         height: materialName.height * 0.75
+                        radius: width / 2
                         color: (connectedPrinter != null && connectedPrinter.materialColors[index] != null && connectedPrinter.materialIds[index] != "") ? connectedPrinter.materialColors[index] : "#00000000"
                         border.width: UM.Theme.getSize("default_lining").width
                         border.color: UM.Theme.getColor("lining")
