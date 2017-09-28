@@ -234,33 +234,36 @@ Rectangle
 
                             if(printJob != null)
                             {
-                                if(printJob.status == "printing" || printJob.status == "post_print")
+                                switch (printJob.status)
                                 {
-                                    return catalog.i18nc("@label:status", "Printing")
-                                }
-                                else if(printJob.status == "wait_for_configuration")
-                                {
-                                    return catalog.i18nc("@label:status", "Reserved")
-                                }
-                                else if(printJob.status == "wait_cleanup")
-                                {
-                                    return catalog.i18nc("@label:status", "Finished")
-                                }
-                                else if (printJob.status == "pre_print" || printJob.status == "sent_to_printer")
-                                {
-                                    return catalog.i18nc("@label", "Preparing to print")
-                                }
-                                else if (printJob.configuration_changes_required != undefined && printJob.status == "queued")
-                                {
-                                    return catalog.i18nc("@label:status", "Action required")
-                                }
-                                else if (printJob.Status == "aborted")
-                                {
-                                    return catalog.i18nc("@label:status", "Print aborted")
-                                }
-                                else
-                                {
-                                    return "";
+                                    case "printing":
+                                    case "post_print":
+                                        return catalog.i18nc("@label:status", "Printing")
+                                    case "wait_for_configuration":
+                                        return catalog.i18nc("@label:status", "Reserved")
+                                    case "wait_cleanup":
+                                        return catalog.i18nc("@label:status", "Finished")
+                                    case "pre_print":
+                                    case "sent_to_printer":
+                                        return catalog.i18nc("@label", "Preparing to print")
+                                    case "queued":
+                                        if (printJob.configuration_changes_required != null && printJob.configuration_changes_required.length !== 0)
+                                        {
+                                            return catalog.i18nc("@label:status", "Action required");
+                                        }
+                                        else
+                                        {
+                                            return "";
+                                        }
+                                    case "pausing":
+                                    case "paused":
+                                        return catalog.i18nc("@label:status", "Paused");
+                                    case "resuming":
+                                        return catalog.i18nc("@label:status", "Resuming");
+                                    case "aborted":
+                                        return catalog.i18nc("@label:status", "Print aborted");
+                                    default:
+                                        return "";
                                 }
                             }
                             return catalog.i18nc("@label:status", "Available");
