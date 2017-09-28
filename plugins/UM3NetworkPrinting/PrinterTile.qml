@@ -8,8 +8,8 @@ import Cura 1.0 as Cura
 Rectangle
 {
     id: base
-    width: 250
-    height: 250
+    width: 250 * screenScaleFactor
+    height: 250 * screenScaleFactor
     signal clicked()
     MouseArea
     {
@@ -19,8 +19,8 @@ Rectangle
     Rectangle
     {
         // TODO: Actually add UM icon / picture
-        width: 100
-        height: 100
+        width: 100 * screenScaleFactor
+        height: 100 * screenScaleFactor
         border.width: UM.Theme.getSize("default_lining").width
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.top: parent.top
@@ -47,7 +47,7 @@ Rectangle
         anchors.bottom: parent.bottom
         anchors.bottomMargin:  UM.Theme.getSize("default_margin").height
         font: UM.Theme.getFont("default")
-        height:10
+        height:10 * screenScaleFactor
         anchors.horizontalCenter: parent.horizontalCenter
     }
 }

@@ -29,8 +29,8 @@ Item
         anchors.right: cameraImage.right
 
         // TODO: Harcoded sizes
-        width: 20
-        height: 20
+        width: 20 * screenScaleFactor
+        height: 20 * screenScaleFactor
 
         onClicked: OutputDevice.selectAutomaticPrinter()
 
@@ -56,8 +56,8 @@ Item
     Image
     {
         id: cameraImage
-        width: Math.min(sourceSize.width === 0 ? 800 : sourceSize.width, maximumWidth)
-        height: (sourceSize.height === 0 ? 600 : sourceSize.height) * width / sourceSize.width
+        width: Math.min(sourceSize.width === 0 ? 800 * screenScaleFactor : sourceSize.width, maximumWidth)
+        height: (sourceSize.height === 0 ? 600 * screenScaleFactor : sourceSize.height) * width / sourceSize.width
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.verticalCenter: parent.verticalCenter
         z: 1

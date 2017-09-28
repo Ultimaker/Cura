@@ -15,7 +15,7 @@ Component
 
         property var emphasisColor: "#44c0ff" //TODO: should be linked to theme.
         property var lineColor: "#DCDCDC" // TODO: Should be linked to theme.
-        property var cornerRadius: 4 // TODO: Should be linked to theme.
+        property var cornerRadius: 4 * screenScaleFactor // TODO: Should be linked to theme.
         UM.I18nCatalog
         {
             id: catalog
@@ -50,7 +50,7 @@ Component
             anchors.top: parent.top
             anchors.horizontalCenter: parent.horizontalCenter
             
-            width: Math.min(800, maximumWidth)
+            width: Math.min(800 * screenScaleFactor, maximumWidth)
             height: children.height
             visible: OutputDevice.connectedPrinters.length != 0
 
@@ -90,8 +90,8 @@ Component
                 delegate: PrinterInfoBlock
                 {
                     printer: modelData
-                    width: Math.min(800, maximumWidth)
-                    height: 125
+                    width: Math.min(800 * screenScaleFactor, maximumWidth)
+                    height: 125 * screenScaleFactor
 
                     // Add a 1 pix margin, as the border is sometimes cut off otherwise.
                     anchors.horizontalCenter: parent.horizontalCenter
