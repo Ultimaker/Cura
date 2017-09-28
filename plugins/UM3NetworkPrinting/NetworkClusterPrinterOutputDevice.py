@@ -494,7 +494,7 @@ class NetworkClusterPrinterOutputDevice(NetworkPrinterOutputDevice.NetworkPrinte
     def numJobsPrinting(self):
         num_jobs_printing = 0
         for job in self._print_jobs:
-            if job["status"] == "printing":
+            if job["status"] in ["printing", "wait_cleanup", "sent_to_printer", "pre_print", "post_print"]:
                 num_jobs_printing += 1
         return num_jobs_printing
 
