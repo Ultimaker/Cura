@@ -252,7 +252,7 @@ Rectangle
                                 }
                                 else if (printJob.configuration_changes_required != undefined && printJob.status == "queued")
                                 {
-                                    return catalog.i18nc("@label:status", "Required action")
+                                    return catalog.i18nc("@label:status", "Action required")
                                 }
                                 else
                                 {
