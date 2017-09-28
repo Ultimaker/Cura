@@ -226,7 +226,7 @@ Item
                     Repeater
                     {
                         id: qualityRepeater
-                        model: qualityModel.availableTotalTicks > 0 ? qualityModel : 0
+                        model: qualityModel.totalTicks > 0 ? qualityModel : 0
 
                         Rectangle
                         {
@@ -254,7 +254,8 @@ Item
                         id: qualitySlider
                         height: UM.Theme.getSize("sidebar_margin").height
                         anchors.bottom: speedSlider.bottom
-                        visible: qualityModel.availableTotalTicks > 0
+                        enabled: qualityModel.availableTotalTicks > 0
+                        visible: qualityModel.totalTicks > 0
                         updateValueWhileDragging : false
 
                         minimumValue: qualityModel.qualitySliderAvailableMin >= 0 ? qualityModel.qualitySliderAvailableMin : 0
