@@ -371,7 +371,7 @@ Item
             {
                 id: infillCellRight
 
-                height: infillSlider.height + enableGradualInfillCheckBox.height + (UM.Theme.getSize("sidebar_margin").height * 2)
+                height: infillSlider.height + UM.Theme.getSize("sidebar_margin").height + enableGradualInfillCheckBox.visible * (enableGradualInfillCheckBox.height + UM.Theme.getSize("sidebar_margin").height)
                 width: UM.Theme.getSize("sidebar").width * .55
 
                 anchors.left: infillCellLeft.right
@@ -531,6 +531,7 @@ Item
 
                     style: UM.Theme.styles.checkbox
                     enabled: base.settingsEnabled
+                    visible: infillSteps.properties.enabled == "True"
                     checked: parseInt(infillSteps.properties.value) > 0
 
                     MouseArea {
@@ -873,7 +874,7 @@ Item
                 id: infillSteps
                 containerStackId: Cura.MachineManager.activeStackId
                 key: "gradual_infill_steps"
-                watchedProperties: ["value"]
+                watchedProperties: ["value", "enabled"]
                 storeIndex: 0
             }
 
