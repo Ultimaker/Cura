@@ -1,5 +1,5 @@
 # Copyright (c) 2016 Ultimaker B.V.
-# Cura is released under the terms of the AGPLv3 or higher.
+# Cura is released under the terms of the LGPLv3 or higher.
 
 # This collects a lot of quality and quality changes related code which was split between ContainerManager
 # and the MachineManager and really needs to usable from both.

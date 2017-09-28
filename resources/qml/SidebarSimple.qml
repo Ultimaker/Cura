@@ -1,5 +1,5 @@
 // Copyright (c) 2017 Ultimaker B.V.
-// Cura is released under the terms of the AGPLv3 or higher.
+// Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.2
 import QtQuick.Controls 1.1
@@ -186,7 +186,10 @@ Item
 
                             x: {
                                 // Make sure the text aligns correctly with each tick
-                                if (index == 0) {
+                                if (qualityModel.totalTicks == 0) {
+                                    // If there is only one tick, align it centrally
+                                    return ((base.width * 0.55) - width) / 2
+                                } else if (index == 0) {
                                     return (base.width * 0.55 / qualityModel.totalTicks) * index
                                 } else if (index == qualityModel.totalTicks) {
                                     return (base.width * 0.55 / qualityModel.totalTicks) * index - width
@@ -223,7 +226,7 @@ Item
                     Repeater
                     {
                         id: qualityRepeater
-                        model: qualityModel
+                        model: qualityModel.totalTicks > 0 ? qualityModel : 0
 
                         Rectangle
                         {
@@ -236,6 +239,15 @@ Item
                         }
                     }
 
+                    Rectangle {
+                        id: disabledHandleButton
+                        visible: !qualitySlider.visible
+                        anchors.centerIn: parent
+                        color: UM.Theme.getColor("quality_slider_unavailable")
+                        implicitWidth: 10 * screenScaleFactor
+                        implicitHeight: implicitWidth
+                        radius: width / 2
+                    }
 
                     Slider
                     {
@@ -243,6 +255,7 @@ Item
                         height: UM.Theme.getSize("sidebar_margin").height
                         anchors.bottom: speedSlider.bottom
                         enabled: qualityModel.availableTotalTicks > 0
+                        visible: qualityModel.totalTicks > 0
                         updateValueWhileDragging : false
 
                         minimumValue: qualityModel.qualitySliderAvailableMin >= 0 ? qualityModel.qualitySliderAvailableMin : 0
@@ -262,16 +275,16 @@ Item
                             groove: Rectangle {
                                 implicitHeight: 2 * screenScaleFactor
                                 color: UM.Theme.getColor("quality_slider_available")
-                                radius: 1 * screenScaleFactor
+                                radius: height / 2
                             }
                             handle: Item {
                                 Rectangle {
                                     id: qualityhandleButton
                                     anchors.centerIn: parent
-                                    color: control.enabled ? UM.Theme.getColor("quality_slider_available") : UM.Theme.getColor("quality_slider_unavailable")
+                                    color: UM.Theme.getColor("quality_slider_available")
                                     implicitWidth: 10 * screenScaleFactor
-                                    implicitHeight: 10 * screenScaleFactor
-                                    radius: 10 * screenScaleFactor
+                                    implicitHeight: implicitWidth
+                                    radius: implicitWidth / 2
                                 }
                             }
                         }
@@ -309,7 +322,7 @@ Item
 
                     text: catalog.i18nc("@label", "Slower")
                     font: UM.Theme.getFont("default")
-                    color: UM.Theme.getColor("text")
+                    color: (qualityModel.availableTotalTicks > 0) ? UM.Theme.getColor("quality_slider_available") : UM.Theme.getColor("quality_slider_unavailable")
                     horizontalAlignment: Text.AlignLeft
                 }
 
@@ -320,7 +333,7 @@ Item
 
                     text: catalog.i18nc("@label", "Faster")
                     font: UM.Theme.getFont("default")
-                    color: UM.Theme.getColor("text")
+                    color: (qualityModel.availableTotalTicks > 0) ? UM.Theme.getColor("quality_slider_available") : UM.Theme.getColor("quality_slider_unavailable")
                     horizontalAlignment: Text.AlignRight
                 }
             }
@@ -354,13 +367,11 @@ Item
                 }
             }
 
-
-
             Item
             {
                 id: infillCellRight
 
-                height: infillSlider.height + enableGradualInfillCheckBox.height + (UM.Theme.getSize("sidebar_margin").height * 2)
+                height: infillSlider.height + UM.Theme.getSize("sidebar_margin").height + enableGradualInfillCheckBox.visible * (enableGradualInfillCheckBox.height + UM.Theme.getSize("sidebar_margin").height)
                 width: UM.Theme.getSize("sidebar").width * .55
 
                 anchors.left: infillCellLeft.right
@@ -395,7 +406,7 @@ Item
 
                     minimumValue: 0
                     maximumValue: 100
-                    stepSize: 10
+                    stepSize: (parseInt(infillDensity.properties.value) % 10 == 0) ? 10 : 1
                     tickmarksEnabled: true
 
                     // disable slider when gradual support is enabled
@@ -405,12 +416,12 @@ Item
                     value: parseInt(infillDensity.properties.value)
 
                     onValueChanged: {
-                        infillDensity.setPropertyValue("value", infillSlider.value)
+                        // Explicitly cast to string to make sure the value passed to Python is an integer.
+                        infillDensity.setPropertyValue("value", String(parseInt(infillSlider.value)))
                     }
 
                     style: SliderStyle
                     {
-
                         groove: Rectangle {
                             id: groove
                             implicitWidth: 200 * screenScaleFactor
@@ -433,6 +444,15 @@ Item
                         tickmarks: Repeater {
                             id: repeater
                             model: control.maximumValue / control.stepSize + 1
+
+                            // check if a tick should be shown based on it's index and wether the infill density is a multiple of 10 (slider step size)
+                            function shouldShowTick (index) {
+                                if ((parseInt(infillDensity.properties.value) % 10 == 0) || (index % 10 == 0)) {
+                                    return true
+                                }
+                                return false
+                            }
+
                             Rectangle {
                                 anchors.verticalCenter: parent.verticalCenter
                                 color: control.enabled ? UM.Theme.getColor("quality_slider_available") : UM.Theme.getColor("quality_slider_unavailable")
@@ -440,6 +460,7 @@ Item
                                 height: 6 * screenScaleFactor
                                 y: 0
                                 x: styleData.handleWidth / 2 + index * ((repeater.width - styleData.handleWidth) / (repeater.count-1))
+                                visible: shouldShowTick(index)
                             }
                         }
                     }
@@ -485,7 +506,7 @@ Item
                             visible: infillIconList.activeIndex == index
 
                             border.width: UM.Theme.getSize("default_lining").width
-                            border.color: UM.Theme.getColor("quality_slider_available")
+                            border.color: UM.Theme.getColor("quality_slider_unavailable")
 
                             UM.RecolorImage {
                                 anchors.fill: parent
@@ -505,11 +526,12 @@ Item
                     property alias _hovered: enableGradualInfillMouseArea.containsMouse
 
                     anchors.top: infillSlider.bottom
-                    anchors.topMargin: UM.Theme.getSize("sidebar_margin").height
+                    anchors.topMargin: UM.Theme.getSize("sidebar_margin").height / 2 // closer to slider since it belongs to the same category
                     anchors.left: infillCellRight.left
 
                     style: UM.Theme.styles.checkbox
                     enabled: base.settingsEnabled
+                    visible: infillSteps.properties.enabled == "True"
                     checked: parseInt(infillSteps.properties.value) > 0
 
                     MouseArea {
@@ -598,7 +620,7 @@ Item
                 visible: enableSupportCheckBox.visible
 
                 anchors.top: infillCellRight.bottom
-                anchors.topMargin: UM.Theme.getSize("sidebar_margin").height
+                anchors.topMargin: UM.Theme.getSize("sidebar_margin").height * 1.5
                 anchors.left: parent.left
                 anchors.leftMargin: UM.Theme.getSize("sidebar_margin").width
                 anchors.verticalCenter: enableSupportCheckBox.verticalCenter
@@ -613,8 +635,7 @@ Item
                 id: enableSupportCheckBox
                 property alias _hovered: enableSupportMouseArea.containsMouse
 
-                anchors.top: infillCellRight.bottom
-                anchors.topMargin: UM.Theme.getSize("sidebar_margin").height
+                anchors.top: enableSupportLabel.top
                 anchors.left: infillCellRight.left
 
                 style: UM.Theme.styles.checkbox;
@@ -726,15 +747,19 @@ Item
             {
                 id: adhesionHelperLabel
                 visible: adhesionCheckBox.visible
-                anchors.left: parent.left
-                anchors.leftMargin: UM.Theme.getSize("sidebar_margin").width
-                anchors.right: infillCellLeft.right
-                anchors.rightMargin: UM.Theme.getSize("sidebar_margin").width
-                anchors.verticalCenter: adhesionCheckBox.verticalCenter
-                text: catalog.i18nc("@label", "Build Plate Adhesion");
-                font: UM.Theme.getFont("default");
-                color: UM.Theme.getColor("text");
+
+                text: catalog.i18nc("@label", "Build Plate Adhesion")
+                font: UM.Theme.getFont("default")
+                color: UM.Theme.getColor("text")
                 elide: Text.ElideRight
+
+                anchors {
+                    left: parent.left
+                    leftMargin: UM.Theme.getSize("sidebar_margin").width
+                    right: infillCellLeft.right
+                    rightMargin: UM.Theme.getSize("sidebar_margin").width
+                    verticalCenter: adhesionCheckBox.verticalCenter
+                }
             }
 
             CheckBox
@@ -829,7 +854,6 @@ Item
             UM.SettingPropertyProvider
             {
                 id: infillExtruderNumber
-
                 containerStackId: Cura.MachineManager.activeStackId
                 key: "infill_extruder_nr"
                 watchedProperties: [ "value" ]
@@ -850,7 +874,7 @@ Item
                 id: infillSteps
                 containerStackId: Cura.MachineManager.activeStackId
                 key: "gradual_infill_steps"
-                watchedProperties: ["value"]
+                watchedProperties: ["value", "enabled"]
                 storeIndex: 0
             }
 

@@ -1,5 +1,5 @@
 # Copyright (c) 2017 Ultimaker B.V.
-# Cura is released under the terms of the AGPLv3 or higher.
+# Cura is released under the terms of the LGPLv3 or higher.
 
 from PyQt5.QtCore import pyqtProperty, pyqtSignal
 from UM.FlameProfiler import pyqtSlot
@@ -112,7 +112,13 @@ class MachineSettingsAction(MachineAction):
         if not self._global_container_stack:
             return 0
 
-        return len(self._global_container_stack.getMetaDataEntry("machine_extruder_trains"))
+        # If there is a printer that originally is multi-extruder, it's not allowed to change the number of extruders
+        # It's just allowed in case of Custom FDM printers
+        definition_container = self._global_container_stack.getBottom()
+        if definition_container.getId() == "custom":
+            return len(self._global_container_stack.getMetaDataEntry("machine_extruder_trains"))
+        return 0
+
 
     @pyqtSlot(int)
     def setMachineExtruderCount(self, extruder_count):

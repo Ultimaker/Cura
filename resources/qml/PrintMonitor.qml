@@ -1,5 +1,5 @@
 // Copyright (c) 2017 Ultimaker B.V.
-// Cura is released under the terms of the AGPLv3 or higher.
+// Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.2
 import QtQuick.Controls 1.1
@@ -164,6 +164,7 @@ Column
                         id: materialColor
                         width: materialName.height * 0.75
                         height: materialName.height * 0.75
+                        radius: width / 2
                         color: (connectedPrinter != null && connectedPrinter.materialColors[index] != null && connectedPrinter.materialIds[index] != "") ? connectedPrinter.materialColors[index] : "#00000000"
                         border.width: UM.Theme.getSize("default_lining").width
                         border.color: UM.Theme.getColor("lining")
