@@ -12,7 +12,7 @@ Component
         property var manager: Cura.MachineManager.printerOutputDevices[0]
         anchors.fill: parent
         property var lineColor: "#DCDCDC" // TODO: Should be linked to theme.
-        property var cornerRadius: 4 // TODO: Should be linked to theme.
+        property var cornerRadius: 4 * screenScaleFactor // TODO: Should be linked to theme.
 
         visible: manager != null
 

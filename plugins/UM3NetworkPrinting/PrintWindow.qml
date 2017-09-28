@@ -11,8 +11,8 @@ UM.Dialog
 {
     id: base;
 
-    minimumWidth: 500
-    minimumHeight: 140
+    minimumWidth: 500 * screenScaleFactor
+    minimumHeight: 140 * screenScaleFactor
     maximumWidth: minimumWidth
     maximumHeight: minimumHeight
     width: minimumWidth
@@ -31,7 +31,7 @@ UM.Dialog
         anchors.topMargin: UM.Theme.getSize("default_margin").height
         anchors.leftMargin: UM.Theme.getSize("default_margin").width
         anchors.rightMargin: UM.Theme.getSize("default_margin").width
-        height: 50
+        height: 50 * screenScaleFactor
 
         Label
         {
@@ -44,7 +44,7 @@ UM.Dialog
             }
             text: "Printer selection"
             wrapMode: Text.Wrap
-            height: 20
+            height: 20 * screenScaleFactor
         }
 
         ComboBox
@@ -54,7 +54,7 @@ UM.Dialog
             textRole: "friendly_name"
 
             width: parent.width
-            height: 40
+            height: 40 * screenScaleFactor
             Behavior on height { NumberAnimation { duration: 100 } }
 
             onActivated:
