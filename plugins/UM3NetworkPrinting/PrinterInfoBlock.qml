@@ -137,7 +137,7 @@ Rectangle
             Rectangle   // Camera icon
             {
                 id: showCameraIcon
-                width: 40
+                width: 40 * screenScaleFactor
                 height: width
                 radius: width
                 anchors.right: printProgressArea.left
@@ -161,7 +161,7 @@ Rectangle
 
                 width: parent.width / 2 - UM.Theme.getSize("default_margin").width
                 height: childrenRect.height
-                spacing: 10
+                spacing: 10 * screenScaleFactor
 
                 PrintCoreConfiguration
                 {
@@ -173,7 +173,7 @@ Rectangle
                 Rectangle
                 {
                     id: extruderSeperator
-                    width: 1
+                    width: 1 * screenScaleFactor
                     height: parent.height
                     color: lineColor
                 }
@@ -215,7 +215,7 @@ Rectangle
                     width: parent.width
                     //border.width: UM.Theme.getSize("default_lining").width
                     //border.color: lineColor
-                    height: 40
+                    height: 40 * screenScaleFactor
                     anchors.left: parent.left
 
                     Label
