@@ -530,6 +530,16 @@ class ExtruderManager(QObject):
         if global_container_stack and global_container_stack.getBottom() and global_container_stack.getBottom().getId() != self._global_container_stack_definition_id:
             self._global_container_stack_definition_id = global_container_stack.getBottom().getId()
             self.globalContainerStackDefinitionChanged.emit()
+
+        # If the global container changed, the number of extruders could be changed and so the active_extruder_index is updated
+        extruder_count = global_container_stack.getProperty("machine_extruder_count", "value")
+        if extruder_count > 1:
+            if self._active_extruder_index == -1:
+                self.setActiveExtruderIndex(0)
+        else:
+            if self._active_extruder_index > -1:
+                self.setActiveExtruderIndex(-1)
+
         self.activeExtruderChanged.emit()
 
         self.resetSelectedObjectExtruders()

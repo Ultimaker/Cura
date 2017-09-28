@@ -31,16 +31,10 @@ class UserProfilesModel(ProfilesModel):
         extruder_manager = ExtruderManager.getInstance()
         active_extruder = extruder_manager.getActiveExtruderStack()
         extruder_stacks = extruder_manager.getActiveExtruderStacks()
-        if extruder_stacks:
-            if multiple_extrusion:
-                # Place the active extruder at the front of the list.
-                if active_extruder in extruder_stacks:
-                    extruder_stacks.remove(active_extruder)
-                    extruder_stacks = [active_extruder] + extruder_stacks
-            else:
-                # The active extruder is the first in the list and only the active extruder is use to compute the usable qualities
-                active_extruder = None
-                extruder_stacks = []
+        if multiple_extrusion:
+            # Place the active extruder at the front of the list.
+            extruder_stacks.remove(active_extruder)
+            extruder_stacks = [active_extruder] + extruder_stacks
 
         # Fetch the list of useable qualities across all extruders.
         # The actual list of quality profiles come from the first extruder in the extruder list.
@@ -52,9 +46,13 @@ class UserProfilesModel(ProfilesModel):
 
         if multiple_extrusion:
             # If the printer has multiple extruders then quality changes related to the current extruder are kept
-            filtered_quality_changes = [qc for qc in quality_changes_list if qc.getMetaDataEntry("quality_type") in quality_type_set and qc.getMetaDataEntry("extruder") == active_extruder.definition.getMetaDataEntry("quality_definition")]
+            filtered_quality_changes = [qc for qc in quality_changes_list if qc.getMetaDataEntry("quality_type") in quality_type_set and
+                                        qc.getMetaDataEntry("extruder") is not None and
+                                        qc.getMetaDataEntry("extruder") == active_extruder.definition.getMetaDataEntry("quality_definition") or
+                                        qc.getMetaDataEntry("extruder") == active_extruder.definition.getId()]
         else:
             # If not, the quality changes of the global stack are selected
-            filtered_quality_changes = [qc for qc in quality_changes_list if qc.getMetaDataEntry("quality_type") in quality_type_set and qc.getMetaDataEntry("extruder") is None]
+            filtered_quality_changes = [qc for qc in quality_changes_list if qc.getMetaDataEntry("quality_type") in quality_type_set and
+                                        qc.getMetaDataEntry("extruder") is None]
 
         return filtered_quality_changes
