@@ -289,15 +289,6 @@ Column
 
             menu: MaterialMenu { extruderIndex: base.currentExtruderIndex }
         }
-
-        Connections
-        {
-            target: Cura.MachineManager
-            onGlobalContainerChanged:
-            {
-
-            }
-        }
     }
 
     // Print core row

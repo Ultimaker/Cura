@@ -66,11 +66,6 @@ Item
                 {
                     target: Cura.MachineManager
                     onActiveQualityChanged: qualityModel.update()
-                }
-
-                Connections
-                {
-                    target: Cura.MachineManager
                     onActiveMaterialChanged: qualityModel.update()
                 }
 
