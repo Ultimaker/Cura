@@ -367,8 +367,6 @@ Item
                 }
             }
 
-
-
             Item
             {
                 id: infillCellRight
@@ -408,7 +406,7 @@ Item
 
                     minimumValue: 0
                     maximumValue: 100
-                    stepSize: 10
+                    stepSize: (parseInt(infillDensity.properties.value) % 10 == 0) ? 10 : 1
                     tickmarksEnabled: true
 
                     // disable slider when gradual support is enabled
@@ -418,12 +416,12 @@ Item
                     value: parseInt(infillDensity.properties.value)
 
                     onValueChanged: {
-                        infillDensity.setPropertyValue("value", infillSlider.value)
+                        // Explicitly cast to string to make sure the value passed to Python is an integer.
+                        infillDensity.setPropertyValue("value", String(parseInt(infillSlider.value)))
                     }
 
                     style: SliderStyle
                     {
-
                         groove: Rectangle {
                             id: groove
                             implicitWidth: 200 * screenScaleFactor
@@ -446,6 +444,15 @@ Item
                         tickmarks: Repeater {
                             id: repeater
                             model: control.maximumValue / control.stepSize + 1
+
+                            // check if a tick should be shown based on it's index and wether the infill density is a multiple of 10 (slider step size)
+                            function shouldShowTick (index) {
+                                if ((parseInt(infillDensity.properties.value) % 10 == 0) || (index % 10 == 0)) {
+                                    return true
+                                }
+                                return false
+                            }
+
                             Rectangle {
                                 anchors.verticalCenter: parent.verticalCenter
                                 color: control.enabled ? UM.Theme.getColor("quality_slider_available") : UM.Theme.getColor("quality_slider_unavailable")
@@ -453,6 +460,7 @@ Item
                                 height: 6 * screenScaleFactor
                                 y: 0
                                 x: styleData.handleWidth / 2 + index * ((repeater.width - styleData.handleWidth) / (repeater.count-1))
+                                visible: shouldShowTick(index)
                             }
                         }
                     }
@@ -498,7 +506,7 @@ Item
                             visible: infillIconList.activeIndex == index
 
                             border.width: UM.Theme.getSize("default_lining").width
-                            border.color: UM.Theme.getColor("quality_slider_available")
+                            border.color: UM.Theme.getColor("quality_slider_unavailable")
 
                             UM.RecolorImage {
                                 anchors.fill: parent
@@ -845,7 +853,6 @@ Item
             UM.SettingPropertyProvider
             {
                 id: infillExtruderNumber
-
                 containerStackId: Cura.MachineManager.activeStackId
                 key: "infill_extruder_nr"
                 watchedProperties: [ "value" ]
