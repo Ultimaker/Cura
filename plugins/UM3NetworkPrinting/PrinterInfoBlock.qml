@@ -199,10 +199,10 @@ Rectangle
                 property var showExtended: {
                     if(printJob!= null)
                     {
-                        var extendStates = ["sent_to_printer", "wait_for_configuration", "printing", "pre_print", "post_print", "wait_cleanup"];
+                        var extendStates = ["sent_to_printer", "wait_for_configuration", "printing", "pre_print", "post_print", "wait_cleanup", "queued"];
                         return extendStates.indexOf(printJob.status) !== -1;
                     }
-                    return false
+                    return ! printer.enabled;
                 }
                 visible:
                 {
@@ -227,6 +227,11 @@ Rectangle
                         anchors.right: progressText.left
                         anchors.rightMargin: UM.Theme.getSize("default_margin").width
                         text: {
+                            if ( ! printer.enabled)
+                            {
+                                return catalog.i18nc("@label:status", "Disabled");
+                            }
+
                             if(printJob != null)
                             {
                                 if(printJob.status == "printing" || printJob.status == "post_print")
@@ -245,12 +250,16 @@ Rectangle
                                 {
                                     return catalog.i18nc("@label:status", "Preparing")
                                 }
+                                else if (printJob.configuration_changes_required != undefined && printJob.status == "queued")
+                                {
+                                    return catalog.i18nc("@label:status", "Required action")
+                                }
                                 else
                                 {
-                                    return ""
+                                    return printJob.status;
                                 }
                             }
-                            return catalog.i18nc("@label:status", "Available")
+                            return catalog.i18nc("@label:status", "Available");
                         }
 
                         elide: Text.ElideRight
@@ -292,29 +301,37 @@ Rectangle
 
                     width: parent.width - 2 * UM.Theme.getSize("default_margin").width
 
-                    visible: printJob != null && (["wait_cleanup", "printing", "pre_print", "wait_for_configuration"].indexOf(printJob.status) !== -1)
+                    visible: showExtended
 
                     Label   // Status detail
                     {
                         text:
                         {
+                            if ( ! printer.enabled)
+                            {
+                                return catalog.i18nc("@label", "Not accepting print jobs");
+                            }
+
                             if(printJob != null)
                             {
-                                if(printJob.status == "printing" )
+                                switch (printJob.status)
                                 {
+                                case "printing":
                                     return catalog.i18nc("@label", "Finishes at: ") + OutputDevice.getTimeCompleted(printJob.time_total - printJob.time_elapsed)
-                                }
-                                if(printJob.status == "wait_cleanup")
-                                {
+                                case "wait_cleanup":
                                     return catalog.i18nc("@label", "Clear build plate")
-                                }
-                                if(printJob.status == "sent_to_printer" || printJob.status == "pre_print")
-                                {
+                                case "sent_to_printer":
+                                case "pre_print":
                                     return catalog.i18nc("@label", "Preparing to print")
-                                }
-                                if(printJob.status == "wait_for_configuration")
-                                {
+                                case "wait_for_configuration":
                                     return catalog.i18nc("@label", "Not accepting print jobs")
+                                case "queued":
+                                    if (printJob.configuration_changes_required != undefined)
+                                    {
+                                        return catalog.i18nc("@label", "Configuration change");
+                                    }
+                                default:
+                                    return "";
                                 }
                             }
                             return ""
