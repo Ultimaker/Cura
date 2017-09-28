@@ -416,6 +416,7 @@ class XmlMaterialProfile(InstanceContainer):
 
     ##  Overridden from InstanceContainer
     def deserialize(self, serialized):
+        containers_to_add = []
         # update the serialized data first
         from UM.Settings.Interfaces import ContainerInterface
         serialized = ContainerInterface.deserialize(self, serialized)
@@ -573,7 +574,7 @@ class XmlMaterialProfile(InstanceContainer):
                     new_material._dirty = False
 
                     if is_new_material:
-                        ContainerRegistry.getInstance().addContainer(new_material)
+                        containers_to_add.append(new_material)
 
                 hotends = machine.iterfind("./um:hotend", self.__namespaces)
                 for hotend in hotends:
@@ -632,7 +633,10 @@ class XmlMaterialProfile(InstanceContainer):
                     new_hotend_material._dirty = False
 
                     if is_new_material:
-                        ContainerRegistry.getInstance().addContainer(new_hotend_material)
+                        containers_to_add.append(new_hotend_material)
+
+        for container_to_add in containers_to_add:
+            ContainerRegistry.getInstance().addContainer(container_to_add)
 
     def _addSettingElement(self, builder, instance):
         try:
