@@ -41,7 +41,7 @@ class ExtruderManager(QObject):
     def __init__(self, parent = None):
         super().__init__(parent)
         self._extruder_trains = { } #Per machine, a dictionary of extruder container stack IDs. Only for separately defined extruders.
-        self._active_extruder_index = 0
+        self._active_extruder_index = -1
         self._selected_object_extruders = []
         Application.getInstance().globalContainerStackChanged.connect(self.__globalContainerStackChanged)
         self._global_container_stack_definition_id = None
@@ -78,6 +78,7 @@ class ExtruderManager(QObject):
     def extruderIds(self):
         map = {}
         global_stack_id = Application.getInstance().getGlobalContainerStack().getId()
+        map["-1"] = global_stack_id
         if global_stack_id in self._extruder_trains:
             for position in self._extruder_trains[global_stack_id]:
                 map[position] = self._extruder_trains[global_stack_id][position].getId()
@@ -513,11 +514,16 @@ class ExtruderManager(QObject):
         global_stack = Application.getInstance().getGlobalContainerStack()
 
         result = []
+        machine_extruder_count = global_stack.getProperty("machine_extruder_count", "value")
+
+        if machine_extruder_count is 1:
+            return result
+
         if global_stack and global_stack.getId() in self._extruder_trains:
             for extruder in sorted(self._extruder_trains[global_stack.getId()]):
                 result.append(self._extruder_trains[global_stack.getId()][extruder])
 
-        return result[:global_stack.getProperty("machine_extruder_count", "value")]
+        return result[:machine_extruder_count]
 
     def __globalContainerStackChanged(self) -> None:
         global_container_stack = Application.getInstance().getGlobalContainerStack()

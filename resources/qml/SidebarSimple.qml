@@ -68,6 +68,12 @@ Item
                     onActiveQualityChanged: qualityModel.update()
                 }
 
+                Connections
+                {
+                    target: Cura.MachineManager
+                    onActiveMaterialChanged: qualityModel.update()
+                }
+
                 ListModel
                 {
                     id: qualityModel

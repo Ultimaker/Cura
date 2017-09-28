@@ -39,11 +39,8 @@ Menu
         visible: printerConnected && Cura.MachineManager.printerOutputDevices[0].materialNames.length > extruderIndex
         onTriggered:
         {
-            var activeExtruderIndex = ExtruderManager.activeExtruderIndex;
-            ExtruderManager.setActiveExtruderIndex(extruderIndex);
             var materialId = Cura.MachineManager.printerOutputDevices[0].materialIds[extruderIndex];
             var items = materialsModel.items;
-            // materialsModel.find cannot be used because we need to look inside the metadata property of items
             for(var i in items)
             {
                 if (items[i]["metadata"]["GUID"] == materialId)
@@ -52,7 +49,6 @@ Menu
                     break;
                 }
             }
-            ExtruderManager.setActiveExtruderIndex(activeExtruderIndex);
         }
     }
 
@@ -70,13 +66,7 @@ Menu
             checkable: true
             checked: model.id == Cura.MachineManager.allActiveMaterialIds[ExtruderManager.extruderIds[extruderIndex]]
             exclusiveGroup: group
-            onTriggered:
-            {
-                var activeExtruderIndex = ExtruderManager.activeExtruderIndex;
-                ExtruderManager.setActiveExtruderIndex(extruderIndex);
-                Cura.MachineManager.setActiveMaterial(model.id);
-                ExtruderManager.setActiveExtruderIndex(activeExtruderIndex);
-            }
+            onTriggered: Cura.MachineManager.setActiveMaterial(model.id)
         }
         onObjectAdded: menu.insertItem(index, object)
         onObjectRemoved: menu.removeItem(object)
@@ -111,13 +101,7 @@ Menu
                             checkable: true
                             checked: model.id == Cura.MachineManager.allActiveMaterialIds[ExtruderManager.extruderIds[extruderIndex]]
                             exclusiveGroup: group
-                            onTriggered:
-                            {
-                                var activeExtruderIndex = ExtruderManager.activeExtruderIndex;
-                                ExtruderManager.setActiveExtruderIndex(extruderIndex);
-                                Cura.MachineManager.setActiveMaterial(model.id);
-                                ExtruderManager.setActiveExtruderIndex(activeExtruderIndex);
-                            }
+                            onTriggered: Cura.MachineManager.setActiveMaterial(model.id)
                         }
                         onObjectAdded: brandMaterialsMenu.insertItem(index, object)
                         onObjectRemoved: brandMaterialsMenu.removeItem(object)

@@ -219,6 +219,7 @@ class MachineSettingsAction(MachineAction):
                     machine_manager.setActiveVariant(extruder_variant_id)
 
                 preferences.setValue("cura/choice_on_profile_override", choice_on_profile_override)
+
         self.forceUpdate()
 
 
