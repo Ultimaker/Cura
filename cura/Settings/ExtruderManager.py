@@ -1,5 +1,5 @@
 # Copyright (c) 2017 Ultimaker B.V.
-# Cura is released under the terms of the AGPLv3 or higher.
+# Cura is released under the terms of the LGPLv3 or higher.
 
 from PyQt5.QtCore import pyqtSignal, pyqtProperty, QObject, QVariant #For communicating data and events to Qt.
 from UM.FlameProfiler import pyqtSlot

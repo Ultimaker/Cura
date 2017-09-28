@@ -1,5 +1,5 @@
 # Copyright (c) 2016 Aleph Objects, Inc.
-# Cura is released under the terms of the AGPLv3 or higher.
+# Cura is released under the terms of the LGPLv3 or higher.
 
 from UM.Application import Application
 from UM.Backend import Backend

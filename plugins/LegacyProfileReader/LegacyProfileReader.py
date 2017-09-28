@@ -1,5 +1,5 @@
 # Copyright (c) 2015 Ultimaker B.V.
-# Cura is released under the terms of the AGPLv3 or higher.
+# Cura is released under the terms of the LGPLv3 or higher.
 
 import configparser  # For reading the legacy profile INI files.
 import json  # For reading the Dictionary of Doom.

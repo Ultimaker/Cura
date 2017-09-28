@@ -1,5 +1,5 @@
 # Copyright (c) 2016 Ultimaker B.V.
-# Cura is released under the terms of the AGPLv3 or higher.
+# Cura is released under the terms of the LGPLv3 or higher.
 from UM.Logger import Logger
 from UM.PluginRegistry import PluginRegistry  # So MachineAction can be added as plugin type
 
