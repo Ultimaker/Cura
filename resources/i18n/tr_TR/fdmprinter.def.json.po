@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: Cura 3.0\n"
 "Report-Msgid-Bugs-To: r.dulek@ultimaker.com\n"
 "POT-Creation-Date: 2017-08-02 16:53+0000\n"
-"PO-Revision-Date: 2017-08-11 14:31+0200\n"
+"PO-Revision-Date: 2017-09-27 12:27+0200\n"
 "Last-Translator: Bothof <info@bothof.nl>\n"
 "Language-Team: Turkish\n"
 "Language: tr_TR\n"
@@ -56,9 +56,7 @@ msgctxt "machine_start_gcode description"
 msgid ""
 "Gcode commands to be executed at the very start - separated by \n"
 "."
-msgstr ""
-"​\n"
-" ile ayrılan, başlangıçta yürütülecek G-code komutları."
+msgstr "​\n ile ayrılan, başlangıçta yürütülecek G-code komutları."
 
 #: fdmprinter.def.json
 msgctxt "machine_end_gcode label"
@@ -70,9 +68,7 @@ msgctxt "machine_end_gcode description"
 msgid ""
 "Gcode commands to be executed at the very end - separated by \n"
 "."
-msgstr ""
-"​\n"
-" ile ayrılan, bitişte yürütülecek Gcode komutları."
+msgstr "​\n ile ayrılan, bitişte yürütülecek Gcode komutları."
 
 #: fdmprinter.def.json
 msgctxt "material_guid label"
@@ -1122,7 +1118,7 @@ msgstr "Gelişigüzel"
 #: fdmprinter.def.json
 msgctxt "z_seam_type option sharpest_corner"
 msgid "Sharpest Corner"
-msgstr ""
+msgstr "En Keskin Köşe"
 
 #: fdmprinter.def.json
 msgctxt "z_seam_x label"
@@ -1147,32 +1143,32 @@ msgstr "Bir katmandaki her kısmın yazdırılmaya başlanacağı yere yakın ko
 #: fdmprinter.def.json
 msgctxt "z_seam_corner label"
 msgid "Seam Corner Preference"
-msgstr ""
+msgstr "Dikiş Köşesi Tercihi"
 
 #: fdmprinter.def.json
 msgctxt "z_seam_corner description"
 msgid "Control whether corners on the model outline influence the position of the seam. None means that corners have no influence on the seam position. Hide Seam makes the seam more likely to occur on an inside corner. Expose Seam makes the seam more likely to occur on an outside corner. Hide or Expose Seam makes the seam more likely to occur at an inside or outside corner."
-msgstr ""
+msgstr "Modelin ana hatlarında yer alan köşelerin dikişin konumunu etkileyip etkilemediğini kontrol edin. Hiçbiri, köşelerin dikişin konumunu etkilemediği anlamına gelir. Dikişi Gizle, dikişin daha büyük olasılıkla bir iç köşe üzerinde oluşmasını sağlar. Dikişi Açığa Çıkar, dikişin daha büyük olasılıkla bir dış köşe üzerinde oluşmasını sağlar. Dikişi Gizle veya Açığa Çıkar, dikişin daha büyük olasılıkla bir iç veya dış köşe üzerinde oluşmasını sağlar."
 
 #: fdmprinter.def.json
 msgctxt "z_seam_corner option z_seam_corner_none"
 msgid "None"
-msgstr ""
+msgstr "Hiçbiri"
 
 #: fdmprinter.def.json
 msgctxt "z_seam_corner option z_seam_corner_inner"
 msgid "Hide Seam"
-msgstr ""
+msgstr "Dikişi Gizle"
 
 #: fdmprinter.def.json
 msgctxt "z_seam_corner option z_seam_corner_outer"
 msgid "Expose Seam"
-msgstr ""
+msgstr "Dikişi Açığa Çıkar"
 
 #: fdmprinter.def.json
 msgctxt "z_seam_corner option z_seam_corner_any"
 msgid "Hide or Expose Seam"
-msgstr ""
+msgstr "Dikişi Gizle veya Açığa Çıkar"
 
 #: fdmprinter.def.json
 msgctxt "z_seam_relative label"
@@ -1252,7 +1248,7 @@ msgstr "Dolgu Şekli"
 #: fdmprinter.def.json
 msgctxt "infill_pattern description"
 msgid "The pattern of the infill material of the print. The line and zig zag infill swap direction on alternate layers, reducing material cost. The grid, triangle, cubic, octet, quarter cubic and concentric patterns are fully printed every layer. Cubic, quarter cubic and octet infill change with every layer to provide a more equal distribution of strength over each direction."
-msgstr ""
+msgstr "Yazdırma dolgu malzemesinin şeklidir. Hat ve zikzak dolgu, farklı katmanlar üzerinde yön değiştirerek malzeme maliyetini azaltır. Izgara, üçgen, kübik, sekizlik, çeyrek kübik ve eş merkezli şekiller, her katmanda tam olarak yazdırılır. Kübik, çeyrek kübik ve sekizlik dolgu, her yönde daha eşit bir kuvvet dağılımı sağlamak için her katmanda değişir."
 
 #: fdmprinter.def.json
 msgctxt "infill_pattern option grid"
@@ -1282,12 +1278,12 @@ msgstr "Kübik Alt Bölüm"
 #: fdmprinter.def.json
 msgctxt "infill_pattern option tetrahedral"
 msgid "Octet"
-msgstr ""
+msgstr "Sekizlik"
 
 #: fdmprinter.def.json
 msgctxt "infill_pattern option quarter_cubic"
 msgid "Quarter Cubic"
-msgstr ""
+msgstr "Çeyrek Kübik"
 
 #: fdmprinter.def.json
 msgctxt "infill_pattern option concentric"
@@ -1307,22 +1303,22 @@ msgstr "Zik Zak"
 #: fdmprinter.def.json
 msgctxt "infill_pattern option cross"
 msgid "Cross"
-msgstr ""
+msgstr "Çapraz"
 
 #: fdmprinter.def.json
 msgctxt "infill_pattern option cross_3d"
 msgid "Cross 3D"
-msgstr ""
+msgstr "Çapraz 3D"
 
 #: fdmprinter.def.json
 msgctxt "zig_zaggify_infill label"
 msgid "Connect Infill Lines"
-msgstr ""
+msgstr "Dolgu Hatlarını Bağlayın"
 
 #: fdmprinter.def.json
 msgctxt "zig_zaggify_infill description"
 msgid "Connect the ends where the infill pattern meets the inner wall using a lines which follows the shape of the inner wall. Enabling this setting can make the infill adhere to the walls better and reduces the effects on infill on the quality of vertical surfaces. Disabling this setting reduces the amount of material used."
-msgstr ""
+msgstr "İç duvarın şeklini takip eden bir hattı kullanarak, dolgu şeklinin iç duvarla buluştuğu noktada uçları bağlayın. Bu ayarın etkinleştirilmesi, dolgunun duvarlara daha iyi yapışmasını sağlayabilir ve dolgunun dikey yüzeylerin kalitesi üzerindeki etkilerini azaltır. Bu ayarın devre dışı bırakılması, kullanılan malzemenin miktarını azaltır."
 
 #: fdmprinter.def.json
 msgctxt "infill_angles label"
@@ -1447,32 +1443,32 @@ msgstr "Bundan küçük dolgu alanları oluşturma (onun yerine yüzey kullan)."
 #: fdmprinter.def.json
 msgctxt "skin_preshrink label"
 msgid "Skin Removal Width"
-msgstr ""
+msgstr "Yüzey Kaldırma Genişliği"
 
 #: fdmprinter.def.json
 msgctxt "skin_preshrink description"
 msgid "The largest width of skin areas which are to be removed. Every skin area smaller than this value will disappear. This can help in limiting the amount of time and material spent on printing top/bottom skin at slanted surfaces in the model."
-msgstr ""
+msgstr "Kaldırılacak olan yüzey alanlarının en büyük genişliğidir. Bu değerden daha küçük olan her yüzey alanı kaybolacaktır. Bu, modeldeki eğimli yüzeylerde alt/üst yüzeyin yazdırılması için harcanan süreyi ve malzemeyi sınırlamaya yardımcı olabilir."
 
 #: fdmprinter.def.json
 msgctxt "top_skin_preshrink label"
 msgid "Top Skin Removal Width"
-msgstr ""
+msgstr "Üst Yüzey Kaldırma Genişliği"
 
 #: fdmprinter.def.json
 msgctxt "top_skin_preshrink description"
 msgid "The largest width of top skin areas which are to be removed. Every skin area smaller than this value will disappear. This can help in limiting the amount of time and material spent on printing top skin at slanted surfaces in the model."
-msgstr ""
+msgstr "Kaldırılacak olan üst yüzey alanlarının en büyük genişliğidir. Bu değerden daha küçük olan her yüzey alanı kaybolacaktır. Bu, modeldeki eğimli yüzeylerde üst yüzeyin yazdırılması için harcanan süreyi ve malzemeyi sınırlamaya yardımcı olabilir."
 
 #: fdmprinter.def.json
 msgctxt "bottom_skin_preshrink label"
 msgid "Bottom Skin Removal Width"
-msgstr ""
+msgstr "Alt Yüzey Kaldırma Genişliği"
 
 #: fdmprinter.def.json
 msgctxt "bottom_skin_preshrink description"
 msgid "The largest width of bottom skin areas which are to be removed. Every skin area smaller than this value will disappear. This can help in limiting the amount of time and material spent on printing bottom skin at slanted surfaces in the model."
-msgstr ""
+msgstr "Kaldırılacak olan alt yüzey alanlarının en büyük genişliğidir. Bu değerden daha küçük olan her yüzey alanı kaybolacaktır. Bu, modeldeki eğimli yüzeylerde alt yüzeyin yazdırılması için harcanan süreyi ve malzemeyi sınırlamaya yardımcı olabilir."
 
 #: fdmprinter.def.json
 msgctxt "expand_skins_expand_distance label"
@@ -1482,27 +1478,27 @@ msgstr "Yüzey Genişleme Mesafesi"
 #: fdmprinter.def.json
 msgctxt "expand_skins_expand_distance description"
 msgid "The distance the skins are expanded into the infill. Higher values makes the skin attach better to the infill pattern and makes the walls on neighboring layers adhere better to the skin. Lower values save amount of material used."
-msgstr ""
+msgstr "Yüzeylerin dolgunun içine doğru genişleyeceği mesafedir. Daha yüksek değerler, yüzeyin dolgu şekline daha iyi tutunmasını sağladığı gibi komşu katmanlardaki duvarların yüzeye daha iyi yapışmasını sağlar. Daha düşük değerler, kullanılan malzemenin miktarından tasarruf yapılmasını sağlar."
 
 #: fdmprinter.def.json
 msgctxt "top_skin_expand_distance label"
 msgid "Top Skin Expand Distance"
-msgstr ""
+msgstr "Üst Yüzey Genişleme Mesafesi"
 
 #: fdmprinter.def.json
 msgctxt "top_skin_expand_distance description"
 msgid "The distance the top skins are expanded into the infill. Higher values makes the skin attach better to the infill pattern and makes the walls on the layer above adhere better to the skin. Lower values save amount of material used."
-msgstr ""
+msgstr "Üst yüzeylerin dolgunun içine doğru genişleyeceği mesafedir. Daha yüksek değerler, yüzeyin dolgu şekline daha iyi tutunmasını sağladığı gibi yukarıdaki katmandaki duvarların yüzeye daha iyi yapışmasını sağlar. Daha düşük değerler, kullanılan malzemenin miktarından tasarruf yapılmasını sağlar."
 
 #: fdmprinter.def.json
 msgctxt "bottom_skin_expand_distance label"
 msgid "Bottom Skin Expand Distance"
-msgstr ""
+msgstr "Alt Yüzey Genişleme Mesafesi"
 
 #: fdmprinter.def.json
 msgctxt "bottom_skin_expand_distance description"
 msgid "The distance the bottom skins are expanded into the infill. Higher values makes the skin attach better to the infill pattern and makes the skin adhere better to the walls on the layer below. Lower values save amount of material used."
-msgstr ""
+msgstr "Alt yüzeylerin dolgunun içine doğru genişleyeceği mesafedir. Daha yüksek değerler, yüzeyin dolgu şekline daha iyi tutunmasını sağladığı gibi yüzeyin aşağıdaki katmandaki duvara daha iyi yapışmasını sağlar. Daha düşük değerler, kullanılan malzemenin miktarından tasarruf yapılmasını sağlar."
 
 #: fdmprinter.def.json
 msgctxt "max_skin_angle_for_expansion label"
@@ -2822,7 +2818,7 @@ msgstr "Zik Zak"
 #: fdmprinter.def.json
 msgctxt "support_pattern option cross"
 msgid "Cross"
-msgstr ""
+msgstr "Çapraz"
 
 #: fdmprinter.def.json
 msgctxt "support_connect_zigzags label"
@@ -2837,32 +2833,32 @@ msgstr "Zikzakları Bağla Zik zak destek yapısının sağlamlığını artır�
 #: fdmprinter.def.json
 msgctxt "support_skip_some_zags label"
 msgid "Break Up Support In Chunks"
-msgstr ""
+msgstr "Parçalarda Döküm Desteği"
 
 #: fdmprinter.def.json
 msgctxt "support_skip_some_zags description"
 msgid "Skip some support line connections to make the support structure easier to break away. This setting is applicable to the Zig Zag support infill pattern."
-msgstr ""
+msgstr "Destek yapısının daha kolay kırılması için bazı destek hattı bağlantılarını atlayın. Bu ayar, Zikzak destek dolgusu şekli için geçerlidir."
 
 #: fdmprinter.def.json
 msgctxt "support_skip_zag_per_mm label"
 msgid "Support Chunk Size"
-msgstr ""
+msgstr "Destek Parçasının Boyutu"
 
 #: fdmprinter.def.json
 msgctxt "support_skip_zag_per_mm description"
 msgid "Leave out a connection between support lines once every N millimeter to make the support structure easier to break away."
-msgstr ""
+msgstr "Destek yapısının daha kolay kırılması için her N milimetresinde bir destek hatları arasında bağlantı atlayın."
 
 #: fdmprinter.def.json
 msgctxt "support_zag_skip_count label"
 msgid "Support Chunk Line Count"
-msgstr ""
+msgstr "Destek Parçası Hattı Sayısı"
 
 #: fdmprinter.def.json
 msgctxt "support_zag_skip_count description"
 msgid "Skip one in every N connection lines to make the support structure easier to break away."
-msgstr ""
+msgstr "Destek yapısının daha kolay kırılması için her N bağlantı hattında bir zikzak atlayın."
 
 #: fdmprinter.def.json
 msgctxt "support_infill_rate label"
@@ -3404,9 +3400,7 @@ msgctxt "skirt_gap description"
 msgid ""
 "The horizontal distance between the skirt and the first layer of the print.\n"
 "This is the minimum distance, multiple skirt lines will extend outwards from this distance."
-msgstr ""
-"Etek ve baskının ilk katmanı arasındaki yatay mesafe.\n"
-"Bu minimum mesafedir ve çoklu etek hatları bu mesafeden dışa doğru genişleyecektir."
+msgstr "Etek ve baskının ilk katmanı arasındaki yatay mesafe.\nBu minimum mesafedir ve çoklu etek hatları bu mesafeden dışa doğru genişleyecektir."
 
 #: fdmprinter.def.json
 msgctxt "skirt_brim_minimal_length label"
@@ -3451,22 +3445,22 @@ msgstr "Sadece modelin dış kısmındaki kenarı yazdırır. Yatak yapışması
 #: fdmprinter.def.json
 msgctxt "z_offset_layer_0 label"
 msgid "Initial Layer Z Offset"
-msgstr ""
+msgstr "İlk Katman Z Ofseti"
 
 #: fdmprinter.def.json
 msgctxt "z_offset_layer_0 description"
 msgid "The extruder is offset from the normal height of the first layer by this amount. It can be positive (raised) or negative (lowered). Some filament types adhere to the build plate better if the extruder is raised slightly."
-msgstr ""
+msgstr "Ekstrüder, birinci katmanın normal yüksekliğinden bu miktarda mesafe bırakılır. Negatif (yükseltilmiş) veya pozitif (alçaltılmış) olabilir. Ekstrüderin hafifçe yükseltilmesi durumunda, bazı filaman türleri yapı levhasına daha iyi yapışır."
 
 #: fdmprinter.def.json
 msgctxt "z_offset_taper_layers label"
 msgid "Z Offset Taper Layers"
-msgstr ""
+msgstr "Z Ofseti Konik Katmanları"
 
 #: fdmprinter.def.json
 msgctxt "z_offset_taper_layers description"
 msgid "When non-zero, the Z offset is reduced to 0 over that many layers. A value of 0 means that the Z offset remains constant for all the layers in the print."
-msgstr ""
+msgstr "Sıfır olmadığında, Z ofseti birçok katman üzerinde 0’a düşürülür. 0 değeri, Z ofsetinin yazdırmada yer alan tüm katmanlarda sabit kalması anlamına gelir."
 
 #: fdmprinter.def.json
 msgctxt "raft_margin label"
@@ -3481,12 +3475,12 @@ msgstr "Radye etkinleştirildiğinde, ayrıca radye verilen model etrafındaki e
 #: fdmprinter.def.json
 msgctxt "raft_smoothing label"
 msgid "Raft Smoothing"
-msgstr ""
+msgstr "Radye Düzeltme"
 
 #: fdmprinter.def.json
 msgctxt "raft_smoothing description"
 msgid "This setting control how much inner corners in the raft outline are rounded. Inward corners are rounded to a semi circle with a radius equal to the value given here. This setting also removes holes in the raft outline which are smaller than such a circle."
-msgstr ""
+msgstr "Bu ayar, radye ana hattında yer alan iç köşelerin ne kadar yuvarlandığını kontrol eder. İç köşeler, burada belirtilen değere eşit yarıçapa sahip yarım daire şeklinde yuvarlanır. Ayrıca bu ayar, söz konusu daireden daha küçük olan radye ana hattındaki delikleri ortadan kaldırır."
 
 #: fdmprinter.def.json
 msgctxt "raft_airgap label"
@@ -4166,12 +4160,12 @@ msgstr "Z dikişinin görünürlüğünü azaltmak için helezon şeklinde kontu
 #: fdmprinter.def.json
 msgctxt "relative_extrusion label"
 msgid "Relative Extrusion"
-msgstr ""
+msgstr "Bağıl Ekstrüzyon"
 
 #: fdmprinter.def.json
 msgctxt "relative_extrusion description"
 msgid "Use relative extrusion rather than absolute extrusion. Using relative E-steps makes for easier post-processing of the Gcode. However, it's not supported by all printers and it may produce very slight deviations in the amount of deposited material compared to absolute E-steps. Irrespective of this setting, the extrusion mode will always be set to absolute before any Gcode script is output."
-msgstr ""
+msgstr "Mutlak ekstrüzyon yerine bağıl ekstrüzyon uygulayın. Bağıl E-adımlarının uygulanması, Gcode’un sonradan işlenmesini kolaylaştırır. Ancak bu, tüm yazıcılar tarafından desteklenmemektedir ve mutlak E-adımları ile karşılaştırıldığında birikmiş malzemenin miktarında hafif farklılıklar yaratabilir. Bu ayara bakılmaksızın, herhangi bir Gcode komut dosyası çıkartılmadan önce ekstrüzyon modu her zaman mutlak değere ayarlı olacaktır."
 
 #: fdmprinter.def.json
 msgctxt "experimental label"
@@ -4186,12 +4180,12 @@ msgstr "deneysel!"
 #: fdmprinter.def.json
 msgctxt "optimize_wall_printing_order label"
 msgid "Optimize Wall Printing Order"
-msgstr ""
+msgstr "Duvar Yazdırma Sırasını Optimize Et"
 
 #: fdmprinter.def.json
 msgctxt "optimize_wall_printing_order description"
 msgid "Optimize the order in which walls are printed so as to reduce the number of retractions and the distance travelled. Most parts will benefit from this being enabled but some may actually take longer so please compare the print time estimates with and without optimization."
-msgstr ""
+msgstr "Geri çekmelerin sayısını ve kat edilen mesafeyi azaltmak için duvarların yazdırıldığı sırayı optimize edin. Çoğu parça, bunun etkinleştirilmesinden yararlanır, ancak bazılarının yararlanması için gerçekte daha uzun bir süre gerekebilir. Bu yüzden, yazdırma süresi tahminlerini optimizasyonlu ve optimizasyonsuz olarak karşılaştırın."
 
 #: fdmprinter.def.json
 msgctxt "draft_shield_enabled label"
@@ -4316,22 +4310,22 @@ msgstr "Üst/alt katmanların yazdırıldığı yönü değiştirin. Normal koş
 #: fdmprinter.def.json
 msgctxt "cross_infill_pocket_size label"
 msgid "Cross 3D Pocket Size"
-msgstr ""
+msgstr "Çapraz 3D Cebin Boyutu"
 
 #: fdmprinter.def.json
 msgctxt "cross_infill_pocket_size description"
 msgid "The size of pockets at four-way crossings in the cross 3D pattern at heights where the pattern is touching itself."
-msgstr ""
+msgstr "Şeklin kendisine temas ettiği yüksekliklerde, çapraz 3D şekilde dört yönlü kesişme yerlerinde bulunan ceplerin boyutudur."
 
 #: fdmprinter.def.json
 msgctxt "cross_infill_apply_pockets_alternatingly label"
 msgid "Alternate Cross 3D Pockets"
-msgstr ""
+msgstr "Çapraz 3D Cepleri Değiştir"
 
 #: fdmprinter.def.json
 msgctxt "cross_infill_apply_pockets_alternatingly description"
 msgid "Only apply pockets at half of the four-way crossings in the cross 3D pattern and alternate the location of the pockets between heights where the pattern is touching itself."
-msgstr ""
+msgstr "Cepleri sadece çapraz 3D şekildeki dört yönlü kesişme yerlerinin yarısında uygulayın ve şeklin kendisine temas ettiği yüksekliklerin arasında ceplerin yerini değiştirin."
 
 #: fdmprinter.def.json
 msgctxt "spaghetti_infill_enabled label"
@@ -4633,9 +4627,7 @@ msgctxt "wireframe_up_half_speed description"
 msgid ""
 "Distance of an upward move which is extruded with half speed.\n"
 "This can cause better adhesion to previous layers, while not heating the material in those layers too much. Only applies to Wire Printing."
-msgstr ""
-"Yarı hızda sıkıştırılmış yukarı doğru hareket mesafesi.\n"
-"Bu katmanlarda malzemeyi çok fazla ısıtmayarak önceki katmanlarda daha iyi yapışma sağlayabilir. Sadece kablo yazdırmaya uygulanır."
+msgstr "Yarı hızda sıkıştırılmış yukarı doğru hareket mesafesi.\nBu katmanlarda malzemeyi çok fazla ısıtmayarak önceki katmanlarda daha iyi yapışma sağlayabilir. Sadece kablo yazdırmaya uygulanır."
 
 #: fdmprinter.def.json
 msgctxt "wireframe_top_jump label"
@@ -4755,12 +4747,12 @@ msgstr "Malzeme ekstrude edilmeden önce üst yüzey üzerinden bir kere daha ge
 #: fdmprinter.def.json
 msgctxt "ironing_only_highest_layer label"
 msgid "Iron Only Highest Layer"
-msgstr ""
+msgstr "Sadece En Yüksek Katmanı Ütüle"
 
 #: fdmprinter.def.json
 msgctxt "ironing_only_highest_layer description"
 msgid "Only perform ironing on the very last layer of the mesh. This saves time if the lower layers don't need a smooth surface finish."
-msgstr ""
+msgstr "Ütüleme işlemini bileşimin sadece en son katmanı üzerinde gerçekleştirin. Bu, alt katmanlarda pürüzsüz bir yüzey tesviyesine gerek olmadığı durumlarda zaman kazandırır."
 
 #: fdmprinter.def.json
 msgctxt "ironing_pattern label"
