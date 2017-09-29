@@ -248,7 +248,7 @@ Rectangle
                                 }
                                 else if (printJob.status == "pre_print" || printJob.status == "sent_to_printer")
                                 {
-                                    return catalog.i18nc("@label:status", "Preparing to print")
+                                    return catalog.i18nc("@label", "Preparing to print")
                                 }
                                 else if (printJob.configuration_changes_required != undefined && printJob.status == "queued")
                                 {
@@ -327,13 +327,13 @@ Rectangle
                                     return catalog.i18nc("@label", "Clear build plate")
                                 case "sent_to_printer":
                                 case "pre_print":
-                                    return catalog.i18nc("@label", "Leveling and heating")
+                                    return catalog.i18nc("@label", "Preparing to print")
                                 case "wait_for_configuration":
                                     return catalog.i18nc("@label", "Not accepting print jobs")
                                 case "queued":
                                     if (printJob.configuration_changes_required != undefined)
                                     {
-                                        return catalog.i18nc("@label", "Configuration change");
+                                        return catalog.i18nc("@label", "Waiting for configuration change");
                                     }
                                 default:
                                     return "";
