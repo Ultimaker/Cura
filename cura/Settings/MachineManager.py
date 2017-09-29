@@ -352,9 +352,9 @@ class MachineManager(QObject):
         if containers:
             Application.getInstance().setGlobalContainerStack(containers[0])
 
-    @pyqtSlot(str, str, str)
-    def addMachine(self, name: str, definition_id: str, default_name: str) -> None:
-        new_stack = CuraStackBuilder.createMachine(name, definition_id, default_name)
+    @pyqtSlot(str, str)
+    def addMachine(self, name: str, definition_id: str) -> None:
+        new_stack = CuraStackBuilder.createMachine(name, definition_id)
         if new_stack:
             Application.getInstance().setGlobalContainerStack(new_stack)
         else:
