@@ -98,16 +98,10 @@ class ProfilesModel(InstanceContainersModel):
         extruder_manager = ExtruderManager.getInstance()
         active_extruder = extruder_manager.getActiveExtruderStack()
         extruder_stacks = extruder_manager.getActiveExtruderStacks()
-        if extruder_stacks:
-            if multiple_extrusion:
-                # Place the active extruder at the front of the list.
-                if active_extruder in extruder_stacks:
-                    extruder_stacks.remove(active_extruder)
-                    extruder_stacks = [active_extruder] + extruder_stacks
-            else:
-                # The active extruder is the first in the list and only the active extruder is use to compute the usable qualities
-                active_extruder = None
-                extruder_stacks = []
+        if multiple_extrusion:
+            # Place the active extruder at the front of the list.
+            extruder_stacks.remove(active_extruder)
+            extruder_stacks = [active_extruder] + extruder_stacks
 
         # Get a list of usable/available qualities for this machine and material
         qualities = QualityManager.getInstance().findAllUsableQualitiesForMachineAndExtruders(global_container_stack,

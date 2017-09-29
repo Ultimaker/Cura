@@ -41,7 +41,7 @@ class ExtruderManager(QObject):
     def __init__(self, parent = None):
         super().__init__(parent)
         self._extruder_trains = { } #Per machine, a dictionary of extruder container stack IDs. Only for separately defined extruders.
-        self._active_extruder_index = -1
+        self._active_extruder_index = -1 # Indicates the index of the active extruder stack. -1 means no active extruder stack
         self._selected_object_extruders = []
         Application.getInstance().globalContainerStackChanged.connect(self.__globalContainerStackChanged)
         self._global_container_stack_definition_id = None
@@ -74,15 +74,18 @@ class ExtruderManager(QObject):
         except KeyError:
             return 0
 
+    ##  Gets a dict with the extruder stack ids with the extruder number as the key.
+    #   The key "-1" indicates the global stack id.
+    #
     @pyqtProperty("QVariantMap", notify = extrudersChanged)
     def extruderIds(self):
-        map = {}
+        extruder_stack_ids = {}
         global_stack_id = Application.getInstance().getGlobalContainerStack().getId()
-        map["-1"] = global_stack_id
+        extruder_stack_ids["-1"] = global_stack_id
         if global_stack_id in self._extruder_trains:
             for position in self._extruder_trains[global_stack_id]:
-                map[position] = self._extruder_trains[global_stack_id][position].getId()
-        return map
+                extruder_stack_ids[position] = self._extruder_trains[global_stack_id][position].getId()
+        return extruder_stack_ids
 
     @pyqtSlot(str, result = str)
     def getQualityChangesIdByExtruderStackId(self, id: str) -> str:
@@ -516,7 +519,8 @@ class ExtruderManager(QObject):
         result = []
         machine_extruder_count = global_stack.getProperty("machine_extruder_count", "value")
 
-        if machine_extruder_count is 1:
+        # In case the printer is using one extruder, shouldn't exist active extruder stacks
+        if machine_extruder_count == 1:
             return result
 
         if global_stack and global_stack.getId() in self._extruder_trains:
@@ -530,6 +534,16 @@ class ExtruderManager(QObject):
         if global_container_stack and global_container_stack.getBottom() and global_container_stack.getBottom().getId() != self._global_container_stack_definition_id:
             self._global_container_stack_definition_id = global_container_stack.getBottom().getId()
             self.globalContainerStackDefinitionChanged.emit()
+
+        # If the global container changed, the number of extruders could be changed and so the active_extruder_index is updated
+        extruder_count = global_container_stack.getProperty("machine_extruder_count", "value")
+        if extruder_count > 1:
+            if self._active_extruder_index == -1:
+                self.setActiveExtruderIndex(0)
+        else:
+            if self._active_extruder_index != -1:
+                self.setActiveExtruderIndex(-1)
+
         self.activeExtruderChanged.emit()
 
         self.resetSelectedObjectExtruders()
