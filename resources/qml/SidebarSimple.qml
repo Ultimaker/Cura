@@ -66,6 +66,7 @@ Item
                 {
                     target: Cura.MachineManager
                     onActiveQualityChanged: qualityModel.update()
+                    onActiveMaterialChanged: qualityModel.update()
                 }
 
                 ListModel

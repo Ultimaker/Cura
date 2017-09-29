@@ -112,13 +112,7 @@ class MachineSettingsAction(MachineAction):
         if not self._global_container_stack:
             return 0
 
-        # If there is a printer that originally is multi-extruder, it's not allowed to change the number of extruders
-        # It's just allowed in case of Custom FDM printers
-        definition_container = self._global_container_stack.getBottom()
-        if definition_container.getId() == "custom":
-            return len(self._global_container_stack.getMetaDataEntry("machine_extruder_trains"))
-        return 0
-
+        return len(self._global_container_stack.getMetaDataEntry("machine_extruder_trains"))
 
     @pyqtSlot(int)
     def setMachineExtruderCount(self, extruder_count):
@@ -176,7 +170,6 @@ class MachineSettingsAction(MachineAction):
                     node.callDecoration("setActiveExtruder", extruder_manager.getExtruderStack(extruder_count - 1).getId())
 
         definition_changes_container.setProperty("machine_extruder_count", "value", extruder_count)
-        self.forceUpdate()
 
         if extruder_count > 1:
             # Multiextrusion
@@ -220,6 +213,8 @@ class MachineSettingsAction(MachineAction):
                     machine_manager.setActiveVariant(extruder_variant_id)
 
                 preferences.setValue("cura/choice_on_profile_override", choice_on_profile_override)
+
+        self.forceUpdate()
 
 
     @pyqtSlot()

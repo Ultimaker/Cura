@@ -91,12 +91,7 @@ Column
             Connections
             {
                 target: Cura.MachineManager
-                onGlobalContainerChanged:
-                {
-                    forceActiveFocus() // Changing focus applies the currently-being-typed values so it can change the displayed setting values.
-                    var extruder_index = (machineExtruderCount.properties.value == 1) ? -1 : 0
-                    ExtruderManager.setActiveExtruderIndex(extruder_index);
-                }
+                onGlobalContainerChanged: forceActiveFocus() // Changing focus applies the currently-being-typed values so it can change the displayed setting values.
             }
 
             delegate: Button
