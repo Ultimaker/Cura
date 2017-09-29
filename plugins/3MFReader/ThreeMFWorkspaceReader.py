@@ -693,54 +693,53 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
 
         # --
         # load extruder stack files
-        if extruder_count_from_global_stack > 1:
-            try:
-                for extruder_stack_file in extruder_stack_files:
-                    container_id = self._stripFileToId(extruder_stack_file)
-                    extruder_file_content = archive.open(extruder_stack_file, "r").read().decode("utf-8")
+        try:
+            for extruder_stack_file in extruder_stack_files:
+                container_id = self._stripFileToId(extruder_stack_file)
+                extruder_file_content = archive.open(extruder_stack_file, "r").read().decode("utf-8")
 
-                    if self._resolve_strategies["machine"] == "override":
-                        # deserialize new extruder stack over the current ones
-                        stack = self._overrideExtruderStack(global_stack, extruder_file_content)
+                if self._resolve_strategies["machine"] == "override":
+                    # deserialize new extruder stack over the current ones
+                    stack = self._overrideExtruderStack(global_stack, extruder_file_content)
 
-                    elif self._resolve_strategies["machine"] == "new":
-                        new_id = extruder_stack_id_map[container_id]
-                        stack = ExtruderStack(new_id)
+                elif self._resolve_strategies["machine"] == "new":
+                    new_id = extruder_stack_id_map[container_id]
+                    stack = ExtruderStack(new_id)
 
-                        # HACK: the global stack can have a new name, so we need to make sure that this extruder stack
-                        #       references to the new name instead of the old one. Normally, this can be done after
-                        #       deserialize() by setting the metadata, but in the case of ExtruderStack, deserialize()
-                        #       also does addExtruder() to its machine stack, so we have to make sure that it's pointing
-                        #       to the right machine BEFORE deserialization.
-                        extruder_config = configparser.ConfigParser()
-                        extruder_config.read_string(extruder_file_content)
-                        extruder_config.set("metadata", "machine", global_stack_id_new)
-                        tmp_string_io = io.StringIO()
-                        extruder_config.write(tmp_string_io)
-                        extruder_file_content = tmp_string_io.getvalue()
+                    # HACK: the global stack can have a new name, so we need to make sure that this extruder stack
+                    #       references to the new name instead of the old one. Normally, this can be done after
+                    #       deserialize() by setting the metadata, but in the case of ExtruderStack, deserialize()
+                    #       also does addExtruder() to its machine stack, so we have to make sure that it's pointing
+                    #       to the right machine BEFORE deserialization.
+                    extruder_config = configparser.ConfigParser()
+                    extruder_config.read_string(extruder_file_content)
+                    extruder_config.set("metadata", "machine", global_stack_id_new)
+                    tmp_string_io = io.StringIO()
+                    extruder_config.write(tmp_string_io)
+                    extruder_file_content = tmp_string_io.getvalue()
 
-                        stack.deserialize(extruder_file_content)
+                    stack.deserialize(extruder_file_content)
 
-                        # Ensure a unique ID and name
-                        stack._id = new_id
+                    # Ensure a unique ID and name
+                    stack._id = new_id
 
-                        self._container_registry.addContainer(stack)
-                        extruder_stacks_added.append(stack)
-                        containers_added.append(stack)
-                    else:
-                        Logger.log("w", "Unknown resolve strategy: %s", self._resolve_strategies["machine"])
+                    self._container_registry.addContainer(stack)
+                    extruder_stacks_added.append(stack)
+                    containers_added.append(stack)
+                else:
+                    Logger.log("w", "Unknown resolve strategy: %s", self._resolve_strategies["machine"])
 
-                    # Create a new definition_changes container if it was empty
-                    if stack.definitionChanges == self._container_registry.getEmptyInstanceContainer():
-                        stack.setDefinitionChanges(CuraStackBuilder.createDefinitionChangesContainer(stack, stack._id + "_settings"))
+                # Create a new definition_changes container if it was empty
+                if stack.definitionChanges == self._container_registry.getEmptyInstanceContainer():
+                    stack.setDefinitionChanges(CuraStackBuilder.createDefinitionChangesContainer(stack, stack._id + "_settings"))
 
-                    extruder_stacks.append(stack)
-            except:
-                Logger.logException("w", "We failed to serialize the stack. Trying to clean up.")
-                # Something went really wrong. Try to remove any data that we added.
-                for container in containers_added:
-                    self._container_registry.removeContainer(container.getId())
-                return
+                extruder_stacks.append(stack)
+        except:
+            Logger.logException("w", "We failed to serialize the stack. Trying to clean up.")
+            # Something went really wrong. Try to remove any data that we added.
+            for container in containers_added:
+                self._container_registry.removeContainer(container.getId())
+            return
 
         #
         # Replacing the old containers if resolve is "new".
