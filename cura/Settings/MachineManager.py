@@ -271,7 +271,6 @@ class MachineManager(QObject):
                     extruder_stack.containersChanged.disconnect(self._onInstanceContainersChanged)
 
         self._global_container_stack = Application.getInstance().getGlobalContainerStack()
-        self._active_container_stack = self._global_container_stack
 
         self.globalContainerChanged.emit()
 
@@ -303,6 +302,9 @@ class MachineManager(QObject):
 
                 quality = self._global_container_stack.quality
                 quality.nameChanged.connect(self._onQualityNameChanged)
+
+                self._active_container_stack = self._global_container_stack
+
         self._error_check_timer.start()
 
     ##  Update self._stacks_valid according to _checkStacksForErrors and emit if change.
@@ -352,9 +354,9 @@ class MachineManager(QObject):
         if containers:
             Application.getInstance().setGlobalContainerStack(containers[0])
 
-    @pyqtSlot(str, str, str)
-    def addMachine(self, name: str, definition_id: str, default_name: str) -> None:
-        new_stack = CuraStackBuilder.createMachine(name, definition_id, default_name)
+    @pyqtSlot(str, str)
+    def addMachine(self, name: str, definition_id: str) -> None:
+        new_stack = CuraStackBuilder.createMachine(name, definition_id)
         if new_stack:
             Application.getInstance().setGlobalContainerStack(new_stack)
         else:
@@ -543,16 +545,22 @@ class MachineManager(QObject):
 
         return result
 
+    ##  Gets a dict with the active materials ids set in all extruder stacks and the global stack
+    #   (when there is one extruder, the material is set in the global stack)
+    #
+    #   \return The material ids in all stacks
     @pyqtProperty("QVariantMap", notify = activeMaterialChanged)
     def allActiveMaterialIds(self) -> Dict[str, str]:
         result = {}
         active_stacks = ExtruderManager.getInstance().getActiveExtruderStacks()
-        if active_stacks is not None: #If we have a global stack.
+
+        result[self._global_container_stack.getId()] = self._global_container_stack.material.getId()
+
+        if active_stacks is not None:  # If we have extruder stacks
             for stack in active_stacks:
                 material_container = stack.material
                 if not material_container:
                     continue
-
                 result[stack.getId()] = material_container.getId()
 
         return result
