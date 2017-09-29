@@ -545,6 +545,10 @@ class MachineManager(QObject):
 
         return result
 
+    ##  Gets a dict with the active materials ids set in all extruder stacks and the global stack
+    #   (when there is one extruder, the material is set in the global stack)
+    #
+    #   \return The material ids in all stacks
     @pyqtProperty("QVariantMap", notify = activeMaterialChanged)
     def allActiveMaterialIds(self) -> Dict[str, str]:
         result = {}
