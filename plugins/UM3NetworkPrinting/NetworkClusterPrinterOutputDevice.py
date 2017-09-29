@@ -97,8 +97,8 @@ class NetworkClusterPrinterOutputDevice(NetworkPrinterOutputDevice.NetworkPrinte
         self._cluster_status_update_timer.setSingleShot(False)
         self._cluster_status_update_timer.timeout.connect(self._requestClusterStatus)
 
-        self._can_pause = False
-        self._can_abort = False
+        self._can_pause = True
+        self._can_abort = True
         self._can_pre_heat_bed = False
         self._cluster_size = int(properties.get(b"cluster_size", 0))
 
@@ -154,6 +154,22 @@ class NetworkClusterPrinterOutputDevice(NetworkPrinterOutputDevice.NetworkPrinte
     def close(self):
         super().close()
         self._cluster_status_update_timer.stop()
+
+    def _setJobState(self, job_state):
+        if not self._selected_printer:
+            return
+
+        selected_printer_uuid = self._printers_dict[self._selected_printer["unique_name"]]["uuid"]
+        if selected_printer_uuid not in self._print_job_by_printer_uuid:
+            return
+
+        print_job_uuid = self._print_job_by_printer_uuid[selected_printer_uuid]["uuid"]
+
+        url = QUrl(self._api_base_uri + "print_jobs/" + print_job_uuid + "/action")
+        put_request = QNetworkRequest(url)
+        put_request.setHeader(QNetworkRequest.ContentTypeHeader, "application/json")
+        data = '{"action": "' + job_state + '"}'
+        self._manager.put(put_request, data.encode())
 
     def _requestClusterStatus(self):
         # TODO: Handle timeout. We probably want to know if the cluster is still reachable or not.
