@@ -61,7 +61,7 @@ Rectangle
         anchors.fill:parent
         onClicked: OutputDevice.selectPrinter(printer.unique_name, printer.friendly_name)
         hoverEnabled: true;
-        
+
         // Only clickable if no printer is selected
         enabled: OutputDevice.selectedPrinterName == ""
     }
@@ -256,10 +256,10 @@ Rectangle
                                 }
                                 else if (printJob.Status == "aborted")
                                 {
-                                    return catalog.i18nc("@label:status", "Aborted")
+                                    return catalog.i18nc("@label:status", "Print aborted")
                                 }
                                 else
-                                {   
+                                {
                                     return "";
                                 }
                             }
