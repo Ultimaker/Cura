@@ -66,7 +66,15 @@ Menu
             checkable: true
             checked: model.id == Cura.MachineManager.allActiveMaterialIds[ExtruderManager.extruderIds[extruderIndex]]
             exclusiveGroup: group
-            onTriggered: Cura.MachineManager.setActiveMaterial(model.id)
+            onTriggered:
+            {
+                // This workaround is done because of the application menus for materials and variants for multiextrusion printers.
+                // The extruder menu would always act on the correspoding extruder only, instead of acting on the extruder selected in the UI.
+                var activeExtruderIndex = ExtruderManager.activeExtruderIndex;
+                ExtruderManager.setActiveExtruderIndex(extruderIndex);
+                Cura.MachineManager.setActiveMaterial(model.id);
+                ExtruderManager.setActiveExtruderIndex(activeExtruderIndex);
+            }
         }
         onObjectAdded: menu.insertItem(index, object)
         onObjectRemoved: menu.removeItem(object)
@@ -101,7 +109,15 @@ Menu
                             checkable: true
                             checked: model.id == Cura.MachineManager.allActiveMaterialIds[ExtruderManager.extruderIds[extruderIndex]]
                             exclusiveGroup: group
-                            onTriggered: Cura.MachineManager.setActiveMaterial(model.id)
+                            onTriggered:
+                            {
+                                // This workaround is done because of the application menus for materials and variants for multiextrusion printers.
+                                // The extruder menu would always act on the correspoding extruder only, instead of acting on the extruder selected in the UI.
+                                var activeExtruderIndex = ExtruderManager.activeExtruderIndex;
+                                ExtruderManager.setActiveExtruderIndex(extruderIndex);
+                                Cura.MachineManager.setActiveMaterial(model.id);
+                                ExtruderManager.setActiveExtruderIndex(activeExtruderIndex);
+                            }
                         }
                         onObjectAdded: brandMaterialsMenu.insertItem(index, object)
                         onObjectRemoved: brandMaterialsMenu.removeItem(object)
