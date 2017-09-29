@@ -5,6 +5,7 @@ import os
 import time
 import json
 
+from collections import defaultdict
 from PyQt5.QtCore import QObject, pyqtProperty, pyqtSignal, pyqtSlot
 from PyQt5.QtCore import QUrl
 from PyQt5.QtGui import QDesktopServices
@@ -40,6 +41,10 @@ class NetworkPrinterOutputDevicePlugin(QObject, OutputDevicePlugin):
         self._network_manager = QNetworkAccessManager()
         self._network_manager.finished.connect(self._onNetworkRequestFinished)
 
+        self._cluster_detect_network_manager = QNetworkAccessManager()
+        self._cluster_detect_network_manager.finished.connect(self._onClusterDetectRequestFinished)
+        self._add_printer_data = defaultdict(list)  # Used to store parameters in the add printer process
+
         # List of old printer names. This is used to ensure that a refresh of zeroconf does not needlessly forces
         # authentication requests.
         self._old_printers = []
@@ -47,6 +52,7 @@ class NetworkPrinterOutputDevicePlugin(QObject, OutputDevicePlugin):
         # Because the model needs to be created in the same thread as the QMLEngine, we use a signal.
         self.addPrinterSignal.connect(self.addPrinter)
         self.removePrinterSignal.connect(self.removePrinter)
+        self.addPrinterAfterDetectionSignal.connect(self._onAddPrinterAfterDetection)
         Application.getInstance().globalContainerStackChanged.connect(self.reCheckConnections)
 
         # Get list of manual printers from preferences
@@ -56,7 +62,8 @@ class NetworkPrinterOutputDevicePlugin(QObject, OutputDevicePlugin):
 
         self._network_requests_buffer = {}  # store api responses until data is complete
 
-    addPrinterSignal = Signal()
+    addPrinterSignal = Signal()  # first step in this plugin
+    addPrinterAfterDetectionSignal = Signal()  # second step
     removePrinterSignal = Signal()
     printerListChanged = Signal()
 
@@ -121,6 +128,7 @@ class NetworkPrinterOutputDevicePlugin(QObject, OutputDevicePlugin):
         self._network_manager.get(name_request)
 
     def checkClusterPrinter(self, address):
+        # Part of manual added printer
         cluster_url = QUrl("http://" + address + self._cluster_api_prefix + "printers/?origin=check_cluster")
         cluster_request = QNetworkRequest(cluster_url)
         self._network_manager.get(cluster_request)
@@ -215,10 +223,12 @@ class NetworkPrinterOutputDevicePlugin(QObject, OutputDevicePlugin):
                     self._printers[key].close()
                     self._printers[key].connectionStateChanged.disconnect(self._onPrinterConnectionStateChanged)
 
-    ##  Because the model needs to be created in the same thread as the QMLEngine, we use a signal.
-    def addPrinter(self, name, address, properties, force_cluster=False):
-        cluster_size = int(properties.get(b"cluster_size", -1))
-        if force_cluster or cluster_size >= 0:
+    ##  Because the model needs to be created in the same thread as the QMLEngine, we use a signal to call this function
+    def _onAddPrinterAfterDetection(self, reply_url, is_cluster, cluster_size):
+        name, address, properties, force_cluster = self._add_printer_data[reply_url].pop(0)
+        if is_cluster:
+            Logger.log("d", "   # Now really adding printer... %s %s %s %s %s %s %s", reply_url, is_cluster, cluster_size, name, address, properties, force_cluster)
+        if is_cluster:
             printer = NetworkClusterPrinterOutputDevice.NetworkClusterPrinterOutputDevice(
                 name, address, properties, self._api_prefix, self._plugin_path)
         else:
@@ -231,6 +241,35 @@ class NetworkPrinterOutputDevicePlugin(QObject, OutputDevicePlugin):
                 self._printers[printer.getKey()].connect()
                 printer.connectionStateChanged.connect(self._onPrinterConnectionStateChanged)
         self.printerListChanged.emit()
+
+    ##  Reply after cluster detect API call in addPrinter
+    def _onClusterDetectRequestFinished(self, reply):
+        reply_url = reply.url().toString()
+        status_code = reply.attribute(QNetworkRequest.HttpStatusCodeAttribute)
+        is_cluster = False
+        cluster_size = -1
+        try:
+            if status_code == 200:
+                json_data = json.loads(bytes(reply.readAll()).decode("utf-8"))
+                cluster_size = len(json_data)
+                # Logger.log("d", "   # cluster printer: %s %s", reply_url, cluster_size)
+                is_cluster = True
+        except json.decoder.JSONDecodeError:
+            pass
+
+        self.addPrinterAfterDetectionSignal.emit(reply_url, is_cluster, cluster_size)  # second step
+
+    ##  Because the model needs to be created in the same thread as the QMLEngine, we use a signal.
+    #   Do the cluster api detection, then finish with _onClusterDetectRequestFinished.
+    def addPrinter(self, name, address, properties, force_cluster=False):
+        Logger.log("d", "addPrinter ... %s %s %s %s", name, address, properties, force_cluster)
+        url = "http://" + address + self._cluster_api_prefix + "printers/"
+        # Multiple calls to the same url can occur (manually added printer), but the results per url are/should be the same
+        self._add_printer_data[url].append((name, address, properties, force_cluster))
+        q_url = QUrl(url)
+        name_request = QNetworkRequest(q_url)
+        Logger.log("d", "  ##  %s", url)
+        self._cluster_detect_network_manager.get(name_request)
 
     def removePrinter(self, name):
         printer = self._printers.pop(name, None)
