@@ -354,11 +354,16 @@ class MachineManager(QObject):
         if containers:
             Application.getInstance().setGlobalContainerStack(containers[0])
 
+        self.activeQualityChanged.emit()
+        self.activeVariantChanged.emit()
+        self.activeMaterialChanged.emit()
+
     @pyqtSlot(str, str)
     def addMachine(self, name: str, definition_id: str) -> None:
         new_stack = CuraStackBuilder.createMachine(name, definition_id)
         if new_stack:
-            Application.getInstance().setGlobalContainerStack(new_stack)
+            # Instead of setting the global container stack here, we set the active machine and so the signals are emitted
+            self.setActiveMachine(new_stack.getId())
         else:
             Logger.log("w", "Failed creating a new machine!")
 
