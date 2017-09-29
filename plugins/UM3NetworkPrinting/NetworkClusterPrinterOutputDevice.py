@@ -144,7 +144,7 @@ class NetworkClusterPrinterOutputDevice(NetworkPrinterOutputDevice.NetworkPrinte
         name = self._selected_printer.get("friendly_name")
         if name != self._automatic_printer.get("friendly_name"):
             return name
-        # Return name of cluster master. 
+        # Return name of cluster master.
         return self._properties.get(b"name", b"").decode("utf-8")
 
     def connect(self):
