@@ -31,7 +31,7 @@ class NetworkPrinterOutputDevicePlugin(QObject, OutputDevicePlugin):
         self._zero_conf = None
         self._browser = None
         self._printers = {}
-        self._printers_seen = {}  # do not forget a printer when we have seen one, also do not 'downgrade' to legacy printer from Connect
+        self._cluster_printers_seen = {}  # do not forget a cluster printer when we have seen one, to not 'downgrade' from Connect to legacy printer
 
         self._api_version = "1"
         self._api_prefix = "/api/v" + self._api_version + "/"
@@ -219,7 +219,7 @@ class NetworkPrinterOutputDevicePlugin(QObject, OutputDevicePlugin):
     ##  Because the model needs to be created in the same thread as the QMLEngine, we use a signal.
     def addPrinter(self, name, address, properties, force_cluster=False):
         cluster_size = int(properties.get(b"cluster_size", -1))
-        was_cluster_before = isinstance(self._printers_seen.get(name, None), NetworkClusterPrinterOutputDevice.NetworkClusterPrinterOutputDevice)
+        was_cluster_before = name in self._cluster_printers_seen
         if was_cluster_before:
             Logger.log("d", "Printer [%s] had Cura Connect before, so assume it's still equipped with Cura Connect.", name)
         if force_cluster or cluster_size >= 0 or was_cluster_before:
@@ -228,7 +228,7 @@ class NetworkPrinterOutputDevicePlugin(QObject, OutputDevicePlugin):
         else:
             printer = NetworkPrinterOutputDevice.NetworkPrinterOutputDevice(name, address, properties, self._api_prefix)
         self._printers[printer.getKey()] = printer
-        self._printers_seen[printer.getKey()] = printer  # Printers that are temporary unreachable or is rebooted are stored here
+        self._cluster_printers_seen[printer.getKey()] = name  # Cluster printers that may be temporary unreachable or is rebooted keep being stored here
         global_container_stack = Application.getInstance().getGlobalContainerStack()
         if global_container_stack and printer.getKey() == global_container_stack.getMetaDataEntry("um_network_key"):
             if printer.getKey() not in self._old_printers:  # Was the printer already connected, but a re-scan forced?
