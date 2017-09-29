@@ -22,6 +22,11 @@ from zeroconf import Zeroconf, ServiceBrowser, ServiceStateChange, ServiceInfo  
 from . import NetworkPrinterOutputDevice, NetworkClusterPrinterOutputDevice
 
 
+# This should cover the startup time from the printer
+SLEEP_AFTER_TIMEOUT = 15
+MAX_RETRIES = 10
+
+
 ##      This plugin handles the connection detection & creation of output device objects for the UM3 printer.
 #       Zero-Conf is used to detect printers, which are saved in a dict.
 #       If we discover a printer that has the same key as the active machine instance a connection is made.
@@ -225,7 +230,7 @@ class NetworkPrinterOutputDevicePlugin(QObject, OutputDevicePlugin):
 
     ##  Because the model needs to be created in the same thread as the QMLEngine, we use a signal to call this function
     def _onAddPrinterAfterDetection(self, reply_url, is_cluster, cluster_size):
-        name, address, properties, force_cluster = self._add_printer_data[reply_url].pop(0)
+        name, address, properties, force_cluster, retries = self._add_printer_data[reply_url].pop(0)
         if is_cluster:
             Logger.log("d", "   # Now really adding printer... %s %s %s %s %s %s %s", reply_url, is_cluster, cluster_size, name, address, properties, force_cluster)
         if is_cluster:
@@ -248,27 +253,49 @@ class NetworkPrinterOutputDevicePlugin(QObject, OutputDevicePlugin):
         status_code = reply.attribute(QNetworkRequest.HttpStatusCodeAttribute)
         is_cluster = False
         cluster_size = -1
+        name, address, properties, force_cluster, retries = self._add_printer_data[reply_url][0]
+        if "237" in address:
+            Logger.log("d", "#### Trying %s %s %s %s %s", name, address, properties, force_cluster, retries)
         try:
             if status_code == 200:
                 json_data = json.loads(bytes(reply.readAll()).decode("utf-8"))
                 cluster_size = len(json_data)
                 # Logger.log("d", "   # cluster printer: %s %s", reply_url, cluster_size)
                 is_cluster = True
+            elif status_code in [503, 504]:
+                # 503 is busy starting up
+                # 504 is timeout
+                Logger.log("d", "After timeout or busy starting up, retry calling API on %s...", reply_url)
+                # Gateway timeout. The printer is too busy or it is still starting up. Try again after some time
+                # TODO: we cannot do a sleep here as it blocks the whole front end
+                time.sleep(SLEEP_AFTER_TIMEOUT)
+                name, address, properties, force_cluster, retries = self._add_printer_data[reply_url].pop(0)
+                self.addPrinter(name, address, properties, force_cluster=force_cluster, retries=retries+1)
+                return
+            elif status_code in [302, 404]:
+                # Currently we expect a 302 or a 404 from a non Cura Connect printer.
+                is_cluster = False
+            # else:
+            #     Logger.log("d", "Got: %s %s %s", reply_url, status_code, bytes(reply.readAll()).decode("utf-8"))
         except json.decoder.JSONDecodeError:
             pass
 
         self.addPrinterAfterDetectionSignal.emit(reply_url, is_cluster, cluster_size)  # second step
 
-    ##  Because the model needs to be created in the same thread as the QMLEngine, we use a signal.
+    ##
+    #   Because the model needs to be created in the same thread as the QMLEngine, we use a signal.
+    #   Update: does not have to be triggered by a signal anymore
     #   Do the cluster api detection, then finish with _onClusterDetectRequestFinished.
-    def addPrinter(self, name, address, properties, force_cluster=False):
+    def addPrinter(self, name, address, properties, force_cluster=False, retries=0):
         Logger.log("d", "addPrinter ... %s %s %s %s", name, address, properties, force_cluster)
+        if retries >= MAX_RETRIES:
+            Logger.log("d", "addPrinter failed, tried %s times contacting %s %s", retries, name, address)
+            return
         url = "http://" + address + self._cluster_api_prefix + "printers/"
         # Multiple calls to the same url can occur (manually added printer), but the results per url are/should be the same
-        self._add_printer_data[url].append((name, address, properties, force_cluster))
+        self._add_printer_data[url].append((name, address, properties, force_cluster, retries))
         q_url = QUrl(url)
         name_request = QNetworkRequest(q_url)
-        Logger.log("d", "  ##  %s", url)
         self._cluster_detect_network_manager.get(name_request)
 
     def removePrinter(self, name):
