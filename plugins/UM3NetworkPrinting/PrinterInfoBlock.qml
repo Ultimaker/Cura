@@ -266,6 +266,10 @@ Rectangle
                                         return "";
                                 }
                             }
+                            if (printer.status == "printing")
+                            {
+                                return catalog.i18nc("@label:status", "Printing")
+                            }
                             return catalog.i18nc("@label:status", "Available");
                         }
 
