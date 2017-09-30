@@ -17,6 +17,7 @@ from UM.Logger import Logger
 from UM.Message import Message
 from UM.OutputDevice import OutputDeviceError
 from UM.i18n import i18nCatalog
+from UM.Qt.Duration import Duration, DurationFormat
 
 from . import NetworkPrinterOutputDevice
 
@@ -652,3 +653,7 @@ class NetworkClusterPrinterOutputDevice(NetworkPrinterOutputDevice.NetworkPrinte
                 self._reply.abort()
                 self._reply = None
             Application.getInstance().showPrintMonitor.emit(False)
+
+    @pyqtSlot(int, result=str)
+    def formatDuration(self, seconds):
+        return Duration(seconds).getDisplayString(DurationFormat.Format.Short)

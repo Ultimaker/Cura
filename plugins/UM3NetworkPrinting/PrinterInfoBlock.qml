@@ -14,14 +14,7 @@ Rectangle
 
     function getPrettyTime(time)
     {
-        var hours = Math.floor(time / 3600)
-        time -= hours * 3600
-        var minutes = Math.floor(time / 60);
-        time -= minutes * 60
-        var seconds = Math.floor(time);
-
-        var finalTime = strPadLeft(hours, "0", 2) + ':' + strPadLeft(minutes,'0',2)+ ':' + strPadLeft(seconds,'0',2);
-        return finalTime;
+        return OutputDevice.formatDuration(time)
     }
 
     function formatPrintJobPercent(printJob)
