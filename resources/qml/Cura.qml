@@ -386,7 +386,10 @@ UM.MainWindow
                 visible: opacity > 0
                 opacity: base.showPrintMonitor ? 1 : 0
 
-                Behavior on opacity { NumberAnimation { duration: 100; } }
+                // Behavior on opacity { NumberAnimation { duration: 100; } }
+
+                // ^ This has been turned off to prevent the flash of blue when switch from
+                // Monitor tab to Prepare in combination with a Cura Connect printer.
 
                 MouseArea {
                     anchors.fill: parent
