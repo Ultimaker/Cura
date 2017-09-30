@@ -31,22 +31,13 @@ Component
             anchors.horizontalCenter: parent.horizontalCenter
             text: Cura.MachineManager.printerOutputDevices[0].name
         }
-        Label
-        {
-            id: printerGroupLabel
-            anchors.top: activePrintersLabel.bottom
-            text: catalog.i18nc("@label", "PRINTER GROUP")
-            anchors.horizontalCenter: parent.horizontalCenter
-            font: UM.Theme.getFont("very_small")
-            opacity: 0.65
-        }
-
+        
         Rectangle
         {
             id: printJobArea
             border.width: UM.Theme.getSize("default_lining").width
             border.color: lineColor
-            anchors.top: printerGroupLabel.bottom
+            anchors.top: activePrintersLabel.bottom
             anchors.topMargin: UM.Theme.getSize("default_margin").height
             anchors.left: parent.left
             anchors.leftMargin: UM.Theme.getSize("default_margin").width
