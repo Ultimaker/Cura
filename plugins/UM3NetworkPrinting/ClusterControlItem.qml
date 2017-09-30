@@ -6,11 +6,13 @@ import Cura 1.0 as Cura
 
 Component
 {
-    Item
+    Rectangle
     {
         id: base
         property var manager: Cura.MachineManager.printerOutputDevices[0]
         anchors.fill: parent
+        color: UM.Theme.getColor("viewport_background")
+
         property var lineColor: "#DCDCDC" // TODO: Should be linked to theme.
         property var cornerRadius: 4 * screenScaleFactor // TODO: Should be linked to theme.
 
