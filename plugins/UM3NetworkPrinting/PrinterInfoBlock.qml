@@ -223,6 +223,9 @@ Rectangle
                     //border.color: lineColor
                     height: 40 * screenScaleFactor
                     anchors.left: parent.left
+                    property var showPercent: {
+                        return printJob != null && (["printing", "post_print", "pre_print", "sent_to_printer"].indexOf(printJob.status) !== -1);
+                    }
 
                     Label
                     {
@@ -283,6 +286,7 @@ Rectangle
 
                         font: UM.Theme.getFont("small")
                     }
+
                     Label
                     {
                         id: progressText
@@ -292,10 +296,42 @@ Rectangle
                         anchors.top: statusText.top
 
                         text: formatPrintJobPercent(printJob)
-                        visible: printJob != null && (["printing", "post_print", "pre_print", "sent_to_printer"].indexOf(printJob.status) !== -1)
+                        visible: printProgressTitleBar.showPercent
                         opacity: 0.65
                         font: UM.Theme.getFont("very_small")
                     }
+
+                    Image 
+                    {
+                        width: 16 * screenScaleFactor
+                        height: width
+                        anchors.right: parent.right
+                        anchors.rightMargin: UM.Theme.getSize("default_margin").width
+                        anchors.top: statusText.top
+
+                        visible: ! printProgressTitleBar.showPercent
+                        
+                        source: {
+                            if ( ! printer.enabled)
+                            {
+                                return "blocked-icon.svg";
+                            }
+                            if (printJob != null)
+                            {
+                                if(printJob.status === "queued")
+                                {
+                                    if (printJob.configuration_changes_required != null && printJob.configuration_changes_required.length !== 0)
+                                    {
+                                        return "action-required-icon.svg";
+                                    }
+                                } else if (printJob.status === "wait_cleanup")
+                                {
+                                    return "checkmark-icon.svg";
+                                }
+                            }
+                        }
+                    }
+
                     Rectangle
                     {
                         //TODO: This will become a progress bar in the future
