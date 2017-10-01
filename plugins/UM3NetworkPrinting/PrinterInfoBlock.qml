@@ -136,15 +136,28 @@ Rectangle
                 anchors.right: printProgressArea.left
                 anchors.rightMargin: UM.Theme.getSize("default_margin").width
                 color: emphasisColor
-                UM.RecolorImage
+
+                Image
                 {
-                    anchors.verticalCenter: parent.verticalCenter
-                    anchors.horizontalCenter: parent.horizontalCenter
+                    width: 40 * screenScaleFactor
+                    height: width
+                    anchors.right: printProgressArea.left
+                    anchors.rightMargin: UM.Theme.getSize("default_margin").width
                     source: "camera-icon.svg"
-                    width: sourceSize.width
-                    height: sourceSize.height * width / sourceSize.width
-                    color: "white"
                 }
+
+                // FIXME: Currently using Image instead of UM.RecolorImage because RecolorImage has
+                // the bad side effect of scaling/shrinking the image on my HiDPI laptop screen(!)
+
+                // UM.RecolorImage
+                // {
+                //     anchors.verticalCenter: parent.verticalCenter
+                //     anchors.horizontalCenter: parent.horizontalCenter
+                //     source: "camera-icon.svg"
+                //     width: sourceSize.width
+                //     height: sourceSize.height * width / sourceSize.width
+                //     color: "white"
+                // }
             }
 
             Row     // PrintCode config
