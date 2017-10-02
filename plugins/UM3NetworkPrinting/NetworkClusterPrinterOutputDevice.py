@@ -144,7 +144,7 @@ class NetworkClusterPrinterOutputDevice(NetworkPrinterOutputDevice.NetworkPrinte
         name = self._selected_printer.get("friendly_name")
         if name != self._automatic_printer.get("friendly_name"):
             return name
-        # Return name of cluster master. 
+        # Return name of cluster master.
         return self._properties.get(b"name", b"").decode("utf-8")
 
     def connect(self):
@@ -461,7 +461,7 @@ class NetworkClusterPrinterOutputDevice(NetworkPrinterOutputDevice.NetworkPrinte
 
                 printer_name = self.__getPrinterNameFromUuid(print_job["printer_uuid"])
                 if printer_name is None:
-                    printer_name = i18n_catalog.i18nc("@info:status", "Unknown printer")
+                    printer_name = i18n_catalog.i18nc("@label", "Unknown")
 
                 message_text = (i18n_catalog.i18nc("@info:status",
                                 "Printer '{printer_name}' has finished printing '{job_name}'.")
@@ -491,7 +491,7 @@ class NetworkClusterPrinterOutputDevice(NetworkPrinterOutputDevice.NetworkPrinte
                 if printer_name is None:
                     printer_name = i18n_catalog.i18nc("@info:status", "Unknown printer")
 
-                message_text = (i18n_catalog.i18n("{printer_name} is reserved to print '{job_name}'.Please change the printer's configuration to match the job, for it to start printing.")
+                message_text = (i18n_catalog.i18n("{printer_name} is reserved to print '{job_name}'. Please change the printer's configuration to match the job, for it to start printing.")
                                 .format(printer_name=printer_name, job_name=print_job["name"]))
                 message = Message(text=message_text, title=i18n_catalog.i18nc("@label:status", "Action required"))
                 Application.getInstance().showMessage(message)
