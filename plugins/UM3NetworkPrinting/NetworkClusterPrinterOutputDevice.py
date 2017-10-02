@@ -628,9 +628,7 @@ class NetworkClusterPrinterOutputDevice(NetworkPrinterOutputDevice.NetworkPrinte
         request.setRawHeader(b"User-agent", b"CuraPrintClusterOutputDevice Plugin")
 
     def _cleanupRequest(self):
-        self._reply = None
         self._request = None
-        self._multipart = None
         self._stage = OutputStage.ready
         self._file_name = None
 
@@ -683,8 +681,7 @@ class NetworkClusterPrinterOutputDevice(NetworkPrinterOutputDevice.NetworkPrinte
             Logger.log("d", "User aborted sending print to remote.")
             self._progress_message.hide()
             self._compressing_print = False
-            self._stage = OutputStage.ready
             if self._reply:
                 self._reply.abort()
-                self._reply = None
+            self._stage = OutputStage.ready
             Application.getInstance().showPrintMonitor.emit(False)
