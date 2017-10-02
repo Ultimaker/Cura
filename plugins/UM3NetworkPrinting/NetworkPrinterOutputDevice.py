@@ -331,13 +331,14 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
 
         if self._camera_timer.isActive():
             self._camera_timer.stop()
-        else: #Camera wasn't even running. Don't try to stop it or you'll get a segfault.
-            return
 
         if self._image_reply:
             try:
+                try:
+                    self._image_reply.downloadProgress.disconnect(self._onStreamDownloadProgress)
+                except TypeError:
+                    pass #The signal was never connected.
                 self._image_reply.abort()
-                self._image_reply.downloadProgress.disconnect(self._onStreamDownloadProgress)
             except RuntimeError:
                 pass  # It can happen that the wrapped c++ object is already deleted.
             self._image_reply = None
