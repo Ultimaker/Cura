@@ -10,8 +10,8 @@ Component
     Rectangle
     {
         width: maximumWidth
-        height: maximumHeight
-        color: "#FFFFFF" // TODO; Should not be hardcoded.
+        height: maximumHeight        
+        color: UM.Theme.getColor("viewport_background")
 
         property var emphasisColor: "#44c0ff" //TODO: should be linked to theme.
         property var lineColor: "#DCDCDC" // TODO: Should be linked to theme.
