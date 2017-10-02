@@ -37,6 +37,23 @@ Rectangle
         return Math.min(100, Math.round(printJob.time_elapsed / printJob.time_total * 100)) + "%";
     }
 
+    function printerStatusText(printer)
+    {
+        switch (printer.status)
+        {
+            case "pre_print":
+                return catalog.i18nc("@label", "Preparing to print")
+            case "printing":
+                return catalog.i18nc("@label:status", "Printing");
+            case "idle":
+                return catalog.i18nc("@label:status", "Available");
+            case "unreachable":  // TODO: new string
+            case "maintenance":  // TODO: new string
+            case "unknown":
+            default:
+                return catalog.i18nc("@label", "Unknown");
+        }
+    }
 
     id: printerDelegate
     property var printer
@@ -232,7 +249,7 @@ Rectangle
                                 return catalog.i18nc("@label:status", "Disabled");
                             }
 
-                            if(printJob != null)
+                            if ((printJob != null) && ((printer.status === "pre_print") || (printer.status === "printing")))
                             {
                                 switch (printJob.status)
                                 {
@@ -263,23 +280,10 @@ Rectangle
                                     case "aborted":
                                         return catalog.i18nc("@label:status", "Print aborted");
                                     default:
-                                        return "";
+                                        return printerStatusText(printer);
                                 }
                             }
-                            switch (printer.status)
-                            {
-                                case "pre_print":
-                                    return catalog.i18nc("@label", "Preparing to print")
-                                case "printing":
-                                    return catalog.i18nc("@label:status", "Printing");
-                                case "idle":
-                                    return catalog.i18nc("@label:status", "Available");
-                                case "unreachable":  // TODO: new string
-                                case "maintenance":  // TODO: new string
-                                case "unknown":
-                                default:
-                                    return catalog.i18nc("@label", "Unknown");
-                            }
+                            return printerStatusText(printer);
                         }
 
                         elide: Text.ElideRight
