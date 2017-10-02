@@ -292,7 +292,8 @@ Item
                         }
 
                         onValueChanged: {
-                            if(Cura.MachineManager.activeMachine != null)
+                            // Only change if an active machine is set and the slider is visible at all.
+                            if(Cura.MachineManager.activeMachine != null && visible)
                             {
                                 //Prevent updating during view initializing. Trigger only if the value changed by user
                                 if(qualitySlider.value != qualityModel.activeQualityId)
