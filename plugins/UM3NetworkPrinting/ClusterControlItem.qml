@@ -29,9 +29,11 @@ Component
             id: activePrintersLabel
             font: UM.Theme.getFont("large")
             anchors.horizontalCenter: parent.horizontalCenter
+            anchors.topMargin: UM.Theme.getSize("default_margin").height
+            anchors.top: parent.top
             text: Cura.MachineManager.printerOutputDevices[0].name
         }
-        
+
         Rectangle
         {
             id: printJobArea
