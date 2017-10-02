@@ -141,8 +141,8 @@ Rectangle
                 {
                     width: 40 * screenScaleFactor
                     height: width
-                    anchors.right: printProgressArea.left
-                    anchors.rightMargin: UM.Theme.getSize("default_margin").width
+                    anchors.right: parent.right
+                    anchors.rightMargin: parent.rightMargin
                     source: "camera-icon.svg"
                 }
 
@@ -301,7 +301,7 @@ Rectangle
                         font: UM.Theme.getFont("very_small")
                     }
 
-                    Image 
+                    Image
                     {
                         width: 16 * screenScaleFactor
                         height: width
@@ -310,7 +310,7 @@ Rectangle
                         anchors.top: statusText.top
 
                         visible: ! printProgressTitleBar.showPercent
-                        
+
                         source: {
                             if ( ! printer.enabled)
                             {
@@ -329,6 +329,7 @@ Rectangle
                                     return "checkmark-icon.svg";
                                 }
                             }
+                            return "";  // We're not going to show it, so it will not be resolved as a url.
                         }
                     }
 
@@ -354,7 +355,7 @@ Rectangle
 
                     width: parent.width - 2 * UM.Theme.getSize("default_margin").width
 
-                    visible: showExtended
+                    visible: printProgressArea.showExtended
 
                     Label   // Status detail
                     {
