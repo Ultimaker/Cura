@@ -23,6 +23,21 @@ msgctxt "@label:status"
 msgid "Print aborted"
 msgstr "打印已中止"
 
+#: Manually added for plugins/UM3NetworkPrinting/PrinterInfoBlock.qml
+msgctxt "@label:status"
+msgid "Blocked"
+msgstr "冻结操作"
+
+#: Manually added for plugins/UM3NetworkPrinting/PrinterInfoBlock.qml
+msgctxt "@label:status"
+msgid "Action required"
+msgstr "需要采取行动"
+
+#: Manually added for plugins/UM3NetworkPrinting/PrinterInfoBlock.qml
+msgctxt "@label:status"
+msgid "Can't start print"
+msgstr "不能开始打印"
+
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.py:29
 msgctxt "@action"
 msgid "Machine Settings"

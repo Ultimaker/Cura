@@ -59,7 +59,7 @@
     "colors": {
         "sidebar": [255, 255, 255, 255],
         "lining": [192, 193, 194, 255],
-        "viewport_overlay": [24, 41, 77, 192],
+        "viewport_overlay": [0, 0, 0, 192],
 
         "primary": [12, 169, 227, 255],
         "primary_hover": [48, 182, 231, 255],
@@ -68,7 +68,7 @@
         "secondary": [245, 245, 245, 255],
 
         "topbar_background_color": [255, 255, 255, 0],
-        "topbar_background_color_monitoring": [255, 255, 255, 255],
+        "topbar_background_color_monitoring": [255, 255, 255, 0],
 
         "topbar_button_text_active": [0, 0, 0, 255],
         "topbar_button_text_inactive": [128, 128, 128, 255],
