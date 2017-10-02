@@ -354,9 +354,7 @@ class MachineManager(QObject):
         if containers:
             Application.getInstance().setGlobalContainerStack(containers[0])
 
-        self.activeQualityChanged.emit()
-        self.activeVariantChanged.emit()
-        self.activeMaterialChanged.emit()
+        self.__onInstanceContainersChanged()
 
     @pyqtSlot(str, str)
     def addMachine(self, name: str, definition_id: str) -> None:
