@@ -331,6 +331,8 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
 
         if self._camera_timer.isActive():
             self._camera_timer.stop()
+        else: #Camera wasn't even running. Don't try to stop it or you'll get a segfault.
+            return
 
         if self._image_reply:
             try:
