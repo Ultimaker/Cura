@@ -173,17 +173,18 @@ class NetworkClusterPrinterOutputDevice(NetworkPrinterOutputDevice.NetworkPrinte
 
     def _requestClusterStatus(self):
         # TODO: Handle timeout. We probably want to know if the cluster is still reachable or not.
-        url = QUrl(self._api_base_uri + "print_jobs/")
-        print_jobs_request = QNetworkRequest(url)
-        self._addUserAgentHeader(print_jobs_request)
-        self._manager.get(print_jobs_request)
-        # See _finishedPrintJobsRequest()
-
         url = QUrl(self._api_base_uri + "printers/")
         printers_request = QNetworkRequest(url)
         self._addUserAgentHeader(printers_request)
         self._manager.get(printers_request)
         # See _finishedPrintersRequest()
+
+        if self._printers:  # if printers is not empty
+            url = QUrl(self._api_base_uri + "print_jobs/")
+            print_jobs_request = QNetworkRequest(url)
+            self._addUserAgentHeader(print_jobs_request)
+            self._manager.get(print_jobs_request)
+            # See _finishedPrintJobsRequest()
 
     def _finishedPrintJobsRequest(self, reply):
         try:
@@ -489,7 +490,8 @@ class NetworkClusterPrinterOutputDevice(NetworkPrinterOutputDevice.NetworkPrinte
 
                 printer_name = self.__getPrinterNameFromUuid(print_job["assigned_to"])
                 if printer_name is None:
-                    printer_name = i18n_catalog.i18nc("@info:status", "Unknown printer")
+                    # don't report on yet unknown printers
+                    continue
 
                 message_text = (i18n_catalog.i18n("{printer_name} is reserved to print '{job_name}'. Please change the printer's configuration to match the job, for it to start printing.")
                                 .format(printer_name=printer_name, job_name=print_job["name"]))
