@@ -10,7 +10,7 @@ Component
     Rectangle
     {
         width: maximumWidth
-        height: maximumHeight        
+        height: maximumHeight
         color: UM.Theme.getColor("viewport_background")
 
         property var emphasisColor: "#44c0ff" //TODO: should be linked to theme.
@@ -49,7 +49,7 @@ Component
             anchors.topMargin: UM.Theme.getSize("default_margin").height
             anchors.top: parent.top
             anchors.horizontalCenter: parent.horizontalCenter
-            
+
             width: Math.min(800 * screenScaleFactor, maximumWidth)
             height: children.height
             visible: OutputDevice.connectedPrinters.length != 0
