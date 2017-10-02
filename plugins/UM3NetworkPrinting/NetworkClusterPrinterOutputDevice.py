@@ -144,7 +144,7 @@ class NetworkClusterPrinterOutputDevice(NetworkPrinterOutputDevice.NetworkPrinte
         name = self._selected_printer.get("friendly_name")
         if name != self._automatic_printer.get("friendly_name"):
             return name
-        # Return name of cluster master. 
+        # Return name of cluster master.
         return self._properties.get(b"name", b"").decode("utf-8")
 
     def connect(self):
@@ -413,6 +413,7 @@ class NetworkClusterPrinterOutputDevice(NetworkPrinterOutputDevice.NetworkPrinte
             self._print_jobs = print_jobs
 
             self._notifyFinishedPrintJobs(old_print_jobs, print_jobs)
+            self._notifyConfigurationChangeRequired(old_print_jobs, print_jobs)
 
             # Yes, this is a hacky way of doing it, but it's quick and the API doesn't give the print job per printer
             # for some reason. ugh.
@@ -460,7 +461,7 @@ class NetworkClusterPrinterOutputDevice(NetworkPrinterOutputDevice.NetworkPrinte
 
                 printer_name = self.__getPrinterNameFromUuid(print_job["printer_uuid"])
                 if printer_name is None:
-                    printer_name = i18n_catalog.i18nc("@info:status", "Unknown printer")
+                    printer_name = i18n_catalog.i18nc("@label", "Unknown")
 
                 message_text = (i18n_catalog.i18nc("@info:status",
                                 "Printer '{printer_name}' has finished printing '{job_name}'.")
@@ -474,6 +475,38 @@ class NetworkClusterPrinterOutputDevice(NetworkPrinterOutputDevice.NetworkPrinte
     def __filterOurPrintJobs(self, print_jobs):
         username = self.__get_username()
         return [print_job for print_job in print_jobs if print_job["owner"] == username]
+
+    def _notifyConfigurationChangeRequired(self, old_print_jobs, new_print_jobs):
+        if old_print_jobs is None:
+            return
+
+        old_change_required_print_jobs = self.__filterConfigChangePrintJobs(self.__filterOurPrintJobs(old_print_jobs))
+        new_change_required_print_jobs = self.__filterConfigChangePrintJobs(self.__filterOurPrintJobs(new_print_jobs))
+        old_change_required_print_job_uuids = set([pj["uuid"] for pj in old_change_required_print_jobs])
+
+        for print_job in new_change_required_print_jobs:
+            if print_job["uuid"] not in old_change_required_print_job_uuids:
+
+                printer_name = self.__getPrinterNameFromUuid(print_job["assigned_to"])
+                if printer_name is None:
+                    printer_name = i18n_catalog.i18nc("@info:status", "Unknown printer")
+
+                message_text = (i18n_catalog.i18n("{printer_name} is reserved to print '{job_name}'. Please change the printer's configuration to match the job, for it to start printing.")
+                                .format(printer_name=printer_name, job_name=print_job["name"]))
+                message = Message(text=message_text, title=i18n_catalog.i18nc("@label:status", "Action required"))
+                Application.getInstance().showMessage(message)
+                Application.getInstance().showToastMessage(
+                    i18n_catalog.i18nc("@label:status", "Action required"),
+                    message_text)
+
+    def __filterConfigChangePrintJobs(self, print_jobs):
+        return filter(self.__isConfigurationChangeRequiredPrintJob, print_jobs)
+
+    def __isConfigurationChangeRequiredPrintJob(self, print_job):
+        if print_job["status"] == "queued":
+            changes_required = print_job.get("configuration_changes_required", [])
+            return len(changes_required) != 0
+        return False
 
     def __getPrinterNameFromUuid(self, printer_uuid):
         for printer in self._printers:
