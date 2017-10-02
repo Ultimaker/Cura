@@ -428,7 +428,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
             Logger.log("d", "Requestion authentication for %s due to action %s" % (self._key, action_id))
             self._authentication_failed_message.hide()
             self._not_authenticated_message.hide()
-            self._authentication_state = AuthState.NotAuthenticated
+            self.setAuthenticationState(AuthState.NotAuthenticated)
             self._authentication_counter = 0
             self._authentication_requested_message.setProgress(0)
             self._authentication_id = None
@@ -615,7 +615,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
 
         # Reset authentication state
         self._authentication_requested_message.hide()
-        self._authentication_state = AuthState.NotAuthenticated
+        self.setAuthenticationState(AuthState.NotAuthenticated)
         self._authentication_counter = 0
         self._authentication_timer.stop()
 
