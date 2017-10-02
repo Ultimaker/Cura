@@ -115,19 +115,15 @@ class NetworkClusterPrinterOutputDevice(NetworkPrinterOutputDevice.NetworkPrinte
 
     ##  No authentication, so requestAuthentication should do exactly nothing
     @pyqtSlot()
-    @override(NetworkPrinterOutputDevice)
     def requestAuthentication(self, message_id = None, action_id = "Retry"):
         pass    # Cura Connect doesn't do any authorization
 
-    @override(NetworkPrinterOutputDevice)
     def setAuthenticationState(self, auth_state):
         self._authentication_state = NetworkPrinterOutputDevice.AuthState.Authenticated  # The printer is always authenticated
 
-    @override(NetworkPrinterOutputDevice)
     def _verifyAuthentication(self):
         pass
 
-    @override(NetworkPrinterOutputDevice)
     def _checkAuthentication(self):
         Logger.log("d", "_checkAuthentication Cura Connect - nothing to be done")
 
