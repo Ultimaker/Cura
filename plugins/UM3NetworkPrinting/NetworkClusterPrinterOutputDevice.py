@@ -44,6 +44,7 @@ class NetworkClusterPrinterOutputDevice(NetworkPrinterOutputDevice.NetworkPrinte
         else:
             name = key
 
+        self._authentication_state = NetworkPrinterOutputDevice.AuthState.Authenticated  # The printer is always authenticated
         self._plugin_path = plugin_path
 
         self.setName(name)
@@ -109,6 +110,20 @@ class NetworkClusterPrinterOutputDevice(NetworkPrinterOutputDevice.NetworkPrinte
         temporary_translation2 = i18n_catalog.i18nc("Count is number of printers.", "This printer is the host for a group of {count} connected Ultimaker 3 printers.").format(count = 3)
         temporary_translation3 = i18n_catalog.i18n("{printer_name} has finished printing '{job_name}'. Please collect the print and confirm clearing the build plate.") #When finished.
         temporary_translation4 = i18n_catalog.i18n("{printer_name} is reserved to print '{job_name}'. Please change the printer's configuration to match the job, for it to start printing.") #When configuration changed.
+
+    ##  No authentication, so requestAuthentication should do exactly nothing
+    @pyqtSlot()
+    def requestAuthentication(self, message_id = None, action_id = "Retry"):
+        Logger.log("d", "requestAuthentication for Cura Connect - nothing to be done")
+
+    def setAuthenticationState(self, auth_state):
+        self._authentication_state = NetworkPrinterOutputDevice.AuthState.Authenticated  # The printer is always authenticated
+
+    def _verifyAuthentication(self):
+        pass
+
+    def _checkAuthentication(self):
+        Logger.log("d", "_checkAuthentication Cura Connect - nothing to be done")
 
     @pyqtProperty(QObject, notify=selectedPrinterChanged)
     def controlItem(self):
