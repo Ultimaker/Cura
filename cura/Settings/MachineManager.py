@@ -304,6 +304,7 @@ class MachineManager(QObject):
                 quality.nameChanged.connect(self._onQualityNameChanged)
 
                 self._active_container_stack = self._global_container_stack
+                self.activeStackChanged.emit()
 
         self._error_check_timer.start()
 

@@ -6,11 +6,13 @@ import Cura 1.0 as Cura
 
 Component
 {
-    Item
+    Rectangle
     {
         id: base
         property var manager: Cura.MachineManager.printerOutputDevices[0]
         anchors.fill: parent
+        color: UM.Theme.getColor("viewport_background")
+
         property var lineColor: "#DCDCDC" // TODO: Should be linked to theme.
         property var cornerRadius: 4 * screenScaleFactor // TODO: Should be linked to theme.
 
@@ -27,16 +29,9 @@ Component
             id: activePrintersLabel
             font: UM.Theme.getFont("large")
             anchors.horizontalCenter: parent.horizontalCenter
+            anchors.topMargin: UM.Theme.getSize("default_margin").height
+            anchors.top: parent.top
             text: Cura.MachineManager.printerOutputDevices[0].name
-        }
-        Label
-        {
-            id: printerGroupLabel
-            anchors.top: activePrintersLabel.bottom
-            text: catalog.i18nc("@label", "Printer Group").toUpperCase()
-            anchors.horizontalCenter: parent.horizontalCenter
-            font: UM.Theme.getFont("very_small")
-            opacity: 0.65
         }
 
         Rectangle
@@ -44,7 +39,7 @@ Component
             id: printJobArea
             border.width: UM.Theme.getSize("default_lining").width
             border.color: lineColor
-            anchors.top: printerGroupLabel.bottom
+            anchors.top: activePrintersLabel.bottom
             anchors.topMargin: UM.Theme.getSize("default_margin").height
             anchors.left: parent.left
             anchors.leftMargin: UM.Theme.getSize("default_margin").width

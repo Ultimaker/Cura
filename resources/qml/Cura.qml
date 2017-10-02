@@ -386,8 +386,6 @@ UM.MainWindow
                 visible: opacity > 0
                 opacity: base.showPrintMonitor ? 1 : 0
 
-                Behavior on opacity { NumberAnimation { duration: 100; } }
-
                 MouseArea {
                     anchors.fill: parent
                     acceptedButtons: Qt.AllButtons
@@ -818,7 +816,7 @@ UM.MainWindow
 
     Connections
     {
-        target: Printer
+        target: CuraApplication
         onShowDiscardOrKeepProfileChanges:
         {
             discardOrKeepProfileChangesDialog.show()

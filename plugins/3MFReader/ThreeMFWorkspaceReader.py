@@ -370,7 +370,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
 
     ## Overrides an ExtruderStack in the given GlobalStack and returns the new ExtruderStack.
     def _overrideExtruderStack(self, global_stack, extruder_file_content):
-        # get extruder position first
+        # Get extruder position first
         extruder_config = configparser.ConfigParser()
         extruder_config.read_string(extruder_file_content)
         if not extruder_config.has_option("metadata", "position"):
@@ -378,10 +378,9 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             Logger.log("e", "Could not find 'metadata/position' in extruder stack file")
             raise RuntimeError(msg)
         extruder_position = extruder_config.get("metadata", "position")
-
         extruder_stack = global_stack.extruders[extruder_position]
 
-        # override the given extruder stack
+        # Override the given extruder stack
         extruder_stack.deserialize(extruder_file_content)
 
         # return the new ExtruderStack
@@ -699,8 +698,9 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                 extruder_file_content = archive.open(extruder_stack_file, "r").read().decode("utf-8")
 
                 if self._resolve_strategies["machine"] == "override":
-                    # deserialize new extruder stack over the current ones
-                    stack = self._overrideExtruderStack(global_stack, extruder_file_content)
+                    if global_stack.getProperty("machine_extruder_count", "value") > 1:
+                        # deserialize new extruder stack over the current ones (if any)
+                        stack = self._overrideExtruderStack(global_stack, extruder_file_content)
 
                 elif self._resolve_strategies["machine"] == "new":
                     new_id = extruder_stack_id_map[container_id]
@@ -732,8 +732,8 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                 # Create a new definition_changes container if it was empty
                 if stack.definitionChanges == self._container_registry.getEmptyInstanceContainer():
                     stack.setDefinitionChanges(CuraStackBuilder.createDefinitionChangesContainer(stack, stack._id + "_settings"))
-
-                extruder_stacks.append(stack)
+                if global_stack.getProperty("machine_extruder_count", "value") > 1:
+                    extruder_stacks.append(stack)
         except:
             Logger.logException("w", "We failed to serialize the stack. Trying to clean up.")
             # Something went really wrong. Try to remove any data that we added.

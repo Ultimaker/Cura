@@ -76,7 +76,7 @@ Item
 
                     property var totalTicks: 0
                     property var availableTotalTicks: 0
-                    property var activeQualityId: 0
+                    property var activeQualityIndex: 0
 
                     property var qualitySliderStepWidth: 0
                     property var qualitySliderAvailableMin : 0
@@ -97,7 +97,7 @@ Item
 
                             // Set selected value
                             if (Cura.MachineManager.activeQualityId == qualityItem.id) {
-                                qualityModel.activeQualityId = i
+                                qualityModel.activeQualityIndex = i
                             }
 
                             // Set min available
@@ -144,9 +144,13 @@ Item
 
                         // check, the ticks count cannot be less than zero
                         if(Cura.ProfilesModel.rowCount() != 0)
+                        {
                             qualityModel.totalTicks = Cura.ProfilesModel.rowCount() - 1  // minus one, because slider starts from 0
+                        }
                         else
+                        {
                             qualityModel.totalTicks = 0
+                        }
                     }
                 }
 
@@ -264,7 +268,7 @@ Item
                         maximumValue: qualityModel.qualitySliderAvailableMax >= 0 ? qualityModel.qualitySliderAvailableMax : 0
                         stepSize: 1
 
-                        value: qualityModel.activeQualityId
+                        value: qualityModel.activeQualityIndex
 
                         width: qualityModel.qualitySliderStepWidth * qualityModel.availableTotalTicks
 
@@ -292,10 +296,11 @@ Item
                         }
 
                         onValueChanged: {
-                            if(Cura.MachineManager.activeMachine != null)
+                            // Only change if an active machine is set and the slider is visible at all.
+                            if(Cura.MachineManager.activeMachine != null && visible)
                             {
                                 //Prevent updating during view initializing. Trigger only if the value changed by user
-                                if(qualitySlider.value != qualityModel.activeQualityId)
+                                if(qualitySlider.value != qualityModel.activeQualityIndex)
                                 {
                                     //start updating with short delay
                                     qualitySliderChangeTimer.start();

@@ -14,14 +14,7 @@ Rectangle
 
     function getPrettyTime(time)
     {
-        var hours = Math.floor(time / 3600)
-        time -= hours * 3600
-        var minutes = Math.floor(time / 60);
-        time -= minutes * 60
-        var seconds = Math.floor(time);
-
-        var finalTime = strPadLeft(hours, "0", 2) + ':' + strPadLeft(minutes,'0',2)+ ':' + strPadLeft(seconds,'0',2);
-        return finalTime;
+        return OutputDevice.formatDuration(time)
     }
 
     function formatPrintJobPercent(printJob)
@@ -37,6 +30,23 @@ Rectangle
         return Math.min(100, Math.round(printJob.time_elapsed / printJob.time_total * 100)) + "%";
     }
 
+    function printerStatusText(printer)
+    {
+        switch (printer.status)
+        {
+            case "pre_print":
+                return catalog.i18nc("@label", "Preparing to print")
+            case "printing":
+                return catalog.i18nc("@label:status", "Printing");
+            case "idle":
+                return catalog.i18nc("@label:status", "Available");
+            case "unreachable":  // TODO: new string
+            case "maintenance":  // TODO: new string
+            case "unknown":
+            default:
+                return catalog.i18nc("@label", "Unknown");
+        }
+    }
 
     id: printerDelegate
     property var printer
@@ -143,14 +153,14 @@ Rectangle
                 anchors.right: printProgressArea.left
                 anchors.rightMargin: UM.Theme.getSize("default_margin").width
                 color: emphasisColor
-                UM.RecolorImage
+
+                Image
                 {
-                    anchors.verticalCenter: parent.verticalCenter
-                    anchors.horizontalCenter: parent.horizontalCenter
+                    width: 40 * screenScaleFactor
+                    height: width
+                    anchors.right: parent.right
+                    anchors.rightMargin: parent.rightMargin
                     source: "camera-icon.svg"
-                    width: sourceSize.width
-                    height: sourceSize.height * width / sourceSize.width
-                    color: "white"
                 }
             }
 
@@ -217,6 +227,9 @@ Rectangle
                     //border.color: lineColor
                     height: 40 * screenScaleFactor
                     anchors.left: parent.left
+                    property var showPercent: {
+                        return printJob != null && (["printing", "post_print", "pre_print", "sent_to_printer"].indexOf(printJob.status) !== -1);
+                    }
 
                     Label
                     {
@@ -232,7 +245,7 @@ Rectangle
                                 return catalog.i18nc("@label:status", "Disabled");
                             }
 
-                            if(printJob != null)
+                            if ((printJob != null) && ((printer.status === "pre_print") || (printer.status === "printing")))
                             {
                                 switch (printJob.status)
                                 {
@@ -263,16 +276,17 @@ Rectangle
                                     case "aborted":
                                         return catalog.i18nc("@label:status", "Print aborted");
                                     default:
-                                        return "";
+                                        return printerStatusText(printer);
                                 }
                             }
-                            return catalog.i18nc("@label:status", "Available");
+                            return printerStatusText(printer);
                         }
 
                         elide: Text.ElideRight
 
                         font: UM.Theme.getFont("small")
                     }
+
                     Label
                     {
                         id: progressText
@@ -282,10 +296,44 @@ Rectangle
                         anchors.top: statusText.top
 
                         text: formatPrintJobPercent(printJob)
-                        visible: printJob != null && (["printing", "post_print", "pre_print", "sent_to_printer"].indexOf(printJob.status) !== -1)
+                        visible: printProgressTitleBar.showPercent
                         opacity: 0.65
                         font: UM.Theme.getFont("very_small")
                     }
+
+                    Image
+                    {
+                        width: statusText.height
+                        height: width
+                        anchors.right: parent.right
+                        anchors.rightMargin: UM.Theme.getSize("default_margin").width
+                        anchors.top: statusText.top
+
+                        visible: ! printProgressTitleBar.showPercent
+
+                        source: {
+                            if ( ! printer.enabled)
+                            {
+                                return "blocked-icon.svg";
+                            }
+                            if (printJob != null)
+                            {
+                                if(printJob.status === "queued")
+                                {
+                                    if (printJob.configuration_changes_required != null && printJob.configuration_changes_required.length !== 0)
+                                    {
+                                        return "action-required-icon.svg";
+                                    }
+                                }
+                                else if (printJob.status === "wait_cleanup")
+                                {
+                                    return "checkmark-icon.svg";
+                                }
+                            }
+                            return "";  // We're not going to show it, so it will not be resolved as a url.
+                        }
+                    }
+
                     Rectangle
                     {
                         //TODO: This will become a progress bar in the future
@@ -308,7 +356,7 @@ Rectangle
 
                     width: parent.width - 2 * UM.Theme.getSize("default_margin").width
 
-                    visible: showExtended
+                    visible: printProgressArea.showExtended
 
                     Label   // Status detail
                     {

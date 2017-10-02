@@ -13,10 +13,12 @@ from PyQt5.QtGui import QDesktopServices
 from PyQt5.QtNetwork import QNetworkAccessManager, QNetworkReply
 from PyQt5.QtQml import QQmlComponent, QQmlContext
 from UM.Application import Application
+from UM.Decorators import override
 from UM.Logger import Logger
 from UM.Message import Message
 from UM.OutputDevice import OutputDeviceError
 from UM.i18n import i18nCatalog
+from UM.Qt.Duration import Duration, DurationFormat
 
 from . import NetworkPrinterOutputDevice
 
@@ -44,6 +46,7 @@ class NetworkClusterPrinterOutputDevice(NetworkPrinterOutputDevice.NetworkPrinte
         else:
             name = key
 
+        self._authentication_state = NetworkPrinterOutputDevice.AuthState.Authenticated  # The printer is always authenticated
         self._plugin_path = plugin_path
 
         self.setName(name)
@@ -110,6 +113,20 @@ class NetworkClusterPrinterOutputDevice(NetworkPrinterOutputDevice.NetworkPrinte
         temporary_translation3 = i18n_catalog.i18n("{printer_name} has finished printing '{job_name}'. Please collect the print and confirm clearing the build plate.") #When finished.
         temporary_translation4 = i18n_catalog.i18n("{printer_name} is reserved to print '{job_name}'. Please change the printer's configuration to match the job, for it to start printing.") #When configuration changed.
 
+    ##  No authentication, so requestAuthentication should do exactly nothing
+    @pyqtSlot()
+    def requestAuthentication(self, message_id = None, action_id = "Retry"):
+        pass    # Cura Connect doesn't do any authorization
+
+    def setAuthenticationState(self, auth_state):
+        self._authentication_state = NetworkPrinterOutputDevice.AuthState.Authenticated  # The printer is always authenticated
+
+    def _verifyAuthentication(self):
+        pass
+
+    def _checkAuthentication(self):
+        Logger.log("d", "_checkAuthentication Cura Connect - nothing to be done")
+
     @pyqtProperty(QObject, notify=selectedPrinterChanged)
     def controlItem(self):
         # TODO: Probably not the nicest way to do this. This needs to be done better at some point in time.
@@ -173,17 +190,18 @@ class NetworkClusterPrinterOutputDevice(NetworkPrinterOutputDevice.NetworkPrinte
 
     def _requestClusterStatus(self):
         # TODO: Handle timeout. We probably want to know if the cluster is still reachable or not.
-        url = QUrl(self._api_base_uri + "print_jobs/")
-        print_jobs_request = QNetworkRequest(url)
-        self._addUserAgentHeader(print_jobs_request)
-        self._manager.get(print_jobs_request)
-        # See _finishedPrintJobsRequest()
-
         url = QUrl(self._api_base_uri + "printers/")
         printers_request = QNetworkRequest(url)
         self._addUserAgentHeader(printers_request)
         self._manager.get(printers_request)
         # See _finishedPrintersRequest()
+
+        if self._printers:  # if printers is not empty
+            url = QUrl(self._api_base_uri + "print_jobs/")
+            print_jobs_request = QNetworkRequest(url)
+            self._addUserAgentHeader(print_jobs_request)
+            self._manager.get(print_jobs_request)
+            # See _finishedPrintJobsRequest()
 
     def _finishedPrintJobsRequest(self, reply):
         try:
@@ -275,7 +293,10 @@ class NetworkClusterPrinterOutputDevice(NetworkPrinterOutputDevice.NetworkPrinte
         self._file_name = "%s.gcode.gz" % file_name
         self._showProgressMessage()
 
-        self._request = self._buildSendPrintJobHttpRequest(require_printer_name)
+        new_request = self._buildSendPrintJobHttpRequest(require_printer_name)
+        if new_request is None or self._stage != OutputStage.uploading:
+            return
+        self._request = new_request
         self._reply = self._manager.post(self._request, self._multipart)
         self._reply.uploadProgress.connect(self._onUploadProgress)
         # See _finishedPostPrintJobRequest()
@@ -294,7 +315,7 @@ class NetworkClusterPrinterOutputDevice(NetworkPrinterOutputDevice.NetworkPrinte
         gcode = getattr(Application.getInstance().getController().getScene(), "gcode_list")
         compressed_gcode = self._compressGcode(gcode)
         if compressed_gcode is None:
-            return  # User aborted print, so stop trying.
+            return None     # User aborted print, so stop trying.
 
         part.setBody(compressed_gcode)
         self._multipart.append(part)
@@ -331,7 +352,7 @@ class NetworkClusterPrinterOutputDevice(NetworkPrinterOutputDevice.NetworkPrinte
         for line in gcode:
             if not self._compressing_print:
                 self._progress_message.hide()
-                return  # Stop trying to zip, abort was called.
+                return None     # Stop trying to zip, abort was called.
             batched_line += line
             # if the gcode was read from a gcode file, self._gcode will be a list of all lines in that file.
             # Compressing line by line in this case is extremely slow, so we need to batch them.
@@ -489,7 +510,8 @@ class NetworkClusterPrinterOutputDevice(NetworkPrinterOutputDevice.NetworkPrinte
 
                 printer_name = self.__getPrinterNameFromUuid(print_job["assigned_to"])
                 if printer_name is None:
-                    printer_name = i18n_catalog.i18nc("@info:status", "Unknown printer")
+                    # don't report on yet unknown printers
+                    continue
 
                 message_text = (i18n_catalog.i18n("{printer_name} is reserved to print '{job_name}'. Please change the printer's configuration to match the job, for it to start printing.")
                                 .format(printer_name=printer_name, job_name=print_job["name"]))
@@ -625,9 +647,7 @@ class NetworkClusterPrinterOutputDevice(NetworkPrinterOutputDevice.NetworkPrinte
         request.setRawHeader(b"User-agent", b"CuraPrintClusterOutputDevice Plugin")
 
     def _cleanupRequest(self):
-        self._reply = None
         self._request = None
-        self._multipart = None
         self._stage = OutputStage.ready
         self._file_name = None
 
@@ -680,8 +700,11 @@ class NetworkClusterPrinterOutputDevice(NetworkPrinterOutputDevice.NetworkPrinte
             Logger.log("d", "User aborted sending print to remote.")
             self._progress_message.hide()
             self._compressing_print = False
-            self._stage = OutputStage.ready
             if self._reply:
                 self._reply.abort()
-                self._reply = None
+            self._stage = OutputStage.ready
             Application.getInstance().showPrintMonitor.emit(False)
+
+    @pyqtSlot(int, result=str)
+    def formatDuration(self, seconds):
+        return Duration(seconds).getDisplayString(DurationFormat.Format.Short)
