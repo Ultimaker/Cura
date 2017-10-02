@@ -290,7 +290,7 @@ Rectangle
 
                     Image
                     {
-                        width: 16 * screenScaleFactor
+                        width: statusText.height * screenScaleFactor
                         height: width
                         anchors.right: parent.right
                         anchors.rightMargin: UM.Theme.getSize("default_margin").width
@@ -311,7 +311,8 @@ Rectangle
                                     {
                                         return "action-required-icon.svg";
                                     }
-                                } else if (printJob.status === "wait_cleanup")
+                                }
+                                else if (printJob.status === "wait_cleanup")
                                 {
                                     return "checkmark-icon.svg";
                                 }
