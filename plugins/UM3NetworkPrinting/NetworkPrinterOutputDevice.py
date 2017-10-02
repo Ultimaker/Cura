@@ -334,7 +334,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         else: #Camera wasn't even running. Don't try to stop it or you'll get a segfault.
             return
 
-        if self._camera_active:
+        if self._image_reply:
             try:
                 self._image_reply.abort()
                 self._image_reply.downloadProgress.disconnect(self._onStreamDownloadProgress)
