@@ -275,7 +275,10 @@ class NetworkClusterPrinterOutputDevice(NetworkPrinterOutputDevice.NetworkPrinte
         self._file_name = "%s.gcode.gz" % file_name
         self._showProgressMessage()
 
-        self._request = self._buildSendPrintJobHttpRequest(require_printer_name)
+        new_request = self._buildSendPrintJobHttpRequest(require_printer_name)
+        if new_request is None or self._stage != OutputStage.uploading:
+            return
+        self._request = new_request
         self._reply = self._manager.post(self._request, self._multipart)
         self._reply.uploadProgress.connect(self._onUploadProgress)
         # See _finishedPostPrintJobRequest()
@@ -294,7 +297,7 @@ class NetworkClusterPrinterOutputDevice(NetworkPrinterOutputDevice.NetworkPrinte
         gcode = getattr(Application.getInstance().getController().getScene(), "gcode_list")
         compressed_gcode = self._compressGcode(gcode)
         if compressed_gcode is None:
-            return  # User aborted print, so stop trying.
+            return None     # User aborted print, so stop trying.
 
         part.setBody(compressed_gcode)
         self._multipart.append(part)
@@ -331,7 +334,7 @@ class NetworkClusterPrinterOutputDevice(NetworkPrinterOutputDevice.NetworkPrinte
         for line in gcode:
             if not self._compressing_print:
                 self._progress_message.hide()
-                return  # Stop trying to zip, abort was called.
+                return None     # Stop trying to zip, abort was called.
             batched_line += line
             # if the gcode was read from a gcode file, self._gcode will be a list of all lines in that file.
             # Compressing line by line in this case is extremely slow, so we need to batch them.
