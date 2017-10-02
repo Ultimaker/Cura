@@ -266,7 +266,20 @@ Rectangle
                                         return "";
                                 }
                             }
-                            return catalog.i18nc("@label:status", "Available");
+                            switch (printer.status)
+                            {
+                                case "pre_print":
+                                    return catalog.i18nc("@label", "Preparing to print")
+                                case "printing":
+                                    return catalog.i18nc("@label:status", "Printing");
+                                case "idle":
+                                    return catalog.i18nc("@label:status", "Available");
+                                case "unreachable":  // TODO: new string
+                                case "maintenance":  // TODO: new string
+                                case "unknown":
+                                default:
+                                    return catalog.i18nc("@label", "Unknown");
+                            }
                         }
 
                         elide: Text.ElideRight
