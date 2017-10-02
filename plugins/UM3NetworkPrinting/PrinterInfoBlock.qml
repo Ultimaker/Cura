@@ -290,7 +290,7 @@ Rectangle
 
                     Image
                     {
-                        width: statusText.height * screenScaleFactor
+                        width: statusText.height
                         height: width
                         anchors.right: parent.right
                         anchors.rightMargin: UM.Theme.getSize("default_margin").width
