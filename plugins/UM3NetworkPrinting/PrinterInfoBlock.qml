@@ -145,19 +145,6 @@ Rectangle
                     anchors.rightMargin: parent.rightMargin
                     source: "camera-icon.svg"
                 }
-
-                // FIXME: Currently using Image instead of UM.RecolorImage because RecolorImage has
-                // the bad side effect of scaling/shrinking the image on my HiDPI laptop screen(!)
-
-                // UM.RecolorImage
-                // {
-                //     anchors.verticalCenter: parent.verticalCenter
-                //     anchors.horizontalCenter: parent.horizontalCenter
-                //     source: "camera-icon.svg"
-                //     width: sourceSize.width
-                //     height: sourceSize.height * width / sourceSize.width
-                //     color: "white"
-                // }
             }
 
             Row     // PrintCode config
