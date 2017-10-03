@@ -17,10 +17,6 @@
             "size": 1.15,
             "family": "Open Sans"
         },
-        "default_little_big": {
-            "size": 1.17,
-            "family": "Open Sans"
-        },
         "default_bold": {
             "size": 1.15,
             "bold": true,
