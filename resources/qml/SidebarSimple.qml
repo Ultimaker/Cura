@@ -385,7 +385,7 @@ Item
                 anchors.top: infillCellLeft.top
                 anchors.topMargin: UM.Theme.getSize("sidebar_margin").height
 
-                Text {
+                Label {
                     id: selectedInfillRateText
 
                     //anchors.top: parent.top
@@ -563,7 +563,7 @@ Item
                         }
                     }
 
-                    Text {
+                    Label {
                         id: gradualInfillLabel
                         anchors.left: enableGradualInfillCheckBox.right
                         anchors.leftMargin: UM.Theme.getSize("sidebar_margin").width / 2
