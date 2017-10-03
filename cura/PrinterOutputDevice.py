@@ -242,8 +242,8 @@ class PrinterOutputDevice(QObject, OutputDevice):
 
     @pyqtSlot()
     def stopCamera(self):
-        self._stopCamera()
         self._camera_active = False
+        self._stopCamera()
 
     def _stopCamera(self):
         Logger.log("w", "_stopCamera is not implemented by this output device")
