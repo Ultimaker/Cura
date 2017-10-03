@@ -600,7 +600,9 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                         if self._resolve_strategies["machine"] == "new":
                             # The machine is going to get a spiffy new name, so ensure that the id's of user settings match.
                             old_extruder_id = instance_container.getMetaDataEntry("extruder", None)
-                            if old_extruder_id:
+                            # Note that in case of a quality_changes extruder means the definition id of the extruder stack
+                            # For the user settings, it means the actual extruder stack id it's assigned to.
+                            if old_extruder_id and old_extruder_id in extruder_stack_id_map:
                                 new_extruder_id = extruder_stack_id_map[old_extruder_id]
                                 instance_container.setMetaDataEntry("extruder", new_extruder_id)
 
