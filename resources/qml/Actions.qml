@@ -61,6 +61,9 @@ Item
 
     property alias configureSettingVisibility: configureSettingVisibilityAction
 
+    property alias browsePlugins: browsePluginsAction
+    property alias configurePlugins: configurePluginsAction
+
     UM.I18nCatalog{id: catalog; name:"cura"}
 
     Action
@@ -361,5 +364,19 @@ Item
         id: configureSettingVisibilityAction
         text: catalog.i18nc("@action:menu", "Configure setting visibility...");
         iconName: "configure"
+    }
+
+    Action
+    {
+        id: browsePluginsAction
+        text: catalog.i18nc("@action:menu", "Browse plugins...")
+        iconName: "plugins_browse"
+    }
+
+    Action
+    {
+        id: configurePluginsAction
+        text: catalog.i18nc("@action:menu", "Installed plugins...");
+        iconName: "plugins_configure"
     }
 }
