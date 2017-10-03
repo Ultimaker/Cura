@@ -378,7 +378,11 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             Logger.log("e", "Could not find 'metadata/position' in extruder stack file")
             raise RuntimeError(msg)
         extruder_position = extruder_config.get("metadata", "position")
-        extruder_stack = global_stack.extruders[extruder_position]
+        try:
+            extruder_stack = global_stack.extruders[extruder_position]
+        except KeyError:
+            Logger.log("w", "Could not find the matching extruder stack to override for position %s", extruder_position)
+            return None
 
         # Override the given extruder stack
         extruder_stack.deserialize(extruder_file_content)
@@ -701,6 +705,8 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                     if global_stack.getProperty("machine_extruder_count", "value") > 1:
                         # deserialize new extruder stack over the current ones (if any)
                         stack = self._overrideExtruderStack(global_stack, extruder_file_content)
+                        if stack is None:
+                            continue
 
                 elif self._resolve_strategies["machine"] == "new":
                     new_id = extruder_stack_id_map[container_id]

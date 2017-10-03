@@ -18,8 +18,6 @@ Rectangle
     height: UM.Theme.getSize("sidebar_header").height
     color: base.monitoringPrint ? UM.Theme.getColor("topbar_background_color_monitoring") : UM.Theme.getColor("topbar_background_color")
 
-    Behavior on color { ColorAnimation { duration: 100; } }
-
     property bool printerConnected: Cura.MachineManager.printerOutputDevices.length != 0
     property bool printerAcceptsCommands: printerConnected && Cura.MachineManager.printerOutputDevices[0].acceptsCommands
     property bool monitoringPrint: false

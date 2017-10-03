@@ -16,7 +16,7 @@
         "secondary": [241, 242, 242, 255],
 
         "topbar_background_color": [0, 0, 0, 0],
-        "topbar_background_color_monitoring": [0, 0, 0, 0],
+        "topbar_background_color_monitoring": [31, 36, 39, 255],
 
         "topbar_button_text_active": [255, 255, 255, 255],
         "topbar_button_text_inactive": [128, 128, 128, 255],
