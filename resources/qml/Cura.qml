@@ -207,7 +207,7 @@ UM.MainWindow
                         id: sub_menu
                         title: model.name;
                         visible: actions != null
-                        enabled:actions != null
+                        enabled: actions != null
                         Instantiator
                         {
                             model: actions
@@ -224,6 +224,15 @@ UM.MainWindow
                     onObjectAdded: extension_menu.insertItem(index, object)
                     onObjectRemoved: extension_menu.removeItem(object)
                 }
+            }
+
+            Menu
+            {
+                id: plugin_menu
+                title: catalog.i18nc("@title:menu menubar:toplevel", "P&lugins")
+
+                MenuItem { action: Cura.Actions.browsePlugins }
+                MenuItem { action: Cura.Actions.configurePlugins }
             }
 
             Menu
@@ -540,6 +549,30 @@ UM.MainWindow
             preferences.visible = true;
             preferences.setPage(1);
             preferences.getCurrentItem().scrollToSection(source.key);
+        }
+    }
+
+    // show the installed plugins page in the preferences dialog
+    Connections
+    {
+        target: Cura.Actions.configurePlugins
+        onTriggered:
+        {
+            preferences.visible = true
+            preferences.setPage(5)
+        }
+    }
+
+    UM.ExtensionModel {
+        id: curaExtensions
+    }
+
+    // show the plugin browser dialog
+    Connections
+    {
+        target: Cura.Actions.browsePlugins
+        onTriggered: {
+            curaExtensions.callExtensionMethod("Plugin Browser", "browsePlugins")
         }
     }
 

@@ -50,7 +50,8 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         self._api_prefix = api_prefix
 
         self._gcode = None
-        self._print_finished = True  # _print_finsihed == False means we're halfway in a print
+        self._print_finished = True  # _print_finished == False means we're halfway in a print
+        self._write_finished = True  # _write_finished == False means we're currently sending a G-code file
 
         self._use_gzip = True  # Should we use g-zip compression before sending the data?
 
@@ -650,7 +651,16 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
     #   \param filter_by_machine Whether to filter MIME types by machine. This
     #   is ignored.
     #   \param kwargs Keyword arguments.
-    def requestWrite(self, nodes, file_name = None, filter_by_machine = False, file_handler = None, **kwargs):
+    def requestWrite(self, nodes, file_name=None, filter_by_machine=False, file_handler=None, **kwargs):
+
+        # Check if we're already writing
+        if not self._write_finished:
+            self._error_message = Message(
+                i18n_catalog.i18nc("@info:status",
+                                   "Sending new jobs (temporarily) blocked, still sending the previous print job."))
+            self._error_message.show()
+            return
+
         if self._printer_state not in ["idle", ""]:
             self._error_message = Message(
                 i18n_catalog.i18nc("@info:status", "Unable to start a new print job, printer is busy. Current printer status is %s.") % self._printer_state,
@@ -749,6 +759,9 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
                                                  callback=self._configurationMismatchMessageCallback
                                                  )
             return
+
+        # Indicate we're starting a new write action, is set back to True in the startPrint() method
+        self._write_finished = False
 
         self.startPrint()
 
@@ -909,6 +922,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
             ##  Post request + data
             self._post_reply = self._manager.post(self._post_request, self._post_multi_part)
             self._post_reply.uploadProgress.connect(self._onUploadProgress)
+            self._post_reply.finished.connect(self._onUploadFinished)  # used to unblock new write actions
 
         except IOError:
             self._progress_message.hide()
@@ -1244,6 +1258,10 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         else:
             self._progress_message.setProgress(0)
             self._progress_message.hide()
+
+    ## Allow new write actions (uploads) again when uploading is finished.
+    def _onUploadFinished(self):
+        self._write_finished = True
 
     ##  Let the user decide if the hotends and/or material should be synced with the printer
     def materialHotendChangedMessage(self, callback):

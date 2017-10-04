@@ -363,7 +363,7 @@ Column
                 visible: !Cura.MachineManager.isCurrentSetupSupported
             }
 
-            Text {
+            Label {
                 id: materialInfoLabel
                 wrapMode: Text.WordWrap
                 text: catalog.i18nc("@label", "<a href='%1'>Check material compatibility</a>")
