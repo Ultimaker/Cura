@@ -1,12 +1,11 @@
-# Copyright (c) 2015 Ultimaker B.V.
-# Uranium is released under the terms of the LGPLv3 or higher.
+# Copyright (c) 2017 Ultimaker B.V.
+# Cura is released under the terms of the LGPLv3 or higher.
 
-# Python build-ins
+# Python built-ins
 import threading
 import time
 
 # Uranium/Messaging
-from UM.Message import Message
 from UM.Logger import Logger
 
 # Uranium/IO
