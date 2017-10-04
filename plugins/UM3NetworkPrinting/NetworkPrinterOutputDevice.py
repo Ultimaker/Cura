@@ -871,6 +871,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
 
             def _compress_data_and_notify_qt(data_to_append):
                 compressed_data = gzip.compress(data_to_append.encode("utf-8"))
+                self._progress_message.setProgress(-1) # Tickle the message so that it's clear that it's still being used.
                 QCoreApplication.processEvents()  # Ensure that the GUI does not freeze.
                 # Pretend that this is a response, as zipping might take a bit of time.
                 self._last_response_time = time()
