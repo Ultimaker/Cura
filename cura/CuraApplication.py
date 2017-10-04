@@ -221,7 +221,7 @@ class CuraApplication(QtApplication):
             "TranslateTool",
             "FileLogger",
             "XmlMaterialProfile",
-
+            "PluginBrowser"
         ])
         self._physics = None
         self._volume = None
