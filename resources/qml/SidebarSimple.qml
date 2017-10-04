@@ -154,7 +154,7 @@ Item
                     }
                 }
 
-                Text
+                Label
                 {
                     id: qualityRowTitle
                     text: catalog.i18nc("@label", "Layer Height")
@@ -171,11 +171,11 @@ Item
                     {
                         model: qualityModel
 
-                        Text
+                        Label
                         {
                             anchors.verticalCenter: parent.verticalCenter
                             anchors.top: parent.top
-                            anchors.topMargin: UM.Theme.getSize("sidebar_margin").height / 2
+                            anchors.topMargin: parseInt(UM.Theme.getSize("sidebar_margin").height / 2)
                             color: (Cura.MachineManager.activeMachine != null && Cura.ProfilesModel.getItem(index).available) ? UM.Theme.getColor("quality_slider_available") : UM.Theme.getColor("quality_slider_unavailable")
                             text:
                             {
@@ -194,13 +194,13 @@ Item
                                 // Make sure the text aligns correctly with each tick
                                 if (qualityModel.totalTicks == 0) {
                                     // If there is only one tick, align it centrally
-                                    return ((base.width * 0.55) - width) / 2
+                                    return parseInt(((base.width * 0.55) - width) / 2)
                                 } else if (index == 0) {
                                     return (base.width * 0.55 / qualityModel.totalTicks) * index
                                 } else if (index == qualityModel.totalTicks) {
                                     return (base.width * 0.55 / qualityModel.totalTicks) * index - width
                                 } else {
-                                    return (base.width * 0.55 / qualityModel.totalTicks) * index - (width / 2)
+                                    return parseInt((base.width * 0.55 / qualityModel.totalTicks) * index - (width / 2))
                                 }
                             }
                         }
@@ -310,7 +310,7 @@ Item
                     }
                 }
 
-                Text
+                Label
                 {
                     id: speedLabel
                     anchors.top: speedSlider.bottom
@@ -322,7 +322,7 @@ Item
                     color: UM.Theme.getColor("text")
                 }
 
-                Text
+                Label
                 {
                     anchors.bottom: speedLabel.bottom
                     anchors.left: speedSlider.left
@@ -333,7 +333,7 @@ Item
                     horizontalAlignment: Text.AlignLeft
                 }
 
-                Text
+                Label
                 {
                     anchors.bottom: speedLabel.bottom
                     anchors.right: speedSlider.right
@@ -360,7 +360,7 @@ Item
 
                 width: UM.Theme.getSize("sidebar").width * .45 - UM.Theme.getSize("sidebar_margin").width
 
-                Text
+                Label
                 {
                     id: infillLabel
                     text: catalog.i18nc("@label", "Infill")
@@ -385,7 +385,7 @@ Item
                 anchors.top: infillCellLeft.top
                 anchors.topMargin: UM.Theme.getSize("sidebar_margin").height
 
-                Text {
+                Label {
                     id: selectedInfillRateText
 
                     //anchors.top: parent.top
@@ -482,7 +482,7 @@ Item
 
                     anchors.right: parent.right
                     anchors.top: parent.top
-                    anchors.topMargin: UM.Theme.getSize("sidebar_margin").height / 2
+                    anchors.topMargin: parseInt(UM.Theme.getSize("sidebar_margin").height / 2)
 
                     // we loop over all density icons and only show the one that has the current density and steps
                     Repeater
@@ -533,7 +533,7 @@ Item
                     property alias _hovered: enableGradualInfillMouseArea.containsMouse
 
                     anchors.top: infillSlider.bottom
-                    anchors.topMargin: UM.Theme.getSize("sidebar_margin").height / 2 // closer to slider since it belongs to the same category
+                    anchors.topMargin: parseInt(UM.Theme.getSize("sidebar_margin").height / 2) // closer to slider since it belongs to the same category
                     anchors.left: infillCellRight.left
 
                     style: UM.Theme.styles.checkbox
@@ -563,10 +563,10 @@ Item
                         }
                     }
 
-                    Text {
+                    Label {
                         id: gradualInfillLabel
                         anchors.left: enableGradualInfillCheckBox.right
-                        anchors.leftMargin: UM.Theme.getSize("sidebar_margin").width / 2
+                        anchors.leftMargin: parseInt(UM.Theme.getSize("sidebar_margin").width / 2)
                         text: catalog.i18nc("@label", "Enable gradual")
                         font: UM.Theme.getFont("default")
                         color: UM.Theme.getColor("text")
@@ -621,13 +621,13 @@ Item
             //
             //  Enable support
             //
-            Text
+            Label
             {
                 id: enableSupportLabel
                 visible: enableSupportCheckBox.visible
 
                 anchors.top: infillCellRight.bottom
-                anchors.topMargin: UM.Theme.getSize("sidebar_margin").height * 1.5
+                anchors.topMargin: parseInt(UM.Theme.getSize("sidebar_margin").height * 1.5)
                 anchors.left: parent.left
                 anchors.leftMargin: UM.Theme.getSize("sidebar_margin").width
                 anchors.verticalCenter: enableSupportCheckBox.verticalCenter
@@ -674,7 +674,7 @@ Item
                 }
             }
 
-            Text
+            Label
             {
                 id: supportExtruderLabel
                 visible: supportExtruderCombobox.visible
@@ -750,7 +750,7 @@ Item
 
             }
 
-            Text
+            Label
             {
                 id: adhesionHelperLabel
                 visible: adhesionCheckBox.visible
@@ -836,12 +836,12 @@ Item
             {
                 id: tipsCell
                 anchors.top: adhesionCheckBox.visible ? adhesionCheckBox.bottom : (enableSupportCheckBox.visible ? supportExtruderCombobox.bottom : infillCellRight.bottom)
-                anchors.topMargin: UM.Theme.getSize("sidebar_margin").height * 2
+                anchors.topMargin: parseInt(UM.Theme.getSize("sidebar_margin").height * 2)
                 anchors.left: parent.left
                 width: parent.width
                 height: tipsText.contentHeight * tipsText.lineCount
 
-                Text
+                Label
                 {
                     id: tipsText
                     anchors.left: parent.left

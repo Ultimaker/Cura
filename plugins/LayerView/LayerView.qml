@@ -1,7 +1,7 @@
 // Copyright (c) 2017 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
-import QtQuick 2.2
+import QtQuick 2.4
 import QtQuick.Controls 1.2
 import QtQuick.Layouts 1.1
 import QtQuick.Controls.Styles 1.1
@@ -602,7 +602,7 @@ Item
                     anchors.leftMargin: UM.Theme.getSize("default_margin").width / 2;
                     anchors.verticalCenter: parent.verticalCenter;
 
-                    width: Math.max(UM.Theme.getSize("line").width * maxValue.length + 2 * screenScaleFactor, 20 * screenScaleFactor);
+                    width: fontMetrics.averageCharacterWidth * (maxValue.length) + UM.Theme.getSize("default_margin").width;
                     style: TextFieldStyle
                     {
                         textColor: UM.Theme.getColor("setting_control_text");
@@ -629,5 +629,10 @@ Item
                 }
             }
         }
+    }
+
+    FontMetrics {
+        id: fontMetrics
+        font: UM.Theme.getFont("default")
     }
 }

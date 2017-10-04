@@ -43,7 +43,7 @@ Item {
         }
     }
 
-    Text {
+    Label {
         id: statusLabel
         width: parent.width - 2 * UM.Theme.getSize("sidebar_margin").width
         anchors.top: parent.top
