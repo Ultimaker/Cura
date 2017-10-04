@@ -222,10 +222,12 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             elif container_type == "definition_changes":
                 definition_name = instance_container.getName()
                 num_settings_overriden_by_definition_changes += len(instance_container._instances)
+                # Check if definition changes already exists.
                 definition_changes = self._container_registry.findInstanceContainers(id = container_id)
-                containers_found_dict["definition_changes"] = True
                 # Check if there is any difference the loaded settings from the project file and the settings in Cura.
                 if definition_changes:
+                    containers_found_dict["definition_changes"] = True
+                    # Check if there really is a conflict by comparing the values
                     if definition_changes[0] != instance_container:
                         definition_changes_conflict = True
             elif container_type == "quality":
@@ -357,7 +359,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         #  - new:       create a new container
         #  - override:  override the existing container
         #  - None:      There is no conflict, which means containers with the same IDs may or may not be there already.
-        #               If there is an existing container, there is no conflict between the them, and default to "override"
+        #               If there is an existing container, there is no conflict between them, and default to "override"
         #               If there is no existing container, default to "new"
         #
         # Default values

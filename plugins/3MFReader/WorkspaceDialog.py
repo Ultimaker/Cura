@@ -233,13 +233,15 @@ class WorkspaceDialog(QObject):
             self._result["quality_changes"] = None
         if "definition_changes" in self._result and not self._has_definition_changes_conflict:
             self._result["definition_changes"] = None
-
-        # If the machine needs to be re-created, the definition_changes should also be re-created.
-        if "machine" in self._result and self._result["machine"] == "new" and self._result["definition_changes"] is None:
-            self._result["definition_changes"] = "new"
-
         if "material" in self._result and not self._has_material_conflict:
             self._result["material"] = None
+
+        # If the machine needs to be re-created, the definition_changes should also be re-created.
+        # If the machine strategy is None, it means that there is no name conflict with existing ones. In this case
+        # new definitions changes are created
+        if "machine" in self._result and self._result["machine"] == "new" or self._result["machine"] is None and self._result["definition_changes"] is None:
+            self._result["definition_changes"] = "new"
+
         return self._result
 
     def _createViewFromQML(self):
