@@ -1,5 +1,5 @@
 {
-    "id": "creality-cr10",
+    "id": "creality_cr10",
     "name": "Creality CR-10",
     "version": 2,
     "inherits": "fdmprinter",

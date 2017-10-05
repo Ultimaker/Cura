@@ -1,8 +1,8 @@
 {
-    "id": "creality-cr10s4",
+    "id": "creality_cr10s4",
     "name": "Creality CR-10 S4",
     "version": 2,
-    "inherits": "creality_cr10a",
+    "inherits": "creality_cr10",
     "metadata": {
         "visible": true,
         "author": "Michael Wildermuth",
