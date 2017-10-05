@@ -100,6 +100,9 @@ class ProfilesModel(InstanceContainersModel):
         extruder_stacks = extruder_manager.getActiveExtruderStacks()
         if multiple_extrusion:
             # Place the active extruder at the front of the list.
+            # This is a workaround checking if there is an active_extruder or not before moving it to the front of the list.
+            # Actually, when a printer has multiple extruders, should exist always an active_extruder. However, in some
+            # cases the active_extruder is still None.
             if active_extruder in extruder_stacks:
                 extruder_stacks.remove(active_extruder)
             new_extruder_stacks = []
