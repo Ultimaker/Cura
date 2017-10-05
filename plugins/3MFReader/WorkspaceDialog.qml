@@ -362,7 +362,7 @@ UM.Dialog
                 Label
                 {
                     id: warningLabel
-                    text: catalog.i18nc("@action:warning", "Loading a project will clear all models on the build plate.")
+                    text: catalog.i18nc("@action:warning", "Loading a project will clear all models on the buildplate")
                     wrapMode: Text.Wrap
                 }
             }

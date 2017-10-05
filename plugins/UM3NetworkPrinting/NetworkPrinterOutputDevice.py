@@ -27,7 +27,6 @@ import zlib
 
 from time import time
 from time import sleep
-from time import gmtime
 
 i18n_catalog = i18nCatalog("cura")
 
@@ -871,6 +870,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
 
             def _compress_data_and_notify_qt(data_to_append):
                 compressed_data = gzip.compress(data_to_append.encode("utf-8"))
+                self._progress_message.setProgress(-1) # Tickle the message so that it's clear that it's still being used.
                 QCoreApplication.processEvents()  # Ensure that the GUI does not freeze.
                 # Pretend that this is a response, as zipping might take a bit of time.
                 self._last_response_time = time()
@@ -1132,11 +1132,6 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
                     else:
                         Logger.log("w", "Unable to save authentication for id %s and key %s", self._authentication_id, self._getSafeAuthKey())
 
-                    # Request 'system' printer data once, when we know we have authentication, so we know we can set the system time.
-                    url = QUrl("http://" + self._address + self._api_prefix + "system")
-                    system_data_request = QNetworkRequest(url)
-                    self._manager.get(system_data_request)
-
                 else:  # Got a response that we didn't expect, so something went wrong.
                     Logger.log("e", "While trying to authenticate, we got an unexpected response: %s", reply.attribute(QNetworkRequest.HttpStatusCodeAttribute))
                     self.setAuthenticationState(AuthState.NotAuthenticated)
@@ -1155,27 +1150,6 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
                     self.setAuthenticationState(AuthState.AuthenticationDenied)
                 else:
                     pass
-
-            elif self._api_prefix + "system" in reply_url:
-                # Check if the printer has time, and if this has a valid system time.
-                try:
-                    data = json.loads(bytes(reply.readAll()).decode("utf-8"))
-                except json.decoder.JSONDecodeError:
-                    Logger.log("w", "Received an invalid authentication request reply from printer: Not valid JSON.")
-                    return
-                if "time" in data and "utc" in data["time"]:
-                    try:
-                        printer_time = gmtime(float(data["time"]["utc"]))
-                        Logger.log("i", "Printer has system time of: %s", str(printer_time))
-                    except ValueError:
-                        printer_time = None
-                    if printer_time is not None and printer_time.tm_year < 1990:
-                        # The system time is not valid, sync our current system time to it, so we at least have some reasonable time in the printer.
-                        Logger.log("w", "Printer system time invalid, setting system time")
-                        url = QUrl("http://" + self._address + self._api_prefix + "system/time/utc")
-                        put_request = QNetworkRequest(url)
-                        put_request.setHeader(QNetworkRequest.ContentTypeHeader, "application/json")
-                        self._manager.put(put_request, str(time()).encode())
 
         elif reply.operation() == QNetworkAccessManager.PostOperation:
             if "/auth/request" in reply_url:

@@ -549,8 +549,11 @@ Item
                         enabled: true
 
                         onClicked: {
+                            // Restore to 90% only when enabling gradual infill
+                            if (parseInt(infillSteps.properties.value) == 0) {
+                                infillDensity.setPropertyValue("value", 90)
+                            }
                             infillSteps.setPropertyValue("value", (parseInt(infillSteps.properties.value) == 0) ? 5 : 0)
-                            infillDensity.setPropertyValue("value", 90)
                         }
 
                         onEntered: {

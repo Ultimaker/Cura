@@ -57,6 +57,4 @@ cmake_install.cmake
 #Debug
 *.gcode
 run.sh
-.scannerwork/
-CuraEngine
 
