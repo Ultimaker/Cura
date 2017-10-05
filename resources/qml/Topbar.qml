@@ -221,40 +221,51 @@ Rectangle
     ComboBox
     {
         id: viewModeButton
-        anchors
-        {
+
+        anchors {
             verticalCenter: parent.verticalCenter
             right: parent.right
             rightMargin: UM.Theme.getSize("sidebar").width + UM.Theme.getSize("default_margin").width
         }
+
         style: UM.Theme.styles.combobox
         visible: !base.monitoringPrint
 
         model: UM.ViewModel { }
         textRole: "name"
 
-        onCurrentIndexChanged:
-        {
-            UM.Controller.setActiveView(model.getItem(currentIndex).id);
-
-            // Update the active flag
-            for (var i = 0; i < model.rowCount; ++i)
-            {
-                const is_active = i == currentIndex;
-                model.getItem(i).active = is_active;
+        // update the model's active index
+        function update () {
+            currentIndex = getActiveIndex()
+            for (var i = 0; i < model.rowCount(); i++) {
+                model.getItem(i).active = (i == currentIndex)
             }
         }
 
-        currentIndex:
-        {
-            for (var i = 0; i < model.rowCount; ++i)
-            {
-                if (model.getItem(i).active)
-                {
-                    return i;
+        // get the index of the active model item on start
+        function getActiveIndex () {
+            for (var i = 0; i < model.rowCount(); i++) {
+                if (model.getItem(i).active) {
+                    return i
                 }
             }
-            return 0;
+            return 0
+        }
+
+        // set the active index
+        function setActiveIndex (index) {
+            UM.Controller.setActiveView(index)
+            // the connection to UM.ActiveView will trigger update so there is no reason to call it manually here
+        }
+
+        onCurrentIndexChanged: viewModeButton.setActiveIndex(model.getItem(currentIndex).id)
+        currentIndex: getActiveIndex()
+
+        // watch the active view proxy for changes made from the menu item
+        Connections
+        {
+            target: UM.ActiveView
+            onActiveViewChanged: viewModeButton.update()
         }
     }
 
