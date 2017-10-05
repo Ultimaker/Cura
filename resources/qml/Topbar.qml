@@ -235,7 +235,7 @@ Rectangle
         textRole: "name"
 
         // update the model's active index
-        function update () {
+        function updateItemActiveFlags () {
             currentIndex = getActiveIndex()
             for (var i = 0; i < model.rowCount(); i++) {
                 model.getItem(i).active = (i == currentIndex)
@@ -265,7 +265,7 @@ Rectangle
         Connections
         {
             target: UM.ActiveView
-            onActiveViewChanged: viewModeButton.update()
+            onActiveViewChanged: viewModeButton.updateItemActiveFlags()
         }
     }
 
