@@ -15,7 +15,7 @@ UM.Dialog
     minimumWidth: 500 * screenScaleFactor
     minimumHeight: 400 * screenScaleFactor
     width: minimumWidth
-    height: minumumHeight
+    height: minimumHeight
 
     property int comboboxHeight: 15 * screenScaleFactor
     property int spacerHeight: 10 * screenScaleFactor
