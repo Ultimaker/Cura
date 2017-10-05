@@ -378,7 +378,7 @@ Cura.MachineAction
             },
             Button {
                 id: btnOk
-                text: catalog.i18nc("@action:button", "Ok")
+                text: catalog.i18nc("@action:button", "OK")
                 onClicked:
                 {
                     manualPrinterDialog.accept()

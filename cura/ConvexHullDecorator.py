@@ -266,7 +266,7 @@ class ConvexHullDecorator(SceneNodeDecorator):
         if self._getSettingProperty("mold_enabled", "value"):
             mold_width = self._getSettingProperty("mold_width", "value")
         hull_offset = horizontal_expansion + mold_width
-        if hull_offset != 0:
+        if hull_offset > 0: #TODO: Implement Minkowski subtraction for if the offset < 0.
             expansion_polygon = Polygon(numpy.array([
                 [-hull_offset, -hull_offset],
                 [-hull_offset, hull_offset],
