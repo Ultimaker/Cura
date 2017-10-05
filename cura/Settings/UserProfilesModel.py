@@ -33,8 +33,12 @@ class UserProfilesModel(ProfilesModel):
         extruder_stacks = extruder_manager.getActiveExtruderStacks()
         if multiple_extrusion:
             # Place the active extruder at the front of the list.
-            extruder_stacks.remove(active_extruder)
-            extruder_stacks = [active_extruder] + extruder_stacks
+            if active_extruder in extruder_stacks:
+                extruder_stacks.remove(active_extruder)
+            new_extruder_stacks = []
+            if active_extruder is not None:
+                new_extruder_stacks = [active_extruder]
+            extruder_stacks = new_extruder_stacks + extruder_stacks
 
         # Fetch the list of useable qualities across all extruders.
         # The actual list of quality profiles come from the first extruder in the extruder list.

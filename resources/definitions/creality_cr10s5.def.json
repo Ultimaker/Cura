@@ -1,8 +1,8 @@
 {
-    "id": "creality-cr10s4_beta",
-    "name": "Creality CR-10 S4 Beta",
+    "id": "creality_cr10s5",
+    "name": "Creality CR-10 S5",
     "version": 2,
-    "inherits": "creality_cr10_beta",
+    "inherits": "creality_cr10",
     "metadata": {
         "visible": true,
         "author": "Michael Wildermuth",
@@ -11,13 +11,13 @@
     },
     "overrides": {
         "machine_width": {
-            "default_value": 400
+            "default_value": 500
         },
         "machine_height": {
-            "default_value": 400
+            "default_value": 500
         },
         "machine_depth": {
-            "default_value": 400
+            "default_value": 500
         }
     }
 }

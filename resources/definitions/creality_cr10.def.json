@@ -1,6 +1,6 @@
 {
-    "id": "creality-cr10_beta",
-    "name": "Creality CR-10 Beta",
+    "id": "creality_cr10",
+    "name": "Creality CR-10",
     "version": 2,
     "inherits": "fdmprinter",
     "metadata": {
@@ -50,7 +50,7 @@
             "default_value": 40
         },
         "cool_min_layer_time": {
-            "default_value": 15
+            "default_value": 10
         },
         "adhesion_type": {
             "default_value": "skirt"
