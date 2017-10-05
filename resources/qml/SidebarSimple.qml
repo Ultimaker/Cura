@@ -413,7 +413,7 @@ Item
 
                     minimumValue: 0
                     maximumValue: 100
-                    stepSize: (parseInt(infillDensity.properties.value) % 10 == 0) ? 10 : 1
+                    stepSize: 1
                     tickmarksEnabled: true
 
                     // disable slider when gradual support is enabled
@@ -454,7 +454,7 @@ Item
 
                             // check if a tick should be shown based on it's index and wether the infill density is a multiple of 10 (slider step size)
                             function shouldShowTick (index) {
-                                if ((parseInt(infillDensity.properties.value) % 10 == 0) || (index % 10 == 0)) {
+                                if (index % 10 == 0) {
                                     return true
                                 }
                                 return false
@@ -548,10 +548,16 @@ Item
                         hoverEnabled: true
                         enabled: true
 
+                        property var previousInfillDensity: infillDensity.properties.value
+
                         onClicked: {
                             // Restore to 90% only when enabling gradual infill
                             if (parseInt(infillSteps.properties.value) == 0) {
+                                previousInfillDensity = infillDensity.properties.value
                                 infillDensity.setPropertyValue("value", 90)
+                            }
+                            else {
+                                infillDensity.setPropertyValue("value", previousInfillDensity)
                             }
                             infillSteps.setPropertyValue("value", (parseInt(infillSteps.properties.value) == 0) ? 5 : 0)
                         }
@@ -891,7 +897,6 @@ Item
             UM.SettingPropertyProvider
             {
                 id: platformAdhesionType
-
                 containerStackId: Cura.MachineManager.activeMachineId
                 key: "adhesion_type"
                 watchedProperties: [ "value", "enabled" ]
@@ -901,7 +906,6 @@ Item
             UM.SettingPropertyProvider
             {
                 id: supportEnabled
-
                 containerStackId: Cura.MachineManager.activeMachineId
                 key: "support_enable"
                 watchedProperties: [ "value", "enabled", "description" ]
@@ -911,7 +915,6 @@ Item
             UM.SettingPropertyProvider
             {
                 id: machineExtruderCount
-
                 containerStackId: Cura.MachineManager.activeMachineId
                 key: "machine_extruder_count"
                 watchedProperties: [ "value" ]
@@ -921,7 +924,6 @@ Item
             UM.SettingPropertyProvider
             {
                 id: supportExtruderNr
-
                 containerStackId: Cura.MachineManager.activeMachineId
                 key: "support_extruder_nr"
                 watchedProperties: [ "value" ]
