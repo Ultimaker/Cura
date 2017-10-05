@@ -481,18 +481,9 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
 
                 # Check if we were uploading something. Abort if this is the case.
                 # Some operating systems handle this themselves, others give weird issues.
-                try:
-                    if self._post_reply:
-                        Logger.log("d", "Stopping post upload because the connection was lost.")
-                        try:
-                            self._post_reply.uploadProgress.disconnect(self._onUploadProgress)
-                        except TypeError:
-                            pass  # The disconnection can fail on mac in some cases. Ignore that.
-
-                        self._post_reply.abort()
-                        self._post_reply = None
-                except RuntimeError:
-                    self._post_reply = None  # It can happen that the wrapped c++ object is already deleted.
+                if self._post_reply:
+                    Logger.log("d", "Stopping post upload because the connection was lost.")
+                    self._finalizePostReply()
             return
         else:
             if not self._connection_state_before_timeout:
@@ -513,18 +504,9 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
 
                 # Check if we were uploading something. Abort if this is the case.
                 # Some operating systems handle this themselves, others give weird issues.
-                try:
-                    if self._post_reply:
-                        Logger.log("d", "Stopping post upload because the connection was lost.")
-                        try:
-                            self._post_reply.uploadProgress.disconnect(self._onUploadProgress)
-                        except TypeError:
-                            pass  # The disconnection can fail on mac in some cases. Ignore that.
-
-                        self._post_reply.abort()
-                        self._post_reply = None
-                except RuntimeError:
-                    self._post_reply = None  # It can happen that the wrapped c++ object is already deleted.
+                if self._post_reply:
+                    Logger.log("d", "Stopping post upload because the connection was lost.")
+                    self._finalizePostReply()
                 self.setConnectionState(ConnectionState.error)
                 return
 
@@ -544,6 +526,26 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         self._manager.get(print_job_request)
 
         self._last_request_time = time()
+
+    def _finalizePostReply(self):
+        if self._post_reply is None:
+            return
+
+        try:
+            try:
+                self._post_reply.uploadProgress.disconnect(self._onUploadProgress)
+            except TypeError:
+                pass  # The disconnection can fail on mac in some cases. Ignore that.
+
+            try:
+                self._post_reply.finished.disconnect(self._onUploadFinished)
+            except TypeError:
+                pass  # The disconnection can fail on mac in some cases. Ignore that.
+
+            self._post_reply.abort()
+            self._post_reply = None
+        except RuntimeError:
+            self._post_reply = None  # It can happen that the wrapped c++ object is already deleted.
 
     def _createNetworkManager(self):
         if self._manager:
@@ -653,14 +655,6 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
     #   \param kwargs Keyword arguments.
     def requestWrite(self, nodes, file_name=None, filter_by_machine=False, file_handler=None, **kwargs):
 
-        # Check if we're already writing
-        if not self._write_finished:
-            self._error_message = Message(
-                i18n_catalog.i18nc("@info:status",
-                                   "Sending new jobs (temporarily) blocked, still sending the previous print job."))
-            self._error_message.show()
-            return
-
         if self._printer_state not in ["idle", ""]:
             self._error_message = Message(
                 i18n_catalog.i18nc("@info:status", "Unable to start a new print job, printer is busy. Current printer status is %s.") % self._printer_state,
@@ -760,6 +754,14 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
                                                  )
             return
 
+        # Check if we're already writing
+        if not self._write_finished:
+            self._error_message = Message(
+                i18n_catalog.i18nc("@info:status",
+                                   "Sending new jobs (temporarily) blocked, still sending the previous print job."))
+            self._error_message.show()
+            return
+
         # Indicate we're starting a new write action, is set back to True in the startPrint() method
         self._write_finished = False
 
@@ -846,8 +848,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
             self._progress_message.hide()
             self._compressing_print = False
             if self._post_reply:
-                self._post_reply.abort()
-                self._post_reply = None
+                self._finalizePostReply()
             Application.getInstance().showPrintMonitor.emit(False)
 
     ##  Attempt to start a new print.
@@ -995,10 +996,8 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
             # Check if we were uploading something. Abort if this is the case.
             # Some operating systems handle this themselves, others give weird issues.
             if self._post_reply:
-                self._post_reply.abort()
-                self._post_reply.uploadProgress.disconnect(self._onUploadProgress)
+                self._finalizePostReply()
                 Logger.log("d", "Uploading of print failed after %s", time() - self._send_gcode_start)
-                self._post_reply = None
                 self._progress_message.hide()
 
             self.setConnectionState(ConnectionState.error)
@@ -1204,6 +1203,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
                 del self._material_post_objects[id(reply)]
             elif "print_job" in reply_url:
                 reply.uploadProgress.disconnect(self._onUploadProgress)
+                reply.finished.disconnect(self._onUploadFinished)
                 Logger.log("d", "Uploading of print succeeded after %s", time() - self._send_gcode_start)
                 # Only reset the _post_reply if it was the same one.
                 if reply == self._post_reply:

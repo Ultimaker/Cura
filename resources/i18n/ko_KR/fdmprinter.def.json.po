@@ -8,9 +8,9 @@ msgstr ""
 "Project-Id-Version: Cura 3.0\n"
 "Report-Msgid-Bugs-To: r.dulek@ultimaker.com\n"
 "POT-Creation-Date: 2017-08-02 16:53+0000\n"
-"PO-Revision-Date: 2017-08-08 23:38+0900\n"
-"Last-Translator: None\n"
-"Language-Team: None\n"
+"PO-Revision-Date: 2017-09-21 14:58+0900\n"
+"Last-Translator: Brule\n"
+"Language-Team: Brule\n"
 "Language: ko_KR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -1220,7 +1220,7 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "infill_extruder_nr description"
 msgid "The extruder train used for printing infill. This is used in multi-extrusion."
-msgstr "충전용 인쇄에 사용되는 압출기 트레인. 이것은 다중 압출에 사용됩니다."
+msgstr "충진용 인쇄에 사용되는 압출기 트레인. 이것은 다중 압출에 사용됩니다."
 
 #: fdmprinter.def.json
 msgctxt "infill_sparse_density label"
@@ -1250,7 +1250,7 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "infill_pattern description"
 msgid "The pattern of the infill material of the print. The line and zig zag infill swap direction on alternate layers, reducing material cost. The grid, triangle, cubic, octet, quarter cubic and concentric patterns are fully printed every layer. Cubic, quarter cubic and octet infill change with every layer to provide a more equal distribution of strength over each direction."
-msgstr ""
+msgstr "인쇄물의 충진재 패턴. 라인과 지그재그는 대체 층의 스필 방향을 바꾸어 재료비를 줄입니다. 그리드, 삼각형, 큐빅, 옥텟, 쿼터 큐빅 및 동심원 패턴이 모든 레이어에 완전히 인쇄됩니다. 큐빅, 쿼터 큐빅 및 옥 테트 필은 각 레이어에 따라 변경되어 각 방향에 대해보다 균등 한 강도 분포를 제공합니다. "
 
 #: fdmprinter.def.json
 msgctxt "infill_pattern option grid"
@@ -1320,7 +1320,7 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "zig_zaggify_infill description"
 msgid "Connect the ends where the infill pattern meets the inner wall using a lines which follows the shape of the inner wall. Enabling this setting can make the infill adhere to the walls better and reduces the effects on infill on the quality of vertical surfaces. Disabling this setting reduces the amount of material used."
-msgstr ""
+msgstr "내부 벽의 모양을 따르는 선을 사용하여 충전 패턴이 내부 벽과 만나는 끝을 연결하십시오. 이 설정을 사용하면 벽에 충전재가 잘 밀착되고 수직 표면의 품질에 영향을 줄 수 있습니다. 이 설정을 사용하지 않으면 사용되는 재료의 양이 줄어 듭니다. "
 
 #: fdmprinter.def.json
 msgctxt "infill_angles label"
@@ -1450,7 +1450,7 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "skin_preshrink description"
 msgid "The largest width of skin areas which are to be removed. Every skin area smaller than this value will disappear. This can help in limiting the amount of time and material spent on printing top/bottom skin at slanted surfaces in the model."
-msgstr ""
+msgstr "제거 할 외부스킨 영역의 가장 큰 너비. 이 값보다 작은 모든 스킨 영역은 사라집니다. 이렇게하면 모델의 경사면에서 위쪽 / 아래쪽 스킨을 인쇄하는 데 소요되는 시간과 재료의 양을 제한하는 데 도움이됩니다.  "
 
 #: fdmprinter.def.json
 msgctxt "top_skin_preshrink label"
@@ -1460,7 +1460,7 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "top_skin_preshrink description"
 msgid "The largest width of top skin areas which are to be removed. Every skin area smaller than this value will disappear. This can help in limiting the amount of time and material spent on printing top skin at slanted surfaces in the model."
-msgstr ""
+msgstr "제거 할 상단 스킨 영역의 가장 큰 너비. 이 값보다 작은 모든 스킨 영역은 사라집니다. 이렇게하면 모델의 경사면에서 상단 스킨을 인쇄하는 데 소요되는 시간과 재료의 양을 제한하는 데 도움이됩니다."
 
 #: fdmprinter.def.json
 msgctxt "bottom_skin_preshrink label"
@@ -1470,7 +1470,7 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "bottom_skin_preshrink description"
 msgid "The largest width of bottom skin areas which are to be removed. Every skin area smaller than this value will disappear. This can help in limiting the amount of time and material spent on printing bottom skin at slanted surfaces in the model."
-msgstr ""
+msgstr "제거 할 바닥 스킨 영역의 최대 너비. 이 값보다 작은 모든 스킨 영역은 사라집니다. 이렇게하면 모델의 경사면에서 밑면 스킨을 인쇄하는 데 소요되는 시간과 재료의 양을 제한하는 데 도움이됩니다."
 
 #: fdmprinter.def.json
 msgctxt "expand_skins_expand_distance label"
@@ -1480,7 +1480,7 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "expand_skins_expand_distance description"
 msgid "The distance the skins are expanded into the infill. Higher values makes the skin attach better to the infill pattern and makes the walls on neighboring layers adhere better to the skin. Lower values save amount of material used."
-msgstr ""
+msgstr "스킨이 infill로 확장되는 거리입니다. 값이 높을수록 스킨이 충 패턴에 더 잘 부착되고 인접 레이어의 벽이 피부에 잘 밀착됩니다. 값이 낮을수록 사용 된 재료의 양이 절약됩니다. "
 
 #: fdmprinter.def.json
 msgctxt "top_skin_expand_distance label"
@@ -1490,7 +1490,7 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "top_skin_expand_distance description"
 msgid "The distance the top skins are expanded into the infill. Higher values makes the skin attach better to the infill pattern and makes the walls on the layer above adhere better to the skin. Lower values save amount of material used."
-msgstr ""
+msgstr "상단 스킨의 거리가 infill로 확장됩니다. 값이 높을수록 스킨이 충 패턴에 더 잘 부착되며 위 레이어의 벽이 피부에 잘 밀착됩니다. 값이 낮을수록 사용 된 재료의 양이 절약됩니다. "
 
 #: fdmprinter.def.json
 msgctxt "bottom_skin_expand_distance label"
@@ -1500,7 +1500,7 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "bottom_skin_expand_distance description"
 msgid "The distance the bottom skins are expanded into the infill. Higher values makes the skin attach better to the infill pattern and makes the skin adhere better to the walls on the layer below. Lower values save amount of material used."
-msgstr ""
+msgstr "바닥 스킨의 거리가 infill로 확장됩니다. 값이 높을수록 피부가 충 패턴에 더 잘 붙어 피부가 아래 층의 벽에 잘 밀착됩니다. 값이 낮을수록 사용 된 재료의 양이 절약됩니다. "
 
 #: fdmprinter.def.json
 msgctxt "max_skin_angle_for_expansion label"
@@ -1510,7 +1510,7 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "max_skin_angle_for_expansion description"
 msgid "Top and/or bottom surfaces of your object with an angle larger than this setting, won't have their top/bottom skin expanded. This avoids expanding the narrow skin areas that are created when the model surface has a near vertical slope. An angle of 0° is horizontal, while an angle of 90° is vertical."
-msgstr "이 설정보다 큰 각도로 객체의 상단 및 / 또는 하단 표면은 위쪽 / 아래쪽 스킨이 확장되지 않습니다. 이렇게하면 모델 표면이 수직 경사가 거의 없을 때 생성되는 좁은 스킨 영역을 확장하지 않아도됩니다. \"0\" 도의 각도는 수평이며, 90 도의 각도는 수직입니다. "
+msgstr "이 설정보다 큰 각도로 객체의 상단 및 또는 하단 표면은 위쪽 / 아래쪽 스킨이 확장되지 않습니다. 이렇게하면 모델 표면이 수직 경사가 거의 없을 때 생성되는 좁은 스킨 영역을 확장하지 않아도됩니다. \"0\" 도의 각도는 수평이며, 90 도의 각도는 수직입니다. "
 
 #: fdmprinter.def.json
 msgctxt "min_skin_width_for_expansion label"
@@ -1870,7 +1870,7 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "speed_roofing description"
 msgid "The speed at which top surface skin layers are printed."
-msgstr ""
+msgstr "상단 표면 스킨 층이 인쇄되는 속도."
 
 #: fdmprinter.def.json
 msgctxt "speed_topbottom label"
@@ -2840,7 +2840,7 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "support_skip_some_zags description"
 msgid "Skip some support line connections to make the support structure easier to break away. This setting is applicable to the Zig Zag support infill pattern."
-msgstr ""
+msgstr "지원 구조가 쉽게 끊어 지도록 지원 라인 연결을 건너 뛰십시오. 이 설정은 지그재그 지원 충전 패턴에 적용됩니다. "
 
 #: fdmprinter.def.json
 msgctxt "support_skip_zag_per_mm label"
@@ -2850,7 +2850,7 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "support_skip_zag_per_mm description"
 msgid "Leave out a connection between support lines once every N millimeter to make the support structure easier to break away."
-msgstr ""
+msgstr "지지 구조를 쉽게 분리 할 수 있도록 N 밀리미터마다 지지선 사이를 연결하십시오. "
 
 #: fdmprinter.def.json
 msgctxt "support_zag_skip_count label"
@@ -2860,7 +2860,7 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "support_zag_skip_count description"
 msgid "Skip one in every N connection lines to make the support structure easier to break away."
-msgstr ""
+msgstr "지원 구조를 쉽게 깨뜨릴 수 있도록 모든 N 개의 연결 라인을 건너 뜁니다. "
 
 #: fdmprinter.def.json
 msgctxt "support_infill_rate label"
@@ -3452,7 +3452,7 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "z_offset_layer_0 description"
 msgid "The extruder is offset from the normal height of the first layer by this amount. It can be positive (raised) or negative (lowered). Some filament types adhere to the build plate better if the extruder is raised slightly."
-msgstr ""
+msgstr "압출기는이 양만큼 제 1 층의 정상 높이로부터 오프셋된다. 양수 (양수) 또는 음수 (양수) 일 수 있습니다. 압출기를 약간 올리면 일부 필라멘트 유형이 빌드 플레이트에 잘 밀착됩니다. "
 
 #: fdmprinter.def.json
 msgctxt "z_offset_taper_layers label"
@@ -3462,7 +3462,7 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "z_offset_taper_layers description"
 msgid "When non-zero, the Z offset is reduced to 0 over that many layers. A value of 0 means that the Z offset remains constant for all the layers in the print."
-msgstr ""
+msgstr "0이 아니면 Z 오프셋은 많은 레이어에서 0으로 줄어 듭니다. 값 0은 인쇄물의 모든 레이어에 대해 Z 오프셋이 일정하게 유지됨을 의미합니다. "
 
 #: fdmprinter.def.json
 msgctxt "raft_margin label"
@@ -3482,7 +3482,7 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "raft_smoothing description"
 msgid "This setting control how much inner corners in the raft outline are rounded. Inward corners are rounded to a semi circle with a radius equal to the value given here. This setting also removes holes in the raft outline which are smaller than such a circle."
-msgstr ""
+msgstr "이 설정은 뗏목 윤곽의 내부 모서리가 둥근 정도를 제어합니다. 안쪽 모서리는 여기에 주어진 값과 같은 반경을 가진 반원으로 반올림됩니다. 이 설정은 또한 뗏목 외곽선에서 그러한 원보다 작은 구멍을 제거합니다. "
 
 #: fdmprinter.def.json
 msgctxt "raft_airgap label"
@@ -4167,7 +4167,7 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "relative_extrusion description"
 msgid "Use relative extrusion rather than absolute extrusion. Using relative E-steps makes for easier post-processing of the Gcode. However, it's not supported by all printers and it may produce very slight deviations in the amount of deposited material compared to absolute E-steps. Irrespective of this setting, the extrusion mode will always be set to absolute before any Gcode script is output."
-msgstr ""
+msgstr "절대 돌출보다는 상대적 돌출을 사용하십시오. 상대적인 E-steps을 사용하면 Gcode를보다 쉽게 후 처리 할 수 있습니다. 그러나 모든 프린터에서 지원되는 것은 아니며 절대 E 단계와 비교할 때 증착 된 재료의 양이 매우 약간 다를 수 있습니다. 이 설정과 관계없이 압출 모드는 Gcode 스크립트가 출력되기 전에 항상 절대 값으로 설정됩니다. "
 
 #: fdmprinter.def.json
 msgctxt "experimental label"
@@ -4187,7 +4187,7 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "optimize_wall_printing_order description"
 msgid "Optimize the order in which walls are printed so as to reduce the number of retractions and the distance travelled. Most parts will benefit from this being enabled but some may actually take longer so please compare the print time estimates with and without optimization."
-msgstr ""
+msgstr "수축 및 이동 거리를 줄이도록 벽이 인쇄되는 순서를 최적화하십시오. 대부분의 부품은이 기능을 사용하면 도움이되지만, 실제로는 시간이 오래 걸릴 수 있으므로, 최적화 여부에 관계없이 인쇄 시간을 비교하십시오. "
 
 #: fdmprinter.def.json
 msgctxt "draft_shield_enabled label"
@@ -4317,7 +4317,7 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "cross_infill_pocket_size description"
 msgid "The size of pockets at four-way crossings in the cross 3D pattern at heights where the pattern is touching itself."
-msgstr ""
+msgstr "패턴이 만지는 높이에서 크로스 3D 패턴의 4 방향 교차점에있는 포켓의 크기입니다. "
 
 #: fdmprinter.def.json
 msgctxt "cross_infill_apply_pockets_alternatingly label"
@@ -4327,7 +4327,7 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "cross_infill_apply_pockets_alternatingly description"
 msgid "Only apply pockets at half of the four-way crossings in the cross 3D pattern and alternate the location of the pockets between heights where the pattern is touching itself."
-msgstr ""
+msgstr "십자형 3D 패턴에서 4방향 교차점의 절반에만 포켓을 적용하고 패턴이 만지는 높이 사이의 포켓 위치를 교체하십시오. "
 
 #: fdmprinter.def.json
 msgctxt "spaghetti_infill_enabled label"
@@ -4754,7 +4754,7 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "ironing_only_highest_layer description"
 msgid "Only perform ironing on the very last layer of the mesh. This saves time if the lower layers don't need a smooth surface finish."
-msgstr ""
+msgstr "메쉬의 마지막 레이어에서만 다림질을 수행하십시오. 낮은 레이어에서 매끄러운 표면 처리가 필요하지 않은 경우 시간을 절약 할 수 있습니다. "
 
 #: fdmprinter.def.json
 msgctxt "ironing_pattern label"

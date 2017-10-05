@@ -100,8 +100,15 @@ class ProfilesModel(InstanceContainersModel):
         extruder_stacks = extruder_manager.getActiveExtruderStacks()
         if multiple_extrusion:
             # Place the active extruder at the front of the list.
-            extruder_stacks.remove(active_extruder)
-            extruder_stacks = [active_extruder] + extruder_stacks
+            # This is a workaround checking if there is an active_extruder or not before moving it to the front of the list.
+            # Actually, when a printer has multiple extruders, should exist always an active_extruder. However, in some
+            # cases the active_extruder is still None.
+            if active_extruder in extruder_stacks:
+                extruder_stacks.remove(active_extruder)
+            new_extruder_stacks = []
+            if active_extruder is not None:
+                new_extruder_stacks = [active_extruder]
+            extruder_stacks = new_extruder_stacks + extruder_stacks
 
         # Get a list of usable/available qualities for this machine and material
         qualities = QualityManager.getInstance().findAllUsableQualitiesForMachineAndExtruders(global_container_stack,

@@ -239,8 +239,9 @@ class WorkspaceDialog(QObject):
         # If the machine needs to be re-created, the definition_changes should also be re-created.
         # If the machine strategy is None, it means that there is no name conflict with existing ones. In this case
         # new definitions changes are created
-        if "machine" in self._result and self._result["machine"] == "new" or self._result["machine"] is None and self._result["definition_changes"] is None:
-            self._result["definition_changes"] = "new"
+        if "machine" in self._result:
+            if self._result["machine"] == "new" or self._result["machine"] is None and self._result["definition_changes"] is None:
+                self._result["definition_changes"] = "new"
 
         return self._result
 
