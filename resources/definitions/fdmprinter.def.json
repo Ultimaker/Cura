@@ -1405,28 +1405,6 @@
                     "limit_to_extruder": "infill_extruder_nr",
                     "settable_per_mesh": true
                 },
-                "infill_offset_x":
-                {
-                    "label": "Infill X Offset",
-                    "description": "The infill pattern is offset this distance along the X axis.",
-                    "unit": "mm",
-                    "type": "float",
-                    "default_value": 0,
-                    "enabled": "infill_pattern == 'grid' or infill_pattern == 'lines' or infill_pattern == 'triangles' or infill_pattern == 'cubic' or infill_pattern == 'tetrahedral' or infill_pattern == 'quarter_cubic' or infill_pattern == 'zigzag'",
-                    "limit_to_extruder": "infill_extruder_nr",
-                    "settable_per_mesh": true
-                },
-                "infill_offset_y":
-                {
-                    "label": "Infill Y Offset",
-                    "description": "The infill pattern is offset this distance along the Y axis.",
-                    "unit": "mm",
-                    "type": "float",
-                    "default_value": 0,
-                    "enabled": "infill_pattern == 'grid' or infill_pattern == 'lines' or infill_pattern == 'triangles' or infill_pattern == 'cubic' or infill_pattern == 'tetrahedral' or infill_pattern == 'quarter_cubic' or infill_pattern == 'zigzag'",
-                    "limit_to_extruder": "infill_extruder_nr",
-                    "settable_per_mesh": true
-                },
                 "sub_div_rad_add":
                 {
                     "label": "Cubic Subdivision Shell",
@@ -4008,7 +3986,7 @@
                 "skirt_gap":
                 {
                     "label": "Skirt Distance",
-                    "description": "The horizontal distance between the skirt and the first layer of the print.\nThis is the minimum distance. Multiple skirt lines will extend outwards from this distance.",
+                    "description": "The horizontal distance between the skirt and the first layer of the print.\nThis is the minimum distance, multiple skirt lines will extend outwards from this distance.",
                     "unit": "mm",
                     "type": "float",
                     "default_value": 3,
