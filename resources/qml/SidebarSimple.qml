@@ -393,10 +393,17 @@ Item
                     anchors.leftMargin: (infillSlider.value / infillSlider.stepSize) * (infillSlider.width / (infillSlider.maximumValue / infillSlider.stepSize)) - 10 * screenScaleFactor
                     anchors.right: parent.right
 
-                    text: infillSlider.value + "%"
+                    text: parseInt(infillDensity.properties.value) + "%"
                     horizontalAlignment: Text.AlignLeft
 
                     color: infillSlider.enabled ? UM.Theme.getColor("quality_slider_available") : UM.Theme.getColor("quality_slider_unavailable")
+                }
+
+                // We use a binding to make sure that after manually setting infillSlider.value it is still bound to the property provider
+                Binding {
+                    target: infillSlider
+                    property: "value"
+                    value: parseInt(infillDensity.properties.value)
                 }
 
                 Slider
@@ -423,8 +430,20 @@ Item
                     value: parseInt(infillDensity.properties.value)
 
                     onValueChanged: {
+
+                        // Don't round the value if it's already the same
+                        if (parseInt(infillDensity.properties.value) == infillSlider.value) {
+                            return
+                        }
+
+                        // Round the slider value to the nearest multiple of 10 (simulate step size of 10)
+                        var roundedSliderValue = Math.round(infillSlider.value / 10) * 10
+
+                        // Update the slider value to represent the rounded value
+                        infillSlider.value = roundedSliderValue
+
                         // Explicitly cast to string to make sure the value passed to Python is an integer.
-                        infillDensity.setPropertyValue("value", String(parseInt(infillSlider.value)))
+                        infillDensity.setPropertyValue("value", String(roundedSliderValue))
                     }
 
                     style: SliderStyle
@@ -548,17 +567,17 @@ Item
                         hoverEnabled: true
                         enabled: true
 
-                        property var previousInfillDensity: infillDensity.properties.value
+                        property var previousInfillDensity: parseInt(infillDensity.properties.value)
 
                         onClicked: {
-                            // Restore to 90% only when enabling gradual infill
+                            // Set to 90% only when enabling gradual infill
                             if (parseInt(infillSteps.properties.value) == 0) {
-                                previousInfillDensity = infillDensity.properties.value
-                                infillDensity.setPropertyValue("value", 90)
+                                previousInfillDensity = parseInt(infillDensity.properties.value)
+                                infillDensity.setPropertyValue("value", String(90))
+                            } else {
+                                infillDensity.setPropertyValue("value", String(previousInfillDensity))
                             }
-                            else {
-                                infillDensity.setPropertyValue("value", previousInfillDensity)
-                            }
+
                             infillSteps.setPropertyValue("value", (parseInt(infillSteps.properties.value) == 0) ? 5 : 0)
                         }
 
