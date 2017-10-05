@@ -393,10 +393,17 @@ Item
                     anchors.leftMargin: (infillSlider.value / infillSlider.stepSize) * (infillSlider.width / (infillSlider.maximumValue / infillSlider.stepSize)) - 10 * screenScaleFactor
                     anchors.right: parent.right
 
-                    text: infillSlider.value + "%"
+                    text: parseInt(infillDensity.properties.value) + "%"
                     horizontalAlignment: Text.AlignLeft
 
                     color: infillSlider.enabled ? UM.Theme.getColor("quality_slider_available") : UM.Theme.getColor("quality_slider_unavailable")
+                }
+
+                // We use a binding to make sure that after manually setting infillSlider.value it is still bound to the property provider
+                Binding {
+                    target: infillSlider
+                    property: "value"
+                    value: parseInt(infillDensity.properties.value)
                 }
 
                 Slider
@@ -413,7 +420,7 @@ Item
 
                     minimumValue: 0
                     maximumValue: 100
-                    stepSize: (parseInt(infillDensity.properties.value) % 10 == 0) ? 10 : 1
+                    stepSize: 1
                     tickmarksEnabled: true
 
                     // disable slider when gradual support is enabled
@@ -423,8 +430,20 @@ Item
                     value: parseInt(infillDensity.properties.value)
 
                     onValueChanged: {
+
+                        // Don't round the value if it's already the same
+                        if (parseInt(infillDensity.properties.value) == infillSlider.value) {
+                            return
+                        }
+
+                        // Round the slider value to the nearest multiple of 10 (simulate step size of 10)
+                        var roundedSliderValue = Math.round(infillSlider.value / 10) * 10
+
+                        // Update the slider value to represent the rounded value
+                        infillSlider.value = roundedSliderValue
+
                         // Explicitly cast to string to make sure the value passed to Python is an integer.
-                        infillDensity.setPropertyValue("value", String(parseInt(infillSlider.value)))
+                        infillDensity.setPropertyValue("value", String(roundedSliderValue))
                     }
 
                     style: SliderStyle
@@ -454,7 +473,7 @@ Item
 
                             // check if a tick should be shown based on it's index and wether the infill density is a multiple of 10 (slider step size)
                             function shouldShowTick (index) {
-                                if ((parseInt(infillDensity.properties.value) % 10 == 0) || (index % 10 == 0)) {
+                                if (index % 10 == 0) {
                                     return true
                                 }
                                 return false
@@ -548,11 +567,17 @@ Item
                         hoverEnabled: true
                         enabled: true
 
+                        property var previousInfillDensity: parseInt(infillDensity.properties.value)
+
                         onClicked: {
-                            // Restore to 90% only when enabling gradual infill
+                            // Set to 90% only when enabling gradual infill
                             if (parseInt(infillSteps.properties.value) == 0) {
-                                infillDensity.setPropertyValue("value", 90)
+                                previousInfillDensity = parseInt(infillDensity.properties.value)
+                                infillDensity.setPropertyValue("value", String(90))
+                            } else {
+                                infillDensity.setPropertyValue("value", String(previousInfillDensity))
                             }
+
                             infillSteps.setPropertyValue("value", (parseInt(infillSteps.properties.value) == 0) ? 5 : 0)
                         }
 
@@ -891,7 +916,6 @@ Item
             UM.SettingPropertyProvider
             {
                 id: platformAdhesionType
-
                 containerStackId: Cura.MachineManager.activeMachineId
                 key: "adhesion_type"
                 watchedProperties: [ "value", "enabled" ]
@@ -901,7 +925,6 @@ Item
             UM.SettingPropertyProvider
             {
                 id: supportEnabled
-
                 containerStackId: Cura.MachineManager.activeMachineId
                 key: "support_enable"
                 watchedProperties: [ "value", "enabled", "description" ]
@@ -911,7 +934,6 @@ Item
             UM.SettingPropertyProvider
             {
                 id: machineExtruderCount
-
                 containerStackId: Cura.MachineManager.activeMachineId
                 key: "machine_extruder_count"
                 watchedProperties: [ "value" ]
@@ -921,7 +943,6 @@ Item
             UM.SettingPropertyProvider
             {
                 id: supportExtruderNr
-
                 containerStackId: Cura.MachineManager.activeMachineId
                 key: "support_extruder_nr"
                 watchedProperties: [ "value" ]
