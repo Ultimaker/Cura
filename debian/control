@@ -5,7 +5,7 @@ Build-Depends: debhelper (>= 10), cmake (>=2.8.12), dh-python,
  python3-all,
  uranium-tools (>=2.5.0),
  gettext
-Standards-Version: 3.9.8
+Standards-Version: 4.1.0
 X-Python3-Version: >= 3.4
 Section: misc
 Homepage: https://github.com/Ultimaker/Cura
