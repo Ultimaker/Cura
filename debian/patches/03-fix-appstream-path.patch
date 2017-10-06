@@ -1,0 +1,14 @@
+Author: Gregor Riepl <onitake@gmail.com>
+Description: The application metadata path
+  has changed a while ago. This patch fixes that.
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -51,7 +51,7 @@
+     install(FILES ${CMAKE_BINARY_DIR}/cura.desktop
+             DESTINATION ${CMAKE_INSTALL_DATADIR}/applications)
+     install(FILES cura.appdata.xml
+-            DESTINATION ${CMAKE_INSTALL_DATADIR}/appdata)
++            DESTINATION ${CMAKE_INSTALL_DATADIR}/metainfo)
+     install(FILES cura.sharedmimeinfo
+             DESTINATION ${CMAKE_INSTALL_DATADIR}/mime/packages/
+             RENAME cura.xml )
