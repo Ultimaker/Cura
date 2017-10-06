@@ -1176,8 +1176,14 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
                 # Remove cached post request items.
                 del self._material_post_objects[id(reply)]
             elif "print_job" in reply_url:
-                reply.uploadProgress.disconnect(self._onUploadProgress)
-                reply.finished.disconnect(self._onUploadFinished)
+                try:
+                    reply.uploadProgress.disconnect(self._onUploadProgress)
+                except:
+                    pass
+                try:
+                    reply.finished.disconnect(self._onUploadFinished)
+                except:
+                    pass
                 Logger.log("d", "Uploading of print succeeded after %s", time() - self._send_gcode_start)
                 # Only reset the _post_reply if it was the same one.
                 if reply == self._post_reply:
