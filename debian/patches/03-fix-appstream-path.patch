@@ -1,6 +1,7 @@
 Author: Gregor Riepl <onitake@gmail.com>
 Description: The application metadata path
   has changed a while ago. This patch fixes that.
+  Reported upstream: https://github.com/Ultimaker/Cura/issues/2563
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
 @@ -51,7 +51,7 @@
