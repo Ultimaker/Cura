@@ -245,7 +245,7 @@ Rectangle
                                 return catalog.i18nc("@label:status", "Disabled");
                             }
 
-                            if ((printJob != null) && ((printer.status === "pre_print") || (printer.status === "printing")))
+                            if (printJob != null)
                             {
                                 switch (printJob.status)
                                 {
