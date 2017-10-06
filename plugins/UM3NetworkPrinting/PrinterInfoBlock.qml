@@ -155,7 +155,7 @@ Rectangle
 
                 Image
                 {
-                    width: 40 * screenScaleFactor
+                    width: parent.width
                     height: width
                     anchors.right: parent.right
                     anchors.rightMargin: parent.rightMargin
@@ -171,19 +171,19 @@ Rectangle
                 width: parent.width / 2 - UM.Theme.getSize("default_margin").width
                 height: childrenRect.height
 
-                spacing: 10 * screenScaleFactor
+                spacing: UM.Theme.getSize("default_margin").width
 
                 PrintCoreConfiguration
                 {
                     id: leftExtruderInfo
-                    width: (parent.width-1) / 2
+                    width: (parent.width - extruderSeperator.width) / 2
                     printCoreConfiguration: printer.configuration[0]
                 }
 
                 Rectangle
                 {
                     id: extruderSeperator
-                    width: 1 * screenScaleFactor
+                    width: UM.Theme.getSize("default_lining").width
                     height: parent.height
                     color: lineColor
                 }
@@ -191,7 +191,7 @@ Rectangle
                 PrintCoreConfiguration
                 {
                     id: rightExtruderInfo
-                    width: (parent.width-1) / 2
+                    width: (parent.width - extruderSeperator.width) / 2
                     printCoreConfiguration: printer.configuration[1]
                 }
             }
@@ -395,7 +395,8 @@ Rectangle
                     Label   // Status 2nd row
                     {
                         text: {
-                          if(printJob != null) {
+                          if(printJob != null)
+                          {
                               if(printJob.status == "printing" || printJob.status == "post_print")
                               {
                                   return OutputDevice.getDateCompleted(printJob.time_total - printJob.time_elapsed)
