@@ -4,7 +4,6 @@ import QtQuick.Controls.Styles 1.4
 
 import UM 1.3 as UM
 
-
 Rectangle
 {
     function strPadLeft(string, pad, length)
@@ -164,13 +163,14 @@ Rectangle
                 }
             }
 
-            Row     // PrintCode config
+            Row     // PrintCore config
             {
                 id: extruderInfo
                 anchors.bottom: parent.bottom
 
                 width: parent.width / 2 - UM.Theme.getSize("default_margin").width
                 height: childrenRect.height
+
                 spacing: 10 * screenScaleFactor
 
                 PrintCoreConfiguration
@@ -207,40 +207,37 @@ Rectangle
                 border.color: lineColor
                 radius: cornerRadius
                 property var showExtended: {
-                    if(printJob!= null)
+                    if(printJob != null)
                     {
                         var extendStates = ["sent_to_printer", "wait_for_configuration", "printing", "pre_print", "post_print", "wait_cleanup", "queued"];
                         return extendStates.indexOf(printJob.status) !== -1;
                     }
-                    return ! printer.enabled;
-                }
-                visible:
-                {
-                    return true
+                    return !printer.enabled;
                 }
 
                 Item  // Status and Percent
                 {
                     id: printProgressTitleBar
-                    width: parent.width
-                    //border.width: UM.Theme.getSize("default_lining").width
-                    //border.color: lineColor
-                    height: 40 * screenScaleFactor
-                    anchors.left: parent.left
+
                     property var showPercent: {
                         return printJob != null && (["printing", "post_print", "pre_print", "sent_to_printer"].indexOf(printJob.status) !== -1);
                     }
+
+                    width: parent.width
+                    //TODO: hardcoded value
+                    height: 40 * screenScaleFactor
+                    anchors.left: parent.left
 
                     Label
                     {
                         id: statusText
                         anchors.left: parent.left
                         anchors.leftMargin: UM.Theme.getSize("default_margin").width
-                        anchors.verticalCenter: parent.verticalCenter
                         anchors.right: progressText.left
                         anchors.rightMargin: UM.Theme.getSize("default_margin").width
+                        anchors.verticalCenter: parent.verticalCenter
                         text: {
-                            if ( ! printer.enabled)
+                            if (!printer.enabled)
                             {
                                 return catalog.i18nc("@label:status", "Disabled");
                             }
@@ -283,7 +280,6 @@ Rectangle
                         }
 
                         elide: Text.ElideRight
-
                         font: UM.Theme.getFont("small")
                     }
 
@@ -292,11 +288,11 @@ Rectangle
                         id: progressText
                         anchors.right: parent.right
                         anchors.rightMargin: UM.Theme.getSize("default_margin").width
-
                         anchors.top: statusText.top
 
                         text: formatPrintJobPercent(printJob)
                         visible: printProgressTitleBar.showPercent
+                        //TODO: Hardcoded value
                         opacity: 0.65
                         font: UM.Theme.getFont("very_small")
                     }
@@ -309,10 +305,10 @@ Rectangle
                         anchors.rightMargin: UM.Theme.getSize("default_margin").width
                         anchors.top: statusText.top
 
-                        visible: ! printProgressTitleBar.showPercent
+                        visible: !printProgressTitleBar.showPercent
 
                         source: {
-                            if ( ! printer.enabled)
+                            if (!printer.enabled)
                             {
                                 return "blocked-icon.svg";
                             }
@@ -362,7 +358,7 @@ Rectangle
                     {
                         text:
                         {
-                            if ( ! printer.enabled)
+                            if (!printer.enabled)
                             {
                                 return catalog.i18nc("@label", "Not accepting print jobs");
                             }
