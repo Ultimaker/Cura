@@ -843,13 +843,9 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
     #   This function can fail to actually start a print due to not being authenticated or another print already
     #   being in progress.
     def startPrint(self):
-
         # Check if we're already writing
         if not self._write_finished:
-            self._error_message = Message(
-                i18n_catalog.i18nc("@info:status",
-                                   "Sending new jobs (temporarily) blocked, still sending the previous print job."))
-            self._error_message.show()
+            Logger.log("d", "Sending new jobs (temporarily) blocked, still sending the previous print job.")
             return
 
         # Indicate we're starting a new write action, is set back to True at the end of this method
