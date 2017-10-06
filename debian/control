@@ -1,6 +1,7 @@
 Source: cura
 Priority: optional
-Maintainer: Gregor Riepl <onitake@gmail.com>
+Maintainer: Debian 3-D Printing Packages <3dprinter-general@lists.alioth.debian.org>
+Uploaders: Gregor Riepl <onitake@gmail.com>
 Build-Depends: debhelper (>= 10), cmake (>=2.8.12), dh-python,
  python3-all,
  uranium-tools (>=2.5.0),
