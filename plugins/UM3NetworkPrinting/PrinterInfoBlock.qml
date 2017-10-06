@@ -93,25 +93,38 @@ Rectangle
                 id: jobNameLabel
                 anchors.top: parent.top
                 anchors.left: parent.left
+                anchors.right: parent.right
+                anchors.rightMargin: UM.Theme.getSize("default_margin").width
+
                 text: printJob != null ? printJob.name : ""
                 font: UM.Theme.getFont("default_bold")
+                elide: Text.ElideRight
+
             }
 
             Label
             {
                 id: jobOwnerLabel
                 anchors.top: jobNameLabel.bottom
+                anchors.left: parent.left
+                anchors.right: parent.right
+                anchors.rightMargin: UM.Theme.getSize("default_margin").width
                 text: printJob != null ? printJob.owner : ""
                 opacity: 0.50
+                elide: Text.ElideRight
             }
 
             Label
             {
                 id: totalTimeLabel
                 anchors.bottom: parent.bottom
+                anchors.left: parent.left
+                anchors.right: parent.right
+                anchors.rightMargin: UM.Theme.getSize("default_margin").width
                 text: printJob != null ? getPrettyTime(printJob.time_total) : ""
                 opacity: 0.65
                 font: UM.Theme.getFont("default")
+                elide: Text.ElideRight
             }
         }
 
@@ -388,6 +401,8 @@ Rectangle
                             }
                             return "";
                         }
+                        anchors.left: parent.left
+                        anchors.right: parent.right
                         elide: Text.ElideRight
                         font: UM.Theme.getFont("default")
                     }
