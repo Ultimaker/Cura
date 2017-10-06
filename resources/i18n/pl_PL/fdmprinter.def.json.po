@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: Cura 3.0\n"
 "Report-Msgid-Bugs-To: r.dulek@ultimaker.com\n"
 "POT-Creation-Date: 2017-08-02 16:53+0000\n"
-"PO-Revision-Date: 2017-08-05 22:00+0200\n"
+"PO-Revision-Date: 2017-09-29 16:14+0200\n"
 "Last-Translator: 'Jaguś' Paweł Jagusiak and Andrzej 'anraf1001' Rafalski\n"
 "Language-Team: reprapy.pl\n"
 "Language: pl_PL\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 2.0.3\n"
+"X-Generator: Poedit 2.0.4\n"
 
 #: fdmprinter.def.json
 msgctxt "machine_settings label"
@@ -1123,7 +1123,7 @@ msgstr "Losowe"
 #: fdmprinter.def.json
 msgctxt "z_seam_type option sharpest_corner"
 msgid "Sharpest Corner"
-msgstr ""
+msgstr "Najostrzejszy róg"
 
 #: fdmprinter.def.json
 msgctxt "z_seam_x label"
@@ -1148,32 +1148,32 @@ msgstr "Współrzędna Y położenia, w pobliżu miejsca rozpoczęcia drukowania
 #: fdmprinter.def.json
 msgctxt "z_seam_corner label"
 msgid "Seam Corner Preference"
-msgstr ""
+msgstr "Wybór Rogu Szwu"
 
 #: fdmprinter.def.json
 msgctxt "z_seam_corner description"
 msgid "Control whether corners on the model outline influence the position of the seam. None means that corners have no influence on the seam position. Hide Seam makes the seam more likely to occur on an inside corner. Expose Seam makes the seam more likely to occur on an outside corner. Hide or Expose Seam makes the seam more likely to occur at an inside or outside corner."
-msgstr ""
+msgstr "Kontroluje, czy rogi na zewn. linii modelu wpływają na pozycję szwu. Brak oznacza, że rogi nie mają wpływu na pozycję szwu. Ukryj Szew powoduje, że szew będzie się bardziej pojawiał na wewn. rogach. Pokaż Szew powoduje, że szew będzie się bardziej pojawiał na zewn. rogach. Ukryj lub Pokaż Szew powoduje, że szew będzie się bardziej pojawiał na wewn. lub zewn. rogach."
 
 #: fdmprinter.def.json
 msgctxt "z_seam_corner option z_seam_corner_none"
 msgid "None"
-msgstr ""
+msgstr "Brak"
 
 #: fdmprinter.def.json
 msgctxt "z_seam_corner option z_seam_corner_inner"
 msgid "Hide Seam"
-msgstr ""
+msgstr "Ukryj Szew"
 
 #: fdmprinter.def.json
 msgctxt "z_seam_corner option z_seam_corner_outer"
 msgid "Expose Seam"
-msgstr ""
+msgstr "Pokaż Szew"
 
 #: fdmprinter.def.json
 msgctxt "z_seam_corner option z_seam_corner_any"
 msgid "Hide or Expose Seam"
-msgstr ""
+msgstr "Ukryj lub Pokaż Szew"
 
 #: fdmprinter.def.json
 msgctxt "z_seam_relative label"
@@ -1253,7 +1253,7 @@ msgstr "Wzór Wypełn."
 #: fdmprinter.def.json
 msgctxt "infill_pattern description"
 msgid "The pattern of the infill material of the print. The line and zig zag infill swap direction on alternate layers, reducing material cost. The grid, triangle, cubic, octet, quarter cubic and concentric patterns are fully printed every layer. Cubic, quarter cubic and octet infill change with every layer to provide a more equal distribution of strength over each direction."
-msgstr ""
+msgstr "Wzór materiału wypełniającego wydruk. Linie i zygzaki zmieniają kierunek na przemiennych warstwach, redukując koszty materiału. Kratka, trójkąty, sześcienne, ośmiościenne, ćwierć sześcienny i koncentryczny wzór są drukowane w pełni na każdej warstwie. Sześcienne, ćwierć sześcienne i czworościenne wypełnienie zmienia się co każdą warstwę, aby zapewnić równy rozkład siły w każdym kierunku."
 
 #: fdmprinter.def.json
 msgctxt "infill_pattern option grid"
@@ -1283,12 +1283,12 @@ msgstr "Podział sześcienny"
 #: fdmprinter.def.json
 msgctxt "infill_pattern option tetrahedral"
 msgid "Octet"
-msgstr ""
+msgstr "Czworościan"
 
 #: fdmprinter.def.json
 msgctxt "infill_pattern option quarter_cubic"
 msgid "Quarter Cubic"
-msgstr ""
+msgstr "Ćwierć Sześcienny"
 
 #: fdmprinter.def.json
 msgctxt "infill_pattern option concentric"
@@ -1308,22 +1308,22 @@ msgstr "Zygzak"
 #: fdmprinter.def.json
 msgctxt "infill_pattern option cross"
 msgid "Cross"
-msgstr ""
+msgstr "Krzyż"
 
 #: fdmprinter.def.json
 msgctxt "infill_pattern option cross_3d"
 msgid "Cross 3D"
-msgstr ""
+msgstr "Krzyż 3D"
 
 #: fdmprinter.def.json
 msgctxt "zig_zaggify_infill label"
 msgid "Connect Infill Lines"
-msgstr ""
+msgstr "Połącz Linie Wypełnienia"
 
 #: fdmprinter.def.json
 msgctxt "zig_zaggify_infill description"
 msgid "Connect the ends where the infill pattern meets the inner wall using a lines which follows the shape of the inner wall. Enabling this setting can make the infill adhere to the walls better and reduces the effects on infill on the quality of vertical surfaces. Disabling this setting reduces the amount of material used."
-msgstr ""
+msgstr "Łączy końce gdzie wypełnienie spotyka się z wewn. ścianą za pomocą linii, które podążają za kształtem wewn. ściany. Włączenie tej opcji może spowodować lepsze łączenie się wypełnienia ze ścianą i redukuje efekty związane z jakością na pionowych ścianach. Wyłączenie tej opcji redukuje ilość użytego materiału."
 
 #: fdmprinter.def.json
 msgctxt "infill_angles label"
@@ -1448,62 +1448,62 @@ msgstr "Nie generuj obszarów wypełnienia mniejszych niż to (zamiast tego uży
 #: fdmprinter.def.json
 msgctxt "skin_preshrink label"
 msgid "Skin Removal Width"
-msgstr ""
+msgstr "Szerokość Usuwania Skóry"
 
 #: fdmprinter.def.json
 msgctxt "skin_preshrink description"
 msgid "The largest width of skin areas which are to be removed. Every skin area smaller than this value will disappear. This can help in limiting the amount of time and material spent on printing top/bottom skin at slanted surfaces in the model."
-msgstr ""
+msgstr "Największa szerokość pow. skóry, które mają zostać usunięte. Każda pow. skóry mniejsza niż ta wartość zniknie. Może to pomóc w ograniczeniu ilości czasu i materiału zużywanego na drukowanie górnych/dolnych skór na pochyłych powierzchniach modelu."
 
 #: fdmprinter.def.json
 msgctxt "top_skin_preshrink label"
 msgid "Top Skin Removal Width"
-msgstr ""
+msgstr "Szer. Usuwania Górnej Skóry"
 
 #: fdmprinter.def.json
 msgctxt "top_skin_preshrink description"
 msgid "The largest width of top skin areas which are to be removed. Every skin area smaller than this value will disappear. This can help in limiting the amount of time and material spent on printing top skin at slanted surfaces in the model."
-msgstr ""
+msgstr "Największa szerokość górnej pow. skóry, które mają zostać usunięte. Każda pow. skóry mniejsza niż ta wartość zniknie. Może to pomóc w ograniczeniu ilości czasu i materiału zużywanego na drukowanie górnych skór na pochyłych powierzchniach modelu."
 
 #: fdmprinter.def.json
 msgctxt "bottom_skin_preshrink label"
 msgid "Bottom Skin Removal Width"
-msgstr ""
+msgstr "Szer. Usuwania Dolnej Skóry"
 
 #: fdmprinter.def.json
 msgctxt "bottom_skin_preshrink description"
 msgid "The largest width of bottom skin areas which are to be removed. Every skin area smaller than this value will disappear. This can help in limiting the amount of time and material spent on printing bottom skin at slanted surfaces in the model."
-msgstr ""
+msgstr "Największa szerokość dolnych pow. skóry, które mają zostać usunięte. Każda pow. skóry mniejsza niż ta wartość zniknie. Może to pomóc w ograniczeniu ilości czasu i materiału zużywanego na drukowanie dolnych skór na pochyłych powierzchniach modelu."
 
 #: fdmprinter.def.json
 msgctxt "expand_skins_expand_distance label"
 msgid "Skin Expand Distance"
-msgstr "Odległość Rozsz. Powłoki"
+msgstr "Odległość Rozsz. Skóry"
 
 #: fdmprinter.def.json
 msgctxt "expand_skins_expand_distance description"
 msgid "The distance the skins are expanded into the infill. Higher values makes the skin attach better to the infill pattern and makes the walls on neighboring layers adhere better to the skin. Lower values save amount of material used."
-msgstr ""
+msgstr "Odległość na jaką skóry są rozszerzane w kierunku wypełnienia. Wyższe wartości powodują lepsze łączenie się skóry i wypełnienia i powodują, że ściany sąsiednich warstw lepiej łączą się ze skórą. Niższe wartości oszczędzają materiał."
 
 #: fdmprinter.def.json
 msgctxt "top_skin_expand_distance label"
 msgid "Top Skin Expand Distance"
-msgstr ""
+msgstr "Odległość Rozsz. Górnej Skóry"
 
 #: fdmprinter.def.json
 msgctxt "top_skin_expand_distance description"
 msgid "The distance the top skins are expanded into the infill. Higher values makes the skin attach better to the infill pattern and makes the walls on the layer above adhere better to the skin. Lower values save amount of material used."
-msgstr ""
+msgstr "Odległość na jaką górne skóry są rozszerzane w kierunku wypełnienia. Wyższe wartości powodują lepsze łączenie się skóry i wypełnienia i powodują, że ściany sąsiednich warstw lepiej łączą się ze skórą. Niższe wartości oszczędzają materiał."
 
 #: fdmprinter.def.json
 msgctxt "bottom_skin_expand_distance label"
 msgid "Bottom Skin Expand Distance"
-msgstr ""
+msgstr "Odległość Rozsz. Dolnej Skóry"
 
 #: fdmprinter.def.json
 msgctxt "bottom_skin_expand_distance description"
 msgid "The distance the bottom skins are expanded into the infill. Higher values makes the skin attach better to the infill pattern and makes the skin adhere better to the walls on the layer below. Lower values save amount of material used."
-msgstr ""
+msgstr "Odległość na jaką dolne skóry są rozszerzane w kierunku wypełnienia. Wyższe wartości powodują lepsze łączenie się skóry i wypełnienia i powodują, że ściany sąsiednich warstw lepiej łączą się ze skórą. Niższe wartości oszczędzają materiał."
 
 #: fdmprinter.def.json
 msgctxt "max_skin_angle_for_expansion label"
@@ -2823,7 +2823,7 @@ msgstr "Zygzak"
 #: fdmprinter.def.json
 msgctxt "support_pattern option cross"
 msgid "Cross"
-msgstr ""
+msgstr "Krzyż"
 
 #: fdmprinter.def.json
 msgctxt "support_connect_zigzags label"
@@ -2838,32 +2838,32 @@ msgstr "Połącz Zygzaki. To zwiększa wytrzymałość zygzakowatej podpory."
 #: fdmprinter.def.json
 msgctxt "support_skip_some_zags label"
 msgid "Break Up Support In Chunks"
-msgstr ""
+msgstr "Podziel Podpory na Kawałki"
 
 #: fdmprinter.def.json
 msgctxt "support_skip_some_zags description"
 msgid "Skip some support line connections to make the support structure easier to break away. This setting is applicable to the Zig Zag support infill pattern."
-msgstr ""
+msgstr "Pomijaj niektóre połączenia linii podpory, aby struktura podpory była łatwiejsza do odłamania. To ustawienie dotyczy wypełn. podpory Zygzak."
 
 #: fdmprinter.def.json
 msgctxt "support_skip_zag_per_mm label"
 msgid "Support Chunk Size"
-msgstr ""
+msgstr "Wielkość Kawałka Podpory"
 
 #: fdmprinter.def.json
 msgctxt "support_skip_zag_per_mm description"
 msgid "Leave out a connection between support lines once every N millimeter to make the support structure easier to break away."
-msgstr ""
+msgstr "Pomiń połączenie pomiędzy liniami podpory co N milimetrów, aby struktura podpory była łatwiejsza do odłamania."
 
 #: fdmprinter.def.json
 msgctxt "support_zag_skip_count label"
 msgid "Support Chunk Line Count"
-msgstr ""
+msgstr "Liczba Linii Kawałka Podpory"
 
 #: fdmprinter.def.json
 msgctxt "support_zag_skip_count description"
 msgid "Skip one in every N connection lines to make the support structure easier to break away."
-msgstr ""
+msgstr "Pomijaj jedną z każdych N linii, aby struktura podpory była łatwiejsza do odłamania."
 
 #: fdmprinter.def.json
 msgctxt "support_infill_rate label"
@@ -3452,22 +3452,22 @@ msgstr "Drukuj obrys tylko na zewnątrz modelu. Zmniejsza to liczbę obrysu, kt�
 #: fdmprinter.def.json
 msgctxt "z_offset_layer_0 label"
 msgid "Initial Layer Z Offset"
-msgstr ""
+msgstr "Przesunięcie w Osi Z Warstwy Początk."
 
 #: fdmprinter.def.json
 msgctxt "z_offset_layer_0 description"
 msgid "The extruder is offset from the normal height of the first layer by this amount. It can be positive (raised) or negative (lowered). Some filament types adhere to the build plate better if the extruder is raised slightly."
-msgstr ""
+msgstr "Ekstruder jest przesuwany z normalnej wysokości pierwszej warstwy o tą wartość. Może być dodatnia (uniesienie) lub ujemna (obniżenie). Niektóre typy filamentu przyklejają się lepiej do stołu jeżeli ekstruder jest lekko uniesiony."
 
 #: fdmprinter.def.json
 msgctxt "z_offset_taper_layers label"
 msgid "Z Offset Taper Layers"
-msgstr ""
+msgstr "Warstwy Zbieżne Przesunięcia Z"
 
 #: fdmprinter.def.json
 msgctxt "z_offset_taper_layers description"
 msgid "When non-zero, the Z offset is reduced to 0 over that many layers. A value of 0 means that the Z offset remains constant for all the layers in the print."
-msgstr ""
+msgstr "Kiedy niezerowe, przesunięcie w osi Z jest redukowane do zera w trakcie drukowania takiej ilości warstw. Wartość 0 oznacza, że przesunięcie pozostaje stałe dla wszystkich warstw wydruku."
 
 #: fdmprinter.def.json
 msgctxt "raft_margin label"
@@ -3482,12 +3482,12 @@ msgstr "Jeśli tratwa jest włączona, jest to dodatkowy obszar tratwy wokół m
 #: fdmprinter.def.json
 msgctxt "raft_smoothing label"
 msgid "Raft Smoothing"
-msgstr ""
+msgstr "Wygładzanie Tratwy"
 
 #: fdmprinter.def.json
 msgctxt "raft_smoothing description"
 msgid "This setting control how much inner corners in the raft outline are rounded. Inward corners are rounded to a semi circle with a radius equal to the value given here. This setting also removes holes in the raft outline which are smaller than such a circle."
-msgstr ""
+msgstr "To ustawienie kontroluje jak bardzo wewn. narożniki zewn. linii tratwy są zaokrąglone. Wewn. narożniki są zaokrąglone do pół-okręgów o promieniu równym wartości podanej w tym miejscu. To ustawienie usuwa też otwory w  zewn. linii tratwy, które są mniejsze niż taki okrąg."
 
 #: fdmprinter.def.json
 msgctxt "raft_airgap label"
@@ -4167,12 +4167,12 @@ msgstr "Wygładź spiralny kontur, aby zmniejszyć widoczność szwu Z (szew Z p
 #: fdmprinter.def.json
 msgctxt "relative_extrusion label"
 msgid "Relative Extrusion"
-msgstr ""
+msgstr "Ekstruzja Względna"
 
 #: fdmprinter.def.json
 msgctxt "relative_extrusion description"
 msgid "Use relative extrusion rather than absolute extrusion. Using relative E-steps makes for easier post-processing of the Gcode. However, it's not supported by all printers and it may produce very slight deviations in the amount of deposited material compared to absolute E-steps. Irrespective of this setting, the extrusion mode will always be set to absolute before any Gcode script is output."
-msgstr ""
+msgstr "Używaj ekstruzji względnej zamiast bezwzględnej.  Używanie względnych kroków osi E powoduje łatwiejszy postprocessing Gcodu. Jednakże nie jest to wspierane przez wszystkie drukarki i może powodować lekkie zakłamania w ilości podawanego materiału w porównaniu do kroków bezwzględnych. Niezależnie od tego ustawienia, tryb ekstruzji będzie zawsze ustawiany jako bezwzględny przez wyjściem jakiegokolwiek skryptu Gcode"
 
 #: fdmprinter.def.json
 msgctxt "experimental label"
@@ -4187,12 +4187,12 @@ msgstr "eksperymentalne!"
 #: fdmprinter.def.json
 msgctxt "optimize_wall_printing_order label"
 msgid "Optimize Wall Printing Order"
-msgstr ""
+msgstr "Optymalizuj Kolejność Drukowania Ścian"
 
 #: fdmprinter.def.json
 msgctxt "optimize_wall_printing_order description"
 msgid "Optimize the order in which walls are printed so as to reduce the number of retractions and the distance travelled. Most parts will benefit from this being enabled but some may actually take longer so please compare the print time estimates with and without optimization."
-msgstr ""
+msgstr "Optymalizuj kolejność, według której drukowane są ściany, aby zredukować ilość retrakcji i długości ruchu jałowego. Większość części powinno na tym zyskać, ale niektóre mogą drukować się dłużej, dlatego prosimy o porównaniu czasu drukowania z i bez włączonej opcji."
 
 #: fdmprinter.def.json
 msgctxt "draft_shield_enabled label"
@@ -4317,22 +4317,22 @@ msgstr "Zmień kierunek, w jakim drukowane są górne/dolne warstwy. Zazwyczaj s
 #: fdmprinter.def.json
 msgctxt "cross_infill_pocket_size label"
 msgid "Cross 3D Pocket Size"
-msgstr ""
+msgstr "Rozmiar Kieszeni Krzyża 3D"
 
 #: fdmprinter.def.json
 msgctxt "cross_infill_pocket_size description"
 msgid "The size of pockets at four-way crossings in the cross 3D pattern at heights where the pattern is touching itself."
-msgstr ""
+msgstr "Rozmiar kieszeni na czterostronnych skrzyżowaniach we wzorze krzyż 3D na wysokościach gdzie wzór tego siebie samego."
 
 #: fdmprinter.def.json
 msgctxt "cross_infill_apply_pockets_alternatingly label"
 msgid "Alternate Cross 3D Pockets"
-msgstr ""
+msgstr "Zamieniaj Kieszenie Krzyża 3D"
 
 #: fdmprinter.def.json
 msgctxt "cross_infill_apply_pockets_alternatingly description"
 msgid "Only apply pockets at half of the four-way crossings in the cross 3D pattern and alternate the location of the pockets between heights where the pattern is touching itself."
-msgstr ""
+msgstr "Twórz kieszenie tylko w połowie czterostronnych skrzyżowań we wzorze krzyż 3D i zamieniaj pozycję kieszonek pomiędzy wysokościami gdzie wzór dotyka samego siebie."
 
 #: fdmprinter.def.json
 msgctxt "spaghetti_infill_enabled label"
@@ -4756,12 +4756,12 @@ msgstr "Przejedź nad górną powierzchnią dodatkowy raz, ale bez ekstrudowania
 #: fdmprinter.def.json
 msgctxt "ironing_only_highest_layer label"
 msgid "Iron Only Highest Layer"
-msgstr ""
+msgstr "Prasuj Tylko Najwyższą Warstwę"
 
 #: fdmprinter.def.json
 msgctxt "ironing_only_highest_layer description"
 msgid "Only perform ironing on the very last layer of the mesh. This saves time if the lower layers don't need a smooth surface finish."
-msgstr ""
+msgstr "Przeprowadzaj prasowanie tylko na najwyższej warstwie siatki. Oszczędza to czas jeżeli niższe warstwy nie muszą mieć gładkie wykończenia powierzchni."
 
 #: fdmprinter.def.json
 msgctxt "ironing_pattern label"
