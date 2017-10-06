@@ -5,11 +5,11 @@ It is highly recommended to use git-buildpackage (gbp) to prepare updated
 packages. This tool will automatically verify the Debian tree against
 the upstream sources and generate separate source and debian tarballs.
 
-Packaging instructions:
+Packaging instructions (1 and 2 only need to be done once):
 
 1.  Obtain the sources:
 
-  $ git clone ssh://git.debian.org/git/3dprinter/packages/cura.git
+  $ gbp clone ssh://git.debian.org/git/3dprinter/packages/cura.git
   $ cd cura
 
 2.  Add the upstream repository and fetch the tree:
@@ -17,84 +17,49 @@ Packaging instructions:
   $ git remote add upstream https://github.com/Ultimaker/Cura.git
   $ git fetch --all
 
-3.  Verify that you have a new release tag:
+3.  Import the latest upstream release:
 
-  $ dpkg-parsechangelog | grep ^Version:
+  $ git fetch --all
+  $ gbp import-orig --uscan
 
-  Version: 2.5.0-1
-  Version: 2.4.0-1
-  ...
+  This will fetch the latest upstream release into the upstream branch
+  and create and commit a pristine-tar from it.
 
-  $ git tag
-  ...
-  2.4.0
-  2.5.0
-  2.6.0
+4.  Update the changelog:
 
-  (in this case, upstream released 2.6.0, which is not packaged yet)
+  $ dch -a -v <UPSTREAM_VERSION>-<DEBIAN_VERSION>
 
-4.  Create a release branch and merge the upstream release:
+  Replace UPSTREAM_VERSION with the version fetched in step 3 and
+  DEBIAN_VERSION with 1. If you are creating a new Debian release
+  from a previous package version, increment DEBIAN_VERSION by 1 each time.
+  This will open a text editor where you can edit the changelog entry.
+  Include a "Closes #..." entry if this release fixes a Debian bug.
 
-  $ git checkout debian
-  $ git checkout -b debian-2.6
-  $ git merge 2.6.0
+5.  Refresh and verify the patches:
 
-5.  Update the changelog:
+  $ quilt push -a
 
-  $ dch -a -v 2.6.0-1
+  This applies all patches. If you encounter any errors, fix them.
+  Make sure to refresh all patches that have changed and remove those that
+  aren't needed any more.
+  Commit the updated patches using git, then unapply them:
 
-  (this will open a text editor where you can edit the changelog entry)
-  (include a "Closes #..." entry if this release fixes a Debian bug)
+  $ quilt pop -a; rm -rf .pc
 
-6.  Refresh and verify the patches:
+6.  Build against the upstream tree:
 
-  $ quilt push
+  $ gbp buildpackage -us -uc
 
-  (verify that the next patch applies; if it does:)
-
-  $ quilt refresh
-
-  (if it doesn't, check if the patch is still needed and fix or remove it)
-
-  (repeat until all patches are applied)
-
-7.  Clean the tree:
-
-  $ debian/rules clean; quilt pop -a; rm -rf .pc
-
-8.  Commit your changes:
-
-  $ git status
-
-  (verify that you are satisfied with the result)
-
-  $ git add .
-  $ git commit -m "New upstream release 2.6.0"
-
-9.  Build against the upstream tree:
-
-  $ gbp buildpackage --git-upstream-tree=2.6.0 --git-upstream-branch=upstream/2.6 --git-debian-branch=debian-2.6 -us -uc
-
-10. Verify that the build succeeds, and add more commits to fix problems.
-
-11. Clean and build again:
-
-  $ debian/rules clean; quilt pop -a; rm -rf .pc
-  $ gbp buildpackage --git-upstream-tree=2.6.0 --git-upstream-branch=upstream/2.6 --git-debian-branch=debian-2.6
-
-  (this may prompt you for your GPG passphrase)
-
-12. Verify that you don't have any lintian warnings:
+7.  Verify that you don't have any lintian warnings:
 
   $ linitian -I
 
-13. Merge your changes back into the debian tree, tag and push everything:
+8.  Merge your changes back into the debian tree, tag and push everything:
 
-  $ git tag debian-2.6.0-1
-  $ git push -u origin debian-2.6
-  $ git push --tags
-  $ git checkout debian
-  $ git merge debian-2.6
-  $ git push
+  $ gbp buildpackage --git-tag --git-sign-tags
+  $ git push --tags origin master upstream pristine-tar
 
-14. Release the package using dput or whichever method you prefer.
+9.  Sign your package and release using dput or whichever method you prefer:
+
+  $ debsign
+  $ dput <RELEASE_REPOSITORY> ../libarcus_<VERSION>.changes
