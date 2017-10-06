@@ -754,17 +754,6 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
                                                  )
             return
 
-        # Check if we're already writing
-        if not self._write_finished:
-            self._error_message = Message(
-                i18n_catalog.i18nc("@info:status",
-                                   "Sending new jobs (temporarily) blocked, still sending the previous print job."))
-            self._error_message.show()
-            return
-
-        # Indicate we're starting a new write action, is set back to True in the startPrint() method
-        self._write_finished = False
-
         self.startPrint()
 
     def _configurationMismatchMessageCallback(self, button):
@@ -855,6 +844,18 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
     #   This function can fail to actually start a print due to not being authenticated or another print already
     #   being in progress.
     def startPrint(self):
+
+        # Check if we're already writing
+        if not self._write_finished:
+            self._error_message = Message(
+                i18n_catalog.i18nc("@info:status",
+                                   "Sending new jobs (temporarily) blocked, still sending the previous print job."))
+            self._error_message.show()
+            return
+
+        # Indicate we're starting a new write action, is set back to True at the end of this method
+        self._write_finished = False
+
         try:
             self._send_gcode_start = time()
             self._progress_message = Message(i18n_catalog.i18nc("@info:status", "Sending data to printer"), 0, False, -1, i18n_catalog.i18nc("@info:title", "Sending Data"))

@@ -3,6 +3,7 @@
 
 import configparser #To parse preference files.
 import io #To serialise the preference files afterwards.
+import os
 
 from UM.VersionUpgrade import VersionUpgrade #We're inheriting from this.
 
@@ -87,6 +88,41 @@ class VersionUpgrade27to30(VersionUpgrade):
                     continue #Don't add the original.
                 new_visible_settings.append(setting) #No special handling, so just add the original visible setting back.
             parser["general"]["visible_settings"] = ";".join(new_visible_settings)
+
+        # Re-serialise the file.
+        output = io.StringIO()
+        parser.write(output)
+        return [filename], [output.getvalue()]
+
+    ##  Upgrades the given quality changes container file from version 2.7 to 3.0.
+    #
+    #   \param serialised The serialised form of the container file.
+    #   \param filename The name of the file to upgrade.
+    def upgradeQualityChangesContainer(self, serialised, filename):
+        parser = configparser.ConfigParser(interpolation=None)
+        parser.read_string(serialised)
+
+        # Update the skin pre-shrink settings:
+        #  - Remove the old ones
+        #  - Do not add the new ones. The default values will be used for them.
+        if parser.has_section("values"):
+            for remove_key in ["expand_skins_into_infill", "expand_upper_skins", "expand_lower_skins"]:
+                if remove_key in parser["values"]:
+                    del parser["values"][remove_key]
+
+        for each_section in ("general", "metadata"):
+            if not parser.has_section(each_section):
+                parser.add_section(each_section)
+
+        # Set the definition to "ultimaker2" for Ultimaker 2 quality changes
+        if not parser.has_section("general"):
+            parser.add_section("general")
+        if os.path.basename(filename).startswith("ultimaker2_"):
+            parser["general"]["definition"] = "ultimaker2"
+
+        # Update version numbers
+        parser["general"]["version"] = "2"
+        parser["metadata"]["setting_version"] = "3"
 
         # Re-serialise the file.
         output = io.StringIO()
