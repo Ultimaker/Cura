@@ -4,7 +4,7 @@ Source: https://github.com/Ultimaker/Cura
 
 Files: *
 Copyright:
- Copyright (c) 2015, 2016 Ultimaker B.V.
+ Copyright (c) 2015-2017 Ultimaker B.V.
  Copyright (c) 2013 David Braam
 License: AGPL-3+
 
@@ -14,7 +14,7 @@ License: Apache-2.0
 
 Files: debian/*
 Copyright:
- 2016 Gregor Riepl <onitake@gmail.com>
+ 2016-2017 Gregor Riepl <onitake@gmail.com>
 License: BSD-3-clause
 
 License: Apache-2.0
