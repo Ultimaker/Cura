@@ -29,8 +29,15 @@ Depends: ${shlibs:Depends}, ${misc:Depends}, ${python3:Depends},
 Recommends: python3-zeroconf, fdm-materials (>=2.5.0)
 Provides: ${python3:Provides}
 XB-Python3-Version: ${python3:Versions}
-Description: 3D printing application
- Cura prepares your model for 3D printing.
- For novices, it makes it easy to get great results.
- For experts, there are over 200 settings to adjust to your needs.
- This is the new, shiny frontend for Cura (dubbed 'Cura 2').
+Description: GUI G-code generator for 3D printers
+ Cura converts digital 3D models into printing instructions (G-code)
+ for your 3D printer. It cuts the model into horizontal slices (layers),
+ generates toolpaths to fill them and calculates the amount of material
+ to be extruded.
+ .
+ Cura is easy to use for novices and provide over 200 settings to adjust
+ for the expert.  It can output G-Code for several series of 3D printers,
+ most notably the Ultimaker.
+ .
+ It provide a graphical user interface.  For batch mode, check out
+ cura-engine.
