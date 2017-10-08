@@ -1,2 +1,3 @@
 02-exclude-fonts.patch
 03-fix-appstream-path.patch
+1000-desktop-menu-location.patch
