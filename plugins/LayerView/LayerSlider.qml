@@ -185,10 +185,9 @@ Item {
             id: upperHandleLabel
 
             height: sliderRoot.handleSize + UM.Theme.getSize("default_margin").height
-            // width is calculated automatically from the input field width
-            x: parent.x - width // align with slider handle
-            y: parent.anchors.top - height // align with slider? handle
-            target: Qt.point(sliderRoot.width, parent.y + parent.height / 2)
+            x: parent.x - width - UM.Theme.getSize("default_margin").width
+            anchors.verticalCenter: parent.verticalCenter
+            target: Qt.point(sliderRoot.width, y + height / 2)
             visible: sliderRoot.layersVisible
 
             // custom properties
@@ -265,10 +264,9 @@ Item {
             id: lowerHandleLabel
 
             height: sliderRoot.handleSize + UM.Theme.getSize("default_margin").height
-            // width is calculated automatically from the input field width
-            x: (parent.x + (parent.width / 2)) - width - 100
-            y: Math.floor(parent.y + height / 2)
-            target: Qt.point(sliderRoot.width, parent.y + parent.height / 2)
+            x: parent.x - width - UM.Theme.getSize("default_margin").width
+            anchors.verticalCenter: parent.verticalCenter
+            target: Qt.point(sliderRoot.width, y + height / 2)
             visible: sliderRoot.layersVisible
 
             // custom properties

@@ -13,13 +13,12 @@ UM.PointingRectangle {
     id: sliderLabelRoot
 
     // custom properties
-    property var target // Qt.point
     property real maximumValue: 100
     property real value: 0
     property var setValue // Function
     property bool busy: false
 
-    target: sliderLabelRoot.target
+    target: Qt.point(parent.width, y + height / 2)
     arrowSize: UM.Theme.getSize("default_arrow").width
     height: parent.height
     width: valueLabel.width + UM.Theme.getSize("default_margin").width
@@ -50,7 +49,8 @@ UM.PointingRectangle {
             verticalCenter: parent.verticalCenter
         }
 
-        width: Math.max(UM.Theme.getSize("line").width * sliderLabelRoot.maximumValue.length + 2 * screenScaleFactor, 20 * screenScaleFactor)
+        // width is based on text field contents, but never smaller than 20pts
+        width: 40 * screenScaleFactor
 
         text: sliderLabelRoot.value + 1 // the current handle value, add 1 because layers is an array
         horizontalAlignment: TextInput.AlignRight
