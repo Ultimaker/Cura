@@ -276,8 +276,8 @@ class WorkspaceDialog(QObject):
 
     def hide(self):
         self._visible = False
-        self._lock.release()
         self._view.hide()
+        self._lock.release()
 
     @pyqtSlot()
     def onOkButtonClicked(self):

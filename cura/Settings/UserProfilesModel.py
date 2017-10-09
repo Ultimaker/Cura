@@ -41,6 +41,9 @@ class UserProfilesModel(ProfilesModel):
             new_extruder_stacks = []
             if active_extruder is not None:
                 new_extruder_stacks = [active_extruder]
+            else:
+                # if there is no active extruder, use the first one in the active extruder stacks
+                active_extruder = extruder_stacks[0]
             extruder_stacks = new_extruder_stacks + extruder_stacks
 
         # Fetch the list of useable qualities across all extruders.
@@ -55,8 +58,8 @@ class UserProfilesModel(ProfilesModel):
             # If the printer has multiple extruders then quality changes related to the current extruder are kept
             filtered_quality_changes = [qc for qc in quality_changes_list if qc.getMetaDataEntry("quality_type") in quality_type_set and
                                         qc.getMetaDataEntry("extruder") is not None and
-                                        qc.getMetaDataEntry("extruder") == active_extruder.definition.getMetaDataEntry("quality_definition") or
-                                        qc.getMetaDataEntry("extruder") == active_extruder.definition.getId()]
+                                        (qc.getMetaDataEntry("extruder") == active_extruder.definition.getMetaDataEntry("quality_definition") or
+                                         qc.getMetaDataEntry("extruder") == active_extruder.definition.getId())]
         else:
             # If not, the quality changes of the global stack are selected
             filtered_quality_changes = [qc for qc in quality_changes_list if qc.getMetaDataEntry("quality_type") in quality_type_set and
