@@ -1,14 +1,13 @@
 # Copyright (c) 2017 Ultimaker B.V.
 # Uranium is released under the terms of the LGPLv3 or higher.
 
-from threading import Thread, Event
-
 from PyQt5.QtCore import Qt, QCoreApplication, QTimer
 from PyQt5.QtGui import QPixmap, QColor, QFont, QPen, QPainter
 from PyQt5.QtWidgets import QSplashScreen
 
 from UM.Resources import Resources
 from UM.Application import Application
+
 
 class CuraSplashScreen(QSplashScreen):
     def __init__(self):
@@ -26,7 +25,6 @@ class CuraSplashScreen(QSplashScreen):
         self._change_timer = QTimer()
         self._change_timer.setInterval(50)
         self._change_timer.setSingleShot(False)
-        #self.timeoutSignal.connect(self._onTimeout)
         self._change_timer.timeout.connect(self.updateLoadingImage)
 
     def show(self):
@@ -62,12 +60,12 @@ class CuraSplashScreen(QSplashScreen):
         font = QFont()  # Using system-default font here
         font.setPixelSize(37)
         painter.setFont(font)
-        painter.drawText(220, 66, 330 * self._scale, 230 * self._scale, Qt.AlignLeft | Qt.AlignTop, version[0])
+        painter.drawText(215, 66, 330 * self._scale, 230 * self._scale, Qt.AlignLeft | Qt.AlignTop, version[0])
         if len(version) > 1:
             font.setPointSize(12)
             painter.setFont(font)
             painter.setPen(QColor(200, 200, 200, 255))
-            painter.drawText(252, 105, 330 * self._scale, 255 * self._scale, Qt.AlignLeft | Qt.AlignTop, version[1])
+            painter.drawText(247, 105, 330 * self._scale, 255 * self._scale, Qt.AlignLeft | Qt.AlignTop, version[1])
         painter.setPen(QColor(255, 255, 255, 255))
 
         # draw the loading image
