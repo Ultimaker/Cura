@@ -404,6 +404,8 @@ Rectangle
                         anchors.left: parent.left
                         anchors.right: parent.right
                         elide: Text.ElideRight
+                        wrapMode: Text.Wrap
+
                         font: UM.Theme.getFont("default")
                     }
 
