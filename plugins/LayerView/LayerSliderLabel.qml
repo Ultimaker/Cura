@@ -49,9 +49,7 @@ UM.PointingRectangle {
             verticalCenter: parent.verticalCenter
         }
 
-        // width is based on text field contents, but never smaller than 20pts
         width: 40 * screenScaleFactor
-
         text: sliderLabelRoot.value + 1 // the current handle value, add 1 because layers is an array
         horizontalAlignment: TextInput.AlignRight
 

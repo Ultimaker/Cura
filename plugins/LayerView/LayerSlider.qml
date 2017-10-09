@@ -38,7 +38,7 @@ Item {
 
     property bool layersVisible: true
 
-    function getUpperValue () {
+    function getUpperValueFromSliderHandle () {
         return upperHandle.getValue()
     }
 
@@ -47,7 +47,7 @@ Item {
         updateRangeHandle()
     }
 
-    function getLowerValue () {
+    function getLowerValueFromSliderHandle () {
         return lowerHandle.getValue()
     }
 
@@ -90,7 +90,7 @@ Item {
             upperHandle.y = y - upperHandle.height
             lowerHandle.y = y + height
 
-            var upperValue = sliderRoot.getUpperValue()
+            var upperValue = sliderRoot.getUpperValueFromSliderHandle()
             var lowerValue = upperValue - (sliderRoot.upperValue - sliderRoot.lowerValue)
 
             // update the Python values
@@ -156,15 +156,16 @@ Item {
 
         // set the slider position based on the upper value
         function setValue (value) {
+
+            // TODO: improve this?
+            UM.LayerView.setCurrentLayer(value)
+
             var diff = (value - sliderRoot.maximumValue) / (sliderRoot.minimumValue - sliderRoot.maximumValue)
             var newUpperYPosition = Math.round(diff * (sliderRoot.height - (2 * sliderRoot.handleSize + sliderRoot.minimumRangeHandleSize)))
             y = newUpperYPosition
 
             // update the rangle handle
             sliderRoot.updateRangeHandle()
-
-            // TODO: improve this?
-            UM.LayerView.setCurrentLayer(getValue())
         }
 
         // dragging
@@ -192,7 +193,7 @@ Item {
 
             // custom properties
             maximumValue: sliderRoot.maximumValue
-            value: sliderRoot.getUpperValue()
+            value: sliderRoot.upperValue
             busy: UM.LayerView.busy
             setValue: sliderRoot.setUpperValue // connect callback functions
         }
@@ -218,8 +219,8 @@ Item {
                 upperHandle.y = y - (upperHandle.heigth + sliderRoot.minimumRangeHandleSize)
             }
 
-            // update the range handle
-            rangeHandle.height = y - (upperHandle.y + upperHandle.height)
+            // update the rangle handle
+            sliderRoot.updateRangeHandle()
 
             // TODO: improve this?
             UM.LayerView.setMinimumLayer(getValue())
@@ -235,15 +236,16 @@ Item {
 
         // set the slider position based on the lower value
         function setValue (value) {
+
+            // TODO: improve this?
+            UM.LayerView.setMinimumLayer(value)
+
             var diff = (value - sliderRoot.maximumValue) / (sliderRoot.minimumValue - sliderRoot.maximumValue)
             var newLowerYPosition = Math.round((sliderRoot.handleSize + sliderRoot.minimumRangeHandleSize) + diff * (sliderRoot.height - (2 * sliderRoot.handleSize + sliderRoot.minimumRangeHandleSize)))
             y = newLowerYPosition
 
             // update the rangle handle
             sliderRoot.updateRangeHandle()
-
-            // TODO: improve this?
-            UM.LayerView.setMinimumLayer(getValue())
         }
 
         // dragging
@@ -271,7 +273,7 @@ Item {
 
             // custom properties
             maximumValue: sliderRoot.maximumValue
-            value: sliderRoot.getLowerValue()
+            value: sliderRoot.lowerValue
             busy: UM.LayerView.busy
             setValue: sliderRoot.setLowerValue // connect callback functions
         }
