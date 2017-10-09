@@ -836,6 +836,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
             Logger.log("d", "User aborted sending print to remote.")
             self._progress_message.hide()
             self._compressing_print = False
+            self._write_finished = True  # post_reply does not always exist, so make sure we unblock writing
             if self._post_reply:
                 self._finalizePostReply()
             Application.getInstance().showPrintMonitor.emit(False)
