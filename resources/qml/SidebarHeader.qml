@@ -36,20 +36,6 @@ Column
 
     Item
     {
-        anchors
-        {
-            left: parent.left
-            leftMargin: UM.Theme.getSize("sidebar_margin").width
-            right: parent.right
-            rightMargin: UM.Theme.getSize("sidebar_margin").width
-        }
-        visible: extruderSelectionRow.visible
-        height: UM.Theme.getSize("default_lining").hieght
-        width: height
-    }
-
-    Item
-    {
         id: extruderSelectionRow
         width: parent.width
         height: UM.Theme.getSize("sidebar_tabs").height * 2 / 3
