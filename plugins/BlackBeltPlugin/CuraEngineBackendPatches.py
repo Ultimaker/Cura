@@ -54,7 +54,6 @@ class CuraEngineBackendPatches():
     #
     #   \param message The protobuf message signalling that slicing is finished.
     def _onSlicingFinishedMessage(self, message):
-        print("???????????????????????")
         self._backend.backendStateChange.emit(BackendState.Done)
         self._backend.processingProgress.emit(1.0)
 
