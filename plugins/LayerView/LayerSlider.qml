@@ -19,6 +19,7 @@ Item {
     property color upperHandleColor: "black"
     property color lowerHandleColor: "black"
     property color rangeHandleColor: "black"
+    property real handleLabelWidth: width
 
     // track properties
     property real trackThickness: 4 // width of the slider track
@@ -42,7 +43,6 @@ Item {
     }
 
     function setUpperValue (value) {
-        console.log("setUpperValue", value)
         upperHandle.setValue(value)
         updateRangeHandle()
     }
@@ -52,7 +52,6 @@ Item {
     }
 
     function setLowerValue (value) {
-        console.log("setLowerValue", value)
         lowerHandle.setValue(value)
         updateRangeHandle()
     }
@@ -135,15 +134,13 @@ Item {
 
         function onHandleDragged () {
 
-            console.log("upperhandle dragged")
-
             // don't allow the lower handle to be heigher than the upper handle
             if (lowerHandle.y - (y + height) < sliderRoot.minimumRangeHandleSize) {
                 lowerHandle.y = y + height + sliderRoot.minimumRangeHandleSize
             }
 
             // update the rangle handle
-            rangeHandle.height = lowerHandle.y - (y + height)
+            sliderRoot.updateRangeHandle()
 
             // TODO: improve this?
             UM.LayerView.setCurrentLayer(getValue())
@@ -159,10 +156,15 @@ Item {
 
         // set the slider position based on the upper value
         function setValue (value) {
-            console.log("setValue", value)
             var diff = (value - sliderRoot.maximumValue) / (sliderRoot.minimumValue - sliderRoot.maximumValue)
             var newUpperYPosition = Math.round(diff * (sliderRoot.height - (2 * sliderRoot.handleSize + sliderRoot.minimumRangeHandleSize)))
             y = newUpperYPosition
+
+            // update the rangle handle
+            sliderRoot.updateRangeHandle()
+
+            // TODO: improve this?
+            UM.LayerView.setCurrentLayer(getValue())
         }
 
         // dragging
@@ -179,39 +181,22 @@ Item {
             onPositionChanged: parent.onHandleDragged()
         }
 
-//        UM.PointingRectangle {
-//
-//            x: sliderRoot.width - UM.Theme.getSize("slider_layerview_background").width / 2 - width;
-//            y: Math.floor(((parent.y + parent.height) / 2) - (height / 2));
-//
-//            target: Qt.point(parent.width, (parent.y + parent.height) / 2)
-//            arrowSize: UM.Theme.getSize("default_arrow").width
-//
-//            height: UM.Theme.getSize("slider_handle").height + UM.Theme.getSize("default_margin").height
-//            width: valueLabel.width + UM.Theme.getSize("default_margin").width
-//            Behavior on height { NumberAnimation { duration: 50; } }
-//
-//            color: UM.Theme.getColor("tool_panel_background")
-//            borderColor: UM.Theme.getColor("lining")
-//            borderWidth: UM.Theme.getSize("default_lining").width
-//            visible: sliderRoot.layersVisible
-//
-//            // Catch all mouse events (so 3D scene doesn't handle them)
-//            MouseArea {
-//                anchors.fill: parent
-//            }
-//
-//            TextField {
-//                id: upperValueLabel
-//
-//                property string maximumValue: sliderRoot.maximumValue + 1
-//
-//                text: sliderRoot.getUpperValue() + 1
-//                horizontalAlignment: TextInput.AlignRight
-//
-//
-//            }
-//        }
+        LayerSliderLabel {
+            id: upperHandleLabel
+
+            height: sliderRoot.handleSize + UM.Theme.getSize("default_margin").height
+            // width is calculated automatically from the input field width
+            x: (sliderRoot.width / 2 - (parent.width / 2)) - width
+            y: Math.floor(parent.y + parent.height / 2 - height / 2)
+            target: Qt.point(sliderRoot.width, parent.y + parent.height / 2)
+            visible: sliderRoot.layersVisible
+
+            // custom properties
+            maximumValue: sliderRoot.maximumValue
+            value: sliderRoot.getUpperValue()
+            busy: UM.LayerView.busy
+            setValue: sliderRoot.setUpperValue // connect callback functions
+        }
     }
 
     // Lower handle
@@ -238,7 +223,7 @@ Item {
             rangeHandle.height = y - (upperHandle.y + upperHandle.height)
 
             // TODO: improve this?
-            UM.LayerView.setMinimumLayer(getValue());
+            UM.LayerView.setMinimumLayer(getValue())
         }
 
         // get the lower value from the current slider position
@@ -254,6 +239,12 @@ Item {
             var diff = (value - sliderRoot.maximumValue) / (sliderRoot.minimumValue - sliderRoot.maximumValue)
             var newLowerYPosition = Math.round((sliderRoot.handleSize + sliderRoot.minimumRangeHandleSize) + diff * (sliderRoot.height - (2 * sliderRoot.handleSize + sliderRoot.minimumRangeHandleSize)))
             y = newLowerYPosition
+
+            // update the rangle handle
+            sliderRoot.updateRangeHandle()
+
+            // TODO: improve this?
+            UM.LayerView.setMinimumLayer(getValue())
         }
 
         // dragging
@@ -268,6 +259,23 @@ Item {
             }
 
             onPositionChanged: parent.onHandleDragged()
+        }
+
+        LayerSliderLabel {
+            id: lowerHandleLabel
+
+            height: sliderRoot.handleSize + UM.Theme.getSize("default_margin").height
+            // width is calculated automatically from the input field width
+            x: (parent.x + (parent.width / 2)) - width - 100
+            y: Math.floor(parent.y + height / 2)
+            target: Qt.point(sliderRoot.width, parent.y + parent.height / 2)
+            visible: sliderRoot.layersVisible
+
+            // custom properties
+            maximumValue: sliderRoot.maximumValue
+            value: sliderRoot.getLowerValue()
+            busy: UM.LayerView.busy
+            setValue: sliderRoot.setLowerValue // connect callback functions
         }
     }
 }

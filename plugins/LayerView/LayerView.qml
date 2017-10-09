@@ -9,8 +9,6 @@ import QtQuick.Controls.Styles 1.1
 import UM 1.0 as UM
 import Cura 1.0 as Cura
 
-//import LayerSlider 1.0
-
 Item
 {
     id: base
@@ -364,6 +362,7 @@ Item
             upperHandleColor: UM.Theme.getColor("slider_handle")
             lowerHandleColor: UM.Theme.getColor("slider_handle")
             rangeHandleColor: UM.Theme.getColor("slider_groove_fill")
+            handleLabelWidth: UM.Theme.getSize("slider_layerview_background").width
             layersVisible: UM.LayerView.layerActivity && CuraApplication.platformActivity ? true : false
 
             // update values when layer data changes
@@ -379,82 +378,5 @@ Item
                 slider.setUpperValue(UM.LayerView.currentLayer)
             }
         }
-
-//        Item
-//        {
-
-//            UM.PointingRectangle
-//            {
-//                x: parent.width - UM.Theme.getSize("slider_layerview_background").width / 2 - width;
-//                y: Math.floor(slider.activeHandle.y + slider.activeHandle.height / 2 - height / 2);
-//
-//                target: Qt.point(parent.width, slider.activeHandle.y + slider.activeHandle.height / 2)
-//                arrowSize: UM.Theme.getSize("default_arrow").width
-//
-//                height: UM.Theme.getSize("slider_handle").height + UM.Theme.getSize("default_margin").height
-//                width: valueLabel.width + UM.Theme.getSize("default_margin").width
-//                Behavior on height { NumberAnimation { duration: 50; } }
-//
-//                color: UM.Theme.getColor("tool_panel_background")
-//                borderColor: UM.Theme.getColor("lining")
-//                borderWidth: UM.Theme.getSize("default_lining").width
-//
-//                visible: slider.layersVisible
-//
-//                MouseArea //Catch all mouse events (so scene doesnt handle them)
-//                {
-//                    anchors.fill: parent
-//                }
-//
-//                TextField
-//                {
-//                    id: valueLabel
-//                    property string maxValue: slider.maximumValue + 1
-//                    text: slider.activeHandle.value + 1
-//                    horizontalAlignment: TextInput.AlignRight;
-//                    onEditingFinished:
-//                    {
-//                        // Ensure that the cursor is at the first position. On some systems the text isn't fully visible
-//                        // Seems to have to do something with different dpi densities that QML doesn't quite handle.
-//                        // Another option would be to increase the size even further, but that gives pretty ugly results.
-//                        cursorPosition = 0;
-//                        if(valueLabel.text != '')
-//                        {
-//                            slider.activeHandle.setValue(valueLabel.text - 1);
-//                        }
-//                    }
-//                    validator: IntValidator { bottom: 1; top: slider.maximumValue + 1; }
-//
-//                    anchors.left: parent.left;
-//                    anchors.leftMargin: UM.Theme.getSize("default_margin").width / 2;
-//                    anchors.verticalCenter: parent.verticalCenter;
-//
-//                    width: Math.max(UM.Theme.getSize("line").width * maxValue.length + 2 * screenScaleFactor, 20 * screenScaleFactor);
-//                    style: TextFieldStyle
-//                    {
-//                        textColor: UM.Theme.getColor("setting_control_text");
-//                        font: UM.Theme.getFont("default");
-//                        background: Item { }
-//                    }
-//
-//                    Keys.onUpPressed: slider.activeHandle.setValue(slider.activeHandle.value + ((event.modifiers & Qt.ShiftModifier) ? 10 : 1))
-//                    Keys.onDownPressed: slider.activeHandle.setValue(slider.activeHandle.value - ((event.modifiers & Qt.ShiftModifier) ? 10 : 1))
-//                }
-//
-//                BusyIndicator
-//                {
-//                    id: busyIndicator;
-//                    anchors.left: parent.right;
-//                    anchors.leftMargin: UM.Theme.getSize("default_margin").width / 2;
-//                    anchors.verticalCenter: parent.verticalCenter;
-//
-//                    width: UM.Theme.getSize("slider_handle").height;
-//                    height: width;
-//
-//                    running: UM.LayerView.busy;
-//                    visible: UM.LayerView.busy;
-//                }
-//            }
-//        }
     }
 }
