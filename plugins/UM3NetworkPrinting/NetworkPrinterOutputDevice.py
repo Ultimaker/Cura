@@ -530,6 +530,9 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         if self._post_reply is None:
             return
 
+        # Indicate uploading was finished (so another file can be send)
+        self._write_finished = True
+
         try:
             try:
                 self._post_reply.uploadProgress.disconnect(self._onUploadProgress)
