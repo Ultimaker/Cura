@@ -9,7 +9,7 @@ import QtQuick.Controls.Styles 1.1
 import UM 1.0 as UM
 import Cura 1.0 as Cura
 
-Item {
+UM.PointingRectangle {
     id: sliderLabelRoot
 
     // custom properties
@@ -19,92 +19,83 @@ Item {
     property var setValue // Function
     property bool busy: false
 
-    x: parent.x
-    y: parent.y
+    target: sliderLabelRoot.target
+    arrowSize: UM.Theme.getSize("default_arrow").width
     height: parent.height
+    width: valueLabel.width + UM.Theme.getSize("default_margin").width
+
+    color: UM.Theme.getColor("tool_panel_background")
+    borderColor: UM.Theme.getColor("lining")
+    borderWidth: UM.Theme.getSize("default_lining").width
+
     visible: true
 
-    UM.PointingRectangle {
-        x: sliderLabelRoot.x
-        y: sliderLabelRoot.y
-        target: sliderLabelRoot.target
-        arrowSize: UM.Theme.getSize("default_arrow").width
-        height: sliderLabelRoot.height
-        width: valueLabel.width + UM.Theme.getSize("default_margin").width
+    Behavior on height {
+        NumberAnimation {
+            duration: 50
+        }
+    }
 
-        color: UM.Theme.getColor("tool_panel_background")
-        borderColor: UM.Theme.getColor("lining")
-        borderWidth: UM.Theme.getSize("default_lining").width
+    // catch all mouse events so they're not handled by underlying 3D scene
+    MouseArea {
+        anchors.fill: parent
+    }
 
-        visible: sliderLabelRoot.visible
+    TextField {
+        id: valueLabel
 
-        Behavior on height {
-            NumberAnimation {
-                duration: 50
+        anchors {
+            left: parent.left
+            leftMargin: UM.Theme.getSize("default_margin").width / 2
+            verticalCenter: parent.verticalCenter
+        }
+
+        width: Math.max(UM.Theme.getSize("line").width * sliderLabelRoot.maximumValue.length + 2 * screenScaleFactor, 20 * screenScaleFactor)
+
+        text: sliderLabelRoot.value + 1 // the current handle value, add 1 because layers is an array
+        horizontalAlignment: TextInput.AlignRight
+
+        style: TextFieldStyle {
+            textColor: UM.Theme.getColor("setting_control_text")
+            font: UM.Theme.getFont("default")
+            background: Item { }
+        }
+
+        onEditingFinished: {
+
+            // Ensure that the cursor is at the first position. On some systems the text isn't fully visible
+            // Seems to have to do something with different dpi densities that QML doesn't quite handle.
+            // Another option would be to increase the size even further, but that gives pretty ugly results.
+            cursorPosition = 0
+
+            if (valueLabel.text != "") {
+                // -1 because we need to convert back to an array structure
+                sliderLabelRoot.setValue(parseInt(valueLabel.text) - 1)
             }
         }
 
-        // catch all mouse events so they're not handled by underlying 3D scene
-        MouseArea {
-            anchors.fill: parent
+        validator: IntValidator {
+            bottom: 1
+            top: sliderLabelRoot.maximumValue + 1 // +1 because actual layers is an array
         }
 
-        TextField {
-            id: valueLabel
+        Keys.onUpPressed: sliderLabelRoot.setValue(sliderLabelRoot.value + ((event.modifiers & Qt.ShiftModifier) ? 10 : 1))
+        Keys.onDownPressed: sliderLabelRoot.setValue(sliderLabelRoot.value - ((event.modifiers & Qt.ShiftModifier) ? 10 : 1))
+    }
 
-            anchors {
-                left: parent.left
-                leftMargin: UM.Theme.getSize("default_margin").width / 2
-                verticalCenter: parent.verticalCenter
-            }
+    BusyIndicator {
+        id: busyIndicator
 
-            width: Math.max(UM.Theme.getSize("line").width * sliderLabelRoot.maximumValue.length + 2 * screenScaleFactor, 20 * screenScaleFactor)
-
-            text: sliderLabelRoot.value + 1 // the current handle value, add 1 because layers is an array
-            horizontalAlignment: TextInput.AlignRight
-
-            style: TextFieldStyle {
-                textColor: UM.Theme.getColor("setting_control_text")
-                font: UM.Theme.getFont("default")
-                background: Item { }
-            }
-
-            onEditingFinished: {
-
-                // Ensure that the cursor is at the first position. On some systems the text isn't fully visible
-                // Seems to have to do something with different dpi densities that QML doesn't quite handle.
-                // Another option would be to increase the size even further, but that gives pretty ugly results.
-                cursorPosition = 0
-
-                if (valueLabel.text != "") {
-                    // -1 because we need to convert back to an array structure
-                    sliderLabelRoot.setValue(parseInt(valueLabel.text) - 1)
-                }
-            }
-
-            validator: IntValidator {
-                bottom: 1
-                top: sliderLabelRoot.maximumValue + 1 // +1 because actual layers is an array
-            }
-
-            Keys.onUpPressed: sliderLabelRoot.setValue(sliderLabelRoot.value + ((event.modifiers & Qt.ShiftModifier) ? 10 : 1))
-            Keys.onDownPressed: sliderLabelRoot.setValue(sliderLabelRoot.value - ((event.modifiers & Qt.ShiftModifier) ? 10 : 1))
+        anchors {
+            left: parent.right
+            leftMargin: UM.Theme.getSize("default_margin").width / 2
+            verticalCenter: parent.verticalCenter
         }
 
-        BusyIndicator {
-            id: busyIndicator
+        width: sliderLabelRoot.height
+        height: width
 
-            anchors {
-                left: parent.right
-                leftMargin: UM.Theme.getSize("default_margin").width / 2
-                verticalCenter: parent.verticalCenter
-            }
-
-            width: sliderLabelRoot.height
-            height: width
-
-            visible: sliderLabelRoot.busy
-            running: sliderLabelRoot.busy
-        }
+        visible: sliderLabelRoot.busy
+        running: sliderLabelRoot.busy
     }
 }

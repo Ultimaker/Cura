@@ -186,8 +186,8 @@ Item {
 
             height: sliderRoot.handleSize + UM.Theme.getSize("default_margin").height
             // width is calculated automatically from the input field width
-            x: (sliderRoot.width / 2 - (parent.width / 2)) - width
-            y: Math.floor(parent.y + parent.height / 2 - height / 2)
+            x: parent.x - width // align with slider handle
+            y: parent.anchors.top - height // align with slider? handle
             target: Qt.point(sliderRoot.width, parent.y + parent.height / 2)
             visible: sliderRoot.layersVisible
 
