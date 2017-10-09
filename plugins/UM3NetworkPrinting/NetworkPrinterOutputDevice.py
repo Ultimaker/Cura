@@ -527,11 +527,11 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         self._last_request_time = time()
 
     def _finalizePostReply(self):
-        if self._post_reply is None:
-            return
-
         # Indicate uploading was finished (so another file can be send)
         self._write_finished = True
+
+        if self._post_reply is None:
+            return
 
         try:
             try:
