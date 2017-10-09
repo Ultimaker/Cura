@@ -22,7 +22,28 @@
         "preferred_variant": "*45_04*",
         "preferred_quality": "*Normal*",
         "preferred_material": "*ngen*",
-        "variants_name": "Setting",
+        "variants_id_pattern": "{definition_id}_{term_0}_{term_1}",
+        "variants_name": "Configuration",
+        "variants_terms":
+        [
+            {
+                "name": "Gantry Angle",
+                "values": {
+                    "15": "15°",
+                    "25": "25°",
+                    "35": "35°",
+                    "45": "45°"
+                }
+            },
+            {
+                "name": "Nozzle Size",
+                "values": {
+                    "0.4": "0.4 mm",
+                    "0.6": "0.6 mm",
+                    "0.8": "0.8 mm"
+                }
+            }
+        ],
         "file_formats": "text/x-gcode"
     },
 

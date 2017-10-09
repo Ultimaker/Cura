@@ -259,11 +259,13 @@ Column
             color: UM.Theme.getColor("text");
         }
 
+        property var variantsTerms: (Cura.BlackBeltPlugin == undefined) ? [] : JSON.parse(Cura.BlackBeltPlugin.variantsTerms)
+
         ToolButton {
             id: variantSelection
             text: Cura.MachineManager.activeVariantName
-            tooltip: Cura.MachineManager.activeVariantName;
-            visible: Cura.MachineManager.hasVariants
+            tooltip: Cura.MachineManager.activeVariantName
+            visible: Cura.MachineManager.hasVariants && parent.variantsTerms.length == 0
 
             height: UM.Theme.getSize("setting_control").height
             width: parent.width * 0.7 + UM.Theme.getSize("sidebar_margin").width
@@ -272,6 +274,53 @@ Column
             activeFocusOnPress: true;
 
             menu: NozzleMenu { extruderIndex: base.currentExtruderIndex }
+        }
+
+        Row
+        {
+            id: variantTermsSelection
+            visible: Cura.MachineManager.hasVariants && parent.variantsTerms.length > 0
+            spacing: UM.Theme.getSize("default_margin").width
+
+            width: parent.width * 0.7 + UM.Theme.getSize("sidebar_margin").width
+            height: UM.Theme.getSize("setting_control").height
+            anchors.right: parent.right
+
+            Repeater
+            {
+                id: variantTermsRepeater
+                model: variantRow.variantsTerms
+
+                ToolButton
+                {
+                    id: termSelectionButton
+                    text: "%1: %2".arg(model.modelData.name).arg(model.modelData.values[Object.keys(model.modelData.values)[0]])
+                    property var values: model.modelData.values
+
+                    width: (variantTermsSelection.width - (variantTermsRepeater.count-1) *  UM.Theme.getSize("default_margin").width) / variantTermsRepeater.count
+                    height: UM.Theme.getSize("setting_control").height
+                    style: UM.Theme.styles.sidebar_header_button
+                    activeFocusOnPress: true;
+
+                    menu: Menu
+                    {
+                        id: variantTermMenu
+                        Instantiator
+                        {
+                            model: Object.keys(termSelectionButton.values)
+                            MenuItem
+                            {
+                                text: termSelectionButton.values[model.modelData]
+                                onTriggered:
+                                {
+                                }
+                            }
+                            onObjectAdded: variantTermMenu.insertItem(index, object)
+                            onObjectRemoved: variantTermMenu.removeItem(object)
+                        }
+                    }
+                }
+            }
         }
     }
 

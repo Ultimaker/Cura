@@ -12,8 +12,12 @@ i18n_catalog = i18nCatalog("BlackBeltPlugin")
 from . import BuildVolumePatches
 from . import CuraEngineBackendPatches
 
+from PyQt5.QtCore import pyqtSignal, pyqtProperty, QObject
+from PyQt5.QtQml import qmlRegisterSingletonType
+
 import math
 import os.path
+import json
 
 class BlackBeltPlugin(Extension):
     def __init__(self):
@@ -32,6 +36,7 @@ class BlackBeltPlugin(Extension):
         self._scene_root = self._application.getController().getScene().getRoot()
         self._scene_root.addDecorator(BlackBeltDecorator())
 
+        qmlRegisterSingletonType(BlackBeltSingleton, "Cura", 1, 0, "BlackBeltPlugin", BlackBeltSingleton.getInstance)
         self._application.engineCreatedSignal.connect(self._onEngineCreated)
 
     def _onGlobalContainerStackChanged(self):
@@ -92,6 +97,34 @@ class BlackBeltPlugin(Extension):
                 expanded_settings += ";%s" % key
         preferences.setValue("cura/categories_expanded", expanded_settings)
         self._application.expandedCategoriesChanged.emit()
+
+class BlackBeltSingleton(QObject):
+    def __init__(self):
+        super().__init__()
+        Application.getInstance().globalContainerStackChanged.connect(self._onGlobalContainerStackChanged)
+
+    def _onGlobalContainerStackChanged(self):
+        self.activeMachineChanged.emit()
+
+    activeMachineChanged = pyqtSignal()
+
+    @pyqtProperty(str, notify = activeMachineChanged)
+    def variantsTerms(self):
+        return  json.dumps(Application.getInstance().getGlobalContainerStack().getMetaDataEntry("variants_terms", []))
+
+    @pyqtProperty(str, notify = activeMachineChanged)
+    def variantsPattern(self):
+        return Application.getInstance().getGlobalContainerStack().getMetaDataEntry("variants_pattern", "")
+
+    ##  Get the singleton instance for this class.
+    @classmethod
+    def getInstance(cls, engine = None, script_engine = None):
+        # Note: Explicit use of class name to prevent issues with inheritance.
+        if not BlackBeltSingleton.__instance:
+            BlackBeltSingleton.__instance = cls()
+        return BlackBeltSingleton.__instance
+
+    __instance = None   # type: "BlackBeltSingleton"
 
 ## Decorator for easy access to gantry angle and transform matrix.
 class BlackBeltDecorator(SceneNodeDecorator):
