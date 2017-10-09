@@ -280,8 +280,10 @@ Column
                 ToolButton
                 {
                     id: termSelectionButton
-                    text: "%1: %2".arg(model.modelData.name).arg(model.modelData.values[Object.keys(model.modelData.values)[0]])
+                    text: "%1: %2".arg(model.modelData.name).arg(model.modelData.values[activeVariantTerm])
                     property var values: model.modelData.values
+                    property string activeVariantTerm: Cura.BlackBeltPlugin && Cura.BlackBeltPlugin.activeVariantTerms.length > index ? Cura.BlackBeltPlugin.activeVariantTerms[index] : ""
+                    property int termIndex: index
 
                     width: (variantTermsSelection.width - (variantTermsRepeater.count-1) *  UM.Theme.getSize("default_margin").width) / variantTermsRepeater.count
                     height: UM.Theme.getSize("setting_control").height
@@ -297,13 +299,18 @@ Column
                             MenuItem
                             {
                                 text: termSelectionButton.values[model.modelData]
+                                checkable: true
+                                checked: activeVariantTerm == model.modelData
+                                exclusiveGroup: variantTermGroup
                                 onTriggered:
                                 {
+                                    Cura.BlackBeltPlugin.setActiveVariantTerm(termSelectionButton.termIndex, model.modelData)
                                 }
                             }
                             onObjectAdded: variantTermMenu.insertItem(index, object)
                             onObjectRemoved: variantTermMenu.removeItem(object)
                         }
+                        ExclusiveGroup { id: variantTermGroup }
                     }
                 }
             }

@@ -12,12 +12,13 @@ i18n_catalog = i18nCatalog("BlackBeltPlugin")
 from . import BuildVolumePatches
 from . import CuraEngineBackendPatches
 
-from PyQt5.QtCore import pyqtSignal, pyqtProperty, QObject
+from PyQt5.QtCore import pyqtSignal, pyqtSlot, pyqtProperty, QObject
 from PyQt5.QtQml import qmlRegisterSingletonType
 
 import math
 import os.path
 import json
+import re
 
 class BlackBeltPlugin(Extension):
     def __init__(self):
@@ -98,23 +99,62 @@ class BlackBeltPlugin(Extension):
         preferences.setValue("cura/categories_expanded", expanded_settings)
         self._application.expandedCategoriesChanged.emit()
 
+## QML-accessible singleton for access to extended data on definition and variants
 class BlackBeltSingleton(QObject):
     def __init__(self):
         super().__init__()
-        Application.getInstance().globalContainerStackChanged.connect(self._onGlobalContainerStackChanged)
 
-    def _onGlobalContainerStackChanged(self):
-        self.activeMachineChanged.emit()
+        self._application = Application.getInstance()
+        self._machine_manager = self._application.getMachineManager()
+        self._global_container_stack = None
+
+        self._variants_terms_pattern = ""
+        self._variants_terms = []
+
+        self._application.globalContainerStackChanged.connect(self._onGlobalContainerStackChanged)
+        self._onGlobalContainerStackChanged(emit = False)
+        self._machine_manager.activeVariantChanged.connect(self._onActiveVariantChanged)
+        self._onActiveVariantChanged(emit = False)
+
+    def _onGlobalContainerStackChanged(self, emit = True):
+        self._global_container_stack = self._application.getGlobalContainerStack()
+
+        self._variants_terms_pattern = self._global_container_stack.getMetaDataEntry("variants_id_pattern", "")
+        self._variants_terms_pattern = self._variants_terms_pattern.replace("{definition_id}", self._global_container_stack.getBottom().getId())
+        self._variants_terms_pattern = self._variants_terms_pattern.replace("{term}", "(.*?)")
+
+        if emit:
+            self.activeMachineChanged.emit()
+
+    def _onActiveVariantChanged(self, emit = True):
+        active_variant_id = self._machine_manager.activeVariantId
+
+        result = re.match("^%s$" % self._variants_terms_pattern, active_variant_id)
+        if result:
+            self._variants_terms = list(result.groups())
+        else:
+            self._variants_terms = []
+
+        if emit:
+            self.activeVariantChanged.emit()
 
     activeMachineChanged = pyqtSignal()
+    activeVariantChanged = pyqtSignal()
 
     @pyqtProperty(str, notify = activeMachineChanged)
     def variantsTerms(self):
-        return  json.dumps(Application.getInstance().getGlobalContainerStack().getMetaDataEntry("variants_terms", []))
+        return json.dumps(self._global_container_stack.getMetaDataEntry("variants_terms", []))
 
-    @pyqtProperty(str, notify = activeMachineChanged)
-    def variantsPattern(self):
-        return Application.getInstance().getGlobalContainerStack().getMetaDataEntry("variants_pattern", "")
+    @pyqtProperty("QVariantList", notify = activeVariantChanged)
+    def activeVariantTerms(self):
+        return self._variants_terms
+
+    @pyqtSlot(int, str)
+    def setActiveVariantTerm(self, index, term):
+        self._variants_terms[index] = term
+        variant_id = self._variants_terms_pattern.replace("(.*?)", "%s") % tuple(self._variants_terms)
+        self._machine_manager.setActiveVariant(variant_id)
+
 
     ##  Get the singleton instance for this class.
     @classmethod
@@ -125,6 +165,7 @@ class BlackBeltSingleton(QObject):
         return BlackBeltSingleton.__instance
 
     __instance = None   # type: "BlackBeltSingleton"
+
 
 ## Decorator for easy access to gantry angle and transform matrix.
 class BlackBeltDecorator(SceneNodeDecorator):

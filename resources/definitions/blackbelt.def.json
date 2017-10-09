@@ -22,7 +22,7 @@
         "preferred_variant": "*45_04*",
         "preferred_quality": "*Normal*",
         "preferred_material": "*ngen*",
-        "variants_id_pattern": "{definition_id}_{term_0}_{term_1}",
+        "variants_id_pattern": "{definition_id}_{term}_{term}",
         "variants_name": "Configuration",
         "variants_terms":
         [
