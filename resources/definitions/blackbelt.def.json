@@ -132,6 +132,10 @@
                 "cross_3d": "Cross 3D"
             }
         },
+        "infill_angles":
+        {
+            "value": "'[' + str(round(45 / math.sin(math.radians(float(blackbelt_gantry_angle))),1)) + ',' + str(round(45 / math.sin(math.radians(float(blackbelt_gantry_angle))),1)) + ']' if infill_pattern == 'lines' else '[ ]'"
+        },
         "gradual_infill_steps":
         {
             "enabled": false
