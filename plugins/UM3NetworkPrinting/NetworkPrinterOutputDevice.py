@@ -23,10 +23,8 @@ from PyQt5.QtWidgets import QMessageBox
 import json
 import os
 import gzip
-import zlib
 
 from time import time
-from time import sleep
 
 i18n_catalog = i18nCatalog("cura")
 
@@ -1179,6 +1177,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
                 # Remove cached post request items.
                 del self._material_post_objects[id(reply)]
             elif "print_job" in reply_url:
+                self._onUploadFinished()  # Make sure the upload flag is reset as reply.finished is not always triggered
                 try:
                     reply.uploadProgress.disconnect(self._onUploadProgress)
                 except:
