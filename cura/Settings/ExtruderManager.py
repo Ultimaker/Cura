@@ -16,6 +16,7 @@ from UM.Settings.InstanceContainer import InstanceContainer
 from UM.Settings.SettingFunction import SettingFunction
 from UM.Settings.ContainerStack import ContainerStack
 from UM.Settings.Interfaces import DefinitionContainerInterface
+from UM.Settings.PropertyEvaluationContext import PropertyEvaluationContext
 from typing import Optional, List, TYPE_CHECKING, Union
 
 if TYPE_CHECKING:
@@ -617,6 +618,22 @@ class ExtruderManager(QObject):
                 value = value(extruder)
         else: #Just a value from global.
             value = Application.getInstance().getGlobalContainerStack().getProperty(key, "value")
+
+        return value
+
+    ##  Get the default value from the given extruder. This function will skip the user settings container.
+    @staticmethod
+    def getDefaultExtruderValue(extruder_index, key):
+        extruder = ExtruderManager.getInstance().getExtruderStack(extruder_index)
+        context = PropertyEvaluationContext()
+        context.context["evaluate_from_container_index"] = 1  # skip the user settings container
+
+        if extruder:
+            value = extruder.getRawProperty(key, "value", context = context)
+            if isinstance(value, SettingFunction):
+                value = value(extruder, context = context)
+        else:  # Just a value from global.
+            value = Application.getInstance().getGlobalContainerStack().getProperty(key, "value", context = context)
 
         return value
 
