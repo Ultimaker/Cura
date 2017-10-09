@@ -5,14 +5,19 @@ import webbrowser
 import faulthandler
 import tempfile
 import os
+import time
+import json
+import ssl
+import urllib.request
+import urllib.error
 
-from PyQt5.QtCore import QT_VERSION_STR, PYQT_VERSION_STR, QCoreApplication
+from PyQt5.QtCore import QT_VERSION_STR, PYQT_VERSION_STR, QCoreApplication, Qt
 from PyQt5.QtWidgets import QDialog, QDialogButtonBox, QVBoxLayout, QLabel, QTextEdit, QGroupBox
-from PyQt5.QtNetwork import QHttpMultiPart, QHttpPart, QNetworkRequest, QNetworkAccessManager, QNetworkReply
 
 from UM.Logger import Logger
 from UM.View.GL.OpenGL import OpenGL
 from UM.i18n import i18nCatalog
+from UM.Platform import Platform
 
 catalog = i18nCatalog("cura")
 
@@ -38,12 +43,17 @@ fatal_exception_types = [
 ]
 
 class CrashHandler:
+    crash_url = "https://stats.ultimaker.com/api/cura"
 
     def __init__(self, exception_type, value, tb):
 
         self.exception_type = exception_type
         self.value = value
         self.traceback = tb
+
+        # While we create the GUI, the information will be stored for sending afterwards
+        self.data = dict()
+        self.data["time_stamp"] = time.time()
 
         Logger.log("c", "An uncaught exception has occurred!")
         for line in traceback.format_exception(exception_type, value, tb):
@@ -103,7 +113,20 @@ class CrashHandler:
         layout.addWidget(label)
         group.setLayout(layout)
 
+        self.data["cura_version"] = version
+        self.data["os"] = {"type": platform.system(), "version": platform.version()}
+        self.data["qt_version"] = QT_VERSION_STR
+        self.data["pyqt_version"] = PYQT_VERSION_STR
+
         return group
+
+    def _getOpenGLInfo(self):
+        info = "<ul><li>OpenGL Version: {0}</li><li>OpenGL Vendor: {1}</li><li>OpenGL Renderer: {2}</li></ul>"
+        info =  info.format(OpenGL.getInstance().getGPUVersion(), OpenGL.getInstance().getGPUVendorName(), OpenGL.getInstance().getGPUType())
+
+        self.data["opengl"] = {"version": OpenGL.getInstance().getGPUVersion(), "vendor": OpenGL.getInstance().getGPUVendorName(), "type": OpenGL.getInstance().getGPUType()}
+
+        return info
 
     def _exceptionInfoWidget(self):
         group = QGroupBox()
@@ -113,9 +136,12 @@ class CrashHandler:
         text_area = QTextEdit()
         trace = "".join(traceback.format_exception(self.exception_type, self.value, self.traceback))
         text_area.setText(trace)
+        text_area.setReadOnly(True)
 
         layout.addWidget(text_area)
         group.setLayout(layout)
+
+        self.data["traceback"] = trace
 
         return group
 
@@ -130,12 +156,15 @@ class CrashHandler:
         with open(tmp_file_path, "w") as f:
             faulthandler.dump_traceback(f, all_threads=True)
         with open(tmp_file_path, "r") as f:
-            data = f.read()
+            logdata = f.read()
 
-        text_area.setText(data)
+        text_area.setText(logdata)
+        text_area.setReadOnly(True)
 
         layout.addWidget(text_area)
         group.setLayout(layout)
+
+        self.data["log"] = logdata
 
         return group
 
@@ -145,9 +174,11 @@ class CrashHandler:
         group.setTitle("User description")
         layout = QVBoxLayout()
 
-        text_area = QTextEdit()
+        # When sending the report, the user comments will be collected
+        self.user_description_text_area = QTextEdit()
+        self.user_description_text_area.setFocus(True)
 
-        layout.addWidget(text_area)
+        layout.addWidget(self.user_description_text_area)
         group.setLayout(layout)
 
         return group
@@ -161,20 +192,31 @@ class CrashHandler:
 
         return buttons
 
-    def _getOpenGLInfo(self):
-        info = "<ul><li>OpenGL Version: {0}</li><li>OpenGL Vendor: {1}</li><li>OpenGL Renderer: {2}</li></ul>"
-        info =  info.format(OpenGL.getInstance().getGPUVersion(), OpenGL.getInstance().getGPUVendorName(), OpenGL.getInstance().getGPUType())
-        return info
-
     def _sendCrashReport(self):
-        print("Hello")
-        # _manager = QNetworkAccessManager()
-        # api_url = QUrl("url")
-        # put_request = QNetworkRequest(api_url)
-        # put_request.setHeader(QNetworkRequest.ContentTypeHeader, "text/plain")
-        # _manager.put(put_request, crash_info.encode())
-        #
-        # sys.exit(1)
+        # Before sending data, the user comments are stored
+        self.data["user_info"] = self.user_description_text_area.toPlainText()
+
+        # Convert data to bytes
+        binary_data = json.dumps(self.data).encode("utf-8")
+
+        # Submit data
+        kwoptions = {"data": binary_data, "timeout": 5}
+
+        if Platform.isOSX():
+            kwoptions["context"] = ssl._create_unverified_context()
+
+        Logger.log("i", "Sending crash report info to [%s]...", self.crash_url)
+
+        try:
+            f = urllib.request.urlopen(self.crash_url, **kwoptions)
+            Logger.log("i", "Sent crash report info.")
+            f.close()
+        except urllib.error.HTTPError:
+            Logger.logException("e", "An HTTP error occurred while trying to send crash report")
+        except Exception:  # We don't want any exception to cause problems
+            Logger.logException("e", "An exception occurred while trying to send crash report")
+
+        sys.exit(1)
 
     def show(self):
         self.dialog.exec_()
