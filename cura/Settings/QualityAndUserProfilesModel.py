@@ -41,6 +41,9 @@ class QualityAndUserProfilesModel(ProfilesModel):
             new_extruder_stacks = []
             if active_extruder is not None:
                 new_extruder_stacks = [active_extruder]
+            else:
+                # if there is no active extruder, use the first one in the active extruder stacks
+                active_extruder = extruder_stacks[0]
             extruder_stacks = new_extruder_stacks + extruder_stacks
 
         # Fetch the list of useable qualities across all extruders.
