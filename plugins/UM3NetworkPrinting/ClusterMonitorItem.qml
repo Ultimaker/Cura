@@ -27,19 +27,13 @@ Component
             id: activePrintersLabel
             font: UM.Theme.getFont("large")
 
-            text:
-            {
-                if (OutputDevice.connectedPrinters.length == 0){
-                    return catalog.i18nc("@label: arg 1 is group name", "%1 is not set up to host a group of connected Ultimaker 3 printers").arg(Cura.MachineManager.printerOutputDevices[0].name)
-                } else {
-                    return ""
-                }
+            anchors {
+                top: parent.top
+                topMargin: UM.Theme.getSize("default_margin").height * 2 // a bit more spacing to give it some breathing room
+                horizontalCenter: parent.horizontalCenter
             }
-            anchors.left: parent.left
-            anchors.right: parent.right
-            anchors.top: parent.top
-            anchors.horizontalCenter: parent.horizontalCenter
-            anchors.topMargin: UM.Theme.getSize("default_margin").height
+
+            text: OutputDevice.connectedPrinters.length == 0 ? catalog.i18nc("@label: arg 1 is group name", "%1 is not set up to host a group of connected Ultimaker 3 printers").arg(Cura.MachineManager.printerOutputDevices[0].name) : ""
 
             visible: OutputDevice.connectedPrinters.length == 0
         }
