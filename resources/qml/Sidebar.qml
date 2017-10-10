@@ -324,7 +324,7 @@ Rectangle
             anchors.bottom: timeSpecDescription.top
             font: UM.Theme.getFont("large")
             color: UM.Theme.getColor("text_subtext")
-            text: (!base.printDuration || !base.printDuration.valid) ? catalog.i18nc("@label", "00h 00min") : base.printDuration.getDisplayString(UM.DurationFormat.Short)
+            text: (!base.printDuration || !base.printDuration.valid) ? catalog.i18nc("@label Hours and minutes", "00h 00min") : base.printDuration.getDisplayString(UM.DurationFormat.Short)
 
             MouseArea
             {
@@ -407,12 +407,12 @@ Rectangle
                 }
                 if(someCostsKnown)
                 {
-                    return catalog.i18nc("@label", "%1m / ~ %2g / ~ %4 %3").arg(lengths.join(" + "))
+                    return catalog.i18nc("@label Print estimates: m for meters, g for grams, %4 is currency and %3 is print cost", "%1m / ~ %2g / ~ %4 %3").arg(lengths.join(" + "))
                             .arg(weights.join(" + ")).arg(costs.join(" + ")).arg(UM.Preferences.getValue("cura/currency"));
                 }
                 else
                 {
-                    return catalog.i18nc("@label", "%1m / ~ %2g").arg(lengths.join(" + ")).arg(weights.join(" + "));
+                    return catalog.i18nc("@label Print estimates: m for meters, g for grams", "%1m / ~ %2g").arg(lengths.join(" + ")).arg(weights.join(" + "));
                 }
             }
         }

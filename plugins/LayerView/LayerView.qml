@@ -1,7 +1,7 @@
 // Copyright (c) 2017 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
-import QtQuick 2.2
+import QtQuick 2.4
 import QtQuick.Controls 1.2
 import QtQuick.Layouts 1.1
 import QtQuick.Controls.Styles 1.1
@@ -378,5 +378,10 @@ Item
                 slider.setUpperValue(UM.LayerView.currentLayer)
             }
         }
+    }
+
+    FontMetrics {
+        id: fontMetrics
+        font: UM.Theme.getFont("default")
     }
 }

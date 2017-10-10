@@ -304,7 +304,8 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         num_visible_settings = 0
         try:
             temp_preferences = Preferences()
-            temp_preferences.readFromFile(io.TextIOWrapper(archive.open("Cura/preferences.cfg")))  # We need to wrap it, else the archive parser breaks.
+            serialized = archive.open("Cura/preferences.cfg").read().decode("utf-8")
+            temp_preferences.deserialize(serialized)
 
             visible_settings_string = temp_preferences.getValue("general/visible_settings")
             if visible_settings_string is not None:
@@ -407,7 +408,8 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         # Create a shadow copy of the preferences (we don't want all of the preferences, but we do want to re-use its
         # parsing code.
         temp_preferences = Preferences()
-        temp_preferences.readFromFile(io.TextIOWrapper(archive.open("Cura/preferences.cfg")))  # We need to wrap it, else the archive parser breaks.
+        serialized = archive.open("Cura/preferences.cfg").read().decode("utf-8")
+        temp_preferences.deserialize(serialized)
 
         # Copy a number of settings from the temp preferences to the global
         global_preferences = Preferences.getInstance()
