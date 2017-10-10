@@ -1359,6 +1359,10 @@ class CuraApplication(QtApplication):
                     # Find node location
                     offset_shape_arr, hull_shape_arr = ShapeArray.fromNode(node, min_offset = min_offset)
 
+                    # If a model is to small then it will not contain any points
+                    if offset_shape_arr is None and hull_shape_arr is None:
+                        return
+
                     # Step is for skipping tests to make it a lot faster. it also makes the outcome somewhat rougher
                     node, _ = arranger.findNodePlacement(node, offset_shape_arr, hull_shape_arr, step = 10)
 
