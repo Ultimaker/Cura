@@ -136,7 +136,7 @@ Rectangle
         anchors.rightMargin: UM.Theme.getSize("sidebar_margin").width
         anchors.top:
         {
-            if (settingsModeLabel.contentWidth >= parent.width - width - UM.Theme.getSize("sidebar_margin").width)
+            if (settingsModeLabel.contentWidth >= parent.width - width - UM.Theme.getSize("sidebar_margin").width * 2)
             {
                 return settingsModeLabel.bottom;
             }
@@ -186,12 +186,18 @@ Rectangle
                                    UM.Theme.getColor("action_button")
                         Behavior on color { ColorAnimation { duration: 50; } }
                         Label {
-                            anchors.centerIn: parent
+                            anchors.left: parent.left
+                            anchors.right: parent.right
+                            anchors.verticalCenter: parent.verticalCenter
+                            anchors.leftMargin: UM.Theme.getSize("default_lining").width * 2
+                            anchors.rightMargin: UM.Theme.getSize("default_lining").width * 2
                             color: (control.checked || control.pressed) ? UM.Theme.getColor("action_button_active_text") :
                                        control.hovered ? UM.Theme.getColor("action_button_hovered_text") :
                                        UM.Theme.getColor("action_button_text")
                             font: UM.Theme.getFont("default")
-                            text: control.text;
+                            text: control.text
+                            horizontalAlignment: Text.AlignHCenter
+                            elide: Text.ElideMiddle
                         }
                     }
                     label: Item { }
