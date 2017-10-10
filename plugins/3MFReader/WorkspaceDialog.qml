@@ -10,10 +10,11 @@ import UM 1.1 as UM
 
 UM.Dialog
 {
+    id: base
     title: catalog.i18nc("@title:window", "Open Project")
 
     minimumWidth: 500 * screenScaleFactor
-    minimumHeight: 400 * screenScaleFactor
+    minimumHeight: 450 * screenScaleFactor
     width: minimumWidth
     height: minimumHeight
 
@@ -30,6 +31,7 @@ UM.Dialog
             materialResolveComboBox.currentIndex = 0
         }
     }
+
     Item
     {
         anchors.fill: parent
@@ -377,7 +379,7 @@ UM.Dialog
             anchors.right: ok_button.left
             anchors.rightMargin: 2 * screenScaleFactor
         }
-         Button
+        Button
         {
             id: ok_button
             text: catalog.i18nc("@action:button","Open");
@@ -385,5 +387,11 @@ UM.Dialog
             anchors.bottom: parent.bottom
             anchors.right: parent.right
         }
+    }
+
+    function reject() {
+        manager.onCancelButtonClicked();
+        base.visible = false;
+        base.rejected();
     }
 }
