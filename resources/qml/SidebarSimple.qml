@@ -316,10 +316,13 @@ Item
                     anchors.top: speedSlider.bottom
 
                     anchors.left: parent.left
+                    anchors.right: speedSlider.left
+                    anchors.rightMargin: UM.Theme.getSize("default_margin").width
 
                     text: catalog.i18nc("@label", "Print Speed")
                     font: UM.Theme.getFont("default")
                     color: UM.Theme.getColor("text")
+                    elide: Text.ElideRight
                 }
 
                 Label
