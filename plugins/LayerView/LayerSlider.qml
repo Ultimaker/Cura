@@ -87,14 +87,14 @@ Item {
         // set the new value when dragging
         // the range slider is only dragged when the upper and lower sliders collide
         function onHandleDragged () {
+
             upperHandle.y = y - upperHandle.height
             lowerHandle.y = y + height
 
             var upperValue = sliderRoot.getUpperValueFromSliderHandle()
-            var lowerValue = upperValue - (sliderRoot.upperValue - sliderRoot.lowerValue)
+            var lowerValue = sliderRoot.getLowerValueFromSliderHandle()
 
-            // update the Python values
-            // TODO: improve this?
+            // set both values after moving the handle position
             UM.LayerView.setCurrentLayer(upperValue)
             UM.LayerView.setMinimumLayer(lowerValue)
         }
@@ -113,7 +113,7 @@ Item {
                 target: parent
                 axis: Drag.YAxis
                 minimumY: upperHandle.height
-                maximumY: sliderRoot.height - (parent.heigth + lowerHandle.height)
+                maximumY: sliderRoot.height - (rangeHandle.height + lowerHandle.height)
             }
 
             onPositionChanged: parent.onHandleDragged()
@@ -139,10 +139,10 @@ Item {
                 lowerHandle.y = y + height + sliderRoot.minimumRangeHandleSize
             }
 
-            // update the rangle handle
+            // update the range handle
             sliderRoot.updateRangeHandle()
 
-            // TODO: improve this?
+            // set the new value after moving the handle position
             UM.LayerView.setCurrentLayer(getValue())
         }
 
@@ -157,14 +157,13 @@ Item {
         // set the slider position based on the upper value
         function setValue (value) {
 
-            // TODO: improve this?
             UM.LayerView.setCurrentLayer(value)
 
             var diff = (value - sliderRoot.maximumValue) / (sliderRoot.minimumValue - sliderRoot.maximumValue)
             var newUpperYPosition = Math.round(diff * (sliderRoot.height - (2 * sliderRoot.handleSize + sliderRoot.minimumRangeHandleSize)))
             y = newUpperYPosition
 
-            // update the rangle handle
+            // update the range handle
             sliderRoot.updateRangeHandle()
         }
 
@@ -219,10 +218,10 @@ Item {
                 upperHandle.y = y - (upperHandle.heigth + sliderRoot.minimumRangeHandleSize)
             }
 
-            // update the rangle handle
+            // update the range handle
             sliderRoot.updateRangeHandle()
 
-            // TODO: improve this?
+            // set the new value after moving the handle position
             UM.LayerView.setMinimumLayer(getValue())
         }
 
@@ -244,7 +243,7 @@ Item {
             var newLowerYPosition = Math.round((sliderRoot.handleSize + sliderRoot.minimumRangeHandleSize) + diff * (sliderRoot.height - (2 * sliderRoot.handleSize + sliderRoot.minimumRangeHandleSize)))
             y = newLowerYPosition
 
-            // update the rangle handle
+            // update the range handle
             sliderRoot.updateRangeHandle()
         }
 
