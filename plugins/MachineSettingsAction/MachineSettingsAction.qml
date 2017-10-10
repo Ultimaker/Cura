@@ -247,7 +247,7 @@ Cura.MachineAction
 
                                 Row
                                 {
-                                    spacing: UM.Theme.getSize("default_margin").width
+                                    spacing: UM.Theme.getSize("default_margin").width * 4 / 5
 
                                     Label
                                     {
@@ -648,7 +648,7 @@ Cura.MachineAction
 
             Row
             {
-                spacing: UM.Theme.getSize("default_margin").width
+                spacing: UM.Theme.getSize("default_margin").width * 4 / 5
 
                 Label
                 {
