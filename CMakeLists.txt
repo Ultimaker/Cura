@@ -63,7 +63,7 @@ if(NOT APPLE AND NOT WIN32)
     install(FILES ${CMAKE_SOURCE_DIR}/resources/images/cura-icon.png
             DESTINATION ${CMAKE_INSTALL_DATADIR}/icons/hicolor/128x128/apps/)
     install(FILES cura.appdata.xml
-            DESTINATION ${CMAKE_INSTALL_DATADIR}/appdata)
+            DESTINATION ${CMAKE_INSTALL_DATADIR}/metainfo)
     install(FILES cura.sharedmimeinfo
             DESTINATION ${CMAKE_INSTALL_DATADIR}/mime/packages/
             RENAME cura.xml )
