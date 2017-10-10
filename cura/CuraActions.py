@@ -1,5 +1,5 @@
 # Copyright (c) 2017 Ultimaker B.V.
-# Cura is released under the terms of the AGPLv3 or higher.
+# Cura is released under the terms of the LGPLv3 or higher.
 
 from PyQt5.QtCore import QObject, QUrl
 from PyQt5.QtGui import QDesktopServices
@@ -35,6 +35,15 @@ class CuraActions(QObject):
     def openBugReportPage(self):
         event = CallFunctionEvent(self._openUrl, [QUrl("http://github.com/Ultimaker/Cura/issues")], {})
         Application.getInstance().functionEvent(event)
+
+    ##  Reset camera position and direction to default
+    @pyqtSlot()
+    def homeCamera(self) -> None:
+        scene = Application.getInstance().getController().getScene()
+        camera = scene.getActiveCamera()
+        camera.setPosition(Vector(-80, 250, 700))
+        camera.setPerspective(True)
+        camera.lookAt(Vector(0, 0, 0))
 
     ##  Center all objects in the selection
     @pyqtSlot()

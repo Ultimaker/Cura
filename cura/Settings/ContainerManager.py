@@ -1,5 +1,5 @@
 # Copyright (c) 2017 Ultimaker B.V.
-# Cura is released under the terms of the AGPLv3 or higher.
+# Cura is released under the terms of the LGPLv3 or higher.
 
 import os.path
 import urllib
@@ -429,7 +429,7 @@ class ContainerManager(QObject):
         if not Platform.isWindows():
             if os.path.exists(file_url):
                 result = QMessageBox.question(None, catalog.i18nc("@title:window", "File Already Exists"),
-                                              catalog.i18nc("@label", "The file <filename>{0}</filename> already exists. Are you sure you want to overwrite it?").format(file_url))
+                                              catalog.i18nc("@label Don't translate the XML tag <filename>!", "The file <filename>{0}</filename> already exists. Are you sure you want to overwrite it?").format(file_url))
                 if result == QMessageBox.No:
                     return { "status": "cancelled", "message": "User cancelled"}
 

@@ -1,5 +1,5 @@
 // Copyright (c) 2015 Ultimaker B.V.
-// Cura is released under the terms of the AGPLv3 or higher.
+// Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.2
 import QtQuick.Controls 1.1
@@ -34,20 +34,18 @@ Item
             Button
             {
                 text: model.name
-                iconSource: UM.Theme.getIcon(model.icon);
+                iconSource: (UM.Theme.getIcon(model.icon) != "") ? UM.Theme.getIcon(model.icon) : "file:///" + model.location + "/" + model.icon
+                checkable: true
+                checked: model.active
+                enabled: model.enabled && UM.Selection.hasSelection && UM.Controller.toolsEnabled
+                style: UM.Theme.styles.tool_button
 
-                checkable: true;
-                checked: model.active;
-                enabled: model.enabled && UM.Selection.hasSelection && UM.Controller.toolsEnabled;
-
-                style: UM.Theme.styles.tool_button;
-                onCheckedChanged:
-                {
-                    if(checked)
-                    {
+                onCheckedChanged: {
+                    if (checked) {
                         base.activeY = y
                     }
                 }
+
                 //Workaround since using ToolButton"s onClicked would break the binding of the checked property, instead
                 //just catch the click so we do not trigger that behaviour.
                 MouseArea
@@ -69,7 +67,7 @@ Item
             }
         }
 
-        Item { height: UM.Theme.getSize("default_margin").height; width: 1; visible: extruders.count > 0 }
+        Item { height: UM.Theme.getSize("default_margin").height; width: UM.Theme.getSize("default_lining").width; visible: extruders.count > 0 }
 
         Repeater
         {

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 # Copyright (c) 2015 Ultimaker B.V.
-# Cura is released under the terms of the AGPLv3 or higher.
+# Cura is released under the terms of the LGPLv3 or higher.
 import os
 import sys
 import platform
@@ -54,8 +54,17 @@ import Arcus #@UnusedImport
 import cura.CuraApplication
 import cura.Settings.CuraContainerRegistry
 
+def get_cura_dir_path():
+    if Platform.isWindows():
+        return os.path.expanduser("~/AppData/Local/cura/")
+    elif Platform.isLinux():
+        return os.path.expanduser("~/.local/share/cura")
+    elif Platform.isOSX():
+        return os.path.expanduser("~/Library/Logs/cura")
+
+
 if hasattr(sys, "frozen"):
-    dirpath = os.path.expanduser("~/AppData/Local/cura/")
+    dirpath = get_cura_dir_path()
     os.makedirs(dirpath, exist_ok = True)
     sys.stdout = open(os.path.join(dirpath, "stdout.log"), "w")
     sys.stderr = open(os.path.join(dirpath, "stderr.log"), "w")

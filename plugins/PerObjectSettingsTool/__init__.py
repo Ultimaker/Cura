@@ -1,5 +1,5 @@
 # Copyright (c) 2015 Ultimaker B.V.
-# Uranium is released under the terms of the AGPLv3 or higher.
+# Uranium is released under the terms of the LGPLv3 or higher.
 
 from . import PerObjectSettingsTool
 from . import PerObjectSettingVisibilityHandler
@@ -13,7 +13,7 @@ def getMetaData():
         "tool": {
             "name": i18n_catalog.i18nc("@label", "Per Model Settings"),
             "description": i18n_catalog.i18nc("@info:tooltip", "Configure Per Model Settings"),
-            "icon": "setting_per_object",
+            "icon": "tool_icon.svg",
             "tool_panel": "PerObjectSettingsPanel.qml",
             "weight": 3
         },

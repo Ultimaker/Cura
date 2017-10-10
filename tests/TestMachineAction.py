@@ -1,6 +1,8 @@
 #Todo: Write tests
 
 import pytest
+# QtApplication needs to be imported first to prevent import errors.
+from UM.Qt.QtApplication import QtApplication
 
 from cura.MachineAction import MachineAction
 from cura.MachineActionManager import MachineActionManager, NotUniqueMachineActionError, UnknownMachineActionError

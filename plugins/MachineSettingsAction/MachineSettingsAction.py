@@ -1,5 +1,5 @@
 # Copyright (c) 2017 Ultimaker B.V.
-# Cura is released under the terms of the AGPLv3 or higher.
+# Cura is released under the terms of the LGPLv3 or higher.
 
 from PyQt5.QtCore import pyqtProperty, pyqtSignal
 from UM.FlameProfiler import pyqtSlot
@@ -170,7 +170,6 @@ class MachineSettingsAction(MachineAction):
                     node.callDecoration("setActiveExtruder", extruder_manager.getExtruderStack(extruder_count - 1).getId())
 
         definition_changes_container.setProperty("machine_extruder_count", "value", extruder_count)
-        self.forceUpdate()
 
         if extruder_count > 1:
             # Multiextrusion
@@ -214,6 +213,8 @@ class MachineSettingsAction(MachineAction):
                     machine_manager.setActiveVariant(extruder_variant_id)
 
                 preferences.setValue("cura/choice_on_profile_override", choice_on_profile_override)
+
+        self.forceUpdate()
 
 
     @pyqtSlot()

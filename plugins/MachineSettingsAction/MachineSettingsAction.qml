@@ -1,5 +1,5 @@
 // Copyright (c) 2016 Ultimaker B.V.
-// Cura is released under the terms of the AGPLv3 or higher.
+// Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.2
 import QtQuick.Controls 1.1
@@ -247,7 +247,7 @@ Cura.MachineAction
 
                                 Row
                                 {
-                                    spacing: UM.Theme.getSize("default_margin").width
+                                    spacing: UM.Theme.getSize("default_margin").width * 4 / 5
 
                                     Label
                                     {
@@ -648,7 +648,7 @@ Cura.MachineAction
 
             Row
             {
-                spacing: UM.Theme.getSize("default_margin").width
+                spacing: UM.Theme.getSize("default_margin").width * 4 / 5
 
                 Label
                 {
@@ -824,7 +824,7 @@ Cura.MachineAction
                             polygon.push([-printHeadPolygon["x"]["min"], printHeadPolygon["y"]["max"]]);
                             polygon.push([-printHeadPolygon["x"]["min"],-printHeadPolygon["y"]["min"]]);
                             polygon.push([ printHeadPolygon["x"]["max"], printHeadPolygon["y"]["max"]]);
-                            polygon.push([ printHeadPolygon["x"]["max"],-printHeadPolygon["y"]["mìn"]]);
+                            polygon.push([ printHeadPolygon["x"]["max"],-printHeadPolygon["y"]["min"]]);
                             var polygon_string = JSON.stringify(polygon);
                             if(polygon_string != machineHeadPolygonProvider.properties.value)
                             {

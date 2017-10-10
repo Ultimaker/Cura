@@ -1,3 +1,6 @@
+[3.0.0]
+*Will be updated soon!
+
 [2.7.0]
 *Top surface skin
 Specify print settings of the top-most layers separately in order to improve print duration and achieve higher quality top surfaces.

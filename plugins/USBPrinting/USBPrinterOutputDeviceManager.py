@@ -1,5 +1,5 @@
 # Copyright (c) 2017 Ultimaker B.V.
-# Cura is released under the terms of the AGPLv3 or higher.
+# Cura is released under the terms of the LGPLv3 or higher.
 
 from UM.Signal import Signal, signalemitter
 from . import USBPrinterOutputDevice
@@ -105,7 +105,7 @@ class USBPrinterOutputDeviceManager(QObject, OutputDevicePlugin, Extension):
         if file_name.startswith("file://"):
             file_name = QUrl(file_name).toLocalFile() # File dialogs prepend the path with file://, which we don't need / want
         if not self._usb_output_devices:
-            Message(i18n_catalog.i18nc("@info", "Unable to update firmware because there are no printers connected.")).show()
+            Message(i18n_catalog.i18nc("@info", "Unable to update firmware because there are no printers connected."), title = i18n_catalog.i18nc("@info:title", "Warning")).show()
             return
 
         for printer_connection in self._usb_output_devices:
@@ -119,7 +119,7 @@ class USBPrinterOutputDeviceManager(QObject, OutputDevicePlugin, Extension):
                 self._usb_output_devices[printer_connection].setProgress(100, 100)
                 Logger.log("w", "No firmware found for printer %s called '%s'", printer_connection, file_name)
                 Message(i18n_catalog.i18nc("@info",
-                    "Could not find firmware required for the printer at %s.") % printer_connection).show()
+                    "Could not find firmware required for the printer at %s.") % printer_connection, title = i18n_catalog.i18nc("@info:title", "Printer Firmware")).show()
                 self._firmware_view.close()
 
                 continue
@@ -230,12 +230,14 @@ class USBPrinterOutputDeviceManager(QObject, OutputDevicePlugin, Extension):
 
     ##  If one of the states of the connected devices change, we might need to add / remove them from the global list.
     def _onConnectionStateChanged(self, serial_port):
+        success = True
         try:
             if self._usb_output_devices[serial_port].connectionState == ConnectionState.connected:
                 self.getOutputDeviceManager().addOutputDevice(self._usb_output_devices[serial_port])
             else:
-                self.getOutputDeviceManager().removeOutputDevice(serial_port)
-            self.connectionStateChanged.emit()
+                success = success and self.getOutputDeviceManager().removeOutputDevice(serial_port)
+            if success:
+                self.connectionStateChanged.emit()
         except KeyError:
             Logger.log("w", "Connection state of %s changed, but it was not found in the list")
 

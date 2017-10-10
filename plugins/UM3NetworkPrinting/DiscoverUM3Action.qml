@@ -272,6 +272,28 @@ Cura.MachineAction
                         text: base.selectedPrinter ? base.selectedPrinter.ipAddress : ""
                     }
                 }
+
+                Label
+                {
+                    width: parent.width
+                    wrapMode: Text.WordWrap
+                    text:{
+                        // The property cluster size does not exist for older UM3 devices.
+                        if(base.selectedPrinter != undefined && base.selectedPrinter.clusterSize == null || base.selectedPrinter.clusterSize == 1)
+                        {
+                            return "";
+                        }
+                        else if (base.selectedPrinter.clusterSize === 0)
+                        {
+                            return catalog.i18nc("@label", "Cura Connect: This printer is not set up to host a group of connected Ultimaker 3 printers.");
+                        }
+                        else
+                        {
+                            return catalog.i18nc("@label", "Cura Connect: This printer is set up to host a group of %1 connected Ultimaker 3 printers".arg(base.selectedPrinter.clusterSize));
+                        }
+                    }
+
+                }
                 Label
                 {
                     width: parent.width
@@ -298,8 +320,8 @@ Cura.MachineAction
 
         title: catalog.i18nc("@title:window", "Printer Address")
 
-        minimumWidth: 400 * Screen.devicePixelRatio
-        minimumHeight: 120 * Screen.devicePixelRatio
+        minimumWidth: 400 * screenScaleFactor
+        minimumHeight: 130 * screenScaleFactor
         width: minimumWidth
         height: minimumHeight
 
@@ -356,7 +378,7 @@ Cura.MachineAction
             },
             Button {
                 id: btnOk
-                text: catalog.i18nc("@action:button", "Ok")
+                text: catalog.i18nc("@action:button", "OK")
                 onClicked:
                 {
                     manualPrinterDialog.accept()

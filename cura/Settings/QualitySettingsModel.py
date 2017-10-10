@@ -1,11 +1,11 @@
-# Copyright (c) 2016 Ultimaker B.V.
-# Cura is released under the terms of the AGPLv3 or higher.
+# Copyright (c) 2017 Ultimaker B.V.
+# Cura is released under the terms of the LGPLv3 or higher.
 
 import collections
 
 from PyQt5.QtCore import pyqtProperty, pyqtSignal, Qt
 
-import UM.Logger
+from UM.Logger import Logger
 import UM.Qt
 from UM.Application import Application
 from UM.Settings.ContainerRegistry import ContainerRegistry
@@ -97,7 +97,7 @@ class QualitySettingsModel(UM.Qt.ListModel.ListModel):
 
         containers = self._container_registry.findInstanceContainers(id = self._quality_id)
         if not containers:
-            UM.Logger.log("w", "Could not find a quality container with id %s", self._quality_id)
+            Logger.log("w", "Could not find a quality container with id %s", self._quality_id)
             return
 
         quality_container = None
@@ -116,7 +116,7 @@ class QualitySettingsModel(UM.Qt.ListModel.ListModel):
 
             quality_container = self._container_registry.findInstanceContainers(**criteria)
             if not quality_container:
-                UM.Logger.log("w", "Could not find a quality container matching quality changes %s", quality_changes_container.getId())
+                Logger.log("w", "Could not find a quality container matching quality changes %s", quality_changes_container.getId())
                 return
             quality_container = quality_container[0]
 
@@ -160,7 +160,7 @@ class QualitySettingsModel(UM.Qt.ListModel.ListModel):
             containers = self._container_registry.findInstanceContainers(**criteria)
 
         if not containers:
-            UM.Logger.log("w", "Could not find any quality containers matching the search criteria %s" % str(criteria))
+            Logger.log("w", "Could not find any quality containers matching the search criteria %s" % str(criteria))
             return
 
         if quality_changes_container:

@@ -1,5 +1,5 @@
 # Copyright (c) 2015 Ultimaker B.V.
-# Cura is released under the terms of the AGPLv3 or higher.
+# Cura is released under the terms of the LGPLv3 or higher.
 
 import os.path
 import zipfile
@@ -17,6 +17,7 @@ from cura.Settings.ExtruderManager import ExtruderManager
 from cura.QualityManager import QualityManager
 from UM.Scene.SceneNode import SceneNode
 from cura.SliceableObjectDecorator import SliceableObjectDecorator
+from cura.ZOffsetDecorator import ZOffsetDecorator
 
 MYPY = False
 
@@ -73,9 +74,8 @@ class ThreeMFReader(MeshReader):
 
         return temp_mat
 
-
-    ##  Convenience function that converts a SceneNode object (as obtained from libSavitar) to a Uranium scenenode.
-    #   \returns Uranium Scenen node.
+    ##  Convenience function that converts a SceneNode object (as obtained from libSavitar) to a Uranium scene node.
+    #   \returns Uranium scene node.
     def _convertSavitarNodeToUMNode(self, savitar_node):
         um_node = SceneNode()
         transformation = self._createMatrixFromTransformationString(savitar_node.getTransformation())
@@ -196,13 +196,20 @@ class ThreeMFReader(MeshReader):
                     translation_matrix.setByTranslation(translation_vector)
                     transformation_matrix.multiply(translation_matrix)
 
-                # Third step: 3MF also defines a unit, wheras Cura always assumes mm.
+                # Third step: 3MF also defines a unit, whereas Cura always assumes mm.
                 scale_matrix = Matrix()
                 scale_matrix.setByScaleVector(self._getScaleFromUnit(self._unit))
                 transformation_matrix.multiply(scale_matrix)
 
                 # Pre multiply the transformation with the loaded transformation, so the data is handled correctly.
                 um_node.setTransformation(um_node.getLocalTransformation().preMultiply(transformation_matrix))
+
+                # Check if the model is positioned below the build plate and honor that when loading project files.
+                if um_node.getMeshData() is not None:
+                    minimum_z_value = um_node.getMeshData().getExtents(um_node.getWorldTransformation()).minimum.y  # y is z in transformation coordinates
+                    if minimum_z_value < 0:
+                        um_node.addDecorator(ZOffsetDecorator())
+                        um_node.callDecoration("setZOffset", minimum_z_value)
 
                 result.append(um_node)
 

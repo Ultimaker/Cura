@@ -1,5 +1,5 @@
 // Copyright (c) 2015 Ultimaker B.V.
-// Uranium is released under the terms of the AGPLv3 or higher.
+// Uranium is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.1
 import QtQuick.Layouts 1.1
@@ -130,11 +130,11 @@ Item {
             id: settingControls
 
             height: parent.height / 2
-            spacing: UM.Theme.getSize("default_margin").width / 2
+            spacing: UM.Theme.getSize("sidebar_margin").height / 2
 
             anchors {
                 right: controlContainer.left
-                rightMargin: UM.Theme.getSize("default_margin").width / 2
+                rightMargin: UM.Theme.getSize("sidebar_margin").width / 2
                 verticalCenter: parent.verticalCenter
             }
 
@@ -293,7 +293,7 @@ Item {
             enabled: propertyProvider.isValueUsed
 
             anchors.right: parent.right;
-            anchors.rightMargin: UM.Theme.getSize("default_margin").width
+            anchors.rightMargin: UM.Theme.getSize("sidebar_margin").width
             anchors.verticalCenter: parent.verticalCenter;
             width: UM.Theme.getSize("setting_control").width;
             height: UM.Theme.getSize("setting_control").height

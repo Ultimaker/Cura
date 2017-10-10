@@ -7,7 +7,6 @@
         "visible": true,
         "author": "makeR",
         "manufacturer": "makeR",
-        "category": "Other",
         "file_formats": "text/x-gcode",
         "icon": "icon_ultimaker2",
         "platform": "makeR_pegasus_platform.stl",
