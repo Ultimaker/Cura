@@ -85,7 +85,6 @@ Item {
         visible: sliderRoot.layersVisible
 
         // set the new value when dragging
-        // the range slider is only dragged when the upper and lower sliders collide
         function onHandleDragged () {
 
             upperHandle.y = y - upperHandle.height
