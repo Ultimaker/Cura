@@ -5,6 +5,7 @@ import webbrowser
 import faulthandler
 import tempfile
 import os
+import os.path
 import time
 import json
 import ssl
@@ -15,6 +16,8 @@ from PyQt5.QtCore import QT_VERSION_STR, PYQT_VERSION_STR, QCoreApplication, Qt
 from PyQt5.QtWidgets import QDialog, QDialogButtonBox, QVBoxLayout, QLabel, QTextEdit, QGroupBox
 
 from UM.Logger import Logger
+from UM.PluginError import InvalidMetaDataError
+from UM.PluginRegistry import PluginRegistry
 from UM.View.GL.OpenGL import OpenGL
 from UM.i18n import i18nCatalog
 from UM.Platform import Platform
@@ -102,18 +105,18 @@ class CrashHandler:
 
         try:
             from UM.Application import Application
-            version = Application.getInstance().getVersion()
+            self.cura_version = Application.getInstance().getVersion()
         except:
-            version = "Unknown"
+            self.cura_version = "Unknown"
 
         crash_info = "<b>Version:</b> {0}<br/><b>Platform:</b> {1}<br/><b>Qt:</b> {2}<br/><b>PyQt:</b> {3}<br/><b>OpenGL:</b> {4}"
-        crash_info = crash_info.format(version, platform.platform(), QT_VERSION_STR, PYQT_VERSION_STR, self._getOpenGLInfo())
+        crash_info = crash_info.format(self.cura_version, platform.platform(), QT_VERSION_STR, PYQT_VERSION_STR, self._getOpenGLInfo())
         label.setText(crash_info)
 
         layout.addWidget(label)
         group.setLayout(layout)
 
-        self.data["cura_version"] = version
+        self.data["cura_version"] = self.cura_version
         self.data["os"] = {"type": platform.system(), "version": platform.version()}
         self.data["qt_version"] = QT_VERSION_STR
         self.data["pyqt_version"] = PYQT_VERSION_STR
@@ -122,9 +125,9 @@ class CrashHandler:
 
     def _getOpenGLInfo(self):
         info = "<ul><li>OpenGL Version: {0}</li><li>OpenGL Vendor: {1}</li><li>OpenGL Renderer: {2}</li></ul>"
-        info =  info.format(OpenGL.getInstance().getGPUVersion(), OpenGL.getInstance().getGPUVendorName(), OpenGL.getInstance().getGPUType())
+        info =  info.format(OpenGL.getInstance().getOpenGLVersion(), OpenGL.getInstance().getGPUVendorName(), OpenGL.getInstance().getGPUType())
 
-        self.data["opengl"] = {"version": OpenGL.getInstance().getGPUVersion(), "vendor": OpenGL.getInstance().getGPUVendorName(), "type": OpenGL.getInstance().getGPUType()}
+        self.data["opengl"] = {"version": OpenGL.getInstance().getOpenGLVersion(), "vendor": OpenGL.getInstance().getGPUVendorName(), "type": OpenGL.getInstance().getGPUType()}
 
         return info
 
@@ -134,14 +137,61 @@ class CrashHandler:
         layout = QVBoxLayout()
 
         text_area = QTextEdit()
-        trace = "".join(traceback.format_exception(self.exception_type, self.value, self.traceback))
+        trace_dict = traceback.format_exception(self.exception_type, self.value, self.traceback)
+        trace = "".join(trace_dict)
         text_area.setText(trace)
         text_area.setReadOnly(True)
 
         layout.addWidget(text_area)
         group.setLayout(layout)
 
-        self.data["traceback"] = trace
+        # Parsing all the information to fill the dictionary
+        summary = trace_dict[len(trace_dict)-1].rstrip("\n")
+        module = trace_dict[len(trace_dict)-2].rstrip("\n").split("\n")
+        module_split = module[0].split(", ")
+        filepath = module_split[0].split("\"")[1]
+        directory, filename = os.path.split(filepath)
+        line = int(module_split[1].lstrip("line "))
+        function = module_split[2].lstrip("in ")
+        code = module[1].lstrip(" ")
+
+        # Using this workaround for a cross-platform path splitting
+        split_path = []
+        folder_name = ""
+        # Split until reach folder "cura"
+        while folder_name != "cura":
+            directory, folder_name = os.path.split(directory)
+            if not folder_name:
+                break
+            split_path.append(folder_name)
+
+        # Look for plugins. If it's not a plugin, the current cura version is set
+        isPlugin = False
+        module_version = self.cura_version
+        if split_path.__contains__("plugins"):
+            isPlugin = True
+            # Look backwards until plugin.json is found
+            directory, name = os.path.split(filepath)
+            while not os.listdir(directory).__contains__("plugin.json"):
+                directory, name = os.path.split(directory)
+
+            json_metadata_file = os.path.join(directory, "plugin.json")
+            try:
+                with open(json_metadata_file, "r") as f:
+                    try:
+                        metadata = json.loads(f.read())
+                        module_version = metadata["version"]
+                    except json.decoder.JSONDecodeError:
+                        # Not through new exceptions
+                        Logger.logException("e", "Failed to parse plugin.json for plugin %s", name)
+            except:
+                # Not through new exceptions
+                pass
+
+        exception_dict = dict()
+        exception_dict["traceback"] = {"summary": summary, "full_trace": trace}
+        exception_dict["location"] = {"path": filepath, "file": filename, "function": function, "code": code, "line": line, "version": module_version, "is_plugin": isPlugin}
+        self.data["exception"] = exception_dict
 
         return group
 
