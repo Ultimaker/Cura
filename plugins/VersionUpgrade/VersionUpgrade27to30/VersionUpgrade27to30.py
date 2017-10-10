@@ -117,8 +117,25 @@ class VersionUpgrade27to30(VersionUpgrade):
         # Set the definition to "ultimaker2" for Ultimaker 2 quality changes
         if not parser.has_section("general"):
             parser.add_section("general")
-        if os.path.basename(filename).startswith("ultimaker2_"):
-            parser["general"]["definition"] = "ultimaker2"
+
+        # Need to exclude the following names:
+        # - ultimaker2_plus
+        # - ultimaker2_go
+        # - ultimaker2_extended
+        # - ultimaker2_extended_plus
+        exclude_prefix_list = ["ultimaker2_plus_",
+                               "ultimaker2_go_",
+                               "ultimaker2_extended_",
+                               "ultimaker2_extended_plus_"]
+        file_base_name = os.path.basename(filename)
+        if file_base_name.startswith("ultimaker2_"):
+            skip_this = False
+            for exclude_prefix in exclude_prefix_list:
+                if file_base_name.startswith(exclude_prefix):
+                    skip_this = True
+                    break
+            if not skip_this:
+                parser["general"]["definition"] = "ultimaker2"
 
         # Update version numbers
         parser["general"]["version"] = "2"

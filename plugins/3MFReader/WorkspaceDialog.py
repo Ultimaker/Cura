@@ -272,12 +272,18 @@ class WorkspaceDialog(QObject):
     def notifyClosed(self):
         self._result = {} # The result should be cleared before hide, because after it is released the main thread lock
         self._visible = False
-        self._lock.release()
+        try:
+            self._lock.release()
+        except:
+            pass
 
     def hide(self):
         self._visible = False
         self._view.hide()
-        self._lock.release()
+        try:
+            self._lock.release()
+        except:
+            pass
 
     @pyqtSlot()
     def onOkButtonClicked(self):
@@ -289,7 +295,6 @@ class WorkspaceDialog(QObject):
         self._result = {}
         self._view.hide()
         self.hide()
-
 
     ##  Block thread until the dialog is closed.
     def waitForClose(self):

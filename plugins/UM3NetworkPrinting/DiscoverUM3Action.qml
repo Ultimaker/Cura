@@ -321,7 +321,7 @@ Cura.MachineAction
         title: catalog.i18nc("@title:window", "Printer Address")
 
         minimumWidth: 400 * screenScaleFactor
-        minimumHeight: 120 * screenScaleFactor
+        minimumHeight: 130 * screenScaleFactor
         width: minimumWidth
         height: minimumHeight
 
