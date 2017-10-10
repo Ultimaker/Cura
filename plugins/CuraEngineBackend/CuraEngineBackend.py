@@ -441,7 +441,7 @@ class CuraEngineBackend(QObject, Backend):
 
     def _onStackErrorCheckFinished(self):
         self._is_error_check_scheduled = False
-        if self._need_slicing:
+        if not self._slicing and self._need_slicing:
             self.needsSlicing()
             self._onChanged()
 
@@ -536,7 +536,6 @@ class CuraEngineBackend(QObject, Backend):
     #
     #   \param message The protobuf message containing the print time per feature
     def _parseMessagePrintTimes(self, message):
-
         result = {
             "inset_0": message.time_inset_0,
             "inset_x": message.time_inset_x,
