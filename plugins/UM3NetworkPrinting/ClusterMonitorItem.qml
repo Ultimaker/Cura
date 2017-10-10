@@ -13,7 +13,7 @@ Component
         height: maximumHeight
         color: UM.Theme.getColor("viewport_background")
 
-        property var emphasisColor: "#44c0ff" //TODO: should be linked to theme.
+        property var emphasisColor: UM.Theme.getColor("setting_control_border_highlight")
         property var lineColor: "#DCDCDC" // TODO: Should be linked to theme.
         property var cornerRadius: 4 * screenScaleFactor // TODO: Should be linked to theme.
         UM.I18nCatalog
