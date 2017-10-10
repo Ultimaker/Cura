@@ -235,7 +235,6 @@ Item {
         // set the slider position based on the lower value
         function setValue (value) {
 
-            // TODO: improve this?
             UM.LayerView.setMinimumLayer(value)
 
             var diff = (value - sliderRoot.maximumValue) / (sliderRoot.minimumValue - sliderRoot.maximumValue)
