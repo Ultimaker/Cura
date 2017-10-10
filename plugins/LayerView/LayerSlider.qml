@@ -20,6 +20,7 @@ Item {
     property color lowerHandleColor: "black"
     property color rangeHandleColor: "black"
     property real handleLabelWidth: width
+    property var activeHandle: upperHandle
 
     // track properties
     property real trackThickness: 4 // width of the slider track
@@ -60,6 +61,11 @@ Item {
         rangeHandle.height = lowerHandle.y - (upperHandle.y + upperHandle.height)
     }
 
+    // set the active handle to show only one label at a time
+    function setActiveHandle (handle) {
+        activeHandle = handle
+    }
+
     // slider track
     Rectangle {
         id: track
@@ -98,6 +104,15 @@ Item {
             UM.LayerView.setMinimumLayer(lowerValue)
         }
 
+        function setValue (value) {
+            var range = sliderRoot.upperValue - sliderRoot.lowerValue
+            value = Math.min(value, sliderRoot.maximumValue)
+            value = Math.max(value, sliderRoot.minimumValue + range)
+
+            UM.LayerView.setCurrentLayer(value)
+            UM.LayerView.setMinimumLayer(value - range)
+        }
+
         Rectangle {
             width: sliderRoot.trackThickness - 2 * sliderRoot.trackBorderWidth
             height: parent.height + sliderRoot.handleSize
@@ -116,6 +131,23 @@ Item {
             }
 
             onPositionChanged: parent.onHandleDragged()
+            onPressed: sliderRoot.setActiveHandle(rangeHandle)
+        }
+
+        LayerSliderLabel {
+            id: rangleHandleLabel
+
+            height: sliderRoot.handleSize + UM.Theme.getSize("default_margin").height
+            x: parent.x - width - UM.Theme.getSize("default_margin").width
+            anchors.verticalCenter: parent.verticalCenter
+            target: Qt.point(sliderRoot.width, y + height / 2)
+            visible: sliderRoot.activeHandle == parent
+
+            // custom properties
+            maximumValue: sliderRoot.maximumValue
+            value: sliderRoot.upperValue
+            busy: UM.LayerView.busy
+            setValue: rangeHandle.setValue // connect callback functions
         }
     }
 
@@ -178,6 +210,7 @@ Item {
             }
 
             onPositionChanged: parent.onHandleDragged()
+            onPressed: sliderRoot.setActiveHandle(upperHandle)
         }
 
         LayerSliderLabel {
@@ -187,7 +220,7 @@ Item {
             x: parent.x - width - UM.Theme.getSize("default_margin").width
             anchors.verticalCenter: parent.verticalCenter
             target: Qt.point(sliderRoot.width, y + height / 2)
-            visible: sliderRoot.layersVisible
+            visible: sliderRoot.activeHandle == parent
 
             // custom properties
             maximumValue: sliderRoot.maximumValue
@@ -257,6 +290,7 @@ Item {
             }
 
             onPositionChanged: parent.onHandleDragged()
+            onPressed: sliderRoot.setActiveHandle(lowerHandle)
         }
 
         LayerSliderLabel {
@@ -266,7 +300,7 @@ Item {
             x: parent.x - width - UM.Theme.getSize("default_margin").width
             anchors.verticalCenter: parent.verticalCenter
             target: Qt.point(sliderRoot.width, y + height / 2)
-            visible: sliderRoot.layersVisible
+            visible: sliderRoot.activeHandle == parent
 
             // custom properties
             maximumValue: sliderRoot.maximumValue
