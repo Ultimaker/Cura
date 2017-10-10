@@ -334,13 +334,17 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
             self._camera_timer.stop()
 
         if self._image_reply:
+            skip_abort = False
             try:
                 try:
                     self._image_reply.downloadProgress.disconnect(self._onStreamDownloadProgress)
-                except TypeError:
-                    pass #The signal was never connected.
-                self._image_reply.abort()
-            except RuntimeError:
+                except Exception as e:
+                    if type(e) != RuntimeError: # can happen the RuntimeError occurs before calling abort (=see below), then then the application will crash
+                        skip_abort = True
+                        pass #The signal was never connected.
+                if not skip_abort:
+                    self._image_reply.abort()
+            except Exception as e: #RuntimeError
                 pass  # It can happen that the wrapped c++ object is already deleted.
             self._image_reply = None
             self._image_request = None
