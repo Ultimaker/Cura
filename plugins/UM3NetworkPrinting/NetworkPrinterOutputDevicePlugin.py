@@ -145,7 +145,6 @@ class NetworkPrinterOutputDevicePlugin(QObject, OutputDevicePlugin):
                         Logger.log("e", "Printer returned incorrect UTF-8.")
                         return
 
-
                     if address not in self._network_requests_buffer:
                         self._network_requests_buffer[address] = {}
                     self._network_requests_buffer[address]["system"] = system_info

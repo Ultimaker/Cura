@@ -40,7 +40,7 @@ UM.Dialog
     {
         id: version
 
-        text: "Cura %1".arg(UM.Application.version)
+        text: catalog.i18nc("@label","version: %1").arg(UM.Application.version)
         font: UM.Theme.getFont("large")
         anchors.right : logo.right
         anchors.top: logo.bottom
