@@ -14,7 +14,7 @@ UM.Dialog
     title: catalog.i18nc("@title:window", "Open Project")
 
     minimumWidth: 500 * screenScaleFactor
-    minimumHeight: 400 * screenScaleFactor
+    minimumHeight: 450 * screenScaleFactor
     width: minimumWidth
     height: minimumHeight
 
