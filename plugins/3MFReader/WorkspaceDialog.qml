@@ -331,6 +331,7 @@ UM.Dialog
             {
                 width: parent.width
                 height: childrenRect.height
+                visible: manager.hasVisibleSettingsField
                 Label
                 {
                     text: catalog.i18nc("@action:label", "Visible settings:")

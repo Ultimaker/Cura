@@ -302,12 +302,14 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                         break
 
         num_visible_settings = 0
+        has_visible_settings_string = False
         try:
             temp_preferences = Preferences()
             serialized = archive.open("Cura/preferences.cfg").read().decode("utf-8")
             temp_preferences.deserialize(serialized)
 
             visible_settings_string = temp_preferences.getValue("general/visible_settings")
+            has_visible_settings_string = visible_settings_string is not None
             if visible_settings_string is not None:
                 num_visible_settings = len(visible_settings_string.split(";"))
             active_mode = temp_preferences.getValue("cura/active_mode")
@@ -334,6 +336,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         self._dialog.setQualityChangesConflict(quality_changes_conflict)
         self._dialog.setDefinitionChangesConflict(definition_changes_conflict)
         self._dialog.setMaterialConflict(material_conflict)
+        self._dialog.setHasVisibleSettingsField(has_visible_settings_string)
         self._dialog.setNumVisibleSettings(num_visible_settings)
         self._dialog.setQualityName(quality_name)
         self._dialog.setQualityType(quality_type)
