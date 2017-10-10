@@ -189,7 +189,7 @@ Rectangle
                 PrintCoreConfiguration
                 {
                     id: leftExtruderInfo
-                    width: (parent.width - extruderSeperator.width) / 2
+                    width: Math.floor((parent.width - extruderSeperator.width) / 2)
                     printCoreConfiguration: printer.configuration[0]
                 }
 
@@ -204,7 +204,7 @@ Rectangle
                 PrintCoreConfiguration
                 {
                     id: rightExtruderInfo
-                    width: (parent.width - extruderSeperator.width) / 2
+                    width: Math.floor((parent.width - extruderSeperator.width) / 2)
                     printCoreConfiguration: printer.configuration[1]
                 }
             }
@@ -404,6 +404,8 @@ Rectangle
                         anchors.left: parent.left
                         anchors.right: parent.right
                         elide: Text.ElideRight
+                        wrapMode: Text.Wrap
+
                         font: UM.Theme.getFont("default")
                     }
 
