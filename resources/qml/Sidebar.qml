@@ -136,7 +136,7 @@ Rectangle
         anchors.rightMargin: UM.Theme.getSize("sidebar_margin").width
         anchors.top:
         {
-            if (settingsModeLabel.contentWidth >= parent.width - width - UM.Theme.getSize("sidebar_margin").width)
+            if (settingsModeLabel.contentWidth >= parent.width - width - UM.Theme.getSize("sidebar_margin").width * 2)
             {
                 return settingsModeLabel.bottom;
             }
