@@ -285,6 +285,14 @@ class WorkspaceDialog(QObject):
         except:
             pass
 
+    @pyqtSlot(bool)
+    def _onVisibilityChanged(self, visible):
+        if not visible:
+            try:
+                self._lock.release()
+            except:
+                pass
+
     @pyqtSlot()
     def onOkButtonClicked(self):
         self._view.hide()
