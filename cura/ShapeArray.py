@@ -43,10 +43,6 @@ class ShapeArray:
         transform_x = transform._data[0][3]
         transform_y = transform._data[2][3]
         hull_verts = node.callDecoration("getConvexHull")
-
-        if not hull_verts.getPoints().any(): # IF a model is to small then it will not contain any points
-            return None, None
-
         # For one_at_a_time printing you need the convex hull head.
         hull_head_verts = node.callDecoration("getConvexHullHead") or hull_verts
 

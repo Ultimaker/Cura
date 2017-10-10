@@ -1359,11 +1359,6 @@ class CuraApplication(QtApplication):
                     # Find node location
                     offset_shape_arr, hull_shape_arr = ShapeArray.fromNode(node, min_offset = min_offset)
 
-                    if offset_shape_arr is None and hull_shape_arr is None:
-                        Message(self._i18n_catalog.i18nc("@info:status","Could not load a model"),
-                                title=self._i18n_catalog.i18nc("@info:title", "Warning")).show()
-                        return
-
                     # Step is for skipping tests to make it a lot faster. it also makes the outcome somewhat rougher
                     node, _ = arranger.findNodePlacement(node, offset_shape_arr, hull_shape_arr, step = 10)
 
