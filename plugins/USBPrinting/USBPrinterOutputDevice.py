@@ -575,7 +575,7 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
             line = "M105"
         try:
             if ("G0" in line or "G1" in line) and "Z" in line:
-                z = float(re.search("Z([0-9\.]*)", line).group(1))
+                z = float(re.search("Z([-0-9\.]*)", line).group(1))
                 if self._current_z != z:
                     self._current_z = z
         except Exception as e:
