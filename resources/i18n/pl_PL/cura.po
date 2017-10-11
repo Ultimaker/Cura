@@ -38,6 +38,31 @@ msgctxt "@label:status"
 msgid "Can't start print"
 msgstr "Nie mogę rozpocząć drukowania"
 
+#: Manually added for plugins/UM3NetworkPrinting/DiscoverUM3Action.qml
+msgctxt "@label"
+msgid "This printer is not set up to host a group of Ultimaker 3 printers."
+msgstr "Ta drukarka nie jest skonfigurowana do zarządzania grupą drukarek Ultimaker 3."
+
+#: Manually added for plugins/UM3NetworkPrinting/PrinterInfoBlock.qml
+msgctxt "@label"
+msgid "Finishes at: "
+msgstr "Wykończenia na: "
+
+#: Manually added for plugins/UM3NetworkPrinting/DiscoverUM3Action.qml
+msgctxt "@label"
+msgid "This printer is the host for a group of %1 Ultimaker 3 printers."
+msgstr "Ta drukarka jest gospodarzem grupy %1 drukarek Ultimaker 3."
+
+#: Manually added for plugins/UM3NetworkPrinting/NetworkClusterPrinterOutputDevice.py
+msgctxt "@info:status"
+msgid "Printer '{printer_name}' has finished printing '{job_name}'."
+msgstr "{printer_name} skończyła drukowanie '{job_name}'."
+
+#: Manually added for plugins/UM3NetworkPrinting/NetworkClusterPrinterOutputDevice.py
+msgctxt "@info:status"
+msgid "Print finished"
+msgstr "Drukowanie zakończone"
+
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.py:29
 msgctxt "@action"
 msgid "Machine Settings"

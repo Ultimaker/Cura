@@ -36,6 +36,31 @@ msgctxt "@label:status"
 msgid "Can't start print"
 msgstr "Baskı başlatılamıyor"
 
+#: Manually added for plugins/UM3NetworkPrinting/DiscoverUM3Action.qml
+msgctxt "@label"
+msgid "This printer is not set up to host a group of Ultimaker 3 printers."
+msgstr "Bu yazıcı, Ultimaker 3 yazıcı grubunu barındırmak için ayarlı değildir."
+
+#: Manually added for plugins/UM3NetworkPrinting/PrinterInfoBlock.qml
+msgctxt "@label"
+msgid "Finishes at: "
+msgstr "Şu tarihlerde bitirir: "
+
+#: Manually added for plugins/UM3NetworkPrinting/DiscoverUM3Action.qml
+msgctxt "@label"
+msgid "This printer is the host for a group of %1 Ultimaker 3 printers."
+msgstr "Bu yazıcı, %1 Ultimaker 3 yazıcı grubunun ana makinesidir."
+
+#: Manually added for plugins/UM3NetworkPrinting/NetworkClusterPrinterOutputDevice.py
+msgctxt "@info:status"
+msgid "Printer '{printer_name}' has finished printing '{job_name}'."
+msgstr "{printer_name}, '{job_name}' yazdırmayı tamamladı."
+
+#: Manually added for plugins/UM3NetworkPrinting/NetworkClusterPrinterOutputDevice.py
+msgctxt "@info:status"
+msgid "Print finished"
+msgstr "Baskı tamamlandı"
+
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.py:29
 msgctxt "@action"
 msgid "Machine Settings"
