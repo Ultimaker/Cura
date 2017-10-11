@@ -1566,7 +1566,7 @@ msgstr "Cette imprimante n'est pas configurée pour héberger un groupe d'imprim
 #: /home/ruben/Projects/Cura/plugins/CuraPrintClusterUpload/DiscoverUM3Action.qml:287
 msgctxt "@label"
 msgid "This printer is the host for a group of %1 connected Ultimaker 3 printers"
-msgstr "L'imprimante n'est pas configurée pour héberger un groupe de %1 imprimantes connectées Ultimaker 3."
+msgstr "L'imprimante est configurée pour héberger un groupe de %1 imprimantes connectées Ultimaker 3."
 
 #: /home/ruben/Projects/Cura/plugins/CuraPrintClusterUpload/PrintWindow.qml:24
 msgctxt "@title:window"
