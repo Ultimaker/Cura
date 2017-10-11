@@ -70,8 +70,11 @@ class UserChangesModel(ListModel):
             # Override "getExtruderValue" with "getDefaultExtruderValue" so we can get the default values
             user_changes = containers.pop(0)
             default_value_resolve_context = PropertyEvaluationContext(stack)
+            default_value_resolve_context.context["evaluate_from_container_index"] = 1  # skip the user settings container
             default_value_resolve_context.context["override_operators"] = {
-                "extruderValue": ExtruderManager.getDefaultExtruderValue
+                "extruderValue": ExtruderManager.getDefaultExtruderValue,
+                "extruderValues": ExtruderManager.getDefaultExtruderValues,
+                "resolveOrValue": ExtruderManager.getDefaultResolveOrValue
             }
 
             for setting_key in user_changes.getAllKeys():
