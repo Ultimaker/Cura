@@ -163,7 +163,7 @@ msgstr "Impossible de démarrer une nouvelle tâche car l'imprimante est occupé
 #: /home/ruben/Projects/Cura/plugins/USBPrinting/USBPrinterOutputDevice.py:153
 msgctxt "@info:title"
 msgid "Print Details"
-msgstr "Imprimer les détails"
+msgstr "Les détails d'impression"
 
 #: /home/ruben/Projects/Cura/plugins/USBPrinting/USBPrinterOutputDevice.py:456
 msgctxt "@info:status"
