@@ -226,7 +226,7 @@ Item {
             maximumValue: sliderRoot.maximumValue
             value: sliderRoot.upperValue
             busy: UM.LayerView.busy
-            setValue: sliderRoot.setUpperValue // connect callback functions
+            setValue: upperHandle.setValue // connect callback functions
         }
     }
 
@@ -306,7 +306,7 @@ Item {
             maximumValue: sliderRoot.maximumValue
             value: sliderRoot.lowerValue
             busy: UM.LayerView.busy
-            setValue: sliderRoot.setLowerValue // connect callback functions
+            setValue: lowerHandle.setValue // connect callback functions
         }
     }
 }
