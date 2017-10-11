@@ -2,8 +2,7 @@
 // Uranium is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.1
-import QtQuick.Controls 1.1
-import QtQuick.Controls.Styles 1.1
+import QtQuick.Controls 2.0
 
 import UM 1.1 as UM
 
@@ -28,71 +27,57 @@ SettingItem
             onWheel: wheel.accepted = true;
         }
 
-        style: ComboBoxStyle
+        background: Rectangle
         {
-            background: Rectangle
+            color:
             {
-                color:
+                if(!enabled)
                 {
-                    if(!enabled)
-                    {
-                        return UM.Theme.getColor("setting_control_disabled")
-                    }
-                    if(control.hovered || control.activeFocus)
-                    {
-                        return UM.Theme.getColor("setting_control_highlight")
-                    }
-                    return UM.Theme.getColor("setting_control")
+                    return UM.Theme.getColor("setting_control_disabled")
                 }
-                border.width: UM.Theme.getSize("default_lining").width
-                border.color:
+                if(control.hovered || control.activeFocus)
                 {
-                    if(!enabled)
-                    {
-                        return UM.Theme.getColor("setting_control_disabled_border")
-                    }
-                    if(control.hovered || control.activeFocus)
-                    {
-                        return UM.Theme.getColor("setting_control_border_highlight")
-                    }
-                    return UM.Theme.getColor("setting_control_border")
+                    return UM.Theme.getColor("setting_control_highlight")
                 }
+                return UM.Theme.getColor("setting_control")
             }
-            label: Item
+            border.width: UM.Theme.getSize("default_lining").width
+            border.color:
             {
-                Label
+                if(!enabled)
                 {
-                    anchors.left: parent.left;
-                    anchors.leftMargin: UM.Theme.getSize("default_lining").width
-                    anchors.right: downArrow.left;
-                    anchors.rightMargin: UM.Theme.getSize("default_lining").width;
-                    anchors.verticalCenter: parent.verticalCenter;
-
-                    text: control.currentText;
-                    font: UM.Theme.getFont("default");
-                    color: !enabled ? UM.Theme.getColor("setting_control_disabled_text") : UM.Theme.getColor("setting_control_text");
-
-                    elide: Text.ElideRight;
-                    verticalAlignment: Text.AlignVCenter;
+                    return UM.Theme.getColor("setting_control_disabled_border")
                 }
-
-                UM.RecolorImage
+                if(control.hovered || control.activeFocus)
                 {
-                    id: downArrow
-                    anchors.right: parent.right;
-                    anchors.rightMargin: UM.Theme.getSize("default_lining").width * 2;
-                    anchors.verticalCenter: parent.verticalCenter;
-
-                    source: UM.Theme.getIcon("arrow_bottom")
-                    width: UM.Theme.getSize("standard_arrow").width
-                    height: UM.Theme.getSize("standard_arrow").height
-                    sourceSize.width: width + 5 * screenScaleFactor
-                    sourceSize.height: width + 5 * screenScaleFactor
-
-                    color: UM.Theme.getColor("setting_control_text");
-
+                    return UM.Theme.getColor("setting_control_border_highlight")
                 }
+                return UM.Theme.getColor("setting_control_border")
             }
+        }
+
+        indicator: UM.RecolorImage
+        {
+            id: downArrow
+            x: control.width - width - control.rightPadding
+            y: control.topPadding + (control.availableHeight - height) / 2
+
+            source: UM.Theme.getIcon("arrow_bottom")
+            width: UM.Theme.getSize("standard_arrow").width
+            height: UM.Theme.getSize("standard_arrow").height
+            sourceSize.width: width + 5 * screenScaleFactor
+            sourceSize.height: width + 5 * screenScaleFactor
+
+            color: UM.Theme.getColor("setting_control_text");
+        }
+
+        contentItem: Label
+        {
+            text: control.currentText;
+            font: UM.Theme.getFont("default");
+            color: !enabled ? UM.Theme.getColor("setting_control_disabled_text") : UM.Theme.getColor("setting_control_text");
+            elide: Text.ElideRight;
+            verticalAlignment: Text.AlignVCenter;
         }
 
         onActivated:
