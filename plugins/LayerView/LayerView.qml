@@ -368,11 +368,7 @@ Item
             // update values when layer data changes
             Connections {
                 target: UM.LayerView
-                onMaxLayersChanged:
-                {
-                    slider.setUpperValue(UM.LayerView.currentLayer);
-                    slider.updateRangeHandle();
-                }
+                onMaxLayersChanged: slider.setUpperValue(UM.LayerView.currentLayer)
                 onMinimumLayerChanged: slider.setLowerValue(UM.LayerView.minimumLayer)
                 onCurrentLayerChanged: slider.setUpperValue(UM.LayerView.currentLayer)
             }
