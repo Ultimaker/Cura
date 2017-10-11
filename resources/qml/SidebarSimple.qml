@@ -902,25 +902,20 @@ Item
             {
                 target: infillDensity
                 property: "containerStackId"
-                value:
-                {
-                    // associate this binding with Cura.MachineManager.activeMachineId in the beginning so this
-                    // binding will be triggered when activeMachineId is changed too.
-                    // Otherwise, if this value only depends on the extruderIds, it won't get updated when the
-                    // machine gets changed.
-                    var activeStackId = Cura.MachineManager.activeStackId;
+                value: {
 
-                    if(machineExtruderCount.properties.value == 1)
-                    {
-                        //Not settable per extruder or there only is global, so we must pick global.
-                        return activeStackId;
+                    // not settable per extruder or there only is global, so we must pick global
+                    if (machineExtruderCount.properties.value == 1) {
+                        return Cura.MachineManager.activeStackId
                     }
-                    if(infillInheritStackProvider.properties.limit_to_extruder != null && infillInheritStackProvider.properties.limit_to_extruder >= 0)
-                    {
-                        //We have limit_to_extruder, so pick that stack.
-                        return ExtruderManager.extruderIds[String(infillInheritStackProvider.properties.limit_to_extruder)];
+
+                    // return the ID of the extruder when the infill is limited to an extruder
+                    if (infillInheritStackProvider.properties.limit_to_extruder != null && infillInheritStackProvider.properties.limit_to_extruder >= 0) {
+                        return ExtruderManager.extruderIds[String(infillInheritStackProvider.properties.limit_to_extruder)]
                     }
-                    return activeStackId;
+
+                    // default to the global stack
+                    return Cura.MachineManager.activeStackId
                 }
             }
 
