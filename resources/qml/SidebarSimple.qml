@@ -175,7 +175,7 @@ Item
                         {
                             anchors.verticalCenter: parent.verticalCenter
                             anchors.top: parent.top
-                            anchors.topMargin: parseInt(UM.Theme.getSize("sidebar_margin").height / 2)
+                            anchors.topMargin: Math.floor(UM.Theme.getSize("sidebar_margin").height / 2)
                             color: (Cura.MachineManager.activeMachine != null && Cura.ProfilesModel.getItem(index).available) ? UM.Theme.getColor("quality_slider_available") : UM.Theme.getColor("quality_slider_unavailable")
                             text:
                             {
@@ -194,13 +194,13 @@ Item
                                 // Make sure the text aligns correctly with each tick
                                 if (qualityModel.totalTicks == 0) {
                                     // If there is only one tick, align it centrally
-                                    return parseInt(((base.width * 0.55) - width) / 2)
+                                    return Math.floor(((base.width * 0.55) - width) / 2)
                                 } else if (index == 0) {
                                     return (base.width * 0.55 / qualityModel.totalTicks) * index
                                 } else if (index == qualityModel.totalTicks) {
                                     return (base.width * 0.55 / qualityModel.totalTicks) * index - width
                                 } else {
-                                    return parseInt((base.width * 0.55 / qualityModel.totalTicks) * index - (width / 2))
+                                    return Math.floor((base.width * 0.55 / qualityModel.totalTicks) * index - (width / 2))
                                 }
                             }
                         }
@@ -361,7 +361,7 @@ Item
                 anchors.topMargin: UM.Theme.getSize("sidebar_margin").height * 2
                 anchors.left: parent.left
 
-                width: parseInt(UM.Theme.getSize("sidebar").width * .45 - UM.Theme.getSize("sidebar_margin").width)
+                width: Math.floor(UM.Theme.getSize("sidebar").width * .45 - UM.Theme.getSize("sidebar_margin").width)
 
                 Label
                 {
@@ -371,7 +371,7 @@ Item
                     color: UM.Theme.getColor("text")
 
                     anchors.top: parent.top
-                    anchors.topMargin: parseInt(UM.Theme.getSize("sidebar_margin").height * 1.7)
+                    anchors.topMargin: Math.floor(UM.Theme.getSize("sidebar_margin").height * 1.7)
                     anchors.left: parent.left
                     anchors.leftMargin: UM.Theme.getSize("sidebar_margin").width
                 }
@@ -382,7 +382,7 @@ Item
                 id: infillCellRight
 
                 height: infillSlider.height + UM.Theme.getSize("sidebar_margin").height + enableGradualInfillCheckBox.visible * (enableGradualInfillCheckBox.height + UM.Theme.getSize("sidebar_margin").height)
-                width: parseInt(UM.Theme.getSize("sidebar").width * .55)
+                width: Math.floor(UM.Theme.getSize("sidebar").width * .55)
 
                 anchors.left: infillCellLeft.right
                 anchors.top: infillCellLeft.top
@@ -393,10 +393,10 @@ Item
 
                     //anchors.top: parent.top
                     anchors.left: infillSlider.left
-                    anchors.leftMargin: parseInt((infillSlider.value / infillSlider.stepSize) * (infillSlider.width / (infillSlider.maximumValue / infillSlider.stepSize)) - 10 * screenScaleFactor)
+                    anchors.leftMargin: Math.floor((infillSlider.value / infillSlider.stepSize) * (infillSlider.width / (infillSlider.maximumValue / infillSlider.stepSize)) - 10 * screenScaleFactor)
                     anchors.right: parent.right
 
-                    text: parseInt(infillDensity.properties.value) + "%"
+                    text: Math.floor(infillDensity.properties.value) + "%"
                     horizontalAlignment: Text.AlignLeft
 
                     color: infillSlider.enabled ? UM.Theme.getColor("quality_slider_available") : UM.Theme.getColor("quality_slider_unavailable")
@@ -406,7 +406,7 @@ Item
                 Binding {
                     target: infillSlider
                     property: "value"
-                    value: parseInt(infillDensity.properties.value)
+                    value: Math.floor(infillDensity.properties.value)
                 }
 
                 Slider
@@ -419,7 +419,7 @@ Item
                     anchors.rightMargin: UM.Theme.getSize("sidebar_margin").width
 
                     height: UM.Theme.getSize("sidebar_margin").height
-                    width: parseInt(infillCellRight.width - UM.Theme.getSize("sidebar_margin").width - style.handleWidth)
+                    width: Math.floor(infillCellRight.width - UM.Theme.getSize("sidebar_margin").width - style.handleWidth)
 
                     minimumValue: 0
                     maximumValue: 100
@@ -427,15 +427,15 @@ Item
                     tickmarksEnabled: true
 
                     // disable slider when gradual support is enabled
-                    enabled: parseInt(infillSteps.properties.value) == 0
+                    enabled: Math.floor(infillSteps.properties.value) == 0
 
                     // set initial value from stack
-                    value: parseInt(infillDensity.properties.value)
+                    value: Math.floor(infillDensity.properties.value)
 
                     onValueChanged: {
 
                         // Don't round the value if it's already the same
-                        if (parseInt(infillDensity.properties.value) == infillSlider.value) {
+                        if (Math.floor(infillDensity.properties.value) == infillSlider.value) {
                             return
                         }
 
@@ -504,7 +504,7 @@ Item
 
                     anchors.right: parent.right
                     anchors.top: parent.top
-                    anchors.topMargin: parseInt(UM.Theme.getSize("sidebar_margin").height / 2)
+                    anchors.topMargin: Math.floor(UM.Theme.getSize("sidebar_margin").height / 2)
 
                     // we loop over all density icons and only show the one that has the current density and steps
                     Repeater
@@ -515,8 +515,8 @@ Item
 
                         property int activeIndex: {
                             for (var i = 0; i < infillModel.count; i++) {
-                                var density = parseInt(infillDensity.properties.value)
-                                var steps = parseInt(infillSteps.properties.value)
+                                var density = Math.floor(infillDensity.properties.value)
+                                var steps = Math.floor(infillSteps.properties.value)
                                 var infillModelItem = infillModel.get(i)
 
                                 if (density >= infillModelItem.percentageMin
@@ -555,13 +555,13 @@ Item
                     property alias _hovered: enableGradualInfillMouseArea.containsMouse
 
                     anchors.top: infillSlider.bottom
-                    anchors.topMargin: parseInt(UM.Theme.getSize("sidebar_margin").height / 2) // closer to slider since it belongs to the same category
+                    anchors.topMargin: Math.floor(UM.Theme.getSize("sidebar_margin").height / 2) // closer to slider since it belongs to the same category
                     anchors.left: infillCellRight.left
 
                     style: UM.Theme.styles.checkbox
                     enabled: base.settingsEnabled
                     visible: infillSteps.properties.enabled == "True"
-                    checked: parseInt(infillSteps.properties.value) > 0
+                    checked: Math.floor(infillSteps.properties.value) > 0
 
                     MouseArea {
                         id: enableGradualInfillMouseArea
@@ -570,18 +570,18 @@ Item
                         hoverEnabled: true
                         enabled: true
 
-                        property var previousInfillDensity: parseInt(infillDensity.properties.value)
+                        property var previousInfillDensity: Math.floor(infillDensity.properties.value)
 
                         onClicked: {
                             // Set to 90% only when enabling gradual infill
-                            if (parseInt(infillSteps.properties.value) == 0) {
-                                previousInfillDensity = parseInt(infillDensity.properties.value)
+                            if (Math.floor(infillSteps.properties.value) == 0) {
+                                previousInfillDensity = Math.floor(infillDensity.properties.value)
                                 infillDensity.setPropertyValue("value", String(90))
                             } else {
                                 infillDensity.setPropertyValue("value", String(previousInfillDensity))
                             }
 
-                            infillSteps.setPropertyValue("value", (parseInt(infillSteps.properties.value) == 0) ? 5 : 0)
+                            infillSteps.setPropertyValue("value", (Math.floor(infillSteps.properties.value) == 0) ? 5 : 0)
                         }
 
                         onEntered: {
@@ -597,7 +597,7 @@ Item
                     Label {
                         id: gradualInfillLabel
                         anchors.left: enableGradualInfillCheckBox.right
-                        anchors.leftMargin: parseInt(UM.Theme.getSize("sidebar_margin").width / 2)
+                        anchors.leftMargin: Math.floor(UM.Theme.getSize("sidebar_margin").width / 2)
                         text: catalog.i18nc("@label", "Enable gradual")
                         font: UM.Theme.getFont("default")
                         color: UM.Theme.getColor("text")
@@ -658,7 +658,7 @@ Item
                 visible: enableSupportCheckBox.visible
 
                 anchors.top: infillCellRight.bottom
-                anchors.topMargin: parseInt(UM.Theme.getSize("sidebar_margin").height * 1.5)
+                anchors.topMargin: Math.floor(UM.Theme.getSize("sidebar_margin").height * 1.5)
                 anchors.left: parent.left
                 anchors.leftMargin: UM.Theme.getSize("sidebar_margin").width
                 anchors.verticalCenter: enableSupportCheckBox.verticalCenter
@@ -867,7 +867,7 @@ Item
             {
                 id: tipsCell
                 anchors.top: adhesionCheckBox.visible ? adhesionCheckBox.bottom : (enableSupportCheckBox.visible ? supportExtruderCombobox.bottom : infillCellRight.bottom)
-                anchors.topMargin: parseInt(UM.Theme.getSize("sidebar_margin").height * 2)
+                anchors.topMargin: Math.floor(UM.Theme.getSize("sidebar_margin").height * 2)
                 anchors.left: parent.left
                 width: parent.width
                 height: tipsText.contentHeight * tipsText.lineCount
