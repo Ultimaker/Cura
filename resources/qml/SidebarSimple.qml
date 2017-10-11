@@ -361,7 +361,7 @@ Item
                 anchors.topMargin: UM.Theme.getSize("sidebar_margin").height * 2
                 anchors.left: parent.left
 
-                width: UM.Theme.getSize("sidebar").width * .45 - UM.Theme.getSize("sidebar_margin").width
+                width: parseInt(UM.Theme.getSize("sidebar").width * .45 - UM.Theme.getSize("sidebar_margin").width)
 
                 Label
                 {
@@ -371,7 +371,7 @@ Item
                     color: UM.Theme.getColor("text")
 
                     anchors.top: parent.top
-                    anchors.topMargin: UM.Theme.getSize("sidebar_margin").height * 1.7
+                    anchors.topMargin: parseInt(UM.Theme.getSize("sidebar_margin").height * 1.7)
                     anchors.left: parent.left
                     anchors.leftMargin: UM.Theme.getSize("sidebar_margin").width
                 }
@@ -382,7 +382,7 @@ Item
                 id: infillCellRight
 
                 height: infillSlider.height + UM.Theme.getSize("sidebar_margin").height + enableGradualInfillCheckBox.visible * (enableGradualInfillCheckBox.height + UM.Theme.getSize("sidebar_margin").height)
-                width: UM.Theme.getSize("sidebar").width * .55
+                width: parseInt(UM.Theme.getSize("sidebar").width * .55)
 
                 anchors.left: infillCellLeft.right
                 anchors.top: infillCellLeft.top
@@ -393,7 +393,7 @@ Item
 
                     //anchors.top: parent.top
                     anchors.left: infillSlider.left
-                    anchors.leftMargin: (infillSlider.value / infillSlider.stepSize) * (infillSlider.width / (infillSlider.maximumValue / infillSlider.stepSize)) - 10 * screenScaleFactor
+                    anchors.leftMargin: parseInt((infillSlider.value / infillSlider.stepSize) * (infillSlider.width / (infillSlider.maximumValue / infillSlider.stepSize)) - 10 * screenScaleFactor)
                     anchors.right: parent.right
 
                     text: parseInt(infillDensity.properties.value) + "%"
@@ -419,7 +419,7 @@ Item
                     anchors.rightMargin: UM.Theme.getSize("sidebar_margin").width
 
                     height: UM.Theme.getSize("sidebar_margin").height
-                    width: infillCellRight.width - UM.Theme.getSize("sidebar_margin").width - style.handleWidth
+                    width: parseInt(infillCellRight.width - UM.Theme.getSize("sidebar_margin").width - style.handleWidth)
 
                     minimumValue: 0
                     maximumValue: 100
