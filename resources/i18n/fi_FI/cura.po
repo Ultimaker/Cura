@@ -36,6 +36,31 @@ msgctxt "@label:status"
 msgid "Can't start print"
 msgstr "Tulostus ei käynnisty"
 
+#: Manually added for plugins/UM3NetworkPrinting/DiscoverUM3Action.qml
+msgctxt "@label"
+msgid "This printer is not set up to host a group of Ultimaker 3 printers."
+msgstr "Tätä tulostinta ei ole määritetty Ultimaker 3 -tulostinryhmän isännäksi."
+
+#: Manually added for plugins/UM3NetworkPrinting/PrinterInfoBlock.qml
+msgctxt "@label"
+msgid "Finishes at: "
+msgstr "Päättyy: "
+
+#: Manually added for plugins/UM3NetworkPrinting/DiscoverUM3Action.qml
+msgctxt "@label"
+msgid "This printer is the host for a group of %1 Ultimaker 3 printers."
+msgstr "Tämä tulostin on {count} tulostimen Ultimaker 3 -ryhmän isäntä."
+
+#: Manually added for plugins/UM3NetworkPrinting/NetworkClusterPrinterOutputDevice.py
+msgctxt "@info:status"
+msgid "Printer '{printer_name}' has finished printing '{job_name}'."
+msgstr "{printer_name} on tulostanut työn '{job_name}'."
+
+#: Manually added for plugins/UM3NetworkPrinting/NetworkClusterPrinterOutputDevice.py
+msgctxt "@info:status"
+msgid "Print finished"
+msgstr "Tulosta valmis"
+
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.py:29
 msgctxt "@action"
 msgid "Machine Settings"
@@ -578,7 +603,7 @@ msgstr "Tämä tulostin on {count} tulostimen yhdistetyn Ultimaker 3 -ryhmän is
 #: /home/ruben/Projects/Cura/plugins/CuraPrintClusterUpload/NetworkClusterPrinterOutputDevice.py:105
 #, python-brace-format
 msgid "{printer_name} has finished printing '{job_name}'. Please collect the print and confirm clearing the build plate."
-msgstr "{printer_name} on tulostanut työn {job_name}. Nouda työ ja vahvista alustan tyhjennys."
+msgstr "{printer_name} on tulostanut työn '{job_name}'. Nouda työ ja vahvista alustan tyhjennys."
 
 #: /home/ruben/Projects/Cura/plugins/CuraPrintClusterUpload/NetworkClusterPrinterOutputDevice.py:106
 #, python-brace-format
