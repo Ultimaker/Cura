@@ -285,11 +285,11 @@ Cura.MachineAction
                         }
                         else if (base.selectedPrinter.clusterSize === 0)
                         {
-                            return catalog.i18nc("@label", "Cura Connect: This printer is not set up to host a group of connected Ultimaker 3 printers.");
+                            return catalog.i18nc("@label", "This printer is not set up to host a group of Ultimaker 3 printers.");
                         }
                         else
                         {
-                            return catalog.i18nc("@label", "Cura Connect: This printer is set up to host a group of %1 connected Ultimaker 3 printers".arg(base.selectedPrinter.clusterSize));
+                            return catalog.i18nc("@label", "This printer is the host for a group of %1 Ultimaker 3 printers.".arg(base.selectedPrinter.clusterSize));
                         }
                     }
 
