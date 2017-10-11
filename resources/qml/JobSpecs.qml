@@ -124,7 +124,7 @@ Item {
         }
     }
 
-    Text
+    Label
     {
         id: boundingSpec
         anchors.top: jobNameRow.bottom
