@@ -19,6 +19,7 @@ from UM.Message import Message
 from UM.OutputDevice import OutputDeviceError
 from UM.i18n import i18nCatalog
 from UM.Qt.Duration import Duration, DurationFormat
+from UM.PluginRegistry import PluginRegistry
 
 from . import NetworkPrinterOutputDevice
 
@@ -36,7 +37,7 @@ class NetworkClusterPrinterOutputDevice(NetworkPrinterOutputDevice.NetworkPrinte
     printersChanged = pyqtSignal()
     selectedPrinterChanged = pyqtSignal()
 
-    def __init__(self, key, address, properties, api_prefix, plugin_path):
+    def __init__(self, key, address, properties, api_prefix):
         super().__init__(key, address, properties, api_prefix)
         # Store the address of the master.
         self._master_address = address
@@ -47,7 +48,6 @@ class NetworkClusterPrinterOutputDevice(NetworkPrinterOutputDevice.NetworkPrinte
             name = key
 
         self._authentication_state = NetworkPrinterOutputDevice.AuthState.Authenticated  # The printer is always authenticated
-        self._plugin_path = plugin_path
 
         self.setName(name)
         description = i18n_catalog.i18nc("@action:button Preceded by 'Ready to'.", "Print over network")
@@ -709,3 +709,14 @@ class NetworkClusterPrinterOutputDevice(NetworkPrinterOutputDevice.NetworkPrinte
     @pyqtSlot(int, result=str)
     def formatDuration(self, seconds):
         return Duration(seconds).getDisplayString(DurationFormat.Format.Short)
+
+    ##  For cluster below
+    def _get_plugin_directory_name(self):
+        current_file_absolute_path = os.path.realpath(__file__)
+        directory_path = os.path.dirname(current_file_absolute_path)
+        _, directory_name = os.path.split(directory_path)
+        return directory_name
+
+    @property
+    def _plugin_path(self):
+        return PluginRegistry.getInstance().getPluginPath(self._get_plugin_directory_name())
