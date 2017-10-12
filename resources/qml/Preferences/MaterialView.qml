@@ -16,8 +16,8 @@ TabView
 
     property bool editingEnabled: false;
     property string currency: UM.Preferences.getValue("cura/currency") ? UM.Preferences.getValue("cura/currency") : "€"
-    property real firstColumnWidth: (width * 0.45) | 0
-    property real secondColumnWidth: (width * 0.45) | 0
+    property real firstColumnWidth: (width * 0.50) | 0
+    property real secondColumnWidth: (width * 0.40) | 0
     property string containerId: ""
     property var materialPreferenceValues: UM.Preferences.getValue("cura/material_settings") ? JSON.parse(UM.Preferences.getValue("cura/material_settings")) : {}
 
