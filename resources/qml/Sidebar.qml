@@ -121,7 +121,7 @@ Rectangle
         anchors.leftMargin: UM.Theme.getSize("sidebar_margin").width
         anchors.top: headerSeparator.bottom
         anchors.topMargin: UM.Theme.getSize("sidebar_margin").height
-        width: parent.width * 0.45
+        width: Math.floor(parent.width * 0.45)
         font: UM.Theme.getFont("large")
         color: UM.Theme.getColor("text")
         visible: !monitoringPrint && !hideView
@@ -130,13 +130,13 @@ Rectangle
     Rectangle {
         id: settingsModeSelection
         color: "transparent"
-        width: parent.width * 0.55
+        width: Math.floor(parent.width * 0.55)
         height: UM.Theme.getSize("sidebar_header_mode_toggle").height
         anchors.right: parent.right
         anchors.rightMargin: UM.Theme.getSize("sidebar_margin").width
         anchors.top:
         {
-            if (settingsModeLabel.contentWidth >= parent.width - width - UM.Theme.getSize("sidebar_margin").width)
+            if (settingsModeLabel.contentWidth >= parent.width - width - UM.Theme.getSize("sidebar_margin").width * 2)
             {
                 return settingsModeLabel.bottom;
             }
@@ -154,7 +154,7 @@ Rectangle
                 anchors.left: parent.left
                 anchors.leftMargin: model.index * (settingsModeSelection.width / 2)
                 anchors.verticalCenter: parent.verticalCenter
-                width: 0.5 * parent.width
+                width: Math.floor(0.5 * parent.width)
                 text: model.text
                 exclusiveGroup: modeMenuGroup;
                 checkable: true;
@@ -186,12 +186,18 @@ Rectangle
                                    UM.Theme.getColor("action_button")
                         Behavior on color { ColorAnimation { duration: 50; } }
                         Label {
-                            anchors.centerIn: parent
+                            anchors.left: parent.left
+                            anchors.right: parent.right
+                            anchors.verticalCenter: parent.verticalCenter
+                            anchors.leftMargin: UM.Theme.getSize("default_lining").width * 2
+                            anchors.rightMargin: UM.Theme.getSize("default_lining").width * 2
                             color: (control.checked || control.pressed) ? UM.Theme.getColor("action_button_active_text") :
                                        control.hovered ? UM.Theme.getColor("action_button_hovered_text") :
                                        UM.Theme.getColor("action_button_text")
                             font: UM.Theme.getFont("default")
-                            text: control.text;
+                            text: control.text
+                            horizontalAlignment: Text.AlignHCenter
+                            elide: Text.ElideMiddle
                         }
                     }
                     label: Item { }
@@ -304,7 +310,7 @@ Rectangle
         height: UM.Theme.getSize("sidebar_lining").height
         color: UM.Theme.getColor("sidebar_lining")
         anchors.bottom: printSpecs.top
-        anchors.bottomMargin: UM.Theme.getSize("sidebar_margin").height * 2 + UM.Theme.getSize("progressbar").height + UM.Theme.getFont("default_bold").pixelSize
+        anchors.bottomMargin: Math.floor(UM.Theme.getSize("sidebar_margin").height * 2 + UM.Theme.getSize("progressbar").height + UM.Theme.getFont("default_bold").pixelSize)
     }
 
     Rectangle
@@ -317,7 +323,7 @@ Rectangle
         height: timeDetails.height + timeSpecDescription.height + lengthSpec.height
         visible: !monitoringPrint
 
-        Text
+        Label
         {
             id: timeDetails
             anchors.left: parent.left
@@ -361,7 +367,7 @@ Rectangle
             }
         }
 
-        Text
+        Label
         {
             id: timeSpecDescription
             anchors.left: parent.left
@@ -370,7 +376,7 @@ Rectangle
             color: UM.Theme.getColor("text_subtext")
             text: catalog.i18nc("@description", "Print time")
         }
-        Text
+        Label
         {
             id: lengthSpec
             anchors.left: parent.left
@@ -484,7 +490,7 @@ Rectangle
         })
         sidebarContents.push({ "item": modesListModel.get(base.currentModeIndex).item, "immediate": true });
 
-        var index = parseInt(UM.Preferences.getValue("cura/active_mode"))
+        var index = Math.floor(UM.Preferences.getValue("cura/active_mode"))
         if(index)
         {
             currentModeIndex = index;

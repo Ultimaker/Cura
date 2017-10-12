@@ -36,6 +36,31 @@ msgctxt "@label:status"
 msgid "Can't start print"
 msgstr "Ne peux pas imprimer"
 
+#: Manually added for plugins/UM3NetworkPrinting/DiscoverUM3Action.qml
+msgctxt "@label"
+msgid "This printer is not set up to host a group of Ultimaker 3 printers."
+msgstr "L'imprimante n'est pas configurée pour héberger un groupe d'imprimantes Ultimaker 3."
+
+#: Manually added for plugins/UM3NetworkPrinting/PrinterInfoBlock.qml
+msgctxt "@label"
+msgid "Finishes at: "
+msgstr "Complète a: "
+
+#: Manually added for plugins/UM3NetworkPrinting/DiscoverUM3Action.qml
+msgctxt "@label"
+msgid "This printer is the host for a group of %1 Ultimaker 3 printers."
+msgstr "L'imprimante est le patron pour un groupe de %1 imprimantes Ultimaker 3."
+
+#: Manually added for plugins/UM3NetworkPrinting/NetworkClusterPrinterOutputDevice.py
+msgctxt "@info:status"
+msgid "Printer '{printer_name}' has finished printing '{job_name}'."
+msgstr "{printer_name} a terminé d'imprimer '{job_name}'."
+
+#: Manually added for plugins/UM3NetworkPrinting/NetworkClusterPrinterOutputDevice.py
+msgctxt "@info:status"
+msgid "Print finished"
+msgstr "Impression terminée"
+
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.py:29
 msgctxt "@action"
 msgid "Machine Settings"
@@ -163,7 +188,7 @@ msgstr "Impossible de démarrer une nouvelle tâche car l'imprimante est occupé
 #: /home/ruben/Projects/Cura/plugins/USBPrinting/USBPrinterOutputDevice.py:153
 msgctxt "@info:title"
 msgid "Print Details"
-msgstr "Imprimer les détails"
+msgstr "Les détails d'impression"
 
 #: /home/ruben/Projects/Cura/plugins/USBPrinting/USBPrinterOutputDevice.py:456
 msgctxt "@info:status"
@@ -1566,7 +1591,7 @@ msgstr "Cette imprimante n'est pas configurée pour héberger un groupe d'imprim
 #: /home/ruben/Projects/Cura/plugins/CuraPrintClusterUpload/DiscoverUM3Action.qml:287
 msgctxt "@label"
 msgid "This printer is the host for a group of %1 connected Ultimaker 3 printers"
-msgstr "L'imprimante n'est pas configurée pour héberger un groupe de %1 imprimantes connectées Ultimaker 3."
+msgstr "L'imprimante est configurée pour héberger un groupe de %1 imprimantes connectées Ultimaker 3."
 
 #: /home/ruben/Projects/Cura/plugins/CuraPrintClusterUpload/PrintWindow.qml:24
 msgctxt "@title:window"
