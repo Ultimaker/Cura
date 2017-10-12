@@ -417,16 +417,16 @@ class MachineManager(QObject):
     #   \param skip_keys \type{list} List of setting keys which will be not taken into account ("support_enable" , "infill_sparse_density"...)
     #   \return \type{boole} Return true if user containers have any of adjusted settings
     @pyqtSlot("QVariantList", result = bool)
-    def hasUserCustomSettings(self, skip_keys = []) -> bool:
+    def hasUserCustomSettings(self, skip_keys = None) -> bool:
+        if skip_keys is None:
+            skip_keys = []
 
         user_setting_keys = []
         try:
             if not self._global_container_stack:
                 return False
 
-            allContainers = self._global_container_stack.getContainers()
-
-            for container in allContainers:
+            for container in self._global_container_stack.getContainers():
                 meta = container.getMetaData()
                 if meta and meta["type"] and meta["type"] == "user":
                     user_setting_keys.extend(container.getAllKeys())

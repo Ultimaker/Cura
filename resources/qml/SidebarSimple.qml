@@ -22,6 +22,13 @@ Item
     property bool settingsEnabled: ExtruderManager.activeExtruderStackId || machineExtruderCount.properties.value == 1
     property bool hasUserSettings;
 
+    property var profileChangedCheckSkipKeys: ["support_enable" ,
+                                               "infill_sparse_density",
+                                               "gradual_infill_steps",
+                                               "adhesion_type",
+                                               "support_extruder_nr"]
+    property var tickClickedViaProfileSlider: undefined
+
     Component.onCompleted: PrintInformation.enabled = true
     Component.onDestruction: PrintInformation.enabled = false
     UM.I18nCatalog { id: catalog; name: "cura" }
@@ -39,17 +46,17 @@ Item
         target: CuraApplication
         onSidebarSimpleDiscardOrKeepProfileChanges:
         {
-            base.hasUserSettings = false
+            base.checkUserSettings();
         }
     }
 
-    function checkUserSettings(){
-        var skip_keys = ["support_enable" ,
-                         "infill_sparse_density",
-                         "gradual_infill_steps",
-                         "adhesion_type",
-                         "support_extruder_nr"]
-        base.hasUserSettings = Cura.MachineManager.hasUserCustomSettings(skip_keys)
+    function checkUserSettings() {
+        hasUserSettings = Cura.MachineManager.hasUserCustomSettings(profileChangedCheckSkipKeys);
+        if (!hasUserSettings && tickClickedViaProfileSlider != undefined)
+        {
+            Cura.MachineManager.setActiveQuality(Cura.ProfilesModel.getItem(tickClickedViaProfileSlider).id);
+        }
+        tickClickedViaProfileSlider = undefined;
     }
 
     ScrollView
@@ -289,7 +296,7 @@ Item
                         anchors.bottom: speedSlider.bottom
                         enabled: qualityModel.availableTotalTicks > 0
                         visible: qualityModel.totalTicks > 0
-                        updateValueWhileDragging : false
+                        updateValueWhileDragging: false
 
                         minimumValue: qualityModel.qualitySliderAvailableMin >= 0 ? qualityModel.qualitySliderAvailableMin : 0
                         maximumValue: qualityModel.qualitySliderAvailableMax >= 0 ? qualityModel.qualitySliderAvailableMax : 0
@@ -340,25 +347,21 @@ Item
 
                     //If any of settings were changed in custom mode then the Rectangle will
                     //overlap quality slider area. It is used to catch mouse click
-                    Rectangle {
-                        anchors.verticalCenter: parent.verticalCenter
-                        anchors.right: extrudersModelCheckBox.right
-                        anchors.rightMargin: UM.Theme.getSize("default_margin").width
-                        width: qualitySlider.width
-                        height: qualitySlider.height * 1.5
-
-                        color: "transparent"
+                    MouseArea {
+                        anchors.fill: qualitySlider
 
                         visible: hasUserSettings
                         enabled: hasUserSettings
 
-                        MouseArea {
-                            anchors.fill: parent
-                            onClicked: {
-                                discardOrKeepProfileChangesDialog.show()
-                            }
-                        }
+                        onClicked: {
+                            const offset = qualityModel.qualitySliderStepWidth / 2;
+                            const mousePosition = mouseX + offset;
 
+                            // save where it was clicked
+                            base.tickClickedViaProfileSlider = Math.floor(mousePosition / qualityModel.qualitySliderStepWidth);
+
+                            discardOrKeepProfileChangesDialog.show();
+                        }
                     }
                 }
 
