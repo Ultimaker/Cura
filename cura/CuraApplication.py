@@ -400,6 +400,8 @@ class CuraApplication(QtApplication):
             # ALWAYS ask whether to keep or discard the profile
             self.showDiscardOrKeepProfileChanges.emit()
 
+    sidebarSimpleDiscardOrKeepProfileChanges = pyqtSignal()
+
     @pyqtSlot(str)
     def discardOrKeepProfileChangesClosed(self, option):
         if option == "discard":
@@ -408,6 +410,10 @@ class CuraApplication(QtApplication):
                 extruder.getTop().clear()
 
             global_stack.getTop().clear()
+
+            #event handler for SidebarSimple, which will update sliders view visibility (like:sliders..)
+            if Preferences.getInstance().getValue("cura/active_mode") == 0:
+                self.sidebarSimpleDiscardOrKeepProfileChanges.emit()
 
     @pyqtSlot(int)
     def messageBoxClosed(self, button):
