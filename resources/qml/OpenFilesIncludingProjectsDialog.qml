@@ -36,8 +36,6 @@ UM.Dialog
 
         var meshName = backgroundItem.getMeshName(projectFile.toString());
         backgroundItem.hasMesh(decodeURIComponent(meshName));
-        // always update the job name with the loaded project
-        PrintInformation.setBaseName(meshName);
     }
 
     function loadModelFiles(fileUrls)
