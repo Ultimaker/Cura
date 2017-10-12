@@ -775,6 +775,11 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
 
     ##  Start requesting data from printer
     def connect(self):
+        # Don't allow to connect to a printer with a faulty connection state.
+        # For instance when switching printers but the printer is disconnected from the network
+        if self._connection_state == ConnectionState.error:
+            return
+
         if self.isConnected():
             self.close()  # Close previous connection
 

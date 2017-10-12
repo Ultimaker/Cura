@@ -17,7 +17,7 @@ Column
     property int currentExtruderIndex: ExtruderManager.activeExtruderIndex;
     property bool currentExtruderVisible: extrudersList.visible;
 
-    spacing: UM.Theme.getSize("sidebar_margin").width * 0.9
+    spacing: Math.floor(UM.Theme.getSize("sidebar_margin").width * 0.9)
 
     signal showTooltip(Item item, point location, string text)
     signal hideTooltip()
@@ -52,15 +52,15 @@ Column
     {
         id: extruderSelectionRow
         width: parent.width
-        height: UM.Theme.getSize("sidebar_tabs").height * 2 / 3
+        height: Math.floor(UM.Theme.getSize("sidebar_tabs").height * 2 / 3)
         visible: machineExtruderCount.properties.value > 1 && !sidebar.monitoringPrint
 
         anchors
         {
             left: parent.left
-            leftMargin: UM.Theme.getSize("sidebar_margin").width * 0.7
+            leftMargin: Math.floor(UM.Theme.getSize("sidebar_margin").width * 0.7)
             right: parent.right
-            rightMargin: UM.Theme.getSize("sidebar_margin").width * 0.7
+            rightMargin: Math.floor(UM.Theme.getSize("sidebar_margin").width * 0.7)
             topMargin: UM.Theme.getSize("sidebar_margin").height
         }
 
@@ -70,15 +70,15 @@ Column
             property var index: 0
 
             height: UM.Theme.getSize("sidebar_header_mode_tabs").height
-            width: parent.width
+            width: Math.floor(parent.width)
             boundsBehavior: Flickable.StopAtBounds
 
             anchors
             {
                 left: parent.left
-                leftMargin: UM.Theme.getSize("default_margin").width / 2
+                leftMargin: Math.floor(UM.Theme.getSize("default_margin").width / 2)
                 right: parent.right
-                rightMargin: UM.Theme.getSize("default_margin").width / 2
+                rightMargin: Math.floor(UM.Theme.getSize("default_margin").width / 2)
                 verticalCenter: parent.verticalCenter
             }
 
@@ -134,11 +134,11 @@ Column
                             width: {
                                 var extruderTextWidth = extruderStaticText.visible ? extruderStaticText.width : 0;
                                 var iconWidth = extruderIconItem.width;
-                                return extruderTextWidth + iconWidth + UM.Theme.getSize("default_margin").width / 2;
+                                return Math.floor(extruderTextWidth + iconWidth + UM.Theme.getSize("default_margin").width / 2);
                             }
 
                             // Static text "Extruder"
-                            Text
+                            Label
                             {
                                 id: extruderStaticText
                                 anchors.verticalCenter: parent.verticalCenter
@@ -166,7 +166,7 @@ Column
                                     var minimumWidth = control.width < UM.Theme.getSize("button").width ? control.width : UM.Theme.getSize("button").width;
                                     var minimumHeight = control.height < UM.Theme.getSize("button").height ? control.height : UM.Theme.getSize("button").height;
                                     var minimumSize = minimumWidth < minimumHeight ? minimumWidth : minimumHeight;
-                                    minimumSize -= UM.Theme.getSize("default_margin").width / 2;
+                                    minimumSize -= Math.floor(UM.Theme.getSize("default_margin").width / 2);
                                     return minimumSize;
                                 }
 
@@ -184,7 +184,7 @@ Column
                                     color: extruderNumberText.color
                                 }
 
-                                Text
+                                Label
                                 {
                                     id: extruderNumberText
                                     anchors.centerIn: parent
@@ -250,11 +250,11 @@ Column
             rightMargin: UM.Theme.getSize("sidebar_margin").width
         }
 
-        Text
+        Label
         {
             id: materialLabel
             text: catalog.i18nc("@label","Material");
-            width: parent.width * 0.45 - UM.Theme.getSize("default_margin").width
+            width: Math.floor(parent.width * 0.45 - UM.Theme.getSize("default_margin").width)
             font: UM.Theme.getFont("default");
             color: UM.Theme.getColor("text");
         }
@@ -306,11 +306,11 @@ Column
             rightMargin: UM.Theme.getSize("sidebar_margin").width
         }
 
-        Text
+        Label
         {
             id: printCoreLabel
             text: Cura.MachineManager.activeDefinitionVariantsName;
-            width: parent.width * 0.45 - UM.Theme.getSize("default_margin").width
+            width: Math.floor(parent.width * 0.45 - UM.Theme.getSize("default_margin").width)
             font: UM.Theme.getFont("default");
             color: UM.Theme.getColor("text");
         }
@@ -322,7 +322,7 @@ Column
             visible: Cura.MachineManager.hasVariants
 
             height: UM.Theme.getSize("setting_control").height
-            width: parent.width * 0.7 + UM.Theme.getSize("sidebar_margin").width
+            width: Math.floor(parent.width * 0.7 + UM.Theme.getSize("sidebar_margin").width)
             anchors.right: parent.right
             style: UM.Theme.styles.sidebar_header_button
             activeFocusOnPress: true;
@@ -335,7 +335,7 @@ Column
     Item
     {
         id: materialInfoRow
-        height: UM.Theme.getSize("sidebar_setup").height / 2
+        height: Math.floor(UM.Theme.getSize("sidebar_setup").height / 2)
         visible: (Cura.MachineManager.hasVariants || Cura.MachineManager.hasMaterials) && !sidebar.monitoringPrint && !sidebar.hideSettings
 
         anchors
@@ -349,7 +349,7 @@ Column
         Item {
             height: UM.Theme.getSize("sidebar_setup").height
             anchors.right: parent.right
-            width: parent.width * 0.7 + UM.Theme.getSize("sidebar_margin").width
+            width: Math.floor(parent.width * 0.7 + UM.Theme.getSize("sidebar_margin").width)
 
             UM.RecolorImage {
                 id: warningImage

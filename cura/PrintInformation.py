@@ -66,10 +66,11 @@ class PrintInformation(QObject):
         self._base_name = ""
         self._abbr_machine = ""
         self._job_name = ""
+        self._project_name = ""
 
         Application.getInstance().globalContainerStackChanged.connect(self._updateJobName)
         Application.getInstance().fileLoaded.connect(self.setBaseName)
-
+        Application.getInstance().projectFileLoaded.connect(self.setProjectName)
         Preferences.getInstance().preferenceChanged.connect(self._onPreferencesChanged)
 
         self._active_material_container = None
@@ -77,7 +78,6 @@ class PrintInformation(QObject):
         self._onActiveMaterialChanged()
 
         self._material_amounts = []
-
 
     # Crate cura message translations and using translation keys initialize empty time Duration object for total time
     # and time for each feature
@@ -241,6 +241,11 @@ class PrintInformation(QObject):
         self._job_name = name
         self.jobNameChanged.emit()
 
+    @pyqtSlot(str)
+    def setProjectName(self, name):
+        self._project_name = name
+        self.setJobName(name)
+
     jobNameChanged = pyqtSignal()
 
     @pyqtProperty(str, notify = jobNameChanged)
@@ -248,6 +253,11 @@ class PrintInformation(QObject):
         return self._job_name
 
     def _updateJobName(self):
+        # if the project name is set, we use the project name as the job name, so the job name should not get updated
+        # if a model file is loaded after that.
+        if self._project_name != "":
+            return
+
         if self._base_name == "":
             self._job_name = ""
             self.jobNameChanged.emit()

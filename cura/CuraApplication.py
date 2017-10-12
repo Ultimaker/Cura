@@ -125,6 +125,8 @@ class CuraApplication(QtApplication):
     #        Cura will always show the Add Machine Dialog upon start.
     stacksValidationFinished = pyqtSignal()  # Emitted whenever a validation is finished
 
+    projectFileLoaded = pyqtSignal(str)  # Emitted whenever a project file is loaded
+
     def __init__(self):
         # this list of dir names will be used by UM to detect an old cura directory
         for dir_name in ["extruders", "machine_instances", "materials", "plugins", "quality", "user", "variants"]:
@@ -1365,8 +1367,9 @@ class CuraApplication(QtApplication):
                     # Find node location
                     offset_shape_arr, hull_shape_arr = ShapeArray.fromNode(node, min_offset = min_offset)
 
+                    # If a model is to small then it will not contain any points
                     if offset_shape_arr is None and hull_shape_arr is None:
-                        Message(self._i18n_catalog.i18nc("@info:status","Could not load a model"),
+                        Message(self._i18n_catalog.i18nc("@info:status", "The selected model was too small to load."),
                                 title=self._i18n_catalog.i18nc("@info:title", "Warning")).show()
                         return
 

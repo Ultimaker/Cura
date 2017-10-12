@@ -108,15 +108,15 @@ TabView
                 {
                     width: scrollView.columnWidth;
                     height:  parent.rowHeight;
-                    spacing: UM.Theme.getSize("default_margin").width/2
+                    spacing: Math.floor(UM.Theme.getSize("default_margin").width/2)
 
                     Rectangle
                     {
                         id: colorSelector
                         color: properties.color_code
 
-                        width: (colorLabel.height * 0.75) | 0
-                        height: (colorLabel.height * 0.75) | 0
+                        width: Math.floor(colorLabel.height * 0.75)
+                        height: Math.floor(colorLabel.height * 0.75)
                         border.width: UM.Theme.getSize("default_lining").height
 
                         anchors.verticalCenter: parent.verticalCenter

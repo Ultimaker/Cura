@@ -22,12 +22,15 @@ UM.PointingRectangle {
     arrowSize: UM.Theme.getSize("default_arrow").width
     height: parent.height
     width: valueLabel.width + UM.Theme.getSize("default_margin").width
+    visible: false
+
+    // make sure the text field is focussed when pressing the parent handle
+    // needed to connect the key bindings when switching active handle
+    onVisibleChanged: if (visible) valueLabel.forceActiveFocus()
 
     color: UM.Theme.getColor("tool_panel_background")
     borderColor: UM.Theme.getColor("lining")
     borderWidth: UM.Theme.getSize("default_lining").width
-
-    visible: true
 
     Behavior on height {
         NumberAnimation {
@@ -53,6 +56,10 @@ UM.PointingRectangle {
         text: sliderLabelRoot.value + 1 // the current handle value, add 1 because layers is an array
         horizontalAlignment: TextInput.AlignRight
 
+        // key bindings, work when label is currenctly focused (active handle in LayerSlider)
+        Keys.onUpPressed: sliderLabelRoot.setValue(sliderLabelRoot.value + ((event.modifiers & Qt.ShiftModifier) ? 10 : 1))
+        Keys.onDownPressed: sliderLabelRoot.setValue(sliderLabelRoot.value - ((event.modifiers & Qt.ShiftModifier) ? 10 : 1))
+
         style: TextFieldStyle {
             textColor: UM.Theme.getColor("setting_control_text")
             font: UM.Theme.getFont("default")
@@ -76,9 +83,6 @@ UM.PointingRectangle {
             bottom: 1
             top: sliderLabelRoot.maximumValue + 1 // +1 because actual layers is an array
         }
-
-        Keys.onUpPressed: sliderLabelRoot.setValue(sliderLabelRoot.value + ((event.modifiers & Qt.ShiftModifier) ? 10 : 1))
-        Keys.onDownPressed: sliderLabelRoot.setValue(sliderLabelRoot.value - ((event.modifiers & Qt.ShiftModifier) ? 10 : 1))
     }
 
     BusyIndicator {

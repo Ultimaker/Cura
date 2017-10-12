@@ -35,11 +35,11 @@ Item
             rightMargin: UM.Theme.getSize("sidebar_margin").width
         }
 
-        Text
+        Label
         {
             id: globalProfileLabel
             text: catalog.i18nc("@label","Profile:");
-            width: parent.width * 0.45 - UM.Theme.getSize("sidebar_margin").width - 2
+            width: Math.floor(parent.width * 0.45 - UM.Theme.getSize("sidebar_margin").width - 2)
             font: UM.Theme.getFont("default");
             color: UM.Theme.getColor("text");
             verticalAlignment: Text.AlignVCenter
@@ -63,7 +63,7 @@ Item
             }
             enabled: !header.currentExtruderVisible || header.currentExtruderIndex > -1
 
-            width: parent.width * 0.55
+            width: Math.floor(parent.width * 0.55)
             height: UM.Theme.getSize("setting_control").height
             anchors.left: globalProfileLabel.right
             anchors.right: parent.right
@@ -77,8 +77,8 @@ Item
                 id: customisedSettings
 
                 visible: Cura.MachineManager.hasUserSettings
-                height: parent.height * 0.6
-                width: parent.height * 0.6
+                height: Math.floor(parent.height * 0.6)
+                width: Math.floor(parent.height * 0.6)
 
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.right: parent.right
