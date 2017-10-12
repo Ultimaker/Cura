@@ -39,7 +39,8 @@ Rectangle
                 return catalog.i18nc("@label:status", "Printing");
             case "idle":
                 return catalog.i18nc("@label:status", "Available");
-            case "unreachable":  // TODO: new string
+            case "unreachable":
+                return catalog.i18nc("@label:MonitorStatus", "Lost connection with the printer");
             case "maintenance":  // TODO: new string
             case "unknown":
             default:
@@ -165,6 +166,7 @@ Rectangle
                 anchors.right: printProgressArea.left
                 anchors.rightMargin: UM.Theme.getSize("default_margin").width
                 color: emphasisColor
+                opacity: printer != null && printer.status === "unreachable" ? 0.3 : 1
 
                 Image
                 {

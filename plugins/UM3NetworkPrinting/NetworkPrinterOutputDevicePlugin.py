@@ -219,7 +219,7 @@ class NetworkPrinterOutputDevicePlugin(QObject, OutputDevicePlugin):
         cluster_size = int(properties.get(b"cluster_size", -1))
         if force_cluster or cluster_size >= 0:
             printer = NetworkClusterPrinterOutputDevice.NetworkClusterPrinterOutputDevice(
-                name, address, properties, self._api_prefix, self._plugin_path)
+                name, address, properties, self._api_prefix)
         else:
             printer = NetworkPrinterOutputDevice.NetworkPrinterOutputDevice(name, address, properties, self._api_prefix)
         self._printers[printer.getKey()] = printer
@@ -283,17 +283,6 @@ class NetworkPrinterOutputDevicePlugin(QObject, OutputDevicePlugin):
         elif state_change == ServiceStateChange.Removed:
             Logger.log("d", "Bonjour service removed: %s" % name)
             self.removePrinterSignal.emit(str(name))
-
-    ##  For cluster below
-    def _get_plugin_directory_name(self):
-        current_file_absolute_path = os.path.realpath(__file__)
-        directory_path = os.path.dirname(current_file_absolute_path)
-        _, directory_name = os.path.split(directory_path)
-        return directory_name
-
-    @property
-    def _plugin_path(self):
-        return PluginRegistry.getInstance().getPluginPath(self._get_plugin_directory_name())
 
     @pyqtSlot()
     def openControlPanel(self):

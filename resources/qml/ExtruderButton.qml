@@ -40,7 +40,7 @@ Button
         width: UM.Theme.getSize("default_margin").width
         height: UM.Theme.getSize("default_margin").height
 
-        Text
+        Label
         {
             anchors.centerIn: parent;
             text: index + 1;

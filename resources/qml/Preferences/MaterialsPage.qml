@@ -67,7 +67,7 @@ UM.ManagementPage
             }
             Label
             {
-                width: (parent.width * 0.3) | 0
+                width: Math.floor((parent.width * 0.3))
                 text: model.metadata.material
                 elide: Text.ElideRight
                 font.italic: model.id == activeId
