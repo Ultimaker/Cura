@@ -73,7 +73,7 @@ Rectangle
         hoverEnabled: true;
 
         // Only clickable if no printer is selected
-        enabled: OutputDevice.selectedPrinterName == ""
+        enabled: OutputDevice.selectedPrinterName == "" && printer.status !== "unreachable"
     }
 
     Row
