@@ -20,13 +20,10 @@ Item
     property variant minimumPrintTime: PrintInformation.minimumPrintTime;
     property variant maximumPrintTime: PrintInformation.maximumPrintTime;
     property bool settingsEnabled: ExtruderManager.activeExtruderStackId || machineExtruderCount.properties.value == 1
-    property bool hasUserSettings;
 
-    property var profileChangedCheckSkipKeys: ["support_enable" ,
-                                               "infill_sparse_density",
-                                               "gradual_infill_steps",
-                                               "adhesion_type",
-                                               "support_extruder_nr"]
+    property bool hasUserSettings: Cura.MachineManager.userCustomSettingsProperty
+
+
     property var tickClickedViaProfileSlider: undefined
 
     Component.onCompleted: PrintInformation.enabled = true
@@ -41,17 +38,9 @@ Item
         }
     }
 
-    Connections
-    {
-        target: CuraApplication
-        onSidebarSimpleDiscardOrKeepProfileChanges:
-        {
-            base.checkUserSettings();
-        }
-    }
-
     function checkUserSettings() {
-        hasUserSettings = Cura.MachineManager.hasUserCustomSettings(profileChangedCheckSkipKeys);
+
+        Cura.MachineManager.checkWhetherUserContainersHaveSettings()
         if (!hasUserSettings && tickClickedViaProfileSlider != undefined)
         {
             Cura.MachineManager.setActiveQuality(Cura.ProfilesModel.getItem(tickClickedViaProfileSlider).id);

@@ -414,10 +414,13 @@ class MachineManager(QObject):
         return False
 
     ## Check whether user containers have adjusted settings or not
+    #  The skipped settings are predefined, because they are used on SideBarSimple to escape them while validation
     #   \param skip_keys \type{list} List of setting keys which will be not taken into account ("support_enable" , "infill_sparse_density"...)
     #   \return \type{boole} Return true if user containers have any of adjusted settings
-    @pyqtSlot("QVariantList", result = bool)
-    def hasUserCustomSettings(self, skip_keys = None) -> bool:
+    def hasUserCustomSettings(self) -> bool:
+
+        skip_keys =  ["support_enable", "infill_sparse_density", "gradual_infill_steps", "adhesion_type", "support_extruder_nr"]
+
         if skip_keys is None:
             skip_keys = []
 
@@ -447,7 +450,25 @@ class MachineManager(QObject):
             Logger.log("e", "While checking user custom settings occured error. skip_keys: %s", skip_keys )
             return False
 
-        return len(user_setting_keys) > 0
+        if len(user_setting_keys) > 0:
+            self.userSettingsUpdated = True
+        else:
+            self.userSettingsUpdated = False
+
+        self.userCustomSettingsChanged.emit()
+
+
+    userSettingsUpdated = False
+    userCustomSettingsChanged = pyqtSignal()
+
+    @pyqtSlot()
+    def checkWhetherUserContainersHaveSettings(self):
+        return self.hasUserCustomSettings()
+
+    #Property to show wheter user settings are updated or not
+    @pyqtProperty(bool, notify = userCustomSettingsChanged)
+    def userCustomSettingsProperty(self):
+        return self.userSettingsUpdated
 
     @pyqtProperty(int, notify = activeStackValueChanged)
     def numUserSettings(self) -> int:
