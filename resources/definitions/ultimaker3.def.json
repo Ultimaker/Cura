@@ -67,7 +67,7 @@
         "machine_extruder_count": { "default_value": 2 },
         "extruder_prime_pos_abs": { "default_value": true },
         "machine_start_gcode": { "default_value": "" },
-        "machine_end_gcode": { "default_value": "G91 ;Relative movement\nG0 F2400 Z3 E-{retraction_amount}\nG90 ;Disable relative movement" },
+        "machine_end_gcode": { "default_value": "G91 ;Relative movement\nG0 F15000 X8.0 Z0.5 E-4.5 ;Wiping+material retraction\nG0 F10000 Z1.5 E4.5 ;Compensation for the retraction\nG90 ;Disable relative movement" },
         "prime_tower_position_x": { "value": "machine_depth - max(extruderValue(adhesion_extruder_nr, 'brim_width') * extruderValue(adhesion_extruder_nr, 'initial_layer_line_width_factor') / 100 if adhesion_type == 'brim' else (extruderValue(adhesion_extruder_nr, 'raft_margin') if adhesion_type == 'raft' else (extruderValue(adhesion_extruder_nr, 'skirt_gap') if adhesion_type == 'skirt' else 0)), max(extruderValues('travel_avoid_distance'))) - max(extruderValues('support_offset')) - sum(extruderValues('skirt_brim_line_width')) - 30" },
         "prime_tower_wipe_enabled": { "default_value": false },
 
