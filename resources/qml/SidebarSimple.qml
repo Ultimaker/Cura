@@ -44,13 +44,11 @@ Item
     }
 
     function checkUserSettings(){
-
         var skip_keys = ["support_enable" ,
-                            "infill_sparse_density",
-                            "gradual_infill_steps",
-                            "adhesion_type",
-                            "support_extruder_nr"]
-
+                         "infill_sparse_density",
+                         "gradual_infill_steps",
+                         "adhesion_type",
+                         "support_extruder_nr"]
         base.hasUserSettings = Cura.MachineManager.hasUserCustomSettings(skip_keys)
     }
 
@@ -348,14 +346,11 @@ Item
                         anchors.rightMargin: UM.Theme.getSize("default_margin").width
                         width: qualitySlider.width
                         height: qualitySlider.height * 1.5
-                        //border.width: UM.Theme.getSize("default_lining").width // dispay overlap zone
-                        //border.color: UM.Theme.getColor("lining")
 
                         color: "transparent"
 
                         visible: hasUserSettings
                         enabled: hasUserSettings
-
 
                         MouseArea {
                             anchors.fill: parent
