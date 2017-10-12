@@ -56,6 +56,9 @@ Gives the user control over where to place the seam - hide it in convex corners 
 *Quarter cubic infill
 Similar to tetrahedral (octet) infill, but half of the lines are shifted half of the period up. This pattern sacrifices some rigidity of octet infill for greater toughness.
 
+*Cross infill
+A fractal pattern infill that requires fewer retractions than other infill types. This is useful for flexible materials as it causes less material elongation. The internal structure given by this infill also assists flexible models having more resistance, while retaining ‘soft’ properties in all directions.
+
 *Layer start negative position
 Layer start X/Y values can be less than 0 when the machine centre is zero.
 
