@@ -257,6 +257,11 @@ Rectangle
                                 return catalog.i18nc("@label:status", "Disabled");
                             }
 
+                            if (printer.status === "unreachable")
+                            {
+                                return printerStatusText(printer);
+                            }
+
                             if (printJob != null)
                             {
                                 switch (printJob.status)
@@ -327,6 +332,12 @@ Rectangle
                             {
                                 return "blocked-icon.svg";
                             }
+
+                            if (printer.status === "unreachable")
+                            {
+                                return "";
+                            }
+
                             if (printJob != null)
                             {
                                 if(printJob.status === "queued")
@@ -376,6 +387,11 @@ Rectangle
                             if (!printer.enabled)
                             {
                                 return catalog.i18nc("@label", "Not accepting print jobs");
+                            }
+
+                            if (printer.status === "unreachable")
+                            {
+                                return "";
                             }
 
                             if(printJob != null)
