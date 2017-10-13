@@ -413,62 +413,41 @@ class MachineManager(QObject):
 
         return False
 
-    ## Check whether user containers have adjusted settings or not
-    #  The skipped settings are predefined, because they are used on SideBarSimple to escape them while validation
-    #   \param skip_keys \type{list} List of setting keys which will be not taken into account ("support_enable" , "infill_sparse_density"...)
-    #   \return \type{boole} Return true if user containers have any of adjusted settings
-    def hasUserCustomSettings(self) -> bool:
 
-        skip_keys =  ["support_enable", "infill_sparse_density", "gradual_infill_steps", "adhesion_type", "support_extruder_nr"]
-
-        if skip_keys is None:
-            skip_keys = []
+    def getAllActiveUserChanges(self, skip_keys = {}) -> bool:
 
         user_setting_keys = []
-        try:
-            if not self._global_container_stack:
-                return False
 
-            for container in self._global_container_stack.getContainers():
+        if not self._global_container_stack:
+            return False
+
+        allContainers = self._global_container_stack.getContainers()
+
+        for container in allContainers:
+            meta = container.getMetaData()
+            if meta and meta["type"] and meta["type"] == "user":
+                user_setting_keys.extend(container.getAllKeys())
+
+        stacks = list(ExtruderManager.getInstance().getMachineExtruders(self._global_container_stack.getId()))
+        for stack in stacks:
+
+            for container in stack.getContainers():
                 meta = container.getMetaData()
                 if meta and meta["type"] and meta["type"] == "user":
                     user_setting_keys.extend(container.getAllKeys())
 
-            stacks = list(ExtruderManager.getInstance().getMachineExtruders(self._global_container_stack.getId()))
-            for stack in stacks:
+        for skip_key in skip_keys:
+            if skip_key in user_setting_keys:
+                user_setting_keys.remove(skip_key)
 
-                for container in stack.getContainers():
-                    meta = container.getMetaData()
-                    if meta and meta["type"] and meta["type"] == "user":
-                        user_setting_keys.extend(container.getAllKeys())
-
-            for skip_key in skip_keys:
-                if skip_key in user_setting_keys:
-                    user_setting_keys.remove(skip_key)
-
-        except:
-            Logger.log("e", "While checking user custom settings occured error. skip_keys: %s", skip_keys )
-            return False
-
-        if len(user_setting_keys) > 0:
-            self.userSettingsUpdated = True
-        else:
-            self.userSettingsUpdated = False
-
-        self.userCustomSettingsChanged.emit()
+        return len(user_setting_keys) > 0
 
 
-    userSettingsUpdated = False
-    userCustomSettingsChanged = pyqtSignal()
+    ignore_list = ["support_enable", "infill_sparse_density", "gradual_infill_steps", "adhesion_type", "support_extruder_nr"]
 
-    @pyqtSlot()
-    def checkWhetherUserContainersHaveSettings(self):
-        return self.hasUserCustomSettings()
-
-    #Property to show wheter user settings are updated or not
-    @pyqtProperty(bool, notify = userCustomSettingsChanged)
-    def userCustomSettingsProperty(self):
-        return self.userSettingsUpdated
+    @pyqtProperty(bool, notify = activeStackValueChanged)
+    def allActiveUserSettings(self):
+        return self.getAllActiveUserChanges(skip_keys = self.ignore_list)
 
     @pyqtProperty(int, notify = activeStackValueChanged)
     def numUserSettings(self) -> int:

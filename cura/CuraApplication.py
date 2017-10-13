@@ -413,10 +413,6 @@ class CuraApplication(QtApplication):
 
             global_stack.getTop().clear()
 
-        # event handler for SidebarSimple, which will update sliders view visibility (like:sliders..)
-        if str(Preferences.getInstance().getValue("cura/active_mode")) == '0':
-                self.getMachineManager().hasUserCustomSettings()
-
     @pyqtSlot(int)
     def messageBoxClosed(self, button):
         if self._message_box_callback:
