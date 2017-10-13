@@ -1096,7 +1096,7 @@ class MachineManager(QObject):
             machine_stacks = ContainerRegistry.getInstance().findContainerStacks(type = "machine")
             other_machine_stacks = [s for s in machine_stacks if s.getId() != machine_id]
             if other_machine_stacks:
-                Application.getInstance().setGlobalContainerStack(other_machine_stacks[0])
+                self.setActiveMachine(other_machine_stacks[0].getId())
 
         ExtruderManager.getInstance().removeMachineExtruders(machine_id)
         containers = ContainerRegistry.getInstance().findInstanceContainers(type = "user", machine = machine_id)
