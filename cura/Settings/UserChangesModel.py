@@ -6,6 +6,7 @@ from cura.Settings.ExtruderManager import ExtruderManager
 from UM.Settings.ContainerRegistry import ContainerRegistry
 from UM.i18n import i18nCatalog
 from UM.Settings.SettingFunction import SettingFunction
+from UM.Settings.PropertyEvaluationContext import PropertyEvaluationContext
 
 from collections import OrderedDict
 import os
@@ -66,8 +67,15 @@ class UserChangesModel(ListModel):
                 containers.extend(latest_stack.getContainers())
                 latest_stack = latest_stack.getNextStack()
 
-            # Drop the user container.
+            # Override "getExtruderValue" with "getDefaultExtruderValue" so we can get the default values
             user_changes = containers.pop(0)
+            default_value_resolve_context = PropertyEvaluationContext(stack)
+            default_value_resolve_context.context["evaluate_from_container_index"] = 1  # skip the user settings container
+            default_value_resolve_context.context["override_operators"] = {
+                "extruderValue": ExtruderManager.getDefaultExtruderValue,
+                "extruderValues": ExtruderManager.getDefaultExtruderValues,
+                "resolveOrValue": ExtruderManager.getDefaultResolveOrValue
+            }
 
             for setting_key in user_changes.getAllKeys():
                 original_value = None
@@ -90,16 +98,16 @@ class UserChangesModel(ListModel):
 
                 for container in containers:
                     if stack == global_stack:
-                        resolve = global_stack.getProperty(setting_key, "resolve")
+                        resolve = global_stack.getProperty(setting_key, "resolve", default_value_resolve_context)
                         if resolve is not None:
                             original_value = resolve
                             break
 
-                    original_value = container.getProperty(setting_key, "value")
+                    original_value = container.getProperty(setting_key, "value", default_value_resolve_context)
 
                     # If a value is a function, ensure it's called with the stack it's in.
                     if isinstance(original_value, SettingFunction):
-                        original_value = original_value(stack)
+                        original_value = original_value(stack, default_value_resolve_context)
 
                     if original_value is not None:
                         break
