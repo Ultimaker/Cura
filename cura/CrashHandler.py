@@ -32,7 +32,6 @@ else:
         from cura.CuraVersion import CuraDebugMode
     except ImportError:
         CuraDebugMode = False  # [CodeStyle: Reflecting imported value]
-CuraDebugMode = True ## TODO Remove when done. Just for debug purposes
 
 # List of exceptions that should be considered "fatal" and abort the program.
 # These are primarily some exception types that we simply cannot really recover from
@@ -168,6 +167,7 @@ class CrashHandler:
         # Look for plugins. If it's not a plugin, the current cura version is set
         isPlugin = False
         module_version = self.cura_version
+        module_name = "Cura"
         if split_path.__contains__("plugins"):
             isPlugin = True
             # Look backwards until plugin.json is found
@@ -181,16 +181,18 @@ class CrashHandler:
                     try:
                         metadata = json.loads(f.read())
                         module_version = metadata["version"]
+                        module_name = metadata["name"]
                     except json.decoder.JSONDecodeError:
-                        # Not through new exceptions
+                        # Not throw new exceptions
                         Logger.logException("e", "Failed to parse plugin.json for plugin %s", name)
             except:
-                # Not through new exceptions
+                # Not throw new exceptions
                 pass
 
         exception_dict = dict()
         exception_dict["traceback"] = {"summary": summary, "full_trace": trace}
-        exception_dict["location"] = {"path": filepath, "file": filename, "function": function, "code": code, "line": line, "version": module_version, "is_plugin": isPlugin}
+        exception_dict["location"] = {"path": filepath, "file": filename, "function": function, "code": code, "line": line,
+                                      "module_name": module_name, "version": module_version, "is_plugin": isPlugin}
         self.data["exception"] = exception_dict
 
         return group
