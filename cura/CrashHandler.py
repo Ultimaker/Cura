@@ -1,7 +1,9 @@
+# Copyright (c) 2017 Ultimaker B.V.
+# Cura is released under the terms of the LGPLv3 or higher.
+
 import sys
 import platform
 import traceback
-import webbrowser
 import faulthandler
 import tempfile
 import os
@@ -12,12 +14,10 @@ import ssl
 import urllib.request
 import urllib.error
 
-from PyQt5.QtCore import QT_VERSION_STR, PYQT_VERSION_STR, QCoreApplication, Qt
-from PyQt5.QtWidgets import QDialog, QDialogButtonBox, QVBoxLayout, QLabel, QTextEdit, QGroupBox
+from PyQt5.QtCore import QT_VERSION_STR, PYQT_VERSION_STR, QCoreApplication
+from PyQt5.QtWidgets import QDialog, QDialogButtonBox, QVBoxLayout, QLabel, QTextEdit, QGroupBox, QPushButton
 
 from UM.Logger import Logger
-from UM.PluginError import InvalidMetaDataError
-from UM.PluginRegistry import PluginRegistry
 from UM.View.GL.OpenGL import OpenGL
 from UM.i18n import i18nCatalog
 from UM.Platform import Platform
@@ -90,7 +90,7 @@ class CrashHandler:
 
     def _messageWidget(self):
         label = QLabel()
-        label.setText(catalog.i18nc("@label", """<p><b>A fatal exception has occurred that we could not recover from!</p></b>
+        label.setText(catalog.i18nc("@label crash message", """<p><b>A fatal exception has occurred that we could not recover from!</p></b>
             <p>Please use the button below to post a bug report automatically to our servers</p>
         """))
 
@@ -98,7 +98,7 @@ class CrashHandler:
 
     def _informationWidget(self):
         group = QGroupBox()
-        group.setTitle("System information")
+        group.setTitle(catalog.i18nc("@title:groupbox", "System information"))
         layout = QVBoxLayout()
         label = QLabel()
 
@@ -106,10 +106,13 @@ class CrashHandler:
             from UM.Application import Application
             self.cura_version = Application.getInstance().getVersion()
         except:
-            self.cura_version = "Unknown"
+            self.cura_version = catalog.i18nc("@label unknown version of Cura", "Unknown")
 
-        crash_info = "<b>Version:</b> {0}<br/><b>Platform:</b> {1}<br/><b>Qt:</b> {2}<br/><b>PyQt:</b> {3}<br/><b>OpenGL:</b> {4}"
-        crash_info = crash_info.format(self.cura_version, platform.platform(), QT_VERSION_STR, PYQT_VERSION_STR, self._getOpenGLInfo())
+        crash_info = catalog.i18nc("@label Cura version", "<b>Cura version:</b> {version}<br/>").format(version = self.cura_version)
+        crash_info += catalog.i18nc("@label Platform", "<b>Platform:</b> {platform}<br/>").format(platform = platform.platform())
+        crash_info += catalog.i18nc("@label Qt version", "<b>Qt version:</b> {qt}<br/>").format(qt = QT_VERSION_STR)
+        crash_info += catalog.i18nc("@label PyQt version", "<b>PyQt version:</b> {pyqt}<br/>").format(pyqt = PYQT_VERSION_STR)
+        crash_info += catalog.i18nc("@label OpenGL", "<b>OpenGL:</b> {opengl}<br/>").format(opengl = self._getOpenGLInfo())
         label.setText(crash_info)
 
         layout.addWidget(label)
@@ -123,8 +126,11 @@ class CrashHandler:
         return group
 
     def _getOpenGLInfo(self):
-        info = "<ul><li>OpenGL Version: {0}</li><li>OpenGL Vendor: {1}</li><li>OpenGL Renderer: {2}</li></ul>"
-        info =  info.format(OpenGL.getInstance().getOpenGLVersion(), OpenGL.getInstance().getGPUVendorName(), OpenGL.getInstance().getGPUType())
+        info = "<ul>"
+        info += catalog.i18nc("@label OpenGL version", "<li>OpenGL Version: {version}</li>").format(version = OpenGL.getInstance().getOpenGLVersion())
+        info += catalog.i18nc("@label OpenGL vendor", "<li>OpenGL Vendor: {vendor}</li>").format(vendor = OpenGL.getInstance().getGPUVendorName())
+        info += catalog.i18nc("@label OpenGL renderer", "<li>OpenGL Renderer: {renderer}</li>").format(renderer = OpenGL.getInstance().getGPUType())
+        info += "</ul>"
 
         self.data["opengl"] = {"version": OpenGL.getInstance().getOpenGLVersion(), "vendor": OpenGL.getInstance().getGPUVendorName(), "type": OpenGL.getInstance().getGPUType()}
 
@@ -132,7 +138,7 @@ class CrashHandler:
 
     def _exceptionInfoWidget(self):
         group = QGroupBox()
-        group.setTitle("Exception traceback")
+        group.setTitle(catalog.i18nc("@title:groupbox", "Exception traceback"))
         layout = QVBoxLayout()
 
         text_area = QTextEdit()
@@ -199,7 +205,7 @@ class CrashHandler:
 
     def _logInfoWidget(self):
         group = QGroupBox()
-        group.setTitle("Logs")
+        group.setTitle(catalog.i18nc("@title:groupbox", "Logs"))
         layout = QVBoxLayout()
 
         text_area = QTextEdit()
@@ -223,7 +229,7 @@ class CrashHandler:
 
     def _userDescriptionWidget(self):
         group = QGroupBox()
-        group.setTitle("User description")
+        group.setTitle(catalog.i18nc("@title:groupbox", "User description"))
         layout = QVBoxLayout()
 
         # When sending the report, the user comments will be collected
@@ -268,8 +274,8 @@ class CrashHandler:
         except Exception:  # We don't want any exception to cause problems
             Logger.logException("e", "An exception occurred while trying to send crash report")
 
-        sys.exit(1)
+        os._exit(1)
 
     def show(self):
         self.dialog.exec_()
-        sys.exit(1)
+        os._exit(1)
