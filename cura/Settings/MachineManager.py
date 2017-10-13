@@ -413,8 +413,10 @@ class MachineManager(QObject):
 
         return False
 
-
-    def getAllActiveUserChanges(self, skip_keys = {}) -> bool:
+    ## Check whether user containers have adjusted settings or not
+    #   \param skip_keys \type{list} List of setting keys which will be not taken into account ("support_enable" , "infill_sparse_density"...)
+    #   \return \type{boole} Return true if user containers have any of adjusted settings
+    def hasUserCustomSettings(self, skip_keys = {}) -> bool:
 
         user_setting_keys = []
 
@@ -424,16 +426,16 @@ class MachineManager(QObject):
         allContainers = self._global_container_stack.getContainers()
 
         for container in allContainers:
-            meta = container.getMetaData()
-            if meta and meta["type"] and meta["type"] == "user":
+            meta_type = container.getMetaDataEntry("type", None)
+            if meta_type == "user":
                 user_setting_keys.extend(container.getAllKeys())
 
         stacks = list(ExtruderManager.getInstance().getMachineExtruders(self._global_container_stack.getId()))
         for stack in stacks:
 
             for container in stack.getContainers():
-                meta = container.getMetaData()
-                if meta and meta["type"] and meta["type"] == "user":
+                meta_type = container.getMetaDataEntry("type", None)
+                if meta_type == "user":
                     user_setting_keys.extend(container.getAllKeys())
 
         for skip_key in skip_keys:
@@ -442,12 +444,13 @@ class MachineManager(QObject):
 
         return len(user_setting_keys) > 0
 
-
+    # These setting keys are used in SettingSimple.qml. They used to validate whether show notification(reset) icon or not
+    # If a changed setting is in the ignore list then this setting should be skipped and the notification not shown
     ignore_list = ["support_enable", "infill_sparse_density", "gradual_infill_steps", "adhesion_type", "support_extruder_nr"]
 
     @pyqtProperty(bool, notify = activeStackValueChanged)
     def allActiveUserSettings(self):
-        return self.getAllActiveUserChanges(skip_keys = self.ignore_list)
+        return self.hasUserCustomSettings(skip_keys = self.ignore_list)
 
     @pyqtProperty(int, notify = activeStackValueChanged)
     def numUserSettings(self) -> int:
