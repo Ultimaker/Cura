@@ -442,6 +442,7 @@ Column
                 anchors.leftMargin: UM.Theme.getSize("setting_unit_margin").width
                 anchors.right: parent.right
                 anchors.verticalCenter: parent.verticalCenter
+                renderType: Text.NativeRendering
 
                 Component.onCompleted:
                 {
