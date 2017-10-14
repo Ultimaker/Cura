@@ -152,7 +152,7 @@ Rectangle
             Button {
                 height: settingsModeSelection.height
                 anchors.left: parent.left
-                anchors.leftMargin: model.index * (settingsModeSelection.width / 2)
+                anchors.leftMargin: model.index * Math.floor(settingsModeSelection.width / 2)
                 anchors.verticalCenter: parent.verticalCenter
                 width: Math.floor(0.5 * parent.width)
                 text: model.text
