@@ -3816,6 +3816,7 @@
                         "zigzag": "Zig Zag"
                     },
                     "default_value": "concentric",
+                    "value": "'lines' if support_interface_density < 100 else 'concentric'",
                     "limit_to_extruder": "support_interface_extruder_nr",
                     "enabled": "support_interface_enable and support_enable",
                     "settable_per_mesh": false,
