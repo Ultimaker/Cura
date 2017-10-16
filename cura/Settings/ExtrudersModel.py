@@ -10,7 +10,6 @@ from UM.Application import Application
 import UM.FlameProfiler
 from cura.Settings.ExtruderManager import ExtruderManager
 from cura.Settings.ExtruderStack import ExtruderStack #To listen to changes on the extruders.
-from cura.Settings.MachineManager import MachineManager #To listen to changes on the extruders of the currently active machine.
 
 catalog = i18nCatalog("cura")
 

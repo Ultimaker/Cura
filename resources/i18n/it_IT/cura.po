@@ -61,6 +61,21 @@ msgctxt "@info:status"
 msgid "Print finished"
 msgstr "Stampa finita"
 
+#: Manually added for resources/Cura/Cura.qml
+msgctxt "@title:menu menubar:toplevel"
+msgid "P&lugins"
+msgstr "&Plugin"
+
+#: Manually added for resources/Cura/Actions.qml
+msgctxt "@action:menu"
+msgid "Browse plugins..."
+msgstr "Sfoglia plugin..."
+
+#: Manually added for resources/Cura/Actions.qml
+msgctxt "@action:menu"
+msgid "Installed plugins..."
+msgstr "Plugin installati..."
+
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.py:29
 msgctxt "@action"
 msgid "Machine Settings"
