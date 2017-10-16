@@ -61,6 +61,21 @@ msgctxt "@info:status"
 msgid "Print finished"
 msgstr "Baskı tamamlandı"
 
+#: Manually added for resources/Cura/Cura.qml
+msgctxt "@title:menu menubar:toplevel"
+msgid "P&lugins"
+msgstr "&Eklentiler"
+
+#: Manually added for resources/Cura/Actions.qml
+msgctxt "@action:menu"
+msgid "Browse plugins..."
+msgstr "Eklentilere göz at..."
+
+#: Manually added for resources/Cura/Actions.qml
+msgctxt "@action:menu"
+msgid "Installed plugins..."
+msgstr "Yüklü eklentiler..."
+
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.py:29
 msgctxt "@action"
 msgid "Machine Settings"
