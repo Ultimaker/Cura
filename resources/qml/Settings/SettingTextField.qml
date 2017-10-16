@@ -102,6 +102,7 @@ SettingItem
                 right: parent.right
                 verticalCenter: parent.verticalCenter
             }
+            renderType: Text.NativeRendering
 
             Keys.onTabPressed:
             {

@@ -687,11 +687,14 @@ Item
                 anchors.topMargin: parseInt(UM.Theme.getSize("sidebar_margin").height * 1.5)
                 anchors.left: parent.left
                 anchors.leftMargin: UM.Theme.getSize("sidebar_margin").width
+                anchors.right: infillCellLeft.right
+                anchors.rightMargin: UM.Theme.getSize("sidebar_margin").width
                 anchors.verticalCenter: enableSupportCheckBox.verticalCenter
 
                 text: catalog.i18nc("@label", "Generate Support");
                 font: UM.Theme.getFont("default");
                 color: UM.Theme.getColor("text");
+                elide: Text.ElideRight
             }
 
             CheckBox
@@ -737,10 +740,13 @@ Item
                 visible: supportExtruderCombobox.visible
                 anchors.left: parent.left
                 anchors.leftMargin: UM.Theme.getSize("sidebar_margin").width
+                anchors.right: infillCellLeft.right
+                anchors.rightMargin: UM.Theme.getSize("sidebar_margin").width
                 anchors.verticalCenter: supportExtruderCombobox.verticalCenter
                 text: catalog.i18nc("@label", "Support Extruder");
                 font: UM.Theme.getFont("default");
                 color: UM.Theme.getColor("text");
+                elide: Text.ElideRight
             }
 
             ComboBox

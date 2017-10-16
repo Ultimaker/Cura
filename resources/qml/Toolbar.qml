@@ -30,7 +30,8 @@ Item
             id: repeat
 
             model: UM.ToolModel { }
-
+            width: childrenRect.width
+            height: childrenRect.height
             Button
             {
                 text: model.name
@@ -72,6 +73,8 @@ Item
         Repeater
         {
             id: extruders
+            width: childrenRect.width
+            height: childrenRect.height
             property var _model: Cura.ExtrudersModel { id: extrudersModel }
             model: _model.items.length > 1 ? _model : 0
             ExtruderButton { extruder: model }
