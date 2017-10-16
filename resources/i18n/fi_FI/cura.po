@@ -71,6 +71,11 @@ msgctxt "@action:menu"
 msgid "Browse plugins..."
 msgstr "Selaa lisäosia..."
 
+#: Manually added for resources/Cura/Actions.qml
+msgctxt "@action:menu"
+msgid "Installed plugins..."
+msgstr "Asennetut lisäoset..."
+
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.py:29
 msgctxt "@action"
 msgid "Machine Settings"
