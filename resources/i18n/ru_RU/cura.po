@@ -68,6 +68,11 @@ msgctxt "@title:menu menubar:toplevel"
 msgid "P&lugins"
 msgstr "Плагины"
 
+#: Manually added for resources/Cura/Actions.qml
+msgctxt "@action:menu"
+msgid "Browse plugins..."
+msgstr "Просмотр плагинов..."
+
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.py:29
 msgctxt "@action"
 msgid "Machine Settings"
