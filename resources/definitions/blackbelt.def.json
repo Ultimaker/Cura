@@ -150,6 +150,18 @@
         {
             "enabled": false
         },
+        "ooze_shield_enabled":
+        {
+            "enabled": false
+        },
+        "draft_shield_enabled":
+        {
+            "enabled": false
+        },
+        "conical_overhang_enabled":
+        {
+            "enabled": false
+        },
         "switch_extruder_retraction_amount":
         {
             "enabled": false
