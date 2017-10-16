@@ -96,6 +96,9 @@
         "machine_gcode_flavor": {
             "default_value": "RepRap (Marlin/Sprinter)"
         },
+        "machine_heated_bed": {
+            "default_value": true
+        },
 
         "support_enable": {
             "enabled": false
