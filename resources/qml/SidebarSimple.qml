@@ -7,7 +7,7 @@ import QtQuick.Controls.Styles 1.1
 import QtQuick.Layouts 1.1
 
 import UM 1.2 as UM
-import Cura 1.0 as Cura
+import Cura 1.2 as Cura
 
 Item
 {
@@ -20,7 +20,6 @@ Item
     property variant minimumPrintTime: PrintInformation.minimumPrintTime;
     property variant maximumPrintTime: PrintInformation.maximumPrintTime;
     property bool settingsEnabled: ExtruderManager.activeExtruderStackId || machineExtruderCount.properties.value == 1
-    property bool hasUserSettings: Cura.MachineManager.allActiveUserSettings
 
     Component.onCompleted: PrintInformation.enabled = true
     Component.onDestruction: PrintInformation.enabled = false
@@ -292,7 +291,7 @@ Item
                                     implicitWidth: 10 * screenScaleFactor
                                     implicitHeight: implicitWidth
                                     radius: implicitWidth / 2
-                                    visible: !hasUserSettings;
+                                    visible: !Cura.SimpleModeSettingsManager.isProfileCustomized;
                                 }
                             }
                         }
@@ -350,7 +349,7 @@ Item
                 {
                     id: customisedSettings
 
-                    visible: hasUserSettings
+                    visible: Cura.SimpleModeSettingsManager.isProfileCustomized
                     height: speedSlider.height * 0.8
                     width: speedSlider.height * 0.8
 
