@@ -130,11 +130,12 @@
                 "zigzag": "Zig Zag",
                 "cross": "Cross",
                 "cross_3d": "Cross 3D"
-            }
+            },
+            "value": "'lines'"
         },
         "infill_angles":
         {
-            "value": "'[' + str(round(45 / math.sin(math.radians(float(blackbelt_gantry_angle))),1)) + ',' + str(round(45 / math.sin(math.radians(float(blackbelt_gantry_angle))),1)) + ']' if infill_pattern == 'lines' else '[ ]'"
+            "value": "'[' + str(round(45 * math.sin(math.radians(float(blackbelt_gantry_angle))))) + ',-' + str(round(45 * math.sin(math.radians(float(blackbelt_gantry_angle))))) + ']' if infill_pattern == 'lines' else '[ ]'"
         },
         "gradual_infill_steps":
         {
