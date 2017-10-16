@@ -676,13 +676,15 @@ class XmlMaterialProfile(InstanceContainer):
         "processing temperature graph": "material_flow_temp_graph",
         "print cooling": "cool_fan_speed",
         "retraction amount": "retraction_amount",
-        "retraction speed": "retraction_speed"
+        "retraction speed": "retraction_speed",
+        "support interface density": "support_interface_density"
     }
     __unmapped_settings = [
         "hardware compatible"
     ]
     __material_properties_setting_map = {
-        "diameter": "material_diameter"
+        "diameter": "material_diameter",
+        "adhesion_tendency": "material_adhesion_tendency"
     }
     __material_metadata_setting_map = {
         "GUID": "material_guid"
