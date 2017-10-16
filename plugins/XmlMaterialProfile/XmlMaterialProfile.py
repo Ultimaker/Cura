@@ -220,10 +220,15 @@ class XmlMaterialProfile(InstanceContainer):
 
             machine_container_map[definition_id] = container
 
+        # Map machine human-readable names to IDs
+        product_id_map = {}
+        for container in registry.findDefinitionContainers(type = "machine"):
+            product_id_map[container.getName()] = container.getId()
+
         for definition_id, container in machine_container_map.items():
             definition = container.getDefinition()
             try:
-                product = UM.Dictionary.findKey(self.__product_id_map, definition_id)
+                product = UM.Dictionary.findKey(product_id_map, definition_id)
             except ValueError:
                 # An unknown product id; export it anyway
                 product = definition_id
@@ -512,6 +517,11 @@ class XmlMaterialProfile(InstanceContainer):
         self.setMetaData(meta_data)
         self._dirty = False
 
+        # Map machine human-readable names to IDs
+        product_id_map = {}
+        for container in ContainerRegistry.getInstance().findDefinitionContainers(type = "machine"):
+            product_id_map[container.getName()] = container.getId()
+
         machines = data.iterfind("./um:settings/um:machine", self.__namespaces)
         for machine in machines:
             machine_compatibility = common_compatibility
@@ -532,7 +542,7 @@ class XmlMaterialProfile(InstanceContainer):
 
             identifiers = machine.iterfind("./um:machine_identifier", self.__namespaces)
             for identifier in identifiers:
-                machine_id = self.__product_id_map.get(identifier.get("product"), None)
+                machine_id = product_id_map.get(identifier.get("product"), None)
                 if machine_id is None:
                     # Lets try again with some naive heuristics.
                     machine_id = identifier.get("product").replace(" ", "").lower()
@@ -676,21 +686,6 @@ class XmlMaterialProfile(InstanceContainer):
     }
     __material_metadata_setting_map = {
         "GUID": "material_guid"
-    }
-
-    # Map XML file product names to internal ids
-    # TODO: Move this to definition's metadata
-    __product_id_map = {
-        "Ultimaker 3": "ultimaker3",
-        "Ultimaker 3 Extended": "ultimaker3_extended",
-        "Ultimaker 2": "ultimaker2",
-        "Ultimaker 2+": "ultimaker2_plus",
-        "Ultimaker 2 Go": "ultimaker2_go",
-        "Ultimaker 2 Extended": "ultimaker2_extended",
-        "Ultimaker 2 Extended+": "ultimaker2_extended_plus",
-        "Ultimaker Original": "ultimaker_original",
-        "Ultimaker Original+": "ultimaker_original_plus",
-        "IMADE3D JellyBOX": "imade3d_jellybox"
     }
 
     # Map of recognised namespaces with a proper prefix.
