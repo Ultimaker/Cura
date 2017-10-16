@@ -79,7 +79,7 @@ class MachineSettingsAction(MachineAction):
     @pyqtSlot()
     def onFinishAction(self):
         # Restore autoslicing when the machineaction is dismissed
-        if self._backend.determineAutoSlicing():
+        if self._backend and self._backend.determineAutoSlicing():
             self._backend.tickle()
 
     def _onActiveExtruderStackChanged(self):
