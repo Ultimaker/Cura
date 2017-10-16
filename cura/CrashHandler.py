@@ -90,8 +90,8 @@ class CrashHandler:
 
     def _messageWidget(self):
         label = QLabel()
-        label.setText(catalog.i18nc("@label crash message", """<p><b>A fatal exception has occurred that we could not recover from!</p></b>
-            <p>Please use the button below to post a bug report automatically to our servers</p>
+        label.setText(catalog.i18nc("@label crash message", """<p><b>A fatal exception has occurred. Please send us this Crash Report to fix the problem</p></b>
+            <p>Please use the "Send report" button to post a bug report automatically to our servers</p>
         """))
 
         return label
@@ -244,7 +244,7 @@ class CrashHandler:
     def _buttonsWidget(self):
         buttons = QDialogButtonBox()
         buttons.addButton(QDialogButtonBox.Close)
-        buttons.addButton(catalog.i18nc("@action:button", "Send to developers"), QDialogButtonBox.AcceptRole)
+        buttons.addButton(catalog.i18nc("@action:button", "Send report"), QDialogButtonBox.AcceptRole)
         buttons.rejected.connect(self.dialog.close)
         buttons.accepted.connect(self._sendCrashReport)
 
