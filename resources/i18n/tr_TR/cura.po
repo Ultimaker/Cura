@@ -69,7 +69,7 @@ msgstr "&Eklentiler"
 #: Manually added for resources/Cura/Actions.qml
 msgctxt "@action:menu"
 msgid "Browse plugins..."
-msgstr "Eklentilere göz at"
+msgstr "Eklentilere göz at..."
 
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.py:29
 msgctxt "@action"
