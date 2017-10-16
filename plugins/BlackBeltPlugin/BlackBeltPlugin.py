@@ -118,6 +118,8 @@ class BlackBeltSingleton(QObject):
 
     def _onGlobalContainerStackChanged(self, emit = True):
         self._global_container_stack = self._application.getGlobalContainerStack()
+        if not self._global_container_stack:
+            return
 
         self._variants_terms_pattern = self._global_container_stack.getMetaDataEntry("variants_id_pattern", "")
         self._variants_terms_pattern = self._variants_terms_pattern.replace("{definition_id}", self._global_container_stack.getBottom().getId())
@@ -143,6 +145,8 @@ class BlackBeltSingleton(QObject):
 
     @pyqtProperty(str, notify = activeMachineChanged)
     def variantsTerms(self):
+        if not self._global_container_stack:
+            return "[]"
         return json.dumps(self._global_container_stack.getMetaDataEntry("variants_terms", []))
 
     @pyqtProperty("QVariantList", notify = activeVariantChanged)
