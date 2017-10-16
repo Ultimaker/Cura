@@ -66,6 +66,16 @@
                     "maximum_value_warning": "machine_nozzle_size",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false
+                },
+                "blackbelt_secondary_fans_enabled":
+                {
+                    "label": "Enable Secondary Print Fans",
+                    "description": "Enables the secondary print cooling fans while printing. The secondary fans are set to the same speed as the primary cooling fan.",
+                    "type": "bool",
+                    "enabled": "cool_fan_enabled",
+                    "default_value": false,
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
                 }
             }
         },

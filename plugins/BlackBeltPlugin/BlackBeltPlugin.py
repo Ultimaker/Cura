@@ -39,6 +39,7 @@ class BlackBeltPlugin(Extension):
 
         qmlRegisterSingletonType(BlackBeltSingleton, "Cura", 1, 0, "BlackBeltPlugin", BlackBeltSingleton.getInstance)
         self._application.engineCreatedSignal.connect(self._onEngineCreated)
+        self._application.getOutputDeviceManager().writeStarted.connect(self._filterGcode)
 
     def _onGlobalContainerStackChanged(self):
         if self._global_container_stack:
@@ -98,6 +99,29 @@ class BlackBeltPlugin(Extension):
                 expanded_settings += ";%s" % key
         preferences.setValue("cura/categories_expanded", expanded_settings)
         self._application.expandedCategoriesChanged.emit()
+
+    def _filterGcode(self, output_device):
+        global_stack = Application.getInstance().getGlobalContainerStack()
+
+        enable_secondary_fans = global_stack.getProperty("blackbelt_secondary_fans_enabled", "value")
+        if not enable_secondary_fans:
+            return
+
+        scene = Application.getInstance().getController().getScene()
+        if hasattr(scene, "gcode_list"):
+            gcode_list = getattr(scene, "gcode_list")
+            if gcode_list:
+                if ";BLACKBELTPROCESSED" not in gcode_list[0]:
+                    search_regex = re.compile(r"M106 S(\d*\.?\d*?)")
+                    replace_pattern = r"M106 P1 S\1\nM106 S\1"
+
+                    for layer_number, layer in enumerate(gcode_list):
+                        gcode_list[layer_number] = re.sub(search_regex, replace_pattern, layer) #Replace all.
+
+                    gcode_list[0] += ";BLACKBELTPROCESSED\n"
+                    setattr(scene, "gcode_list", gcode_list)
+                else:
+                    Logger.log("e", "Already post processed")
 
 ## QML-accessible singleton for access to extended data on definition and variants
 class BlackBeltSingleton(QObject):
