@@ -260,7 +260,7 @@ Item
                         id: qualitySlider
                         height: UM.Theme.getSize("sidebar_margin").height
                         anchors.bottom: speedSlider.bottom
-                        enabled: qualityModel.availableTotalTicks > 0
+                        enabled: qualityModel.availableTotalTicks > 0 && !Cura.SimpleModeSettingsManager.isProfileCustomized
                         visible: qualityModel.totalTicks > 0
                         updateValueWhileDragging : false
 

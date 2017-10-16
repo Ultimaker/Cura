@@ -47,7 +47,8 @@ class SimpleModeSettingsManager(QObject):
             self._is_profile_customized = has_customized_user_settings
             self.isProfileCustomizedChanged.emit()
 
-    # A list of settings that will be ignored when check whether there is any custom settings.
+    # These are the settings included in the Simple ("Recommended") Mode, so only when the other settings have been
+    # changed, we consider it as a user customized profile in the Simple ("Recommended") Mode.
     __ignored_custom_setting_keys = ["support_enable",
                                      "infill_sparse_density",
                                      "gradual_infill_steps",
