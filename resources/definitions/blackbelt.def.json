@@ -80,6 +80,12 @@
         "machine_name": {
             "default_value": "BLACKBELT 3D Printer"
         },
+        "machine_start_gcode" : {
+            "default_value": "G90      ; Set to Absolute Positioning\nM82      ; Set extruder to absolute mode\nG21      ; metric values\nM107     ; start with the fan off\nG92 X0 Y0.2 Z0 E0 ; Set all axis to 0. Set Y offset to the belt (Y0.1 = big gap, Y0.3 = small gap)\nG1 Y1    ; Move print head up 1mm\nG28 X0 F2000      ; Home X axis\nG1 E15   ; Extruder 15mm material (purge nozzle)\nG1 Z20 E30 F500   ; Move belt and keep extruding\nG1 Z30 E20        ; Stop extruding, move the belt a bit further\nG92 Z0 E-14       ; Zero Belt and Extuder\nG1 F1000          ; Move to the next point with a Speed of 1000mm per minute\nM117 BLACKBELT Printing...\n\n˅˅˅˅˅˅˅˅˅˅˅˅˅˅˅˅ - copy from here / paste codes just under here - ˅˅˅˅˅˅˅˅˅˅˅˅˅˅˅˅\n\nM107 ;start with the fan off"
+        },
+        "machine_end_gcode" : {
+            "default_value": "G92 E0   ;set Extruder to zero\nG1 E-6   ;Retract 6mm\nG92 Z0   ;set Belt to zero\nG1 Z15   ;move Belt 10mm before starting up the next product\nG92 Z0   ;set Belt to zero again\n\n˄˄˄˄˄˄˄˄˄˄˄˄˄˄˄˄ - copy up to here / paste codes just above here- ˄˄˄˄˄˄˄˄˄˄˄˄˄˄˄˄\nM104 S0  ;extruder heater off\nM140 S0  ;heated bed heater off\nG92 Z0\nG1 Z10 F1000\nG28 X0 F2000\nG1 Z20 F1000\nG1 X170 F2000\nG1 Y 1 F2000\nM18      ; Disable all stepper motors"
+        },
         "machine_width": {
             "default_value": 340
         },
