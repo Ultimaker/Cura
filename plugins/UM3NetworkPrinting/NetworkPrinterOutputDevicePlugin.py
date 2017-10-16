@@ -282,7 +282,7 @@ class NetworkPrinterOutputDevicePlugin(QObject, OutputDevicePlugin):
             # Request more data if info is not complete
             if not info.address:
                 Logger.log("d", "Trying to get address of %s", name)
-                info = zeroconf.get_service_info(service_type, name, 0)
+                info = zeroconf.get_service_info(service_type, name)
 
             if info:
                 type_of_device = info.properties.get(b"type", None)
