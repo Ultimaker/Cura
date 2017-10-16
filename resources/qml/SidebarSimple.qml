@@ -20,10 +20,39 @@ Item
     property variant minimumPrintTime: PrintInformation.minimumPrintTime;
     property variant maximumPrintTime: PrintInformation.maximumPrintTime;
     property bool settingsEnabled: ExtruderManager.activeExtruderStackId || machineExtruderCount.properties.value == 1
+    property bool hasUserSettings;
 
     Component.onCompleted: PrintInformation.enabled = true
     Component.onDestruction: PrintInformation.enabled = false
     UM.I18nCatalog { id: catalog; name: "cura" }
+
+    onVisibleChanged:
+    {
+        if (visible)
+        {
+            base.checkUserSettings()
+        }
+    }
+
+    Connections
+    {
+        target: CuraApplication
+        onSidebarSimpleDiscardOrKeepProfileChanges:
+        {
+            base.hasUserSettings = false
+        }
+    }
+
+    function checkUserSettings(){
+
+        var skip_keys = ["support_enable" ,
+                            "infill_sparse_density",
+                            "gradual_infill_steps",
+                            "adhesion_type",
+                            "support_extruder_nr"]
+
+        base.hasUserSettings = Cura.MachineManager.hasUserCustomSettings(skip_keys)
+    }
 
     ScrollView
     {
@@ -291,6 +320,7 @@ Item
                                     implicitWidth: 10 * screenScaleFactor
                                     implicitHeight: implicitWidth
                                     radius: implicitWidth / 2
+                                    visible: !hasUserSettings;
                                 }
                             }
                         }
@@ -307,6 +337,33 @@ Item
                                 }
                             }
                         }
+                    }
+
+
+                    //If any of settings were changed in custom mode then the Rectangle will
+                    //overlap quality slider area. It is used to catch mouse click
+                    Rectangle {
+                        anchors.verticalCenter: parent.verticalCenter
+                        anchors.right: extrudersModelCheckBox.right
+                        anchors.rightMargin: UM.Theme.getSize("default_margin").width
+                        width: qualitySlider.width
+                        height: qualitySlider.height * 1.5
+                        //border.width: UM.Theme.getSize("default_lining").width // dispay overlap zone
+                        //border.color: UM.Theme.getColor("lining")
+
+                        color: "transparent"
+
+                        visible: hasUserSettings
+                        enabled: hasUserSettings
+
+
+                        MouseArea {
+                            anchors.fill: parent
+                            onClicked: {
+                                discardOrKeepProfileChangesDialog.show()
+                            }
+                        }
+
                     }
                 }
 
@@ -345,6 +402,33 @@ Item
                     font: UM.Theme.getFont("default")
                     color: (qualityModel.availableTotalTicks > 0) ? UM.Theme.getColor("quality_slider_available") : UM.Theme.getColor("quality_slider_unavailable")
                     horizontalAlignment: Text.AlignRight
+                }
+
+                UM.SimpleButton
+                {
+                    id: customisedSettings
+
+                    visible: hasUserSettings
+                    height: speedSlider.height * 0.8
+                    width: speedSlider.height * 0.8
+
+                    anchors.verticalCenter: speedSlider.verticalCenter
+                    anchors.right: speedSlider.left
+                    anchors.rightMargin: UM.Theme.getSize("sidebar_margin").width / 2
+
+                    color: hovered ? UM.Theme.getColor("setting_control_button_hover") : UM.Theme.getColor("setting_control_button");
+                    iconSource: UM.Theme.getIcon("reset");
+
+                    onClicked:
+                    {
+                        discardOrKeepProfileChangesDialog.show()
+                    }
+                    onEntered:
+                    {
+                        var content = catalog.i18nc("@tooltip","You have selected a custom profile. If you want to change it, go to custom mode.")
+                        base.showTooltip(qualityRow, Qt.point(-UM.Theme.getSize("sidebar_margin").width, customisedSettings.height),  content)
+                    }
+                    onExited: base.hideTooltip()
                 }
             }
 
@@ -661,11 +745,14 @@ Item
                 anchors.topMargin: Math.floor(UM.Theme.getSize("sidebar_margin").height * 1.5)
                 anchors.left: parent.left
                 anchors.leftMargin: UM.Theme.getSize("sidebar_margin").width
+                anchors.right: infillCellLeft.right
+                anchors.rightMargin: UM.Theme.getSize("sidebar_margin").width
                 anchors.verticalCenter: enableSupportCheckBox.verticalCenter
 
                 text: catalog.i18nc("@label", "Generate Support");
                 font: UM.Theme.getFont("default");
                 color: UM.Theme.getColor("text");
+                elide: Text.ElideRight
             }
 
             CheckBox
@@ -711,10 +798,13 @@ Item
                 visible: supportExtruderCombobox.visible
                 anchors.left: parent.left
                 anchors.leftMargin: UM.Theme.getSize("sidebar_margin").width
+                anchors.right: infillCellLeft.right
+                anchors.rightMargin: UM.Theme.getSize("sidebar_margin").width
                 anchors.verticalCenter: supportExtruderCombobox.verticalCenter
                 text: catalog.i18nc("@label", "Support Extruder");
                 font: UM.Theme.getFont("default");
                 color: UM.Theme.getColor("text");
+                elide: Text.ElideRight
             }
 
             ComboBox

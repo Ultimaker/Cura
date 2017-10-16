@@ -96,17 +96,17 @@ class GlobalStack(CuraContainerStack):
         if not self.definition.findDefinitions(key = key):
             return None
 
+        if context is None:
+            context = PropertyEvaluationContext()
+        context.pushContainer(self)
+
         # Handle the "resolve" property.
-        if self._shouldResolve(key, property_name):
+        if self._shouldResolve(key, property_name, context):
             self._resolving_settings.add(key)
             resolve = super().getProperty(key, "resolve", context)
             self._resolving_settings.remove(key)
             if resolve is not None:
                 return resolve
-
-        if context is None:
-            context = PropertyEvaluationContext()
-        context.pushContainer(self)
 
         # Handle the "limit_to_extruder" property.
         limit_to_extruder = super().getProperty(key, "limit_to_extruder", context)
@@ -151,7 +151,7 @@ class GlobalStack(CuraContainerStack):
 
     # Determine whether or not we should try to get the "resolve" property instead of the
     # requested property.
-    def _shouldResolve(self, key: str, property_name: str) -> bool:
+    def _shouldResolve(self, key: str, property_name: str, context: Optional[PropertyEvaluationContext] = None) -> bool:
         if property_name is not "value":
             # Do not try to resolve anything but the "value" property
             return False
@@ -163,7 +163,7 @@ class GlobalStack(CuraContainerStack):
             # track all settings that are being resolved.
             return False
 
-        setting_state = super().getProperty(key, "state")
+        setting_state = super().getProperty(key, "state", context = context)
         if setting_state is not None and setting_state != InstanceState.Default:
             # When the user has explicitly set a value, we should ignore any resolve and
             # just return that value.

@@ -16,6 +16,7 @@ from UM.Settings.InstanceContainer import InstanceContainer
 from UM.Settings.SettingFunction import SettingFunction
 from UM.Settings.ContainerStack import ContainerStack
 from UM.Settings.Interfaces import DefinitionContainerInterface
+from UM.Settings.PropertyEvaluationContext import PropertyEvaluationContext
 from typing import Optional, List, TYPE_CHECKING, Union
 
 if TYPE_CHECKING:
@@ -587,6 +588,46 @@ class ExtruderManager(QObject):
 
         return result
 
+    ##  Get all extruder values for a certain setting. This function will skip the user settings container.
+    #
+    #   This is exposed to SettingFunction so it can be used in value functions.
+    #
+    #   \param key The key of the setting to retrieve values for.
+    #
+    #   \return A list of values for all extruders. If an extruder does not have a value, it will not be in the list.
+    #           If no extruder has the value, the list will contain the global value.
+    @staticmethod
+    def getDefaultExtruderValues(key):
+        global_stack = Application.getInstance().getGlobalContainerStack()
+        context = PropertyEvaluationContext(global_stack)
+        context.context["evaluate_from_container_index"] = 1  # skip the user settings container
+        context.context["override_operators"] = {
+            "extruderValue": ExtruderManager.getDefaultExtruderValue,
+            "extruderValues": ExtruderManager.getDefaultExtruderValues,
+            "resolveOrValue": ExtruderManager.getDefaultResolveOrValue
+        }
+
+        result = []
+        for extruder in ExtruderManager.getInstance().getMachineExtruders(global_stack.getId()):
+            # only include values from extruders that are "active" for the current machine instance
+            if int(extruder.getMetaDataEntry("position")) >= global_stack.getProperty("machine_extruder_count", "value", context = context):
+                continue
+
+            value = extruder.getRawProperty(key, "value", context = context)
+
+            if value is None:
+                continue
+
+            if isinstance(value, SettingFunction):
+                value = value(extruder, context = context)
+
+            result.append(value)
+
+        if not result:
+            result.append(global_stack.getProperty(key, "value", context = context))
+
+        return result
+
     ##  Get all extruder values for a certain setting.
     #
     #   This is exposed to qml for display purposes
@@ -620,6 +661,35 @@ class ExtruderManager(QObject):
 
         return value
 
+    ##  Get the default value from the given extruder. This function will skip the user settings container.
+    #
+    #   This is exposed to SettingFunction to use in value functions.
+    #
+    #   \param extruder_index The index of the extruder to get the value from.
+    #   \param key The key of the setting to get the value of.
+    #
+    #   \return The value of the setting for the specified extruder or for the
+    #   global stack if not found.
+    @staticmethod
+    def getDefaultExtruderValue(extruder_index, key):
+        extruder = ExtruderManager.getInstance().getExtruderStack(extruder_index)
+        context = PropertyEvaluationContext(extruder)
+        context.context["evaluate_from_container_index"] = 1  # skip the user settings container
+        context.context["override_operators"] = {
+            "extruderValue": ExtruderManager.getDefaultExtruderValue,
+            "extruderValues": ExtruderManager.getDefaultExtruderValues,
+            "resolveOrValue": ExtruderManager.getDefaultResolveOrValue
+        }
+
+        if extruder:
+            value = extruder.getRawProperty(key, "value", context = context)
+            if isinstance(value, SettingFunction):
+                value = value(extruder, context = context)
+        else:  # Just a value from global.
+            value = Application.getInstance().getGlobalContainerStack().getProperty(key, "value", context = context)
+
+        return value
+
     ##  Get the resolve value or value for a given key
     #
     #   This is the effective value for a given key, it is used for values in the global stack.
@@ -631,5 +701,27 @@ class ExtruderManager(QObject):
     def getResolveOrValue(key):
         global_stack = Application.getInstance().getGlobalContainerStack()
         resolved_value = global_stack.getProperty(key, "value")
+
+        return resolved_value
+
+    ##  Get the resolve value or value for a given key without looking the first container (user container)
+    #
+    #   This is the effective value for a given key, it is used for values in the global stack.
+    #   This is exposed to SettingFunction to use in value functions.
+    #   \param key The key of the setting to get the value of.
+    #
+    #   \return The effective value
+    @staticmethod
+    def getDefaultResolveOrValue(key):
+        global_stack = Application.getInstance().getGlobalContainerStack()
+        context = PropertyEvaluationContext(global_stack)
+        context.context["evaluate_from_container_index"] = 1  # skip the user settings container
+        context.context["override_operators"] = {
+            "extruderValue": ExtruderManager.getDefaultExtruderValue,
+            "extruderValues": ExtruderManager.getDefaultExtruderValues,
+            "resolveOrValue": ExtruderManager.getDefaultResolveOrValue
+        }
+
+        resolved_value = global_stack.getProperty(key, "value", context = context)
 
         return resolved_value

@@ -154,7 +154,18 @@ class NetworkPrinterOutputDevicePlugin(QObject, OutputDevicePlugin):
                 if status_code == 200:
                     # We know it's a cluster printer
                     Logger.log("d", "Cluster printer detected: [%s]", reply.url())
+
+                    try:
+                        cluster_printers_list = json.loads(bytes(reply.readAll()).decode("utf-8"))
+                    except json.JSONDecodeError:
+                        Logger.log("e", "Printer returned invalid JSON.")
+                        return
+                    except UnicodeDecodeError:
+                        Logger.log("e", "Printer returned incorrect UTF-8.")
+                        return
+
                     self._network_requests_buffer[address]["cluster"] = True
+                    self._network_requests_buffer[address]["cluster_size"] = len(cluster_printers_list)
                 else:
                     Logger.log("d", "This url is not from a cluster printer: [%s]", reply.url())
                     self._network_requests_buffer[address]["cluster"] = False
@@ -166,7 +177,6 @@ class NetworkPrinterOutputDevicePlugin(QObject, OutputDevicePlugin):
 
                 instance_name = "manual:%s" % address
                 system_info = self._network_requests_buffer[address]["system"]
-                is_cluster = self._network_requests_buffer[address]["cluster"]
                 machine = "unknown"
                 if "variant" in system_info:
                     variant = system_info["variant"]
@@ -182,10 +192,14 @@ class NetworkPrinterOutputDevicePlugin(QObject, OutputDevicePlugin):
                     b"manual": b"true",
                     b"machine": machine.encode("utf-8")
                 }
+
+                if self._network_requests_buffer[address]["cluster"]:
+                    properties[b"cluster_size"] = self._network_requests_buffer[address]["cluster_size"]
+
                 if instance_name in self._printers:
                     # Only replace the printer if it is still in the list of (manual) printers
                     self.removePrinter(instance_name)
-                    self.addPrinter(instance_name, address, properties, force_cluster=is_cluster)
+                    self.addPrinter(instance_name, address, properties)
 
                 del self._network_requests_buffer[address]
 
@@ -216,12 +230,9 @@ class NetworkPrinterOutputDevicePlugin(QObject, OutputDevicePlugin):
                     self._printers[key].connectionStateChanged.disconnect(self._onPrinterConnectionStateChanged)
 
     ##  Because the model needs to be created in the same thread as the QMLEngine, we use a signal.
-    def addPrinter(self, name, address, properties, force_cluster=False):
+    def addPrinter(self, name, address, properties):
         cluster_size = int(properties.get(b"cluster_size", -1))
-        was_cluster_before = name in self._cluster_printers_seen
-        if was_cluster_before:
-            Logger.log("d", "Printer [%s] had Cura Connect before, so assume it's still equipped with Cura Connect.", name)
-        if force_cluster or cluster_size >= 0 or was_cluster_before:
+        if cluster_size >= 0:
             printer = NetworkClusterPrinterOutputDevice.NetworkClusterPrinterOutputDevice(
                 name, address, properties, self._api_prefix)
         else:

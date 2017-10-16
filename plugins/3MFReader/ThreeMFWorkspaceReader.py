@@ -26,6 +26,7 @@ from configparser import ConfigParser
 import zipfile
 import io
 import configparser
+import os
 
 i18n_catalog = i18nCatalog("cura")
 
@@ -876,6 +877,11 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         nodes = self._3mf_mesh_reader.read(file_name)
         if nodes is None:
             nodes = []
+
+        base_file_name = os.path.basename(file_name)
+        if base_file_name.endswith(".curaproject.3mf"):
+            base_file_name = base_file_name[:base_file_name.rfind(".curaproject.3mf")]
+        Application.getInstance().projectFileLoaded.emit(base_file_name)
         return nodes
 
     ##  HACK: Replaces the material container in the given stack with a newly created material container.
