@@ -39,8 +39,6 @@ if TYPE_CHECKING:
     from cura.Settings.CuraContainerStack import CuraContainerStack
     from cura.Settings.GlobalStack import GlobalStack
 
-import os
-
 
 class MachineManager(QObject):
     def __init__(self, parent = None):
@@ -412,42 +410,6 @@ class MachineManager(QObject):
                 return True
 
         return False
-
-    ## Check whether user containers have adjusted settings or not
-    #   \param skip_keys \type{list} List of setting keys which will be not taken into account ("support_enable" , "infill_sparse_density"...)
-    #   \return \type{boole} Return true if user containers have any of adjusted settings
-    @pyqtSlot("QVariantList", result = bool)
-    def hasUserCustomSettings(self, skip_keys = []) -> bool:
-
-        user_setting_keys = []
-        try:
-            if not self._global_container_stack:
-                return False
-
-            allContainers = self._global_container_stack.getContainers()
-
-            for container in allContainers:
-                meta = container.getMetaData()
-                if meta and meta["type"] and meta["type"] == "user":
-                    user_setting_keys.extend(container.getAllKeys())
-
-            stacks = list(ExtruderManager.getInstance().getMachineExtruders(self._global_container_stack.getId()))
-            for stack in stacks:
-
-                for container in stack.getContainers():
-                    meta = container.getMetaData()
-                    if meta and meta["type"] and meta["type"] == "user":
-                        user_setting_keys.extend(container.getAllKeys())
-
-            for skip_key in skip_keys:
-                if skip_key in user_setting_keys:
-                    user_setting_keys.remove(skip_key)
-
-        except:
-            Logger.log("e", "While checking user custom settings occured error. skip_keys: %s", skip_keys )
-            return False
-
-        return len(user_setting_keys) > 0
 
     @pyqtProperty(int, notify = activeStackValueChanged)
     def numUserSettings(self) -> int:

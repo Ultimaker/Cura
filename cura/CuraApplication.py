@@ -51,6 +51,7 @@ from cura.Settings.MaterialsModel import MaterialsModel
 from cura.Settings.QualityAndUserProfilesModel import QualityAndUserProfilesModel
 from cura.Settings.SettingInheritanceManager import SettingInheritanceManager
 from cura.Settings.UserProfilesModel import UserProfilesModel
+from cura.Settings.SimpleModeSettingsManager import SimpleModeSettingsManager
 
 from . import PlatformPhysics
 from . import BuildVolume
@@ -201,6 +202,7 @@ class CuraApplication(QtApplication):
         self._machine_manager = None    # This is initialized on demand.
         self._material_manager = None
         self._setting_inheritance_manager = None
+        self._simple_mode_settings_manager = None
 
         self._additional_components = {} # Components to add to certain areas in the interface
 
@@ -402,7 +404,7 @@ class CuraApplication(QtApplication):
             # ALWAYS ask whether to keep or discard the profile
             self.showDiscardOrKeepProfileChanges.emit()
 
-    sidebarSimpleDiscardOrKeepProfileChanges = pyqtSignal()
+    #sidebarSimpleDiscardOrKeepProfileChanges = pyqtSignal()
 
     @pyqtSlot(str)
     def discardOrKeepProfileChangesClosed(self, option):
@@ -412,10 +414,6 @@ class CuraApplication(QtApplication):
                 extruder.getTop().clear()
 
             global_stack.getTop().clear()
-
-            #event handler for SidebarSimple, which will update sliders view visibility (like:sliders..)
-            if Preferences.getInstance().getValue("cura/active_mode") == 0:
-                self.sidebarSimpleDiscardOrKeepProfileChanges.emit()
 
     @pyqtSlot(int)
     def messageBoxClosed(self, button):
@@ -674,7 +672,9 @@ class CuraApplication(QtApplication):
         qmlRegisterSingletonType(MachineManager, "Cura", 1, 0, "MachineManager", self.getMachineManager)
         qmlRegisterSingletonType(MaterialManager, "Cura", 1, 0, "MaterialManager", self.getMaterialManager)
         qmlRegisterSingletonType(SettingInheritanceManager, "Cura", 1, 0, "SettingInheritanceManager",
-                         self.getSettingInheritanceManager)
+                                 self.getSettingInheritanceManager)
+        qmlRegisterSingletonType(SimpleModeSettingsManager, "Cura", 1, 2, "SimpleModeSettingsManager",
+                                 self.getSimpleModeSettingsManager)
 
         qmlRegisterSingletonType(MachineActionManager.MachineActionManager, "Cura", 1, 0, "MachineActionManager", self.getMachineActionManager)
         self.setMainQml(Resources.getPath(self.ResourceTypes.QmlFiles, "Cura.qml"))
@@ -713,6 +713,11 @@ class CuraApplication(QtApplication):
     #   It wants to give this function an engine and script engine, but we don't care about that.
     def getMachineActionManager(self, *args):
         return self._machine_action_manager
+
+    def getSimpleModeSettingsManager(self, *args):
+        if self._simple_mode_settings_manager is None:
+            self._simple_mode_settings_manager = SimpleModeSettingsManager()
+        return self._simple_mode_settings_manager
 
     ##   Handle Qt events
     def event(self, event):
