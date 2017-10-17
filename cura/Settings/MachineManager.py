@@ -854,17 +854,18 @@ class MachineManager(QObject):
                 self._replaceQualityOrQualityChangesInStack(stack, stack_quality, postpone_emit=True)
                 self._replaceQualityOrQualityChangesInStack(stack, stack_quality_changes, postpone_emit=True)
 
-            # Send emits that are postponed in replaceContainer.
-            # Here the stacks are finished replacing and every value can be resolved based on the current state.
-            for setting_info in new_quality_settings_list:
-                setting_info["stack"].sendPostponedEmits()
-
             # Connect to onQualityNameChanged
             for stack in name_changed_connect_stacks:
                 stack.nameChanged.connect(self._onQualityNameChanged)
 
             if self.hasUserSettings and Preferences.getInstance().getValue("cura/active_mode") == 1:
                 self._askUserToKeepOrClearCurrentSettings()
+            else:
+                # If the user doesn't have any of adjusted settings then slicing will be triggered by emit()
+                # Send emits that are postponed in replaceContainer.
+                # Here the stacks are finished replacing and every value can be resolved based on the current state.
+                for setting_info in new_quality_settings_list:
+                    setting_info["stack"].sendPostponedEmits()
 
             self.activeQualityChanged.emit()
 
