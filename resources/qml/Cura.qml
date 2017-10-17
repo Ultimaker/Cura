@@ -16,7 +16,7 @@ UM.MainWindow
 {
     id: base
     //: Cura application window title
-    title: catalog.i18nc("@title:window","Ultimaker Cura");
+    title: catalog.i18nc("@title:window","BlackBelt Cura");
     viewportRect: Qt.rect(0, 0, (base.width - sidebar.width) / base.width, 1.0)
     property bool showPrintMonitor: false
 
