@@ -15,8 +15,9 @@ import urllib.request
 import urllib.error
 
 from PyQt5.QtCore import QT_VERSION_STR, PYQT_VERSION_STR, QCoreApplication
-from PyQt5.QtWidgets import QDialog, QDialogButtonBox, QVBoxLayout, QLabel, QTextEdit, QGroupBox, QPushButton
+from PyQt5.QtWidgets import QDialog, QDialogButtonBox, QVBoxLayout, QLabel, QTextEdit, QGroupBox
 
+from UM.Application import Application
 from UM.Logger import Logger
 from UM.View.GL.OpenGL import OpenGL
 from UM.i18n import i18nCatalog
@@ -275,5 +276,9 @@ class CrashHandler:
         os._exit(1)
 
     def show(self):
+        # must run the GUI code on the Qt thread, otherwise the widgets on the dialog won't react correctly.
+        Application.getInstance().callLater(self._show)
+
+    def _show(self):
         self.dialog.exec_()
         os._exit(1)
