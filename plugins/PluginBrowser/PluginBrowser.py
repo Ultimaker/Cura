@@ -26,7 +26,7 @@ class PluginBrowser(QObject, Extension):
     def __init__(self, parent=None):
         super().__init__(parent)
 
-        self._api_version = 1
+        self._api_version = 2
         self._api_url = "http://software.ultimaker.com/cura/v%s/" % self._api_version
 
         self._plugin_list_request = None
