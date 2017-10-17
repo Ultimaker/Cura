@@ -1854,9 +1854,20 @@
                 {
                     "label": "Adhesion Tendency",
                     "description": "Surface adhesion tendency.",
-                    "unit": "%",
                     "type": "int",
                     "default_value": 0,
+                    "minimum_value": 0,
+                    "maximum_value": 10,
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
+                },
+                "material_surface_energy":
+                {
+                    "label": "Surface Energy",
+                    "description": "Surface energy.",
+                    "unit": "%",
+                    "type": "int",
+                    "default_value": 100,
                     "minimum_value": 0,
                     "maximum_value": 100,
                     "settable_per_mesh": false,
