@@ -44,11 +44,11 @@ fatal_exception_types = [
     SystemError,
 ]
 
+
 class CrashHandler:
     crash_url = "https://stats.ultimaker.com/api/cura"
 
     def __init__(self, exception_type, value, tb):
-
         self.exception_type = exception_type
         self.value = value
         self.traceback = tb
@@ -73,7 +73,6 @@ class CrashHandler:
 
     ##  Creates a modal dialog.
     def _createDialog(self):
-
         self.dialog = QDialog()
         self.dialog.setMinimumWidth(640)
         self.dialog.setMinimumHeight(640)
@@ -225,7 +224,6 @@ class CrashHandler:
         self.data["log"] = logdata
 
         return group
-
 
     def _userDescriptionWidget(self):
         group = QGroupBox()
