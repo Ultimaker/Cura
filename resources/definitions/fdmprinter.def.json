@@ -1850,6 +1850,18 @@
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
+                "material_adhesion_tendency":
+                {
+                    "label": "Adhesion Tendency",
+                    "description": "Surface adhesion tendency.",
+                    "unit": "%",
+                    "type": "int",
+                    "default_value": 0,
+                    "minimum_value": 0,
+                    "maximum_value": 100,
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
+                },
                 "material_flow":
                 {
                     "label": "Flow",
@@ -3469,7 +3481,7 @@
                             "default_value": 0.1,
                             "type": "float",
                             "enabled": "support_enable",
-                            "value": "min(math.ceil(extruderValues('material_adhesion_tendency')) / (2 if (layer_height >= 0.2) else 1)) * layer_height",
+                            "value": "math.ceil(min(extruderValues('material_adhesion_tendency')) / 2 if (layer_height >= 0.2) else 1) * layer_height",
                             "limit_to_extruder": "support_roof_extruder_nr if support_roof_enable else support_infill_extruder_nr",
                             "settable_per_mesh": true
                         },
@@ -3481,7 +3493,7 @@
                             "minimum_value": "0",
                             "maximum_value_warning": "machine_nozzle_size",
                             "default_value": 0.1,
-                            "value": "min(math.ceil(extruderValues('material_adhesion_tendency')) / 2) * layer_height",
+                            "value": "math.ceil(min(extruderValues('material_adhesion_tendency')) / 2) * layer_height",
                             "limit_to_extruder": "support_bottom_extruder_nr if support_bottom_enable else support_infill_extruder_nr",
                             "type": "float",
                             "enabled": "support_enable and resolveOrValue('support_type') == 'everywhere'",
