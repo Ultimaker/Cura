@@ -7,7 +7,8 @@
         "visible": true,
         "author": "Michael Wildermuth",
         "manufacturer": "Creality3D",
-        "file_formats": "text/x-gcode"
+        "file_formats": "text/x-gcode",
+        "preferred_quality": "*Draft*"
     },
     "overrides": {
         "machine_width": {
@@ -24,9 +25,6 @@
         },
         "machine_nozzle_size": {
             "default_value": 0.4
-        },
-        "layer_height": {
-            "default_value": 0.2
         },
         "layer_height_0": {
             "default_value": 0.2
