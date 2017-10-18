@@ -1874,7 +1874,6 @@
                     "minimum_value": "5",
                     "minimum_value_warning": "50",
                     "maximum_value_warning": "150",
-                    "enabled": "machine_gcode_flavor != \"UltiGCode\"",
                     "settable_per_mesh": true
                 },
                 "retraction_enable":
