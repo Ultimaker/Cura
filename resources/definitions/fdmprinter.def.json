@@ -3492,7 +3492,7 @@
                             "default_value": 0.1,
                             "type": "float",
                             "enabled": "support_enable",
-                            "value": "math.ceil(min(extruderValues('material_adhesion_tendency')) / 2 if (layer_height >= 0.2) else 1) * layer_height",
+                            "value": "extruderValue(support_roof_extruder_nr if support_roof_enable else support_infill_extruder_nr, 'support_z_distance')",
                             "limit_to_extruder": "support_roof_extruder_nr if support_roof_enable else support_infill_extruder_nr",
                             "settable_per_mesh": true
                         },
@@ -3504,7 +3504,7 @@
                             "minimum_value": "0",
                             "maximum_value_warning": "machine_nozzle_size",
                             "default_value": 0.1,
-                            "value": "math.ceil(min(extruderValues('material_adhesion_tendency')) / 2) * layer_height",
+                            "value": "extruderValue(support_bottom_extruder_nr if support_bottom_enable else support_infill_extruder_nr, 'support_z_distance') if support_type == 'everywhere' else 0",
                             "limit_to_extruder": "support_bottom_extruder_nr if support_bottom_enable else support_infill_extruder_nr",
                             "type": "float",
                             "enabled": "support_enable and resolveOrValue('support_type') == 'everywhere'",
@@ -3748,7 +3748,6 @@
                     "unit": "%",
                     "type": "float",
                     "default_value": 100,
-                    "value": "min(extruderValues('material_surface_energy'))",
                     "minimum_value": "0",
                     "maximum_value_warning": "100",
                     "limit_to_extruder": "support_interface_extruder_nr",
@@ -3840,7 +3839,6 @@
                         "zigzag": "Zig Zag"
                     },
                     "default_value": "concentric",
-                    "value": "'lines' if support_interface_density < 100 and extruderValue(support_interface_extruder_nr, 'material_adhesion_tendency') < 10 else 'concentric'",
                     "limit_to_extruder": "support_interface_extruder_nr",
                     "enabled": "support_interface_enable and support_enable",
                     "settable_per_mesh": false,
