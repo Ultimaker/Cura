@@ -366,7 +366,7 @@ Item
                     }
                     onEntered:
                     {
-                        var content = catalog.i18nc("@tooltip","You have selected a custom profile. If you want to change it, go to custom mode.")
+                        var content = catalog.i18nc("@tooltip","You have modified some profile settings. If you want to change these go to custom mode.")
                         base.showTooltip(qualityRow, Qt.point(-UM.Theme.getSize("sidebar_margin").width, customisedSettings.height),  content)
                     }
                     onExited: base.hideTooltip()
