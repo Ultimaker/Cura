@@ -5273,6 +5273,17 @@
                     "limit_to_extruder": "infill_extruder_nr",
                     "settable_per_mesh": true
                 },
+                "cross_support_density_image":
+                {
+                    "label": "Cross Fill Density Image for Support",
+                    "description": "The file location of an image of which the brightness values determine the minimal density at the corresponding location in the support.",
+                    "type": "str",
+                    "default_value": "",
+                    "enabled": "infill_pattern == 'cross' or infill_pattern == 'cross_3d'",
+                    "limit_to_extruder": "support_infill_extruder_nr",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
+                },
                 "spaghetti_infill_enabled":
                 {
                     "label": "Spaghetti Infill",
