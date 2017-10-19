@@ -409,12 +409,10 @@ class CuraApplication(QtApplication):
 
     @pyqtSlot(str)
     def discardOrKeepProfileChangesClosed(self, option):
-        self.getMachineManager().activeQualityChanged.emit()
         if option == "discard":
             global_stack = self.getGlobalContainerStack()
             for extruder in ExtruderManager.getInstance().getMachineExtruders(global_stack.getId()):
                 extruder.getTop().clear()
-
             global_stack.getTop().clear()
 
         # if the user decided to keep settings then the user settings should be re-calculated and validated for errors
@@ -423,13 +421,15 @@ class CuraApplication(QtApplication):
             global_stack = self.getGlobalContainerStack()
             for extruder in ExtruderManager.getInstance().getMachineExtruders(global_stack.getId()):
                 user_extruder_container = extruder.getTop()
-
                 if user_extruder_container:
                     user_extruder_container.update()
 
             user_global_container = global_stack.getTop()
             if user_global_container:
                 user_global_container.update()
+
+        # notify listeners that quality has changed (after user selected discard or keep)
+        self.getMachineManager().activeQualityChanged.emit()
 
     @pyqtSlot(int)
     def messageBoxClosed(self, button):
