@@ -16,10 +16,10 @@ class SimpleModeSettingsManager(QObject):
         self._is_profile_user_created = False  # True when profile was custom created by user
 
         self._machine_manager.activeStackValueChanged.connect(self._updateIsProfileCustomized)
-        self._machine_manager.activeStackValueChanged.connect(self._updateIsProfileUserCreated)
+        self._machine_manager.activeQualityChanged.connect(self._updateIsProfileUserCreated)
 
     isProfileCustomizedChanged = pyqtSignal()
-    isProfileUserCreated = pyqtSignal()
+    isProfileUserCreatedChanged = pyqtSignal()
 
     @pyqtProperty(bool, notify = isProfileCustomizedChanged)
     def isProfileCustomized(self):
@@ -52,27 +52,32 @@ class SimpleModeSettingsManager(QObject):
             self._is_profile_customized = has_customized_user_settings
             self.isProfileCustomizedChanged.emit()
 
-    @pyqtProperty(bool, notify = isProfileUserCreated)
+    @pyqtProperty(bool, notify = isProfileUserCreatedChanged)
     def isProfileUserCreated(self):
         return self._is_profile_user_created
 
     def _updateIsProfileUserCreated(self):
+        quality_changes_keys = set()
+
         if not self._machine_manager.activeMachine:
             return False
 
         global_stack = self._machine_manager.activeMachine
 
-        # get all keys present in the quality changes container
-        quality_changes_keys = global_stack.qualityChanges.getAllKeys()
+        # check quality changes settings in the global stack
+        quality_changes_keys.update(set(global_stack.qualityChanges.getAllKeys()))
 
-        # check if the qualityChanges container is not empty (meaning there are user changes)
-        is_profile_user_created = len(quality_changes_keys) > 0
+        # check quality changes settings in the extruder stacks
+        if global_stack.extruders:
+            for extruder_stack in global_stack.extruders.values():
+                quality_changes_keys.update(set(extruder_stack.qualityChanges.getAllKeys()))
 
-        print("is_user_created_profile", global_stack.qualityChanges.getName(), is_profile_user_created)
+        # check if the qualityChanges container is not empty (meaning it is a user created profile)
+        has_quality_changes = len(quality_changes_keys) > 0
 
-        if is_profile_user_created != self._is_profile_user_created:
-            self._is_profile_user_created = is_profile_user_created
-            self.isProfileUserCreated.emit()
+        if has_quality_changes != self._is_profile_user_created:
+            self._is_profile_user_created = has_quality_changes
+            self.isProfileUserCreatedChanged.emit()
 
     # These are the settings included in the Simple ("Recommended") Mode, so only when the other settings have been
     # changed, we consider it as a user customized profile in the Simple ("Recommended") Mode.
