@@ -55,15 +55,15 @@
             "icon": "category_machine",
             "children":
             {
-                "blackbelt_z_offset":
+                "blackbelt_z_offset_gap":
                 {
                     "label": "Belt Offset",
-                    "description": "The offset to the belt (0.1 = big gap, 0.3 = small gap)",
+                    "description": "The gap between the nozzle and the belt (0.3 = big gap, 0.1 = small gap)",
                     "type": "float",
                     "unit": "mm",
                     "default_value": 0.2,
                     "minimum_value": "0",
-                    "maximum_value_warning": "machine_nozzle_size",
+                    "maximum_value": "0.4",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false
                 },
@@ -96,6 +96,19 @@
                         "45": "45°"
                     },
                     "default_value": "45",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false
+                },
+                "blackbelt_z_offset":
+                {
+                    "label": "Belt Offset",
+                    "description": "The offset to the belt (0.1 = big gap, 0.3 = small gap)",
+                    "type": "float",
+                    "unit": "mm",
+                    "default_value": 0.2,
+                    "value": "0.4 - blackbelt_z_offset_gap",
+                    "minimum_value": "0",
+                    "maximum_value_warning": "machine_nozzle_size",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false
                 }
@@ -222,6 +235,9 @@
             "value": "line_width + 0.1"
         },
         "skin_line_width": {
+            "value": "line_width"
+        },
+        "infill_line_width": {
             "value": "line_width + 0.2"
         },
         "skin_preshrink": {
