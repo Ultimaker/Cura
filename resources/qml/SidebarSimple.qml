@@ -291,7 +291,7 @@ Item
                                     implicitWidth: 10 * screenScaleFactor
                                     implicitHeight: implicitWidth
                                     radius: implicitWidth / 2
-                                    visible: !Cura.SimpleModeSettingsManager.isProfileCustomized;
+                                    visible: !Cura.SimpleModeSettingsManager.isProfileCustomized && !Cura.SimpleModeSettingsManager.isProfileUserCreated
                                 }
                             }
                         }
