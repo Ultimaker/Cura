@@ -229,6 +229,18 @@
         },
         "expand_skins_expand_distance": {
             "value": "0"
+        },
+        "retraction_extrusion_window": {
+            "value": "3"
+        },
+        "retraction_min_travel": {
+            "value": "0.8"
+        },
+        "cool_fan_speed": {
+            "value": "0"
+        },
+        "z_seam_type": {
+            "value": "'shortest'"
         }
     }
 }
