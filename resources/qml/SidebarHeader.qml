@@ -277,10 +277,10 @@ Column
         }
     }
 
-    // Print core row
+    //Variant row
     Item
     {
-        id: printCoreRow
+        id: variantRow
         height: UM.Theme.getSize("sidebar_setup").height
         visible: Cura.MachineManager.hasVariants && !sidebar.monitoringPrint && !sidebar.hideSettings
 
@@ -294,7 +294,7 @@ Column
 
         Label
         {
-            id: printCoreLabel
+            id: variantLabel
             text: Cura.MachineManager.activeDefinitionVariantsName;
             width: Math.floor(parent.width * 0.45 - UM.Theme.getSize("default_margin").width)
             font: UM.Theme.getFont("default");
@@ -302,7 +302,7 @@ Column
         }
 
         ToolButton {
-            id: printCoreSelection
+            id: variantSelection
             text: Cura.MachineManager.activeVariantName
             tooltip: Cura.MachineManager.activeVariantName;
             visible: Cura.MachineManager.hasVariants
