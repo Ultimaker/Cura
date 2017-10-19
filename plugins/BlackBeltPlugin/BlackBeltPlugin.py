@@ -1,6 +1,7 @@
 from UM.Extension import Extension
 from UM.Application import Application
 from UM.Preferences import Preferences
+from UM.Settings.ContainerRegistry import ContainerRegistry
 
 from UM.Scene.SceneNodeDecorator import SceneNodeDecorator
 from UM.Math.Matrix import Matrix
@@ -52,6 +53,14 @@ class BlackBeltPlugin(Extension):
             definition_container = self._global_container_stack.getBottom()
             if definition_container._definitions[len(definition_container._definitions) -1].key == "blackbelt_settings":
                 definition_container._definitions.insert(0, definition_container._definitions.pop(len(definition_container._definitions) -1))
+
+            # HOTFIX: Make sure the BlackBelt printer has the right quality profile
+            if definition_container.getId() == "blackbelt":
+                quality_container = self._global_container_stack.quality
+                if quality_container.getDefinition().getId() != "blackbelt":
+                    containers = ContainerRegistry.getInstance().findContainers(None, id="blackbelt_normal")
+                    if containers:
+                        self._global_container_stack.quality = containers[0]
 
     def _onSlicingStarted(self):
         self._scene_root.callDecoration("calculateTransformData")
