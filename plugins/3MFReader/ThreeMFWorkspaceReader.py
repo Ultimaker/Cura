@@ -651,13 +651,13 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
 
                 # HACK
                 # There is a machine, check if it has authentication data. If so, keep that data.
-                network_authentication_id = container_stacks[0].getMetaDataEntry("network_authentication_id")
-                network_authentication_key = container_stacks[0].getMetaDataEntry("network_authentication_key")
-                container_stacks[0].deserialize(archive.open(global_stack_file).read().decode("utf-8"))
+                network_authentication_id = stack.getMetaDataEntry("network_authentication_id")
+                network_authentication_key = stack.getMetaDataEntry("network_authentication_key")
+                stack.deserialize(archive.open(global_stack_file).read().decode("utf-8"))
                 if network_authentication_id:
-                    container_stacks[0].addMetaDataEntry("network_authentication_id", network_authentication_id)
+                    stack.addMetaDataEntry("network_authentication_id", network_authentication_id)
                 if network_authentication_key:
-                    container_stacks[0].addMetaDataEntry("network_authentication_key", network_authentication_key)
+                    stack.addMetaDataEntry("network_authentication_key", network_authentication_key)
 
             elif self._resolve_strategies["machine"] == "new":
                 # create a new global stack
