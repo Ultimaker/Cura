@@ -89,14 +89,14 @@ Item
                         var availableMin = -1
                         var availableMax = -1
 
-                        for (var i = 0; i <= Cura.ProfilesModel.rowCount(); i++) {
+                        for (var i = 0; i < Cura.ProfilesModel.rowCount(); i++) {
                             var qualityItem = Cura.ProfilesModel.getItem(i)
 
                             // Add each quality item to the UI quality model
                             qualityModel.append(qualityItem)
 
                             // Set selected value
-                            if (Cura.MachineManager.activeQualityId == qualityItem.id) {
+                            if (Cura.MachineManager.activeQualityType == qualityItem.metadata.quality_type) {
                                 qualityModel.activeQualityIndex = i
                             }
 
@@ -143,14 +143,7 @@ Item
                         qualityModel.availableTotalTicks = -1
 
                         // check, the ticks count cannot be less than zero
-                        if(Cura.ProfilesModel.rowCount() != 0)
-                        {
-                            qualityModel.totalTicks = Cura.ProfilesModel.rowCount() - 1  // minus one, because slider starts from 0
-                        }
-                        else
-                        {
-                            qualityModel.totalTicks = 0
-                        }
+                        qualityModel.totalTicks = Math.max(0, Cura.ProfilesModel.rowCount() - 1)
                     }
                 }
 
