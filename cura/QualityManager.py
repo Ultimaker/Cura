@@ -209,11 +209,13 @@ class QualityManager:
             definition_id = "fdmprinter"
         if base_material:
             # There is a basic material specified
-            criteria = { "type": "material", "name": base_material, "definition": definition_id }
+            criteria = {
+                "type": "material",
+                "name": base_material,
+                "definition": definition_id,
+                "variant": material_container.getMetadataEntry("variant")
+            }
             containers = ContainerRegistry.getInstance().findInstanceContainers(**criteria)
-            containers = [basic_material for basic_material in containers if
-                               basic_material.getMetaDataEntry("variant") == material_container.getMetaDataEntry(
-                                   "variant")]
             return containers
 
         return []
