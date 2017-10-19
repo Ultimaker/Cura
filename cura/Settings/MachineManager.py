@@ -858,8 +858,10 @@ class MachineManager(QObject):
             for stack in name_changed_connect_stacks:
                 stack.nameChanged.connect(self._onQualityNameChanged)
 
+            has_user_interaction = False
             if self.hasUserSettings and Preferences.getInstance().getValue("cura/active_mode") == 1:
-                self._askUserToKeepOrClearCurrentSettings()
+                # Show the keep/discard user settings dialog
+                has_user_interaction = Application.getInstance().discardOrKeepProfileChanges()
             else:
                 # If the user doesn't have any of adjusted settings then slicing will be triggered by emit()
                 # Send emits that are postponed in replaceContainer.
@@ -867,7 +869,8 @@ class MachineManager(QObject):
                 for setting_info in new_quality_settings_list:
                     setting_info["stack"].sendPostponedEmits()
 
-            self.activeQualityChanged.emit()
+            if not has_user_interaction:
+                self.activeQualityChanged.emit()
 
     ##  Determine the quality and quality changes settings for the current machine for a quality name.
     #
@@ -985,9 +988,6 @@ class MachineManager(QObject):
             stack.setQualityChanges(container, postpone_emit = postpone_emit)
             stack.qualityChanges.nameChanged.connect(self._onQualityNameChanged)
         self._onQualityNameChanged()
-
-    def _askUserToKeepOrClearCurrentSettings(self):
-        Application.getInstance().discardOrKeepProfileChanges()
 
     @pyqtProperty(str, notify = activeVariantChanged)
     def activeVariantName(self) -> str:

@@ -393,6 +393,7 @@ class CuraApplication(QtApplication):
     showDiscardOrKeepProfileChanges = pyqtSignal()
 
     def discardOrKeepProfileChanges(self):
+        has_user_interaction = False
         choice = Preferences.getInstance().getValue("cura/choice_on_profile_override")
         if choice == "always_discard":
             # don't show dialog and DISCARD the profile
@@ -403,11 +404,12 @@ class CuraApplication(QtApplication):
         else:
             # ALWAYS ask whether to keep or discard the profile
             self.showDiscardOrKeepProfileChanges.emit()
-
-    #sidebarSimpleDiscardOrKeepProfileChanges = pyqtSignal()
+            has_user_interaction = True
+        return has_user_interaction
 
     @pyqtSlot(str)
     def discardOrKeepProfileChangesClosed(self, option):
+        self.getMachineManager().activeQualityChanged.emit()
         if option == "discard":
             global_stack = self.getGlobalContainerStack()
             for extruder in ExtruderManager.getInstance().getMachineExtruders(global_stack.getId()):
