@@ -871,7 +871,7 @@ class MachineManager(QObject):
                     setting_info["stack"].sendPostponedEmits()
 
             if not has_user_interaction:
-                self.activeQualityChanged.emit()
+                    self.activeQualityChanged.emit()
 
     ##  Determine the quality and quality changes settings for the current machine for a quality name.
     #
