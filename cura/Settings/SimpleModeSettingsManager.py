@@ -18,6 +18,10 @@ class SimpleModeSettingsManager(QObject):
         self._machine_manager.activeStackValueChanged.connect(self._updateIsProfileCustomized)
         self._machine_manager.activeQualityChanged.connect(self._updateIsProfileUserCreated)
 
+        # update on create as the activeQualityChanged signal is emitted before this manager is created when Cura starts
+        self._updateIsProfileCustomized()
+        self._updateIsProfileUserCreated()
+
     isProfileCustomizedChanged = pyqtSignal()
     isProfileUserCreatedChanged = pyqtSignal()
 
