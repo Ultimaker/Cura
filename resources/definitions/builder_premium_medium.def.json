@@ -13,7 +13,7 @@
         "platform": "builder_premium_platform.stl",
         "platform_offset": [-126, -36, 117],
         "has_machine_quality": true,
-        "preferred_quality": "*normal*",
+        "preferred_quality": "*Normal*",
         "machine_extruder_trains":
         {
             "0": "builder_premium_medium_rear",
@@ -34,8 +34,7 @@
         "infill_pattern": {"value": "'triangles'" },
         "infill_before_walls": {"value": false },
 
-        "material_print_temperature": {"value": 215 },
-        "default_material_print_temperature": { "default_value": 215 },
+        "default_material_print_temperature": { "value": "215" },
         "material_print_temperature_layer_0": { "value": "material_print_temperature + 5" },
         "material_standby_temperature": { "value": "material_print_temperature" },
 		
