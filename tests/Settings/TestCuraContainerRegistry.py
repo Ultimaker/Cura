@@ -140,8 +140,8 @@ def test_loadTypes(filename, output_class, container_registry):
 
     #Check whether the resulting type was correct.
     stack_id = filename.split(".")[0]
-    for container in container_registry._containers: #Stupid ContainerRegistry class doesn't expose any way of getting at this except by prodding the privates.
-        if container.getId() == stack_id: #This is the one we're testing.
+    for container_id, container in container_registry._containers.items(): #Stupid ContainerRegistry class doesn't expose any way of getting at this except by prodding the privates.
+        if container_id == stack_id: #This is the one we're testing.
             assert type(container) == output_class
             break
     else:

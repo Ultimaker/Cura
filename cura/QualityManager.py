@@ -1,4 +1,4 @@
-# Copyright (c) 2016 Ultimaker B.V.
+# Copyright (c) 2017 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 # This collects a lot of quality and quality changes related code which was split between ContainerManager
@@ -229,7 +229,7 @@ class QualityManager:
             machine_definition = Application.getInstance().getGlobalContainerStack().getBottom()
             quality_definition_id = machine_definition.getMetaDataEntry("quality_definition")
             if quality_definition_id is not None:
-                machine_definition = ContainerRegistry.getInstance().findDefinitionContainers(id=quality_definition_id)[0]
+                machine_definition = ContainerRegistry.getInstance().findDefinitionContainers(id = quality_definition_id)[0]
 
         # for convenience
         if material_containers is None:
@@ -245,7 +245,7 @@ class QualityManager:
 
         machine_definition = self.getParentMachineDefinition(machine_definition)
         criteria["definition"] = machine_definition.getId()
-        found_containers_with_machine_definition = ContainerRegistry.getInstance().findInstanceContainers(**criteria)
+        found_containers_with_machine_definition = ContainerRegistry.getInstance().findInstanceContainersMetadata(**criteria)
         whole_machine_definition = self.getWholeMachineDefinition(machine_definition)
         if whole_machine_definition.getMetaDataEntry("has_machine_quality"):
             definition_id = machine_definition.getMetaDataEntry("quality_definition", whole_machine_definition.getId())
@@ -290,13 +290,13 @@ class QualityManager:
             # We have a normal (whole) machine defintion
             quality_definition = machine_definition.getMetaDataEntry("quality_definition")
             if quality_definition is not None:
-                parent_machine_definition = container_registry.findDefinitionContainers(id=quality_definition)[0]
+                parent_machine_definition = container_registry.findDefinitionContainers(id = quality_definition)[0]
                 return self.getParentMachineDefinition(parent_machine_definition)
             else:
                 return machine_definition
         else:
             # This looks like an extruder. Find the rest of the machine.
-            whole_machine = container_registry.findDefinitionContainers(id=machine_entry)[0]
+            whole_machine = container_registry.findDefinitionContainers(id = machine_entry)[0]
             parent_machine = self.getParentMachineDefinition(whole_machine)
             if whole_machine is parent_machine:
                 # This extruder already belongs to a 'parent' machine def.
@@ -305,7 +305,7 @@ class QualityManager:
                 # Look up the corresponding extruder definition in the parent machine definition.
                 extruder_position = machine_definition.getMetaDataEntry("position")
                 parent_extruder_id = parent_machine.getMetaDataEntry("machine_extruder_trains")[extruder_position]
-                return container_registry.findDefinitionContainers(id=parent_extruder_id)[0]
+                return container_registry.findDefinitionContainers(id = parent_extruder_id)[0]
 
     ##  Get the whole/global machine definition from an extruder definition.
     #
@@ -319,5 +319,5 @@ class QualityManager:
             return machine_definition
         else:
             container_registry = ContainerRegistry.getInstance()
-            whole_machine = container_registry.findDefinitionContainers(id=machine_entry)[0]
+            whole_machine = container_registry.findDefinitionContainers(id = machine_entry)[0]
             return whole_machine

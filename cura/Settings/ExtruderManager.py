@@ -222,7 +222,7 @@ class ExtruderManager(QObject):
                 position = extruder_definition.getMetaDataEntry("position", None)
                 if not position:
                     Logger.log("w", "Extruder definition %s specifies no position metadata entry.", extruder_definition.getId())
-                if not container_registry.findContainerStacks(machine = machine_id, position = position): # Doesn't exist yet.
+                if not container_registry.findContainerStacksMetadata(machine = machine_id, position = position): # Doesn't exist yet.
                     self.createExtruderTrain(extruder_definition, machine_definition, position, machine_id)
                     changed = True
 
@@ -357,13 +357,13 @@ class ExtruderManager(QObject):
         if preferred_quality:
             search_criteria["id"] = preferred_quality
 
-        containers = ContainerRegistry.getInstance().findInstanceContainers(**search_criteria)
-        if not containers and preferred_quality:
+        quality_containers = ContainerRegistry.getInstance().findInstanceContainers(**search_criteria)
+        if not quality_containers and preferred_quality:
             Logger.log("w", "The preferred quality \"%s\" of machine %s doesn't exist or is not a quality profile.", preferred_quality, machine_id)
             search_criteria.pop("id", None)
-            containers = ContainerRegistry.getInstance().findInstanceContainers(**search_criteria)
-        if containers:
-            quality = containers[0]
+            quality_containers = ContainerRegistry.getInstance().findInstanceContainers(**search_criteria)
+        if quality_containers:
+            quality = quality_containers[0]
 
         container_stack.addContainer(quality)
 

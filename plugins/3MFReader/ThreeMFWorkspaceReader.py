@@ -130,7 +130,6 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         # A few lists of containers in this project files.
         # When loading the global stack file, it may be associated with those containers, which may or may not be
         # in Cura already, so we need to provide them as alternative search lists.
-        definition_container_list = []
         instance_container_list = []
         material_container_list = []
 
@@ -146,20 +145,20 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         definition_container_files = [name for name in cura_file_names if name.endswith(self._definition_container_suffix)]
         for each_definition_container_file in definition_container_files:
             container_id = self._stripFileToId(each_definition_container_file)
-            definitions = self._container_registry.findDefinitionContainers(id=container_id)
+            definitions = self._container_registry.findDefinitionContainersMetadata(id = container_id)
 
             if not definitions:
                 definition_container = DefinitionContainer(container_id)
                 definition_container.deserialize(archive.open(each_definition_container_file).read().decode("utf-8"))
+                definition_container = definition_container.getMetaData()
 
             else:
                 definition_container = definitions[0]
-            definition_container_list.append(definition_container)
 
-            definition_container_type = definition_container.getMetaDataEntry("type")
+            definition_container_type = definition_container.get("type")
             if definition_container_type == "machine":
-                machine_type = definition_container.getName()
-                variant_type_name = definition_container.getMetaDataEntry("variants_name", variant_type_name)
+                machine_type = definition_container["name"]
+                variant_type_name = definition_container.get("variants_name", variant_type_name)
 
                 machine_definition_container_count += 1
             elif definition_container_type == "extruder":
@@ -456,7 +455,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         extruder_stack_id_map = {}  # new and old ExtruderStack IDs map
         if self._resolve_strategies["machine"] == "new":
             # We need a new id if the id already exists
-            if self._container_registry.findContainerStacks(id = global_stack_id_original):
+            if self._container_registry.findContainerStacksMetadata(id = global_stack_id_original):
                 global_stack_id_new = self.getNewId(global_stack_id_original)
                 global_stack_need_rename = True
 
@@ -465,7 +464,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             for each_extruder_stack_file in extruder_stack_files:
                 old_container_id = self._stripFileToId(each_extruder_stack_file)
                 new_container_id = old_container_id
-                if self._container_registry.findContainerStacks(id = old_container_id):
+                if self._container_registry.findContainerStacksMetadata(id = old_container_id):
                     # get a new name for this extruder
                     new_container_id = self.getNewId(old_container_id)
 
@@ -479,7 +478,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         definition_container_files = [name for name in cura_file_names if name.endswith(self._definition_container_suffix)]
         for definition_container_file in definition_container_files:
             container_id = self._stripFileToId(definition_container_file)
-            definitions = self._container_registry.findDefinitionContainers(id = container_id)
+            definitions = self._container_registry.findDefinitionContainersMetadata(id = container_id)
             if not definitions:
                 definition_container = DefinitionContainer(container_id)
                 definition_container.deserialize(archive.open(definition_container_file).read().decode("utf-8"))
@@ -626,7 +625,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                         pass
                 quality_and_definition_changes_instance_containers.append(instance_container)
             else:
-                existing_container = self._container_registry.findInstanceContainers(id = container_id)
+                existing_container = self._container_registry.findInstanceContainersMetadata(id = container_id)
                 if not existing_container:
                     containers_to_add.append(instance_container)
             if global_stack_need_rename:

@@ -3,7 +3,7 @@
 
 from UM.Logger import Logger
 
-from UM.Settings.DefinitionContainer import DefinitionContainer
+from UM.Settings.Interfaces import DefinitionContainerInterface
 from UM.Settings.InstanceContainer import InstanceContainer
 from UM.Settings.ContainerRegistry import ContainerRegistry
 
@@ -34,7 +34,7 @@ class CuraStackBuilder:
         # Make sure the new name does not collide with any definition or (quality) profile
         # createUniqueName() only looks at other stacks, but not at definitions or quality profiles
         # Note that we don't go for uniqueName() immediately because that function matches with ignore_case set to true
-        if registry.findContainers(id = generated_name):
+        if registry.findContainersMetadata(id = generated_name):
             generated_name = registry.uniqueName(generated_name)
 
         new_global_stack = cls.createGlobalStack(
@@ -74,7 +74,7 @@ class CuraStackBuilder:
     #
     #   \return A new Global stack instance with the specified parameters.
     @classmethod
-    def createExtruderStack(cls, new_stack_id: str, definition: DefinitionContainer, machine_definition: DefinitionContainer, **kwargs) -> ExtruderStack:
+    def createExtruderStack(cls, new_stack_id: str, definition: DefinitionContainerInterface, machine_definition: DefinitionContainerInterface, **kwargs) -> ExtruderStack:
         stack = ExtruderStack(new_stack_id)
         stack.setName(definition.getName())
         stack.setDefinition(definition)
@@ -127,7 +127,7 @@ class CuraStackBuilder:
     #
     #   \return A new Global stack instance with the specified parameters.
     @classmethod
-    def createGlobalStack(cls, new_stack_id: str, definition: DefinitionContainer, **kwargs) -> GlobalStack:
+    def createGlobalStack(cls, new_stack_id: str, definition: DefinitionContainerInterface, **kwargs) -> GlobalStack:
         stack = GlobalStack(new_stack_id)
         stack.setDefinition(definition)
 

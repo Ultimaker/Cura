@@ -125,8 +125,12 @@ class ProfilesModel(InstanceContainersModel):
         # active machine and material, and later yield the right ones.
         tmp_all_quality_items = OrderedDict()
         for item in super()._recomputeItems():
-            profile = container_registry.findContainers(id=item["id"])
-            quality_type = profile[0].getMetaDataEntry("quality_type") if profile else ""
+
+            profiles = container_registry.findContainersMetadata(id = item["id"])
+            if not profiles or "quality_type" not in profiles[0]:
+                quality_type = ""
+            else:
+                quality_type = profiles[0]["quality_type"]
 
             if quality_type not in tmp_all_quality_items:
                 tmp_all_quality_items[quality_type] = {"suitable_container": None, "all_containers": []}
@@ -155,7 +159,7 @@ class ProfilesModel(InstanceContainersModel):
 
         # Now all the containers are set
         for item in containers:
-            profile = container_registry.findContainers(id=item["id"])
+            profile = container_registry.findContainers(id = item["id"])
             if not profile:
                 self._setItemLayerHeight(item, "", unit)
                 item["available"] = False

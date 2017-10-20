@@ -95,18 +95,6 @@ class XmlMaterialProfile(InstanceContainer):
                     base_container.setDirty(dirty)
 
     ##  Overridden from InstanceContainer
-    # def setProperty(self, key, property_name, property_value, container = None):
-    #     if self.isReadOnly():
-    #         return
-    #
-    #     super().setProperty(key, property_name, property_value)
-    #
-    #     basefile = self.getMetaDataEntry("base_file", self._id)  #if basefile is self.id, this is a basefile.
-    #     for container in UM.Settings.ContainerRegistry.ContainerRegistry.getInstance().findInstanceContainers(base_file = basefile):
-    #         if not container.isReadOnly():
-    #             container.setDirty(True)
-
-    ##  Overridden from InstanceContainer
     # base file: common settings + supported machines
     # machine / variant combination: only changes for itself.
     def serialize(self, ignored_metadata_keys: Optional[List] = None):
@@ -222,8 +210,8 @@ class XmlMaterialProfile(InstanceContainer):
 
         # Map machine human-readable names to IDs
         product_id_map = {}
-        for container in registry.findDefinitionContainers(type = "machine"):
-            product_id_map[container.getName()] = container.getId()
+        for container in registry.findDefinitionContainersMetadata(type = "machine"):
+            product_id_map[container["name"]] = container["id"]
 
         for definition_id, container in machine_container_map.items():
             definition = container.getDefinition()
@@ -249,11 +237,11 @@ class XmlMaterialProfile(InstanceContainer):
 
             # Find all hotend sub-profiles corresponding to this material and machine and add them to this profile.
             for hotend_id, hotend in machine_nozzle_map[definition_id].items():
-                variant_containers = registry.findInstanceContainers(id = hotend.getMetaDataEntry("variant"))
+                variant_containers = registry.findInstanceContainersMetadata(id = hotend.getMetaDataEntry("variant"))
                 if not variant_containers:
                     continue
 
-                builder.start("hotend", {"id": variant_containers[0].getName()})
+                builder.start("hotend", {"id": variant_containers[0]["id"]})
 
                 # Compatible is a special case, as it's added as a meta data entry (instead of an instance).
                 compatible = hotend.getMetaDataEntry("compatible")
@@ -519,8 +507,8 @@ class XmlMaterialProfile(InstanceContainer):
 
         # Map machine human-readable names to IDs
         product_id_map = {}
-        for container in ContainerRegistry.getInstance().findDefinitionContainers(type = "machine"):
-            product_id_map[container.getName()] = container.getId()
+        for container in ContainerRegistry.getInstance().findDefinitionContainersMetadata(type = "machine"):
+            product_id_map[container["name"]] = container["id"]
 
         machines = data.iterfind("./um:settings/um:machine", self.__namespaces)
         for machine in machines:
@@ -592,10 +580,10 @@ class XmlMaterialProfile(InstanceContainer):
                     if hotend_id is None:
                         continue
 
-                    variant_containers = ContainerRegistry.getInstance().findInstanceContainers(id = hotend_id)
+                    variant_containers = ContainerRegistry.getInstance().findInstanceContainersMetadata(id = hotend_id)
                     if not variant_containers:
                         # It is not really properly defined what "ID" is so also search for variants by name.
-                        variant_containers = ContainerRegistry.getInstance().findInstanceContainers(definition = definition.id, name = hotend_id)
+                        variant_containers = ContainerRegistry.getInstance().findInstanceContainersMetadata(definition = definition.id, name = hotend_id)
 
                     if not variant_containers:
                         #Logger.log("d", "No variants found with ID or name %s for machine %s", hotend_id, definition.id)
@@ -630,7 +618,7 @@ class XmlMaterialProfile(InstanceContainer):
                     new_hotend_material._name = self.getName()
                     new_hotend_material.setMetaData(copy.deepcopy(self.getMetaData()))
                     new_hotend_material.setDefinition(definition)
-                    new_hotend_material.addMetaDataEntry("variant", variant_containers[0].id)
+                    new_hotend_material.addMetaDataEntry("variant", variant_containers[0]["id"])
                     # Don't use setMetadata, as that overrides it for all materials with same base file
                     new_hotend_material.getMetaData()["compatible"] = hotend_compatibility
                     new_hotend_material.getMetaData()["machine_manufacturer"] = machine_manufacturer

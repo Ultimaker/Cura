@@ -95,7 +95,7 @@ class MachineManager(QObject):
         # There might already be some output devices by the time the signal is connected
         self._onOutputDevicesChanged()
 
-        if active_machine_id != "" and ContainerRegistry.getInstance().findContainerStacks(id = active_machine_id):
+        if active_machine_id != "" and ContainerRegistry.getInstance().findContainerStacksMetadata(id = active_machine_id):
             # An active machine was saved, so restore it.
             self.setActiveMachine(active_machine_id)
             if self._global_container_stack and self._global_container_stack.getProperty("machine_extruder_count", "value") > 1:
@@ -145,13 +145,13 @@ class MachineManager(QObject):
 
     @pyqtProperty(int, constant=True)
     def totalNumberOfSettings(self) -> int:
-        return len(ContainerRegistry.getInstance().findDefinitionContainers(id="fdmprinter")[0].getAllKeys())
+        return len(ContainerRegistry.getInstance().findDefinitionContainers(id = "fdmprinter")[0].getAllKeys())
 
     def _onHotendIdChanged(self, index: Union[str, int], hotend_id: str) -> None:
         if not self._global_container_stack:
             return
 
-        containers = ContainerRegistry.getInstance().findInstanceContainers(type="variant", definition=self._global_container_stack.getBottom().getId(), name=hotend_id)
+        containers = ContainerRegistry.getInstance().findInstanceContainersMetadata(type="variant", definition=self._global_container_stack.getBottom().getId(), name=hotend_id)
         if containers:  # New material ID is known
             extruder_manager = ExtruderManager.getInstance()
             machine_id = self.activeMachineId
@@ -163,7 +163,7 @@ class MachineManager(QObject):
                     break
             if matching_extruder and matching_extruder.variant.getName() != hotend_id:
                 # Save the material that needs to be changed. Multiple changes will be handled by the callback.
-                self._auto_hotends_changed[str(index)] = containers[0].getId()
+                self._auto_hotends_changed[str(index)] = containers[0]["id"]
                 self._printer_output_devices[0].materialHotendChangedMessage(self._materialHotendChangedCallback)
         else:
             Logger.log("w", "No variant found for printer definition %s with id %s" % (self._global_container_stack.getBottom().getId(), hotend_id))
@@ -176,7 +176,7 @@ class MachineManager(QObject):
         if self._global_container_stack.getMetaDataEntry("has_machine_materials", False):
             definition_id = self.activeQualityDefinitionId
         extruder_manager = ExtruderManager.getInstance()
-        containers = ContainerRegistry.getInstance().findInstanceContainers(type = "material", definition = definition_id, GUID = material_id)
+        containers = ContainerRegistry.getInstance().findInstanceContainersMetadata(type = "material", definition = definition_id, GUID = material_id)
         if containers:  # New material ID is known
             extruders = list(extruder_manager.getMachineExtruders(self.activeMachineId))
             matching_extruder = None
@@ -190,12 +190,12 @@ class MachineManager(QObject):
                 if self._global_container_stack.getBottom().getMetaDataEntry("has_variants") and matching_extruder.variant:
                     variant_id = self.getQualityVariantId(self._global_container_stack.getBottom(), matching_extruder.variant)
                     for container in containers:
-                        if container.getMetaDataEntry("variant") == variant_id:
-                            self._auto_materials_changed[str(index)] = container.getId()
+                        if container.get("variant") == variant_id:
+                            self._auto_materials_changed[str(index)] = container["id"]
                             break
                 else:
                     # Just use the first result we found.
-                    self._auto_materials_changed[str(index)] = containers[0].getId()
+                    self._auto_materials_changed[str(index)] = containers[0]["id"]
                 self._printer_output_devices[0].materialHotendChangedMessage(self._materialHotendChangedCallback)
         else:
             Logger.log("w", "No material definition found for printer definition %s and GUID %s" % (definition_id, material_id))
@@ -818,7 +818,7 @@ class MachineManager(QObject):
         with postponeSignals(*self._getContainerChangedSignals(), compress = CompressTechnique.CompressPerParameterValue):
             self.blurSettings.emit()
 
-            containers = ContainerRegistry.getInstance().findInstanceContainers(id = quality_id)
+            containers = ContainerRegistry.getInstance().findInstanceContainersMetadata(id = quality_id)
             if not containers or not self._global_container_stack:
                 return
 
@@ -826,9 +826,9 @@ class MachineManager(QObject):
 
             # Quality profile come in two flavours: type=quality and type=quality_changes
             # If we found a quality_changes profile then look up its parent quality profile.
-            container_type = containers[0].getMetaDataEntry("type")
-            quality_name = containers[0].getName()
-            quality_type = containers[0].getMetaDataEntry("quality_type")
+            container_type = containers[0].get("type")
+            quality_name = containers[0]["name"]
+            quality_type = containers[0].get("quality_type")
 
             # Get quality container and optionally the quality_changes container.
             if container_type == "quality":
@@ -1091,15 +1091,15 @@ class MachineManager(QObject):
 
         # activate a new machine before removing a machine because this is safer
         if activate_new_machine:
-            machine_stacks = ContainerRegistry.getInstance().findContainerStacks(type = "machine")
-            other_machine_stacks = [s for s in machine_stacks if s.getId() != machine_id]
+            machine_stacks = ContainerRegistry.getInstance().findContainerStacksMetadata(type = "machine")
+            other_machine_stacks = [s for s in machine_stacks if s["id"] != machine_id]
             if other_machine_stacks:
-                self.setActiveMachine(other_machine_stacks[0].getId())
+                self.setActiveMachine(other_machine_stacks[0]["id"])
 
         ExtruderManager.getInstance().removeMachineExtruders(machine_id)
-        containers = ContainerRegistry.getInstance().findInstanceContainers(type = "user", machine = machine_id)
+        containers = ContainerRegistry.getInstance().findInstanceContainersMetadata(type = "user", machine = machine_id)
         for container in containers:
-            ContainerRegistry.getInstance().removeContainer(container.getId())
+            ContainerRegistry.getInstance().removeContainer(container["id"])
         ContainerRegistry.getInstance().removeContainer(machine_id)
 
     @pyqtProperty(bool, notify = globalContainerChanged)
@@ -1138,7 +1138,7 @@ class MachineManager(QObject):
     #   \returns DefinitionID (string) if found, None otherwise
     @pyqtSlot(str, result = str)
     def getDefinitionByMachineId(self, machine_id: str) -> str:
-        containers = ContainerRegistry.getInstance().findContainerStacks(id=machine_id)
+        containers = ContainerRegistry.getInstance().findContainerStacks(id = machine_id)
         if containers:
             return containers[0].getBottom().getId()
 
