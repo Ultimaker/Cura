@@ -1,5 +1,5 @@
 //Copyright (c) 2017 Ultimaker B.V.
-//Cura is released under the terms of the AGPLv3 or higher.
+//Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.1
 import QtQuick.Controls 1.1
@@ -67,7 +67,7 @@ UM.ManagementPage
             }
             Label
             {
-                width: (parent.width * 0.3) | 0
+                width: Math.floor((parent.width * 0.3))
                 text: model.metadata.material
                 elide: Text.ElideRight
                 font.italic: model.id == activeId

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 # Copyright (c) 2015 Ultimaker B.V.
-# Cura is released under the terms of the AGPLv3 or higher.
+# Cura is released under the terms of the LGPLv3 or higher.
 import os
 import sys
 import platform
@@ -41,8 +41,9 @@ if "PYTHONPATH" in os.environ.keys():                       # If PYTHONPATH is u
         sys.path.insert(1, PATH_real)                       # Insert it at 1 after os.curdir, which is 0.
 
 def exceptHook(hook_type, value, traceback):
-    import cura.CrashHandler
-    cura.CrashHandler.show(hook_type, value, traceback)
+    from cura.CrashHandler import CrashHandler
+    _crash_handler = CrashHandler(hook_type, value, traceback)
+    _crash_handler.show()
 
 sys.excepthook = exceptHook
 

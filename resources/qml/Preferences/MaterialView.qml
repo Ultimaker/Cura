@@ -1,5 +1,5 @@
 // Copyright (c) 2017 Ultimaker B.V.
-// Cura is released under the terms of the AGPLv3 or higher.
+// Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.1
 import QtQuick.Controls 1.3
@@ -16,8 +16,8 @@ TabView
 
     property bool editingEnabled: false;
     property string currency: UM.Preferences.getValue("cura/currency") ? UM.Preferences.getValue("cura/currency") : "€"
-    property real firstColumnWidth: (width * 0.45) | 0
-    property real secondColumnWidth: (width * 0.45) | 0
+    property real firstColumnWidth: (width * 0.50) | 0
+    property real secondColumnWidth: (width * 0.40) | 0
     property string containerId: ""
     property var materialPreferenceValues: UM.Preferences.getValue("cura/material_settings") ? JSON.parse(UM.Preferences.getValue("cura/material_settings")) : {}
 
@@ -108,15 +108,15 @@ TabView
                 {
                     width: scrollView.columnWidth;
                     height:  parent.rowHeight;
-                    spacing: UM.Theme.getSize("default_margin").width/2
+                    spacing: Math.floor(UM.Theme.getSize("default_margin").width/2)
 
                     Rectangle
                     {
                         id: colorSelector
                         color: properties.color_code
 
-                        width: (colorLabel.height * 0.75) | 0
-                        height: (colorLabel.height * 0.75) | 0
+                        width: Math.floor(colorLabel.height * 0.75)
+                        height: Math.floor(colorLabel.height * 0.75)
                         border.width: UM.Theme.getSize("default_lining").height
 
                         anchors.verticalCenter: parent.verticalCenter

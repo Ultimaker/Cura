@@ -1,5 +1,5 @@
 // Copyright (c) 2016 Ultimaker B.V.
-// Cura is released under the terms of the AGPLv3 or higher.
+// Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.2
 import QtQuick.Controls 1.1
@@ -39,11 +39,8 @@ Menu
         visible: printerConnected && Cura.MachineManager.printerOutputDevices[0].materialNames.length > extruderIndex
         onTriggered:
         {
-            var activeExtruderIndex = ExtruderManager.activeExtruderIndex;
-            ExtruderManager.setActiveExtruderIndex(extruderIndex);
             var materialId = Cura.MachineManager.printerOutputDevices[0].materialIds[extruderIndex];
             var items = materialsModel.items;
-            // materialsModel.find cannot be used because we need to look inside the metadata property of items
             for(var i in items)
             {
                 if (items[i]["metadata"]["GUID"] == materialId)
@@ -52,7 +49,6 @@ Menu
                     break;
                 }
             }
-            ExtruderManager.setActiveExtruderIndex(activeExtruderIndex);
         }
     }
 
@@ -72,6 +68,8 @@ Menu
             exclusiveGroup: group
             onTriggered:
             {
+                // This workaround is done because of the application menus for materials and variants for multiextrusion printers.
+                // The extruder menu would always act on the correspoding extruder only, instead of acting on the extruder selected in the UI.
                 var activeExtruderIndex = ExtruderManager.activeExtruderIndex;
                 ExtruderManager.setActiveExtruderIndex(extruderIndex);
                 Cura.MachineManager.setActiveMaterial(model.id);
@@ -113,6 +111,8 @@ Menu
                             exclusiveGroup: group
                             onTriggered:
                             {
+                                // This workaround is done because of the application menus for materials and variants for multiextrusion printers.
+                                // The extruder menu would always act on the correspoding extruder only, instead of acting on the extruder selected in the UI.
                                 var activeExtruderIndex = ExtruderManager.activeExtruderIndex;
                                 ExtruderManager.setActiveExtruderIndex(extruderIndex);
                                 Cura.MachineManager.setActiveMaterial(model.id);

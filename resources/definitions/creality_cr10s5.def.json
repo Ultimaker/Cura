@@ -1,0 +1,23 @@
+{
+    "id": "creality_cr10s5",
+    "name": "Creality CR-10 S5",
+    "version": 2,
+    "inherits": "creality_cr10",
+    "metadata": {
+        "visible": true,
+        "author": "Michael Wildermuth",
+        "manufacturer": "Creality3D",
+        "file_formats": "text/x-gcode"
+    },
+    "overrides": {
+        "machine_width": {
+            "default_value": 500
+        },
+        "machine_height": {
+            "default_value": 500
+        },
+        "machine_depth": {
+            "default_value": 500
+        }
+    }
+}

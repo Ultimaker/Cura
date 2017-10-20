@@ -1,5 +1,5 @@
 // Copyright (c) 2015 Ultimaker B.V.
-// Cura is released under the terms of the AGPLv3 or higher.
+// Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.2
 import QtQuick.Window 2.2
@@ -11,10 +11,10 @@ UM.Dialog
 {
     id: base;
 
-    width: 500 * Screen.devicePixelRatio;
-    minimumWidth: 500 * Screen.devicePixelRatio;
-    height: 100 * Screen.devicePixelRatio;
-    minimumHeight: 100 * Screen.devicePixelRatio;
+    width: minimumWidth;
+    minimumWidth: 500 * screenScaleFactor;
+    height: minimumHeight;
+    minimumHeight: 100 * screenScaleFactor;
 
     visible: true;
     modality: Qt.ApplicationModal;

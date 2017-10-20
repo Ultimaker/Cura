@@ -1,5 +1,5 @@
 # Copyright (c) 2017 Ultimaker B.V.
-# Cura is released under the terms of the AGPLv3 or higher.
+# Cura is released under the terms of the LGPLv3 or higher.
 
 from cura.Settings.ExtruderManager import ExtruderManager
 from UM.Settings.ContainerRegistry import ContainerRegistry
@@ -27,9 +27,8 @@ import math
 
 from typing import List
 
-PRIME_CLEARANCE = 6.5 #Setting for clearance around the prime.
-MAJOR_GRID_SIZE = 10 #Size of the grid cells.
-MINOR_GRID_SIZE = 1
+# Setting for clearance around the prime
+PRIME_CLEARANCE = 6.5
 
 
 ##  Build volume is a special kind of node that is responsible for rendering the printable area & disallowed areas.
@@ -45,8 +44,6 @@ class BuildVolume(SceneNode):
         self._z_axis_color = None
         self._disallowed_area_color = None
         self._error_area_color = None
-        self._grid_color = None
-        self._grid_minor_color = None
 
         self._width = 0
         self._height = 0
@@ -59,9 +56,8 @@ class BuildVolume(SceneNode):
         self._origin_line_length = 20
         self._origin_line_width = 0.5
 
-        self._plate_mesh = None
         self._grid_mesh = None
-        self._plate_shader = None
+        self._grid_shader = None
 
         self._disallowed_areas = []
         self._disallowed_area_mesh = None
@@ -90,29 +86,38 @@ class BuildVolume(SceneNode):
         #Objects loaded at the moment. We are connected to the property changed events of these objects.
         self._scene_objects = set()
 
-        self._change_timer = QTimer()
-        self._change_timer.setInterval(100)
-        self._change_timer.setSingleShot(True)
-        self._change_timer.timeout.connect(self._onChangeTimerFinished)
+        self._scene_change_timer = QTimer()
+        self._scene_change_timer.setInterval(100)
+        self._scene_change_timer.setSingleShot(True)
+        self._scene_change_timer.timeout.connect(self._onSceneChangeTimerFinished)
+
+        self._setting_change_timer = QTimer()
+        self._setting_change_timer.setInterval(150)
+        self._setting_change_timer.setSingleShot(True)
+        self._setting_change_timer.timeout.connect(self._onSettingChangeTimerFinished)
 
         self._build_volume_message = Message(catalog.i18nc("@info:status",
             "The build volume height has been reduced due to the value of the"
             " \"Print Sequence\" setting to prevent the gantry from colliding"
-            " with printed models."))
+            " with printed models."), title = catalog.i18nc("@info:title","Build Volume"))
 
         # Must be after setting _build_volume_message, apparently that is used in getMachineManager.
         # activeQualityChanged is always emitted after setActiveVariant, setActiveMaterial and setActiveQuality.
         # Therefore this works.
         Application.getInstance().getMachineManager().activeQualityChanged.connect(self._onStackChanged)
+
         # This should also ways work, and it is semantically more correct,
         # but it does not update the disallowed areas after material change
         Application.getInstance().getMachineManager().activeStackChanged.connect(self._onStackChanged)
 
+        # list of settings which were updated
+        self._changed_settings_since_last_rebuild = []
+
     def _onSceneChanged(self, source):
         if self._global_container_stack:
-            self._change_timer.start()
+            self._scene_change_timer.start()
 
-    def _onChangeTimerFinished(self):
+    def _onSceneChangeTimerFinished(self):
         root = Application.getInstance().getController().getScene().getRoot()
         new_scene_objects = set(node for node in BreadthFirstIterator(root) if node.callDecoration("isSliceable"))
         if new_scene_objects != self._scene_objects:
@@ -171,15 +176,15 @@ class BuildVolume(SceneNode):
 
         if not self._shader:
             self._shader = OpenGL.getInstance().createShaderProgram(Resources.getPath(Resources.Shaders, "default.shader"))
-            self._plate_shader = OpenGL.getInstance().createShaderProgram(Resources.getPath(Resources.Shaders, "color.shader"))
+            self._grid_shader = OpenGL.getInstance().createShaderProgram(Resources.getPath(Resources.Shaders, "grid.shader"))
             theme = Application.getInstance().getTheme()
-            self._plate_shader.setUniformValue("u_color", Color(*theme.getColor("buildplate").getRgb()))
-            self._plate_shader.setUniformValue("u_z_bias", 0.000001)
+            self._grid_shader.setUniformValue("u_plateColor", Color(*theme.getColor("buildplate").getRgb()))
+            self._grid_shader.setUniformValue("u_gridColor0", Color(*theme.getColor("buildplate_grid").getRgb()))
+            self._grid_shader.setUniformValue("u_gridColor1", Color(*theme.getColor("buildplate_grid_minor").getRgb()))
 
         renderer.queueNode(self, mode = RenderBatch.RenderMode.Lines)
         renderer.queueNode(self, mesh = self._origin_mesh)
-        renderer.queueNode(self, mesh = self._plate_mesh, shader = self._plate_shader, backface_cull = True)
-        renderer.queueNode(self, mesh = self._grid_mesh, mode = RenderBatch.RenderMode.Lines, transparent = True)
+        renderer.queueNode(self, mesh = self._grid_mesh, shader = self._grid_shader, backface_cull = True)
         if self._disallowed_area_mesh:
             renderer.queueNode(self, mesh = self._disallowed_area_mesh, shader = self._shader, transparent = True, backface_cull = True, sort = -9)
 
@@ -252,8 +257,6 @@ class BuildVolume(SceneNode):
             self._z_axis_color = Color(*theme.getColor("z_axis").getRgb())
             self._disallowed_area_color = Color(*theme.getColor("disallowed_area").getRgb())
             self._error_area_color = Color(*theme.getColor("error_area").getRgb())
-            self._grid_color = Color(*theme.getColor("buildplate_grid").getRgb())
-            self._grid_minor_color = Color(*theme.getColor("buildplate_grid_minor").getRgb())
 
         min_w = -self._width / 2
         max_w = self._width / 2
@@ -284,7 +287,7 @@ class BuildVolume(SceneNode):
 
             self.setMeshData(mb.build())
 
-            # Build plate surface.
+            # Build plate grid mesh
             mb = MeshBuilder()
             mb.addQuad(
                 Vector(min_w, min_h - z_fight_distance, min_d),
@@ -296,30 +299,6 @@ class BuildVolume(SceneNode):
             for n in range(0, 6):
                 v = mb.getVertex(n)
                 mb.setVertexUVCoordinates(n, v[0], v[2])
-            self._plate_mesh = mb.build()
-
-            #Build plate grid mesh.
-            mb = MeshBuilder()
-            for x in range(0, int(math.ceil(max_w)), MAJOR_GRID_SIZE):
-                mb.addLine(Vector(x, min_h, min_d), Vector(x, min_h, max_d), color = self._grid_color)
-                #Start from 0 in both cases, so you need to do this in two for loops.
-                mb.addLine(Vector(-x, min_h, min_d), Vector(-x, min_h, max_d), color = self._grid_color)
-            for y in range(0, int(math.ceil(max_d)), MAJOR_GRID_SIZE):
-                mb.addLine(Vector(min_w, min_h, y), Vector(max_w, min_h, y), color = self._grid_color)
-                mb.addLine(Vector(min_w, min_h, -y), Vector(max_w, min_h, -y), color = self._grid_color)
-
-            #More fine grained grid.
-            for x in range(0, int(math.ceil(max_w)), MINOR_GRID_SIZE):
-                if x % MAJOR_GRID_SIZE == 0: #Don't overlap with the major grid.
-                    pass
-                mb.addLine(Vector(x, min_h, min_d), Vector(x, min_h, max_d), color = self._grid_minor_color)
-                mb.addLine(Vector(-x, min_h, min_d), Vector(-x, min_h, max_d), color = self._grid_minor_color)
-            for y in range(0, int(math.ceil(max_d)), MINOR_GRID_SIZE):
-                if y % MAJOR_GRID_SIZE == 0:
-                    pass
-                mb.addLine(Vector(min_w, min_h, y), Vector(max_w, min_h, y), color = self._grid_minor_color)
-                mb.addLine(Vector(min_w, min_h, -y), Vector(max_w, min_h, -y), color = self._grid_minor_color)
-
             self._grid_mesh = mb.build()
 
         else:
@@ -335,7 +314,7 @@ class BuildVolume(SceneNode):
             mb.addArc(max_w, Vector.Unit_Y, center = (0, max_h, 0),  color = self._volume_outline_color)
             self.setMeshData(mb.build().getTransformed(scale_matrix))
 
-            # Build plate surface.
+            # Build plate grid mesh
             mb = MeshBuilder()
             mb.addVertex(0, min_h - z_fight_distance, 0)
             mb.addArc(max_w, Vector.Unit_Y, center = Vector(0, min_h - z_fight_distance, 0))
@@ -349,40 +328,7 @@ class BuildVolume(SceneNode):
             for n in range(0, mb.getVertexCount()):
                 v = mb.getVertex(n)
                 mb.setVertexUVCoordinates(n, v[0], v[2] * aspect)
-            self._plate_mesh = mb.build().getTransformed(scale_matrix)
-
-            #Build plate grid mesh.
-            #We need to constrain the length of the lines to the build plate ellipsis. Time to get out the calculator!
-            mb = MeshBuilder()
-            for x in range(0, int(math.ceil(max_w)), MAJOR_GRID_SIZE):
-                #x / max_w is the fraction along the build plate we have progressed, counting from the centre.
-                #So x / max_w is sin(a), where a is the angle towards an endpoint of the grid line from the centre.
-                #So math.asin(x / max_w) is a.
-                #So math.cos(math.asin(x / max_w)) is half of the length of the grid line on a unit circle, which scales between 0 and 1.
-                length_factor = math.cos(math.asin(x / max_w))
-                mb.addLine(Vector(x, min_h, min_d * length_factor), Vector(x, min_h, max_d * length_factor), color = self._grid_color)
-                #Start from 0 in both cases, so you need to do this in two for loops.
-                mb.addLine(Vector(-x, min_h, min_d * length_factor), Vector(-x, min_h, max_d * length_factor), color = self._grid_color)
-            for y in range(0, int(math.ceil(max_d)), MAJOR_GRID_SIZE):
-                length_factor = math.sin(math.acos(y / max_d))
-                mb.addLine(Vector(min_w * length_factor, min_h, y), Vector(max_w * length_factor, min_h, y), color = self._grid_color)
-                mb.addLine(Vector(min_w * length_factor, min_h, -y), Vector(max_w * length_factor, min_h, -y), color = self._grid_color)
-
-            #More fine grained grid.
-            for x in range(0, int(math.ceil(max_w)), MINOR_GRID_SIZE):
-                if x % MAJOR_GRID_SIZE == 0: #Don't overlap with the major grid.
-                    pass
-                length_factor = math.cos(math.asin(x / max_w))
-                mb.addLine(Vector(x, min_h, min_d * length_factor), Vector(x, min_h, max_d * length_factor), color = self._grid_minor_color)
-                mb.addLine(Vector(-x, min_h, min_d * length_factor), Vector(-x, min_h, max_d * length_factor), color = self._grid_minor_color)
-            for y in range(0, int(math.ceil(max_d)), MINOR_GRID_SIZE):
-                if y % MAJOR_GRID_SIZE == 0:
-                    pass
-                length_factor = math.sin(math.acos(y / max_d))
-                mb.addLine(Vector(min_w * length_factor, min_h, y), Vector(max_w * length_factor, min_h, y), color = self._grid_minor_color)
-                mb.addLine(Vector(min_w * length_factor, min_h, -y), Vector(max_w * length_factor, min_h, -y), color = self._grid_minor_color)
-
-            self._grid_mesh = mb.build()
+            self._grid_mesh = mb.build().getTransformed(scale_matrix)
 
         # Indication of the machine origin
         if self._global_container_stack.getProperty("machine_center_is_zero", "value"):
@@ -562,42 +508,67 @@ class BuildVolume(SceneNode):
         self._engine_ready = True
         self.rebuild()
 
+    def _onSettingChangeTimerFinished(self):
+        rebuild_me = False
+        update_disallowed_areas = False
+        update_raft_thickness = False
+        update_extra_z_clearance = True
+        for setting_key in self._changed_settings_since_last_rebuild:
+            if setting_key == "print_sequence":
+                machine_height = self._global_container_stack.getProperty("machine_height", "value")
+                if Application.getInstance().getGlobalContainerStack().getProperty("print_sequence",
+                                                                                   "value") == "one_at_a_time" and len(
+                        self._scene_objects) > 1:
+                    self._height = min(self._global_container_stack.getProperty("gantry_height", "value"),
+                                       machine_height)
+                    if self._height < machine_height:
+                        self._build_volume_message.show()
+                    else:
+                        self._build_volume_message.hide()
+                else:
+                    self._height = self._global_container_stack.getProperty("machine_height", "value")
+                    self._build_volume_message.hide()
+                rebuild_me = True
+
+            if setting_key in self._skirt_settings or setting_key in self._prime_settings or setting_key in self._tower_settings or setting_key == "print_sequence" or setting_key in self._ooze_shield_settings or setting_key in self._distance_settings or setting_key in self._extruder_settings:
+                update_disallowed_areas = True
+                rebuild_me = True
+
+            if setting_key in self._raft_settings:
+                update_raft_thickness = True
+                rebuild_me = True
+
+            if setting_key in self._extra_z_settings:
+                update_extra_z_clearance = True
+                rebuild_me = True
+
+            if setting_key in self._limit_to_extruder_settings:
+                update_disallowed_areas = True
+                rebuild_me = True
+
+        # We only want to update all of them once.
+        if update_disallowed_areas:
+            self._updateDisallowedAreas()
+
+        if update_raft_thickness:
+            self._updateRaftThickness()
+
+        if update_extra_z_clearance:
+            self._updateExtraZClearance()
+
+        if rebuild_me:
+            self.rebuild()
+
+        # We just did a rebuild, reset the list.
+        self._changed_settings_since_last_rebuild = []
+
     def _onSettingPropertyChanged(self, setting_key: str, property_name: str):
         if property_name != "value":
             return
 
-        rebuild_me = False
-        if setting_key == "print_sequence":
-            machine_height = self._global_container_stack.getProperty("machine_height", "value")
-            if Application.getInstance().getGlobalContainerStack().getProperty("print_sequence", "value") == "one_at_a_time" and len(self._scene_objects) > 1:
-                self._height = min(self._global_container_stack.getProperty("gantry_height", "value"), machine_height)
-                if self._height < machine_height:
-                    self._build_volume_message.show()
-                else:
-                    self._build_volume_message.hide()
-            else:
-                self._height = self._global_container_stack.getProperty("machine_height", "value")
-                self._build_volume_message.hide()
-            rebuild_me = True
-
-        if setting_key in self._skirt_settings or setting_key in self._prime_settings or setting_key in self._tower_settings or setting_key == "print_sequence" or setting_key in self._ooze_shield_settings or setting_key in self._distance_settings or setting_key in self._extruder_settings:
-            self._updateDisallowedAreas()
-            rebuild_me = True
-
-        if setting_key in self._raft_settings:
-            self._updateRaftThickness()
-            rebuild_me = True
-
-        if setting_key in self._extra_z_settings:
-            self._updateExtraZClearance()
-            rebuild_me = True
-
-        if setting_key in self._limit_to_extruder_settings:
-            self._updateDisallowedAreas()
-            rebuild_me = True
-
-        if rebuild_me:
-            self.rebuild()
+        if setting_key not in self._changed_settings_since_last_rebuild:
+            self._changed_settings_since_last_rebuild.append(setting_key)
+            self._setting_change_timer.start()
 
     def hasErrors(self) -> bool:
         return self._has_errors
@@ -985,14 +956,14 @@ class BuildVolume(SceneNode):
         if adhesion_type == "skirt":
             skirt_distance = self._getSettingFromAdhesionExtruder("skirt_gap")
             skirt_line_count = self._getSettingFromAdhesionExtruder("skirt_line_count")
-            bed_adhesion_size = skirt_distance + (skirt_line_count * self._getSettingFromAdhesionExtruder("skirt_brim_line_width")) * self._getSettingFromAdhesionExtruder("initial_layer_line_width_factor") / 100.0
+            bed_adhesion_size = skirt_distance + (self._getSettingFromAdhesionExtruder("skirt_brim_line_width") * skirt_line_count) * self._getSettingFromAdhesionExtruder("initial_layer_line_width_factor") / 100.0
             if len(used_extruders) > 1:
                 for extruder_stack in used_extruders:
                     bed_adhesion_size += extruder_stack.getProperty("skirt_brim_line_width", "value") * extruder_stack.getProperty("initial_layer_line_width_factor", "value") / 100.0
                 #We don't create an additional line for the extruder we're printing the skirt with.
                 bed_adhesion_size -= self._getSettingFromAdhesionExtruder("skirt_brim_line_width", "value") * self._getSettingFromAdhesionExtruder("initial_layer_line_width_factor", "value") / 100.0
         elif adhesion_type == "brim":
-            bed_adhesion_size = self._getSettingFromAdhesionExtruder("brim_line_count") * self._getSettingFromAdhesionExtruder("skirt_brim_line_width") * self._getSettingFromAdhesionExtruder("initial_layer_line_width_factor") / 100.0
+            bed_adhesion_size = self._getSettingFromAdhesionExtruder("skirt_brim_line_width") * self._getSettingFromAdhesionExtruder("brim_line_count") *  self._getSettingFromAdhesionExtruder("initial_layer_line_width_factor") / 100.0
             if self._global_container_stack.getProperty("machine_extruder_count", "value") > 1:
                 for extruder_stack in used_extruders:
                     bed_adhesion_size += extruder_stack.getProperty("skirt_brim_line_width", "value") * extruder_stack.getProperty("initial_layer_line_width_factor", "value") / 100.0

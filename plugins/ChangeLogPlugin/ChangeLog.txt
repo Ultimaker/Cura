@@ -1,3 +1,83 @@
+[3.0.0]
+*Faster start-up
+Start-up speed has been cut in half compared to the previous version.
+
+*New color scheme
+Color scheme has been updated to reflect Ultimaker Cura rebrand.
+
+*Updated UX design
+The Ultimaker Cura logo has moved from the bottom to the top of the interface. Print status icons have been updated and repositioned.
+
+*Redesigned splash screen
+A new splash screen on Ultimaker Cura startup has been added.
+
+*Top navigation bar improvements
+The width of tab functionality changes accordingly to the word space (multilingual).
+
+*Print quality slider
+A slider can now be used to control the quality profile in recommended mode.
+
+*Infill slider
+Model infill can now be changed using a slider in recommended mode.
+
+*Changed layer view
+Layer view icon, panel and slider have moved to top-right of interface.
+
+*Rasterized build plate
+The build plate now shows graduations of 10 mm and 1 mm for easy model positioning.
+
+*Changed row of extruder buttons
+Extruder tabs have become buttons and icons have been updated.
+
+*Add an "Export to Cura" button in SOLIDWORKS
+SOLIDWORKS plugin can now be installed using an automatic installer.
+
+*Siemens NX macro
+When a user updates models in Siemens NX and clicks the button, the updated models replace the models opened in Ultimaker Cura.
+
+*Skin removal width
+Remove thin strips of skin from a model to prevent print head zigzagging, in turn preventing vibrations.
+
+*Skin expand distance
+Cutting away skins on steep overhangs makes prints less sturdy. By expanding skins with the thickness of walls, features will be better supported. In addition, features such as towers on top of infill will be stronger.
+
+*Extra skin wall count
+Printing extra skin directly on top of infill can lead to gaps, curling and pillowing. This is reduced by printing a wall around the skin first, and also improves the printing speed.
+
+*Minimum extrusion for skin
+Will prevent filling small gaps that are probably filled already, resulting in less strings, better top details and faster prints.
+
+*PVA retractions
+PVA (switch) retraction length is increased, minimum travel distance for retraction is decreased and max count is slightly increased, this reduces stringing by a lot at the cost of slightly increased print time.
+
+*Z seam options
+Gives the user control over where to place the seam - hide it in convex corners or in easy to remove locations such as concave corners. Don’t let corner angles influence the seam position.
+
+*Quarter cubic infill
+Similar to tetrahedral (octet) infill, but half of the lines are shifted half of the period up. This pattern sacrifices some rigidity of octet infill for greater toughness.
+
+*Cross infill
+A fractal pattern infill that requires fewer retractions than other infill types. This is useful for flexible materials as it causes less material elongation. The internal structure given by this infill also assists flexible models having more resistance, while retaining ‘soft’ properties in all directions.
+
+*Layer start negative position
+Layer start X/Y values can be less than 0 when the machine centre is zero.
+
+*PostProcessing stretch script
+This new script performs "post stretch" algorithm to fix the problem of insufficient inner and outer diameters. Thanks to electrocbd for contributing.
+
+*Ironing speed settings
+Ironing speed settings have been moved to experimental category.
+
+*Doodle3D plugin
+Update Doodle3D plugin to connect with printers. Thanks to mith for contributing.
+
+*Bug fixes
+- Customized profiles are not sent when connecting to a printer
+- Sync z-hop with layer changes, thanks to smartavionics for contributing
+- Memory leaks on MacOS
+- Printer name not loaded when project file is opened
+- Doodle3D Wifi box was selected by default on non-UM3 printers
+
 [2.7.0]
 *Top surface skin
 Specify print settings of the top-most layers separately in order to improve print duration and achieve higher quality top surfaces.

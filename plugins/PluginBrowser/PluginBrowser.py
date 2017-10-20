@@ -1,5 +1,5 @@
 # Copyright (c) 2017 Ultimaker B.V.
-# PluginBrowser is released under the terms of the AGPLv3 or higher.
+# PluginBrowser is released under the terms of the LGPLv3 or higher.
 from UM.Extension import Extension
 from UM.i18n import i18nCatalog
 from UM.Logger import Logger
@@ -23,10 +23,10 @@ i18n_catalog = i18nCatalog("cura")
 
 
 class PluginBrowser(QObject, Extension):
-    def __init__(self, parent = None):
+    def __init__(self, parent=None):
         super().__init__(parent)
-        self.addMenuItem(i18n_catalog.i18nc("@menuitem", "Browse plugins"), self.browsePlugins)
-        self._api_version = 1
+
+        self._api_version = 2
         self._api_url = "http://software.ultimaker.com/cura/v%s/" % self._api_version
 
         self._plugin_list_request = None
@@ -92,6 +92,7 @@ class PluginBrowser(QObject, Extension):
     def isDownloading(self):
         return self._is_downloading
 
+    @pyqtSlot()
     def browsePlugins(self):
         self._createNetworkManager()
         self.requestPluginList()
@@ -161,7 +162,8 @@ class PluginBrowser(QObject, Extension):
 
             if plugin_id is None:
                 msg = i18n_catalog.i18nc("@info:status", "Failed to get plugin ID from <filename>{0}</filename>", file_path)
-                self._progress_message = Message(msg, lifetime=0, dismissable=False)
+                msg_title = i18n_catalog.i18nc("@info:tile", "Warning")
+                self._progress_message = Message(msg, lifetime=0, dismissable=False, title = msg_title)
                 return
 
             # find a potential license file

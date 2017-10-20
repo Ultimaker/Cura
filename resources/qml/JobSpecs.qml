@@ -1,5 +1,5 @@
 // Copyright (c) 2017 Ultimaker B.V.
-// Cura is released under the terms of the AGPLv3 or higher.
+// Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.2
 import QtQuick.Controls 1.1
@@ -13,40 +13,38 @@ Item {
     id: base
 
     property bool activity: CuraApplication.platformActivity
-    property string fileBaseName
-    property variant activeMachineName: Cura.MachineManager.activeMachineName
-
-    onActiveMachineNameChanged:
-    {
-        printJobTextfield.text = PrintInformation.createJobName(base.fileBaseName);
-    }
+    property string fileBaseName: ""
 
     UM.I18nCatalog { id: catalog; name:"cura"}
 
     height: childrenRect.height
+    width: childrenRect.width
 
     Connections
     {
         target: backgroundItem
         onHasMesh:
         {
-            base.fileBaseName = name
+            if (base.fileBaseName == "")
+            {
+                base.fileBaseName = name;
+            }
         }
     }
 
     onActivityChanged: {
         if (activity == true && base.fileBaseName == ''){
             //this only runs when you open a file from the terminal (or something that works the same way; for example when you drag a file on the icon in MacOS or use 'open with' on Windows)
-            base.fileBaseName = PrintInformation.jobName; //get the fileBaseName from PrintInformation.py because this saves the filebase when the file is opened using the terminal (or something alike)
-            printJobTextfield.text = PrintInformation.createJobName(base.fileBaseName);
+            base.fileBaseName = PrintInformation.baseName; //get the fileBaseName from PrintInformation.py because this saves the filebase when the file is opened using the terminal (or something alike)
+            PrintInformation.setBaseName(base.fileBaseName);
         }
         if (activity == true && base.fileBaseName != ''){
             //this runs in all other cases where there is a mesh on the buildplate (activity == true). It uses the fileBaseName from the hasMesh signal
-            printJobTextfield.text = PrintInformation.createJobName(base.fileBaseName);
+            PrintInformation.setBaseName(base.fileBaseName);
         }
         if (activity == false){
             //When there is no mesh in the buildplate; the printJobTextField is set to an empty string so it doesn't set an empty string as a jobName (which is later used for saving the file)
-            printJobTextfield.text = '';
+            PrintInformation.setBaseName('')
         }
     }
 
@@ -102,7 +100,7 @@ Item {
                 width: Math.max(__contentWidth + UM.Theme.getSize("default_margin").width, 50)
                 maximumLength: 120
                 property int unremovableSpacing: 5
-                text: ''
+                text: PrintInformation.jobName
                 horizontalAlignment: TextInput.AlignRight
                 onTextChanged: {
                     PrintInformation.setJobName(text);
@@ -127,7 +125,7 @@ Item {
         }
     }
 
-    Text
+    Label
     {
         id: boundingSpec
         anchors.top: jobNameRow.bottom

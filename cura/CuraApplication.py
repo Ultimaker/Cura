@@ -1,5 +1,5 @@
 # Copyright (c) 2017 Ultimaker B.V.
-# Cura is released under the terms of the AGPLv3 or higher.
+# Cura is released under the terms of the LGPLv3 or higher.
 
 from PyQt5.QtNetwork import QLocalServer
 from PyQt5.QtNetwork import QLocalSocket
@@ -51,6 +51,7 @@ from cura.Settings.MaterialsModel import MaterialsModel
 from cura.Settings.QualityAndUserProfilesModel import QualityAndUserProfilesModel
 from cura.Settings.SettingInheritanceManager import SettingInheritanceManager
 from cura.Settings.UserProfilesModel import UserProfilesModel
+from cura.Settings.SimpleModeSettingsManager import SimpleModeSettingsManager
 
 from . import PlatformPhysics
 from . import BuildVolume
@@ -104,7 +105,7 @@ class CuraApplication(QtApplication):
     # SettingVersion represents the set of settings available in the machine/extruder definitions.
     # You need to make sure that this version number needs to be increased if there is any non-backwards-compatible
     # changes of the settings.
-    SettingVersion = 2
+    SettingVersion = 3
 
     class ResourceTypes:
         QmlFiles = Resources.UserType + 1
@@ -124,6 +125,8 @@ class CuraApplication(QtApplication):
     #        will make it initialized before ContainerRegistry does, and it won't find the active machine, thus
     #        Cura will always show the Add Machine Dialog upon start.
     stacksValidationFinished = pyqtSignal()  # Emitted whenever a validation is finished
+
+    projectFileLoaded = pyqtSignal(str)  # Emitted whenever a project file is loaded
 
     def __init__(self):
         # this list of dir names will be used by UM to detect an old cura directory
@@ -199,6 +202,7 @@ class CuraApplication(QtApplication):
         self._machine_manager = None    # This is initialized on demand.
         self._material_manager = None
         self._setting_inheritance_manager = None
+        self._simple_mode_settings_manager = None
 
         self._additional_components = {} # Components to add to certain areas in the interface
 
@@ -211,7 +215,7 @@ class CuraApplication(QtApplication):
 
         self.setRequiredPlugins([
             "CuraEngineBackend",
-            "MeshView",
+            "SolidView",
             "LayerView",
             "STLReader",
             "SelectionTool",
@@ -220,7 +224,8 @@ class CuraApplication(QtApplication):
             "LocalFileOutputDevice",
             "TranslateTool",
             "FileLogger",
-            "XmlMaterialProfile"
+            "XmlMaterialProfile",
+            "PluginBrowser"
         ])
         self._physics = None
         self._volume = None
@@ -399,6 +404,8 @@ class CuraApplication(QtApplication):
             # ALWAYS ask whether to keep or discard the profile
             self.showDiscardOrKeepProfileChanges.emit()
 
+    #sidebarSimpleDiscardOrKeepProfileChanges = pyqtSignal()
+
     @pyqtSlot(str)
     def discardOrKeepProfileChangesClosed(self, option):
         if option == "discard":
@@ -488,7 +495,7 @@ class CuraApplication(QtApplication):
             f.write(data)
 
 
-    @pyqtSlot(str, result=QUrl)
+    @pyqtSlot(str, result = QUrl)
     def getDefaultPath(self, key):
         default_path = Preferences.getInstance().getValue("local_file/%s" % key)
         return QUrl.fromLocalFile(default_path)
@@ -665,7 +672,9 @@ class CuraApplication(QtApplication):
         qmlRegisterSingletonType(MachineManager, "Cura", 1, 0, "MachineManager", self.getMachineManager)
         qmlRegisterSingletonType(MaterialManager, "Cura", 1, 0, "MaterialManager", self.getMaterialManager)
         qmlRegisterSingletonType(SettingInheritanceManager, "Cura", 1, 0, "SettingInheritanceManager",
-                         self.getSettingInheritanceManager)
+                                 self.getSettingInheritanceManager)
+        qmlRegisterSingletonType(SimpleModeSettingsManager, "Cura", 1, 2, "SimpleModeSettingsManager",
+                                 self.getSimpleModeSettingsManager)
 
         qmlRegisterSingletonType(MachineActionManager.MachineActionManager, "Cura", 1, 0, "MachineActionManager", self.getMachineActionManager)
         self.setMainQml(Resources.getPath(self.ResourceTypes.QmlFiles, "Cura.qml"))
@@ -704,6 +713,11 @@ class CuraApplication(QtApplication):
     #   It wants to give this function an engine and script engine, but we don't care about that.
     def getMachineActionManager(self, *args):
         return self._machine_action_manager
+
+    def getSimpleModeSettingsManager(self, *args):
+        if self._simple_mode_settings_manager is None:
+            self._simple_mode_settings_manager = SimpleModeSettingsManager()
+        return self._simple_mode_settings_manager
 
     ##   Handle Qt events
     def event(self, event):
@@ -1128,7 +1142,7 @@ class CuraApplication(QtApplication):
 
     expandedCategoriesChanged = pyqtSignal()
 
-    @pyqtProperty("QStringList", notify=expandedCategoriesChanged)
+    @pyqtProperty("QStringList", notify = expandedCategoriesChanged)
     def expandedCategories(self):
         return Preferences.getInstance().getValue("cura/categories_expanded").split(";")
 
@@ -1182,6 +1196,7 @@ class CuraApplication(QtApplication):
         group_node = SceneNode()
         group_decorator = GroupDecorator()
         group_node.addDecorator(group_decorator)
+        group_node.addDecorator(ConvexHullDecorator())
         group_node.setParent(self.getController().getScene().getRoot())
         group_node.setSelectable(True)
         center = Selection.getSelectionCenter()
@@ -1292,7 +1307,7 @@ class CuraApplication(QtApplication):
                 message = Message(
                     self._i18n_catalog.i18nc("@info:status",
                                        "Only one G-code file can be loaded at a time. Skipped importing {0}",
-                                       filename))
+                                       filename), title = self._i18n_catalog.i18nc("@info:title", "Warning"))
                 message.show()
                 return
             # If file being loaded is non-slicable file, then prevent loading of any other files
@@ -1301,7 +1316,7 @@ class CuraApplication(QtApplication):
                 message = Message(
                     self._i18n_catalog.i18nc("@info:status",
                                        "Can't open any other file if G-code is loading. Skipped importing {0}",
-                                       filename))
+                                       filename), title = self._i18n_catalog.i18nc("@info:title", "Error"))
                 message.show()
                 return
 
@@ -1356,6 +1371,12 @@ class CuraApplication(QtApplication):
                 if node.getBoundingBox().width < self._volume.getBoundingBox().width or node.getBoundingBox().depth < self._volume.getBoundingBox().depth:
                     # Find node location
                     offset_shape_arr, hull_shape_arr = ShapeArray.fromNode(node, min_offset = min_offset)
+
+                    # If a model is to small then it will not contain any points
+                    if offset_shape_arr is None and hull_shape_arr is None:
+                        Message(self._i18n_catalog.i18nc("@info:status", "The selected model was too small to load."),
+                                title=self._i18n_catalog.i18nc("@info:title", "Warning")).show()
+                        return
 
                     # Step is for skipping tests to make it a lot faster. it also makes the outcome somewhat rougher
                     node, _ = arranger.findNodePlacement(node, offset_shape_arr, hull_shape_arr, step = 10)

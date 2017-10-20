@@ -9,10 +9,10 @@ UM.Dialog
     id: base
 
     title: catalog.i18nc("@title:window", "Find & Update plugins")
-    width: 600 * Screen.devicePixelRatio
-    height: 450 * Screen.devicePixelRatio
-    minimumWidth: 350 * Screen.devicePixelRatio
-    minimumHeight: 350 * Screen.devicePixelRatio
+    width: 600 * screenScaleFactor
+    height: 450 * screenScaleFactor
+    minimumWidth: 350 * screenScaleFactor
+    minimumHeight: 350 * screenScaleFactor
     Item
     {
         anchors.fill: parent
@@ -217,7 +217,7 @@ UM.Dialog
                     anchors.top: parent.top
                     anchors.left: parent.left
                     anchors.right: parent.right
-                    text: licenseDialog.pluginName + catalog.i18nc("@label", " plugin contains a license.\nYou need to accept this license to install this plugin.\nDo you agree with the terms below?")
+                    text: licenseDialog.pluginName + catalog.i18nc("@label", "This plugin contains a license.\nYou need to accept this license to install this plugin.\nDo you agree with the terms below?")
                     wrapMode: Text.Wrap
                 }
 
