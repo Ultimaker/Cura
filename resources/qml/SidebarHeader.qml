@@ -36,20 +36,6 @@ Column
 
     Item
     {
-        anchors
-        {
-            left: parent.left
-            leftMargin: UM.Theme.getSize("sidebar_margin").width
-            right: parent.right
-            rightMargin: UM.Theme.getSize("sidebar_margin").width
-        }
-        visible: extruderSelectionRow.visible
-        height: UM.Theme.getSize("default_lining").hieght
-        width: height
-    }
-
-    Item
-    {
         id: extruderSelectionRow
         width: parent.width
         height: Math.floor(UM.Theme.getSize("sidebar_tabs").height * 2 / 3)
@@ -291,10 +277,10 @@ Column
         }
     }
 
-    // Print core row
+    //Variant row
     Item
     {
-        id: printCoreRow
+        id: variantRow
         height: UM.Theme.getSize("sidebar_setup").height
         visible: Cura.MachineManager.hasVariants && !sidebar.monitoringPrint && !sidebar.hideSettings
 
@@ -308,7 +294,7 @@ Column
 
         Label
         {
-            id: printCoreLabel
+            id: variantLabel
             text: Cura.MachineManager.activeDefinitionVariantsName;
             width: Math.floor(parent.width * 0.45 - UM.Theme.getSize("default_margin").width)
             font: UM.Theme.getFont("default");
@@ -316,7 +302,7 @@ Column
         }
 
         ToolButton {
-            id: printCoreSelection
+            id: variantSelection
             text: Cura.MachineManager.activeVariantName
             tooltip: Cura.MachineManager.activeVariantName;
             visible: Cura.MachineManager.hasVariants

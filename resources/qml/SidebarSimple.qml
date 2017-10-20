@@ -89,14 +89,14 @@ Item
                         var availableMin = -1
                         var availableMax = -1
 
-                        for (var i = 0; i <= Cura.ProfilesModel.rowCount(); i++) {
+                        for (var i = 0; i < Cura.ProfilesModel.rowCount(); i++) {
                             var qualityItem = Cura.ProfilesModel.getItem(i)
 
                             // Add each quality item to the UI quality model
                             qualityModel.append(qualityItem)
 
                             // Set selected value
-                            if (Cura.MachineManager.activeQualityId == qualityItem.id) {
+                            if (Cura.MachineManager.activeQualityType == qualityItem.metadata.quality_type) {
                                 qualityModel.activeQualityIndex = i
                             }
 
@@ -143,14 +143,7 @@ Item
                         qualityModel.availableTotalTicks = -1
 
                         // check, the ticks count cannot be less than zero
-                        if(Cura.ProfilesModel.rowCount() != 0)
-                        {
-                            qualityModel.totalTicks = Cura.ProfilesModel.rowCount() - 1  // minus one, because slider starts from 0
-                        }
-                        else
-                        {
-                            qualityModel.totalTicks = 0
-                        }
+                        qualityModel.totalTicks = Math.max(0, Cura.ProfilesModel.rowCount() - 1)
                     }
                 }
 
@@ -291,7 +284,7 @@ Item
                                     implicitWidth: 10 * screenScaleFactor
                                     implicitHeight: implicitWidth
                                     radius: implicitWidth / 2
-                                    visible: !Cura.SimpleModeSettingsManager.isProfileCustomized;
+                                    visible: !Cura.SimpleModeSettingsManager.isProfileCustomized && !Cura.SimpleModeSettingsManager.isProfileUserCreated
                                 }
                             }
                         }
@@ -366,7 +359,7 @@ Item
                     }
                     onEntered:
                     {
-                        var content = catalog.i18nc("@tooltip","You have selected a custom profile. If you want to change it, go to custom mode.")
+                        var content = catalog.i18nc("@tooltip","You have modified some profile settings. If you want to change these go to custom mode.")
                         base.showTooltip(qualityRow, Qt.point(-UM.Theme.getSize("sidebar_margin").width, customisedSettings.height),  content)
                     }
                     onExited: base.hideTooltip()

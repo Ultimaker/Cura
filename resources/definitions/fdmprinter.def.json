@@ -643,6 +643,20 @@
                     "settable_per_mesh": false,
                     "settable_per_extruder": false
                 },
+                "slicing_tolerance":
+                {
+                    "label": "Slicing Tolerance",
+                    "description": "How to slice layers with diagonal surfaces. The areas of a layer can be generated based on where the middle of the layer intersects the surface (Middle). Alternatively each layer can have the areas which fall inside of the volume throughout the height of the layer (Exclusive) or a layer has the areas which fall inside anywhere within the layer (Inclusive). Exclusive retains the most details, Inclusive makes for the best fit and Middle takes the least time to process.",
+                    "type": "enum",
+                    "options":
+                    {
+                        "middle": "Middle",
+                        "exclusive": "Exclusive",
+                        "inclusive": "Inclusive"
+                    },
+                    "default_value": "middle",
+                    "settable_per_mesh": true
+                },
                 "line_width":
                 {
                     "label": "Line Width",
@@ -1847,6 +1861,29 @@
                     "minimum_value_warning": "0.4",
                     "maximum_value_warning": "3.5",
                     "enabled": "machine_gcode_flavor != \"UltiGCode\"",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
+                },
+                "material_adhesion_tendency":
+                {
+                    "label": "Adhesion Tendency",
+                    "description": "Surface adhesion tendency.",
+                    "type": "int",
+                    "default_value": 10,
+                    "minimum_value": "0",
+                    "maximum_value": "10",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
+                },
+                "material_surface_energy":
+                {
+                    "label": "Surface Energy",
+                    "description": "Surface energy.",
+                    "unit": "%",
+                    "type": "int",
+                    "default_value": 100,
+                    "minimum_value": "0",
+                    "maximum_value": "100",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
