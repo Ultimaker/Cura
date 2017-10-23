@@ -28,6 +28,20 @@ if TYPE_CHECKING:
 #
 #   This keeps a list of extruder stacks for each machine.
 class ExtruderManager(QObject):
+
+    ##  Registers listeners and such to listen to changes to the extruders.
+    def __init__(self, parent = None):
+        super().__init__(parent)
+
+        self._extruder_trains = {}  # Per machine, a dictionary of extruder container stack IDs. Only for separately defined extruders.
+        self._active_extruder_index = -1  # Indicates the index of the active extruder stack. -1 means no active extruder stack
+        self._selected_object_extruders = []
+        self._global_container_stack_definition_id = None
+        self._addCurrentMachineExtruders()
+
+        Application.getInstance().globalContainerStackChanged.connect(self.__globalContainerStackChanged)
+        Selection.selectionChanged.connect(self.resetSelectedObjectExtruders)
+
     ##  Signal to notify other components when the list of extruders for a machine definition changes.
     extrudersChanged = pyqtSignal(QVariant)
 
@@ -38,18 +52,6 @@ class ExtruderManager(QObject):
     ##  Notify when the user switches the currently active extruder.
     activeExtruderChanged = pyqtSignal()
 
-    ##  Registers listeners and such to listen to changes to the extruders.
-    def __init__(self, parent = None):
-        super().__init__(parent)
-        self._extruder_trains = { } #Per machine, a dictionary of extruder container stack IDs. Only for separately defined extruders.
-        self._active_extruder_index = -1 # Indicates the index of the active extruder stack. -1 means no active extruder stack
-        self._selected_object_extruders = []
-        Application.getInstance().globalContainerStackChanged.connect(self.__globalContainerStackChanged)
-        self._global_container_stack_definition_id = None
-        self._addCurrentMachineExtruders()
-
-        Selection.selectionChanged.connect(self.resetSelectedObjectExtruders)
-
     ##  Gets the unique identifier of the currently active extruder stack.
     #
     #   The currently active extruder stack is the stack that is currently being
@@ -59,10 +61,10 @@ class ExtruderManager(QObject):
     @pyqtProperty(str, notify = activeExtruderChanged)
     def activeExtruderStackId(self) -> Optional[str]:
         if not Application.getInstance().getGlobalContainerStack():
-            return None # No active machine, so no active extruder.
+            return None  # No active machine, so no active extruder.
         try:
             return self._extruder_trains[Application.getInstance().getGlobalContainerStack().getId()][str(self._active_extruder_index)].getId()
-        except KeyError: # Extruder index could be -1 if the global tab is selected, or the entry doesn't exist if the machine definition is wrong.
+        except KeyError:  # Extruder index could be -1 if the global tab is selected, or the entry doesn't exist if the machine definition is wrong.
             return None
 
     ##  Return extruder count according to extruder trains.
@@ -521,8 +523,8 @@ class ExtruderManager(QObject):
         machine_extruder_count = global_stack.getProperty("machine_extruder_count", "value")
 
         # In case the printer is using one extruder, shouldn't exist active extruder stacks
-        if machine_extruder_count == 1:
-            return result
+        # if machine_extruder_count == 1:
+        #     return result
 
         if global_stack and global_stack.getId() in self._extruder_trains:
             for extruder in sorted(self._extruder_trains[global_stack.getId()]):
@@ -537,16 +539,10 @@ class ExtruderManager(QObject):
             self.globalContainerStackDefinitionChanged.emit()
 
         # If the global container changed, the number of extruders could be changed and so the active_extruder_index is updated
-        extruder_count = global_container_stack.getProperty("machine_extruder_count", "value")
-        if extruder_count > 1:
-            if self._active_extruder_index == -1:
-                self.setActiveExtruderIndex(0)
-        else:
-            if self._active_extruder_index != -1:
-                self.setActiveExtruderIndex(-1)
+        if self._active_extruder_index == -1:
+            self.setActiveExtruderIndex(0)
 
         self.activeExtruderChanged.emit()
-
         self.resetSelectedObjectExtruders()
 
     ##  Adds the extruders of the currently active machine.

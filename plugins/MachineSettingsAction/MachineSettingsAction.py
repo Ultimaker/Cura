@@ -171,17 +171,21 @@ class MachineSettingsAction(MachineAction):
 
         definition_changes_container.setProperty("machine_extruder_count", "value", extruder_count)
 
-        if extruder_count > 1:
-            # Multiextrusion
+        # Make sure one of the extruder stacks is active
+        if extruder_manager.activeExtruderIndex == -1:
+            extruder_manager.setActiveExtruderIndex(0)
 
-            # Make sure one of the extruder stacks is active
-            if extruder_manager.activeExtruderIndex == -1:
-                extruder_manager.setActiveExtruderIndex(0)
+        # Move settable_per_extruder values out of the global container
+        extruder_stacks = ExtruderManager.getInstance().getActiveExtruderStack()
+        global_user_container = self._global_container_stack.getTop()
 
-            # Move settable_per_extruder values out of the global container
-            if previous_extruder_count == 1:
-                extruder_stacks = ExtruderManager.getInstance().getActiveExtruderStacks()
-                global_user_container = self._global_container_stack.getTop()
+        for setting_instance in global_user_container.findInstances():
+            setting_key = setting_instance.definition.key
+            
+
+
+
+
 
                 for setting_instance in global_user_container.findInstances():
                     setting_key = setting_instance.definition.key
