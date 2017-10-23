@@ -7,6 +7,7 @@ from PyQt5.QtCore import Qt
 
 from UM.Application import Application
 from UM.Settings.ContainerRegistry import ContainerRegistry
+from UM.Settings.InstanceContainer import InstanceContainer
 from UM.Settings.Models.InstanceContainersModel import InstanceContainersModel
 
 from cura.QualityManager import QualityManager
@@ -61,6 +62,7 @@ class ProfilesModel(InstanceContainersModel):
         active_extruder = extruder_manager.getActiveExtruderStack()
         extruder_stacks = extruder_manager.getActiveExtruderStacks()
         materials = [global_container_stack.material]
+
         if active_extruder in extruder_stacks:
             extruder_stacks.remove(active_extruder)
             extruder_stacks = [active_extruder] + extruder_stacks
@@ -83,7 +85,29 @@ class ProfilesModel(InstanceContainersModel):
             if quality.getMetaDataEntry("quality_type") not in quality_type_set:
                 result.append(quality)
 
+        # If not qualities are found we dynamically create an empty container with name "Not Supported"
+        if len(result) == 0:
+            machine_id = global_container_stack.definition.getId()
+            material_id = extruder_stacks[0].material.getId()
+            result.append(self.generateNoSupportedInstanceContainer(machine_id, material_id))
+
         return result
+
+    def generateNoSupportedInstanceContainer(self, machine_id: str, material_id: str):
+        container = InstanceContainer("not_supported")
+        container.setName("Not Supported")
+        container.metaData["quality_type"] = "normal"
+        container.metaData["setting_version"] = 3
+        container.metaData["supported"] = False
+        container.metaData["type"] = "quality"
+        container.metaData["weight"] = "0"
+        container.metaData["material"] = material_id
+        container.readOnly = True
+        container.setDirty(False)
+        container.setCachedValues({})
+        definition = ContainerRegistry.getInstance().findDefinitionContainers(id = machine_id)
+        container.setDefinition(definition)
+        return container
 
     ##  Re-computes the items in this model, and adds the layer height role.
     def _recomputeItems(self):

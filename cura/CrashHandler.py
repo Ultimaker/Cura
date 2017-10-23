@@ -53,6 +53,7 @@ class CrashHandler:
         self.exception_type = exception_type
         self.value = value
         self.traceback = tb
+        self.dialog = QDialog()
 
         # While we create the GUI, the information will be stored for sending afterwards
         self.data = dict()
