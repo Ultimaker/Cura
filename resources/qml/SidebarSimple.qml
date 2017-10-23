@@ -98,8 +98,15 @@ Item
 
                             // Set selected value
                             if (Cura.MachineManager.activeQualityType == qualityItem.metadata.quality_type) {
-                                qualityModel.qualitySliderActiveIndex = i
-                                qualityModel.existingQualityProfile = 1
+
+                                // set to -1 when switching to user created profile so all ticks are clickable
+                                if (Cura.SimpleModeSettingsManager.isProfileUserCreated) {
+                                    qualityModel.qualitySliderActiveIndex = -1
+                                } else {
+                                     qualityModel.qualitySliderActiveIndex = i
+                                }
+
+                                 qualityModel.existingQualityProfile = 1
                             }
 
                             // Set min available
@@ -293,14 +300,12 @@ Item
                         }
 
                         onValueChanged: {
-                            // Only change if an active machine is set and the slider is visible at all.
-                            if (Cura.MachineManager.activeMachine != null && visible)
-                            {
-                                //Prevent updating during view initializing. Trigger only if the value changed by user
-                                if (qualitySlider.value != qualityModel.qualitySliderActiveIndex)
-                                {
-                                    //start updating with short delay
-                                    qualitySliderChangeTimer.start();
+                            // only change if an active machine is set and the slider is visible at all.
+                            if (Cura.MachineManager.activeMachine != null && visible) {
+                                // prevent updating during view initializing. Trigger only if the value changed by user
+                                if (qualitySlider.value != qualityModel.qualitySliderActiveIndex) {
+                                    // start updating with short delay
+                                    qualitySliderChangeTimer.start()
                                 }
                             }
                         }
