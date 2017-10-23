@@ -680,6 +680,192 @@ Column
     Loader
     {
         sourceComponent: monitorSection
+        property string label: catalog.i18nc("@label", "Printer control")
+    }
+
+    Row
+    {
+        width: base.width - 2 * UM.Theme.getSize("default_margin").width
+        height: childrenRect.height + 2 * UM.Theme.getSize("default_margin").width
+        anchors.left: parent.left
+        anchors.leftMargin: UM.Theme.getSize("default_margin").width
+
+        spacing: UM.Theme.getSize("default_margin").width
+
+        Label
+        {
+            text: catalog.i18nc("@label", "Position")
+            color: UM.Theme.getColor("setting_control_text")
+            font: UM.Theme.getFont("default")
+
+            width: Math.floor(parent.width * 0.4) - UM.Theme.getSize("default_margin").width
+        }
+
+        GridLayout
+        {
+            columns: 3
+            rows: 4
+            rowSpacing: UM.Theme.getSize("default_lining").width
+            columnSpacing: UM.Theme.getSize("default_lining").height
+
+            Label
+            {
+                text: catalog.i18nc("@label", "X/Y")
+                color: UM.Theme.getColor("setting_control_text")
+                font: UM.Theme.getFont("default")
+                width: parent.width
+                horizontalAlignment: Text.AlignHCenter
+
+                Layout.row: 1
+                Layout.column: 2
+                Layout.preferredWidth: UM.Theme.getSize("section").height
+            }
+
+            Button
+            {
+                Layout.row: 2
+                Layout.column: 2
+                Layout.preferredWidth: width
+                Layout.preferredHeight: height
+                iconSource: UM.Theme.getIcon("arrow_top");
+                style: monitorButtonStyle
+                width: height
+                height: UM.Theme.getSize("setting_control").height
+
+                onClicked:
+                {
+                    connectedPrinter.moveHead(0, 10, 0)
+                }
+            }
+
+            Button
+            {
+                Layout.row: 3
+                Layout.column: 1
+                Layout.preferredWidth: width
+                Layout.preferredHeight: height
+                iconSource: UM.Theme.getIcon("arrow_left");
+                style: monitorButtonStyle
+                width: height
+                height: UM.Theme.getSize("setting_control").height
+
+                onClicked:
+                {
+                    connectedPrinter.moveHead(-10, 0, 0)
+                }
+            }
+
+            Button
+            {
+                Layout.row: 3
+                Layout.column: 3
+                Layout.preferredWidth: width
+                Layout.preferredHeight: height
+                iconSource: UM.Theme.getIcon("arrow_right");
+                style: monitorButtonStyle
+                width: height
+                height: UM.Theme.getSize("setting_control").height
+
+                onClicked:
+                {
+                    connectedPrinter.moveHead(10, 0, 0)
+                }
+            }
+
+            Button
+            {
+                Layout.row: 4
+                Layout.column: 2
+                Layout.preferredWidth: width
+                Layout.preferredHeight: height
+                iconSource: UM.Theme.getIcon("arrow_bottom");
+                style: monitorButtonStyle
+                width: height
+                height: UM.Theme.getSize("setting_control").height
+
+                onClicked:
+                {
+                    connectedPrinter.moveHead(0, -10, 0)
+                }
+            }
+
+            Button
+            {
+                Layout.row: 3
+                Layout.column: 2
+                Layout.preferredWidth: width
+                Layout.preferredHeight: height
+                iconSource: UM.Theme.getIcon("home");
+                style: monitorButtonStyle
+                width: height
+                height: UM.Theme.getSize("setting_control").height
+
+                onClicked:
+                {
+                    connectedPrinter.homeHead()
+                }
+            }
+        }
+
+
+        Column
+        {
+            spacing: UM.Theme.getSize("default_lining").height
+
+            Label
+            {
+                text: catalog.i18nc("@label", "Z")
+                color: UM.Theme.getColor("setting_control_text")
+                font: UM.Theme.getFont("default")
+                width: UM.Theme.getSize("section").height
+
+                horizontalAlignment: Text.AlignHCenter
+            }
+
+            Button
+            {
+                iconSource: UM.Theme.getIcon("arrow_top");
+                style: monitorButtonStyle
+                width: height
+                height: UM.Theme.getSize("setting_control").height
+
+                onClicked:
+                {
+                    connectedPrinter.moveHead(0, 0, 10)
+                }
+            }
+
+            Button
+            {
+                iconSource: UM.Theme.getIcon("home");
+                style: monitorButtonStyle
+                width: height
+                height: UM.Theme.getSize("setting_control").height
+
+                onClicked:
+                {
+                    connectedPrinter.homeBed()
+                }
+            }
+
+            Button
+            {
+                iconSource: UM.Theme.getIcon("arrow_bottom");
+                style: monitorButtonStyle
+                width: height
+                height: UM.Theme.getSize("setting_control").height
+
+                onClicked:
+                {
+                    connectedPrinter.moveHead(0, 0, -10)
+                }
+            }
+        }
+    }
+
+    Loader
+    {
+        sourceComponent: monitorSection
         property string label: catalog.i18nc("@label", "Active print")
     }
     Loader
@@ -751,6 +937,97 @@ Column
                 text: label
                 font: UM.Theme.getFont("setting_category")
                 color: UM.Theme.getColor("setting_category_text")
+            }
+        }
+    }
+
+    Component
+    {
+        id: monitorButtonStyle
+
+        ButtonStyle
+        {
+            background: Rectangle
+            {
+                border.width: UM.Theme.getSize("default_lining").width
+                border.color:
+                {
+                    if(!control.enabled)
+                    {
+                        return UM.Theme.getColor("action_button_disabled_border");
+                    }
+                    else if(control.pressed)
+                    {
+                        return UM.Theme.getColor("action_button_active_border");
+                    }
+                    else if(control.hovered)
+                    {
+                        return UM.Theme.getColor("action_button_hovered_border");
+                    }
+                    else
+                    {
+                        return UM.Theme.getColor("action_button_border");
+                    }
+                }
+                color:
+                {
+                    if(!control.enabled)
+                    {
+                        return UM.Theme.getColor("action_button_disabled");
+                    }
+                    else if(control.pressed)
+                    {
+                        return UM.Theme.getColor("action_button_active");
+                    }
+                    else if(control.hovered)
+                    {
+                        return UM.Theme.getColor("action_button_hovered");
+                    }
+                    else
+                    {
+                        return UM.Theme.getColor("action_button");
+                    }
+                }
+                Behavior on color
+                {
+                    ColorAnimation
+                    {
+                        duration: 50
+                    }
+                }
+            }
+
+            label: Item
+            {
+                UM.RecolorImage
+                {
+                    anchors.verticalCenter: parent.verticalCenter
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    width: Math.floor(control.width / 2)
+                    height: Math.floor(control.height / 2)
+                    sourceSize.width: width
+                    sourceSize.height: width
+                    color:
+                    {
+                        if(!control.enabled)
+                        {
+                            return UM.Theme.getColor("action_button_disabled_text");
+                        }
+                        else if(control.pressed)
+                        {
+                            return UM.Theme.getColor("action_button_active_text");
+                        }
+                        else if(control.hovered)
+                        {
+                            return UM.Theme.getColor("action_button_hovered_text");
+                        }
+                        else
+                        {
+                            return UM.Theme.getColor("action_button_text");
+                        }
+                    }
+                    source: control.iconSource
+                }
             }
         }
     }
