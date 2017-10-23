@@ -1872,6 +1872,7 @@
                     "default_value": 10,
                     "minimum_value": "0",
                     "maximum_value": "10",
+                    "enabled": false,
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
@@ -1884,6 +1885,7 @@
                     "default_value": 100,
                     "minimum_value": "0",
                     "maximum_value": "100",
+                    "enabled": false,
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
