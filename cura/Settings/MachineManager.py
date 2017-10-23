@@ -47,6 +47,10 @@ class MachineManager(QObject):
         self._active_container_stack = None     # type: CuraContainerStack
         self._global_container_stack = None     # type: GlobalStack
 
+        # Used to store the new containers until after confirming the dialog
+        self._new_variant_container = None
+        self._new_material_container = None
+
         self._error_check_timer = QTimer()
         self._error_check_timer.setInterval(250)
         self._error_check_timer.setSingleShot(True)
@@ -58,6 +62,7 @@ class MachineManager(QObject):
         self._instance_container_timer.timeout.connect(self.__onInstanceContainersChanged)
 
         Application.getInstance().globalContainerStackChanged.connect(self._onGlobalContainerChanged)
+
         ##  When the global container is changed, active material probably needs to be updated.
         self.globalContainerChanged.connect(self.activeMaterialChanged)
         self.globalContainerChanged.connect(self.activeVariantChanged)
@@ -84,6 +89,9 @@ class MachineManager(QObject):
         ExtruderManager.getInstance().activeExtruderChanged.connect(self.activeStackChanged)
         self.activeStackChanged.connect(self.activeStackValueChanged)
 
+        # when a user closed dialog check if any delayed material or variant changes need to be applied
+        Application.getInstance().onDiscardOrKeepProfileChangesClosed.connect(self._executeDelayedActiveContainerStackChanges)
+
         Preferences.getInstance().addPreference("cura/active_machine", "")
 
         self._global_event_keys = set()
@@ -109,7 +117,7 @@ class MachineManager(QObject):
                                               "The selected material is incompatible with the selected machine or configuration."),
                                                 title = catalog.i18nc("@info:title", "Incompatible Material"))
 
-    globalContainerChanged = pyqtSignal() # Emitted whenever the global stack is changed (ie: when changing between printers, changing a global profile, but not when changing a value)
+    globalContainerChanged = pyqtSignal()  # Emitted whenever the global stack is changed (ie: when changing between printers, changing a global profile, but not when changing a value)
     activeMaterialChanged = pyqtSignal()
     activeVariantChanged = pyqtSignal()
     activeQualityChanged = pyqtSignal()
@@ -747,7 +755,7 @@ class MachineManager(QObject):
             self.blurSettings.emit()
             old_material.nameChanged.disconnect(self._onMaterialNameChanged)
 
-            self._active_container_stack.material = material_container
+            self._new_material_container = material_container   # self._active_container_stack will be updated with a delay
             Logger.log("d", "Active material changed")
 
             material_container.nameChanged.connect(self._onMaterialNameChanged)
@@ -801,13 +809,13 @@ class MachineManager(QObject):
             old_material = self._active_container_stack.material
             if old_variant:
                 self.blurSettings.emit()
-                self._active_container_stack.variant = containers[0]
+                self._new_variant_container = containers[0]  # self._active_container_stack will be updated with a delay
                 Logger.log("d", "Active variant changed to {active_variant_id}".format(active_variant_id = containers[0].getId()))
                 preferred_material_name = None
                 if old_material:
                     preferred_material_name = old_material.getName()
-
-                self.setActiveMaterial(self._updateMaterialContainer(self._global_container_stack.getBottom(), self._global_container_stack, containers[0], preferred_material_name).id)
+                preferred_material_id = self._updateMaterialContainer(self._global_container_stack.getBottom(), self._global_container_stack, containers[0], preferred_material_name).id
+                self.setActiveMaterial(preferred_material_id)
             else:
                 Logger.log("w", "While trying to set the active variant, no variant was found to replace.")
 
@@ -854,19 +862,38 @@ class MachineManager(QObject):
                 self._replaceQualityOrQualityChangesInStack(stack, stack_quality, postpone_emit=True)
                 self._replaceQualityOrQualityChangesInStack(stack, stack_quality_changes, postpone_emit=True)
 
-            # Send emits that are postponed in replaceContainer.
-            # Here the stacks are finished replacing and every value can be resolved based on the current state.
-            for setting_info in new_quality_settings_list:
-                setting_info["stack"].sendPostponedEmits()
-
             # Connect to onQualityNameChanged
             for stack in name_changed_connect_stacks:
                 stack.nameChanged.connect(self._onQualityNameChanged)
 
-            if self.hasUserSettings and Preferences.getInstance().getValue("cura/active_mode") == 1:
-                self._askUserToKeepOrClearCurrentSettings()
+            has_user_interaction = False
 
-            self.activeQualityChanged.emit()
+            if self.hasUserSettings and Preferences.getInstance().getValue("cura/active_mode") == 1:
+                # Show the keep/discard user settings dialog
+                has_user_interaction = Application.getInstance().discardOrKeepProfileChanges()
+            else:
+                # If the user doesn't have any of adjusted settings then slicing will be triggered by emit()
+                # Send emits that are postponed in replaceContainer.
+                # Here the stacks are finished replacing and every value can be resolved based on the current state.
+                for setting_info in new_quality_settings_list:
+                    setting_info["stack"].sendPostponedEmits()
+
+            if not has_user_interaction:
+                self._executeDelayedActiveContainerStackChanges()
+                self.activeQualityChanged.emit()
+
+    ##  Used to update material and variant in the active container stack with a delay.
+    #   This delay prevents the stack from triggering a lot of signals (eventually resulting in slicing)
+    #   before the user decided to keep or discard any of their changes using the dialog.
+    #   The Application.onDiscardOrKeepProfileChangesClosed signal triggers this method.
+    def _executeDelayedActiveContainerStackChanges(self):
+        if self._new_material_container is not None:
+            self._active_container_stack.material = self._new_material_container
+            self._new_material_container = None
+
+        if self._new_variant_container is not None:
+            self._active_container_stack.variant = self._new_variant_container
+            self._new_variant_container = None
 
     ##  Determine the quality and quality changes settings for the current machine for a quality name.
     #
@@ -984,9 +1011,6 @@ class MachineManager(QObject):
             stack.setQualityChanges(container, postpone_emit = postpone_emit)
             stack.qualityChanges.nameChanged.connect(self._onQualityNameChanged)
         self._onQualityNameChanged()
-
-    def _askUserToKeepOrClearCurrentSettings(self):
-        Application.getInstance().discardOrKeepProfileChanges()
 
     @pyqtProperty(str, notify = activeVariantChanged)
     def activeVariantName(self) -> str:
