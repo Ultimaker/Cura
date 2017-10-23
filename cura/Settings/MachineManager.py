@@ -884,7 +884,7 @@ class MachineManager(QObject):
     ##  Used to update material and variant in the active container stack with a delay.
     #   This delay prevents the stack from triggering a lot of signals (eventually resulting in slicing)
     #   before the user decided to keep or discard any of their changes using the dialog.
-    #   The activeQualityChanged signal triggers this method.
+    #   The Application.onDiscardOrKeepProfileChangesClosed signal triggers this method.
     def _executeDelayedActiveContainerStackChanges(self):
         if self._new_material_container is not None:
             self._active_container_stack.material = self._new_material_container
