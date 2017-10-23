@@ -694,7 +694,7 @@ Column
 
         Label
         {
-            text: catalog.i18nc("@label", "Position")
+            text: catalog.i18nc("@label", "Jog position")
             color: UM.Theme.getColor("setting_control_text")
             font: UM.Theme.getFont("default")
 
@@ -734,7 +734,7 @@ Column
 
                 onClicked:
                 {
-                    connectedPrinter.moveHead(0, 10, 0)
+                    connectedPrinter.moveHead(0, distancesRow.currentDistance, 0)
                 }
             }
 
@@ -751,7 +751,7 @@ Column
 
                 onClicked:
                 {
-                    connectedPrinter.moveHead(-10, 0, 0)
+                    connectedPrinter.moveHead(-distancesRow.currentDistance, 0, 0)
                 }
             }
 
@@ -768,7 +768,7 @@ Column
 
                 onClicked:
                 {
-                    connectedPrinter.moveHead(10, 0, 0)
+                    connectedPrinter.moveHead(distancesRow.currentDistance, 0, 0)
                 }
             }
 
@@ -785,7 +785,7 @@ Column
 
                 onClicked:
                 {
-                    connectedPrinter.moveHead(0, -10, 0)
+                    connectedPrinter.moveHead(0, -distancesRow.currentDistance, 0)
                 }
             }
 
@@ -831,7 +831,7 @@ Column
 
                 onClicked:
                 {
-                    connectedPrinter.moveHead(0, 0, 10)
+                    connectedPrinter.moveHead(0, 0, distancesRow.currentDistance)
                 }
             }
 
@@ -857,11 +857,92 @@ Column
 
                 onClicked:
                 {
-                    connectedPrinter.moveHead(0, 0, -10)
+                    connectedPrinter.moveHead(0, 0, -distancesRow.currentDistance)
                 }
             }
         }
     }
+
+    Row
+    {
+        id: distancesRow
+
+        width: base.width - 2 * UM.Theme.getSize("default_margin").width
+        height: childrenRect.height + 2 * UM.Theme.getSize("default_margin").width
+        anchors.left: parent.left
+        anchors.leftMargin: UM.Theme.getSize("default_margin").width
+
+        spacing: UM.Theme.getSize("default_margin").width
+
+        property real currentDistance: 10
+
+        Label
+        {
+            text: catalog.i18nc("@label", "Jog distance")
+            color: UM.Theme.getColor("setting_control_text")
+            font: UM.Theme.getFont("default")
+
+            width: Math.floor(parent.width * 0.4) - UM.Theme.getSize("default_margin").width
+        }
+
+        Row
+        {
+            Repeater
+            {
+                model: distancesModel
+                delegate: Button
+                {
+                    height: UM.Theme.getSize("setting_control").height
+                    width: height + UM.Theme.getSize("default_margin").width
+
+                    text: model.label
+                    exclusiveGroup: distanceGroup
+                    checkable: true
+                    checked: distancesRow.currentDistance == model.value
+                    onClicked: distancesRow.currentDistance = model.value
+
+                    style: ButtonStyle {
+                        background: Rectangle {
+                            border.width: control.checked ? UM.Theme.getSize("default_lining").width * 2 : UM.Theme.getSize("default_lining").width
+                            border.color: (control.checked || control.pressed) ? UM.Theme.getColor("action_button_active_border") :
+                                              control.hovered ? UM.Theme.getColor("action_button_hovered_border") :
+                                              UM.Theme.getColor("action_button_border")
+                            color: (control.checked || control.pressed) ? UM.Theme.getColor("action_button_active") :
+                                       control.hovered ? UM.Theme.getColor("action_button_hovered") :
+                                       UM.Theme.getColor("action_button")
+                            Behavior on color { ColorAnimation { duration: 50; } }
+                            Label {
+                                anchors.left: parent.left
+                                anchors.right: parent.right
+                                anchors.verticalCenter: parent.verticalCenter
+                                anchors.leftMargin: UM.Theme.getSize("default_lining").width * 2
+                                anchors.rightMargin: UM.Theme.getSize("default_lining").width * 2
+                                color: (control.checked || control.pressed) ? UM.Theme.getColor("action_button_active_text") :
+                                           control.hovered ? UM.Theme.getColor("action_button_hovered_text") :
+                                           UM.Theme.getColor("action_button_text")
+                                font: UM.Theme.getFont("default")
+                                text: control.text
+                                horizontalAlignment: Text.AlignHCenter
+                                elide: Text.ElideMiddle
+                            }
+                        }
+                        label: Item { }
+                    }
+                }
+            }
+        }
+
+        ListModel
+        {
+            id: distancesModel
+            ListElement { label: "0.1"; value: 0.1 }
+            ListElement { label: "1";   value: 1   }
+            ListElement { label: "10";  value: 10  }
+            ListElement { label: "100"; value: 100 }
+        }
+        ExclusiveGroup { id: distanceGroup }
+    }
+
 
     Loader
     {
