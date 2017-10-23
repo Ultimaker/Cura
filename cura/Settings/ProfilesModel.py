@@ -72,6 +72,15 @@ class ProfilesModel(InstanceContainersModel):
         # The actual list of quality profiles come from the first extruder in the extruder list.
         result = QualityManager.getInstance().findAllUsableQualitiesForMachineAndExtruders(global_container_stack, extruder_stacks)
 
+        # If not qualities are found we dynamically create an empty container with name "Not Supported"
+        if len(result) == 0:
+            machine_id = global_container_stack.definition.getId()
+            material_id = extruder_stacks[0].material.getId()
+            not_supported_container = self.generateNoSupportedInstanceContainer(machine_id, material_id)
+            result.append(not_supported_container)
+            # ContainerRegistry.getInstance().addContainer(not_supported_container)
+            return result
+
         # The usable quality types are set
         quality_type_set = set([x.getMetaDataEntry("quality_type") for x in result])
 
@@ -85,26 +94,17 @@ class ProfilesModel(InstanceContainersModel):
             if quality.getMetaDataEntry("quality_type") not in quality_type_set:
                 result.append(quality)
 
-        # If not qualities are found we dynamically create an empty container with name "Not Supported"
-        if len(result) == 0:
-            machine_id = global_container_stack.definition.getId()
-            material_id = extruder_stacks[0].material.getId()
-            result.append(self.generateNoSupportedInstanceContainer(machine_id, material_id))
-
         return result
 
     def generateNoSupportedInstanceContainer(self, machine_id: str, material_id: str):
         container = InstanceContainer("not_supported")
         container.setName("Not Supported")
-        container.metaData["quality_type"] = "normal"
         container.metaData["setting_version"] = 3
         container.metaData["supported"] = False
         container.metaData["type"] = "quality"
         container.metaData["weight"] = "0"
         container.metaData["material"] = material_id
-        container.readOnly = True
-        container.setDirty(False)
-        container.setCachedValues({})
+        container.metaData["quality_type"] = "normal"
         definition = ContainerRegistry.getInstance().findDefinitionContainers(id = machine_id)
         container.setDefinition(definition)
         return container
@@ -181,8 +181,8 @@ class ProfilesModel(InstanceContainersModel):
         for item in containers:
             profile = container_registry.findContainers(id=item["id"])
             if not profile:
-                self._setItemLayerHeight(item, "", unit)
-                item["available"] = False
+                self._setItemLayerHeight(item, "", "")
+                item["available"] = True
                 yield item
                 continue
 
