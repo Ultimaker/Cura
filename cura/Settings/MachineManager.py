@@ -879,6 +879,7 @@ class MachineManager(QObject):
                     setting_info["stack"].sendPostponedEmits()
 
             if not has_user_interaction:
+                self._executeDelayedActiveContainerStackChanges()
                 self.activeQualityChanged.emit()
 
     ##  Used to update material and variant in the active container stack with a delay.
