@@ -393,6 +393,7 @@ class CuraApplication(QtApplication):
     showDiscardOrKeepProfileChanges = pyqtSignal()
 
     def discardOrKeepProfileChanges(self):
+        has_user_interaction = False
         choice = Preferences.getInstance().getValue("cura/choice_on_profile_override")
         if choice == "always_discard":
             # don't show dialog and DISCARD the profile
@@ -403,8 +404,10 @@ class CuraApplication(QtApplication):
         else:
             # ALWAYS ask whether to keep or discard the profile
             self.showDiscardOrKeepProfileChanges.emit()
+            has_user_interaction = True
+        return has_user_interaction
 
-    #sidebarSimpleDiscardOrKeepProfileChanges = pyqtSignal()
+    onDiscardOrKeepProfileChangesClosed = pyqtSignal()  # Used to notify other managers that the dialog was closed
 
     @pyqtSlot(str)
     def discardOrKeepProfileChangesClosed(self, option):
@@ -412,8 +415,24 @@ class CuraApplication(QtApplication):
             global_stack = self.getGlobalContainerStack()
             for extruder in ExtruderManager.getInstance().getMachineExtruders(global_stack.getId()):
                 extruder.getTop().clear()
-
             global_stack.getTop().clear()
+
+        # if the user decided to keep settings then the user settings should be re-calculated and validated for errors
+        # before slicing. To ensure that slicer uses right settings values
+        elif option == "keep":
+            global_stack = self.getGlobalContainerStack()
+            for extruder in ExtruderManager.getInstance().getMachineExtruders(global_stack.getId()):
+                user_extruder_container = extruder.getTop()
+                if user_extruder_container:
+                    user_extruder_container.update()
+
+            user_global_container = global_stack.getTop()
+            if user_global_container:
+                user_global_container.update()
+
+        # notify listeners that quality has changed (after user selected discard or keep)
+        self.onDiscardOrKeepProfileChangesClosed.emit()
+        self.getMachineManager().activeQualityChanged.emit()
 
     @pyqtSlot(int)
     def messageBoxClosed(self, button):
