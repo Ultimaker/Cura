@@ -240,3 +240,4 @@ class ProcessSlicedLayersJob(Job):
             else:
                 if self._progress_message:
                     self._progress_message.hide()
+
