@@ -341,6 +341,7 @@ class MachineManager(QObject):
         self.activeQualityChanged.emit()
         self.activeVariantChanged.emit()
         self.activeMaterialChanged.emit()
+        self._updateStacksHaveErrors()  # Prevents unwanted re-slices after changing machine
         self._error_check_timer.start()
 
     def _onInstanceContainersChanged(self, container):
@@ -357,6 +358,8 @@ class MachineManager(QObject):
     @pyqtSlot(str)
     def setActiveMachine(self, stack_id: str) -> None:
         self.blurSettings.emit()  # Ensure no-one has focus.
+        self._cancelDelayedActiveContainerStackChanges()
+
         containers = ContainerRegistry.getInstance().findContainerStacks(id = stack_id)
         if containers:
             Application.getInstance().setGlobalContainerStack(containers[0])
@@ -894,6 +897,12 @@ class MachineManager(QObject):
         if self._new_variant_container is not None:
             self._active_container_stack.variant = self._new_variant_container
             self._new_variant_container = None
+
+    ##  Cancel set changes for material and variant in the active container stack.
+    #   Used for ignoring any changes when switching between printers (setActiveMachine)
+    def _cancelDelayedActiveContainerStackChanges(self):
+        self._new_material_container = None
+        self._new_variant_container = None
 
     ##  Determine the quality and quality changes settings for the current machine for a quality name.
     #
