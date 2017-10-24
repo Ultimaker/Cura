@@ -3980,6 +3980,7 @@
                     "description": "Remove empty layers beneath the first printed layer if they are present.",
                     "type": "bool",
                     "default_value": true,
+                    "enabled": "not support_enable",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false
                 }
