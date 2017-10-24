@@ -335,6 +335,7 @@ class LayerView(View):
             if self._global_container_stack:
                 self._global_container_stack.propertyChanged.disconnect(self._onPropertyChanged)
 
+            self.getRenderer().removeRenderPass(self._layer_pass)
             self._composite_pass.setLayerBindings(self._old_layer_bindings)
             self._composite_pass.setCompositeShader(self._old_composite_shader)
 

@@ -74,5 +74,6 @@ class XRayView(View):
             self._composite_pass.setCompositeShader(self._xray_composite_shader)
 
         if event.type == Event.ViewDeactivateEvent:
+            self.getRenderer().removeRenderPass(self._xray_pass)
             self._composite_pass.setLayerBindings(self._old_layer_bindings)
             self._composite_pass.setCompositeShader(self._old_composite_shader)
