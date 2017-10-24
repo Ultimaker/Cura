@@ -20,12 +20,14 @@ class ProfilesModel(InstanceContainersModel):
     LayerHeightRole = Qt.UserRole + 1001
     LayerHeightWithoutUnitRole = Qt.UserRole + 1002
     AvailableRole = Qt.UserRole + 1003
+    NotSupportedRole = Qt.UserRole + 1004
 
     def __init__(self, parent = None):
         super().__init__(parent)
         self.addRoleName(self.LayerHeightRole, "layer_height")
         self.addRoleName(self.LayerHeightWithoutUnitRole, "layer_height_without_unit")
         self.addRoleName(self.AvailableRole, "available")
+        self.addRoleName(self.NotSupportedRole, "not_supported")
 
         Application.getInstance().globalContainerStackChanged.connect(self._update)
 
@@ -182,7 +184,8 @@ class ProfilesModel(InstanceContainersModel):
             profile = container_registry.findContainers(id=item["id"])
             if not profile:
                 self._setItemLayerHeight(item, "", "")
-                item["available"] = True
+                item["available"] = False
+                item["not_supported"] = True
                 yield item
                 continue
 
