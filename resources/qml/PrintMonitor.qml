@@ -677,14 +677,9 @@ Column
         watchedProperties: ["value"]
     }
 
-    Loader
-    {
-        sourceComponent: monitorSection
-        property string label: catalog.i18nc("@label", "Printer control")
-    }
-
     Column
     {
+        visible: connectedPrinter != null ? connectedPrinter.canControlManually : false
         enabled:
         {
             if (connectedPrinter == null)
@@ -700,6 +695,12 @@ Column
                 return false; //Printer is in a state where it can't react to manual control
             }
             return true;
+        }
+
+        Loader
+        {
+            sourceComponent: monitorSection
+            property string label: catalog.i18nc("@label", "Printer control")
         }
 
         Row
