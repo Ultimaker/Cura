@@ -924,12 +924,38 @@ Column
                         style: ButtonStyle {
                             background: Rectangle {
                                 border.width: control.checked ? UM.Theme.getSize("default_lining").width * 2 : UM.Theme.getSize("default_lining").width
-                                border.color: (control.checked || control.pressed) ? UM.Theme.getColor("action_button_active_border") :
-                                                  control.hovered ? UM.Theme.getColor("action_button_hovered_border") :
-                                                  UM.Theme.getColor("action_button_border")
-                                color: (control.checked || control.pressed) ? UM.Theme.getColor("action_button_active") :
-                                           control.hovered ? UM.Theme.getColor("action_button_hovered") :
-                                           UM.Theme.getColor("action_button")
+                                border.color:
+                                {
+                                    if(!control.enabled)
+                                    {
+                                        return UM.Theme.getColor("action_button_disabled_border");
+                                    }
+                                    else if (control.checked || control.pressed)
+                                    {
+                                        return UM.Theme.getColor("action_button_active_border");
+                                    }
+                                    else if(control.hovered)
+                                    {
+                                        return UM.Theme.getColor("action_button_hovered_border");
+                                    }
+                                    return UM.Theme.getColor("action_button_border");
+                                }
+                                color:
+                                {
+                                    if(!control.enabled)
+                                    {
+                                        return UM.Theme.getColor("action_button_disabled");
+                                    }
+                                    else if (control.checked || control.pressed)
+                                    {
+                                        return UM.Theme.getColor("action_button_active");
+                                    }
+                                    else if (control.hovered)
+                                    {
+                                        return UM.Theme.getColor("action_button_hovered");
+                                    }
+                                    return UM.Theme.getColor("action_button");
+                                }
                                 Behavior on color { ColorAnimation { duration: 50; } }
                                 Label {
                                     anchors.left: parent.left
@@ -937,9 +963,22 @@ Column
                                     anchors.verticalCenter: parent.verticalCenter
                                     anchors.leftMargin: UM.Theme.getSize("default_lining").width * 2
                                     anchors.rightMargin: UM.Theme.getSize("default_lining").width * 2
-                                    color: (control.checked || control.pressed) ? UM.Theme.getColor("action_button_active_text") :
-                                               control.hovered ? UM.Theme.getColor("action_button_hovered_text") :
-                                               UM.Theme.getColor("action_button_text")
+                                    color:
+                                    {
+                                        if(!control.enabled)
+                                        {
+                                            return UM.Theme.getColor("action_button_disabled_text");
+                                        }
+                                        else if (control.checked || control.pressed)
+                                        {
+                                            return UM.Theme.getColor("action_button_active_text");
+                                        }
+                                        else if (control.hovered)
+                                        {
+                                            return UM.Theme.getColor("action_button_hovered_text");
+                                        }
+                                        return UM.Theme.getColor("action_button_text");
+                                    }
                                     font: UM.Theme.getFont("default")
                                     text: control.text
                                     horizontalAlignment: Text.AlignHCenter
@@ -1066,10 +1105,7 @@ Column
                     {
                         return UM.Theme.getColor("action_button_hovered_border");
                     }
-                    else
-                    {
-                        return UM.Theme.getColor("action_button_border");
-                    }
+                    return UM.Theme.getColor("action_button_border");
                 }
                 color:
                 {
@@ -1085,10 +1121,7 @@ Column
                     {
                         return UM.Theme.getColor("action_button_hovered");
                     }
-                    else
-                    {
-                        return UM.Theme.getColor("action_button");
-                    }
+                    return UM.Theme.getColor("action_button");
                 }
                 Behavior on color
                 {
@@ -1123,10 +1156,7 @@ Column
                         {
                             return UM.Theme.getColor("action_button_hovered_text");
                         }
-                        else
-                        {
-                            return UM.Theme.getColor("action_button_text");
-                        }
+                        return UM.Theme.getColor("action_button_text");
                     }
                     source: control.iconSource
                 }
