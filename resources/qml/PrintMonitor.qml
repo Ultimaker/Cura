@@ -714,11 +714,13 @@ Column
 
             Label
             {
-                text: catalog.i18nc("@label", "Jog position")
+                text: catalog.i18nc("@label", "Jog Position")
                 color: UM.Theme.getColor("setting_control_text")
                 font: UM.Theme.getFont("default")
 
                 width: Math.floor(parent.width * 0.4) - UM.Theme.getSize("default_margin").width
+                height: UM.Theme.getSize("setting_control").height
+                verticalAlignment: Text.AlignVCenter
             }
 
             GridLayout
@@ -733,12 +735,15 @@ Column
                     text: catalog.i18nc("@label", "X/Y")
                     color: UM.Theme.getColor("setting_control_text")
                     font: UM.Theme.getFont("default")
-                    width: parent.width
+                    width: height
+                    height: UM.Theme.getSize("setting_control").height
+                    verticalAlignment: Text.AlignVCenter
                     horizontalAlignment: Text.AlignHCenter
 
                     Layout.row: 1
                     Layout.column: 2
-                    Layout.preferredWidth: UM.Theme.getSize("section").height
+                    Layout.preferredWidth: width
+                    Layout.preferredHeight: height
                 }
 
                 Button
@@ -838,7 +843,8 @@ Column
                     color: UM.Theme.getColor("setting_control_text")
                     font: UM.Theme.getFont("default")
                     width: UM.Theme.getSize("section").height
-
+                    height: UM.Theme.getSize("setting_control").height
+                    verticalAlignment: Text.AlignVCenter
                     horizontalAlignment: Text.AlignHCenter
                 }
 
@@ -898,11 +904,13 @@ Column
 
             Label
             {
-                text: catalog.i18nc("@label", "Jog distance")
+                text: catalog.i18nc("@label", "Jog Distance")
                 color: UM.Theme.getColor("setting_control_text")
                 font: UM.Theme.getFont("default")
 
                 width: Math.floor(parent.width * 0.4) - UM.Theme.getSize("default_margin").width
+                height: UM.Theme.getSize("setting_control").height
+                verticalAlignment: Text.AlignVCenter
             }
 
             Row
