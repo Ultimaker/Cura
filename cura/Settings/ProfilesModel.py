@@ -7,11 +7,11 @@ from PyQt5.QtCore import Qt
 
 from UM.Application import Application
 from UM.Settings.ContainerRegistry import ContainerRegistry
-from UM.Settings.InstanceContainer import InstanceContainer
 from UM.Settings.Models.InstanceContainersModel import InstanceContainersModel
 
 from cura.QualityManager import QualityManager
 from cura.Settings.ExtruderManager import ExtruderManager
+from cura.Settings.NotSupportedProfileContainer import NotSupportedProfileContainer
 
 
 ##  QML Model for listing the current list of valid quality profiles.
@@ -78,9 +78,9 @@ class ProfilesModel(InstanceContainersModel):
         if len(result) == 0:
             machine_id = global_container_stack.definition.getId()
             material_id = extruder_stacks[0].material.getId()
-            not_supported_container = self.generateNoSupportedInstanceContainer(machine_id, material_id)
+            container_id = machine_id + "_" + material_id + "_not_supported"
+            not_supported_container = NotSupportedProfileContainer(container_id, machine_id, material_id)
             result.append(not_supported_container)
-            # ContainerRegistry.getInstance().addContainer(not_supported_container)
             return result
 
         # The usable quality types are set
@@ -98,32 +98,22 @@ class ProfilesModel(InstanceContainersModel):
 
         return result
 
-    def generateNoSupportedInstanceContainer(self, machine_id: str, material_id: str):
-        container = InstanceContainer("not_supported")
-        container.setName("Not Supported")
-        container.metaData["setting_version"] = 3
-        container.metaData["supported"] = False
-        container.metaData["type"] = "quality"
-        container.metaData["weight"] = "0"
-        container.metaData["material"] = material_id
-        container.metaData["quality_type"] = "normal"
-        definition = ContainerRegistry.getInstance().findDefinitionContainers(id = machine_id)
-        container.setDefinition(definition)
-        return container
-
     ##  Re-computes the items in this model, and adds the layer height role.
     def _recomputeItems(self):
-        #Some globals that we can re-use.
+
+        # Some globals that we can re-use.
         global_container_stack = Application.getInstance().getGlobalContainerStack()
         if global_container_stack is None:
             return
 
         # Detecting if the machine has multiple extrusion
         multiple_extrusion = global_container_stack.getProperty("machine_extruder_count", "value") > 1
+
         # Get the list of extruders and place the selected extruder at the front of the list.
         extruder_manager = ExtruderManager.getInstance()
         active_extruder = extruder_manager.getActiveExtruderStack()
         extruder_stacks = extruder_manager.getActiveExtruderStacks()
+
         if multiple_extrusion:
             # Place the active extruder at the front of the list.
             # This is a workaround checking if there is an active_extruder or not before moving it to the front of the list.
@@ -181,7 +171,9 @@ class ProfilesModel(InstanceContainersModel):
 
         # Now all the containers are set
         for item in containers:
-            profile = container_registry.findContainers(id=item["id"])
+            profile = container_registry.findContainers(id = item["id"])
+
+            # when the profile is not supported
             if not profile:
                 self._setItemLayerHeight(item, "", "")
                 item["available"] = False
@@ -195,6 +187,7 @@ class ProfilesModel(InstanceContainersModel):
             # Easy case: This profile defines its own layer height.
             if profile.hasProperty("layer_height", "value"):
                 self._setItemLayerHeight(item, profile.getProperty("layer_height", "value"), unit)
+                item["not_supported"] = False
                 yield item
                 continue
 
@@ -213,16 +206,18 @@ class ProfilesModel(InstanceContainersModel):
                         quality = None
                 if quality and quality.hasProperty("layer_height", "value"):
                     self._setItemLayerHeight(item, quality.getProperty("layer_height", "value"), unit)
+                    item["not_supported"] = False
                     yield item
                     continue
 
-            #Quality has no value for layer height either. Get the layer height from somewhere lower in the stack.
+            # Quality has no value for layer height either. Get the layer height from somewhere lower in the stack.
             skip_until_container = global_container_stack.material
             if not skip_until_container or skip_until_container == ContainerRegistry.getInstance().getEmptyInstanceContainer(): #No material in stack.
                 skip_until_container = global_container_stack.variant
                 if not skip_until_container or skip_until_container == ContainerRegistry.getInstance().getEmptyInstanceContainer(): #No variant in stack.
                     skip_until_container = global_container_stack.getBottom()
             self._setItemLayerHeight(item, global_container_stack.getRawProperty("layer_height", "value", skip_until_container = skip_until_container.getId()), unit)  # Fall through to the currently loaded material.
+            item["not_supported"] = False
             yield item
 
     def _setItemLayerHeight(self, item, value, unit):
