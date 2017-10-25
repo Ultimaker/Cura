@@ -102,6 +102,60 @@ Item
         }
     }
 
+    ToolButton
+    {
+        id: settingVisibilityProfileMenu
+
+        width: height
+        height: UM.Theme.getSize("setting_control").height
+        anchors
+        {
+            top: globalProfileRow.bottom
+            topMargin: UM.Theme.getSize("sidebar_margin").height
+            right: parent.right
+            rightMargin: UM.Theme.getSize("sidebar_margin").width
+        }
+        style: ButtonStyle
+        {
+            background: Rectangle {
+                color:
+                {
+                    if(!control.enabled)
+                    {
+                        return UM.Theme.getColor("setting_control_disabled");
+                    }
+                    return UM.Theme.getColor("setting_control");
+                }
+
+                border.width: UM.Theme.getSize("default_lining").width
+                border.color:
+                {
+                    if (!control.enabled)
+                    {
+                        return UM.Theme.getColor("setting_control_disabled_border");
+                    }
+                    else if (control.hovered)
+                    {
+                        return UM.Theme.getColor("setting_control_border_highlight");
+                    }
+                    return UM.Theme.getColor("setting_control_border");
+                }
+                UM.RecolorImage {
+                    anchors.verticalCenter: parent.verticalCenter
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    width: UM.Theme.getSize("standard_arrow").width
+                    height: UM.Theme.getSize("standard_arrow").height
+                    sourceSize.width: width
+                    sourceSize.height: width
+                    color: control.enabled ? UM.Theme.getColor("setting_category_text") : UM.Theme.getColor("setting_category_disabled_text")
+                    source: UM.Theme.getIcon("menu")
+                }
+            }
+            label: Label{}
+        }
+        menu: Menu {}
+    }
+
     Rectangle
     {
         id: filterContainer
@@ -128,8 +182,8 @@ Item
             topMargin: UM.Theme.getSize("sidebar_margin").height
             left: parent.left
             leftMargin: UM.Theme.getSize("sidebar_margin").width
-            right: parent.right
-            rightMargin: UM.Theme.getSize("sidebar_margin").width
+            right: settingVisibilityProfileMenu.left
+            rightMargin: UM.Theme.getSize("default_margin").width
         }
         height: visible ? UM.Theme.getSize("setting_control").height : 0
         Behavior on height { NumberAnimation { duration: 100 } }
