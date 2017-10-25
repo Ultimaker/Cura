@@ -18,7 +18,7 @@ Menu
     {
         var clusterSize = Cura.MachineManager.printerOutputDevices[0].clusterSize
         // This is a non cluster printer or the cluster it is just one printer
-        if (typeof clusterSize == "undefined" || clusterSize == 1)
+        if (clusterSize == undefined || clusterSize == 1)
             return false
         return true
     }
