@@ -15,10 +15,11 @@ Item
 {
     id: base;
 
-    property Action configureSettings;
-    property bool findingSettings;
-    signal showTooltip(Item item, point location, string text);
-    signal hideTooltip();
+    property Action configureSettings
+    property bool findingSettings
+    property bool showingAllSettings
+    signal showTooltip(Item item, point location, string text)
+    signal hideTooltip()
 
     Item
     {
@@ -153,7 +154,26 @@ Item
             }
             label: Label{}
         }
-        menu: Menu {}
+        menu: SettingVisibilityProfilesMenu
+        {
+            showingSearchResults: findingSettings
+            showingAllSettings: showingAllSettings
+
+            onShowAllSettings:
+            {
+                base.showingAllSettings = true;
+                base.findingSettings = false;
+                filter.text = "";
+                filter.updateDefinitionModel();
+            }
+            onShowSettingVisibilityProfile:
+            {
+                base.showingAllSettings = false;
+                base.findingSettings = false;
+                filter.text = "";
+                filter.updateDefinitionModel();
+            }
+        }
     }
 
     Rectangle
@@ -217,17 +237,9 @@ Item
                 {
                     if(findingSettings)
                     {
-                        expandedCategories = definitionsModel.expanded.slice();
-                        definitionsModel.expanded = ["*"];
-                        definitionsModel.showAncestors = true;
-                        definitionsModel.showAll = true;
+                        showingAllSettings = false;
                     }
-                    else
-                    {
-                        definitionsModel.expanded = expandedCategories;
-                        definitionsModel.showAncestors = false;
-                        definitionsModel.showAll = false;
-                    }
+                    updateDefinitionModel();
                     lastFindingSettings = findingSettings;
                 }
             }
@@ -235,6 +247,23 @@ Item
             Keys.onEscapePressed:
             {
                 filter.text = "";
+            }
+
+            function updateDefinitionModel()
+            {
+                if(findingSettings || base.showingAllSettings)
+                {
+                    expandedCategories = definitionsModel.expanded.slice();
+                    definitionsModel.expanded = ["*"];
+                    definitionsModel.showAncestors = true;
+                    definitionsModel.showAll = true;
+                }
+                else
+                {
+                    definitionsModel.expanded = expandedCategories;
+                    definitionsModel.showAncestors = false;
+                    definitionsModel.showAll = false;
+                }
             }
         }
 
@@ -258,7 +287,7 @@ Item
 
             anchors.verticalCenter: parent.verticalCenter
             anchors.right: parent.right
-            anchors.rightMargin: UM.Theme.getSize("sidebar_margin").width
+            anchors.rightMargin: UM.Theme.getSize("default_margin").width
 
             color: UM.Theme.getColor("setting_control_button")
             hoverColor: UM.Theme.getColor("setting_control_button_hover")
