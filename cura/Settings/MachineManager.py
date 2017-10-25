@@ -862,8 +862,8 @@ class MachineManager(QObject):
 
                 name_changed_connect_stacks.append(stack_quality)
                 name_changed_connect_stacks.append(stack_quality_changes)
-                self._replaceQualityOrQualityChangesInStack(stack, stack_quality, postpone_emit=True)
-                self._replaceQualityOrQualityChangesInStack(stack, stack_quality_changes, postpone_emit=True)
+                self._replaceQualityOrQualityChangesInStack(stack, stack_quality, postpone_emit = True)
+                self._replaceQualityOrQualityChangesInStack(stack, stack_quality_changes, postpone_emit = True)
 
             # Connect to onQualityNameChanged
             for stack in name_changed_connect_stacks:
@@ -927,7 +927,8 @@ class MachineManager(QObject):
         for stack in stacks:
             material = stack.material
             quality = quality_manager.findQualityByQualityType(quality_type, global_machine_definition, [material])
-            if not quality: #No quality profile is found for this quality type.
+            if not quality:
+                # No quality profile is found for this quality type.
                 quality = self._empty_quality_container
             result.append({"stack": stack, "quality": quality, "quality_changes": empty_quality_changes})
 

@@ -63,10 +63,14 @@ Item
             menu: ProfileMenu { }
 
             function generateActiveQualityText () {
-                var result = ""
+                var result = catalog.i18nc("@", "No Profile Available") // default text
 
-                if (Cura.MachineManager.activeQualityName) {
-                    result += Cura.MachineManager.activeQualityName
+                console.log("Cura.MachineManager.activeQualityName", Cura.MachineManager.activeQualityName)
+                console.log("Cura.ProfilesModel.rowCount()", Cura.ProfilesModel.rowCount())
+                console.log("Cura.MachineManager.isActiveQualitySupported", Cura.MachineManager.isActiveQualitySupported)
+
+                if (Cura.MachineManager.activeQualityName && Cura.ProfilesModel.rowCount() > 0) {
+                    result = Cura.MachineManager.activeQualityName
 
                     if (Cura.MachineManager.activeQualityLayerHeight > 0) {
                         result += " <font color=\"" + UM.Theme.getColor("text_detail") + "\">"
