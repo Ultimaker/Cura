@@ -91,7 +91,6 @@ class ProfilesModel(InstanceContainersModel):
             # If not qualities are found we dynamically create a not supported container for this machine + material combination
             not_supported_container = ContainerRegistry.getInstance().findContainers(id = "empty_quality")[0]
             result.append(not_supported_container)
-            # return result
 
         return result
 

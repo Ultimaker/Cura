@@ -843,8 +843,6 @@ class MachineManager(QObject):
             if not containers or not self._global_container_stack:
                 return
 
-            Logger.log("d", "Attempting to change the active quality to %s", quality_id)
-
             # Quality profile come in two flavours: type=quality and type=quality_changes
             # If we found a quality_changes profile then look up its parent quality profile.
             container_type = containers[0].getMetaDataEntry("type")
@@ -864,14 +862,25 @@ class MachineManager(QObject):
             if new_quality_settings_list is None:
                 return
 
+            has_not_supported_quality = False
+
+            # check if any of the extruder stacks have a not supported profile
+            # if that is the case, all stacks should have a not supported state (otherwise it will show quality_type normal)
+            for setting_info in new_quality_settings_list:
+                if setting_info["quality"].getMetaDataEntry("quality_type") == "not_supported":
+                    has_not_supported_quality = True
+                    break
+
+            if has_not_supported_quality:
+                for setting_info in new_quality_settings_list:
+                    setting_info["quality"] = self._empty_quality_container
+
             self._new_quality_containers.clear()
 
             for setting_info in new_quality_settings_list:
                 stack = setting_info["stack"]
                 stack_quality = setting_info["quality"]
                 stack_quality_changes = setting_info["quality_changes"]
-
-                Logger.log("d", "=======================setting new quality=%s, %s", stack.getId(), stack_quality.getId())
 
                 self._new_quality_containers.append({
                     "stack": stack,
