@@ -6,6 +6,7 @@ from collections import OrderedDict
 from PyQt5.QtCore import Qt
 
 from UM.Application import Application
+from UM.Logger import Logger
 from UM.Settings.ContainerRegistry import ContainerRegistry
 from UM.Settings.Models.InstanceContainersModel import InstanceContainersModel
 
@@ -71,12 +72,6 @@ class ProfilesModel(InstanceContainersModel):
         # The actual list of quality profiles come from the first extruder in the extruder list.
         result = QualityManager.getInstance().findAllUsableQualitiesForMachineAndExtruders(global_container_stack, extruder_stacks)
 
-        if len(result) == 0:
-            # If not qualities are found we dynamically create a not supported container for this machine + material combination
-            not_supported_container = ContainerRegistry.getInstance().findContainers(id = "empty_quality")[0]
-            result.append(not_supported_container)
-            return result
-
         # The usable quality types are set
         quality_type_set = set([x.getMetaDataEntry("quality_type") for x in result])
 
@@ -89,6 +84,14 @@ class ProfilesModel(InstanceContainersModel):
         for quality in all_qualities:
             if quality.getMetaDataEntry("quality_type") not in quality_type_set:
                 result.append(quality)
+
+            Logger.log("d", "====================quality=%s", quality.getId())
+
+        if len(result) == 0:
+            # If not qualities are found we dynamically create a not supported container for this machine + material combination
+            not_supported_container = ContainerRegistry.getInstance().findContainers(id = "empty_quality")[0]
+            result.append(not_supported_container)
+            # return result
 
         return result
 
@@ -121,7 +124,8 @@ class ProfilesModel(InstanceContainersModel):
             extruder_stacks = new_extruder_stacks + extruder_stacks
 
         # Get a list of usable/available qualities for this machine and material
-        qualities = QualityManager.getInstance().findAllUsableQualitiesForMachineAndExtruders(global_container_stack, extruder_stacks)
+        qualities = QualityManager.getInstance().findAllUsableQualitiesForMachineAndExtruders(global_container_stack,
+                                                                                              extruder_stacks)
 
         container_registry = ContainerRegistry.getInstance()
         machine_manager = Application.getInstance().getMachineManager()
@@ -166,15 +170,25 @@ class ProfilesModel(InstanceContainersModel):
         for item in containers:
             profile = container_registry.findContainers(id = item["id"])
 
+            Logger.log("d", "profile=%s, id=%s", profile, item["id"])
+
             # when the profile is not supported
             if not profile:
                 self._setItemLayerHeight(item, "", "")
                 item["available"] = False
-                yield None
+                yield item
                 continue
 
             profile = profile[0]
+
+            if profile.getId() == "empty_quality":
+                self._setItemLayerHeight(item, "", "")
+                item["available"] = True
+                yield item
+                continue
+
             item["available"] = profile in qualities
+            Logger.log("d", "---- profile available = [%s] , qualities = [%s]", item["available"], [q.getId() for q in qualities])
 
             # Easy case: This profile defines its own layer height.
             if profile.hasProperty("layer_height", "value"):

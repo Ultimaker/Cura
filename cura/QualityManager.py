@@ -178,12 +178,32 @@ class QualityManager:
     def findAllUsableQualitiesForMachineAndExtruders(self, global_container_stack: "GlobalStack", extruder_stacks: List["ExtruderStack"]) -> List[InstanceContainer]:
         global_machine_definition = global_container_stack.getBottom()
 
+        machine_manager = Application.getInstance().getMachineManager()
+        active_stack_id = machine_manager.activeStackId
+
+        materials = []
+
+        # TODO: fix this
         if extruder_stacks:
-            # Multi-extruder machine detected.
-            materials = [stack.material for stack in extruder_stacks]
+            # Multi-extruder machine detected
+            for stack in extruder_stacks:
+                if stack.getId() == active_stack_id and machine_manager.newMaterial:
+                    materials.append(machine_manager.newMaterial)
+                else:
+                    materials.append(stack.material)
         else:
-            # Machine with one extruder.
-            materials = [global_container_stack.material]
+            # Machine with one extruder
+            if global_container_stack.getId() == active_stack_id and machine_manager.newMaterial:
+                materials.append(machine_manager.newMaterial)
+            else:
+                materials.append(global_container_stack.material)
+
+        # if extruder_stacks:
+        #     # Multi-extruder machine detected.
+        #     materials = [stack.material for stack in extruder_stacks]
+        # else:
+        #     # Machine with one extruder.
+        #     materials = [global_container_stack.material]
 
         quality_types = self.findAllQualityTypesForMachineAndMaterials(global_machine_definition, materials)
 
