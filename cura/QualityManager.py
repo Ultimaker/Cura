@@ -198,13 +198,6 @@ class QualityManager:
             else:
                 materials.append(global_container_stack.material)
 
-        # if extruder_stacks:
-        #     # Multi-extruder machine detected.
-        #     materials = [stack.material for stack in extruder_stacks]
-        # else:
-        #     # Machine with one extruder.
-        #     materials = [global_container_stack.material]
-
         quality_types = self.findAllQualityTypesForMachineAndMaterials(global_machine_definition, materials)
 
         # Map the list of quality_types to InstanceContainers

@@ -166,7 +166,7 @@ class ProfilesModel(InstanceContainersModel):
         for item in containers:
             profile = container_registry.findContainers(id = item["id"])
 
-            # when the profile is not supported
+            # When for some reason there is no profile container in the registry
             if not profile:
                 self._setItemLayerHeight(item, "", "")
                 item["available"] = False
@@ -175,7 +175,7 @@ class ProfilesModel(InstanceContainersModel):
 
             profile = profile[0]
 
-            # empty qualities should show in the list (they are "Not Supported" profiles)
+            # When there is a profile but it's an empty quality should. It's shown in the list (they are "Not Supported" profiles)
             if profile.getId() == "empty_quality":
                 self._setItemLayerHeight(item, "", "")
                 item["available"] = True

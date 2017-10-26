@@ -75,7 +75,6 @@ class CrashHandler:
 
     ##  Creates a modal dialog.
     def _createDialog(self):
-        self.dialog = QDialog()
         self.dialog.setMinimumWidth(640)
         self.dialog.setMinimumHeight(640)
         self.dialog.setWindowTitle(catalog.i18nc("@title:window", "Crash Report"))
