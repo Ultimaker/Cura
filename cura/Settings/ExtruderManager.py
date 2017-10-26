@@ -398,16 +398,12 @@ class ExtruderManager(QObject):
     #   \param setting_key  \type{str} The setting to get the property of.
     #   \param property  \type{str} The property to get.
     #   \return \type{List} the list of results
-    def getAllExtruderSettings(self, setting_key, property):
-        global_container_stack = Application.getInstance().getGlobalContainerStack()
-        if global_container_stack.getProperty("machine_extruder_count", "value") <= 1:
-            return [global_container_stack.getProperty(setting_key, property)]
-
+    def getAllExtruderSettings(self, setting_key: str, prop: str):
         result = []
         for index in self.extruderIds:
             extruder_stack_id = self.extruderIds[str(index)]
-            stack = ContainerRegistry.getInstance().findContainerStacks(id = extruder_stack_id)[0]
-            result.append(stack.getProperty(setting_key, property))
+            extruder_stack = ContainerRegistry.getInstance().findContainerStacks(id = extruder_stack_id)[0]
+            result.append(extruder_stack.getProperty(setting_key, prop))
         return result
 
     ##  Gets the extruder stacks that are actually being used at the moment.
