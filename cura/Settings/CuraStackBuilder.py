@@ -62,6 +62,7 @@ class CuraStackBuilder:
                 variant = "default",
                 next_stack = new_global_stack
             )
+            new_global_stack.addExtruder(new_extruder)
 
         return new_global_stack
 
@@ -79,7 +80,9 @@ class CuraStackBuilder:
         stack.setName(definition.getName())
         stack.setDefinition(definition)
         stack.addMetaDataEntry("position", definition.getMetaDataEntry("position"))
-        if "next_stack" in kwargs: #Add stacks before containers are added, since they may trigger a setting update.
+
+        if "next_stack" in kwargs:
+            # Add stacks before containers are added, since they may trigger a setting update.
             stack.setNextStack(kwargs["next_stack"])
 
         user_container = InstanceContainer(new_stack_id + "_user")

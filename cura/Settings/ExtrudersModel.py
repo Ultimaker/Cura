@@ -66,7 +66,7 @@ class ExtrudersModel(UM.Qt.ListModel.ListModel):
         self._update_extruder_timer = QTimer()
         self._update_extruder_timer.setInterval(100)
         self._update_extruder_timer.setSingleShot(True)
-        self._update_extruder_timer.connect(self.__updateExtruders)
+        self._update_extruder_timer.timeout.connect(self.__updateExtruders)
 
         self._add_global = False
         self._simple_names = False

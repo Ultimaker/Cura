@@ -1173,7 +1173,7 @@ class MachineManager(QObject):
             return containers[0].getBottom().getId()
 
     @staticmethod
-    def createMachineManager(engine=None, script_engine=None):
+    def createMachineManager():
         return MachineManager()
 
     @deprecated("Use ExtruderStack.material = ... and it won't be necessary", "2.7")

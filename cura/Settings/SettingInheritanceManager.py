@@ -47,21 +47,20 @@ class SettingInheritanceManager(QObject):
 
     @pyqtSlot(str, str, result = "QStringList")
     def getOverridesForExtruder(self, key, extruder_index):
-        multi_extrusion = self._global_container_stack.getProperty("machine_extruder_count", "value") > 1
-        if not multi_extrusion:
-            return self._settings_with_inheritance_warning
-        extruder = ExtruderManager.getInstance().getExtruderStack(extruder_index)
-        if not extruder:
-            Logger.log("w", "Unable to find extruder for current machine with index %s", extruder_index)
-            return []
+        result = []
 
-        definitions = self._global_container_stack.definition.findDefinitions(key=key)
+        extruder_stack = ExtruderManager.getInstance().getExtruderStack(extruder_index)
+        if not extruder_stack:
+            Logger.log("w", "Unable to find extruder for current machine with index %s", extruder_index)
+            return result
+
+        definitions = self._global_container_stack.definition.findDefinitions(key = key)
         if not definitions:
             Logger.log("w", "Could not find definition for key [%s] (2)", key)
-            return []
-        result = []
+            return result
+
         for key in definitions[0].getAllKeys():
-            if self._settingIsOverwritingInheritance(key, extruder):
+            if self._settingIsOverwritingInheritance(key, extruder_stack):
                 result.append(key)
 
         return result

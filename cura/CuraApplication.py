@@ -200,6 +200,7 @@ class CuraApplication(QtApplication):
 
         self._machine_action_manager = MachineActionManager.MachineActionManager()
         self._machine_manager = None    # This is initialized on demand.
+        self._extruder_manager = None
         self._material_manager = None
         self._setting_inheritance_manager = None
         self._simple_mode_settings_manager = None
@@ -259,20 +260,24 @@ class CuraApplication(QtApplication):
         # Since they are empty, they should never be serialized and instead just programmatically created.
         # We need them to simplify the switching between materials.
         empty_container = ContainerRegistry.getInstance().getEmptyInstanceContainer()
+
         empty_variant_container = copy.deepcopy(empty_container)
         empty_variant_container._id = "empty_variant"
         empty_variant_container.addMetaDataEntry("type", "variant")
         ContainerRegistry.getInstance().addContainer(empty_variant_container)
+
         empty_material_container = copy.deepcopy(empty_container)
         empty_material_container._id = "empty_material"
         empty_material_container.addMetaDataEntry("type", "material")
         ContainerRegistry.getInstance().addContainer(empty_material_container)
+
         empty_quality_container = copy.deepcopy(empty_container)
         empty_quality_container._id = "empty_quality"
         empty_quality_container.setName("Not Supported")
         empty_quality_container.addMetaDataEntry("quality_type", "normal")
         empty_quality_container.addMetaDataEntry("type", "quality")
         ContainerRegistry.getInstance().addContainer(empty_quality_container)
+
         empty_quality_changes_container = copy.deepcopy(empty_container)
         empty_quality_changes_container._id = "empty_quality_changes"
         empty_quality_changes_container.addMetaDataEntry("type", "quality_changes")
@@ -413,7 +418,7 @@ class CuraApplication(QtApplication):
     def discardOrKeepProfileChangesClosed(self, option):
         if option == "discard":
             global_stack = self.getGlobalContainerStack()
-            for extruder in ExtruderManager.getInstance().getMachineExtruders(global_stack.getId()):
+            for extruder in self._extruder_manager.getMachineExtruders(global_stack.getId()):
                 extruder.getTop().clear()
             global_stack.getTop().clear()
 
@@ -421,7 +426,7 @@ class CuraApplication(QtApplication):
         # before slicing. To ensure that slicer uses right settings values
         elif option == "keep":
             global_stack = self.getGlobalContainerStack()
-            for extruder in ExtruderManager.getInstance().getMachineExtruders(global_stack.getId()):
+            for extruder in self._extruder_manager.getMachineExtruders(global_stack.getId()):
                 user_extruder_container = extruder.getTop()
                 if user_extruder_container:
                     user_extruder_container.update()
@@ -686,16 +691,13 @@ class CuraApplication(QtApplication):
 
         self.showSplashMessage(self._i18n_catalog.i18nc("@info:progress", "Loading interface..."))
 
-        # Initialise extruder so as to listen to global container stack changes before the first global container stack is set.
-        ExtruderManager.getInstance()
+        qmlRegisterSingletonType(ExtruderManager, "Cura", 1, 0, "ExtruderManager", self.getExtruderManager)
         qmlRegisterSingletonType(MachineManager, "Cura", 1, 0, "MachineManager", self.getMachineManager)
         qmlRegisterSingletonType(MaterialManager, "Cura", 1, 0, "MaterialManager", self.getMaterialManager)
-        qmlRegisterSingletonType(SettingInheritanceManager, "Cura", 1, 0, "SettingInheritanceManager",
-                                 self.getSettingInheritanceManager)
-        qmlRegisterSingletonType(SimpleModeSettingsManager, "Cura", 1, 2, "SimpleModeSettingsManager",
-                                 self.getSimpleModeSettingsManager)
-
+        qmlRegisterSingletonType(SettingInheritanceManager, "Cura", 1, 0, "SettingInheritanceManager", self.getSettingInheritanceManager)
+        qmlRegisterSingletonType(SimpleModeSettingsManager, "Cura", 1, 2, "SimpleModeSettingsManager", self.getSimpleModeSettingsManager)
         qmlRegisterSingletonType(MachineActionManager.MachineActionManager, "Cura", 1, 0, "MachineActionManager", self.getMachineActionManager)
+
         self.setMainQml(Resources.getPath(self.ResourceTypes.QmlFiles, "Cura.qml"))
         self._qml_import_paths.append(Resources.getPath(self.ResourceTypes.QmlFiles))
         self.initializeEngine()
@@ -716,6 +718,11 @@ class CuraApplication(QtApplication):
         if self._machine_manager is None:
             self._machine_manager = MachineManager.createMachineManager()
         return self._machine_manager
+
+    def getExtruderManager(self, *args):
+        if self._extruder_manager is None:
+            self._extruder_manager = ExtruderManager.createExtruderManager()
+        return self._extruder_manager
 
     def getMaterialManager(self, *args):
         if self._material_manager is None:
@@ -784,7 +791,7 @@ class CuraApplication(QtApplication):
         actions_url = QUrl.fromLocalFile(os.path.abspath(Resources.getPath(CuraApplication.ResourceTypes.QmlFiles, "Actions.qml")))
         qmlRegisterSingletonType(actions_url, "Cura", 1, 0, "Actions")
 
-        engine.rootContext().setContextProperty("ExtruderManager", ExtruderManager.getInstance())
+        # engine.rootContext().setContextProperty("ExtruderManager", ExtruderManager.getInstance())
 
         for path in Resources.getAllResourcesOfType(CuraApplication.ResourceTypes.QmlFiles):
             type_name = os.path.splitext(os.path.basename(path))[0]
