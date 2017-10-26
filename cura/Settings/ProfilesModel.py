@@ -32,11 +32,9 @@ class ProfilesModel(InstanceContainersModel):
         self.addRoleName(self.AvailableRole, "available")
 
         Application.getInstance().globalContainerStackChanged.connect(self._update)
-
-        self._machine_manager = Application.getInstance().getMachineManager()
-        self._machine_manager.activeVariantChanged.connect(self._update)
-        self._machine_manager.activeStackChanged.connect(self._update)
-        self._machine_manager.activeMaterialChanged.connect(self._update)
+        Application.getInstance().getMachineManager().activeVariantChanged.connect(self._update)
+        Application.getInstance().getMachineManager().activeStackChanged.connect(self._update)
+        Application.getInstance().getMachineManager().activeMaterialChanged.connect(self._update)
 
     # Factory function, used by QML
     @staticmethod
@@ -153,17 +151,21 @@ class ProfilesModel(InstanceContainersModel):
                 yield item
                 continue
 
+            machine_manager = Application.getInstance().getMachineManager()
+
             # Quality-changes profile that has no value for layer height. Get the corresponding quality profile and ask that profile.
             quality_type = profile.getMetaDataEntry("quality_type", None)
             if quality_type:
-                quality_results = self._machine_manager.determineQualityAndQualityChangesForQualityType(quality_type)
+                quality_results = machine_manager.determineQualityAndQualityChangesForQualityType(quality_type)
                 for quality_result in quality_results:
                     if quality_result["stack"] is global_container_stack:
                         quality = quality_result["quality"]
                         break
-                else: #No global container stack in the results:
+                else:
+                    # No global container stack in the results:
                     if quality_results:
-                        quality = quality_results[0]["quality"] #Take any of the extruders.
+                        # Take any of the extruders.
+                        quality = quality_results[0]["quality"]
                     else:
                         quality = None
                 if quality and quality.hasProperty("layer_height", "value"):
@@ -171,11 +173,11 @@ class ProfilesModel(InstanceContainersModel):
                     yield item
                     continue
 
-            #Quality has no value for layer height either. Get the layer height from somewhere lower in the stack.
+            # Quality has no value for layer height either. Get the layer height from somewhere lower in the stack.
             skip_until_container = global_container_stack.material
-            if not skip_until_container or skip_until_container == ContainerRegistry.getInstance().getEmptyInstanceContainer(): #No material in stack.
+            if not skip_until_container or skip_until_container == ContainerRegistry.getInstance().getEmptyInstanceContainer():  # No material in stack.
                 skip_until_container = global_container_stack.variant
-                if not skip_until_container or skip_until_container == ContainerRegistry.getInstance().getEmptyInstanceContainer(): #No variant in stack.
+                if not skip_until_container or skip_until_container == ContainerRegistry.getInstance().getEmptyInstanceContainer():  # No variant in stack.
                     skip_until_container = global_container_stack.getBottom()
             self._setItemLayerHeight(item, global_container_stack.getRawProperty("layer_height", "value", skip_until_container = skip_until_container.getId()), unit)  # Fall through to the currently loaded material.
             yield item

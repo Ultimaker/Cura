@@ -176,25 +176,27 @@ class MachineSettingsAction(MachineAction):
             extruder_manager.setActiveExtruderIndex(0)
 
         # Move settable_per_extruder values out of the global container
-        extruder_stacks = ExtruderManager.getInstance().getActiveExtruderStack()
+        # extruder_stacks = ExtruderManager.getInstance().getActiveExtruderStack()
         global_user_container = self._global_container_stack.getTop()
 
-        for setting_instance in global_user_container.findInstances():
-            setting_key = setting_instance.definition.key
-            
+        if extruder_count > 1:
+            # Multi extrusion
+            # Make sure one of the extruder stacks is active
+            if extruder_manager.activeExtruderIndex == -1:
+                extruder_manager.setActiveExtruderIndex(0)
 
-
-
-
-
-                for setting_instance in global_user_container.findInstances():
-                    setting_key = setting_instance.definition.key
-                    settable_per_extruder = self._global_container_stack.getProperty(setting_key, "settable_per_extruder")
-                    if settable_per_extruder:
-                        limit_to_extruder = int(self._global_container_stack.getProperty(setting_key, "limit_to_extruder"))
-                        extruder_stack = extruder_stacks[max(0, limit_to_extruder)]
-                        extruder_stack.getTop().setProperty(setting_key, "value", global_user_container.getProperty(setting_key, "value"))
-                        global_user_container.removeInstance(setting_key)
+            # Move settable_per_extruder values out of the global container
+            if previous_extruder_count == 1:
+                extruder_stacks = ExtruderManager.getInstance().getActiveExtruderStacks()
+                global_user_container = self._global_container_stack.getTop()
+            for setting_instance in global_user_container.findInstances():
+                setting_key = setting_instance.definition.key
+                settable_per_extruder = self._global_container_stack.getProperty(setting_key, "settable_per_extruder")
+                if settable_per_extruder:
+                    limit_to_extruder = int(self._global_container_stack.getProperty(setting_key, "limit_to_extruder"))
+                    extruder_stack = extruder_stacks[max(0, limit_to_extruder)]
+                    extruder_stack.getTop().setProperty(setting_key, "value", global_user_container.getProperty(setting_key, "value"))
+                    global_user_container.removeInstance(setting_key)
         else:
             # Single extrusion
 
