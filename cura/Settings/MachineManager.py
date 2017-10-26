@@ -264,9 +264,12 @@ class MachineManager(QObject):
                 self._global_container_stack.propertyChanged.disconnect(self._onPropertyChanged)
             except TypeError:
                 pass
+
+            # TODO: remove this - CURA-4482
             material = self._global_container_stack.material
             material.nameChanged.disconnect(self._onMaterialNameChanged)
 
+            # TODO: remove this - CURA-4482
             quality = self._global_container_stack.quality
             quality.nameChanged.disconnect(self._onQualityNameChanged)
 
@@ -274,41 +277,33 @@ class MachineManager(QObject):
                 extruder_stack.propertyChanged.disconnect(self._onPropertyChanged)
                 extruder_stack.containersChanged.disconnect(self._onInstanceContainersChanged)
 
+        # update the local global container stack reference
         self._global_container_stack = Application.getInstance().getGlobalContainerStack()
 
         self.globalContainerChanged.emit()
 
+        # after switching the global stack we reconnect all the signals and set the variant and material references
         if self._global_container_stack:
             Preferences.getInstance().setValue("cura/active_machine", self._global_container_stack.getId())
+
             self._global_container_stack.nameChanged.connect(self._onMachineNameChanged)
             self._global_container_stack.containersChanged.connect(self._onInstanceContainersChanged)
             self._global_container_stack.propertyChanged.connect(self._onPropertyChanged)
 
-            if self._global_container_stack.getProperty("machine_extruder_count", "value") > 1:
-                # For multi-extrusion machines, we do not want variant or material profiles in the stack,
-                # because these are extruder specific and may cause wrong values to be used for extruders
-                # that did not specify a value in the extruder.
-                global_variant = self._global_container_stack.variant
-                if global_variant != self._empty_variant_container:
-                    self._global_container_stack.setVariant(self._empty_variant_container)
+            # set the global variant to empty as we now use the extruder stack at all times - CURA-4482
+            global_variant = self._global_container_stack.variant
+            if global_variant != self._empty_variant_container:
+                self._global_container_stack.setVariant(self._empty_variant_container)
 
-                global_material = self._global_container_stack.material
-                if global_material != self._empty_material_container:
-                    self._global_container_stack.setMaterial(self._empty_material_container)
+            # set the global material to empty as we now use the extruder stack at all times - CURA-4482
+            global_material = self._global_container_stack.material
+            if global_material != self._empty_material_container:
+                self._global_container_stack.setMaterial(self._empty_material_container)
 
-                for extruder_stack in ExtruderManager.getInstance().getActiveExtruderStacks(): #Listen for changes on all extruder stacks.
-                    extruder_stack.propertyChanged.connect(self._onPropertyChanged)
-                    extruder_stack.containersChanged.connect(self._onInstanceContainersChanged)
-
-            else:
-                material = self._global_container_stack.material
-                material.nameChanged.connect(self._onMaterialNameChanged)
-
-                quality = self._global_container_stack.quality
-                quality.nameChanged.connect(self._onQualityNameChanged)
-
-                self._active_container_stack = self._global_container_stack
-                self.activeStackChanged.emit()
+            # Listen for changes on all extruder stacks
+            for extruder_stack in ExtruderManager.getInstance().getActiveExtruderStacks():
+                extruder_stack.propertyChanged.connect(self._onPropertyChanged)
+                extruder_stack.containersChanged.connect(self._onInstanceContainersChanged)
 
         self._error_check_timer.start()
 
@@ -721,15 +716,16 @@ class MachineManager(QObject):
     ## Copy the value of the setting of the current extruder to all other extruders as well as the global container.
     @pyqtSlot(str)
     def copyValueToExtruders(self, key: str):
-        if not self._active_container_stack or self._global_container_stack.getProperty("machine_extruder_count", "value") <= 1:
-            return
-
         new_value = self._active_container_stack.getProperty(key, "value")
-        stacks = [stack for stack in ExtruderManager.getInstance().getMachineExtruders(self._global_container_stack.getId())]
-        stacks.append(self._global_container_stack)
-        for extruder_stack in stacks:
+        extruder_stacks = [stack for stack in ExtruderManager.getInstance().getMachineExtruders(self._global_container_stack.getId())]
+
+        # TODO: remove this - CURA-4482
+        extruder_stacks.append(self._global_container_stack)
+
+        # check in which stack the value has to be replaced
+        for extruder_stack in extruder_stacks:
             if extruder_stack != self._active_container_stack and extruder_stack.getProperty(key, "value") != new_value:
-                extruder_stack.getTop().setProperty(key, "value", new_value)
+                extruder_stack.userChanges.setProperty(key, "value", new_value)
 
     ## Set the active material by switching out a container
     #  Depending on from/to material+current variant, a quality profile is chosen and set.
