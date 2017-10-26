@@ -118,29 +118,7 @@ Item
         }
         style: ButtonStyle
         {
-            background: Rectangle {
-                color:
-                {
-                    if(!control.enabled)
-                    {
-                        return UM.Theme.getColor("setting_control_disabled");
-                    }
-                    return UM.Theme.getColor("setting_control");
-                }
-
-                border.width: UM.Theme.getSize("default_lining").width
-                border.color:
-                {
-                    if (!control.enabled)
-                    {
-                        return UM.Theme.getColor("setting_control_disabled_border");
-                    }
-                    else if (control.hovered)
-                    {
-                        return UM.Theme.getColor("setting_control_border_highlight");
-                    }
-                    return UM.Theme.getColor("setting_control_border");
-                }
+            background: Item {
                 UM.RecolorImage {
                     anchors.verticalCenter: parent.verticalCenter
                     anchors.horizontalCenter: parent.horizontalCenter
@@ -203,7 +181,7 @@ Item
             left: parent.left
             leftMargin: UM.Theme.getSize("sidebar_margin").width
             right: settingVisibilityProfileMenu.left
-            rightMargin: UM.Theme.getSize("default_margin").width
+            rightMargin: Math.floor(UM.Theme.getSize("default_margin").width / 2)
         }
         height: visible ? UM.Theme.getSize("setting_control").height : 0
         Behavior on height { NumberAnimation { duration: 100 } }
