@@ -827,7 +827,6 @@ class MachineManager(QObject):
                 if old_material:
                     preferred_material_name = old_material.getName()
                 preferred_material_id = self._updateMaterialContainer(self._global_container_stack.getBottom(), self._global_container_stack, containers[0], preferred_material_name).id
-                Logger.log("d", "preferred_material_id=%s", preferred_material_id)
                 self.setActiveMaterial(preferred_material_id)
             else:
                 Logger.log("w", "While trying to set the active variant, no variant was found to replace.")
