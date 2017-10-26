@@ -119,11 +119,17 @@ Item
             onClicked: manager.loadConfigurationFromPrinter()
 
             function isClusterPrinter() {
-                var clusterSize = Cura.MachineManager.printerOutputDevices[0].clusterSize
-                // This is a non cluster printer or the cluster it is just one printer
-                if (clusterSize == undefined || clusterSize == 1)
-                    return false
-                return true
+                if(Cura.MachineManager.printerOutputDevices.length == 0)
+                {
+                    return false;
+                }
+                var clusterSize = Cura.MachineManager.printerOutputDevices[0].clusterSize;
+                // This is not a cluster printer or the cluster it is just one printer
+                if(clusterSize == undefined || clusterSize == 1)
+                {
+                    return false;
+                }
+                return true;
             }
         }
     }
