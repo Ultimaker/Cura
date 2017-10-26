@@ -53,6 +53,7 @@ class CrashHandler:
         self.exception_type = exception_type
         self.value = value
         self.traceback = tb
+        self.dialog = QDialog()
 
         # While we create the GUI, the information will be stored for sending afterwards
         self.data = dict()
@@ -74,7 +75,6 @@ class CrashHandler:
 
     ##  Creates a modal dialog.
     def _createDialog(self):
-        self.dialog = QDialog()
         self.dialog.setMinimumWidth(640)
         self.dialog.setMinimumHeight(640)
         self.dialog.setWindowTitle(catalog.i18nc("@title:window", "Crash Report"))
