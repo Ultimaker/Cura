@@ -11,8 +11,11 @@
         "file_formats": "text/x-gcode",
         "platform": "builder_premium_platform.stl",
         "platform_offset": [-126, -36, 117],
+
         "has_machine_quality": true,
-        "preferred_quality": "*Normal*",
+        "preferred_material": "*pla*",
+        "preferred_quality": "*normal*",
+
         "machine_extruder_trains":
         {
             "0": "builder_premium_small_rear",
