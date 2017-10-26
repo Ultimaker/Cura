@@ -725,7 +725,7 @@ class MachineManager(QObject):
         # check in which stack the value has to be replaced
         for extruder_stack in extruder_stacks:
             if extruder_stack != self._active_container_stack and extruder_stack.getProperty(key, "value") != new_value:
-                extruder_stack.userChanges.setProperty(key, "value", new_value)
+                extruder_stack.userChanges.setProperty(key, "value", new_value)  # TODO: nested property access, should be improved
 
     ## Set the active material by switching out a container
     #  Depending on from/to material+current variant, a quality profile is chosen and set.
