@@ -91,7 +91,6 @@ class ProfilesModel(InstanceContainersModel):
             return
 
         extruder_stacks = self._getOrderedExtruderStacksList()
-
         container_registry = ContainerRegistry.getInstance()
 
         # Get a list of usable/available qualities for this machine and material
