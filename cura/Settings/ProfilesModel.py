@@ -6,7 +6,6 @@ from collections import OrderedDict
 from PyQt5.QtCore import Qt
 
 from UM.Application import Application
-from UM.Logger import Logger
 from UM.Settings.ContainerRegistry import ContainerRegistry
 from UM.Settings.Models.InstanceContainersModel import InstanceContainersModel
 
@@ -167,8 +166,6 @@ class ProfilesModel(InstanceContainersModel):
         for item in containers:
             profile = container_registry.findContainers(id = item["id"])
 
-            Logger.log("d", "profile=%s, id=%s", profile, item["id"])
-
             # when the profile is not supported
             if not profile:
                 self._setItemLayerHeight(item, "", "")
@@ -186,7 +183,6 @@ class ProfilesModel(InstanceContainersModel):
                 continue
 
             item["available"] = profile in qualities
-            Logger.log("d", "---- profile available = [%s] , qualities = [%s]", item["available"], [q.getId() for q in qualities])
 
             # Easy case: This profile defines its own layer height.
             if profile.hasProperty("layer_height", "value"):
