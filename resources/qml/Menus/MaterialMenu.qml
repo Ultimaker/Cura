@@ -14,6 +14,14 @@ Menu
 
     property int extruderIndex: 0
     property bool printerConnected: Cura.MachineManager.printerOutputDevices.length != 0
+    property bool isClusterPrinter:
+    {
+        var clusterSize = Cura.MachineManager.printerOutputDevices[0].clusterSize
+        // This is a non cluster printer or the cluster it is just one printer
+        if (clusterSize == undefined || clusterSize == 1)
+            return false
+        return true
+    }
 
     UM.SettingPropertyProvider
     {
@@ -29,14 +37,14 @@ Menu
         id: automaticMaterial
         text:
         {
-            if(printerConnected && Cura.MachineManager.printerOutputDevices[0].materialNames.length > extruderIndex)
+            if(printerConnected && Cura.MachineManager.printerOutputDevices[0].materialNames.length > extruderIndex && !isClusterPrinter)
             {
                 var materialName = Cura.MachineManager.printerOutputDevices[0].materialNames[extruderIndex];
                 return catalog.i18nc("@title:menuitem %1 is the automatically selected material", "Automatic: %1").arg(materialName);
             }
             return "";
         }
-        visible: printerConnected && Cura.MachineManager.printerOutputDevices[0].materialNames.length > extruderIndex
+        visible: printerConnected && Cura.MachineManager.printerOutputDevices[0].materialNames.length > extruderIndex && !isClusterPrinter
         onTriggered:
         {
             var materialId = Cura.MachineManager.printerOutputDevices[0].materialIds[extruderIndex];

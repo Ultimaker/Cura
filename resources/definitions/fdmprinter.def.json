@@ -682,6 +682,7 @@
                             "value": "line_width",
                             "default_value": 0.4,
                             "type": "float",
+                            "limit_to_extruder": "wall_0_extruder_nr if wall_x_extruder_nr == wall_0_extruder_nr else -1",
                             "settable_per_mesh": true,
                             "children":
                             {
@@ -880,29 +881,45 @@
             "type": "category",
             "children":
             {
-                "wall_0_extruder_nr":
+                "wall_extruder_nr":
                 {
-                    "label": "Outer Wall Extruder",
-                    "description": "The extruder train used for printing the outer wall. This is used in multi-extrusion.",
+                    "label": "Wall Extruder",
+                    "description": "The extruder train used for printing the walls. This is used in multi-extrusion.",
                     "type": "optional_extruder",
                     "default_value": "-1",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false,
                     "settable_per_meshgroup": true,
                     "settable_globally": true,
-                    "enabled": "machine_extruder_count > 1"
-                },
-                "wall_x_extruder_nr":
-                {
-                    "label": "Inner Walls Extruder",
-                    "description": "The extruder train used for printing the inner walls. This is used in multi-extrusion.",
-                    "type": "optional_extruder",
-                    "default_value": "-1",
-                    "settable_per_mesh": false,
-                    "settable_per_extruder": false,
-                    "settable_per_meshgroup": true,
-                    "settable_globally": true,
-                    "enabled": "machine_extruder_count > 1"
+                    "enabled": "machine_extruder_count > 1",
+                    "children": {
+                        "wall_0_extruder_nr":
+                        {
+                            "label": "Outer Wall Extruder",
+                            "description": "The extruder train used for printing the outer wall. This is used in multi-extrusion.",
+                            "type": "optional_extruder",
+                            "value": "wall_extruder_nr",
+                            "default_value": "-1",
+                            "settable_per_mesh": false,
+                            "settable_per_extruder": false,
+                            "settable_per_meshgroup": true,
+                            "settable_globally": true,
+                            "enabled": "machine_extruder_count > 1"
+                        },
+                        "wall_x_extruder_nr":
+                        {
+                            "label": "Inner Wall Extruder",
+                            "description": "The extruder train used for printing the inner walls. This is used in multi-extrusion.",
+                            "type": "optional_extruder",
+                            "value": "wall_extruder_nr",
+                            "default_value": "-1",
+                            "settable_per_mesh": false,
+                            "settable_per_extruder": false,
+                            "settable_per_meshgroup": true,
+                            "settable_globally": true,
+                            "enabled": "machine_extruder_count > 1"
+                        }
+                    }
                 },
                 "wall_thickness":
                 {
@@ -1872,6 +1889,7 @@
                     "default_value": 10,
                     "minimum_value": "0",
                     "maximum_value": "10",
+                    "enabled": false,
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
@@ -1884,6 +1902,7 @@
                     "default_value": 100,
                     "minimum_value": "0",
                     "maximum_value": "100",
+                    "enabled": false,
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
@@ -3954,6 +3973,16 @@
                     "limit_to_extruder": "support_infill_extruder_nr",
                     "enabled": "support_enable and support_use_towers",
                     "settable_per_mesh": true
+                },
+                "remove_empty_first_layers":
+                {
+                    "label": "Remove Empty First Layers",
+                    "description": "Remove empty layers beneath the first printed layer if they are present.",
+                    "type": "bool",
+                    "default_value": true,
+                    "enabled": "not support_enable",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false
                 }
             }
         },
