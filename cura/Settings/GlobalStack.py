@@ -23,9 +23,9 @@ class GlobalStack(CuraContainerStack):
     def __init__(self, container_id: str, *args, **kwargs):
         super().__init__(container_id, *args, **kwargs)
 
-        self.addMetaDataEntry("type", "machine") # For backward compatibility
+        self.addMetaDataEntry("type", "machine")  # For backward compatibility
 
-        self._extruders = {}
+        self._extruders = {}  # type: Dict[str, "ExtruderStack"]
 
         # This property is used to track which settings we are calculating the "resolve" for
         # and if so, to bypass the resolve to prevent an infinite recursion that would occur
@@ -61,12 +61,15 @@ class GlobalStack(CuraContainerStack):
     #   \throws Exceptions.TooManyExtrudersError Raised when trying to add an extruder while we
     #                                            already have the maximum number of extruders.
     def addExtruder(self, extruder: ContainerStack) -> None:
-        extruder_count = self.getProperty("machine_extruder_count", "value")
 
-        if extruder_count <= 1:
-            Logger.log("i", "Not adding extruder[%s] to [%s] because it is a single-extrusion machine.",
-                       extruder.id, self.id)
-            return
+        # CURA-4482
+        # extruder_count = self.getProperty("machine_extruder_count", "value")
+
+        # CURA-4482
+        # if extruder_count <= 1:
+        #     Logger.log("i", "Not adding extruder[%s] to [%s] because it is a single-extrusion machine.",
+        #                extruder.id, self.id)
+        #     return
 
         position = extruder.getMetaDataEntry("position")
         if position is None:
