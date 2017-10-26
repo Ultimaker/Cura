@@ -30,9 +30,11 @@ Rectangle
     Component.onCompleted: {
         startMonitoringPrint.connect(function () {
             base.monitoringPrint = true
+            UM.Controller.disableModelRendering()
         })
         stopMonitoringPrint.connect(function () {
             base.monitoringPrint = false
+            UM.Controller.enableModelRendering()
         })
     }
 
