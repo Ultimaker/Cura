@@ -945,10 +945,8 @@ class MachineManager(QObject):
         quality_manager = QualityManager.getInstance()
 
         global_container_stack = self._global_container_stack
-        global_machine_definition = quality_manager.getParentMachineDefinition(global_container_stack.getBottom())
-
-        quality_changes_profiles = quality_manager.findQualityChangesByName(quality_changes_name,
-                                                                            global_machine_definition)
+        global_machine_definition = quality_manager.getParentMachineDefinition(global_container_stack.definition)
+        quality_changes_profiles = quality_manager.findQualityChangesByName(quality_changes_name, global_machine_definition)
 
         global_quality_changes = [qcp for qcp in quality_changes_profiles if qcp.getMetaDataEntry("extruder") is None]
         if global_quality_changes:
@@ -956,47 +954,52 @@ class MachineManager(QObject):
         else:
             Logger.log("e", "Could not find the global quality changes container with name %s", quality_changes_name)
             return None
+
+        # TODO: remove this - CURA-4482
         material = global_container_stack.material
 
-        # For the global stack, find a quality which matches the quality_type in
-        # the quality changes profile and also satisfies any material constraints.
+        # find a quality type that matches both machine and materials
         quality_type = global_quality_changes.getMetaDataEntry("quality_type")
-        if global_container_stack.getProperty("machine_extruder_count", "value") > 1:
-            global_quality = quality_manager.findQualityByQualityType(quality_type, global_machine_definition, [], global_quality = True)
-        else:
-            global_quality = quality_manager.findQualityByQualityType(quality_type, global_machine_definition, [material])
-        if not global_quality:
-            global_quality = self._empty_quality_container
 
-        # Find the values for each extruder.
         extruder_stacks = ExtruderManager.getInstance().getActiveExtruderStacks()
 
-        for stack in extruder_stacks:
-            extruder_definition = quality_manager.getParentMachineDefinition(stack.getBottom())
+        # append the extruder quality changes
+        for extruder_stack in extruder_stacks:
+            extruder_definition = quality_manager.getParentMachineDefinition(extruder_stack.definition)
 
-            quality_changes_list = [qcp for qcp in quality_changes_profiles
-                                    if qcp.getMetaDataEntry("extruder") == extruder_definition.getId()]
+            quality_changes_list = [qcp for qcp in quality_changes_profiles if qcp.getMetaDataEntry("extruder") == extruder_definition.getId()]
+
             if quality_changes_list:
                 quality_changes = quality_changes_list[0]
+            # TODO: remove this - CURA-4482
             else:
                 quality_changes = global_quality_changes
             if not quality_changes:
                 quality_changes = self._empty_quality_changes_container
 
-            material = stack.material
+            material = extruder_stack.material
             quality = quality_manager.findQualityByQualityType(quality_type, global_machine_definition, [material])
-            if not quality: #No quality profile found for this quality type.
+
+            if not quality:
+                # No quality profile found for this quality type.
                 quality = self._empty_quality_container
 
-            result.append({"stack": stack, "quality": quality, "quality_changes": quality_changes})
+            result.append({
+                "stack": extruder_stack,
+                "quality": quality,
+                "quality_changes": quality_changes
+            })
 
-        if extruder_stacks:
-            global_quality = quality_manager.findQualityByQualityType(quality_type, global_machine_definition, [material], global_quality = "True")
-            if not global_quality:
-                global_quality = self._empty_quality_container
-            result.append({"stack": global_container_stack, "quality": global_quality, "quality_changes": global_quality_changes})
-        else:
-            result.append({"stack": global_container_stack, "quality": global_quality, "quality_changes": global_quality_changes})
+        # append the global quality changes
+        global_quality = quality_manager.findQualityByQualityType(quality_type, global_machine_definition, [material], global_quality = True)
+        if not global_quality:
+            global_quality = self._empty_quality_container
+
+        result.append({
+            "stack": global_container_stack,
+            "quality": global_quality,
+            "quality_changes": global_quality_changes
+        })
 
         return result
 
