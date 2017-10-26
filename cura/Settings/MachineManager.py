@@ -248,13 +248,13 @@ class MachineManager(QObject):
 
             if old_index is not None:
                 extruder_manager.setActiveExtruderIndex(old_index)
-        self._auto_hotends_changed = {} #Processed all of them now.
+        self._auto_hotends_changed = {}  # Processed all of them now.
 
     def _onGlobalContainerChanged(self):
         if self._global_container_stack:
             try:
                 self._global_container_stack.nameChanged.disconnect(self._onMachineNameChanged)
-            except TypeError: #pyQtSignal gives a TypeError when disconnecting from something that was already disconnected.
+            except TypeError:  # pyQtSignal gives a TypeError when disconnecting from something that was already disconnected.
                 pass
             try:
                 self._global_container_stack.containersChanged.disconnect(self._onInstanceContainersChanged)
@@ -270,10 +270,9 @@ class MachineManager(QObject):
             quality = self._global_container_stack.quality
             quality.nameChanged.disconnect(self._onQualityNameChanged)
 
-            if self._global_container_stack.getProperty("machine_extruder_count", "value") > 1:
-                for extruder_stack in ExtruderManager.getInstance().getActiveExtruderStacks():
-                    extruder_stack.propertyChanged.disconnect(self._onPropertyChanged)
-                    extruder_stack.containersChanged.disconnect(self._onInstanceContainersChanged)
+            for extruder_stack in ExtruderManager.getInstance().getActiveExtruderStacks():
+                extruder_stack.propertyChanged.disconnect(self._onPropertyChanged)
+                extruder_stack.containersChanged.disconnect(self._onInstanceContainersChanged)
 
         self._global_container_stack = Application.getInstance().getGlobalContainerStack()
 
