@@ -46,6 +46,7 @@ UM.MainWindow
         //
         // This has been fixed for QtQuick Controls 2 since the Shortcut item has a context property.
         Cura.Actions.parent = backgroundItem
+        CuraApplication.purgeWindows()
     }
 
     Item
