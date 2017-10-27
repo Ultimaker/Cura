@@ -2519,7 +2519,7 @@ msgstr "Sichtbarkeit einstellen"
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/SettingVisibilityPage.qml:44
 msgctxt "@label:textbox"
 msgid "Check all"
-msgstr "Alle prüfen"
+msgstr "Alles wählen"
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/ProfileTab.qml:40
 msgctxt "@info:status"
