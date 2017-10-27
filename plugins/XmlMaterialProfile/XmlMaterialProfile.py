@@ -45,7 +45,7 @@ class XmlMaterialProfile(InstanceContainer):
     def setReadOnly(self, read_only):
         super().setReadOnly(read_only)
 
-        basefile = self.getMetaDataEntry("base_file", self._id)  # if basefile is self.id, this is a basefile.
+        basefile = self.getMetaDataEntry("base_file", self.getId())  # if basefile is self.getId, this is a basefile.
         for container in ContainerRegistry.getInstance().findInstanceContainers(base_file = basefile):
             container._read_only = read_only  # prevent loop instead of calling setReadOnly
 
@@ -57,7 +57,7 @@ class XmlMaterialProfile(InstanceContainer):
 
         super().setMetaDataEntry(key, value)
 
-        basefile = self.getMetaDataEntry("base_file", self._id)  #if basefile is self.id, this is a basefile.
+        basefile = self.getMetaDataEntry("base_file", self.getId())  #if basefile is self.getId, this is a basefile.
         # Update all containers that share basefile
         for container in ContainerRegistry.getInstance().findInstanceContainers(base_file = basefile):
             if container.getMetaDataEntry(key, None) != value: # Prevent recursion
@@ -76,7 +76,7 @@ class XmlMaterialProfile(InstanceContainer):
 
         super().setName(new_name)
 
-        basefile = self.getMetaDataEntry("base_file", self._id)  # if basefile is self.id, this is a basefile.
+        basefile = self.getMetaDataEntry("base_file", self.getId())  # if basefile is self.getId, this is a basefile.
         # Update the basefile as well, this is actually what we're trying to do
         # Update all containers that share GUID and basefile
         containers = ContainerRegistry.getInstance().findInstanceContainers(base_file = basefile)
@@ -87,7 +87,7 @@ class XmlMaterialProfile(InstanceContainer):
     def setDirty(self, dirty):
         super().setDirty(dirty)
         base_file = self.getMetaDataEntry("base_file", None)
-        if base_file is not None and base_file != self._id:
+        if base_file is not None and base_file != self.getId():
             containers = ContainerRegistry.getInstance().findContainers(id=base_file)
             if containers:
                 base_container = containers[0]
@@ -101,7 +101,7 @@ class XmlMaterialProfile(InstanceContainer):
         registry = ContainerRegistry.getInstance()
 
         base_file = self.getMetaDataEntry("base_file", "")
-        if base_file and self.id != base_file:
+        if base_file and self.getId() != base_file:
             # Since we create an instance of XmlMaterialProfile for each machine and nozzle in the profile,
             # we should only serialize the "base" material definition, since that can then take care of
             # serializing the machine/nozzle specific profiles.
@@ -150,7 +150,7 @@ class XmlMaterialProfile(InstanceContainer):
         builder.end("color")
 
         builder.start("label")
-        builder.data(self._name)
+        builder.data(self.getName())
         builder.end("label")
 
         builder.end("name")
@@ -182,16 +182,16 @@ class XmlMaterialProfile(InstanceContainer):
         ## Begin Settings Block
         builder.start("settings")
 
-        if self.getDefinition().id == "fdmprinter":
+        if self.getDefinition().getId() == "fdmprinter":
             for instance in self.findInstances():
                 self._addSettingElement(builder, instance)
 
         machine_container_map = {}
         machine_nozzle_map = {}
 
-        all_containers = registry.findInstanceContainers(GUID = self.getMetaDataEntry("GUID"), base_file = self._id)
+        all_containers = registry.findInstanceContainers(GUID = self.getMetaDataEntry("GUID"), base_file = self.getId())
         for container in all_containers:
-            definition_id = container.getDefinition().id
+            definition_id = container.getDefinition().getId()
             if definition_id == "fdmprinter":
                 continue
 
@@ -229,7 +229,7 @@ class XmlMaterialProfile(InstanceContainer):
             builder.end("machine_identifier")
 
             for instance in container.findInstances():
-                if self.getDefinition().id == "fdmprinter" and self.getInstance(instance.definition.key) and self.getProperty(instance.definition.key, "value") == instance.value:
+                if self.getDefinition().getId() == "fdmprinter" and self.getInstance(instance.definition.key) and self.getProperty(instance.definition.key, "value") == instance.value:
                     # If the settings match that of the base profile, just skip since we inherit the base profile.
                     continue
 
@@ -385,7 +385,7 @@ class XmlMaterialProfile(InstanceContainer):
 
     def clearData(self):
         self._metadata = {}
-        self._name = ""
+        self.setName("")
         self._definition = None
         self._instances = {}
         self._read_only = False
@@ -424,7 +424,7 @@ class XmlMaterialProfile(InstanceContainer):
         self.clearData() # Ensure any previous data is gone.
         meta_data = {}
         meta_data["type"] = "material"
-        meta_data["base_file"] = self.id
+        meta_data["base_file"] = self.getId()
         meta_data["status"] = "unknown"  # TODO: Add material verification
 
         common_setting_values = {}
@@ -451,9 +451,9 @@ class XmlMaterialProfile(InstanceContainer):
                 label = entry.find("./um:label", self.__namespaces)
 
                 if label is not None:
-                    self._name = label.text
+                    self.setName(label.text)
                 else:
-                    self._name = self._profile_name(material.text, color.text)
+                    self.setName(self._profile_name(material.text, color.text))
                 meta_data["brand"] = brand.text
                 meta_data["material"] = material.text
                 meta_data["color_name"] = color.text
@@ -545,7 +545,7 @@ class XmlMaterialProfile(InstanceContainer):
                 machine_manufacturer = identifier.get("manufacturer", definition.getMetaDataEntry("manufacturer", "Unknown")) #If the XML material doesn't specify a manufacturer, use the one in the actual printer definition.
 
                 if machine_compatibility:
-                    new_material_id = self.id + "_" + machine_id
+                    new_material_id = self.getId() + "_" + machine_id
 
                     # The child or derived material container may already exist. This can happen when a material in a
                     # project file and the a material in Cura have the same ID.
@@ -560,7 +560,7 @@ class XmlMaterialProfile(InstanceContainer):
                         is_new_material = True
 
                     # Update the private directly, as we want to prevent the lookup that is done when using setName
-                    new_material._name = self.getName()
+                    new_material.setName(self.getName())
                     new_material.setMetaData(copy.deepcopy(self.getMetaData()))
                     new_material.setDefinition(definition)
                     # Don't use setMetadata, as that overrides it for all materials with same base file
@@ -583,10 +583,9 @@ class XmlMaterialProfile(InstanceContainer):
                     variant_containers = ContainerRegistry.getInstance().findInstanceContainersMetadata(id = hotend_id)
                     if not variant_containers:
                         # It is not really properly defined what "ID" is so also search for variants by name.
-                        variant_containers = ContainerRegistry.getInstance().findInstanceContainersMetadata(definition = definition.id, name = hotend_id)
+                        variant_containers = ContainerRegistry.getInstance().findInstanceContainersMetadata(definition = definition.getId(), name = hotend_id)
 
                     if not variant_containers:
-                        #Logger.log("d", "No variants found with ID or name %s for machine %s", hotend_id, definition.id)
                         continue
 
                     hotend_compatibility = machine_compatibility
@@ -602,7 +601,7 @@ class XmlMaterialProfile(InstanceContainer):
                         else:
                             Logger.log("d", "Unsupported material setting %s", key)
 
-                    new_hotend_id = self.id + "_" + machine_id + "_" + hotend_id.replace(" ", "_")
+                    new_hotend_id = self.getId() + "_" + machine_id + "_" + hotend_id.replace(" ", "_")
 
                     # Same as machine compatibility, keep the derived material containers consistent with the parent
                     # material
@@ -615,7 +614,7 @@ class XmlMaterialProfile(InstanceContainer):
                         is_new_material = True
 
                     # Update the private directly, as we want to prevent the lookup that is done when using setName
-                    new_hotend_material._name = self.getName()
+                    new_hotend_material.setName(self.getName())
                     new_hotend_material.setMetaData(copy.deepcopy(self.getMetaData()))
                     new_hotend_material.setDefinition(definition)
                     new_hotend_material.addMetaDataEntry("variant", variant_containers[0]["id"])
