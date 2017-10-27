@@ -897,16 +897,12 @@ class MachineManager(QObject):
             if self.hasUserSettings and Preferences.getInstance().getValue("cura/active_mode") == 1:
                 # Show the keep/discard user settings dialog
                 has_user_interaction = Application.getInstance().discardOrKeepProfileChanges()
-            else:
-                # If the user doesn't have any of adjusted settings then slicing will be triggered by emit()
-                # Send emits that are postponed in replaceContainer.
-                # Here the stacks are finished replacing and every value can be resolved based on the current state.
-                for setting_info in new_quality_settings_list:
-                    setting_info["stack"].sendPostponedEmits()
 
+            # If there is no interaction with the user (it means the dialog showing "keep" or "discard" was not shown)
+            # because either there are not user changes or because the used already decided to always keep or discard,
+            # then the quality instance container is replaced, in which case, the activeQualityChanged signal is emitted.
             if not has_user_interaction:
                 self._executeDelayedActiveContainerStackChanges()
-                self.activeQualityChanged.emit()
 
     ##  Used to update material and variant in the active container stack with a delay.
     #   This delay prevents the stack from triggering a lot of signals (eventually resulting in slicing)
@@ -929,6 +925,7 @@ class MachineManager(QObject):
 
             for new_quality in self._new_quality_containers:
                 new_quality["stack"].nameChanged.connect(self._onQualityNameChanged)
+                new_quality["stack"].sendPostponedEmits() # Send the signals that were postponed in _replaceQualityOrQualityChangesInStack
 
             self._new_quality_containers.clear()
 
