@@ -133,6 +133,8 @@ class XmlMaterialProfile(InstanceContainer):
         metadata.pop("type", "")
         metadata.pop("base_file", "")
         metadata.pop("approximate_diameter", "")
+        metadata.pop("id", "")
+        metadata.pop("container_type", "")
 
         ## Begin Name Block
         builder.start("name")
@@ -417,15 +419,18 @@ class XmlMaterialProfile(InstanceContainer):
         try:
             data = ET.fromstring(serialized)
         except:
-            Logger.logException("e", "An exception occured while parsing the material profile")
+            Logger.logException("e", "An exception occurred while parsing the material profile")
             return
 
         # Reset previous metadata
+        old_id = self.getId()
         self.clearData() # Ensure any previous data is gone.
         meta_data = {}
         meta_data["type"] = "material"
         meta_data["base_file"] = self.getId()
         meta_data["status"] = "unknown"  # TODO: Add material verification
+        meta_data["id"] = old_id
+        meta_data["container_type"] = XmlMaterialProfile
 
         common_setting_values = {}
 
