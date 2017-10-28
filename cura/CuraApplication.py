@@ -215,6 +215,7 @@ class CuraApplication(QtApplication):
 
         self.setRequiredPlugins([
             "CuraEngineBackend",
+            "UserAgreement",
             "SolidView",
             "LayerView",
             "STLReader",
