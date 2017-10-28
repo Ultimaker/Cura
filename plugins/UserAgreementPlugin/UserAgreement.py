@@ -7,6 +7,8 @@ from UM.Application import Application
 from UM.PluginRegistry import PluginRegistry
 from UM.Logger import Logger
 
+from cura.CuraApplication import CuraApplication
+
 from PyQt5.QtQml import QQmlComponent, QQmlContext
 from PyQt5.QtCore import QUrl, QObject, pyqtSlot
 
@@ -31,15 +33,17 @@ class UserAgreement(Extension, QObject):
 
         self._user_agreement_window.show()
 
-    @pyqtSlot()
-    def disagreed(self):
-        Logger.log("i", "User did NOT Accept the license")
+    @pyqtSlot(bool)
+    def didAgree(self, userChoice):
+        if userChoice:
+            Logger.log("i", 'User agreed to the user agreement')
+            Preferences.getInstance().setValue("general/accepted_user_agreement", True)
+            self._user_agreement_window.hide()
+        else:
+            Logger.log("i", 'User did NOT agree to the user agreement')
+            Preferences.getInstance().setValue("general/accepted_user_agreement", False)
+            CuraApplication.getInstance().quit()
 
-    @pyqtSlot()
-    def agreed(self):
-        Logger.log("i", "User Accepted the license")
-        Preferences.getInstance().setValue("general/accepted_user_agreement", True)
-        self._user_agreement_window.hide()
 
     def createUserAgreementWindow(self):
         path = QUrl.fromLocalFile(os.path.join(PluginRegistry.getInstance().getPluginPath(self.getPluginId()), "UserAgreement.qml"))
