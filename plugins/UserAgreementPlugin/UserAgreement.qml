@@ -1,12 +1,10 @@
 // Copyright (c) 2015 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
-import QtQuick 2.1
+import QtQuick 2.2
 import QtQuick.Controls 1.3
-import QtQuick.Layouts 1.1
-import QtQuick.Window 2.1
 
-import UM 1.1 as UM
+import UM 1.3 as UM
 
 UM.Dialog
 {
@@ -43,7 +41,7 @@ UM.Dialog
             anchors.right: parent.right
             text: "I understand and agree"
             onClicked: {
-                manager.agreed
+                manager.didAgree(true)
             }
         }
 
@@ -52,10 +50,15 @@ UM.Dialog
             anchors.left: parent.left
             text: "I don't agree"
             onClicked: {
-                manager.disagreed
+                manager.didAgree(false)
             }
         }
 
     }
+
+    onClosing: {
+        manager.didAgree(false)
+    }
+
 
 }
