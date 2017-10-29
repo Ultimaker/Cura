@@ -355,7 +355,7 @@ Rectangle
                         {
                             if(!print_time[feature].isTotalDurationZero)
                             {
-                                content += "<tr><td>" + feature +
+                                content += "<tr><td>" + feature + ":" +
                                     "&nbsp;&nbsp;</td><td>" + print_time[feature].getDisplayString(UM.DurationFormat.Short) +
                                     "&nbsp;&nbsp;</td><td>" + Math.round(100 * parseInt(print_time[feature].getDisplayString(UM.DurationFormat.Seconds)) / total_seconds) + "%" +
                                     "</td></tr>";
@@ -382,12 +382,16 @@ Rectangle
             color: UM.Theme.getColor("text_subtext")
             elide: Text.ElideMiddle
             width: parent.width
+            property string tooltipText: "test"
             text:
             {
                 var lengths = [];
+                var total_length = 0;
                 var weights = [];
+                var total_weight = 0;
                 var costs = [];
-                var someCostsKnown = false;
+                var total_cost = 0;
+                var some_costs_known = false;
                 if(base.printMaterialLengths) {
                     for(var index = 0; index < base.printMaterialLengths.length; index++)
                     {
@@ -399,8 +403,12 @@ Rectangle
                             costs.push(cost);
                             if(cost > 0)
                             {
-                                someCostsKnown = true;
+                                some_costs_known = true;
                             }
+
+                            total_length += base.printMaterialLengths[index];
+                            total_weight += base.printMaterialWeights[index];
+                            total_cost += base.printMaterialCosts[index];
                         }
                     }
                 }
@@ -410,10 +418,21 @@ Rectangle
                     weights = ["0"];
                     costs = ["0.00"];
                 }
-                if(someCostsKnown)
+
+                tooltipText = catalog.i18nc("@tooltip", "<b>Cost specification</b><br/><table>");
+                for(var index = 0; index < lengths.length; index++)
+                {
+                    tooltipText += catalog.i18nc("@label Print estimates: m for meters, g for grams, %4 is currency and %3 is print cost", "<tr><td>Extruder %0:&nbsp;&nbsp;</td><td>%1m&nbsp;&nbsp;</td><td>%2g&nbsp;&nbsp;</td><td>%4 %3</td></tr>").arg(index + 1).arg(lengths[index])
+                            .arg(weights[index]).arg(costs[index]).arg(UM.Preferences.getValue("cura/currency"));
+                }
+                tooltipText += catalog.i18nc("@label Print totals: m for meters, g for grams, %4 is currency and %3 is print cost", "<tr><td>Total:&nbsp;&nbsp;</td><td>%1m&nbsp;&nbsp;</td><td>%2g&nbsp;&nbsp;</td><td>%4 %3</td></tr>").arg(total_length.toFixed(2))
+                            .arg(Math.round(total_weight)).arg(total_cost.toFixed(2)).arg(UM.Preferences.getValue("cura/currency"));
+                tooltipText += "</table>";
+
+                if(some_costs_known)
                 {
                     return catalog.i18nc("@label Print estimates: m for meters, g for grams, %4 is currency and %3 is print cost", "%1m / ~ %2g / ~ %4 %3").arg(lengths.join(" + "))
-                            .arg(weights.join(" + ")).arg(costs.join(" + ")).arg(UM.Preferences.getValue("cura/currency"));
+                            .arg(Math.round(total_weight)).arg(total_cost.toFixed(2)).arg(UM.Preferences.getValue("cura/currency"));
                 }
                 else
                 {
@@ -431,15 +450,7 @@ Rectangle
 
                     if(base.printDuration.valid && !base.printDuration.isTotalDurationZero)
                     {
-                        // All the time information for the different features is achieved
-                        var print_time = PrintInformation.getFeaturePrintTimes();
-                        var total_seconds = parseInt(base.printDuration.getDisplayString(UM.DurationFormat.Seconds))
-
-                        // A message is created and displayed when the user hover the time label
-                        var content = catalog.i18nc("@tooltip", "<b>Cost specification</b><br/><table>");
-                        content += "</table>";
-
-                        base.showTooltip(parent, Qt.point(-UM.Theme.getSize("sidebar_margin").width, 0), content);
+                        base.showTooltip(parent, Qt.point(-UM.Theme.getSize("sidebar_margin").width, 0), costSpec.tooltipText);
                     }
                 }
                 onExited:
