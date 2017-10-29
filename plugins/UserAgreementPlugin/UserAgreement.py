@@ -1,4 +1,4 @@
-# Copyright (c) 2015 Ultimaker B.V.
+# Copyright (c) 2017 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from UM.Extension import Extension
@@ -14,10 +14,9 @@ from PyQt5.QtCore import QUrl, QObject, pyqtSlot
 
 import os.path
 
-class UserAgreement(Extension, QObject):
+class UserAgreement(QObject, Extension):
     def __init__(self, parent = None):
-        QObject.__init__(self, parent)
-        Extension.__init__(self)
+        super(UserAgreement, self).__init__()
         self._user_agreement_window = None
         self._user_agreement_context = None
         Application.getInstance().engineCreatedSignal.connect(self._onEngineCreated)
@@ -36,11 +35,11 @@ class UserAgreement(Extension, QObject):
     @pyqtSlot(bool)
     def didAgree(self, userChoice):
         if userChoice:
-            Logger.log("i", 'User agreed to the user agreement')
+            Logger.log('i', 'User agreed to the user agreement')
             Preferences.getInstance().setValue("general/accepted_user_agreement", True)
             self._user_agreement_window.hide()
         else:
-            Logger.log("i", 'User did NOT agree to the user agreement')
+            Logger.log('i', 'User did NOT agree to the user agreement')
             Preferences.getInstance().setValue("general/accepted_user_agreement", False)
             CuraApplication.getInstance().quit()
 
