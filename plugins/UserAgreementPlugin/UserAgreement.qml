@@ -1,8 +1,8 @@
-// Copyright (c) 2015 Ultimaker B.V.
+// Copyright (c) 2017 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.2
-import QtQuick.Controls 1.3
+import QtQuick.Controls 1.4
 
 import UM 1.3 as UM
 
@@ -13,7 +13,7 @@ UM.Dialog
     minimumHeight: Math.floor(UM.Theme.getSize("modal_window_minimum").height * 0.5)
     width: minimumWidth
     height: minimumHeight
-    title: "User Agreement"
+    title: catalog.i18nc("@title:window", "User Agreement")
 
     TextArea
     {
@@ -36,10 +36,12 @@ UM.Dialog
         width: parent.width
         anchors.bottomMargin: UM.Theme.getSize("default_margin").height
 
+        UM.I18nCatalog { id: catalog; name:"cura" }
+
         Button
         {
             anchors.right: parent.right
-            text: "I understand and agree"
+            text: catalog.i18nc("@action:button", "I understand and agree")
             onClicked: {
                 manager.didAgree(true)
             }
@@ -48,7 +50,7 @@ UM.Dialog
         Button
         {
             anchors.left: parent.left
-            text: "I don't agree"
+            text: catalog.i18nc("@action:button", "I don't agree")
             onClicked: {
                 manager.didAgree(false)
             }
@@ -59,6 +61,4 @@ UM.Dialog
     onClosing: {
         manager.didAgree(false)
     }
-
-
 }
