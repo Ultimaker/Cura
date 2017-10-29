@@ -313,31 +313,32 @@ Rectangle
         anchors.bottomMargin: Math.floor(UM.Theme.getSize("sidebar_margin").height * 2 + UM.Theme.getSize("progressbar").height + UM.Theme.getFont("default_bold").pixelSize)
     }
 
-    Rectangle
+    Item
     {
         id: printSpecs
         anchors.left: parent.left
         anchors.bottom: parent.bottom
         anchors.leftMargin: UM.Theme.getSize("sidebar_margin").width
         anchors.bottomMargin: UM.Theme.getSize("sidebar_margin").height
-        height: timeDetails.height + timeSpecDescription.height + lengthSpec.height
+        height: timeDetails.height + costSpec.height
+        width: base.width - (saveButton.buttonRowWidth + UM.Theme.getSize("sidebar_margin").width)
         visible: !monitoringPrint
+        clip: true
 
         Label
         {
             id: timeDetails
             anchors.left: parent.left
-            anchors.bottom: timeSpecDescription.top
+            anchors.bottom: costSpec.top
             font: UM.Theme.getFont("large")
             color: UM.Theme.getColor("text_subtext")
             text: (!base.printDuration || !base.printDuration.valid) ? catalog.i18nc("@label Hours and minutes", "00h 00min") : base.printDuration.getDisplayString(UM.DurationFormat.Short)
 
             MouseArea
             {
-                id: infillMouseArea
+                id: timeDetailsMouseArea
                 anchors.fill: parent
                 hoverEnabled: true
-                //enabled: base.settingsEnabled
 
                 onEntered:
                 {
@@ -345,19 +346,24 @@ Rectangle
                     if(base.printDuration.valid && !base.printDuration.isTotalDurationZero)
                     {
                         // All the time information for the different features is achieved
-                        var print_time = PrintInformation.getFeaturePrintTimes()
+                        var print_time = PrintInformation.getFeaturePrintTimes();
+                        var total_seconds = parseInt(base.printDuration.getDisplayString(UM.DurationFormat.Seconds))
 
                         // A message is created and displayed when the user hover the time label
-                        var content = catalog.i18nc("@tooltip", "<b>Time information</b>")
+                        var content = catalog.i18nc("@tooltip", "<b>Time specification</b><br/><table>");
                         for(var feature in print_time)
                         {
                             if(!print_time[feature].isTotalDurationZero)
                             {
-                                content += "<br /><i>" + feature + "</i>: " + print_time[feature].getDisplayString(UM.DurationFormat.Short)
+                                content += "<tr><td>" + feature +
+                                    "&nbsp;&nbsp;</td><td>" + print_time[feature].getDisplayString(UM.DurationFormat.Short) +
+                                    "&nbsp;&nbsp;</td><td>" + Math.round(100 * parseInt(print_time[feature].getDisplayString(UM.DurationFormat.Seconds)) / total_seconds) + "%" +
+                                    "</td></tr>";
                             }
                         }
+                        content += "</table>";
 
-                        base.showTooltip(parent, Qt.point(-UM.Theme.getSize("sidebar_margin").width, 0), content)
+                        base.showTooltip(parent, Qt.point(-UM.Theme.getSize("sidebar_margin").width, 0), content);
                     }
                 }
                 onExited:
@@ -369,20 +375,13 @@ Rectangle
 
         Label
         {
-            id: timeSpecDescription
-            anchors.left: parent.left
-            anchors.bottom: lengthSpec.top
-            font: UM.Theme.getFont("very_small")
-            color: UM.Theme.getColor("text_subtext")
-            text: catalog.i18nc("@description", "Print time")
-        }
-        Label
-        {
-            id: lengthSpec
+            id: costSpec
             anchors.left: parent.left
             anchors.bottom: parent.bottom
             font: UM.Theme.getFont("very_small")
             color: UM.Theme.getColor("text_subtext")
+            elide: Text.ElideMiddle
+            width: parent.width
             text:
             {
                 var lengths = [];
@@ -419,6 +418,33 @@ Rectangle
                 else
                 {
                     return catalog.i18nc("@label Print estimates: m for meters, g for grams", "%1m / ~ %2g").arg(lengths.join(" + ")).arg(weights.join(" + "));
+                }
+            }
+            MouseArea
+            {
+                id: costSpecMouseArea
+                anchors.fill: parent
+                hoverEnabled: true
+
+                onEntered:
+                {
+
+                    if(base.printDuration.valid && !base.printDuration.isTotalDurationZero)
+                    {
+                        // All the time information for the different features is achieved
+                        var print_time = PrintInformation.getFeaturePrintTimes();
+                        var total_seconds = parseInt(base.printDuration.getDisplayString(UM.DurationFormat.Seconds))
+
+                        // A message is created and displayed when the user hover the time label
+                        var content = catalog.i18nc("@tooltip", "<b>Cost specification</b><br/><table>");
+                        content += "</table>";
+
+                        base.showTooltip(parent, Qt.point(-UM.Theme.getSize("sidebar_margin").width, 0), content);
+                    }
+                }
+                onExited:
+                {
+                    base.hideTooltip();
                 }
             }
         }
