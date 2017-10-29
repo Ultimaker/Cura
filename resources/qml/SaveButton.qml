@@ -18,6 +18,8 @@ Item {
     property var backend: CuraApplication.getBackend();
     property bool activity: CuraApplication.platformActivity;
 
+    property alias buttonRowWidth: saveRow.width
+
     property string fileBaseName
     property string statusText:
     {
@@ -89,11 +91,12 @@ Item {
 
     Item {
         id: saveRow
-        width: base.width
+        width: Math.min(childrenRect.width + UM.Theme.getSize("sidebar_margin").width, base.width - UM.Theme.getSize("sidebar_margin").width)
         height: saveToButton.height
         anchors.bottom: parent.bottom
         anchors.bottomMargin: UM.Theme.getSize("sidebar_margin").height
-        anchors.left: parent.left
+        anchors.right: parent.right
+        clip: true
 
         Row {
             id: additionalComponentsRow
