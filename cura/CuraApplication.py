@@ -306,7 +306,6 @@ class CuraApplication(QtApplication):
         preferences.addPreference("view/invert_zoom", False)
 
         self._need_to_show_user_agreement = not Preferences.getInstance().getValue("general/accepted_user_agreement")
-        self._has_user_agreement_shown = False
 
         for key in [
             "dialog_load_path",  # dialog_save_path is in LocalFileOutputDevicePlugin
@@ -380,21 +379,13 @@ class CuraApplication(QtApplication):
     def _onEngineCreated(self):
         self._engine.addImageProvider("camera", CameraImageProvider.CameraImageProvider())
 
-    onHasUserAgreementShownChanged = pyqtSignal()
-
     @pyqtProperty(bool)
     def needToShowUserAgreement(self):
         return self._need_to_show_user_agreement
 
-    @pyqtProperty(bool, notify = onHasUserAgreementShownChanged)
-    def hasUserAgreementShown(self):
-        return self._has_user_agreement_shown
 
-    def setHasShownUserAgreement(self, shown = True):
-        emit_signal = self._has_user_agreement_shown != shown
-        self._has_user_agreement_shown = shown
-        if emit_signal:
-            self.onHasUserAgreementShownChanged.emit()
+    def setNeedToShowUserAgreement(self, set_value = True):
+        self._need_to_show_user_agreement = set_value
 
     ## The "Quit" button click event handler.
     @pyqtSlot()
