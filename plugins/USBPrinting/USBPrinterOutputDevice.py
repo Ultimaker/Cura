@@ -119,7 +119,8 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
         self._sendCommand("G0 Y%s F%s" % (z, speed))
 
     def _homeHead(self):
-        self._sendCommand("G28")
+        self._sendCommand("G28 X")
+        self._sendCommand("G28 Y")
 
     def _homeBed(self):
         self._sendCommand("G28 Z")

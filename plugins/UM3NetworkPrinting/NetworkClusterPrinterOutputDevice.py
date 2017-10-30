@@ -220,7 +220,9 @@ class NetworkClusterPrinterOutputDevice(NetworkPrinterOutputDevice.NetworkPrinte
         self.setPrinters(json_data)
 
     def materialHotendChangedMessage(self, callback):
-        pass # Do nothing.
+        # When there is just one printer, the activate configuration option is enabled
+        if (self._cluster_size == 1):
+            super().materialHotendChangedMessage(callback = callback)
 
     def _startCameraStream(self):
         ## Request new image

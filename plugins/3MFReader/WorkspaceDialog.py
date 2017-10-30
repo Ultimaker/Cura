@@ -38,6 +38,7 @@ class WorkspaceDialog(QObject):
         self._has_definition_changes_conflict = False
         self._has_machine_conflict = False
         self._has_material_conflict = False
+        self._has_visible_settings_field = False
         self._num_visible_settings = 0
         self._num_user_settings = 0
         self._active_mode = ""
@@ -58,6 +59,7 @@ class WorkspaceDialog(QObject):
     numVisibleSettingsChanged = pyqtSignal()
     activeModeChanged = pyqtSignal()
     qualityNameChanged = pyqtSignal()
+    hasVisibleSettingsFieldChanged = pyqtSignal()
     numSettingsOverridenByQualityChangesChanged = pyqtSignal()
     qualityTypeChanged = pyqtSignal()
     machineNameChanged = pyqtSignal()
@@ -166,6 +168,14 @@ class WorkspaceDialog(QObject):
         else:
             self._active_mode = i18n_catalog.i18nc("@title:tab", "Custom")
         self.activeModeChanged.emit()
+
+    @pyqtProperty(int, notify = hasVisibleSettingsFieldChanged)
+    def hasVisibleSettingsField(self):
+        return self._has_visible_settings_field
+
+    def setHasVisibleSettingsField(self, has_visible_settings_field):
+        self._has_visible_settings_field = has_visible_settings_field
+        self.hasVisibleSettingsFieldChanged.emit()
 
     @pyqtProperty(int, constant = True)
     def totalNumberOfSettings(self):
@@ -284,6 +294,14 @@ class WorkspaceDialog(QObject):
             self._lock.release()
         except:
             pass
+
+    @pyqtSlot(bool)
+    def _onVisibilityChanged(self, visible):
+        if not visible:
+            try:
+                self._lock.release()
+            except:
+                pass
 
     @pyqtSlot()
     def onOkButtonClicked(self):

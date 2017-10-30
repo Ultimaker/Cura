@@ -279,7 +279,8 @@ Rectangle
 
         property var buttonTarget: Qt.point(viewModeButton.x + viewModeButton.width / 2, viewModeButton.y + viewModeButton.height / 2)
 
-        height: childrenRect.height;
+        height: childrenRect.height
+        width: childrenRect.width
 
         source: UM.ActiveView.valid ? UM.ActiveView.activeViewPanel : "";
     }

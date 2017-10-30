@@ -51,6 +51,7 @@ from cura.Settings.MaterialsModel import MaterialsModel
 from cura.Settings.QualityAndUserProfilesModel import QualityAndUserProfilesModel
 from cura.Settings.SettingInheritanceManager import SettingInheritanceManager
 from cura.Settings.UserProfilesModel import UserProfilesModel
+from cura.Settings.SimpleModeSettingsManager import SimpleModeSettingsManager
 
 from . import PlatformPhysics
 from . import BuildVolume
@@ -104,7 +105,7 @@ class CuraApplication(QtApplication):
     # SettingVersion represents the set of settings available in the machine/extruder definitions.
     # You need to make sure that this version number needs to be increased if there is any non-backwards-compatible
     # changes of the settings.
-    SettingVersion = 3
+    SettingVersion = 4
 
     class ResourceTypes:
         QmlFiles = Resources.UserType + 1
@@ -124,6 +125,8 @@ class CuraApplication(QtApplication):
     #        will make it initialized before ContainerRegistry does, and it won't find the active machine, thus
     #        Cura will always show the Add Machine Dialog upon start.
     stacksValidationFinished = pyqtSignal()  # Emitted whenever a validation is finished
+
+    projectFileLoaded = pyqtSignal(str)  # Emitted whenever a project file is loaded
 
     def __init__(self):
         # this list of dir names will be used by UM to detect an old cura directory
@@ -199,6 +202,7 @@ class CuraApplication(QtApplication):
         self._machine_manager = None    # This is initialized on demand.
         self._material_manager = None
         self._setting_inheritance_manager = None
+        self._simple_mode_settings_manager = None
 
         self._additional_components = {} # Components to add to certain areas in the interface
 
@@ -211,6 +215,7 @@ class CuraApplication(QtApplication):
 
         self.setRequiredPlugins([
             "CuraEngineBackend",
+            "UserAgreement",
             "SolidView",
             "LayerView",
             "STLReader",
@@ -266,8 +271,9 @@ class CuraApplication(QtApplication):
         empty_quality_container = copy.deepcopy(empty_container)
         empty_quality_container._id = "empty_quality"
         empty_quality_container.setName("Not Supported")
-        empty_quality_container.addMetaDataEntry("quality_type", "normal")
+        empty_quality_container.addMetaDataEntry("quality_type", "not_supported")
         empty_quality_container.addMetaDataEntry("type", "quality")
+        empty_quality_container.addMetaDataEntry("supported", False)
         ContainerRegistry.getInstance().addContainer(empty_quality_container)
         empty_quality_changes_container = copy.deepcopy(empty_container)
         empty_quality_changes_container._id = "empty_quality_changes"
@@ -298,6 +304,8 @@ class CuraApplication(QtApplication):
         preferences.addPreference("cura/material_settings", "{}")
 
         preferences.addPreference("view/invert_zoom", False)
+
+        self._need_to_show_user_agreement = not Preferences.getInstance().getValue("general/accepted_user_agreement")
 
         for key in [
             "dialog_load_path",  # dialog_save_path is in LocalFileOutputDevicePlugin
@@ -371,6 +379,14 @@ class CuraApplication(QtApplication):
     def _onEngineCreated(self):
         self._engine.addImageProvider("camera", CameraImageProvider.CameraImageProvider())
 
+    @pyqtProperty(bool)
+    def needToShowUserAgreement(self):
+        return self._need_to_show_user_agreement
+
+
+    def setNeedToShowUserAgreement(self, set_value = True):
+        self._need_to_show_user_agreement = set_value
+
     ## The "Quit" button click event handler.
     @pyqtSlot()
     def closeApplication(self):
@@ -389,6 +405,7 @@ class CuraApplication(QtApplication):
     showDiscardOrKeepProfileChanges = pyqtSignal()
 
     def discardOrKeepProfileChanges(self):
+        has_user_interaction = False
         choice = Preferences.getInstance().getValue("cura/choice_on_profile_override")
         if choice == "always_discard":
             # don't show dialog and DISCARD the profile
@@ -399,6 +416,10 @@ class CuraApplication(QtApplication):
         else:
             # ALWAYS ask whether to keep or discard the profile
             self.showDiscardOrKeepProfileChanges.emit()
+            has_user_interaction = True
+        return has_user_interaction
+
+    onDiscardOrKeepProfileChangesClosed = pyqtSignal()  # Used to notify other managers that the dialog was closed
 
     @pyqtSlot(str)
     def discardOrKeepProfileChangesClosed(self, option):
@@ -406,8 +427,24 @@ class CuraApplication(QtApplication):
             global_stack = self.getGlobalContainerStack()
             for extruder in ExtruderManager.getInstance().getMachineExtruders(global_stack.getId()):
                 extruder.getTop().clear()
-
             global_stack.getTop().clear()
+
+        # if the user decided to keep settings then the user settings should be re-calculated and validated for errors
+        # before slicing. To ensure that slicer uses right settings values
+        elif option == "keep":
+            global_stack = self.getGlobalContainerStack()
+            for extruder in ExtruderManager.getInstance().getMachineExtruders(global_stack.getId()):
+                user_extruder_container = extruder.getTop()
+                if user_extruder_container:
+                    user_extruder_container.update()
+
+            user_global_container = global_stack.getTop()
+            if user_global_container:
+                user_global_container.update()
+
+        # notify listeners that quality has changed (after user selected discard or keep)
+        self.onDiscardOrKeepProfileChangesClosed.emit()
+        self.getMachineManager().activeQualityChanged.emit()
 
     @pyqtSlot(int)
     def messageBoxClosed(self, button):
@@ -666,7 +703,9 @@ class CuraApplication(QtApplication):
         qmlRegisterSingletonType(MachineManager, "Cura", 1, 0, "MachineManager", self.getMachineManager)
         qmlRegisterSingletonType(MaterialManager, "Cura", 1, 0, "MaterialManager", self.getMaterialManager)
         qmlRegisterSingletonType(SettingInheritanceManager, "Cura", 1, 0, "SettingInheritanceManager",
-                         self.getSettingInheritanceManager)
+                                 self.getSettingInheritanceManager)
+        qmlRegisterSingletonType(SimpleModeSettingsManager, "Cura", 1, 2, "SimpleModeSettingsManager",
+                                 self.getSimpleModeSettingsManager)
 
         qmlRegisterSingletonType(MachineActionManager.MachineActionManager, "Cura", 1, 0, "MachineActionManager", self.getMachineActionManager)
         self.setMainQml(Resources.getPath(self.ResourceTypes.QmlFiles, "Cura.qml"))
@@ -705,6 +744,11 @@ class CuraApplication(QtApplication):
     #   It wants to give this function an engine and script engine, but we don't care about that.
     def getMachineActionManager(self, *args):
         return self._machine_action_manager
+
+    def getSimpleModeSettingsManager(self, *args):
+        if self._simple_mode_settings_manager is None:
+            self._simple_mode_settings_manager = SimpleModeSettingsManager()
+        return self._simple_mode_settings_manager
 
     ##   Handle Qt events
     def event(self, event):
@@ -1361,6 +1405,8 @@ class CuraApplication(QtApplication):
 
                     # If a model is to small then it will not contain any points
                     if offset_shape_arr is None and hull_shape_arr is None:
+                        Message(self._i18n_catalog.i18nc("@info:status", "The selected model was too small to load."),
+                                title=self._i18n_catalog.i18nc("@info:title", "Warning")).show()
                         return
 
                     # Step is for skipping tests to make it a lot faster. it also makes the outcome somewhat rougher

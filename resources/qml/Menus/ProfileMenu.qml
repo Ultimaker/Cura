@@ -17,9 +17,9 @@ Menu
 
         MenuItem
         {
-            text: model.name + " - " + model.layer_height
+            text: (model.layer_height != "") ? model.name + " - " + model.layer_height : model.name
             checkable: true
-            checked: Cura.MachineManager.activeQualityChangesId == "" && Cura.MachineManager.activeQualityType == model.metadata.quality_type
+            checked: Cura.MachineManager.activeQualityId == model.id
             exclusiveGroup: group
             onTriggered: Cura.MachineManager.setActiveQuality(model.id)
             visible: model.available

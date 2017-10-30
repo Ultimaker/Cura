@@ -4,12 +4,14 @@
 from PyQt5.QtCore import Qt, pyqtSignal, pyqtProperty, QTimer
 from typing import Iterable
 
+from UM.i18n import i18nCatalog
 import UM.Qt.ListModel
 from UM.Application import Application
 import UM.FlameProfiler
 from cura.Settings.ExtruderManager import ExtruderManager
 from cura.Settings.ExtruderStack import ExtruderStack #To listen to changes on the extruders.
-from cura.Settings.MachineManager import MachineManager #To listen to changes on the extruders of the currently active machine.
+
+catalog = i18nCatalog("cura")
 
 ##  Model that holds extruders.
 #
@@ -172,7 +174,7 @@ class ExtrudersModel(UM.Qt.ListModel.ListModel):
                 color = material.getMetaDataEntry("color_code", default = self.defaultColors[0]) if material else self.defaultColors[0]
                 item = {
                     "id": global_container_stack.getId(),
-                    "name": "Global",
+                    "name": catalog.i18nc("@menuitem", "Global"),
                     "color": color,
                     "index": -1,
                     "definition": ""
@@ -215,7 +217,7 @@ class ExtrudersModel(UM.Qt.ListModel.ListModel):
             if self._add_optional_extruder:
                 item = {
                     "id": "",
-                    "name": "Not overridden",
+                    "name": catalog.i18nc("@menuitem", "Not overridden"),
                     "color": "#ffffff",
                     "index": -1,
                     "definition": ""
