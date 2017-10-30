@@ -252,6 +252,10 @@ Column
             visible: Cura.MachineManager.hasMaterials
             property var valueError:
             {
+                if(Cura.MachineManager.activeMaterialId === "")
+                {
+                    return false
+                }
                 var data = Cura.ContainerManager.getContainerMetaDataEntry(Cura.MachineManager.activeMaterialId, "compatible")
                 if(data == "False")
                 {

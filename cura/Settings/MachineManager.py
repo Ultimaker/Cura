@@ -151,7 +151,7 @@ class MachineManager(QObject):
         if not self._global_container_stack:
             return
 
-        containers = ContainerRegistry.getInstance().findInstanceContainersMetadata(type="variant", definition=self._global_container_stack.getBottom().getId(), name=hotend_id)
+        containers = ContainerRegistry.getInstance().findInstanceContainersMetadata(type = "variant", definition = self._global_container_stack.getBottom().getId(), name = hotend_id)
         if containers:  # New material ID is known
             extruder_manager = ExtruderManager.getInstance()
             machine_id = self.activeMachineId
