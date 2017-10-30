@@ -74,7 +74,7 @@ class GlobalStack(CuraContainerStack):
             return
 
         if any(item.getId() == extruder.id for item in self._extruders.values()):
-            Logger.log("w", "Extruder [%s] has already been added to this stack [%s]", extruder.id, self._id)
+            Logger.log("w", "Extruder [%s] has already been added to this stack [%s]", extruder.id, self.getId())
             return
 
         self._extruders[position] = extruder
