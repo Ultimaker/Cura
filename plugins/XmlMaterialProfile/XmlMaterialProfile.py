@@ -386,7 +386,7 @@ class XmlMaterialProfile(InstanceContainer):
                     first.append(element)
 
     def clearData(self):
-        self._metadata = {}
+        self._metadata = {"id": self.getId()}
         self.setName("")
         self._definition = None
         self._instances = {}
