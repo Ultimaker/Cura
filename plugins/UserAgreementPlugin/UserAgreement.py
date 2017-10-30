@@ -42,7 +42,7 @@ class UserAgreement(QObject, Extension):
             Logger.log("i", "User did NOT agree to the user agreement")
             Preferences.getInstance().setValue("general/accepted_user_agreement", False)
             CuraApplication.getInstance().quit()
-
+        CuraApplication.getInstance().setHasShownUserAgreement(True)
 
     def createUserAgreementWindow(self):
         path = QUrl.fromLocalFile(os.path.join(PluginRegistry.getInstance().getPluginPath(self.getPluginId()), "UserAgreement.qml"))
