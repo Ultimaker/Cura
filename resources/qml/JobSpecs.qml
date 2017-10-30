@@ -18,7 +18,6 @@ Item {
     UM.I18nCatalog { id: catalog; name:"cura"}
 
     height: childrenRect.height
-    width: childrenRect.width
 
     Connections
     {
