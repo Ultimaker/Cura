@@ -382,7 +382,7 @@ Rectangle
             color: UM.Theme.getColor("text_subtext")
             elide: Text.ElideMiddle
             width: parent.width
-            property string tooltipText: "test"
+            property string tooltipText
             text:
             {
                 var lengths = [];
@@ -419,15 +419,32 @@ Rectangle
                     costs = ["0.00"];
                 }
 
-                tooltipText = catalog.i18nc("@tooltip", "<b>Cost specification</b><br/><table>");
+                var tooltip_html = "<b>%1</b><br/><table>".arg(catalog.i18nc("@label", "Cost specification"));
                 for(var index = 0; index < lengths.length; index++)
                 {
-                    tooltipText += catalog.i18nc("@label Print estimates: m for meters, g for grams, %4 is currency and %3 is print cost", "<tr><td>Extruder %0:&nbsp;&nbsp;</td><td>%1m&nbsp;&nbsp;</td><td>%2g&nbsp;&nbsp;</td><td>%4 %3</td></tr>").arg(index + 1).arg(lengths[index])
-                            .arg(weights[index]).arg(costs[index]).arg(UM.Preferences.getValue("cura/currency"));
+                    var item_strings = [
+                        catalog.i18nc("@label", "Extruder %1:").arg(index + 1),
+                        catalog.i18nc("@label m for meter", "%1m").arg(lengths[index]),
+                        catalog.i18nc("@label g for grams", "%1g").arg(weights[index]),
+                        "%1 %2".arg(UM.Preferences.getValue("cura/currency")).arg(costs[index]),
+                    ];
+                    tooltip_html += "<tr>";
+                    for(var item = 0; item < item_strings.length; item++) {
+                        tooltip_html += "<td>%1&nbsp;&nbsp;</td>".arg(item_strings[item]);
+                    }
                 }
-                tooltipText += catalog.i18nc("@label Print totals: m for meters, g for grams, %4 is currency and %3 is print cost", "<tr><td>Total:&nbsp;&nbsp;</td><td>%1m&nbsp;&nbsp;</td><td>%2g&nbsp;&nbsp;</td><td>%4 %3</td></tr>").arg(total_length.toFixed(2))
-                            .arg(Math.round(total_weight)).arg(total_cost.toFixed(2)).arg(UM.Preferences.getValue("cura/currency"));
-                tooltipText += "</table>";
+                var item_strings = [
+                    catalog.i18nc("@label", "Total:"),
+                    catalog.i18nc("@label m for meter", "%1m").arg(total_length.toFixed(2)),
+                    catalog.i18nc("@label g for grams", "%1g").arg(Math.round(total_weight)),
+                    "%1 %2".arg(UM.Preferences.getValue("cura/currency")).arg(total_cost.toFixed(2)),
+                ];
+                tooltip_html += "<tr>";
+                for(var item = 0; item < item_strings.length; item++) {
+                    tooltip_html += "<td>%1&nbsp;&nbsp;</td>".arg(item_strings[item]);
+                }
+                tooltip_html += "</tr></table>";
+                tooltipText = tooltip_html;
 
                 if(some_costs_known)
                 {
