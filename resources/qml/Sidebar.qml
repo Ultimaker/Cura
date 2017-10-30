@@ -30,6 +30,7 @@ Rectangle
     property variant printMaterialLengths: PrintInformation.materialLengths
     property variant printMaterialWeights: PrintInformation.materialWeights
     property variant printMaterialCosts: PrintInformation.materialCosts
+    property variant printMaterialNames: PrintInformation.materialNames
 
     color: UM.Theme.getColor("sidebar")
     UM.I18nCatalog { id: catalog; name:"cura"}
@@ -392,11 +393,13 @@ Rectangle
                 var costs = [];
                 var total_cost = 0;
                 var some_costs_known = false;
+                var names = [];
                 if(base.printMaterialLengths) {
                     for(var index = 0; index < base.printMaterialLengths.length; index++)
                     {
                         if(base.printMaterialLengths[index] > 0)
                         {
+                            names.push(base.printMaterialNames[index]);
                             lengths.push(base.printMaterialLengths[index].toFixed(2));
                             weights.push(String(Math.floor(base.printMaterialWeights[index])));
                             var cost = base.printMaterialCosts[index] == undefined ? 0 : base.printMaterialCosts[index].toFixed(2);
@@ -423,7 +426,7 @@ Rectangle
                 for(var index = 0; index < lengths.length; index++)
                 {
                     var item_strings = [
-                        catalog.i18nc("@label", "Extruder %1:").arg(index + 1),
+                        "%1:".arg(names[index]),
                         catalog.i18nc("@label m for meter", "%1m").arg(lengths[index]),
                         catalog.i18nc("@label g for grams", "%1g").arg(weights[index]),
                         "%1 %2".arg(UM.Preferences.getValue("cura/currency")).arg(costs[index]),
