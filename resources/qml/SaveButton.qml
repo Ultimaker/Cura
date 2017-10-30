@@ -91,7 +91,19 @@ Item {
 
     Item {
         id: saveRow
-        width: Math.min(childrenRect.width + UM.Theme.getSize("sidebar_margin").width, base.width - UM.Theme.getSize("sidebar_margin").width)
+        width: {
+            // using childrenRect.width directly causes a binding loop, because setting the width affects the childrenRect
+            var children_width = UM.Theme.getSize("default_margin").width;
+            for (var index in children)
+            {
+                var child = children[index];
+                if(child.visible)
+                {
+                    children_width += child.width + child.anchors.rightMargin;
+                }
+            }
+            return Math.min(children_width, base.width - UM.Theme.getSize("sidebar_margin").width);
+        }
         height: saveToButton.height
         anchors.bottom: parent.bottom
         anchors.bottomMargin: UM.Theme.getSize("sidebar_margin").height
@@ -102,7 +114,7 @@ Item {
             id: additionalComponentsRow
             anchors.top: parent.top
             anchors.right: saveToButton.visible ? saveToButton.left : parent.right
-            anchors.rightMargin: UM.Theme.getSize("sidebar_margin").width
+            anchors.rightMargin: UM.Theme.getSize("default_margin").width
 
             spacing: UM.Theme.getSize("default_margin").width
         }

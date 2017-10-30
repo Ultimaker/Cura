@@ -188,7 +188,11 @@ Item
     Item {
         id: buttonsRow
         height: abortButton.height
-        width: Math.min(childrenRect.width, base.width - 2 * UM.Theme.getSize("sidebar_margin").width)
+        width: {
+            // using childrenRect.width directly causes a binding loop, because setting the width affects the childrenRect
+            var children_width = additionalComponentsRow.width + pauseResumeButton.width + abortButton.width + 3 * UM.Theme.getSize("default_margin").width;
+            return Math.min(children_width, base.width - 2 * UM.Theme.getSize("sidebar_margin").width);
+        }
         anchors.top: progressBar.bottom
         anchors.topMargin: UM.Theme.getSize("sidebar_margin").height
         anchors.right: parent.right
