@@ -21,6 +21,8 @@ from cura.Settings.CuraStackBuilder import CuraStackBuilder
 from cura.Settings.ExtruderManager import ExtruderManager
 from cura.Settings.ExtruderStack import ExtruderStack
 from cura.Settings.GlobalStack import GlobalStack
+from cura.Settings.CuraContainerStack import _ContainerIndexes
+from cura.QualityManager import QualityManager
 
 from configparser import ConfigParser
 import zipfile
@@ -757,13 +759,37 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                 self._container_registry.removeContainer(container.getId())
             return
 
+        # Check quality profiles to make sure that if one stack has the "not supported" quality profile,
+        # all others should have the same.
+        #
+        # This block code tries to fix the following problems in Cura 3.0 and earlier:
+        #  1. The upgrade script can rename all "Not Supported" quality profiles to "empty_quality", but it cannot fix
+        #     the problem that the global stack the extruder stacks may have different quality profiles. The code
+        #     below loops over all stacks and make sure that if there is one stack with "Not Supported" profile, the
+        #     rest should also use the "Not Supported" profile.
+        #  2. In earlier versions (at least 2.7 and 3.0), a wrong quality profile could be assigned to a stack. For
+        #     example, a UM3 can have a BB 0.8 variant with "aa04_pla_fast" quality profile enabled. To fix this,
+        #     in the code below we also check the actual available quality profiles for the machine.
+        #
+        has_not_supported = False
+        for stack in [global_stack] + extruder_stacks:
+            if stack.quality.getId() == "empty_quality":
+                has_not_supported = True
+                break
+        if not has_not_supported:
+            available_quality = QualityManager.getInstance().findAllUsableQualitiesForMachineAndExtruders(global_stack, extruder_stacks)
+            has_not_supported = not available_quality
+        if has_not_supported:
+            empty_quality_container = self._container_registry.findInstanceContainers(id = "empty_quality")[0]
+            for stack in [global_stack] + extruder_stacks:
+                stack.replaceContainer(_ContainerIndexes.Quality, empty_quality_container)
+
         #
         # Replacing the old containers if resolve is "new".
         # When resolve is "new", some containers will get renamed, so all the other containers that reference to those
         # MUST get updated too.
         #
         if self._resolve_strategies["machine"] == "new":
-
             # A new machine was made, but it was serialized with the wrong user container. Fix that now.
             for container in user_instance_containers:
                 # replacing the container ID for user instance containers for the extruders
