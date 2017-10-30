@@ -35,11 +35,11 @@ class UserAgreement(QObject, Extension):
     @pyqtSlot(bool)
     def didAgree(self, userChoice):
         if userChoice:
-            Logger.log('i', 'User agreed to the user agreement')
+            Logger.log("i", "User agreed to the user agreement")
             Preferences.getInstance().setValue("general/accepted_user_agreement", True)
             self._user_agreement_window.hide()
         else:
-            Logger.log('i', 'User did NOT agree to the user agreement')
+            Logger.log("i", "User did NOT agree to the user agreement")
             Preferences.getInstance().setValue("general/accepted_user_agreement", False)
             CuraApplication.getInstance().quit()
 
