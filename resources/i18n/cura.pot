@@ -18,6 +18,21 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
+#Manually added for plugins/UserAgreementPlugin/UserAgreement.qml
+msgctxt "@title:window"
+msgid "User Agreement"
+msgstr ""
+
+#Manually added for plugins/UserAgreementPlugin/UserAgreement.qml
+msgctxt "@action:button"
+msgid "I understand and agree"
+msgstr ""
+
+#Manually added for plugins/UserAgreementPlugin/UserAgreement.qml
+msgctxt "@action:button"
+msgid "I don't agree"
+msgstr ""
+
 #: Manually added for plugins/UM3NetworkPrinting/PrinterInfoBlock.qml
 msgctxt "@label:status"
 msgid "Print aborted"

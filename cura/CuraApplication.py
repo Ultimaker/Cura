@@ -215,6 +215,7 @@ class CuraApplication(QtApplication):
 
         self.setRequiredPlugins([
             "CuraEngineBackend",
+            "UserAgreement",
             "SolidView",
             "LayerView",
             "STLReader",
@@ -304,6 +305,8 @@ class CuraApplication(QtApplication):
 
         preferences.addPreference("view/invert_zoom", False)
 
+        self._need_to_show_user_agreement = not Preferences.getInstance().getValue("general/accepted_user_agreement")
+
         for key in [
             "dialog_load_path",  # dialog_save_path is in LocalFileOutputDevicePlugin
             "dialog_profile_path",
@@ -375,6 +378,14 @@ class CuraApplication(QtApplication):
 
     def _onEngineCreated(self):
         self._engine.addImageProvider("camera", CameraImageProvider.CameraImageProvider())
+
+    @pyqtProperty(bool)
+    def needToShowUserAgreement(self):
+        return self._need_to_show_user_agreement
+
+
+    def setNeedToShowUserAgreement(self, set_value = True):
+        self._need_to_show_user_agreement = set_value
 
     ## The "Quit" button click event handler.
     @pyqtSlot()
