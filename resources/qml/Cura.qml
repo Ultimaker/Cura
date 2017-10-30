@@ -897,7 +897,7 @@ UM.MainWindow
             }
 
             // check later if the user agreement dialog has been closed
-            if (CuraApplication.needToShowUserAgreement && !CuraApplication.hasUserAgreementShown)
+            if (CuraApplication.needToShowUserAgreement)
             {
                 restart();
             }
