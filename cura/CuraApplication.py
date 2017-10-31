@@ -105,7 +105,7 @@ class CuraApplication(QtApplication):
     # SettingVersion represents the set of settings available in the machine/extruder definitions.
     # You need to make sure that this version number needs to be increased if there is any non-backwards-compatible
     # changes of the settings.
-    SettingVersion = 3
+    SettingVersion = 4
 
     class ResourceTypes:
         QmlFiles = Resources.UserType + 1
@@ -216,6 +216,7 @@ class CuraApplication(QtApplication):
 
         self.setRequiredPlugins([
             "CuraEngineBackend",
+            "UserAgreement",
             "SolidView",
             "LayerView",
             "STLReader",
@@ -274,8 +275,9 @@ class CuraApplication(QtApplication):
         empty_quality_container = copy.deepcopy(empty_container)
         empty_quality_container._id = "empty_quality"
         empty_quality_container.setName("Not Supported")
-        empty_quality_container.addMetaDataEntry("quality_type", "normal")
+        empty_quality_container.addMetaDataEntry("quality_type", "not_supported")
         empty_quality_container.addMetaDataEntry("type", "quality")
+        empty_quality_container.addMetaDataEntry("supported", False)
         ContainerRegistry.getInstance().addContainer(empty_quality_container)
 
         empty_quality_changes_container = copy.deepcopy(empty_container)
@@ -307,6 +309,8 @@ class CuraApplication(QtApplication):
         preferences.addPreference("cura/material_settings", "{}")
 
         preferences.addPreference("view/invert_zoom", False)
+
+        self._need_to_show_user_agreement = not Preferences.getInstance().getValue("general/accepted_user_agreement")
 
         for key in [
             "dialog_load_path",  # dialog_save_path is in LocalFileOutputDevicePlugin
@@ -379,6 +383,14 @@ class CuraApplication(QtApplication):
 
     def _onEngineCreated(self):
         self._engine.addImageProvider("camera", CameraImageProvider.CameraImageProvider())
+
+    @pyqtProperty(bool)
+    def needToShowUserAgreement(self):
+        return self._need_to_show_user_agreement
+
+
+    def setNeedToShowUserAgreement(self, set_value = True):
+        self._need_to_show_user_agreement = set_value
 
     ## The "Quit" button click event handler.
     @pyqtSlot()

@@ -51,26 +51,33 @@ Item
         {
             id: globalProfileSelection
 
-            text: {
-                var result = Cura.MachineManager.activeQualityName;
-                if (Cura.MachineManager.activeQualityLayerHeight > 0) {
-                    result += " <font color=\"" + UM.Theme.getColor("text_detail") + "\">";
-                    result += " - ";
-                    result += Cura.MachineManager.activeQualityLayerHeight + "mm";
-                    result += "</font>";
-                }
-                return result;
-            }
+            text: generateActiveQualityText()
             enabled: !header.currentExtruderVisible || header.currentExtruderIndex > -1
-
             width: Math.floor(parent.width * 0.55)
             height: UM.Theme.getSize("setting_control").height
             anchors.left: globalProfileLabel.right
             anchors.right: parent.right
             tooltip: Cura.MachineManager.activeQualityName
             style: UM.Theme.styles.sidebar_header_button
-            activeFocusOnPress: true;
+            activeFocusOnPress: true
             menu: ProfileMenu { }
+
+            function generateActiveQualityText () {
+                var result = catalog.i18nc("@", "No Profile Available") // default text
+
+                if (Cura.MachineManager.isActiveQualitySupported ) {
+                    result = Cura.MachineManager.activeQualityName
+
+                    if (Cura.MachineManager.activeQualityLayerHeight > 0) {
+                        result += " <font color=\"" + UM.Theme.getColor("text_detail") + "\">"
+                        result += " - "
+                        result += Cura.MachineManager.activeQualityLayerHeight + "mm"
+                        result += "</font>"
+                    }
+                }
+
+                return result
+            }
 
             UM.SimpleButton
             {

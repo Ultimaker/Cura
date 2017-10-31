@@ -82,10 +82,18 @@ class ProfilesModel(InstanceContainersModel):
             if quality.getMetaDataEntry("quality_type") not in quality_type_set:
                 result.append(quality)
 
+        # if still profiles are found, add a single empty_quality ("Not supported") instance to the drop down list
+        if len(result) == 0:
+            # If not qualities are found we dynamically create a not supported container for this machine + material combination
+            not_supported_container = ContainerRegistry.getInstance().findContainers(id = "empty_quality")[0]
+            result.append(not_supported_container)
+
         return result
 
     ##  Re-computes the items in this model, and adds the layer height role.
     def _recomputeItems(self):
+
+        # Some globals that we can re-use.
         global_container_stack = Application.getInstance().getGlobalContainerStack()
         if global_container_stack is None:
             return
@@ -134,14 +142,24 @@ class ProfilesModel(InstanceContainersModel):
 
         # Now all the containers are set
         for item in containers:
-            profile = container_registry.findContainers(id=item["id"])
+            profile = container_registry.findContainers(id = item["id"])
+
+            # When for some reason there is no profile container in the registry
             if not profile:
-                self._setItemLayerHeight(item, "", unit)
+                self._setItemLayerHeight(item, "", "")
                 item["available"] = False
                 yield item
                 continue
 
             profile = profile[0]
+
+            # When there is a profile but it's an empty quality should. It's shown in the list (they are "Not Supported" profiles)
+            if profile.getId() == "empty_quality":
+                self._setItemLayerHeight(item, "", "")
+                item["available"] = True
+                yield item
+                continue
+
             item["available"] = profile in qualities
 
             # Easy case: This profile defines its own layer height.
