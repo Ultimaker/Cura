@@ -12,13 +12,12 @@ from PyQt5.QtWidgets import QMessageBox
 from UM.Decorators import override
 from UM.Settings.ContainerRegistry import ContainerRegistry
 from UM.Settings.ContainerStack import ContainerStack
-from UM.Settings.DefinitionContainer import DefinitionContainer
 from UM.Settings.InstanceContainer import InstanceContainer
 from UM.Application import Application
 from UM.Logger import Logger
 from UM.Message import Message
 from UM.Platform import Platform
-from UM.PluginRegistry import PluginRegistry #For getting the possible profile writers to write with.
+from UM.PluginRegistry import PluginRegistry  # For getting the possible profile writers to write with.
 from UM.Util import parseBool
 
 from . import ExtruderStack
