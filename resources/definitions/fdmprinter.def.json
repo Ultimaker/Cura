@@ -858,7 +858,7 @@
                     "default_value": 0.2,
                     "value": "machine_nozzle_size / 2",
                     "minimum_value": "0",
-                    "maximum_value_warning": "machine_nozzle_size",
+                    "maximum_value_warning": "machine_nozzle_size * 2",
                     "settable_per_mesh": true
                 },
                 "top_bottom_thickness":
@@ -1278,7 +1278,6 @@
                     "default_value": 1.5,
                     "minimum_value": "0.0001",
                     "minimum_value_warning": "3 * resolveOrValue('layer_height')",
-                    "maximum_value_warning": "100",
                     "enabled": "infill_sparse_density > 0 and gradual_infill_steps > 0 and infill_pattern != 'cubicsubdiv'",
                     "settable_per_mesh": true
                 },
@@ -1325,6 +1324,7 @@
                             "description": "Expand the bottom skin areas (areas with air below) so that they are anchored by the infill layers above and below.",
                             "type": "bool",
                             "default_value": false,
+                            "value": "expand_skins_into_infill",
                             "settable_per_mesh": true
                         }
                     }
@@ -2046,9 +2046,9 @@
                     "description": "The first few layers are printed slower than the rest of the model, to get better adhesion to the build plate and improve the overall success rate of prints. The speed is gradually increased over these layers.",
                     "type": "int",
                     "default_value": 2,
-                    "resolve": "sum(extruderValues('speed_slowdown_layers')) / len(extruderValues('speed_slowdown_layers'))",
+                    "resolve": "round(sum(extruderValues('speed_slowdown_layers')) / len(extruderValues('speed_slowdown_layers')))",
                     "minimum_value": "0",
-                    "maximum_value_warning": "1.0 / resolveOrValue('layer_height')",
+                    "maximum_value_warning": "3.2 / resolveOrValue('layer_height')",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false
                 },
@@ -2726,7 +2726,7 @@
                     "unit": "mm",
                     "type": "float",
                     "default_value": 1,
-                    "minimum_value_warning": "0.75 * machine_nozzle_size",
+                    "minimum_value_warning": "0",
                     "maximum_value_warning": "10",
                     "enabled": "retraction_enable and retraction_hop_enabled",
                     "settable_per_mesh": false,
