@@ -5,7 +5,8 @@
 *License agreement on the first startup has been added
 
 [3.0.3]
-*Bug fixes for the MakePrintable plugin.
+*Bug fixes
+- Add missing libraries for the MakePrintable plugin.
 
 [3.0.0]
 *Faster start-up
