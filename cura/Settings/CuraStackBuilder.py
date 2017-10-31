@@ -51,7 +51,7 @@ class CuraStackBuilder:
 
         if not extruder_definition:
             # create extruder stack for single extrusion machines that have no separate extruder definition files
-            extruder_definition = registry.findDefinitionContainers(id = "fdmextruder")
+            extruder_definition = registry.findDefinitionContainers(id = "fdmextruder")[0]
             new_extruder_id = registry.uniqueName(machine_definition.getId() + " " + "fdmextruder")
             new_extruder = cls.createExtruderStack(
                 new_extruder_id,

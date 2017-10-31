@@ -424,23 +424,23 @@ class CuraContainerRegistry(ContainerRegistry):
         extruder_stack.addMetaDataEntry("position", "0")
         extruder_stack.setNextStack(machine)
 
-        # if machine.userChanges:
-        #     # set existing user changes if found
-        #     extruder_stack.setUserChanges(machine.userChanges)
-        # else:
-        #     # create empty user changes container otherwise
-        #     user_container = InstanceContainer(extruder_stack.getId() + "_user")
-        #     user_container.addMetaDataEntry("type", "user")
-        #     user_container.addMetaDataEntry("machine", extruder_stack.getId())
-        #     from cura.CuraApplication import CuraApplication
-        #     user_container.addMetaDataEntry("setting_version", CuraApplication.SettingVersion)
-        #     user_container.setDefinition(extruder_definition)
-        #     extruder_stack.setUserChanges(user_container)
-        #     self.addContainer(user_container)
+        if machine.userChanges:
+            # set existing user changes if found
+            extruder_stack.setUserChanges(machine.userChanges)
+        else:
+            # create empty user changes container otherwise
+            user_container = InstanceContainer(extruder_stack.getId() + "_user")
+            user_container.addMetaDataEntry("type", "user")
+            user_container.addMetaDataEntry("machine", extruder_stack.getId())
+            from cura.CuraApplication import CuraApplication
+            user_container.addMetaDataEntry("setting_version", CuraApplication.SettingVersion)
+            user_container.setDefinition(extruder_definition)
+            extruder_stack.setUserChanges(user_container)
+            self.addContainer(user_container)
 
         # extruder_stack.setVariantById("default")
-        # extruder_stack.setMaterialById("default")
-        # extruder_stack.setQualityById("default")
+        extruder_stack.setMaterialById("default")
+        extruder_stack.setQualityById("default")
 
         self.addContainer(extruder_stack)
 
