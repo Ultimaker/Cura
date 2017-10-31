@@ -63,11 +63,11 @@ UM.Dialog
         anchors.fill: parent
         anchors.leftMargin: 20 * screenScaleFactor
         anchors.rightMargin: 20 * screenScaleFactor
-        anchors.bottomMargin: 20 * screenScaleFactor
-        spacing: 10 * screenScaleFactor
+        anchors.bottomMargin: 10 * screenScaleFactor
 
         Label
         {
+            id: questionText
             text: catalog.i18nc("@text:window", "This is a Cura project file. Would you like to open it as a project or import the models from it?")
             anchors.left: parent.left
             anchors.right: parent.right
@@ -78,15 +78,28 @@ UM.Dialog
         CheckBox
         {
             id: rememberChoiceCheckBox
-            text: catalog.i18nc("@text:window", "Remember my choice")
+            anchors.bottom: buttonBar.top
+            anchors.bottomMargin: UM.Theme.getSize("default_margin").heigth
             checked: UM.Preferences.getValue("cura/choice_on_open_project") != "always_ask"
         }
+
+        Label
+        {
+            id: checkboxTextWithNiceRendering
+            anchors.left: rememberChoiceCheckBox.right
+            anchors.bottom: rememberChoiceCheckBox.bottom
+            font: UM.Theme.getFont("default")
+            text: catalog.i18nc("@text:window", "Remember my choice")
+        }
+
 
         // Buttons
         Item
         {
+            id: buttonBar
             anchors.right: parent.right
             anchors.left: parent.left
+            anchors.bottom: parent.bottom
             height: childrenRect.height
 
             Button

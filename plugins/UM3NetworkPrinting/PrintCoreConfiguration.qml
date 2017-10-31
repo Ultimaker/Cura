@@ -10,7 +10,7 @@ Item
     id: extruderInfo
     property var printCoreConfiguration
 
-    width: parent.width / 2
+    width: Math.floor(parent.width / 2)
     height: childrenRect.height
     Label
     {
