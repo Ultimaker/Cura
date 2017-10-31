@@ -1,5 +1,5 @@
 //Copyright (c) 2017 Ultimaker B.V.
-//Cura is released under the terms of the AGPLv3 or higher.
+//Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.1
 import QtQuick.Controls 1.1
@@ -67,7 +67,7 @@ UM.ManagementPage
             }
             Label
             {
-                width: (parent.width * 0.3) | 0
+                width: Math.floor((parent.width * 0.3))
                 text: model.metadata.material
                 elide: Text.ElideRight
                 font.italic: model.id == activeId
@@ -317,11 +317,11 @@ UM.ManagementPage
                 var result = Cura.ContainerManager.importContainer(fileUrl)
 
                 messageDialog.title = catalog.i18nc("@title:window", "Import Material")
-                messageDialog.text = catalog.i18nc("@info:status", "Could not import material <filename>%1</filename>: <message>%2</message>").arg(fileUrl).arg(result.message)
+                messageDialog.text = catalog.i18nc("@info:status Don't translate the XML tags <filename> or <message>!", "Could not import material <filename>%1</filename>: <message>%2</message>").arg(fileUrl).arg(result.message)
                 if(result.status == "success")
                 {
                     messageDialog.icon = StandardIcon.Information
-                    messageDialog.text = catalog.i18nc("@info:status", "Successfully imported material <filename>%1</filename>").arg(fileUrl)
+                    messageDialog.text = catalog.i18nc("@info:status Don't translate the XML tag <filename>!", "Successfully imported material <filename>%1</filename>").arg(fileUrl)
                     currentItem = base.model.getItem(base.objectList.currentIndex)
                 }
                 else if(result.status == "duplicate")
@@ -359,13 +359,13 @@ UM.ManagementPage
                 if(result.status == "error")
                 {
                     messageDialog.icon = StandardIcon.Critical
-                    messageDialog.text = catalog.i18nc("@info:status", "Failed to export material to <filename>%1</filename>: <message>%2</message>").arg(fileUrl).arg(result.message)
+                    messageDialog.text = catalog.i18nc("@info:status Don't translate the XML tags <filename> and <message>!", "Failed to export material to <filename>%1</filename>: <message>%2</message>").arg(fileUrl).arg(result.message)
                     messageDialog.open()
                 }
                 else if(result.status == "success")
                 {
                     messageDialog.icon = StandardIcon.Information
-                    messageDialog.text = catalog.i18nc("@info:status", "Successfully exported material to <filename>%1</filename>").arg(result.path)
+                    messageDialog.text = catalog.i18nc("@info:status Don't translate the XML tag <filename>!", "Successfully exported material to <filename>%1</filename>").arg(result.path)
                     messageDialog.open()
                 }
                 CuraApplication.setDefaultPath("dialog_material_path", folder)

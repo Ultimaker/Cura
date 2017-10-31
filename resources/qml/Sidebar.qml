@@ -1,5 +1,5 @@
 // Copyright (c) 2017 Ultimaker B.V.
-// Cura is released under the terms of the AGPLv3 or higher.
+// Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.2
 import QtQuick.Controls 1.1
@@ -16,14 +16,20 @@ Rectangle
 
     property int currentModeIndex;
     property bool hideSettings: PrintInformation.preSliced
+    property bool hideView: Cura.MachineManager.activeMachineName == ""
 
     // Is there an output device for this printer?
     property bool printerConnected: Cura.MachineManager.printerOutputDevices.length != 0
     property bool printerAcceptsCommands: printerConnected && Cura.MachineManager.printerOutputDevices[0].acceptsCommands
     property var connectedPrinter: Cura.MachineManager.printerOutputDevices.length >= 1 ? Cura.MachineManager.printerOutputDevices[0] : null
-    property int backendState: UM.Backend.state;
+    property int backendState: UM.Backend.state
 
     property bool monitoringPrint: false
+
+    property variant printDuration: PrintInformation.currentPrintTime
+    property variant printMaterialLengths: PrintInformation.materialLengths
+    property variant printMaterialWeights: PrintInformation.materialWeights
+    property variant printMaterialCosts: PrintInformation.materialCosts
 
     color: UM.Theme.getColor("sidebar")
     UM.I18nCatalog { id: catalog; name:"cura"}
@@ -37,14 +43,14 @@ Rectangle
 
         onTriggered:
         {
-            base.showTooltip(base, {x:1, y:item.y}, text);
+            base.showTooltip(base, {x: 0, y: item.y}, text);
         }
     }
 
     function showTooltip(item, position, text)
     {
         tooltip.text = text;
-        position = item.mapToItem(base, position.x, position.y);
+        position = item.mapToItem(base, position.x - UM.Theme.getSize("default_arrow").width, position.y);
         tooltip.show(position);
     }
 
@@ -83,6 +89,7 @@ Rectangle
     SidebarHeader {
         id: header
         width: parent.width
+        visible: machineExtruderCount.properties.value > 1 || Cura.MachineManager.hasMaterials || Cura.MachineManager.hasVariants
 
         onShowTooltip: base.showTooltip(item, location, text)
         onHideTooltip: base.hideTooltip()
@@ -91,11 +98,11 @@ Rectangle
     Rectangle {
         id: headerSeparator
         width: parent.width
-        visible: !monitoringPrint && !hideSettings
+        visible: settingsModeSelection.visible && header.visible
         height: visible ? UM.Theme.getSize("sidebar_lining").height : 0
         color: UM.Theme.getColor("sidebar_lining")
         anchors.top: header.bottom
-        anchors.topMargin: visible ? UM.Theme.getSize("default_margin").height : 0
+        anchors.topMargin: visible ? UM.Theme.getSize("sidebar_margin").height : 0
     }
 
     onCurrentModeIndexChanged:
@@ -107,38 +114,47 @@ Rectangle
         }
     }
 
-    Text {
+    Label {
         id: settingsModeLabel
         text: !hideSettings ? catalog.i18nc("@label:listbox", "Print Setup") : catalog.i18nc("@label:listbox","Print Setup disabled\nG-code files cannot be modified");
         anchors.left: parent.left
-        anchors.leftMargin: UM.Theme.getSize("default_margin").width;
+        anchors.leftMargin: UM.Theme.getSize("sidebar_margin").width
         anchors.top: headerSeparator.bottom
-        anchors.topMargin: UM.Theme.getSize("default_margin").height
-        width: parent.width * 0.45 - 2 * UM.Theme.getSize("default_margin").width
+        anchors.topMargin: UM.Theme.getSize("sidebar_margin").height
+        width: Math.floor(parent.width * 0.45)
         font: UM.Theme.getFont("large")
         color: UM.Theme.getColor("text")
-        visible: !monitoringPrint
-        elide: Text.ElideRight
+        visible: !monitoringPrint && !hideView
     }
 
     Rectangle {
         id: settingsModeSelection
         color: "transparent"
-        width: parent.width * 0.55
+        width: Math.floor(parent.width * 0.55)
         height: UM.Theme.getSize("sidebar_header_mode_toggle").height
         anchors.right: parent.right
-        anchors.rightMargin: UM.Theme.getSize("default_margin").width
-        anchors.top: headerSeparator.bottom
-        anchors.topMargin: UM.Theme.getSize("default_margin").height
-        visible: !monitoringPrint && !hideSettings
+        anchors.rightMargin: UM.Theme.getSize("sidebar_margin").width
+        anchors.top:
+        {
+            if (settingsModeLabel.contentWidth >= parent.width - width - UM.Theme.getSize("sidebar_margin").width * 2)
+            {
+                return settingsModeLabel.bottom;
+            }
+            else
+            {
+                return headerSeparator.bottom;
+            }
+        }
+        anchors.topMargin: UM.Theme.getSize("sidebar_margin").height
+        visible: !monitoringPrint && !hideSettings && !hideView
         Component{
             id: wizardDelegate
             Button {
                 height: settingsModeSelection.height
                 anchors.left: parent.left
-                anchors.leftMargin: model.index * (settingsModeSelection.width / 2)
+                anchors.leftMargin: model.index * Math.floor(settingsModeSelection.width / 2)
                 anchors.verticalCenter: parent.verticalCenter
-                width: 0.5 * parent.width
+                width: Math.floor(0.5 * parent.width)
                 text: model.text
                 exclusiveGroup: modeMenuGroup;
                 checkable: true;
@@ -161,21 +177,27 @@ Rectangle
 
                 style: ButtonStyle {
                     background: Rectangle {
-                        border.width: UM.Theme.getSize("default_lining").width
-                        border.color: control.checked ? UM.Theme.getColor("toggle_checked_border") :
-                                          control.pressed ? UM.Theme.getColor("toggle_active_border") :
-                                          control.hovered ? UM.Theme.getColor("toggle_hovered_border") : UM.Theme.getColor("toggle_unchecked_border")
-                        color: control.checked ? UM.Theme.getColor("toggle_checked") :
-                                   control.pressed ? UM.Theme.getColor("toggle_active") :
-                                   control.hovered ? UM.Theme.getColor("toggle_hovered") : UM.Theme.getColor("toggle_unchecked")
+                        border.width: control.checked ? UM.Theme.getSize("default_lining").width * 2 : UM.Theme.getSize("default_lining").width
+                        border.color: (control.checked || control.pressed) ? UM.Theme.getColor("action_button_active_border") :
+                                          control.hovered ? UM.Theme.getColor("action_button_hovered_border") :
+                                          UM.Theme.getColor("action_button_border")
+                        color: (control.checked || control.pressed) ? UM.Theme.getColor("action_button_active") :
+                                   control.hovered ? UM.Theme.getColor("action_button_hovered") :
+                                   UM.Theme.getColor("action_button")
                         Behavior on color { ColorAnimation { duration: 50; } }
                         Label {
-                            anchors.centerIn: parent
-                            color: control.checked ? UM.Theme.getColor("toggle_checked_text") :
-                                       control.pressed ? UM.Theme.getColor("toggle_active_text") :
-                                       control.hovered ? UM.Theme.getColor("toggle_hovered_text") : UM.Theme.getColor("toggle_unchecked_text")
+                            anchors.left: parent.left
+                            anchors.right: parent.right
+                            anchors.verticalCenter: parent.verticalCenter
+                            anchors.leftMargin: UM.Theme.getSize("default_lining").width * 2
+                            anchors.rightMargin: UM.Theme.getSize("default_lining").width * 2
+                            color: (control.checked || control.pressed) ? UM.Theme.getColor("action_button_active_text") :
+                                       control.hovered ? UM.Theme.getColor("action_button_hovered_text") :
+                                       UM.Theme.getColor("action_button_text")
                             font: UM.Theme.getFont("default")
-                            text: control.text;
+                            text: control.text
+                            horizontalAlignment: Text.AlignHCenter
+                            elide: Text.ElideMiddle
                         }
                     }
                     label: Item { }
@@ -184,122 +206,15 @@ Rectangle
         }
         ExclusiveGroup { id: modeMenuGroup; }
 
-        Label
+        ListView
         {
-            id: toggleLeftText
-            anchors.right: modeToggleSwitch.left
-            anchors.rightMargin: UM.Theme.getSize("default_margin").width
-            anchors.verticalCenter: parent.verticalCenter
-            text: ""
-            color:
-            {
-                if(toggleLeftTextMouseArea.containsMouse)
-                {
-                    return UM.Theme.getColor("mode_switch_text_hover");
-                }
-                else if(!modeToggleSwitch.checked)
-                {
-                    return UM.Theme.getColor("mode_switch_text_checked");
-                }
-                else
-                {
-                    return UM.Theme.getColor("mode_switch_text");
-                }
-            }
-            font: UM.Theme.getFont("default")
-
-            MouseArea
-            {
-                id: toggleLeftTextMouseArea
-                hoverEnabled: true
-                anchors.fill: parent
-                onClicked:
-                {
-                    modeToggleSwitch.checked = false;
-                }
-
-                Component.onCompleted:
-                {
-                    clicked.connect(modeToggleSwitch.clicked)
-                }
-            }
-        }
-
-        Switch
-        {
-            id: modeToggleSwitch
-            checked: false
-            anchors.right: toggleRightText.left
-            anchors.rightMargin: UM.Theme.getSize("default_margin").width
-            anchors.verticalCenter: parent.verticalCenter
-
-            property bool _hovered: modeToggleSwitchMouseArea.containsMouse || toggleLeftTextMouseArea.containsMouse || toggleRightTextMouseArea.containsMouse
-
-            MouseArea
-            {
-                id: modeToggleSwitchMouseArea
-                anchors.fill: parent
-                hoverEnabled: true
-                acceptedButtons: Qt.NoButton
-            }
-
-            onCheckedChanged:
-            {
-                var index = 0;
-                if (checked)
-                {
-                    index = 1;
-                }
-                updateActiveMode(index);
-            }
-
-            function updateActiveMode(index)
-            {
-                base.currentModeIndex = index;
-                UM.Preferences.setValue("cura/active_mode", index);
-            }
-
-            style: UM.Theme.styles.mode_switch
-        }
-
-        Label
-        {
-            id: toggleRightText
-            anchors.right: parent.right
-            anchors.verticalCenter: parent.verticalCenter
-            text: ""
-            color:
-            {
-                if(toggleRightTextMouseArea.containsMouse)
-                {
-                    return UM.Theme.getColor("mode_switch_text_hover");
-                }
-                else if(modeToggleSwitch.checked)
-                {
-                    return UM.Theme.getColor("mode_switch_text_checked");
-                }
-                else
-                {
-                    return UM.Theme.getColor("mode_switch_text");
-                }
-            }
-            font: UM.Theme.getFont("default")
-
-            MouseArea
-            {
-                id: toggleRightTextMouseArea
-                hoverEnabled: true
-                anchors.fill: parent
-                onClicked:
-                {
-                    modeToggleSwitch.checked = true;
-                }
-
-                Component.onCompleted:
-                {
-                    clicked.connect(modeToggleSwitch.clicked)
-                }
-            }
+            id: modesList
+            property var index: 0
+            model: modesListModel
+            delegate: wizardDelegate
+            anchors.top: parent.top
+            anchors.left: parent.left
+            width: parent.width
         }
     }
 
@@ -309,7 +224,7 @@ Rectangle
 
         anchors.bottom: footerSeparator.top
         anchors.top: settingsModeSelection.bottom
-        anchors.topMargin: UM.Theme.getSize("default_margin").height
+        anchors.topMargin: UM.Theme.getSize("sidebar_margin").height
         anchors.left: base.left
         anchors.right: base.right
         visible: !monitoringPrint && !hideSettings
@@ -394,8 +309,119 @@ Rectangle
         width: parent.width
         height: UM.Theme.getSize("sidebar_lining").height
         color: UM.Theme.getColor("sidebar_lining")
-        anchors.bottom: saveButton.top
-        anchors.bottomMargin: UM.Theme.getSize("default_margin").height
+        anchors.bottom: printSpecs.top
+        anchors.bottomMargin: Math.floor(UM.Theme.getSize("sidebar_margin").height * 2 + UM.Theme.getSize("progressbar").height + UM.Theme.getFont("default_bold").pixelSize)
+    }
+
+    Rectangle
+    {
+        id: printSpecs
+        anchors.left: parent.left
+        anchors.bottom: parent.bottom
+        anchors.leftMargin: UM.Theme.getSize("sidebar_margin").width
+        anchors.bottomMargin: UM.Theme.getSize("sidebar_margin").height
+        height: timeDetails.height + timeSpecDescription.height + lengthSpec.height
+        visible: !monitoringPrint
+
+        Label
+        {
+            id: timeDetails
+            anchors.left: parent.left
+            anchors.bottom: timeSpecDescription.top
+            font: UM.Theme.getFont("large")
+            color: UM.Theme.getColor("text_subtext")
+            text: (!base.printDuration || !base.printDuration.valid) ? catalog.i18nc("@label", "00h 00min") : base.printDuration.getDisplayString(UM.DurationFormat.Short)
+
+            MouseArea
+            {
+                id: infillMouseArea
+                anchors.fill: parent
+                hoverEnabled: true
+                //enabled: base.settingsEnabled
+
+                onEntered:
+                {
+
+                    if(base.printDuration.valid && !base.printDuration.isTotalDurationZero)
+                    {
+                        // All the time information for the different features is achieved
+                        var print_time = PrintInformation.getFeaturePrintTimes()
+
+                        // A message is created and displayed when the user hover the time label
+                        var content = catalog.i18nc("@tooltip", "<b>Time information</b>")
+                        for(var feature in print_time)
+                        {
+                            if(!print_time[feature].isTotalDurationZero)
+                            {
+                                content += "<br /><i>" + feature + "</i>: " + print_time[feature].getDisplayString(UM.DurationFormat.Short)
+                            }
+                        }
+
+                        base.showTooltip(parent, Qt.point(-UM.Theme.getSize("sidebar_margin").width, 0), content)
+                    }
+                }
+                onExited:
+                {
+                    base.hideTooltip();
+                }
+            }
+        }
+
+        Label
+        {
+            id: timeSpecDescription
+            anchors.left: parent.left
+            anchors.bottom: lengthSpec.top
+            font: UM.Theme.getFont("very_small")
+            color: UM.Theme.getColor("text_subtext")
+            text: catalog.i18nc("@description", "Print time")
+        }
+        Label
+        {
+            id: lengthSpec
+            anchors.left: parent.left
+            anchors.bottom: parent.bottom
+            font: UM.Theme.getFont("very_small")
+            color: UM.Theme.getColor("text_subtext")
+            text:
+            {
+                var lengths = [];
+                var weights = [];
+                var costs = [];
+                var someCostsKnown = false;
+                if(base.printMaterialLengths) {
+                    for(var index = 0; index < base.printMaterialLengths.length; index++)
+                    {
+                        if(base.printMaterialLengths[index] > 0)
+                        {
+                            lengths.push(base.printMaterialLengths[index].toFixed(2));
+                            weights.push(String(Math.floor(base.printMaterialWeights[index])));
+                            var cost = base.printMaterialCosts[index] == undefined ? 0 : base.printMaterialCosts[index].toFixed(2);
+                            costs.push(cost);
+                            if(cost > 0)
+                            {
+                                someCostsKnown = true;
+                            }
+                        }
+                    }
+                }
+                if(lengths.length == 0)
+                {
+                    lengths = ["0.00"];
+                    weights = ["0"];
+                    costs = ["0.00"];
+                }
+                if(someCostsKnown)
+                {
+                    return catalog.i18nc("@label", "%1m / ~ %2g / ~ %4 %3").arg(lengths.join(" + "))
+                            .arg(weights.join(" + ")).arg(costs.join(" + ")).arg(UM.Preferences.getValue("cura/currency"));
+                }
+                else
+                {
+                    return catalog.i18nc("@label", "%1m / ~ %2g").arg(lengths.join(" + ")).arg(weights.join(" + "));
+                }
+            }
+        }
     }
 
     // SaveButton and MonitorButton are actually the bottom footer panels.
@@ -404,7 +430,8 @@ Rectangle
     {
         id: saveButton
         implicitWidth: base.width
-        implicitHeight: totalHeight
+        anchors.top: footerSeparator.bottom
+        anchors.topMargin: UM.Theme.getSize("sidebar_margin").height
         anchors.bottom: parent.bottom
         visible: !monitoringPrint
     }
@@ -413,7 +440,8 @@ Rectangle
     {
         id: monitorButton
         implicitWidth: base.width
-        implicitHeight: totalHeight
+        anchors.top: footerSeparator.bottom
+        anchors.topMargin: UM.Theme.getSize("sidebar_margin").height
         anchors.bottom: parent.bottom
         visible: monitoringPrint
     }
@@ -462,14 +490,10 @@ Rectangle
         })
         sidebarContents.push({ "item": modesListModel.get(base.currentModeIndex).item, "immediate": true });
 
-        toggleLeftText.text = modesListModel.get(0).text;
-        toggleRightText.text = modesListModel.get(1).text;
-
-        var index = parseInt(UM.Preferences.getValue("cura/active_mode"));
-        if (index)
+        var index = Math.floor(UM.Preferences.getValue("cura/active_mode"))
+        if(index)
         {
             currentModeIndex = index;
-            modeToggleSwitch.checked = index > 0;
         }
     }
 

@@ -1,5 +1,5 @@
 // Copyright (c) 2017 Ultimaker B.V.
-// Cura is released under the terms of the AGPLv3 or higher.
+// Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.2
 import QtQuick.Controls 1.1
@@ -16,22 +16,51 @@ Rectangle
     anchors.left: parent.left
     anchors.right: parent.right
     height: UM.Theme.getSize("sidebar_header").height
-    color: UM.Theme.getColor("sidebar_header_bar")
+    color: base.monitoringPrint ? UM.Theme.getColor("topbar_background_color_monitoring") : UM.Theme.getColor("topbar_background_color")
 
     property bool printerConnected: Cura.MachineManager.printerOutputDevices.length != 0
     property bool printerAcceptsCommands: printerConnected && Cura.MachineManager.printerOutputDevices[0].acceptsCommands
     property bool monitoringPrint: false
+
+    // outgoing signal
     signal startMonitoringPrint()
     signal stopMonitoringPrint()
+
+    // update monitoring status when event was triggered outside topbar
+    Component.onCompleted: {
+        startMonitoringPrint.connect(function () {
+            base.monitoringPrint = true
+        })
+        stopMonitoringPrint.connect(function () {
+            base.monitoringPrint = false
+        })
+    }
+
     UM.I18nCatalog
     {
         id: catalog
         name:"cura"
     }
 
+    Image
+    {
+        id: logo
+        anchors.left: parent.left
+        anchors.leftMargin: UM.Theme.getSize("default_margin").width
+        anchors.verticalCenter: parent.verticalCenter
+
+        source: UM.Theme.getImage("logo");
+        width: UM.Theme.getSize("logo").width;
+        height: UM.Theme.getSize("logo").height;
+
+        sourceSize.width: width;
+        sourceSize.height: height;
+    }
+
     Row
     {
-        anchors.left: parent.left
+        anchors.left: logo.right
+        anchors.leftMargin: UM.Theme.getSize("topbar_logo_right_margin").width
         anchors.right: machineSelection.left
         anchors.rightMargin: UM.Theme.getSize("default_margin").width
         spacing: UM.Theme.getSize("default_margin").width
@@ -40,81 +69,74 @@ Rectangle
         {
             id: showSettings
             height: UM.Theme.getSize("sidebar_header").height
-            onClicked: base.stopMonitoringPrint()
-            iconSource: UM.Theme.getIcon("tab_settings");
+            text: catalog.i18nc("@title:tab", "Prepare")
+            checkable: true
+            checked: isChecked()
+            exclusiveGroup: sidebarHeaderBarGroup
+            style: UM.Theme.styles.topbar_header_tab
+
+            // We use a Qt.binding to re-bind the checkbox state after manually setting it
+            // https://stackoverflow.com/questions/38798450/qt-5-7-qml-why-are-my-checkbox-property-bindings-disappearing
+            onClicked: {
+                base.stopMonitoringPrint()
+                checked = Qt.binding(isChecked)
+            }
+
+            function isChecked () {
+                return !base.monitoringPrint
+            }
+
             property color overlayColor: "transparent"
             property string overlayIconSource: ""
-            text: catalog.i18nc("@title:tab","Prepare")
-            checkable: true
-            checked: !base.monitoringPrint
-            exclusiveGroup: sidebarHeaderBarGroup
-
-            style:  UM.Theme.styles.topbar_header_tab
         }
 
         Button
         {
             id: showMonitor
+            width: UM.Theme.getSize("topbar_button").width
             height: UM.Theme.getSize("sidebar_header").height
-            onClicked: base.startMonitoringPrint()
-            text: catalog.i18nc("@title:tab", "Print")
-            iconSource: printerConnected ? UM.Theme.getIcon("tab_monitor_with_status") : UM.Theme.getIcon("tab_monitor")
-            property color overlayColor:
-            {
-                if(!printerAcceptsCommands)
-                {
-                    return UM.Theme.getColor("status_unknown");
-                }
+            text: catalog.i18nc("@title:tab", "Monitor")
+            checkable: true
+            checked: isChecked()
+            exclusiveGroup: sidebarHeaderBarGroup
+            style: UM.Theme.styles.topbar_header_tab_no_overlay
 
-                if(Cura.MachineManager.printerOutputDevices[0].printerState == "maintenance")
-                {
-                    return UM.Theme.getColor("status_busy");
-                }
-                switch(Cura.MachineManager.printerOutputDevices[0].jobState)
-                {
-                    case "printing":
-                    case "pre_print":
-                    case "wait_cleanup":
-                    case "pausing":
-                    case "resuming":
-                        return UM.Theme.getColor("status_busy");
-                    case "ready":
-                    case "":
-                        return UM.Theme.getColor("status_ready");
-                    case "paused":
-                        return UM.Theme.getColor("status_paused");
-                    case "error":
-                        return UM.Theme.getColor("status_stopped");
-                    case "offline":
-                        return UM.Theme.getColor("status_offline");
-                    default:
-                        return UM.Theme.getColor("text_reversed");
-                }
+            // We use a Qt.binding to re-bind the checkbox state after manually setting it
+            // https://stackoverflow.com/questions/38798450/qt-5-7-qml-why-are-my-checkbox-property-bindings-disappearing
+            onClicked: {
+                base.startMonitoringPrint()
+                checked = Qt.binding(isChecked)
             }
-            property string overlayIconSource:
+
+            function isChecked () {
+                return base.monitoringPrint
+            }
+
+            property string iconSource:
             {
-                if(!printerConnected)
+                if (!printerConnected)
                 {
-                    return "";
+                    return UM.Theme.getIcon("tab_status_unknown");
                 }
-                else if(!printerAcceptsCommands)
+                else if (!printerAcceptsCommands)
                 {
                     return UM.Theme.getIcon("tab_status_unknown");
                 }
 
-                if(Cura.MachineManager.printerOutputDevices[0].printerState == "maintenance")
+                if (Cura.MachineManager.printerOutputDevices[0].printerState == "maintenance")
                 {
                     return UM.Theme.getIcon("tab_status_busy");
                 }
 
-                switch(Cura.MachineManager.printerOutputDevices[0].jobState)
+                switch (Cura.MachineManager.printerOutputDevices[0].jobState)
                 {
                     case "printing":
                     case "pre_print":
-                    case "wait_cleanup":
                     case "pausing":
                     case "resuming":
                         return UM.Theme.getIcon("tab_status_busy");
+                    case "wait_cleanup":
+                        return UM.Theme.getIcon("tab_status_finished");
                     case "ready":
                     case "":
                         return UM.Theme.getIcon("tab_status_connected")
@@ -122,18 +144,10 @@ Rectangle
                         return UM.Theme.getIcon("tab_status_paused")
                     case "error":
                         return UM.Theme.getIcon("tab_status_stopped")
-                    case "offline":
-                        return UM.Theme.getIcon("tab_status_offline")
                     default:
-                        return ""
+                        return UM.Theme.getIcon("tab_status_unknown")
                 }
             }
-
-            checkable: true
-            checked: base.monitoringPrint
-            exclusiveGroup: sidebarHeaderBarGroup
-
-            style:  UM.Theme.styles.topbar_header_tab
         }
 
         ExclusiveGroup { id: sidebarHeaderBarGroup }
@@ -144,7 +158,7 @@ Rectangle
         id: machineSelection
         text: Cura.MachineManager.activeMachineName
 
-        width: UM.Theme.getSize("sidebar").width;
+        width: UM.Theme.getSize("sidebar").width
         height: UM.Theme.getSize("sidebar_header").height
         tooltip: Cura.MachineManager.activeMachineName
 
@@ -159,27 +173,17 @@ Rectangle
                     if(control.pressed)
                     {
                         return UM.Theme.getColor("sidebar_header_active");
-                    } else if(control.hovered)
+                    }
+                    else if(control.hovered)
                     {
                         return UM.Theme.getColor("sidebar_header_hover");
-                    } else
+                    }
+                    else
                     {
                         return UM.Theme.getColor("sidebar_header_bar");
                     }
                 }
                 Behavior on color { ColorAnimation { duration: 50; } }
-
-                Rectangle
-                {
-                    id: underline;
-
-                    anchors.left: parent.left
-                    anchors.right: parent.right
-                    anchors.bottom: parent.bottom
-                    height: UM.Theme.getSize("sidebar_header_highlight").height
-                    color: UM.Theme.getColor("sidebar_header_highlight_hover")
-                    visible: control.hovered || control.pressed
-                }
 
                 UM.RecolorImage
                 {
@@ -191,17 +195,17 @@ Rectangle
                     height: UM.Theme.getSize("standard_arrow").height
                     sourceSize.width: width
                     sourceSize.height: width
-                    color: UM.Theme.getColor("text_reversed")
+                    color: UM.Theme.getColor("text_emphasis")
                     source: UM.Theme.getIcon("arrow_bottom")
                 }
                 Label
                 {
                     id: sidebarComboBoxLabel
-                    color: UM.Theme.getColor("text_reversed")
+                    color: UM.Theme.getColor("sidebar_header_text_active")
                     text: control.text;
                     elide: Text.ElideRight;
                     anchors.left: parent.left;
-                    anchors.leftMargin: UM.Theme.getSize("default_margin").width
+                    anchors.leftMargin: UM.Theme.getSize("default_margin").width * 2
                     anchors.right: downArrow.left;
                     anchors.rightMargin: control.rightMargin;
                     anchors.verticalCenter: parent.verticalCenter;
@@ -213,4 +217,71 @@ Rectangle
 
         menu: PrinterMenu { }
     }
+
+    ComboBox
+    {
+        id: viewModeButton
+
+        anchors {
+            verticalCenter: parent.verticalCenter
+            right: parent.right
+            rightMargin: UM.Theme.getSize("sidebar").width + UM.Theme.getSize("default_margin").width
+        }
+
+        style: UM.Theme.styles.combobox
+        visible: !base.monitoringPrint
+
+        model: UM.ViewModel { }
+        textRole: "name"
+
+        // update the model's active index
+        function updateItemActiveFlags () {
+            currentIndex = getActiveIndex()
+            for (var i = 0; i < model.rowCount(); i++) {
+                model.getItem(i).active = (i == currentIndex)
+            }
+        }
+
+        // get the index of the active model item on start
+        function getActiveIndex () {
+            for (var i = 0; i < model.rowCount(); i++) {
+                if (model.getItem(i).active) {
+                    return i
+                }
+            }
+            return 0
+        }
+
+        // set the active index
+        function setActiveIndex (index) {
+            UM.Controller.setActiveView(index)
+            // the connection to UM.ActiveView will trigger update so there is no reason to call it manually here
+        }
+
+        onCurrentIndexChanged: viewModeButton.setActiveIndex(model.getItem(currentIndex).id)
+        currentIndex: getActiveIndex()
+
+        // watch the active view proxy for changes made from the menu item
+        Connections
+        {
+            target: UM.ActiveView
+            onActiveViewChanged: viewModeButton.updateItemActiveFlags()
+        }
+    }
+
+    Loader
+    {
+        id: view_panel
+
+        anchors.top: viewModeButton.bottom
+        anchors.topMargin: UM.Theme.getSize("default_margin").height
+        anchors.right: viewModeButton.right
+
+        property var buttonTarget: Qt.point(viewModeButton.x + viewModeButton.width / 2, viewModeButton.y + viewModeButton.height / 2)
+
+        height: childrenRect.height;
+
+        source: UM.ActiveView.valid ? UM.ActiveView.activeViewPanel : "";
+    }
+
 }

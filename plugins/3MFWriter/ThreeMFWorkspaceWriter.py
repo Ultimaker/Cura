@@ -1,3 +1,6 @@
+# Copyright (c) 2017 Ultimaker B.V.
+# Cura is released under the terms of the LGPLv3 or higher.
+
 from UM.Workspace.WorkspaceWriter import WorkspaceWriter
 from UM.Application import Application
 from UM.Preferences import Preferences
@@ -42,9 +45,14 @@ class ThreeMFWorkspaceWriter(WorkspaceWriter):
                 self._writeContainerToArchive(container, archive)
 
         # Write preferences to archive
-        preferences_file = zipfile.ZipInfo("Cura/preferences.cfg")
+        original_preferences = Preferences.getInstance() #Copy only the preferences that we use to the workspace.
+        temp_preferences = Preferences()
+        for preference in {"general/visible_settings", "cura/active_mode", "cura/categories_expanded"}:
+            temp_preferences.addPreference(preference, None)
+            temp_preferences.setValue(preference, original_preferences.getValue(preference))
         preferences_string = StringIO()
-        Preferences.getInstance().writeToFile(preferences_string)
+        temp_preferences.writeToFile(preferences_string)
+        preferences_file = zipfile.ZipInfo("Cura/preferences.cfg")
         archive.writestr(preferences_file, preferences_string.getvalue())
 
         # Save Cura version

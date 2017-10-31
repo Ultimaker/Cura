@@ -7,7 +7,6 @@
         "visible": true,
         "author": "NA",
         "manufacturer": "NA",
-        "category": "Other",
         "file_formats": "text/x-gcode",
         "has_materials": false,
         "supported_actions": [ "MachineSettingsAction", "UpgradeFirmware" ],

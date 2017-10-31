@@ -1,5 +1,5 @@
 # Copyright (c) 2017 Ultimaker B.V.
-# Cura is released under the terms of the AGPLv3 or higher.
+# Cura is released under the terms of the LGPLv3 or higher.
 
 import configparser #To parse the files we need to upgrade and write the new files.
 import io #To serialise configparser output to a string.
@@ -127,7 +127,12 @@ class VersionUpgrade25to26(VersionUpgrade):
         machine_id = parser["general"]["id"]
         quality_container_id = parser["containers"]["2"]
         material_container_id = parser["containers"]["3"]
-        definition_container_id = parser["containers"]["6"]
+
+        # we don't have definition_changes container in 2.5
+        if "6" in parser["containers"]:
+            definition_container_id = parser["containers"]["6"]
+        else:
+            definition_container_id = parser["containers"]["5"]
 
         if definition_container_id == "custom" and not self._checkCustomFdmPrinterHasExtruderStack(machine_id):
             # go through all extruders and make sure that this custom FDM printer has 8 extruder stacks.

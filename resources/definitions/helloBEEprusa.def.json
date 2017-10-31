@@ -7,7 +7,6 @@
         "visible": true,
         "author": "BEEVERYCREATIVE",
         "manufacturer": "BEEVERYCREATIVE",
-        "category": "Other",
         "platform": "BEEVERYCREATIVE-helloBEEprusa.stl",
         "platform_offset": [-226, -75, -196],
         "file_formats": "text/x-gcode",

@@ -5,7 +5,8 @@
     "inherits": "fdmextruder",
     "metadata": {
         "machine": "ultimaker3",
-        "position": "0"
+        "position": "0",
+        "quality_definition": "ultimaker3_extruder_left"
     },
 
     "overrides": {

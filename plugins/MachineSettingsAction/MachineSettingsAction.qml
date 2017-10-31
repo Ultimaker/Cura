@@ -1,5 +1,5 @@
 // Copyright (c) 2016 Ultimaker B.V.
-// Cura is released under the terms of the AGPLv3 or higher.
+// Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.2
 import QtQuick.Controls 1.1
@@ -71,6 +71,7 @@ Cura.MachineAction
             anchors.topMargin: UM.Theme.getSize("default_margin").height
 
             property real columnWidth: ((width - 3 * UM.Theme.getSize("default_margin").width) / 2) | 0
+            property real labelColumnWidth: columnWidth * 0.5
 
             Tab
             {
@@ -253,7 +254,7 @@ Cura.MachineAction
                                     {
                                         text: catalog.i18nc("@label", "Number of Extruders")
                                         elide: Text.ElideRight
-                                        width: Math.max(0, settingsTabs.columnWidth - 2 * UM.Theme.getSize("default_margin").width - extruderCountComboBox.width)
+                                        width: Math.max(0, settingsTabs.labelColumnWidth)
                                         anchors.verticalCenter: extruderCountComboBox.verticalCenter
                                     }
                                     ComboBox
@@ -562,7 +563,7 @@ Cura.MachineAction
                     text: _label
                     visible: _label != ""
                     elide: Text.ElideRight
-                    width: Math.max(0, settingsTabs.columnWidth - 2 * UM.Theme.getSize("default_margin").width - textFieldWithUnit.width)
+                    width: Math.max(0, settingsTabs.labelColumnWidth)
                     anchors.verticalCenter: textFieldWithUnit.verticalCenter
                 }
 
@@ -655,7 +656,7 @@ Cura.MachineAction
                     text: _label
                     visible: _label != ""
                     elide: Text.ElideRight
-                    width: Math.max(0, settingsTabs.columnWidth - 2 * UM.Theme.getSize("default_margin").width - comboBox.width)
+                    width: Math.max(0, settingsTabs.labelColumnWidth)
                     anchors.verticalCenter: comboBox.verticalCenter
                 }
                 ComboBox
@@ -787,7 +788,7 @@ Cura.MachineAction
                     text: _label
                     visible: _label != ""
                     elide: Text.ElideRight
-                    width: Math.max(0, settingsTabs.columnWidth - 2 * UM.Theme.getSize("default_margin").width - textFieldWithUnit.width)
+                    width: Math.max(0, settingsTabs.labelColumnWidth)
                     anchors.verticalCenter: textFieldWithUnit.verticalCenter
                 }
 
@@ -824,7 +825,7 @@ Cura.MachineAction
                             polygon.push([-printHeadPolygon["x"]["min"], printHeadPolygon["y"]["max"]]);
                             polygon.push([-printHeadPolygon["x"]["min"],-printHeadPolygon["y"]["min"]]);
                             polygon.push([ printHeadPolygon["x"]["max"], printHeadPolygon["y"]["max"]]);
-                            polygon.push([ printHeadPolygon["x"]["max"],-printHeadPolygon["y"]["mìn"]]);
+                            polygon.push([ printHeadPolygon["x"]["max"],-printHeadPolygon["y"]["min"]]);
                             var polygon_string = JSON.stringify(polygon);
                             if(polygon_string != machineHeadPolygonProvider.properties.value)
                             {

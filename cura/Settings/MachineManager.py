@@ -1,6 +1,9 @@
 # Copyright (c) 2017 Ultimaker B.V.
-# Cura is released under the terms of the AGPLv3 or higher.
-from typing import Union
+# Cura is released under the terms of the LGPLv3 or higher.
+
+#Type hinting.
+from typing import Union, List, Dict
+from UM.Signal import Signal
 
 from PyQt5.QtCore import QObject, pyqtProperty, pyqtSignal, QTimer
 from UM.FlameProfiler import pyqtSlot
@@ -105,7 +108,8 @@ class MachineManager(QObject):
         self._auto_hotends_changed = {}
 
         self._material_incompatible_message = Message(catalog.i18nc("@info:status",
-                                              "The selected material is incompatible with the selected machine or configuration."))
+                                              "The selected material is incompatible with the selected machine or configuration."),
+                                                title = catalog.i18nc("@info:title", "Incompatible Material"))
 
     globalContainerChanged = pyqtSignal() # Emitted whenever the global stack is changed (ie: when changing between printers, changing a global profile, but not when changing a value)
     activeMaterialChanged = pyqtSignal()
@@ -267,7 +271,6 @@ class MachineManager(QObject):
                     extruder_stack.containersChanged.disconnect(self._onInstanceContainersChanged)
 
         self._global_container_stack = Application.getInstance().getGlobalContainerStack()
-        self._active_container_stack = self._global_container_stack
 
         self.globalContainerChanged.emit()
 
@@ -299,6 +302,10 @@ class MachineManager(QObject):
 
                 quality = self._global_container_stack.quality
                 quality.nameChanged.connect(self._onQualityNameChanged)
+
+                self._active_container_stack = self._global_container_stack
+                self.activeStackChanged.emit()
+
         self._error_check_timer.start()
 
     ##  Update self._stacks_valid according to _checkStacksForErrors and emit if change.
@@ -348,11 +355,14 @@ class MachineManager(QObject):
         if containers:
             Application.getInstance().setGlobalContainerStack(containers[0])
 
+        self.__onInstanceContainersChanged()
+
     @pyqtSlot(str, str)
     def addMachine(self, name: str, definition_id: str) -> None:
         new_stack = CuraStackBuilder.createMachine(name, definition_id)
         if new_stack:
-            Application.getInstance().setGlobalContainerStack(new_stack)
+            # Instead of setting the global container stack here, we set the active machine and so the signals are emitted
+            self.setActiveMachine(new_stack.getId())
         else:
             Logger.log("w", "Failed creating a new machine!")
 
@@ -365,7 +375,7 @@ class MachineManager(QObject):
     def _createUniqueName(self, container_type: str, current_name: str, new_name: str, fallback_name: str) -> str:
         return ContainerRegistry.getInstance().createUniqueName(container_type, current_name, new_name, fallback_name)
 
-    def _checkStacksHaveErrors(self):
+    def _checkStacksHaveErrors(self) -> bool:
         if self._global_container_stack is None: #No active machine.
             return False
 
@@ -389,7 +399,7 @@ class MachineManager(QObject):
 
     ##  Check if the global_container has instances in the user container
     @pyqtProperty(bool, notify = activeStackValueChanged)
-    def hasUserSettings(self):
+    def hasUserSettings(self) -> bool:
         if not self._global_container_stack:
             return False
 
@@ -404,7 +414,7 @@ class MachineManager(QObject):
         return False
 
     @pyqtProperty(int, notify = activeStackValueChanged)
-    def numUserSettings(self):
+    def numUserSettings(self) -> int:
         if not self._global_container_stack:
             return 0
         num_user_settings = 0
@@ -449,7 +459,7 @@ class MachineManager(QObject):
     #   Note that the _stacks_have_errors is cached due to performance issues
     #   Calling _checkStack(s)ForErrors on every change is simply too expensive
     @pyqtProperty(bool, notify = stacksValidationChanged)
-    def stacksHaveErrors(self):
+    def stacksHaveErrors(self) -> bool:
         return bool(self._stacks_have_errors)
 
     @pyqtProperty(str, notify = activeStackChanged)
@@ -474,7 +484,7 @@ class MachineManager(QObject):
         return ""
 
     @pyqtProperty(QObject, notify = globalContainerChanged)
-    def activeMachine(self) -> "GlobalStack":
+    def activeMachine(self) -> Optional["GlobalStack"]:
         return self._global_container_stack
 
     @pyqtProperty(str, notify = activeStackChanged)
@@ -494,31 +504,23 @@ class MachineManager(QObject):
         return ""
 
     @pyqtProperty("QVariantList", notify=activeVariantChanged)
-    def activeVariantNames(self):
+    def activeVariantNames(self) -> List[str]:
         result = []
-        if ExtruderManager.getInstance().getActiveGlobalAndExtruderStacks() is not None:
-            for stack in ExtruderManager.getInstance().getActiveGlobalAndExtruderStacks():
+        active_stacks = ExtruderManager.getInstance().getActiveGlobalAndExtruderStacks()
+        if active_stacks is not None:
+            for stack in active_stacks:
                 variant_container = stack.variant
                 if variant_container and variant_container != self._empty_variant_container:
                     result.append(variant_container.getName())
 
         return result
 
-    @pyqtProperty("QVariantList", notify = activeVariantChanged)
-    def activeMaterialIds(self):
-        result = []
-        if ExtruderManager.getInstance().getActiveGlobalAndExtruderStacks() is not None:
-            for stack in ExtruderManager.getInstance().getActiveGlobalAndExtruderStacks():
-                if stack.variant and stack.variant != self._empty_variant_container:
-                    result.append(stack.variant.getId())
-
-        return result
-
     @pyqtProperty("QVariantList", notify = activeMaterialChanged)
-    def activeMaterialNames(self):
+    def activeMaterialNames(self) -> List[str]:
         result = []
-        if ExtruderManager.getInstance().getActiveGlobalAndExtruderStacks() is not None:
-            for stack in ExtruderManager.getInstance().getActiveGlobalAndExtruderStacks():
+        active_stacks = ExtruderManager.getInstance().getActiveGlobalAndExtruderStacks()
+        if active_stacks is not None:
+            for stack in active_stacks:
                 material_container = stack.material
                 if material_container and material_container != self._empty_material_container:
                     result.append(material_container.getName())
@@ -534,34 +536,36 @@ class MachineManager(QObject):
         return ""
 
     @pyqtProperty("QVariantMap", notify = activeVariantChanged)
-    def allActiveVariantIds(self):
-        if not self._global_container_stack:
-            return {}
-
+    def allActiveVariantIds(self) -> Dict[str, str]:
         result = {}
+        active_stacks = ExtruderManager.getInstance().getActiveExtruderStacks()
+        if active_stacks is not None: #If we have a global stack.
+            for stack in active_stacks:
+                variant_container = stack.variant
+                if not variant_container:
+                    continue
 
-        for stack in ExtruderManager.getInstance().getActiveGlobalAndExtruderStacks():
-            variant_container = stack.variant
-            if not variant_container:
-                continue
-
-            result[stack.getId()] = variant_container.getId()
+                result[stack.getId()] = variant_container.getId()
 
         return result
 
+    ##  Gets a dict with the active materials ids set in all extruder stacks and the global stack
+    #   (when there is one extruder, the material is set in the global stack)
+    #
+    #   \return The material ids in all stacks
     @pyqtProperty("QVariantMap", notify = activeMaterialChanged)
-    def allActiveMaterialIds(self):
-        if not self._global_container_stack:
-            return {}
-
+    def allActiveMaterialIds(self) -> Dict[str, str]:
         result = {}
+        active_stacks = ExtruderManager.getInstance().getActiveExtruderStacks()
 
-        for stack in ExtruderManager.getInstance().getActiveGlobalAndExtruderStacks():
-            material_container = stack.material
-            if not material_container:
-                continue
+        result[self._global_container_stack.getId()] = self._global_container_stack.material.getId()
 
-            result[stack.getId()] = material_container.getId()
+        if active_stacks is not None:  # If we have extruder stacks
+            for stack in active_stacks:
+                material_container = stack.material
+                if not material_container:
+                    continue
+                result[stack.getId()] = material_container.getId()
 
         return result
 
@@ -658,6 +662,23 @@ class MachineManager(QObject):
             if quality:
                 return Util.parseBool(quality.getMetaDataEntry("supported", True))
         return False
+
+    ##  Returns whether there is anything unsupported in the current set-up.
+    #
+    #   The current set-up signifies the global stack and all extruder stacks,
+    #   so this indicates whether there is any container in any of the container
+    #   stacks that is not marked as supported.
+    @pyqtProperty(bool, notify = activeQualityChanged)
+    def isCurrentSetupSupported(self) -> bool:
+        if not self._global_container_stack:
+            return False
+        for stack in [self._global_container_stack] + list(self._global_container_stack.extruders.values()):
+            for container in stack.getContainers():
+                if not container:
+                    return False
+                if not Util.parseBool(container.getMetaDataEntry("supported", True)):
+                    return False
+        return True
 
     ##  Get the Quality ID associated with the currently active extruder
     #   Note that this only returns the "quality", not the "quality_changes"
@@ -854,7 +875,7 @@ class MachineManager(QObject):
     #   \param quality_name \type{str} the name of the quality.
     #   \return \type{List[Dict]} with keys "stack", "quality" and "quality_changes".
     @UM.FlameProfiler.profile
-    def determineQualityAndQualityChangesForQualityType(self, quality_type: str):
+    def determineQualityAndQualityChangesForQualityType(self, quality_type: str) -> List[Dict[str, Union["CuraContainerStack", InstanceContainer]]]:
         quality_manager = QualityManager.getInstance()
         result = []
         empty_quality_changes = self._empty_quality_changes_container
@@ -891,7 +912,7 @@ class MachineManager(QObject):
     #
     #   \param quality_changes_name \type{str} the name of the quality changes.
     #   \return \type{List[Dict]} with keys "stack", "quality" and "quality_changes".
-    def _determineQualityAndQualityChangesForQualityChanges(self, quality_changes_name: str):
+    def _determineQualityAndQualityChangesForQualityChanges(self, quality_changes_name: str) -> Optional[List[Dict[str, Union["CuraContainerStack", InstanceContainer]]]]:
         result = []
         quality_manager = QualityManager.getInstance()
 
@@ -957,7 +978,7 @@ class MachineManager(QObject):
         if container_type == "quality":
             stack.quality.nameChanged.disconnect(self._onQualityNameChanged)
             stack.setQuality(container, postpone_emit = postpone_emit)
-            stack.qualityChanges.nameChanged.connect(self._onQualityNameChanged)
+            stack.quality.nameChanged.connect(self._onQualityNameChanged)
         elif container_type == "quality_changes" or container_type is None:
             # If the container is an empty container, we need to change the quality_changes.
             # Quality can never be set to empty.
@@ -1075,7 +1096,7 @@ class MachineManager(QObject):
             machine_stacks = ContainerRegistry.getInstance().findContainerStacks(type = "machine")
             other_machine_stacks = [s for s in machine_stacks if s.getId() != machine_id]
             if other_machine_stacks:
-                Application.getInstance().setGlobalContainerStack(other_machine_stacks[0])
+                self.setActiveMachine(other_machine_stacks[0].getId())
 
         ExtruderManager.getInstance().removeMachineExtruders(machine_id)
         containers = ContainerRegistry.getInstance().findInstanceContainers(type = "user", machine = machine_id)
@@ -1128,7 +1149,7 @@ class MachineManager(QObject):
         return MachineManager()
 
     @deprecated("Use ExtruderStack.material = ... and it won't be necessary", "2.7")
-    def _updateMaterialContainer(self, definition: "DefinitionContainer", stack: "ContainerStack", variant_container: Optional["InstanceContainer"] = None, preferred_material_name: Optional[str] = None):
+    def _updateMaterialContainer(self, definition: "DefinitionContainer", stack: "ContainerStack", variant_container: Optional["InstanceContainer"] = None, preferred_material_name: Optional[str] = None) -> InstanceContainer:
         if not definition.getMetaDataEntry("has_materials"):
             return self._empty_material_container
 
@@ -1174,7 +1195,7 @@ class MachineManager(QObject):
     def _onQualityNameChanged(self):
         self.activeQualityChanged.emit()
 
-    def _getContainerChangedSignals(self):
+    def _getContainerChangedSignals(self) -> List[Signal]:
         stacks = ExtruderManager.getInstance().getActiveExtruderStacks()
         stacks.append(self._global_container_stack)
         return [ s.containersChanged for s in stacks ]

@@ -7,7 +7,6 @@
         "visible": true,
         "author": "Chris Petersen",
         "manufacturer": "OpenBeam",
-        "category": "Other",
         "file_formats": "text/x-gcode",
         "icon": "icon_ultimaker2",
         "platform": "kossel_pro_build_platform.stl",

@@ -1,5 +1,5 @@
 // Copyright (c) 2017 Ultimaker B.V.
-// Cura is released under the terms of the AGPLv3 or higher.
+// Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.2
 import QtQuick.Controls 1.1
@@ -17,8 +17,8 @@ UM.Dialog
     id: base
 
     title: catalog.i18nc("@title:window", "Open file(s)")
-    width: 420
-    height: 170
+    width: 420 * screenScaleFactor
+    height: 170 * screenScaleFactor
 
     maximumHeight: height
     maximumWidth: width
@@ -28,7 +28,7 @@ UM.Dialog
     modality: UM.Application.platform == "linux" ? Qt.NonModal : Qt.WindowModal;
 
     property var fileUrls: []
-    property int spacerHeight: 10
+    property int spacerHeight: 10 * screenScaleFactor
 
     function loadProjectFile(projectFile)
     {
@@ -52,12 +52,12 @@ UM.Dialog
     Column
     {
         anchors.fill: parent
-        anchors.leftMargin: 20
-        anchors.rightMargin: 20
-        anchors.bottomMargin: 20
+        anchors.leftMargin: 20 * screenScaleFactor
+        anchors.rightMargin: 20 * screenScaleFactor
+        anchors.bottomMargin: 20 * screenScaleFactor
         anchors.left: parent.left
         anchors.right: parent.right
-        spacing: 10
+        spacing: 10 * screenScaleFactor
 
         Label
         {

@@ -1,5 +1,5 @@
 # Copyright (c) 2017 Ultimaker B.V.
-# Cura is released under the terms of the AGPLv3 or higher.
+# Cura is released under the terms of the LGPLv3 or higher.
 
 from . import XmlMaterialProfile
 from . import XmlMaterialUpgrader
@@ -19,7 +19,7 @@ def getMetaData():
             "mimetype": "application/x-ultimaker-material-profile"
         },
         "version_upgrade": {
-            ("materials", 1000000): ("materials", 1000002, upgrader.upgradeMaterial),
+            ("materials", 1000000): ("materials", 1000003, upgrader.upgradeMaterial),
         },
         "sources": {
             "materials": {

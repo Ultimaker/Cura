@@ -1,5 +1,5 @@
 // Copyright (c) 2016 Ultimaker B.V.
-// Cura is released under the terms of the AGPLv3 or higher.
+// Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.2
 import QtQuick.Controls 1.1
@@ -22,6 +22,7 @@ Menu
             checked: Cura.MachineManager.activeQualityChangesId == "" && Cura.MachineManager.activeQualityType == model.metadata.quality_type
             exclusiveGroup: group
             onTriggered: Cura.MachineManager.setActiveQuality(model.id)
+            visible: model.available
         }
 
         onObjectAdded: menu.insertItem(index, object);
@@ -42,7 +43,7 @@ Menu
         {
             text: model.name + " - " + model.layer_height
             checkable: true
-            checked: Cura.MachineManager.globalQualityId == model.id
+            checked: Cura.MachineManager.activeQualityChangesId == model.id
             exclusiveGroup: group
             onTriggered: Cura.MachineManager.setActiveQuality(model.id)
         }
