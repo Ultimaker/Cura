@@ -14,8 +14,8 @@ UM.Dialog
     //: About dialog title
     title: catalog.i18nc("@title:window","About Cura")
 
-    minimumWidth: 450 * Screen.devicePixelRatio
-    minimumHeight: 550 * Screen.devicePixelRatio
+    minimumWidth: 500
+    minimumHeight: 650
     width: minimumWidth
     height: minimumHeight
 

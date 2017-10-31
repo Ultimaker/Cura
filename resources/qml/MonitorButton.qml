@@ -80,7 +80,7 @@ Item
         }
     }
 
-    property bool activity: Printer.platformActivity;
+    property bool activity: CuraApplication.platformActivity;
     property int totalHeight: childrenRect.height + UM.Theme.getSize("default_margin").height
     property string fileBaseName
     property string statusText:
@@ -205,8 +205,8 @@ Item
             onAdditionalComponentsChanged:
             {
                 if(areaId == "monitorButtons") {
-                    for (var component in Printer.additionalComponents["monitorButtons"]) {
-                        Printer.additionalComponents["monitorButtons"][component].parent = additionalComponentsRow
+                    for (var component in CuraApplication.additionalComponents["monitorButtons"]) {
+                        CuraApplication.additionalComponents["monitorButtons"][component].parent = additionalComponentsRow
                     }
                 }
             }

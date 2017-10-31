@@ -11,8 +11,7 @@
         "file_formats": "text/x-gcode",
         "icon": "icon_ultimaker2.png",
         "platform": "ultimaker2_platform.obj",
-        "platform_texture": "Ultimaker2Extendedbackplate.png",
-        "supported_actions": ["UpgradeFirmware"]
+        "platform_texture": "Ultimaker2Extendedbackplate.png"
     },
 
     "overrides": {

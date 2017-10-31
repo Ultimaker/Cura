@@ -13,8 +13,8 @@ from UM.Resources import Resources
 from UM.Settings.Validator import ValidatorState #To find if a setting is in an error state. We can't slice then.
 from UM.Platform import Platform
 from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
+from UM.Qt.Duration import DurationFormat
 from PyQt5.QtCore import QObject, pyqtSlot
-
 
 from cura.Settings.ExtruderManager import ExtruderManager
 from . import ProcessSlicedLayersJob
@@ -187,7 +187,19 @@ class CuraEngineBackend(QObject, Backend):
             Logger.log("w", "Slice unnecessary, nothing has changed that needs reslicing.")
             return
 
-        self.printDurationMessage.emit(0, [0])
+        self.printDurationMessage.emit({
+            "none": 0,
+            "inset_0": 0,
+            "inset_x": 0,
+            "skin": 0,
+            "support": 0,
+            "skirt": 0,
+            "infill": 0,
+            "support_infill": 0,
+            "travel": 0,
+            "retract": 0,
+            "support_interface": 0
+        }, [0])
 
         self._stored_layer_data = []
         self._stored_optimized_layer_data = []
@@ -273,9 +285,15 @@ class CuraEngineBackend(QObject, Backend):
                 if not extruders:
                     error_keys = self._global_container_stack.getErrorKeys()
                 error_labels = set()
-                definition_container = self._global_container_stack.getBottom()
                 for key in error_keys:
-                    error_labels.add(definition_container.findDefinitions(key = key)[0].label)
+                    for stack in [self._global_container_stack] + extruders: #Search all container stacks for the definition of this setting. Some are only in an extruder stack.
+                        definitions = stack.getBottom().findDefinitions(key = key)
+                        if definitions:
+                            break #Found it! No need to continue search.
+                    else: #No stack has a definition for this setting.
+                        Logger.log("w", "When checking settings for errors, unable to find definition for key: {key}".format(key = key))
+                        continue
+                    error_labels.add(definitions[0].label)
 
                 error_labels = ", ".join(error_labels)
                 self._error_message = Message(catalog.i18nc("@info:status", "Unable to slice with the current settings. The following settings have errors: {0}".format(error_labels)))
@@ -442,6 +460,15 @@ class CuraEngineBackend(QObject, Backend):
         self.backendStateChange.emit(BackendState.Done)
         self.processingProgress.emit(1.0)
 
+        for line in self._scene.gcode_list:
+            replaced = line.replace("{print_time}", str(Application.getInstance().getPrintInformation().currentPrintTime.getDisplayString(DurationFormat.Format.ISO8601)))
+            replaced = replaced.replace("{filament_amount}", str(Application.getInstance().getPrintInformation().materialLengths))
+            replaced = replaced.replace("{filament_weight}", str(Application.getInstance().getPrintInformation().materialWeights))
+            replaced = replaced.replace("{filament_cost}", str(Application.getInstance().getPrintInformation().materialCosts))
+            replaced = replaced.replace("{jobname}", str(Application.getInstance().getPrintInformation().jobName))
+
+            self._scene.gcode_list[self._scene.gcode_list.index(line)] = replaced
+
         self._slicing = False
         self._need_slicing = False
         Logger.log("d", "Slicing took %s seconds", time() - self._slice_start_time )
@@ -466,13 +493,26 @@ class CuraEngineBackend(QObject, Backend):
 
     ##  Called when a print time message is received from the engine.
     #
-    #   \param message The protobuff message containing the print time and
+    #   \param message The protobuf message containing the print time per feature and
     #   material amount per extruder
     def _onPrintTimeMaterialEstimates(self, message):
         material_amounts = []
         for index in range(message.repeatedMessageCount("materialEstimates")):
             material_amounts.append(message.getRepeatedMessage("materialEstimates", index).material_amount)
-        self.printDurationMessage.emit(message.time, material_amounts)
+        feature_times = {
+            "none": message.time_none,
+            "inset_0": message.time_inset_0,
+            "inset_x": message.time_inset_x,
+            "skin": message.time_skin,
+            "support": message.time_support,
+            "skirt": message.time_skirt,
+            "infill": message.time_infill,
+            "support_infill": message.time_support_infill,
+            "travel": message.time_travel,
+            "retract": message.time_retract,
+            "support_interface": message.time_support_interface
+        }
+        self.printDurationMessage.emit(feature_times, material_amounts)
 
     ##  Creates a new socket connection.
     def _createSocket(self):

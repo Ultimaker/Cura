@@ -2,6 +2,9 @@ import sys
 import platform
 import traceback
 import webbrowser
+import faulthandler
+import tempfile
+import os
 import urllib
 
 from PyQt5.QtCore import QT_VERSION_STR, PYQT_VERSION_STR, Qt, QCoreApplication
@@ -48,35 +51,32 @@ def show(exception_type, value, tb):
     dialog = QDialog()
     dialog.setMinimumWidth(640)
     dialog.setMinimumHeight(640)
-    dialog.setWindowTitle(catalog.i18nc("@title:window", "Oops!"))
+    dialog.setWindowTitle(catalog.i18nc("@title:window", "Crash Report"))
 
     layout = QVBoxLayout(dialog)
 
-    label = QLabel(dialog)
-    pixmap = QPixmap()
-
-    try:
-        data = urllib.request.urlopen("http://www.randomkittengenerator.com/cats/rotator.php").read()
-        pixmap.loadFromData(data)
-    except:
-        try:
-            from UM.Resources import Resources
-            path = Resources.getPath(Resources.Images, "kitten.jpg")
-            pixmap.load(path)
-        except:
-            pass
-
-    pixmap = pixmap.scaled(150, 150)
-    label.setPixmap(pixmap)
-    label.setAlignment(Qt.AlignCenter)
-    layout.addWidget(label)
+    #label = QLabel(dialog)
+    #pixmap = QPixmap()
+    #try:
+    #    data = urllib.request.urlopen("http://www.randomkittengenerator.com/cats/rotator.php").read()
+    #    pixmap.loadFromData(data)
+    #except:
+    #    try:
+    #        from UM.Resources import Resources
+    #        path = Resources.getPath(Resources.Images, "kitten.jpg")
+    #        pixmap.load(path)
+    #    except:
+    #        pass
+    #pixmap = pixmap.scaled(150, 150)
+    #label.setPixmap(pixmap)
+    #label.setAlignment(Qt.AlignCenter)
+    #layout.addWidget(label)
 
     label = QLabel(dialog)
     layout.addWidget(label)
 
     #label.setScaledContents(True)
     label.setText(catalog.i18nc("@label", """<p>A fatal exception has occurred that we could not recover from!</p>
-        <p>We hope this picture of a kitten helps you recover from the shock.</p>
         <p>Please use the information below to post a bug report at <a href=\"http://github.com/Ultimaker/Cura/issues\">http://github.com/Ultimaker/Cura/issues</a></p>
     """))
 
@@ -93,6 +93,17 @@ def show(exception_type, value, tb):
 
     crash_info = "Version: {0}\nPlatform: {1}\nQt: {2}\nPyQt: {3}\n\nException:\n{4}"
     crash_info = crash_info.format(version, platform.platform(), QT_VERSION_STR, PYQT_VERSION_STR, trace)
+
+    tmp_file_fd, tmp_file_path = tempfile.mkstemp(prefix = "cura-crash", text = True)
+    os.close(tmp_file_fd)
+    with open(tmp_file_path, "w") as f:
+        faulthandler.dump_traceback(f, all_threads=True)
+    with open(tmp_file_path, "r") as f:
+        data = f.read()
+
+    msg = "-------------------------\n"
+    msg += data
+    crash_info += "\n\n" + msg
 
     textarea.setText(crash_info)
 

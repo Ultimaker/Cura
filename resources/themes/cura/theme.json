@@ -175,6 +175,15 @@
         "checkbox_mark": [24, 41, 77, 255],
         "checkbox_text": [24, 41, 77, 255],
 
+        "mode_switch": [255, 255, 255, 255],
+        "mode_switch_hover": [255, 255, 255, 255],
+        "mode_switch_border": [127, 127, 127, 255],
+        "mode_switch_border_hover": [12, 169, 227, 255],
+        "mode_switch_handle": [24, 41, 77, 255],
+        "mode_switch_text": [24, 41, 77, 255],
+        "mode_switch_text_hover": [24, 41, 77, 255],
+        "mode_switch_text_checked": [12, 169, 227, 255],
+
         "tooltip": [12, 169, 227, 255],
         "tooltip_text": [255, 255, 255, 255],
 
@@ -238,7 +247,7 @@
     },
 
     "sizes": {
-        "window_minimum_size": [70, 54],
+        "window_minimum_size": [70, 50],
         "window_margin": [1.0, 1.0],
         "default_margin": [1.0, 1.0],
         "default_lining": [0.08, 0.08],
@@ -301,6 +310,7 @@
         "layerview_row_spacing": [0.0, 0.5],
 
         "checkbox": [2.0, 2.0],
+        "mode_switch": [2.0, 1.0],
 
         "tooltip": [20.0, 10.0],
         "tooltip_margins": [1.0, 1.0],
@@ -319,6 +329,8 @@
 
         "infill_button_margin": [0.5, 0.5],
 
-        "jobspecs_line": [2.0, 2.0]
+        "jobspecs_line": [2.0, 2.0],
+
+        "info_button": [0.6, 0.6]
     }
 }

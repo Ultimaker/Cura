@@ -16,6 +16,7 @@
         "has_materials": true,
         "has_machine_materials": true,
         "has_machine_quality": true,
+        "first_start_actions": [],
         "supported_actions":["UpgradeFirmware"]
     },
 

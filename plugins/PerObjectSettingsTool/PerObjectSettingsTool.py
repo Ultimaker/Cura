@@ -112,4 +112,4 @@ class PerObjectSettingsTool(Tool):
             self._single_model_selected = False # Group is selected, so tool needs to be disabled
         else:
             self._single_model_selected = True
-        Application.getInstance().getController().toolEnabledChanged.emit(self._plugin_id, (self._advanced_mode or self._multi_extrusion) and self._single_model_selected)
+        Application.getInstance().getController().toolEnabledChanged.emit(self._plugin_id, self._advanced_mode and self._single_model_selected)

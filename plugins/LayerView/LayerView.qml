@@ -7,6 +7,7 @@ import QtQuick.Layouts 1.1
 import QtQuick.Controls.Styles 1.1
 
 import UM 1.0 as UM
+import Cura 1.0 as Cura
 
 Item
 {
@@ -42,7 +43,8 @@ Item
             property bool show_helpers: UM.Preferences.getValue("layerview/show_helpers")
             property bool show_skin: UM.Preferences.getValue("layerview/show_skin")
             property bool show_infill: UM.Preferences.getValue("layerview/show_infill")
-            property bool show_legend: UM.LayerView.compatibilityMode || UM.Preferences.getValue("layerview/layer_view_type") == 1
+            // if we are in compatibility mode, we only show the "line type"
+            property bool show_legend: UM.LayerView.compatibilityMode ? 1 : UM.Preferences.getValue("layerview/layer_view_type") == 1
             property bool only_show_top_layers: UM.Preferences.getValue("view/only_show_top_layers")
             property int top_layer_count: UM.Preferences.getValue("view/top_layer_count")
 
@@ -58,6 +60,7 @@ Item
                 anchors.left: parent.left
                 text: catalog.i18nc("@label","View Mode: Layers")
                 font.bold: true
+                color: UM.Theme.getColor("text")
             }
 
             Label
@@ -75,6 +78,7 @@ Item
                 text: catalog.i18nc("@label","Color scheme")
                 visible: !UM.LayerView.compatibilityMode
                 Layout.fillWidth: true
+                color: UM.Theme.getColor("text")
             }
 
             ListModel  // matches LayerView.py
@@ -102,28 +106,25 @@ Item
                 Layout.preferredWidth: UM.Theme.getSize("layerview_row").width
                 model: layerViewTypes
                 visible: !UM.LayerView.compatibilityMode
+                style: UM.Theme.styles.combobox
 
-                property int layer_view_type: UM.Preferences.getValue("layerview/layer_view_type")
-                currentIndex: layer_view_type  // index matches type_id
-                onActivated: {
-                    // Combobox selection
-                    var type_id = index;
-                    UM.Preferences.setValue("layerview/layer_view_type", type_id);
-                    updateLegend(type_id);
-                }
-                onModelChanged: {
-                    updateLegend(UM.Preferences.getValue("layerview/layer_view_type"));
+                onActivated:
+                {
+                    UM.Preferences.setValue("layerview/layer_view_type", index);
                 }
 
-                // Update visibility of legend.
-                function updateLegend(type_id) {
-                    if (UM.LayerView.compatibilityMode || (type_id == 1)) {
-                        // Line type
-                        view_settings.show_legend = true;
-                    } else {
-                        view_settings.show_legend = false;
-                    }
+                Component.onCompleted:
+                {
+                    currentIndex = UM.LayerView.compatibilityMode ? 1 : UM.Preferences.getValue("layerview/layer_view_type");
+                    updateLegends(currentIndex);
                 }
+
+                function updateLegends(type_id)
+                {
+                    // update visibility of legends
+                    view_settings.show_legend = UM.LayerView.compatibilityMode || (type_id == 1);
+                }
+
             }
 
             Label
@@ -149,7 +150,8 @@ Item
                 target: UM.Preferences
                 onPreferenceChanged:
                 {
-                    layerTypeCombobox.layer_view_type = UM.Preferences.getValue("layerview/layer_view_type");
+                    layerTypeCombobox.currentIndex = UM.LayerView.compatibilityMode ? 1 : UM.Preferences.getValue("layerview/layer_view_type");
+                    layerTypeCombobox.updateLegends(layerTypeCombobox.currentIndex);
                     view_settings.extruder_opacities = UM.Preferences.getValue("layerview/extruder_opacities").split("|");
                     view_settings.show_travel_moves = UM.Preferences.getValue("layerview/show_travel_moves");
                     view_settings.show_helpers = UM.Preferences.getValue("layerview/show_helpers");
@@ -161,106 +163,88 @@ Item
             }
 
             Repeater {
-                model: UM.LayerView.extruderCount
+                model: Cura.ExtrudersModel{}
                 CheckBox {
                     checked: view_settings.extruder_opacities[index] > 0.5 || view_settings.extruder_opacities[index] == undefined || view_settings.extruder_opacities[index] == ""
                     onClicked: {
                         view_settings.extruder_opacities[index] = checked ? 1.0 : 0.0
                         UM.Preferences.setValue("layerview/extruder_opacities", view_settings.extruder_opacities.join("|"));
                     }
-                    text: catalog.i18nc("@label", "Extruder %1").arg(index + 1)
+                    text: model.name
                     visible: !UM.LayerView.compatibilityMode
                     enabled: index + 1 <= 4
+                    Rectangle {
+                        anchors.verticalCenter: parent.verticalCenter
+                        anchors.right: parent.right
+                        width: UM.Theme.getSize("layerview_legend_size").width
+                        height: UM.Theme.getSize("layerview_legend_size").height
+                        color: model.color
+                        border.width: UM.Theme.getSize("default_lining").width
+                        border.color: UM.Theme.getColor("lining")
+                        visible: !view_settings.show_legend
+                    }
                     Layout.fillWidth: true
-                    Layout.preferredHeight: UM.Theme.getSize("layerview_row").height
+                    Layout.preferredHeight: UM.Theme.getSize("layerview_row").height + UM.Theme.getSize("default_lining").height
                     Layout.preferredWidth: UM.Theme.getSize("layerview_row").width
+                    style: UM.Theme.styles.checkbox
                 }
             }
 
-            CheckBox {
-                checked: view_settings.show_travel_moves
-                onClicked: {
-                    UM.Preferences.setValue("layerview/show_travel_moves", checked);
+            Repeater {
+                model: ListModel {
+                    id: typesLegenModel
+                    Component.onCompleted:
+                    {
+                        typesLegenModel.append({
+                            label: catalog.i18nc("@label", "Show Travels"),
+                            initialValue: view_settings.show_travel_moves,
+                            preference: "layerview/show_travel_moves",
+                            colorId:  "layerview_move_combing"
+                        });
+                        typesLegenModel.append({
+                            label: catalog.i18nc("@label", "Show Helpers"),
+                            initialValue: view_settings.show_helpers,
+                            preference: "layerview/show_helpers",
+                            colorId:  "layerview_support"
+                        });
+                        typesLegenModel.append({
+                            label: catalog.i18nc("@label", "Show Shell"),
+                            initialValue: view_settings.show_skin,
+                            preference: "layerview/show_skin",
+                            colorId:  "layerview_inset_0"
+                        });
+                        typesLegenModel.append({
+                            label: catalog.i18nc("@label", "Show Infill"),
+                            initialValue: view_settings.show_infill,
+                            preference: "layerview/show_infill",
+                            colorId:  "layerview_infill"
+                        });
+                    }
                 }
-                text: catalog.i18nc("@label", "Show Travels")
-                Rectangle {
-                    anchors.top: parent.top
-                    anchors.topMargin: 2
-                    anchors.right: parent.right
-                    width: UM.Theme.getSize("layerview_legend_size").width
-                    height: UM.Theme.getSize("layerview_legend_size").height
-                    color: UM.Theme.getColor("layerview_move_combing")
-                    border.width: UM.Theme.getSize("default_lining").width
-                    border.color: UM.Theme.getColor("lining")
-                    visible: view_settings.show_legend
+
+                CheckBox {
+                    checked: model.initialValue
+                    onClicked: {
+                        UM.Preferences.setValue(model.preference, checked);
+                    }
+                    text: label
+                    Rectangle {
+                        anchors.verticalCenter: parent.verticalCenter
+                        anchors.right: parent.right
+                        width: UM.Theme.getSize("layerview_legend_size").width
+                        height: UM.Theme.getSize("layerview_legend_size").height
+                        color: UM.Theme.getColor(model.colorId)
+                        border.width: UM.Theme.getSize("default_lining").width
+                        border.color: UM.Theme.getColor("lining")
+                        visible: view_settings.show_legend
+                    }
+                    Layout.fillWidth: true
+                    Layout.preferredHeight: UM.Theme.getSize("layerview_row").height + UM.Theme.getSize("default_lining").height
+                    Layout.preferredWidth: UM.Theme.getSize("layerview_row").width
+                    style: UM.Theme.styles.checkbox
                 }
-                Layout.fillWidth: true
-                Layout.preferredHeight: UM.Theme.getSize("layerview_row").height
-                Layout.preferredWidth: UM.Theme.getSize("layerview_row").width
             }
-            CheckBox {
-                checked: view_settings.show_helpers
-                onClicked: {
-                    UM.Preferences.setValue("layerview/show_helpers", checked);
-                }
-                text: catalog.i18nc("@label", "Show Helpers")
-                Rectangle {
-                    anchors.top: parent.top
-                    anchors.topMargin: 2
-                    anchors.right: parent.right
-                    width: UM.Theme.getSize("layerview_legend_size").width
-                    height: UM.Theme.getSize("layerview_legend_size").height
-                    color: UM.Theme.getColor("layerview_support")
-                    border.width: UM.Theme.getSize("default_lining").width
-                    border.color: UM.Theme.getColor("lining")
-                    visible: view_settings.show_legend
-                }
-                Layout.fillWidth: true
-                Layout.preferredHeight: UM.Theme.getSize("layerview_row").height
-                Layout.preferredWidth: UM.Theme.getSize("layerview_row").width
-            }
-            CheckBox {
-                checked: view_settings.show_skin
-                onClicked: {
-                    UM.Preferences.setValue("layerview/show_skin", checked);
-                }
-                text: catalog.i18nc("@label", "Show Shell")
-                Rectangle {
-                    anchors.top: parent.top
-                    anchors.topMargin: 2
-                    anchors.right: parent.right
-                    width: UM.Theme.getSize("layerview_legend_size").width
-                    height: UM.Theme.getSize("layerview_legend_size").height
-                    color: UM.Theme.getColor("layerview_inset_0")
-                    border.width: UM.Theme.getSize("default_lining").width
-                    border.color: UM.Theme.getColor("lining")
-                    visible: view_settings.show_legend
-                }
-                Layout.fillWidth: true
-                Layout.preferredHeight: UM.Theme.getSize("layerview_row").height
-                Layout.preferredWidth: UM.Theme.getSize("layerview_row").width
-            }
-            CheckBox {
-                checked: view_settings.show_infill
-                onClicked: {
-                    UM.Preferences.setValue("layerview/show_infill", checked);
-                }
-                text: catalog.i18nc("@label", "Show Infill")
-                Rectangle {
-                    anchors.top: parent.top
-                    anchors.topMargin: 2
-                    anchors.right: parent.right
-                    width: UM.Theme.getSize("layerview_legend_size").width
-                    height: UM.Theme.getSize("layerview_legend_size").height
-                    color: UM.Theme.getColor("layerview_infill")
-                    border.width: UM.Theme.getSize("default_lining").width
-                    border.color: UM.Theme.getColor("lining")
-                    visible: view_settings.show_legend
-                }
-                Layout.fillWidth: true
-                Layout.preferredHeight: UM.Theme.getSize("layerview_row").height
-                Layout.preferredWidth: UM.Theme.getSize("layerview_row").width
-            }
+
             CheckBox {
                 checked: view_settings.only_show_top_layers
                 onClicked: {
@@ -268,6 +252,7 @@ Item
                 }
                 text: catalog.i18nc("@label", "Only Show Top Layers")
                 visible: UM.LayerView.compatibilityMode
+                style: UM.Theme.styles.checkbox
             }
             CheckBox {
                 checked: view_settings.top_layer_count == 5
@@ -276,51 +261,44 @@ Item
                 }
                 text: catalog.i18nc("@label", "Show 5 Detailed Layers On Top")
                 visible: UM.LayerView.compatibilityMode
+                style: UM.Theme.styles.checkbox
             }
 
-            Label
-            {
-                id: topBottomLabel
-                anchors.left: parent.left
-                text: catalog.i18nc("@label","Top / Bottom")
-                Rectangle {
-                    anchors.top: parent.top
-                    anchors.topMargin: 2
-                    anchors.right: parent.right
-                    width: UM.Theme.getSize("layerview_legend_size").width
-                    height: UM.Theme.getSize("layerview_legend_size").height
-                    color: UM.Theme.getColor("layerview_skin")
-                    border.width: UM.Theme.getSize("default_lining").width
-                    border.color: UM.Theme.getColor("lining")
+            Repeater {
+                model: ListModel {
+                    id: typesLegenModelNoCheck
+                    Component.onCompleted:
+                    {
+                        typesLegenModelNoCheck.append({
+                            label: catalog.i18nc("@label", "Top / Bottom"),
+                            colorId: "layerview_skin",
+                        });
+                        typesLegenModelNoCheck.append({
+                            label: catalog.i18nc("@label", "Inner Wall"),
+                            colorId: "layerview_inset_x",
+                        });
+                    }
                 }
-                Layout.fillWidth: true
-                Layout.preferredHeight: UM.Theme.getSize("layerview_row").height
-                Layout.preferredWidth: UM.Theme.getSize("layerview_row").width
-                visible: view_settings.show_legend
-            }
 
-            Label
-            {
-                id: innerWallLabel
-                anchors.left: parent.left
-                text: catalog.i18nc("@label","Inner Wall")
-                Rectangle {
-                    anchors.top: parent.top
-                    anchors.topMargin: 2
-                    anchors.right: parent.right
-                    width: UM.Theme.getSize("layerview_legend_size").width
-                    height: UM.Theme.getSize("layerview_legend_size").height
-                    color: UM.Theme.getColor("layerview_inset_x")
-                    border.width: UM.Theme.getSize("default_lining").width
-                    border.color: UM.Theme.getColor("lining")
+                Label {
+                    text: label
                     visible: view_settings.show_legend
+                    Rectangle {
+                        anchors.verticalCenter: parent.verticalCenter
+                        anchors.right: parent.right
+                        width: UM.Theme.getSize("layerview_legend_size").width
+                        height: UM.Theme.getSize("layerview_legend_size").height
+                        color: UM.Theme.getColor(model.colorId)
+                        border.width: UM.Theme.getSize("default_lining").width
+                        border.color: UM.Theme.getColor("lining")
+                        visible: view_settings.show_legend
+                    }
+                    Layout.fillWidth: true
+                    Layout.preferredHeight: UM.Theme.getSize("layerview_row").height + UM.Theme.getSize("default_lining").height
+                    Layout.preferredWidth: UM.Theme.getSize("layerview_row").width
+                    color: UM.Theme.getColor("text")
                 }
-                Layout.fillWidth: true
-                Layout.preferredHeight: UM.Theme.getSize("layerview_row").height
-                Layout.preferredWidth: UM.Theme.getSize("layerview_row").width
-                visible: view_settings.show_legend
             }
-
         }
 
         Item
@@ -351,7 +329,7 @@ Item
             property bool roundValues: true
 
             property var activeHandle: upperHandle
-            property bool layersVisible: UM.LayerView.layerActivity && Printer.platformActivity ? true : false
+            property bool layersVisible: UM.LayerView.layerActivity && CuraApplication.platformActivity ? true : false
 
             function getUpperValueFromHandle()
             {

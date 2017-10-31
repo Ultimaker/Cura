@@ -236,8 +236,7 @@ class USBPrinterOutputDeviceManager(QObject, OutputDevicePlugin, Extension):
                 self.getOutputDeviceManager().removeOutputDevice(serial_port)
             self.connectionStateChanged.emit()
         except KeyError:
-            pass  # no output device by this device_id found in connection list.
-
+            Logger.log("w", "Connection state of %s changed, but it was not found in the list")
 
     @pyqtProperty(QObject , notify = connectionStateChanged)
     def connectedPrinterList(self):
@@ -260,7 +259,7 @@ class USBPrinterOutputDeviceManager(QObject, OutputDevicePlugin, Extension):
                 i = 0
                 while True:
                     values = winreg.EnumValue(key, i)
-                    if not only_list_usb or "USBSER" in values[0]:
+                    if not only_list_usb or "USBSER" or "VCP" in values[0]:
                         base_list += [values[1]]
                     i += 1
             except Exception as e:

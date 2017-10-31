@@ -12,15 +12,12 @@ UM.Dialog
 {
     title: catalog.i18nc("@title:window", "Open Project")
 
-    width: 550
-    minimumWidth: 550
-    maximumWidth: 550
-
+    width: 500
     height: 400
-    minimumHeight: 400
-    maximumHeight: 400
+
     property int comboboxHeight: 15
     property int spacerHeight: 10
+
     onClosing: manager.notifyClosed()
     onVisibleChanged:
     {
@@ -33,20 +30,17 @@ UM.Dialog
     }
     Item
     {
-        anchors.top: parent.top
-        anchors.bottom: parent.bottom
-        anchors.left: parent.left
-        anchors.right: parent.right
-
-        anchors.topMargin: 20
-        anchors.bottomMargin: 20
-        anchors.leftMargin:20
-        anchors.rightMargin: 20
+        anchors.fill: parent
+        anchors.margins: 20
 
         UM.I18nCatalog
         {
-            id: catalog;
-            name: "cura";
+            id: catalog
+            name: "cura"
+        }
+        SystemPalette
+        {
+            id: palette
         }
 
         ListModel
@@ -70,12 +64,12 @@ UM.Dialog
             {
                 id: titleLabel
                 text: catalog.i18nc("@action:title", "Summary - Cura Project")
-                font.pixelSize: 22
+                font.pointSize: 18
             }
             Rectangle
             {
                 id: separator
-                color: "black"
+                color: palette.text
                 width: parent.width
                 height: 1
             }
@@ -93,7 +87,7 @@ UM.Dialog
                 {
                     text: catalog.i18nc("@action:label", "Printer settings")
                     font.bold: true
-                    width: parent.width /3
+                    width: parent.width / 3
                 }
                 Item
                 {
@@ -360,7 +354,7 @@ UM.Dialog
                     height: width
 
                     source: UM.Theme.getIcon("notice")
-                    color: "black"
+                    color: palette.text
 
                 }
                 Label
@@ -379,7 +373,6 @@ UM.Dialog
             enabled: true
             anchors.bottom: parent.bottom
             anchors.right: ok_button.left
-            anchors.bottomMargin: - 0.5 * height
             anchors.rightMargin:2
         }
          Button
@@ -387,7 +380,6 @@ UM.Dialog
             id: ok_button
             text: catalog.i18nc("@action:button","Open");
             onClicked: { manager.closeBackend(); manager.onOkButtonClicked() }
-            anchors.bottomMargin: - 0.5 * height
             anchors.bottom: parent.bottom
             anchors.right: parent.right
         }

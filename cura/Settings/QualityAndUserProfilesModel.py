@@ -40,6 +40,6 @@ class QualityAndUserProfilesModel(ProfilesModel):
 
         # Filter the quality_change by the list of available quality_types
         quality_type_set = set([x.getMetaDataEntry("quality_type") for x in quality_list])
-        filtered_quality_changes = [qc for qc in quality_changes_list if qc.getMetaDataEntry("quality_type") in quality_type_set]
+        filtered_quality_changes = [qc for qc in quality_changes_list if qc.getMetaDataEntry("quality_type") in quality_type_set and qc.getMetaDataEntry("extruder") is None]
 
         return quality_list + filtered_quality_changes

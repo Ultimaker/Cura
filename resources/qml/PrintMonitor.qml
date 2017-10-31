@@ -27,7 +27,7 @@ Column
         height: childrenRect.height + UM.Theme.getSize("default_margin").height * 2
         color: UM.Theme.getColor("setting_category")
 
-        Label
+        Text
         {
             id: connectedPrinterNameLabel
             text: connectedPrinter != null ? connectedPrinter.name : catalog.i18nc("@info:status", "No printer connected")
@@ -37,7 +37,7 @@ Column
             anchors.top: parent.top
             anchors.margins: UM.Theme.getSize("default_margin").width
         }
-        Label
+        Text
         {
             id: connectedPrinterAddressLabel
             text: (connectedPrinter != null && connectedPrinter.address != null) ? connectedPrinter.address : ""
@@ -47,7 +47,7 @@ Column
             anchors.right: parent.right
             anchors.margins: UM.Theme.getSize("default_margin").width
         }
-        Label
+        Text
         {
             text: connectedPrinter != null ? connectedPrinter.connectionText : catalog.i18nc("@info:status", "The printer is not connected.")
             color: connectedPrinter != null && connectedPrinter.acceptsCommands ? UM.Theme.getColor("setting_control_text") : UM.Theme.getColor("setting_control_disabled_text")
@@ -85,7 +85,7 @@ Column
                     width: index == machineExtruderCount.properties.value - 1 && index % 2 == 0 ? extrudersGrid.width : extrudersGrid.width / 2 - UM.Theme.getSize("sidebar_lining_thin").width / 2
                     height: UM.Theme.getSize("sidebar_extruder_box").height
 
-                    Label //Extruder name.
+                    Text //Extruder name.
                     {
                         text: ExtruderManager.getExtruderName(index) != "" ? ExtruderManager.getExtruderName(index) : catalog.i18nc("@label", "Hotend")
                         color: UM.Theme.getColor("text")
@@ -94,7 +94,7 @@ Column
                         anchors.top: parent.top
                         anchors.margins: UM.Theme.getSize("default_margin").width
                     }
-                    Label //Temperature indication.
+                    Text //Temperature indication.
                     {
                         id: extruderTemperature
                         text: (connectedPrinter != null && connectedPrinter.hotendIds[index] != null && connectedPrinter.hotendTemperatures[index] != null) ? Math.round(connectedPrinter.hotendTemperatures[index]) + "°C" : ""
@@ -161,7 +161,7 @@ Column
                             }
                         }
                     }
-                    Label //Material name.
+                    Text //Material name.
                     {
                         id: materialName
                         text: (connectedPrinter != null && connectedPrinter.materialNames[index] != null && connectedPrinter.materialIds[index] != "") ? connectedPrinter.materialNames[index] : ""
@@ -193,7 +193,7 @@ Column
                             }
                         }
                     }
-                    Label //Variant name.
+                    Text //Variant name.
                     {
                         id: variantName
                         text: (connectedPrinter != null && connectedPrinter.hotendIds[index] != null) ? connectedPrinter.hotendIds[index] : ""
@@ -244,7 +244,7 @@ Column
         height: machineHeatedBed.properties.value == "True" ? UM.Theme.getSize("sidebar_extruder_box").height : 0
         visible: machineHeatedBed.properties.value == "True"
 
-        Label //Build plate label.
+        Text //Build plate label.
         {
             text: catalog.i18nc("@label", "Build plate")
             font: UM.Theme.getFont("default")
@@ -253,7 +253,7 @@ Column
             anchors.top: parent.top
             anchors.margins: UM.Theme.getSize("default_margin").width
         }
-        Label //Target temperature.
+        Text //Target temperature.
         {
             id: bedTargetTemperature
             text: connectedPrinter != null ? connectedPrinter.targetBedTemperature + "°C" : ""
@@ -285,7 +285,7 @@ Column
                 }
             }
         }
-        Label //Current temperature.
+        Text //Current temperature.
         {
             id: bedCurrentTemperature
             text: connectedPrinter != null ? connectedPrinter.bedTemperature + "°C" : ""
@@ -353,7 +353,7 @@ Column
                 color: UM.Theme.getColor("setting_control_highlight")
                 opacity: preheatTemperatureControl.hovered ? 1.0 : 0
             }
-            Label //Maximum temperature indication.
+            Text //Maximum temperature indication.
             {
                 text: (bedTemperature.properties.maximum_value != "None" ? bedTemperature.properties.maximum_value : "") + "°C"
                 color: UM.Theme.getColor("setting_unit")
@@ -452,7 +452,7 @@ Column
                 }
             }
         }
-        Label
+        Text
         {
             id: preheatCountdown
             text: connectedPrinter != null ? connectedPrinter.preheatBedRemainingTime : ""
@@ -546,7 +546,7 @@ Column
                         }
                     }
 
-                    Label
+                    Text
                     {
                         id: actualLabel
                         anchors.centerIn: parent
@@ -649,6 +649,7 @@ Column
         sourceComponent: monitorItem
         property string label: catalog.i18nc("@label", "Estimated time left")
         property string value: connectedPrinter != null ? getPrettyTime(connectedPrinter.timeTotal - connectedPrinter.timeElapsed) : ""
+        visible: connectedPrinter != null && (connectedPrinter.jobState == "printing" || connectedPrinter.jobState == "resuming" || connectedPrinter.jobState == "pausing" || connectedPrinter.jobState == "paused")
     }
 
     Component
@@ -662,7 +663,7 @@ Column
             anchors.left: parent.left
             anchors.leftMargin: UM.Theme.getSize("default_margin").width
 
-            Label
+            Text
             {
                 width: parent.width * 0.4
                 anchors.verticalCenter: parent.verticalCenter
@@ -671,7 +672,7 @@ Column
                 font: UM.Theme.getFont("default")
                 elide: Text.ElideRight
             }
-            Label
+            Text
             {
                 width: parent.width * 0.6
                 anchors.verticalCenter: parent.verticalCenter
@@ -692,7 +693,7 @@ Column
             width: base.width
             height: UM.Theme.getSize("section").height
 
-            Label
+            Text
             {
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.left: parent.left

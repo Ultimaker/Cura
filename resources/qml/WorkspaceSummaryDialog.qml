@@ -13,11 +13,8 @@ UM.Dialog
 {
     title: catalog.i18nc("@title:window", "Save Project")
 
-    width: 550
-    minimumWidth: 550
-
-    height: 350
-    minimumHeight: 350
+    width: 500
+    height: 400
 
     property int spacerHeight: 10
 
@@ -41,15 +38,7 @@ UM.Dialog
 
     Item
     {
-        anchors.top: parent.top
-        anchors.bottom: parent.bottom
-        anchors.left: parent.left
-        anchors.right: parent.right
-
-        anchors.topMargin: 20
-        anchors.bottomMargin: 20
-        anchors.leftMargin:20
-        anchors.rightMargin: 20
+        anchors.fill: parent
 
         UM.SettingDefinitionsModel
         {
@@ -63,8 +52,12 @@ UM.Dialog
         }
         UM.I18nCatalog
         {
-            id: catalog;
-            name: "cura";
+            id: catalog
+            name: "cura"
+        }
+        SystemPalette
+        {
+            id: palette
         }
 
         Column
@@ -75,12 +68,12 @@ UM.Dialog
             {
                 id: titleLabel
                 text: catalog.i18nc("@action:title", "Summary - Cura Project")
-                font.pixelSize: 22
+                font.pointSize: 18
             }
             Rectangle
             {
                 id: separator
-                color: "black"
+                color: palette.text
                 width: parent.width
                 height: 1
             }
@@ -229,41 +222,49 @@ UM.Dialog
                     width: parent.width / 3
                 }
             }
-            CheckBox
+
+            Item // Spacer
             {
-                id: dontShowAgainCheckbox
-                text: catalog.i18nc("@action:label", "Don't show project summary on save again")
-                checked: dontShowAgain
+                height: spacerHeight
+                width: height
             }
         }
 
 
+        CheckBox
+        {
+            id: dontShowAgainCheckbox
+            anchors.bottom: parent.bottom
+            anchors.left: parent.left
+
+            text: catalog.i18nc("@action:label", "Don't show project summary on save again")
+            checked: dontShowAgain
+        }
+
+        Button
+        {
+            id: cancel_button
+            anchors.bottom: parent.bottom
+            anchors.right: ok_button.left
+            anchors.rightMargin: 2
+
+            text: catalog.i18nc("@action:button","Cancel");
+            enabled: true
+            onClicked: close()
+        }
+
         Button
         {
             id: ok_button
+            anchors.bottom: parent.bottom
+            anchors.right: parent.right
+
             text: catalog.i18nc("@action:button","Save");
             enabled: true
             onClicked: {
                 close()
                 yes()
             }
-            anchors.bottomMargin: - 0.5 * height
-            anchors.bottom: parent.bottom
-            anchors.right: parent.right
-        }
-
-        Button
-        {
-            id: cancel_button
-            text: catalog.i18nc("@action:button","Cancel");
-            enabled: true
-            onClicked: close()
-
-            anchors.bottom: parent.bottom
-            anchors.right: ok_button.left
-            anchors.bottomMargin: - 0.5 * height
-            anchors.rightMargin:2
-
         }
     }
 }
