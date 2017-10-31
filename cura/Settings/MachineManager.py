@@ -728,9 +728,6 @@ class MachineManager(QObject):
         new_value = self._active_container_stack.getProperty(key, "value")
         extruder_stacks = [stack for stack in ExtruderManager.getInstance().getMachineExtruders(self._global_container_stack.getId())]
 
-        # TODO: remove this - CURA-4482
-        extruder_stacks.append(self._global_container_stack)
-
         # check in which stack the value has to be replaced
         for extruder_stack in extruder_stacks:
             if extruder_stack != self._active_container_stack and extruder_stack.getProperty(key, "value") != new_value:
