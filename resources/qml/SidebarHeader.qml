@@ -14,7 +14,7 @@ Column
 {
     id: base;
 
-    property int currentExtruderIndex: ExtruderManager.activeExtruderIndex;
+    property int currentExtruderIndex: Cura.ExtruderManager.activeExtruderIndex;
     property bool currentExtruderVisible: extrudersList.visible;
 
     spacing: Math.floor(UM.Theme.getSize("sidebar_margin").width * 0.9)
@@ -93,7 +93,7 @@ Column
                 onClicked:
                 {
                     forceActiveFocus() // Changing focus applies the currently-being-typed values so it can change the displayed setting values.
-                    ExtruderManager.setActiveExtruderIndex(index);
+                    Cura.ExtruderManager.setActiveExtruderIndex(index);
                 }
 
                 style: ButtonStyle

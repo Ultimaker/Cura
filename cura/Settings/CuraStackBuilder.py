@@ -62,7 +62,7 @@ class CuraStackBuilder:
                 variant = "default",
                 next_stack = new_global_stack
             )
-            new_global_stack.addExtruder(new_extruder)
+            # new_global_stack.addExtruder(new_extruder)
 
         return new_global_stack
 

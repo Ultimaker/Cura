@@ -300,6 +300,17 @@ class MachineManager(QObject):
             if global_material != self._empty_material_container:
                 self._global_container_stack.setMaterial(self._empty_material_container)
 
+            # TODO: update stack builder since this is not always a user created stack
+            # if len(self._global_container_stack.extruders) == 0:
+            #     extruder_stack = CuraStackBuilder.createExtruderStack(
+            #         self._global_container_stack.getId(),
+            #         definition = self._global_container_stack.definition,
+            #         machine_definition = self._global_container_stack.definition,
+            #     )
+            #     extruder_stack.setNextStack(self._global_container_stack)
+            #     extruder_stack.propertyChanged.connect(self._onPropertyChanged)
+            #     extruder_stack.containersChanged.connect(self._onInstanceContainersChanged)
+
             # Listen for changes on all extruder stacks
             for extruder_stack in ExtruderManager.getInstance().getActiveExtruderStacks():
                 extruder_stack.propertyChanged.connect(self._onPropertyChanged)
@@ -320,8 +331,8 @@ class MachineManager(QObject):
         old_active_container_stack = self._active_container_stack
 
         self._active_container_stack = ExtruderManager.getInstance().getActiveExtruderStack()
-        if not self._active_container_stack:
-            self._active_container_stack = self._global_container_stack
+        # if not self._active_container_stack:
+        #     self._active_container_stack = self._global_container_stack
 
         self._error_check_timer.start()
 

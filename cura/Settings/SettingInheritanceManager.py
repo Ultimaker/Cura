@@ -77,8 +77,8 @@ class SettingInheritanceManager(QObject):
 
     def _onActiveExtruderChanged(self):
         new_active_stack = ExtruderManager.getInstance().getActiveExtruderStack()
-        if not new_active_stack:
-            new_active_stack = self._global_container_stack
+        # if not new_active_stack:
+        #     new_active_stack = self._global_container_stack
 
         if new_active_stack != self._active_container_stack:  # Check if changed
             if self._active_container_stack:  # Disconnect signal from old container (if any)

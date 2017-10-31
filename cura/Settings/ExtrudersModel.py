@@ -201,7 +201,7 @@ class ExtrudersModel(UM.Qt.ListModel.ListModel):
                     continue
 
                 default_color = self.defaultColors[position] if 0 <= position < len(self.defaultColors) else self.defaultColors[0]
-                color = extruder.material.getMetaDataEntry("color_code", default = default_color) if material else default_color
+                color = extruder.material.getMetaDataEntry("color_code", default = default_color) if extruder.material else default_color
 
                 # construct an item with only the relevant information
                 item = {
@@ -210,7 +210,7 @@ class ExtrudersModel(UM.Qt.ListModel.ListModel):
                     "color": color,
                     "index": position,
                     "definition": extruder.getBottom().getId(),
-                    "material": extruder.material.getName() if material else "",
+                    "material": extruder.material.getName() if extruder.material else "",
                     "variant": extruder.variant.getName() if extruder.variant else "",  # e.g. print core
                 }
 
