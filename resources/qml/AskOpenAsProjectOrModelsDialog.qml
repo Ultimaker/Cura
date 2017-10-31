@@ -85,11 +85,11 @@ UM.Dialog
 
         Label
         {
-                id: checkboxTextWithNiceRendering
-                anchors.left: rememberChoiceCheckBox.right
-                anchors.bottom: rememberChoiceCheckBox.bottom
-                font: UM.Theme.getFont("default")
-                text: catalog.i18nc("@text:window", "Remember my choice")
+            id: checkboxTextWithNiceRendering
+            anchors.left: rememberChoiceCheckBox.right
+            anchors.bottom: rememberChoiceCheckBox.bottom
+            font: UM.Theme.getFont("default")
+            text: catalog.i18nc("@text:window", "Remember my choice")
         }
 
 
