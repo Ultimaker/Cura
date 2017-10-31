@@ -106,7 +106,7 @@ class ExtruderManager(QObject):
 
     @staticmethod
     def createExtruderManager():
-        return ExtruderManager()
+        return ExtruderManager().getInstance()
 
     ##  Gets an instance of the extruder manager, or creates one if no instance
     #   exists yet.
