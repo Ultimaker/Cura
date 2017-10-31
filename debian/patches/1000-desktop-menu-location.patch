@@ -6,12 +6,12 @@ Forwarded: no
 Reviewed-By: Petter Reinholdtsen <pere@hungry.com>
 Last-Update: 2017-10-08
 
---- cura-2.5.0.orig/cura.desktop.in
-+++ cura-2.5.0/cura.desktop.in
-@@ -12,5 +12,5 @@ Icon=@CMAKE_INSTALL_FULL_DATADIR@/cura/r
+--- a/cura.desktop.in
++++ b/cura.desktop.in
+@@ -11,5 +11,5 @@
  Terminal=false
  Type=Application
- MimeType=application/sla;application/vnd.ms-3mfdocument;application/prs.wavefront-obj;image/bmp;image/gif;image/jpeg;image/png
+ MimeType=application/sla;application/vnd.ms-3mfdocument;application/prs.wavefront-obj;image/bmp;image/gif;image/jpeg;image/png;
 -Categories=Graphics;
 +Categories=Graphics;Education;Development;Science;
  Keywords=3D;Printing;

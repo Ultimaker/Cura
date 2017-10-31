@@ -6,15 +6,13 @@ Forwarded: https://github.com/Ultimaker/Cura/issues/2571
 Reviewed-By: Petter Reinholdtsen <pere@hungry.com>
 Last-Update: 2017-10-10
 
-Index: cura/cura.desktop.in
-===================================================================
---- cura.orig/cura.desktop.in	2017-10-10 11:31:26.889950760 +0200
-+++ cura/cura.desktop.in	2017-10-10 11:31:48.342172033 +0200
-@@ -11,6 +11,6 @@
- Icon=@CMAKE_INSTALL_FULL_DATADIR@/cura/resources/images/cura-icon.png
+--- a/cura.desktop.in
++++ b/cura.desktop.in
+@@ -10,6 +10,6 @@
+ Icon=cura-icon
  Terminal=false
  Type=Application
--MimeType=application/sla;application/vnd.ms-3mfdocument;application/prs.wavefront-obj;image/bmp;image/gif;image/jpeg;image/png
-+MimeType=application/sla;application/vnd.ms-3mfdocument;application/prs.wavefront-obj;image/bmp;image/gif;image/jpeg;image/png;model/x3d+xml
+-MimeType=application/sla;application/vnd.ms-3mfdocument;application/prs.wavefront-obj;image/bmp;image/gif;image/jpeg;image/png;
++MimeType=application/sla;application/vnd.ms-3mfdocument;application/prs.wavefront-obj;image/bmp;image/gif;image/jpeg;image/png;model/x3d+xml;
  Categories=Graphics;Education;Development;Science;
  Keywords=3D;Printing;

@@ -5,13 +5,13 @@ Description: Fonts should be packaged separately.
   A dependency on fonts-open-sans was added to debian/control.
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
-@@ -34,7 +34,8 @@
+@@ -37,7 +37,8 @@
  find_package(PythonInterp 3.5.0 REQUIRED)
  
  install(DIRECTORY resources
 -        DESTINATION ${CMAKE_INSTALL_DATADIR}/cura)
 +        DESTINATION ${CMAKE_INSTALL_DATADIR}/cura
-+        PATTERN resources/themes/cura/fonts EXCLUDE)
++        PATTERN resources/themes/cura-light/fonts EXCLUDE)
  install(DIRECTORY plugins
          DESTINATION lib/cura)
  if(NOT APPLE AND NOT WIN32)
