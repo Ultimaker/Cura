@@ -83,8 +83,7 @@ Component
                 anchors.leftMargin: UM.Theme.getSize("default_margin").width
                 anchors.right: parent.right
                 anchors.rightMargin: UM.Theme.getSize("default_margin").width
-                //TODO; It's probably nicer to do this with a dynamic data model instead of hardcoding this.
-                //But you know the drill; time constraints don't result in elegant code.
+
                 Item
                 {
                     width: parent.width
