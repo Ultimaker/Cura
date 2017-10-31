@@ -36,8 +36,8 @@ class UMOUpgradeSelection(MachineAction):
         global_container_stack = Application.getInstance().getGlobalContainerStack()
         if global_container_stack:
             # Make sure there is a definition_changes container to store the machine settings
-            definition_changes_container = global_container_stack.findContainer({"type": "definition_changes"})
-            if not definition_changes_container:
+            definition_changes_container = global_container_stack.definitionChanges
+            if definition_changes_container == ContainerRegistry.getInstance().getEmptyInstanceContainer():
                 definition_changes_container = self._createDefinitionChangesContainer(global_container_stack)
 
             definition_changes_container.setProperty("machine_heated_bed", "value", heated_bed)
@@ -51,7 +51,7 @@ class UMOUpgradeSelection(MachineAction):
         definition_changes_container.addMetaDataEntry("type", "definition_changes")
         definition_changes_container.addMetaDataEntry("setting_version", CuraApplication.SettingVersion)
 
-        UM.Settings.ContainerRegistry.ContainerRegistry.getInstance().addContainer(definition_changes_container)
+        ContainerRegistry.getInstance().addContainer(definition_changes_container)
         global_container_stack.definitionChanges = definition_changes_container
 
         return definition_changes_container

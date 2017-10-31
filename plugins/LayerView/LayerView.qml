@@ -11,6 +11,7 @@ import Cura 1.0 as Cura
 
 Item
 {
+    id: base
     width: {
         if (UM.LayerView.compatibilityMode) {
             return UM.Theme.getSize("layerview_menu_size_compatibility").width;
@@ -25,8 +26,12 @@ Item
             return UM.Theme.getSize("layerview_menu_size").height + UM.LayerView.extruderCount * (UM.Theme.getSize("layerview_row").height + UM.Theme.getSize("layerview_row_spacing").height)
         }
     }
+    property var buttonTarget: {
+        var force_binding = parent.y; // ensure this gets reevaluated when the panel moves
+        return base.mapFromItem(parent.parent, parent.buttonTarget.x, parent.buttonTarget.y);
+    }
 
-    Rectangle {
+    UM.PointingRectangle {
         id: layerViewMenu
         anchors.left: parent.left
         anchors.top: parent.top
@@ -34,6 +39,11 @@ Item
         height: parent.height
         z: slider.z - 1
         color: UM.Theme.getColor("tool_panel_background")
+        borderWidth: UM.Theme.getSize("default_lining").width
+        borderColor: UM.Theme.getColor("lining")
+
+        target: parent.buttonTarget
+        arrowSize: UM.Theme.getSize("default_arrow").width
 
         ColumnLayout {
             id: view_settings
@@ -53,6 +63,8 @@ Item
             anchors.left: parent.left
             anchors.leftMargin: UM.Theme.getSize("default_margin").width
             spacing: UM.Theme.getSize("layerview_row_spacing").height
+            anchors.right: parent.right
+            anchors.rightMargin: UM.Theme.getSize("default_margin").width * 2
 
             Label
             {
@@ -61,6 +73,8 @@ Item
                 text: catalog.i18nc("@label","View Mode: Layers")
                 font.bold: true
                 color: UM.Theme.getColor("text")
+                Layout.fillWidth: true
+                elide: Text.ElideMiddle;
             }
 
             Label
@@ -107,6 +121,8 @@ Item
                 model: layerViewTypes
                 visible: !UM.LayerView.compatibilityMode
                 style: UM.Theme.styles.combobox
+                anchors.right: parent.right
+                anchors.rightMargin: 10
 
                 onActivated:
                 {
@@ -132,6 +148,7 @@ Item
                 id: compatibilityModeLabel
                 anchors.left: parent.left
                 text: catalog.i18nc("@label","Compatibility Mode")
+                color: UM.Theme.getColor("text")
                 visible: UM.LayerView.compatibilityMode
                 Layout.fillWidth: true
                 Layout.preferredHeight: UM.Theme.getSize("layerview_row").height
@@ -165,17 +182,18 @@ Item
             Repeater {
                 model: Cura.ExtrudersModel{}
                 CheckBox {
+                    id: extrudersModelCheckBox
                     checked: view_settings.extruder_opacities[index] > 0.5 || view_settings.extruder_opacities[index] == undefined || view_settings.extruder_opacities[index] == ""
                     onClicked: {
                         view_settings.extruder_opacities[index] = checked ? 1.0 : 0.0
                         UM.Preferences.setValue("layerview/extruder_opacities", view_settings.extruder_opacities.join("|"));
                     }
-                    text: model.name
                     visible: !UM.LayerView.compatibilityMode
                     enabled: index + 1 <= 4
                     Rectangle {
                         anchors.verticalCenter: parent.verticalCenter
-                        anchors.right: parent.right
+                        anchors.right: extrudersModelCheckBox.right
+                        anchors.rightMargin: UM.Theme.getSize("default_margin").width
                         width: UM.Theme.getSize("layerview_legend_size").width
                         height: UM.Theme.getSize("layerview_legend_size").height
                         color: model.color
@@ -187,6 +205,17 @@ Item
                     Layout.preferredHeight: UM.Theme.getSize("layerview_row").height + UM.Theme.getSize("default_lining").height
                     Layout.preferredWidth: UM.Theme.getSize("layerview_row").width
                     style: UM.Theme.styles.checkbox
+                    Label
+                    {
+                        text: model.name
+                        elide: Text.ElideRight
+                        color: UM.Theme.getColor("text")
+                        anchors.verticalCenter: parent.verticalCenter
+                        anchors.left: extrudersModelCheckBox.left;
+                        anchors.right: extrudersModelCheckBox.right;
+                        anchors.leftMargin: UM.Theme.getSize("checkbox").width + UM.Theme.getSize("default_margin").width /2
+                        anchors.rightMargin: UM.Theme.getSize("default_margin").width * 2
+                    }
                 }
             }
 
@@ -223,14 +252,15 @@ Item
                 }
 
                 CheckBox {
+                    id: legendModelCheckBox
                     checked: model.initialValue
                     onClicked: {
                         UM.Preferences.setValue(model.preference, checked);
                     }
-                    text: label
                     Rectangle {
                         anchors.verticalCenter: parent.verticalCenter
-                        anchors.right: parent.right
+                        anchors.right: legendModelCheckBox.right
+                        anchors.rightMargin: UM.Theme.getSize("default_margin").width
                         width: UM.Theme.getSize("layerview_legend_size").width
                         height: UM.Theme.getSize("layerview_legend_size").height
                         color: UM.Theme.getColor(model.colorId)
@@ -242,6 +272,17 @@ Item
                     Layout.preferredHeight: UM.Theme.getSize("layerview_row").height + UM.Theme.getSize("default_lining").height
                     Layout.preferredWidth: UM.Theme.getSize("layerview_row").width
                     style: UM.Theme.styles.checkbox
+                    Label
+                    {
+                        text: label
+                        elide: Text.ElideRight
+                        color: UM.Theme.getColor("text")
+                        anchors.verticalCenter: parent.verticalCenter
+                        anchors.left: legendModelCheckBox.left;
+                        anchors.right: legendModelCheckBox.right;
+                        anchors.leftMargin: UM.Theme.getSize("checkbox").width + UM.Theme.getSize("default_margin").width /2
+                        anchors.rightMargin: UM.Theme.getSize("default_margin").width * 2
+                    }
                 }
             }
 
@@ -283,9 +324,11 @@ Item
                 Label {
                     text: label
                     visible: view_settings.show_legend
+                    id: typesLegendModelLabel
                     Rectangle {
                         anchors.verticalCenter: parent.verticalCenter
-                        anchors.right: parent.right
+                        anchors.right: typesLegendModelLabel.right
+                        anchors.rightMargin: UM.Theme.getSize("default_margin").width
                         width: UM.Theme.getSize("layerview_legend_size").width
                         height: UM.Theme.getSize("layerview_legend_size").height
                         color: UM.Theme.getColor(model.colorId)
@@ -522,26 +565,19 @@ Item
                 target: Qt.point(0, slider.activeHandle.y + slider.activeHandle.height / 2)
                 arrowSize: UM.Theme.getSize("default_arrow").width
 
-                height: (Math.floor(UM.Theme.getSize("slider_handle").height + UM.Theme.getSize("default_margin").height) / 2) * 2 // Make sure height has an integer middle so drawing a pointy border is easier
+                height: UM.Theme.getSize("slider_handle").height + UM.Theme.getSize("default_margin").height
                 width: valueLabel.width + UM.Theme.getSize("default_margin").width
                 Behavior on height { NumberAnimation { duration: 50; } }
 
-                color: UM.Theme.getColor("lining");
+                color: UM.Theme.getColor("tool_panel_background")
+                borderColor: UM.Theme.getColor("lining")
+                borderWidth: UM.Theme.getSize("default_lining").width
 
                 visible: slider.layersVisible
 
-                UM.PointingRectangle
+                MouseArea //Catch all mouse events (so scene doesnt handle them)
                 {
-                    color: UM.Theme.getColor("tool_panel_background")
-                    target: Qt.point(0, height / 2 + UM.Theme.getSize("default_lining").width)
-                    arrowSize: UM.Theme.getSize("default_arrow").width
                     anchors.fill: parent
-                    anchors.margins: UM.Theme.getSize("default_lining").width
-
-                    MouseArea //Catch all mouse events (so scene doesnt handle them)
-                    {
-                        anchors.fill: parent
-                    }
                 }
 
                 TextField

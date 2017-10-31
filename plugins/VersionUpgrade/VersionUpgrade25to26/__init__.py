@@ -10,13 +10,6 @@ upgrade = VersionUpgrade25to26.VersionUpgrade25to26()
 
 def getMetaData():
     return {
-        "plugin": {
-            "name": catalog.i18nc("@label", "Version Upgrade 2.5 to 2.6"),
-            "author": "Ultimaker",
-            "version": "1.0",
-            "description": catalog.i18nc("@info:whatsthis", "Upgrades configurations from Cura 2.5 to Cura 2.6."),
-            "api": 3
-        },
         "version_upgrade": {
             # From                          To                          Upgrade function
             ("preferences", 4000000):     ("preferences", 4000001,     upgrade.upgradePreferences),
@@ -26,6 +19,7 @@ def getMetaData():
             ("user", 2000000):                  ("user", 2000001,               upgrade.upgradeInstanceContainer),
             ("quality", 2000000):               ("quality", 2000001,            upgrade.upgradeInstanceContainer),
             ("definition_changes", 2000000):    ("definition_changes", 2000001, upgrade.upgradeInstanceContainer),
+            ("machine_stack", 3000000):         ("machine_stack", 3000001,      upgrade.upgradeMachineStack),
         },
         "sources": {
             "quality_changes": {
@@ -41,6 +35,10 @@ def getMetaData():
                 "location": {"./user"}
             },
             "definition_changes": {
+                "get_version": upgrade.getCfgVersion,
+                "location": {"./machine_instances"}
+            },
+            "machine_stack": {
                 "get_version": upgrade.getCfgVersion,
                 "location": {"./machine_instances"}
             }

@@ -5,8 +5,8 @@
     "metadata":
     {
         "type": "extruder",
-        "author": "Ultimaker B.V.",
-        "manufacturer": "Ultimaker",
+        "author": "Ultimaker",
+        "manufacturer": "Unknown",
         "setting_version": 1,
         "visible": false
     },
@@ -29,6 +29,15 @@
                     "settable_per_extruder": true,
                     "settable_per_meshgroup": false,
                     "settable_globally": false
+                },
+                "machine_nozzle_id":
+                {
+                    "label": "Nozzle ID",
+                    "description": "The nozzle ID for an extruder train, such as \"AA 0.4\" and \"BB 0.8\".",
+                    "type": "str",
+                    "default_value": "unknown",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
                 },
                 "machine_nozzle_size":
                 {

@@ -11,11 +11,11 @@
         "file_formats": "text/x-gcode",
         "icon": "icon_ultimaker2",
         "platform": "makeR_pegasus_platform.stl",
-		"platform_offset": [-200,-10,200]
+        "platform_offset": [-200, -10, 200]
     },
 
     "overrides": {
-        "machine_name": { "default_value": " makeR Pegasus" },
+        "machine_name": { "default_value": "makeR Pegasus" },
         "machine_heated_bed": {
             "default_value": true
         },
@@ -37,12 +37,6 @@
         "material_diameter": {
             "default_value": 2.85
         },
-        "machine_nozzle_heat_up_speed": {
-            "default_value": 2
-        },
-        "machine_nozzle_cool_down_speed": {
-            "default_value": 2
-        },
         "machine_head_polygon": {
             "default_value": [
                 [-75, -18],
@@ -54,9 +48,6 @@
         "gantry_height": {
             "default_value": -25
         },
-		"machine_platform_offset":{
-			"default_value":-25
-		},
         "machine_gcode_flavor": {
             "default_value": "RepRap (Marlin/Sprinter)"
         },

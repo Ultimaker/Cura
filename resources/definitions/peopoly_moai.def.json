@@ -114,6 +114,12 @@
         "speed_slowdown_layers": {
             "value": "2"
         },
+        "infill_overlap": {
+            "value": "15"
+        },
+        "adhesion_type": {
+            "value": "\"none\""
+        },
 
         "acceleration_enabled": {
             "value": "False"

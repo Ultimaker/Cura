@@ -1,4 +1,4 @@
-// Copyright (c) 2016 Ultimaker B.V.
+// Copyright (c) 2017 Ultimaker B.V.
 // Cura is released under the terms of the AGPLv3 or higher.
 
 import QtQuick 2.2
@@ -23,7 +23,7 @@ Menu
             if(printerConnected && Cura.MachineManager.printerOutputDevices[0].hotendIds.length > extruderIndex)
             {
                 var nozzleName = Cura.MachineManager.printerOutputDevices[0].hotendIds[extruderIndex];
-                return catalog.i18nc("@title:menuitem %1 is the value from the printer", "Automatic: %1").arg(nozzleName);
+                return catalog.i18nc("@title:menuitem %1 is the nozzle currently loaded in the printer", "Automatic: %1").arg(nozzleName);
             }
             return "";
         }

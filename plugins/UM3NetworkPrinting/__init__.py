@@ -6,15 +6,7 @@ from UM.i18n import i18nCatalog
 catalog = i18nCatalog("cura")
 
 def getMetaData():
-    return {
-        "plugin": {
-            "name": "UM3 Network Connection",
-            "author": "Ultimaker",
-            "description": catalog.i18nc("@info:whatsthis", "Manages network connections to Ultimaker 3 printers"),
-            "version": "1.0",
-            "api": 3
-        }
-    }
+    return {}
 
 def register(app):
     return { "output_device": NetworkPrinterOutputDevicePlugin.NetworkPrinterOutputDevicePlugin(), "machine_action": DiscoverUM3Action.DiscoverUM3Action()}

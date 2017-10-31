@@ -117,7 +117,14 @@ class NetworkPrinterOutputDevicePlugin(OutputDevicePlugin):
         if reply.operation() == QNetworkAccessManager.GetOperation:
             if "system" in reply_url:  # Name returned from printer.
                 if status_code == 200:
-                    system_info = json.loads(bytes(reply.readAll()).decode("utf-8"))
+                    try:
+                        system_info = json.loads(bytes(reply.readAll()).decode("utf-8"))
+                    except json.JSONDecodeError:
+                        Logger.log("e", "Printer returned invalid JSON.")
+                        return
+                    except UnicodeDecodeError:
+                        Logger.log("e", "Printer returned incorrect UTF-8.")
+                        return
                     address = reply.url().host()
 
                     instance_name = "manual:%s" % address

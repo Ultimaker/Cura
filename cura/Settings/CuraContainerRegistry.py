@@ -282,7 +282,7 @@ class CuraContainerRegistry(ContainerRegistry):
             profile.setDefinition(self._activeQualityDefinition())
             if self._machineHasOwnMaterials():
                 active_material_id = self._activeMaterialId()
-                if active_material_id:  # only update if there is an active material
+                if active_material_id and active_material_id != "empty":  # only update if there is an active material
                     profile.addMetaDataEntry("material", active_material_id)
                     quality_type_criteria["material"] = active_material_id
 
@@ -292,10 +292,18 @@ class CuraContainerRegistry(ContainerRegistry):
             profile.setDefinition(ContainerRegistry.getInstance().findDefinitionContainers(id="fdmprinter")[0])
             quality_type_criteria["definition"] = "fdmprinter"
 
+        machine_definition = Application.getInstance().getGlobalContainerStack().getBottom()
+        del quality_type_criteria["definition"]
+        materials = None
+        if "material" in quality_type_criteria:
+            materials = ContainerRegistry.getInstance().findInstanceContainers(id = quality_type_criteria["material"])
+            del quality_type_criteria["material"]
+
         # Check to make sure the imported profile actually makes sense in context of the current configuration.
         # This prevents issues where importing a "draft" profile for a machine without "draft" qualities would report as
         # successfully imported but then fail to show up.
-        qualities = self.findInstanceContainers(**quality_type_criteria)
+        from cura.QualityManager import QualityManager
+        qualities = QualityManager.getInstance()._getFilteredContainersForStack(machine_definition, materials, **quality_type_criteria)
         if not qualities:
             return catalog.i18nc("@info:status", "Could not find a quality type {0} for the current configuration.", quality_type)
 
@@ -340,10 +348,8 @@ class CuraContainerRegistry(ContainerRegistry):
     #   \return the ID of the active material or the empty string
     def _activeMaterialId(self):
         global_container_stack = Application.getInstance().getGlobalContainerStack()
-        if global_container_stack:
-            material = global_container_stack.findContainer({"type": "material"})
-            if material:
-                return material.getId()
+        if global_container_stack and global_container_stack.material:
+            return global_container_stack.material.getId()
         return ""
 
     ##  Returns true if the current machien requires its own quality profiles

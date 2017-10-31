@@ -138,11 +138,11 @@ QtObject {
         }
     }
 
-    property Component sidebar_header_tab: Component {
+    property Component topbar_header_tab: Component {
         ButtonStyle {
             background: Item {
-                implicitWidth: Theme.getSize("button").width;
-                implicitHeight: Theme.getSize("button").height;
+                implicitWidth: Theme.getSize("topbar_button").width;
+                implicitHeight: Theme.getSize("topbar_button").height;
 
                 Rectangle {
                     id: buttonFace;
@@ -174,27 +174,48 @@ QtObject {
                 }
             }
 
-            label: Item {
-                UM.RecolorImage {
-                    color: UM.Theme.getColor("text_reversed")
-                    anchors.centerIn: parent
-                    opacity: !control.enabled ? 0.2 : 1.0
-                    source: control.iconSource
-                    width: Theme.getSize("button_icon").width
-                    height: Theme.getSize("button_icon").height
+            label: Item
+            {
 
-                    sourceSize: Theme.getSize("button_icon")
-                }
-                UM.RecolorImage {
-                    visible: control.overlayIconSource != ""
-                    color: control.overlayColor
-                    anchors.centerIn: parent
-                    opacity: !control.enabled ? 0.2 : 1.0
-                    source: control.overlayIconSource
-                    width: Theme.getSize("button_icon").width
+                implicitHeight: Theme.getSize("button_icon").height
+                implicitWidth: Theme.getSize("topbar_button").width;
+                Item
+                {
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    anchors.verticalCenter: parent.verticalCenter;
+                    width: childrenRect.width
                     height: Theme.getSize("button_icon").height
+                    UM.RecolorImage
+                    {
+                        id: icon
+                        color: UM.Theme.getColor("text_reversed")
+                        opacity: !control.enabled ? 0.2 : 1.0
+                        source: control.iconSource
+                        width: Theme.getSize("button_icon").width
+                        height: Theme.getSize("button_icon").height
 
-                    sourceSize: Theme.getSize("button_icon")
+                        sourceSize: Theme.getSize("button_icon")
+                    }
+                    UM.RecolorImage
+                    {
+                        visible: control.overlayIconSource != ""
+                        color: control.overlayColor
+                        opacity: !control.enabled ? 0.2 : 1.0
+                        source: control.overlayIconSource
+                        width: Theme.getSize("button_icon").width
+                        height: Theme.getSize("button_icon").height
+
+                        sourceSize: Theme.getSize("button_icon")
+                    }
+                    Label
+                    {
+                        text: control.text;
+                        anchors.left: icon.right
+                        anchors.leftMargin: Theme.getSize("default_margin").width
+                        anchors.verticalCenter: parent.verticalCenter;
+                        font: UM.Theme.getFont("large");
+                        color: UM.Theme.getColor("text_reversed")
+                    }
                 }
             }
         }
@@ -368,11 +389,11 @@ QtObject {
                     color: {
                         if(!control.enabled) {
                             return Theme.getColor("setting_category_disabled_border");
-                        } else if(control.hovered && control.checkable && control.checked) {
+                        } else if((control.hovered || control.activeFocus) && control.checkable && control.checked) {
                             return Theme.getColor("setting_category_active_hover_border");
                         } else if(control.pressed || (control.checkable && control.checked)) {
                             return Theme.getColor("setting_category_active_border");
-                        } else if(control.hovered) {
+                        } else if(control.hovered || control.activeFocus) {
                             return Theme.getColor("setting_category_hover_border");
                         } else {
                             return Theme.getColor("setting_category_border");
@@ -508,7 +529,7 @@ QtObject {
             {
                 color:
                 {
-                    if (!enabled)
+                    if(!enabled)
                     {
                         return UM.Theme.getColor("setting_control_disabled");
                     }

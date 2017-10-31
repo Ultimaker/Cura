@@ -109,20 +109,20 @@ UM.Dialog
                 role: "label"
                 title: catalog.i18nc("@title:column", "Profile settings")
                 delegate: labelDelegate
-                width: tableView.width * 0.4
+                width: (tableView.width * 0.4) | 0
             }
             TableViewColumn
             {
                 role: "original_value"
                 title: catalog.i18nc("@title:column", "Default")
-                width: tableView.width * 0.3
+                width: (tableView.width * 0.3) | 0
                 delegate: defaultDelegate
             }
             TableViewColumn
             {
                 role: "user_value"
                 title: catalog.i18nc("@title:column", "Customized")
-                width: tableView.width * 0.3 - 1
+                width: (tableView.width * 0.3) | 0
             }
             section.property: "category"
             section.delegate: Label

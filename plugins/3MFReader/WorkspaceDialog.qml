@@ -87,18 +87,18 @@ UM.Dialog
                 {
                     text: catalog.i18nc("@action:label", "Printer settings")
                     font.bold: true
-                    width: parent.width / 3
+                    width: (parent.width / 3) | 0
                 }
                 Item
                 {
                     // spacer
                     height: spacerHeight
-                    width: parent.width / 3
+                    width: (parent.width / 3) | 0
                 }
                 UM.TooltipArea
                 {
                     id: machineResolveTooltip
-                    width: parent.width / 3
+                    width: (parent.width / 3) | 0
                     height: visible ? comboboxHeight : 0
                     visible: manager.machineConflict
                     text: catalog.i18nc("@info:tooltip", "How should the conflict in the machine be resolved?")
@@ -122,12 +122,12 @@ UM.Dialog
                 Label
                 {
                     text: catalog.i18nc("@action:label", "Type")
-                    width: parent.width / 3
+                    width: (parent.width / 3) | 0
                 }
                 Label
                 {
                     text: manager.machineType
-                    width: parent.width / 3
+                    width: (parent.width / 3) | 0
                 }
             }
 
@@ -138,12 +138,12 @@ UM.Dialog
                 Label
                 {
                     text: catalog.i18nc("@action:label", "Name")
-                    width: parent.width / 3
+                    width: (parent.width / 3) | 0
                 }
                 Label
                 {
                     text: manager.machineName
-                    width: parent.width / 3
+                    width: (parent.width / 3) | 0
                 }
             }
 
@@ -160,18 +160,18 @@ UM.Dialog
                 {
                     text: catalog.i18nc("@action:label", "Profile settings")
                     font.bold: true
-                    width: parent.width / 3
+                    width: (parent.width / 3) | 0
                 }
                 Item
                 {
                     // spacer
                     height: spacerHeight
-                    width: parent.width / 3
+                    width: (parent.width / 3) | 0
                 }
                 UM.TooltipArea
                 {
                     id: qualityChangesResolveTooltip
-                    width: parent.width / 3
+                    width: (parent.width / 3) | 0
                     height: visible ? comboboxHeight : 0
                     visible: manager.qualityChangesConflict
                     text: catalog.i18nc("@info:tooltip", "How should the conflict in the profile be resolved?")
@@ -195,12 +195,12 @@ UM.Dialog
                 Label
                 {
                     text: catalog.i18nc("@action:label", "Name")
-                    width: parent.width / 3
+                    width: (parent.width / 3) | 0
                 }
                 Label
                 {
                     text: manager.qualityName
-                    width: parent.width / 3
+                    width: (parent.width / 3) | 0
                 }
             }
             Row
@@ -210,12 +210,12 @@ UM.Dialog
                 Label
                 {
                     text: catalog.i18nc("@action:label", "Not in profile")
-                    width: parent.width / 3
+                    width: (parent.width / 3) | 0
                 }
                 Label
                 {
                     text: catalog.i18ncp("@action:label", "%1 override", "%1 overrides", manager.numUserSettings).arg(manager.numUserSettings)
-                    width: parent.width / 3
+                    width: (parent.width / 3) | 0
                 }
                 visible: manager.numUserSettings != 0
             }
@@ -226,12 +226,12 @@ UM.Dialog
                 Label
                 {
                     text: catalog.i18nc("@action:label", "Derivative from")
-                    width: parent.width / 3
+                    width: (parent.width / 3) | 0
                 }
                 Label
                 {
                     text: catalog.i18ncp("@action:label", "%1, %2 override", "%1, %2 overrides", manager.numSettingsOverridenByQualityChanges).arg(manager.qualityType).arg(manager.numSettingsOverridenByQualityChanges)
-                    width: parent.width / 3
+                    width: (parent.width / 3) | 0
                 }
                 visible: manager.numSettingsOverridenByQualityChanges != 0
             }
@@ -248,18 +248,18 @@ UM.Dialog
                 {
                     text: catalog.i18nc("@action:label", "Material settings")
                     font.bold: true
-                    width: parent.width / 3
+                    width: (parent.width / 3) | 0
                 }
                 Item
                 {
                     // spacer
                     height: spacerHeight
-                    width: parent.width / 3
+                    width: (parent.width / 3) | 0
                 }
                 UM.TooltipArea
                 {
                     id: materialResolveTooltip
-                    width: parent.width / 3
+                    width: (parent.width / 3) | 0
                     height: visible ? comboboxHeight : 0
                     visible: manager.materialConflict
                     text: catalog.i18nc("@info:tooltip", "How should the conflict in the material be resolved?")
@@ -287,12 +287,12 @@ UM.Dialog
                     Label
                     {
                         text: catalog.i18nc("@action:label", "Name")
-                        width: parent.width / 3
+                        width: (parent.width / 3) | 0
                     }
                     Label
                     {
                         text: modelData
-                        width: parent.width / 3
+                        width: (parent.width / 3) | 0
                     }
                 }
             }
@@ -315,12 +315,12 @@ UM.Dialog
                 Label
                 {
                     text: catalog.i18nc("@action:label", "Mode")
-                    width: parent.width / 3
+                    width: (parent.width / 3) | 0
                 }
                 Label
                 {
                     text: manager.activeMode
-                    width: parent.width / 3
+                    width: (parent.width / 3) | 0
                 }
             }
             Row
@@ -330,12 +330,12 @@ UM.Dialog
                 Label
                 {
                     text: catalog.i18nc("@action:label", "Visible settings:")
-                    width: parent.width / 3
+                    width: (parent.width / 3) | 0
                 }
                 Label
                 {
                     text: catalog.i18nc("@action:label", "%1 out of %2" ).arg(manager.numVisibleSettings).arg(manager.totalNumberOfSettings)
-                    width: parent.width / 3
+                    width: (parent.width / 3) | 0
                 }
             }
             Item // Spacer

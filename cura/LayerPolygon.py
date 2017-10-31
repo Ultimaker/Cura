@@ -1,4 +1,6 @@
-from UM.Math.Color import Color
+# Copyright (c) 2017 Ultimaker B.V.
+# Cura is released under the terms of the AGPLv3 or higher.
+
 from UM.Application import Application
 from typing import Any
 import numpy
@@ -16,8 +18,9 @@ class LayerPolygon:
     MoveCombingType = 8
     MoveRetractionType = 9
     SupportInterfaceType = 10
-    
-    __jump_map = numpy.logical_or(numpy.logical_or(numpy.arange(11) == NoneType, numpy.arange(11) == MoveCombingType), numpy.arange(11) == MoveRetractionType)
+    __number_of_types = 11
+
+    __jump_map = numpy.logical_or(numpy.logical_or(numpy.arange(__number_of_types) == NoneType, numpy.arange(__number_of_types) == MoveCombingType), numpy.arange(__number_of_types) == MoveRetractionType)
     
     ##  LayerPolygon, used in ProcessSlicedLayersJob
     #   \param extruder
@@ -28,6 +31,9 @@ class LayerPolygon:
     def __init__(self, extruder, line_types, data, line_widths, line_thicknesses):
         self._extruder = extruder
         self._types = line_types
+        for i in range(len(self._types)):
+            if self._types[i] >= self.__number_of_types: #Got faulty line data from the engine.
+                self._types[i] = self.NoneType
         self._data = data
         self._line_widths = line_widths
         self._line_thicknesses = line_thicknesses
@@ -36,11 +42,11 @@ class LayerPolygon:
         self._vertex_end = 0
         self._index_begin = 0
         self._index_end = 0
-        
+
         self._jump_mask = self.__jump_map[self._types]
         self._jump_count = numpy.sum(self._jump_mask)
-        self._mesh_line_count = len(self._types)-self._jump_count
-        self._vertex_count = self._mesh_line_count + numpy.sum( self._types[1:] == self._types[:-1])
+        self._mesh_line_count = len(self._types) - self._jump_count
+        self._vertex_count = self._mesh_line_count + numpy.sum(self._types[1:] == self._types[:-1])
 
         # Buffering the colors shouldn't be necessary as it is not 
         # re-used and can save alot of memory usage.

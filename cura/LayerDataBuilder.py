@@ -69,7 +69,7 @@ class LayerDataBuilder(MeshBuilder):
 
         vertex_offset = 0
         index_offset = 0
-        for layer, data in self._layers.items():
+        for layer, data in sorted(self._layers.items()):
             ( vertex_offset, index_offset ) = data.build( vertex_offset, index_offset, vertices, colors, line_dimensions, extruders, line_types, indices)
             self._element_counts[layer] = data.elementCount
 

@@ -78,6 +78,7 @@ Menu
     Dialog
     {
         id: multiplyDialog
+        modality: Qt.ApplicationModal
 
         title: catalog.i18ncp("@title:window", "Multiply Selected Model", "Multiply Selected Models", UM.Selection.selectionCount)
 

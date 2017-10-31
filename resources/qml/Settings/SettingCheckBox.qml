@@ -11,6 +11,7 @@ import UM 1.2 as UM
 SettingItem
 {
     id: base
+    property var focusItem: control
 
     contents: MouseArea
     {
@@ -49,10 +50,33 @@ SettingItem
             }
         }
 
+        Keys.onSpacePressed:
+        {
+            forceActiveFocus();
+            propertyProvider.setPropertyValue("value", !checked);
+        }
+
         onClicked:
         {
             forceActiveFocus();
             propertyProvider.setPropertyValue("value", !checked);
+        }
+
+        Keys.onTabPressed:
+        {
+            base.setActiveFocusToNextSetting(true)
+        }
+        Keys.onBacktabPressed:
+        {
+            base.setActiveFocusToNextSetting(false)
+        }
+
+        onActiveFocusChanged:
+        {
+            if(activeFocus)
+            {
+                base.focusReceived();
+            }
         }
 
         Rectangle
@@ -67,7 +91,7 @@ SettingItem
 
             color:
             {
-                if (!enabled)
+                if(!enabled)
                 {
                     return UM.Theme.getColor("setting_control_disabled")
                 }
@@ -75,14 +99,22 @@ SettingItem
                 {
                     return UM.Theme.getColor("setting_control_highlight")
                 }
-                else
-                {
-                    return UM.Theme.getColor("setting_control")
-                }
+                return UM.Theme.getColor("setting_control")
             }
 
             border.width: UM.Theme.getSize("default_lining").width
-            border.color: !enabled ? UM.Theme.getColor("setting_control_disabled_border") : control.containsMouse ? UM.Theme.getColor("setting_control_border_highlight") : UM.Theme.getColor("setting_control_border")
+            border.color:
+            {
+                if(!enabled)
+                {
+                    return UM.Theme.getColor("setting_control_disabled_border")
+                }
+                if(control.containsMouse || control.activeFocus)
+                {
+                    return UM.Theme.getColor("setting_control_border_highlight")
+                }
+                return UM.Theme.getColor("setting_control_border")
+            }
 
             UM.RecolorImage {
                 anchors.verticalCenter: parent.verticalCenter
