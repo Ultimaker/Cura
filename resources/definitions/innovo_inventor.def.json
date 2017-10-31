@@ -44,12 +44,6 @@
         "gantry_height": {
             "default_value": 82.3
         },
-        "machine_nozzle_offset_x": {
-            "default_value": 0
-        },
-        "machine_nozzle_offset_y": {
-            "default_value": 15
-        },
         "machine_gcode_flavor": {
             "default_value": "RepRap (Marlin/Sprinter)"
         },

@@ -332,7 +332,7 @@ Rectangle
         }
     }
 
-    Label {
+    Text {
         id: settingsModeLabel
         text: !hideSettings ? catalog.i18nc("@label:listbox", "Print Setup") : catalog.i18nc("@label:listbox","Print Setup disabled\nG-code files cannot be modified");
         anchors.left: parent.left
@@ -348,6 +348,7 @@ Rectangle
 
     Rectangle {
         id: settingsModeSelection
+        color: "transparent"
         width: parent.width * 0.55
         height: UM.Theme.getSize("sidebar_header_mode_toggle").height
         anchors.right: parent.right
@@ -362,7 +363,7 @@ Rectangle
                 anchors.left: parent.left
                 anchors.leftMargin: model.index * (settingsModeSelection.width / 2)
                 anchors.verticalCenter: parent.verticalCenter
-                width: 0.5 * parent.width - (model.showFilterButton ? toggleFilterButton.width : 0)
+                width: 0.5 * parent.width
                 text: model.text
                 exclusiveGroup: modeMenuGroup;
                 checkable: true;
@@ -407,51 +408,122 @@ Rectangle
             }
         }
         ExclusiveGroup { id: modeMenuGroup; }
-        ListView{
-            id: modesList
-            property var index: 0
-            model: modesListModel
-            delegate: wizardDelegate
-            anchors.top: parent.top
-            anchors.left: parent.left
-            width: parent.width
-        }
-    }
 
-    Button
-    {
-        id: toggleFilterButton
-
-        anchors.right: parent.right
-        anchors.rightMargin: UM.Theme.getSize("default_margin").width
-        anchors.top: headerSeparator.bottom
-        anchors.topMargin: UM.Theme.getSize("default_margin").height
-
-        height: settingsModeSelection.height
-        width: visible ? height : 0
-
-        visible: !monitoringPrint && !hideSettings && modesListModel.get(base.currentModeIndex) != undefined && modesListModel.get(base.currentModeIndex).showFilterButton
-        opacity: visible ? 1 : 0
-
-        onClicked: sidebarContents.currentItem.toggleFilterField()
-
-        style: ButtonStyle
+        Label
         {
-            background: Rectangle
+            id: toggleLeftText
+            anchors.right: modeToggleSwitch.left
+            anchors.rightMargin: UM.Theme.getSize("default_margin").width
+            anchors.verticalCenter: parent.verticalCenter
+            text: ""
+            color:
             {
-                border.width: UM.Theme.getSize("default_lining").width
-                border.color: UM.Theme.getColor("toggle_checked_border")
-                color: visible ? UM.Theme.getColor("toggle_checked") : UM.Theme.getColor("toggle_hovered")
-                Behavior on color { ColorAnimation { duration: 50; } }
+                if(toggleLeftTextMouseArea.containsMouse)
+                {
+                    return UM.Theme.getColor("mode_switch_text_hover");
+                }
+                else if(!modeToggleSwitch.checked)
+                {
+                    return UM.Theme.getColor("mode_switch_text_checked");
+                }
+                else
+                {
+                    return UM.Theme.getColor("mode_switch_text");
+                }
             }
-            label: UM.RecolorImage
-            {
-                anchors.verticalCenter: parent.verticalCenter
-                anchors.right: parent.right
-                anchors.rightMargin: UM.Theme.getSize("default_margin").width / 2
+            font: UM.Theme.getFont("default")
 
-                source: UM.Theme.getIcon("search")
-                color: UM.Theme.getColor("toggle_checked_text")
+            MouseArea
+            {
+                id: toggleLeftTextMouseArea
+                hoverEnabled: true
+                anchors.fill: parent
+                onClicked:
+                {
+                    modeToggleSwitch.checked = false;
+                }
+
+                Component.onCompleted:
+                {
+                    clicked.connect(modeToggleSwitch.clicked)
+                }
+            }
+        }
+
+        Switch
+        {
+            id: modeToggleSwitch
+            checked: false
+            anchors.right: toggleRightText.left
+            anchors.rightMargin: UM.Theme.getSize("default_margin").width
+            anchors.verticalCenter: parent.verticalCenter
+
+            property bool _hovered: modeToggleSwitchMouseArea.containsMouse || toggleLeftTextMouseArea.containsMouse || toggleRightTextMouseArea.containsMouse
+
+            MouseArea
+            {
+                id: modeToggleSwitchMouseArea
+                anchors.fill: parent
+                hoverEnabled: true
+                acceptedButtons: Qt.NoButton
+            }
+
+            onCheckedChanged:
+            {
+                var index = 0;
+                if (checked)
+                {
+                    index = 1;
+                }
+                updateActiveMode(index);
+            }
+
+            function updateActiveMode(index)
+            {
+                base.currentModeIndex = index;
+                UM.Preferences.setValue("cura/active_mode", index);
+            }
+
+            style: UM.Theme.styles.mode_switch
+        }
+
+        Label
+        {
+            id: toggleRightText
+            anchors.right: parent.right
+            anchors.verticalCenter: parent.verticalCenter
+            text: ""
+            color:
+            {
+                if(toggleRightTextMouseArea.containsMouse)
+                {
+                    return UM.Theme.getColor("mode_switch_text_hover");
+                }
+                else if(modeToggleSwitch.checked)
+                {
+                    return UM.Theme.getColor("mode_switch_text_checked");
+                }
+                else
+                {
+                    return UM.Theme.getColor("mode_switch_text");
+                }
+            }
+            font: UM.Theme.getFont("default")
+
+            MouseArea
+            {
+                id: toggleRightTextMouseArea
+                hoverEnabled: true
+                anchors.fill: parent
+                onClicked:
+                {
+                    modeToggleSwitch.checked = true;
+                }
+
+                Component.onCompleted:
+                {
+                    clicked.connect(modeToggleSwitch.clicked)
+                }
             }
         }
     }
@@ -570,21 +642,23 @@ Rectangle
         modesListModel.append({
             text: catalog.i18nc("@title:tab", "Recommended"),
             tooltipText: catalog.i18nc("@tooltip", "<b>Recommended Print Setup</b><br/><br/>Print with the recommended settings for the selected printer, material and quality."),
-            item: sidebarSimple,
-            showFilterButton: false
+            item: sidebarSimple
         })
         modesListModel.append({
             text: catalog.i18nc("@title:tab", "Custom"),
             tooltipText: catalog.i18nc("@tooltip", "<b>Custom Print Setup</b><br/><br/>Print with finegrained control over every last bit of the slicing process."),
-            item: sidebarAdvanced,
-            showFilterButton: true
+            item: sidebarAdvanced
         })
         sidebarContents.push({ "item": modesListModel.get(base.currentModeIndex).item, "immediate": true });
 
-        var index = parseInt(UM.Preferences.getValue("cura/active_mode"))
-        if(index)
+        toggleLeftText.text = modesListModel.get(0).text;
+        toggleRightText.text = modesListModel.get(1).text;
+
+        var index = parseInt(UM.Preferences.getValue("cura/active_mode"));
+        if (index)
         {
             currentModeIndex = index;
+            modeToggleSwitch.checked = index > 0;
         }
     }
 

@@ -95,13 +95,17 @@ SettingItem
             value:
             {
                 // FIXME this needs to go away once 'resolve' is combined with 'value' in our data model.
-                var value;
-                if ((base.resolve != "None") && (base.stackLevel != 0) && (base.stackLevel != 1)) {
+                var value = undefined;
+                if ((base.resolve != "None") && (base.stackLevel != 0) && (base.stackLevel != 1))
+                {
                     // We have a resolve function. Indicates that the setting is not settable per extruder and that
                     // we have to choose between the resolved value (default) and the global value
                     // (if user has explicitly set this).
                     value = base.resolve;
-                } else {
+                }
+
+                if (value == undefined)
+                {
                     value = propertyProvider.properties.value;
                 }
 

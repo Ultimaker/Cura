@@ -1,14 +1,16 @@
 project(cura NONE)
 cmake_minimum_required(VERSION 2.8.12)
 
+set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake/
+                      ${CMAKE_MODULE_PATH})
+
 include(GNUInstallDirs)
 
-set(URANIUM_SCRIPTS_DIR "${CMAKE_SOURCE_DIR}/../uranium/scripts" CACHE DIRECTORY "The location of the scripts directory of the Uranium repository")
+set(URANIUM_DIR "${CMAKE_SOURCE_DIR}/../Uranium" CACHE DIRECTORY "The location of the Uranium repository")
+set(URANIUM_SCRIPTS_DIR "${URANIUM_DIR}/scripts" CACHE DIRECTORY "The location of the scripts directory of the Uranium repository")
 
 # Tests
-# Note that we use exit 0 here to not mark the build as a failure on test failure
-add_custom_target(tests)
-add_custom_command(TARGET tests POST_BUILD COMMAND "PYTHONPATH=${CMAKE_SOURCE_DIR}/../Uranium/:${CMAKE_SOURCE_DIR}" ${PYTHON_EXECUTABLE} -m pytest -r a --junitxml=${CMAKE_BINARY_DIR}/junit.xml ${CMAKE_SOURCE_DIR} || exit 0)
+include(CuraTests)
 
 option(CURA_DEBUGMODE "Enable debug dialog and other debug features" OFF)
 if(CURA_DEBUGMODE)
@@ -24,6 +26,7 @@ if(NOT ${URANIUM_DIR} STREQUAL "")
     set(CMAKE_MODULE_PATH "${URANIUM_DIR}/cmake")
 endif()
 if(NOT ${URANIUM_SCRIPTS_DIR} STREQUAL "")
+    list(APPEND CMAKE_MODULE_PATH ${URANIUM_DIR}/cmake)
     include(UraniumTranslationTools)
     # Extract Strings
     add_custom_target(extract-messages ${URANIUM_SCRIPTS_DIR}/extract-messages ${CMAKE_SOURCE_DIR} cura)
@@ -64,5 +67,3 @@ else()
     install(FILES ${CMAKE_BINARY_DIR}/CuraVersion.py
             DESTINATION lib/python${PYTHON_VERSION_MAJOR}.${PYTHON_VERSION_MINOR}/site-packages/cura)
 endif()
-
-include(CPackConfig.cmake)

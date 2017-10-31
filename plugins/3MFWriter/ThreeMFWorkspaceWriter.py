@@ -7,6 +7,7 @@ from cura.Settings.ExtruderManager import ExtruderManager
 import zipfile
 from io import StringIO
 import copy
+import configparser
 
 
 class ThreeMFWorkspaceWriter(WorkspaceWriter):
@@ -47,6 +48,16 @@ class ThreeMFWorkspaceWriter(WorkspaceWriter):
         preferences_string = StringIO()
         Preferences.getInstance().writeToFile(preferences_string)
         archive.writestr(preferences_file, preferences_string.getvalue())
+
+        # Save Cura version
+        version_file = zipfile.ZipInfo("Cura/version.ini")
+        version_config_parser = configparser.ConfigParser()
+        version_config_parser.add_section("versions")
+        version_config_parser.set("versions", "cura_version", Application.getStaticVersion())
+
+        version_file_string = StringIO()
+        version_config_parser.write(version_file_string)
+        archive.writestr(version_file, version_file_string.getvalue())
 
         # Close the archive & reset states.
         archive.close()

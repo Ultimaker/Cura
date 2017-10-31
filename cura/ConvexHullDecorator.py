@@ -59,7 +59,8 @@ class ConvexHullDecorator(SceneNodeDecorator):
         hull = self._compute2DConvexHull()
 
         if self._global_stack and self._node:
-            if self._global_stack.getProperty("print_sequence", "value") == "one_at_a_time" and not self._node.getParent().callDecoration("isGroup"):
+            # Parent can be None if node is just loaded.
+            if self._global_stack.getProperty("print_sequence", "value") == "one_at_a_time" and (self._node.getParent() is None or not self._node.getParent().callDecoration("isGroup")):
                 hull = hull.getMinkowskiHull(Polygon(numpy.array(self._global_stack.getProperty("machine_head_polygon", "value"), numpy.float32)))
                 hull = self._add2DAdhesionMargin(hull)
         return hull
@@ -79,7 +80,7 @@ class ConvexHullDecorator(SceneNodeDecorator):
             return None
 
         if self._global_stack:
-            if self._global_stack.getProperty("print_sequence", "value") == "one_at_a_time" and not self._node.getParent().callDecoration("isGroup"):
+            if self._global_stack.getProperty("print_sequence", "value") == "one_at_a_time" and (self._node.getParent() is None or not self._node.getParent().callDecoration("isGroup")):
                 head_with_fans = self._compute2DConvexHeadMin()
                 head_with_fans_with_adhesion_margin = self._add2DAdhesionMargin(head_with_fans)
                 return head_with_fans_with_adhesion_margin
@@ -93,8 +94,7 @@ class ConvexHullDecorator(SceneNodeDecorator):
             return None
 
         if self._global_stack:
-            if self._global_stack.getProperty("print_sequence", "value") == "one_at_a_time" and not self._node.getParent().callDecoration("isGroup"):
-
+            if self._global_stack.getProperty("print_sequence", "value") == "one_at_a_time" and (self._node.getParent() is None or not self._node.getParent().callDecoration("isGroup")):
                 # Printing one at a time and it's not an object in a group
                 return self._compute2DConvexHull()
         return None
@@ -258,12 +258,16 @@ class ConvexHullDecorator(SceneNodeDecorator):
     #   influences the collision area.
     def _offsetHull(self, convex_hull):
         horizontal_expansion = self._getSettingProperty("xy_offset", "value")
-        if horizontal_expansion != 0:
+        mold_width = 0
+        if self._getSettingProperty("mold_enabled", "value"):
+            mold_width = self._getSettingProperty("mold_width", "value")
+        hull_offset = horizontal_expansion + mold_width
+        if hull_offset != 0:
             expansion_polygon = Polygon(numpy.array([
-                [-horizontal_expansion, -horizontal_expansion],
-                [-horizontal_expansion, horizontal_expansion],
-                [horizontal_expansion, horizontal_expansion],
-                [horizontal_expansion, -horizontal_expansion]
+                [-hull_offset, -hull_offset],
+                [-hull_offset, hull_offset],
+                [hull_offset, hull_offset],
+                [hull_offset, -hull_offset]
             ], numpy.float32))
             return convex_hull.getMinkowskiHull(expansion_polygon)
         else:
@@ -294,7 +298,7 @@ class ConvexHullDecorator(SceneNodeDecorator):
             self._onChanged()
 
     ##   Private convenience function to get a setting from the correct extruder (as defined by limit_to_extruder property).
-    def _getSettingProperty(self, setting_key, property="value"):
+    def _getSettingProperty(self, setting_key, property = "value"):
         per_mesh_stack = self._node.callDecoration("getStack")
         if per_mesh_stack:
             return per_mesh_stack.getProperty(setting_key, property)
@@ -310,10 +314,8 @@ class ConvexHullDecorator(SceneNodeDecorator):
                 extruder_stack_id = ExtruderManager.getInstance().extruderIds["0"]
             extruder_stack = ContainerRegistry.getInstance().findContainerStacks(id = extruder_stack_id)[0]
             return extruder_stack.getProperty(setting_key, property)
-        else: #Limit_to_extruder is set. Use that one.
-            extruder_stack_id = ExtruderManager.getInstance().extruderIds[str(extruder_index)]
-            stack = ContainerRegistry.getInstance().findContainerStacks(id = extruder_stack_id)[0]
-            return stack.getProperty(setting_key, property)
+        else: #Limit_to_extruder is set. The global stack handles this then.
+            return self._global_stack.getProperty(setting_key, property)
 
     ## Returns true if node is a descendant or the same as the root node.
     def __isDescendant(self, root, node):
@@ -324,11 +326,10 @@ class ConvexHullDecorator(SceneNodeDecorator):
         return self.__isDescendant(root, node.getParent())
 
     _affected_settings = [
-        "adhesion_type", "raft_base_thickness", "raft_interface_thickness", "raft_surface_layers",
-        "raft_surface_thickness", "raft_airgap", "raft_margin", "print_sequence",
+        "adhesion_type", "raft_margin", "print_sequence",
         "skirt_gap", "skirt_line_count", "skirt_brim_line_width", "skirt_distance", "brim_line_count"]
 
     ##  Settings that change the convex hull.
     #
     #   If these settings change, the convex hull should be recalculated.
-    _influencing_settings = {"xy_offset"}
+    _influencing_settings = {"xy_offset", "mold_enabled", "mold_width"}

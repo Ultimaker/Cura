@@ -8,6 +8,81 @@ import QtQuick.Controls.Styles 1.1
 import UM 1.1 as UM
 
 QtObject {
+    property Component info_button: Component {
+        ButtonStyle {
+            label: Text {
+                renderType: Text.NativeRendering
+                verticalAlignment: Text.AlignVCenter
+                horizontalAlignment: Text.AlignHCenter
+                font: UM.Theme.getFont("small")
+                color: UM.Theme.getColor("button_text")
+                text: control.text
+            }
+
+            background: Rectangle {
+                implicitHeight: UM.Theme.getSize("info_button").height
+                implicitWidth: width
+                border.width: 0
+                radius: height * 0.5
+
+                color: {
+                    if (control.pressed) {
+                        return UM.Theme.getColor("button_active");
+                    } else if (control.hovered) {
+                        return UM.Theme.getColor("button_hover");
+                    } else {
+                        return UM.Theme.getColor("button");
+                    }
+                }
+                Behavior on color { ColorAnimation { duration: 50; } }
+            }
+        }
+    }
+
+    property Component mode_switch: Component {
+        SwitchStyle {
+            groove: Rectangle {
+                implicitWidth: UM.Theme.getSize("mode_switch").width
+                implicitHeight: UM.Theme.getSize("mode_switch").height
+                radius: implicitHeight / 2
+                color: {
+                    if(control.hovered || control._hovered) {
+                        return UM.Theme.getColor("mode_switch_hover");
+                    } else {
+                        return UM.Theme.getColor("mode_switch");
+                    }
+                }
+                Behavior on color { ColorAnimation { duration: 50; } }
+                border.color: {
+                    if(control.hovered || control._hovered) {
+                        return UM.Theme.getColor("mode_switch_border_hover");
+                    } else {
+                        return UM.Theme.getColor("mode_switch_border");
+                    }
+                }
+                Behavior on border.color { ColorAnimation { duration: 50; } }
+                border.width: 1
+            }
+
+            handle: Rectangle {
+                implicitWidth: implicitHeight
+                implicitHeight: UM.Theme.getSize("mode_switch").height
+                radius: implicitHeight / 2
+
+                color: {
+                    if (control.pressed || (control.checkable && control.checked)) {
+                        return UM.Theme.getColor("sidebar_header_active");
+                    } else if(control.hovered) {
+                        return UM.Theme.getColor("sidebar_header_hover");
+                    } else {
+                        return UM.Theme.getColor("sidebar_header_bar");
+                    }
+                }
+                Behavior on color { ColorAnimation { duration: 50; } }
+            }
+        }
+    }
+
     property Component sidebar_header_button: Component {
         ButtonStyle {
             background: Rectangle {
@@ -168,7 +243,9 @@ QtObject {
                     property bool down: control.pressed || (control.checkable && control.checked);
 
                     color: {
-                        if(control.checkable && control.checked && control.hovered) {
+                        if(control.customColor !== undefined && control.customColor !== null) {
+                            return control.customColor
+                        } else if(control.checkable && control.checked && control.hovered) {
                             return Theme.getColor("button_active_hover");
                         } else if(control.pressed || (control.checkable && control.checked)) {
                             return Theme.getColor("button_active");

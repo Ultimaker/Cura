@@ -18,23 +18,10 @@ Item
     signal showTooltip(Item item, point location, string text);
     signal hideTooltip();
 
-    function toggleFilterField()
-    {
-        filterContainer.visible = !filterContainer.visible
-        if(filterContainer.visible)
-        {
-            filter.forceActiveFocus();
-        }
-        else
-        {
-            filter.text = "";
-        }
-    }
-
     Rectangle
     {
         id: filterContainer
-        visible: false
+        visible: true
 
         border.width: UM.Theme.getSize("default_lining").width
         border.color:
@@ -70,7 +57,7 @@ Item
             anchors.right: clearFilterButton.left
             anchors.rightMargin: UM.Theme.getSize("default_margin").width
 
-            placeholderText: catalog.i18nc("@label:textbox", "Filter...")
+            placeholderText: catalog.i18nc("@label:textbox", "Search...")
 
             style: TextFieldStyle
             {
@@ -167,15 +154,15 @@ Item
                 id: definitionsModel;
                 containerId: Cura.MachineManager.activeDefinitionId
                 visibilityHandler: UM.SettingPreferenceVisibilityHandler { }
-                exclude: ["machine_settings", "command_line_settings", "infill_mesh", "infill_mesh_order", "support_mesh", "anti_overhang_mesh"] // TODO: infill_mesh settigns are excluded hardcoded, but should be based on the fact that settable_globally, settable_per_meshgroup and settable_per_extruder are false.
-                expanded: Printer.expandedCategories
+                exclude: ["machine_settings", "command_line_settings", "infill_mesh", "infill_mesh_order", "cutting_mesh", "support_mesh", "anti_overhang_mesh"] // TODO: infill_mesh settigns are excluded hardcoded, but should be based on the fact that settable_globally, settable_per_meshgroup and settable_per_extruder are false.
+                expanded: CuraApplication.expandedCategories
                 onExpandedChanged:
                 {
                     if(!findingSettings)
                     {
                         // Do not change expandedCategories preference while filtering settings
                         // because all categories are expanded while filtering
-                        Printer.setExpandedCategories(expanded)
+                        CuraApplication.setExpandedCategories(expanded)
                     }
                 }
                 onVisibilityChanged: Cura.SettingInheritanceManager.forceUpdate()
@@ -192,7 +179,7 @@ Item
                 Behavior on opacity { NumberAnimation { duration: 100 } }
                 enabled:
                 {
-                    if(!ExtruderManager.activeExtruderStackId && ExtruderManager.extruderCount > 0)
+                    if(!ExtruderManager.activeExtruderStackId && machineExtruderCount.properties.value > 1)
                     {
                         // disable all controls on the global tab, except categories
                         return model.type == "category"

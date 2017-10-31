@@ -50,7 +50,6 @@ sys.excepthook = exceptHook
 # first seems to prevent Sip from going into a state where it
 # tries to create PyQt objects on a non-main thread.
 import Arcus #@UnusedImport
-from UM.Platform import Platform
 import cura.CuraApplication
 import cura.Settings.CuraContainerRegistry
 

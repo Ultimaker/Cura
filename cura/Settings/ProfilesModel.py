@@ -32,9 +32,9 @@ class ProfilesModel(InstanceContainersModel):
 
     ##  Get the singleton instance for this class.
     @classmethod
-    def getInstance(cls):
+    def getInstance(cls) -> "ProfilesModel":
         # Note: Explicit use of class name to prevent issues with inheritance.
-        if ProfilesModel.__instance is None:
+        if not ProfilesModel.__instance:
             ProfilesModel.__instance = cls()
         return ProfilesModel.__instance
 

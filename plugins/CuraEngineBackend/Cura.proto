@@ -90,9 +90,21 @@ message GCodeLayer {
 }
 
 
-message PrintTimeMaterialEstimates { // The print time for the whole print and material estimates for the extruder
-    float time = 1; // Total time estimate
-    repeated MaterialEstimates materialEstimates = 2; // materialEstimates data
+message PrintTimeMaterialEstimates { // The print time for each feature and material estimates for the extruder
+    // Time estimate in each feature
+    float time_none = 1;
+    float time_inset_0 = 2;
+    float time_inset_x = 3;
+    float time_skin = 4;
+    float time_support = 5;
+    float time_skirt = 6;
+    float time_infill = 7;
+    float time_support_infill = 8;
+    float time_travel = 9;
+    float time_retract = 10;
+    float time_support_interface = 11;
+
+    repeated MaterialEstimates materialEstimates = 12; // materialEstimates data
 }
 
 message MaterialEstimates {
