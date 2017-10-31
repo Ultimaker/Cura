@@ -116,7 +116,7 @@ class MachineSettingsAction(MachineAction):
 
     @pyqtSlot(int)
     def setMachineExtruderCount(self, extruder_count):
-        machine_manager = Application.getInstance().getMachineManager()
+        # machine_manager = Application.getInstance().getMachineManager()
         extruder_manager = ExtruderManager.getInstance()
 
         definition_changes_container = self._global_container_stack.definitionChanges
@@ -127,33 +127,34 @@ class MachineSettingsAction(MachineAction):
         if extruder_count == previous_extruder_count:
             return
 
-        extruder_material_id = None
-        extruder_variant_id = None
-        if extruder_count == 1:
-            # Get the material and variant of the first extruder before setting the number extruders to 1
-            if machine_manager.hasMaterials:
-                extruder_material_id = machine_manager.allActiveMaterialIds[extruder_manager.extruderIds["0"]]
-            if machine_manager.hasVariants:
-                extruder_variant_id = machine_manager.allActiveVariantIds[extruder_manager.extruderIds["0"]]
+        # extruder_material_id = None
+        # extruder_variant_id = None
 
-            # Copy any settable_per_extruder setting value from the extruders to the global stack
-            extruder_stacks = ExtruderManager.getInstance().getActiveExtruderStacks()
-            extruder_stacks.reverse() # make sure the first extruder is done last, so its settings override any higher extruder settings
-
-            global_user_container = self._global_container_stack.getTop()
-            for extruder_stack in extruder_stacks:
-                extruder_index = extruder_stack.getMetaDataEntry("position")
-                extruder_user_container = extruder_stack.getTop()
-                for setting_instance in extruder_user_container.findInstances():
-                    setting_key = setting_instance.definition.key
-                    settable_per_extruder = self._global_container_stack.getProperty(setting_key, "settable_per_extruder")
-
-                    if settable_per_extruder:
-                        limit_to_extruder = self._global_container_stack.getProperty(setting_key, "limit_to_extruder")
-
-                        if limit_to_extruder == "-1" or limit_to_extruder == extruder_index:
-                            global_user_container.setProperty(setting_key, "value", extruder_user_container.getProperty(setting_key, "value"))
-                            extruder_user_container.removeInstance(setting_key)
+        # if extruder_count == 1:
+        #     # Get the material and variant of the first extruder before setting the number extruders to 1
+        #     if machine_manager.hasMaterials:
+        #         extruder_material_id = machine_manager.allActiveMaterialIds[extruder_manager.extruderIds["0"]]
+        #     if machine_manager.hasVariants:
+        #         extruder_variant_id = machine_manager.allActiveVariantIds[extruder_manager.extruderIds["0"]]
+        #
+        #     # Copy any settable_per_extruder setting value from the extruders to the global stack
+        #     extruder_stacks = ExtruderManager.getInstance().getActiveExtruderStacks()
+        #     extruder_stacks.reverse() # make sure the first extruder is done last, so its settings override any higher extruder settings
+        #
+        #     global_user_container = self._global_container_stack.getTop()
+        #     for extruder_stack in extruder_stacks:
+        #         extruder_index = extruder_stack.getMetaDataEntry("position")
+        #         extruder_user_container = extruder_stack.getTop()
+        #         for setting_instance in extruder_user_container.findInstances():
+        #             setting_key = setting_instance.definition.key
+        #             settable_per_extruder = self._global_container_stack.getProperty(setting_key, "settable_per_extruder")
+        #
+        #             if settable_per_extruder:
+        #                 limit_to_extruder = self._global_container_stack.getProperty(setting_key, "limit_to_extruder")
+        #
+        #                 if limit_to_extruder == "-1" or limit_to_extruder == extruder_index:
+        #                     global_user_container.setProperty(setting_key, "value", extruder_user_container.getProperty(setting_key, "value"))
+        #                     extruder_user_container.removeInstance(setting_key)
 
         # reset all extruder number settings whose value is no longer valid
         for setting_instance in self._global_container_stack.userChanges.findInstances():
@@ -185,49 +186,51 @@ class MachineSettingsAction(MachineAction):
         # extruder_stacks = ExtruderManager.getInstance().getActiveExtruderStack()
         global_user_container = self._global_container_stack.getTop()
 
-        if extruder_count > 1:
-            # Multi extrusion
-            # Make sure one of the extruder stacks is active
-            if extruder_manager.activeExtruderIndex == -1:
-                extruder_manager.setActiveExtruderIndex(0)
+        # if extruder_count > 1:
 
-            # Move settable_per_extruder values out of the global container
-            if previous_extruder_count == 1:
-                extruder_stacks = ExtruderManager.getInstance().getActiveExtruderStacks()
-                global_user_container = self._global_container_stack.getTop()
-            for setting_instance in global_user_container.findInstances():
-                setting_key = setting_instance.definition.key
-                settable_per_extruder = self._global_container_stack.getProperty(setting_key, "settable_per_extruder")
-                if settable_per_extruder:
-                    limit_to_extruder = int(self._global_container_stack.getProperty(setting_key, "limit_to_extruder"))
-                    extruder_stack = extruder_stacks[max(0, limit_to_extruder)]
-                    extruder_stack.getTop().setProperty(setting_key, "value", global_user_container.getProperty(setting_key, "value"))
-                    global_user_container.removeInstance(setting_key)
-        else:
-            # Single extrusion
+        # Make sure one of the extruder stacks is active
+        extruder_manager.setActiveExtruderIndex(0)
 
-            # Make sure the machine stack is active
-            if extruder_manager.activeExtruderIndex > -1:
-                extruder_manager.setActiveExtruderIndex(-1)
+        # Move settable_per_extruder values out of the global container
+        # After CURA-4482 this should not be the case anymore, but we still want to support older project files.
+        if previous_extruder_count == 1:
+            extruder_stacks = ExtruderManager.getInstance().getActiveExtruderStacks()
+            global_user_container = self._global_container_stack.getTop()
 
-            # Restore material and variant on global stack
-            # MachineManager._onGlobalContainerChanged removes the global material and variant of multiextruder machines
-            if extruder_material_id or extruder_variant_id:
-                # Prevent the DiscardOrKeepProfileChangesDialog from popping up (twice) if there are user changes
-                # The dialog is not relevant here, since we're restoring the previous situation as good as possible
-                preferences = Preferences.getInstance()
-                choice_on_profile_override = preferences.getValue("cura/choice_on_profile_override")
-                preferences.setValue("cura/choice_on_profile_override", "always_keep")
+        for setting_instance in global_user_container.findInstances():
+            setting_key = setting_instance.definition.key
+            settable_per_extruder = self._global_container_stack.getProperty(setting_key, "settable_per_extruder")
 
-                if extruder_material_id:
-                    machine_manager.setActiveMaterial(extruder_material_id)
-                if extruder_variant_id:
-                    machine_manager.setActiveVariant(extruder_variant_id)
+            if settable_per_extruder:
+                limit_to_extruder = int(self._global_container_stack.getProperty(setting_key, "limit_to_extruder"))
+                extruder_stack = extruder_stacks[max(0, limit_to_extruder)]
+                extruder_stack.getTop().setProperty(setting_key, "value", global_user_container.getProperty(setting_key, "value"))
+                global_user_container.removeInstance(setting_key)
 
-                preferences.setValue("cura/choice_on_profile_override", choice_on_profile_override)
+        # else:
+        #     # Single extrusion
+        #
+        #     # Make sure the machine stack is active
+        #     if extruder_manager.activeExtruderIndex > -1:
+        #         extruder_manager.setActiveExtruderIndex(-1)
+        #
+        #     # Restore material and variant on global stack
+        #     # MachineManager._onGlobalContainerChanged removes the global material and variant of multiextruder machines
+        #     if extruder_material_id or extruder_variant_id:
+        #         # Prevent the DiscardOrKeepProfileChangesDialog from popping up (twice) if there are user changes
+        #         # The dialog is not relevant here, since we're restoring the previous situation as good as possible
+        #         preferences = Preferences.getInstance()
+        #         choice_on_profile_override = preferences.getValue("cura/choice_on_profile_override")
+        #         preferences.setValue("cura/choice_on_profile_override", "always_keep")
+        #
+        #         if extruder_material_id:
+        #             machine_manager.setActiveMaterial(extruder_material_id)
+        #         if extruder_variant_id:
+        #             machine_manager.setActiveVariant(extruder_variant_id)
+        #
+        #         preferences.setValue("cura/choice_on_profile_override", choice_on_profile_override)
 
         self.forceUpdate()
-
 
     @pyqtSlot()
     def forceUpdate(self):
