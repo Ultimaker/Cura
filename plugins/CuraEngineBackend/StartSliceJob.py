@@ -9,6 +9,7 @@ import time
 from UM.Job import Job
 from UM.Application import Application
 from UM.Logger import Logger
+from UM.Decorators import deprecated
 
 from UM.Scene.SceneNode import SceneNode
 from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
@@ -158,13 +159,9 @@ class StartSliceJob(Job):
             self._buildGlobalSettingsMessage(stack)
             self._buildGlobalInheritsStackMessage(stack)
 
-            # Only add extruder stacks if there are multiple extruders
-            # Single extruder machines only use the global stack to store setting values
-            if stack.getProperty("machine_extruder_count", "value") > 1:
-                for extruder_stack in ExtruderManager.getInstance().getMachineExtruders(stack.getId()):
-                    self._buildExtruderMessage(extruder_stack)
-            else:
-                self._buildExtruderMessageFromGlobalStack(stack)
+            # Build messages for extruder stacks
+            for extruder_stack in ExtruderManager.getInstance().getMachineExtruders(stack.getId()):
+                self._buildExtruderMessage(extruder_stack)
 
             for group in object_groups:
                 group_message = self._slice_message.addRepeatedMessage("object_lists")
@@ -251,6 +248,7 @@ class StartSliceJob(Job):
             Job.yieldThread()
 
     ##  Create extruder message from global stack
+    @deprecated("Extruder stack is always used since version 3.1, even with single extrusion machines", "3.1")
     def _buildExtruderMessageFromGlobalStack(self, stack):
         message = self._slice_message.addRepeatedMessage("extruders")
 
