@@ -86,7 +86,7 @@ Rectangle
 
         Rectangle
         {
-            width: parent.width / 3
+            width: Math.floor(parent.width / 3)
             height: parent.height
 
             Label   // Print job name
@@ -131,7 +131,7 @@ Rectangle
 
         Rectangle
         {
-            width: parent.width / 3 * 2
+            width: Math.floor(parent.width / 3 * 2)
             height: parent.height
 
             Label   // Friendly machine name
@@ -139,7 +139,7 @@ Rectangle
                 id: printerNameLabel
                 anchors.top: parent.top
                 anchors.left: parent.left
-                width: parent.width / 2 - UM.Theme.getSize("default_margin").width - showCameraIcon.width
+                width: Math.floor(parent.width / 2 - UM.Theme.getSize("default_margin").width - showCameraIcon.width)
                 text: printer.friendly_name
                 font: UM.Theme.getFont("default_bold")
                 elide: Text.ElideRight
@@ -149,7 +149,7 @@ Rectangle
             {
                 id: printerTypeLabel
                 anchors.top: printerNameLabel.bottom
-                width: parent.width / 2 - UM.Theme.getSize("default_margin").width
+                width: Math.floor(parent.width / 2 - UM.Theme.getSize("default_margin").width)
                 text: printer.machine_variant
                 anchors.left: parent.left
                 elide: Text.ElideRight
@@ -183,7 +183,7 @@ Rectangle
                 id: extruderInfo
                 anchors.bottom: parent.bottom
 
-                width: parent.width / 2 - UM.Theme.getSize("default_margin").width
+                width: Math.floor(parent.width / 2 - UM.Theme.getSize("default_margin").width)
                 height: childrenRect.height
 
                 spacing: UM.Theme.getSize("default_margin").width
@@ -217,7 +217,7 @@ Rectangle
                 anchors.right: parent.right
                 anchors.top: parent.top
                 height: showExtended ? parent.height: printProgressTitleBar.height
-                width: parent.width / 2 - UM.Theme.getSize("default_margin").width
+                width: Math.floor(parent.width / 2 - UM.Theme.getSize("default_margin").width)
                 border.width: UM.Theme.getSize("default_lining").width
                 border.color: lineColor
                 radius: cornerRadius

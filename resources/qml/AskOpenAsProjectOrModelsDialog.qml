@@ -63,11 +63,12 @@ UM.Dialog
         anchors.fill: parent
         anchors.leftMargin: 20 * screenScaleFactor
         anchors.rightMargin: 20 * screenScaleFactor
-        anchors.bottomMargin: 20 * screenScaleFactor
+        anchors.bottomMargin: 10 * screenScaleFactor
         spacing: 10 * screenScaleFactor
 
         Label
         {
+            id: questionText
             text: catalog.i18nc("@text:window", "This is a Cura project file. Would you like to open it as a project or import the models from it?")
             anchors.left: parent.left
             anchors.right: parent.right
@@ -85,6 +86,7 @@ UM.Dialog
         // Buttons
         Item
         {
+            id: buttonBar
             anchors.right: parent.right
             anchors.left: parent.left
             height: childrenRect.height

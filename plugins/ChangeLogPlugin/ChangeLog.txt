@@ -1,3 +1,13 @@
+[3.0.4]
+*Bug fixes
+- Fixed OpenGL issue that prevents Cura from starting.
+
+*License agreement on the first startup has been added
+
+[3.0.3]
+*Bug fixes
+- Add missing libraries for the MakePrintable plugin.
+
 [3.0.0]
 *Faster start-up
 Start-up speed has been cut in half compared to the previous version.
