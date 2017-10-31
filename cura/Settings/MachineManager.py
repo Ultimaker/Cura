@@ -274,14 +274,6 @@ class MachineManager(QObject):
             except TypeError:
                 pass
 
-            # TODO: remove this - CURA-4482
-            material = self._global_container_stack.material
-            material.nameChanged.disconnect(self._onMaterialNameChanged)
-
-            # TODO: remove this - CURA-4482
-            quality = self._global_container_stack.quality
-            quality.nameChanged.disconnect(self._onQualityNameChanged)
-
             for extruder_stack in ExtruderManager.getInstance().getActiveExtruderStacks():
                 extruder_stack.propertyChanged.disconnect(self._onPropertyChanged)
                 extruder_stack.containersChanged.disconnect(self._onInstanceContainersChanged)
@@ -308,17 +300,6 @@ class MachineManager(QObject):
             global_material = self._global_container_stack.material
             if global_material != self._empty_material_container:
                 self._global_container_stack.setMaterial(self._empty_material_container)
-
-            # TODO: update stack builder since this is not always a user created stack
-            # if len(self._global_container_stack.extruders) == 0:
-            #     extruder_stack = CuraStackBuilder.createExtruderStack(
-            #         self._global_container_stack.getId(),
-            #         definition = self._global_container_stack.definition,
-            #         machine_definition = self._global_container_stack.definition,
-            #     )
-            #     extruder_stack.setNextStack(self._global_container_stack)
-            #     extruder_stack.propertyChanged.connect(self._onPropertyChanged)
-            #     extruder_stack.containersChanged.connect(self._onInstanceContainersChanged)
 
             # Listen for changes on all extruder stacks
             for extruder_stack in ExtruderManager.getInstance().getActiveExtruderStacks():
