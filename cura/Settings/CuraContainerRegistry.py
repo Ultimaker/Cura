@@ -302,10 +302,13 @@ class CuraContainerRegistry(ContainerRegistry):
 
         machine_definition = Application.getInstance().getGlobalContainerStack().getBottom()
         del quality_type_criteria["definition"]
-        materials = None
+
+        # materials = None
+
         if "material" in quality_type_criteria:
-            materials = ContainerRegistry.getInstance().findInstanceContainers(id = quality_type_criteria["material"])
+            # materials = ContainerRegistry.getInstance().findInstanceContainers(id = quality_type_criteria["material"])
             del quality_type_criteria["material"]
+
         # Do not filter quality containers here with materials because we are trying to import a profile, so it should
         # NOT be restricted by the active materials on the current machine.
         materials = None
