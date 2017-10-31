@@ -149,8 +149,13 @@ class StartSliceJob(Job):
             self._buildGlobalSettingsMessage(stack)
             self._buildGlobalInheritsStackMessage(stack)
 
-            for extruder_stack in ExtruderManager.getInstance().getMachineExtruders(stack.getId()):
-                self._buildExtruderMessage(extruder_stack)
+            # Only add extruder stacks if there are multiple extruders
+            # Single extruder machines only use the global stack to store setting values
+            if stack.getProperty("machine_extruder_count", "value") > 1:
+                for extruder_stack in ExtruderManager.getInstance().getMachineExtruders(stack.getId()):
+                    self._buildExtruderMessage(extruder_stack)
+            else:
+                self._buildExtruderMessageFromGlobalStack(stack)
 
             for group in object_groups:
                 group_message = self._slice_message.addRepeatedMessage("object_lists")
@@ -221,6 +226,19 @@ class StartSliceJob(Job):
                 setting.value = str(material_instance_container.getMetaDataEntry("GUID", "")).encode("utf-8")
             else:
                 setting.value = str(stack.getProperty(key, "value")).encode("utf-8")
+            Job.yieldThread()
+
+    ##  Create extruder message from global stack
+    def _buildExtruderMessageFromGlobalStack(self, stack):
+        message = self._slice_message.addRepeatedMessage("extruders")
+
+        for key in stack.getAllKeys():
+            # Do not send settings that are not settable_per_extruder.
+            if not stack.getProperty(key, "settable_per_extruder"):
+                continue
+            setting = message.getMessage("settings").addRepeatedMessage("settings")
+            setting.name = key
+            setting.value = str(stack.getProperty(key, "value")).encode("utf-8")
             Job.yieldThread()
 
     ##  Sends all global settings to the engine.
