@@ -543,9 +543,8 @@ class ExtruderManager(QObject):
             self._global_container_stack_definition_id = global_container_stack.getBottom().getId()
             self.globalContainerStackDefinitionChanged.emit()
 
-        # If the global container changed, the number of extruders could be changed and so the active_extruder_index is updated
-        if self._active_extruder_index == -1:
-            self.setActiveExtruderIndex(0)
+        # If the global container changed, the machine changed and might have extruders that were not registered yet
+        self._addCurrentMachineExtruders()
 
         self.resetSelectedObjectExtruders()
 
@@ -554,21 +553,29 @@ class ExtruderManager(QObject):
         global_stack = Application.getInstance().getGlobalContainerStack()
         extruders_changed = False
 
-        if global_stack and global_stack.getBottom():
+        if global_stack:
             container_registry = ContainerRegistry.getInstance()
-            machine_id = global_stack.getBottom().getId()
+            global_stack_id = global_stack.getId()
 
             # Gets the extruder trains that we just created as well as any that still existed.
-            extruder_trains = container_registry.findContainerStacks(type = "extruder_train", machine = machine_id)
+            extruder_trains = container_registry.findContainerStacks(type = "extruder_train", machine = global_stack_id)
+
+            # Make sure the extruder trains for the new machine can be placed in the set of sets
+            if global_stack_id not in self._extruder_trains:
+                self._extruder_trains[global_stack_id] = {}
+                extruders_changed = True
+
+            # Register the extruder trains by position
             for extruder_train in extruder_trains:
-                self._extruder_trains[machine_id][extruder_train.getMetaDataEntry("position")] = extruder_train
+                self._extruder_trains[global_stack_id][extruder_train.getMetaDataEntry("position")] = extruder_train
 
                 # regardless of what the next stack is, we have to set it again, because of signal routing. ???
                 extruder_train.setNextStack(global_stack)
                 extruders_changed = True
 
             if extruders_changed:
-                self.extrudersChanged.emit(machine_id)
+                self.extrudersChanged.emit(global_stack_id)
+                self.setActiveExtruderIndex(0)
 
     ##  Get all extruder values for a certain setting.
     #

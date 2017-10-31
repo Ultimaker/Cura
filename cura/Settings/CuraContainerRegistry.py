@@ -405,6 +405,7 @@ class CuraContainerRegistry(ContainerRegistry):
     def _addExtruderStackForSingleExtrusionMachine(self, machine, extruder_id):
         new_extruder_id = extruder_id
 
+        # if extruders are defined in the machine definition use those instead
         if machine.extruders and len(machine.extruders) > 0:
             new_extruder_id = machine.extruders["0"].getId()
 
@@ -415,13 +416,12 @@ class CuraContainerRegistry(ContainerRegistry):
             return
 
         extruder_definition = extruder_definitions[0]
-        unique_name = self.uniqueName(machine.getId() + " " + new_extruder_id)
+        unique_name = self.uniqueName(machine.getName() + " " + new_extruder_id)
 
         extruder_stack = ExtruderStack.ExtruderStack(unique_name)
         extruder_stack.setName(extruder_definition.getName())
         extruder_stack.setDefinition(extruder_definition)
-        extruder_stack.addMetaDataEntry("machine", machine.getId())
-        extruder_stack.addMetaDataEntry("position", "0")
+        extruder_stack.addMetaDataEntry("position", extruder_definition.getMetaDataEntry("position"))
         extruder_stack.setNextStack(machine)
 
         if machine.userChanges:
@@ -429,7 +429,7 @@ class CuraContainerRegistry(ContainerRegistry):
             extruder_stack.setUserChanges(machine.userChanges)
         else:
             # create empty user changes container otherwise
-            user_container = InstanceContainer(extruder_stack.getId() + "_user")
+            user_container = InstanceContainer(extruder_stack.id + "_user")
             user_container.addMetaDataEntry("type", "user")
             user_container.addMetaDataEntry("machine", extruder_stack.getId())
             from cura.CuraApplication import CuraApplication
@@ -438,7 +438,7 @@ class CuraContainerRegistry(ContainerRegistry):
             extruder_stack.setUserChanges(user_container)
             self.addContainer(user_container)
 
-        # extruder_stack.setVariantById("default")
+        extruder_stack.setVariantById("default")
         extruder_stack.setMaterialById("default")
         extruder_stack.setQualityById("default")
 

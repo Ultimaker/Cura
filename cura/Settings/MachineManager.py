@@ -161,7 +161,7 @@ class MachineManager(QObject):
 
     @pyqtProperty(int, constant=True)
     def totalNumberOfSettings(self) -> int:
-        return len(ContainerRegistry.getInstance().findDefinitionContainers(id="fdmprinter")[0].getAllKeys())
+        return len(ContainerRegistry.getInstance().findDefinitionContainers(id = "fdmprinter")[0].getAllKeys())
 
     def _onHotendIdChanged(self, index: Union[str, int], hotend_id: str) -> None:
         if not self._global_container_stack:
@@ -385,15 +385,6 @@ class MachineManager(QObject):
             self.setActiveMachine(new_stack.getId())
         else:
             Logger.log("w", "Failed creating a new machine!")
-
-    ##  Create a name that is not empty and unique
-    #   \param container_type \type{string} Type of the container (machine, quality, ...)
-    #   \param current_name \type{} Current name of the container, which may be an acceptable option
-    #   \param new_name \type{string} Base name, which may not be unique
-    #   \param fallback_name \type{string} Name to use when (stripped) new_name is empty
-    #   \return \type{string} Name that is unique for the specified type and name/id
-    def _createUniqueName(self, container_type: str, current_name: str, new_name: str, fallback_name: str) -> str:
-        return ContainerRegistry.getInstance().createUniqueName(container_type, current_name, new_name, fallback_name)
 
     def _checkStacksHaveErrors(self) -> bool:
         if self._global_container_stack is None: #No active machine.
@@ -950,15 +941,12 @@ class MachineManager(QObject):
         global_container_stack = self._global_container_stack
         if not global_container_stack:
             return []
+
         global_machine_definition = quality_manager.getParentMachineDefinition(global_container_stack.getBottom())
-
         extruder_stacks = ExtruderManager.getInstance().getActiveExtruderStacks()
-        if extruder_stacks:
-            stacks = extruder_stacks
-        else:
-            stacks = [global_container_stack]
 
-        for stack in stacks:
+        # find qualities for extruders
+        for stack in extruder_stacks:
             material = stack.material
 
             # TODO: fix this
@@ -966,19 +954,33 @@ class MachineManager(QObject):
                 material = self._new_material_container
 
             quality = quality_manager.findQualityByQualityType(quality_type, global_machine_definition, [material])
+
             if not quality:
                 # No quality profile is found for this quality type.
                 quality = self._empty_quality_container
-            result.append({"stack": stack, "quality": quality, "quality_changes": empty_quality_changes})
 
-        if extruder_stacks:
-            # Add an extra entry for the global stack.
-            global_quality = quality_manager.findQualityByQualityType(quality_type, global_machine_definition, [], global_quality = "True")
+            result.append({
+                "stack": stack,
+                "quality": quality,
+                "quality_changes": empty_quality_changes
+            })
 
-            if not global_quality:
-                global_quality = self._empty_quality_container
+        # also find a global quality for the machine
+        global_quality = quality_manager.findQualityByQualityType(quality_type, global_machine_definition, [], global_quality = True)
 
-            result.append({"stack": global_container_stack, "quality": global_quality, "quality_changes": empty_quality_changes})
+        # if there is not global quality but we're using a single extrusion machine, copy the quality of the first extruder - CURA-4482
+        if not global_quality and len(extruder_stacks) == 1:
+            global_quality = result[0]["quality"]
+
+        # if there is still no global quality, set it to empty (not supported)
+        if not global_quality:
+            global_quality = self._empty_quality_container
+
+        result.append({
+            "stack": global_container_stack,
+            "quality": global_quality,
+            "quality_changes": empty_quality_changes
+        })
 
         return result
 
@@ -1030,7 +1032,7 @@ class MachineManager(QObject):
 
             material = extruder_stack.material
 
-            if self._new_material_container and self._active_container_stack.getId() == stack.getId():
+            if self._new_material_container and self._active_container_stack.getId() == extruder_stack.getId():
                 material = self._new_material_container
 
             quality = quality_manager.findQualityByQualityType(quality_type, global_machine_definition, [material])
@@ -1047,6 +1049,12 @@ class MachineManager(QObject):
 
         # append the global quality changes
         global_quality = quality_manager.findQualityByQualityType(quality_type, global_machine_definition, [material], global_quality = True)
+
+        # if there is not global quality but we're using a single extrusion machine, copy the quality of the first extruder - CURA-4482
+        if not global_quality and len(extruder_stacks) == 1:
+            global_quality = result[0]["quality_changes"]
+
+        # if still no global quality changes are found we set it to empty (not supported)
         if not global_quality:
             global_quality = self._empty_quality_container
 
@@ -1163,10 +1171,11 @@ class MachineManager(QObject):
 
     @pyqtSlot(str, str)
     def renameMachine(self, machine_id: str, new_name: str):
-        containers = ContainerRegistry.getInstance().findContainerStacks(id = machine_id)
-        if containers:
-            new_name = self._createUniqueName("machine", containers[0].getName(), new_name, containers[0].getBottom().getName())
-            containers[0].setName(new_name)
+        container_registry = ContainerRegistry.getInstance()
+        machine_stack = container_registry.findContainerStacks(id = machine_id)
+        if machine_stack:
+            new_name = container_registry.createUniqueName("machine", machine_stack[0].getName(), new_name, machine_stack[0].getBottom().getName())
+            machine_stack[0].setName(new_name)
             self.globalContainerChanged.emit()
 
     @pyqtSlot(str)
