@@ -1,6 +1,6 @@
 [3.0.4]
 *Bug fixes
-- Fixed OpenGL issue that prevent Cura from starting.
+- Fixed OpenGL issue that prevents Cura from starting.
 
 *License agreement on the first startup has been added
 
