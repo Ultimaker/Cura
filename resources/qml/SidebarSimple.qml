@@ -310,6 +310,24 @@ Item
                             }
                         }
                     }
+
+                    MouseArea
+                    {
+                        id: speedSliderMouseArea
+                        anchors.fill: parent
+                        hoverEnabled: true
+                        enabled: Cura.SimpleModeSettingsManager.isProfileUserCreated
+
+                        onEntered:
+                        {
+                            var content = catalog.i18nc("@tooltip","A custom profile is currently active. To enable the quality slider, choose a default quality profile in Custom tab")
+                            base.showTooltip(qualityRow, Qt.point(-UM.Theme.getSize("sidebar_margin").width, customisedSettings.height),  content)
+                        }
+                        onExited:
+                        {
+                            base.hideTooltip();
+                        }
+                    }
                 }
 
                 Label
