@@ -786,7 +786,6 @@ class CuraApplication(QtApplication):
         qmlRegisterUncreatableType(CuraApplication, "Cura", 1, 0, "ResourceTypes", "Just an Enum type")
 
         qmlRegisterType(ExtrudersModel, "Cura", 1, 0, "ExtrudersModel")
-
         qmlRegisterType(ContainerSettingsModel, "Cura", 1, 0, "ContainerSettingsModel")
         qmlRegisterSingletonType(ProfilesModel, "Cura", 1, 0, "ProfilesModel", ProfilesModel.createProfilesModel)
         qmlRegisterType(MaterialsModel, "Cura", 1, 0, "MaterialsModel")
@@ -796,14 +795,11 @@ class CuraApplication(QtApplication):
         qmlRegisterType(QualitySettingsModel, "Cura", 1, 0, "QualitySettingsModel")
         qmlRegisterType(MachineNameValidator, "Cura", 1, 0, "MachineNameValidator")
         qmlRegisterType(UserChangesModel, "Cura", 1, 1, "UserChangesModel")
-
         qmlRegisterSingletonType(ContainerManager, "Cura", 1, 0, "ContainerManager", ContainerManager.createContainerManager)
 
         # As of Qt5.7, it is necessary to get rid of any ".." in the path for the singleton to work.
         actions_url = QUrl.fromLocalFile(os.path.abspath(Resources.getPath(CuraApplication.ResourceTypes.QmlFiles, "Actions.qml")))
         qmlRegisterSingletonType(actions_url, "Cura", 1, 0, "Actions")
-
-        # engine.rootContext().setContextProperty("ExtruderManager", ExtruderManager.getInstance())
 
         for path in Resources.getAllResourcesOfType(CuraApplication.ResourceTypes.QmlFiles):
             type_name = os.path.splitext(os.path.basename(path))[0]
