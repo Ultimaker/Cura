@@ -566,8 +566,6 @@ class XmlMaterialProfile(InstanceContainer):
                         new_material = XmlMaterialProfile(new_material_id)
                         is_new_material = True
 
-                    # Update the private directly, as we want to prevent the lookup that is done when using setName
-                    new_material.setName(self.getName())
                     new_material.setMetaData(copy.deepcopy(self.getMetaData()))
                     new_material.setDefinition(definition)
                     # Don't use setMetadata, as that overrides it for all materials with same base file
