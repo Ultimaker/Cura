@@ -10,13 +10,6 @@ upgrade = VersionUpgrade21to22.VersionUpgrade21to22()
 
 def getMetaData():
     return {
-        "plugin": {
-            "name": catalog.i18nc("@label", "Version Upgrade 2.1 to 2.2"),
-            "author": "Ultimaker",
-            "version": "1.0",
-            "description": catalog.i18nc("@info:whatsthis", "Upgrades configurations from Cura 2.1 to Cura 2.2."),
-            "api": 3
-        },
         "version_upgrade": {
             # From                         To                         Upgrade function
             ("profile", 1000000):          ("quality", 2000000,       upgrade.upgradeProfile),

@@ -11,8 +11,8 @@ import UM 1.1 as UM
 UM.Dialog
 {
     id: base
-    minimumWidth: UM.Theme.getSize("modal_window_minimum").width * 0.75
-    minimumHeight: UM.Theme.getSize("modal_window_minimum").height * 0.75
+    minimumWidth: (UM.Theme.getSize("modal_window_minimum").width * 0.75) | 0
+    minimumHeight: (UM.Theme.getSize("modal_window_minimum").height * 0.75) | 0
     width: minimumWidth
     height: minimumHeight
     title: catalog.i18nc("@label", "Changelog")

@@ -59,7 +59,7 @@ UM.Dialog
         anchors.right: parent.right
         spacing: 10
 
-        Text
+        Label
         {
             text: catalog.i18nc("@text:window", "We have found one or more project file(s) within the files you have selected. You can open only one project file at a time. We suggest to only import models from those files. Would you like to proceed?")
             anchors.left: parent.left

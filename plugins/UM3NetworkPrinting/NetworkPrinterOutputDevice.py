@@ -178,7 +178,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         self._last_command = ""
 
         self._compressing_print = False
-
+        self._monitor_view_qml_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "MonitorItem.qml")
         printer_type = self._properties.get(b"machine", b"").decode("utf-8")
         if printer_type.startswith("9511"):
             self._updatePrinterType("ultimaker3_extended")
@@ -187,8 +187,17 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         else:
             self._updatePrinterType("unknown")
 
+        Application.getInstance().getOutputDeviceManager().outputDevicesChanged.connect(self._onOutputDevicesChanged)
+
     def _onNetworkAccesibleChanged(self, accessible):
         Logger.log("d", "Network accessible state changed to: %s", accessible)
+
+    ##  Triggered when the output device manager changes devices.
+    #
+    #   This is how we can detect that our device is no longer active now.
+    def _onOutputDevicesChanged(self):
+        if self.getId() not in Application.getInstance().getOutputDeviceManager().getOutputDeviceIds():
+            self.stopCamera()
 
     def _onAuthenticationTimer(self):
         self._authentication_counter += 1
@@ -304,15 +313,16 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         return True
 
     def _stopCamera(self):
-        self._camera_timer.stop()
-        if self._image_reply:
-            try:
-                self._image_reply.abort()
-                self._image_reply.downloadProgress.disconnect(self._onStreamDownloadProgress)
-            except RuntimeError:
-                pass  # It can happen that the wrapped c++ object is already deleted.
-            self._image_reply = None
-            self._image_request = None
+        if self._camera_timer.isActive():
+            self._camera_timer.stop()
+            if self._image_reply:
+                try:
+                    self._image_reply.abort()
+                    self._image_reply.downloadProgress.disconnect(self._onStreamDownloadProgress)
+                except RuntimeError:
+                    pass  # It can happen that the wrapped c++ object is already deleted.
+                self._image_reply = None
+                self._image_request = None
 
     def _startCamera(self):
         if self._use_stream:
@@ -615,7 +625,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
     #   is ignored.
     #   \param kwargs Keyword arguments.
     def requestWrite(self, nodes, file_name = None, filter_by_machine = False, file_handler = None, **kwargs):
-        if self._printer_state != "idle":
+        if self._printer_state not in ["idle", ""]:
             self._error_message = Message(
                 i18n_catalog.i18nc("@info:status", "Unable to start a new print job, printer is busy. Current printer status is %s.") % self._printer_state)
             self._error_message.show()
@@ -635,7 +645,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
 
         # Only check for mistakes if there is material length information.
         if print_information.materialLengths:
-            # Check if print cores / materials are loaded at all. Any failure in these results in an Error.
+            # Check if PrintCores / materials are loaded at all. Any failure in these results in an Error.
             for index in range(0, self._num_extruders):
                 if index < len(print_information.materialLengths) and print_information.materialLengths[index] != 0:
                     if self._json_printer_state["heads"][0]["extruders"][index]["hotend"]["id"] == "":
@@ -667,7 +677,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
                     if variant:
                         if variant.getName() != core_name:
                             Logger.log("w", "Extruder %s has a different Cartridge (%s) as Cura (%s)", index + 1, core_name, variant.getName())
-                            warnings.append(i18n_catalog.i18nc("@label", "Different print core (Cura: {0}, Printer: {1}) selected for extruder {2}".format(variant.getName(), core_name, index + 1)))
+                            warnings.append(i18n_catalog.i18nc("@label", "Different PrintCore (Cura: {0}, Printer: {1}) selected for extruder {2}".format(variant.getName(), core_name, index + 1)))
 
                     material = extruder_manager.getExtruderStack(index).findContainer({"type": "material"})
                     if material:
@@ -689,7 +699,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
                         is_offset_calibrated = True
 
                     if not is_offset_calibrated:
-                        warnings.append(i18n_catalog.i18nc("@label", "Print core {0} is not properly calibrated. XY calibration needs to be performed on the printer.").format(index + 1))
+                        warnings.append(i18n_catalog.i18nc("@label", "PrintCore {0} is not properly calibrated. XY calibration needs to be performed on the printer.").format(index + 1))
         else:
             Logger.log("w", "There was no material usage found. No check to match used material with machine is done.")
 
@@ -1166,7 +1176,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
             i18n_catalog.i18nc("@label",
                 "Would you like to use your current printer configuration in Cura?"),
             i18n_catalog.i18nc("@label",
-                "The print cores and/or materials on your printer differ from those within your current project. For the best result, always slice for the print cores and materials that are inserted in your printer."),
+                "The PrintCores and/or materials on your printer differ from those within your current project. For the best result, always slice for the PrintCores and materials that are inserted in your printer."),
             buttons=QMessageBox.Yes + QMessageBox.No,
             icon=QMessageBox.Question,
             callback=callback

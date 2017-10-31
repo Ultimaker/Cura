@@ -9,6 +9,7 @@ import UM 1.1 as UM
 SettingItem
 {
     id: base
+    property var focusItem: input
 
     contents: Rectangle
     {
@@ -17,10 +18,21 @@ SettingItem
         anchors.fill: parent
 
         border.width: UM.Theme.getSize("default_lining").width
-        border.color: !enabled ? UM.Theme.getColor("setting_control_disabled_border") : hovered ? UM.Theme.getColor("setting_control_border_highlight") : UM.Theme.getColor("setting_control_border")
+        border.color:
+        {
+            if(!enabled)
+            {
+                return UM.Theme.getColor("setting_control_disabled_border")
+            }
+            if(hovered || input.activeFocus)
+            {
+                return UM.Theme.getColor("setting_control_border_highlight")
+            }
+            return UM.Theme.getColor("setting_control_border")
+        }
 
         color: {
-            if (!enabled)
+            if(!enabled)
             {
                 return UM.Theme.getColor("setting_control_disabled")
             }
@@ -83,6 +95,15 @@ SettingItem
                 verticalCenter: parent.verticalCenter
             }
 
+            Keys.onTabPressed:
+            {
+                base.setActiveFocusToNextSetting(true)
+            }
+            Keys.onBacktabPressed:
+            {
+                base.setActiveFocusToNextSetting(false)
+            }
+
             Keys.onReleased:
             {
                 propertyProvider.setPropertyValue("value", text)
@@ -91,6 +112,14 @@ SettingItem
             onEditingFinished:
             {
                 propertyProvider.setPropertyValue("value", text)
+            }
+
+            onActiveFocusChanged:
+            {
+                if(activeFocus)
+                {
+                    base.focusReceived();
+                }
             }
 
             color: !enabled ? UM.Theme.getColor("setting_control_disabled_text") : UM.Theme.getColor("setting_control_text")

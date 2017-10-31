@@ -70,6 +70,7 @@ class ExtrudersModel(UM.Qt.ListModel.ListModel):
         self._simple_names = False
 
         self._active_machine_extruders = [] # type: Iterable[ExtruderStack]
+        self._add_optional_extruder = False
 
         #Listen to changes.
         Application.getInstance().globalContainerStackChanged.connect(self._extrudersChanged) #When the machine is swapped we must update the active machine extruders.
@@ -87,6 +88,18 @@ class ExtrudersModel(UM.Qt.ListModel.ListModel):
     @pyqtProperty(bool, fset = setAddGlobal, notify = addGlobalChanged)
     def addGlobal(self):
         return self._add_global
+
+    addOptionalExtruderChanged = pyqtSignal()
+
+    def setAddOptionalExtruder(self, add_optional_extruder):
+        if add_optional_extruder != self._add_optional_extruder:
+            self._add_optional_extruder = add_optional_extruder
+            self.addOptionalExtruderChanged.emit()
+            self._updateExtruders()
+
+    @pyqtProperty(bool, fset = setAddOptionalExtruder, notify = addOptionalExtruderChanged)
+    def addOptionalExtruder(self):
+        return self._add_optional_extruder
 
     ##  Set the simpleNames property.
     def setSimpleNames(self, simple_names):
@@ -197,5 +210,16 @@ class ExtrudersModel(UM.Qt.ListModel.ListModel):
 
         if changed:
             items.sort(key = lambda i: i["index"])
+            # We need optional extruder to be last, so add it after we do sorting.
+            # This way we can simply intrepret the -1 of the index as the last item (which it now always is)
+            if self._add_optional_extruder:
+                item = {
+                    "id": "",
+                    "name": "Not overridden",
+                    "color": "#ffffff",
+                    "index": -1,
+                    "definition": ""
+                }
+                items.append(item)
             self.setItems(items)
             self.modelChanged.emit()

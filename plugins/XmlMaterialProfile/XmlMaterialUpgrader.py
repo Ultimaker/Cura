@@ -21,7 +21,7 @@ class XmlMaterialUpgrader(VersionUpgrade):
 
     def _xmlVersionToSettingVersion(self, xml_version: str) -> int:
         if xml_version == "1.3":
-            return 1
+            return 2
         return 0 #Older than 1.3.
 
     def upgradeMaterial(self, serialised, filename):

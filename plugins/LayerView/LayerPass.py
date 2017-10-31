@@ -82,12 +82,12 @@ class LayerPass(RenderPass):
                     start = 0
                     end = 0
                     element_counts = layer_data.getElementCounts()
-                    for layer, counts in element_counts.items():
+                    for layer in sorted(element_counts.keys()):
                         if layer > self._layer_view._current_layer_num:
                             break
                         if self._layer_view._minimum_layer_num > layer:
-                            start += counts
-                        end += counts
+                            start += element_counts[layer]
+                        end += element_counts[layer]
 
                     # This uses glDrawRangeElements internally to only draw a certain range of lines.
                     batch = RenderBatch(self._layer_shader, type = RenderBatch.RenderType.Solid, mode = RenderBatch.RenderMode.Lines, range = (start, end))

@@ -10,6 +10,7 @@ import UM 1.1 as UM
 SettingItem
 {
     id: base
+    property var focusItem: control
 
     contents: ComboBox
     {
@@ -33,21 +34,29 @@ SettingItem
             {
                 color:
                 {
-                    if (!enabled)
+                    if(!enabled)
                     {
                         return UM.Theme.getColor("setting_control_disabled")
                     }
-                    if(control.hovered || base.activeFocus)
+                    if(control.hovered || control.activeFocus)
                     {
                         return UM.Theme.getColor("setting_control_highlight")
                     }
-                    else
-                    {
-                        return UM.Theme.getColor("setting_control")
-                    }
+                    return UM.Theme.getColor("setting_control")
                 }
-                border.width: UM.Theme.getSize("default_lining").width;
-                border.color: !enabled ? UM.Theme.getColor("setting_control_disabled_border") : control.hovered ? UM.Theme.getColor("setting_control_border_highlight") : UM.Theme.getColor("setting_control_border");
+                border.width: UM.Theme.getSize("default_lining").width
+                border.color:
+                {
+                    if(!enabled)
+                    {
+                        return UM.Theme.getColor("setting_control_disabled_border")
+                    }
+                    if(control.hovered || control.activeFocus)
+                    {
+                        return UM.Theme.getColor("setting_control_border_highlight")
+                    }
+                    return UM.Theme.getColor("setting_control_border")
+                }
             }
             label: Item
             {
@@ -86,7 +95,28 @@ SettingItem
             }
         }
 
-        onActivated: { forceActiveFocus(); propertyProvider.setPropertyValue("value", definition.options[index].key) }
+        onActivated:
+        {
+            forceActiveFocus();
+            propertyProvider.setPropertyValue("value", definition.options[index].key);
+        }
+
+        onActiveFocusChanged:
+        {
+            if(activeFocus)
+            {
+                base.focusReceived();
+            }
+        }
+
+        Keys.onTabPressed:
+        {
+            base.setActiveFocusToNextSetting(true)
+        }
+        Keys.onBacktabPressed:
+        {
+            base.setActiveFocusToNextSetting(false)
+        }
 
         Binding
         {

@@ -142,6 +142,7 @@ Item
 
         style: UM.Theme.styles.scrollview;
         flickableItem.flickableDirection: Flickable.VerticalFlick;
+        __wheelAreaScrollSpeed: 75; // Scroll three lines in one scroll event
 
         ListView
         {
@@ -167,6 +168,8 @@ Item
                 }
                 onVisibilityChanged: Cura.SettingInheritanceManager.forceUpdate()
             }
+
+            property var indexWithFocus: -1
 
             delegate: Loader
             {
@@ -195,7 +198,7 @@ Item
                 //Qt5.4.2 and earlier has a bug where this causes a crash: https://bugreports.qt.io/browse/QTBUG-35989
                 //In addition, while it works for 5.5 and higher, the ordering of the actual combo box drop down changes,
                 //causing nasty issues when selecting different options. So disable asynchronous loading of enum type completely.
-                asynchronous: model.type != "enum" && model.type != "extruder"
+                asynchronous: model.type != "enum" && model.type != "extruder" && model.type != "optional_extruder"
                 active: model.type != undefined
 
                 source:
@@ -218,6 +221,8 @@ Item
                             return "SettingTextField.qml"
                         case "category":
                             return "SettingCategory.qml"
+                        case "optional_extruder":
+                            return "SettingOptionalExtruder.qml"
                         default:
                             return "SettingUnknown.qml"
                     }
@@ -233,10 +238,16 @@ Item
                     when: model.settable_per_extruder || (inheritStackProvider.properties.limit_to_extruder != null && inheritStackProvider.properties.limit_to_extruder >= 0);
                     value:
                     {
+                        // associate this binding with Cura.MachineManager.activeMachineId in the beginning so this
+                        // binding will be triggered when activeMachineId is changed too.
+                        // Otherwise, if this value only depends on the extruderIds, it won't get updated when the
+                        // machine gets changed.
+                        var activeMachineId = Cura.MachineManager.activeMachineId;
+
                         if(!model.settable_per_extruder || machineExtruderCount.properties.value == 1)
                         {
                             //Not settable per extruder or there only is global, so we must pick global.
-                            return Cura.MachineManager.activeMachineId;
+                            return activeMachineId;
                         }
                         if(inheritStackProvider.properties.limit_to_extruder != null && inheritStackProvider.properties.limit_to_extruder >= 0)
                         {
@@ -249,7 +260,7 @@ Item
                             return ExtruderManager.activeExtruderStackId;
                         }
                         //No extruder tab is selected. Pick the global stack. Shouldn't happen any more since we removed the global tab.
-                        return Cura.MachineManager.activeMachineId;
+                        return activeMachineId;
                     }
                 }
 
@@ -296,10 +307,52 @@ Item
                         }
                         Cura.SettingInheritanceManager.manualRemoveOverride(category_id)
                     }
+                    onFocusReceived:
+                    {
+                        contents.indexWithFocus = index;
+                        animateContentY.from = contents.contentY;
+                        contents.positionViewAtIndex(index, ListView.Contain);
+                        animateContentY.to = contents.contentY;
+                        animateContentY.running = true;
+                    }
+                    onSetActiveFocusToNextSetting:
+                    {
+                        if(forward == undefined || forward)
+                        {
+                            contents.currentIndex = contents.indexWithFocus + 1;
+                            while(contents.currentItem && contents.currentItem.height <= 0)
+                            {
+                                contents.currentIndex++;
+                            }
+                            if(contents.currentItem)
+                            {
+                                contents.currentItem.item.focusItem.forceActiveFocus();
+                            }
+                        }
+                        else
+                        {
+                            contents.currentIndex = contents.indexWithFocus - 1;
+                            while(contents.currentItem && contents.currentItem.height <= 0)
+                            {
+                                contents.currentIndex--;
+                            }
+                            if(contents.currentItem)
+                            {
+                                contents.currentItem.item.focusItem.forceActiveFocus();
+                            }
+                        }
+                    }
                 }
             }
 
             UM.I18nCatalog { id: catalog; name: "cura"; }
+
+            NumberAnimation {
+                id: animateContentY
+                target: contents
+                property: "contentY"
+                duration: 50
+            }
 
             add: Transition {
                 SequentialAnimation {

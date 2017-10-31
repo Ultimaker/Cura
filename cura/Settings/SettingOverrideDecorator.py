@@ -5,13 +5,13 @@ import copy
 
 from UM.Scene.SceneNodeDecorator import SceneNodeDecorator
 from UM.Signal import Signal, signalemitter
-from UM.Settings.ContainerStack import ContainerStack
 from UM.Settings.InstanceContainer import InstanceContainer
 from UM.Settings.ContainerRegistry import ContainerRegistry
 from UM.Logger import Logger
 
 from UM.Application import Application
 
+from cura.Settings.PerObjectContainerStack import PerObjectContainerStack
 from cura.Settings.ExtruderManager import ExtruderManager
 
 ##  A decorator that adds a container stack to a Node. This stack should be queried for all settings regarding
@@ -24,10 +24,9 @@ class SettingOverrideDecorator(SceneNodeDecorator):
 
     def __init__(self):
         super().__init__()
-        self._stack = ContainerStack(stack_id = id(self))
+        self._stack = PerObjectContainerStack(stack_id = id(self))
         self._stack.setDirty(False)  # This stack does not need to be saved.
-        self._instance = InstanceContainer(container_id = "SettingOverrideInstanceContainer")
-        self._stack.addContainer(self._instance)
+        self._stack.addContainer(InstanceContainer(container_id = "SettingOverrideInstanceContainer"))
 
         if ExtruderManager.getInstance().extruderCount > 1:
             self._extruder_stack = ExtruderManager.getInstance().getExtruderStack(0).getId()
@@ -46,13 +45,14 @@ class SettingOverrideDecorator(SceneNodeDecorator):
         ## Create a fresh decorator object
         deep_copy = SettingOverrideDecorator()
         ## Copy the instance
-        deep_copy._instance = copy.deepcopy(self._instance, memo)
+        instance_container = copy.deepcopy(self._stack.getContainer(0), memo)
+
+        ## Set the copied instance as the first (and only) instance container of the stack.
+        deep_copy._stack.replaceContainer(0, instance_container)
 
         # Properly set the right extruder on the copy
         deep_copy.setActiveExtruder(self._extruder_stack)
 
-        ## Set the copied instance as the first (and only) instance container of the stack.
-        deep_copy._stack.replaceContainer(0, deep_copy._instance)
         return deep_copy
 
     ##  Gets the currently active extruder to print this object with.
