@@ -919,13 +919,8 @@ class BuildVolume(SceneNode):
     #   \return The property of the specified setting in the specified extruder.
     def _getSettingFromExtruder(self, setting_key, extruder_setting_key, prop = "value"):
         extruder_index = self._global_container_stack.getProperty(extruder_setting_key, "value")
-
-        # TODO: remove this - CURA-4482
-        if str(extruder_index) == "-1":  # If extruder index is -1 use global instead
-            extruder_stack = self._global_container_stack
-        else:
-            extruder_stack_id = ExtruderManager.getInstance().extruderIds[str(extruder_index)]
-            extruder_stack = ContainerRegistry.getInstance().findContainerStacks(id = extruder_stack_id)[0]
+        extruder_stack_id = ExtruderManager.getInstance().extruderIds[str(extruder_index)]
+        extruder_stack = ContainerRegistry.getInstance().findContainerStacks(id = extruder_stack_id)[0]
 
         value = extruder_stack.getProperty(setting_key, prop)
         setting_type = extruder_stack.getProperty(setting_key, "type")

@@ -340,8 +340,6 @@ class MachineManager(QObject):
         old_active_container_stack = self._active_container_stack
 
         self._active_container_stack = ExtruderManager.getInstance().getActiveExtruderStack()
-        # if not self._active_container_stack:
-        #     self._active_container_stack = self._global_container_stack
 
         self._error_check_timer.start()
 

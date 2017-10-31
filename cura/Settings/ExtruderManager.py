@@ -193,6 +193,7 @@ class ExtruderManager(QObject):
             if global_container_stack.getId() in self._extruder_trains:
                 if str(self._active_extruder_index) in self._extruder_trains[global_container_stack.getId()]:
                     return self._extruder_trains[global_container_stack.getId()][str(self._active_extruder_index)]
+
         return None
 
     ##  Get an extruder stack by index
@@ -434,6 +435,10 @@ class ExtruderManager(QObject):
         support_roof_enabled = False
 
         scene_root = Application.getInstance().getController().getScene().getRoot()
+
+        # If no extruders are registered in the extruder manager yet, return an empty array
+        if len(self.extruderIds) == 0:
+            return []
 
         # Get the extruders of all printable meshes in the scene
         meshes = [node for node in DepthFirstIterator(scene_root) if type(node) is SceneNode and node.isSelectable()]
