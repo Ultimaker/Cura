@@ -944,7 +944,7 @@ class MachineManager(QObject):
             })
 
         # also find a global quality for the machine
-        global_quality = quality_manager.findQualityByQualityType(quality_type, global_machine_definition, [], global_quality = True)
+        global_quality = quality_manager.findQualityByQualityType(quality_type, global_machine_definition, [], global_quality = "True")
 
         # if there is not global quality but we're using a single extrusion machine, copy the quality of the first extruder - CURA-4482
         if not global_quality and len(extruder_stacks) == 1:
