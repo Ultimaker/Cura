@@ -946,11 +946,11 @@ class MachineManager(QObject):
         extruder_stacks = ExtruderManager.getInstance().getActiveExtruderStacks()
 
         # find qualities for extruders
-        for stack in extruder_stacks:
-            material = stack.material
+        for extruder_stack in extruder_stacks:
+            material = extruder_stack.material
 
             # TODO: fix this
-            if self._new_material_container and stack.getId() == self._active_container_stack.getId():
+            if self._new_material_container and extruder_stack.getId() == self._active_container_stack.getId():
                 material = self._new_material_container
 
             quality = quality_manager.findQualityByQualityType(quality_type, global_machine_definition, [material])
@@ -960,7 +960,7 @@ class MachineManager(QObject):
                 quality = self._empty_quality_container
 
             result.append({
-                "stack": stack,
+                "stack": extruder_stack,
                 "quality": quality,
                 "quality_changes": empty_quality_changes
             })
@@ -1003,7 +1003,6 @@ class MachineManager(QObject):
             Logger.log("e", "Could not find the global quality changes container with name %s", quality_changes_name)
             return None
 
-        # TODO: remove this - CURA-4482
         material = global_container_stack.material
 
         # find a quality type that matches both machine and materials
@@ -1024,7 +1023,6 @@ class MachineManager(QObject):
 
             if quality_changes_list:
                 quality_changes = quality_changes_list[0]
-            # TODO: remove this - CURA-4482
             else:
                 quality_changes = global_quality_changes
             if not quality_changes:
