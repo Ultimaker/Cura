@@ -150,17 +150,12 @@ class MachineSettingsAction(MachineAction):
         definition_changes_container.setProperty("machine_extruder_count", "value", extruder_count)
 
         # Make sure one of the extruder stacks is active
-        if extruder_manager.activeExtruderIndex == -1:
-            extruder_manager.setActiveExtruderIndex(0)
-
-        # Move settable_per_extruder values out of the global container
-        global_user_container = self._global_container_stack.getTop()
-
-        # Make sure one of the extruder stacks is active
         extruder_manager.setActiveExtruderIndex(0)
 
         # Move settable_per_extruder values out of the global container
         # After CURA-4482 this should not be the case anymore, but we still want to support older project files.
+        global_user_container = self._global_container_stack.getTop()
+
         if previous_extruder_count == 1:
             extruder_stacks = ExtruderManager.getInstance().getActiveExtruderStacks()
             global_user_container = self._global_container_stack.getTop()
