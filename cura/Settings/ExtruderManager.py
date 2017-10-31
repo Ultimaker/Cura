@@ -630,7 +630,7 @@ class ExtruderManager(QObject):
         }
 
         result = []
-        for extruder in ExtruderManager.getMachineExtruders(global_stack.getId()):
+        for extruder in ExtruderManager.getInstance().getMachineExtruders(global_stack.getId()):
             # only include values from extruders that are "active" for the current machine instance
             if int(extruder.getMetaDataEntry("position")) >= global_stack.getProperty("machine_extruder_count", "value", context = context):
                 continue
