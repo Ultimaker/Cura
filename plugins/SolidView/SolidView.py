@@ -46,19 +46,10 @@ class SolidView(View):
             self._disabled_shader.setUniformValue("u_diffuseColor2", Color(*theme.getColor("model_unslicable_alt").getRgb()))
             self._disabled_shader.setUniformValue("u_width", 50.0)
 
-        multi_extrusion = False
-
         global_container_stack = Application.getInstance().getGlobalContainerStack()
         if global_container_stack:
-            multi_extrusion = global_container_stack.getProperty("machine_extruder_count", "value") > 1
-
-            if multi_extrusion:
-                support_extruder_nr = global_container_stack.getProperty("support_extruder_nr", "value")
-                support_angle_stack = ExtruderManager.getInstance().getExtruderStack(support_extruder_nr)
-                if not support_angle_stack:
-                    support_angle_stack = global_container_stack
-            else:
-                support_angle_stack = global_container_stack
+            support_extruder_nr = global_container_stack.getProperty("support_extruder_nr", "value")
+            support_angle_stack = ExtruderManager.getInstance().getExtruderStack(support_extruder_nr)
 
             if Preferences.getInstance().getValue("view/show_overhang"):
                 angle = support_angle_stack.getProperty("support_angle", "value")
@@ -71,33 +62,26 @@ class SolidView(View):
             else:
                 self._enabled_shader.setUniformValue("u_overhangAngle", math.cos(math.radians(0)))
 
-
         for node in DepthFirstIterator(scene.getRoot()):
             if not node.render(renderer):
                 if node.getMeshData() and node.isVisible():
                     uniforms = {}
                     shade_factor = 1.0
 
-                    if not multi_extrusion:
-                        if global_container_stack:
-                            material = global_container_stack.findContainer({ "type": "material" })
-                            material_color = material.getMetaDataEntry("color_code", default = self._extruders_model.defaultColors[0]) if material else self._extruders_model.defaultColors[0]
-                        else:
-                            material_color = self._extruders_model.defaultColors[0]
-                    else:
-                        # Get color to render this mesh in from ExtrudersModel
-                        extruder_index = 0
-                        extruder_id = node.callDecoration("getActiveExtruder")
-                        if extruder_id:
-                            extruder_index = max(0, self._extruders_model.find("id", extruder_id))
-                        try:
-                            material_color = self._extruders_model.getItem(extruder_index)["color"]
-                        except KeyError:
-                            material_color = self._extruders_model.defaultColors[0]
+                    # Get color to render this mesh in from ExtrudersModel
+                    extruder_index = 0
+                    extruder_id = node.callDecoration("getActiveExtruder")
+                    if extruder_id:
+                        extruder_index = max(0, self._extruders_model.find("id", extruder_id))
+                    try:
+                        material_color = self._extruders_model.getItem(extruder_index)["color"]
+                    except KeyError:
+                        material_color = self._extruders_model.defaultColors[0]
 
-                        if extruder_index != ExtruderManager.getInstance().activeExtruderIndex:
-                            # Shade objects that are printed with the non-active extruder 25% darker
-                            shade_factor = 0.6
+                    if extruder_index != ExtruderManager.getInstance().activeExtruderIndex:
+                        # Shade objects that are printed with the non-active extruder 25% darker
+                        shade_factor = 0.6
+
                     try:
                         # Colors are passed as rgb hex strings (eg "#ffffff"), and the shader needs
                         # an rgba list of floats (eg [1.0, 1.0, 1.0, 1.0])
