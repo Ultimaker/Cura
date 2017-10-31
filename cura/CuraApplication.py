@@ -1,5 +1,5 @@
 # Copyright (c) 2017 Ultimaker B.V.
-# Cura is released under the terms of the AGPLv3 or higher.
+# Cura is released under the terms of the LGPLv3 or higher.
 
 from PyQt5.QtNetwork import QLocalServer
 from PyQt5.QtNetwork import QLocalSocket
@@ -104,7 +104,7 @@ class CuraApplication(QtApplication):
     # SettingVersion represents the set of settings available in the machine/extruder definitions.
     # You need to make sure that this version number needs to be increased if there is any non-backwards-compatible
     # changes of the settings.
-    SettingVersion = 2
+    SettingVersion = 3
 
     class ResourceTypes:
         QmlFiles = Resources.UserType + 1
@@ -202,13 +202,16 @@ class CuraApplication(QtApplication):
 
         self._additional_components = {} # Components to add to certain areas in the interface
 
-        super().__init__(name = "cura", version = CuraVersion, buildtype = CuraBuildType)
+        super().__init__(name = "cura", version = CuraVersion, buildtype = CuraBuildType,
+                         tray_icon_name = "cura-icon-32.png")
+
+        self.default_theme = "cura-light"
 
         self.setWindowIcon(QIcon(Resources.getPath(Resources.Images, "cura-icon.png")))
 
         self.setRequiredPlugins([
             "CuraEngineBackend",
-            "MeshView",
+            "SolidView",
             "LayerView",
             "STLReader",
             "SelectionTool",
@@ -217,7 +220,8 @@ class CuraApplication(QtApplication):
             "LocalFileOutputDevice",
             "TranslateTool",
             "FileLogger",
-            "XmlMaterialProfile"
+            "XmlMaterialProfile",
+            "PluginBrowser"
         ])
         self._physics = None
         self._volume = None
@@ -1179,6 +1183,7 @@ class CuraApplication(QtApplication):
         group_node = SceneNode()
         group_decorator = GroupDecorator()
         group_node.addDecorator(group_decorator)
+        group_node.addDecorator(ConvexHullDecorator())
         group_node.setParent(self.getController().getScene().getRoot())
         group_node.setSelectable(True)
         center = Selection.getSelectionCenter()
@@ -1289,7 +1294,7 @@ class CuraApplication(QtApplication):
                 message = Message(
                     self._i18n_catalog.i18nc("@info:status",
                                        "Only one G-code file can be loaded at a time. Skipped importing {0}",
-                                       filename))
+                                       filename), title = self._i18n_catalog.i18nc("@info:title", "Warning"))
                 message.show()
                 return
             # If file being loaded is non-slicable file, then prevent loading of any other files
@@ -1298,7 +1303,7 @@ class CuraApplication(QtApplication):
                 message = Message(
                     self._i18n_catalog.i18nc("@info:status",
                                        "Can't open any other file if G-code is loading. Skipped importing {0}",
-                                       filename))
+                                       filename), title = self._i18n_catalog.i18nc("@info:title", "Error"))
                 message.show()
                 return
 
@@ -1353,6 +1358,10 @@ class CuraApplication(QtApplication):
                 if node.getBoundingBox().width < self._volume.getBoundingBox().width or node.getBoundingBox().depth < self._volume.getBoundingBox().depth:
                     # Find node location
                     offset_shape_arr, hull_shape_arr = ShapeArray.fromNode(node, min_offset = min_offset)
+
+                    # If a model is to small then it will not contain any points
+                    if offset_shape_arr is None and hull_shape_arr is None:
+                        return
 
                     # Step is for skipping tests to make it a lot faster. it also makes the outcome somewhat rougher
                     node, _ = arranger.findNodePlacement(node, offset_shape_arr, hull_shape_arr, step = 10)

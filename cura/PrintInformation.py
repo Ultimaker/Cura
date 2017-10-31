@@ -1,5 +1,5 @@
-# Copyright (c) 2015 Ultimaker B.V.
-# Cura is released under the terms of the AGPLv3 or higher.
+# Copyright (c) 2017 Ultimaker B.V.
+# Cura is released under the terms of the LGPLv3 or higher.
 
 from PyQt5.QtCore import QObject, pyqtSignal, pyqtProperty
 from UM.FlameProfiler import pyqtSlot
@@ -51,20 +51,7 @@ class PrintInformation(QObject):
     def __init__(self, parent = None):
         super().__init__(parent)
 
-        self._current_print_time = Duration(None, self)
-        self._print_times_per_feature = {
-            "none": Duration(None, self),
-            "inset_0": Duration(None, self),
-            "inset_x": Duration(None, self),
-            "skin": Duration(None, self),
-            "support": Duration(None, self),
-            "skirt": Duration(None, self),
-            "infill": Duration(None, self),
-            "support_infill": Duration(None, self),
-            "travel": Duration(None, self),
-            "retract": Duration(None, self),
-            "support_interface": Duration(None, self)
-        }
+        self.initializeCuraMessagePrintTimeProperties()
 
         self._material_lengths = []
         self._material_weights = []
@@ -76,11 +63,12 @@ class PrintInformation(QObject):
         if self._backend:
             self._backend.printDurationMessage.connect(self._onPrintDurationMessage)
 
-        self._job_name = ""
+        self._base_name = ""
         self._abbr_machine = ""
+        self._job_name = ""
 
-        Application.getInstance().globalContainerStackChanged.connect(self._setAbbreviatedMachineName)
-        Application.getInstance().fileLoaded.connect(self.setJobName)
+        Application.getInstance().globalContainerStackChanged.connect(self._updateJobName)
+        Application.getInstance().fileLoaded.connect(self.setBaseName)
 
         Preferences.getInstance().preferenceChanged.connect(self._onPreferencesChanged)
 
@@ -89,6 +77,33 @@ class PrintInformation(QObject):
         self._onActiveMaterialChanged()
 
         self._material_amounts = []
+
+
+    # Crate cura message translations and using translation keys initialize empty time Duration object for total time
+    # and time for each feature
+    def initializeCuraMessagePrintTimeProperties(self):
+        self._current_print_time = Duration(None, self)
+
+        self._print_time_message_translations = {
+            "inset_0": catalog.i18nc("@tooltip", "Outer Wall"),
+            "inset_x": catalog.i18nc("@tooltip", "Inner Walls"),
+            "skin": catalog.i18nc("@tooltip", "Skin"),
+            "infill": catalog.i18nc("@tooltip", "Infill"),
+            "support_infill": catalog.i18nc("@tooltip", "Support Infill"),
+            "support_interface": catalog.i18nc("@tooltip", "Support Interface"),
+            "support": catalog.i18nc("@tooltip", "Support"),
+            "skirt": catalog.i18nc("@tooltip", "Skirt"),
+            "travel": catalog.i18nc("@tooltip", "Travel"),
+            "retract": catalog.i18nc("@tooltip", "Retractions"),
+            "none": catalog.i18nc("@tooltip", "Other")
+        }
+
+        self._print_time_message_values = {}
+
+        # Full fill message values using keys from _print_time_message_translations
+        for key in self._print_time_message_translations.keys():
+            self._print_time_message_values[key] = Duration(None, self)
+
 
     currentPrintTimeChanged = pyqtSignal()
 
@@ -105,10 +120,6 @@ class PrintInformation(QObject):
     @pyqtProperty(Duration, notify = currentPrintTimeChanged)
     def currentPrintTime(self):
         return self._current_print_time
-
-    @pyqtProperty("QVariantMap", notify = currentPrintTimeChanged)
-    def printTimesPerFeature(self):
-        return self._print_times_per_feature
 
     materialLengthsChanged = pyqtSignal()
 
@@ -128,21 +139,27 @@ class PrintInformation(QObject):
     def materialCosts(self):
         return self._material_costs
 
-    def _onPrintDurationMessage(self, time_per_feature, material_amounts):
-        total_time = 0
-        for feature, time in time_per_feature.items():
-            if time != time:  # Check for NaN. Engine can sometimes give us weird values.
-                self._print_times_per_feature[feature].setDuration(0)
-                Logger.log("w", "Received NaN for print duration message")
-                continue
-            total_time += time
-            self._print_times_per_feature[feature].setDuration(time)
-        self._current_print_time.setDuration(total_time)
+    def _onPrintDurationMessage(self, print_time, material_amounts):
 
+        self._updateTotalPrintTimePerFeature(print_time)
         self.currentPrintTimeChanged.emit()
 
         self._material_amounts = material_amounts
         self._calculateInformation()
+
+    def _updateTotalPrintTimePerFeature(self, print_time):
+        total_estimated_time = 0
+
+        for feature, time in print_time.items():
+            if time != time:  # Check for NaN. Engine can sometimes give us weird values.
+                self._print_time_message_values.get(feature).setDuration(0)
+                Logger.log("w", "Received NaN for print duration message")
+                continue
+
+            total_estimated_time += time
+            self._print_time_message_values.get(feature).setDuration(time)
+
+        self._current_print_time.setDuration(total_estimated_time)
 
     def _calculateInformation(self):
         if Application.getInstance().getGlobalContainerStack() is None:
@@ -221,15 +238,8 @@ class PrintInformation(QObject):
 
     @pyqtSlot(str)
     def setJobName(self, name):
-        # Ensure that we don't use entire path but only filename
-        name = os.path.basename(name)
-
-        # when a file is opened using the terminal; the filename comes from _onFileLoaded and still contains its
-        # extension. This cuts the extension off if necessary.
-        name = os.path.splitext(name)[0]
-        if self._job_name != name:
-            self._job_name = name
-            self.jobNameChanged.emit()
+        self._job_name = name
+        self.jobNameChanged.emit()
 
     jobNameChanged = pyqtSignal()
 
@@ -237,21 +247,44 @@ class PrintInformation(QObject):
     def jobName(self):
         return self._job_name
 
-    @pyqtSlot(str, result = str)
-    def createJobName(self, base_name):
-        if base_name == "":
-            return ""
-        base_name = self._stripAccents(base_name)
+    def _updateJobName(self):
+        if self._base_name == "":
+            self._job_name = ""
+            self.jobNameChanged.emit()
+            return
+
+        base_name = self._stripAccents(self._base_name)
         self._setAbbreviatedMachineName()
         if self._pre_sliced:
-            return catalog.i18nc("@label", "Pre-sliced file {0}", base_name)
+            self._job_name = catalog.i18nc("@label", "Pre-sliced file {0}", base_name)
         elif Preferences.getInstance().getValue("cura/jobname_prefix"):
             # Don't add abbreviation if it already has the exact same abbreviation.
             if base_name.startswith(self._abbr_machine + "_"):
-                return base_name
-            return self._abbr_machine + "_" + base_name
+                self._job_name = base_name
+            else:
+                self._job_name = self._abbr_machine + "_" + base_name
         else:
-            return base_name
+            self._job_name = base_name
+
+        self.jobNameChanged.emit()
+
+    @pyqtProperty(str)
+    def baseName(self):
+        return self._base_name
+
+    @pyqtSlot(str)
+    def setBaseName(self, base_name):
+        # Ensure that we don't use entire path but only filename
+        name = os.path.basename(base_name)
+
+        # when a file is opened using the terminal; the filename comes from _onFileLoaded and still contains its
+        # extension. This cuts the extension off if necessary.
+        name = os.path.splitext(name)[0]
+
+        # name is "" when I first had some meshes and afterwards I deleted them so the naming should start again
+        if name == "" or (self._base_name == "" and self._base_name != name):
+            self._base_name = name
+            self._updateJobName()
 
     ##  Created an acronymn-like abbreviated machine name from the currently active machine name
     #   Called each time the global stack is switched
@@ -276,4 +309,24 @@ class PrintInformation(QObject):
 
     ##  Utility method that strips accents from characters (eg: â -> a)
     def _stripAccents(self, str):
-       return ''.join(char for char in unicodedata.normalize('NFD', str) if unicodedata.category(char) != 'Mn')
+        return ''.join(char for char in unicodedata.normalize('NFD', str) if unicodedata.category(char) != 'Mn')
+
+    @pyqtSlot(result = "QVariantMap")
+    def getFeaturePrintTimes(self):
+        result = {}
+        for feature, time in self._print_time_message_values.items():
+            if feature in self._print_time_message_translations:
+                result[self._print_time_message_translations[feature]] = time
+            else:
+                result[feature] = time
+        return result
+
+    # Simulate message with zero time duration
+    def setToZeroPrintInformation(self):
+        temp_message = {}
+        for key in self._print_time_message_values.keys():
+            temp_message[key] = 0
+
+        temp_material_amounts = [0]
+        self._onPrintDurationMessage(temp_message, temp_material_amounts)
+

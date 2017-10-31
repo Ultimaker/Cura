@@ -1,5 +1,5 @@
 // Copyright (c) 2016 Ultimaker B.V.
-// Cura is released under the terms of the AGPLv3 or higher.
+// Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.1
 import QtQuick.Controls 1.1
@@ -10,13 +10,16 @@ import UM 1.1 as UM
 
 UM.Dialog
 {
+    id: base
     title: catalog.i18nc("@title:window", "Open Project")
 
-    width: 500
-    height: 400
+    minimumWidth: 500 * screenScaleFactor
+    minimumHeight: 450 * screenScaleFactor
+    width: minimumWidth
+    height: minimumHeight
 
-    property int comboboxHeight: 15
-    property int spacerHeight: 10
+    property int comboboxHeight: 15 * screenScaleFactor
+    property int spacerHeight: 10 * screenScaleFactor
 
     onClosing: manager.notifyClosed()
     onVisibleChanged:
@@ -28,10 +31,11 @@ UM.Dialog
             materialResolveComboBox.currentIndex = 0
         }
     }
+
     Item
     {
         anchors.fill: parent
-        anchors.margins: 20
+        anchors.margins: 20 * screenScaleFactor
 
         UM.I18nCatalog
         {
@@ -59,7 +63,7 @@ UM.Dialog
         Column
         {
             anchors.fill: parent
-            spacing: 2
+            spacing: 2 * screenScaleFactor
             Label
             {
                 id: titleLabel
@@ -373,9 +377,9 @@ UM.Dialog
             enabled: true
             anchors.bottom: parent.bottom
             anchors.right: ok_button.left
-            anchors.rightMargin:2
+            anchors.rightMargin: 2 * screenScaleFactor
         }
-         Button
+        Button
         {
             id: ok_button
             text: catalog.i18nc("@action:button","Open");
@@ -383,5 +387,11 @@ UM.Dialog
             anchors.bottom: parent.bottom
             anchors.right: parent.right
         }
+    }
+
+    function reject() {
+        manager.onCancelButtonClicked();
+        base.visible = false;
+        base.rejected();
     }
 }

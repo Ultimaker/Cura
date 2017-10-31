@@ -1,5 +1,5 @@
 // Copyright (c) 2017 Ultimaker B.V.
-// Cura is released under the terms of the AGPLv3 or higher.
+// Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.2
 import QtQuick.Controls 1.1
@@ -24,20 +24,20 @@ Column
     {
         id: connectedPrinterHeader
         width: parent.width
-        height: childrenRect.height + UM.Theme.getSize("default_margin").height * 2
+        height: Math.floor(childrenRect.height + UM.Theme.getSize("default_margin").height * 2)
         color: UM.Theme.getColor("setting_category")
 
-        Text
+        Label
         {
             id: connectedPrinterNameLabel
-            text: connectedPrinter != null ? connectedPrinter.name : catalog.i18nc("@info:status", "No printer connected")
             font: UM.Theme.getFont("large")
             color: UM.Theme.getColor("text")
             anchors.left: parent.left
             anchors.top: parent.top
             anchors.margins: UM.Theme.getSize("default_margin").width
+            text: connectedPrinter != null ? connectedPrinter.name : catalog.i18nc("@info:status", "No printer connected")
         }
-        Text
+        Label
         {
             id: connectedPrinterAddressLabel
             text: (connectedPrinter != null && connectedPrinter.address != null) ? connectedPrinter.address : ""
@@ -47,7 +47,7 @@ Column
             anchors.right: parent.right
             anchors.margins: UM.Theme.getSize("default_margin").width
         }
-        Text
+        Label
         {
             text: connectedPrinter != null ? connectedPrinter.connectionText : catalog.i18nc("@info:status", "The printer is not connected.")
             color: connectedPrinter != null && connectedPrinter.acceptsCommands ? UM.Theme.getColor("setting_control_text") : UM.Theme.getColor("setting_control_disabled_text")
@@ -82,25 +82,58 @@ Column
                 {
                     id: extruderRectangle
                     color: UM.Theme.getColor("sidebar")
-                    width: index == machineExtruderCount.properties.value - 1 && index % 2 == 0 ? extrudersGrid.width : extrudersGrid.width / 2 - UM.Theme.getSize("sidebar_lining_thin").width / 2
+                    width: index == machineExtruderCount.properties.value - 1 && index % 2 == 0 ? extrudersGrid.width : Math.floor(extrudersGrid.width / 2 - UM.Theme.getSize("sidebar_lining_thin").width / 2)
                     height: UM.Theme.getSize("sidebar_extruder_box").height
 
-                    Text //Extruder name.
+                    Label //Extruder name.
                     {
-                        text: ExtruderManager.getExtruderName(index) != "" ? ExtruderManager.getExtruderName(index) : catalog.i18nc("@label", "Hotend")
+                        text: ExtruderManager.getExtruderName(index) != "" ? ExtruderManager.getExtruderName(index) : catalog.i18nc("@label", "Extruder")
                         color: UM.Theme.getColor("text")
                         font: UM.Theme.getFont("default")
                         anchors.left: parent.left
                         anchors.top: parent.top
                         anchors.margins: UM.Theme.getSize("default_margin").width
                     }
-                    Text //Temperature indication.
+
+                    Label //Target temperature.
+                    {
+                        id: extruderTargetTemperature
+                        text: (connectedPrinter != null && connectedPrinter.hotendIds[index] != null && connectedPrinter.targetHotendTemperatures[index] != null) ? Math.round(connectedPrinter.targetHotendTemperatures[index]) + "°C" : ""
+                        font: UM.Theme.getFont("small")
+                        color: UM.Theme.getColor("text_inactive")
+                        anchors.right: parent.right
+                        anchors.rightMargin: UM.Theme.getSize("default_margin").width
+                        anchors.bottom: extruderTemperature.bottom
+
+                        MouseArea //For tooltip.
+                        {
+                            id: extruderTargetTemperatureTooltipArea
+                            hoverEnabled: true
+                            anchors.fill: parent
+                            onHoveredChanged:
+                            {
+                                if (containsMouse)
+                                {
+                                    base.showTooltip(
+                                        base,
+                                        {x: 0, y: extruderTargetTemperature.mapToItem(base, 0, -parent.height / 4).y},
+                                        catalog.i18nc("@tooltip", "The target temperature of the hotend. The hotend will heat up or cool down towards this temperature. If this is 0, the hotend heating is turned off.")
+                                    );
+                                }
+                                else
+                                {
+                                    base.hideTooltip();
+                                }
+                            }
+                        }
+                    }
+                    Label //Temperature indication.
                     {
                         id: extruderTemperature
                         text: (connectedPrinter != null && connectedPrinter.hotendIds[index] != null && connectedPrinter.hotendTemperatures[index] != null) ? Math.round(connectedPrinter.hotendTemperatures[index]) + "°C" : ""
                         color: UM.Theme.getColor("text")
                         font: UM.Theme.getFont("large")
-                        anchors.right: parent.right
+                        anchors.right: extruderTargetTemperature.left
                         anchors.top: parent.top
                         anchors.margins: UM.Theme.getSize("default_margin").width
 
@@ -129,8 +162,9 @@ Column
                     Rectangle //Material colour indication.
                     {
                         id: materialColor
-                        width: materialName.height * 0.75
-                        height: materialName.height * 0.75
+                        width: Math.floor(materialName.height * 0.75)
+                        height: Math.floor(materialName.height * 0.75)
+                        radius: width / 2
                         color: (connectedPrinter != null && connectedPrinter.materialColors[index] != null && connectedPrinter.materialIds[index] != "") ? connectedPrinter.materialColors[index] : "#00000000"
                         border.width: UM.Theme.getSize("default_lining").width
                         border.color: UM.Theme.getColor("lining")
@@ -161,7 +195,7 @@ Column
                             }
                         }
                     }
-                    Text //Material name.
+                    Label //Material name.
                     {
                         id: materialName
                         text: (connectedPrinter != null && connectedPrinter.materialNames[index] != null && connectedPrinter.materialIds[index] != "") ? connectedPrinter.materialNames[index] : ""
@@ -193,7 +227,7 @@ Column
                             }
                         }
                     }
-                    Text //Variant name.
+                    Label //Variant name.
                     {
                         id: variantName
                         text: (connectedPrinter != null && connectedPrinter.hotendIds[index] != null) ? connectedPrinter.hotendIds[index] : ""
@@ -244,7 +278,7 @@ Column
         height: machineHeatedBed.properties.value == "True" ? UM.Theme.getSize("sidebar_extruder_box").height : 0
         visible: machineHeatedBed.properties.value == "True"
 
-        Text //Build plate label.
+        Label //Build plate label.
         {
             text: catalog.i18nc("@label", "Build plate")
             font: UM.Theme.getFont("default")
@@ -253,7 +287,7 @@ Column
             anchors.top: parent.top
             anchors.margins: UM.Theme.getSize("default_margin").width
         }
-        Text //Target temperature.
+        Label //Target temperature.
         {
             id: bedTargetTemperature
             text: connectedPrinter != null ? connectedPrinter.targetBedTemperature + "°C" : ""
@@ -285,7 +319,7 @@ Column
                 }
             }
         }
-        Text //Current temperature.
+        Label //Current temperature.
         {
             id: bedCurrentTemperature
             text: connectedPrinter != null ? connectedPrinter.bedTemperature + "°C" : ""
@@ -320,10 +354,10 @@ Column
         Rectangle //Input field for pre-heat temperature.
         {
             id: preheatTemperatureControl
-            color: !enabled ? UM.Theme.getColor("setting_control_disabled") : showError ? UM.Theme.getColor("setting_validation_error") : UM.Theme.getColor("setting_validation_ok")
+            color: !enabled ? UM.Theme.getColor("setting_control_disabled") : showError ? UM.Theme.getColor("setting_validation_error_background") : UM.Theme.getColor("setting_validation_ok")
             property var showError:
             {
-                if(bedTemperature.properties.maximum_value != "None" && bedTemperature.properties.maximum_value <  parseInt(preheatTemperatureInput.text))
+                if(bedTemperature.properties.maximum_value != "None" && bedTemperature.properties.maximum_value <  Math.floor(preheatTemperatureInput.text))
                 {
                     return true;
                 } else
@@ -355,7 +389,7 @@ Column
             anchors.bottomMargin: UM.Theme.getSize("default_margin").height
             width: UM.Theme.getSize("setting_control").width
             height: UM.Theme.getSize("setting_control").height
-
+            visible: connectedPrinter != null ? connectedPrinter.canPreHeatBed: true
             Rectangle //Highlight of input field.
             {
                 anchors.fill: parent
@@ -363,7 +397,7 @@ Column
                 color: UM.Theme.getColor("setting_control_highlight")
                 opacity: preheatTemperatureControl.hovered ? 1.0 : 0
             }
-            Text //Maximum temperature indication.
+            Label //Maximum temperature indication.
             {
                 text: (bedTemperature.properties.maximum_value != "None" ? bedTemperature.properties.maximum_value : "") + "°C"
                 color: UM.Theme.getColor("setting_unit")
@@ -408,9 +442,14 @@ Column
                 anchors.leftMargin: UM.Theme.getSize("setting_unit_margin").width
                 anchors.right: parent.right
                 anchors.verticalCenter: parent.verticalCenter
+                renderType: Text.NativeRendering
 
                 Component.onCompleted:
                 {
+                    if (!bedTemperature.properties.value)
+                    {
+                        text = "";
+                    }
                     if ((bedTemperature.resolve != "None" && bedTemperature.resolve) && (bedTemperature.stackLevels[0] != 0) && (bedTemperature.stackLevels[0] != 1))
                     {
                         // We have a resolve function. Indicates that the setting is not settable per extruder and that
@@ -437,7 +476,7 @@ Column
             visible: preheatCountdown.visible
             source: UM.Theme.getIcon("print_time")
             anchors.right: preheatCountdown.left
-            anchors.rightMargin: UM.Theme.getSize("default_margin").width / 2
+            anchors.rightMargin: Math.floor(UM.Theme.getSize("default_margin").width / 2)
             anchors.verticalCenter: preheatCountdown.verticalCenter
         }
 
@@ -462,7 +501,7 @@ Column
                 }
             }
         }
-        Text
+        Label
         {
             id: preheatCountdown
             text: connectedPrinter != null ? connectedPrinter.preheatBedRemainingTime : ""
@@ -478,6 +517,7 @@ Column
         {
             id: preheatButton
             height: UM.Theme.getSize("setting_control").height
+            visible: connectedPrinter != null ? connectedPrinter.canPreHeatBed: true
             enabled:
             {
                 if (!preheatTemperatureControl.enabled)
@@ -488,15 +528,15 @@ Column
                 {
                     return true; //Can always cancel if the timer is running.
                 }
-                if (bedTemperature.properties.minimum_value != "None" && parseInt(preheatTemperatureInput.text) < parseInt(bedTemperature.properties.minimum_value))
+                if (bedTemperature.properties.minimum_value != "None" && Math.floor(preheatTemperatureInput.text) < Math.floor(bedTemperature.properties.minimum_value))
                 {
                     return false; //Target temperature too low.
                 }
-                if (bedTemperature.properties.maximum_value != "None" && parseInt(preheatTemperatureInput.text) > parseInt(bedTemperature.properties.maximum_value))
+                if (bedTemperature.properties.maximum_value != "None" && Math.floor(preheatTemperatureInput.text) > Math.floor(bedTemperature.properties.maximum_value))
                 {
                     return false; //Target temperature too high.
                 }
-                if (parseInt(preheatTemperatureInput.text) == 0)
+                if (Math.floor(preheatTemperatureInput.text) == 0)
                 {
                     return false; //Setting the temperature to 0 is not allowed (since that cancels the pre-heating).
                 }
@@ -556,7 +596,7 @@ Column
                         }
                     }
 
-                    Text
+                    Label
                     {
                         id: actualLabel
                         anchors.centerIn: parent
@@ -669,22 +709,22 @@ Column
         Row
         {
             height: UM.Theme.getSize("setting_control").height
-            width: base.width - 2 * UM.Theme.getSize("default_margin").width
+            width: Math.floor(base.width - 2 * UM.Theme.getSize("default_margin").width)
             anchors.left: parent.left
             anchors.leftMargin: UM.Theme.getSize("default_margin").width
 
-            Text
+            Label
             {
-                width: parent.width * 0.4
+                width: Math.floor(parent.width * 0.4)
                 anchors.verticalCenter: parent.verticalCenter
                 text: label
                 color: connectedPrinter != null && connectedPrinter.acceptsCommands ? UM.Theme.getColor("setting_control_text") : UM.Theme.getColor("setting_control_disabled_text")
                 font: UM.Theme.getFont("default")
                 elide: Text.ElideRight
             }
-            Text
+            Label
             {
-                width: parent.width * 0.6
+                width: Math.floor(parent.width * 0.6)
                 anchors.verticalCenter: parent.verticalCenter
                 text: value
                 color: connectedPrinter != null && connectedPrinter.acceptsCommands ? UM.Theme.getColor("setting_control_text") : UM.Theme.getColor("setting_control_disabled_text")
@@ -703,7 +743,7 @@ Column
             width: base.width
             height: UM.Theme.getSize("section").height
 
-            Text
+            Label
             {
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.left: parent.left

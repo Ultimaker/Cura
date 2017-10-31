@@ -1,5 +1,5 @@
 # Copyright (c) 2016 Ultimaker B.V.
-# Cura is released under the terms of the AGPLv3 or higher.
+# Cura is released under the terms of the LGPLv3 or higher.
 
 import UM.VersionUpgrade #To indicate that a file is of incorrect format.
 import UM.VersionUpgradeManager #To schedule more files to be upgraded.

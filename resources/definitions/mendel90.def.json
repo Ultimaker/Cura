@@ -7,7 +7,6 @@
     {
         "visible": true,
         "author": "Bo Herrmannsen",
-        "category": "Other",
         "manufacturer": "Nophead",
         "file_formats": "text/x-gcode",
         "platform": "mendel90_platform.stl",
