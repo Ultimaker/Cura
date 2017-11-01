@@ -3,7 +3,10 @@
 
 import copy
 import io
-from typing import List, Optional
+import json #To parse the product-to-id mapping file.
+import os.path #To find the product-to-id mapping.
+import sys
+from typing import Dict, Optional
 import xml.etree.ElementTree as ET
 
 from UM.Resources import Resources
@@ -11,6 +14,7 @@ from UM.Logger import Logger
 from cura.CuraApplication import CuraApplication
 
 import UM.Dictionary
+from UM.PluginRegistry import PluginRegistry
 from UM.Settings.InstanceContainer import InstanceContainer
 from UM.Settings.ContainerRegistry import ContainerRegistry
 
@@ -211,9 +215,7 @@ class XmlMaterialProfile(InstanceContainer):
             machine_container_map[definition_id] = container
 
         # Map machine human-readable names to IDs
-        product_id_map = {}
-        for container in registry.findDefinitionContainersMetadata(type = "machine"):
-            product_id_map[container["name"]] = container["id"]
+        product_id_map = self.getProductIdMap()
 
         for definition_id, container in machine_container_map.items():
             definition = container.getDefinition()
@@ -513,9 +515,7 @@ class XmlMaterialProfile(InstanceContainer):
         self._dirty = False
 
         # Map machine human-readable names to IDs
-        product_id_map = {}
-        for container in ContainerRegistry.getInstance().findDefinitionContainersMetadata(type = "machine"):
-            product_id_map[container["name"]] = container["id"]
+        product_id_map = self.getProductIdMap()
 
         machines = data.iterfind("./um:settings/um:machine", self.__namespaces)
         for machine in machines:
@@ -655,6 +655,16 @@ class XmlMaterialProfile(InstanceContainer):
             return "%s %s" % (color_name, material_name)
         else:
             return material_name
+
+    ##  Gets a mapping from product names in the XML files to their definition
+    #   IDs.
+    #
+    #   This loads the mapping from a file.
+    @classmethod
+    def getProductIdMap(cls) -> Dict[str, str]:
+        product_to_id_file = os.path.join(os.path.dirname(sys.modules[cls.__module__].__file__), "product_to_id.json")
+        with open(product_to_id_file) as f:
+            return json.load(f)
 
     ##  Parse the value of the "material compatible" property.
     def _parseCompatibleValue(self, value: str):
