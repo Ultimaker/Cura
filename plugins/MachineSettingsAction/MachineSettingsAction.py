@@ -116,8 +116,7 @@ class MachineSettingsAction(MachineAction):
 
     @pyqtSlot(int)
     def setMachineExtruderCount(self, extruder_count):
-        # machine_manager = Application.getInstance().getMachineManager()
-        extruder_manager = ExtruderManager.getInstance()
+        extruder_manager = Application.getInstance().getExtruderManager()
 
         definition_changes_container = self._global_container_stack.definitionChanges
         if not self._global_container_stack or definition_changes_container == self._empty_container:

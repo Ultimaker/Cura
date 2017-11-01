@@ -75,16 +75,11 @@ class ExtruderManager(QObject):
             return 0
 
     ##  Gets a dict with the extruder stack ids with the extruder number as the key.
-    #   The key "-1" indicates the global stack id.
-    #
     @pyqtProperty("QVariantMap", notify = extrudersChanged)
     def extruderIds(self):
         extruder_stack_ids = {}
 
         global_stack_id = Application.getInstance().getGlobalContainerStack().getId()
-
-        # TODO: remove this? - CURA-4482
-        # extruder_stack_ids["-1"] = global_stack_id
 
         if global_stack_id in self._extruder_trains:
             for position in self._extruder_trains[global_stack_id]:
@@ -212,40 +207,6 @@ class ExtruderManager(QObject):
             result.append(self.getExtruderStack(i))
         return result
 
-    # ##  Adds all extruders of a specific machine definition to the extruder
-    # #   manager.
-    # #
-    # #   \param machine_definition   The machine definition to add the extruders for.
-    # #   \param machine_id           The machine_id to add the extruders for.
-    # @deprecated("Use CuraStackBuilder", "2.6")
-    # def addMachineExtruders(self, machine_definition: DefinitionContainerInterface, machine_id: str) -> None:
-    #     changed = False
-    #     machine_definition_id = machine_definition.getId()
-    #     if machine_id not in self._extruder_trains:
-    #         self._extruder_trains[machine_id] = { }
-    #         changed = True
-    #     container_registry = ContainerRegistry.getInstance()
-    #     if container_registry:
-    #         # Add the extruder trains that don't exist yet.
-    #         for extruder_definition in container_registry.findDefinitionContainers(machine = machine_definition_id):
-    #             position = extruder_definition.getMetaDataEntry("position", None)
-    #             if not position:
-    #                 Logger.log("w", "Extruder definition %s specifies no position metadata entry.", extruder_definition.getId())
-    #             if not container_registry.findContainerStacks(machine = machine_id, position = position): # Doesn't exist yet.
-    #                 self.createExtruderTrain(extruder_definition, machine_definition, position, machine_id)
-    #                 changed = True
-    #
-    #         # Gets the extruder trains that we just created as well as any that still existed.
-    #         extruder_trains = container_registry.findContainerStacks(type = "extruder_train", machine = machine_id)
-    #         for extruder_train in extruder_trains:
-    #             self._extruder_trains[machine_id][extruder_train.getMetaDataEntry("position")] = extruder_train
-    #
-    #             # regardless of what the next stack is, we have to set it again, because of signal routing.
-    #             extruder_train.setNextStack(Application.getInstance().getGlobalContainerStack())
-    #             changed = True
-    #     if changed:
-    #         self.extrudersChanged.emit(machine_id)
-
     def registerExtruder(self, extruder_train, machine_id):
         changed = False
 
@@ -264,138 +225,6 @@ class ExtruderManager(QObject):
             changed = True
         if changed:
             self.extrudersChanged.emit(machine_id)
-
-    # ##  Creates a container stack for an extruder train.
-    # #
-    # #   The container stack has an extruder definition at the bottom, which is
-    # #   linked to a machine definition. Then it has a variant profile, a material
-    # #   profile, a quality profile and a user profile, in that order.
-    # #
-    # #   The resulting container stack is added to the registry.
-    # #
-    # #   \param extruder_definition  The extruder to create the extruder train for.
-    # #   \param machine_definition   The machine that the extruder train belongs to.
-    # #   \param position             The position of this extruder train in the extruder slots of the machine.
-    # #   \param machine_id           The id of the "global" stack this extruder is linked to.
-    # @deprecated("Use CuraStackBuilder::createExtruderStack", "2.6")
-    # def createExtruderTrain(self, extruder_definition: DefinitionContainerInterface, machine_definition: DefinitionContainerInterface,
-    #                         position, machine_id: str) -> None:
-    #     # Cache some things.
-    #     container_registry = ContainerRegistry.getInstance()
-    #     machine_definition_id = Application.getInstance().getMachineManager().getQualityDefinitionId(machine_definition)
-    #
-    #     # Create a container stack for this extruder.
-    #     extruder_stack_id = container_registry.uniqueName(extruder_definition.getId())
-    #     container_stack = ContainerStack(extruder_stack_id)
-    #     container_stack.setName(extruder_definition.getName())  # Take over the display name to display the stack with.
-    #     container_stack.addMetaDataEntry("type", "extruder_train")
-    #     container_stack.addMetaDataEntry("machine", machine_id)
-    #     container_stack.addMetaDataEntry("position", position)
-    #     container_stack.addContainer(extruder_definition)
-    #
-    #     # Find the variant to use for this extruder.
-    #     variant = container_registry.findInstanceContainers(id = "empty_variant")[0]
-    #     if machine_definition.getMetaDataEntry("has_variants"):
-    #         # First add any variant. Later, overwrite with preference if the preference is valid.
-    #         variants = container_registry.findInstanceContainers(definition = machine_definition_id, type = "variant")
-    #         if len(variants) >= 1:
-    #             variant = variants[0]
-    #         preferred_variant_id = machine_definition.getMetaDataEntry("preferred_variant")
-    #         if preferred_variant_id:
-    #             preferred_variants = container_registry.findInstanceContainers(id = preferred_variant_id, definition = machine_definition_id, type = "variant")
-    #             if len(preferred_variants) >= 1:
-    #                 variant = preferred_variants[0]
-    #             else:
-    #                 Logger.log("w", "The preferred variant \"%s\" of machine %s doesn't exist or is not a variant profile.", preferred_variant_id, machine_id)
-    #                 # And leave it at the default variant.
-    #     container_stack.addContainer(variant)
-    #
-    #     # Find a material to use for this variant.
-    #     material = container_registry.findInstanceContainers(id = "empty_material")[0]
-    #     if machine_definition.getMetaDataEntry("has_materials"):
-    #         # First add any material. Later, overwrite with preference if the preference is valid.
-    #         machine_has_variant_materials = machine_definition.getMetaDataEntry("has_variant_materials", default = False)
-    #         if machine_has_variant_materials or machine_has_variant_materials == "True":
-    #             materials = container_registry.findInstanceContainers(type = "material", definition = machine_definition_id, variant = variant.getId())
-    #         else:
-    #             materials = container_registry.findInstanceContainers(type = "material", definition = machine_definition_id)
-    #         if len(materials) >= 1:
-    #             material = materials[0]
-    #         preferred_material_id = machine_definition.getMetaDataEntry("preferred_material")
-    #         if preferred_material_id:
-    #             global_stack = ContainerRegistry.getInstance().findContainerStacks(id = machine_id)
-    #             if global_stack:
-    #                 approximate_material_diameter = str(round(global_stack[0].getProperty("material_diameter", "value")))
-    #             else:
-    #                 approximate_material_diameter = str(round(machine_definition.getProperty("material_diameter", "value")))
-    #
-    #             search_criteria = { "type": "material",  "id": preferred_material_id, "approximate_diameter": approximate_material_diameter}
-    #             if machine_definition.getMetaDataEntry("has_machine_materials"):
-    #                 search_criteria["definition"] = machine_definition_id
-    #
-    #                 if machine_definition.getMetaDataEntry("has_variants") and variant:
-    #                     search_criteria["variant"] = variant.id
-    #             else:
-    #                 search_criteria["definition"] = "fdmprinter"
-    #
-    #             preferred_materials = container_registry.findInstanceContainers(**search_criteria)
-    #             if len(preferred_materials) >= 1:
-    #                 # In some cases we get multiple materials. In that case, prefer materials that are marked as read only.
-    #                 read_only_preferred_materials = [preferred_material for preferred_material in preferred_materials if preferred_material.isReadOnly()]
-    #                 if len(read_only_preferred_materials) >= 1:
-    #                     material = read_only_preferred_materials[0]
-    #                 else:
-    #                     material = preferred_materials[0]
-    #             else:
-    #                 Logger.log("w", "The preferred material \"%s\" of machine %s doesn't exist or is not a material profile.", preferred_material_id, machine_id)
-    #                 # And leave it at the default material.
-    #     container_stack.addContainer(material)
-    #
-    #     # Find a quality to use for this extruder.
-    #     quality = container_registry.getEmptyInstanceContainer()
-    #
-    #     search_criteria = { "type": "quality" }
-    #     if machine_definition.getMetaDataEntry("has_machine_quality"):
-    #         search_criteria["definition"] = machine_definition_id
-    #         if machine_definition.getMetaDataEntry("has_materials") and material:
-    #             search_criteria["material"] = material.id
-    #     else:
-    #         search_criteria["definition"] = "fdmprinter"
-    #
-    #     preferred_quality = machine_definition.getMetaDataEntry("preferred_quality")
-    #     if preferred_quality:
-    #         search_criteria["id"] = preferred_quality
-    #
-    #     containers = ContainerRegistry.getInstance().findInstanceContainers(**search_criteria)
-    #     if not containers and preferred_quality:
-    #         Logger.log("w", "The preferred quality \"%s\" of machine %s doesn't exist or is not a quality profile.", preferred_quality, machine_id)
-    #         search_criteria.pop("id", None)
-    #         containers = ContainerRegistry.getInstance().findInstanceContainers(**search_criteria)
-    #     if containers:
-    #         quality = containers[0]
-    #
-    #     container_stack.addContainer(quality)
-    #
-    #     empty_quality_changes = container_registry.findInstanceContainers(id = "empty_quality_changes")[0]
-    #     container_stack.addContainer(empty_quality_changes)
-    #
-    #     user_profile = container_registry.findInstanceContainers(type = "user", extruder = extruder_stack_id)
-    #     if user_profile: # There was already a user profile, loaded from settings.
-    #         user_profile = user_profile[0]
-    #     else:
-    #         user_profile = InstanceContainer(extruder_stack_id + "_current_settings")  # Add an empty user profile.
-    #         user_profile.addMetaDataEntry("type", "user")
-    #         user_profile.addMetaDataEntry("extruder", extruder_stack_id)
-    #         from cura.CuraApplication import CuraApplication
-    #         user_profile.addMetaDataEntry("setting_version", CuraApplication.SettingVersion)
-    #         user_profile.setDefinition(machine_definition)
-    #         container_registry.addContainer(user_profile)
-    #     container_stack.addContainer(user_profile)
-    #
-    #     # regardless of what the next stack is, we have to set it again, because of signal routing.
-    #     container_stack.setNextStack(Application.getInstance().getGlobalContainerStack())
-    #
-    #     container_registry.addContainer(container_stack)
 
     def getAllExtruderValues(self, setting_key):
         return self.getAllExtruderSettings(setting_key, "value")
@@ -678,7 +507,8 @@ class ExtruderManager(QObject):
             value = extruder.getRawProperty(key, "value")
             if isinstance(value, SettingFunction):
                 value = value(extruder)
-        else: #Just a value from global.
+        else:
+            # Just a value from global.
             value = Application.getInstance().getGlobalContainerStack().getProperty(key, "value")
 
         return value
