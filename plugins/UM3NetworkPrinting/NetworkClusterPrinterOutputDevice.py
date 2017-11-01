@@ -103,6 +103,7 @@ class NetworkClusterPrinterOutputDevice(NetworkPrinterOutputDevice.NetworkPrinte
         self._can_pause = True
         self._can_abort = True
         self._can_pre_heat_bed = False
+        self._can_control_manually = False
         self._cluster_size = int(properties.get(b"cluster_size", 0))
 
         self._cleanupRequest()
