@@ -185,17 +185,24 @@ Item
         anchors.leftMargin: UM.Theme.getSize("sidebar_margin").width;
     }
 
-    Row {
+    Item {
         id: buttonsRow
         height: abortButton.height
+        width: {
+            // using childrenRect.width directly causes a binding loop, because setting the width affects the childrenRect
+            var children_width = additionalComponentsRow.width + pauseResumeButton.width + abortButton.width + 3 * UM.Theme.getSize("default_margin").width;
+            return Math.min(children_width, base.width - 2 * UM.Theme.getSize("sidebar_margin").width);
+        }
         anchors.top: progressBar.bottom
         anchors.topMargin: UM.Theme.getSize("sidebar_margin").height
         anchors.right: parent.right
         anchors.rightMargin: UM.Theme.getSize("sidebar_margin").width
-        spacing: UM.Theme.getSize("default_margin").width
+        clip: true
 
         Row {
             id: additionalComponentsRow
+            anchors.right: pauseResumeButton.left
+            anchors.rightMargin: UM.Theme.getSize("default_margin").width
             spacing: UM.Theme.getSize("default_margin").width
         }
 
@@ -215,6 +222,8 @@ Item
         {
             id: pauseResumeButton
 
+            anchors.right: abortButton.left
+            anchors.rightMargin: UM.Theme.getSize("default_margin").width
             height: UM.Theme.getSize("save_button_save_to_button").height
 
             property bool userClicked: false
@@ -260,6 +269,8 @@ Item
         Button
         {
             id: abortButton
+
+            anchors.right: parent.right
 
             visible: printerConnected && Cura.MachineManager.printerOutputDevices[0].canAbort
             enabled: printerConnected && Cura.MachineManager.printerOutputDevices[0].acceptsCommands &&
