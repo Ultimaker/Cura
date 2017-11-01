@@ -739,9 +739,15 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
 
                 # Create a new definition_changes container if it was empty
                 if stack.definitionChanges == self._container_registry.getEmptyInstanceContainer():
-                    stack.setDefinitionChanges(CuraStackBuilder.createDefinitionChangesContainer(stack, stack._id + "_settings"))
-                if global_stack.getProperty("machine_extruder_count", "value") > 1:
-                    extruder_stacks.append(stack)
+                    stack.setDefinitionChanges(CuraStackBuilder.createDefinitionChangesContainer(stack, stack.getId() + "_settings"))
+
+                extruder_stacks.append(stack)
+
+            # If not extruder stacks were saved in the project file (pre 3.1) create one manually
+            # We re-use the container registry's addExtruderStackForSingleExtrusionMachine method for this
+            if not extruder_stacks:
+                self._container_registry.addExtruderStackForSingleExtrusionMachine(global_stack, "fdmextruder")
+
         except:
             Logger.logException("w", "We failed to serialize the stack. Trying to clean up.")
             # Something went really wrong. Try to remove any data that we added.
@@ -774,7 +780,6 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             for stack in [global_stack] + extruder_stacks:
                 stack.replaceContainer(_ContainerIndexes.Quality, empty_quality_container)
 
-        #
         # Replacing the old containers if resolve is "new".
         # When resolve is "new", some containers will get renamed, so all the other containers that reference to those
         # MUST get updated too.
