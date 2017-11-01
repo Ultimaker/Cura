@@ -112,7 +112,6 @@ class LayerView(View):
             self._layer_pass = LayerPass.LayerPass(1, 1)
             self._compatibility_mode = OpenGLContext.isLegacyOpenGL() or bool(Preferences.getInstance().getValue("view/force_layer_view_compatibility_mode"))
             self._layer_pass.setLayerView(self)
-            #self.getRenderer().addRenderPass(self._layer_pass)
         return self._layer_pass
 
     def getCurrentLayer(self):
