@@ -356,7 +356,18 @@ Rectangle
                         {
                             if(!print_time[feature].isTotalDurationZero)
                             {
-                                content += "<tr><td>" + feature + ":" +
+                                var feature_name = "";
+
+                                if (feature.length <= 11)
+                                {
+                                    feature_name = feature
+                                }
+                                else{
+                                    feature_name = feature.substring(0, 8) + "..."
+                                }
+
+
+                                content += "<tr><td>" + feature_name + ":" +
                                     "&nbsp;&nbsp;</td><td>" + print_time[feature].getDisplayString(UM.DurationFormat.Short) +
                                     "&nbsp;&nbsp;</td><td>" + Math.round(100 * parseInt(print_time[feature].getDisplayString(UM.DurationFormat.Seconds)) / total_seconds) + "%" +
                                     "</td></tr>";
@@ -376,16 +387,9 @@ Rectangle
 
         Label
         {
-            id: costSpec
-            anchors.left: parent.left
-            anchors.bottom: parent.bottom
-            font: UM.Theme.getFont("very_small")
-            color: UM.Theme.getColor("text_subtext")
-            elide: Text.ElideMiddle
-            width: parent.width
-            property string tooltipText
-            text:
-            {
+
+            function getSpecsData(){
+
                 var lengths = [];
                 var total_length = 0;
                 var weights = [];
@@ -449,10 +453,50 @@ Rectangle
                 tooltip_html += "</tr></table>";
                 tooltipText = tooltip_html;
 
-                if(some_costs_known)
+
+                return tooltipText
+            }
+
+            id: costSpec
+            anchors.left: parent.left
+            anchors.bottom: parent.bottom
+            font: UM.Theme.getFont("very_small")
+            color: UM.Theme.getColor("text_subtext")
+            elide: Text.ElideMiddle
+            width: parent.width
+            property string tooltipText
+            text:
+            {
+                var lengths = [];
+                var weights = [];
+                var costs = [];
+                var someCostsKnown = false;
+                if(base.printMaterialLengths) {
+                    for(var index = 0; index < base.printMaterialLengths.length; index++)
+                    {
+                        if(base.printMaterialLengths[index] > 0)
+                        {
+                            lengths.push(base.printMaterialLengths[index].toFixed(2));
+                            weights.push(String(Math.floor(base.printMaterialWeights[index])));
+                            var cost = base.printMaterialCosts[index] == undefined ? 0 : base.printMaterialCosts[index].toFixed(2);
+                            costs.push(cost);
+                            if(cost > 0)
+                            {
+                                someCostsKnown = true;
+                            }
+                        }
+                    }
+                }
+                if(lengths.length == 0)
+                {
+                    lengths = ["0.00"];
+                    weights = ["0"];
+                    costs = ["0.00"];
+                }
+                if(someCostsKnown)
                 {
                     return catalog.i18nc("@label Print estimates: m for meters, g for grams, %4 is currency and %3 is print cost", "%1m / ~ %2g / ~ %4 %3").arg(lengths.join(" + "))
-                            .arg(Math.round(total_weight)).arg(total_cost.toFixed(2)).arg(UM.Preferences.getValue("cura/currency"));
+                            .arg(weights.join(" + ")).arg(costs.join(" + ")).arg(UM.Preferences.getValue("cura/currency"));
                 }
                 else
                 {
@@ -470,7 +514,9 @@ Rectangle
 
                     if(base.printDuration.valid && !base.printDuration.isTotalDurationZero)
                     {
-                        base.showTooltip(parent, Qt.point(-UM.Theme.getSize("sidebar_margin").width, 0), costSpec.tooltipText);
+                        var show_data = costSpec.getSpecsData()
+
+                        base.showTooltip(parent, Qt.point(-UM.Theme.getSize("sidebar_margin").width, 0), show_data);
                     }
                 }
                 onExited:
