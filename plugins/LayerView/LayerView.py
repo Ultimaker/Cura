@@ -112,7 +112,6 @@ class LayerView(View):
             self._layer_pass = LayerPass.LayerPass(1, 1)
             self._compatibility_mode = OpenGLContext.isLegacyOpenGL() or bool(Preferences.getInstance().getValue("view/force_layer_view_compatibility_mode"))
             self._layer_pass.setLayerView(self)
-            self.getRenderer().addRenderPass(self._layer_pass)
         return self._layer_pass
 
     def getCurrentLayer(self):
@@ -310,7 +309,8 @@ class LayerView(View):
 
         if event.type == Event.ViewActivateEvent:
             # Make sure the LayerPass is created
-            self.getLayerPass()
+            layer_pass = self.getLayerPass()
+            self.getRenderer().addRenderPass(layer_pass)
 
             Application.getInstance().globalContainerStackChanged.connect(self._onGlobalStackChanged)
             self._onGlobalStackChanged()
@@ -335,6 +335,7 @@ class LayerView(View):
             if self._global_container_stack:
                 self._global_container_stack.propertyChanged.disconnect(self._onPropertyChanged)
 
+            self.getRenderer().removeRenderPass(self._layer_pass)
             self._composite_pass.setLayerBindings(self._old_layer_bindings)
             self._composite_pass.setCompositeShader(self._old_composite_shader)
 

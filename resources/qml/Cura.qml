@@ -344,9 +344,6 @@ UM.MainWindow
             {
                 id: toolbar;
 
-                property int mouseX: base.mouseX
-                property int mouseY: base.mouseY
-
                 anchors {
                     top: openFileButton.bottom;
                     topMargin: UM.Theme.getSize("window_margin").height;
