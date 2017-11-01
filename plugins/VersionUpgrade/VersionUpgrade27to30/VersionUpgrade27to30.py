@@ -128,8 +128,8 @@ class VersionUpgrade27to30(VersionUpgrade):
 
         # set machine definition to "ultimaker2" for the custom quality profiles that can be for the ultimaker 2 family
         file_base_name = os.path.basename(filename)
-        is_ultimaker2_family = not any(file_base_name.startswith(ep) for ep in exclude_prefix_list)
-        if not is_ultimaker2_family:
+        is_ultimaker2_family = False
+        if not any(file_base_name.startswith(ep) for ep in exclude_prefix_list):
             is_ultimaker2_family = any(file_base_name.startswith(ep) for ep in ultimaker2_prefix_list)
 
         # ultimaker2 family quality profiles used to set as "fdmprinter" profiles

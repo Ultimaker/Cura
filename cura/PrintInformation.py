@@ -313,7 +313,12 @@ class PrintInformation(QObject):
             elif word.isdigit():
                 abbr_machine += word
             else:
-                abbr_machine += self._stripAccents(word.strip("()[]{}#").upper())[0]
+                stripped_word = self._stripAccents(word.strip("()[]{}#").upper())
+                # - use only the first character if the word is too long (> 3 characters)
+                # - use the whole word if it's not too long (<= 3 characters)
+                if len(stripped_word) > 3:
+                    stripped_word = stripped_word[0]
+                abbr_machine += stripped_word
 
         self._abbr_machine = abbr_machine
 
@@ -339,4 +344,3 @@ class PrintInformation(QObject):
 
         temp_material_amounts = [0]
         self._onPrintDurationMessage(temp_message, temp_material_amounts)
-

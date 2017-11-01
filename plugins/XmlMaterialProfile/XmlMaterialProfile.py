@@ -35,7 +35,7 @@ class XmlMaterialProfile(InstanceContainer):
     #   \return The corresponding setting_version.
     def xmlVersionToSettingVersion(self, xml_version: str) -> int:
         if xml_version == "1.3":
-            return 3
+            return 4
         return 0 #Older than 1.3.
 
     def getInheritedFiles(self):
@@ -509,8 +509,6 @@ class XmlMaterialProfile(InstanceContainer):
             elif key in self.__unmapped_settings:
                 if key == "hardware compatible":
                     common_compatibility = self._parseCompatibleValue(entry.text)
-            else:
-                Logger.log("d", "Unsupported material setting %s", key)
         self._cached_values = common_setting_values # from InstanceContainer ancestor
 
         meta_data["compatible"] = common_compatibility
@@ -676,7 +674,9 @@ class XmlMaterialProfile(InstanceContainer):
         "processing temperature graph": "material_flow_temp_graph",
         "print cooling": "cool_fan_speed",
         "retraction amount": "retraction_amount",
-        "retraction speed": "retraction_speed"
+        "retraction speed": "retraction_speed",
+        "adhesion tendency": "material_adhesion_tendency",
+        "surface energy": "material_surface_energy"
     }
     __unmapped_settings = [
         "hardware compatible"

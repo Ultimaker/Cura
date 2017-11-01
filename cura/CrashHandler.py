@@ -15,8 +15,9 @@ import urllib.request
 import urllib.error
 
 from PyQt5.QtCore import QT_VERSION_STR, PYQT_VERSION_STR, QCoreApplication
-from PyQt5.QtWidgets import QDialog, QDialogButtonBox, QVBoxLayout, QLabel, QTextEdit, QGroupBox, QPushButton
+from PyQt5.QtWidgets import QDialog, QDialogButtonBox, QVBoxLayout, QLabel, QTextEdit, QGroupBox
 
+from UM.Application import Application
 from UM.Logger import Logger
 from UM.View.GL.OpenGL import OpenGL
 from UM.i18n import i18nCatalog
@@ -44,14 +45,15 @@ fatal_exception_types = [
     SystemError,
 ]
 
+
 class CrashHandler:
     crash_url = "https://stats.ultimaker.com/api/cura"
 
     def __init__(self, exception_type, value, tb):
-
         self.exception_type = exception_type
         self.value = value
         self.traceback = tb
+        self.dialog = QDialog()
 
         # While we create the GUI, the information will be stored for sending afterwards
         self.data = dict()
@@ -73,8 +75,6 @@ class CrashHandler:
 
     ##  Creates a modal dialog.
     def _createDialog(self):
-
-        self.dialog = QDialog()
         self.dialog.setMinimumWidth(640)
         self.dialog.setMinimumHeight(640)
         self.dialog.setWindowTitle(catalog.i18nc("@title:window", "Crash Report"))
@@ -226,7 +226,6 @@ class CrashHandler:
 
         return group
 
-
     def _userDescriptionWidget(self):
         group = QGroupBox()
         group.setTitle(catalog.i18nc("@title:groupbox", "User description"))
@@ -277,5 +276,9 @@ class CrashHandler:
         os._exit(1)
 
     def show(self):
+        # must run the GUI code on the Qt thread, otherwise the widgets on the dialog won't react correctly.
+        Application.getInstance().callLater(self._show)
+
+    def _show(self):
         self.dialog.exec_()
         os._exit(1)

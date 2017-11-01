@@ -91,8 +91,8 @@ Item {
         id: saveRow
         width: base.width
         height: saveToButton.height
-        anchors.top: progressBar.bottom
-        anchors.topMargin: UM.Theme.getSize("sidebar_margin").height
+        anchors.bottom: parent.bottom
+        anchors.bottomMargin: UM.Theme.getSize("sidebar_margin").height
         anchors.left: parent.left
 
         Row {

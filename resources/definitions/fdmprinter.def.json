@@ -643,6 +643,20 @@
                     "settable_per_mesh": false,
                     "settable_per_extruder": false
                 },
+                "slicing_tolerance":
+                {
+                    "label": "Slicing Tolerance",
+                    "description": "How to slice layers with diagonal surfaces. The areas of a layer can be generated based on where the middle of the layer intersects the surface (Middle). Alternatively each layer can have the areas which fall inside of the volume throughout the height of the layer (Exclusive) or a layer has the areas which fall inside anywhere within the layer (Inclusive). Exclusive retains the most details, Inclusive makes for the best fit and Middle takes the least time to process.",
+                    "type": "enum",
+                    "options":
+                    {
+                        "middle": "Middle",
+                        "exclusive": "Exclusive",
+                        "inclusive": "Inclusive"
+                    },
+                    "default_value": "middle",
+                    "settable_per_mesh": true
+                },
                 "line_width":
                 {
                     "label": "Line Width",
@@ -668,6 +682,7 @@
                             "value": "line_width",
                             "default_value": 0.4,
                             "type": "float",
+                            "limit_to_extruder": "wall_0_extruder_nr if wall_x_extruder_nr == wall_0_extruder_nr else -1",
                             "settable_per_mesh": true,
                             "children":
                             {
@@ -866,29 +881,45 @@
             "type": "category",
             "children":
             {
-                "wall_0_extruder_nr":
+                "wall_extruder_nr":
                 {
-                    "label": "Outer Wall Extruder",
-                    "description": "The extruder train used for printing the outer wall. This is used in multi-extrusion.",
+                    "label": "Wall Extruder",
+                    "description": "The extruder train used for printing the walls. This is used in multi-extrusion.",
                     "type": "optional_extruder",
                     "default_value": "-1",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false,
                     "settable_per_meshgroup": true,
                     "settable_globally": true,
-                    "enabled": "machine_extruder_count > 1"
-                },
-                "wall_x_extruder_nr":
-                {
-                    "label": "Inner Walls Extruder",
-                    "description": "The extruder train used for printing the inner walls. This is used in multi-extrusion.",
-                    "type": "optional_extruder",
-                    "default_value": "-1",
-                    "settable_per_mesh": false,
-                    "settable_per_extruder": false,
-                    "settable_per_meshgroup": true,
-                    "settable_globally": true,
-                    "enabled": "machine_extruder_count > 1"
+                    "enabled": "machine_extruder_count > 1",
+                    "children": {
+                        "wall_0_extruder_nr":
+                        {
+                            "label": "Outer Wall Extruder",
+                            "description": "The extruder train used for printing the outer wall. This is used in multi-extrusion.",
+                            "type": "optional_extruder",
+                            "value": "wall_extruder_nr",
+                            "default_value": "-1",
+                            "settable_per_mesh": false,
+                            "settable_per_extruder": false,
+                            "settable_per_meshgroup": true,
+                            "settable_globally": true,
+                            "enabled": "machine_extruder_count > 1"
+                        },
+                        "wall_x_extruder_nr":
+                        {
+                            "label": "Inner Wall Extruder",
+                            "description": "The extruder train used for printing the inner walls. This is used in multi-extrusion.",
+                            "type": "optional_extruder",
+                            "value": "wall_extruder_nr",
+                            "default_value": "-1",
+                            "settable_per_mesh": false,
+                            "settable_per_extruder": false,
+                            "settable_per_meshgroup": true,
+                            "settable_globally": true,
+                            "enabled": "machine_extruder_count > 1"
+                        }
+                    }
                 },
                 "wall_thickness":
                 {
@@ -1354,7 +1385,7 @@
                             "default_value": 2,
                             "minimum_value": "0",
                             "minimum_value_warning": "infill_line_width",
-                            "value": "0 if infill_sparse_density == 0 else (infill_line_width * 100) / infill_sparse_density * (2 if infill_pattern == 'grid' else (3 if infill_pattern == 'triangles' or infill_pattern == 'cubic' or infill_pattern == 'cubicsubdiv' else (2 if infill_pattern == 'tetrahedral' or infill_pattern == 'quarter_cubic' else (1 if infill_pattern == 'cross' or infill_pattern == 'cross_3d' else 1))))",
+                            "value": "0 if infill_sparse_density == 0 else (infill_line_width * 100) / infill_sparse_density * (2 if infill_pattern == 'grid' else (3 if infill_pattern == 'triangles' or infill_pattern == 'trihexagon' or infill_pattern == 'cubic' or infill_pattern == 'cubicsubdiv' else (2 if infill_pattern == 'tetrahedral' or infill_pattern == 'quarter_cubic' else (1 if infill_pattern == 'cross' or infill_pattern == 'cross_3d' else 1))))",
                             "limit_to_extruder": "infill_extruder_nr",
                             "settable_per_mesh": true
                         }
@@ -1370,6 +1401,7 @@
                         "grid": "Grid",
                         "lines": "Lines",
                         "triangles": "Triangles",
+                        "trihexagon": "Tri-Hexagon",
                         "cubic": "Cubic",
                         "cubicsubdiv": "Cubic Subdivision",
                         "tetrahedral": "Octet",
@@ -1847,6 +1879,31 @@
                     "minimum_value_warning": "0.4",
                     "maximum_value_warning": "3.5",
                     "enabled": "machine_gcode_flavor != \"UltiGCode\"",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
+                },
+                "material_adhesion_tendency":
+                {
+                    "label": "Adhesion Tendency",
+                    "description": "Surface adhesion tendency.",
+                    "type": "int",
+                    "default_value": 10,
+                    "minimum_value": "0",
+                    "maximum_value": "10",
+                    "enabled": false,
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
+                },
+                "material_surface_energy":
+                {
+                    "label": "Surface Energy",
+                    "description": "Surface energy.",
+                    "unit": "%",
+                    "type": "int",
+                    "default_value": 100,
+                    "minimum_value": "0",
+                    "maximum_value": "100",
+                    "enabled": false,
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
@@ -3917,6 +3974,16 @@
                     "limit_to_extruder": "support_infill_extruder_nr",
                     "enabled": "support_enable and support_use_towers",
                     "settable_per_mesh": true
+                },
+                "remove_empty_first_layers":
+                {
+                    "label": "Remove Empty First Layers",
+                    "description": "Remove empty layers beneath the first printed layer if they are present.",
+                    "type": "bool",
+                    "default_value": true,
+                    "enabled": "not support_enable",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false
                 }
             }
         },
