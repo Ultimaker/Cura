@@ -667,7 +667,8 @@ class XmlMaterialProfile(InstanceContainer):
             return json.load(f)
 
     ##  Parse the value of the "material compatible" property.
-    def _parseCompatibleValue(self, value: str):
+    @classmethod
+    def _parseCompatibleValue(cls, value: str):
         return value in {"yes", "unknown"}
 
     # Map XML file setting names to internal names
