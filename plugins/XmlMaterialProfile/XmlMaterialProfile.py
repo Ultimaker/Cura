@@ -14,7 +14,6 @@ from UM.Logger import Logger
 from cura.CuraApplication import CuraApplication
 
 import UM.Dictionary
-from UM.PluginRegistry import PluginRegistry
 from UM.Settings.InstanceContainer import InstanceContainer
 from UM.Settings.ContainerRegistry import ContainerRegistry
 
@@ -37,7 +36,8 @@ class XmlMaterialProfile(InstanceContainer):
     #
     #   \param xml_version: The version number found in an XML file.
     #   \return The corresponding setting_version.
-    def xmlVersionToSettingVersion(self, xml_version: str) -> int:
+    @classmethod
+    def xmlVersionToSettingVersion(cls, xml_version: str) -> int:
         if xml_version == "1.3":
             return 3
         return 0 #Older than 1.3.
@@ -398,18 +398,20 @@ class XmlMaterialProfile(InstanceContainer):
         self._dirty = False
         self._path = ""
 
-    def getConfigurationTypeFromSerialized(self, serialized: str) -> Optional[str]:
+    @classmethod
+    def getConfigurationTypeFromSerialized(cls, serialized: str) -> Optional[str]:
         return "materials"
 
-    def getVersionFromSerialized(self, serialized: str) -> Optional[int]:
+    @classmethod
+    def getVersionFromSerialized(cls, serialized: str) -> Optional[int]:
         data = ET.fromstring(serialized)
 
         version = 1
         # get setting version
         if "version" in data.attrib:
-            setting_version = self.xmlVersionToSettingVersion(data.attrib["version"])
+            setting_version = cls.xmlVersionToSettingVersion(data.attrib["version"])
         else:
-            setting_version = self.xmlVersionToSettingVersion("1.2")
+            setting_version = cls.xmlVersionToSettingVersion("1.2")
 
         return version * 1000000 + setting_version
 
