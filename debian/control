@@ -4,7 +4,7 @@ Maintainer: Debian 3-D Printing Packages <3dprinter-general@lists.alioth.debian.
 Uploaders: Gregor Riepl <onitake@gmail.com>
 Build-Depends: debhelper (>= 10), cmake (>=2.8.12), dh-python,
  python3-all,
- uranium-tools (>=3.0.3),
+ uranium-tools (>=3.0.3), python3-uranium (>=3.0.3),
  gettext
 Standards-Version: 4.1.1
 X-Python3-Version: >= 3.4
