@@ -1,3 +1,13 @@
+Description: Removed hard dependency on Python 3.5
+ When a system has both Python 3.5 and a newer version installed,
+ cmake will only pick up 3.5.
+ This causes problems with SIP modules, which are only installed
+ for a single Python version.
+Author: Gregor Riepl <onitake@gmail.com>
+Forwarded: no
+Last-Update: 2017-11-02
+---
+
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
 @@ -34,7 +34,7 @@
