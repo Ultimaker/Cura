@@ -1,5 +1,4 @@
 {
-    "id": "kemiq_q2_beta",
     "version": 2,
     "name": "Kemiq Q2 Beta",
     "inherits": "fdmprinter",

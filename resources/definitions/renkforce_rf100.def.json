@@ -1,5 +1,4 @@
 {
-    "id": "RF100",
     "version": 2,
     "name": "Renkforce RF100",
     "inherits": "fdmprinter",
