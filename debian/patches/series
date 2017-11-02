@@ -2,3 +2,4 @@
 03-fix-appstream-path.patch
 1000-desktop-menu-location.patch
 1010-desktop-x3d-support.patch
+1020-depend-latest-python3.patch
