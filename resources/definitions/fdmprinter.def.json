@@ -5952,6 +5952,32 @@
                     "enabled": "resolveOrValue('jerk_enabled') and ironing_enabled",
                     "limit_to_extruder": "top_bottom_extruder_nr",
                     "settable_per_mesh": true
+                },
+                "flow_rate_max_extrusion_offset":
+                {
+                    "label": "Flow rate compensation max extrusion offset",
+                    "description": "The maximum distance in mm to compensate for pressure in the bowden tube.",
+                    "unit": "mm",
+                    "type": "float",
+                    "minimum_value": "0",
+                    "maximum_value_warning": "10",
+                    "default_value": 0,
+                    "value": "0",
+                    "enabled": true,
+                    "settable_per_mesh": false
+                },
+                "flow_rate_extrusion_offset_factor":
+                {
+                    "label": "Flow rate compensation factor",
+                    "description": "The multiplication factor for the flow rate -> distance translation.",
+                    "unit": "%",
+                    "type": "float",
+                    "minimum_value": "0",
+                    "maximum_value_warning": "100",
+                    "default_value": 100,
+                    "value": "100",
+                    "enabled": true,
+                    "settable_per_mesh": false
                 }
             }
         },
