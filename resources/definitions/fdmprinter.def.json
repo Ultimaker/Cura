@@ -3978,7 +3978,7 @@
                 "remove_empty_first_layers":
                 {
                     "label": "Remove Empty First Layers",
-                    "description": "Remove empty layers beneath the first printed layer if they are present.",
+                    "description": "Remove empty layers beneath the first printed layer if they are present. Disabling this setting can cause empty first layers if the Slicing Tolerance setting is set to Exclusive or Middle.",
                     "type": "bool",
                     "default_value": true,
                     "enabled": "not support_enable",
