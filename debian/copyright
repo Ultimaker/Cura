@@ -6,7 +6,7 @@ Files: *
 Copyright:
  Copyright (c) 2015-2017 Ultimaker B.V.
  Copyright (c) 2013 David Braam
-License: AGPL-3+
+License: LGPL-3+
 
 Files: resources/themes/cura-light/fonts/*
 Copyright: Digitized data copyright © 2010-2011, Google Corporation.
