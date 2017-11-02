@@ -196,8 +196,10 @@ class PrintInformation(QObject):
 
             weight = float(amount) * float(density) / 1000
             cost = 0
+            material_name = catalog.i18nc("@label unknown material", "Unknown")
             if material:
                 material_guid = material.getMetaDataEntry("GUID")
+                material_name = material.getName()
                 if material_guid in material_preference_values:
                     material_values = material_preference_values[material_guid]
 
@@ -216,7 +218,7 @@ class PrintInformation(QObject):
             self._material_weights.append(weight)
             self._material_lengths.append(length)
             self._material_costs.append(cost)
-            self._material_names.append(material.getName())
+            self._material_names.append(material_name)
 
         self.materialLengthsChanged.emit()
         self.materialWeightsChanged.emit()
