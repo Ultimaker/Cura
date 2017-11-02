@@ -5057,7 +5057,7 @@
                     "description": "Spiralize smooths out the Z move of the outer edge. This will create a steady Z increase over the whole print. This feature turns a solid model into a single walled print with a solid bottom. This feature should only be enabled when each layer only contains a single part.",
                     "type": "bool",
                     "default_value": false,
-                    "settable_per_mesh": false,
+                    "settable_per_mesh": true,
                     "settable_per_extruder": false
                 },
                 "smooth_spiralized_contours":
@@ -5067,7 +5067,7 @@
                     "type": "bool",
                     "default_value": true,
                     "enabled": "magic_spiralize",
-                    "settable_per_mesh": false,
+                    "settable_per_mesh": true,
                     "settable_per_extruder": false
                 },
                 "relative_extrusion":
