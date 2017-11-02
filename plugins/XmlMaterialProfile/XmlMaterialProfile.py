@@ -697,7 +697,8 @@ class XmlMaterialProfile(InstanceContainer):
         builder.data(str(instance.value))
         builder.end("setting")
 
-    def _profile_name(self, material_name, color_name):
+    @classmethod
+    def _profile_name(cls, material_name, color_name):
         if color_name != "Generic":
             return "%s %s" % (color_name, material_name)
         else:
