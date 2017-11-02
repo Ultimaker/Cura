@@ -3,3 +3,4 @@
 1000-desktop-menu-location.patch
 1010-desktop-x3d-support.patch
 1020-depend-latest-python3.patch
+2000-fix-tests-uranium-3.patch
