@@ -34,7 +34,7 @@ if(NOT ${URANIUM_SCRIPTS_DIR} STREQUAL "")
     CREATE_TRANSLATION_TARGETS()
 endif()
 
-find_package(PythonInterp 3.5.0 REQUIRED)
+find_package(PythonInterp 3 REQUIRED)
 
 install(DIRECTORY resources
         DESTINATION ${CMAKE_INSTALL_DATADIR}/cura)
