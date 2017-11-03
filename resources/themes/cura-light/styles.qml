@@ -380,6 +380,109 @@ QtObject {
         }
     }
 
+    property Component orientation_button: Component {
+        ButtonStyle {
+            background: Item {
+                implicitWidth: 30;
+                implicitHeight: 30;
+
+                Rectangle {
+                    id: buttonFace2;
+
+                    anchors.fill: parent;
+                    property bool down: control.pressed || (control.checkable && control.checked);
+
+                    color: {
+                        if(control.customColor !== undefined && control.customColor !== null) {
+                            return control.customColor
+                        } else if(control.checkable && control.checked && control.hovered) {
+                            return Theme.getColor("button_active_hover");
+                        } else if(control.pressed || (control.checkable && control.checked)) {
+                            return Theme.getColor("button_active");
+                        } else if(control.hovered) {
+                            return Theme.getColor("button_hover");
+                        } else {
+                            //return Theme.getColor("button");
+                            return "red"
+                        }
+                    }
+                    Behavior on color { ColorAnimation { duration: 50; } }
+
+                    border.width: (control.hasOwnProperty("needBorder") && control.needBorder) ? 2 * screenScaleFactor : 0
+                    border.color: Theme.getColor("tool_button_border")
+
+                    UM.RecolorImage {
+                        id: tool_button_arrow2
+                        //anchors.right: parent.right;
+                        //anchors.rightMargin: (Theme.getSize("button").width - Theme.getSize("button_icon").width) / 4
+                        //anchors.bottom: parent.bottom;
+                        //anchors.bottomMargin: (Theme.getSize("button").height - Theme.getSize("button_icon").height) / 4
+                        //width: Theme.getSize("standard_arrow").width
+                        //height: Theme.getSize("standard_arrow").height
+
+                        width: 5
+                        height: 5
+
+                        sourceSize.width: 5
+                        sourceSize.height: 5
+                        visible: control.menu != null;
+                        color:
+                        {
+                            if(control.checkable && control.checked && control.hovered)
+                            {
+                                return Theme.getColor("button_text_active_hover");
+                            }
+                            else if(control.pressed || (control.checkable && control.checked))
+                            {
+                                return Theme.getColor("button_text_active");
+                            }
+                            else if(control.hovered)
+                            {
+                                return Theme.getColor("button_text_hover");
+                            }
+                            else
+                            {
+                                return Theme.getColor("button_text");
+                            }
+                        }
+                        source: Theme.getIcon("arrow_bottom")
+                    }
+                }
+            }
+
+            label: Item {
+                UM.RecolorImage {
+                    anchors.centerIn: parent;
+                    opacity: !control.enabled ? 0.2 : 1.0
+                    source: control.iconSource;
+                    width: 20;
+                    height: 20;
+                    color:
+                    {
+                        if(control.checkable && control.checked && control.hovered)
+                        {
+                            return Theme.getColor("button_text_active_hover");
+                        }
+                        else if(control.pressed || (control.checkable && control.checked))
+                        {
+                            return Theme.getColor("button_text_active");
+                        }
+                        else if(control.hovered)
+                        {
+                            return Theme.getColor("button_text_hover");
+                        }
+                        else
+                        {
+                            return Theme.getColor("button_text");
+                        }
+                    }
+
+                    sourceSize: Theme.getSize("button_icon")
+                }
+            }
+        }
+    }
+
     property Component progressbar: Component{
         ProgressBarStyle {
             background: Rectangle {
