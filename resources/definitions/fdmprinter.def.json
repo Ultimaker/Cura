@@ -3681,7 +3681,7 @@
                 "support_tree_wall_thickness":
                 {
                     "label": "Tree Support Wall Thickness",
-                    "description": "The thickness of the walls of the tree support. Thicker walls take longer to print but are more stable.",
+                    "description": "The thickness of the walls of the branches of tree support. Thicker walls take longer to print but don't fall over as easily.",
                     "unit": "mm",
                     "type": "float",
                     "minimum_value": "0",
@@ -3691,7 +3691,24 @@
                     "limit_to_extruder": "support_infill_extruder_nr",
                     "enabled": "support_tree_enable",
                     "settable_per_mesh": false,
-                    "settable_per_extruder": true
+                    "settable_per_extruder": true,
+                    "children":
+                    {
+                        "support_tree_wall_line_count":
+                        {
+                            "label": "Tree Support Wall Line Count",
+                            "description": "The number of walls of the branches of tree support. Thicker walls take longer to print but don't fall over as easily.",
+                            "type": "int",
+                            "minimum_value": "0",
+                            "minimum_value_warning": "1",
+                            "default_value": 2,
+                            "value": "round(support_tree_wall_thickness / support_line_width)",
+                            "limit_to_extruder": "support_infill_extruder_nr",
+                            "enabled": "support_tree_enable",
+                            "settable_per_mesh": false,
+                            "settable_per_extruder": true
+                        }
+                    }
                 },
                 "gradual_support_infill_steps":
                 {
