@@ -3655,6 +3655,44 @@
                     "limit_to_extruder": "support_infill_extruder_nr",
                     "settable_per_mesh": false
                 },
+                "support_tree_enable":
+                {
+                    "label": "Tree Support",
+                    "description": "Generate a tree-like support with branches that support your print. This may reduce material usage and print time.",
+                    "type": "bool",
+                    "default_value": false,
+                    "settable_per_mesh": true
+                },
+                "support_tree_angle":
+                {
+                    "label": "Tree Support Branch Angle",
+                    "description": "The angle of the branches. Use a lower angle to make them more vertical and more stable. Use a higher angle to be able to have more reach.",
+                    "unit": "°",
+                    "type": "float",
+                    "minimum_value": "0",
+                    "maximum_value": "90",
+                    "maximum_value_warning": "60",
+                    "default_value": 40,
+                    "limit_to_extruder": "support_infill_extruder_nr",
+                    "enabled": "support_tree_enable",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
+                },
+                "support_tree_wall_thickness":
+                {
+                    "label": "Tree Support Wall Thickness",
+                    "description": "The thickness of the walls of the tree support. Thicker walls take longer to print but are more stable.",
+                    "unit": "mm",
+                    "type": "float",
+                    "minimum_value": "0",
+                    "minimum_value_warning": "wall_line_width",
+                    "default_value": 0.8,
+                    "value": "wall_line_width * 2",
+                    "limit_to_extruder": "support_infill_extruder_nr",
+                    "enabled": "support_tree_enable",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
+                },
                 "gradual_support_infill_steps":
                 {
                     "label": "Gradual Support Infill Steps",
