@@ -61,7 +61,7 @@ class ProcessSlicedLayersJob(Job):
 
     def run(self):
         start_time = time()
-        if Application.getInstance().getController().getActiveView().getPluginId() == "LayerView":
+        if Application.getInstance().getController().getActiveView().getPluginId() in ("LayerView", "SimulationView"):
             self._progress_message.show()
             Job.yieldThread()
             if self._abort_requested:
@@ -219,7 +219,7 @@ class ProcessSlicedLayersJob(Job):
             self._progress_message.setProgress(100)
 
         view = Application.getInstance().getController().getActiveView()
-        if view.getPluginId() == "LayerView":
+        if view.getPluginId() in ("LayerView", "SimulationView"):
             view.resetLayerData()
 
         if self._progress_message:
@@ -232,7 +232,7 @@ class ProcessSlicedLayersJob(Job):
 
     def _onActiveViewChanged(self):
         if self.isRunning():
-            if Application.getInstance().getController().getActiveView().getPluginId() == "LayerView":
+            if Application.getInstance().getController().getActiveView().getPluginId() in ("LayerView", "SimulationView"):
                 if not self._progress_message:
                     self._progress_message = Message(catalog.i18nc("@info:status", "Processing Layers"), 0, False, 0, catalog.i18nc("@info:title", "Information"))
                 if self._progress_message.getProgress() != 100:
