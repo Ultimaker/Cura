@@ -1,0 +1,21 @@
+#!/usr/bin/make -f
+# See debhelper(7) (uncomment to enable)
+# output every command that modifies files on the build system.
+export DH_VERBOSE = 1
+include /usr/share/dpkg/pkg-info.mk
+# Suppress __pycache__ pollution
+export PYTHONDONTWRITEBYTECODE = 1
+
+DEB_URANIUM_DIR ?= /usr/share/uranium
+
+%:
+	dh $@ --buildsystem=cmake --with python3 --parallel
+
+override_dh_auto_configure:
+	dh_auto_configure -- -DURANIUM_DIR=$(DEB_URANIUM_DIR) -DCURA_VERSION=$(DEB_VERSION_UPSTREAM)
+
+override_dh_clean:
+	dh_clean
+	# Leftovers from pytest
+	rm -rf .cache
+	find -name __pycache__ -print0 | xargs -0 rm -rf

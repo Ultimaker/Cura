@@ -1,0 +1,32 @@
+Description: Removed hard dependency on Python 3.5
+ When a system has both Python 3.5 and a newer version installed,
+ cmake will only pick up 3.5.
+ This causes problems with SIP modules, which are only installed
+ for a single Python version.
+Author: Gregor Riepl <onitake@gmail.com>
+Forwarded: no
+Last-Update: 2017-11-02
+---
+
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -34,7 +34,7 @@
+     CREATE_TRANSLATION_TARGETS()
+ endif()
+ 
+-find_package(PythonInterp 3.5.0 REQUIRED)
++find_package(PythonInterp 3 REQUIRED)
+ 
+ install(DIRECTORY resources
+         DESTINATION ${CMAKE_INSTALL_DATADIR}/cura
+--- a/cmake/CuraTests.cmake
++++ b/cmake/CuraTests.cmake
+@@ -4,7 +4,7 @@
+ enable_testing()
+ include(CMakeParseArguments)
+ 
+-find_package(PythonInterp 3.5.0 REQUIRED)
++find_package(PythonInterp 3 REQUIRED)
+ 
+ function(cura_add_test)
+     set(_single_args NAME DIRECTORY PYTHONPATH)

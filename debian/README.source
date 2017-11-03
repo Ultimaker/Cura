@@ -1,0 +1,65 @@
+Release process for Cura
+------------------------
+
+It is highly recommended to use git-buildpackage (gbp) to prepare updated
+packages. This tool will automatically verify the Debian tree against
+the upstream sources and generate separate source and debian tarballs.
+
+Packaging instructions (1 and 2 only need to be done once):
+
+1.  Obtain the sources:
+
+  $ gbp clone ssh://git.debian.org/git/3dprinter/packages/cura.git
+  $ cd cura
+
+2.  Add the upstream repository and fetch the tree:
+
+  $ git remote add upstream https://github.com/Ultimaker/Cura.git
+  $ git fetch --all
+
+3.  Import the latest upstream release:
+
+  $ git fetch --all
+  $ gbp import-orig --uscan
+
+  This will fetch the latest upstream release into the upstream branch
+  and create and commit a pristine-tar from it.
+
+4.  Update the changelog:
+
+  $ dch -a -v <UPSTREAM_VERSION>-<DEBIAN_VERSION>
+
+  Replace UPSTREAM_VERSION with the version fetched in step 3 and
+  DEBIAN_VERSION with 1. If you are creating a new Debian release
+  from a previous package version, increment DEBIAN_VERSION by 1 each time.
+  This will open a text editor where you can edit the changelog entry.
+  Include a "Closes #..." entry if this release fixes a Debian bug.
+
+5.  Refresh and verify the patches:
+
+  $ quilt push -a
+
+  This applies all patches. If you encounter any errors, fix them.
+  Make sure to refresh all patches that have changed and remove those that
+  aren't needed any more.
+  Commit the updated patches using git, then unapply them:
+
+  $ quilt pop -a; rm -rf .pc
+
+6.  Build against the upstream tree:
+
+  $ gbp buildpackage -us -uc
+
+7.  Verify that you don't have any lintian warnings:
+
+  $ linitian -I
+
+8.  Merge your changes back into the debian tree, tag and push everything:
+
+  $ gbp buildpackage --git-tag --git-sign-tags
+  $ git push --tags origin master upstream pristine-tar
+
+9.  Sign your package and release using dput or whichever method you prefer:
+
+  $ debsign
+  $ dput <RELEASE_REPOSITORY> ../libarcus_<VERSION>.changes

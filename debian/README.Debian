@@ -1,0 +1,18 @@
+Cura for Debian
+---------------
+
+This package contains the Cura 3D printing slicer user interface.
+
+It is highly recommended to install the optional dependencies as well:
+
+- python3-zeroconf provides network autodiscovery of UltiMaker3 machines
+- fdm-materials contains predefined material descriptions
+- cura-doodle3d (currently not packaged, obtain from https://github.com/Doodle3D/Doodle3D-cura-plugin)
+- cura-postprocessing (currently not packaged, obtain from https://github.com/nallath/PostProcessingPlugin)
+
+
+Acknowledgements:
+
+The dependency list is based on the work of Thomas Karl Pietrowski
+(thopiekar). You can find his own packaging effort here:
+https://github.com/thopiekar/Cura-packaging

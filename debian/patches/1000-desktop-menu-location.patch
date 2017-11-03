@@ -1,0 +1,17 @@
+Description: Adjust menu location of progam
+ Add more categories to the desktop file to adjust where
+ Cura show up in the GUI menu.
+Author: Petter Reinholdtsen <pere@hungry.com>
+Forwarded: no
+Reviewed-By: Petter Reinholdtsen <pere@hungry.com>
+Last-Update: 2017-10-08
+
+--- a/cura.desktop.in
++++ b/cura.desktop.in
+@@ -11,5 +11,5 @@
+ Terminal=false
+ Type=Application
+ MimeType=application/sla;application/vnd.ms-3mfdocument;application/prs.wavefront-obj;image/bmp;image/gif;image/jpeg;image/png;
+-Categories=Graphics;
++Categories=Graphics;Education;Development;Science;
+ Keywords=3D;Printing;

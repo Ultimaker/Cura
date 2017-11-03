@@ -1,0 +1,13 @@
+cura (3.0.3-1) UNRELEASED; urgency=medium
+
+  * New upstream release: 3.0.3
+  * Upstream license change from AGPL-3+ to LGPL-3+
+
+ -- Gregor Riepl <onitake@gmail.com>  Wed, 01 Nov 2017 01:02:01 +0100
+
+cura (2.5.0-1) unstable; urgency=medium
+
+  [ Gregor Riepl ]
+  * Initial Debian release. Closes: #706656
+
+ -- Petter Reinholdtsen <pere@debian.org>  Sun, 08 Oct 2017 09:08:37 +0000
