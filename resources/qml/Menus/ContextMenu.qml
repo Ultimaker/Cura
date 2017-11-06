@@ -39,6 +39,26 @@ Menu
         onObjectRemoved: base.removeItem(object)
     }
 
+    MenuSeparator {}
+    MenuItem {
+        text: "build plate 0";
+        onTriggered: CuraActions.setBuildPlateForSelection(0);
+        checkable: true
+        checked: false
+    }
+    MenuItem {
+        text: "build plate 1";
+        onTriggered: CuraActions.setBuildPlateForSelection(1);
+        checkable: true
+        checked: false
+    }
+    MenuItem {
+        text: "build plate 2";
+        onTriggered: CuraActions.setBuildPlateForSelection(2);
+        checkable: true
+        checked: false
+    }
+
     // Global actions
     MenuSeparator {}
     MenuItem { action: Cura.Actions.selectAll; }

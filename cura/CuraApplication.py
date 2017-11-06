@@ -1,4 +1,5 @@
 # Copyright (c) 2017 Ultimaker B.V.
+# Copyright (c) 2017 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from PyQt5.QtNetwork import QLocalServer
@@ -52,6 +53,9 @@ from cura.Settings.QualityAndUserProfilesModel import QualityAndUserProfilesMode
 from cura.Settings.SettingInheritanceManager import SettingInheritanceManager
 from cura.Settings.UserProfilesModel import UserProfilesModel
 from cura.Settings.SimpleModeSettingsManager import SimpleModeSettingsManager
+
+# research
+from cura.Scene.BuildPlateDecorator import BuildPlateDecorator
 
 from . import PlatformPhysics
 from . import BuildVolume
@@ -375,6 +379,10 @@ class CuraApplication(QtApplication):
         self._onGlobalContainerChanged()
 
         self._plugin_registry.addSupportedPluginExtension("curaplugin", "Cura Plugin")
+
+        # research
+        self._num_build_plates = 1  # default
+        self._active_build_plate = 1
 
     def _onEngineCreated(self):
         self._engine.addImageProvider("camera", CameraImageProvider.CameraImageProvider())
@@ -855,6 +863,8 @@ class CuraApplication(QtApplication):
     activityChanged = pyqtSignal()
     sceneBoundingBoxChanged = pyqtSignal()
     preferredOutputMimetypeChanged = pyqtSignal()
+    numBuildPlatesChanged = pyqtSignal()
+    activeBuildPlateChanged = pyqtSignal()
 
     @pyqtProperty(bool, notify = activityChanged)
     def platformActivity(self):
@@ -1025,7 +1035,7 @@ class CuraApplication(QtApplication):
             op.push()
             Selection.clear()
 
-    ## Reset all translation on nodes with mesh data. 
+    ## Reset all translation on nodes with mesh data.
     @pyqtSlot()
     def resetAllTranslation(self):
         Logger.log("i", "Resetting all scene translations")
@@ -1150,7 +1160,7 @@ class CuraApplication(QtApplication):
                 job.start()
             else:
                 Logger.log("w", "Unable to reload data because we don't have a filename.")
-    
+
     ##  Get logging data of the backend engine
     #   \returns \type{string} Logging data
     @pyqtSlot(result = str)
@@ -1373,6 +1383,7 @@ class CuraApplication(QtApplication):
         for node in nodes:
             node.setSelectable(True)
             node.setName(os.path.basename(filename))
+            node.addDecorator(BuildPlateDecorator())
 
             extension = os.path.splitext(filename)[1]
             if extension.lower() in self._non_sliceable_extensions:
@@ -1445,3 +1456,24 @@ class CuraApplication(QtApplication):
                     node = node.getParent()
 
                 Selection.add(node)
+
+    #### research - hacky place for these kind of thing
+    @pyqtSlot(int)
+    def setActiveBuildPlate(self, nr):
+        Logger.log("d", "Select build plate: %s" % nr)
+        self._active_build_plate = nr
+        self.activeBuildPlateChanged.emit()
+
+    @pyqtSlot()
+    def newBuildPlate(self):
+        Logger.log("d", "New build plate")
+        self._num_build_plates += 1
+        self.numBuildPlatesChanged.emit()
+
+    @pyqtProperty(int, notify = numBuildPlatesChanged)
+    def numBuildPlates(self):
+        return self._num_build_plates
+
+    @pyqtProperty(int, notify = activeBuildPlateChanged)
+    def activeBuildPlate(self):
+        return self._active_build_plate

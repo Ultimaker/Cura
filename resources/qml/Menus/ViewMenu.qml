@@ -29,5 +29,24 @@ Menu
     ExclusiveGroup { id: group; }
 
     MenuSeparator {}
+    MenuItem {
+        text: "build plate 0";
+        onTriggered: CuraApplication.setActiveBuildPlate(0);
+    }
+    MenuItem {
+        text: "build plate 1";
+        onTriggered: CuraApplication.setActiveBuildPlate(1);
+    }
+    MenuItem {
+        text: "build plate 2";
+        onTriggered: CuraApplication.setActiveBuildPlate(2);
+    }
+    ExclusiveGroup { id: buildPlateGroup; }
+
+    MenuItem {
+        text: "New build plate";
+        onTriggered: CuraApplication.newBuildPlate();
+    }
+    MenuSeparator {}
     MenuItem { action: Cura.Actions.homeCamera; }
 }
