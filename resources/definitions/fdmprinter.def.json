@@ -3678,6 +3678,18 @@
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
+                "support_tree_branch_distance":
+                {
+                    "label": "Tree Support Branch Distance",
+                    "description": "How far apart the branches need to be when they touch the model. Making this distance small will cause the tree support to touch the model at more points, causing better overhang but making support harder to remove.",
+                    "unit": "mm",
+                    "type": "float",
+                    "minimum_value": "0.001",
+                    "default_value": 4,
+                    "limit_to_extruder": "support_infill_extruder_nr",
+                    "enabled": "support_tree_enable",
+                    "settable_per_mesh": true
+                },
                 "support_tree_wall_thickness":
                 {
                     "label": "Tree Support Wall Thickness",
