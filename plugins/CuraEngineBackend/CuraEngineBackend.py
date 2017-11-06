@@ -293,7 +293,7 @@ class CuraEngineBackend(QObject, Backend):
                     error_labels.add(definitions[0].label)
 
                 error_labels = ", ".join(error_labels)
-                self._error_message = Message(catalog.i18nc("@info:status", "Unable to slice with the current settings. The following settings have errors: {0}".format(error_labels)),
+                self._error_message = Message(catalog.i18nc("@info:status", "Unable to slice with the current settings. The following settings have errors: {0}").format(error_labels),
                                               title = catalog.i18nc("@info:title", "Unable to slice"))
                 self._error_message.show()
                 self.backendStateChange.emit(BackendState.Error)

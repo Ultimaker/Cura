@@ -33,9 +33,10 @@ class XmlMaterialProfile(InstanceContainer):
     #
     #   \param xml_version: The version number found in an XML file.
     #   \return The corresponding setting_version.
-    def xmlVersionToSettingVersion(self, xml_version: str) -> int:
+    @classmethod
+    def xmlVersionToSettingVersion(cls, xml_version: str) -> int:
         if xml_version == "1.3":
-            return 4
+            return CuraApplication.SettingVersion
         return 0 #Older than 1.3.
 
     def getInheritedFiles(self):
@@ -407,15 +408,16 @@ class XmlMaterialProfile(InstanceContainer):
     def getConfigurationTypeFromSerialized(self, serialized: str) -> Optional[str]:
         return "materials"
 
-    def getVersionFromSerialized(self, serialized: str) -> Optional[int]:
+    @classmethod
+    def getVersionFromSerialized(cls, serialized: str) -> Optional[int]:
         data = ET.fromstring(serialized)
 
-        version = 1
+        version = XmlMaterialProfile.Version
         # get setting version
         if "version" in data.attrib:
-            setting_version = self.xmlVersionToSettingVersion(data.attrib["version"])
+            setting_version = XmlMaterialProfile.xmlVersionToSettingVersion(data.attrib["version"])
         else:
-            setting_version = self.xmlVersionToSettingVersion("1.2")
+            setting_version = XmlMaterialProfile.xmlVersionToSettingVersion("1.2")
 
         return version * 1000000 + setting_version
 

@@ -3974,16 +3974,6 @@
                     "limit_to_extruder": "support_infill_extruder_nr",
                     "enabled": "support_enable and support_use_towers",
                     "settable_per_mesh": true
-                },
-                "remove_empty_first_layers":
-                {
-                    "label": "Remove Empty First Layers",
-                    "description": "Remove empty layers beneath the first printed layer if they are present.",
-                    "type": "bool",
-                    "default_value": true,
-                    "enabled": "not support_enable",
-                    "settable_per_mesh": false,
-                    "settable_per_extruder": false
                 }
             }
         },
@@ -4894,6 +4884,16 @@
                     "settable_per_mesh": false,
                     "settable_per_extruder": false,
                     "settable_per_meshgroup": true
+                },
+                "remove_empty_first_layers":
+                {
+                    "label": "Remove Empty First Layers",
+                    "description": "Remove empty layers beneath the first printed layer if they are present. Disabling this setting can cause empty first layers if the Slicing Tolerance setting is set to Exclusive or Middle.",
+                    "type": "bool",
+                    "default_value": true,
+                    "enabled": "not support_enable",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false
                 }
             }
         },
