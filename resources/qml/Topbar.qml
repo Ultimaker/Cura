@@ -220,6 +220,76 @@ Rectangle
         menu: PrinterMenu { }
     }
 
+        //View orientation Item
+    Row
+    {
+        id: viewOrientationControl
+        height: 30
+        width: 155
+        spacing: 2
+
+        anchors {
+            verticalCenter: base.verticalCenter
+            right: viewModeButton.right
+            rightMargin: UM.Theme.getSize("default_margin").width + viewModeButton.width
+        }
+
+        // #1 3d view
+        Button
+        {
+            iconSource: UM.Theme.getIcon("category_machine")
+            style: UM.Theme.styles.orientation_button
+            anchors.verticalCenter: viewOrientationControl.verticalCenter
+            onClicked:{
+                UM.Controller.rotateView("3d", 0);
+            }
+        }
+
+        // #2 Front view
+        Button
+        {
+            iconSource: UM.Theme.getIcon("category_machine")
+            style: UM.Theme.styles.orientation_button
+            anchors.verticalCenter: viewOrientationControl.verticalCenter
+            onClicked:{
+                UM.Controller.rotateView("home", 0);
+            }
+        }
+
+        // #3 Top view
+        Button
+        {
+            iconSource: UM.Theme.getIcon("category_machine")
+            style: UM.Theme.styles.orientation_button
+            anchors.verticalCenter: viewOrientationControl.verticalCenter
+            onClicked:{
+                UM.Controller.rotateView("y", 90);
+            }
+        }
+
+        // #4 Left view
+        Button
+        {
+            iconSource: UM.Theme.getIcon("category_machine")
+            style: UM.Theme.styles.orientation_button
+            anchors.verticalCenter: viewOrientationControl.verticalCenter
+            onClicked:{
+                UM.Controller.rotateView("x", 90);
+            }
+        }
+
+        // #5 Left view
+        Button
+        {
+            iconSource: UM.Theme.getIcon("category_machine")
+            style: UM.Theme.styles.orientation_button
+            anchors.verticalCenter: viewOrientationControl.verticalCenter
+            onClicked:{
+                UM.Controller.rotateView("x", -90);
+            }
+        }
+    }
+
     ComboBox
     {
         id: viewModeButton

@@ -383,8 +383,8 @@ QtObject {
     property Component orientation_button: Component {
         ButtonStyle {
             background: Item {
-                implicitWidth: 30;
-                implicitHeight: 30;
+                implicitWidth: 25;
+                implicitHeight: 25;
 
                 Rectangle {
                     id: buttonFace2;
@@ -403,7 +403,7 @@ QtObject {
                             return Theme.getColor("button_hover");
                         } else {
                             //return Theme.getColor("button");
-                            return "red"
+                            return "transparent"
                         }
                     }
                     Behavior on color { ColorAnimation { duration: 50; } }
@@ -469,11 +469,13 @@ QtObject {
                         }
                         else if(control.hovered)
                         {
-                            return Theme.getColor("button_text_hover");
+                            //return Theme.getColor("button_text_hover");
+                            return "white"
                         }
                         else
                         {
-                            return Theme.getColor("button_text");
+                            //return Theme.getColor("button_text");
+                            return "black"
                         }
                     }
 
