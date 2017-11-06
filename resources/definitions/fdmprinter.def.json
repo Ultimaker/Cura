@@ -3344,7 +3344,7 @@
                     "description": "The extruder train to use for printing the support. This is used in multi-extrusion.",
                     "type": "extruder",
                     "default_value": "0",
-                    "enabled": "support_enable and machine_extruder_count > 1",
+                    "enabled": "(support_enable or support_tree_enable) and machine_extruder_count > 1",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false,
                     "children": {
@@ -3355,7 +3355,7 @@
                             "type": "extruder",
                             "default_value": "0",
                             "value": "support_extruder_nr",
-                            "enabled": "support_enable and machine_extruder_count > 1",
+                            "enabled": "(support_enable or support_tree_enable) and machine_extruder_count > 1",
                             "settable_per_mesh": false,
                             "settable_per_extruder": false
                         },
@@ -3366,7 +3366,7 @@
                             "type": "extruder",
                             "default_value": "0",
                             "value": "support_extruder_nr",
-                            "enabled": "support_enable and machine_extruder_count > 1",
+                            "enabled": "(support_enable or support_tree_enable) and machine_extruder_count > 1",
                             "settable_per_mesh": false,
                             "settable_per_extruder": false
                         },
@@ -3420,7 +3420,7 @@
                     },
                     "default_value": "everywhere",
                     "resolve": "'everywhere' if 'everywhere' in extruderValues('support_type') else 'buildplate'",
-                    "enabled": "support_enable",
+                    "enabled": "support_enable or support_tree_enable",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false
                 },
@@ -3435,7 +3435,7 @@
                     "maximum_value_warning": "80",
                     "default_value": 50,
                     "limit_to_extruder": "support_roof_extruder_nr if support_roof_enable else support_infill_extruder_nr",
-                    "enabled": "support_enable",
+                    "enabled": "support_enable or support_tree_enable",
                     "settable_per_mesh": true
                 },
                 "support_pattern":
@@ -3512,7 +3512,7 @@
                     "maximum_value_warning": "machine_nozzle_size",
                     "default_value": 0.1,
                     "limit_to_extruder": "support_interface_extruder_nr if support_interface_enable else support_infill_extruder_nr",
-                    "enabled": "support_enable",
+                    "enabled": "support_enable or support_tree_enable",
                     "settable_per_mesh": true,
                     "children":
                     {
@@ -3525,7 +3525,7 @@
                             "maximum_value_warning": "machine_nozzle_size",
                             "default_value": 0.1,
                             "type": "float",
-                            "enabled": "support_enable",
+                            "enabled": "support_enable or support_tree_enable",
                             "value": "extruderValue(support_roof_extruder_nr if support_roof_enable else support_infill_extruder_nr, 'support_z_distance')",
                             "limit_to_extruder": "support_roof_extruder_nr if support_roof_enable else support_infill_extruder_nr",
                             "settable_per_mesh": true
@@ -3541,7 +3541,7 @@
                             "value": "extruderValue(support_bottom_extruder_nr if support_bottom_enable else support_infill_extruder_nr, 'support_z_distance') if support_type == 'everywhere' else 0",
                             "limit_to_extruder": "support_bottom_extruder_nr if support_bottom_enable else support_infill_extruder_nr",
                             "type": "float",
-                            "enabled": "support_enable and resolveOrValue('support_type') == 'everywhere'",
+                            "enabled": "(support_enable or support_tree_enable) and resolveOrValue('support_type') == 'everywhere'",
                             "settable_per_mesh": true
                         }
                     }
@@ -3556,7 +3556,7 @@
                     "maximum_value_warning": "1.5 * machine_nozzle_tip_outer_diameter",
                     "default_value": 0.7,
                     "limit_to_extruder": "support_infill_extruder_nr",
-                    "enabled": "support_enable",
+                    "enabled": "support_enable or support_tree_enable",
                     "settable_per_mesh": true
                 },
                 "support_xy_overrides_z":
@@ -3571,7 +3571,7 @@
                     },
                     "default_value": "z_overrides_xy",
                     "limit_to_extruder": "support_infill_extruder_nr",
-                    "enabled": "support_enable",
+                    "enabled": "support_enable or support_tree_enable",
                     "settable_per_mesh": true
                 },
                 "support_xy_distance_overhang":
@@ -3585,7 +3585,7 @@
                     "default_value": 0.2,
                     "value": "machine_nozzle_size / 2",
                     "limit_to_extruder": "support_infill_extruder_nr",
-                    "enabled": "support_enable and support_xy_overrides_z == 'z_overrides_xy'",
+                    "enabled": "(support_enable or support_tree_enable) and support_xy_overrides_z == 'z_overrides_xy'",
                     "settable_per_mesh": true
                 },
                 "support_bottom_stair_step_height":
@@ -3651,7 +3651,7 @@
                     "maximum_value_warning": "0.75 * machine_nozzle_size",
                     "maximum_value": "resolveOrValue('layer_height') * 8",
                     "value": "resolveOrValue('layer_height')",
-                    "enabled": "support_enable and support_infill_rate > 0",
+                    "enabled": "(support_enable or support_tree_enable) and support_infill_rate > 0",
                     "limit_to_extruder": "support_infill_extruder_nr",
                     "settable_per_mesh": false
                 },
@@ -4036,7 +4036,7 @@
                     "description": "Remove empty layers beneath the first printed layer if they are present. Disabling this setting can cause empty first layers if the Slicing Tolerance setting is set to Exclusive or Middle.",
                     "type": "bool",
                     "default_value": true,
-                    "enabled": "not support_enable",
+                    "enabled": "not support_enable and not support_tree_enable",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false
                 }
