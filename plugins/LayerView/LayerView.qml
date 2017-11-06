@@ -13,7 +13,11 @@ Item
 {
     id: base
     width: {
-        if (UM.LayerView.compatibilityMode)
+        if (collapsed)
+        {
+            return 3 * UM.Theme.getSize("default_margin").height;
+        }
+        else if (UM.LayerView.compatibilityMode)
         {
             return UM.Theme.getSize("layerview_menu_size_compatibility").width;
         }
@@ -38,6 +42,7 @@ Item
         return UM.Theme.getSize("layerview_menu_size").height + UM.LayerView.extruderCount * (UM.Theme.getSize("layerview_row").height + UM.Theme.getSize("layerview_row_spacing").height)
     }
     Behavior on height { NumberAnimation { duration: 100 } }
+    Behavior on width { NumberAnimation { duration: 100 } }
 
     property bool collapsed: false
     property var buttonTarget: {
@@ -89,21 +94,6 @@ Item
                 label: {}
             }
         }
-
-        Label
-        {
-            visible: base.collapsed
-
-            anchors.top: parent.top
-            anchors.topMargin: UM.Theme.getSize("default_margin").height
-            anchors.left: parent.left
-            anchors.leftMargin: UM.Theme.getSize("default_margin").width
-
-            text: catalog.i18nc("@label","Legend")
-            font: UM.Theme.getFont("default");
-            color: UM.Theme.getColor("setting_control_text")
-        }
-
 
         ColumnLayout {
             id: view_settings
