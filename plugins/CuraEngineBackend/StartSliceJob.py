@@ -140,9 +140,13 @@ class StartSliceJob(Job):
                 temp_list = []
                 for node in DepthFirstIterator(self._scene.getRoot()):
                     if type(node) is SceneNode and node.getMeshData() and node.getMeshData().getVertices() is not None:
-                        if not getattr(node, "_outside_buildarea", False)\
-                                or (node.callDecoration("getStack") and any(node.callDecoration("getStack").getProperty(setting, "value") for setting in self._not_printed_mesh_settings)):
-                            temp_list.append(node)
+
+                        # temp hack to filter on build plate 0
+                        if (node.callDecoration("getBuildPlateNumber") == 0):
+
+                            if not getattr(node, "_outside_buildarea", False)\
+                                    or (node.callDecoration("getStack") and any(node.callDecoration("getStack").getProperty(setting, "value") for setting in self._not_printed_mesh_settings)):
+                                temp_list.append(node)
                     Job.yieldThread()
 
                 if temp_list:

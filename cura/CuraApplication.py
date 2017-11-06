@@ -292,6 +292,8 @@ class CuraApplication(QtApplication):
         preferences.addPreference("metadata/setting_version", 0)
         preferences.setValue("metadata/setting_version", self.SettingVersion) #Don't make it equal to the default so that the setting version always gets written to the file.
 
+        preferences.addPreference("view/build_plate_number", 0)
+
         preferences.addPreference("cura/active_mode", "simple")
 
         preferences.addPreference("cura/categories_expanded", "")
@@ -1462,6 +1464,8 @@ class CuraApplication(QtApplication):
     def setActiveBuildPlate(self, nr):
         Logger.log("d", "Select build plate: %s" % nr)
         self._active_build_plate = nr
+        Preferences.setValue("view/build_plate_number", self._active_build_plate)
+
         self.activeBuildPlateChanged.emit()
 
     @pyqtSlot()

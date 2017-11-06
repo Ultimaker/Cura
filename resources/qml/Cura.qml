@@ -340,6 +340,22 @@ UM.MainWindow
                 action: Cura.Actions.open;
             }
 
+            Button
+            {
+                id: objectsButton;
+                text: catalog.i18nc("@action:button","Objects");
+                iconSource: UM.Theme.getIcon("load")
+                style: UM.Theme.styles.tool_button
+                tooltip: '';
+                anchors
+                {
+                    top: openFileButton.bottom;
+                    topMargin: UM.Theme.getSize("default_margin").height;
+                    left: parent.left;
+                }
+                action: triggerObjectsList;
+            }
+
             Toolbar
             {
                 id: toolbar;
@@ -348,7 +364,7 @@ UM.MainWindow
                 property int mouseY: base.mouseY
 
                 anchors {
-                    top: openFileButton.bottom;
+                    top: objectsButton.bottom;
                     topMargin: UM.Theme.getSize("window_margin").height;
                     left: parent.left;
                 }
@@ -378,6 +394,29 @@ UM.MainWindow
                 z: 1
                 width: UM.Theme.getSize("sidebar").width;
                 monitoringPrint: base.showPrintMonitor
+            }
+
+            Action
+            {
+                id: triggerObjectsList;
+                text: catalog.i18nc("@action:inmenu menubar:file","&Open File(s)...");
+                iconName: "document-open";
+                shortcut: StandardKey.Open;
+                onTriggered: objectsList.visible = !objectsList.visible;
+            }
+
+            ObjectsList
+            {
+                id: objectsList;
+                visible: false;
+                anchors
+                {
+                    top: objectsButton.top;
+                    left: objectsButton.right;
+                    leftMargin: UM.Theme.getSize("default_margin").width;
+                    rightMargin: UM.Theme.getSize("default_margin").width;
+                }
+
             }
 
             Rectangle
