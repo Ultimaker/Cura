@@ -10,30 +10,21 @@ from UM.Job import Job
 import urllib.request
 import codecs
 
-from PyQt5.QtCore import QUrl
-from PyQt5.QtGui import QDesktopServices
-
 from UM.i18n import i18nCatalog
 i18n_catalog = i18nCatalog("cura")
 
 
 ##  This job checks if there is an update available on the provided URL.
 class FirmwareUpdateCheckerJob(Job):
-    def __init__(self, container = None, silent = False, url = None):
+    def __init__(self, container = None, silent = False, url = None, callback = None, set_download_url_callback = None):
         super().__init__()
         self._container = container
         self.silent = silent
         self._url = url
-        self._download_url = None  # If an update was found, the download_url will be set to the location of the new version.
-
-    ##  Callback for the message that is spawned when there is a new version.
-    def actionTriggered(self, message, action):
-        if action == "download":
-            if self._download_url is not None:
-                QDesktopServices.openUrl(QUrl(self._download_url))
+        self._callback = callback
+        self._set_download_url_callback = set_download_url_callback
 
     def run(self):
-        self._download_url = None  # Reset download ur.
         if not self._url:
             Logger.log("e", "Can not check for a new release. URL not set!")
             return
@@ -75,8 +66,9 @@ class FirmwareUpdateCheckerJob(Job):
                     message.addAction("download", i18n_catalog.i18nc("@action:button", "Download"), "[no_icon]", "[no_description]")
 
                     # If we do this in a cool way, the download url should be available in the JSON file
-                    self._download_url = "https://ultimaker.com/en/resources/20500-upgrade-firmware"
-                    message.actionTriggered.connect(self.actionTriggered)
+                    if self._set_download_url_callback:
+                        self._set_download_url_callback("https://ultimaker.com/en/resources/20500-upgrade-firmware")
+                    message.actionTriggered.connect(self._callback)
                     message.show()
 
         except Exception as e:
