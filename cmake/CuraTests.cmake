@@ -4,7 +4,7 @@
 enable_testing()
 include(CMakeParseArguments)
 
-find_package(PythonInterp 3.5.0 REQUIRED)
+find_package(PythonInterp 3 REQUIRED)
 
 function(cura_add_test)
     set(_single_args NAME DIRECTORY PYTHONPATH)
