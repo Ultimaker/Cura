@@ -23,64 +23,67 @@ class LayerViewProxy(QObject):
     @pyqtProperty(bool, notify=activityChanged)
     def layerActivity(self):
         active_view = self._controller.getActiveView()
-        if type(active_view) == LayerView.LayerView.LayerView:
+        if isinstance(active_view, LayerView.LayerView.LayerView):
             return active_view.getActivity()
+        return False
 
     @pyqtProperty(int, notify=maxLayersChanged)
     def numLayers(self):
         active_view = self._controller.getActiveView()
-        if type(active_view) == LayerView.LayerView.LayerView:
+        if isinstance(active_view, LayerView.LayerView.LayerView):
             return active_view.getMaxLayers()
+        return 0
 
     @pyqtProperty(int, notify=currentLayerChanged)
     def currentLayer(self):
         active_view = self._controller.getActiveView()
-        if type(active_view) == LayerView.LayerView.LayerView:
+        if isinstance(active_view, LayerView.LayerView.LayerView):
             return active_view.getCurrentLayer()
+        return 0
 
     @pyqtProperty(int, notify=currentLayerChanged)
     def minimumLayer(self):
         active_view = self._controller.getActiveView()
-        if type(active_view) == LayerView.LayerView.LayerView:
+        if isinstance(active_view, LayerView.LayerView.LayerView):
             return active_view.getMinimumLayer()
+        return 0
 
     @pyqtProperty(bool, notify=busyChanged)
     def busy(self):
         active_view = self._controller.getActiveView()
-        if type(active_view) == LayerView.LayerView.LayerView:
+        if isinstance(active_view, LayerView.LayerView.LayerView):
             return active_view.isBusy()
-
         return False
 
     @pyqtProperty(bool, notify=preferencesChanged)
     def compatibilityMode(self):
         active_view = self._controller.getActiveView()
-        if type(active_view) == LayerView.LayerView.LayerView:
+        if isinstance(active_view, LayerView.LayerView.LayerView):
             return active_view.getCompatibilityMode()
         return False
 
     @pyqtSlot(int)
     def setCurrentLayer(self, layer_num):
         active_view = self._controller.getActiveView()
-        if type(active_view) == LayerView.LayerView.LayerView:
+        if isinstance(active_view, LayerView.LayerView.LayerView):
             active_view.setLayer(layer_num)
 
     @pyqtSlot(int)
     def setMinimumLayer(self, layer_num):
         active_view = self._controller.getActiveView()
-        if type(active_view) == LayerView.LayerView.LayerView:
+        if isinstance(active_view, LayerView.LayerView.LayerView):
             active_view.setMinimumLayer(layer_num)
 
     @pyqtSlot(int)
     def setLayerViewType(self, layer_view_type):
         active_view = self._controller.getActiveView()
-        if type(active_view) == LayerView.LayerView.LayerView:
+        if isinstance(active_view, LayerView.LayerView.LayerView):
             active_view.setLayerViewType(layer_view_type)
 
     @pyqtSlot(result=int)
     def getLayerViewType(self):
         active_view = self._controller.getActiveView()
-        if type(active_view) == LayerView.LayerView.LayerView:
+        if isinstance(active_view, LayerView.LayerView.LayerView):
             return active_view.getLayerViewType()
         return 0
 
@@ -88,37 +91,37 @@ class LayerViewProxy(QObject):
     @pyqtSlot(int, float)
     def setExtruderOpacity(self, extruder_nr, opacity):
         active_view = self._controller.getActiveView()
-        if type(active_view) == LayerView.LayerView.LayerView:
+        if isinstance(active_view, LayerView.LayerView.LayerView):
             active_view.setExtruderOpacity(extruder_nr, opacity)
 
     @pyqtSlot(int)
     def setShowTravelMoves(self, show):
         active_view = self._controller.getActiveView()
-        if type(active_view) == LayerView.LayerView.LayerView:
+        if isinstance(active_view, LayerView.LayerView.LayerView):
             active_view.setShowTravelMoves(show)
 
     @pyqtSlot(int)
     def setShowHelpers(self, show):
         active_view = self._controller.getActiveView()
-        if type(active_view) == LayerView.LayerView.LayerView:
+        if isinstance(active_view, LayerView.LayerView.LayerView):
             active_view.setShowHelpers(show)
 
     @pyqtSlot(int)
     def setShowSkin(self, show):
         active_view = self._controller.getActiveView()
-        if type(active_view) == LayerView.LayerView.LayerView:
+        if isinstance(active_view, LayerView.LayerView.LayerView):
             active_view.setShowSkin(show)
 
     @pyqtSlot(int)
     def setShowInfill(self, show):
         active_view = self._controller.getActiveView()
-        if type(active_view) == LayerView.LayerView.LayerView:
+        if isinstance(active_view, LayerView.LayerView.LayerView):
             active_view.setShowInfill(show)
 
     @pyqtProperty(int, notify=globalStackChanged)
     def extruderCount(self):
         active_view = self._controller.getActiveView()
-        if type(active_view) == LayerView.LayerView.LayerView:
+        if isinstance(active_view, LayerView.LayerView.LayerView):
             return active_view.getExtruderCount()
         return 0
 
@@ -143,7 +146,7 @@ class LayerViewProxy(QObject):
 
     def _onActiveViewChanged(self):
         active_view = self._controller.getActiveView()
-        if type(active_view) == LayerView.LayerView.LayerView:
+        if isinstance(active_view, LayerView.LayerView.LayerView):
             active_view.currentLayerNumChanged.connect(self._onLayerChanged)
             active_view.maxLayersChanged.connect(self._onMaxLayersChanged)
             active_view.busyChanged.connect(self._onBusyChanged)
