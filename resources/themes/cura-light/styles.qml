@@ -857,6 +857,49 @@ QtObject {
         }
     }
 
+    property Component partially_checkbox: Component {
+        CheckBoxStyle {
+            background: Item { }
+            indicator: Rectangle {
+                implicitWidth:  Theme.getSize("checkbox").width;
+                implicitHeight: Theme.getSize("checkbox").height;
+
+                color: (control.hovered || control._hovered) ? Theme.getColor("checkbox_hover") : Theme.getColor("checkbox");
+                Behavior on color { ColorAnimation { duration: 50; } }
+
+                radius: control.exclusiveGroup ? Theme.getSize("checkbox").width / 2 : 0
+
+                border.width: Theme.getSize("default_lining").width;
+                border.color: (control.hovered || control._hovered) ? Theme.getColor("checkbox_border_hover") : Theme.getColor("checkbox_border");
+
+                UM.RecolorImage {
+                    anchors.verticalCenter: parent.verticalCenter
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    width: parent.width / 2.5
+                    height: parent.height / 2.5
+                    sourceSize.width: width
+                    sourceSize.height: width
+                    color: Theme.getColor("checkbox_mark")
+                    source: {
+                        if (control.checkbox_state == 2){
+                            return Theme.getIcon("solid")
+                        }
+                        else{
+                            return control.exclusiveGroup ? Theme.getIcon("dot") : Theme.getIcon("check")
+                        }
+                    }
+                    opacity: control.checked
+                    Behavior on opacity { NumberAnimation { duration: 100; } }
+                }
+            }
+            label: Label {
+                text: control.text;
+                color: Theme.getColor("checkbox_text");
+                font: Theme.getFont("default");
+            }
+        }
+    }
+
     property Component slider: Component {
         SliderStyle {
             groove: Rectangle {
