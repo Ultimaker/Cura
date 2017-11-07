@@ -8,7 +8,7 @@ import QtQuick.Layouts 1.1
 import QtQuick.Dialogs 1.1
 
 import UM 1.3 as UM
-import Cura 1.0 as Cura
+import Cura 1.2 as Cura
 
 import "Menus"
 
@@ -20,6 +20,8 @@ Rectangle
 
     width: UM.Theme.getSize("objects_menu_size").width
     height: UM.Theme.getSize("objects_menu_size").height
+
+    SystemPalette { id: palette }
 
     Button
     {
@@ -38,51 +40,188 @@ Rectangle
         action: Cura.Actions.open;
     }
 
-    ListModel
-    {
-        id: objectsListModel;
-
-        ListElement {
-            name: "Apple"
-            cost: 2.45
-        }
-        ListElement {
-            name: "Orange"
-            cost: 3.25
-        }
-        ListElement {
-            name: "Banana"
-            cost: 1.95
-        }
-    }
-
     Component {
         id: objectDelegate
-        Rectangle {
-            height: 30
+        Rectangle
+            {
+                height: childrenRect.height
+                color: Cura.ObjectManager.getItem(index).isSelected ? palette.highlight : index % 2 ? palette.base : palette.alternateBase
+                width: parent.width
+                Label
+                {
+                    id: nodeNameLabel
+                    anchors.left: parent.left
+                    anchors.leftMargin: UM.Theme.getSize("default_margin").width
+                    //anchors.right: parent.right
+                    width: parent.width - 2 * UM.Theme.getSize("default_margin").width - 30
+                    text: Cura.ObjectManager.getItem(index).name;
+                    color: Cura.ObjectManager.getItem(index).isSelected ? palette.highlightedText : palette.text
+                    elide: Text.ElideRight
+                }
 
-            Text {
-                text: name
-                color: red
+                Label
+                {
+                    id: buildPlateNumberLabel
+                    width: 20
+                    anchors.left: nodeNameLabel.right
+                    anchors.leftMargin: UM.Theme.getSize("default_margin").width
+                    anchors.right: parent.right
+                    text: Cura.ObjectManager.getItem(index).buildPlateNumber;
+                    color: Cura.ObjectManager.getItem(index).isSelected ? palette.highlightedText : palette.text
+                    elide: Text.ElideRight
+                }
+
+                MouseArea
+                {
+                    anchors.fill: parent;
+                    onClicked:
+                    {
+                        Cura.ObjectManager.changeSelection(index);
+                    }
+                }
             }
-            //Text { text: '$' + cost }
-        }
     }
 
-    ListView
+    // list all the scene nodes
+    ScrollView
     {
-        model: objectsListModel;
+        id: objectsList
+        frameVisible: true
+        width: parent.width - 2 * UM.Theme.getSize("default_margin").height
+
         anchors
         {
             top: openFileButton.bottom;
             topMargin: UM.Theme.getSize("default_margin").height;
             left: parent.left;
             leftMargin: UM.Theme.getSize("default_margin").height;
+            bottom: buildPlateSelection.top;
+            bottomMargin: UM.Theme.getSize("default_margin").height;
         }
-        width: parent.width - 2 * UM.Theme.getSize("default_margin").height
-        height: 100
 
-        delegate: objectDelegate
+        Rectangle
+        {
+            parent: viewport
+            anchors.fill: parent
+            color: palette.light
+        }
+
+        ListView
+        {
+            id: listview
+            model: Cura.ObjectManager
+            //model: objectsListModel
+
+            onModelChanged:
+            {
+                //currentIndex = -1;
+            }
+            width: parent.width
+            currentIndex: -1
+            onCurrentIndexChanged:
+            {
+                //base.selectedPrinter = listview.model[currentIndex];
+                // Only allow connecting if the printer has responded to API query since the last refresh
+                //base.completeProperties = base.selectedPrinter != null && base.selectedPrinter.getProperty("incomplete") != "true";
+            }
+            //Component.onCompleted: manager.startDiscovery()
+            delegate: objectDelegate
+        }
+    }
+
+    ListModel
+    {
+        id: buildPlatesModel
+
+        ListElement
+        {
+            name: "build plate 0"
+            buildPlateNumber: 0
+        }
+        ListElement
+        {
+            name: "build plate 1"
+            buildPlateNumber: 1
+        }
+        ListElement
+        {
+            name: "build plate 2"
+            buildPlateNumber: 2
+        }
+    }
+
+    Component {
+        id: buildPlateDelegate
+        Rectangle
+            {
+                height: childrenRect.height
+                color: CuraApplication.activeBuildPlate == buildPlateNumber ? palette.highlight : index % 2 ? palette.base : palette.alternateBase
+                width: parent.width
+                Label
+                {
+                    anchors.left: parent.left
+                    anchors.leftMargin: UM.Theme.getSize("default_margin").width
+                    anchors.right: parent.right
+                    text: name //Cura.ObjectManager.getItem(index).name;
+                    color: CuraApplication.activeBuildPlate == buildPlateNumber ? palette.highlightedText : palette.text
+                    elide: Text.ElideRight
+                }
+
+                MouseArea
+                {
+                    anchors.fill: parent;
+                    onClicked:
+                    {
+                        CuraApplication.setActiveBuildPlate(buildPlateNumber);
+                    }
+                }
+            }
+    }
+
+    ScrollView
+    {
+        id: buildPlateSelection
+        frameVisible: true
+        height: 100
+        width: parent.width - 2 * UM.Theme.getSize("default_margin").height
+
+        anchors
+        {
+            // top: objectsList.bottom;
+            topMargin: UM.Theme.getSize("default_margin").height;
+            left: parent.left;
+            leftMargin: UM.Theme.getSize("default_margin").height;
+            bottom: parent.bottom;
+            bottomMargin: UM.Theme.getSize("default_margin").height;
+        }
+
+        Rectangle
+        {
+            parent: viewport
+            anchors.fill: parent
+            color: palette.light
+        }
+
+        ListView
+        {
+            id: buildPlateListView
+            model: buildPlatesModel
+
+            onModelChanged:
+            {
+                //currentIndex = -1;
+            }
+            width: parent.width
+            currentIndex: -1
+            onCurrentIndexChanged:
+            {
+                //base.selectedPrinter = listview.model[currentIndex];
+                // Only allow connecting if the printer has responded to API query since the last refresh
+                //base.completeProperties = base.selectedPrinter != null && base.selectedPrinter.getProperty("incomplete") != "true";
+            }
+            //Component.onCompleted: manager.startDiscovery()
+            delegate: buildPlateDelegate
+        }
     }
 
 }

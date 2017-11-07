@@ -71,7 +71,7 @@ class SolidView(View):
             else:
                 self._enabled_shader.setUniformValue("u_overhangAngle", math.cos(math.radians(0)))
 
-        activeBuildPlateNumber = Preferences.getInstance().getValue("view/build_plate_number") or 0
+        activeBuildPlateNumber = Application.getInstance().activeBuildPlate
 
         for node in DepthFirstIterator(scene.getRoot()):
             if not node.render(renderer):

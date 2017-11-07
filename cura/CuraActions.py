@@ -156,13 +156,8 @@ class CuraActions(QObject):
 
         if not nodes_to_change:
             Logger.log("d", "Nothing to change.")
-            # If there are no changes to make, we still need to reset the selected extruders.
-            # This is a workaround for checked menu items being deselected while still being
-            # selected.
-            #ExtruderManager.getInstance().resetSelectedObjectExtruders()
             return
 
-        Logger.log("d", "Yes: %s", nodes_to_change)
         for node in nodes_to_change:
             operation.addOperation(SetBuildPlateNumberOperation(node, build_plate_nr))
         operation.push()

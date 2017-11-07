@@ -79,6 +79,8 @@ from cura.Settings.ContainerManager import ContainerManager
 from cura.Settings.GlobalStack import GlobalStack
 from cura.Settings.ExtruderStack import ExtruderStack
 
+from cura.ObjectManager import ObjectManager
+
 from PyQt5.QtCore import QUrl, pyqtSignal, pyqtProperty, QEvent, Q_ENUMS
 from UM.FlameProfiler import pyqtSlot
 from PyQt5.QtGui import QColor, QIcon
@@ -205,6 +207,7 @@ class CuraApplication(QtApplication):
         self._machine_action_manager = MachineActionManager.MachineActionManager()
         self._machine_manager = None    # This is initialized on demand.
         self._material_manager = None
+        self._object_manager = None
         self._setting_inheritance_manager = None
         self._simple_mode_settings_manager = None
 
@@ -291,8 +294,6 @@ class CuraApplication(QtApplication):
         preferences = Preferences.getInstance()
         preferences.addPreference("metadata/setting_version", 0)
         preferences.setValue("metadata/setting_version", self.SettingVersion) #Don't make it equal to the default so that the setting version always gets written to the file.
-
-        preferences.addPreference("view/build_plate_number", 0)
 
         preferences.addPreference("cura/active_mode", "simple")
 
@@ -384,7 +385,7 @@ class CuraApplication(QtApplication):
 
         # research
         self._num_build_plates = 1  # default
-        self._active_build_plate = 1
+        self._active_build_plate = 0
 
     def _onEngineCreated(self):
         self._engine.addImageProvider("camera", CameraImageProvider.CameraImageProvider())
@@ -717,6 +718,9 @@ class CuraApplication(QtApplication):
         qmlRegisterSingletonType(SimpleModeSettingsManager, "Cura", 1, 2, "SimpleModeSettingsManager",
                                  self.getSimpleModeSettingsManager)
 
+        Logger.log("d", "           #### going to register object manager")
+        qmlRegisterSingletonType(ObjectManager, "Cura", 1, 2, "ObjectManager", self.getObjectManager)
+
         qmlRegisterSingletonType(MachineActionManager.MachineActionManager, "Cura", 1, 0, "MachineActionManager", self.getMachineActionManager)
         self.setMainQml(Resources.getPath(self.ResourceTypes.QmlFiles, "Cura.qml"))
         self._qml_import_paths.append(Resources.getPath(self.ResourceTypes.QmlFiles))
@@ -743,6 +747,11 @@ class CuraApplication(QtApplication):
         if self._material_manager is None:
             self._material_manager = MaterialManager.createMaterialManager()
         return self._material_manager
+
+    def getObjectManager(self, *args):
+        if self._object_manager is None:
+            self._object_manager = ObjectManager.createObjectManager()
+        return self._object_manager
 
     def getSettingInheritanceManager(self, *args):
         if self._setting_inheritance_manager is None:
@@ -799,6 +808,7 @@ class CuraApplication(QtApplication):
         qmlRegisterType(QualitySettingsModel, "Cura", 1, 0, "QualitySettingsModel")
         qmlRegisterType(MachineNameValidator, "Cura", 1, 0, "MachineNameValidator")
         qmlRegisterType(UserChangesModel, "Cura", 1, 1, "UserChangesModel")
+        # qmlRegisterSingletonType(ObjectManager, "Cura", 1, 0, "ObjectManager", ObjectManager.createObjectManager)
 
         qmlRegisterSingletonType(ContainerManager, "Cura", 1, 0, "ContainerManager", ContainerManager.createContainerManager)
 
@@ -1464,7 +1474,6 @@ class CuraApplication(QtApplication):
     def setActiveBuildPlate(self, nr):
         Logger.log("d", "Select build plate: %s" % nr)
         self._active_build_plate = nr
-        Preferences.setValue("view/build_plate_number", self._active_build_plate)
 
         self.activeBuildPlateChanged.emit()
 
