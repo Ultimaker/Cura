@@ -78,13 +78,13 @@
         "text_pressed": [12, 169, 227, 255],
         "text_subtext": [0, 0, 0, 255],
         "text_emphasis": [255, 255, 255, 255],
-        "text_scene": [24, 41, 77, 255],
+        "text_scene": [31, 36, 39, 255],
         "text_scene_hover": [70, 84, 113, 255],
 
         "error": [255, 140, 0, 255],
         "sidebar_header_bar": [31, 36, 39, 255],
-        "sidebar_header_active": [68, 72, 75, 255],
-        "sidebar_header_hover": [68, 72, 75, 255],
+        "sidebar_header_active": [31, 36, 39, 255],
+        "sidebar_header_hover": [31, 36, 39, 255],
         "sidebar_header_highlight": [68, 192, 255, 255],
         "sidebar_header_highlight_hover": [68, 192, 255, 255],
         "sidebar_header_text_inactive": [255, 255, 255, 255],
@@ -176,7 +176,7 @@
         "material_compatibility_warning": [0, 0, 0, 255],
 
         "progressbar_background": [245, 245, 245, 255],
-        "progressbar_control": [24, 41, 77, 255],
+        "progressbar_control": [31, 36, 39, 255],
 
         "slider_groove": [245, 245, 245, 255],
         "slider_groove_border": [127, 127, 127, 255],
