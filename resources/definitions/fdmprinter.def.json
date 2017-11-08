@@ -3690,6 +3690,20 @@
                     "enabled": "support_tree_enable",
                     "settable_per_mesh": true
                 },
+                "support_tree_branch_diameter":
+                {
+                    "label": "Tree Support Branch Diameter",
+                    "description": "The diameter of the thinnest branches of tree support. Thicker branches are more sturdy. Branches towards the base will be thicker than this.",
+                    "unit": "mm",
+                    "type": "float",
+                    "minimum_value": "0.001",
+                    "minimum_value_warning": "support_line_width * 2",
+                    "default_value": 2,
+                    "limit_to_extruder": "support_infill_extruder_nr",
+                    "enabled": "support_tree_enable",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
+                },
                 "support_tree_wall_thickness":
                 {
                     "label": "Tree Support Wall Thickness",
