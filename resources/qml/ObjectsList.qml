@@ -110,21 +110,7 @@ Rectangle
         {
             id: listview
             model: Cura.ObjectManager
-            //model: objectsListModel
-
-            onModelChanged:
-            {
-                //currentIndex = -1;
-            }
             width: parent.width
-            currentIndex: -1
-            onCurrentIndexChanged:
-            {
-                //base.selectedPrinter = listview.model[currentIndex];
-                // Only allow connecting if the printer has responded to API query since the last refresh
-                //base.completeProperties = base.selectedPrinter != null && base.selectedPrinter.getProperty("incomplete") != "true";
-            }
-            //Component.onCompleted: manager.startDiscovery()
             delegate: objectDelegate
         }
     }
@@ -191,7 +177,7 @@ Rectangle
             topMargin: UM.Theme.getSize("default_margin").height;
             left: parent.left;
             leftMargin: UM.Theme.getSize("default_margin").height;
-            bottom: parent.bottom;
+            bottom: arrangeAllBuildPlatesButton.top;
             bottomMargin: UM.Theme.getSize("default_margin").height;
         }
 
@@ -223,5 +209,47 @@ Rectangle
             delegate: buildPlateDelegate
         }
     }
+
+    Button
+    {
+        id: arrangeAllBuildPlatesButton;
+        text: catalog.i18nc("@action:button","Arrange to all build plates");
+        //iconSource: UM.Theme.getIcon("load")
+        //style: UM.Theme.styles.tool_button
+        height: 25
+        tooltip: '';
+        anchors
+        {
+            //top: buildPlateSelection.bottom;
+            topMargin: UM.Theme.getSize("default_margin").height;
+            left: parent.left;
+            leftMargin: UM.Theme.getSize("default_margin").height;
+            right: parent.right;
+            rightMargin: UM.Theme.getSize("default_margin").height;
+            bottom: arrangeBuildPlateButton.top;
+            bottomMargin: UM.Theme.getSize("default_margin").height;
+        }
+        action: Cura.Actions.arrangeAllBuildPlates;
+    }
+
+    Button
+    {
+        id: arrangeBuildPlateButton;
+        text: catalog.i18nc("@action:button","Arrange current build plate");
+        height: 25
+        tooltip: '';
+        anchors
+        {
+            topMargin: UM.Theme.getSize("default_margin").height;
+            left: parent.left;
+            leftMargin: UM.Theme.getSize("default_margin").height;
+            right: parent.right;
+            rightMargin: UM.Theme.getSize("default_margin").height;
+            bottom: parent.bottom;
+            bottomMargin: UM.Theme.getSize("default_margin").height;
+        }
+        action: Cura.Actions.arrangeAll;
+    }
+
 
 }

@@ -30,6 +30,7 @@ class Arrange:
         self._offset_x = offset_x
         self._offset_y = offset_y
         self._last_priority = 0
+        self._is_empty = True
 
     ##  Helper to create an Arranger instance
     #
@@ -38,8 +39,8 @@ class Arrange:
     #   \param scene_root   Root for finding all scene nodes
     #   \param fixed_nodes  Scene nodes to be placed
     @classmethod
-    def create(cls, scene_root = None, fixed_nodes = None, scale = 0.5):
-        arranger = Arrange(220, 220, 110, 110, scale = scale)
+    def create(cls, scene_root = None, fixed_nodes = None, scale = 0.5, x = 220, y = 220):
+        arranger = Arrange(x, y, x / 2, y / 2, scale = scale)
         arranger.centerFirst()
 
         if fixed_nodes is None:
@@ -62,7 +63,7 @@ class Arrange:
             for area in disallowed_areas:
                 points = copy.deepcopy(area._points)
                 shape_arr = ShapeArray.fromPolygon(points, scale = scale)
-                arranger.place(0, 0, shape_arr)
+                arranger.place(0, 0, shape_arr, update_empty = False)
         return arranger
 
     ##  Find placement for a node (using offset shape) and place it (using hull shape)
@@ -166,7 +167,7 @@ class Arrange:
     #   \param x x-coordinate
     #   \param y y-coordinate
     #   \param shape_arr ShapeArray object
-    def place(self, x, y, shape_arr):
+    def place(self, x, y, shape_arr, update_empty = True):
         x = int(self._scale * x)
         y = int(self._scale * y)
         offset_x = x + self._offset_x + shape_arr.offset_x
@@ -179,10 +180,17 @@ class Arrange:
         max_y = min(max(offset_y + shape_arr.arr.shape[0], 0), shape_y - 1)
         occupied_slice = self._occupied[min_y:max_y, min_x:max_x]
         # we use a slice of shape because it can be out of bounds
-        occupied_slice[numpy.where(shape_arr.arr[
-            min_y - offset_y:max_y - offset_y, min_x - offset_x:max_x - offset_x] == 1)] = 1
+        new_occupied = numpy.where(shape_arr.arr[
+            min_y - offset_y:max_y - offset_y, min_x - offset_x:max_x - offset_x] == 1)
+        if update_empty and new_occupied:
+            self._is_empty = False
+        occupied_slice[new_occupied] = 1
 
         # Set priority to low (= high number), so it won't get picked at trying out.
         prio_slice = self._priority[min_y:max_y, min_x:max_x]
         prio_slice[numpy.where(shape_arr.arr[
             min_y - offset_y:max_y - offset_y, min_x - offset_x:max_x - offset_x] == 1)] = 999
+
+    @property
+    def isEmpty(self):
+        return self._is_empty

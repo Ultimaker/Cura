@@ -134,25 +134,16 @@ class CuraActions(QObject):
         Logger.log("d", "Setting build plate number... %d" % build_plate_nr)
         operation = GroupedOperation()
 
+        root = Application.getInstance().getController().getScene().getRoot()
+
         nodes_to_change = []
         for node in Selection.getAllSelectedObjects():
-            # Do not change any nodes that already have the right extruder set.
-            if node.callDecoration("getBuildPlateNumber") == build_plate_nr:
-                continue
+            parent_node = node  # Find the parent node to change instead
+            while parent_node.getParent() != root:
+                parent_node = parent_node.getParent()
 
-            # If the node is a group, apply the active extruder to all children of the group.
-            if node.callDecoration("isGroup"):
-                for grouped_node in BreadthFirstIterator(node):
-                    if grouped_node.callDecoration("getBuildPlateNumber") == build_plate_nr:
-                        continue
-
-                    if grouped_node.callDecoration("isGroup"):
-                        continue
-
-                    nodes_to_change.append(grouped_node)
-                continue
-
-            nodes_to_change.append(node)
+            for single_node in BreadthFirstIterator(parent_node):
+                nodes_to_change.append(single_node)
 
         if not nodes_to_change:
             Logger.log("d", "Nothing to change.")

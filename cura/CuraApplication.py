@@ -39,8 +39,11 @@ from cura.ConvexHullDecorator import ConvexHullDecorator
 from cura.SetParentOperation import SetParentOperation
 from cura.SliceableObjectDecorator import SliceableObjectDecorator
 from cura.BlockSlicingDecorator import BlockSlicingDecorator
+# research
+from cura.Scene.BuildPlateDecorator import BuildPlateDecorator
 
 from cura.ArrangeObjectsJob import ArrangeObjectsJob
+from cura.ArrangeObjectsAllBuildPlatesJob import ArrangeObjectsAllBuildPlatesJob
 from cura.MultiplyObjectsJob import MultiplyObjectsJob
 
 from UM.Settings.SettingDefinition import SettingDefinition, DefinitionPropertyType
@@ -54,8 +57,6 @@ from cura.Settings.SettingInheritanceManager import SettingInheritanceManager
 from cura.Settings.UserProfilesModel import UserProfilesModel
 from cura.Settings.SimpleModeSettingsManager import SimpleModeSettingsManager
 
-# research
-from cura.Scene.BuildPlateDecorator import BuildPlateDecorator
 
 from . import PlatformPhysics
 from . import BuildVolume
@@ -1105,7 +1106,7 @@ class CuraApplication(QtApplication):
 
     ##  Arrange all objects.
     @pyqtSlot()
-    def arrangeAll(self):
+    def arrangeObjectsToAllBuildPlates(self):
         nodes = []
         for node in DepthFirstIterator(self.getController().getScene().getRoot()):
             if type(node) is not SceneNode:
@@ -1119,6 +1120,26 @@ class CuraApplication(QtApplication):
             # Skip nodes that are too big
             if node.getBoundingBox().width < self._volume.getBoundingBox().width or node.getBoundingBox().depth < self._volume.getBoundingBox().depth:
                 nodes.append(node)
+        job = ArrangeObjectsAllBuildPlatesJob(nodes)
+        job.start()
+
+    # Single build plate
+    @pyqtSlot()
+    def arrangeAll(self):
+        nodes = []
+        for node in DepthFirstIterator(self.getController().getScene().getRoot()):
+            if type(node) is not SceneNode:
+                continue
+            if not node.getMeshData() and not node.callDecoration("isGroup"):
+                continue  # Node that doesnt have a mesh and is not a group.
+            if node.getParent() and node.getParent().callDecoration("isGroup"):
+                continue  # Grouped nodes don't need resetting as their parent (the group) is resetted)
+            if not node.isSelectable():
+                continue  # i.e. node with layer data
+            if node.callDecoration("getBuildPlateNumber") == self._active_build_plate:
+                # Skip nodes that are too big
+                if node.getBoundingBox().width < self._volume.getBoundingBox().width or node.getBoundingBox().depth < self._volume.getBoundingBox().depth:
+                    nodes.append(node)
         self.arrange(nodes, fixed_nodes = [])
 
     ##  Arrange Selection
@@ -1250,6 +1271,7 @@ class CuraApplication(QtApplication):
         group_decorator = GroupDecorator()
         group_node.addDecorator(group_decorator)
         group_node.addDecorator(ConvexHullDecorator())
+        group_node.addDecorator(BuildPlateDecorator(self.activeBuildPlate))
         group_node.setParent(self.getController().getScene().getRoot())
         group_node.setSelectable(True)
         center = Selection.getSelectionCenter()
