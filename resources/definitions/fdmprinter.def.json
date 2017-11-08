@@ -3720,7 +3720,7 @@
                     "settable_per_extruder": true,
                     "children":
                     {
-                        "support_tree_wall_line_count":
+                        "support_tree_wall_count":
                         {
                             "label": "Tree Support Wall Line Count",
                             "description": "The number of walls of the branches of tree support. Thicker walls take longer to print but don't fall over as easily.",
