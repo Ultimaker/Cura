@@ -92,7 +92,7 @@ Item
                     color:  UM.Theme.getColor("setting_control_text")
                     source: base.collapsed ? UM.Theme.getIcon("arrow_left") : UM.Theme.getIcon("arrow_bottom")
                 }
-                label: {}
+                label: Label{ }
             }
         }
 
