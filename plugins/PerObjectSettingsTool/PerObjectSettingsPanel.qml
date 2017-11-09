@@ -67,9 +67,32 @@ Item {
                             type:  "cutting_mesh",
                             text: catalog.i18nc("@label", "Modify extruder or settings for overlap with other models")
                         });
+
+                        meshTypeSelection.updateCurrentIndex();
                     }
                 }
+
+                function updateCurrentIndex()
+                {
+                    var mesh_type = UM.ActiveTool.properties.getValue("MeshType");
+                    for(var index=0; index < meshTypeSelection.model.count; index++)
+                    {
+                        if(meshTypeSelection.model.get(index).type == mesh_type)
+                        {
+                            meshTypeSelection.currentIndex = index;
+                            return;
+                        }
+                    }
+                    meshTypeSelection.currentIndex = 0;
+                }
             }
+
+            Connections
+            {
+                target: UM.Selection
+                onSelectionChanged: meshTypeSelection.updateCurrentIndex()
+            }
+
         }
 
         Column
