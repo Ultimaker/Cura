@@ -98,12 +98,19 @@ class SolidView(View):
                         extruder_id = node.callDecoration("getActiveExtruder")
                         if extruder_id:
                             extruder_index = max(0, self._extruders_model.find("id", extruder_id))
+
+                        # Use the support extruder instead of the active extruder if this is a support_mesh
+                        per_mesh_stack = node.callDecoration("getStack")
+                        if per_mesh_stack:
+                            if per_mesh_stack.getProperty("support_mesh", "value"):
+                                extruder_index = global_container_stack.getProperty("support_extruder_nr", "value")
+
                         try:
                             material_color = self._extruders_model.getItem(extruder_index)["color"]
                         except KeyError:
                             material_color = self._extruders_model.defaultColors[0]
 
-                        if extruder_index != ExtruderManager.getInstance().activeExtruderIndex:
+                        if int(extruder_index) != int(ExtruderManager.getInstance().activeExtruderIndex):
                             # Shade objects that are printed with the non-active extruder 25% darker
                             shade_factor = 0.6
                     try:
