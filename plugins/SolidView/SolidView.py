@@ -27,24 +27,32 @@ class SolidView(View):
 
         self._enabled_shader = None
         self._disabled_shader = None
+        self._non_printing_shader = None
 
         self._extruders_model = ExtrudersModel()
+        self._theme = None
 
     def beginRendering(self):
         scene = self.getController().getScene()
         renderer = self.getRenderer()
 
+        if not self._theme:
+            self._theme = Application.getInstance().getTheme()
+
         if not self._enabled_shader:
             self._enabled_shader = OpenGL.getInstance().createShaderProgram(Resources.getPath(Resources.Shaders, "overhang.shader"))
-            theme = Application.getInstance().getTheme()
-            self._enabled_shader.setUniformValue("u_overhangColor", Color(*theme.getColor("model_overhang").getRgb()))
+            self._enabled_shader.setUniformValue("u_overhangColor", Color(*self._theme.getColor("model_overhang").getRgb()))
 
         if not self._disabled_shader:
             self._disabled_shader = OpenGL.getInstance().createShaderProgram(Resources.getPath(Resources.Shaders, "striped.shader"))
-            theme = Application.getInstance().getTheme()
-            self._disabled_shader.setUniformValue("u_diffuseColor1", Color(*theme.getColor("model_unslicable").getRgb()))
-            self._disabled_shader.setUniformValue("u_diffuseColor2", Color(*theme.getColor("model_unslicable_alt").getRgb()))
+            self._disabled_shader.setUniformValue("u_diffuseColor1", Color(*self._theme.getColor("model_unslicable").getRgb()))
+            self._disabled_shader.setUniformValue("u_diffuseColor2", Color(*self._theme.getColor("model_unslicable_alt").getRgb()))
             self._disabled_shader.setUniformValue("u_width", 50.0)
+
+        if not self._non_printing_shader:
+            self._non_printing_shader = OpenGL.getInstance().createShaderProgram(Resources.getPath(Resources.Shaders, "transparent_object.shader"))
+            self._non_printing_shader.setUniformValue("u_diffuseColor", Color(*self._theme.getColor("model_non_printing").getRgb()))
+            self._non_printing_shader.setUniformValue("u_opacity", 0.6)
 
         multi_extrusion = False
 
@@ -110,13 +118,12 @@ class SolidView(View):
                     except ValueError:
                         pass
 
-                    if hasattr(node, "_outside_buildarea"):
-                        if node._outside_buildarea:
-                            renderer.queueNode(node, shader = self._disabled_shader)
-                        else:
-                            renderer.queueNode(node, shader = self._enabled_shader, uniforms = uniforms)
+                    if getattr(node, "_non_printing_mesh", False):
+                        renderer.queueNode(node, shader = self._non_printing_shader, transparent = True)
+                    elif getattr(node, "_outside_buildarea", False):
+                        renderer.queueNode(node, shader = self._disabled_shader)
                     else:
-                        renderer.queueNode(node, material = self._enabled_shader, uniforms = uniforms)
+                        renderer.queueNode(node, shader = self._enabled_shader, uniforms = uniforms)
                 if node.callDecoration("isGroup") and Selection.isSelected(node):
                     renderer.queueNode(scene.getRoot(), mesh = node.getBoundingBoxMesh(), mode = RenderBatch.RenderMode.LineLoop)
 
