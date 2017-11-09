@@ -277,7 +277,7 @@ Cura.MachineAction
                     wrapMode: Text.WordWrap
                     text:{
                         // The property cluster size does not exist for older UM3 devices.
-                        if(!base.selectedPrinter && (base.selectedPrinter.clusterSize == null || base.selectedPrinter.clusterSize == 1))
+                        if(!base.selectedPrinter || base.selectedPrinter.clusterSize == null || base.selectedPrinter.clusterSize == 1)
                         {
                             return "";
                         }
