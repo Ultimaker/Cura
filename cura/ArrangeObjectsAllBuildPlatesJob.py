@@ -112,7 +112,6 @@ class ArrangeObjectsAllBuildPlatesJob(Job):
             #     start_priority = 0
 
             while try_placement:
-                Logger.log("d", "start_priority %s", start_priority)
                 # make sure that current_build_plate_number is not going crazy or you'll have a lot of arrange objects
                 while current_build_plate_number >= arrange_array.count():
                     arrange_array.add()

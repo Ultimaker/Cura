@@ -409,6 +409,7 @@ UM.MainWindow
             {
                 id: objectsList;
                 visible: false;
+                //z: -10;
                 anchors
                 {
                     top: objectsButton.top;

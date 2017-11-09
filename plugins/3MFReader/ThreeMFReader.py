@@ -15,7 +15,8 @@ from cura.Settings.SettingOverrideDecorator import SettingOverrideDecorator
 from UM.Application import Application
 from cura.Settings.ExtruderManager import ExtruderManager
 from cura.QualityManager import QualityManager
-from UM.Scene.SceneNode import SceneNode
+#from UM.Scene.SceneNode import SceneNode
+from cura.Scene.CuraSceneNode import CuraSceneNode as SceneNode
 from cura.SliceableObjectDecorator import SliceableObjectDecorator
 from cura.ZOffsetDecorator import ZOffsetDecorator
 

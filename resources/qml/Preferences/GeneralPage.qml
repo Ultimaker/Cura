@@ -304,7 +304,7 @@ UM.PreferencesPage
                     text: catalog.i18nc("@option:check","Slice automatically");
                 }
             }
-            
+
             Item
             {
                 //: Spacer
@@ -449,6 +449,20 @@ UM.PreferencesPage
             {
                 font.bold: true
                 text: catalog.i18nc("@label","Opening and saving files")
+            }
+
+            UM.TooltipArea {
+                width: childrenRect.width
+                height: childrenRect.height
+                text: catalog.i18nc("@info:tooltip","Should newly loaded models be arranged on the build palte?")
+
+                CheckBox
+                {
+                    id: arrangeOnLoadCheckbox
+                    text: catalog.i18nc("@option:check","Arrange objects on load")
+                    checked: boolCheck(UM.Preferences.getValue("cura/arrange_objects_on_load"))
+                    onCheckedChanged: UM.Preferences.setValue("cura/arrange_objects_on_load", checked)
+                }
             }
 
             UM.TooltipArea {

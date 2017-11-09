@@ -40,7 +40,7 @@ class Arrange:
     #   \param fixed_nodes  Scene nodes to be placed
     @classmethod
     def create(cls, scene_root = None, fixed_nodes = None, scale = 0.5, x = 220, y = 220):
-        arranger = Arrange(x, y, x / 2, y / 2, scale = scale)
+        arranger = Arrange(x, y, x // 2, y // 2, scale = scale)
         arranger.centerFirst()
 
         if fixed_nodes is None:

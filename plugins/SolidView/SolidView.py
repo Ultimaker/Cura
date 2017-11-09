@@ -75,7 +75,7 @@ class SolidView(View):
 
         for node in DepthFirstIterator(scene.getRoot()):
             if not node.render(renderer):
-                if node.getMeshData() and node.isVisible() and (node.callDecoration("getBuildPlateNumber") == activeBuildPlateNumber):
+                if node.getMeshData() and node.isVisible():  #  and (node.callDecoration("getBuildPlateNumber") == activeBuildPlateNumber):
                     uniforms = {}
                     shade_factor = 1.0
 

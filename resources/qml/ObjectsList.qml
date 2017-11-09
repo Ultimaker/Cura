@@ -55,7 +55,7 @@ Rectangle
                     //anchors.right: parent.right
                     width: parent.width - 2 * UM.Theme.getSize("default_margin").width - 30
                     text: Cura.ObjectManager.getItem(index).name;
-                    color: Cura.ObjectManager.getItem(index).isSelected ? palette.highlightedText : palette.text
+                    color: Cura.ObjectManager.getItem(index).isSelected ? palette.highlightedText : (Cura.ObjectManager.getItem(index).isOutsideBuildArea ? palette.mid : palette.text)
                     elide: Text.ElideRight
                 }
 
@@ -95,7 +95,7 @@ Rectangle
             topMargin: UM.Theme.getSize("default_margin").height;
             left: parent.left;
             leftMargin: UM.Theme.getSize("default_margin").height;
-            bottom: buildPlateSelection.top;
+            bottom: filterBuildPlateCheckbox.top;
             bottomMargin: UM.Theme.getSize("default_margin").height;
         }
 
@@ -112,6 +112,25 @@ Rectangle
             model: Cura.ObjectManager
             width: parent.width
             delegate: objectDelegate
+        }
+    }
+
+
+    CheckBox
+    {
+        id: filterBuildPlateCheckbox
+        checked: boolCheck(UM.Preferences.getValue("view/filter_current_build_plate"))
+        onClicked: UM.Preferences.setValue("view/filter_current_build_plate", checked)
+
+        text: catalog.i18nc("@option:check","Filter active build plate");
+
+        anchors
+        {
+            left: parent.left;
+            topMargin: UM.Theme.getSize("default_margin").height;
+            bottomMargin: UM.Theme.getSize("default_margin").height;
+            leftMargin: UM.Theme.getSize("default_margin").height;
+            bottom: buildPlateSelection.top;
         }
     }
 

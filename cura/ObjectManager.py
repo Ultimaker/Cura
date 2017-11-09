@@ -7,29 +7,47 @@ from UM.Scene.SceneNode import SceneNode
 from UM.Scene.Selection import Selection
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QApplication
+#from cura.Scene.CuraSceneNode import CuraSceneNode
+from UM.Preferences import Preferences
 
 
 class ObjectManager(ListModel):
     def __init__(self):
         super().__init__()
         self._last_selected_index = 0
-        Application.getInstance().getController().getScene().sceneChanged.connect(self._update)
+        Application.getInstance().getController().getScene().sceneChanged.connect(self._update_scene_changed)
+        Preferences.getInstance().preferenceChanged.connect(self._update)
+        Application.getInstance().activeBuildPlateChanged.connect(self._update)
 
     def _update(self, *args):
         nodes = []
+        filter_current_build_plate = Preferences.getInstance().getValue("view/filter_current_build_plate")
+        active_build_plate_number = Application.getInstance().activeBuildPlate
         for node in DepthFirstIterator(Application.getInstance().getController().getScene().getRoot()):
-            if type(node) is not SceneNode or (not node.getMeshData() and not node.callDecoration("getLayerData")):
+            if not issubclass(type(node), SceneNode) or (not node.getMeshData() and not node.callDecoration("getLayerData")):
+                continue
+            if not node.callDecoration("isSliceable"):
+                continue
+            node_build_plate_number = node.callDecoration("getBuildPlateNumber")
+            if filter_current_build_plate and node_build_plate_number != active_build_plate_number:
                 continue
             nodes.append({
                 "name": node.getName(),
                 "isSelected": Selection.isSelected(node),
-                "buildPlateNumber": node.callDecoration("getBuildPlateNumber"),
+                "isOutsideBuildArea": node.isOutsideBuildArea(),
+                "buildPlateNumber": node_build_plate_number,
                 "node": node
             })
         nodes = sorted(nodes, key=lambda n: n["name"])
         self.setItems(nodes)
 
         self.itemsChanged.emit()
+
+    def _update_scene_changed(self, *args):
+        # if args and type(args[0]) is not CuraSceneNode:
+        #     Logger.log("d", "   ascdf %s", args)
+        #     return
+        self._update(*args)
 
     ##  Either select or deselect an item
     @pyqtSlot(int)
@@ -62,6 +80,11 @@ class ObjectManager(ListModel):
                 Application.getInstance().setActiveBuildPlate(build_plate_number)
 
         self._last_selected_index = index
+
+        # testing
+        for node in DepthFirstIterator(Application.getInstance().getController().getScene().getRoot()):
+            if node.callDecoration("getLayerData"):
+                Logger.log("d", "   ##### NODE: %s", node)
 
     @staticmethod
     def createObjectManager():
