@@ -276,12 +276,8 @@ Cura.MachineAction
                     width: parent.width
                     wrapMode: Text.WordWrap
                     text:{
-                        if (base.selectedPrinter == undefined)
-                        {
-                            return "";
-                        }
                         // The property cluster size does not exist for older UM3 devices.
-                        if(base.selectedPrinter != undefined && base.selectedPrinter.clusterSize == null || base.selectedPrinter.clusterSize == 1)
+                        if(!base.selectedPrinter || base.selectedPrinter.clusterSize == null || base.selectedPrinter.clusterSize == 1)
                         {
                             return "";
                         }
