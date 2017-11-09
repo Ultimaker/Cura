@@ -44,6 +44,8 @@ Item
     Behavior on height { NumberAnimation { duration: 100 } }
     Behavior on width { NumberAnimation { duration: 100 } }
 
+    clip: true
+
     property bool collapsed: false
     property var buttonTarget: {
         if(parent != null)
@@ -56,7 +58,7 @@ Item
 
     visible: parent != null ? !parent.parent.monitoringPrint: true
 
-    UM.PointingRectangle {
+    Rectangle {
         id: layerViewMenu
         anchors.right: parent.right
         anchors.top: parent.top
@@ -64,9 +66,8 @@ Item
         height: parent.height
         z: slider.z - 1
         color: UM.Theme.getColor("tool_panel_background")
-        borderWidth: UM.Theme.getSize("default_lining").width
-        borderColor: UM.Theme.getColor("lining")
-        arrowSize: 0 // hide arrow until weird issue with first time rendering is fixed
+        border.width: UM.Theme.getSize("default_lining").width
+        border.color: UM.Theme.getColor("lining")
 
         Button {
             id: collapse_button
