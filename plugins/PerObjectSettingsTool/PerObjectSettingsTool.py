@@ -8,6 +8,7 @@ from UM.Application import Application
 from UM.Preferences import Preferences
 from cura.Settings.SettingOverrideDecorator import SettingOverrideDecorator
 from cura.Settings.ExtruderManager import ExtruderManager
+from UM.Settings.SettingInstance import SettingInstance
 from UM.Event import Event
 
 
@@ -69,6 +70,26 @@ class PerObjectSettingsTool(Tool):
         if not stack:
             selected_object.addDecorator(SettingOverrideDecorator())
         selected_object.callDecoration("setActiveExtruder", extruder_stack_id)
+
+    def setMeshType(self, mesh_type):
+        selected_object = Selection.getSelectedObject(0)
+        stack = selected_object.callDecoration("getStack") #Don't try to get the active extruder since it may be None anyway.
+        if not stack:
+            selected_object.addDecorator(SettingOverrideDecorator())
+            stack = selected_object.callDecoration("getStack")
+
+        settings = stack.getTop()
+        for property_key in ["infill_mesh", "cutting_mesh", "support_mesh", "anti_overhang_mesh"]:
+            if property_key != mesh_type:
+                if settings.getInstance(property_key):
+                    settings.removeInstance(property_key)
+            else:
+                if not (settings.getInstance(property_key) and settings.getProperty(property_key, "value")):
+                    definition = stack.getSettingDefinition(property_key)
+                    new_instance = SettingInstance(definition, settings)
+                    new_instance.setProperty("value", True)
+                    new_instance.resetState()  # Ensure that the state is not seen as a user state.
+                    settings.addInstance(new_instance)
 
     def _onPreferenceChanged(self, preference):
         if preference == "cura/active_mode":

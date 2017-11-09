@@ -43,6 +43,9 @@ Item {
             {
                 id: meshTypeSelection
                 style: UM.Theme.styles.combobox
+                onActivated: {
+                    UM.ActiveTool.setProperty("MeshType", model.get(index).type)
+                }
                 model: ListModel
                 {
                     id: meshTypeModel
@@ -94,6 +97,7 @@ Item {
                         id: addedSettingsModel;
                         containerId: Cura.MachineManager.activeDefinitionId
                         expanded: [ "*" ]
+                        exclude: [ "support_mesh", "anti_overhang_mesh", "cutting_mesh", "infill_mesh" ]
 
                         visibilityHandler: Cura.PerObjectSettingVisibilityHandler
                         {
