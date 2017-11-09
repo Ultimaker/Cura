@@ -14,6 +14,13 @@ import numpy
 ##  The convex hull decorator is a scene node decorator that adds the convex hull functionality to a scene node.
 #   If a scene node has a convex hull decorator, it will have a shadow in which other objects can not be printed.
 class ConvexHullDecorator(SceneNodeDecorator):
+    ##  Meshes that don't need a convex hull
+    #
+    #   If these settings are True for any mesh, the mesh does not need to push other meshes away.
+    #   Note that Support Mesh is not in here because it actually generates
+    #   g-code in the volume of the mesh.
+    _not_printed_mesh_settings = {"anti_overhang_mesh", "infill_mesh", "cutting_mesh"}
+
     def __init__(self):
         super().__init__()
 
@@ -54,6 +61,9 @@ class ConvexHullDecorator(SceneNodeDecorator):
     ##  Get the unmodified 2D projected convex hull of the node
     def getConvexHull(self):
         if self._node is None:
+            return None
+
+        if (self._node.callDecoration("getStack") and any(self._node.callDecoration("getStack").getProperty(setting, "value") for setting in self._not_printed_mesh_settings)):
             return None
 
         hull = self._compute2DConvexHull()
