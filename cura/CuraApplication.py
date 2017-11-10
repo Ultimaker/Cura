@@ -567,6 +567,7 @@ class CuraApplication(QtApplication):
         super().addCommandLineOptions(parser)
         parser.add_argument("file", nargs="*", help="Files to load after starting the application.")
         parser.add_argument("--single-instance", action="store_true", default=False)
+        parser.add_argument("--headless", action = "store_true", default=False)
 
     # Set up a local socket server which listener which coordinates single instances Curas and accepts commands.
     def _setUpSingleInstanceServer(self):
@@ -712,9 +713,12 @@ class CuraApplication(QtApplication):
 
         self.setMainQml(Resources.getPath(self.ResourceTypes.QmlFiles, "Cura.qml"))
         self._qml_import_paths.append(Resources.getPath(self.ResourceTypes.QmlFiles))
-        self.initializeEngine()
 
-        if self._engine.rootObjects:
+        run_headless = self.getCommandLineOption("headless", False)
+        if not run_headless:
+            self.initializeEngine()
+
+        if run_headless or self._engine.rootObjects:
             self.closeSplash()
 
             for file in self.getCommandLineOption("file", []):
@@ -1266,6 +1270,9 @@ class CuraApplication(QtApplication):
                 # see GroupDecorator._onChildrenChanged
 
     def _createSplashScreen(self):
+        run_headless = self.getCommandLineOption("headless", False)
+        if run_headless:
+            return None
         return CuraSplashScreen.CuraSplashScreen()
 
     def _onActiveMachineChanged(self):
