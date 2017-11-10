@@ -114,9 +114,11 @@ class GCodeReader(MeshReader):
         line_types = numpy.empty((count - 1, 1), numpy.int32)
         line_widths = numpy.empty((count - 1, 1), numpy.float32)
         line_thicknesses = numpy.empty((count - 1, 1), numpy.float32)
+        line_feedrates = numpy.empty((count - 1, 1), numpy.float32)
         # TODO: need to calculate actual line width based on E values
         line_widths[:, 0] = 0.35  # Just a guess
-        line_thicknesses[:, 0] = layer_thickness
+        line_thicknesses[:, 0] = layer_thickness    # TODO Same for all, but it should be calculated from the layer height differences
+        line_feedrates[:, 0] = 50    # TODO Now we use 50mm/s as a demo, it should be obtained from the GCode
         points = numpy.empty((count, 3), numpy.float32)
         i = 0
         for point in path:
@@ -127,7 +129,7 @@ class GCodeReader(MeshReader):
                     line_widths[i - 1] = 0.1
             i += 1
 
-        this_poly = LayerPolygon(self._extruder_number, line_types, points, line_widths, line_thicknesses)
+        this_poly = LayerPolygon(self._extruder_number, line_types, points, line_widths, line_thicknesses, line_feedrates)
         this_poly.buildCache()
 
         this_layer.polygons.append(this_poly)
