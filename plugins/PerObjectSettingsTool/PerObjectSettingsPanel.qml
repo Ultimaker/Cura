@@ -65,7 +65,11 @@ Item {
                         });
                         meshTypeModel.append({
                             type:  "cutting_mesh",
-                            text: catalog.i18nc("@label", "Modify extruder or settings for overlap with other models")
+                            text: catalog.i18nc("@label", "Modify settings for overlap with other models")
+                        });
+                        meshTypeModel.append({
+                            type:  "infill_mesh",
+                            text: catalog.i18nc("@label", "Modify settings for overlap with infill of other models")
                         });
 
                         meshTypeSelection.updateCurrentIndex();
