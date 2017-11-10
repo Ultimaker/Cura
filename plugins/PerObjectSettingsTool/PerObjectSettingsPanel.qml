@@ -61,7 +61,7 @@ Item {
                         });
                         meshTypeModel.append({
                             type:  "anti_overhang_mesh",
-                            text: catalog.i18nc("@label", "Remove support for overlap with other models")
+                            text: catalog.i18nc("@label", "Don't support overlap with other models")
                         });
                         meshTypeModel.append({
                             type:  "cutting_mesh",
@@ -69,7 +69,7 @@ Item {
                         });
                         meshTypeModel.append({
                             type:  "infill_mesh",
-                            text: catalog.i18nc("@label", "Modify settings for overlap with infill of other models")
+                            text: catalog.i18nc("@label", "Modify settings for infill of other models")
                         });
 
                         meshTypeSelection.updateCurrentIndex();
