@@ -86,6 +86,8 @@ class SolidView(View):
                     uniforms = {}
                     shade_factor = 1.0
 
+                    per_mesh_stack = node.callDecoration("getStack")
+
                     if not multi_extrusion:
                         if global_container_stack:
                             material = global_container_stack.findContainer({ "type": "material" })
@@ -100,7 +102,6 @@ class SolidView(View):
                             extruder_index = max(0, self._extruders_model.find("id", extruder_id))
 
                         # Use the support extruder instead of the active extruder if this is a support_mesh
-                        per_mesh_stack = node.callDecoration("getStack")
                         if per_mesh_stack:
                             if per_mesh_stack.getProperty("support_mesh", "value"):
                                 extruder_index = int(global_container_stack.getProperty("support_extruder_nr", "value"))
@@ -126,7 +127,10 @@ class SolidView(View):
                         pass
 
                     if getattr(node, "_non_printing_mesh", False):
-                        renderer.queueNode(node, shader = self._non_printing_shader, transparent = True)
+                        if per_mesh_stack and (per_mesh_stack.getProperty("infill_mesh", "value") or per_mesh_stack.getProperty("cutting_mesh", "value")):
+                            renderer.queueNode(node, shader = self._non_printing_shader, uniforms = uniforms, transparent = True)
+                        else:
+                            renderer.queueNode(node, shader = self._non_printing_shader, transparent = True)
                     elif getattr(node, "_outside_buildarea", False):
                         renderer.queueNode(node, shader = self._disabled_shader)
                     else:

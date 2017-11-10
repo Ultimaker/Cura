@@ -111,6 +111,7 @@ u_modelMatrix = model_matrix
 u_viewProjectionMatrix = view_projection_matrix
 u_normalMatrix = normal_matrix
 u_lightPosition = light_0_position
+u_diffuseColor = diffuse_color
 
 [attributes]
 a_vertex = vertex
