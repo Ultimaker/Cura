@@ -13,6 +13,7 @@ from UM.Application import Application
 from UM.Logger import Logger
 from cura.PrinterOutputDevice import PrinterOutputDevice, ConnectionState
 from UM.Message import Message
+from UM.Qt.Duration import DurationFormat
 
 from PyQt5.QtCore import QUrl, pyqtSlot, pyqtSignal, pyqtProperty
 
@@ -62,7 +63,7 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
 
         ## Set when print is started in order to check running time.
         self._print_start_time = None
-        self._print_start_time_100 = None
+        self._print_estimated_time = None
 
         ## Keep track where in the provided g-code the print is
         self._gcode_position = 0
@@ -189,7 +190,6 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
         # Reset line number. If this is not done, first line is sometimes ignored
         self._gcode.insert(0, "M110")
         self._gcode_position = 0
-        self._print_start_time_100 = None
         self._is_printing = True
         self._print_start_time = time.time()
 
@@ -487,6 +487,7 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
             return
 
         self.setJobName(file_name)
+        self._print_estimated_time = int(Application.getInstance().getPrintInformation().currentPrintTime.getDisplayString(DurationFormat.Format.Seconds))
 
         Application.getInstance().showPrintMonitor.emit(True)
         self.startPrint()
@@ -605,8 +606,6 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
     def _sendNextGcodeLine(self):
         if self._gcode_position >= len(self._gcode):
             return
-        if self._gcode_position == 100:
-            self._print_start_time_100 = time.time()
         line = self._gcode[self._gcode_position]
 
         if ";" in line:
@@ -630,8 +629,18 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
         checksum = functools.reduce(lambda x,y: x^y, map(ord, "N%d%s" % (self._gcode_position, line)))
 
         self._sendCommand("N%d%s*%d" % (self._gcode_position, line, checksum))
+
+        progress = (self._gcode_position / len(self._gcode))
+
+        elapsed_time = int(time.time() - self._print_start_time)
+        self.setTimeElapsed(elapsed_time)
+        estimated_time = self._print_estimated_time
+        if progress > .1:
+            estimated_time = self._print_estimated_time * (1-progress) + elapsed_time
+        self.setTimeTotal(estimated_time)
+
         self._gcode_position += 1
-        self.setProgress((self._gcode_position / len(self._gcode)) * 100)
+        self.setProgress(progress * 100)
         self.progressChanged.emit()
 
     ##  Set the state of the print.
@@ -647,9 +656,11 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
             self.cancelPrint()
 
     def _onJobStateChanged(self):
-        # clear the job name when printing is done or aborted
+        # clear the job name & times when printing is done or aborted
         if self._job_state == "ready":
             self.setJobName("")
+            self.setTimeElapsed(0)
+            self.setTimeTotal(0)
 
     ##  Set the progress of the print.
     #   It will be normalized (based on max_progress) to range 0 - 100
