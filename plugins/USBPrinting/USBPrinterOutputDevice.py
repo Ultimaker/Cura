@@ -52,6 +52,8 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
 
         self._heatup_wait_start_time = time.time()
 
+        self.jobStateChanged.connect(self._onJobStateChanged)
+
         ## Queue for commands that need to be send. Used when command is sent when a print is active.
         self._command_queue = queue.Queue()
 
@@ -469,7 +471,6 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
     #
     #   \param nodes A collection of scene nodes to send. This is ignored.
     #   \param file_name \type{string} A suggestion for a file name to write.
-    #   This is ignored.
     #   \param filter_by_machine Whether to filter MIME types by machine. This
     #   is ignored.
     #   \param kwargs Keyword arguments.
@@ -484,6 +485,8 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
             self._error_message = Message(catalog.i18nc("@info:status", "Unable to start a new job because the printer does not support usb printing."), title = catalog.i18nc("@info:title", "Warning"))
             self._error_message.show()
             return
+
+        self.setJobName(file_name)
 
         Application.getInstance().showPrintMonitor.emit(True)
         self.startPrint()
@@ -642,6 +645,11 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
             self._updateJobState("printing")
         elif job_state == "abort":
             self.cancelPrint()
+
+    def _onJobStateChanged(self):
+        # clear the job name when printing is done or aborted
+        if self._job_state == "ready":
+            self.setJobName("")
 
     ##  Set the progress of the print.
     #   It will be normalized (based on max_progress) to range 0 - 100
