@@ -125,6 +125,29 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
     def _homeBed(self):
         self._sendCommand("G28 Z")
 
+    ##  Updates the target bed temperature from the printer, and emit a signal if it was changed.
+    #
+    #   /param temperature The new target temperature of the bed.
+    #   /return boolean, True if the temperature was changed, false if the new temperature has the same value as the already stored temperature
+    def _updateTargetBedTemperature(self, temperature):
+        if self._target_bed_temperature == temperature:
+            return False
+        self._target_bed_temperature = temperature
+        self.targetBedTemperatureChanged.emit()
+        return True
+
+    ##  Updates the target hotend temperature from the printer, and emit a signal if it was changed.
+    #
+    #   /param index The index of the hotend.
+    #   /param temperature The new target temperature of the hotend.
+    #   /return boolean, True if the temperature was changed, false if the new temperature has the same value as the already stored temperature
+    def _updateTargetHotendTemperature(self, index, temperature):
+        if self._target_hotend_temperatures[index] == temperature:
+            return False
+        self._target_hotend_temperatures[index] = temperature
+        self.targetHotendTemperaturesChanged.emit()
+        return True
+
     ##  A name for the device.
     @pyqtProperty(str, constant = True)
     def name(self):
@@ -511,16 +534,36 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
                         self._setErrorState(line[6:])
 
             elif b" T:" in line or line.startswith(b"T:"):  # Temperature message
+                temperature_matches = re.findall(b"T(\d*):s?*([\d\.]+)\s?\/?([\d\.]+)?", line)
+                temperature_set = False
                 try:
-                    self._setHotendTemperature(self._temperature_requested_extruder_index, float(re.search(b"T: *([0-9\.]*)", line).group(1)))
+                    for match in temperature_matches:
+                        if match[0]:
+                            extruder_nr = int(match[0])
+                            if match[1]:
+                                self._setHotendTemperature(extruder_nr, float(match[1]))
+                                temperature_set = True
+                            if match[2]:
+                                self._updateTargetHotendTemperature(extruder_nr, float(match[2]))
+                        else:
+                            requested_temperatures = match
+                    if not temperature_set and requested_temperatures:
+                        if requested_temperatures[1]:
+                            self._setHotendTemperature(self._temperature_requested_extruder_index, float(requested_temperatures[1]))
+                        if requested_temperatures[2]:
+                            self._updateTargetHotendTemperature(self._temperature_requested_extruder_index, float(requested_temperatures[1]))
                 except:
-                    pass
-                if b"B:" in line:  # Check if it's a bed temperature
-                    try:
-                        self._setBedTemperature(float(re.search(b"B: *([0-9\.]*)", line).group(1)))
-                    except Exception as e:
-                        pass
-                #TODO: temperature changed callback
+                    Logger.log("w", "Could not parse hotend temperatures from response: %s", line)
+                # Check if there's also a bed temperature
+                temperature_matches = re.findall(b"B:\s?*([\d\.]+)\s?\/?([\d\.]+)?", line)
+                try:
+                    if match[0]:
+                        self._setBedTemperature(float(match[0]))
+                    if match[1]:
+                        self._updateTargetBedTemperature(float(match[1]))
+                except:
+                    Logger.log("w", "Could not parse bed temperature from response: %s", line)
+
             elif b"_min" in line or b"_max" in line:
                 tag, value = line.split(b":", 1)
                 self._setEndstopState(tag,(b"H" in value or b"TRIGGERED" in value))
