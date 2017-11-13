@@ -509,6 +509,7 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
     ##  Listen thread function.
     def _listen(self):
         Logger.log("i", "Printer connection listen thread started for %s" % self._serial_port)
+        container_stack = Application.getInstance().getGlobalContainerStack()
         temperature_request_timeout = time.time()
         ok_timeout = time.time()
         while self._connection_state == ConnectionState.connected:
@@ -538,12 +539,14 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
                         self._setErrorState(line[6:])
 
             elif b" T:" in line or line.startswith(b"T:"):  # Temperature message
-                temperature_matches = re.findall(b"T(\d*):s?*([\d\.]+)\s?\/?([\d\.]+)?", line)
+                temperature_matches = re.findall(b"T(\d*): ?([\d\.]+) ?\/?([\d\.]+)?", line)
                 temperature_set = False
                 try:
                     for match in temperature_matches:
                         if match[0]:
                             extruder_nr = int(match[0])
+                            if extruder_nr >= container_stack.getProperty("machine_extruder_count", "value"):
+                                continue
                             if match[1]:
                                 self._setHotendTemperature(extruder_nr, float(match[1]))
                                 temperature_set = True
@@ -555,18 +558,20 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
                         if requested_temperatures[1]:
                             self._setHotendTemperature(self._temperature_requested_extruder_index, float(requested_temperatures[1]))
                         if requested_temperatures[2]:
-                            self._updateTargetHotendTemperature(self._temperature_requested_extruder_index, float(requested_temperatures[1]))
+                            self._updateTargetHotendTemperature(self._temperature_requested_extruder_index, float(requested_temperatures[2]))
                 except:
                     Logger.log("w", "Could not parse hotend temperatures from response: %s", line)
                 # Check if there's also a bed temperature
-                temperature_matches = re.findall(b"B:\s?*([\d\.]+)\s?\/?([\d\.]+)?", line)
-                try:
-                    if match[0]:
-                        self._setBedTemperature(float(match[0]))
-                    if match[1]:
-                        self._updateTargetBedTemperature(float(match[1]))
-                except:
-                    Logger.log("w", "Could not parse bed temperature from response: %s", line)
+                temperature_matches = re.findall(b"B: ?([\d\.]+) ?\/?([\d\.]+)?", line)
+                if container_stack.getProperty("machine_heated_bed", "value") and len(temperature_matches) > 0:
+                    match = temperature_matches[0]
+                    try:
+                        if match[0]:
+                            self._setBedTemperature(float(match[0]))
+                        if match[1]:
+                            self._updateTargetBedTemperature(float(match[1]))
+                    except:
+                        Logger.log("w", "Could not parse bed temperature from response: %s", line)
 
             elif b"_min" in line or b"_max" in line:
                 tag, value = line.split(b":", 1)
