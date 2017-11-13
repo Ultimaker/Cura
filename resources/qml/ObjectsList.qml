@@ -54,7 +54,7 @@ Rectangle
                     anchors.leftMargin: UM.Theme.getSize("default_margin").width
                     //anchors.right: parent.right
                     width: parent.width - 2 * UM.Theme.getSize("default_margin").width - 30
-                    text: Cura.ObjectManager.getItem(index).name;
+                    text: Cura.ObjectManager.getItem(index) ? Cura.ObjectManager.getItem(index).name : "";
                     color: Cura.ObjectManager.getItem(index).isSelected ? palette.highlightedText : (Cura.ObjectManager.getItem(index).isOutsideBuildArea ? palette.mid : palette.text)
                     elide: Text.ElideRight
                 }
@@ -66,7 +66,7 @@ Rectangle
                     anchors.left: nodeNameLabel.right
                     anchors.leftMargin: UM.Theme.getSize("default_margin").width
                     anchors.right: parent.right
-                    text: Cura.ObjectManager.getItem(index).buildPlateNumber;
+                    text: Cura.ObjectManager.getItem(index) ? Cura.ObjectManager.getItem(index).buildPlateNumber : 0;
                     color: Cura.ObjectManager.getItem(index).isSelected ? palette.highlightedText : palette.text
                     elide: Text.ElideRight
                 }
