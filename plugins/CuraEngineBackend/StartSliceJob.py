@@ -120,7 +120,7 @@ class StartSliceJob(Job):
         with self._scene.getSceneLock():
             # Remove old layer data.
             for node in DepthFirstIterator(self._scene.getRoot()):
-                if node.callDecoration("getLayerData"):
+                if node.callDecoration("getLayerData") and node.callDecoration("getBuildPlateNumber") == self._build_plate_number:
                     node.getParent().removeChild(node)
                     break
 
@@ -155,7 +155,6 @@ class StartSliceJob(Job):
                                 temp_list.append(node)
                     Job.yieldThread()
 
-                Logger.log("d", "  objects to be sliced: %s", temp_list)
                 if temp_list:
                     object_groups.append(temp_list)
 

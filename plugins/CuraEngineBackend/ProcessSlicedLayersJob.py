@@ -65,6 +65,9 @@ class ProcessSlicedLayersJob(Job):
     def setBuildPlate(self, new_value):
         self._build_plate_number = new_value
 
+    def getBuildPlate(self):
+        return self._build_plate_number
+
     def run(self):
         Logger.log("d", "########## Processing new layer for [%s]..." % self._build_plate_number)
         start_time = time()
