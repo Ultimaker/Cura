@@ -258,6 +258,7 @@ class CuraApplication(QtApplication):
         self._i18n_catalog = i18nCatalog("cura")
 
         self.getController().getScene().sceneChanged.connect(self.updatePlatformActivity)
+        self.getController().getScene().sceneChanged.connect(self.updateMaxBuildPlate)  # it may be a bit inefficient when changing a lot simultaneously
         self.getController().toolOperationStopped.connect(self._onToolOperationStopped)
         self.getController().contextMenuRequested.connect(self._onContextMenuRequested)
 
@@ -1523,7 +1524,7 @@ class CuraApplication(QtApplication):
     @pyqtSlot()
     def newBuildPlate(self):
         Logger.log("d", "New build plate")
-        self._num_build_plates += 1
+        #self._num_build_plates += 1
         self.numBuildPlatesChanged.emit()
 
     @pyqtProperty(int, notify = numBuildPlatesChanged)
@@ -1533,3 +1534,19 @@ class CuraApplication(QtApplication):
     @pyqtProperty(int, notify = activeBuildPlateChanged)
     def activeBuildPlate(self):
         return self._active_build_plate
+
+    def updateMaxBuildPlate(self, source):
+        if not issubclass(type(source), SceneNode):
+            return
+        num_build_plates = self._calcMaxBuildPlate()
+        if num_build_plates != self._num_build_plates:
+            self._num_build_plates = num_build_plates
+            self.numBuildPlatesChanged.emit()
+
+    def _calcMaxBuildPlate(self):
+        max_build_plate = 0
+        for node in DepthFirstIterator(self.getController().getScene().getRoot()):
+            if node.callDecoration("isSliceable"):
+                build_plate_number = node.callDecoration("getBuildPlateNumber")
+                max_build_plate = max(build_plate_number, max_build_plate)
+        return max_build_plate
