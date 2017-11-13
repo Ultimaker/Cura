@@ -3338,6 +3338,14 @@
                     "settable_per_mesh": true,
                     "settable_per_extruder": false
                 },
+                "support_tree_enable":
+                {
+                    "label": "Tree Support",
+                    "description": "Generate a tree-like support with branches that support your print. This may reduce material usage and print time.",
+                    "type": "bool",
+                    "default_value": false,
+                    "settable_per_mesh": true
+                },
                 "support_extruder_nr":
                 {
                     "label": "Support Extruder",
@@ -3654,14 +3662,6 @@
                     "enabled": "(support_enable or support_tree_enable) and support_infill_rate > 0",
                     "limit_to_extruder": "support_infill_extruder_nr",
                     "settable_per_mesh": false
-                },
-                "support_tree_enable":
-                {
-                    "label": "Tree Support",
-                    "description": "Generate a tree-like support with branches that support your print. This may reduce material usage and print time.",
-                    "type": "bool",
-                    "default_value": false,
-                    "settable_per_mesh": true
                 },
                 "support_tree_angle":
                 {
