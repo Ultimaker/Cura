@@ -16,6 +16,7 @@ from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 from UM.Qt.Duration import DurationFormat
 from PyQt5.QtCore import QObject, pyqtSlot
 
+from collections import defaultdict
 from cura.Settings.ExtruderManager import ExtruderManager
 from . import ProcessSlicedLayersJob
 from . import StartSliceJob
@@ -117,7 +118,7 @@ class CuraEngineBackend(QObject, Backend):
 
         self._backend_log_max_lines = 20000  # Maximum number of lines to buffer
         self._error_message = None  # Pop-up message that shows errors.
-        self._last_num_objects = 0  # Count number of objects to see if there is something changed
+        self._last_num_objects = defaultdict(int)  # Count number of objects to see if there is something changed
         self._postponed_scene_change_sources = []  # scene change is postponed (by a tool)
 
         self.backendQuit.connect(self._onBackendQuit)
@@ -192,17 +193,26 @@ class CuraEngineBackend(QObject, Backend):
 
     ##  Perform a slice of the scene.
     def slice(self):
-        Logger.log("d", "starting to slice again!")
+        Logger.log("d", "starting to slice!")
         self._slice_start_time = time()
         if not self._build_plates_to_be_sliced:
             self.processingProgress.emit(1.0)
             self.backendStateChange.emit(BackendState.Done)
             Logger.log("w", "Slice unnecessary, nothing has changed that needs reslicing.")
             return
-        if Application.getInstance().getPrintInformation():
-            Application.getInstance().getPrintInformation().setToZeroPrintInformation()
+
+        # see if we really have to slice
+        build_plate_to_be_sliced = self._build_plates_to_be_sliced.pop(0)
+        num_objects = self._numObjects()
+        if build_plate_to_be_sliced not in num_objects or num_objects[build_plate_to_be_sliced] == 0:
+            Logger.log("d", "  ## Build plate %s has 0 objects to be sliced, skipping", build_plate_to_be_sliced)
+            self._invokeSlice()
 
         self._stored_layer_data = []
+        self._stored_optimized_layer_data[build_plate_to_be_sliced] = []
+
+        if Application.getInstance().getPrintInformation():
+            Application.getInstance().getPrintInformation().setToZeroPrintInformation()
 
         if self._process is None:
             self._createSocket()
@@ -218,8 +228,7 @@ class CuraEngineBackend(QObject, Backend):
 
         slice_message = self._socket.createMessage("cura.proto.Slice")
         self._start_slice_job = StartSliceJob.StartSliceJob(slice_message)
-        self._start_slice_job_build_plate = self._build_plates_to_be_sliced.pop(0)
-        self._stored_optimized_layer_data[self._start_slice_job_build_plate] = []
+        self._start_slice_job_build_plate = build_plate_to_be_sliced
         self._start_slice_job.setBuildPlate(self._start_slice_job_build_plate)
         self._start_slice_job.start()
         self._start_slice_job.finished.connect(self._onStartSliceCompleted)
@@ -364,40 +373,62 @@ class CuraEngineBackend(QObject, Backend):
             self.disableTimer()
             return False
 
+    ##  Return a dict with number of objects per build plate
+    def _numObjects(self):
+        num_objects = defaultdict(int)
+        for node in DepthFirstIterator(self._scene.getRoot()):
+            # Only count sliceable objects
+            if node.callDecoration("isSliceable"):
+                build_plate_number = node.callDecoration("getBuildPlateNumber")
+                num_objects[build_plate_number] += 1
+        return num_objects
+
     ##  Listener for when the scene has changed.
     #
     #   This should start a slice if the scene is now ready to slice.
     #
     #   \param source The scene node that was changed.
     def _onSceneChanged(self, source):
-        Logger.log("d", "  ##### scene changed: %s", source)
         if not issubclass(type(source), SceneNode):
             return
 
-        root_scene_nodes_changed = False
-        build_plates_changed = set()
+        build_plate_changed = set()
+        source_build_plate_number = source.callDecoration("getBuildPlateNumber")
         if source == self._scene.getRoot():
-            num_objects = 0
+            # we got the root node
+            num_objects = self._numObjects()
+            # num_objects = defaultdict(int)
             for node in DepthFirstIterator(self._scene.getRoot()):
-                # Only count sliceable objects
-                if node.callDecoration("isSliceable"):
-                    num_objects += 1
-                    build_plates_changed.add(node.callDecoration("getBuildPlateNumber"))
-                    build_plates_changed.add(node.callDecoration("getPreviousBuildPlateNumber"))
-            if num_objects != self._last_num_objects:
-                self._last_num_objects = num_objects
-                root_scene_nodes_changed = True
-            # else:
-            #     return  # ??
-        build_plates_changed.discard(None)
-        build_plates_changed.discard(-1)  # object not on build plate
-        Logger.log("d", "    #### build plates changed: %s", build_plates_changed)
+                # # Only count sliceable objects
+                # if node.callDecoration("isSliceable"):
+                #     build_plate_number = node.callDecoration("getBuildPlateNumber")
+                #     num_objects[build_plate_number] += 1
+                node.callDecoration("removePreviousBuildPlateNumber")  # use the previous build plate number one time
+            for build_plate_number in list(self._last_num_objects.keys()) + list(num_objects.keys()):
+                if build_plate_number not in self._last_num_objects or num_objects[build_plate_number] != self._last_num_objects[build_plate_number]:
+                    self._last_num_objects[build_plate_number] = num_objects[build_plate_number]
+                    build_plate_changed.add(build_plate_number)
+        else:
+            # we got a single scenenode, how do we know if it's changed?
+            # build_plate_changed.add(source_build_plate_number)
+            # build_plate_changed.add(source.callDecoration("getPreviousBuildPlateNumber"))
+            # source.callDecoration("removePreviousBuildPlateNumber")  # use the previous build plate number one time
+            if not source.callDecoration("isGroup"):
+                if source.getMeshData() is None:
+                    return
+                if source.getMeshData().getVertices() is None:
+                    return
 
-        # if not source.callDecoration("isGroup") and not root_scene_nodes_changed:
-        #     if source.getMeshData() is None:
-        #         return
-        #     if source.getMeshData().getVertices() is None:
-        #         return
+            # we got a single object and it passed all the tests of being changed
+            build_plate_changed.add(source_build_plate_number)
+            build_plate_changed.add(source.callDecoration("getPreviousBuildPlateNumber"))
+            source.callDecoration("removePreviousBuildPlateNumber")  # use the previous build plate number one time
+
+        build_plate_changed.discard(None)
+        build_plate_changed.discard(-1)  # object not on build plate
+        if not build_plate_changed:
+            return
+        # Logger.log("d", "    #### build plates changed: %s", build_plate_changed)
 
         if self._tool_active:
             # do it later, each source only has to be done once
@@ -405,19 +436,18 @@ class CuraEngineBackend(QObject, Backend):
                 self._postponed_scene_change_sources.append(source)
             return
 
-        if build_plates_changed:
-            Logger.log("d", " going to reslice")
-            self.stopSlicing()
-            for build_plate_number in build_plates_changed:
-                if build_plate_number not in self._build_plates_to_be_sliced:
-                    self._build_plates_to_be_sliced.append(build_plate_number)
-            self.processingProgress.emit(0.0)
-            self.backendStateChange.emit(BackendState.NotStarted)
-            if not self._use_timer:
-                # With manually having to slice, we want to clear the old invalid layer data.
-                self._clearLayerData(build_plates_changed)
+        Logger.log("d", " going to reslice: %s", build_plate_changed)
+        self.stopSlicing()
+        for build_plate_number in build_plate_changed:
+            if build_plate_number not in self._build_plates_to_be_sliced:
+                self._build_plates_to_be_sliced.append(build_plate_number)
+        self.processingProgress.emit(0.0)
+        self.backendStateChange.emit(BackendState.NotStarted)
+        if not self._use_timer:
+            # With manually having to slice, we want to clear the old invalid layer data.
+            self._clearLayerData(build_plate_changed)
 
-            self._invokeSlice()
+        self._invokeSlice()
 
         # #self.needsSlicing()
         # self.stopSlicing()
@@ -445,7 +475,7 @@ class CuraEngineBackend(QObject, Backend):
     def _clearLayerData(self, build_plate_numbers = set()):
         for node in DepthFirstIterator(self._scene.getRoot()):
             if node.callDecoration("getLayerData"):
-                if node.callDecoration("getBuildPlateNumber") in build_plate_numbers or not build_plate_numbers:
+                if not build_plate_numbers or node.callDecoration("getBuildPlateNumber") in build_plate_numbers:
                     node.getParent().removeChild(node)
 
     def markSliceAll(self):

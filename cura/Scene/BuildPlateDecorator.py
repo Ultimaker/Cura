@@ -26,5 +26,8 @@ class BuildPlateDecorator(SceneNodeDecorator):
     def getPreviousBuildPlateNumber(self):
         return self._previous_build_plate_number
 
+    def removePreviousBuildPlateNumber(self):
+        self._previous_build_plate_number = None
+
     def __deepcopy__(self, memo):
         return BuildPlateDecorator()
