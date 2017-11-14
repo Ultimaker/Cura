@@ -815,7 +815,6 @@ class CuraApplication(QtApplication):
         qmlRegisterType(QualitySettingsModel, "Cura", 1, 0, "QualitySettingsModel")
         qmlRegisterType(MachineNameValidator, "Cura", 1, 0, "MachineNameValidator")
         qmlRegisterType(UserChangesModel, "Cura", 1, 1, "UserChangesModel")
-        # qmlRegisterSingletonType(ObjectManager, "Cura", 1, 0, "ObjectManager", ObjectManager.createObjectManager)
 
         qmlRegisterSingletonType(ContainerManager, "Cura", 1, 0, "ContainerManager", ContainerManager.createContainerManager)
 

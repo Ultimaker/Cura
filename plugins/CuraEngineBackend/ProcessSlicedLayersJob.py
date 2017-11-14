@@ -84,17 +84,6 @@ class ProcessSlicedLayersJob(Job):
         new_node = SceneNode()
         new_node.addDecorator(BuildPlateDecorator(self._build_plate_number))
 
-        # ## Remove old layer data (if any)
-        # for node in DepthFirstIterator(self._scene.getRoot()):
-        #     if node.callDecoration("getLayerData") and node.callDecoration("getBuildPlateNumber") == self._build_plate_number:
-        #         Logger.log("d", "   # Removing: %s", node)
-        #         node.getParent().removeChild(node)
-        #         #break
-        #     if self._abort_requested:
-        #         if self._progress_message:
-        #             self._progress_message.hide()
-        #         return
-
         # Force garbage collection.
         # For some reason, Python has a tendency to keep the layer data
         # in memory longer than needed. Forcing the GC to run here makes

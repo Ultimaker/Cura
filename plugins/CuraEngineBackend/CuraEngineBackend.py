@@ -112,7 +112,6 @@ class CuraEngineBackend(QObject, Backend):
         self._tool_active = False  # If a tool is active, some tasks do not have to do anything
         self._always_restart = True  # Always restart the engine when starting a new slice. Don't keep the process running. TODO: Fix engine statelessness.
         self._process_layers_job = None  # The currently active job to process layers, or None if it is not processing layers.
-        # self._need_slicing = False
         self._build_plates_to_be_sliced = []  # what needs slicing?
         self._engine_is_fresh = True  # Is the newly started engine used before or not?
 
@@ -446,11 +445,6 @@ class CuraEngineBackend(QObject, Backend):
 
         self._invokeSlice()
 
-        # #self.needsSlicing()
-        # self.stopSlicing()
-        # #self._onChanged()
-        # self._invokeSlice()
-
     ##  Called when an error occurs in the socket connection towards the engine.
     #
     #   \param error The exception that occurred.
@@ -476,12 +470,9 @@ class CuraEngineBackend(QObject, Backend):
                     node.getParent().removeChild(node)
 
     def markSliceAll(self):
-        if 0 not in self._build_plates_to_be_sliced:
-            self._build_plates_to_be_sliced.append(0)
-        if 1 not in self._build_plates_to_be_sliced:
-            self._build_plates_to_be_sliced.append(1)
-        if 2 not in self._build_plates_to_be_sliced:
-            self._build_plates_to_be_sliced.append(2)
+        for build_plate_number in range(Application.getInstance().getBuildPlateModel().maxBuildPlate + 1):
+            if build_plate_number not in self._build_plates_to_be_sliced:
+                self._build_plates_to_be_sliced.append(build_plate_number)
 
     ##  Convenient function: mark everything to slice, emit state and clear layer data
     def needsSlicing(self):

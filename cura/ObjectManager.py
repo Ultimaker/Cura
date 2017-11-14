@@ -11,6 +11,7 @@ from PyQt5.QtWidgets import QApplication
 from UM.Preferences import Preferences
 
 
+##  Keep track of all objects in the project
 class ObjectManager(ListModel):
     def __init__(self):
         super().__init__()

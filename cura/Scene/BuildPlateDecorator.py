@@ -3,6 +3,7 @@ from UM.Application import Application
 from UM.Logger import Logger
 
 
+##  Make a SceneNode build plate aware CuraSceneNode objects all have this decorator.
 class BuildPlateDecorator(SceneNodeDecorator):
     def __init__(self, build_plate_number = -1):
         super().__init__()
