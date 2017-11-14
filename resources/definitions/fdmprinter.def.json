@@ -5075,7 +5075,8 @@
                     "default_value": false,
                     "settable_per_mesh": true
                 },
-                "support_skip_some_zags": {
+                "support_skip_some_zags":
+                {
                     "label": "Break Up Support In Chunks",
                     "description": "Skip some support line connections to make the support structure easier to break away. This setting is applicable to the Zig Zag support infill pattern.",
                     "type": "bool",
@@ -5083,35 +5084,36 @@
                     "enabled": "support_enable and (support_pattern == 'zigzag')",
                     "limit_to_extruder": "support_infill_extruder_nr",
                     "settable_per_mesh": false,
+                    "settable_per_extruder": true
+                },
+                "support_skip_zag_per_mm":
+                {
+                    "label": "Support Chunk Size",
+                    "description": "Leave out a connection between support lines once every N millimeter to make the support structure easier to break away.",
+                    "type": "float",
+                    "unit": "mm",
+                    "default_value": 20,
+                    "minimum_value": "0",
+                    "minimum_value_warning": "support_line_distance",
+                    "enabled": "support_enable and (support_pattern == 'zigzag') and support_skip_some_zags",
+                    "limit_to_extruder": "support_infill_extruder_nr",
+                    "settable_per_mesh": false,
                     "settable_per_extruder": true,
-                    "children": {
-                        "support_skip_zag_per_mm": {
-                            "label": "Support Chunk Size",
-                            "description": "Leave out a connection between support lines once every N millimeter to make the support structure easier to break away.",
-                            "type": "float",
-                            "unit": "mm",
-                            "default_value": 20,
-                            "minimum_value": "0",
-                            "minimum_value_warning": "support_line_distance",
+                    "children":
+                    {
+                        "support_zag_skip_count":
+                        {
+                            "label": "Support Chunk Line Count",
+                            "description": "Skip one in every N connection lines to make the support structure easier to break away.",
+                            "type": "int",
+                            "default_value": 5,
+                            "value": "round(support_skip_zag_per_mm / support_line_distance)",
+                            "minimum_value": "1",
+                            "minimum_value_warning": "3",
                             "enabled": "support_enable and (support_pattern == 'zigzag') and support_skip_some_zags",
                             "limit_to_extruder": "support_infill_extruder_nr",
                             "settable_per_mesh": false,
-                            "settable_per_extruder": true,
-                            "children": {
-                                "support_zag_skip_count": {
-                                    "label": "Support Chunk Line Count",
-                                    "description": "Skip one in every N connection lines to make the support structure easier to break away.",
-                                    "type": "int",
-                                    "default_value": 5,
-                                    "value": "round(support_skip_zag_per_mm / support_line_distance)",
-                                    "minimum_value": "1",
-                                    "minimum_value_warning": "3",
-                                    "enabled": "support_enable and (support_pattern == 'zigzag') and support_skip_some_zags",
-                                    "limit_to_extruder": "support_infill_extruder_nr",
-                                    "settable_per_mesh": false,
-                                    "settable_per_extruder": true
-                                }
-                            }
+                            "settable_per_extruder": true
                         }
                     }
                 },
