@@ -237,7 +237,7 @@ Rectangle
         // #1 3d view
         Button
         {
-            iconSource: UM.Theme.getIcon("category_machine")
+            iconSource: UM.Theme.getIcon("view_3d")
             style: UM.Theme.styles.orientation_button
             anchors.verticalCenter: viewOrientationControl.verticalCenter
             onClicked:{
@@ -248,7 +248,7 @@ Rectangle
         // #2 Front view
         Button
         {
-            iconSource: UM.Theme.getIcon("category_machine")
+            iconSource: UM.Theme.getIcon("view_fron")
             style: UM.Theme.styles.orientation_button
             anchors.verticalCenter: viewOrientationControl.verticalCenter
             onClicked:{
@@ -259,7 +259,7 @@ Rectangle
         // #3 Top view
         Button
         {
-            iconSource: UM.Theme.getIcon("category_machine")
+            iconSource: UM.Theme.getIcon("view_top")
             style: UM.Theme.styles.orientation_button
             anchors.verticalCenter: viewOrientationControl.verticalCenter
             onClicked:{
@@ -270,7 +270,7 @@ Rectangle
         // #4 Left view
         Button
         {
-            iconSource: UM.Theme.getIcon("category_machine")
+            iconSource: UM.Theme.getIcon("view_left")
             style: UM.Theme.styles.orientation_button
             anchors.verticalCenter: viewOrientationControl.verticalCenter
             onClicked:{
@@ -281,7 +281,7 @@ Rectangle
         // #5 Left view
         Button
         {
-            iconSource: UM.Theme.getIcon("category_machine")
+            iconSource: UM.Theme.getIcon("view_right")
             style: UM.Theme.styles.orientation_button
             anchors.verticalCenter: viewOrientationControl.verticalCenter
             onClicked:{
