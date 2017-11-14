@@ -10,9 +10,6 @@
     "author": "Velleman"
   },
   "overrides": {
-    "material_diameter": {
-      "default_value": 1.75,
-    },
     "machine_width": {
       "default_value": 200
     },
@@ -45,6 +42,9 @@
     },
     "gantry_height": {
       "default_value": 0
+    },
+	"material_diameter": {
+      "default_value": 1.75
     },
     "machine_nozzle_offset_x_1": {
       "default_value": 0
