@@ -1,5 +1,5 @@
-# Copyright (c) 2015 Ultimaker B.V.
-# Cura is released under the terms of the AGPLv3 or higher.
+# Copyright (c) 2017 Ultimaker B.V.
+# Cura is released under the terms of the LGPLv3 or higher.
 
 from UM.Backend.Backend import Backend, BackendState
 from UM.Application import Application
@@ -76,14 +76,23 @@ class CuraEngineBackend(QObject, Backend):
         self._scene = Application.getInstance().getController().getScene()
         self._scene.sceneChanged.connect(self._onSceneChanged)
 
-        # Triggers for when to (re)start slicing:
+        # Triggers for auto-slicing. Auto-slicing is triggered as follows:
+        #  - auto-slicing is started with a timer
+        #  - whenever there is a value change, we start the timer
+        #  - sometimes an error check can get scheduled for a value change, in that case, we ONLY want to start the
+        #    auto-slicing timer when that error check is finished
+        #  If there is an error check, it will set the "_is_error_check_scheduled" flag, stop the auto-slicing timer,
+        #  and only wait for the error check to be finished to start the auto-slicing timer again.
+        #
         self._global_container_stack = None
         Application.getInstance().globalContainerStackChanged.connect(self._onGlobalStackChanged)
         self._onGlobalStackChanged()
 
-        self._active_extruder_stack = None
-        ExtruderManager.getInstance().activeExtruderChanged.connect(self._onActiveExtruderChanged)
-        self._onActiveExtruderChanged()
+        Application.getInstance().stacksValidationFinished.connect(self._onStackErrorCheckFinished)
+
+        # A flag indicating if an error check was scheduled
+        # If so, we will stop the auto-slice timer and start upon the error check
+        self._is_error_check_scheduled = False
 
         # Listeners for receiving messages from the back-end.
         self._message_handlers["cura.proto.Layer"] = self._onLayerMessage
@@ -186,20 +195,8 @@ class CuraEngineBackend(QObject, Backend):
             self.backendStateChange.emit(BackendState.Done)
             Logger.log("w", "Slice unnecessary, nothing has changed that needs reslicing.")
             return
-
-        self.printDurationMessage.emit({
-            "none": 0,
-            "inset_0": 0,
-            "inset_x": 0,
-            "skin": 0,
-            "support": 0,
-            "skirt": 0,
-            "infill": 0,
-            "support_infill": 0,
-            "travel": 0,
-            "retract": 0,
-            "support_interface": 0
-        }, [0])
+        if Application.getInstance().getPrintInformation():
+            Application.getInstance().getPrintInformation().setToZeroPrintInformation()
 
         self._stored_layer_data = []
         self._stored_optimized_layer_data = []
@@ -269,7 +266,7 @@ class CuraEngineBackend(QObject, Backend):
         if job.getResult() == StartSliceJob.StartJobResult.MaterialIncompatible:
             if Application.getInstance().platformActivity:
                 self._error_message = Message(catalog.i18nc("@info:status",
-                                            "The selected material is incompatible with the selected machine or configuration."))
+                                            "Unable to slice with the current material as it is incompatible with the selected machine or configuration."), title = catalog.i18nc("@info:title", "Unable to slice"))
                 self._error_message.show()
                 self.backendStateChange.emit(BackendState.Error)
             else:
@@ -296,7 +293,8 @@ class CuraEngineBackend(QObject, Backend):
                     error_labels.add(definitions[0].label)
 
                 error_labels = ", ".join(error_labels)
-                self._error_message = Message(catalog.i18nc("@info:status", "Unable to slice with the current settings. The following settings have errors: {0}".format(error_labels)))
+                self._error_message = Message(catalog.i18nc("@info:status", "Unable to slice with the current settings. The following settings have errors: {0}").format(error_labels),
+                                              title = catalog.i18nc("@info:title", "Unable to slice"))
                 self._error_message.show()
                 self.backendStateChange.emit(BackendState.Error)
             else:
@@ -305,7 +303,8 @@ class CuraEngineBackend(QObject, Backend):
 
         if job.getResult() == StartSliceJob.StartJobResult.BuildPlateError:
             if Application.getInstance().platformActivity:
-                self._error_message = Message(catalog.i18nc("@info:status", "Unable to slice because the prime tower or prime position(s) are invalid."))
+                self._error_message = Message(catalog.i18nc("@info:status", "Unable to slice because the prime tower or prime position(s) are invalid."),
+                                              title = catalog.i18nc("@info:title", "Unable to slice"))
                 self._error_message.show()
                 self.backendStateChange.emit(BackendState.Error)
             else:
@@ -313,7 +312,8 @@ class CuraEngineBackend(QObject, Backend):
 
         if job.getResult() == StartSliceJob.StartJobResult.NothingToSlice:
             if Application.getInstance().platformActivity:
-                self._error_message = Message(catalog.i18nc("@info:status", "Nothing to slice because none of the models fit the build volume. Please scale or rotate models to fit."))
+                self._error_message = Message(catalog.i18nc("@info:status", "Nothing to slice because none of the models fit the build volume. Please scale or rotate models to fit."),
+                                              title = catalog.i18nc("@info:title", "Unable to slice"))
                 self._error_message.show()
                 self.backendStateChange.emit(BackendState.Error)
             else:
@@ -418,6 +418,7 @@ class CuraEngineBackend(QObject, Backend):
 
     ##  Convenient function: set need_slicing, emit state and clear layer data
     def needsSlicing(self):
+        self.stopSlicing()
         self._need_slicing = True
         self.processingProgress.emit(0.0)
         self.backendStateChange.emit(BackendState.NotStarted)
@@ -426,11 +427,21 @@ class CuraEngineBackend(QObject, Backend):
             self._clearLayerData()
 
     ##  A setting has changed, so check if we must reslice.
-    #
-    #   \param instance The setting instance that has changed.
-    #   \param property The property of the setting instance that has changed.
+    # \param instance The setting instance that has changed.
+    # \param property The property of the setting instance that has changed.
     def _onSettingChanged(self, instance, property):
-        if property == "value": # Only reslice if the value has changed.
+        if property == "value":  # Only reslice if the value has changed.
+            self.needsSlicing()
+            self._onChanged()
+
+        elif property == "validationState":
+            if self._use_timer:
+                self._is_error_check_scheduled = True
+                self._change_timer.stop()
+
+    def _onStackErrorCheckFinished(self):
+        self._is_error_check_scheduled = False
+        if not self._slicing and self._need_slicing:
             self.needsSlicing()
             self._onChanged()
 
@@ -491,29 +502,6 @@ class CuraEngineBackend(QObject, Backend):
     def _onGCodePrefixMessage(self, message):
         self._scene.gcode_list.insert(0, message.data.decode("utf-8", "replace"))
 
-    ##  Called when a print time message is received from the engine.
-    #
-    #   \param message The protobuf message containing the print time per feature and
-    #   material amount per extruder
-    def _onPrintTimeMaterialEstimates(self, message):
-        material_amounts = []
-        for index in range(message.repeatedMessageCount("materialEstimates")):
-            material_amounts.append(message.getRepeatedMessage("materialEstimates", index).material_amount)
-        feature_times = {
-            "none": message.time_none,
-            "inset_0": message.time_inset_0,
-            "inset_x": message.time_inset_x,
-            "skin": message.time_skin,
-            "support": message.time_support,
-            "skirt": message.time_skirt,
-            "infill": message.time_infill,
-            "support_infill": message.time_support_infill,
-            "travel": message.time_travel,
-            "retract": message.time_retract,
-            "support_interface": message.time_support_interface
-        }
-        self.printDurationMessage.emit(feature_times, material_amounts)
-
     ##  Creates a new socket connection.
     def _createSocket(self):
         super()._createSocket(os.path.abspath(os.path.join(PluginRegistry.getInstance().getPluginPath(self.getPluginId()), "Cura.proto")))
@@ -525,7 +513,43 @@ class CuraEngineBackend(QObject, Backend):
     def _onChanged(self, *args, **kwargs):
         self.needsSlicing()
         if self._use_timer:
-            self._change_timer.start()
+            # if the error check is scheduled, wait for the error check finish signal to trigger auto-slice,
+            # otherwise business as usual
+            if self._is_error_check_scheduled:
+                self._change_timer.stop()
+            else:
+                self._change_timer.start()
+
+    ##  Called when a print time message is received from the engine.
+    #
+    #   \param message The protobuf message containing the print time per feature and
+    #   material amount per extruder
+    def _onPrintTimeMaterialEstimates(self, message):
+        material_amounts = []
+        for index in range(message.repeatedMessageCount("materialEstimates")):
+            material_amounts.append(message.getRepeatedMessage("materialEstimates", index).material_amount)
+
+        times = self._parseMessagePrintTimes(message)
+        self.printDurationMessage.emit(times, material_amounts)
+
+    ##  Called for parsing message to retrieve estimated time per feature
+    #
+    #   \param message The protobuf message containing the print time per feature
+    def _parseMessagePrintTimes(self, message):
+        result = {
+            "inset_0": message.time_inset_0,
+            "inset_x": message.time_inset_x,
+            "skin": message.time_skin,
+            "infill": message.time_infill,
+            "support_infill": message.time_support_infill,
+            "support_interface": message.time_support_interface,
+            "support": message.time_support,
+            "skirt": message.time_skirt,
+            "travel": message.time_travel,
+            "retract": message.time_retract,
+            "none": message.time_none
+        }
+        return result
 
     ##  Called when the back-end connects to the front-end.
     def _onBackendConnected(self):
@@ -591,9 +615,10 @@ class CuraEngineBackend(QObject, Backend):
             self._global_container_stack.propertyChanged.disconnect(self._onSettingChanged)
             self._global_container_stack.containersChanged.disconnect(self._onChanged)
             extruders = list(ExtruderManager.getInstance().getMachineExtruders(self._global_container_stack.getId()))
-            if extruders:
-                for extruder in extruders:
-                    extruder.propertyChanged.disconnect(self._onSettingChanged)
+
+            for extruder in extruders:
+                extruder.propertyChanged.disconnect(self._onSettingChanged)
+                extruder.containersChanged.disconnect(self._onChanged)
 
         self._global_container_stack = Application.getInstance().getGlobalContainerStack()
 
@@ -601,26 +626,10 @@ class CuraEngineBackend(QObject, Backend):
             self._global_container_stack.propertyChanged.connect(self._onSettingChanged)  # Note: Only starts slicing when the value changed.
             self._global_container_stack.containersChanged.connect(self._onChanged)
             extruders = list(ExtruderManager.getInstance().getMachineExtruders(self._global_container_stack.getId()))
-            if extruders:
-                for extruder in extruders:
-                    extruder.propertyChanged.connect(self._onSettingChanged)
-            self._onActiveExtruderChanged()
+            for extruder in extruders:
+                extruder.propertyChanged.connect(self._onSettingChanged)
+                extruder.containersChanged.connect(self._onChanged)
             self._onChanged()
-
-    def _onActiveExtruderChanged(self):
-        if self._global_container_stack:
-            # Connect all extruders of the active machine. This might cause a few connects that have already happend,
-            # but that shouldn't cause issues as only new / unique connections are added.
-            extruders = list(ExtruderManager.getInstance().getMachineExtruders(self._global_container_stack.getId()))
-            if extruders:
-                for extruder in extruders:
-                    extruder.propertyChanged.connect(self._onSettingChanged)
-        if self._active_extruder_stack:
-            self._active_extruder_stack.containersChanged.disconnect(self._onChanged)
-
-        self._active_extruder_stack = ExtruderManager.getInstance().getActiveExtruderStack()
-        if self._active_extruder_stack:
-            self._active_extruder_stack.containersChanged.connect(self._onChanged)
 
     def _onProcessLayersFinished(self, job):
         self._process_layers_job = None

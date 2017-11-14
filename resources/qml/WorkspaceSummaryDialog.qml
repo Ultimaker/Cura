@@ -1,5 +1,5 @@
 // Copyright (c) 2016 Ultimaker B.V.
-// Cura is released under the terms of the AGPLv3 or higher.
+// Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.1
 import QtQuick.Controls 1.1
@@ -13,10 +13,12 @@ UM.Dialog
 {
     title: catalog.i18nc("@title:window", "Save Project")
 
-    width: 500
-    height: 400
+    minimumWidth: 500 * screenScaleFactor
+    minimumHeight: 400 * screenScaleFactor
+    width: minimumWidth
+    height: minimumHeight
 
-    property int spacerHeight: 10
+    property int spacerHeight: 10 * screenScaleFactor
 
     property bool dontShowAgain: true
 
@@ -63,7 +65,7 @@ UM.Dialog
         Column
         {
             anchors.fill: parent
-            spacing: 2
+            spacing: 2 * screenScaleFactor
             Label
             {
                 id: titleLabel
@@ -95,12 +97,12 @@ UM.Dialog
                 Label
                 {
                     text: catalog.i18nc("@action:label", "Type")
-                    width: parent.width / 3
+                    width: (parent.width / 3) | 0
                 }
                 Label
                 {
                     text: Cura.MachineManager.activeDefinitionName
-                    width: parent.width / 3
+                    width: (parent.width / 3) | 0
                 }
             }
             Row
@@ -110,12 +112,12 @@ UM.Dialog
                 Label
                 {
                     text: catalog.i18nc("@action:label", "Name")
-                    width: parent.width / 3
+                    width: (parent.width / 3) | 0
                 }
                 Label
                 {
                     text: Cura.MachineManager.activeMachineName
-                    width: parent.width / 3
+                    width: (parent.width / 3) | 0
                 }
             }
 
@@ -142,12 +144,12 @@ UM.Dialog
                         Label
                         {
                             text: catalog.i18nc("@action:label", "%1 & material").arg(Cura.MachineManager.activeDefinitionVariantsName)
-                            width: parent.width / 3
+                            width: (parent.width / 3) | 0
                         }
                         Label
                         {
                             text: Cura.MachineManager.activeVariantNames[index] + ", " + modelData
-                            width: parent.width / 3
+                            width: (parent.width / 3) | 0
                         }
                     }
                 }
@@ -170,12 +172,12 @@ UM.Dialog
                 Label
                 {
                     text: catalog.i18nc("@action:label", "Not in profile")
-                    width: parent.width / 3
+                    width: (parent.width / 3) | 0
                 }
                 Label
                 {
                     text: catalog.i18ncp("@action:label", "%1 override", "%1 overrides", Cura.MachineManager.numUserSettings).arg(Cura.MachineManager.numUserSettings)
-                    width: parent.width / 3
+                    width: (parent.width / 3) | 0
                 }
                 visible: Cura.MachineManager.numUserSettings
             }
@@ -186,12 +188,12 @@ UM.Dialog
                 Label
                 {
                     text: catalog.i18nc("@action:label", "Name")
-                    width: parent.width / 3
+                    width: (parent.width / 3) | 0
                 }
                 Label
                 {
                     text: Cura.MachineManager.activeQualityName
-                    width: parent.width / 3
+                    width: (parent.width / 3) | 0
                 }
 
             }
@@ -214,12 +216,12 @@ UM.Dialog
                 Label
                 {
                     text: catalog.i18nc("@action:label", "Visible settings:")
-                    width: parent.width / 3
+                    width: (parent.width / 3) | 0
                 }
                 Label
                 {
                     text: catalog.i18nc("@action:label", "%1 out of %2" ).arg(definitionsModel.visibleCount).arg(Cura.MachineManager.totalNumberOfSettings)
-                    width: parent.width / 3
+                    width: (parent.width / 3) | 0
                 }
             }
 
@@ -230,11 +232,11 @@ UM.Dialog
             }
         }
 
-
         CheckBox
         {
             id: dontShowAgainCheckbox
-            anchors.bottom: parent.bottom
+            anchors.bottom: cancel_button.top
+            anchors.bottomMargin: UM.Theme.getSize("default_margin").height
             anchors.left: parent.left
 
             text: catalog.i18nc("@action:label", "Don't show project summary on save again")

@@ -1,6 +1,6 @@
 {
     "name": "Plugin Browser",
-    "author": "Ultimaker",
+    "author": "Ultimaker B.V.",
     "version": "1.0.0",
     "api": 4,
     "description": "Find, manage and install new plugins."

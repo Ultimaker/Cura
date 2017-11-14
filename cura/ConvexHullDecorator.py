@@ -1,5 +1,5 @@
 # Copyright (c) 2016 Ultimaker B.V.
-# Cura is released under the terms of the AGPLv3 or higher.
+# Cura is released under the terms of the LGPLv3 or higher.
 
 from UM.Application import Application
 from UM.Math.Polygon import Polygon
@@ -257,12 +257,16 @@ class ConvexHullDecorator(SceneNodeDecorator):
     #   \return New Polygon instance that is offset with everything that
     #   influences the collision area.
     def _offsetHull(self, convex_hull):
-        horizontal_expansion = self._getSettingProperty("xy_offset", "value")
+        horizontal_expansion = max(
+            self._getSettingProperty("xy_offset", "value"),
+            self._getSettingProperty("xy_offset_layer_0", "value")
+        )
+
         mold_width = 0
         if self._getSettingProperty("mold_enabled", "value"):
             mold_width = self._getSettingProperty("mold_width", "value")
         hull_offset = horizontal_expansion + mold_width
-        if hull_offset != 0:
+        if hull_offset > 0: #TODO: Implement Minkowski subtraction for if the offset < 0.
             expansion_polygon = Polygon(numpy.array([
                 [-hull_offset, -hull_offset],
                 [-hull_offset, hull_offset],
@@ -332,4 +336,4 @@ class ConvexHullDecorator(SceneNodeDecorator):
     ##  Settings that change the convex hull.
     #
     #   If these settings change, the convex hull should be recalculated.
-    _influencing_settings = {"xy_offset", "mold_enabled", "mold_width"}
+    _influencing_settings = {"xy_offset", "xy_offset_layer_0", "mold_enabled", "mold_width"}

@@ -1,5 +1,5 @@
-# Copyright (c) 2016 Ultimaker B.V.
-# Cura is released under the terms of the AGPLv3 or higher.
+# Copyright (c) 2017 Ultimaker B.V.
+# Cura is released under the terms of the LGPLv3 or higher.
 
 from UM.Mesh.MeshWriter import MeshWriter
 from UM.Logger import Logger
@@ -113,7 +113,7 @@ class GCodeWriter(MeshWriter):
 
         # Ensure that quality_type is set. (Can happen if we have empty quality changes).
         if flat_global_container.getMetaDataEntry("quality_type", None) is None:
-            flat_global_container.addMetaDataEntry("quality_type", stack.findContainer({"type": "quality"}).getMetaDataEntry("quality_type", "normal"))
+            flat_global_container.addMetaDataEntry("quality_type", stack.quality.getMetaDataEntry("quality_type", "normal"))
 
         serialized = flat_global_container.serialize()
         data = {"global_quality": serialized}
@@ -134,7 +134,7 @@ class GCodeWriter(MeshWriter):
 
             # Ensure that quality_type is set. (Can happen if we have empty quality changes).
             if flat_extruder_quality.getMetaDataEntry("quality_type", None) is None:
-                flat_extruder_quality.addMetaDataEntry("quality_type", extruder.findContainer({"type": "quality"}).getMetaDataEntry("quality_type", "normal"))
+                flat_extruder_quality.addMetaDataEntry("quality_type", extruder.quality.getMetaDataEntry("quality_type", "normal"))
             extruder_serialized = flat_extruder_quality.serialize()
             data.setdefault("extruder_quality", []).append(extruder_serialized)
 

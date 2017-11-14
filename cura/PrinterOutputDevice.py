@@ -1,5 +1,5 @@
 # Copyright (c) 2017 Ultimaker B.V.
-# Cura is released under the terms of the AGPLv3 or higher.
+# Cura is released under the terms of the LGPLv3 or higher.
 
 from UM.i18n import i18nCatalog
 from UM.OutputDevice.OutputDevice import OutputDevice
@@ -65,7 +65,16 @@ class PrinterOutputDevice(QObject, OutputDevice):
         self._monitor_view_qml_path = ""
         self._monitor_component = None
         self._monitor_item = None
+
+        self._control_view_qml_path = ""
+        self._control_component = None
+        self._control_item = None
+
         self._qml_context = None
+        self._can_pause = True
+        self._can_abort = True
+        self._can_pre_heat_bed = True
+        self._can_control_manually = True
 
     def requestWrite(self, nodes, file_name = None, filter_by_machine = False, file_handler = None):
         raise NotImplementedError("requestWrite needs to be implemented")
@@ -121,6 +130,26 @@ class PrinterOutputDevice(QObject, OutputDevice):
     # Signal to be emitted when some drastic change occurs in the remaining time (not when the time just passes on normally).
     preheatBedRemainingTimeChanged = pyqtSignal()
 
+    # Does the printer support pre-heating the bed at all
+    @pyqtProperty(bool, constant=True)
+    def canPreHeatBed(self):
+        return self._can_pre_heat_bed
+
+    # Does the printer support pause at all
+    @pyqtProperty(bool,  constant=True)
+    def canPause(self):
+        return self._can_pause
+
+    # Does the printer support abort at all
+    @pyqtProperty(bool, constant=True)
+    def canAbort(self):
+        return self._can_abort
+
+    # Does the printer support manual control at all
+    @pyqtProperty(bool, constant=True)
+    def canControlManually(self):
+        return self._can_control_manually
+
     @pyqtProperty(QObject, constant=True)
     def monitorItem(self):
         # Note that we specifically only check if the monitor component is created.
@@ -131,7 +160,35 @@ class PrinterOutputDevice(QObject, OutputDevice):
 
         return self._monitor_item
 
+    @pyqtProperty(QObject, constant=True)
+    def controlItem(self):
+        if not self._control_component:
+            self._createControlViewFromQML()
+
+        return self._control_item
+
+    def _createControlViewFromQML(self):
+        if not self._control_view_qml_path:
+            return
+
+        path = QUrl.fromLocalFile(self._control_view_qml_path)
+
+        # Because of garbage collection we need to keep this referenced by python.
+        self._control_component = QQmlComponent(Application.getInstance()._engine, path)
+
+        # Check if the context was already requested before (Printer output device might have multiple items in the future)
+        if self._qml_context is None:
+            self._qml_context = QQmlContext(Application.getInstance()._engine.rootContext())
+            self._qml_context.setContextProperty("OutputDevice", self)
+
+        self._control_item = self._control_component.create(self._qml_context)
+        if self._control_item is None:
+            Logger.log("e", "QQmlComponent status %s", self._control_component.status())
+            Logger.log("e", "QQmlComponent error string %s", self._control_component.errorString())
+
     def _createMonitorViewFromQML(self):
+        if not self._monitor_view_qml_path:
+            return
         path = QUrl.fromLocalFile(self._monitor_view_qml_path)
 
         # Because of garbage collection we need to keep this referenced by python.
@@ -584,7 +641,7 @@ class PrinterOutputDevice(QObject, OutputDevice):
     @pyqtSlot("long")
     @pyqtSlot("long", "long")
     def setHeadZ(self, z, speed = 3000):
-        self._setHeadY(z, speed)
+        self._setHeadZ(z, speed)
 
     ##  Move the head of the printer.
     #   Note that this is a relative move. If you want to move the head to a specific position you can use

@@ -6,7 +6,6 @@
     "metadata": {
         "visible": true,
         "manufacturer": "Velleman",
-        "category": "Other",
         "file_formats": "text/x-gcode",
         "icon": "icon_ultimaker2",
         "platform": "Vertex_build_panel.stl",
@@ -64,12 +63,6 @@
         },
         "gantry_height": {
             "default_value": 18
-        },
-        "machine_nozzle_heat_up_speed": {
-            "default_value": 2
-        },
-        "machine_nozzle_cool_down_speed": {
-            "default_value": 2
         },
         "machine_gcode_flavor": {
             "default_value": "RepRap (Marlin/Sprinter)"

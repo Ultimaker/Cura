@@ -1,5 +1,5 @@
 # Copyright (c) 2017 Ultimaker B.V.
-# Cura is released under the terms of the AGPLv3 or higher.
+# Cura is released under the terms of the LGPLv3 or higher.
 
 from UM.Logger import Logger
 
@@ -29,20 +29,23 @@ class CuraStackBuilder:
             return None
 
         machine_definition = definitions[0]
-        name = registry.createUniqueName("machine", "", name, machine_definition.name)
+
+        generated_name = registry.createUniqueName("machine", "", name, machine_definition.name)
         # Make sure the new name does not collide with any definition or (quality) profile
         # createUniqueName() only looks at other stacks, but not at definitions or quality profiles
         # Note that we don't go for uniqueName() immediately because that function matches with ignore_case set to true
-        if registry.findContainers(id = name):
-            name = registry.uniqueName(name)
+        if registry.findContainers(id = generated_name):
+            generated_name = registry.uniqueName(generated_name)
 
         new_global_stack = cls.createGlobalStack(
-            new_stack_id = name,
+            new_stack_id = generated_name,
             definition = machine_definition,
             quality = "default",
             material = "default",
             variant = "default",
         )
+
+        new_global_stack.setName(generated_name)
 
         for extruder_definition in registry.findDefinitionContainers(machine = machine_definition.id):
             position = extruder_definition.getMetaDataEntry("position", None)
@@ -76,6 +79,8 @@ class CuraStackBuilder:
         stack.setName(definition.getName())
         stack.setDefinition(definition)
         stack.addMetaDataEntry("position", definition.getMetaDataEntry("position"))
+        if "next_stack" in kwargs: #Add stacks before containers are added, since they may trigger a setting update.
+            stack.setNextStack(kwargs["next_stack"])
 
         user_container = InstanceContainer(new_stack_id + "_user")
         user_container.addMetaDataEntry("type", "user")
@@ -86,13 +91,12 @@ class CuraStackBuilder:
 
         stack.setUserChanges(user_container)
 
-        if "next_stack" in kwargs:
-            stack.setNextStack(kwargs["next_stack"])
-
         # Important! The order here matters, because that allows the stack to
         # assume the material and variant have already been set.
         if "definition_changes" in kwargs:
             stack.setDefinitionChangesById(kwargs["definition_changes"])
+        else:
+            stack.setDefinitionChanges(cls.createDefinitionChangesContainer(stack, new_stack_id + "_settings"))
 
         if "variant" in kwargs:
             stack.setVariantById(kwargs["variant"])
@@ -140,6 +144,8 @@ class CuraStackBuilder:
         # assume the material and variant have already been set.
         if "definition_changes" in kwargs:
             stack.setDefinitionChangesById(kwargs["definition_changes"])
+        else:
+            stack.setDefinitionChanges(cls.createDefinitionChangesContainer(stack, new_stack_id + "_settings"))
 
         if "variant" in kwargs:
             stack.setVariantById(kwargs["variant"])
@@ -158,3 +164,20 @@ class CuraStackBuilder:
         registry.addContainer(user_container)
 
         return stack
+
+    @classmethod
+    def createDefinitionChangesContainer(cls, container_stack, container_name, container_index = None):
+        from cura.CuraApplication import CuraApplication
+
+        unique_container_name = ContainerRegistry.getInstance().uniqueName(container_name)
+
+        definition_changes_container = InstanceContainer(unique_container_name)
+        definition = container_stack.getBottom()
+        definition_changes_container.setDefinition(definition)
+        definition_changes_container.addMetaDataEntry("type", "definition_changes")
+        definition_changes_container.addMetaDataEntry("setting_version", CuraApplication.SettingVersion)
+
+        ContainerRegistry.getInstance().addContainer(definition_changes_container)
+        container_stack.definitionChanges = definition_changes_container
+
+        return definition_changes_container

@@ -7,7 +7,6 @@
         "visible": true,
         "author": "fieldOfView",
         "manufacturer": "Peopoly",
-        "category": "Other",
         "file_formats": "text/x-gcode",
         "has_machine_quality": true,
         "has_materials": false

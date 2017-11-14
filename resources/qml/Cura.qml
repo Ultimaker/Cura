@@ -1,5 +1,5 @@
-// Copyright (c) 2015 Ultimaker B.V.
-// Cura is released under the terms of the AGPLv3 or higher.
+// Copyright (c) 2017 Ultimaker B.V.
+// Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.2
 import QtQuick.Controls 1.1
@@ -16,9 +16,22 @@ UM.MainWindow
 {
     id: base
     //: Cura application window title
-    title: catalog.i18nc("@title:window","Cura");
+    title: catalog.i18nc("@title:window","Ultimaker Cura");
     viewportRect: Qt.rect(0, 0, (base.width - sidebar.width) / base.width, 1.0)
-    property bool monitoringPrint: false
+    property bool showPrintMonitor: false
+
+    Connections
+    {
+        target: Printer
+        onShowPrintMonitor: {
+            if (show) {
+                topbar.startMonitoringPrint()
+            } else {
+                topbar.stopMonitoringPrint()
+            }
+        }
+    }
+
     Component.onCompleted:
     {
         CuraApplication.setMinimumWindowSize(UM.Theme.getSize("window_minimum_size"))
@@ -194,7 +207,7 @@ UM.MainWindow
                         id: sub_menu
                         title: model.name;
                         visible: actions != null
-                        enabled:actions != null
+                        enabled: actions != null
                         Instantiator
                         {
                             model: actions
@@ -211,6 +224,15 @@ UM.MainWindow
                     onObjectAdded: extension_menu.insertItem(index, object)
                     onObjectRemoved: extension_menu.removeItem(object)
                 }
+            }
+
+            Menu
+            {
+                id: plugin_menu
+                title: catalog.i18nc("@title:menu menubar:toplevel", "P&lugins")
+
+                MenuItem { action: Cura.Actions.browsePlugins }
+                MenuItem { action: Cura.Actions.configurePlugins }
             }
 
             Menu
@@ -302,24 +324,6 @@ UM.MainWindow
                 }
             }
 
-            Loader
-            {
-                id: view_panel
-
-                property bool hugBottom: parent.height < viewModeButton.y + viewModeButton.height + height + UM.Theme.getSize("default_margin").height
-
-                anchors.bottom: parent.bottom // panel is always anchored to the bottom only, because dynamically switching between bottom and top results in stretching the height
-                anchors.bottomMargin: hugBottom ? 0 : parent.height - (viewModeButton.y + viewModeButton.height + height + UM.Theme.getSize("default_margin").height)
-                anchors.left: viewModeButton.left;
-                anchors.leftMargin: hugBottom ? viewModeButton.width + UM.Theme.getSize("default_margin").width : 0
-
-                property var buttonTarget: Qt.point(viewModeButton.x + viewModeButton.width / 2, viewModeButton.y + viewModeButton.height / 2)
-
-                height: childrenRect.height;
-
-                source: UM.ActiveView.valid ? UM.ActiveView.activeViewPanel : "";
-            }
-
             Button
             {
                 id: openFileButton;
@@ -329,33 +333,12 @@ UM.MainWindow
                 tooltip: '';
                 anchors
                 {
-                    top: parent.top;
+                    top: topbar.bottom;
+                    topMargin: UM.Theme.getSize("default_margin").height;
                     left: parent.left;
                 }
                 action: Cura.Actions.open;
             }
-
-            Image
-            {
-                id: logo
-                anchors
-                {
-                    left: parent.left
-                    leftMargin: UM.Theme.getSize("default_margin").width;
-                    bottom: parent.bottom
-                    bottomMargin: UM.Theme.getSize("default_margin").height;
-                }
-
-                source: UM.Theme.getImage("logo");
-                width: UM.Theme.getSize("logo").width;
-                height: UM.Theme.getSize("logo").height;
-                z: -1;
-
-                sourceSize.width: width;
-                sourceSize.height: height;
-            }
-
-
 
             Toolbar
             {
@@ -371,38 +354,30 @@ UM.MainWindow
                 }
             }
 
+            Topbar
+            {
+                id: topbar
+                anchors.left:parent.left
+                anchors.right: parent.right
+                anchors.top: parent.top
+                monitoringPrint: base.showPrintMonitor
+                onStartMonitoringPrint: base.showPrintMonitor = true
+                onStopMonitoringPrint: base.showPrintMonitor = false
+            }
+
             Sidebar
             {
                 id: sidebar;
 
                 anchors
                 {
-                    top: parent.top;
+                    top: topbar.bottom;
                     bottom: parent.bottom;
                     right: parent.right;
                 }
                 z: 1
-                onMonitoringPrintChanged: base.monitoringPrint = monitoringPrint
                 width: UM.Theme.getSize("sidebar").width;
-            }
-
-            Button
-            {
-                id: viewModeButton
-
-                anchors
-                {
-                    top: toolbar.bottom;
-                    topMargin: UM.Theme.getSize("window_margin").height;
-                    left: parent.left;
-                }
-                text: catalog.i18nc("@action:button","View Mode");
-                iconSource: UM.Theme.getIcon("viewmode");
-
-                style: UM.Theme.styles.tool_button;
-                tooltip: "";
-                enabled: !PrintInformation.preSliced
-                menu: ViewMenu { }
+                monitoringPrint: base.showPrintMonitor
             }
 
             Rectangle
@@ -412,15 +387,13 @@ UM.MainWindow
                 color: UM.Theme.getColor("viewport_overlay")
                 anchors
                 {
-                    top: parent.top
+                    top: topbar.bottom
                     bottom: parent.bottom
                     left:parent.left
                     right: sidebar.left
                 }
                 visible: opacity > 0
-                opacity: base.monitoringPrint ? 0.75 : 0
-
-                Behavior on opacity { NumberAnimation { duration: 100; } }
+                opacity: base.showPrintMonitor ? 1 : 0
 
                 MouseArea {
                     anchors.fill: parent
@@ -433,12 +406,13 @@ UM.MainWindow
             Loader
             {
                 sourceComponent: Cura.MachineManager.printerOutputDevices.length > 0 ? Cura.MachineManager.printerOutputDevices[0].monitorItem: null
-                visible: base.monitoringPrint
+                visible: base.showPrintMonitor
                 anchors.horizontalCenter: parent.horizontalCenter
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.horizontalCenterOffset: - UM.Theme.getSize("sidebar").width / 2
-
-
+                anchors.verticalCenterOffset: UM.Theme.getSize("sidebar_header").height / 2
+                property real maximumWidth: viewportOverlay.width
+                property real maximumHeight: viewportOverlay.height
             }
 
             UM.MessageStack
@@ -578,6 +552,30 @@ UM.MainWindow
         }
     }
 
+    // show the installed plugins page in the preferences dialog
+    Connections
+    {
+        target: Cura.Actions.configurePlugins
+        onTriggered:
+        {
+            preferences.visible = true
+            preferences.setPage(5)
+        }
+    }
+
+    UM.ExtensionModel {
+        id: curaExtensions
+    }
+
+    // show the plugin browser dialog
+    Connections
+    {
+        target: Cura.Actions.browsePlugins
+        onTriggered: {
+            curaExtensions.callExtensionMethod("Plugin Browser", "browsePlugins")
+        }
+    }
+
     Timer
     {
         id: createProfileTimer
@@ -605,7 +603,7 @@ UM.MainWindow
     Connections
     {
         target: Cura.Actions.quit
-        onTriggered: base.visible = false;
+        onTriggered: CuraApplication.closeApplication();
     }
 
     Connections
@@ -851,7 +849,7 @@ UM.MainWindow
 
     Connections
     {
-        target: Printer
+        target: CuraApplication
         onShowDiscardOrKeepProfileChanges:
         {
             discardOrKeepProfileChangesDialog.show()
@@ -896,6 +894,11 @@ UM.MainWindow
             if(!base.visible)
             {
                 base.visible = true;
+            }
+
+            // check later if the user agreement dialog has been closed
+            if (CuraApplication.needToShowUserAgreement)
+            {
                 restart();
             }
             else if(Cura.MachineManager.activeMachineId == null || Cura.MachineManager.activeMachineId == "")

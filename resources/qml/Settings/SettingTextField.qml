@@ -1,5 +1,5 @@
 // Copyright (c) 2015 Ultimaker B.V.
-// Uranium is released under the terms of the AGPLv3 or higher.
+// Uranium is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.2
 import QtQuick.Controls 1.2
@@ -10,6 +10,14 @@ SettingItem
 {
     id: base
     property var focusItem: input
+
+    property string textBeforeEdit
+    property bool textHasChanged
+    onFocusReceived:
+    {
+        textHasChanged = false;
+        textBeforeEdit = focusItem.text;
+    }
 
     contents: Rectangle
     {
@@ -24,6 +32,17 @@ SettingItem
             {
                 return UM.Theme.getColor("setting_control_disabled_border")
             }
+            switch(propertyProvider.properties.validationState)
+            {
+                case "ValidatorState.Exception":
+                case "ValidatorState.MinimumError":
+                case "ValidatorState.MaximumError":
+                    return UM.Theme.getColor("setting_validation_error");
+                case "ValidatorState.MinimumWarning":
+                case "ValidatorState.MaximumWarning":
+                    return UM.Theme.getColor("setting_validation_warning");
+            }
+            //Validation is OK.
             if(hovered || input.activeFocus)
             {
                 return UM.Theme.getColor("setting_control_border_highlight")
@@ -39,15 +58,12 @@ SettingItem
             switch(propertyProvider.properties.validationState)
             {
                 case "ValidatorState.Exception":
-                    return UM.Theme.getColor("setting_validation_error")
                 case "ValidatorState.MinimumError":
-                    return UM.Theme.getColor("setting_validation_error")
                 case "ValidatorState.MaximumError":
-                    return UM.Theme.getColor("setting_validation_error")
+                    return UM.Theme.getColor("setting_validation_error_background")
                 case "ValidatorState.MinimumWarning":
-                    return UM.Theme.getColor("setting_validation_warning")
                 case "ValidatorState.MaximumWarning":
-                    return UM.Theme.getColor("setting_validation_warning")
+                    return UM.Theme.getColor("setting_validation_warning_background")
                 case "ValidatorState.Valid":
                     return UM.Theme.getColor("setting_validation_ok")
 
@@ -94,6 +110,7 @@ SettingItem
                 right: parent.right
                 verticalCenter: parent.verticalCenter
             }
+            renderType: Text.NativeRendering
 
             Keys.onTabPressed:
             {
@@ -106,12 +123,22 @@ SettingItem
 
             Keys.onReleased:
             {
-                propertyProvider.setPropertyValue("value", text)
+                if (text != textBeforeEdit)
+                {
+                    textHasChanged = true;
+                }
+                if (textHasChanged)
+                {
+                    propertyProvider.setPropertyValue("value", text)
+                }
             }
 
             onEditingFinished:
             {
-                propertyProvider.setPropertyValue("value", text)
+                if (textHasChanged)
+                {
+                    propertyProvider.setPropertyValue("value", text)
+                }
             }
 
             onActiveFocusChanged:

@@ -7,7 +7,6 @@
         "visible": true,
         "author": "Calvindog717",
         "manufacturer": "PrintrBot",
-        "category": "Other",
         "platform": "printrbot_simple_metal_platform.stl",
         "platform_offset": [0, -3.45, 0],
         "file_formats": "text/x-gcode"
@@ -22,8 +21,6 @@
         "machine_center_is_zero": { "default_value": false },
         "machine_nozzle_size": { "default_value": 0.4 },
         "material_diameter": { "default_value": 1.75 },
-        "machine_nozzle_heat_up_speed": { "default_value": 2 },
-        "machine_nozzle_cool_down_speed": { "default_value": 2 },
         "machine_head_with_fans_polygon": {
             "default_value": [
                 [-49, 20],

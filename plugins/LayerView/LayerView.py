@@ -1,5 +1,5 @@
 # Copyright (c) 2015 Ultimaker B.V.
-# Cura is released under the terms of the AGPLv3 or higher.
+# Cura is released under the terms of the LGPLv3 or higher.
 
 import sys
 
@@ -90,7 +90,8 @@ class LayerView(View):
         self._only_show_top_layers = bool(Preferences.getInstance().getValue("view/only_show_top_layers"))
         self._compatibility_mode = True  # for safety
 
-        self._wireprint_warning_message = Message(catalog.i18nc("@info:status", "Cura does not accurately display layers when Wire Printing is enabled"))
+        self._wireprint_warning_message = Message(catalog.i18nc("@info:status", "Cura does not accurately display layers when Wire Printing is enabled"),
+                                                  title = catalog.i18nc("@info:title", "Layer View"))
 
     def _resetSettings(self):
         self._layer_view_type = 0  # 0 is material color, 1 is color by linetype, 2 is speed
@@ -111,7 +112,6 @@ class LayerView(View):
             self._layer_pass = LayerPass.LayerPass(1, 1)
             self._compatibility_mode = OpenGLContext.isLegacyOpenGL() or bool(Preferences.getInstance().getValue("view/force_layer_view_compatibility_mode"))
             self._layer_pass.setLayerView(self)
-            self.getRenderer().addRenderPass(self._layer_pass)
         return self._layer_pass
 
     def getCurrentLayer(self):
@@ -309,7 +309,8 @@ class LayerView(View):
 
         if event.type == Event.ViewActivateEvent:
             # Make sure the LayerPass is created
-            self.getLayerPass()
+            layer_pass = self.getLayerPass()
+            self.getRenderer().addRenderPass(layer_pass)
 
             Application.getInstance().globalContainerStackChanged.connect(self._onGlobalStackChanged)
             self._onGlobalStackChanged()
@@ -334,6 +335,7 @@ class LayerView(View):
             if self._global_container_stack:
                 self._global_container_stack.propertyChanged.disconnect(self._onPropertyChanged)
 
+            self.getRenderer().removeRenderPass(self._layer_pass)
             self._composite_pass.setLayerBindings(self._old_layer_bindings)
             self._composite_pass.setCompositeShader(self._old_composite_shader)
 

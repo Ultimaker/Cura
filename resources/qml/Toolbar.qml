@@ -1,5 +1,5 @@
 // Copyright (c) 2015 Ultimaker B.V.
-// Cura is released under the terms of the AGPLv3 or higher.
+// Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.2
 import QtQuick.Controls 1.1
@@ -30,24 +30,23 @@ Item
             id: repeat
 
             model: UM.ToolModel { }
-
+            width: childrenRect.width
+            height: childrenRect.height
             Button
             {
                 text: model.name
-                iconSource: UM.Theme.getIcon(model.icon);
+                iconSource: (UM.Theme.getIcon(model.icon) != "") ? UM.Theme.getIcon(model.icon) : "file:///" + model.location + "/" + model.icon
+                checkable: true
+                checked: model.active
+                enabled: model.enabled && UM.Selection.hasSelection && UM.Controller.toolsEnabled
+                style: UM.Theme.styles.tool_button
 
-                checkable: true;
-                checked: model.active;
-                enabled: model.enabled && UM.Selection.hasSelection && UM.Controller.toolsEnabled;
-
-                style: UM.Theme.styles.tool_button;
-                onCheckedChanged:
-                {
-                    if(checked)
-                    {
+                onCheckedChanged: {
+                    if (checked) {
                         base.activeY = y
                     }
                 }
+
                 //Workaround since using ToolButton"s onClicked would break the binding of the checked property, instead
                 //just catch the click so we do not trigger that behaviour.
                 MouseArea
@@ -69,12 +68,15 @@ Item
             }
         }
 
-        Item { height: UM.Theme.getSize("default_margin").height; width: 1; visible: extruders.count > 0 }
+        Item { height: UM.Theme.getSize("default_margin").height; width: UM.Theme.getSize("default_lining").width; visible: extruders.count > 0 }
 
         Repeater
         {
             id: extruders
-            model: Cura.ExtrudersModel { id: extrudersModel }
+            width: childrenRect.width
+            height: childrenRect.height
+            property var _model: Cura.ExtrudersModel { id: extrudersModel }
+            model: _model.items.length > 1 ? _model : 0
             ExtruderButton { extruder: model }
         }
     }
@@ -106,22 +108,13 @@ Item
         opacity: panel.item && panel.width > 0 ? 1 : 0
         Behavior on opacity { NumberAnimation { duration: 100 } }
 
-        color: UM.Theme.getColor("lining");
+        color: UM.Theme.getColor("tool_panel_background")
+        borderColor: UM.Theme.getColor("lining")
+        borderWidth: UM.Theme.getSize("default_lining").width
 
-        UM.PointingRectangle
+        MouseArea //Catch all mouse events (so scene doesnt handle them)
         {
-            id: panelBackground;
-
-            color: UM.Theme.getColor("tool_panel_background");
             anchors.fill: parent
-            anchors.margins: UM.Theme.getSize("default_lining").width
-
-            target: Qt.point(-UM.Theme.getSize("default_margin").width, UM.Theme.getSize("button").height/2)
-            arrowSize: parent.arrowSize
-            MouseArea //Catch all mouse events (so scene doesnt handle them)
-            {
-                anchors.fill: parent
-            }
         }
 
         Loader

@@ -1,6 +1,6 @@
 {
     "name": "Slice info",
-    "author": "Ultimaker",
+    "author": "Ultimaker B.V.",
     "version": "1.0.0",
     "description": "Submits anonymous slice info. Can be disabled through preferences.",
     "api": 4,

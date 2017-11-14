@@ -7,7 +7,6 @@
         "visible": true,
         "author": "ALYA",
         "manufacturer": "ALYA",
-        "category": "Other",
         "file_formats": "text/x-gcode"
     },
 
@@ -27,19 +26,15 @@
         "machine_nozzle_size": {
             "default_value": 0.4
         },
-        "machine_head_shape_min_x": {
-            "default_value": 75
+        "machine_head_polygon": {
+            "default_value": [
+                [75, 18],
+                [18, 18],
+                [18, 35],
+                [75, 35]
+            ]
         },
-        "machine_head_shape_min_y": {
-            "default_value": 18
-        },
-        "machine_head_shape_max_x": {
-            "default_value": 18
-        },
-        "machine_head_shape_max_y": {
-            "default_value": 35
-        },
-        "machine_nozzle_gantry_distance": {
+        "gantry_height": {
             "default_value": 55
         },
         "machine_gcode_flavor": {

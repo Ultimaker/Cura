@@ -6,8 +6,7 @@
     "metadata": {
         "visible": true,
         "author": "Ultimaker",
-        "manufacturer": "Ultimaker",
-        "category": "Ultimaker",
+        "manufacturer": "Ultimaker B.V.",
         "weight": 3,
         "file_formats": "text/x-gcode",
         "icon": "icon_ultimaker2.png",
@@ -15,6 +14,7 @@
         "platform_texture": "Ultimaker2backplate.png",
         "platform_offset": [9, 0, 0],
         "has_materials": false,
+        "has_machine_quality": true,
         "first_start_actions": ["UM2UpgradeSelection"],
         "supported_actions":["UM2UpgradeSelection", "UpgradeFirmware"]
     },
@@ -56,12 +56,6 @@
             "default_value": 0.4,
             "minimum_value": "0.001"
         },
-        "machine_nozzle_heat_up_speed": {
-            "default_value": 2
-        },
-        "machine_nozzle_cool_down_speed": {
-            "default_value": 2
-        },
         "gantry_height": {
             "default_value": 48
         },
@@ -95,9 +89,6 @@
         },
         "machine_max_feedrate_z": {
             "default_value": 40
-        },
-        "machine_max_feedrate_e": {
-            "default_value": 45
         },
         "machine_acceleration": {
             "default_value": 3000

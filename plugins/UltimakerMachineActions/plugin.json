@@ -1,6 +1,6 @@
 {
     "name": "Ultimaker machine actions",
-    "author": "Ultimaker",
+    "author": "Ultimaker B.V.",
     "version": "1.0.0",
     "description": "Provides machine actions for Ultimaker machines (such as bed leveling wizard, selecting upgrades, etc)",
     "api": 4,

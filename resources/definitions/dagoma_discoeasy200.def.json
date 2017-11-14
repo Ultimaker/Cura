@@ -7,7 +7,6 @@
         "visible": true,
         "author": "Dagoma",
         "manufacturer": "Dagoma",
-        "category": "Other",
         "file_formats": "text/x-gcode",
         "icon": "icon_ultimaker2.png",
         "platform": "discoeasy200.stl",
@@ -37,14 +36,8 @@
                 [16, 37]
             ]
         },
-        "machine_nozzle_gantry_distance": {
+        "gantry_height": {
             "default_value": 55
-        },
-        "machine_nozzle_offset_x_1": {
-            "default_value": 18
-        },
-        "machine_nozzle_offset_y_1": {
-            "default_value": 0
         },
         "machine_gcode_flavor": {
             "default_value": "RepRap"

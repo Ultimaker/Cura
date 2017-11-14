@@ -5,9 +5,8 @@
     "inherits": "fdmprinter",
     "metadata": {
         "visible": true,
-        "author": "Apsu",
+        "author": "Apsu, Nounours2099",
         "manufacturer": "Prusa Research",
-        "category": "Other",
         "file_formats": "text/x-gcode",
         "icon": "icon_ultimaker2",
         "platform": "prusai3_platform.stl",
@@ -31,8 +30,6 @@
         "retraction_retract_speed": { "default_value": 35 },
         "retraction_prime_speed": { "default_value": 35 },
         "adhesion_type": { "default_value": "skirt" },
-        "machine_nozzle_heat_up_speed": { "default_value": 2 },
-        "machine_nozzle_cool_down_speed": { "default_value": 2 },
         "machine_head_with_fans_polygon": { "default_value": [[-31,31],[34,31],[34,-40],[-31,-40]] },
         "gantry_height": { "default_value": 28 },
         "machine_max_feedrate_z": { "default_value": 12 },
@@ -44,7 +41,7 @@
         "machine_max_jerk_e": { "default_value": 2.5 },
         "machine_gcode_flavor": { "default_value": "RepRap (Marlin/Sprinter)" },
         "machine_start_gcode": {
-            "default_value": "G21 ; set units to millimeters\nG90 ; use absolute positioning\nM82 ; absolute extrusion mode\nG28 W ; home all without mesh bed level\nG80 ; mesh bed leveling\nM104 S{material_print_temperature} ; set extruder temp\nM140 S{material_bed_temperature} ; set bed temp\nM190 S{material_bed_temperature} ; wait for bed temp\nM109 S{material_print_temperature} ; wait for extruder temp\nG92 E0.0 ; reset extruder distance position\nG1 Y-3.0 F1000.0 ; go outside print area\nG1 X60.0 E9.0 F1000.0 ; intro line\nG1 X100.0 E21.5 F1000.0 ; intro line\nG92 E0.0 ; reset extruder distance position"
+            "default_value": "G21 ; set units to millimeters\nG90 ; use absolute positioning\nM82 ; absolute extrusion mode\nM104 S{material_print_temperature_layer_0} ; set extruder temp\nM140 S{material_bed_temperature_layer_0} ; set bed temp\nM190 S{material_bed_temperature_layer_0} ; wait for bed temp\nM109 S{material_print_temperature_layer_0} ; wait for extruder temp\nG28 W ; home all without mesh bed level\nG80 ; mesh bed leveling\nG92 E0.0 ; reset extruder distance position\nG1 Y-3.0 F1000.0 ; go outside print area\nG1 X60.0 E9.0 F1000.0 ; intro line\nG1 X100.0 E21.5 F1000.0 ; intro line\nG92 E0.0 ; reset extruder distance position"
         },
         "machine_end_gcode": {
             "default_value": "M104 S0 ; turn off extruder\nM140 S0 ; turn off heatbed\nM107 ; turn off fan\nG1 X0 Y210; home X axis and push Y forward\nM84 ; disable motors"

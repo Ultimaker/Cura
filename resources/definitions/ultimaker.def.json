@@ -5,7 +5,8 @@
     "inherits": "fdmprinter",
     "metadata": {
         "author": "Ultimaker",
-        "manufacturer": "Ultimaker",
+        "manufacturer": "Ultimaker B.V.",
+        "category": "Ultimaker",
         "visible": false
     },
     "overrides": {
@@ -30,6 +31,11 @@
         {
             "minimum_value": "0",
             "maximum_value": "machine_width"
+        },
+        "relative_extrusion":
+        {
+            "value": false,
+            "enabled": false
         }
     }
 }
