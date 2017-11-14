@@ -250,9 +250,7 @@ class StartSliceJob(Job):
         settings = self._buildReplacementTokens(stack)
 
         #Also send the material GUID. This is a setting in fdmprinter, but we have no interface for it.
-        material_instance_container = stack.findContainer({"type": "material"})
-        if material_instance_container:
-            settings["material_guid"] = material_instance_container.getMetaDataEntry("GUID", "")
+        settings["material_guid"] = stack.material.getMetaDataEntry("GUID", "")
 
         #Replace the setting tokens in start and end g-code.
         settings["machine_extruder_start_code"] = self._expandGcodeTokens(settings["machine_extruder_start_code"], settings)
