@@ -71,11 +71,9 @@ class SolidView(View):
             else:
                 self._enabled_shader.setUniformValue("u_overhangAngle", math.cos(math.radians(0)))
 
-        activeBuildPlateNumber = Application.getInstance().activeBuildPlate
-
         for node in DepthFirstIterator(scene.getRoot()):
             if not node.render(renderer):
-                if node.getMeshData() and node.isVisible():  #  and (node.callDecoration("getBuildPlateNumber") == activeBuildPlateNumber):
+                if node.getMeshData() and node.isVisible():
                     uniforms = {}
                     shade_factor = 1.0
 

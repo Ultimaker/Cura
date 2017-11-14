@@ -40,7 +40,6 @@ from cura.ConvexHullDecorator import ConvexHullDecorator
 from cura.SetParentOperation import SetParentOperation
 from cura.SliceableObjectDecorator import SliceableObjectDecorator
 from cura.BlockSlicingDecorator import BlockSlicingDecorator
-# research
 from cura.Scene.BuildPlateDecorator import BuildPlateDecorator
 from cura.Scene.CuraSceneNode import CuraSceneNode
 
@@ -83,6 +82,7 @@ from cura.Settings.GlobalStack import GlobalStack
 from cura.Settings.ExtruderStack import ExtruderStack
 
 from cura.ObjectManager import ObjectManager
+from cura.BuildPlateModel import BuildPlateModel
 
 from PyQt5.QtCore import QUrl, pyqtSignal, pyqtProperty, QEvent, Q_ENUMS
 from UM.FlameProfiler import pyqtSlot
@@ -211,6 +211,7 @@ class CuraApplication(QtApplication):
         self._machine_manager = None    # This is initialized on demand.
         self._material_manager = None
         self._object_manager = None
+        self._build_plate_model = None
         self._setting_inheritance_manager = None
         self._simple_mode_settings_manager = None
 
@@ -258,7 +259,6 @@ class CuraApplication(QtApplication):
         self._i18n_catalog = i18nCatalog("cura")
 
         self.getController().getScene().sceneChanged.connect(self.updatePlatformActivity)
-        self.getController().getScene().sceneChanged.connect(self.updateMaxBuildPlate)  # it may be a bit inefficient when changing a lot simultaneously
         self.getController().toolOperationStopped.connect(self._onToolOperationStopped)
         self.getController().contextMenuRequested.connect(self._onContextMenuRequested)
 
@@ -388,10 +388,6 @@ class CuraApplication(QtApplication):
         self._onGlobalContainerChanged()
 
         self._plugin_registry.addSupportedPluginExtension("curaplugin", "Cura Plugin")
-
-        # research
-        self._num_build_plates = 1  # default
-        self._active_build_plate = 0
 
     def _onEngineCreated(self):
         self._engine.addImageProvider("camera", CameraImageProvider.CameraImageProvider())
@@ -724,8 +720,8 @@ class CuraApplication(QtApplication):
         qmlRegisterSingletonType(SimpleModeSettingsManager, "Cura", 1, 2, "SimpleModeSettingsManager",
                                  self.getSimpleModeSettingsManager)
 
-        Logger.log("d", "           #### going to register object manager")
         qmlRegisterSingletonType(ObjectManager, "Cura", 1, 2, "ObjectManager", self.getObjectManager)
+        qmlRegisterSingletonType(BuildPlateModel, "Cura", 1, 2, "BuildPlateModel", self.getBuildPlateModel)
 
         qmlRegisterSingletonType(MachineActionManager.MachineActionManager, "Cura", 1, 0, "MachineActionManager", self.getMachineActionManager)
         self.setMainQml(Resources.getPath(self.ResourceTypes.QmlFiles, "Cura.qml"))
@@ -758,6 +754,11 @@ class CuraApplication(QtApplication):
         if self._object_manager is None:
             self._object_manager = ObjectManager.createObjectManager()
         return self._object_manager
+
+    def getBuildPlateModel(self, *args):
+        if self._build_plate_model is None:
+            self._build_plate_model = BuildPlateModel.createBuildPlateModel()
+        return self._build_plate_model
 
     def getSettingInheritanceManager(self, *args):
         if self._setting_inheritance_manager is None:
@@ -881,8 +882,6 @@ class CuraApplication(QtApplication):
     activityChanged = pyqtSignal()
     sceneBoundingBoxChanged = pyqtSignal()
     preferredOutputMimetypeChanged = pyqtSignal()
-    numBuildPlatesChanged = pyqtSignal()
-    activeBuildPlateChanged = pyqtSignal()
 
     @pyqtProperty(bool, notify = activityChanged)
     def platformActivity(self):
@@ -1130,12 +1129,13 @@ class CuraApplication(QtApplication):
                 nodes.append(node)
         job = ArrangeObjectsAllBuildPlatesJob(nodes)
         job.start()
-        self.setActiveBuildPlate(0)
+        self.getBuildPlateModel().setActiveBuildPlate(0)
 
     # Single build plate
     @pyqtSlot()
     def arrangeAll(self):
         nodes = []
+        active_build_plate = self.getBuildPlateModel().activeBuildPlate
         for node in DepthFirstIterator(self.getController().getScene().getRoot()):
             if not issubclass(type(node), SceneNode):
                 continue
@@ -1147,7 +1147,7 @@ class CuraApplication(QtApplication):
                 continue  # i.e. node with layer data
             if not node.callDecoration("isSliceable"):
                 continue  # i.e. node with layer data
-            if node.callDecoration("getBuildPlateNumber") == self._active_build_plate:
+            if node.callDecoration("getBuildPlateNumber") == active_build_plate:
                 # Skip nodes that are too big
                 if node.getBoundingBox().width < self._volume.getBoundingBox().width or node.getBoundingBox().depth < self._volume.getBoundingBox().depth:
                     nodes.append(node)
@@ -1284,7 +1284,7 @@ class CuraApplication(QtApplication):
         group_decorator = GroupDecorator()
         group_node.addDecorator(group_decorator)
         group_node.addDecorator(ConvexHullDecorator())
-        group_node.addDecorator(BuildPlateDecorator(self.activeBuildPlate))
+        group_node.addDecorator(BuildPlateDecorator(self.getBuildPlateModel().activeBuildPlate))
         group_node.setParent(self.getController().getScene().getRoot())
         group_node.setSelectable(True)
         center = Selection.getSelectionCenter()
@@ -1510,43 +1510,3 @@ class CuraApplication(QtApplication):
                     node = node.getParent()
 
                 Selection.add(node)
-
-    #### research - hacky place for these kind of thing
-    @pyqtSlot(int)
-    def setActiveBuildPlate(self, nr):
-        if nr == self._active_build_plate:
-            return
-        Logger.log("d", "Select build plate: %s" % nr)
-        self._active_build_plate = nr
-
-        self.activeBuildPlateChanged.emit()
-
-    @pyqtSlot()
-    def newBuildPlate(self):
-        Logger.log("d", "New build plate")
-        #self._num_build_plates += 1
-        self.numBuildPlatesChanged.emit()
-
-    @pyqtProperty(int, notify = numBuildPlatesChanged)
-    def numBuildPlates(self):
-        return self._num_build_plates
-
-    @pyqtProperty(int, notify = activeBuildPlateChanged)
-    def activeBuildPlate(self):
-        return self._active_build_plate
-
-    def updateMaxBuildPlate(self, source):
-        if not issubclass(type(source), SceneNode):
-            return
-        num_build_plates = self._calcMaxBuildPlate()
-        if num_build_plates != self._num_build_plates:
-            self._num_build_plates = num_build_plates
-            self.numBuildPlatesChanged.emit()
-
-    def _calcMaxBuildPlate(self):
-        max_build_plate = 0
-        for node in DepthFirstIterator(self.getController().getScene().getRoot()):
-            if node.callDecoration("isSliceable"):
-                build_plate_number = node.callDecoration("getBuildPlateNumber")
-                max_build_plate = max(build_plate_number, max_build_plate)
-        return max_build_plate

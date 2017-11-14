@@ -324,6 +324,7 @@ UM.MainWindow
                 }
             }
 
+            /*
             Button
             {
                 id: openFileButton;
@@ -339,17 +340,19 @@ UM.MainWindow
                 }
                 action: Cura.Actions.open;
             }
+            */
 
             Button
             {
                 id: objectsButton;
                 text: catalog.i18nc("@action:button","Objects");
-                iconSource: UM.Theme.getIcon("load")
+                iconSource: UM.Theme.getIcon("plus")
                 style: UM.Theme.styles.tool_button
                 tooltip: '';
                 anchors
                 {
-                    top: openFileButton.bottom;
+                    top: topbar.bottom;
+                    //top: openFileButton.bottom;
                     topMargin: UM.Theme.getSize("default_margin").height;
                     left: parent.left;
                 }

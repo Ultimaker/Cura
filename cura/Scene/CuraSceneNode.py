@@ -18,10 +18,10 @@ class CuraSceneNode(SceneNode):
         return self._outside_buildarea or self.callDecoration("getBuildPlateNumber") < 0
 
     def isVisible(self):
-        return super().isVisible() and self.callDecoration("getBuildPlateNumber") == Application.getInstance().activeBuildPlate
+        return super().isVisible() and self.callDecoration("getBuildPlateNumber") == Application.getInstance().getBuildPlateModel().activeBuildPlate
 
     def isSelectable(self) -> bool:
-        return super().isSelectable() and self.callDecoration("getBuildPlateNumber") == Application.getInstance().activeBuildPlate
+        return super().isSelectable() and self.callDecoration("getBuildPlateNumber") == Application.getInstance().getBuildPlateModel().activeBuildPlate
 
     ##  Taken from SceneNode, but replaced SceneNode with CuraSceneNode
     def __deepcopy__(self, memo):

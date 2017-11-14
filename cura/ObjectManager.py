@@ -15,14 +15,15 @@ class ObjectManager(ListModel):
     def __init__(self):
         super().__init__()
         self._last_selected_index = 0
-        Application.getInstance().getController().getScene().sceneChanged.connect(self._update_scene_changed)
+        self._build_plate_model = Application.getInstance().getBuildPlateModel()
+        Application.getInstance().getController().getScene().sceneChanged.connect(self._update)
         Preferences.getInstance().preferenceChanged.connect(self._update)
-        Application.getInstance().activeBuildPlateChanged.connect(self._update)
+        self._build_plate_model.activeBuildPlateChanged.connect(self._update)
 
     def _update(self, *args):
         nodes = []
         filter_current_build_plate = Preferences.getInstance().getValue("view/filter_current_build_plate")
-        active_build_plate_number = Application.getInstance().activeBuildPlate
+        active_build_plate_number = self._build_plate_model.activeBuildPlate
         for node in DepthFirstIterator(Application.getInstance().getController().getScene().getRoot()):
             if not issubclass(type(node), SceneNode) or (not node.getMeshData() and not node.callDecoration("getLayerData")):
                 continue
@@ -42,12 +43,6 @@ class ObjectManager(ListModel):
         self.setItems(nodes)
 
         self.itemsChanged.emit()
-
-    def _update_scene_changed(self, *args):
-        # if args and type(args[0]) is not CuraSceneNode:
-        #     Logger.log("d", "   ascdf %s", args)
-        #     return
-        self._update(*args)
 
     ##  Either select or deselect an item
     @pyqtSlot(int)
@@ -77,7 +72,7 @@ class ObjectManager(ListModel):
             Selection.add(node)
             build_plate_number = node.callDecoration("getBuildPlateNumber")
             if build_plate_number is not None and build_plate_number != -1:
-                Application.getInstance().setActiveBuildPlate(build_plate_number)
+                self._build_plate_model.setActiveBuildPlate(build_plate_number)
 
         self._last_selected_index = index
 

@@ -52,7 +52,6 @@ Rectangle
                     id: nodeNameLabel
                     anchors.left: parent.left
                     anchors.leftMargin: UM.Theme.getSize("default_margin").width
-                    //anchors.right: parent.right
                     width: parent.width - 2 * UM.Theme.getSize("default_margin").width - 30
                     text: Cura.ObjectManager.getItem(index) ? Cura.ObjectManager.getItem(index).name : "";
                     color: Cura.ObjectManager.getItem(index).isSelected ? palette.highlightedText : (Cura.ObjectManager.getItem(index).isOutsideBuildArea ? palette.mid : palette.text)
@@ -66,7 +65,7 @@ Rectangle
                     anchors.left: nodeNameLabel.right
                     anchors.leftMargin: UM.Theme.getSize("default_margin").width
                     anchors.right: parent.right
-                    text: Cura.ObjectManager.getItem(index) ? Cura.ObjectManager.getItem(index).buildPlateNumber : 0;
+                    text: Cura.ObjectManager.getItem(index).buildPlateNumber != -1 ? Cura.ObjectManager.getItem(index).buildPlateNumber + 1 : "";
                     color: Cura.ObjectManager.getItem(index).isSelected ? palette.highlightedText : palette.text
                     elide: Text.ElideRight
                 }
@@ -134,41 +133,22 @@ Rectangle
         }
     }
 
-    ListModel
-    {
-        id: buildPlatesModel
-
-        ListElement
-        {
-            name: "build plate 0"
-            buildPlateNumber: 0
-        }
-        ListElement
-        {
-            name: "build plate 1"
-            buildPlateNumber: 1
-        }
-        ListElement
-        {
-            name: "build plate 2"
-            buildPlateNumber: 2
-        }
-    }
 
     Component {
         id: buildPlateDelegate
         Rectangle
             {
                 height: childrenRect.height
-                color: CuraApplication.activeBuildPlate == buildPlateNumber ? palette.highlight : index % 2 ? palette.base : palette.alternateBase
+                color: Cura.BuildPlateModel.getItem(index).buildPlateNumber == Cura.BuildPlateModel.activeBuildPlate ? palette.highlight : index % 2 ? palette.base : palette.alternateBase
                 width: parent.width
                 Label
                 {
+                    id: buildPlateNameLabel
                     anchors.left: parent.left
                     anchors.leftMargin: UM.Theme.getSize("default_margin").width
-                    anchors.right: parent.right
-                    text: name //Cura.ObjectManager.getItem(index).name;
-                    color: CuraApplication.activeBuildPlate == buildPlateNumber ? palette.highlightedText : palette.text
+                    width: parent.width - 2 * UM.Theme.getSize("default_margin").width - 30
+                    text: Cura.BuildPlateModel.getItem(index) ? Cura.BuildPlateModel.getItem(index).name : "";
+                    color: Cura.BuildPlateModel.activeBuildPlate == index ? palette.highlightedText : palette.text
                     elide: Text.ElideRight
                 }
 
@@ -177,7 +157,7 @@ Rectangle
                     anchors.fill: parent;
                     onClicked:
                     {
-                        CuraApplication.setActiveBuildPlate(buildPlateNumber);
+                        Cura.BuildPlateModel.setActiveBuildPlate(index);
                     }
                 }
             }
@@ -192,7 +172,6 @@ Rectangle
 
         anchors
         {
-            // top: objectsList.bottom;
             topMargin: UM.Theme.getSize("default_margin").height;
             left: parent.left;
             leftMargin: UM.Theme.getSize("default_margin").height;
@@ -210,21 +189,8 @@ Rectangle
         ListView
         {
             id: buildPlateListView
-            model: buildPlatesModel
-
-            onModelChanged:
-            {
-                //currentIndex = -1;
-            }
+            model: Cura.BuildPlateModel
             width: parent.width
-            currentIndex: -1
-            onCurrentIndexChanged:
-            {
-                //base.selectedPrinter = listview.model[currentIndex];
-                // Only allow connecting if the printer has responded to API query since the last refresh
-                //base.completeProperties = base.selectedPrinter != null && base.selectedPrinter.getProperty("incomplete") != "true";
-            }
-            //Component.onCompleted: manager.startDiscovery()
             delegate: buildPlateDelegate
         }
     }

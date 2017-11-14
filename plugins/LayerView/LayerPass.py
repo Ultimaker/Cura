@@ -66,7 +66,7 @@ class LayerPass(RenderPass):
         self.bind()
 
         tool_handle_batch = RenderBatch(self._tool_handle_shader, type = RenderBatch.RenderType.Overlay)
-        active_build_plate = Application.getInstance().activeBuildPlate
+        active_build_plate = Application.getInstance().getBuildPlateModel().activeBuildPlate
 
         for node in DepthFirstIterator(self._scene.getRoot()):
 
