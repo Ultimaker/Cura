@@ -48,9 +48,9 @@
         "material_bed_temp_wait": { "default_value": false },
         "prime_tower_enable": { "default_value": true },
         "prime_tower_wall_thickness": { "resolve": 0.7 },
-        "prime_tower_size": { "default_value": 24.0 },
-        "prime_tower_position_x": { "default_value": 125 },
-        "prime_tower_position_y": { "default_value": 70 },
+        "prime_tower_size": { "value": 24.0 },
+        "prime_tower_position_x": { "value": 125 },
+        "prime_tower_position_y": { "value": 70 },
         "prime_blob_enable": { "default_value": false },
         "machine_max_feedrate_z": { "default_value": 20 },
         "machine_disallowed_areas": { "default_value": [
