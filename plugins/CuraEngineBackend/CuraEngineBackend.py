@@ -207,6 +207,7 @@ class CuraEngineBackend(QObject, Backend):
             return
 
         # see if we really have to slice
+        active_build_plate = Application.getInstance().getBuildPlateModel().activeBuildPlate
         build_plate_to_be_sliced = self._build_plates_to_be_sliced.pop(0)
         Logger.log("d", "Going to slice build plate [%s]!" % build_plate_to_be_sliced)
         num_objects = self._numObjects()
@@ -218,8 +219,8 @@ class CuraEngineBackend(QObject, Backend):
         self._stored_layer_data = []
         self._stored_optimized_layer_data[build_plate_to_be_sliced] = []
 
-        if Application.getInstance().getPrintInformation():
-            Application.getInstance().getPrintInformation().setToZeroPrintInformation()
+        if Application.getInstance().getPrintInformation() and build_plate_to_be_sliced == active_build_plate:
+            Application.getInstance().getPrintInformation().setToZeroPrintInformation(build_plate_to_be_sliced)
 
         if self._process is None:
             self._createSocket()
@@ -547,11 +548,9 @@ class CuraEngineBackend(QObject, Backend):
             replaced = replaced.replace("{filament_cost}", str(Application.getInstance().getPrintInformation().materialCosts))
             replaced = replaced.replace("{jobname}", str(Application.getInstance().getPrintInformation().jobName))
 
-            #gcode_list[gcode_list.index(line)] = replaced
             gcode_list[index] = replaced
 
         self._slicing = False
-        #self._need_slicing = False
         Logger.log("d", "Slicing took %s seconds", time() - self._slice_start_time )
 
         # See if we need to process the sliced layers job.
@@ -608,7 +607,7 @@ class CuraEngineBackend(QObject, Backend):
             material_amounts.append(message.getRepeatedMessage("materialEstimates", index).material_amount)
 
         times = self._parseMessagePrintTimes(message)
-        self.printDurationMessage.emit(times, material_amounts)
+        self.printDurationMessage.emit(self._start_slice_job_build_plate, times, material_amounts)
 
     ##  Called for parsing message to retrieve estimated time per feature
     #

@@ -15,7 +15,7 @@ class BuildPlateModel(ListModel):
         Application.getInstance().getController().getScene().sceneChanged.connect(self.updateMaxBuildPlate)  # it may be a bit inefficient when changing a lot simultaneously
 
         self._max_build_plate = 1  # default
-        self._active_build_plate = 0
+        self._active_build_plate = -1
 
     @pyqtSlot(int)
     def setActiveBuildPlate(self, nr):

@@ -758,6 +758,8 @@ class CuraApplication(QtApplication):
     def getBuildPlateModel(self, *args):
         if self._build_plate_model is None:
             self._build_plate_model = BuildPlateModel.createBuildPlateModel()
+            self._build_plate_model.setActiveBuildPlate(0)  # default value
+
         return self._build_plate_model
 
     def getSettingInheritanceManager(self, *args):
