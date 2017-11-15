@@ -49,7 +49,9 @@ class GCodeReader(MeshReader):
         Preferences.getInstance().addPreference("gcodereader/show_caution", True)
 
     def _clearValues(self):
+        self._filament_diameter = 2.85
         self._extruder_number = 0
+        self._extrusion_length_offset = [0]
         self._layer_type = LayerPolygon.Inset0Type
         self._layer_number = 0
         self._previous_z = 0
@@ -97,7 +99,7 @@ class GCodeReader(MeshReader):
     def _createPolygon(self, layer_thickness, path, extruder_offsets):
         countvalid = 0
         for point in path:
-            if point[4] > 0:
+            if point[5] > 0:
                 countvalid += 1
                 if countvalid >= 2:
                     # we know what to do now, no need to count further
@@ -116,21 +118,22 @@ class GCodeReader(MeshReader):
         line_widths = numpy.empty((count - 1, 1), numpy.float32)
         line_thicknesses = numpy.empty((count - 1, 1), numpy.float32)
         line_feedrates = numpy.empty((count - 1, 1), numpy.float32)
-        # TODO: need to calculate actual line width based on E values
         line_widths[:, 0] = 0.35  # Just a guess
         line_thicknesses[:, 0] = layer_thickness
         points = numpy.empty((count, 3), numpy.float32)
+        extrusion_values = numpy.empty((count, 1), numpy.float32)
         i = 0
         for point in path:
             points[i, :] = [point[0] + extruder_offsets[0], point[2], -point[1] - extruder_offsets[1]]
+            extrusion_values[i] = point[4]
             if i > 0:
                 line_feedrates[i - 1] = point[3]
-                line_types[i - 1] = point[4]
-                if point[4] in [LayerPolygon.MoveCombingType, LayerPolygon.MoveRetractionType]:
+                line_types[i - 1] = point[5]
+                if point[5] in [LayerPolygon.MoveCombingType, LayerPolygon.MoveRetractionType]:
                     line_widths[i - 1] = 0.1
                     line_thicknesses[i - 1] = 0.0 # Travels are set as zero thickness lines
-                # else:
-                #     line_widths[i - 1] = _calculateLineWidth(layer_thickness)
+                else:
+                    line_widths[i - 1] = self._calculateLineWidth(points[i], points[i-1], extrusion_values[i], extrusion_values[i-1], layer_thickness)
             i += 1
 
         this_poly = LayerPolygon(self._extruder_number, line_types, points, line_widths, line_thicknesses, line_feedrates)
@@ -139,20 +142,27 @@ class GCodeReader(MeshReader):
         this_layer.polygons.append(this_poly)
         return True
 
-    def _calculateLineWidth(self, current_position, previous_position, layer_thickness):
+    def _calculateLineWidth(self, current_point, previous_point, current_extrusion, previous_extrusion, layer_thickness):
         # Area of the filament
-        filament_diameter = 2.85
-        Af = (filament_diameter / 2) ** 2 * numpy.pi
+        Af = (self._filament_diameter / 2) ** 2 * numpy.pi
         # Length of the extruded filament
-        de = current_position.e - previous_position.e
+        de = current_extrusion - previous_extrusion
         # Volumne of the extruded filament
         dVe = de * Af
         # Length of the printed line
-        dX = numpy.sqrt((current_position.x - previous_position.x)**2 + (current_position.y - previous_position.y)**2)
-        # Area of the printed line. This area is a ellipse
+        dX = numpy.sqrt((current_point[0] - previous_point[0])**2 + (current_point[2] - previous_point[2])**2)
+        # When the extruder recovers from a retraction, we get zero distance
+        if dX == 0:
+            return 0.1
+        # Area of the printed line. This area is a rectangle
         Ae = dVe / dX
-        # This area is a ellipse with: r1 = layer_thickness, r2 = layer_width
-        return Ae / (layer_thickness * numpy.pi)
+        # This area is a rectangle with area equal to layer_thickness * layer_width
+        line_width = Ae / layer_thickness
+
+        # A threshold is set to avoid weird paths in the GCode
+        if line_width > 1.2:
+            return 0.35
+        return line_width
 
     def _gCode0(self, position, params, path):
         x, y, z, f, e = position
@@ -163,9 +173,9 @@ class GCodeReader(MeshReader):
 
         if params.e is not None:
             if params.e > e[self._extruder_number]:
-                path.append([x, y, z, f, self._layer_type])  # extrusion
+                path.append([x, y, z, f, params.e + self._extrusion_length_offset[self._extruder_number], self._layer_type])  # extrusion
             else:
-                path.append([x, y, z, f, LayerPolygon.MoveRetractionType])  # retraction
+                path.append([x, y, z, f, params.e + self._extrusion_length_offset[self._extruder_number], LayerPolygon.MoveRetractionType])  # retraction
             e[self._extruder_number] = params.e
 
             # Only when extruding we can determine the latest known "layer height" which is the difference in height between extrusions
@@ -174,7 +184,7 @@ class GCodeReader(MeshReader):
                 self._current_layer_thickness = z - self._previous_z # allow a tiny overlap
                 self._previous_z = z
         else:
-            path.append([x, y, z, f, LayerPolygon.MoveCombingType])
+            path.append([x, y, z, f, e[self._extruder_number] + self._extrusion_length_offset[self._extruder_number], LayerPolygon.MoveCombingType])
         return self._position(x, y, z, f, e)
 
     # G0 and G1 should be handled exactly the same.
@@ -193,6 +203,8 @@ class GCodeReader(MeshReader):
     #   For example: G92 X10 will set the X to 10 without any physical motion.
     def _gCode92(self, position, params, path):
         if params.e is not None:
+            # Sometimes a G92 E0 is introduced in the middle of the GCode so we need to keep those offsets for calculate the line_width
+            self._extrusion_length_offset[self._extruder_number] += position.e[self._extruder_number] - params.e
             position.e[self._extruder_number] = params.e
         return self._position(
             params.x if params.x is not None else position.x,
@@ -231,6 +243,7 @@ class GCodeReader(MeshReader):
     def _processTCode(self, T, line, position, path):
         self._extruder_number = T
         if self._extruder_number + 1 > len(position.e):
+            self._extrusion_length_offset.extend([0] * (self._extruder_number - len(position.e) + 1))
             position.e.extend([0] * (self._extruder_number - len(position.e) + 1))
         return position
 
@@ -249,6 +262,8 @@ class GCodeReader(MeshReader):
     def read(self, file_name):
         Logger.log("d", "Preparing to load %s" % file_name)
         self._cancelled = False
+        # We obtain the filament diameter from the selected printer to calculate line widths
+        self._filament_diameter = Application.getInstance().getGlobalContainerStack().getProperty("material_diameter", "value")
 
         scene_node = SceneNode()
         # Override getBoundingBox function of the sceneNode, as this node should return a bounding box, but there is no
@@ -319,6 +334,7 @@ class GCodeReader(MeshReader):
                     else:
                         Logger.log("w", "Encountered a unknown type (%s) while parsing g-code.", type)
 
+                # When the layer change is reached, the polygon is computed so we have just one layer per layer per extruder
                 if self._is_layers_in_file and line[:len(self._layer_keyword)] == self._layer_keyword:
                     try:
                         layer_number = int(line[len(self._layer_keyword):])
@@ -334,17 +350,12 @@ class GCodeReader(MeshReader):
 
                 G = self._getInt(line, "G")
                 if G is not None:
+                    # When find a movement, the new posistion is calculated and added to the current_path, but
+                    # don't need to create a polygon until the end of the layer
                     current_position = self._processGCode(G, line, current_position, current_path)
-
-                    # < 2 is a heuristic for a movement only, that should not be counted as a layer
-                    if current_position.z > last_z and abs(current_position.z - last_z) < 2:
-                        if self._createPolygon(self._current_layer_thickness, current_path, self._extruder_offsets.get(self._extruder_number, [0, 0])):
-                            current_path.clear()
-                            if not self._is_layers_in_file:
-                                self._layer_number += 1
-
                     continue
 
+                # When changing the extruder, the polygon with the stored paths is computed
                 if line.startswith("T"):
                     T = self._getInt(line, "T")
                     if T is not None:
@@ -353,8 +364,8 @@ class GCodeReader(MeshReader):
 
                         current_position = self._processTCode(T, line, current_position, current_path)
 
-            # "Flush" leftovers
-            if not self._is_layers_in_file and len(current_path) > 1:
+            # "Flush" leftovers. Last layer paths are still stored
+            if len(current_path) > 1:
                 if self._createPolygon(self._current_layer_thickness, current_path, self._extruder_offsets.get(self._extruder_number, [0, 0])):
                     self._layer_number += 1
                     current_path.clear()
