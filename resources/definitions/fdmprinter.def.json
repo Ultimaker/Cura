@@ -3722,6 +3722,22 @@
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
+                "support_tree_collision_resolution":
+                {
+                    "label": "Tree Support Collision Resolution",
+                    "description": "Resolution to compute collisions with to avoid hitting the model. Setting this lower will produce more accurate trees that fail less often, but increases slicing time dramatically.",
+                    "unit": "mm",
+                    "type": "float",
+                    "minimum_value": "0.001",
+                    "minimum_value_warning": "support_line_width / 4",
+                    "maximum_value_warning": "support_line_width * 2",
+                    "default_value": 0.4,
+                    "value": "support_line_width",
+                    "limit_to_extruder": "support_infill_extruder_nr",
+                    "enabled": "support_tree_enable and support_tree_branch_diameter_angle > 0",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
+                },
                 "support_tree_wall_thickness":
                 {
                     "label": "Tree Support Wall Thickness",
