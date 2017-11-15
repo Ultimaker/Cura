@@ -225,7 +225,7 @@ Rectangle
     {
         id: viewOrientationControl
         height: 30
-        width: 155
+
         spacing: 2
 
         anchors {
@@ -242,7 +242,9 @@ Rectangle
             anchors.verticalCenter: viewOrientationControl.verticalCenter
             onClicked:{
                 UM.Controller.rotateView("3d", 0);
+                console.log("WIDTH : " + base.width)
             }
+            visible: base.width > 1100
         }
 
         // #2 Front view
@@ -254,6 +256,7 @@ Rectangle
             onClicked:{
                 UM.Controller.rotateView("home", 0);
             }
+            visible: base.width > 1130
         }
 
         // #3 Top view
@@ -265,6 +268,7 @@ Rectangle
             onClicked:{
                 UM.Controller.rotateView("y", 90);
             }
+            visible: base.width > 1160
         }
 
         // #4 Left view
@@ -276,6 +280,7 @@ Rectangle
             onClicked:{
                 UM.Controller.rotateView("x", 90);
             }
+            visible: base.width > 1190
         }
 
         // #5 Left view
@@ -287,6 +292,7 @@ Rectangle
             onClicked:{
                 UM.Controller.rotateView("x", -90);
             }
+            visible: base.width > 1210
         }
     }
 
