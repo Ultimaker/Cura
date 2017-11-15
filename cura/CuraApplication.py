@@ -311,6 +311,7 @@ class CuraApplication(QtApplication):
         preferences.addPreference("cura/choice_on_profile_override", "always_ask")
         preferences.addPreference("cura/choice_on_open_project", "always_ask")
         preferences.addPreference("cura/arrange_objects_on_load", True)
+        preferences.addPreference("cura/use_multi_build_plate", False)
 
         preferences.addPreference("cura/currency", "€")
         preferences.addPreference("cura/material_settings", "{}")
@@ -1427,7 +1428,9 @@ class CuraApplication(QtApplication):
         min_offset = 8
 
         self.fileLoaded.emit(filename)
-        arrange_objects_on_load = Preferences.getInstance().getValue("cura/arrange_objects_on_load")
+        arrange_objects_on_load = (
+            not Preferences.getInstance().getValue("cura/use_multi_build_plate") or
+            Preferences.getInstance().getValue("cura/arrange_objects_on_load"))
         target_build_plate = self.getBuildPlateModel().activeBuildPlate if arrange_objects_on_load else -1
 
         for original_node in nodes:

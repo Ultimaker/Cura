@@ -31,7 +31,9 @@ Menu
     MenuSeparator {}
     MenuItem { action: Cura.Actions.homeCamera; }
 
-    MenuSeparator {}
+    MenuSeparator {
+        visible: UM.Preferences.getValue("cura/use_multi_build_plate")
+    }
     Instantiator
     {
         model: Cura.BuildPlateModel
@@ -41,6 +43,7 @@ Menu
             checkable: true;
             checked: Cura.BuildPlateModel.getItem(index).buildPlateNumber == Cura.BuildPlateModel.activeBuildPlate;
             exclusiveGroup: buildPlateGroup;
+            visible: UM.Preferences.getValue("cura/use_multi_build_plate")
         }
         onObjectAdded: base.insertItem(index, object);
         onObjectRemoved: base.removeItem(object)

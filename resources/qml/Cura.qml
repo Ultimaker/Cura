@@ -324,10 +324,10 @@ UM.MainWindow
                 }
             }
 
-            /*
             Button
             {
                 id: openFileButton;
+                visible: !UM.Preferences.getValue("cura/use_multi_build_plate")
                 text: catalog.i18nc("@action:button","Open File");
                 iconSource: UM.Theme.getIcon("load")
                 style: UM.Theme.styles.tool_button
@@ -340,12 +340,13 @@ UM.MainWindow
                 }
                 action: Cura.Actions.open;
             }
-            */
 
             Button
             {
                 id: objectsButton;
-                text: catalog.i18nc("@action:button","Objects");
+                visible: UM.Preferences.getValue("cura/use_multi_build_plate")
+
+                text: catalog.i18nc("@action:button","Objects list");
                 iconSource: UM.Theme.getIcon("plus")
                 style: UM.Theme.styles.tool_button
                 tooltip: '';

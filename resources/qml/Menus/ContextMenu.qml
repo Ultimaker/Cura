@@ -39,7 +39,9 @@ Menu
         onObjectRemoved: base.removeItem(object)
     }
 
-    MenuSeparator {}
+    MenuSeparator {
+        visible: UM.Preferences.getValue("cura/use_multi_build_plate")
+    }
     Instantiator
     {
         model: Cura.BuildPlateModel
@@ -48,15 +50,17 @@ Menu
             onTriggered: CuraActions.setBuildPlateForSelection(Cura.BuildPlateModel.getItem(index).buildPlateNumber);
             checkable: true
             checked: Cura.BuildPlateModel.getItem(index).buildPlateNumber == Cura.BuildPlateModel.activeBuildPlate
+            visible: UM.Preferences.getValue("cura/use_multi_build_plate")
         }
         onObjectAdded: base.insertItem(index, object);
-        onObjectRemoved: base.removeItem(object)
+        onObjectRemoved: base.removeItem(object);
     }
     MenuItem {
         text: "New build plate";
         onTriggered: CuraActions.setBuildPlateForSelection(Cura.BuildPlateModel.maxBuildPlate + 1);
         checkable: true
         checked: false
+        visible: UM.Preferences.getValue("cura/use_multi_build_plate")
     }
 
     // Global actions
