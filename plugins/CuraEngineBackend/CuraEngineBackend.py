@@ -433,7 +433,6 @@ class CuraEngineBackend(QObject, Backend):
                 self._postponed_scene_change_sources.append(source)
             return
 
-        Logger.log("d", " going to reslice: %s", build_plate_changed)
         self.stopSlicing()
         for build_plate_number in build_plate_changed:
             if build_plate_number not in self._build_plates_to_be_sliced:

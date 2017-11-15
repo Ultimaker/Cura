@@ -1428,7 +1428,7 @@ class CuraApplication(QtApplication):
 
         self.fileLoaded.emit(filename)
         arrange_objects_on_load = Preferences.getInstance().getValue("cura/arrange_objects_on_load")
-        target_build_plate = self.activeBuildPlate if arrange_objects_on_load else -1
+        target_build_plate = self.getBuildPlateModel().activeBuildPlate if arrange_objects_on_load else -1
 
         for original_node in nodes:
             node = CuraSceneNode()  # We want our own CuraSceneNode

@@ -59,8 +59,9 @@ class GCodeWriter(MeshWriter):
             Logger.log("e", "GCode Writer does not support non-text mode.")
             return False
 
+        active_build_plate = Application.getInstance().getBuildPlateModel().activeBuildPlate
         scene = Application.getInstance().getController().getScene()
-        gcode_list = getattr(scene, "gcode_list")
+        gcode_list = getattr(scene, "gcode_list")[active_build_plate]
         if gcode_list:
             for gcode in gcode_list:
                 stream.write(gcode)

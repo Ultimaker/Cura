@@ -165,13 +165,16 @@ class PrintInformation(QObject):
     def materialNames(self):
         return self._material_names[self._active_build_plate]
 
+    def printTimes(self):
+        return self._print_time_message_values[self._active_build_plate]
+
     def _onPrintDurationMessage(self, build_plate_number, print_time, material_amounts):
         Logger.log("d", "  ###  print duration message for build plate %s", build_plate_number)
         self._updateTotalPrintTimePerFeature(build_plate_number, print_time)
         self.currentPrintTimeChanged.emit()
 
         self._material_amounts = material_amounts
-        self._calculateInformation()
+        self._calculateInformation(build_plate_number)
 
     def _updateTotalPrintTimePerFeature(self, build_plate_number, print_time):
         total_estimated_time = 0
@@ -192,16 +195,16 @@ class PrintInformation(QObject):
             self._current_print_time[build_plate_number] = Duration(None, self)
         self._current_print_time[build_plate_number].setDuration(total_estimated_time)
 
-    def _calculateInformation(self):
+    def _calculateInformation(self, build_plate_number):
         if Application.getInstance().getGlobalContainerStack() is None:
             return
 
         # Material amount is sent as an amount of mm^3, so calculate length from that
         radius = Application.getInstance().getGlobalContainerStack().getProperty("material_diameter", "value") / 2
-        self._material_lengths[self._active_build_plate] = []
-        self._material_weights[self._active_build_plate] = []
-        self._material_costs[self._active_build_plate] = []
-        self._material_names[self._active_build_plate] = []
+        self._material_lengths[build_plate_number] = []
+        self._material_weights[build_plate_number] = []
+        self._material_costs[build_plate_number] = []
+        self._material_names[build_plate_number] = []
 
         material_preference_values = json.loads(Preferences.getInstance().getValue("cura/material_settings"))
 
@@ -239,10 +242,10 @@ class PrintInformation(QObject):
                 length = round((amount / (math.pi * radius ** 2)) / 1000, 2)
             else:
                 length = 0
-            self._material_weights[self._active_build_plate].append(weight)
-            self._material_lengths[self._active_build_plate].append(length)
-            self._material_costs[self._active_build_plate].append(cost)
-            self._material_names[self._active_build_plate].append(material_name)
+            self._material_weights[build_plate_number].append(weight)
+            self._material_lengths[build_plate_number].append(length)
+            self._material_costs[build_plate_number].append(cost)
+            self._material_names[build_plate_number].append(material_name)
 
         self.materialLengthsChanged.emit()
         self.materialWeightsChanged.emit()
@@ -253,7 +256,8 @@ class PrintInformation(QObject):
         if preference != "cura/material_settings":
             return
 
-        self._calculateInformation()
+        for build_plate_number in range(Application.getInstance().getBuildPlateModel().maxBuildPlate + 1):
+            self._calculateInformation(build_plate_number)
 
     def _onActiveMaterialChanged(self):
         if self._active_material_container:
@@ -284,7 +288,8 @@ class PrintInformation(QObject):
             self.currentPrintTimeChanged.emit()
 
     def _onMaterialMetaDataChanged(self, *args, **kwargs):
-        self._calculateInformation()
+        for build_plate_number in range(Application.getInstance().getBuildPlateModel().maxBuildPlate + 1):
+            self._calculateInformation(build_plate_number)
 
     @pyqtSlot(str)
     def setJobName(self, name):
