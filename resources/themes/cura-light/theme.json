@@ -83,8 +83,8 @@
 
         "error": [255, 140, 0, 255],
         "sidebar_header_bar": [31, 36, 39, 255],
-        "sidebar_header_active": [31, 36, 39, 255],
-        "sidebar_header_hover": [31, 36, 39, 255],
+        "sidebar_header_active": [68, 72, 75, 255],
+        "sidebar_header_hover": [68, 72, 75, 255],
         "sidebar_header_highlight": [68, 192, 255, 255],
         "sidebar_header_highlight_hover": [68, 192, 255, 255],
         "sidebar_header_text_inactive": [255, 255, 255, 255],
