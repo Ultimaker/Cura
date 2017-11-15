@@ -169,7 +169,6 @@ class PrintInformation(QObject):
         return self._print_time_message_values[self._active_build_plate]
 
     def _onPrintDurationMessage(self, build_plate_number, print_time, material_amounts):
-        Logger.log("d", "  ###  print duration message for build plate %s", build_plate_number)
         self._updateTotalPrintTimePerFeature(build_plate_number, print_time)
         self.currentPrintTimeChanged.emit()
 
@@ -276,7 +275,6 @@ class PrintInformation(QObject):
     def _onActiveBuildPlateChanged(self):
         new_active_build_plate = Application.getInstance().getBuildPlateModel().activeBuildPlate
         if new_active_build_plate != self._active_build_plate:
-            Logger.log("d", "  ## active build plate changed: %s", self._active_build_plate)
             self._active_build_plate = new_active_build_plate
 
             self._initVariablesWithBuildPlate(self._active_build_plate)
