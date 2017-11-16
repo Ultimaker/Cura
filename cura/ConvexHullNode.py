@@ -6,7 +6,6 @@ from UM.Scene.SceneNode import SceneNode
 from UM.Resources import Resources
 from UM.Math.Color import Color
 from UM.Mesh.MeshBuilder import MeshBuilder  # To create a mesh to display the convex hull with.
-
 from UM.View.GL.OpenGL import OpenGL
 
 
@@ -65,7 +64,7 @@ class ConvexHullNode(SceneNode):
             ConvexHullNode.shader.setUniformValue("u_diffuseColor", self._color)
             ConvexHullNode.shader.setUniformValue("u_opacity", 0.6)
 
-        if self.getParent():
+        if self.getParent() and self.getParent().callDecoration("getBuildPlateNumber") == Application.getInstance().getBuildPlateModel().activeBuildPlate:
             if self.getMeshData():
                 renderer.queueNode(self, transparent = True, shader = ConvexHullNode.shader, backface_cull = True, sort = -8)
                 if self._convex_hull_head_mesh:

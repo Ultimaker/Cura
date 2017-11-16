@@ -13,6 +13,7 @@ from UM.i18n import i18nCatalog
 i18n_catalog = i18nCatalog("cura")
 
 from cura.ZOffsetDecorator import ZOffsetDecorator
+from cura.Scene.BuildPlateDecorator import BuildPlateDecorator
 from cura.Arrange import Arrange
 from cura.ShapeArray import ShapeArray
 
@@ -64,6 +65,10 @@ class MultiplyObjectsJob(Job):
                     new_location = node.getPosition()
                     new_location = new_location.set(z = 100 - i * 20)
                     node.setPosition(new_location)
+
+                # Same build plate
+                build_plate_number = current_node.callDecoration("getBuildPlateNumber")
+                node.callDecoration("setBuildPlateNumber", build_plate_number)
 
                 nodes.append(node)
                 current_progress += 1
