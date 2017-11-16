@@ -58,8 +58,8 @@ class QualityAndUserProfilesModel(ProfilesModel):
             # If the printer has multiple extruders then quality changes related to the current extruder are kept
             filtered_quality_changes = [qc for qc in quality_changes_list if qc.getMetaDataEntry("quality_type") in quality_type_set and
                                         qc.getMetaDataEntry("extruder") is not None and
-                                        qc.getMetaDataEntry("extruder") == active_extruder.definition.getMetaDataEntry("quality_definition") or
-                                        qc.getMetaDataEntry("extruder") == active_extruder.definition.getId()]
+                                        (qc.getMetaDataEntry("extruder") == active_extruder.definition.getMetaDataEntry("quality_definition") or
+                                         qc.getMetaDataEntry("extruder") == active_extruder.definition.getId())]
         else:
             # If not, the quality changes of the global stack are selected
             filtered_quality_changes = [qc for qc in quality_changes_list if qc.getMetaDataEntry("quality_type") in quality_type_set and

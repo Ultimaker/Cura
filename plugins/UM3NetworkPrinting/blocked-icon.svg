@@ -1,3 +1,6 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-    <path fill="#000" fill-rule="evenodd" d="M6 10h12v4H6v-4zm6 14c6.627 0 12-5.373 12-12S18.627 0 12 0 0 5.373 0 12s5.373 12 12 12z"/>
+<svg xmlns="http://www.w3.org/2000/svg" width="25" height="24" viewBox="0 0 25 24">
+    <g fill="none" fill-rule="evenodd" stroke="#000" stroke-width="2.4" transform="translate(.567)">
+        <circle cx="12" cy="12" r="10.8"/>
+        <path stroke-linecap="square" d="M5.5 18.5L18.935 5.065"/>
+    </g>
 </svg>

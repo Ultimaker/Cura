@@ -14,20 +14,34 @@ Menu
 
     property int extruderIndex: 0
     property bool printerConnected: Cura.MachineManager.printerOutputDevices.length != 0
+    property bool isClusterPrinter:
+    {
+        if(Cura.MachineManager.printerOutputDevices.length == 0)
+        {
+            return false;
+        }
+        var clusterSize = Cura.MachineManager.printerOutputDevices[0].clusterSize;
+        // This is not a cluster printer or the cluster it is just one printer
+        if(clusterSize == undefined || clusterSize == 1)
+        {
+            return false;
+        }
+        return true;
+    }
 
     MenuItem
     {
         id: automaticNozzle
         text:
         {
-            if(printerConnected && Cura.MachineManager.printerOutputDevices[0].hotendIds.length > extruderIndex)
+            if(printerConnected && Cura.MachineManager.printerOutputDevices[0].hotendIds.length > extruderIndex && !isClusterPrinter)
             {
                 var nozzleName = Cura.MachineManager.printerOutputDevices[0].hotendIds[extruderIndex];
                 return catalog.i18nc("@title:menuitem %1 is the nozzle currently loaded in the printer", "Automatic: %1").arg(nozzleName);
             }
             return "";
         }
-        visible: printerConnected && Cura.MachineManager.printerOutputDevices[0].hotendIds.length > extruderIndex
+        visible: printerConnected && Cura.MachineManager.printerOutputDevices[0].hotendIds.length > extruderIndex && !isClusterPrinter
         onTriggered:
         {
             var activeExtruderIndex = ExtruderManager.activeExtruderIndex;

@@ -118,24 +118,23 @@ class VersionUpgrade27to30(VersionUpgrade):
         if not parser.has_section("general"):
             parser.add_section("general")
 
-        # Need to exclude the following names:
-        # - ultimaker2_plus
-        # - ultimaker2_go
-        # - ultimaker2_extended
-        # - ultimaker2_extended_plus
-        exclude_prefix_list = ["ultimaker2_plus_",
-                               "ultimaker2_go_",
-                               "ultimaker2_extended_",
-                               "ultimaker2_extended_plus_"]
+        # The ultimaker 2 family
+        ultimaker2_prefix_list = ["ultimaker2_extended_",
+                                  "ultimaker2_go_",
+                                  "ultimaker2_"]
+        # ultimaker 2+ is a different family, so don't do anything with those
+        exclude_prefix_list = ["ultimaker2_extended_plus_",
+                               "ultimaker2_plus_"]
+
+        # set machine definition to "ultimaker2" for the custom quality profiles that can be for the ultimaker 2 family
         file_base_name = os.path.basename(filename)
-        if file_base_name.startswith("ultimaker2_"):
-            skip_this = False
-            for exclude_prefix in exclude_prefix_list:
-                if file_base_name.startswith(exclude_prefix):
-                    skip_this = True
-                    break
-            if not skip_this:
-                parser["general"]["definition"] = "ultimaker2"
+        is_ultimaker2_family = False
+        if not any(file_base_name.startswith(ep) for ep in exclude_prefix_list):
+            is_ultimaker2_family = any(file_base_name.startswith(ep) for ep in ultimaker2_prefix_list)
+
+        # ultimaker2 family quality profiles used to set as "fdmprinter" profiles
+        if is_ultimaker2_family and parser["general"]["definition"] == "fdmprinter":
+            parser["general"]["definition"] = "ultimaker2"
 
         # Update version numbers
         parser["general"]["version"] = "2"

@@ -115,8 +115,22 @@ Item
         {
             tooltip: catalog.i18nc("@info:tooltip", "Load the configuration of the printer into Cura")
             text: catalog.i18nc("@action:button", "Activate Configuration")
-            visible: printerConnected
+            visible: printerConnected && !isClusterPrinter()
             onClicked: manager.loadConfigurationFromPrinter()
+
+            function isClusterPrinter() {
+                if(Cura.MachineManager.printerOutputDevices.length == 0)
+                {
+                    return false;
+                }
+                var clusterSize = Cura.MachineManager.printerOutputDevices[0].clusterSize;
+                // This is not a cluster printer or the cluster it is just one printer
+                if(clusterSize == undefined || clusterSize == 1)
+                {
+                    return false;
+                }
+                return true;
+            }
         }
     }
 

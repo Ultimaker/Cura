@@ -11,6 +11,14 @@ SettingItem
     id: base
     property var focusItem: input
 
+    property string textBeforeEdit
+    property bool textHasChanged
+    onFocusReceived:
+    {
+        textHasChanged = false;
+        textBeforeEdit = focusItem.text;
+    }
+
     contents: Rectangle
     {
         id: control
@@ -102,6 +110,7 @@ SettingItem
                 right: parent.right
                 verticalCenter: parent.verticalCenter
             }
+            renderType: Text.NativeRendering
 
             Keys.onTabPressed:
             {
@@ -114,12 +123,22 @@ SettingItem
 
             Keys.onReleased:
             {
-                propertyProvider.setPropertyValue("value", text)
+                if (text != textBeforeEdit)
+                {
+                    textHasChanged = true;
+                }
+                if (textHasChanged)
+                {
+                    propertyProvider.setPropertyValue("value", text)
+                }
             }
 
             onEditingFinished:
             {
-                propertyProvider.setPropertyValue("value", text)
+                if (textHasChanged)
+                {
+                    propertyProvider.setPropertyValue("value", text)
+                }
             }
 
             onActiveFocusChanged:

@@ -16,7 +16,7 @@ UM.MainWindow
 {
     id: base
     //: Cura application window title
-    title: catalog.i18nc("@title:window","Cura");
+    title: catalog.i18nc("@title:window","Ultimaker Cura");
     viewportRect: Qt.rect(0, 0, (base.width - sidebar.width) / base.width, 1.0)
     property bool showPrintMonitor: false
 
@@ -894,6 +894,11 @@ UM.MainWindow
             if(!base.visible)
             {
                 base.visible = true;
+            }
+
+            // check later if the user agreement dialog has been closed
+            if (CuraApplication.needToShowUserAgreement)
+            {
                 restart();
             }
             else if(Cura.MachineManager.activeMachineId == null || Cura.MachineManager.activeMachineId == "")

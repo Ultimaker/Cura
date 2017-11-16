@@ -36,6 +36,46 @@ msgctxt "@label:status"
 msgid "Can't start print"
 msgstr "Druck startet nicht"
 
+#: Manually added for plugins/UM3NetworkPrinting/DiscoverUM3Action.qml
+msgctxt "@label"
+msgid "This printer is not set up to host a group of Ultimaker 3 printers."
+msgstr "Dieser Drucker ist nicht eingerichtet um eine Gruppe von Ultimaker 3 Druckern anzusteuern."
+
+#: Manually added for plugins/UM3NetworkPrinting/PrinterInfoBlock.qml
+msgctxt "@label"
+msgid "Finishes at: "
+msgstr "Endet um: "
+
+#: Manually added for plugins/UM3NetworkPrinting/DiscoverUM3Action.qml
+msgctxt "@label"
+msgid "This printer is the host for a group of %1 Ultimaker 3 printers."
+msgstr "Dieser Drucker steuert eine Gruppe von %1 Ultimaker 3 Druckern an."
+
+#: Manually added for plugins/UM3NetworkPrinting/NetworkClusterPrinterOutputDevice.py
+msgctxt "@info:status"
+msgid "Printer '{printer_name}' has finished printing '{job_name}'."
+msgstr "Drucker '{printer_name}' hat '{job_name}' vollständig gedrückt."
+
+#: Manually added for plugins/UM3NetworkPrinting/NetworkClusterPrinterOutputDevice.py
+msgctxt "@info:status"
+msgid "Print finished"
+msgstr "Druck vollendet"
+
+#: Manually added for resources/Cura/Cura.qml
+msgctxt "@title:menu menubar:toplevel"
+msgid "P&lugins"
+msgstr "&Plugins"
+
+#: Manually added for resources/Cura/Actions.qml
+msgctxt "@action:menu"
+msgid "Browse plugins..."
+msgstr "Plugins durchsuchen..."
+
+#: Manually added for resources/Cura/Actions.qml
+msgctxt "@action:menu"
+msgid "Installed plugins..."
+msgstr "Installierte plugins..."
+
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.py:29
 msgctxt "@action"
 msgid "Machine Settings"
@@ -2479,7 +2519,7 @@ msgstr "Sichtbarkeit einstellen"
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/SettingVisibilityPage.qml:44
 msgctxt "@label:textbox"
 msgid "Check all"
-msgstr "Alle prüfen"
+msgstr "Alles wählen"
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/ProfileTab.qml:40
 msgctxt "@info:status"

@@ -30,9 +30,11 @@ Rectangle
     Component.onCompleted: {
         startMonitoringPrint.connect(function () {
             base.monitoringPrint = true
+            UM.Controller.disableModelRendering()
         })
         stopMonitoringPrint.connect(function () {
             base.monitoringPrint = false
+            UM.Controller.enableModelRendering()
         })
     }
 
@@ -279,7 +281,8 @@ Rectangle
 
         property var buttonTarget: Qt.point(viewModeButton.x + viewModeButton.width / 2, viewModeButton.y + viewModeButton.height / 2)
 
-        height: childrenRect.height;
+        height: childrenRect.height
+        width: childrenRect.width
 
         source: UM.ActiveView.valid ? UM.ActiveView.activeViewPanel : "";
     }

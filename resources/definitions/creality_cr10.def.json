@@ -7,7 +7,8 @@
         "visible": true,
         "author": "Michael Wildermuth",
         "manufacturer": "Creality3D",
-        "file_formats": "text/x-gcode"
+        "file_formats": "text/x-gcode",
+        "preferred_quality": "*Draft*"
     },
     "overrides": {
         "machine_width": {
@@ -24,9 +25,6 @@
         },
         "machine_nozzle_size": {
             "default_value": 0.4
-        },
-        "layer_height": {
-            "default_value": 0.2
         },
         "layer_height_0": {
             "default_value": 0.2
@@ -60,9 +58,6 @@
         },
         "skirt_gap": {
             "default_value": 5
-        },
-        "machine_start_gcode": {
-            "default_value": "G21 ;metric values\nG90 ;absolute Positioning\nG28 ; home all axes\nG1 Z5 F3000 ; lift\nG1 X20 Y2 F1500 ; avoid binder clips\nG1 Z0.2 F3000 ; get ready to prime\nG92 E0 ; reset extrusion distance\nG1 X120 E10 F600 ; prime nozzle\nG1 X150 F5000 ; quick wipe"
         },
         "machine_end_gcode": {
             "default_value": "G91\nG1 F1800 E-3\nG1 F3000 Z10\nG90\nG28 X0 Y0 ; home x and y axis\nM106 S0 ; turn off cooling fan\nM104 S0 ; turn off extruder\nM140 S0 ; turn off bed\nM84 ; disable motors"

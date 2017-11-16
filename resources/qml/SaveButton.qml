@@ -18,6 +18,8 @@ Item {
     property var backend: CuraApplication.getBackend();
     property bool activity: CuraApplication.platformActivity;
 
+    property alias buttonRowWidth: saveRow.width
+
     property string fileBaseName
     property string statusText:
     {
@@ -89,17 +91,30 @@ Item {
 
     Item {
         id: saveRow
-        width: base.width
+        width: {
+            // using childrenRect.width directly causes a binding loop, because setting the width affects the childrenRect
+            var children_width = UM.Theme.getSize("default_margin").width;
+            for (var index in children)
+            {
+                var child = children[index];
+                if(child.visible)
+                {
+                    children_width += child.width + child.anchors.rightMargin;
+                }
+            }
+            return Math.min(children_width, base.width - UM.Theme.getSize("sidebar_margin").width);
+        }
         height: saveToButton.height
-        anchors.top: progressBar.bottom
-        anchors.topMargin: UM.Theme.getSize("sidebar_margin").height
-        anchors.left: parent.left
+        anchors.bottom: parent.bottom
+        anchors.bottomMargin: UM.Theme.getSize("sidebar_margin").height
+        anchors.right: parent.right
+        clip: true
 
         Row {
             id: additionalComponentsRow
             anchors.top: parent.top
             anchors.right: saveToButton.visible ? saveToButton.left : parent.right
-            anchors.rightMargin: UM.Theme.getSize("sidebar_margin").width
+            anchors.rightMargin: UM.Theme.getSize("default_margin").width
 
             spacing: UM.Theme.getSize("default_margin").width
         }

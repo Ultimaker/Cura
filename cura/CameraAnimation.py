@@ -12,8 +12,8 @@ class CameraAnimation(QVariantAnimation):
     def __init__(self, parent = None):
         super().__init__(parent)
         self._camera_tool = None
-        self.setDuration(500)
-        self.setEasingCurve(QEasingCurve.InOutQuad)
+        self.setDuration(300)
+        self.setEasingCurve(QEasingCurve.OutQuad)
 
     def setCameraTool(self, camera_tool):
         self._camera_tool = camera_tool

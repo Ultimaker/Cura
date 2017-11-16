@@ -63,6 +63,21 @@ msgctxt "@info:status"
 msgid "Print finished"
 msgstr "Drukowanie zakończone"
 
+#: Manually added for resources/Cura/Cura.qml
+msgctxt "@title:menu menubar:toplevel"
+msgid "P&lugins"
+msgstr "W&tyczki"
+
+#: Manually added for resources/Cura/Actions.qml
+msgctxt "@action:menu"
+msgid "Browse plugins..."
+msgstr "Przeglądaj wtyczki..."
+
+#: Manually added for resources/Cura/Actions.qml
+msgctxt "@action:menu"
+msgid "Installed plugins..."
+msgstr "Zainstalowane wtyczki..."
+
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.py:29
 msgctxt "@action"
 msgid "Machine Settings"

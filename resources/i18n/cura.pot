@@ -18,6 +18,21 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
+#Manually added for plugins/UserAgreementPlugin/UserAgreement.qml
+msgctxt "@title:window"
+msgid "User Agreement"
+msgstr ""
+
+#Manually added for plugins/UserAgreementPlugin/UserAgreement.qml
+msgctxt "@action:button"
+msgid "I understand and agree"
+msgstr ""
+
+#Manually added for plugins/UserAgreementPlugin/UserAgreement.qml
+msgctxt "@action:button"
+msgid "I don't agree"
+msgstr ""
+
 #: Manually added for plugins/UM3NetworkPrinting/PrinterInfoBlock.qml
 msgctxt "@label:status"
 msgid "Print aborted"
@@ -61,6 +76,21 @@ msgstr ""
 #: Manually added for plugins/UM3NetworkPrinting/NetworkClusterPrinterOutputDevice.py
 msgctxt "@info:status"
 msgid "Print finished"
+msgstr ""
+
+#: Manually added for resources/Cura/Cura.qml
+msgctxt "@title:menu menubar:toplevel"
+msgid "P&lugins"
+msgstr ""
+
+#: Manually added for resources/Cura/Actions.qml
+msgctxt "@action:menu"
+msgid "Browse plugins..."
+msgstr ""
+
+#: Manually added for resources/Cura/Actions.qml
+msgctxt "@action:menu"
+msgid "Installed plugins..."
 msgstr ""
 
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.py:29
