@@ -1,5 +1,5 @@
 // Copyright (c) 2017 Ultimaker B.V.
-// Cura is released under the terms of the AGPLv3 or higher.
+// Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.2
 import QtQuick.Controls 1.1
@@ -16,7 +16,7 @@ Button
     text: catalog.i18ncp("@label %1 is filled in with the name of an extruder", "Print Selected Model with %1", "Print Selected Models with %1", UM.Selection.selectionCount).arg(extruder.name)
 
     style: UM.Theme.styles.tool_button;
-    iconSource: checked ? UM.Theme.getIcon("material_selected") : UM.Theme.getIcon("material_not_selected");
+    iconSource: UM.Theme.getIcon("extruder_button")
 
     checked: ExtruderManager.selectedObjectExtruders.indexOf(extruder.id) != -1
     enabled: UM.Selection.hasSelection
@@ -36,16 +36,11 @@ Button
 
     Item
     {
-        anchors
-        {
-            right: parent.right;
-            top: parent.top;
-            margins: UM.Theme.getSize("default_lining").width * 3
-        }
+        anchors.centerIn: parent
         width: UM.Theme.getSize("default_margin").width
         height: UM.Theme.getSize("default_margin").height
 
-        Text
+        Label
         {
             anchors.centerIn: parent;
             text: index + 1;
@@ -54,22 +49,28 @@ Button
         }
     }
 
+    // Material colour circle
+    // Only draw the filling colour of the material inside the SVG border.
     Rectangle
     {
         anchors
         {
-            left: parent.left;
-            top: parent.top;
-            margins: UM.Theme.getSize("default_lining").width * 3
+            right: parent.right
+            top: parent.top
+            rightMargin: UM.Theme.getSize("extruder_button_material_margin").width
+            topMargin: UM.Theme.getSize("extruder_button_material_margin").height
         }
 
         color: model.color
 
-        width: UM.Theme.getSize("default_margin").width
-        height: UM.Theme.getSize("default_margin").height
+        width: UM.Theme.getSize("extruder_button_material").width
+        height: UM.Theme.getSize("extruder_button_material").height
+        radius: width / 2
 
         border.width: UM.Theme.getSize("default_lining").width
-        border.color: UM.Theme.getColor("lining");
+        border.color: UM.Theme.getColor("extruder_button_material_border")
+
+        opacity: !base.enabled ? 0.2 : 1.0
     }
 
     onClicked:

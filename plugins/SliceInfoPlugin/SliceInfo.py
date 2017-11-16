@@ -1,5 +1,5 @@
 # Copyright (c) 2015 Ultimaker B.V.
-# Cura is released under the terms of the AGPLv3 or higher.
+# Cura is released under the terms of the LGPLv3 or higher.
 
 from cura.CuraApplication import CuraApplication
 from cura.Settings.ExtruderManager import ExtruderManager
@@ -40,7 +40,11 @@ class SliceInfo(Extension):
         Preferences.getInstance().addPreference("info/asked_send_slice_info", False)
 
         if not Preferences.getInstance().getValue("info/asked_send_slice_info"):
-            self.send_slice_info_message = Message(catalog.i18nc("@info", "Cura collects anonymised slicing statistics. You can disable this in the preferences."), lifetime = 0, dismissable = False)
+            self.send_slice_info_message = Message(catalog.i18nc("@info", "Cura collects anonymised slicing statistics. You can disable this in the preferences."),
+                                                   lifetime = 0,
+                                                   dismissable = False,
+                                                   title = catalog.i18nc("@info:title", "Collecting Data"))
+
             self.send_slice_info_message.addAction("Dismiss", catalog.i18nc("@action:button", "Dismiss"), None, "")
             self.send_slice_info_message.actionTriggered.connect(self.messageActionTriggered)
             self.send_slice_info_message.show()
@@ -69,15 +73,26 @@ class SliceInfo(Extension):
             else:
                 data["active_mode"] = "custom"
 
-            data["machine_settings_changed_by_user"] = global_container_stack.definitionChanges.getId() != "empty"
+            definition_changes = global_container_stack.definitionChanges
+            machine_settings_changed_by_user = False
+            if definition_changes.getId() != "empty":
+                # Now a definition_changes container will always be created for a stack,
+                # so we also need to check if there is any instance in the definition_changes container
+                if definition_changes.getAllKeys():
+                    machine_settings_changed_by_user = True
+
+            data["machine_settings_changed_by_user"] = machine_settings_changed_by_user
             data["language"] = Preferences.getInstance().getValue("general/language")
             data["os"] = {"type": platform.system(), "version": platform.version()}
 
             data["active_machine"] = {"definition_id": global_container_stack.definition.getId(), "manufacturer": global_container_stack.definition.getMetaData().get("manufacturer","")}
 
             data["extruders"] = []
-            extruders = list(ExtruderManager.getInstance().getMachineExtruders(global_container_stack.getId()))
-            extruders = sorted(extruders, key = lambda extruder: extruder.getMetaDataEntry("position"))
+            extruder_count = len(global_container_stack.extruders)
+            extruders = []
+            if extruder_count > 1:
+                extruders = list(ExtruderManager.getInstance().getMachineExtruders(global_container_stack.getId()))
+                extruders = sorted(extruders, key = lambda extruder: extruder.getMetaDataEntry("position"))
 
             if not extruders:
                 extruders = [global_container_stack]
@@ -147,7 +162,7 @@ class SliceInfo(Extension):
 
                     data["models"].append(model)
 
-            print_times = print_information.printTimesPerFeature
+            print_times = print_information._print_time_message_values
             data["print_times"] = {"travel": int(print_times["travel"].getDisplayString(DurationFormat.Format.Seconds)),
                                    "support": int(print_times["support"].getDisplayString(DurationFormat.Format.Seconds)),
                                    "infill": int(print_times["infill"].getDisplayString(DurationFormat.Format.Seconds)),
@@ -178,6 +193,9 @@ class SliceInfo(Extension):
             print_settings["print_sequence"] = global_container_stack.getProperty("print_sequence", "value")
 
             data["print_settings"] = print_settings
+
+            # Send the name of the output device type that is used.
+            data["output_to"] = type(output_device).__name__
 
             # Convert data to bytes
             binary_data = json.dumps(data).encode("utf-8")

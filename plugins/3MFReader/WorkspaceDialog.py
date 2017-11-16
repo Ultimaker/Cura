@@ -1,5 +1,5 @@
 # Copyright (c) 2016 Ultimaker B.V.
-# Cura is released under the terms of the AGPLv3 or higher.
+# Cura is released under the terms of the LGPLv3 or higher.
 
 from PyQt5.QtCore import QUrl, pyqtSignal, QObject, pyqtProperty, QCoreApplication
 from UM.FlameProfiler import pyqtSlot
@@ -26,7 +26,7 @@ class WorkspaceDialog(QObject):
         self._view = None
         self._qml_url = "WorkspaceDialog.qml"
         self._lock = threading.Lock()
-        self._default_strategy = "override"
+        self._default_strategy = None
         self._result = {"machine": self._default_strategy,
                         "quality_changes": self._default_strategy,
                         "definition_changes": self._default_strategy,
@@ -38,6 +38,7 @@ class WorkspaceDialog(QObject):
         self._has_definition_changes_conflict = False
         self._has_machine_conflict = False
         self._has_material_conflict = False
+        self._has_visible_settings_field = False
         self._num_visible_settings = 0
         self._num_user_settings = 0
         self._active_mode = ""
@@ -58,6 +59,7 @@ class WorkspaceDialog(QObject):
     numVisibleSettingsChanged = pyqtSignal()
     activeModeChanged = pyqtSignal()
     qualityNameChanged = pyqtSignal()
+    hasVisibleSettingsFieldChanged = pyqtSignal()
     numSettingsOverridenByQualityChangesChanged = pyqtSignal()
     qualityTypeChanged = pyqtSignal()
     machineNameChanged = pyqtSignal()
@@ -167,6 +169,14 @@ class WorkspaceDialog(QObject):
             self._active_mode = i18n_catalog.i18nc("@title:tab", "Custom")
         self.activeModeChanged.emit()
 
+    @pyqtProperty(int, notify = hasVisibleSettingsFieldChanged)
+    def hasVisibleSettingsField(self):
+        return self._has_visible_settings_field
+
+    def setHasVisibleSettingsField(self, has_visible_settings_field):
+        self._has_visible_settings_field = has_visible_settings_field
+        self.hasVisibleSettingsFieldChanged.emit()
+
     @pyqtProperty(int, constant = True)
     def totalNumberOfSettings(self):
         return len(ContainerRegistry.getInstance().findDefinitionContainers(id="fdmprinter")[0].getAllKeys())
@@ -235,6 +245,14 @@ class WorkspaceDialog(QObject):
             self._result["definition_changes"] = None
         if "material" in self._result and not self._has_material_conflict:
             self._result["material"] = None
+
+        # If the machine needs to be re-created, the definition_changes should also be re-created.
+        # If the machine strategy is None, it means that there is no name conflict with existing ones. In this case
+        # new definitions changes are created
+        if "machine" in self._result:
+            if self._result["machine"] == "new" or self._result["machine"] is None and self._result["definition_changes"] is None:
+                self._result["definition_changes"] = "new"
+
         return self._result
 
     def _createViewFromQML(self):
@@ -262,14 +280,28 @@ class WorkspaceDialog(QObject):
     @pyqtSlot()
     ##  Used to notify the dialog so the lock can be released.
     def notifyClosed(self):
-        self._result = {}
+        self._result = {} # The result should be cleared before hide, because after it is released the main thread lock
         self._visible = False
-        self._lock.release()
+        try:
+            self._lock.release()
+        except:
+            pass
 
     def hide(self):
         self._visible = False
-        self._lock.release()
         self._view.hide()
+        try:
+            self._lock.release()
+        except:
+            pass
+
+    @pyqtSlot(bool)
+    def _onVisibilityChanged(self, visible):
+        if not visible:
+            try:
+                self._lock.release()
+            except:
+                pass
 
     @pyqtSlot()
     def onOkButtonClicked(self):
@@ -278,9 +310,9 @@ class WorkspaceDialog(QObject):
 
     @pyqtSlot()
     def onCancelButtonClicked(self):
+        self._result = {}
         self._view.hide()
         self.hide()
-        self._result = {}
 
     ##  Block thread until the dialog is closed.
     def waitForClose(self):

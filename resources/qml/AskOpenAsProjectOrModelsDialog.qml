@@ -1,5 +1,5 @@
 // Copyright (c) 2015 Ultimaker B.V.
-// Cura is released under the terms of the AGPLv3 or higher.
+// Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.2
 import QtQuick.Controls 1.1
@@ -18,8 +18,8 @@ UM.Dialog
     id: base
 
     title: catalog.i18nc("@title:window", "Open project file")
-    width: 450
-    height: 150
+    width: 450 * screenScaleFactor
+    height: 150 * screenScaleFactor
 
     maximumHeight: height
     maximumWidth: width
@@ -61,13 +61,14 @@ UM.Dialog
     Column
     {
         anchors.fill: parent
-        anchors.leftMargin: 20
-        anchors.rightMargin: 20
-        anchors.bottomMargin: 20
-        spacing: 10
+        anchors.leftMargin: 20 * screenScaleFactor
+        anchors.rightMargin: 20 * screenScaleFactor
+        anchors.bottomMargin: 10 * screenScaleFactor
+        spacing: 10 * screenScaleFactor
 
         Label
         {
+            id: questionText
             text: catalog.i18nc("@text:window", "This is a Cura project file. Would you like to open it as a project or import the models from it?")
             anchors.left: parent.left
             anchors.right: parent.right
@@ -80,11 +81,18 @@ UM.Dialog
             id: rememberChoiceCheckBox
             text: catalog.i18nc("@text:window", "Remember my choice")
             checked: UM.Preferences.getValue("cura/choice_on_open_project") != "always_ask"
+            style: CheckBoxStyle {
+                label: Label {
+                    text: control.text
+                    font: UM.Theme.getFont("default")
+                }
+            }
         }
 
         // Buttons
         Item
         {
+            id: buttonBar
             anchors.right: parent.right
             anchors.left: parent.left
             height: childrenRect.height

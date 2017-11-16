@@ -7,7 +7,6 @@
         "visible": true,
         "author": "Rigid3D",
         "manufacturer": "Rigid3D",
-        "category": "Other",
         "has_materials": false,
         "file_formats": "text/x-gcode",
         "platform": "rigid3d_zero2_platform.stl",

@@ -1,5 +1,5 @@
 # Copyright (c) 2016 Ultimaker B.V.
-# Cura is released under the terms of the AGPLv3 or higher.
+# Cura is released under the terms of the LGPLv3 or higher.
 
 from .avr_isp import stk500v2, ispBase, intelHex
 import serial   # type: ignore
@@ -119,7 +119,8 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
         self._sendCommand("G0 Y%s F%s" % (z, speed))
 
     def _homeHead(self):
-        self._sendCommand("G28")
+        self._sendCommand("G28 X")
+        self._sendCommand("G28 Y")
 
     def _homeBed(self):
         self._sendCommand("G28 Z")
@@ -150,7 +151,7 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
     def printGCode(self, gcode_list):
         Logger.log("d", "Started printing g-code")
         if self._progress or self._connection_state != ConnectionState.connected:
-            self._error_message = Message(catalog.i18nc("@info:status", "Unable to start a new job because the printer is busy or not connected."))
+            self._error_message = Message(catalog.i18nc("@info:status", "Unable to start a new job because the printer is busy or not connected."), title = catalog.i18nc("@info:title", "Printer Unavailable"))
             self._error_message.show()
             Logger.log("d", "Printer is busy or not connected, aborting print")
             self.writeError.emit(self)
@@ -453,11 +454,11 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
         container_stack = Application.getInstance().getGlobalContainerStack()
 
         if container_stack.getProperty("machine_gcode_flavor", "value") == "UltiGCode":
-            self._error_message = Message(catalog.i18nc("@info:status", "This printer does not support USB printing because it uses UltiGCode flavor."))
+            self._error_message = Message(catalog.i18nc("@info:status", "This printer does not support USB printing because it uses UltiGCode flavor."), title = catalog.i18nc("@info:title", "USB Printing"))
             self._error_message.show()
             return
         elif not container_stack.getMetaDataEntry("supports_usb_connection"):
-            self._error_message = Message(catalog.i18nc("@info:status", "Unable to start a new job because the printer does not support usb printing."))
+            self._error_message = Message(catalog.i18nc("@info:status", "Unable to start a new job because the printer does not support usb printing."), title = catalog.i18nc("@info:title", "Warning"))
             self._error_message.show()
             return
 
@@ -622,8 +623,9 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
         self._sendCommand("M140 S0")
         self._sendCommand("M104 S0")
         self._sendCommand("M107")
+        # Home XY to prevent nozzle resting on aborted print
+        # Don't home bed because it may crash the printhead into the print on printers that home on the bottom
         self.homeHead()
-        self.homeBed()
         self._sendCommand("M84")
         self._is_printing = False
         self._is_paused = False

@@ -7,7 +7,6 @@
         "visible": true,
         "author": "BQ",
         "manufacturer": "BQ",
-        "category": "Other",
         "platform": "bq_hephestos_2_platform.stl",
         "platform_offset": [6, 1320, 0 ],
         "file_formats": "text/x-gcode"

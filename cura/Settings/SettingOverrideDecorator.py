@@ -1,17 +1,17 @@
 # Copyright (c) 2016 Ultimaker B.V.
-# Cura is released under the terms of the AGPLv3 or higher.
+# Cura is released under the terms of the LGPLv3 or higher.
 
 import copy
 
 from UM.Scene.SceneNodeDecorator import SceneNodeDecorator
 from UM.Signal import Signal, signalemitter
-from UM.Settings.ContainerStack import ContainerStack
 from UM.Settings.InstanceContainer import InstanceContainer
 from UM.Settings.ContainerRegistry import ContainerRegistry
 from UM.Logger import Logger
 
 from UM.Application import Application
 
+from cura.Settings.PerObjectContainerStack import PerObjectContainerStack
 from cura.Settings.ExtruderManager import ExtruderManager
 
 ##  A decorator that adds a container stack to a Node. This stack should be queried for all settings regarding
@@ -24,7 +24,7 @@ class SettingOverrideDecorator(SceneNodeDecorator):
 
     def __init__(self):
         super().__init__()
-        self._stack = ContainerStack(stack_id = id(self))
+        self._stack = PerObjectContainerStack(stack_id = id(self))
         self._stack.setDirty(False)  # This stack does not need to be saved.
         self._stack.addContainer(InstanceContainer(container_id = "SettingOverrideInstanceContainer"))
 

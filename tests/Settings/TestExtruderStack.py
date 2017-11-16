@@ -1,5 +1,5 @@
 # Copyright (c) 2017 Ultimaker B.V.
-# Cura is released under the terms of the AGPLv3 or higher.
+# Cura is released under the terms of the LGPLv3 or higher.
 
 import pytest #This module contains automated tests.
 import unittest.mock #For the mocking and monkeypatching functionality.
@@ -251,7 +251,7 @@ def test_getPropertyFallThrough(extruder_stack):
     for type_id, type_name in container_indices.IndexTypeMap.items():
         container = unittest.mock.MagicMock()
         # Return type_id when asking for value and -1 when asking for limit_to_extruder
-        container.getProperty = lambda key, property, type_id = type_id: type_id if (key == "layer_height" and property == "value") else (None if property != "limit_to_extruder" else "-1") #Returns the container type ID as layer height, in order to identify it.
+        container.getProperty = lambda key, property, context = None, type_id = type_id: type_id if (key == "layer_height" and property == "value") else (None if property != "limit_to_extruder" else "-1") #Returns the container type ID as layer height, in order to identify it.
         container.hasProperty = lambda key, property: key == "layer_height"
         container.getMetaDataEntry = unittest.mock.MagicMock(return_value = type_name)
         mock_layer_heights[type_id] = container

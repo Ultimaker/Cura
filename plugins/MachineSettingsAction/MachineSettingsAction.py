@@ -1,5 +1,5 @@
 # Copyright (c) 2017 Ultimaker B.V.
-# Cura is released under the terms of the AGPLv3 or higher.
+# Cura is released under the terms of the LGPLv3 or higher.
 
 from PyQt5.QtCore import pyqtProperty, pyqtSignal
 from UM.FlameProfiler import pyqtSlot
@@ -79,7 +79,7 @@ class MachineSettingsAction(MachineAction):
     @pyqtSlot()
     def onFinishAction(self):
         # Restore autoslicing when the machineaction is dismissed
-        if self._backend.determineAutoSlicing():
+        if self._backend and self._backend.determineAutoSlicing():
             self._backend.tickle()
 
     def _onActiveExtruderStackChanged(self):
@@ -147,6 +147,7 @@ class MachineSettingsAction(MachineAction):
                 for setting_instance in extruder_user_container.findInstances():
                     setting_key = setting_instance.definition.key
                     settable_per_extruder = self._global_container_stack.getProperty(setting_key, "settable_per_extruder")
+
                     if settable_per_extruder:
                         limit_to_extruder = self._global_container_stack.getProperty(setting_key, "limit_to_extruder")
 
@@ -154,11 +155,16 @@ class MachineSettingsAction(MachineAction):
                             global_user_container.setProperty(setting_key, "value", extruder_user_container.getProperty(setting_key, "value"))
                             extruder_user_container.removeInstance(setting_key)
 
-        # Check to see if any features are set to print with an extruder that will no longer exist
-        for setting_key in ["adhesion_extruder_nr", "support_extruder_nr", "support_extruder_nr_layer_0", "support_infill_extruder_nr", "support_interface_extruder_nr"]:
-            if int(self._global_container_stack.getProperty(setting_key, "value")) > extruder_count - 1:
-                Logger.log("i", "Lowering %s setting to match number of extruders", setting_key)
-                self._global_container_stack.getTop().setProperty(setting_key, "value", extruder_count - 1)
+        # reset all extruder number settings whose value is no longer valid
+        for setting_instance in self._global_container_stack.userChanges.findInstances():
+            setting_key = setting_instance.definition.key
+            if not self._global_container_stack.getProperty(setting_key, "type") in ("extruder", "optional_extruder"):
+                continue
+
+            old_value = int(self._global_container_stack.userChanges.getProperty(setting_key, "value"))
+            if old_value >= extruder_count:
+                self._global_container_stack.userChanges.removeInstance(setting_key)
+                Logger.log("d", "Reset [%s] because its old value [%s] is no longer valid ", setting_key, old_value)
 
         # Check to see if any objects are set to print with an extruder that will no longer exist
         root_node = Application.getInstance().getController().getScene().getRoot()
@@ -170,7 +176,6 @@ class MachineSettingsAction(MachineAction):
                     node.callDecoration("setActiveExtruder", extruder_manager.getExtruderStack(extruder_count - 1).getId())
 
         definition_changes_container.setProperty("machine_extruder_count", "value", extruder_count)
-        self.forceUpdate()
 
         if extruder_count > 1:
             # Multiextrusion
@@ -214,6 +219,8 @@ class MachineSettingsAction(MachineAction):
                     machine_manager.setActiveVariant(extruder_variant_id)
 
                 preferences.setValue("cura/choice_on_profile_override", choice_on_profile_override)
+
+        self.forceUpdate()
 
 
     @pyqtSlot()

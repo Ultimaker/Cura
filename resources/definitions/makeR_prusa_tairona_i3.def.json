@@ -7,11 +7,10 @@
         "visible": true,
         "author": "makeR",
         "manufacturer": "makeR",
-        "category": "Other",
         "file_formats": "text/x-gcode",
         "icon": "icon_ultimaker2",
         "platform": "makeR_prusa_tairona_i3_platform.stl",
-		"platform_offset": [-2,0,0]
+        "platform_offset": [-2, 0, 0]
     },
 
     "overrides": {

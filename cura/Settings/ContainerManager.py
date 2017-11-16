@@ -1,5 +1,5 @@
 # Copyright (c) 2017 Ultimaker B.V.
-# Cura is released under the terms of the AGPLv3 or higher.
+# Cura is released under the terms of the LGPLv3 or higher.
 
 import os.path
 import urllib
@@ -333,16 +333,15 @@ class ContainerManager(QObject):
     @pyqtSlot(str, result = bool)
     def isContainerUsed(self, container_id):
         Logger.log("d", "Checking if container %s is currently used", container_id)
-        # check if this is a material container. If so, check if any material with the same GUID is being used by any
+        # check if this is a material container. If so, check if any material with the same base is being used by any
         # stacks.
         container_ids_to_check = [container_id]
         container_results = self._container_registry.findInstanceContainers(id = container_id, type = "material")
         if container_results:
             this_container = container_results[0]
-            container_guid = this_container.getMetaDataEntry("GUID")
-            # check all material container IDs with the same GUID
-            material_containers = self._container_registry.findInstanceContainers(id = container_id,
-                                                                                  GUID = container_guid,
+            material_base_file = this_container.getMetaDataEntry("base_file", this_container.getId())
+            # check all material container IDs with the same base
+            material_containers = self._container_registry.findInstanceContainers(base_file = material_base_file,
                                                                                   type = "material")
             if material_containers:
                 container_ids_to_check = [container.getId() for container in material_containers]
@@ -430,7 +429,7 @@ class ContainerManager(QObject):
         if not Platform.isWindows():
             if os.path.exists(file_url):
                 result = QMessageBox.question(None, catalog.i18nc("@title:window", "File Already Exists"),
-                                              catalog.i18nc("@label", "The file <filename>{0}</filename> already exists. Are you sure you want to overwrite it?").format(file_url))
+                                              catalog.i18nc("@label Don't translate the XML tag <filename>!", "The file <filename>{0}</filename> already exists. Are you sure you want to overwrite it?").format(file_url))
                 if result == QMessageBox.No:
                     return { "status": "cancelled", "message": "User cancelled"}
 

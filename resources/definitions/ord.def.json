@@ -7,7 +7,6 @@
         "visible": true,
         "author": "Ultimaker",
         "manufacturer": "ORD Solutions",
-        "category": "Other",
         "file_formats": "text/x-gcode",
         "machine_extruder_trains":
         {

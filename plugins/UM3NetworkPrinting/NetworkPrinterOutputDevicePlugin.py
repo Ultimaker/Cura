@@ -1,34 +1,41 @@
 # Copyright (c) 2017 Ultimaker B.V.
-# Cura is released under the terms of the AGPLv3 or higher.
-
-from UM.OutputDevice.OutputDevicePlugin import OutputDevicePlugin
-from . import NetworkPrinterOutputDevice
-
-from zeroconf import Zeroconf, ServiceBrowser, ServiceStateChange, ServiceInfo  # type: ignore
-from UM.Logger import Logger
-from UM.Signal import Signal, signalemitter
-from UM.Application import Application
-from UM.Preferences import Preferences
-
-from PyQt5.QtNetwork import QNetworkRequest, QNetworkAccessManager, QNetworkReply
-from PyQt5.QtCore import QUrl
+# Cura is released under the terms of the LGPLv3 or higher.
 
 import time
 import json
+from queue import Queue
+from threading import Event, Thread
+
+from PyQt5.QtCore import QObject, pyqtSlot
+from PyQt5.QtCore import QUrl
+from PyQt5.QtGui import QDesktopServices
+from PyQt5.QtNetwork import QNetworkRequest, QNetworkAccessManager
+from UM.Application import Application
+from UM.Logger import Logger
+from UM.OutputDevice.OutputDevicePlugin import OutputDevicePlugin
+from UM.Preferences import Preferences
+from UM.Signal import Signal, signalemitter
+from zeroconf import Zeroconf, ServiceBrowser, ServiceStateChange, ServiceInfo  # type: ignore
+
+from . import NetworkPrinterOutputDevice, NetworkClusterPrinterOutputDevice
+
 
 ##      This plugin handles the connection detection & creation of output device objects for the UM3 printer.
 #       Zero-Conf is used to detect printers, which are saved in a dict.
 #       If we discover a printer that has the same key as the active machine instance a connection is made.
 @signalemitter
-class NetworkPrinterOutputDevicePlugin(OutputDevicePlugin):
+class NetworkPrinterOutputDevicePlugin(QObject, OutputDevicePlugin):
     def __init__(self):
         super().__init__()
         self._zero_conf = None
         self._browser = None
         self._printers = {}
+        self._cluster_printers_seen = {}  # do not forget a cluster printer when we have seen one, to not 'downgrade' from Connect to legacy printer
 
         self._api_version = "1"
         self._api_prefix = "/api/v" + self._api_version + "/"
+        self._cluster_api_version = "1"
+        self._cluster_api_prefix = "/cluster-api/v" + self._cluster_api_version + "/"
 
         self._network_manager = QNetworkAccessManager()
         self._network_manager.finished.connect(self._onNetworkRequestFinished)
@@ -46,6 +53,18 @@ class NetworkPrinterOutputDevicePlugin(OutputDevicePlugin):
         self._preferences = Preferences.getInstance()
         self._preferences.addPreference("um3networkprinting/manual_instances", "") #  A comma-separated list of ip adresses or hostnames
         self._manual_instances = self._preferences.getValue("um3networkprinting/manual_instances").split(",")
+
+        self._network_requests_buffer = {}  # store api responses until data is complete
+
+        # The zeroconf service changed requests are handled in a separate thread, so we can re-schedule the requests
+        # which fail to get detailed service info.
+        # Any new or re-scheduled requests will be appended to the request queue, and the handling thread will pick
+        # them up and process them.
+        self._service_changed_request_queue = Queue()
+        self._service_changed_request_event = Event()
+        self._service_changed_request_thread = Thread(target = self._handleOnServiceChangedRequests,
+                                                      daemon = True)
+        self._service_changed_request_thread.start()
 
     addPrinterSignal = Signal()
     removePrinterSignal = Signal()
@@ -66,7 +85,7 @@ class NetworkPrinterOutputDevicePlugin(OutputDevicePlugin):
         # After network switching, one must make a new instance of Zeroconf
         # On windows, the instance creation is very fast (unnoticable). Other platforms?
         self._zero_conf = Zeroconf()
-        self._browser = ServiceBrowser(self._zero_conf, u'_ultimaker._tcp.local.', [self._onServiceChanged])
+        self._browser = ServiceBrowser(self._zero_conf, u'_ultimaker._tcp.local.', [self._appendServiceChangedRequest])
 
         # Look for manual instances from preference
         for address in self._manual_instances:
@@ -91,6 +110,7 @@ class NetworkPrinterOutputDevicePlugin(OutputDevicePlugin):
             self.addPrinter(instance_name, address, properties)
 
         self.checkManualPrinter(address)
+        self.checkClusterPrinter(address)
 
     def removeManualPrinter(self, key, address = None):
         if key in self._printers:
@@ -105,9 +125,15 @@ class NetworkPrinterOutputDevicePlugin(OutputDevicePlugin):
     def checkManualPrinter(self, address):
         # Check if a printer exists at this address
         # If a printer responds, it will replace the preliminary printer created above
-        url = QUrl("http://" + address + self._api_prefix + "system")
+        # origin=manual is for tracking back the origin of the call
+        url = QUrl("http://" + address + self._api_prefix + "system?origin=manual_name")
         name_request = QNetworkRequest(url)
         self._network_manager.get(name_request)
+
+    def checkClusterPrinter(self, address):
+        cluster_url = QUrl("http://" + address + self._cluster_api_prefix + "printers/?origin=check_cluster")
+        cluster_request = QNetworkRequest(cluster_url)
+        self._network_manager.get(cluster_request)
 
     ##  Handler for all requests that have finished.
     def _onNetworkRequestFinished(self, reply):
@@ -115,31 +141,76 @@ class NetworkPrinterOutputDevicePlugin(OutputDevicePlugin):
         status_code = reply.attribute(QNetworkRequest.HttpStatusCodeAttribute)
 
         if reply.operation() == QNetworkAccessManager.GetOperation:
-            if "system" in reply_url:  # Name returned from printer.
+            address = reply.url().host()
+            if "origin=manual_name" in reply_url:  # Name returned from printer.
                 if status_code == 200:
-                    system_info = json.loads(bytes(reply.readAll()).decode("utf-8"))
-                    address = reply.url().host()
 
-                    instance_name = "manual:%s" % address
-                    machine = "unknown"
-                    if "variant" in system_info:
-                        variant = system_info["variant"]
-                        if variant == "Ultimaker 3":
-                            machine = "9066"
-                        elif variant == "Ultimaker 3 Extended":
-                            machine = "9511"
+                    try:
+                        system_info = json.loads(bytes(reply.readAll()).decode("utf-8"))
+                    except json.JSONDecodeError:
+                        Logger.log("e", "Printer returned invalid JSON.")
+                        return
+                    except UnicodeDecodeError:
+                        Logger.log("e", "Printer returned incorrect UTF-8.")
+                        return
 
-                    properties = {
-                        b"name": system_info["name"].encode("utf-8"),
-                        b"address": address.encode("utf-8"),
-                        b"firmware_version": system_info["firmware"].encode("utf-8"),
-                        b"manual": b"true",
-                        b"machine": machine.encode("utf-8")
-                    }
-                    if instance_name in self._printers:
-                        # Only replace the printer if it is still in the list of (manual) printers
-                        self.removePrinter(instance_name)
-                        self.addPrinter(instance_name, address, properties)
+                    if address not in self._network_requests_buffer:
+                        self._network_requests_buffer[address] = {}
+                    self._network_requests_buffer[address]["system"] = system_info
+            elif "origin=check_cluster" in reply_url:
+                if address not in self._network_requests_buffer:
+                    self._network_requests_buffer[address] = {}
+                if status_code == 200:
+                    # We know it's a cluster printer
+                    Logger.log("d", "Cluster printer detected: [%s]", reply.url())
+
+                    try:
+                        cluster_printers_list = json.loads(bytes(reply.readAll()).decode("utf-8"))
+                    except json.JSONDecodeError:
+                        Logger.log("e", "Printer returned invalid JSON.")
+                        return
+                    except UnicodeDecodeError:
+                        Logger.log("e", "Printer returned incorrect UTF-8.")
+                        return
+
+                    self._network_requests_buffer[address]["cluster"] = True
+                    self._network_requests_buffer[address]["cluster_size"] = len(cluster_printers_list)
+                else:
+                    Logger.log("d", "This url is not from a cluster printer: [%s]", reply.url())
+                    self._network_requests_buffer[address]["cluster"] = False
+
+            # Both the system call and cluster call are finished
+            if (address in self._network_requests_buffer and
+                "system" in self._network_requests_buffer[address] and
+                "cluster" in self._network_requests_buffer[address]):
+
+                instance_name = "manual:%s" % address
+                system_info = self._network_requests_buffer[address]["system"]
+                machine = "unknown"
+                if "variant" in system_info:
+                    variant = system_info["variant"]
+                    if variant == "Ultimaker 3":
+                        machine = "9066"
+                    elif variant == "Ultimaker 3 Extended":
+                        machine = "9511"
+
+                properties = {
+                    b"name": system_info["name"].encode("utf-8"),
+                    b"address": address.encode("utf-8"),
+                    b"firmware_version": system_info["firmware"].encode("utf-8"),
+                    b"manual": b"true",
+                    b"machine": machine.encode("utf-8")
+                }
+
+                if self._network_requests_buffer[address]["cluster"]:
+                    properties[b"cluster_size"] = self._network_requests_buffer[address]["cluster_size"]
+
+                if instance_name in self._printers:
+                    # Only replace the printer if it is still in the list of (manual) printers
+                    self.removePrinter(instance_name)
+                    self.addPrinter(instance_name, address, properties)
+
+                del self._network_requests_buffer[address]
 
     ##  Stop looking for devices on network.
     def stop(self):
@@ -169,8 +240,14 @@ class NetworkPrinterOutputDevicePlugin(OutputDevicePlugin):
 
     ##  Because the model needs to be created in the same thread as the QMLEngine, we use a signal.
     def addPrinter(self, name, address, properties):
-        printer = NetworkPrinterOutputDevice.NetworkPrinterOutputDevice(name, address, properties, self._api_prefix)
+        cluster_size = int(properties.get(b"cluster_size", -1))
+        if cluster_size >= 0:
+            printer = NetworkClusterPrinterOutputDevice.NetworkClusterPrinterOutputDevice(
+                name, address, properties, self._api_prefix)
+        else:
+            printer = NetworkPrinterOutputDevice.NetworkPrinterOutputDevice(name, address, properties, self._api_prefix)
         self._printers[printer.getKey()] = printer
+        self._cluster_printers_seen[printer.getKey()] = name  # Cluster printers that may be temporary unreachable or is rebooted keep being stored here
         global_container_stack = Application.getInstance().getGlobalContainerStack()
         if global_container_stack and printer.getKey() == global_container_stack.getMetaDataEntry("um_network_key"):
             if printer.getKey() not in self._old_printers:  # Was the printer already connected, but a re-scan forced?
@@ -197,7 +274,8 @@ class NetworkPrinterOutputDevicePlugin(OutputDevicePlugin):
         else:
             self.getOutputDeviceManager().removeOutputDevice(key)
 
-    ##  Handler for zeroConf detection
+    ##  Handler for zeroConf detection.
+    #   Return True or False indicating if the process succeeded.
     def _onServiceChanged(self, zeroconf, service_type, name, state_change):
         if state_change == ServiceStateChange.Added:
             Logger.log("d", "Bonjour service added: %s" % name)
@@ -227,7 +305,53 @@ class NetworkPrinterOutputDevicePlugin(OutputDevicePlugin):
                         Logger.log("w", "The type of the found device is '%s', not 'printer'! Ignoring.." % type_of_device )
             else:
                 Logger.log("w", "Could not get information about %s" % name)
+                return False
 
         elif state_change == ServiceStateChange.Removed:
             Logger.log("d", "Bonjour service removed: %s" % name)
             self.removePrinterSignal.emit(str(name))
+
+        return True
+
+    ##  Appends a service changed request so later the handling thread will pick it up and processes it.
+    def _appendServiceChangedRequest(self, zeroconf, service_type, name, state_change):
+        # append the request and set the event so the event handling thread can pick it up
+        item = (zeroconf, service_type, name, state_change)
+        self._service_changed_request_queue.put(item)
+        self._service_changed_request_event.set()
+
+    def _handleOnServiceChangedRequests(self):
+        while True:
+            # wait for the event to be set
+            self._service_changed_request_event.wait(timeout = 5.0)
+            # stop if the application is shutting down
+            if Application.getInstance().isShuttingDown():
+                return
+
+            self._service_changed_request_event.clear()
+
+            # handle all pending requests
+            reschedule_requests = []  # a list of requests that have failed so later they will get re-scheduled
+            while not self._service_changed_request_queue.empty():
+                request = self._service_changed_request_queue.get()
+                zeroconf, service_type, name, state_change = request
+                try:
+                    result = self._onServiceChanged(zeroconf, service_type, name, state_change)
+                    if not result:
+                        reschedule_requests.append(request)
+                except Exception:
+                    Logger.logException("e", "Failed to get service info for [%s] [%s], the request will be rescheduled",
+                                        service_type, name)
+                    reschedule_requests.append(request)
+
+            # re-schedule the failed requests if any
+            if reschedule_requests:
+                for request in reschedule_requests:
+                    self._service_changed_request_queue.put(request)
+
+    @pyqtSlot()
+    def openControlPanel(self):
+        Logger.log("d", "Opening print jobs web UI...")
+        selected_device = self.getOutputDeviceManager().getActiveDevice()
+        if isinstance(selected_device, NetworkClusterPrinterOutputDevice.NetworkClusterPrinterOutputDevice):
+            QDesktopServices.openUrl(QUrl(selected_device.getPrintJobsUrl()))
