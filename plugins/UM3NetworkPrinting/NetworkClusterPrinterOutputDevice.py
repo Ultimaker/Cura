@@ -255,7 +255,8 @@ class NetworkClusterPrinterOutputDevice(NetworkPrinterOutputDevice.NetworkPrinte
         self._request_job = [nodes, file_name, filter_by_machine, file_handler, kwargs]
 
         # the build plates to be sent
-        self._job_list = list(getattr(Application.getInstance().getController().getScene(), "gcode_list").keys())
+        gcodes = getattr(Application.getInstance().getController().getScene(), "gcode_list")
+        self._job_list = list(gcodes.keys())
         Logger.log("d", "build plates to be sent to printer: %s", (self._job_list))
 
         if self._stage != OutputStage.ready:
@@ -268,7 +269,7 @@ class NetworkClusterPrinterOutputDevice(NetworkPrinterOutputDevice.NetworkPrinte
             return
 
         self._add_build_plate_number = len(self._job_list) > 1
-        if len(self._printers) > 1:
+        if len(self._printers) > 1 or len(gcodes) > 1:
             self.spawnPrintView()  # Ask user how to print it.
         elif len(self._printers) == 1:
             # If there is only one printer, don't bother asking.
