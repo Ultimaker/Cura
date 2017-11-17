@@ -136,16 +136,22 @@ class GCodeReader(MeshReader):
 
     def _gCode0(self, position, params, path):
         x, y, z, e = position
-        x = params.x if params.x is not None else x
-        y = params.y if params.y is not None else y
-        z = params.z if params.z is not None else position.z
+        if self._is_absolute_positioning:
+            x = params.x if params.x is not None else x
+            y = params.y if params.y is not None else y
+            z = params.z if params.z is not None else position.z
+        else:
+            x = x + params.x if params.x is not None else x
+            y = y + params.y if params.y is not None else y
+            z = z + params.z if params.z is not None else position.z
 
         if params.e is not None:
-            if params.e > e[self._extruder_number]:
+            new_extrusion_value = params.e if self._is_absolute_positioning else e[self._extruder_number] + params.e
+            if new_extrusion_value > e[self._extruder_number]:
                 path.append([x, y, z, self._layer_type])  # extrusion
             else:
                 path.append([x, y, z, LayerPolygon.MoveRetractionType])  # retraction
-            e[self._extruder_number] = params.e
+            e[self._extruder_number] = new_extrusion_value
 
             # Only when extruding we can determine the latest known "layer height" which is the difference in height between extrusions
             # Also, 1.5 is a heuristic for any priming or whatsoever, we skip those.
