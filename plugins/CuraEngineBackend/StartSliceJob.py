@@ -9,7 +9,6 @@ import time
 from UM.Job import Job
 from UM.Application import Application
 from UM.Logger import Logger
-from UM.Decorators import deprecated
 
 from UM.Scene.SceneNode import SceneNode
 from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
@@ -245,20 +244,6 @@ class StartSliceJob(Job):
                 setting.value = self._expandGcodeTokens(key, value, settings)
             else:
                 setting.value = str(stack.getProperty(key, "value")).encode("utf-8")
-            Job.yieldThread()
-
-    ##  Create extruder message from global stack
-    @deprecated("Extruder stack is always used since version 3.1, even with single extrusion machines", "3.1")
-    def _buildExtruderMessageFromGlobalStack(self, stack):
-        message = self._slice_message.addRepeatedMessage("extruders")
-
-        for key in stack.getAllKeys():
-            # Do not send settings that are not settable_per_extruder.
-            if not stack.getProperty(key, "settable_per_extruder"):
-                continue
-            setting = message.getMessage("settings").addRepeatedMessage("settings")
-            setting.name = key
-            setting.value = str(stack.getProperty(key, "value")).encode("utf-8")
             Job.yieldThread()
 
     ##  Sends all global settings to the engine.
