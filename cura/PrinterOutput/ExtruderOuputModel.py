@@ -49,7 +49,7 @@ class ExtruderOutputModel(QObject):
     ##  Set the target hotend temperature. This ensures that it's actually sent to the remote.
     @pyqtSlot(int)
     def setTargetHotendTemperature(self, temperature: int):
-        self._setTargetHotendTemperature(temperature)
+        self._printer.getController().setTargetHotendTemperature(self._printer, self, temperature)
         self.updateTargetHotendTemperature(temperature)
 
     @pyqtProperty(int, notify = targetHotendTemperatureChanged)
@@ -59,12 +59,6 @@ class ExtruderOutputModel(QObject):
     @pyqtProperty(int, notify=hotendTemperatureChanged)
     def hotendTemperature(self) -> int:
         return self._hotendTemperature
-
-    ##  Protected setter for the hotend temperature of the connected printer (if any).
-    #   /parameter temperature Temperature hotend needs to go to (in deg celsius)
-    #   /sa setTargetHotendTemperature
-    def _setTargetHotendTemperature(self, temperature):
-        Logger.log("w", "_setTargetHotendTemperature is not implemented by this model")
 
     @pyqtProperty(str, notify = hotendIDChanged)
     def hotendID(self) -> str:

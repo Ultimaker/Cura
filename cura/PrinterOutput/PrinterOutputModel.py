@@ -9,6 +9,7 @@ MYPY = False
 if MYPY:
     from cura.PrinterOutput.PrintJobOutputModel import PrintJobOutputModel
     from cura.PrinterOutput.ExtruderOuputModel import ExtruderOutputModel
+    from cura.PrinterOutput.PrinterOutputController import PrinterOutputController
 
 
 class PrinterOutputModel(QObject):
@@ -18,12 +19,12 @@ class PrinterOutputModel(QObject):
     activePrintJobChanged = pyqtSignal()
     nameChanged = pyqtSignal()
 
-    def __init__(self, parent=None):
+    def __init__(self, output_controller: "PrinterOutputController", parent=None):
         super().__init__(parent)
         self._bed_temperature = 0
         self._target_bed_temperature = 0
         self._name = ""
-
+        self._controller = output_controller
         self._extruders = []  # type: List[ExtruderOutputModel]
 
         self._active_print_job = None  # type: Optional[PrintJobOutputModel]
@@ -34,6 +35,9 @@ class PrinterOutputModel(QObject):
         self._can_pre_heat_bed = True
         self._can_control_manually = True
 
+    def getController(self):
+        return self._controller
+
     @pyqtProperty(str, notify=nameChanged)
     def name(self):
         return self._name
@@ -41,9 +45,6 @@ class PrinterOutputModel(QObject):
     def setName(self, name):
         self._setName(name)
         self.updateName(name)
-
-    def _setName(self, name):
-        Logger.log("w", "_setTargetBedTemperature is not implemented by this model")
 
     def updateName(self, name):
         if self._name != name:
@@ -64,14 +65,8 @@ class PrinterOutputModel(QObject):
     ##  Set the target bed temperature. This ensures that it's actually sent to the remote.
     @pyqtSlot(int)
     def setTargetBedTemperature(self, temperature):
-        self._setTargetBedTemperature(temperature)
+        self._controller.setTargetBedTemperature(self, temperature)
         self.updateTargetBedTemperature(temperature)
-
-    ##  Protected setter for the bed temperature of the connected printer (if any).
-    #   /parameter temperature Temperature bed needs to go to (in deg celsius)
-    #   /sa setTargetBedTemperature
-    def _setTargetBedTemperature(self, temperature):
-        Logger.log("w", "_setTargetBedTemperature is not implemented by this model")
 
     def updateActivePrintJob(self, print_job):
         if self._active_print_job != print_job:
