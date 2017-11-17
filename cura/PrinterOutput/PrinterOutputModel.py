@@ -21,15 +21,13 @@ class PrinterOutputModel(QObject):
     nameChanged = pyqtSignal()
     headPositionChanged = pyqtSignal()
 
-    def __init__(self, output_controller: "PrinterOutputController", extruders: Optional["ExtruderOutputModel"] = None, parent=None):
+    def __init__(self, output_controller: "PrinterOutputController", extruders: List["ExtruderOutputModel"], parent=None):
         super().__init__(parent)
         self._bed_temperature = 0
         self._target_bed_temperature = 0
         self._name = ""
         self._controller = output_controller
-        self._extruders = []  # type: List[ExtruderOutputModel]
-        if self._extruders is not None:
-            self._extruders = extruders
+        self._extruders = extruders
 
         self._head_position = Vector(0, 0, 0)
         self._active_print_job = None  # type: Optional[PrintJobOutputModel]
