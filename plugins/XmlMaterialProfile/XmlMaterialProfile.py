@@ -549,7 +549,7 @@ class XmlMaterialProfile(InstanceContainer):
 
                 definitions = ContainerRegistry.getInstance().findDefinitionContainers(id = machine_id)
                 if not definitions:
-                    Logger.log("w", "No definition found for machine ID %s", machine_id)
+                    # Logger.log("w", "No definition found for machine ID %s", machine_id)
                     continue
 
                 definition = definitions[0]

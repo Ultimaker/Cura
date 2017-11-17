@@ -396,7 +396,9 @@ class CuraContainerStack(ContainerStack):
     #   \note This method assumes the stack has a valid machine definition.
     def findDefaultVariant(self) -> Optional[ContainerInterface]:
         definition = self._getMachineDefinition()
-        if not definition.getMetaDataEntry("has_variants"):
+        # has_variants can be overridden in other containers and stacks.
+        # In the case of UM2, it is overridden in the GlobalStack
+        if not self.getMetaDataEntry("has_variants"):
             # If the machine does not use variants, we should never set a variant.
             return None
 

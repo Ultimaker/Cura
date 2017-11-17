@@ -644,9 +644,10 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         # Get the stack(s) saved in the workspace.
         Logger.log("d", "Workspace loading is checking stacks containers...")
 
-        # --
         # load global stack file
         try:
+            stack = None
+
             if self._resolve_strategies["machine"] == "override":
                 container_stacks = self._container_registry.findContainerStacks(id = global_stack_id_original)
                 stack = container_stacks[0]
@@ -682,12 +683,11 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                 self._container_registry.addContainer(stack)
                 containers_added.append(stack)
             else:
-                Logger.log("e", "Resolve strategy of %s for machine is not supported",
-                           self._resolve_strategies["machine"])
+                Logger.log("e", "Resolve strategy of %s for machine is not supported", self._resolve_strategies["machine"])
 
             # Create a new definition_changes container if it was empty
             if stack.definitionChanges == self._container_registry.getEmptyInstanceContainer():
-                stack.setDefinitionChanges(CuraStackBuilder.createDefinitionChangesContainer(stack, stack._id + "_settings"))
+                stack.setDefinitionChanges(CuraStackBuilder.createDefinitionChangesContainer(stack, stack.getId() + "_settings"))
             global_stack = stack
             Job.yieldThread()
         except:
@@ -697,16 +697,6 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                 self._container_registry.removeContainer(container.getId())
             return
 
-        #
-        # Use the number of extruders from the global stack instead of the number of extruder stacks this project file
-        # contains. The Custom FDM Printer can have multiple extruders, but the actual number of extruders in used is
-        # defined in the global stack.
-        # Because for single-extrusion machines, there won't be an extruder stack, so relying on the the extruder count
-        # in the global stack can avoid problems in those cases.
-        #
-        extruder_count_from_global_stack = global_stack.getProperty("machine_extruder_count", "value")
-
-        # --
         # load extruder stack files
         try:
             for extruder_stack_file in extruder_stack_files:
@@ -749,9 +739,15 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
 
                 # Create a new definition_changes container if it was empty
                 if stack.definitionChanges == self._container_registry.getEmptyInstanceContainer():
-                    stack.setDefinitionChanges(CuraStackBuilder.createDefinitionChangesContainer(stack, stack._id + "_settings"))
-                if global_stack.getProperty("machine_extruder_count", "value") > 1:
-                    extruder_stacks.append(stack)
+                    stack.setDefinitionChanges(CuraStackBuilder.createDefinitionChangesContainer(stack, stack.getId() + "_settings"))
+
+                extruder_stacks.append(stack)
+
+            # If not extruder stacks were saved in the project file (pre 3.1) create one manually
+            # We re-use the container registry's addExtruderStackForSingleExtrusionMachine method for this
+            if not extruder_stacks:
+                self._container_registry.addExtruderStackForSingleExtrusionMachine(global_stack, "fdmextruder")
+
         except:
             Logger.logException("w", "We failed to serialize the stack. Trying to clean up.")
             # Something went really wrong. Try to remove any data that we added.
@@ -784,7 +780,6 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             for stack in [global_stack] + extruder_stacks:
                 stack.replaceContainer(_ContainerIndexes.Quality, empty_quality_container)
 
-        #
         # Replacing the old containers if resolve is "new".
         # When resolve is "new", some containers will get renamed, so all the other containers that reference to those
         # MUST get updated too.
