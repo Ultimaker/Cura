@@ -443,7 +443,10 @@ class CuraContainerRegistry(ContainerRegistry):
                 extruder_stack.setUserChanges(user_container)
                 self.addContainer(user_container)
 
-            extruder_stack.setVariantById("default")
+            variant_id = "default"
+            if machine.variant.getId() != "empty_variant":
+                variant_id = machine.variant.getId()
+            extruder_stack.setVariantById(variant_id)
             extruder_stack.setMaterialById("default")
             extruder_stack.setQualityById("default")
 

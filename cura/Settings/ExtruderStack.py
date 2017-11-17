@@ -115,6 +115,11 @@ class ExtruderStack(CuraContainerStack):
             if has_global_dependencies:
                 self.getNextStack().propertiesChanged.emit(key, properties)
 
+    def findDefaultVariant(self):
+        # The default variant is defined in the machine stack and/or definition, so use the machine stack to find
+        # the default variant.
+        return self.getNextStack().findDefaultVariant()
+
 
 extruder_stack_mime = MimeType(
     name = "application/x-cura-extruderstack",
