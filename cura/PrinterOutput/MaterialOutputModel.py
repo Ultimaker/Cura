@@ -4,7 +4,7 @@
 from PyQt5.QtCore import pyqtSignal, pyqtProperty, QObject, QVariant, pyqtSlot
 
 
-class MaterialModel(QObject):
+class MaterialOutputModel(QObject):
     def __init__(self, guid, type, color, brand, parent = None):
         super().__init__(parent)
         self._guid = guid

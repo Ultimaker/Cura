@@ -8,29 +8,29 @@ from typing import Optional
 
 MYPY = False
 if MYPY:
-    from cura.PrinterOutput.PrinterModel import PrinterModel
-    from cura.PrinterOutput.MaterialModel import MaterialModel
+    from cura.PrinterOutput.PrinterOutputModel import PrinterOutputModel
+    from cura.PrinterOutput.MaterialOutputModel import MaterialOutputModel
 
 
-class ExtruderModel(QObject):
+class ExtruderOutputModel(QObject):
     hotendIDChanged = pyqtSignal()
     targetHotendTemperatureChanged = pyqtSignal()
     hotendTemperatureChanged = pyqtSignal()
     activeMaterialChanged = pyqtSignal()
 
-    def __init__(self, printer: "PrinterModel", parent=None):
+    def __init__(self, printer: "PrinterOutputModel", parent=None):
         super().__init__(parent)
         self._printer = printer
         self._target_hotend_temperature = 0
         self._hotend_temperature = 0
         self._hotend_id = ""
-        self._active_material = None  # type: Optional[MaterialModel]
+        self._active_material = None  # type: Optional[MaterialOutputModel]
 
     @pyqtProperty(QObject, notify = activeMaterialChanged)
-    def activeMaterial(self) -> "MaterialModel":
+    def activeMaterial(self) -> "MaterialOutputModel":
         return self._active_material
 
-    def updateActiveMaterial(self, material: Optional["MaterialModel"]):
+    def updateActiveMaterial(self, material: Optional["MaterialOutputModel"]):
         if self._active_material != material:
             self._active_material = material
             self.activeMaterialChanged.emit()

@@ -7,11 +7,11 @@ from typing import Optional, List
 
 MYPY = False
 if MYPY:
-    from cura.PrinterOutput.PrintJobModel import PrintJobModel
-    from cura.PrinterOutput.ExtruderModel import ExtruderModel
+    from cura.PrinterOutput.PrintJobOutputModel import PrintJobOutputModel
+    from cura.PrinterOutput.ExtruderOuputModel import ExtruderOutputModel
 
 
-class PrinterModel(QObject):
+class PrinterOutputModel(QObject):
     bedTemperatureChanged = pyqtSignal()
     targetBedTemperatureChanged = pyqtSignal()
     printerStateChanged = pyqtSignal()
@@ -24,9 +24,9 @@ class PrinterModel(QObject):
         self._target_bed_temperature = 0
         self._name = ""
 
-        self._extruders = []  # type: List[ExtruderModel]
+        self._extruders = []  # type: List[ExtruderOutputModel]
 
-        self._active_print_job = None  # type: Optional[PrintJobModel]
+        self._active_print_job = None  # type: Optional[PrintJobOutputModel]
 
         # Features of the printer;
         self._can_pause = True
