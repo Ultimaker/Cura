@@ -308,8 +308,11 @@ class PrintInformation(QObject):
         # name is "" when I first had some meshes and afterwards I deleted them so the naming should start again
         is_empty = name == ""
         if is_empty or (self._base_name == "" and self._base_name != name):
+            # remove ".curaproject" suffix from (imported) the file name
+            if name.endswith(".curaproject"):
+                name = name[:name.rfind(".curaproject")]
             self._base_name = name
-            self._updateJobName( empty_name = is_empty)
+            self._updateJobName(empty_name = is_empty)
 
     ##  Created an acronymn-like abbreviated machine name from the currently active machine name
     #   Called each time the global stack is switched
