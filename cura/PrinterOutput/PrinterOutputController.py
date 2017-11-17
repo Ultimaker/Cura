@@ -31,3 +31,9 @@ class PrinterOutputController:
 
     def moveHead(self, printer: "PrinterOutputModel", x, y, z, speed):
         pass
+
+    def homeBed(self, printer):
+        pass
+
+    def homeHead(self, printer):
+        pass

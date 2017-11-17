@@ -40,6 +40,14 @@ class PrinterOutputModel(QObject):
         self._can_pre_heat_bed = True
         self._can_control_manually = True
 
+    @pyqtSlot()
+    def homeHead(self):
+        self._controller.homeHead(self)
+
+    @pyqtSlot()
+    def homeBed(self):
+        self._controller.homeBed(self)
+
     @pyqtProperty("QVariantList", constant = True)
     def extruders(self):
         return self._extruders
