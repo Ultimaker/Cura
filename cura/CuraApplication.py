@@ -217,7 +217,7 @@ class CuraApplication(QtApplication):
             "CuraEngineBackend",
             "UserAgreement",
             "SolidView",
-            "LayerView",
+            "SimulationView",
             "STLReader",
             "SelectionTool",
             "CameraTool",
@@ -1383,7 +1383,7 @@ class CuraApplication(QtApplication):
 
             extension = os.path.splitext(filename)[1]
             if extension.lower() in self._non_sliceable_extensions:
-                self.getController().setActiveView("LayerView")
+                self.getController().setActiveView("SimulationView")
                 view = self.getController().getActiveView()
                 view.resetLayerData()
                 view.setLayer(9999999)
