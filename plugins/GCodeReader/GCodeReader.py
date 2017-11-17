@@ -140,9 +140,9 @@ class GCodeReader(MeshReader):
             y = params.y if params.y is not None else y
             z = params.z if params.z is not None else position.z
         else:
-            x = x + params.x if params.x is not None else x
-            y = y + params.y if params.y is not None else y
-            z = z + params.z if params.z is not None else position.z
+            x += params.x if params.x is not None else x
+            y += params.y if params.y is not None else y
+            z += params.z if params.z is not None else position.z
 
         if params.e is not None:
             new_extrusion_value = params.e if self._is_absolute_positioning else e[self._extruder_number] + params.e
