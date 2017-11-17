@@ -8,15 +8,15 @@ msgstr ""
 "Project-Id-Version: Cura 3.0\n"
 "Report-Msgid-Bugs-To: r.dulek@ultimaker.com\n"
 "POT-Creation-Date: 2017-08-02 16:53+0000\n"
-"PO-Revision-Date: 2017-11-10 20:08+0900\n"
+"PO-Revision-Date: 2017-11-17 15:52+0100\n"
 "Language-Team: TEAM\n"
 "Language: xx_XX\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
 "Last-Translator: \n"
-"X-Generator: Poedit 2.0.4\n"
+"X-Generator: Poedit 1.8.7.1\n"
 
 #: Manually added for plugins/UM3NetworkPrinting/PrinterInfoBlock.qml
 msgctxt "@label:status"
@@ -51,7 +51,7 @@ msgstr "この層で終了します:"
 #: Manually added for plugins/UM3NetworkPrinting/DiscoverUM3Action.qml
 msgctxt "@label"
 msgid "This printer is the host for a group of %1 Ultimaker 3 printers."
-msgstr "このプリンターがUltimaker3のグループのホストプリンターです。"
+msgstr "このプリンターはUltimaker3　%1グループのホストプリンターです。"
 
 #: Manually added for plugins/UM3NetworkPrinting/NetworkClusterPrinterOutputDevice.py
 msgctxt "@info:status"
@@ -86,7 +86,7 @@ msgstr "プリンターの設定"
 #: /home/ruben/Projects/Cura/plugins/XRayView/__init__.py:12
 msgctxt "@item:inlistbox"
 msgid "X-Ray view"
-msgstr "X-Rayビューイング"
+msgstr "透視ビューイング"
 
 #: /home/ruben/Projects/Cura/plugins/X3DReader/__init__.py:13
 msgctxt "@item:inlistbox"
@@ -243,7 +243,7 @@ msgstr "プリンターが未接続のため、ファームウェアをアップ
 #, python-format
 msgctxt "@info"
 msgid "Could not find firmware required for the printer at %s."
-msgstr "プリンターに必要なファームウェアを探せませんでした。"
+msgstr "プリンター(%s)に必要なファームウェアを探せませんでした。"
 
 #: /home/ruben/Projects/Cura/plugins/USBPrinting/USBPrinterOutputDeviceManager.py:122
 msgctxt "@info:title"
@@ -259,13 +259,13 @@ msgstr "リムーバブルドライブに保存"
 #, python-brace-format
 msgctxt "@item:inlistbox"
 msgid "Save to Removable Drive {0}"
-msgstr "リムーバブルドライブに保存"
+msgstr "リムーバブルドライブ{0}に保存"
 
 #: /home/ruben/Projects/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:89
 #, python-brace-format
 msgctxt "@info:progress Don't translate the XML tags <filename>!"
 msgid "Saving to Removable Drive <filename>{0}</filename>"
-msgstr "リムーバブルドライブに保存中"
+msgstr "リムーバブルドライブ<filename>{0}</filename>に保存中"
 
 #: /home/ruben/Projects/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:89
 msgctxt "@info:title"
@@ -277,20 +277,20 @@ msgstr "保存中"
 #, python-brace-format
 msgctxt "@info:status Don't translate the XML tags <filename> or <message>!"
 msgid "Could not save to <filename>{0}</filename>: <message>{1}</message>"
-msgstr "保存できませんでした。"
+msgstr "<filename>{0}</filename>を保存できませんでした: <message>{1}</message>"
 
 #: /home/ruben/Projects/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:118
 #, python-brace-format
 msgctxt "@info:status Don't translate the tag {device}!"
 msgid "Could not find a file name when trying to write to {device}."
-msgstr "デバイスに書き出すためのファイル名が見つかりませんでした。"
+msgstr "デバイス{device}に書き出すためのファイル名が見つかりませんでした。"
 
 #: /home/ruben/Projects/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:131
 #: /home/ruben/Projects/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:146
 #, python-brace-format
 msgctxt "@info:status"
 msgid "Could not save to removable drive {0}: {1}"
-msgstr "リムーバブルドライブに保存することができませんでした。"
+msgstr "リムーバブルドライブ{0}に保存することができませんでした: {1}"
 
 #: /home/ruben/Projects/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:132
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/NetworkPrinterOutputDevice.py:675
@@ -306,7 +306,7 @@ msgstr "エラー"
 #, python-brace-format
 msgctxt "@info:status"
 msgid "Saved to Removable Drive {0} as {1}"
-msgstr "リムーバブルドライブに保存"
+msgstr "リムーバブルドライブ{0}に {1}として保存"
 
 #: /home/ruben/Projects/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:140
 msgctxt "@info:title"
@@ -322,13 +322,13 @@ msgstr "取り出す"
 #, python-brace-format
 msgctxt "@action"
 msgid "Eject removable device {0}"
-msgstr "リムーバブルデバイスを取り出す"
+msgstr "リムーバブルデバイス{0}を取り出す"
 
 #: /home/ruben/Projects/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:156
 #, python-brace-format
 msgctxt "@info:status"
 msgid "Ejected {0}. You can now safely remove the drive."
-msgstr "取り出し完了。デバイスを安全に取り外せます。"
+msgstr "{0}取り出し完了。デバイスを安全に取り外せます。"
 
 #: /home/ruben/Projects/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:156
 msgctxt "@info:title"
@@ -339,7 +339,7 @@ msgstr "ハードウェアを安全に取り外します。"
 #, python-brace-format
 msgctxt "@info:status"
 msgid "Failed to eject {0}. Another program may be using the drive."
-msgstr "取り出し失敗。他のプログラムがデバイスを使用しているため。"
+msgstr "{0}取り出し失敗。他のプログラムがデバイスを使用しているため。"
 
 #: /home/ruben/Projects/Cura/plugins/RemovableDriveOutputDevice/WindowsRemovableDrivePlugin.py:68
 msgctxt "@item:intext"
@@ -476,7 +476,8 @@ msgstr "ネットワークへの接続が切断されました。プリンター
 #, python-format
 msgctxt "@info:status"
 msgid "Unable to start a new print job, printer is busy. Current printer status is %s."
-msgstr "プリンターが利用中です。新しいプリントジョブを開始することができませんでした。現在の印刷状況は%です。"
+msgstr ""
+"プリンターが利用中です。新しいプリントジョブを開始することができませんでした。現在のプリンターのステータスは%sです。"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/NetworkPrinterOutputDevice.py:650
 msgctxt "@info:title"
@@ -488,42 +489,42 @@ msgstr "プリンターのステータス"
 #, python-brace-format
 msgctxt "@info:status"
 msgid "Unable to start a new print job. No Printcore loaded in slot {0}"
-msgstr "プリントコアがスロットに入っていません。プリントジョブを開始できません。"
+msgstr "プリントコアがスロット{0}に入っていません。プリントジョブを開始できません。"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/NetworkPrinterOutputDevice.py:682
 #: /home/ruben/Projects/Cura/plugins/CuraPrintClusterUpload/NetworkPrinterOutputDevice.py:667
 #, python-brace-format
 msgctxt "@info:status"
 msgid "Unable to start a new print job. No material loaded in slot {0}"
-msgstr "フィラメントがスロットに入っていません。プリントジョブを開始できません。"
+msgstr "フィラメントがスロット{0}に入っていません。プリントジョブを開始できません。"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/NetworkPrinterOutputDevice.py:692
 #: /home/ruben/Projects/Cura/plugins/CuraPrintClusterUpload/NetworkPrinterOutputDevice.py:676
 #, python-brace-format
 msgctxt "@label"
 msgid "Not enough material for spool {0}."
-msgstr "フィラメントの残量が足りません。"
+msgstr "フィラメント{0}の残量が足りません。"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/NetworkPrinterOutputDevice.py:702
 #: /home/ruben/Projects/Cura/plugins/CuraPrintClusterUpload/NetworkPrinterOutputDevice.py:686
 #, python-brace-format
 msgctxt "@label"
 msgid "Different PrintCore (Cura: {0}, Printer: {1}) selected for extruder {2}"
-msgstr "異なるプリントコアが入っています。(Cura:{0}, プリンター{1})エクストルーダー{2}"
+msgstr "異なるプリントコアが入っています(Cura:{0}, プリンター{1})エクストルーダー{2}"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/NetworkPrinterOutputDevice.py:716
 #: /home/ruben/Projects/Cura/plugins/CuraPrintClusterUpload/NetworkPrinterOutputDevice.py:700
 #, python-brace-format
 msgctxt "@label"
 msgid "Different material (Cura: {0}, Printer: {1}) selected for extruder {2}"
-msgstr "異なるフィラメントが入っています。(Cura:{0}, プリンター{1})エクストルーダー{2}"
+msgstr "異なるフィラメントが入っています(Cura:{0}, プリンター{1})エクストルーダー{2}"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/NetworkPrinterOutputDevice.py:724
 #: /home/ruben/Projects/Cura/plugins/CuraPrintClusterUpload/NetworkPrinterOutputDevice.py:708
 #, python-brace-format
 msgctxt "@label"
 msgid "PrintCore {0} is not properly calibrated. XY calibration needs to be performed on the printer."
-msgstr "プリントコア{0}が適切にカリブレーションできていません。XYキャリブレーションをプリンターで行ってください。"
+msgstr "プリントコア{0}が適切にキャリブレーションできていません。XYキャリブレーションをプリンターで行ってください。"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/NetworkPrinterOutputDevice.py:729
 #: /home/ruben/Projects/Cura/plugins/CuraPrintClusterUpload/NetworkPrinterOutputDevice.py:713
@@ -625,7 +626,7 @@ msgstr "このプリンターは、繋がっているUltimaker3プリンター�
 #, python-brace-format
 msgctxt "Count is number of printers."
 msgid "This printer is the host for a group of {count} connected Ultimaker 3 printers."
-msgstr "このプリンターは{台数}繋がっているUltimaker3プリンターのグループのホストプリンターです。"
+msgstr "このプリンターは{count}繋がっているUltimaker3プリンターのグループのホストプリンターです。"
 
 #: /home/ruben/Projects/Cura/plugins/CuraPrintClusterUpload/NetworkClusterPrinterOutputDevice.py:105
 #, python-brace-format
@@ -693,7 +694,7 @@ msgstr ""
 #, python-format
 msgctxt "@info:title The %s gets replaced with the printer name."
 msgid "New %s firmware available"
-msgstr "新しい利用可能なファームウェアのアップデートがあります。"
+msgstr "新しい利用可能な%sファームウェアのアップデートがあります。"
 
 #: /home/ruben/Projects/Cura/plugins/FirmwareUpdateChecker/FirmwareUpdateCheckerJob.py:73
 #: /home/ruben/Projects/Cura/plugins/PluginBrowser/PluginBrowser.qml:149
@@ -732,7 +733,7 @@ msgstr "構成"
 #, python-format
 msgctxt "@info:status"
 msgid "Error while starting %s!"
-msgstr " %を開始中にエラーが発生"
+msgstr "%sを開始中にエラーが発生"
 
 #: /home/ruben/Projects/Cura/plugins/PostProcessingPlugin/PostProcessingPlugin.py:24
 msgid "Modify G-Code"
@@ -821,7 +822,7 @@ msgstr "スライスできません。"
 #, python-brace-format
 msgctxt "@info:status"
 msgid "Unable to slice with the current settings. The following settings have errors: {0}"
-msgstr "現在の設定でスライスが完了できません。以下の設定にエラーがあります。{0}"
+msgstr "現在の設定でスライスが完了できません。以下の設定にエラーがあります: {0}"
 
 #: /home/ruben/Projects/Cura/plugins/CuraEngineBackend/CuraEngineBackend.py:306
 msgctxt "@info:status"
@@ -888,7 +889,7 @@ msgstr "プラグインを見る"
 #, python-brace-format
 msgctxt "@info:status"
 msgid "Failed to get plugin ID from <filename>{0}</filename>"
-msgstr "プラグインIDを<filename>{0}</filename>取得することに失敗しました。"
+msgstr "<filename>{0}</filename>からプラグインIDを取得することに失敗しました。"
 
 #: /home/ruben/Projects/Cura/plugins/PluginBrowser/PluginBrowser.py:164
 msgctxt "@info:tile"
@@ -1069,7 +1070,7 @@ msgstr "すでに存在するファイルです。"
 #, python-brace-format
 msgctxt "@label Don't translate the XML tag <filename>!"
 msgid "The file <filename>{0}</filename> already exists. Are you sure you want to overwrite it?"
-msgstr "<filename>{0}</filename> は既に存在します。ファイルを上書きしますか？ "
+msgstr "<filename>{0}</filename> は既に存在します。ファイルを上書きしますか？"
 
 #: /home/ruben/Projects/Cura/cura/Settings/ContainerManager.py:815
 msgctxt "@label"
@@ -1111,7 +1112,7 @@ msgstr "フィラメント直径を変更を取り消す"
 #, python-brace-format
 msgctxt "@info:status Don't translate the XML tags <filename> or <message>!"
 msgid "Failed to export profile to <filename>{0}</filename>: <message>{1}</message>"
-msgstr "<filename>{0}</filename>: <message>{1}</message>にプロファイルを書き出すのに失敗しました。"
+msgstr "<filename>{0}</filename>にプロファイルを書き出すのに失敗しました: <message>{1}</message>"
 
 #: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:150
 #, python-brace-format
@@ -1144,7 +1145,7 @@ msgstr "<filename>{0}</filename>: <message>{1}</message>からプロファイル
 #, python-brace-format
 msgctxt "@info:status"
 msgid "Successfully imported profile {0}"
-msgstr "プロファイルの取り込み完了"
+msgstr "プロファイル {0}の取り込み完了"
 
 #: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:254
 #, python-brace-format
@@ -1204,7 +1205,7 @@ msgid ""
 "    "
 msgstr ""
 "<p>不可解なエラーが発生しリカバリーできませんでした。</p>\n"
-"<p>この情報をバグとして報告してください。 <a href=“http://github.com/Ultimaker/Cura/issues”>http://github.com/Ultimaker/"
+"<p>この情報をバグとして報告してください。 <a href=\"http://github.com/Ultimaker/Cura/issues\">http://github.com/Ultimaker/"
 "Cura/issues</a></p>\n"
 "    "
 
@@ -1234,19 +1235,19 @@ msgctxt ""
 "@info 'width', 'depth' and 'height' are variable names that must NOT be translated; just translate the format of ##x##x## "
 "mm."
 msgid "%(width).1f x %(depth).1f x %(height).1f mm"
-msgstr "%(幅).1f x %(奥行き).1f x %(高さ).1f mm"
+msgstr "%(width).1f x %(depth).1f x %(height).1f mm"
 
 #: /home/ruben/Projects/Cura/cura/CuraApplication.py:1295
 #, python-brace-format
 msgctxt "@info:status"
 msgid "Only one G-code file can be loaded at a time. Skipped importing {0}"
-msgstr "一度に一つのG-codeしか読み取れません。取り込みをスキップしました{0}。"
+msgstr "一度に一つのG-codeしか読み取れません。{0}の取り込みをスキップしました。"
 
 #: /home/ruben/Projects/Cura/cura/CuraApplication.py:1304
 #, python-brace-format
 msgctxt "@info:status"
 msgid "Can't open any other file if G-code is loading. Skipped importing {0}"
-msgstr "G-codeを読み込み中は他のファイルを開くことができません。取り込みをスキップしました{0}。"
+msgstr "G-codeを読み込み中は他のファイルを開くことができません。{0}の取り込みをスキップしました。"
 
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:59
 msgctxt "@title"
@@ -1571,8 +1572,8 @@ msgstr "更新"
 msgctxt "@label"
 msgid "If your printer is not listed, read the <a href='%1'>network printing troubleshooting guide</a>"
 msgstr ""
-"お持ちのプリンターがリストにない場合、<a href=‘%1’>ネットワークプリンティングトラブルシューティングガイド</a>を読んでくだ"
-"さい。"
+"お持ちのプリンターがリストにない場合、<a href='%1'>ネットワーク・プリンティング・トラブルシューティング・ガイド</a>を読ん"
+"でください。"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/DiscoverUM3Action.qml:223
 #: /home/ruben/Projects/Cura/plugins/CuraPrintClusterUpload/DiscoverUM3Action.qml:223
@@ -1668,7 +1669,7 @@ msgstr "このプリンターは、繋がっているUltimaker3プリンター�
 #: /home/ruben/Projects/Cura/plugins/CuraPrintClusterUpload/DiscoverUM3Action.qml:287
 msgctxt "@label"
 msgid "This printer is the host for a group of %1 connected Ultimaker 3 printers"
-msgstr "このプリンターは繋がっているUltimaker3プリンターのグループのホストです。"
+msgstr "このプリンターは繋がっているUltimaker3プリンターの%1グループのホストです。"
 
 #: /home/ruben/Projects/Cura/plugins/CuraPrintClusterUpload/PrintWindow.qml:24
 msgctxt "@title:window"
@@ -2087,12 +2088,10 @@ msgstr "プロファイル内にない"
 # Can’t edit the Japanese text
 #: /home/ruben/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:217
 #: /home/ruben/Projects/Cura/resources/qml/WorkspaceSummaryDialog.qml:177
-#, fuzzy
 msgctxt "@action:label"
 msgid "%1 override"
 msgid_plural "%1 overrides"
-msgstr[0] "プロファイルを無効にする"
-msgstr[1] ""
+msgstr[0] "%1個の設定を上書き"
 
 #: /home/ruben/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:228
 msgctxt "@action:label"
@@ -2100,12 +2099,13 @@ msgid "Derivative from"
 msgstr "次から引き出す"
 
 # can’t inset the japanese text
+# %1: print quality profile name
+# %2: number of overridden ssettings
 #: /home/ruben/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:233
 msgctxt "@action:label"
 msgid "%1, %2 override"
 msgid_plural "%1, %2 overrides"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%2の%1個の設定を上書き"
 
 #: /home/ruben/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:249
 msgctxt "@action:label"
@@ -2138,7 +2138,7 @@ msgstr "ビジブル設定:"
 #: /home/ruben/Projects/Cura/resources/qml/WorkspaceSummaryDialog.qml:221
 msgctxt "@action:label"
 msgid "%1 out of %2"
-msgstr "%2のうち％1"
+msgstr "%2のうち%1"
 
 #: /home/ruben/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:363
 msgctxt "@action:warning"
@@ -3063,12 +3063,12 @@ msgstr "フィラメントを取り込む"
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/MaterialsPage.qml:320
 msgctxt "@info:status Don't translate the XML tags <filename> or <message>!"
 msgid "Could not import material <filename>%1</filename>: <message>%2</message>"
-msgstr " <filename>%1</filename>: <message>%2</message>フィラメントを取り込むことができない。"
+msgstr " <filename>%1</filename>フィラメントを取り込むことができない: <message>%2</message>"
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/MaterialsPage.qml:324
 msgctxt "@info:status Don't translate the XML tag <filename>!"
 msgid "Successfully imported material <filename>%1</filename>"
-msgstr "フィラメントの取り込みに成功しました。"
+msgstr "フィラメント<filename>%1</filename>の取り込みに成功しました。"
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/MaterialsPage.qml:343
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/MaterialsPage.qml:358
@@ -3079,12 +3079,12 @@ msgstr "フィラメントを書き出す"
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/MaterialsPage.qml:362
 msgctxt "@info:status Don't translate the XML tags <filename> and <message>!"
 msgid "Failed to export material to <filename>%1</filename>: <message>%2</message>"
-msgstr "フィラメントの書き出しに失敗しました <ファイルネーム>%1</ファイルネーム>: <メッセージ>%2</メッセージ>"
+msgstr "フィラメントの書き出しに失敗しました <filename>%1</filename>: <message>%2</message>"
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/MaterialsPage.qml:368
 msgctxt "@info:status Don't translate the XML tag <filename>!"
 msgid "Successfully exported material to <filename>%1</filename>"
-msgstr "無事に<filename>%1</filename>にフィラメントを書き出しました。"
+msgstr "フィラメントの<filename>%1</filename>への書き出しが完了ました。"
 
 #: /home/ruben/Projects/Cura/resources/qml/AddMachineDialog.qml:18 /home/ruben/Projects/Cura/resources/qml/Cura.qml:766
 msgctxt "@title:window"
@@ -3359,7 +3359,7 @@ msgstr "<b>カスタムプリントセットアップ</b><br/><br/>スライス�
 #: /home/ruben/Projects/Cura/resources/qml/Menus/MaterialMenu.qml:35
 msgctxt "@title:menuitem %1 is the automatically selected material"
 msgid "Automatic: %1"
-msgstr "自動: %1"
+msgstr "自動選択: %1"
 
 #: /home/ruben/Projects/Cura/resources/qml/Menus/ViewMenu.qml:12
 msgctxt "@title:menu menubar:toplevel"
@@ -3369,7 +3369,7 @@ msgstr "&ビュー"
 #: /home/ruben/Projects/Cura/resources/qml/Menus/NozzleMenu.qml:26
 msgctxt "@title:menuitem %1 is the nozzle currently loaded in the printer"
 msgid "Automatic: %1"
-msgstr "自動: %1"
+msgstr "自動選択: %1"
 
 # can’t enter japanese texts
 #: /home/ruben/Projects/Cura/resources/qml/Menus/ContextMenu.qml:25
@@ -3377,7 +3377,6 @@ msgctxt "@label"
 msgid "Print Selected Model With:"
 msgid_plural "Print Selected Models With:"
 msgstr[0] ""
-msgstr[1] ""
 
 # can’t eneter japanese texts
 #: /home/ruben/Projects/Cura/resources/qml/Menus/ContextMenu.qml:83
@@ -3385,7 +3384,6 @@ msgctxt "@title:window"
 msgid "Multiply Selected Model"
 msgid_plural "Multiply Selected Models"
 msgstr[0] ""
-msgstr[1] ""
 
 #: /home/ruben/Projects/Cura/resources/qml/Menus/ContextMenu.qml:108
 msgctxt "@label"
@@ -3580,7 +3578,6 @@ msgctxt "@action:inmenu menubar:edit"
 msgid "Delete &Selected Model"
 msgid_plural "Delete &Selected Models"
 msgstr[0] ""
-msgstr[1] ""
 
 # can’t enter japanese text
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:196
@@ -3588,7 +3585,6 @@ msgctxt "@action:inmenu menubar:edit"
 msgid "Center Selected Model"
 msgid_plural "Center Selected Models"
 msgstr[0] ""
-msgstr[1] ""
 
 # can’t edit japanese text
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:205
@@ -3596,7 +3592,6 @@ msgctxt "@action:inmenu menubar:edit"
 msgid "Multiply Selected Model"
 msgid_plural "Multiply Selected Models"
 msgstr[0] ""
-msgstr[1] ""
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:214
 msgctxt "@action:inmenu"
@@ -3706,7 +3701,7 @@ msgstr "スライス中…"
 #: /home/ruben/Projects/Cura/resources/qml/SaveButton.qml:36
 msgctxt "@label:PrintjobStatus %1 is target operation"
 msgid "Ready to %1"
-msgstr "準備に%1"
+msgstr "%1の準備完了"
 
 #: /home/ruben/Projects/Cura/resources/qml/SaveButton.qml:38
 msgctxt "@label:PrintjobStatus"
@@ -3875,12 +3870,12 @@ msgstr "プロジェクトを保存"
 #: /home/ruben/Projects/Cura/resources/qml/WorkspaceSummaryDialog.qml:134
 msgctxt "@action:label"
 msgid "Extruder %1"
-msgstr "エクストルーダー"
+msgstr "エクストルーダー%1"
 
 #: /home/ruben/Projects/Cura/resources/qml/WorkspaceSummaryDialog.qml:144
 msgctxt "@action:label"
 msgid "%1 & material"
-msgstr "フィラメント"
+msgstr "%1とフィラメント"
 
 #: /home/ruben/Projects/Cura/resources/qml/WorkspaceSummaryDialog.qml:240
 msgctxt "@action:label"
@@ -3979,15 +3974,14 @@ msgstr "ブリムまたはラフトのプリントの有効化。それぞれ、
 #: /home/ruben/Projects/Cura/resources/qml/SidebarSimple.qml:883
 msgctxt "@label"
 msgid "Need help improving your prints?<br>Read the <a href='%1'>Ultimaker Troubleshooting Guides</a>"
-msgstr "プリントにヘルプが必要ですか？<br>読んでください。 <a href=‘%1’>Ultimakerトラブルシューティングガイド</a>"
+msgstr "プリントにヘルプが必要ですか？<br> <a href='%1'>Ultimakerトラブルシューティングガイド</a>を読んでください。"
 
 # can’t enter japanese
 #: /home/ruben/Projects/Cura/resources/qml/ExtruderButton.qml:16
 msgctxt "@label %1 is filled in with the name of an extruder"
 msgid "Print Selected Model with %1"
 msgid_plural "Print Selected Models with %1"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "選択したモデルを%1で印刷する"
 
 #: /home/ruben/Projects/Cura/resources/qml/AskOpenAsProjectOrModelsDialog.qml:20
 msgctxt "@title:window"
@@ -4022,7 +4016,7 @@ msgstr "フィラメント"
 #: /home/ruben/Projects/Cura/resources/qml/SidebarHeader.qml:374
 msgctxt "@label"
 msgid "<a href='%1'>Check material compatibility</a>"
-msgstr "マテリアルのコンパティビリティを確認"
+msgstr "<a href='%1'>マテリアルのコンパティビリティを確認</a>"
 
 #: /home/ruben/Projects/Cura/resources/qml/SidebarHeader.qml:394
 msgctxt "@tooltip"
@@ -4042,12 +4036,12 @@ msgstr "プリンターの設定アクション"
 #: XRayView/plugin.json
 msgctxt "description"
 msgid "Provides the X-Ray view."
-msgstr "X-Rayビューイング"
+msgstr "透視ビューイング"
 
 #: XRayView/plugin.json
 msgctxt "name"
 msgid "X-Ray View"
-msgstr "X-Rayビュー"
+msgstr "透視ビュー"
 
 #: X3DReader/plugin.json
 msgctxt "description"
