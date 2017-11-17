@@ -4,6 +4,7 @@
 from PyQt5.QtCore import pyqtSignal, pyqtProperty, QObject, QVariant, pyqtSlot
 from UM.Logger import Logger
 from typing import Optional, List
+from UM.Math.Vector import Vector
 
 MYPY = False
 if MYPY:
@@ -18,15 +19,19 @@ class PrinterOutputModel(QObject):
     printerStateChanged = pyqtSignal()
     activePrintJobChanged = pyqtSignal()
     nameChanged = pyqtSignal()
+    headPositionChanged = pyqtSignal()
 
-    def __init__(self, output_controller: "PrinterOutputController", parent=None):
+    def __init__(self, output_controller: "PrinterOutputController", extruders: Optional["ExtruderOutputModel"] = None, parent=None):
         super().__init__(parent)
         self._bed_temperature = 0
         self._target_bed_temperature = 0
         self._name = ""
         self._controller = output_controller
         self._extruders = []  # type: List[ExtruderOutputModel]
+        if self._extruders is not None:
+            self._extruders = extruders
 
+        self._head_position = Vector(0, 0, 0)
         self._active_print_job = None  # type: Optional[PrintJobOutputModel]
 
         # Features of the printer;
@@ -34,6 +39,57 @@ class PrinterOutputModel(QObject):
         self._can_abort = True
         self._can_pre_heat_bed = True
         self._can_control_manually = True
+
+    @pyqtProperty("QVariantList", constant = True)
+    def extruders(self):
+        return self._extruders
+
+    @pyqtProperty(QVariant, notify = headPositionChanged)
+    def headPosition(self):
+        return {"x": self._head_position.x, "y": self._head_position.y, "z": self.head_position_z}
+
+    def updateHeadPosition(self, x, y, z):
+        if self._head_position.x != x or self._head_position.y != y or self._head_position.z != z:
+            self._head_position = Vector(x, y, z)
+            self.headPositionChanged.emit()
+
+    @pyqtProperty("long", "long", "long")
+    @pyqtProperty("long", "long", "long", "long")
+    def setHeadPosition(self, x, y, z, speed = 3000):
+        self._controller.setHeadPosition(self, x, y, z, speed)
+
+    @pyqtProperty("long")
+    @pyqtProperty("long", "long")
+    def setHeadX(self, x, speed = 3000):
+        self._controller.setHeadPosition(self, x, self._head_position.y, self._head_position.z, speed)
+
+    @pyqtProperty("long")
+    @pyqtProperty("long", "long")
+    def setHeadY(self, y, speed = 3000):
+        self._controller.setHeadPosition(self, self._head_position.x, y, self._head_position.z, speed)
+
+    @pyqtProperty("long")
+    @pyqtProperty("long", "long")
+    def setHeadY(self, z, speed = 3000):
+        self._controller.setHeadPosition(self, self._head_position.x, self._head_position.y, z, speed)
+
+    @pyqtSlot("long", "long", "long")
+    @pyqtSlot("long", "long", "long", "long")
+    def moveHead(self, x = 0, y = 0, z = 0, speed = 3000):
+        self._controller.moveHead(self, x, y, z, speed)
+
+    ##  Pre-heats the heated bed of the printer.
+    #
+    #   \param temperature The temperature to heat the bed to, in degrees
+    #   Celsius.
+    #   \param duration How long the bed should stay warm, in seconds.
+    @pyqtSlot(float, float)
+    def preheatBed(self, temperature, duration):
+        self._controller.preheatBed(self, temperature, duration)
+
+    @pyqtSlot()
+    def cancelPreheatBed(self):
+        self._controller.cancelPreheatBed(self)
 
     def getController(self):
         return self._controller

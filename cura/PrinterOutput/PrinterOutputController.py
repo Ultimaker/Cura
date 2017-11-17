@@ -19,3 +19,15 @@ class PrinterOutputController:
 
     def setJobState(self, job: "PrintJobOutputModel", state: str):
         pass
+
+    def cancelPreheatBed(self, printer: "PrinterOutputModel"):
+        pass
+
+    def preheatBed(self, printer: "PrinterOutputModel", temperature, duration):
+        pass
+
+    def setHeadPosition(self, printer: "PrinterOutputModel", x, y, z, speed):
+        pass
+
+    def moveHead(self, printer: "PrinterOutputModel", x, y, z, speed):
+        pass
