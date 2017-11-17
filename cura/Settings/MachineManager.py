@@ -1175,15 +1175,14 @@ class MachineManager(QObject):
     @pyqtProperty(bool, notify = globalContainerChanged)
     def hasMaterials(self) -> bool:
         if self._global_container_stack:
-            return bool(self._global_container_stack.getMetaDataEntry("has_materials", False))
+            return Util.parseBool(self._global_container_stack.getMetaDataEntry("has_materials", False))
 
         return False
 
     @pyqtProperty(bool, notify = globalContainerChanged)
     def hasVariants(self) -> bool:
         if self._global_container_stack:
-            return bool(self._global_container_stack.getMetaDataEntry("has_variants", False))
-
+            return Util.parseBool(self._global_container_stack.getMetaDataEntry("has_variants", False))
         return False
 
     ##  Property to indicate if a machine has "specialized" material profiles.
@@ -1191,8 +1190,7 @@ class MachineManager(QObject):
     @pyqtProperty(bool, notify = globalContainerChanged)
     def filterMaterialsByMachine(self) -> bool:
         if self._global_container_stack:
-            return bool(self._global_container_stack.getMetaDataEntry("has_machine_materials", False))
-
+            return Util.parseBool(self._global_container_stack.getMetaDataEntry("has_machine_materials", False))
         return False
 
     ##  Property to indicate if a machine has "specialized" quality profiles.
@@ -1200,7 +1198,7 @@ class MachineManager(QObject):
     @pyqtProperty(bool, notify = globalContainerChanged)
     def filterQualityByMachine(self) -> bool:
         if self._global_container_stack:
-            return bool(self._global_container_stack.getMetaDataEntry("has_machine_quality", False))
+            return Util.parseBool(self._global_container_stack.getMetaDataEntry("has_machine_quality", False))
         return False
 
     ##  Get the Definition ID of a machine (specified by ID)
