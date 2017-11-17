@@ -34,7 +34,10 @@ if(NOT ${URANIUM_SCRIPTS_DIR} STREQUAL "")
     CREATE_TRANSLATION_TARGETS()
 endif()
 
-find_package(PythonInterp 3.5.0 REQUIRED)
+find_package(PythonInterp 3 REQUIRED)
+if (PYTHON_VERSION_MAJOR LESS 3 OR PYTHON_VERSION_MAJOR EQUAL 3 AND PYTHON_VERSION_MINOR LESS 5)
+    message(FATAL_ERROR "At least Python 3.5 is required")
+endif()
 
 install(DIRECTORY resources
         DESTINATION ${CMAKE_INSTALL_DATADIR}/cura)
