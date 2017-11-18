@@ -124,7 +124,3 @@ class SolidView(View):
 
     def endRendering(self):
         pass
-
-    #def _onPreferenceChanged(self, preference):
-        #if preference == "view/show_overhang": ## Todo: This a printer only setting. Should be removed from Uranium.
-            #self._enabled_material = None
