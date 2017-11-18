@@ -87,7 +87,7 @@ Column
 
                     Label //Extruder name.
                     {
-                        text: ExtruderManager.getExtruderName(index) != "" ? ExtruderManager.getExtruderName(index) : catalog.i18nc("@label", "Extruder")
+                        text: Cura.ExtruderManager.getExtruderName(index) != "" ? Cura.ExtruderManager.getExtruderName(index) : catalog.i18nc("@label", "Extruder")
                         color: UM.Theme.getColor("text")
                         font: UM.Theme.getFont("default")
                         anchors.left: parent.left

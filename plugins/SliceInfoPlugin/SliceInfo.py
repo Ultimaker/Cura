@@ -87,15 +87,10 @@ class SliceInfo(Extension):
 
             data["active_machine"] = {"definition_id": global_container_stack.definition.getId(), "manufacturer": global_container_stack.definition.getMetaData().get("manufacturer","")}
 
+            # add extruder specific data to slice info
             data["extruders"] = []
-            extruder_count = len(global_container_stack.extruders)
-            extruders = []
-            if extruder_count > 1:
-                extruders = list(ExtruderManager.getInstance().getMachineExtruders(global_container_stack.getId()))
-                extruders = sorted(extruders, key = lambda extruder: extruder.getMetaDataEntry("position"))
-
-            if not extruders:
-                extruders = [global_container_stack]
+            extruders = list(ExtruderManager.getInstance().getMachineExtruders(global_container_stack.getId()))
+            extruders = sorted(extruders, key = lambda extruder: extruder.getMetaDataEntry("position"))
 
             for extruder in extruders:
                 extruder_dict = dict()

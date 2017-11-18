@@ -78,16 +78,16 @@ Menu
         {
             text: model.name
             checkable: true
-            checked: model.id == Cura.MachineManager.allActiveMaterialIds[ExtruderManager.extruderIds[extruderIndex]]
+            checked: model.id == Cura.MachineManager.allActiveMaterialIds[Cura.ExtruderManager.extruderIds[extruderIndex]]
             exclusiveGroup: group
             onTriggered:
             {
                 // This workaround is done because of the application menus for materials and variants for multiextrusion printers.
                 // The extruder menu would always act on the correspoding extruder only, instead of acting on the extruder selected in the UI.
-                var activeExtruderIndex = ExtruderManager.activeExtruderIndex;
-                ExtruderManager.setActiveExtruderIndex(extruderIndex);
+                var activeExtruderIndex = Cura.ExtruderManager.activeExtruderIndex;
+                Cura.ExtruderManager.setActiveExtruderIndex(extruderIndex);
                 Cura.MachineManager.setActiveMaterial(model.id);
-                ExtruderManager.setActiveExtruderIndex(activeExtruderIndex);
+                Cura.ExtruderManager.setActiveExtruderIndex(activeExtruderIndex);
             }
         }
         onObjectAdded: menu.insertItem(index, object)
@@ -121,16 +121,16 @@ Menu
                         {
                             text: model.name
                             checkable: true
-                            checked: model.id == Cura.MachineManager.allActiveMaterialIds[ExtruderManager.extruderIds[extruderIndex]]
+                            checked: model.id == Cura.MachineManager.allActiveMaterialIds[Cura.ExtruderManager.extruderIds[extruderIndex]]
                             exclusiveGroup: group
                             onTriggered:
                             {
                                 // This workaround is done because of the application menus for materials and variants for multiextrusion printers.
                                 // The extruder menu would always act on the correspoding extruder only, instead of acting on the extruder selected in the UI.
-                                var activeExtruderIndex = ExtruderManager.activeExtruderIndex;
-                                ExtruderManager.setActiveExtruderIndex(extruderIndex);
+                                var activeExtruderIndex = Cura.ExtruderManager.activeExtruderIndex;
+                                Cura.ExtruderManager.setActiveExtruderIndex(extruderIndex);
                                 Cura.MachineManager.setActiveMaterial(model.id);
-                                ExtruderManager.setActiveExtruderIndex(activeExtruderIndex);
+                                Cura.ExtruderManager.setActiveExtruderIndex(activeExtruderIndex);
                             }
                         }
                         onObjectAdded: brandMaterialsMenu.insertItem(index, object)

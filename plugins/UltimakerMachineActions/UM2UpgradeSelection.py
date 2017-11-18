@@ -37,7 +37,7 @@ class UM2UpgradeSelection(MachineAction):
     def setHasVariants(self, has_variants = True):
         global_container_stack = Application.getInstance().getGlobalContainerStack()
         if global_container_stack:
-            variant_container = global_container_stack.variant
+            variant_container = global_container_stack.extruders["0"].variant
             variant_index = global_container_stack.getContainerIndex(variant_container)
 
             if has_variants:
@@ -52,7 +52,7 @@ class UM2UpgradeSelection(MachineAction):
                     search_criteria = { "type": "variant", "definition": "ultimaker2", "id": "*0.4*" }
                     containers = self._container_registry.findInstanceContainers(**search_criteria)
                     if containers:
-                        global_container_stack.variant = containers[0]
+                        global_container_stack.extruders["0"].variant = containers[0]
             else:
                 # The metadata entry is stored in an ini, and ini files are parsed as strings only.
                 # Because any non-empty string evaluates to a boolean True, we have to remove the entry to make it False.

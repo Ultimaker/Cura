@@ -54,6 +54,7 @@ class GCodeReader(MeshReader):
         self._previous_z = 0
         self._layer_data_builder = LayerDataBuilder.LayerDataBuilder()
         self._center_is_zero = False
+        self._is_absolute_positioning = True    # It can be absolute (G90) or relative (G91)
 
     @staticmethod
     def _getValue(line, code):
@@ -135,16 +136,22 @@ class GCodeReader(MeshReader):
 
     def _gCode0(self, position, params, path):
         x, y, z, e = position
-        x = params.x if params.x is not None else x
-        y = params.y if params.y is not None else y
-        z = params.z if params.z is not None else position.z
+        if self._is_absolute_positioning:
+            x = params.x if params.x is not None else x
+            y = params.y if params.y is not None else y
+            z = params.z if params.z is not None else position.z
+        else:
+            x += params.x if params.x is not None else x
+            y += params.y if params.y is not None else y
+            z += params.z if params.z is not None else position.z
 
         if params.e is not None:
-            if params.e > e[self._extruder_number]:
+            new_extrusion_value = params.e if self._is_absolute_positioning else e[self._extruder_number] + params.e
+            if new_extrusion_value > e[self._extruder_number]:
                 path.append([x, y, z, self._layer_type])  # extrusion
             else:
                 path.append([x, y, z, LayerPolygon.MoveRetractionType])  # retraction
-            e[self._extruder_number] = params.e
+            e[self._extruder_number] = new_extrusion_value
 
             # Only when extruding we can determine the latest known "layer height" which is the difference in height between extrusions
             # Also, 1.5 is a heuristic for any priming or whatsoever, we skip those.
@@ -165,6 +172,16 @@ class GCodeReader(MeshReader):
             params.y if params.y is not None else position.y,
             0,
             position.e)
+
+    ##  Set the absolute positioning
+    def _gCode90(self, position, params, path):
+        self._is_absolute_positioning = True
+        return position
+
+    ##  Set the relative positioning
+    def _gCode91(self, position, params, path):
+        self._is_absolute_positioning = False
+        return position
 
     ##  Reset the current position to the values specified.
     #   For example: G92 X10 will set the X to 10 without any physical motion.
@@ -196,7 +213,7 @@ class GCodeReader(MeshReader):
                     z = float(item[1:])
                 if item[0] == "E":
                     e = float(item[1:])
-            if (x is not None and x < 0) or (y is not None and y < 0):
+            if self._is_absolute_positioning and ((x is not None and x < 0) or (y is not None and y < 0)):
                 self._center_is_zero = True
             params = self._position(x, y, z, e)
             return func(position, params, path)
