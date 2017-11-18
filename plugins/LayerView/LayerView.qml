@@ -13,22 +13,40 @@ Item
 {
     id: base
     width: {
-        if (UM.LayerView.compatibilityMode) {
+        if (collapsed)
+        {
+            return 3 * UM.Theme.getSize("default_margin").height;
+        }
+        else if (UM.LayerView.compatibilityMode)
+        {
             return UM.Theme.getSize("layerview_menu_size_compatibility").width;
-        } else {
+        }
+        else
+        {
             return UM.Theme.getSize("layerview_menu_size").width;
         }
     }
     height: {
-        if (UM.LayerView.compatibilityMode) {
-            return UM.Theme.getSize("layerview_menu_size_compatibility").height;
-        } else if (UM.Preferences.getValue("layerview/layer_view_type") == 0) {
-            return UM.Theme.getSize("layerview_menu_size_material_color_mode").height + UM.LayerView.extruderCount * (UM.Theme.getSize("layerview_row").height + UM.Theme.getSize("layerview_row_spacing").height)
-        } else {
-            return UM.Theme.getSize("layerview_menu_size").height + UM.LayerView.extruderCount * (UM.Theme.getSize("layerview_row").height + UM.Theme.getSize("layerview_row_spacing").height)
+        if (collapsed)
+        {
+            return UM.Theme.getSize("layerview_row").height + 2 * UM.Theme.getSize("default_margin").height;
         }
+        else if (UM.LayerView.compatibilityMode)
+        {
+            return UM.Theme.getSize("layerview_menu_size_compatibility").height;
+        }
+        else if (UM.Preferences.getValue("layerview/layer_view_type") == 0)
+        {
+            return UM.Theme.getSize("layerview_menu_size_material_color_mode").height + UM.LayerView.extruderCount * (UM.Theme.getSize("layerview_row").height + UM.Theme.getSize("layerview_row_spacing").height)
+        }
+        return UM.Theme.getSize("layerview_menu_size").height + UM.LayerView.extruderCount * (UM.Theme.getSize("layerview_row").height + UM.Theme.getSize("layerview_row_spacing").height)
     }
+    Behavior on height { NumberAnimation { duration: 100 } }
+    Behavior on width { NumberAnimation { duration: 100 } }
 
+    clip: true
+
+    property bool collapsed: false
     property var buttonTarget: {
         if(parent != null)
         {
@@ -40,7 +58,7 @@ Item
 
     visible: parent != null ? !parent.parent.monitoringPrint: true
 
-    UM.PointingRectangle {
+    Rectangle {
         id: layerViewMenu
         anchors.right: parent.right
         anchors.top: parent.top
@@ -48,12 +66,40 @@ Item
         height: parent.height
         z: slider.z - 1
         color: UM.Theme.getColor("tool_panel_background")
-        borderWidth: UM.Theme.getSize("default_lining").width
-        borderColor: UM.Theme.getColor("lining")
-        arrowSize: 0 // hide arrow until weird issue with first time rendering is fixed
+        border.width: UM.Theme.getSize("default_lining").width
+        border.color: UM.Theme.getColor("lining")
+
+        Button {
+            id: collapse_button
+            anchors.top: parent.top
+            anchors.topMargin: Math.floor(UM.Theme.getSize("default_margin").height + (UM.Theme.getSize("layerview_row").height - UM.Theme.getSize("default_margin").height) / 2)
+            anchors.right: parent.right
+            anchors.rightMargin: UM.Theme.getSize("default_margin").width
+
+            width: UM.Theme.getSize("standard_arrow").width
+            height: UM.Theme.getSize("standard_arrow").height
+
+            onClicked: base.collapsed = !base.collapsed
+
+            style: ButtonStyle
+            {
+                background: UM.RecolorImage
+                {
+                    width: control.width
+                    height: control.height
+                    sourceSize.width: width
+                    sourceSize.height: width
+                    color:  UM.Theme.getColor("setting_control_text")
+                    source: base.collapsed ? UM.Theme.getIcon("arrow_left") : UM.Theme.getIcon("arrow_bottom")
+                }
+                label: Label{ }
+            }
+        }
 
         ColumnLayout {
             id: view_settings
+
+            visible: !base.collapsed
 
             property var extruder_opacities: UM.Preferences.getValue("layerview/extruder_opacities").split("|")
             property bool show_travel_moves: UM.Preferences.getValue("layerview/show_travel_moves")
@@ -71,7 +117,6 @@ Item
             anchors.leftMargin: UM.Theme.getSize("default_margin").width
             spacing: UM.Theme.getSize("layerview_row_spacing").height
             anchors.right: parent.right
-            anchors.rightMargin: UM.Theme.getSize("default_margin").width
 
             Label
             {
