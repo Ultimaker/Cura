@@ -27,6 +27,7 @@ i18n_catalog = i18nCatalog("cura")
 @signalemitter
 class PrinterOutputDevice(QObject, OutputDevice):
     printersChanged = pyqtSignal()
+    connectionStateChanged = pyqtSignal()
 
     def __init__(self, device_id, parent = None):
         super().__init__(device_id = device_id, parent = parent)
@@ -47,6 +48,11 @@ class PrinterOutputDevice(QObject, OutputDevice):
         self._update_timer.setInterval(2000)  # TODO; Add preference for update interval
         self._update_timer.setSingleShot(False)
         self._update_timer.timeout.connect(self._update)
+
+        self._connection_state = ConnectionState.closed
+
+    def isConnected(self):
+        return self._connection_state != ConnectionState.closed and self._connection_state != ConnectionState.error
 
     def _update(self):
         pass
