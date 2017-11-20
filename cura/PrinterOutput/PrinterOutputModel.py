@@ -20,12 +20,14 @@ class PrinterOutputModel(QObject):
     activePrintJobChanged = pyqtSignal()
     nameChanged = pyqtSignal()
     headPositionChanged = pyqtSignal()
+    keyChanged = pyqtSignal()
 
     def __init__(self, output_controller: "PrinterOutputController", number_of_extruders: int = 1, parent=None):
         super().__init__(parent)
         self._bed_temperature = 0
         self._target_bed_temperature = 0
         self._name = ""
+        self._key = ""  # Unique identifier
         self._controller = output_controller
         self._extruders = [ExtruderOutputModel(printer=self)] * number_of_extruders
 
@@ -39,6 +41,15 @@ class PrinterOutputModel(QObject):
         self._can_abort = True
         self._can_pre_heat_bed = True
         self._can_control_manually = True
+
+    @pyqtProperty(str, notify=keyChanged)
+    def key(self):
+        return self._key
+
+    def updateKey(self, key: str):
+        if self._key != key:
+            self._key = key
+            self.keyChanged.emit()
 
     @pyqtSlot()
     def homeHead(self):

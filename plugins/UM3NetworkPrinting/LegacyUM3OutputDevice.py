@@ -6,7 +6,6 @@ from UM.Logger import Logger
 
 from PyQt5.QtNetwork import QNetworkRequest
 
-
 import json
 
 
