@@ -26,7 +26,7 @@ from UM.View.GL.OpenGLContext import OpenGLContext
 from UM.View.View import View
 from UM.i18n import i18nCatalog
 from cura.ConvexHullNode import ConvexHullNode
-from plugins.SimulationView.NozzleNode import NozzleNode
+from . import NozzleNode
 from . import SimulationPass, SimulationViewProxy
 
 catalog = i18nCatalog("cura")
