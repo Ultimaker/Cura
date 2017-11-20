@@ -583,7 +583,6 @@ Item
                     UM.SimulationView.setSimulationRunning(true)
                     iconSource = "./resources/simulation_pause.svg"
                     simulationTimer.start()
-                    status = 1
                 }
             }
         }
@@ -599,18 +598,42 @@ Item
                 var numPaths = UM.SimulationView.numPaths
                 var currentLayer = UM.SimulationView.currentLayer
                 var numLayers = UM.SimulationView.numLayers
-                if (currentPath >= numPaths) {
-                    if (currentLayer >= numLayers) {
-                        playButton.pauseSimulation()
-                    }
-                    else {
-                        UM.SimulationView.setCurrentLayer(currentLayer+1)
+                // When the user plays the simulation, if the path slider is at the end of this layer, we start
+                // the simulation at the beginning of the current layer.
+                if (playButton.status == 0)
+                {
+                    if (currentPath >= numPaths)
+                    {
                         UM.SimulationView.setCurrentPath(0)
                     }
+                    else
+                    {
+                        UM.SimulationView.setCurrentPath(currentPath+1)
+                    }
                 }
-                else {
-                    UM.SimulationView.setCurrentPath(currentPath+1)
+                // If the simulation is already playing and we reach the end of a layer, then it automatically
+                // starts at the beginning of the next layer.
+                else
+                {
+                    if (currentPath >= numPaths)
+                    {
+                        // At the end of the model, the simulation stops
+                        if (currentLayer >= numLayers)
+                        {
+                            playButton.pauseSimulation()
+                        }
+                        else
+                        {
+                            UM.SimulationView.setCurrentLayer(currentLayer+1)
+                            UM.SimulationView.setCurrentPath(0)
+                        }
+                    }
+                    else
+                    {
+                        UM.SimulationView.setCurrentPath(currentPath+1)
+                    }
                 }
+                playButton.status = 1
             }
         }
     }
