@@ -302,24 +302,23 @@ class ConvexHullDecorator(SceneNodeDecorator):
             self._onChanged()
 
     ##   Private convenience function to get a setting from the correct extruder (as defined by limit_to_extruder property).
-    def _getSettingProperty(self, setting_key, property = "value"):
+    def _getSettingProperty(self, setting_key, prop = "value"):
         per_mesh_stack = self._node.callDecoration("getStack")
         if per_mesh_stack:
-            return per_mesh_stack.getProperty(setting_key, property)
-
-        multi_extrusion = self._global_stack.getProperty("machine_extruder_count", "value") > 1
-        if not multi_extrusion:
-            return self._global_stack.getProperty(setting_key, property)
+            return per_mesh_stack.getProperty(setting_key, prop)
 
         extruder_index = self._global_stack.getProperty(setting_key, "limit_to_extruder")
-        if extruder_index == "-1": #No limit_to_extruder.
+        if extruder_index == "-1":
+            # No limit_to_extruder
             extruder_stack_id = self._node.callDecoration("getActiveExtruder")
-            if not extruder_stack_id: #Decoration doesn't exist.
+            if not extruder_stack_id:
+                # Decoration doesn't exist
                 extruder_stack_id = ExtruderManager.getInstance().extruderIds["0"]
             extruder_stack = ContainerRegistry.getInstance().findContainerStacks(id = extruder_stack_id)[0]
-            return extruder_stack.getProperty(setting_key, property)
-        else: #Limit_to_extruder is set. The global stack handles this then.
-            return self._global_stack.getProperty(setting_key, property)
+            return extruder_stack.getProperty(setting_key, prop)
+        else:
+            # Limit_to_extruder is set. The global stack handles this then
+            return self._global_stack.getProperty(setting_key, prop)
 
     ## Returns true if node is a descendant or the same as the root node.
     def __isDescendant(self, root, node):
