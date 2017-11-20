@@ -6,6 +6,7 @@ if MYPY:
     from cura.PrinterOutput.ExtruderOuputModel import ExtruderOuputModel
     from cura.PrinterOutput.PrinterOutputModel import PrinterOutputModel
 
+
 class PrinterOutputController:
     def __init__(self):
         pass
