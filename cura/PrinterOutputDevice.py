@@ -26,7 +26,7 @@ i18n_catalog = i18nCatalog("cura")
 #   For all other uses it should be used in the same way as a "regular" OutputDevice.
 @signalemitter
 class PrinterOutputDevice(QObject, OutputDevice):
-    printersChanged = pyqtSignal
+    printersChanged = pyqtSignal()
 
     def __init__(self, device_id, parent = None):
         super().__init__(device_id = device_id, parent = parent)
