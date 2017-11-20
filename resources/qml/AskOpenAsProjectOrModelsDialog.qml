@@ -64,6 +64,7 @@ UM.Dialog
         anchors.leftMargin: 20 * screenScaleFactor
         anchors.rightMargin: 20 * screenScaleFactor
         anchors.bottomMargin: 10 * screenScaleFactor
+        spacing: 10 * screenScaleFactor
 
         Label
         {
@@ -78,20 +79,15 @@ UM.Dialog
         CheckBox
         {
             id: rememberChoiceCheckBox
-            anchors.bottom: buttonBar.top
-            anchors.bottomMargin: UM.Theme.getSize("default_margin").heigth
-            checked: UM.Preferences.getValue("cura/choice_on_open_project") != "always_ask"
-        }
-
-        Label
-        {
-            id: checkboxTextWithNiceRendering
-            anchors.left: rememberChoiceCheckBox.right
-            anchors.bottom: rememberChoiceCheckBox.bottom
-            font: UM.Theme.getFont("default")
             text: catalog.i18nc("@text:window", "Remember my choice")
+            checked: UM.Preferences.getValue("cura/choice_on_open_project") != "always_ask"
+            style: CheckBoxStyle {
+                label: Label {
+                    text: control.text
+                    font: UM.Theme.getFont("default")
+                }
+            }
         }
-
 
         // Buttons
         Item
@@ -99,7 +95,6 @@ UM.Dialog
             id: buttonBar
             anchors.right: parent.right
             anchors.left: parent.left
-            anchors.bottom: parent.bottom
             height: childrenRect.height
 
             Button

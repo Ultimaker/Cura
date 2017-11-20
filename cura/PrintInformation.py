@@ -56,6 +56,7 @@ class PrintInformation(QObject):
         self._material_lengths = []
         self._material_weights = []
         self._material_costs = []
+        self._material_names = []
 
         self._pre_sliced = False
 
@@ -139,6 +140,12 @@ class PrintInformation(QObject):
     def materialCosts(self):
         return self._material_costs
 
+    materialNamesChanged = pyqtSignal()
+
+    @pyqtProperty("QVariantList", notify = materialNamesChanged)
+    def materialNames(self):
+        return self._material_names
+
     def _onPrintDurationMessage(self, print_time, material_amounts):
 
         self._updateTotalPrintTimePerFeature(print_time)
@@ -170,6 +177,7 @@ class PrintInformation(QObject):
         self._material_lengths = []
         self._material_weights = []
         self._material_costs = []
+        self._material_names = []
 
         material_preference_values = json.loads(Preferences.getInstance().getValue("cura/material_settings"))
 
@@ -188,8 +196,10 @@ class PrintInformation(QObject):
 
             weight = float(amount) * float(density) / 1000
             cost = 0
+            material_name = catalog.i18nc("@label unknown material", "Unknown")
             if material:
                 material_guid = material.getMetaDataEntry("GUID")
+                material_name = material.getName()
                 if material_guid in material_preference_values:
                     material_values = material_preference_values[material_guid]
 
@@ -208,10 +218,12 @@ class PrintInformation(QObject):
             self._material_weights.append(weight)
             self._material_lengths.append(length)
             self._material_costs.append(cost)
+            self._material_names.append(material_name)
 
         self.materialLengthsChanged.emit()
         self.materialWeightsChanged.emit()
         self.materialCostsChanged.emit()
+        self.materialNamesChanged.emit()
 
     def _onPreferencesChanged(self, preference):
         if preference != "cura/material_settings":
