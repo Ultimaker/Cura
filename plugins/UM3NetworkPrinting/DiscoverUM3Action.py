@@ -37,7 +37,7 @@ class DiscoverUM3Action(MachineAction):
         if not self._network_plugin:
             Logger.log("d", "Starting printer discovery.")
             self._network_plugin = Application.getInstance().getOutputDeviceManager().getOutputDevicePlugin("UM3NetworkPrinting")
-            self._network_plugin.printerListChanged.connect(self._onPrinterDiscoveryChanged)
+            self._network_plugin.discoveredDevicesChanged.connect(self._onPrinterDiscoveryChanged)
             self.printersChanged.emit()
 
     ##  Re-filters the list of printers.
@@ -87,10 +87,10 @@ class DiscoverUM3Action(MachineAction):
             else:
                 global_printer_type = "unknown"
 
-            printers = list(self._network_plugin.getPrinters().values())
+            printers = list(self._network_plugin.getDiscoveredDevices().values())
             # TODO; There are still some testing printers that don't have a correct printer type, so don't filter out unkown ones just yet.
-            printers = [printer for printer in printers if printer.printerType == global_printer_type or printer.printerType == "unknown"]
-            printers.sort(key = lambda k: k.name)
+            #printers = [printer for printer in printers if printer.printerType == global_printer_type or printer.printerType == "unknown"]
+            #printers.sort(key = lambda k: k.name)
             return printers
         else:
             return []
