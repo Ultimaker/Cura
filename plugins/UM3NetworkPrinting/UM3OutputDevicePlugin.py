@@ -60,6 +60,28 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
         self._zero_conf_browser = ServiceBrowser(self._zero_conf, u'_ultimaker._tcp.local.',
                                                  [self._appendServiceChangedRequest])
 
+    def reCheckConnections(self):
+        active_machine = Application.getInstance().getGlobalContainerStack()
+        if not active_machine:
+            return
+
+        um_network_key = active_machine.getMetaDataEntry("um_network_key")
+
+        for key in self._discovered_devices:
+            if key == um_network_key:
+                if not self._discovered_devices[key].isConnected():
+                    Logger.log("d", "Attempting to connect with [%s]" % key)
+                    self._discovered_devices[key].connect()
+                    self._discovered_devices[key].connectionStateChanged.connect(self._onDeviceConnectionStateChanged)
+            else:
+                if self._discovered_devices[key].isConnected():
+                    Logger.log("d", "Attempting to close connection with [%s]" % key)
+                    self._printers[key].close()
+                    self._printers[key].connectionStateChanged.disconnect(self._onDeviceConnectionStateChanged)
+
+    def _onDeviceConnectionStateChanged(self, key):
+        pass  # TODO
+
     def stop(self):
         if self._zero_conf is not None:
             Logger.log("d", "zeroconf close...")
