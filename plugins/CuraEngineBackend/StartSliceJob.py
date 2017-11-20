@@ -26,6 +26,7 @@ class StartJobResult(IntEnum):
     NothingToSlice = 4
     MaterialIncompatible = 5
     BuildPlateError = 6
+    ObjectSettingError = 7 #When an error occurs in per-object settings.
 
 
 ##  Formatter class that handles token expansion in start/end gcod
@@ -105,7 +106,7 @@ class StartSliceJob(Job):
                 continue
 
             if self._checkStackForErrors(node.callDecoration("getStack")):
-                self.setResult(StartJobResult.SettingError)
+                self.setResult(StartJobResult.ObjectSettingError)
                 return
 
         with self._scene.getSceneLock():
