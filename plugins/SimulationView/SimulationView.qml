@@ -21,6 +21,9 @@ Item
     }
     height: {
         if (viewSettings.collapsed) {
+            if (UM.SimulationView.compatibilityMode) {
+                return UM.Theme.getSize("layerview_menu_size_compatibility_collapsed").height;
+            }
             return UM.Theme.getSize("layerview_menu_size_collapsed").height;
         } else if (UM.SimulationView.compatibilityMode) {
             return UM.Theme.getSize("layerview_menu_size_compatibility").height;
@@ -535,8 +538,8 @@ Item
             height: UM.Theme.getSize("layerview_menu_size").height
 
             anchors {
-                top: playButton.bottom
-                topMargin: UM.Theme.getSize("default_margin").height
+                top: !UM.SimulationView.compatibilityMode ? playButton.bottom : parent.top
+                topMargin: !UM.SimulationView.compatibilityMode ? UM.Theme.getSize("default_margin").height : 0
                 right: parent.right
                 rightMargin: UM.Theme.getSize("slider_layerview_margin").width
             }
