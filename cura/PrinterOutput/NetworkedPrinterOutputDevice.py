@@ -8,14 +8,14 @@ from time import time
 from typing import Callable
 
 class NetworkedPrinterOutputDevice(PrinterOutputDevice):
-    def __init__(self, device_id, parent = None):
+    def __init__(self, device_id, address: str, parent = None):
         super().__init__(device_id = device_id, parent = parent)
         self._manager = None
         self._createNetworkManager()
         self._last_response_time = time()
         self._last_request_time = None
         self._api_prefix = ""
-        self._address = ""
+        self._address = address
 
         self._user_agent = "%s/%s " % (Application.getInstance().getApplicationName(), Application.getInstance().getVersion())
 
