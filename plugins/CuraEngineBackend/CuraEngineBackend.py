@@ -608,7 +608,7 @@ class CuraEngineBackend(QObject, Backend):
     def _onActiveViewChanged(self):
         if Application.getInstance().getController().getActiveView():
             view = Application.getInstance().getController().getActiveView()
-            if view.getPluginId() == "LayerView":  # If switching to layer view, we should process the layers if that hasn't been done yet.
+            if view.getPluginId() == "SimulationView":  # If switching to layer view, we should process the layers if that hasn't been done yet.
                 self._layer_view_active = True
                 # There is data and we're not slicing at the moment
                 # if we are slicing, there is no need to re-calculate the data as it will be invalid in a moment.
