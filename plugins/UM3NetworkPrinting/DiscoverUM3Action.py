@@ -27,24 +27,26 @@ class DiscoverUM3Action(MachineAction):
 
         Application.getInstance().engineCreatedSignal.connect(self._createAdditionalComponentsView)
 
-        self._last_zeroconf_event_time = time.time()
-        self._zeroconf_change_grace_period = 0.25 # Time to wait after a zeroconf service change before allowing a zeroconf reset
+        self._last_zero_conf_event_time = time.time()
 
-    printersChanged = pyqtSignal()
+        # Time to wait after a zero-conf service change before allowing a zeroconf reset
+        self._zero_conf_change_grace_period = 0.25
+
+    discoveredDevicesChanged = pyqtSignal()
 
     @pyqtSlot()
     def startDiscovery(self):
         if not self._network_plugin:
-            Logger.log("d", "Starting printer discovery.")
+            Logger.log("d", "Starting device discovery.")
             self._network_plugin = Application.getInstance().getOutputDeviceManager().getOutputDevicePlugin("UM3NetworkPrinting")
-            self._network_plugin.discoveredDevicesChanged.connect(self._onPrinterDiscoveryChanged)
-            self.printersChanged.emit()
+            self._network_plugin.discoveredDevicesChanged.connect(self._onDeviceDiscoveryChanged)
+            self.discoveredDevicesChanged.emit()
 
-    ##  Re-filters the list of printers.
+    ##  Re-filters the list of devices.
     @pyqtSlot()
     def reset(self):
-        Logger.log("d", "Reset the list of found printers.")
-        self.printersChanged.emit()
+        Logger.log("d", "Reset the list of found devices.")
+        self.discoveredDevicesChanged.emit()
 
     @pyqtSlot()
     def restartDiscovery(self):
@@ -53,35 +55,36 @@ class DiscoverUM3Action(MachineAction):
         # It's most likely that the QML engine is still creating delegates, where the python side already deleted or
         # garbage collected the data.
         # Whatever the case, waiting a bit ensures that it doesn't crash.
-        if time.time() - self._last_zeroconf_event_time > self._zeroconf_change_grace_period:
+        if time.time() - self._last_zero_conf_event_time > self._zero_conf_change_grace_period:
             if not self._network_plugin:
                 self.startDiscovery()
             else:
                 self._network_plugin.startDiscovery()
 
     @pyqtSlot(str, str)
-    def removeManualPrinter(self, key, address):
+    def removeManualDevice(self, key, address):
         if not self._network_plugin:
             return
 
-        self._network_plugin.removeManualPrinter(key, address)
+        self._network_plugin.removeManualDevice(key, address)
 
     @pyqtSlot(str, str)
-    def setManualPrinter(self, key, address):
+    def setManualDevice(self, key, address):
         if key != "":
             # This manual printer replaces a current manual printer
-            self._network_plugin.removeManualPrinter(key)
+            self._network_plugin.removeManualDevice(key)
 
         if address != "":
             self._network_plugin.addManualPrinter(address)
 
-    def _onPrinterDiscoveryChanged(self, *args):
-        self._last_zeroconf_event_time = time.time()
-        self.printersChanged.emit()
+    def _onDeviceDiscoveryChanged(self, *args):
+        self._last_zero_conf_event_time = time.time()
+        self.discoveredDevicesChanged.emit()
 
-    @pyqtProperty("QVariantList", notify = printersChanged)
+    @pyqtProperty("QVariantList", notify = discoveredDevicesChanged)
     def foundDevices(self):
         if self._network_plugin:
+            # TODO: Check if this needs to stay.
             if Application.getInstance().getGlobalContainerStack():
                 global_printer_type = Application.getInstance().getGlobalContainerStack().getBottom().getId()
             else:
