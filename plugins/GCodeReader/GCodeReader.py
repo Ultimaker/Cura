@@ -54,6 +54,7 @@ class GCodeReader(MeshReader):
         self._previous_z = 0
         self._layer_data_builder = LayerDataBuilder.LayerDataBuilder()
         self._center_is_zero = False
+        self._is_absolute_positioning = True    # It can be absolute (G90) or relative (G91)
 
     @staticmethod
     def _getValue(line, code):
@@ -172,6 +173,16 @@ class GCodeReader(MeshReader):
             0,
             position.e)
 
+    ##  Set the absolute positioning
+    def _gCode90(self, position, params, path):
+        self._is_absolute_positioning = True
+        return position
+
+    ##  Set the relative positioning
+    def _gCode91(self, position, params, path):
+        self._is_absolute_positioning = False
+        return position
+
     ##  Reset the current position to the values specified.
     #   For example: G92 X10 will set the X to 10 without any physical motion.
     def _gCode92(self, position, params, path):
@@ -202,7 +213,7 @@ class GCodeReader(MeshReader):
                     z = float(item[1:])
                 if item[0] == "E":
                     e = float(item[1:])
-            if (x is not None and x < 0) or (y is not None and y < 0):
+            if self._is_absolute_positioning and ((x is not None and x < 0) or (y is not None and y < 0)):
                 self._center_is_zero = True
             params = self._position(x, y, z, e)
             return func(position, params, path)
