@@ -8,7 +8,8 @@
         "author": "Ultimaker",
         "manufacturer": "Unknown",
         "setting_version": 1,
-        "visible": false
+        "visible": false,
+        "position": "0"
     },
     "settings":
     {

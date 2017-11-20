@@ -47,21 +47,40 @@ class CuraStackBuilder:
 
         new_global_stack.setName(generated_name)
 
-        for extruder_definition in registry.findDefinitionContainers(machine = machine_definition.id):
-            position = extruder_definition.getMetaDataEntry("position", None)
-            if not position:
-                Logger.log("w", "Extruder definition %s specifies no position metadata entry.", extruder_definition.id)
+        extruder_definition = registry.findDefinitionContainers(machine = machine_definition.getId())
 
-            new_extruder_id = registry.uniqueName(extruder_definition.id)
+        if not extruder_definition:
+            # create extruder stack for single extrusion machines that have no separate extruder definition files
+            extruder_definition = registry.findDefinitionContainers(id = "fdmextruder")[0]
+            new_extruder_id = registry.uniqueName(machine_definition.getName() + " " + extruder_definition.id)
             new_extruder = cls.createExtruderStack(
                 new_extruder_id,
-                definition = extruder_definition,
-                machine_definition = machine_definition,
-                quality = "default",
-                material = "default",
-                variant = "default",
-                next_stack = new_global_stack
+                definition=extruder_definition,
+                machine_definition=machine_definition,
+                quality="default",
+                material="default",
+                variant="default",
+                next_stack=new_global_stack
             )
+            new_global_stack.addExtruder(new_extruder)
+        else:
+            # create extruder stack for each found extruder definition
+            for extruder_definition in registry.findDefinitionContainers(machine = machine_definition.id):
+                position = extruder_definition.getMetaDataEntry("position", None)
+                if not position:
+                    Logger.log("w", "Extruder definition %s specifies no position metadata entry.", extruder_definition.id)
+
+                new_extruder_id = registry.uniqueName(extruder_definition.id)
+                new_extruder = cls.createExtruderStack(
+                    new_extruder_id,
+                    definition = extruder_definition,
+                    machine_definition = machine_definition,
+                    quality = "default",
+                    material = "default",
+                    variant = "default",
+                    next_stack = new_global_stack
+                )
+                new_global_stack.addExtruder(new_extruder)
 
         return new_global_stack
 
@@ -79,7 +98,9 @@ class CuraStackBuilder:
         stack.setName(definition.getName())
         stack.setDefinition(definition)
         stack.addMetaDataEntry("position", definition.getMetaDataEntry("position"))
-        if "next_stack" in kwargs: #Add stacks before containers are added, since they may trigger a setting update.
+
+        if "next_stack" in kwargs:
+            # Add stacks before containers are added, since they may trigger a setting update.
             stack.setNextStack(kwargs["next_stack"])
 
         user_container = InstanceContainer(new_stack_id + "_user")

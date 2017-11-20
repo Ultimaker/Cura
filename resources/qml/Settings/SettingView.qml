@@ -275,7 +275,7 @@ Item
                 Behavior on opacity { NumberAnimation { duration: 100 } }
                 enabled:
                 {
-                    if(!ExtruderManager.activeExtruderStackId && machineExtruderCount.properties.value > 1)
+                    if (!Cura.ExtruderManager.activeExtruderStackId && machineExtruderCount.properties.value > 1)
                     {
                         // disable all controls on the global tab, except categories
                         return model.type == "category"
@@ -345,12 +345,12 @@ Item
                         if(inheritStackProvider.properties.limit_to_extruder != null && inheritStackProvider.properties.limit_to_extruder >= 0)
                         {
                             //We have limit_to_extruder, so pick that stack.
-                            return ExtruderManager.extruderIds[String(inheritStackProvider.properties.limit_to_extruder)];
+                            return Cura.ExtruderManager.extruderIds[String(inheritStackProvider.properties.limit_to_extruder)];
                         }
-                        if(ExtruderManager.activeExtruderStackId)
+                        if(Cura.ExtruderManager.activeExtruderStackId)
                         {
                             //We're on an extruder tab. Pick the current extruder.
-                            return ExtruderManager.activeExtruderStackId;
+                            return Cura.ExtruderManager.activeExtruderStackId;
                         }
                         //No extruder tab is selected. Pick the global stack. Shouldn't happen any more since we removed the global tab.
                         return activeMachineId;

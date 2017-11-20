@@ -10,11 +10,7 @@
         "file_formats": "text/x-gcode",
         "icon": "icon_ultimaker2",
         "supports_usb_connection": true,
-        "platform": "3dator_platform.stl",
-        "machine_extruder_trains":
-        {
-            "0": "fdmextruder"
-        }
+        "platform": "3dator_platform.stl"
     },
 
     "overrides": {
@@ -29,7 +25,6 @@
         "layer_height": { "default_value": 0.2 },
         "speed_print": { "default_value": 50 },
         "speed_infill": { "default_value": 60 },
-        "machine_extruder_count": { "default_value": 1 },
         "machine_heated_bed": { "default_value": true },
         "machine_center_is_zero": { "default_value": false },
         "machine_height": { "default_value": 260 },
