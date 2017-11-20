@@ -29,6 +29,12 @@ Cura.MachineAction
 
     function connectToPrinter()
     {
+        if(base.selectedDevice)
+        {
+            var deviceKey = base.selectedDevice.key
+            manager.setKey(deviceKey);
+            completed();
+        }
         if(base.selectedPrinter && base.completeProperties)
         {
             var printerKey = base.selectedDevice.key

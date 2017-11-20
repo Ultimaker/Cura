@@ -37,13 +37,13 @@ class NetworkedPrinterOutputDevice(PrinterOutputDevice):
 
     def _put(self, target: str, data: str, onFinished: Callable):
         request = self._createEmptyRequest(target)
-        self._onFinishedCallbacks[request] = onFinished
-        self._manager.put(request, data.encode())
+        reply = self._manager.put(request, data.encode())
+        self._onFinishedCallbacks[reply.url().toString() + str(reply.operation())] = onFinished
 
     def _get(self, target: str, onFinished: Callable):
         request = self._createEmptyRequest(target)
-        self._onFinishedCallbacks[request] = onFinished
-        self._manager.get(request)
+        reply = self._manager.get(request)
+        self._onFinishedCallbacks[reply.url().toString() + str(reply.operation())] = onFinished
 
     def _delete(self, target: str, onFinished: Callable):
         pass
@@ -65,8 +65,7 @@ class NetworkedPrinterOutputDevice(PrinterOutputDevice):
     def __handleOnFinished(self, reply: QNetworkReply):
         self._last_response_time = time()
         try:
-            self._onFinishedCallbacks[reply.request()](reply)
-            del self._onFinishedCallbacks[reply.request]  # Remove the callback.
+            self._onFinishedCallbacks[reply.url().toString() + str(reply.operation())](reply)
         except Exception as e:
             print("Something went wrong with callback", e)
         pass

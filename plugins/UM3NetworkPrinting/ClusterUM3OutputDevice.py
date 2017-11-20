@@ -7,5 +7,3 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
 
     def _update(self):
         super()._update()
-
-        pass
