@@ -472,8 +472,9 @@ Item
             PathSlider {
                 id: pathSlider
 
-                width: parent.width
                 height: UM.Theme.getSize("slider_handle").width
+                anchors.right: playButton.left
+                anchors.rightMargin: UM.Theme.getSize("default_margin").width
                 anchors.left: parent.left
                 visible: !UM.SimulationView.compatibilityMode
 
@@ -508,8 +509,8 @@ Item
                 height: UM.Theme.getSize("layerview_menu_size").height
 
                 anchors {
-                    top: pathSlider.bottom
-                    topMargin: UM.Theme.getSize("slider_layerview_margin").height
+                    top: playButton.bottom
+                    topMargin: UM.Theme.getSize("default_margin").height
                     right: parent.right
                     rightMargin: UM.Theme.getSize("slider_layerview_margin").width
                 }
@@ -546,15 +547,14 @@ Item
             // Play simulation button
             Button {
                 id: playButton
-                implicitWidth: UM.Theme.getSize("button").width * 0.75;
-                implicitHeight: UM.Theme.getSize("button").height * 0.75;
+                implicitWidth: Math.floor(UM.Theme.getSize("button").width * 0.75)
+                implicitHeight: Math.floor(UM.Theme.getSize("button").height * 0.75)
                 iconSource: "./resources/simulation_resume.svg"
                 style: UM.Theme.styles.tool_button
                 visible: !UM.SimulationView.compatibilityMode
                 anchors {
                     horizontalCenter: layerSlider.horizontalCenter
-                    top: layerSlider.bottom
-                    topMargin: UM.Theme.getSize("slider_layerview_margin").width
+                    verticalCenter: pathSlider.verticalCenter
                 }
 
                 property var status: 0  // indicates if it's stopped (0) or playing (1)
