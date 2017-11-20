@@ -1,7 +1,7 @@
 {
     "id": "cartesio_extruder_0",
     "version": 2,
-    "name": "Extruder 0",
+    "name": "Extruder 1",
     "inherits": "fdmextruder",
     "metadata": {
         "machine": "cartesio",
