@@ -5,11 +5,11 @@ from PyQt5.QtCore import pyqtSignal, pyqtProperty, QObject, QVariant, pyqtSlot
 from UM.Logger import Logger
 from typing import Optional, List
 from UM.Math.Vector import Vector
+from cura.PrinterOutput.ExtruderOuputModel import ExtruderOutputModel
 
 MYPY = False
 if MYPY:
     from cura.PrinterOutput.PrintJobOutputModel import PrintJobOutputModel
-    from cura.PrinterOutput.ExtruderOuputModel import ExtruderOutputModel
     from cura.PrinterOutput.PrinterOutputController import PrinterOutputController
 
 
@@ -21,16 +21,18 @@ class PrinterOutputModel(QObject):
     nameChanged = pyqtSignal()
     headPositionChanged = pyqtSignal()
 
-    def __init__(self, output_controller: "PrinterOutputController", extruders: List["ExtruderOutputModel"], parent=None):
+    def __init__(self, output_controller: "PrinterOutputController", number_of_extruders: int = 1, parent=None):
         super().__init__(parent)
         self._bed_temperature = 0
         self._target_bed_temperature = 0
         self._name = ""
         self._controller = output_controller
-        self._extruders = extruders
+        self._extruders = [ExtruderOutputModel(printer=self)] * number_of_extruders
 
         self._head_position = Vector(0, 0, 0)
         self._active_print_job = None  # type: Optional[PrintJobOutputModel]
+
+        self._printer_state = "unknown"
 
         # Features of the printer;
         self._can_pause = True
@@ -134,6 +136,11 @@ class PrinterOutputModel(QObject):
         if self._active_print_job != print_job:
             self._active_print_job = print_job
             self.activePrintJobChanged.emit()
+
+    def updatePrinterState(self, printer_state):
+        if self._printer_state != printer_state:
+            self._printer_state = printer_state
+            self.printerStateChanged.emit()
 
     @pyqtProperty(QObject, notify = activePrintJobChanged)
     def activePrintJob(self):

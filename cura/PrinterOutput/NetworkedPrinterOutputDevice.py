@@ -1,4 +1,6 @@
 from UM.Application import Application
+from UM.Logger import Logger
+
 from cura.PrinterOutputDevice import PrinterOutputDevice
 
 from PyQt5.QtNetwork import QHttpMultiPart, QHttpPart, QNetworkRequest, QNetworkAccessManager, QNetworkReply
@@ -30,6 +32,7 @@ class NetworkedPrinterOutputDevice(PrinterOutputDevice):
 
     def _createEmptyRequest(self, target):
         url = QUrl("http://" + self._address + self._api_prefix + target)
+        print(url)
         request = QNetworkRequest(url)
         request.setHeader(QNetworkRequest.ContentTypeHeader, "application/json")
         request.setHeader(QNetworkRequest.UserAgentHeader, self._user_agent)
@@ -66,9 +69,8 @@ class NetworkedPrinterOutputDevice(PrinterOutputDevice):
         self._last_response_time = time()
         try:
             self._onFinishedCallbacks[reply.url().toString() + str(reply.operation())](reply)
-        except Exception as e:
-            print("Something went wrong with callback", e)
-        pass
+        except Exception:
+            Logger.logException("w", "something went wrong with callback")
 
     @pyqtSlot(str, result=str)
     def getProperty(self, key):

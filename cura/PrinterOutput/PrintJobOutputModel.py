@@ -11,6 +11,7 @@ class PrintJobOutputModel(QObject):
     stateChanged = pyqtSignal()
     timeTotalChanged = pyqtSignal()
     timeElapsedChanged = pyqtSignal()
+    nameChanged = pyqtSignal()
 
     def __init__(self, output_controller: "PrinterOutputController", parent=None):
         super().__init__(parent)
@@ -18,6 +19,16 @@ class PrintJobOutputModel(QObject):
         self._state = ""
         self._time_total = 0
         self._time_elapsed = 0
+        self._name = ""
+
+    @pyqtProperty(str, notify = nameChanged)
+    def name(self):
+        return self._name
+
+    def updateName(self, name: str):
+        if self._name != name:
+            self._name = name
+            self.nameChanged.emit()
 
     @pyqtProperty(int, notify = timeTotalChanged)
     def timeTotal(self):
