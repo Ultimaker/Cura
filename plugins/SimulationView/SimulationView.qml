@@ -70,9 +70,9 @@ Item
             anchors.topMargin: UM.Theme.getSize("default_margin").height
             anchors.left: parent.left
             anchors.leftMargin: UM.Theme.getSize("default_margin").width
-            spacing: UM.Theme.getSize("layerview_row_spacing").height
             anchors.right: parent.right
             anchors.rightMargin: UM.Theme.getSize("default_margin").width
+            spacing: UM.Theme.getSize("layerview_row_spacing").height
 
             Label
             {
@@ -120,7 +120,6 @@ Item
                 visible: !UM.SimulationView.compatibilityMode
                 style: UM.Theme.styles.combobox
                 anchors.right: parent.right
-                anchors.rightMargin: 10 * screenScaleFactor
 
                 onActivated:
                 {
@@ -154,12 +153,10 @@ Item
                 Layout.preferredWidth: UM.Theme.getSize("layerview_row").width
             }
 
-            Label
+            Item
             {
-                id: space2Label
-                anchors.left: parent.left
-                text: " "
-                font.pointSize: 0.5
+                height: Math.floor(UM.Theme.getSize("default_margin").width / 2)
+                width: width
             }
 
             Connections {
@@ -192,7 +189,6 @@ Item
                     Rectangle {
                         anchors.verticalCenter: parent.verticalCenter
                         anchors.right: extrudersModelCheckBox.right
-                        anchors.rightMargin: UM.Theme.getSize("default_margin").width
                         width: UM.Theme.getSize("layerview_legend_size").width
                         height: UM.Theme.getSize("layerview_legend_size").height
                         color: model.color
@@ -261,7 +257,6 @@ Item
                     Rectangle {
                         anchors.verticalCenter: parent.verticalCenter
                         anchors.right: legendModelCheckBox.right
-                        anchors.rightMargin: UM.Theme.getSize("default_margin").width
                         width: UM.Theme.getSize("layerview_legend_size").width
                         height: UM.Theme.getSize("layerview_legend_size").height
                         color: UM.Theme.getColor(model.colorId)
@@ -330,7 +325,6 @@ Item
                     Rectangle {
                         anchors.verticalCenter: parent.verticalCenter
                         anchors.right: typesLegendModelLabel.right
-                        anchors.rightMargin: UM.Theme.getSize("default_margin").width
                         width: UM.Theme.getSize("layerview_legend_size").width
                         height: UM.Theme.getSize("layerview_legend_size").height
                         color: UM.Theme.getColor(model.colorId)
@@ -347,7 +341,7 @@ Item
             }
 
             // Text for the minimum, maximum and units for the feedrates and layer thickness
-            Rectangle {
+            Item {
                 id: gradientLegend
                 visible: view_settings.show_gradient
                 width: parent.width
