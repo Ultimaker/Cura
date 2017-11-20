@@ -11,14 +11,12 @@ from UM.Event import Event, KeyEvent
 from UM.Job import Job
 from UM.Logger import Logger
 from UM.Math.Color import Color
-from UM.Math.Vector import Vector
 from UM.Mesh.MeshBuilder import MeshBuilder
 from UM.Message import Message
 from UM.PluginRegistry import PluginRegistry
 from UM.Preferences import Preferences
 from UM.Resources import Resources
 from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
-from UM.Scene.SceneNode import SceneNode
 from UM.Scene.Selection import Selection
 from UM.Signal import Signal
 from UM.View.GL.OpenGL import OpenGL
@@ -26,8 +24,10 @@ from UM.View.GL.OpenGLContext import OpenGLContext
 from UM.View.View import View
 from UM.i18n import i18nCatalog
 from cura.ConvexHullNode import ConvexHullNode
-from . import NozzleNode
-from . import SimulationPass, SimulationViewProxy
+
+from .NozzleNode import NozzleNode
+from .SimulationPass import SimulationPass
+from .SimulationViewProxy import SimulationViewProxy
 
 catalog = i18nCatalog("cura")
 
@@ -70,7 +70,7 @@ class SimulationView(View):
         self._old_composite_shader = None
 
         self._global_container_stack = None
-        self._proxy = SimulationViewProxy.SimulationViewProxy()
+        self._proxy = SimulationViewProxy()
         self._controller.getScene().getRoot().childrenChanged.connect(self._onSceneChanged)
 
         self._resetSettings()
@@ -123,7 +123,7 @@ class SimulationView(View):
         if not self._layer_pass:
             # Currently the RenderPass constructor requires a size > 0
             # This should be fixed in RenderPass's constructor.
-            self._layer_pass = SimulationPass.SimulationPass(1, 1)
+            self._layer_pass = SimulationPass(1, 1)
             self._compatibility_mode = OpenGLContext.isLegacyOpenGL() or bool(Preferences.getInstance().getValue("view/force_layer_view_compatibility_mode"))
             self._layer_pass.setSimulationView(self)
         return self._layer_pass
