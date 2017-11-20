@@ -2,13 +2,14 @@ from UM.Application import Application
 from cura.PrinterOutputDevice import PrinterOutputDevice
 
 from PyQt5.QtNetwork import QHttpMultiPart, QHttpPart, QNetworkRequest, QNetworkAccessManager, QNetworkReply
-from PyQt5.QtCore import QUrl
+from PyQt5.QtCore import pyqtProperty, pyqtSignal, pyqtSlot, QObject, QTimer, pyqtSignal, QUrl
 
 from time import time
 from typing import Callable
 
+
 class NetworkedPrinterOutputDevice(PrinterOutputDevice):
-    def __init__(self, device_id, address: str, parent = None):
+    def __init__(self, device_id, address: str, properties, parent = None):
         super().__init__(device_id = device_id, parent = parent)
         self._manager = None
         self._createNetworkManager()
@@ -16,7 +17,7 @@ class NetworkedPrinterOutputDevice(PrinterOutputDevice):
         self._last_request_time = None
         self._api_prefix = ""
         self._address = address
-
+        self._properties = properties
         self._user_agent = "%s/%s " % (Application.getInstance().getApplicationName(), Application.getInstance().getVersion())
 
         self._onFinishedCallbacks = {}
@@ -69,3 +70,37 @@ class NetworkedPrinterOutputDevice(PrinterOutputDevice):
         except Exception as e:
             print("Something went wrong with callback", e)
         pass
+
+    @pyqtSlot(str, result=str)
+    def getProperty(self, key):
+        key = key.encode("utf-8")
+        if key in self._properties:
+            return self._properties.get(key, b"").decode("utf-8")
+        else:
+            return ""
+
+    ##  Get the unique key of this machine
+    #   \return key String containing the key of the machine.
+    @pyqtProperty(str, constant=True)
+    def key(self):
+        return self._id
+
+    ##  The IP address of the printer.
+    @pyqtProperty(str, constant=True)
+    def address(self):
+        return self._properties.get(b"address", b"").decode("utf-8")
+
+    ##  Name of the printer (as returned from the ZeroConf properties)
+    @pyqtProperty(str, constant=True)
+    def name(self):
+        return self._properties.get(b"name", b"").decode("utf-8")
+
+    ##  Firmware version (as returned from the ZeroConf properties)
+    @pyqtProperty(str, constant=True)
+    def firmwareVersion(self):
+        return self._properties.get(b"firmware_version", b"").decode("utf-8")
+
+    ## IPadress of this printer
+    @pyqtProperty(str, constant=True)
+    def ipAddress(self):
+        return self._address
