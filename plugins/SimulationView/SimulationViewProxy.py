@@ -16,6 +16,8 @@ class SimulationViewProxy(QObject):
         self._controller.activeViewChanged.connect(self._onActiveViewChanged)
         self._onActiveViewChanged()
 
+        self.is_simulationView_selected = False
+
     currentLayerChanged = pyqtSignal()
     currentPathChanged = pyqtSignal()
     maxLayersChanged = pyqtSignal()
@@ -236,6 +238,19 @@ class SimulationViewProxy(QObject):
     def _onActiveViewChanged(self):
         active_view = self._controller.getActiveView()
         if isinstance(active_view, SimulationView.SimulationView.SimulationView):
+
+            # remove other connection if once the SimulationView was created.
+            if self.is_simulationView_selected:
+                active_view.currentLayerNumChanged.disconnect(self._onLayerChanged)
+                active_view.currentPathNumChanged.disconnect(self._onPathChanged)
+                active_view.maxLayersChanged.disconnect(self._onMaxLayersChanged)
+                active_view.maxPathsChanged.disconnect(self._onMaxPathsChanged)
+                active_view.busyChanged.disconnect(self._onBusyChanged)
+                active_view.activityChanged.disconnect(self._onActivityChanged)
+                active_view.globalStackChanged.disconnect(self._onGlobalStackChanged)
+                active_view.preferencesChanged.disconnect(self._onPreferencesChanged)
+
+            self.is_simulationView_selected = True
             active_view.currentLayerNumChanged.connect(self._onLayerChanged)
             active_view.currentPathNumChanged.connect(self._onPathChanged)
             active_view.maxLayersChanged.connect(self._onMaxLayersChanged)
