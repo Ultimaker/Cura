@@ -264,10 +264,12 @@ class PrintInformation(QObject):
     def jobName(self):
         return self._job_name
 
-    def _updateJobName(self):
+    def _updateJobName(self, empty_name = False):
         # if the project name is set, we use the project name as the job name, so the job name should not get updated
         # if a model file is loaded after that.
         if self._project_name != "":
+            if empty_name:
+                self._project_name = ""
             return
 
         if self._base_name == "":
@@ -304,12 +306,13 @@ class PrintInformation(QObject):
         name = os.path.splitext(name)[0]
 
         # name is "" when I first had some meshes and afterwards I deleted them so the naming should start again
-        if name == "" or (self._base_name == "" and self._base_name != name):
+        is_empty = name == ""
+        if is_empty or (self._base_name == "" and self._base_name != name):
             # remove ".curaproject" suffix from (imported) the file name
             if name.endswith(".curaproject"):
                 name = name[:name.rfind(".curaproject")]
             self._base_name = name
-            self._updateJobName()
+            self._updateJobName(empty_name = is_empty)
 
     ##  Created an acronymn-like abbreviated machine name from the currently active machine name
     #   Called each time the global stack is switched
