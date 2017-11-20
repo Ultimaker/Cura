@@ -5965,7 +5965,9 @@
                     "default_value": 0,
                     "value": "0",
                     "enabled": true,
-                    "settable_per_mesh": false
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false,
+                    "settable_per_meshgroup": false
                 },
                 "flow_rate_extrusion_offset_factor":
                 {
@@ -5978,7 +5980,9 @@
                     "default_value": 100,
                     "value": "100",
                     "enabled": true,
-                    "settable_per_mesh": false
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false,
+                    "settable_per_meshgroup": false
                 }
             }
         },
