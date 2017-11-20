@@ -166,8 +166,8 @@ class GCodeReader(MeshReader):
         return line_width
 
     def _gCode0(self, position, params, path):
-
         x, y, z, f, e = position
+
         if self._is_absolute_positioning:
             x = params.x if params.x is not None else x
             y = params.y if params.y is not None else y
@@ -176,7 +176,7 @@ class GCodeReader(MeshReader):
             x += params.x if params.x is not None else 0
             y += params.y if params.y is not None else 0
             z += params.z if params.z is not None else 0
-        
+
         f = params.f if params.f is not None else f
 
         if params.e is not None:
