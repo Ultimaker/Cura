@@ -136,7 +136,7 @@ class VersionUpgrade30to31(VersionUpgrade):
                     parser["containers"]["2"] = "empty_quality"
 
             # fix empty containers
-            for key, specific_empty_container in _EMPTY_CONTAINER_DICT:
+            for key, specific_empty_container in _EMPTY_CONTAINER_DICT.items():
                 if parser.has_option("containers", key) and parser["containers"][key] == "empty":
                     parser["containers"][key] = specific_empty_container
 
