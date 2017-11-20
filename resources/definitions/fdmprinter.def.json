@@ -5471,6 +5471,36 @@
                         }
                     }
                 },
+                "flow_rate_max_extrusion_offset":
+                {
+                    "label": "Flow rate compensation max extrusion offset",
+                    "description": "The maximum distance in mm to compensate for pressure in the bowden tube.",
+                    "unit": "mm",
+                    "type": "float",
+                    "minimum_value": "0",
+                    "maximum_value_warning": "10",
+                    "default_value": 0,
+                    "value": "0",
+                    "enabled": true,
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false,
+                    "settable_per_meshgroup": false
+                },
+                "flow_rate_extrusion_offset_factor":
+                {
+                    "label": "Flow rate compensation factor",
+                    "description": "The multiplication factor for the flow rate -> distance translation.",
+                    "unit": "%",
+                    "type": "float",
+                    "minimum_value": "0",
+                    "maximum_value_warning": "100",
+                    "default_value": 100,
+                    "value": "100",
+                    "enabled": true,
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false,
+                    "settable_per_meshgroup": false
+                },
                 "wireframe_enabled":
                 {
                     "label": "Wire Printing",
