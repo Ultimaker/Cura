@@ -61,7 +61,7 @@ class ProcessSlicedLayersJob(Job):
 
     def run(self):
         start_time = time()
-        if Application.getInstance().getController().getActiveView().getPluginId() == "LayerView":
+        if Application.getInstance().getController().getActiveView().getPluginId() == "SimulationView":
             self._progress_message.show()
             Job.yieldThread()
             if self._abort_requested:
@@ -109,6 +109,7 @@ class ProcessSlicedLayersJob(Job):
             layer_data.addLayer(abs_layer_number)
             this_layer = layer_data.getLayer(abs_layer_number)
             layer_data.setLayerHeight(abs_layer_number, layer.height)
+            layer_data.setLayerThickness(abs_layer_number, layer.thickness)
 
             for p in range(layer.repeatedMessageCount("path_segment")):
                 polygon = layer.getRepeatedMessage("path_segment", p)
@@ -127,10 +128,11 @@ class ProcessSlicedLayersJob(Job):
                 line_widths = numpy.fromstring(polygon.line_width, dtype="f4")  # Convert bytearray to numpy array
                 line_widths = line_widths.reshape((-1,1))  # We get a linear list of pairs that make up the points, so make numpy interpret them correctly.
 
-                # In the future, line_thicknesses should be given by CuraEngine as well.
-                # Currently the infill layer thickness also translates to line width
-                line_thicknesses = numpy.zeros(line_widths.shape, dtype="f4")
-                line_thicknesses[:] = layer.thickness / 1000  # from micrometer to millimeter
+                line_thicknesses = numpy.fromstring(polygon.line_thickness, dtype="f4")  # Convert bytearray to numpy array
+                line_thicknesses = line_thicknesses.reshape((-1,1))  # We get a linear list of pairs that make up the points, so make numpy interpret them correctly.
+
+                line_feedrates = numpy.fromstring(polygon.line_feedrate, dtype="f4")  # Convert bytearray to numpy array
+                line_feedrates = line_feedrates.reshape((-1,1))  # We get a linear list of pairs that make up the points, so make numpy interpret them correctly.
 
                 # Create a new 3D-array, copy the 2D points over and insert the right height.
                 # This uses manual array creation + copy rather than numpy.insert since this is
@@ -145,7 +147,7 @@ class ProcessSlicedLayersJob(Job):
                     new_points[:, 1] = points[:, 2]
                     new_points[:, 2] = -points[:, 1]
 
-                this_poly = LayerPolygon.LayerPolygon(extruder, line_types, new_points, line_widths, line_thicknesses)
+                this_poly = LayerPolygon.LayerPolygon(extruder, line_types, new_points, line_widths, line_thicknesses, line_feedrates)
                 this_poly.buildCache()
 
                 this_layer.polygons.append(this_poly)
@@ -219,7 +221,7 @@ class ProcessSlicedLayersJob(Job):
             self._progress_message.setProgress(100)
 
         view = Application.getInstance().getController().getActiveView()
-        if view.getPluginId() == "LayerView":
+        if view.getPluginId() == "SimulationView":
             view.resetLayerData()
 
         if self._progress_message:
@@ -232,7 +234,7 @@ class ProcessSlicedLayersJob(Job):
 
     def _onActiveViewChanged(self):
         if self.isRunning():
-            if Application.getInstance().getController().getActiveView().getPluginId() == "LayerView":
+            if Application.getInstance().getController().getActiveView().getPluginId() == "SimulationView":
                 if not self._progress_message:
                     self._progress_message = Message(catalog.i18nc("@info:status", "Processing Layers"), 0, False, 0, catalog.i18nc("@info:title", "Information"))
                 if self._progress_message.getProgress() != 100:
