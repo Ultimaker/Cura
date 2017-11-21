@@ -795,7 +795,8 @@ class XmlMaterialProfile(InstanceContainer):
                         result_metadata.append(new_hotend_material_metadata)
 
         for metadata in result_metadata:
-            #ContainerRegistry.getInstance().metadata[metadata["id"]] = metadata
+            result_metadata.append(metadata)
+        return result_metadata
 
     ##  Override of getIdsFromFile because the XML files contain multiple IDs.
     @classmethod
