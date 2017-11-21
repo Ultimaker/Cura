@@ -3,8 +3,13 @@
 
 import configparser #To parse preference files.
 import io #To serialise the preference files afterwards.
+import os
+from urllib.parse import quote_plus
 
+from UM.Resources import Resources
 from UM.VersionUpgrade import VersionUpgrade #We're inheriting from this.
+
+from cura.CuraApplication import CuraApplication
 
 
 # a list of all legacy "Not Supported" quality profiles
@@ -106,6 +111,12 @@ class VersionUpgrade30to31(VersionUpgrade):
             if not parser.has_section(each_section):
                 parser.add_section(each_section)
 
+        # Copy global quality changes to extruder quality changes for single extrusion machines
+        if parser["metadata"]["type"] == "quality_changes":
+            all_quality_changes = self._getSingleExtrusionMachineQualityChanges(parser)
+            if len(all_quality_changes) == 1 and not all_quality_changes[0].has_option("metadata", "extruder"):
+                self._createExtruderQualityChangesForSingleExtrusionMachine(filename, all_quality_changes[0])
+
         # Update version numbers
         parser["general"]["version"] = "2"
         parser["metadata"]["setting_version"] = "4"
@@ -153,3 +164,59 @@ class VersionUpgrade30to31(VersionUpgrade):
         output = io.StringIO()
         parser.write(output)
         return [filename], [output.getvalue()]
+
+    def _getSingleExtrusionMachineQualityChanges(self, quality_changes_container):
+        quality_changes_dir = Resources.getPath(CuraApplication.ResourceTypes.QualityInstanceContainer)
+        quality_changes_containers = []
+
+        for item in os.listdir(quality_changes_dir):
+            file_path = os.path.join(quality_changes_dir, item)
+            if not os.path.isfile(file_path):
+                continue
+
+            parser = configparser.ConfigParser()
+            try:
+                parser.read([file_path])
+            except:
+                # skip, it is not a valid stack file
+                continue
+
+            if not parser.has_option("metadata", "type"):
+                continue
+            if "quality_changes" != parser["metadata"]["type"]:
+                continue
+
+            if not parser.has_option("general", "name"):
+                continue
+            if quality_changes_container["general"]["name"] != parser["general"]["name"]:
+                continue
+
+            quality_changes_containers.append(parser)
+
+        return quality_changes_containers
+
+    def _createExtruderQualityChangesForSingleExtrusionMachine(self, filename, global_quality_changes):
+        suffix = "_" + quote_plus(global_quality_changes["general"]["name"].lower())
+        machine_name = filename.strip("." + os.sep).replace(suffix, "")
+        new_filename = machine_name + "_" + "fdmextruder" + suffix
+
+        extruder_quality_changes_parser = configparser.ConfigParser()
+        extruder_quality_changes_parser.add_section("general")
+        extruder_quality_changes_parser["general"]["version"] = str(2)
+        extruder_quality_changes_parser["general"]["name"] = global_quality_changes["general"]["name"]
+        extruder_quality_changes_parser["general"]["definition"] = global_quality_changes["general"]["definition"]
+
+        extruder_quality_changes_parser.add_section("metadata")
+        extruder_quality_changes_parser["metadata"]["quality_type"] = global_quality_changes["metadata"]["quality_type"]
+        extruder_quality_changes_parser["metadata"]["type"] = global_quality_changes["metadata"]["type"]
+        extruder_quality_changes_parser["metadata"]["setting_version"] = str(4)
+        extruder_quality_changes_parser["metadata"]["extruder"] = "fdmextruder"
+
+        extruder_quality_changes_output = io.StringIO()
+        extruder_quality_changes_parser.write(extruder_quality_changes_output)
+        extruder_quality_changes_filename = quote_plus(new_filename) + ".inst.cfg"
+
+        quality_changes_dir = Resources.getPath(CuraApplication.ResourceTypes.QualityInstanceContainer)
+
+        with open(os.path.join(quality_changes_dir, extruder_quality_changes_filename), "w") as f:
+            f.write(extruder_quality_changes_output.getvalue())
