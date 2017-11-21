@@ -6,7 +6,7 @@ import io
 import json #To parse the product-to-id mapping file.
 import os.path #To find the product-to-id mapping.
 import sys
-from typing import Dict, Optional
+from typing import Any, Dict, List, Optional
 import xml.etree.ElementTree as ET
 
 from UM.Resources import Resources
@@ -641,6 +641,161 @@ class XmlMaterialProfile(InstanceContainer):
 
         for container_to_add in containers_to_add:
             ContainerRegistry.getInstance().addContainer(container_to_add)
+
+    @classmethod
+    def deserializeMetadata(cls, serialized: str, container_id: str) -> List[Dict[str, Any]]:
+        result_metadata = [] #All the metadata that we found except the base (because the base is returned).
+
+        #Update the serialized data to the latest version.
+        serialized = cls._updateSerialized(serialized)
+
+        base_metadata = {
+            "type": "material",
+            "status": "unknown", #TODO: Add material verification.
+            "container_type": XmlMaterialProfile
+        }
+
+        try:
+            data = ET.fromstring(serialized)
+        except:
+            Logger.logException("e", "An exception occurred while parsing the material profile")
+            return []
+
+        #TODO: Implement the <inherits> tag. It's unused at the moment though.
+
+        if "version" in data.attrib:
+            base_metadata["setting_version"] = cls.xmlVersionToSettingVersion(data.attrib["version"])
+        else:
+            base_metadata["setting_version"] = cls.xmlVersionToSettingVersion("1.2") #1.2 and lower didn't have that version number there yet.
+
+        for entry in data.iterfind("./um:metadata/*", cls.__namespaces):
+            tag_name = _tag_without_namespace(entry)
+
+            if tag_name == "name":
+                brand = entry.find("./um:brand", cls.__namespaces)
+                material = entry.find("./um:material", cls.__namespaces)
+                color = entry.find("./um:color", cls.__namespaces)
+                label = entry.find("./um:label", cls.__namespaces)
+
+                if label is not None:
+                    base_metadata["name"] = label.text
+                else:
+                    base_metadata["name"] = cls._profile_name(material.text, color.text)
+                base_metadata["brand"] = brand.text
+                base_metadata["material"] = material.text
+                base_metadata["color_name"] = color.text
+                continue
+
+            #Setting_version is derived from the "version" tag in the schema earlier, so don't set it here.
+            if tag_name == "setting_version":
+                continue
+
+            base_metadata[tag_name] = entry.text
+
+        if "description" not in base_metadata:
+            base_metadata["description"] = ""
+        if "adhesion_info" not in base_metadata:
+            base_metadata["adhesion_info"] = ""
+
+        property_values = {}
+        properties = data.iterfind("./um:properties/*", cls.__namespaces)
+        for entry in properties:
+            tag_name = _tag_without_namespace(entry)
+            property_values[tag_name] = entry.text
+
+        base_metadata["approximate_diameter"] = str(round(float(property_values.get("diameter", 2.85)))) # In mm
+        base_metadata["properties"] = property_values
+
+        compatible_entries = data.iterfind("./um:settings/um:setting[@key='hardware compatible']", cls.__namespaces)
+        try:
+            common_compatibility = cls._parseCompatibleValue(next(compatible_entries).text)
+        except StopIteration: #No 'hardware compatible' setting.
+            common_compatibility = True
+        base_metadata["compatible"] = common_compatibility
+        result_metadata.append(base_metadata)
+
+        # Map machine human-readable names to IDs
+        product_id_map = cls.getProductIdMap()
+
+        for machine in data.iterfind("./um:settings/um:machine", cls.__namespaces):
+            machine_compatibility = common_compatibility
+            for entry in machine.iterfind("./um:setting", cls.__namespaces):
+                key = entry.get("key")
+                if key == "hardware compatible":
+                    machine_compatibility = cls._parseCompatibleValue(entry.text)
+
+            for identifier in machine.iterfind("./um:machine_identifier", cls.__namespaces):
+                machine_id = product_id_map.get(identifier.get("product"), None)
+                if machine_id is None:
+                    # Lets try again with some naive heuristics.
+                    machine_id = identifier.get("product").replace(" ", "").lower()
+                definition_metadata = ContainerRegistry.getInstance().findDefinitionContainersMetadata(id = machine_id)
+                if not definition_metadata:
+                    Logger.log("w", "No definition found for machine ID %s", machine_id)
+                    continue
+                definition_metadata = definition_metadata[0]
+
+                machine_manufacturer = identifier.get("manufacturer", definition_metadata.get("manufacturer", "Unknown")) #If the XML material doesn't specify a manufacturer, use the one in the actual printer definition.
+
+                if machine_compatibility:
+                    new_material_id = container_id + "_" + machine_id
+
+                    # The child or derived material container may already exist. This can happen when a material in a
+                    # project file and the a material in Cura have the same ID.
+                    # In the case if a derived material already exists, override that material container because if
+                    # the data in the parent material has been changed, the derived ones should be updated too.
+                    found_materials = ContainerRegistry.getInstance().findInstanceContainersMetadata(id = new_material_id)
+                    if found_materials:
+                        new_material_metadata = found_materials[0]
+                    else:
+                        new_material_metadata = {}
+
+                    new_material_metadata.update(base_metadata)
+                    new_material_metadata["compatible"] = machine_compatibility
+                    new_material_metadata["machine_manufacturer"] = machine_manufacturer
+
+                    if len(found_materials) == 0: #This is a new material.
+                        result_metadata.append(new_material_metadata)
+
+                for hotend in machine.iterfind("./um:hotend", cls.__namespaces):
+                    hotend_id = hotend.get("id")
+                    if hotend_id is None:
+                        continue
+
+                    variant_containers = ContainerRegistry.getInstance().findInstanceContainersMetadata(id = hotend_id)
+                    if not variant_containers:
+                        # It is not really properly defined what "ID" is so also search for variants by name.
+                        variant_containers = ContainerRegistry.getInstance().findInstanceContainersMetadata(definition = machine_id, name = hotend_id)
+                    if not variant_containers:
+                        continue
+
+                    hotend_compatibility = machine_compatibility
+                    for entry in hotend.iterfind("./um:setting", cls.__namespaces):
+                        key = entry.get("key")
+                        if key == "hardware compatible":
+                            hotend_compatibility = cls._parseCompatibleValue(entry.text)
+
+                    new_hotend_id = container_id + "_" + machine_id + "_" + hotend_id.replace(" ", "_")
+
+                    # Same as machine compatibility, keep the derived material containers consistent with the parent
+                    # material
+                    found_materials = ContainerRegistry.getInstance().findInstanceContainers(id = new_hotend_id)
+                    if found_materials:
+                        new_hotend_material_metadata = found_materials[0]
+                    else:
+                        new_hotend_material_metadata = {}
+
+                    new_hotend_material_metadata["name"] = base_metadata["name"]
+                    new_hotend_material_metadata.update(base_metadata)
+                    new_hotend_material_metadata["variant"] = variant_containers[0]["id"]
+                    new_hotend_material_metadata["compatible"] = hotend_compatibility
+                    new_hotend_material_metadata["machine_manufacturer"] = machine_manufacturer
+
+                    if len(found_materials) == 0:
+                        result_metadata.append(new_hotend_material_metadata)
+
+        for metadata in result_metadata:
+            #ContainerRegistry.getInstance().metadata[metadata["id"]] = metadata
 
     ##  Override of getIdsFromFile because the XML files contain multiple IDs.
     @classmethod
