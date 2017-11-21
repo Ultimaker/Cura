@@ -7,7 +7,7 @@ from cura.PrinterOutput.MaterialOutputModel import MaterialOutputModel
 
 import json
 
-from PyQt5.QtNetwork import QNetworkRequest
+from PyQt5.QtNetwork import QNetworkRequest, QNetworkReply
 
 class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
     def __init__(self, device_id, address, properties, parent = None):
@@ -16,17 +16,57 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
 
         self._number_of_extruders = 2
 
+        self._print_jobs = []
+
     def _update(self):
         super()._update()
         self._get("printers/", onFinished=self._onGetPrintersDataFinished)
+        self._get("print_jobs/", onFinished=self._onGetPrintJobsFinished)
 
-    def _onGetPrintersDataFinished(self, reply):
+    def _onGetPrintJobsFinished(self, reply: QNetworkReply):
         status_code = reply.attribute(QNetworkRequest.HttpStatusCodeAttribute)
         if status_code == 200:
             try:
                 result = json.loads(bytes(reply.readAll()).decode("utf-8"))
             except json.decoder.JSONDecodeError:
-                Logger.log("w", "Received an invalid printer state message: Not valid JSON.")
+                Logger.log("w", "Received an invalid print jobs message: Not valid JSON.")
+                return
+            print_jobs_seen = []
+            for print_job_data in result:
+                print_job = None
+                for job in self._print_jobs:
+                    if job.key == print_job_data["uuid"]:
+                        print_job = job
+                        break
+
+                if print_job is None:
+                    print_job = PrintJobOutputModel(output_controller = None,
+                                                    key = print_job_data["uuid"],
+                                                    name = print_job_data["name"])
+                print_job.updateTimeTotal(print_job_data["time_total"])
+                print_job.updateTimeElapsed(print_job_data["time_elapsed"])
+                print_job.updateState(print_job_data["status"])
+                if print_job.state == "printing":
+                    # Print job should be assigned to a printer.
+                    printer = self._getPrinterByKey(print_job_data["printer_uuid"])
+                    if printer:
+                        printer.updateActivePrintJob(print_job)
+
+                print_jobs_seen.append(print_job)
+            for old_job in self._print_jobs:
+                if old_job not in print_jobs_seen:
+                    # Print job needs to be removed.
+                    old_job.assignedPrinter.updateActivePrintJob(None)
+
+            self._print_jobs = print_jobs_seen
+
+    def _onGetPrintersDataFinished(self, reply: QNetworkReply):
+        status_code = reply.attribute(QNetworkRequest.HttpStatusCodeAttribute)
+        if status_code == 200:
+            try:
+                result = json.loads(bytes(reply.readAll()).decode("utf-8"))
+            except json.decoder.JSONDecodeError:
+                Logger.log("w", "Received an invalid printers state message: Not valid JSON.")
                 return
 
             for printer_data in result:

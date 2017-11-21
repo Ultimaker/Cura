@@ -60,6 +60,13 @@ class PrinterOutputDevice(QObject, OutputDevice):
     def _update(self):
         pass
 
+    def _getPrinterByKey(self, key):
+        for printer in self._printers:
+            if printer.key == key:
+                return printer
+
+        return None
+
     def requestWrite(self, nodes, file_name = None, filter_by_machine = False, file_handler = None):
         raise NotImplementedError("requestWrite needs to be implemented")
 

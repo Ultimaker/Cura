@@ -5,6 +5,7 @@ from PyQt5.QtCore import pyqtSignal, pyqtProperty, QObject, QVariant
 MYPY = False
 if MYPY:
     from cura.PrinterOutput.PrinterOutputController import PrinterOutputController
+    from cura.PrinterOutput.PrinterOutputModel import PrinterOutputModel
 
 
 class PrintJobOutputModel(QObject):
@@ -13,15 +14,26 @@ class PrintJobOutputModel(QObject):
     timeElapsedChanged = pyqtSignal()
     nameChanged = pyqtSignal()
     keyChanged = pyqtSignal()
+    assignedPrinterChanged = pyqtSignal()
 
-    def __init__(self, output_controller: "PrinterOutputController", parent=None):
+    def __init__(self, output_controller: "PrinterOutputController", key: str = "", name: str = "", parent=None):
         super().__init__(parent)
         self._output_controller = output_controller
         self._state = ""
         self._time_total = 0
         self._time_elapsed = 0
         self._name = ""  # Human readable name
-        self._key = ""  # Unique identifier
+        self._key = key  # Unique identifier
+        self._assigned_printer = None
+
+    @pyqtProperty(QObject, notify=assignedPrinterChanged)
+    def assignedPrinter(self):
+        return self._assigned_printer
+
+    def updateAssignedPrinter(self, assigned_printer: "PrinterOutputModel"):
+        if self._assigned_printer != assigned_printer:
+            self._assigned_printer = assigned_printer
+            self.assignedPrinterChanged.emit()
 
     @pyqtProperty(str, notify=keyChanged)
     def key(self):
