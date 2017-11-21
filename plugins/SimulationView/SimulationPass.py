@@ -175,7 +175,7 @@ class SimulationPass(RenderPass):
             if head_position is not None:
                 nozzle_node.setVisible(True)
                 nozzle_node.setPosition(head_position)
-                nozzle_batch = RenderBatch(self._nozzle_shader, type = RenderBatch.RenderType.Solid)
+                nozzle_batch = RenderBatch(self._nozzle_shader, type = RenderBatch.RenderType.Transparent)
                 nozzle_batch.addItem(nozzle_node.getWorldTransformation(), mesh = nozzle_node.getMeshData())
                 nozzle_batch.render(self._scene.getActiveCamera())
 
