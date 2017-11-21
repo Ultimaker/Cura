@@ -7,7 +7,7 @@ from PyQt5.QtNetwork import QHttpMultiPart, QHttpPart, QNetworkRequest, QNetwork
 from PyQt5.QtCore import pyqtProperty, pyqtSignal, pyqtSlot, QObject, QTimer, pyqtSignal, QUrl
 
 from time import time
-from typing import Callable
+from typing import Callable, Any
 
 
 class NetworkedPrinterOutputDevice(PrinterOutputDevice):
@@ -38,20 +38,20 @@ class NetworkedPrinterOutputDevice(PrinterOutputDevice):
         request.setHeader(QNetworkRequest.UserAgentHeader, self._user_agent)
         return request
 
-    def _put(self, target: str, data: str, onFinished: Callable[[QNetworkReply], None]):
+    def _put(self, target: str, data: str, onFinished: Callable[[Any, QNetworkReply], None]):
         request = self._createEmptyRequest(target)
         reply = self._manager.put(request, data.encode())
         self._onFinishedCallbacks[reply.url().toString() + str(reply.operation())] = onFinished
 
-    def _get(self, target: str, onFinished: Callable[[QNetworkReply], None]):
+    def _get(self, target: str, onFinished: Callable[[Any, QNetworkReply], None]):
         request = self._createEmptyRequest(target)
         reply = self._manager.get(request)
         self._onFinishedCallbacks[reply.url().toString() + str(reply.operation())] = onFinished
 
-    def _delete(self, target: str, onFinished: Callable[[QNetworkReply], None]):
+    def _delete(self, target: str, onFinished: Callable[[Any, QNetworkReply], None]):
         pass
 
-    def _post(self, target: str, data: str, onFinished: Callable[[QNetworkReply], None], onProgress: Callable):
+    def _post(self, target: str, data: str, onFinished: Callable[[Any, QNetworkReply], None], onProgress: Callable):
         pass
 
     def _createNetworkManager(self):
