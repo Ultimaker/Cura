@@ -168,6 +168,7 @@ Item
                 {
                     layerTypeCombobox.currentIndex = UM.SimulationView.compatibilityMode ? 1 : UM.Preferences.getValue("layerview/layer_view_type");
                     layerTypeCombobox.updateLegends(layerTypeCombobox.currentIndex);
+                    playButton.pauseSimulation();
                     view_settings.extruder_opacities = UM.Preferences.getValue("layerview/extruder_opacities").split("|");
                     view_settings.show_travel_moves = UM.Preferences.getValue("layerview/show_travel_moves");
                     view_settings.show_helpers = UM.Preferences.getValue("layerview/show_helpers");

@@ -171,7 +171,7 @@ class SimulationPass(RenderPass):
                     batch.render(self._scene.getActiveCamera())
 
         # The nozzle is drawn once we know the correct position
-        if self._layer_view.getActivity() and nozzle_node is not None:
+        if not self._compatibility_mode and self._layer_view.getActivity() and nozzle_node is not None:
             if head_position is not None:
                 nozzle_node.setVisible(True)
                 nozzle_node.setPosition(head_position)
