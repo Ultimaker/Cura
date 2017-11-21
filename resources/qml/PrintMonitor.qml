@@ -9,6 +9,8 @@ import QtQuick.Layouts 1.1
 import UM 1.2 as UM
 import Cura 1.0 as Cura
 
+import "PrinterOutput"
+
 Column
 {
     id: printMonitor
@@ -22,45 +24,10 @@ Column
         simpleNames: true
     }
 
-    Rectangle
+    OutputDeviceHeader
     {
-        id: connectedPrinterHeader
         width: parent.width
-        height: Math.floor(childrenRect.height + UM.Theme.getSize("default_margin").height * 2)
-        color: UM.Theme.getColor("setting_category")
-
-        Label
-        {
-            id: connectedPrinterNameLabel
-            font: UM.Theme.getFont("large")
-            color: UM.Theme.getColor("text")
-            anchors.left: parent.left
-            anchors.top: parent.top
-            anchors.margins: UM.Theme.getSize("default_margin").width
-            text: connectedPrinter != null ? connectedPrinter.name : catalog.i18nc("@info:status", "No printer connected")
-        }
-        Label
-        {
-            id: connectedPrinterAddressLabel
-            text: (connectedPrinter != null && connectedPrinter.address != null) ? connectedPrinter.address : ""
-            font: UM.Theme.getFont("small")
-            color: UM.Theme.getColor("text_inactive")
-            anchors.top: parent.top
-            anchors.right: parent.right
-            anchors.margins: UM.Theme.getSize("default_margin").width
-        }
-        Label
-        {
-            text: connectedPrinter != null ? connectedPrinter.connectionText : catalog.i18nc("@info:status", "The printer is not connected.")
-            color: connectedPrinter != null && connectedPrinter.acceptsCommands ? UM.Theme.getColor("setting_control_text") : UM.Theme.getColor("setting_control_disabled_text")
-            font: UM.Theme.getFont("very_small")
-            wrapMode: Text.WordWrap
-            anchors.left: parent.left
-            anchors.leftMargin: UM.Theme.getSize("default_margin").width
-            anchors.right: parent.right
-            anchors.rightMargin: UM.Theme.getSize("default_margin").width
-            anchors.top: connectedPrinterNameLabel.bottom
-        }
+        outputDevice: connectedDevice
     }
 
     Rectangle
@@ -78,189 +45,13 @@ Column
             Repeater
             {
                 id: extrudersRepeater
-                model: machineExtruderCount.properties.value
+                model: activePrinter.extruders
 
-                delegate: Rectangle
+                ExtruderBox
                 {
-                    id: extruderRectangle
                     color: UM.Theme.getColor("sidebar")
                     width: index == machineExtruderCount.properties.value - 1 && index % 2 == 0 ? extrudersGrid.width : Math.floor(extrudersGrid.width / 2 - UM.Theme.getSize("sidebar_lining_thin").width / 2)
-                    height: UM.Theme.getSize("sidebar_extruder_box").height
-
-                    Label //Extruder name.
-                    {
-                        text: Cura.ExtruderManager.getExtruderName(index) != "" ? Cura.ExtruderManager.getExtruderName(index) : catalog.i18nc("@label", "Extruder")
-                        color: UM.Theme.getColor("text")
-                        font: UM.Theme.getFont("default")
-                        anchors.left: parent.left
-                        anchors.top: parent.top
-                        anchors.margins: UM.Theme.getSize("default_margin").width
-                    }
-
-                    Label //Target temperature.
-                    {
-                        id: extruderTargetTemperature
-                        text: (connectedPrinter != null && connectedPrinter.hotendIds[index] != null && connectedPrinter.targetHotendTemperatures[index] != null) ? Math.round(connectedPrinter.targetHotendTemperatures[index]) + "°C" : ""
-                        font: UM.Theme.getFont("small")
-                        color: UM.Theme.getColor("text_inactive")
-                        anchors.right: parent.right
-                        anchors.rightMargin: UM.Theme.getSize("default_margin").width
-                        anchors.bottom: extruderTemperature.bottom
-
-                        MouseArea //For tooltip.
-                        {
-                            id: extruderTargetTemperatureTooltipArea
-                            hoverEnabled: true
-                            anchors.fill: parent
-                            onHoveredChanged:
-                            {
-                                if (containsMouse)
-                                {
-                                    base.showTooltip(
-                                        base,
-                                        {x: 0, y: extruderTargetTemperature.mapToItem(base, 0, -parent.height / 4).y},
-                                        catalog.i18nc("@tooltip", "The target temperature of the hotend. The hotend will heat up or cool down towards this temperature. If this is 0, the hotend heating is turned off.")
-                                    );
-                                }
-                                else
-                                {
-                                    base.hideTooltip();
-                                }
-                            }
-                        }
-                    }
-                    Label //Temperature indication.
-                    {
-                        id: extruderTemperature
-                        text: (connectedPrinter != null && connectedPrinter.hotendIds[index] != null && connectedPrinter.hotendTemperatures[index] != null) ? Math.round(connectedPrinter.hotendTemperatures[index]) + "°C" : ""
-                        color: UM.Theme.getColor("text")
-                        font: UM.Theme.getFont("large")
-                        anchors.right: extruderTargetTemperature.left
-                        anchors.top: parent.top
-                        anchors.margins: UM.Theme.getSize("default_margin").width
-
-                        MouseArea //For tooltip.
-                        {
-                            id: extruderTemperatureTooltipArea
-                            hoverEnabled: true
-                            anchors.fill: parent
-                            onHoveredChanged:
-                            {
-                                if (containsMouse)
-                                {
-                                    base.showTooltip(
-                                        base,
-                                        {x: 0, y: parent.mapToItem(base, 0, -parent.height / 4).y},
-                                        catalog.i18nc("@tooltip", "The current temperature of this extruder.")
-                                    );
-                                }
-                                else
-                                {
-                                    base.hideTooltip();
-                                }
-                            }
-                        }
-                    }
-                    Rectangle //Material colour indication.
-                    {
-                        id: materialColor
-                        width: Math.floor(materialName.height * 0.75)
-                        height: Math.floor(materialName.height * 0.75)
-                        radius: width / 2
-                        color: (connectedPrinter != null && connectedPrinter.materialColors[index] != null && connectedPrinter.materialIds[index] != "") ? connectedPrinter.materialColors[index] : "#00000000"
-                        border.width: UM.Theme.getSize("default_lining").width
-                        border.color: UM.Theme.getColor("lining")
-                        visible: connectedPrinter != null && connectedPrinter.materialColors[index] != null && connectedPrinter.materialIds[index] != ""
-                        anchors.left: parent.left
-                        anchors.leftMargin: UM.Theme.getSize("default_margin").width
-                        anchors.verticalCenter: materialName.verticalCenter
-
-                        MouseArea //For tooltip.
-                        {
-                            id: materialColorTooltipArea
-                            hoverEnabled: true
-                            anchors.fill: parent
-                            onHoveredChanged:
-                            {
-                                if (containsMouse)
-                                {
-                                    base.showTooltip(
-                                        base,
-                                        {x: 0, y: parent.mapToItem(base, 0, -parent.height / 2).y},
-                                        catalog.i18nc("@tooltip", "The colour of the material in this extruder.")
-                                    );
-                                }
-                                else
-                                {
-                                    base.hideTooltip();
-                                }
-                            }
-                        }
-                    }
-                    Label //Material name.
-                    {
-                        id: materialName
-                        text: (connectedPrinter != null && connectedPrinter.materialNames[index] != null && connectedPrinter.materialIds[index] != "") ? connectedPrinter.materialNames[index] : ""
-                        font: UM.Theme.getFont("default")
-                        color: UM.Theme.getColor("text")
-                        anchors.left: materialColor.right
-                        anchors.bottom: parent.bottom
-                        anchors.margins: UM.Theme.getSize("default_margin").width
-
-                        MouseArea //For tooltip.
-                        {
-                            id: materialNameTooltipArea
-                            hoverEnabled: true
-                            anchors.fill: parent
-                            onHoveredChanged:
-                            {
-                                if (containsMouse)
-                                {
-                                    base.showTooltip(
-                                        base,
-                                        {x: 0, y: parent.mapToItem(base, 0, 0).y},
-                                        catalog.i18nc("@tooltip", "The material in this extruder.")
-                                    );
-                                }
-                                else
-                                {
-                                    base.hideTooltip();
-                                }
-                            }
-                        }
-                    }
-                    Label //Variant name.
-                    {
-                        id: variantName
-                        text: (connectedPrinter != null && connectedPrinter.hotendIds[index] != null) ? connectedPrinter.hotendIds[index] : ""
-                        font: UM.Theme.getFont("default")
-                        color: UM.Theme.getColor("text")
-                        anchors.right: parent.right
-                        anchors.bottom: parent.bottom
-                        anchors.margins: UM.Theme.getSize("default_margin").width
-
-                        MouseArea //For tooltip.
-                        {
-                            id: variantNameTooltipArea
-                            hoverEnabled: true
-                            anchors.fill: parent
-                            onHoveredChanged:
-                            {
-                                if (containsMouse)
-                                {
-                                    base.showTooltip(
-                                        base,
-                                        {x: 0, y: parent.mapToItem(base, 0, -parent.height / 4).y},
-                                        catalog.i18nc("@tooltip", "The nozzle inserted in this extruder.")
-                                    );
-                                }
-                                else
-                                {
-                                    base.hideTooltip();
-                                }
-                            }
-                        }
-                    }
+                    extruderModel: activePrinter.extruders[index]
                 }
             }
         }
