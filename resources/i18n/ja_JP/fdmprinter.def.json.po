@@ -6,8 +6,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Cura 3.0\n"
-"Report-Msgid-Bugs-To: r.dulek@ultimaker.com\n"
-"POT-Creation-Date: 2017-08-02 16:53+0000\n"
+"Report-Msgid-Bugs-To: http://github.com/ultimaker/uranium\n"
+"POT-Creation-Date: 2017-11-21 16:58+0000\n"
 "PO-Revision-Date: 2017-10-04 14:30+0900\n"
 "Last-Translator: Brule\n"
 "Language-Team: Brule\n"
@@ -22,8 +22,8 @@ msgstr ""
 msgctxt "machine_settings label"
 msgid "Machine"
 msgstr ""
-#msgstr "プリンター"
 
+# msgstr "プリンター"
 #: fdmprinter.def.json
 msgctxt "machine_settings description"
 msgid "Machine specific settings"
@@ -33,8 +33,8 @@ msgstr "プリンター詳細設定"
 msgctxt "machine_name label"
 msgid "Machine Type"
 msgstr ""
-#msgstr "プリンタータイプ"
 
+# msgstr "プリンタータイプ"
 #: fdmprinter.def.json
 msgctxt "machine_name description"
 msgid "The name of your 3D printer model."
@@ -44,8 +44,8 @@ msgstr "3Dプリンターの機種名"
 msgctxt "machine_show_variants label"
 msgid "Show Machine Variants"
 msgstr ""
-#msgstr "プリンターのバリエーションを表示する"
 
+# msgstr "プリンターのバリエーションを表示する"
 #: fdmprinter.def.json
 msgctxt "machine_show_variants description"
 msgid "Whether to show the different variants of this machine, which are described in separate json files."
@@ -55,8 +55,8 @@ msgstr "このプリンターのバリエーションを表示するかどうか
 msgctxt "machine_start_gcode label"
 msgid "Start GCode"
 msgstr ""
-#msgstr "GCodeを開始する"
 
+# msgstr "GCodeを開始する"
 #: fdmprinter.def.json
 msgctxt "machine_start_gcode description"
 msgid ""
@@ -70,8 +70,8 @@ msgstr ""
 msgctxt "machine_end_gcode label"
 msgid "End GCode"
 msgstr ""
-#msgstr "GCodeを終了する"
 
+# msgstr "GCodeを終了する"
 #: fdmprinter.def.json
 msgctxt "machine_end_gcode description"
 msgid ""
@@ -85,8 +85,8 @@ msgstr ""
 msgctxt "material_guid label"
 msgid "Material GUID"
 msgstr ""
-#msgstr "マテリアルGUID"
 
+# msgstr "マテリアルGUID"
 #: fdmprinter.def.json
 msgctxt "material_guid description"
 msgid "GUID of the material. This is set automatically. "
@@ -96,8 +96,8 @@ msgstr "マテリアルのGUID。これは自動的に設定されます。"
 msgctxt "material_bed_temp_wait label"
 msgid "Wait for Build Plate Heatup"
 msgstr ""
-#msgstr "ビルドプレート加熱の待機"
 
+# msgstr "ビルドプレート加熱の待機"
 #: fdmprinter.def.json
 msgctxt "material_bed_temp_wait description"
 msgid "Whether to insert a command to wait until the build plate temperature is reached at the start."
@@ -107,8 +107,8 @@ msgstr "開始時にビルドプレートが温度に達するまで待つコマ
 msgctxt "material_print_temp_wait label"
 msgid "Wait for Nozzle Heatup"
 msgstr ""
-#msgstr "ノズル加熱の待機"
 
+# msgstr "ノズル加熱の待機"
 #: fdmprinter.def.json
 msgctxt "material_print_temp_wait description"
 msgid "Whether to wait until the nozzle temperature is reached at the start."
@@ -118,8 +118,8 @@ msgstr "開始時にノズルの温度が達するまで待つかどうか。"
 msgctxt "material_print_temp_prepend label"
 msgid "Include Material Temperatures"
 msgstr ""
-#msgstr "マテリアル温度を含む"
 
+# msgstr "マテリアル温度を含む"
 #: fdmprinter.def.json
 msgctxt "material_print_temp_prepend description"
 msgid "Whether to include nozzle temperature commands at the start of the gcode. When the start_gcode already contains nozzle temperature commands Cura frontend will automatically disable this setting."
@@ -129,8 +129,8 @@ msgstr "GCodeの開始時にノズル温度設定を含めるかどうか。 既
 msgctxt "material_bed_temp_prepend label"
 msgid "Include Build Plate Temperature"
 msgstr ""
-#msgstr "ビルドプレートの温度を含める"
 
+# msgstr "ビルドプレートの温度を含める"
 #: fdmprinter.def.json
 msgctxt "material_bed_temp_prepend description"
 msgid "Whether to include build plate temperature commands at the start of the gcode. When the start_gcode already contains build plate temperature commands Cura frontend will automatically disable this setting."
@@ -140,8 +140,8 @@ msgstr "GCodeの開始時にビルドプレート温度設定を含めるかど�
 msgctxt "machine_width label"
 msgid "Machine Width"
 msgstr ""
-#msgstr "プリンターの幅"
 
+# msgstr "プリンターの幅"
 #: fdmprinter.def.json
 msgctxt "machine_width description"
 msgid "The width (X-direction) of the printable area."
@@ -151,8 +151,8 @@ msgstr "造形可能領域の幅（X方向）。"
 msgctxt "machine_depth label"
 msgid "Machine Depth"
 msgstr ""
-#msgstr "プリンターの奥行き"
 
+# msgstr "プリンターの奥行き"
 #: fdmprinter.def.json
 msgctxt "machine_depth description"
 msgid "The depth (Y-direction) of the printable area."
@@ -162,8 +162,8 @@ msgstr "造形可能領域の幅（Y方向）。"
 msgctxt "machine_shape label"
 msgid "Build Plate Shape"
 msgstr ""
-#msgstr "ビルドプレートの形"
 
+# msgstr "ビルドプレートの形"
 #: fdmprinter.def.json
 msgctxt "machine_shape description"
 msgid "The shape of the build plate without taking unprintable areas into account."
@@ -173,20 +173,20 @@ msgstr "造形不可領域を考慮しないビルドプレートの形状。"
 msgctxt "machine_shape option rectangular"
 msgid "Rectangular"
 msgstr ""
-#msgstr "長方形"
 
+# msgstr "長方形"
 #: fdmprinter.def.json
 msgctxt "machine_shape option elliptic"
 msgid "Elliptic"
 msgstr ""
-#msgstr "楕円形"
 
+# msgstr "楕円形"
 #: fdmprinter.def.json
 msgctxt "machine_height label"
 msgid "Machine Height"
 msgstr ""
-#msgstr "プリンターの高さ"
 
+# msgstr "プリンターの高さ"
 #: fdmprinter.def.json
 msgctxt "machine_height description"
 msgid "The height (Z-direction) of the printable area."
@@ -196,8 +196,8 @@ msgstr "造形可能領域の幅（Z方向）。"
 msgctxt "machine_heated_bed label"
 msgid "Has Heated Build Plate"
 msgstr ""
-#msgstr "加熱したビルドプレート"
 
+# msgstr "加熱したビルドプレート"
 #: fdmprinter.def.json
 msgctxt "machine_heated_bed description"
 msgid "Whether the machine has a heated build plate present."
@@ -207,8 +207,8 @@ msgstr "プリンターに加熱式ビルドプレートが付属しているか
 msgctxt "machine_center_is_zero label"
 msgid "Is Center Origin"
 msgstr ""
-#msgstr "センター原点"
 
+# msgstr "センター原点"
 #: fdmprinter.def.json
 msgctxt "machine_center_is_zero description"
 msgid "Whether the X/Y coordinates of the zero position of the printer is at the center of the printable area."
@@ -218,8 +218,8 @@ msgstr "プリンタのゼロポジションのX / Y座標が印刷可能領域�
 msgctxt "machine_extruder_count label"
 msgid "Number of Extruders"
 msgstr ""
-#msgstr "エクストルーダーの数"
 
+# msgstr "エクストルーダーの数"
 #: fdmprinter.def.json
 msgctxt "machine_extruder_count description"
 msgid "Number of extruder trains. An extruder train is the combination of a feeder, bowden tube, and nozzle."
@@ -229,8 +229,8 @@ msgstr "エクストルーダーの数。エクストルーダーの単位は、
 msgctxt "machine_nozzle_tip_outer_diameter label"
 msgid "Outer nozzle diameter"
 msgstr ""
-#msgstr "ノズル外径"
 
+# msgstr "ノズル外径"
 #: fdmprinter.def.json
 msgctxt "machine_nozzle_tip_outer_diameter description"
 msgid "The outer diameter of the tip of the nozzle."
@@ -240,8 +240,8 @@ msgstr "ノズルの外径。"
 msgctxt "machine_nozzle_head_distance label"
 msgid "Nozzle length"
 msgstr ""
-#msgstr "ノズルの長さ"
 
+# msgstr "ノズルの長さ"
 #: fdmprinter.def.json
 msgctxt "machine_nozzle_head_distance description"
 msgid "The height difference between the tip of the nozzle and the lowest part of the print head."
@@ -251,8 +251,8 @@ msgstr "ノズル先端とプリントヘッドの最下部との高さの差。
 msgctxt "machine_nozzle_expansion_angle label"
 msgid "Nozzle angle"
 msgstr ""
-#msgstr "ノズル角度"
 
+# msgstr "ノズル角度"
 #: fdmprinter.def.json
 msgctxt "machine_nozzle_expansion_angle description"
 msgid "The angle between the horizontal plane and the conical part right above the tip of the nozzle."
@@ -262,8 +262,8 @@ msgstr "水平面とノズル直上の円錐部分との間の角度。"
 msgctxt "machine_heat_zone_length label"
 msgid "Heat zone length"
 msgstr ""
-#msgstr "加熱範囲"
 
+# msgstr "加熱範囲"
 #: fdmprinter.def.json
 msgctxt "machine_heat_zone_length description"
 msgid "The distance from the tip of the nozzle in which heat from the nozzle is transferred to the filament."
@@ -333,8 +333,8 @@ msgstr "生成するGコードの種類"
 msgctxt "machine_gcode_flavor option RepRap (Marlin/Sprinter)"
 msgid "Marlin"
 msgstr ""
-#msgstr "Marlin"
 
+# msgstr "Marlin"
 #: fdmprinter.def.json
 msgctxt "machine_gcode_flavor option RepRap (Volumetric)"
 msgid "Marlin (Volumetric)"
@@ -344,44 +344,44 @@ msgstr ""
 msgctxt "machine_gcode_flavor option RepRap (RepRap)"
 msgid "RepRap"
 msgstr ""
-#msgstr "RepRap"
 
+# msgstr "RepRap"
 #: fdmprinter.def.json
 msgctxt "machine_gcode_flavor option UltiGCode"
 msgid "Ultimaker 2"
 msgstr ""
-#msgstr "Ultimaker 2"
 
+# msgstr "Ultimaker 2"
 #: fdmprinter.def.json
 msgctxt "machine_gcode_flavor option Griffin"
 msgid "Griffin"
 msgstr ""
-#msgstr "Griffin"
 
+# msgstr "Griffin"
 #: fdmprinter.def.json
 msgctxt "machine_gcode_flavor option Makerbot"
 msgid "Makerbot"
 msgstr ""
-#msgstr "Makerbot"
 
+# msgstr "Makerbot"
 #: fdmprinter.def.json
 msgctxt "machine_gcode_flavor option BFB"
 msgid "Bits from Bytes"
 msgstr ""
-#msgstr "Bits from Bytes"
 
+# msgstr "Bits from Bytes"
 #: fdmprinter.def.json
 msgctxt "machine_gcode_flavor option MACH3"
 msgid "Mach3"
 msgstr ""
-#msgstr "Mach3"
 
+# msgstr "Mach3"
 #: fdmprinter.def.json
 msgctxt "machine_gcode_flavor option Repetier"
 msgid "Repetier"
 msgstr ""
-#msgstr "Repetier"
 
+# msgstr "Repetier"
 #: fdmprinter.def.json
 msgctxt "machine_disallowed_areas label"
 msgid "Disallowed areas"
@@ -436,8 +436,8 @@ msgstr "ノズルの先端とガントリーシステムの高さの差（X軸�
 msgctxt "machine_nozzle_id label"
 msgid "Nozzle ID"
 msgstr ""
-#msgstr "ノズル ID"
 
+# msgstr "ノズル ID"
 #: fdmprinter.def.json
 msgctxt "machine_nozzle_id description"
 msgid "The nozzle ID for an extruder train, such as \"AA 0.4\" and \"BB 0.8\"."
@@ -617,8 +617,8 @@ msgstr "プリントヘッドの最小移動速度。"
 msgctxt "resolution label"
 msgid "Quality"
 msgstr ""
-#msgstr "品質"
 
+# msgstr "品質"
 #: fdmprinter.def.json
 msgctxt "resolution description"
 msgid "All settings that influence the resolution of the print. These settings have a large impact on the quality (and print time)"
@@ -628,8 +628,8 @@ msgstr "プリントの解像度に影響を与えるすべての設定。これ
 msgctxt "layer_height label"
 msgid "Layer Height"
 msgstr ""
-#msgstr "積層ピッチ"
 
+# msgstr "積層ピッチ"
 #: fdmprinter.def.json
 msgctxt "layer_height description"
 msgid "The height of each layer in mm. Higher values produce faster prints in lower resolution, lower values produce slower prints in higher resolution."
@@ -644,6 +644,31 @@ msgstr ""
 msgctxt "layer_height_0 description"
 msgid "The height of the initial layer in mm. A thicker initial layer makes adhesion to the build plate easier."
 msgstr "初期レイヤーの高さ（mm）。厚い初期層はビルドプレートへの接着を容易にする。"
+
+#: fdmprinter.def.json
+msgctxt "slicing_tolerance label"
+msgid "Slicing Tolerance"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "slicing_tolerance description"
+msgid "How to slice layers with diagonal surfaces. The areas of a layer can be generated based on where the middle of the layer intersects the surface (Middle). Alternatively each layer can have the areas which fall inside of the volume throughout the height of the layer (Exclusive) or a layer has the areas which fall inside anywhere within the layer (Inclusive). Exclusive retains the most details, Inclusive makes for the best fit and Middle takes the least time to process."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "slicing_tolerance option middle"
+msgid "Middle"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "slicing_tolerance option exclusive"
+msgid "Exclusive"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "slicing_tolerance option inclusive"
+msgid "Inclusive"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "line_width label"
@@ -689,8 +714,8 @@ msgstr "一番外側のウォールラインを除くすべてのウォールラ
 msgctxt "roofing_line_width label"
 msgid "Top Surface Skin Line Width"
 msgstr ""
-#msgstr "上表面スキンの線幅"
 
+# msgstr "上表面スキンの線幅"
 #: fdmprinter.def.json
 msgctxt "roofing_line_width description"
 msgid "Width of a single line of the areas at the top of the print."
@@ -750,8 +775,8 @@ msgstr "サポートのルーフ、フロアのライン幅"
 msgctxt "support_roof_line_width label"
 msgid "Support Roof Line Width"
 msgstr ""
-#msgstr "サポートルーフライン幅"
 
+# msgstr "サポートルーフライン幅"
 #: fdmprinter.def.json
 msgctxt "support_roof_line_width description"
 msgid "Width of a single support roof line."
@@ -761,8 +786,8 @@ msgstr "サポートルーフのライン一幅。"
 msgctxt "support_bottom_line_width label"
 msgid "Support Floor Line Width"
 msgstr ""
-#msgstr "サポートフロアライン幅"
 
+# msgstr "サポートフロアライン幅"
 #: fdmprinter.def.json
 msgctxt "support_bottom_line_width description"
 msgid "Width of a single support floor line."
@@ -782,8 +807,8 @@ msgstr "単一のプライムタワーラインの幅。"
 msgctxt "initial_layer_line_width_factor label"
 msgid "Initial Layer Line Width"
 msgstr ""
-#msgstr "初期レイヤー線幅"
 
+# msgstr "初期レイヤー線幅"
 #: fdmprinter.def.json
 msgctxt "initial_layer_line_width_factor description"
 msgid "Multiplier of the line width on the first layer. Increasing this could improve bed adhesion."
@@ -793,19 +818,29 @@ msgstr "最初のレイヤーに線幅の乗数です。この値を増やすと
 msgctxt "shell label"
 msgid "Shell"
 msgstr ""
-#msgstr "外郭"
 
+# msgstr "外郭"
 #: fdmprinter.def.json
 msgctxt "shell description"
 msgid "Shell"
 msgstr "外郭"
 
 #: fdmprinter.def.json
+msgctxt "wall_extruder_nr label"
+msgid "Wall Extruder"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "wall_extruder_nr description"
+msgid "The extruder train used for printing the walls. This is used in multi-extrusion."
+msgstr "壁造形用のエクストルーダー。デュアルノズル印刷時に使用。"
+
+#: fdmprinter.def.json
 msgctxt "wall_0_extruder_nr label"
 msgid "Outer Wall Extruder"
 msgstr ""
-#msgstr "外側印刷用エクストルーダー"
 
+# msgstr "外側印刷用エクストルーダー"
 #: fdmprinter.def.json
 msgctxt "wall_0_extruder_nr description"
 msgid "The extruder train used for printing the outer wall. This is used in multi-extrusion."
@@ -813,10 +848,10 @@ msgstr "外壁印刷用のエクストルーダー。デュアルノズル印刷
 
 #: fdmprinter.def.json
 msgctxt "wall_x_extruder_nr label"
-msgid "Inner Walls Extruder"
+msgid "Inner Wall Extruder"
 msgstr ""
-#msgstr "内側用エクストルーダー"
 
+# msgstr "内側用エクストルーダー"
 #: fdmprinter.def.json
 msgctxt "wall_x_extruder_nr description"
 msgid "The extruder train used for printing the inner walls. This is used in multi-extrusion."
@@ -836,8 +871,8 @@ msgstr "壁の厚さ。この値をラインの幅で割ることで壁の数が
 msgctxt "wall_line_count label"
 msgid "Wall Line Count"
 msgstr ""
-#msgstr "壁の線本数"
 
+# msgstr "壁の線本数"
 #: fdmprinter.def.json
 msgctxt "wall_line_count description"
 msgid "The number of walls. When calculated by the wall thickness, this value is rounded to a whole number."
@@ -847,8 +882,8 @@ msgstr "ウォールの数。厚さから計算された場合、この値は整
 msgctxt "wall_0_wipe_dist label"
 msgid "Outer Wall Wipe Distance"
 msgstr ""
-#msgstr "外壁のワイピング距離"
 
+# msgstr "外壁のワイピング距離"
 #: fdmprinter.def.json
 msgctxt "wall_0_wipe_dist description"
 msgid "Distance of a travel move inserted after the outer wall, to hide the Z seam better."
@@ -858,8 +893,8 @@ msgstr "外壁の後に挿入された移動の距離はZシームをよりよ�
 msgctxt "roofing_extruder_nr label"
 msgid "Top Surface Skin Extruder"
 msgstr ""
-#msgstr "上層表面スキンエクストルーダー"
 
+# msgstr "上層表面スキンエクストルーダー"
 #: fdmprinter.def.json
 msgctxt "roofing_extruder_nr description"
 msgid "The extruder train used for printing the top most skin. This is used in multi-extrusion."
@@ -869,8 +904,8 @@ msgstr "上部の表面印刷用のエクストルーダー。デュアルノズ
 msgctxt "roofing_layer_count label"
 msgid "Top Surface Skin Layers"
 msgstr ""
-#msgstr "上の表皮層"
 
+# msgstr "上の表皮層"
 #: fdmprinter.def.json
 msgctxt "roofing_layer_count description"
 msgid "The number of top most skin layers. Usually only one top most layer is sufficient to generate higher quality top surfaces."
@@ -880,8 +915,8 @@ msgstr "上部表面のレイヤー数。通常一層で綺麗に出来上がり
 msgctxt "roofing_pattern label"
 msgid "Top Surface Skin Pattern"
 msgstr ""
-#msgstr "上層表面スキンパターン"
 
+# msgstr "上層表面スキンパターン"
 #: fdmprinter.def.json
 msgctxt "roofing_pattern description"
 msgid "The pattern of the top most layers."
@@ -891,26 +926,26 @@ msgstr "上層のパターン"
 msgctxt "roofing_pattern option lines"
 msgid "Lines"
 msgstr ""
-#msgstr "線"
 
+# msgstr "線"
 #: fdmprinter.def.json
 msgctxt "roofing_pattern option concentric"
 msgid "Concentric"
 msgstr ""
-#msgstr "同心"
 
+# msgstr "同心"
 #: fdmprinter.def.json
 msgctxt "roofing_pattern option zigzag"
 msgid "Zig Zag"
 msgstr ""
-#msgstr "ジグザグ"
 
+# msgstr "ジグザグ"
 #: fdmprinter.def.json
 msgctxt "roofing_angles label"
 msgid "Top Surface Skin Line Directions"
 msgstr ""
-#msgstr "上層表面スキンラインの方向"
 
+# msgstr "上層表面スキンラインの方向"
 #: fdmprinter.def.json
 msgctxt "roofing_angles description"
 msgid "A list of integer line directions to use when the top surface skin layers use the lines or zig zag pattern. Elements from the list are used sequentially as the layers progress and when the end of the list is reached, it starts at the beginning again. The list items are separated by commas and the whole list is contained in square brackets. Default is an empty list which means use the traditional default angles (45 and 135 degrees)."
@@ -920,8 +955,8 @@ msgstr "トップ表面層に縦かジグザグパターンを利用する時に
 msgctxt "top_bottom_extruder_nr label"
 msgid "Top/Bottom Extruder"
 msgstr ""
-#msgstr "トップ/ボトムエクストルーダー"
 
+# msgstr "トップ/ボトムエクストルーダー"
 #: fdmprinter.def.json
 msgctxt "top_bottom_extruder_nr description"
 msgid "The extruder train used for printing the top and bottom skin. This is used in multi-extrusion."
@@ -996,8 +1031,8 @@ msgstr ""
 msgctxt "top_bottom_pattern option concentric"
 msgid "Concentric"
 msgstr ""
-#msgstr "同心"
 
+# msgstr "同心"
 #: fdmprinter.def.json
 msgctxt "top_bottom_pattern option zigzag"
 msgid "Zig Zag"
@@ -1122,8 +1157,8 @@ msgstr ""
 msgctxt "fill_outline_gaps label"
 msgid "Print Thin Walls"
 msgstr ""
-#msgstr "薄い壁をプリントする"
 
+# msgstr "薄い壁をプリントする"
 #: fdmprinter.def.json
 msgctxt "fill_outline_gaps description"
 msgid "Print pieces of the model which are horizontally thinner than the nozzle size."
@@ -1143,8 +1178,8 @@ msgstr "各レイヤーのすべてのポリゴンに適用されるオフセッ
 msgctxt "xy_offset_layer_0 label"
 msgid "Initial Layer Horizontal Expansion"
 msgstr ""
-#msgstr "初期レイヤー水平方向への展開"
 
+# msgstr "初期レイヤー水平方向への展開"
 #: fdmprinter.def.json
 msgctxt "xy_offset_layer_0 description"
 msgid "Amount of offset applied to all polygons in the first layer. A negative value can compensate for squishing of the first layer known as \"elephant's foot\"."
@@ -1179,8 +1214,8 @@ msgstr ""
 msgctxt "z_seam_type option sharpest_corner"
 msgid "Sharpest Corner"
 msgstr ""
-#msgstr "最も鋭利な角"
 
+# msgstr "最も鋭利な角"
 #: fdmprinter.def.json
 msgctxt "z_seam_x label"
 msgid "Z Seam X"
@@ -1207,8 +1242,8 @@ msgstr "レイヤー内の各パーツの印刷を開始する場所の近くの
 msgctxt "z_seam_corner label"
 msgid "Seam Corner Preference"
 msgstr ""
-#msgstr "薄層のプレファレンス"
 
+# msgstr "薄層のプレファレンス"
 #: fdmprinter.def.json
 msgctxt "z_seam_corner description"
 msgid "Control whether corners on the model outline influence the position of the seam. None means that corners have no influence on the seam position. Hide Seam makes the seam more likely to occur on an inside corner. Expose Seam makes the seam more likely to occur on an outside corner. Hide or Expose Seam makes the seam more likely to occur at an inside or outside corner."
@@ -1218,32 +1253,32 @@ msgstr "モデル輪郭のコーナーがシーム（縫い目）の位置に影
 msgctxt "z_seam_corner option z_seam_corner_none"
 msgid "None"
 msgstr ""
-#msgstr "なし"
 
+# msgstr "なし"
 #: fdmprinter.def.json
 msgctxt "z_seam_corner option z_seam_corner_inner"
 msgid "Hide Seam"
 msgstr ""
-#msgstr "シームを非表示にする"
 
+# msgstr "シームを非表示にする"
 #: fdmprinter.def.json
 msgctxt "z_seam_corner option z_seam_corner_outer"
 msgid "Expose Seam"
 msgstr ""
-#msgstr "シームを表示する"
 
+# msgstr "シームを表示する"
 #: fdmprinter.def.json
 msgctxt "z_seam_corner option z_seam_corner_any"
 msgid "Hide or Expose Seam"
 msgstr ""
-#msgstr "シームを非表示または表示する"
 
+# msgstr "シームを非表示または表示する"
 #: fdmprinter.def.json
 msgctxt "z_seam_relative label"
 msgid "Z Seam Relative"
 msgstr ""
-#msgstr "Zシーム関連"
 
+# msgstr "Zシーム関連"
 #: fdmprinter.def.json
 msgctxt "z_seam_relative description"
 msgid "When enabled, the z seam coordinates are relative to each part's centre. When disabled, the coordinates define an absolute position on the build plate."
@@ -1253,8 +1288,8 @@ msgstr "有効時は、Zシームは各パーツの真ん中に設定されま�
 msgctxt "skin_no_small_gaps_heuristic label"
 msgid "Ignore Small Z Gaps"
 msgstr ""
-#msgstr "小さなZギャップを無視する"
 
+# msgstr "小さなZギャップを無視する"
 #: fdmprinter.def.json
 msgctxt "skin_no_small_gaps_heuristic description"
 msgid "When the model has small vertical gaps, about 5% extra computation time can be spent on generating top and bottom skin in these narrow spaces. In such case, disable the setting."
@@ -1264,19 +1299,130 @@ msgstr "モデルに垂直方向のギャップが小さくある場合、これ
 msgctxt "skin_outline_count label"
 msgid "Extra Skin Wall Count"
 msgstr ""
-#msgstr "余分な肌壁の本数"
 
+# msgstr "余分な肌壁の本数"
 #: fdmprinter.def.json
 msgctxt "skin_outline_count description"
 msgid "Replaces the outermost part of the top/bottom pattern with a number of concentric lines. Using one or two lines improves roofs that start on infill material."
 msgstr "上部/下部パターンの最も外側の部分を同心円の線で置き換えます。 1つまたは2つの線を使用すると、トップ部分の造形が改善されます。"
 
 #: fdmprinter.def.json
+msgctxt "ironing_enabled label"
+msgid "Enable Ironing"
+msgstr ""
+
+# msgstr "アイロンを有効にする"
+#: fdmprinter.def.json
+msgctxt "ironing_enabled description"
+msgid "Go over the top surface one additional time, but without extruding material. This is meant to melt the plastic on top further, creating a smoother surface."
+msgstr "ノズルから吐出せずに上部表面を再度動く機能。表面を溶かしてよりスムースにします。"
+
+#: fdmprinter.def.json
+msgctxt "ironing_only_highest_layer label"
+msgid "Iron Only Highest Layer"
+msgstr ""
+
+# msgstr "上層のみアイロンをかけます"
+#: fdmprinter.def.json
+msgctxt "ironing_only_highest_layer description"
+msgid "Only perform ironing on the very last layer of the mesh. This saves time if the lower layers don't need a smooth surface finish."
+msgstr "メッシュの最後のレイヤーでのみアイロンをかけます。下層にて滑らかな表面仕上げを必要としない場合、時間を節約します。"
+
+#: fdmprinter.def.json
+msgctxt "ironing_pattern label"
+msgid "Ironing Pattern"
+msgstr ""
+
+# msgstr "アイロン時のパターン"
+#: fdmprinter.def.json
+msgctxt "ironing_pattern description"
+msgid "The pattern to use for ironing top surfaces."
+msgstr "アイロンのパターン"
+
+#: fdmprinter.def.json
+msgctxt "ironing_pattern option concentric"
+msgid "Concentric"
+msgstr ""
+
+# msgstr "同心"
+#: fdmprinter.def.json
+msgctxt "ironing_pattern option zigzag"
+msgid "Zig Zag"
+msgstr ""
+
+# msgstr "ジグザグ"
+#: fdmprinter.def.json
+msgctxt "ironing_line_spacing label"
+msgid "Ironing Line Spacing"
+msgstr ""
+
+# msgstr "アイロンラインの線隔"
+#: fdmprinter.def.json
+msgctxt "ironing_line_spacing description"
+msgid "The distance between the lines of ironing."
+msgstr "アイロンライン同士の距離"
+
+#: fdmprinter.def.json
+msgctxt "ironing_flow label"
+msgid "Ironing Flow"
+msgstr ""
+
+# msgstr "アイロン時のフロー"
+#: fdmprinter.def.json
+msgctxt "ironing_flow description"
+msgid "The amount of material, relative to a normal skin line, to extrude during ironing. Keeping the nozzle filled helps filling some of the crevices of the top surface, but too much results in overextrusion and blips on the side of the surface."
+msgstr "アイロン時にノズルから出しておくフィラメントの量。多少出しておくと裂け目を綺麗にします。ただ出し過ぎると吐出過多になり、端が荒れます。"
+
+#: fdmprinter.def.json
+msgctxt "ironing_inset label"
+msgid "Ironing Inset"
+msgstr ""
+
+# msgstr "アイロンを挿入する"
+#: fdmprinter.def.json
+msgctxt "ironing_inset description"
+msgid "A distance to keep from the edges of the model. Ironing all the way to the edge of the mesh may result in a jagged edge on your print."
+msgstr "モデルの端からの距離。端までアイロンをすると、端が荒れる場合があります。"
+
+#: fdmprinter.def.json
+msgctxt "speed_ironing label"
+msgid "Ironing Speed"
+msgstr ""
+
+# msgstr "アイロン時のスピード"
+#: fdmprinter.def.json
+msgctxt "speed_ironing description"
+msgid "The speed at which to pass over the top surface."
+msgstr "上部表面通過時の速度"
+
+#: fdmprinter.def.json
+msgctxt "acceleration_ironing label"
+msgid "Ironing Acceleration"
+msgstr ""
+
+# msgstr "アイロン時の加速"
+#: fdmprinter.def.json
+msgctxt "acceleration_ironing description"
+msgid "The acceleration with which ironing is performed."
+msgstr "アイロン時の加速度"
+
+#: fdmprinter.def.json
+msgctxt "jerk_ironing label"
+msgid "Ironing Jerk"
+msgstr ""
+
+# msgstr "ジャークをアイロンする"
+#: fdmprinter.def.json
+msgctxt "jerk_ironing description"
+msgid "The maximum instantaneous velocity change while performing ironing."
+msgstr "アイロン時の最大加速度"
+
+#: fdmprinter.def.json
 msgctxt "infill label"
 msgid "Infill"
 msgstr ""
-#msgstr "インフィル"
 
+# msgstr "インフィル"
 #: fdmprinter.def.json
 msgctxt "infill description"
 msgid "Infill"
@@ -1286,8 +1432,8 @@ msgstr "インフィル"
 msgctxt "infill_extruder_nr label"
 msgid "Infill Extruder"
 msgstr ""
-#msgstr "インフィルエクストルーダー"
 
+# msgstr "インフィルエクストルーダー"
 #: fdmprinter.def.json
 msgctxt "infill_extruder_nr description"
 msgid "The extruder train used for printing infill. This is used in multi-extrusion."
@@ -1320,8 +1466,8 @@ msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "infill_pattern description"
-msgid "The pattern of the infill material of the print. The line and zig zag infill swap direction on alternate layers, reducing material cost. The grid, triangle, cubic, octet, quarter cubic and concentric patterns are fully printed every layer. Cubic, quarter cubic and octet infill change with every layer to provide a more equal distribution of strength over each direction."
-msgstr "印刷物のインフィルのパターン。線とジグザグのインフィルはレイヤーごとに交互に方向を変え、材料費を削減します。グリッド、三角形、キュービック、オクテット、クォーターキュービック、同心円のパターンは、すべてのレイヤーにて完全に印刷されます。キュービック、クォーターキュービック、オクテットのインフィルは各レイヤーごとに変化し、各方向の強度が均等になるように分布します。"
+msgid "The pattern of the infill material of the print. The line and zig zag infill swap direction on alternate layers, reducing material cost. The grid, triangle, tri-hexagon, cubic, octet, quarter cubic, cross and concentric patterns are fully printed every layer. Cubic, quarter cubic and octet infill change with every layer to provide a more equal distribution of strength over each direction."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "infill_pattern option grid"
@@ -1339,6 +1485,11 @@ msgid "Triangles"
 msgstr ""
 
 #: fdmprinter.def.json
+msgctxt "infill_pattern option trihexagon"
+msgid "Tri-Hexagon"
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "infill_pattern option cubic"
 msgid "Cubic"
 msgstr ""
@@ -1352,20 +1503,20 @@ msgstr ""
 msgctxt "infill_pattern option tetrahedral"
 msgid "Octet"
 msgstr ""
-#msgstr "オクテット"
 
+# msgstr "オクテット"
 #: fdmprinter.def.json
 msgctxt "infill_pattern option quarter_cubic"
 msgid "Quarter Cubic"
 msgstr ""
-#msgstr "クォーターキュービック"
 
+# msgstr "クォーターキュービック"
 #: fdmprinter.def.json
 msgctxt "infill_pattern option concentric"
 msgid "Concentric"
 msgstr ""
-#msgstr "同心円"
 
+# msgstr "同心円"
 #: fdmprinter.def.json
 msgctxt "infill_pattern option concentric_3d"
 msgid "Concentric 3D"
@@ -1380,35 +1531,54 @@ msgstr ""
 msgctxt "infill_pattern option cross"
 msgid "Cross"
 msgstr ""
-#msgstr "クロス"
 
+# msgstr "クロス"
 #: fdmprinter.def.json
 msgctxt "infill_pattern option cross_3d"
 msgid "Cross 3D"
 msgstr ""
-#msgstr "クロス3D"
 
+# msgstr "クロス3D"
 #: fdmprinter.def.json
 msgctxt "zig_zaggify_infill label"
 msgid "Connect Infill Lines"
 msgstr ""
-#msgstr "インフィルの線をつなげる"
 
 #: fdmprinter.def.json
 msgctxt "zig_zaggify_infill description"
-msgid "Connect the ends where the infill pattern meets the inner wall using a lines which follows the shape of the inner wall. Enabling this setting can make the infill adhere to the walls better and reduces the effects on infill on the quality of vertical surfaces. Disabling this setting reduces the amount of material used."
-msgstr "内壁の形状に沿った線を使用して、インフィルのパターンが内壁と接する端を接続します。この設定を有効にすると、インフィルを壁面に密着させることができ、充填材が垂直面の品質に与える影響を低減できます。この設定を無効にすると、使用される材料の量が減ります。"
+msgid "Connect the ends where the infill pattern meets the inner wall using a line which follows the shape of the inner wall. Enabling this setting can make the infill adhere to the walls better and reduce the effects of infill on the quality of vertical surfaces. Disabling this setting reduces the amount of material used."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "infill_angles label"
 msgid "Infill Line Directions"
 msgstr ""
-#msgstr "インフィルラインの方向"
 
+# msgstr "インフィルラインの方向"
 #: fdmprinter.def.json
 msgctxt "infill_angles description"
 msgid "A list of integer line directions to use. Elements from the list are used sequentially as the layers progress and when the end of the list is reached, it starts at the beginning again. The list items are separated by commas and the whole list is contained in square brackets. Default is an empty list which means use the traditional default angles (45 and 135 degrees for the lines and zig zag patterns and 45 degrees for all other patterns)."
 msgstr "使用する整数線の方向のリスト。リストの要素は、レイヤの層に合わせて順番に使用され、リストの末尾に達すると、最初から再び開始されます。リスト項目はコンマで区切られ、リスト全体は大括弧で囲まれています。デフォルトは空のリストです。これは、従来のデフォルト角度（線とジグザグのパターンでは45と135度、他のすべてのパターンでは45度）を使用することを意味します。"
+
+#: fdmprinter.def.json
+msgctxt "infill_offset_x label"
+msgid "Infill X Offset"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "infill_offset_x description"
+msgid "The infill pattern is offset this distance along the X axis."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "infill_offset_y label"
+msgid "Infill Y Offset"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "infill_offset_y description"
+msgid "The infill pattern is offset this distance along the Y axis."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "sub_div_rad_add label"
@@ -1424,8 +1594,8 @@ msgstr "この立方体を細分するかどうかを決定するために、各
 msgctxt "infill_overlap label"
 msgid "Infill Overlap Percentage"
 msgstr ""
-#msgstr "インフィルのオーバーラップ率"
 
+# msgstr "インフィルのオーバーラップ率"
 #: fdmprinter.def.json
 msgctxt "infill_overlap description"
 msgid "The amount of overlap between the infill and the walls. A slight overlap allows the walls to connect firmly to the infill."
@@ -1435,8 +1605,8 @@ msgstr "インフィルと壁が交差する量、わずかな交差によって
 msgctxt "infill_overlap_mm label"
 msgid "Infill Overlap"
 msgstr ""
-#msgstr "インフィルのオーバーラップ"
 
+# msgstr "インフィルのオーバーラップ"
 #: fdmprinter.def.json
 msgctxt "infill_overlap_mm description"
 msgid "The amount of overlap between the infill and the walls. A slight overlap allows the walls to connect firmly to the infill."
@@ -1456,8 +1626,8 @@ msgstr "表面と壁の交わる量。ラインの幅の％で設定。少しの
 msgctxt "skin_overlap_mm label"
 msgid "Skin Overlap"
 msgstr ""
-#msgstr "スキンオーバーラップ"
 
+# msgstr "スキンオーバーラップ"
 #: fdmprinter.def.json
 msgctxt "skin_overlap_mm description"
 msgid "The amount of overlap between the skin and the walls. A slight overlap allows the walls to connect firmly to the skin."
@@ -1467,8 +1637,8 @@ msgstr "スキンと壁の間の交差した量　わずかなオーバーラッ
 msgctxt "infill_wipe_dist label"
 msgid "Infill Wipe Distance"
 msgstr ""
-#msgstr "インフィルWipe距離"
 
+# msgstr "インフィルWipe距離"
 #: fdmprinter.def.json
 msgctxt "infill_wipe_dist description"
 msgid "Distance of a travel move inserted after every infill line, to make the infill stick to the walls better. This option is similar to infill overlap, but without extrusion and only on one end of the infill line."
@@ -1530,8 +1700,8 @@ msgstr "これより小さいインフィルの領域を生成しないでくだ
 msgctxt "skin_preshrink label"
 msgid "Skin Removal Width"
 msgstr ""
-#msgstr "スキン除去幅"
 
+# msgstr "スキン除去幅"
 #: fdmprinter.def.json
 msgctxt "skin_preshrink description"
 msgid "The largest width of skin areas which are to be removed. Every skin area smaller than this value will disappear. This can help in limiting the amount of time and material spent on printing top/bottom skin at slanted surfaces in the model."
@@ -1541,8 +1711,8 @@ msgstr "取り除くスキンエリアの最大幅。この値より小さいす
 msgctxt "top_skin_preshrink label"
 msgid "Top Skin Removal Width"
 msgstr ""
-#msgstr "トップスキン除去幅"
 
+# msgstr "トップスキン除去幅"
 #: fdmprinter.def.json
 msgctxt "top_skin_preshrink description"
 msgid "The largest width of top skin areas which are to be removed. Every skin area smaller than this value will disappear. This can help in limiting the amount of time and material spent on printing top skin at slanted surfaces in the model."
@@ -1552,8 +1722,8 @@ msgstr "取り除くスキンエリアの最大幅。この値より小さいす
 msgctxt "bottom_skin_preshrink label"
 msgid "Bottom Skin Removal Width"
 msgstr ""
-#msgstr "ボトムのスキン除去幅"
 
+# msgstr "ボトムのスキン除去幅"
 #: fdmprinter.def.json
 msgctxt "bottom_skin_preshrink description"
 msgid "The largest width of bottom skin areas which are to be removed. Every skin area smaller than this value will disappear. This can help in limiting the amount of time and material spent on printing bottom skin at slanted surfaces in the model."
@@ -1573,8 +1743,8 @@ msgstr "スキンがインフィルまで到達する距離です。高い数値
 msgctxt "top_skin_expand_distance label"
 msgid "Top Skin Expand Distance"
 msgstr ""
-#msgstr "トップのスキンの展開距離"
 
+# msgstr "トップのスキンの展開距離"
 #: fdmprinter.def.json
 msgctxt "top_skin_expand_distance description"
 msgid "The distance the top skins are expanded into the infill. Higher values makes the skin attach better to the infill pattern and makes the walls on the layer above adhere better to the skin. Lower values save amount of material used."
@@ -1584,8 +1754,8 @@ msgstr "スキンがインフィルまで到達する距離です。高い数値
 msgctxt "bottom_skin_expand_distance label"
 msgid "Bottom Skin Expand Distance"
 msgstr ""
-#msgstr "ボトムのスキンの展開距離"
 
+# msgstr "ボトムのスキンの展開距離"
 #: fdmprinter.def.json
 msgctxt "bottom_skin_expand_distance description"
 msgid "The distance the bottom skins are expanded into the infill. Higher values makes the skin attach better to the infill pattern and makes the skin adhere better to the walls on the layer below. Lower values save amount of material used."
@@ -1730,6 +1900,26 @@ msgstr ""
 msgctxt "material_diameter description"
 msgid "Adjusts the diameter of the filament used. Match this value with the diameter of the used filament."
 msgstr "使用するフィラメントの太さの調整　この値を使用するフィラメントの太さと一致させてください。"
+
+#: fdmprinter.def.json
+msgctxt "material_adhesion_tendency label"
+msgid "Adhesion Tendency"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "material_adhesion_tendency description"
+msgid "Surface adhesion tendency."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "material_surface_energy label"
+msgid "Surface Energy"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "material_surface_energy description"
+msgid "Surface energy."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "material_flow label"
@@ -1958,8 +2148,8 @@ msgstr "内側のウォールをプリントする速度　外壁より内壁を
 msgctxt "speed_roofing label"
 msgid "Top Surface Skin Speed"
 msgstr ""
-#msgstr "トップサーフェススキンの速度"
 
+# msgstr "トップサーフェススキンの速度"
 #: fdmprinter.def.json
 msgctxt "speed_roofing description"
 msgid "The speed at which top surface skin layers are printed."
@@ -2009,8 +2199,8 @@ msgstr "ルーフとフロアのサポート材をプリントする速度。低
 msgctxt "speed_support_roof label"
 msgid "Support Roof Speed"
 msgstr ""
-#msgstr "サポートルーフの速度"
 
+# msgstr "サポートルーフの速度"
 #: fdmprinter.def.json
 msgctxt "speed_support_roof description"
 msgid "The speed at which the roofs of support are printed. Printing them at lower speeds can improve overhang quality."
@@ -2020,8 +2210,8 @@ msgstr "ルーフとフロアのサポート材をプリントする速度　こ
 msgctxt "speed_support_bottom label"
 msgid "Support Floor Speed"
 msgstr ""
-#msgstr "サポートフロアの速度"
 
+# msgstr "サポートフロアの速度"
 #: fdmprinter.def.json
 msgctxt "speed_support_bottom description"
 msgid "The speed at which the floor of support is printed. Printing it at lower speed can improve adhesion of support on top of your model."
@@ -2191,8 +2381,8 @@ msgstr "内側のウォールがが出力される際のスピード。"
 msgctxt "acceleration_roofing label"
 msgid "Top Surface Skin Acceleration"
 msgstr ""
-#msgstr "トップ表面スキンの加速度"
 
+# msgstr "トップ表面スキンの加速度"
 #: fdmprinter.def.json
 msgctxt "acceleration_roofing description"
 msgid "The acceleration with which top surface skin layers are printed."
@@ -2242,8 +2432,8 @@ msgstr "サポートの上面と下面が印刷される加速度。低加速度
 msgctxt "acceleration_support_roof label"
 msgid "Support Roof Acceleration"
 msgstr ""
-#msgstr "サポートルーフの加速度"
 
+# msgstr "サポートルーフの加速度"
 #: fdmprinter.def.json
 msgctxt "acceleration_support_roof description"
 msgid "The acceleration with which the roofs of support are printed. Printing them at lower acceleration can improve overhang quality."
@@ -2253,8 +2443,8 @@ msgstr "サポートの上面がプリントされる加速度、低加速度で
 msgctxt "acceleration_support_bottom label"
 msgid "Support Floor Acceleration"
 msgstr ""
-#msgstr "サポートフロアの加速度"
 
+# msgstr "サポートフロアの加速度"
 #: fdmprinter.def.json
 msgctxt "acceleration_support_bottom description"
 msgid "The acceleration with which the floors of support are printed. Printing them at lower acceleration can improve adhesion of support on top of your model."
@@ -2384,8 +2574,8 @@ msgstr "内側のウォールがプリントされれう際の最大瞬間速度
 msgctxt "jerk_roofing label"
 msgid "Top Surface Skin Jerk"
 msgstr ""
-#msgstr "トップサーフェススキンジャーク"
 
+# msgstr "トップサーフェススキンジャーク"
 #: fdmprinter.def.json
 msgctxt "jerk_roofing description"
 msgid "The maximum instantaneous velocity change with which top surface skin layers are printed."
@@ -2435,8 +2625,8 @@ msgstr "どのルーフとフロアのサポート部分を印刷するかによ
 msgctxt "jerk_support_roof label"
 msgid "Support Roof Jerk"
 msgstr ""
-#msgstr "サポートルーフのジャーク"
 
+# msgstr "サポートルーフのジャーク"
 #: fdmprinter.def.json
 msgctxt "jerk_support_roof description"
 msgid "The maximum instantaneous velocity change with which the roofs of support are printed."
@@ -2446,8 +2636,8 @@ msgstr "どのサポートのルーフ部分を印刷するかによって最大
 msgctxt "jerk_support_bottom label"
 msgid "Support Floor Jerk"
 msgstr ""
-#msgstr "サポートフロアのジャーク"
 
+# msgstr "サポートフロアのジャーク"
 #: fdmprinter.def.json
 msgctxt "jerk_support_bottom description"
 msgid "The maximum instantaneous velocity change with which the floors of support are printed."
@@ -2785,8 +2975,8 @@ msgstr "サポート"
 msgctxt "support_enable label"
 msgid "Generate Support"
 msgstr ""
-#msgstr "サポートを生成します。"
 
+# msgstr "サポートを生成します。"
 #: fdmprinter.def.json
 msgctxt "support_enable description"
 msgid "Generate structures to support parts of the model which have overhangs. Without these structures, such parts would collapse during printing."
@@ -2836,8 +3026,8 @@ msgstr "サポートのルーフおよび底面を印刷するために使用す
 msgctxt "support_roof_extruder_nr label"
 msgid "Support Roof Extruder"
 msgstr ""
-#msgstr "サポートルーフエクストルーダー"
 
+# msgstr "サポートルーフエクストルーダー"
 #: fdmprinter.def.json
 msgctxt "support_roof_extruder_nr description"
 msgid "The extruder train to use for printing the roofs of the support. This is used in multi-extrusion."
@@ -2847,8 +3037,8 @@ msgstr "サポートのルーフ面をプリントする際のエクストルー
 msgctxt "support_bottom_extruder_nr label"
 msgid "Support Floor Extruder"
 msgstr ""
-#msgstr "サポートフロアエクストルーダー"
 
+# msgstr "サポートフロアエクストルーダー"
 #: fdmprinter.def.json
 msgctxt "support_bottom_extruder_nr description"
 msgid "The extruder train to use for printing the floors of the support. This is used in multi-extrusion."
@@ -2928,8 +3118,8 @@ msgstr ""
 msgctxt "support_pattern option cross"
 msgid "Cross"
 msgstr ""
-#msgstr "クロス"
 
+# msgstr "クロス"
 #: fdmprinter.def.json
 msgctxt "support_connect_zigzags label"
 msgid "Connect Support ZigZags"
@@ -2939,39 +3129,6 @@ msgstr ""
 msgctxt "support_connect_zigzags description"
 msgid "Connect the ZigZags. This will increase the strength of the zig zag support structure."
 msgstr "ジグザグを接続します。ジグザグ形のサポート材の強度が上がります。"
-
-#: fdmprinter.def.json
-msgctxt "support_skip_some_zags label"
-msgid "Break Up Support In Chunks"
-msgstr ""
-#msgstr "かたまりででサポートを割る"
-
-#: fdmprinter.def.json
-msgctxt "support_skip_some_zags description"
-msgid "Skip some support line connections to make the support structure easier to break away. This setting is applicable to the Zig Zag support infill pattern."
-msgstr "サポートラインの接続部分をスキップし、サポート材部分を壊れやすくします。この設定はジグザクのサポートインフィル材のパターンにて適用できます。"
-
-#: fdmprinter.def.json
-msgctxt "support_skip_zag_per_mm label"
-msgid "Support Chunk Size"
-msgstr ""
-#msgstr "サポートのかたまりサイズ"
-
-#: fdmprinter.def.json
-msgctxt "support_skip_zag_per_mm description"
-msgid "Leave out a connection between support lines once every N millimeter to make the support structure easier to break away."
-msgstr "サポート毎行Nミリ時に、サポートの接続をわざと外し、後のサポート材の構造をもろくし、壊れやすくする。"
-
-#: fdmprinter.def.json
-msgctxt "support_zag_skip_count label"
-msgid "Support Chunk Line Count"
-msgstr ""
-#msgstr "サポートのかたまり線数"
-
-#: fdmprinter.def.json
-msgctxt "support_zag_skip_count description"
-msgid "Skip one in every N connection lines to make the support structure easier to break away."
-msgstr "毎行Nミリ時に、サポートの接続をわざとスキップし、後のサポート材の構造をもろくし、壊れやすくする。"
 
 #: fdmprinter.def.json
 msgctxt "support_infill_rate label"
@@ -3077,8 +3234,8 @@ msgstr "モデルにのっている階段状のサポートの底のステップ
 msgctxt "support_bottom_stair_step_width label"
 msgid "Support Stair Step Maximum Width"
 msgstr ""
-#msgstr "階段状ステップサポートの最大幅"
 
+# msgstr "階段状ステップサポートの最大幅"
 #: fdmprinter.def.json
 msgctxt "support_bottom_stair_step_width description"
 msgid "The maximum width of the steps of the stair-like bottom of support resting on the model. A low value makes the support harder to remove, but too high values can lead to unstable support structures."
@@ -3108,8 +3265,8 @@ msgstr "各レイヤーのサポート用ポリゴンに適用されるオフセ
 msgctxt "support_infill_sparse_thickness label"
 msgid "Support Infill Layer Thickness"
 msgstr ""
-#msgstr "サポートインフィルのレイヤーの厚さ"
 
+# msgstr "サポートインフィルのレイヤーの厚さ"
 #: fdmprinter.def.json
 msgctxt "support_infill_sparse_thickness description"
 msgid "The thickness per layer of support infill material. This value should always be a multiple of the layer height and is otherwise rounded."
@@ -3119,8 +3276,8 @@ msgstr "サポートのインフィルの厚さ。この値はレイヤーの倍
 msgctxt "gradual_support_infill_steps label"
 msgid "Gradual Support Infill Steps"
 msgstr ""
-#msgstr "段階的なサポート インフィルステップ"
 
+# msgstr "段階的なサポート インフィルステップ"
 #: fdmprinter.def.json
 msgctxt "gradual_support_infill_steps description"
 msgid "Number of times to reduce the support infill density by half when getting further below top surfaces. Areas which are closer to top surfaces get a higher density, up to the Support Infill Density."
@@ -3130,8 +3287,8 @@ msgstr "天井面より下に遠ざかる際にサポートのインフィル密
 msgctxt "gradual_support_infill_step_height label"
 msgid "Gradual Support Infill Step Height"
 msgstr ""
-#msgstr "段階的なサポート インフィル ステップの高さ"
 
+# msgstr "段階的なサポート インフィル ステップの高さ"
 #: fdmprinter.def.json
 msgctxt "gradual_support_infill_step_height description"
 msgid "The height of support infill of a given density before switching to half the density."
@@ -3151,8 +3308,8 @@ msgstr "モデルとサポートの間に密なインターフェースを生成
 msgctxt "support_roof_enable label"
 msgid "Enable Support Roof"
 msgstr ""
-#msgstr "サポートルーフの有効化"
 
+# msgstr "サポートルーフの有効化"
 #: fdmprinter.def.json
 msgctxt "support_roof_enable description"
 msgid "Generate a dense slab of material between the top of support and the model. This will create a skin between the model and support."
@@ -3162,8 +3319,8 @@ msgstr "サポートの上部とモデルの間に高密度の厚板を形成し
 msgctxt "support_bottom_enable label"
 msgid "Enable Support Floor"
 msgstr ""
-#msgstr "サポートフロアを有効にします。"
 
+# msgstr "サポートフロアを有効にします。"
 #: fdmprinter.def.json
 msgctxt "support_bottom_enable description"
 msgid "Generate a dense slab of material between the bottom of the support and the model. This will create a skin between the model and support."
@@ -3193,8 +3350,8 @@ msgstr "サポートのルーフの厚さ。これは、モデルの下につく
 msgctxt "support_bottom_height label"
 msgid "Support Floor Thickness"
 msgstr ""
-#msgstr "サポートのフロアの厚み"
 
+# msgstr "サポートのフロアの厚み"
 #: fdmprinter.def.json
 msgctxt "support_bottom_height description"
 msgid "The thickness of the support floors. This controls the number of dense layers that are printed on top of places of a model on which support rests."
@@ -3224,8 +3381,8 @@ msgstr "サポート材のルーフとフロアの密度を調整します　大
 msgctxt "support_roof_density label"
 msgid "Support Roof Density"
 msgstr ""
-#msgstr "サポートルーフの密度"
 
+# msgstr "サポートルーフの密度"
 #: fdmprinter.def.json
 msgctxt "support_roof_density description"
 msgid "The density of the roofs of the support structure. A higher value results in better overhangs, but the supports are harder to remove."
@@ -3235,8 +3392,8 @@ msgstr "サポート材のルーフの部分の密度を調整します　大き
 msgctxt "support_roof_line_distance label"
 msgid "Support Roof Line Distance"
 msgstr ""
-#msgstr "サポートルーフライン距離"
 
+# msgstr "サポートルーフライン距離"
 #: fdmprinter.def.json
 msgctxt "support_roof_line_distance description"
 msgid "Distance between the printed support roof lines. This setting is calculated by the Support Roof Density, but can be adjusted separately."
@@ -3246,8 +3403,8 @@ msgstr "印刷されたサポートルーフ線間の距離。この設定は、
 msgctxt "support_bottom_density label"
 msgid "Support Floor Density"
 msgstr ""
-#msgstr "サポートフロア密度"
 
+# msgstr "サポートフロア密度"
 #: fdmprinter.def.json
 msgctxt "support_bottom_density description"
 msgid "The density of the floors of the support structure. A higher value results in better adhesion of the support on top of the model."
@@ -3307,8 +3464,8 @@ msgstr ""
 msgctxt "support_roof_pattern label"
 msgid "Support Roof Pattern"
 msgstr ""
-#msgstr "ルーフのサポートのパターン"
 
+# msgstr "ルーフのサポートのパターン"
 #: fdmprinter.def.json
 msgctxt "support_roof_pattern description"
 msgid "The pattern with which the roofs of the support are printed."
@@ -3318,44 +3475,44 @@ msgstr "サポートのルーフが印刷されるパターン"
 msgctxt "support_roof_pattern option lines"
 msgid "Lines"
 msgstr ""
-#msgstr "線"
 
+# msgstr "線"
 #: fdmprinter.def.json
 msgctxt "support_roof_pattern option grid"
 msgid "Grid"
 msgstr ""
-#msgstr "グリッド"
 
+# msgstr "グリッド"
 #: fdmprinter.def.json
 msgctxt "support_roof_pattern option triangles"
 msgid "Triangles"
 msgstr ""
-#msgstr "三角形"
 
+# msgstr "三角形"
 #: fdmprinter.def.json
 msgctxt "support_roof_pattern option concentric"
 msgid "Concentric"
 msgstr ""
-#msgstr "同心"
 
+# msgstr "同心"
 #: fdmprinter.def.json
 msgctxt "support_roof_pattern option concentric_3d"
 msgid "Concentric 3D"
 msgstr ""
-#msgstr "同心3D"
 
+# msgstr "同心3D"
 #: fdmprinter.def.json
 msgctxt "support_roof_pattern option zigzag"
 msgid "Zig Zag"
 msgstr ""
-#msgstr "ジグザグ"
 
+# msgstr "ジグザグ"
 #: fdmprinter.def.json
 msgctxt "support_bottom_pattern label"
 msgid "Support Floor Pattern"
 msgstr ""
-#msgstr "サポートフロアパターン"
 
+# msgstr "サポートフロアパターン"
 #: fdmprinter.def.json
 msgctxt "support_bottom_pattern description"
 msgid "The pattern with which the floors of the support are printed."
@@ -3365,38 +3522,38 @@ msgstr "サポートのフロアが印刷されるパターン。"
 msgctxt "support_bottom_pattern option lines"
 msgid "Lines"
 msgstr ""
-#msgstr "線"
 
+# msgstr "線"
 #: fdmprinter.def.json
 msgctxt "support_bottom_pattern option grid"
 msgid "Grid"
 msgstr ""
-#msgstr "グリッド"
 
+# msgstr "グリッド"
 #: fdmprinter.def.json
 msgctxt "support_bottom_pattern option triangles"
 msgid "Triangles"
 msgstr ""
-#msgstr "三角形"
 
+# msgstr "三角形"
 #: fdmprinter.def.json
 msgctxt "support_bottom_pattern option concentric"
 msgid "Concentric"
 msgstr ""
-#msgstr "同心円"
 
+# msgstr "同心円"
 #: fdmprinter.def.json
 msgctxt "support_bottom_pattern option concentric_3d"
 msgid "Concentric 3D"
 msgstr ""
-#msgstr "コンセントリック3D"
 
+# msgstr "コンセントリック3D"
 #: fdmprinter.def.json
 msgctxt "support_bottom_pattern option zigzag"
 msgid "Zig Zag"
 msgstr ""
-#msgstr "ジグザグ"
 
+# msgstr "ジグザグ"
 #: fdmprinter.def.json
 msgctxt "support_use_towers label"
 msgid "Use Towers"
@@ -3451,8 +3608,8 @@ msgstr "密着性"
 msgctxt "prime_blob_enable label"
 msgid "Enable Prime Blob"
 msgstr ""
-#msgstr "プライムブロブを有効にする"
 
+# msgstr "プライムブロブを有効にする"
 #: fdmprinter.def.json
 msgctxt "prime_blob_enable description"
 msgid "Whether to prime the filament with a blob before printing. Turning this setting on will ensure that the extruder will have material ready at the nozzle before printing. Printing Brim or Skirt can act like priming too, in which case turning this setting off saves some time."
@@ -3492,26 +3649,26 @@ msgstr "エクストルーダーとビルドプレートへの接着両方を改
 msgctxt "adhesion_type option skirt"
 msgid "Skirt"
 msgstr ""
-#msgstr "スカート"
 
+# msgstr "スカート"
 #: fdmprinter.def.json
 msgctxt "adhesion_type option brim"
 msgid "Brim"
 msgstr ""
-#msgstr "ブリム"
 
+# msgstr "ブリム"
 #: fdmprinter.def.json
 msgctxt "adhesion_type option raft"
 msgid "Raft"
 msgstr ""
-#msgstr "ラフト"
 
+# msgstr "ラフト"
 #: fdmprinter.def.json
 msgctxt "adhesion_type option none"
 msgid "None"
 msgstr ""
-#msgstr "なし"
 
+# msgstr "なし"
 #: fdmprinter.def.json
 msgctxt "adhesion_extruder_nr label"
 msgid "Build Plate Adhesion Extruder"
@@ -3541,8 +3698,8 @@ msgstr ""
 msgctxt "skirt_gap description"
 msgid ""
 "The horizontal distance between the skirt and the first layer of the print.\n"
-"This is the minimum distance, multiple skirt lines will extend outwards from this distance."
-msgstr "スカートとプリントの最初のレイヤーの間の水平距離。これが最小距離であり、複数のスカートラインがこの距離から外側に延びている。"
+"This is the minimum distance. Multiple skirt lines will extend outwards from this distance."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "skirt_brim_minimal_length label"
@@ -3585,28 +3742,6 @@ msgid "Only print the brim on the outside of the model. This reduces the amount 
 msgstr "モデルの外側のみにブリムを印刷します。これにより、後で取り除くブリムの量が減少します。またプレートへの接着力はそれほど低下しません。"
 
 #: fdmprinter.def.json
-msgctxt "z_offset_layer_0 label"
-msgid "Initial Layer Z Offset"
-msgstr ""
-#msgstr "初期レイヤーのZオフセット"
-
-#: fdmprinter.def.json
-msgctxt "z_offset_layer_0 description"
-msgid "The extruder is offset from the normal height of the first layer by this amount. It can be positive (raised) or negative (lowered). Some filament types adhere to the build plate better if the extruder is raised slightly."
-msgstr "エクストルーダーは、最初のレイヤーの通常の高さからこの値でオフセットされます。それは、正 (上昇) または負 (低下)。エクストルーダーを少しだけ上昇させた方が、フィラメントによってはビルドプレートに付着しやすくなります。"
-
-#: fdmprinter.def.json
-msgctxt "z_offset_taper_layers label"
-msgid "Z Offset Taper Layers"
-msgstr ""
-#msgstr "Z オフセット テーパーレイヤー"
-
-#: fdmprinter.def.json
-msgctxt "z_offset_taper_layers description"
-msgid "When non-zero, the Z offset is reduced to 0 over that many layers. A value of 0 means that the Z offset remains constant for all the layers in the print."
-msgstr "0 以外の場合、Z オフセットは多くのレイヤーを介して 0 に減らされます。0 の値は そのZ オフセットがプリント中すべてのレイヤーにてコンスタントを維持することを意味します。"
-
-#: fdmprinter.def.json
 msgctxt "raft_margin label"
 msgid "Raft Extra Margin"
 msgstr ""
@@ -3620,12 +3755,11 @@ msgstr "ラフトが有効になっている場合、モデルの周りに余分
 msgctxt "raft_smoothing label"
 msgid "Raft Smoothing"
 msgstr ""
-#msgstr "ラフトスムージング"
 
 #: fdmprinter.def.json
 msgctxt "raft_smoothing description"
-msgid "This setting control how much inner corners in the raft outline are rounded. Inward corners are rounded to a semi circle with a radius equal to the value given here. This setting also removes holes in the raft outline which are smaller than such a circle."
-msgstr "この設定は、ラフトのアウトラインの内側の角が丸みを帯びているかを制御します。内側のコーナーは、与えられた値と等しい半径の半円に丸められています。この設定では、円よりも小さいラフトアウトラインの穴は削除されます。"
+msgid "This setting controls how much inner corners in the raft outline are rounded. Inward corners are rounded to a semi circle with a radius equal to the value given here. This setting also removes holes in the raft outline which are smaller than such a circle."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "raft_airgap label"
@@ -4011,8 +4145,8 @@ msgstr "エクストルーダーを切り替えた後、最初に印刷したも
 msgctxt "prime_tower_purge_volume label"
 msgid "Prime Tower Purge Volume"
 msgstr ""
-#msgstr "プライムタワーのパージ時のボリューム"
 
+# msgstr "プライムタワーのパージ時のボリューム"
 #: fdmprinter.def.json
 msgctxt "prime_tower_purge_volume description"
 msgid "Amount of filament to be purged when wiping on the prime tower. Purging is useful for compensating the filament lost by oozing during inactivity of the nozzle."
@@ -4099,6 +4233,16 @@ msgid "Normally Cura tries to stitch up small holes in the mesh and remove parts
 msgstr "通常、Curaはメッシュ内の小さな穴をスティッチし、大きな穴のあるレイヤーの部分を削除しようとします。このオプションを有効にすると、スティッチできない部分が保持されます。このオプションは、他のすべてが適切なGCodeを生成できない場合の最後の手段として使用する必要があります。"
 
 #: fdmprinter.def.json
+msgctxt "meshfix_maximum_resolution label"
+msgid "Maximum Resolution"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "meshfix_maximum_resolution description"
+msgid "The minimum size of a line segment after slicing. If you increase this, the mesh will have a lower resolution. This may allow the printer to keep up with the speed it has to process g-code and will increase slice speed by removing details of the mesh that it can't process anyway."
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "multiple_mesh_overlap label"
 msgid "Merged Meshes Overlap"
 msgstr ""
@@ -4127,6 +4271,16 @@ msgstr ""
 msgctxt "alternate_carve_order description"
 msgid "Switch to which mesh intersecting volumes will belong with every layer, so that the overlapping meshes become interwoven. Turning this setting off will cause one of the meshes to obtain all of the volume in the overlap, while it is removed from the other meshes."
 msgstr "交差するメッシュがどのレイヤーに属しているかを切り替えることで、オーバーラップしているメッシュを絡み合うようにします。この設定をオフにすると、一方のメッシュはオーバーラップ内のすべてのボリュームを取得し、他方のメッシュは他から削除されます。"
+
+#: fdmprinter.def.json
+msgctxt "remove_empty_first_layers label"
+msgid "Remove Empty First Layers"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "remove_empty_first_layers description"
+msgid "Remove empty layers beneath the first printed layer if they are present. Disabling this setting can cause empty first layers if the Slicing Tolerance setting is set to Exclusive or Middle."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "blackmagic label"
@@ -4182,8 +4336,8 @@ msgstr "他のインフィルメッシュのインフィル内にあるインフ
 msgctxt "cutting_mesh label"
 msgid "Cutting Mesh"
 msgstr ""
-#msgstr "メッシュの切断"
 
+# msgstr "メッシュの切断"
 #: fdmprinter.def.json
 msgctxt "cutting_mesh description"
 msgid "Limit the volume of this mesh to within other meshes. You can use this to make certain areas of one mesh print with different settings and with a whole different extruder."
@@ -4193,8 +4347,8 @@ msgstr "このメッシュの大きさをを他のメッシュ内に制限しま
 msgctxt "mold_enabled label"
 msgid "Mold"
 msgstr ""
-#msgstr "モールド"
 
+# msgstr "モールド"
 #: fdmprinter.def.json
 msgctxt "mold_enabled description"
 msgid "Print models as a mold, which can be cast in order to get a model which resembles the models on the build plate."
@@ -4204,8 +4358,8 @@ msgstr "型を取るため印刷し、ビルドプレート上の同じような
 msgctxt "mold_width label"
 msgid "Minimal Mold Width"
 msgstr ""
-#msgstr "最小のモールド幅"
 
+# msgstr "最小のモールド幅"
 #: fdmprinter.def.json
 msgctxt "mold_width description"
 msgid "The minimal distance between the ouside of the mold and the outside of the model."
@@ -4215,8 +4369,8 @@ msgstr "型用とモデルの外側の最短距離。"
 msgctxt "mold_roof_height label"
 msgid "Mold Roof Height"
 msgstr ""
-#msgstr "モールドの屋根の高さ"
 
+# msgstr "モールドの屋根の高さ"
 #: fdmprinter.def.json
 msgctxt "mold_roof_height description"
 msgid "The height above horizontal parts in your model which to print mold."
@@ -4226,8 +4380,8 @@ msgstr "型を印刷するためのモデルの水平部分上の高さ。"
 msgctxt "mold_angle label"
 msgid "Mold Angle"
 msgstr ""
-#msgstr "モールドの角度"
 
+# msgstr "モールドの角度"
 #: fdmprinter.def.json
 msgctxt "mold_angle description"
 msgid "The angle of overhang of the outer walls created for the mold. 0° will make the outer shell of the mold vertical, while 90° will make the outside of the model follow the contour of the model."
@@ -4247,8 +4401,8 @@ msgstr "このメッシュを使用してサポート領域を指定します。
 msgctxt "support_mesh_drop_down label"
 msgid "Drop Down Support Mesh"
 msgstr ""
-#msgstr "ドロップダウンサポートメッシュ"
 
+# msgstr "ドロップダウンサポートメッシュ"
 #: fdmprinter.def.json
 msgctxt "support_mesh_drop_down description"
 msgid "Make support everywhere below the support mesh, so that there's no overhang in the support mesh."
@@ -4303,8 +4457,8 @@ msgstr "Z軸の外側のエッジの動きを滑らかにします。全体の�
 msgctxt "smooth_spiralized_contours label"
 msgid "Smooth Spiralized Contours"
 msgstr ""
-#msgstr "滑らかならせん状の輪郭"
 
+# msgstr "滑らかならせん状の輪郭"
 #: fdmprinter.def.json
 msgctxt "smooth_spiralized_contours description"
 msgid "Smooth the spiralized contours to reduce the visibility of the Z seam (the Z-seam should be barely visible on the print but will still be visible in the layer view). Note that smoothing will tend to blur fine surface details."
@@ -4314,8 +4468,8 @@ msgstr "らせん状の輪郭を滑らかにしてZシームの視認性を低�
 msgctxt "relative_extrusion label"
 msgid "Relative Extrusion"
 msgstr ""
-#msgstr "相対エクストルージョン"
 
+# msgstr "相対エクストルージョン"
 #: fdmprinter.def.json
 msgctxt "relative_extrusion description"
 msgid "Use relative extrusion rather than absolute extrusion. Using relative E-steps makes for easier post-processing of the Gcode. However, it's not supported by all printers and it may produce very slight deviations in the amount of deposited material compared to absolute E-steps. Irrespective of this setting, the extrusion mode will always be set to absolute before any Gcode script is output."
@@ -4335,12 +4489,45 @@ msgstr "実験的"
 msgctxt "optimize_wall_printing_order label"
 msgid "Optimize Wall Printing Order"
 msgstr ""
-#msgstr "壁のプリントの順番を最適化する"
 
+# msgstr "壁のプリントの順番を最適化する"
 #: fdmprinter.def.json
 msgctxt "optimize_wall_printing_order description"
 msgid "Optimize the order in which walls are printed so as to reduce the number of retractions and the distance travelled. Most parts will benefit from this being enabled but some may actually take longer so please compare the print time estimates with and without optimization."
 msgstr "撤回と移動距離を減らすために、壁のプリント順序を最適化します。ほとんどの部品がこの設定を有効にしている方が良い印刷結果につながりますが、実際には時間がかかることがありますので、最適化の有無に関わらず印刷時間を比較してください。"
+
+#: fdmprinter.def.json
+msgctxt "support_skip_some_zags label"
+msgid "Break Up Support In Chunks"
+msgstr ""
+
+# msgstr "かたまりででサポートを割る"
+#: fdmprinter.def.json
+msgctxt "support_skip_some_zags description"
+msgid "Skip some support line connections to make the support structure easier to break away. This setting is applicable to the Zig Zag support infill pattern."
+msgstr "サポートラインの接続部分をスキップし、サポート材部分を壊れやすくします。この設定はジグザクのサポートインフィル材のパターンにて適用できます。"
+
+#: fdmprinter.def.json
+msgctxt "support_skip_zag_per_mm label"
+msgid "Support Chunk Size"
+msgstr ""
+
+# msgstr "サポートのかたまりサイズ"
+#: fdmprinter.def.json
+msgctxt "support_skip_zag_per_mm description"
+msgid "Leave out a connection between support lines once every N millimeter to make the support structure easier to break away."
+msgstr "サポート毎行Nミリ時に、サポートの接続をわざと外し、後のサポート材の構造をもろくし、壊れやすくする。"
+
+#: fdmprinter.def.json
+msgctxt "support_zag_skip_count label"
+msgid "Support Chunk Line Count"
+msgstr ""
+
+# msgstr "サポートのかたまり線数"
+#: fdmprinter.def.json
+msgctxt "support_zag_skip_count description"
+msgid "Skip one in every N connection lines to make the support structure easier to break away."
+msgstr "毎行Nミリ時に、サポートの接続をわざとスキップし、後のサポート材の構造をもろくし、壊れやすくする。"
 
 #: fdmprinter.def.json
 msgctxt "draft_shield_enabled label"
@@ -4466,8 +4653,8 @@ msgstr "トップ/ボトムのレイヤーが印刷される方向を変更し�
 msgctxt "cross_infill_pocket_size label"
 msgid "Cross 3D Pocket Size"
 msgstr ""
-#msgstr "クロス3Dポケットサイズ"
 
+# msgstr "クロス3Dポケットサイズ"
 #: fdmprinter.def.json
 msgctxt "cross_infill_pocket_size description"
 msgid "The size of pockets at four-way crossings in the cross 3D pattern at heights where the pattern is touching itself."
@@ -4477,8 +4664,8 @@ msgstr "四方でクロス3Dパターンが交差するポケットの大きさ�
 msgctxt "cross_infill_apply_pockets_alternatingly label"
 msgid "Alternate Cross 3D Pockets"
 msgstr ""
-#msgstr "クロス3Dポケットと交差させる"
 
+# msgstr "クロス3Dポケットと交差させる"
 #: fdmprinter.def.json
 msgctxt "cross_infill_apply_pockets_alternatingly description"
 msgid "Only apply pockets at half of the four-way crossings in the cross 3D pattern and alternate the location of the pockets between heights where the pattern is touching itself."
@@ -4488,8 +4675,8 @@ msgstr "四方がクロスする、クロス3Dパターン交差時には半分�
 msgctxt "spaghetti_infill_enabled label"
 msgid "Spaghetti Infill"
 msgstr ""
-#msgstr "スパゲッティ・インフィル"
 
+# msgstr "スパゲッティ・インフィル"
 #: fdmprinter.def.json
 msgctxt "spaghetti_infill_enabled description"
 msgid "Print the infill every so often, so that the filament will curl up chaotically inside the object. This reduces print time, but the behaviour is rather unpredictable."
@@ -4499,8 +4686,8 @@ msgstr "時々インフィルを印刷してください、オブジェクト内
 msgctxt "spaghetti_infill_stepped label"
 msgid "Spaghetti Infill Stepping"
 msgstr ""
-#msgstr "スパゲッティのインフィルステッピング"
 
+# msgstr "スパゲッティのインフィルステッピング"
 #: fdmprinter.def.json
 msgctxt "spaghetti_infill_stepped description"
 msgid "Whether to print spaghetti infill in steps or extrude all the infill filament at the end of the print."
@@ -4510,8 +4697,8 @@ msgstr "スパゲッティインフィルをプリントするか印刷の最後
 msgctxt "spaghetti_max_infill_angle label"
 msgid "Spaghetti Maximum Infill Angle"
 msgstr ""
-#msgstr "スパゲッティの最大のインフィルの角度"
 
+# msgstr "スパゲッティの最大のインフィルの角度"
 #: fdmprinter.def.json
 msgctxt "spaghetti_max_infill_angle description"
 msgid "The maximum angle w.r.t. the Z axis of the inside of the print for areas which are to be filled with spaghetti infill afterwards. Lowering this value causes more angled parts in your model to be filled on each layer."
@@ -4521,8 +4708,8 @@ msgstr "最大角度 w.r.t.-印刷範囲内がスパゲッティ・インフィ�
 msgctxt "spaghetti_max_height label"
 msgid "Spaghetti Infill Maximum Height"
 msgstr ""
-#msgstr "スパゲッティインフィルの最大高さ"
 
+# msgstr "スパゲッティインフィルの最大高さ"
 #: fdmprinter.def.json
 msgctxt "spaghetti_max_height description"
 msgid "The maximum height of inside space which can be combined and filled from the top."
@@ -4532,8 +4719,8 @@ msgstr "内部空間の上から結合して埋め込むことができる最大
 msgctxt "spaghetti_inset label"
 msgid "Spaghetti Inset"
 msgstr ""
-#msgstr "スパゲティをセットする"
 
+# msgstr "スパゲティをセットする"
 #: fdmprinter.def.json
 msgctxt "spaghetti_inset description"
 msgid "The offset from the walls from where the spaghetti infill will be printed."
@@ -4543,8 +4730,8 @@ msgstr "スパゲッティ・インフィルがプリントされる壁からの
 msgctxt "spaghetti_flow label"
 msgid "Spaghetti Flow"
 msgstr ""
-#msgstr "スパゲッティのフロー"
 
+# msgstr "スパゲッティのフロー"
 #: fdmprinter.def.json
 msgctxt "spaghetti_flow description"
 msgid "Adjusts the density of the spaghetti infill. Note that the Infill Density only controls the line spacing of the filling pattern, not the amount of extrusion for spaghetti infill."
@@ -4554,8 +4741,8 @@ msgstr "スパゲッティ・インフィルの密度を調整します。イン
 msgctxt "spaghetti_infill_extra_volume label"
 msgid "Spaghetti Infill Extra Volume"
 msgstr ""
-#msgstr "スパゲッティ・インフィルの余分量"
 
+# msgstr "スパゲッティ・インフィルの余分量"
 #: fdmprinter.def.json
 msgctxt "spaghetti_infill_extra_volume description"
 msgid "A correction term to adjust the total volume being extruded each time when filling spaghetti."
@@ -4640,6 +4827,26 @@ msgstr ""
 msgctxt "magic_fuzzy_skin_point_dist description"
 msgid "The average distance between the random points introduced on each line segment. Note that the original points of the polygon are discarded, so a high smoothness results in a reduction of the resolution. This value must be higher than half the Fuzzy Skin Thickness."
 msgstr "各線分に導入されたランダム点間の平均距離。ポリゴンの元の点は破棄されるので、積層の値を低くすることで、なめらかな仕上がりになります。この値は、ファジースキンの厚さの半分よりも大きくなければなりません。"
+
+#: fdmprinter.def.json
+msgctxt "flow_rate_max_extrusion_offset label"
+msgid "Flow rate compensation max extrusion offset"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "flow_rate_max_extrusion_offset description"
+msgid "The maximum distance in mm to compensate."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "flow_rate_extrusion_offset_factor label"
+msgid "Flow rate compensation factor"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "flow_rate_extrusion_offset_factor description"
+msgid "The multiplication factor for the flow rate -> distance translation."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "wireframe_enabled label"
@@ -4899,117 +5106,6 @@ msgid "Distance between the nozzle and horizontally downward lines. Larger clear
 msgstr "ノズルと水平方向に下向きの線間の距離。大きな隙間がある場合、急な角度で斜め下方線となり、次の層が上方接続しずらくなる。ワイヤ印刷にのみ適用されます。"
 
 #: fdmprinter.def.json
-msgctxt "ironing_enabled label"
-msgid "Enable Ironing"
-msgstr ""
-#msgstr "アイロンを有効にする"
-
-#: fdmprinter.def.json
-msgctxt "ironing_enabled description"
-msgid "Go over the top surface one additional time, but without extruding material. This is meant to melt the plastic on top further, creating a smoother surface."
-msgstr "ノズルから吐出せずに上部表面を再度動く機能。表面を溶かしてよりスムースにします。"
-
-#: fdmprinter.def.json
-msgctxt "ironing_only_highest_layer label"
-msgid "Iron Only Highest Layer"
-msgstr ""
-#msgstr "上層のみアイロンをかけます"
-
-#: fdmprinter.def.json
-msgctxt "ironing_only_highest_layer description"
-msgid "Only perform ironing on the very last layer of the mesh. This saves time if the lower layers don't need a smooth surface finish."
-msgstr "メッシュの最後のレイヤーでのみアイロンをかけます。下層にて滑らかな表面仕上げを必要としない場合、時間を節約します。"
-
-#: fdmprinter.def.json
-msgctxt "ironing_pattern label"
-msgid "Ironing Pattern"
-msgstr ""
-#msgstr "アイロン時のパターン"
-
-#: fdmprinter.def.json
-msgctxt "ironing_pattern description"
-msgid "The pattern to use for ironing top surfaces."
-msgstr "アイロンのパターン"
-
-#: fdmprinter.def.json
-msgctxt "ironing_pattern option concentric"
-msgid "Concentric"
-msgstr ""
-#msgstr "同心"
-
-#: fdmprinter.def.json
-msgctxt "ironing_pattern option zigzag"
-msgid "Zig Zag"
-msgstr ""
-#msgstr "ジグザグ"
-
-#: fdmprinter.def.json
-msgctxt "ironing_line_spacing label"
-msgid "Ironing Line Spacing"
-msgstr ""
-#msgstr "アイロンラインの線隔"
-
-#: fdmprinter.def.json
-msgctxt "ironing_line_spacing description"
-msgid "The distance between the lines of ironing."
-msgstr "アイロンライン同士の距離"
-
-#: fdmprinter.def.json
-msgctxt "ironing_flow label"
-msgid "Ironing Flow"
-msgstr ""
-#msgstr "アイロン時のフロー"
-
-#: fdmprinter.def.json
-msgctxt "ironing_flow description"
-msgid "The amount of material, relative to a normal skin line, to extrude during ironing. Keeping the nozzle filled helps filling some of the crevices of the top surface, but too much results in overextrusion and blips on the side of the surface."
-msgstr "アイロン時にノズルから出しておくフィラメントの量。多少出しておくと裂け目を綺麗にします。ただ出し過ぎると吐出過多になり、端が荒れます。"
-
-#: fdmprinter.def.json
-msgctxt "ironing_inset label"
-msgid "Ironing Inset"
-msgstr ""
-#msgstr "アイロンを挿入する"
-
-#: fdmprinter.def.json
-msgctxt "ironing_inset description"
-msgid "A distance to keep from the edges of the model. Ironing all the way to the edge of the mesh may result in a jagged edge on your print."
-msgstr "モデルの端からの距離。端までアイロンをすると、端が荒れる場合があります。"
-
-#: fdmprinter.def.json
-msgctxt "speed_ironing label"
-msgid "Ironing Speed"
-msgstr ""
-#msgstr "アイロン時のスピード"
-
-#: fdmprinter.def.json
-msgctxt "speed_ironing description"
-msgid "The speed at which to pass over the top surface."
-msgstr "上部表面通過時の速度"
-
-#: fdmprinter.def.json
-msgctxt "acceleration_ironing label"
-msgid "Ironing Acceleration"
-msgstr ""
-#msgstr "アイロン時の加速"
-
-#: fdmprinter.def.json
-msgctxt "acceleration_ironing description"
-msgid "The acceleration with which ironing is performed."
-msgstr "アイロン時の加速度"
-
-#: fdmprinter.def.json
-msgctxt "jerk_ironing label"
-msgid "Ironing Jerk"
-msgstr ""
-#msgstr "ジャークをアイロンする"
-
-#: fdmprinter.def.json
-msgctxt "jerk_ironing description"
-msgid "The maximum instantaneous velocity change while performing ironing."
-msgstr "アイロン時の最大加速度"
-
-#: fdmprinter.def.json
 msgctxt "command_line_settings label"
 msgid "Command Line Settings"
 msgstr ""
@@ -5069,21 +5165,39 @@ msgctxt "mesh_rotation_matrix description"
 msgid "Transformation matrix to be applied to the model when loading it from file."
 msgstr "ファイルから読み込むときに、モデルに適用するトランスフォーメーションマトリックス。"
 
-#~ msgctxt "wall_extruder_nr description"
-#~ msgid "The extruder train used for printing the walls. This is used in multi-extrusion."
-#~ msgstr "壁造形用のエクストルーダー。デュアルノズル印刷時に使用。"
+#~ msgctxt "infill_pattern description"
+#~ msgid "The pattern of the infill material of the print. The line and zig zag infill swap direction on alternate layers, reducing material cost. The grid, triangle, cubic, octet, quarter cubic and concentric patterns are fully printed every layer. Cubic, quarter cubic and octet infill change with every layer to provide a more equal distribution of strength over each direction."
+#~ msgstr "印刷物のインフィルのパターン。線とジグザグのインフィルはレイヤーごとに交互に方向を変え、材料費を削減します。グリッド、三角形、キュービック、オクテット、クォーターキュービック、同心円のパターンは、すべてのレイヤーにて完全に印刷されます。キュービック、クォーターキュービック、オクテットのインフィルは各レイヤーごとに変化し、各方向の強度が均等になるように分布します。"
+
+# msgstr "インフィルの線をつなげる"
+#~ msgctxt "zig_zaggify_infill description"
+#~ msgid "Connect the ends where the infill pattern meets the inner wall using a lines which follows the shape of the inner wall. Enabling this setting can make the infill adhere to the walls better and reduces the effects on infill on the quality of vertical surfaces. Disabling this setting reduces the amount of material used."
+#~ msgstr "内壁の形状に沿った線を使用して、インフィルのパターンが内壁と接する端を接続します。この設定を有効にすると、インフィルを壁面に密着させることができ、充填材が垂直面の品質に与える影響を低減できます。この設定を無効にすると、使用される材料の量が減ります。"
+
+#~ msgctxt "skirt_gap description"
+#~ msgid ""
+#~ "The horizontal distance between the skirt and the first layer of the print.\n"
+#~ "This is the minimum distance, multiple skirt lines will extend outwards from this distance."
+#~ msgstr "スカートとプリントの最初のレイヤーの間の水平距離。これが最小距離であり、複数のスカートラインがこの距離から外側に延びている。"
+
+# msgstr "初期レイヤーのZオフセット"
+#~ msgctxt "z_offset_layer_0 description"
+#~ msgid "The extruder is offset from the normal height of the first layer by this amount. It can be positive (raised) or negative (lowered). Some filament types adhere to the build plate better if the extruder is raised slightly."
+#~ msgstr "エクストルーダーは、最初のレイヤーの通常の高さからこの値でオフセットされます。それは、正 (上昇) または負 (低下)。エクストルーダーを少しだけ上昇させた方が、フィラメントによってはビルドプレートに付着しやすくなります。"
+
+# msgstr "Z オフセット テーパーレイヤー"
+#~ msgctxt "z_offset_taper_layers description"
+#~ msgid "When non-zero, the Z offset is reduced to 0 over that many layers. A value of 0 means that the Z offset remains constant for all the layers in the print."
+#~ msgstr "0 以外の場合、Z オフセットは多くのレイヤーを介して 0 に減らされます。0 の値は そのZ オフセットがプリント中すべてのレイヤーにてコンスタントを維持することを意味します。"
+
+# msgstr "ラフトスムージング"
+#~ msgctxt "raft_smoothing description"
+#~ msgid "This setting control how much inner corners in the raft outline are rounded. Inward corners are rounded to a semi circle with a radius equal to the value given here. This setting also removes holes in the raft outline which are smaller than such a circle."
+#~ msgstr "この設定は、ラフトのアウトラインの内側の角が丸みを帯びているかを制御します。内側のコーナーは、与えられた値と等しい半径の半円に丸められています。この設定では、円よりも小さいラフトアウトラインの穴は削除されます。"
 
 #~ msgctxt "infill_pattern description"
 #~ msgid "The pattern of the infill material of the print. The line and zig zag infill swap direction on alternate layers, reducing material cost. The grid, triangle, cubic, tetrahedral and concentric patterns are fully printed every layer. Cubic and tetrahedral infill change with every layer to provide a more equal distribution of strength over each direction."
 #~ msgstr "印刷物のインフィルのパターン。ラインとジグザグのインフィルは交互のレイヤー方向をずらし、材料費を削減します。グリッド、三角形、キュービック、四面体、同心円のパターンは、各レイヤーに完全に印刷されます。立方体および四面体のインフィルは各層ごとに変化し、各方向に沿ってより均等な強度分布を提供する。"
-
-#~ msgctxt "infill_pattern option tetrahedral"
-#~ msgid "Tetrahedral"
-#~ msgstr ""
-
-#~ msgctxt "expand_skins_into_infill label"
-#~ msgid "Expand Skins Into Infill"
-#~ msgstr ""
 
 #~ msgctxt "expand_skins_into_infill description"
 #~ msgid "Expand skin areas of top and/or bottom skin of flat surfaces. By default, skins stop under the wall lines that surround infill but this can lead to holes appearing when the infill density is low. This setting extends the skins beyond the wall lines so that the infill on the next layer rests on skin."
@@ -5157,10 +5271,6 @@ msgstr "ファイルから読み込むときに、モデルに適用するトラ
 #~ msgid "RepRap (Marlin/Sprinter)"
 #~ msgstr "RepRap (Marlin/Sprinter)"
 
-#~ msgctxt "machine_gcode_flavor option RepRap (Volumatric)"
-#~ msgid "RepRap (Volumetric)"
-#~ msgstr ""
-
 #~ msgctxt "wall_thickness description"
 #~ msgid "The thickness of the outside walls in the horizontal direction. This value divided by the wall line width defines the number of walls."
 #~ msgstr "水平方向の外壁厚さ　この値をウォールライン幅で割ることで、ウォール数を定義します。"
@@ -5173,25 +5283,13 @@ msgstr "ファイルから読み込むときに、モデルに適用するトラ
 #~ msgid "Width of a single support interface line."
 #~ msgstr "単一のサポートインタフェースラインの幅。"
 
-#~ msgctxt "sub_div_rad_mult label"
-#~ msgid "Cubic Subdivision Radius"
-#~ msgstr ""
-
 #~ msgctxt "sub_div_rad_mult description"
 #~ msgid "A multiplier on the radius from the center of each cube to check for the boundary of the model, as to decide whether this cube should be subdivided. Larger values lead to more subdivisions, i.e. more small cubes."
 #~ msgstr "各立方体の中心からの半径上の乗数で、モデルの境界をチェックし、この立方体を細分するかどうかを決定します。値を大きくすると細分化が増えます。つまり、より小さなキューブになります。"
 
-#~ msgctxt "expand_upper_skins label"
-#~ msgid "Expand Upper Skins"
-#~ msgstr ""
-
 #~ msgctxt "expand_upper_skins description"
 #~ msgid "Expand upper skin areas (areas with air above) so that they support infill above."
 #~ msgstr "上部のインフィルをサポートするので、スキン面 (上記の空気を含んだ領域) を展開します。"
-
-#~ msgctxt "expand_lower_skins label"
-#~ msgid "Expand Lower Skins"
-#~ msgstr ""
 
 #~ msgctxt "expand_lower_skins description"
 #~ msgid "Expand lower skin areas (areas with air below) so that they are anchored by the infill layers above and below."
@@ -5209,10 +5307,6 @@ msgstr "ファイルから読み込むときに、モデルに適用するトラ
 #~ msgid "The maximum instantaneous velocity change with which the roofs and bottoms of support are printed."
 #~ msgstr "サポート材の屋根とボトムのプリント時、最大瞬間速度の変更。"
 
-#~ msgctxt "support_enable label"
-#~ msgid "Enable Support"
-#~ msgstr ""
-
 #~ msgctxt "support_enable description"
 #~ msgid "Enable support structures. These structures support parts of the model with severe overhangs."
 #~ msgstr "サポート材を印刷可能にします。これは、モデル上のオーバーハング部分にサポート材を構築します。"
@@ -5225,10 +5319,6 @@ msgstr "ファイルから読み込むときに、モデルに適用するトラ
 #~ msgid "The height of the steps of the stair-like bottom of support resting on the model. A low value makes the support harder to remove, but too high values can lead to unstable support structures."
 #~ msgstr "モデルにかかる階段形サポートの下部の高さです。低い値のサポートの除去は難しく、高すぎる値は不安定なサポート構造につながります。"
 
-#~ msgctxt "support_bottom_height label"
-#~ msgid "Support Bottom Thickness"
-#~ msgstr ""
-
 #~ msgctxt "support_bottom_height description"
 #~ msgid "The thickness of the support bottoms. This controls the number of dense layers are printed on top of places of a model on which support rests."
 #~ msgstr "サポート材の底部の厚さ。これは、サモデルの上に印刷されるサポートの積層密度を制御します。"
@@ -5240,10 +5330,6 @@ msgstr "ファイルから読み込むときに、モデルに適用するトラ
 #~ msgctxt "support_interface_density description"
 #~ msgid "Adjusts the density of the roofs and bottoms of the support structure. A higher value results in better overhangs, but the supports are harder to remove."
 #~ msgstr "サポート材の屋根と底部の密度を調整します　大きな値ではオーバーハングでの成功率があがりますが、サポート材が除去しにくくなります"
-
-#~ msgctxt "support_interface_line_distance label"
-#~ msgid "Support Interface Line Distance"
-#~ msgstr ""
 
 #~ msgctxt "support_interface_line_distance description"
 #~ msgid "Distance between the printed support interface lines. This setting is calculated by the Support Interface Density, but can be adjusted separately."

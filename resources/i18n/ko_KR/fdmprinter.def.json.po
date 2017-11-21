@@ -6,8 +6,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Cura 3.0\n"
-"Report-Msgid-Bugs-To: r.dulek@ultimaker.com\n"
-"POT-Creation-Date: 2017-08-02 16:53+0000\n"
+"Report-Msgid-Bugs-To: http://github.com/ultimaker/uranium\n"
+"POT-Creation-Date: 2017-11-21 16:58+0000\n"
 "PO-Revision-Date: 2017-09-21 14:58+0900\n"
 "Last-Translator: Brule\n"
 "Language-Team: Brule\n"
@@ -608,6 +608,31 @@ msgid "The height of the initial layer in mm. A thicker initial layer makes adhe
 msgstr "초기 레이어의 높이 (mm)입니다. 두꺼운 초기 레이어는 빌드 플레이트에 쉽게 접착합니다. "
 
 #: fdmprinter.def.json
+msgctxt "slicing_tolerance label"
+msgid "Slicing Tolerance"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "slicing_tolerance description"
+msgid "How to slice layers with diagonal surfaces. The areas of a layer can be generated based on where the middle of the layer intersects the surface (Middle). Alternatively each layer can have the areas which fall inside of the volume throughout the height of the layer (Exclusive) or a layer has the areas which fall inside anywhere within the layer (Inclusive). Exclusive retains the most details, Inclusive makes for the best fit and Middle takes the least time to process."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "slicing_tolerance option middle"
+msgid "Middle"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "slicing_tolerance option exclusive"
+msgid "Exclusive"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "slicing_tolerance option inclusive"
+msgid "Inclusive"
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "line_width label"
 msgid "Line Width"
 msgstr ""
@@ -758,6 +783,16 @@ msgid "Shell"
 msgstr "겉면 "
 
 #: fdmprinter.def.json
+msgctxt "wall_extruder_nr label"
+msgid "Wall Extruder"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "wall_extruder_nr description"
+msgid "The extruder train used for printing the walls. This is used in multi-extrusion."
+msgstr "벽을 인쇄하는 데 사용되는 압출기 트레인. 이것은 다중 압출에 사용됩니다. "
+
+#: fdmprinter.def.json
 msgctxt "wall_0_extruder_nr label"
 msgid "Outer Wall Extruder"
 msgstr ""
@@ -769,7 +804,7 @@ msgstr "외벽 인쇄에 사용되는 압출기 트레인. 이것은 다중 압�
 
 #: fdmprinter.def.json
 msgctxt "wall_x_extruder_nr label"
-msgid "Inner Walls Extruder"
+msgid "Inner Wall Extruder"
 msgstr ""
 
 #: fdmprinter.def.json
@@ -1203,6 +1238,106 @@ msgid "Replaces the outermost part of the top/bottom pattern with a number of co
 msgstr "위쪽 / 아래쪽 패턴의 가장 바깥 쪽 부분을 여러 동심 선으로 바꿉니다. 하나 또는 두 개의 선을 사용하면 충진재로 시작하는 지붕이 향상됩니다.  "
 
 #: fdmprinter.def.json
+msgctxt "ironing_enabled label"
+msgid "Enable Ironing"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "ironing_enabled description"
+msgid "Go over the top surface one additional time, but without extruding material. This is meant to melt the plastic on top further, creating a smoother surface."
+msgstr "상단 표면을 한 번 더 이동 시키되 재료를 돌출시키지 마십시오. 이것은 플라스틱을 맨 위에 더 녹여 부드러운 표면을 만듭니다. "
+
+#: fdmprinter.def.json
+msgctxt "ironing_only_highest_layer label"
+msgid "Iron Only Highest Layer"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "ironing_only_highest_layer description"
+msgid "Only perform ironing on the very last layer of the mesh. This saves time if the lower layers don't need a smooth surface finish."
+msgstr "메쉬의 마지막 레이어에서만 다림질을 수행하십시오. 낮은 레이어에서 매끄러운 표면 처리가 필요하지 않은 경우 시간을 절약 할 수 있습니다. "
+
+#: fdmprinter.def.json
+msgctxt "ironing_pattern label"
+msgid "Ironing Pattern"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "ironing_pattern description"
+msgid "The pattern to use for ironing top surfaces."
+msgstr "윗면을 다림질 할 때 사용하는 패턴. "
+
+#: fdmprinter.def.json
+msgctxt "ironing_pattern option concentric"
+msgid "Concentric"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "ironing_pattern option zigzag"
+msgid "Zig Zag"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "ironing_line_spacing label"
+msgid "Ironing Line Spacing"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "ironing_line_spacing description"
+msgid "The distance between the lines of ironing."
+msgstr "다림질 라인 사이의 거리. "
+
+#: fdmprinter.def.json
+msgctxt "ironing_flow label"
+msgid "Ironing Flow"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "ironing_flow description"
+msgid "The amount of material, relative to a normal skin line, to extrude during ironing. Keeping the nozzle filled helps filling some of the crevices of the top surface, but too much results in overextrusion and blips on the side of the surface."
+msgstr "다림질하는 동안 보통의 피부 라인을 기준으로 한 재료의 양. 노즐을 가득 채우면 윗면의 틈새가 채워지지만 표면의 과도한 돌출과 틈이 너무 많이 생깁니다. "
+
+#: fdmprinter.def.json
+msgctxt "ironing_inset label"
+msgid "Ironing Inset"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "ironing_inset description"
+msgid "A distance to keep from the edges of the model. Ironing all the way to the edge of the mesh may result in a jagged edge on your print."
+msgstr "모델 가장자리에서 떨어지지 않는 거리. 메쉬 가장자리까지 다림질하면 인쇄물의 가장자리가 고르지 않을 수 있습니다. "
+
+#: fdmprinter.def.json
+msgctxt "speed_ironing label"
+msgid "Ironing Speed"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "speed_ironing description"
+msgid "The speed at which to pass over the top surface."
+msgstr "상단 표면을 통과하는 속도. "
+
+#: fdmprinter.def.json
+msgctxt "acceleration_ironing label"
+msgid "Ironing Acceleration"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "acceleration_ironing description"
+msgid "The acceleration with which ironing is performed."
+msgstr "다림질이 수행되는 가속도. "
+
+#: fdmprinter.def.json
+msgctxt "jerk_ironing label"
+msgid "Ironing Jerk"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "jerk_ironing description"
+msgid "The maximum instantaneous velocity change while performing ironing."
+msgstr "다림질을하는 동안 최대 순간 속도 변화. "
+
+#: fdmprinter.def.json
 msgctxt "infill label"
 msgid "Infill"
 msgstr ""
@@ -1249,8 +1384,8 @@ msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "infill_pattern description"
-msgid "The pattern of the infill material of the print. The line and zig zag infill swap direction on alternate layers, reducing material cost. The grid, triangle, cubic, octet, quarter cubic and concentric patterns are fully printed every layer. Cubic, quarter cubic and octet infill change with every layer to provide a more equal distribution of strength over each direction."
-msgstr "인쇄물의 충진재 패턴. 라인과 지그재그는 대체 층의 스필 방향을 바꾸어 재료비를 줄입니다. 그리드, 삼각형, 큐빅, 옥텟, 쿼터 큐빅 및 동심원 패턴이 모든 레이어에 완전히 인쇄됩니다. 큐빅, 쿼터 큐빅 및 옥 테트 필은 각 레이어에 따라 변경되어 각 방향에 대해보다 균등 한 강도 분포를 제공합니다. "
+msgid "The pattern of the infill material of the print. The line and zig zag infill swap direction on alternate layers, reducing material cost. The grid, triangle, tri-hexagon, cubic, octet, quarter cubic, cross and concentric patterns are fully printed every layer. Cubic, quarter cubic and octet infill change with every layer to provide a more equal distribution of strength over each direction."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "infill_pattern option grid"
@@ -1265,6 +1400,11 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "infill_pattern option triangles"
 msgid "Triangles"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "infill_pattern option trihexagon"
+msgid "Tri-Hexagon"
 msgstr ""
 
 #: fdmprinter.def.json
@@ -1319,8 +1459,8 @@ msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "zig_zaggify_infill description"
-msgid "Connect the ends where the infill pattern meets the inner wall using a lines which follows the shape of the inner wall. Enabling this setting can make the infill adhere to the walls better and reduces the effects on infill on the quality of vertical surfaces. Disabling this setting reduces the amount of material used."
-msgstr "내부 벽의 모양을 따르는 선을 사용하여 충전 패턴이 내부 벽과 만나는 끝을 연결하십시오. 이 설정을 사용하면 벽에 충전재가 잘 밀착되고 수직 표면의 품질에 영향을 줄 수 있습니다. 이 설정을 사용하지 않으면 사용되는 재료의 양이 줄어 듭니다. "
+msgid "Connect the ends where the infill pattern meets the inner wall using a line which follows the shape of the inner wall. Enabling this setting can make the infill adhere to the walls better and reduce the effects of infill on the quality of vertical surfaces. Disabling this setting reduces the amount of material used."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "infill_angles label"
@@ -1331,6 +1471,26 @@ msgstr ""
 msgctxt "infill_angles description"
 msgid "A list of integer line directions to use. Elements from the list are used sequentially as the layers progress and when the end of the list is reached, it starts at the beginning again. The list items are separated by commas and the whole list is contained in square brackets. Default is an empty list which means use the traditional default angles (45 and 135 degrees for the lines and zig zag patterns and 45 degrees for all other patterns)."
 msgstr "사용할 정수선 방향 목록. 목록의 요소는 레이어가 진행됨에 따라 순차적으로 사용되며 목록의 끝에 도달하면 처음부터 다시 시작됩니다. 목록 항목은 쉼표로 구분되며 전체 목록은 대괄호 안에 들어 있습니다. 기본값은 전통적인 기본 각도 (선 및 지그재그 패턴의 경우 45 및 135도, 다른 모든 패턴의 경우 45도)를 사용한다는 의미의 빈 목록입니다. "
+
+#: fdmprinter.def.json
+msgctxt "infill_offset_x label"
+msgid "Infill X Offset"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "infill_offset_x description"
+msgid "The infill pattern is offset this distance along the X axis."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "infill_offset_y label"
+msgid "Infill Y Offset"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "infill_offset_y description"
+msgid "The infill pattern is offset this distance along the Y axis."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "sub_div_rad_add label"
@@ -1641,6 +1801,26 @@ msgstr ""
 msgctxt "material_diameter description"
 msgid "Adjusts the diameter of the filament used. Match this value with the diameter of the used filament."
 msgstr "사용 된 필라멘트의 직경을 조정합니다. 이 값을 사용 필라멘트의 직경과 일치시킵니다. "
+
+#: fdmprinter.def.json
+msgctxt "material_adhesion_tendency label"
+msgid "Adhesion Tendency"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "material_adhesion_tendency description"
+msgid "Surface adhesion tendency."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "material_surface_energy label"
+msgid "Surface Energy"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "material_surface_energy description"
+msgid "Surface energy."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "material_flow label"
@@ -2833,36 +3013,6 @@ msgid "Connect the ZigZags. This will increase the strength of the zig zag suppo
 msgstr "지그재그를 연결하십시오. 이것은 지그재그지지 구조의 강도를 증가시킵니다. "
 
 #: fdmprinter.def.json
-msgctxt "support_skip_some_zags label"
-msgid "Break Up Support In Chunks"
-msgstr ""
-
-#: fdmprinter.def.json
-msgctxt "support_skip_some_zags description"
-msgid "Skip some support line connections to make the support structure easier to break away. This setting is applicable to the Zig Zag support infill pattern."
-msgstr "지원 구조가 쉽게 끊어 지도록 지원 라인 연결을 건너 뛰십시오. 이 설정은 지그재그 지원 충전 패턴에 적용됩니다. "
-
-#: fdmprinter.def.json
-msgctxt "support_skip_zag_per_mm label"
-msgid "Support Chunk Size"
-msgstr ""
-
-#: fdmprinter.def.json
-msgctxt "support_skip_zag_per_mm description"
-msgid "Leave out a connection between support lines once every N millimeter to make the support structure easier to break away."
-msgstr "지지 구조를 쉽게 분리 할 수 있도록 N 밀리미터마다 지지선 사이를 연결하십시오. "
-
-#: fdmprinter.def.json
-msgctxt "support_zag_skip_count label"
-msgid "Support Chunk Line Count"
-msgstr ""
-
-#: fdmprinter.def.json
-msgctxt "support_zag_skip_count description"
-msgid "Skip one in every N connection lines to make the support structure easier to break away."
-msgstr "지원 구조를 쉽게 깨뜨릴 수 있도록 모든 N 개의 연결 라인을 건너 뜁니다. "
-
-#: fdmprinter.def.json
 msgctxt "support_infill_rate label"
 msgid "Support Density"
 msgstr ""
@@ -3401,8 +3551,8 @@ msgstr ""
 msgctxt "skirt_gap description"
 msgid ""
 "The horizontal distance between the skirt and the first layer of the print.\n"
-"This is the minimum distance, multiple skirt lines will extend outwards from this distance."
-msgstr "스커트와 인쇄물의 첫 번째 레이어 사이의 수평 거리입니다. 이것은 최소 거리이며, 여러 스커트 라인이이 거리에서 바깥쪽으로 확장됩니다.  "
+"This is the minimum distance. Multiple skirt lines will extend outwards from this distance."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "skirt_brim_minimal_length label"
@@ -3445,26 +3595,6 @@ msgid "Only print the brim on the outside of the model. This reduces the amount 
 msgstr "모델 바깥 쪽 가장자리에만 인쇄하십시오. 이렇게하면 나중에 제거해야하는 가장자리의 양이 줄어들지 만 침대 접착력은 그렇게 많이 줄어들지 않습니다. "
 
 #: fdmprinter.def.json
-msgctxt "z_offset_layer_0 label"
-msgid "Initial Layer Z Offset"
-msgstr ""
-
-#: fdmprinter.def.json
-msgctxt "z_offset_layer_0 description"
-msgid "The extruder is offset from the normal height of the first layer by this amount. It can be positive (raised) or negative (lowered). Some filament types adhere to the build plate better if the extruder is raised slightly."
-msgstr "압출기는이 양만큼 제 1 층의 정상 높이로부터 오프셋된다. 양수 (양수) 또는 음수 (양수) 일 수 있습니다. 압출기를 약간 올리면 일부 필라멘트 유형이 빌드 플레이트에 잘 밀착됩니다. "
-
-#: fdmprinter.def.json
-msgctxt "z_offset_taper_layers label"
-msgid "Z Offset Taper Layers"
-msgstr ""
-
-#: fdmprinter.def.json
-msgctxt "z_offset_taper_layers description"
-msgid "When non-zero, the Z offset is reduced to 0 over that many layers. A value of 0 means that the Z offset remains constant for all the layers in the print."
-msgstr "0이 아니면 Z 오프셋은 많은 레이어에서 0으로 줄어 듭니다. 값 0은 인쇄물의 모든 레이어에 대해 Z 오프셋이 일정하게 유지됨을 의미합니다. "
-
-#: fdmprinter.def.json
 msgctxt "raft_margin label"
 msgid "Raft Extra Margin"
 msgstr ""
@@ -3481,8 +3611,8 @@ msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "raft_smoothing description"
-msgid "This setting control how much inner corners in the raft outline are rounded. Inward corners are rounded to a semi circle with a radius equal to the value given here. This setting also removes holes in the raft outline which are smaller than such a circle."
-msgstr "이 설정은 뗏목 윤곽의 내부 모서리가 둥근 정도를 제어합니다. 안쪽 모서리는 여기에 주어진 값과 같은 반경을 가진 반원으로 반올림됩니다. 이 설정은 또한 뗏목 외곽선에서 그러한 원보다 작은 구멍을 제거합니다. "
+msgid "This setting controls how much inner corners in the raft outline are rounded. Inward corners are rounded to a semi circle with a radius equal to the value given here. This setting also removes holes in the raft outline which are smaller than such a circle."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "raft_airgap label"
@@ -3955,6 +4085,16 @@ msgid "Normally Cura tries to stitch up small holes in the mesh and remove parts
 msgstr "일반적으로 큐라(Cura)는 메쉬의 작은 구멍을 꿰매 붙이고 큰 구멍이있는 레이어의 부분을 제거하려고합니다. 이 옵션을 활성화하면 스티칭 할 수없는 파트가 유지됩니다. 이 옵션은 다른 모든 것이 올바른 GCode를 생성하지 못할 때 최후의 수단으로 사용해야합니다. "
 
 #: fdmprinter.def.json
+msgctxt "meshfix_maximum_resolution label"
+msgid "Maximum Resolution"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "meshfix_maximum_resolution description"
+msgid "The minimum size of a line segment after slicing. If you increase this, the mesh will have a lower resolution. This may allow the printer to keep up with the speed it has to process g-code and will increase slice speed by removing details of the mesh that it can't process anyway."
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "multiple_mesh_overlap label"
 msgid "Merged Meshes Overlap"
 msgstr ""
@@ -3983,6 +4123,16 @@ msgstr ""
 msgctxt "alternate_carve_order description"
 msgid "Switch to which mesh intersecting volumes will belong with every layer, so that the overlapping meshes become interwoven. Turning this setting off will cause one of the meshes to obtain all of the volume in the overlap, while it is removed from the other meshes."
 msgstr "교차하는 메쉬로 교차하는 볼륨으로 전환하면 겹치는 메쉬가 서로 얽 히게됩니다. 이 설정을 해제하면 메시 중 하나가 다른 메시에서 제거되는 동안 오버랩의 모든 볼륨을 가져옵니다. "
+
+#: fdmprinter.def.json
+msgctxt "remove_empty_first_layers label"
+msgid "Remove Empty First Layers"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "remove_empty_first_layers description"
+msgid "Remove empty layers beneath the first printed layer if they are present. Disabling this setting can cause empty first layers if the Slicing Tolerance setting is set to Exclusive or Middle."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "blackmagic label"
@@ -4188,6 +4338,36 @@ msgstr ""
 msgctxt "optimize_wall_printing_order description"
 msgid "Optimize the order in which walls are printed so as to reduce the number of retractions and the distance travelled. Most parts will benefit from this being enabled but some may actually take longer so please compare the print time estimates with and without optimization."
 msgstr "수축 및 이동 거리를 줄이도록 벽이 인쇄되는 순서를 최적화하십시오. 대부분의 부품은이 기능을 사용하면 도움이되지만, 실제로는 시간이 오래 걸릴 수 있으므로, 최적화 여부에 관계없이 인쇄 시간을 비교하십시오. "
+
+#: fdmprinter.def.json
+msgctxt "support_skip_some_zags label"
+msgid "Break Up Support In Chunks"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_skip_some_zags description"
+msgid "Skip some support line connections to make the support structure easier to break away. This setting is applicable to the Zig Zag support infill pattern."
+msgstr "지원 구조가 쉽게 끊어 지도록 지원 라인 연결을 건너 뛰십시오. 이 설정은 지그재그 지원 충전 패턴에 적용됩니다. "
+
+#: fdmprinter.def.json
+msgctxt "support_skip_zag_per_mm label"
+msgid "Support Chunk Size"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_skip_zag_per_mm description"
+msgid "Leave out a connection between support lines once every N millimeter to make the support structure easier to break away."
+msgstr "지지 구조를 쉽게 분리 할 수 있도록 N 밀리미터마다 지지선 사이를 연결하십시오. "
+
+#: fdmprinter.def.json
+msgctxt "support_zag_skip_count label"
+msgid "Support Chunk Line Count"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_zag_skip_count description"
+msgid "Skip one in every N connection lines to make the support structure easier to break away."
+msgstr "지원 구조를 쉽게 깨뜨릴 수 있도록 모든 N 개의 연결 라인을 건너 뜁니다. "
 
 #: fdmprinter.def.json
 msgctxt "draft_shield_enabled label"
@@ -4480,6 +4660,26 @@ msgid "The average distance between the random points introduced on each line se
 msgstr "각 선분에 도입 된 임의의 점 사이의 평균 거리입니다. 다각형의 원래 점은 버려 지므로 높은 부드러움으로 인해 해상도가 감소합니다. 이 값은 퍼지 스킨 두께의 절반보다 커야합니다. "
 
 #: fdmprinter.def.json
+msgctxt "flow_rate_max_extrusion_offset label"
+msgid "Flow rate compensation max extrusion offset"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "flow_rate_max_extrusion_offset description"
+msgid "The maximum distance in mm to compensate."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "flow_rate_extrusion_offset_factor label"
+msgid "Flow rate compensation factor"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "flow_rate_extrusion_offset_factor description"
+msgid "The multiplication factor for the flow rate -> distance translation."
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "wireframe_enabled label"
 msgid "Wire Printing"
 msgstr ""
@@ -4737,106 +4937,6 @@ msgid "Distance between the nozzle and horizontally downward lines. Larger clear
 msgstr "노즐과 수평 아래쪽 라인 사이의 거리. 클리어런스가 클수록 비스듬한 각도에서 비스듬히 아래쪽으로 선이 그어져 다음 층과의 연결이보다 적어집니다. 와이어 인쇄에만 적용됩니다. "
 
 #: fdmprinter.def.json
-msgctxt "ironing_enabled label"
-msgid "Enable Ironing"
-msgstr ""
-
-#: fdmprinter.def.json
-msgctxt "ironing_enabled description"
-msgid "Go over the top surface one additional time, but without extruding material. This is meant to melt the plastic on top further, creating a smoother surface."
-msgstr "상단 표면을 한 번 더 이동 시키되 재료를 돌출시키지 마십시오. 이것은 플라스틱을 맨 위에 더 녹여 부드러운 표면을 만듭니다. "
-
-#: fdmprinter.def.json
-msgctxt "ironing_only_highest_layer label"
-msgid "Iron Only Highest Layer"
-msgstr ""
-
-#: fdmprinter.def.json
-msgctxt "ironing_only_highest_layer description"
-msgid "Only perform ironing on the very last layer of the mesh. This saves time if the lower layers don't need a smooth surface finish."
-msgstr "메쉬의 마지막 레이어에서만 다림질을 수행하십시오. 낮은 레이어에서 매끄러운 표면 처리가 필요하지 않은 경우 시간을 절약 할 수 있습니다. "
-
-#: fdmprinter.def.json
-msgctxt "ironing_pattern label"
-msgid "Ironing Pattern"
-msgstr ""
-
-#: fdmprinter.def.json
-msgctxt "ironing_pattern description"
-msgid "The pattern to use for ironing top surfaces."
-msgstr "윗면을 다림질 할 때 사용하는 패턴. "
-
-#: fdmprinter.def.json
-msgctxt "ironing_pattern option concentric"
-msgid "Concentric"
-msgstr ""
-
-#: fdmprinter.def.json
-msgctxt "ironing_pattern option zigzag"
-msgid "Zig Zag"
-msgstr ""
-
-#: fdmprinter.def.json
-msgctxt "ironing_line_spacing label"
-msgid "Ironing Line Spacing"
-msgstr ""
-
-#: fdmprinter.def.json
-msgctxt "ironing_line_spacing description"
-msgid "The distance between the lines of ironing."
-msgstr "다림질 라인 사이의 거리. "
-
-#: fdmprinter.def.json
-msgctxt "ironing_flow label"
-msgid "Ironing Flow"
-msgstr ""
-
-#: fdmprinter.def.json
-msgctxt "ironing_flow description"
-msgid "The amount of material, relative to a normal skin line, to extrude during ironing. Keeping the nozzle filled helps filling some of the crevices of the top surface, but too much results in overextrusion and blips on the side of the surface."
-msgstr "다림질하는 동안 보통의 피부 라인을 기준으로 한 재료의 양. 노즐을 가득 채우면 윗면의 틈새가 채워지지만 표면의 과도한 돌출과 틈이 너무 많이 생깁니다. "
-
-#: fdmprinter.def.json
-msgctxt "ironing_inset label"
-msgid "Ironing Inset"
-msgstr ""
-
-#: fdmprinter.def.json
-msgctxt "ironing_inset description"
-msgid "A distance to keep from the edges of the model. Ironing all the way to the edge of the mesh may result in a jagged edge on your print."
-msgstr "모델 가장자리에서 떨어지지 않는 거리. 메쉬 가장자리까지 다림질하면 인쇄물의 가장자리가 고르지 않을 수 있습니다. "
-
-#: fdmprinter.def.json
-msgctxt "speed_ironing label"
-msgid "Ironing Speed"
-msgstr ""
-
-#: fdmprinter.def.json
-msgctxt "speed_ironing description"
-msgid "The speed at which to pass over the top surface."
-msgstr "상단 표면을 통과하는 속도. "
-
-#: fdmprinter.def.json
-msgctxt "acceleration_ironing label"
-msgid "Ironing Acceleration"
-msgstr ""
-
-#: fdmprinter.def.json
-msgctxt "acceleration_ironing description"
-msgid "The acceleration with which ironing is performed."
-msgstr "다림질이 수행되는 가속도. "
-
-#: fdmprinter.def.json
-msgctxt "jerk_ironing label"
-msgid "Ironing Jerk"
-msgstr ""
-
-#: fdmprinter.def.json
-msgctxt "jerk_ironing description"
-msgid "The maximum instantaneous velocity change while performing ironing."
-msgstr "다림질을하는 동안 최대 순간 속도 변화. "
-
-#: fdmprinter.def.json
 msgctxt "command_line_settings label"
 msgid "Command Line Settings"
 msgstr ""
@@ -4896,9 +4996,31 @@ msgctxt "mesh_rotation_matrix description"
 msgid "Transformation matrix to be applied to the model when loading it from file."
 msgstr "파일로부터 로드 하는 경유, 모델에 적용될 변환 행렬입니다. "
 
-#~ msgctxt "wall_extruder_nr description"
-#~ msgid "The extruder train used for printing the walls. This is used in multi-extrusion."
-#~ msgstr "벽을 인쇄하는 데 사용되는 압출기 트레인. 이것은 다중 압출에 사용됩니다. "
+#~ msgctxt "infill_pattern description"
+#~ msgid "The pattern of the infill material of the print. The line and zig zag infill swap direction on alternate layers, reducing material cost. The grid, triangle, cubic, octet, quarter cubic and concentric patterns are fully printed every layer. Cubic, quarter cubic and octet infill change with every layer to provide a more equal distribution of strength over each direction."
+#~ msgstr "인쇄물의 충진재 패턴. 라인과 지그재그는 대체 층의 스필 방향을 바꾸어 재료비를 줄입니다. 그리드, 삼각형, 큐빅, 옥텟, 쿼터 큐빅 및 동심원 패턴이 모든 레이어에 완전히 인쇄됩니다. 큐빅, 쿼터 큐빅 및 옥 테트 필은 각 레이어에 따라 변경되어 각 방향에 대해보다 균등 한 강도 분포를 제공합니다. "
+
+#~ msgctxt "zig_zaggify_infill description"
+#~ msgid "Connect the ends where the infill pattern meets the inner wall using a lines which follows the shape of the inner wall. Enabling this setting can make the infill adhere to the walls better and reduces the effects on infill on the quality of vertical surfaces. Disabling this setting reduces the amount of material used."
+#~ msgstr "내부 벽의 모양을 따르는 선을 사용하여 충전 패턴이 내부 벽과 만나는 끝을 연결하십시오. 이 설정을 사용하면 벽에 충전재가 잘 밀착되고 수직 표면의 품질에 영향을 줄 수 있습니다. 이 설정을 사용하지 않으면 사용되는 재료의 양이 줄어 듭니다. "
+
+#~ msgctxt "skirt_gap description"
+#~ msgid ""
+#~ "The horizontal distance between the skirt and the first layer of the print.\n"
+#~ "This is the minimum distance, multiple skirt lines will extend outwards from this distance."
+#~ msgstr "스커트와 인쇄물의 첫 번째 레이어 사이의 수평 거리입니다. 이것은 최소 거리이며, 여러 스커트 라인이이 거리에서 바깥쪽으로 확장됩니다.  "
+
+#~ msgctxt "z_offset_layer_0 description"
+#~ msgid "The extruder is offset from the normal height of the first layer by this amount. It can be positive (raised) or negative (lowered). Some filament types adhere to the build plate better if the extruder is raised slightly."
+#~ msgstr "압출기는이 양만큼 제 1 층의 정상 높이로부터 오프셋된다. 양수 (양수) 또는 음수 (양수) 일 수 있습니다. 압출기를 약간 올리면 일부 필라멘트 유형이 빌드 플레이트에 잘 밀착됩니다. "
+
+#~ msgctxt "z_offset_taper_layers description"
+#~ msgid "When non-zero, the Z offset is reduced to 0 over that many layers. A value of 0 means that the Z offset remains constant for all the layers in the print."
+#~ msgstr "0이 아니면 Z 오프셋은 많은 레이어에서 0으로 줄어 듭니다. 값 0은 인쇄물의 모든 레이어에 대해 Z 오프셋이 일정하게 유지됨을 의미합니다. "
+
+#~ msgctxt "raft_smoothing description"
+#~ msgid "This setting control how much inner corners in the raft outline are rounded. Inward corners are rounded to a semi circle with a radius equal to the value given here. This setting also removes holes in the raft outline which are smaller than such a circle."
+#~ msgstr "이 설정은 뗏목 윤곽의 내부 모서리가 둥근 정도를 제어합니다. 안쪽 모서리는 여기에 주어진 값과 같은 반경을 가진 반원으로 반올림됩니다. 이 설정은 또한 뗏목 외곽선에서 그러한 원보다 작은 구멍을 제거합니다. "
 
 #~ msgctxt "infill_pattern description"
 #~ msgid "The pattern of the infill material of the print. The line and zig zag infill swap direction on alternate layers, reducing material cost. The grid, triangle, cubic, tetrahedral and concentric patterns are fully printed every layer. Cubic and tetrahedral infill change with every layer to provide a more equal distribution of strength over each direction."
