@@ -12,7 +12,9 @@ import Cura 1.0 as Cura
 Column
 {
     id: printMonitor
-    property var connectedPrinter: Cura.MachineManager.printerOutputDevices.length >= 1 ? Cura.MachineManager.printerOutputDevices[0] : null
+    property var connectedDevice: Cura.MachineManager.printerOutputDevices.length >= 1 ? Cura.MachineManager.printerOutputDevices[0] : null
+
+    property var activePrinter: connectedDevice != null ? connectedDevice.activePrinter : null
 
     Cura.ExtrudersModel
     {

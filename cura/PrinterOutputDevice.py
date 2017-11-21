@@ -27,7 +27,7 @@ i18n_catalog = i18nCatalog("cura")
 @signalemitter
 class PrinterOutputDevice(QObject, OutputDevice):
     printersChanged = pyqtSignal()
-    connectionStateChanged = pyqtSignal()
+    connectionStateChanged = pyqtSignal(str)
 
     def __init__(self, device_id, parent = None):
         super().__init__(device_id = device_id, parent = parent)
@@ -54,8 +54,10 @@ class PrinterOutputDevice(QObject, OutputDevice):
     def isConnected(self):
         return self._connection_state != ConnectionState.closed and self._connection_state != ConnectionState.error
 
-    def setConnectionState(self, new_state):
-        self._connection_state = new_state
+    def setConnectionState(self, connection_state):
+        if self._connection_state != connection_state:
+            self._connection_state = connection_state
+            self.connectionStateChanged.emit(self._id)
 
     def _update(self):
         pass

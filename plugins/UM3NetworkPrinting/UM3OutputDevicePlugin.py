@@ -84,7 +84,7 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
     def _onDeviceConnectionStateChanged(self, key):
         if key not in self._discovered_devices:
             return
-
+        print("STATE CHANGED", key)
         if self._discovered_devices[key].isConnected():
             self.getOutputDeviceManager().addOutputDevice(self._discovered_devices[key])
         else:
@@ -95,8 +95,8 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
             Logger.log("d", "zeroconf close...")
             self._zero_conf.close()
 
-    def _onRemoveDevice(self, name):
-        device = self._discovered_devices.pop(name, None)
+    def _onRemoveDevice(self, device_id):
+        device = self._discovered_devices.pop(device_id, None)
         if device:
             if device.isConnected():
                 device.disconnect()
@@ -108,10 +108,12 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
         # Check what kind of device we need to add; Depending on the firmware we either add a "Connect"/"Cluster"
         # or "Legacy" UM3 device.
         cluster_size = int(properties.get(b"cluster_size", -1))
-        if cluster_size > 0:
+        # TODO: For debug purposes; force it to be legacy printer.
+        device = LegacyUM3OutputDevice.LegacyUM3OutputDevice(name, address, properties)
+        '''if cluster_size > 0:
             device = ClusterUM3OutputDevice.ClusterUM3OutputDevice(name, address, properties)
         else:
-            device = LegacyUM3OutputDevice.LegacyUM3OutputDevice(name, address, properties)
+            device = LegacyUM3OutputDevice.LegacyUM3OutputDevice(name, address, properties)'''
 
         self._discovered_devices[device.getId()] = device
         self.discoveredDevicesChanged.emit()
