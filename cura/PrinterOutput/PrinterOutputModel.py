@@ -24,7 +24,7 @@ class PrinterOutputModel(QObject):
 
     def __init__(self, output_controller: "PrinterOutputController", number_of_extruders: int = 1, parent=None):
         super().__init__(parent)
-        self._bed_temperature = 0
+        self._bed_temperature = -1  # Use -1 for no heated bed.
         self._target_bed_temperature = 0
         self._name = ""
         self._key = ""  # Unique identifier
