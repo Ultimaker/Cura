@@ -1,4 +1,4 @@
-# Copyright (c) 2016 Aleph Objects, Inc.
+# Copyright (c) 2017 Aleph Objects, Inc.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from UM.Application import Application
