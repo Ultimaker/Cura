@@ -652,7 +652,8 @@ class XmlMaterialProfile(InstanceContainer):
         base_metadata = {
             "type": "material",
             "status": "unknown", #TODO: Add material verification.
-            "container_type": XmlMaterialProfile
+            "container_type": XmlMaterialProfile,
+            "id": container_id
         }
 
         try:
@@ -751,6 +752,7 @@ class XmlMaterialProfile(InstanceContainer):
                         new_material_metadata = {}
 
                     new_material_metadata.update(base_metadata)
+                    new_material_metadata["id"] = new_material_id
                     new_material_metadata["compatible"] = machine_compatibility
                     new_material_metadata["machine_manufacturer"] = machine_manufacturer
 
@@ -790,6 +792,7 @@ class XmlMaterialProfile(InstanceContainer):
                     new_hotend_material_metadata["variant"] = variant_containers[0]["id"]
                     new_hotend_material_metadata["compatible"] = hotend_compatibility
                     new_hotend_material_metadata["machine_manufacturer"] = machine_manufacturer
+                    new_hotend_material_metadata["id"] = new_hotend_id
 
                     if len(found_materials) == 0:
                         result_metadata.append(new_hotend_material_metadata)
