@@ -32,6 +32,8 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
         self.addDeviceSignal.connect(self._onAddDevice)
         self.removeDeviceSignal.connect(self._onRemoveDevice)
 
+        Application.getInstance().globalContainerStackChanged.connect(self.reCheckConnections)
+
         self._discovered_devices = {}
 
         # The zero-conf service changed requests are handled in a separate thread, so we can re-schedule the requests
@@ -101,16 +103,8 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
                 device.connectionStateChanged.disconnect(self._onDeviceConnectionStateChanged)
 
             self.discoveredDevicesChanged.emit()
-        '''printer = self._printers.pop(name, None)
-        if printer:
-            if printer.isConnected():
-                printer.disconnect()
-                printer.connectionStateChanged.disconnect(self._onPrinterConnectionStateChanged)
-                Logger.log("d", "removePrinter, disconnecting [%s]..." % name)
-        self.printerListChanged.emit()'''
 
     def _onAddDevice(self, name, address, properties):
-
         # Check what kind of device we need to add; Depending on the firmware we either add a "Connect"/"Cluster"
         # or "Legacy" UM3 device.
         cluster_size = int(properties.get(b"cluster_size", -1))
@@ -122,17 +116,10 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
         self._discovered_devices[device.getId()] = device
         self.discoveredDevicesChanged.emit()
 
-        pass
-        '''
-        self._cluster_printers_seen[
-        printer.getKey()] = name  # Cluster printers that may be temporary unreachable or is rebooted keep being stored here
         global_container_stack = Application.getInstance().getGlobalContainerStack()
-        if global_container_stack and printer.getKey() == global_container_stack.getMetaDataEntry("um_network_key"):
-        if printer.getKey() not in self._old_printers:  # Was the printer already connected, but a re-scan forced?
-            Logger.log("d", "addPrinter, connecting [%s]..." % printer.getKey())
-            self._printers[printer.getKey()].connect()
-            printer.connectionStateChanged.connect(self._onPrinterConnectionStateChanged)
-        self.printerListChanged.emit()'''
+        if global_container_stack and device.getId() == global_container_stack.getMetaDataEntry("um_network_key"):
+            device.connect()
+            device.connectionStateChanged.connect(self._onDeviceConnectionStateChanged)
 
     ##  Appends a service changed request so later the handling thread will pick it up and processes it.
     def _appendServiceChangedRequest(self, zeroconf, service_type, name, state_change):

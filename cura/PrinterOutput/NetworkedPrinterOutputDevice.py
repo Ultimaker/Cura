@@ -54,7 +54,6 @@ class NetworkedPrinterOutputDevice(PrinterOutputDevice):
 
     def _createEmptyRequest(self, target):
         url = QUrl("http://" + self._address + self._api_prefix + target)
-        print(url)
         request = QNetworkRequest(url)
         request.setHeader(QNetworkRequest.ContentTypeHeader, "application/json")
         request.setHeader(QNetworkRequest.UserAgentHeader, self._user_agent)
