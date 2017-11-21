@@ -9,7 +9,10 @@ if MYPY:
 
 class PrinterOutputController:
     def __init__(self):
-        pass
+        self.can_pause = True
+        self.can_abort = True
+        self.can_pre_heat_bed = True
+        self.can_control_manually = True
 
     def setTargetHotendTemperature(self, printer: "PrinterOutputModel", extruder: "ExtruderOuputModel", temperature: int):
         # TODO: implement

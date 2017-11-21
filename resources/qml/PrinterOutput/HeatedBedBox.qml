@@ -229,6 +229,10 @@ Item
             property var endTime: new Date() //Set initial endTime to be the current date, so that the endTime has initially already passed and the timer text becomes invisible if you were to update.
             function update()
             {
+                if(printerModel != null && !printerModel.canPreHeatBed)
+                {
+                    return // Nothing to do, printer cant preheat at all!
+                }
                 preheatCountdown.text = ""
                 if (printerModel != null)
                 {

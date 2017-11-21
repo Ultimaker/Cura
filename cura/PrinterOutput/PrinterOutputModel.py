@@ -35,12 +35,6 @@ class PrinterOutputModel(QObject):
 
         self._printer_state = "unknown"
 
-        # Features of the printer;
-        self._can_pause = True
-        self._can_abort = True
-        self._can_pre_heat_bed = True
-        self._can_control_manually = True
-
     @pyqtProperty(str, notify=keyChanged)
     def key(self):
         return self._key
@@ -175,19 +169,27 @@ class PrinterOutputModel(QObject):
     # Does the printer support pre-heating the bed at all
     @pyqtProperty(bool, constant=True)
     def canPreHeatBed(self):
-        return self._can_pre_heat_bed
+        if self._controller:
+            return self._controller.can_pre_heat_bed
+        return False
 
     # Does the printer support pause at all
     @pyqtProperty(bool, constant=True)
     def canPause(self):
-        return self._can_pause
+        if self._controller:
+            return self.can_pause
+        return False
 
     # Does the printer support abort at all
     @pyqtProperty(bool, constant=True)
     def canAbort(self):
-        return self._can_abort
+        if self._controller:
+            return self.can_abort
+        return False
 
     # Does the printer support manual control at all
     @pyqtProperty(bool, constant=True)
     def canControlManually(self):
-        return self._can_control_manually
+        if self._controller:
+            return self.can_control_manually
+        return False
