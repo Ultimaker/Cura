@@ -20,7 +20,7 @@ from cura.Settings.ExtruderManager import ExtruderManager
 import os.path
 
 ## RenderPass used to display g-code paths.
-from plugins.SimulationView.NozzleNode import NozzleNode
+from .NozzleNode import NozzleNode
 
 
 class SimulationPass(RenderPass):
@@ -100,7 +100,6 @@ class SimulationPass(RenderPass):
             if isinstance(node, ToolHandle):
                 tool_handle_batch.addItem(node.getWorldTransformation(), mesh = node.getSolidMesh())
 
-
             elif isinstance(node, NozzleNode):
                 nozzle_node = node
                 nozzle_node.setVisible(False)
@@ -172,11 +171,11 @@ class SimulationPass(RenderPass):
                     batch.render(self._scene.getActiveCamera())
 
         # The nozzle is drawn once we know the correct position
-        if self._layer_view.getActivity() and nozzle_node is not None:
+        if not self._compatibility_mode and self._layer_view.getActivity() and nozzle_node is not None:
             if head_position is not None:
                 nozzle_node.setVisible(True)
                 nozzle_node.setPosition(head_position)
-                nozzle_batch = RenderBatch(self._nozzle_shader, type = RenderBatch.RenderType.Solid)
+                nozzle_batch = RenderBatch(self._nozzle_shader, type = RenderBatch.RenderType.Transparent)
                 nozzle_batch.addItem(nozzle_node.getWorldTransformation(), mesh = nozzle_node.getMeshData())
                 nozzle_batch.render(self._scene.getActiveCamera())
 

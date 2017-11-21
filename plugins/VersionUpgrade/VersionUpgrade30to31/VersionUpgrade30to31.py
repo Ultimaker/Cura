@@ -45,6 +45,15 @@ _OLD_NOT_SUPPORTED_PROFILES = [
 ]
 
 
+# Some containers have their specific empty containers, those need to be set correctly.
+_EMPTY_CONTAINER_DICT = {
+    "1": "empty_quality_changes",
+    "2": "empty_quality",
+    "3": "empty_material",
+    "4": "empty_variant",
+}
+
+
 class VersionUpgrade30to31(VersionUpgrade):
     ##  Gets the version number from a CFG file in Uranium's 3.0 format.
     #
@@ -125,6 +134,11 @@ class VersionUpgrade30to31(VersionUpgrade):
                 quality_profile_id = parser["containers"]["2"]
                 if quality_profile_id in _OLD_NOT_SUPPORTED_PROFILES:
                     parser["containers"]["2"] = "empty_quality"
+
+            # fix empty containers
+            for key, specific_empty_container in _EMPTY_CONTAINER_DICT.items():
+                if parser.has_option("containers", key) and parser["containers"][key] == "empty":
+                    parser["containers"][key] = specific_empty_container
 
         # Update version numbers
         if "general" not in parser:

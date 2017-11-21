@@ -71,7 +71,7 @@ class PrintInformation(QObject):
 
         Application.getInstance().globalContainerStackChanged.connect(self._updateJobName)
         Application.getInstance().fileLoaded.connect(self.setBaseName)
-        Application.getInstance().projectFileLoaded.connect(self.setProjectName)
+        Application.getInstance().workspaceLoaded.connect(self.setProjectName)
         Preferences.getInstance().preferenceChanged.connect(self._onPreferencesChanged)
 
         self._active_material_container = None
@@ -264,13 +264,14 @@ class PrintInformation(QObject):
     def jobName(self):
         return self._job_name
 
-    def _updateJobName(self, empty_name = False):
+    def _updateJobName(self, is_project_name_empty = False):
         # if the project name is set, we use the project name as the job name, so the job name should not get updated
         # if a model file is loaded after that.
         if self._project_name != "":
-            if empty_name:
+            if is_project_name_empty:
                 self._project_name = ""
-            return
+            else:
+                return
 
         if self._base_name == "":
             self._job_name = ""
@@ -312,7 +313,7 @@ class PrintInformation(QObject):
             if name.endswith(".curaproject"):
                 name = name[:name.rfind(".curaproject")]
             self._base_name = name
-            self._updateJobName(empty_name = is_empty)
+            self._updateJobName(is_project_name_empty = is_empty)
 
     ##  Created an acronymn-like abbreviated machine name from the currently active machine name
     #   Called each time the global stack is switched

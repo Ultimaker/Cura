@@ -126,8 +126,6 @@ class CuraApplication(QtApplication):
     #        Cura will always show the Add Machine Dialog upon start.
     stacksValidationFinished = pyqtSignal()  # Emitted whenever a validation is finished
 
-    projectFileLoaded = pyqtSignal(str)  # Emitted whenever a project file is loaded
-
     def __init__(self):
         # this list of dir names will be used by UM to detect an old cura directory
         for dir_name in ["extruders", "machine_instances", "materials", "plugins", "quality", "user", "variants"]:
