@@ -29,8 +29,7 @@ class PrinterOutputModel(QObject):
         self._name = ""
         self._key = ""  # Unique identifier
         self._controller = output_controller
-        self._extruders = [ExtruderOutputModel(printer=self)] * number_of_extruders
-
+        self._extruders = [ExtruderOutputModel(printer=self) for i in range(number_of_extruders)]
         self._head_position = Vector(0, 0, 0)
         self._active_print_job = None  # type: Optional[PrintJobOutputModel]
 

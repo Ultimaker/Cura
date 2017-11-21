@@ -51,7 +51,7 @@ Column
                 {
                     color: UM.Theme.getColor("sidebar")
                     width: index == machineExtruderCount.properties.value - 1 && index % 2 == 0 ? extrudersGrid.width : Math.floor(extrudersGrid.width / 2 - UM.Theme.getSize("sidebar_lining_thin").width / 2)
-                    extruderModel: activePrinter.extruders[index]
+                    extruderModel:  modelData
                 }
             }
         }
