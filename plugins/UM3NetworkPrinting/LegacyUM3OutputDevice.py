@@ -16,7 +16,8 @@ class LegacyUM3OutputDevice(NetworkedPrinterOutputDevice):
         self._number_of_extruders = 2
 
     def _update(self):
-        super()._update()
+        if not super()._update():
+            return
         self._get("printer", onFinished=self._onGetPrinterDataFinished)
         self._get("print_job", onFinished=self._onGetPrintJobFinished)
 

@@ -14,9 +14,13 @@ class NetworkedPrinterOutputDevice(PrinterOutputDevice):
     def __init__(self, device_id, address: str, properties, parent = None):
         super().__init__(device_id = device_id, parent = parent)
         self._manager = None
-        self._createNetworkManager()
-        self._last_response_time = time()
+        self._last_manager_create_time = None
+        self._recreate_network_manager_time = 30
+        self._timeout_time = 10  # After how many seconds of no response should a timeout occur?
+
+        self._last_response_time = None
         self._last_request_time = None
+
         self._api_prefix = ""
         self._address = address
         self._properties = properties
@@ -25,10 +29,28 @@ class NetworkedPrinterOutputDevice(PrinterOutputDevice):
         self._onFinishedCallbacks = {}
 
     def _update(self):
-        if not self._manager.networkAccessible():
-            pass  # TODO: no internet connection.
+        if self._last_response_time:
+            time_since_last_response = time() - self._last_response_time
+        else:
+            time_since_last_response = 0
 
-        pass
+        if self._last_request_time:
+            time_since_last_request = time() - self._last_request_time
+        else:
+            time_since_last_request = float("inf")  # An irrelevantly large number of seconds
+
+        if time_since_last_response > self._timeout_time >= time_since_last_request:
+            # Go (or stay) into timeout.
+            self.setConnectionState(ConnectionState.closed)
+            # We need to check if the manager needs to be re-created. If we don't, we get some issues when OSX goes to
+            # sleep.
+            if time_since_last_response > self._recreate_network_manager_time:
+                if self._last_manager_create_time is None:
+                    self._createNetworkManager()
+                if time() - self._last_manager_create_time > self._recreate_network_manager_time:
+                    self._createNetworkManager()
+
+        return True
 
     def _createEmptyRequest(self, target):
         url = QUrl("http://" + self._address + self._api_prefix + target)
@@ -39,22 +61,35 @@ class NetworkedPrinterOutputDevice(PrinterOutputDevice):
         return request
 
     def _put(self, target: str, data: str, onFinished: Callable[[Any, QNetworkReply], None]):
+        if self._manager is None:
+            self._createNetworkManager()
         request = self._createEmptyRequest(target)
+        self._last_request_time = time()
         reply = self._manager.put(request, data.encode())
         self._onFinishedCallbacks[reply.url().toString() + str(reply.operation())] = onFinished
 
     def _get(self, target: str, onFinished: Callable[[Any, QNetworkReply], None]):
+        if self._manager is None:
+            self._createNetworkManager()
         request = self._createEmptyRequest(target)
+        self._last_request_time = time()
         reply = self._manager.get(request)
         self._onFinishedCallbacks[reply.url().toString() + str(reply.operation())] = onFinished
 
     def _delete(self, target: str, onFinished: Callable[[Any, QNetworkReply], None]):
+        if self._manager is None:
+            self._createNetworkManager()
+        self._last_request_time = time()
         pass
 
     def _post(self, target: str, data: str, onFinished: Callable[[Any, QNetworkReply], None], onProgress: Callable):
+        if self._manager is None:
+            self._createNetworkManager()
+        self._last_request_time = time()
         pass
 
     def _createNetworkManager(self):
+        Logger.log("d", "Creating network manager")
         if self._manager:
             self._manager.finished.disconnect(self.__handleOnFinished)
             #self._manager.networkAccessibleChanged.disconnect(self._onNetworkAccesibleChanged)
@@ -62,12 +97,17 @@ class NetworkedPrinterOutputDevice(PrinterOutputDevice):
 
         self._manager = QNetworkAccessManager()
         self._manager.finished.connect(self.__handleOnFinished)
+        self._last_manager_create_time = time()
         #self._manager.authenticationRequired.connect(self._onAuthenticationRequired)
         #self._manager.networkAccessibleChanged.connect(self._onNetworkAccesibleChanged)  # for debug purposes
 
     def __handleOnFinished(self, reply: QNetworkReply):
+        if reply.attribute(QNetworkRequest.HttpStatusCodeAttribute) is None:
+            # No status code means it never even reached remote.
+            return
+
         self._last_response_time = time()
-        # TODO: Check if the message is actually correct
+
         self.setConnectionState(ConnectionState.connected)
         try:
             self._onFinishedCallbacks[reply.url().toString() + str(reply.operation())](reply)

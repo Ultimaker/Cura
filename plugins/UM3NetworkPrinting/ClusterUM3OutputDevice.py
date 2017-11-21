@@ -19,7 +19,8 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
         self._print_jobs = []
 
     def _update(self):
-        super()._update()
+        if not super()._update():
+            return
         self._get("printers/", onFinished=self._onGetPrintersDataFinished)
         self._get("print_jobs/", onFinished=self._onGetPrintJobsFinished)
 

@@ -80,7 +80,13 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
                     self._discovered_devices[key].connectionStateChanged.disconnect(self._onDeviceConnectionStateChanged)
 
     def _onDeviceConnectionStateChanged(self, key):
-        pass  # TODO
+        if key not in self._discovered_devices:
+            return
+
+        if self._discovered_devices[key].isConnected():
+            self.getOutputDeviceManager().addOutputDevice(self._discovered_devices[key])
+        else:
+            self.getOutputDeviceManager().removeOutputDevice(key)
 
     def stop(self):
         if self._zero_conf is not None:
