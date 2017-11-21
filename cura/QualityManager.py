@@ -183,20 +183,11 @@ class QualityManager:
 
         materials = []
 
-        # TODO: fix this
-        if extruder_stacks:
-            # Multi-extruder machine detected
-            for stack in extruder_stacks:
-                if stack.getId() == active_stack_id and machine_manager.newMaterial:
-                    materials.append(machine_manager.newMaterial)
-                else:
-                    materials.append(stack.material)
-        else:
-            # Machine with one extruder
-            if global_container_stack.getId() == active_stack_id and machine_manager.newMaterial:
+        for stack in extruder_stacks:
+            if stack.getId() == active_stack_id and machine_manager.newMaterial:
                 materials.append(machine_manager.newMaterial)
             else:
-                materials.append(global_container_stack.material)
+                materials.append(stack.material)
 
         quality_types = self.findAllQualityTypesForMachineAndMaterials(global_machine_definition, materials)
 
