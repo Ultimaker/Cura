@@ -1,46 +1,46 @@
-# Copyright (c) 2015 Ultimaker B.V.
+# Copyright (c) 2017 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import sys
 
-from UM.PluginRegistry import PluginRegistry
-from UM.View.View import View
-from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
-from UM.Resources import Resources
-from UM.Event import Event, KeyEvent
-from UM.Signal import Signal
-from UM.Scene.Selection import Selection
-from UM.Math.Color import Color
-from UM.Mesh.MeshBuilder import MeshBuilder
-from UM.Job import Job
-from UM.Preferences import Preferences
-from UM.Logger import Logger
-from UM.View.GL.OpenGL import OpenGL
-from UM.Message import Message
-from UM.Application import Application
-from UM.View.GL.OpenGLContext import OpenGLContext
-
-from cura.ConvexHullNode import ConvexHullNode
-from cura.Settings.ExtruderManager import ExtruderManager
-
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QApplication
 
-from . import LayerViewProxy
-
+from UM.Application import Application
+from UM.Event import Event, KeyEvent
+from UM.Job import Job
+from UM.Logger import Logger
+from UM.Math.Color import Color
+from UM.Mesh.MeshBuilder import MeshBuilder
+from UM.Message import Message
+from UM.PluginRegistry import PluginRegistry
+from UM.Preferences import Preferences
+from UM.Resources import Resources
+from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
+from UM.Scene.Selection import Selection
+from UM.Signal import Signal
+from UM.View.GL.OpenGL import OpenGL
+from UM.View.GL.OpenGLContext import OpenGLContext
+from UM.View.View import View
 from UM.i18n import i18nCatalog
-catalog = i18nCatalog("cura")
+from cura.ConvexHullNode import ConvexHullNode
 
-from . import LayerPass
+from .NozzleNode import NozzleNode
+from .SimulationPass import SimulationPass
+from .SimulationViewProxy import SimulationViewProxy
+
+catalog = i18nCatalog("cura")
 
 import numpy
 import os.path
 
 ## View used to display g-code paths.
-class LayerView(View):
-    # Must match LayerView.qml
+class SimulationView(View):
+    # Must match SimulationView.qml
     LAYER_VIEW_TYPE_MATERIAL_TYPE = 0
     LAYER_VIEW_TYPE_LINE_TYPE = 1
+    LAYER_VIEW_TYPE_FEEDRATE = 2
+    LAYER_VIEW_TYPE_THICKNESS = 3
 
     def __init__(self):
         super().__init__()
@@ -54,22 +54,29 @@ class LayerView(View):
         self._activity = False
         self._old_max_layers = 0
 
+        self._max_paths = 0
+        self._current_path_num = 0
+        self._minimum_path_num = 0
+        self.currentLayerNumChanged.connect(self._onCurrentLayerNumChanged)
+
         self._busy = False
+        self._simulation_running = False
 
         self._ghost_shader = None
         self._layer_pass = None
         self._composite_pass = None
         self._old_layer_bindings = None
-        self._layerview_composite_shader = None
+        self._simulationview_composite_shader = None
         self._old_composite_shader = None
 
         self._global_container_stack = None
-        self._proxy = LayerViewProxy.LayerViewProxy()
+        self._proxy = SimulationViewProxy()
         self._controller.getScene().getRoot().childrenChanged.connect(self._onSceneChanged)
 
         self._resetSettings()
         self._legend_items = None
         self._show_travel_moves = False
+        self._nozzle_node = None
 
         Preferences.getInstance().addPreference("view/top_layer_count", 5)
         Preferences.getInstance().addPreference("view/only_show_top_layers", False)
@@ -91,7 +98,7 @@ class LayerView(View):
         self._compatibility_mode = True  # for safety
 
         self._wireprint_warning_message = Message(catalog.i18nc("@info:status", "Cura does not accurately display layers when Wire Printing is enabled"),
-                                                  title = catalog.i18nc("@info:title", "Layer View"))
+                                                  title = catalog.i18nc("@info:title", "Simulation View"))
 
     def _resetSettings(self):
         self._layer_view_type = 0  # 0 is material color, 1 is color by linetype, 2 is speed
@@ -101,17 +108,24 @@ class LayerView(View):
         self._show_helpers = 1
         self._show_skin = 1
         self._show_infill = 1
+        self.resetLayerData()
 
     def getActivity(self):
         return self._activity
 
-    def getLayerPass(self):
+    def setActivity(self, activity):
+        if self._activity == activity:
+            return
+        self._activity = activity
+        self.activityChanged.emit()
+
+    def getSimulationPass(self):
         if not self._layer_pass:
             # Currently the RenderPass constructor requires a size > 0
             # This should be fixed in RenderPass's constructor.
-            self._layer_pass = LayerPass.LayerPass(1, 1)
+            self._layer_pass = SimulationPass(1, 1)
             self._compatibility_mode = OpenGLContext.isLegacyOpenGL() or bool(Preferences.getInstance().getValue("view/force_layer_view_compatibility_mode"))
-            self._layer_pass.setLayerView(self)
+            self._layer_pass.setSimulationView(self)
         return self._layer_pass
 
     def getCurrentLayer(self):
@@ -120,13 +134,26 @@ class LayerView(View):
     def getMinimumLayer(self):
         return self._minimum_layer_num
 
-    def _onSceneChanged(self, node):
-        self.calculateMaxLayers()
-
     def getMaxLayers(self):
         return self._max_layers
 
-    busyChanged = Signal()
+    def getCurrentPath(self):
+        return self._current_path_num
+
+    def getMinimumPath(self):
+        return self._minimum_path_num
+
+    def getMaxPaths(self):
+        return self._max_paths
+
+    def getNozzleNode(self):
+        if not self._nozzle_node:
+            self._nozzle_node = NozzleNode()
+        return self._nozzle_node
+
+    def _onSceneChanged(self, node):
+        self.setActivity(False)
+        self.calculateMaxLayers()
 
     def isBusy(self):
         return self._busy
@@ -136,9 +163,19 @@ class LayerView(View):
             self._busy = busy
             self.busyChanged.emit()
 
+    def isSimulationRunning(self):
+        return self._simulation_running
+
+    def setSimulationRunning(self, running):
+        self._simulation_running = running
+
     def resetLayerData(self):
         self._current_layer_mesh = None
         self._current_layer_jumps = None
+        self._max_feedrate = sys.float_info.min
+        self._min_feedrate = sys.float_info.max
+        self._max_thickness = sys.float_info.min
+        self._min_thickness = sys.float_info.max
 
     def beginRendering(self):
         scene = self.getController().getScene()
@@ -186,15 +223,43 @@ class LayerView(View):
 
             self.currentLayerNumChanged.emit()
 
+    def setPath(self, value):
+        if self._current_path_num != value:
+            self._current_path_num = value
+            if self._current_path_num < 0:
+                self._current_path_num = 0
+            if self._current_path_num > self._max_paths:
+                self._current_path_num = self._max_paths
+            if self._current_path_num < self._minimum_path_num:
+                self._minimum_path_num = self._current_path_num
+
+            self._startUpdateTopLayers()
+
+            self.currentPathNumChanged.emit()
+
+    def setMinimumPath(self, value):
+        if self._minimum_path_num != value:
+            self._minimum_path_num = value
+            if self._minimum_path_num < 0:
+                self._minimum_path_num = 0
+            if self._minimum_path_num > self._max_layers:
+                self._minimum_path_num = self._max_layers
+            if self._minimum_path_num > self._current_path_num:
+                self._current_path_num = self._minimum_path_num
+
+            self._startUpdateTopLayers()
+
+            self.currentPathNumChanged.emit()
+
     ##  Set the layer view type
     #
-    #   \param layer_view_type integer as in LayerView.qml and this class
-    def setLayerViewType(self, layer_view_type):
+    #   \param layer_view_type integer as in SimulationView.qml and this class
+    def setSimulationViewType(self, layer_view_type):
         self._layer_view_type = layer_view_type
         self.currentLayerNumChanged.emit()
 
-    ##  Return the layer view type, integer as in LayerView.qml and this class
-    def getLayerViewType(self):
+    ##  Return the layer view type, integer as in SimulationView.qml and this class
+    def getSimulationViewType(self):
         return self._layer_view_type
 
     ##  Set the extruder opacity
@@ -243,9 +308,20 @@ class LayerView(View):
     def getExtruderCount(self):
         return self._extruder_count
 
+    def getMinFeedrate(self):
+        return self._min_feedrate
+
+    def getMaxFeedrate(self):
+        return self._max_feedrate
+
+    def getMinThickness(self):
+        return self._min_thickness
+
+    def getMaxThickness(self):
+        return self._max_thickness
+
     def calculateMaxLayers(self):
         scene = self.getController().getScene()
-        self._activity = True
 
         self._old_max_layers = self._max_layers
         ## Recalculate num max layers
@@ -255,9 +331,16 @@ class LayerView(View):
             if not layer_data:
                 continue
 
+            self.setActivity(True)
             min_layer_number = sys.maxsize
             max_layer_number = -sys.maxsize
             for layer_id in layer_data.getLayers():
+                # Store the max and min feedrates and thicknesses for display purposes
+                for p in layer_data.getLayer(layer_id).polygons:
+                    self._max_feedrate = max(float(p.lineFeedrates.max()), self._max_feedrate)
+                    self._min_feedrate = min(float(p.lineFeedrates.min()), self._min_feedrate)
+                    self._max_thickness = max(float(p.lineThicknesses.max()), self._max_thickness)
+                    self._min_thickness = min(float(p.lineThicknesses.min()), self._min_thickness)
                 if max_layer_number < layer_id:
                     max_layer_number = layer_id
                 if min_layer_number > layer_id:
@@ -281,10 +364,32 @@ class LayerView(View):
                 self.maxLayersChanged.emit()
         self._startUpdateTopLayers()
 
+    def calculateMaxPathsOnLayer(self, layer_num):
+        # Update the currentPath
+        scene = self.getController().getScene()
+        for node in DepthFirstIterator(scene.getRoot()):
+            layer_data = node.callDecoration("getLayerData")
+            if not layer_data:
+                continue
+
+            layer = layer_data.getLayer(layer_num)
+            if layer is None:
+                return
+            new_max_paths = layer.lineMeshElementCount()
+            if new_max_paths > 0 and new_max_paths != self._max_paths:
+                self._max_paths = new_max_paths
+                self.maxPathsChanged.emit()
+
+            self.setPath(int(new_max_paths))
+
     maxLayersChanged = Signal()
+    maxPathsChanged = Signal()
     currentLayerNumChanged = Signal()
+    currentPathNumChanged = Signal()
     globalStackChanged = Signal()
     preferencesChanged = Signal()
+    busyChanged = Signal()
+    activityChanged = Signal()
 
     ##  Hackish way to ensure the proxy is already created, which ensures that the layerview.qml is already created
     #   as this caused some issues.
@@ -308,26 +413,31 @@ class LayerView(View):
                 return True
 
         if event.type == Event.ViewActivateEvent:
-            # Make sure the LayerPass is created
-            layer_pass = self.getLayerPass()
+            # Make sure the SimulationPass is created
+            layer_pass = self.getSimulationPass()
             self.getRenderer().addRenderPass(layer_pass)
+
+            # Make sure the NozzleNode is add to the root
+            nozzle = self.getNozzleNode()
+            nozzle.setParent(self.getController().getScene().getRoot())
+            nozzle.setVisible(False)
 
             Application.getInstance().globalContainerStackChanged.connect(self._onGlobalStackChanged)
             self._onGlobalStackChanged()
 
-            if not self._layerview_composite_shader:
-                self._layerview_composite_shader = OpenGL.getInstance().createShaderProgram(os.path.join(PluginRegistry.getInstance().getPluginPath("LayerView"), "layerview_composite.shader"))
+            if not self._simulationview_composite_shader:
+                self._simulationview_composite_shader = OpenGL.getInstance().createShaderProgram(os.path.join(PluginRegistry.getInstance().getPluginPath("SimulationView"), "simulationview_composite.shader"))
                 theme = Application.getInstance().getTheme()
-                self._layerview_composite_shader.setUniformValue("u_background_color", Color(*theme.getColor("viewport_background").getRgb()))
-                self._layerview_composite_shader.setUniformValue("u_outline_color", Color(*theme.getColor("model_selection_outline").getRgb()))
+                self._simulationview_composite_shader.setUniformValue("u_background_color", Color(*theme.getColor("viewport_background").getRgb()))
+                self._simulationview_composite_shader.setUniformValue("u_outline_color", Color(*theme.getColor("model_selection_outline").getRgb()))
 
             if not self._composite_pass:
                 self._composite_pass = self.getRenderer().getRenderPass("composite")
 
             self._old_layer_bindings = self._composite_pass.getLayerBindings()[:] # make a copy so we can restore to it later
-            self._composite_pass.getLayerBindings().append("layerview")
+            self._composite_pass.getLayerBindings().append("simulationview")
             self._old_composite_shader = self._composite_pass.getCompositeShader()
-            self._composite_pass.setCompositeShader(self._layerview_composite_shader)
+            self._composite_pass.setCompositeShader(self._simulationview_composite_shader)
 
         elif event.type == Event.ViewDeactivateEvent:
             self._wireprint_warning_message.hide()
@@ -335,6 +445,7 @@ class LayerView(View):
             if self._global_container_stack:
                 self._global_container_stack.propertyChanged.disconnect(self._onPropertyChanged)
 
+            self._nozzle_node.setParent(None)
             self.getRenderer().removeRenderPass(self._layer_pass)
             self._composite_pass.setLayerBindings(self._old_layer_bindings)
             self._composite_pass.setCompositeShader(self._old_composite_shader)
@@ -363,6 +474,9 @@ class LayerView(View):
                 self._wireprint_warning_message.show()
             else:
                 self._wireprint_warning_message.hide()
+
+    def _onCurrentLayerNumChanged(self):
+        self.calculateMaxPathsOnLayer(self._current_layer_num)
 
     def _startUpdateTopLayers(self):
         if not self._compatibility_mode:
@@ -397,7 +511,7 @@ class LayerView(View):
         self._compatibility_mode = OpenGLContext.isLegacyOpenGL() or bool(
             Preferences.getInstance().getValue("view/force_layer_view_compatibility_mode"))
 
-        self.setLayerViewType(int(float(Preferences.getInstance().getValue("layerview/layer_view_type"))));
+        self.setSimulationViewType(int(float(Preferences.getInstance().getValue("layerview/layer_view_type"))));
 
         for extruder_nr, extruder_opacity in enumerate(Preferences.getInstance().getValue("layerview/extruder_opacities").split("|")):
             try:

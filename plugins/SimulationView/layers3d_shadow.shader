@@ -6,13 +6,13 @@ vertex41core =
     uniform highp mat4 u_modelMatrix;
     uniform highp mat4 u_viewProjectionMatrix;
     uniform lowp float u_active_extruder;
-    uniform lowp int u_layer_view_type;
     uniform lowp vec4 u_extruder_opacity;  // currently only for max 4 extruders, others always visible
 
     uniform highp mat4 u_normalMatrix;
 
     in highp vec4 a_vertex;
     in lowp vec4 a_color;
+    in lowp vec4 a_grayColor;
     in lowp vec4 a_material_color;
     in highp vec4 a_normal;
     in highp vec2 a_line_dim;  // line width and thickness
@@ -41,15 +41,7 @@ vertex41core =
         gl_Position = world_space_vert;
         // shade the color depending on the extruder index stored in the alpha component of the color
 
-        switch (u_layer_view_type) {
-            case 0:  // "Material color"
-                v_color = a_material_color;
-                break;
-            case 1:  // "Line type"
-                v_color = a_color;
-                break;
-        }
-
+        v_color = vec4(0.4, 0.4, 0.4, 0.9);    // default color for not current layer
         v_vertex = world_space_vert.xyz;
         v_normal = (u_normalMatrix * normalize(a_normal)).xyz;
         v_line_dim = a_line_dim;
@@ -234,7 +226,6 @@ fragment41core =
 
 [defaults]
 u_active_extruder = 0.0
-u_layer_view_type = 0
 u_extruder_opacity = [1.0, 1.0, 1.0, 1.0]
 
 u_specularColor = [0.4, 0.4, 0.4, 1.0]
@@ -257,6 +248,7 @@ u_lightPosition = light_0_position
 [attributes]
 a_vertex = vertex
 a_color = color
+a_grayColor = vec4(0.87, 0.12, 0.45, 1.0)
 a_normal = normal
 a_line_dim = line_dim
 a_extruder = extruder

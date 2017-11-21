@@ -133,6 +133,7 @@
         "slider_groove_fill": [245, 245, 245, 255],
         "slider_handle": [255, 255, 255, 255],
         "slider_handle_hover": [77, 182, 226, 255],
+        "slider_handle_active": [68, 192, 255, 255],
         "slider_handle_border": [39, 44, 48, 255],
         "slider_text_background": [255, 255, 255, 255],
 
@@ -194,6 +195,7 @@
         "layerview_move_combing": [0,  0,  255, 255],
         "layerview_move_retraction": [128,  128,  255, 255],
         "layerview_support_interface": [64, 192, 255, 255],
+        "layerview_nozzle": [181, 166, 66, 120],
 
         "material_compatibility_warning": [255, 255, 255, 255],
 

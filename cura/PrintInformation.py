@@ -71,7 +71,7 @@ class PrintInformation(QObject):
 
         Application.getInstance().globalContainerStackChanged.connect(self._updateJobName)
         Application.getInstance().fileLoaded.connect(self.setBaseName)
-        Application.getInstance().projectFileLoaded.connect(self.setProjectName)
+        Application.getInstance().workspaceLoaded.connect(self.setProjectName)
         Preferences.getInstance().preferenceChanged.connect(self._onPreferencesChanged)
 
         self._active_material_container = None
