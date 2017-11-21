@@ -136,7 +136,7 @@ Item
         Label //Material name.
         {
             id: materialName
-            text: extruderModel.activeMaterial != null ? extruderModel.activeMaterial.name : ""
+            text: extruderModel.activeMaterial != null ? extruderModel.activeMaterial.type : ""
             font: UM.Theme.getFont("default")
             color: UM.Theme.getColor("text")
             anchors.left: materialColor.right

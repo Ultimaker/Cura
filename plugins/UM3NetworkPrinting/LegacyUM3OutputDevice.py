@@ -1,8 +1,10 @@
 from cura.PrinterOutput.NetworkedPrinterOutputDevice import NetworkedPrinterOutputDevice
 from cura.PrinterOutput.PrinterOutputModel import PrinterOutputModel
 from cura.PrinterOutput.PrintJobOutputModel import PrintJobOutputModel
+from cura.PrinterOutput.MaterialOutputModel import MaterialOutputModel
 
 from UM.Logger import Logger
+from UM.Settings.ContainerRegistry import ContainerRegistry
 
 from PyQt5.QtNetwork import QNetworkRequest
 
@@ -70,10 +72,28 @@ class LegacyUM3OutputDevice(NetworkedPrinterOutputDevice):
 
             for index in range(0, self._number_of_extruders):
                 temperatures = result["heads"][0]["extruders"][index]["hotend"]["temperature"]
-                printer.extruders[index].updateTargetHotendTemperature(temperatures["target"])
-                printer.extruders[index].updateHotendTemperature(temperatures["current"])
+                extruder = printer.extruders[index]
+                extruder.updateTargetHotendTemperature(temperatures["target"])
+                extruder.updateHotendTemperature(temperatures["current"])
 
-                # TODO: Set active material
+                material_guid = result["heads"][0]["extruders"][index]["active_material"]["guid"]
+
+                if extruder.activeMaterial is None or extruder.activeMaterial.guid != material_guid:
+                    # Find matching material (as we need to set brand, type & color)
+                    containers = ContainerRegistry.getInstance().findInstanceContainers(type="material",
+                                                                                        GUID=material_guid)
+                    if containers:
+                        color = containers[0].getMetaDataEntry("color_code")
+                        brand = containers[0].getMetaDataEntry("brand")
+                        material_type = containers[0].getMetaDataEntry("material")
+                    else:
+                        # Unknown material.
+                        color = "#00000000"
+                        brand = "Unknown"
+                        material_type = "Unknown"
+                    material = MaterialOutputModel(guid=material_guid, type=material_type,
+                                                   brand=brand, color=color)
+                    extruder.updateActiveMaterial(material)
 
                 try:
                     hotend_id = result["heads"][0]["extruders"][index]["hotend"]["id"]
