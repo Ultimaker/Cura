@@ -76,8 +76,8 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
             else:
                 if self._discovered_devices[key].isConnected():
                     Logger.log("d", "Attempting to close connection with [%s]" % key)
-                    self._printers[key].close()
-                    self._printers[key].connectionStateChanged.disconnect(self._onDeviceConnectionStateChanged)
+                    self._discovered_devices[key].close()
+                    self._discovered_devices[key].connectionStateChanged.disconnect(self._onDeviceConnectionStateChanged)
 
     def _onDeviceConnectionStateChanged(self, key):
         pass  # TODO

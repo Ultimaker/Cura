@@ -1,7 +1,7 @@
 from UM.Application import Application
 from UM.Logger import Logger
 
-from cura.PrinterOutputDevice import PrinterOutputDevice
+from cura.PrinterOutputDevice import PrinterOutputDevice, ConnectionState
 
 from PyQt5.QtNetwork import QHttpMultiPart, QHttpPart, QNetworkRequest, QNetworkAccessManager, QNetworkReply
 from PyQt5.QtCore import pyqtProperty, pyqtSignal, pyqtSlot, QObject, QTimer, pyqtSignal, QUrl
@@ -67,6 +67,8 @@ class NetworkedPrinterOutputDevice(PrinterOutputDevice):
 
     def __handleOnFinished(self, reply: QNetworkReply):
         self._last_response_time = time()
+        # TODO: Check if the message is actually correct
+        self.setConnectionState(ConnectionState.connected)
         try:
             self._onFinishedCallbacks[reply.url().toString() + str(reply.operation())](reply)
         except Exception:

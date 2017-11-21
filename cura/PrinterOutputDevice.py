@@ -54,6 +54,9 @@ class PrinterOutputDevice(QObject, OutputDevice):
     def isConnected(self):
         return self._connection_state != ConnectionState.closed and self._connection_state != ConnectionState.error
 
+    def setConnectionState(self, new_state):
+        self._connection_state = new_state
+
     def _update(self):
         pass
 
