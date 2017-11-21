@@ -38,20 +38,20 @@ class NetworkedPrinterOutputDevice(PrinterOutputDevice):
         request.setHeader(QNetworkRequest.UserAgentHeader, self._user_agent)
         return request
 
-    def _put(self, target: str, data: str, onFinished: Callable):
+    def _put(self, target: str, data: str, onFinished: Callable[[QNetworkReply], None]):
         request = self._createEmptyRequest(target)
         reply = self._manager.put(request, data.encode())
         self._onFinishedCallbacks[reply.url().toString() + str(reply.operation())] = onFinished
 
-    def _get(self, target: str, onFinished: Callable):
+    def _get(self, target: str, onFinished: Callable[[QNetworkReply], None]):
         request = self._createEmptyRequest(target)
         reply = self._manager.get(request)
         self._onFinishedCallbacks[reply.url().toString() + str(reply.operation())] = onFinished
 
-    def _delete(self, target: str, onFinished: Callable):
+    def _delete(self, target: str, onFinished: Callable[[QNetworkReply], None]):
         pass
 
-    def _post(self, target: str, data: str, onFinished: Callable, onProgress: Callable):
+    def _post(self, target: str, data: str, onFinished: Callable[[QNetworkReply], None], onProgress: Callable):
         pass
 
     def _createNetworkManager(self):
