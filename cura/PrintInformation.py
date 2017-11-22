@@ -70,6 +70,7 @@ class PrintInformation(QObject):
 
         Application.getInstance().globalContainerStackChanged.connect(self._updateJobName)
         Application.getInstance().fileLoaded.connect(self.setBaseName)
+        Application.getInstance().workspaceLoaded.connect(self.setProjectName)
         Preferences.getInstance().preferenceChanged.connect(self._onPreferencesChanged)
 
         self._active_material_container = None
@@ -283,7 +284,11 @@ class PrintInformation(QObject):
         return self._base_name
 
     @pyqtSlot(str)
-    def setBaseName(self, base_name):
+    def setProjectName(self, name):
+        self.setBaseName(name, is_project_file = True)
+
+    @pyqtSlot(str)
+    def setBaseName(self, base_name, is_project_file = False):
         # Ensure that we don't use entire path but only filename
         name = os.path.basename(base_name)
 
@@ -291,14 +296,16 @@ class PrintInformation(QObject):
         # extension. This cuts the extension off if necessary.
         name = os.path.splitext(name)[0]
 
+        # if this is a profile file, always update the job name
         # name is "" when I first had some meshes and afterwards I deleted them so the naming should start again
         is_empty = name == ""
-        if is_empty or (self._base_name == "" and self._base_name != name):
+        if is_project_file or (is_empty or (self._base_name == "" and self._base_name != name)):
             # remove ".curaproject" suffix from (imported) the file name
             if name.endswith(".curaproject"):
                 name = name[:name.rfind(".curaproject")]
             self._base_name = name
             self._updateJobName()
+
 
     ##  Created an acronymn-like abbreviated machine name from the currently active machine name
     #   Called each time the global stack is switched
