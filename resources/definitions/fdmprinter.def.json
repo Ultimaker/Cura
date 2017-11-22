@@ -1218,7 +1218,17 @@
                     },
                     "default_value": "everywhere",
                     "limit_to_extruder": "wall_0_extruder_nr",
-                    "settable_per_mesh": true
+                    "settable_per_mesh": true,
+                    "children": {
+                        "filter_out_tiny_gaps": {
+                            "label": "Filter Out Tiny Gaps",
+                            "description": "Filter out tiny gaps to reduce blobs on outside of model.",
+                            "type": "bool",
+                            "default_value": true,
+                            "limit_to_extruder": "wall_0_extruder_nr",
+                            "settable_per_mesh": true
+                        }
+                    }
                 },
                 "fill_outline_gaps": {
                     "label": "Print Thin Walls",
