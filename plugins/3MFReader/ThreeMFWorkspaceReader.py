@@ -746,7 +746,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             # If not extruder stacks were saved in the project file (pre 3.1) create one manually
             # We re-use the container registry's addExtruderStackForSingleExtrusionMachine method for this
             if not extruder_stacks:
-                self._container_registry.addExtruderStackForSingleExtrusionMachine(global_stack, "fdmextruder")
+                extruder_stacks.append(self._container_registry.addExtruderStackForSingleExtrusionMachine(global_stack, "fdmextruder"))
 
         except:
             Logger.logException("w", "We failed to serialize the stack. Trying to clean up.")

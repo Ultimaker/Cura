@@ -409,7 +409,7 @@ class CuraContainerRegistry(ContainerRegistry):
         extruder_stack = None
 
         # if extruders are defined in the machine definition use those instead
-        if machine.extruders and len(machine.extruders) > 0:
+        if machine.extruders and "0" in machine.extruders:
             new_extruder_id = machine.extruders["0"].getId()
             extruder_stack = machine.extruders["0"]
 
@@ -449,8 +449,15 @@ class CuraContainerRegistry(ContainerRegistry):
             extruder_stack.setVariantById(variant_id)
             extruder_stack.setMaterialById("default")
             extruder_stack.setQualityById("default")
+            if machine.qualityChanges.getId() != "empty_quality_changes":
+                extruder_quality_changes_container = self.findInstanceContainers(name = machine.qualityChanges.getName(), extruder = extruder_id)
+                if extruder_quality_changes_container:
+                    quality_changes_id = extruder_quality_changes_container[0].getId()
+                    extruder_stack.setQualityChangesById(quality_changes_id)
 
             self.addContainer(extruder_stack)
+
+        return extruder_stack
 
     # Fix the extruders that were upgraded to ExtruderStack instances during addContainer.
     # The stacks are now responsible for setting the next stack on deserialize. However,
