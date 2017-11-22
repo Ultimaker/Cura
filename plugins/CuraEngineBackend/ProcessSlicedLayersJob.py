@@ -106,6 +106,12 @@ class ProcessSlicedLayersJob(Job):
         for layer in self._layers:
             abs_layer_number = layer.id + abs(min_layer_number)
 
+            # Workaround when the last layer doesn't have paths, this layer is skipped because this was generating
+            # some glitches when rendering.
+            if layer.id == len(self._layers)-1 and layer.repeatedMessageCount("path_segment") == 0:
+                Logger.log("i", "No sliced data in the layer", layer.id)
+                continue
+
             layer_data.addLayer(abs_layer_number)
             this_layer = layer_data.getLayer(abs_layer_number)
             layer_data.setLayerHeight(abs_layer_number, layer.height)
