@@ -5,10 +5,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Cura 3.0\n"
+"Project-Id-Version: Cura 3.1\n"
 "Report-Msgid-Bugs-To: r.dulek@ultimaker.com\n"
 "POT-Creation-Date: 2017-08-02 16:53+0000\n"
-"PO-Revision-Date: 2017-10-31 23:30+0800\n"
+"PO-Revision-Date: 2017-11-22 23:36+0800\n"
 "Last-Translator: Zhang Heh Ji <dinowchang@gmail.com>\n"
 "Language-Team: TEAM\n"
 "Language: zh_TW\n"
@@ -665,6 +665,38 @@ msgid ""
 msgstr "起始層高（以毫米為單位）。起始層越厚，與列印平台的附著越輕鬆。"
 
 #: fdmprinter.def.json
+msgctxt "slicing_tolerance label"
+msgid "Slicing Tolerance"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "slicing_tolerance description"
+msgid ""
+"How to slice layers with diagonal surfaces. The areas of a layer can be "
+"generated based on where the middle of the layer intersects the surface "
+"(Middle). Alternatively each layer can have the areas which fall inside of "
+"the volume throughout the height of the layer (Exclusive) or a layer has the "
+"areas which fall inside anywhere within the layer (Inclusive). Exclusive "
+"retains the most details, Inclusive makes for the best fit and Middle takes "
+"the least time to process."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "slicing_tolerance option middle"
+msgid "Middle"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "slicing_tolerance option exclusive"
+msgid "Exclusive"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "slicing_tolerance option inclusive"
+msgid "Inclusive"
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "line_width label"
 msgid "Line Width"
 msgstr "線寬"
@@ -825,6 +857,18 @@ msgid "Shell"
 msgstr "外殼"
 
 #: fdmprinter.def.json
+msgctxt "wall_extruder_nr label"
+msgid "Wall Extruder"
+msgstr "牆壁擠出機"
+
+#: fdmprinter.def.json
+msgctxt "wall_extruder_nr description"
+msgid ""
+"The extruder train used for printing the walls. This is used in multi-"
+"extrusion."
+msgstr "用於列印牆壁的擠出機組。在多擠出機情況下適用。"
+
+#: fdmprinter.def.json
 msgctxt "wall_0_extruder_nr label"
 msgid "Outer Wall Extruder"
 msgstr "外壁擠出機"
@@ -837,8 +881,11 @@ msgid ""
 msgstr "用於列印外壁的擠出機組。在多擠出機情況下適用。"
 
 #: fdmprinter.def.json
+#, fuzzy
+#| msgctxt "wall_x_extruder_nr label"
+#| msgid "Inner Walls Extruder"
 msgctxt "wall_x_extruder_nr label"
-msgid "Inner Walls Extruder"
+msgid "Inner Wall Extruder"
 msgstr "內壁擠出機"
 
 #: fdmprinter.def.json
@@ -1384,6 +1431,124 @@ msgstr ""
 "填充上的頂板。"
 
 #: fdmprinter.def.json
+msgctxt "ironing_enabled label"
+msgid "Enable Ironing"
+msgstr "啟用燙平"
+
+#: fdmprinter.def.json
+msgctxt "ironing_enabled description"
+msgid ""
+"Go over the top surface one additional time, but without extruding material. "
+"This is meant to melt the plastic on top further, creating a smoother "
+"surface."
+msgstr ""
+"再一次經過頂部表面，但不擠出耗材。這是為了進一步融化頂部的塑料，打造更平滑的"
+"表面。"
+
+#: fdmprinter.def.json
+msgctxt "ironing_only_highest_layer label"
+msgid "Iron Only Highest Layer"
+msgstr "只燙平最高層"
+
+#: fdmprinter.def.json
+msgctxt "ironing_only_highest_layer description"
+msgid ""
+"Only perform ironing on the very last layer of the mesh. This saves time if "
+"the lower layers don't need a smooth surface finish."
+msgstr ""
+"只在網格的最後一層進行燙平處理。 如果下層不需要光滑的表面，可啟用此選項以節省"
+"時間。"
+
+#: fdmprinter.def.json
+msgctxt "ironing_pattern label"
+msgid "Ironing Pattern"
+msgstr "燙平列印樣式"
+
+#: fdmprinter.def.json
+msgctxt "ironing_pattern description"
+msgid "The pattern to use for ironing top surfaces."
+msgstr "用於燙平頂部表面的列印樣式。"
+
+#: fdmprinter.def.json
+msgctxt "ironing_pattern option concentric"
+msgid "Concentric"
+msgstr "同心"
+
+#: fdmprinter.def.json
+msgctxt "ironing_pattern option zigzag"
+msgid "Zig Zag"
+msgstr "鋸齒狀"
+
+#: fdmprinter.def.json
+msgctxt "ironing_line_spacing label"
+msgid "Ironing Line Spacing"
+msgstr "燙平線條間距"
+
+#: fdmprinter.def.json
+msgctxt "ironing_line_spacing description"
+msgid "The distance between the lines of ironing."
+msgstr "燙平線條之間的距離。"
+
+#: fdmprinter.def.json
+msgctxt "ironing_flow label"
+msgid "Ironing Flow"
+msgstr "燙平流量"
+
+#: fdmprinter.def.json
+msgctxt "ironing_flow description"
+msgid ""
+"The amount of material, relative to a normal skin line, to extrude during "
+"ironing. Keeping the nozzle filled helps filling some of the crevices of the "
+"top surface, but too much results in overextrusion and blips on the side of "
+"the surface."
+msgstr ""
+"燙平期間相對於正常表層線條的擠出耗材量。保持噴頭填充狀态有助於填充頂部表面的"
+"一些縫隙，但如填充過多則會導致表面上過度擠出和光點。"
+
+#: fdmprinter.def.json
+msgctxt "ironing_inset label"
+msgid "Ironing Inset"
+msgstr "燙平內嵌"
+
+#: fdmprinter.def.json
+msgctxt "ironing_inset description"
+msgid ""
+"A distance to keep from the edges of the model. Ironing all the way to the "
+"edge of the mesh may result in a jagged edge on your print."
+msgstr ""
+"與模型邊緣保持的距離。一直燙平至網格的邊緣可能導致列印品出現鋸齒狀邊緣。"
+
+#: fdmprinter.def.json
+msgctxt "speed_ironing label"
+msgid "Ironing Speed"
+msgstr "燙平速度"
+
+#: fdmprinter.def.json
+msgctxt "speed_ironing description"
+msgid "The speed at which to pass over the top surface."
+msgstr "通過頂部表面的速度。"
+
+#: fdmprinter.def.json
+msgctxt "acceleration_ironing label"
+msgid "Ironing Acceleration"
+msgstr "燙平加速度"
+
+#: fdmprinter.def.json
+msgctxt "acceleration_ironing description"
+msgid "The acceleration with which ironing is performed."
+msgstr "執行燙平的加速度。"
+
+#: fdmprinter.def.json
+msgctxt "jerk_ironing label"
+msgid "Ironing Jerk"
+msgstr "燙平加加速度"
+
+#: fdmprinter.def.json
+msgctxt "jerk_ironing description"
+msgid "The maximum instantaneous velocity change while performing ironing."
+msgstr "執行燙平時的最大瞬時速度變化。"
+
+#: fdmprinter.def.json
 msgctxt "infill label"
 msgid "Infill"
 msgstr "填充"
@@ -1432,13 +1597,23 @@ msgid "Infill Pattern"
 msgstr "填充列印樣式"
 
 #: fdmprinter.def.json
+#, fuzzy
+#| msgctxt "infill_pattern description"
+#| msgid ""
+#| "The pattern of the infill material of the print. The line and zig zag "
+#| "infill swap direction on alternate layers, reducing material cost. The "
+#| "grid, triangle, cubic, octet, quarter cubic and concentric patterns are "
+#| "fully printed every layer. Cubic, quarter cubic and octet infill change "
+#| "with every layer to provide a more equal distribution of strength over "
+#| "each direction."
 msgctxt "infill_pattern description"
 msgid ""
 "The pattern of the infill material of the print. The line and zig zag infill "
 "swap direction on alternate layers, reducing material cost. The grid, "
-"triangle, cubic, octet, quarter cubic and concentric patterns are fully "
-"printed every layer. Cubic, quarter cubic and octet infill change with every "
-"layer to provide a more equal distribution of strength over each direction."
+"triangle, tri-hexagon, cubic, octet, quarter cubic, cross and concentric "
+"patterns are fully printed every layer. Cubic, quarter cubic and octet "
+"infill change with every layer to provide a more equal distribution of "
+"strength over each direction."
 msgstr ""
 "填充耗材的樣式。線條和鋸齒狀填充輪流在每一層交換方向，以降低耗材成本。網格、"
 "三角形、立方體、八面體、四分立方體和同心的列印樣式在每層完整列印。立方體、四"
@@ -1458,6 +1633,11 @@ msgstr "直線"
 msgctxt "infill_pattern option triangles"
 msgid "Triangles"
 msgstr "三角形"
+
+#: fdmprinter.def.json
+msgctxt "infill_pattern option trihexagon"
+msgid "Tri-Hexagon"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "infill_pattern option cubic"
@@ -1510,11 +1690,19 @@ msgid "Connect Infill Lines"
 msgstr "連接填充線條"
 
 #: fdmprinter.def.json
+#, fuzzy
+#| msgctxt "zig_zaggify_infill description"
+#| msgid ""
+#| "Connect the ends where the infill pattern meets the inner wall using a "
+#| "lines which follows the shape of the inner wall. Enabling this setting "
+#| "can make the infill adhere to the walls better and reduces the effects on "
+#| "infill on the quality of vertical surfaces. Disabling this setting "
+#| "reduces the amount of material used."
 msgctxt "zig_zaggify_infill description"
 msgid ""
-"Connect the ends where the infill pattern meets the inner wall using a lines "
+"Connect the ends where the infill pattern meets the inner wall using a line "
 "which follows the shape of the inner wall. Enabling this setting can make "
-"the infill adhere to the walls better and reduces the effects on infill on "
+"the infill adhere to the walls better and reduce the effects of infill on "
 "the quality of vertical surfaces. Disabling this setting reduces the amount "
 "of material used."
 msgstr ""
@@ -1541,6 +1729,32 @@ msgstr ""
 "它將從頭開始。列表元素以逗號分隔，整個列表包含在方括號中。空的列表代表使用傳"
 "統的預設角度（線條和鋸齒狀的列印樣式為 45 和 135 度，其他所有的列印樣式為 45 "
 "度）。"
+
+#: fdmprinter.def.json
+#, fuzzy
+#| msgctxt "z_offset_layer_0 label"
+#| msgid "Initial Layer Z Offset"
+msgctxt "infill_offset_x label"
+msgid "Infill X Offset"
+msgstr "起始層 Z 軸偏移"
+
+#: fdmprinter.def.json
+msgctxt "infill_offset_x description"
+msgid "The infill pattern is offset this distance along the X axis."
+msgstr ""
+
+#: fdmprinter.def.json
+#, fuzzy
+#| msgctxt "z_offset_layer_0 label"
+#| msgid "Initial Layer Z Offset"
+msgctxt "infill_offset_y label"
+msgid "Infill Y Offset"
+msgstr "起始層 Z 軸偏移"
+
+#: fdmprinter.def.json
+msgctxt "infill_offset_y description"
+msgid "The infill pattern is offset this distance along the Y axis."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "sub_div_rad_add label"
@@ -1960,6 +2174,35 @@ msgid ""
 "Adjusts the diameter of the filament used. Match this value with the "
 "diameter of the used filament."
 msgstr "調整所使用耗材的直徑。這個數值要等同於所使用耗材的直徑。"
+
+#: fdmprinter.def.json
+#, fuzzy
+#| msgctxt "platform_adhesion description"
+#| msgid "Adhesion"
+msgctxt "material_adhesion_tendency label"
+msgid "Adhesion Tendency"
+msgstr "附著"
+
+#: fdmprinter.def.json
+msgctxt "material_adhesion_tendency description"
+msgid "Surface adhesion tendency."
+msgstr ""
+
+#: fdmprinter.def.json
+#, fuzzy
+#| msgctxt "magic_mesh_surface_mode label"
+#| msgid "Surface Mode"
+msgctxt "material_surface_energy label"
+msgid "Surface Energy"
+msgstr "表面模式"
+
+#: fdmprinter.def.json
+#, fuzzy
+#| msgctxt "magic_mesh_surface_mode label"
+#| msgid "Surface Mode"
+msgctxt "material_surface_energy description"
+msgid "Surface energy."
+msgstr "表面模式"
 
 #: fdmprinter.def.json
 msgctxt "material_flow label"
@@ -3408,43 +3651,6 @@ msgid ""
 msgstr "連接鋸齒狀。這將增加鋸齒狀支撐結構的强度。"
 
 #: fdmprinter.def.json
-msgctxt "support_skip_some_zags label"
-msgid "Break Up Support In Chunks"
-msgstr "將支撐拆成塊狀"
-
-#: fdmprinter.def.json
-msgctxt "support_skip_some_zags description"
-msgid ""
-"Skip some support line connections to make the support structure easier to "
-"break away. This setting is applicable to the Zig Zag support infill pattern."
-msgstr ""
-"省略支撐的部分連接線，讓支撐結構更容易拆除。此設定適用於鋸齒狀的支撐樣式。"
-
-#: fdmprinter.def.json
-msgctxt "support_skip_zag_per_mm label"
-msgid "Support Chunk Size"
-msgstr "支撐塊大小"
-
-#: fdmprinter.def.json
-msgctxt "support_skip_zag_per_mm description"
-msgid ""
-"Leave out a connection between support lines once every N millimeter to make "
-"the support structure easier to break away."
-msgstr "每隔 N 毫米省略一次連接線，讓支撐結構更容易拆除。"
-
-#: fdmprinter.def.json
-msgctxt "support_zag_skip_count label"
-msgid "Support Chunk Line Count"
-msgstr "支撐塊線條數"
-
-#: fdmprinter.def.json
-msgctxt "support_zag_skip_count description"
-msgid ""
-"Skip one in every N connection lines to make the support structure easier to "
-"break away."
-msgstr "每隔 N 個連接線省略一次，讓支撐結構更容易拆除。"
-
-#: fdmprinter.def.json
 msgctxt "support_infill_rate label"
 msgid "Support Density"
 msgstr "支撐密度"
@@ -4099,10 +4305,17 @@ msgid "Skirt Distance"
 msgstr "外圍間距"
 
 #: fdmprinter.def.json
+#, fuzzy
+#| msgctxt "skirt_gap description"
+#| msgid ""
+#| "The horizontal distance between the skirt and the first layer of the "
+#| "print.\n"
+#| "This is the minimum distance, multiple skirt lines will extend outwards "
+#| "from this distance."
 msgctxt "skirt_gap description"
 msgid ""
 "The horizontal distance between the skirt and the first layer of the print.\n"
-"This is the minimum distance, multiple skirt lines will extend outwards from "
+"This is the minimum distance. Multiple skirt lines will extend outwards from "
 "this distance."
 msgstr ""
 "外圍和列印第一層之間的水平距離。\n"
@@ -4169,36 +4382,6 @@ msgstr ""
 "附著。"
 
 #: fdmprinter.def.json
-msgctxt "z_offset_layer_0 label"
-msgid "Initial Layer Z Offset"
-msgstr "起始層 Z 軸偏移"
-
-#: fdmprinter.def.json
-msgctxt "z_offset_layer_0 description"
-msgid ""
-"The extruder is offset from the normal height of the first layer by this "
-"amount. It can be positive (raised) or negative (lowered). Some filament "
-"types adhere to the build plate better if the extruder is raised slightly."
-msgstr ""
-"擠出機在第一層從正常高度偏移了此設定量。它可以是正值（上升）或負值（下降）。"
-"某些耗材類型在擠出機稍微上升情況下，會更好地附著在列印平台上。"
-
-#: fdmprinter.def.json
-msgctxt "z_offset_taper_layers label"
-msgid "Z Offset Taper Layers"
-msgstr "Z 軸偏移漸減層數"
-
-#: fdmprinter.def.json
-msgctxt "z_offset_taper_layers description"
-msgid ""
-"When non-zero, the Z offset is reduced to 0 over that many layers. A value "
-"of 0 means that the Z offset remains constant for all the layers in the "
-"print."
-msgstr ""
-"當此值不為 0 時，Z 軸偏移量在經過此層數時逐漸降為 0。此值設為 0 表示所有列印"
-"層的 Z 軸偏移量保持為固定值。"
-
-#: fdmprinter.def.json
 msgctxt "raft_margin label"
 msgid "Raft Extra Margin"
 msgstr "木筏額外邊緣"
@@ -4219,12 +4402,19 @@ msgid "Raft Smoothing"
 msgstr "木筏平滑處理"
 
 #: fdmprinter.def.json
+#, fuzzy
+#| msgctxt "raft_smoothing description"
+#| msgid ""
+#| "This setting control how much inner corners in the raft outline are "
+#| "rounded. Inward corners are rounded to a semi circle with a radius equal "
+#| "to the value given here. This setting also removes holes in the raft "
+#| "outline which are smaller than such a circle."
 msgctxt "raft_smoothing description"
 msgid ""
-"This setting control how much inner corners in the raft outline are rounded. "
-"Inward corners are rounded to a semi circle with a radius equal to the value "
-"given here. This setting also removes holes in the raft outline which are "
-"smaller than such a circle."
+"This setting controls how much inner corners in the raft outline are "
+"rounded. Inward corners are rounded to a semi circle with a radius equal to "
+"the value given here. This setting also removes holes in the raft outline "
+"which are smaller than such a circle."
 msgstr ""
 "此設定控制木筏輪廓凹角導圓角的量。向內的轉角會被導為圓弧，其半徑等於此設定"
 "值。此設定同時可以移除木筏輪廓中半徑小於此設定值的圓孔。"
@@ -4799,6 +4989,23 @@ msgstr ""
 "作最後手段。"
 
 #: fdmprinter.def.json
+#, fuzzy
+#| msgctxt "machine_max_acceleration_x label"
+#| msgid "Maximum Acceleration X"
+msgctxt "meshfix_maximum_resolution label"
+msgid "Maximum Resolution"
+msgstr "X 軸最大加速度"
+
+#: fdmprinter.def.json
+msgctxt "meshfix_maximum_resolution description"
+msgid ""
+"The minimum size of a line segment after slicing. If you increase this, the "
+"mesh will have a lower resolution. This may allow the printer to keep up "
+"with the speed it has to process g-code and will increase slice speed by "
+"removing details of the mesh that it can't process anyway."
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "multiple_mesh_overlap label"
 msgid "Merged Meshes Overlap"
 msgstr "合併網格重疊"
@@ -4840,6 +5047,19 @@ msgstr ""
 "將網格重疊的部分，交互的在每一層中歸屬到不同的網格，以便重疊的網格交織在一"
 "起。關閉此設定將使其中一個網格物體獲得重疊中的所有體積，而從其他網格物體中移"
 "除。"
+
+#: fdmprinter.def.json
+msgctxt "remove_empty_first_layers label"
+msgid "Remove Empty First Layers"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "remove_empty_first_layers description"
+msgid ""
+"Remove empty layers beneath the first printed layer if they are present. "
+"Disabling this setting can cause empty first layers if the Slicing Tolerance "
+"setting is set to Exclusive or Middle."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "blackmagic label"
@@ -5121,6 +5341,43 @@ msgid ""
 msgstr ""
 "最佳化牆壁列印順序以減少回抽的次數和空跑的距離。啟用此功能對大多數是有益的，"
 "但有的可能會花更多的時間。所以請比較有無最佳化的估算時間進行確認。"
+
+#: fdmprinter.def.json
+msgctxt "support_skip_some_zags label"
+msgid "Break Up Support In Chunks"
+msgstr "將支撐拆成塊狀"
+
+#: fdmprinter.def.json
+msgctxt "support_skip_some_zags description"
+msgid ""
+"Skip some support line connections to make the support structure easier to "
+"break away. This setting is applicable to the Zig Zag support infill pattern."
+msgstr ""
+"省略支撐的部分連接線，讓支撐結構更容易拆除。此設定適用於鋸齒狀的支撐樣式。"
+
+#: fdmprinter.def.json
+msgctxt "support_skip_zag_per_mm label"
+msgid "Support Chunk Size"
+msgstr "支撐塊大小"
+
+#: fdmprinter.def.json
+msgctxt "support_skip_zag_per_mm description"
+msgid ""
+"Leave out a connection between support lines once every N millimeter to make "
+"the support structure easier to break away."
+msgstr "每隔 N 毫米省略一次連接線，讓支撐結構更容易拆除。"
+
+#: fdmprinter.def.json
+msgctxt "support_zag_skip_count label"
+msgid "Support Chunk Line Count"
+msgstr "支撐塊線條數"
+
+#: fdmprinter.def.json
+msgctxt "support_zag_skip_count description"
+msgid ""
+"Skip one in every N connection lines to make the support structure easier to "
+"break away."
+msgstr "每隔 N 個連接線省略一次，讓支撐結構更容易拆除。"
 
 #: fdmprinter.def.json
 msgctxt "draft_shield_enabled label"
@@ -5509,6 +5766,29 @@ msgstr ""
 "高平滑度導致解析度降低。該值必須大於絨毛皮膚厚度的一半。"
 
 #: fdmprinter.def.json
+msgctxt "flow_rate_max_extrusion_offset label"
+msgid "Flow rate compensation max extrusion offset"
+msgstr ""
+
+#: fdmprinter.def.json
+#, fuzzy
+#| msgctxt "machine_max_feedrate_e description"
+#| msgid "The maximum speed of the filament."
+msgctxt "flow_rate_max_extrusion_offset description"
+msgid "The maximum distance in mm to compensate."
+msgstr "耗材的最大速度。"
+
+#: fdmprinter.def.json
+msgctxt "flow_rate_extrusion_offset_factor label"
+msgid "Flow rate compensation factor"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "flow_rate_extrusion_offset_factor description"
+msgid "The multiplication factor for the flow rate -> distance translation."
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "wireframe_enabled label"
 msgid "Wire Printing"
 msgstr "鐵絲網列印（以下簡稱 WP）"
@@ -5849,124 +6129,6 @@ msgstr ""
 "上行連接較少。僅套用於鐵絲網列印。"
 
 #: fdmprinter.def.json
-msgctxt "ironing_enabled label"
-msgid "Enable Ironing"
-msgstr "啟用燙平"
-
-#: fdmprinter.def.json
-msgctxt "ironing_enabled description"
-msgid ""
-"Go over the top surface one additional time, but without extruding material. "
-"This is meant to melt the plastic on top further, creating a smoother "
-"surface."
-msgstr ""
-"再一次經過頂部表面，但不擠出耗材。這是為了進一步融化頂部的塑料，打造更平滑的"
-"表面。"
-
-#: fdmprinter.def.json
-msgctxt "ironing_only_highest_layer label"
-msgid "Iron Only Highest Layer"
-msgstr "只燙平最高層"
-
-#: fdmprinter.def.json
-msgctxt "ironing_only_highest_layer description"
-msgid ""
-"Only perform ironing on the very last layer of the mesh. This saves time if "
-"the lower layers don't need a smooth surface finish."
-msgstr ""
-"只在網格的最後一層進行燙平處理。 如果下層不需要光滑的表面，可啟用此選項以節省"
-"時間。"
-
-#: fdmprinter.def.json
-msgctxt "ironing_pattern label"
-msgid "Ironing Pattern"
-msgstr "燙平列印樣式"
-
-#: fdmprinter.def.json
-msgctxt "ironing_pattern description"
-msgid "The pattern to use for ironing top surfaces."
-msgstr "用於燙平頂部表面的列印樣式。"
-
-#: fdmprinter.def.json
-msgctxt "ironing_pattern option concentric"
-msgid "Concentric"
-msgstr "同心"
-
-#: fdmprinter.def.json
-msgctxt "ironing_pattern option zigzag"
-msgid "Zig Zag"
-msgstr "鋸齒狀"
-
-#: fdmprinter.def.json
-msgctxt "ironing_line_spacing label"
-msgid "Ironing Line Spacing"
-msgstr "燙平線條間距"
-
-#: fdmprinter.def.json
-msgctxt "ironing_line_spacing description"
-msgid "The distance between the lines of ironing."
-msgstr "燙平線條之間的距離。"
-
-#: fdmprinter.def.json
-msgctxt "ironing_flow label"
-msgid "Ironing Flow"
-msgstr "燙平流量"
-
-#: fdmprinter.def.json
-msgctxt "ironing_flow description"
-msgid ""
-"The amount of material, relative to a normal skin line, to extrude during "
-"ironing. Keeping the nozzle filled helps filling some of the crevices of the "
-"top surface, but too much results in overextrusion and blips on the side of "
-"the surface."
-msgstr ""
-"燙平期間相對於正常表層線條的擠出耗材量。保持噴頭填充狀态有助於填充頂部表面的"
-"一些縫隙，但如填充過多則會導致表面上過度擠出和光點。"
-
-#: fdmprinter.def.json
-msgctxt "ironing_inset label"
-msgid "Ironing Inset"
-msgstr "燙平內嵌"
-
-#: fdmprinter.def.json
-msgctxt "ironing_inset description"
-msgid ""
-"A distance to keep from the edges of the model. Ironing all the way to the "
-"edge of the mesh may result in a jagged edge on your print."
-msgstr ""
-"與模型邊緣保持的距離。一直燙平至網格的邊緣可能導致列印品出現鋸齒狀邊緣。"
-
-#: fdmprinter.def.json
-msgctxt "speed_ironing label"
-msgid "Ironing Speed"
-msgstr "燙平速度"
-
-#: fdmprinter.def.json
-msgctxt "speed_ironing description"
-msgid "The speed at which to pass over the top surface."
-msgstr "通過頂部表面的速度。"
-
-#: fdmprinter.def.json
-msgctxt "acceleration_ironing label"
-msgid "Ironing Acceleration"
-msgstr "燙平加速度"
-
-#: fdmprinter.def.json
-msgctxt "acceleration_ironing description"
-msgid "The acceleration with which ironing is performed."
-msgstr "執行燙平的加速度。"
-
-#: fdmprinter.def.json
-msgctxt "jerk_ironing label"
-msgid "Ironing Jerk"
-msgstr "燙平加加速度"
-
-#: fdmprinter.def.json
-msgctxt "jerk_ironing description"
-msgid "The maximum instantaneous velocity change while performing ironing."
-msgstr "執行燙平時的最大瞬時速度變化。"
-
-#: fdmprinter.def.json
 msgctxt "command_line_settings label"
 msgid "Command Line Settings"
 msgstr "命令行設定"
@@ -6035,15 +6197,27 @@ msgid ""
 "Transformation matrix to be applied to the model when loading it from file."
 msgstr "在將模型從檔案中載入時套用在模型上的轉換矩陣。"
 
-#~ msgctxt "wall_extruder_nr label"
-#~ msgid "Wall Extruder"
-#~ msgstr "牆壁擠出機"
-
-#~ msgctxt "wall_extruder_nr description"
+#~ msgctxt "z_offset_layer_0 description"
 #~ msgid ""
-#~ "The extruder train used for printing the walls. This is used in multi-"
-#~ "extrusion."
-#~ msgstr "用於列印牆壁的擠出機組。在多擠出機情況下適用。"
+#~ "The extruder is offset from the normal height of the first layer by this "
+#~ "amount. It can be positive (raised) or negative (lowered). Some filament "
+#~ "types adhere to the build plate better if the extruder is raised slightly."
+#~ msgstr ""
+#~ "擠出機在第一層從正常高度偏移了此設定量。它可以是正值（上升）或負值（下"
+#~ "降）。某些耗材類型在擠出機稍微上升情況下，會更好地附著在列印平台上。"
+
+#~ msgctxt "z_offset_taper_layers label"
+#~ msgid "Z Offset Taper Layers"
+#~ msgstr "Z 軸偏移漸減層數"
+
+#~ msgctxt "z_offset_taper_layers description"
+#~ msgid ""
+#~ "When non-zero, the Z offset is reduced to 0 over that many layers. A "
+#~ "value of 0 means that the Z offset remains constant for all the layers in "
+#~ "the print."
+#~ msgstr ""
+#~ "當此值不為 0 時，Z 軸偏移量在經過此層數時逐漸降為 0。此值設為 0 表示所有列"
+#~ "印層的 Z 軸偏移量保持為固定值。"
 
 #~ msgctxt "infill_pattern option tetrahedral"
 #~ msgid "Tetrahedral"
