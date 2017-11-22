@@ -864,17 +864,10 @@ class MachineManager(QObject):
                     "quality_changes": stack_quality_changes
                 })
 
-            has_user_interaction = False
-
-            if self.hasUserSettings and Preferences.getInstance().getValue("cura/active_mode") == 1:
-                # Show the keep/discard user settings dialog
-                has_user_interaction = Application.getInstance().discardOrKeepProfileChanges()
-
-            # If there is no interaction with the user (it means the dialog showing "keep" or "discard" was not shown)
-            # because either there are not user changes or because the used already decided to always keep or discard,
-            # then the quality instance container is replaced, in which case, the activeQualityChanged signal is emitted.
-            if not has_user_interaction:
-                self._executeDelayedActiveContainerStackChanges()
+            # show the keep/discard dialog after the containers have been switched. Otherwise, the default values on
+            # the dialog will be the those before the switching.
+            self._executeDelayedActiveContainerStackChanges()
+            Application.getInstance().discardOrKeepProfileChanges()
 
     ##  Used to update material and variant in the active container stack with a delay.
     #   This delay prevents the stack from triggering a lot of signals (eventually resulting in slicing)
