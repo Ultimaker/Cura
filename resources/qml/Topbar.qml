@@ -242,7 +242,6 @@ Rectangle
             anchors.verticalCenter: viewOrientationControl.verticalCenter
             onClicked:{
                 UM.Controller.rotateView("3d", 0);
-                console.log("WIDTH : " + base.width)
             }
             visible: base.width > 1100
         }
@@ -250,7 +249,7 @@ Rectangle
         // #2 Front view
         Button
         {
-            iconSource: UM.Theme.getIcon("view_fron")
+            iconSource: UM.Theme.getIcon("view_front")
             style: UM.Theme.styles.orientation_button
             anchors.verticalCenter: viewOrientationControl.verticalCenter
             onClicked:{
