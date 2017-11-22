@@ -621,9 +621,16 @@ class MachineManager(QObject):
     def activeQualityId(self) -> str:
         if self._active_container_stack:
             quality = self._active_container_stack.quality
+            if isinstance(quality, type(self._empty_quality_container)):
+                return ""
             quality_changes = self._active_container_stack.qualityChanges
-            if quality and quality_changes and isinstance(quality_changes, type(self._empty_quality_changes_container)) and not isinstance(quality, type(self._empty_quality_container)):
-                return quality.getId()
+            if quality and quality_changes:
+                if isinstance(quality_changes, type(self._empty_quality_changes_container)):
+                    # It's a built-in profile
+                    return quality.getId()
+                else:
+                    # Custom profile
+                    return quality_changes.getId()
         return ""
 
     @pyqtProperty(str, notify=activeQualityChanged)
