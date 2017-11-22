@@ -867,7 +867,9 @@ class MachineManager(QObject):
             # show the keep/discard dialog after the containers have been switched. Otherwise, the default values on
             # the dialog will be the those before the switching.
             self._executeDelayedActiveContainerStackChanges()
-            Application.getInstance().discardOrKeepProfileChanges()
+
+            if self.hasUserSettings and Preferences.getInstance().getValue("cura/active_mode") == 1:
+                Application.getInstance().discardOrKeepProfileChanges()
 
     ##  Used to update material and variant in the active container stack with a delay.
     #   This delay prevents the stack from triggering a lot of signals (eventually resulting in slicing)
