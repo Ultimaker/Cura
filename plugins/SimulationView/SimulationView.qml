@@ -20,7 +20,12 @@ Item
         }
     }
     height: {
-        if (UM.SimulationView.compatibilityMode) {
+        if (viewSettings.collapsed) {
+            if (UM.SimulationView.compatibilityMode) {
+                return UM.Theme.getSize("layerview_menu_size_compatibility_collapsed").height;
+            }
+            return UM.Theme.getSize("layerview_menu_size_collapsed").height;
+        } else if (UM.SimulationView.compatibilityMode) {
             return UM.Theme.getSize("layerview_menu_size_compatibility").height;
         } else if (UM.Preferences.getValue("layerview/layer_view_type") == 0) {
             return UM.Theme.getSize("layerview_menu_size_material_color_mode").height + UM.SimulationView.extruderCount * (UM.Theme.getSize("layerview_row").height + UM.Theme.getSize("layerview_row_spacing").height)
@@ -28,6 +33,7 @@ Item
             return UM.Theme.getSize("layerview_menu_size").height + UM.SimulationView.extruderCount * (UM.Theme.getSize("layerview_row").height + UM.Theme.getSize("layerview_row_spacing").height)
         }
     }
+    Behavior on height { NumberAnimation { duration: 100 } }
 
     property var buttonTarget: {
         if(parent != null)
@@ -40,21 +46,49 @@ Item
 
     visible: parent != null ? !parent.parent.monitoringPrint: true
 
-    UM.PointingRectangle {
+    Rectangle {
         id: layerViewMenu
         anchors.right: parent.right
         anchors.top: parent.top
         width: parent.width
         height: parent.height
+        clip: true
         z: layerSlider.z - 1
         color: UM.Theme.getColor("tool_panel_background")
-        borderWidth: UM.Theme.getSize("default_lining").width
-        borderColor: UM.Theme.getColor("lining")
-        arrowSize: 0 // hide arrow until weird issue with first time rendering is fixed
+        border.width: UM.Theme.getSize("default_lining").width
+        border.color: UM.Theme.getColor("lining")
+
+        Button {
+            id: collapseButton
+            anchors.top: parent.top
+            anchors.topMargin: Math.floor(UM.Theme.getSize("default_margin").height + (UM.Theme.getSize("layerview_row").height - UM.Theme.getSize("default_margin").height) / 2)
+            anchors.right: parent.right
+            anchors.rightMargin: UM.Theme.getSize("default_margin").width
+
+            width: UM.Theme.getSize("standard_arrow").width
+            height: UM.Theme.getSize("standard_arrow").height
+
+            onClicked: viewSettings.collapsed = !viewSettings.collapsed
+
+            style: ButtonStyle
+            {
+                background: UM.RecolorImage
+                {
+                    width: control.width
+                    height: control.height
+                    sourceSize.width: width
+                    sourceSize.height: width
+                    color:  UM.Theme.getColor("setting_control_text")
+                    source: viewSettings.collapsed ? UM.Theme.getIcon("arrow_left") : UM.Theme.getIcon("arrow_bottom")
+                }
+                label: Label{ }
+            }
+        }
 
         ColumnLayout {
-            id: view_settings
+            id: viewSettings
 
+            property bool collapsed: false
             property var extruder_opacities: UM.Preferences.getValue("layerview/extruder_opacities").split("|")
             property bool show_travel_moves: UM.Preferences.getValue("layerview/show_travel_moves")
             property bool show_helpers: UM.Preferences.getValue("layerview/show_helpers")
@@ -70,9 +104,9 @@ Item
             anchors.topMargin: UM.Theme.getSize("default_margin").height
             anchors.left: parent.left
             anchors.leftMargin: UM.Theme.getSize("default_margin").width
-            spacing: UM.Theme.getSize("layerview_row_spacing").height
             anchors.right: parent.right
             anchors.rightMargin: UM.Theme.getSize("default_margin").width
+            spacing: UM.Theme.getSize("layerview_row_spacing").height
 
             Label
             {
@@ -120,7 +154,6 @@ Item
                 visible: !UM.SimulationView.compatibilityMode
                 style: UM.Theme.styles.combobox
                 anchors.right: parent.right
-                anchors.rightMargin: 10 * screenScaleFactor
 
                 onActivated:
                 {
@@ -136,7 +169,7 @@ Item
                 function updateLegends(type_id)
                 {
                     // update visibility of legends
-                    view_settings.show_legend = UM.SimulationView.compatibilityMode || (type_id == 1);
+                    viewSettings.show_legend = UM.SimulationView.compatibilityMode || (type_id == 1);
                 }
 
             }
@@ -154,12 +187,10 @@ Item
                 Layout.preferredWidth: UM.Theme.getSize("layerview_row").width
             }
 
-            Label
+            Item
             {
-                id: space2Label
-                anchors.left: parent.left
-                text: " "
-                font.pointSize: 0.5
+                height: Math.floor(UM.Theme.getSize("default_margin").width / 2)
+                width: width
             }
 
             Connections {
@@ -169,13 +200,13 @@ Item
                     layerTypeCombobox.currentIndex = UM.SimulationView.compatibilityMode ? 1 : UM.Preferences.getValue("layerview/layer_view_type");
                     layerTypeCombobox.updateLegends(layerTypeCombobox.currentIndex);
                     playButton.pauseSimulation();
-                    view_settings.extruder_opacities = UM.Preferences.getValue("layerview/extruder_opacities").split("|");
-                    view_settings.show_travel_moves = UM.Preferences.getValue("layerview/show_travel_moves");
-                    view_settings.show_helpers = UM.Preferences.getValue("layerview/show_helpers");
-                    view_settings.show_skin = UM.Preferences.getValue("layerview/show_skin");
-                    view_settings.show_infill = UM.Preferences.getValue("layerview/show_infill");
-                    view_settings.only_show_top_layers = UM.Preferences.getValue("view/only_show_top_layers");
-                    view_settings.top_layer_count = UM.Preferences.getValue("view/top_layer_count");
+                    viewSettings.extruder_opacities = UM.Preferences.getValue("layerview/extruder_opacities").split("|");
+                    viewSettings.show_travel_moves = UM.Preferences.getValue("layerview/show_travel_moves");
+                    viewSettings.show_helpers = UM.Preferences.getValue("layerview/show_helpers");
+                    viewSettings.show_skin = UM.Preferences.getValue("layerview/show_skin");
+                    viewSettings.show_infill = UM.Preferences.getValue("layerview/show_infill");
+                    viewSettings.only_show_top_layers = UM.Preferences.getValue("view/only_show_top_layers");
+                    viewSettings.top_layer_count = UM.Preferences.getValue("view/top_layer_count");
                 }
             }
 
@@ -183,24 +214,23 @@ Item
                 model: Cura.ExtrudersModel{}
                 CheckBox {
                     id: extrudersModelCheckBox
-                    checked: view_settings.extruder_opacities[index] > 0.5 || view_settings.extruder_opacities[index] == undefined || view_settings.extruder_opacities[index] == ""
+                    checked: viewSettings.extruder_opacities[index] > 0.5 || viewSettings.extruder_opacities[index] == undefined || viewSettings.extruder_opacities[index] == ""
                     onClicked: {
-                        view_settings.extruder_opacities[index] = checked ? 1.0 : 0.0
-                        UM.Preferences.setValue("layerview/extruder_opacities", view_settings.extruder_opacities.join("|"));
+                        viewSettings.extruder_opacities[index] = checked ? 1.0 : 0.0
+                        UM.Preferences.setValue("layerview/extruder_opacities", viewSettings.extruder_opacities.join("|"));
                     }
                     visible: !UM.SimulationView.compatibilityMode
                     enabled: index + 1 <= 4
                     Rectangle {
                         anchors.verticalCenter: parent.verticalCenter
                         anchors.right: extrudersModelCheckBox.right
-                        anchors.rightMargin: UM.Theme.getSize("default_margin").width
                         width: UM.Theme.getSize("layerview_legend_size").width
                         height: UM.Theme.getSize("layerview_legend_size").height
                         color: model.color
                         radius: width / 2
                         border.width: UM.Theme.getSize("default_lining").width
                         border.color: UM.Theme.getColor("lining")
-                        visible: !view_settings.show_legend & !view_settings.show_gradient
+                        visible: !viewSettings.show_legend & !viewSettings.show_gradient
                     }
                     Layout.fillWidth: true
                     Layout.preferredHeight: UM.Theme.getSize("layerview_row").height + UM.Theme.getSize("default_lining").height
@@ -228,25 +258,25 @@ Item
                     {
                         typesLegendModel.append({
                             label: catalog.i18nc("@label", "Show Travels"),
-                            initialValue: view_settings.show_travel_moves,
+                            initialValue: viewSettings.show_travel_moves,
                             preference: "layerview/show_travel_moves",
                             colorId:  "layerview_move_combing"
                         });
                         typesLegendModel.append({
                             label: catalog.i18nc("@label", "Show Helpers"),
-                            initialValue: view_settings.show_helpers,
+                            initialValue: viewSettings.show_helpers,
                             preference: "layerview/show_helpers",
                             colorId:  "layerview_support"
                         });
                         typesLegendModel.append({
                             label: catalog.i18nc("@label", "Show Shell"),
-                            initialValue: view_settings.show_skin,
+                            initialValue: viewSettings.show_skin,
                             preference: "layerview/show_skin",
                             colorId:  "layerview_inset_0"
                         });
                         typesLegendModel.append({
                             label: catalog.i18nc("@label", "Show Infill"),
-                            initialValue: view_settings.show_infill,
+                            initialValue: viewSettings.show_infill,
                             preference: "layerview/show_infill",
                             colorId:  "layerview_infill"
                         });
@@ -262,13 +292,12 @@ Item
                     Rectangle {
                         anchors.verticalCenter: parent.verticalCenter
                         anchors.right: legendModelCheckBox.right
-                        anchors.rightMargin: UM.Theme.getSize("default_margin").width
                         width: UM.Theme.getSize("layerview_legend_size").width
                         height: UM.Theme.getSize("layerview_legend_size").height
                         color: UM.Theme.getColor(model.colorId)
                         border.width: UM.Theme.getSize("default_lining").width
                         border.color: UM.Theme.getColor("lining")
-                        visible: view_settings.show_legend
+                        visible: viewSettings.show_legend
                     }
                     Layout.fillWidth: true
                     Layout.preferredHeight: UM.Theme.getSize("layerview_row").height + UM.Theme.getSize("default_lining").height
@@ -290,7 +319,7 @@ Item
             }
 
             CheckBox {
-                checked: view_settings.only_show_top_layers
+                checked: viewSettings.only_show_top_layers
                 onClicked: {
                     UM.Preferences.setValue("view/only_show_top_layers", checked ? 1.0 : 0.0);
                 }
@@ -299,7 +328,7 @@ Item
                 style: UM.Theme.styles.checkbox
             }
             CheckBox {
-                checked: view_settings.top_layer_count == 5
+                checked: viewSettings.top_layer_count == 5
                 onClicked: {
                     UM.Preferences.setValue("view/top_layer_count", checked ? 5 : 1);
                 }
@@ -326,18 +355,17 @@ Item
 
                 Label {
                     text: label
-                    visible: view_settings.show_legend
+                    visible: viewSettings.show_legend
                     id: typesLegendModelLabel
                     Rectangle {
                         anchors.verticalCenter: parent.verticalCenter
                         anchors.right: typesLegendModelLabel.right
-                        anchors.rightMargin: UM.Theme.getSize("default_margin").width
                         width: UM.Theme.getSize("layerview_legend_size").width
                         height: UM.Theme.getSize("layerview_legend_size").height
                         color: UM.Theme.getColor(model.colorId)
                         border.width: UM.Theme.getSize("default_lining").width
                         border.color: UM.Theme.getColor("lining")
-                        visible: view_settings.show_legend
+                        visible: viewSettings.show_legend
                     }
                     Layout.fillWidth: true
                     Layout.preferredHeight: UM.Theme.getSize("layerview_row").height + UM.Theme.getSize("default_lining").height
@@ -348,9 +376,9 @@ Item
             }
 
             // Text for the minimum, maximum and units for the feedrates and layer thickness
-            Rectangle {
+            Item {
                 id: gradientLegend
-                visible: view_settings.show_gradient
+                visible: viewSettings.show_gradient
                 width: parent.width
                 height: UM.Theme.getSize("layerview_row").height
                 anchors {
@@ -426,7 +454,7 @@ Item
             Rectangle { // In QML 5.9 can be changed by LinearGradient
                 // Invert values because then the bar is rotated 90 degrees
                 id: gradient
-                visible: view_settings.show_gradient
+                visible: viewSettings.show_gradient
                 anchors.left: parent.right
                 height: parent.width
                 width: UM.Theme.getSize("layerview_row").height * 1.5
@@ -457,134 +485,134 @@ Item
                 }
             }
         }
+    }
 
-        Item {
-            id: slidersBox
+    Item {
+        id: slidersBox
 
-            width: parent.width
-            visible: UM.SimulationView.layerActivity && CuraApplication.platformActivity
+        width: parent.width
+        visible: UM.SimulationView.layerActivity && CuraApplication.platformActivity
+
+        anchors {
+            top: parent.bottom
+            topMargin: UM.Theme.getSize("slider_layerview_margin").height
+            left: parent.left
+        }
+
+        PathSlider {
+            id: pathSlider
+
+            height: UM.Theme.getSize("slider_handle").width
+            anchors.right: playButton.left
+            anchors.rightMargin: UM.Theme.getSize("default_margin").width
+            anchors.left: parent.left
+            visible: !UM.SimulationView.compatibilityMode
+
+            // custom properties
+            handleValue: UM.SimulationView.currentPath
+            maximumValue: UM.SimulationView.numPaths
+            handleSize: UM.Theme.getSize("slider_handle").width
+            trackThickness: UM.Theme.getSize("slider_groove").width
+            trackColor: UM.Theme.getColor("slider_groove")
+            trackBorderColor: UM.Theme.getColor("slider_groove_border")
+            handleColor: UM.Theme.getColor("slider_handle")
+            handleActiveColor: UM.Theme.getColor("slider_handle_active")
+            rangeColor: UM.Theme.getColor("slider_groove_fill")
+
+            // update values when layer data changes
+            Connections {
+                target: UM.SimulationView
+                onMaxPathsChanged: pathSlider.setHandleValue(UM.SimulationView.currentPath)
+                onCurrentPathChanged: pathSlider.setHandleValue(UM.SimulationView.currentPath)
+            }
+
+            // make sure the slider handlers show the correct value after switching views
+            Component.onCompleted: {
+                pathSlider.setHandleValue(UM.SimulationView.currentPath)
+            }
+        }
+
+        LayerSlider {
+            id: layerSlider
+
+            width: UM.Theme.getSize("slider_handle").width
+            height: UM.Theme.getSize("layerview_menu_size").height
 
             anchors {
-                top: parent.bottom
-                topMargin: UM.Theme.getSize("slider_layerview_margin").height
-                left: parent.left
+                top: !UM.SimulationView.compatibilityMode ? playButton.bottom : parent.top
+                topMargin: !UM.SimulationView.compatibilityMode ? UM.Theme.getSize("default_margin").height : 0
+                right: parent.right
+                rightMargin: UM.Theme.getSize("slider_layerview_margin").width
             }
 
-            PathSlider {
-                id: pathSlider
+            // custom properties
+            upperValue: UM.SimulationView.currentLayer
+            lowerValue: UM.SimulationView.minimumLayer
+            maximumValue: UM.SimulationView.numLayers
+            handleSize: UM.Theme.getSize("slider_handle").width
+            trackThickness: UM.Theme.getSize("slider_groove").width
+            trackColor: UM.Theme.getColor("slider_groove")
+            trackBorderColor: UM.Theme.getColor("slider_groove_border")
+            upperHandleColor: UM.Theme.getColor("slider_handle")
+            lowerHandleColor: UM.Theme.getColor("slider_handle")
+            rangeHandleColor: UM.Theme.getColor("slider_groove_fill")
+            handleActiveColor: UM.Theme.getColor("slider_handle_active")
+            handleLabelWidth: UM.Theme.getSize("slider_layerview_background").width
 
-                width: parent.width
-                height: UM.Theme.getSize("slider_handle").width
-                anchors.left: parent.left
-                visible: !UM.SimulationView.compatibilityMode
-
-                // custom properties
-                handleValue: UM.SimulationView.currentPath
-                maximumValue: UM.SimulationView.numPaths
-                handleSize: UM.Theme.getSize("slider_handle").width
-                trackThickness: UM.Theme.getSize("slider_groove").width
-                trackColor: UM.Theme.getColor("slider_groove")
-                trackBorderColor: UM.Theme.getColor("slider_groove_border")
-                handleColor: UM.Theme.getColor("slider_handle")
-                handleActiveColor: UM.Theme.getColor("slider_handle_active")
-                rangeColor: UM.Theme.getColor("slider_groove_fill")
-
-                // update values when layer data changes
-                Connections {
-                    target: UM.SimulationView
-                    onMaxPathsChanged: pathSlider.setHandleValue(UM.SimulationView.currentPath)
-                    onCurrentPathChanged: pathSlider.setHandleValue(UM.SimulationView.currentPath)
-                }
-
-                // make sure the slider handlers show the correct value after switching views
-                Component.onCompleted: {
-                    pathSlider.setHandleValue(UM.SimulationView.currentPath)
-                }
+            // update values when layer data changes
+            Connections {
+                target: UM.SimulationView
+                onMaxLayersChanged: layerSlider.setUpperValue(UM.SimulationView.currentLayer)
+                onMinimumLayerChanged: layerSlider.setLowerValue(UM.SimulationView.minimumLayer)
+                onCurrentLayerChanged: layerSlider.setUpperValue(UM.SimulationView.currentLayer)
             }
 
-            LayerSlider {
-                id: layerSlider
+            // make sure the slider handlers show the correct value after switching views
+            Component.onCompleted: {
+                layerSlider.setLowerValue(UM.SimulationView.minimumLayer)
+                layerSlider.setUpperValue(UM.SimulationView.currentLayer)
+            }
+        }
 
-                width: UM.Theme.getSize("slider_handle").width
-                height: UM.Theme.getSize("layerview_menu_size").height
-
-                anchors {
-                    top: pathSlider.bottom
-                    topMargin: UM.Theme.getSize("slider_layerview_margin").height
-                    right: parent.right
-                    rightMargin: UM.Theme.getSize("slider_layerview_margin").width
-                }
-
-                // custom properties
-                upperValue: UM.SimulationView.currentLayer
-                lowerValue: UM.SimulationView.minimumLayer
-                maximumValue: UM.SimulationView.numLayers
-                handleSize: UM.Theme.getSize("slider_handle").width
-                trackThickness: UM.Theme.getSize("slider_groove").width
-                trackColor: UM.Theme.getColor("slider_groove")
-                trackBorderColor: UM.Theme.getColor("slider_groove_border")
-                upperHandleColor: UM.Theme.getColor("slider_handle")
-                lowerHandleColor: UM.Theme.getColor("slider_handle")
-                rangeHandleColor: UM.Theme.getColor("slider_groove_fill")
-                handleActiveColor: UM.Theme.getColor("slider_handle_active")
-                handleLabelWidth: UM.Theme.getSize("slider_layerview_background").width
-
-                // update values when layer data changes
-                Connections {
-                    target: UM.SimulationView
-                    onMaxLayersChanged: layerSlider.setUpperValue(UM.SimulationView.currentLayer)
-                    onMinimumLayerChanged: layerSlider.setLowerValue(UM.SimulationView.minimumLayer)
-                    onCurrentLayerChanged: layerSlider.setUpperValue(UM.SimulationView.currentLayer)
-                }
-
-                // make sure the slider handlers show the correct value after switching views
-                Component.onCompleted: {
-                    layerSlider.setLowerValue(UM.SimulationView.minimumLayer)
-                    layerSlider.setUpperValue(UM.SimulationView.currentLayer)
-                }
+        // Play simulation button
+        Button {
+            id: playButton
+            implicitWidth: Math.floor(UM.Theme.getSize("button").width * 0.75)
+            implicitHeight: Math.floor(UM.Theme.getSize("button").height * 0.75)
+            iconSource: "./resources/simulation_resume.svg"
+            style: UM.Theme.styles.tool_button
+            visible: !UM.SimulationView.compatibilityMode
+            anchors {
+                horizontalCenter: layerSlider.horizontalCenter
+                verticalCenter: pathSlider.verticalCenter
             }
 
-            // Play simulation button
-            Button {
-                id: playButton
-                implicitWidth: UM.Theme.getSize("button").width * 0.75;
-                implicitHeight: UM.Theme.getSize("button").height * 0.75;
-                iconSource: "./resources/simulation_resume.svg"
-                style: UM.Theme.styles.tool_button
-                visible: !UM.SimulationView.compatibilityMode
-                anchors {
-                    horizontalCenter: layerSlider.horizontalCenter
-                    top: layerSlider.bottom
-                    topMargin: UM.Theme.getSize("slider_layerview_margin").width
-                }
+            property var status: 0  // indicates if it's stopped (0) or playing (1)
 
-                property var status: 0  // indicates if it's stopped (0) or playing (1)
-
-                onClicked: {
-                    switch(status) {
-                        case 0: {
-                            resumeSimulation()
-                            break
-                        }
-                        case 1: {
-                            pauseSimulation()
-                            break
-                        }
+            onClicked: {
+                switch(status) {
+                    case 0: {
+                        resumeSimulation()
+                        break
+                    }
+                    case 1: {
+                        pauseSimulation()
+                        break
                     }
                 }
+            }
 
-                function pauseSimulation() {
-                    UM.SimulationView.setSimulationRunning(false)
-                    iconSource = "./resources/simulation_resume.svg"
-                    simulationTimer.stop()
-                    status = 0
-                }
+            function pauseSimulation() {
+                UM.SimulationView.setSimulationRunning(false)
+                iconSource = "./resources/simulation_resume.svg"
+                simulationTimer.stop()
+                status = 0
+            }
 
-                function resumeSimulation() {
-                    UM.SimulationView.setSimulationRunning(true)
-                    iconSource = "./resources/simulation_pause.svg"
-                    simulationTimer.start()
-                }
+            function resumeSimulation() {
+                UM.SimulationView.setSimulationRunning(true)
+                iconSource = "./resources/simulation_pause.svg"
+                simulationTimer.start()
             }
         }
 
