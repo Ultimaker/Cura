@@ -449,6 +449,12 @@ class CuraContainerRegistry(ContainerRegistry):
             extruder_stack.setVariantById(variant_id)
             extruder_stack.setMaterialById("default")
             extruder_stack.setQualityById("default")
+            quality_changes_id = "default"
+            if machine.qualityChanges.getId() != "empty_quality_changes":
+                extruder_quality_changes_container = self.findInstanceContainers(name = machine.qualityChanges.getName(), extruder = extruder_id)
+                if extruder_quality_changes_container:
+                    quality_changes_id = extruder_quality_changes_container[0].getId()
+            extruder_stack.setQualityChangesById(quality_changes_id)
 
             self.addContainer(extruder_stack)
 

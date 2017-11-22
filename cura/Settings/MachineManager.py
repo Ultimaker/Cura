@@ -620,11 +620,9 @@ class MachineManager(QObject):
     @pyqtProperty(str, notify=activeQualityChanged)
     def activeQualityId(self) -> str:
         if self._active_container_stack:
-            quality = self._active_container_stack.qualityChanges
-            if quality and not isinstance(quality, type(self._empty_quality_changes_container)):
-                return quality.getId()
             quality = self._active_container_stack.quality
-            if quality:
+            quality_changes = self._active_container_stack.qualityChanges
+            if quality and quality_changes and isinstance(quality_changes, type(self._empty_quality_changes_container)) and not isinstance(quality, type(self._empty_quality_container)):
                 return quality.getId()
         return ""
 
@@ -690,9 +688,9 @@ class MachineManager(QObject):
     @pyqtProperty(str, notify = activeQualityChanged)
     def activeQualityChangesId(self) -> str:
         if self._active_container_stack:
-            changes = self._active_container_stack.qualityChanges
-            if changes and changes.getId() != "empty":
-                return changes.getId()
+            quality_changes = self._active_container_stack.qualityChanges
+            if quality_changes and not isinstance(quality_changes, type(self._empty_quality_changes_container)):
+                return quality_changes.getId()
         return ""
 
     ## Check if a container is read_only

@@ -114,8 +114,10 @@ class VersionUpgrade30to31(VersionUpgrade):
         # Copy global quality changes to extruder quality changes for single extrusion machines
         if parser["metadata"]["type"] == "quality_changes":
             all_quality_changes = self._getSingleExtrusionMachineQualityChanges(parser)
-            if len(all_quality_changes) == 1 and not all_quality_changes[0].has_option("metadata", "extruder"):
-                self._createExtruderQualityChangesForSingleExtrusionMachine(filename, all_quality_changes[0])
+            # Note that DO NOT!!! use the quality_changes returned from _getSingleExtrusionMachineQualityChanges().
+            # Those are loaded from the hard drive which are original files that haven't been upgraded yet.
+            if len(all_quality_changes) == 1 and not parser.has_option("metadata", "extruder"):
+                self._createExtruderQualityChangesForSingleExtrusionMachine(filename, parser)
 
         # Update version numbers
         parser["general"]["version"] = "2"
