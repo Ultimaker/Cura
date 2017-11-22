@@ -135,11 +135,13 @@ class PrinterOutputDevice(QObject, OutputDevice):
 
     ##  Attempt to establish connection
     def connect(self):
+        self.setConnectionState(ConnectionState.connecting)
         self._update_timer.start()
 
     ##  Attempt to close the connection
     def close(self):
         self._update_timer.stop()
+        self.setConnectionState(ConnectionState.closed)
 
     ##  Ensure that close gets called when object is destroyed
     def __del__(self):

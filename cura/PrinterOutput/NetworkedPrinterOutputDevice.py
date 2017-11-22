@@ -8,9 +8,19 @@ from PyQt5.QtCore import pyqtProperty, pyqtSignal, pyqtSlot, QObject, QTimer, py
 
 from time import time
 from typing import Callable, Any
+from enum import IntEnum
+
+
+class AuthState(IntEnum):
+    NotAuthenticated = 1
+    AuthenticationRequested = 2
+    Authenticated = 3
+    AuthenticationDenied = 4
+    AuthenticationReceived = 5
 
 
 class NetworkedPrinterOutputDevice(PrinterOutputDevice):
+    authenticationStateChanged = pyqtSignal()
     def __init__(self, device_id, address: str, properties, parent = None):
         super().__init__(device_id = device_id, parent = parent)
         self._manager = None
@@ -27,6 +37,16 @@ class NetworkedPrinterOutputDevice(PrinterOutputDevice):
         self._user_agent = "%s/%s " % (Application.getInstance().getApplicationName(), Application.getInstance().getVersion())
 
         self._onFinishedCallbacks = {}
+        self._authentication_state = AuthState.NotAuthenticated
+
+    def setAuthenticationState(self, authentication_state):
+        if self._authentication_state != authentication_state:
+            self._authentication_state = authentication_state
+            self.authenticationStateChanged.emit()
+
+    @pyqtProperty(int, notify=authenticationStateChanged)
+    def authenticationState(self):
+        return self._authentication_state
 
     def _update(self):
         if self._last_response_time:
@@ -81,23 +101,30 @@ class NetworkedPrinterOutputDevice(PrinterOutputDevice):
         self._last_request_time = time()
         pass
 
-    def _post(self, target: str, data: str, onFinished: Callable[[Any, QNetworkReply], None], onProgress: Callable):
+    def _post(self, target: str, data: str, onFinished: Callable[[Any, QNetworkReply], None], onProgress: Callable = None):
         if self._manager is None:
             self._createNetworkManager()
+        request = self._createEmptyRequest(target)
         self._last_request_time = time()
-        pass
+        reply = self._manager.post(request, data)
+        if onProgress is not None:
+            reply.uploadProgress.connect(onProgress)
+        self._onFinishedCallbacks[reply.url().toString() + str(reply.operation())] = onFinished
+
+    def _onAuthenticationRequired(self, reply, authenticator):
+        Logger.log("w", "Request to {url} required authentication, which was not implemented".format(url = reply.url().toString()))
 
     def _createNetworkManager(self):
         Logger.log("d", "Creating network manager")
         if self._manager:
             self._manager.finished.disconnect(self.__handleOnFinished)
             #self._manager.networkAccessibleChanged.disconnect(self._onNetworkAccesibleChanged)
-            #self._manager.authenticationRequired.disconnect(self._onAuthenticationRequired)
+            self._manager.authenticationRequired.disconnect(self._onAuthenticationRequired)
 
         self._manager = QNetworkAccessManager()
         self._manager.finished.connect(self.__handleOnFinished)
         self._last_manager_create_time = time()
-        #self._manager.authenticationRequired.connect(self._onAuthenticationRequired)
+        self._manager.authenticationRequired.connect(self._onAuthenticationRequired)
         #self._manager.networkAccessibleChanged.connect(self._onNetworkAccesibleChanged)  # for debug purposes
 
     def __handleOnFinished(self, reply: QNetworkReply):
@@ -107,7 +134,9 @@ class NetworkedPrinterOutputDevice(PrinterOutputDevice):
 
         self._last_response_time = time()
 
-        self.setConnectionState(ConnectionState.connected)
+        if self._connection_state == ConnectionState.connecting:
+            self.setConnectionState(ConnectionState.connected)
+
         try:
             self._onFinishedCallbacks[reply.url().toString() + str(reply.operation())](reply)
         except Exception:
