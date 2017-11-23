@@ -279,7 +279,7 @@ class CuraApplication(QtApplication):
         ContainerRegistry.getInstance().addContainer(empty_quality_changes_container)
 
         with ContainerRegistry.getInstance().lockFile():
-            ContainerRegistry.getInstance().load()
+            ContainerRegistry.getInstance().loadAllMetadata()
 
         # set the setting version for Preferences
         preferences = Preferences.getInstance()
