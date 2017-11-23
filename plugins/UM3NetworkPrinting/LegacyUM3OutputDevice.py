@@ -65,6 +65,15 @@ class LegacyUM3OutputDevice(NetworkedPrinterOutputDevice):
         self._compressing_gcode = False
         self._gcode = []
 
+        self.authenticationStateChanged.connect(self._onAuthenticationStateChanged)
+
+    def _onAuthenticationStateChanged(self):
+        # We only accept commands if we are authenticated.
+        if self._authentication_state == AuthState.Authenticated:
+            self.setAcceptsCommands(True)
+        else:
+            self.setAcceptsCommands(False)
+
     def _setupMessages(self):
         self._authentication_requested_message = Message(i18n_catalog.i18nc("@info:status",
                                                                             "Access to the printer requested. Please approve the request on the printer"),

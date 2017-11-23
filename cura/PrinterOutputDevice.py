@@ -34,6 +34,7 @@ i18n_catalog = i18nCatalog("cura")
 class PrinterOutputDevice(QObject, OutputDevice):
     printersChanged = pyqtSignal()
     connectionStateChanged = pyqtSignal(str)
+    acceptsCommandsChanged = pyqtSignal()
 
     def __init__(self, device_id, parent = None):
         super().__init__(device_id = device_id, parent = parent)
@@ -49,6 +50,7 @@ class PrinterOutputDevice(QObject, OutputDevice):
         self._control_item = None
 
         self._qml_context = None
+        self._accepts_commands = False
 
         self._update_timer = QTimer()
         self._update_timer.setInterval(2000)  # TODO; Add preference for update interval
@@ -151,6 +153,17 @@ class PrinterOutputDevice(QObject, OutputDevice):
     ##  Ensure that close gets called when object is destroyed
     def __del__(self):
         self.close()
+
+    @pyqtProperty(bool, notify=acceptsCommandsChanged)
+    def acceptsCommands(self):
+        return self._accepts_commands
+
+        ##  Set a flag to signal the UI that the printer is not (yet) ready to receive commands
+    def setAcceptsCommands(self, accepts_commands):
+        if self._accepts_commands != accepts_commands:
+            self._accepts_commands = accepts_commands
+
+        self.acceptsCommandsChanged.emit()
 
 
 ##  The current processing state of the backend.
