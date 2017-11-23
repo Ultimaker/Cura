@@ -152,7 +152,8 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
 
             if not definitions:
                 definition_container = DefinitionContainer(container_id)
-                definition_container.deserialize(archive.open(each_definition_container_file).read().decode("utf-8"))
+                definition_container.deserialize(archive.open(each_definition_container_file).read().decode("utf-8"),
+                                                 file_name = each_definition_container_file)
 
             else:
                 definition_container = definitions[0]
@@ -208,7 +209,8 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             instance_container = InstanceContainer(container_id)
 
             # Deserialize InstanceContainer by converting read data from bytes to string
-            instance_container.deserialize(archive.open(each_instance_container_file).read().decode("utf-8"))
+            instance_container.deserialize(archive.open(each_instance_container_file).read().decode("utf-8"),
+                                           file_name = each_instance_container_file)
             instance_container_list.append(instance_container)
 
             container_type = instance_container.getMetaDataEntry("type")
@@ -378,7 +380,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         return WorkspaceReader.PreReadResult.accepted
 
     ## Overrides an ExtruderStack in the given GlobalStack and returns the new ExtruderStack.
-    def _overrideExtruderStack(self, global_stack, extruder_file_content):
+    def _overrideExtruderStack(self, global_stack, extruder_file_content, extruder_stack_file):
         # Get extruder position first
         extruder_config = configparser.ConfigParser()
         extruder_config.read_string(extruder_file_content)
@@ -394,7 +396,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             return None
 
         # Override the given extruder stack
-        extruder_stack.deserialize(extruder_file_content)
+        extruder_stack.deserialize(extruder_file_content, file_name = extruder_stack_file)
 
         # return the new ExtruderStack
         return extruder_stack
@@ -484,7 +486,8 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             definitions = self._container_registry.findDefinitionContainers(id = container_id)
             if not definitions:
                 definition_container = DefinitionContainer(container_id)
-                definition_container.deserialize(archive.open(definition_container_file).read().decode("utf-8"))
+                definition_container.deserialize(archive.open(definition_container_file).read().decode("utf-8"),
+                                                 file_name = definition_container_file)
                 self._container_registry.addContainer(definition_container)
             Job.yieldThread()
 
@@ -502,18 +505,21 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
 
                 if not materials:
                     material_container = xml_material_profile(container_id)
-                    material_container.deserialize(archive.open(material_container_file).read().decode("utf-8"))
+                    material_container.deserialize(archive.open(material_container_file).read().decode("utf-8"),
+                                                   file_name = material_container_file)
                     containers_to_add.append(material_container)
                 else:
                     material_container = materials[0]
                     if not material_container.isReadOnly():  # Only create new materials if they are not read only.
                         if self._resolve_strategies["material"] == "override":
-                            material_container.deserialize(archive.open(material_container_file).read().decode("utf-8"))
+                            material_container.deserialize(archive.open(material_container_file).read().decode("utf-8"),
+                                                           file_name = material_container_file)
                         elif self._resolve_strategies["material"] == "new":
                             # Note that we *must* deserialize it with a new ID, as multiple containers will be
                             # auto created & added.
                             material_container = xml_material_profile(self.getNewId(container_id))
-                            material_container.deserialize(archive.open(material_container_file).read().decode("utf-8"))
+                            material_container.deserialize(archive.open(material_container_file).read().decode("utf-8"),
+                                                           file_name = material_container_file)
                             containers_to_add.append(material_container)
 
                 material_containers.append(material_container)
@@ -540,7 +546,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             instance_container = InstanceContainer(container_id)
 
             # Deserialize InstanceContainer by converting read data from bytes to string
-            instance_container.deserialize(serialized)
+            instance_container.deserialize(serialized, file_name = instance_container_file)
             container_type = instance_container.getMetaDataEntry("type")
             Job.yieldThread()
 
@@ -562,7 +568,8 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                 else:
                     if self._resolve_strategies["machine"] == "override" or self._resolve_strategies["machine"] is None:
                         instance_container = user_containers[0]
-                        instance_container.deserialize(archive.open(instance_container_file).read().decode("utf-8"))
+                        instance_container.deserialize(archive.open(instance_container_file).read().decode("utf-8"),
+                                                       file_name = instance_container_file)
                         instance_container.setDirty(True)
                     elif self._resolve_strategies["machine"] == "new":
                         # The machine is going to get a spiffy new name, so ensure that the id's of user settings match.
@@ -595,7 +602,8 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                     # selected strategy.
                     if self._resolve_strategies[container_type] == "override":
                         instance_container = changes_containers[0]
-                        instance_container.deserialize(archive.open(instance_container_file).read().decode("utf-8"))
+                        instance_container.deserialize(archive.open(instance_container_file).read().decode("utf-8"),
+                                                       file_name = instance_container_file)
                         instance_container.setDirty(True)
 
                     elif self._resolve_strategies[container_type] == "new":
@@ -656,7 +664,8 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                 # There is a machine, check if it has authentication data. If so, keep that data.
                 network_authentication_id = container_stacks[0].getMetaDataEntry("network_authentication_id")
                 network_authentication_key = container_stacks[0].getMetaDataEntry("network_authentication_key")
-                container_stacks[0].deserialize(archive.open(global_stack_file).read().decode("utf-8"))
+                container_stacks[0].deserialize(archive.open(global_stack_file).read().decode("utf-8"),
+                                                file_name = global_stack_file)
                 if network_authentication_id:
                     container_stacks[0].addMetaDataEntry("network_authentication_id", network_authentication_id)
                 if network_authentication_key:
@@ -666,7 +675,8 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                 # create a new global stack
                 stack = GlobalStack(global_stack_id_new)
                 # Deserialize stack by converting read data from bytes to string
-                stack.deserialize(archive.open(global_stack_file).read().decode("utf-8"))
+                stack.deserialize(archive.open(global_stack_file).read().decode("utf-8"),
+                                  file_name = global_stack_file)
 
                 # Ensure a unique ID and name
                 stack._id = global_stack_id_new
@@ -706,7 +716,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                 if self._resolve_strategies["machine"] == "override":
                     if global_stack.getProperty("machine_extruder_count", "value") > 1:
                         # deserialize new extruder stack over the current ones (if any)
-                        stack = self._overrideExtruderStack(global_stack, extruder_file_content)
+                        stack = self._overrideExtruderStack(global_stack, extruder_file_content, extruder_stack_file)
                         if stack is None:
                             continue
 
@@ -726,7 +736,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                     extruder_config.write(tmp_string_io)
                     extruder_file_content = tmp_string_io.getvalue()
 
-                    stack.deserialize(extruder_file_content)
+                    stack.deserialize(extruder_file_content, file_name = extruder_stack_file)
 
                     # Ensure a unique ID and name
                     stack._id = new_id
