@@ -67,6 +67,13 @@ class LegacyUM3OutputDevice(NetworkedPrinterOutputDevice):
 
         self.authenticationStateChanged.connect(self._onAuthenticationStateChanged)
 
+        self.setPriority(3)  # Make sure the output device gets selected above local file output
+        self.setName(self._id)
+        self.setShortDescription(i18n_catalog.i18nc("@action:button Preceded by 'Ready to'.", "Print over network"))
+        self.setDescription(i18n_catalog.i18nc("@properties:tooltip", "Print over network"))
+
+        self.setIconName("print")
+
     def _onAuthenticationStateChanged(self):
         # We only accept commands if we are authenticated.
         if self._authentication_state == AuthState.Authenticated:
