@@ -11,7 +11,7 @@ catalog = i18nCatalog("cura")
 def getMetaData():
     return {
         "view": {
-            "name": catalog.i18nc("@item:inlistbox", "Simulation view"),
+            "name": catalog.i18nc("@item:inlistbox", "Layer view"),
             "view_panel": "SimulationView.qml",
             "weight": 2
         }

@@ -34,6 +34,7 @@ class SimulationPass(RenderPass):
         self._nozzle_shader = None
         self._old_current_layer = 0
         self._old_current_path = 0
+        self._switching_layers = True # It tracks when the user is moving the layers' slider
         self._gl = OpenGL.getInstance().getBindingsObject()
         self._scene = Application.getInstance().getController().getScene()
         self._extruder_manager = ExtruderManager.getInstance()
@@ -91,7 +92,7 @@ class SimulationPass(RenderPass):
 
         self.bind()
 
-        tool_handle_batch = RenderBatch(self._tool_handle_shader, type = RenderBatch.RenderType.Solid)
+        tool_handle_batch = RenderBatch(self._tool_handle_shader, type = RenderBatch.RenderType.Overlay)
         head_position = None  # Indicates the current position of the print head
         nozzle_node = None
 
@@ -143,8 +144,10 @@ class SimulationPass(RenderPass):
                     # All the layers but the current selected layer are rendered first
                     if self._old_current_path != self._layer_view._current_path_num:
                         self._current_shader = self._layer_shadow_shader
+                        self._switching_layers = False
                     if not self._layer_view.isSimulationRunning() and self._old_current_layer != self._layer_view._current_layer_num:
                         self._current_shader = self._layer_shader
+                        self._switching_layers = True
 
                     layers_batch = RenderBatch(self._current_shader, type = RenderBatch.RenderType.Solid, mode = RenderBatch.RenderMode.Lines, range = (start, end))
                     layers_batch.addItem(node.getWorldTransformation(), layer_data)
@@ -170,8 +173,9 @@ class SimulationPass(RenderPass):
                 if len(batch.items) > 0:
                     batch.render(self._scene.getActiveCamera())
 
-        # The nozzle is drawn once we know the correct position
-        if not self._compatibility_mode and self._layer_view.getActivity() and nozzle_node is not None:
+        # The nozzle is drawn when once we know the correct position of the head,
+        # but the user is not using the layer slider, and the compatibility mode is not enabled
+        if not self._switching_layers and not self._compatibility_mode and self._layer_view.getActivity() and nozzle_node is not None:
             if head_position is not None:
                 nozzle_node.setVisible(True)
                 nozzle_node.setPosition(head_position)
