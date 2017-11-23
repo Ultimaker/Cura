@@ -803,6 +803,22 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                                                                                  quality_type = quality_type)
             if quality_containers:
                 global_stack.quality = quality_containers[0]
+            else:
+                # the quality_type of the quality profile cannot be found.
+                # this can happen if a quality_type has been removed in a newer version, for example:
+                #  "extra_coarse" is removed from 2.7 to 3.0
+                # in this case, the quality will be reset to "normal"
+                quality_containers = self._container_registry.findInstanceContainers(
+                    definition = global_stack.definition.getId(),
+                    type = "quality",
+                    quality_type = "normal")
+                if quality_containers:
+                    global_stack.quality = quality_containers[0]
+                else:
+                    # This should not happen!
+                    Logger.log("e", "Cannot find quality normal for global stack [%s] [%s]",
+                               global_stack.getId(), global_stack.definition.getId())
+                    global_stack.quality = self._container_registry.findInstanceContainers(id = "empty_quality")
 
         # Replacing the old containers if resolve is "new".
         # When resolve is "new", some containers will get renamed, so all the other containers that reference to those
