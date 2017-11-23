@@ -799,51 +799,6 @@ class XmlMaterialProfile(InstanceContainer):
 
         return result_metadata
 
-    ##  Override of getIdsFromFile because the XML files contain multiple IDs.
-    @classmethod
-    def getIdsFromFile(cls, file_name):
-        result_ids = super().getIdsFromFile(file_name) #The base file has the default ID, taken from the file name without extension.
-        base_id = result_ids[0]
-
-        try:
-            data = ET.parse(file_name)
-        except: #IOError, PermissionError, or anything from the ElementTree library.
-            Logger.logException("e", "An exception occurred while parsing the material profile")
-            return
-
-        common_compatibility = True
-        compatible_entries = data.iterfind("./um:settings/um:setting[@key='hardware compatible']", cls.__namespaces)
-        try:
-            common_compatibility = cls._parseCompatibleValue(next(compatible_entries).text)
-        except StopIteration: #No 'hardware compatible' setting.
-            pass
-
-        #Get a mapping from the product names to the definition IDs.
-        product_id_map = cls.getProductIdMap()
-
-        for machine in data.iterfind("./um:settings/um:machine", cls.__namespaces):
-            machine_compatibility = common_compatibility
-            compatible_entries = data.iterfind("./um:setting[@key='hardware compatible']", cls.__namespaces)
-            try:
-                machine_compatibility = cls._parseCompatibleValue(next(compatible_entries).text)
-            except StopIteration: #No 'hardware compatible' setting.
-                pass
-
-            for identifier in machine.iterfind("./um:machine_identifier", cls.__namespaces): #For all machines.
-                machine_id = product_id_map.get(identifier.get("product"), None)
-                if machine_id is None:
-                    #Let's try again with some naive heuristics.
-                    machine_id = identifier.get("product").replace(" ", "").lower()
-                if machine_compatibility:
-                    result_ids.append(base_id + "_" + machine_id)
-
-                for hotend in machine.iterfind("./um:hotend", cls.__namespaces): #For all hotends.
-                    hotend_id = hotend.get("id")
-                    if hotend_id is None:
-                        continue
-                    result_ids.append(base_id + "_" + machine_id + "_" + hotend_id)
-        return result_ids
-
     def _addSettingElement(self, builder, instance):
         try:
             key = UM.Dictionary.findKey(self.__material_settings_setting_map, instance.definition.key)
