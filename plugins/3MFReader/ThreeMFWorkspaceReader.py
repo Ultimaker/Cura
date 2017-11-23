@@ -751,12 +751,15 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                 if stack.definitionChanges == self._container_registry.getEmptyInstanceContainer():
                     stack.setDefinitionChanges(CuraStackBuilder.createDefinitionChangesContainer(stack, stack.getId() + "_settings"))
 
-                extruder_stacks.append(stack)
+                if stack.getMetaDataEntry("type") == "extruder_train":
+                    extruder_stacks.append(stack)
 
             # If not extruder stacks were saved in the project file (pre 3.1) create one manually
             # We re-use the container registry's addExtruderStackForSingleExtrusionMachine method for this
             if not extruder_stacks:
-                extruder_stacks.append(self._container_registry.addExtruderStackForSingleExtrusionMachine(global_stack, "fdmextruder"))
+                stack = self._container_registry.addExtruderStackForSingleExtrusionMachine(global_stack, "fdmextruder")
+                if stack:
+                    extruder_stacks.append(stack)
 
         except:
             Logger.logException("w", "We failed to serialize the stack. Trying to clean up.")
@@ -801,24 +804,34 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             quality_containers = self._container_registry.findInstanceContainers(definition = global_stack.definition.getId(),
                                                                                  type = "quality",
                                                                                  quality_type = quality_type)
+            quality_containers = [q for q in quality_containers if q.getMetaDataEntry("material", "") == ""]
             if quality_containers:
                 global_stack.quality = quality_containers[0]
             else:
-                # the quality_type of the quality profile cannot be found.
-                # this can happen if a quality_type has been removed in a newer version, for example:
-                #  "extra_coarse" is removed from 2.7 to 3.0
-                # in this case, the quality will be reset to "normal"
-                quality_containers = self._container_registry.findInstanceContainers(
-                    definition = global_stack.definition.getId(),
-                    type = "quality",
-                    quality_type = "normal")
+                # look for "fdmprinter" qualities if the machine-specific qualities cannot be found
+                quality_containers = self._container_registry.findInstanceContainers(definition = "fdmprinter",
+                                                                                     type = "quality",
+                                                                                     quality_type = quality_type)
+                quality_containers = [q for q in quality_containers if q.getMetaDataEntry("material", "") == ""]
                 if quality_containers:
                     global_stack.quality = quality_containers[0]
                 else:
-                    # This should not happen!
-                    Logger.log("e", "Cannot find quality normal for global stack [%s] [%s]",
-                               global_stack.getId(), global_stack.definition.getId())
-                    global_stack.quality = self._container_registry.findInstanceContainers(id = "empty_quality")
+                    # the quality_type of the quality profile cannot be found.
+                    # this can happen if a quality_type has been removed in a newer version, for example:
+                    #  "extra_coarse" is removed from 2.7 to 3.0
+                    # in this case, the quality will be reset to "normal"
+                    quality_containers = self._container_registry.findInstanceContainers(
+                        definition = global_stack.definition.getId(),
+                        type = "quality",
+                        quality_type = "normal")
+                    quality_containers = [q for q in quality_containers if q.getMetaDataEntry("material", "") == ""]
+                    if quality_containers:
+                        global_stack.quality = quality_containers[0]
+                    else:
+                        # This should not happen!
+                        Logger.log("e", "Cannot find quality normal for global stack [%s] [%s]",
+                                   global_stack.getId(), global_stack.definition.getId())
+                        global_stack.quality = self._container_registry.findInstanceContainers(id = "empty_quality")[0]
 
         # Replacing the old containers if resolve is "new".
         # When resolve is "new", some containers will get renamed, so all the other containers that reference to those
