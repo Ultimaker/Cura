@@ -116,7 +116,10 @@ class VersionUpgrade30to31(VersionUpgrade):
             all_quality_changes = self._getSingleExtrusionMachineQualityChanges(parser)
             # Note that DO NOT!!! use the quality_changes returned from _getSingleExtrusionMachineQualityChanges().
             # Those are loaded from the hard drive which are original files that haven't been upgraded yet.
-            if len(all_quality_changes) == 1 and not parser.has_option("metadata", "extruder"):
+            # NOTE 2: The number can be 0 or 1 depends on whether you are loading it from the qualities folder or
+            #         from a project file. When you load from a project file, the custom profile may not be in cura
+            #         yet, so you will get 0.
+            if len(all_quality_changes) <= 1 and not parser.has_option("metadata", "extruder"):
                 self._createExtruderQualityChangesForSingleExtrusionMachine(filename, parser)
 
         # Update version numbers
@@ -199,7 +202,7 @@ class VersionUpgrade30to31(VersionUpgrade):
 
     def _createExtruderQualityChangesForSingleExtrusionMachine(self, filename, global_quality_changes):
         suffix = "_" + quote_plus(global_quality_changes["general"]["name"].lower())
-        machine_name = filename.strip("." + os.sep).replace(suffix, "")
+        machine_name = os.path.os.path.basename(filename).replace(".inst.cfg", "").replace(suffix, "")
         new_filename = machine_name + "_" + "fdmextruder" + suffix
 
         extruder_quality_changes_parser = configparser.ConfigParser()

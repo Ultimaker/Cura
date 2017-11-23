@@ -228,6 +228,8 @@ Rectangle
 
         spacing: 2
 
+        visible: !base.monitoringPrint
+
         anchors {
             verticalCenter: base.verticalCenter
             right: viewModeButton.right
