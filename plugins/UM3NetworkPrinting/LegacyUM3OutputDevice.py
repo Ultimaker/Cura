@@ -4,6 +4,7 @@ from cura.PrinterOutput.PrintJobOutputModel import PrintJobOutputModel
 from cura.PrinterOutput.MaterialOutputModel import MaterialOutputModel
 
 from cura.Settings.ContainerManager import ContainerManager
+from cura.Settings.ExtruderManager import ExtruderManager
 
 from UM.Logger import Logger
 from UM.Settings.ContainerRegistry import ContainerRegistry
@@ -13,6 +14,7 @@ from UM.Message import Message
 
 from PyQt5.QtNetwork import QNetworkRequest
 from PyQt5.QtCore import QTimer
+from PyQt5.QtWidgets import QMessageBox
 
 import json
 import os  # To get the username
@@ -122,8 +124,144 @@ class LegacyUM3OutputDevice(NetworkedPrinterOutputDevice):
                 # NotImplementedError. We can simply ignore these.
                 pass
 
-        # TODO
-        pass
+    def requestWrite(self, nodes, file_name=None, filter_by_machine=False, file_handler=None, **kwargs):
+        if not self.activePrinter:
+            # No active printer. Unable to write
+            return
+
+        if self.activePrinter.printerState not in ["idle", ""]:
+            # Printer is not able to accept commands.
+            return
+
+        if self._authentication_state != AuthState.Authenticated:
+            # Not authenticated, so unable to send job.
+            return
+
+        # Notify the UI that a switch to the print monitor should happen
+        Application.getInstance().showPrintMonitor.emit(True)
+        self.writeStarted.emit(self)
+
+        gcode = getattr(Application.getInstance().getController().getScene(), "gcode_list", None)
+        if gcode is None:
+            # Unable to find g-code. Nothing to send
+            return
+
+        errors = self._checkForErrors()
+        if errors:
+            text = i18n_catalog.i18nc("@label", "Unable to start a new print job.")
+            informative_text = i18n_catalog.i18nc("@label",
+                                                  "There is an issue with the configuration of your Ultimaker, which makes it impossible to start the print. "
+                                                  "Please resolve this issues before continuing.")
+            detailed_text = ""
+            for error in errors:
+                detailed_text += error + "\n"
+
+            Application.getInstance().messageBox(i18n_catalog.i18nc("@window:title", "Mismatched configuration"),
+                                                 text,
+                                                 informative_text,
+                                                 detailed_text,
+                                                 buttons=QMessageBox.Ok,
+                                                 icon=QMessageBox.Critical,
+                                                callback = self._messageBoxCallback
+                                                 )
+            return  # Don't continue; Errors must block sending the job to the printer.
+
+        # There might be multiple things wrong with the configuration. Check these before starting.
+        warnings = self._checkForWarnings()
+
+        if warnings:
+            text = i18n_catalog.i18nc("@label", "Are you sure you wish to print with the selected configuration?")
+            informative_text = i18n_catalog.i18nc("@label",
+                                                  "There is a mismatch between the configuration or calibration of the printer and Cura. "
+                                                  "For the best result, always slice for the PrintCores and materials that are inserted in your printer.")
+            detailed_text = ""
+            for warning in warnings:
+                detailed_text += warning + "\n"
+
+            Application.getInstance().messageBox(i18n_catalog.i18nc("@window:title", "Mismatched configuration"),
+                                                 text,
+                                                 informative_text,
+                                                 detailed_text,
+                                                 buttons=QMessageBox.Yes + QMessageBox.No,
+                                                 icon=QMessageBox.Question,
+                                                 callback=self._messageBoxCallback
+                                                 )
+            return
+
+        # No warnings or errors, so we're good to go.
+        self._startPrint()
+
+    def _startPrint(self):
+        # TODO: Implement
+        Logger.log("i", "Sending print job to printer.")
+        return
+
+    def _messageBoxCallback(self, button):
+        def delayedCallback():
+            if button == QMessageBox.Yes:
+                self._startPrint()
+            else:
+                Application.getInstance().showPrintMonitor.emit(False)
+                # For some unknown reason Cura on OSX will hang if we do the call back code
+                # immediately without first returning and leaving QML's event system.
+
+        QTimer.singleShot(100, delayedCallback)
+
+    def _checkForErrors(self):
+        errors = []
+        print_information = Application.getInstance().getPrintInformation()
+        if not print_information.materialLengths:
+            Logger.log("w", "There is no material length information. Unable to check for errors.")
+            return errors
+
+        for index, extruder in enumerate(self.activePrinter.extruders):
+            # Due to airflow issues, both slots must be loaded, regardless if they are actually used or not.
+            if extruder.hotendID == "":
+                # No Printcore loaded.
+                errors.append(i18n_catalog.i18nc("@info:status", "No Printcore loaded in slot {slot_number}".format(slot_number=index + 1)))
+
+            if index < len(print_information.materialLengths) and print_information.materialLengths[index] != 0:
+                # The extruder is by this print.
+                if extruder.activeMaterial is None:
+                    # No active material
+                    errors.append(i18n_catalog.i18nc("@info:status", "No material loaded in slot {slot_number}".format(slot_number=index + 1)))
+        return errors
+
+    def _checkForWarnings(self):
+        warnings = []
+        print_information = Application.getInstance().getPrintInformation()
+
+        if not print_information.materialLengths:
+            Logger.log("w", "There is no material length information. Unable to check for warnings.")
+            return warnings
+
+        extruder_manager = ExtruderManager.getInstance()
+
+        for index, extruder in enumerate(self.activePrinter.extruders):
+            if index < len(print_information.materialLengths) and print_information.materialLengths[index] != 0:
+                # The extruder is by this print.
+
+                # TODO: material length check
+
+                # Check if the right Printcore is active.
+                variant = extruder_manager.getExtruderStack(index).findContainer({"type": "variant"})
+                if variant:
+                    if variant.getName() != extruder.hotendID:
+                        warnings.append(i18n_catalog.i18nc("@label", "Different PrintCore (Cura: {cura_printcore_name}, Printer: {remote_printcore_name}) selected for extruder {extruder_id}".format(cura_printcore_name = variant.getName(), remote_printcore_name = extruder.hotendID, extruder_id = index + 1)))
+                else:
+                    Logger.log("w", "Unable to find variant.")
+
+                # Check if the right material is loaded.
+                local_material = extruder_manager.getExtruderStack(index).findContainer({"type": "material"})
+                if local_material:
+                    if extruder.activeMaterial.guid != local_material.getMetaDataEntry("GUID"):
+                        Logger.log("w", "Extruder %s has a different material (%s) as Cura (%s)", index + 1, extruder.activeMaterial.guid, local_material.getMetaDataEntry("GUID"))
+                        warnings.append(i18n_catalog.i18nc("@label", "Different material (Cura: {0}, Printer: {1}) selected for extruder {2}").format(local_material.getName(), extruder.activeMaterial.name, index + 1))
+                else:
+                    Logger.log("w", "Unable to find material.")
+
+        return warnings
+
 
     def _update(self):
         if not super()._update():
@@ -339,13 +477,15 @@ class LegacyUM3OutputDevice(NetworkedPrinterOutputDevice):
                         color = containers[0].getMetaDataEntry("color_code")
                         brand = containers[0].getMetaDataEntry("brand")
                         material_type = containers[0].getMetaDataEntry("material")
+                        name = containers[0].getName()
                     else:
                         # Unknown material.
                         color = "#00000000"
                         brand = "Unknown"
                         material_type = "Unknown"
+                        name = "Unknown"
                     material = MaterialOutputModel(guid=material_guid, type=material_type,
-                                                   brand=brand, color=color)
+                                                   brand=brand, color=color, name = name)
                     extruder.updateActiveMaterial(material)
 
                 try:

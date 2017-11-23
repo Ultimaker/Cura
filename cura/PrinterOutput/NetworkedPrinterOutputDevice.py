@@ -21,6 +21,7 @@ class AuthState(IntEnum):
 
 class NetworkedPrinterOutputDevice(PrinterOutputDevice):
     authenticationStateChanged = pyqtSignal()
+
     def __init__(self, device_id, address: str, properties, parent = None):
         super().__init__(device_id = device_id, parent = parent)
         self._manager = None
@@ -40,6 +41,9 @@ class NetworkedPrinterOutputDevice(PrinterOutputDevice):
         self._authentication_state = AuthState.NotAuthenticated
 
         self._cached_multiparts = {}
+
+    def requestWrite(self, nodes, file_name=None, filter_by_machine=False, file_handler=None, **kwargs):
+        raise NotImplementedError("requestWrite needs to be implemented")
 
     def setAuthenticationState(self, authentication_state):
         if self._authentication_state != authentication_state:

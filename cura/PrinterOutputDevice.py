@@ -5,13 +5,19 @@ from UM.i18n import i18nCatalog
 from UM.OutputDevice.OutputDevice import OutputDevice
 from PyQt5.QtCore import pyqtProperty, pyqtSignal, pyqtSlot, QObject, QTimer, pyqtSignal, QUrl
 from PyQt5.QtQml import QQmlComponent, QQmlContext
-from enum import IntEnum  # For the connection state tracking.
+
 
 from UM.Logger import Logger
 from UM.Signal import signalemitter
 from UM.Application import Application
 
 import os
+from enum import IntEnum  # For the connection state tracking.
+from typing import List, Optional
+
+MYPY = False
+if MYPY:
+    from cura.PrinterOutput.PrinterOutputModel import PrinterOutputModel
 
 i18n_catalog = i18nCatalog("cura")
 
@@ -32,7 +38,7 @@ class PrinterOutputDevice(QObject, OutputDevice):
     def __init__(self, device_id, parent = None):
         super().__init__(device_id = device_id, parent = parent)
 
-        self._printers = []
+        self._printers = []  # type: List[PrinterOutputModel]
 
         self._monitor_view_qml_path = ""
         self._monitor_component = None
@@ -62,20 +68,19 @@ class PrinterOutputDevice(QObject, OutputDevice):
     def _update(self):
         pass
 
-    def _getPrinterByKey(self, key):
+    def _getPrinterByKey(self, key) -> Optional["PrinterOutputModel"]:
         for printer in self._printers:
             if printer.key == key:
                 return printer
 
         return None
 
-    def requestWrite(self, nodes, file_name = None, filter_by_machine = False, file_handler = None):
+    def requestWrite(self, nodes, file_name = None, filter_by_machine = False, file_handler = None, **kwargs):
         raise NotImplementedError("requestWrite needs to be implemented")
 
     @pyqtProperty(QObject, notify = printersChanged)
-    def activePrinter(self):
+    def activePrinter(self) -> Optional["PrinterOutputModel"]:
         if len(self._printers):
-
             return self._printers[0]
         return None
 
