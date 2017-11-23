@@ -13,11 +13,15 @@ from UM.i18n import i18nCatalog
 from UM.Message import Message
 
 from PyQt5.QtNetwork import QNetworkRequest
-from PyQt5.QtCore import QTimer
+from PyQt5.QtCore import QTimer, QCoreApplication
 from PyQt5.QtWidgets import QMessageBox
+
+from time import time
 
 import json
 import os  # To get the username
+import gzip
+
 
 i18n_catalog = i18nCatalog("cura")
 
@@ -55,6 +59,10 @@ class LegacyUM3OutputDevice(NetworkedPrinterOutputDevice):
         self._authentication_requested_message = None
         self._authentication_failed_message = None
         self._not_authenticated_message = None
+
+        self._sending_gcode = False
+        self._compressing_gcode = False
+        self._gcode = []
 
     def _setupMessages(self):
         self._authentication_requested_message = Message(i18n_catalog.i18nc("@info:status",
@@ -96,7 +104,8 @@ class LegacyUM3OutputDevice(NetworkedPrinterOutputDevice):
             self._authentication_failed_message.hide()
         if self._authentication_succeeded_message:
             self._authentication_succeeded_message.hide()
-
+        self._sending_gcode = False
+        self._compressing_gcode = False
         self._authentication_timer.stop()
 
     ##  Send all material profiles to the printer.
@@ -141,8 +150,8 @@ class LegacyUM3OutputDevice(NetworkedPrinterOutputDevice):
         Application.getInstance().showPrintMonitor.emit(True)
         self.writeStarted.emit(self)
 
-        gcode = getattr(Application.getInstance().getController().getScene(), "gcode_list", None)
-        if gcode is None:
+        self._gcode = getattr(Application.getInstance().getController().getScene(), "gcode_list", [])
+        if not self._gcode:
             # Unable to find g-code. Nothing to send
             return
 
@@ -192,9 +201,97 @@ class LegacyUM3OutputDevice(NetworkedPrinterOutputDevice):
         self._startPrint()
 
     def _startPrint(self):
-        # TODO: Implement
         Logger.log("i", "Sending print job to printer.")
+        if self._sending_gcode:
+            self._error_message = Message(
+                i18n_catalog.i18nc("@info:status",
+                                   "Sending new jobs (temporarily) blocked, still sending the previous print job."))
+            self._error_message.show()
+            return
+
+        self._sending_gcode = True
+
+        self._send_gcode_start = time()
+        self._progress_message = Message(i18n_catalog.i18nc("@info:status", "Sending data to printer"), 0, False, -1,
+                                         i18n_catalog.i18nc("@info:title", "Sending Data"))
+        self._progress_message.addAction("Abort", i18n_catalog.i18nc("@action:button", "Cancel"), None, "")
+        self._progress_message.actionTriggered.connect(self._progressMessageActionTriggered)
+
+        self._progress_message.show()
+        compressed_gcode = self._compressGCode()
+        if compressed_gcode is None:
+            # Abort was called.
+            return
+
+        file_name = "%s.gcode.gz" % Application.getInstance().getPrintInformation().jobName
+        self._postForm("print_job", "form-data; name=\"file\";filename=\"%s\"" % file_name, compressed_gcode,
+                       onFinished=self._onPostPrintJobFinished)
+
         return
+
+    def _progressMessageActionTriggered(self, message_id=None, action_id=None):
+        if action_id == "Abort":
+            Logger.log("d", "User aborted sending print to remote.")
+            self._progress_message.hide()
+            self._compressing_gcode = False
+            self._sending_gcode = False
+            Application.getInstance().showPrintMonitor.emit(False)
+
+    def _onPostPrintJobFinished(self, reply):
+        self._progress_message.hide()
+        self._sending_gcode = False
+
+    def __compressDataAndNotifyQt(self, data_to_append):
+        compressed_data = gzip.compress(data_to_append.encode("utf-8"))
+        self._progress_message.setProgress(-1)  # Tickle the message so that it's clear that it's still being used.
+        QCoreApplication.processEvents()  # Ensure that the GUI does not freeze.
+
+        # Pretend that this is a response, as zipping might take a bit of time.
+        # If we don't do this, the device might trigger a timeout.
+        self._last_response_time = time()
+        return compressed_data
+
+    def _onUploadPrintJobProgress(self, bytes_sent, bytes_total):
+        if bytes_total > 0:
+            new_progress = bytes_sent / bytes_total * 100
+            # Treat upload progress as response. Uploading can take more than 10 seconds, so if we don't, we can get
+            # timeout responses if this happens.
+            self._last_response_time = time()
+            if new_progress > self._progress_message.getProgress():
+                self._progress_message.show()  # Ensure that the message is visible.
+                self._progress_message.setProgress(bytes_sent / bytes_total * 100)
+        else:
+            self._progress_message.setProgress(0)
+
+            self._progress_message.hide()
+
+    def _compressGCode(self):
+        self._compressing_gcode = True
+
+        ## Mash the data into single string
+        max_chars_per_line = 1024 * 1024 / 4  # 1/4 MB per line.
+        byte_array_file_data = b""
+        batched_line = ""
+
+        for line in self._gcode:
+            if not self._compressing_gcode:
+                self._progress_message.hide()
+                # Stop trying to zip / send as abort was called.
+                return
+            batched_line += line
+            # if the gcode was read from a gcode file, self._gcode will be a list of all lines in that file.
+            # Compressing line by line in this case is extremely slow, so we need to batch them.
+            if len(batched_line) < max_chars_per_line:
+                continue
+            byte_array_file_data += self.__compressDataAndNotifyQt(batched_line)
+            batched_line = ""
+
+        # Don't miss the last batch (If any)
+        if batched_line:
+            byte_array_file_data += self.__compressDataAndNotifyQt(batched_line)
+
+        self._compressing_gcode = False
+        return byte_array_file_data
 
     def _messageBoxCallback(self, button):
         def delayedCallback():
