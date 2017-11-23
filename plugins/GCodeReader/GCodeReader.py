@@ -58,6 +58,7 @@ class GCodeReader(MeshReader):
         self._layer_data_builder = LayerDataBuilder.LayerDataBuilder()
         self._center_is_zero = False
         self._is_absolute_positioning = True    # It can be absolute (G90) or relative (G91)
+        self._is_absolute_extrusion = True  # It can become absolute (M82, default) or relative (M83)
 
     @staticmethod
     def _getValue(line, code):
@@ -180,11 +181,11 @@ class GCodeReader(MeshReader):
         f = params.f if params.f is not None else f
 
         if params.e is not None:
-            new_extrusion_value = params.e if self._is_absolute_positioning else e[self._extruder_number] + params.e
+            new_extrusion_value = params.e if self._is_absolute_extrusion else e[self._extruder_number] + params.e
             if new_extrusion_value > e[self._extruder_number]:
-                path.append([x, y, z, f, params.e + self._extrusion_length_offset[self._extruder_number], self._layer_type])  # extrusion
+                path.append([x, y, z, f, new_extrusion_value + self._extrusion_length_offset[self._extruder_number], self._layer_type])  # extrusion
             else:
-                path.append([x, y, z, f, params.e + self._extrusion_length_offset[self._extruder_number], LayerPolygon.MoveRetractionType])  # retraction
+                path.append([x, y, z, f, new_extrusion_value + self._extrusion_length_offset[self._extruder_number], LayerPolygon.MoveRetractionType])  # retraction
             e[self._extruder_number] = new_extrusion_value
 
             # Only when extruding we can determine the latest known "layer height" which is the difference in height between extrusions
@@ -196,6 +197,7 @@ class GCodeReader(MeshReader):
             path.append([x, y, z, f, e[self._extruder_number] + self._extrusion_length_offset[self._extruder_number], LayerPolygon.MoveCombingType])
         return self._position(x, y, z, f, e)
 
+
     # G0 and G1 should be handled exactly the same.
     _gCode1 = _gCode0
 
@@ -204,6 +206,7 @@ class GCodeReader(MeshReader):
         return self._position(
             params.x if params.x is not None else position.x,
             params.y if params.y is not None else position.y,
+
             0,
             position.f,
             position.e)
@@ -265,6 +268,14 @@ class GCodeReader(MeshReader):
             self._extrusion_length_offset.extend([0] * (self._extruder_number - len(position.e) + 1))
             position.e.extend([0] * (self._extruder_number - len(position.e) + 1))
         return position
+
+    def _processMCode(self, m):
+        if m == 82:
+            # Set absolute extrusion mode
+            self._is_absolute_extrusion = True
+        elif m == 83:
+            # Set relative extrusion mode
+            self._is_absolute_extrusion = False
 
     _type_keyword = ";TYPE:"
     _layer_keyword = ";LAYER:"
@@ -382,6 +393,10 @@ class GCodeReader(MeshReader):
                         current_path.clear()
 
                         current_position = self._processTCode(T, line, current_position, current_path)
+
+                if line.startswith("M"):
+                    M = self._getInt(line, "M")
+                    self._processMCode(M)
 
             # "Flush" leftovers. Last layer paths are still stored
             if len(current_path) > 1:
