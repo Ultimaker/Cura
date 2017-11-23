@@ -19,3 +19,7 @@ class MaterialsModel(InstanceContainersModel):
     def _onContainerMetaDataChanged(self, container):
         if container.getMetaDataEntry("type") == "material": #Only need to update if a material was changed.
             self._update()
+
+    def _onContainerChanged(self, container):
+        if container.getMetaDataEntry("type", "") == "material":
+            super()._onContainerChanged(container)
