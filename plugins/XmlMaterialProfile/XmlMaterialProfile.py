@@ -781,7 +781,7 @@ class XmlMaterialProfile(InstanceContainer):
 
                     # Same as machine compatibility, keep the derived material containers consistent with the parent
                     # material
-                    found_materials = ContainerRegistry.getInstance().findInstanceContainers(id = new_hotend_id)
+                    found_materials = ContainerRegistry.getInstance().findInstanceContainersMetadata(id = new_hotend_id)
                     if found_materials:
                         new_hotend_material_metadata = found_materials[0]
                     else:
