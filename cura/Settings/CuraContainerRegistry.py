@@ -4,6 +4,7 @@
 import os
 import os.path
 import re
+import configparser
 
 from typing import Optional
 
@@ -19,6 +20,7 @@ from UM.Message import Message
 from UM.Platform import Platform
 from UM.PluginRegistry import PluginRegistry  # For getting the possible profile writers to write with.
 from UM.Util import parseBool
+from UM.Resources import Resources
 
 from . import ExtruderStack
 from . import GlobalStack
@@ -444,20 +446,83 @@ class CuraContainerRegistry(ContainerRegistry):
                 self.addContainer(user_container)
 
             variant_id = "default"
-            if machine.variant.getId() != "empty_variant":
+            if machine.variant.getId() not in ("empty", "empty_variant"):
                 variant_id = machine.variant.getId()
+            else:
+                variant_id = "empty_variant"
             extruder_stack.setVariantById(variant_id)
-            extruder_stack.setMaterialById("default")
-            extruder_stack.setQualityById("default")
-            if machine.qualityChanges.getId() != "empty_quality_changes":
+
+            material_id = "default"
+            if machine.material.getId() not in ("empty", "empty_material"):
+                # TODO: find the ID that's suitable for this extruder
+                pass
+            else:
+                material_id = "empty_material"
+            extruder_stack.setMaterialById(material_id)
+
+            quality_id = "default"
+            if machine.quality.getId() not in ("empty", "empty_quality"):
+                # TODO: find the ID that's suitable for this extruder
+                pass
+            else:
+                quality_id = "empty_quality"
+            extruder_stack.setQualityById(quality_id)
+
+            if machine.qualityChanges.getId() not in ("empty", "empty_quality_changes"):
                 extruder_quality_changes_container = self.findInstanceContainers(name = machine.qualityChanges.getName(), extruder = extruder_id)
                 if extruder_quality_changes_container:
-                    quality_changes_id = extruder_quality_changes_container[0].getId()
+                    extruder_quality_changes_container = extruder_quality_changes_container[0]
+                    quality_changes_id = extruder_quality_changes_container.getId()
                     extruder_stack.setQualityChangesById(quality_changes_id)
+                else:
+                    # Some extruder quality_changes containers can be created at runtime as files in the qualities
+                    # folder. Those files won't be loaded in the registry immediately. So we also need to search
+                    # the folder to see if the quality_changes exists.
+                    extruder_quality_changes_container = self._findQualityChangesContainerInCuraFolder(machine.qualityChanges.getName())
+                    if extruder_quality_changes_container:
+                        quality_changes_id = extruder_quality_changes_container.getId()
+                        extruder_stack.setQualityChangesById(quality_changes_id)
+
+                if not extruder_quality_changes_container:
+                    Logger.log("w", "Could not find quality_changes named [%s] for extruder [%s]",
+                               machine.qualityChanges.getName(), extruder_stack.getId())
 
             self.addContainer(extruder_stack)
 
         return extruder_stack
+
+    def _findQualityChangesContainerInCuraFolder(self, name):
+        quality_changes_dir = Resources.getPath(CuraApplication.ResourceTypes.QualityInstanceContainer)
+
+        instance_container = None
+
+        for item in os.listdir(quality_changes_dir):
+            file_path = os.path.join(quality_changes_dir, item)
+            if not os.path.isfile(file_path):
+                continue
+
+            parser = configparser.ConfigParser()
+            try:
+                parser.read([file_path])
+            except:
+                # skip, it is not a valid stack file
+                continue
+
+            if not parser.has_option("general", "name"):
+                continue
+
+            if parser["general"]["name"] == name:
+                # load the container
+                container_id = os.path.basename(file_path).replace(".inst.cfg", "")
+
+                instance_container = InstanceContainer(container_id)
+                with open(file_path, "r") as f:
+                    serialized = f.read()
+                instance_container.deserialize(serialized, file_path)
+                self.addContainer(instance_container)
+                break
+
+        return instance_container
 
     # Fix the extruders that were upgraded to ExtruderStack instances during addContainer.
     # The stacks are now responsible for setting the next stack on deserialize. However,
