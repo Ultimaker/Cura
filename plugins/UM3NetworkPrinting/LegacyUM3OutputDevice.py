@@ -58,6 +58,7 @@ class LegacyUM3OutputDevice(NetworkedPrinterOutputDevice):
         # This ensures that the messages are only created for devices that actually want to connect.
         self._authentication_requested_message = None
         self._authentication_failed_message = None
+        self._authentication_succeeded_message = None
         self._not_authenticated_message = None
 
         self._sending_gcode = False
