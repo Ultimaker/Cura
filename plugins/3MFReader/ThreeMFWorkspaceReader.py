@@ -799,6 +799,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         if quality.getId() not in ("empty", "empty_quality"):
             quality_type = quality.getMetaDataEntry("quality_type")
             quality_containers = self._container_registry.findInstanceContainers(definition = global_stack.definition.getId(),
+                                                                                 type = "quality",
                                                                                  quality_type = quality_type)
             if quality_containers:
                 global_stack.quality = quality_containers[0]
