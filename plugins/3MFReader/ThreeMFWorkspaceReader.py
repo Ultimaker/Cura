@@ -790,6 +790,19 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             for stack in [global_stack] + extruder_stacks:
                 stack.replaceContainer(_ContainerIndexes.Quality, empty_quality_container)
 
+        # Fix quality:
+        # The quality specified in an old project file can be wrong, for example, for UM2, it should be "um2_normal"
+        # but instead it was "normal". This should be fixed by setting it to the correct quality.
+        # Note that this only seems to happen on single-extrusion machines on the global stack, so we only apply the
+        # fix for that
+        quality = global_stack.quality
+        if quality.getId() not in ("empty", "empty_quality"):
+            quality_type = quality.getMetaDataEntry("quality_type")
+            quality_containers = self._container_registry.findInstanceContainers(definition = global_stack.definition.getId(),
+                                                                                 quality_type = quality_type)
+            if quality_containers:
+                global_stack.quality = quality_containers[0]
+
         # Replacing the old containers if resolve is "new".
         # When resolve is "new", some containers will get renamed, so all the other containers that reference to those
         # MUST get updated too.
