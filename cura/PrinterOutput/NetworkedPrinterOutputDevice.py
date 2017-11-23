@@ -7,7 +7,7 @@ from PyQt5.QtNetwork import QHttpMultiPart, QHttpPart, QNetworkRequest, QNetwork
 from PyQt5.QtCore import pyqtProperty, pyqtSignal, pyqtSlot, QObject, QTimer, pyqtSignal, QUrl
 
 from time import time
-from typing import Callable, Any
+from typing import Callable, Any, Optional
 from enum import IntEnum
 
 
@@ -38,6 +38,8 @@ class NetworkedPrinterOutputDevice(PrinterOutputDevice):
 
         self._onFinishedCallbacks = {}
         self._authentication_state = AuthState.NotAuthenticated
+
+        self._cached_multiparts = {}
 
     def setAuthenticationState(self, authentication_state):
         if self._authentication_state != authentication_state:
@@ -79,29 +81,35 @@ class NetworkedPrinterOutputDevice(PrinterOutputDevice):
         request.setHeader(QNetworkRequest.UserAgentHeader, self._user_agent)
         return request
 
-    def _put(self, target: str, data: str, onFinished: Callable[[Any, QNetworkReply], None]):
+    def _clearCachedMultiPart(self, reply):
+        if id(reply) in self._cached_multiparts:
+            del self._cached_multiparts[id(reply)]
+
+    def _put(self, target: str, data: str, onFinished: Optional[Callable[[Any, QNetworkReply], None]]):
         if self._manager is None:
             self._createNetworkManager()
         request = self._createEmptyRequest(target)
         self._last_request_time = time()
         reply = self._manager.put(request, data.encode())
-        self._onFinishedCallbacks[reply.url().toString() + str(reply.operation())] = onFinished
+        if onFinished is not None:
+            self._onFinishedCallbacks[reply.url().toString() + str(reply.operation())] = onFinished
 
-    def _get(self, target: str, onFinished: Callable[[Any, QNetworkReply], None]):
+    def _get(self, target: str, onFinished: Optional[Callable[[Any, QNetworkReply], None]]):
         if self._manager is None:
             self._createNetworkManager()
         request = self._createEmptyRequest(target)
         self._last_request_time = time()
         reply = self._manager.get(request)
-        self._onFinishedCallbacks[reply.url().toString() + str(reply.operation())] = onFinished
+        if onFinished is not None:
+            self._onFinishedCallbacks[reply.url().toString() + str(reply.operation())] = onFinished
 
-    def _delete(self, target: str, onFinished: Callable[[Any, QNetworkReply], None]):
+    def _delete(self, target: str, onFinished: Optional[Callable[[Any, QNetworkReply], None]]):
         if self._manager is None:
             self._createNetworkManager()
         self._last_request_time = time()
         pass
 
-    def _post(self, target: str, data: str, onFinished: Callable[[Any, QNetworkReply], None], onProgress: Callable = None):
+    def _post(self, target: str, data: str, onFinished: Optional[Callable[[Any, QNetworkReply], None]], onProgress: Callable = None):
         if self._manager is None:
             self._createNetworkManager()
         request = self._createEmptyRequest(target)
@@ -109,7 +117,31 @@ class NetworkedPrinterOutputDevice(PrinterOutputDevice):
         reply = self._manager.post(request, data)
         if onProgress is not None:
             reply.uploadProgress.connect(onProgress)
-        self._onFinishedCallbacks[reply.url().toString() + str(reply.operation())] = onFinished
+        if onFinished is not None:
+            self._onFinishedCallbacks[reply.url().toString() + str(reply.operation())] = onFinished
+
+    def _postForm(self, target: str, header_data: str, body_data: bytes, onFinished: Optional[Callable[[Any, QNetworkReply], None]], onProgress: Callable = None):
+        if self._manager is None:
+            self._createNetworkManager()
+        request = self._createEmptyRequest(target)
+
+        multi_post_part = QHttpMultiPart()
+        post_part = QHttpPart()
+        post_part.setHeader(QNetworkRequest.ContentDispositionHeader, header_data)
+        post_part.setBody(body_data)
+        multi_post_part.append(post_part)
+
+        self._last_request_time = time()
+
+        reply = self._manager.post(request, multi_post_part)
+
+        # Due to garbage collection on python doing some weird stuff, we need to keep hold of a reference
+        self._cached_multiparts[id(reply)] = (post_part, multi_post_part, reply)
+
+        if onProgress is not None:
+            reply.uploadProgress.connect(onProgress)
+        if onFinished is not None:
+            self._onFinishedCallbacks[reply.url().toString() + str(reply.operation())] = onFinished
 
     def _onAuthenticationRequired(self, reply, authenticator):
         Logger.log("w", "Request to {url} required authentication, which was not implemented".format(url = reply.url().toString()))
@@ -128,6 +160,11 @@ class NetworkedPrinterOutputDevice(PrinterOutputDevice):
         #self._manager.networkAccessibleChanged.connect(self._onNetworkAccesibleChanged)  # for debug purposes
 
     def __handleOnFinished(self, reply: QNetworkReply):
+        # Due to garbage collection, we need to cache certain bits of post operations.
+        # As we don't want to keep them around forever, delete them if we get a reply.
+        if reply.operation() == QNetworkAccessManager.PostOperation:
+            self._clearCachedMultiPart(reply)
+
         if reply.attribute(QNetworkRequest.HttpStatusCodeAttribute) is None:
             # No status code means it never even reached remote.
             return
@@ -137,8 +174,10 @@ class NetworkedPrinterOutputDevice(PrinterOutputDevice):
         if self._connection_state == ConnectionState.connecting:
             self.setConnectionState(ConnectionState.connected)
 
+        callback_key = reply.url().toString() + str(reply.operation())
         try:
-            self._onFinishedCallbacks[reply.url().toString() + str(reply.operation())](reply)
+            if callback_key in self._onFinishedCallbacks:
+                self._onFinishedCallbacks[callback_key](reply)
         except Exception:
             Logger.logException("w", "something went wrong with callback")
 

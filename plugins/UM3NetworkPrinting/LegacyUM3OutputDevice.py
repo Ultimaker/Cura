@@ -3,6 +3,8 @@ from cura.PrinterOutput.PrinterOutputModel import PrinterOutputModel
 from cura.PrinterOutput.PrintJobOutputModel import PrintJobOutputModel
 from cura.PrinterOutput.MaterialOutputModel import MaterialOutputModel
 
+from cura.Settings.ContainerManager import ContainerManager
+
 from UM.Logger import Logger
 from UM.Settings.ContainerRegistry import ContainerRegistry
 from UM.Application import Application
@@ -97,6 +99,29 @@ class LegacyUM3OutputDevice(NetworkedPrinterOutputDevice):
 
     ##  Send all material profiles to the printer.
     def sendMaterialProfiles(self):
+        Logger.log("i", "Sending material profiles to printer")
+
+        # TODO: Might want to move this to a job...
+        for container in ContainerRegistry.getInstance().findInstanceContainers(type="material"):
+            try:
+                xml_data = container.serialize()
+                if xml_data == "" or xml_data is None:
+                    continue
+
+                names = ContainerManager.getInstance().getLinkedMaterials(container.getId())
+                if names:
+                    # There are other materials that share this GUID.
+                    if not container.isReadOnly():
+                        continue  # If it's not readonly, it's created by user, so skip it.
+
+                file_name = "none.xml"
+                self._postForm("materials", "form-data; name=\"file\";filename=\"%s\"" % file_name, xml_data.encode(), onFinished=None)
+
+            except NotImplementedError:
+                # If the material container is not the most "generic" one it can't be serialized an will raise a
+                # NotImplementedError. We can simply ignore these.
+                pass
+
         # TODO
         pass
 
