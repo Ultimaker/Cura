@@ -11,7 +11,6 @@ MYPY = False
 if MYPY:
     from cura.PrinterOutput.PrintJobOutputModel import PrintJobOutputModel
     from cura.PrinterOutput.PrinterOutputController import PrinterOutputController
-    from cura.PrinterOutput.ExtruderOuputModel import ExtruderOutputModel
 
 
 class PrinterOutputModel(QObject):

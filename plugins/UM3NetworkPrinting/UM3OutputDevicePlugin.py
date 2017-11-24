@@ -84,7 +84,6 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
     def _onDeviceConnectionStateChanged(self, key):
         if key not in self._discovered_devices:
             return
-        print("STATE CHANGED", key)
         if self._discovered_devices[key].isConnected():
             self.getOutputDeviceManager().addOutputDevice(self._discovered_devices[key])
         else:

@@ -568,6 +568,7 @@ class LegacyUM3OutputDevice(NetworkedPrinterOutputDevice):
 
             if not self._printers:
                 self._printers = [PrinterOutputModel(output_controller=None, number_of_extruders=self._number_of_extruders)]
+                self.printersChanged.emit()
 
             # LegacyUM3 always has a single printer.
             printer = self._printers[0]
