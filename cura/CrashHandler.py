@@ -126,13 +126,18 @@ class CrashHandler:
         return group
 
     def _getOpenGLInfo(self):
+        opengl_instance = OpenGL.getInstance()
+        if not opengl_instance:
+            self.data["opengl"] = {"version": "n/a", "vendor": "n/a", "type": "n/a"}
+            return catalog.i18nc("@label", "not yet initialised<br/>")
+
         info = "<ul>"
-        info += catalog.i18nc("@label OpenGL version", "<li>OpenGL Version: {version}</li>").format(version = OpenGL.getInstance().getOpenGLVersion())
-        info += catalog.i18nc("@label OpenGL vendor", "<li>OpenGL Vendor: {vendor}</li>").format(vendor = OpenGL.getInstance().getGPUVendorName())
-        info += catalog.i18nc("@label OpenGL renderer", "<li>OpenGL Renderer: {renderer}</li>").format(renderer = OpenGL.getInstance().getGPUType())
+        info += catalog.i18nc("@label OpenGL version", "<li>OpenGL Version: {version}</li>").format(version = opengl_instance.getOpenGLVersion())
+        info += catalog.i18nc("@label OpenGL vendor", "<li>OpenGL Vendor: {vendor}</li>").format(vendor = opengl_instance.getGPUVendorName())
+        info += catalog.i18nc("@label OpenGL renderer", "<li>OpenGL Renderer: {renderer}</li>").format(renderer = opengl_instance.getGPUType())
         info += "</ul>"
 
-        self.data["opengl"] = {"version": OpenGL.getInstance().getOpenGLVersion(), "vendor": OpenGL.getInstance().getGPUVendorName(), "type": OpenGL.getInstance().getGPUType()}
+        self.data["opengl"] = {"version": opengl_instance.getOpenGLVersion(), "vendor": opengl_instance.getGPUVendorName(), "type": opengl_instance.getGPUType()}
 
         return info
 
