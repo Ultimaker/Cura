@@ -16,6 +16,7 @@ Column
     id: printMonitor
     property var connectedDevice: Cura.MachineManager.printerOutputDevices.length >= 1 ? Cura.MachineManager.printerOutputDevices[0] : null
     property var activePrinter: connectedDevice != null ? connectedDevice.activePrinter : null
+    property var activePrintJob: activePrinter != null ? activePrinter.activePrintJob: null
 
     Cura.ExtrudersModel
     {
@@ -438,20 +439,33 @@ Column
     {
         sourceComponent: monitorItem
         property string label: catalog.i18nc("@label", "Job Name")
-        property string value: connectedPrinter != null ? connectedPrinter.jobName : ""
+        property string value: activePrintJob != null ? activePrintJob.name : ""
     }
+
     Loader
     {
         sourceComponent: monitorItem
         property string label: catalog.i18nc("@label", "Printing Time")
-        property string value: connectedPrinter != null ? getPrettyTime(connectedPrinter.timeTotal) : ""
+        property string value: activePrintJob != null ? getPrettyTime(activePrintJob.timeTotal) : ""
     }
+
     Loader
     {
         sourceComponent: monitorItem
         property string label: catalog.i18nc("@label", "Estimated time left")
-        property string value: connectedPrinter != null ? getPrettyTime(connectedPrinter.timeTotal - connectedPrinter.timeElapsed) : ""
-        visible: connectedPrinter != null && (connectedPrinter.jobState == "printing" || connectedPrinter.jobState == "resuming" || connectedPrinter.jobState == "pausing" || connectedPrinter.jobState == "paused")
+        property string value: activePrintJob != null ? getPrettyTime(activePrintJob.timeTotal - activePrintJob.timeElapsed) : ""
+        visible:
+        {
+            if(activePrintJob == null)
+            {
+                return false
+            }
+
+            return (activePrintJob.state == "printing" ||
+                    activePrintJob.state == "resuming" ||
+                    activePrintJob.state == "pausing" ||
+                    activePrintJob.state == "paused")
+        }
     }
 
     Component
@@ -485,6 +499,7 @@ Column
             }
         }
     }
+
     Component
     {
         id: monitorSection
