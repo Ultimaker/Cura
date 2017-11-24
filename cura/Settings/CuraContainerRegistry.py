@@ -454,16 +454,14 @@ class CuraContainerRegistry(ContainerRegistry):
 
             material_id = "default"
             if machine.material.getId() not in ("empty", "empty_material"):
-                # TODO: find the ID that's suitable for this extruder
-                pass
+                material_id = machine.material.getId()
             else:
                 material_id = "empty_material"
             extruder_stack.setMaterialById(material_id)
 
             quality_id = "default"
             if machine.quality.getId() not in ("empty", "empty_quality"):
-                # TODO: find the ID that's suitable for this extruder
-                pass
+                quality_id = machine.quality.getId()
             else:
                 quality_id = "empty_quality"
             extruder_stack.setQualityById(quality_id)
