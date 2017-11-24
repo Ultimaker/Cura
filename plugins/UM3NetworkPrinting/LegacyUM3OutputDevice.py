@@ -16,6 +16,8 @@ from PyQt5.QtNetwork import QNetworkRequest
 from PyQt5.QtCore import QTimer, QCoreApplication
 from PyQt5.QtWidgets import QMessageBox
 
+from .LegacyUM3PrinterOutputController import LegacyUM3PrinterOutputController
+
 from time import time
 
 import json
@@ -73,6 +75,8 @@ class LegacyUM3OutputDevice(NetworkedPrinterOutputDevice):
         self.setDescription(i18n_catalog.i18nc("@properties:tooltip", "Print over network"))
 
         self.setIconName("print")
+
+        self._output_controller = LegacyUM3PrinterOutputController(self)
 
     def _onAuthenticationStateChanged(self):
         # We only accept commands if we are authenticated.
@@ -143,7 +147,7 @@ class LegacyUM3OutputDevice(NetworkedPrinterOutputDevice):
                         continue  # If it's not readonly, it's created by user, so skip it.
 
                 file_name = "none.xml"
-                self._postForm("materials", "form-data; name=\"file\";filename=\"%s\"" % file_name, xml_data.encode(), onFinished=None)
+                self.postForm("materials", "form-data; name=\"file\";filename=\"%s\"" % file_name, xml_data.encode(), onFinished=None)
 
             except NotImplementedError:
                 # If the material container is not the most "generic" one it can't be serialized an will raise a
@@ -241,8 +245,8 @@ class LegacyUM3OutputDevice(NetworkedPrinterOutputDevice):
             return
 
         file_name = "%s.gcode.gz" % Application.getInstance().getPrintInformation().jobName
-        self._postForm("print_job", "form-data; name=\"file\";filename=\"%s\"" % file_name, compressed_gcode,
-                       onFinished=self._onPostPrintJobFinished)
+        self.postForm("print_job", "form-data; name=\"file\";filename=\"%s\"" % file_name, compressed_gcode,
+                      onFinished=self._onPostPrintJobFinished)
 
         return
 
@@ -392,8 +396,8 @@ class LegacyUM3OutputDevice(NetworkedPrinterOutputDevice):
             self._checkAuthentication()
 
         # We don't need authentication for requesting info, so we can go right ahead with requesting this.
-        self._get("printer", onFinished=self._onGetPrinterDataFinished)
-        self._get("print_job", onFinished=self._onGetPrintJobFinished)
+        self.get("printer", onFinished=self._onGetPrinterDataFinished)
+        self.get("print_job", onFinished=self._onGetPrintJobFinished)
 
     def _resetAuthenticationRequestedMessage(self):
         if self._authentication_requested_message:
@@ -415,7 +419,7 @@ class LegacyUM3OutputDevice(NetworkedPrinterOutputDevice):
     def _verifyAuthentication(self):
         Logger.log("d", "Attempting to verify authentication")
         # This will ensure that the "_onAuthenticationRequired" is triggered, which will setup the authenticator.
-        self._get("auth/verify", onFinished=self._onVerifyAuthenticationCompleted)
+        self.get("auth/verify", onFinished=self._onVerifyAuthenticationCompleted)
 
     def _onVerifyAuthenticationCompleted(self, reply):
         status_code = reply.attribute(QNetworkRequest.HttpStatusCodeAttribute)
@@ -438,7 +442,7 @@ class LegacyUM3OutputDevice(NetworkedPrinterOutputDevice):
 
     def _checkAuthentication(self):
         Logger.log("d", "Checking if authentication is correct for id %s and key %s", self._authentication_id, self._getSafeAuthKey())
-        self._get("auth/check/" + str(self._authentication_id), onFinished=self._onCheckAuthenticationFinished)
+        self.get("auth/check/" + str(self._authentication_id), onFinished=self._onCheckAuthenticationFinished)
 
     def _onCheckAuthenticationFinished(self, reply):
         if str(self._authentication_id) not in reply.url().toString():
@@ -511,10 +515,10 @@ class LegacyUM3OutputDevice(NetworkedPrinterOutputDevice):
         self._authentication_key = None
         self._authentication_id = None
 
-        self._post("auth/request",
-                   json.dumps({"application":  "Cura-" + Application.getInstance().getVersion(),
+        self.post("auth/request",
+                  json.dumps({"application":  "Cura-" + Application.getInstance().getVersion(),
                                                "user": self._getUserName()}).encode(),
-                   onFinished=self._onRequestAuthenticationFinished)
+                  onFinished=self._onRequestAuthenticationFinished)
 
         self.setAuthenticationState(AuthState.AuthenticationRequested)
 
@@ -542,7 +546,7 @@ class LegacyUM3OutputDevice(NetworkedPrinterOutputDevice):
                 Logger.log("w", "Received an invalid print job state message: Not valid JSON.")
                 return
             if printer.activePrintJob is None:
-                print_job = PrintJobOutputModel(output_controller=None)
+                print_job = PrintJobOutputModel(output_controller=self._output_controller)
                 printer.updateActivePrintJob(print_job)
             else:
                 print_job = printer.activePrintJob
@@ -567,7 +571,7 @@ class LegacyUM3OutputDevice(NetworkedPrinterOutputDevice):
                 return
 
             if not self._printers:
-                self._printers = [PrinterOutputModel(output_controller=None, number_of_extruders=self._number_of_extruders)]
+                self._printers = [PrinterOutputModel(output_controller=self._output_controller, number_of_extruders=self._number_of_extruders)]
                 self.printersChanged.emit()
 
             # LegacyUM3 always has a single printer.

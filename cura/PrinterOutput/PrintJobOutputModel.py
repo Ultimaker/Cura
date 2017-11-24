@@ -1,7 +1,7 @@
 # Copyright (c) 2017 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from PyQt5.QtCore import pyqtSignal, pyqtProperty, QObject, QVariant
+from PyQt5.QtCore import pyqtSignal, pyqtProperty, QObject, pyqtSlot
 MYPY = False
 if MYPY:
     from cura.PrinterOutput.PrinterOutputController import PrinterOutputController
@@ -80,5 +80,6 @@ class PrintJobOutputModel(QObject):
             self._state = new_state
             self.stateChanged.emit()
 
+    @pyqtSlot(str)
     def setState(self, state):
         self._output_controller.setJobState(self, state)

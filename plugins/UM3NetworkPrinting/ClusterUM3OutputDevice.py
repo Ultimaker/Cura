@@ -21,8 +21,8 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
     def _update(self):
         if not super()._update():
             return
-        self._get("printers/", onFinished=self._onGetPrintersDataFinished)
-        self._get("print_jobs/", onFinished=self._onGetPrintJobsFinished)
+        self.get("printers/", onFinished=self._onGetPrintersDataFinished)
+        self.get("print_jobs/", onFinished=self._onGetPrintJobsFinished)
 
     def _onGetPrintJobsFinished(self, reply: QNetworkReply):
         status_code = reply.attribute(QNetworkRequest.HttpStatusCodeAttribute)

@@ -98,7 +98,7 @@ class NetworkedPrinterOutputDevice(PrinterOutputDevice):
         if id(reply) in self._cached_multiparts:
             del self._cached_multiparts[id(reply)]
 
-    def _put(self, target: str, data: str, onFinished: Optional[Callable[[Any, QNetworkReply], None]]):
+    def put(self, target: str, data: str, onFinished: Optional[Callable[[Any, QNetworkReply], None]]):
         if self._manager is None:
             self._createNetworkManager()
         request = self._createEmptyRequest(target)
@@ -107,7 +107,7 @@ class NetworkedPrinterOutputDevice(PrinterOutputDevice):
         if onFinished is not None:
             self._onFinishedCallbacks[reply.url().toString() + str(reply.operation())] = onFinished
 
-    def _get(self, target: str, onFinished: Optional[Callable[[Any, QNetworkReply], None]]):
+    def get(self, target: str, onFinished: Optional[Callable[[Any, QNetworkReply], None]]):
         if self._manager is None:
             self._createNetworkManager()
         request = self._createEmptyRequest(target)
@@ -116,13 +116,13 @@ class NetworkedPrinterOutputDevice(PrinterOutputDevice):
         if onFinished is not None:
             self._onFinishedCallbacks[reply.url().toString() + str(reply.operation())] = onFinished
 
-    def _delete(self, target: str, onFinished: Optional[Callable[[Any, QNetworkReply], None]]):
+    def delete(self, target: str, onFinished: Optional[Callable[[Any, QNetworkReply], None]]):
         if self._manager is None:
             self._createNetworkManager()
         self._last_request_time = time()
         pass
 
-    def _post(self, target: str, data: str, onFinished: Optional[Callable[[Any, QNetworkReply], None]], onProgress: Callable = None):
+    def post(self, target: str, data: str, onFinished: Optional[Callable[[Any, QNetworkReply], None]], onProgress: Callable = None):
         if self._manager is None:
             self._createNetworkManager()
         request = self._createEmptyRequest(target)
@@ -133,7 +133,7 @@ class NetworkedPrinterOutputDevice(PrinterOutputDevice):
         if onFinished is not None:
             self._onFinishedCallbacks[reply.url().toString() + str(reply.operation())] = onFinished
 
-    def _postForm(self, target: str, header_data: str, body_data: bytes, onFinished: Optional[Callable[[Any, QNetworkReply], None]], onProgress: Callable = None):
+    def postForm(self, target: str, header_data: str, body_data: bytes, onFinished: Optional[Callable[[Any, QNetworkReply], None]], onProgress: Callable = None):
         if self._manager is None:
             self._createNetworkManager()
         request = self._createEmptyFormRequest(target)

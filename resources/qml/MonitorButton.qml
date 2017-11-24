@@ -263,18 +263,17 @@ Item
             property string lastJobState: ""
 
             visible: printerConnected && activePrinter.canPause
-            enabled: (!userClicked) && printerConnected && Cura.MachineManager.printerOutputDevices[0].acceptsCommands &&
-                     (["paused", "printing"].indexOf(Cura.MachineManager.printerOutputDevices[0].jobState) >= 0)
+            enabled: (!userClicked) && printerConnected && printerAcceptsCommands && activePrintJob != null &&
+                     (["paused", "printing"].indexOf(activePrintJob.state) >= 0)
 
             text: {
                 var result = "";
-                if (!printerConnected)
+                if (!printerConnected || activePrintJob == null)
                 {
                   return "";
                 }
-                var jobState = Cura.MachineManager.printerOutputDevices[0].jobState;
 
-                if (jobState == "paused")
+                if (activePrintJob.state == "paused")
                 {
                     return catalog.i18nc("@label:", "Resume");
                 }
@@ -285,14 +284,17 @@ Item
             }
             onClicked:
             {
-                var current_job_state = Cura.MachineManager.printerOutputDevices[0].jobState
-                if(current_job_state == "paused")
+                if(activePrintJob == null)
                 {
-                    Cura.MachineManager.printerOutputDevices[0].setJobState("print");
+                    return // Do nothing!
                 }
-                else if(current_job_state == "printing")
+                if(activePrintJob.state == "paused")
                 {
-                    Cura.MachineManager.printerOutputDevices[0].setJobState("pause");
+                    activePrintJob.setState("print");
+                }
+                else if(activePrintJob.state == "printing")
+                {
+                    activePrintJob.setState("pause");
                 }
             }
 
@@ -304,8 +306,8 @@ Item
             id: abortButton
 
             visible: printerConnected && activePrinter.canAbort
-            enabled: printerConnected && activePrinter.acceptsCommands &&
-                     (["paused", "printing", "pre_print"].indexOf(Cura.MachineManager.printerOutputDevices[0].jobState) >= 0)
+            enabled: printerConnected && printerAcceptsCommands && activePrintJob != null &&
+                     (["paused", "printing", "pre_print"].indexOf(activePrintJob.state) >= 0)
 
             height: UM.Theme.getSize("save_button_save_to_button").height
 
@@ -324,7 +326,7 @@ Item
             text: catalog.i18nc("@label", "Are you sure you want to abort the print?")
             standardButtons: StandardButton.Yes | StandardButton.No
             Component.onCompleted: visible = false
-            onYes: Cura.MachineManager.printerOutputDevices[0].setJobState("abort")
+            onYes: activePrintJob.setState("abort")
         }
     }
 }

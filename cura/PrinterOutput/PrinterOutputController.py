@@ -1,4 +1,5 @@
-
+# Copyright (c) 2017 Ultimaker B.V.
+# Cura is released under the terms of the LGPLv3 or higher.
 
 MYPY = False
 if MYPY:
@@ -8,11 +9,13 @@ if MYPY:
 
 
 class PrinterOutputController:
-    def __init__(self):
+    def __init__(self, output_device):
         self.can_pause = True
         self.can_abort = True
         self.can_pre_heat_bed = True
         self.can_control_manually = True
+        self._output_device = output_device
+
 
     def setTargetHotendTemperature(self, printer: "PrinterOutputModel", extruder: "ExtruderOuputModel", temperature: int):
         # TODO: implement

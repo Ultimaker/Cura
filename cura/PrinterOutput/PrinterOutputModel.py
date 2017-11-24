@@ -177,19 +177,19 @@ class PrinterOutputModel(QObject):
     @pyqtProperty(bool, constant=True)
     def canPause(self):
         if self._controller:
-            return self.can_pause
+            return self._controller.can_pause
         return False
 
     # Does the printer support abort at all
     @pyqtProperty(bool, constant=True)
     def canAbort(self):
         if self._controller:
-            return self.can_abort
+            return self._controller.can_abort
         return False
 
     # Does the printer support manual control at all
     @pyqtProperty(bool, constant=True)
     def canControlManually(self):
         if self._controller:
-            return self.can_control_manually
+            return self._controller.can_control_manually
         return False
