@@ -138,10 +138,11 @@ Item
                     text: catalog.i18nc("@label:listbox", "Feedrate"),
                     type_id: 2
                 })
-                layerViewTypes.append({
-                    text: catalog.i18nc("@label:listbox", "Layer thickness"),
-                    type_id: 3  // these ids match the switching in the shader
-                })
+                // TODO DON'T DELETE!!!! This part must be enabled when adaptive layer height feature is available
+//                layerViewTypes.append({
+//                    text: catalog.i18nc("@label:listbox", "Layer thickness"),
+//                    type_id: 3  // these ids match the switching in the shader
+//                })
             }
 
             ComboBox
@@ -619,7 +620,7 @@ Item
         Timer
         {
             id: simulationTimer
-            interval: 250
+            interval: 100
             running: false
             repeat: true
             onTriggered: {

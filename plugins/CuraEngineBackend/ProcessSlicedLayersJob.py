@@ -95,22 +95,22 @@ class ProcessSlicedLayersJob(Job):
 
         # Find the minimum layer number
         # When using a raft, the raft layers are sent as layers < 0. Instead of allowing layers < 0, we
-        # instead simply offset all other layers so the lowest layer is always 0.
+        # instead simply offset all other layers so the lowest layer is always 0. It could happens that
+        # the first raft layer has value -8 but there are just 4 raft (negative) layers.
         min_layer_number = 0
+        negative_layers = 0
         for layer in self._layers:
             if layer.id < min_layer_number:
                 min_layer_number = layer.id
+            if layer.id < 0:
+                negative_layers += 1
 
         current_layer = 0
 
         for layer in self._layers:
-            abs_layer_number = layer.id + abs(min_layer_number)
-
-            # Workaround when the last layer doesn't have paths, this layer is skipped because this was generating
-            # some glitches when rendering.
-            if layer.id == len(self._layers)-1 and layer.repeatedMessageCount("path_segment") == 0:
-                Logger.log("i", "No sliced data in the layer", layer.id)
-                continue
+            # Negative layers are offset by the minimum layer number, but the positive layers are just
+            # offset by the number of negative layers so there is no layer gap between raft and model
+            abs_layer_number = layer.id + abs(min_layer_number) if layer.id < 0 else layer.id + negative_layers
 
             layer_data.addLayer(abs_layer_number)
             this_layer = layer_data.getLayer(abs_layer_number)

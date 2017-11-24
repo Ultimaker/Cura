@@ -220,6 +220,83 @@ Rectangle
         menu: PrinterMenu { }
     }
 
+        //View orientation Item
+    Row
+    {
+        id: viewOrientationControl
+        height: 30
+
+        spacing: 2
+
+        visible: !base.monitoringPrint
+
+        anchors {
+            verticalCenter: base.verticalCenter
+            right: viewModeButton.right
+            rightMargin: UM.Theme.getSize("default_margin").width + viewModeButton.width
+        }
+
+        // #1 3d view
+        Button
+        {
+            iconSource: UM.Theme.getIcon("view_3d")
+            style: UM.Theme.styles.orientation_button
+            anchors.verticalCenter: viewOrientationControl.verticalCenter
+            onClicked:{
+                UM.Controller.rotateView("3d", 0);
+            }
+            visible: base.width > 1100
+        }
+
+        // #2 Front view
+        Button
+        {
+            iconSource: UM.Theme.getIcon("view_front")
+            style: UM.Theme.styles.orientation_button
+            anchors.verticalCenter: viewOrientationControl.verticalCenter
+            onClicked:{
+                UM.Controller.rotateView("home", 0);
+            }
+            visible: base.width > 1130
+        }
+
+        // #3 Top view
+        Button
+        {
+            iconSource: UM.Theme.getIcon("view_top")
+            style: UM.Theme.styles.orientation_button
+            anchors.verticalCenter: viewOrientationControl.verticalCenter
+            onClicked:{
+                UM.Controller.rotateView("y", 90);
+            }
+            visible: base.width > 1160
+        }
+
+        // #4 Left view
+        Button
+        {
+            iconSource: UM.Theme.getIcon("view_left")
+            style: UM.Theme.styles.orientation_button
+            anchors.verticalCenter: viewOrientationControl.verticalCenter
+            onClicked:{
+                UM.Controller.rotateView("x", 90);
+            }
+            visible: base.width > 1190
+        }
+
+        // #5 Left view
+        Button
+        {
+            iconSource: UM.Theme.getIcon("view_right")
+            style: UM.Theme.styles.orientation_button
+            anchors.verticalCenter: viewOrientationControl.verticalCenter
+            onClicked:{
+                UM.Controller.rotateView("x", -90);
+            }
+            visible: base.width > 1210
+        }
+    }
+
     ComboBox
     {
         id: viewModeButton

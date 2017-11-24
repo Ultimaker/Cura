@@ -322,7 +322,6 @@ UM.ManagementPage
                 {
                     messageDialog.icon = StandardIcon.Information
                     messageDialog.text = catalog.i18nc("@info:status Don't translate the XML tag <filename>!", "Successfully imported material <filename>%1</filename>").arg(fileUrl)
-                    currentItem = base.model.getItem(base.objectList.currentIndex)
                 }
                 else if(result.status == "duplicate")
                 {
