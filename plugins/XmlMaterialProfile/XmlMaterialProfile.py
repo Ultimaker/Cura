@@ -496,8 +496,9 @@ class XmlMaterialProfile(InstanceContainer):
 
         meta_data["approximate_diameter"] = str(round(float(property_values.get("diameter", 2.85)))) # In mm
         meta_data["properties"] = property_values
+        meta_data["definition"] = "fdmprinter"
 
-        self.setDefinition(ContainerRegistry.getInstance().findDefinitionContainers(id = "fdmprinter")[0])
+        self.setDefinition("fdmprinter")
 
         common_compatibility = True
         settings = data.iterfind("./um:settings/um:setting", self.__namespaces)
@@ -569,7 +570,7 @@ class XmlMaterialProfile(InstanceContainer):
                         is_new_material = True
 
                     new_material.setMetaData(copy.deepcopy(self.getMetaData()))
-                    new_material.setDefinition(definition)
+                    new_material.setDefinition(machine_id)
                     # Don't use setMetadata, as that overrides it for all materials with same base file
                     new_material.getMetaData()["compatible"] = machine_compatibility
                     new_material.getMetaData()["machine_manufacturer"] = machine_manufacturer
@@ -623,7 +624,7 @@ class XmlMaterialProfile(InstanceContainer):
                     # Update the private directly, as we want to prevent the lookup that is done when using setName
                     new_hotend_material.setName(self.getName())
                     new_hotend_material.setMetaData(copy.deepcopy(self.getMetaData()))
-                    new_hotend_material.setDefinition(definition)
+                    new_hotend_material.setDefinition(machine_id)
                     new_hotend_material.addMetaDataEntry("variant", variant_containers[0]["id"])
                     # Don't use setMetadata, as that overrides it for all materials with same base file
                     new_hotend_material.getMetaData()["compatible"] = hotend_compatibility
@@ -706,6 +707,7 @@ class XmlMaterialProfile(InstanceContainer):
 
         base_metadata["approximate_diameter"] = str(round(float(property_values.get("diameter", 2.85)))) # In mm
         base_metadata["properties"] = property_values
+        base_metadata["definition"] = "fdmprinter"
 
         compatible_entries = data.iterfind("./um:settings/um:setting[@key='hardware compatible']", cls.__namespaces)
         try:

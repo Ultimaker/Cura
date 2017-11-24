@@ -1001,9 +1001,9 @@ class ContainerManager(QObject):
 
         # If the machine specifies qualities should be filtered, ensure we match the current criteria.
         if not machine_definition.getMetaDataEntry("has_machine_quality"):
-            quality_changes.setDefinition(self._container_registry.findDefinitionContainers(id = "fdmprinter")[0])
+            quality_changes.setDefinition("fdmprinter")
         else:
-            quality_changes.setDefinition(QualityManager.getInstance().getParentMachineDefinition(machine_definition))
+            quality_changes.setDefinition(QualityManager.getInstance().getParentMachineDefinition(machine_definition).getId())
 
         from cura.CuraApplication import CuraApplication
         quality_changes.addMetaDataEntry("setting_version", CuraApplication.SettingVersion)

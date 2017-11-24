@@ -56,7 +56,7 @@ class CuraStackBuilder:
             new_extruder = cls.createExtruderStack(
                 new_extruder_id,
                 definition = extruder_definition,
-                machine_definition = machine_definition,
+                machine_definition_id = machine_definition.getId(),
                 quality = "default",
                 material = "default",
                 variant = "default",
@@ -69,12 +69,13 @@ class CuraStackBuilder:
     #
     #   \param new_stack_id The ID of the new stack.
     #   \param definition The definition to base the new stack on.
-    #   \param machine_definition The machine definition to use for the user container.
+    #   \param machine_definition_id The ID of the machine definition to use for
+    #   the user container.
     #   \param kwargs You can add keyword arguments to specify IDs of containers to use for a specific type, for example "variant": "0.4mm"
     #
     #   \return A new Global stack instance with the specified parameters.
     @classmethod
-    def createExtruderStack(cls, new_stack_id: str, definition: DefinitionContainerInterface, machine_definition: DefinitionContainerInterface, **kwargs) -> ExtruderStack:
+    def createExtruderStack(cls, new_stack_id: str, definition: DefinitionContainerInterface, machine_definition_id: str, **kwargs) -> ExtruderStack:
         stack = ExtruderStack(new_stack_id)
         stack.setName(definition.getName())
         stack.setDefinition(definition)
@@ -87,7 +88,7 @@ class CuraStackBuilder:
         user_container.addMetaDataEntry("extruder", new_stack_id)
         from cura.CuraApplication import CuraApplication
         user_container.addMetaDataEntry("setting_version", CuraApplication.SettingVersion)
-        user_container.setDefinition(machine_definition)
+        user_container.setDefinition(machine_definition_id)
 
         stack.setUserChanges(user_container)
 
@@ -136,7 +137,7 @@ class CuraStackBuilder:
         user_container.addMetaDataEntry("machine", new_stack_id)
         from cura.CuraApplication import CuraApplication
         user_container.addMetaDataEntry("setting_version", CuraApplication.SettingVersion)
-        user_container.setDefinition(definition)
+        user_container.setDefinition(definition.getId())
 
         stack.setUserChanges(user_container)
 
@@ -172,8 +173,7 @@ class CuraStackBuilder:
         unique_container_name = ContainerRegistry.getInstance().uniqueName(container_name)
 
         definition_changes_container = InstanceContainer(unique_container_name)
-        definition = container_stack.getBottom()
-        definition_changes_container.setDefinition(definition)
+        definition_changes_container.setDefinition(container_stack.getBottom().getId())
         definition_changes_container.addMetaDataEntry("type", "definition_changes")
         definition_changes_container.addMetaDataEntry("setting_version", CuraApplication.SettingVersion)
 

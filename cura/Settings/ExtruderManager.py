@@ -379,7 +379,7 @@ class ExtruderManager(QObject):
             user_profile.addMetaDataEntry("extruder", extruder_stack_id)
             from cura.CuraApplication import CuraApplication
             user_profile.addMetaDataEntry("setting_version", CuraApplication.SettingVersion)
-            user_profile.setDefinition(machine_definition)
+            user_profile.setDefinition(machine_definition.getId())
             container_registry.addContainer(user_profile)
         container_stack.addContainer(user_profile)
 

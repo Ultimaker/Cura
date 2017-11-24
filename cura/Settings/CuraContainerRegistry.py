@@ -284,7 +284,7 @@ class CuraContainerRegistry(ContainerRegistry):
 
         quality_type_criteria = {"quality_type": quality_type}
         if self._machineHasOwnQualities():
-            profile.setDefinition(self._activeQualityDefinition())
+            profile.setDefinition(self._activeQualityDefinition().getId())
             if self._machineHasOwnMaterials():
                 active_material_id = self._activeMaterialId()
                 if active_material_id and active_material_id != "empty":  # only update if there is an active material
@@ -294,7 +294,7 @@ class CuraContainerRegistry(ContainerRegistry):
             quality_type_criteria["definition"] = profile.getDefinition().getId()
 
         else:
-            profile.setDefinition(ContainerRegistry.getInstance().findDefinitionContainers(id = "fdmprinter")[0])
+            profile.setDefinition(fdmprinter)
             quality_type_criteria["definition"] = "fdmprinter"
 
         machine_definition = Application.getInstance().getGlobalContainerStack().getBottom()

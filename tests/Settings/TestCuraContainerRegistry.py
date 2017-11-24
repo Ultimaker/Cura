@@ -74,7 +74,7 @@ def test_addContainerGoodSettingVersion(container_registry, definition_container
 
     instance = UM.Settings.InstanceContainer.InstanceContainer(container_id = "Test Instance")
     instance.addMetaDataEntry("setting_version", CuraApplication.SettingVersion)
-    instance.setDefinition(definition_container)
+    instance.setDefinition(definition_container.getId())
 
     mock_super_add_container = unittest.mock.MagicMock() #Take the role of the Uranium-ContainerRegistry where the resulting containers get registered.
     with unittest.mock.patch("UM.Settings.ContainerRegistry.ContainerRegistry.addContainer", mock_super_add_container):
@@ -89,7 +89,7 @@ def test_addContainerNoSettingVersion(container_registry, definition_container):
 
     instance = UM.Settings.InstanceContainer.InstanceContainer(container_id = "Test Instance")
     #Don't add setting_version metadata.
-    instance.setDefinition(definition_container)
+    instance.setDefinition(definition_container.getId())
 
     mock_super_add_container = unittest.mock.MagicMock() #Take the role of the Uranium-ContainerRegistry where the resulting container should not get registered.
     with unittest.mock.patch("UM.Settings.ContainerRegistry.ContainerRegistry.addContainer", mock_super_add_container):
@@ -104,7 +104,7 @@ def test_addContainerBadSettingVersion(container_registry, definition_container)
 
     instance = UM.Settings.InstanceContainer.InstanceContainer(container_id = "Test Instance")
     instance.addMetaDataEntry("setting_version", 9001) #Wrong version!
-    instance.setDefinition(definition_container)
+    instance.setDefinition(definition_container.getId())
 
     mock_super_add_container = unittest.mock.MagicMock() #Take the role of the Uranium-ContainerRegistry where the resulting container should not get registered.
     with unittest.mock.patch("UM.Settings.ContainerRegistry.ContainerRegistry.addContainer", mock_super_add_container):
