@@ -349,7 +349,7 @@ Item
             }
 
             // Text for the minimum, maximum and units for the feedrates and layer thickness
-            Rectangle {
+            Item {
                 id: gradientLegend
                 visible: view_settings.show_gradient
                 width: parent.width
