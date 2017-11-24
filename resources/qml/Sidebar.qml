@@ -343,7 +343,6 @@ Rectangle
 
                 onEntered:
                 {
-
                     if(base.printDuration.valid && !base.printDuration.isTotalDurationZero)
                     {
                         // All the time information for the different features is achieved
@@ -356,20 +355,10 @@ Rectangle
                         {
                             if(!print_time[feature].isTotalDurationZero)
                             {
-                                var feature_name = "";
-
-                                if (feature.length <= 11)
-                                {
-                                    feature_name = feature
-                                }
-                                else{
-                                    feature_name = feature.substring(0, 8) + "..."
-                                }
-
-
-                                content += "<tr><td>" + feature_name + ":" +
-                                    "&nbsp;&nbsp;</td><td>" + print_time[feature].getDisplayString(UM.DurationFormat.Short) +
-                                    "&nbsp;&nbsp;</td><td>" + Math.round(100 * parseInt(print_time[feature].getDisplayString(UM.DurationFormat.Seconds)) / total_seconds) + "%" +
+                                content += "<tr><td colspan='2'>" + feature + "</td></tr>" +
+                                    "<tr>" +
+                                    "<td width='60%'>" + print_time[feature].getDisplayString(UM.DurationFormat.Short) + "</td>" +
+                                    "<td width='40%'>&nbsp;&nbsp;" + Math.round(100 * parseInt(print_time[feature].getDisplayString(UM.DurationFormat.Seconds)) / total_seconds) + "%" +
                                     "</td></tr>";
                             }
                         }
