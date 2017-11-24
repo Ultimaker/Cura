@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: Cura 3.1\n"
 "Report-Msgid-Bugs-To: r.dulek@ultimaker.com\n"
 "POT-Creation-Date: 2017-08-02 16:53+0000\n"
-"PO-Revision-Date: 2017-11-22 23:36+0800\n"
+"PO-Revision-Date: 2017-11-25 00:31+0800\n"
 "Last-Translator: Zhang Heh Ji <dinowchang@gmail.com>\n"
 "Language-Team: TEAM\n"
 "Language: zh_TW\n"
@@ -667,7 +667,7 @@ msgstr "起始層高（以毫米為單位）。起始層越厚，與列印平台
 #: fdmprinter.def.json
 msgctxt "slicing_tolerance label"
 msgid "Slicing Tolerance"
-msgstr ""
+msgstr "切片公差"
 
 #: fdmprinter.def.json
 msgctxt "slicing_tolerance description"
@@ -680,21 +680,25 @@ msgid ""
 "retains the most details, Inclusive makes for the best fit and Middle takes "
 "the least time to process."
 msgstr ""
+"如何使用傾斜的外表切片。可以使用層高的中間與外表相交產生的截面（中間）。也可"
+"以使用該層高完全不超出模型體積的區域（排除），或是該層高的模型投影區域（包"
+"含）。「排除」保留最多的細節，「包含」有最符合的外形，而「中間」花最少的運算"
+"時間。"
 
 #: fdmprinter.def.json
 msgctxt "slicing_tolerance option middle"
 msgid "Middle"
-msgstr ""
+msgstr "中間"
 
 #: fdmprinter.def.json
 msgctxt "slicing_tolerance option exclusive"
 msgid "Exclusive"
-msgstr ""
+msgstr "排除"
 
 #: fdmprinter.def.json
 msgctxt "slicing_tolerance option inclusive"
 msgid "Inclusive"
-msgstr ""
+msgstr "包含"
 
 #: fdmprinter.def.json
 msgctxt "line_width label"
@@ -881,9 +885,6 @@ msgid ""
 msgstr "用於列印外壁的擠出機組。在多擠出機情況下適用。"
 
 #: fdmprinter.def.json
-#, fuzzy
-#| msgctxt "wall_x_extruder_nr label"
-#| msgid "Inner Walls Extruder"
 msgctxt "wall_x_extruder_nr label"
 msgid "Inner Wall Extruder"
 msgstr "內壁擠出機"
@@ -1597,15 +1598,6 @@ msgid "Infill Pattern"
 msgstr "填充列印樣式"
 
 #: fdmprinter.def.json
-#, fuzzy
-#| msgctxt "infill_pattern description"
-#| msgid ""
-#| "The pattern of the infill material of the print. The line and zig zag "
-#| "infill swap direction on alternate layers, reducing material cost. The "
-#| "grid, triangle, cubic, octet, quarter cubic and concentric patterns are "
-#| "fully printed every layer. Cubic, quarter cubic and octet infill change "
-#| "with every layer to provide a more equal distribution of strength over "
-#| "each direction."
 msgctxt "infill_pattern description"
 msgid ""
 "The pattern of the infill material of the print. The line and zig zag infill "
@@ -1616,8 +1608,9 @@ msgid ""
 "strength over each direction."
 msgstr ""
 "填充耗材的樣式。線條和鋸齒狀填充輪流在每一層交換方向，以降低耗材成本。網格、"
-"三角形、立方體、八面體、四分立方體和同心的列印樣式在每層完整列印。立方體、四"
-"分立方體和八面體填充隨每層變化，以在各個方向提供更均衡的强度分布。"
+"三角形、三-六邊形、立方體、八面體、四分立方體、十字形和同心的列印樣式在每層完"
+"整列印。立方體、四分立方體和八面體填充隨每層變化，以在各個方向提供更均衡的强"
+"度分布。"
 
 #: fdmprinter.def.json
 msgctxt "infill_pattern option grid"
@@ -1637,7 +1630,7 @@ msgstr "三角形"
 #: fdmprinter.def.json
 msgctxt "infill_pattern option trihexagon"
 msgid "Tri-Hexagon"
-msgstr ""
+msgstr "三-六邊形"
 
 #: fdmprinter.def.json
 msgctxt "infill_pattern option cubic"
@@ -1690,14 +1683,6 @@ msgid "Connect Infill Lines"
 msgstr "連接填充線條"
 
 #: fdmprinter.def.json
-#, fuzzy
-#| msgctxt "zig_zaggify_infill description"
-#| msgid ""
-#| "Connect the ends where the infill pattern meets the inner wall using a "
-#| "lines which follows the shape of the inner wall. Enabling this setting "
-#| "can make the infill adhere to the walls better and reduces the effects on "
-#| "infill on the quality of vertical surfaces. Disabling this setting "
-#| "reduces the amount of material used."
 msgctxt "zig_zaggify_infill description"
 msgid ""
 "Connect the ends where the infill pattern meets the inner wall using a line "
@@ -1731,30 +1716,24 @@ msgstr ""
 "度）。"
 
 #: fdmprinter.def.json
-#, fuzzy
-#| msgctxt "z_offset_layer_0 label"
-#| msgid "Initial Layer Z Offset"
 msgctxt "infill_offset_x label"
 msgid "Infill X Offset"
-msgstr "起始層 Z 軸偏移"
+msgstr "填充 X 軸偏移"
 
 #: fdmprinter.def.json
 msgctxt "infill_offset_x description"
 msgid "The infill pattern is offset this distance along the X axis."
-msgstr ""
+msgstr "填充樣式在 X 軸方向偏移此距離。"
 
 #: fdmprinter.def.json
-#, fuzzy
-#| msgctxt "z_offset_layer_0 label"
-#| msgid "Initial Layer Z Offset"
 msgctxt "infill_offset_y label"
 msgid "Infill Y Offset"
-msgstr "起始層 Z 軸偏移"
+msgstr "填充 Y 軸偏移"
 
 #: fdmprinter.def.json
 msgctxt "infill_offset_y description"
 msgid "The infill pattern is offset this distance along the Y axis."
-msgstr ""
+msgstr "填充樣式在 Y 軸方向偏移此距離。"
 
 #: fdmprinter.def.json
 msgctxt "sub_div_rad_add label"
@@ -2176,33 +2155,24 @@ msgid ""
 msgstr "調整所使用耗材的直徑。這個數值要等同於所使用耗材的直徑。"
 
 #: fdmprinter.def.json
-#, fuzzy
-#| msgctxt "platform_adhesion description"
-#| msgid "Adhesion"
 msgctxt "material_adhesion_tendency label"
 msgid "Adhesion Tendency"
-msgstr "附著"
+msgstr "附著趨勢"
 
 #: fdmprinter.def.json
 msgctxt "material_adhesion_tendency description"
 msgid "Surface adhesion tendency."
-msgstr ""
+msgstr "表面附著趨勢。"
 
 #: fdmprinter.def.json
-#, fuzzy
-#| msgctxt "magic_mesh_surface_mode label"
-#| msgid "Surface Mode"
 msgctxt "material_surface_energy label"
 msgid "Surface Energy"
-msgstr "表面模式"
+msgstr "表面能量"
 
 #: fdmprinter.def.json
-#, fuzzy
-#| msgctxt "magic_mesh_surface_mode label"
-#| msgid "Surface Mode"
 msgctxt "material_surface_energy description"
 msgid "Surface energy."
-msgstr "表面模式"
+msgstr "表面能量。"
 
 #: fdmprinter.def.json
 msgctxt "material_flow label"
@@ -4305,13 +4275,6 @@ msgid "Skirt Distance"
 msgstr "外圍間距"
 
 #: fdmprinter.def.json
-#, fuzzy
-#| msgctxt "skirt_gap description"
-#| msgid ""
-#| "The horizontal distance between the skirt and the first layer of the "
-#| "print.\n"
-#| "This is the minimum distance, multiple skirt lines will extend outwards "
-#| "from this distance."
 msgctxt "skirt_gap description"
 msgid ""
 "The horizontal distance between the skirt and the first layer of the print.\n"
@@ -4402,13 +4365,6 @@ msgid "Raft Smoothing"
 msgstr "木筏平滑處理"
 
 #: fdmprinter.def.json
-#, fuzzy
-#| msgctxt "raft_smoothing description"
-#| msgid ""
-#| "This setting control how much inner corners in the raft outline are "
-#| "rounded. Inward corners are rounded to a semi circle with a radius equal "
-#| "to the value given here. This setting also removes holes in the raft "
-#| "outline which are smaller than such a circle."
 msgctxt "raft_smoothing description"
 msgid ""
 "This setting controls how much inner corners in the raft outline are "
@@ -4989,12 +4945,9 @@ msgstr ""
 "作最後手段。"
 
 #: fdmprinter.def.json
-#, fuzzy
-#| msgctxt "machine_max_acceleration_x label"
-#| msgid "Maximum Acceleration X"
 msgctxt "meshfix_maximum_resolution label"
 msgid "Maximum Resolution"
-msgstr "X 軸最大加速度"
+msgstr "最高解析度"
 
 #: fdmprinter.def.json
 msgctxt "meshfix_maximum_resolution description"
@@ -5004,6 +4957,8 @@ msgid ""
 "with the speed it has to process g-code and will increase slice speed by "
 "removing details of the mesh that it can't process anyway."
 msgstr ""
+"切片後線段的最小尺寸。 如果你增加此設定值，網格的解析度將較低。 這允許印表機"
+"保持處理 G-code 的速度，並通過移除無法處理的網格細節來增加切片速度。"
 
 #: fdmprinter.def.json
 msgctxt "multiple_mesh_overlap label"
@@ -5051,7 +5006,7 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "remove_empty_first_layers label"
 msgid "Remove Empty First Layers"
-msgstr ""
+msgstr "移除空的第一層"
 
 #: fdmprinter.def.json
 msgctxt "remove_empty_first_layers description"
@@ -5060,6 +5015,8 @@ msgid ""
 "Disabling this setting can cause empty first layers if the Slicing Tolerance "
 "setting is set to Exclusive or Middle."
 msgstr ""
+"如果可列印的第一層下方有空的層，將其移除。假如「切片公差」設定為「排除」或"
+"「中間」，關閉此設定可能會導致空的第一層。"
 
 #: fdmprinter.def.json
 msgctxt "blackmagic label"
@@ -5768,25 +5725,22 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "flow_rate_max_extrusion_offset label"
 msgid "Flow rate compensation max extrusion offset"
-msgstr ""
+msgstr "流量補償的最大擠出偏移量"
 
 #: fdmprinter.def.json
-#, fuzzy
-#| msgctxt "machine_max_feedrate_e description"
-#| msgid "The maximum speed of the filament."
 msgctxt "flow_rate_max_extrusion_offset description"
 msgid "The maximum distance in mm to compensate."
-msgstr "耗材的最大速度。"
+msgstr "最大補償距離（以毫米為單位）。"
 
 #: fdmprinter.def.json
 msgctxt "flow_rate_extrusion_offset_factor label"
 msgid "Flow rate compensation factor"
-msgstr ""
+msgstr "流量補償因子"
 
 #: fdmprinter.def.json
 msgctxt "flow_rate_extrusion_offset_factor description"
 msgid "The multiplication factor for the flow rate -> distance translation."
-msgstr ""
+msgstr "流量倍率 -> 移動距離。"
 
 #: fdmprinter.def.json
 msgctxt "wireframe_enabled label"
