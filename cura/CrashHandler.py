@@ -280,5 +280,7 @@ class CrashHandler:
         Application.getInstance().callLater(self._show)
 
     def _show(self):
-        self.dialog.exec_()
-        os._exit(1)
+        # When the exception is not in the fatal_exception_types list, the dialog is not created, so we don't need to show it
+        if self.dialog:
+            self.dialog.exec_()
+            os._exit(1)
