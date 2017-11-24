@@ -1966,7 +1966,7 @@
                 "material_bed_temperature":
                 {
                     "label": "Build Plate Temperature",
-                    "description": "The temperature used for the heated build plate. If this is 0, the bed will not heat up for this print.",
+                    "description": "The temperature used for the heated build plate. If this is 0, the bed temperature will not be adjusted.",
                     "unit": "°C",
                     "type": "float",
                     "resolve": "max(extruderValues('material_bed_temperature'))",
