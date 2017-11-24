@@ -138,11 +138,10 @@ Item
                     text: catalog.i18nc("@label:listbox", "Feedrate"),
                     type_id: 2
                 })
-                // TODO DON'T DELETE!!!! This part must be enabled when adaptive layer height feature is available
-//                layerViewTypes.append({
-//                    text: catalog.i18nc("@label:listbox", "Layer thickness"),
-//                    type_id: 3  // these ids match the switching in the shader
-//                })
+                layerViewTypes.append({
+                    text: catalog.i18nc("@label:listbox", "Layer thickness"),
+                    type_id: 3  // these ids match the switching in the shader
+                })
             }
 
             ComboBox
