@@ -124,13 +124,22 @@ Rectangle
                 {
                     return UM.Theme.getIcon("tab_status_unknown");
                 }
-
                 if (Cura.MachineManager.printerOutputDevices[0].printerState == "maintenance")
                 {
                     return UM.Theme.getIcon("tab_status_busy");
                 }
 
-                switch (Cura.MachineManager.printerOutputDevices[0].jobState)
+                if(Cura.MachineManager.printerOutputDevices[0].activePrinter == null)
+                {
+                    return UM.Theme.getIcon("tab_status_connected")
+                }
+
+                if(Cura.MachineManager.printerOutputDevices[0].activePrinter.activePrintJob == null)
+                {
+                    return UM.Theme.getIcon("tab_status_connected")
+                }
+
+                switch (Cura.MachineManager.printerOutputDevices[0].activePrinter.activePrintJob.state)
                 {
                     case "printing":
                     case "pre_print":

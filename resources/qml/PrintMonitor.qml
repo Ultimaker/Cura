@@ -100,15 +100,15 @@ Column
         visible: connectedPrinter != null ? connectedPrinter.canControlManually : false
         enabled:
         {
-            if (connectedPrinter == null)
+            if (connectedPrinter == null || activePrintJob == null)
             {
-                return false; //Can't control the printer if not connected.
+                return false; //Can't control the printer if not connected or if there is no print job.
             }
             if (!connectedPrinter.acceptsCommands)
             {
                 return false; //Not allowed to do anything.
             }
-            if (connectedPrinter.jobState == "printing" || connectedPrinter.jobState == "resuming" || connectedPrinter.jobState == "pausing" || connectedPrinter.jobState == "error" || connectedPrinter.jobState == "offline")
+            if (activePrintJob.state == "printing" || activePrintJob.state == "resuming" || activePrintJob.state == "pausing" || activePrintJob.state == "error" || activePrintJob.state == "offline")
             {
                 return false; //Printer is in a state where it can't react to manual control
             }
