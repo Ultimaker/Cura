@@ -211,7 +211,6 @@ class GCodeReader(MeshReader):
         return self._position(
             params.x if params.x is not None else position.x,
             params.y if params.y is not None else position.y,
-
             0,
             position.f,
             position.e)
@@ -274,11 +273,11 @@ class GCodeReader(MeshReader):
             position.e.extend([0] * (self._extruder_number - len(position.e) + 1))
         return position
 
-    def _processMCode(self, m):
-        if m == 82:
+    def _processMCode(self, M):
+        if M == 82:
             # Set absolute extrusion mode
             self._is_absolute_extrusion = True
-        elif m == 83:
+        elif M == 83:
             # Set relative extrusion mode
             self._is_absolute_extrusion = False
 
