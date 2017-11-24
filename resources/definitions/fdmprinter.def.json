@@ -1218,7 +1218,17 @@
                     },
                     "default_value": "everywhere",
                     "limit_to_extruder": "wall_0_extruder_nr",
-                    "settable_per_mesh": true
+                    "settable_per_mesh": true,
+                    "children": {
+                        "filter_out_tiny_gaps": {
+                            "label": "Filter Out Tiny Gaps",
+                            "description": "Filter out tiny gaps to reduce blobs on outside of model.",
+                            "type": "bool",
+                            "default_value": true,
+                            "limit_to_extruder": "wall_0_extruder_nr",
+                            "settable_per_mesh": true
+                        }
+                    }
                 },
                 "fill_outline_gaps": {
                     "label": "Print Thin Walls",
@@ -4945,6 +4955,18 @@
                     "default_value": false,
                     "settable_per_mesh": true
                 },
+                "meshfix_maximum_resolution":
+                {
+                    "label": "Maximum Resolution",
+                    "description": "The minimum size of a line segment after slicing. If you increase this, the mesh will have a lower resolution. This may allow the printer to keep up with the speed it has to process g-code and will increase slice speed by removing details of the mesh that it can't process anyway.",
+                    "type": "float",
+                    "unit": "mm",
+                    "default_value": 0.01,
+                    "minimum_value": "0.001",
+                    "minimum_value_warning": "0.005",
+                    "maximum_value_warning": "0.1",
+                    "settable_per_mesh": true
+                },
                 "multiple_mesh_overlap":
                 {
                     "label": "Merged Meshes Overlap",
@@ -5576,6 +5598,36 @@
                             "settable_per_mesh": true
                         }
                     }
+                },
+                "flow_rate_max_extrusion_offset":
+                {
+                    "label": "Flow rate compensation max extrusion offset",
+                    "description": "The maximum distance in mm to compensate.",
+                    "unit": "mm",
+                    "type": "float",
+                    "minimum_value": "0",
+                    "maximum_value_warning": "10",
+                    "default_value": 0,
+                    "value": "0",
+                    "enabled": true,
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false,
+                    "settable_per_meshgroup": false
+                },
+                "flow_rate_extrusion_offset_factor":
+                {
+                    "label": "Flow rate compensation factor",
+                    "description": "The multiplication factor for the flow rate -> distance translation.",
+                    "unit": "%",
+                    "type": "float",
+                    "minimum_value": "0",
+                    "maximum_value_warning": "100",
+                    "default_value": 100,
+                    "value": "100",
+                    "enabled": true,
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false,
+                    "settable_per_meshgroup": false
                 },
                 "wireframe_enabled":
                 {

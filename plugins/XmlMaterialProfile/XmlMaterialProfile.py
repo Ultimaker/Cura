@@ -422,11 +422,11 @@ class XmlMaterialProfile(InstanceContainer):
         return version * 1000000 + setting_version
 
     ##  Overridden from InstanceContainer
-    def deserialize(self, serialized):
+    def deserialize(self, serialized, file_name = None):
         containers_to_add = []
         # update the serialized data first
         from UM.Settings.Interfaces import ContainerInterface
-        serialized = ContainerInterface.deserialize(self, serialized)
+        serialized = ContainerInterface.deserialize(self, serialized, file_name)
 
         try:
             data = ET.fromstring(serialized)

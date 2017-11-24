@@ -41,9 +41,20 @@ class CuraContainerStack(ContainerStack):
     def __init__(self, container_id: str, *args, **kwargs):
         super().__init__(container_id, *args, **kwargs)
 
-        self._empty_instance_container = ContainerRegistry.getInstance().getEmptyInstanceContainer()
+        self._container_registry = ContainerRegistry.getInstance()
+
+        self._empty_instance_container = self._container_registry.getEmptyInstanceContainer()
+
+        self._empty_quality_changes = self._container_registry.findInstanceContainers(id = "empty_quality_changes")[0]
+        self._empty_quality = self._container_registry.findInstanceContainers(id = "empty_quality")[0]
+        self._empty_material = self._container_registry.findInstanceContainers(id = "empty_material")[0]
+        self._empty_variant = self._container_registry.findInstanceContainers(id = "empty_variant")[0]
 
         self._containers = [self._empty_instance_container for i in range(len(_ContainerIndexes.IndexTypeMap))]
+        self._containers[_ContainerIndexes.QualityChanges] = self._empty_quality_changes
+        self._containers[_ContainerIndexes.Quality] = self._empty_quality
+        self._containers[_ContainerIndexes.Material] = self._empty_material
+        self._containers[_ContainerIndexes.Variant] = self._empty_variant
 
         self.containersChanged.connect(self._onContainersChanged)
 
@@ -348,8 +359,8 @@ class CuraContainerStack(ContainerStack):
     #
     #   \throws InvalidContainerStackError Raised when no definition can be found for the stack.
     @override(ContainerStack)
-    def deserialize(self, contents: str) -> None:
-        super().deserialize(contents)
+    def deserialize(self, contents: str, file_name: Optional[str] = None) -> None:
+        super().deserialize(contents, file_name)
 
         new_containers = self._containers.copy()
         while len(new_containers) < len(_ContainerIndexes.IndexTypeMap):
@@ -456,7 +467,7 @@ class CuraContainerStack(ContainerStack):
         else:
             search_criteria["definition"] = "fdmprinter"
 
-        if self.material != self._empty_instance_container:
+        if self.material != self._empty_material:
             search_criteria["name"] = self.material.name
         else:
             preferred_material = definition.getMetaDataEntry("preferred_material")
@@ -503,7 +514,7 @@ class CuraContainerStack(ContainerStack):
         else:
             search_criteria["definition"] = "fdmprinter"
 
-        if self.quality != self._empty_instance_container:
+        if self.quality != self._empty_quality:
             search_criteria["name"] = self.quality.name
         else:
             preferred_quality = definition.getMetaDataEntry("preferred_quality")

@@ -1,8 +1,8 @@
 {
-    "name": "Layer View",
+    "name": "Simulation View",
     "author": "Ultimaker B.V.",
     "version": "1.0.0",
-    "description": "Provides the Layer view.",
+    "description": "Provides the Simulation view.",
     "api": 4,
     "i18n-catalog": "cura"
 }

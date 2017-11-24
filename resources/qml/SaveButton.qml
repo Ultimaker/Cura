@@ -45,6 +45,14 @@ Item {
         }
     }
 
+    function sliceOrStopSlicing() {
+        if ([1, 5].indexOf(UM.Backend.state) != -1) {
+            backend.forceSlice();
+        } else {
+            backend.stopSlicing();
+        }
+    }
+
     Label {
         id: statusLabel
         width: parent.width - 2 * UM.Theme.getSize("sidebar_margin").width
@@ -85,6 +93,10 @@ Item {
             // only work when the button is enabled
             if (saveToButton.enabled) {
                 saveToButton.clicked();
+            }
+            // prepare button
+            if (prepareButton.enabled) {
+                sliceOrStopSlicing();
             }
         }
     }
@@ -145,7 +157,7 @@ Item {
         Button {
             id: prepareButton
 
-            tooltip: UM.OutputDeviceManager.activeDeviceDescription;
+            tooltip: catalog.i18nc("@info:tooltip","Slice");
             // 1 = not started, 2 = Processing
             enabled: (base.backendState == 1 || base.backendState == 2) && base.activity == true
             visible: {
@@ -162,11 +174,7 @@ Item {
             text: [1, 5].indexOf(UM.Backend.state) != -1 ? catalog.i18nc("@label:Printjob", "Prepare") : catalog.i18nc("@label:Printjob", "Cancel")
             onClicked:
             {
-                if ([1, 5].indexOf(UM.Backend.state) != -1) {
-                    backend.forceSlice();
-                } else {
-                    backend.stopSlicing();
-                }
+                sliceOrStopSlicing();
             }
 
             style: ButtonStyle {

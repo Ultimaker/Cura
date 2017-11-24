@@ -620,12 +620,17 @@ class MachineManager(QObject):
     @pyqtProperty(str, notify=activeQualityChanged)
     def activeQualityId(self) -> str:
         if self._active_container_stack:
-            quality = self._active_container_stack.qualityChanges
-            if quality and not isinstance(quality, type(self._empty_quality_changes_container)):
-                return quality.getId()
             quality = self._active_container_stack.quality
-            if quality:
-                return quality.getId()
+            if isinstance(quality, type(self._empty_quality_container)):
+                return ""
+            quality_changes = self._active_container_stack.qualityChanges
+            if quality and quality_changes:
+                if isinstance(quality_changes, type(self._empty_quality_changes_container)):
+                    # It's a built-in profile
+                    return quality.getId()
+                else:
+                    # Custom profile
+                    return quality_changes.getId()
         return ""
 
     @pyqtProperty(str, notify=activeQualityChanged)
@@ -690,9 +695,9 @@ class MachineManager(QObject):
     @pyqtProperty(str, notify = activeQualityChanged)
     def activeQualityChangesId(self) -> str:
         if self._active_container_stack:
-            changes = self._active_container_stack.qualityChanges
-            if changes and changes.getId() != "empty":
-                return changes.getId()
+            quality_changes = self._active_container_stack.qualityChanges
+            if quality_changes and not isinstance(quality_changes, type(self._empty_quality_changes_container)):
+                return quality_changes.getId()
         return ""
 
     ## Check if a container is read_only
@@ -864,17 +869,12 @@ class MachineManager(QObject):
                     "quality_changes": stack_quality_changes
                 })
 
-            has_user_interaction = False
+            # show the keep/discard dialog after the containers have been switched. Otherwise, the default values on
+            # the dialog will be the those before the switching.
+            self._executeDelayedActiveContainerStackChanges()
 
             if self.hasUserSettings and Preferences.getInstance().getValue("cura/active_mode") == 1:
-                # Show the keep/discard user settings dialog
-                has_user_interaction = Application.getInstance().discardOrKeepProfileChanges()
-
-            # If there is no interaction with the user (it means the dialog showing "keep" or "discard" was not shown)
-            # because either there are not user changes or because the used already decided to always keep or discard,
-            # then the quality instance container is replaced, in which case, the activeQualityChanged signal is emitted.
-            if not has_user_interaction:
-                self._executeDelayedActiveContainerStackChanges()
+                Application.getInstance().discardOrKeepProfileChanges()
 
     ##  Used to update material and variant in the active container stack with a delay.
     #   This delay prevents the stack from triggering a lot of signals (eventually resulting in slicing)
