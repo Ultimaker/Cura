@@ -3,11 +3,10 @@
 
 # This collects a lot of quality and quality changes related code which was split between ContainerManager
 # and the MachineManager and really needs to usable from both.
-from typing import List, Optional, Dict, TYPE_CHECKING
+from typing import Any, Dict, List, Optional, TYPE_CHECKING
 
 from UM.Application import Application
 from UM.Settings.ContainerRegistry import ContainerRegistry
-from UM.Settings.DefinitionContainer import DefinitionContainer
 from UM.Settings.InstanceContainer import InstanceContainer
 from cura.Settings.ExtruderManager import ExtruderManager
 
@@ -42,7 +41,7 @@ class QualityManager:
 
         # Fall back to using generic materials and qualities if nothing could be found.
         if not result and material_containers and len(material_containers) == 1:
-            basic_materials = self._getBasicMaterials(material_containers[0])
+            basic_materials = self._getBasicMaterialMetadatas(material_containers[0].getMetaData())
             result = self._getFilteredContainersForStack(machine_definition, basic_materials, **criteria)
 
         return result[0] if result else None
@@ -119,7 +118,7 @@ class QualityManager:
         result = self._getFilteredContainersForStack(machine_definition, material_containers, **criteria)
         # Fall back to using generic materials and qualities if nothing could be found.
         if not result and material_containers and len(material_containers) == 1:
-            basic_materials = self._getBasicMaterials(material_containers[0])
+            basic_materials = self._getBasicMaterialMetadatas(material_containers[0].getMetaData())
             if basic_materials:
                 result = self._getFilteredContainersForStack(machine_definition, basic_materials, **criteria)
         return result[0] if result else None
@@ -131,9 +130,9 @@ class QualityManager:
     #   \return \type{List[InstanceContainer]} the list of suitable qualities.
     def findAllQualitiesForMachineMaterial(self, machine_definition: "DefinitionContainerInterface", material_container: InstanceContainer) -> List[InstanceContainer]:
         criteria = {"type": "quality"}
-        result = self._getFilteredContainersForStack(machine_definition, [material_container], **criteria)
+        result = self._getFilteredContainersForStack(machine_definition, [material_container.getMetaData()], **criteria)
         if not result:
-            basic_materials = self._getBasicMaterials(material_container)
+            basic_materials = self._getBasicMaterialMetadatas(material_container.getMetaData())
             if basic_materials:
                 result = self._getFilteredContainersForStack(machine_definition, basic_materials, **criteria)
 
@@ -198,13 +197,19 @@ class QualityManager:
     ##  Fetch more basic versions of a material.
     #
     #   This tries to find a generic or basic version of the given material.
-    #   \param material_container \type{InstanceContainer} the material
-    #   \return \type{List[InstanceContainer]} a list of the basic materials or an empty list if one could not be found.
-    def _getBasicMaterials(self, material_container: InstanceContainer):
-        base_material = material_container.getMetaDataEntry("material")
-        material_container_definition = material_container.getDefinition()
-        if material_container_definition and material_container_definition.getMetaDataEntry("has_machine_quality"):
-            definition_id = material_container.getDefinition().getMetaDataEntry("quality_definition", material_container.getDefinition().getId())
+    #   \param material_container \type{Dict[str, Any]} The metadata of a
+    #   material to find the basic versions of.
+    #   \return \type{List[Dict[str, Any]]} A list of the metadata of basic
+    #   materials, or an empty list if none could be found.
+    def _getBasicMaterialMetadatas(self, material_container: Dict[str, Any]) -> List[Dict[str, Any]]:
+        base_material = material_container.get("material")
+        material_container_definition = ContainerRegistry.getInstance().findDefinitionContainersMetadata(id = material_container["definition"])
+        if material_container_definition:
+            material_container_definition = material_container_definition[0]
+            if "has_machine_quality" in material_container_definition:
+                definition_id = material_container_definition.get("quality_definition", material_container_definition["id"])
+            else:
+                definition_id = "fdmprinter"
         else:
             definition_id = "fdmprinter"
         if base_material:
@@ -213,9 +218,9 @@ class QualityManager:
                 "type": "material",
                 "name": base_material,
                 "definition": definition_id,
-                "variant": material_container.getMetaDataEntry("variant")
+                "variant": material_container.get("variant")
             }
-            containers = ContainerRegistry.getInstance().findInstanceContainers(**criteria)
+            containers = ContainerRegistry.getInstance().findInstanceContainersMetadata(**criteria)
             return containers
 
         return []
@@ -223,7 +228,7 @@ class QualityManager:
     def _getFilteredContainers(self, **kwargs):
         return self._getFilteredContainersForStack(None, None, **kwargs)
 
-    def _getFilteredContainersForStack(self, machine_definition: "DefinitionContainerInterface" = None, material_containers: List[InstanceContainer] = None, **kwargs):
+    def _getFilteredContainersForStack(self, machine_definition: "DefinitionContainerInterface" = None, material_metadata: List[Dict[str, Any]] = None, **kwargs):
         # Fill in any default values.
         if machine_definition is None:
             machine_definition = Application.getInstance().getGlobalContainerStack().getBottom()
@@ -231,10 +236,10 @@ class QualityManager:
             if quality_definition_id is not None:
                 machine_definition = ContainerRegistry.getInstance().findDefinitionContainers(id = quality_definition_id)[0]
 
-        if not material_containers:
+        if not material_metadata:
             active_stacks = ExtruderManager.getInstance().getActiveGlobalAndExtruderStacks()
             if active_stacks:
-                material_containers = [stack.material for stack in active_stacks]
+                material_metadata = [stack.material.getMetaData() for stack in active_stacks]
 
         criteria = kwargs
         filter_by_material = False
@@ -255,12 +260,12 @@ class QualityManager:
         # Stick the material IDs in a set
         material_ids = set()
 
-        for material_instance in material_containers:
+        for material_instance in material_metadata:
             if material_instance is not None:
                 # Add the parent material too.
-                for basic_material in self._getBasicMaterials(material_instance):
-                    material_ids.add(basic_material.getId())
-                material_ids.add(material_instance.getId())
+                for basic_material in self._getBasicMaterialMetadatas(material_instance):
+                    material_ids.add(basic_material["id"])
+                material_ids.add(material_instance["id"])
         containers = ContainerRegistry.getInstance().findInstanceContainers(**criteria)
 
         result = []
