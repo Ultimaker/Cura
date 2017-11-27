@@ -570,6 +570,7 @@ class XmlMaterialProfile(InstanceContainer):
                         is_new_material = True
 
                     new_material.setMetaData(copy.deepcopy(self.getMetaData()))
+                    new_material.getMetaData()["id"] = new_material_id
                     new_material.getMetaData()["name"] = self.getName()
                     new_material.setDefinition(machine_id)
                     # Don't use setMetadata, as that overrides it for all materials with same base file
@@ -623,6 +624,7 @@ class XmlMaterialProfile(InstanceContainer):
                         is_new_material = True
 
                     new_hotend_material.setMetaData(copy.deepcopy(self.getMetaData()))
+                    new_hotend_material.getMetaData()["id"] = new_hotend_id
                     new_hotend_material.getMetaData()["name"] = self.getName()
                     new_hotend_material.setDefinition(machine_id)
                     new_hotend_material.getMetaData()["variant"] = variant_containers[0]["id"]
