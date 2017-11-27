@@ -768,6 +768,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                 self._container_registry.removeContainer(container.getId())
             return
 
+
         # Check quality profiles to make sure that if one stack has the "not supported" quality profile,
         # all others should have the same.
         #
