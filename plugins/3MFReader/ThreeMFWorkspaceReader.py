@@ -715,11 +715,10 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                 extruder_file_content = archive.open(extruder_stack_file, "r").read().decode("utf-8")
 
                 if self._resolve_strategies["machine"] == "override":
-                    if global_stack.getProperty("machine_extruder_count", "value") > 1:
-                        # deserialize new extruder stack over the current ones (if any)
-                        stack = self._overrideExtruderStack(global_stack, extruder_file_content, extruder_stack_file)
-                        if stack is None:
-                            continue
+                    # deserialize new extruder stack over the current ones (if any)
+                    stack = self._overrideExtruderStack(global_stack, extruder_file_content, extruder_stack_file)
+                    if stack is None:
+                        continue
 
                 elif self._resolve_strategies["machine"] == "new":
                     new_id = extruder_stack_id_map[container_id]
@@ -760,7 +759,15 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             if not extruder_stacks:
                 stack = self._container_registry.addExtruderStackForSingleExtrusionMachine(global_stack, "fdmextruder")
                 if stack:
-                    extruder_stacks.append(stack)
+                    if self._resolve_strategies["machine"] == "override":
+                        # in case the extruder is newly created (for a single-extrusion machine), we need to override
+                        # the existing extruder stack.
+                        existing_extruder_stack = global_stack.extruders[stack.getMetaDataEntry("position")]
+                        for idx in range(len(_ContainerIndexes.IndexTypeMap)):
+                            existing_extruder_stack.replaceContainer(idx, stack._containers[idx], postpone_emit = True)
+                        extruder_stacks.append(existing_extruder_stack)
+                    else:
+                        extruder_stacks.append(stack)
 
         except:
             Logger.logException("w", "We failed to serialize the stack. Trying to clean up.")
@@ -812,6 +819,8 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             available_quality_types = [q.getMetaDataEntry("quality_type") for q in available_quality]
 
             if global_stack.quality.getMetaDataEntry("quality_type") not in available_quality_types:
+                # We are here because the quality_type specified in the project is not supported any more,
+                # so we need to switch it to the "preferred quality" if present, otherwise "normal".
                 quality_has_been_changed = True
 
                 # find the preferred quality
@@ -845,6 +854,41 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                     else:
                         # we cannot find the preferred quality. THIS SHOULD NOT HAPPEN
                         Logger.log("e", "Cannot find the preferred quality for machine [%s]", global_stack.getId())
+            else:
+                # The quality_type specified in the project file is usable, but the quality container itself may not
+                # be correct. For example, for UM2, the quality container can be "draft" while it should be "um2_draft"
+                # instead.
+                # In this code branch, we try to fix those incorrect quality containers.
+                search_criteria = {"type": "quality",
+                                   "quality_type": global_stack.quality.getMetaDataEntry("quality_type")}
+                search_criteria["definition"] = global_stack.definition.getId()
+                if not parseBool(global_stack.getMetaDataEntry("has_machine_quality", "False")):
+                    search_criteria["definition"] = "fdmprinter"
+
+                containers = self._container_registry.findInstanceContainers(**search_criteria)
+                containers = [c for c in containers if not c.getMetaDataEntry("material", "")]
+                if not containers:
+                    # cannot find machine-specific qualities, so just use fdmprinter to search again
+                    search_criteria["definition"] = "fdmprinter"
+                    containers = self._container_registry.findInstanceContainers(**search_criteria)
+                    containers = [c for c in containers if not c.getMetaDataEntry("material", "")]
+
+                if containers:
+                    new_quality_container = containers[0]
+                    global_stack.quality = new_quality_container
+
+                for extruder_stack in extruder_stacks:
+                    search_criteria = {"type": "quality",
+                                       "quality_type": global_stack.quality.getMetaDataEntry("quality_type")}
+                    search_criteria["definition"] = global_stack.definition.getId()
+                    if not parseBool(global_stack.getMetaDataEntry("has_machine_quality", "False")):
+                        search_criteria["definition"] = "fdmprinter"
+
+                    if global_stack.getMetaDataEntry("has_machine_materials") and extruder_stack.material.getId() not in ("empty", "empty_material"):
+                        search_criteria["material"] = extruder_stack.material.getId()
+                    containers = self._container_registry.findInstanceContainers(**search_criteria)
+                    if containers:
+                        extruder_stack.quality = containers[0]
 
         # Replacing the old containers if resolve is "new".
         # When resolve is "new", some containers will get renamed, so all the other containers that reference to those

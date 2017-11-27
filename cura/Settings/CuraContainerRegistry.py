@@ -402,96 +402,92 @@ class CuraContainerRegistry(ContainerRegistry):
         return new_stack
 
     def _registerSingleExtrusionMachinesExtruderStacks(self):
-        machines = ContainerRegistry.getInstance().findContainerStacks(machine_extruder_trains = {"0": "fdmextruder"})
+        machines = self.findContainerStacks(type = "machine", machine_extruder_trains = {"0": "fdmextruder"})
         for machine in machines:
-            self.addExtruderStackForSingleExtrusionMachine(machine, "fdmextruder")
+            extruder_stacks = self.findContainerStacks(type = "extruder_train", machine = machine.getId())
+            if not extruder_stacks:
+                self.addExtruderStackForSingleExtrusionMachine(machine, "fdmextruder")
 
     def addExtruderStackForSingleExtrusionMachine(self, machine, extruder_id):
         new_extruder_id = extruder_id
-        extruder_stack = None
 
-        # if extruders are defined in the machine definition use those instead
-        if machine.extruders and "0" in machine.extruders:
-            new_extruder_id = machine.extruders["0"].getId()
-            extruder_stack = machine.extruders["0"]
+        extruder_definitions = self.findDefinitionContainers(id = new_extruder_id)
+        if not extruder_definitions:
+            Logger.log("w", "Could not find definition containers for extruder %s", new_extruder_id)
+            return
 
-        # if the extruder stack doesn't exist yet we create and add it
-        if not extruder_stack:
-            extruder_definitions = self.findDefinitionContainers(id = new_extruder_id)
-            if not extruder_definitions:
-                Logger.log("w", "Could not find definition containers for extruder %s", new_extruder_id)
-                return
+        extruder_definition = extruder_definitions[0]
+        unique_name = self.uniqueName(machine.getName() + " " + new_extruder_id)
 
-            extruder_definition = extruder_definitions[0]
-            unique_name = self.uniqueName(machine.getName() + " " + new_extruder_id)
+        extruder_stack = ExtruderStack.ExtruderStack(unique_name)
+        extruder_stack.setName(extruder_definition.getName())
+        extruder_stack.setDefinition(extruder_definition)
+        extruder_stack.addMetaDataEntry("position", extruder_definition.getMetaDataEntry("position"))
+        extruder_stack.setNextStack(machine)
 
-            extruder_stack = ExtruderStack.ExtruderStack(unique_name)
-            extruder_stack.setName(extruder_definition.getName())
-            extruder_stack.setDefinition(extruder_definition)
-            extruder_stack.addMetaDataEntry("position", extruder_definition.getMetaDataEntry("position"))
-            extruder_stack.setNextStack(machine)
+        # create empty user changes container otherwise
+        user_container = InstanceContainer(extruder_stack.id + "_user")
+        user_container.addMetaDataEntry("type", "user")
+        user_container.addMetaDataEntry("machine", extruder_stack.getId())
+        from cura.CuraApplication import CuraApplication
+        user_container.addMetaDataEntry("setting_version", CuraApplication.SettingVersion)
+        user_container.setDefinition(machine.definition)
 
-            # create empty user changes container otherwise
-            user_container = InstanceContainer(extruder_stack.id + "_user")
-            user_container.addMetaDataEntry("type", "user")
-            user_container.addMetaDataEntry("machine", extruder_stack.getId())
-            from cura.CuraApplication import CuraApplication
-            user_container.addMetaDataEntry("setting_version", CuraApplication.SettingVersion)
-            user_container.setDefinition(extruder_definition)
+        if machine.userChanges:
+            # for the newly created extruder stack, we need to move all "per-extruder" settings to the user changes
+            # container to the extruder stack.
+            for user_setting_key in machine.userChanges.getAllKeys():
+                settable_per_extruder = machine.getProperty(user_setting_key, "settable_per_extruder")
+                if settable_per_extruder:
+                    user_container.addInstance(machine.userChanges.getInstance(user_setting_key))
+                    machine.userChanges.removeInstance(user_setting_key, postpone_emit = True)
 
-            if machine.userChanges:
-                # for the newly created extruder stack, we need to move all "per-extruder" settings to the user changes
-                # container to the extruder stack.
-                for user_setting_key in machine.userChanges.getAllKeys():
-                    settable_per_extruder = machine.getProperty(user_setting_key, "settable_per_extruder")
-                    if settable_per_extruder:
-                        user_container.addInstance(machine.userChanges.getInstance(user_setting_key))
-                        machine.userChanges.removeInstance(user_setting_key, postpone_emit = True)
+        extruder_stack.setUserChanges(user_container)
+        self.addContainer(user_container)
 
-            extruder_stack.setUserChanges(user_container)
-            self.addContainer(user_container)
+        variant_id = "default"
+        if machine.variant.getId() not in ("empty", "empty_variant"):
+            variant_id = machine.variant.getId()
+        else:
+            variant_id = "empty_variant"
+        extruder_stack.setVariantById(variant_id)
 
-            variant_id = "default"
-            if machine.variant.getId() not in ("empty", "empty_variant"):
-                variant_id = machine.variant.getId()
+        material_id = "default"
+        if machine.material.getId() not in ("empty", "empty_material"):
+            material_id = machine.material.getId()
+        else:
+            material_id = "empty_material"
+        extruder_stack.setMaterialById(material_id)
+
+        quality_id = "default"
+        if machine.quality.getId() not in ("empty", "empty_quality"):
+            quality_id = machine.quality.getId()
+        else:
+            quality_id = "empty_quality"
+        extruder_stack.setQualityById(quality_id)
+
+        if machine.qualityChanges.getId() not in ("empty", "empty_quality_changes"):
+            extruder_quality_changes_container = self.findInstanceContainers(name = machine.qualityChanges.getName(), extruder = extruder_id)
+            if extruder_quality_changes_container:
+                extruder_quality_changes_container = extruder_quality_changes_container[0]
+                quality_changes_id = extruder_quality_changes_container.getId()
+                extruder_stack.setQualityChangesById(quality_changes_id)
             else:
-                variant_id = "empty_variant"
-            extruder_stack.setVariantById(variant_id)
-
-            material_id = "default"
-            if machine.material.getId() not in ("empty", "empty_material"):
-                material_id = machine.material.getId()
-            else:
-                material_id = "empty_material"
-            extruder_stack.setMaterialById(material_id)
-
-            quality_id = "default"
-            if machine.quality.getId() not in ("empty", "empty_quality"):
-                quality_id = machine.quality.getId()
-            else:
-                quality_id = "empty_quality"
-            extruder_stack.setQualityById(quality_id)
-
-            if machine.qualityChanges.getId() not in ("empty", "empty_quality_changes"):
-                extruder_quality_changes_container = self.findInstanceContainers(name = machine.qualityChanges.getName(), extruder = extruder_id)
+                # Some extruder quality_changes containers can be created at runtime as files in the qualities
+                # folder. Those files won't be loaded in the registry immediately. So we also need to search
+                # the folder to see if the quality_changes exists.
+                extruder_quality_changes_container = self._findQualityChangesContainerInCuraFolder(machine.qualityChanges.getName())
                 if extruder_quality_changes_container:
-                    extruder_quality_changes_container = extruder_quality_changes_container[0]
                     quality_changes_id = extruder_quality_changes_container.getId()
                     extruder_stack.setQualityChangesById(quality_changes_id)
-                else:
-                    # Some extruder quality_changes containers can be created at runtime as files in the qualities
-                    # folder. Those files won't be loaded in the registry immediately. So we also need to search
-                    # the folder to see if the quality_changes exists.
-                    extruder_quality_changes_container = self._findQualityChangesContainerInCuraFolder(machine.qualityChanges.getName())
-                    if extruder_quality_changes_container:
-                        quality_changes_id = extruder_quality_changes_container.getId()
-                        extruder_stack.setQualityChangesById(quality_changes_id)
 
-                if not extruder_quality_changes_container:
-                    Logger.log("w", "Could not find quality_changes named [%s] for extruder [%s]",
-                               machine.qualityChanges.getName(), extruder_stack.getId())
+            if not extruder_quality_changes_container:
+                Logger.log("w", "Could not find quality_changes named [%s] for extruder [%s]",
+                           machine.qualityChanges.getName(), extruder_stack.getId())
+        else:
+            extruder_stack.setQualityChangesById("empty_quality_changes")
 
-            self.addContainer(extruder_stack)
+        self.addContainer(extruder_stack)
 
         return extruder_stack
 
