@@ -834,6 +834,10 @@ class XmlMaterialProfile(InstanceContainer):
     def _parseCompatibleValue(cls, value: str):
         return value in {"yes", "unknown"}
 
+    ##  Small string representation for debugging.
+    def __str__(self):
+        return "<XmlMaterialProfile '{my_id}' ('{name}') from base file '{base_file}'>".format(my_id = self.getId(), name = self.getName(), base_file = self.getMetaDataEntry("base_file"))
+
     # Map XML file setting names to internal names
     __material_settings_setting_map = {
         "print temperature": "default_material_print_temperature",
