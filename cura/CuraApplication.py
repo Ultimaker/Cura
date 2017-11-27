@@ -260,21 +260,21 @@ class CuraApplication(QtApplication):
         # We need them to simplify the switching between materials.
         empty_container = ContainerRegistry.getInstance().getEmptyInstanceContainer()
         empty_variant_container = copy.deepcopy(empty_container)
-        empty_variant_container._id = "empty_variant"
+        empty_variant_container.setMetaDataEntry("id", "empty_variant")
         empty_variant_container.addMetaDataEntry("type", "variant")
         ContainerRegistry.getInstance().addContainer(empty_variant_container)
         empty_material_container = copy.deepcopy(empty_container)
-        empty_material_container._id = "empty_material"
+        empty_material_container.setMetaDataEntry("id", "empty_material")
         empty_material_container.addMetaDataEntry("type", "material")
         ContainerRegistry.getInstance().addContainer(empty_material_container)
         empty_quality_container = copy.deepcopy(empty_container)
-        empty_quality_container._id = "empty_quality"
+        empty_quality_container.setMetaDataEntry("id", "empty_quality")
         empty_quality_container.setName("Not Supported")
         empty_quality_container.addMetaDataEntry("quality_type", "normal")
         empty_quality_container.addMetaDataEntry("type", "quality")
         ContainerRegistry.getInstance().addContainer(empty_quality_container)
         empty_quality_changes_container = copy.deepcopy(empty_container)
-        empty_quality_changes_container._id = "empty_quality_changes"
+        empty_quality_changes_container.setMetaDataEntry("id", "empty_quality_changes")
         empty_quality_changes_container.addMetaDataEntry("type", "quality_changes")
         ContainerRegistry.getInstance().addContainer(empty_quality_changes_container)
 
