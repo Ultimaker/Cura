@@ -451,8 +451,8 @@ class XmlMaterialProfile(InstanceContainer):
         else:
             meta_data["setting_version"] = self.xmlVersionToSettingVersion("1.2") #1.2 and lower didn't have that version number there yet.
 
-        metadata = data.iterfind("./um:metadata/*", self.__namespaces)
-        for entry in metadata:
+        meta_data["name"] = "Unknown Material" #In case the name tag is missing.
+        for entry in data.iterfind("./um:metadata/*", self.__namespaces):
             tag_name = _tag_without_namespace(entry)
 
             if tag_name == "name":
@@ -462,9 +462,9 @@ class XmlMaterialProfile(InstanceContainer):
                 label = entry.find("./um:label", self.__namespaces)
 
                 if label is not None:
-                    self.setName(label.text)
+                    meta_data["name"] = label.text
                 else:
-                    self.setName(self._profile_name(material.text, color.text))
+                    meta_data["name"] = self._profile_name(material.text, color.text)
                 meta_data["brand"] = brand.text
                 meta_data["material"] = material.text
                 meta_data["color_name"] = color.text
@@ -570,6 +570,7 @@ class XmlMaterialProfile(InstanceContainer):
                         is_new_material = True
 
                     new_material.setMetaData(copy.deepcopy(self.getMetaData()))
+                    new_material.getMetaData()["name"] = self.getName()
                     new_material.setDefinition(machine_id)
                     # Don't use setMetadata, as that overrides it for all materials with same base file
                     new_material.getMetaData()["compatible"] = machine_compatibility
@@ -621,11 +622,10 @@ class XmlMaterialProfile(InstanceContainer):
                         new_hotend_material = XmlMaterialProfile(new_hotend_id)
                         is_new_material = True
 
-                    # Update the private directly, as we want to prevent the lookup that is done when using setName
-                    new_hotend_material.setName(self.getName())
                     new_hotend_material.setMetaData(copy.deepcopy(self.getMetaData()))
+                    new_hotend_material.getMetaData()["name"] = self.getName()
                     new_hotend_material.setDefinition(machine_id)
-                    new_hotend_material.addMetaDataEntry("variant", variant_containers[0]["id"])
+                    new_hotend_material.getMetaData()["variant"] = variant_containers[0]["id"]
                     # Don't use setMetadata, as that overrides it for all materials with same base file
                     new_hotend_material.getMetaData()["compatible"] = hotend_compatibility
                     new_hotend_material.getMetaData()["machine_manufacturer"] = machine_manufacturer
@@ -789,7 +789,6 @@ class XmlMaterialProfile(InstanceContainer):
                     else:
                         new_hotend_material_metadata = {}
 
-                    new_hotend_material_metadata["name"] = base_metadata["name"]
                     new_hotend_material_metadata.update(base_metadata)
                     new_hotend_material_metadata["variant"] = variant_containers[0]["id"]
                     new_hotend_material_metadata["compatible"] = hotend_compatibility
