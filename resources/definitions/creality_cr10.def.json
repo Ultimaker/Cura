@@ -20,6 +20,14 @@
         "machine_depth": {
             "default_value": 300
         },
+        "machine_head_polygon": {
+            "default_value": [
+                [-30, 34],
+                [-30, -32],
+                [30, -32],
+                [30, 34]
+            ]
+        },
         "material_diameter": {
             "default_value": 1.75
         },
