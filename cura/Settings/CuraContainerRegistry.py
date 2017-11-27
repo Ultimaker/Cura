@@ -431,19 +431,25 @@ class CuraContainerRegistry(ContainerRegistry):
             extruder_stack.addMetaDataEntry("position", extruder_definition.getMetaDataEntry("position"))
             extruder_stack.setNextStack(machine)
 
+            # create empty user changes container otherwise
+            user_container = InstanceContainer(extruder_stack.id + "_user")
+            user_container.addMetaDataEntry("type", "user")
+            user_container.addMetaDataEntry("machine", extruder_stack.getId())
+            from cura.CuraApplication import CuraApplication
+            user_container.addMetaDataEntry("setting_version", CuraApplication.SettingVersion)
+            user_container.setDefinition(extruder_definition)
+
             if machine.userChanges:
-                # set existing user changes if found
-                extruder_stack.setUserChanges(machine.userChanges)
-            else:
-                # create empty user changes container otherwise
-                user_container = InstanceContainer(extruder_stack.id + "_user")
-                user_container.addMetaDataEntry("type", "user")
-                user_container.addMetaDataEntry("machine", extruder_stack.getId())
-                from cura.CuraApplication import CuraApplication
-                user_container.addMetaDataEntry("setting_version", CuraApplication.SettingVersion)
-                user_container.setDefinition(extruder_definition)
-                extruder_stack.setUserChanges(user_container)
-                self.addContainer(user_container)
+                # for the newly created extruder stack, we need to move all "per-extruder" settings to the user changes
+                # container to the extruder stack.
+                for user_setting_key in machine.userChanges.getAllKeys():
+                    settable_per_extruder = machine.getProperty(user_setting_key, "settable_per_extruder")
+                    if settable_per_extruder:
+                        user_container.addInstance(machine.userChanges.getInstance(user_setting_key))
+                        machine.userChanges.removeInstance(user_setting_key, postpone_emit = True)
+
+            extruder_stack.setUserChanges(user_container)
+            self.addContainer(user_container)
 
             variant_id = "default"
             if machine.variant.getId() not in ("empty", "empty_variant"):

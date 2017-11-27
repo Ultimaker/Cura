@@ -108,7 +108,7 @@ class CuraStackBuilder:
         user_container.addMetaDataEntry("extruder", new_stack_id)
         from cura.CuraApplication import CuraApplication
         user_container.addMetaDataEntry("setting_version", CuraApplication.SettingVersion)
-        user_container.setDefinition(machine_definition)
+        user_container.setDefinition(definition)
 
         stack.setUserChanges(user_container)
 
