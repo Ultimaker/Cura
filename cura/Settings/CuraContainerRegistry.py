@@ -429,7 +429,7 @@ class CuraContainerRegistry(ContainerRegistry):
         user_container.addMetaDataEntry("machine", extruder_stack.getId())
         from cura.CuraApplication import CuraApplication
         user_container.addMetaDataEntry("setting_version", CuraApplication.SettingVersion)
-        user_container.setDefinition(extruder_definition)
+        user_container.setDefinition(machine.definition)
 
         if machine.userChanges:
             # for the newly created extruder stack, we need to move all "per-extruder" settings to the user changes
