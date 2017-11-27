@@ -108,11 +108,11 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
         # or "Legacy" UM3 device.
         cluster_size = int(properties.get(b"cluster_size", -1))
         # TODO: For debug purposes; force it to be legacy printer.
-        device = LegacyUM3OutputDevice.LegacyUM3OutputDevice(name, address, properties)
-        '''if cluster_size > 0:
+        #device = LegacyUM3OutputDevice.LegacyUM3OutputDevice(name, address, properties)
+        if cluster_size > 0:
             device = ClusterUM3OutputDevice.ClusterUM3OutputDevice(name, address, properties)
         else:
-            device = LegacyUM3OutputDevice.LegacyUM3OutputDevice(name, address, properties)'''
+            device = LegacyUM3OutputDevice.LegacyUM3OutputDevice(name, address, properties)
 
         self._discovered_devices[device.getId()] = device
         self.discoveredDevicesChanged.emit()

@@ -1,3 +1,6 @@
+# Copyright (c) 2017 Ultimaker B.V.
+# Cura is released under the terms of the LGPLv3 or higher.
+
 from UM.Logger import Logger
 
 from cura.PrinterOutput.NetworkedPrinterOutputDevice import NetworkedPrinterOutputDevice
@@ -5,9 +8,11 @@ from cura.PrinterOutput.PrinterOutputModel import PrinterOutputModel
 from cura.PrinterOutput.PrintJobOutputModel import PrintJobOutputModel
 from cura.PrinterOutput.MaterialOutputModel import MaterialOutputModel
 
-import json
-
 from PyQt5.QtNetwork import QNetworkRequest, QNetworkReply
+
+import json
+import os
+
 
 class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
     def __init__(self, device_id, address, properties, parent = None):
@@ -17,6 +22,9 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
         self._number_of_extruders = 2
 
         self._print_jobs = []
+
+        self._monitor_view_qml_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "ClusterMonitorItem.qml")
+        self._control_view_qml_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "ClusterControlItem.qml")
 
     def _update(self):
         if not super()._update():
