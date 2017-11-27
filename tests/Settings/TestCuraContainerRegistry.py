@@ -146,39 +146,3 @@ def test_loadTypes(filename, output_class, container_registry):
             break
     else:
         assert False #Container stack with specified ID was not loaded.
-
-##  Tests whether loading a legacy file moves the upgraded file properly.
-def test_loadLegacyFileRenamed(container_registry):
-    #Create a temporary file for the registry to load.
-    stacks_folder = os.path.join(os.path.dirname(os.path.abspath(__file__)), "stacks")
-    temp_file = os.path.join(stacks_folder, "temporary.stack.cfg")
-    temp_file_source = os.path.join(stacks_folder, "MachineLegacy.stack.cfg")
-    shutil.copyfile(temp_file_source, temp_file)
-
-    #Mock some dependencies.
-    UM.Settings.ContainerStack.setContainerRegistry(container_registry)
-    Resources.getAllResourcesOfType = unittest.mock.MagicMock(return_value = [temp_file]) #Return a temporary file that we'll make for this test.
-
-    def findContainers(container_type = 0, id = None):
-        if id == "MachineLegacy":
-            return None
-
-        container = UM.Settings.ContainerRegistry._EmptyInstanceContainer(id)
-        container.getNextStack = unittest.mock.MagicMock()
-        return [container]
-
-    old_find_containers = container_registry.findContainers
-    container_registry.findContainers = findContainers
-
-    with unittest.mock.patch("cura.Settings.GlobalStack.GlobalStack.findContainer"):
-        container_registry.load()
-
-    container_registry.findContainers = old_find_containers
-
-    container_registry.saveAll()
-    print("all containers in registry", container_registry._containers)
-    assert not os.path.isfile(temp_file)
-    mime_type = container_registry.getMimeTypeForContainer(GlobalStack)
-    file_name = urllib.parse.quote_plus("MachineLegacy") + "." + mime_type.preferredSuffix
-    path = Resources.getStoragePath(Resources.ContainerStacks, file_name)
-    assert os.path.isfile(path)
