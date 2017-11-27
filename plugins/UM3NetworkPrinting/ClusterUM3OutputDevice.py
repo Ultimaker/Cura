@@ -3,6 +3,8 @@
 
 from UM.Logger import Logger
 
+from UM.Settings.ContainerRegistry import ContainerRegistry
+
 from cura.PrinterOutput.NetworkedPrinterOutputDevice import NetworkedPrinterOutputDevice
 from cura.PrinterOutput.PrinterOutputModel import PrinterOutputModel
 from cura.PrinterOutput.PrintJobOutputModel import PrintJobOutputModel
@@ -105,7 +107,26 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
 
                     material_data = extruder_data["material"]
                     if extruder.activeMaterial is None or extruder.activeMaterial.guid != material_data["guid"]:
-                        material = MaterialOutputModel(guid = material_data["guid"], type = material_data["material"], brand=material_data["brand"], color=material_data["color"])
+                        containers = ContainerRegistry.getInstance().findInstanceContainers(type="material",
+                                                                                            GUID=material_data["guid"])
+                        if containers:
+                            color = containers[0].getMetaDataEntry("color_code")
+                            brand = containers[0].getMetaDataEntry("brand")
+                            material_type = containers[0].getMetaDataEntry("material")
+                            name = containers[0].getName()
+                        else:
+                            Logger.log("w", "Unable to find material with guid {guid}. Using data as provided by cluster".format(guid = material_data["guid"]))
+                            # Unknown material.
+                            color = material_data["color"]
+                            brand = material_data["brand"]
+                            material_type = material_data["material"]
+                            name = "Unknown"
+
+                        material = MaterialOutputModel(guid = material_data["guid"],
+                                                       type = material_type,
+                                                       brand = brand,
+                                                       color = color,
+                                                       name = name)
                         extruder.updateActiveMaterial(material)
 
         else:
