@@ -376,7 +376,7 @@ class SimulationView(View):
             if layer is None:
                 return
             new_max_paths = layer.lineMeshElementCount()
-            if new_max_paths > 0 and new_max_paths != self._max_paths:
+            if new_max_paths >= 0 and new_max_paths != self._max_paths:
                 self._max_paths = new_max_paths
                 self.maxPathsChanged.emit()
 

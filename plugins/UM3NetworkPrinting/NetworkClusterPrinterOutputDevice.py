@@ -486,7 +486,7 @@ class NetworkClusterPrinterOutputDevice(NetworkPrinterOutputDevice.NetworkPrinte
 
                 printer_name = self.__getPrinterNameFromUuid(print_job["printer_uuid"])
                 if printer_name is None:
-                    printer_name = i18n_catalog.i18nc("@label", "Unknown")
+                    printer_name = i18n_catalog.i18nc("@label Printer name", "Unknown")
 
                 message_text = (i18n_catalog.i18nc("@info:status",
                                 "Printer '{printer_name}' has finished printing '{job_name}'.")

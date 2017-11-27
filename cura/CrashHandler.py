@@ -108,11 +108,11 @@ class CrashHandler:
         except:
             self.cura_version = catalog.i18nc("@label unknown version of Cura", "Unknown")
 
-        crash_info = catalog.i18nc("@label Cura version", "<b>Cura version:</b> {version}<br/>").format(version = self.cura_version)
-        crash_info += catalog.i18nc("@label Platform", "<b>Platform:</b> {platform}<br/>").format(platform = platform.platform())
-        crash_info += catalog.i18nc("@label Qt version", "<b>Qt version:</b> {qt}<br/>").format(qt = QT_VERSION_STR)
-        crash_info += catalog.i18nc("@label PyQt version", "<b>PyQt version:</b> {pyqt}<br/>").format(pyqt = PYQT_VERSION_STR)
-        crash_info += catalog.i18nc("@label OpenGL", "<b>OpenGL:</b> {opengl}<br/>").format(opengl = self._getOpenGLInfo())
+        crash_info = "<b>" + catalog.i18nc("@label Cura version number", "Cura version") + ":</b> " + str(self.cura_version) + "<br/>"
+        crash_info += "<b>" + catalog.i18nc("@label Type of platform", "Platform") + ":</b> " + str(platform.platform()) + "<br/>"
+        crash_info += "<b>" + catalog.i18nc("@label", "Qt version") + ":</b> " + str(QT_VERSION_STR) + "<br/>"
+        crash_info += "<b>" + catalog.i18nc("@label", "PyQt version") + ":</b> " + str(PYQT_VERSION_STR) + "<br/>"
+        crash_info += "<b>" + catalog.i18nc("@label OpenGL version", "OpenGL") + ":</b> " + str(self._getOpenGLInfo()) + "<br/>"
         label.setText(crash_info)
 
         layout.addWidget(label)
@@ -280,5 +280,7 @@ class CrashHandler:
         Application.getInstance().callLater(self._show)
 
     def _show(self):
-        self.dialog.exec_()
-        os._exit(1)
+        # When the exception is not in the fatal_exception_types list, the dialog is not created, so we don't need to show it
+        if self.dialog:
+            self.dialog.exec_()
+            os._exit(1)

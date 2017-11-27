@@ -121,7 +121,7 @@ class CuraContainerStack(ContainerStack):
     #
     #   \throws Exceptions.InvalidContainerError Raised when no container could be found with the specified ID.
     def setQualityById(self, new_quality_id: str) -> None:
-        quality = self._empty_instance_container
+        quality = self._empty_quality
         if new_quality_id == "default":
             new_quality = self.findDefaultQuality()
             if new_quality:
@@ -159,7 +159,7 @@ class CuraContainerStack(ContainerStack):
     #
     #   \throws Exceptions.InvalidContainerError Raised when no container could be found with the specified ID.
     def setMaterialById(self, new_material_id: str) -> None:
-        material = self._empty_instance_container
+        material = self._empty_material
         if new_material_id == "default":
             new_material = self.findDefaultMaterial()
             if new_material:
@@ -197,7 +197,7 @@ class CuraContainerStack(ContainerStack):
     #
     #   \throws Exceptions.InvalidContainerError Raised when no container could be found with the specified ID.
     def setVariantById(self, new_variant_id: str) -> None:
-        variant = self._empty_instance_container
+        variant = self._empty_variant
         if new_variant_id == "default":
             new_variant = self.findDefaultVariant()
             if new_variant:

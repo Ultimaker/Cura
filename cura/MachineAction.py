@@ -73,14 +73,8 @@ class MachineAction(QObject, PluginObject):
 
     ##  Protected helper to create a view object based on provided QML.
     def _createViewFromQML(self):
-        path = QUrl.fromLocalFile(os.path.join(PluginRegistry.getInstance().getPluginPath(self.getPluginId()), self._qml_url))
-        self._component = QQmlComponent(Application.getInstance()._engine, path)
-        self._context = QQmlContext(Application.getInstance()._engine.rootContext())
-        self._context.setContextProperty("manager", self)
-        self._view = self._component.create(self._context)
-        if self._view is None:
-            Logger.log("c", "QQmlComponent status %s", self._component.status())
-            Logger.log("c", "QQmlComponent error string %s", self._component.errorString())
+        path = os.path.join(PluginRegistry.getInstance().getPluginPath(self.getPluginId()), self._qml_url)
+        self._view = Application.getInstance().createQmlComponent(path, {"manager": self})
 
     @pyqtProperty(QObject, constant = True)
     def displayItem(self):

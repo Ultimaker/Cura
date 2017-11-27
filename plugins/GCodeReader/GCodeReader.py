@@ -144,6 +144,11 @@ class GCodeReader(MeshReader):
         this_layer.polygons.append(this_poly)
         return True
 
+    def _createEmptyLayer(self, layer_number):
+        self._layer_data_builder.addLayer(layer_number)
+        self._layer_data_builder.setLayerHeight(layer_number, 0)
+        self._layer_data_builder.setLayerThickness(layer_number, 0)
+
     def _calculateLineWidth(self, current_point, previous_point, current_extrusion, previous_extrusion, layer_thickness):
         # Area of the filament
         Af = (self._filament_diameter / 2) ** 2 * numpy.pi
@@ -206,7 +211,6 @@ class GCodeReader(MeshReader):
         return self._position(
             params.x if params.x is not None else position.x,
             params.y if params.y is not None else position.y,
-
             0,
             position.f,
             position.e)
@@ -269,11 +273,11 @@ class GCodeReader(MeshReader):
             position.e.extend([0] * (self._extruder_number - len(position.e) + 1))
         return position
 
-    def _processMCode(self, m):
-        if m == 82:
+    def _processMCode(self, M):
+        if M == 82:
             # Set absolute extrusion mode
             self._is_absolute_extrusion = True
-        elif m == 83:
+        elif M == 83:
             # Set relative extrusion mode
             self._is_absolute_extrusion = False
 
@@ -333,6 +337,9 @@ class GCodeReader(MeshReader):
 
             current_position = self._position(0, 0, 0, 0, [0])
             current_path = []
+            min_layer_number = 0
+            negative_layers = 0
+            previous_layer = 0
 
             for line in file:
                 if self._cancelled:
@@ -370,7 +377,23 @@ class GCodeReader(MeshReader):
                         layer_number = int(line[len(self._layer_keyword):])
                         self._createPolygon(self._current_layer_thickness, current_path, self._extruder_offsets.get(self._extruder_number, [0, 0]))
                         current_path.clear()
+
+                        # When using a raft, the raft layers are stored as layers < 0, it mimics the same behavior
+                        # as in ProcessSlicedLayersJob
+                        if layer_number < min_layer_number:
+                            min_layer_number = layer_number
+                        if layer_number < 0:
+                            layer_number += abs(min_layer_number)
+                            negative_layers += 1
+                        else:
+                            layer_number += negative_layers
+
+                        # In case there is a gap in the layer count, empty layers are created
+                        for empty_layer in range(previous_layer + 1, layer_number):
+                            self._createEmptyLayer(empty_layer)
+
                         self._layer_number = layer_number
+                        previous_layer = layer_number
                     except:
                         pass
 

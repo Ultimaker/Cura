@@ -769,8 +769,9 @@ class MachineManager(QObject):
             candidate_quality = None
             if quality_type:
                 candidate_quality = quality_manager.findQualityByQualityType(quality_type,
-                                        quality_manager.getWholeMachineDefinition(machine_definition),
+                                        quality_manager.getWholeMachineDefinition(material_container.getDefinition()),
                                         [material_container])
+
 
             if not candidate_quality or isinstance(candidate_quality, type(self._empty_quality_changes_container)):
                 Logger.log("d", "Attempting to find fallback quality")

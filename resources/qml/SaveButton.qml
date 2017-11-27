@@ -157,7 +157,7 @@ Item {
         Button {
             id: prepareButton
 
-            tooltip: catalog.i18nc("@info:tooltip","Slice");
+            tooltip: [1, 5].indexOf(UM.Backend.state) != -1 ? catalog.i18nc("@info:tooltip","Slice current printjob") : catalog.i18nc("@info:tooltip","Cancel slicing process")
             // 1 = not started, 2 = Processing
             enabled: (base.backendState == 1 || base.backendState == 2) && base.activity == true
             visible: {

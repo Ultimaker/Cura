@@ -45,9 +45,5 @@ class UserAgreement(QObject, Extension):
         CuraApplication.getInstance().setNeedToShowUserAgreement(False)
 
     def createUserAgreementWindow(self):
-        path = QUrl.fromLocalFile(os.path.join(PluginRegistry.getInstance().getPluginPath(self.getPluginId()), "UserAgreement.qml"))
-
-        component = QQmlComponent(Application.getInstance()._engine, path)
-        self._user_agreement_context = QQmlContext(Application.getInstance()._engine.rootContext())
-        self._user_agreement_context.setContextProperty("manager", self)
-        self._user_agreement_window = component.create(self._user_agreement_context)
+        path = os.path.join(PluginRegistry.getInstance().getPluginPath(self.getPluginId()), "UserAgreement.qml")
+        self._user_agreement_window = Application.getInstance().createQmlComponent(path, {"manager": self})
