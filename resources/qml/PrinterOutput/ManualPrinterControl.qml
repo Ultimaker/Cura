@@ -108,7 +108,7 @@ Item
                 return false; //Can't control the printer if not connected
             }
 
-            if (!connectedPrinter.acceptsCommands)
+            if (!connectedDevice.acceptsCommands)
             {
                 return false; //Not allowed to do anything.
             }
@@ -188,7 +188,7 @@ Item
 
                     onClicked:
                     {
-                        connectedPrinter.moveHead(0, distancesRow.currentDistance, 0)
+                        printerModel.moveHead(0, distancesRow.currentDistance, 0)
                     }
                 }
 
@@ -205,7 +205,7 @@ Item
 
                     onClicked:
                     {
-                        connectedPrinter.moveHead(-distancesRow.currentDistance, 0, 0)
+                        printerModel.moveHead(-distancesRow.currentDistance, 0, 0)
                     }
                 }
 
@@ -222,7 +222,7 @@ Item
 
                     onClicked:
                     {
-                        connectedPrinter.moveHead(distancesRow.currentDistance, 0, 0)
+                        printerModel.moveHead(distancesRow.currentDistance, 0, 0)
                     }
                 }
 
@@ -239,7 +239,7 @@ Item
 
                     onClicked:
                     {
-                        connectedPrinter.moveHead(0, -distancesRow.currentDistance, 0)
+                        printerModel.moveHead(0, -distancesRow.currentDistance, 0)
                     }
                 }
 
@@ -256,7 +256,7 @@ Item
 
                     onClicked:
                     {
-                        connectedPrinter.homeHead()
+                        printerModel.homeHead()
                     }
                 }
             }
@@ -286,7 +286,7 @@ Item
 
                     onClicked:
                     {
-                        connectedPrinter.moveHead(0, 0, distancesRow.currentDistance)
+                        printerModel.moveHead(0, 0, distancesRow.currentDistance)
                     }
                 }
 
@@ -299,7 +299,7 @@ Item
 
                     onClicked:
                     {
-                        connectedPrinter.homeBed()
+                        printerModel.homeBed()
                     }
                 }
 
@@ -312,7 +312,7 @@ Item
 
                     onClicked:
                     {
-                        connectedPrinter.moveHead(0, 0, -distancesRow.currentDistance)
+                        printerModel.moveHead(0, 0, -distancesRow.currentDistance)
                     }
                 }
             }

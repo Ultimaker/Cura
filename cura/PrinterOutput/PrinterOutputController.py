@@ -1,6 +1,8 @@
 # Copyright (c) 2017 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
+from UM.Logger import Logger
+
 MYPY = False
 if MYPY:
     from cura.PrinterOutput.PrintJobOutputModel import PrintJobOutputModel
@@ -16,31 +18,29 @@ class PrinterOutputController:
         self.can_control_manually = True
         self._output_device = output_device
 
-
     def setTargetHotendTemperature(self, printer: "PrinterOutputModel", extruder: "ExtruderOuputModel", temperature: int):
-        # TODO: implement
-        pass
+        Logger.log("w", "Set target hotend temperature not implemented in controller")
 
     def setTargetBedTemperature(self, printer: "PrinterOutputModel", temperature: int):
-        pass
+        Logger.log("w", "Set target bed temperature not implemented in controller")
 
     def setJobState(self, job: "PrintJobOutputModel", state: str):
-        pass
+        Logger.log("w", "Set job state not implemented in controller")
 
     def cancelPreheatBed(self, printer: "PrinterOutputModel"):
-        pass
+        Logger.log("w", "Cancel preheat bed not implemented in controller")
 
     def preheatBed(self, printer: "PrinterOutputModel", temperature, duration):
-        pass
+        Logger.log("w", "Preheat bed not implemented in controller")
 
     def setHeadPosition(self, printer: "PrinterOutputModel", x, y, z, speed):
-        pass
+        Logger.log("w", "Set head position not implemented in controller")
 
     def moveHead(self, printer: "PrinterOutputModel", x, y, z, speed):
-        pass
+        Logger.log("w", "Move head not implemented in controller")
 
     def homeBed(self, printer):
-        pass
+        Logger.log("w", "Home bed not implemented in controller")
 
     def homeHead(self, printer):
-        pass
+        Logger.log("w", "Home head not implemented in controller")
