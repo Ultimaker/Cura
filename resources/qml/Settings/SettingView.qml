@@ -337,7 +337,7 @@ Item
                         // machine gets changed.
                         var activeMachineId = Cura.MachineManager.activeMachineId;
 
-                        if(!model.settable_per_extruder || machineExtruderCount.properties.value == 1)
+                        if(!model.settable_per_extruder)
                         {
                             //Not settable per extruder or there only is global, so we must pick global.
                             return activeMachineId;
