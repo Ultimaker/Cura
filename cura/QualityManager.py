@@ -231,10 +231,6 @@ class QualityManager:
             if quality_definition_id is not None:
                 machine_definition = ContainerRegistry.getInstance().findDefinitionContainers(id = quality_definition_id)[0]
 
-        # for convenience
-        if material_containers is None:
-            material_containers = []
-
         if not material_containers:
             active_stacks = ExtruderManager.getInstance().getActiveGlobalAndExtruderStacks()
             if active_stacks:
