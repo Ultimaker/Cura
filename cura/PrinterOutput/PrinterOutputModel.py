@@ -68,21 +68,25 @@ class PrinterOutputModel(QObject):
     @pyqtProperty("long", "long", "long")
     @pyqtProperty("long", "long", "long", "long")
     def setHeadPosition(self, x, y, z, speed = 3000):
+        self.updateHeadPosition(x, y, z)
         self._controller.setHeadPosition(self, x, y, z, speed)
 
     @pyqtProperty("long")
     @pyqtProperty("long", "long")
     def setHeadX(self, x, speed = 3000):
+        self.updateHeadPosition(x, self._head_position.y, self._head_position.z)
         self._controller.setHeadPosition(self, x, self._head_position.y, self._head_position.z, speed)
 
     @pyqtProperty("long")
     @pyqtProperty("long", "long")
     def setHeadY(self, y, speed = 3000):
+        self.updateHeadPosition(self._head_position.x, y, self._head_position.z)
         self._controller.setHeadPosition(self, self._head_position.x, y, self._head_position.z, speed)
 
     @pyqtProperty("long")
     @pyqtProperty("long", "long")
-    def setHeadY(self, z, speed = 3000):
+    def setHeadZ(self, z, speed = 3000):
+        self.updateHeadPosition(self._head_position.x, self._head_position.y, z)
         self._controller.setHeadPosition(self, self._head_position.x, self._head_position.y, z, speed)
 
     @pyqtSlot("long", "long", "long")

@@ -411,7 +411,7 @@ class LegacyUM3OutputDevice(NetworkedPrinterOutputDevice):
             self._authentication_counter / self._max_authentication_counter * 100)
         if self._authentication_counter > self._max_authentication_counter:
             self._authentication_timer.stop()
-            Logger.log("i", "Authentication timer ended. Setting authentication to denied for printer: %s" % self._key)
+            Logger.log("i", "Authentication timer ended. Setting authentication to denied for printer: %s" % self._id)
             self.setAuthenticationState(AuthState.AuthenticationDenied)
             self._resetAuthenticationRequestedMessage()
             self._authentication_failed_message.show()
@@ -530,7 +530,7 @@ class LegacyUM3OutputDevice(NetworkedPrinterOutputDevice):
             authenticator.setUser(self._authentication_id)
             authenticator.setPassword(self._authentication_key)
         else:
-            Logger.log("d", "No authentication is available to use for %s, but we did got a request for it.", self._key)
+            Logger.log("d", "No authentication is available to use for %s, but we did got a request for it.", self._id)
 
     def _onGetPrintJobFinished(self, reply):
         status_code = reply.attribute(QNetworkRequest.HttpStatusCodeAttribute)
@@ -579,6 +579,9 @@ class LegacyUM3OutputDevice(NetworkedPrinterOutputDevice):
             printer.updateBedTemperature(result["bed"]["temperature"]["current"])
             printer.updateTargetBedTemperature(result["bed"]["temperature"]["target"])
             printer.updatePrinterState(result["status"])
+
+            head_position = result["heads"][0]["position"]
+            printer.updateHeadPosition(head_position["x"], head_position["y"], head_position["z"])
 
             for index in range(0, self._number_of_extruders):
                 temperatures = result["heads"][0]["extruders"][index]["hotend"]["temperature"]
