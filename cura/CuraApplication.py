@@ -433,10 +433,7 @@ class CuraApplication(QtApplication):
 
         # Lock file for "more" atomically loading and saving to/from config dir.
         with ContainerRegistry.getInstance().lockFile():
-            for instance in ContainerRegistry.getInstance().findInstanceContainers():
-                if not instance.isDirty():
-                    continue
-
+            for instance in ContainerRegistry.getInstance().findDirtyContainers(container_type = InstanceContainer):
                 try:
                     data = instance.serialize()
                 except NotImplementedError:
