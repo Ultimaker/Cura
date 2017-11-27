@@ -402,9 +402,11 @@ class CuraContainerRegistry(ContainerRegistry):
         return new_stack
 
     def _registerSingleExtrusionMachinesExtruderStacks(self):
-        machines = ContainerRegistry.getInstance().findContainerStacks(machine_extruder_trains = {"0": "fdmextruder"})
+        machines = self.findContainerStacks(type = "machine", machine_extruder_trains = {"0": "fdmextruder"})
         for machine in machines:
-            self.addExtruderStackForSingleExtrusionMachine(machine, "fdmextruder")
+            extruder_stacks = self.findContainerStacks(type = "extruder_train", machine = machine.getId())
+            if not extruder_stacks:
+                self.addExtruderStackForSingleExtrusionMachine(machine, "fdmextruder")
 
     def addExtruderStackForSingleExtrusionMachine(self, machine, extruder_id):
         new_extruder_id = extruder_id
