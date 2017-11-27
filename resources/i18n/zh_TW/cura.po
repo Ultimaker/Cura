@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: Cura 3.1\n"
 "Report-Msgid-Bugs-To: r.dulek@ultimaker.com\n"
 "POT-Creation-Date: 2017-08-02 16:53+0000\n"
-"PO-Revision-Date: 2017-11-22 23:36+0800\n"
+"PO-Revision-Date: 2017-11-28 23:48+0800\n"
 "Last-Translator: Zhang Heh Ji <dinowchang@gmail.com>\n"
 "Language-Team: TEAM\n"
 "Language: zh_TW\n"
@@ -91,9 +91,6 @@ msgid "File sent to Doodle3D Connect"
 msgstr "檔案已被傳送到 Doodle3D Connect"
 
 #: /home/ruben/Projects/Cura/plugins/Doodle3D-cura-plugin/Doodle3D/D3DCloudPrintOutputDevicePlugin.py:214
-#, fuzzy
-#| msgctxt "@action:button"
-#| msgid "Open Connect.."
 msgctxt "@action:button"
 msgid "Open Connect..."
 msgstr "開啟連線..."
@@ -144,12 +141,9 @@ msgid "Unable to start a new job because the printer is busy or not connected."
 msgstr "無法啟動新作業，因為印表機處於忙碌狀態或未連接。"
 
 #: /home/ruben/Projects/Cura/plugins/USBPrinting/USBPrinterOutputDevice.py:154
-#, fuzzy
-#| msgctxt "@label:PrintjobStatus"
-#| msgid "Slicing unavailable"
 msgctxt "@info:title"
 msgid "Printer Unavailable"
-msgstr "切片不可用"
+msgstr "印表機無法使用"
 
 #: /home/ruben/Projects/Cura/plugins/USBPrinting/USBPrinterOutputDevice.py:457
 msgctxt "@info:status"
@@ -641,7 +635,7 @@ msgctxt ""
 msgid ""
 "New features are available for your {machine_name}! It is recommended to "
 "update the firmware on your printer."
-msgstr ""
+msgstr "你的 {machine_name} 有新功能可用！建議更新印表機韌體。"
 
 #: /home/ruben/Projects/Cura/plugins/FirmwareUpdateChecker/FirmwareUpdateCheckerJob.py:65
 #, python-format
@@ -652,12 +646,12 @@ msgstr "有新 %s 韌體可用"
 #: /home/ruben/Projects/Cura/plugins/FirmwareUpdateChecker/FirmwareUpdateCheckerJob.py:66
 msgctxt "@action:button"
 msgid "How to update"
-msgstr ""
+msgstr "如何更新"
 
 #: /home/ruben/Projects/Cura/plugins/FirmwareUpdateChecker/FirmwareUpdateCheckerJob.py:77
 msgctxt "@info"
 msgid "Could not access update information."
-msgstr "無法存取升級資訊。"
+msgstr "無法存取更新資訊。"
 
 #: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/SolidWorksReader.py:199
 msgctxt "@info:status"
@@ -690,12 +684,9 @@ msgid "Error while starting %s!"
 msgstr "啟動 %s 時發生錯誤！"
 
 #: /home/ruben/Projects/Cura/plugins/SimulationView/__init__.py:14
-#, fuzzy
-#| msgctxt "@item:inmenu"
-#| msgid "Solid view"
 msgctxt "@item:inlistbox"
 msgid "Simulation view"
-msgstr "實體檢視"
+msgstr "模擬檢視"
 
 #: /home/ruben/Projects/Cura/plugins/SimulationView/SimulationView.py:100
 msgctxt "@info:status"
@@ -705,12 +696,9 @@ msgstr ""
 "（Layers）"
 
 #: /home/ruben/Projects/Cura/plugins/SimulationView/SimulationView.py:101
-#, fuzzy
-#| msgctxt "name"
-#| msgid "Solid View"
 msgctxt "@info:title"
 msgid "Simulation View"
-msgstr "實體檢視"
+msgstr "模擬檢視"
 
 #: /home/ruben/Projects/Cura/plugins/PostProcessingPlugin/PostProcessingPlugin.py:26
 msgid "Modify G-Code"
@@ -794,16 +782,13 @@ msgid ""
 msgstr "無法使用目前設定進行切片。以下設定存在錯誤：{0}"
 
 #: /home/ruben/Projects/Cura/plugins/CuraEngineBackend/CuraEngineBackend.py:318
-#, fuzzy, python-brace-format
-#| msgctxt "@info:status"
-#| msgid ""
-#| "Unable to slice with the current settings. The following settings have "
-#| "errors: {0}"
+#, python-brace-format
 msgctxt "@info:status"
 msgid ""
 "Unable to slice due to some per-model settings. The following settings have "
 "errors on one or more models: {error_labels}"
-msgstr "無法使用目前設定進行切片。以下設定存在錯誤：{0}"
+msgstr ""
+"因部份模型設定問題無法進行切片。部份模型的下列設定有錯誤：{error_labels}"
 
 #: /home/ruben/Projects/Cura/plugins/CuraEngineBackend/CuraEngineBackend.py:326
 msgctxt "@info:status"
@@ -842,34 +827,34 @@ msgid "Configure Per Model Settings"
 msgstr "設定對每個模型的單獨設定"
 
 #: /home/ruben/Projects/Cura/plugins/cura-siemensnx-plugin/Installer.py:23
-#, fuzzy
-#| msgctxt "@action:button"
-#| msgid "Installed"
 msgid "Install"
-msgstr "已安裝"
+msgstr "安裝"
 
 #: /home/ruben/Projects/Cura/plugins/cura-siemensnx-plugin/Installer.py:43
 msgid ""
 "Failed to copy Siemens NX plugins files. Please check your UGII_USER_DIR. It "
 "is not set to a directory."
 msgstr ""
+"無法複製 Siemens NX 外掛檔案。請檢查你的 UGII_USER_DIR，它沒有設置到正確的目"
+"錄。"
 
 #: /home/ruben/Projects/Cura/plugins/cura-siemensnx-plugin/Installer.py:50
 #: /home/ruben/Projects/Cura/plugins/cura-siemensnx-plugin/Installer.py:59
 #: /home/ruben/Projects/Cura/plugins/cura-siemensnx-plugin/Installer.py:81
 msgid "Successfully installed Siemens NX Cura plugin."
-msgstr ""
+msgstr "Siemens NX Cura 外掛已成功安裝。"
 
 #: /home/ruben/Projects/Cura/plugins/cura-siemensnx-plugin/Installer.py:65
 msgid ""
 "Failed to copy Siemens NX plugins files. Please check your UGII_USER_DIR."
-msgstr ""
+msgstr "無法複製 Siemens NX 外掛檔案。請檢查你的 UGII_USER_DIR。"
 
 #: /home/ruben/Projects/Cura/plugins/cura-siemensnx-plugin/Installer.py:85
 msgid ""
 "Failed to install Siemens NX plugin. Could not set environment variable "
 "UGII_USER_DIR for Siemens NX."
 msgstr ""
+"無法安裝 Siemens NX 外掛。無法為 Siemens NX 設定環境變數 UGII_USER_DIR。"
 
 #: /home/ruben/Projects/Cura/plugins/3MFReader/WorkspaceDialog.py:167
 #: /home/ruben/Projects/Cura/resources/qml/Sidebar.qml:585
@@ -1034,9 +1019,6 @@ msgid "Other"
 msgstr "其它"
 
 #: /home/ruben/Projects/Cura/cura/PrintInformation.py:199
-#, fuzzy
-#| msgctxt "@label"
-#| msgid "Unknown"
 msgctxt "@label unknown material"
 msgid "Unknown"
 msgstr "未知"
@@ -1106,16 +1088,12 @@ msgstr "自訂耗材"
 #: /home/ruben/Projects/Cura/cura/Settings/ExtrudersModel.py:182
 msgctxt "@menuitem"
 msgid "Global"
-msgstr ""
+msgstr "整體"
 
 #: /home/ruben/Projects/Cura/cura/Settings/ExtrudersModel.py:229
-#, fuzzy
-#| msgctxt "@action:label"
-#| msgid "%1 override"
-#| msgid_plural "%1 overrides"
 msgctxt "@menuitem"
 msgid "Not overridden"
-msgstr "%1 覆寫"
+msgstr "不覆寫"
 
 #: /home/ruben/Projects/Cura/cura/Settings/MachineManager.py:117
 msgctxt "@info:status"
@@ -1171,7 +1149,7 @@ msgstr "列印參數已匯出至：<filename>{0}</filename>"
 #: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:157
 msgctxt "@info:title"
 msgid "Export succeeded"
-msgstr ""
+msgstr "匯出成功"
 
 #: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:183
 #: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:205
@@ -1252,19 +1230,16 @@ msgid ""
 "automatically to our servers</p>\n"
 "        "
 msgstr ""
+"<p><b>程式發生了致命異常。請將錯誤報告傳送給我們以解決這個問題</p></b>\n"
+"            <p>請使用「送出報告」按鈕將錯誤報告自動發送到我們的伺服器</p>\n"
+"        "
 
 #: /home/ruben/Projects/Cura/cura/CrashHandler.py:101
-#, fuzzy
-#| msgctxt "@info:title"
-#| msgid "Information"
 msgctxt "@title:groupbox"
 msgid "System information"
-msgstr "資訊"
+msgstr "系統資訊"
 
 #: /home/ruben/Projects/Cura/cura/CrashHandler.py:109
-#, fuzzy
-#| msgctxt "@label"
-#| msgid "Unknown"
 msgctxt "@label unknown version of Cura"
 msgid "Unknown"
 msgstr "未知"
@@ -1273,72 +1248,69 @@ msgstr "未知"
 #, python-brace-format
 msgctxt "@label Cura version"
 msgid "<b>Cura version:</b> {version}<br/>"
-msgstr ""
+msgstr "<b>Cura 版本：</b> {version}<br/>"
 
 #: /home/ruben/Projects/Cura/cura/CrashHandler.py:112
 #, python-brace-format
 msgctxt "@label Platform"
 msgid "<b>Platform:</b> {platform}<br/>"
-msgstr ""
+msgstr "<b>平台：</b> {platform}<br/>"
 
 #: /home/ruben/Projects/Cura/cura/CrashHandler.py:113
 #, python-brace-format
 msgctxt "@label Qt version"
 msgid "<b>Qt version:</b> {qt}<br/>"
-msgstr ""
+msgstr "<b>Qt 版本：</b> {qt}<br/>"
 
 #: /home/ruben/Projects/Cura/cura/CrashHandler.py:114
 #, python-brace-format
 msgctxt "@label PyQt version"
 msgid "<b>PyQt version:</b> {pyqt}<br/>"
-msgstr ""
+msgstr "<b>PyQt 版本：</b> {pyqt}<br/>"
 
 #: /home/ruben/Projects/Cura/cura/CrashHandler.py:115
 #, python-brace-format
 msgctxt "@label OpenGL"
 msgid "<b>OpenGL:</b> {opengl}<br/>"
-msgstr ""
+msgstr "<b>OpenGL:</b> {opengl}<br/>"
 
 #: /home/ruben/Projects/Cura/cura/CrashHandler.py:130
 #, python-brace-format
 msgctxt "@label OpenGL version"
 msgid "<li>OpenGL Version: {version}</li>"
-msgstr ""
+msgstr "<li>OpenGL 版本：{version}</li>"
 
 #: /home/ruben/Projects/Cura/cura/CrashHandler.py:131
 #, python-brace-format
 msgctxt "@label OpenGL vendor"
 msgid "<li>OpenGL Vendor: {vendor}</li>"
-msgstr ""
+msgstr "<li>OpenGL 供應商：{vendor}</li>"
 
 #: /home/ruben/Projects/Cura/cura/CrashHandler.py:132
 #, python-brace-format
 msgctxt "@label OpenGL renderer"
 msgid "<li>OpenGL Renderer: {renderer}</li>"
-msgstr ""
+msgstr "<li>OpenGL 渲染器：{renderer}</li>"
 
 #: /home/ruben/Projects/Cura/cura/CrashHandler.py:141
 msgctxt "@title:groupbox"
 msgid "Exception traceback"
-msgstr ""
+msgstr "異常追溯"
 
 #: /home/ruben/Projects/Cura/cura/CrashHandler.py:208
 msgctxt "@title:groupbox"
 msgid "Logs"
-msgstr ""
+msgstr "日誌"
 
 #: /home/ruben/Projects/Cura/cura/CrashHandler.py:231
-#, fuzzy
-#| msgctxt "@label"
-#| msgid "Description"
 msgctxt "@title:groupbox"
 msgid "User description"
-msgstr "描述"
+msgstr "使用者描述"
 
 #: /home/ruben/Projects/Cura/cura/CrashHandler.py:246
 msgctxt "@action:button"
 msgid "Send report"
-msgstr ""
+msgstr "送出報告"
 
 #: /home/ruben/Projects/Cura/cura/CuraApplication.py:256
 msgctxt "@info:progress"
@@ -1378,7 +1350,7 @@ msgstr "如果載入 G-code，則無法開啟其他任何檔案。{0} 已跳過�
 #: /home/ruben/Projects/Cura/cura/CuraApplication.py:1416
 msgctxt "@info:status"
 msgid "The selected model was too small to load."
-msgstr ""
+msgstr "選擇的模型太小無法載入。"
 
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:59
 msgctxt "@title"
@@ -1788,12 +1760,9 @@ msgid "%1 is not set up to host a group of connected Ultimaker 3 printers"
 msgstr "%1 未設定成管理一組連線的 Ultimaker 3 印表機的主機"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/OpenPanelButton.qml:14
-#, fuzzy
-#| msgctxt "@info:tooltip"
-#| msgid "Opens the print jobs page with your default web  browser."
 msgctxt "@info:tooltip"
 msgid "Opens the print jobs page with your default web browser."
-msgstr "使用你的預設瀏覽器開啟列印作業頁面。"
+msgstr "使用預設瀏覽器開啟列印作業頁面。"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/OpenPanelButton.qml:15
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/ClusterControlItem.qml:131
@@ -1828,7 +1797,7 @@ msgstr "與印表機的連接中斷"
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/PrinterInfoBlock.qml:257
 msgctxt "@label:status"
 msgid "Disabled"
-msgstr ""
+msgstr "已關閉"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/PrinterInfoBlock.qml:273
 msgctxt "@label:status"
@@ -1841,17 +1810,11 @@ msgid "Finished"
 msgstr "已完成"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/PrinterInfoBlock.qml:290
-#, fuzzy
-#| msgctxt "@label:MonitorStatus"
-#| msgid "Paused"
 msgctxt "@label:status"
 msgid "Paused"
 msgstr "已暫停"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/PrinterInfoBlock.qml:292
-#, fuzzy
-#| msgctxt "@label:"
-#| msgid "Resume"
 msgctxt "@label:status"
 msgid "Resuming"
 msgstr "繼續"
@@ -1890,7 +1853,7 @@ msgstr "列印作業"
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/ClusterControlItem.qml:94
 msgctxt "@label"
 msgid "Printing"
-msgstr "列印中"
+msgstr "已排入佇列"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/ClusterControlItem.qml:112
 msgctxt "@label"
@@ -1996,15 +1959,12 @@ msgstr "線條類型"
 #: /home/ruben/Projects/Cura/plugins/SimulationView/SimulationView.qml:104
 msgctxt "@label:listbox"
 msgid "Feedrate"
-msgstr ""
+msgstr "進給率"
 
 #: /home/ruben/Projects/Cura/plugins/SimulationView/SimulationView.qml:108
-#, fuzzy
-#| msgctxt "@item:inlistbox"
-#| msgid "Layer view"
 msgctxt "@label:listbox"
 msgid "Layer thickness"
-msgstr "分層檢視"
+msgstr "層厚"
 
 #: /home/ruben/Projects/Cura/plugins/SimulationView/SimulationView.qml:148
 msgctxt "@label"
@@ -2052,20 +2012,14 @@ msgid "Inner Wall"
 msgstr "內壁"
 
 #: /home/ruben/Projects/Cura/plugins/SimulationView/SimulationView.qml:378
-#, fuzzy
-#| msgctxt "@label"
-#| msgid "X min"
 msgctxt "@label"
 msgid "min"
-msgstr "X 最小值"
+msgstr "最小值"
 
 #: /home/ruben/Projects/Cura/plugins/SimulationView/SimulationView.qml:420
-#, fuzzy
-#| msgctxt "@label"
-#| msgid "X max"
 msgctxt "@label"
 msgid "max"
-msgstr "X 最大值"
+msgstr "最大值"
 
 #: /home/ruben/Projects/Cura/plugins/PostProcessingPlugin/PostProcessingPlugin.qml:18
 msgctxt "@title:window"
@@ -2305,12 +2259,9 @@ msgid "%1 out of %2"
 msgstr "%1 / %2"
 
 #: /home/ruben/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:368
-#, fuzzy
-#| msgctxt "@action:warning"
-#| msgid "Loading a project will clear all models on the buildplate"
 msgctxt "@action:warning"
 msgid "Loading a project will clear all models on the build plate."
-msgstr "載入專案時將清除列印平台上的所有模型"
+msgstr "載入專案時將清除列印平台上的所有模型。"
 
 #: /home/ruben/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:386
 msgctxt "@action:button"
@@ -2348,19 +2299,13 @@ msgid "Plugin License Agreement"
 msgstr "外掛授權協議"
 
 #: /home/ruben/Projects/Cura/plugins/PluginBrowser/PluginBrowser.qml:220
-#, fuzzy
-#| msgctxt "@label"
-#| msgid ""
-#| " plugin contains a license.\n"
-#| "You need to accept this license to install this plugin.\n"
-#| "Do you agree with the terms below?"
 msgctxt "@label"
 msgid ""
 "This plugin contains a license.\n"
 "You need to accept this license to install this plugin.\n"
 "Do you agree with the terms below?"
 msgstr ""
-" 外掛內含一份授權\n"
+"外掛內含一份授權協議。\n"
 "你必需同意此份授權協議才能安裝此外掛。\n"
 "是否同意下列條款？"
 
@@ -2375,12 +2320,9 @@ msgid "Decline"
 msgstr "拒絕"
 
 #: /home/ruben/Projects/Cura/plugins/UserAgreementPlugin/UserAgreement.qml:16
-#, fuzzy
-#| msgctxt "@title:window"
-#| msgid "Plugin License Agreement"
 msgctxt "@title:window"
 msgid "User Agreement"
-msgstr "外掛授權協議"
+msgstr "使用者授權"
 
 #: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UM2UpgradeSelectionMachineAction.qml:25
 #: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UMOUpgradeSelectionMachineAction.qml:25
@@ -3310,12 +3252,9 @@ msgid "About Cura"
 msgstr "關於 Cura"
 
 #: /home/ruben/Projects/Cura/resources/qml/AboutDialog.qml:43
-#, fuzzy
-#| msgctxt "@label %1 is printer name"
-#| msgid "Printer: %1"
 msgctxt "@label"
 msgid "version: %1"
-msgstr "印表機：%1"
+msgstr "版本：%1"
 
 #: /home/ruben/Projects/Cura/resources/qml/AboutDialog.qml:56
 msgctxt "@label"
@@ -3412,12 +3351,9 @@ msgid "Polygon clipping library"
 msgstr "多邊形剪輯函式庫"
 
 #: /home/ruben/Projects/Cura/resources/qml/AboutDialog.qml:135
-#, fuzzy
-#| msgctxt "@label"
-#| msgid "Polygon clipping library"
 msgctxt "@Label"
 msgid "Python HTTP library"
-msgstr "多邊形剪輯函式庫"
+msgstr "Python HTTP 函式庫"
 
 #: /home/ruben/Projects/Cura/resources/qml/AboutDialog.qml:137
 msgctxt "@label"
@@ -3435,12 +3371,9 @@ msgid "Profile:"
 msgstr "列印參數："
 
 #: /home/ruben/Projects/Cura/resources/qml/Settings/SettingView.qml:66
-#, fuzzy
-#| msgctxt "@info:title The %s gets replaced with the printer name."
-#| msgid "New %s firmware available"
 msgctxt "@"
 msgid "No Profile Available"
-msgstr "有新 %s 韌體可用"
+msgstr "無可用的列印參數"
 
 #: /home/ruben/Projects/Cura/resources/qml/Settings/SettingView.qml:104
 msgctxt "@tooltip"
@@ -3552,57 +3485,42 @@ msgid ""
 "Print Setup disabled\n"
 "G-code files cannot be modified"
 msgstr ""
-"列印設定已禁用\n"
+"列印設定已關閉\n"
 "G-code 檔案無法被修改"
 
 #: /home/ruben/Projects/Cura/resources/qml/Sidebar.qml:336
-#, fuzzy
-#| msgctxt "@label"
-#| msgid "00h 00min"
 msgctxt "@label Hours and minutes"
 msgid "00h 00min"
 msgstr "00 小時 00 分"
 
 #: /home/ruben/Projects/Cura/resources/qml/Sidebar.qml:354
-#, fuzzy
-#| msgctxt "@tooltip"
-#| msgid "<b>Time information</b>"
 msgctxt "@tooltip"
 msgid "<b>Time specification</b><br/><table>"
-msgstr "<b>時間資訊</b>"
+msgstr "<b>時間資訊</b><br/><table>"
 
 #: /home/ruben/Projects/Cura/resources/qml/Sidebar.qml:429
 msgctxt "@label"
 msgid "Cost specification"
-msgstr ""
+msgstr "成本明細"
 
 #: /home/ruben/Projects/Cura/resources/qml/Sidebar.qml:434
 #: /home/ruben/Projects/Cura/resources/qml/Sidebar.qml:445
-#, fuzzy
-#| msgctxt "@label"
-#| msgid "%1"
 msgctxt "@label m for meter"
 msgid "%1m"
-msgstr "%1"
+msgstr "%1m"
 
 #: /home/ruben/Projects/Cura/resources/qml/Sidebar.qml:435
 #: /home/ruben/Projects/Cura/resources/qml/Sidebar.qml:446
-#, fuzzy
-#| msgctxt "@label"
-#| msgid "%1"
 msgctxt "@label g for grams"
 msgid "%1g"
-msgstr "%1"
+msgstr "%1g"
 
 #: /home/ruben/Projects/Cura/resources/qml/Sidebar.qml:444
 msgctxt "@label"
 msgid "Total:"
-msgstr ""
+msgstr "總共："
 
 #: /home/ruben/Projects/Cura/resources/qml/Sidebar.qml:498
-#, fuzzy
-#| msgctxt "@label"
-#| msgid "%1m / ~ %2g / ~ %4 %3"
 msgctxt ""
 "@label Print estimates: m for meters, g for grams, %4 is currency and %3 is "
 "print cost"
@@ -3610,9 +3528,6 @@ msgid "%1m / ~ %2g / ~ %4 %3"
 msgstr "%1m / ~ %2g / ~ %4 %3"
 
 #: /home/ruben/Projects/Cura/resources/qml/Sidebar.qml:503
-#, fuzzy
-#| msgctxt "@label"
-#| msgid "%1m / ~ %2g"
 msgctxt "@label Print estimates: m for meters, g for grams"
 msgid "%1m / ~ %2g"
 msgstr "%1m / ~ %2g"
@@ -3753,35 +3668,29 @@ msgstr ""
 "待熱床加熱完畢。"
 
 #: /home/ruben/Projects/Cura/resources/qml/PrintMonitor.qml:703
-#, fuzzy
-#| msgctxt "@action:button Preceded by 'Ready to'."
-#| msgid "Print over network"
 msgctxt "@label"
 msgid "Printer control"
-msgstr "網路連線列印"
+msgstr "印表機控制"
 
 #: /home/ruben/Projects/Cura/resources/qml/PrintMonitor.qml:717
-#, fuzzy
-#| msgctxt "@action:button"
-#| msgid "Move to Next Position"
 msgctxt "@label"
 msgid "Jog Position"
-msgstr "移動到下一個位置"
+msgstr "輕搖位置"
 
 #: /home/ruben/Projects/Cura/resources/qml/PrintMonitor.qml:735
 msgctxt "@label"
 msgid "X/Y"
-msgstr ""
+msgstr "X/Y"
 
 #: /home/ruben/Projects/Cura/resources/qml/PrintMonitor.qml:842
 msgctxt "@label"
 msgid "Z"
-msgstr ""
+msgstr "Z"
 
 #: /home/ruben/Projects/Cura/resources/qml/PrintMonitor.qml:907
 msgctxt "@label"
 msgid "Jog Distance"
-msgstr ""
+msgstr "輕搖距離"
 
 #: /home/ruben/Projects/Cura/resources/qml/PrintMonitor.qml:1018
 msgctxt "@label"
@@ -3824,12 +3733,9 @@ msgid "&Quit"
 msgstr "退出(&Q)"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:107
-#, fuzzy
-#| msgctxt "@action:inmenu menubar:edit"
-#| msgid "Reset All Model Positions"
 msgctxt "@action:inmenu menubar:view"
 msgid "&Reset camera position"
-msgstr "重置所有模型位置"
+msgstr "重置視角位置"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:114
 msgctxt "@action:inmenu"
@@ -4032,7 +3938,7 @@ msgstr "無法切片"
 #: /home/ruben/Projects/Cura/resources/qml/SaveButton.qml:42
 msgctxt "@label:PrintjobStatus"
 msgid "Slicing unavailable"
-msgstr "切片不可用"
+msgstr "切片無法使用"
 
 #: /home/ruben/Projects/Cura/resources/qml/SaveButton.qml:162
 msgctxt "@label:Printjob"
@@ -4071,12 +3977,9 @@ msgid "Import all as models"
 msgstr "匯入所有模型"
 
 #: /home/ruben/Projects/Cura/resources/qml/Cura.qml:19
-#, fuzzy
-#| msgctxt "@label"
-#| msgid "Ultimaker 3"
 msgctxt "@title:window"
 msgid "Ultimaker Cura"
-msgstr "Ultimaker 3"
+msgstr "Ultimaker Cura"
 
 #: /home/ruben/Projects/Cura/resources/qml/Cura.qml:81
 msgctxt "@title:menu menubar:toplevel"
@@ -4243,6 +4146,7 @@ msgid ""
 "A custom profile is currently active. To enable the quality slider, choose a "
 "default quality profile in Custom tab"
 msgstr ""
+"目前正使用自訂列印參數。若要使用品質滑動條，在自訂分頁中選擇預設的列印參數"
 
 #: /home/ruben/Projects/Cura/resources/qml/SidebarSimple.qml:340
 msgctxt "@label"
@@ -4260,18 +4164,11 @@ msgid "Faster"
 msgstr "更快"
 
 #: /home/ruben/Projects/Cura/resources/qml/SidebarSimple.qml:388
-#, fuzzy
-#| msgctxt "@text:window"
-#| msgid ""
-#| "You have customized some profile settings.\n"
-#| "Would you like to keep or discard those settings?"
 msgctxt "@tooltip"
 msgid ""
 "You have modified some profile settings. If you want to change these go to "
 "custom mode."
-msgstr ""
-"你已自訂部份列印參數設定。\n"
-"你想保留或捨棄這些設定嗎？"
+msgstr "你修改過部份列印參數設定。如果你想改變這些設定，請切換到自訂模式。"
 
 #: /home/ruben/Projects/Cura/resources/qml/SidebarSimple.qml:413
 msgctxt "@label"
@@ -4377,9 +4274,6 @@ msgid "Material"
 msgstr "耗材"
 
 #: /home/ruben/Projects/Cura/resources/qml/SidebarHeader.qml:349
-#, fuzzy
-#| msgctxt "@label"
-#| msgid "<a href='%1'>Check material compatibility</a>"
 msgctxt "@label"
 msgid "<a href='%1'>Check compatibility</a>"
 msgstr "<a href='%1'>檢查耗材相容性</a>"
@@ -4523,23 +4417,17 @@ msgstr ""
 #: CuraSolidWorksPlugin/plugin.json
 msgctxt "name"
 msgid "SolidWorks Integration"
-msgstr "SolidWorks 集成"
+msgstr "SolidWorks 整合"
 
 #: SimulationView/plugin.json
-#, fuzzy
-#| msgctxt "description"
-#| msgid "Provides the X-Ray view."
 msgctxt "description"
 msgid "Provides the Simulation view."
-msgstr "提供透視檢視。"
+msgstr "提供模擬檢視。"
 
 #: SimulationView/plugin.json
-#, fuzzy
-#| msgctxt "name"
-#| msgid "Solid View"
 msgctxt "name"
 msgid "Simulation View"
-msgstr "實體檢視"
+msgstr "模擬檢視"
 
 #: PostProcessingPlugin/plugin.json
 msgctxt "description"
@@ -4622,20 +4510,14 @@ msgid "Version Upgrade 2.7 to 3.0"
 msgstr "升級版本 2.7 到 3.0"
 
 #: VersionUpgrade/VersionUpgrade30to31/plugin.json
-#, fuzzy
-#| msgctxt "description"
-#| msgid "Upgrades configurations from Cura 2.7 to Cura 3.0."
 msgctxt "description"
 msgid "Upgrades configurations from Cura 3.0 to Cura 3.1."
-msgstr "將設定從 Cura 2.7 版本升級至 3.0 版本。"
+msgstr "將設定從 Cura 3.0 版本升級至 3.1 版本。"
 
 #: VersionUpgrade/VersionUpgrade30to31/plugin.json
-#, fuzzy
-#| msgctxt "name"
-#| msgid "Version Upgrade 2.7 to 3.0"
 msgctxt "name"
 msgid "Version Upgrade 3.0 to 3.1"
-msgstr "升級版本 2.7 到 3.0"
+msgstr "升級版本 3.0 到 3.1"
 
 #: VersionUpgrade/VersionUpgrade26to27/plugin.json
 msgctxt "description"
@@ -4700,15 +4582,12 @@ msgstr "單一模型設定工具"
 #: cura-siemensnx-plugin/plugin.json
 msgctxt "description"
 msgid "Helps you to install an 'export to Cura' button in Siemens NX."
-msgstr ""
+msgstr "協助你在 Siemens NX 中安裝一個「匯出到 Cura」按鈕。"
 
 #: cura-siemensnx-plugin/plugin.json
-#, fuzzy
-#| msgctxt "name"
-#| msgid "SolidWorks Integration"
 msgctxt "name"
 msgid "Siemens NX Integration"
-msgstr "SolidWorks 集成"
+msgstr "Siemens NX 整合"
 
 #: 3MFReader/plugin.json
 msgctxt "description"
@@ -4773,12 +4652,12 @@ msgstr "3MF 寫入器"
 #: UserAgreementPlugin/plugin.json
 msgctxt "description"
 msgid "Ask the user once if he/she agrees with our license"
-msgstr ""
+msgstr "詢問使用者是否同意我們的授權協議"
 
 #: UserAgreementPlugin/plugin.json
 msgctxt "name"
 msgid "UserAgreement"
-msgstr ""
+msgstr "使用者授權"
 
 #: UltimakerMachineActions/plugin.json
 msgctxt "description"
