@@ -213,7 +213,7 @@ class QualityManager:
                 "type": "material",
                 "name": base_material,
                 "definition": definition_id,
-                "variant": material_container.getMetadataEntry("variant")
+                "variant": material_container.getMetaDataEntry("variant")
             }
             containers = ContainerRegistry.getInstance().findInstanceContainers(**criteria)
             return containers
