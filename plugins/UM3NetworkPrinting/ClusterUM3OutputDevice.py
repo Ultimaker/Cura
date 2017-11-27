@@ -11,6 +11,8 @@ from cura.PrinterOutput.PrintJobOutputModel import PrintJobOutputModel
 from cura.PrinterOutput.MaterialOutputModel import MaterialOutputModel
 
 from PyQt5.QtNetwork import QNetworkRequest, QNetworkReply
+from PyQt5.QtGui import QDesktopServices
+from PyQt5.QtCore import pyqtSlot, QUrl
 
 import json
 import os
@@ -27,6 +29,16 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
 
         self._monitor_view_qml_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "ClusterMonitorItem.qml")
         self._control_view_qml_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "ClusterControlItem.qml")
+
+    @pyqtSlot()
+    def openPrintJobControlPanel(self):
+        Logger.log("d", "Opening print job control panel...")
+        QDesktopServices.openUrl(QUrl("http://" + self._address + "/print_jobs"))
+
+    @pyqtSlot()
+    def openPrinterControlPanel(self):
+        Logger.log("d", "Opening printer control panel...")
+        QDesktopServices.openUrl(QUrl("http://" + self._address + "/printers"))
 
     def _update(self):
         if not super()._update():
