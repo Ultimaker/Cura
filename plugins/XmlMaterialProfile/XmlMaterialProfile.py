@@ -545,14 +545,14 @@ class XmlMaterialProfile(InstanceContainer):
                     # Lets try again with some naive heuristics.
                     machine_id = identifier.get("product").replace(" ", "").lower()
 
-                definitions = ContainerRegistry.getInstance().findDefinitionContainers(id = machine_id)
+                definitions = ContainerRegistry.getInstance().findDefinitionContainersMetadata(id = machine_id)
                 if not definitions:
                     Logger.log("w", "No definition found for machine ID %s", machine_id)
                     continue
 
                 definition = definitions[0]
 
-                machine_manufacturer = identifier.get("manufacturer", definition.getMetaDataEntry("manufacturer", "Unknown")) #If the XML material doesn't specify a manufacturer, use the one in the actual printer definition.
+                machine_manufacturer = identifier.get("manufacturer", definition.get("manufacturer", "Unknown")) #If the XML material doesn't specify a manufacturer, use the one in the actual printer definition.
 
                 if machine_compatibility:
                     new_material_id = self.getId() + "_" + machine_id
@@ -593,7 +593,7 @@ class XmlMaterialProfile(InstanceContainer):
                     variant_containers = ContainerRegistry.getInstance().findInstanceContainersMetadata(id = hotend_id)
                     if not variant_containers:
                         # It is not really properly defined what "ID" is so also search for variants by name.
-                        variant_containers = ContainerRegistry.getInstance().findInstanceContainersMetadata(definition = definition.getId(), name = hotend_id)
+                        variant_containers = ContainerRegistry.getInstance().findInstanceContainersMetadata(definition = definition["id"], name = hotend_id)
 
                     if not variant_containers:
                         continue
