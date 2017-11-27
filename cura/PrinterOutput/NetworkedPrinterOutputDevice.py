@@ -113,16 +113,11 @@ class NetworkedPrinterOutputDevice(PrinterOutputDevice):
 
         return True
 
-    def _createEmptyFormRequest(self, target):
+    def _createEmptyRequest(self, target, content_type: Optional[str] = "application/json"):
         url = QUrl("http://" + self._address + self._api_prefix + target)
         request = QNetworkRequest(url)
-        request.setHeader(QNetworkRequest.UserAgentHeader, self._user_agent)
-        return request
-
-    def _createEmptyRequest(self, target):
-        url = QUrl("http://" + self._address + self._api_prefix + target)
-        request = QNetworkRequest(url)
-        request.setHeader(QNetworkRequest.ContentTypeHeader, "application/json")
+        if content_type is not None:
+            request.setHeader(QNetworkRequest.ContentTypeHeader, "application/json")
         request.setHeader(QNetworkRequest.UserAgentHeader, self._user_agent)
         return request
 
@@ -168,7 +163,7 @@ class NetworkedPrinterOutputDevice(PrinterOutputDevice):
     def postForm(self, target: str, header_data: str, body_data: bytes, onFinished: Optional[Callable[[Any, QNetworkReply], None]], onProgress: Callable = None):
         if self._manager is None:
             self._createNetworkManager()
-        request = self._createEmptyFormRequest(target)
+        request = self._createEmptyRequest(target, content_type=None)
 
         multi_post_part = QHttpMultiPart(QHttpMultiPart.FormDataType)
         post_part = QHttpPart()
