@@ -106,9 +106,5 @@ class ChangeLog(Extension, QObject,):
             self._changelog_window.hide()
 
     def createChangelogWindow(self):
-        path = QUrl.fromLocalFile(os.path.join(PluginRegistry.getInstance().getPluginPath(self.getPluginId()), "ChangeLog.qml"))
-
-        component = QQmlComponent(Application.getInstance()._engine, path)
-        self._changelog_context = QQmlContext(Application.getInstance()._engine.rootContext())
-        self._changelog_context.setContextProperty("manager", self)
-        self._changelog_window = component.create(self._changelog_context)
+        path = os.path.join(PluginRegistry.getInstance().getPluginPath(self.getPluginId()), "ChangeLog.qml")
+        self._changelog_window = Application.getInstance().createQmlComponent(path, {"manager": self})
