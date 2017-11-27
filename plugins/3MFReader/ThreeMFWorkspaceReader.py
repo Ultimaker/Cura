@@ -822,17 +822,24 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                 global_stack.quality = quality_containers[0]
                 project_quality_is_not_supported = False
             else:
-                # the quality_type of the quality profile cannot be found.
-                # this can happen if a quality_type has been removed in a newer version, for example:
-                #  "extra_coarse" is removed from 2.7 to 3.0
-                # in this case, the quality will be reset to "normal"
-                quality_containers = self._container_registry.findInstanceContainers(
-                    definition = global_stack.definition.getId(),
-                    type = "quality",
-                    quality_type = "normal")
+                search_criteria["definition"] = "fdmprinter"
+                quality_containers = self._container_registry.findInstanceContainers(**search_criteria)
                 quality_containers = [q for q in quality_containers if q.getMetaDataEntry("material", "") == ""]
                 if quality_containers:
                     global_stack.quality = quality_containers[0]
+                    project_quality_is_not_supported = False
+                else:
+                    # the quality_type of the quality profile cannot be found.
+                    # this can happen if a quality_type has been removed in a newer version, for example:
+                    #  "extra_coarse" is removed from 2.7 to 3.0
+                    # in this case, the quality will be reset to "normal"
+                    quality_containers = self._container_registry.findInstanceContainers(
+                        definition = global_stack.definition.getId(),
+                        type = "quality",
+                        quality_type = "normal")
+                    quality_containers = [q for q in quality_containers if q.getMetaDataEntry("material", "") == ""]
+                    if quality_containers:
+                        global_stack.quality = quality_containers[0]
 
             if not quality_containers:
                 # This should not happen!
