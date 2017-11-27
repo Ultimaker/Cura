@@ -16,7 +16,7 @@ if MYPY:
 class PrinterOutputModel(QObject):
     bedTemperatureChanged = pyqtSignal()
     targetBedTemperatureChanged = pyqtSignal()
-    printerStateChanged = pyqtSignal()
+    stateChanged = pyqtSignal()
     activePrintJobChanged = pyqtSignal()
     nameChanged = pyqtSignal()
     headPositionChanged = pyqtSignal()
@@ -161,17 +161,17 @@ class PrinterOutputModel(QObject):
             self._active_print_job = print_job
             self.activePrintJobChanged.emit()
 
-    def updatePrinterState(self, printer_state):
+    def updateState(self, printer_state):
         if self._printer_state != printer_state:
             self._printer_state = printer_state
-            self.printerStateChanged.emit()
+            self.stateChanged.emit()
 
     @pyqtProperty(QObject, notify = activePrintJobChanged)
     def activePrintJob(self):
         return self._active_print_job
 
-    @pyqtProperty(str, notify=printerStateChanged)
-    def printerState(self):
+    @pyqtProperty(str, notify=stateChanged)
+    def state(self):
         return self._printer_state
 
     @pyqtProperty(int, notify = bedTemperatureChanged)

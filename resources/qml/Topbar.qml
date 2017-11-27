@@ -124,7 +124,7 @@ Rectangle
                 {
                     return UM.Theme.getIcon("tab_status_unknown");
                 }
-                if (Cura.MachineManager.printerOutputDevices[0].printerState == "maintenance")
+                if (Cura.MachineManager.printerOutputDevices[0].state == "maintenance")
                 {
                     return UM.Theme.getIcon("tab_status_busy");
                 }

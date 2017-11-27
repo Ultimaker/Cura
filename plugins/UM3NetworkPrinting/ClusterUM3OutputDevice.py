@@ -20,7 +20,11 @@ import os
 
 class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
     printJobsChanged = pyqtSignal()
-    printersChanged = pyqtSignal()
+
+    # This is a bit of a hack, as the notify can only use signals that are defined by the class that they are in.
+    # Inheritance doesn't seem to work. Tying them together does work, but i'm open for better suggestions.
+    clusterPrintersChanged = pyqtSignal()
+
     def __init__(self, device_id, address, properties, parent = None):
         super().__init__(device_id = device_id, address = address, properties=properties, parent = parent)
         self._api_prefix = "/cluster-api/v1/"
@@ -31,6 +35,9 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
 
         self._monitor_view_qml_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "ClusterMonitorItem.qml")
         self._control_view_qml_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "ClusterControlItem.qml")
+
+        # See comments about this hack with the clusterPrintersChanged signal
+        self.printersChanged.connect(self.clusterPrintersChanged)
 
     @pyqtSlot()
     def openPrintJobControlPanel(self):
@@ -54,7 +61,7 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
     def activePrintJobs(self):
         return [print_job for print_job in self._print_jobs if print_job.assignedPrinter is not None]
 
-    @pyqtProperty("QVariantList", notify=printersChanged)
+    @pyqtProperty("QVariantList", notify=clusterPrintersChanged)
     def connectedPrintersTypeCount(self):
         printer_count = {}
         for printer in self._printers:
@@ -119,7 +126,7 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
             except json.decoder.JSONDecodeError:
                 Logger.log("w", "Received an invalid printers state message: Not valid JSON.")
                 return
-
+            printer_list_changed = False
             # TODO: Ensure that printers that have been removed are also removed locally.
             for printer_data in result:
                 uuid = printer_data["uuid"]
@@ -133,10 +140,15 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
                 if printer is None:
                     printer = PrinterOutputModel(output_controller=None, number_of_extruders=self._number_of_extruders)
                     self._printers.append(printer)
+                    printer_list_changed = True
 
                 printer.updateName(printer_data["friendly_name"])
                 printer.updateKey(uuid)
                 printer.updateType(printer_data["machine_variant"])
+                if not printer_data["enabled"]:
+                    printer.updateState("disabled")
+                else:
+                    printer.updateState(printer_data["status"])
 
                 for index in range(0, self._number_of_extruders):
                     extruder = printer.extruders[index]
@@ -171,6 +183,8 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
                                                        name = name)
                         extruder.updateActiveMaterial(material)
 
+            if printer_list_changed:
+                self.printersChanged.emit()
         else:
             Logger.log("w",
                        "Got status code {status_code} while trying to get printer data".format(status_code=status_code))

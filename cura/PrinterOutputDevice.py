@@ -86,6 +86,10 @@ class PrinterOutputDevice(QObject, OutputDevice):
             return self._printers[0]
         return None
 
+    @pyqtProperty("QVariantList", notify = printersChanged)
+    def printers(self):
+        return self._printers
+
     @pyqtProperty(QObject, constant=True)
     def monitorItem(self):
         # Note that we specifically only check if the monitor component is created.

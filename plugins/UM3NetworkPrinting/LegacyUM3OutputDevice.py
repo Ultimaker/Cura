@@ -159,7 +159,7 @@ class LegacyUM3OutputDevice(NetworkedPrinterOutputDevice):
             # No active printer. Unable to write
             return
 
-        if self.activePrinter.printerState not in ["idle", ""]:
+        if self.activePrinter.state not in ["idle", ""]:
             # Printer is not able to accept commands.
             return
 
@@ -578,7 +578,7 @@ class LegacyUM3OutputDevice(NetworkedPrinterOutputDevice):
             printer = self._printers[0]
             printer.updateBedTemperature(result["bed"]["temperature"]["current"])
             printer.updateTargetBedTemperature(result["bed"]["temperature"]["target"])
-            printer.updatePrinterState(result["status"])
+            printer.updateState(result["status"])
 
             head_position = result["heads"][0]["position"]
             printer.updateHeadPosition(head_position["x"], head_position["y"], head_position["z"])

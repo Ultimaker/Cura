@@ -73,7 +73,7 @@ Item
         if(!printerConnected || !printerAcceptsCommands)
             return UM.Theme.getColor("text");
 
-        switch(activePrinter.printerState)
+        switch(activePrinter.state)
         {
             case "maintenance":
                 return UM.Theme.getColor("status_busy");
@@ -118,7 +118,7 @@ Item
 
         var printerOutputDevice = Cura.MachineManager.printerOutputDevices[0]
 
-        if(activePrinter.printerState == "maintenance")
+        if(activePrinter.state == "maintenance")
         {
             return catalog.i18nc("@label:MonitorStatus", "In maintenance. Please check the printer");
         }
