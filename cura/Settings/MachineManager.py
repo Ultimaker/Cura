@@ -763,29 +763,30 @@ class MachineManager(QObject):
                 quality_type = old_quality_changes.getMetaDataEntry("quality_type")
                 new_quality_id = old_quality_changes.getId()
 
-            # See if the requested quality type is available in the new situation.
-            machine_definition = self._active_container_stack.getBottom()
-            quality_manager = QualityManager.getInstance()
-            candidate_quality = None
-            if quality_type:
-                candidate_quality = quality_manager.findQualityByQualityType(quality_type,
-                                        quality_manager.getWholeMachineDefinition(material_container.getDefinition()),
-                                        [material_container])
+            global_stack = Application.getInstance().getGlobalContainerStack()
+            if global_stack:
+                quality_manager = QualityManager.getInstance()
 
-            if not candidate_quality or isinstance(candidate_quality, type(self._empty_quality_changes_container)):
-                Logger.log("d", "Attempting to find fallback quality")
-                # Fall back to a quality (which must be compatible with all other extruders)
-                new_qualities = quality_manager.findAllUsableQualitiesForMachineAndExtruders(
-                    self._global_container_stack, ExtruderManager.getInstance().getExtruderStacks())
-                if new_qualities:
-                    new_quality_id = new_qualities[0].getId()  # Just pick the first available one
+                candidate_quality = None
+                if quality_type:
+                    candidate_quality = quality_manager.findQualityByQualityType(quality_type,
+                                            quality_manager.getWholeMachineDefinition(global_stack.definition),
+                                            [material_container])
+
+                if not candidate_quality or isinstance(candidate_quality, type(self._empty_quality_changes_container)):
+                    Logger.log("d", "Attempting to find fallback quality")
+                    # Fall back to a quality (which must be compatible with all other extruders)
+                    new_qualities = quality_manager.findAllUsableQualitiesForMachineAndExtruders(
+                        self._global_container_stack, ExtruderManager.getInstance().getExtruderStacks())
+                    if new_qualities:
+                        new_quality_id = new_qualities[0].getId()  # Just pick the first available one
+                    else:
+                        Logger.log("w", "No quality profile found that matches the current machine and extruders.")
                 else:
-                    Logger.log("w", "No quality profile found that matches the current machine and extruders.")
-            else:
-                if not old_quality_changes:
-                    new_quality_id = candidate_quality.getId()
+                    if not old_quality_changes:
+                        new_quality_id = candidate_quality.getId()
 
-            self.setActiveQuality(new_quality_id)
+                self.setActiveQuality(new_quality_id)
 
     @pyqtSlot(str)
     def setActiveVariant(self, variant_id: str):
