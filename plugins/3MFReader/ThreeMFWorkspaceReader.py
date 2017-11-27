@@ -13,6 +13,7 @@ from UM.Settings.ContainerRegistry import ContainerRegistry
 from UM.MimeTypeDatabase import MimeTypeDatabase
 from UM.Job import Job
 from UM.Preferences import Preferences
+from UM.Util import parseBool
 from .WorkspaceDialog import WorkspaceDialog
 
 import xml.etree.ElementTree as ET
@@ -793,6 +794,9 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             empty_quality_container = self._container_registry.findInstanceContainers(id = "empty_quality")[0]
             for stack in [global_stack] + extruder_stacks:
                 stack.replaceContainer(_ContainerIndexes.Quality, empty_quality_container)
+            empty_quality_changes_container = self._container_registry.findInstanceContainers(id = "empty_quality_changes")[0]
+            for stack in [global_stack] + extruder_stacks:
+                stack.replaceContainer(_ContainerIndexes.QualityChanges, empty_quality_changes_container)
 
         # Fix quality:
         # The quality specified in an old project file can be wrong, for example, for UM2, it should be "um2_normal"
@@ -800,39 +804,70 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         # Note that this only seems to happen on single-extrusion machines on the global stack, so we only apply the
         # fix for that
         quality = global_stack.quality
+        has_empty_quality = True
+        project_quality_is_not_supported = True
         if quality.getId() not in ("empty", "empty_quality"):
+            has_empty_quality = False
             quality_type = quality.getMetaDataEntry("quality_type")
-            quality_containers = self._container_registry.findInstanceContainers(definition = global_stack.definition.getId(),
-                                                                                 type = "quality",
-                                                                                 quality_type = quality_type)
+            search_criteria = {"type": "quality",
+                               "quality_type": quality_type}
+            if parseBool(global_stack.definition.getMetaDataEntry("has_machine_quality", "False")):
+                search_criteria["definition"] = global_stack.definition.getId()
+            else:
+                search_criteria["definition"] = "fdmprinter"
+
+            quality_containers = self._container_registry.findInstanceContainers(**search_criteria)
             quality_containers = [q for q in quality_containers if q.getMetaDataEntry("material", "") == ""]
             if quality_containers:
                 global_stack.quality = quality_containers[0]
+                project_quality_is_not_supported = False
             else:
-                # look for "fdmprinter" qualities if the machine-specific qualities cannot be found
-                quality_containers = self._container_registry.findInstanceContainers(definition = "fdmprinter",
-                                                                                     type = "quality",
-                                                                                     quality_type = quality_type)
+                # the quality_type of the quality profile cannot be found.
+                # this can happen if a quality_type has been removed in a newer version, for example:
+                #  "extra_coarse" is removed from 2.7 to 3.0
+                # in this case, the quality will be reset to "normal"
+                quality_containers = self._container_registry.findInstanceContainers(
+                    definition = global_stack.definition.getId(),
+                    type = "quality",
+                    quality_type = "normal")
                 quality_containers = [q for q in quality_containers if q.getMetaDataEntry("material", "") == ""]
                 if quality_containers:
                     global_stack.quality = quality_containers[0]
-                else:
-                    # the quality_type of the quality profile cannot be found.
-                    # this can happen if a quality_type has been removed in a newer version, for example:
-                    #  "extra_coarse" is removed from 2.7 to 3.0
-                    # in this case, the quality will be reset to "normal"
-                    quality_containers = self._container_registry.findInstanceContainers(
-                        definition = global_stack.definition.getId(),
-                        type = "quality",
-                        quality_type = "normal")
-                    quality_containers = [q for q in quality_containers if q.getMetaDataEntry("material", "") == ""]
-                    if quality_containers:
-                        global_stack.quality = quality_containers[0]
+
+            if not quality_containers:
+                # This should not happen!
+                Logger.log("e", "Cannot find quality normal for global stack [%s] [%s]",
+                           global_stack.getId(), global_stack.definition.getId())
+                has_empty_quality = True
+
+        if project_quality_is_not_supported:
+            empty_quality_container = self._container_registry.findInstanceContainers(id = "empty_quality")[0]
+            empty_quality_changes_container = self._container_registry.findInstanceContainers(id = "empty_quality_changes")[0]
+
+            if has_empty_quality:
+                for stack in [global_stack] + extruder_stacks:
+                    stack.quality = empty_quality_container
+                    stack.qualityChanges = empty_quality_changes_container
+            else:
+                for stack in [global_stack] + extruder_stacks:
+                    stack.qualityChanges = empty_quality_changes_container
+                # for extruder stacks, the quality containers also need to be switched
+                for stack in extruder_stacks:
+                    search_criteria = {"type": "quality",
+                                       "quality_type": "normal"}
+                    if parseBool(global_stack.definition.getMetaDataEntry("has_machine_quality", "False")):
+                        search_criteria["definition"] = global_stack.definition.getId()
                     else:
-                        # This should not happen!
-                        Logger.log("e", "Cannot find quality normal for global stack [%s] [%s]",
-                                   global_stack.getId(), global_stack.definition.getId())
-                        global_stack.quality = self._container_registry.findInstanceContainers(id = "empty_quality")[0]
+                        search_criteria["definition"] = "fdmprinter"
+
+                    if parseBool(global_stack.getMetaDataEntry("has_machine_material")):
+                        search_criteria["material"] = stack.material.getId()
+
+                    quality_containers = self._container_registry.findInstanceContainers(**search_criteria)
+                    if quality_containers:
+                        stack.quality = quality_containers[0]
+                    else:
+                        Logger.log("e", "Cannot find quality container for extruder stack [%s]", stack.getId())
 
         # Replacing the old containers if resolve is "new".
         # When resolve is "new", some containers will get renamed, so all the other containers that reference to those
@@ -856,7 +891,11 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                         global_stack.userChanges = container
                         continue
 
-        for changes_container_type in ("quality_changes", "definition_changes"):
+        changes_container_types = ("quality_changes", "definition_changes")
+        if project_quality_is_not_supported:
+            # DO NOT replace quality_changes if the current quality_type is not supported
+            changes_container_types = ("definition_changes",)
+        for changes_container_type in changes_container_types:
             if self._resolve_strategies[changes_container_type] == "new":
                 # Quality changes needs to get a new ID, added to registry and to the right stacks
                 for each_changes_container in quality_and_definition_changes_instance_containers:
