@@ -40,16 +40,21 @@ class SliceInfo(Extension):
         Preferences.getInstance().addPreference("info/asked_send_slice_info", False)
 
         if not Preferences.getInstance().getValue("info/asked_send_slice_info"):
-            self.send_slice_info_message = Message(catalog.i18nc("@info", "Cura collects anonymised slicing statistics. You can disable this in the preferences."),
+            self.send_slice_info_message = Message(catalog.i18nc("@info", "Cura collects anonymized usage statistics."),
                                                    lifetime = 0,
                                                    dismissable = False,
                                                    title = catalog.i18nc("@info:title", "Collecting Data"))
 
-            self.send_slice_info_message.addAction("Dismiss", catalog.i18nc("@action:button", "Dismiss"), None, "")
+            self.send_slice_info_message.addAction("Dismiss", name = catalog.i18nc("@action:button", "Allow"), icon = None,
+                    description = catalog.i18nc("@action:tooltip", "Allow Cura to send anonymized usage statistics to help prioritize future improvements to Cura. Some of your preferences and settings are sent, the Cura version and a hash of the models you're slicing."))
+            self.send_slice_info_message.addAction("Disable", name = catalog.i18nc("@action:button", "Disable"), icon = None,
+                    description = catalog.i18nc("@action:tooltip", "Don't allow Cura to send anonymized usage statistics. You can enable it again in the preferences."))
             self.send_slice_info_message.actionTriggered.connect(self.messageActionTriggered)
             self.send_slice_info_message.show()
 
     def messageActionTriggered(self, message_id, action_id):
+        if action_id == "Disable":
+            Preferences.getInstance().setValue("info/send_slice_info", False)
         self.send_slice_info_message.hide()
         Preferences.getInstance().setValue("info/asked_send_slice_info", True)
 
