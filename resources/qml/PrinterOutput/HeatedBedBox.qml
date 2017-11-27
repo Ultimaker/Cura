@@ -234,7 +234,7 @@ Item
                     return // Nothing to do, printer cant preheat at all!
                 }
                 preheatCountdown.text = ""
-                if (printerModel != null)
+                if (printerModel != null && connectedPrinter.preheatBedRemainingTime != null)
                 {
                     preheatCountdown.text = connectedPrinter.preheatBedRemainingTime;
                 }
