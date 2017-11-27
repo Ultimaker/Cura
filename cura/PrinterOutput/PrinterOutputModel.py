@@ -21,6 +21,7 @@ class PrinterOutputModel(QObject):
     nameChanged = pyqtSignal()
     headPositionChanged = pyqtSignal()
     keyChanged = pyqtSignal()
+    typeChanged = pyqtSignal()
 
     def __init__(self, output_controller: "PrinterOutputController", number_of_extruders: int = 1, parent=None):
         super().__init__(parent)
@@ -34,6 +35,17 @@ class PrinterOutputModel(QObject):
         self._active_print_job = None  # type: Optional[PrintJobOutputModel]
 
         self._printer_state = "unknown"
+
+        self._type = ""
+
+    @pyqtProperty(str, notify = typeChanged)
+    def type(self):
+        return self._type
+
+    def updateType(self, type):
+        if self._type != type:
+            self._type = type
+            self.typeChanged.emit()
 
     @pyqtProperty(str, notify=keyChanged)
     def key(self):

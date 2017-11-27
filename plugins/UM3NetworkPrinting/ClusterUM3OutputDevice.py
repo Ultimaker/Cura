@@ -12,13 +12,15 @@ from cura.PrinterOutput.MaterialOutputModel import MaterialOutputModel
 
 from PyQt5.QtNetwork import QNetworkRequest, QNetworkReply
 from PyQt5.QtGui import QDesktopServices
-from PyQt5.QtCore import pyqtSlot, QUrl
+from PyQt5.QtCore import pyqtSlot, QUrl, pyqtSignal, pyqtProperty
 
 import json
 import os
 
 
 class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
+    printJobsChanged = pyqtSignal()
+    printersChanged = pyqtSignal()
     def __init__(self, device_id, address, properties, parent = None):
         super().__init__(device_id = device_id, address = address, properties=properties, parent = parent)
         self._api_prefix = "/cluster-api/v1/"
@@ -39,6 +41,31 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
     def openPrinterControlPanel(self):
         Logger.log("d", "Opening printer control panel...")
         QDesktopServices.openUrl(QUrl("http://" + self._address + "/printers"))
+
+    @pyqtProperty("QVariantList", notify=printJobsChanged)
+    def printJobs(self):
+        return self._print_jobs
+
+    @pyqtProperty("QVariantList", notify=printJobsChanged)
+    def queuedPrintJobs(self):
+        return [print_job for print_job in self._print_jobs if print_job.assignedPrinter is None]
+
+    @pyqtProperty("QVariantList", notify=printJobsChanged)
+    def activePrintJobs(self):
+        return [print_job for print_job in self._print_jobs if print_job.assignedPrinter is not None]
+
+    @pyqtProperty("QVariantList", notify=printersChanged)
+    def connectedPrintersTypeCount(self):
+        printer_count = {}
+        for printer in self._printers:
+            if printer.type in printer_count:
+                printer_count[printer.type] += 1
+            else:
+                printer_count[printer.type] = 1
+        result = []
+        for machine_type in printer_count:
+            result.append({"machine_type": machine_type, "count": printer_count[machine_type]})
+        return result
 
     def _update(self):
         if not super()._update():
@@ -82,6 +109,7 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
                     old_job.assignedPrinter.updateActivePrintJob(None)
 
             self._print_jobs = print_jobs_seen
+            self.printJobsChanged.emit()
 
     def _onGetPrintersDataFinished(self, reply: QNetworkReply):
         status_code = reply.attribute(QNetworkRequest.HttpStatusCodeAttribute)
@@ -92,6 +120,7 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
                 Logger.log("w", "Received an invalid printers state message: Not valid JSON.")
                 return
 
+            # TODO: Ensure that printers that have been removed are also removed locally.
             for printer_data in result:
                 uuid = printer_data["uuid"]
 
@@ -107,6 +136,7 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
 
                 printer.updateName(printer_data["friendly_name"])
                 printer.updateKey(uuid)
+                printer.updateType(printer_data["machine_variant"])
 
                 for index in range(0, self._number_of_extruders):
                     extruder = printer.extruders[index]

@@ -22,7 +22,7 @@ class PrintJobOutputModel(QObject):
         self._state = ""
         self._time_total = 0
         self._time_elapsed = 0
-        self._name = ""  # Human readable name
+        self._name = name  # Human readable name
         self._key = key  # Unique identifier
         self._assigned_printer = None
 
