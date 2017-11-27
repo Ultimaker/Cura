@@ -132,7 +132,7 @@ Rectangle
                 anchors.top: parent.top
                 anchors.left: parent.left
                 width: Math.floor(parent.width / 2 - UM.Theme.getSize("default_margin").width - showCameraIcon.width)
-                text: printer.friendly_name
+                text: printer.name
                 font: UM.Theme.getFont("default_bold")
                 elide: Text.ElideRight
             }
@@ -142,7 +142,7 @@ Rectangle
                 id: printerTypeLabel
                 anchors.top: printerNameLabel.bottom
                 width: Math.floor(parent.width / 2 - UM.Theme.getSize("default_margin").width)
-                text: printer.machine_variant
+                text: printer.type
                 anchors.left: parent.left
                 elide: Text.ElideRight
                 font: UM.Theme.getFont("very_small")
