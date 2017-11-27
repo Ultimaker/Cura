@@ -2,10 +2,12 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from UM.Logger import Logger
-
+from UM.Application import Application
 from UM.Settings.ContainerRegistry import ContainerRegistry
+from UM.i18n import i18nCatalog
+from UM.Message import Message
 
-from cura.PrinterOutput.NetworkedPrinterOutputDevice import NetworkedPrinterOutputDevice
+from cura.PrinterOutput.NetworkedPrinterOutputDevice import NetworkedPrinterOutputDevice, AuthState
 from cura.PrinterOutput.PrinterOutputModel import PrinterOutputModel
 from cura.PrinterOutput.PrintJobOutputModel import PrintJobOutputModel
 from cura.PrinterOutput.MaterialOutputModel import MaterialOutputModel
@@ -16,6 +18,8 @@ from PyQt5.QtCore import pyqtSlot, QUrl, pyqtSignal, pyqtProperty
 
 import json
 import os
+
+i18n_catalog = i18nCatalog("cura")
 
 
 class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
@@ -38,6 +42,49 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
 
         # See comments about this hack with the clusterPrintersChanged signal
         self.printersChanged.connect(self.clusterPrintersChanged)
+
+        self._accepts_commands = True
+
+        # Cluster does not have authentication, so default to authenticated
+        self._authentication_state = AuthState.Authenticated
+
+        self._error_message = None
+        self._progress_message = None
+
+    def requestWrite(self, nodes, file_name=None, filter_by_machine=False, file_handler=None, **kwargs):
+        # Notify the UI that a switch to the print monitor should happen
+        Application.getInstance().showPrintMonitor.emit(True)
+        self.writeStarted.emit(self)
+
+        self._gcode = getattr(Application.getInstance().getController().getScene(), "gcode_list", [])
+        if not self._gcode:
+            # Unable to find g-code. Nothing to send
+            return
+
+    @pyqtSlot()
+    def sendPrintJob(self):
+        Logger.log("i", "Sending print job to printer.")
+        if self._sending_gcode:
+            self._error_message = Message(
+                i18n_catalog.i18nc("@info:status",
+                                   "Sending new jobs (temporarily) blocked, still sending the previous print job."))
+            self._error_message.show()
+            return
+
+        self._sending_gcode = True
+
+        self._progress_message = Message(i18n_catalog.i18nc("@info:status", "Sending data to printer"), 0, False, -1,
+                                         i18n_catalog.i18nc("@info:title", "Sending Data"))
+        self._progress_message.addAction("Abort", i18n_catalog.i18nc("@action:button", "Cancel"), None, "")
+        self._progress_message.actionTriggered.connect(self._progressMessageActionTriggered)
+
+        compressed_gcode = self._compressGCode()
+        if compressed_gcode is None:
+            # Abort was called.
+            return
+
+
+
 
     @pyqtSlot()
     def openPrintJobControlPanel(self):

@@ -138,7 +138,7 @@ class PrinterOutputDevice(QObject, OutputDevice):
     def acceptsCommands(self):
         return self._accepts_commands
 
-        ##  Set a flag to signal the UI that the printer is not (yet) ready to receive commands
+    ##  Set a flag to signal the UI that the printer is not (yet) ready to receive commands
     def setAcceptsCommands(self, accepts_commands):
         if self._accepts_commands != accepts_commands:
             self._accepts_commands = accepts_commands

@@ -63,10 +63,6 @@ class LegacyUM3OutputDevice(NetworkedPrinterOutputDevice):
         self._authentication_succeeded_message = None
         self._not_authenticated_message = None
 
-        self._sending_gcode = False
-        self._compressing_gcode = False
-        self._gcode = []
-
         self.authenticationStateChanged.connect(self._onAuthenticationStateChanged)
 
         self.setPriority(3)  # Make sure the output device gets selected above local file output
@@ -285,34 +281,6 @@ class LegacyUM3OutputDevice(NetworkedPrinterOutputDevice):
             self._progress_message.setProgress(0)
 
             self._progress_message.hide()
-
-    def _compressGCode(self):
-        self._compressing_gcode = True
-
-        ## Mash the data into single string
-        max_chars_per_line = 1024 * 1024 / 4  # 1/4 MB per line.
-        byte_array_file_data = b""
-        batched_line = ""
-
-        for line in self._gcode:
-            if not self._compressing_gcode:
-                self._progress_message.hide()
-                # Stop trying to zip / send as abort was called.
-                return
-            batched_line += line
-            # if the gcode was read from a gcode file, self._gcode will be a list of all lines in that file.
-            # Compressing line by line in this case is extremely slow, so we need to batch them.
-            if len(batched_line) < max_chars_per_line:
-                continue
-            byte_array_file_data += self.__compressDataAndNotifyQt(batched_line)
-            batched_line = ""
-
-        # Don't miss the last batch (If any)
-        if batched_line:
-            byte_array_file_data += self.__compressDataAndNotifyQt(batched_line)
-
-        self._compressing_gcode = False
-        return byte_array_file_data
 
     def _messageBoxCallback(self, button):
         def delayedCallback():
