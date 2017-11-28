@@ -827,6 +827,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                 preferred_quality_id = global_stack.getMetaDataEntry("preferred_quality", None)
                 if preferred_quality_id is not None:
                     definition_id = global_stack.definition.getId()
+                    definition_id = global_stack.definition.getMetaDataEntry("quality_definition", definition_id)
                     if not parseBool(global_stack.getMetaDataEntry("has_machine_quality", "False")):
                         definition_id = "fdmprinter"
 
@@ -859,25 +860,14 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                 # be correct. For example, for UM2, the quality container can be "draft" while it should be "um2_draft"
                 # instead.
                 # In this code branch, we try to fix those incorrect quality containers.
-                search_criteria = {"type": "quality",
-                                   "quality_type": global_stack.quality.getMetaDataEntry("quality_type")}
-                search_criteria["definition"] = global_stack.definition.getId()
-                if not parseBool(global_stack.getMetaDataEntry("has_machine_quality", "False")):
-                    search_criteria["definition"] = "fdmprinter"
+                #
+                # ***IMPORTANT***: We only do this fix for single-extrusion machines.
+                #                  We will first find the correct quality profile for the extruder, then apply the same
+                #                  quality profile for the global stack.
+                #
+                if len(extruder_stacks) == 1:
+                    extruder_stack = extruder_stacks[0]
 
-                containers = self._container_registry.findInstanceContainers(**search_criteria)
-                containers = [c for c in containers if not c.getMetaDataEntry("material", "")]
-                if not containers:
-                    # cannot find machine-specific qualities, so just use fdmprinter to search again
-                    search_criteria["definition"] = "fdmprinter"
-                    containers = self._container_registry.findInstanceContainers(**search_criteria)
-                    containers = [c for c in containers if not c.getMetaDataEntry("material", "")]
-
-                if containers:
-                    new_quality_container = containers[0]
-                    global_stack.quality = new_quality_container
-
-                for extruder_stack in extruder_stacks:
                     search_criteria = {"type": "quality",
                                        "quality_type": global_stack.quality.getMetaDataEntry("quality_type")}
                     search_criteria["definition"] = global_stack.definition.getId()
@@ -888,7 +878,9 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                         search_criteria["material"] = extruder_stack.material.getId()
                     containers = self._container_registry.findInstanceContainers(**search_criteria)
                     if containers:
-                        extruder_stack.quality = containers[0]
+                        new_quality_container = containers[0]
+                        extruder_stack.quality = new_quality_container
+                        global_stack.quality = new_quality_container
 
         # Replacing the old containers if resolve is "new".
         # When resolve is "new", some containers will get renamed, so all the other containers that reference to those
