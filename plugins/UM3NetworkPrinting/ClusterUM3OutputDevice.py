@@ -16,6 +16,8 @@ from PyQt5.QtNetwork import QNetworkRequest, QNetworkReply
 from PyQt5.QtGui import QDesktopServices
 from PyQt5.QtCore import pyqtSlot, QUrl, pyqtSignal, pyqtProperty
 
+from time import time
+
 import json
 import os
 
@@ -61,6 +63,9 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
             # Unable to find g-code. Nothing to send
             return
 
+        # TODO; DEBUG
+        self.sendPrintJob()
+
     @pyqtSlot()
     def sendPrintJob(self):
         Logger.log("i", "Sending print job to printer.")
@@ -83,8 +88,46 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
             # Abort was called.
             return
 
+        parts = []
 
+        # If a specific printer was selected, it should be printed with that machine.
+        require_printer_name = "" # Todo; actually needs to be set
+        if require_printer_name:
+            parts.append(self._createFormPart("name=require_printer_name", bytes(require_printer_name, "utf-8"), "text/plain"))
 
+        # Add user name to the print_job
+        parts.append(self._createFormPart("name=owner", bytes(self._getUserName(), "utf-8"), "text/plain"))
+
+        file_name = "%s.gcode.gz" % Application.getInstance().getPrintInformation().jobName
+
+        parts.append(self._createFormPart("name=\"file\"; filename=\"%s\"" % file_name, compressed_gcode))
+
+        self.postFormWithParts("print_jobs/", parts, onFinished=self._onPostPrintJobFinished, onProgress=self._onUploadPrintJobProgress)
+
+    def _onPostPrintJobFinished(self, reply):
+        print("POST PRINTJOB DONE! YAY!", reply.readAll())
+        pass
+
+    def _onUploadPrintJobProgress(self, bytes_sent, bytes_total):
+        if bytes_total > 0:
+            new_progress = bytes_sent / bytes_total * 100
+            # Treat upload progress as response. Uploading can take more than 10 seconds, so if we don't, we can get
+            # timeout responses if this happens.
+            self._last_response_time = time()
+            if new_progress > self._progress_message.getProgress():
+                self._progress_message.show()  # Ensure that the message is visible.
+                self._progress_message.setProgress(bytes_sent / bytes_total * 100)
+        else:
+            self._progress_message.setProgress(0)
+            self._progress_message.hide()
+
+    def _progressMessageActionTriggered(self, message_id=None, action_id=None):
+        if action_id == "Abort":
+            Logger.log("d", "User aborted sending print to remote.")
+            self._progress_message.hide()
+            self._compressing_gcode = False
+            self._sending_gcode = False
+            Application.getInstance().showPrintMonitor.emit(False)
 
     @pyqtSlot()
     def openPrintJobControlPanel(self):

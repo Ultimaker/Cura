@@ -21,8 +21,7 @@ from .LegacyUM3PrinterOutputController import LegacyUM3PrinterOutputController
 from time import time
 
 import json
-import os  # To get the username
-import gzip
+
 
 
 i18n_catalog = i18nCatalog("cura")
@@ -258,16 +257,6 @@ class LegacyUM3OutputDevice(NetworkedPrinterOutputDevice):
     def _onPostPrintJobFinished(self, reply):
         self._progress_message.hide()
         self._sending_gcode = False
-
-    def __compressDataAndNotifyQt(self, data_to_append):
-        compressed_data = gzip.compress(data_to_append.encode("utf-8"))
-        self._progress_message.setProgress(-1)  # Tickle the message so that it's clear that it's still being used.
-        QCoreApplication.processEvents()  # Ensure that the GUI does not freeze.
-
-        # Pretend that this is a response, as zipping might take a bit of time.
-        # If we don't do this, the device might trigger a timeout.
-        self._last_response_time = time()
-        return compressed_data
 
     def _onUploadPrintJobProgress(self, bytes_sent, bytes_total):
         if bytes_total > 0:

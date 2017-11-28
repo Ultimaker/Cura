@@ -7,14 +7,14 @@ from UM.Logger import Logger
 from cura.PrinterOutputDevice import PrinterOutputDevice, ConnectionState
 
 from PyQt5.QtNetwork import QHttpMultiPart, QHttpPart, QNetworkRequest, QNetworkAccessManager, QNetworkReply
-from PyQt5.QtCore import pyqtProperty, pyqtSignal, pyqtSlot, QObject, QTimer, pyqtSignal, QUrl
-
+from PyQt5.QtCore import pyqtProperty, pyqtSignal, pyqtSlot, pyqtSignal, QUrl, QCoreApplication
 from time import time
 from typing import Callable, Any, Optional
 from enum import IntEnum
 from typing import List
 
-import os
+import os  # To get the username
+import gzip
 
 class AuthState(IntEnum):
     NotAuthenticated = 1
@@ -63,6 +63,16 @@ class NetworkedPrinterOutputDevice(PrinterOutputDevice):
     def authenticationState(self):
         return self._authentication_state
 
+    def _compressDataAndNotifyQt(self, data_to_append):
+        compressed_data = gzip.compress(data_to_append.encode("utf-8"))
+        self._progress_message.setProgress(-1)  # Tickle the message so that it's clear that it's still being used.
+        QCoreApplication.processEvents()  # Ensure that the GUI does not freeze.
+
+        # Pretend that this is a response, as zipping might take a bit of time.
+        # If we don't do this, the device might trigger a timeout.
+        self._last_response_time = time()
+        return compressed_data
+
     def _compressGCode(self):
         self._compressing_gcode = True
 
@@ -81,12 +91,12 @@ class NetworkedPrinterOutputDevice(PrinterOutputDevice):
             # Compressing line by line in this case is extremely slow, so we need to batch them.
             if len(batched_line) < max_chars_per_line:
                 continue
-            byte_array_file_data += self.__compressDataAndNotifyQt(batched_line)
+            byte_array_file_data += self._compressDataAndNotifyQt(batched_line)
             batched_line = ""
 
         # Don't miss the last batch (If any)
         if batched_line:
-            byte_array_file_data += self.__compressDataAndNotifyQt(batched_line)
+            byte_array_file_data += self._compressDataAndNotifyQt(batched_line)
 
         self._compressing_gcode = False
         return byte_array_file_data
