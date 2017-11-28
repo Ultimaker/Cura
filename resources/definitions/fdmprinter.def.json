@@ -318,6 +318,17 @@
                     "settable_per_extruder": false,
                     "settable_per_meshgroup": false
                 },
+                "machine_firmware_retract":
+                {
+                    "label": "Firmware Retraction",
+                    "description": "Whether to use firmware retract commands (G10/G11) instead of using the E property in G1 commands to retract the material.",
+                    "type": "bool",
+                    "default_value": false,
+                    "value": "machine_gcode_flavor == 'RepRap (Volumetric)' or machine_gcode_flavor == 'UltiGCode' or machine_gcode_flavor == 'BFB'",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false,
+                    "settable_per_meshgroup": false
+                },
                 "machine_disallowed_areas":
                 {
                     "label": "Disallowed areas",
