@@ -7,14 +7,15 @@ from UM.i18n import i18nCatalog
 from UM.Preferences import Preferences
 
 catalog = i18nCatalog("cura")
-from . import GriffinFlavor, RepRapFlavor
+from . import MarlinFlavorParser, RepRapFlavorParser
 
 # Class for loading and parsing G-code files
 class GCodeReader(MeshReader):
 
+    _flavor_default = "Marlin"
     _flavor_keyword = ";FLAVOR:"
-    _flavor_readers_dict = {"Griffin" : GriffinFlavor.GriffinFlavor(),
-                            "RepRap" : RepRapFlavor.RepRapFlavor()}
+    _flavor_readers_dict = {"RepRap" : RepRapFlavorParser.RepRapFlavorParser(),
+                            "Marlin" : MarlinFlavorParser.MarlinFlavorParser()}
 
     def __init__(self):
         super(GCodeReader, self).__init__()
@@ -28,11 +29,15 @@ class GCodeReader(MeshReader):
         with open(file_name, "r") as file:
             for line in file:
                 if line[:len(self._flavor_keyword)] == self._flavor_keyword:
-                    self._flavor_reader = self._flavor_readers_dict[line[len(self._flavor_keyword):].rstrip()]
-                    return FileReader.PreReadResult.accepted
+                    try:
+                        self._flavor_reader = self._flavor_readers_dict[line[len(self._flavor_keyword):].rstrip()]
+                        return FileReader.PreReadResult.accepted
+                    except:
+                        # If there is no entry in the dictionary for this flavor, just skip and select the by-default flavor
+                        break
 
             # If no flavor is found in the GCode, then we use the by-default
-            self._flavor_reader = self._flavor_readers_dict["Griffin"]
+            self._flavor_reader = self._flavor_readers_dict[self._flavor_default]
             return FileReader.PreReadResult.accepted
 
     def read(self, file_name):

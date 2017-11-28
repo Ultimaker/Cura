@@ -1,9 +1,10 @@
 # Copyright (c) 2017 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from . import GCodeFlavor
+from . import FlavorParser
 
-class RepRapFlavor(GCodeFlavor.GCodeFlavor):
+# This parser is intented for interpret the RepRap Firmware flavor
+class RepRapFlavorParser(FlavorParser.FlavorParser):
 
     def __init__(self):
         super().__init__()

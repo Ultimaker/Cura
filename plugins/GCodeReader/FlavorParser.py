@@ -25,9 +25,8 @@ import math
 import re
 from collections import namedtuple
 
-
-# Class for loading and parsing G-code files
-class GCodeFlavor:
+# This parser is intented for interpret the common firmware codes among all the different flavors
+class FlavorParser:
 
     def __init__(self):
         Application.getInstance().hideMessageSignal.connect(self._onHideMessage)
