@@ -235,17 +235,8 @@ class NetworkClusterPrinterOutputDevice(NetworkPrinterOutputDevice.NetworkPrinte
 
     def spawnPrintView(self):
         if self._print_view is None:
-            path = QUrl.fromLocalFile(os.path.join(self._plugin_path, "PrintWindow.qml"))
-            component = QQmlComponent(Application.getInstance()._engine, path)
-
-            self._print_context = QQmlContext(Application.getInstance()._engine.rootContext())
-            self._print_context.setContextProperty("OutputDevice", self)
-            self._print_view = component.create(self._print_context)
-
-            if component.isError():
-                Logger.log("e", " Errors creating component: \n%s", "\n".join(
-                    [e.toString() for e in component.errors()]))
-
+            path = os.path.join(self._plugin_path, "PrintWindow.qml")
+            self._print_view = Application.getInstance().createQmlComponent(path, {"OutputDevice", self})
         if self._print_view is not None:
             self._print_view.show()
 
