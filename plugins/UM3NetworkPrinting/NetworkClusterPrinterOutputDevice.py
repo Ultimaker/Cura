@@ -8,12 +8,10 @@ import time
 
 from enum import Enum
 from PyQt5.QtNetwork import QNetworkRequest, QHttpPart, QHttpMultiPart
-from PyQt5.QtCore import QUrl, QByteArray, pyqtSlot, pyqtProperty, QCoreApplication, QTimer, pyqtSignal, QObject
+from PyQt5.QtCore import QUrl, pyqtSlot, pyqtProperty, QCoreApplication, QTimer, pyqtSignal, QObject
 from PyQt5.QtGui import QDesktopServices
 from PyQt5.QtNetwork import QNetworkAccessManager, QNetworkReply
-from PyQt5.QtQml import QQmlComponent, QQmlContext
 from UM.Application import Application
-from UM.Decorators import override
 from UM.Logger import Logger
 from UM.Message import Message
 from UM.OutputDevice import OutputDeviceError
