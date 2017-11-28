@@ -49,9 +49,9 @@ class SolidView(View):
         global_container_stack = Application.getInstance().getGlobalContainerStack()
         if global_container_stack:
             support_extruder_nr = global_container_stack.getProperty("support_extruder_nr", "value")
-            support_angle_stack = ExtruderManager.getInstance().getExtruderStack(support_extruder_nr)
+            support_angle_stack = Application.getInstance().getExtruderManager().getExtruderStack(support_extruder_nr)
 
-            if Preferences.getInstance().getValue("view/show_overhang"):
+            if support_angle_stack is not None and Preferences.getInstance().getValue("view/show_overhang"):
                 angle = support_angle_stack.getProperty("support_angle", "value")
                 # Make sure the overhang angle is valid before passing it to the shader
                 # Note: if the overhang angle is set to its default value, it does not need to get validated (validationState = None)

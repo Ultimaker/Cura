@@ -295,16 +295,26 @@ QtObject {
                     anchors.fill: parent;
                     property bool down: control.pressed || (control.checkable && control.checked);
 
-                    color: {
-                        if(control.customColor !== undefined && control.customColor !== null) {
+                    color:
+                    {
+                        if(control.customColor !== undefined && control.customColor !== null)
+                        {
                             return control.customColor
-                        } else if(control.checkable && control.checked && control.hovered) {
+                        }
+                        else if(control.checkable && control.checked && control.hovered)
+                        {
                             return Theme.getColor("button_active_hover");
-                        } else if(control.pressed || (control.checkable && control.checked)) {
+                        }
+                        else if(control.pressed || (control.checkable && control.checked))
+                        {
                             return Theme.getColor("button_active");
-                        } else if(control.hovered) {
+                        }
+                        else if(control.hovered)
+                        {
                             return Theme.getColor("button_hover");
-                        } else {
+                        }
+                        else
+                        {
                             return Theme.getColor("button");
                         }
                     }
@@ -381,30 +391,39 @@ QtObject {
         }
     }
 
-    property Component orientation_button: Component {
+    property Component small_tool_button: Component {
         ButtonStyle {
             background: Item {
-                implicitWidth: 25;
-                implicitHeight: 25;
+                implicitWidth: Theme.getSize("small_button").width;
+                implicitHeight: Theme.getSize("small_button").height;
 
                 Rectangle {
-                    id: buttonFace2;
+                    id: smallButtonFace;
 
                     anchors.fill: parent;
                     property bool down: control.pressed || (control.checkable && control.checked);
 
-                    color: {
-                        if(control.customColor !== undefined && control.customColor !== null) {
+                    color:
+                    {
+                        if(control.customColor !== undefined && control.customColor !== null)
+                        {
                             return control.customColor
-                        } else if(control.checkable && control.checked && control.hovered) {
-                            return Theme.getColor("button_active_hover");
-                        } else if(control.pressed || (control.checkable && control.checked)) {
-                            return Theme.getColor("button_active");
-                        } else if(control.hovered) {
-                            return Theme.getColor("button_hover");
-                        } else {
-                            //return Theme.getColor("button");
-                            return "transparent"
+                        }
+                        else if(control.checkable && control.checked && control.hovered)
+                        {
+                            return Theme.getColor("small_button_active_hover");
+                        }
+                        else if(control.pressed || (control.checkable && control.checked))
+                        {
+                            return Theme.getColor("small_button_active");
+                        }
+                        else if(control.hovered)
+                        {
+                            return Theme.getColor("small_button_hover");
+                        }
+                        else
+                        {
+                            return Theme.getColor("small_button");
                         }
                     }
                     Behavior on color { ColorAnimation { duration: 50; } }
@@ -413,17 +432,10 @@ QtObject {
                     border.color: Theme.getColor("tool_button_border")
 
                     UM.RecolorImage {
-                        id: tool_button_arrow2
-                        //anchors.right: parent.right;
-                        //anchors.rightMargin: (Theme.getSize("button").width - Theme.getSize("button_icon").width) / 4
-                        //anchors.bottom: parent.bottom;
-                        //anchors.bottomMargin: (Theme.getSize("button").height - Theme.getSize("button_icon").height) / 4
-                        //width: Theme.getSize("standard_arrow").width
-                        //height: Theme.getSize("standard_arrow").height
+                        id: smallToolButtonArrow
 
                         width: 5
                         height: 5
-
                         sourceSize.width: 5
                         sourceSize.height: 5
                         visible: control.menu != null;
@@ -431,19 +443,19 @@ QtObject {
                         {
                             if(control.checkable && control.checked && control.hovered)
                             {
-                                return Theme.getColor("button_text_active_hover");
+                                return Theme.getColor("small_button_text_active_hover");
                             }
                             else if(control.pressed || (control.checkable && control.checked))
                             {
-                                return Theme.getColor("button_text_active");
+                                return Theme.getColor("small_button_text_active");
                             }
                             else if(control.hovered)
                             {
-                                return Theme.getColor("button_text_hover");
+                                return Theme.getColor("small_button_text_hover");
                             }
                             else
                             {
-                                return Theme.getColor("button_text");
+                                return Theme.getColor("small_button_text");
                             }
                         }
                         source: Theme.getIcon("arrow_bottom")
@@ -456,31 +468,29 @@ QtObject {
                     anchors.centerIn: parent;
                     opacity: !control.enabled ? 0.2 : 1.0
                     source: control.iconSource;
-                    width: 20;
-                    height: 20;
+                    width: Theme.getSize("small_button_icon").width;
+                    height: Theme.getSize("small_button_icon").height;
                     color:
                     {
                         if(control.checkable && control.checked && control.hovered)
                         {
-                            return Theme.getColor("button_text_active_hover");
+                            return Theme.getColor("small_button_text_active_hover");
                         }
                         else if(control.pressed || (control.checkable && control.checked))
                         {
-                            return Theme.getColor("button_text_active");
+                            return Theme.getColor("small_button_text_active");
                         }
                         else if(control.hovered)
                         {
-                            //return Theme.getColor("button_text_hover");
-                            return "white"
+                            return Theme.getColor("small_button_text_hover");
                         }
                         else
                         {
-                            //return Theme.getColor("button_text");
-                            return "black"
+                            return Theme.getColor("small_button_text");
                         }
                     }
 
-                    sourceSize: Theme.getSize("button_icon")
+                    sourceSize: Theme.getSize("small_button_icon")
                 }
             }
         }

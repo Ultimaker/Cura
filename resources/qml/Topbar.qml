@@ -240,7 +240,7 @@ Rectangle
         Button
         {
             iconSource: UM.Theme.getIcon("view_3d")
-            style: UM.Theme.styles.orientation_button
+            style: UM.Theme.styles.small_tool_button
             anchors.verticalCenter: viewOrientationControl.verticalCenter
             onClicked:{
                 UM.Controller.rotateView("3d", 0);
@@ -252,7 +252,7 @@ Rectangle
         Button
         {
             iconSource: UM.Theme.getIcon("view_front")
-            style: UM.Theme.styles.orientation_button
+            style: UM.Theme.styles.small_tool_button
             anchors.verticalCenter: viewOrientationControl.verticalCenter
             onClicked:{
                 UM.Controller.rotateView("home", 0);
@@ -264,7 +264,7 @@ Rectangle
         Button
         {
             iconSource: UM.Theme.getIcon("view_top")
-            style: UM.Theme.styles.orientation_button
+            style: UM.Theme.styles.small_tool_button
             anchors.verticalCenter: viewOrientationControl.verticalCenter
             onClicked:{
                 UM.Controller.rotateView("y", 90);
@@ -276,7 +276,7 @@ Rectangle
         Button
         {
             iconSource: UM.Theme.getIcon("view_left")
-            style: UM.Theme.styles.orientation_button
+            style: UM.Theme.styles.small_tool_button
             anchors.verticalCenter: viewOrientationControl.verticalCenter
             onClicked:{
                 UM.Controller.rotateView("x", 90);
@@ -288,7 +288,7 @@ Rectangle
         Button
         {
             iconSource: UM.Theme.getIcon("view_right")
-            style: UM.Theme.styles.orientation_button
+            style: UM.Theme.styles.small_tool_button
             anchors.verticalCenter: viewOrientationControl.verticalCenter
             onClicked:{
                 UM.Controller.rotateView("x", -90);

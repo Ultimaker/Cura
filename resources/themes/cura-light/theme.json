@@ -103,6 +103,15 @@
         "button_disabled": [31, 36, 39, 255],
         "button_disabled_text": [255, 255, 255, 101],
 
+        "small_button": [31, 36, 39, 0],
+        "small_button_hover": [68, 72, 75, 255],
+        "small_button_active": [68, 72, 75, 255],
+        "small_button_active_hover": [68, 72, 75, 255],
+        "small_button_text": [31, 36, 39, 197],
+        "small_button_text_hover": [255, 255, 255, 255],
+        "small_button_text_active": [255, 255, 255, 255],
+        "small_button_text_active_hover": [255, 255, 255, 255],
+
         "button_tooltip": [31, 36, 39, 255],
         "button_tooltip_border": [68, 192, 255, 255],
         "button_tooltip_text": [192, 193, 194, 255],
@@ -322,6 +331,9 @@
         "button": [4, 4],
         "button_icon": [2.5, 2.5],
         "button_lining": [0, 0],
+
+        "small_button": [2, 2],
+        "small_button_icon": [1.5, 1.5],
 
         "topbar_logo_right_margin": [3, 0],
         "topbar_button": [8, 4],
