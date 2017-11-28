@@ -836,7 +836,7 @@ class MachineManager(QObject):
             elif container_type == "quality_changes":
                 new_quality_settings_list = self._determineQualityAndQualityChangesForQualityChanges(quality_name)
             else:
-                Logger.log("e", "Tried to set quality to a container that is not of the right type")
+                Logger.log("e", "Tried to set quality to a container that is not of the right type: {container_id}".format(container_id = containers[0]["id"]))
                 return
 
             # Check if it was at all possible to find new settings
