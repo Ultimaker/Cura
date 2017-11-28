@@ -202,16 +202,20 @@ class QualityManager:
     #   \return \type{List[Dict[str, Any]]} A list of the metadata of basic
     #   materials, or an empty list if none could be found.
     def _getBasicMaterialMetadatas(self, material_container: Dict[str, Any]) -> List[Dict[str, Any]]:
-        base_material = material_container.get("material")
-        material_container_definition = ContainerRegistry.getInstance().findDefinitionContainersMetadata(id = material_container["definition"])
-        if material_container_definition:
-            material_container_definition = material_container_definition[0]
-            if "has_machine_quality" in material_container_definition:
-                definition_id = material_container_definition.get("quality_definition", material_container_definition["id"])
-            else:
-                definition_id = "fdmprinter"
-        else:
+        if "definition" not in material_container:
             definition_id = "fdmprinter"
+        else:
+            material_container_definition = ContainerRegistry.getInstance().findDefinitionContainersMetadata(id = material_container["definition"])
+            if not material_container_definition:
+                definition_id = "fdmprinter"
+            else:
+                material_container_definition = material_container_definition[0]
+                if "has_machine_quality" not in material_container_definition:
+                    definition_id = "fdmprinter"
+                else:
+                    definition_id = material_container_definition.get("quality_definition", material_container_definition["id"])
+
+        base_material = material_container.get("material")
         if base_material:
             # There is a basic material specified
             criteria = {
