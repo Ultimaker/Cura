@@ -171,20 +171,9 @@ class PrinterOutputDevice(QObject, OutputDevice):
         if not self._control_view_qml_path:
             return
 
-        path = QUrl.fromLocalFile(self._control_view_qml_path)
-
-        # Because of garbage collection we need to keep this referenced by python.
-        self._control_component = QQmlComponent(Application.getInstance()._engine, path)
-
-        # Check if the context was already requested before (Printer output device might have multiple items in the future)
-        if self._qml_context is None:
-            self._qml_context = QQmlContext(Application.getInstance()._engine.rootContext())
-            self._qml_context.setContextProperty("OutputDevice", self)
-
-        self._control_item = self._control_component.create(self._qml_context)
-        if self._control_item is None:
-            Logger.log("e", "QQmlComponent status %s", self._control_component.status())
-            Logger.log("e", "QQmlComponent error string %s", self._control_component.errorString())
+        self._control_component = Application.getInstance().createQmlComponent(self._control_view_qml_path, {
+            "OutputDevice": self
+        })
 
     def _createMonitorViewFromQML(self):
         if not self._monitor_view_qml_path:
