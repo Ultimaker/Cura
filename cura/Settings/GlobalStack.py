@@ -23,9 +23,9 @@ class GlobalStack(CuraContainerStack):
     def __init__(self, container_id: str, *args, **kwargs):
         super().__init__(container_id, *args, **kwargs)
 
-        self.addMetaDataEntry("type", "machine") # For backward compatibility
+        self.addMetaDataEntry("type", "machine")  # For backward compatibility
 
-        self._extruders = {}
+        self._extruders = {}  # type: Dict[str, "ExtruderStack"]
 
         # This property is used to track which settings we are calculating the "resolve" for
         # and if so, to bypass the resolve to prevent an infinite recursion that would occur
@@ -61,13 +61,6 @@ class GlobalStack(CuraContainerStack):
     #   \throws Exceptions.TooManyExtrudersError Raised when trying to add an extruder while we
     #                                            already have the maximum number of extruders.
     def addExtruder(self, extruder: ContainerStack) -> None:
-        extruder_count = self.getProperty("machine_extruder_count", "value")
-
-        if extruder_count <= 1:
-            Logger.log("i", "Not adding extruder[%s] to [%s] because it is a single-extrusion machine.",
-                       extruder.id, self.id)
-            return
-
         position = extruder.getMetaDataEntry("position")
         if position is None:
             Logger.log("w", "No position defined for extruder {extruder}, cannot add it to stack {stack}", extruder = extruder.id, stack = self.id)
@@ -96,17 +89,17 @@ class GlobalStack(CuraContainerStack):
         if not self.definition.findDefinitions(key = key):
             return None
 
+        if context is None:
+            context = PropertyEvaluationContext()
+        context.pushContainer(self)
+
         # Handle the "resolve" property.
-        if self._shouldResolve(key, property_name):
+        if self._shouldResolve(key, property_name, context):
             self._resolving_settings.add(key)
             resolve = super().getProperty(key, "resolve", context)
             self._resolving_settings.remove(key)
             if resolve is not None:
                 return resolve
-
-        if context is None:
-            context = PropertyEvaluationContext()
-        context.pushContainer(self)
 
         # Handle the "limit_to_extruder" property.
         limit_to_extruder = super().getProperty(key, "limit_to_extruder", context)
@@ -151,7 +144,7 @@ class GlobalStack(CuraContainerStack):
 
     # Determine whether or not we should try to get the "resolve" property instead of the
     # requested property.
-    def _shouldResolve(self, key: str, property_name: str) -> bool:
+    def _shouldResolve(self, key: str, property_name: str, context: Optional[PropertyEvaluationContext] = None) -> bool:
         if property_name is not "value":
             # Do not try to resolve anything but the "value" property
             return False
@@ -163,7 +156,7 @@ class GlobalStack(CuraContainerStack):
             # track all settings that are being resolved.
             return False
 
-        setting_state = super().getProperty(key, "state")
+        setting_state = super().getProperty(key, "state", context = context)
         if setting_state is not None and setting_state != InstanceState.Default:
             # When the user has explicitly set a value, we should ignore any resolve and
             # just return that value.

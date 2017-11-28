@@ -67,7 +67,7 @@ UM.ManagementPage
             }
             Label
             {
-                width: (parent.width * 0.3) | 0
+                width: Math.floor((parent.width * 0.3))
                 text: model.metadata.material
                 elide: Text.ElideRight
                 font.italic: model.id == activeId
@@ -322,7 +322,6 @@ UM.ManagementPage
                 {
                     messageDialog.icon = StandardIcon.Information
                     messageDialog.text = catalog.i18nc("@info:status Don't translate the XML tag <filename>!", "Successfully imported material <filename>%1</filename>").arg(fileUrl)
-                    currentItem = base.model.getItem(base.objectList.currentIndex)
                 }
                 else if(result.status == "duplicate")
                 {

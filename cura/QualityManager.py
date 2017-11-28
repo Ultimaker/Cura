@@ -87,7 +87,7 @@ class QualityManager:
         qualities = set(quality_type_dict.values())
         for material_container in material_containers[1:]:
             next_quality_type_dict = self.__fetchQualityTypeDictForMaterial(machine_definition, material_container)
-            qualities.update(set(next_quality_type_dict.values()))
+            qualities.intersection_update(set(next_quality_type_dict.values()))
 
         return list(qualities)
 
@@ -178,12 +178,16 @@ class QualityManager:
     def findAllUsableQualitiesForMachineAndExtruders(self, global_container_stack: "GlobalStack", extruder_stacks: List["ExtruderStack"]) -> List[InstanceContainer]:
         global_machine_definition = global_container_stack.getBottom()
 
-        if extruder_stacks:
-            # Multi-extruder machine detected.
-            materials = [stack.material for stack in extruder_stacks]
-        else:
-            # Machine with one extruder.
-            materials = [global_container_stack.material]
+        machine_manager = Application.getInstance().getMachineManager()
+        active_stack_id = machine_manager.activeStackId
+
+        materials = []
+
+        for stack in extruder_stacks:
+            if stack.getId() == active_stack_id and machine_manager.newMaterial:
+                materials.append(machine_manager.newMaterial)
+            else:
+                materials.append(stack.material)
 
         quality_types = self.findAllQualityTypesForMachineAndMaterials(global_machine_definition, materials)
 

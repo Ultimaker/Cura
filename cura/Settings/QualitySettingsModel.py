@@ -224,7 +224,6 @@ class QualitySettingsModel(UM.Qt.ListModel.ListModel):
                 if self._extruder_id == "" and settable_per_extruder:
                     continue
 
-
             label = definition.label
             if self._i18n_catalog:
                 label = self._i18n_catalog.i18nc(definition.key + " label", label)

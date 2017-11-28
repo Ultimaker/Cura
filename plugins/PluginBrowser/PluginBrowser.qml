@@ -114,7 +114,7 @@ UM.Dialog
                         anchors.rightMargin: UM.Theme.getSize("default_margin").width
                         Label
                         {
-                            text: "<b>" + model.name + "</b> - " + model.author
+                            text: "<b>" + model.name + "</b>" + ((model.author !== "") ? (" - " + model.author) : "")
                             width: contentWidth
                             height: contentHeight +  UM.Theme.getSize("default_margin").height
                             verticalAlignment: Text.AlignVCenter

@@ -91,12 +91,8 @@ class USBPrinterOutputDeviceManager(QObject, OutputDevicePlugin, Extension):
     #   This will create the view if its not already created.
     def spawnFirmwareInterface(self, serial_port):
         if self._firmware_view is None:
-            path = QUrl.fromLocalFile(os.path.join(PluginRegistry.getInstance().getPluginPath("USBPrinting"), "FirmwareUpdateWindow.qml"))
-            component = QQmlComponent(Application.getInstance()._engine, path)
-
-            self._firmware_context = QQmlContext(Application.getInstance()._engine.rootContext())
-            self._firmware_context.setContextProperty("manager", self)
-            self._firmware_view = component.create(self._firmware_context)
+            path = os.path.join(PluginRegistry.getInstance().getPluginPath("USBPrinting"), "FirmwareUpdateWindow.qml")
+            self._firmware_view = Application.getInstance().createQmlComponent(path, {"manager": self})
 
         self._firmware_view.show()
 

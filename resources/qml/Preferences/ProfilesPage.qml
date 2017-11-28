@@ -208,7 +208,7 @@ UM.ManagementPage
             anchors.right: parent.right
             anchors.bottom: parent.bottom
 
-            currentIndex: ExtruderManager.extruderCount > 0 ? ExtruderManager.activeExtruderIndex + 1 : 0
+            currentIndex: Cura.ExtruderManager.extruderCount > 0 ? Cura.ExtruderManager.activeExtruderIndex + 1 : 0
 
             ProfileTab
             {

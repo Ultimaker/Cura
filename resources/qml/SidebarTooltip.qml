@@ -54,6 +54,7 @@ UM.PointingRectangle {
             rightMargin: UM.Theme.getSize("tooltip_margins").width;
         }
         wrapMode: Text.Wrap;
+        textFormat: Text.RichText
         font: UM.Theme.getFont("default");
         color: UM.Theme.getColor("tooltip_text");
     }

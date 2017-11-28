@@ -47,12 +47,12 @@ class Layer:
 
         return result
 
-    def build(self, vertex_offset, index_offset, vertices, colors, line_dimensions, extruders, line_types, indices):
+    def build(self, vertex_offset, index_offset, vertices, colors, line_dimensions, feedrates, extruders, line_types, indices):
         result_vertex_offset = vertex_offset
         result_index_offset = index_offset
         self._element_count = 0
         for polygon in self._polygons:
-            polygon.build(result_vertex_offset, result_index_offset, vertices, colors, line_dimensions, extruders, line_types, indices)
+            polygon.build(result_vertex_offset, result_index_offset, vertices, colors, line_dimensions, feedrates, extruders, line_types, indices)
             result_vertex_offset += polygon.lineMeshVertexCount()
             result_index_offset += polygon.lineMeshElementCount()
             self._element_count += polygon.elementCount

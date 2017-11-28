@@ -39,11 +39,12 @@ Rectangle
                 return catalog.i18nc("@label:status", "Printing");
             case "idle":
                 return catalog.i18nc("@label:status", "Available");
-            case "unreachable":  // TODO: new string
+            case "unreachable":
+                return catalog.i18nc("@label:MonitorStatus", "Lost connection with the printer");
             case "maintenance":  // TODO: new string
             case "unknown":
             default:
-                return catalog.i18nc("@label", "Unknown");
+                return catalog.i18nc("@label Printer status", "Unknown");
         }
     }
 
@@ -72,7 +73,7 @@ Rectangle
         hoverEnabled: true;
 
         // Only clickable if no printer is selected
-        enabled: OutputDevice.selectedPrinterName == ""
+        enabled: OutputDevice.selectedPrinterName == "" && printer.status !== "unreachable"
     }
 
     Row
@@ -85,7 +86,7 @@ Rectangle
 
         Rectangle
         {
-            width: parent.width / 3
+            width: Math.floor(parent.width / 3)
             height: parent.height
 
             Label   // Print job name
@@ -130,7 +131,7 @@ Rectangle
 
         Rectangle
         {
-            width: parent.width / 3 * 2
+            width: Math.floor(parent.width / 3 * 2)
             height: parent.height
 
             Label   // Friendly machine name
@@ -138,7 +139,7 @@ Rectangle
                 id: printerNameLabel
                 anchors.top: parent.top
                 anchors.left: parent.left
-                width: parent.width / 2 - UM.Theme.getSize("default_margin").width - showCameraIcon.width
+                width: Math.floor(parent.width / 2 - UM.Theme.getSize("default_margin").width - showCameraIcon.width)
                 text: printer.friendly_name
                 font: UM.Theme.getFont("default_bold")
                 elide: Text.ElideRight
@@ -148,7 +149,7 @@ Rectangle
             {
                 id: printerTypeLabel
                 anchors.top: printerNameLabel.bottom
-                width: parent.width / 2 - UM.Theme.getSize("default_margin").width
+                width: Math.floor(parent.width / 2 - UM.Theme.getSize("default_margin").width)
                 text: printer.machine_variant
                 anchors.left: parent.left
                 elide: Text.ElideRight
@@ -165,6 +166,7 @@ Rectangle
                 anchors.right: printProgressArea.left
                 anchors.rightMargin: UM.Theme.getSize("default_margin").width
                 color: emphasisColor
+                opacity: printer != null && printer.status === "unreachable" ? 0.3 : 1
 
                 Image
                 {
@@ -181,7 +183,7 @@ Rectangle
                 id: extruderInfo
                 anchors.bottom: parent.bottom
 
-                width: parent.width / 2 - UM.Theme.getSize("default_margin").width
+                width: Math.floor(parent.width / 2 - UM.Theme.getSize("default_margin").width)
                 height: childrenRect.height
 
                 spacing: UM.Theme.getSize("default_margin").width
@@ -215,7 +217,7 @@ Rectangle
                 anchors.right: parent.right
                 anchors.top: parent.top
                 height: showExtended ? parent.height: printProgressTitleBar.height
-                width: parent.width / 2 - UM.Theme.getSize("default_margin").width
+                width: Math.floor(parent.width / 2 - UM.Theme.getSize("default_margin").width)
                 border.width: UM.Theme.getSize("default_lining").width
                 border.color: lineColor
                 radius: cornerRadius
@@ -253,6 +255,11 @@ Rectangle
                             if (!printer.enabled)
                             {
                                 return catalog.i18nc("@label:status", "Disabled");
+                            }
+
+                            if (printer.status === "unreachable")
+                            {
+                                return printerStatusText(printer);
                             }
 
                             if (printJob != null)
@@ -325,6 +332,12 @@ Rectangle
                             {
                                 return "blocked-icon.svg";
                             }
+
+                            if (printer.status === "unreachable")
+                            {
+                                return "";
+                            }
+
                             if (printJob != null)
                             {
                                 if(printJob.status === "queued")
@@ -374,6 +387,11 @@ Rectangle
                             if (!printer.enabled)
                             {
                                 return catalog.i18nc("@label", "Not accepting print jobs");
+                            }
+
+                            if (printer.status === "unreachable")
+                            {
+                                return "";
                             }
 
                             if(printJob != null)

@@ -19,6 +19,7 @@ from UM.Message import Message
 from UM.OutputDevice import OutputDeviceError
 from UM.i18n import i18nCatalog
 from UM.Qt.Duration import Duration, DurationFormat
+from UM.PluginRegistry import PluginRegistry
 
 from . import NetworkPrinterOutputDevice
 
@@ -36,7 +37,7 @@ class NetworkClusterPrinterOutputDevice(NetworkPrinterOutputDevice.NetworkPrinte
     printersChanged = pyqtSignal()
     selectedPrinterChanged = pyqtSignal()
 
-    def __init__(self, key, address, properties, api_prefix, plugin_path):
+    def __init__(self, key, address, properties, api_prefix):
         super().__init__(key, address, properties, api_prefix)
         # Store the address of the master.
         self._master_address = address
@@ -47,7 +48,6 @@ class NetworkClusterPrinterOutputDevice(NetworkPrinterOutputDevice.NetworkPrinte
             name = key
 
         self._authentication_state = NetworkPrinterOutputDevice.AuthState.Authenticated  # The printer is always authenticated
-        self._plugin_path = plugin_path
 
         self.setName(name)
         description = i18n_catalog.i18nc("@action:button Preceded by 'Ready to'.", "Print over network")
@@ -103,6 +103,7 @@ class NetworkClusterPrinterOutputDevice(NetworkPrinterOutputDevice.NetworkPrinte
         self._can_pause = True
         self._can_abort = True
         self._can_pre_heat_bed = False
+        self._can_control_manually = False
         self._cluster_size = int(properties.get(b"cluster_size", 0))
 
         self._cleanupRequest()
@@ -220,7 +221,9 @@ class NetworkClusterPrinterOutputDevice(NetworkPrinterOutputDevice.NetworkPrinte
         self.setPrinters(json_data)
 
     def materialHotendChangedMessage(self, callback):
-        pass # Do nothing.
+        # When there is just one printer, the activate configuration option is enabled
+        if (self._cluster_size == 1):
+            super().materialHotendChangedMessage(callback = callback)
 
     def _startCameraStream(self):
         ## Request new image
@@ -483,7 +486,7 @@ class NetworkClusterPrinterOutputDevice(NetworkPrinterOutputDevice.NetworkPrinte
 
                 printer_name = self.__getPrinterNameFromUuid(print_job["printer_uuid"])
                 if printer_name is None:
-                    printer_name = i18n_catalog.i18nc("@label", "Unknown")
+                    printer_name = i18n_catalog.i18nc("@label Printer name", "Unknown")
 
                 message_text = (i18n_catalog.i18nc("@info:status",
                                 "Printer '{printer_name}' has finished printing '{job_name}'.")
@@ -709,3 +712,14 @@ class NetworkClusterPrinterOutputDevice(NetworkPrinterOutputDevice.NetworkPrinte
     @pyqtSlot(int, result=str)
     def formatDuration(self, seconds):
         return Duration(seconds).getDisplayString(DurationFormat.Format.Short)
+
+    ##  For cluster below
+    def _get_plugin_directory_name(self):
+        current_file_absolute_path = os.path.realpath(__file__)
+        directory_path = os.path.dirname(current_file_absolute_path)
+        _, directory_name = os.path.split(directory_path)
+        return directory_name
+
+    @property
+    def _plugin_path(self):
+        return PluginRegistry.getInstance().getPluginPath(self._get_plugin_directory_name())

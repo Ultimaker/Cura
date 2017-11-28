@@ -18,7 +18,7 @@ Button
     style: UM.Theme.styles.tool_button;
     iconSource: UM.Theme.getIcon("extruder_button")
 
-    checked: ExtruderManager.selectedObjectExtruders.indexOf(extruder.id) != -1
+    checked: Cura.ExtruderManager.selectedObjectExtruders.indexOf(extruder.id) != -1
     enabled: UM.Selection.hasSelection
 
     property color customColor: base.hovered ? UM.Theme.getColor("button_hover") : UM.Theme.getColor("button");
@@ -40,7 +40,7 @@ Button
         width: UM.Theme.getSize("default_margin").width
         height: UM.Theme.getSize("default_margin").height
 
-        Text
+        Label
         {
             anchors.centerIn: parent;
             text: index + 1;
