@@ -266,7 +266,6 @@ class CuraContainerRegistry(ContainerRegistry):
     #
     #   \return None if configuring was successful or an error message if an error occurred.
     def _configureProfile(self, profile: InstanceContainer, id_seed: str, new_name: str) -> Optional[str]:
-        profile.setReadOnly(False)
         profile.setDirty(True)  # Ensure the profiles are correctly saved
 
         new_id = self.createUniqueName("quality_changes", "", id_seed, catalog.i18nc("@label", "Custom profile"))

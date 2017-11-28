@@ -332,7 +332,7 @@ class ExtruderManager(QObject):
                 preferred_materials = container_registry.findInstanceContainers(**search_criteria)
                 if len(preferred_materials) >= 1:
                     # In some cases we get multiple materials. In that case, prefer materials that are marked as read only.
-                    read_only_preferred_materials = [preferred_material for preferred_material in preferred_materials if preferred_material.isReadOnly()]
+                    read_only_preferred_materials = [preferred_material for preferred_material in preferred_materials if container_registry.isReadOnly(preferred_material.getId())]
                     if len(read_only_preferred_materials) >= 1:
                         material = read_only_preferred_materials[0]
                     else:

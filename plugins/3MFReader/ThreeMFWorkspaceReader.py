@@ -180,11 +180,10 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             material_container_files = [name for name in cura_file_names if name.endswith(self._material_container_suffix)]
             for material_container_file in material_container_files:
                 container_id = self._stripFileToId(material_container_file)
-                materials = self._container_registry.findInstanceContainers(id=container_id)
                 material_labels.append(self._getMaterialLabelFromSerialized(archive.open(material_container_file).read().decode("utf-8")))
-                if materials:
+                if self._container_registry.findContainersMetadata(id = container_id): #This material already exists.
                     containers_found_dict["material"] = True
-                    if not materials[0].isReadOnly():  # Only non readonly materials can be in conflict
+                    if not self._container_registry.isReadOnly(container_id):  # Only non readonly materials can be in conflict
                         material_conflict = True
                 Job.yieldThread()
 
@@ -501,7 +500,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                     containers_to_add.append(material_container)
                 else:
                     material_container = materials[0]
-                    if not material_container.isReadOnly():  # Only create new materials if they are not read only.
+                    if not self._container_registry.isReadOnly(container_id):  # Only create new materials if they are not read only.
                         if self._resolve_strategies["material"] == "override":
                             material_container.deserialize(archive.open(material_container_file).read().decode("utf-8"))
                         elif self._resolve_strategies["material"] == "new":

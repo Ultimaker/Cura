@@ -164,13 +164,13 @@ class ContainerManager(QObject):
     #   \return True if successful, False if not.
     @pyqtSlot(str, result = bool)
     def clearContainer(self, container_id):
+        if self._container_registry.isReadOnly(container_id):
+            Logger.log("w", "Cannot clear read-only container %s", container_id)
+            return False
+
         containers = self._container_registry.findContainers(id = container_id)
         if not containers:
             Logger.log("w", "Could clear container %s because it was not found.", container_id)
-            return False
-
-        if containers[0].isReadOnly():
-            Logger.log("w", "Cannot clear read-only container %s", container_id)
             return False
 
         containers[0].clear()
@@ -200,16 +200,16 @@ class ContainerManager(QObject):
     #   \return True if successful, False if not.
     @pyqtSlot(str, str, str, result = bool)
     def setContainerMetaDataEntry(self, container_id, entry_name, entry_value):
+        if self._container_registry.isReadOnly(container_id):
+            Logger.log("w", "Cannot set metadata of read-only container %s.", container_id)
+            return False
+
         containers = self._container_registry.findContainers(id = container_id) #We need the complete container, since we need to know whether the container is read-only or not.
         if not containers:
             Logger.log("w", "Could not set metadata of container %s because it was not found.", container_id)
             return False
 
         container = containers[0]
-
-        if container.isReadOnly():
-            Logger.log("w", "Cannot set metadata of read-only container %s.", container_id)
-            return False
 
         entries = entry_name.split("/")
         entry_name = entries.pop()
@@ -250,16 +250,16 @@ class ContainerManager(QObject):
     #   \return True if successful, False if not.
     @pyqtSlot(str, str, str, str, result = bool)
     def setContainerProperty(self, container_id, setting_key, property_name, property_value):
+        if self._container_registry.isReadOnly(container_id):
+            Logger.log("w", "Cannot set properties of read-only container %s.", container_id)
+            return False
+
         containers = self._container_registry.findContainers(id = container_id)
         if not containers:
             Logger.log("w", "Could not set properties of container %s because it was not found.", container_id)
             return False
 
         container = containers[0]
-
-        if container.isReadOnly():
-            Logger.log("w", "Cannot set properties of read-only container %s.", container_id)
-            return False
 
         container.setProperty(setting_key, property_name, property_value)
 
@@ -296,18 +296,16 @@ class ContainerManager(QObject):
     ##  Set the name of the specified container.
     @pyqtSlot(str, str, result = bool)
     def setContainerName(self, container_id, new_name):
+        if self._container_registry.isReadOnly(container_id):
+            Logger.log("w", "Cannot set name of read-only container %s.", container_id)
+            return False
+
         containers = self._container_registry.findContainers(id = container_id) #We need to get the full container, not just metadata, since we need to know whether it's read-only.
         if not containers:
             Logger.log("w", "Could not set name of container %s because it was not found.", container_id)
             return False
 
-        container = containers[0]
-
-        if container.isReadOnly():
-            Logger.log("w", "Cannot set name of read-only container %s.", container_id)
-            return False
-
-        container.setName(new_name)
+        containers[0].setName(new_name)
 
         return True
 

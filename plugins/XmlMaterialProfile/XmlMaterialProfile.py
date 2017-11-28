@@ -46,24 +46,17 @@ class XmlMaterialProfile(InstanceContainer):
         return self._inherited_files
 
     ##  Overridden from InstanceContainer
-    def setReadOnly(self, read_only):
-        super().setReadOnly(read_only)
-
-        basefile = self.getMetaDataEntry("base_file", self.getId())  # if basefile is self.getId, this is a basefile.
-        for container in ContainerRegistry.getInstance().findInstanceContainers(base_file = basefile):
-            container._read_only = read_only  # prevent loop instead of calling setReadOnly
-
-    ##  Overridden from InstanceContainer
     #   set the meta data for all machine / variant combinations
     def setMetaDataEntry(self, key, value):
-        if self.isReadOnly():
+        registry = ContainerRegistry.getInstance()
+        if registry.isReadOnly(self.getId()):
             return
 
         super().setMetaDataEntry(key, value)
 
         basefile = self.getMetaDataEntry("base_file", self.getId())  #if basefile is self.getId, this is a basefile.
         # Update all containers that share basefile
-        for container in ContainerRegistry.getInstance().findInstanceContainers(base_file = basefile):
+        for container in registry.findInstanceContainers(base_file = basefile):
             if container.getMetaDataEntry(key, None) != value: # Prevent recursion
                 container.setMetaDataEntry(key, value)
 
@@ -71,7 +64,8 @@ class XmlMaterialProfile(InstanceContainer):
     #   without this function the setName would only set the name of the specific nozzle / material / machine combination container
     #   The function is a bit tricky. It will not set the name of all containers if it has the correct name itself.
     def setName(self, new_name):
-        if self.isReadOnly():
+        registry = ContainerRegistry.getInstance()
+        if registry.isReadOnly(self.getId()):
             return
 
         # Not only is this faster, it also prevents a major loop that causes a stack overflow.
@@ -83,7 +77,7 @@ class XmlMaterialProfile(InstanceContainer):
         basefile = self.getMetaDataEntry("base_file", self.getId())  # if basefile is self.getId, this is a basefile.
         # Update the basefile as well, this is actually what we're trying to do
         # Update all containers that share GUID and basefile
-        containers = ContainerRegistry.getInstance().findInstanceContainers(base_file = basefile)
+        containers = registry.findInstanceContainers(base_file = basefile)
         for container in containers:
             container.setName(new_name)
 
@@ -91,12 +85,11 @@ class XmlMaterialProfile(InstanceContainer):
     def setDirty(self, dirty):
         super().setDirty(dirty)
         base_file = self.getMetaDataEntry("base_file", None)
-        if base_file is not None and base_file != self.getId():
-            containers = ContainerRegistry.getInstance().findContainers(id=base_file)
+        registry = ContainerRegistry.getInstance()
+        if base_file is not None and base_file != self.getId() and not registry.isReadOnly(base_file):
+            containers = registry.findContainers(id = base_file)
             if containers:
-                base_container = containers[0]
-                if not base_container.isReadOnly():
-                    base_container.setDirty(dirty)
+                containers[0].setDirty(dirty)
 
     ##  Overridden from InstanceContainer
     # base file: common settings + supported machines

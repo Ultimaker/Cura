@@ -969,7 +969,8 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
 
     ##  Send all material profiles to the printer.
     def sendMaterialProfiles(self):
-        for container in UM.Settings.ContainerRegistry.ContainerRegistry.getInstance().findInstanceContainers(type = "material"):
+        registry = UM.Settings.ContainerRegistry.ContainerRegistry.getInstance()
+        for container in registry.findInstanceContainers(type = "material"):
             try:
                 xml_data = container.serialize()
                 if xml_data == "" or xml_data is None:
@@ -978,7 +979,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
                 names = ContainerManager.getInstance().getLinkedMaterials(container.getId())
                 if names:
                     # There are other materials that share this GUID.
-                    if not container.isReadOnly():
+                    if not registry.isReadOnly(container.getId()):
                         continue  # If it's not readonly, it's created by user, so skip it.
 
                 material_multi_part = QHttpMultiPart(QHttpMultiPart.FormDataType)
