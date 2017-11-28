@@ -119,7 +119,6 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             Logger.log("w", "Could not find reader that was able to read the scene data for 3MF workspace")
             return WorkspaceReader.PreReadResult.failed
 
-        machine_name = ""
         machine_type = ""
         variant_type_name = i18n_catalog.i18nc("@label", "Nozzle")
 
@@ -131,7 +130,6 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         # When loading the global stack file, it may be associated with those containers, which may or may not be
         # in Cura already, so we need to provide them as alternative search lists.
         instance_container_list = []
-        material_container_list = []
 
         resolve_strategy_keys = ["machine", "material", "quality_changes"]
         self._resolve_strategies = {k: None for k in resolve_strategy_keys}
