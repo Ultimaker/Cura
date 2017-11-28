@@ -131,7 +131,7 @@ class NetworkClusterPrinterOutputDevice(NetworkPrinterOutputDevice.NetworkPrinte
     @pyqtProperty(QObject, notify=selectedPrinterChanged)
     def controlItem(self):
         # TODO: Probably not the nicest way to do this. This needs to be done better at some point in time.
-        if not self._control_component:
+        if not self._control_item:
             self._createControlViewFromQML()
         name = self._selected_printer.get("friendly_name")
         if name == self._automatic_printer.get("friendly_name") or name == "":
