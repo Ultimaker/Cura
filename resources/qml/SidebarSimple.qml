@@ -303,7 +303,7 @@ Item
                             // only change if an active machine is set and the slider is visible at all.
                             if (Cura.MachineManager.activeMachine != null && visible) {
                                 // prevent updating during view initializing. Trigger only if the value changed by user
-                                if (qualitySlider.value != qualityModel.qualitySliderActiveIndex) {
+                                if (qualitySlider.value != qualityModel.qualitySliderActiveIndex && qualityModel.qualitySliderActiveIndex != -1) {
                                     // start updating with short delay
                                     qualitySliderChangeTimer.start()
                                 }
@@ -368,7 +368,7 @@ Item
                 {
                     id: customisedSettings
 
-                    visible: Cura.SimpleModeSettingsManager.isProfileCustomized
+                    visible: Cura.SimpleModeSettingsManager.isProfileCustomized || Cura.SimpleModeSettingsManager.isProfileUserCreated
                     height: speedSlider.height * 0.8
                     width: speedSlider.height * 0.8
 
@@ -381,7 +381,18 @@ Item
 
                     onClicked:
                     {
-                        discardOrKeepProfileChangesDialog.show()
+                        // if the current profile is user-created, switch to a built-in quality
+                        if (Cura.SimpleModeSettingsManager.isProfileUserCreated)
+                        {
+                            if (Cura.ProfilesModel.rowCount() > 0)
+                            {
+                                Cura.MachineManager.setActiveQuality(Cura.ProfilesModel.getItem(0).id)
+                            }
+                        }
+                        if (Cura.SimpleModeSettingsManager.isProfileCustomized)
+                        {
+                            discardOrKeepProfileChangesDialog.show()
+                        }
                     }
                     onEntered:
                     {
