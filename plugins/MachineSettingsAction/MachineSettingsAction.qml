@@ -355,7 +355,7 @@ Cura.MachineAction
                 if(currentIndex > 0)
                 {
                     contentItem.forceActiveFocus();
-                    ExtruderManager.setActiveExtruderIndex(currentIndex - 1);
+                    Cura.ExtruderManager.setActiveExtruderIndex(currentIndex - 1);
                 }
             }
 
@@ -585,11 +585,11 @@ Cura.MachineAction
                                 propertyProvider.setPropertyValue("value", text);
                                 if(_forceUpdateOnChange)
                                 {
-                                    var extruderIndex = ExtruderManager.activeExtruderIndex;
+                                    var extruderIndex = Cura.ExtruderManager.activeExtruderIndex;
                                     manager.forceUpdate();
-                                    if(ExtruderManager.activeExtruderIndex != extruderIndex)
+                                    if(Cura.ExtruderManager.activeExtruderIndex != extruderIndex)
                                     {
-                                        ExtruderManager.setActiveExtruderIndex(extruderIndex)
+                                        Cura.ExtruderManager.setActiveExtruderIndex(extruderIndex)
                                     }
                                 }
                                 if(_afterOnEditingFinished)
