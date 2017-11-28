@@ -38,8 +38,6 @@ class PluginBrowser(QObject, Extension):
         self._plugins_metadata = []
         self._plugins_model = None
 
-        self._qml_component = None
-        self._qml_context = None
         self._dialog = None
         self._download_progress = 0
 
@@ -110,16 +108,8 @@ class PluginBrowser(QObject, Extension):
 
     def _createDialog(self, qml_name):
         Logger.log("d", "Creating dialog [%s]", qml_name)
-
         path = os.path.join(PluginRegistry.getInstance().getPluginPath(self.getPluginId()), qml_name)
-        dialog = Application.getInstance().createQmlComponent(path, {
-            "manager": self
-        })
-
-        if dialog is None:
-            Logger.log("e", "QQmlComponent status %s", self._qml_component.status())
-            Logger.log("e", "QQmlComponent errorString %s", self._qml_component.errorString())
-
+        dialog = Application.getInstance().createQmlComponent(path, {"manager": self})
         return dialog
 
     def setIsDownloading(self, is_downloading):
