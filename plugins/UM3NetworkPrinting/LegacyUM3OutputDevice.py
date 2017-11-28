@@ -143,6 +143,7 @@ class LegacyUM3OutputDevice(NetworkedPrinterOutputDevice):
                         continue  # If it's not readonly, it's created by user, so skip it.
 
                 file_name = "none.xml"
+
                 self.postForm("materials", "form-data; name=\"file\";filename=\"%s\"" % file_name, xml_data.encode(), onFinished=None)
 
             except NotImplementedError:
@@ -597,12 +598,3 @@ class LegacyUM3OutputDevice(NetworkedPrinterOutputDevice):
             return result
 
         return self._authentication_key
-
-    ##  Convenience function to get the username from the OS.
-    #   The code was copied from the getpass module, as we try to use as little dependencies as possible.
-    def _getUserName(self):
-        for name in ("LOGNAME", "USER", "LNAME", "USERNAME"):
-            user = os.environ.get(name)
-            if user:
-                return user
-        return "Unknown User"  # Couldn't find out username.

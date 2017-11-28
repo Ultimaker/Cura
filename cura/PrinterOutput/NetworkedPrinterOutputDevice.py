@@ -12,7 +12,9 @@ from PyQt5.QtCore import pyqtProperty, pyqtSignal, pyqtSlot, QObject, QTimer, py
 from time import time
 from typing import Callable, Any, Optional
 from enum import IntEnum
+from typing import List
 
+import os
 
 class AuthState(IntEnum):
     NotAuthenticated = 1
@@ -121,6 +123,28 @@ class NetworkedPrinterOutputDevice(PrinterOutputDevice):
         request.setHeader(QNetworkRequest.UserAgentHeader, self._user_agent)
         return request
 
+    def _createFormPart(self, content_header, data, content_type = None):
+        part = QHttpPart()
+
+        if not content_header.startswith("form-data;"):
+            content_header = "form_data; " + content_header
+        part.setHeader(QNetworkRequest.ContentDispositionHeader, content_header)
+
+        if content_type is not None:
+            part.setHeader(QNetworkRequest.ContentTypeHeader, content_type)
+
+        part.setBody(data)
+        return part
+
+    ##  Convenience function to get the username from the OS.
+    #   The code was copied from the getpass module, as we try to use as little dependencies as possible.
+    def _getUserName(self):
+        for name in ("LOGNAME", "USER", "LNAME", "USERNAME"):
+            user = os.environ.get(name)
+            if user:
+                return user
+        return "Unknown User"  # Couldn't find out username.
+
     def _clearCachedMultiPart(self, reply):
         if id(reply) in self._cached_multiparts:
             del self._cached_multiparts[id(reply)]
@@ -160,28 +184,31 @@ class NetworkedPrinterOutputDevice(PrinterOutputDevice):
         if onFinished is not None:
             self._onFinishedCallbacks[reply.url().toString() + str(reply.operation())] = onFinished
 
-    def postForm(self, target: str, header_data: str, body_data: bytes, onFinished: Optional[Callable[[Any, QNetworkReply], None]], onProgress: Callable = None):
+    def postFormWithParts(self, target:str, parts: List[QHttpPart], onFinished: Optional[Callable[[Any, QNetworkReply], None]], onProgress: Callable = None):
         if self._manager is None:
             self._createNetworkManager()
         request = self._createEmptyRequest(target, content_type=None)
-
         multi_post_part = QHttpMultiPart(QHttpMultiPart.FormDataType)
-        post_part = QHttpPart()
-        post_part.setHeader(QNetworkRequest.ContentDispositionHeader, header_data)
-        post_part.setBody(body_data)
-        multi_post_part.append(post_part)
+        for part in parts:
+            multi_post_part.append(part)
 
         self._last_request_time = time()
 
         reply = self._manager.post(request, multi_post_part)
 
-        # Due to garbage collection on python doing some weird stuff, we need to keep hold of a reference
-        self._cached_multiparts[id(reply)] = (post_part, multi_post_part, reply)
+        self._cached_multiparts[id(reply)] = (multi_post_part, reply)
 
         if onProgress is not None:
             reply.uploadProgress.connect(onProgress)
         if onFinished is not None:
             self._onFinishedCallbacks[reply.url().toString() + str(reply.operation())] = onFinished
+
+    def postForm(self, target: str, header_data: str, body_data: bytes, onFinished: Optional[Callable[[Any, QNetworkReply], None]], onProgress: Callable = None):
+        post_part = QHttpPart()
+        post_part.setHeader(QNetworkRequest.ContentDispositionHeader, header_data)
+        post_part.setBody(body_data)
+
+        self.postFormWithParts(target, [post_part], onFinished, onProgress)
 
     def _onAuthenticationRequired(self, reply, authenticator):
         Logger.log("w", "Request to {url} required authentication, which was not implemented".format(url = reply.url().toString()))
