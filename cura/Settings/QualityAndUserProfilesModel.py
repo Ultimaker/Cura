@@ -18,7 +18,7 @@ class QualityAndUserProfilesModel(ProfilesModel):
     def _fetchInstanceContainers(self):
         global_container_stack = Application.getInstance().getGlobalContainerStack()
         if not global_container_stack:
-            return []
+            return {}, {}
 
         # Fetch the list of quality changes.
         quality_manager = QualityManager.getInstance()
@@ -50,19 +50,21 @@ class QualityAndUserProfilesModel(ProfilesModel):
         # The actual list of quality profiles come from the first extruder in the extruder list.
         quality_list = quality_manager.findAllUsableQualitiesForMachineAndExtruders(global_container_stack,
                                                                                                   extruder_stacks)
+        result = {quality.getId():quality for quality in quality_list}
 
         # Filter the quality_change by the list of available quality_types
         quality_type_set = set([x.getMetaDataEntry("quality_type") for x in quality_list])
 
         if multiple_extrusion:
             # If the printer has multiple extruders then quality changes related to the current extruder are kept
-            filtered_quality_changes = [qc for qc in quality_changes_list if qc.getMetaDataEntry("quality_type") in quality_type_set and
+            filtered_quality_changes = {qc.getId():qc for qc in quality_changes_list if qc.getMetaDataEntry("quality_type") in quality_type_set and
                                         qc.getMetaDataEntry("extruder") is not None and
                                         (qc.getMetaDataEntry("extruder") == active_extruder.definition.getMetaDataEntry("quality_definition") or
-                                         qc.getMetaDataEntry("extruder") == active_extruder.definition.getId())]
+                                         qc.getMetaDataEntry("extruder") == active_extruder.definition.getId())}
         else:
             # If not, the quality changes of the global stack are selected
-            filtered_quality_changes = [qc for qc in quality_changes_list if qc.getMetaDataEntry("quality_type") in quality_type_set and
-                                        qc.getMetaDataEntry("extruder") is None]
+            filtered_quality_changes = {qc.getId():qc for qc in quality_changes_list if qc.getMetaDataEntry("quality_type") in quality_type_set and
+                                        qc.getMetaDataEntry("extruder") is None}
+        result.update(filtered_quality_changes)
 
-        return quality_list + filtered_quality_changes
+        return result, {}

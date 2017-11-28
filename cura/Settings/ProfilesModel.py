@@ -53,7 +53,7 @@ class ProfilesModel(InstanceContainersModel):
     def _fetchInstanceContainers(self):
         global_container_stack = Application.getInstance().getGlobalContainerStack()
         if global_container_stack is None:
-            return []
+            return {}, {}
         global_stack_definition = global_container_stack.getBottom()
 
         # Get the list of extruders and place the selected extruder at the front of the list.
@@ -83,7 +83,7 @@ class ProfilesModel(InstanceContainersModel):
             if quality.getMetaDataEntry("quality_type") not in quality_type_set:
                 result.append(quality)
 
-        return result
+        return {item.getId():item for item in result}, {}
 
     ##  Re-computes the items in this model, and adds the layer height role.
     def _recomputeItems(self):
