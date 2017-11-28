@@ -24,9 +24,6 @@ class MachineAction(QObject, PluginObject):
         self._key = key
         self._label = label
         self._qml_url = ""
-
-        self._component = None
-        self._context = None
         self._view = None
         self._finished = False
 
@@ -50,7 +47,6 @@ class MachineAction(QObject, PluginObject):
     #   /sa _reset
     @pyqtSlot()
     def reset(self):
-        self._component = None
         self._finished = False
         self._reset()
 
@@ -76,7 +72,6 @@ class MachineAction(QObject, PluginObject):
 
     @pyqtProperty(QObject, constant = True)
     def displayItem(self):
-        if not self._component:
+        if not self._view:
             self._createViewFromQML()
-
         return self._view
