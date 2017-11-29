@@ -266,6 +266,7 @@
         "model_unslicable": [122, 122, 122, 255],
         "model_unslicable_alt": [172, 172, 127, 255],
         "model_selection_outline": [12, 169, 227, 255],
+        "model_non_printing": [122, 122, 122, 255],
 
         "xray": [26,  26,  62, 255],
         "xray_error": [255,  0,  0, 255],

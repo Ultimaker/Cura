@@ -45,14 +45,6 @@ class GcodeStartEndFormatter(Formatter):
 
 ##  Job class that builds up the message of scene data to send to CuraEngine.
 class StartSliceJob(Job):
-    ##  Meshes that are sent to the engine regardless of being outside of the
-    #   build volume.
-    #
-    #   If these settings are True for any mesh, the build volume is ignored.
-    #   Note that Support Mesh is not in here because it actually generates
-    #   g-code in the volume of the mesh.
-    _not_printed_mesh_settings = {"anti_overhang_mesh", "infill_mesh", "cutting_mesh"}
-
     def __init__(self, slice_message):
         super().__init__()
 
@@ -141,8 +133,7 @@ class StartSliceJob(Job):
                 temp_list = []
                 for node in DepthFirstIterator(self._scene.getRoot()):
                     if type(node) is SceneNode and node.getMeshData() and node.getMeshData().getVertices() is not None:
-                        if not getattr(node, "_outside_buildarea", False)\
-                                or (node.callDecoration("getStack") and any(node.callDecoration("getStack").getProperty(setting, "value") for setting in self._not_printed_mesh_settings)):
+                        if not getattr(node, "_outside_buildarea", False) or getattr(node, "_non_printing_mesh", False):
                             temp_list.append(node)
                     Job.yieldThread()
 
