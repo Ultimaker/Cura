@@ -550,10 +550,9 @@ class XmlMaterialProfile(InstanceContainer):
                     # project file and the a material in Cura have the same ID.
                     # In the case if a derived material already exists, override that material container because if
                     # the data in the parent material has been changed, the derived ones should be updated too.
-                    found_materials = ContainerRegistry.getInstance().findInstanceContainers(id = new_material_id)
-                    is_new_material = False
-                    if found_materials:
-                        new_material = found_materials[0]
+                    if ContainerRegistry.getInstance().isLoaded(new_material_id):
+                        new_material = ContainerRegistry.getInstance().findContainers(id = new_material_id)[0]
+                        is_new_material = False
                     else:
                         new_material = XmlMaterialProfile(new_material_id)
                         is_new_material = True
@@ -605,10 +604,9 @@ class XmlMaterialProfile(InstanceContainer):
 
                     # Same as machine compatibility, keep the derived material containers consistent with the parent
                     # material
-                    found_materials = ContainerRegistry.getInstance().findInstanceContainers(id = new_hotend_id)
-                    is_new_material = False
-                    if found_materials:
-                        new_hotend_material = found_materials[0]
+                    if ContainerRegistry.getInstance().isLoaded(new_hotend_id):
+                        new_hotend_material = ContainerRegistry.getInstance().findContainers(id = new_hotend_id)[0]
+                        is_new_material = False
                     else:
                         new_hotend_material = XmlMaterialProfile(new_hotend_id)
                         is_new_material = True
