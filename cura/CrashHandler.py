@@ -53,6 +53,7 @@ class CrashHandler:
         self.exception_type = exception_type
         self.value = value
         self.traceback = tb
+        self.dialog = QDialog()
 
         # While we create the GUI, the information will be stored for sending afterwards
         self.data = dict()
@@ -74,7 +75,6 @@ class CrashHandler:
 
     ##  Creates a modal dialog.
     def _createDialog(self):
-        self.dialog = QDialog()
         self.dialog.setMinimumWidth(640)
         self.dialog.setMinimumHeight(640)
         self.dialog.setWindowTitle(catalog.i18nc("@title:window", "Crash Report"))
@@ -108,11 +108,11 @@ class CrashHandler:
         except:
             self.cura_version = catalog.i18nc("@label unknown version of Cura", "Unknown")
 
-        crash_info = catalog.i18nc("@label Cura version", "<b>Cura version:</b> {version}<br/>").format(version = self.cura_version)
-        crash_info += catalog.i18nc("@label Platform", "<b>Platform:</b> {platform}<br/>").format(platform = platform.platform())
-        crash_info += catalog.i18nc("@label Qt version", "<b>Qt version:</b> {qt}<br/>").format(qt = QT_VERSION_STR)
-        crash_info += catalog.i18nc("@label PyQt version", "<b>PyQt version:</b> {pyqt}<br/>").format(pyqt = PYQT_VERSION_STR)
-        crash_info += catalog.i18nc("@label OpenGL", "<b>OpenGL:</b> {opengl}<br/>").format(opengl = self._getOpenGLInfo())
+        crash_info = "<b>" + catalog.i18nc("@label Cura version number", "Cura version") + ":</b> " + str(self.cura_version) + "<br/>"
+        crash_info += "<b>" + catalog.i18nc("@label Type of platform", "Platform") + ":</b> " + str(platform.platform()) + "<br/>"
+        crash_info += "<b>" + catalog.i18nc("@label", "Qt version") + ":</b> " + str(QT_VERSION_STR) + "<br/>"
+        crash_info += "<b>" + catalog.i18nc("@label", "PyQt version") + ":</b> " + str(PYQT_VERSION_STR) + "<br/>"
+        crash_info += "<b>" + catalog.i18nc("@label OpenGL version", "OpenGL") + ":</b> " + str(self._getOpenGLInfo()) + "<br/>"
         label.setText(crash_info)
 
         layout.addWidget(label)
@@ -126,13 +126,18 @@ class CrashHandler:
         return group
 
     def _getOpenGLInfo(self):
+        opengl_instance = OpenGL.getInstance()
+        if not opengl_instance:
+            self.data["opengl"] = {"version": "n/a", "vendor": "n/a", "type": "n/a"}
+            return catalog.i18nc("@label", "not yet initialised<br/>")
+
         info = "<ul>"
-        info += catalog.i18nc("@label OpenGL version", "<li>OpenGL Version: {version}</li>").format(version = OpenGL.getInstance().getOpenGLVersion())
-        info += catalog.i18nc("@label OpenGL vendor", "<li>OpenGL Vendor: {vendor}</li>").format(vendor = OpenGL.getInstance().getGPUVendorName())
-        info += catalog.i18nc("@label OpenGL renderer", "<li>OpenGL Renderer: {renderer}</li>").format(renderer = OpenGL.getInstance().getGPUType())
+        info += catalog.i18nc("@label OpenGL version", "<li>OpenGL Version: {version}</li>").format(version = opengl_instance.getOpenGLVersion())
+        info += catalog.i18nc("@label OpenGL vendor", "<li>OpenGL Vendor: {vendor}</li>").format(vendor = opengl_instance.getGPUVendorName())
+        info += catalog.i18nc("@label OpenGL renderer", "<li>OpenGL Renderer: {renderer}</li>").format(renderer = opengl_instance.getGPUType())
         info += "</ul>"
 
-        self.data["opengl"] = {"version": OpenGL.getInstance().getOpenGLVersion(), "vendor": OpenGL.getInstance().getGPUVendorName(), "type": OpenGL.getInstance().getGPUType()}
+        self.data["opengl"] = {"version": opengl_instance.getOpenGLVersion(), "vendor": opengl_instance.getGPUVendorName(), "type": opengl_instance.getGPUType()}
 
         return info
 
@@ -280,5 +285,7 @@ class CrashHandler:
         Application.getInstance().callLater(self._show)
 
     def _show(self):
-        self.dialog.exec_()
-        os._exit(1)
+        # When the exception is not in the fatal_exception_types list, the dialog is not created, so we don't need to show it
+        if self.dialog:
+            self.dialog.exec_()
+            os._exit(1)

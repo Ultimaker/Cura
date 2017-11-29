@@ -63,7 +63,7 @@ def test_addContainer(global_stack):
 ##  Tests adding extruders to the global stack.
 def test_addExtruder(global_stack):
     mock_definition = unittest.mock.MagicMock()
-    mock_definition.getProperty = lambda key, property: 2 if key == "machine_extruder_count" and property == "value" else None
+    mock_definition.getProperty = lambda key, property, context = None: 2 if key == "machine_extruder_count" and property == "value" else None
 
     with unittest.mock.patch("cura.Settings.CuraContainerStack.DefinitionContainer", unittest.mock.MagicMock):
         global_stack.definition = mock_definition
@@ -318,7 +318,7 @@ def test_getPropertyFallThrough(global_stack):
     container_indexes = cura.Settings.CuraContainerStack._ContainerIndexes #Cache.
     for type_id, type_name in container_indexes.IndexTypeMap.items():
         container = unittest.mock.MagicMock()
-        container.getProperty = lambda key, property, type_id = type_id: type_id if (key == "layer_height" and property == "value") else None #Returns the container type ID as layer height, in order to identify it.
+        container.getProperty = lambda key, property, context = None, type_id = type_id: type_id if (key == "layer_height" and property == "value") else None #Returns the container type ID as layer height, in order to identify it.
         container.hasProperty = lambda key, property: key == "layer_height"
         container.getMetaDataEntry = unittest.mock.MagicMock(return_value = type_name)
         mock_layer_heights[type_id] = container
@@ -355,7 +355,7 @@ def test_getPropertyFallThrough(global_stack):
 ##  In definitions, test whether having no resolve allows us to find the value.
 def test_getPropertyNoResolveInDefinition(global_stack):
     value = unittest.mock.MagicMock() #Just sets the value for bed temperature.
-    value.getProperty = lambda key, property: 10 if (key == "material_bed_temperature" and property == "value") else None
+    value.getProperty = lambda key, property, context = None: 10 if (key == "material_bed_temperature" and property == "value") else None
 
     with unittest.mock.patch("cura.Settings.CuraContainerStack.DefinitionContainer", unittest.mock.MagicMock): #To guard against the type checking.
         global_stack.definition = value
@@ -365,7 +365,7 @@ def test_getPropertyNoResolveInDefinition(global_stack):
 #   must get the resolve first.
 def test_getPropertyResolveInDefinition(global_stack):
     resolve_and_value = unittest.mock.MagicMock() #Sets the resolve and value for bed temperature.
-    resolve_and_value.getProperty = lambda key, property: (7.5 if property == "resolve" else 5) if (key == "material_bed_temperature" and property in ("resolve", "value")) else None #7.5 resolve, 5 value.
+    resolve_and_value.getProperty = lambda key, property, context = None: (7.5 if property == "resolve" else 5) if (key == "material_bed_temperature" and property in ("resolve", "value")) else None #7.5 resolve, 5 value.
 
     with unittest.mock.patch("cura.Settings.CuraContainerStack.DefinitionContainer", unittest.mock.MagicMock): #To guard against the type checking.
         global_stack.definition = resolve_and_value
@@ -378,9 +378,9 @@ def test_getPropertyResolveInInstance(global_stack):
     instance_containers = {}
     for container_type in container_indices.IndexTypeMap:
         instance_containers[container_type] = unittest.mock.MagicMock() #Sets the resolve and value for bed temperature.
-        instance_containers[container_type].getProperty = lambda key, property: (7.5 if property == "resolve" else (InstanceState.User if property == "state" else (5 if property != "limit_to_extruder" else "-1"))) if (key == "material_bed_temperature") else None #7.5 resolve, 5 value.
+        instance_containers[container_type].getProperty = lambda key, property, context = None: (7.5 if property == "resolve" else (InstanceState.User if property == "state" else (5 if property != "limit_to_extruder" else "-1"))) if (key == "material_bed_temperature") else None #7.5 resolve, 5 value.
         instance_containers[container_type].getMetaDataEntry = unittest.mock.MagicMock(return_value = container_indices.IndexTypeMap[container_type]) #Make queries for the type return the desired type.
-    instance_containers[container_indices.Definition].getProperty = lambda key, property: 10 if (key == "material_bed_temperature" and property == "value") else None #Definition only has value.
+    instance_containers[container_indices.Definition].getProperty = lambda key, property, context = None: 10 if (key == "material_bed_temperature" and property == "value") else None #Definition only has value.
     with unittest.mock.patch("cura.Settings.CuraContainerStack.DefinitionContainer", unittest.mock.MagicMock): #To guard against the type checking.
         global_stack.definition = instance_containers[container_indices.Definition] #Stack must have a definition.
 
@@ -402,10 +402,10 @@ def test_getPropertyResolveInInstance(global_stack):
 #   definitions.
 def test_getPropertyInstancesBeforeResolve(global_stack):
     value = unittest.mock.MagicMock() #Sets just the value.
-    value.getProperty = lambda key, property: (10 if property == "value" else (InstanceState.User if property != "limit_to_extruder" else "-1")) if key == "material_bed_temperature" else None
+    value.getProperty = lambda key, property, context = None: (10 if property == "value" else (InstanceState.User if property != "limit_to_extruder" else "-1")) if key == "material_bed_temperature" else None
     value.getMetaDataEntry = unittest.mock.MagicMock(return_value = "quality")
     resolve = unittest.mock.MagicMock() #Sets just the resolve.
-    resolve.getProperty = lambda key, property: 7.5 if (key == "material_bed_temperature" and property == "resolve") else None
+    resolve.getProperty = lambda key, property, context = None: 7.5 if (key == "material_bed_temperature" and property == "resolve") else None
 
     with unittest.mock.patch("cura.Settings.CuraContainerStack.DefinitionContainer", unittest.mock.MagicMock): #To guard against the type checking.
         global_stack.definition = resolve

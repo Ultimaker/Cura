@@ -39,7 +39,7 @@ class XmlMaterialProfile(InstanceContainer):
     @classmethod
     def xmlVersionToSettingVersion(cls, xml_version: str) -> int:
         if xml_version == "1.3":
-            return 3
+            return CuraApplication.SettingVersion
         return 0 #Older than 1.3.
 
     def getInheritedFiles(self):
@@ -399,7 +399,7 @@ class XmlMaterialProfile(InstanceContainer):
     def getVersionFromSerialized(cls, serialized: str) -> Optional[int]:
         data = ET.fromstring(serialized)
 
-        version = 1
+        version = XmlMaterialProfile.Version
         # get setting version
         if "version" in data.attrib:
             setting_version = cls.xmlVersionToSettingVersion(data.attrib["version"])
@@ -409,11 +409,11 @@ class XmlMaterialProfile(InstanceContainer):
         return version * 1000000 + setting_version
 
     ##  Overridden from InstanceContainer
-    def deserialize(self, serialized):
+    def deserialize(self, serialized, file_name = None):
         containers_to_add = []
         # update the serialized data first
         from UM.Settings.Interfaces import ContainerInterface
-        serialized = ContainerInterface.deserialize(self, serialized)
+        serialized = ContainerInterface.deserialize(self, serialized, file_name)
 
         try:
             data = ET.fromstring(serialized)
@@ -502,8 +502,6 @@ class XmlMaterialProfile(InstanceContainer):
             elif key in self.__unmapped_settings:
                 if key == "hardware compatible":
                     common_compatibility = self._parseCompatibleValue(entry.text)
-            else:
-                Logger.log("d", "Unsupported material setting %s", key)
         self._cached_values = common_setting_values # from InstanceContainer ancestor
 
         meta_data["compatible"] = common_compatibility

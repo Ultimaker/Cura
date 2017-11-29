@@ -78,31 +78,26 @@ class PerObjectSettingsTool(Tool):
     def _onGlobalContainerChanged(self):
         global_container_stack = Application.getInstance().getGlobalContainerStack()
         if global_container_stack:
+
+            # used for enabling or disabling per extruder settings per object
             self._multi_extrusion = global_container_stack.getProperty("machine_extruder_count", "value") > 1
 
-            # Ensure that all extruder data is reset
-            if not self._multi_extrusion:
-                default_stack_id = global_container_stack.getId()
-            else:
-                default_stack = ExtruderManager.getInstance().getExtruderStack(0)
-                if default_stack:
-                    default_stack_id = default_stack.getId()
-                else:
-                    default_stack_id = global_container_stack.getId()
+            extruder_stack = ExtruderManager.getInstance().getExtruderStack(0)
 
-            root_node = Application.getInstance().getController().getScene().getRoot()
-            for node in DepthFirstIterator(root_node):
-                new_stack_id = default_stack_id
-                # Get position of old extruder stack for this node
-                old_extruder_pos = node.callDecoration("getActiveExtruderPosition")
-                if old_extruder_pos is not None:
-                    # Fetch current (new) extruder stack at position
-                    new_stack = ExtruderManager.getInstance().getExtruderStack(old_extruder_pos)
-                    if new_stack:
-                        new_stack_id = new_stack.getId()
-                node.callDecoration("setActiveExtruder", new_stack_id)
+            if extruder_stack:
+                root_node = Application.getInstance().getController().getScene().getRoot()
+                for node in DepthFirstIterator(root_node):
+                    new_stack_id = extruder_stack.getId()
+                    # Get position of old extruder stack for this node
+                    old_extruder_pos = node.callDecoration("getActiveExtruderPosition")
+                    if old_extruder_pos is not None:
+                        # Fetch current (new) extruder stack at position
+                        new_stack = ExtruderManager.getInstance().getExtruderStack(old_extruder_pos)
+                        if new_stack:
+                            new_stack_id = new_stack.getId()
+                    node.callDecoration("setActiveExtruder", new_stack_id)
 
-            self._updateEnabled()
+                self._updateEnabled()
 
     def _updateEnabled(self):
         selected_objects = Selection.getAllSelectedObjects()

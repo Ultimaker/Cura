@@ -105,7 +105,7 @@ class CuraApplication(QtApplication):
     # SettingVersion represents the set of settings available in the machine/extruder definitions.
     # You need to make sure that this version number needs to be increased if there is any non-backwards-compatible
     # changes of the settings.
-    SettingVersion = 3
+    SettingVersion = 4
 
     class ResourceTypes:
         QmlFiles = Resources.UserType + 1
@@ -125,8 +125,6 @@ class CuraApplication(QtApplication):
     #        will make it initialized before ContainerRegistry does, and it won't find the active machine, thus
     #        Cura will always show the Add Machine Dialog upon start.
     stacksValidationFinished = pyqtSignal()  # Emitted whenever a validation is finished
-
-    projectFileLoaded = pyqtSignal(str)  # Emitted whenever a project file is loaded
 
     def __init__(self):
         # this list of dir names will be used by UM to detect an old cura directory
@@ -200,6 +198,7 @@ class CuraApplication(QtApplication):
 
         self._machine_action_manager = MachineActionManager.MachineActionManager()
         self._machine_manager = None    # This is initialized on demand.
+        self._extruder_manager = None
         self._material_manager = None
         self._setting_inheritance_manager = None
         self._simple_mode_settings_manager = None
@@ -215,8 +214,9 @@ class CuraApplication(QtApplication):
 
         self.setRequiredPlugins([
             "CuraEngineBackend",
+            "UserAgreement",
             "SolidView",
-            "LayerView",
+            "SimulationView",
             "STLReader",
             "SelectionTool",
             "CameraTool",
@@ -259,20 +259,25 @@ class CuraApplication(QtApplication):
         # Since they are empty, they should never be serialized and instead just programmatically created.
         # We need them to simplify the switching between materials.
         empty_container = ContainerRegistry.getInstance().getEmptyInstanceContainer()
+
         empty_variant_container = copy.deepcopy(empty_container)
         empty_variant_container.setMetaDataEntry("id", "empty_variant")
         empty_variant_container.addMetaDataEntry("type", "variant")
         ContainerRegistry.getInstance().addContainer(empty_variant_container)
+
         empty_material_container = copy.deepcopy(empty_container)
         empty_material_container.setMetaDataEntry("id", "empty_material")
         empty_material_container.addMetaDataEntry("type", "material")
         ContainerRegistry.getInstance().addContainer(empty_material_container)
+
         empty_quality_container = copy.deepcopy(empty_container)
         empty_quality_container.setMetaDataEntry("id", "empty_quality")
         empty_quality_container.setName("Not Supported")
-        empty_quality_container.addMetaDataEntry("quality_type", "normal")
+        empty_quality_container.addMetaDataEntry("quality_type", "not_supported")
         empty_quality_container.addMetaDataEntry("type", "quality")
+        empty_quality_container.addMetaDataEntry("supported", False)
         ContainerRegistry.getInstance().addContainer(empty_quality_container)
+
         empty_quality_changes_container = copy.deepcopy(empty_container)
         empty_quality_changes_container.setMetaDataEntry("id", "empty_quality_changes")
         empty_quality_changes_container.addMetaDataEntry("type", "quality_changes")
@@ -302,6 +307,8 @@ class CuraApplication(QtApplication):
         preferences.addPreference("cura/material_settings", "{}")
 
         preferences.addPreference("view/invert_zoom", False)
+
+        self._need_to_show_user_agreement = not Preferences.getInstance().getValue("general/accepted_user_agreement")
 
         for key in [
             "dialog_load_path",  # dialog_save_path is in LocalFileOutputDevicePlugin
@@ -375,6 +382,14 @@ class CuraApplication(QtApplication):
     def _onEngineCreated(self):
         self._engine.addImageProvider("camera", CameraImageProvider.CameraImageProvider())
 
+    @pyqtProperty(bool)
+    def needToShowUserAgreement(self):
+        return self._need_to_show_user_agreement
+
+
+    def setNeedToShowUserAgreement(self, set_value = True):
+        self._need_to_show_user_agreement = set_value
+
     ## The "Quit" button click event handler.
     @pyqtSlot()
     def closeApplication(self):
@@ -393,6 +408,7 @@ class CuraApplication(QtApplication):
     showDiscardOrKeepProfileChanges = pyqtSignal()
 
     def discardOrKeepProfileChanges(self):
+        has_user_interaction = False
         choice = Preferences.getInstance().getValue("cura/choice_on_profile_override")
         if choice == "always_discard":
             # don't show dialog and DISCARD the profile
@@ -403,17 +419,35 @@ class CuraApplication(QtApplication):
         else:
             # ALWAYS ask whether to keep or discard the profile
             self.showDiscardOrKeepProfileChanges.emit()
+            has_user_interaction = True
+        return has_user_interaction
 
-    #sidebarSimpleDiscardOrKeepProfileChanges = pyqtSignal()
+    onDiscardOrKeepProfileChangesClosed = pyqtSignal()  # Used to notify other managers that the dialog was closed
 
     @pyqtSlot(str)
     def discardOrKeepProfileChangesClosed(self, option):
         if option == "discard":
             global_stack = self.getGlobalContainerStack()
-            for extruder in ExtruderManager.getInstance().getMachineExtruders(global_stack.getId()):
+            for extruder in self._extruder_manager.getMachineExtruders(global_stack.getId()):
                 extruder.getTop().clear()
-
             global_stack.getTop().clear()
+
+        # if the user decided to keep settings then the user settings should be re-calculated and validated for errors
+        # before slicing. To ensure that slicer uses right settings values
+        elif option == "keep":
+            global_stack = self.getGlobalContainerStack()
+            for extruder in self._extruder_manager.getMachineExtruders(global_stack.getId()):
+                user_extruder_container = extruder.getTop()
+                if user_extruder_container:
+                    user_extruder_container.update()
+
+            user_global_container = global_stack.getTop()
+            if user_global_container:
+                user_global_container.update()
+
+        # notify listeners that quality has changed (after user selected discard or keep)
+        self.onDiscardOrKeepProfileChangesClosed.emit()
+        self.getMachineManager().activeQualityChanged.emit()
 
     @pyqtSlot(int)
     def messageBoxClosed(self, button):
@@ -528,6 +562,7 @@ class CuraApplication(QtApplication):
         super().addCommandLineOptions(parser)
         parser.add_argument("file", nargs="*", help="Files to load after starting the application.")
         parser.add_argument("--single-instance", action="store_true", default=False)
+        parser.add_argument("--headless", action = "store_true", default=False)
 
     # Set up a local socket server which listener which coordinates single instances Curas and accepts commands.
     def _setUpSingleInstanceServer(self):
@@ -664,25 +699,25 @@ class CuraApplication(QtApplication):
 
         self.showSplashMessage(self._i18n_catalog.i18nc("@info:progress", "Loading interface..."))
 
-        # Initialise extruder so as to listen to global container stack changes before the first global container stack is set.
-        ExtruderManager.getInstance()
+        qmlRegisterSingletonType(ExtruderManager, "Cura", 1, 0, "ExtruderManager", self.getExtruderManager)
         qmlRegisterSingletonType(MachineManager, "Cura", 1, 0, "MachineManager", self.getMachineManager)
         qmlRegisterSingletonType(MaterialManager, "Cura", 1, 0, "MaterialManager", self.getMaterialManager)
-        qmlRegisterSingletonType(SettingInheritanceManager, "Cura", 1, 0, "SettingInheritanceManager",
-                                 self.getSettingInheritanceManager)
-        qmlRegisterSingletonType(SimpleModeSettingsManager, "Cura", 1, 2, "SimpleModeSettingsManager",
-                                 self.getSimpleModeSettingsManager)
-
+        qmlRegisterSingletonType(SettingInheritanceManager, "Cura", 1, 0, "SettingInheritanceManager", self.getSettingInheritanceManager)
+        qmlRegisterSingletonType(SimpleModeSettingsManager, "Cura", 1, 2, "SimpleModeSettingsManager", self.getSimpleModeSettingsManager)
         qmlRegisterSingletonType(MachineActionManager.MachineActionManager, "Cura", 1, 0, "MachineActionManager", self.getMachineActionManager)
+
         self.setMainQml(Resources.getPath(self.ResourceTypes.QmlFiles, "Cura.qml"))
         self._qml_import_paths.append(Resources.getPath(self.ResourceTypes.QmlFiles))
-        self.initializeEngine()
 
-        if self._engine.rootObjects:
+        run_headless = self.getCommandLineOption("headless", False)
+        if not run_headless:
+            self.initializeEngine()
+
+        if run_headless or self._engine.rootObjects:
             self.closeSplash()
 
-            for file in self.getCommandLineOption("file", []):
-                self._openFile(file)
+            for file_name in self.getCommandLineOption("file", []):
+                self._openFile(file_name)
             for file_name in self._open_file_queue: #Open all the files that were queued up while plug-ins were loading.
                 self._openFile(file_name)
 
@@ -694,6 +729,11 @@ class CuraApplication(QtApplication):
         if self._machine_manager is None:
             self._machine_manager = MachineManager.createMachineManager()
         return self._machine_manager
+
+    def getExtruderManager(self, *args):
+        if self._extruder_manager is None:
+            self._extruder_manager = ExtruderManager.createExtruderManager()
+        return self._extruder_manager
 
     def getMaterialManager(self, *args):
         if self._material_manager is None:
@@ -745,7 +785,6 @@ class CuraApplication(QtApplication):
         qmlRegisterUncreatableType(CuraApplication, "Cura", 1, 0, "ResourceTypes", "Just an Enum type")
 
         qmlRegisterType(ExtrudersModel, "Cura", 1, 0, "ExtrudersModel")
-
         qmlRegisterType(ContainerSettingsModel, "Cura", 1, 0, "ContainerSettingsModel")
         qmlRegisterSingletonType(ProfilesModel, "Cura", 1, 0, "ProfilesModel", ProfilesModel.createProfilesModel)
         qmlRegisterType(MaterialsModel, "Cura", 1, 0, "MaterialsModel")
@@ -755,14 +794,11 @@ class CuraApplication(QtApplication):
         qmlRegisterType(QualitySettingsModel, "Cura", 1, 0, "QualitySettingsModel")
         qmlRegisterType(MachineNameValidator, "Cura", 1, 0, "MachineNameValidator")
         qmlRegisterType(UserChangesModel, "Cura", 1, 1, "UserChangesModel")
-
         qmlRegisterSingletonType(ContainerManager, "Cura", 1, 0, "ContainerManager", ContainerManager.createContainerManager)
 
         # As of Qt5.7, it is necessary to get rid of any ".." in the path for the singleton to work.
         actions_url = QUrl.fromLocalFile(os.path.abspath(Resources.getPath(CuraApplication.ResourceTypes.QmlFiles, "Actions.qml")))
         qmlRegisterSingletonType(actions_url, "Cura", 1, 0, "Actions")
-
-        engine.rootContext().setContextProperty("ExtruderManager", ExtruderManager.getInstance())
 
         for path in Resources.getAllResourcesOfType(CuraApplication.ResourceTypes.QmlFiles):
             type_name = os.path.splitext(os.path.basename(path))[0]
@@ -1229,6 +1265,9 @@ class CuraApplication(QtApplication):
                 # see GroupDecorator._onChildrenChanged
 
     def _createSplashScreen(self):
+        run_headless = self.getCommandLineOption("headless", False)
+        if run_headless:
+            return None
         return CuraSplashScreen.CuraSplashScreen()
 
     def _onActiveMachineChanged(self):
@@ -1342,7 +1381,7 @@ class CuraApplication(QtApplication):
 
             extension = os.path.splitext(filename)[1]
             if extension.lower() in self._non_sliceable_extensions:
-                self.getController().setActiveView("LayerView")
+                self.getController().setActiveView("SimulationView")
                 view = self.getController().getActiveView()
                 view.resetLayerData()
                 view.setLayer(9999999)

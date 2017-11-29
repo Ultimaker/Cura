@@ -642,6 +642,20 @@
                     "settable_per_mesh": false,
                     "settable_per_extruder": false
                 },
+                "slicing_tolerance":
+                {
+                    "label": "Slicing Tolerance",
+                    "description": "How to slice layers with diagonal surfaces. The areas of a layer can be generated based on where the middle of the layer intersects the surface (Middle). Alternatively each layer can have the areas which fall inside of the volume throughout the height of the layer (Exclusive) or a layer has the areas which fall inside anywhere within the layer (Inclusive). Exclusive retains the most details, Inclusive makes for the best fit and Middle takes the least time to process.",
+                    "type": "enum",
+                    "options":
+                    {
+                        "middle": "Middle",
+                        "exclusive": "Exclusive",
+                        "inclusive": "Inclusive"
+                    },
+                    "default_value": "middle",
+                    "settable_per_mesh": true
+                },
                 "line_width":
                 {
                     "label": "Line Width",
@@ -667,6 +681,7 @@
                             "value": "line_width",
                             "default_value": 0.4,
                             "type": "float",
+                            "limit_to_extruder": "wall_0_extruder_nr if wall_x_extruder_nr == wall_0_extruder_nr else -1",
                             "settable_per_mesh": true,
                             "children":
                             {
@@ -865,29 +880,45 @@
             "type": "category",
             "children":
             {
-                "wall_0_extruder_nr":
+                "wall_extruder_nr":
                 {
-                    "label": "Outer Wall Extruder",
-                    "description": "The extruder train used for printing the outer wall. This is used in multi-extrusion.",
+                    "label": "Wall Extruder",
+                    "description": "The extruder train used for printing the walls. This is used in multi-extrusion.",
                     "type": "optional_extruder",
                     "default_value": "-1",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false,
                     "settable_per_meshgroup": true,
                     "settable_globally": true,
-                    "enabled": "machine_extruder_count > 1"
-                },
-                "wall_x_extruder_nr":
-                {
-                    "label": "Inner Walls Extruder",
-                    "description": "The extruder train used for printing the inner walls. This is used in multi-extrusion.",
-                    "type": "optional_extruder",
-                    "default_value": "-1",
-                    "settable_per_mesh": false,
-                    "settable_per_extruder": false,
-                    "settable_per_meshgroup": true,
-                    "settable_globally": true,
-                    "enabled": "machine_extruder_count > 1"
+                    "enabled": "machine_extruder_count > 1",
+                    "children": {
+                        "wall_0_extruder_nr":
+                        {
+                            "label": "Outer Wall Extruder",
+                            "description": "The extruder train used for printing the outer wall. This is used in multi-extrusion.",
+                            "type": "optional_extruder",
+                            "value": "wall_extruder_nr",
+                            "default_value": "-1",
+                            "settable_per_mesh": false,
+                            "settable_per_extruder": false,
+                            "settable_per_meshgroup": true,
+                            "settable_globally": true,
+                            "enabled": "machine_extruder_count > 1"
+                        },
+                        "wall_x_extruder_nr":
+                        {
+                            "label": "Inner Wall Extruder",
+                            "description": "The extruder train used for printing the inner walls. This is used in multi-extrusion.",
+                            "type": "optional_extruder",
+                            "value": "wall_extruder_nr",
+                            "default_value": "-1",
+                            "settable_per_mesh": false,
+                            "settable_per_extruder": false,
+                            "settable_per_meshgroup": true,
+                            "settable_globally": true,
+                            "enabled": "machine_extruder_count > 1"
+                        }
+                    }
                 },
                 "wall_thickness":
                 {
@@ -1176,7 +1207,8 @@
                         }
                     }
                 },
-                "fill_perimeter_gaps": {
+                "fill_perimeter_gaps":
+                {
                     "label": "Fill Gaps Between Walls",
                     "description": "Fills the gaps between walls where no walls fit.",
                     "type": "enum",
@@ -1185,6 +1217,15 @@
                         "everywhere": "Everywhere"
                     },
                     "default_value": "everywhere",
+                    "limit_to_extruder": "wall_0_extruder_nr",
+                    "settable_per_mesh": true
+                },
+                "filter_out_tiny_gaps":
+                {
+                    "label": "Filter Out Tiny Gaps",
+                    "description": "Filter out tiny gaps to reduce blobs on outside of model.",
+                    "type": "bool",
+                    "default_value": true,
                     "limit_to_extruder": "wall_0_extruder_nr",
                     "settable_per_mesh": true
                 },
@@ -1308,6 +1349,124 @@
                     "type": "int",
                     "limit_to_extruder": "top_bottom_extruder_nr",
                     "settable_per_mesh": true
+                },
+                "ironing_enabled":
+                {
+                    "label": "Enable Ironing",
+                    "description": "Go over the top surface one additional time, but without extruding material. This is meant to melt the plastic on top further, creating a smoother surface.",
+                    "type": "bool",
+                    "default_value": false,
+                    "limit_to_extruder": "top_bottom_extruder_nr",
+                    "settable_per_mesh": true
+                },
+                "ironing_only_highest_layer":
+                {
+                    "label": "Iron Only Highest Layer",
+                    "description": "Only perform ironing on the very last layer of the mesh. This saves time if the lower layers don't need a smooth surface finish.",
+                    "type": "bool",
+                    "default_value": false,
+                    "enabled": "ironing_enabled",
+                    "limit_to_extruder": "top_bottom_extruder_nr",
+                    "settable_per_mesh": true
+                },
+                "ironing_pattern":
+                {
+                    "label": "Ironing Pattern",
+                    "description": "The pattern to use for ironing top surfaces.",
+                    "type": "enum",
+                    "options":
+                    {
+                        "concentric": "Concentric",
+                        "zigzag": "Zig Zag"
+                    },
+                    "default_value": "zigzag",
+                    "enabled": "ironing_enabled",
+                    "limit_to_extruder": "top_bottom_extruder_nr",
+                    "settable_per_mesh": true
+                },
+                "ironing_line_spacing":
+                {
+                    "label": "Ironing Line Spacing",
+                    "description": "The distance between the lines of ironing.",
+                    "type": "float",
+                    "unit": "mm",
+                    "default_value": 0.1,
+                    "minimum_value": "0.001",
+                    "maximum_value_warning": "machine_nozzle_tip_outer_diameter",
+                    "enabled": "ironing_enabled",
+                    "limit_to_extruder": "top_bottom_extruder_nr",
+                    "settable_per_mesh": true
+                },
+                "ironing_flow":
+                {
+                    "label": "Ironing Flow",
+                    "description": "The amount of material, relative to a normal skin line, to extrude during ironing. Keeping the nozzle filled helps filling some of the crevices of the top surface, but too much results in overextrusion and blips on the side of the surface.",
+                    "type": "float",
+                    "unit": "%",
+                    "default_value": 10.0,
+                    "minimum_value": "0",
+                    "maximum_value_warning": "50",
+                    "enabled": "ironing_enabled",
+                    "limit_to_extruder": "top_bottom_extruder_nr",
+                    "settable_per_mesh": true
+                },
+                "ironing_inset":
+                {
+                    "label": "Ironing Inset",
+                    "description": "A distance to keep from the edges of the model. Ironing all the way to the edge of the mesh may result in a jagged edge on your print.",
+                    "type": "float",
+                    "unit": "mm",
+                    "default_value": 0.35,
+                    "value": "wall_line_width_0 / 2",
+                    "minimum_value_warning": "0",
+                    "maximum_value_warning": "wall_line_width_0",
+                    "enabled": "ironing_enabled",
+                    "limit_to_extruder": "top_bottom_extruder_nr",
+                    "settable_per_mesh": true
+                },
+                "speed_ironing":
+                {
+                    "label": "Ironing Speed",
+                    "description": "The speed at which to pass over the top surface.",
+                    "type": "float",
+                    "unit": "mm/s",
+                    "default_value": 20.0,
+                    "value": "speed_topbottom * 20 / 30",
+                    "minimum_value": "0.001",
+                    "maximum_value": "math.sqrt(machine_max_feedrate_x ** 2 + machine_max_feedrate_y ** 2)",
+                    "maximum_value_warning": "100",
+                    "enabled": "ironing_enabled",
+                    "limit_to_extruder": "top_bottom_extruder_nr",
+                    "settable_per_mesh": true
+                },
+                "acceleration_ironing":
+                {
+                    "label": "Ironing Acceleration",
+                    "description": "The acceleration with which ironing is performed.",
+                    "unit": "mm/s²",
+                    "type": "float",
+                    "minimum_value": "0.1",
+                    "minimum_value_warning": "100",
+                    "maximum_value_warning": "10000",
+                    "default_value": 3000,
+                    "value": "acceleration_topbottom",
+                    "enabled": "resolveOrValue('acceleration_enabled') and ironing_enabled",
+                    "limit_to_extruder": "top_bottom_extruder_nr",
+                    "settable_per_mesh": true
+                },
+                "jerk_ironing":
+                {
+                    "label": "Ironing Jerk",
+                    "description": "The maximum instantaneous velocity change while performing ironing.",
+                    "unit": "mm/s",
+                    "type": "float",
+                    "minimum_value": "0",
+                    "maximum_value_warning": "50",
+                    "default_value": 20,
+                    "value": "jerk_topbottom",
+                    "enabled": "resolveOrValue('jerk_enabled') and ironing_enabled",
+                    "limit_to_extruder": "top_bottom_extruder_nr",
+                    "settable_per_mesh": true
                 }
             }
         },
@@ -1353,7 +1512,7 @@
                             "default_value": 2,
                             "minimum_value": "0",
                             "minimum_value_warning": "infill_line_width",
-                            "value": "0 if infill_sparse_density == 0 else (infill_line_width * 100) / infill_sparse_density * (2 if infill_pattern == 'grid' else (3 if infill_pattern == 'triangles' or infill_pattern == 'cubic' or infill_pattern == 'cubicsubdiv' else (2 if infill_pattern == 'tetrahedral' or infill_pattern == 'quarter_cubic' else (1 if infill_pattern == 'cross' or infill_pattern == 'cross_3d' else 1))))",
+                            "value": "0 if infill_sparse_density == 0 else (infill_line_width * 100) / infill_sparse_density * (2 if infill_pattern == 'grid' else (3 if infill_pattern == 'triangles' or infill_pattern == 'trihexagon' or infill_pattern == 'cubic' or infill_pattern == 'cubicsubdiv' else (2 if infill_pattern == 'tetrahedral' or infill_pattern == 'quarter_cubic' else (1 if infill_pattern == 'cross' or infill_pattern == 'cross_3d' else 1))))",
                             "limit_to_extruder": "infill_extruder_nr",
                             "settable_per_mesh": true
                         }
@@ -1362,13 +1521,14 @@
                 "infill_pattern":
                 {
                     "label": "Infill Pattern",
-                    "description": "The pattern of the infill material of the print. The line and zig zag infill swap direction on alternate layers, reducing material cost. The grid, triangle, cubic, octet, quarter cubic and concentric patterns are fully printed every layer. Cubic, quarter cubic and octet infill change with every layer to provide a more equal distribution of strength over each direction.",
+                    "description": "The pattern of the infill material of the print. The line and zig zag infill swap direction on alternate layers, reducing material cost. The grid, triangle, tri-hexagon, cubic, octet, quarter cubic, cross and concentric patterns are fully printed every layer. Cubic, quarter cubic and octet infill change with every layer to provide a more equal distribution of strength over each direction.",
                     "type": "enum",
                     "options":
                     {
                         "grid": "Grid",
                         "lines": "Lines",
                         "triangles": "Triangles",
+                        "trihexagon": "Tri-Hexagon",
                         "cubic": "Cubic",
                         "cubicsubdiv": "Cubic Subdivision",
                         "tetrahedral": "Octet",
@@ -1407,7 +1567,7 @@
                 "infill_offset_x":
                 {
                     "label": "Infill X Offset",
-                    "description": "The infill pattern is offset this distance along the X axis.",
+                    "description": "The infill pattern is moved this distance along the X axis.",
                     "unit": "mm",
                     "type": "float",
                     "default_value": 0,
@@ -1418,7 +1578,7 @@
                 "infill_offset_y":
                 {
                     "label": "Infill Y Offset",
-                    "description": "The infill pattern is offset this distance along the Y axis.",
+                    "description": "The infill pattern is moved this distance along the Y axis.",
                     "unit": "mm",
                     "type": "float",
                     "default_value": 0,
@@ -1805,7 +1965,7 @@
                 "material_bed_temperature":
                 {
                     "label": "Build Plate Temperature",
-                    "description": "The temperature used for the heated build plate. If this is 0, the bed will not heat up for this print.",
+                    "description": "The temperature used for the heated build plate. If this is 0, the bed temperature will not be adjusted.",
                     "unit": "°C",
                     "type": "float",
                     "resolve": "max(extruderValues('material_bed_temperature'))",
@@ -1857,6 +2017,7 @@
                     "default_value": 10,
                     "minimum_value": "0",
                     "maximum_value": "10",
+                    "enabled": false,
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
@@ -1869,6 +2030,7 @@
                     "default_value": 100,
                     "minimum_value": "0",
                     "maximum_value": "100",
+                    "enabled": false,
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
@@ -3460,7 +3622,7 @@
                             "minimum_value_warning": "support_line_width",
                             "default_value": 2.66,
                             "enabled": "support_enable",
-                            "value": "(support_line_width * 100) / support_infill_rate * (2 if support_pattern == 'grid' else (3 if support_pattern == 'triangles' else 1))",
+                            "value": "0 if support_infill_rate == 0 else (support_line_width * 100) / support_infill_rate * (2 if support_pattern == 'grid' else (3 if support_pattern == 'triangles' else 1))",
                             "limit_to_extruder": "support_infill_extruder_nr",
                             "settable_per_mesh": false,
                             "settable_per_extruder": true
@@ -4096,30 +4258,6 @@
                     "settable_per_mesh": false,
                     "settable_per_extruder": true,
                     "limit_to_extruder": "adhesion_extruder_nr"
-                },
-                "z_offset_layer_0":
-                {
-                    "label": "Initial Layer Z Offset",
-                    "description": "The extruder is offset from the normal height of the first layer by this amount. It can be positive (raised) or negative (lowered). Some filament types adhere to the build plate better if the extruder is raised slightly.",
-                    "unit": "mm",
-                    "type": "float",
-                    "default_value": 0,
-                    "minimum_value_warning": "0",
-                    "maximum_value_warning": "layer_height_0",
-                    "enabled": "resolveOrValue('adhesion_type') != 'raft'",
-                    "settable_per_mesh": false,
-                    "settable_per_extruder": false
-                },
-                "z_offset_taper_layers":
-                {
-                    "label": "Z Offset Taper Layers",
-                    "description": "When non-zero, the Z offset is reduced to 0 over that many layers. A value of 0 means that the Z offset remains constant for all the layers in the print.",
-                    "type": "int",
-                    "default_value": 0,
-                    "minimum_value": "0",
-                    "enabled": "resolveOrValue('adhesion_type') != 'raft' and z_offset_layer_0 != 0",
-                    "settable_per_mesh": false,
-                    "settable_per_extruder": false
                 },
                 "raft_margin":
                 {
@@ -4816,6 +4954,18 @@
                     "default_value": false,
                     "settable_per_mesh": true
                 },
+                "meshfix_maximum_resolution":
+                {
+                    "label": "Maximum Resolution",
+                    "description": "The minimum size of a line segment after slicing. If you increase this, the mesh will have a lower resolution. This may allow the printer to keep up with the speed it has to process g-code and will increase slice speed by removing details of the mesh that it can't process anyway.",
+                    "type": "float",
+                    "unit": "mm",
+                    "default_value": 0.01,
+                    "minimum_value": "0.001",
+                    "minimum_value_warning": "0.005",
+                    "maximum_value_warning": "0.1",
+                    "settable_per_mesh": true
+                },
                 "multiple_mesh_overlap":
                 {
                     "label": "Merged Meshes Overlap",
@@ -4849,6 +4999,16 @@
                     "settable_per_mesh": false,
                     "settable_per_extruder": false,
                     "settable_per_meshgroup": true
+                },
+                "remove_empty_first_layers":
+                {
+                    "label": "Remove Empty First Layers",
+                    "description": "Remove empty layers beneath the first printed layer if they are present. Disabling this setting can cause empty first layers if the Slicing Tolerance setting is set to Exclusive or Middle.",
+                    "type": "bool",
+                    "default_value": true,
+                    "enabled": "not support_enable",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false
                 }
             }
         },
@@ -5054,7 +5214,8 @@
                     "default_value": false,
                     "settable_per_mesh": true
                 },
-                "support_skip_some_zags": {
+                "support_skip_some_zags":
+                {
                     "label": "Break Up Support In Chunks",
                     "description": "Skip some support line connections to make the support structure easier to break away. This setting is applicable to the Zig Zag support infill pattern.",
                     "type": "bool",
@@ -5062,35 +5223,36 @@
                     "enabled": "support_enable and (support_pattern == 'zigzag')",
                     "limit_to_extruder": "support_infill_extruder_nr",
                     "settable_per_mesh": false,
+                    "settable_per_extruder": true
+                },
+                "support_skip_zag_per_mm":
+                {
+                    "label": "Support Chunk Size",
+                    "description": "Leave out a connection between support lines once every N millimeter to make the support structure easier to break away.",
+                    "type": "float",
+                    "unit": "mm",
+                    "default_value": 20,
+                    "minimum_value": "0",
+                    "minimum_value_warning": "support_line_distance",
+                    "enabled": "support_enable and (support_pattern == 'zigzag') and support_skip_some_zags",
+                    "limit_to_extruder": "support_infill_extruder_nr",
+                    "settable_per_mesh": false,
                     "settable_per_extruder": true,
-                    "children": {
-                        "support_skip_zag_per_mm": {
-                            "label": "Support Chunk Size",
-                            "description": "Leave out a connection between support lines once every N millimeter to make the support structure easier to break away.",
-                            "type": "float",
-                            "unit": "mm",
-                            "default_value": 20,
-                            "minimum_value": "0",
-                            "minimum_value_warning": "support_line_distance",
+                    "children":
+                    {
+                        "support_zag_skip_count":
+                        {
+                            "label": "Support Chunk Line Count",
+                            "description": "Skip one in every N connection lines to make the support structure easier to break away.",
+                            "type": "int",
+                            "default_value": 5,
+                            "value": "0 if support_line_distance == 0 else round(support_skip_zag_per_mm / support_line_distance)",
+                            "minimum_value": "1",
+                            "minimum_value_warning": "3",
                             "enabled": "support_enable and (support_pattern == 'zigzag') and support_skip_some_zags",
                             "limit_to_extruder": "support_infill_extruder_nr",
                             "settable_per_mesh": false,
-                            "settable_per_extruder": true,
-                            "children": {
-                                "support_zag_skip_count": {
-                                    "label": "Support Chunk Line Count",
-                                    "description": "Skip one in every N connection lines to make the support structure easier to break away.",
-                                    "type": "int",
-                                    "default_value": 5,
-                                    "value": "round(support_skip_zag_per_mm / support_line_distance)",
-                                    "minimum_value": "1",
-                                    "minimum_value_warning": "3",
-                                    "enabled": "support_enable and (support_pattern == 'zigzag') and support_skip_some_zags",
-                                    "limit_to_extruder": "support_infill_extruder_nr",
-                                    "settable_per_mesh": false,
-                                    "settable_per_extruder": true
-                                }
-                            }
+                            "settable_per_extruder": true
                         }
                     }
                 },
@@ -5435,6 +5597,36 @@
                             "settable_per_mesh": true
                         }
                     }
+                },
+                "flow_rate_max_extrusion_offset":
+                {
+                    "label": "Flow rate compensation max extrusion offset",
+                    "description": "The maximum distance in mm to compensate.",
+                    "unit": "mm",
+                    "type": "float",
+                    "minimum_value": "0",
+                    "maximum_value_warning": "10",
+                    "default_value": 0,
+                    "value": "0",
+                    "enabled": true,
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false,
+                    "settable_per_meshgroup": false
+                },
+                "flow_rate_extrusion_offset_factor":
+                {
+                    "label": "Flow rate compensation factor",
+                    "description": "The multiplication factor for the flow rate -> distance translation.",
+                    "unit": "%",
+                    "type": "float",
+                    "minimum_value": "0",
+                    "maximum_value_warning": "100",
+                    "default_value": 100,
+                    "value": "100",
+                    "enabled": true,
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false,
+                    "settable_per_meshgroup": false
                 },
                 "wireframe_enabled":
                 {
@@ -5790,124 +5982,6 @@
                     "settable_per_mesh": false,
                     "settable_per_extruder": false,
                     "settable_per_meshgroup": false
-                },
-                "ironing_enabled":
-                {
-                    "label": "Enable Ironing",
-                    "description": "Go over the top surface one additional time, but without extruding material. This is meant to melt the plastic on top further, creating a smoother surface.",
-                    "type": "bool",
-                    "default_value": false,
-                    "limit_to_extruder": "top_bottom_extruder_nr",
-                    "settable_per_mesh": true
-                },
-                "ironing_only_highest_layer":
-                {
-                    "label": "Iron Only Highest Layer",
-                    "description": "Only perform ironing on the very last layer of the mesh. This saves time if the lower layers don't need a smooth surface finish.",
-                    "type": "bool",
-                    "default_value": false,
-                    "enabled": "ironing_enabled",
-                    "limit_to_extruder": "top_bottom_extruder_nr",
-                    "settable_per_mesh": true
-                },
-                "ironing_pattern":
-                {
-                    "label": "Ironing Pattern",
-                    "description": "The pattern to use for ironing top surfaces.",
-                    "type": "enum",
-                    "options":
-                    {
-                        "concentric": "Concentric",
-                        "zigzag": "Zig Zag"
-                    },
-                    "default_value": "zigzag",
-                    "enabled": "ironing_enabled",
-                    "limit_to_extruder": "top_bottom_extruder_nr",
-                    "settable_per_mesh": true
-                },
-                "ironing_line_spacing":
-                {
-                    "label": "Ironing Line Spacing",
-                    "description": "The distance between the lines of ironing.",
-                    "type": "float",
-                    "unit": "mm",
-                    "default_value": 0.1,
-                    "minimum_value": "0.001",
-                    "maximum_value_warning": "machine_nozzle_tip_outer_diameter",
-                    "enabled": "ironing_enabled",
-                    "limit_to_extruder": "top_bottom_extruder_nr",
-                    "settable_per_mesh": true
-                },
-                "ironing_flow":
-                {
-                    "label": "Ironing Flow",
-                    "description": "The amount of material, relative to a normal skin line, to extrude during ironing. Keeping the nozzle filled helps filling some of the crevices of the top surface, but too much results in overextrusion and blips on the side of the surface.",
-                    "type": "float",
-                    "unit": "%",
-                    "default_value": 10.0,
-                    "minimum_value": "0",
-                    "maximum_value_warning": "50",
-                    "enabled": "ironing_enabled",
-                    "limit_to_extruder": "top_bottom_extruder_nr",
-                    "settable_per_mesh": true
-                },
-                "ironing_inset":
-                {
-                    "label": "Ironing Inset",
-                    "description": "A distance to keep from the edges of the model. Ironing all the way to the edge of the mesh may result in a jagged edge on your print.",
-                    "type": "float",
-                    "unit": "mm",
-                    "default_value": 0.35,
-                    "value": "wall_line_width_0 / 2",
-                    "minimum_value_warning": "0",
-                    "maximum_value_warning": "wall_line_width_0",
-                    "enabled": "ironing_enabled",
-                    "limit_to_extruder": "top_bottom_extruder_nr",
-                    "settable_per_mesh": true
-                },
-                "speed_ironing":
-                {
-                    "label": "Ironing Speed",
-                    "description": "The speed at which to pass over the top surface.",
-                    "type": "float",
-                    "unit": "mm/s",
-                    "default_value": 20.0,
-                    "value": "speed_topbottom * 20 / 30",
-                    "minimum_value": "0.001",
-                    "maximum_value": "math.sqrt(machine_max_feedrate_x ** 2 + machine_max_feedrate_y ** 2)",
-                    "maximum_value_warning": "100",
-                    "enabled": "ironing_enabled",
-                    "limit_to_extruder": "top_bottom_extruder_nr",
-                    "settable_per_mesh": true
-                },
-                "acceleration_ironing":
-                {
-                    "label": "Ironing Acceleration",
-                    "description": "The acceleration with which ironing is performed.",
-                    "unit": "mm/s²",
-                    "type": "float",
-                    "minimum_value": "0.1",
-                    "minimum_value_warning": "100",
-                    "maximum_value_warning": "10000",
-                    "default_value": 3000,
-                    "value": "acceleration_topbottom",
-                    "enabled": "resolveOrValue('acceleration_enabled') and ironing_enabled",
-                    "limit_to_extruder": "top_bottom_extruder_nr",
-                    "settable_per_mesh": true
-                },
-                "jerk_ironing":
-                {
-                    "label": "Ironing Jerk",
-                    "description": "The maximum instantaneous velocity change while performing ironing.",
-                    "unit": "mm/s",
-                    "type": "float",
-                    "minimum_value": "0",
-                    "maximum_value_warning": "50",
-                    "default_value": 20,
-                    "value": "jerk_topbottom",
-                    "enabled": "resolveOrValue('jerk_enabled') and ironing_enabled",
-                    "limit_to_extruder": "top_bottom_extruder_nr",
-                    "settable_per_mesh": true
                 }
             }
         },

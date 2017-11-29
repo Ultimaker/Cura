@@ -107,20 +107,13 @@ class ThreeMFReader(MeshReader):
             um_node.addDecorator(SettingOverrideDecorator())
 
             global_container_stack = Application.getInstance().getGlobalContainerStack()
+
             # Ensure the correct next container for the SettingOverride decorator is set.
             if global_container_stack:
-                multi_extrusion = global_container_stack.getProperty("machine_extruder_count", "value") > 1
+                default_stack = ExtruderManager.getInstance().getExtruderStack(0)
 
-                # Ensure that all extruder data is reset
-                if not multi_extrusion:
-                    default_stack_id = global_container_stack.getId()
-                else:
-                    default_stack = ExtruderManager.getInstance().getExtruderStack(0)
-                    if default_stack:
-                        default_stack_id = default_stack.getId()
-                    else:
-                        default_stack_id = global_container_stack.getId()
-                um_node.callDecoration("setActiveExtruder", default_stack_id)
+                if default_stack:
+                    um_node.callDecoration("setActiveExtruder", default_stack.getId())
 
                 # Get the definition & set it
                 definition = QualityManager.getInstance().getParentMachineDefinition(global_container_stack.getBottom())
@@ -139,7 +132,7 @@ class ThreeMFReader(MeshReader):
                     else:
                         Logger.log("w", "Unable to find extruder in position %s", setting_value)
                     continue
-                setting_container.setProperty(key,"value", setting_value)
+                setting_container.setProperty(key, "value", setting_value)
 
         if len(um_node.getChildren()) > 0:
             group_decorator = GroupDecorator()

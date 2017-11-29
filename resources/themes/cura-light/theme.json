@@ -78,7 +78,7 @@
         "text_pressed": [12, 169, 227, 255],
         "text_subtext": [0, 0, 0, 255],
         "text_emphasis": [255, 255, 255, 255],
-        "text_scene": [24, 41, 77, 255],
+        "text_scene": [31, 36, 39, 255],
         "text_scene_hover": [70, 84, 113, 255],
 
         "error": [255, 140, 0, 255],
@@ -100,8 +100,17 @@
         "button_text_hover": [255, 255, 255, 255],
         "button_text_active": [255, 255, 255, 255],
         "button_text_active_hover": [255, 255, 255, 255],
-        "button_disabled": [24, 41, 77, 255],
+        "button_disabled": [31, 36, 39, 255],
         "button_disabled_text": [255, 255, 255, 101],
+
+        "small_button": [31, 36, 39, 0],
+        "small_button_hover": [68, 72, 75, 255],
+        "small_button_active": [68, 72, 75, 255],
+        "small_button_active_hover": [68, 72, 75, 255],
+        "small_button_text": [31, 36, 39, 197],
+        "small_button_text_hover": [255, 255, 255, 255],
+        "small_button_text_active": [255, 255, 255, 255],
+        "small_button_text_active_hover": [255, 255, 255, 255],
 
         "button_tooltip": [31, 36, 39, 255],
         "button_tooltip_border": [68, 192, 255, 255],
@@ -116,7 +125,7 @@
         "action_button_text": [0, 0, 0, 255],
         "action_button_border": [127, 127, 127, 255],
         "action_button_hovered": [255, 255, 255, 255],
-        "action_button_hovered_text": [24, 41, 77, 255],
+        "action_button_hovered_text": [31, 36, 39, 255],
         "action_button_hovered_border": [12, 169, 227, 255],
         "action_button_active": [255, 255, 255, 255],
         "action_button_active_text": [0, 0, 0, 255],
@@ -134,7 +143,7 @@
         "print_button_ready_pressed_border": [30, 186, 245, 243],
 
         "scrollbar_background": [255, 255, 255, 255],
-        "scrollbar_handle": [24, 41, 77, 255],
+        "scrollbar_handle": [31, 36, 39, 255],
         "scrollbar_handle_hover": [12, 159, 227, 255],
         "scrollbar_handle_down": [12, 159, 227, 255],
 
@@ -143,11 +152,11 @@
         "setting_category_hover": [245, 245, 245, 255],
         "setting_category_active": [245, 245, 245, 255],
         "setting_category_active_hover": [245, 245, 245, 255],
-        "setting_category_text": [24, 41, 77, 255],
+        "setting_category_text": [31, 36, 39, 255],
         "setting_category_disabled_text": [24, 41, 77, 101],
-        "setting_category_hover_text": [24, 41, 77, 255],
-        "setting_category_active_text": [24, 41, 77, 255],
-        "setting_category_active_hover_text": [24, 41, 77, 255],
+        "setting_category_hover_text": [31, 36, 39, 255],
+        "setting_category_active_text": [31, 36, 39, 255],
+        "setting_category_active_hover_text": [31, 36, 39, 255],
         "setting_category_border": [245, 245, 245, 255],
         "setting_category_disabled_border": [245, 245, 245, 255],
         "setting_category_hover_border": [12, 159, 227, 255],
@@ -155,7 +164,7 @@
         "setting_category_active_hover_border": [12, 159, 227, 255],
 
         "setting_control": [255, 255, 255, 255],
-        "setting_control_selected": [24, 41, 77, 255],
+        "setting_control_selected": [31, 36, 39, 255],
         "setting_control_highlight": [255, 255, 255, 255],
         "setting_control_border": [127, 127, 127, 255],
         "setting_control_border_highlight": [12, 169, 227, 255],
@@ -176,13 +185,14 @@
         "material_compatibility_warning": [0, 0, 0, 255],
 
         "progressbar_background": [245, 245, 245, 255],
-        "progressbar_control": [24, 41, 77, 255],
+        "progressbar_control": [31, 36, 39, 255],
 
         "slider_groove": [245, 245, 245, 255],
         "slider_groove_border": [127, 127, 127, 255],
         "slider_groove_fill": [127, 127, 127, 255],
         "slider_handle": [0, 0, 0, 255],
         "slider_handle_hover": [77, 182, 226, 255],
+        "slider_handle_active": [68, 192, 255, 255],
         "slider_handle_border": [39, 44, 48, 255],
         "slider_text_background": [255, 255, 255, 255],
 
@@ -203,9 +213,9 @@
         "mode_switch_hover": [255, 255, 255, 255],
         "mode_switch_border": [127, 127, 127, 255],
         "mode_switch_border_hover": [12, 169, 227, 255],
-        "mode_switch_handle": [24, 41, 77, 255],
-        "mode_switch_text": [24, 41, 77, 255],
-        "mode_switch_text_hover": [24, 41, 77, 255],
+        "mode_switch_handle": [31, 36, 39, 255],
+        "mode_switch_text": [31, 36, 39, 255],
+        "mode_switch_text_hover": [31, 36, 39, 255],
         "mode_switch_text_checked": [12, 169, 227, 255],
 
         "tooltip": [68, 192, 255, 255],
@@ -271,7 +281,8 @@
         "layerview_support_infill": [0,  255,  255, 255],
         "layerview_move_combing": [0,  0,  255, 255],
         "layerview_move_retraction": [128,  128,  255, 255],
-        "layerview_support_interface": [64, 192, 255, 255]
+        "layerview_support_interface": [64, 192, 255, 255],
+        "layerview_nozzle": [181, 166, 66, 50]
     },
 
     "sizes": {
@@ -321,6 +332,9 @@
         "button_icon": [2.5, 2.5],
         "button_lining": [0, 0],
 
+        "small_button": [2, 2],
+        "small_button_icon": [1.5, 1.5],
+
         "topbar_logo_right_margin": [3, 0],
         "topbar_button": [8, 4],
         "topbar_button_icon": [1.2, 1.2],
@@ -342,11 +356,13 @@
         "slider_handle": [1.0, 1.0],
         "slider_layerview_size": [1.0, 22.0],
         "slider_layerview_background": [4.0, 0.0],
-        "slider_layerview_margin": [1.0, 1.0],
+        "slider_layerview_margin": [1.0, 1.5],
 
-        "layerview_menu_size": [15, 19.5],
-        "layerview_menu_size_material_color_mode": [15, 15.5],
+        "layerview_menu_size": [15, 20],
+        "layerview_menu_size_material_color_mode": [15, 16],
+        "layerview_menu_size_collapsed": [15, 6],
         "layerview_menu_size_compatibility": [22, 22.0],
+        "layerview_menu_size_compatibility_collapsed": [15, 3.5],
         "layerview_legend_size": [1.0, 1.0],
         "layerview_row": [11.0, 1.5],
         "layerview_row_spacing": [0.0, 0.5],

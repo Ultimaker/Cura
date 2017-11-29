@@ -102,6 +102,8 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         self._target_bed_temperature = 0
         self._processing_preheat_requests = True
 
+        self._can_control_manually = False
+
         self.setPriority(3) # Make sure the output device gets selected above local file output
         self.setName(key)
         self.setShortDescription(i18n_catalog.i18nc("@action:button Preceded by 'Ready to'.", "Print over network"))

@@ -37,8 +37,7 @@ class UM2UpgradeSelection(MachineAction):
     def setHasVariants(self, has_variants = True):
         global_container_stack = Application.getInstance().getGlobalContainerStack()
         if global_container_stack:
-            variant_container = global_container_stack.variant
-            variant_index = global_container_stack.getContainerIndex(variant_container)
+            variant_container = global_container_stack.extruders["0"].variant
 
             if has_variants:
                 if "has_variants" in global_container_stack.getMetaData():
@@ -52,7 +51,7 @@ class UM2UpgradeSelection(MachineAction):
                     search_criteria = { "type": "variant", "definition": "ultimaker2", "id": "*0.4*" }
                     containers = self._container_registry.findInstanceContainers(**search_criteria)
                     if containers:
-                        global_container_stack.variant = containers[0]
+                        global_container_stack.extruders["0"].variant = containers[0]
             else:
                 # The metadata entry is stored in an ini, and ini files are parsed as strings only.
                 # Because any non-empty string evaluates to a boolean True, we have to remove the entry to make it False.
@@ -60,6 +59,6 @@ class UM2UpgradeSelection(MachineAction):
                     global_container_stack.removeMetaDataEntry("has_variants")
 
                 # Set the variant container to an empty variant
-                global_container_stack.variant = ContainerRegistry.getInstance().getEmptyInstanceContainer()
+                global_container_stack.extruders["0"].variant = ContainerRegistry.getInstance().getEmptyInstanceContainer()
 
             Application.getInstance().globalContainerStackChanged.emit()
