@@ -32,16 +32,16 @@ class QualityManager:
     #   \param quality_name
     #   \param machine_definition (Optional) \type{DefinitionContainerInterface} If nothing is
     #                               specified then the currently selected machine definition is used.
-    #   \param material_containers (Optional) \type{List[InstanceContainer]} If nothing is specified then
-    #                               the current set of selected materials is used.
+    #   \param material_containers_metadata If nothing is specified then the
+    #   current set of selected materials is used.
     #   \return the matching quality container \type{InstanceContainer}
-    def findQualityByName(self, quality_name: str, machine_definition: Optional["DefinitionContainerInterface"] = None, material_containers: List[InstanceContainer] = None) -> Optional[InstanceContainer]:
+    def findQualityByName(self, quality_name: str, machine_definition: Optional["DefinitionContainerInterface"] = None, material_containers_metadata: Optional[List[Dict[str, Any]]] = None) -> Optional[InstanceContainer]:
         criteria = {"type": "quality", "name": quality_name}
-        result = self._getFilteredContainersForStack(machine_definition, material_containers, **criteria)
+        result = self._getFilteredContainersForStack(machine_definition, material_containers_metadata, **criteria)
 
         # Fall back to using generic materials and qualities if nothing could be found.
-        if not result and material_containers and len(material_containers) == 1:
-            basic_materials = self._getBasicMaterialMetadatas(material_containers[0].getMetaData())
+        if not result and material_containers_metadata and len(material_containers_metadata) == 1:
+            basic_materials = self._getBasicMaterialMetadatas(material_containers_metadata[0])
             result = self._getFilteredContainersForStack(machine_definition, basic_materials, **criteria)
 
         return result[0] if result else None
@@ -107,18 +107,18 @@ class QualityManager:
     #   \param quality_type \type{str} the name of the quality type to search for.
     #   \param machine_definition (Optional) \type{InstanceContainer} If nothing is
     #                               specified then the currently selected machine definition is used.
-    #   \param material_containers (Optional) \type{List[InstanceContainer]} If nothing is specified then
-    #                               the current set of selected materials is used.
+    #   \param material_containers_metadata If nothing is specified then the
+    #   current set of selected materials is used.
     #   \return the matching quality container \type{InstanceContainer}
-    def findQualityByQualityType(self, quality_type: str, machine_definition: Optional["DefinitionContainerInterface"] = None, material_containers: List[InstanceContainer] = None, **kwargs) -> InstanceContainer:
+    def findQualityByQualityType(self, quality_type: str, machine_definition: Optional["DefinitionContainerInterface"] = None, material_containers_metadata: Optional[List[Dict[str, Any]]] = None, **kwargs) -> InstanceContainer:
         criteria = kwargs
         criteria["type"] = "quality"
         if quality_type:
             criteria["quality_type"] = quality_type
-        result = self._getFilteredContainersForStack(machine_definition, material_containers, **criteria)
+        result = self._getFilteredContainersForStack(machine_definition, material_containers_metadata, **criteria)
         # Fall back to using generic materials and qualities if nothing could be found.
-        if not result and material_containers and len(material_containers) == 1:
-            basic_materials = self._getBasicMaterialMetadatas(material_containers[0].getMetaData())
+        if not result and material_containers_metadata and len(material_containers_metadata) == 1:
+            basic_materials = self._getBasicMaterialMetadatas(material_containers_metadata[0])
             if basic_materials:
                 result = self._getFilteredContainersForStack(machine_definition, basic_materials, **criteria)
         return result[0] if result else None
@@ -236,7 +236,7 @@ class QualityManager:
     def _getFilteredContainers(self, **kwargs):
         return self._getFilteredContainersForStack(None, None, **kwargs)
 
-    def _getFilteredContainersForStack(self, machine_definition: "DefinitionContainerInterface" = None, material_metadata: List[Dict[str, Any]] = None, **kwargs):
+    def _getFilteredContainersForStack(self, machine_definition: "DefinitionContainerInterface" = None, material_metadata: Optional[List[Dict[str, Any]]] = None, **kwargs):
         # Fill in any default values.
         if machine_definition is None:
             machine_definition = Application.getInstance().getGlobalContainerStack().getBottom()

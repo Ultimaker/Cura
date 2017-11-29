@@ -4,7 +4,7 @@
 import os.path
 import urllib
 import uuid
-from typing import Dict, Union
+from typing import Any, Dict, List, Union
 
 from PyQt5.QtCore import QObject, QUrl, QVariant
 from UM.FlameProfiler import pyqtSlot
@@ -677,27 +677,29 @@ class ContainerManager(QObject):
         machine_definition = global_stack.getBottom()
 
         active_stacks = ExtruderManager.getInstance().getActiveGlobalAndExtruderStacks()
-        material_containers = [stack.material for stack in active_stacks]
+        if active_stacks is None:
+            return ""
+        material_metadatas = [stack.material.getMetaData() for stack in active_stacks]
 
         result = self._duplicateQualityOrQualityChangesForMachineType(quality_name, base_name,
                     QualityManager.getInstance().getParentMachineDefinition(machine_definition),
-                    material_containers)
+                    material_metadatas)
         return result[0].getName() if result else ""
 
     ##  Duplicate a quality or quality changes profile specific to a machine type
     #
-    #   \param quality_name \type{str} the name of the quality or quality changes container to duplicate.
-    #   \param base_name \type{str} the desired name for the new container.
-    #   \param machine_definition \type{DefinitionContainer}
-    #   \param material_instances \type{List[InstanceContainer]}
-    #   \return \type{str} the name of the newly created container.
-    def _duplicateQualityOrQualityChangesForMachineType(self, quality_name, base_name, machine_definition, material_instances):
+    #   \param quality_name The name of the quality or quality changes container to duplicate.
+    #   \param base_name The desired name for the new container.
+    #   \param machine_definition The machine with the specific machine type.
+    #   \param material_metadatas Metadata of materials
+    #   \return List of duplicated quality profiles.
+    def _duplicateQualityOrQualityChangesForMachineType(self, quality_name: str, base_name: str, machine_definition: DefinitionContainer, material_metadatas: List[Dict[str, Any]]) -> List[InstanceContainer]:
         Logger.log("d", "Attempting to duplicate the quality %s", quality_name)
 
         if base_name is None:
             base_name = quality_name
         # Try to find a Quality with the name.
-        container = QualityManager.getInstance().findQualityByName(quality_name, machine_definition, material_instances)
+        container = QualityManager.getInstance().findQualityByName(quality_name, machine_definition, material_metadatas)
         if container:
             Logger.log("d", "We found a quality to duplicate.")
             return self._duplicateQualityForMachineType(container, base_name, machine_definition)
@@ -706,7 +708,7 @@ class ContainerManager(QObject):
         return self._duplicateQualityChangesForMachineType(quality_name, base_name, machine_definition)
 
     # Duplicate a quality profile
-    def _duplicateQualityForMachineType(self, quality_container, base_name, machine_definition):
+    def _duplicateQualityForMachineType(self, quality_container, base_name, machine_definition) -> List[InstanceContainer]:
         if base_name is None:
             base_name = quality_container.getName()
         new_name = self._container_registry.uniqueName(base_name)
@@ -730,7 +732,7 @@ class ContainerManager(QObject):
         return new_change_instances
 
     #  Duplicate a quality changes container
-    def _duplicateQualityChangesForMachineType(self, quality_changes_name, base_name, machine_definition):
+    def _duplicateQualityChangesForMachineType(self, quality_changes_name, base_name, machine_definition) -> List[InstanceContainer]:
         new_change_instances = []
         for container in QualityManager.getInstance().findQualityChangesByName(quality_changes_name,
                                                               machine_definition):
