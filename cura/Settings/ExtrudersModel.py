@@ -8,8 +8,9 @@ from UM.i18n import i18nCatalog
 import UM.Qt.ListModel
 from UM.Application import Application
 import UM.FlameProfiler
-from cura.Settings.ExtruderManager import ExtruderManager
-from cura.Settings.ExtruderStack import ExtruderStack #To listen to changes on the extruders.
+from UM.Settings.ContainerRegistry import ContainerRegistry #To listen for changes to the materials.
+
+from cura.Settings.ExtruderStack import ExtruderStack  # To listen to changes on the extruders.
 
 catalog = i18nCatalog("cura")
 
@@ -68,7 +69,6 @@ class ExtrudersModel(UM.Qt.ListModel.ListModel):
         self._update_extruder_timer.setSingleShot(True)
         self._update_extruder_timer.timeout.connect(self.__updateExtruders)
 
-        self._add_global = False
         self._simple_names = False
 
         self._active_machine_extruders = []  # type: Iterable[ExtruderStack]
@@ -76,20 +76,9 @@ class ExtrudersModel(UM.Qt.ListModel.ListModel):
 
         # Listen to changes
         Application.getInstance().globalContainerStackChanged.connect(self._extrudersChanged)  # When the machine is swapped we must update the active machine extruders
-        ExtruderManager.getInstance().extrudersChanged.connect(self._extrudersChanged)  # When the extruders change we must link to the stack-changed signal of the new extruder
+        Application.getInstance().getExtruderManager().extrudersChanged.connect(self._extrudersChanged)  # When the extruders change we must link to the stack-changed signal of the new extruder
+        ContainerRegistry.getInstance().containerMetaDataChanged.connect(self._onExtruderStackContainersChanged)  # When meta data from a material container changes we must update
         self._extrudersChanged()  # Also calls _updateExtruders
-
-    def setAddGlobal(self, add):
-        if add != self._add_global:
-            self._add_global = add
-            self._updateExtruders()
-            self.addGlobalChanged.emit()
-
-    addGlobalChanged = pyqtSignal()
-
-    @pyqtProperty(bool, fset = setAddGlobal, notify = addGlobalChanged)
-    def addGlobal(self):
-        return self._add_global
 
     addOptionalExtruderChanged = pyqtSignal()
 
@@ -140,7 +129,7 @@ class ExtrudersModel(UM.Qt.ListModel.ListModel):
 
         # Link to new extruders
         self._active_machine_extruders = []
-        extruder_manager = ExtruderManager.getInstance()
+        extruder_manager = Application.getInstance().getExtruderManager()
         for extruder in extruder_manager.getExtruderStacks():
             extruder.containersChanged.connect(self._onExtruderStackContainersChanged)
             self._active_machine_extruders.append(extruder)
@@ -173,24 +162,10 @@ class ExtrudersModel(UM.Qt.ListModel.ListModel):
         global_container_stack = Application.getInstance().getGlobalContainerStack()
         if global_container_stack:
 
-            # TODO: remove this - CURA-4482
-            if self._add_global:
-                material = global_container_stack.material
-                color = material.getMetaDataEntry("color_code", default = self.defaultColors[0]) if material else self.defaultColors[0]
-                item = {
-                    "id": global_container_stack.getId(),
-                    "name": catalog.i18nc("@menuitem", "Global"),
-                    "color": color,
-                    "index": -1,
-                    "definition": ""
-                }
-                items.append(item)
-                extruders_changed = True
-
             # get machine extruder count for verification
             machine_extruder_count = global_container_stack.getProperty("machine_extruder_count", "value")
 
-            for extruder in ExtruderManager.getInstance().getMachineExtruders(global_container_stack.getId()):
+            for extruder in Application.getInstance().getExtruderManager().getMachineExtruders(global_container_stack.getId()):
                 position = extruder.getMetaDataEntry("position", default = "0")  # Get the position
                 try:
                     position = int(position)
