@@ -8,7 +8,6 @@ from UM.i18n import i18nCatalog
 import UM.Qt.ListModel
 from UM.Application import Application
 import UM.FlameProfiler
-from UM.Settings.ContainerRegistry import ContainerRegistry #To listen for changes to the materials.
 
 from cura.Settings.ExtruderStack import ExtruderStack  # To listen to changes on the extruders.
 
@@ -77,7 +76,7 @@ class ExtrudersModel(UM.Qt.ListModel.ListModel):
         # Listen to changes
         Application.getInstance().globalContainerStackChanged.connect(self._extrudersChanged)  # When the machine is swapped we must update the active machine extruders
         Application.getInstance().getExtruderManager().extrudersChanged.connect(self._extrudersChanged)  # When the extruders change we must link to the stack-changed signal of the new extruder
-        ContainerRegistry.getInstance().containerMetaDataChanged.connect(self._onExtruderStackContainersChanged)  # When meta data from a material container changes we must update
+        Application.getInstance().getContainerRegistry().containerMetaDataChanged.connect(self._onExtruderStackContainersChanged)  # When meta data from a material container changes we must update
         self._extrudersChanged()  # Also calls _updateExtruders
 
     addOptionalExtruderChanged = pyqtSignal()
