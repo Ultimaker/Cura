@@ -126,7 +126,7 @@ Section "Install Arduino Drivers"
 SectionEnd
 
 Section "Open STL files with Cura"
-   ${registerExtension} "$INSTDIR\Cura.exe.exe" ".stl" "STL_File"
+   ${registerExtension} "$INSTDIR\Cura.exe" ".stl" "STL_File"
 SectionEnd
 
 Section /o "Open OBJ files with Cura"
