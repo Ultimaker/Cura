@@ -95,10 +95,11 @@ numpy.seterr(all="ignore")
 MYPY = False
 if not MYPY:
     try:
-        from cura.CuraVersion import CuraVersion, CuraBuildType
+        from cura.CuraVersion import CuraVersion, CuraBuildType, CuraDebugMode
     except ImportError:
         CuraVersion = "master"  # [CodeStyle: Reflecting imported value]
         CuraBuildType = ""
+        CuraDebugMode = False
 
 
 class CuraApplication(QtApplication):
@@ -205,9 +206,8 @@ class CuraApplication(QtApplication):
 
         self._additional_components = {} # Components to add to certain areas in the interface
 
-        is_debug_mode = CuraBuildType.strip().lower() == "debug"
         super().__init__(name = "cura", version = CuraVersion, buildtype = CuraBuildType,
-                         is_debug_mode = is_debug_mode,
+                         is_debug_mode = CuraDebugMode,
                          tray_icon_name = "cura-icon-32.png")
 
         self.default_theme = "cura-light"
