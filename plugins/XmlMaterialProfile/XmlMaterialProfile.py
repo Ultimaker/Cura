@@ -491,8 +491,6 @@ class XmlMaterialProfile(InstanceContainer):
         meta_data["properties"] = property_values
         meta_data["definition"] = "fdmprinter"
 
-        self.setDefinition("fdmprinter")
-
         common_compatibility = True
         settings = data.iterfind("./um:settings/um:setting", self.__namespaces)
         for entry in settings:
