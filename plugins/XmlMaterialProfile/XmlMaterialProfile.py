@@ -17,7 +17,6 @@ import UM.Dictionary
 from UM.Settings.InstanceContainer import InstanceContainer
 from UM.Settings.ContainerRegistry import ContainerRegistry
 
-
 ##  Handles serializing and deserializing material containers from an XML file
 class XmlMaterialProfile(InstanceContainer):
     CurrentFdmMaterialVersion = "1.3"
@@ -761,8 +760,6 @@ class XmlMaterialProfile(InstanceContainer):
                     if not variant_containers:
                         # It is not really properly defined what "ID" is so also search for variants by name.
                         variant_containers = ContainerRegistry.getInstance().findInstanceContainersMetadata(definition = machine_id, name = hotend_id)
-                    if not variant_containers:
-                        continue
 
                     hotend_compatibility = machine_compatibility
                     for entry in hotend.iterfind("./um:setting", cls.__namespaces):
@@ -781,7 +778,11 @@ class XmlMaterialProfile(InstanceContainer):
                         new_hotend_material_metadata = {}
 
                     new_hotend_material_metadata.update(base_metadata)
-                    new_hotend_material_metadata["variant"] = variant_containers[0]["id"]
+                    if variant_containers:
+                        new_hotend_material_metadata["variant"] = variant_containers[0]["id"]
+                    else:
+                        new_hotend_material_metadata["variant"] = hotend_id
+                        _with_missing_variants.append(new_hotend_material_metadata)
                     new_hotend_material_metadata["compatible"] = hotend_compatibility
                     new_hotend_material_metadata["machine_manufacturer"] = machine_manufacturer
                     new_hotend_material_metadata["id"] = new_hotend_id
@@ -877,3 +878,21 @@ def _indent(elem, level = 0):
 # before the last }
 def _tag_without_namespace(element):
     return element.tag[element.tag.rfind("}") + 1:]
+
+#While loading XML profiles, some of these profiles don't know what variant
+#they belong to. We'd like to search by the machine ID and the variant's
+#name, but we don't know the variant's ID. Not all variants have been loaded
+#yet so we can't run a filter on the name and machine. The ID is unknown
+#so we can't lazily load the variant either. So we have to wait until all
+#the rest is loaded properly and then assign the correct variant to the
+#material files that were missing it.
+_with_missing_variants = []
+def _fillMissingVariants():
+    registry = ContainerRegistry.getInstance()
+    for variant_metadata in _with_missing_variants:
+        variants = registry.findContainersMetadata(definition = variant_metadata["definition"], name = variant_metadata["variant"])
+        if not variants:
+            Logger.log("w", "Could not find variant for variant-specific material {material_id}.".format(material_id = variant_metadata["id"]))
+            continue
+        variant_metadata["variant"] = variants[0]["id"]
+ContainerRegistry.allMetadataLoaded.connect(_fillMissingVariants)
