@@ -15,6 +15,8 @@ UM.Dialog
     height: minimumHeight
     title: catalog.i18nc("@title:window", "User Agreement")
 
+    disableKeyButtons: false;
+
     TextArea
     {
         anchors.top: parent.top
