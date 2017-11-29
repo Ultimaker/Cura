@@ -565,6 +565,7 @@ class XmlMaterialProfile(InstanceContainer):
                     # Don't use setMetadata, as that overrides it for all materials with same base file
                     new_material.getMetaData()["compatible"] = machine_compatibility
                     new_material.getMetaData()["machine_manufacturer"] = machine_manufacturer
+                    new_material.getMetaData()["definition"] = machine_id
 
                     new_material.setCachedValues(cached_machine_setting_properties)
 
@@ -615,11 +616,11 @@ class XmlMaterialProfile(InstanceContainer):
                     new_hotend_material.setMetaData(copy.deepcopy(self.getMetaData()))
                     new_hotend_material.getMetaData()["id"] = new_hotend_id
                     new_hotend_material.getMetaData()["name"] = self.getName()
-                    new_hotend_material.setDefinition(machine_id)
                     new_hotend_material.getMetaData()["variant"] = variant_containers[0]["id"]
                     # Don't use setMetadata, as that overrides it for all materials with same base file
                     new_hotend_material.getMetaData()["compatible"] = hotend_compatibility
                     new_hotend_material.getMetaData()["machine_manufacturer"] = machine_manufacturer
+                    new_hotend_material.getMetaData()["definition"] = machine_id
 
                     cached_hotend_setting_properties = cached_machine_setting_properties.copy()
                     cached_hotend_setting_properties.update(hotend_setting_values)
@@ -748,6 +749,7 @@ class XmlMaterialProfile(InstanceContainer):
                     new_material_metadata["id"] = new_material_id
                     new_material_metadata["compatible"] = machine_compatibility
                     new_material_metadata["machine_manufacturer"] = machine_manufacturer
+                    new_material_metadata["definition"] = machine_id
 
                     if len(found_materials) == 0: #This is a new material.
                         result_metadata.append(new_material_metadata)
@@ -785,6 +787,7 @@ class XmlMaterialProfile(InstanceContainer):
                     new_hotend_material_metadata["compatible"] = hotend_compatibility
                     new_hotend_material_metadata["machine_manufacturer"] = machine_manufacturer
                     new_hotend_material_metadata["id"] = new_hotend_id
+                    new_hotend_material_metadata["definition"] = machine_id
 
                     if len(found_materials) == 0:
                         result_metadata.append(new_hotend_material_metadata)
