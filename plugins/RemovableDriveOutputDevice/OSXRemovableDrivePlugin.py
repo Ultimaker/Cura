@@ -4,8 +4,6 @@
 
 from . import RemovableDrivePlugin
 
-from UM.Logger import Logger
-
 import subprocess
 import os
 
@@ -15,12 +13,12 @@ import plistlib
 class OSXRemovableDrivePlugin(RemovableDrivePlugin.RemovableDrivePlugin):
     def checkRemovableDrives(self):
         drives = {}
-        p = subprocess.Popen(["system_profiler", "SPUSBDataType", "-xml"], stdout = subprocess.PIPE)
+        p = subprocess.Popen(["system_profiler", "SPUSBDataType", "-xml"], stdout = subprocess.PIPE, stderr = subprocess.PIPE)
         plist = plistlib.loads(p.communicate()[0])
 
         result = self._recursiveSearch(plist, "removable_media")
 
-        p = subprocess.Popen(["system_profiler", "SPCardReaderDataType", "-xml"], stdout=subprocess.PIPE)
+        p = subprocess.Popen(["system_profiler", "SPCardReaderDataType", "-xml"], stdout=subprocess.PIPE, stderr = subprocess.PIPE)
         plist = plistlib.loads(p.communicate()[0])
 
         result.extend(self._recursiveSearch(plist, "removable_media"))

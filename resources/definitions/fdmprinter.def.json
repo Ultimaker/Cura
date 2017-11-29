@@ -1394,7 +1394,7 @@
                 "infill_pattern":
                 {
                     "label": "Infill Pattern",
-                    "description": "The pattern of the infill material of the print. The line and zig zag infill swap direction on alternate layers, reducing material cost. The grid, triangle, cubic, octet, quarter cubic and concentric patterns are fully printed every layer. Cubic, quarter cubic and octet infill change with every layer to provide a more equal distribution of strength over each direction.",
+                    "description": "The pattern of the infill material of the print. The line and zig zag infill swap direction on alternate layers, reducing material cost. The grid, triangle, tri-hexagon, cubic, octet, quarter cubic, cross and concentric patterns are fully printed every layer. Cubic, quarter cubic and octet infill change with every layer to provide a more equal distribution of strength over each direction.",
                     "type": "enum",
                     "options":
                     {
@@ -4131,30 +4131,6 @@
                     "settable_per_mesh": false,
                     "settable_per_extruder": true,
                     "limit_to_extruder": "adhesion_extruder_nr"
-                },
-                "z_offset_layer_0":
-                {
-                    "label": "Initial Layer Z Offset",
-                    "description": "The extruder is offset from the normal height of the first layer by this amount. It can be positive (raised) or negative (lowered). Some filament types adhere to the build plate better if the extruder is raised slightly.",
-                    "unit": "mm",
-                    "type": "float",
-                    "default_value": 0,
-                    "minimum_value_warning": "0",
-                    "maximum_value_warning": "layer_height_0",
-                    "enabled": "resolveOrValue('adhesion_type') != 'raft'",
-                    "settable_per_mesh": false,
-                    "settable_per_extruder": false
-                },
-                "z_offset_taper_layers":
-                {
-                    "label": "Z Offset Taper Layers",
-                    "description": "When non-zero, the Z offset is reduced to 0 over that many layers. A value of 0 means that the Z offset remains constant for all the layers in the print.",
-                    "type": "int",
-                    "default_value": 0,
-                    "minimum_value": "0",
-                    "enabled": "resolveOrValue('adhesion_type') != 'raft' and z_offset_layer_0 != 0",
-                    "settable_per_mesh": false,
-                    "settable_per_extruder": false
                 },
                 "raft_margin":
                 {
