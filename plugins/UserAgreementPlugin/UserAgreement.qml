@@ -15,7 +15,7 @@ UM.Dialog
     height: minimumHeight
     title: catalog.i18nc("@title:window", "User Agreement")
 
-    disableKeyButtons: false;
+    disableKeyButtons: true
 
     TextArea
     {
