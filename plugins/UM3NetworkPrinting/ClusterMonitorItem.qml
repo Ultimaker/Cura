@@ -62,7 +62,6 @@ Component
             }
         }
 
-
         ScrollView
         {
             id: printerScrollView
@@ -93,10 +92,10 @@ Component
             }
         }
 
-        /*PrinterVideoStream
+        PrinterVideoStream
         {
-            visible: OutputDevice.selectedPrinterName != ""
+            visible: OutputDevice.activePrinter != null
             anchors.fill:parent
-        }*/
+        }
     }
 }

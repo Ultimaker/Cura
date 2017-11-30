@@ -17,7 +17,7 @@ Item
     MouseArea
     {
       anchors.fill: parent
-      onClicked: OutputDevice.selectAutomaticPrinter()
+      onClicked: OutputDevice.setActivePrinter(null)
       z: 0
     }
 

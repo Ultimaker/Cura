@@ -61,11 +61,11 @@ Rectangle
     {
         id: mouse
         anchors.fill:parent
-        onClicked: OutputDevice.selectPrinter(printer.unique_name, printer.friendly_name)
+        onClicked: OutputDevice.setActivePrinter(printer)
         hoverEnabled: true;
 
         // Only clickable if no printer is selected
-        enabled: OutputDevice.selectedPrinterName == "" && printer.state !== "unreachable"
+        enabled: OutputDevice.activePrinter == null && printer.state !== "unreachable"
     }
 
     Row

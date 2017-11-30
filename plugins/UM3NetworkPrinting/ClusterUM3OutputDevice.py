@@ -15,10 +15,12 @@ from cura.PrinterOutput.MaterialOutputModel import MaterialOutputModel
 
 from PyQt5.QtNetwork import QNetworkRequest, QNetworkReply
 from PyQt5.QtGui import QDesktopServices
-from PyQt5.QtCore import pyqtSlot, QUrl, pyqtSignal, pyqtProperty
+from PyQt5.QtCore import pyqtSlot, QUrl, pyqtSignal, pyqtProperty, QObject
 
 from time import time
 from datetime import datetime
+from typing import Optional
+
 import json
 import os
 
@@ -27,6 +29,7 @@ i18n_catalog = i18nCatalog("cura")
 
 class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
     printJobsChanged = pyqtSignal()
+    activePrinterChanged = pyqtSignal()
 
     # This is a bit of a hack, as the notify can only use signals that are defined by the class that they are in.
     # Inheritance doesn't seem to work. Tying them together does work, but i'm open for better suggestions.
@@ -53,6 +56,8 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
 
         self._error_message = None
         self._progress_message = None
+
+        self._active_printer = None  # type: Optional[PrinterOutputModel]
 
     def requestWrite(self, nodes, file_name=None, filter_by_machine=False, file_handler=None, **kwargs):
         # Notify the UI that a switch to the print monitor should happen
@@ -105,11 +110,20 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
 
         self.postFormWithParts("print_jobs/", parts, onFinished=self._onPostPrintJobFinished, onProgress=self._onUploadPrintJobProgress)
 
+    @pyqtProperty(QObject, notify=activePrinterChanged)
+    def activePrinter(self) -> Optional["PrinterOutputModel"]:
+        return self._active_printer
+
+    @pyqtSlot(QObject)
+    def setActivePrinter(self, printer):
+        if self._active_printer != printer:
+            self._active_printer = printer
+            self.activePrinterChanged.emit()
+
     def _onPostPrintJobFinished(self, reply):
         self._progress_message.hide()
         self._compressing_gcode = False
         self._sending_gcode = False
-        Application.getInstance().showPrintMonitor.emit(False)
 
     def _onUploadPrintJobProgress(self, bytes_sent, bytes_total):
         if bytes_total > 0:

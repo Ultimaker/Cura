@@ -70,8 +70,10 @@ Item
 
     property variant statusColor:
     {
-        if(!printerConnected || !printerAcceptsCommands)
+        if(!printerConnected || !printerAcceptsCommands || activePrinter == null)
+        {
             return UM.Theme.getColor("text");
+        }
 
         switch(activePrinter.state)
         {
@@ -117,7 +119,10 @@ Item
         }
 
         var printerOutputDevice = Cura.MachineManager.printerOutputDevices[0]
-
+        if(activePrinter == null)
+        {
+            return "";
+        }
         if(activePrinter.state == "maintenance")
         {
             return catalog.i18nc("@label:MonitorStatus", "In maintenance. Please check the printer");
@@ -262,7 +267,7 @@ Item
             property bool userClicked: false
             property string lastJobState: ""
 
-            visible: printerConnected && activePrinter.canPause
+            visible: printerConnected && activePrinter != null &&activePrinter.canPause
             enabled: (!userClicked) && printerConnected && printerAcceptsCommands && activePrintJob != null &&
                      (["paused", "printing"].indexOf(activePrintJob.state) >= 0)
 
@@ -305,7 +310,7 @@ Item
         {
             id: abortButton
 
-            visible: printerConnected && activePrinter.canAbort
+            visible: printerConnected && activePrinter != null && activePrinter.canAbort
             enabled: printerConnected && printerAcceptsCommands && activePrintJob != null &&
                      (["paused", "printing", "pre_print"].indexOf(activePrintJob.state) >= 0)
 
