@@ -2,13 +2,13 @@
 # Copyright (C) 2017 Ultimaker
 # This file is distributed under the same license as the Cura package.
 # Ruben Dulek <r.dulek@ultimaker.com>, 2017.
-#
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Cura 3.0\n"
 "Report-Msgid-Bugs-To: r.dulek@ultimaker.com\n"
 "POT-Creation-Date: 2017-11-21 16:58+0000\n"
-"PO-Revision-Date: 2017-11-15 21:07+0900\n"
+"PO-Revision-Date: 2017-11-30 13:05+0100\n"
 "Last-Translator: Brule\n"
 "Language-Team: Brule\n"
 "Language: ko_KR\n"
@@ -610,27 +610,27 @@ msgstr "초기 레이어의 높이 (mm)입니다. 두꺼운 초기 레이어는 
 #: fdmprinter.def.json
 msgctxt "slicing_tolerance label"
 msgid "Slicing Tolerance"
-msgstr ""
+msgstr "슬라이싱 허용 오차"
 
 #: fdmprinter.def.json
 msgctxt "slicing_tolerance description"
 msgid "How to slice layers with diagonal surfaces. The areas of a layer can be generated based on where the middle of the layer intersects the surface (Middle). Alternatively each layer can have the areas which fall inside of the volume throughout the height of the layer (Exclusive) or a layer has the areas which fall inside anywhere within the layer (Inclusive). Exclusive retains the most details, Inclusive makes for the best fit and Middle takes the least time to process."
-msgstr ""
+msgstr "레이어를 대각선 서피스로 슬라이스하는 방법 레이어 영역은 레이어의 중앙이 서피스와 교차하는 부분(중간)을 기준으로 생성됩니다. 또는 각 레이어에 레이어의 높이 전체의 볼륨에 들어가는 영역(배타)이나 레이어 안의 어느 지점에 들어가는 영역(중복)이 있을 수 있습니다. 배타는 가장 많은 디테일을 포함하고, 중복은 베스트 피트를 만들 수 있으며, 중간은 처리 시간이 가장 짧습니다."
 
 #: fdmprinter.def.json
 msgctxt "slicing_tolerance option middle"
 msgid "Middle"
-msgstr ""
+msgstr "중간"
 
 #: fdmprinter.def.json
 msgctxt "slicing_tolerance option exclusive"
 msgid "Exclusive"
-msgstr ""
+msgstr "배타"
 
 #: fdmprinter.def.json
 msgctxt "slicing_tolerance option inclusive"
 msgid "Inclusive"
-msgstr ""
+msgstr "중복"
 
 #: fdmprinter.def.json
 msgctxt "line_width label"
@@ -785,7 +785,7 @@ msgstr "내관"
 #: fdmprinter.def.json
 msgctxt "wall_extruder_nr label"
 msgid "Wall Extruder"
-msgstr ""
+msgstr "벽 압출기"
 
 #: fdmprinter.def.json
 msgctxt "wall_extruder_nr description"
@@ -805,7 +805,7 @@ msgstr "외벽 인쇄에 사용되는 압출기 트레인. 이것은 다중 압�
 #: fdmprinter.def.json
 msgctxt "wall_x_extruder_nr label"
 msgid "Inner Wall Extruder"
-msgstr ""
+msgstr "내벽 압출기"
 
 #: fdmprinter.def.json
 msgctxt "wall_x_extruder_nr description"
@@ -1385,7 +1385,7 @@ msgstr "충진 패턴"
 #: fdmprinter.def.json
 msgctxt "infill_pattern description"
 msgid "The pattern of the infill material of the print. The line and zig zag infill swap direction on alternate layers, reducing material cost. The grid, triangle, tri-hexagon, cubic, octet, quarter cubic, cross and concentric patterns are fully printed every layer. Cubic, quarter cubic and octet infill change with every layer to provide a more equal distribution of strength over each direction."
-msgstr ""
+msgstr "프린트 충진 재료의 패턴입니다. 선과 갈지자형 충진이 레이어를 하나 걸러서 방향을 바꾸므로 재료비가 절감됩니다. 격자, 삼각형, 삼육각형, 입방체, 옥텟, 4분 입방체, 십자, 동심원 패턴이 레이어마다 완전히 인쇄됩니다. 입방체, 4분 입방체, 옥텟 충진이 레이어마다 변경되므로 각 방향으로 힘이 더 균등하게 분산됩니다."
 
 #: fdmprinter.def.json
 msgctxt "infill_pattern option grid"
@@ -1405,7 +1405,7 @@ msgstr "삼각형"
 #: fdmprinter.def.json
 msgctxt "infill_pattern option trihexagon"
 msgid "Tri-Hexagon"
-msgstr ""
+msgstr "삼육각형"
 
 #: fdmprinter.def.json
 msgctxt "infill_pattern option cubic"
@@ -1460,7 +1460,7 @@ msgstr "충진 선 연결"
 #: fdmprinter.def.json
 msgctxt "zig_zaggify_infill description"
 msgid "Connect the ends where the infill pattern meets the inner wall using a line which follows the shape of the inner wall. Enabling this setting can make the infill adhere to the walls better and reduce the effects of infill on the quality of vertical surfaces. Disabling this setting reduces the amount of material used."
-msgstr ""
+msgstr "내벽의 형태를 따라가는 선을 사용하여 충진 패턴과 내벽이 만나는 끝을 연결합니다. 이 설정을 사용하면 충진이 벽에 더 잘 점착되어 충진이 수직 서피스의 품질에 미치는 영향을 줄일 수 있습니다. 이 설정을 해제하면 사용되는 재료의 양이 줄어듭니다."
 
 #: fdmprinter.def.json
 msgctxt "infill_angles label"
@@ -1475,22 +1475,22 @@ msgstr "사용할 정수선 방향 목록. 목록의 요소는 레이어가 진�
 #: fdmprinter.def.json
 msgctxt "infill_offset_x label"
 msgid "Infill X Offset"
-msgstr ""
+msgstr "충진 X 오프셋"
 
 #: fdmprinter.def.json
 msgctxt "infill_offset_x description"
 msgid "The infill pattern is offset this distance along the X axis."
-msgstr ""
+msgstr "충진 패턴이 X축을 따라 이 거리만큼 이동합니다."
 
 #: fdmprinter.def.json
 msgctxt "infill_offset_y label"
 msgid "Infill Y Offset"
-msgstr ""
+msgstr "충진 Y 오프셋"
 
 #: fdmprinter.def.json
 msgctxt "infill_offset_y description"
 msgid "The infill pattern is offset this distance along the Y axis."
-msgstr ""
+msgstr "충진 패턴이 Y축을 따라 이 거리만큼 이동합니다."
 
 #: fdmprinter.def.json
 msgctxt "sub_div_rad_add label"
@@ -1805,22 +1805,22 @@ msgstr "사용 된 필라멘트의 직경을 조정합니다. 이 값을 사용 
 #: fdmprinter.def.json
 msgctxt "material_adhesion_tendency label"
 msgid "Adhesion Tendency"
-msgstr ""
+msgstr "점착 기질"
 
 #: fdmprinter.def.json
 msgctxt "material_adhesion_tendency description"
 msgid "Surface adhesion tendency."
-msgstr ""
+msgstr "서피스의 점착 기질입니다."
 
 #: fdmprinter.def.json
 msgctxt "material_surface_energy label"
 msgid "Surface Energy"
-msgstr ""
+msgstr "서피스 에너지"
 
 #: fdmprinter.def.json
 msgctxt "material_surface_energy description"
 msgid "Surface energy."
-msgstr ""
+msgstr "서피스의 에너지입니다."
 
 #: fdmprinter.def.json
 msgctxt "material_flow label"
@@ -3552,7 +3552,7 @@ msgctxt "skirt_gap description"
 msgid ""
 "The horizontal distance between the skirt and the first layer of the print.\n"
 "This is the minimum distance. Multiple skirt lines will extend outwards from this distance."
-msgstr ""
+msgstr "프린트의 스커트와 첫 번째 레이어 사이의 수직 거리입니다.\n이는 최소 거리입니다. 여러 개의 스커트 선이 이 거리에서 바깥쪽으로 연장됩니다."
 
 #: fdmprinter.def.json
 msgctxt "skirt_brim_minimal_length label"
@@ -3612,7 +3612,7 @@ msgstr "Raft 부드럽게하기"
 #: fdmprinter.def.json
 msgctxt "raft_smoothing description"
 msgid "This setting controls how much inner corners in the raft outline are rounded. Inward corners are rounded to a semi circle with a radius equal to the value given here. This setting also removes holes in the raft outline which are smaller than such a circle."
-msgstr ""
+msgstr "이 설정은 래프트 윤곽의 안쪽 구석의 곡률을 제어합니다. 안쪽 구석이 여기에 지정된 값과 동일한 반경으로 반원 모양으로 휘어집니다. 또한 이 설정을 사용하면 래프트 윤곽에서 그러한 원보다 작은 구멍이 제거됩니다."
 
 #: fdmprinter.def.json
 msgctxt "raft_airgap label"
@@ -4087,12 +4087,12 @@ msgstr "일반적으로 큐라(Cura)는 메쉬의 작은 구멍을 꿰매 붙이
 #: fdmprinter.def.json
 msgctxt "meshfix_maximum_resolution label"
 msgid "Maximum Resolution"
-msgstr ""
+msgstr "최대 해상도"
 
 #: fdmprinter.def.json
 msgctxt "meshfix_maximum_resolution description"
 msgid "The minimum size of a line segment after slicing. If you increase this, the mesh will have a lower resolution. This may allow the printer to keep up with the speed it has to process g-code and will increase slice speed by removing details of the mesh that it can't process anyway."
-msgstr ""
+msgstr "슬라이딩 후의 선분의 최소 크기입니다. 이 값을 높이면 메쉬의 해상도가 낮아집니다. 그러면 프린터가 G 코드를 처리하는 데 필요한 속도를 유지할 수 있으며 처리할 수 없는 메쉬의 디테일이 제거되므로 슬라이드 속도가 높아집니다."
 
 #: fdmprinter.def.json
 msgctxt "multiple_mesh_overlap label"
@@ -4127,12 +4127,12 @@ msgstr "교차하는 메쉬로 교차하는 볼륨으로 전환하면 겹치는 
 #: fdmprinter.def.json
 msgctxt "remove_empty_first_layers label"
 msgid "Remove Empty First Layers"
-msgstr ""
+msgstr "비어 있는 첫 번째 레이어 제거"
 
 #: fdmprinter.def.json
 msgctxt "remove_empty_first_layers description"
 msgid "Remove empty layers beneath the first printed layer if they are present. Disabling this setting can cause empty first layers if the Slicing Tolerance setting is set to Exclusive or Middle."
-msgstr ""
+msgstr "첫 번째로 인쇄된 레이어 바로 아래의 비어 있는 레이어를 제거합니다(있는 경우). 이 설정을 해제하면 슬라이딩 허용 오차 설정을 배타 또는 중간으로 설정할 경우 첫 번째 레이어가 비어 있게 될 수 있습니다."
 
 #: fdmprinter.def.json
 msgctxt "blackmagic label"
@@ -4662,22 +4662,22 @@ msgstr "각 선분에 도입 된 임의의 점 사이의 평균 거리입니다.
 #: fdmprinter.def.json
 msgctxt "flow_rate_max_extrusion_offset label"
 msgid "Flow rate compensation max extrusion offset"
-msgstr ""
+msgstr "압출 속도 보상 최대 압출 오프셋"
 
 #: fdmprinter.def.json
 msgctxt "flow_rate_max_extrusion_offset description"
 msgid "The maximum distance in mm to compensate."
-msgstr ""
+msgstr "최대 보상 거리입니다(단위: mm)."
 
 #: fdmprinter.def.json
 msgctxt "flow_rate_extrusion_offset_factor label"
 msgid "Flow rate compensation factor"
-msgstr ""
+msgstr "압출 속도 보상 배율"
 
 #: fdmprinter.def.json
 msgctxt "flow_rate_extrusion_offset_factor description"
 msgid "The multiplication factor for the flow rate -> distance translation."
-msgstr ""
+msgstr "압출 속도를 거리로 변환하는 증배율입니다."
 
 #: fdmprinter.def.json
 msgctxt "wireframe_enabled label"
