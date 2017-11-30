@@ -350,12 +350,12 @@ Rectangle
                         var total_seconds = parseInt(base.printDuration.getDisplayString(UM.DurationFormat.Seconds))
 
                         // A message is created and displayed when the user hover the time label
-                        var tooltip_html = "<b>%1</b><br/><table>".arg(catalog.i18nc("@tooltip", "Time specification"));
+                        var tooltip_html = "<b>%1</b><br/><table width=\"100%\">".arg(catalog.i18nc("@tooltip", "Time specification"));
                         for(var feature in print_time)
                         {
                             if(!print_time[feature].isTotalDurationZero)
                             {
-                                tooltip_html += "<tr><td>" + feature + " (in a more verbose language):</td>" +
+                                tooltip_html += "<tr><td>" + feature + ":</td>" +
                                     "<td align=\"right\" valign=\"bottom\">&nbsp;&nbsp;%1</td>".arg(print_time[feature].getDisplayString(UM.DurationFormat.ISO8601).slice(0,-3)) +
                                     "<td align=\"right\" valign=\"bottom\">&nbsp;&nbsp;%1%</td>".arg(Math.round(100 * parseInt(print_time[feature].getDisplayString(UM.DurationFormat.Seconds)) / total_seconds)) +
                                     "</td></tr>";
