@@ -223,6 +223,7 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
                 Logger.log("w", "Received an invalid print jobs message: Not valid JSON.")
                 return
             print_jobs_seen = []
+            job_list_changed = False
             for print_job_data in result:
                 print_job = None
                 for job in self._print_jobs:
@@ -234,6 +235,8 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
                     print_job = PrintJobOutputModel(output_controller = ClusterUM3PrinterOutputController(self),
                                                     key = print_job_data["uuid"],
                                                     name = print_job_data["name"])
+                    job_list_changed = True
+                    self._print_jobs.append(print_job)
                 print_job.updateTimeTotal(print_job_data["time_total"])
                 print_job.updateTimeElapsed(print_job_data["time_elapsed"])
                 print_job.updateState(print_job_data["status"])
@@ -250,13 +253,18 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
                     printer.updateActivePrintJob(print_job)
 
                 print_jobs_seen.append(print_job)
-            for old_job in self._print_jobs:
-                if old_job not in print_jobs_seen and old_job.assignedPrinter:
-                    # Print job needs to be removed.
-                    old_job.assignedPrinter.updateActivePrintJob(None)
 
-            self._print_jobs = print_jobs_seen
-            self.printJobsChanged.emit()
+            # Check what jobs need to be removed.
+            removed_jobs = [print_job for print_job in self._print_jobs if print_job not in print_jobs_seen]
+            for removed_job in removed_jobs:
+                if removed_job.assignedPrinter:
+                    removed_job.assignedPrinter.updateActivePrintJob(None)
+                    self._print_jobs.remove(removed_job)
+                    job_list_changed = True
+
+            # Do a single emit for all print job changes.
+            if job_list_changed:
+                self.printJobsChanged.emit()
 
     def _onGetPrintersDataFinished(self, reply: QNetworkReply):
         status_code = reply.attribute(QNetworkRequest.HttpStatusCodeAttribute)
