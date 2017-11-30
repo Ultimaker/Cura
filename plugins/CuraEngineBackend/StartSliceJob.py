@@ -225,10 +225,10 @@ class StartSliceJob(Job):
         try:
             # any setting can be used as a token
             fmt = GcodeStartEndFormatter()
-            return str(fmt.format(value, **settings)).encode("utf-8")
+            return str(fmt.format(value, **settings))
         except:
             Logger.logException("w", "Unable to do token replacement on start/end gcode")
-            return str(value).encode("utf-8")
+            return str(value)
 
     ##  Create extruder message from stack
     def _buildExtruderMessage(self, stack):
