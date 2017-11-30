@@ -15,7 +15,7 @@ Item
     Label
     {
         id: materialLabel
-        text: printCoreConfiguration.activeMaterial.name
+        text: printCoreConfiguration.activeMaterial != null ? printCoreConfiguration.activeMaterial.name : ""
         elide: Text.ElideRight
         width: parent.width
         font: UM.Theme.getFont("very_small")

@@ -268,6 +268,9 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
                 return
             printer_list_changed = False
             # TODO: Ensure that printers that have been removed are also removed locally.
+
+            printers_seen = []
+
             for printer_data in result:
                 uuid = printer_data["uuid"]
 
@@ -282,6 +285,8 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
                     self._printers.append(printer)
                     printer_list_changed = True
 
+                printers_seen.append(printer)
+
                 printer.updateName(printer_data["friendly_name"])
                 printer.updateKey(uuid)
                 printer.updateType(printer_data["machine_variant"])
@@ -292,7 +297,11 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
 
                 for index in range(0, self._number_of_extruders):
                     extruder = printer.extruders[index]
-                    extruder_data = printer_data["configuration"][index]
+                    try:
+                        extruder_data = printer_data["configuration"][index]
+                    except IndexError:
+                        break
+
                     try:
                         hotend_id = extruder_data["print_core_id"]
                     except KeyError:
@@ -322,6 +331,14 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
                                                        color = color,
                                                        name = name)
                         extruder.updateActiveMaterial(material)
+            removed_printers = [printer for printer in self._printers if printer not in printers_seen]
+
+            for removed_printer in removed_printers:
+                self._printers.remove(removed_printer)
+                printer_list_changed = True
+                if self._active_printer == removed_printer:
+                    self._active_printer = None
+                    self.activePrinterChanged.emit()
 
             if printer_list_changed:
                 self.printersChanged.emit()

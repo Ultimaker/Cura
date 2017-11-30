@@ -82,7 +82,10 @@ Item
             case "error":
                 return UM.Theme.getColor("status_stopped");
         }
-
+        if(base.activePrintJob == null)
+        {
+            return UM.Theme.getColor("text");
+        }
         switch(base.activePrintJob.state)
         {
             case "printing":
