@@ -269,14 +269,7 @@ Rectangle
                                     case "sent_to_printer":
                                         return catalog.i18nc("@label", "Preparing to print")
                                     case "queued":
-                                        if (printJob.configuration_changes_required != null && printJob.configuration_changes_required.length !== 0)
-                                        {
                                             return catalog.i18nc("@label:status", "Action required");
-                                        }
-                                        else
-                                        {
-                                            return "";
-                                        }
                                     case "pausing":
                                     case "paused":
                                         return catalog.i18nc("@label:status", "Paused");
@@ -334,10 +327,7 @@ Rectangle
                             {
                                 if(printJob.state === "queued")
                                 {
-                                    if (printJob.configuration_changes_required != null && printJob.configuration_changes_required.length !== 0)
-                                    {
-                                        return "action-required-icon.svg";
-                                    }
+                                    return "action-required-icon.svg";
                                 }
                                 else if (printJob.state === "wait_cleanup")
                                 {
@@ -401,10 +391,7 @@ Rectangle
                                 case "wait_for_configuration":
                                     return catalog.i18nc("@label", "Not accepting print jobs")
                                 case "queued":
-                                    if (printJob.configuration_changes_required != undefined)
-                                    {
-                                        return catalog.i18nc("@label", "Waiting for configuration change");
-                                    }
+                                    return catalog.i18nc("@label", "Waiting for configuration change");
                                 default:
                                     return "";
                                 }

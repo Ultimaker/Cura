@@ -198,11 +198,17 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
                 print_job.updateTimeTotal(print_job_data["time_total"])
                 print_job.updateTimeElapsed(print_job_data["time_elapsed"])
                 print_job.updateState(print_job_data["status"])
+                print_job.updateOwner(print_job_data["owner"])
+                printer = None
                 if print_job.state != "queued":
                     # Print job should be assigned to a printer.
                     printer = self._getPrinterByKey(print_job_data["printer_uuid"])
-                    if printer:
-                        printer.updateActivePrintJob(print_job)
+                else:  # Status is queued
+                    # The job can "reserve" a printer if some changes are required.
+                    printer = self._getPrinterByKey(print_job_data["assigned_to"])
+
+                if printer:
+                    printer.updateActivePrintJob(print_job)
 
                 print_jobs_seen.append(print_job)
             for old_job in self._print_jobs:

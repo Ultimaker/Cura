@@ -2,6 +2,7 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from PyQt5.QtCore import pyqtSignal, pyqtProperty, QObject, pyqtSlot
+from typing import Optional
 MYPY = False
 if MYPY:
     from cura.PrinterOutput.PrinterOutputController import PrinterOutputController
@@ -15,6 +16,7 @@ class PrintJobOutputModel(QObject):
     nameChanged = pyqtSignal()
     keyChanged = pyqtSignal()
     assignedPrinterChanged = pyqtSignal()
+    ownerChanged = pyqtSignal()
 
     def __init__(self, output_controller: "PrinterOutputController", key: str = "", name: str = "", parent=None):
         super().__init__(parent)
@@ -24,7 +26,17 @@ class PrintJobOutputModel(QObject):
         self._time_elapsed = 0
         self._name = name  # Human readable name
         self._key = key  # Unique identifier
-        self._assigned_printer = None
+        self._assigned_printer = None  # type: Optional[PrinterOutputModel]
+        self._owner = ""  # Who started/owns the print job?
+
+    @pyqtProperty(str, notify=ownerChanged)
+    def owner(self):
+        return self._owner
+
+    def updateOwner(self, owner):
+        if self._owner != owner:
+            self._owner = owner
+            self.ownerChanged.emit()
 
     @pyqtProperty(QObject, notify=assignedPrinterChanged)
     def assignedPrinter(self):
