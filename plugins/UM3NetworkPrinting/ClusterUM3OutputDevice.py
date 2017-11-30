@@ -61,6 +61,14 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
 
         self._active_printer = None  # type: Optional[PrinterOutputModel]
 
+    @pyqtProperty(QObject, notify=activePrinterChanged)
+    def controlItem(self):
+        if self._active_printer is None:
+            return super().controlItem
+        else:
+            # Let cura use the default.
+            return None
+
     def requestWrite(self, nodes, file_name=None, filter_by_machine=False, file_handler=None, **kwargs):
         # Notify the UI that a switch to the print monitor should happen
         Application.getInstance().showPrintMonitor.emit(True)

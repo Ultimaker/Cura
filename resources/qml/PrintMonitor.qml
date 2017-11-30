@@ -45,7 +45,7 @@ Column
             Repeater
             {
                 id: extrudersRepeater
-                model: activePrinter.extruders
+                model: activePrinter!=null ? activePrinter.extruders : null
 
                 ExtruderBox
                 {
