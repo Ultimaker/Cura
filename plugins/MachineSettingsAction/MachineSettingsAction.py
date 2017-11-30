@@ -188,9 +188,8 @@ class MachineSettingsAction(MachineAction):
             # In other words: only continue for the UM2 (extended), but not for the UM2+
             return
 
+        stacks = ExtruderManager.getInstance().getExtruderStacks()
         has_materials = self._global_container_stack.getProperty("machine_gcode_flavor", "value") != "UltiGCode"
-
-        material_container = self._global_container_stack.material
 
         if has_materials:
             if "has_materials" in self._global_container_stack.getMetaData():
@@ -198,19 +197,23 @@ class MachineSettingsAction(MachineAction):
             else:
                 self._global_container_stack.addMetaDataEntry("has_materials", True)
 
-            # Set the material container to a sane default
-            if material_container == self._empty_container:
-                search_criteria = { "type": "material", "definition": "fdmprinter", "id": self._global_container_stack.getMetaDataEntry("preferred_material")}
-                materials = self._container_registry.findInstanceContainers(**search_criteria)
-                if materials:
-                    self._global_container_stack.material = materials[0]
+            # Set the material container for each extruder to a sane default
+            for stack in stacks:
+                material_container = stack.material
+                if material_container == self._empty_container:
+                    machine_approximate_diameter = str(round(self._global_container_stack.getProperty("material_diameter", "value")))
+                    search_criteria = { "type": "material", "definition": "fdmprinter", "id": self._global_container_stack.getMetaDataEntry("preferred_material"), "approximate_diameter": machine_approximate_diameter}
+                    materials = self._container_registry.findInstanceContainers(**search_criteria)
+                    if materials:
+                        stack.material = materials[0]
         else:
             # The metadata entry is stored in an ini, and ini files are parsed as strings only.
             # Because any non-empty string evaluates to a boolean True, we have to remove the entry to make it False.
             if "has_materials" in self._global_container_stack.getMetaData():
                 self._global_container_stack.removeMetaDataEntry("has_materials")
 
-            self._global_container_stack.material = ContainerRegistry.getInstance().getEmptyInstanceContainer()
+            for stack in stacks:
+                stack.material = ContainerRegistry.getInstance().getEmptyInstanceContainer()
 
         Application.getInstance().globalContainerStackChanged.emit()
 
