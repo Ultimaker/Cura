@@ -18,7 +18,7 @@ from PyQt5.QtGui import QDesktopServices
 from PyQt5.QtCore import pyqtSlot, QUrl, pyqtSignal, pyqtProperty
 
 from time import time
-
+from datetime import datetime
 import json
 import os
 
@@ -170,6 +170,19 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
     @pyqtSlot(int, result=str)
     def formatDuration(self, seconds):
         return Duration(seconds).getDisplayString(DurationFormat.Format.Short)
+
+    @pyqtSlot(int, result=str)
+    def getTimeCompleted(self, time_remaining):
+        current_time = time()
+        datetime_completed = datetime.fromtimestamp(current_time + time_remaining)
+        return "{hour:02d}:{minute:02d}".format(hour=datetime_completed.hour, minute=datetime_completed.minute)
+
+    @pyqtSlot(int, result=str)
+    def getDateCompleted(self, time_remaining):
+        current_time = time()
+        datetime_completed = datetime.fromtimestamp(current_time + time_remaining)
+
+        return (datetime_completed.strftime("%a %b ") + "{day}".format(day=datetime_completed.day)).upper()
 
     def _update(self):
         if not super()._update():
