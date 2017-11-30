@@ -238,12 +238,6 @@ class CuraContainerRegistry(ContainerRegistry):
                     if profile_index == 0:
                         # This is assumed to be the global profile
                         profile_id = (global_container_stack.getBottom().getId() + "_" + name_seed).lower().replace(" ", "_")
-                        result = self._configureProfile(profile, profile_id, new_name)
-                        if result is not None:
-                            return {"status": "error", "message": catalog.i18nc(
-                                "@info:status Don't translate the XML tags <filename> or <message>!",
-                                "Failed to import profile from <filename>{0}</filename>: <message>{1}</message>",
-                                file_name, result)}
 
                     elif len(machine_extruders) > profile_index:
                         # This is assumed to be an extruder profile
@@ -252,6 +246,14 @@ class CuraContainerRegistry(ContainerRegistry):
                             profile.addMetaDataEntry("extruder", extruder_id)
                         else:
                             profile.setMetaDataEntry("extruder", extruder_id)
+                        profile_id = (extruder_id + "_" + name_seed).lower().replace(" ", "_")
+
+                    result = self._configureProfile(profile, profile_id, new_name)
+                    if result is not None:
+                        return {"status": "error", "message": catalog.i18nc(
+                            "@info:status Don't translate the XML tags <filename> or <message>!",
+                            "Failed to import profile from <filename>{0}</filename>: <message>{1}</message>",
+                            file_name, result)}
 
                 return {"status": "ok", "message": catalog.i18nc("@info:status", "Successfully imported profile {0}", profile_or_list[0].getName())}
 
