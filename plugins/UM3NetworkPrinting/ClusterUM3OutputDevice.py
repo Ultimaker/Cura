@@ -106,8 +106,10 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
         self.postFormWithParts("print_jobs/", parts, onFinished=self._onPostPrintJobFinished, onProgress=self._onUploadPrintJobProgress)
 
     def _onPostPrintJobFinished(self, reply):
-        print("POST PRINTJOB DONE! YAY!", reply.readAll())
-        pass
+        self._progress_message.hide()
+        self._compressing_gcode = False
+        self._sending_gcode = False
+        Application.getInstance().showPrintMonitor.emit(False)
 
     def _onUploadPrintJobProgress(self, bytes_sent, bytes_total):
         if bytes_total > 0:

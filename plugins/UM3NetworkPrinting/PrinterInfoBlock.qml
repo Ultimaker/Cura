@@ -382,7 +382,7 @@ Rectangle
                                 {
                                 case "printing":
                                 case "post_print":
-                                    return catalog.i18nc("@label", "Finishes at: ") + OutputDevice.getTimeCompleted(printJob.time_total - printJob.time_elapsed)
+                                    return catalog.i18nc("@label", "Finishes at: ") + OutputDevice.getTimeCompleted(printJob.timeTotal - printJob.timeElapsed)
                                 case "wait_cleanup":
                                     return catalog.i18nc("@label", "Clear build plate")
                                 case "sent_to_printer":
