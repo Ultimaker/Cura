@@ -954,14 +954,6 @@ class ContainerManager(QObject):
             name_filter = "{0} ({1})".format(mime_type.comment, suffix_list)
             self._container_name_filters[name_filter] = entry
 
-    ##  Get containers filtered by machine type and material if required.
-    #
-    #   \param kwargs Initial search criteria that the containers need to match.
-    #
-    #   \return A list of containers matching the search criteria.
-    def _getFilteredContainers(self, **kwargs):
-        return QualityManager.getInstance()._getFilteredContainers(**kwargs)
-
     ##  Creates a unique ID for a container by prefixing the name with the stack ID.
     #
     #   This method creates a unique ID for a container by prefixing it with a specified stack ID.
