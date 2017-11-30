@@ -1825,7 +1825,7 @@ msgstr "Tipo di linea"
 #: /home/ruben/Projects/Cura/plugins/SimulationView/SimulationView.qml:104
 msgctxt "@label:listbox"
 msgid "Feedrate"
-msgstr "Velocità di alimentazione"
+msgstr "Velocità"
 
 #: /home/ruben/Projects/Cura/plugins/SimulationView/SimulationView.qml:108
 msgctxt "@label:listbox"
@@ -1885,7 +1885,7 @@ msgstr "min."
 #: /home/ruben/Projects/Cura/plugins/SimulationView/SimulationView.qml:420
 msgctxt "@label"
 msgid "max"
-msgstr "max"
+msgstr "max."
 
 #: /home/ruben/Projects/Cura/plugins/PostProcessingPlugin/PostProcessingPlugin.qml:18
 msgctxt "@title:window"
