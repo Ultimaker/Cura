@@ -449,6 +449,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         extruder_stacks = []
         extruder_stacks_added = []
         container_stacks_added = []
+        machine_extruder_count = None
 
         containers_added = []
 
@@ -636,6 +637,12 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                         # The ID already exists, but nothing in the values changed, so do nothing.
                         pass
                 quality_and_definition_changes_instance_containers.append(instance_container)
+
+                if container_type == "definition_changes":
+                    definition_changes_extruder_count = instance_container.getProperty("machine_extruder_count", "value")
+                    if definition_changes_extruder_count is not None:
+                        machine_extruder_count = definition_changes_extruder_count
+
             else:
                 existing_container = self._container_registry.findInstanceContainers(id = container_id)
                 if not existing_container:
@@ -794,8 +801,14 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             if stack.quality.getId() in ("empty", "empty_quality"):
                 has_not_supported = True
                 break
+
+        # We filter out extruder stacks that are not actually used, for example the UM3 and custom FDM printer extruder count setting.
+        extruder_stacks_in_use = extruder_stacks
+        if machine_extruder_count is not None:
+            extruder_stacks_in_use = extruder_stacks[:machine_extruder_count]
+
         available_quality = QualityManager.getInstance().findAllUsableQualitiesForMachineAndExtruders(global_stack,
-                                                                                                      extruder_stacks)
+                                                                                                      extruder_stacks_in_use)
         if not has_not_supported:
             has_not_supported = not available_quality
 
@@ -803,10 +816,10 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
 
         if has_not_supported:
             empty_quality_container = self._container_registry.findInstanceContainers(id = "empty_quality")[0]
-            for stack in [global_stack] + extruder_stacks:
+            for stack in [global_stack] + extruder_stacks_in_use:
                 stack.replaceContainer(_ContainerIndexes.Quality, empty_quality_container)
             empty_quality_changes_container = self._container_registry.findInstanceContainers(id = "empty_quality_changes")[0]
-            for stack in [global_stack] + extruder_stacks:
+            for stack in [global_stack] + extruder_stacks_in_use:
                 stack.replaceContainer(_ContainerIndexes.QualityChanges, empty_quality_changes_container)
             quality_has_been_changed = True
 
@@ -839,7 +852,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                         global_stack.quality = containers[0]
                         global_stack.qualityChanges = empty_quality_changes_container
                         # also find the quality containers for the extruders
-                        for extruder_stack in extruder_stacks:
+                        for extruder_stack in extruder_stacks_in_use:
                             search_criteria = {"id": preferred_quality_id,
                                                "type": "quality",
                                                "definition": definition_id}
@@ -868,8 +881,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                 if len(extruder_stacks) == 1:
                     extruder_stack = extruder_stacks[0]
 
-                    search_criteria = {"type": "quality",
-                                       "quality_type": global_stack.quality.getMetaDataEntry("quality_type")}
+                    search_criteria = {"type": "quality", "quality_type": global_stack.quality.getMetaDataEntry("quality_type")}
                     search_criteria["definition"] = global_stack.definition.getId()
                     if not parseBool(global_stack.getMetaDataEntry("has_machine_quality", "False")):
                         search_criteria["definition"] = "fdmprinter"
