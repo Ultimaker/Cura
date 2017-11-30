@@ -13,6 +13,8 @@ from cura.PrinterOutput.PrinterOutputModel import PrinterOutputModel
 from cura.PrinterOutput.PrintJobOutputModel import PrintJobOutputModel
 from cura.PrinterOutput.MaterialOutputModel import MaterialOutputModel
 
+from .ClusterUM3PrinterOutputController import ClusterUM3PrinterOutputController
+
 from PyQt5.QtNetwork import QNetworkRequest, QNetworkReply
 from PyQt5.QtGui import QDesktopServices
 from PyQt5.QtCore import pyqtSlot, QUrl, pyqtSignal, pyqtProperty, QObject
@@ -221,7 +223,7 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
                         break
 
                 if print_job is None:
-                    print_job = PrintJobOutputModel(output_controller = None,
+                    print_job = PrintJobOutputModel(output_controller = ClusterUM3PrinterOutputController(self),
                                                     key = print_job_data["uuid"],
                                                     name = print_job_data["name"])
                 print_job.updateTimeTotal(print_job_data["time_total"])
@@ -268,7 +270,7 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
                         break
 
                 if printer is None:
-                    printer = PrinterOutputModel(output_controller=None, number_of_extruders=self._number_of_extruders)
+                    printer = PrinterOutputModel(output_controller=ClusterUM3PrinterOutputController(self), number_of_extruders=self._number_of_extruders)
                     self._printers.append(printer)
                     printer_list_changed = True
 
