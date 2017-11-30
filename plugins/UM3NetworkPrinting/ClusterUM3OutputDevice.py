@@ -6,6 +6,7 @@ from UM.Application import Application
 from UM.Settings.ContainerRegistry import ContainerRegistry
 from UM.i18n import i18nCatalog
 from UM.Message import Message
+from UM.Qt.Duration import Duration, DurationFormat
 
 from cura.PrinterOutput.NetworkedPrinterOutputDevice import NetworkedPrinterOutputDevice, AuthState
 from cura.PrinterOutput.PrinterOutputModel import PrinterOutputModel
@@ -164,6 +165,10 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
             result.append({"machine_type": machine_type, "count": printer_count[machine_type]})
         return result
 
+    @pyqtSlot(int, result=str)
+    def formatDuration(self, seconds):
+        return Duration(seconds).getDisplayString(DurationFormat.Format.Short)
+
     def _update(self):
         if not super()._update():
             return
@@ -201,7 +206,7 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
 
                 print_jobs_seen.append(print_job)
             for old_job in self._print_jobs:
-                if old_job not in print_jobs_seen:
+                if old_job not in print_jobs_seen and old_job.assignedPrinter:
                     # Print job needs to be removed.
                     old_job.assignedPrinter.updateActivePrintJob(None)
 

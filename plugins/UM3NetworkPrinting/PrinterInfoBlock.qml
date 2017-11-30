@@ -22,11 +22,11 @@ Rectangle
         {
             return "";
         }
-        if (printJob.time_total === 0)
+        if (printJob.timeTotal === 0)
         {
             return "";
         }
-        return Math.min(100, Math.round(printJob.time_elapsed / printJob.time_total * 100)) + "%";
+        return Math.min(100, Math.round(printJob.timeElapsed / printJob.timeTotal * 100)) + "%";
     }
 
     function printerStatusText(printer)
@@ -114,7 +114,7 @@ Rectangle
                 anchors.left: parent.left
                 anchors.right: parent.right
                 anchors.rightMargin: UM.Theme.getSize("default_margin").width
-                text: printJob != null ? getPrettyTime(printJob.time_total) : ""
+                text: printJob != null ? getPrettyTime(printJob.timeTotal) : ""
                 opacity: 0.65
                 font: UM.Theme.getFont("default")
                 elide: Text.ElideRight
