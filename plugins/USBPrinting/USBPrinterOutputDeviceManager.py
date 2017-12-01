@@ -81,7 +81,7 @@ class USBPrinterOutputDeviceManager(QObject, OutputDevicePlugin, Extension):
 
     def _updateThread(self):
         while self._check_updates:
-            result = self.getSerialPortList(only_list_usb = True)
+            result = self.getSerialPortList(only_list_usb = False)
             self._addRemovePorts(result)
             time.sleep(5)
 
