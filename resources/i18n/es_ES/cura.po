@@ -1137,7 +1137,7 @@ msgid ""
 "<p><b>A fatal exception has occurred. Please send us this Crash Report to fix the problem</p></b>\n"
 "            <p>Please use the \"Send report\" button to post a bug report automatically to our servers</p>\n"
 "        "
-msgstr "<p><b>Se ha producido una excepción fatal. Envíenos este informe de errores para que podamos solucionar el problema.</p></b>\n            <p>Utilice el botón «Enviar informe» para publicar automáticamente un informe de errores en nuestros servidores.</p>\n"
+msgstr "<p><b>Se ha producido una excepción fatal. Envíenos este informe de errores para que podamos solucionar el problema.</p></b>\n            <p>Utilice el botón «Enviar informe» para publicar automáticamente un informe de errores en nuestros servidores.</p>\n        "
 
 #: /home/ruben/Projects/Cura/cura/CrashHandler.py:101
 msgctxt "@title:groupbox"
