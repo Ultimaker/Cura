@@ -643,7 +643,8 @@ class XmlMaterialProfile(InstanceContainer):
             "type": "material",
             "status": "unknown", #TODO: Add material verification.
             "container_type": XmlMaterialProfile,
-            "id": container_id
+            "id": container_id,
+            "base_file": container_id
         }
 
         try:
