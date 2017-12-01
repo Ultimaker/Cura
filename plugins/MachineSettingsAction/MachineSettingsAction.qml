@@ -283,6 +283,7 @@ Cura.MachineAction
                             Loader
                             {
                                 id: materialDiameterField
+                                visible: Cura.MachineManager.hasMaterials
                                 sourceComponent: numericTextFieldWithUnit
                                 property string settingKey: "material_diameter"
                                 property string unit: catalog.i18nc("@label", "mm")
