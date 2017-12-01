@@ -4894,3 +4894,8 @@ msgstr "分層檢視"
 #~ msgctxt "name"
 #~ msgid "X3G Writer"
 #~ msgstr "X3G 寫入器"
+
+#Added manually to fix a string that was changed after string freeze.
+msgctxt "@item:inlistbox"
+msgid "Layer view"
+msgstr "分層檢視"
