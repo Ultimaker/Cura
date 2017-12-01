@@ -116,7 +116,7 @@ UM.MainWindow
                 MenuItem
                 {
                     id: saveWorkspaceMenu
-                    text: catalog.i18nc("@title:menu menubar:file","Save project")
+                    text: catalog.i18nc("@title:menu menubar:file","Save &Project...")
                     onTriggered:
                     {
                         if(UM.Preferences.getValue("cura/dialog_on_project_save"))
