@@ -208,6 +208,10 @@ class ProcessSlicedLayersJob(Job):
                 self._progress_message.hide()
             return
 
+        view = Application.getInstance().getController().getActiveView()
+        if view.getPluginId() == "SimulationView":
+            view.resetLayerData()
+
         # Add LayerDataDecorator to scene node to indicate that the node has layer data
         decorator = LayerDataDecorator.LayerDataDecorator()
         decorator.setLayerData(layer_mesh)
@@ -225,10 +229,6 @@ class ProcessSlicedLayersJob(Job):
 
         if self._progress_message:
             self._progress_message.setProgress(100)
-
-        view = Application.getInstance().getController().getActiveView()
-        if view.getPluginId() == "SimulationView":
-            view.resetLayerData()
 
         if self._progress_message:
             self._progress_message.hide()
