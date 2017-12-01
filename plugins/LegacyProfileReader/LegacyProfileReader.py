@@ -2,6 +2,7 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import configparser  # For reading the legacy profile INI files.
+import io
 import json  # For reading the Dictionary of Doom.
 import math  # For mathematical operations included in the Dictionary of Doom.
 import os.path  # For concatenating the path to the plugin and the relative path to the Dictionary of Doom.
@@ -80,8 +81,7 @@ class LegacyProfileReader(ProfileReader):
 
         parser = configparser.ConfigParser(interpolation = None)
         try:
-            with open(file_name) as f:
-                parser.readfp(f)  # Parse the INI file.
+            parser.read([file_name])  # Parse the INI file.
         except Exception as e:
             Logger.log("e", "Unable to open legacy profile %s: %s", file_name, str(e))
             return None
@@ -138,7 +138,22 @@ class LegacyProfileReader(ProfileReader):
 
         if len(profile.getAllKeys()) == 0:
             Logger.log("i", "A legacy profile was imported but everything evaluates to the defaults, creating an empty profile.")
-        profile.setDirty(True)
-        profile.addMetaDataEntry("type", "quality_changes")
+
+
+        # We need to downgrade the container to version 1 (in Cura 2.1) so the upgrade system can correctly upgrade
+        # it to the latest version.
+        profile.addMetaDataEntry("type", "profile")
+        # don't know what quality_type it is based on, so use "normal" by default
         profile.addMetaDataEntry("quality_type", "normal")
+        profile.setDirty(True)
+
+        parser = configparser.ConfigParser(interpolation=None)
+        data = profile.serialize()
+        parser.read_string(data)
+        parser["general"]["version"] = "1"
+        stream = io.StringIO()
+        parser.write(stream)
+        data = stream.getvalue()
+        profile.deserialize(data)
+
         return profile
