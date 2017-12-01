@@ -252,6 +252,8 @@ class NetworkClusterPrinterOutputDevice(NetworkPrinterOutputDevice.NetworkPrinte
             self._error_message.show()
             return
 
+        self.writeStarted.emit(self) # Allow postprocessing before sending data to the printer
+
         if len(self._printers) > 1:
             self.spawnPrintView()  # Ask user how to print it.
         elif len(self._printers) == 1:
