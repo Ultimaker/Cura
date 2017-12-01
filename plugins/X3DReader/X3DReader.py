@@ -1,18 +1,22 @@
 # Contributed by Seva Alekseyev <sevaa@nih.gov> with National Institutes of Health, 2016
-# Cura is released under the terms of the AGPLv3 or higher.
+# Cura is released under the terms of the LGPLv3 or higher.
 
-from UM.Mesh.MeshReader import MeshReader
-from UM.Mesh.MeshBuilder import MeshBuilder
+from math import pi, sin, cos, sqrt
+
+import numpy
+
+from UM.Job import Job
 from UM.Logger import Logger
 from UM.Math.Matrix import Matrix
 from UM.Math.Vector import Vector
+from UM.Mesh.MeshBuilder import MeshBuilder
+from UM.Mesh.MeshReader import MeshReader
 from UM.Scene.SceneNode import SceneNode
-from UM.Job import Job
-from math import pi, sin, cos, sqrt
-import numpy
 
+MYPY = False
 try:
-    import xml.etree.cElementTree as ET
+    if not MYPY:
+        import xml.etree.cElementTree as ET
 except ImportError:
     import xml.etree.ElementTree as ET
     
@@ -700,7 +704,11 @@ class X3DReader(MeshReader):
                 if not c is None:
                     pt = c.attrib.get("point")
                     if pt:
-                        co = [float(x) for x in pt.split()]
+                        # allow the list of float values in 'point' attribute to 
+                        # be separated by commas or whitespace as per spec of 
+                        # XML encoding of X3D 
+                        # Ref  ISO/IEC 19776-1:2015 : Section 5.1.2
+                        co = [float(x) for vec in pt.split(',') for x in vec.split()]
                         num_verts = len(co) // 3
                         self.verts = numpy.empty((4, num_verts), dtype=numpy.float32)
                         self.verts[3,:] = numpy.ones((num_verts), dtype=numpy.float32)

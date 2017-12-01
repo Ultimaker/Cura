@@ -13,8 +13,8 @@ Cura.MachineAction
     {
         id: checkupMachineAction
         anchors.fill: parent;
-        property int leftRow: checkupMachineAction.width * 0.40
-        property int rightRow: checkupMachineAction.width * 0.60
+        property int leftRow: (checkupMachineAction.width * 0.40) | 0
+        property int rightRow: (checkupMachineAction.width * 0.60) | 0
         property bool heatupHotendStarted: false
         property bool heatupBedStarted: false
         property bool usbConnected: Cura.USBPrinterManager.connectedPrinterList.rowCount() > 0
@@ -166,7 +166,7 @@ Cura.MachineAction
             Label
             {
                 id: nozzleTempStatus
-                width: checkupMachineAction.rightRow * 0.4
+                width: (checkupMachineAction.rightRow * 0.4) | 0
                 anchors.top: nozzleTempLabel.top
                 anchors.left: nozzleTempLabel.right
                 wrapMode: Text.WordWrap
@@ -176,7 +176,7 @@ Cura.MachineAction
             Item
             {
                 id: nozzleTempButton
-                width: checkupMachineAction.rightRow * 0.3
+                width: (checkupMachineAction.rightRow * 0.3) | 0
                 height: childrenRect.height
                 anchors.top: nozzleTempLabel.top
                 anchors.left: bedTempStatus.right
@@ -205,7 +205,7 @@ Cura.MachineAction
                 anchors.top: nozzleTempLabel.top
                 anchors.left: nozzleTempButton.right
                 anchors.leftMargin: UM.Theme.getSize("default_margin").width
-                width: checkupMachineAction.rightRow * 0.2
+                width: (checkupMachineAction.rightRow * 0.2) | 0
                 wrapMode: Text.WordWrap
                 text: manager.hotendTemperature + "°C"
                 font.bold: true
@@ -227,7 +227,7 @@ Cura.MachineAction
             Label
             {
                 id: bedTempStatus
-                width: checkupMachineAction.rightRow * 0.4
+                width: (checkupMachineAction.rightRow * 0.4) | 0
                 anchors.top: bedTempLabel.top
                 anchors.left: bedTempLabel.right
                 wrapMode: Text.WordWrap
@@ -237,7 +237,7 @@ Cura.MachineAction
             Item
             {
                 id: bedTempButton
-                width: checkupMachineAction.rightRow * 0.3
+                width: (checkupMachineAction.rightRow * 0.3) | 0
                 height: childrenRect.height
                 anchors.top: bedTempLabel.top
                 anchors.left: bedTempStatus.right
@@ -263,7 +263,7 @@ Cura.MachineAction
             Label
             {
                 id: bedTemp
-                width: checkupMachineAction.rightRow * 0.2
+                width: (checkupMachineAction.rightRow * 0.2) | 0
                 anchors.top: bedTempLabel.top
                 anchors.left: bedTempButton.right
                 anchors.leftMargin: UM.Theme.getSize("default_margin").width

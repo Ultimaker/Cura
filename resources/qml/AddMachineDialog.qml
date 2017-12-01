@@ -1,5 +1,5 @@
 // Copyright (c) 2016 Ultimaker B.V.
-// Cura is released under the terms of the AGPLv3 or higher.
+// Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.2
 import QtQuick.Controls 1.1
@@ -19,6 +19,11 @@ UM.Dialog
     property bool firstRun: false
     property string preferredCategory: "Ultimaker"
     property string activeCategory: preferredCategory
+
+    minimumWidth: UM.Theme.getSize("modal_window_minimum").width
+    minimumHeight: UM.Theme.getSize("modal_window_minimum").height
+    width: minimumWidth
+    height: minimumHeight
 
     onVisibilityChanged:
     {
@@ -46,7 +51,8 @@ UM.Dialog
             left: parent.left;
             top: parent.top;
             right: parent.right;
-            bottom: parent.bottom;
+            bottom: machineNameRow.top;
+            bottomMargin: UM.Theme.getSize("default_margin").height
         }
 
         ListView
@@ -65,12 +71,11 @@ UM.Dialog
             section.delegate: Button
             {
                 text: section
+                width: machineList.width
                 style: ButtonStyle
                 {
-                    background: Rectangle
+                    background: Item
                     {
-                        border.width: 0
-                        color: "transparent";
                         height: UM.Theme.getSize("standard_list_lineheight").height
                         width: machineList.width
                     }
@@ -102,8 +107,8 @@ UM.Dialog
                     base.activeCategory = section;
                     if (machineList.model.getItem(machineList.currentIndex).section != section) {
                         // Find the first machine from this section
-                        for(var i = 0; i < sortedMachineDefinitionsModel.count; i++) {
-                            var item = sortedMachineDefinitionsModel.getItem(i);
+                        for(var i = 0; i < machineList.model.rowCount(); i++) {
+                            var item = machineList.model.getItem(i);
                             if (item.section == section) {
                                 machineList.currentIndex = i;
                                 break;
@@ -169,21 +174,33 @@ UM.Dialog
         }
     }
 
-    TextField
+    Row
     {
-        id: machineName;
-        text: getMachineName()
-        implicitWidth: UM.Theme.getSize("standard_list_input").width
-        maximumLength: 40
-        //validator: Cura.MachineNameValidator { } //TODO: Gives a segfault in PyQt5.6. For now, we must use a signal on text changed.
-        validator: RegExpValidator
-        {
-            regExp: {
-                machineName.machine_name_validator.machineNameRegex
-            }
-        }
-        property var machine_name_validator: Cura.MachineNameValidator { }
+        id: machineNameRow
         anchors.bottom:parent.bottom
+        spacing: UM.Theme.getSize("default_margin").width
+
+        Label
+        {
+            text: catalog.i18nc("@label", "Printer Name:")
+            anchors.verticalCenter: machineName.verticalCenter
+        }
+
+        TextField
+        {
+            id: machineName
+            text: getMachineName()
+            implicitWidth: UM.Theme.getSize("standard_list_input").width
+            maximumLength: 40
+            //validator: Cura.MachineNameValidator { } //TODO: Gives a segfault in PyQt5.6. For now, we must use a signal on text changed.
+            validator: RegExpValidator
+            {
+                regExp: {
+                    machineName.machine_name_validator.machineNameRegex
+                }
+            }
+            property var machine_name_validator: Cura.MachineNameValidator { }
+        }
     }
 
     Button

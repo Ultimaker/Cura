@@ -1,0 +1,197 @@
+# Cura JSON setting files
+# Copyright (C) 2017 Ultimaker
+# This file is distributed under the same license as the Cura package.
+# Ruben Dulek <r.dulek@ultimaker.com>, 2017.
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: Cura 3.0\n"
+"Report-Msgid-Bugs-To: http://github.com/ultimaker/uranium\n"
+"POT-Creation-Date: 2017-11-21 16:58+0000\n"
+"PO-Revision-Date: 2017-11-30 13:05+0100\n"
+"Last-Translator: Bothof <info@bothof.nl>\n"
+"Language-Team: Spanish\n"
+"Language: es_ES\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: fdmextruder.def.json
+msgctxt "machine_settings label"
+msgid "Machine"
+msgstr "Máquina"
+
+#: fdmextruder.def.json
+msgctxt "machine_settings description"
+msgid "Machine specific settings"
+msgstr "Ajustes específicos de la máquina"
+
+#: fdmextruder.def.json
+msgctxt "extruder_nr label"
+msgid "Extruder"
+msgstr "Extrusor"
+
+#: fdmextruder.def.json
+msgctxt "extruder_nr description"
+msgid "The extruder train used for printing. This is used in multi-extrusion."
+msgstr "El tren extrusor que se utiliza para imprimir. Se emplea en la extrusión múltiple."
+
+#: fdmextruder.def.json
+msgctxt "machine_nozzle_id label"
+msgid "Nozzle ID"
+msgstr "Id. de la tobera"
+
+#: fdmextruder.def.json
+msgctxt "machine_nozzle_id description"
+msgid "The nozzle ID for an extruder train, such as \"AA 0.4\" and \"BB 0.8\"."
+msgstr "Id. de la tobera de un tren extrusor, como \"AA 0.4\" y \"BB 0.8\"."
+
+#: fdmextruder.def.json
+msgctxt "machine_nozzle_size label"
+msgid "Nozzle Diameter"
+msgstr "Diámetro de la tobera"
+
+#: fdmextruder.def.json
+msgctxt "machine_nozzle_size description"
+msgid "The inner diameter of the nozzle. Change this setting when using a non-standard nozzle size."
+msgstr "Diámetro interior de la tobera. Cambie este ajuste cuando utilice un tamaño de tobera no estándar."
+
+#: fdmextruder.def.json
+msgctxt "machine_nozzle_offset_x label"
+msgid "Nozzle X Offset"
+msgstr "Desplazamiento de la tobera sobre el eje X"
+
+#: fdmextruder.def.json
+msgctxt "machine_nozzle_offset_x description"
+msgid "The x-coordinate of the offset of the nozzle."
+msgstr "Coordenada X del desplazamiento de la tobera."
+
+#: fdmextruder.def.json
+msgctxt "machine_nozzle_offset_y label"
+msgid "Nozzle Y Offset"
+msgstr "Desplazamiento de la tobera sobre el eje Y"
+
+#: fdmextruder.def.json
+msgctxt "machine_nozzle_offset_y description"
+msgid "The y-coordinate of the offset of the nozzle."
+msgstr "Coordenada Y del desplazamiento de la tobera."
+
+#: fdmextruder.def.json
+msgctxt "machine_extruder_start_code label"
+msgid "Extruder Start G-Code"
+msgstr "Gcode inicial del extrusor"
+
+#: fdmextruder.def.json
+msgctxt "machine_extruder_start_code description"
+msgid "Start g-code to execute whenever turning the extruder on."
+msgstr "Gcode inicial que se ejecuta cada vez que se enciende el extrusor."
+
+#: fdmextruder.def.json
+msgctxt "machine_extruder_start_pos_abs label"
+msgid "Extruder Start Position Absolute"
+msgstr "Posición de inicio absoluta del extrusor"
+
+#: fdmextruder.def.json
+msgctxt "machine_extruder_start_pos_abs description"
+msgid "Make the extruder starting position absolute rather than relative to the last-known location of the head."
+msgstr "El extrusor se coloca en la posición de inicio absoluta según la última ubicación conocida del cabezal."
+
+#: fdmextruder.def.json
+msgctxt "machine_extruder_start_pos_x label"
+msgid "Extruder Start Position X"
+msgstr "Posición de inicio del extrusor sobre el eje X"
+
+#: fdmextruder.def.json
+msgctxt "machine_extruder_start_pos_x description"
+msgid "The x-coordinate of the starting position when turning the extruder on."
+msgstr "Coordenada X de la posición de inicio cuando se enciende el extrusor."
+
+#: fdmextruder.def.json
+msgctxt "machine_extruder_start_pos_y label"
+msgid "Extruder Start Position Y"
+msgstr "Posición de inicio del extrusor sobre el eje Y"
+
+#: fdmextruder.def.json
+msgctxt "machine_extruder_start_pos_y description"
+msgid "The y-coordinate of the starting position when turning the extruder on."
+msgstr "Coordenada Y de la posición de inicio cuando se enciende el extrusor."
+
+#: fdmextruder.def.json
+msgctxt "machine_extruder_end_code label"
+msgid "Extruder End G-Code"
+msgstr "Gcode final del extrusor"
+
+#: fdmextruder.def.json
+msgctxt "machine_extruder_end_code description"
+msgid "End g-code to execute whenever turning the extruder off."
+msgstr "Gcode final que se ejecuta cada vez que se apaga el extrusor."
+
+#: fdmextruder.def.json
+msgctxt "machine_extruder_end_pos_abs label"
+msgid "Extruder End Position Absolute"
+msgstr "Posición final absoluta del extrusor"
+
+#: fdmextruder.def.json
+msgctxt "machine_extruder_end_pos_abs description"
+msgid "Make the extruder ending position absolute rather than relative to the last-known location of the head."
+msgstr "La posición final del extrusor se considera absoluta, en lugar de relativa a la última ubicación conocida del cabezal."
+
+#: fdmextruder.def.json
+msgctxt "machine_extruder_end_pos_x label"
+msgid "Extruder End Position X"
+msgstr "Posición de fin del extrusor sobre el eje X"
+
+#: fdmextruder.def.json
+msgctxt "machine_extruder_end_pos_x description"
+msgid "The x-coordinate of the ending position when turning the extruder off."
+msgstr "Coordenada X de la posición de fin cuando se apaga el extrusor."
+
+#: fdmextruder.def.json
+msgctxt "machine_extruder_end_pos_y label"
+msgid "Extruder End Position Y"
+msgstr "Posición de fin del extrusor sobre el eje Y"
+
+#: fdmextruder.def.json
+msgctxt "machine_extruder_end_pos_y description"
+msgid "The y-coordinate of the ending position when turning the extruder off."
+msgstr "Coordenada Y de la posición de fin cuando se apaga el extrusor."
+
+#: fdmextruder.def.json
+msgctxt "extruder_prime_pos_z label"
+msgid "Extruder Prime Z Position"
+msgstr "Posición de preparación del extrusor sobre el eje Z"
+
+#: fdmextruder.def.json
+msgctxt "extruder_prime_pos_z description"
+msgid "The Z coordinate of the position where the nozzle primes at the start of printing."
+msgstr "Coordenada Z de la posición en la que la tobera queda preparada al inicio de la impresión."
+
+#: fdmextruder.def.json
+msgctxt "platform_adhesion label"
+msgid "Build Plate Adhesion"
+msgstr "Adherencia de la placa de impresión"
+
+#: fdmextruder.def.json
+msgctxt "platform_adhesion description"
+msgid "Adhesion"
+msgstr "Adherencia"
+
+#: fdmextruder.def.json
+msgctxt "extruder_prime_pos_x label"
+msgid "Extruder Prime X Position"
+msgstr "Posición de preparación del extrusor sobre el eje X"
+
+#: fdmextruder.def.json
+msgctxt "extruder_prime_pos_x description"
+msgid "The X coordinate of the position where the nozzle primes at the start of printing."
+msgstr "Coordenada X de la posición en la que la tobera se coloca al inicio de la impresión."
+
+#: fdmextruder.def.json
+msgctxt "extruder_prime_pos_y label"
+msgid "Extruder Prime Y Position"
+msgstr "Posición de preparación del extrusor sobre el eje Y"
+
+#: fdmextruder.def.json
+msgctxt "extruder_prime_pos_y description"
+msgid "The Y coordinate of the position where the nozzle primes at the start of printing."
+msgstr "Coordenada X de la posición en la que la tobera se coloca al inicio de la impresión."

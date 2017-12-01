@@ -1,0 +1,199 @@
+# Cura JSON setting files
+# Copyright (C) 2017 Ultimaker
+# This file is distributed under the same license as the Cura package.
+# Ruben Dulek <r.dulek@ultimaker.com>, 2017.
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: Cura 3.1\n"
+"Report-Msgid-Bugs-To: r.dulek@ultimaker.com\n"
+"POT-Creation-Date: 2017-11-21 16:58+0000\n"
+"PO-Revision-Date: 2017-11-30 13:05+0100\n"
+"Last-Translator: Brule\n"
+"Language-Team: Brule\n"
+"Language: ko_KR\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Poedit 2.0.3\n"
+
+#: fdmextruder.def.json
+msgctxt "machine_settings label"
+msgid "Machine"
+msgstr "기계"
+
+#: fdmextruder.def.json
+msgctxt "machine_settings description"
+msgid "Machine specific settings"
+msgstr "장비 별 설정 "
+
+#: fdmextruder.def.json
+msgctxt "extruder_nr label"
+msgid "Extruder"
+msgstr "압출기 "
+
+#: fdmextruder.def.json
+msgctxt "extruder_nr description"
+msgid "The extruder train used for printing. This is used in multi-extrusion."
+msgstr "인쇄에 사용되는 압출기 트레인. 이것은 다중 압출에 사용됩니다. "
+
+#: fdmextruder.def.json
+msgctxt "machine_nozzle_id label"
+msgid "Nozzle ID"
+msgstr "노즐 ID"
+
+#: fdmextruder.def.json
+msgctxt "machine_nozzle_id description"
+msgid "The nozzle ID for an extruder train, such as \"AA 0.4\" and \"BB 0.8\"."
+msgstr "\"AA 0.4\"및 \"BB 0.8\"과 같은 압출기 트레인의 노즐 ID."
+
+#: fdmextruder.def.json
+msgctxt "machine_nozzle_size label"
+msgid "Nozzle Diameter"
+msgstr "노즐 지름"
+
+#: fdmextruder.def.json
+msgctxt "machine_nozzle_size description"
+msgid "The inner diameter of the nozzle. Change this setting when using a non-standard nozzle size."
+msgstr "노즐의 내경. 비표준 노즐 크기를 사용할 때, 본 설정을 변경하십시오. "
+
+#: fdmextruder.def.json
+msgctxt "machine_nozzle_offset_x label"
+msgid "Nozzle X Offset"
+msgstr "노즐 X 오프셋 "
+
+#: fdmextruder.def.json
+msgctxt "machine_nozzle_offset_x description"
+msgid "The x-coordinate of the offset of the nozzle."
+msgstr "노즐 오프셋의 x 좌표입니다. "
+
+#: fdmextruder.def.json
+msgctxt "machine_nozzle_offset_y label"
+msgid "Nozzle Y Offset"
+msgstr "노즐 Y 오프셋"
+
+#: fdmextruder.def.json
+msgctxt "machine_nozzle_offset_y description"
+msgid "The y-coordinate of the offset of the nozzle."
+msgstr "노즐 오프셋의 y 좌표입니다. "
+
+#: fdmextruder.def.json
+msgctxt "machine_extruder_start_code label"
+msgid "Extruder Start G-Code"
+msgstr "압출기 시작 G 코드"
+
+#: fdmextruder.def.json
+msgctxt "machine_extruder_start_code description"
+msgid "Start g-code to execute whenever turning the extruder on."
+msgstr "압출기를 켤 때마다 실행할 g 코드를 시작하십시오. "
+
+#: fdmextruder.def.json
+msgctxt "machine_extruder_start_pos_abs label"
+msgid "Extruder Start Position Absolute"
+msgstr "압출기 시작 위치의 절대 값 "
+
+#: fdmextruder.def.json
+msgctxt "machine_extruder_start_pos_abs description"
+msgid "Make the extruder starting position absolute rather than relative to the last-known location of the head."
+msgstr "압출기 시작 위치를 헤드의 마지막으로 알려진 위치에 상대적이 아닌 절대 위치로 만듭니다."
+
+#: fdmextruder.def.json
+msgctxt "machine_extruder_start_pos_x label"
+msgid "Extruder Start Position X"
+msgstr "압출기 시작 X의 위치 "
+
+#: fdmextruder.def.json
+msgctxt "machine_extruder_start_pos_x description"
+msgid "The x-coordinate of the starting position when turning the extruder on."
+msgstr "압출기를 켤 때 시작 위치의 x 좌표. "
+
+#: fdmextruder.def.json
+msgctxt "machine_extruder_start_pos_y label"
+msgid "Extruder Start Position Y"
+msgstr "압출기 시작 위치 Y "
+
+#: fdmextruder.def.json
+msgctxt "machine_extruder_start_pos_y description"
+msgid "The y-coordinate of the starting position when turning the extruder on."
+msgstr "압출기를 켤 때 시작 위치의 y 좌표입니다. "
+
+#: fdmextruder.def.json
+msgctxt "machine_extruder_end_code label"
+msgid "Extruder End G-Code"
+msgstr "압출기 최종 G 코드 "
+
+#: fdmextruder.def.json
+msgctxt "machine_extruder_end_code description"
+msgid "End g-code to execute whenever turning the extruder off."
+msgstr "압출기를 끌 때마다 실행할 g 코드를 종료하십시오. "
+
+#: fdmextruder.def.json
+msgctxt "machine_extruder_end_pos_abs label"
+msgid "Extruder End Position Absolute"
+msgstr "압출기 끝 절대 위치 "
+
+#: fdmextruder.def.json
+msgctxt "machine_extruder_end_pos_abs description"
+msgid "Make the extruder ending position absolute rather than relative to the last-known location of the head."
+msgstr "압출 성형기가 헤드의 마지막으로 알려진 위치에 상대적이 아닌 절대 위치로 끝나도록하십시오. "
+
+#: fdmextruder.def.json
+msgctxt "machine_extruder_end_pos_x label"
+msgid "Extruder End Position X"
+msgstr "압출기 끝 X 위치 "
+
+#: fdmextruder.def.json
+msgctxt "machine_extruder_end_pos_x description"
+msgid "The x-coordinate of the ending position when turning the extruder off."
+msgstr "압출기를 끌 때 끝 위치의 x 좌표."
+
+#: fdmextruder.def.json
+msgctxt "machine_extruder_end_pos_y label"
+msgid "Extruder End Position Y"
+msgstr "압출기 끝 Y 위치 "
+
+#: fdmextruder.def.json
+msgctxt "machine_extruder_end_pos_y description"
+msgid "The y-coordinate of the ending position when turning the extruder off."
+msgstr "압출기를 끌 때 종료 위치의 y 좌표입니다. "
+
+#: fdmextruder.def.json
+msgctxt "extruder_prime_pos_z label"
+msgid "Extruder Prime Z Position"
+msgstr "압출기 프라임 Z 위치 "
+
+#: fdmextruder.def.json
+msgctxt "extruder_prime_pos_z description"
+msgid "The Z coordinate of the position where the nozzle primes at the start of printing."
+msgstr "인쇄가 시작될 때 노즐이 끝나는 위치의 Z 좌표입니다. "
+
+#: fdmextruder.def.json
+msgctxt "platform_adhesion label"
+msgid "Build Plate Adhesion"
+msgstr "플레이트 접착력 강화 "
+
+#: fdmextruder.def.json
+msgctxt "platform_adhesion description"
+msgid "Adhesion"
+msgstr "부착 "
+
+#: fdmextruder.def.json
+msgctxt "extruder_prime_pos_x label"
+msgid "Extruder Prime X Position"
+msgstr "압출기 프라임 X 위치 "
+
+#: fdmextruder.def.json
+msgctxt "extruder_prime_pos_x description"
+msgid "The X coordinate of the position where the nozzle primes at the start of printing."
+msgstr "인쇄가 시작될 때 노즐이 끝내는 위치의 X 좌표입니다. "
+
+#: fdmextruder.def.json
+msgctxt "extruder_prime_pos_y label"
+msgid "Extruder Prime Y Position"
+msgstr "압출기 프라임 Y 위치 "
+
+#: fdmextruder.def.json
+msgctxt "extruder_prime_pos_y description"
+msgid "The Y coordinate of the position where the nozzle primes at the start of printing."
+msgstr "인쇄가 시작될 때 노즐이 끝내는 위치의 Y 좌표입니다. "

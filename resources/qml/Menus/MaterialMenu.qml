@@ -1,5 +1,5 @@
 // Copyright (c) 2016 Ultimaker B.V.
-// Cura is released under the terms of the AGPLv3 or higher.
+// Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.2
 import QtQuick.Controls 1.1
@@ -14,28 +14,50 @@ Menu
 
     property int extruderIndex: 0
     property bool printerConnected: Cura.MachineManager.printerOutputDevices.length != 0
+    property bool isClusterPrinter:
+    {
+        if(Cura.MachineManager.printerOutputDevices.length == 0)
+        {
+            return false;
+        }
+        var clusterSize = Cura.MachineManager.printerOutputDevices[0].clusterSize;
+        // This is not a cluster printer or the cluster it is just one printer
+        if(clusterSize == undefined || clusterSize == 1)
+        {
+            return false;
+        }
+        return true;
+    }
+
+    UM.SettingPropertyProvider
+    {
+        id: materialDiameterProvider
+
+        containerStackId: Cura.MachineManager.activeMachineId
+        key: "material_diameter"
+        watchedProperties: [ "value" ]
+    }
 
     MenuItem
     {
         id: automaticMaterial
         text:
         {
-            if(printerConnected && Cura.MachineManager.printerOutputDevices[0].materialNames.length > extruderIndex)
+            if(printerConnected && Cura.MachineManager.printerOutputDevices[0].materialNames.length > extruderIndex && !isClusterPrinter)
             {
                 var materialName = Cura.MachineManager.printerOutputDevices[0].materialNames[extruderIndex];
-                return catalog.i18nc("@title:menuitem %1 is the value from the printer", "Automatic: %1").arg(materialName);
+                return catalog.i18nc("@title:menuitem %1 is the automatically selected material", "Automatic: %1").arg(materialName);
             }
             return "";
         }
-        visible: printerConnected && Cura.MachineManager.printerOutputDevices[0].materialNames.length > extruderIndex
+        visible: printerConnected && Cura.MachineManager.printerOutputDevices[0].materialNames.length > extruderIndex && !isClusterPrinter
         onTriggered:
         {
-            var material_id = Cura.MachineManager.printerOutputDevices[0].materialIds[extruderIndex];
+            var materialId = Cura.MachineManager.printerOutputDevices[0].materialIds[extruderIndex];
             var items = materialsModel.items;
-            // materialsModel.find cannot be used because we need to look inside the metadata property of items
             for(var i in items)
             {
-                if (items[i]["metadata"]["GUID"] == material_id)
+                if (items[i]["metadata"]["GUID"] == materialId)
                 {
                     Cura.MachineManager.setActiveMaterial(items[i].id);
                     break;
@@ -55,12 +77,17 @@ Menu
         MenuItem
         {
             text: model.name
-            checkable: true;
-            checked: model.id == Cura.MachineManager.activeMaterialId;
-            exclusiveGroup: group;
+            checkable: true
+            checked: model.id == Cura.MachineManager.allActiveMaterialIds[Cura.ExtruderManager.extruderIds[extruderIndex]]
+            exclusiveGroup: group
             onTriggered:
             {
+                // This workaround is done because of the application menus for materials and variants for multiextrusion printers.
+                // The extruder menu would always act on the correspoding extruder only, instead of acting on the extruder selected in the UI.
+                var activeExtruderIndex = Cura.ExtruderManager.activeExtruderIndex;
+                Cura.ExtruderManager.setActiveExtruderIndex(extruderIndex);
                 Cura.MachineManager.setActiveMaterial(model.id);
+                Cura.ExtruderManager.setActiveExtruderIndex(activeExtruderIndex);
             }
         }
         onObjectAdded: menu.insertItem(index, object)
@@ -93,12 +120,17 @@ Menu
                         MenuItem
                         {
                             text: model.name
-                            checkable: true;
-                            checked: model.id == Cura.MachineManager.activeMaterialId;
-                            exclusiveGroup: group;
+                            checkable: true
+                            checked: model.id == Cura.MachineManager.allActiveMaterialIds[Cura.ExtruderManager.extruderIds[extruderIndex]]
+                            exclusiveGroup: group
                             onTriggered:
                             {
+                                // This workaround is done because of the application menus for materials and variants for multiextrusion printers.
+                                // The extruder menu would always act on the correspoding extruder only, instead of acting on the extruder selected in the UI.
+                                var activeExtruderIndex = Cura.ExtruderManager.activeExtruderIndex;
+                                Cura.ExtruderManager.setActiveExtruderIndex(extruderIndex);
                                 Cura.MachineManager.setActiveMaterial(model.id);
+                                Cura.ExtruderManager.setActiveExtruderIndex(activeExtruderIndex);
                             }
                         }
                         onObjectAdded: brandMaterialsMenu.insertItem(index, object)
@@ -141,7 +173,7 @@ Menu
 
     function materialFilter()
     {
-        var result = { "type": "material" };
+        var result = { "type": "material", "approximate_diameter": Math.round(materialDiameterProvider.properties.value).toString() };
         if(Cura.MachineManager.filterMaterialsByMachine)
         {
             result.definition = Cura.MachineManager.activeQualityDefinitionId;

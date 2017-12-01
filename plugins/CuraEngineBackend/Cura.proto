@@ -61,6 +61,8 @@ message Polygon {
     Type type = 1; // Type of move
     bytes points = 2; // The points of the polygon, or two points if only a line segment (Currently only line segments are used)
     float line_width = 3; // The width of the line being laid down
+    float line_thickness = 4; // The thickness of the line being laid down
+    float line_feedrate = 5; // The feedrate of the line being laid down
 }
 
 message LayerOptimized {
@@ -82,6 +84,8 @@ message PathSegment {
     bytes points = 3; // The points defining the line segments, bytes of float[2/3] array of length N+1
     bytes line_type = 4; // Type of line segment as an unsigned char array of length 1 or N, where N is the number of line segments in this path
     bytes line_width = 5; // The widths of the line segments as bytes of a float array of length 1 or N
+    bytes line_thickness = 6; // The thickness of the line segments as bytes of a float array of length 1 or N
+    bytes line_feedrate = 7; // The feedrate of the line segments as bytes of a float array of length 1 or N
 }
 
 
@@ -90,9 +94,21 @@ message GCodeLayer {
 }
 
 
-message PrintTimeMaterialEstimates { // The print time for the whole print and material estimates for the extruder
-    float time = 1; // Total time estimate
-    repeated MaterialEstimates materialEstimates = 2; // materialEstimates data
+message PrintTimeMaterialEstimates { // The print time for each feature and material estimates for the extruder
+    // Time estimate in each feature
+    float time_none = 1;
+    float time_inset_0 = 2;
+    float time_inset_x = 3;
+    float time_skin = 4;
+    float time_support = 5;
+    float time_skirt = 6;
+    float time_infill = 7;
+    float time_support_infill = 8;
+    float time_travel = 9;
+    float time_retract = 10;
+    float time_support_interface = 11;
+
+    repeated MaterialEstimates materialEstimates = 12; // materialEstimates data
 }
 
 message MaterialEstimates {

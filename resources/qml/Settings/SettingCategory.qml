@@ -1,5 +1,5 @@
 // Copyright (c) 2015 Ultimaker B.V.
-// Uranium is released under the terms of the AGPLv3 or higher.
+// Uranium is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.2
 import QtQuick.Controls 1.1
@@ -14,10 +14,14 @@ Button {
 
     style: UM.Theme.styles.sidebar_category;
 
-    signal showTooltip(string text);
-    signal hideTooltip();
+    signal showTooltip(string text)
+    signal hideTooltip()
     signal contextMenuRequested()
     signal showAllHiddenInheritedSettings(string category_id)
+    signal focusReceived()
+    signal setActiveFocusToNextSetting(bool forward)
+
+    property var focusItem: base
 
     text: definition.label
     iconSource: UM.Theme.getIcon(definition.icon)
@@ -25,7 +29,33 @@ Button {
     checkable: true
     checked: definition.expanded
 
-    onClicked: { forceActiveFocus(); definition.expanded ? settingDefinitionsModel.collapse(definition.key) : settingDefinitionsModel.expandAll(definition.key) }
+    onClicked:
+    {
+        forceActiveFocus();
+        if(definition.expanded)
+        {
+            settingDefinitionsModel.collapse(definition.key);
+        } else {
+            settingDefinitionsModel.expandAll(definition.key);
+        }
+    }
+    onActiveFocusChanged:
+    {
+        if(activeFocus)
+        {
+            base.focusReceived();
+        }
+    }
+
+    Keys.onTabPressed:
+    {
+        base.setActiveFocusToNextSetting(true)
+    }
+    Keys.onBacktabPressed:
+    {
+        base.setActiveFocusToNextSetting(false)
+    }
+
     UM.SimpleButton
     {
         id: settingsButton

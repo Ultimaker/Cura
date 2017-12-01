@@ -1,14 +1,21 @@
 # Copyright (c) 2015 Ultimaker B.V.
-# Uranium is released under the terms of the AGPLv3 or higher.
+# Uranium is released under the terms of the LGPLv3 or higher.
 
 from UM.Mesh.MeshWriter import MeshWriter
 from UM.Math.Vector import Vector
 from UM.Logger import Logger
 from UM.Math.Matrix import Matrix
-from UM.Settings.SettingRelation import RelationType
+from UM.Application import Application
+import UM.Scene.SceneNode
 
+import Savitar
+
+import numpy
+
+MYPY = False
 try:
-    import xml.etree.cElementTree as ET
+    if not MYPY:
+        import xml.etree.cElementTree as ET
 except ImportError:
     Logger.log("w", "Unable to load cElementTree, switching to slower version")
     import xml.etree.ElementTree as ET
@@ -33,18 +40,18 @@ class ThreeMFWriter(MeshWriter):
 
     def _convertMatrixToString(self, matrix):
         result = ""
-        result += str(matrix._data[0,0]) + " "
-        result += str(matrix._data[1,0]) + " "
-        result += str(matrix._data[2,0]) + " "
-        result += str(matrix._data[0,1]) + " "
-        result += str(matrix._data[1,1]) + " "
-        result += str(matrix._data[2,1]) + " "
-        result += str(matrix._data[0,2]) + " "
-        result += str(matrix._data[1,2]) + " "
-        result += str(matrix._data[2,2]) + " "
-        result += str(matrix._data[0,3]) + " "
-        result += str(matrix._data[1,3]) + " "
-        result += str(matrix._data[2,3]) + " "
+        result += str(matrix._data[0, 0]) + " "
+        result += str(matrix._data[1, 0]) + " "
+        result += str(matrix._data[2, 0]) + " "
+        result += str(matrix._data[0, 1]) + " "
+        result += str(matrix._data[1, 1]) + " "
+        result += str(matrix._data[2, 1]) + " "
+        result += str(matrix._data[0, 2]) + " "
+        result += str(matrix._data[1, 2]) + " "
+        result += str(matrix._data[2, 2]) + " "
+        result += str(matrix._data[0, 3]) + " "
+        result += str(matrix._data[1, 3]) + " "
+        result += str(matrix._data[2, 3])
         return result
 
     ##  Should we store the archive
@@ -52,6 +59,48 @@ class ThreeMFWriter(MeshWriter):
     #   The object that set this parameter is then responsible for closing it correctly!
     def setStoreArchive(self, store_archive):
         self._store_archive = store_archive
+
+    ##  Convenience function that converts an Uranium SceneNode object to a SavitarSceneNode
+    #   \returns Uranium Scenen node.
+    def _convertUMNodeToSavitarNode(self, um_node, transformation = Matrix()):
+        if type(um_node) is not UM.Scene.SceneNode.SceneNode:
+            return None
+
+        savitar_node = Savitar.SceneNode()
+
+        node_matrix = um_node.getLocalTransformation()
+
+        matrix_string = self._convertMatrixToString(node_matrix.preMultiply(transformation))
+
+        savitar_node.setTransformation(matrix_string)
+        mesh_data = um_node.getMeshData()
+        if mesh_data is not None:
+            savitar_node.getMeshData().setVerticesFromBytes(mesh_data.getVerticesAsByteArray())
+            indices_array = mesh_data.getIndicesAsByteArray()
+            if indices_array is not None:
+                savitar_node.getMeshData().setFacesFromBytes(indices_array)
+            else:
+                savitar_node.getMeshData().setFacesFromBytes(numpy.arange(mesh_data.getVertices().size / 3, dtype=numpy.int32).tostring())
+
+        # Handle per object settings (if any)
+        stack = um_node.callDecoration("getStack")
+        if stack is not None:
+            changed_setting_keys = set(stack.getTop().getAllKeys())
+
+            # Ensure that we save the extruder used for this object in a multi-extrusion setup
+            if stack.getProperty("machine_extruder_count", "value") > 1:
+                changed_setting_keys.add("extruder_nr")
+
+            # Get values for all changed settings & save them.
+            for key in changed_setting_keys:
+                savitar_node.setSetting(key, str(stack.getProperty(key, "value")))
+
+        for child_node in um_node.getChildren():
+            savitar_child_node = self._convertUMNodeToSavitarNode(child_node)
+            if savitar_child_node is not None:
+                savitar_node.addChild(savitar_child_node)
+
+        return savitar_node
 
     def getArchive(self):
         return self._archive
@@ -77,98 +126,14 @@ class ThreeMFWriter(MeshWriter):
             relations_element = ET.Element("Relationships", xmlns = self._namespaces["relationships"])
             model_relation_element = ET.SubElement(relations_element, "Relationship", Target = "/3D/3dmodel.model", Id = "rel0", Type = "http://schemas.microsoft.com/3dmanufacturing/2013/01/3dmodel")
 
-            model = ET.Element("model", unit = "millimeter", xmlns = self._namespaces["3mf"])
-            resources = ET.SubElement(model, "resources")
-            build = ET.SubElement(model, "build")
-
-            added_nodes = []
-            index = 0  # Ensure index always exists (even if there are no nodes to write)
-            # Write all nodes with meshData to the file as objects inside the resource tag
-            for index, n in enumerate(MeshWriter._meshNodes(nodes)):
-                added_nodes.append(n)  # Save the nodes that have mesh data
-                object = ET.SubElement(resources, "object", id = str(index+1), type = "model")
-                mesh = ET.SubElement(object, "mesh")
-
-                mesh_data = n.getMeshData()
-                vertices = ET.SubElement(mesh, "vertices")
-                verts = mesh_data.getVertices()
-
-                if verts is None:
-                    Logger.log("d", "3mf writer can't write nodes without mesh data. Skipping this node.")
-                    continue  # No mesh data, nothing to do.
-                if mesh_data.hasIndices():
-                    for face in mesh_data.getIndices():
-                        v1 = verts[face[0]]
-                        v2 = verts[face[1]]
-                        v3 = verts[face[2]]
-                        xml_vertex1 = ET.SubElement(vertices, "vertex", x = str(v1[0]), y = str(v1[1]), z = str(v1[2]))
-                        xml_vertex2 = ET.SubElement(vertices, "vertex", x = str(v2[0]), y = str(v2[1]), z = str(v2[2]))
-                        xml_vertex3 = ET.SubElement(vertices, "vertex", x = str(v3[0]), y = str(v3[1]), z = str(v3[2]))
-
-                    triangles = ET.SubElement(mesh, "triangles")
-                    for face in mesh_data.getIndices():
-                        triangle = ET.SubElement(triangles, "triangle", v1 = str(face[0]) , v2 = str(face[1]), v3 = str(face[2]))
-                else:
-                    triangles = ET.SubElement(mesh, "triangles")
-                    for idx, vert in enumerate(verts):
-                        xml_vertex = ET.SubElement(vertices, "vertex", x = str(vert[0]), y = str(vert[1]), z = str(vert[2]))
-
-                        # If we have no faces defined, assume that every three subsequent vertices form a face.
-                        if idx % 3 == 0:
-                            triangle = ET.SubElement(triangles, "triangle", v1 = str(idx), v2 = str(idx + 1), v3 = str(idx + 2))
-
-                # Handle per object settings
-                stack = n.callDecoration("getStack")
-                if stack is not None:
-                    changed_setting_keys = set(stack.getTop().getAllKeys())
-
-                    # Ensure that we save the extruder used for this object.
-                    if stack.getProperty("machine_extruder_count", "value") > 1:
-                        changed_setting_keys.add("extruder_nr")
-
-                    settings_xml = ET.SubElement(object, "settings", xmlns=self._namespaces["cura"])
-
-                    # Get values for all changed settings & save them.
-                    for key in changed_setting_keys:
-                        setting_xml = ET.SubElement(settings_xml, "setting", key = key)
-                        setting_xml.text = str(stack.getProperty(key, "value"))
-
-            # Add one to the index as we haven't incremented the last iteration.
-            index += 1
-            nodes_to_add = set()
-
-            for node in added_nodes:
-                # Check the parents of the nodes with mesh_data and ensure that they are also added.
-                parent_node = node.getParent()
-                while parent_node is not None:
-                    if parent_node.callDecoration("isGroup"):
-                        nodes_to_add.add(parent_node)
-                        parent_node = parent_node.getParent()
-                    else:
-                        parent_node = None
-
-            # Sort all the nodes by depth (so nodes with the highest depth are done first)
-            sorted_nodes_to_add = sorted(nodes_to_add, key=lambda node: node.getDepth(), reverse = True)
-
-            # We have already saved the nodes with mesh data, but now we also want to save nodes required for the scene
-            for node in sorted_nodes_to_add:
-                object = ET.SubElement(resources, "object", id=str(index + 1), type="model")
-                components = ET.SubElement(object, "components")
-                for child in node.getChildren():
-                    if child in added_nodes:
-                        component = ET.SubElement(components, "component", objectid = str(added_nodes.index(child) + 1), transform = self._convertMatrixToString(child.getLocalTransformation()))
-                index += 1
-                added_nodes.append(node)
-
-            # Create a transformation Matrix to convert from our worldspace into 3MF.
-            # First step: flip the y and z axis.
+            savitar_scene = Savitar.Scene()
             transformation_matrix = Matrix()
             transformation_matrix._data[1, 1] = 0
             transformation_matrix._data[1, 2] = -1
             transformation_matrix._data[2, 1] = 1
             transformation_matrix._data[2, 2] = 0
 
-            global_container_stack = UM.Application.getInstance().getGlobalContainerStack()
+            global_container_stack = Application.getInstance().getGlobalContainerStack()
             # Second step: 3MF defines the left corner of the machine as center, whereas cura uses the center of the
             # build volume.
             if global_container_stack:
@@ -179,14 +144,22 @@ class ThreeMFWriter(MeshWriter):
                 translation_matrix.setByTranslation(translation_vector)
                 transformation_matrix.preMultiply(translation_matrix)
 
-            # Find out what the final build items are and add them.
-            for node in added_nodes:
-                if node.getParent().callDecoration("isGroup") is None:
-                    node_matrix = node.getLocalTransformation()
+            root_node = UM.Application.Application.getInstance().getController().getScene().getRoot()
+            for node in nodes:
+                if node == root_node:
+                    for root_child in node.getChildren():
+                        savitar_node = self._convertUMNodeToSavitarNode(root_child, transformation_matrix)
+                        if savitar_node:
+                            savitar_scene.addSceneNode(savitar_node)
+                else:
+                    savitar_node = self._convertUMNodeToSavitarNode(node, transformation_matrix)
+                    if savitar_node:
+                        savitar_scene.addSceneNode(savitar_node)
 
-                    ET.SubElement(build, "item", objectid = str(added_nodes.index(node) + 1), transform = self._convertMatrixToString(node_matrix.preMultiply(transformation_matrix)))
+            parser = Savitar.ThreeMFParser()
+            scene_string = parser.sceneToString(savitar_scene)
 
-            archive.writestr(model_file, b'<?xml version="1.0" encoding="UTF-8"?> \n' + ET.tostring(model))
+            archive.writestr(model_file, scene_string)
             archive.writestr(content_types_file, b'<?xml version="1.0" encoding="UTF-8"?> \n' + ET.tostring(content_types))
             archive.writestr(relations_file, b'<?xml version="1.0" encoding="UTF-8"?> \n' + ET.tostring(relations_element))
         except Exception as e:

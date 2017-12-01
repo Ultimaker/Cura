@@ -1,12 +1,12 @@
 # Copyright (c) 2015 Ultimaker B.V.
-# Cura is released under the terms of the AGPLv3 or higher.
+# Cura is released under the terms of the LGPLv3 or higher.
 
 from PyQt5.QtCore import QTimer
 
+from UM.Application import Application
 from UM.Scene.SceneNode import SceneNode
 from UM.Scene.Iterator.BreadthFirstIterator import BreadthFirstIterator
 from UM.Math.Vector import Vector
-from UM.Math.AxisAlignedBox import AxisAlignedBox
 from UM.Scene.Selection import Selection
 from UM.Preferences import Preferences
 
@@ -41,7 +41,7 @@ class PlatformPhysics:
     def _onSceneChanged(self, source):
         self._change_timer.start()
 
-    def _onChangeTimerFinished(self):
+    def _onChangeTimerFinished(self, was_triggered_by_tool=False):
         if not self._enabled:
             return
 
@@ -51,10 +51,13 @@ class PlatformPhysics:
         # same direction.
         transformed_nodes = []
 
-        group_nodes = []
         # We try to shuffle all the nodes to prevent "locked" situations, where iteration B inverts iteration A.
         # By shuffling the order of the nodes, this might happen a few times, but at some point it will resolve.
         nodes = list(BreadthFirstIterator(root))
+
+        # Only check nodes inside build area.
+        nodes = [node for node in nodes if (hasattr(node, "_outside_buildarea") and not node._outside_buildarea)]
+
         random.shuffle(nodes)
         for node in nodes:
             if node is root or type(node) is not SceneNode or node.getBoundingBox() is None:
@@ -62,26 +65,9 @@ class PlatformPhysics:
 
             bbox = node.getBoundingBox()
 
-            # Ignore intersections with the bottom
-            build_volume_bounding_box = self._build_volume.getBoundingBox()
-            if build_volume_bounding_box:
-                # It's over 9000!
-                build_volume_bounding_box = build_volume_bounding_box.set(bottom=-9001)
-            else:
-                # No bounding box. This is triggered when running Cura from command line with a model for the first time
-                # In that situation there is a model, but no machine (and therefore no build volume.
-                return
-            node._outside_buildarea = False
-
-            # Mark the node as outside the build volume if the bounding box test fails.
-            if build_volume_bounding_box.intersectsBox(bbox) != AxisAlignedBox.IntersectionResult.FullIntersection:
-                node._outside_buildarea = True
-
-            if node.callDecoration("isGroup"):
-                group_nodes.append(node)  # Keep list of affected group_nodes
-
             # Move it downwards if bottom is above platform
             move_vector = Vector()
+
             if Preferences.getInstance().getValue("physics/automatic_drop_down") and not (node.getParent() and node.getParent().callDecoration("isGroup")) and node.isEnabled(): #If an object is grouped, don't move it down
                 z_offset = node.callDecoration("getZOffset") if node.getDecorator(ZOffsetDecorator.ZOffsetDecorator) else 0
                 move_vector = move_vector.set(y=-bbox.bottom + z_offset)
@@ -145,32 +131,23 @@ class PlatformPhysics:
                                 #  Simply waiting for the next tick seems to resolve this correctly.
                                 overlap = None
 
-            convex_hull = node.callDecoration("getConvexHull")
-            if convex_hull:
-                if not convex_hull.isValid():
-                    return
-                # Check for collisions between disallowed areas and the object
-                for area in self._build_volume.getDisallowedAreas():
-                    overlap = convex_hull.intersectsPolygon(area)
-                    if overlap is None:
-                        continue
-                    node._outside_buildarea = True
-
             if not Vector.Null.equals(move_vector, epsilon=1e-5):
                 transformed_nodes.append(node)
                 op = PlatformPhysicsOperation.PlatformPhysicsOperation(node, move_vector)
                 op.push()
 
-        # Group nodes should override the _outside_buildarea property of their children.
-        for group_node in group_nodes:
-            for child_node in group_node.getAllChildren():
-                child_node._outside_buildarea = group_node._outside_buildarea
-
+        # After moving, we have to evaluate the boundary checks for nodes
+        build_volume = Application.getInstance().getBuildVolume()
+        build_volume.updateNodeBoundaryCheck()
 
     def _onToolOperationStarted(self, tool):
         self._enabled = False
 
     def _onToolOperationStopped(self, tool):
+        # Selection tool should not trigger an update.
+        if tool.getPluginId() == "SelectionTool":
+            return
+
         if tool.getPluginId() == "TranslateTool":
             for node in Selection.getAllSelectedObjects():
                 if node.getBoundingBox().bottom < 0:
@@ -183,4 +160,4 @@ class PlatformPhysics:
                         node.removeDecorator(ZOffsetDecorator.ZOffsetDecorator)
 
         self._enabled = True
-        self._onChangeTimerFinished()
+        self._onChangeTimerFinished(True)

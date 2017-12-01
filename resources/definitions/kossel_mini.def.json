@@ -7,10 +7,10 @@
         "visible": true,
         "author": "Claudio Sampaio (Patola)",
         "manufacturer": "Other",
-        "category": "Other",
         "file_formats": "text/x-gcode",
         "icon": "icon_ultimaker2",
-        "platform": "kossel_platform.stl"
+        "platform": "kossel_platform.stl",
+        "platform_offset": [0, -0.25, 0]
     },
 
     "overrides": {
@@ -35,12 +35,6 @@
         "material_diameter": {
             "default_value": 1.75
         },
-        "machine_nozzle_heat_up_speed": {
-            "default_value": 2
-        },
-        "machine_nozzle_cool_down_speed": {
-            "default_value": 2
-        },
         "machine_gcode_flavor": {
             "default_value": "RepRap (Marlin/Sprinter)"
         },
@@ -50,18 +44,8 @@
         "machine_end_gcode": {
             "default_value": "M104 S0 ;extruder heater off\nM140 S0 ;heated bed heater off (if you have it)\nG91 ;relative positioning\nG1 E-1 F300  ;retract the filament a bit before lifting the nozzle, to release some of the pressure\nG28 ;Home all axes (max endstops)\nM84 ;steppers off\nG90 ;absolute positioning"
         },
-        "machine_disallowed_areas": {
-            "default_value": [
-                [[-34,  -85], [ -85,  -85], [-70,  -70]],
-		[[-85, -85], [-85, -34], [-70, -70]],
-                [[34,  -85], [ 85,  -85], [70,  -70]],
-		[[85, -85], [85, -34], [70, -70]],
-                [[-34,  85], [ -85,  85], [-70,  70]],
-		[[-85, 85], [-85, 34], [-70, 70]],
-                [[34,  85], [ 85,  85], [70,  70]],
-		[[85, 85], [85, 34], [70, 70]]
-            ]
+        "machine_shape": {
+            "default_value": "elliptic"
         }
-
     }
 }

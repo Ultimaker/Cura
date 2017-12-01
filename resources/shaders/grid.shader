@@ -14,6 +14,7 @@ vertex =
     }
 
 fragment =
+    uniform lowp vec4 u_plateColor;
     uniform lowp vec4 u_gridColor0;
     uniform lowp vec4 u_gridColor1;
 
@@ -21,13 +22,64 @@ fragment =
 
     void main()
     {
-        if (mod(floor(v_uvs.x / 10.0) - floor(v_uvs.y / 10.0), 2.0) < 1.0)
-            gl_FragColor = u_gridColor0;
-        else
-            gl_FragColor = u_gridColor1;
+        vec2 coord = v_uvs.xy;
+
+        // Compute anti-aliased world-space minor grid lines
+        vec2 minorGrid = abs(fract(coord - 0.5) - 0.5) / fwidth(coord);
+        float minorLine = min(minorGrid.x, minorGrid.y);
+
+        vec4 minorGridColor = mix(u_plateColor, u_gridColor1, 1.0 - min(minorLine, 1.0));
+
+        // Compute anti-aliased world-space major grid lines
+        vec2 majorGrid = abs(fract(coord / 10.0 - 0.5) - 0.5) / fwidth(coord / 10.0);
+        float majorLine = min(majorGrid.x, majorGrid.y);
+
+        gl_FragColor = mix(minorGridColor, u_gridColor0, 1.0 - min(majorLine, 1.0));
+    }
+
+vertex41core =
+    #version 410
+    uniform highp mat4 u_modelViewProjectionMatrix;
+
+    in highp vec4 a_vertex;
+    in lowp vec2 a_uvs;
+
+    out lowp vec2 v_uvs;
+
+    void main()
+    {
+        gl_Position = u_modelViewProjectionMatrix * a_vertex;
+        v_uvs = a_uvs;
+    }
+
+fragment41core =
+    #version 410
+    uniform lowp vec4 u_plateColor;
+    uniform lowp vec4 u_gridColor0;
+    uniform lowp vec4 u_gridColor1;
+
+    in lowp vec2 v_uvs;
+    out vec4 frag_color;
+
+    void main()
+    {
+        vec2 coord = v_uvs.xy;
+
+        // Compute anti-aliased world-space minor grid lines
+        vec2 minorGrid = abs(fract(coord - 0.5) - 0.5) / fwidth(coord);
+        float minorLine = min(minorGrid.x, minorGrid.y);
+
+        vec4 minorGridColor = mix(u_plateColor, u_gridColor1, 1.0 - min(minorLine, 1.0));
+
+        // Compute anti-aliased world-space major grid lines
+        vec2 majorGrid = abs(fract(coord / 10.0 - 0.5) - 0.5) / fwidth(coord / 10.0);
+        float majorLine = min(majorGrid.x, majorGrid.y);
+
+        frag_color = mix(minorGridColor, u_gridColor0, 1.0 - min(majorLine, 1.0));
     }
 
 [defaults]
+u_plateColor = [1.0, 1.0, 1.0, 1.0]
 u_gridColor0 = [0.96, 0.96, 0.96, 1.0]
 u_gridColor1 = [0.8, 0.8, 0.8, 1.0]
 

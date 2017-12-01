@@ -7,7 +7,7 @@ import struct
 import sys
 import time
 
-from serial import Serial
+from serial import Serial   # type: ignore
 from serial import SerialException
 from serial import SerialTimeoutException
 from UM.Logger import Logger
@@ -43,17 +43,20 @@ class Stk500v2(ispBase.IspBase):
 
         self.serial.flushInput()
         self.serial.flushOutput()
-        if self.sendMessage([0x10, 0xc8, 0x64, 0x19, 0x20, 0x00, 0x53, 0x03, 0xac, 0x53, 0x00, 0x00]) != [0x10, 0x00]:
+        try:
+            if self.sendMessage([0x10, 0xc8, 0x64, 0x19, 0x20, 0x00, 0x53, 0x03, 0xac, 0x53, 0x00, 0x00]) != [0x10, 0x00]:
+                raise ispBase.IspError("Failed to enter programming mode")
+
+            self.sendMessage([0x06, 0x80, 0x00, 0x00, 0x00])
+            if self.sendMessage([0xEE])[1] == 0x00:
+                self._has_checksum = True
+            else:
+                self._has_checksum = False
+        except ispBase.IspError:
             self.close()
-            raise ispBase.IspError("Failed to enter programming mode")
-
-        self.sendMessage([0x06, 0x80, 0x00, 0x00, 0x00])
-        if self.sendMessage([0xEE])[1] == 0x00:
-            self._has_checksum = True
-        else:
-            self._has_checksum = False
+            raise
         self.serial.timeout = 5
-
+ 
     def close(self):
         if self.serial is not None:
             self.serial.close()
@@ -181,7 +184,7 @@ class Stk500v2(ispBase.IspBase):
 
 def portList():
     ret = []
-    import _winreg
+    import _winreg  # type: ignore
     key=_winreg.OpenKey(_winreg.HKEY_LOCAL_MACHINE,"HARDWARE\\DEVICEMAP\\SERIALCOMM") #@UndefinedVariable
     i=0
     while True:

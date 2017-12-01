@@ -1,5 +1,5 @@
-// Copyright (c) 2015 Ultimaker B.V.
-// Uranium is released under the terms of the AGPLv3 or higher.
+// Copyright (c) 2017 Ultimaker B.V.
+// Uranium is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.2
 import QtQuick.Controls 1.1
@@ -8,6 +8,8 @@ import QtQuick.Layouts 1.1
 
 import UM 1.2 as UM
 import Cura 1.0 as Cura
+
+import "../Menus"
 
 Item
 {
@@ -18,23 +20,99 @@ Item
     signal showTooltip(Item item, point location, string text);
     signal hideTooltip();
 
-    function toggleFilterField()
+    Item
     {
-        filterContainer.visible = !filterContainer.visible
-        if(filterContainer.visible)
+        id: globalProfileRow
+        height: UM.Theme.getSize("sidebar_setup").height
+        visible: !sidebar.monitoringPrint && !sidebar.hideSettings
+
+        anchors
         {
-            filter.forceActiveFocus();
+            top: parent.top
+            left: parent.left
+            leftMargin: UM.Theme.getSize("sidebar_margin").width
+            right: parent.right
+            rightMargin: UM.Theme.getSize("sidebar_margin").width
         }
-        else
+
+        Label
         {
-            filter.text = "";
+            id: globalProfileLabel
+            text: catalog.i18nc("@label","Profile:");
+            width: Math.floor(parent.width * 0.45 - UM.Theme.getSize("sidebar_margin").width - 2)
+            font: UM.Theme.getFont("default");
+            color: UM.Theme.getColor("text");
+            verticalAlignment: Text.AlignVCenter
+            anchors.top: parent.top
+            anchors.bottom: parent.bottom
+        }
+
+        ToolButton
+        {
+            id: globalProfileSelection
+
+            text: generateActiveQualityText()
+            enabled: !header.currentExtruderVisible || header.currentExtruderIndex > -1
+            width: Math.floor(parent.width * 0.55)
+            height: UM.Theme.getSize("setting_control").height
+            anchors.left: globalProfileLabel.right
+            anchors.right: parent.right
+            tooltip: Cura.MachineManager.activeQualityName
+            style: UM.Theme.styles.sidebar_header_button
+            activeFocusOnPress: true
+            menu: ProfileMenu { }
+
+            function generateActiveQualityText () {
+                var result = catalog.i18nc("@", "No Profile Available") // default text
+
+                if (Cura.MachineManager.isActiveQualitySupported ) {
+                    result = Cura.MachineManager.activeQualityName
+
+                    if (Cura.MachineManager.activeQualityLayerHeight > 0) {
+                        result += " <font color=\"" + UM.Theme.getColor("text_detail") + "\">"
+                        result += " - "
+                        result += Cura.MachineManager.activeQualityLayerHeight + "mm"
+                        result += "</font>"
+                    }
+                }
+
+                return result
+            }
+
+            UM.SimpleButton
+            {
+                id: customisedSettings
+
+                visible: Cura.MachineManager.hasUserSettings
+                height: Math.floor(parent.height * 0.6)
+                width: Math.floor(parent.height * 0.6)
+
+                anchors.verticalCenter: parent.verticalCenter
+                anchors.right: parent.right
+                anchors.rightMargin: UM.Theme.getSize("setting_preferences_button_margin").width - UM.Theme.getSize("sidebar_margin").width
+
+                color: hovered ? UM.Theme.getColor("setting_control_button_hover") : UM.Theme.getColor("setting_control_button");
+                iconSource: UM.Theme.getIcon("star");
+
+                onClicked:
+                {
+                    forceActiveFocus();
+                    Cura.Actions.manageProfiles.trigger()
+                }
+                onEntered:
+                {
+                    var content = catalog.i18nc("@tooltip","Some setting/override values are different from the values stored in the profile.\n\nClick to open the profile manager.")
+                    base.showTooltip(globalProfileRow, Qt.point(-UM.Theme.getSize("sidebar_margin").width, 0),  content)
+                }
+                onExited: base.hideTooltip()
+            }
         }
     }
 
     Rectangle
     {
         id: filterContainer
-        visible: false
+        visible: true
 
         border.width: UM.Theme.getSize("default_lining").width
         border.color:
@@ -53,11 +131,12 @@ Item
 
         anchors
         {
-            top: parent.top
+            top: globalProfileRow.bottom
+            topMargin: UM.Theme.getSize("sidebar_margin").height
             left: parent.left
-            leftMargin: UM.Theme.getSize("default_margin").width
+            leftMargin: UM.Theme.getSize("sidebar_margin").width
             right: parent.right
-            rightMargin: UM.Theme.getSize("default_margin").width
+            rightMargin: UM.Theme.getSize("sidebar_margin").width
         }
         height: visible ? UM.Theme.getSize("setting_control").height : 0
         Behavior on height { NumberAnimation { duration: 100 } }
@@ -68,13 +147,14 @@ Item
 
             anchors.left: parent.left
             anchors.right: clearFilterButton.left
-            anchors.rightMargin: UM.Theme.getSize("default_margin").width
+            anchors.rightMargin: UM.Theme.getSize("sidebar_margin").width
 
-            placeholderText: catalog.i18nc("@label:textbox", "Filter...")
+            placeholderText: catalog.i18nc("@label:textbox", "Search...")
 
             style: TextFieldStyle
             {
                 textColor: UM.Theme.getColor("setting_control_text");
+                placeholderTextColor: UM.Theme.getColor("setting_control_text")
                 font: UM.Theme.getFont("default");
                 background: Item {}
             }
@@ -84,7 +164,7 @@ Item
 
             onTextChanged:
             {
-                definitionsModel.filter = {"label": "*" + text};
+                definitionsModel.filter = {"i18n_label": "*" + text};
                 findingSettings = (text.length > 0);
                 if(findingSettings != lastFindingSettings)
                 {
@@ -131,7 +211,7 @@ Item
 
             anchors.verticalCenter: parent.verticalCenter
             anchors.right: parent.right
-            anchors.rightMargin: UM.Theme.getSize("default_margin").width
+            anchors.rightMargin: UM.Theme.getSize("sidebar_margin").width
 
             color: UM.Theme.getColor("setting_control_button")
             hoverColor: UM.Theme.getColor("setting_control_button_hover")
@@ -150,11 +230,12 @@ Item
         anchors.bottom: parent.bottom;
         anchors.right: parent.right;
         anchors.left: parent.left;
-        anchors.topMargin: filterContainer.visible ? UM.Theme.getSize("default_margin").width : 0
+        anchors.topMargin: filterContainer.visible ? UM.Theme.getSize("sidebar_margin").height : 0
         Behavior on anchors.topMargin { NumberAnimation { duration: 100 } }
 
         style: UM.Theme.styles.scrollview;
         flickableItem.flickableDirection: Flickable.VerticalFlick;
+        __wheelAreaScrollSpeed: 75; // Scroll three lines in one scroll event
 
         ListView
         {
@@ -167,19 +248,21 @@ Item
                 id: definitionsModel;
                 containerId: Cura.MachineManager.activeDefinitionId
                 visibilityHandler: UM.SettingPreferenceVisibilityHandler { }
-                exclude: ["machine_settings", "command_line_settings", "infill_mesh", "infill_mesh_order"] // TODO: infill_mesh settigns are excluded hardcoded, but should be based on the fact that settable_globally, settable_per_meshgroup and settable_per_extruder are false.
-                expanded: Printer.expandedCategories
+                exclude: ["machine_settings", "command_line_settings", "infill_mesh", "infill_mesh_order", "cutting_mesh", "support_mesh", "anti_overhang_mesh"] // TODO: infill_mesh settigns are excluded hardcoded, but should be based on the fact that settable_globally, settable_per_meshgroup and settable_per_extruder are false.
+                expanded: CuraApplication.expandedCategories
                 onExpandedChanged:
                 {
                     if(!findingSettings)
                     {
                         // Do not change expandedCategories preference while filtering settings
                         // because all categories are expanded while filtering
-                        Printer.setExpandedCategories(expanded)
+                        CuraApplication.setExpandedCategories(expanded)
                     }
                 }
                 onVisibilityChanged: Cura.SettingInheritanceManager.forceUpdate()
             }
+
+            property var indexWithFocus: -1
 
             delegate: Loader
             {
@@ -192,7 +275,7 @@ Item
                 Behavior on opacity { NumberAnimation { duration: 100 } }
                 enabled:
                 {
-                    if(!ExtruderManager.activeExtruderStackId && ExtruderManager.extruderCount > 0)
+                    if (!Cura.ExtruderManager.activeExtruderStackId && machineExtruderCount.properties.value > 1)
                     {
                         // disable all controls on the global tab, except categories
                         return model.type == "category"
@@ -208,7 +291,7 @@ Item
                 //Qt5.4.2 and earlier has a bug where this causes a crash: https://bugreports.qt.io/browse/QTBUG-35989
                 //In addition, while it works for 5.5 and higher, the ordering of the actual combo box drop down changes,
                 //causing nasty issues when selecting different options. So disable asynchronous loading of enum type completely.
-                asynchronous: model.type != "enum" && model.type != "extruder"
+                asynchronous: model.type != "enum" && model.type != "extruder" && model.type != "optional_extruder"
                 active: model.type != undefined
 
                 source:
@@ -216,6 +299,8 @@ Item
                     switch(model.type)
                     {
                         case "int":
+                            return "SettingTextField.qml"
+                        case "[int]":
                             return "SettingTextField.qml"
                         case "float":
                             return "SettingTextField.qml"
@@ -229,6 +314,8 @@ Item
                             return "SettingTextField.qml"
                         case "category":
                             return "SettingCategory.qml"
+                        case "optional_extruder":
+                            return "SettingOptionalExtruder.qml"
                         default:
                             return "SettingUnknown.qml"
                     }
@@ -244,23 +331,29 @@ Item
                     when: model.settable_per_extruder || (inheritStackProvider.properties.limit_to_extruder != null && inheritStackProvider.properties.limit_to_extruder >= 0);
                     value:
                     {
-                        if(!model.settable_per_extruder || machineExtruderCount.properties.value == 1)
+                        // associate this binding with Cura.MachineManager.activeMachineId in the beginning so this
+                        // binding will be triggered when activeMachineId is changed too.
+                        // Otherwise, if this value only depends on the extruderIds, it won't get updated when the
+                        // machine gets changed.
+                        var activeMachineId = Cura.MachineManager.activeMachineId;
+
+                        if(!model.settable_per_extruder)
                         {
                             //Not settable per extruder or there only is global, so we must pick global.
-                            return Cura.MachineManager.activeMachineId;
+                            return activeMachineId;
                         }
                         if(inheritStackProvider.properties.limit_to_extruder != null && inheritStackProvider.properties.limit_to_extruder >= 0)
                         {
                             //We have limit_to_extruder, so pick that stack.
-                            return ExtruderManager.extruderIds[String(inheritStackProvider.properties.limit_to_extruder)];
+                            return Cura.ExtruderManager.extruderIds[String(inheritStackProvider.properties.limit_to_extruder)];
                         }
-                        if(ExtruderManager.activeExtruderStackId)
+                        if(Cura.ExtruderManager.activeExtruderStackId)
                         {
                             //We're on an extruder tab. Pick the current extruder.
-                            return ExtruderManager.activeExtruderStackId;
+                            return Cura.ExtruderManager.activeExtruderStackId;
                         }
                         //No extruder tab is selected. Pick the global stack. Shouldn't happen any more since we removed the global tab.
-                        return Cura.MachineManager.activeMachineId;
+                        return activeMachineId;
                     }
                 }
 
@@ -296,7 +389,7 @@ Item
                         contextMenu.provider = provider
                         contextMenu.popup();
                     }
-                    onShowTooltip: base.showTooltip(delegate, { x: 0, y: delegate.height / 2 }, text)
+                    onShowTooltip: base.showTooltip(delegate, { x: -UM.Theme.getSize("default_arrow").width, y: delegate.height / 2 }, text)
                     onHideTooltip: base.hideTooltip()
                     onShowAllHiddenInheritedSettings:
                     {
@@ -307,10 +400,52 @@ Item
                         }
                         Cura.SettingInheritanceManager.manualRemoveOverride(category_id)
                     }
+                    onFocusReceived:
+                    {
+                        contents.indexWithFocus = index;
+                        animateContentY.from = contents.contentY;
+                        contents.positionViewAtIndex(index, ListView.Contain);
+                        animateContentY.to = contents.contentY;
+                        animateContentY.running = true;
+                    }
+                    onSetActiveFocusToNextSetting:
+                    {
+                        if(forward == undefined || forward)
+                        {
+                            contents.currentIndex = contents.indexWithFocus + 1;
+                            while(contents.currentItem && contents.currentItem.height <= 0)
+                            {
+                                contents.currentIndex++;
+                            }
+                            if(contents.currentItem)
+                            {
+                                contents.currentItem.item.focusItem.forceActiveFocus();
+                            }
+                        }
+                        else
+                        {
+                            contents.currentIndex = contents.indexWithFocus - 1;
+                            while(contents.currentItem && contents.currentItem.height <= 0)
+                            {
+                                contents.currentIndex--;
+                            }
+                            if(contents.currentItem)
+                            {
+                                contents.currentItem.item.focusItem.forceActiveFocus();
+                            }
+                        }
+                    }
                 }
             }
 
-            UM.I18nCatalog { id: catalog; name: "uranium"; }
+            UM.I18nCatalog { id: catalog; name: "cura"; }
+
+            NumberAnimation {
+                id: animateContentY
+                target: contents
+                property: "contentY"
+                duration: 50
+            }
 
             add: Transition {
                 SequentialAnimation {

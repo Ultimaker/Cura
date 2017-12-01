@@ -1,5 +1,5 @@
 // Copyright (c) 2015 Ultimaker B.V.
-// Cura is released under the terms of the AGPLv3 or higher.
+// Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.2
 import QtQuick.Controls 1.1
@@ -29,6 +29,11 @@ UM.PointingRectangle {
         } else {
             x = position.x - base.width;
             y = position.y - UM.Theme.getSize("tooltip_arrow_margins").height;
+            if(y < 0)
+            {
+                position.y += -y;
+                y = 0;
+            }
         }
         base.opacity = 1;
         target = Qt.point(40 , position.y + UM.Theme.getSize("tooltip_arrow_margins").height / 2)
@@ -49,6 +54,7 @@ UM.PointingRectangle {
             rightMargin: UM.Theme.getSize("tooltip_margins").width;
         }
         wrapMode: Text.Wrap;
+        textFormat: Text.RichText
         font: UM.Theme.getFont("default");
         color: UM.Theme.getColor("tooltip_text");
     }

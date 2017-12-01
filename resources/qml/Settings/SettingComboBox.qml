@@ -1,5 +1,5 @@
 // Copyright (c) 2015 Ultimaker B.V.
-// Uranium is released under the terms of the AGPLv3 or higher.
+// Uranium is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.1
 import QtQuick.Controls 1.1
@@ -10,6 +10,7 @@ import UM 1.1 as UM
 SettingItem
 {
     id: base
+    property var focusItem: control
 
     contents: ComboBox
     {
@@ -33,21 +34,29 @@ SettingItem
             {
                 color:
                 {
-                    if (!enabled)
+                    if(!enabled)
                     {
                         return UM.Theme.getColor("setting_control_disabled")
                     }
-                    if(control.hovered || base.activeFocus)
+                    if(control.hovered || control.activeFocus)
                     {
                         return UM.Theme.getColor("setting_control_highlight")
                     }
-                    else
-                    {
-                        return UM.Theme.getColor("setting_control")
-                    }
+                    return UM.Theme.getColor("setting_control")
                 }
-                border.width: UM.Theme.getSize("default_lining").width;
-                border.color: !enabled ? UM.Theme.getColor("setting_control_disabled_border") : control.hovered ? UM.Theme.getColor("setting_control_border_highlight") : UM.Theme.getColor("setting_control_border");
+                border.width: UM.Theme.getSize("default_lining").width
+                border.color:
+                {
+                    if(!enabled)
+                    {
+                        return UM.Theme.getColor("setting_control_disabled_border")
+                    }
+                    if(control.hovered || control.activeFocus)
+                    {
+                        return UM.Theme.getColor("setting_control_border_highlight")
+                    }
+                    return UM.Theme.getColor("setting_control_border")
+                }
             }
             label: Item
             {
@@ -77,8 +86,8 @@ SettingItem
                     source: UM.Theme.getIcon("arrow_bottom")
                     width: UM.Theme.getSize("standard_arrow").width
                     height: UM.Theme.getSize("standard_arrow").height
-                    sourceSize.width: width + 5
-                    sourceSize.height: width + 5
+                    sourceSize.width: width + 5 * screenScaleFactor
+                    sourceSize.height: width + 5 * screenScaleFactor
 
                     color: UM.Theme.getColor("setting_control_text");
 
@@ -86,7 +95,28 @@ SettingItem
             }
         }
 
-        onActivated: { forceActiveFocus(); propertyProvider.setPropertyValue("value", definition.options[index].key) }
+        onActivated:
+        {
+            forceActiveFocus();
+            propertyProvider.setPropertyValue("value", definition.options[index].key);
+        }
+
+        onActiveFocusChanged:
+        {
+            if(activeFocus)
+            {
+                base.focusReceived();
+            }
+        }
+
+        Keys.onTabPressed:
+        {
+            base.setActiveFocusToNextSetting(true)
+        }
+        Keys.onBacktabPressed:
+        {
+            base.setActiveFocusToNextSetting(false)
+        }
 
         Binding
         {
@@ -95,13 +125,17 @@ SettingItem
             value:
             {
                 // FIXME this needs to go away once 'resolve' is combined with 'value' in our data model.
-                var value;
-                if ((base.resolve != "None") && (base.stackLevel != 0) && (base.stackLevel != 1)) {
+                var value = undefined;
+                if ((base.resolve != "None") && (base.stackLevel != 0) && (base.stackLevel != 1))
+                {
                     // We have a resolve function. Indicates that the setting is not settable per extruder and that
                     // we have to choose between the resolved value (default) and the global value
                     // (if user has explicitly set this).
                     value = base.resolve;
-                } else {
+                }
+
+                if (value == undefined)
+                {
                     value = propertyProvider.properties.value;
                 }
 

@@ -1,11 +1,17 @@
-# Copyright (c) 2016 Ultimaker B.V.
-# Cura is released under the terms of the AGPLv3 or higher.
+# Copyright (c) 2017 Ultimaker B.V.
+# Cura is released under the terms of the LGPLv3 or higher.
 
-from PyQt5.QtCore import Qt, pyqtSignal, pyqtProperty
+from PyQt5.QtCore import Qt, pyqtSignal, pyqtProperty, QTimer
+from typing import Iterable
 
+from UM.i18n import i18nCatalog
 import UM.Qt.ListModel
+from UM.Application import Application
+import UM.FlameProfiler
 
-from . import ExtruderManager
+from cura.Settings.ExtruderStack import ExtruderStack  # To listen to changes on the extruders.
+
+catalog = i18nCatalog("cura")
 
 ##  Model that holds extruders.
 #
@@ -32,6 +38,12 @@ class ExtrudersModel(UM.Qt.ListModel.ListModel):
     # The ID of the definition of the extruder.
     DefinitionRole = Qt.UserRole + 5
 
+    # The material of the extruder.
+    MaterialRole = Qt.UserRole + 6
+
+    # The variant of the extruder.
+    VariantRole = Qt.UserRole + 7
+
     ##  List of colours to display if there is no material or the material has no known
     #   colour.
     defaultColors = ["#ffc924", "#86ec21", "#22eeee", "#245bff", "#9124ff", "#ff24c8"]
@@ -48,32 +60,36 @@ class ExtrudersModel(UM.Qt.ListModel.ListModel):
         self.addRoleName(self.ColorRole, "color")
         self.addRoleName(self.IndexRole, "index")
         self.addRoleName(self.DefinitionRole, "definition")
+        self.addRoleName(self.MaterialRole, "material")
+        self.addRoleName(self.VariantRole, "variant")
 
-        self._add_global = False
+        self._update_extruder_timer = QTimer()
+        self._update_extruder_timer.setInterval(100)
+        self._update_extruder_timer.setSingleShot(True)
+        self._update_extruder_timer.timeout.connect(self.__updateExtruders)
+
         self._simple_names = False
 
-        self._active_extruder_stack = None
+        self._active_machine_extruders = []  # type: Iterable[ExtruderStack]
+        self._add_optional_extruder = False
 
-        #Listen to changes.
-        UM.Application.getInstance().globalContainerStackChanged.connect(self._updateExtruders)
-        manager = ExtruderManager.getInstance()
+        # Listen to changes
+        Application.getInstance().globalContainerStackChanged.connect(self._extrudersChanged)  # When the machine is swapped we must update the active machine extruders
+        Application.getInstance().getExtruderManager().extrudersChanged.connect(self._extrudersChanged)  # When the extruders change we must link to the stack-changed signal of the new extruder
+        Application.getInstance().getContainerRegistry().containerMetaDataChanged.connect(self._onExtruderStackContainersChanged)  # When meta data from a material container changes we must update
+        self._extrudersChanged()  # Also calls _updateExtruders
 
-        self._updateExtruders()
+    addOptionalExtruderChanged = pyqtSignal()
 
-        manager.activeExtruderChanged.connect(self._onActiveExtruderChanged)
-        self._onActiveExtruderChanged()
-
-    def setAddGlobal(self, add):
-        if add != self._add_global:
-            self._add_global = add
+    def setAddOptionalExtruder(self, add_optional_extruder):
+        if add_optional_extruder != self._add_optional_extruder:
+            self._add_optional_extruder = add_optional_extruder
+            self.addOptionalExtruderChanged.emit()
             self._updateExtruders()
-            self.addGlobalChanged.emit()
 
-    addGlobalChanged = pyqtSignal()
-
-    @pyqtProperty(bool, fset = setAddGlobal, notify = addGlobalChanged)
-    def addGlobal(self):
-        return self._add_global
+    @pyqtProperty(bool, fset = setAddOptionalExtruder, notify = addOptionalExtruderChanged)
+    def addOptionalExtruder(self):
+        return self._add_optional_extruder
 
     ##  Set the simpleNames property.
     def setSimpleNames(self, simple_names):
@@ -90,76 +106,106 @@ class ExtrudersModel(UM.Qt.ListModel.ListModel):
     def simpleNames(self):
         return self._simple_names
 
-    def _onActiveExtruderChanged(self):
-        manager = ExtruderManager.getInstance()
-        active_extruder_stack = manager.getActiveExtruderStack()
-        if self._active_extruder_stack != active_extruder_stack:
-            if self._active_extruder_stack:
-                self._active_extruder_stack.containersChanged.disconnect(self._onExtruderStackContainersChanged)
+    ##  Links to the stack-changed signal of the new extruders when an extruder
+    #   is swapped out or added in the current machine.
+    #
+    #   \param machine_id The machine for which the extruders changed. This is
+    #   filled by the ExtruderManager.extrudersChanged signal when coming from
+    #   that signal. Application.globalContainerStackChanged doesn't fill this
+    #   signal; it's assumed to be the current printer in that case.
+    def _extrudersChanged(self, machine_id = None):
+        if machine_id is not None:
+            if Application.getInstance().getGlobalContainerStack() is None:
+                # No machine, don't need to update the current machine's extruders
+                return
+            if machine_id != Application.getInstance().getGlobalContainerStack().getId():
+                # Not the current machine
+                return
 
-            if active_extruder_stack:
-                # Update the model when the material container is changed
-                active_extruder_stack.containersChanged.connect(self._onExtruderStackContainersChanged)
-            self._active_extruder_stack = active_extruder_stack
+        # Unlink from old extruders
+        for extruder in self._active_machine_extruders:
+            extruder.containersChanged.disconnect(self._onExtruderStackContainersChanged)
 
+        # Link to new extruders
+        self._active_machine_extruders = []
+        extruder_manager = Application.getInstance().getExtruderManager()
+        for extruder in extruder_manager.getExtruderStacks():
+            extruder.containersChanged.connect(self._onExtruderStackContainersChanged)
+            self._active_machine_extruders.append(extruder)
+
+        self._updateExtruders()  # Since the new extruders may have different properties, update our own model.
 
     def _onExtruderStackContainersChanged(self, container):
-        # The ExtrudersModel needs to be updated when the material-name or -color changes, because the user identifies extruders by material-name
-        if container.getMetaDataEntry("type") == "material":
+        # Update when there is an empty container or material change
+        if container.getMetaDataEntry("type") == "material" or container.getMetaDataEntry("type") is None:
+            # The ExtrudersModel needs to be updated when the material-name or -color changes, because the user identifies extruders by material-name
             self._updateExtruders()
 
     modelChanged = pyqtSignal()
 
+    def _updateExtruders(self):
+        self._update_extruder_timer.start()
+
     ##  Update the list of extruders.
     #
     #   This should be called whenever the list of extruders changes.
-    def _updateExtruders(self):
-        changed = False
+    @UM.FlameProfiler.profile
+    def __updateExtruders(self):
+        extruders_changed = False
 
         if self.rowCount() != 0:
-            changed = True
+            extruders_changed = True
 
         items = []
 
-        global_container_stack = UM.Application.getInstance().getGlobalContainerStack()
+        global_container_stack = Application.getInstance().getGlobalContainerStack()
         if global_container_stack:
-            if self._add_global:
-                material = global_container_stack.findContainer({ "type": "material" })
-                color = material.getMetaDataEntry("color_code", default = self.defaultColors[0]) if material else self.defaultColors[0]
+
+            # get machine extruder count for verification
+            machine_extruder_count = global_container_stack.getProperty("machine_extruder_count", "value")
+
+            for extruder in Application.getInstance().getExtruderManager().getMachineExtruders(global_container_stack.getId()):
+                position = extruder.getMetaDataEntry("position", default = "0")  # Get the position
+                try:
+                    position = int(position)
+                except ValueError:
+                    # Not a proper int.
+                    position = -1
+                if position >= machine_extruder_count:
+                    continue
+
+                default_color = self.defaultColors[position] if 0 <= position < len(self.defaultColors) else self.defaultColors[0]
+                color = extruder.material.getMetaDataEntry("color_code", default = default_color) if extruder.material else default_color
+
+                # construct an item with only the relevant information
                 item = {
-                    "id": global_container_stack.getId(),
-                    "name": "Global",
+                    "id": extruder.getId(),
+                    "name": extruder.getName(),
                     "color": color,
+                    "index": position,
+                    "definition": extruder.getBottom().getId(),
+                    "material": extruder.material.getName() if extruder.material else "",
+                    "variant": extruder.variant.getName() if extruder.variant else "",  # e.g. print core
+                }
+
+                items.append(item)
+                extruders_changed = True
+
+        if extruders_changed:
+            # sort by extruder index
+            items.sort(key = lambda i: i["index"])
+
+            # We need optional extruder to be last, so add it after we do sorting.
+            # This way we can simply interpret the -1 of the index as the last item (which it now always is)
+            if self._add_optional_extruder:
+                item = {
+                    "id": "",
+                    "name": catalog.i18nc("@menuitem", "Not overridden"),
+                    "color": "#ffffff",
                     "index": -1,
                     "definition": ""
                 }
                 items.append(item)
-                changed = True
 
-            manager = ExtruderManager.getInstance()
-            for extruder in manager.getMachineExtruders(global_container_stack.getId()):
-                extruder_name = extruder.getName()
-                material = extruder.findContainer({ "type": "material" })
-                if material and not self._simple_names:
-                    extruder_name = "%s (%s)" % (material.getName(), extruder_name)
-                position = extruder.getMetaDataEntry("position", default = "0")  # Get the position
-                try:
-                    position = int(position)
-                except ValueError: #Not a proper int.
-                    position = -1
-                default_color = self.defaultColors[position] if position >= 0 and position < len(self.defaultColors) else self.defaultColors[0]
-                color = material.getMetaDataEntry("color_code", default = default_color) if material else default_color
-                item = { #Construct an item with only the relevant information.
-                    "id": extruder.getId(),
-                    "name": extruder_name,
-                    "color": color,
-                    "index": position,
-                    "definition": extruder.getBottom().getId()
-                }
-                items.append(item)
-                changed = True
-
-        if changed:
-            items.sort(key = lambda i: i["index"])
             self.setItems(items)
             self.modelChanged.emit()

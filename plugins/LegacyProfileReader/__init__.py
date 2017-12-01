@@ -1,5 +1,5 @@
 # Copyright (c) 2015 Ultimaker B.V.
-# Cura is released under the terms of the AGPLv3 or higher.
+# Cura is released under the terms of the LGPLv3 or higher.
 
 from . import LegacyProfileReader
 
@@ -8,13 +8,6 @@ catalog = i18nCatalog("cura")
 
 def getMetaData():
     return {
-        "plugin": {
-            "name": catalog.i18nc("@label", "Legacy Cura Profile Reader"),
-            "author": "Ultimaker",
-            "version": "1.0",
-            "description": catalog.i18nc("@info:whatsthis", "Provides support for importing profiles from legacy Cura versions."),
-            "api": 3
-        },
         "profile_reader": [
             {
                 "extension": "ini",

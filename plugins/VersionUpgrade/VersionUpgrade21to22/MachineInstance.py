@@ -1,9 +1,9 @@
 # Copyright (c) 2016 Ultimaker B.V.
-# Cura is released under the terms of the AGPLv3 or higher.
+# Cura is released under the terms of the LGPLv3 or higher.
 
 import UM.VersionUpgrade #To indicate that a file is of incorrect format.
 import UM.VersionUpgradeManager #To schedule more files to be upgraded.
-import UM.Resources #To get the config storage path.
+from UM.Resources import Resources #To get the config storage path.
 
 import configparser #To read config files.
 import io #To write config files to strings as if they were files.
@@ -107,7 +107,7 @@ class MachineInstance:
         user_profile["values"] = {}
 
         version_upgrade_manager = UM.VersionUpgradeManager.VersionUpgradeManager.getInstance()
-        user_storage = os.path.join(UM.Resources.getDataStoragePath(), next(iter(version_upgrade_manager.getStoragePaths("user"))))
+        user_storage = os.path.join(Resources.getDataStoragePath(), next(iter(version_upgrade_manager.getStoragePaths("user"))))
         user_profile_file = os.path.join(user_storage, urllib.parse.quote_plus(self._name) + "_current_settings.inst.cfg")
         if not os.path.exists(user_storage):
             os.makedirs(user_storage)

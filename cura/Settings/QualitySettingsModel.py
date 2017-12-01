@@ -1,14 +1,17 @@
-# Copyright (c) 2016 Ultimaker B.V.
-# Cura is released under the terms of the AGPLv3 or higher.
+# Copyright (c) 2017 Ultimaker B.V.
+# Cura is released under the terms of the LGPLv3 or higher.
 
 import collections
 
 from PyQt5.QtCore import pyqtProperty, pyqtSignal, Qt
 
-import UM.Application
-import UM.Logger
+from UM.Logger import Logger
 import UM.Qt
-import UM.Settings
+from UM.Application import Application
+from UM.Settings.ContainerRegistry import ContainerRegistry
+import os
+
+from UM.i18n import i18nCatalog
 
 
 class QualitySettingsModel(UM.Qt.ListModel.ListModel):
@@ -23,12 +26,13 @@ class QualitySettingsModel(UM.Qt.ListModel.ListModel):
     def __init__(self, parent = None):
         super().__init__(parent = parent)
 
-        self._container_registry = UM.Settings.ContainerRegistry.getInstance()
+        self._container_registry = ContainerRegistry.getInstance()
 
         self._extruder_id = None
         self._extruder_definition_id = None
         self._quality_id = None
         self._material_id = None
+        self._i18n_catalog = None
 
         self.addRoleName(self.KeyRole, "key")
         self.addRoleName(self.LabelRole, "label")
@@ -89,11 +93,11 @@ class QualitySettingsModel(UM.Qt.ListModel.ListModel):
         items = []
 
         settings = collections.OrderedDict()
-        definition_container = UM.Application.getInstance().getGlobalContainerStack().getBottom()
+        definition_container = Application.getInstance().getGlobalContainerStack().getBottom()
 
         containers = self._container_registry.findInstanceContainers(id = self._quality_id)
         if not containers:
-            UM.Logger.log("w", "Could not find a quality container with id %s", self._quality_id)
+            Logger.log("w", "Could not find a quality container with id %s", self._quality_id)
             return
 
         quality_container = None
@@ -112,12 +116,24 @@ class QualitySettingsModel(UM.Qt.ListModel.ListModel):
 
             quality_container = self._container_registry.findInstanceContainers(**criteria)
             if not quality_container:
-                UM.Logger.log("w", "Could not find a quality container matching quality changes %s", quality_changes_container.getId())
+                Logger.log("w", "Could not find a quality container matching quality changes %s", quality_changes_container.getId())
                 return
             quality_container = quality_container[0]
 
         quality_type = quality_container.getMetaDataEntry("quality_type")
-        definition_id = UM.Application.getInstance().getMachineManager().getQualityDefinitionId(quality_container.getDefinition())
+        definition_id = Application.getInstance().getMachineManager().getQualityDefinitionId(quality_container.getDefinition())
+        definition = quality_container.getDefinition()
+
+        # Check if the definition container has a translation file.
+        definition_suffix = ContainerRegistry.getMimeTypeForContainer(type(definition)).preferredSuffix
+        catalog = i18nCatalog(os.path.basename(definition_id + "." + definition_suffix))
+        if catalog.hasTranslationLoaded():
+            self._i18n_catalog = catalog
+
+        for file_name in quality_container.getDefinition().getInheritedFiles():
+            catalog = i18nCatalog(os.path.basename(file_name))
+            if catalog.hasTranslationLoaded():
+                self._i18n_catalog = catalog
 
         criteria = {"type": "quality", "quality_type": quality_type, "definition": definition_id}
 
@@ -144,7 +160,7 @@ class QualitySettingsModel(UM.Qt.ListModel.ListModel):
             containers = self._container_registry.findInstanceContainers(**criteria)
 
         if not containers:
-            UM.Logger.log("w", "Could not find any quality containers matching the search criteria %s" % str(criteria))
+            Logger.log("w", "Could not find any quality containers matching the search criteria %s" % str(criteria))
             return
 
         if quality_changes_container:
@@ -152,7 +168,7 @@ class QualitySettingsModel(UM.Qt.ListModel.ListModel):
             if self._extruder_definition_id != "":
                 extruder_definitions = self._container_registry.findDefinitionContainers(id = self._extruder_definition_id)
                 if extruder_definitions:
-                    criteria["extruder"] = UM.Application.getInstance().getMachineManager().getQualityDefinitionId(extruder_definitions[0])
+                    criteria["extruder"] = Application.getInstance().getMachineManager().getQualityDefinitionId(extruder_definitions[0])
                     criteria["name"] = quality_changes_container.getName()
             else:
                 criteria["extruder"] = None
@@ -161,22 +177,31 @@ class QualitySettingsModel(UM.Qt.ListModel.ListModel):
             if changes:
                 containers.extend(changes)
 
-        global_container_stack = UM.Application.getInstance().getGlobalContainerStack()
+        global_container_stack = Application.getInstance().getGlobalContainerStack()
         is_multi_extrusion = global_container_stack.getProperty("machine_extruder_count", "value") > 1
 
         current_category = ""
         for definition in definition_container.findDefinitions():
             if definition.type == "category":
                 current_category = definition.label
+                if self._i18n_catalog:
+                    current_category = self._i18n_catalog.i18nc(definition.key + " label", definition.label)
                 continue
 
             profile_value = None
             profile_value_source = ""
             for container in containers:
                 new_value = container.getProperty(definition.key, "value")
+
                 if new_value is not None:
                     profile_value_source = container.getMetaDataEntry("type")
                     profile_value = new_value
+
+                # Global tab should use resolve (if there is one)
+                if not self._extruder_id:
+                    resolve_value = global_container_stack.getProperty(definition.key, "resolve")
+                    if resolve_value is not None and profile_value is not None and profile_value_source != "quality_changes":
+                        profile_value = resolve_value
 
             user_value = None
             if not self._extruder_id:
@@ -199,9 +224,13 @@ class QualitySettingsModel(UM.Qt.ListModel.ListModel):
                 if self._extruder_id == "" and settable_per_extruder:
                     continue
 
+            label = definition.label
+            if self._i18n_catalog:
+                label = self._i18n_catalog.i18nc(definition.key + " label", label)
+
             items.append({
                 "key": definition.key,
-                "label": definition.label,
+                "label": label,
                 "unit": definition.unit,
                 "profile_value": "" if profile_value is None else str(profile_value),  # it is for display only
                 "profile_value_source": profile_value_source,

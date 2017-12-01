@@ -1,53 +1,59 @@
 // Copyright (c) 2015 Ultimaker B.V.
-// Cura is released under the terms of the AGPLv3 or higher.
+// Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.2
 import QtQuick.Controls 1.1
 import QtQuick.Controls.Styles 1.1
 import QtQuick.Layouts 1.1
 
-import UM 1.0 as UM
+import UM 1.2 as UM
+import Cura 1.0 as Cura
 
-Item {
+Item
+{
     id: base;
 
     width: buttons.width;
     height: buttons.height
     property int activeY
 
-    ColumnLayout {
+    Column
+    {
         id: buttons;
 
         anchors.bottom: parent.bottom;
         anchors.left: parent.left;
         spacing: UM.Theme.getSize("button_lining").width
 
-        Repeater {
+        Repeater
+        {
             id: repeat
 
             model: UM.ToolModel { }
-
-            Button {
+            width: childrenRect.width
+            height: childrenRect.height
+            Button
+            {
                 text: model.name
-                iconSource: UM.Theme.getIcon(model.icon);
+                iconSource: (UM.Theme.getIcon(model.icon) != "") ? UM.Theme.getIcon(model.icon) : "file:///" + model.location + "/" + model.icon
+                checkable: true
+                checked: model.active
+                enabled: model.enabled && UM.Selection.hasSelection && UM.Controller.toolsEnabled
+                style: UM.Theme.styles.tool_button
 
-                checkable: true;
-                checked: model.active;
-                enabled: model.enabled && UM.Selection.hasSelection && UM.Controller.toolsEnabled;
-
-                style: UM.Theme.styles.tool_button;
-                onCheckedChanged:
-                {
-                    if(checked)
-                    {
+                onCheckedChanged: {
+                    if (checked) {
                         base.activeY = y
                     }
                 }
+
                 //Workaround since using ToolButton"s onClicked would break the binding of the checked property, instead
                 //just catch the click so we do not trigger that behaviour.
-                MouseArea {
+                MouseArea
+                {
                     anchors.fill: parent;
-                    onClicked: {
+                    onClicked:
+                    {
                         forceActiveFocus() //First grab focus, so all the text fields are updated
                         if(parent.checked)
                         {
@@ -61,9 +67,22 @@ Item {
                 }
             }
         }
+
+        Item { height: UM.Theme.getSize("default_margin").height; width: UM.Theme.getSize("default_lining").width; visible: extruders.count > 0 }
+
+        Repeater
+        {
+            id: extruders
+            width: childrenRect.width
+            height: childrenRect.height
+            property var _model: Cura.ExtrudersModel { id: extrudersModel }
+            model: _model.items.length > 1 ? _model : 0
+            ExtruderButton { extruder: model }
+        }
     }
 
-    UM.PointingRectangle {
+    UM.PointingRectangle
+    {
         id: panelBorder;
 
         anchors.left: parent.right;
@@ -75,7 +94,8 @@ Item {
         target: Qt.point(parent.right, base.activeY +  UM.Theme.getSize("button").height/2)
         arrowSize: UM.Theme.getSize("default_arrow").width
 
-        width: {
+        width:
+        {
             if (panel.item && panel.width > 0){
                  return Math.max(panel.width + 2 * UM.Theme.getSize("default_margin").width)
             }
@@ -88,24 +108,17 @@ Item {
         opacity: panel.item && panel.width > 0 ? 1 : 0
         Behavior on opacity { NumberAnimation { duration: 100 } }
 
-        color: UM.Theme.getColor("lining");
+        color: UM.Theme.getColor("tool_panel_background")
+        borderColor: UM.Theme.getColor("lining")
+        borderWidth: UM.Theme.getSize("default_lining").width
 
-        UM.PointingRectangle {
-            id: panelBackground;
-
-            color: UM.Theme.getColor("tool_panel_background");
+        MouseArea //Catch all mouse events (so scene doesnt handle them)
+        {
             anchors.fill: parent
-            anchors.margins: UM.Theme.getSize("default_lining").width
-
-            target: Qt.point(-UM.Theme.getSize("default_margin").width, UM.Theme.getSize("button").height/2)
-            arrowSize: parent.arrowSize
-            MouseArea //Catch all mouse events (so scene doesnt handle them)
-            {
-                anchors.fill: parent
-            }
         }
 
-        Loader {
+        Loader
+        {
             id: panel
 
             x: UM.Theme.getSize("default_margin").width;
@@ -116,6 +129,8 @@ Item {
         }
     }
 
+    // This rectangle displays the information about the current angle etc. when
+    // dragging a tool handle.
     Rectangle
     {
         x: -base.x + base.mouseX + UM.Theme.getSize("default_margin").width

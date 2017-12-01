@@ -1,13 +1,13 @@
 # Copyright (c) 2016 Ultimaker B.V.
-# Cura is released under the terms of the AGPLv3 or higher.
+# Cura is released under the terms of the LGPLv3 or higher.
 
-from UM.Scene.SceneNodeDecorator import SceneNodeDecorator
 from UM.Application import Application
-from cura.Settings.ExtruderManager import ExtruderManager
 from UM.Math.Polygon import Polygon
-from . import ConvexHullNode
+from UM.Scene.SceneNodeDecorator import SceneNodeDecorator
+from UM.Settings.ContainerRegistry import ContainerRegistry
 
-import UM.Settings.ContainerRegistry
+from cura.Settings.ExtruderManager import ExtruderManager
+from . import ConvexHullNode
 
 import numpy
 
@@ -56,10 +56,16 @@ class ConvexHullDecorator(SceneNodeDecorator):
         if self._node is None:
             return None
 
+        if getattr(self._node, "_non_printing_mesh", False):
+            # infill_mesh, cutting_mesh and anti_overhang_mesh do not need a convex hull
+            # node._non_printing_mesh is set in SettingOverrideDecorator
+            return None
+
         hull = self._compute2DConvexHull()
 
         if self._global_stack and self._node:
-            if self._global_stack.getProperty("print_sequence", "value") == "one_at_a_time" and not self._node.getParent().callDecoration("isGroup"):
+            # Parent can be None if node is just loaded.
+            if self._global_stack.getProperty("print_sequence", "value") == "one_at_a_time" and (self._node.getParent() is None or not self._node.getParent().callDecoration("isGroup")):
                 hull = hull.getMinkowskiHull(Polygon(numpy.array(self._global_stack.getProperty("machine_head_polygon", "value"), numpy.float32)))
                 hull = self._add2DAdhesionMargin(hull)
         return hull
@@ -79,7 +85,7 @@ class ConvexHullDecorator(SceneNodeDecorator):
             return None
 
         if self._global_stack:
-            if self._global_stack.getProperty("print_sequence", "value") == "one_at_a_time" and not self._node.getParent().callDecoration("isGroup"):
+            if self._global_stack.getProperty("print_sequence", "value") == "one_at_a_time" and (self._node.getParent() is None or not self._node.getParent().callDecoration("isGroup")):
                 head_with_fans = self._compute2DConvexHeadMin()
                 head_with_fans_with_adhesion_margin = self._add2DAdhesionMargin(head_with_fans)
                 return head_with_fans_with_adhesion_margin
@@ -93,8 +99,7 @@ class ConvexHullDecorator(SceneNodeDecorator):
             return None
 
         if self._global_stack:
-            if self._global_stack.getProperty("print_sequence", "value") == "one_at_a_time" and not self._node.getParent().callDecoration("isGroup"):
-
+            if self._global_stack.getProperty("print_sequence", "value") == "one_at_a_time" and (self._node.getParent() is None or not self._node.getParent().callDecoration("isGroup")):
                 # Printing one at a time and it's not an object in a group
                 return self._compute2DConvexHull()
         return None
@@ -197,7 +202,7 @@ class ConvexHullDecorator(SceneNodeDecorator):
 
                     hull = Polygon(vertex_data)
 
-                    if len(vertex_data) >= 4:
+                    if len(vertex_data) >= 3:
                         convex_hull = hull.getConvexHull()
                         offset_hull = self._offsetHull(convex_hull)
             else:
@@ -253,21 +258,29 @@ class ConvexHullDecorator(SceneNodeDecorator):
 
     ##  Offset the convex hull with settings that influence the collision area.
     #
-    #   This also applies a minimum offset of 0.5mm, because of edge cases due
-    #   to the rounding we apply.
-    #
     #   \param convex_hull Polygon of the original convex hull.
     #   \return New Polygon instance that is offset with everything that
     #   influences the collision area.
     def _offsetHull(self, convex_hull):
-        horizontal_expansion = max(0.5, self._getSettingProperty("xy_offset", "value"))
-        expansion_polygon = Polygon(numpy.array([
-            [-horizontal_expansion, -horizontal_expansion],
-            [-horizontal_expansion, horizontal_expansion],
-            [horizontal_expansion, horizontal_expansion],
-            [horizontal_expansion, -horizontal_expansion]
-        ], numpy.float32))
-        return convex_hull.getMinkowskiHull(expansion_polygon)
+        horizontal_expansion = max(
+            self._getSettingProperty("xy_offset", "value"),
+            self._getSettingProperty("xy_offset_layer_0", "value")
+        )
+
+        mold_width = 0
+        if self._getSettingProperty("mold_enabled", "value"):
+            mold_width = self._getSettingProperty("mold_width", "value")
+        hull_offset = horizontal_expansion + mold_width
+        if hull_offset > 0: #TODO: Implement Minkowski subtraction for if the offset < 0.
+            expansion_polygon = Polygon(numpy.array([
+                [-hull_offset, -hull_offset],
+                [-hull_offset, hull_offset],
+                [hull_offset, hull_offset],
+                [hull_offset, -hull_offset]
+            ], numpy.float32))
+            return convex_hull.getMinkowskiHull(expansion_polygon)
+        else:
+            return convex_hull
 
     def _onChanged(self, *args):
         self._raft_thickness = self._build_volume.getRaftThickness()
@@ -294,26 +307,23 @@ class ConvexHullDecorator(SceneNodeDecorator):
             self._onChanged()
 
     ##   Private convenience function to get a setting from the correct extruder (as defined by limit_to_extruder property).
-    def _getSettingProperty(self, setting_key, property="value"):
+    def _getSettingProperty(self, setting_key, prop = "value"):
         per_mesh_stack = self._node.callDecoration("getStack")
         if per_mesh_stack:
-            return per_mesh_stack.getProperty(setting_key, property)
-
-        multi_extrusion = self._global_stack.getProperty("machine_extruder_count", "value") > 1
-        if not multi_extrusion:
-            return self._global_stack.getProperty(setting_key, property)
+            return per_mesh_stack.getProperty(setting_key, prop)
 
         extruder_index = self._global_stack.getProperty(setting_key, "limit_to_extruder")
-        if extruder_index == "-1": #No limit_to_extruder.
+        if extruder_index == "-1":
+            # No limit_to_extruder
             extruder_stack_id = self._node.callDecoration("getActiveExtruder")
-            if not extruder_stack_id: #Decoration doesn't exist.
+            if not extruder_stack_id:
+                # Decoration doesn't exist
                 extruder_stack_id = ExtruderManager.getInstance().extruderIds["0"]
-            extruder_stack = UM.Settings.ContainerRegistry.getInstance().findContainerStacks(id = extruder_stack_id)[0]
-            return extruder_stack.getProperty(setting_key, property)
-        else: #Limit_to_extruder is set. Use that one.
-            extruder_stack_id = ExtruderManager.getInstance().extruderIds[str(extruder_index)]
-            stack = UM.Settings.ContainerRegistry.getInstance().findContainerStacks(id = extruder_stack_id)[0]
-            return stack.getProperty(setting_key, property)
+            extruder_stack = ContainerRegistry.getInstance().findContainerStacks(id = extruder_stack_id)[0]
+            return extruder_stack.getProperty(setting_key, prop)
+        else:
+            # Limit_to_extruder is set. The global stack handles this then
+            return self._global_stack.getProperty(setting_key, prop)
 
     ## Returns true if node is a descendant or the same as the root node.
     def __isDescendant(self, root, node):
@@ -324,11 +334,10 @@ class ConvexHullDecorator(SceneNodeDecorator):
         return self.__isDescendant(root, node.getParent())
 
     _affected_settings = [
-        "adhesion_type", "raft_base_thickness", "raft_interface_thickness", "raft_surface_layers",
-        "raft_surface_thickness", "raft_airgap", "raft_margin", "print_sequence",
+        "adhesion_type", "raft_margin", "print_sequence",
         "skirt_gap", "skirt_line_count", "skirt_brim_line_width", "skirt_distance", "brim_line_count"]
 
     ##  Settings that change the convex hull.
     #
     #   If these settings change, the convex hull should be recalculated.
-    _influencing_settings = {"xy_offset"}
+    _influencing_settings = {"xy_offset", "xy_offset_layer_0", "mold_enabled", "mold_width"}

@@ -1,8 +1,8 @@
 # Copyright (c) 2016 Ultimaker B.V.
-# Cura is released under the terms of the AGPLv3 or higher.
+# Cura is released under the terms of the LGPLv3 or higher.
 
 from .avr_isp import stk500v2, ispBase, intelHex
-import serial
+import serial   # type: ignore
 import threading
 import time
 import queue
@@ -13,14 +13,15 @@ from UM.Application import Application
 from UM.Logger import Logger
 from cura.PrinterOutputDevice import PrinterOutputDevice, ConnectionState
 from UM.Message import Message
+from UM.Qt.Duration import DurationFormat
 
 from PyQt5.QtCore import QUrl, pyqtSlot, pyqtSignal, pyqtProperty
 
 from UM.i18n import i18nCatalog
 catalog = i18nCatalog("cura")
 
-class USBPrinterOutputDevice(PrinterOutputDevice):
 
+class USBPrinterOutputDevice(PrinterOutputDevice):
     def __init__(self, serial_port):
         super().__init__(serial_port)
         self.setName(catalog.i18nc("@item:inmenu", "USB printing"))
@@ -52,6 +53,8 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
 
         self._heatup_wait_start_time = time.time()
 
+        self.jobStateChanged.connect(self._onJobStateChanged)
+
         ## Queue for commands that need to be send. Used when command is sent when a print is active.
         self._command_queue = queue.Queue()
 
@@ -60,7 +63,7 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
 
         ## Set when print is started in order to check running time.
         self._print_start_time = None
-        self._print_start_time_100 = None
+        self._print_estimated_time = None
 
         ## Keep track where in the provided g-code the print is
         self._gcode_position = 0
@@ -119,10 +122,44 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
         self._sendCommand("G0 Y%s F%s" % (z, speed))
 
     def _homeHead(self):
-        self._sendCommand("G28")
+        self._sendCommand("G28 X")
+        self._sendCommand("G28 Y")
 
     def _homeBed(self):
         self._sendCommand("G28 Z")
+
+    ##  Updates the target bed temperature from the printer, and emit a signal if it was changed.
+    #
+    #   /param temperature The new target temperature of the bed.
+    #   /return boolean, True if the temperature was changed, false if the new temperature has the same value as the already stored temperature
+    def _updateTargetBedTemperature(self, temperature):
+        if self._target_bed_temperature == temperature:
+            return False
+        self._target_bed_temperature = temperature
+        self.targetBedTemperatureChanged.emit()
+        return True
+
+    ##  Updates the target hotend temperature from the printer, and emit a signal if it was changed.
+    #
+    #   /param index The index of the hotend.
+    #   /param temperature The new target temperature of the hotend.
+    #   /return boolean, True if the temperature was changed, false if the new temperature has the same value as the already stored temperature
+    def _updateTargetHotendTemperature(self, index, temperature):
+        if self._target_hotend_temperatures[index] == temperature:
+            return False
+        self._target_hotend_temperatures[index] = temperature
+        self.targetHotendTemperaturesChanged.emit()
+        return True
+
+    ##  A name for the device.
+    @pyqtProperty(str, constant = True)
+    def name(self):
+        return self.getName()
+
+    ##  The address of the device.
+    @pyqtProperty(str, constant = True)
+    def address(self):
+        return self._serial_port
 
     def startPrint(self):
         self.writeStarted.emit(self)
@@ -138,8 +175,9 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
     ##  Start a print based on a g-code.
     #   \param gcode_list List with gcode (strings).
     def printGCode(self, gcode_list):
+        Logger.log("d", "Started printing g-code")
         if self._progress or self._connection_state != ConnectionState.connected:
-            self._error_message = Message(catalog.i18nc("@info:status", "Unable to start a new job because the printer is busy or not connected."))
+            self._error_message = Message(catalog.i18nc("@info:status", "Unable to start a new job because the printer is busy or not connected."), title = catalog.i18nc("@info:title", "Printer Unavailable"))
             self._error_message.show()
             Logger.log("d", "Printer is busy or not connected, aborting print")
             self.writeError.emit(self)
@@ -152,7 +190,6 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
         # Reset line number. If this is not done, first line is sometimes ignored
         self._gcode.insert(0, "M110")
         self._gcode_position = 0
-        self._print_start_time_100 = None
         self._is_printing = True
         self._print_start_time = time.time()
 
@@ -173,6 +210,7 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
 
     ##  Private function (threaded) that actually uploads the firmware.
     def _updateFirmware(self):
+        Logger.log("d", "Attempting to update firmware")
         self._error_code = 0
         self.setProgress(0, 100)
         self._firmware_update_finished = False
@@ -192,6 +230,7 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
         try:
             programmer.connect(self._serial_port)
         except Exception:
+            programmer.close()
             pass
 
         # Give programmer some time to connect. Might need more in some cases, but this worked in all tested cases.
@@ -302,8 +341,10 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
             programmer.connect(self._serial_port) # Connect with the serial, if this succeeds, it's an arduino based usb device.
             self._serial = programmer.leaveISP()
         except ispBase.IspError as e:
+            programmer.close()
             Logger.log("i", "Could not establish connection on %s: %s. Device is not arduino based." %(self._serial_port,str(e)))
         except Exception as e:
+            programmer.close()
             Logger.log("i", "Could not establish connection on %s, unknown reasons.  Device is not arduino based." % self._serial_port)
 
         # If the programmer connected, we know its an atmega based version.
@@ -313,6 +354,7 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
             if self._serial is None:
                 try:
                     self._serial = serial.Serial(str(self._serial_port), baud_rate, timeout = 3, writeTimeout = 10000)
+                    time.sleep(10)
                 except serial.SerialException:
                     Logger.log("d", "Could not open port %s" % self._serial_port)
                     continue
@@ -377,7 +419,8 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
                 self._listen_thread.join()
             except:
                 pass
-            self._serial.close()
+            if self._serial is not None:    # Avoid a race condition when a thread can change the value of self._serial to None
+                self._serial.close()
 
         self._listen_thread = threading.Thread(target = self._listen)
         self._listen_thread.daemon = True
@@ -429,10 +472,24 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
     #
     #   \param nodes A collection of scene nodes to send. This is ignored.
     #   \param file_name \type{string} A suggestion for a file name to write.
-    #   This is ignored.
     #   \param filter_by_machine Whether to filter MIME types by machine. This
     #   is ignored.
-    def requestWrite(self, nodes, file_name = None, filter_by_machine = False, file_handler = None):
+    #   \param kwargs Keyword arguments.
+    def requestWrite(self, nodes, file_name = None, filter_by_machine = False, file_handler = None, **kwargs):
+        container_stack = Application.getInstance().getGlobalContainerStack()
+
+        if container_stack.getProperty("machine_gcode_flavor", "value") == "UltiGCode":
+            self._error_message = Message(catalog.i18nc("@info:status", "This printer does not support USB printing because it uses UltiGCode flavor."), title = catalog.i18nc("@info:title", "USB Printing"))
+            self._error_message.show()
+            return
+        elif not container_stack.getMetaDataEntry("supports_usb_connection"):
+            self._error_message = Message(catalog.i18nc("@info:status", "Unable to start a new job because the printer does not support usb printing."), title = catalog.i18nc("@info:title", "Warning"))
+            self._error_message.show()
+            return
+
+        self.setJobName(file_name)
+        self._print_estimated_time = int(Application.getInstance().getPrintInformation().currentPrintTime.getDisplayString(DurationFormat.Format.Seconds))
+
         Application.getInstance().showPrintMonitor.emit(True)
         self.startPrint()
 
@@ -453,6 +510,7 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
     ##  Listen thread function.
     def _listen(self):
         Logger.log("i", "Printer connection listen thread started for %s" % self._serial_port)
+        container_stack = Application.getInstance().getGlobalContainerStack()
         temperature_request_timeout = time.time()
         ok_timeout = time.time()
         while self._connection_state == ConnectionState.connected:
@@ -461,7 +519,7 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
                 break  # None is only returned when something went wrong. Stop listening
 
             if time.time() > temperature_request_timeout:
-                if self._num_extruders > 0:
+                if self._num_extruders > 1:
                     self._temperature_requested_extruder_index = (self._temperature_requested_extruder_index + 1) % self._num_extruders
                     self.sendCommand("M105 T%d" % (self._temperature_requested_extruder_index))
                 else:
@@ -482,16 +540,40 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
                         self._setErrorState(line[6:])
 
             elif b" T:" in line or line.startswith(b"T:"):  # Temperature message
+                temperature_matches = re.findall(b"T(\d*): ?([\d\.]+) ?\/?([\d\.]+)?", line)
+                temperature_set = False
                 try:
-                    self._setHotendTemperature(self._temperature_requested_extruder_index, float(re.search(b"T: *([0-9\.]*)", line).group(1)))
+                    for match in temperature_matches:
+                        if match[0]:
+                            extruder_nr = int(match[0])
+                            if extruder_nr >= container_stack.getProperty("machine_extruder_count", "value"):
+                                continue
+                            if match[1]:
+                                self._setHotendTemperature(extruder_nr, float(match[1]))
+                                temperature_set = True
+                            if match[2]:
+                                self._updateTargetHotendTemperature(extruder_nr, float(match[2]))
+                        else:
+                            requested_temperatures = match
+                    if not temperature_set and requested_temperatures:
+                        if requested_temperatures[1]:
+                            self._setHotendTemperature(self._temperature_requested_extruder_index, float(requested_temperatures[1]))
+                        if requested_temperatures[2]:
+                            self._updateTargetHotendTemperature(self._temperature_requested_extruder_index, float(requested_temperatures[2]))
                 except:
-                    pass
-                if b"B:" in line:  # Check if it's a bed temperature
+                    Logger.log("w", "Could not parse hotend temperatures from response: %s", line)
+                # Check if there's also a bed temperature
+                temperature_matches = re.findall(b"B: ?([\d\.]+) ?\/?([\d\.]+)?", line)
+                if container_stack.getProperty("machine_heated_bed", "value") and len(temperature_matches) > 0:
+                    match = temperature_matches[0]
                     try:
-                        self._setBedTemperature(float(re.search(b"B: *([0-9\.]*)", line).group(1)))
-                    except Exception as e:
-                        pass
-                #TODO: temperature changed callback
+                        if match[0]:
+                            self._setBedTemperature(float(match[0]))
+                        if match[1]:
+                            self._updateTargetBedTemperature(float(match[1]))
+                    except:
+                        Logger.log("w", "Could not parse bed temperature from response: %s", line)
+
             elif b"_min" in line or b"_max" in line:
                 tag, value = line.split(b":", 1)
                 self._setEndstopState(tag,(b"H" in value or b"TRIGGERED" in value))
@@ -510,6 +592,7 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
                         self._sendNextGcodeLine()
                 elif b"resend" in line.lower() or b"rs" in line:  # Because a resend can be asked with "resend" and "rs"
                     try:
+                        Logger.log("d", "Got a resend response")
                         self._gcode_position = int(line.replace(b"N:",b" ").replace(b"N",b" ").replace(b":",b" ").split()[-1])
                     except:
                         if b"rs" in line:
@@ -517,7 +600,7 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
 
             # Request the temperature on comm timeout (every 2 seconds) when we are not printing.)
             if line == b"":
-                if self._num_extruders > 0:
+                if self._num_extruders > 1:
                     self._temperature_requested_extruder_index = (self._temperature_requested_extruder_index + 1) % self._num_extruders
                     self.sendCommand("M105 T%d" % self._temperature_requested_extruder_index)
                 else:
@@ -529,28 +612,41 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
     def _sendNextGcodeLine(self):
         if self._gcode_position >= len(self._gcode):
             return
-        if self._gcode_position == 100:
-            self._print_start_time_100 = time.time()
         line = self._gcode[self._gcode_position]
 
         if ";" in line:
             line = line[:line.find(";")]
         line = line.strip()
+
+        # Don't send empty lines. But we do have to send something, so send
+        # m105 instead.
+        # Don't send the M0 or M1 to the machine, as M0 and M1 are handled as
+        # an LCD menu pause.
+        if line == "" or line == "M0" or line == "M1":
+            line = "M105"
         try:
-            if line == "M0" or line == "M1":
-                line = "M105"  # Don't send the M0 or M1 to the machine, as M0 and M1 are handled as an LCD menu pause.
             if ("G0" in line or "G1" in line) and "Z" in line:
                 z = float(re.search("Z([0-9\.]*)", line).group(1))
                 if self._current_z != z:
                     self._current_z = z
         except Exception as e:
-            Logger.log("e", "Unexpected error with printer connection: %s" % e)
+            Logger.log("e", "Unexpected error with printer connection, could not parse current Z: %s: %s" % (e, line))
             self._setErrorState("Unexpected error: %s" %e)
         checksum = functools.reduce(lambda x,y: x^y, map(ord, "N%d%s" % (self._gcode_position, line)))
 
         self._sendCommand("N%d%s*%d" % (self._gcode_position, line, checksum))
+
+        progress = (self._gcode_position / len(self._gcode))
+
+        elapsed_time = int(time.time() - self._print_start_time)
+        self.setTimeElapsed(elapsed_time)
+        estimated_time = self._print_estimated_time
+        if progress > .1:
+            estimated_time = self._print_estimated_time * (1-progress) + elapsed_time
+        self.setTimeTotal(estimated_time)
+
         self._gcode_position += 1
-        self.setProgress((self._gcode_position / len(self._gcode)) * 100)
+        self.setProgress(progress * 100)
         self.progressChanged.emit()
 
     ##  Set the state of the print.
@@ -564,6 +660,13 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
             self._updateJobState("printing")
         elif job_state == "abort":
             self.cancelPrint()
+
+    def _onJobStateChanged(self):
+        # clear the job name & times when printing is done or aborted
+        if self._job_state == "ready":
+            self.setJobName("")
+            self.setTimeElapsed(0)
+            self.setTimeTotal(0)
 
     ##  Set the progress of the print.
     #   It will be normalized (based on max_progress) to range 0 - 100
@@ -588,6 +691,9 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
         self._sendCommand("M140 S0")
         self._sendCommand("M104 S0")
         self._sendCommand("M107")
+        # Home XY to prevent nozzle resting on aborted print
+        # Don't home bed because it may crash the printhead into the print on printers that home on the bottom
+        self.homeHead()
         self._sendCommand("M84")
         self._is_printing = False
         self._is_paused = False
@@ -623,3 +729,24 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
         self._update_firmware_thread.daemon = True
 
         self.connect()
+
+    ##  Pre-heats the heated bed of the printer, if it has one.
+    #
+    #   \param temperature The temperature to heat the bed to, in degrees
+    #   Celsius.
+    #   \param duration How long the bed should stay warm, in seconds. This is
+    #   ignored because there is no g-code to set this.
+    @pyqtSlot(float, float)
+    def preheatBed(self, temperature, duration):
+        Logger.log("i", "Pre-heating the bed to %i degrees.", temperature)
+        self._setTargetBedTemperature(temperature)
+        self.preheatBedRemainingTimeChanged.emit()
+
+    ##  Cancels pre-heating the heated bed of the printer.
+    #
+    #   If the bed is not pre-heated, nothing happens.
+    @pyqtSlot()
+    def cancelPreheatBed(self):
+        Logger.log("i", "Cancelling pre-heating of the bed.")
+        self._setTargetBedTemperature(0)
+        self.preheatBedRemainingTimeChanged.emit()

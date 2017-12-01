@@ -1,7 +1,7 @@
 {
     "id": "ultimaker_original_dual_1st",
     "version": 2,
-    "name": "1st Extruder",
+    "name": "Extruder 1",
     "inherits": "fdmextruder",
     "metadata": {
         "machine": "ultimaker_original_dual",

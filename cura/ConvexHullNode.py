@@ -1,6 +1,7 @@
 # Copyright (c) 2015 Ultimaker B.V.
-# Cura is released under the terms of the AGPLv3 or higher.
+# Cura is released under the terms of the LGPLv3 or higher.
 
+from UM.Application import Application
 from UM.Scene.SceneNode import SceneNode
 from UM.Resources import Resources
 from UM.Math.Color import Color
@@ -8,7 +9,10 @@ from UM.Mesh.MeshBuilder import MeshBuilder  # To create a mesh to display the c
 
 from UM.View.GL.OpenGL import OpenGL
 
+
 class ConvexHullNode(SceneNode):
+    shader = None  # To prevent the shader from being re-built over and over again, only load it once.
+
     ##  Convex hull node is a special type of scene node that is used to display an area, to indicate the
     #   location an object uses on the buildplate. This area (or area's in case of one at a time printing) is
     #   then displayed as a transparent shadow. If the adhesion type is set to raft, the area is extruded
@@ -18,12 +22,10 @@ class ConvexHullNode(SceneNode):
 
         self.setCalculateBoundingBox(False)
 
-        self._shader = None
-
         self._original_parent = parent
 
         # Color of the drawn convex hull
-        self._color = Color(0.4, 0.4, 0.4, 1.0)
+        self._color = Color(*Application.getInstance().getTheme().getColor("convex_hull").getRgb())
 
         # The y-coordinate of the convex hull mesh. Must not be 0, to prevent z-fighting.
         self._mesh_height = 0.1
@@ -58,22 +60,20 @@ class ConvexHullNode(SceneNode):
         return self._node
 
     def render(self, renderer):
-        if not self._shader:
-            self._shader = OpenGL.getInstance().createShaderProgram(Resources.getPath(Resources.Shaders, "transparent_object.shader"))
-            self._shader.setUniformValue("u_diffuseColor", self._color)
-            self._shader.setUniformValue("u_opacity", 0.6)
+        if not ConvexHullNode.shader:
+            ConvexHullNode.shader = OpenGL.getInstance().createShaderProgram(Resources.getPath(Resources.Shaders, "transparent_object.shader"))
+            ConvexHullNode.shader.setUniformValue("u_diffuseColor", self._color)
+            ConvexHullNode.shader.setUniformValue("u_opacity", 0.6)
 
         if self.getParent():
             if self.getMeshData():
-                renderer.queueNode(self, transparent = True, shader = self._shader, backface_cull = True, sort = -8)
+                renderer.queueNode(self, transparent = True, shader = ConvexHullNode.shader, backface_cull = True, sort = -8)
                 if self._convex_hull_head_mesh:
-                    renderer.queueNode(self, shader = self._shader, transparent = True, mesh = self._convex_hull_head_mesh, backface_cull = True, sort = -8)
+                    renderer.queueNode(self, shader = ConvexHullNode.shader, transparent = True, mesh = self._convex_hull_head_mesh, backface_cull = True, sort = -8)
 
         return True
 
     def _onNodeDecoratorsChanged(self, node):
-        self._color = Color(35, 35, 35, 0.5)
-
         convex_hull_head = self._node.callDecoration("getConvexHullHead")
         if convex_hull_head:
             convex_hull_head_builder = MeshBuilder()

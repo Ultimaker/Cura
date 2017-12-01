@@ -7,7 +7,6 @@
         "visible": true,
         "author": "Ultimaker",
         "manufacturer": "MakerBot",
-        "category": "Other",
         "file_formats": "application/x3g",
         "platform_offset": [ 0, 0, 0]
     },

@@ -1,17 +1,18 @@
 # Copyright (c) 2015 Ultimaker B.V.
-# Cura is released under the terms of the AGPLv3 or higher.
+# Cura is released under the terms of the LGPLv3 or higher.
 
-import configparser #For reading the legacy profile INI files.
-import json #For reading the Dictionary of Doom.
-import math #For mathematical operations included in the Dictionary of Doom.
-import os.path #For concatenating the path to the plugin and the relative path to the Dictionary of Doom.
+import configparser  # For reading the legacy profile INI files.
+import io
+import json  # For reading the Dictionary of Doom.
+import math  # For mathematical operations included in the Dictionary of Doom.
+import os.path  # For concatenating the path to the plugin and the relative path to the Dictionary of Doom.
 
-from UM.Application import Application #To get the machine manager to create the new profile in.
-from UM.Logger import Logger #Logging errors.
-from UM.PluginRegistry import PluginRegistry #For getting the path to this plugin's directory.
-from UM.Settings.DefinitionContainer import DefinitionContainer #For getting the current machine's defaults.
-from UM.Settings.InstanceContainer import InstanceContainer #The new profile to make.
-from cura.ProfileReader import ProfileReader #The plug-in type to implement.
+from UM.Application import Application  # To get the machine manager to create the new profile in.
+from UM.Logger import Logger  # Logging errors.
+from UM.PluginRegistry import PluginRegistry  # For getting the path to this plugin's directory.
+from UM.Settings.InstanceContainer import InstanceContainer  # The new profile to make.
+from cura.ProfileReader import ProfileReader  # The plug-in type to implement.
+
 
 ##  A plugin that reads profile data from legacy Cura versions.
 #
@@ -33,7 +34,7 @@ class LegacyProfileReader(ProfileReader):
     #   \return A dictionary of the default values of the legacy Cura version.
     def prepareDefaults(self, json):
         defaults = {}
-        for key in json["defaults"]: #We have to copy over all defaults from the JSON handle to a normal dict.
+        for key in json["defaults"]:  # We have to copy over all defaults from the JSON handle to a normal dict.
             defaults[key] = json["defaults"][key]
         return defaults
 
@@ -52,7 +53,7 @@ class LegacyProfileReader(ProfileReader):
     #   \return A set of local variables, one for each setting in the legacy
     #   profile.
     def prepareLocals(self, config_parser, config_section, defaults):
-        copied_locals = defaults.copy() #Don't edit the original!
+        copied_locals = defaults.copy()  # Don't edit the original!
         for option in config_parser.options(config_section):
             copied_locals[option] = config_parser.get(config_section, option)
         return copied_locals
@@ -76,29 +77,28 @@ class LegacyProfileReader(ProfileReader):
             raise Exception("Unable to import legacy profile. Multi extrusion is not supported")
 
         Logger.log("i", "Importing legacy profile from file " + file_name + ".")
-        profile = InstanceContainer("Imported Legacy Profile") # Create an empty profile.
+        profile = InstanceContainer("Imported Legacy Profile")  # Create an empty profile.
 
         parser = configparser.ConfigParser(interpolation = None)
         try:
-            with open(file_name) as f:
-                parser.readfp(f) #Parse the INI file.
+            parser.read([file_name])  # Parse the INI file.
         except Exception as e:
             Logger.log("e", "Unable to open legacy profile %s: %s", file_name, str(e))
             return None
 
-        #Legacy Cura saved the profile under the section "profile_N" where N is the ID of a machine, except when you export in which case it saves it in the section "profile".
-        #Since importing multiple machine profiles is out of scope, just import the first section we find.
+        # Legacy Cura saved the profile under the section "profile_N" where N is the ID of a machine, except when you export in which case it saves it in the section "profile".
+        # Since importing multiple machine profiles is out of scope, just import the first section we find.
         section = ""
         for found_section in parser.sections():
             if found_section.startswith("profile"):
                 section = found_section
                 break
-        if not section: #No section starting with "profile" was found. Probably not a proper INI file.
+        if not section:  # No section starting with "profile" was found. Probably not a proper INI file.
             return None
 
         try:
             with open(os.path.join(PluginRegistry.getInstance().getPluginPath("LegacyProfileReader"), "DictionaryOfDoom.json"), "r", -1, "utf-8") as f:
-                dict_of_doom = json.load(f) #Parse the Dictionary of Doom.
+                dict_of_doom = json.load(f)  # Parse the Dictionary of Doom.
         except IOError as e:
             Logger.log("e", "Could not open DictionaryOfDoom.json for reading: %s", str(e))
             return None
@@ -122,13 +122,13 @@ class LegacyProfileReader(ProfileReader):
             return None
         current_printer_definition = global_container_stack.getBottom()
         profile.setDefinition(current_printer_definition)
-        for new_setting in dict_of_doom["translation"]: #Evaluate all new settings that would get a value from the translations.
+        for new_setting in dict_of_doom["translation"]:  # Evaluate all new settings that would get a value from the translations.
             old_setting_expression = dict_of_doom["translation"][new_setting]
             compiled = compile(old_setting_expression, new_setting, "eval")
             try:
-                new_value = eval(compiled, {"math": math}, legacy_settings) #Pass the legacy settings as local variables to allow access to in the evaluation.
-                value_using_defaults = eval(compiled, {"math": math}, defaults) #Evaluate again using only the default values to try to see if they are default.
-            except Exception: #Probably some setting name that was missing or something else that went wrong in the ini file.
+                new_value = eval(compiled, {"math": math}, legacy_settings)  # Pass the legacy settings as local variables to allow access to in the evaluation.
+                value_using_defaults = eval(compiled, {"math": math}, defaults)  #Evaluate again using only the default values to try to see if they are default.
+            except Exception:  # Probably some setting name that was missing or something else that went wrong in the ini file.
                 Logger.log("w", "Setting " + new_setting + " could not be set because the evaluation failed. Something is probably missing from the imported legacy profile.")
                 continue
             definitions = current_printer_definition.findDefinitions(key = new_setting)
@@ -138,7 +138,25 @@ class LegacyProfileReader(ProfileReader):
 
         if len(profile.getAllKeys()) == 0:
             Logger.log("i", "A legacy profile was imported but everything evaluates to the defaults, creating an empty profile.")
-        profile.setDirty(True)
-        profile.addMetaDataEntry("type", "quality_changes")
+
+
+        # We need to downgrade the container to version 1 (in Cura 2.1) so the upgrade system can correctly upgrade
+        # it to the latest version.
+        profile.addMetaDataEntry("type", "profile")
+        # don't know what quality_type it is based on, so use "normal" by default
         profile.addMetaDataEntry("quality_type", "normal")
+        profile.setDirty(True)
+
+        parser = configparser.ConfigParser(interpolation=None)
+        data = profile.serialize()
+        parser.read_string(data)
+        parser["general"]["version"] = "1"
+        if parser.has_section("values"):
+            parser["settings"] = parser["values"]
+            del parser["values"]
+        stream = io.StringIO()
+        parser.write(stream)
+        data = stream.getvalue()
+        profile.deserialize(data)
+
         return profile
