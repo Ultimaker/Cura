@@ -162,6 +162,7 @@ UM.PreferencesPage
                             //Russian is disabled for being incomplete: append({ text: "Русский", code: "ru_RU" })
                             append({ text: "Türkçe", code: "tr_TR" })
                             append({ text: "简体中文", code: "zh_CN" })
+                            append({ text: "正體字", code: "zh_TW" })
 
                             var date_object = new Date();
                             if (date_object.getUTCMonth() == 8 && date_object.getUTCDate() == 19) //Only add Pirate on the 19th of September.
