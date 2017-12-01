@@ -1,3 +1,60 @@
+[3.1.0]
+*Profile added for 0.25 mm print core
+This new print core gives extra fine line widths which gives prints extra definition and surface quality.
+
+*Profile added for Breakaway material
+New material profile for Breakaway material, a new dry post processing support material, which can be used for models with flat surface area overhangs.
+
+*Layer view
+The existing Layer View has been updated in order to see a live simulation of all the paths within a layer.
+
+*Quick camera controls
+New buttons have been added to the interface that can quickly reposition the camera view of the buildplate.
+
+*Increased processing speeds and performance
+A 5-10% speed increase when calculating normals, loading models and slicing.
+
+*Jogging
+It allows the printhead to be moved with on-screen controls. Contributed by fieldOfView.
+
+*Large model loading
+A new feature has been added which unloads the layer view when switching to solid mode, speeding Ultimaker Cura back up without losing your G-code/layer view information.
+
+*Scripts folder
+A scripts folder is now available in the Ultimaker Cura configuration folder. This folder can be loaded with post processing plugins scripts, which will automatically show in Ultimaker Cura. Contributed by fieldOfView.
+
+*Optimized workflow for crash reporting
+Crash reports are automatically generated and allow the user, in case of a crash, to easily send their report with a description to developers.
+
+*Floating models enabled
+In previous releases, models were dropped to the build plate when support was disabled. Models now float when the setting is enabled (even if creates an impossible-to-print situation). This can be used to stack separate models on top of each other.
+
+*Slicing tolerance
+A new setting that affects the intersect point to influence the dimensional accuracy for diagonal surfaces. The user can select the behaviour: ‘Inclusive’ makes gaps narrower, ‘Exclusive’ makes gaps wider, and ‘Middle’ is the fastest to process. This can be used to create better tolerances for printed screw holes. Contributed by BagelOrb.
+
+*Optimized zig zag patterns
+Zig zag patterns now print more consistently. Lines now have a 5 micron tolerance in which they are printed any way, resulting in longer connected lines. Contributed by smartavionics.
+
+*Aligned z-seam inner wall moves
+Inner wall travel moves are aligned with the z-seam. This reduces the number of travel moves and reduces the chance of more unwanted seams.
+
+*Relative positioning of infill patterns
+Infill patterns are now positioned relative to the center of loaded models and an offset can be applied to control the infill more precisely and adjust it to preference or strength. Contributed by smartavionics.
+
+*Line resolution
+Enables the user to specify the minimum allowed distance value between two points in G-code to create lower or higher resolution polygons.
+
+*Custom mode changes
+If profile settings have been modified in recommended mode under custom mode, a reset icon will appear to notify the user. Click the icon to show the changes that have been made, and revert back to the default profile settings.
+
+*Bugfixes
+- Fix for layer numbers being displayed incorrectly when switching between solid and layer mode
+- Fix for Ultimaker Cura engine crashes on certain models
+- Fix for Uninstalling previous versions of Cura on Windows platforms
+- Fix for displaying visible settings
+- Fix for loading legacy profiles
+- Fix for importing custom single extrusion profile
+
 [3.0.4]
 *Bug fixes
 - Fixed OpenGL issue that prevents Cura from starting.
@@ -571,10 +628,10 @@ The new GUI allows custom profiles to load easily and intuitively, directly from
 *3MF File Loading Support
 We’re happy to report we now support loading 3MF files. This is a new file format similar to AMF, but freely available.
 
-*Intuitive Cut-Off Object Bottom 
+*Intuitive Cut-Off Object Bottom
 We’ve added a feature that allows you to move objects below the build plate. You can either correct a model with a rough bottom, or print only a part of an object. Please note that the implementation differs greatly from the old one when it was just a setting.
 
-*64-bit Windows Builds 
+*64-bit Windows Builds
 An optimized 64-bit Windows Cura version is now available. This allows you to load larger model files.
 
 *Automatic calculations
