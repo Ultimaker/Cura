@@ -13,6 +13,7 @@ from UM.Application import Application
 from UM.Logger import Logger
 from cura.PrinterOutputDevice import PrinterOutputDevice, ConnectionState
 from UM.Message import Message
+from UM.Qt.Duration import DurationFormat
 
 from PyQt5.QtCore import QUrl, pyqtSlot, pyqtSignal, pyqtProperty
 
@@ -52,6 +53,8 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
 
         self._heatup_wait_start_time = time.time()
 
+        self.jobStateChanged.connect(self._onJobStateChanged)
+
         ## Queue for commands that need to be send. Used when command is sent when a print is active.
         self._command_queue = queue.Queue()
 
@@ -60,7 +63,7 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
 
         ## Set when print is started in order to check running time.
         self._print_start_time = None
-        self._print_start_time_100 = None
+        self._print_estimated_time = None
 
         ## Keep track where in the provided g-code the print is
         self._gcode_position = 0
@@ -125,6 +128,29 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
     def _homeBed(self):
         self._sendCommand("G28 Z")
 
+    ##  Updates the target bed temperature from the printer, and emit a signal if it was changed.
+    #
+    #   /param temperature The new target temperature of the bed.
+    #   /return boolean, True if the temperature was changed, false if the new temperature has the same value as the already stored temperature
+    def _updateTargetBedTemperature(self, temperature):
+        if self._target_bed_temperature == temperature:
+            return False
+        self._target_bed_temperature = temperature
+        self.targetBedTemperatureChanged.emit()
+        return True
+
+    ##  Updates the target hotend temperature from the printer, and emit a signal if it was changed.
+    #
+    #   /param index The index of the hotend.
+    #   /param temperature The new target temperature of the hotend.
+    #   /return boolean, True if the temperature was changed, false if the new temperature has the same value as the already stored temperature
+    def _updateTargetHotendTemperature(self, index, temperature):
+        if self._target_hotend_temperatures[index] == temperature:
+            return False
+        self._target_hotend_temperatures[index] = temperature
+        self.targetHotendTemperaturesChanged.emit()
+        return True
+
     ##  A name for the device.
     @pyqtProperty(str, constant = True)
     def name(self):
@@ -164,7 +190,6 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
         # Reset line number. If this is not done, first line is sometimes ignored
         self._gcode.insert(0, "M110")
         self._gcode_position = 0
-        self._print_start_time_100 = None
         self._is_printing = True
         self._print_start_time = time.time()
 
@@ -447,7 +472,6 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
     #
     #   \param nodes A collection of scene nodes to send. This is ignored.
     #   \param file_name \type{string} A suggestion for a file name to write.
-    #   This is ignored.
     #   \param filter_by_machine Whether to filter MIME types by machine. This
     #   is ignored.
     #   \param kwargs Keyword arguments.
@@ -462,6 +486,9 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
             self._error_message = Message(catalog.i18nc("@info:status", "Unable to start a new job because the printer does not support usb printing."), title = catalog.i18nc("@info:title", "Warning"))
             self._error_message.show()
             return
+
+        self.setJobName(file_name)
+        self._print_estimated_time = int(Application.getInstance().getPrintInformation().currentPrintTime.getDisplayString(DurationFormat.Format.Seconds))
 
         Application.getInstance().showPrintMonitor.emit(True)
         self.startPrint()
@@ -483,6 +510,7 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
     ##  Listen thread function.
     def _listen(self):
         Logger.log("i", "Printer connection listen thread started for %s" % self._serial_port)
+        container_stack = Application.getInstance().getGlobalContainerStack()
         temperature_request_timeout = time.time()
         ok_timeout = time.time()
         while self._connection_state == ConnectionState.connected:
@@ -512,16 +540,40 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
                         self._setErrorState(line[6:])
 
             elif b" T:" in line or line.startswith(b"T:"):  # Temperature message
+                temperature_matches = re.findall(b"T(\d*): ?([\d\.]+) ?\/?([\d\.]+)?", line)
+                temperature_set = False
                 try:
-                    self._setHotendTemperature(self._temperature_requested_extruder_index, float(re.search(b"T: *([0-9\.]*)", line).group(1)))
+                    for match in temperature_matches:
+                        if match[0]:
+                            extruder_nr = int(match[0])
+                            if extruder_nr >= container_stack.getProperty("machine_extruder_count", "value"):
+                                continue
+                            if match[1]:
+                                self._setHotendTemperature(extruder_nr, float(match[1]))
+                                temperature_set = True
+                            if match[2]:
+                                self._updateTargetHotendTemperature(extruder_nr, float(match[2]))
+                        else:
+                            requested_temperatures = match
+                    if not temperature_set and requested_temperatures:
+                        if requested_temperatures[1]:
+                            self._setHotendTemperature(self._temperature_requested_extruder_index, float(requested_temperatures[1]))
+                        if requested_temperatures[2]:
+                            self._updateTargetHotendTemperature(self._temperature_requested_extruder_index, float(requested_temperatures[2]))
                 except:
-                    pass
-                if b"B:" in line:  # Check if it's a bed temperature
+                    Logger.log("w", "Could not parse hotend temperatures from response: %s", line)
+                # Check if there's also a bed temperature
+                temperature_matches = re.findall(b"B: ?([\d\.]+) ?\/?([\d\.]+)?", line)
+                if container_stack.getProperty("machine_heated_bed", "value") and len(temperature_matches) > 0:
+                    match = temperature_matches[0]
                     try:
-                        self._setBedTemperature(float(re.search(b"B: *([0-9\.]*)", line).group(1)))
-                    except Exception as e:
-                        pass
-                #TODO: temperature changed callback
+                        if match[0]:
+                            self._setBedTemperature(float(match[0]))
+                        if match[1]:
+                            self._updateTargetBedTemperature(float(match[1]))
+                    except:
+                        Logger.log("w", "Could not parse bed temperature from response: %s", line)
+
             elif b"_min" in line or b"_max" in line:
                 tag, value = line.split(b":", 1)
                 self._setEndstopState(tag,(b"H" in value or b"TRIGGERED" in value))
@@ -560,8 +612,6 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
     def _sendNextGcodeLine(self):
         if self._gcode_position >= len(self._gcode):
             return
-        if self._gcode_position == 100:
-            self._print_start_time_100 = time.time()
         line = self._gcode[self._gcode_position]
 
         if ";" in line:
@@ -585,8 +635,18 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
         checksum = functools.reduce(lambda x,y: x^y, map(ord, "N%d%s" % (self._gcode_position, line)))
 
         self._sendCommand("N%d%s*%d" % (self._gcode_position, line, checksum))
+
+        progress = (self._gcode_position / len(self._gcode))
+
+        elapsed_time = int(time.time() - self._print_start_time)
+        self.setTimeElapsed(elapsed_time)
+        estimated_time = self._print_estimated_time
+        if progress > .1:
+            estimated_time = self._print_estimated_time * (1-progress) + elapsed_time
+        self.setTimeTotal(estimated_time)
+
         self._gcode_position += 1
-        self.setProgress((self._gcode_position / len(self._gcode)) * 100)
+        self.setProgress(progress * 100)
         self.progressChanged.emit()
 
     ##  Set the state of the print.
@@ -600,6 +660,13 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
             self._updateJobState("printing")
         elif job_state == "abort":
             self.cancelPrint()
+
+    def _onJobStateChanged(self):
+        # clear the job name & times when printing is done or aborted
+        if self._job_state == "ready":
+            self.setJobName("")
+            self.setTimeElapsed(0)
+            self.setTimeTotal(0)
 
     ##  Set the progress of the print.
     #   It will be normalized (based on max_progress) to range 0 - 100
