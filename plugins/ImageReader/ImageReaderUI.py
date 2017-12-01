@@ -107,7 +107,7 @@ class ImageReaderUI(QObject):
     def onWidthChanged(self, value):
         if self._ui_view and not self._disable_size_callbacks:
             if len(value) > 0:
-                self._width = float(value)
+                self._width = float(value.replace(",", "."))
             else:
                 self._width = 0
 
@@ -120,7 +120,7 @@ class ImageReaderUI(QObject):
     def onDepthChanged(self, value):
         if self._ui_view and not self._disable_size_callbacks:
             if len(value) > 0:
-                self._depth = float(value)
+                self._depth = float(value.replace(",", "."))
             else:
                 self._depth = 0
 
@@ -132,14 +132,14 @@ class ImageReaderUI(QObject):
     @pyqtSlot(str)
     def onBaseHeightChanged(self, value):
         if (len(value) > 0):
-            self.base_height = float(value)
+            self.base_height = float(value.replace(",", "."))
         else:
             self.base_height = 0
 
     @pyqtSlot(str)
     def onPeakHeightChanged(self, value):
         if (len(value) > 0):
-            self.peak_height = float(value)
+            self.peak_height = float(value.replace(",", "."))
         else:
             self.peak_height = 0
 
@@ -149,7 +149,4 @@ class ImageReaderUI(QObject):
 
     @pyqtSlot(int)
     def onImageColorInvertChanged(self, value):
-        if (value == 1):
-            self.image_color_invert = True
-        else:
-            self.image_color_invert = False
+        self.image_color_invert = (value == 1)
