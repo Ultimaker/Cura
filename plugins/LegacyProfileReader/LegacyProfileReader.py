@@ -151,6 +151,9 @@ class LegacyProfileReader(ProfileReader):
         data = profile.serialize()
         parser.read_string(data)
         parser["general"]["version"] = "1"
+        if parser.has_section("values"):
+            parser["settings"] = parser["values"]
+            del parser["values"]
         stream = io.StringIO()
         parser.write(stream)
         data = stream.getvalue()
