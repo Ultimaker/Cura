@@ -6,7 +6,7 @@ from UM.PluginRegistry import PluginRegistry  # So MachineAction can be added as
 from UM.Settings.ContainerRegistry import ContainerRegistry
 from UM.Settings.DefinitionContainer import DefinitionContainer
 
-from PyQt5.QtCore import QObject
+from UM.Qt.Factory.QtCore import QObject
 from UM.FlameProfiler import pyqtSlot
 
 ##  Raised when trying to add an unknown machine action as a required action

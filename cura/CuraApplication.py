@@ -1,8 +1,8 @@
 # Copyright (c) 2017 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from PyQt5.QtNetwork import QLocalServer
-from PyQt5.QtNetwork import QLocalSocket
+from UM.Qt.Factory.QtNetwork import QLocalServer
+from UM.Qt.Factory.QtNetwork import QLocalSocket
 
 from UM.Qt.QtApplication import QtApplication
 from UM.Scene.SceneNode import SceneNode
@@ -75,11 +75,11 @@ from cura.Settings.ContainerManager import ContainerManager
 from cura.Settings.GlobalStack import GlobalStack
 from cura.Settings.ExtruderStack import ExtruderStack
 
-from PyQt5.QtCore import QUrl, pyqtSignal, pyqtProperty, QEvent, Q_ENUMS
+from UM.Qt.Factory.QtCore import QUrl, pyqtSignal, pyqtProperty, QEvent, Q_ENUMS
 from UM.FlameProfiler import pyqtSlot
-from PyQt5.QtGui import QColor, QIcon
-from PyQt5.QtWidgets import QMessageBox
-from PyQt5.QtQml import qmlRegisterUncreatableType, qmlRegisterSingletonType, qmlRegisterType
+from UM.Qt.Factory.QtGui import QColor, QIcon
+from UM.Qt.Factory.QtWidgets import QMessageBox
+from UM.Qt.Factory.QtQml import qmlRegisterUncreatableType, qmlRegisterSingletonType, qmlRegisterType
 
 import sys
 import os.path

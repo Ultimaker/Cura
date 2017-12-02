@@ -4,7 +4,7 @@
 from UM.Application import Application
 from UM.Qt.ListModel import ListModel
 
-from PyQt5.QtCore import pyqtProperty, Qt, pyqtSignal, pyqtSlot, QUrl
+from UM.Qt.Factory.QtCore import pyqtProperty, Qt, pyqtSignal, pyqtSlot, QUrl
 
 from UM.Settings.ContainerRegistry import ContainerRegistry
 from UM.Settings.InstanceContainer import InstanceContainer

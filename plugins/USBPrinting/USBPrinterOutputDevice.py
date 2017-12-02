@@ -15,7 +15,7 @@ from cura.PrinterOutputDevice import PrinterOutputDevice, ConnectionState
 from UM.Message import Message
 from UM.Qt.Duration import DurationFormat
 
-from PyQt5.QtCore import QUrl, pyqtSlot, pyqtSignal, pyqtProperty
+from UM.Qt.Factory.QtCore import QUrl, pyqtSlot, pyqtSignal, pyqtProperty
 
 from UM.i18n import i18nCatalog
 catalog = i18nCatalog("cura")

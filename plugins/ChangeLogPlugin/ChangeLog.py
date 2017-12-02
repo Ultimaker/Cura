@@ -8,7 +8,7 @@ from UM.Application import Application
 from UM.PluginRegistry import PluginRegistry
 from UM.Version import Version
 
-from PyQt5.QtCore import pyqtSlot, QObject
+from UM.Qt.Factory.QtCore import pyqtSlot, QObject
 
 import os.path
 import collections

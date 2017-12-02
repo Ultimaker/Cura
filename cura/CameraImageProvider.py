@@ -1,6 +1,6 @@
-from PyQt5.QtGui import QImage
-from PyQt5.QtQuick import QQuickImageProvider
-from PyQt5.QtCore import QSize
+from UM.Qt.Factory.QtGui import QImage
+from UM.Qt.Factory.QtQuick import QQuickImageProvider
+from UM.Qt.Factory.QtCore import QSize
 
 from UM.Application import Application
 

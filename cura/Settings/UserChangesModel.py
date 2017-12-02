@@ -1,6 +1,6 @@
 from UM.Qt.ListModel import ListModel
 
-from PyQt5.QtCore import pyqtSlot, Qt
+from UM.Qt.Factory.QtCore import pyqtSlot, Qt
 from UM.Application import Application
 from cura.Settings.ExtruderManager import ExtruderManager
 from UM.Settings.ContainerRegistry import ContainerRegistry

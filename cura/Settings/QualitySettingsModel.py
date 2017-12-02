@@ -3,7 +3,7 @@
 
 import collections
 
-from PyQt5.QtCore import pyqtProperty, pyqtSignal, Qt
+from UM.Qt.Factory.QtCore import pyqtProperty, pyqtSignal, Qt
 
 from UM.Logger import Logger
 import UM.Qt

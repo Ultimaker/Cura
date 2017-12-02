@@ -1,7 +1,7 @@
 # Copyright (c) 2017 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from PyQt5.QtCore import pyqtProperty, pyqtSignal
+from UM.Qt.Factory.QtCore import pyqtProperty, pyqtSignal
 from UM.FlameProfiler import pyqtSlot
 
 from cura.MachineAction import MachineAction

@@ -8,7 +8,7 @@ import configparser
 
 from typing import Optional
 
-from PyQt5.QtWidgets import QMessageBox
+from UM.Qt.Factory.QtWidgets import QMessageBox
 
 from UM.Decorators import override
 from UM.Settings.ContainerRegistry import ContainerRegistry

@@ -7,10 +7,10 @@ import os.path
 import time
 
 from enum import Enum
-from PyQt5.QtNetwork import QNetworkRequest, QHttpPart, QHttpMultiPart
-from PyQt5.QtCore import QUrl, pyqtSlot, pyqtProperty, QCoreApplication, QTimer, pyqtSignal, QObject
-from PyQt5.QtGui import QDesktopServices
-from PyQt5.QtNetwork import QNetworkAccessManager, QNetworkReply
+from UM.Qt.Factory.QtNetwork import QNetworkRequest, QHttpPart, QHttpMultiPart
+from UM.Qt.Factory.QtCore import QUrl, pyqtSlot, pyqtProperty, QCoreApplication, QTimer, pyqtSignal, QObject
+from UM.Qt.Factory.QtGui import QDesktopServices
+from UM.Qt.Factory.QtNetwork import QNetworkAccessManager, QNetworkReply
 from UM.Application import Application
 from UM.Logger import Logger
 from UM.Message import Message

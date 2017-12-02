@@ -9,8 +9,8 @@ from UM.Application import Application
 from UM.Version import Version
 from UM.Message import Message
 
-from PyQt5.QtNetwork import QNetworkAccessManager, QNetworkRequest, QNetworkReply
-from PyQt5.QtCore import QUrl, QObject, Qt, pyqtProperty, pyqtSignal, pyqtSlot
+from UM.Qt.Factory.QtNetwork import QNetworkAccessManager, QNetworkRequest, QNetworkReply
+from UM.Qt.Factory.QtCore import QUrl, QObject, Qt, pyqtProperty, pyqtSignal, pyqtSlot
 
 import json
 import os

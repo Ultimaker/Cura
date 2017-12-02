@@ -1,7 +1,7 @@
 # Copyright (c) 2017 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from PyQt5.QtQml import qmlRegisterSingletonType
+from UM.Qt.Factory.QtQml import qmlRegisterSingletonType
 
 from UM.i18n import i18nCatalog
 from . import SimulationViewProxy, SimulationView

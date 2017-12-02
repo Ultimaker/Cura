@@ -6,10 +6,10 @@ import json
 from queue import Queue
 from threading import Event, Thread
 
-from PyQt5.QtCore import QObject, pyqtSlot
-from PyQt5.QtCore import QUrl
-from PyQt5.QtGui import QDesktopServices
-from PyQt5.QtNetwork import QNetworkRequest, QNetworkAccessManager
+from UM.Qt.Factory.QtCore import QObject, pyqtSlot
+from UM.Qt.Factory.QtCore import QUrl
+from UM.Qt.Factory.QtGui import QDesktopServices
+from UM.Qt.Factory.QtNetwork import QNetworkRequest, QNetworkAccessManager
 from UM.Application import Application
 from UM.Logger import Logger
 from UM.OutputDevice.OutputDevicePlugin import OutputDevicePlugin
