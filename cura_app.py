@@ -47,8 +47,8 @@ def exceptHook(hook_type, value, traceback):
 
 sys.excepthook = exceptHook
 
-# PySide2: Workaround for error message:
-#  "QWidget: Must construct a QApplication before a QWidget"
+# WORKAROUND: GITHUB-2896
+# Error message due to PySide2: "QWidget: Must construct a QApplication before a QWidget"
 from UM.Qt.Factory.QtWidgets import QApplication
 QApplication(sys.argv)
 
