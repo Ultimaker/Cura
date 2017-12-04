@@ -1,12 +1,10 @@
 # Copyright (c) 2016 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from PyQt5.QtCore import QUrl, pyqtSignal, QObject, pyqtProperty, QCoreApplication
+from PyQt5.QtCore import pyqtSignal, QObject, pyqtProperty, QCoreApplication
 from UM.FlameProfiler import pyqtSlot
-from PyQt5.QtQml import QQmlComponent, QQmlContext
 from UM.PluginRegistry import PluginRegistry
 from UM.Application import Application
-from UM.Logger import Logger
 from UM.i18n import i18nCatalog
 from UM.Settings.ContainerRegistry import ContainerRegistry
 
@@ -256,14 +254,8 @@ class WorkspaceDialog(QObject):
         return self._result
 
     def _createViewFromQML(self):
-        path = QUrl.fromLocalFile(os.path.join(PluginRegistry.getInstance().getPluginPath("3MFReader"), self._qml_url))
-        self._component = QQmlComponent(Application.getInstance()._engine, path)
-        self._context = QQmlContext(Application.getInstance()._engine.rootContext())
-        self._context.setContextProperty("manager", self)
-        self._view = self._component.create(self._context)
-        if self._view is None:
-            Logger.log("c", "QQmlComponent status %s", self._component.status())
-            Logger.log("c", "QQmlComponent error string %s", self._component.errorString())
+        path = os.path.join(PluginRegistry.getInstance().getPluginPath("3MFReader"), self._qml_url)
+        self._view = Application.getInstance().createQmlComponent(path, {"manager": self})
 
     def show(self):
         # Emit signal so the right thread actually shows the view.

@@ -22,6 +22,14 @@ class SettingOverrideDecorator(SceneNodeDecorator):
     ##  Event indicating that the user selected a different extruder.
     activeExtruderChanged = Signal()
 
+    ##  Non-printing meshes
+    #
+    #   If these settings are True for any mesh, the mesh does not need a convex hull,
+    #   and is sent to the slicer regardless of whether it fits inside the build volume.
+    #   Note that Support Mesh is not in here because it actually generates
+    #   g-code in the volume of the mesh.
+    _non_printing_mesh_settings = {"anti_overhang_mesh", "infill_mesh", "cutting_mesh"}
+
     def __init__(self):
         super().__init__()
         self._stack = PerObjectContainerStack(stack_id = id(self))
@@ -77,6 +85,8 @@ class SettingOverrideDecorator(SceneNodeDecorator):
         if property_name == "value":
             Application.getInstance().getBackend().needsSlicing()
             Application.getInstance().getBackend().tickle()
+
+            self._node._non_printing_mesh = any(self._stack.getProperty(setting, "value") for setting in self._non_printing_mesh_settings)
 
     ##  Makes sure that the stack upon which the container stack is placed is
     #   kept up to date.
