@@ -3,7 +3,7 @@ from UM.Logger import Logger
 from UM.PluginRegistry import PluginRegistry
 from UM.Signal import Signal
 from .SidebarView import SidebarView
-from typing import Optional
+from typing import Optional, Dict
 
 # The sidebar controller manages available sidebar components and decides which one to display.
 # The cura.qml file uses this controller to repeat over the sidebars and show the active index.
@@ -46,3 +46,7 @@ class SidebarController:
     ##  Change the active sidebar view to one of the registered views.
     def setActiveSidebarView(self, name: str):
         print("setting active sidebar view")
+
+    ##  Get all sidebar views registered in this controller.
+    def getAllSidebarViews(self) -> Dict[SidebarView]:
+        return self._sidebar_views
