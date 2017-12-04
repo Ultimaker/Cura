@@ -9,6 +9,10 @@ class SettingsSidebarView(QObject, SidebarView):
     def __init__(self):
         super().__init__()
 
+    ##  As the default sidebar is not a plugin, we have a get plugin ID method to allow the sidebar view model to get the needed data.
+    def getPluginId(self):
+        return "default"
+
     ##  As the default sidebar is not a plugin, we have a get meta data method here to allow the sidebar view model to get the needed data.
     def getMetaData(self):
         return {

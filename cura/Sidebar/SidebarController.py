@@ -46,6 +46,7 @@ class SidebarController:
     ##  Change the active sidebar view to one of the registered views.
     def setActiveSidebarView(self, name: str):
         print("setting active sidebar view")
+        self.activeSidebarViewChanged.emit()
 
     ##  Get all sidebar views registered in this controller.
     def getAllSidebarViews(self) -> Dict[SidebarView]:

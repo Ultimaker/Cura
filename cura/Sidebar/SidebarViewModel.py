@@ -13,7 +13,10 @@ class SidebarViewModel(ListModel):
     def __init__(self, parent = None):
         super().__init__(parent)
 
+        # connect views changed signals
         self._controller = Application.getInstance().getSidebarController()
+        self._controller.sidebarViewsChanged.connect(self._onSidebarViewsChanged)
+        self._controller.activeSidebarViewChanged.connect(self._onSidebarViewsChanged)
 
         # register Qt list roles
         self.addRoleName(self.IdRole, "id")
@@ -39,7 +42,7 @@ class SidebarViewModel(ListModel):
             if "visible" in sidebar_view_metadata and not sidebar_view_metadata["visible"]:
                 continue
 
-            name = sidebar_view_metadata.get("name", id)
+            name = sidebar_view_metadata.get("name", sidebar_view_id)
             weight = sidebar_view_metadata.get("weight", 0)
 
             items.append({

@@ -38,6 +38,7 @@ from cura.ShapeArray import ShapeArray
 from cura.ConvexHullDecorator import ConvexHullDecorator
 from cura.SetParentOperation import SetParentOperation
 from cura.Sidebar.SidebarController import SidebarController
+from cura.Sidebar.SidebarViewModel import SidebarViewModel
 from cura.SliceableObjectDecorator import SliceableObjectDecorator
 from cura.BlockSlicingDecorator import BlockSlicingDecorator
 
@@ -819,6 +820,7 @@ class CuraApplication(QtApplication):
         qmlRegisterType(UserChangesModel, "Cura", 1, 1, "UserChangesModel")
         qmlRegisterSingletonType(ContainerManager, "Cura", 1, 0, "ContainerManager", ContainerManager.createContainerManager)
         qmlRegisterSingletonType(SidebarController, "Cura", 1, 0, "SidebarController", self.getSidebarController)
+        qmlRegisterType(SidebarViewModel, "Cura", 1, 0, "SidebarViewModel")
 
         # As of Qt5.7, it is necessary to get rid of any ".." in the path for the singleton to work.
         actions_url = QUrl.fromLocalFile(os.path.abspath(Resources.getPath(CuraApplication.ResourceTypes.QmlFiles, "Actions.qml")))
