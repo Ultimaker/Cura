@@ -207,14 +207,6 @@ class CuraApplication(QtApplication):
         self._setting_inheritance_manager = None
         self._simple_mode_settings_manager = None
 
-        ##  As of Cura 3.2, the sidebar is controlled by a controller.
-        #   This functionality was added to allow plugins registering custom sidebar views.
-        self._sidebar_controller = SidebarController(self)
-
-        ##  Register the default settings sidebar manually
-        settings_sidebar_view = SettingsSidebarView()
-        self._sidebar_controller.addSidebarView(settings_sidebar_view)
-
         self._additional_components = {} # Components to add to certain areas in the interface
 
         super().__init__(name = "cura", version = CuraVersion, buildtype = CuraBuildType,
@@ -224,6 +216,14 @@ class CuraApplication(QtApplication):
         self.default_theme = "cura-light"
 
         self.setWindowIcon(QIcon(Resources.getPath(Resources.Images, "cura-icon.png")))
+
+        ##  As of Cura 3.2, the sidebar is controlled by a controller.
+        #   This functionality was added to allow plugins registering custom sidebar views.
+        self._sidebar_controller = SidebarController(self)
+
+        ##  Register the default settings sidebar manually
+        settings_sidebar_view = SettingsSidebarView()
+        self._sidebar_controller.addSidebarView(settings_sidebar_view)
 
         self.setRequiredPlugins([
             "CuraEngineBackend",
