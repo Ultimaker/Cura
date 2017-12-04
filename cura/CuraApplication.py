@@ -33,9 +33,11 @@ from UM.Operations.RemoveSceneNodeOperation import RemoveSceneNodeOperation
 from UM.Operations.GroupedOperation import GroupedOperation
 from UM.Operations.SetTransformOperation import SetTransformOperation
 from cura.Arrange import Arrange
+from cura.Settings.SettingsSidebarView import SettingsSidebarView
 from cura.ShapeArray import ShapeArray
 from cura.ConvexHullDecorator import ConvexHullDecorator
 from cura.SetParentOperation import SetParentOperation
+from cura.Sidebar.SidebarController import SidebarController
 from cura.SliceableObjectDecorator import SliceableObjectDecorator
 from cura.BlockSlicingDecorator import BlockSlicingDecorator
 
@@ -203,6 +205,14 @@ class CuraApplication(QtApplication):
         self._material_manager = None
         self._setting_inheritance_manager = None
         self._simple_mode_settings_manager = None
+
+        ##  As of Cura 3.2, the sidebar is controlled by a controller.
+        #   This functionality was added to allow plugins registering custom sidebar views.
+        self._sidebar_controller = SidebarController(self)
+
+        ##  Register the default settings sidebar manually
+        settings_sidebar_view = SettingsSidebarView()
+        self._sidebar_controller.addSidebarView(settings_sidebar_view)
 
         self._additional_components = {} # Components to add to certain areas in the interface
 
@@ -775,6 +785,14 @@ class CuraApplication(QtApplication):
     def getPrintInformation(self):
         return self._print_information
 
+    ##  Get the SidebarController of this application.
+    #   A sidebar controller is created if it wasn't yet.
+    #   \returns SidebarControllers \type{SidebarController}
+    def getSidebarController(self) -> SidebarController:
+        if self._sidebar_controller is None:
+            self._sidebar_controller = SidebarController(self)
+        return self._sidebar_controller
+
     ##  Registers objects for the QML engine to use.
     #
     #   \param engine The QML engine.
@@ -800,6 +818,7 @@ class CuraApplication(QtApplication):
         qmlRegisterType(MachineNameValidator, "Cura", 1, 0, "MachineNameValidator")
         qmlRegisterType(UserChangesModel, "Cura", 1, 1, "UserChangesModel")
         qmlRegisterSingletonType(ContainerManager, "Cura", 1, 0, "ContainerManager", ContainerManager.createContainerManager)
+        qmlRegisterSingletonType(SidebarController, "Cura", 1, 0, "SidebarController", self.getSidebarController)
 
         # As of Qt5.7, it is necessary to get rid of any ".." in the path for the singleton to work.
         actions_url = QUrl.fromLocalFile(os.path.abspath(Resources.getPath(CuraApplication.ResourceTypes.QmlFiles, "Actions.qml")))
