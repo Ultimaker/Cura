@@ -785,7 +785,11 @@ class ContainerManager(QObject):
         for container_to_copy in containers_to_copy:
             #Create unique IDs for every clone.
             current_id = container_to_copy.getId()
-            new_id = self._container_registry.uniqueName(current_id)
+            new_id = new_base_id
+            if container_to_copy.getMetaDataEntry("definition") != "fdmprinter":
+                new_id += "_" + container_to_copy.getMetaDataEntry("definition")
+                if container_to_copy.getMetaDataEntry("variant"):
+                    new_id += "_" + container_to_copy.getMetaDataEntry("variant")
             if current_id == material_id:
                 clone_of_original = new_id
 
