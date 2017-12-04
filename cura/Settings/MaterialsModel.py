@@ -29,5 +29,8 @@ class MaterialsModel(InstanceContainersModel):
     def _sortKey(self, item) -> List[Any]:
         result = []
         result.append(item["metadata"]["brand"])
+        result.append(item["metadata"]["material"])
+        result.append(item["metadata"]["name"])
+        result.append(item["metadata"]["color_name"])
         result.extend(super()._sortKey(item))
         return result
