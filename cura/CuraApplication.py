@@ -32,13 +32,11 @@ from UM.Operations.AddSceneNodeOperation import AddSceneNodeOperation
 from UM.Operations.RemoveSceneNodeOperation import RemoveSceneNodeOperation
 from UM.Operations.GroupedOperation import GroupedOperation
 from UM.Operations.SetTransformOperation import SetTransformOperation
+
 from cura.Arrange import Arrange
-from cura.Settings.SettingsSidebarView import SettingsSidebarView
 from cura.ShapeArray import ShapeArray
 from cura.ConvexHullDecorator import ConvexHullDecorator
 from cura.SetParentOperation import SetParentOperation
-from cura.Sidebar.SidebarController import SidebarController
-from cura.Sidebar.SidebarViewModel import SidebarViewModel
 from cura.SliceableObjectDecorator import SliceableObjectDecorator
 from cura.BlockSlicingDecorator import BlockSlicingDecorator
 
@@ -77,6 +75,11 @@ from cura.Settings.QualitySettingsModel import QualitySettingsModel
 from cura.Settings.ContainerManager import ContainerManager
 from cura.Settings.GlobalStack import GlobalStack
 from cura.Settings.ExtruderStack import ExtruderStack
+
+from cura.Sidebar.SidebarController import SidebarController
+from cura.Sidebar.SidebarControllerProxy import SidebarControllerProxy
+from cura.Sidebar.SidebarViewModel import SidebarViewModel
+from cura.Settings.SettingsSidebarView import SettingsSidebarView
 
 from PyQt5.QtCore import QUrl, pyqtSignal, pyqtProperty, QEvent, Q_ENUMS
 from UM.FlameProfiler import pyqtSlot
@@ -131,6 +134,7 @@ class CuraApplication(QtApplication):
     stacksValidationFinished = pyqtSignal()  # Emitted whenever a validation is finished
 
     def __init__(self):
+
         # this list of dir names will be used by UM to detect an old cura directory
         for dir_name in ["extruders", "machine_instances", "materials", "plugins", "quality", "user", "variants"]:
             Resources.addExpectedDirNameInData(dir_name)
@@ -159,7 +163,6 @@ class CuraApplication(QtApplication):
 
         SettingDefinition.addSettingType("extruder", None, str, Validator)
         SettingDefinition.addSettingType("optional_extruder", None, str, None)
-
         SettingDefinition.addSettingType("[int]", None, str, None)
 
         SettingFunction.registerOperator("extruderValues", ExtruderManager.getExtruderValues)
@@ -184,7 +187,8 @@ class CuraApplication(QtApplication):
         ContainerRegistry.getInstance().addResourceType(self.ResourceTypes.DefinitionChangesContainer)
 
         ##  Initialise the version upgrade manager with Cura's storage paths.
-        import UM.VersionUpgradeManager #Needs to be here to prevent circular dependencies.
+        #   Needs to be here to prevent circular dependencies.
+        import UM.VersionUpgradeManager
 
         UM.VersionUpgradeManager.VersionUpgradeManager.getInstance().setCurrentVersions(
             {
@@ -322,6 +326,11 @@ class CuraApplication(QtApplication):
         preferences.addPreference("view/invert_zoom", False)
 
         self._need_to_show_user_agreement = not Preferences.getInstance().getValue("general/accepted_user_agreement")
+
+        # Set the active sidebar view based on user preferences
+        preferences.addPreference("cura/active_sidebar_view", "default")
+        active_sidebar_view = preferences.getValue("cura/active_sidebar_view")
+        self._sidebar_controller.setActiveSidebarView(active_sidebar_view)
 
         for key in [
             "dialog_load_path",  # dialog_save_path is in LocalFileOutputDevicePlugin
@@ -678,7 +687,6 @@ class CuraApplication(QtApplication):
         controller = self.getController()
 
         controller.setActiveView("SolidView")
-
         controller.setCameraTool("CameraTool")
         controller.setSelectionTool("SelectionTool")
 
@@ -741,6 +749,11 @@ class CuraApplication(QtApplication):
 
             self.exec_()
 
+    ##  Get the SidebarController of this application.
+    #   \returns SidebarControllers \type{SidebarController}
+    def getSidebarController(self) -> SidebarController:
+        return self._sidebar_controller
+
     def getMachineManager(self, *args):
         if self._machine_manager is None:
             self._machine_manager = MachineManager.createMachineManager()
@@ -786,14 +799,6 @@ class CuraApplication(QtApplication):
     def getPrintInformation(self):
         return self._print_information
 
-    ##  Get the SidebarController of this application.
-    #   A sidebar controller is created if it wasn't yet.
-    #   \returns SidebarControllers \type{SidebarController}
-    def getSidebarController(self) -> SidebarController:
-        if self._sidebar_controller is None:
-            self._sidebar_controller = SidebarController(self)
-        return self._sidebar_controller
-
     ##  Registers objects for the QML engine to use.
     #
     #   \param engine The QML engine.
@@ -808,6 +813,7 @@ class CuraApplication(QtApplication):
 
         qmlRegisterUncreatableType(CuraApplication, "Cura", 1, 0, "ResourceTypes", "Just an Enum type")
 
+        qmlRegisterType(SidebarViewModel, "Cura", 1, 0, "SidebarViewModel")
         qmlRegisterType(ExtrudersModel, "Cura", 1, 0, "ExtrudersModel")
         qmlRegisterType(ContainerSettingsModel, "Cura", 1, 0, "ContainerSettingsModel")
         qmlRegisterSingletonType(ProfilesModel, "Cura", 1, 0, "ProfilesModel", ProfilesModel.createProfilesModel)
@@ -819,8 +825,7 @@ class CuraApplication(QtApplication):
         qmlRegisterType(MachineNameValidator, "Cura", 1, 0, "MachineNameValidator")
         qmlRegisterType(UserChangesModel, "Cura", 1, 1, "UserChangesModel")
         qmlRegisterSingletonType(ContainerManager, "Cura", 1, 0, "ContainerManager", ContainerManager.createContainerManager)
-        qmlRegisterSingletonType(SidebarController, "Cura", 1, 0, "SidebarController", self.getSidebarController)
-        qmlRegisterType(SidebarViewModel, "Cura", 1, 0, "SidebarViewModel")
+        qmlRegisterSingletonType(SidebarControllerProxy, "Cura", 1, 0, "SidebarController", SidebarControllerProxy.createSidebarControllerProxy)
 
         # As of Qt5.7, it is necessary to get rid of any ".." in the path for the singleton to work.
         actions_url = QUrl.fromLocalFile(os.path.abspath(Resources.getPath(CuraApplication.ResourceTypes.QmlFiles, "Actions.qml")))

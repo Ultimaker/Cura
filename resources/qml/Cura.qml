@@ -366,19 +366,24 @@ UM.MainWindow
                 onStopMonitoringPrint: base.showPrintMonitor = false
             }
 
-            Sidebar
+            Loader
             {
-                id: sidebar;
+                id: sidebar
 
                 anchors
                 {
-                    top: topbar.bottom;
-                    bottom: parent.bottom;
-                    right: parent.right;
+                    top: topbar.bottom
+                    bottom: parent.bottom
+                    right: parent.right
                 }
-                z: 1
-                width: UM.Theme.getSize("sidebar").width;
-                monitoringPrint: base.showPrintMonitor
+
+                width: UM.Theme.getSize("sidebar").width
+
+                // all sidebar components will have access to the show print monitor flag
+                property bool showPrintMonitor: base.showPrintMonitor
+
+                // dynamically get the component from the sidebar controller
+                source: Cura.SidebarController.activeComponentPath
             }
 
             Rectangle
