@@ -201,6 +201,10 @@ class CuraApplication(QtApplication):
             }
         )
 
+        ##  As of Cura 3.2, the sidebar is controlled by a controller.
+        #   This functionality was added to allow plugins registering custom sidebar views.
+        self._sidebar_controller = SidebarController(self)
+
         self._currently_loading_files = []
         self._non_sliceable_extensions = []
 
@@ -220,14 +224,6 @@ class CuraApplication(QtApplication):
         self.default_theme = "cura-light"
 
         self.setWindowIcon(QIcon(Resources.getPath(Resources.Images, "cura-icon.png")))
-
-        ##  As of Cura 3.2, the sidebar is controlled by a controller.
-        #   This functionality was added to allow plugins registering custom sidebar views.
-        self._sidebar_controller = SidebarController(self)
-
-        ##  Register the default settings sidebar manually
-        settings_sidebar_view = SettingsSidebarView()
-        self._sidebar_controller.addSidebarView(settings_sidebar_view)
 
         self.setRequiredPlugins([
             "CuraEngineBackend",
@@ -326,11 +322,6 @@ class CuraApplication(QtApplication):
         preferences.addPreference("view/invert_zoom", False)
 
         self._need_to_show_user_agreement = not Preferences.getInstance().getValue("general/accepted_user_agreement")
-
-        # Set the active sidebar view based on user preferences
-        preferences.addPreference("cura/active_sidebar_view", "default")
-        active_sidebar_view = preferences.getValue("cura/active_sidebar_view")
-        self._sidebar_controller.setActiveSidebarView(active_sidebar_view)
 
         for key in [
             "dialog_load_path",  # dialog_save_path is in LocalFileOutputDevicePlugin
@@ -736,6 +727,10 @@ class CuraApplication(QtApplication):
         run_headless = self.getCommandLineOption("headless", False)
         if not run_headless:
             self.initializeEngine()
+
+            # Now that the SidebarViewModel has been created we can set the default sidebar view
+            # TODO: put this in a more elegant place
+            self._setDefaultSidebarView()
 
         if run_headless or self._engine.rootObjects:
             self.closeSplash()
@@ -1323,6 +1318,19 @@ class CuraApplication(QtApplication):
 
     def _addProfileWriter(self, profile_writer):
         pass
+
+    ##  Create and register the default sidebar component (settings)
+    def _setDefaultSidebarView(self):
+
+        # Register the default settings sidebar manually
+        settings_sidebar_view = SettingsSidebarView()
+        self._sidebar_controller.addSidebarView(settings_sidebar_view)
+
+        # Set the default sidebar view depending on user preferences.
+        preferences = Preferences.getInstance()
+        preferences.addPreference("cura/active_sidebar_view", settings_sidebar_view.getPluginId())
+        active_sidebar_view = preferences.getValue("cura/active_sidebar_view")
+        self._sidebar_controller.setActiveSidebarView(active_sidebar_view)
 
     @pyqtSlot("QSize")
     def setMinimumWindowSize(self, size):

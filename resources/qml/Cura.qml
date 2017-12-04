@@ -331,7 +331,7 @@ UM.MainWindow
                 text: catalog.i18nc("@action:button","Open File");
                 iconSource: UM.Theme.getIcon("load")
                 style: UM.Theme.styles.tool_button
-                tooltip: '';
+                tooltip: ""
                 anchors
                 {
                     top: topbar.bottom;
@@ -366,7 +366,7 @@ UM.MainWindow
                 onStopMonitoringPrint: base.showPrintMonitor = false
             }
 
-            Loader
+            Rectangle
             {
                 id: sidebar
 
@@ -379,11 +379,30 @@ UM.MainWindow
 
                 width: UM.Theme.getSize("sidebar").width
 
-                // all sidebar components will have access to the show print monitor flag
-                property bool showPrintMonitor: base.showPrintMonitor
+                // The sidebarRepeater exposes sidebar views provided by plugins.
+                // Whenever a plugin sidebar view is active (e.g. not "default"), that sidebar view is shown.
+                Repeater
+                {
+                    id: sidebarRepeater
 
-                // dynamically get the component from the sidebar controller
-                source: Cura.SidebarController.activeComponentPath
+                    model: Cura.SidebarViewModel { }
+
+                    delegate: Loader
+                    {
+                        id: delegate
+                        asynchronous: true
+                        visible: model.active
+
+                        // dynamically get the component from the sidebar controller or set the default sidebar
+                        sourceComponent: {
+                            if (model.id !== "default") {
+                                return Cura.SidebarController.getSidebarComponent(model.id)
+                            } else {
+                                return defaultSidebar
+                            }
+                        }
+                    }
+                }
             }
 
             Rectangle
@@ -431,6 +450,27 @@ UM.MainWindow
                     bottom: parent.bottom;
                 }
             }
+        }
+    }
+
+    // This is the default sidebar view.
+    // It is used as sourceComponent for the default sidebar view.
+    Component
+    {
+        id: defaultSidebar
+
+        Sidebar
+        {
+//            anchors {
+//                top: parent.top
+//                bottom: parent.bottom
+//                left: parent.left
+//                right: parent.right
+//            }
+//
+//            width: parent.width
+//
+//            monitoringPrint: base.showPrintMonitor
         }
     }
 

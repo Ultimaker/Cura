@@ -1,5 +1,6 @@
 # Copyright (c) 2017 Ultimaker B.V.
 from UM.Logger import Logger
+from UM.Preferences import Preferences
 from UM.Signal import Signal
 from UM.PluginRegistry import PluginRegistry
 
@@ -52,5 +53,7 @@ class SidebarController:
 
     ##  Change the active sidebar view to one of the registered views.
     def setActiveSidebarView(self, sidebar_view_id: str):
-        self._active_sidebar_view = self._sidebar_views[sidebar_view_id]
-        self.activeSidebarViewChanged.emit()
+        if sidebar_view_id in self._sidebar_views:
+            self._active_sidebar_view = self._sidebar_views[sidebar_view_id]
+            Preferences.getInstance().setValue("cura/active_sidebar_view", sidebar_view_id)
+            self.activeSidebarViewChanged.emit()

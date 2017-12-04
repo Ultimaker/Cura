@@ -1,8 +1,8 @@
 # Copyright (c) 2017 Ultimaker B.V.
-import os.path
-from PyQt5.QtCore import QObject, QUrl
+from PyQt5.QtCore import QObject
 
 from UM.i18n import i18nCatalog
+
 from cura.Sidebar.SidebarView import SidebarView
 i18n_catalog = i18nCatalog("cura")
 
@@ -19,11 +19,10 @@ class SettingsSidebarView(QObject, SidebarView):
     def getMetaData(self):
         return {
             "sidebar_view": {
-                "name": i18n_catalog.i18nc("", "Print settings"),
+                "name": i18n_catalog.i18nc("@item:inmenu", "Print settings"),
                 "weight": 0
             }
         }
 
-    ##  As the default sidebar is not a plugin, we have a get component path method here to allow the sidebar controller to get the needed data.
-    def getComponentPath(self):
-        return QUrl("SidebarSettings.qml")
+    def getComponent(self):
+        return None

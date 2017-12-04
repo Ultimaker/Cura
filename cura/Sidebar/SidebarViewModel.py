@@ -26,17 +26,18 @@ class SidebarViewModel(ListModel):
     ##  Update the model when new views are added or another view is made the active view.
     def _onSidebarViewsChanged(self):
         items = []
+        current_view_id = None
+
         sidebar_views = self._controller.getAllSidebarViews()
         current_view = self._controller.getActiveSidebarView()
+        if current_view:
+            current_view_id = current_view.getPluginId()
 
         for sidebar_view_id, sidebar_view in sidebar_views.items():
-            plugin_metadata = PluginRegistry.getInstance().getMetaData(sidebar_view_id)
-            if plugin_metadata:
-                # Check if the registered view came from a plugin and extract the metadata if so.
-                sidebar_view_metadata = plugin_metadata.get("sidebar_view", {})
+            if sidebar_view_id != "default":
+                sidebar_view_metadata = PluginRegistry.getInstance().getMetaData(sidebar_view_id).get("sidebar_view", {})
             else:
-                # Get the meta data directly from the plugin
-                sidebar_view_metadata = sidebar_view.getMetaData()
+                sidebar_view_metadata = sidebar_view.getMetaData().get("sidebar_view", {})
 
             # Skip view modes that are marked as not visible
             if "visible" in sidebar_view_metadata and not sidebar_view_metadata["visible"]:
@@ -48,7 +49,7 @@ class SidebarViewModel(ListModel):
             items.append({
                 "id": sidebar_view_id,
                 "name": name,
-                "active": sidebar_view_id == current_view.getPluginId(),
+                "active": sidebar_view_id == current_view_id,
                 "weight": weight
             })
 

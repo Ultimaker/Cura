@@ -4,33 +4,41 @@ from UM.Application import Application
 
 
 ##  The sidebar controller proxy acts a proxy between the sidebar controller and the QMl context of the controller.
+from UM.Logger import Logger
+
+
 class SidebarControllerProxy(QObject):
 
     def __init__(self, parent = None):
         super().__init__(parent)
         self._controller = Application.getInstance().getSidebarController()
-        self._controller.activeSidebarViewChanged.connect(self._onActiveSidebarComponentChanged)
+        self._controller.activeSidebarViewChanged.connect(self._onActiveSidebarViewChanged)
 
-    ##  Emitted when the active view changes.
     activeSidebarViewChanged = pyqtSignal()
 
     @classmethod
     def createSidebarControllerProxy(self, engine, script_engine):
         return SidebarControllerProxy()
 
-    @pyqtSlot()
-    def setActiveView(self, sidebar_view):
-        self._controller.setActiveSidebarView(sidebar_view)
+    @pyqtProperty(str, notify = activeSidebarViewChanged)
+    def activeSidebarId(self):
+        if self._controller.getActiveSidebarView() is not None:
+            return self._controller.getActiveSidebarView().getPluginId()
+        else:
+            return "default"
 
-    @pyqtProperty(QUrl, notify = activeSidebarViewChanged)
-    def activeComponentPath(self):
-        if not self._controller.getActiveSidebarView():
-            return QUrl()
-        return self._controller.getActiveSidebarView().getComponentPath()
+    @pyqtSlot(str)
+    def setActiveSidebarView(self, sidebar_view_id):
+        Logger.log("d", "Setting active sidebar view to %s", sidebar_view_id)
+        self._controller.setActiveSidebarView(sidebar_view_id)
 
-    @pyqtSlot(QUrl)
+    @pyqtSlot(str, result = QObject)
+    def getSidebarComponent(self, sidebar_id):
+        return self._controller.getSidebarView(sidebar_id).getComponent()
+
+    @pyqtSlot(str, result = QUrl)
     def getSidebarComponentPath(self, sidebar_id):
-        self._controller.getSidebarView(sidebar_id).getComponentPath()
+        return self._controller.getSidebarView(sidebar_id).getComponentPath()
 
-    def _onActiveSidebarComponentChanged(self):
+    def _onActiveSidebarViewChanged(self):
         self.activeSidebarViewChanged.emit()
