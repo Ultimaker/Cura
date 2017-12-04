@@ -30,6 +30,8 @@ Menu
     }
     ExclusiveGroup { id: group }
 
+    MenuSeparator {}
+
     // sidebar views
     Instantiator
     {
