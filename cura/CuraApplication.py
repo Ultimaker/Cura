@@ -728,8 +728,6 @@ class CuraApplication(QtApplication):
     def getMachineManager(self, *args):
         if self._machine_manager is None:
             self._machine_manager = MachineManager.createMachineManager()
-            # explicitly sets current material and set internal state: also fixes problem with material namechange signal
-            self._machine_manager.setActiveMaterial(self._machine_manager.activeMaterialId)
         return self._machine_manager
 
     def getExtruderManager(self, *args):
