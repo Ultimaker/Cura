@@ -117,6 +117,10 @@ class MachineManager(QObject):
                                               "The selected material is incompatible with the selected machine or configuration."),
                                                 title = catalog.i18nc("@info:title", "Incompatible Material"))
 
+        containers = ContainerRegistry.getInstance().findInstanceContainers(id = self.activeMaterialId)
+        if containers:
+            containers[0].nameChanged.connect(self._onMaterialNameChanged)
+
     globalContainerChanged = pyqtSignal()  # Emitted whenever the global stack is changed (ie: when changing between printers, changing a global profile, but not when changing a value)
     activeMaterialChanged = pyqtSignal()
     activeVariantChanged = pyqtSignal()
