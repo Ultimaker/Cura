@@ -131,6 +131,7 @@ class XmlMaterialProfile(InstanceContainer):
         metadata.pop("approximate_diameter", "")
         metadata.pop("id", "")
         metadata.pop("container_type", "")
+        metadata.pop("name", "")
 
         ## Begin Name Block
         builder.start("name")
