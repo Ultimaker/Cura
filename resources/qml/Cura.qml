@@ -379,6 +379,25 @@ UM.MainWindow
 
                 width: UM.Theme.getSize("sidebar").width
 
+                // This is the default sidebar view.
+                // It is hidden when the active sidebar view ID is not default.
+                Sidebar
+                {
+                    id: defaultSidebar
+
+                    anchors {
+                        top: parent.top
+                        bottom: parent.bottom
+                        left: parent.left
+                        right: parent.right
+                    }
+
+                    width: parent.width
+                    z: 1
+                    monitoringPrint: base.showPrintMonitor
+                    visible: Cura.SidebarController.activeSidebarId == "default"
+                }
+
                 // The sidebarRepeater exposes sidebar views provided by plugins.
                 // Whenever a plugin sidebar view is active (e.g. not "default"), that sidebar view is shown.
                 Repeater
@@ -397,8 +416,6 @@ UM.MainWindow
                         sourceComponent: {
                             if (model.id !== "default") {
                                 return Cura.SidebarController.getSidebarComponent(model.id)
-                            } else {
-                                return defaultSidebar
                             }
                         }
                     }
@@ -450,27 +467,6 @@ UM.MainWindow
                     bottom: parent.bottom;
                 }
             }
-        }
-    }
-
-    // This is the default sidebar view.
-    // It is used as sourceComponent for the default sidebar view.
-    Component
-    {
-        id: defaultSidebar
-
-        Sidebar
-        {
-//            anchors {
-//                top: parent.top
-//                bottom: parent.bottom
-//                left: parent.left
-//                right: parent.right
-//            }
-//
-//            width: parent.width
-//
-//            monitoringPrint: base.showPrintMonitor
         }
     }
 
