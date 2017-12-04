@@ -61,7 +61,9 @@ class ProcessSlicedLayersJob(Job):
 
     def run(self):
         start_time = time()
-        if Application.getInstance().getController().getActiveView().getPluginId() == "SimulationView":
+        view = Application.getInstance().getController().getActiveView()
+        if view.getPluginId() == "SimulationView":
+            view.resetLayerData()
             self._progress_message.show()
             Job.yieldThread()
             if self._abort_requested:
@@ -225,10 +227,6 @@ class ProcessSlicedLayersJob(Job):
 
         if self._progress_message:
             self._progress_message.setProgress(100)
-
-        view = Application.getInstance().getController().getActiveView()
-        if view.getPluginId() == "SimulationView":
-            view.resetLayerData()
 
         if self._progress_message:
             self._progress_message.hide()
