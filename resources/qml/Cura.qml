@@ -366,7 +366,7 @@ UM.MainWindow
                 onStopMonitoringPrint: base.showPrintMonitor = false
             }
 
-            Rectangle
+            Sidebar
             {
                 id: sidebar
 
@@ -378,24 +378,8 @@ UM.MainWindow
                 }
 
                 width: UM.Theme.getSize("sidebar").width
-
-                // This is the default sidebar view.
-                // It is hidden when the active sidebar view ID is not default.
-                Sidebar
-                {
-                    id: defaultSidebar
-
-                    anchors {
-                        top: parent.top
-                        bottom: parent.bottom
-                        left: parent.left
-                        right: parent.right
-                    }
-
-                    width: parent.width
-                    z: 1
-                    monitoringPrint: base.showPrintMonitor
-                }
+                z: 1
+                monitoringPrint: base.showPrintMonitor
             }
 
             Rectangle

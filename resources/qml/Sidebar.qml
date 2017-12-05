@@ -87,15 +87,6 @@ Rectangle
         }
     }
 
-    onCurrentModeIndexChanged:
-    {
-        UM.Preferences.setValue("cura/active_mode", currentModeIndex);
-        if(modesListModel.count > base.currentModeIndex)
-        {
-            sidebarContents.push({ "item": modesListModel.get(base.currentModeIndex).item, "replace": true });
-        }
-    }
-
     SidebarHeader {
         id: header
         width: parent.width
@@ -112,6 +103,15 @@ Rectangle
         color: UM.Theme.getColor("sidebar_lining")
         anchors.top: header.bottom
         anchors.topMargin: visible ? UM.Theme.getSize("sidebar_margin").height : 0
+    }
+
+    onCurrentModeIndexChanged:
+    {
+        UM.Preferences.setValue("cura/active_mode", currentModeIndex);
+        if(modesListModel.count > base.currentModeIndex)
+        {
+            sidebarContents.push({ "item": modesListModel.get(base.currentModeIndex).item, "replace": true });
+        }
     }
 
     Label {
