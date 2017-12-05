@@ -26,11 +26,11 @@ class SidebarViewModel(ListModel):
     ##  Update the model when new views are added or another view is made the active view.
     def _onSidebarViewsChanged(self):
         items = []
-        current_view_id = None
+        current_view_id = "default"
 
         sidebar_views = self._controller.getAllSidebarViews()
         current_view = self._controller.getActiveSidebarView()
-        if current_view:
+        if current_view and hasattr(current_view, "getPluginId"):
             current_view_id = current_view.getPluginId()
 
         for sidebar_view_id, sidebar_view in sidebar_views.items():
@@ -39,9 +39,9 @@ class SidebarViewModel(ListModel):
             if sidebar_view_id == "default":
                 items.append({
                     "id": "default",
-                    "name": "Print settings",
-                    "weight": 0,
-                    "active": current_view_id == "default"
+                    "name": "Print settings sidebar",
+                    "active": sidebar_view_id == current_view_id,
+                    "weight": 0
                 })
                 continue
 
@@ -52,7 +52,7 @@ class SidebarViewModel(ListModel):
                 continue
 
             name = sidebar_view_metadata.get("name", sidebar_view_id)
-            weight = sidebar_view_metadata.get("weight", 0)
+            weight = sidebar_view_metadata.get("weight", 1)
 
             items.append({
                 "id": sidebar_view_id,
