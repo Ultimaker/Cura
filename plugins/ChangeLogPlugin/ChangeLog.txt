@@ -11,8 +11,20 @@ The existing Layer View has been updated in order to see a live simulation of al
 *Quick camera controls
 New buttons have been added to the interface that can quickly reposition the camera view of the buildplate.
 
-*Increased processing speeds and performance
-A 5-10% speed increase when calculating normals, loading models and slicing.
+*Lock model on platform
+The move tool has a new option to lock a selected model to the platform.
+
+*Faster profile switching speed
+Duplicating and removing a profile could take Ultimaker Cura quite some time, it now happens instantly.
+
+*Faster printer selection
+Removing a printer from the library is now instant. No more unresponsive screens.
+
+*Faster processing speed
+A 5 - 10 % speed increase when calculating normals, loading models, and slicing.
+
+*Feedrate visualization
+Feedrate visualization has been added to the Layer view. Using this gives the user an idea of the print speeds per model part, allowing for better control over prints.
 
 *Jogging
 It allows the printhead to be moved with on-screen controls. Contributed by fieldOfView.
@@ -52,8 +64,8 @@ If profile settings have been modified in recommended mode under custom mode, a 
 - Fix for Ultimaker Cura engine crashes on certain models
 - Fix for Uninstalling previous versions of Cura on Windows platforms
 - Fix for displaying visible settings
-- Fix for loading legacy profiles
-- Fix for importing custom single extrusion profile
+- Fix for importing legacy .ini files
+- Prevent skipping user agreement dialog by pressing escape
 
 [3.0.4]
 *Bug fixes

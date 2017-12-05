@@ -34,6 +34,7 @@ Column
         width: height
     }
 
+    // Extruder Row
     Item
     {
         id: extruderSelectionRow
