@@ -105,15 +105,6 @@ Rectangle
         anchors.topMargin: visible ? UM.Theme.getSize("sidebar_margin").height : 0
     }
 
-    onCurrentModeIndexChanged:
-    {
-        UM.Preferences.setValue("cura/active_mode", currentModeIndex);
-        if(modesListModel.count > base.currentModeIndex)
-        {
-            sidebarContents.push({ "item": modesListModel.get(base.currentModeIndex).item, "replace": true });
-        }
-    }
-
     Label {
         id: settingsModeLabel
         text: !hideSettings ? catalog.i18nc("@label:listbox", "Print Setup") : catalog.i18nc("@label:listbox","Print Setup disabled\nG-code files cannot be modified");
