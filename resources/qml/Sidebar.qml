@@ -87,25 +87,6 @@ Rectangle
         }
     }
 
-    SidebarHeader {
-        id: header
-        width: parent.width
-        visible: machineExtruderCount.properties.value > 1 || Cura.MachineManager.hasMaterials || Cura.MachineManager.hasVariants
-
-        onShowTooltip: base.showTooltip(item, location, text)
-        onHideTooltip: base.hideTooltip()
-    }
-
-    Rectangle {
-        id: headerSeparator
-        width: parent.width
-        visible: settingsModeSelection.visible && header.visible
-        height: visible ? UM.Theme.getSize("sidebar_lining").height : 0
-        color: UM.Theme.getColor("sidebar_lining")
-        anchors.top: header.bottom
-        anchors.topMargin: visible ? UM.Theme.getSize("sidebar_margin").height : 0
-    }
-
     onCurrentModeIndexChanged:
     {
         UM.Preferences.setValue("cura/active_mode", currentModeIndex);
@@ -113,6 +94,24 @@ Rectangle
         {
             sidebarContents.push({ "item": modesListModel.get(base.currentModeIndex).item, "replace": true });
         }
+    }
+
+    SidebarHeader {
+        id: header
+        width: parent.width
+        visible: (machineExtruderCount.properties.value > 1 || Cura.MachineManager.hasMaterials || Cura.MachineManager.hasVariants) && Cura.SidebarController.activeSidebarId == "default"
+        onShowTooltip: base.showTooltip(item, location, text)
+        onHideTooltip: base.hideTooltip()
+    }
+
+    Rectangle {
+        id: headerSeparator
+        width: parent.width
+        visible: settingsModeSelection.visible && header.visible && Cura.SidebarController.activeSidebarId == "default"
+        height: visible ? UM.Theme.getSize("sidebar_lining").height : 0
+        color: UM.Theme.getColor("sidebar_lining")
+        anchors.top: header.bottom
+        anchors.topMargin: visible ? UM.Theme.getSize("sidebar_margin").height : 0
     }
 
     Label {
@@ -125,7 +124,7 @@ Rectangle
         width: Math.floor(parent.width * 0.45)
         font: UM.Theme.getFont("large")
         color: UM.Theme.getColor("text")
-        visible: !monitoringPrint && !hideView
+        visible: !monitoringPrint && !hideView && Cura.SidebarController.activeSidebarId == "default"
     }
 
     Rectangle {
@@ -147,7 +146,7 @@ Rectangle
             }
         }
         anchors.topMargin: UM.Theme.getSize("sidebar_margin").height
-        visible: !monitoringPrint && !hideSettings && !hideView
+        visible: !monitoringPrint && !hideSettings && !hideView && Cura.SidebarController.activeSidebarId == "default"
         Component{
             id: wizardDelegate
             Button {
@@ -228,7 +227,7 @@ Rectangle
         anchors.topMargin: UM.Theme.getSize("sidebar_margin").height
         anchors.left: base.left
         anchors.right: base.right
-        visible: !monitoringPrint && !hideSettings
+        visible: !monitoringPrint && !hideSettings && Cura.SidebarController.activeSidebarId == "default"
 
         delegate: StackViewDelegate
         {
@@ -254,6 +253,29 @@ Rectangle
                     from: 1
                     to: 0
                     duration: 100
+                }
+            }
+        }
+    }
+
+    // The sidebarRepeater exposes sidebar views provided by plugins.
+    // Whenever a plugin sidebar view is active (e.g. not "default"), that sidebar view is shown.
+    Repeater
+    {
+        id: sidebarRepeater
+
+        model: Cura.SidebarViewModel { }
+
+        delegate: Loader
+        {
+            id: delegate
+            asynchronous: true
+            visible: model.active
+
+            // dynamically get the component from the sidebar controller or set the default sidebar
+            sourceComponent: {
+                if (model.id !== "default") {
+                    return Cura.SidebarController.getSidebarComponent(model.id)
                 }
             }
         }

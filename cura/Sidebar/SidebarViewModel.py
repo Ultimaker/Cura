@@ -34,10 +34,18 @@ class SidebarViewModel(ListModel):
             current_view_id = current_view.getPluginId()
 
         for sidebar_view_id, sidebar_view in sidebar_views.items():
-            if sidebar_view_id != "default":
-                sidebar_view_metadata = PluginRegistry.getInstance().getMetaData(sidebar_view_id).get("sidebar_view", {})
-            else:
-                sidebar_view_metadata = sidebar_view.getMetaData().get("sidebar_view", {})
+
+            # Override fields for default settings sidebar
+            if sidebar_view_id == "default":
+                items.append({
+                    "id": "default",
+                    "name": "Print settings",
+                    "weight": 0,
+                    "active": current_view_id == "default"
+                })
+                continue
+
+            sidebar_view_metadata = PluginRegistry.getInstance().getMetaData(sidebar_view_id).get("sidebar_view", {})
 
             # Skip view modes that are marked as not visible
             if "visible" in sidebar_view_metadata and not sidebar_view_metadata["visible"]:

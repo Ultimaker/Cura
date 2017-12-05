@@ -10,7 +10,7 @@ class SidebarController:
 
     def __init__(self, application):
         self._application = application
-        self._sidebar_views = {}
+        self._sidebar_views = {"default": {}}  # default is needed for the default settings sidebar
         self._active_sidebar_view = None
 
         # Register the sidebar_view plugin type so plugins can expose custom sidebar views.
@@ -50,6 +50,13 @@ class SidebarController:
     ##  Get the active sidebar view.
     def getActiveSidebarView(self):
         return self._active_sidebar_view
+
+    ##  Get the ID of the active sidebar view.
+    def getActiveSidebarViewId(self):
+        if self._active_sidebar_view:
+            if hasattr(self._active_sidebar_view, "getPluginId"):
+                return self._active_sidebar_view.getPluginId()
+        return "default"
 
     ##  Change the active sidebar view to one of the registered views.
     def setActiveSidebarView(self, sidebar_view_id: str):

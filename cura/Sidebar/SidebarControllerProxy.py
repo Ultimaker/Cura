@@ -22,10 +22,7 @@ class SidebarControllerProxy(QObject):
 
     @pyqtProperty(str, notify = activeSidebarViewChanged)
     def activeSidebarId(self):
-        if self._controller.getActiveSidebarView() is not None:
-            return self._controller.getActiveSidebarView().getPluginId()
-        else:
-            return "default"
+        return self._controller.getActiveSidebarViewId()
 
     @pyqtSlot(str)
     def setActiveSidebarView(self, sidebar_view_id):

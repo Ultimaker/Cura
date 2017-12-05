@@ -395,30 +395,6 @@ UM.MainWindow
                     width: parent.width
                     z: 1
                     monitoringPrint: base.showPrintMonitor
-                    visible: Cura.SidebarController.activeSidebarId == "default"
-                }
-
-                // The sidebarRepeater exposes sidebar views provided by plugins.
-                // Whenever a plugin sidebar view is active (e.g. not "default"), that sidebar view is shown.
-                Repeater
-                {
-                    id: sidebarRepeater
-
-                    model: Cura.SidebarViewModel { }
-
-                    delegate: Loader
-                    {
-                        id: delegate
-                        asynchronous: true
-                        visible: model.active
-
-                        // dynamically get the component from the sidebar controller or set the default sidebar
-                        sourceComponent: {
-                            if (model.id !== "default") {
-                                return Cura.SidebarController.getSidebarComponent(model.id)
-                            }
-                        }
-                    }
                 }
             }
 

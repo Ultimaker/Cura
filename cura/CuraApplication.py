@@ -79,7 +79,6 @@ from cura.Settings.ExtruderStack import ExtruderStack
 from cura.Sidebar.SidebarController import SidebarController
 from cura.Sidebar.SidebarControllerProxy import SidebarControllerProxy
 from cura.Sidebar.SidebarViewModel import SidebarViewModel
-from cura.Settings.SettingsSidebarView import SettingsSidebarView
 
 from PyQt5.QtCore import QUrl, pyqtSignal, pyqtProperty, QEvent, Q_ENUMS
 from UM.FlameProfiler import pyqtSlot
@@ -1319,16 +1318,10 @@ class CuraApplication(QtApplication):
     def _addProfileWriter(self, profile_writer):
         pass
 
-    ##  Create and register the default sidebar component (settings)
+    ## Set the default sidebar view to "default"
     def _setDefaultSidebarView(self):
-
-        # Register the default settings sidebar manually
-        settings_sidebar_view = SettingsSidebarView()
-        self._sidebar_controller.addSidebarView(settings_sidebar_view)
-
-        # Set the default sidebar view depending on user preferences.
         preferences = Preferences.getInstance()
-        preferences.addPreference("cura/active_sidebar_view", settings_sidebar_view.getPluginId())
+        preferences.addPreference("cura/active_sidebar_view", "default")
         active_sidebar_view = preferences.getValue("cura/active_sidebar_view")
         self._sidebar_controller.setActiveSidebarView(active_sidebar_view)
 
