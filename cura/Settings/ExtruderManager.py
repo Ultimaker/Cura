@@ -128,6 +128,16 @@ class ExtruderManager(QObject):
     def activeExtruderIndex(self) -> int:
         return self._active_extruder_index
 
+    ##  Gets the extruder id of an extruder of the currently active machine.
+    #
+    #   \param index The index of the extruder whose id to get.
+    @pyqtSlot(int, result = str)
+    def getExtruderId(self, index):
+        try:
+            return list(self.getActiveExtruderStacks())[index].getId()
+        except IndexError:
+            return ""
+
     ##  Gets the extruder name of an extruder of the currently active machine.
     #
     #   \param index The index of the extruder whose name to get.
