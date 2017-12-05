@@ -487,11 +487,17 @@ class CuraContainerStack(ContainerStack):
             search_criteria.pop("name", None)
             materials = ContainerRegistry.getInstance().findInstanceContainers(**search_criteria)
 
-        if materials:
-            return materials[0]
+        if not materials:
+            Logger.log("w", "Could not find a valid material for stack {stack}", stack = self.id)
+            return None
 
-        Logger.log("w", "Could not find a valid material for stack {stack}", stack = self.id)
-        return None
+        for material in materials:
+            # Prefer a read-only material
+            if ContainerRegistry.getInstance().isReadOnly(material.getId()):
+                return material
+
+        return materials[0]
+
 
     ##  Find the quality that should be used as "default" quality.
     #
