@@ -118,7 +118,7 @@ class ContainerManager(QObject):
     def removeContainer(self, container_id):
         containers = self._container_registry.findContainers(id = container_id)
         if not containers:
-            Logger.log("w", "Could remove container %s because it was not found.", container_id)
+            Logger.log("w", "Could not remove container %s because it was not found.", container_id)
             return False
 
         self._container_registry.removeContainer(containers[0].getId())

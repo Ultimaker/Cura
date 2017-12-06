@@ -32,5 +32,6 @@ class MaterialsModel(InstanceContainersModel):
         result.append(item["metadata"]["material"])
         result.append(item["metadata"]["name"])
         result.append(item["metadata"]["color_name"])
+        result.append(item["metadata"]["id"])
         result.extend(super()._sortKey(item))
         return result
