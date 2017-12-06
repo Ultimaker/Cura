@@ -171,13 +171,13 @@ class CuraApplication(QtApplication):
         Resources.addStorageType(self.ResourceTypes.MachineStack, "machine_instances")
         Resources.addStorageType(self.ResourceTypes.DefinitionChangesContainer, "definition_changes")
 
-        ContainerRegistry.getInstance().addResourceType(self.ResourceTypes.QualityInstanceContainer)
-        ContainerRegistry.getInstance().addResourceType(self.ResourceTypes.VariantInstanceContainer)
-        ContainerRegistry.getInstance().addResourceType(self.ResourceTypes.MaterialInstanceContainer)
-        ContainerRegistry.getInstance().addResourceType(self.ResourceTypes.UserInstanceContainer)
-        ContainerRegistry.getInstance().addResourceType(self.ResourceTypes.ExtruderStack)
-        ContainerRegistry.getInstance().addResourceType(self.ResourceTypes.MachineStack)
-        ContainerRegistry.getInstance().addResourceType(self.ResourceTypes.DefinitionChangesContainer)
+        ContainerRegistry.getInstance().addResourceType(self.ResourceTypes.QualityInstanceContainer, "quality")
+        ContainerRegistry.getInstance().addResourceType(self.ResourceTypes.VariantInstanceContainer, "variant")
+        ContainerRegistry.getInstance().addResourceType(self.ResourceTypes.MaterialInstanceContainer, "material")
+        ContainerRegistry.getInstance().addResourceType(self.ResourceTypes.UserInstanceContainer, "user")
+        ContainerRegistry.getInstance().addResourceType(self.ResourceTypes.ExtruderStack, "extruder_train")
+        ContainerRegistry.getInstance().addResourceType(self.ResourceTypes.MachineStack, "machine")
+        ContainerRegistry.getInstance().addResourceType(self.ResourceTypes.DefinitionChangesContainer, "definition_changes")
 
         ##  Initialise the version upgrade manager with Cura's storage paths.
         import UM.VersionUpgradeManager #Needs to be here to prevent circular dependencies.
@@ -465,66 +465,10 @@ class CuraApplication(QtApplication):
         if not self._started: # Do not do saving during application start
             return
 
-        # Lock file for "more" atomically loading and saving to/from config dir.
-        with ContainerRegistry.getInstance().lockFile():
-            for instance in ContainerRegistry.getInstance().findDirtyContainers(container_type = InstanceContainer):
-                try:
-                    data = instance.serialize()
-                except NotImplementedError:
-                    continue
-                except Exception:
-                    Logger.logException("e", "An exception occurred when serializing container %s", instance.getId())
-                    continue
-
-                mime_type = ContainerRegistry.getMimeTypeForContainer(type(instance))
-                file_name = urllib.parse.quote_plus(instance.getId()) + "." + mime_type.preferredSuffix
-                instance_type = instance.getMetaDataEntry("type")
-                path = None
-                if instance_type == "material":
-                    path = Resources.getStoragePath(self.ResourceTypes.MaterialInstanceContainer, file_name)
-                elif instance_type == "quality" or instance_type == "quality_changes":
-                    path = Resources.getStoragePath(self.ResourceTypes.QualityInstanceContainer, file_name)
-                elif instance_type == "user":
-                    path = Resources.getStoragePath(self.ResourceTypes.UserInstanceContainer, file_name)
-                elif instance_type == "variant":
-                    path = Resources.getStoragePath(self.ResourceTypes.VariantInstanceContainer, file_name)
-                elif instance_type == "definition_changes":
-                    path = Resources.getStoragePath(self.ResourceTypes.DefinitionChangesContainer, file_name)
-
-                if path:
-                    instance.setPath(path)
-                    with SaveFile(path, "wt") as f:
-                        f.write(data)
-
-            for stack in ContainerRegistry.getInstance().findContainerStacks():
-                self.saveStack(stack)
+        ContainerRegistry.getInstance().saveDirtyContainers()
 
     def saveStack(self, stack):
-        if not stack.isDirty():
-            return
-        try:
-            data = stack.serialize()
-        except NotImplementedError:
-            return
-        except Exception:
-            Logger.logException("e", "An exception occurred when serializing container %s", stack.getId())
-            return
-
-        mime_type = ContainerRegistry.getMimeTypeForContainer(type(stack))
-        file_name = urllib.parse.quote_plus(stack.getId()) + "." + mime_type.preferredSuffix
-
-        path = None
-        if isinstance(stack, GlobalStack):
-            path = Resources.getStoragePath(self.ResourceTypes.MachineStack, file_name)
-        elif isinstance(stack, ExtruderStack):
-            path = Resources.getStoragePath(self.ResourceTypes.ExtruderStack, file_name)
-        else:
-            path = Resources.getStoragePath(Resources.ContainerStacks, file_name)
-
-        stack.setPath(path)
-        with SaveFile(path, "wt") as f:
-            f.write(data)
-
+        ContainerRegistry.getInstance().saveStack(stack)
 
     @pyqtSlot(str, result = QUrl)
     def getDefaultPath(self, key):
