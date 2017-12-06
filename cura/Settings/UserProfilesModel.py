@@ -1,7 +1,7 @@
 # Copyright (c) 2017 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
-from UM.Application import Application
 
+from UM.Application import Application
 from cura.QualityManager import QualityManager
 from cura.Settings.ProfilesModel import ProfilesModel
 from cura.Settings.ExtruderManager import ExtruderManager
@@ -11,6 +11,16 @@ from cura.Settings.ExtruderManager import ExtruderManager
 class UserProfilesModel(ProfilesModel):
     def __init__(self, parent = None):
         super().__init__(parent)
+
+        #Need to connect to the metaDataChanged signal of the active materials.
+        self.__current_extruders = []
+        self.__current_materials = []
+
+        Application.getInstance().getExtruderManager().extrudersChanged.connect(self.__onExtrudersChanged)
+        self.__onExtrudersChanged()
+        self.__current_materials = [extruder.material for extruder in self.__current_extruders]
+        for material in self.__current_materials:
+            material.metaDataChanged.connect(self._onContainerChanged)
 
     ##  Fetch the list of containers to display.
     #
@@ -43,3 +53,28 @@ class UserProfilesModel(ProfilesModel):
                                      qc.getMetaDataEntry("extruder") == active_extruder.definition.getId())}
 
         return filtered_quality_changes, {}
+
+    ##  Called when a container changed on an extruder stack.
+    #
+    #   If it's the material we need to connect to the metaDataChanged signal of
+    #   that.
+    def __onContainerChanged(self, new_container):
+        #Careful not to update when a quality or quality changes profile changed!
+        #If you then update you're going to have an infinite recursion because the update may change the container.
+        if new_container.getMetaDataEntry("type") == "material":
+            for material in self.__current_materials:
+                material.metaDataChanged.disconnect(self._onContainerChanged)
+            self.__current_materials = [extruder.material for extruder in self.__current_extruders]
+            for material in self.__current_materials:
+                material.metaDataChanged.connect(self._onContainerChanged)
+
+    ##  Called when the current set of extruders change.
+    #
+    #   This makes sure that we are listening to the signal for when the
+    #   materials change.
+    def __onExtrudersChanged(self):
+        for extruder in self.__current_extruders:
+            extruder.containersChanged.disconnect(self.__onContainerChanged)
+        self.__current_extruders = Application.getInstance().getExtruderManager().getExtruderStacks()
+        for extruder in self.__current_extruders:
+            extruder.containersChanged.connect(self.__onContainerChanged)
