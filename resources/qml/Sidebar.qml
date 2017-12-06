@@ -90,7 +90,7 @@ Rectangle
     SidebarHeader {
         id: header
         width: parent.width
-        visible: (machineExtruderCount.properties.value > 1 || Cura.MachineManager.hasMaterials || Cura.MachineManager.hasVariants) && Cura.SidebarController.activeSidebarId == "default"
+        visible: machineExtruderCount.properties.value > 1 || Cura.MachineManager.hasMaterials || Cura.MachineManager.hasVariantst
         onShowTooltip: base.showTooltip(item, location, text)
         onHideTooltip: base.hideTooltip()
     }
@@ -98,7 +98,7 @@ Rectangle
     Rectangle {
         id: headerSeparator
         width: parent.width
-        visible: settingsModeSelection.visible && header.visible && Cura.SidebarController.activeSidebarId == "default"
+        visible: settingsModeSelection.visible && header.visible
         height: visible ? UM.Theme.getSize("sidebar_lining").height : 0
         color: UM.Theme.getColor("sidebar_lining")
         anchors.top: header.bottom
@@ -115,7 +115,7 @@ Rectangle
         width: Math.floor(parent.width * 0.45)
         font: UM.Theme.getFont("large")
         color: UM.Theme.getColor("text")
-        visible: !monitoringPrint && !hideView && Cura.SidebarController.activeSidebarId == "default"
+        visible: !monitoringPrint && !hideView
     }
 
     Rectangle {
@@ -137,7 +137,7 @@ Rectangle
             }
         }
         anchors.topMargin: UM.Theme.getSize("sidebar_margin").height
-        visible: !monitoringPrint && !hideSettings && !hideView && Cura.SidebarController.activeSidebarId == "default"
+        visible: !monitoringPrint && !hideSettings && !hideView
         Component{
             id: wizardDelegate
             Button {
@@ -218,7 +218,7 @@ Rectangle
         anchors.topMargin: UM.Theme.getSize("sidebar_margin").height
         anchors.left: base.left
         anchors.right: base.right
-        visible: !monitoringPrint && !hideSettings && Cura.SidebarController.activeSidebarId == "default"
+        visible: !monitoringPrint && !hideSettings
 
         delegate: StackViewDelegate
         {
@@ -244,29 +244,6 @@ Rectangle
                     from: 1
                     to: 0
                     duration: 100
-                }
-            }
-        }
-    }
-
-    // The sidebarRepeater exposes sidebar views provided by plugins.
-    // Whenever a plugin sidebar view is active (e.g. not "default"), that sidebar view is shown.
-    Repeater
-    {
-        id: sidebarRepeater
-
-        model: Cura.SidebarViewModel { }
-
-        delegate: Loader
-        {
-            id: delegate
-            asynchronous: true
-            visible: model.active
-
-            // dynamically get the component from the sidebar controller or set the default sidebar
-            sourceComponent: {
-                if (model.id !== "default") {
-                    return Cura.SidebarController.getSidebarComponent(model.id)
                 }
             }
         }

@@ -67,90 +67,108 @@ Rectangle
         anchors.rightMargin: UM.Theme.getSize("default_margin").width
         spacing: UM.Theme.getSize("default_margin").width
 
-        Button
+        // The topbar is dynamically filled with all available stages
+        Repeater
         {
-            id: showSettings
-            height: UM.Theme.getSize("sidebar_header").height
-            text: catalog.i18nc("@title:tab", "Prepare")
-            checkable: true
-            checked: isChecked()
-            exclusiveGroup: sidebarHeaderBarGroup
-            style: UM.Theme.styles.topbar_header_tab
+            id: stagesMenu
 
-            // We use a Qt.binding to re-bind the checkbox state after manually setting it
-            // https://stackoverflow.com/questions/38798450/qt-5-7-qml-why-are-my-checkbox-property-bindings-disappearing
-            onClicked: {
-                base.stopMonitoringPrint()
-                checked = Qt.binding(isChecked)
-            }
+            model: UM.StageModel{}
 
-            function isChecked () {
-                return !base.monitoringPrint
-            }
-
-            property color overlayColor: "transparent"
-            property string overlayIconSource: ""
-        }
-
-        Button
-        {
-            id: showMonitor
-            width: UM.Theme.getSize("topbar_button").width
-            height: UM.Theme.getSize("sidebar_header").height
-            text: catalog.i18nc("@title:tab", "Monitor")
-            checkable: true
-            checked: isChecked()
-            exclusiveGroup: sidebarHeaderBarGroup
-            style: UM.Theme.styles.topbar_header_tab_no_overlay
-
-            // We use a Qt.binding to re-bind the checkbox state after manually setting it
-            // https://stackoverflow.com/questions/38798450/qt-5-7-qml-why-are-my-checkbox-property-bindings-disappearing
-            onClicked: {
-                base.startMonitoringPrint()
-                checked = Qt.binding(isChecked)
-            }
-
-            function isChecked () {
-                return base.monitoringPrint
-            }
-
-            property string iconSource:
+            delegate: Button
             {
-                if (!printerConnected)
-                {
-                    return UM.Theme.getIcon("tab_status_unknown");
-                }
-                else if (!printerAcceptsCommands)
-                {
-                    return UM.Theme.getIcon("tab_status_unknown");
-                }
-
-                if (Cura.MachineManager.printerOutputDevices[0].printerState == "maintenance")
-                {
-                    return UM.Theme.getIcon("tab_status_busy");
-                }
-
-                switch (Cura.MachineManager.printerOutputDevices[0].jobState)
-                {
-                    case "printing":
-                    case "pre_print":
-                    case "pausing":
-                    case "resuming":
-                        return UM.Theme.getIcon("tab_status_busy");
-                    case "wait_cleanup":
-                        return UM.Theme.getIcon("tab_status_finished");
-                    case "ready":
-                    case "":
-                        return UM.Theme.getIcon("tab_status_connected")
-                    case "paused":
-                        return UM.Theme.getIcon("tab_status_paused")
-                    case "error":
-                        return UM.Theme.getIcon("tab_status_stopped")
-                    default:
-                        return UM.Theme.getIcon("tab_status_unknown")
-                }
+                text: model.name
+                checkable: true
+                checked: model.active
+                exclusiveGroup: sidebarHeaderBarGroup
+                style: UM.Theme.styles.topbar_header_tab
+                height: UM.Theme.getSize("sidebar_header").height
             }
         }
+
+//        Button
+//        {
+//            id: showSettings
+//            height: UM.Theme.getSize("sidebar_header").height
+//            text: catalog.i18nc("@title:tab", "Prepare")
+//            checkable: true
+//            checked: isChecked()
+//            exclusiveGroup: sidebarHeaderBarGroup
+//            style: UM.Theme.styles.topbar_header_tab
+//
+//            // We use a Qt.binding to re-bind the checkbox state after manually setting it
+//            // https://stackoverflow.com/questions/38798450/qt-5-7-qml-why-are-my-checkbox-property-bindings-disappearing
+//            onClicked: {
+//                base.stopMonitoringPrint()
+//                checked = Qt.binding(isChecked)
+//            }
+//
+//            function isChecked () {
+//                return !base.monitoringPrint
+//            }
+//
+//            property color overlayColor: "transparent"
+//            property string overlayIconSource: ""
+//        }
+
+//        Button
+//        {
+//            id: showMonitor
+//            width: UM.Theme.getSize("topbar_button").width
+//            height: UM.Theme.getSize("sidebar_header").height
+//            text: catalog.i18nc("@title:tab", "Monitor")
+//            checkable: true
+//            checked: isChecked()
+//            exclusiveGroup: sidebarHeaderBarGroup
+//            style: UM.Theme.styles.topbar_header_tab_no_overlay
+//
+//            // We use a Qt.binding to re-bind the checkbox state after manually setting it
+//            // https://stackoverflow.com/questions/38798450/qt-5-7-qml-why-are-my-checkbox-property-bindings-disappearing
+//            onClicked: {
+//                base.startMonitoringPrint()
+//                checked = Qt.binding(isChecked)
+//            }
+//
+//            function isChecked () {
+//                return base.monitoringPrint
+//            }
+//
+//            property string iconSource:
+//            {
+//                if (!printerConnected)
+//                {
+//                    return UM.Theme.getIcon("tab_status_unknown");
+//                }
+//                else if (!printerAcceptsCommands)
+//                {
+//                    return UM.Theme.getIcon("tab_status_unknown");
+//                }
+//
+//                if (Cura.MachineManager.printerOutputDevices[0].printerState == "maintenance")
+//                {
+//                    return UM.Theme.getIcon("tab_status_busy");
+//                }
+//
+//                switch (Cura.MachineManager.printerOutputDevices[0].jobState)
+//                {
+//                    case "printing":
+//                    case "pre_print":
+//                    case "pausing":
+//                    case "resuming":
+//                        return UM.Theme.getIcon("tab_status_busy");
+//                    case "wait_cleanup":
+//                        return UM.Theme.getIcon("tab_status_finished");
+//                    case "ready":
+//                    case "":
+//                        return UM.Theme.getIcon("tab_status_connected")
+//                    case "paused":
+//                        return UM.Theme.getIcon("tab_status_paused")
+//                    case "error":
+//                        return UM.Theme.getIcon("tab_status_stopped")
+//                    default:
+//                        return UM.Theme.getIcon("tab_status_unknown")
+//                }
+//            }
+//        }
 
         ExclusiveGroup { id: sidebarHeaderBarGroup }
     }

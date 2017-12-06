@@ -76,10 +76,6 @@ from cura.Settings.ContainerManager import ContainerManager
 from cura.Settings.GlobalStack import GlobalStack
 from cura.Settings.ExtruderStack import ExtruderStack
 
-from cura.Sidebar.SidebarController import SidebarController
-from cura.Sidebar.SidebarControllerProxy import SidebarControllerProxy
-from cura.Sidebar.SidebarViewModel import SidebarViewModel
-
 from PyQt5.QtCore import QUrl, pyqtSignal, pyqtProperty, QEvent, Q_ENUMS
 from UM.FlameProfiler import pyqtSlot
 from PyQt5.QtGui import QColor, QIcon
@@ -199,10 +195,6 @@ class CuraApplication(QtApplication):
                 ("definition_changes", InstanceContainer.Version * 1000000 + self.SettingVersion): (self.ResourceTypes.DefinitionChangesContainer, "application/x-uranium-instancecontainer"),
             }
         )
-
-        ##  As of Cura 3.2, the sidebar is controlled by a controller.
-        #   This functionality was added to allow plugins registering custom sidebar views.
-        self._sidebar_controller = SidebarController(self)
 
         self._currently_loading_files = []
         self._non_sliceable_extensions = []
@@ -727,10 +719,6 @@ class CuraApplication(QtApplication):
         if not run_headless:
             self.initializeEngine()
 
-            # Now that the SidebarViewModel has been created we can set the default sidebar view
-            # TODO: put this in a more elegant place
-            self._setDefaultSidebarView()
-
         if run_headless or self._engine.rootObjects:
             self.closeSplash()
 
@@ -742,11 +730,6 @@ class CuraApplication(QtApplication):
             self._started = True
 
             self.exec_()
-
-    ##  Get the SidebarController of this application.
-    #   \returns SidebarControllers \type{SidebarController}
-    def getSidebarController(self) -> SidebarController:
-        return self._sidebar_controller
 
     def getMachineManager(self, *args):
         if self._machine_manager is None:
@@ -807,7 +790,6 @@ class CuraApplication(QtApplication):
 
         qmlRegisterUncreatableType(CuraApplication, "Cura", 1, 0, "ResourceTypes", "Just an Enum type")
 
-        qmlRegisterType(SidebarViewModel, "Cura", 1, 0, "SidebarViewModel")
         qmlRegisterType(ExtrudersModel, "Cura", 1, 0, "ExtrudersModel")
         qmlRegisterType(ContainerSettingsModel, "Cura", 1, 0, "ContainerSettingsModel")
         qmlRegisterSingletonType(ProfilesModel, "Cura", 1, 0, "ProfilesModel", ProfilesModel.createProfilesModel)
@@ -819,7 +801,6 @@ class CuraApplication(QtApplication):
         qmlRegisterType(MachineNameValidator, "Cura", 1, 0, "MachineNameValidator")
         qmlRegisterType(UserChangesModel, "Cura", 1, 1, "UserChangesModel")
         qmlRegisterSingletonType(ContainerManager, "Cura", 1, 0, "ContainerManager", ContainerManager.createContainerManager)
-        qmlRegisterSingletonType(SidebarControllerProxy, "Cura", 1, 0, "SidebarController", SidebarControllerProxy.createSidebarControllerProxy)
 
         # As of Qt5.7, it is necessary to get rid of any ".." in the path for the singleton to work.
         actions_url = QUrl.fromLocalFile(os.path.abspath(Resources.getPath(CuraApplication.ResourceTypes.QmlFiles, "Actions.qml")))
@@ -1317,13 +1298,6 @@ class CuraApplication(QtApplication):
 
     def _addProfileWriter(self, profile_writer):
         pass
-
-    ## Set the default sidebar view to "default"
-    def _setDefaultSidebarView(self):
-        preferences = Preferences.getInstance()
-        preferences.addPreference("cura/active_sidebar_view", "default")
-        active_sidebar_view = preferences.getValue("cura/active_sidebar_view")
-        self._sidebar_controller.setActiveSidebarView(active_sidebar_view)
 
     @pyqtSlot("QSize")
     def setMinimumWindowSize(self, size):
