@@ -725,7 +725,7 @@ class CuraApplication(QtApplication):
 
             self.exec_()
 
-    def getMachineManager(self, *args):
+    def getMachineManager(self, *args) -> MachineManager:
         if self._machine_manager is None:
             self._machine_manager = MachineManager.createMachineManager()
         return self._machine_manager

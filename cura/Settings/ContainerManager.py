@@ -789,7 +789,8 @@ class ContainerManager(QObject):
             if container_to_copy.getMetaDataEntry("definition") != "fdmprinter":
                 new_id += "_" + container_to_copy.getMetaDataEntry("definition")
                 if container_to_copy.getMetaDataEntry("variant"):
-                    new_id += "_" + container_to_copy.getMetaDataEntry("variant")
+                    variant = self._container_registry.findContainers(id = container_to_copy.getMetaDataEntry("variant"))[0]
+                    new_id += "_" + variant.getName().replace(" ", "_")
             if current_id == material_id:
                 clone_of_original = new_id
 
