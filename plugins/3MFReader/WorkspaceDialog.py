@@ -1,12 +1,10 @@
 # Copyright (c) 2016 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from PyQt5.QtCore import QUrl, pyqtSignal, QObject, pyqtProperty, QCoreApplication
+from PyQt5.QtCore import pyqtSignal, QObject, pyqtProperty, QCoreApplication
 from UM.FlameProfiler import pyqtSlot
-from PyQt5.QtQml import QQmlComponent, QQmlContext
 from UM.PluginRegistry import PluginRegistry
 from UM.Application import Application
-from UM.Logger import Logger
 from UM.i18n import i18nCatalog
 from UM.Settings.ContainerRegistry import ContainerRegistry
 
@@ -38,6 +36,7 @@ class WorkspaceDialog(QObject):
         self._has_definition_changes_conflict = False
         self._has_machine_conflict = False
         self._has_material_conflict = False
+        self._has_visible_settings_field = False
         self._num_visible_settings = 0
         self._num_user_settings = 0
         self._active_mode = ""
@@ -58,6 +57,7 @@ class WorkspaceDialog(QObject):
     numVisibleSettingsChanged = pyqtSignal()
     activeModeChanged = pyqtSignal()
     qualityNameChanged = pyqtSignal()
+    hasVisibleSettingsFieldChanged = pyqtSignal()
     numSettingsOverridenByQualityChangesChanged = pyqtSignal()
     qualityTypeChanged = pyqtSignal()
     machineNameChanged = pyqtSignal()
@@ -167,6 +167,14 @@ class WorkspaceDialog(QObject):
             self._active_mode = i18n_catalog.i18nc("@title:tab", "Custom")
         self.activeModeChanged.emit()
 
+    @pyqtProperty(int, notify = hasVisibleSettingsFieldChanged)
+    def hasVisibleSettingsField(self):
+        return self._has_visible_settings_field
+
+    def setHasVisibleSettingsField(self, has_visible_settings_field):
+        self._has_visible_settings_field = has_visible_settings_field
+        self.hasVisibleSettingsFieldChanged.emit()
+
     @pyqtProperty(int, constant = True)
     def totalNumberOfSettings(self):
         return len(ContainerRegistry.getInstance().findDefinitionContainers(id="fdmprinter")[0].getAllKeys())
@@ -246,14 +254,8 @@ class WorkspaceDialog(QObject):
         return self._result
 
     def _createViewFromQML(self):
-        path = QUrl.fromLocalFile(os.path.join(PluginRegistry.getInstance().getPluginPath("3MFReader"), self._qml_url))
-        self._component = QQmlComponent(Application.getInstance()._engine, path)
-        self._context = QQmlContext(Application.getInstance()._engine.rootContext())
-        self._context.setContextProperty("manager", self)
-        self._view = self._component.create(self._context)
-        if self._view is None:
-            Logger.log("c", "QQmlComponent status %s", self._component.status())
-            Logger.log("c", "QQmlComponent error string %s", self._component.errorString())
+        path = os.path.join(PluginRegistry.getInstance().getPluginPath("3MFReader"), self._qml_url)
+        self._view = Application.getInstance().createQmlComponent(path, {"manager": self})
 
     def show(self):
         # Emit signal so the right thread actually shows the view.
@@ -284,6 +286,14 @@ class WorkspaceDialog(QObject):
             self._lock.release()
         except:
             pass
+
+    @pyqtSlot(bool)
+    def _onVisibilityChanged(self, visible):
+        if not visible:
+            try:
+                self._lock.release()
+            except:
+                pass
 
     @pyqtSlot()
     def onOkButtonClicked(self):

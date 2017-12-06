@@ -331,6 +331,7 @@ UM.Dialog
             {
                 width: parent.width
                 height: childrenRect.height
+                visible: manager.hasVisibleSettingsField
                 Label
                 {
                     text: catalog.i18nc("@action:label", "Visible settings:")
@@ -364,7 +365,7 @@ UM.Dialog
                 Label
                 {
                     id: warningLabel
-                    text: catalog.i18nc("@action:warning", "Loading a project will clear all models on the buildplate")
+                    text: catalog.i18nc("@action:warning", "Loading a project will clear all models on the build plate.")
                     wrapMode: Text.Wrap
                 }
             }

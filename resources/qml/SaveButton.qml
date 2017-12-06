@@ -18,6 +18,8 @@ Item {
     property var backend: CuraApplication.getBackend();
     property bool activity: CuraApplication.platformActivity;
 
+    property alias buttonRowWidth: saveRow.width
+
     property string fileBaseName
     property string statusText:
     {
@@ -40,6 +42,14 @@ Item {
                 return catalog.i18nc("@label:PrintjobStatus", "Slicing unavailable");
             default:
                 return "";
+        }
+    }
+
+    function sliceOrStopSlicing() {
+        if ([1, 5].indexOf(UM.Backend.state) != -1) {
+            backend.forceSlice();
+        } else {
+            backend.stopSlicing();
         }
     }
 
@@ -84,22 +94,39 @@ Item {
             if (saveToButton.enabled) {
                 saveToButton.clicked();
             }
+            // prepare button
+            if (prepareButton.enabled) {
+                sliceOrStopSlicing();
+            }
         }
     }
 
     Item {
         id: saveRow
-        width: base.width
+        width: {
+            // using childrenRect.width directly causes a binding loop, because setting the width affects the childrenRect
+            var children_width = UM.Theme.getSize("default_margin").width;
+            for (var index in children)
+            {
+                var child = children[index];
+                if(child.visible)
+                {
+                    children_width += child.width + child.anchors.rightMargin;
+                }
+            }
+            return Math.min(children_width, base.width - UM.Theme.getSize("sidebar_margin").width);
+        }
         height: saveToButton.height
-        anchors.top: progressBar.bottom
-        anchors.topMargin: UM.Theme.getSize("sidebar_margin").height
-        anchors.left: parent.left
+        anchors.bottom: parent.bottom
+        anchors.bottomMargin: UM.Theme.getSize("sidebar_margin").height
+        anchors.right: parent.right
+        clip: true
 
         Row {
             id: additionalComponentsRow
             anchors.top: parent.top
             anchors.right: saveToButton.visible ? saveToButton.left : parent.right
-            anchors.rightMargin: UM.Theme.getSize("sidebar_margin").width
+            anchors.rightMargin: UM.Theme.getSize("default_margin").width
 
             spacing: UM.Theme.getSize("default_margin").width
         }
@@ -130,7 +157,7 @@ Item {
         Button {
             id: prepareButton
 
-            tooltip: UM.OutputDeviceManager.activeDeviceDescription;
+            tooltip: [1, 5].indexOf(UM.Backend.state) != -1 ? catalog.i18nc("@info:tooltip","Slice current printjob") : catalog.i18nc("@info:tooltip","Cancel slicing process")
             // 1 = not started, 2 = Processing
             enabled: (base.backendState == 1 || base.backendState == 2) && base.activity == true
             visible: {
@@ -147,11 +174,7 @@ Item {
             text: [1, 5].indexOf(UM.Backend.state) != -1 ? catalog.i18nc("@label:Printjob", "Prepare") : catalog.i18nc("@label:Printjob", "Cancel")
             onClicked:
             {
-                if ([1, 5].indexOf(UM.Backend.state) != -1) {
-                    backend.forceSlice();
-                } else {
-                    backend.stopSlicing();
-                }
+                sliceOrStopSlicing();
             }
 
             style: ButtonStyle {

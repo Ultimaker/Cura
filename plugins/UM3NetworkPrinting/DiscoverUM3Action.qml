@@ -114,7 +114,7 @@ Cura.MachineAction
 
             Column
             {
-                width: (parent.width * 0.5) | 0
+                width: Math.floor(parent.width * 0.5)
                 spacing: UM.Theme.getSize("default_margin").height
 
                 ScrollView
@@ -191,8 +191,6 @@ Cura.MachineAction
                     anchors.left: parent.left
                     anchors.right: parent.right
                     wrapMode: Text.WordWrap
-                    //: Tips label
-                    //TODO: get actual link from webteam
                     text: catalog.i18nc("@label", "If your printer is not listed, read the <a href='%1'>network printing troubleshooting guide</a>").arg("https://ultimaker.com/en/troubleshooting");
                     onLinkActivated: Qt.openUrlExternally(link)
                 }
@@ -200,7 +198,7 @@ Cura.MachineAction
             }
             Column
             {
-                width: (parent.width * 0.5) | 0
+                width: Math.floor(parent.width * 0.5)
                 visible: base.selectedPrinter ? true : false
                 spacing: UM.Theme.getSize("default_margin").height
                 Label
@@ -218,13 +216,13 @@ Cura.MachineAction
                     columns: 2
                     Label
                     {
-                        width: (parent.width * 0.5) | 0
+                        width: Math.floor(parent.width * 0.5)
                         wrapMode: Text.WordWrap
                         text: catalog.i18nc("@label", "Type")
                     }
                     Label
                     {
-                        width: (parent.width * 0.5) | 0
+                        width: Math.floor(parent.width * 0.5)
                         wrapMode: Text.WordWrap
                         text:
                         {
@@ -232,13 +230,13 @@ Cura.MachineAction
                             {
                                 if(base.selectedPrinter.printerType == "ultimaker3")
                                 {
-                                    return catalog.i18nc("@label", "Ultimaker 3")
+                                    return catalog.i18nc("@label Printer name", "Ultimaker 3")
                                 } else if(base.selectedPrinter.printerType == "ultimaker3_extended")
                                 {
-                                    return catalog.i18nc("@label", "Ultimaker 3 Extended")
+                                    return catalog.i18nc("@label Printer name", "Ultimaker 3 Extended")
                                 } else
                                 {
-                                    return catalog.i18nc("@label", "Unknown") // We have no idea what type it is. Should not happen 'in the field'
+                                    return catalog.i18nc("@label Printer name", "Unknown") // We have no idea what type it is. Should not happen 'in the field'
                                 }
                             }
                             else
@@ -249,25 +247,25 @@ Cura.MachineAction
                     }
                     Label
                     {
-                        width: (parent.width * 0.5) | 0
+                        width: Math.floor(parent.width * 0.5)
                         wrapMode: Text.WordWrap
                         text: catalog.i18nc("@label", "Firmware version")
                     }
                     Label
                     {
-                        width: (parent.width * 0.5) | 0
+                        width: Math.floor(parent.width * 0.5)
                         wrapMode: Text.WordWrap
                         text: base.selectedPrinter ? base.selectedPrinter.firmwareVersion : ""
                     }
                     Label
                     {
-                        width: (parent.width * 0.5) | 0
+                        width: Math.floor(parent.width * 0.5)
                         wrapMode: Text.WordWrap
                         text: catalog.i18nc("@label", "Address")
                     }
                     Label
                     {
-                        width: (parent.width * 0.5) | 0
+                        width: Math.floor(parent.width * 0.5)
                         wrapMode: Text.WordWrap
                         text: base.selectedPrinter ? base.selectedPrinter.ipAddress : ""
                     }
@@ -279,7 +277,7 @@ Cura.MachineAction
                     wrapMode: Text.WordWrap
                     text:{
                         // The property cluster size does not exist for older UM3 devices.
-                        if(base.selectedPrinter != undefined && base.selectedPrinter.clusterSize == null || base.selectedPrinter.clusterSize == 1)
+                        if(!base.selectedPrinter || base.selectedPrinter.clusterSize == null || base.selectedPrinter.clusterSize == 1)
                         {
                             return "";
                         }
@@ -378,7 +376,7 @@ Cura.MachineAction
             },
             Button {
                 id: btnOk
-                text: catalog.i18nc("@action:button", "Ok")
+                text: catalog.i18nc("@action:button", "OK")
                 onClicked:
                 {
                     manualPrinterDialog.accept()

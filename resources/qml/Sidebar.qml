@@ -30,6 +30,7 @@ Rectangle
     property variant printMaterialLengths: PrintInformation.materialLengths
     property variant printMaterialWeights: PrintInformation.materialWeights
     property variant printMaterialCosts: PrintInformation.materialCosts
+    property variant printMaterialNames: PrintInformation.materialNames
 
     color: UM.Theme.getColor("sidebar")
     UM.I18nCatalog { id: catalog; name:"cura"}
@@ -313,51 +314,56 @@ Rectangle
         anchors.bottomMargin: Math.floor(UM.Theme.getSize("sidebar_margin").height * 2 + UM.Theme.getSize("progressbar").height + UM.Theme.getFont("default_bold").pixelSize)
     }
 
-    Rectangle
+    Item
     {
         id: printSpecs
         anchors.left: parent.left
         anchors.bottom: parent.bottom
         anchors.leftMargin: UM.Theme.getSize("sidebar_margin").width
         anchors.bottomMargin: UM.Theme.getSize("sidebar_margin").height
-        height: timeDetails.height + timeSpecDescription.height + lengthSpec.height
+        height: timeDetails.height + costSpec.height
+        width: base.width - (saveButton.buttonRowWidth + UM.Theme.getSize("sidebar_margin").width)
         visible: !monitoringPrint
+        clip: true
 
         Label
         {
             id: timeDetails
             anchors.left: parent.left
-            anchors.bottom: timeSpecDescription.top
+            anchors.bottom: costSpec.top
             font: UM.Theme.getFont("large")
             color: UM.Theme.getColor("text_subtext")
-            text: (!base.printDuration || !base.printDuration.valid) ? catalog.i18nc("@label", "00h 00min") : base.printDuration.getDisplayString(UM.DurationFormat.Short)
+            text: (!base.printDuration || !base.printDuration.valid) ? catalog.i18nc("@label Hours and minutes", "00h 00min") : base.printDuration.getDisplayString(UM.DurationFormat.Short)
 
             MouseArea
             {
-                id: infillMouseArea
+                id: timeDetailsMouseArea
                 anchors.fill: parent
                 hoverEnabled: true
-                //enabled: base.settingsEnabled
 
                 onEntered:
                 {
-
                     if(base.printDuration.valid && !base.printDuration.isTotalDurationZero)
                     {
                         // All the time information for the different features is achieved
-                        var print_time = PrintInformation.getFeaturePrintTimes()
+                        var print_time = PrintInformation.getFeaturePrintTimes();
+                        var total_seconds = parseInt(base.printDuration.getDisplayString(UM.DurationFormat.Seconds))
 
                         // A message is created and displayed when the user hover the time label
-                        var content = catalog.i18nc("@tooltip", "<b>Time information</b>")
+                        var tooltip_html = "<b>%1</b><br/><table width=\"100%\">".arg(catalog.i18nc("@tooltip", "Time specification"));
                         for(var feature in print_time)
                         {
                             if(!print_time[feature].isTotalDurationZero)
                             {
-                                content += "<br /><i>" + feature + "</i>: " + print_time[feature].getDisplayString(UM.DurationFormat.Short)
+                                tooltip_html += "<tr><td>" + feature + ":</td>" +
+                                    "<td align=\"right\" valign=\"bottom\">&nbsp;&nbsp;%1</td>".arg(print_time[feature].getDisplayString(UM.DurationFormat.ISO8601).slice(0,-3)) +
+                                    "<td align=\"right\" valign=\"bottom\">&nbsp;&nbsp;%1%</td>".arg(Math.round(100 * parseInt(print_time[feature].getDisplayString(UM.DurationFormat.Seconds)) / total_seconds)) +
+                                    "</td></tr>";
                             }
                         }
+                        tooltip_html += "</table>";
 
-                        base.showTooltip(parent, Qt.point(-UM.Theme.getSize("sidebar_margin").width, 0), content)
+                        base.showTooltip(parent, Qt.point(-UM.Theme.getSize("sidebar_margin").width, 0), tooltip_html);
                     }
                 }
                 onExited:
@@ -369,20 +375,96 @@ Rectangle
 
         Label
         {
-            id: timeSpecDescription
-            anchors.left: parent.left
-            anchors.bottom: lengthSpec.top
-            font: UM.Theme.getFont("very_small")
-            color: UM.Theme.getColor("text_subtext")
-            text: catalog.i18nc("@description", "Print time")
-        }
-        Label
-        {
-            id: lengthSpec
+            function formatRow(items)
+            {
+                var row_html = "<tr>";
+                for(var item = 0; item < items.length; item++)
+                {
+                    if (item == 0)
+                    {
+                        row_html += "<td valign=\"bottom\">%1</td>".arg(items[item]);
+                    }
+                    else
+                    {
+                        row_html += "<td align=\"right\" valign=\"bottom\">&nbsp;&nbsp;%1</td>".arg(items[item]);
+                    }
+                }
+                row_html += "</tr>";
+                return row_html;
+            }
+
+            function getSpecsData()
+            {
+                var lengths = [];
+                var total_length = 0;
+                var weights = [];
+                var total_weight = 0;
+                var costs = [];
+                var total_cost = 0;
+                var some_costs_known = false;
+                var names = [];
+                if(base.printMaterialLengths)
+                {
+                    for(var index = 0; index < base.printMaterialLengths.length; index++)
+                    {
+                        if(base.printMaterialLengths[index] > 0)
+                        {
+                            names.push(base.printMaterialNames[index]);
+                            lengths.push(base.printMaterialLengths[index].toFixed(2));
+                            weights.push(String(Math.floor(base.printMaterialWeights[index])));
+                            var cost = base.printMaterialCosts[index] == undefined ? 0 : base.printMaterialCosts[index].toFixed(2);
+                            costs.push(cost);
+                            if(cost > 0)
+                            {
+                                some_costs_known = true;
+                            }
+
+                            total_length += base.printMaterialLengths[index];
+                            total_weight += base.printMaterialWeights[index];
+                            total_cost += base.printMaterialCosts[index];
+                        }
+                    }
+                }
+                if(lengths.length == 0)
+                {
+                    lengths = ["0.00"];
+                    weights = ["0"];
+                    costs = ["0.00"];
+                }
+
+                var tooltip_html = "<b>%1</b><br/><table width=\"100%\">".arg(catalog.i18nc("@label", "Cost specification"));
+                for(var index = 0; index < lengths.length; index++)
+                {
+                    tooltip_html += formatRow([
+                        "%1:".arg(names[index]),
+                        catalog.i18nc("@label m for meter", "%1m").arg(lengths[index]),
+                        catalog.i18nc("@label g for grams", "%1g").arg(weights[index]),
+                        "%1&nbsp;%2".arg(UM.Preferences.getValue("cura/currency")).arg(costs[index]),
+                    ]);
+                }
+                if(lengths.length > 1)
+                {
+                    tooltip_html += formatRow([
+                        catalog.i18nc("@label", "Total:"),
+                        catalog.i18nc("@label m for meter", "%1m").arg(total_length.toFixed(2)),
+                        catalog.i18nc("@label g for grams", "%1g").arg(Math.round(total_weight)),
+                        "%1 %2".arg(UM.Preferences.getValue("cura/currency")).arg(total_cost.toFixed(2)),
+                    ]);
+                }
+                tooltip_html += "</table>";
+                tooltipText = tooltip_html;
+
+                return tooltipText
+            }
+
+            id: costSpec
             anchors.left: parent.left
             anchors.bottom: parent.bottom
             font: UM.Theme.getFont("very_small")
             color: UM.Theme.getColor("text_subtext")
+            elide: Text.ElideMiddle
+            width: parent.width
+            property string tooltipText
             text:
             {
                 var lengths = [];
@@ -413,12 +495,33 @@ Rectangle
                 }
                 if(someCostsKnown)
                 {
-                    return catalog.i18nc("@label", "%1m / ~ %2g / ~ %4 %3").arg(lengths.join(" + "))
+                    return catalog.i18nc("@label Print estimates: m for meters, g for grams, %4 is currency and %3 is print cost", "%1m / ~ %2g / ~ %4 %3").arg(lengths.join(" + "))
                             .arg(weights.join(" + ")).arg(costs.join(" + ")).arg(UM.Preferences.getValue("cura/currency"));
                 }
                 else
                 {
-                    return catalog.i18nc("@label", "%1m / ~ %2g").arg(lengths.join(" + ")).arg(weights.join(" + "));
+                    return catalog.i18nc("@label Print estimates: m for meters, g for grams", "%1m / ~ %2g").arg(lengths.join(" + ")).arg(weights.join(" + "));
+                }
+            }
+            MouseArea
+            {
+                id: costSpecMouseArea
+                anchors.fill: parent
+                hoverEnabled: true
+
+                onEntered:
+                {
+
+                    if(base.printDuration.valid && !base.printDuration.isTotalDurationZero)
+                    {
+                        var show_data = costSpec.getSpecsData()
+
+                        base.showTooltip(parent, Qt.point(-UM.Theme.getSize("sidebar_margin").width, 0), show_data);
+                    }
+                }
+                onExited:
+                {
+                    base.hideTooltip();
                 }
             }
         }

@@ -56,6 +56,7 @@ class PrintInformation(QObject):
         self._material_lengths = []
         self._material_weights = []
         self._material_costs = []
+        self._material_names = []
 
         self._pre_sliced = False
 
@@ -69,7 +70,7 @@ class PrintInformation(QObject):
 
         Application.getInstance().globalContainerStackChanged.connect(self._updateJobName)
         Application.getInstance().fileLoaded.connect(self.setBaseName)
-
+        Application.getInstance().workspaceLoaded.connect(self.setProjectName)
         Preferences.getInstance().preferenceChanged.connect(self._onPreferencesChanged)
 
         self._active_material_container = None
@@ -77,7 +78,6 @@ class PrintInformation(QObject):
         self._onActiveMaterialChanged()
 
         self._material_amounts = []
-
 
     # Crate cura message translations and using translation keys initialize empty time Duration object for total time
     # and time for each feature
@@ -139,6 +139,12 @@ class PrintInformation(QObject):
     def materialCosts(self):
         return self._material_costs
 
+    materialNamesChanged = pyqtSignal()
+
+    @pyqtProperty("QVariantList", notify = materialNamesChanged)
+    def materialNames(self):
+        return self._material_names
+
     def _onPrintDurationMessage(self, print_time, material_amounts):
 
         self._updateTotalPrintTimePerFeature(print_time)
@@ -170,6 +176,7 @@ class PrintInformation(QObject):
         self._material_lengths = []
         self._material_weights = []
         self._material_costs = []
+        self._material_names = []
 
         material_preference_values = json.loads(Preferences.getInstance().getValue("cura/material_settings"))
 
@@ -188,8 +195,10 @@ class PrintInformation(QObject):
 
             weight = float(amount) * float(density) / 1000
             cost = 0
+            material_name = catalog.i18nc("@label unknown material", "Unknown")
             if material:
                 material_guid = material.getMetaDataEntry("GUID")
+                material_name = material.getName()
                 if material_guid in material_preference_values:
                     material_values = material_preference_values[material_guid]
 
@@ -208,10 +217,12 @@ class PrintInformation(QObject):
             self._material_weights.append(weight)
             self._material_lengths.append(length)
             self._material_costs.append(cost)
+            self._material_names.append(material_name)
 
         self.materialLengthsChanged.emit()
         self.materialWeightsChanged.emit()
         self.materialCostsChanged.emit()
+        self.materialNamesChanged.emit()
 
     def _onPreferencesChanged(self, preference):
         if preference != "cura/material_settings":
@@ -273,7 +284,11 @@ class PrintInformation(QObject):
         return self._base_name
 
     @pyqtSlot(str)
-    def setBaseName(self, base_name):
+    def setProjectName(self, name):
+        self.setBaseName(name, is_project_file = True)
+
+    @pyqtSlot(str)
+    def setBaseName(self, base_name, is_project_file = False):
         # Ensure that we don't use entire path but only filename
         name = os.path.basename(base_name)
 
@@ -281,10 +296,16 @@ class PrintInformation(QObject):
         # extension. This cuts the extension off if necessary.
         name = os.path.splitext(name)[0]
 
+        # if this is a profile file, always update the job name
         # name is "" when I first had some meshes and afterwards I deleted them so the naming should start again
-        if name == "" or (self._base_name == "" and self._base_name != name):
+        is_empty = name == ""
+        if is_project_file or (is_empty or (self._base_name == "" and self._base_name != name)):
+            # remove ".curaproject" suffix from (imported) the file name
+            if name.endswith(".curaproject"):
+                name = name[:name.rfind(".curaproject")]
             self._base_name = name
             self._updateJobName()
+
 
     ##  Created an acronymn-like abbreviated machine name from the currently active machine name
     #   Called each time the global stack is switched
@@ -303,7 +324,12 @@ class PrintInformation(QObject):
             elif word.isdigit():
                 abbr_machine += word
             else:
-                abbr_machine += self._stripAccents(word.strip("()[]{}#").upper())[0]
+                stripped_word = self._stripAccents(word.strip("()[]{}#").upper())
+                # - use only the first character if the word is too long (> 3 characters)
+                # - use the whole word if it's not too long (<= 3 characters)
+                if len(stripped_word) > 3:
+                    stripped_word = stripped_word[0]
+                abbr_machine += stripped_word
 
         self._abbr_machine = abbr_machine
 
@@ -329,4 +355,3 @@ class PrintInformation(QObject):
 
         temp_material_amounts = [0]
         self._onPrintDurationMessage(temp_message, temp_material_amounts)
-

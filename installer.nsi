@@ -126,11 +126,7 @@ Section "Install Arduino Drivers"
 SectionEnd
 
 Section "Open STL files with Cura"
-	WriteRegStr HKCR .stl "" "Cura STL model file"
-	DeleteRegValue HKCR .stl "Content Type"
-	WriteRegStr HKCR "Cura STL model file\DefaultIcon" "" "$INSTDIR\Cura.exe,0"
-	WriteRegStr HKCR "Cura STL model file\shell" "" "open"
-	WriteRegStr HKCR "Cura STL model file\shell\open\command" "" '"$INSTDIR\Cura.exe" "%1"'
+   ${registerExtension} "$INSTDIR\Cura.exe" ".stl" "STL_File"
 SectionEnd
 
 Section /o "Open OBJ files with Cura"

@@ -46,6 +46,7 @@ UM.MainWindow
         //
         // This has been fixed for QtQuick Controls 2 since the Shortcut item has a context property.
         Cura.Actions.parent = backgroundItem
+        CuraApplication.purgeWindows()
     }
 
     Item
@@ -115,7 +116,7 @@ UM.MainWindow
                 MenuItem
                 {
                     id: saveWorkspaceMenu
-                    text: catalog.i18nc("@title:menu menubar:file","Save project")
+                    text: catalog.i18nc("@title:menu menubar:file","Save &Project...")
                     onTriggered:
                     {
                         if(UM.Preferences.getValue("cura/dialog_on_project_save"))
@@ -177,7 +178,7 @@ UM.MainWindow
 
                         MenuSeparator { }
 
-                        MenuItem { text: catalog.i18nc("@action:inmenu", "Set as Active Extruder"); onTriggered: ExtruderManager.setActiveExtruderIndex(model.index) }
+                        MenuItem { text: catalog.i18nc("@action:inmenu", "Set as Active Extruder"); onTriggered: Cura.ExtruderManager.setActiveExtruderIndex(model.index) }
                     }
                     onObjectAdded: settingsMenu.insertItem(index, object)
                     onObjectRemoved: settingsMenu.removeItem(object)
@@ -894,6 +895,11 @@ UM.MainWindow
             if(!base.visible)
             {
                 base.visible = true;
+            }
+
+            // check later if the user agreement dialog has been closed
+            if (CuraApplication.needToShowUserAgreement)
+            {
                 restart();
             }
             else if(Cura.MachineManager.activeMachineId == null || Cura.MachineManager.activeMachineId == "")

@@ -513,14 +513,13 @@ class BuildVolume(SceneNode):
         update_disallowed_areas = False
         update_raft_thickness = False
         update_extra_z_clearance = True
+
         for setting_key in self._changed_settings_since_last_rebuild:
+
             if setting_key == "print_sequence":
                 machine_height = self._global_container_stack.getProperty("machine_height", "value")
-                if Application.getInstance().getGlobalContainerStack().getProperty("print_sequence",
-                                                                                   "value") == "one_at_a_time" and len(
-                        self._scene_objects) > 1:
-                    self._height = min(self._global_container_stack.getProperty("gantry_height", "value"),
-                                       machine_height)
+                if Application.getInstance().getGlobalContainerStack().getProperty("print_sequence", "value") == "one_at_a_time" and len(self._scene_objects) > 1:
+                    self._height = min(self._global_container_stack.getProperty("gantry_height", "value"), machine_height)
                     if self._height < machine_height:
                         self._build_volume_message.show()
                     else:
@@ -528,9 +527,20 @@ class BuildVolume(SceneNode):
                 else:
                     self._height = self._global_container_stack.getProperty("machine_height", "value")
                     self._build_volume_message.hide()
+                update_disallowed_areas = True
                 rebuild_me = True
 
-            if setting_key in self._skirt_settings or setting_key in self._prime_settings or setting_key in self._tower_settings or setting_key == "print_sequence" or setting_key in self._ooze_shield_settings or setting_key in self._distance_settings or setting_key in self._extruder_settings:
+            # sometimes the machine size or shape settings are adjusted on the active machine, we should reflect this
+            if setting_key in self._machine_settings:
+                self._height = self._global_container_stack.getProperty("machine_height", "value")
+                self._width = self._global_container_stack.getProperty("machine_width", "value")
+                self._depth = self._global_container_stack.getProperty("machine_depth", "value")
+                self._shape = self._global_container_stack.getProperty("machine_shape", "value")
+                update_extra_z_clearance = True
+                update_disallowed_areas = True
+                rebuild_me = True
+
+            if setting_key in self._skirt_settings + self._prime_settings + self._tower_settings + self._ooze_shield_settings + self._distance_settings + self._extruder_settings:
                 update_disallowed_areas = True
                 rebuild_me = True
 
@@ -876,15 +886,6 @@ class BuildVolume(SceneNode):
 
         return result
 
-    ##  Private convenience function to get a setting from the adhesion
-    #   extruder.
-    #
-    #   \param setting_key The key of the setting to get.
-    #   \param property The property to get from the setting.
-    #   \return The property of the specified setting in the adhesion extruder.
-    def _getSettingFromAdhesionExtruder(self, setting_key, property = "value"):
-        return self._getSettingFromExtruder(setting_key, "adhesion_extruder_nr", property)
-
     ##  Private convenience function to get a setting from every extruder.
     #
     #   For single extrusion machines, this gets the setting from the global
@@ -899,44 +900,6 @@ class BuildVolume(SceneNode):
                 all_values[i] = 0
         return all_values
 
-    ##  Private convenience function to get a setting from the support infill
-    #   extruder.
-    #
-    #   \param setting_key The key of the setting to get.
-    #   \param property The property to get from the setting.
-    #   \return The property of the specified setting in the support infill
-    #   extruder.
-    def _getSettingFromSupportInfillExtruder(self, setting_key, property = "value"):
-        return self._getSettingFromExtruder(setting_key, "support_infill_extruder_nr", property)
-
-    ##  Helper function to get a setting from an extruder specified in another
-    #   setting.
-    #
-    #   \param setting_key The key of the setting to get.
-    #   \param extruder_setting_key The key of the setting that specifies from
-    #   which extruder to get the setting, if there are multiple extruders.
-    #   \param property The property to get from the setting.
-    #   \return The property of the specified setting in the specified extruder.
-    def _getSettingFromExtruder(self, setting_key, extruder_setting_key, property = "value"):
-        multi_extrusion = self._global_container_stack.getProperty("machine_extruder_count", "value") > 1
-
-        if not multi_extrusion:
-            stack = self._global_container_stack
-        else:
-            extruder_index = self._global_container_stack.getProperty(extruder_setting_key, "value")
-
-            if str(extruder_index) == "-1":  # If extruder index is -1 use global instead
-                stack = self._global_container_stack
-            else:
-                extruder_stack_id = ExtruderManager.getInstance().extruderIds[str(extruder_index)]
-                stack = ContainerRegistry.getInstance().findContainerStacks(id = extruder_stack_id)[0]
-
-        value = stack.getProperty(setting_key, property)
-        setting_type = stack.getProperty(setting_key, "type")
-        if not value and (setting_type == "int" or setting_type == "float"):
-            return 0
-        return value
-
     ##  Convenience function to calculate the disallowed radius around the edge.
     #
     #   This disallowed radius is to allow for space around the models that is
@@ -945,6 +908,7 @@ class BuildVolume(SceneNode):
     def _getEdgeDisallowedSize(self):
         if not self._global_container_stack:
             return 0
+
         container_stack = self._global_container_stack
         used_extruders = ExtruderManager.getInstance().getUsedExtruderStacks()
 
@@ -953,32 +917,44 @@ class BuildVolume(SceneNode):
             return 0.1  # Return a very small value, so we do draw disallowed area's near the edges.
 
         adhesion_type = container_stack.getProperty("adhesion_type", "value")
+        skirt_brim_line_width = self._global_container_stack.getProperty("skirt_brim_line_width", "value")
+        initial_layer_line_width_factor = self._global_container_stack.getProperty("initial_layer_line_width_factor", "value")
         if adhesion_type == "skirt":
-            skirt_distance = self._getSettingFromAdhesionExtruder("skirt_gap")
-            skirt_line_count = self._getSettingFromAdhesionExtruder("skirt_line_count")
-            bed_adhesion_size = skirt_distance + (self._getSettingFromAdhesionExtruder("skirt_brim_line_width") * skirt_line_count) * self._getSettingFromAdhesionExtruder("initial_layer_line_width_factor") / 100.0
-            if len(used_extruders) > 1:
-                for extruder_stack in used_extruders:
-                    bed_adhesion_size += extruder_stack.getProperty("skirt_brim_line_width", "value") * extruder_stack.getProperty("initial_layer_line_width_factor", "value") / 100.0
-                #We don't create an additional line for the extruder we're printing the skirt with.
-                bed_adhesion_size -= self._getSettingFromAdhesionExtruder("skirt_brim_line_width", "value") * self._getSettingFromAdhesionExtruder("initial_layer_line_width_factor", "value") / 100.0
+            skirt_distance = self._global_container_stack.getProperty("skirt_gap", "value")
+            skirt_line_count = self._global_container_stack.getProperty("skirt_line_count", "value")
+
+            bed_adhesion_size = skirt_distance + (skirt_brim_line_width * skirt_line_count) * initial_layer_line_width_factor / 100.0
+
+            for extruder_stack in used_extruders:
+                bed_adhesion_size += extruder_stack.getProperty("skirt_brim_line_width", "value") * extruder_stack.getProperty("initial_layer_line_width_factor", "value") / 100.0
+
+            # We don't create an additional line for the extruder we're printing the skirt with.
+            bed_adhesion_size -= skirt_brim_line_width * initial_layer_line_width_factor / 100.0
+
         elif adhesion_type == "brim":
-            bed_adhesion_size = self._getSettingFromAdhesionExtruder("skirt_brim_line_width") * self._getSettingFromAdhesionExtruder("brim_line_count") *  self._getSettingFromAdhesionExtruder("initial_layer_line_width_factor") / 100.0
-            if self._global_container_stack.getProperty("machine_extruder_count", "value") > 1:
-                for extruder_stack in used_extruders:
-                    bed_adhesion_size += extruder_stack.getProperty("skirt_brim_line_width", "value") * extruder_stack.getProperty("initial_layer_line_width_factor", "value") / 100.0
-                #We don't create an additional line for the extruder we're printing the brim with.
-                bed_adhesion_size -= self._getSettingFromAdhesionExtruder("skirt_brim_line_width", "value") * self._getSettingFromAdhesionExtruder("initial_layer_line_width_factor", "value") / 100.0
+            brim_line_count = self._global_container_stack.getProperty("brim_line_count", "value")
+            bed_adhesion_size = skirt_brim_line_width * brim_line_count * initial_layer_line_width_factor / 100.0
+
+            for extruder_stack in used_extruders:
+                bed_adhesion_size += extruder_stack.getProperty("skirt_brim_line_width", "value") * extruder_stack.getProperty("initial_layer_line_width_factor", "value") / 100.0
+
+            # We don't create an additional line for the extruder we're printing the brim with.
+            bed_adhesion_size -= skirt_brim_line_width * initial_layer_line_width_factor / 100.0
+
         elif adhesion_type == "raft":
-            bed_adhesion_size = self._getSettingFromAdhesionExtruder("raft_margin")
+            bed_adhesion_size = self._global_container_stack.getProperty("raft_margin", "value")
+
         elif adhesion_type == "none":
             bed_adhesion_size = 0
+
         else:
             raise Exception("Unknown bed adhesion type. Did you forget to update the build volume calculations for your new bed adhesion type?")
 
         support_expansion = 0
-        if self._getSettingFromSupportInfillExtruder("support_offset") and self._global_container_stack.getProperty("support_enable", "value"):
-            support_expansion += self._getSettingFromSupportInfillExtruder("support_offset")
+        support_enabled = self._global_container_stack.getProperty("support_enable", "value")
+        support_offset = self._global_container_stack.getProperty("support_offset", "value")
+        if support_enabled and support_offset:
+            support_expansion += support_offset
 
         farthest_shield_distance = 0
         if container_stack.getProperty("draft_shield_enabled", "value"):
@@ -1003,6 +979,7 @@ class BuildVolume(SceneNode):
     def _clamp(self, value, min_value, max_value):
         return max(min(value, max_value), min_value)
 
+    _machine_settings = ["machine_width", "machine_depth", "machine_height", "machine_shape", "machine_center_is_zero"]
     _skirt_settings = ["adhesion_type", "skirt_gap", "skirt_line_count", "skirt_brim_line_width", "brim_width", "brim_line_count", "raft_margin", "draft_shield_enabled", "draft_shield_dist", "initial_layer_line_width_factor"]
     _raft_settings = ["adhesion_type", "raft_base_thickness", "raft_interface_thickness", "raft_surface_layers", "raft_surface_thickness", "raft_airgap", "layer_0_z_overlap"]
     _extra_z_settings = ["retraction_hop_enabled", "retraction_hop"]

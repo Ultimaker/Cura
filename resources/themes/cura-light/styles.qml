@@ -269,6 +269,7 @@ QtObject {
                     arrowSize: Theme.getSize("button_tooltip_arrow").width
                     color: Theme.getColor("button_tooltip")
                     opacity: control.hovered ? 1.0 : 0.0;
+                    visible: control.text != ""
 
                     width: control.hovered ? button_tip.width + Theme.getSize("button_tooltip").width : 0
                     height: Theme.getSize("button_tooltip").height
@@ -294,16 +295,26 @@ QtObject {
                     anchors.fill: parent;
                     property bool down: control.pressed || (control.checkable && control.checked);
 
-                    color: {
-                        if(control.customColor !== undefined && control.customColor !== null) {
+                    color:
+                    {
+                        if(control.customColor !== undefined && control.customColor !== null)
+                        {
                             return control.customColor
-                        } else if(control.checkable && control.checked && control.hovered) {
+                        }
+                        else if(control.checkable && control.checked && control.hovered)
+                        {
                             return Theme.getColor("button_active_hover");
-                        } else if(control.pressed || (control.checkable && control.checked)) {
+                        }
+                        else if(control.pressed || (control.checkable && control.checked))
+                        {
                             return Theme.getColor("button_active");
-                        } else if(control.hovered) {
+                        }
+                        else if(control.hovered)
+                        {
                             return Theme.getColor("button_hover");
-                        } else {
+                        }
+                        else
+                        {
                             return Theme.getColor("button");
                         }
                     }
@@ -375,6 +386,111 @@ QtObject {
                     }
 
                     sourceSize: Theme.getSize("button_icon")
+                }
+            }
+        }
+    }
+
+    property Component small_tool_button: Component {
+        ButtonStyle {
+            background: Item {
+                implicitWidth: Theme.getSize("small_button").width;
+                implicitHeight: Theme.getSize("small_button").height;
+
+                Rectangle {
+                    id: smallButtonFace;
+
+                    anchors.fill: parent;
+                    property bool down: control.pressed || (control.checkable && control.checked);
+
+                    color:
+                    {
+                        if(control.customColor !== undefined && control.customColor !== null)
+                        {
+                            return control.customColor
+                        }
+                        else if(control.checkable && control.checked && control.hovered)
+                        {
+                            return Theme.getColor("small_button_active_hover");
+                        }
+                        else if(control.pressed || (control.checkable && control.checked))
+                        {
+                            return Theme.getColor("small_button_active");
+                        }
+                        else if(control.hovered)
+                        {
+                            return Theme.getColor("small_button_hover");
+                        }
+                        else
+                        {
+                            return Theme.getColor("small_button");
+                        }
+                    }
+                    Behavior on color { ColorAnimation { duration: 50; } }
+
+                    border.width: (control.hasOwnProperty("needBorder") && control.needBorder) ? 2 * screenScaleFactor : 0
+                    border.color: Theme.getColor("tool_button_border")
+
+                    UM.RecolorImage {
+                        id: smallToolButtonArrow
+
+                        width: 5
+                        height: 5
+                        sourceSize.width: 5
+                        sourceSize.height: 5
+                        visible: control.menu != null;
+                        color:
+                        {
+                            if(control.checkable && control.checked && control.hovered)
+                            {
+                                return Theme.getColor("small_button_text_active_hover");
+                            }
+                            else if(control.pressed || (control.checkable && control.checked))
+                            {
+                                return Theme.getColor("small_button_text_active");
+                            }
+                            else if(control.hovered)
+                            {
+                                return Theme.getColor("small_button_text_hover");
+                            }
+                            else
+                            {
+                                return Theme.getColor("small_button_text");
+                            }
+                        }
+                        source: Theme.getIcon("arrow_bottom")
+                    }
+                }
+            }
+
+            label: Item {
+                UM.RecolorImage {
+                    anchors.centerIn: parent;
+                    opacity: !control.enabled ? 0.2 : 1.0
+                    source: control.iconSource;
+                    width: Theme.getSize("small_button_icon").width;
+                    height: Theme.getSize("small_button_icon").height;
+                    color:
+                    {
+                        if(control.checkable && control.checked && control.hovered)
+                        {
+                            return Theme.getColor("small_button_text_active_hover");
+                        }
+                        else if(control.pressed || (control.checkable && control.checked))
+                        {
+                            return Theme.getColor("small_button_text_active");
+                        }
+                        else if(control.hovered)
+                        {
+                            return Theme.getColor("small_button_text_hover");
+                        }
+                        else
+                        {
+                            return Theme.getColor("small_button_text");
+                        }
+                    }
+
+                    sourceSize: Theme.getSize("small_button_icon")
                 }
             }
         }
@@ -740,6 +856,49 @@ QtObject {
                     sourceSize.height: width
                     color: Theme.getColor("checkbox_mark")
                     source: control.exclusiveGroup ? Theme.getIcon("dot") : Theme.getIcon("check")
+                    opacity: control.checked
+                    Behavior on opacity { NumberAnimation { duration: 100; } }
+                }
+            }
+            label: Label {
+                text: control.text;
+                color: Theme.getColor("checkbox_text");
+                font: Theme.getFont("default");
+            }
+        }
+    }
+
+    property Component partially_checkbox: Component {
+        CheckBoxStyle {
+            background: Item { }
+            indicator: Rectangle {
+                implicitWidth:  Theme.getSize("checkbox").width;
+                implicitHeight: Theme.getSize("checkbox").height;
+
+                color: (control.hovered || control._hovered) ? Theme.getColor("checkbox_hover") : Theme.getColor("checkbox");
+                Behavior on color { ColorAnimation { duration: 50; } }
+
+                radius: control.exclusiveGroup ? Theme.getSize("checkbox").width / 2 : 0
+
+                border.width: Theme.getSize("default_lining").width;
+                border.color: (control.hovered || control._hovered) ? Theme.getColor("checkbox_border_hover") : Theme.getColor("checkbox_border");
+
+                UM.RecolorImage {
+                    anchors.verticalCenter: parent.verticalCenter
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    width: parent.width / 2.5
+                    height: parent.height / 2.5
+                    sourceSize.width: width
+                    sourceSize.height: width
+                    color: Theme.getColor("checkbox_mark")
+                    source: {
+                        if (control.checkbox_state == 2){
+                            return Theme.getIcon("solid")
+                        }
+                        else{
+                            return control.exclusiveGroup ? Theme.getIcon("dot") : Theme.getIcon("check")
+                        }
+                    }
                     opacity: control.checked
                     Behavior on opacity { NumberAnimation { duration: 100; } }
                 }

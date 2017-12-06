@@ -4,6 +4,7 @@
 import os
 import os.path
 import re
+import configparser
 
 from typing import Optional
 
@@ -17,8 +18,9 @@ from UM.Application import Application
 from UM.Logger import Logger
 from UM.Message import Message
 from UM.Platform import Platform
-from UM.PluginRegistry import PluginRegistry #For getting the possible profile writers to write with.
+from UM.PluginRegistry import PluginRegistry  # For getting the possible profile writers to write with.
 from UM.Util import parseBool
+from UM.Resources import Resources
 
 from . import ExtruderStack
 from . import GlobalStack
@@ -42,12 +44,13 @@ class CuraContainerRegistry(ContainerRegistry):
     #   Global stack based on metadata information.
     @override(ContainerRegistry)
     def addContainer(self, container):
+
         # Note: Intentional check with type() because we want to ignore subclasses
         if type(container) == ContainerStack:
             container = self._convertContainerStack(container)
 
         if isinstance(container, InstanceContainer) and type(container) != type(self.getEmptyInstanceContainer()):
-            #Check against setting version of the definition.
+            # Check against setting version of the definition.
             required_setting_version = CuraApplication.SettingVersion
             actual_setting_version = int(container.getMetaDataEntry("setting_version", default = 0))
             if required_setting_version != actual_setting_version:
@@ -202,53 +205,57 @@ class CuraContainerRegistry(ContainerRegistry):
                 # Note that this will fail quickly. That is, if any profile reader throws an exception, it will stop reading. It will only continue reading if the reader returned None.
                 Logger.log("e", "Failed to import profile from %s: %s while using profile reader. Got exception %s", file_name,profile_reader.getPluginId(), str(e))
                 return { "status": "error", "message": catalog.i18nc("@info:status Don't translate the XML tags <filename> or <message>!", "Failed to import profile from <filename>{0}</filename>: <message>{1}</message>", file_name, str(e))}
-            if profile_or_list: # Success!
+
+            if profile_or_list:
                 name_seed = os.path.splitext(os.path.basename(file_name))[0]
                 new_name = self.uniqueName(name_seed)
+
+                # Ensure it is always a list of profiles
                 if type(profile_or_list) is not list:
-                    profile = profile_or_list
+                    profile_or_list = [profile_or_list]
 
-                    result = self._configureProfile(profile, name_seed, new_name)
-                    if result is not None:
-                        return {"status": "error", "message": catalog.i18nc("@info:status Don't translate the XML tags <filename> or <message>!", "Failed to import profile from <filename>{0}</filename>: <message>{1}</message>", file_name, result)}
+                if len(profile_or_list) == 1:
+                    # If there is only 1 stack file it means we're loading a legacy (pre-3.1) .curaprofile.
+                    # In that case we find the per-extruder settings and put those in a new quality_changes container
+                    # so that it is compatible with the new stack setup.
+                    profile = profile_or_list[0]
+                    extruder_stack_quality_changes_container = ContainerManager.getInstance().duplicateContainerInstance(profile)
+                    extruder_stack_quality_changes_container.addMetaDataEntry("extruder", "fdmextruder")
 
-                    return {"status": "ok", "message": catalog.i18nc("@info:status", "Successfully imported profile {0}", profile.getName())}
-                else:
-                    profile_index = -1
-                    global_profile = None
-
-                    for profile in profile_or_list:
-                        if profile_index >= 0:
-                            if len(machine_extruders) > profile_index:
-                                extruder_id = Application.getInstance().getMachineManager().getQualityDefinitionId(machine_extruders[profile_index].getBottom())
-                                # Ensure the extruder profiles get non-conflicting names
-                                # NB: these are not user-facing
-                                if "extruder" in profile.getMetaData():
-                                    profile.setMetaDataEntry("extruder", extruder_id)
-                                else:
-                                    profile.addMetaDataEntry("extruder", extruder_id)
-                                profile_id = (extruder_id + "_" + name_seed).lower().replace(" ", "_")
-                            elif profile_index == 0:
-                                # Importing a multiextrusion profile into a single extrusion machine; merge 1st extruder profile into global profile
-                                profile._id = self.uniqueName("temporary_profile")
-                                self.addContainer(profile)
-                                ContainerManager.getInstance().mergeContainers(global_profile.getId(), profile.getId())
-                                self.removeContainer(profile.getId())
-                                break
-                            else:
-                                # The imported composite profile has a profile for an extruder that this machine does not have. Ignore this extruder-profile
-                                break
+                    for quality_changes_setting_key in extruder_stack_quality_changes_container.getAllKeys():
+                        settable_per_extruder = extruder_stack_quality_changes_container.getProperty(quality_changes_setting_key, "settable_per_extruder")
+                        if settable_per_extruder:
+                            profile.removeInstance(quality_changes_setting_key, postpone_emit = True)
                         else:
-                            global_profile = profile
-                            profile_id = (global_container_stack.getBottom().getId() + "_" + name_seed).lower().replace(" ", "_")
+                            extruder_stack_quality_changes_container.removeInstance(quality_changes_setting_key, postpone_emit = True)
 
-                        result = self._configureProfile(profile, profile_id, new_name)
-                        if result is not None:
-                            return {"status": "error", "message": catalog.i18nc("@info:status Don't translate the XML tags <filename> or <message>!", "Failed to import profile from <filename>{0}</filename>: <message>{1}</message>", file_name, result)}
+                    # We add the new container to the profile list so things like extruder positions are taken care of
+                    # in the next code segment.
+                    profile_or_list.append(extruder_stack_quality_changes_container)
 
-                        profile_index += 1
+                # Import all profiles
+                for profile_index, profile in enumerate(profile_or_list):
+                    if profile_index == 0:
+                        # This is assumed to be the global profile
+                        profile_id = (global_container_stack.getBottom().getId() + "_" + name_seed).lower().replace(" ", "_")
 
-                    return {"status": "ok", "message": catalog.i18nc("@info:status", "Successfully imported profile {0}", profile_or_list[0].getName())}
+                    elif len(machine_extruders) > profile_index:
+                        # This is assumed to be an extruder profile
+                        extruder_id = Application.getInstance().getMachineManager().getQualityDefinitionId(machine_extruders[profile_index - 1].getBottom())
+                        if not profile.getMetaDataEntry("extruder"):
+                            profile.addMetaDataEntry("extruder", extruder_id)
+                        else:
+                            profile.setMetaDataEntry("extruder", extruder_id)
+                        profile_id = (extruder_id + "_" + name_seed).lower().replace(" ", "_")
+
+                    result = self._configureProfile(profile, profile_id, new_name)
+                    if result is not None:
+                        return {"status": "error", "message": catalog.i18nc(
+                            "@info:status Don't translate the XML tags <filename> or <message>!",
+                            "Failed to import profile from <filename>{0}</filename>: <message>{1}</message>",
+                            file_name, result)}
+
+                return {"status": "ok", "message": catalog.i18nc("@info:status", "Successfully imported profile {0}", profile_or_list[0].getName())}
 
         # If it hasn't returned by now, none of the plugins loaded the profile successfully.
         return {"status": "error", "message": catalog.i18nc("@info:status", "Profile {0} has an unknown file type or is corrupted.", file_name)}
@@ -256,7 +263,8 @@ class CuraContainerRegistry(ContainerRegistry):
     @override(ContainerRegistry)
     def load(self):
         super().load()
-        self._fixupExtruders()
+        self._registerSingleExtrusionMachinesExtruderStacks()
+        self._connectUpgradedExtruderStacksToMachines()
 
     ##  Update an imported profile to match the current machine configuration.
     #
@@ -299,10 +307,16 @@ class CuraContainerRegistry(ContainerRegistry):
 
         machine_definition = Application.getInstance().getGlobalContainerStack().getBottom()
         del quality_type_criteria["definition"]
-        materials = None
+
+        # materials = None
+
         if "material" in quality_type_criteria:
-            materials = ContainerRegistry.getInstance().findInstanceContainers(id = quality_type_criteria["material"])
+            # materials = ContainerRegistry.getInstance().findInstanceContainers(id = quality_type_criteria["material"])
             del quality_type_criteria["material"]
+
+        # Do not filter quality containers here with materials because we are trying to import a profile, so it should
+        # NOT be restricted by the active materials on the current machine.
+        materials = None
 
         # Check to make sure the imported profile actually makes sense in context of the current configuration.
         # This prevents issues where importing a "draft" profile for a machine without "draft" qualities would report as
@@ -357,8 +371,8 @@ class CuraContainerRegistry(ContainerRegistry):
             return global_container_stack.material.getId()
         return ""
 
-    ##  Returns true if the current machien requires its own quality profiles
-    #   \return true if the current machien requires its own quality profiles
+    ##  Returns true if the current machine requires its own quality profiles
+    #   \return true if the current machine requires its own quality profiles
     def _machineHasOwnQualities(self):
         global_container_stack = Application.getInstance().getGlobalContainerStack()
         if global_container_stack:
@@ -391,12 +405,135 @@ class CuraContainerRegistry(ContainerRegistry):
 
         return new_stack
 
+    def _registerSingleExtrusionMachinesExtruderStacks(self):
+        machines = self.findContainerStacks(type = "machine", machine_extruder_trains = {"0": "fdmextruder"})
+        for machine in machines:
+            extruder_stacks = self.findContainerStacks(type = "extruder_train", machine = machine.getId())
+            if not extruder_stacks:
+                self.addExtruderStackForSingleExtrusionMachine(machine, "fdmextruder")
+
+    def addExtruderStackForSingleExtrusionMachine(self, machine, extruder_id):
+        new_extruder_id = extruder_id
+
+        extruder_definitions = self.findDefinitionContainers(id = new_extruder_id)
+        if not extruder_definitions:
+            Logger.log("w", "Could not find definition containers for extruder %s", new_extruder_id)
+            return
+
+        extruder_definition = extruder_definitions[0]
+        unique_name = self.uniqueName(machine.getName() + " " + new_extruder_id)
+
+        extruder_stack = ExtruderStack.ExtruderStack(unique_name)
+        extruder_stack.setName(extruder_definition.getName())
+        extruder_stack.setDefinition(extruder_definition)
+        extruder_stack.addMetaDataEntry("position", extruder_definition.getMetaDataEntry("position"))
+        extruder_stack.setNextStack(machine)
+
+        # create empty user changes container otherwise
+        user_container = InstanceContainer(extruder_stack.id + "_user")
+        user_container.addMetaDataEntry("type", "user")
+        user_container.addMetaDataEntry("machine", extruder_stack.getId())
+        from cura.CuraApplication import CuraApplication
+        user_container.addMetaDataEntry("setting_version", CuraApplication.SettingVersion)
+        user_container.setDefinition(machine.definition)
+
+        if machine.userChanges:
+            # for the newly created extruder stack, we need to move all "per-extruder" settings to the user changes
+            # container to the extruder stack.
+            for user_setting_key in machine.userChanges.getAllKeys():
+                settable_per_extruder = machine.getProperty(user_setting_key, "settable_per_extruder")
+                if settable_per_extruder:
+                    user_container.addInstance(machine.userChanges.getInstance(user_setting_key))
+                    machine.userChanges.removeInstance(user_setting_key, postpone_emit = True)
+
+        extruder_stack.setUserChanges(user_container)
+        self.addContainer(user_container)
+
+        variant_id = "default"
+        if machine.variant.getId() not in ("empty", "empty_variant"):
+            variant_id = machine.variant.getId()
+        else:
+            variant_id = "empty_variant"
+        extruder_stack.setVariantById(variant_id)
+
+        material_id = "default"
+        if machine.material.getId() not in ("empty", "empty_material"):
+            material_id = machine.material.getId()
+        else:
+            material_id = "empty_material"
+        extruder_stack.setMaterialById(material_id)
+
+        quality_id = "default"
+        if machine.quality.getId() not in ("empty", "empty_quality"):
+            quality_id = machine.quality.getId()
+        else:
+            quality_id = "empty_quality"
+        extruder_stack.setQualityById(quality_id)
+
+        if machine.qualityChanges.getId() not in ("empty", "empty_quality_changes"):
+            extruder_quality_changes_container = self.findInstanceContainers(name = machine.qualityChanges.getName(), extruder = extruder_id)
+            if extruder_quality_changes_container:
+                extruder_quality_changes_container = extruder_quality_changes_container[0]
+                quality_changes_id = extruder_quality_changes_container.getId()
+                extruder_stack.setQualityChangesById(quality_changes_id)
+            else:
+                # Some extruder quality_changes containers can be created at runtime as files in the qualities
+                # folder. Those files won't be loaded in the registry immediately. So we also need to search
+                # the folder to see if the quality_changes exists.
+                extruder_quality_changes_container = self._findQualityChangesContainerInCuraFolder(machine.qualityChanges.getName())
+                if extruder_quality_changes_container:
+                    quality_changes_id = extruder_quality_changes_container.getId()
+                    extruder_stack.setQualityChangesById(quality_changes_id)
+
+            if not extruder_quality_changes_container:
+                Logger.log("w", "Could not find quality_changes named [%s] for extruder [%s]",
+                           machine.qualityChanges.getName(), extruder_stack.getId())
+        else:
+            extruder_stack.setQualityChangesById("empty_quality_changes")
+
+        self.addContainer(extruder_stack)
+
+        return extruder_stack
+
+    def _findQualityChangesContainerInCuraFolder(self, name):
+        quality_changes_dir = Resources.getPath(CuraApplication.ResourceTypes.QualityInstanceContainer)
+
+        instance_container = None
+
+        for item in os.listdir(quality_changes_dir):
+            file_path = os.path.join(quality_changes_dir, item)
+            if not os.path.isfile(file_path):
+                continue
+
+            parser = configparser.ConfigParser()
+            try:
+                parser.read([file_path])
+            except:
+                # skip, it is not a valid stack file
+                continue
+
+            if not parser.has_option("general", "name"):
+                continue
+
+            if parser["general"]["name"] == name:
+                # load the container
+                container_id = os.path.basename(file_path).replace(".inst.cfg", "")
+
+                instance_container = InstanceContainer(container_id)
+                with open(file_path, "r") as f:
+                    serialized = f.read()
+                instance_container.deserialize(serialized, file_path)
+                self.addContainer(instance_container)
+                break
+
+        return instance_container
+
     # Fix the extruders that were upgraded to ExtruderStack instances during addContainer.
     # The stacks are now responsible for setting the next stack on deserialize. However,
     # due to problems with loading order, some stacks may not have the proper next stack
     # set after upgrading, because the proper global stack was not yet loaded. This method
     # makes sure those extruders also get the right stack set.
-    def _fixupExtruders(self):
+    def _connectUpgradedExtruderStacksToMachines(self):
         extruder_stacks = self.findContainers(ExtruderStack.ExtruderStack)
         for extruder_stack in extruder_stacks:
             if extruder_stack.getNextStack():

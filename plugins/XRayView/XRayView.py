@@ -56,7 +56,8 @@ class XRayView(View):
                 # Currently the RenderPass constructor requires a size > 0
                 # This should be fixed in RenderPass's constructor.
                 self._xray_pass = XRayPass.XRayPass(1, 1)
-                self.getRenderer().addRenderPass(self._xray_pass)
+
+            self.getRenderer().addRenderPass(self._xray_pass)
 
             if not self._xray_composite_shader:
                 self._xray_composite_shader = OpenGL.getInstance().createShaderProgram(os.path.join(PluginRegistry.getInstance().getPluginPath("XRayView"), "xray_composite.shader"))
@@ -74,5 +75,6 @@ class XRayView(View):
             self._composite_pass.setCompositeShader(self._xray_composite_shader)
 
         if event.type == Event.ViewDeactivateEvent:
+            self.getRenderer().removeRenderPass(self._xray_pass)
             self._composite_pass.setLayerBindings(self._old_layer_bindings)
             self._composite_pass.setCompositeShader(self._old_composite_shader)

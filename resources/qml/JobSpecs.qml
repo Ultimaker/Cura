@@ -94,7 +94,7 @@ Item {
             {
                 id: printJobTextfield
                 anchors.right: printJobPencilIcon.left
-                anchors.rightMargin: UM.Theme.getSize("default_margin").width/2
+                anchors.rightMargin: Math.floor(UM.Theme.getSize("default_margin").width/2)
                 height: UM.Theme.getSize("jobspecs_line").height
                 width: Math.max(__contentWidth + UM.Theme.getSize("default_margin").width, 50)
                 maximumLength: 120

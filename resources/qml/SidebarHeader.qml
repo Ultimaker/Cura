@@ -14,7 +14,7 @@ Column
 {
     id: base;
 
-    property int currentExtruderIndex: ExtruderManager.activeExtruderIndex;
+    property int currentExtruderIndex: Cura.ExtruderManager.activeExtruderIndex;
     property bool currentExtruderVisible: extrudersList.visible;
 
     spacing: UM.Theme.getSize("sidebar_margin").width * 0.9
@@ -34,6 +34,7 @@ Column
         width: height
     }
 
+    // Extruder Row
     Item
     {
         id: extruderSelectionRow
@@ -72,7 +73,7 @@ Column
 
             orientation: ListView.Horizontal
 
-            model: Cura.ExtrudersModel { id: extrudersModel; addGlobal: false }
+            model: Cura.ExtrudersModel { id: extrudersModel; }
 
             Connections
             {
@@ -93,7 +94,7 @@ Column
                 onClicked:
                 {
                     forceActiveFocus() // Changing focus applies the currently-being-typed values so it can change the displayed setting values.
-                    ExtruderManager.setActiveExtruderIndex(index);
+                    Cura.ExtruderManager.setActiveExtruderIndex(index);
                 }
 
                 style: ButtonStyle
@@ -185,6 +186,8 @@ Column
                                 // Only draw the filling colour of the material inside the SVG border.
                                 Rectangle
                                 {
+                                    id: materialColorCircle
+
                                     anchors
                                     {
                                         right: parent.right
@@ -247,7 +250,8 @@ Column
 
         property var variantsTerms: (Cura.BlackBeltPlugin == undefined) ? [] : JSON.parse(Cura.BlackBeltPlugin.variantsTerms)
 
-        ToolButton {
+        ToolButton
+        {
             id: variantSelection
             text: Cura.MachineManager.activeVariantName
             tooltip: Cura.MachineManager.activeVariantName
@@ -258,8 +262,9 @@ Column
             anchors.right: parent.right
             style: UM.Theme.styles.sidebar_header_button
             activeFocusOnPress: true;
-
-            menu: NozzleMenu { extruderIndex: base.currentExtruderIndex }
+            menu: NozzleMenu {
+                extruderIndex: base.currentExtruderIndex
+            }
         }
 
         Row
@@ -357,9 +362,7 @@ Column
                 {
                     return false
                 }
-
             }
-            property var valueWarning: ! Cura.MachineManager.isActiveQualitySupported
 
             enabled: !extrudersList.visible || base.currentExtruderIndex  > -1
 

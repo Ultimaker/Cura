@@ -1,19 +1,18 @@
 # Copyright (c) 2017 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-import os
 import time
 import json
+from queue import Queue
+from threading import Event, Thread
 
-from PyQt5.QtCore import QObject, pyqtProperty, pyqtSignal, pyqtSlot
+from PyQt5.QtCore import QObject, pyqtSlot
 from PyQt5.QtCore import QUrl
 from PyQt5.QtGui import QDesktopServices
-from PyQt5.QtNetwork import QNetworkRequest, QNetworkAccessManager, QNetworkReply
-from PyQt5.QtQml import QQmlComponent, QQmlContext
+from PyQt5.QtNetwork import QNetworkRequest, QNetworkAccessManager
 from UM.Application import Application
 from UM.Logger import Logger
 from UM.OutputDevice.OutputDevicePlugin import OutputDevicePlugin
-from UM.PluginRegistry import PluginRegistry
 from UM.Preferences import Preferences
 from UM.Signal import Signal, signalemitter
 from zeroconf import Zeroconf, ServiceBrowser, ServiceStateChange, ServiceInfo  # type: ignore
@@ -31,6 +30,7 @@ class NetworkPrinterOutputDevicePlugin(QObject, OutputDevicePlugin):
         self._zero_conf = None
         self._browser = None
         self._printers = {}
+        self._cluster_printers_seen = {}  # do not forget a cluster printer when we have seen one, to not 'downgrade' from Connect to legacy printer
 
         self._api_version = "1"
         self._api_prefix = "/api/v" + self._api_version + "/"
@@ -56,6 +56,16 @@ class NetworkPrinterOutputDevicePlugin(QObject, OutputDevicePlugin):
 
         self._network_requests_buffer = {}  # store api responses until data is complete
 
+        # The zeroconf service changed requests are handled in a separate thread, so we can re-schedule the requests
+        # which fail to get detailed service info.
+        # Any new or re-scheduled requests will be appended to the request queue, and the handling thread will pick
+        # them up and process them.
+        self._service_changed_request_queue = Queue()
+        self._service_changed_request_event = Event()
+        self._service_changed_request_thread = Thread(target = self._handleOnServiceChangedRequests,
+                                                      daemon = True)
+        self._service_changed_request_thread.start()
+
     addPrinterSignal = Signal()
     removePrinterSignal = Signal()
     printerListChanged = Signal()
@@ -75,7 +85,7 @@ class NetworkPrinterOutputDevicePlugin(QObject, OutputDevicePlugin):
         # After network switching, one must make a new instance of Zeroconf
         # On windows, the instance creation is very fast (unnoticable). Other platforms?
         self._zero_conf = Zeroconf()
-        self._browser = ServiceBrowser(self._zero_conf, u'_ultimaker._tcp.local.', [self._onServiceChanged])
+        self._browser = ServiceBrowser(self._zero_conf, u'_ultimaker._tcp.local.', [self._appendServiceChangedRequest])
 
         # Look for manual instances from preference
         for address in self._manual_instances:
@@ -237,6 +247,7 @@ class NetworkPrinterOutputDevicePlugin(QObject, OutputDevicePlugin):
         else:
             printer = NetworkPrinterOutputDevice.NetworkPrinterOutputDevice(name, address, properties, self._api_prefix)
         self._printers[printer.getKey()] = printer
+        self._cluster_printers_seen[printer.getKey()] = name  # Cluster printers that may be temporary unreachable or is rebooted keep being stored here
         global_container_stack = Application.getInstance().getGlobalContainerStack()
         if global_container_stack and printer.getKey() == global_container_stack.getMetaDataEntry("um_network_key"):
             if printer.getKey() not in self._old_printers:  # Was the printer already connected, but a re-scan forced?
@@ -263,7 +274,8 @@ class NetworkPrinterOutputDevicePlugin(QObject, OutputDevicePlugin):
         else:
             self.getOutputDeviceManager().removeOutputDevice(key)
 
-    ##  Handler for zeroConf detection
+    ##  Handler for zeroConf detection.
+    #   Return True or False indicating if the process succeeded.
     def _onServiceChanged(self, zeroconf, service_type, name, state_change):
         if state_change == ServiceStateChange.Added:
             Logger.log("d", "Bonjour service added: %s" % name)
@@ -293,10 +305,49 @@ class NetworkPrinterOutputDevicePlugin(QObject, OutputDevicePlugin):
                         Logger.log("w", "The type of the found device is '%s', not 'printer'! Ignoring.." % type_of_device )
             else:
                 Logger.log("w", "Could not get information about %s" % name)
+                return False
 
         elif state_change == ServiceStateChange.Removed:
             Logger.log("d", "Bonjour service removed: %s" % name)
             self.removePrinterSignal.emit(str(name))
+
+        return True
+
+    ##  Appends a service changed request so later the handling thread will pick it up and processes it.
+    def _appendServiceChangedRequest(self, zeroconf, service_type, name, state_change):
+        # append the request and set the event so the event handling thread can pick it up
+        item = (zeroconf, service_type, name, state_change)
+        self._service_changed_request_queue.put(item)
+        self._service_changed_request_event.set()
+
+    def _handleOnServiceChangedRequests(self):
+        while True:
+            # wait for the event to be set
+            self._service_changed_request_event.wait(timeout = 5.0)
+            # stop if the application is shutting down
+            if Application.getInstance().isShuttingDown():
+                return
+
+            self._service_changed_request_event.clear()
+
+            # handle all pending requests
+            reschedule_requests = []  # a list of requests that have failed so later they will get re-scheduled
+            while not self._service_changed_request_queue.empty():
+                request = self._service_changed_request_queue.get()
+                zeroconf, service_type, name, state_change = request
+                try:
+                    result = self._onServiceChanged(zeroconf, service_type, name, state_change)
+                    if not result:
+                        reschedule_requests.append(request)
+                except Exception:
+                    Logger.logException("e", "Failed to get service info for [%s] [%s], the request will be rescheduled",
+                                        service_type, name)
+                    reschedule_requests.append(request)
+
+            # re-schedule the failed requests if any
+            if reschedule_requests:
+                for request in reschedule_requests:
+                    self._service_changed_request_queue.put(request)
 
     @pyqtSlot()
     def openControlPanel(self):
