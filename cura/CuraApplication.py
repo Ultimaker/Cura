@@ -229,7 +229,9 @@ class CuraApplication(QtApplication):
             "TranslateTool",
             "FileLogger",
             "XmlMaterialProfile",
-            "PluginBrowser"
+            "PluginBrowser",
+            "PrepareStage",
+            "MonitorStage"
         ])
         self._physics = None
         self._volume = None
@@ -668,13 +670,14 @@ class CuraApplication(QtApplication):
 
         controller = self.getController()
 
+        controller.setActiveStage("PrepareStage")
         controller.setActiveView("SolidView")
         controller.setCameraTool("CameraTool")
         controller.setSelectionTool("SelectionTool")
 
         t = controller.getTool("TranslateTool")
         if t:
-            t.setEnabledAxis([ToolHandle.XAxis, ToolHandle.YAxis,ToolHandle.ZAxis])
+            t.setEnabledAxis([ToolHandle.XAxis, ToolHandle.YAxis, ToolHandle.ZAxis])
 
         Selection.selectionChanged.connect(self.onSelectionChanged)
 

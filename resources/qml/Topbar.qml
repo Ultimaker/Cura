@@ -82,6 +82,7 @@ Rectangle
                 exclusiveGroup: sidebarHeaderBarGroup
                 style: UM.Theme.styles.topbar_header_tab
                 height: UM.Theme.getSize("sidebar_header").height
+                onClicked: UM.Controller.setActiveStage(model.id)
             }
         }
 
