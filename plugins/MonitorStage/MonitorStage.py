@@ -19,3 +19,40 @@ class MonitorStage(CuraStage):
         sidebar_component_path = os.path.join(Resources.getPath(Application.getInstance().ResourceTypes.QmlFiles), "Sidebar.qml")
         self.addDisplayComponent("sidebar", sidebar_component_path)
         self.setIconSource(Application.getInstance().getTheme().getIcon("tab_status_connected"))
+
+# property string iconSource:
+# //            {
+# //                if (!printerConnected)
+# //                {
+# //                    return UM.Theme.getIcon("tab_status_unknown");
+# //                }
+# //                else if (!printerAcceptsCommands)
+# //                {
+# //                    return UM.Theme.getIcon("tab_status_unknown");
+# //                }
+# //
+# //                if (Cura.MachineManager.printerOutputDevices[0].printerState == "maintenance")
+# //                {
+# //                    return UM.Theme.getIcon("tab_status_busy");
+# //                }
+# //
+# //                switch (Cura.MachineManager.printerOutputDevices[0].jobState)
+# //                {
+# //                    case "printing":
+# //                    case "pre_print":
+# //                    case "pausing":
+# //                    case "resuming":
+# //                        return UM.Theme.getIcon("tab_status_busy");
+# //                    case "wait_cleanup":
+# //                        return UM.Theme.getIcon("tab_status_finished");
+# //                    case "ready":
+# //                    case "":
+# //                        return UM.Theme.getIcon("tab_status_connected")
+# //                    case "paused":
+# //                        return UM.Theme.getIcon("tab_status_paused")
+# //                    case "error":
+# //                        return UM.Theme.getIcon("tab_status_stopped")
+# //                    default:
+# //                        return UM.Theme.getIcon("tab_status_unknown")
+# //                }
+# //            }
