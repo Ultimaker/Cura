@@ -1,15 +1,18 @@
-# Copyright (c) 2015 Ultimaker B.V.
-# Uranium is released under the terms of the AGPLv3 or higher.
+# Copyright (c) 2017 Ultimaker B.V.
+# Cura is released under the terms of the LGPLv3 or higher.
 
+# Python built-ins
 import threading
 import time
 
-from UM.Message import Message
-from UM.OutputDevice.OutputDevicePlugin import OutputDevicePlugin
+# Uranium/Messaging
 from UM.Logger import Logger
 
+# Uranium/IO
+from UM.OutputDevice.OutputDevicePlugin import OutputDevicePlugin
 from . import RemovableDriveOutputDevice
-from UM.Logger import Logger
+
+# Uranium/l18n
 from UM.i18n import i18nCatalog
 catalog = i18nCatalog("cura")
 
@@ -46,11 +49,7 @@ class RemovableDrivePlugin(OutputDevicePlugin):
 
         if result:
             Logger.log("i", "Succesfully ejected the device")
-            message = Message(catalog.i18nc("@info:status", "Ejected {0}. You can now safely remove the drive.").format(device.getName()))
-            message.show()
-        else:
-            message = Message(catalog.i18nc("@info:status", "Failed to eject {0}. Maybe it is still in use?").format(device.getName()))
-            message.show()
+        return result
 
     def performEjectDevice(self, device):
         raise NotImplementedError()

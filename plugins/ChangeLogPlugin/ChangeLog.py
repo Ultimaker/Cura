@@ -1,5 +1,5 @@
 # Copyright (c) 2015 Ultimaker B.V.
-# Cura is released under the terms of the AGPLv3 or higher.
+# Cura is released under the terms of the LGPLv3 or higher.
 
 from UM.i18n import i18nCatalog
 from UM.Extension import Extension
@@ -8,9 +8,7 @@ from UM.Application import Application
 from UM.PluginRegistry import PluginRegistry
 from UM.Version import Version
 
-from PyQt5.QtQuick import QQuickView
-from PyQt5.QtQml import QQmlComponent, QQmlContext
-from PyQt5.QtCore import QUrl, pyqtSlot, QObject
+from PyQt5.QtCore import pyqtSlot, QObject
 
 import os.path
 import collections
@@ -33,7 +31,6 @@ class ChangeLog(Extension, QObject,):
         Application.getInstance().engineCreatedSignal.connect(self._onEngineCreated)
         Preferences.getInstance().addPreference("general/latest_version_changelog_shown", "2.0.0") #First version of CURA with uranium
         self.addMenuItem(catalog.i18nc("@item:inmenu", "Show Changelog"), self.showChangelog)
-        #self.showChangelog()
 
     def getChangeLogs(self):
         if not self._change_logs:
@@ -87,6 +84,13 @@ class ChangeLog(Extension, QObject,):
         else:
             latest_version_shown = Version(Preferences.getInstance().getValue("general/latest_version_changelog_shown"))
 
+        Preferences.getInstance().setValue("general/latest_version_changelog_shown", Application.getInstance().getVersion())
+
+        # Do not show the changelog when there is no global container stack
+        # This implies we are running Cura for the first time.
+        if not Application.getInstance().getGlobalContainerStack():
+            return
+
         if self._version > latest_version_shown:
             self.showChangelog()
 
@@ -95,16 +99,11 @@ class ChangeLog(Extension, QObject,):
             self.createChangelogWindow()
 
         self._changelog_window.show()
-        Preferences.getInstance().setValue("general/latest_version_changelog_shown", Application.getInstance().getVersion())
 
     def hideChangelog(self):
         if self._changelog_window:
             self._changelog_window.hide()
 
     def createChangelogWindow(self):
-        path = QUrl.fromLocalFile(os.path.join(PluginRegistry.getInstance().getPluginPath(self.getPluginId()), "ChangeLog.qml"))
-
-        component = QQmlComponent(Application.getInstance()._engine, path)
-        self._changelog_context = QQmlContext(Application.getInstance()._engine.rootContext())
-        self._changelog_context.setContextProperty("manager", self)
-        self._changelog_window = component.create(self._changelog_context)
+        path = os.path.join(PluginRegistry.getInstance().getPluginPath(self.getPluginId()), "ChangeLog.qml")
+        self._changelog_window = Application.getInstance().createQmlComponent(path, {"manager": self})

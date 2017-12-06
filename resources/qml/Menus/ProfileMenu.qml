@@ -1,5 +1,5 @@
 // Copyright (c) 2016 Ultimaker B.V.
-// Cura is released under the terms of the AGPLv3 or higher.
+// Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.2
 import QtQuick.Controls 1.1
@@ -7,24 +7,22 @@ import QtQuick.Controls 1.1
 import UM 1.2 as UM
 import Cura 1.0 as Cura
 
- Menu
+Menu
 {
     id: menu
 
     Instantiator
     {
-        model: UM.InstanceContainersModel
-        {
-            filter: menu.getFilter({ "read_only": true });
-        }
+        model: Cura.ProfilesModel 
 
         MenuItem
         {
-            text: model.name
+            text: (model.layer_height != "") ? model.name + " - " + model.layer_height : model.name
             checkable: true
             checked: Cura.MachineManager.activeQualityId == model.id
             exclusiveGroup: group
             onTriggered: Cura.MachineManager.setActiveQuality(model.id)
+            visible: model.available
         }
 
         onObjectAdded: menu.insertItem(index, object);
@@ -36,9 +34,8 @@ import Cura 1.0 as Cura
     Instantiator
     {
         id: customProfileInstantiator
-        model: UM.InstanceContainersModel
+        model: Cura.UserProfilesModel
         {
-            filter: menu.getFilter({ "read_only": false });
             onModelReset: customSeparator.visible = rowCount() > 0
         }
 
@@ -46,7 +43,7 @@ import Cura 1.0 as Cura
         {
             text: model.name
             checkable: true
-            checked: Cura.MachineManager.activeQualityId == model.id
+            checked: Cura.MachineManager.activeQualityChangesId == model.id
             exclusiveGroup: group
             onTriggered: Cura.MachineManager.setActiveQuality(model.id)
         }
@@ -76,14 +73,13 @@ import Cura 1.0 as Cura
     function getFilter(initial_conditions)
     {
         var result = initial_conditions;
-        result.type = "quality"
 
         if(Cura.MachineManager.filterQualityByMachine)
         {
-            result.definition = Cura.MachineManager.activeDefinitionId;
+            result.definition = Cura.MachineManager.activeQualityDefinitionId;
             if(Cura.MachineManager.hasMaterials)
             {
-                result.material = Cura.MachineManager.activeMaterialId;
+                result.material = Cura.MachineManager.activeQualityMaterialId;
             }
         }
         else

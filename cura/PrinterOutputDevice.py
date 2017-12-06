@@ -1,12 +1,16 @@
+# Copyright (c) 2017 Ultimaker B.V.
+# Cura is released under the terms of the LGPLv3 or higher.
+
 from UM.i18n import i18nCatalog
 from UM.OutputDevice.OutputDevice import OutputDevice
-from PyQt5.QtCore import pyqtProperty, pyqtSignal, pyqtSlot, QObject
+from PyQt5.QtCore import pyqtProperty, pyqtSlot, QObject, QTimer, pyqtSignal
 from PyQt5.QtWidgets import QMessageBox
-
 from enum import IntEnum  # For the connection state tracking.
+
+from UM.Settings.ContainerRegistry import ContainerRegistry
 from UM.Logger import Logger
-from UM.Application import Application
 from UM.Signal import signalemitter
+from UM.Application import Application
 
 i18n_catalog = i18nCatalog("cura")
 
@@ -24,6 +28,7 @@ class PrinterOutputDevice(QObject, OutputDevice):
     def __init__(self, device_id, parent = None):
         super().__init__(device_id = device_id, parent = parent)
 
+        self._container_registry = ContainerRegistry.getInstance()
         self._target_bed_temperature = 0
         self._bed_temperature = 0
         self._num_extruders = 1
@@ -43,8 +48,29 @@ class PrinterOutputDevice(QObject, OutputDevice):
         self._job_name = ""
         self._error_text = ""
         self._accepts_commands = True
+        self._preheat_bed_timeout = 900  # Default time-out for pre-heating the bed, in seconds.
+        self._preheat_bed_timer = QTimer()  # Timer that tracks how long to preheat still.
+        self._preheat_bed_timer.setSingleShot(True)
+        self._preheat_bed_timer.timeout.connect(self.cancelPreheatBed)
 
-    def requestWrite(self, node, file_name = None, filter_by_machine = False):
+        self._printer_state = ""
+        self._printer_type = "unknown"
+
+        self._camera_active = False
+
+        self._monitor_view_qml_path = ""
+        self._monitor_item = None
+
+        self._control_view_qml_path = ""
+        self._control_item = None
+
+        self._qml_context = None
+        self._can_pause = True
+        self._can_abort = True
+        self._can_pre_heat_bed = True
+        self._can_control_manually = True
+
+    def requestWrite(self, nodes, file_name = None, filter_by_machine = False, file_handler = None):
         raise NotImplementedError("requestWrite needs to be implemented")
 
     ## Signals
@@ -91,9 +117,85 @@ class PrinterOutputDevice(QObject, OutputDevice):
 
     acceptsCommandsChanged = pyqtSignal()
 
+    printerStateChanged = pyqtSignal()
+
+    printerTypeChanged = pyqtSignal()
+
+    # Signal to be emitted when some drastic change occurs in the remaining time (not when the time just passes on normally).
+    preheatBedRemainingTimeChanged = pyqtSignal()
+
+    # Does the printer support pre-heating the bed at all
+    @pyqtProperty(bool, constant=True)
+    def canPreHeatBed(self):
+        return self._can_pre_heat_bed
+
+    # Does the printer support pause at all
+    @pyqtProperty(bool,  constant=True)
+    def canPause(self):
+        return self._can_pause
+
+    # Does the printer support abort at all
+    @pyqtProperty(bool, constant=True)
+    def canAbort(self):
+        return self._can_abort
+
+    # Does the printer support manual control at all
+    @pyqtProperty(bool, constant=True)
+    def canControlManually(self):
+        return self._can_control_manually
+
+    @pyqtProperty(QObject, constant=True)
+    def monitorItem(self):
+        # Note that we specifically only check if the monitor component is created.
+        # It could be that it failed to actually create the qml item! If we check if the item was created, it will try to
+        # create the item (and fail) every time.
+        if not self._monitor_item:
+            self._createMonitorViewFromQML()
+        return self._monitor_item
+
+    @pyqtProperty(QObject, constant=True)
+    def controlItem(self):
+        if not self._control_item:
+            self._createControlViewFromQML()
+        return self._control_item
+
+    def _createControlViewFromQML(self):
+        if not self._control_view_qml_path:
+            return
+
+        self._control_item = Application.getInstance().createQmlComponent(self._control_view_qml_path, {
+            "OutputDevice": self
+        })
+
+    def _createMonitorViewFromQML(self):
+        if not self._monitor_view_qml_path:
+            return
+
+        self._monitor_item = Application.getInstance().createQmlComponent(self._monitor_view_qml_path, {
+            "OutputDevice": self
+        })
+
+    @pyqtProperty(str, notify=printerTypeChanged)
+    def printerType(self):
+        return self._printer_type
+
+    @pyqtProperty(str, notify=printerStateChanged)
+    def printerState(self):
+        return self._printer_state
+
     @pyqtProperty(str, notify = jobStateChanged)
     def jobState(self):
         return self._job_state
+
+    def _updatePrinterType(self, printer_type):
+        if self._printer_type != printer_type:
+            self._printer_type = printer_type
+            self.printerTypeChanged.emit()
+
+    def _updatePrinterState(self, printer_state):
+        if self._printer_state != printer_state:
+            self._printer_state = printer_state
+            self.printerStateChanged.emit()
 
     def _updateJobState(self, job_state):
         if self._job_state != job_state:
@@ -107,6 +209,22 @@ class PrinterOutputDevice(QObject, OutputDevice):
     def _setJobState(self, job_state):
         Logger.log("w", "_setJobState is not implemented by this output device")
 
+    @pyqtSlot()
+    def startCamera(self):
+        self._camera_active = True
+        self._startCamera()
+
+    def _startCamera(self):
+        Logger.log("w", "_startCamera is not implemented by this output device")
+
+    @pyqtSlot()
+    def stopCamera(self):
+        self._camera_active = False
+        self._stopCamera()
+
+    def _stopCamera(self):
+        Logger.log("w", "_stopCamera is not implemented by this output device")
+
     @pyqtProperty(str, notify = jobNameChanged)
     def jobName(self):
         return self._job_name
@@ -115,6 +233,17 @@ class PrinterOutputDevice(QObject, OutputDevice):
         if self._job_name != name:
             self._job_name = name
             self.jobNameChanged.emit()
+
+    ##  Gives a human-readable address where the device can be found.
+    @pyqtProperty(str, constant = True)
+    def address(self):
+        Logger.log("w", "address is not implemented by this output device.")
+
+    ##  A human-readable name for the device.
+    @pyqtProperty(str, constant = True)
+    def name(self):
+        Logger.log("w", "name is not implemented by this output device.")
+        return ""
 
     @pyqtProperty(str, notify = errorTextChanged)
     def errorText(self):
@@ -150,8 +279,33 @@ class PrinterOutputDevice(QObject, OutputDevice):
     @pyqtSlot(int)
     def setTargetBedTemperature(self, temperature):
         self._setTargetBedTemperature(temperature)
-        self._target_bed_temperature = temperature
-        self.targetBedTemperatureChanged.emit()
+        if self._target_bed_temperature != temperature:
+            self._target_bed_temperature = temperature
+            self.targetBedTemperatureChanged.emit()
+
+    ##  The total duration of the time-out to pre-heat the bed, in seconds.
+    #
+    #   \return The duration of the time-out to pre-heat the bed, in seconds.
+    @pyqtProperty(int, constant = True)
+    def preheatBedTimeout(self):
+        return self._preheat_bed_timeout
+
+    ##  The remaining duration of the pre-heating of the bed.
+    #
+    #   This is formatted in M:SS format.
+    #   \return The duration of the time-out to pre-heat the bed, formatted.
+    @pyqtProperty(str, notify = preheatBedRemainingTimeChanged)
+    def preheatBedRemainingTime(self):
+        if not self._preheat_bed_timer.isActive():
+            return ""
+        period = self._preheat_bed_timer.remainingTime()
+        if period <= 0:
+            return ""
+        minutes, period = divmod(period, 60000) #60000 milliseconds in a minute.
+        seconds, _ = divmod(period, 1000) #1000 milliseconds in a second.
+        if minutes <= 0 and seconds <= 0:
+            return ""
+        return "%d:%02d" % (minutes, seconds)
 
     ## Time the print has been printing.
     #  Note that timeTotal - timeElapsed should give time remaining.
@@ -208,12 +362,29 @@ class PrinterOutputDevice(QObject, OutputDevice):
     def _setTargetBedTemperature(self, temperature):
         Logger.log("w", "_setTargetBedTemperature is not implemented by this output device")
 
+    ##  Pre-heats the heated bed of the printer.
+    #
+    #   \param temperature The temperature to heat the bed to, in degrees
+    #   Celsius.
+    #   \param duration How long the bed should stay warm, in seconds.
+    @pyqtSlot(float, float)
+    def preheatBed(self, temperature, duration):
+        Logger.log("w", "preheatBed is not implemented by this output device.")
+
+    ##  Cancels pre-heating the heated bed of the printer.
+    #
+    #   If the bed is not pre-heated, nothing happens.
+    @pyqtSlot()
+    def cancelPreheatBed(self):
+        Logger.log("w", "cancelPreheatBed is not implemented by this output device.")
+
     ##  Protected setter for the current bed temperature.
     #   This simply sets the bed temperature, but ensures that a signal is emitted.
     #   /param temperature temperature of the bed.
     def _setBedTemperature(self, temperature):
-        self._bed_temperature = temperature
-        self.bedTemperatureChanged.emit()
+        if self._bed_temperature != temperature:
+            self._bed_temperature = temperature
+            self.bedTemperatureChanged.emit()
 
     ##  Get the target bed temperature if connected printer (if any)
     @pyqtProperty(int, notify = targetBedTemperatureChanged)
@@ -228,8 +399,10 @@ class PrinterOutputDevice(QObject, OutputDevice):
     @pyqtSlot(int, int)
     def setTargetHotendTemperature(self, index, temperature):
         self._setTargetHotendTemperature(index, temperature)
-        self._target_hotend_temperatures[index] = temperature
-        self.targetHotendTemperaturesChanged.emit()
+
+        if self._target_hotend_temperatures[index] != temperature:
+            self._target_hotend_temperatures[index] = temperature
+            self.targetHotendTemperaturesChanged.emit()
 
     ##  Implementation function of setTargetHotendTemperature.
     #   /param index Index of the hotend to set the temperature of
@@ -251,12 +424,50 @@ class PrinterOutputDevice(QObject, OutputDevice):
     #   /param index Index of the hotend
     #   /param temperature temperature of the hotend (in deg C)
     def _setHotendTemperature(self, index, temperature):
-        self._hotend_temperatures[index] = temperature
-        self.hotendTemperaturesChanged.emit()
+        if self._hotend_temperatures[index] != temperature:
+            self._hotend_temperatures[index] = temperature
+            self.hotendTemperaturesChanged.emit()
 
     @pyqtProperty("QVariantList", notify = materialIdChanged)
     def materialIds(self):
         return self._material_ids
+
+    @pyqtProperty("QVariantList", notify = materialIdChanged)
+    def materialNames(self):
+        result = []
+        for material_id in self._material_ids:
+            if material_id is None:
+                result.append(i18n_catalog.i18nc("@item:material", "No material loaded"))
+                continue
+
+            containers = self._container_registry.findInstanceContainers(type = "material", GUID = material_id)
+            if containers:
+                result.append(containers[0].getName())
+            else:
+                result.append(i18n_catalog.i18nc("@item:material", "Unknown material"))
+        return result
+
+    ##  List of the colours of the currently loaded materials.
+    #
+    #   The list is in order of extruders. If there is no material in an
+    #   extruder, the colour is shown as transparent.
+    #
+    #   The colours are returned in hex-format AARRGGBB or RRGGBB
+    #   (e.g. #800000ff for transparent blue or #00ff00 for pure green).
+    @pyqtProperty("QVariantList", notify = materialIdChanged)
+    def materialColors(self):
+        result = []
+        for material_id in self._material_ids:
+            if material_id is None:
+                result.append("#00000000") #No material.
+                continue
+
+            containers = self._container_registry.findInstanceContainers(type = "material", GUID = material_id)
+            if containers:
+                result.append(containers[0].getMetaDataEntry("color_code"))
+            else:
+                result.append("#00000000") #Unknown material.
+        return result
 
     ##  Protected setter for the current material id.
     #   /param index Index of the extruder
@@ -267,7 +478,6 @@ class PrinterOutputDevice(QObject, OutputDevice):
             self._material_ids[index] = material_id
             self.materialIdChanged.emit(index, material_id)
 
-
     @pyqtProperty("QVariantList", notify = hotendIdChanged)
     def hotendIds(self):
         return self._hotend_ids
@@ -276,10 +486,14 @@ class PrinterOutputDevice(QObject, OutputDevice):
     #   /param index Index of the extruder
     #   /param hotend_id id of the hotend
     def _setHotendId(self, index, hotend_id):
-        if hotend_id and hotend_id != "" and hotend_id != self._hotend_ids[index]:
+        if hotend_id and hotend_id != self._hotend_ids[index]:
             Logger.log("d", "Setting hotend id of hotend %d to %s" % (index, hotend_id))
             self._hotend_ids[index] = hotend_id
             self.hotendIdChanged.emit(index, hotend_id)
+        elif not hotend_id:
+            Logger.log("d", "Removing hotend id of hotend %d.", index)
+            self._hotend_ids[index] = None
+            self.hotendIdChanged.emit(index, None)
 
     ##  Let the user decide if the hotends and/or material should be synced with the printer
     #   NB: the UX needs to be implemented by the plugin
@@ -302,8 +516,9 @@ class PrinterOutputDevice(QObject, OutputDevice):
     ##  Set the connection state of this output device.
     #   /param connection_state ConnectionState enum.
     def setConnectionState(self, connection_state):
-        self._connection_state = connection_state
-        self.connectionStateChanged.emit(self._id)
+        if self._connection_state != connection_state:
+            self._connection_state = connection_state
+            self.connectionStateChanged.emit(self._id)
 
     @pyqtProperty(str, notify = connectionTextChanged)
     def connectionText(self):
@@ -351,6 +566,7 @@ class PrinterOutputDevice(QObject, OutputDevice):
         if self._head_z != z:
             self._head_z = z
             position_changed = True
+
         if position_changed:
             self.headPositionChanged.emit()
 
@@ -396,7 +612,7 @@ class PrinterOutputDevice(QObject, OutputDevice):
     @pyqtSlot("long")
     @pyqtSlot("long", "long")
     def setHeadZ(self, z, speed = 3000):
-        self._setHeadY(z, speed)
+        self._setHeadZ(z, speed)
 
     ##  Move the head of the printer.
     #   Note that this is a relative move. If you want to move the head to a specific position you can use

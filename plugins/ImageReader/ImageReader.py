@@ -1,5 +1,5 @@
 # Copyright (c) 2015 Ultimaker B.V.
-# Cura is released under the terms of the AGPLv3 or higher.
+# Cura is released under the terms of the LGPLv3 or higher.
 
 import numpy
 
@@ -21,7 +21,7 @@ class ImageReader(MeshReader):
         self._supported_extensions = [".jpg", ".jpeg", ".bmp", ".gif", ".png"]
         self._ui = ImageReaderUI(self)
 
-    def preRead(self, file_name):
+    def preRead(self, file_name, *args, **kwargs):
         img = QImage(file_name)
 
         if img.isNull():

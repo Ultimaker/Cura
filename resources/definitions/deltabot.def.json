@@ -1,0 +1,35 @@
+{
+    "id": "deltabot",
+    "name": "DeltaBot",
+    "version": 2,
+    "inherits": "fdmprinter",
+    "metadata": {
+        "visible": true,
+        "author": "Ultimaker",
+        "manufacturer": "Danny Lu",
+        "file_formats": "text/x-gcode",
+        "platform_offset": [ 0, 0, 0]
+    },
+
+    "overrides": {
+        "speed_travel": { "default_value": 150 },
+        "prime_tower_size": { "default_value": 8.660254037844387 },
+        "infill_sparse_density": { "default_value": 10 },
+        "speed_wall_x": { "default_value": 30 },
+        "speed_wall_0": { "default_value": 30 },
+        "speed_topbottom": { "default_value": 30 },
+        "layer_height": { "default_value": 0.2 },
+        "machine_nozzle_size": { "default_value": 0.5 },
+        "speed_print": { "default_value": 30 },
+        "speed_infill": { "default_value": 30 },
+        "machine_extruder_count": { "default_value": 1 },
+        "machine_heated_bed": { "default_value": true },
+        "machine_center_is_zero": { "default_value": true },
+        "machine_height": { "default_value": 150 },
+        "machine_gcode_flavor": { "default_value": "RepRap (Marlin/Sprinter)" },
+        "machine_depth": { "default_value": 150 },
+        "machine_width": { "default_value": 150 },
+        "machine_name": { "default_value": "DeltaBot style" },
+        "machine_shape": { "default_value": "elliptic"}
+    }
+}

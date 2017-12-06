@@ -1,6 +1,8 @@
 #Todo: Write tests
 
 import pytest
+# QtApplication needs to be imported first to prevent import errors.
+from UM.Qt.QtApplication import QtApplication
 
 from cura.MachineAction import MachineAction
 from cura.MachineActionManager import MachineActionManager, NotUniqueMachineActionError, UnknownMachineActionError
@@ -30,19 +32,19 @@ def test_addMachineAction():
         machine_manager.addMachineAction(test_action)
 
     # Check that the machine has no supported actions yet.
-    assert machine_manager.getSupportedActions(test_machine) == set()
+    assert machine_manager.getSupportedActions(test_machine) == list()
 
     # Check if adding a supported action works.
     machine_manager.addSupportedAction(test_machine, "test_action")
-    assert machine_manager.getSupportedActions(test_machine) == {test_action}
+    assert machine_manager.getSupportedActions(test_machine) == [test_action, ]
 
     # Check that adding a unknown action doesn't change anything.
     machine_manager.addSupportedAction(test_machine, "key_that_doesnt_exist")
-    assert machine_manager.getSupportedActions(test_machine) == {test_action}
+    assert machine_manager.getSupportedActions(test_machine) == [test_action, ]
 
     # Check if adding multiple supported actions works.
     machine_manager.addSupportedAction(test_machine, "test_action_2")
-    assert machine_manager.getSupportedActions(test_machine) == {test_action, test_action_2}
+    assert machine_manager.getSupportedActions(test_machine) == [test_action, test_action_2]
 
     # Check that the machine has no required actions yet.
     assert machine_manager.getRequiredActions(test_machine) == set()
@@ -53,11 +55,11 @@ def test_addMachineAction():
 
     ## Check if adding single required action works
     machine_manager.addRequiredAction(test_machine, "test_action")
-    assert machine_manager.getRequiredActions(test_machine) == {test_action}
+    assert machine_manager.getRequiredActions(test_machine) == [test_action, ]
 
     # Check if adding multiple required actions works.
     machine_manager.addRequiredAction(test_machine, "test_action_2")
-    assert machine_manager.getRequiredActions(test_machine) == {test_action, test_action_2}
+    assert machine_manager.getRequiredActions(test_machine) == [test_action, test_action_2]
 
     # Ensure that firstStart actions are empty by default.
     assert machine_manager.getFirstStartActions(test_machine) == []

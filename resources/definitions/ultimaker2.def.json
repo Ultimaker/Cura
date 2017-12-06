@@ -6,20 +6,23 @@
     "metadata": {
         "visible": true,
         "author": "Ultimaker",
-        "manufacturer": "Ultimaker",
-        "category": "Ultimaker",
+        "manufacturer": "Ultimaker B.V.",
         "weight": 3,
         "file_formats": "text/x-gcode",
         "icon": "icon_ultimaker2.png",
         "platform": "ultimaker2_platform.obj",
         "platform_texture": "Ultimaker2backplate.png",
         "platform_offset": [9, 0, 0],
-        "supported_actions":["UpgradeFirmware"]
+        "has_materials": false,
+        "has_machine_quality": true,
+        "first_start_actions": ["UM2UpgradeSelection"],
+        "supported_actions":["UM2UpgradeSelection", "UpgradeFirmware"]
     },
     "overrides": {
+        "machine_name": { "default_value": "Ultimaker 2" },
         "machine_start_gcode" : {
             "default_value": "",
-            "value": "\"\"  if machine_gcode_flavor == \"UltiGCode\" else \"G21 ;metric values\\nG90 ;absolute positioning\\nM82 ;set extruder to absolute mode\\nM107 ;start with the fan off\\nG1 X10 Y0 F4000;move X/Y to min endstops\\nG28 Z0 ;move Z to bottom endstops\\nG1 Z15.0 F9000 ;move the platform to 15mm\\nG92 E0 ;zero the extruded length\\nG1 F200 E10 ;extrude 10 mm of feed stock\\nG92 E0 ;zero the extruded length again\\nG1 F9000\\n;Put printing message on LCD screen\\nM117 Printing...\""
+            "value": "\"\"  if machine_gcode_flavor == \"UltiGCode\" else \"G21 ;metric values\\nG90 ;absolute positioning\\nM82 ;set extruder to absolute mode\\nM107 ;start with the fan off\\nG28 Z0 ;move Z to bottom endstops\\nG28 X0 Y0 ;move X/Y to endstops\\nG1 X15 Y0 F4000 ;move X/Y to front of printer\\nG1 Z15.0 F9000 ;move the platform to 15mm\\nG92 E0 ;zero the extruded length\\nG1 F200 E10 ;extrude 10 mm of feed stock\\nG92 E0 ;zero the extruded length again\\nG1 F9000\\n;Put printing message on LCD screen\\nM117 Printing...\""
         },
         "machine_end_gcode" : {
             "default_value": "",
@@ -53,12 +56,6 @@
             "default_value": 0.4,
             "minimum_value": "0.001"
         },
-        "machine_nozzle_heat_up_speed": {
-            "default_value": 2
-        },
-        "machine_nozzle_cool_down_speed": {
-            "default_value": 2
-        },
         "gantry_height": {
             "default_value": 48
         },
@@ -84,12 +81,6 @@
         "machine_nozzle_expansion_angle": {
             "default_value": 45
         },
-        "material_print_temperature": {
-            "enabled": "not (material_flow_dependent_temperature) and machine_gcode_flavor != \"UltiGCode\""
-        },
-        "material_bed_temperature": {
-            "enabled": "machine_heated_bed and machine_gcode_flavor != \"UltiGCode\""
-        },
         "machine_max_feedrate_x": {
             "default_value": 300
         },
@@ -99,29 +90,11 @@
         "machine_max_feedrate_z": {
             "default_value": 40
         },
-        "machine_max_feedrate_e": {
-            "default_value": 45
-        },
         "machine_acceleration": {
             "default_value": 3000
         },
-        "material_diameter": {
-            "enabled": "machine_gcode_flavor != \"UltiGCode\""
-        },
-        "material_flow": {
-            "enabled": "machine_gcode_flavor != \"UltiGCode\""
-        },
-        "retraction_amount": {
-            "enabled": "retraction_enable and machine_gcode_flavor != \"UltiGCode\""
-        },
-        "retraction_speed": {
-            "enabled": "retraction_enable and machine_gcode_flavor != \"UltiGCode\""
-        },
-        "retraction_retract_speed": {
-            "enabled": "retraction_enable and machine_gcode_flavor != \"UltiGCode\""
-        },
-        "retraction_prime_speed": {
-            "enabled": "retraction_enable and machine_gcode_flavor != \"UltiGCode\""
+        "machine_nozzle_temp_enabled": {
+            "default_value": false
         }
     }
 }

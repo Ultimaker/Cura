@@ -7,11 +7,11 @@
         "visible": true,
         "author": "Ruben Dulek",
         "manufacturer": "Malyan",
-        "category": "Other",
         "file_formats": "application/x3g"
     },
 
     "overrides": {
+        "machine_name": { "default_value": "Malyan M180" },
         "machine_width": {
             "default_value": 230
         },

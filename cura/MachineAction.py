@@ -1,26 +1,29 @@
 # Copyright (c) 2016 Ultimaker B.V.
-# Cura is released under the terms of the AGPLv3 or higher.
+# Cura is released under the terms of the LGPLv3 or higher.
 
-from PyQt5.QtCore import QObject, pyqtSlot, pyqtProperty, pyqtSignal, QUrl
-from PyQt5.QtQml import QQmlComponent, QQmlContext
+from PyQt5.QtCore import QObject, pyqtSlot, pyqtProperty, pyqtSignal
 
 from UM.PluginObject import PluginObject
 from UM.PluginRegistry import PluginRegistry
-
 from UM.Application import Application
 
 import os
 
 
+##  Machine actions are actions that are added to a specific machine type. Examples of such actions are
+#   updating the firmware, connecting with remote devices or doing bed leveling. A machine action can also have a
+#   qml, which should contain a "Cura.MachineAction" item. When activated, the item will be displayed in a dialog
+#   and this object will be added as "manager" (so all pyqtSlot() functions can be called by calling manager.func())
 class MachineAction(QObject, PluginObject):
+
+    ##  Create a new Machine action.
+    #   \param key unique key of the machine action
+    #   \param label Human readable label used to identify the machine action.
     def __init__(self, key, label = ""):
         super().__init__()
         self._key = key
         self._label = label
         self._qml_url = ""
-
-        self._component = None
-        self._context = None
         self._view = None
         self._finished = False
 
@@ -44,7 +47,6 @@ class MachineAction(QObject, PluginObject):
     #   /sa _reset
     @pyqtSlot()
     def reset(self):
-        self._component = None
         self._finished = False
         self._reset()
 
@@ -63,17 +65,13 @@ class MachineAction(QObject, PluginObject):
     def finished(self):
         return self._finished
 
+    ##  Protected helper to create a view object based on provided QML.
     def _createViewFromQML(self):
-        path = QUrl.fromLocalFile(
-            os.path.join(PluginRegistry.getInstance().getPluginPath(self.getPluginId()), self._qml_url))
-        self._component = QQmlComponent(Application.getInstance()._engine, path)
-        self._context = QQmlContext(Application.getInstance()._engine.rootContext())
-        self._context.setContextProperty("manager", self)
-        self._view = self._component.create(self._context)
+        path = os.path.join(PluginRegistry.getInstance().getPluginPath(self.getPluginId()), self._qml_url)
+        self._view = Application.getInstance().createQmlComponent(path, {"manager": self})
 
     @pyqtProperty(QObject, constant = True)
     def displayItem(self):
-        if not self._component:
+        if not self._view:
             self._createViewFromQML()
-
         return self._view

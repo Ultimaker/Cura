@@ -5,23 +5,22 @@
     "inherits": "ultimaker2",
     "metadata": {
         "author": "Ultimaker",
-        "manufacturer": "Ultimaker",
-        "category": "Ultimaker",
+        "manufacturer": "Ultimaker B.V.",
         "weight": 1,
         "file_formats": "text/x-gcode",
         "platform": "ultimaker2_platform.obj",
         "platform_texture": "Ultimaker2Plusbackplate.png",
-        "preferred_variant": "ultimaker2_plus_0.4",
-        "preferred_material": "*pla*",
-        "preferred_quality": "*normal*",
+        "preferred_variant": "*0.4*",
         "has_variants": true,
         "has_materials": true,
         "has_machine_materials": true,
         "has_machine_quality": true,
+        "first_start_actions": [],
         "supported_actions":["UpgradeFirmware"]
     },
 
     "overrides": {
+        "machine_name": { "default_value": "Ultimaker 2+" },
         "speed_infill": {
             "value": "speed_print"
         },
@@ -41,7 +40,7 @@
             "value": "speed_wall_0"
         },
         "machine_height": {
-            "default_value": 203
+            "default_value": 205
         },
         "machine_show_variants": {
             "default_value": true

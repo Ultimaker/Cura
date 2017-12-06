@@ -1,5 +1,5 @@
 # Copyright (c) 2015 Ultimaker B.V.
-# Cura is released under the terms of the AGPLv3 or higher.
+# Cura is released under the terms of the LGPLv3 or higher.
 
 from . import ImageReader
 
@@ -8,13 +8,6 @@ i18n_catalog = i18nCatalog("cura")
 
 def getMetaData():
     return {
-        "plugin": {
-            "name": i18n_catalog.i18nc("@label", "Image Reader"),
-            "author": "Ultimaker",
-            "version": "1.0",
-            "description": i18n_catalog.i18nc("@info:whatsthis", "Enables ability to generate printable geometry from 2D image files."),
-            "api": 3
-        },
         "mesh_reader": [
             {
                 "extension": "jpg",

@@ -1,22 +1,34 @@
 # Copyright (c) 2015 Ultimaker B.V.
-# Cura is released under the terms of the AGPLv3 or higher.
+# Cura is released under the terms of the LGPLv3 or higher.
 
-from UM.Mesh.MeshReader import MeshReader
-from UM.Mesh.MeshBuilder import MeshBuilder
+import os.path
+import zipfile
+
+from UM.Job import Job
 from UM.Logger import Logger
 from UM.Math.Matrix import Matrix
 from UM.Math.Vector import Vector
-from UM.Scene.SceneNode import SceneNode
+from UM.Mesh.MeshBuilder import MeshBuilder
+from UM.Mesh.MeshReader import MeshReader
 from UM.Scene.GroupDecorator import GroupDecorator
-from UM.Math.Quaternion import Quaternion
-from UM.Job import Job
+from cura.Settings.SettingOverrideDecorator import SettingOverrideDecorator
+from UM.Application import Application
+from cura.Settings.ExtruderManager import ExtruderManager
+from cura.QualityManager import QualityManager
+from UM.Scene.SceneNode import SceneNode
+from cura.SliceableObjectDecorator import SliceableObjectDecorator
+from cura.ZOffsetDecorator import ZOffsetDecorator
 
-import math
-import zipfile
+MYPY = False
+
+import Savitar
+import numpy
 
 try:
-    import xml.etree.cElementTree as ET
+    if not MYPY:
+        import xml.etree.cElementTree as ET
 except ImportError:
+    Logger.log("w", "Unable to load cElementTree, switching to slower version")
     import xml.etree.ElementTree as ET
 
 ##    Base implementation for reading 3MF files. Has no support for textures. Only loads meshes!
@@ -24,104 +36,207 @@ class ThreeMFReader(MeshReader):
     def __init__(self):
         super().__init__()
         self._supported_extensions = [".3mf"]
-
+        self._root = None
         self._namespaces = {
             "3mf": "http://schemas.microsoft.com/3dmanufacturing/core/2015/02",
             "cura": "http://software.ultimaker.com/xml/cura/3mf/2015/10"
         }
+        self._base_name = ""
+        self._unit = None
 
-    def read(self, file_name):
-        result = SceneNode()
-        # The base object of 3mf is a zipped archive.
-        archive = zipfile.ZipFile(file_name, "r")
-        try:
-            root = ET.parse(archive.open("3D/3dmodel.model"))
+    def _createMatrixFromTransformationString(self, transformation):
+        if transformation == "":
+            return Matrix()
 
-            # There can be multiple objects, try to load all of them.
-            objects = root.findall("./3mf:resources/3mf:object", self._namespaces)
-            if len(objects) == 0:
-                Logger.log("w", "No objects found in 3MF file %s, either the file is corrupt or you are using an outdated format", file_name)
-                return None
+        splitted_transformation = transformation.split()
+        ## Transformation is saved as:
+        ## M00 M01 M02 0.0
+        ## M10 M11 M12 0.0
+        ## M20 M21 M22 0.0
+        ## M30 M31 M32 1.0
+        ## We switch the row & cols as that is how everyone else uses matrices!
+        temp_mat = Matrix()
+        # Rotation & Scale
+        temp_mat._data[0, 0] = splitted_transformation[0]
+        temp_mat._data[1, 0] = splitted_transformation[1]
+        temp_mat._data[2, 0] = splitted_transformation[2]
+        temp_mat._data[0, 1] = splitted_transformation[3]
+        temp_mat._data[1, 1] = splitted_transformation[4]
+        temp_mat._data[2, 1] = splitted_transformation[5]
+        temp_mat._data[0, 2] = splitted_transformation[6]
+        temp_mat._data[1, 2] = splitted_transformation[7]
+        temp_mat._data[2, 2] = splitted_transformation[8]
 
-            for entry in objects:
-                mesh_builder = MeshBuilder()
-                node = SceneNode()
-                vertex_list = []
-                #for vertex in entry.mesh.vertices.vertex:
-                for vertex in entry.findall(".//3mf:vertex", self._namespaces):
-                    vertex_list.append([vertex.get("x"), vertex.get("y"), vertex.get("z")])
-                    Job.yieldThread()
+        # Translation
+        temp_mat._data[0, 3] = splitted_transformation[9]
+        temp_mat._data[1, 3] = splitted_transformation[10]
+        temp_mat._data[2, 3] = splitted_transformation[11]
 
-                triangles = entry.findall(".//3mf:triangle", self._namespaces)
-                mesh_builder.reserveFaceCount(len(triangles))
+        return temp_mat
 
-                for triangle in triangles:
-                    v1 = int(triangle.get("v1"))
-                    v2 = int(triangle.get("v2"))
-                    v3 = int(triangle.get("v3"))
+    ##  Convenience function that converts a SceneNode object (as obtained from libSavitar) to a Uranium scene node.
+    #   \returns Uranium scene node.
+    def _convertSavitarNodeToUMNode(self, savitar_node):
+        um_node = SceneNode()
+        transformation = self._createMatrixFromTransformationString(savitar_node.getTransformation())
+        um_node.setTransformation(transformation)
+        mesh_builder = MeshBuilder()
 
-                    mesh_builder.addFaceByPoints(vertex_list[v1][0], vertex_list[v1][1], vertex_list[v1][2],
-                                                 vertex_list[v2][0], vertex_list[v2][1], vertex_list[v2][2],
-                                                 vertex_list[v3][0], vertex_list[v3][1], vertex_list[v3][2])
+        data = numpy.fromstring(savitar_node.getMeshData().getFlatVerticesAsBytes(), dtype=numpy.float32)
 
-                    Job.yieldThread()
+        vertices = numpy.resize(data, (int(data.size / 3), 3))
+        mesh_builder.setVertices(vertices)
+        mesh_builder.calculateNormals(fast=True)
+        mesh_data = mesh_builder.build()
 
-                # Rotate the model; We use a different coordinate frame.
-                rotation = Matrix()
-                rotation.setByRotationAxis(-0.5 * math.pi, Vector(1, 0, 0))
+        if len(mesh_data.getVertices()):
+            um_node.setMeshData(mesh_data)
 
-                # TODO: We currently do not check for normals and simply recalculate them.
-                mesh_builder.calculateNormals()
-                mesh_builder.setFileName(file_name)
-                node.setMeshData(mesh_builder.build().getTransformed(rotation))
-                node.setSelectable(True)
+        for child in savitar_node.getChildren():
+            child_node = self._convertSavitarNodeToUMNode(child)
+            if child_node:
+                um_node.addChild(child_node)
 
-                transformations = root.findall("./3mf:build/3mf:item[@objectid='{0}']".format(entry.get("id")), self._namespaces)
-                transformation = transformations[0] if transformations else None
-                if transformation is not None and transformation.get("transform"):
-                    splitted_transformation = transformation.get("transform").split()
-                    ## Transformation is saved as:
-                    ## M00 M01 M02 0.0
-                    ## M10 M11 M12 0.0
-                    ## M20 M21 M22 0.0
-                    ## M30 M31 M32 1.0
-                    ## We switch the row & cols as that is how everyone else uses matrices!
-                    temp_mat = Matrix()
-                    # Rotation & Scale
-                    temp_mat._data[0,0] = splitted_transformation[0]
-                    temp_mat._data[1,0] = splitted_transformation[1]
-                    temp_mat._data[2,0] = splitted_transformation[2]
-                    temp_mat._data[0,1] = splitted_transformation[3]
-                    temp_mat._data[1,1] = splitted_transformation[4]
-                    temp_mat._data[2,1] = splitted_transformation[5]
-                    temp_mat._data[0,2] = splitted_transformation[6]
-                    temp_mat._data[1,2] = splitted_transformation[7]
-                    temp_mat._data[2,2] = splitted_transformation[8]
-
-                    # Translation
-                    temp_mat._data[0,3] = splitted_transformation[9]
-                    temp_mat._data[1,3] = splitted_transformation[10]
-                    temp_mat._data[2,3] = splitted_transformation[11]
-
-                    node.setTransformation(temp_mat)
-
-                result.addChild(node)
-
-                Job.yieldThread()
-
-            # If there is more then one object, group them.
-            if len(objects) > 1:
-                group_decorator = GroupDecorator()
-                result.addDecorator(group_decorator)
-            elif len(objects) == 1:
-                result = result.getChildren()[0] # Only one object found, return that.
-        except Exception as e:
-            Logger.log("e", "exception occured in 3mf reader: %s", e)
-
-        try: # Selftest - There might be more functions that should fail
-            boundingBox = result.getBoundingBox()
-            boundingBox.isValid()
-        except:
+        if um_node.getMeshData() is None and len(um_node.getChildren()) == 0:
             return None
 
+        settings = savitar_node.getSettings()
+
+        # Add the setting override decorator, so we can add settings to this node.
+        if settings:
+            um_node.addDecorator(SettingOverrideDecorator())
+
+            global_container_stack = Application.getInstance().getGlobalContainerStack()
+
+            # Ensure the correct next container for the SettingOverride decorator is set.
+            if global_container_stack:
+                default_stack = ExtruderManager.getInstance().getExtruderStack(0)
+
+                if default_stack:
+                    um_node.callDecoration("setActiveExtruder", default_stack.getId())
+
+                # Get the definition & set it
+                definition = QualityManager.getInstance().getParentMachineDefinition(global_container_stack.getBottom())
+                um_node.callDecoration("getStack").getTop().setDefinition(definition)
+
+            setting_container = um_node.callDecoration("getStack").getTop()
+
+            for key in settings:
+                setting_value = settings[key]
+
+                # Extruder_nr is a special case.
+                if key == "extruder_nr":
+                    extruder_stack = ExtruderManager.getInstance().getExtruderStack(int(setting_value))
+                    if extruder_stack:
+                        um_node.callDecoration("setActiveExtruder", extruder_stack.getId())
+                    else:
+                        Logger.log("w", "Unable to find extruder in position %s", setting_value)
+                    continue
+                setting_container.setProperty(key, "value", setting_value)
+
+        if len(um_node.getChildren()) > 0:
+            group_decorator = GroupDecorator()
+            um_node.addDecorator(group_decorator)
+        um_node.setSelectable(True)
+        if um_node.getMeshData():
+            # Assuming that all nodes with mesh data are printable objects
+            # affects (auto) slicing
+            sliceable_decorator = SliceableObjectDecorator()
+            um_node.addDecorator(sliceable_decorator)
+        return um_node
+
+    def read(self, file_name):
+        result = []
+        # The base object of 3mf is a zipped archive.
+        try:
+            archive = zipfile.ZipFile(file_name, "r")
+            self._base_name = os.path.basename(file_name)
+            parser = Savitar.ThreeMFParser()
+            scene_3mf = parser.parse(archive.open("3D/3dmodel.model").read())
+            self._unit = scene_3mf.getUnit()
+            for node in scene_3mf.getSceneNodes():
+                um_node = self._convertSavitarNodeToUMNode(node)
+                if um_node is None:
+                    continue
+                # compensate for original center position, if object(s) is/are not around its zero position
+
+                transform_matrix = Matrix()
+                mesh_data = um_node.getMeshData()
+                if mesh_data is not None:
+                    extents = mesh_data.getExtents()
+                    center_vector = Vector(extents.center.x, extents.center.y, extents.center.z)
+                    transform_matrix.setByTranslation(center_vector)
+                transform_matrix.multiply(um_node.getLocalTransformation())
+                um_node.setTransformation(transform_matrix)
+
+                global_container_stack = Application.getInstance().getGlobalContainerStack()
+
+                # Create a transformation Matrix to convert from 3mf worldspace into ours.
+                # First step: flip the y and z axis.
+                transformation_matrix = Matrix()
+                transformation_matrix._data[1, 1] = 0
+                transformation_matrix._data[1, 2] = 1
+                transformation_matrix._data[2, 1] = -1
+                transformation_matrix._data[2, 2] = 0
+
+                # Second step: 3MF defines the left corner of the machine as center, whereas cura uses the center of the
+                # build volume.
+                if global_container_stack:
+                    translation_vector = Vector(x=-global_container_stack.getProperty("machine_width", "value") / 2,
+                                                y=-global_container_stack.getProperty("machine_depth", "value") / 2,
+                                                z=0)
+                    translation_matrix = Matrix()
+                    translation_matrix.setByTranslation(translation_vector)
+                    transformation_matrix.multiply(translation_matrix)
+
+                # Third step: 3MF also defines a unit, whereas Cura always assumes mm.
+                scale_matrix = Matrix()
+                scale_matrix.setByScaleVector(self._getScaleFromUnit(self._unit))
+                transformation_matrix.multiply(scale_matrix)
+
+                # Pre multiply the transformation with the loaded transformation, so the data is handled correctly.
+                um_node.setTransformation(um_node.getLocalTransformation().preMultiply(transformation_matrix))
+
+                # Check if the model is positioned below the build plate and honor that when loading project files.
+                if um_node.getMeshData() is not None:
+                    minimum_z_value = um_node.getMeshData().getExtents(um_node.getWorldTransformation()).minimum.y  # y is z in transformation coordinates
+                    if minimum_z_value < 0:
+                        um_node.addDecorator(ZOffsetDecorator())
+                        um_node.callDecoration("setZOffset", minimum_z_value)
+
+                result.append(um_node)
+
+        except Exception:
+            Logger.logException("e", "An exception occurred in 3mf reader.")
+            return []
+
         return result
+
+    ##  Create a scale vector based on a unit string.
+    #   The core spec defines the following:
+    #   * micron
+    #   * millimeter (default)
+    #   * centimeter
+    #   * inch
+    #   * foot
+    #   * meter
+    def _getScaleFromUnit(self, unit):
+        if unit is None:
+            unit = "millimeter"
+        if unit == "micron":
+            scale = 0.001
+        elif unit == "millimeter":
+            scale = 1
+        elif unit == "centimeter":
+            scale = 10
+        elif unit == "inch":
+            scale = 25.4
+        elif unit == "foot":
+            scale = 304.8
+        elif unit == "meter":
+            scale = 1000
+        else:
+            Logger.log("w", "Unrecognised unit %s used. Assuming mm instead", unit)
+            scale = 1
+
+        return Vector(scale, scale, scale)

@@ -1,5 +1,5 @@
 // Copyright (c) 2016 Ultimaker B.V.
-// Cura is released under the terms of the AGPLv3 or higher.
+// Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.2
 import QtQuick.Controls 1.1
@@ -64,9 +64,7 @@ Cura.MachineAction
                 {
                     startBedLevelingButton.visible = false;
                     bedlevelingButton.visible = true;
-                    checkupMachineAction.heatupHotendStarted = false;
-                    checkupMachineAction.heatupBedStarted = false;
-                    manager.startCheck();
+                    manager.startBedLeveling();
                 }
             }
 

@@ -1,5 +1,5 @@
 # Copyright (c) 2015 Ultimaker B.V.
-# Uranium is released under the terms of the AGPLv3 or higher.
+# Uranium is released under the terms of the LGPLv3 or higher.
 
 from UM.PluginObject import PluginObject
 
@@ -18,8 +18,8 @@ class ProfileWriter(PluginObject):
     #   The profile writer may write its own file format to the specified file.
     #
     #   \param path \type{string} The file to output to.
-    #   \param profile \type{Profile} The profile to write to the file.
+    #   \param profiles \type{Profile} or \type{List} The profile(s) to write to the file.
     #   \return \code True \endcode if the writing was successful, or \code
     #   False \endcode if it wasn't.
-    def write(self, path, node):
+    def write(self, path, profiles):
         raise NotImplementedError("Profile writer plugin was not correctly implemented. No write was specified.")

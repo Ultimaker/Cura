@@ -1,5 +1,5 @@
 // Copyright (c) 2015 Ultimaker B.V.
-// Uranium is released under the terms of the AGPLv3 or higher.
+// Uranium is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.2
 import QtQuick.Controls 1.1
@@ -22,7 +22,7 @@ Button {
             UM.RecolorImage
             {
                 anchors.verticalCenter: parent.verticalCenter
-                height: label.height / 2
+                height: (label.height / 2) | 0
                 width: height
                 source: control.checked ? UM.Theme.getIcon("arrow_bottom") : UM.Theme.getIcon("arrow_right");
                 color: control.hovered ? palette.highlight : palette.buttonText

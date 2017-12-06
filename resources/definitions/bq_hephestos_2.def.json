@@ -7,13 +7,13 @@
         "visible": true,
         "author": "BQ",
         "manufacturer": "BQ",
-        "category": "Other",
         "platform": "bq_hephestos_2_platform.stl",
         "platform_offset": [6, 1320, 0 ],
         "file_formats": "text/x-gcode"
     },
 
     "overrides": {
+        "machine_name": { "default_value": "BQ Hephestos 2" },
         "machine_start_gcode": { "default_value": "; -- START GCODE --\nM104 S{material_print_temperature} ; Heat up extruder while leveling\nM800 ; Custom GCODE to fire start print procedure\nM109 S{material_print_temperature} ; Makes sure the temperature is correct before printing\n; -- end of START GCODE --" },
         "machine_end_gcode": { "default_value": "; -- END GCODE --\nM801        ; Custom GCODE to fire end print procedure\n; -- end of END GCODE --" },
         "machine_width": { "default_value": 210 },

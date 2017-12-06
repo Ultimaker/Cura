@@ -5,8 +5,7 @@
     "inherits": "ultimaker_original",
     "metadata": {
         "author": "Ultimaker",
-        "manufacturer": "Ultimaker",
-        "category": "Ultimaker",
+        "manufacturer": "Ultimaker B.V.",
         "weight": 4,
         "file_formats": "text/x-gcode",
         "icon": "icon_ultimaker.png",
@@ -17,6 +16,7 @@
     },
 
     "overrides": {
+        "machine_name": { "default_value": "Ultimaker Original+" },
         "machine_heated_bed": {
             "default_value": true
         },

@@ -1,5 +1,5 @@
 // Copyright (c) 2016 Ultimaker B.V.
-// Cura is released under the terms of the AGPLv3 or higher.
+// Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.2
 import QtQuick.Controls 1.1
@@ -11,6 +11,7 @@ Menu
 {
     title: catalog.i18nc("@title:menu menubar:toplevel", "&View");
     id: menu
+    enabled: !PrintInformation.preSliced
     Instantiator
     {
         model: UM.ViewModel { }
@@ -26,4 +27,7 @@ Menu
         onObjectRemoved: menu.removeItem(object)
     }
     ExclusiveGroup { id: group; }
+
+    MenuSeparator {}
+    MenuItem { action: Cura.Actions.homeCamera; }
 }

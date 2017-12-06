@@ -1,9 +1,7 @@
-from .LayerPolygon import LayerPolygon
-
-from UM.Math.Vector import Vector
 from UM.Mesh.MeshBuilder import MeshBuilder
 
 import numpy
+
 
 class Layer:
     def __init__(self, layer_id):
@@ -49,12 +47,12 @@ class Layer:
 
         return result
 
-    def build(self, vertex_offset, index_offset, vertices, colors, indices):
+    def build(self, vertex_offset, index_offset, vertices, colors, line_dimensions, feedrates, extruders, line_types, indices):
         result_vertex_offset = vertex_offset
         result_index_offset = index_offset
         self._element_count = 0
         for polygon in self._polygons:
-            polygon.build(result_vertex_offset, result_index_offset, vertices, colors, indices)
+            polygon.build(result_vertex_offset, result_index_offset, vertices, colors, line_dimensions, feedrates, extruders, line_types, indices)
             result_vertex_offset += polygon.lineMeshVertexCount()
             result_index_offset += polygon.lineMeshElementCount()
             self._element_count += polygon.elementCount
@@ -80,8 +78,7 @@ class Layer:
         else:
             for polygon in self._polygons:
                 line_count += polygon.jumpCount
-            
-        
+
         # Reserve the neccesary space for the data upfront
         builder.reserveFaceAndVertexCount(2 * line_count, 4 * line_count)
         
@@ -94,7 +91,7 @@ class Layer:
             # Line types of the points we want to draw
             line_types = polygon.types[index_mask]
             
-             # Shift the z-axis according to previous implementation. 
+            # Shift the z-axis according to previous implementation.
             if make_mesh:
                 points[polygon.isInfillOrSkinType(line_types), 1::3] -= 0.01
             else:
@@ -106,13 +103,14 @@ class Layer:
             # Scale all normals by the line width of the current line so we can easily offset.
             normals *= (polygon.lineWidths[index_mask.ravel()] / 2)
 
-            # Create 4 points to draw each line segment, points +- normals results in 2 points each. Reshape to one point per line
+            # Create 4 points to draw each line segment, points +- normals results in 2 points each.
+            # After this we reshape to one point per line.
             f_points = numpy.concatenate((points-normals, points+normals), 1).reshape((-1, 3))
-            # __index_pattern defines which points to use to draw the two faces for each lines egment, the following linesegment is offset by 4 
+
+            # __index_pattern defines which points to use to draw the two faces for each lines egment, the following linesegment is offset by 4
             f_indices = ( self.__index_pattern + numpy.arange(0, 4 * len(normals), 4, dtype=numpy.int32).reshape((-1, 1)) ).reshape((-1, 3))
             f_colors = numpy.repeat(polygon.mapLineTypeToColor(line_types), 4, 0)
 
             builder.addFacesWithColor(f_points, f_indices, f_colors)
-
         
         return builder.build()

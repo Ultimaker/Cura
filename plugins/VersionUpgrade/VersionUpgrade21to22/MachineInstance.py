@@ -1,10 +1,14 @@
 # Copyright (c) 2016 Ultimaker B.V.
-# Cura is released under the terms of the AGPLv3 or higher.
+# Cura is released under the terms of the LGPLv3 or higher.
 
 import UM.VersionUpgrade #To indicate that a file is of incorrect format.
+import UM.VersionUpgradeManager #To schedule more files to be upgraded.
+from UM.Resources import Resources #To get the config storage path.
 
 import configparser #To read config files.
 import io #To write config files to strings as if they were files.
+import os.path #To get the path to write new user profiles to.
+import urllib #To serialise the user container file name properly.
 
 ##  Creates a new machine instance instance by parsing a serialised machine
 #   instance in version 1 of the file format.
@@ -69,26 +73,52 @@ class MachineInstance:
         config.add_section("general")
         config.set("general", "name", self._name)
         config.set("general", "id", self._name)
-        config.set("general", "type", self._type_name)
         config.set("general", "version", "2") # Hard-code version 2, since if this number changes the programmer MUST change this entire function.
 
         import VersionUpgrade21to22 # Import here to prevent circular dependencies.
         has_machine_qualities = self._type_name in VersionUpgrade21to22.VersionUpgrade21to22.VersionUpgrade21to22.machinesWithMachineQuality()
         type_name = VersionUpgrade21to22.VersionUpgrade21to22.VersionUpgrade21to22.translatePrinter(self._type_name)
-        active_material = VersionUpgrade21to22.VersionUpgrade21to22.VersionUpgrade21to22.translateProfile(self._active_material_name)
+        active_material = VersionUpgrade21to22.VersionUpgrade21to22.VersionUpgrade21to22.translateMaterial(self._active_material_name)
         variant = VersionUpgrade21to22.VersionUpgrade21to22.VersionUpgrade21to22.translateVariant(self._variant_name, type_name)
         variant_materials = VersionUpgrade21to22.VersionUpgrade21to22.VersionUpgrade21to22.translateVariantForMaterials(self._variant_name, type_name)
-        active_profile = VersionUpgrade21to22.VersionUpgrade21to22.VersionUpgrade21to22.translateProfile(self._active_profile_name)
-        if has_machine_qualities: #This machine now has machine-quality profiles.
-            active_profile += "_" + active_material + "_" + variant
-            active_material += "_" + variant_materials #That means that the profile was split into multiple.
-            current_settings = "empty" #The profile didn't know the definition ID when it was upgraded, so it will have been invalid. Sorry, your current settings are lost now.
+
+        #Convert to quality profile if we have one of the built-in profiles, otherwise convert to a quality-changes profile.
+        if self._active_profile_name in VersionUpgrade21to22.VersionUpgrade21to22.VersionUpgrade21to22.builtInProfiles():
+            active_quality = VersionUpgrade21to22.VersionUpgrade21to22.VersionUpgrade21to22.translateProfile(self._active_profile_name)
+            active_quality_changes = "empty_quality_changes"
         else:
-            current_settings = self._name + "_current_settings"
+            active_quality = VersionUpgrade21to22.VersionUpgrade21to22.VersionUpgrade21to22.getQualityFallback(type_name, variant, active_material)
+            active_quality_changes = self._active_profile_name
+
+        if has_machine_qualities: #This machine now has machine-quality profiles.
+            active_material += "_" + variant_materials
+
+        #Create a new user profile and schedule it to be upgraded.
+        user_profile = configparser.ConfigParser(interpolation = None)
+        user_profile["general"] = {
+            "version": "2",
+            "name": "Current settings",
+            "definition": type_name
+        }
+        user_profile["metadata"] = {
+            "type": "user",
+            "machine": self._name
+        }
+        user_profile["values"] = {}
+
+        version_upgrade_manager = UM.VersionUpgradeManager.VersionUpgradeManager.getInstance()
+        user_storage = os.path.join(Resources.getDataStoragePath(), next(iter(version_upgrade_manager.getStoragePaths("user"))))
+        user_profile_file = os.path.join(user_storage, urllib.parse.quote_plus(self._name) + "_current_settings.inst.cfg")
+        if not os.path.exists(user_storage):
+            os.makedirs(user_storage)
+        with open(user_profile_file, "w", encoding = "utf-8") as file_handle:
+            user_profile.write(file_handle)
+        version_upgrade_manager.upgradeExtraFile(user_storage, urllib.parse.quote_plus(self._name), "user")
 
         containers = [
-            current_settings,
-            active_profile,
+            self._name + "_current_settings", #The current profile doesn't know the definition ID when it was upgraded, only the instance ID, so it will be invalid. Sorry, your current settings are lost now.
+            active_quality_changes,
+            active_quality,
             active_material,
             variant,
             type_name

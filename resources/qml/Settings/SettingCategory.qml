@@ -1,5 +1,5 @@
 // Copyright (c) 2015 Ultimaker B.V.
-// Uranium is released under the terms of the AGPLv3 or higher.
+// Uranium is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.2
 import QtQuick.Controls 1.1
@@ -14,9 +14,14 @@ Button {
 
     style: UM.Theme.styles.sidebar_category;
 
-    signal showTooltip(string text);
-    signal hideTooltip();
+    signal showTooltip(string text)
+    signal hideTooltip()
     signal contextMenuRequested()
+    signal showAllHiddenInheritedSettings(string category_id)
+    signal focusReceived()
+    signal setActiveFocusToNextSetting(bool forward)
+
+    property var focusItem: base
 
     text: definition.label
     iconSource: UM.Theme.getIcon(definition.icon)
@@ -24,7 +29,32 @@ Button {
     checkable: true
     checked: definition.expanded
 
-    onClicked: { forceActiveFocus(); definition.expanded ? settingDefinitionsModel.collapse(definition.key) : settingDefinitionsModel.expandAll(definition.key) }
+    onClicked:
+    {
+        forceActiveFocus();
+        if(definition.expanded)
+        {
+            settingDefinitionsModel.collapse(definition.key);
+        } else {
+            settingDefinitionsModel.expandAll(definition.key);
+        }
+    }
+    onActiveFocusChanged:
+    {
+        if(activeFocus)
+        {
+            base.focusReceived();
+        }
+    }
+
+    Keys.onTabPressed:
+    {
+        base.setActiveFocusToNextSetting(true)
+    }
+    Keys.onBacktabPressed:
+    {
+        base.setActiveFocusToNextSetting(false)
+    }
 
     UM.SimpleButton
     {
@@ -57,13 +87,31 @@ Button {
         anchors.right: parent.right
         anchors.rightMargin: UM.Theme.getSize("setting_preferences_button_margin").width
 
-        visible: false //hiddenValuesCount > 0
+        visible:
+        {
+            if(Cura.SettingInheritanceManager.settingsWithInheritanceWarning.indexOf(definition.key) >= 0)
+            {
+                var children_with_override = Cura.SettingInheritanceManager.getChildrenKeysWithOverride(definition.key)
+                for(var i = 0; i < children_with_override.length; i++)
+                {
+                    if(!settingDefinitionsModel.getVisible(children_with_override[i]))
+                    {
+                        return true
+                    }
+                }
+                return false
+            }
+            return false
+        }
+
         height: parent.height / 2
         width: height
 
         onClicked:
         {
-            base.showAllHiddenInheritedSettings()
+            settingDefinitionsModel.expandAll(definition.key);
+            base.checked = true;
+            base.showAllHiddenInheritedSettings(definition.key);
         }
 
         color: UM.Theme.getColor("setting_control_button")
