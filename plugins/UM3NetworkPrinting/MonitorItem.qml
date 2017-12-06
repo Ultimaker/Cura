@@ -9,35 +9,32 @@ Component
     Image
     {
         id: cameraImage
-        property bool proportionalHeight:
-        {
-            if(sourceSize.height == 0 || maximumHeight == 0)
-            {
-                return true;
-            }
-            return (sourceSize.width / sourceSize.height) > (maximumWidth / maximumHeight);
-        }
-        property real _width: Math.floor(Math.min(maximumWidth, sourceSize.width))
-        property real _height: Math.floor(Math.min(maximumHeight, sourceSize.height))
-        width: proportionalHeight ? _width : Math.floor(sourceSize.width * _height / sourceSize.height)
-        height: !proportionalHeight ? _height : Math.floor(sourceSize.height * _width / sourceSize.width)
+        width: Math.min(sourceSize.width === 0 ? 800 * screenScaleFactor : sourceSize.width, maximumWidth)
+        height: Math.floor((sourceSize.height === 0 ? 600 * screenScaleFactor : sourceSize.height) * width / sourceSize.width)
         anchors.horizontalCenter: parent.horizontalCenter
-
+        anchors.verticalCenter: parent.verticalCenter
+        z: 1
         onVisibleChanged:
         {
             if(visible)
             {
-                OutputDevice.startCamera()
+                if(OutputDevice.activePrinter != null && OutputDevice.activePrinter.camera != null)
+                {
+                    OutputDevice.activePrinter.camera.start()
+                }
             } else
             {
-                OutputDevice.stopCamera()
+                if(OutputDevice.activePrinter != null && OutputDevice.activePrinter.camera != null)
+                {
+                    OutputDevice.activePrinter.camera.stop()
+                }
             }
         }
         source:
         {
-            if(OutputDevice.cameraImage)
+            if(OutputDevice.activePrinter != null && OutputDevice.activePrinter.camera != null && OutputDevice.activePrinter.camera.latestImage)
             {
-                return OutputDevice.cameraImage;
+                return OutputDevice.activePrinter.camera.latestImage;
             }
             return "";
         }

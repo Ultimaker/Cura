@@ -22,7 +22,7 @@ from .LegacyUM3PrinterOutputController import LegacyUM3PrinterOutputController
 from time import time
 
 import json
-
+import os
 
 
 i18n_catalog = i18nCatalog("cura")
@@ -71,6 +71,9 @@ class LegacyUM3OutputDevice(NetworkedPrinterOutputDevice):
         self.setDescription(i18n_catalog.i18nc("@properties:tooltip", "Print over network"))
 
         self.setIconName("print")
+
+        self._monitor_view_qml_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "MonitorItem.qml")
+
 
         self._output_controller = LegacyUM3PrinterOutputController(self)
 
