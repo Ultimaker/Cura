@@ -220,7 +220,7 @@ Rectangle
         id: viewOrientationControl
         height: 30
         spacing: 2
-        visible: UM.Controller.activeStage.id != "MonitorStage"
+        visible: UM.Controller.activeStage.stageId != "MonitorStage"
 
         anchors
         {
@@ -301,7 +301,7 @@ Rectangle
         }
 
         style: UM.Theme.styles.combobox
-        visible: UM.Controller.activeStage.id != "MonitorStage"
+        visible: UM.Controller.activeStage.stageId != "MonitorStage"
 
         model: UM.ViewModel { }
         textRole: "name"
