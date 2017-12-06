@@ -31,24 +31,5 @@ Menu
     ExclusiveGroup { id: group }
 
     MenuSeparator {}
-
-    // sidebar views
-    Instantiator
-    {
-        model: Cura.SidebarViewModel{}
-        MenuItem
-        {
-            text: model.name
-            checkable: true
-            checked: model.active
-            exclusiveGroup: sidebarGroup
-            onTriggered: Cura.SidebarController.setActiveSidebarView(model.id)
-        }
-        onObjectAdded: menu.insertItem(index, object)
-        onObjectRemoved: menu.removeItem(object)
-    }
-    ExclusiveGroup { id: sidebarGroup }
-
-    MenuSeparator {}
     MenuItem { action: Cura.Actions.homeCamera; }
 }
