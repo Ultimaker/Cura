@@ -40,4 +40,7 @@ class QualityAndUserProfilesModel(ProfilesModel):
                                     qc.getMetaDataEntry("extruder") is not None and
                                     (qc.getMetaDataEntry("extruder") == active_extruder.definition.getMetaDataEntry("quality_definition") or
                                      qc.getMetaDataEntry("extruder") == active_extruder.definition.getId())}
-        return filtered_quality_changes, {}
+
+        result = filtered_quality_changes
+        result.update({q.getId():q for q in quality_list})
+        return result, {}
