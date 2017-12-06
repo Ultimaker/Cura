@@ -61,7 +61,7 @@ class ThreeMFWorkspaceWriter(WorkspaceWriter):
         version_config_parser.add_section("versions")
         version_config_parser.set("versions", "cura_version", Application.getInstance().getVersion())
         version_config_parser.set("versions", "build_type", Application.getInstance().getBuildType())
-        version_config_parser.set("versions", "is_debug_mode", Application.getInstance().getIsDebugMode())
+        version_config_parser.set("versions", "is_debug_mode", str(Application.getInstance().getIsDebugMode()))
 
         version_file_string = StringIO()
         version_config_parser.write(version_file_string)
