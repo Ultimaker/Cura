@@ -6,7 +6,7 @@ import QtQuick.Controls 1.1
 import QtQuick.Controls.Styles 1.1
 import QtQuick.Layouts 1.1
 
-import UM 1.2 as UM
+import UM 1.4 as UM
 import Cura 1.0 as Cura
 import "Menus"
 
@@ -83,33 +83,12 @@ Rectangle
                 style: UM.Theme.styles.topbar_header_tab
                 height: UM.Theme.getSize("sidebar_header").height
                 onClicked: UM.Controller.setActiveStage(model.id)
+                iconSource: model.stage.iconSource
+
+                property color overlayColor: "transparent"
+                property string overlayIconSource: ""
             }
         }
-
-//        Button
-//        {
-//            id: showSettings
-//            height: UM.Theme.getSize("sidebar_header").height
-//            text: catalog.i18nc("@title:tab", "Prepare")
-//            checkable: true
-//            checked: isChecked()
-//            exclusiveGroup: sidebarHeaderBarGroup
-//            style: UM.Theme.styles.topbar_header_tab
-//
-//            // We use a Qt.binding to re-bind the checkbox state after manually setting it
-//            // https://stackoverflow.com/questions/38798450/qt-5-7-qml-why-are-my-checkbox-property-bindings-disappearing
-//            onClicked: {
-//                base.stopMonitoringPrint()
-//                checked = Qt.binding(isChecked)
-//            }
-//
-//            function isChecked () {
-//                return !base.monitoringPrint
-//            }
-//
-//            property color overlayColor: "transparent"
-//            property string overlayIconSource: ""
-//        }
 
 //        Button
 //        {

@@ -15,4 +15,6 @@ def getMetaData():
     }
 
 def register(app):
-    return { "stage": PrepareStage.PrepareStage() }
+    return {
+        "stage": PrepareStage.PrepareStage()
+    }

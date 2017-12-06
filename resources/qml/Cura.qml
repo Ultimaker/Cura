@@ -366,8 +366,7 @@ UM.MainWindow
                 onStopMonitoringPrint: base.showPrintMonitor = false
             }
 
-            Sidebar
-            {
+            Loader {
                 id: sidebar
 
                 anchors
@@ -379,7 +378,8 @@ UM.MainWindow
 
                 width: UM.Theme.getSize("sidebar").width
                 z: 1
-                monitoringPrint: base.showPrintMonitor
+
+                sourceComponent: UM.Controller.activeStage.sidebarComponent
             }
 
             Rectangle

@@ -10,10 +10,11 @@ def getMetaData():
     return {
         "stage": {
             "name": i18n_catalog.i18nc("@item:inmenu", "Monitor"),
-            "weight": 1,
-            "icon": ""
+            "weight": 1
         }
     }
 
 def register(app):
-    return { "stage": MonitorStage.MonitorStage() }
+    return {
+        "stage": MonitorStage.MonitorStage()
+    }
