@@ -21,7 +21,7 @@ import os.path
 import serial.tools.list_ports
 from UM.Extension import Extension
 
-from PyQt5.QtCore import QUrl, QObject, pyqtSlot, pyqtProperty, pyqtSignal, Qt
+from UM.Qt.Factory.QtCore import QUrl, QObject, pyqtSlot, pyqtProperty, pyqtSignal, Qt
 from UM.i18n import i18nCatalog
 i18n_catalog = i18nCatalog("cura")
 

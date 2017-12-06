@@ -47,6 +47,11 @@ def exceptHook(hook_type, value, traceback):
 
 sys.excepthook = exceptHook
 
+# WORKAROUND: GITHUB-2896
+# Error message due to PySide2: "QWidget: Must construct a QApplication before a QWidget"
+from UM.Qt.Factory.QtWidgets import QApplication
+QApplication(sys.argv)
+
 # Workaround for a race condition on certain systems where there
 # is a race condition between Arcus and PyQt. Importing Arcus
 # first seems to prevent Sip from going into a state where it

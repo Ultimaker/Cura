@@ -3,7 +3,7 @@
 
 from collections import OrderedDict
 
-from PyQt5.QtCore import Qt
+from UM.Qt.Factory.QtCore import Qt
 
 from UM.Application import Application
 from UM.Settings.ContainerRegistry import ContainerRegistry

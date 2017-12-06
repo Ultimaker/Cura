@@ -1,8 +1,8 @@
 # Copyright (c) 2017 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from PyQt5.QtCore import QUrl
-from PyQt5.QtGui import QDesktopServices
+from UM.Qt.Factory.QtCore import QUrl
+from UM.Qt.Factory.QtGui import QDesktopServices
 
 from UM.Extension import Extension
 from UM.Preferences import Preferences

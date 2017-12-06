@@ -14,7 +14,7 @@ from UM.Settings.Validator import ValidatorState #To find if a setting is in an 
 from UM.Platform import Platform
 from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 from UM.Qt.Duration import DurationFormat
-from PyQt5.QtCore import QObject, pyqtSlot
+from UM.Qt.Factory.QtCore import QObject, pyqtSlot
 
 from cura.Settings.ExtruderManager import ExtruderManager
 from . import ProcessSlicedLayersJob
@@ -24,7 +24,7 @@ import os
 import sys
 from time import time
 
-from PyQt5.QtCore import QTimer
+from UM.Qt.Factory.QtCore import QTimer
 
 import Arcus
 

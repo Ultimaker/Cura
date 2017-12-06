@@ -3,8 +3,8 @@
 
 from UM.i18n import i18nCatalog
 from UM.OutputDevice.OutputDevice import OutputDevice
-from PyQt5.QtCore import pyqtProperty, pyqtSlot, QObject, QTimer, pyqtSignal
-from PyQt5.QtWidgets import QMessageBox
+from UM.Qt.Factory.QtCore import pyqtProperty, pyqtSlot, QObject, QTimer, pyqtSignal
+from UM.Qt.Factory.QtWidgets import QMessageBox
 from enum import IntEnum  # For the connection state tracking.
 
 from UM.Settings.ContainerRegistry import ContainerRegistry

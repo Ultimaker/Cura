@@ -3,8 +3,8 @@
 
 import sys
 
-from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import QApplication
+from UM.Qt.Factory.QtCore import Qt
+from UM.Qt.Factory.QtWidgets import QApplication
 
 from UM.Application import Application
 from UM.Event import Event, KeyEvent

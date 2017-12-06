@@ -14,8 +14,8 @@ import ssl
 import urllib.request
 import urllib.error
 
-from PyQt5.QtCore import QT_VERSION_STR, PYQT_VERSION_STR, QCoreApplication
-from PyQt5.QtWidgets import QDialog, QDialogButtonBox, QVBoxLayout, QLabel, QTextEdit, QGroupBox
+from UM.Qt.Factory.QtCore import QT_VERSION_STR, PYQT_VERSION_STR, QCoreApplication
+from UM.Qt.Factory.QtWidgets import QDialog, QDialogButtonBox, QVBoxLayout, QLabel, QTextEdit, QGroupBox
 
 from UM.Application import Application
 from UM.Logger import Logger

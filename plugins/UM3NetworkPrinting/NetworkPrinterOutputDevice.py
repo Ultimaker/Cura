@@ -15,10 +15,10 @@ from cura.PrinterOutputDevice import PrinterOutputDevice, ConnectionState
 from cura.Settings.ContainerManager import ContainerManager
 import cura.Settings.ExtruderManager
 
-from PyQt5.QtNetwork import QHttpMultiPart, QHttpPart, QNetworkRequest, QNetworkAccessManager, QNetworkReply
-from PyQt5.QtCore import QUrl, QTimer, pyqtSignal, pyqtProperty, pyqtSlot, QCoreApplication
-from PyQt5.QtGui import QImage, QColor
-from PyQt5.QtWidgets import QMessageBox
+from UM.Qt.Factory.QtNetwork import QHttpMultiPart, QHttpPart, QNetworkRequest, QNetworkAccessManager, QNetworkReply
+from UM.Qt.Factory.QtCore import QUrl, QTimer, pyqtSignal, pyqtProperty, pyqtSlot, QCoreApplication
+from UM.Qt.Factory.QtGui import QImage, QColor
+from UM.Qt.Factory.QtWidgets import QMessageBox
 
 import json
 import os

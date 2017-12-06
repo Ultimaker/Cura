@@ -1,7 +1,7 @@
 import os.path
 import time
 
-from PyQt5.QtCore import pyqtSignal, pyqtProperty, pyqtSlot, QObject
+from UM.Qt.Factory.QtCore import pyqtSignal, pyqtProperty, pyqtSlot, QObject
 
 from UM.Application import Application
 from UM.PluginRegistry import PluginRegistry

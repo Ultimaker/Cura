@@ -2,7 +2,7 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from . import USBPrinterOutputDeviceManager
-from PyQt5.QtQml import qmlRegisterType, qmlRegisterSingletonType
+from UM.Qt.Factory.QtQml import qmlRegisterType, qmlRegisterSingletonType
 from UM.i18n import i18nCatalog
 i18n_catalog = i18nCatalog("cura")
 

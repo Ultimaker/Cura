@@ -1,7 +1,7 @@
 # Copyright (c) 2017 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from PyQt5.QtCore import Qt, pyqtSignal, pyqtProperty, QTimer
+from UM.Qt.Factory.QtCore import Qt, pyqtSignal, pyqtProperty, QTimer
 from typing import Iterable
 
 from UM.i18n import i18nCatalog

@@ -17,7 +17,7 @@ from UM.Math.AxisAlignedBox import AxisAlignedBox
 from UM.Math.Polygon import Polygon
 from UM.Message import Message
 from UM.Signal import Signal
-from PyQt5.QtCore import QTimer
+from UM.Qt.Factory.QtCore import QTimer
 from UM.View.RenderBatch import RenderBatch
 from UM.View.GL.OpenGL import OpenGL
 catalog = i18nCatalog("cura")

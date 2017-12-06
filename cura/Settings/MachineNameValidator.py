@@ -1,8 +1,8 @@
 # Copyright (c) 2016 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from PyQt5.QtCore import pyqtSlot, pyqtProperty, QObject, pyqtSignal, QRegExp
-from PyQt5.QtGui import QValidator
+from UM.Qt.Factory.QtCore import pyqtSlot, pyqtProperty, QObject, pyqtSignal, QRegExp
+from UM.Qt.Factory.QtGui import QValidator
 import os #For statvfs.
 import urllib #To escape machine names for how they're saved to file.
 

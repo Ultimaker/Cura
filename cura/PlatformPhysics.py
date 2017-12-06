@@ -1,7 +1,7 @@
 # Copyright (c) 2015 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from PyQt5.QtCore import QTimer
+from UM.Qt.Factory.QtCore import QTimer
 
 from UM.Application import Application
 from UM.Scene.SceneNode import SceneNode

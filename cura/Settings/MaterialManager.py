@@ -1,7 +1,7 @@
 # Copyright (c) 2017 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from PyQt5.QtCore import QObject, pyqtSlot #To expose data to QML.
+from UM.Qt.Factory.QtCore import QObject, pyqtSlot #To expose data to QML.
 
 from cura.Settings.ContainerManager import ContainerManager
 from UM.Logger import Logger

@@ -5,9 +5,9 @@
 from typing import Union, List, Dict
 from UM.Signal import Signal
 
-from PyQt5.QtCore import QObject, pyqtProperty, pyqtSignal, QTimer
+from UM.Qt.Factory.QtCore import QObject, pyqtProperty, pyqtSignal, QTimer
 from UM.FlameProfiler import pyqtSlot
-from PyQt5.QtWidgets import QMessageBox
+from UM.Qt.Factory.QtWidgets import QMessageBox
 from UM import Util
 
 from UM.Application import Application

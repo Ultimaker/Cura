@@ -3,7 +3,7 @@
 
 from typing import Any, Dict, Optional
 
-from PyQt5.QtCore import pyqtProperty
+from UM.Qt.Factory.QtCore import pyqtProperty
 
 from UM.Decorators import override
 

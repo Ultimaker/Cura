@@ -6,9 +6,9 @@ import urllib
 import uuid
 from typing import Dict, Union
 
-from PyQt5.QtCore import QObject, QUrl, QVariant
+from UM.Qt.Factory.QtCore import QObject, QUrl, QVariant
 from UM.FlameProfiler import pyqtSlot
-from PyQt5.QtWidgets import QMessageBox
+from UM.Qt.Factory.QtWidgets import QMessageBox
 from UM.Util import parseBool
 
 from UM.PluginRegistry import PluginRegistry

@@ -9,7 +9,7 @@ from UM.Logger import Logger
 
 from cura.CuraApplication import CuraApplication
 
-from PyQt5.QtCore import QObject, pyqtSlot
+from UM.Qt.Factory.QtCore import QObject, pyqtSlot
 
 import os.path
 
