@@ -6,7 +6,7 @@ class CuraStage(Stage):
         super().__init__()
 
     def getMainView(self):
-        return None
+        return self.getView("main")
 
     def getSidebarView(self):
-        return None
+        return self.getView("sidebar")
