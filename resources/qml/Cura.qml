@@ -358,15 +358,13 @@ UM.MainWindow
             Topbar
             {
                 id: topbar
-                anchors.left:parent.left
+                anchors.left: parent.left
                 anchors.right: parent.right
                 anchors.top: parent.top
-                monitoringPrint: base.showPrintMonitor
-                onStartMonitoringPrint: base.showPrintMonitor = true
-                onStopMonitoringPrint: base.showPrintMonitor = false
             }
 
-            Loader {
+            Loader
+            {
                 id: sidebar
 
                 anchors
@@ -382,39 +380,30 @@ UM.MainWindow
                 sourceComponent: UM.Controller.activeStage.sidebarComponent
             }
 
-            Rectangle
+            Loader
             {
-                id: viewportOverlay
+                id: main
 
-                color: UM.Theme.getColor("viewport_overlay")
                 anchors
                 {
                     top: topbar.bottom
                     bottom: parent.bottom
-                    left:parent.left
+                    left: parent.left
                     right: sidebar.left
+//                    horizontalCenter: parent.horizontalCenter
+//                    verticalCenter: parent.verticalCenter
+//                    horizontalCenterOffset: - UM.Theme.getSize("sidebar").width / 2
+//                    verticalCenterOffset: UM.Theme.getSize("sidebar_header").height / 2
                 }
-                visible: opacity > 0
-                opacity: base.showPrintMonitor ? 1 : 0
 
-                MouseArea {
-                    anchors.fill: parent
-                    acceptedButtons: Qt.AllButtons
+//                MouseArea
+//                {
+//                    anchors.fill: parent
+//                    acceptedButtons: Qt.AllButtons
+//                    onWheel: wheel.accepted = true
+//                }
 
-                    onWheel: wheel.accepted = true
-                }
-            }
-
-            Loader
-            {
-                sourceComponent: Cura.MachineManager.printerOutputDevices.length > 0 ? Cura.MachineManager.printerOutputDevices[0].monitorItem: null
-                visible: base.showPrintMonitor
-                anchors.horizontalCenter: parent.horizontalCenter
-                anchors.verticalCenter: parent.verticalCenter
-                anchors.horizontalCenterOffset: - UM.Theme.getSize("sidebar").width / 2
-                anchors.verticalCenterOffset: UM.Theme.getSize("sidebar_header").height / 2
-                property real maximumWidth: viewportOverlay.width
-                property real maximumHeight: viewportOverlay.height
+                sourceComponent: UM.Controller.activeStage.mainComponent
             }
 
             UM.MessageStack

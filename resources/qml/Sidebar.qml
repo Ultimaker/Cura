@@ -26,7 +26,7 @@ Component
         property var connectedPrinter: Cura.MachineManager.printerOutputDevices.length >= 1 ? Cura.MachineManager.printerOutputDevices[0] : null
         property int backendState: UM.Backend.state
 
-        property bool monitoringPrint: false
+        property bool monitoringPrint: UM.Controller.activeStage.id == "MonitorStage"
 
         property variant printDuration: PrintInformation.currentPrintTime
         property variant printMaterialLengths: PrintInformation.materialLengths

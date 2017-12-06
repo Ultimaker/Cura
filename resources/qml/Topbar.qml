@@ -16,27 +16,22 @@ Rectangle
     anchors.left: parent.left
     anchors.right: parent.right
     height: UM.Theme.getSize("sidebar_header").height
-    color: base.monitoringPrint ? UM.Theme.getColor("topbar_background_color_monitoring") : UM.Theme.getColor("topbar_background_color")
+    color: UM.Controller.activeStage.id == "MonitorStage" ? UM.Theme.getColor("topbar_background_color_monitoring") : UM.Theme.getColor("topbar_background_color")
 
     property bool printerConnected: Cura.MachineManager.printerOutputDevices.length != 0
     property bool printerAcceptsCommands: printerConnected && Cura.MachineManager.printerOutputDevices[0].acceptsCommands
-    property bool monitoringPrint: false
-
-    // outgoing signal
-    signal startMonitoringPrint()
-    signal stopMonitoringPrint()
 
     // update monitoring status when event was triggered outside topbar
-    Component.onCompleted: {
-        startMonitoringPrint.connect(function () {
-            base.monitoringPrint = true
-            UM.Controller.disableModelRendering()
-        })
-        stopMonitoringPrint.connect(function () {
-            base.monitoringPrint = false
-            UM.Controller.enableModelRendering()
-        })
-    }
+//    Component.onCompleted: {
+//        startMonitoringPrint.connect(function () {
+//            base.monitoringPrint = true
+//            UM.Controller.disableModelRendering()
+//        })
+//        stopMonitoringPrint.connect(function () {
+//            base.monitoringPrint = false
+//            UM.Controller.enableModelRendering()
+//        })
+//    }
 
     UM.I18nCatalog
     {
@@ -79,9 +74,10 @@ Rectangle
                 text: model.name
                 checkable: true
                 checked: model.active
-                exclusiveGroup: sidebarHeaderBarGroup
+                exclusiveGroup: topbarMenuGroup
                 style: UM.Theme.styles.topbar_header_tab
                 height: UM.Theme.getSize("sidebar_header").height
+                width: UM.Theme.getSize("topbar_button").width
                 onClicked: UM.Controller.setActiveStage(model.id)
                 iconSource: model.stage.iconSource
 
@@ -89,6 +85,8 @@ Rectangle
                 property string overlayIconSource: ""
             }
         }
+
+        ExclusiveGroup { id: topbarMenuGroup }
 
 //        Button
 //        {
@@ -149,8 +147,6 @@ Rectangle
 //                }
 //            }
 //        }
-
-        ExclusiveGroup { id: sidebarHeaderBarGroup }
     }
 
     ToolButton
@@ -218,17 +214,16 @@ Rectangle
         menu: PrinterMenu { }
     }
 
-        //View orientation Item
+    // View orientation Item
     Row
     {
         id: viewOrientationControl
         height: 30
-
         spacing: 2
+        visible: UM.Controller.activeStage.id != "MonitorStage"
 
-        visible: !base.monitoringPrint
-
-        anchors {
+        anchors
+        {
             verticalCenter: base.verticalCenter
             right: viewModeButton.right
             rightMargin: UM.Theme.getSize("default_margin").width + viewModeButton.width
@@ -306,7 +301,7 @@ Rectangle
         }
 
         style: UM.Theme.styles.combobox
-        visible: !base.monitoringPrint
+        visible: UM.Controller.activeStage.id != "MonitorStage"
 
         model: UM.ViewModel { }
         textRole: "name"

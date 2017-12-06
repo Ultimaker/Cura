@@ -24,7 +24,7 @@ Item
     {
         id: globalProfileRow
         height: UM.Theme.getSize("sidebar_setup").height
-        visible: !sidebar.monitoringPrint && !sidebar.hideSettings
+//        visible: !sidebar.monitoringPrint && !sidebar.hideSettings
 
         anchors
         {
