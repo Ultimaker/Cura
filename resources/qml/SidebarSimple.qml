@@ -572,11 +572,7 @@ Item
                                 var steps = parseInt(infillSteps.properties.value)
                                 var infillModelItem = infillModel.get(i)
 
-                                // TODO: somehow this print causes this method not to crash QML when the sidebar view gets unloaded (when switching states)
-                                // TODO: That should be fixed :P
-                                print("test", density, steps, infillModelItem)
-
-                                if (infillModelItem
+                                if (infillModelItem != "undefined"
                                     && density >= infillModelItem.percentageMin
                                     && density <= infillModelItem.percentageMax
                                     && steps >= infillModelItem.stepsMin

@@ -10,7 +10,6 @@ import UM 1.2 as UM
 import Cura 1.0 as Cura
 import "Menus"
 
-
 Rectangle
 {
     id: base;
@@ -92,6 +91,7 @@ Rectangle
         id: header
         width: parent.width
         visible: machineExtruderCount.properties.value > 1 || Cura.MachineManager.hasMaterials || Cura.MachineManager.hasVariants
+
         onShowTooltip: base.showTooltip(item, location, text)
         onHideTooltip: base.hideTooltip()
     }
@@ -104,6 +104,15 @@ Rectangle
         color: UM.Theme.getColor("sidebar_lining")
         anchors.top: header.bottom
         anchors.topMargin: visible ? UM.Theme.getSize("sidebar_margin").height : 0
+    }
+
+    onCurrentModeIndexChanged:
+    {
+        UM.Preferences.setValue("cura/active_mode", currentModeIndex);
+        if(modesListModel.count > base.currentModeIndex)
+        {
+            sidebarContents.push({ "item": modesListModel.get(base.currentModeIndex).item, "replace": true });
+        }
     }
 
     Label {
@@ -540,6 +549,7 @@ Rectangle
         visible: monitoringPrint
     }
 
+
     SidebarTooltip
     {
         id: tooltip;
@@ -593,6 +603,7 @@ Rectangle
     UM.SettingPropertyProvider
     {
         id: machineExtruderCount
+
         containerStackId: Cura.MachineManager.activeMachineId
         key: "machine_extruder_count"
         watchedProperties: [ "value" ]
@@ -602,6 +613,7 @@ Rectangle
     UM.SettingPropertyProvider
     {
         id: machineHeatedBed
+
         containerStackId: Cura.MachineManager.activeMachineId
         key: "machine_heated_bed"
         watchedProperties: [ "value" ]

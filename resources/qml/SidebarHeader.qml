@@ -40,7 +40,7 @@ Column
         id: extruderSelectionRow
         width: parent.width
         height: Math.floor(UM.Theme.getSize("sidebar_tabs").height * 2 / 3)
-        visible: machineExtruderCount.properties.value > 1
+        visible: machineExtruderCount.properties.value > 1 && !sidebar.monitoringPrint
 
         anchors
         {
@@ -229,7 +229,7 @@ Column
     {
         id: materialRow
         height: UM.Theme.getSize("sidebar_setup").height
-        visible: Cura.MachineManager.hasMaterials
+        visible: Cura.MachineManager.hasMaterials && !sidebar.monitoringPrint && !sidebar.hideSettings
 
         anchors
         {
@@ -279,7 +279,7 @@ Column
     {
         id: variantRow
         height: UM.Theme.getSize("sidebar_setup").height
-        visible: Cura.MachineManager.hasVariants
+        visible: Cura.MachineManager.hasVariants && !sidebar.monitoringPrint && !sidebar.hideSettings
 
         anchors
         {
@@ -319,7 +319,7 @@ Column
     {
         id: materialInfoRow
         height: Math.floor(UM.Theme.getSize("sidebar_setup").height / 2)
-        visible: Cura.MachineManager.hasVariants || Cura.MachineManager.hasMaterials
+        visible: (Cura.MachineManager.hasVariants || Cura.MachineManager.hasMaterials) && !sidebar.monitoringPrint && !sidebar.hideSettings
 
         anchors
         {
