@@ -2,6 +2,7 @@ from cura.PrinterOutput.NetworkedPrinterOutputDevice import NetworkedPrinterOutp
 from cura.PrinterOutput.PrinterOutputModel import PrinterOutputModel
 from cura.PrinterOutput.PrintJobOutputModel import PrintJobOutputModel
 from cura.PrinterOutput.MaterialOutputModel import MaterialOutputModel
+from cura.PrinterOutput.NetworkCamera import NetworkCamera
 
 from cura.Settings.ContainerManager import ContainerManager
 from cura.Settings.ExtruderManager import ExtruderManager
@@ -91,7 +92,7 @@ class LegacyUM3OutputDevice(NetworkedPrinterOutputDevice):
                                                       title=i18n_catalog.i18nc("@info:title", "Authentication Status"))
         self._authentication_failed_message.addAction("Retry", i18n_catalog.i18nc("@action:button", "Retry"), None,
                                                       i18n_catalog.i18nc("@info:tooltip", "Re-send the access request"))
-        self._authentication_failed_message.actionTriggered.connect(self._requestAuthentication)
+        self._authentication_failed_message.actionTriggered.connect(self._messageCallback)
         self._authentication_succeeded_message = Message(
             i18n_catalog.i18nc("@info:status", "Access to the printer accepted"),
             title=i18n_catalog.i18nc("@info:title", "Authentication Status"))
@@ -102,7 +103,17 @@ class LegacyUM3OutputDevice(NetworkedPrinterOutputDevice):
         self._not_authenticated_message.addAction("Request", i18n_catalog.i18nc("@action:button", "Request Access"),
                                                   None, i18n_catalog.i18nc("@info:tooltip",
                                                                            "Send access request to the printer"))
-        self._not_authenticated_message.actionTriggered.connect(self._requestAuthentication)
+        self._not_authenticated_message.actionTriggered.connect(self._messageCallback)
+
+    def _messageCallback(self, message_id=None, action_id="Retry"):
+        if action_id == "Request" or action_id == "Retry":
+            if self._authentication_failed_message:
+                self._authentication_failed_message.hide()
+            if self._not_authenticated_message:
+                self._not_authenticated_message.hide()
+
+            self._requestAuthentication()
+        pass  # Cura Connect doesn't do any authorization
 
     def connect(self):
         super().connect()
@@ -530,6 +541,7 @@ class LegacyUM3OutputDevice(NetworkedPrinterOutputDevice):
 
             if not self._printers:
                 self._printers = [PrinterOutputModel(output_controller=self._output_controller, number_of_extruders=self._number_of_extruders)]
+                self._printers[0].setCamera(NetworkCamera("http://" + self._address + ":8080/?action=stream"))
                 self.printersChanged.emit()
 
             # LegacyUM3 always has a single printer.
