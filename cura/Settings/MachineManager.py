@@ -161,7 +161,10 @@ class MachineManager(QObject):
 
     @pyqtProperty(int, constant=True)
     def totalNumberOfSettings(self) -> int:
-        return len(ContainerRegistry.getInstance().findDefinitionContainers(id = "fdmprinter")[0].getAllKeys())
+        containers = ContainerRegistry.getInstance().findDefinitionContainers(id = "fdmprinter")
+        if len(containers) == 0:
+            return 0
+        return len(containers[0].getAllKeys())
 
     def _onHotendIdChanged(self, index: Union[str, int], hotend_id: str) -> None:
         if not self._global_container_stack:
