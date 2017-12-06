@@ -52,6 +52,8 @@ class Arrange:
         # Place all objects fixed nodes
         for fixed_node in fixed_nodes:
             vertices = fixed_node.callDecoration("getConvexHull")
+            if not vertices:
+                continue
             points = copy.deepcopy(vertices._points)
             shape_arr = ShapeArray.fromPolygon(points, scale = scale)
             arranger.place(0, 0, shape_arr)

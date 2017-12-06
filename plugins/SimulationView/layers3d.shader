@@ -38,12 +38,25 @@ vertex41core =
     out highp vec3 f_vertex;
     out highp vec3 f_normal;
 
-    vec4 gradientColor(float abs_value, float min_value, float max_value)
+    vec4 feedrateGradientColor(float abs_value, float min_value, float max_value)
     {
         float value = (abs_value - min_value)/(max_value - min_value);
         float red = value;
+        float green = 1-abs(1-4*value);
+        if (value > 0.375)
+        {
+            green = 0.5;
+        }
+        float blue = max(1-4*value, 0);
+        return vec4(red, green, blue, 1.0);
+    }
+
+    vec4 layerThicknessGradientColor(float abs_value, float min_value, float max_value)
+    {
+        float value = (abs_value - min_value)/(max_value - min_value);
+        float red = max(2*value-1, 0);
         float green = 1-abs(1-2*value);
-        float blue = 1-value;
+        float blue = max(1-2*value, 0);
         return vec4(red, green, blue, 1.0);
     }
 
@@ -64,10 +77,10 @@ vertex41core =
                 v_color = a_color;
                 break;
             case 2:  // "Feedrate"
-                v_color = gradientColor(a_feedrate, u_min_feedrate, u_max_feedrate);
+                v_color = feedrateGradientColor(a_feedrate, u_min_feedrate, u_max_feedrate);
                 break;
             case 3:  // "Layer thickness"
-                v_color = gradientColor(a_line_dim.y, u_min_thickness, u_max_thickness);
+                v_color = layerThicknessGradientColor(a_line_dim.y, u_min_thickness, u_max_thickness);
                 break;
         }
 

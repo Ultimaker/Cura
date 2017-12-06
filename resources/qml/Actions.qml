@@ -246,6 +246,16 @@ Item
 
     Action
     {
+        id: reloadQmlAction
+        onTriggered:
+        {
+            CuraApplication.reloadQML()
+        }
+        shortcut: "Shift+F5"
+    }
+
+    Action
+    {
         id: unGroupObjectsAction
         text: catalog.i18nc("@action:inmenu menubar:edit","Ungroup Models");
         enabled: UM.Scene.isGroupSelected

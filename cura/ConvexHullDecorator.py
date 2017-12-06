@@ -56,6 +56,11 @@ class ConvexHullDecorator(SceneNodeDecorator):
         if self._node is None:
             return None
 
+        if getattr(self._node, "_non_printing_mesh", False):
+            # infill_mesh, cutting_mesh and anti_overhang_mesh do not need a convex hull
+            # node._non_printing_mesh is set in SettingOverrideDecorator
+            return None
+
         hull = self._compute2DConvexHull()
 
         if self._global_stack and self._node:

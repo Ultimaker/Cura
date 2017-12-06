@@ -1,12 +1,10 @@
 # Copyright (c) 2016 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from PyQt5.QtCore import QObject, pyqtSlot, pyqtProperty, pyqtSignal, QUrl
-from PyQt5.QtQml import QQmlComponent, QQmlContext
+from PyQt5.QtCore import QObject, pyqtSlot, pyqtProperty, pyqtSignal
 
 from UM.PluginObject import PluginObject
 from UM.PluginRegistry import PluginRegistry
-from UM.Logger import Logger
 from UM.Application import Application
 
 import os
@@ -26,9 +24,6 @@ class MachineAction(QObject, PluginObject):
         self._key = key
         self._label = label
         self._qml_url = ""
-
-        self._component = None
-        self._context = None
         self._view = None
         self._finished = False
 
@@ -52,7 +47,6 @@ class MachineAction(QObject, PluginObject):
     #   /sa _reset
     @pyqtSlot()
     def reset(self):
-        self._component = None
         self._finished = False
         self._reset()
 
@@ -78,7 +72,6 @@ class MachineAction(QObject, PluginObject):
 
     @pyqtProperty(QObject, constant = True)
     def displayItem(self):
-        if not self._component:
+        if not self._view:
             self._createViewFromQML()
-
         return self._view

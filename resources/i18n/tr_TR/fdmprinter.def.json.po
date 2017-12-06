@@ -2,13 +2,13 @@
 # Copyright (C) 2017 Ultimaker
 # This file is distributed under the same license as the Cura package.
 # Ruben Dulek <r.dulek@ultimaker.com>, 2017.
-#
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Cura 3.0\n"
 "Report-Msgid-Bugs-To: http://github.com/ultimaker/uranium\n"
 "POT-Creation-Date: 2017-11-21 16:58+0000\n"
-"PO-Revision-Date: 2017-09-27 12:27+0200\n"
+"PO-Revision-Date: 2017-11-30 13:05+0100\n"
 "Last-Translator: Bothof <info@bothof.nl>\n"
 "Language-Team: Turkish\n"
 "Language: tr_TR\n"
@@ -56,9 +56,7 @@ msgctxt "machine_start_gcode description"
 msgid ""
 "Gcode commands to be executed at the very start - separated by \n"
 "."
-msgstr ""
-"​\n"
-" ile ayrılan, başlangıçta yürütülecek G-code komutları."
+msgstr "​\n ile ayrılan, başlangıçta yürütülecek G-code komutları."
 
 #: fdmprinter.def.json
 msgctxt "machine_end_gcode label"
@@ -70,9 +68,7 @@ msgctxt "machine_end_gcode description"
 msgid ""
 "Gcode commands to be executed at the very end - separated by \n"
 "."
-msgstr ""
-"​\n"
-" ile ayrılan, bitişte yürütülecek Gcode komutları."
+msgstr "​\n ile ayrılan, bitişte yürütülecek Gcode komutları."
 
 #: fdmprinter.def.json
 msgctxt "material_guid label"
@@ -612,27 +608,27 @@ msgstr "İlk katmanın milimetre cinsinden yüksekliği. Kalın ilk katmanlar ya
 #: fdmprinter.def.json
 msgctxt "slicing_tolerance label"
 msgid "Slicing Tolerance"
-msgstr ""
+msgstr "Dilimleme Toleransı"
 
 #: fdmprinter.def.json
 msgctxt "slicing_tolerance description"
 msgid "How to slice layers with diagonal surfaces. The areas of a layer can be generated based on where the middle of the layer intersects the surface (Middle). Alternatively each layer can have the areas which fall inside of the volume throughout the height of the layer (Exclusive) or a layer has the areas which fall inside anywhere within the layer (Inclusive). Exclusive retains the most details, Inclusive makes for the best fit and Middle takes the least time to process."
-msgstr ""
+msgstr "Çapraz yüzeylerle katman dilimleme yolları. Bir katmanın alanları katmanın ortasının yüzeyle kesiştiği yere (Ortalayıcı) göre oluşturulabilir. Diğer bir yol da her katmanın yüksekliği boyunca hacim içinde kalan alanları (Dışlayıcı) veya katmanın içinde herhangi bir yerde kalan alanları (Kapsayıcı) almasıdır. Dışlayıcı seçenek en çok ayrıntıyı tutar; Kapsayıcı seçenek en iyi şekilde oturur; Ortalayıcı ise en kısa sürede işlenir."
 
 #: fdmprinter.def.json
 msgctxt "slicing_tolerance option middle"
 msgid "Middle"
-msgstr ""
+msgstr "Ortalayıcı"
 
 #: fdmprinter.def.json
 msgctxt "slicing_tolerance option exclusive"
 msgid "Exclusive"
-msgstr ""
+msgstr "Dışlayıcı"
 
 #: fdmprinter.def.json
 msgctxt "slicing_tolerance option inclusive"
 msgid "Inclusive"
-msgstr ""
+msgstr "Kapsayıcı"
 
 #: fdmprinter.def.json
 msgctxt "line_width label"
@@ -807,7 +803,7 @@ msgstr "Dış Duvarı yazdırmak için kullanılan ekstruder dişli çarkı. Ço
 #: fdmprinter.def.json
 msgctxt "wall_x_extruder_nr label"
 msgid "Inner Wall Extruder"
-msgstr ""
+msgstr "İç Duvar Ekstrüderi"
 
 #: fdmprinter.def.json
 msgctxt "wall_x_extruder_nr description"
@@ -1387,7 +1383,7 @@ msgstr "Dolgu Şekli"
 #: fdmprinter.def.json
 msgctxt "infill_pattern description"
 msgid "The pattern of the infill material of the print. The line and zig zag infill swap direction on alternate layers, reducing material cost. The grid, triangle, tri-hexagon, cubic, octet, quarter cubic, cross and concentric patterns are fully printed every layer. Cubic, quarter cubic and octet infill change with every layer to provide a more equal distribution of strength over each direction."
-msgstr ""
+msgstr "Baskının dolgu malzemesinin şeklidir. Hat ve zikzak dolgu, farklı katmanlar üzerinde yön değiştirerek malzeme maliyetini azaltır. Izgara, üçgen, üçlü altıgen, kübik, sekizlik, çeyrek kübik, çapraz ve eşmerkezli şekiller, her katmana tam olarak basılır. Kübik, çeyrek kübik ve sekizlik dolgu, her yönde daha eşit bir kuvvet dağılımı sağlamak için her katmanda değişir."
 
 #: fdmprinter.def.json
 msgctxt "infill_pattern option grid"
@@ -1407,7 +1403,7 @@ msgstr "Üçgenler"
 #: fdmprinter.def.json
 msgctxt "infill_pattern option trihexagon"
 msgid "Tri-Hexagon"
-msgstr ""
+msgstr "Üçlü Altıgen"
 
 #: fdmprinter.def.json
 msgctxt "infill_pattern option cubic"
@@ -1462,7 +1458,7 @@ msgstr "Dolgu Hatlarını Bağlayın"
 #: fdmprinter.def.json
 msgctxt "zig_zaggify_infill description"
 msgid "Connect the ends where the infill pattern meets the inner wall using a line which follows the shape of the inner wall. Enabling this setting can make the infill adhere to the walls better and reduce the effects of infill on the quality of vertical surfaces. Disabling this setting reduces the amount of material used."
-msgstr ""
+msgstr "İç duvarın şeklini takip eden bir hattı kullanarak dolgu şeklinin iç duvarla buluştuğu noktada uçları bağlar. Bu ayarın etkinleştirilmesi, dolgunun duvarlara daha iyi yapışmasını sağlayabilir ve dolgunun dikey yüzeylerin kalitesinin etkilerini azaltabilir. Bu ayarın devre dışı bırakılması, kullanılan malzemenin miktarını azaltır."
 
 #: fdmprinter.def.json
 msgctxt "infill_angles label"
@@ -1477,22 +1473,22 @@ msgstr "Kullanılacak tam sayı hat yönü listesi. Listedeki öğeler, katmanla
 #: fdmprinter.def.json
 msgctxt "infill_offset_x label"
 msgid "Infill X Offset"
-msgstr ""
+msgstr "Dolgu X Kayması"
 
 #: fdmprinter.def.json
 msgctxt "infill_offset_x description"
 msgid "The infill pattern is offset this distance along the X axis."
-msgstr ""
+msgstr "Dolgu şekli X ekseni boyunca bu mesafe kadar kaydırılır."
 
 #: fdmprinter.def.json
 msgctxt "infill_offset_y label"
 msgid "Infill Y Offset"
-msgstr ""
+msgstr "Dolgu Y Kayması"
 
 #: fdmprinter.def.json
 msgctxt "infill_offset_y description"
 msgid "The infill pattern is offset this distance along the Y axis."
-msgstr ""
+msgstr "Dolgu şekli Y ekseni boyunca bu mesafe kadar kaydırılır."
 
 #: fdmprinter.def.json
 msgctxt "sub_div_rad_add label"
@@ -1807,22 +1803,22 @@ msgstr "Kullanılan filamanın çapını ayarlar. Bu değeri kullanılan filaman
 #: fdmprinter.def.json
 msgctxt "material_adhesion_tendency label"
 msgid "Adhesion Tendency"
-msgstr ""
+msgstr "Yapışma Eğilimi"
 
 #: fdmprinter.def.json
 msgctxt "material_adhesion_tendency description"
 msgid "Surface adhesion tendency."
-msgstr ""
+msgstr "Yüzeye yapışma eğilimi."
 
 #: fdmprinter.def.json
 msgctxt "material_surface_energy label"
 msgid "Surface Energy"
-msgstr ""
+msgstr "Yüzey Enerjisi"
 
 #: fdmprinter.def.json
 msgctxt "material_surface_energy description"
 msgid "Surface energy."
-msgstr ""
+msgstr "Yüzey enerjisi."
 
 #: fdmprinter.def.json
 msgctxt "material_flow label"
@@ -3554,7 +3550,7 @@ msgctxt "skirt_gap description"
 msgid ""
 "The horizontal distance between the skirt and the first layer of the print.\n"
 "This is the minimum distance. Multiple skirt lines will extend outwards from this distance."
-msgstr ""
+msgstr "Baskının eteği ve ilk katmanı arasındaki yatay mesafe.\nMinimum mesafedir. Bu mesafeden çok sayıda etek hattı dışarı doğru uzanır."
 
 #: fdmprinter.def.json
 msgctxt "skirt_brim_minimal_length label"
@@ -3614,7 +3610,7 @@ msgstr "Radye Düzeltme"
 #: fdmprinter.def.json
 msgctxt "raft_smoothing description"
 msgid "This setting controls how much inner corners in the raft outline are rounded. Inward corners are rounded to a semi circle with a radius equal to the value given here. This setting also removes holes in the raft outline which are smaller than such a circle."
-msgstr ""
+msgstr "Bu ayar, radye ana hattında yer alan iç köşelerin ne kadar yuvarlanacağını kontrol eder. İç köşeler, burada belirtilen değere eşit yarıçapa sahip yarım daire şeklinde yuvarlanır. Ayrıca bu ayar, söz konusu daireden daha küçük olan radye ana hattındaki delikleri ortadan kaldırır."
 
 #: fdmprinter.def.json
 msgctxt "raft_airgap label"
@@ -4089,12 +4085,12 @@ msgstr "Normal koşullarda, Cura ağdaki küçük boşlukları diker ve büyük 
 #: fdmprinter.def.json
 msgctxt "meshfix_maximum_resolution label"
 msgid "Maximum Resolution"
-msgstr ""
+msgstr "Maksimum Çözünürlük"
 
 #: fdmprinter.def.json
 msgctxt "meshfix_maximum_resolution description"
 msgid "The minimum size of a line segment after slicing. If you increase this, the mesh will have a lower resolution. This may allow the printer to keep up with the speed it has to process g-code and will increase slice speed by removing details of the mesh that it can't process anyway."
-msgstr ""
+msgstr "Bir çizginin dilimlemeden sonraki minimum boyutu. Bu değer artırıldıktan sonra örgünün çözünürlüğü düşer. Bu, yazıcının g-kodunu işlemek için gereken hıza yetişmesine olanak tanır ve örtünün zaten işlenemeyecek ayrıntılarını kaldırarak dilimleme hızını artırır."
 
 #: fdmprinter.def.json
 msgctxt "multiple_mesh_overlap label"
@@ -4129,12 +4125,12 @@ msgstr "Çakışan bileşimlerin birbirine karışması için her bir katmanda b
 #: fdmprinter.def.json
 msgctxt "remove_empty_first_layers label"
 msgid "Remove Empty First Layers"
-msgstr ""
+msgstr "Boş İlk Katmanları Kaldır"
 
 #: fdmprinter.def.json
 msgctxt "remove_empty_first_layers description"
 msgid "Remove empty layers beneath the first printed layer if they are present. Disabling this setting can cause empty first layers if the Slicing Tolerance setting is set to Exclusive or Middle."
-msgstr ""
+msgstr "Basılan ilk katmanın altındaki varsa boş katmanları kaldır. Bu ayarın devre dışı bırakılması, Dilimleme Toleransı Dışlayıcı veya Ortalayıcı olarak ayarlanmışsa, boş ilk katmanlar oluşmasına neden olabilir."
 
 #: fdmprinter.def.json
 msgctxt "blackmagic label"
@@ -4664,22 +4660,22 @@ msgstr "Her bir hat dilimine tanıtılan rastgele noktalar arasındaki ortalama 
 #: fdmprinter.def.json
 msgctxt "flow_rate_max_extrusion_offset label"
 msgid "Flow rate compensation max extrusion offset"
-msgstr ""
+msgstr "Akış hızı dengelemesi maksimum ekstrüzyon kayması"
 
 #: fdmprinter.def.json
 msgctxt "flow_rate_max_extrusion_offset description"
 msgid "The maximum distance in mm to compensate."
-msgstr ""
+msgstr "Dengelenecek, mm cinsinden maksimum mesafe."
 
 #: fdmprinter.def.json
 msgctxt "flow_rate_extrusion_offset_factor label"
 msgid "Flow rate compensation factor"
-msgstr ""
+msgstr "Akış hızı dengeleme çarpanı"
 
 #: fdmprinter.def.json
 msgctxt "flow_rate_extrusion_offset_factor description"
 msgid "The multiplication factor for the flow rate -> distance translation."
-msgstr ""
+msgstr "Akış hızından -> mesafeye dönüştürme için çarpan."
 
 #: fdmprinter.def.json
 msgctxt "wireframe_enabled label"
@@ -4831,9 +4827,7 @@ msgctxt "wireframe_up_half_speed description"
 msgid ""
 "Distance of an upward move which is extruded with half speed.\n"
 "This can cause better adhesion to previous layers, while not heating the material in those layers too much. Only applies to Wire Printing."
-msgstr ""
-"Yarı hızda sıkıştırılmış yukarı doğru hareket mesafesi.\n"
-"Bu katmanlarda malzemeyi çok fazla ısıtmayarak önceki katmanlarda daha iyi yapışma sağlayabilir. Sadece kablo yazdırmaya uygulanır."
+msgstr "Yarı hızda sıkıştırılmış yukarı doğru hareket mesafesi.\nBu katmanlarda malzemeyi çok fazla ısıtmayarak önceki katmanlarda daha iyi yapışma sağlayabilir. Sadece kablo yazdırmaya uygulanır."
 
 #: fdmprinter.def.json
 msgctxt "wireframe_top_jump label"

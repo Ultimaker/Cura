@@ -61,7 +61,17 @@ class ContainerManager(QObject):
             return ""
 
         container = containers[0]
+        new_container = self.duplicateContainerInstance(container)
+        return new_container.getId()
 
+    ##  Create a duplicate of the given container instance
+    #
+    #   This will create and add a duplicate of the container that was passed.
+    #
+    #   \param container \type{ContainerInterface} The container to duplicate.
+    #
+    #   \return The duplicated container, or None if duplication failed.
+    def duplicateContainerInstance(self, container):
         new_container = None
         new_name = self._container_registry.uniqueName(container.getName())
         # Only InstanceContainer has a duplicate method at the moment.
@@ -73,10 +83,11 @@ class ContainerManager(QObject):
             new_container.deserialize(container.serialize())
             new_container.setName(new_name)
 
+        # TODO: we probably don't want to add it to the registry here!
         if new_container:
             self._container_registry.addContainer(new_container)
 
-        return new_container.getId()
+        return new_container
 
     ##  Change the name of a specified container to a new name.
     #

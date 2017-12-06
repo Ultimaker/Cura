@@ -97,6 +97,8 @@ Item
             // if we are in compatibility mode, we only show the "line type"
             property bool show_legend: UM.SimulationView.compatibilityMode ? true : UM.Preferences.getValue("layerview/layer_view_type") == 1
             property bool show_gradient: UM.SimulationView.compatibilityMode ? false : UM.Preferences.getValue("layerview/layer_view_type") == 2 || UM.Preferences.getValue("layerview/layer_view_type") == 3
+            property bool show_feedrate_gradient: show_gradient && UM.Preferences.getValue("layerview/layer_view_type") == 2
+            property bool show_thickness_gradient: show_gradient && UM.Preferences.getValue("layerview/layer_view_type") == 3
             property bool only_show_top_layers: UM.Preferences.getValue("view/only_show_top_layers")
             property int top_layer_count: UM.Preferences.getValue("view/top_layer_count")
 
@@ -170,6 +172,9 @@ Item
                 {
                     // update visibility of legends
                     viewSettings.show_legend = UM.SimulationView.compatibilityMode || (type_id == 1);
+                    viewSettings.show_gradient = !UM.SimulationView.compatibilityMode && (type_id == 2 || type_id == 3);
+                    viewSettings.show_feedrate_gradient = viewSettings.show_gradient && (type_id == 2);
+                    viewSettings.show_thickness_gradient = viewSettings.show_gradient && (type_id == 3);
                 }
 
             }
@@ -450,11 +455,42 @@ Item
                 }
             }
 
-            // Gradient colors for feedrate and thickness
+            // Gradient colors for feedrate
             Rectangle { // In QML 5.9 can be changed by LinearGradient
                 // Invert values because then the bar is rotated 90 degrees
-                id: gradient
-                visible: viewSettings.show_gradient
+                id: feedrateGradient
+                visible: viewSettings.show_feedrate_gradient
+                anchors.left: parent.right
+                height: parent.width
+                width: UM.Theme.getSize("layerview_row").height * 1.5
+                border.width: UM.Theme.getSize("default_lining").width
+                border.color: UM.Theme.getColor("lining")
+                transform: Rotation {origin.x: 0; origin.y: 0; angle: 90}
+                gradient: Gradient {
+                    GradientStop {
+                        position: 0.000
+                        color: Qt.rgba(1, 0.5, 0, 1)
+                    }
+                    GradientStop {
+                        position: 0.625
+                        color: Qt.rgba(0.375, 0.5, 0, 1)
+                    }
+                    GradientStop {
+                        position: 0.75
+                        color: Qt.rgba(0.25, 1, 0, 1)
+                    }
+                    GradientStop {
+                        position: 1.0
+                        color: Qt.rgba(0, 0, 1, 1)
+                    }
+                }
+            }
+
+            // Gradient colors for layer thickness
+            Rectangle { // In QML 5.9 can be changed by LinearGradient
+                // Invert values because then the bar is rotated 90 degrees
+                id: thicknessGradient
+                visible: viewSettings.show_thickness_gradient
                 anchors.left: parent.right
                 height: parent.width
                 width: UM.Theme.getSize("layerview_row").height * 1.5
@@ -468,15 +504,15 @@ Item
                     }
                     GradientStop {
                         position: 0.25
-                        color: Qt.rgba(0.75, 0.5, 0.25, 1)
+                        color: Qt.rgba(0.5, 0.5, 0, 1)
                     }
                     GradientStop {
                         position: 0.5
-                        color: Qt.rgba(0.5, 1, 0.5, 1)
+                        color: Qt.rgba(0, 1, 0, 1)
                     }
                     GradientStop {
                         position: 0.75
-                        color: Qt.rgba(0.25, 0.5, 0.75, 1)
+                        color: Qt.rgba(0, 0.5, 0.5, 1)
                     }
                     GradientStop {
                         position: 1.0
@@ -503,9 +539,9 @@ Item
             id: pathSlider
 
             height: UM.Theme.getSize("slider_handle").width
-            anchors.right: playButton.left
-            anchors.rightMargin: UM.Theme.getSize("default_margin").width
-            anchors.left: parent.left
+            anchors.left: playButton.right
+            anchors.leftMargin: UM.Theme.getSize("default_margin").width
+            anchors.right: parent.right
             visible: !UM.SimulationView.compatibilityMode
 
             // custom properties
@@ -539,7 +575,7 @@ Item
             height: UM.Theme.getSize("layerview_menu_size").height
 
             anchors {
-                top: !UM.SimulationView.compatibilityMode ? playButton.bottom : parent.top
+                top: !UM.SimulationView.compatibilityMode ? pathSlider.bottom : parent.top
                 topMargin: !UM.SimulationView.compatibilityMode ? UM.Theme.getSize("default_margin").height : 0
                 right: parent.right
                 rightMargin: UM.Theme.getSize("slider_layerview_margin").width
@@ -577,13 +613,10 @@ Item
         // Play simulation button
         Button {
             id: playButton
-            implicitWidth: Math.floor(UM.Theme.getSize("button").width * 0.75)
-            implicitHeight: Math.floor(UM.Theme.getSize("button").height * 0.75)
             iconSource: "./resources/simulation_resume.svg"
-            style: UM.Theme.styles.tool_button
+            style: UM.Theme.styles.small_tool_button
             visible: !UM.SimulationView.compatibilityMode
             anchors {
-                horizontalCenter: layerSlider.horizontalCenter
                 verticalCenter: pathSlider.verticalCenter
             }
 

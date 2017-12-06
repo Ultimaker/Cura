@@ -350,21 +350,20 @@ Rectangle
                         var total_seconds = parseInt(base.printDuration.getDisplayString(UM.DurationFormat.Seconds))
 
                         // A message is created and displayed when the user hover the time label
-                        var content = catalog.i18nc("@tooltip", "<b>Time specification</b><br/><table>");
+                        var tooltip_html = "<b>%1</b><br/><table width=\"100%\">".arg(catalog.i18nc("@tooltip", "Time specification"));
                         for(var feature in print_time)
                         {
                             if(!print_time[feature].isTotalDurationZero)
                             {
-                                content += "<tr><td colspan='2'>" + feature + "</td></tr>" +
-                                    "<tr>" +
-                                    "<td width='60%'>" + print_time[feature].getDisplayString(UM.DurationFormat.Short) + "</td>" +
-                                    "<td width='40%'>&nbsp;&nbsp;" + Math.round(100 * parseInt(print_time[feature].getDisplayString(UM.DurationFormat.Seconds)) / total_seconds) + "%" +
+                                tooltip_html += "<tr><td>" + feature + ":</td>" +
+                                    "<td align=\"right\" valign=\"bottom\">&nbsp;&nbsp;%1</td>".arg(print_time[feature].getDisplayString(UM.DurationFormat.ISO8601).slice(0,-3)) +
+                                    "<td align=\"right\" valign=\"bottom\">&nbsp;&nbsp;%1%</td>".arg(Math.round(100 * parseInt(print_time[feature].getDisplayString(UM.DurationFormat.Seconds)) / total_seconds)) +
                                     "</td></tr>";
                             }
                         }
-                        content += "</table>";
+                        tooltip_html += "</table>";
 
-                        base.showTooltip(parent, Qt.point(-UM.Theme.getSize("sidebar_margin").width, 0), content);
+                        base.showTooltip(parent, Qt.point(-UM.Theme.getSize("sidebar_margin").width, 0), tooltip_html);
                     }
                 }
                 onExited:
@@ -376,9 +375,26 @@ Rectangle
 
         Label
         {
+            function formatRow(items)
+            {
+                var row_html = "<tr>";
+                for(var item = 0; item < items.length; item++)
+                {
+                    if (item == 0)
+                    {
+                        row_html += "<td valign=\"bottom\">%1</td>".arg(items[item]);
+                    }
+                    else
+                    {
+                        row_html += "<td align=\"right\" valign=\"bottom\">&nbsp;&nbsp;%1</td>".arg(items[item]);
+                    }
+                }
+                row_html += "</tr>";
+                return row_html;
+            }
 
-            function getSpecsData(){
-
+            function getSpecsData()
+            {
                 var lengths = [];
                 var total_length = 0;
                 var weights = [];
@@ -387,7 +403,8 @@ Rectangle
                 var total_cost = 0;
                 var some_costs_known = false;
                 var names = [];
-                if(base.printMaterialLengths) {
+                if(base.printMaterialLengths)
+                {
                     for(var index = 0; index < base.printMaterialLengths.length; index++)
                     {
                         if(base.printMaterialLengths[index] > 0)
@@ -415,33 +432,27 @@ Rectangle
                     costs = ["0.00"];
                 }
 
-                var tooltip_html = "<b>%1</b><br/><table>".arg(catalog.i18nc("@label", "Cost specification"));
+                var tooltip_html = "<b>%1</b><br/><table width=\"100%\">".arg(catalog.i18nc("@label", "Cost specification"));
                 for(var index = 0; index < lengths.length; index++)
                 {
-                    var item_strings = [
+                    tooltip_html += formatRow([
                         "%1:".arg(names[index]),
                         catalog.i18nc("@label m for meter", "%1m").arg(lengths[index]),
                         catalog.i18nc("@label g for grams", "%1g").arg(weights[index]),
-                        "%1 %2".arg(UM.Preferences.getValue("cura/currency")).arg(costs[index]),
-                    ];
-                    tooltip_html += "<tr>";
-                    for(var item = 0; item < item_strings.length; item++) {
-                        tooltip_html += "<td>%1&nbsp;&nbsp;</td>".arg(item_strings[item]);
-                    }
+                        "%1&nbsp;%2".arg(UM.Preferences.getValue("cura/currency")).arg(costs[index]),
+                    ]);
                 }
-                var item_strings = [
-                    catalog.i18nc("@label", "Total:"),
-                    catalog.i18nc("@label m for meter", "%1m").arg(total_length.toFixed(2)),
-                    catalog.i18nc("@label g for grams", "%1g").arg(Math.round(total_weight)),
-                    "%1 %2".arg(UM.Preferences.getValue("cura/currency")).arg(total_cost.toFixed(2)),
-                ];
-                tooltip_html += "<tr>";
-                for(var item = 0; item < item_strings.length; item++) {
-                    tooltip_html += "<td>%1&nbsp;&nbsp;</td>".arg(item_strings[item]);
+                if(lengths.length > 1)
+                {
+                    tooltip_html += formatRow([
+                        catalog.i18nc("@label", "Total:"),
+                        catalog.i18nc("@label m for meter", "%1m").arg(total_length.toFixed(2)),
+                        catalog.i18nc("@label g for grams", "%1g").arg(Math.round(total_weight)),
+                        "%1 %2".arg(UM.Preferences.getValue("cura/currency")).arg(total_cost.toFixed(2)),
+                    ]);
                 }
-                tooltip_html += "</tr></table>";
+                tooltip_html += "</table>";
                 tooltipText = tooltip_html;
-
 
                 return tooltipText
             }

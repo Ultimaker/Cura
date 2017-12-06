@@ -154,6 +154,7 @@ class SimulationView(View):
     def _onSceneChanged(self, node):
         self.setActivity(False)
         self.calculateMaxLayers()
+        self.calculateMaxPathsOnLayer(self._current_layer_num)
 
     def isBusy(self):
         return self._busy
