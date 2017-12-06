@@ -9,11 +9,10 @@ from cura.Stages.CuraStage import CuraStage
 ##  Stage for preparing model (slicing).
 class PrepareStage(CuraStage):
 
-    def __init__(self):
-        super().__init__()
+    def __init__(self, parent = None):
+        super().__init__(parent)
         Application.getInstance().engineCreatedSignal.connect(self._engineCreated)
 
     def _engineCreated(self):
         sidebar_component_path = os.path.join(Resources.getPath(Application.getInstance().ResourceTypes.QmlFiles), "Sidebar.qml")
-        sidebar_component = Application.getInstance().createQmlComponent(sidebar_component_path)
-        self.addDisplayComponent("sidebar", sidebar_component)
+        self.addDisplayComponent("sidebar", sidebar_component_path)

@@ -377,7 +377,8 @@ UM.MainWindow
                 width: UM.Theme.getSize("sidebar").width
                 z: 1
 
-                sourceComponent: UM.Controller.activeStage.sidebarComponent
+                source: UM.Controller.activeStage.sidebarComponent
+                asynchronous: true
             }
 
             Loader
@@ -390,10 +391,6 @@ UM.MainWindow
                     bottom: parent.bottom
                     left: parent.left
                     right: sidebar.left
-//                    horizontalCenter: parent.horizontalCenter
-//                    verticalCenter: parent.verticalCenter
-//                    horizontalCenterOffset: - UM.Theme.getSize("sidebar").width / 2
-//                    verticalCenterOffset: UM.Theme.getSize("sidebar_header").height / 2
                 }
 
 //                MouseArea
@@ -403,7 +400,8 @@ UM.MainWindow
 //                    onWheel: wheel.accepted = true
 //                }
 
-                sourceComponent: UM.Controller.activeStage.mainComponent
+                source: UM.Controller.activeStage.mainComponent
+                asynchronous: true
             }
 
             UM.MessageStack
