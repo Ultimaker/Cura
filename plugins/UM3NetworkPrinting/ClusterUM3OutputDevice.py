@@ -12,6 +12,7 @@ from cura.PrinterOutput.NetworkedPrinterOutputDevice import NetworkedPrinterOutp
 from cura.PrinterOutput.PrinterOutputModel import PrinterOutputModel
 from cura.PrinterOutput.PrintJobOutputModel import PrintJobOutputModel
 from cura.PrinterOutput.MaterialOutputModel import MaterialOutputModel
+from cura.PrinterOutput.NetworkCamera import NetworkCamera
 
 from .ClusterUM3PrinterOutputController import ClusterUM3PrinterOutputController
 
@@ -290,6 +291,7 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
 
                 if printer is None:
                     printer = PrinterOutputModel(output_controller=ClusterUM3PrinterOutputController(self), number_of_extruders=self._number_of_extruders)
+                    printer.setCamera(NetworkCamera("http://" + printer_data["ip_address"] + ":8080/?action=stream"))
                     self._printers.append(printer)
                     printer_list_changed = True
 

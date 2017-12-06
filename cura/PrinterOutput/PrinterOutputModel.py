@@ -22,6 +22,7 @@ class PrinterOutputModel(QObject):
     headPositionChanged = pyqtSignal()
     keyChanged = pyqtSignal()
     typeChanged = pyqtSignal()
+    cameraChanged = pyqtSignal()
 
     def __init__(self, output_controller: "PrinterOutputController", number_of_extruders: int = 1, parent=None):
         super().__init__(parent)
@@ -37,6 +38,17 @@ class PrinterOutputModel(QObject):
         self._printer_state = "unknown"
 
         self._type = ""
+
+        self._camera = None
+
+    def setCamera(self, camera):
+        if self._camera is not camera:
+            self._camera = camera
+            self.cameraChanged.emit()
+
+    @pyqtProperty(QObject, notify=cameraChanged)
+    def camera(self):
+        return self._camera
 
     @pyqtProperty(str, notify = typeChanged)
     def type(self):
