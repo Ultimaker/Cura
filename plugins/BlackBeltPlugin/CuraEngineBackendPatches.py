@@ -50,6 +50,11 @@ class CuraEngineBackendPatches():
         self._backend._start_slice_job.start()
         self._backend._start_slice_job.finished.connect(self._backend._onStartSliceCompleted)
 
+        self._backend._layer_view_active = False
+        Application.getInstance().getController().activeViewChanged.disconnect(self._backend._onActiveViewChanged)
+        Application.getInstance().getController().activeViewChanged.connect(self._onActiveViewChanged)
+        self._onActiveViewChanged()
+
     ##  Called when the engine sends a message that slicing is finished.
     #
     #   \param message The protobuf message signalling that slicing is finished.
@@ -74,3 +79,19 @@ class CuraEngineBackendPatches():
             self._backend._process_layers_job.finished.connect(self._backend._onProcessLayersFinished)
             self._backend._process_layers_job.start()
             self._backend._stored_optimized_layer_data = []
+
+    ##  Called when the user changes the active view mode.
+    def _onActiveViewChanged(self):
+        view = Application.getInstance().getController().getActiveView()
+        if view:
+            if view.getPluginId() == "SimulationView":  # If switching to layer view, we should process the layers if that hasn't been done yet.
+                self._backend._layer_view_active = True
+                # There is data and we're not slicing at the moment
+                # if we are slicing, there is no need to re-calculate the data as it will be invalid in a moment.
+            if self._backend._layer_view_active and (self._backend._process_layers_job is None or not self._backend._process_layers_job.isRunning()):
+                self._backend._process_layers_job = ProcessSlicedLayersJob.ProcessSlicedLayersJob(self._backend._stored_optimized_layer_data)
+                self._backend._process_layers_job.finished.connect(self._backend._onProcessLayersFinished)
+                self._backend._process_layers_job.start()
+                self._backend._stored_optimized_layer_data = []
+            else:
+                self._backend._layer_view_active = False
