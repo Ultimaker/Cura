@@ -75,9 +75,8 @@ Rectangle
                 checkable: true
                 checked: model.active
                 exclusiveGroup: topbarMenuGroup
-                style: UM.Theme.styles.topbar_header_tab
+                style: (model.stage.iconSource != "") ? UM.Theme.styles.topbar_header_tab_no_overlay : UM.Theme.styles.topbar_header_tab
                 height: UM.Theme.getSize("sidebar_header").height
-                width: UM.Theme.getSize("topbar_button").width
                 onClicked: UM.Controller.setActiveStage(model.id)
                 iconSource: model.stage.iconSource
 
