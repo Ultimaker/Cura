@@ -21,18 +21,6 @@ Rectangle
     property bool printerConnected: Cura.MachineManager.printerOutputDevices.length != 0
     property bool printerAcceptsCommands: printerConnected && Cura.MachineManager.printerOutputDevices[0].acceptsCommands
 
-    // update monitoring status when event was triggered outside topbar
-//    Component.onCompleted: {
-//        startMonitoringPrint.connect(function () {
-//            base.monitoringPrint = true
-//            UM.Controller.disableModelRendering()
-//        })
-//        stopMonitoringPrint.connect(function () {
-//            base.monitoringPrint = false
-//            UM.Controller.enableModelRendering()
-//        })
-//    }
-
     UM.I18nCatalog
     {
         id: catalog
