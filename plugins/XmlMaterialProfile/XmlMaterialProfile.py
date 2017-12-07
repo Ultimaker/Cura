@@ -238,7 +238,8 @@ class XmlMaterialProfile(InstanceContainer):
                 if not variant_containers:
                     continue
 
-                builder.start("hotend", {"id": variant_containers[0]["id"]})
+                # The hotend identifier is not the containers name, but its "name".
+                builder.start("hotend", {"id": variant_containers[0]["name"]})
 
                 # Compatible is a special case, as it's added as a meta data entry (instead of an instance).
                 compatible = hotend.getMetaDataEntry("compatible")
