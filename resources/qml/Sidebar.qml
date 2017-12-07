@@ -282,7 +282,7 @@ Rectangle
     Loader
     {
         anchors.bottom: footerSeparator.top
-        anchors.top: headerSeparator.bottom
+        anchors.top: monitoringPrint ? base.top : headerSeparator.bottom
         anchors.left: base.left
         anchors.right: base.right
         source:
