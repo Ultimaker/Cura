@@ -391,7 +391,6 @@ class CuraApplication(QtApplication):
     def needToShowUserAgreement(self):
         return self._need_to_show_user_agreement
 
-
     def setNeedToShowUserAgreement(self, set_value = True):
         self._need_to_show_user_agreement = set_value
 

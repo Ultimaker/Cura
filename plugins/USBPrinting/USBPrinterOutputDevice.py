@@ -490,7 +490,7 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
         self.setJobName(file_name)
         self._print_estimated_time = int(Application.getInstance().getPrintInformation().currentPrintTime.getDisplayString(DurationFormat.Format.Seconds))
 
-        Application.getInstance().showPrintMonitor.emit(True)
+        Application.getInstance().getController().setActiveStage("MonitorStage")
         self.startPrint()
 
     def _setEndstopState(self, endstop_key, value):
@@ -698,7 +698,7 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
         self._is_printing = False
         self._is_paused = False
         self._updateJobState("ready")
-        Application.getInstance().showPrintMonitor.emit(False)
+        Application.getInstance().getController().setActiveStage("PrepareStage")
 
     ##  Check if the process did not encounter an error yet.
     def hasError(self):
