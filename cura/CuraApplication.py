@@ -172,6 +172,7 @@ class CuraApplication(QtApplication):
         Resources.addStorageType(self.ResourceTypes.DefinitionChangesContainer, "definition_changes")
 
         ContainerRegistry.getInstance().addResourceType(self.ResourceTypes.QualityInstanceContainer, "quality")
+        ContainerRegistry.getInstance().addResourceType(self.ResourceTypes.QualityInstanceContainer, "quality_changes")
         ContainerRegistry.getInstance().addResourceType(self.ResourceTypes.VariantInstanceContainer, "variant")
         ContainerRegistry.getInstance().addResourceType(self.ResourceTypes.MaterialInstanceContainer, "material")
         ContainerRegistry.getInstance().addResourceType(self.ResourceTypes.UserInstanceContainer, "user")
@@ -468,7 +469,7 @@ class CuraApplication(QtApplication):
         ContainerRegistry.getInstance().saveDirtyContainers()
 
     def saveStack(self, stack):
-        ContainerRegistry.getInstance().saveStack(stack)
+        ContainerRegistry.getInstance().saveContainer(stack)
 
     @pyqtSlot(str, result = QUrl)
     def getDefaultPath(self, key):
