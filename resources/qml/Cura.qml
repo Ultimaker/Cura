@@ -18,6 +18,21 @@ UM.MainWindow
     //: Cura application window title
     title: catalog.i18nc("@title:window","Ultimaker Cura");
     viewportRect: Qt.rect(0, 0, (base.width - sidebar.width) / base.width, 1.0)
+    property bool showPrintMonitor: false
+
+    // This connection is here to support legacy printer output devices that use the showPrintMonitor signal on Application to switch to the monitor stage
+    // It should be phased out in newer plugin versions.
+    Connections
+    {
+        target: Printer
+        onShowPrintMonitor: {
+            if (show) {
+                UM.Controller.setActiveStage("MonitorStage")
+            } else {
+                UM.Controller.setActiveStage("PrepareStage")
+            }
+        }
+    }
 
     Component.onCompleted:
     {
