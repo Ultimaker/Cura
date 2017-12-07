@@ -109,7 +109,7 @@ The build plate now shows graduations of 10 mm and 1 mm for easy model positioni
 Extruder tabs have become buttons and icons have been updated.
 
 *Add an "Export to Cura" button in SOLIDWORKS
-SOLIDWORKS plugin can now be installed using an automatic installer.
+A macro can be added to your SOLIDWORKS installation that loads your model into Ultimaker Cura.
 
 *Siemens NX macro
 When a user updates models in Siemens NX and clicks the button, the updated models replace the models opened in Ultimaker Cura.
