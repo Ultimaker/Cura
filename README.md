@@ -3,7 +3,7 @@ Cura
 
 This is the new, shiny frontend for Cura. [daid/Cura](https://github.com/daid/Cura.git) is the old legacy Cura that everyone knows and loves/hates.
 
-We re-worked the whole GUI code at Ultimaker, because the old code started to become a unmaintainable.
+We re-worked the whole GUI code at Ultimaker, because the old code started to become unmaintainable.
 
 
 Logging Issues
