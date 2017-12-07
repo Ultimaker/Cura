@@ -378,7 +378,6 @@ UM.MainWindow
                 z: 1
 
                 source: UM.Controller.activeStage.sidebarComponent
-                asynchronous: true
             }
 
             Loader
@@ -402,7 +401,6 @@ UM.MainWindow
                 }
 
                 source: UM.Controller.activeStage.mainComponent
-                asynchronous: true
             }
 
             UM.MessageStack

@@ -16,7 +16,8 @@ class MonitorStage(CuraStage):
         # Wait until QML engine is created, otherwise creating the new QML components will fail
         Application.getInstance().engineCreatedSignal.connect(self._setComponents)
 
-        # TODO: connect output device state to icon source
+        # Update the status icon when the output device is changed
+        Application.getInstance().getOutputDeviceManager().activeDeviceChanged.connect(self._setIconSource)
 
     def _setComponents(self):
         self._setMainOverlay()
@@ -34,41 +35,39 @@ class MonitorStage(CuraStage):
 
     def _setIconSource(self):
         if Application.getInstance().getTheme() is not None:
-            self.setIconSource(Application.getInstance().getTheme().getIcon("tab_status_connected"))
+            icon_name = self._getActiveOutputDeviceStatusIcon()
+            self.setIconSource(Application.getInstance().getTheme().getIcon(icon_name))
 
-# property string iconSource:
-# //            {
-# //                if (!printerConnected)
-# //                {
-# //                    return UM.Theme.getIcon("tab_status_unknown");
-# //                }
-# //                else if (!printerAcceptsCommands)
-# //                {
-# //                    return UM.Theme.getIcon("tab_status_unknown");
-# //                }
-# //
-# //                if (Cura.MachineManager.printerOutputDevices[0].printerState == "maintenance")
-# //                {
-# //                    return UM.Theme.getIcon("tab_status_busy");
-# //                }
-# //
-# //                switch (Cura.MachineManager.printerOutputDevices[0].jobState)
-# //                {
-# //                    case "printing":
-# //                    case "pre_print":
-# //                    case "pausing":
-# //                    case "resuming":
-# //                        return UM.Theme.getIcon("tab_status_busy");
-# //                    case "wait_cleanup":
-# //                        return UM.Theme.getIcon("tab_status_finished");
-# //                    case "ready":
-# //                    case "":
-# //                        return UM.Theme.getIcon("tab_status_connected")
-# //                    case "paused":
-# //                        return UM.Theme.getIcon("tab_status_paused")
-# //                    case "error":
-# //                        return UM.Theme.getIcon("tab_status_stopped")
-# //                    default:
-# //                        return UM.Theme.getIcon("tab_status_unknown")
-# //                }
-# //            }
+    ##  Find the correct status icon depending on the active output device state
+    def _getActiveOutputDeviceStatusIcon(self):
+        output_device = Application.getInstance().getOutputDeviceManager().getActiveDevice()
+
+        if not output_device:
+            return "tab_status_unknown"
+
+        if hasattr(output_device, "acceptsCommands") and not output_device.acceptsCommands:
+            return "tab_status_unknown"
+
+        if not hasattr(output_device, "printerState") or not hasattr(output_device, "jobState"):
+            return "tab_status_unknown"
+
+        # TODO: refactor to use enum instead of hardcoded strings?
+        if output_device.printerState == "maintenance":
+            return "tab_status_busy"
+
+        if output_device.jobState in ["printing", "pre_print", "pausing", "resuming"]:
+            return "tab_status_busy"
+
+        if output_device.jobState == "wait_cleanup":
+            return "tab_status_finished"
+
+        if output_device.jobState in ["ready", ""]:
+            return "tab_status_connected"
+
+        if output_device.jobState == "paused":
+            return "tab_status_paused"
+
+        if output_device.jobState == "error":
+            return "tab_status_stopped"
+
+        return "tab_status_unknown"
