@@ -2,6 +2,7 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 import os.path
 from UM.Application import Application
+from UM.PluginRegistry import PluginRegistry
 from UM.Resources import Resources
 from cura.Stages.CuraStage import CuraStage
 
@@ -11,14 +12,29 @@ class MonitorStage(CuraStage):
 
     def __init__(self, parent = None):
         super().__init__(parent)
-        Application.getInstance().engineCreatedSignal.connect(self._engineCreated)
+
+        # Wait until QML engine is created, otherwise creating the new QML components will fail
+        Application.getInstance().engineCreatedSignal.connect(self._setComponents)
+
         # TODO: connect output device state to icon source
 
-    def _engineCreated(self):
+    def _setComponents(self):
+        self._setMainOverlay()
+        self._setSidebar()
+        self._setIconSource()
+
+    def _setMainOverlay(self):
+        main_component_path = os.path.join(PluginRegistry.getInstance().getPluginPath("MonitorStage"), "MonitorMainView.qml")
+        self.addDisplayComponent("main", main_component_path)
+
+    def _setSidebar(self):
         # Note: currently the sidebar component for prepare and monitor stages is the same, this will change with the printer output device refactor!
         sidebar_component_path = os.path.join(Resources.getPath(Application.getInstance().ResourceTypes.QmlFiles), "Sidebar.qml")
         self.addDisplayComponent("sidebar", sidebar_component_path)
-        self.setIconSource(Application.getInstance().getTheme().getIcon("tab_status_connected"))
+
+    def _setIconSource(self):
+        if Application.getInstance().getTheme() is not None:
+            self.setIconSource(Application.getInstance().getTheme().getIcon("tab_status_connected"))
 
 # property string iconSource:
 # //            {

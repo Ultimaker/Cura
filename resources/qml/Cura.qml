@@ -393,12 +393,13 @@ UM.MainWindow
                     right: sidebar.left
                 }
 
-//                MouseArea
-//                {
-//                    anchors.fill: parent
-//                    acceptedButtons: Qt.AllButtons
-//                    onWheel: wheel.accepted = true
-//                }
+                MouseArea
+                {
+                    visible: UM.Controller.activeStage.mainComponent != ""
+                    anchors.fill: parent
+                    acceptedButtons: Qt.AllButtons
+                    onWheel: wheel.accepted = true
+                }
 
                 source: UM.Controller.activeStage.mainComponent
                 asynchronous: true
