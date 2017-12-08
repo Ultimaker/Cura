@@ -543,7 +543,9 @@ class LegacyUM3OutputDevice(NetworkedPrinterOutputDevice):
                 return
 
             if not self._printers:
-                self._printers = [PrinterOutputModel(output_controller=self._output_controller, number_of_extruders=self._number_of_extruders)]
+                # Quickest way to get the firmware version is to grab it from the zeroconf.
+                firmware_version = self._properties.get(b"firmware_version", b"").decode("utf-8")
+                self._printers = [PrinterOutputModel(output_controller=self._output_controller, number_of_extruders=self._number_of_extruders, firmware_version=firmware_version)]
                 self._printers[0].setCamera(NetworkCamera("http://" + self._address + ":8080/?action=stream"))
                 self.printersChanged.emit()
 
@@ -552,6 +554,14 @@ class LegacyUM3OutputDevice(NetworkedPrinterOutputDevice):
             printer.updateBedTemperature(result["bed"]["temperature"]["current"])
             printer.updateTargetBedTemperature(result["bed"]["temperature"]["target"])
             printer.updateState(result["status"])
+
+            try:
+                # If we're still handling the request, we should ignore remote for a bit.
+                if not printer.getController().isPreheatRequestInProgress():
+                    printer.updateIsPreheating(result["bed"]["pre_heat"]["active"])
+            except KeyError:
+                # Older firmwares don't support preheating, so we need to fake it.
+                pass
 
             head_position = result["heads"][0]["position"]
             printer.updateHeadPosition(head_position["x"], head_position["y"], head_position["z"])

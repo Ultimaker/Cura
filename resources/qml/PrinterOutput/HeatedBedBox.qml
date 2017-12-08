@@ -136,15 +136,6 @@ Item
                 color: UM.Theme.getColor("setting_control_highlight")
                 opacity: preheatTemperatureControl.hovered ? 1.0 : 0
             }
-            Label //Maximum temperature indication.
-            {
-                text: (bedTemperature.properties.maximum_value != "None" ? bedTemperature.properties.maximum_value : "") + "°C"
-                color: UM.Theme.getColor("setting_unit")
-                font: UM.Theme.getFont("default")
-                anchors.right: parent.right
-                anchors.rightMargin: UM.Theme.getSize("setting_unit_margin").width
-                anchors.verticalCenter: parent.verticalCenter
-            }
             MouseArea //Change cursor on hovering.
             {
                 id: preheatTemperatureInputMouseArea
@@ -204,58 +195,6 @@ Item
             }
         }
 
-        UM.RecolorImage
-        {
-            id: preheatCountdownIcon
-            width: UM.Theme.getSize("save_button_specs_icons").width
-            height: UM.Theme.getSize("save_button_specs_icons").height
-            sourceSize.width: width
-            sourceSize.height: height
-            color: UM.Theme.getColor("text")
-            visible: preheatCountdown.visible
-            source: UM.Theme.getIcon("print_time")
-            anchors.right: preheatCountdown.left
-            anchors.rightMargin: Math.floor(UM.Theme.getSize("default_margin").width / 2)
-            anchors.verticalCenter: preheatCountdown.verticalCenter
-        }
-
-        Timer
-        {
-            id: preheatUpdateTimer
-            interval: 100 //Update every 100ms. You want to update every 1s, but then you have one timer for the updating running out of sync with the actual date timer and you might skip seconds.
-            running: printerModel != null && printerModel.preheatBedRemainingTime != ""
-            repeat: true
-            onTriggered: update()
-            property var endTime: new Date() //Set initial endTime to be the current date, so that the endTime has initially already passed and the timer text becomes invisible if you were to update.
-            function update()
-            {
-                if(printerModel != null && !printerModel.canPreHeatBed)
-                {
-                    return // Nothing to do, printer cant preheat at all!
-                }
-                preheatCountdown.text = ""
-                if (printerModel != null && connectedPrinter.preheatBedRemainingTime != null)
-                {
-                    preheatCountdown.text = connectedPrinter.preheatBedRemainingTime;
-                }
-                if (preheatCountdown.text == "") //Either time elapsed or not connected.
-                {
-                    stop();
-                }
-            }
-        }
-        Label
-        {
-            id: preheatCountdown
-            text: printerModel != null ? printerModel.preheatBedRemainingTime : ""
-            visible: text != "" //Has no direct effect, but just so that we can link visibility of clock icon to visibility of the countdown text.
-            font: UM.Theme.getFont("default")
-            color: UM.Theme.getColor("text")
-            anchors.right: preheatButton.left
-            anchors.rightMargin: UM.Theme.getSize("default_margin").width
-            anchors.verticalCenter: preheatButton.verticalCenter
-        }
-
         Button //The pre-heat button.
         {
             id: preheatButton
@@ -267,9 +206,9 @@ Item
                 {
                     return false; //Not connected, not authenticated or printer is busy.
                 }
-                if (preheatUpdateTimer.running)
+                if (printerModel.isPreheating)
                 {
-                    return true; //Can always cancel if the timer is running.
+                    return true;
                 }
                 if (bedTemperature.properties.minimum_value != "None" && Math.floor(preheatTemperatureInput.text) < Math.floor(bedTemperature.properties.minimum_value))
                 {
@@ -363,23 +302,20 @@ Item
                             }
                         }
                         font: UM.Theme.getFont("action_button")
-                        text: preheatUpdateTimer.running ? catalog.i18nc("@button Cancel pre-heating", "Cancel") : catalog.i18nc("@button", "Pre-heat")
+                        text: printerModel.isPreheating ? catalog.i18nc("@button Cancel pre-heating", "Cancel") : catalog.i18nc("@button", "Pre-heat")
                     }
                 }
             }
 
             onClicked:
             {
-                if (!preheatUpdateTimer.running)
+                if (!printerModel.isPreheating)
                 {
-                    printerModel.preheatBed(preheatTemperatureInput.text, printerModel.preheatBedTimeout);
-                    preheatUpdateTimer.start();
-                    preheatUpdateTimer.update(); //Update once before the first timer is triggered.
+                    printerModel.preheatBed(preheatTemperatureInput.text, 900);
                 }
                 else
                 {
                     printerModel.cancelPreheatBed();
-                    preheatUpdateTimer.update();
                 }
             }
 

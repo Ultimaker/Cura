@@ -23,7 +23,7 @@ class MonitorStage(CuraStage):
     def _setActivePrintJob(self, print_job):
         if self._active_print_job != print_job:
             if self._active_print_job:
-                self._active_printer.stateChanged.disconnect(self._updateIconSource)
+                self._active_print_job.stateChanged.disconnect(self._updateIconSource)
             self._active_print_job = print_job
             if self._active_print_job:
                 self._active_print_job.stateChanged.connect(self._updateIconSource)

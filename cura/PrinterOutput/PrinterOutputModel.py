@@ -16,6 +16,7 @@ if MYPY:
 class PrinterOutputModel(QObject):
     bedTemperatureChanged = pyqtSignal()
     targetBedTemperatureChanged = pyqtSignal()
+    isPreheatingChanged = pyqtSignal()
     stateChanged = pyqtSignal()
     activePrintJobChanged = pyqtSignal()
     nameChanged = pyqtSignal()
@@ -24,7 +25,7 @@ class PrinterOutputModel(QObject):
     typeChanged = pyqtSignal()
     cameraChanged = pyqtSignal()
 
-    def __init__(self, output_controller: "PrinterOutputController", number_of_extruders: int = 1, parent=None):
+    def __init__(self, output_controller: "PrinterOutputController", number_of_extruders: int = 1, parent=None, firmware_version = ""):
         super().__init__(parent)
         self._bed_temperature = -1  # Use -1 for no heated bed.
         self._target_bed_temperature = 0
@@ -34,17 +35,30 @@ class PrinterOutputModel(QObject):
         self._extruders = [ExtruderOutputModel(printer=self) for i in range(number_of_extruders)]
         self._head_position = Vector(0, 0, 0)
         self._active_print_job = None  # type: Optional[PrintJobOutputModel]
-
+        self._firmware_version = firmware_version
         self._printer_state = "unknown"
-
+        self._is_preheating = False
         self._type = ""
 
         self._camera = None
+
+    @pyqtProperty(str, constant = True)
+    def firmwareVersion(self):
+        return self._firmware_version
 
     def setCamera(self, camera):
         if self._camera is not camera:
             self._camera = camera
             self.cameraChanged.emit()
+
+    def updateIsPreheating(self, pre_heating):
+        if self._is_preheating != pre_heating:
+            self._is_preheating = pre_heating
+            self.isPreheatingChanged.emit()
+
+    @pyqtProperty(bool, notify=isPreheatingChanged)
+    def isPreheating(self):
+        return self._is_preheating
 
     @pyqtProperty(QObject, notify=cameraChanged)
     def camera(self):
