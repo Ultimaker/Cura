@@ -202,7 +202,6 @@ Item
             target: Printer
             onAdditionalComponentsChanged:
             {
-                print("areaId", areaId)
                 if(areaId == "monitorButtons") {
                     for (var component in CuraApplication.additionalComponents["monitorButtons"]) {
                         CuraApplication.additionalComponents["monitorButtons"][component].parent = additionalComponentsRow
