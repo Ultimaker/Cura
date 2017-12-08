@@ -135,14 +135,19 @@ Item {
             spacing: UM.Theme.getSize("default_margin").width
         }
 
+        Component.onCompleted: {
+            addAdditionalComponents("saveButton")
+        }
+
         Connections {
-            target: Printer
-            onAdditionalComponentsChanged:
-            {
-                if(areaId == "saveButton") {
-                    for (var component in CuraApplication.additionalComponents["saveButton"]) {
-                        CuraApplication.additionalComponents["saveButton"][component].parent = additionalComponentsRow
-                    }
+            target: CuraApplication
+            onAdditionalComponentsChanged: addAdditionalComponents
+        }
+
+        function addAdditionalComponents (areaId) {
+            if(areaId == "saveButton") {
+                for (var component in CuraApplication.additionalComponents["saveButton"]) {
+                    CuraApplication.additionalComponents["saveButton"][component].parent = additionalComponentsRow
                 }
             }
         }

@@ -24,7 +24,7 @@ UM.MainWindow
     // It should be phased out in newer plugin versions.
     Connections
     {
-        target: Printer
+        target: CuraApplication
         onShowPrintMonitor: {
             if (show) {
                 UM.Controller.setActiveStage("MonitorStage")
@@ -377,7 +377,6 @@ UM.MainWindow
                 }
 
                 width: UM.Theme.getSize("sidebar").width
-                z: 1
 
                 source: UM.Controller.activeStage.sidebarComponent
             }
@@ -819,7 +818,7 @@ UM.MainWindow
 
     Connections
     {
-        target: Printer
+        target: CuraApplication
         onShowMessageBox:
         {
             messageDialog.title = title
@@ -865,7 +864,7 @@ UM.MainWindow
 
     Connections
     {
-        target: Printer
+        target: CuraApplication
         onRequestAddPrinter:
         {
             addMachineDialog.visible = true

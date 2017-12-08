@@ -198,14 +198,19 @@ Item
             spacing: UM.Theme.getSize("default_margin").width
         }
 
+        Component.onCompleted: {
+            updateAdditionalComponents("monitorButtons")
+        }
+
         Connections {
-            target: Printer
-            onAdditionalComponentsChanged:
-            {
-                if(areaId == "monitorButtons") {
-                    for (var component in CuraApplication.additionalComponents["monitorButtons"]) {
-                        CuraApplication.additionalComponents["monitorButtons"][component].parent = additionalComponentsRow
-                    }
+            target: CuraApplication
+            onAdditionalComponentsChanged: updateAdditionalComponents
+        }
+
+        function updateAdditionalComponents (areaId) {
+            if(areaId == "monitorButtons") {
+                for (var component in CuraApplication.additionalComponents["monitorButtons"]) {
+                    CuraApplication.additionalComponents["monitorButtons"][component].parent = additionalComponentsRow
                 }
             }
         }

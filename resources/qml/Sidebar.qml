@@ -549,7 +549,6 @@ Rectangle
         visible: monitoringPrint
     }
 
-
     SidebarTooltip
     {
         id: tooltip;
