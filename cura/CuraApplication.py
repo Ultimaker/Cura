@@ -1,6 +1,5 @@
 # Copyright (c) 2017 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
-
 from PyQt5.QtNetwork import QLocalServer
 from PyQt5.QtNetwork import QLocalSocket
 
@@ -32,6 +31,7 @@ from UM.Operations.AddSceneNodeOperation import AddSceneNodeOperation
 from UM.Operations.RemoveSceneNodeOperation import RemoveSceneNodeOperation
 from UM.Operations.GroupedOperation import GroupedOperation
 from UM.Operations.SetTransformOperation import SetTransformOperation
+
 from cura.Arrange import Arrange
 from cura.ShapeArray import ShapeArray
 from cura.ConvexHullDecorator import ConvexHullDecorator
@@ -128,6 +128,7 @@ class CuraApplication(QtApplication):
     stacksValidationFinished = pyqtSignal()  # Emitted whenever a validation is finished
 
     def __init__(self):
+
         # this list of dir names will be used by UM to detect an old cura directory
         for dir_name in ["extruders", "machine_instances", "materials", "plugins", "quality", "user", "variants"]:
             Resources.addExpectedDirNameInData(dir_name)
@@ -156,7 +157,6 @@ class CuraApplication(QtApplication):
 
         SettingDefinition.addSettingType("extruder", None, str, Validator)
         SettingDefinition.addSettingType("optional_extruder", None, str, None)
-
         SettingDefinition.addSettingType("[int]", None, str, None)
 
         SettingFunction.registerOperator("extruderValues", ExtruderManager.getExtruderValues)
@@ -181,7 +181,8 @@ class CuraApplication(QtApplication):
         ContainerRegistry.getInstance().addResourceType(self.ResourceTypes.DefinitionChangesContainer)
 
         ##  Initialise the version upgrade manager with Cura's storage paths.
-        import UM.VersionUpgradeManager #Needs to be here to prevent circular dependencies.
+        #   Needs to be here to prevent circular dependencies.
+        import UM.VersionUpgradeManager
 
         UM.VersionUpgradeManager.VersionUpgradeManager.getInstance().setCurrentVersions(
             {
@@ -227,7 +228,9 @@ class CuraApplication(QtApplication):
             "TranslateTool",
             "FileLogger",
             "XmlMaterialProfile",
-            "PluginBrowser"
+            "PluginBrowser",
+            "PrepareStage",
+            "MonitorStage"
         ])
         self._physics = None
         self._volume = None
@@ -387,7 +390,6 @@ class CuraApplication(QtApplication):
     @pyqtProperty(bool)
     def needToShowUserAgreement(self):
         return self._need_to_show_user_agreement
-
 
     def setNeedToShowUserAgreement(self, set_value = True):
         self._need_to_show_user_agreement = set_value
@@ -666,14 +668,14 @@ class CuraApplication(QtApplication):
 
         controller = self.getController()
 
+        controller.setActiveStage("PrepareStage")
         controller.setActiveView("SolidView")
-
         controller.setCameraTool("CameraTool")
         controller.setSelectionTool("SelectionTool")
 
         t = controller.getTool("TranslateTool")
         if t:
-            t.setEnabledAxis([ToolHandle.XAxis, ToolHandle.YAxis,ToolHandle.ZAxis])
+            t.setEnabledAxis([ToolHandle.XAxis, ToolHandle.YAxis, ToolHandle.ZAxis])
 
         Selection.selectionChanged.connect(self.onSelectionChanged)
 
@@ -717,6 +719,7 @@ class CuraApplication(QtApplication):
         run_headless = self.getCommandLineOption("headless", False)
         if not run_headless:
             self.initializeEngine()
+            controller.setActiveStage("PrepareStage")
 
         if run_headless or self._engine.rootObjects:
             self.closeSplash()

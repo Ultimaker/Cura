@@ -18,7 +18,6 @@ Item
     property bool printerConnected: Cura.MachineManager.printerOutputDevices.length != 0
     property bool printerAcceptsCommands: printerConnected && Cura.MachineManager.printerOutputDevices[0].acceptsCommands
     property real progress: printerConnected ? Cura.MachineManager.printerOutputDevices[0].progress : 0
-    property int backendState: UM.Backend.state
 
     property bool showProgress: {
         // determine if we need to show the progress bar + percentage

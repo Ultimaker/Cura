@@ -498,6 +498,7 @@ class MachineManager(QObject):
     @pyqtProperty("QVariantList", notify=activeVariantChanged)
     def activeVariantNames(self) -> List[str]:
         result = []
+
         active_stacks = ExtruderManager.getInstance().getActiveGlobalAndExtruderStacks()
         if active_stacks is not None:
             for stack in active_stacks:
@@ -510,6 +511,7 @@ class MachineManager(QObject):
     @pyqtProperty("QVariantList", notify = activeMaterialChanged)
     def activeMaterialNames(self) -> List[str]:
         result = []
+
         active_stacks = ExtruderManager.getInstance().getActiveGlobalAndExtruderStacks()
         if active_stacks is not None:
             for stack in active_stacks:
@@ -530,6 +532,7 @@ class MachineManager(QObject):
     @pyqtProperty("QVariantMap", notify = activeVariantChanged)
     def allActiveVariantIds(self) -> Dict[str, str]:
         result = {}
+
         active_stacks = ExtruderManager.getInstance().getActiveExtruderStacks()
         if active_stacks is not None: #If we have a global stack.
             for stack in active_stacks:
@@ -548,10 +551,8 @@ class MachineManager(QObject):
     @pyqtProperty("QVariantMap", notify = activeMaterialChanged)
     def allActiveMaterialIds(self) -> Dict[str, str]:
         result = {}
+
         active_stacks = ExtruderManager.getInstance().getActiveExtruderStacks()
-
-        result[self._global_container_stack.getId()] = self._global_container_stack.material.getId()
-
         if active_stacks is not None:  # If we have extruder stacks
             for stack in active_stacks:
                 material_container = stack.material

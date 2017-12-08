@@ -698,7 +698,7 @@ class NetworkClusterPrinterOutputDevice(NetworkPrinterOutputDevice.NetworkPrinte
             if self._reply:
                 self._reply.abort()
             self._stage = OutputStage.ready
-            Application.getInstance().showPrintMonitor.emit(False)
+            Application.getInstance().getController().setActiveStage("PrepareStage")
 
     @pyqtSlot(int, result=str)
     def formatDuration(self, seconds):

@@ -3379,7 +3379,6 @@
                     "unit": "s",
                     "type": "float",
                     "default_value": 10,
-                    "minimum_value": "cool_min_layer_time",
                     "maximum_value_warning": "600",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
