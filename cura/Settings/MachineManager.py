@@ -171,7 +171,7 @@ class MachineManager(QObject):
         if not self._global_container_stack:
             return
 
-        containers = ContainerRegistry.getInstance().findInstanceContainersMetadata(type = "variant", definition = self._global_container_stack.getBottom().getId(), name = hotend_id)
+        containers = ContainerRegistry.getInstance().findInstanceContainersMetadata(type = "variant", definition = self._global_container_stack.definition.getId(), name = hotend_id)
         if containers:  # New material ID is known
             extruder_manager = ExtruderManager.getInstance()
             machine_id = self.activeMachineId
@@ -186,7 +186,7 @@ class MachineManager(QObject):
                 self._auto_hotends_changed[str(index)] = containers[0]["id"]
                 self._printer_output_devices[0].materialHotendChangedMessage(self._materialHotendChangedCallback)
         else:
-            Logger.log("w", "No variant found for printer definition %s with id %s" % (self._global_container_stack.getBottom().getId(), hotend_id))
+            Logger.log("w", "No variant found for printer definition %s with id %s" % (self._global_container_stack.definition.getId(), hotend_id))
 
     def _onMaterialIdChanged(self, index: Union[str, int], material_id: str):
         if not self._global_container_stack:
@@ -207,8 +207,8 @@ class MachineManager(QObject):
 
             if matching_extruder and matching_extruder.material.getMetaDataEntry("GUID") != material_id:
                 # Save the material that needs to be changed. Multiple changes will be handled by the callback.
-                if self._global_container_stack.getBottom().getMetaDataEntry("has_variants") and matching_extruder.variant:
-                    variant_id = self.getQualityVariantId(self._global_container_stack.getBottom(), matching_extruder.variant)
+                if self._global_container_stack.definition.getMetaDataEntry("has_variants") and matching_extruder.variant:
+                    variant_id = self.getQualityVariantId(self._global_container_stack.definition, matching_extruder.variant)
                     for container in containers:
                         if container.get("variant") == variant_id:
                             self._auto_materials_changed[str(index)] = container["id"]
@@ -824,7 +824,7 @@ class MachineManager(QObject):
                 preferred_material_name = None
                 if old_material:
                     preferred_material_name = old_material.getName()
-                preferred_material_id = self._updateMaterialContainer(self._global_container_stack.getBottom(), self._global_container_stack, containers[0], preferred_material_name).id
+                preferred_material_id = self._updateMaterialContainer(self._global_container_stack.definition, self._global_container_stack, containers[0], preferred_material_name).id
                 self.setActiveMaterial(preferred_material_id)
             else:
                 Logger.log("w", "While trying to set the active variant, no variant was found to replace.")
@@ -941,7 +941,7 @@ class MachineManager(QObject):
         if not global_container_stack:
             return []
 
-        global_machine_definition = quality_manager.getParentMachineDefinition(global_container_stack.getBottom())
+        global_machine_definition = quality_manager.getParentMachineDefinition(global_container_stack.definition)
         extruder_stacks = ExtruderManager.getInstance().getActiveExtruderStacks()
 
         # find qualities for extruders
@@ -1093,18 +1093,14 @@ class MachineManager(QObject):
     @pyqtProperty(str, notify = globalContainerChanged)
     def activeDefinitionId(self) -> str:
         if self._global_container_stack:
-            definition = self._global_container_stack.getBottom()
-            if definition:
-                return definition.id
+            return self._global_container_stack.definition.id
 
         return ""
 
     @pyqtProperty(str, notify=globalContainerChanged)
     def activeDefinitionName(self) -> str:
         if self._global_container_stack:
-            definition = self._global_container_stack.getBottom()
-            if definition:
-                return definition.getName()
+            return self._global_container_stack.definition.getName()
 
         return ""
 
@@ -1114,7 +1110,7 @@ class MachineManager(QObject):
     @pyqtProperty(str, notify = globalContainerChanged)
     def activeQualityDefinitionId(self) -> str:
         if self._global_container_stack:
-            return self.getQualityDefinitionId(self._global_container_stack.getBottom())
+            return self.getQualityDefinitionId(self._global_container_stack.definition)
         return ""
 
     ##  Get the Definition ID to use to select quality profiles for machines of the specified definition
@@ -1132,7 +1128,7 @@ class MachineManager(QObject):
         if self._active_container_stack:
             variant = self._active_container_stack.variant
             if variant:
-                return self.getQualityVariantId(self._global_container_stack.getBottom(), variant)
+                return self.getQualityVariantId(self._global_container_stack.definition, variant)
         return ""
 
     ##  Get the Variant ID to use to select quality profiles for variants of the specified definitions
@@ -1156,7 +1152,7 @@ class MachineManager(QObject):
     def activeDefinitionVariantsName(self) -> str:
         fallback_title = catalog.i18nc("@label", "Nozzle")
         if self._global_container_stack:
-            return self._global_container_stack.getBottom().getMetaDataEntry("variants_name", fallback_title)
+            return self._global_container_stack.definition.getMetaDataEntry("variants_name", fallback_title)
 
         return fallback_title
 
@@ -1165,7 +1161,7 @@ class MachineManager(QObject):
         container_registry = ContainerRegistry.getInstance()
         machine_stack = container_registry.findContainerStacks(id = machine_id)
         if machine_stack:
-            new_name = container_registry.createUniqueName("machine", machine_stack[0].getName(), new_name, machine_stack[0].getBottom().getName())
+            new_name = container_registry.createUniqueName("machine", machine_stack[0].getName(), new_name, machine_stack[0].definition.getName())
             machine_stack[0].setName(new_name)
             self.globalContainerChanged.emit()
 
@@ -1223,7 +1219,7 @@ class MachineManager(QObject):
     def getDefinitionByMachineId(self, machine_id: str) -> str:
         containers = ContainerRegistry.getInstance().findContainerStacks(id = machine_id)
         if containers:
-            return containers[0].getBottom().getId()
+            return containers[0].definition.getId()
 
     @staticmethod
     def createMachineManager():

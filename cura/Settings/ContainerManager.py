@@ -324,8 +324,8 @@ class ContainerManager(QObject):
 
     ##  Find instance containers matching certain criteria.
     #
-    # This effectively forwards to
-    # ContainerRegistry::findInstanceContainersMetadata.
+    #   This effectively forwards to
+    #   ContainerRegistry::findInstanceContainersMetadata.
     #
     #   \param criteria A dict of key - value pairs to search for.
     #
