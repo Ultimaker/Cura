@@ -59,7 +59,6 @@ class NetworkCamera(QObject):
 
     @pyqtSlot()
     def stop(self):
-
         self._stream_buffer = b""
         self._stream_buffer_start_index = -1
 

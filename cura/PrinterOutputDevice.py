@@ -97,7 +97,6 @@ class PrinterOutputDevice(QObject, OutputDevice):
         # create the item (and fail) every time.
         if not self._monitor_component:
             self._createMonitorViewFromQML()
-
         return self._monitor_item
 
     @pyqtProperty(QObject, constant=True)

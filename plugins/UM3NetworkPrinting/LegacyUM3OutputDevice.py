@@ -74,7 +74,6 @@ class LegacyUM3OutputDevice(NetworkedPrinterOutputDevice):
 
         self._monitor_view_qml_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "MonitorItem.qml")
 
-
         self._output_controller = LegacyUM3PrinterOutputController(self)
 
     def _onAuthenticationStateChanged(self):
