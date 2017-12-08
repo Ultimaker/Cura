@@ -630,7 +630,7 @@ class CuraApplication(QtApplication):
     @classmethod
     def preStartUp(cls):
         # Peek the arguments and look for the 'single-instance' flag.
-        parser = cls.getCommandlineParser()
+        parser = argparse.ArgumentParser(prog="cura")  # pylint: disable=bad-whitespace
         CuraApplication.addCommandLineOptions(parser)
         cls.parseCommandLine()
 
