@@ -165,6 +165,12 @@ class StartSliceJob(Job):
                         _stack.replaceContainer(index, copy.deepcopy(container))
                     index = index + 1
                 stack = _stack
+
+                # Make sure CuraEngine does not create any supports
+                # support_enable is set in the frontend so support options are settable,
+                # but CuraEngine support structures don't work for slanted gantry
+                stack.setProperty("support_enable", "value", False)
+
                 for key in ["layer_height", "layer_height_0"]:
                     current_value = stack.getProperty(key, "value")
                     stack.setProperty(key, "value", current_value / math.sin(gantry_angle))

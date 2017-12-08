@@ -137,7 +137,7 @@
             "default_value": 99999
         },
         "material_diameter": {
-            "value": "1.75"
+            "default_value": 1.75
         },
         "machine_gcode_flavor": {
             "default_value": "RepRap (Marlin/Sprinter)"
@@ -147,10 +147,40 @@
         },
 
         "support_enable": {
-            "enabled": false
+            "enabled": false,
+            "default_value": true
         },
         "support_angle": {
-            "value": 90
+            "enabled": false,
+            "default_value": 90
+        },
+        "support_type": {
+            "enabled": false
+        },
+        "gradual_support_infill_steps": {
+            "enabled": false
+        },
+        "support_interface_enable": {
+            "enabled": false
+        },
+        "support_roof_enable": {
+            "enabled": false
+        },
+        "support_bottom_enable": {
+            "enabled": false
+        },
+        "support_use_towers": {
+            "enabled": false
+        },
+        "remove_empty_first_layers": {
+            "enabled": false
+        },
+        "support_mesh_drop_down": {
+            "enabled": false,
+            "default_value": false
+        },
+        "anti_overhang_mesh": {
+            "enabled": false
         },
         "adhesion_type": {
             "enabled": false,
