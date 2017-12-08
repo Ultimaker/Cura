@@ -18,7 +18,6 @@ Item
     property bool printerConnected: Cura.MachineManager.printerOutputDevices.length != 0
     property bool printerAcceptsCommands: printerConnected && Cura.MachineManager.printerOutputDevices[0].acceptsCommands
     property real progress: printerConnected ? Cura.MachineManager.printerOutputDevices[0].progress : 0
-    property int backendState: UM.Backend.state
 
     property bool showProgress: {
         // determine if we need to show the progress bar + percentage
@@ -203,6 +202,7 @@ Item
             target: Printer
             onAdditionalComponentsChanged:
             {
+                print("areaId", areaId)
                 if(areaId == "monitorButtons") {
                     for (var component in CuraApplication.additionalComponents["monitorButtons"]) {
                         CuraApplication.additionalComponents["monitorButtons"][component].parent = additionalComponentsRow

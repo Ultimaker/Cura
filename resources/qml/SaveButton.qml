@@ -28,6 +28,10 @@ Item {
             return catalog.i18nc("@label:PrintjobStatus", "Please load a 3D model");
         }
 
+        if (base.backendState == "undefined") {
+            return ""
+        }
+
         switch(base.backendState)
         {
             case 1:
@@ -81,7 +85,7 @@ Item {
             height: parent.height
             color: UM.Theme.getColor("progressbar_control")
             radius: UM.Theme.getSize("progressbar_radius").width
-            visible: base.backendState == 2 ? true : false
+            visible: (base.backendState != "undefined" && base.backendState == 2) ? true : false
         }
     }
 
@@ -159,10 +163,8 @@ Item {
 
             tooltip: [1, 5].indexOf(UM.Backend.state) != -1 ? catalog.i18nc("@info:tooltip","Slice current printjob") : catalog.i18nc("@info:tooltip","Cancel slicing process")
             // 1 = not started, 2 = Processing
-            enabled: (base.backendState == 1 || base.backendState == 2) && base.activity == true
-            visible: {
-                return !autoSlice && (base.backendState == 1 || base.backendState == 2) && base.activity == true;
-                }
+            enabled: base.backendState != "undefined" && (base.backendState == 1 || base.backendState == 2) && base.activity == true
+            visible: base.backendState != "undefined" && !autoSlice && (base.backendState == 1 || base.backendState == 2) && base.activity == true
             property bool autoSlice
             height: UM.Theme.getSize("save_button_save_to_button").height
 
@@ -235,10 +237,8 @@ Item {
 
             tooltip: UM.OutputDeviceManager.activeDeviceDescription;
             // 3 = done, 5 = disabled
-            enabled: (base.backendState == 3 || base.backendState == 5) && base.activity == true
-            visible: {
-                return autoSlice || ((base.backendState == 3 || base.backendState == 5) && base.activity == true);
-            }
+            enabled: base.backendState != "undefined" && (base.backendState == 3 || base.backendState == 5) && base.activity == true
+            visible: base.backendState != "undefined" && autoSlice || ((base.backendState == 3 || base.backendState == 5) && base.activity == true)
             property bool autoSlice
             height: UM.Theme.getSize("save_button_save_to_button").height
 
@@ -315,8 +315,8 @@ Item {
             width: UM.Theme.getSize("save_button_save_to_button").height
             height: UM.Theme.getSize("save_button_save_to_button").height
             // 3 = Done, 5 = Disabled
-            enabled: (base.backendState == 3 || base.backendState == 5) && base.activity == true
-            visible: (devicesModel.deviceCount > 1) && (base.backendState == 3 || base.backendState == 5) && base.activity == true
+            enabled: base.backendState != "undefined" && (base.backendState == 3 || base.backendState == 5) && base.activity == true
+            visible: base.backendState != "undefined" && (devicesModel.deviceCount > 1) && (base.backendState == 3 || base.backendState == 5) && base.activity == true
 
 
             style: ButtonStyle {
