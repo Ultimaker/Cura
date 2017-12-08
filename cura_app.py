@@ -9,7 +9,7 @@ from UM.Platform import Platform
 
 def get_cura_dir_path():
     if Platform.isWindows():
-        return os.path.expanduser("~/AppData/Local/cura/")
+        return os.path.expanduser("~/AppData/Roaming/cura/")
     elif Platform.isLinux():
         return os.path.expanduser("~/.local/share/cura")
     elif Platform.isOSX():
