@@ -12,7 +12,8 @@ from UM.Platform import Platform
 #WORKAROUND: GITHUB-88 GITHUB-385 GITHUB-612
 if Platform.isLinux(): # Needed for platform.linux_distribution, which is not available on Windows and OSX
     # For Ubuntu: https://bugs.launchpad.net/ubuntu/+source/python-qt4/+bug/941826
-    if platform.linux_distribution()[0] in ("debian", "Ubuntu", "LinuxMint", "Fedora"): # TODO: Needs a "if X11_GFX == 'nvidia'" here. The workaround is only needed on Ubuntu+NVidia drivers. Other drivers are not affected, but fine with this fix.
+    linux_distro_name = platform.linux_distribution()[0].lower()
+    if linux_distro_name in ("debian", "ubuntu", "linuxmint", "fedora"): # TODO: Needs a "if X11_GFX == 'nvidia'" here. The workaround is only needed on Ubuntu+NVidia drivers. Other drivers are not affected, but fine with this fix.
         import ctypes
         from ctypes.util import find_library
         libGL = find_library("GL")
