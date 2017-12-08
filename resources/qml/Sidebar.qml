@@ -24,7 +24,7 @@ Rectangle
     property var connectedPrinter: Cura.MachineManager.printerOutputDevices.length >= 1 ? Cura.MachineManager.printerOutputDevices[0] : null
     property int backendState: UM.Backend.state
 
-    property bool monitoringPrint: false
+    property bool monitoringPrint: UM.Controller.activeStage.stageId == "MonitorStage"
 
     property variant printDuration: PrintInformation.currentPrintTime
     property variant printMaterialLengths: PrintInformation.materialLengths
@@ -263,7 +263,7 @@ Rectangle
     {
         id: controlItem
         anchors.bottom: footerSeparator.top
-        anchors.top: headerSeparator.bottom
+        anchors.top: monitoringPrint ? base.top : headerSeparator.bottom
         anchors.left: base.left
         anchors.right: base.right
         sourceComponent:
@@ -282,7 +282,7 @@ Rectangle
     Loader
     {
         anchors.bottom: footerSeparator.top
-        anchors.top: headerSeparator.bottom
+        anchors.top: monitoringPrint ? base.top : headerSeparator.bottom
         anchors.left: base.left
         anchors.right: base.right
         source:

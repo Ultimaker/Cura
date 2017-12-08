@@ -403,8 +403,6 @@ Item
                 }
             }
 
-
-
             //
             // Infill
             //
@@ -568,18 +566,20 @@ Item
                         model: infillModel
                         anchors.fill: parent
 
-                        property int activeIndex: {
+                        function activeIndex () {
                             for (var i = 0; i < infillModel.count; i++) {
                                 var density = parseInt(infillDensity.properties.value)
                                 var steps = parseInt(infillSteps.properties.value)
                                 var infillModelItem = infillModel.get(i)
 
-                                if (density >= infillModelItem.percentageMin
+                                if (infillModelItem != "undefined"
+                                    && density >= infillModelItem.percentageMin
                                     && density <= infillModelItem.percentageMax
                                     && steps >= infillModelItem.stepsMin
-                                    && steps <= infillModelItem.stepsMax){
-                                        return i
-                                    }
+                                    && steps <= infillModelItem.stepsMax
+                                ){
+                                    return i
+                                }
                             }
                             return -1
                         }
@@ -587,7 +587,7 @@ Item
                         Rectangle
                         {
                             anchors.fill: parent
-                            visible: infillIconList.activeIndex == index
+                            visible: infillIconList.activeIndex() == index
 
                             border.width: UM.Theme.getSize("default_lining").width
                             border.color: UM.Theme.getColor("quality_slider_unavailable")

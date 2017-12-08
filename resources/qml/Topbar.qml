@@ -6,7 +6,7 @@ import QtQuick.Controls 1.1
 import QtQuick.Controls.Styles 1.1
 import QtQuick.Layouts 1.1
 
-import UM 1.2 as UM
+import UM 1.4 as UM
 import Cura 1.0 as Cura
 import "Menus"
 
@@ -16,27 +16,10 @@ Rectangle
     anchors.left: parent.left
     anchors.right: parent.right
     height: UM.Theme.getSize("sidebar_header").height
-    color: base.monitoringPrint ? UM.Theme.getColor("topbar_background_color_monitoring") : UM.Theme.getColor("topbar_background_color")
+    color: UM.Controller.activeStage.stageId == "MonitorStage" ? UM.Theme.getColor("topbar_background_color_monitoring") : UM.Theme.getColor("topbar_background_color")
 
     property bool printerConnected: Cura.MachineManager.printerOutputDevices.length != 0
     property bool printerAcceptsCommands: printerConnected && Cura.MachineManager.printerOutputDevices[0].acceptsCommands
-    property bool monitoringPrint: false
-
-    // outgoing signal
-    signal startMonitoringPrint()
-    signal stopMonitoringPrint()
-
-    // update monitoring status when event was triggered outside topbar
-    Component.onCompleted: {
-        startMonitoringPrint.connect(function () {
-            base.monitoringPrint = true
-            UM.Controller.disableModelRendering()
-        })
-        stopMonitoringPrint.connect(function () {
-            base.monitoringPrint = false
-            UM.Controller.enableModelRendering()
-        })
-    }
 
     UM.I18nCatalog
     {
@@ -67,92 +50,30 @@ Rectangle
         anchors.rightMargin: UM.Theme.getSize("default_margin").width
         spacing: UM.Theme.getSize("default_margin").width
 
-        Button
+        // The topbar is dynamically filled with all available stages
+        Repeater
         {
-            id: showSettings
-            height: UM.Theme.getSize("sidebar_header").height
-            text: catalog.i18nc("@title:tab", "Prepare")
-            checkable: true
-            checked: isChecked()
-            exclusiveGroup: sidebarHeaderBarGroup
-            style: UM.Theme.styles.topbar_header_tab
+            id: stagesMenu
 
-            // We use a Qt.binding to re-bind the checkbox state after manually setting it
-            // https://stackoverflow.com/questions/38798450/qt-5-7-qml-why-are-my-checkbox-property-bindings-disappearing
-            onClicked: {
-                base.stopMonitoringPrint()
-                checked = Qt.binding(isChecked)
-            }
+            model: UM.StageModel{}
 
-            function isChecked () {
-                return !base.monitoringPrint
-            }
-
-            property color overlayColor: "transparent"
-            property string overlayIconSource: ""
-        }
-
-        Button
-        {
-            id: showMonitor
-            width: UM.Theme.getSize("topbar_button").width
-            height: UM.Theme.getSize("sidebar_header").height
-            text: catalog.i18nc("@title:tab", "Monitor")
-            checkable: true
-            checked: isChecked()
-            exclusiveGroup: sidebarHeaderBarGroup
-            style: UM.Theme.styles.topbar_header_tab_no_overlay
-
-            // We use a Qt.binding to re-bind the checkbox state after manually setting it
-            // https://stackoverflow.com/questions/38798450/qt-5-7-qml-why-are-my-checkbox-property-bindings-disappearing
-            onClicked: {
-                base.startMonitoringPrint()
-                checked = Qt.binding(isChecked)
-            }
-
-            function isChecked () {
-                return base.monitoringPrint
-            }
-
-            property string iconSource:
+            delegate: Button
             {
-                if (!printerConnected)
-                {
-                    return UM.Theme.getIcon("tab_status_unknown");
-                }
-                else if (!printerAcceptsCommands)
-                {
-                    return UM.Theme.getIcon("tab_status_unknown");
-                }
+                text: model.name
+                checkable: true
+                checked: model.active
+                exclusiveGroup: topbarMenuGroup
+                style: (model.stage.iconSource != "") ? UM.Theme.styles.topbar_header_tab_no_overlay : UM.Theme.styles.topbar_header_tab
+                height: UM.Theme.getSize("sidebar_header").height
+                onClicked: UM.Controller.setActiveStage(model.id)
+                iconSource: model.stage.iconSource
 
-                if (Cura.MachineManager.printerOutputDevices[0].printerState == "maintenance")
-                {
-                    return UM.Theme.getIcon("tab_status_busy");
-                }
-
-                switch (Cura.MachineManager.printerOutputDevices[0].jobState)
-                {
-                    case "printing":
-                    case "pre_print":
-                    case "pausing":
-                    case "resuming":
-                        return UM.Theme.getIcon("tab_status_busy");
-                    case "wait_cleanup":
-                        return UM.Theme.getIcon("tab_status_finished");
-                    case "ready":
-                    case "":
-                        return UM.Theme.getIcon("tab_status_connected")
-                    case "paused":
-                        return UM.Theme.getIcon("tab_status_paused")
-                    case "error":
-                        return UM.Theme.getIcon("tab_status_stopped")
-                    default:
-                        return UM.Theme.getIcon("tab_status_unknown")
-                }
+                property color overlayColor: "transparent"
+                property string overlayIconSource: ""
             }
         }
 
-        ExclusiveGroup { id: sidebarHeaderBarGroup }
+        ExclusiveGroup { id: topbarMenuGroup }
     }
 
     ToolButton
@@ -220,17 +141,16 @@ Rectangle
         menu: PrinterMenu { }
     }
 
-        //View orientation Item
+    // View orientation Item
     Row
     {
         id: viewOrientationControl
         height: 30
-
         spacing: 2
+        visible: UM.Controller.activeStage.stageId != "MonitorStage"
 
-        visible: !base.monitoringPrint
-
-        anchors {
+        anchors
+        {
             verticalCenter: base.verticalCenter
             right: viewModeButton.right
             rightMargin: UM.Theme.getSize("default_margin").width + viewModeButton.width
@@ -308,7 +228,7 @@ Rectangle
         }
 
         style: UM.Theme.styles.combobox
-        visible: !base.monitoringPrint
+        visible: UM.Controller.activeStage.stageId != "MonitorStage"
 
         model: UM.ViewModel { }
         textRole: "name"
