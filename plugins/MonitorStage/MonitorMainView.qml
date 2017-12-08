@@ -16,7 +16,6 @@ Item
         color: UM.Theme.getColor("viewport_overlay")
         width: parent.width
         height: parent.height
-        visible: monitorViewComponent.sourceComponent == null ? 1 : 0
 
         MouseArea
         {

@@ -91,7 +91,7 @@ class LegacyUM3OutputDevice(NetworkedPrinterOutputDevice):
                                                          title=i18n_catalog.i18nc("@info:title",
                                                                                   "Authentication status"))
 
-        self._authentication_failed_message = Message(i18n_catalog.i18nc("@info:status", "Authentication failed"),
+        self._authentication_failed_message = Message(i18n_catalog.i18nc("@info:status", ""),
                                                       title=i18n_catalog.i18nc("@info:title", "Authentication Status"))
         self._authentication_failed_message.addAction("Retry", i18n_catalog.i18nc("@action:button", "Retry"), None,
                                                       i18n_catalog.i18nc("@info:tooltip", "Re-send the access request"))
@@ -352,7 +352,6 @@ class LegacyUM3OutputDevice(NetworkedPrinterOutputDevice):
 
         return warnings
 
-
     def _update(self):
         if not super()._update():
             return
@@ -401,10 +400,12 @@ class LegacyUM3OutputDevice(NetworkedPrinterOutputDevice):
             self._authentication_id = None
             self._authentication_key = None
             self.setAuthenticationState(AuthState.NotAuthenticated)
-        elif status_code == 403:
+        elif status_code == 403 and self._authentication_state != AuthState.Authenticated:
+            # If we were already authenticated, we probably got an older message back all of the sudden. Drop that.
             Logger.log("d",
-                       "While trying to verify the authentication state, we got a forbidden response. Our own auth state was %s",
+                       "While trying to verify the authentication state, we got a forbidden response. Our own auth state was %s. ",
                        self._authentication_state)
+            print(reply.readAll())
             self.setAuthenticationState(AuthState.AuthenticationDenied)
             self._authentication_failed_message.show()
         elif status_code == 200:

@@ -137,8 +137,7 @@ class MachineManager(QObject):
             printer_output_device.hotendIdChanged.disconnect(self._onHotendIdChanged)
             printer_output_device.materialIdChanged.disconnect(self._onMaterialIdChanged)'''
 
-        self._printer_output_devices.clear()
-
+        self._printer_output_devices = []
         for printer_output_device in Application.getInstance().getOutputDeviceManager().getOutputDevices():
             if isinstance(printer_output_device, PrinterOutputDevice):
                 self._printer_output_devices.append(printer_output_device)

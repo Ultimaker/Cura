@@ -143,7 +143,7 @@ class PrinterOutputDevice(QObject, OutputDevice):
         if self._accepts_commands != accepts_commands:
             self._accepts_commands = accepts_commands
 
-        self.acceptsCommandsChanged.emit()
+            self.acceptsCommandsChanged.emit()
 
 
 ##  The current processing state of the backend.
