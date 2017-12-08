@@ -630,7 +630,7 @@ class CuraApplication(QtApplication):
         CuraApplication.addCommandLineOptions(parser)
         parsed_command_line = vars(parser.parse_args())
 
-        if "single_instance" in parsed_command_line and parsed_command_line["single_instance"]:
+        if parsed_command_line["single_instance"]:
             Logger.log("i", "Checking for the presence of an ready running Cura instance.")
             single_instance_socket = QLocalSocket()
             Logger.log("d", "preStartUp(): full server name: " + single_instance_socket.fullServerName())
