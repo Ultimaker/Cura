@@ -40,34 +40,41 @@ class MonitorStage(CuraStage):
 
     ##  Find the correct status icon depending on the active output device state
     def _getActiveOutputDeviceStatusIcon(self):
-        output_device = Application.getInstance().getOutputDeviceManager().getActiveDevice()
-
-        if not output_device:
+        # We assume that you are monitoring the device with the highest priority.
+        try:
+            output_device = Application.getInstance().getMachineManager().printerOutputDevices[0]
+        except IndexError:
             return "tab_status_unknown"
 
-        if hasattr(output_device, "acceptsCommands") and not output_device.acceptsCommands:
+        if not output_device.acceptsCommands:
             return "tab_status_unknown"
 
-        if not hasattr(output_device, "printerState") or not hasattr(output_device, "jobState"):
-            return "tab_status_unknown"
-
-        # TODO: refactor to use enum instead of hardcoded strings?
-        if output_device.printerState == "maintenance":
-            return "tab_status_busy"
-
-        if output_device.jobState in ["printing", "pre_print", "pausing", "resuming"]:
-            return "tab_status_busy"
-
-        if output_device.jobState == "wait_cleanup":
-            return "tab_status_finished"
-
-        if output_device.jobState in ["ready", ""]:
+        if output_device.activePrinter is None:
             return "tab_status_connected"
 
-        if output_device.jobState == "paused":
+        # TODO: refactor to use enum instead of hardcoded strings?
+        if output_device.activePrinter.state == "maintenance":
+            return "tab_status_busy"
+
+        if output_device.state == "maintenance":
+            return "tab_status_busy"
+
+        if output_device.activePrinter.activeJob is None:
+            return "tab_status_connected"
+
+        if output_device.activePrinter.activeJob.state in ["printing", "pre_print", "pausing", "resuming"]:
+            return "tab_status_busy"
+
+        if output_device.activePrinter.activeJob.state == "wait_cleanup":
+            return "tab_status_finished"
+
+        if output_device.activePrinter.activeJob.state in ["ready", ""]:
+            return "tab_status_connected"
+
+        if output_device.activePrinter.activeJob.state == "paused":
             return "tab_status_paused"
 
-        if output_device.jobState == "error":
+        if output_device.activePrinter.activeJob.state == "error":
             return "tab_status_stopped"
 
         return "tab_status_unknown"
