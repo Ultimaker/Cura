@@ -22,9 +22,10 @@ if Platform.isLinux(): # Needed for platform.linux_distribution, which is not av
 if Platform.isWindows() and hasattr(sys, "frozen"):
     try:
         del os.environ["PYTHONPATH"]
-    except KeyError: pass
+    except KeyError:
+        pass
 
-#WORKAROUND: GITHUB-704 GITHUB-708
+# WORKAROUND: GITHUB-704 GITHUB-708
 # It looks like setuptools creates a .pth file in
 # the default /usr/lib which causes the default site-packages
 # to be inserted into sys.path before PYTHONPATH.
@@ -44,6 +45,7 @@ def exceptHook(hook_type, value, traceback):
     from cura.CrashHandler import CrashHandler
     _crash_handler = CrashHandler(hook_type, value, traceback)
     _crash_handler.show()
+
 
 sys.excepthook = exceptHook
 
@@ -75,7 +77,7 @@ faulthandler.enable()
 # Force an instance of CuraContainerRegistry to be created and reused later.
 cura.Settings.CuraContainerRegistry.CuraContainerRegistry.getInstance()
 
-# This prestart up check is needed to determine if we should start the application at all.
+# This pre-start up check is needed to determine if we should start the application at all.
 if not cura.CuraApplication.CuraApplication.preStartUp():
     sys.exit(0)
 
