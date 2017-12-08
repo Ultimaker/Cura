@@ -672,7 +672,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
             Logger.log("d", "Attempting to perform an action without authentication for printer %s. Auth state is %s", self._key, self._authentication_state)
             return
 
-        Application.getInstance().showPrintMonitor.emit(True)
+        Application.getInstance().getController().setActiveStage("MonitorStage")
         self._print_finished = True
         self.writeStarted.emit(self)
         self._gcode = getattr(Application.getInstance().getController().getScene(), "gcode_list")
@@ -767,7 +767,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
             if button == QMessageBox.Yes:
                 self.startPrint()
             else:
-                Application.getInstance().showPrintMonitor.emit(False)
+                Application.getInstance().getController().setActiveStage("PrepareStage")
         # For some unknown reason Cura on OSX will hang if we do the call back code
         # immediately without first returning and leaving QML's event system.
         QTimer.singleShot(100, delayedCallback)
@@ -850,7 +850,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
             self._write_finished = True  # post_reply does not always exist, so make sure we unblock writing
             if self._post_reply:
                 self._finalizePostReply()
-            Application.getInstance().showPrintMonitor.emit(False)
+        Application.getInstance().getController().setActiveStage("PrepareStage")
 
     ##  Attempt to start a new print.
     #   This function can fail to actually start a print due to not being authenticated or another print already

@@ -502,6 +502,7 @@ class MachineManager(QObject):
     @pyqtProperty("QVariantList", notify=activeVariantChanged)
     def activeVariantNames(self) -> List[str]:
         result = []
+
         active_stacks = ExtruderManager.getInstance().getActiveGlobalAndExtruderStacks()
         if active_stacks is not None:
             for stack in active_stacks:
@@ -514,6 +515,7 @@ class MachineManager(QObject):
     @pyqtProperty("QVariantList", notify = activeMaterialChanged)
     def activeMaterialNames(self) -> List[str]:
         result = []
+
         active_stacks = ExtruderManager.getInstance().getActiveGlobalAndExtruderStacks()
         if active_stacks is not None:
             for stack in active_stacks:
@@ -534,6 +536,7 @@ class MachineManager(QObject):
     @pyqtProperty("QVariantMap", notify = activeVariantChanged)
     def allActiveVariantIds(self) -> Dict[str, str]:
         result = {}
+
         active_stacks = ExtruderManager.getInstance().getActiveExtruderStacks()
         if active_stacks is not None: #If we have a global stack.
             for stack in active_stacks:
@@ -552,10 +555,8 @@ class MachineManager(QObject):
     @pyqtProperty("QVariantMap", notify = activeMaterialChanged)
     def allActiveMaterialIds(self) -> Dict[str, str]:
         result = {}
+
         active_stacks = ExtruderManager.getInstance().getActiveExtruderStacks()
-
-        result[self._global_container_stack.getId()] = self._global_container_stack.material.getId()
-
         if active_stacks is not None:  # If we have extruder stacks
             for stack in active_stacks:
                 material_container = stack.material
@@ -734,6 +735,9 @@ class MachineManager(QObject):
 
             old_material = self._active_container_stack.material
             old_quality = self._active_container_stack.quality
+            old_quality_type = None
+            if old_quality and old_quality.getId() != self._empty_quality_container.getId():
+                old_quality_type = old_quality.getMetaDataEntry("quality_type")
             old_quality_changes = self._active_container_stack.qualityChanges
             if not old_material:
                 Logger.log("w", "While trying to set the active material, no material was found to replace it.")
@@ -774,13 +778,28 @@ class MachineManager(QObject):
                                             quality_manager.getWholeMachineDefinition(global_stack.definition),
                                             [material_container.getMetaData()])
 
-                if not candidate_quality or isinstance(candidate_quality, type(self._empty_quality_changes_container)):
+                if not candidate_quality or candidate_quality.getId() == self._empty_quality_changes_container:
                     Logger.log("d", "Attempting to find fallback quality")
                     # Fall back to a quality (which must be compatible with all other extruders)
                     new_qualities = quality_manager.findAllUsableQualitiesForMachineAndExtruders(
                         self._global_container_stack, ExtruderManager.getInstance().getExtruderStacks())
-                    if new_qualities:
-                        new_quality_id = new_qualities[0].getId()  # Just pick the first available one
+
+                    quality_types = sorted([q.getMetaDataEntry("quality_type") for q in new_qualities], reverse = True)
+                    quality_type_to_use = None
+                    if quality_types:
+                        # try to use the same quality as before, otherwise the first one in the quality_types
+                        quality_type_to_use = quality_types[0]
+                        if old_quality_type is not None and old_quality_type in quality_type_to_use:
+                            quality_type_to_use = old_quality_type
+
+                    new_quality = None
+                    for q in new_qualities:
+                        if quality_type_to_use is not None and q.getMetaDataEntry("quality_type") == quality_type_to_use:
+                            new_quality = q
+                            break
+
+                    if new_quality is not None:
+                        new_quality_id = new_quality.getId()  # Just pick the first available one
                     else:
                         Logger.log("w", "No quality profile found that matches the current machine and extruders.")
                 else:

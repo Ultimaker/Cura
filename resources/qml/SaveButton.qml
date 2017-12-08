@@ -46,7 +46,7 @@ Item {
     }
 
     function sliceOrStopSlicing() {
-        if ([1, 5].indexOf(UM.Backend.state) != -1) {
+        if (backend != "undefined" && [1, 5].indexOf(UM.Backend.state) != -1) {
             backend.forceSlice();
         } else {
             backend.stopSlicing();

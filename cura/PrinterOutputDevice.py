@@ -3,18 +3,14 @@
 
 from UM.i18n import i18nCatalog
 from UM.OutputDevice.OutputDevice import OutputDevice
-from PyQt5.QtCore import pyqtProperty, pyqtSignal, pyqtSlot, QObject, QTimer, pyqtSignal, QUrl
-from PyQt5.QtQml import QQmlComponent, QQmlContext
+from PyQt5.QtCore import pyqtProperty, pyqtSlot, QObject, QTimer, pyqtSignal
 from PyQt5.QtWidgets import QMessageBox
 from enum import IntEnum  # For the connection state tracking.
 
 from UM.Settings.ContainerRegistry import ContainerRegistry
 from UM.Logger import Logger
 from UM.Signal import signalemitter
-from UM.PluginRegistry import PluginRegistry
 from UM.Application import Application
-
-import os
 
 i18n_catalog = i18nCatalog("cura")
 
@@ -63,11 +59,9 @@ class PrinterOutputDevice(QObject, OutputDevice):
         self._camera_active = False
 
         self._monitor_view_qml_path = ""
-        self._monitor_component = None
         self._monitor_item = None
 
         self._control_view_qml_path = ""
-        self._control_component = None
         self._control_item = None
 
         self._qml_context = None
@@ -155,54 +149,31 @@ class PrinterOutputDevice(QObject, OutputDevice):
         # Note that we specifically only check if the monitor component is created.
         # It could be that it failed to actually create the qml item! If we check if the item was created, it will try to
         # create the item (and fail) every time.
-        if not self._monitor_component:
+        if not self._monitor_item:
             self._createMonitorViewFromQML()
-
         return self._monitor_item
 
     @pyqtProperty(QObject, constant=True)
     def controlItem(self):
-        if not self._control_component:
+        if not self._control_item:
             self._createControlViewFromQML()
-
         return self._control_item
 
     def _createControlViewFromQML(self):
         if not self._control_view_qml_path:
             return
 
-        path = QUrl.fromLocalFile(self._control_view_qml_path)
-
-        # Because of garbage collection we need to keep this referenced by python.
-        self._control_component = QQmlComponent(Application.getInstance()._engine, path)
-
-        # Check if the context was already requested before (Printer output device might have multiple items in the future)
-        if self._qml_context is None:
-            self._qml_context = QQmlContext(Application.getInstance()._engine.rootContext())
-            self._qml_context.setContextProperty("OutputDevice", self)
-
-        self._control_item = self._control_component.create(self._qml_context)
-        if self._control_item is None:
-            Logger.log("e", "QQmlComponent status %s", self._control_component.status())
-            Logger.log("e", "QQmlComponent error string %s", self._control_component.errorString())
+        self._control_item = Application.getInstance().createQmlComponent(self._control_view_qml_path, {
+            "OutputDevice": self
+        })
 
     def _createMonitorViewFromQML(self):
         if not self._monitor_view_qml_path:
             return
-        path = QUrl.fromLocalFile(self._monitor_view_qml_path)
 
-        # Because of garbage collection we need to keep this referenced by python.
-        self._monitor_component = QQmlComponent(Application.getInstance()._engine, path)
-
-        # Check if the context was already requested before (Printer output device might have multiple items in the future)
-        if self._qml_context is None:
-            self._qml_context = QQmlContext(Application.getInstance()._engine.rootContext())
-            self._qml_context.setContextProperty("OutputDevice", self)
-
-        self._monitor_item = self._monitor_component.create(self._qml_context)
-        if self._monitor_item is None:
-            Logger.log("e", "QQmlComponent status %s", self._monitor_component.status())
-            Logger.log("e", "QQmlComponent error string %s", self._monitor_component.errorString())
+        self._monitor_item = Application.getInstance().createQmlComponent(self._monitor_view_qml_path, {
+            "OutputDevice": self
+        })
 
     @pyqtProperty(str, notify=printerTypeChanged)
     def printerType(self):

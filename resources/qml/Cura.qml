@@ -20,14 +20,16 @@ UM.MainWindow
     viewportRect: Qt.rect(0, 0, (base.width - sidebar.width) / base.width, 1.0)
     property bool showPrintMonitor: false
 
+    // This connection is here to support legacy printer output devices that use the showPrintMonitor signal on Application to switch to the monitor stage
+    // It should be phased out in newer plugin versions.
     Connections
     {
         target: Printer
         onShowPrintMonitor: {
             if (show) {
-                topbar.startMonitoringPrint()
+                UM.Controller.setActiveStage("MonitorStage")
             } else {
-                topbar.stopMonitoringPrint()
+                UM.Controller.setActiveStage("PrepareStage")
             }
         }
     }
@@ -46,6 +48,7 @@ UM.MainWindow
         //
         // This has been fixed for QtQuick Controls 2 since the Shortcut item has a context property.
         Cura.Actions.parent = backgroundItem
+        CuraApplication.purgeWindows()
     }
 
     Item
@@ -115,7 +118,7 @@ UM.MainWindow
                 MenuItem
                 {
                     id: saveWorkspaceMenu
-                    text: catalog.i18nc("@title:menu menubar:file","Save project")
+                    text: catalog.i18nc("@title:menu menubar:file","Save &Project...")
                     onTriggered:
                     {
                         if(UM.Preferences.getValue("cura/dialog_on_project_save"))
@@ -330,7 +333,7 @@ UM.MainWindow
                 text: catalog.i18nc("@action:button","Open File");
                 iconSource: UM.Theme.getIcon("load")
                 style: UM.Theme.styles.tool_button
-                tooltip: '';
+                tooltip: ""
                 anchors
                 {
                     top: topbar.bottom;
@@ -357,62 +360,49 @@ UM.MainWindow
             Topbar
             {
                 id: topbar
-                anchors.left:parent.left
+                anchors.left: parent.left
                 anchors.right: parent.right
                 anchors.top: parent.top
-                monitoringPrint: base.showPrintMonitor
-                onStartMonitoringPrint: base.showPrintMonitor = true
-                onStopMonitoringPrint: base.showPrintMonitor = false
-            }
-
-            Sidebar
-            {
-                id: sidebar;
-
-                anchors
-                {
-                    top: topbar.bottom;
-                    bottom: parent.bottom;
-                    right: parent.right;
-                }
-                z: 1
-                width: UM.Theme.getSize("sidebar").width;
-                monitoringPrint: base.showPrintMonitor
-            }
-
-            Rectangle
-            {
-                id: viewportOverlay
-
-                color: UM.Theme.getColor("viewport_overlay")
-                anchors
-                {
-                    top: topbar.bottom
-                    bottom: parent.bottom
-                    left:parent.left
-                    right: sidebar.left
-                }
-                visible: opacity > 0
-                opacity: base.showPrintMonitor ? 1 : 0
-
-                MouseArea {
-                    anchors.fill: parent
-                    acceptedButtons: Qt.AllButtons
-
-                    onWheel: wheel.accepted = true
-                }
             }
 
             Loader
             {
-                sourceComponent: Cura.MachineManager.printerOutputDevices.length > 0 ? Cura.MachineManager.printerOutputDevices[0].monitorItem: null
-                visible: base.showPrintMonitor
-                anchors.horizontalCenter: parent.horizontalCenter
-                anchors.verticalCenter: parent.verticalCenter
-                anchors.horizontalCenterOffset: - UM.Theme.getSize("sidebar").width / 2
-                anchors.verticalCenterOffset: UM.Theme.getSize("sidebar_header").height / 2
-                property real maximumWidth: viewportOverlay.width
-                property real maximumHeight: viewportOverlay.height
+                id: sidebar
+
+                anchors
+                {
+                    top: topbar.bottom
+                    bottom: parent.bottom
+                    right: parent.right
+                }
+
+                width: UM.Theme.getSize("sidebar").width
+                z: 1
+
+                source: UM.Controller.activeStage.sidebarComponent
+            }
+
+            Loader
+            {
+                id: main
+
+                anchors
+                {
+                    top: topbar.bottom
+                    bottom: parent.bottom
+                    left: parent.left
+                    right: sidebar.left
+                }
+
+                MouseArea
+                {
+                    visible: UM.Controller.activeStage.mainComponent != ""
+                    anchors.fill: parent
+                    acceptedButtons: Qt.AllButtons
+                    onWheel: wheel.accepted = true
+                }
+
+                source: UM.Controller.activeStage.mainComponent
             }
 
             UM.MessageStack

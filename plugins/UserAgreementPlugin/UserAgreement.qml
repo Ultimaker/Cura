@@ -43,7 +43,7 @@ UM.Dialog
             anchors.right: parent.right
             text: catalog.i18nc("@action:button", "I understand and agree")
             onClicked: {
-                manager.didAgree(true)
+                baseDialog.accepted()
             }
         }
 
@@ -52,13 +52,12 @@ UM.Dialog
             anchors.left: parent.left
             text: catalog.i18nc("@action:button", "I don't agree")
             onClicked: {
-                manager.didAgree(false)
+                baseDialog.rejected()
             }
         }
-
     }
 
-    onClosing: {
-        manager.didAgree(false)
-    }
+    onAccepted: manager.didAgree(true)
+    onRejected: manager.didAgree(false)
+    onClosing: manager.didAgree(false)
 }

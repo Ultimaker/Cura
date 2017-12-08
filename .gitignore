@@ -45,6 +45,7 @@ plugins/cura-big-flame-graph
 plugins/cura-siemensnx-plugin
 plugins/CuraVariSlicePlugin
 plugins/CuraLiveScriptingPlugin
+plugins/CuraPrintProfileCreator
 
 #Build stuff
 CMakeCache.txt

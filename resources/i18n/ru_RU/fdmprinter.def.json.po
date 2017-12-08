@@ -2,13 +2,13 @@
 # Copyright (C) 2017 Ultimaker
 # This file is distributed under the same license as the Cura package.
 # Ruben Dulek <r.dulek@ultimaker.com>, 2017.
-#
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Cura 3.0\n"
 "Report-Msgid-Bugs-To: http://github.com/ultimaker/uranium\n"
 "POT-Creation-Date: 2017-11-21 16:58+0000\n"
-"PO-Revision-Date: 2017-09-23 11:19+0300\n"
+"PO-Revision-Date: 2017-11-30 13:05+0100\n"
 "Last-Translator: Ruslan Popov <ruslan.popov@gmail.com>\n"
 "Language-Team: Ruslan Popov\n"
 "Language: ru_RU\n"
@@ -58,9 +58,7 @@ msgctxt "machine_start_gcode description"
 msgid ""
 "Gcode commands to be executed at the very start - separated by \n"
 "."
-msgstr ""
-"Команды в G-коде, которые будут выполнены при старте печати, разделённые \n"
-"."
+msgstr "Команды в G-коде, которые будут выполнены при старте печати, разделённые \n."
 
 #: fdmprinter.def.json
 msgctxt "machine_end_gcode label"
@@ -72,9 +70,7 @@ msgctxt "machine_end_gcode description"
 msgid ""
 "Gcode commands to be executed at the very end - separated by \n"
 "."
-msgstr ""
-"Команды в G-коде, которые будут выполнены в конце печати, разделённые \n"
-"."
+msgstr "Команды в G-коде, которые будут выполнены в конце печати, разделённые \n."
 
 #: fdmprinter.def.json
 msgctxt "material_guid label"
@@ -614,27 +610,27 @@ msgstr "Высота первого слоя в миллиметрах. Боле
 #: fdmprinter.def.json
 msgctxt "slicing_tolerance label"
 msgid "Slicing Tolerance"
-msgstr ""
+msgstr "Допуск слайсинга"
 
 #: fdmprinter.def.json
 msgctxt "slicing_tolerance description"
 msgid "How to slice layers with diagonal surfaces. The areas of a layer can be generated based on where the middle of the layer intersects the surface (Middle). Alternatively each layer can have the areas which fall inside of the volume throughout the height of the layer (Exclusive) or a layer has the areas which fall inside anywhere within the layer (Inclusive). Exclusive retains the most details, Inclusive makes for the best fit and Middle takes the least time to process."
-msgstr ""
+msgstr "Способ выполнения слайсинга слоев диагональными поверхностями. Области слоя можно создать на основе места пересечения середины слоя и поверхности (Середина). Кроме того, каждый слой может иметь области, попадающие в объем по высоте слоя (Исключение), или слой имеет области, попадающие в любое место слоя (Включение). Способ «Исключение» сохраняет больше деталей. Способ «Включение» обеспечивает наилучшую подгонку. Способ «Середина» требует минимального времени для обработки."
 
 #: fdmprinter.def.json
 msgctxt "slicing_tolerance option middle"
 msgid "Middle"
-msgstr ""
+msgstr "Середина"
 
 #: fdmprinter.def.json
 msgctxt "slicing_tolerance option exclusive"
 msgid "Exclusive"
-msgstr ""
+msgstr "Исключение"
 
 #: fdmprinter.def.json
 msgctxt "slicing_tolerance option inclusive"
 msgid "Inclusive"
-msgstr ""
+msgstr "Включение"
 
 #: fdmprinter.def.json
 msgctxt "line_width label"
@@ -809,7 +805,7 @@ msgstr "Этот экструдер используется для печати
 #: fdmprinter.def.json
 msgctxt "wall_x_extruder_nr label"
 msgid "Inner Wall Extruder"
-msgstr ""
+msgstr "Экструдер внутренней стенки"
 
 #: fdmprinter.def.json
 msgctxt "wall_x_extruder_nr description"
@@ -1389,7 +1385,7 @@ msgstr "Шаблон заполнения"
 #: fdmprinter.def.json
 msgctxt "infill_pattern description"
 msgid "The pattern of the infill material of the print. The line and zig zag infill swap direction on alternate layers, reducing material cost. The grid, triangle, tri-hexagon, cubic, octet, quarter cubic, cross and concentric patterns are fully printed every layer. Cubic, quarter cubic and octet infill change with every layer to provide a more equal distribution of strength over each direction."
-msgstr ""
+msgstr "Шаблон заполняющего материала печати. Линейное и зигзагообразное заполнение меняет направление на чередующихся слоях, снижая расходы на материал. Шаблоны «сетка», «треугольник», «шестигранник из треугольников», «куб», «восьмигранник», «четверть куба», «крестовое», «концентрическое» полностью печатаются в каждом слое. Шаблоны заполнения «куб», «четверть куба», «восьмигранник» меняются в каждом слое, чтобы обеспечить более равномерное распределение прочности в каждом направлении."
 
 #: fdmprinter.def.json
 msgctxt "infill_pattern option grid"
@@ -1409,7 +1405,7 @@ msgstr "Треугольник"
 #: fdmprinter.def.json
 msgctxt "infill_pattern option trihexagon"
 msgid "Tri-Hexagon"
-msgstr ""
+msgstr "Шестигранник из треугольников"
 
 #: fdmprinter.def.json
 msgctxt "infill_pattern option cubic"
@@ -1464,7 +1460,7 @@ msgstr "Соединять линии заполнения"
 #: fdmprinter.def.json
 msgctxt "zig_zaggify_infill description"
 msgid "Connect the ends where the infill pattern meets the inner wall using a line which follows the shape of the inner wall. Enabling this setting can make the infill adhere to the walls better and reduce the effects of infill on the quality of vertical surfaces. Disabling this setting reduces the amount of material used."
-msgstr ""
+msgstr "Соединение мест пересечения шаблона заполнения и внутренних стенок с использованием линии, повторяющей контур внутренней стенки. Использование этой функции улучшает сцепление заполнения со стенками и снижает влияние заполнения на качество вертикальных поверхностей. Отключение этой функции снижает расход материала."
 
 #: fdmprinter.def.json
 msgctxt "infill_angles label"
@@ -1479,22 +1475,22 @@ msgstr "Список направлений линии при печати сл�
 #: fdmprinter.def.json
 msgctxt "infill_offset_x label"
 msgid "Infill X Offset"
-msgstr ""
+msgstr "Смещение заполнения по X"
 
 #: fdmprinter.def.json
 msgctxt "infill_offset_x description"
 msgid "The infill pattern is offset this distance along the X axis."
-msgstr ""
+msgstr "Расстояние смещения шаблона заполнения по оси X."
 
 #: fdmprinter.def.json
 msgctxt "infill_offset_y label"
 msgid "Infill Y Offset"
-msgstr ""
+msgstr "Смещение заполнения по Y"
 
 #: fdmprinter.def.json
 msgctxt "infill_offset_y description"
 msgid "The infill pattern is offset this distance along the Y axis."
-msgstr ""
+msgstr "Расстояние смещения шаблона заполнения по оси Y."
 
 #: fdmprinter.def.json
 msgctxt "sub_div_rad_add label"
@@ -1809,22 +1805,22 @@ msgstr "Укажите диаметр используемой нити."
 #: fdmprinter.def.json
 msgctxt "material_adhesion_tendency label"
 msgid "Adhesion Tendency"
-msgstr ""
+msgstr "Тенденция к прилипанию"
 
 #: fdmprinter.def.json
 msgctxt "material_adhesion_tendency description"
 msgid "Surface adhesion tendency."
-msgstr ""
+msgstr "Тенденция к прилипанию к поверхности."
 
 #: fdmprinter.def.json
 msgctxt "material_surface_energy label"
 msgid "Surface Energy"
-msgstr ""
+msgstr "Поверхностная энергия"
 
 #: fdmprinter.def.json
 msgctxt "material_surface_energy description"
 msgid "Surface energy."
-msgstr ""
+msgstr "Поверхностная энергия."
 
 #: fdmprinter.def.json
 msgctxt "material_flow label"
@@ -3556,7 +3552,7 @@ msgctxt "skirt_gap description"
 msgid ""
 "The horizontal distance between the skirt and the first layer of the print.\n"
 "This is the minimum distance. Multiple skirt lines will extend outwards from this distance."
-msgstr ""
+msgstr "Горизонтальное расстояние между юбкой и первым слоем печати.\nМинимальное расстояние. Несколько линий юбки будут расширяться от этого расстояния."
 
 #: fdmprinter.def.json
 msgctxt "skirt_brim_minimal_length label"
@@ -3616,7 +3612,7 @@ msgstr "Сглаживание подложки"
 #: fdmprinter.def.json
 msgctxt "raft_smoothing description"
 msgid "This setting controls how much inner corners in the raft outline are rounded. Inward corners are rounded to a semi circle with a radius equal to the value given here. This setting also removes holes in the raft outline which are smaller than such a circle."
-msgstr ""
+msgstr "Этот параметр регулирует величину скругления внутренних углов контура подложки. Внутренние углы скругляются до полукруга с радиусом, равным установленному здесь значению. Этот параметр также приводит к удалению отверстий в контуре подложки, которые меньше такого круга."
 
 #: fdmprinter.def.json
 msgctxt "raft_airgap label"
@@ -4091,12 +4087,12 @@ msgstr "Обычно Cura пытается закрыть небольшие о�
 #: fdmprinter.def.json
 msgctxt "meshfix_maximum_resolution label"
 msgid "Maximum Resolution"
-msgstr ""
+msgstr "Максимальное разрешение"
 
 #: fdmprinter.def.json
 msgctxt "meshfix_maximum_resolution description"
 msgid "The minimum size of a line segment after slicing. If you increase this, the mesh will have a lower resolution. This may allow the printer to keep up with the speed it has to process g-code and will increase slice speed by removing details of the mesh that it can't process anyway."
-msgstr ""
+msgstr "Минимальный размер сегмента линии после слайсинга. Увеличение значения этого параметра понизит разрешение модели. Это может позволить принтеру поддерживать скорость обработки кода G и увеличит скорость слайсинга за счет удаления деталей модели, которые он в любом случае не сможет обработать."
 
 #: fdmprinter.def.json
 msgctxt "multiple_mesh_overlap label"
@@ -4131,12 +4127,12 @@ msgstr "Чередует какой из объектов, пересекающ�
 #: fdmprinter.def.json
 msgctxt "remove_empty_first_layers label"
 msgid "Remove Empty First Layers"
-msgstr ""
+msgstr "Удалить первые пустые слои"
 
 #: fdmprinter.def.json
 msgctxt "remove_empty_first_layers description"
 msgid "Remove empty layers beneath the first printed layer if they are present. Disabling this setting can cause empty first layers if the Slicing Tolerance setting is set to Exclusive or Middle."
-msgstr ""
+msgstr "Удаление пустых слоёв под первым печатаемым слоем, если они имеются. Отключение этой функции может привести к созданию первых пустых слоев, если для параметра «Допуск слайсинга» установлено значение «Включение» или «Середина»."
 
 #: fdmprinter.def.json
 msgctxt "blackmagic label"
@@ -4666,22 +4662,22 @@ msgstr "Среднее расстояние между случайными то
 #: fdmprinter.def.json
 msgctxt "flow_rate_max_extrusion_offset label"
 msgid "Flow rate compensation max extrusion offset"
-msgstr ""
+msgstr "Макс. смещение экструзии для компенсации расхода"
 
 #: fdmprinter.def.json
 msgctxt "flow_rate_max_extrusion_offset description"
 msgid "The maximum distance in mm to compensate."
-msgstr ""
+msgstr "Максимальное компенсируемое расстояние в миллиметрах."
 
 #: fdmprinter.def.json
 msgctxt "flow_rate_extrusion_offset_factor label"
 msgid "Flow rate compensation factor"
-msgstr ""
+msgstr "Коэффициент компенсации расхода"
 
 #: fdmprinter.def.json
 msgctxt "flow_rate_extrusion_offset_factor description"
 msgid "The multiplication factor for the flow rate -> distance translation."
-msgstr ""
+msgstr "Коэффициент перевода расхода в расстояние."
 
 #: fdmprinter.def.json
 msgctxt "wireframe_enabled label"
@@ -4833,9 +4829,7 @@ msgctxt "wireframe_up_half_speed description"
 msgid ""
 "Distance of an upward move which is extruded with half speed.\n"
 "This can cause better adhesion to previous layers, while not heating the material in those layers too much. Only applies to Wire Printing."
-msgstr ""
-"Расстояние движения вверх, при котором выдавливание идёт на половине скорости.\n"
-"Это может улучшить прилипание к предыдущим слоям, не перегревая материал тех слоёв. Применяется только при каркасной печати."
+msgstr "Расстояние движения вверх, при котором выдавливание идёт на половине скорости.\nЭто может улучшить прилипание к предыдущим слоям, не перегревая материал тех слоёв. Применяется только при каркасной печати."
 
 #: fdmprinter.def.json
 msgctxt "wireframe_top_jump label"
