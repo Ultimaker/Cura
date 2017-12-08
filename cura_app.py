@@ -2,12 +2,27 @@
 
 # Copyright (c) 2015 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
+
 import os
 import sys
+from UM.Platform import Platform
+
+def get_cura_dir_path():
+    if Platform.isWindows():
+        return os.path.expanduser("~/AppData/Local/cura/")
+    elif Platform.isLinux():
+        return os.path.expanduser("~/.local/share/cura")
+    elif Platform.isOSX():
+        return os.path.expanduser("~/Library/Logs/cura")
+
+if hasattr(sys, "frozen"):
+    dirpath = get_cura_dir_path()
+    os.makedirs(dirpath, exist_ok = True)
+    sys.stdout = open(os.path.join(dirpath, "stdout.log"), "w")
+    sys.stderr = open(os.path.join(dirpath, "stderr.log"), "w")
+
 import platform
 import faulthandler
-
-from UM.Platform import Platform
 
 #WORKAROUND: GITHUB-88 GITHUB-385 GITHUB-612
 if Platform.isLinux(): # Needed for platform.linux_distribution, which is not available on Windows and OSX
@@ -47,7 +62,6 @@ def exceptHook(hook_type, value, traceback):
     _crash_handler = CrashHandler(hook_type, value, traceback)
     _crash_handler.show()
 
-
 sys.excepthook = exceptHook
 
 # Workaround for a race condition on certain systems where there
@@ -57,21 +71,6 @@ sys.excepthook = exceptHook
 import Arcus #@UnusedImport
 import cura.CuraApplication
 import cura.Settings.CuraContainerRegistry
-
-def get_cura_dir_path():
-    if Platform.isWindows():
-        return os.path.expanduser("~/AppData/Local/cura/")
-    elif Platform.isLinux():
-        return os.path.expanduser("~/.local/share/cura")
-    elif Platform.isOSX():
-        return os.path.expanduser("~/Library/Logs/cura")
-
-
-if hasattr(sys, "frozen"):
-    dirpath = get_cura_dir_path()
-    os.makedirs(dirpath, exist_ok = True)
-    sys.stdout = open(os.path.join(dirpath, "stdout.log"), "w")
-    sys.stderr = open(os.path.join(dirpath, "stderr.log"), "w")
 
 faulthandler.enable()
 
