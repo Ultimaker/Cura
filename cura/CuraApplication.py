@@ -634,7 +634,7 @@ class CuraApplication(QtApplication):
         CuraApplication.addCommandLineOptions(parser)
         # Important: It is important to keep this line here!
         #            In Uranium we allow to pass unknown arguments to the final executable or script.
-        parsed_command_line = vars(parser.parse_args())
+        parsed_command_line = vars(parser.known_args()[0])
 
         if parsed_command_line["single_instance"]:
             Logger.log("i", "Checking for the presence of an ready running Cura instance.")
