@@ -80,8 +80,6 @@ class GCodeWriter(MeshWriter):
 
         if instance_container1.getDefinition():
             flat_container.setDefinition(instance_container1.getDefinition().getId())
-        else:
-            flat_container.setDefinition(instance_container2.getDefinition().getId())
 
         for key in instance_container2.getAllKeys():
             flat_container.setProperty(key, "value", instance_container2.getProperty(key, "value"))
