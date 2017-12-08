@@ -626,7 +626,7 @@ class CuraApplication(QtApplication):
     @classmethod
     def preStartUp(cls):
         # Peek the arguments and look for the 'single-instance' flag.
-        parser = argparse.ArgumentParser(prog="cura")  # pylint: disable=bad-whitespace
+        parser = cls.getCommandlineParser()
         CuraApplication.addCommandLineOptions(parser)
         # Important: It is important to keep this line here!
         #            In Uranium we allow to pass unknown arguments to the final executable or script.
