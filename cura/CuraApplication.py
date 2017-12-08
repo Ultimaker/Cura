@@ -385,6 +385,10 @@ class CuraApplication(QtApplication):
         self._plugin_registry.addSupportedPluginExtension("curaplugin", "Cura Plugin")
 
     def _onEngineCreated(self):
+        # Last check for unknown commandline arguments
+        parser = self.getCommandlineParser()
+        parser.parse_args()
+        
         self._engine.addImageProvider("camera", CameraImageProvider.CameraImageProvider())
 
     @pyqtProperty(bool)
