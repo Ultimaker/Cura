@@ -62,6 +62,11 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
 
         self._active_printer = None  # type: Optional[PrinterOutputModel]
 
+        self.setPriority(3)  # Make sure the output device gets selected above local file output
+        self.setName(self._id)
+        self.setShortDescription(i18n_catalog.i18nc("@action:button Preceded by 'Ready to'.", "Print over network"))
+        self.setDescription(i18n_catalog.i18nc("@properties:tooltip", "Print over network"))
+
     @pyqtProperty(QObject, notify=activePrinterChanged)
     def controlItem(self):
         if self._active_printer is None:
