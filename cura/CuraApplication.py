@@ -660,6 +660,8 @@ class CuraApplication(QtApplication):
                 single_instance_socket.flush()
                 single_instance_socket.waitForDisconnected()
                 return False
+        if parsed_command_line["Embedding"]:
+            self._splash_prevent = True
         return True
 
     def run(self):
