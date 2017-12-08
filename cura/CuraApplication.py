@@ -632,9 +632,11 @@ class CuraApplication(QtApplication):
         # Peek the arguments and look for the 'single-instance' flag.
         parser = argparse.ArgumentParser(prog="cura")  # pylint: disable=bad-whitespace
         CuraApplication.addCommandLineOptions(parser)
-        cls.parseCommandLine()
+        # Important: It is important to keep this line here!
+        #            In Uranium we allow to pass unknown arguments to the final executable or script.
+        parsed_command_line = vars(parser.parse_args())
 
-        if cls.getCommandLineOption("single_instance"):
+        if parsed_command_line["single_instance"]:
             Logger.log("i", "Checking for the presence of an ready running Cura instance.")
             single_instance_socket = QLocalSocket()
             Logger.log("d", "preStartUp(): full server name: " + single_instance_socket.fullServerName())
@@ -653,8 +655,8 @@ class CuraApplication(QtApplication):
                 payload = {"command": "focus"}
                 single_instance_socket.write(bytes(json.dumps(payload) + "\n", encoding="ASCII"))
 
-                if len(cls.getCommandLineOption("file")) != 0:
-                    for filename in cls.getCommandLineOption("file"):
+                if len(parsed_command_line["file"]) != 0:
+                    for filename in parsed_command_line["file"]:
                         payload = {"command": "open", "filePath": filename}
                         single_instance_socket.write(bytes(json.dumps(payload) + "\n", encoding="ASCII"))
 
@@ -664,7 +666,7 @@ class CuraApplication(QtApplication):
                 single_instance_socket.flush()
                 single_instance_socket.waitForDisconnected()
                 return False
-        if cls.getCommandLineOption("Embedding"):
+        if parsed_command_line["Embedding"]:
             cls._splash_prevent = True
         return True
 
