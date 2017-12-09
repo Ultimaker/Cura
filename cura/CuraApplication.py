@@ -388,10 +388,6 @@ class CuraApplication(QtApplication):
         self._plugin_registry.addSupportedPluginExtension("curaplugin", "Cura Plugin")
 
     def _onEngineCreated(self):
-        # Last check for unknown commandline arguments
-        parser = self.getCommandlineParser(with_help = True)
-        parser.parse_args()
-        
         self._engine.addImageProvider("camera", CameraImageProvider.CameraImageProvider())
 
     @pyqtProperty(bool)
@@ -671,7 +667,14 @@ class CuraApplication(QtApplication):
                 return False
         return True
 
+    def preRun(self):
+        # Last check for unknown commandline arguments
+        parser = self.getCommandlineParser(with_help = True)
+        parser.parse_args()
+    
     def run(self):
+        self.preRun()
+        
         self.showSplashMessage(self._i18n_catalog.i18nc("@info:progress", "Setting up scene..."))
 
         self._setUpSingleInstanceServer()
