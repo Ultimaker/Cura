@@ -127,7 +127,7 @@ class CuraApplication(QtApplication):
     #        Cura will always show the Add Machine Dialog upon start.
     stacksValidationFinished = pyqtSignal()  # Emitted whenever a validation is finished
 
-    def __init__(self):
+    def __init__(self, **kwargs):
 
         # this list of dir names will be used by UM to detect an old cura directory
         for dir_name in ["extruders", "machine_instances", "materials", "plugins", "quality", "user", "variants"]:
@@ -207,9 +207,12 @@ class CuraApplication(QtApplication):
 
         self._additional_components = {} # Components to add to certain areas in the interface
 
-        super().__init__(name = "cura", version = CuraVersion, buildtype = CuraBuildType,
+        super().__init__(name = "cura",
+                         version = CuraVersion,
+                         buildtype = CuraBuildType,
                          is_debug_mode = CuraDebugMode,
-                         tray_icon_name = "cura-icon-32.png")
+                         tray_icon_name = "cura-icon-32.png"
+                         **kwargs)
 
         self.default_theme = "cura-light"
 
