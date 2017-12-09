@@ -669,8 +669,16 @@ class CuraApplication(QtApplication):
 
     def preRun(self):
         # Last check for unknown commandline arguments
-        parser = self.getCommandlineParser(with_help = True)
-        parser.parse_args()
+        parser = self.getCommandlineParser()
+        parser.add_argument("--help", "-h",
+                            action='store_true',
+                            default = False,
+                            help = "Show this help message and exit."
+                            )
+        parsed_args = vars(parser.parse_args()) # This won't allow unknown arguments
+        if parsed_args["help"]:
+            parser.print_help()
+            sys.exit(0)
     
     def run(self):
         self.preRun()
