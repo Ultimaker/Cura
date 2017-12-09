@@ -15,7 +15,6 @@ parser.add_argument('--debug',
                     default = False,
                     help="Turn on the debug mode by setting this option."
                     )
-                    )
 known_args, unknown_args = parser.parse_known_args()
 known_args = vars(known_args)
 
