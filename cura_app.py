@@ -17,7 +17,7 @@ parser.add_argument('--debug',
 known_args, unknown_args = parser.parse_known_args()
 known_args = vars(known_args)
 
-if known_args["debug"]:
+if not known_args["debug"]:
     def get_cura_dir_path():
         if Platform.isWindows():
             return os.path.expanduser("~/AppData/Roaming/cura/")
