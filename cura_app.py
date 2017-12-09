@@ -3,23 +3,34 @@
 # Copyright (c) 2015 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
+import argparse
 import os
 import sys
+
 from UM.Platform import Platform
 
-def get_cura_dir_path():
-    if Platform.isWindows():
-        return os.path.expanduser("~/AppData/Roaming/cura/")
-    elif Platform.isLinux():
-        return os.path.expanduser("~/.local/share/cura")
-    elif Platform.isOSX():
-        return os.path.expanduser("~/Library/Logs/cura")
+parser = argparse.ArgumentParser()
+parser.add_argument('--debug',
+                    action='store_true',
+                    default = False
+                    )
+known_args, unknown_args = parser.parse_known_args()
+known_args = vars(known_args)
 
-if hasattr(sys, "frozen"):
-    dirpath = get_cura_dir_path()
-    os.makedirs(dirpath, exist_ok = True)
-    sys.stdout = open(os.path.join(dirpath, "stdout.log"), "w")
-    sys.stderr = open(os.path.join(dirpath, "stderr.log"), "w")
+if known_args["debug"]:
+    def get_cura_dir_path():
+        if Platform.isWindows():
+            return os.path.expanduser("~/AppData/Roaming/cura/")
+        elif Platform.isLinux():
+            return os.path.expanduser("~/.local/share/cura")
+        elif Platform.isOSX():
+            return os.path.expanduser("~/Library/Logs/cura")
+    
+    if hasattr(sys, "frozen"):
+        dirpath = get_cura_dir_path()
+        os.makedirs(dirpath, exist_ok = True)
+        sys.stdout = open(os.path.join(dirpath, "stdout.log"), "w")
+        sys.stderr = open(os.path.join(dirpath, "stderr.log"), "w")
 
 import platform
 import faulthandler
@@ -78,8 +89,8 @@ faulthandler.enable()
 cura.Settings.CuraContainerRegistry.CuraContainerRegistry.getInstance()
 
 # This pre-start up check is needed to determine if we should start the application at all.
-if not cura.CuraApplication.CuraApplication.preStartUp():
+if not cura.CuraApplication.CuraApplication.preStartUp(parser = parser, parsed_command_line = known_args):
     sys.exit(0)
 
-app = cura.CuraApplication.CuraApplication.getInstance()
+app = cura.CuraApplication.CuraApplication.getInstance(parser = parser, parsed_command_line = known_args)
 app.run()

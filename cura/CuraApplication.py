@@ -628,13 +628,14 @@ class CuraApplication(QtApplication):
     #   This should be called directly before creating an instance of CuraApplication.
     #   \returns \type{bool} True if the whole Cura app should continue running.
     @classmethod
-    def preStartUp(cls):
+    def preStartUp(cls, parser = None, parsed_command_line = {}):
         # Peek the arguments and look for the 'single-instance' flag.
-        parser = argparse.ArgumentParser(prog = "cura", add_help = False)  # pylint: disable=bad-whitespace
+        if not parser:
+            parser = argparse.ArgumentParser(prog = "cura", add_help = False)  # pylint: disable=bad-whitespace
         CuraApplication.addCommandLineOptions(parser)
         # Important: It is important to keep this line here!
         #            In Uranium we allow to pass unknown arguments to the final executable or script.
-        parsed_command_line = vars(parser.parse_known_args()[0])
+        parsed_command_line.update(vars(parser.parse_known_args()[0]))
 
         if parsed_command_line["single_instance"]:
             Logger.log("i", "Checking for the presence of an ready running Cura instance.")
