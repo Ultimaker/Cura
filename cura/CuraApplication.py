@@ -569,8 +569,8 @@ class CuraApplication(QtApplication):
         self._plugins_loaded = True
 
     @classmethod
-    def addCommandLineOptions(self, parser):
-        super().addCommandLineOptions(parser)
+    def addCommandLineOptions(self, parser, parsed_command_line = {}):
+        super().addCommandLineOptions(parser, parsed_command_line = parsed_command_line)
         parser.add_argument("file", nargs="*", help="Files to load after starting the application.")
         parser.add_argument("--single-instance", action="store_true", default=False)
         parser.add_argument("--headless", action = "store_true", default=False)
@@ -631,7 +631,7 @@ class CuraApplication(QtApplication):
         # Peek the arguments and look for the 'single-instance' flag.
         if not parser:
             parser = argparse.ArgumentParser(prog = "cura", add_help = False)  # pylint: disable=bad-whitespace
-        CuraApplication.addCommandLineOptions(parser)
+        CuraApplication.addCommandLineOptions(parser, parsed_command_line = parsed_command_line)
         # Important: It is important to keep this line here!
         #            In Uranium we allow to pass unknown arguments to the final executable or script.
         parsed_command_line.update(vars(parser.parse_known_args()[0]))
