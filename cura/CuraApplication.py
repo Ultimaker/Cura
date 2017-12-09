@@ -729,7 +729,6 @@ class CuraApplication(QtApplication):
         run_headless = self.getCommandLineOption("headless", False)
         if not run_headless:
             self.initializeEngine()
-            controller.setActiveStage("PrepareStage")
 
         if run_headless or self._engine.rootObjects:
             self.closeSplash()
