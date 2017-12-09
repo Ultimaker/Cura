@@ -9,7 +9,7 @@ import sys
 
 from UM.Platform import Platform
 
-parser = argparse.ArgumentParser()
+parser = argparse.ArgumentParser(prog = "cura")
 parser.add_argument('--debug',
                     action='store_true',
                     default = False
