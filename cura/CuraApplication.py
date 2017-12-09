@@ -729,11 +729,11 @@ class CuraApplication(QtApplication):
         self.setMainQml(Resources.getPath(self.ResourceTypes.QmlFiles, "Cura.qml"))
         self._qml_import_paths.append(Resources.getPath(self.ResourceTypes.QmlFiles))
 
-        run_headless = self.getCommandLineOption("headless", False)
-        if not run_headless:
+        run_without_gui = self.getCommandLineOption("headless", False) or self.getCommandLineOption("headless", False)
+        if not run_without_gui:
             self.initializeEngine()
 
-        if run_headless or self._engine.rootObjects:
+        if run_without_gui or self._engine.rootObjects:
             self.closeSplash()
 
             for file_name in self.getCommandLineOption("file", []):
