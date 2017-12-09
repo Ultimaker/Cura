@@ -73,7 +73,8 @@ def exceptHook(hook_type, value, traceback):
     _crash_handler = CrashHandler(hook_type, value, traceback)
     _crash_handler.show()
 
-sys.excepthook = exceptHook
+if not known_args["debug"]:
+    sys.excepthook = exceptHook
 
 # Workaround for a race condition on certain systems where there
 # is a race condition between Arcus and PyQt. Importing Arcus
