@@ -12,7 +12,9 @@ from UM.Platform import Platform
 parser = argparse.ArgumentParser(prog = "cura")
 parser.add_argument('--debug',
                     action='store_true',
-                    default = False
+                    default = False,
+                    help="Turn on the debug mode by setting this option."
+                    )
                     )
 known_args, unknown_args = parser.parse_known_args()
 known_args = vars(known_args)
