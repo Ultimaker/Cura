@@ -401,7 +401,11 @@ class CuraApplication(QtApplication):
     @pyqtSlot()
     def closeApplication(self):
         Logger.log("i", "Close application")
-        self._main_window.close()
+        main_window = self.getMainWindow()
+        if main_window is not None:
+            main_window.close()
+        else:
+            self.closeAllWindows()
 
     ## A reusable dialogbox
     #
