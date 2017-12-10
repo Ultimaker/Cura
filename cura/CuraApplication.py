@@ -405,7 +405,7 @@ class CuraApplication(QtApplication):
         if main_window is not None:
             main_window.close()
         else:
-            self.closeAllWindows()
+            self.exit(0)
 
     ## A reusable dialogbox
     #
