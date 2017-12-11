@@ -52,7 +52,7 @@ class UserProfilesModel(ProfilesModel):
                                     (qc.getMetaDataEntry("extruder") == active_extruder.definition.getMetaDataEntry("quality_definition") or
                                      qc.getMetaDataEntry("extruder") == active_extruder.definition.getId())}
 
-        return filtered_quality_changes, {}
+        return filtered_quality_changes, {} #Only return true profiles for now, no metadata. The quality manager is not able to get only metadata yet.
 
     ##  Called when a container changed on an extruder stack.
     #

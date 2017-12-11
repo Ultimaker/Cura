@@ -87,7 +87,7 @@ class ProfilesModel(InstanceContainersModel):
             not_supported_container = ContainerRegistry.getInstance().findContainers(id = "empty_quality")[0]
             result.append(not_supported_container)
 
-        return {item.getId():item for item in result}, {}
+        return {item.getId():item for item in result}, {} #Only return true profiles for now, no metadata. The quality manager is not able to get only metadata yet.
 
     ##  Re-computes the items in this model, and adds the layer height role.
     def _recomputeItems(self):

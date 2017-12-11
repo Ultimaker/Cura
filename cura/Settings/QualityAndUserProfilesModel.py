@@ -43,4 +43,4 @@ class QualityAndUserProfilesModel(ProfilesModel):
 
         result = filtered_quality_changes
         result.update({q.getId():q for q in quality_list})
-        return result, {}
+        return result, {} #Only return true profiles for now, no metadata. The quality manager is not able to get only metadata yet.
