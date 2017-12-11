@@ -1,5 +1,4 @@
 {
-    "id": "robo_3d_r1",
     "name": "Robo 3D R1",
     "version": 2,
     "inherits": "fdmprinter",

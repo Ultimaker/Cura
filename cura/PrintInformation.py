@@ -238,7 +238,7 @@ class PrintInformation(QObject):
                 pass
 
         active_material_id = Application.getInstance().getMachineManager().activeMaterialId
-        active_material_containers = ContainerRegistry.getInstance().findInstanceContainers(id=active_material_id)
+        active_material_containers = ContainerRegistry.getInstance().findInstanceContainers(id = active_material_id)
 
         if active_material_containers:
             self._active_material_container = active_material_containers[0]

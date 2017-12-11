@@ -1,5 +1,4 @@
 {
-  "id": "K8800",
   "name": "Vertex Delta K8800",
   "version": 2,
   "inherits": "fdmprinter",

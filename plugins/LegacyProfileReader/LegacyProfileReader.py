@@ -121,7 +121,7 @@ class LegacyProfileReader(ProfileReader):
             Logger.log("e", "Dictionary of Doom has no translation. Is it the correct JSON file?")
             return None
         current_printer_definition = global_container_stack.getBottom()
-        profile.setDefinition(current_printer_definition)
+        profile.setDefinition(current_printer_definition.getId())
         for new_setting in dict_of_doom["translation"]:  # Evaluate all new settings that would get a value from the translations.
             old_setting_expression = dict_of_doom["translation"][new_setting]
             compiled = compile(old_setting_expression, new_setting, "eval")
