@@ -179,7 +179,7 @@ class VersionUpgrade30to31(VersionUpgrade):
             if not os.path.isfile(file_path):
                 continue
 
-            parser = configparser.ConfigParser()
+            parser = configparser.ConfigParser(interpolation = None)
             try:
                 parser.read([file_path])
             except:
@@ -213,7 +213,7 @@ class VersionUpgrade30to31(VersionUpgrade):
 
         new_filename = machine_name + "_" + "fdmextruder" + suffix
 
-        extruder_quality_changes_parser = configparser.ConfigParser()
+        extruder_quality_changes_parser = configparser.ConfigParser(interpolation = None)
         extruder_quality_changes_parser.add_section("general")
         extruder_quality_changes_parser["general"]["version"] = str(2)
         extruder_quality_changes_parser["general"]["name"] = global_quality_changes["general"]["name"]
