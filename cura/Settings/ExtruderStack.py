@@ -92,8 +92,8 @@ class ExtruderStack(CuraContainerStack):
         return self.getNextStack()._getMachineDefinition()
 
     @override(CuraContainerStack)
-    def deserialize(self, contents: str) -> None:
-        super().deserialize(contents)
+    def deserialize(self, contents: str, file_name: Optional[str] = None) -> None:
+        super().deserialize(contents, file_name)
         stacks = ContainerRegistry.getInstance().findContainerStacks(id=self.getMetaDataEntry("machine", ""))
         if stacks:
             self.setNextStack(stacks[0])
@@ -114,6 +114,11 @@ class ExtruderStack(CuraContainerStack):
 
             if has_global_dependencies:
                 self.getNextStack().propertiesChanged.emit(key, properties)
+
+    def findDefaultVariant(self):
+        # The default variant is defined in the machine stack and/or definition, so use the machine stack to find
+        # the default variant.
+        return self.getNextStack().findDefaultVariant()
 
 
 extruder_stack_mime = MimeType(

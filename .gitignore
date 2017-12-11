@@ -43,6 +43,8 @@ plugins/ProfileFlattener
 plugins/cura-god-mode-plugin
 plugins/cura-big-flame-graph
 plugins/cura-siemensnx-plugin
+plugins/CuraVariSlicePlugin
+plugins/CuraLiveScriptingPlugin
 
 #Build stuff
 CMakeCache.txt

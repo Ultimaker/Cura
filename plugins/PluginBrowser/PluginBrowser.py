@@ -11,7 +11,6 @@ from UM.Message import Message
 
 from PyQt5.QtNetwork import QNetworkAccessManager, QNetworkRequest, QNetworkReply
 from PyQt5.QtCore import QUrl, QObject, Qt, pyqtProperty, pyqtSignal, pyqtSlot
-from PyQt5.QtQml import QQmlComponent, QQmlContext
 
 import json
 import os
@@ -39,8 +38,6 @@ class PluginBrowser(QObject, Extension):
         self._plugins_metadata = []
         self._plugins_model = None
 
-        self._qml_component = None
-        self._qml_context = None
         self._dialog = None
         self._download_progress = 0
 
@@ -111,17 +108,8 @@ class PluginBrowser(QObject, Extension):
 
     def _createDialog(self, qml_name):
         Logger.log("d", "Creating dialog [%s]", qml_name)
-
-        path = QUrl.fromLocalFile(os.path.join(PluginRegistry.getInstance().getPluginPath(self.getPluginId()), qml_name))
-        self._qml_component = QQmlComponent(Application.getInstance()._engine, path)
-
-        # We need access to engine (although technically we can't)
-        self._qml_context = QQmlContext(Application.getInstance()._engine.rootContext())
-        self._qml_context.setContextProperty("manager", self)
-        dialog = self._qml_component.create(self._qml_context)
-        if dialog is None:
-            Logger.log("e", "QQmlComponent status %s", self._qml_component.status())
-            Logger.log("e", "QQmlComponent errorString %s", self._qml_component.errorString())
+        path = os.path.join(PluginRegistry.getInstance().getPluginPath(self.getPluginId()), qml_name)
+        dialog = Application.getInstance().createQmlComponent(path, {"manager": self})
         return dialog
 
     def setIsDownloading(self, is_downloading):

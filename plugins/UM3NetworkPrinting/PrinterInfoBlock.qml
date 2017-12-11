@@ -44,7 +44,7 @@ Rectangle
             case "maintenance":  // TODO: new string
             case "unknown":
             default:
-                return catalog.i18nc("@label", "Unknown");
+                return catalog.i18nc("@label Printer status", "Unknown");
         }
     }
 

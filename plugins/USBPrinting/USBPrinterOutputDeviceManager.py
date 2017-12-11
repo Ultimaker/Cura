@@ -16,13 +16,11 @@ from cura.CuraApplication import CuraApplication
 
 import threading
 import platform
-import glob
 import time
 import os.path
 import serial.tools.list_ports
 from UM.Extension import Extension
 
-from PyQt5.QtQml import QQmlComponent, QQmlContext
 from PyQt5.QtCore import QUrl, QObject, pyqtSlot, pyqtProperty, pyqtSignal, Qt
 from UM.i18n import i18nCatalog
 i18n_catalog = i18nCatalog("cura")
@@ -91,19 +89,16 @@ class USBPrinterOutputDeviceManager(QObject, OutputDevicePlugin, Extension):
     #   This will create the view if its not already created.
     def spawnFirmwareInterface(self, serial_port):
         if self._firmware_view is None:
-            path = QUrl.fromLocalFile(os.path.join(PluginRegistry.getInstance().getPluginPath("USBPrinting"), "FirmwareUpdateWindow.qml"))
-            component = QQmlComponent(Application.getInstance()._engine, path)
-
-            self._firmware_context = QQmlContext(Application.getInstance()._engine.rootContext())
-            self._firmware_context.setContextProperty("manager", self)
-            self._firmware_view = component.create(self._firmware_context)
+            path = os.path.join(PluginRegistry.getInstance().getPluginPath("USBPrinting"), "FirmwareUpdateWindow.qml")
+            self._firmware_view = Application.getInstance().createQmlComponent(path, {"manager": self})
 
         self._firmware_view.show()
 
     @pyqtSlot(str)
     def updateAllFirmware(self, file_name):
         if file_name.startswith("file://"):
-            file_name = QUrl(file_name).toLocalFile() # File dialogs prepend the path with file://, which we don't need / want
+            file_name = QUrl(file_name).toLocalFile()  # File dialogs prepend the path with file://, which we don't need / want
+
         if not self._usb_output_devices:
             Message(i18n_catalog.i18nc("@info", "Unable to update firmware because there are no printers connected."), title = i18n_catalog.i18nc("@info:title", "Warning")).show()
             return

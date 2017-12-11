@@ -1,5 +1,5 @@
-// Copyright (c) 2015 Ultimaker B.V.
-// Uranium is released under the terms of the LGPLv3 or higher.
+// Copyright (c) 2017 Ultimaker B.V.
+// Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.2
 import QtQuick.Controls 1.2
@@ -108,6 +108,7 @@ SettingItem
                 left: parent.left
                 leftMargin: UM.Theme.getSize("setting_unit_margin").width
                 right: parent.right
+                rightMargin: UM.Theme.getSize("setting_unit_margin").width
                 verticalCenter: parent.verticalCenter
             }
             renderType: Text.NativeRendering
@@ -154,7 +155,8 @@ SettingItem
 
             selectByMouse: true;
 
-            maximumLength: (definition.type == "[int]") ? 20 : (definition.type == "str") ? -1 : 10;
+            maximumLength: (definition.type == "str" || definition.type == "[int]") ? -1 : 10;
+            clip: true; //Hide any text that exceeds the width of the text box.
 
             validator: RegExpValidator { regExp: (definition.type == "[int]") ? /^\[?(\s*-?[0-9]{0,9}\s*,)*(\s*-?[0-9]{0,9})\s*\]?$/ : (definition.type == "int") ? /^-?[0-9]{0,10}$/ : (definition.type == "float") ? /^-?[0-9]{0,9}[.,]?[0-9]{0,10}$/ : /^.*$/ } // definition.type property from parent loader used to disallow fractional number entry
 

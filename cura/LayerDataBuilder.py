@@ -20,11 +20,11 @@ class LayerDataBuilder(MeshBuilder):
         if layer not in self._layers:
             self._layers[layer] = Layer(layer)
 
-    def addPolygon(self, layer, polygon_type, data, line_width):
+    def addPolygon(self, layer, polygon_type, data, line_width, line_thickness, line_feedrate):
         if layer not in self._layers:
             self.addLayer(layer)
 
-        p = LayerPolygon(self, polygon_type, data, line_width)
+        p = LayerPolygon(self, polygon_type, data, line_width, line_thickness, line_feedrate)
         self._layers[layer].polygons.append(p)
 
     def getLayer(self, layer):
@@ -64,13 +64,14 @@ class LayerDataBuilder(MeshBuilder):
         line_dimensions = numpy.empty((vertex_count, 2), numpy.float32)
         colors = numpy.empty((vertex_count, 4), numpy.float32)
         indices = numpy.empty((index_count, 2), numpy.int32)
+        feedrates = numpy.empty((vertex_count), numpy.float32)
         extruders = numpy.empty((vertex_count), numpy.float32)
         line_types = numpy.empty((vertex_count), numpy.float32)
 
         vertex_offset = 0
         index_offset = 0
         for layer, data in sorted(self._layers.items()):
-            ( vertex_offset, index_offset ) = data.build( vertex_offset, index_offset, vertices, colors, line_dimensions, extruders, line_types, indices)
+            ( vertex_offset, index_offset ) = data.build( vertex_offset, index_offset, vertices, colors, line_dimensions, feedrates, extruders, line_types, indices)
             self._element_counts[layer] = data.elementCount
 
         self.addVertices(vertices)
@@ -106,6 +107,11 @@ class LayerDataBuilder(MeshBuilder):
             "line_types": {
                 "value": line_types,
                 "opengl_name": "a_line_type",
+                "opengl_type": "float"
+                },
+            "feedrates": {
+                "value": feedrates,
+                "opengl_name": "a_feedrate",
                 "opengl_type": "float"
                 }
             }

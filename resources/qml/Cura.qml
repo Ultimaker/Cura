@@ -46,6 +46,7 @@ UM.MainWindow
         //
         // This has been fixed for QtQuick Controls 2 since the Shortcut item has a context property.
         Cura.Actions.parent = backgroundItem
+        CuraApplication.purgeWindows()
     }
 
     Item
@@ -177,7 +178,7 @@ UM.MainWindow
 
                         MenuSeparator { }
 
-                        MenuItem { text: catalog.i18nc("@action:inmenu", "Set as Active Extruder"); onTriggered: ExtruderManager.setActiveExtruderIndex(model.index) }
+                        MenuItem { text: catalog.i18nc("@action:inmenu", "Set as Active Extruder"); onTriggered: Cura.ExtruderManager.setActiveExtruderIndex(model.index) }
                     }
                     onObjectAdded: settingsMenu.insertItem(index, object)
                     onObjectRemoved: settingsMenu.removeItem(object)

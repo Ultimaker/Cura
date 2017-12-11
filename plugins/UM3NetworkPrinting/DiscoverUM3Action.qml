@@ -230,13 +230,13 @@ Cura.MachineAction
                             {
                                 if(base.selectedPrinter.printerType == "ultimaker3")
                                 {
-                                    return catalog.i18nc("@label", "Ultimaker 3")
+                                    return catalog.i18nc("@label Printer name", "Ultimaker 3")
                                 } else if(base.selectedPrinter.printerType == "ultimaker3_extended")
                                 {
-                                    return catalog.i18nc("@label", "Ultimaker 3 Extended")
+                                    return catalog.i18nc("@label Printer name", "Ultimaker 3 Extended")
                                 } else
                                 {
-                                    return catalog.i18nc("@label", "Unknown") // We have no idea what type it is. Should not happen 'in the field'
+                                    return catalog.i18nc("@label Printer name", "Unknown") // We have no idea what type it is. Should not happen 'in the field'
                                 }
                             }
                             else
