@@ -17,7 +17,7 @@ UM.MainWindow
     id: base
     //: Cura application window title
     title: catalog.i18nc("@title:window","Ultimaker Cura");
-    //viewportRect: Qt.rect(0, 0, (base.width - sidebar.width) / base.width, 1.0)
+    viewportRect: Qt.rect(0, 0, (base.width - sidebar.width) / base.width, 1.0)
     property bool showPrintMonitor: false
 
     // This connection is here to support legacy printer output devices that use the showPrintMonitor signal on Application to switch to the monitor stage
@@ -67,15 +67,6 @@ UM.MainWindow
         // This has been fixed for QtQuick Controls 2 since the Shortcut item has a context property.
         Cura.Actions.parent = backgroundItem
         CuraApplication.purgeWindows()
-
-
-        var sidebarCollaps = UM.Preferences.getValue("general/sidebar_collaps")
-
-        if (sidebarCollaps == true){
-            sidebar.collapsed = true;
-            collapsSidebarAnimation.start();
-
-        }
     }
 
     Item
@@ -403,8 +394,10 @@ UM.MainWindow
                     if(collapsed){
                         sidebar.visible = true
                         sidebar.initialWidth = UM.Theme.getSize("sidebar").width
+                        viewportRect = Qt.rect(0, 0, (base.width - sidebar.width) / base.width, 1.0)
                         expandSidebarAnimation.start();
                     }else{
+                        viewportRect = Qt.rect(0, 0, 1, 1.0)
                         collapsSidebarAnimation.start();
                     }
                     collapsed = !collapsed;
@@ -435,6 +428,17 @@ UM.MainWindow
                     properties: "x"
                     to: base.width - sidebar.width
                     duration: 500
+                }
+
+                Component.onCompleted:
+                {
+                    var sidebarCollaps = UM.Preferences.getValue("general/sidebar_collaps")
+
+                    if (sidebarCollaps == true){
+                        sidebar.collapsed = true;
+                        viewportRect = Qt.rect(0, 0, 1, 1.0)
+                        collapsSidebarAnimation.start();
+                    }
                 }
             }
 
