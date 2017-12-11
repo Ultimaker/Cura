@@ -32,4 +32,5 @@ Menu
 
     MenuSeparator {}
     MenuItem { action: Cura.Actions.homeCamera; }
+    MenuItem { action: Cura.Actions.expandSidebar; }
 }
