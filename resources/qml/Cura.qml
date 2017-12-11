@@ -17,7 +17,7 @@ UM.MainWindow
     id: base
     //: Cura application window title
     title: catalog.i18nc("@title:window","Ultimaker Cura");
-    viewportRect: Qt.rect(0, 0, (base.width - sidebar.width) / base.width, 1.0)
+    //viewportRect: Qt.rect(0, 0, (base.width - sidebar.width) / base.width, 1.0)
     property bool showPrintMonitor: false
 
     // This connection is here to support legacy printer output devices that use the showPrintMonitor signal on Application to switch to the monitor stage
@@ -30,6 +30,24 @@ UM.MainWindow
                 UM.Controller.setActiveStage("MonitorStage")
             } else {
                 UM.Controller.setActiveStage("PrepareStage")
+            }
+        }
+    }
+
+    onWidthChanged:
+    {
+        // If slidebar is collapsed then it should be invisible
+        // otherwise after the main_window resize the sidebar will be fully re-drawn
+        if (sidebar.collapsed){
+            if (sidebar.visible == true){
+                sidebar.visible = false
+                sidebar.initialWidth = 0
+            }
+        }
+        else{
+            if (sidebar.visible == false){
+                sidebar.visible = true
+                sidebar.initialWidth = UM.Theme.getSize("sidebar").width
             }
         }
     }
@@ -49,6 +67,15 @@ UM.MainWindow
         // This has been fixed for QtQuick Controls 2 since the Shortcut item has a context property.
         Cura.Actions.parent = backgroundItem
         CuraApplication.purgeWindows()
+
+
+        var sidebarCollaps = UM.Preferences.getValue("general/sidebar_collaps")
+
+        if (sidebarCollaps == true){
+            sidebar.collapsed = true;
+            collapsSidebarAnimation.start();
+
+        }
     }
 
     Item
@@ -369,16 +396,46 @@ UM.MainWindow
             {
                 id: sidebar
 
-                anchors
-                {
-                    top: topbar.bottom
-                    bottom: parent.bottom
-                    right: parent.right
+                property bool collapsed: false;
+                property var initialWidth: UM.Theme.getSize("sidebar").width;
+
+                function callExpandOrCollapse(){
+                    if(collapsed){
+                        sidebar.visible = true
+                        sidebar.initialWidth = UM.Theme.getSize("sidebar").width
+                        expandSidebarAnimation.start();
+                    }else{
+                        collapsSidebarAnimation.start();
+                    }
+                    collapsed = !collapsed;
+                    UM.Preferences.setValue("general/sidebar_collaps", collapsed);
                 }
 
-                width: UM.Theme.getSize("sidebar").width
+                anchors
+                {
+                    top: topbar.top
+                    bottom: parent.bottom
+                }
 
+                width: initialWidth
+                x: base.width - sidebar.width
                 source: UM.Controller.activeStage.sidebarComponent
+
+                NumberAnimation {
+                    id: collapsSidebarAnimation
+                    target: sidebar
+                    properties: "x"
+                    to: base.width
+                    duration: 500
+                }
+
+                NumberAnimation {
+                    id: expandSidebarAnimation
+                    target: sidebar
+                    properties: "x"
+                    to: base.width - sidebar.width
+                    duration: 500
+                }
             }
 
             Loader
@@ -415,6 +472,13 @@ UM.MainWindow
                 }
             }
         }
+    }
+
+    // Expand or collapse sidebar
+    Connections
+    {
+        target: Cura.Actions.expandSidebar
+        onTriggered: sidebar.callExpandOrCollapse()
     }
 
     UM.PreferencesDialog
