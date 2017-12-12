@@ -12,11 +12,10 @@ Item {
     id: base;
     UM.I18nCatalog { id: catalog; name:"cura"}
 
-    property real progress: UM.Backend.progress;
-    property int backendState: UM.Backend.state;
-
-    property var backend: CuraApplication.getBackend();
-    property bool activity: CuraApplication.platformActivity;
+    property real progress: UM.Backend.progress
+    property int backendState: UM.Backend.state
+    property var backend: CuraApplication.getBackend()
+    property bool activity: CuraApplication.platformActivity
 
     property alias buttonRowWidth: saveRow.width
 
