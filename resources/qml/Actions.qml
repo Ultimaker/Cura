@@ -394,7 +394,7 @@ Item
     Action
     {
         id: expandSidebarAction;
-        text: catalog.i18nc("@action:inmenu menubar:view","Expand/Collapse sidebar");
+        text: catalog.i18nc("@action:inmenu menubar:view","Expand/Collapse Sidebar");
         shortcut: "Ctrl+E";
     }
 }

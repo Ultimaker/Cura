@@ -384,6 +384,8 @@ class CuraApplication(QtApplication):
 
         self._plugin_registry.addSupportedPluginExtension("curaplugin", "Cura Plugin")
 
+        preferences.addPreference("general/sidebar_collapse", False)
+
     def _onEngineCreated(self):
         self._engine.addImageProvider("camera", CameraImageProvider.CameraImageProvider())
 

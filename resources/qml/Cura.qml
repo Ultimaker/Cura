@@ -401,12 +401,12 @@ UM.MainWindow
                         collapsSidebarAnimation.start();
                     }
                     collapsed = !collapsed;
-                    UM.Preferences.setValue("general/sidebar_collaps", collapsed);
+                    UM.Preferences.setValue("general/sidebar_collapse", collapsed);
                 }
 
                 anchors
                 {
-                    top: topbar.top
+                    top: topbar.bottom
                     bottom: parent.bottom
                 }
 
@@ -419,7 +419,7 @@ UM.MainWindow
                     target: sidebar
                     properties: "x"
                     to: base.width
-                    duration: 500
+                    duration: 100
                 }
 
                 NumberAnimation {
@@ -427,12 +427,12 @@ UM.MainWindow
                     target: sidebar
                     properties: "x"
                     to: base.width - sidebar.width
-                    duration: 500
+                    duration: 100
                 }
 
                 Component.onCompleted:
                 {
-                    var sidebarCollaps = UM.Preferences.getValue("general/sidebar_collaps")
+                    var sidebarCollaps = UM.Preferences.getValue("general/sidebar_collapse")
 
                     if (sidebarCollaps == true){
                         sidebar.collapsed = true;
