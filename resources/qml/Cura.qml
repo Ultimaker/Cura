@@ -406,7 +406,7 @@ UM.MainWindow
 
                 anchors
                 {
-                    top: topbar.bottom
+                    top: topbar.top
                     bottom: parent.bottom
                 }
 

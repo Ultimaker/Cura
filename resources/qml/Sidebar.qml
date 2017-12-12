@@ -87,10 +87,77 @@ Rectangle
         }
     }
 
+    ToolButton
+    {
+        id: machineSelection
+        text: Cura.MachineManager.activeMachineName
+
+        width: base.width
+        height: UM.Theme.getSize("sidebar_header").height
+        tooltip: Cura.MachineManager.activeMachineName
+
+        anchors.top: base.top
+        //anchors.verticalCenter: parent.verticalCenter
+        anchors.right: parent.right
+        style: ButtonStyle
+        {
+            background: Rectangle
+            {
+                color:
+                {
+                    if(control.pressed)
+                    {
+                        return UM.Theme.getColor("sidebar_header_active");
+                    }
+                    else if(control.hovered)
+                    {
+                        return UM.Theme.getColor("sidebar_header_hover");
+                    }
+                    else
+                    {
+                        return UM.Theme.getColor("sidebar_header_bar");
+                    }
+                }
+                Behavior on color { ColorAnimation { duration: 50; } }
+
+                UM.RecolorImage
+                {
+                    id: downArrow
+                    anchors.verticalCenter: parent.verticalCenter
+                    anchors.right: parent.right
+                    anchors.rightMargin: UM.Theme.getSize("default_margin").width
+                    width: UM.Theme.getSize("standard_arrow").width
+                    height: UM.Theme.getSize("standard_arrow").height
+                    sourceSize.width: width
+                    sourceSize.height: width
+                    color: UM.Theme.getColor("text_emphasis")
+                    source: UM.Theme.getIcon("arrow_bottom")
+                }
+                Label
+                {
+                    id: sidebarComboBoxLabel
+                    color: UM.Theme.getColor("sidebar_header_text_active")
+                    text: control.text;
+                    elide: Text.ElideRight;
+                    anchors.left: parent.left;
+                    anchors.leftMargin: UM.Theme.getSize("default_margin").width * 2
+                    anchors.right: downArrow.left;
+                    anchors.rightMargin: control.rightMargin;
+                    anchors.verticalCenter: parent.verticalCenter;
+                    font: UM.Theme.getFont("large")
+                }
+            }
+            label: Label {}
+        }
+
+        menu: PrinterMenu { }
+    }
+
     SidebarHeader {
         id: header
         width: parent.width
         visible: machineExtruderCount.properties.value > 1 || Cura.MachineManager.hasMaterials || Cura.MachineManager.hasVariants
+        anchors.top: machineSelection.bottom
 
         onShowTooltip: base.showTooltip(item, location, text)
         onHideTooltip: base.hideTooltip()

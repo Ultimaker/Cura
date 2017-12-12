@@ -312,6 +312,7 @@ class CuraApplication(QtApplication):
         preferences.addPreference("cura/material_settings", "{}")
 
         preferences.addPreference("view/invert_zoom", False)
+        preferences.addPreference("general/sidebar_collapse", False)
 
         self._need_to_show_user_agreement = not Preferences.getInstance().getValue("general/accepted_user_agreement")
 
@@ -383,8 +384,6 @@ class CuraApplication(QtApplication):
         self._onGlobalContainerChanged()
 
         self._plugin_registry.addSupportedPluginExtension("curaplugin", "Cura Plugin")
-
-        preferences.addPreference("general/sidebar_collapse", False)
 
     def _onEngineCreated(self):
         self._engine.addImageProvider("camera", CameraImageProvider.CameraImageProvider())
