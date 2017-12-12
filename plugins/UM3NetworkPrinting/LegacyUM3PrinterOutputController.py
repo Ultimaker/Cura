@@ -18,6 +18,9 @@ class LegacyUM3PrinterOutputController(PrinterOutputController):
         self._preheat_bed_timer.setSingleShot(True)
         self._preheat_bed_timer.timeout.connect(self._onPreheatBedTimerFinished)
         self._preheat_printer = None
+
+        self.can_control_manually = False
+
         # Are we still waiting for a response about preheat?
         # We need this so we can already update buttons, so it feels more snappy.
         self._preheat_request_in_progress = False
