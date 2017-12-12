@@ -172,13 +172,14 @@ class CuraApplication(QtApplication):
         Resources.addStorageType(self.ResourceTypes.MachineStack, "machine_instances")
         Resources.addStorageType(self.ResourceTypes.DefinitionChangesContainer, "definition_changes")
 
-        ContainerRegistry.getInstance().addResourceType(self.ResourceTypes.QualityInstanceContainer)
-        ContainerRegistry.getInstance().addResourceType(self.ResourceTypes.VariantInstanceContainer)
-        ContainerRegistry.getInstance().addResourceType(self.ResourceTypes.MaterialInstanceContainer)
-        ContainerRegistry.getInstance().addResourceType(self.ResourceTypes.UserInstanceContainer)
-        ContainerRegistry.getInstance().addResourceType(self.ResourceTypes.ExtruderStack)
-        ContainerRegistry.getInstance().addResourceType(self.ResourceTypes.MachineStack)
-        ContainerRegistry.getInstance().addResourceType(self.ResourceTypes.DefinitionChangesContainer)
+        ContainerRegistry.getInstance().addResourceType(self.ResourceTypes.QualityInstanceContainer, "quality")
+        ContainerRegistry.getInstance().addResourceType(self.ResourceTypes.QualityInstanceContainer, "quality_changes")
+        ContainerRegistry.getInstance().addResourceType(self.ResourceTypes.VariantInstanceContainer, "variant")
+        ContainerRegistry.getInstance().addResourceType(self.ResourceTypes.MaterialInstanceContainer, "material")
+        ContainerRegistry.getInstance().addResourceType(self.ResourceTypes.UserInstanceContainer, "user")
+        ContainerRegistry.getInstance().addResourceType(self.ResourceTypes.ExtruderStack, "extruder_train")
+        ContainerRegistry.getInstance().addResourceType(self.ResourceTypes.MachineStack, "machine")
+        ContainerRegistry.getInstance().addResourceType(self.ResourceTypes.DefinitionChangesContainer, "definition_changes")
 
         ##  Initialise the version upgrade manager with Cura's storage paths.
         #   Needs to be here to prevent circular dependencies.
@@ -266,17 +267,17 @@ class CuraApplication(QtApplication):
         empty_container = ContainerRegistry.getInstance().getEmptyInstanceContainer()
 
         empty_variant_container = copy.deepcopy(empty_container)
-        empty_variant_container._id = "empty_variant"
+        empty_variant_container.setMetaDataEntry("id", "empty_variant")
         empty_variant_container.addMetaDataEntry("type", "variant")
         ContainerRegistry.getInstance().addContainer(empty_variant_container)
 
         empty_material_container = copy.deepcopy(empty_container)
-        empty_material_container._id = "empty_material"
+        empty_material_container.setMetaDataEntry("id", "empty_material")
         empty_material_container.addMetaDataEntry("type", "material")
         ContainerRegistry.getInstance().addContainer(empty_material_container)
 
         empty_quality_container = copy.deepcopy(empty_container)
-        empty_quality_container._id = "empty_quality"
+        empty_quality_container.setMetaDataEntry("id", "empty_quality")
         empty_quality_container.setName("Not Supported")
         empty_quality_container.addMetaDataEntry("quality_type", "not_supported")
         empty_quality_container.addMetaDataEntry("type", "quality")
@@ -284,12 +285,12 @@ class CuraApplication(QtApplication):
         ContainerRegistry.getInstance().addContainer(empty_quality_container)
 
         empty_quality_changes_container = copy.deepcopy(empty_container)
-        empty_quality_changes_container._id = "empty_quality_changes"
+        empty_quality_changes_container.setMetaDataEntry("id", "empty_quality_changes")
         empty_quality_changes_container.addMetaDataEntry("type", "quality_changes")
         ContainerRegistry.getInstance().addContainer(empty_quality_changes_container)
 
         with ContainerRegistry.getInstance().lockFile():
-            ContainerRegistry.getInstance().load()
+            ContainerRegistry.getInstance().loadAllMetadata()
 
         # set the setting version for Preferences
         preferences = Preferences.getInstance()
@@ -470,69 +471,10 @@ class CuraApplication(QtApplication):
         if not self._started: # Do not do saving during application start
             return
 
-        # Lock file for "more" atomically loading and saving to/from config dir.
-        with ContainerRegistry.getInstance().lockFile():
-            for instance in ContainerRegistry.getInstance().findInstanceContainers():
-                if not instance.isDirty():
-                    continue
-
-                try:
-                    data = instance.serialize()
-                except NotImplementedError:
-                    continue
-                except Exception:
-                    Logger.logException("e", "An exception occurred when serializing container %s", instance.getId())
-                    continue
-
-                mime_type = ContainerRegistry.getMimeTypeForContainer(type(instance))
-                file_name = urllib.parse.quote_plus(instance.getId()) + "." + mime_type.preferredSuffix
-                instance_type = instance.getMetaDataEntry("type")
-                path = None
-                if instance_type == "material":
-                    path = Resources.getStoragePath(self.ResourceTypes.MaterialInstanceContainer, file_name)
-                elif instance_type == "quality" or instance_type == "quality_changes":
-                    path = Resources.getStoragePath(self.ResourceTypes.QualityInstanceContainer, file_name)
-                elif instance_type == "user":
-                    path = Resources.getStoragePath(self.ResourceTypes.UserInstanceContainer, file_name)
-                elif instance_type == "variant":
-                    path = Resources.getStoragePath(self.ResourceTypes.VariantInstanceContainer, file_name)
-                elif instance_type == "definition_changes":
-                    path = Resources.getStoragePath(self.ResourceTypes.DefinitionChangesContainer, file_name)
-
-                if path:
-                    instance.setPath(path)
-                    with SaveFile(path, "wt") as f:
-                        f.write(data)
-
-            for stack in ContainerRegistry.getInstance().findContainerStacks():
-                self.saveStack(stack)
+        ContainerRegistry.getInstance().saveDirtyContainers()
 
     def saveStack(self, stack):
-        if not stack.isDirty():
-            return
-        try:
-            data = stack.serialize()
-        except NotImplementedError:
-            return
-        except Exception:
-            Logger.logException("e", "An exception occurred when serializing container %s", stack.getId())
-            return
-
-        mime_type = ContainerRegistry.getMimeTypeForContainer(type(stack))
-        file_name = urllib.parse.quote_plus(stack.getId()) + "." + mime_type.preferredSuffix
-
-        path = None
-        if isinstance(stack, GlobalStack):
-            path = Resources.getStoragePath(self.ResourceTypes.MachineStack, file_name)
-        elif isinstance(stack, ExtruderStack):
-            path = Resources.getStoragePath(self.ResourceTypes.ExtruderStack, file_name)
-        else:
-            path = Resources.getStoragePath(Resources.ContainerStacks, file_name)
-
-        stack.setPath(path)
-        with SaveFile(path, "wt") as f:
-            f.write(data)
-
+        ContainerRegistry.getInstance().saveContainer(stack)
 
     @pyqtSlot(str, result = QUrl)
     def getDefaultPath(self, key):
@@ -734,7 +676,7 @@ class CuraApplication(QtApplication):
 
             self.exec_()
 
-    def getMachineManager(self, *args):
+    def getMachineManager(self, *args) -> MachineManager:
         if self._machine_manager is None:
             self._machine_manager = MachineManager.createMachineManager()
         return self._machine_manager

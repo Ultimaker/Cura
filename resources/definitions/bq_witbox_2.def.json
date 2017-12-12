@@ -1,5 +1,4 @@
 {
-    "id": "bq_witbox_2",
     "version": 2,
     "name": "BQ Witbox 2",
     "inherits": "fdmprinter",

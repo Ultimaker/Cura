@@ -130,6 +130,8 @@ class ExtrudersModel(UM.Qt.ListModel.ListModel):
         self._active_machine_extruders = []
         extruder_manager = Application.getInstance().getExtruderManager()
         for extruder in extruder_manager.getExtruderStacks():
+            if extruder is None: #This extruder wasn't loaded yet. This happens asynchronously while this model is constructed from QML.
+                continue
             extruder.containersChanged.connect(self._onExtruderStackContainersChanged)
             self._active_machine_extruders.append(extruder)
 

@@ -1,5 +1,4 @@
 {
-    "id": "peopoly_moai",
     "version": 2,
     "name": "Peopoly Moai",
     "inherits": "fdmprinter",

@@ -44,7 +44,6 @@ class CuraContainerRegistry(ContainerRegistry):
     #   Global stack based on metadata information.
     @override(ContainerRegistry)
     def addContainer(self, container):
-
         # Note: Intentional check with type() because we want to ignore subclasses
         if type(container) == ContainerStack:
             container = self._convertContainerStack(container)
@@ -89,8 +88,8 @@ class CuraContainerRegistry(ContainerRegistry):
     def _containerExists(self, container_type, container_name):
         container_class = ContainerStack if container_type == "machine" else InstanceContainer
 
-        return self.findContainers(container_class, id = container_name, type = container_type, ignore_case = True) or \
-                self.findContainers(container_class, name = container_name, type = container_type)
+        return self.findContainersMetadata(id = container_name, type = container_type, ignore_case = True) or \
+                self.findContainersMetadata(container_type = container_class, name = container_name, type = container_type)
 
     ##  Exports an profile to a file
     #
@@ -119,7 +118,7 @@ class CuraContainerRegistry(ContainerRegistry):
         found_containers = []
         extruder_positions = []
         for instance_id in instance_ids:
-            containers = ContainerRegistry.getInstance().findInstanceContainers(id=instance_id)
+            containers = ContainerRegistry.getInstance().findInstanceContainers(id = instance_id)
             if containers:
                 found_containers.append(containers[0])
 
@@ -129,9 +128,9 @@ class CuraContainerRegistry(ContainerRegistry):
                     # Global stack
                     extruder_positions.append(-1)
                 else:
-                    extruder_containers = ContainerRegistry.getInstance().findDefinitionContainers(id=extruder_id)
+                    extruder_containers = ContainerRegistry.getInstance().findDefinitionContainersMetadata(id = extruder_id)
                     if extruder_containers:
-                        extruder_positions.append(int(extruder_containers[0].getMetaDataEntry("position", 0)))
+                        extruder_positions.append(int(extruder_containers[0].get("position", 0)))
                     else:
                         extruder_positions.append(0)
         # Ensure the profiles are always exported in order (global, extruder 0, extruder 1, ...)
@@ -274,7 +273,6 @@ class CuraContainerRegistry(ContainerRegistry):
     #
     #   \return None if configuring was successful or an error message if an error occurred.
     def _configureProfile(self, profile: InstanceContainer, id_seed: str, new_name: str) -> Optional[str]:
-        profile.setReadOnly(False)
         profile.setDirty(True)  # Ensure the profiles are correctly saved
 
         new_id = self.createUniqueName("quality_changes", "", id_seed, catalog.i18nc("@label", "Custom profile"))
@@ -292,7 +290,7 @@ class CuraContainerRegistry(ContainerRegistry):
 
         quality_type_criteria = {"quality_type": quality_type}
         if self._machineHasOwnQualities():
-            profile.setDefinition(self._activeQualityDefinition())
+            profile.setDefinition(self._activeQualityDefinition().getId())
             if self._machineHasOwnMaterials():
                 active_material_id = self._activeMaterialId()
                 if active_material_id and active_material_id != "empty":  # only update if there is an active material
@@ -302,7 +300,7 @@ class CuraContainerRegistry(ContainerRegistry):
             quality_type_criteria["definition"] = profile.getDefinition().getId()
 
         else:
-            profile.setDefinition(ContainerRegistry.getInstance().findDefinitionContainers(id="fdmprinter")[0])
+            profile.setDefinition(fdmprinter)
             quality_type_criteria["definition"] = "fdmprinter"
 
         machine_definition = Application.getInstance().getGlobalContainerStack().getBottom()
@@ -349,7 +347,7 @@ class CuraContainerRegistry(ContainerRegistry):
         global_container_stack = Application.getInstance().getGlobalContainerStack()
         if global_container_stack:
             definition_id = Application.getInstance().getMachineManager().getQualityDefinitionId(global_container_stack.getBottom())
-            definition = self.findDefinitionContainers(id=definition_id)[0]
+            definition = self.findDefinitionContainers(id = definition_id)[0]
 
             if definition:
                 return definition
@@ -534,13 +532,13 @@ class CuraContainerRegistry(ContainerRegistry):
     # set after upgrading, because the proper global stack was not yet loaded. This method
     # makes sure those extruders also get the right stack set.
     def _connectUpgradedExtruderStacksToMachines(self):
-        extruder_stacks = self.findContainers(ExtruderStack.ExtruderStack)
+        extruder_stacks = self.findContainers(container_type = ExtruderStack.ExtruderStack)
         for extruder_stack in extruder_stacks:
             if extruder_stack.getNextStack():
                 # Has the right next stack, so ignore it.
                 continue
 
-            machines = ContainerRegistry.getInstance().findContainerStacks(id=extruder_stack.getMetaDataEntry("machine", ""))
+            machines = ContainerRegistry.getInstance().findContainerStacks(id = extruder_stack.getMetaDataEntry("machine", ""))
             if machines:
                 extruder_stack.setNextStack(machines[0])
             else:

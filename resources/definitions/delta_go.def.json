@@ -1,5 +1,4 @@
 {
-"id": "Delta_Go",
     "name": "Delta Go",
     "version": 2,
     "inherits": "fdmprinter",

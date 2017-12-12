@@ -1,5 +1,4 @@
 {
-    "id": "prusa_i3",
     "version": 2,
     "name": "Prusa i3",
     "inherits": "fdmprinter",
