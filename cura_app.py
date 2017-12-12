@@ -12,7 +12,8 @@ from UM.Platform import Platform
 #WORKAROUND: GITHUB-88 GITHUB-385 GITHUB-612
 if Platform.isLinux(): # Needed for platform.linux_distribution, which is not available on Windows and OSX
     # For Ubuntu: https://bugs.launchpad.net/ubuntu/+source/python-qt4/+bug/941826
-    if platform.linux_distribution()[0] in ("debian", "Ubuntu", "LinuxMint"): # TODO: Needs a "if X11_GFX == 'nvidia'" here. The workaround is only needed on Ubuntu+NVidia drivers. Other drivers are not affected, but fine with this fix.
+    linux_distro_name = platform.linux_distribution()[0].lower()
+    if linux_distro_name in ("debian", "ubuntu", "linuxmint", "fedora"): # TODO: Needs a "if X11_GFX == 'nvidia'" here. The workaround is only needed on Ubuntu+NVidia drivers. Other drivers are not affected, but fine with this fix.
         import ctypes
         from ctypes.util import find_library
         libGL = find_library("GL")
@@ -22,9 +23,10 @@ if Platform.isLinux(): # Needed for platform.linux_distribution, which is not av
 if Platform.isWindows() and hasattr(sys, "frozen"):
     try:
         del os.environ["PYTHONPATH"]
-    except KeyError: pass
+    except KeyError:
+        pass
 
-#WORKAROUND: GITHUB-704 GITHUB-708
+# WORKAROUND: GITHUB-704 GITHUB-708
 # It looks like setuptools creates a .pth file in
 # the default /usr/lib which causes the default site-packages
 # to be inserted into sys.path before PYTHONPATH.
@@ -44,6 +46,7 @@ def exceptHook(hook_type, value, traceback):
     from cura.CrashHandler import CrashHandler
     _crash_handler = CrashHandler(hook_type, value, traceback)
     _crash_handler.show()
+
 
 sys.excepthook = exceptHook
 
@@ -75,7 +78,7 @@ faulthandler.enable()
 # Force an instance of CuraContainerRegistry to be created and reused later.
 cura.Settings.CuraContainerRegistry.CuraContainerRegistry.getInstance()
 
-# This prestart up check is needed to determine if we should start the application at all.
+# This pre-start up check is needed to determine if we should start the application at all.
 if not cura.CuraApplication.CuraApplication.preStartUp():
     sys.exit(0)
 

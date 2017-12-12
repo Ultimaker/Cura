@@ -26,17 +26,92 @@ Item {
 
         spacing: UM.Theme.getSize("default_margin").height
 
+        Row
+        {
+            spacing: UM.Theme.getSize("default_margin").width
+
+            Label
+            {
+                text: catalog.i18nc("@label","Mesh Type")
+                font: UM.Theme.getFont("default")
+                color: UM.Theme.getColor("text")
+                height: UM.Theme.getSize("setting").height
+                verticalAlignment: Text.AlignVCenter
+            }
+
+            ComboBox
+            {
+                id: meshTypeSelection
+                style: UM.Theme.styles.combobox
+                onActivated: {
+                    UM.ActiveTool.setProperty("MeshType", model.get(index).type)
+                }
+                model: ListModel
+                {
+                    id: meshTypeModel
+                    Component.onCompleted:
+                    {
+                        meshTypeModel.append({
+                            type:  "",
+                            text: catalog.i18nc("@label", "Normal model")
+                        });
+                        meshTypeModel.append({
+                            type:  "support_mesh",
+                            text: catalog.i18nc("@label", "Print as support")
+                        });
+                        meshTypeModel.append({
+                            type:  "anti_overhang_mesh",
+                            text: catalog.i18nc("@label", "Don't support overlap with other models")
+                        });
+                        meshTypeModel.append({
+                            type:  "cutting_mesh",
+                            text: catalog.i18nc("@label", "Modify settings for overlap with other models")
+                        });
+                        meshTypeModel.append({
+                            type:  "infill_mesh",
+                            text: catalog.i18nc("@label", "Modify settings for infill of other models")
+                        });
+
+                        meshTypeSelection.updateCurrentIndex();
+                    }
+                }
+
+                function updateCurrentIndex()
+                {
+                    var mesh_type = UM.ActiveTool.properties.getValue("MeshType");
+                    for(var index=0; index < meshTypeSelection.model.count; index++)
+                    {
+                        if(meshTypeSelection.model.get(index).type == mesh_type)
+                        {
+                            meshTypeSelection.currentIndex = index;
+                            return;
+                        }
+                    }
+                    meshTypeSelection.currentIndex = 0;
+                }
+            }
+
+            Connections
+            {
+                target: UM.Selection
+                onSelectionChanged: meshTypeSelection.updateCurrentIndex()
+            }
+
+        }
+
         Column
         {
             // This is to ensure that the panel is first increasing in size up to 200 and then shows a scrollbar.
             // It kinda looks ugly otherwise (big panel, no content on it)
+            id: currentSettings
             property int maximumHeight: 200 * screenScaleFactor
             height: Math.min(contents.count * (UM.Theme.getSize("section").height + UM.Theme.getSize("default_lining").height), maximumHeight)
+            visible: ["support_mesh", "anti_overhang_mesh"].indexOf(meshTypeSelection.model.get(meshTypeSelection.currentIndex).type) == -1
 
             ScrollView
             {
                 height: parent.height
-                width: UM.Theme.getSize("setting").width + UM.Theme.getSize("setting").height
+                width: UM.Theme.getSize("setting").width
                 style: UM.Theme.styles.scrollview
 
                 ListView
@@ -49,6 +124,7 @@ Item {
                         id: addedSettingsModel;
                         containerId: Cura.MachineManager.activeDefinitionId
                         expanded: [ "*" ]
+                        exclude: [ "support_mesh", "anti_overhang_mesh", "cutting_mesh", "infill_mesh" ]
 
                         visibilityHandler: Cura.PerObjectSettingVisibilityHandler
                         {
@@ -58,6 +134,7 @@ Item {
 
                     delegate: Row
                     {
+                        spacing: - UM.Theme.getSize("default_margin").width
                         Loader
                         {
                             id: settingLoader
@@ -112,7 +189,7 @@ Item {
 
                         Button
                         {
-                            width: (UM.Theme.getSize("setting").height / 2) | 0
+                            width: Math.floor(UM.Theme.getSize("setting").height / 2)
                             height: UM.Theme.getSize("setting").height
 
                             onClicked: addedSettingsModel.setVisible(model.key, false)
@@ -125,7 +202,7 @@ Item {
                                     {
                                         anchors.verticalCenter: parent.verticalCenter
                                         width: parent.width
-                                        height: parent.height / 2
+                                        height: width
                                         sourceSize.width: width
                                         sourceSize.height: width
                                         color: control.hovered ? UM.Theme.getColor("setting_control_button_hover") : UM.Theme.getColor("setting_control_button")
@@ -201,9 +278,9 @@ Item {
 
         Button
         {
-            id: customise_settings_button;
-            height: UM.Theme.getSize("setting").height;
-            visible: parseInt(UM.Preferences.getValue("cura/active_mode")) == 1
+            id: customiseSettingsButton;
+            height: UM.Theme.getSize("setting_control").height;
+            visible: currentSettings.visible
 
             text: catalog.i18nc("@action:button", "Select settings");
 
@@ -223,21 +300,12 @@ Item {
                 {
                     text: control.text;
                     color: UM.Theme.getColor("setting_control_text");
+                    font: UM.Theme.getFont("default")
                     anchors.centerIn: parent
                 }
             }
 
             onClicked: settingPickDialog.visible = true;
-
-            Connections
-            {
-                target: UM.Preferences;
-
-                onPreferenceChanged:
-                {
-                    customise_settings_button.visible = parseInt(UM.Preferences.getValue("cura/active_mode"))
-                }
-            }
         }
     }
 
@@ -325,7 +393,7 @@ Item {
                     }
                     visibilityHandler: UM.SettingPreferenceVisibilityHandler {}
                     expanded: [ "*" ]
-                    exclude: [ "machine_settings", "command_line_settings" ]
+                    exclude: [ "machine_settings", "command_line_settings", "support_mesh", "anti_overhang_mesh", "cutting_mesh", "infill_mesh" ]
                 }
                 delegate:Loader
                 {

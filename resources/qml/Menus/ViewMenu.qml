@@ -12,21 +12,23 @@ Menu
     title: catalog.i18nc("@title:menu menubar:toplevel", "&View");
     id: menu
     enabled: !PrintInformation.preSliced
+
+    // main views
     Instantiator
     {
-        model: UM.ViewModel { }
+        model: UM.ViewModel{}
         MenuItem
         {
-            text: model.name;
-            checkable: true;
-            checked: model.active;
-            exclusiveGroup: group;
-            onTriggered: UM.Controller.setActiveView(model.id);
+            text: model.name
+            checkable: true
+            checked: model.active
+            exclusiveGroup: group
+            onTriggered: UM.Controller.setActiveView(model.id)
         }
         onObjectAdded: menu.insertItem(index, object)
         onObjectRemoved: menu.removeItem(object)
     }
-    ExclusiveGroup { id: group; }
+    ExclusiveGroup { id: group }
 
     MenuSeparator {}
     MenuItem { action: Cura.Actions.homeCamera; }

@@ -3,7 +3,7 @@ Cura
 
 This is the new, shiny frontend for Cura. [daid/Cura](https://github.com/daid/Cura.git) is the old legacy Cura that everyone knows and loves/hates.
 
-We re-worked the whole GUI code at Ultimaker, because the old code started to become a unmaintainable.
+We re-worked the whole GUI code at Ultimaker, because the old code started to become unmaintainable.
 
 
 Logging Issues
@@ -19,6 +19,8 @@ For crashes and similar issues, please attach the following information:
   * $USER/.local/share/cura/`<Cura version>`/cura.log (Ubuntu/Linux)
 
 If the Cura user interface still starts, you can also reach this directory from the application menu in Help -> Show settings folder
+
+For additional support, you could also ask in the #cura channel on FreeNode IRC. For help with development, there is also the #cura-dev channel.
 
 Dependencies
 ------------

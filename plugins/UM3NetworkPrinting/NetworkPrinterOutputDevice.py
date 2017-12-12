@@ -672,7 +672,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
             Logger.log("d", "Attempting to perform an action without authentication for printer %s. Auth state is %s", self._key, self._authentication_state)
             return
 
-        Application.getInstance().showPrintMonitor.emit(True)
+        Application.getInstance().getController().setActiveStage("MonitorStage")
         self._print_finished = True
         self.writeStarted.emit(self)
         self._gcode = getattr(Application.getInstance().getController().getScene(), "gcode_list")
@@ -726,10 +726,10 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
                                        remote_material_guid,
                                        material.getMetaDataEntry("GUID"))
 
-                            remote_materials = UM.Settings.ContainerRegistry.ContainerRegistry.getInstance().findInstanceContainers(type = "material", GUID = remote_material_guid, read_only = True)
+                            remote_materials = UM.Settings.ContainerRegistry.ContainerRegistry.getInstance().findInstanceContainersMetadata(type = "material", GUID = remote_material_guid, read_only = True)
                             remote_material_name = "Unknown"
                             if remote_materials:
-                                remote_material_name = remote_materials[0].getName()
+                                remote_material_name = remote_materials[0]["name"]
                             warnings.append(i18n_catalog.i18nc("@label", "Different material (Cura: {0}, Printer: {1}) selected for extruder {2}").format(material.getName(), remote_material_name, index + 1))
 
                     try:
@@ -767,7 +767,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
             if button == QMessageBox.Yes:
                 self.startPrint()
             else:
-                Application.getInstance().showPrintMonitor.emit(False)
+                Application.getInstance().getController().setActiveStage("PrepareStage")
         # For some unknown reason Cura on OSX will hang if we do the call back code
         # immediately without first returning and leaving QML's event system.
         QTimer.singleShot(100, delayedCallback)
@@ -850,7 +850,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
             self._write_finished = True  # post_reply does not always exist, so make sure we unblock writing
             if self._post_reply:
                 self._finalizePostReply()
-            Application.getInstance().showPrintMonitor.emit(False)
+        Application.getInstance().getController().setActiveStage("PrepareStage")
 
     ##  Attempt to start a new print.
     #   This function can fail to actually start a print due to not being authenticated or another print already
@@ -971,7 +971,8 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
 
     ##  Send all material profiles to the printer.
     def sendMaterialProfiles(self):
-        for container in UM.Settings.ContainerRegistry.ContainerRegistry.getInstance().findInstanceContainers(type = "material"):
+        registry = UM.Settings.ContainerRegistry.ContainerRegistry.getInstance()
+        for container in registry.findInstanceContainers(type = "material"):
             try:
                 xml_data = container.serialize()
                 if xml_data == "" or xml_data is None:
@@ -980,7 +981,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
                 names = ContainerManager.getInstance().getLinkedMaterials(container.getId())
                 if names:
                     # There are other materials that share this GUID.
-                    if not container.isReadOnly():
+                    if not registry.isReadOnly(container.getId()):
                         continue  # If it's not readonly, it's created by user, so skip it.
 
                 material_multi_part = QHttpMultiPart(QHttpMultiPart.FormDataType)

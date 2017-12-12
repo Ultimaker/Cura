@@ -1,5 +1,4 @@
 {
-    "id": "makeR_prusa_tairona_i3",
     "version": 2,
     "name": "makeR Prusa Tairona i3",
     "inherits": "fdmprinter",

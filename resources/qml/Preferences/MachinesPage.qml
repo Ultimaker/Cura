@@ -222,14 +222,19 @@ UM.ManagementPage
             }
         }
 
+        Component.onCompleted: {
+            addAdditionalComponents("machinesDetailPane")
+        }
+
         Connections {
-            target: Printer
-            onAdditionalComponentsChanged:
-            {
-                if(areaId == "machinesDetailPane") {
-                    for (var component in CuraApplication.additionalComponents["machinesDetailPane"]) {
-                        CuraApplication.additionalComponents["machinesDetailPane"][component].parent = additionalComponentsColumn
-                    }
+            target: CuraApplication
+            onAdditionalComponentsChanged: addAdditionalComponents
+        }
+
+        function addAdditionalComponents (areaId) {
+            if(areaId == "machinesDetailPane") {
+                for (var component in CuraApplication.additionalComponents["machinesDetailPane"]) {
+                    CuraApplication.additionalComponents["machinesDetailPane"][component].parent = additionalComponentsColumn
                 }
             }
         }

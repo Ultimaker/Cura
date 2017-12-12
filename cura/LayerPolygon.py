@@ -28,7 +28,8 @@ class LayerPolygon:
     #   \param data new_points
     #   \param line_widths array with line widths
     #   \param line_thicknesses: array with type as index and thickness as value
-    def __init__(self, extruder, line_types, data, line_widths, line_thicknesses):
+    #   \param line_feedrates array with line feedrates
+    def __init__(self, extruder, line_types, data, line_widths, line_thicknesses, line_feedrates):
         self._extruder = extruder
         self._types = line_types
         for i in range(len(self._types)):
@@ -37,6 +38,7 @@ class LayerPolygon:
         self._data = data
         self._line_widths = line_widths
         self._line_thicknesses = line_thicknesses
+        self._line_feedrates = line_feedrates
 
         self._vertex_begin = 0
         self._vertex_end = 0
@@ -84,10 +86,11 @@ class LayerPolygon:
     #   \param vertices : vertex numpy array to be filled
     #   \param colors : vertex numpy array to be filled
     #   \param line_dimensions : vertex numpy array to be filled
+    #   \param feedrates : vertex numpy array to be filled
     #   \param extruders : vertex numpy array to be filled
     #   \param line_types : vertex numpy array to be filled
     #   \param indices : index numpy array to be filled
-    def build(self, vertex_offset, index_offset, vertices, colors, line_dimensions, extruders, line_types, indices):
+    def build(self, vertex_offset, index_offset, vertices, colors, line_dimensions, feedrates, extruders, line_types, indices):
         if self._build_cache_line_mesh_mask is None or self._build_cache_needed_points is None:
             self.buildCache()
             
@@ -109,9 +112,12 @@ class LayerPolygon:
         # Create an array with colors for each vertex and remove the color data for the points that has been thrown away. 
         colors[self._vertex_begin:self._vertex_end, :] = numpy.tile(self._colors, (1, 2)).reshape((-1, 4))[needed_points_list.ravel()]
 
-        # Create an array with line widths for each vertex.
+        # Create an array with line widths and thicknesses for each vertex.
         line_dimensions[self._vertex_begin:self._vertex_end, 0] = numpy.tile(self._line_widths, (1, 2)).reshape((-1, 1))[needed_points_list.ravel()][:, 0]
         line_dimensions[self._vertex_begin:self._vertex_end, 1] = numpy.tile(self._line_thicknesses, (1, 2)).reshape((-1, 1))[needed_points_list.ravel()][:, 0]
+
+        # Create an array with feedrates for each line
+        feedrates[self._vertex_begin:self._vertex_end] = numpy.tile(self._line_feedrates, (1, 2)).reshape((-1, 1))[needed_points_list.ravel()][:, 0]
 
         extruders[self._vertex_begin:self._vertex_end] = self._extruder
 
@@ -166,6 +172,14 @@ class LayerPolygon:
     @property
     def lineWidths(self):
         return self._line_widths
+
+    @property
+    def lineThicknesses(self):
+        return self._line_thicknesses
+
+    @property
+    def lineFeedrates(self):
+        return self._line_feedrates
     
     @property
     def jumpMask(self):

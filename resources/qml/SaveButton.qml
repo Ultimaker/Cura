@@ -28,6 +28,10 @@ Item {
             return catalog.i18nc("@label:PrintjobStatus", "Please load a 3D model");
         }
 
+        if (base.backendState == "undefined") {
+            return ""
+        }
+
         switch(base.backendState)
         {
             case 1:
@@ -42,6 +46,14 @@ Item {
                 return catalog.i18nc("@label:PrintjobStatus", "Slicing unavailable");
             default:
                 return "";
+        }
+    }
+
+    function sliceOrStopSlicing() {
+        if (backend != "undefined" && [1, 5].indexOf(UM.Backend.state) != -1) {
+            backend.forceSlice();
+        } else {
+            backend.stopSlicing();
         }
     }
 
@@ -73,7 +85,7 @@ Item {
             height: parent.height
             color: UM.Theme.getColor("progressbar_control")
             radius: UM.Theme.getSize("progressbar_radius").width
-            visible: base.backendState == 2 ? true : false
+            visible: (base.backendState != "undefined" && base.backendState == 2) ? true : false
         }
     }
 
@@ -85,6 +97,10 @@ Item {
             // only work when the button is enabled
             if (saveToButton.enabled) {
                 saveToButton.clicked();
+            }
+            // prepare button
+            if (prepareButton.enabled) {
+                sliceOrStopSlicing();
             }
         }
     }
@@ -119,14 +135,19 @@ Item {
             spacing: UM.Theme.getSize("default_margin").width
         }
 
+        Component.onCompleted: {
+            addAdditionalComponents("saveButton")
+        }
+
         Connections {
-            target: Printer
-            onAdditionalComponentsChanged:
-            {
-                if(areaId == "saveButton") {
-                    for (var component in CuraApplication.additionalComponents["saveButton"]) {
-                        CuraApplication.additionalComponents["saveButton"][component].parent = additionalComponentsRow
-                    }
+            target: CuraApplication
+            onAdditionalComponentsChanged: addAdditionalComponents
+        }
+
+        function addAdditionalComponents (areaId) {
+            if(areaId == "saveButton") {
+                for (var component in CuraApplication.additionalComponents["saveButton"]) {
+                    CuraApplication.additionalComponents["saveButton"][component].parent = additionalComponentsRow
                 }
             }
         }
@@ -145,12 +166,10 @@ Item {
         Button {
             id: prepareButton
 
-            tooltip: UM.OutputDeviceManager.activeDeviceDescription;
+            tooltip: [1, 5].indexOf(UM.Backend.state) != -1 ? catalog.i18nc("@info:tooltip","Slice current printjob") : catalog.i18nc("@info:tooltip","Cancel slicing process")
             // 1 = not started, 2 = Processing
-            enabled: (base.backendState == 1 || base.backendState == 2) && base.activity == true
-            visible: {
-                return !autoSlice && (base.backendState == 1 || base.backendState == 2) && base.activity == true;
-                }
+            enabled: base.backendState != "undefined" && (base.backendState == 1 || base.backendState == 2) && base.activity == true
+            visible: base.backendState != "undefined" && !autoSlice && (base.backendState == 1 || base.backendState == 2) && base.activity == true
             property bool autoSlice
             height: UM.Theme.getSize("save_button_save_to_button").height
 
@@ -162,11 +181,7 @@ Item {
             text: [1, 5].indexOf(UM.Backend.state) != -1 ? catalog.i18nc("@label:Printjob", "Prepare") : catalog.i18nc("@label:Printjob", "Cancel")
             onClicked:
             {
-                if ([1, 5].indexOf(UM.Backend.state) != -1) {
-                    backend.forceSlice();
-                } else {
-                    backend.stopSlicing();
-                }
+                sliceOrStopSlicing();
             }
 
             style: ButtonStyle {
@@ -227,10 +242,8 @@ Item {
 
             tooltip: UM.OutputDeviceManager.activeDeviceDescription;
             // 3 = done, 5 = disabled
-            enabled: (base.backendState == 3 || base.backendState == 5) && base.activity == true
-            visible: {
-                return autoSlice || ((base.backendState == 3 || base.backendState == 5) && base.activity == true);
-            }
+            enabled: base.backendState != "undefined" && (base.backendState == 3 || base.backendState == 5) && base.activity == true
+            visible: base.backendState != "undefined" && autoSlice || ((base.backendState == 3 || base.backendState == 5) && base.activity == true)
             property bool autoSlice
             height: UM.Theme.getSize("save_button_save_to_button").height
 
@@ -307,8 +320,8 @@ Item {
             width: UM.Theme.getSize("save_button_save_to_button").height
             height: UM.Theme.getSize("save_button_save_to_button").height
             // 3 = Done, 5 = Disabled
-            enabled: (base.backendState == 3 || base.backendState == 5) && base.activity == true
-            visible: (devicesModel.deviceCount > 1) && (base.backendState == 3 || base.backendState == 5) && base.activity == true
+            enabled: base.backendState != "undefined" && (base.backendState == 3 || base.backendState == 5) && base.activity == true
+            visible: base.backendState != "undefined" && (devicesModel.deviceCount > 1) && (base.backendState == 3 || base.backendState == 5) && base.activity == true
 
 
             style: ButtonStyle {

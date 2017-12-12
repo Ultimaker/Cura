@@ -1,5 +1,4 @@
 {
-  "id": "K8800",
   "name": "Vertex Delta K8800",
   "version": 2,
   "inherits": "fdmprinter",
@@ -10,6 +9,9 @@
     "author": "Velleman"
   },
   "overrides": {
+    "material_diameter": {
+      "default_value": 1.75
+    },
     "machine_width": {
       "default_value": 200
     },
@@ -40,7 +42,7 @@
     "machine_head_shape_max_y": {
       "default_value": 0
     },
-    "machine_nozzle_gantry_distance": {
+    "gantry_height": {
       "default_value": 0
     },
     "machine_nozzle_offset_x_1": {

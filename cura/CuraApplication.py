@@ -1,6 +1,5 @@
 # Copyright (c) 2017 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
-
 from PyQt5.QtNetwork import QLocalServer
 from PyQt5.QtNetwork import QLocalSocket
 
@@ -32,6 +31,7 @@ from UM.Operations.AddSceneNodeOperation import AddSceneNodeOperation
 from UM.Operations.RemoveSceneNodeOperation import RemoveSceneNodeOperation
 from UM.Operations.GroupedOperation import GroupedOperation
 from UM.Operations.SetTransformOperation import SetTransformOperation
+
 from cura.Arrange import Arrange
 from cura.ShapeArray import ShapeArray
 from cura.ConvexHullDecorator import ConvexHullDecorator
@@ -95,10 +95,11 @@ numpy.seterr(all="ignore")
 MYPY = False
 if not MYPY:
     try:
-        from cura.CuraVersion import CuraVersion, CuraBuildType
+        from cura.CuraVersion import CuraVersion, CuraBuildType, CuraDebugMode
     except ImportError:
         CuraVersion = "master"  # [CodeStyle: Reflecting imported value]
         CuraBuildType = ""
+        CuraDebugMode = False
 
 
 class CuraApplication(QtApplication):
@@ -126,9 +127,8 @@ class CuraApplication(QtApplication):
     #        Cura will always show the Add Machine Dialog upon start.
     stacksValidationFinished = pyqtSignal()  # Emitted whenever a validation is finished
 
-    projectFileLoaded = pyqtSignal(str)  # Emitted whenever a project file is loaded
-
     def __init__(self):
+
         # this list of dir names will be used by UM to detect an old cura directory
         for dir_name in ["extruders", "machine_instances", "materials", "plugins", "quality", "user", "variants"]:
             Resources.addExpectedDirNameInData(dir_name)
@@ -157,7 +157,6 @@ class CuraApplication(QtApplication):
 
         SettingDefinition.addSettingType("extruder", None, str, Validator)
         SettingDefinition.addSettingType("optional_extruder", None, str, None)
-
         SettingDefinition.addSettingType("[int]", None, str, None)
 
         SettingFunction.registerOperator("extruderValues", ExtruderManager.getExtruderValues)
@@ -173,16 +172,18 @@ class CuraApplication(QtApplication):
         Resources.addStorageType(self.ResourceTypes.MachineStack, "machine_instances")
         Resources.addStorageType(self.ResourceTypes.DefinitionChangesContainer, "definition_changes")
 
-        ContainerRegistry.getInstance().addResourceType(self.ResourceTypes.QualityInstanceContainer)
-        ContainerRegistry.getInstance().addResourceType(self.ResourceTypes.VariantInstanceContainer)
-        ContainerRegistry.getInstance().addResourceType(self.ResourceTypes.MaterialInstanceContainer)
-        ContainerRegistry.getInstance().addResourceType(self.ResourceTypes.UserInstanceContainer)
-        ContainerRegistry.getInstance().addResourceType(self.ResourceTypes.ExtruderStack)
-        ContainerRegistry.getInstance().addResourceType(self.ResourceTypes.MachineStack)
-        ContainerRegistry.getInstance().addResourceType(self.ResourceTypes.DefinitionChangesContainer)
+        ContainerRegistry.getInstance().addResourceType(self.ResourceTypes.QualityInstanceContainer, "quality")
+        ContainerRegistry.getInstance().addResourceType(self.ResourceTypes.QualityInstanceContainer, "quality_changes")
+        ContainerRegistry.getInstance().addResourceType(self.ResourceTypes.VariantInstanceContainer, "variant")
+        ContainerRegistry.getInstance().addResourceType(self.ResourceTypes.MaterialInstanceContainer, "material")
+        ContainerRegistry.getInstance().addResourceType(self.ResourceTypes.UserInstanceContainer, "user")
+        ContainerRegistry.getInstance().addResourceType(self.ResourceTypes.ExtruderStack, "extruder_train")
+        ContainerRegistry.getInstance().addResourceType(self.ResourceTypes.MachineStack, "machine")
+        ContainerRegistry.getInstance().addResourceType(self.ResourceTypes.DefinitionChangesContainer, "definition_changes")
 
         ##  Initialise the version upgrade manager with Cura's storage paths.
-        import UM.VersionUpgradeManager #Needs to be here to prevent circular dependencies.
+        #   Needs to be here to prevent circular dependencies.
+        import UM.VersionUpgradeManager
 
         UM.VersionUpgradeManager.VersionUpgradeManager.getInstance().setCurrentVersions(
             {
@@ -200,6 +201,7 @@ class CuraApplication(QtApplication):
 
         self._machine_action_manager = MachineActionManager.MachineActionManager()
         self._machine_manager = None    # This is initialized on demand.
+        self._extruder_manager = None
         self._material_manager = None
         self._setting_inheritance_manager = None
         self._simple_mode_settings_manager = None
@@ -207,6 +209,7 @@ class CuraApplication(QtApplication):
         self._additional_components = {} # Components to add to certain areas in the interface
 
         super().__init__(name = "cura", version = CuraVersion, buildtype = CuraBuildType,
+                         is_debug_mode = CuraDebugMode,
                          tray_icon_name = "cura-icon-32.png")
 
         self.default_theme = "cura-light"
@@ -217,7 +220,7 @@ class CuraApplication(QtApplication):
             "CuraEngineBackend",
             "UserAgreement",
             "SolidView",
-            "LayerView",
+            "SimulationView",
             "STLReader",
             "SelectionTool",
             "CameraTool",
@@ -226,7 +229,9 @@ class CuraApplication(QtApplication):
             "TranslateTool",
             "FileLogger",
             "XmlMaterialProfile",
-            "PluginBrowser"
+            "PluginBrowser",
+            "PrepareStage",
+            "MonitorStage"
         ])
         self._physics = None
         self._volume = None
@@ -260,28 +265,32 @@ class CuraApplication(QtApplication):
         # Since they are empty, they should never be serialized and instead just programmatically created.
         # We need them to simplify the switching between materials.
         empty_container = ContainerRegistry.getInstance().getEmptyInstanceContainer()
+
         empty_variant_container = copy.deepcopy(empty_container)
-        empty_variant_container._id = "empty_variant"
+        empty_variant_container.setMetaDataEntry("id", "empty_variant")
         empty_variant_container.addMetaDataEntry("type", "variant")
         ContainerRegistry.getInstance().addContainer(empty_variant_container)
+
         empty_material_container = copy.deepcopy(empty_container)
-        empty_material_container._id = "empty_material"
+        empty_material_container.setMetaDataEntry("id", "empty_material")
         empty_material_container.addMetaDataEntry("type", "material")
         ContainerRegistry.getInstance().addContainer(empty_material_container)
+
         empty_quality_container = copy.deepcopy(empty_container)
-        empty_quality_container._id = "empty_quality"
+        empty_quality_container.setMetaDataEntry("id", "empty_quality")
         empty_quality_container.setName("Not Supported")
         empty_quality_container.addMetaDataEntry("quality_type", "not_supported")
         empty_quality_container.addMetaDataEntry("type", "quality")
         empty_quality_container.addMetaDataEntry("supported", False)
         ContainerRegistry.getInstance().addContainer(empty_quality_container)
+
         empty_quality_changes_container = copy.deepcopy(empty_container)
-        empty_quality_changes_container._id = "empty_quality_changes"
+        empty_quality_changes_container.setMetaDataEntry("id", "empty_quality_changes")
         empty_quality_changes_container.addMetaDataEntry("type", "quality_changes")
         ContainerRegistry.getInstance().addContainer(empty_quality_changes_container)
 
         with ContainerRegistry.getInstance().lockFile():
-            ContainerRegistry.getInstance().load()
+            ContainerRegistry.getInstance().loadAllMetadata()
 
         # set the setting version for Preferences
         preferences = Preferences.getInstance()
@@ -383,7 +392,6 @@ class CuraApplication(QtApplication):
     def needToShowUserAgreement(self):
         return self._need_to_show_user_agreement
 
-
     def setNeedToShowUserAgreement(self, set_value = True):
         self._need_to_show_user_agreement = set_value
 
@@ -425,7 +433,7 @@ class CuraApplication(QtApplication):
     def discardOrKeepProfileChangesClosed(self, option):
         if option == "discard":
             global_stack = self.getGlobalContainerStack()
-            for extruder in ExtruderManager.getInstance().getMachineExtruders(global_stack.getId()):
+            for extruder in self._extruder_manager.getMachineExtruders(global_stack.getId()):
                 extruder.getTop().clear()
             global_stack.getTop().clear()
 
@@ -433,7 +441,7 @@ class CuraApplication(QtApplication):
         # before slicing. To ensure that slicer uses right settings values
         elif option == "keep":
             global_stack = self.getGlobalContainerStack()
-            for extruder in ExtruderManager.getInstance().getMachineExtruders(global_stack.getId()):
+            for extruder in self._extruder_manager.getMachineExtruders(global_stack.getId()):
                 user_extruder_container = extruder.getTop()
                 if user_extruder_container:
                     user_extruder_container.update()
@@ -462,69 +470,10 @@ class CuraApplication(QtApplication):
         if not self._started: # Do not do saving during application start
             return
 
-        # Lock file for "more" atomically loading and saving to/from config dir.
-        with ContainerRegistry.getInstance().lockFile():
-            for instance in ContainerRegistry.getInstance().findInstanceContainers():
-                if not instance.isDirty():
-                    continue
-
-                try:
-                    data = instance.serialize()
-                except NotImplementedError:
-                    continue
-                except Exception:
-                    Logger.logException("e", "An exception occurred when serializing container %s", instance.getId())
-                    continue
-
-                mime_type = ContainerRegistry.getMimeTypeForContainer(type(instance))
-                file_name = urllib.parse.quote_plus(instance.getId()) + "." + mime_type.preferredSuffix
-                instance_type = instance.getMetaDataEntry("type")
-                path = None
-                if instance_type == "material":
-                    path = Resources.getStoragePath(self.ResourceTypes.MaterialInstanceContainer, file_name)
-                elif instance_type == "quality" or instance_type == "quality_changes":
-                    path = Resources.getStoragePath(self.ResourceTypes.QualityInstanceContainer, file_name)
-                elif instance_type == "user":
-                    path = Resources.getStoragePath(self.ResourceTypes.UserInstanceContainer, file_name)
-                elif instance_type == "variant":
-                    path = Resources.getStoragePath(self.ResourceTypes.VariantInstanceContainer, file_name)
-                elif instance_type == "definition_changes":
-                    path = Resources.getStoragePath(self.ResourceTypes.DefinitionChangesContainer, file_name)
-
-                if path:
-                    instance.setPath(path)
-                    with SaveFile(path, "wt") as f:
-                        f.write(data)
-
-            for stack in ContainerRegistry.getInstance().findContainerStacks():
-                self.saveStack(stack)
+        ContainerRegistry.getInstance().saveDirtyContainers()
 
     def saveStack(self, stack):
-        if not stack.isDirty():
-            return
-        try:
-            data = stack.serialize()
-        except NotImplementedError:
-            return
-        except Exception:
-            Logger.logException("e", "An exception occurred when serializing container %s", stack.getId())
-            return
-
-        mime_type = ContainerRegistry.getMimeTypeForContainer(type(stack))
-        file_name = urllib.parse.quote_plus(stack.getId()) + "." + mime_type.preferredSuffix
-
-        path = None
-        if isinstance(stack, GlobalStack):
-            path = Resources.getStoragePath(self.ResourceTypes.MachineStack, file_name)
-        elif isinstance(stack, ExtruderStack):
-            path = Resources.getStoragePath(self.ResourceTypes.ExtruderStack, file_name)
-        else:
-            path = Resources.getStoragePath(Resources.ContainerStacks, file_name)
-
-        stack.setPath(path)
-        with SaveFile(path, "wt") as f:
-            f.write(data)
-
+        ContainerRegistry.getInstance().saveContainer(stack)
 
     @pyqtSlot(str, result = QUrl)
     def getDefaultPath(self, key):
@@ -562,6 +511,7 @@ class CuraApplication(QtApplication):
         super().addCommandLineOptions(parser)
         parser.add_argument("file", nargs="*", help="Files to load after starting the application.")
         parser.add_argument("--single-instance", action="store_true", default=False)
+        parser.add_argument("--headless", action = "store_true", default=False)
 
     # Set up a local socket server which listener which coordinates single instances Curas and accepts commands.
     def _setUpSingleInstanceServer(self):
@@ -660,14 +610,14 @@ class CuraApplication(QtApplication):
 
         controller = self.getController()
 
+        controller.setActiveStage("PrepareStage")
         controller.setActiveView("SolidView")
-
         controller.setCameraTool("CameraTool")
         controller.setSelectionTool("SelectionTool")
 
         t = controller.getTool("TranslateTool")
         if t:
-            t.setEnabledAxis([ToolHandle.XAxis, ToolHandle.YAxis,ToolHandle.ZAxis])
+            t.setEnabledAxis([ToolHandle.XAxis, ToolHandle.YAxis, ToolHandle.ZAxis])
 
         Selection.selectionChanged.connect(self.onSelectionChanged)
 
@@ -698,25 +648,26 @@ class CuraApplication(QtApplication):
 
         self.showSplashMessage(self._i18n_catalog.i18nc("@info:progress", "Loading interface..."))
 
-        # Initialise extruder so as to listen to global container stack changes before the first global container stack is set.
-        ExtruderManager.getInstance()
+        qmlRegisterSingletonType(ExtruderManager, "Cura", 1, 0, "ExtruderManager", self.getExtruderManager)
         qmlRegisterSingletonType(MachineManager, "Cura", 1, 0, "MachineManager", self.getMachineManager)
         qmlRegisterSingletonType(MaterialManager, "Cura", 1, 0, "MaterialManager", self.getMaterialManager)
-        qmlRegisterSingletonType(SettingInheritanceManager, "Cura", 1, 0, "SettingInheritanceManager",
-                                 self.getSettingInheritanceManager)
-        qmlRegisterSingletonType(SimpleModeSettingsManager, "Cura", 1, 2, "SimpleModeSettingsManager",
-                                 self.getSimpleModeSettingsManager)
-
+        qmlRegisterSingletonType(SettingInheritanceManager, "Cura", 1, 0, "SettingInheritanceManager", self.getSettingInheritanceManager)
+        qmlRegisterSingletonType(SimpleModeSettingsManager, "Cura", 1, 2, "SimpleModeSettingsManager", self.getSimpleModeSettingsManager)
         qmlRegisterSingletonType(MachineActionManager.MachineActionManager, "Cura", 1, 0, "MachineActionManager", self.getMachineActionManager)
+
         self.setMainQml(Resources.getPath(self.ResourceTypes.QmlFiles, "Cura.qml"))
         self._qml_import_paths.append(Resources.getPath(self.ResourceTypes.QmlFiles))
-        self.initializeEngine()
 
-        if self._engine.rootObjects:
+        run_headless = self.getCommandLineOption("headless", False)
+        if not run_headless:
+            self.initializeEngine()
+            controller.setActiveStage("PrepareStage")
+
+        if run_headless or self._engine.rootObjects:
             self.closeSplash()
 
-            for file in self.getCommandLineOption("file", []):
-                self._openFile(file)
+            for file_name in self.getCommandLineOption("file", []):
+                self._openFile(file_name)
             for file_name in self._open_file_queue: #Open all the files that were queued up while plug-ins were loading.
                 self._openFile(file_name)
 
@@ -724,10 +675,15 @@ class CuraApplication(QtApplication):
 
             self.exec_()
 
-    def getMachineManager(self, *args):
+    def getMachineManager(self, *args) -> MachineManager:
         if self._machine_manager is None:
             self._machine_manager = MachineManager.createMachineManager()
         return self._machine_manager
+
+    def getExtruderManager(self, *args):
+        if self._extruder_manager is None:
+            self._extruder_manager = ExtruderManager.createExtruderManager()
+        return self._extruder_manager
 
     def getMaterialManager(self, *args):
         if self._material_manager is None:
@@ -779,7 +735,6 @@ class CuraApplication(QtApplication):
         qmlRegisterUncreatableType(CuraApplication, "Cura", 1, 0, "ResourceTypes", "Just an Enum type")
 
         qmlRegisterType(ExtrudersModel, "Cura", 1, 0, "ExtrudersModel")
-
         qmlRegisterType(ContainerSettingsModel, "Cura", 1, 0, "ContainerSettingsModel")
         qmlRegisterSingletonType(ProfilesModel, "Cura", 1, 0, "ProfilesModel", ProfilesModel.createProfilesModel)
         qmlRegisterType(MaterialsModel, "Cura", 1, 0, "MaterialsModel")
@@ -789,14 +744,11 @@ class CuraApplication(QtApplication):
         qmlRegisterType(QualitySettingsModel, "Cura", 1, 0, "QualitySettingsModel")
         qmlRegisterType(MachineNameValidator, "Cura", 1, 0, "MachineNameValidator")
         qmlRegisterType(UserChangesModel, "Cura", 1, 1, "UserChangesModel")
-
         qmlRegisterSingletonType(ContainerManager, "Cura", 1, 0, "ContainerManager", ContainerManager.createContainerManager)
 
         # As of Qt5.7, it is necessary to get rid of any ".." in the path for the singleton to work.
         actions_url = QUrl.fromLocalFile(os.path.abspath(Resources.getPath(CuraApplication.ResourceTypes.QmlFiles, "Actions.qml")))
         qmlRegisterSingletonType(actions_url, "Cura", 1, 0, "Actions")
-
-        engine.rootContext().setContextProperty("ExtruderManager", ExtruderManager.getInstance())
 
         for path in Resources.getAllResourcesOfType(CuraApplication.ResourceTypes.QmlFiles):
             type_name = os.path.splitext(os.path.basename(path))[0]
@@ -1263,6 +1215,9 @@ class CuraApplication(QtApplication):
                 # see GroupDecorator._onChildrenChanged
 
     def _createSplashScreen(self):
+        run_headless = self.getCommandLineOption("headless", False)
+        if run_headless:
+            return None
         return CuraSplashScreen.CuraSplashScreen()
 
     def _onActiveMachineChanged(self):
@@ -1376,7 +1331,7 @@ class CuraApplication(QtApplication):
 
             extension = os.path.splitext(filename)[1]
             if extension.lower() in self._non_sliceable_extensions:
-                self.getController().setActiveView("LayerView")
+                self.getController().setActiveView("SimulationView")
                 view = self.getController().getActiveView()
                 view.resetLayerData()
                 view.setLayer(9999999)

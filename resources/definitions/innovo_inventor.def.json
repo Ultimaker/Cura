@@ -1,5 +1,4 @@
 {
-    "id": "innovo-inventor",
     "version": 2,
     "name": "Innovo INVENTOR",
     "inherits": "fdmprinter",
