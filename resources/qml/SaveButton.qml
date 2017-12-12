@@ -49,10 +49,12 @@ Item {
     }
 
     function sliceOrStopSlicing() {
-        if (backend != "undefined" && [1, 5].indexOf(UM.Backend.state) != -1) {
-            backend.forceSlice();
-        } else {
-            backend.stopSlicing();
+        if (base.backendState != "undefined" && backend !== "undefined") {
+            if ([1, 5].indexOf(base.backendState) != -1) {
+                backend.forceSlice();
+            } else {
+                backend.stopSlicing();
+            }
         }
     }
 
@@ -165,7 +167,7 @@ Item {
         Button {
             id: prepareButton
 
-            tooltip: [1, 5].indexOf(UM.Backend.state) != -1 ? catalog.i18nc("@info:tooltip","Slice current printjob") : catalog.i18nc("@info:tooltip","Cancel slicing process")
+            tooltip: [1, 5].indexOf(base.backendState) != -1 ? catalog.i18nc("@info:tooltip","Slice current printjob") : catalog.i18nc("@info:tooltip","Cancel slicing process")
             // 1 = not started, 2 = Processing
             enabled: base.backendState != "undefined" && (base.backendState == 1 || base.backendState == 2) && base.activity == true
             visible: base.backendState != "undefined" && !autoSlice && (base.backendState == 1 || base.backendState == 2) && base.activity == true
@@ -177,7 +179,7 @@ Item {
             anchors.rightMargin: UM.Theme.getSize("sidebar_margin").width
 
             // 1 = not started, 5 = disabled
-            text: [1, 5].indexOf(UM.Backend.state) != -1 ? catalog.i18nc("@label:Printjob", "Prepare") : catalog.i18nc("@label:Printjob", "Cancel")
+            text: [1, 5].indexOf(base.backendState) != -1 ? catalog.i18nc("@label:Printjob", "Prepare") : catalog.i18nc("@label:Printjob", "Cancel")
             onClicked:
             {
                 sliceOrStopSlicing();
