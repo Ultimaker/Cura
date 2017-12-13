@@ -533,7 +533,7 @@ class XmlMaterialProfile(InstanceContainer):
             for identifier in identifiers:
                 machine_id_list = product_id_map.get(identifier.get("product"), [])
                 if not machine_id_list:
-                    machine_id_list.append(identifier.get("product").replace(" ", "").lower())
+                    machine_id_list = self.getPossibleDefinitionIDsFromName(identifier.get("product"))
 
                 for machine_id in machine_id_list:
                     definitions = ContainerRegistry.getInstance().findDefinitionContainersMetadata(id = machine_id)
@@ -541,6 +541,7 @@ class XmlMaterialProfile(InstanceContainer):
                         Logger.log("w", "No definition found for machine ID %s", machine_id)
                         continue
 
+                    Logger.log("d", "Found definition for machine ID %s", machine_id)
                     definition = definitions[0]
 
                     machine_manufacturer = identifier.get("manufacturer", definition.get("manufacturer", "Unknown")) #If the XML material doesn't specify a manufacturer, use the one in the actual printer definition.
@@ -584,7 +585,7 @@ class XmlMaterialProfile(InstanceContainer):
                         variant_containers = ContainerRegistry.getInstance().findInstanceContainersMetadata(id = hotend_id)
                         if not variant_containers:
                             # It is not really properly defined what "ID" is so also search for variants by name.
-                            variant_containers = ContainerRegistry.getInstance().findInstanceContainersMetadata(definition = definition["id"], name = hotend_id)
+                            variant_containers = ContainerRegistry.getInstance().findInstanceContainersMetadata(definition = machine_id, name = hotend_id)
 
                         if not variant_containers:
                             continue
@@ -617,6 +618,7 @@ class XmlMaterialProfile(InstanceContainer):
                         new_hotend_material.getMetaData()["id"] = new_hotend_id
                         new_hotend_material.getMetaData()["name"] = self.getName()
                         new_hotend_material.getMetaData()["variant"] = variant_containers[0]["id"]
+                        new_hotend_material.setDefinition(machine_id)
                         # Don't use setMetadata, as that overrides it for all materials with same base file
                         new_hotend_material.getMetaData()["compatible"] = hotend_compatibility
                         new_hotend_material.getMetaData()["machine_manufacturer"] = machine_manufacturer
@@ -727,13 +729,15 @@ class XmlMaterialProfile(InstanceContainer):
             for identifier in machine.iterfind("./um:machine_identifier", cls.__namespaces):
                 machine_id_list = product_id_map.get(identifier.get("product"), [])
                 if not machine_id_list:
-                    machine_id_list.append(identifier.get("product").replace(" ", "").lower())
+                    machine_id_list = cls.getPossibleDefinitionIDsFromName(identifier.get("product"))
 
                 for machine_id in machine_id_list:
                     definition_metadata = ContainerRegistry.getInstance().findDefinitionContainersMetadata(id = machine_id)
                     if not definition_metadata:
                         Logger.log("w", "No definition found for machine ID %s", machine_id)
                         continue
+
+                    Logger.log("d", "========= Found def for machine [%s]", machine_id)
                     definition_metadata = definition_metadata[0]
 
                     machine_manufacturer = identifier.get("manufacturer", definition_metadata.get("manufacturer", "Unknown")) #If the XML material doesn't specify a manufacturer, use the one in the actual printer definition.
@@ -823,6 +827,30 @@ class XmlMaterialProfile(InstanceContainer):
         else:
             return material_name
 
+    @classmethod
+    def getPossibleDefinitionIDsFromName(cls, name):
+        name_parts = name.lower().split(" ")
+        merged_name_parts = []
+        for part in name_parts:
+            if len(part) == 0:
+                continue
+            if len(merged_name_parts) == 0:
+                merged_name_parts.append(part)
+                continue
+            if part.isdigit():
+                # for names with digit(s) such as Ultimaker 3 Extended, we generate an ID like
+                # "ultimaker3_extended", ignoring the space between "Ultimaker" and "3".
+                merged_name_parts[-1] = merged_name_parts[-1] + part
+            else:
+                merged_name_parts.append(part)
+
+        id_list = [name.lower().replace(" ", ""),  # simply removing all spaces
+                   name.lower().replace(" ", "_"),  # simply replacing all spaces with underscores
+                   "_".join(merged_name_parts),
+                   ]
+
+        return id_list
+
     ##  Gets a mapping from product names in the XML files to their definition
     #   IDs.
     #
@@ -832,27 +860,7 @@ class XmlMaterialProfile(InstanceContainer):
         product_to_id_file = os.path.join(os.path.dirname(sys.modules[cls.__module__].__file__), "product_to_id.json")
         with open(product_to_id_file) as f:
             product_to_id_map = json.load(f)
-
-        # generate a few more combinations so it can be smart about finding IDs
         product_to_id_map = {key: [value] for key, value in product_to_id_map.items()}
-        for name, id_list in product_to_id_map.items():
-            name_parts = name.split(" ")
-            merged_name_parts = []
-            for part in name_parts:
-                if len(part) == 0:
-                    continue
-                if len(merged_name_parts) == 0:
-                    merged_name_parts.append(part.lower())
-                    continue
-                if part.isdigit():
-                    # for names with digit(s) such as Ultimaker 3 Extended, we generate an ID like
-                    # "ultimaker3_extended", ignoring the space between "Ultimaker" and "3".
-                    merged_name_parts[-1] = merged_name_parts[-1] + part.lower()
-
-            generated_id = "_".join(merged_name_parts)
-            if generated_id not in id_list:
-                id_list.append(generated_id)
-
         return product_to_id_map
 
     ##  Parse the value of the "material compatible" property.

@@ -508,7 +508,7 @@ class CuraContainerStack(ContainerStack):
     def findDefaultQuality(self) -> Optional[ContainerInterface]:
         definition = self._getMachineDefinition()
         registry = ContainerRegistry.getInstance()
-        material_container = self.material if self.material != self._empty_instance_container else None
+        material_container = self.material if self.material.getId() not in (self._empty_material.getId(), self._empty_instance_container.getId()) else None
 
         search_criteria = {"type": "quality"}
 
@@ -552,7 +552,7 @@ class CuraContainerStack(ContainerStack):
             material_search_criteria = {"type": "material", "material": material_container.getMetaDataEntry("material"), "color_name": "Generic"}
             if definition.getMetaDataEntry("has_machine_quality"):
                 if self.material != self._empty_instance_container:
-                    material_search_criteria["definition"] = material_container.getDefinition().id
+                    material_search_criteria["definition"] = material_container.getMetaDataEntry("definition")
 
                     if definition.getMetaDataEntry("has_variants"):
                         material_search_criteria["variant"] = material_container.getMetaDataEntry("variant")
