@@ -49,6 +49,10 @@ class ProfilesModel(InstanceContainersModel):
             ProfilesModel.__instance = cls()
         return ProfilesModel.__instance
 
+    @classmethod
+    def hasInstance(cls) -> bool:
+        return ProfilesModel.__instance is not None
+
     __instance = None   # type: "ProfilesModel"
 
     ##  Fetch the list of containers to display.
@@ -91,7 +95,6 @@ class ProfilesModel(InstanceContainersModel):
 
     ##  Re-computes the items in this model, and adds the layer height role.
     def _recomputeItems(self):
-
         # Some globals that we can re-use.
         global_container_stack = Application.getInstance().getGlobalContainerStack()
         if global_container_stack is None:
