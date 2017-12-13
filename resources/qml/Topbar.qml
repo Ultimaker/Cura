@@ -162,7 +162,6 @@ Rectangle
         }
 
         function updateMargins() {
-            CuraApplication.log("update margin");
             if (UM.Preferences.getValue("cura/sidebar_collapse")) {
                 rightMargin = UM.Theme.getSize("default_margin").width;
             } else {
