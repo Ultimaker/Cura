@@ -32,6 +32,7 @@ from .CuraStackBuilder import CuraStackBuilder
 from UM.i18n import i18nCatalog
 catalog = i18nCatalog("cura")
 
+from cura.Settings.ProfilesModel import ProfilesModel
 from typing import TYPE_CHECKING, Optional
 
 if TYPE_CHECKING:
@@ -60,9 +61,11 @@ class MachineManager(QObject):
         self._instance_container_timer = QTimer()
         self._instance_container_timer.setInterval(250)
         self._instance_container_timer.setSingleShot(True)
-        self._instance_container_timer.timeout.connect(self.__onInstanceContainersChanged)
+        self._instance_container_timer.timeout.connect(self.__emitChangedSignals)
 
         Application.getInstance().globalContainerStackChanged.connect(self._onGlobalContainerChanged)
+        Application.getInstance().getContainerRegistry().containerLoadComplete.connect(self._onInstanceContainersChanged)
+        self._connected_to_profiles_model = False
 
         ##  When the global container is changed, active material probably needs to be updated.
         self.globalContainerChanged.connect(self.activeMaterialChanged)
@@ -333,14 +336,24 @@ class MachineManager(QObject):
             # on _active_container_stack. If it changes, then the properties change.
             self.activeQualityChanged.emit()
 
-    def __onInstanceContainersChanged(self):
+    def __emitChangedSignals(self):
         self.activeQualityChanged.emit()
         self.activeVariantChanged.emit()
         self.activeMaterialChanged.emit()
         self._updateStacksHaveErrors()  # Prevents unwanted re-slices after changing machine
         self._error_check_timer.start()
 
+    def _onProfilesModelChanged(self, *args):
+        self.__emitChangedSignals()
+
     def _onInstanceContainersChanged(self, container):
+        # This should not trigger the ProfilesModel to be created, or there will be an infinite recursion
+        if not self._connected_to_profiles_model and ProfilesModel.hasInstance():
+            # This triggers updating the qualityModel in SidebarSimple whenever ProfilesModel is updated
+            Logger.log("d", "Connecting profiles model...")
+            ProfilesModel.getInstance().itemsChanged.connect(self._onProfilesModelChanged)
+            self._connected_to_profiles_model = True
+
         self._instance_container_timer.start()
 
     def _onPropertyChanged(self, key: str, property_name: str):
@@ -360,7 +373,7 @@ class MachineManager(QObject):
         if containers:
             Application.getInstance().setGlobalContainerStack(containers[0])
 
-        self.__onInstanceContainersChanged()
+        self.__emitChangedSignals()
 
     @pyqtSlot(str, str)
     def addMachine(self, name: str, definition_id: str) -> None:
