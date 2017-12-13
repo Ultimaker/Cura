@@ -313,7 +313,7 @@ class CuraApplication(QtApplication):
         preferences.addPreference("cura/material_settings", "{}")
 
         preferences.addPreference("view/invert_zoom", False)
-        preferences.addPreference("general/sidebar_collapse", False)
+        preferences.addPreference("cura/sidebar_collapse", False)
 
         self._need_to_show_user_agreement = not Preferences.getInstance().getValue("general/accepted_user_agreement")
 

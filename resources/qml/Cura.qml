@@ -390,18 +390,18 @@ UM.MainWindow
                 property bool collapsed: false;
                 property var initialWidth: UM.Theme.getSize("sidebar").width;
 
-                function callExpandOrCollapse(){
-                    if(collapsed){
-                        sidebar.visible = true
-                        sidebar.initialWidth = UM.Theme.getSize("sidebar").width
-                        viewportRect = Qt.rect(0, 0, (base.width - sidebar.width) / base.width, 1.0)
+                function callExpandOrCollapse() {
+                    if (collapsed) {
+                        sidebar.visible = true;
+                        sidebar.initialWidth = UM.Theme.getSize("sidebar").width;
+                        viewportRect = Qt.rect(0, 0, (base.width - sidebar.width) / base.width, 1.0);
                         expandSidebarAnimation.start();
-                    }else{
-                        viewportRect = Qt.rect(0, 0, 1, 1.0)
-                        collapsSidebarAnimation.start();
+                    } else {
+                        viewportRect = Qt.rect(0, 0, 1, 1.0);
+                        collapseSidebarAnimation.start();
                     }
                     collapsed = !collapsed;
-                    UM.Preferences.setValue("general/sidebar_collapse", collapsed);
+                    UM.Preferences.setValue("cura/sidebar_collapse", collapsed);
                 }
 
                 anchors
@@ -415,7 +415,7 @@ UM.MainWindow
                 source: UM.Controller.activeStage.sidebarComponent
 
                 NumberAnimation {
-                    id: collapsSidebarAnimation
+                    id: collapseSidebarAnimation
                     target: sidebar
                     properties: "x"
                     to: base.width
@@ -432,12 +432,12 @@ UM.MainWindow
 
                 Component.onCompleted:
                 {
-                    var sidebarCollaps = UM.Preferences.getValue("general/sidebar_collapse")
+                    var sidebarCollapsed = UM.Preferences.getValue("cura/sidebar_collapse");
 
-                    if (sidebarCollaps == true){
+                    if (sidebarCollapsed) {
                         sidebar.collapsed = true;
                         viewportRect = Qt.rect(0, 0, 1, 1.0)
-                        collapsSidebarAnimation.start();
+                        collapseSidebarAnimation.start();
                     }
                 }
             }
