@@ -632,9 +632,9 @@ class XmlMaterialProfile(InstanceContainer):
                         if is_new_material:
                             containers_to_add.append(new_hotend_material)
 
-                        # there is only one ID for a machine. Once we have reached here, it means we have already found
-                        # a workable ID for that machine, so there is no need to continue
-                        break
+                    # there is only one ID for a machine. Once we have reached here, it means we have already found
+                    # a workable ID for that machine, so there is no need to continue
+                    break
 
         for container_to_add in containers_to_add:
             ContainerRegistry.getInstance().addContainer(container_to_add)
@@ -800,9 +800,9 @@ class XmlMaterialProfile(InstanceContainer):
                         if len(found_materials) == 0:
                             result_metadata.append(new_hotend_material_metadata)
 
-                        # there is only one ID for a machine. Once we have reached here, it means we have already found
-                        # a workable ID for that machine, so there is no need to continue
-                        break
+                    # there is only one ID for a machine. Once we have reached here, it means we have already found
+                    # a workable ID for that machine, so there is no need to continue
+                    break
 
         return result_metadata
 
