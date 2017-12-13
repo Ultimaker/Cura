@@ -59,7 +59,7 @@ class CrashHandler:
         self.data = dict()
         self.data["time_stamp"] = time.time()
 
-        Logger.log("c", "An uncaught exception has occurred!")
+        Logger.log("c", "An uncaught error has occurred!")
         for line in traceback.format_exception(exception_type, value, tb):
             for part in line.rstrip("\n").split("\n"):
                 Logger.log("c", part)
@@ -90,7 +90,7 @@ class CrashHandler:
 
     def _messageWidget(self):
         label = QLabel()
-        label.setText(catalog.i18nc("@label crash message", """<p><b>A fatal exception has occurred. Please send us this Crash Report to fix the problem</p></b>
+        label.setText(catalog.i18nc("@label crash message", """<p><b>A fatal error has occurred. Please send us this Crash Report to fix the problem</p></b>
             <p>Please use the "Send report" button to post a bug report automatically to our servers</p>
         """))
 
@@ -143,7 +143,7 @@ class CrashHandler:
 
     def _exceptionInfoWidget(self):
         group = QGroupBox()
-        group.setTitle(catalog.i18nc("@title:groupbox", "Exception traceback"))
+        group.setTitle(catalog.i18nc("@title:groupbox", "Error traceback"))
         layout = QVBoxLayout()
 
         text_area = QTextEdit()
