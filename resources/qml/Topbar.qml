@@ -153,11 +153,21 @@ Rectangle
     ComboBox
     {
         id: viewModeButton
+        property int rightMargin: UM.Theme.getSize("sidebar").width + UM.Theme.getSize("default_margin").width;
 
         anchors {
             verticalCenter: parent.verticalCenter
             right: parent.right
-            rightMargin: UM.Theme.getSize("sidebar").width + UM.Theme.getSize("default_margin").width
+            rightMargin: rightMargin
+        }
+
+        function updateMargins() {
+            CuraApplication.log("update margin");
+            if (UM.Preferences.getValue("cura/sidebar_collapse")) {
+                rightMargin = UM.Theme.getSize("default_margin").width;
+            } else {
+                rightMargin = UM.Theme.getSize("sidebar").width + UM.Theme.getSize("default_margin").width;
+            }
         }
 
         style: UM.Theme.styles.combobox
@@ -199,6 +209,13 @@ Rectangle
             target: UM.ActiveView
             onActiveViewChanged: viewModeButton.updateItemActiveFlags()
         }
+    }
+
+    // Expand or collapse sidebar
+    Connections
+    {
+        target: Cura.Actions.expandSidebar
+        onTriggered: viewModeButton.updateMargins()
     }
 
     Loader
