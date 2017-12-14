@@ -14,7 +14,7 @@ Item {
 
     property real progress: UM.Backend.progress
     property int backendState: UM.Backend.state
-    property var backend: CuraApplication.getBackend() || "undefined"
+    property var backend: CuraApplication.backend
     property bool activity: CuraApplication.platformActivity
 
     property alias buttonRowWidth: saveRow.width
