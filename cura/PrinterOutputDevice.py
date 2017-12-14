@@ -67,6 +67,10 @@ class PrinterOutputDevice(QObject, OutputDevice):
             self._connection_state = connection_state
             self.connectionStateChanged.emit(self._id)
 
+    @pyqtProperty(str, notify = connectionStateChanged)
+    def connectionState(self):
+        return self._connection_state
+
     def _update(self):
         pass
 
