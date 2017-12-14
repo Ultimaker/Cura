@@ -20,14 +20,6 @@ Column
         simpleNames: true
     }
 
-    MachineSelection {
-        id: machineSelection
-        width: base.width
-        height: UM.Theme.getSize("sidebar_header").height
-        anchors.top: base.top
-        anchors.right: parent.right
-    }
-
     Rectangle
     {
         id: connectedPrinterHeader

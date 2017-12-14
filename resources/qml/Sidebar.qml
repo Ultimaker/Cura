@@ -272,7 +272,7 @@ Rectangle
     {
         id: controlItem
         anchors.bottom: footerSeparator.top
-        anchors.top: monitoringPrint ? base.top : headerSeparator.bottom
+        anchors.top: monitoringPrint ? machineSelection.bottom : headerSeparator.bottom
         anchors.left: base.left
         anchors.right: base.right
         sourceComponent:
@@ -291,7 +291,7 @@ Rectangle
     Loader
     {
         anchors.bottom: footerSeparator.top
-        anchors.top: monitoringPrint ? base.top : headerSeparator.bottom
+        anchors.top: monitoringPrint ? machineSelection.bottom : headerSeparator.bottom
         anchors.left: base.left
         anchors.right: base.right
         source:
