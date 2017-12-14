@@ -79,9 +79,9 @@ class LegacyUM3OutputDevice(NetworkedPrinterOutputDevice):
     def _onAuthenticationStateChanged(self):
         # We only accept commands if we are authenticated.
         if self._authentication_state == AuthState.Authenticated:
-            self.setAcceptsCommands(True)
+            self._setAcceptsCommands(True)
         else:
-            self.setAcceptsCommands(False)
+            self._setAcceptsCommands(False)
 
     def _setupMessages(self):
         self._authentication_requested_message = Message(i18n_catalog.i18nc("@info:status",
