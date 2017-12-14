@@ -36,28 +36,28 @@ class ExtruderOutputModel(QObject):
             self.activeMaterialChanged.emit()
 
     ##  Update the hotend temperature. This only changes it locally.
-    def updateHotendTemperature(self, temperature: int):
+    def updateHotendTemperature(self, temperature: float):
         if self._hotend_temperature != temperature:
             self._hotend_temperature = temperature
             self.hotendTemperatureChanged.emit()
 
-    def updateTargetHotendTemperature(self, temperature: int):
+    def updateTargetHotendTemperature(self, temperature: float):
         if self._target_hotend_temperature != temperature:
             self._target_hotend_temperature = temperature
             self.targetHotendTemperatureChanged.emit()
 
     ##  Set the target hotend temperature. This ensures that it's actually sent to the remote.
-    @pyqtSlot(int)
-    def setTargetHotendTemperature(self, temperature: int):
+    @pyqtSlot(float)
+    def setTargetHotendTemperature(self, temperature: float):
         self._printer.getController().setTargetHotendTemperature(self._printer, self, temperature)
         self.updateTargetHotendTemperature(temperature)
 
-    @pyqtProperty(int, notify = targetHotendTemperatureChanged)
-    def targetHotendTemperature(self) -> int:
+    @pyqtProperty(float, notify = targetHotendTemperatureChanged)
+    def targetHotendTemperature(self) -> float:
         return self._target_hotend_temperature
 
-    @pyqtProperty(int, notify=hotendTemperatureChanged)
-    def hotendTemperature(self) -> int:
+    @pyqtProperty(float, notify=hotendTemperatureChanged)
+    def hotendTemperature(self) -> float:
         return self._hotend_temperature
 
     @pyqtProperty(str, notify = hotendIDChanged)
