@@ -22,7 +22,6 @@ Rectangle
     property bool printerConnected: Cura.MachineManager.printerOutputDevices.length != 0
     property bool printerAcceptsCommands: printerConnected && Cura.MachineManager.printerOutputDevices[0].acceptsCommands
     property var connectedPrinter: Cura.MachineManager.printerOutputDevices.length >= 1 ? Cura.MachineManager.printerOutputDevices[0] : null
-    property int backendState: UM.Backend.state
 
     property bool monitoringPrint: UM.Controller.activeStage.stageId == "MonitorStage"
 
