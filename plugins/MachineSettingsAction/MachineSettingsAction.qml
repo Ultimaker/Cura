@@ -22,7 +22,7 @@ Cura.MachineAction
         onModelChanged:
         {
             var extruderCount = base.extrudersModel.rowCount();
-            base.extruderTabsCount = extruderCount > 1 ? extruderCount : 0;
+            base.extruderTabsCount = extruderCount;
         }
     }
 
@@ -241,7 +241,6 @@ Cura.MachineAction
 
                             UM.TooltipArea
                             {
-                                visible: manager.definedExtruderCount > 1
                                 height: childrenRect.height
                                 width: childrenRect.width
                                 text: machineExtruderCountProvider.properties.description
@@ -290,15 +289,6 @@ Cura.MachineAction
                                 property string tooltip: catalog.i18nc("@tooltip", "The nominal diameter of filament supported by the printer. The exact diameter will be overridden by the material and/or the profile.")
                                 property var afterOnEditingFinished: manager.updateMaterialForDiameter
                                 property string label: catalog.i18nc("@label", "Material diameter")
-                            }
-                            Loader
-                            {
-                                id: nozzleSizeField
-                                visible: !Cura.MachineManager.hasVariants && machineExtruderCountProvider.properties.value == 1
-                                sourceComponent: numericTextFieldWithUnit
-                                property string settingKey: "machine_nozzle_size"
-                                property string label: catalog.i18nc("@label", "Nozzle size")
-                                property string unit: catalog.i18nc("@label", "mm")
                             }
                         }
                     }

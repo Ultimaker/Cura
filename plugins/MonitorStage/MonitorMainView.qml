@@ -8,6 +8,9 @@ import Cura 1.0 as Cura
 
 Item
 {
+    width: parent.width
+    height: parent.height
+
     // We show a nice overlay on the 3D viewer when the current output device has no monitor view
     Rectangle
     {
@@ -28,6 +31,9 @@ Item
     Loader
     {
         id: monitorViewComponent
+
+        width: parent.width
+        height: parent.height
 
         property real maximumWidth: parent.width
         property real maximumHeight: parent.height

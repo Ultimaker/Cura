@@ -1,5 +1,4 @@
 {
-    "id": "rigidbot",
     "version": 2,
     "name": "RigidBot",
     "inherits": "fdmprinter",

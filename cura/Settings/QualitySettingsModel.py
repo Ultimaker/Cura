@@ -92,7 +92,6 @@ class QualitySettingsModel(UM.Qt.ListModel.ListModel):
 
         items = []
 
-        settings = collections.OrderedDict()
         definition_container = Application.getInstance().getGlobalContainerStack().getBottom()
 
         containers = self._container_registry.findInstanceContainers(id = self._quality_id)

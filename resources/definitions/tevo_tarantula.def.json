@@ -1,5 +1,4 @@
 {
-    "id": "tevo_tarantula",
     "version": 2,
     "name": "Tevo Tarantula",
     "inherits": "fdmprinter",

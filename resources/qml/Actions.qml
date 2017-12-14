@@ -18,6 +18,7 @@ Item
     property alias redo: redoAction;
 
     property alias homeCamera: homeCameraAction;
+    property alias expandSidebar: expandSidebarAction;
 
     property alias deleteSelection: deleteSelectionAction;
     property alias centerSelection: centerSelectionAction;
@@ -388,5 +389,12 @@ Item
         id: configurePluginsAction
         text: catalog.i18nc("@action:menu", "Installed plugins...");
         iconName: "plugins_configure"
+    }
+
+    Action
+    {
+        id: expandSidebarAction;
+        text: catalog.i18nc("@action:inmenu menubar:view","Expand/Collapse Sidebar");
+        shortcut: "Ctrl+E";
     }
 }

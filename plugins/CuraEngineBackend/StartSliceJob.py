@@ -131,11 +131,20 @@ class StartSliceJob(Job):
                     Logger.log("w", "No objects suitable for one at a time found, or no correct order found")
             else:
                 temp_list = []
+                has_printing_mesh = False
                 for node in DepthFirstIterator(self._scene.getRoot()):
                     if type(node) is SceneNode and node.getMeshData() and node.getMeshData().getVertices() is not None:
-                        if not getattr(node, "_outside_buildarea", False) or getattr(node, "_non_printing_mesh", False):
+                        _non_printing_mesh = getattr(node, "_non_printing_mesh", False)
+                        if not getattr(node, "_outside_buildarea", False) or _non_printing_mesh:
                             temp_list.append(node)
+                            if not _non_printing_mesh:
+                                has_printing_mesh = True
                     Job.yieldThread()
+
+                #If the list doesn't have any model with suitable settings then clean the list
+                # otherwise CuraEngine will crash
+                if not has_printing_mesh:
+                    temp_list.clear()
 
                 if temp_list:
                     object_groups.append(temp_list)

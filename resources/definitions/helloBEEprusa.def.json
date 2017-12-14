@@ -1,5 +1,4 @@
 {
-    "id": "BEEVERYCREATIVE-helloBEEprusa",
     "version": 2,
     "name": "Hello BEE Prusa",
     "inherits": "fdmprinter",

@@ -122,7 +122,6 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             Logger.log("w", "Could not find reader that was able to read the scene data for 3MF workspace")
             return WorkspaceReader.PreReadResult.failed
 
-        machine_name = ""
         machine_type = ""
         variant_type_name = i18n_catalog.i18nc("@label", "Nozzle")
 
@@ -133,9 +132,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         # A few lists of containers in this project files.
         # When loading the global stack file, it may be associated with those containers, which may or may not be
         # in Cura already, so we need to provide them as alternative search lists.
-        definition_container_list = []
         instance_container_list = []
-        material_container_list = []
 
         resolve_strategy_keys = ["machine", "material", "quality_changes"]
         self._resolve_strategies = {k: None for k in resolve_strategy_keys}
@@ -149,21 +146,20 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         definition_container_files = [name for name in cura_file_names if name.endswith(self._definition_container_suffix)]
         for each_definition_container_file in definition_container_files:
             container_id = self._stripFileToId(each_definition_container_file)
-            definitions = self._container_registry.findDefinitionContainers(id=container_id)
+            definitions = self._container_registry.findDefinitionContainersMetadata(id = container_id)
 
             if not definitions:
                 definition_container = DefinitionContainer(container_id)
-                definition_container.deserialize(archive.open(each_definition_container_file).read().decode("utf-8"),
-                                                 file_name = each_definition_container_file)
+                definition_container.deserialize(archive.open(each_definition_container_file).read().decode("utf-8"), file_name = each_definition_container_file)
+                definition_container = definition_container.getMetaData()
 
             else:
                 definition_container = definitions[0]
-            definition_container_list.append(definition_container)
 
-            definition_container_type = definition_container.getMetaDataEntry("type")
+            definition_container_type = definition_container.get("type")
             if definition_container_type == "machine":
-                machine_type = definition_container.getName()
-                variant_type_name = definition_container.getMetaDataEntry("variants_name", variant_type_name)
+                machine_type = definition_container["name"]
+                variant_type_name = definition_container.get("variants_name", variant_type_name)
 
                 machine_definition_container_count += 1
             elif definition_container_type == "extruder":
@@ -187,11 +183,10 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             material_container_files = [name for name in cura_file_names if name.endswith(self._material_container_suffix)]
             for material_container_file in material_container_files:
                 container_id = self._stripFileToId(material_container_file)
-                materials = self._container_registry.findInstanceContainers(id=container_id)
                 material_labels.append(self._getMaterialLabelFromSerialized(archive.open(material_container_file).read().decode("utf-8")))
-                if materials:
+                if self._container_registry.findContainersMetadata(id = container_id): #This material already exists.
                     containers_found_dict["material"] = True
-                    if not materials[0].isReadOnly():  # Only non readonly materials can be in conflict
+                    if not self._container_registry.isReadOnly(container_id):  # Only non readonly materials can be in conflict
                         material_conflict = True
                 Job.yieldThread()
 
@@ -462,7 +457,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         extruder_stack_id_map = {}  # new and old ExtruderStack IDs map
         if self._resolve_strategies["machine"] == "new":
             # We need a new id if the id already exists
-            if self._container_registry.findContainerStacks(id = global_stack_id_original):
+            if self._container_registry.findContainerStacksMetadata(id = global_stack_id_original):
                 global_stack_id_new = self.getNewId(global_stack_id_original)
                 global_stack_need_rename = True
 
@@ -471,7 +466,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             for each_extruder_stack_file in extruder_stack_files:
                 old_container_id = self._stripFileToId(each_extruder_stack_file)
                 new_container_id = old_container_id
-                if self._container_registry.findContainerStacks(id = old_container_id):
+                if self._container_registry.findContainerStacksMetadata(id = old_container_id):
                     # get a new name for this extruder
                     new_container_id = self.getNewId(old_container_id)
 
@@ -485,7 +480,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         definition_container_files = [name for name in cura_file_names if name.endswith(self._definition_container_suffix)]
         for definition_container_file in definition_container_files:
             container_id = self._stripFileToId(definition_container_file)
-            definitions = self._container_registry.findDefinitionContainers(id = container_id)
+            definitions = self._container_registry.findDefinitionContainersMetadata(id = container_id)
             if not definitions:
                 definition_container = DefinitionContainer(container_id)
                 definition_container.deserialize(archive.open(definition_container_file).read().decode("utf-8"),
@@ -512,7 +507,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                     containers_to_add.append(material_container)
                 else:
                     material_container = materials[0]
-                    if not material_container.isReadOnly():  # Only create new materials if they are not read only.
+                    if not self._container_registry.isReadOnly(container_id):  # Only create new materials if they are not read only.
                         if self._resolve_strategies["material"] == "override":
                             material_container.deserialize(archive.open(material_container_file).read().decode("utf-8"),
                                                            file_name = material_container_file)
@@ -579,7 +574,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                         if old_extruder_id:
                             new_extruder_id = extruder_stack_id_map[old_extruder_id]
                             new_id = new_extruder_id + "_current_settings"
-                            instance_container._id = new_id
+                            instance_container.setMetaDataEntry("id", new_id)
                             instance_container.setName(new_id)
                             instance_container.setMetaDataEntry("extruder", new_extruder_id)
                             containers_to_add.append(instance_container)
@@ -588,7 +583,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                         if machine_id:
                             new_machine_id = self.getNewId(machine_id)
                             new_id = new_machine_id + "_current_settings"
-                            instance_container._id = new_id
+                            instance_container.setMetadataEntry("id", new_id)
                             instance_container.setName(new_id)
                             instance_container.setMetaDataEntry("machine", new_machine_id)
                             containers_to_add.append(instance_container)
@@ -644,7 +639,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                         machine_extruder_count = definition_changes_extruder_count
 
             else:
-                existing_container = self._container_registry.findInstanceContainers(id = container_id)
+                existing_container = self._container_registry.findInstanceContainersMetadata(id = container_id)
                 if not existing_container:
                     containers_to_add.append(instance_container)
             if global_stack_need_rename:
@@ -670,14 +665,13 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
 
                 # HACK
                 # There is a machine, check if it has authentication data. If so, keep that data.
-                network_authentication_id = container_stacks[0].getMetaDataEntry("network_authentication_id")
-                network_authentication_key = container_stacks[0].getMetaDataEntry("network_authentication_key")
-                container_stacks[0].deserialize(archive.open(global_stack_file).read().decode("utf-8"),
-                                                file_name = global_stack_file)
+                network_authentication_id = stack.getMetaDataEntry("network_authentication_id")
+                network_authentication_key = stack.getMetaDataEntry("network_authentication_key")
+                stack.deserialize(archive.open(global_stack_file).read().decode("utf-8"), file_name = global_stack_file)
                 if network_authentication_id:
-                    container_stacks[0].addMetaDataEntry("network_authentication_id", network_authentication_id)
+                    stack.addMetaDataEntry("network_authentication_id", network_authentication_id)
                 if network_authentication_key:
-                    container_stacks[0].addMetaDataEntry("network_authentication_key", network_authentication_key)
+                    stack.addMetaDataEntry("network_authentication_key", network_authentication_key)
 
             elif self._resolve_strategies["machine"] == "new":
                 # create a new global stack

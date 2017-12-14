@@ -1,5 +1,4 @@
 {
-    "id": "cartesio",
     "name": "Cartesio",
     "version": 2,
     "inherits": "fdmprinter",

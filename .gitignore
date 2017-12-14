@@ -46,6 +46,7 @@ plugins/cura-siemensnx-plugin
 plugins/CuraVariSlicePlugin
 plugins/CuraLiveScriptingPlugin
 plugins/CuraPrintProfileCreator
+plugins/OctoPrintPlugin
 
 #Build stuff
 CMakeCache.txt
