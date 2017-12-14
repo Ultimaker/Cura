@@ -92,7 +92,7 @@ class SimulationPass(RenderPass):
 
         self.bind()
 
-        tool_handle_batch = RenderBatch(self._tool_handle_shader, type = RenderBatch.RenderType.Overlay)
+        tool_handle_batch = RenderBatch(self._tool_handle_shader, type = RenderBatch.RenderType.Overlay, backface_cull = True)
         head_position = None  # Indicates the current position of the print head
         nozzle_node = None
 
@@ -149,7 +149,7 @@ class SimulationPass(RenderPass):
                         self._current_shader = self._layer_shader
                         self._switching_layers = True
 
-                    layers_batch = RenderBatch(self._current_shader, type = RenderBatch.RenderType.Solid, mode = RenderBatch.RenderMode.Lines, range = (start, end))
+                    layers_batch = RenderBatch(self._current_shader, type = RenderBatch.RenderType.Solid, mode = RenderBatch.RenderMode.Lines, range = (start, end), backface_cull = True)
                     layers_batch.addItem(node.getWorldTransformation(), layer_data)
                     layers_batch.render(self._scene.getActiveCamera())
 
