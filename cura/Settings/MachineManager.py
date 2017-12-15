@@ -369,7 +369,9 @@ class MachineManager(QObject):
         self.blurSettings.emit()  # Ensure no-one has focus.
         self._cancelDelayedActiveContainerStackChanges()
 
-        containers = ContainerRegistry.getInstance().findContainerStacks(id = stack_id)
+        container_registry = ContainerRegistry.getInstance()
+
+        containers = container_registry.findContainerStacks(id = stack_id)
         if containers:
             Application.getInstance().setGlobalContainerStack(containers[0])
 
