@@ -77,7 +77,7 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
 
     def requestWrite(self, nodes, file_name=None, filter_by_machine=False, file_handler=None, **kwargs):
         # Notify the UI that a switch to the print monitor should happen
-        Application.getInstance().showPrintMonitor.emit(True)
+        Application.getInstance().getController().setActiveStage("MonitorStage")
         self.writeStarted.emit(self)
 
         self._gcode = getattr(Application.getInstance().getController().getScene(), "gcode_list", [])
@@ -160,7 +160,7 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
             self._progress_message.hide()
             self._compressing_gcode = False
             self._sending_gcode = False
-            Application.getInstance().showPrintMonitor.emit(False)
+            Application.getInstance().getController().setActiveStage("PrepareStage")
 
     @pyqtSlot()
     def openPrintJobControlPanel(self):

@@ -177,7 +177,7 @@ class LegacyUM3OutputDevice(NetworkedPrinterOutputDevice):
             return
 
         # Notify the UI that a switch to the print monitor should happen
-        Application.getInstance().showPrintMonitor.emit(True)
+        Application.getInstance().getController().setActiveStage("MonitorStage")
         self.writeStarted.emit(self)
 
         self._gcode = getattr(Application.getInstance().getController().getScene(), "gcode_list", [])
@@ -265,7 +265,7 @@ class LegacyUM3OutputDevice(NetworkedPrinterOutputDevice):
             self._progress_message.hide()
             self._compressing_gcode = False
             self._sending_gcode = False
-            Application.getInstance().showPrintMonitor.emit(False)
+            Application.getInstance().getController().setActiveStage("PrepareStage")
 
     def _onPostPrintJobFinished(self, reply):
         self._progress_message.hide()
@@ -290,7 +290,7 @@ class LegacyUM3OutputDevice(NetworkedPrinterOutputDevice):
             if button == QMessageBox.Yes:
                 self._startPrint()
             else:
-                Application.getInstance().showPrintMonitor.emit(False)
+                Application.getInstance().getController().setActiveStage("PrepareStage")
                 # For some unknown reason Cura on OSX will hang if we do the call back code
                 # immediately without first returning and leaving QML's event system.
 

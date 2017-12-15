@@ -76,7 +76,7 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
         if self._is_printing:
             return # Aleady printing
 
-        Application.getInstance().showPrintMonitor.emit(True)
+        Application.getInstance().getController().setActiveStage("MonitorStage")
 
         gcode_list = getattr(Application.getInstance().getController().getScene(), "gcode_list")
         self._printGCode(gcode_list)
