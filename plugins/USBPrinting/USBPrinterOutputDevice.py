@@ -11,6 +11,7 @@ from cura.PrinterOutput.PrinterOutputModel import PrinterOutputModel
 from cura.PrinterOutput.PrintJobOutputModel import PrintJobOutputModel
 
 from .AutoDetectBaudJob import AutoDetectBaudJob
+from .USBPrinterOutputController import USBPrinterOuptutController
 
 from serial import Serial, SerialException
 from threading import Thread
@@ -44,7 +45,6 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
 
         self._baud_rate = baud_rate
 
-
         self._all_baud_rates = [115200, 250000, 230400, 57600, 38400, 19200, 9600]
 
         # Instead of using a timer, we really need the update to be as a thread, as reading from serial can block.
@@ -57,6 +57,8 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
         ## Set when print is started in order to check running time.
         self._print_start_time = None
         self._print_estimated_time = None
+
+        self._accepts_commands = True
 
         # Queue for commands that need to be send. Used when command is sent when a print is active.
         self._command_queue = Queue()
@@ -127,7 +129,7 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
         num_extruders = container_stack.getProperty("machine_extruder_count", "value")
 
         # Ensure that a printer is created.
-        self._printers = [PrinterOutputModel(output_controller=None, number_of_extruders=num_extruders)]
+        self._printers = [PrinterOutputModel(output_controller=USBPrinterOuptutController(self), number_of_extruders=num_extruders)]
         self.setConnectionState(ConnectionState.connected)
         self._update_thread.start()
 
@@ -214,7 +216,7 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
         elapsed_time = int(time() - self._print_start_time)
         print_job = self._printers[0].activePrintJob
         if print_job is None:
-            print_job = PrintJobOutputModel(output_controller = None, name= Application.getInstance().getPrintInformation().jobName)
+            print_job = PrintJobOutputModel(output_controller = USBPrinterOuptutController(self), name= Application.getInstance().getPrintInformation().jobName)
             self._printers[0].updateActivePrintJob(print_job)
 
         print_job.updateTimeElapsed(elapsed_time)
