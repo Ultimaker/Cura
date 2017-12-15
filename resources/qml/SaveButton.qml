@@ -14,7 +14,6 @@ Item {
 
     property real progress: UM.Backend.progress
     property int backendState: UM.Backend.state
-    property var backend: CuraApplication.backend
     property bool activity: CuraApplication.platformActivity
 
     property alias buttonRowWidth: saveRow.width
@@ -50,12 +49,10 @@ Item {
 
     function sliceOrStopSlicing() {
         try {
-            if (base.backendState != "undefined" && base.backend != "undefined") {
-                if ([1, 5].indexOf(base.backendState) != -1) {
-                    backend.forceSlice();
-                } else {
-                    backend.stopSlicing();
-                }
+            if ([1, 5].indexOf(base.backendState) != -1) {
+                CuraApplication.backend.forceSlice();
+            } else {
+                CuraApplication.backend.stopSlicing();
             }
         } catch (e) {
             console.log('Could not start or stop slicing', e)
