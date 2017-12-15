@@ -157,8 +157,8 @@ class USBPrinterOutputDeviceManager(QObject, OutputDevicePlugin, Extension):
     def addOutputDevice(self, serial_port):
         device = USBPrinterOutputDevice.USBPrinterOutputDevice(serial_port)
         device.connectionStateChanged.connect(self._onConnectionStateChanged)
-        device.connect()
         self._usb_output_devices[serial_port] = device
+        device.connect()
 
     ##  Create a list of serial ports on the system.
     #   \param only_list_usb If true, only usb ports are listed

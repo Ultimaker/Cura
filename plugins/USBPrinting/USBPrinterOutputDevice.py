@@ -127,10 +127,10 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
             try:
                 self._serial = Serial(str(self._serial_port), self._baud_rate, timeout=self._timeout, writeTimeout=self._timeout)
             except SerialException:
+                Logger.log("w", "An exception occured while trying to create serial connection")
                 return
         container_stack = Application.getInstance().getGlobalContainerStack()
         num_extruders = container_stack.getProperty("machine_extruder_count", "value")
-
         # Ensure that a printer is created.
         self._printers = [PrinterOutputModel(output_controller=USBPrinterOuptutController(self), number_of_extruders=num_extruders)]
         self.setConnectionState(ConnectionState.connected)
