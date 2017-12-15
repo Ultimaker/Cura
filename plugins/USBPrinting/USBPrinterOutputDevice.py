@@ -69,6 +69,11 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
     #   is ignored.
     #   \param kwargs Keyword arguments.
     def requestWrite(self, nodes, file_name = None, filter_by_machine = False, file_handler = None, **kwargs):
+        if self._is_printing:
+            return # Aleady printing
+
+        Application.getInstance().showPrintMonitor.emit(True)
+
         gcode_list = getattr(Application.getInstance().getController().getScene(), "gcode_list")
         self._printGCode(gcode_list)
 
@@ -92,7 +97,6 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
             self._sendNextGcodeLine()
 
         self.writeFinished.emit(self)
-
 
     def _autoDetectFinished(self, job):
         result = job.getResult()
@@ -210,7 +214,7 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
         elapsed_time = int(time() - self._print_start_time)
         print_job = self._printers[0].activePrintJob
         if print_job is None:
-            print_job = PrintJobOutputModel(output_controller = None)
+            print_job = PrintJobOutputModel(output_controller = None, name= Application.getInstance().getPrintInformation().jobName)
             self._printers[0].updateActivePrintJob(print_job)
 
         print_job.updateTimeElapsed(elapsed_time)
