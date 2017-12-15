@@ -31,6 +31,17 @@ class USBPrinterOuptutController(PrinterOutputController):
     def homeBed(self, printer):
         self._output_device.sendCommand("G28 Z")
 
+    def setJobState(self, job: "PrintJobOutputModel", state: str):
+        if state == "pause":
+            self._output_device.pausePrint()
+            job.updateState("paused")
+        elif state == "print":
+            self._output_device.resumePrint()
+            job.updateState("printing")
+        elif state == "abort":
+            self._output_device.cancelPrint()
+            pass
+
     def preheatBed(self, printer: "PrinterOutputModel", temperature, duration):
         try:
             temperature = round(temperature)  # The API doesn't allow floating point.

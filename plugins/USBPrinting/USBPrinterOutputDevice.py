@@ -60,6 +60,8 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
 
         self._accepts_commands = True
 
+        self._paused = False
+
         # Queue for commands that need to be send. Used when command is sent when a print is active.
         self._command_queue = Queue()
 
@@ -83,6 +85,7 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
     #   \param gcode_list List with gcode (strings).
     def _printGCode(self, gcode_list):
         self._gcode.clear()
+        self._paused = False
 
         for layer in gcode_list:
             self._gcode.extend(layer.split("\n"))
@@ -179,6 +182,8 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
                 if b"ok" in line:
                     if not self._command_queue.empty():
                         self._sendCommand(self._command_queue.get())
+                    elif self._paused:
+                        pass  # Nothing to do!
                     else:
                         self._sendNextGcodeLine()
                 elif b"resend" in line.lower() or b"rs" in line:
@@ -189,6 +194,29 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
                         if b"rs" in line:
                             # In some cases of the RS command it needs to be handled differently.
                             self._gcode_position = int(line.split()[1])
+
+    def pausePrint(self):
+        self._paused = True
+
+    def resumePrint(self):
+        self._paused = False
+
+    def cancelPrint(self):
+        self._gcode_position = 0
+        self._gcode.clear()
+        self._printers[0].updateActivePrintJob(None)
+        self._is_printing = False
+        self._is_paused = False
+
+        # Turn off temperatures, fan and steppers
+        self._sendCommand("M140 S0")
+        self._sendCommand("M104 S0")
+        self._sendCommand("M107")
+
+        # Home XY to prevent nozzle resting on aborted print
+        # Don't home bed because it may crash the printhead into the print on printers that home on the bottom
+        self.printers[0].homeHead()
+        self._sendCommand("M84")
 
     def _sendNextGcodeLine(self):
         if self._gcode_position >= len(self._gcode):
