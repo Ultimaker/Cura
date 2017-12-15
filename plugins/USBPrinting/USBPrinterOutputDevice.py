@@ -217,6 +217,7 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
         print_job = self._printers[0].activePrintJob
         if print_job is None:
             print_job = PrintJobOutputModel(output_controller = USBPrinterOuptutController(self), name= Application.getInstance().getPrintInformation().jobName)
+            print_job.updateState("printing")
             self._printers[0].updateActivePrintJob(print_job)
 
         print_job.updateTimeElapsed(elapsed_time)

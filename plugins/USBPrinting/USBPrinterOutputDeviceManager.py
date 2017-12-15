@@ -46,20 +46,6 @@ class USBPrinterOutputDeviceManager(QObject, OutputDevicePlugin, Extension):
         Application.getInstance().applicationShuttingDown.connect(self.stop)
         self.addUSBOutputDeviceSignal.connect(self.addOutputDevice) #Because the model needs to be created in the same thread as the QMLEngine, we use a signal.
 
-    @pyqtProperty(float, notify = progressChanged)
-    def progress(self):
-        progress = 0
-        for printer_name, device in self._usb_output_devices.items(): # TODO: @UnusedVariable "printer_name"
-            progress += device.progress
-        return progress / len(self._usb_output_devices)
-
-    @pyqtProperty(int, notify = progressChanged)
-    def errorCode(self):
-        for printer_name, device in self._usb_output_devices.items(): # TODO: @UnusedVariable "printer_name"
-            if device._error_code:
-                return device._error_code
-        return 0
-
     def start(self):
         self._check_updates = True
         self._update_thread.start()
