@@ -186,6 +186,8 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
 
     def _sendNextGcodeLine(self):
         if self._gcode_position >= len(self._gcode):
+            self._printers[0].updateActivePrintJob(None)
+            self._is_printing = False
             return
         line = self._gcode[self._gcode_position]
 
