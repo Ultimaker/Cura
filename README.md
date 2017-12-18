@@ -60,3 +60,7 @@ To submit your translation, ideally you would make two pull requests where all `
 After the translation is submitted, the Cura maintainers will check for its completeness and check whether it is consistent. We will take special care to look for common mistakes, such as translating mark-up `<message>` code and such. We are often not fluent in every language, so we expect the translator and the international users to make corrections where necessary. Of course, there will always be some mistakes in every translation.
 
 When the next Cura release comes around, some of the texts will have changed and some new texts will have been added. Around the time when the beta is released we will invoke a string freeze, meaning that no developer is allowed to make changes to the texts. Then we will update the translation template `.pot` files and ask all our translators to update their translations. If you are unable to update the translation in time for the actual release, we will remove the language from the drop-down menu in the Preferences window. The translation stays in Cura however, so that someone might pick it up again later and update it with the newest texts. Also, users who had previously selected the language can still continue Cura in their language but English text will appear among the original text.
+
+License
+----------------
+Cura is released under the terms of the LGPLv3 or higher. A copy of this license should be included with the software.
