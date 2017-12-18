@@ -19,8 +19,6 @@ Item {
     property alias contents: controlContainer.children
     property alias hovered: mouse.containsMouse
 
-    property var resetHandler: false
-
     property var showRevertButton: true
     property var showInheritButton: true
     property var showLinkedSettingIcon: true
@@ -183,8 +181,8 @@ Item {
                 onClicked: {
                     revertButton.focus = true
 
-                    if (resetHandler) {
-                        resetHandler(propertyProvider.key)
+                    if (externalResetHandler) {
+                        externalResetHandler(propertyProvider.key)
                     } else {
                         Cura.MachineManager.clearUserSettingAllCurrentStacks(propertyProvider.key)
                     }
