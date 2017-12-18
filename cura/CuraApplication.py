@@ -127,7 +127,7 @@ class CuraApplication(QtApplication):
     #        Cura will always show the Add Machine Dialog upon start.
     stacksValidationFinished = pyqtSignal()  # Emitted whenever a validation is finished
 
-    def __init__(self):
+    def __init__(self, **kwargs):
 
         # this list of dir names will be used by UM to detect an old cura directory
         for dir_name in ["extruders", "machine_instances", "materials", "plugins", "quality", "user", "variants"]:
@@ -208,9 +208,12 @@ class CuraApplication(QtApplication):
 
         self._additional_components = {} # Components to add to certain areas in the interface
 
-        super().__init__(name = "cura", version = CuraVersion, buildtype = CuraBuildType,
+        super().__init__(name = "cura",
+                         version = CuraVersion,
+                         buildtype = CuraBuildType,
                          is_debug_mode = CuraDebugMode,
-                         tray_icon_name = "cura-icon-32.png")
+                         tray_icon_name = "cura-icon-32.png",
+                         **kwargs)
 
         self.default_theme = "cura-light"
 
@@ -400,7 +403,11 @@ class CuraApplication(QtApplication):
     @pyqtSlot()
     def closeApplication(self):
         Logger.log("i", "Close application")
-        self._main_window.close()
+        main_window = self.getMainWindow()
+        if main_window is not None:
+            main_window.close()
+        else:
+            self.exit(0)
 
     ## A reusable dialogbox
     #
@@ -508,11 +515,10 @@ class CuraApplication(QtApplication):
         self._plugins_loaded = True
 
     @classmethod
-    def addCommandLineOptions(self, parser):
-        super().addCommandLineOptions(parser)
+    def addCommandLineOptions(self, parser, parsed_command_line = {}):
+        super().addCommandLineOptions(parser, parsed_command_line = parsed_command_line)
         parser.add_argument("file", nargs="*", help="Files to load after starting the application.")
         parser.add_argument("--single-instance", action="store_true", default=False)
-        parser.add_argument("--headless", action = "store_true", default=False)
 
     # Set up a local socket server which listener which coordinates single instances Curas and accepts commands.
     def _setUpSingleInstanceServer(self):
@@ -566,13 +572,16 @@ class CuraApplication(QtApplication):
     #   This should be called directly before creating an instance of CuraApplication.
     #   \returns \type{bool} True if the whole Cura app should continue running.
     @classmethod
-    def preStartUp(cls):
+    def preStartUp(cls, parser = None, parsed_command_line = {}):
         # Peek the arguments and look for the 'single-instance' flag.
-        parser = argparse.ArgumentParser(prog="cura")  # pylint: disable=bad-whitespace
-        CuraApplication.addCommandLineOptions(parser)
-        parsed_command_line = vars(parser.parse_args())
+        if not parser:
+            parser = argparse.ArgumentParser(prog = "cura", add_help = False)  # pylint: disable=bad-whitespace
+        CuraApplication.addCommandLineOptions(parser, parsed_command_line = parsed_command_line)
+        # Important: It is important to keep this line here!
+        #            In Uranium we allow to pass unknown arguments to the final executable or script.
+        parsed_command_line.update(vars(parser.parse_known_args()[0]))
 
-        if "single_instance" in parsed_command_line and parsed_command_line["single_instance"]:
+        if parsed_command_line["single_instance"]:
             Logger.log("i", "Checking for the presence of an ready running Cura instance.")
             single_instance_socket = QLocalSocket()
             Logger.log("d", "preStartUp(): full server name: " + single_instance_socket.fullServerName())
@@ -604,7 +613,22 @@ class CuraApplication(QtApplication):
                 return False
         return True
 
+    def preRun(self):
+        # Last check for unknown commandline arguments
+        parser = self.getCommandlineParser()
+        parser.add_argument("--help", "-h",
+                            action='store_true',
+                            default = False,
+                            help = "Show this help message and exit."
+                            )
+        parsed_args = vars(parser.parse_args()) # This won't allow unknown arguments
+        if parsed_args["help"]:
+            parser.print_help()
+            sys.exit(0)
+    
     def run(self):
+        self.preRun()
+        
         self.showSplashMessage(self._i18n_catalog.i18nc("@info:progress", "Setting up scene..."))
 
         self._setUpSingleInstanceServer()
@@ -659,12 +683,12 @@ class CuraApplication(QtApplication):
         self.setMainQml(Resources.getPath(self.ResourceTypes.QmlFiles, "Cura.qml"))
         self._qml_import_paths.append(Resources.getPath(self.ResourceTypes.QmlFiles))
 
-        run_headless = self.getCommandLineOption("headless", False)
-        if not run_headless:
+        run_without_gui = self.getCommandLineOption("headless", False) or self.getCommandLineOption("invisible", False)
+        if not run_without_gui:
             self.initializeEngine()
             controller.setActiveStage("PrepareStage")
 
-        if run_headless or self._engine.rootObjects:
+        if run_without_gui or self._engine.rootObjects:
             self.closeSplash()
 
             for file_name in self.getCommandLineOption("file", []):
@@ -1362,7 +1386,8 @@ class CuraApplication(QtApplication):
                     # If a model is to small then it will not contain any points
                     if offset_shape_arr is None and hull_shape_arr is None:
                         Message(self._i18n_catalog.i18nc("@info:status", "The selected model was too small to load."),
-                                title=self._i18n_catalog.i18nc("@info:title", "Warning")).show()
+                                title=self._i18n_catalog.i18nc("@info:title", "Warning")
+                                ).show()
                         return
 
                     # Step is for skipping tests to make it a lot faster. it also makes the outcome somewhat rougher
