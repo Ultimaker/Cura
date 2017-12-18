@@ -519,7 +519,6 @@ class CuraApplication(QtApplication):
         super().addCommandLineOptions(parser, parsed_command_line = parsed_command_line)
         parser.add_argument("file", nargs="*", help="Files to load after starting the application.")
         parser.add_argument("--single-instance", action="store_true", default=False)
-        parser.add_argument("--headless", action = "store_true", default=False)
 
     # Set up a local socket server which listener which coordinates single instances Curas and accepts commands.
     def _setUpSingleInstanceServer(self):
