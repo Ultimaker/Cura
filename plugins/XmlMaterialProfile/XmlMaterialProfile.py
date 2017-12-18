@@ -617,6 +617,12 @@ class XmlMaterialProfile(InstanceContainer):
                             else:
                                 Logger.log("d", "Unsupported material setting %s", key)
 
+                        # Add namespaced Cura-specific settings
+                        settings = hotend.iterfind("./cura:setting", self.__namespaces)
+                        for entry in settings:
+                            key = entry.get("key")
+                            hotend_setting_values[key] = entry.text
+
                         new_hotend_id = self.getId() + "_" + machine_id + "_" + hotend_id.replace(" ", "_")
 
                         # Same as machine compatibility, keep the derived material containers consistent with the parent
@@ -637,14 +643,6 @@ class XmlMaterialProfile(InstanceContainer):
                         new_hotend_material.getMetaData()["compatible"] = hotend_compatibility
                         new_hotend_material.getMetaData()["machine_manufacturer"] = machine_manufacturer
                         new_hotend_material.getMetaData()["definition"] = machine_id
-
-                    # Add namespaced Cura-specific settings
-                    settings = hotend.iterfind("./cura:setting", self.__namespaces)
-                    for entry in settings:
-                        key = entry.get("key")
-                        hotend_setting_values[key] = entry.text
-
-                    new_hotend_id = self.id + "_" + machine_id + "_" + hotend_id.replace(" ", "_")
 
                         cached_hotend_setting_properties = cached_machine_setting_properties.copy()
                         cached_hotend_setting_properties.update(hotend_setting_values)
