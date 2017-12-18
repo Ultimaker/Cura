@@ -1,5 +1,4 @@
 {
-    "id": "bfb",
     "name": "BFB",
     "version": 2,
     "inherits": "fdmprinter",

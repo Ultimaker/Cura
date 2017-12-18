@@ -1,5 +1,4 @@
 {
-    "id": "makerbotreplicator",
     "name": "MakerBotReplicator",
     "version": 2,
     "inherits": "fdmprinter",

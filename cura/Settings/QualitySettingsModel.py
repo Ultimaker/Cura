@@ -92,7 +92,6 @@ class QualitySettingsModel(UM.Qt.ListModel.ListModel):
 
         items = []
 
-        settings = collections.OrderedDict()
         definition_container = Application.getInstance().getGlobalContainerStack().getBottom()
 
         containers = self._container_registry.findInstanceContainers(id = self._quality_id)
@@ -223,7 +222,6 @@ class QualitySettingsModel(UM.Qt.ListModel.ListModel):
                 # If a setting is settable per extruder (not global) and we're looking at global tab, don't show this value.
                 if self._extruder_id == "" and settable_per_extruder:
                     continue
-
 
             label = definition.label
             if self._i18n_catalog:

@@ -1,5 +1,4 @@
 {
-    "id": "printrbot_play_heated",
     "version": 2,
     "name": "Printrbot Play (Heated Bed)",
     "inherits": "printrbot_play",

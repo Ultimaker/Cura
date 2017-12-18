@@ -1,5 +1,4 @@
 {
-    "id": "printrbot_play",
     "version": 2,
     "name": "Printrbot Play",
     "inherits": "fdmprinter",

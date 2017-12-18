@@ -103,6 +103,15 @@
         "button_disabled": [31, 36, 39, 255],
         "button_disabled_text": [255, 255, 255, 101],
 
+        "small_button": [31, 36, 39, 0],
+        "small_button_hover": [68, 72, 75, 255],
+        "small_button_active": [68, 72, 75, 255],
+        "small_button_active_hover": [68, 72, 75, 255],
+        "small_button_text": [31, 36, 39, 197],
+        "small_button_text_hover": [255, 255, 255, 255],
+        "small_button_text_active": [255, 255, 255, 255],
+        "small_button_text_active_hover": [255, 255, 255, 255],
+
         "button_tooltip": [31, 36, 39, 255],
         "button_tooltip_border": [68, 192, 255, 255],
         "button_tooltip_text": [192, 193, 194, 255],
@@ -183,6 +192,7 @@
         "slider_groove_fill": [127, 127, 127, 255],
         "slider_handle": [0, 0, 0, 255],
         "slider_handle_hover": [77, 182, 226, 255],
+        "slider_handle_active": [68, 192, 255, 255],
         "slider_handle_border": [39, 44, 48, 255],
         "slider_text_background": [255, 255, 255, 255],
 
@@ -256,6 +266,7 @@
         "model_unslicable": [122, 122, 122, 255],
         "model_unslicable_alt": [172, 172, 127, 255],
         "model_selection_outline": [12, 169, 227, 255],
+        "model_non_printing": [122, 122, 122, 255],
 
         "xray": [26,  26,  62, 255],
         "xray_error": [255,  0,  0, 255],
@@ -271,7 +282,8 @@
         "layerview_support_infill": [0,  255,  255, 255],
         "layerview_move_combing": [0,  0,  255, 255],
         "layerview_move_retraction": [128,  128,  255, 255],
-        "layerview_support_interface": [64, 192, 255, 255]
+        "layerview_support_interface": [64, 192, 255, 255],
+        "layerview_nozzle": [181, 166, 66, 50]
     },
 
     "sizes": {
@@ -321,6 +333,9 @@
         "button_icon": [2.5, 2.5],
         "button_lining": [0, 0],
 
+        "small_button": [2, 2],
+        "small_button_icon": [1.5, 1.5],
+
         "topbar_logo_right_margin": [3, 0],
         "topbar_button": [8, 4],
         "topbar_button_icon": [1.2, 1.2],
@@ -342,11 +357,13 @@
         "slider_handle": [1.0, 1.0],
         "slider_layerview_size": [1.0, 22.0],
         "slider_layerview_background": [4.0, 0.0],
-        "slider_layerview_margin": [1.0, 1.0],
+        "slider_layerview_margin": [1.0, 1.5],
 
-        "layerview_menu_size": [15, 19.5],
-        "layerview_menu_size_material_color_mode": [15, 15.5],
+        "layerview_menu_size": [15, 20],
+        "layerview_menu_size_material_color_mode": [15, 16],
+        "layerview_menu_size_collapsed": [15, 6],
         "layerview_menu_size_compatibility": [22, 22.0],
+        "layerview_menu_size_compatibility_collapsed": [15, 3.5],
         "layerview_legend_size": [1.0, 1.0],
         "layerview_row": [11.0, 1.5],
         "layerview_row_spacing": [0.0, 0.5],

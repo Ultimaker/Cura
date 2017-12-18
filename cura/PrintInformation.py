@@ -16,6 +16,7 @@ import math
 import os.path
 import unicodedata
 import json
+import re #To create abbreviations for printer names.
 
 from UM.i18n import i18nCatalog
 catalog = i18nCatalog("cura")
@@ -67,11 +68,10 @@ class PrintInformation(QObject):
         self._base_name = ""
         self._abbr_machine = ""
         self._job_name = ""
-        self._project_name = ""
 
         Application.getInstance().globalContainerStackChanged.connect(self._updateJobName)
         Application.getInstance().fileLoaded.connect(self.setBaseName)
-        Application.getInstance().projectFileLoaded.connect(self.setProjectName)
+        Application.getInstance().workspaceLoaded.connect(self.setProjectName)
         Preferences.getInstance().preferenceChanged.connect(self._onPreferencesChanged)
 
         self._active_material_container = None
@@ -239,7 +239,7 @@ class PrintInformation(QObject):
                 pass
 
         active_material_id = Application.getInstance().getMachineManager().activeMaterialId
-        active_material_containers = ContainerRegistry.getInstance().findInstanceContainers(id=active_material_id)
+        active_material_containers = ContainerRegistry.getInstance().findInstanceContainers(id = active_material_id)
 
         if active_material_containers:
             self._active_material_container = active_material_containers[0]
@@ -253,11 +253,6 @@ class PrintInformation(QObject):
         self._job_name = name
         self.jobNameChanged.emit()
 
-    @pyqtSlot(str)
-    def setProjectName(self, name):
-        self._project_name = name
-        self.setJobName(name)
-
     jobNameChanged = pyqtSignal()
 
     @pyqtProperty(str, notify = jobNameChanged)
@@ -265,11 +260,6 @@ class PrintInformation(QObject):
         return self._job_name
 
     def _updateJobName(self):
-        # if the project name is set, we use the project name as the job name, so the job name should not get updated
-        # if a model file is loaded after that.
-        if self._project_name != "":
-            return
-
         if self._base_name == "":
             self._job_name = ""
             self.jobNameChanged.emit()
@@ -295,7 +285,11 @@ class PrintInformation(QObject):
         return self._base_name
 
     @pyqtSlot(str)
-    def setBaseName(self, base_name):
+    def setProjectName(self, name):
+        self.setBaseName(name, is_project_file = True)
+
+    @pyqtSlot(str)
+    def setBaseName(self, base_name, is_project_file = False):
         # Ensure that we don't use entire path but only filename
         name = os.path.basename(base_name)
 
@@ -303,10 +297,16 @@ class PrintInformation(QObject):
         # extension. This cuts the extension off if necessary.
         name = os.path.splitext(name)[0]
 
+        # if this is a profile file, always update the job name
         # name is "" when I first had some meshes and afterwards I deleted them so the naming should start again
-        if name == "" or (self._base_name == "" and self._base_name != name):
+        is_empty = name == ""
+        if is_project_file or (is_empty or (self._base_name == "" and self._base_name != name)):
+            # remove ".curaproject" suffix from (imported) the file name
+            if name.endswith(".curaproject"):
+                name = name[:name.rfind(".curaproject")]
             self._base_name = name
             self._updateJobName()
+
 
     ##  Created an acronymn-like abbreviated machine name from the currently active machine name
     #   Called each time the global stack is switched
@@ -317,15 +317,14 @@ class PrintInformation(QObject):
             return
 
         global_stack_name = global_container_stack.getName()
-        split_name = global_stack_name.split(" ")
         abbr_machine = ""
-        for word in split_name:
+        for word in re.findall(r"[\w']+", global_stack_name):
             if word.lower() == "ultimaker":
                 abbr_machine += "UM"
             elif word.isdigit():
                 abbr_machine += word
             else:
-                stripped_word = self._stripAccents(word.strip("()[]{}#").upper())
+                stripped_word = self._stripAccents(word.upper())
                 # - use only the first character if the word is too long (> 3 characters)
                 # - use the whole word if it's not too long (<= 3 characters)
                 if len(stripped_word) > 3:

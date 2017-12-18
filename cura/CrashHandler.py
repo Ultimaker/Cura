@@ -59,7 +59,7 @@ class CrashHandler:
         self.data = dict()
         self.data["time_stamp"] = time.time()
 
-        Logger.log("c", "An uncaught exception has occurred!")
+        Logger.log("c", "An uncaught error has occurred!")
         for line in traceback.format_exception(exception_type, value, tb):
             for part in line.rstrip("\n").split("\n"):
                 Logger.log("c", part)
@@ -90,7 +90,7 @@ class CrashHandler:
 
     def _messageWidget(self):
         label = QLabel()
-        label.setText(catalog.i18nc("@label crash message", """<p><b>A fatal exception has occurred. Please send us this Crash Report to fix the problem</p></b>
+        label.setText(catalog.i18nc("@label crash message", """<p><b>A fatal error has occurred. Please send us this Crash Report to fix the problem</p></b>
             <p>Please use the "Send report" button to post a bug report automatically to our servers</p>
         """))
 
@@ -108,11 +108,11 @@ class CrashHandler:
         except:
             self.cura_version = catalog.i18nc("@label unknown version of Cura", "Unknown")
 
-        crash_info = catalog.i18nc("@label Cura version", "<b>Cura version:</b> {version}<br/>").format(version = self.cura_version)
-        crash_info += catalog.i18nc("@label Platform", "<b>Platform:</b> {platform}<br/>").format(platform = platform.platform())
-        crash_info += catalog.i18nc("@label Qt version", "<b>Qt version:</b> {qt}<br/>").format(qt = QT_VERSION_STR)
-        crash_info += catalog.i18nc("@label PyQt version", "<b>PyQt version:</b> {pyqt}<br/>").format(pyqt = PYQT_VERSION_STR)
-        crash_info += catalog.i18nc("@label OpenGL", "<b>OpenGL:</b> {opengl}<br/>").format(opengl = self._getOpenGLInfo())
+        crash_info = "<b>" + catalog.i18nc("@label Cura version number", "Cura version") + ":</b> " + str(self.cura_version) + "<br/>"
+        crash_info += "<b>" + catalog.i18nc("@label Type of platform", "Platform") + ":</b> " + str(platform.platform()) + "<br/>"
+        crash_info += "<b>" + catalog.i18nc("@label", "Qt version") + ":</b> " + str(QT_VERSION_STR) + "<br/>"
+        crash_info += "<b>" + catalog.i18nc("@label", "PyQt version") + ":</b> " + str(PYQT_VERSION_STR) + "<br/>"
+        crash_info += "<b>" + catalog.i18nc("@label OpenGL version", "OpenGL") + ":</b> " + str(self._getOpenGLInfo()) + "<br/>"
         label.setText(crash_info)
 
         layout.addWidget(label)
@@ -126,19 +126,24 @@ class CrashHandler:
         return group
 
     def _getOpenGLInfo(self):
+        opengl_instance = OpenGL.getInstance()
+        if not opengl_instance:
+            self.data["opengl"] = {"version": "n/a", "vendor": "n/a", "type": "n/a"}
+            return catalog.i18nc("@label", "not yet initialised<br/>")
+
         info = "<ul>"
-        info += catalog.i18nc("@label OpenGL version", "<li>OpenGL Version: {version}</li>").format(version = OpenGL.getInstance().getOpenGLVersion())
-        info += catalog.i18nc("@label OpenGL vendor", "<li>OpenGL Vendor: {vendor}</li>").format(vendor = OpenGL.getInstance().getGPUVendorName())
-        info += catalog.i18nc("@label OpenGL renderer", "<li>OpenGL Renderer: {renderer}</li>").format(renderer = OpenGL.getInstance().getGPUType())
+        info += catalog.i18nc("@label OpenGL version", "<li>OpenGL Version: {version}</li>").format(version = opengl_instance.getOpenGLVersion())
+        info += catalog.i18nc("@label OpenGL vendor", "<li>OpenGL Vendor: {vendor}</li>").format(vendor = opengl_instance.getGPUVendorName())
+        info += catalog.i18nc("@label OpenGL renderer", "<li>OpenGL Renderer: {renderer}</li>").format(renderer = opengl_instance.getGPUType())
         info += "</ul>"
 
-        self.data["opengl"] = {"version": OpenGL.getInstance().getOpenGLVersion(), "vendor": OpenGL.getInstance().getGPUVendorName(), "type": OpenGL.getInstance().getGPUType()}
+        self.data["opengl"] = {"version": opengl_instance.getOpenGLVersion(), "vendor": opengl_instance.getGPUVendorName(), "type": opengl_instance.getGPUType()}
 
         return info
 
     def _exceptionInfoWidget(self):
         group = QGroupBox()
-        group.setTitle(catalog.i18nc("@title:groupbox", "Exception traceback"))
+        group.setTitle(catalog.i18nc("@title:groupbox", "Error traceback"))
         layout = QVBoxLayout()
 
         text_area = QTextEdit()
@@ -280,5 +285,7 @@ class CrashHandler:
         Application.getInstance().callLater(self._show)
 
     def _show(self):
-        self.dialog.exec_()
-        os._exit(1)
+        # When the exception is not in the fatal_exception_types list, the dialog is not created, so we don't need to show it
+        if self.dialog:
+            self.dialog.exec_()
+            os._exit(1)

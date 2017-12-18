@@ -9,13 +9,12 @@ from UM.Logger import Logger
 
 from cura.CuraApplication import CuraApplication
 
-from PyQt5.QtQml import QQmlComponent, QQmlContext
-from PyQt5.QtCore import QUrl, QObject, pyqtSlot
+from PyQt5.QtCore import QObject, pyqtSlot
 
 import os.path
 
 class UserAgreement(QObject, Extension):
-    def __init__(self, parent = None):
+    def __init__(self):
         super(UserAgreement, self).__init__()
         self._user_agreement_window = None
         self._user_agreement_context = None
@@ -33,8 +32,8 @@ class UserAgreement(QObject, Extension):
         self._user_agreement_window.show()
 
     @pyqtSlot(bool)
-    def didAgree(self, userChoice):
-        if userChoice:
+    def didAgree(self, user_choice):
+        if user_choice:
             Logger.log("i", "User agreed to the user agreement")
             Preferences.getInstance().setValue("general/accepted_user_agreement", True)
             self._user_agreement_window.hide()
@@ -45,9 +44,5 @@ class UserAgreement(QObject, Extension):
         CuraApplication.getInstance().setNeedToShowUserAgreement(False)
 
     def createUserAgreementWindow(self):
-        path = QUrl.fromLocalFile(os.path.join(PluginRegistry.getInstance().getPluginPath(self.getPluginId()), "UserAgreement.qml"))
-
-        component = QQmlComponent(Application.getInstance()._engine, path)
-        self._user_agreement_context = QQmlContext(Application.getInstance()._engine.rootContext())
-        self._user_agreement_context.setContextProperty("manager", self)
-        self._user_agreement_window = component.create(self._user_agreement_context)
+        path = os.path.join(PluginRegistry.getInstance().getPluginPath(self.getPluginId()), "UserAgreement.qml")
+        self._user_agreement_window = Application.getInstance().createQmlComponent(path, {"manager": self})

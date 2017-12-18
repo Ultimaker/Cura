@@ -1,5 +1,4 @@
 {
-    "id": "rigid3d",
     "name": "Rigid3D",
     "version": 2,
     "inherits": "fdmprinter",

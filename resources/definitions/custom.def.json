@@ -1,5 +1,4 @@
 {
-    "id": "custom",
     "version": 2,
     "name": "Custom FDM printer",
     "inherits": "fdmprinter",

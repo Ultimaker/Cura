@@ -1,5 +1,4 @@
 {
-    "id": "vertex_k8400",
     "version": 2,
     "name": "Vertex K8400",
     "inherits": "fdmprinter",
