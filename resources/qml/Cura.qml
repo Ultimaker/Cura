@@ -34,6 +34,24 @@ UM.MainWindow
         }
     }
 
+    onWidthChanged:
+    {
+        // If slidebar is collapsed then it should be invisible
+        // otherwise after the main_window resize the sidebar will be fully re-drawn
+        if (sidebar.collapsed){
+            if (sidebar.visible == true){
+                sidebar.visible = false
+                sidebar.initialWidth = 0
+            }
+        }
+        else{
+            if (sidebar.visible == false){
+                sidebar.visible = true
+                sidebar.initialWidth = UM.Theme.getSize("sidebar").width
+            }
+        }
+    }
+
     Component.onCompleted:
     {
         CuraApplication.setMinimumWindowSize(UM.Theme.getSize("window_minimum_size"))
@@ -369,16 +387,59 @@ UM.MainWindow
             {
                 id: sidebar
 
-                anchors
-                {
-                    top: topbar.bottom
-                    bottom: parent.bottom
-                    right: parent.right
+                property bool collapsed: false;
+                property var initialWidth: UM.Theme.getSize("sidebar").width;
+
+                function callExpandOrCollapse() {
+                    if (collapsed) {
+                        sidebar.visible = true;
+                        sidebar.initialWidth = UM.Theme.getSize("sidebar").width;
+                        viewportRect = Qt.rect(0, 0, (base.width - sidebar.width) / base.width, 1.0);
+                        expandSidebarAnimation.start();
+                    } else {
+                        viewportRect = Qt.rect(0, 0, 1, 1.0);
+                        collapseSidebarAnimation.start();
+                    }
+                    collapsed = !collapsed;
+                    UM.Preferences.setValue("cura/sidebar_collapse", collapsed);
                 }
 
-                width: UM.Theme.getSize("sidebar").width
+                anchors
+                {
+                    top: topbar.top
+                    bottom: parent.bottom
+                }
 
+                width: initialWidth
+                x: base.width - sidebar.width
                 source: UM.Controller.activeStage.sidebarComponent
+
+                NumberAnimation {
+                    id: collapseSidebarAnimation
+                    target: sidebar
+                    properties: "x"
+                    to: base.width
+                    duration: 100
+                }
+
+                NumberAnimation {
+                    id: expandSidebarAnimation
+                    target: sidebar
+                    properties: "x"
+                    to: base.width - sidebar.width
+                    duration: 100
+                }
+
+                Component.onCompleted:
+                {
+                    var sidebarCollapsed = UM.Preferences.getValue("cura/sidebar_collapse");
+
+                    if (sidebarCollapsed) {
+                        sidebar.collapsed = true;
+                        viewportRect = Qt.rect(0, 0, 1, 1.0)
+                        collapseSidebarAnimation.start();
+                    }
+                }
             }
 
             Loader
@@ -415,6 +476,13 @@ UM.MainWindow
                 }
             }
         }
+    }
+
+    // Expand or collapse sidebar
+    Connections
+    {
+        target: Cura.Actions.expandSidebar
+        onTriggered: sidebar.callExpandOrCollapse()
     }
 
     UM.PreferencesDialog

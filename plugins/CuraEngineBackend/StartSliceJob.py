@@ -131,11 +131,20 @@ class StartSliceJob(Job):
                     Logger.log("w", "No objects suitable for one at a time found, or no correct order found")
             else:
                 temp_list = []
+                has_printing_mesh = False
                 for node in DepthFirstIterator(self._scene.getRoot()):
                     if type(node) is SceneNode and node.getMeshData() and node.getMeshData().getVertices() is not None:
-                        if not getattr(node, "_outside_buildarea", False) or getattr(node, "_non_printing_mesh", False):
+                        _non_printing_mesh = getattr(node, "_non_printing_mesh", False)
+                        if not getattr(node, "_outside_buildarea", False) or _non_printing_mesh:
                             temp_list.append(node)
+                            if not _non_printing_mesh:
+                                has_printing_mesh = True
                     Job.yieldThread()
+
+                #If the list doesn't have any model with suitable settings then clean the list
+                # otherwise CuraEngine will crash
+                if not has_printing_mesh:
+                    temp_list.clear()
 
                 if temp_list:
                     object_groups.append(temp_list)
@@ -209,7 +218,7 @@ class StartSliceJob(Job):
             result[key] = stack.getProperty(key, "value")
             Job.yieldThread()
 
-        result["print_bed_temperature"] = result["material_bed_temperature"] #Renamed settings.
+        result["print_bed_temperature"] = result["material_bed_temperature"] # Renamed settings.
         result["print_temperature"] = result["material_print_temperature"]
         result["time"] = time.strftime("%H:%M:%S") #Some extra settings.
         result["date"] = time.strftime("%d-%m-%Y")
@@ -237,10 +246,10 @@ class StartSliceJob(Job):
 
         settings = self._buildReplacementTokens(stack)
 
-        #Also send the material GUID. This is a setting in fdmprinter, but we have no interface for it.
+        # Also send the material GUID. This is a setting in fdmprinter, but we have no interface for it.
         settings["material_guid"] = stack.material.getMetaDataEntry("GUID", "")
 
-        #Replace the setting tokens in start and end g-code.
+        # Replace the setting tokens in start and end g-code.
         settings["machine_extruder_start_code"] = self._expandGcodeTokens(settings["machine_extruder_start_code"], settings)
         settings["machine_extruder_end_code"] = self._expandGcodeTokens(settings["machine_extruder_end_code"], settings)
 
@@ -260,18 +269,23 @@ class StartSliceJob(Job):
     def _buildGlobalSettingsMessage(self, stack):
         settings = self._buildReplacementTokens(stack)
 
+        # Pre-compute material material_bed_temp_prepend and material_print_temp_prepend
         start_gcode = settings["machine_start_gcode"]
-        #Pre-compute material material_bed_temp_prepend and material_print_temp_prepend
         bed_temperature_settings = {"material_bed_temperature", "material_bed_temperature_layer_0"}
         settings["material_bed_temp_prepend"] = all(("{" + setting + "}" not in start_gcode for setting in bed_temperature_settings))
         print_temperature_settings = {"material_print_temperature", "material_print_temperature_layer_0", "default_material_print_temperature", "material_initial_print_temperature", "material_final_print_temperature", "material_standby_temperature"}
         settings["material_print_temp_prepend"] = all(("{" + setting + "}" not in start_gcode for setting in print_temperature_settings))
 
-        #Replace the setting tokens in start and end g-code.
-        settings["machine_start_gcode"] = self._expandGcodeTokens(settings["machine_start_gcode"], settings)
-        settings["machine_end_gcode"] = self._expandGcodeTokens(settings["machine_end_gcode"], settings)
+        # Find the correct temperatures from the first used extruder
+        extruder_stack = Application.getInstance().getExtruderManager().getUsedExtruderStacks()[0]
+        extruder_0_settings = self._buildReplacementTokens(extruder_stack)
 
-        for key, value in settings.items(): #Add all submessages for each individual setting.
+        # Replace the setting tokens in start and end g-code.
+        settings["machine_start_gcode"] = self._expandGcodeTokens(settings["machine_start_gcode"], extruder_0_settings)
+        settings["machine_end_gcode"] = self._expandGcodeTokens(settings["machine_end_gcode"], extruder_0_settings)
+
+        # Add all sub-messages for each individual setting.
+        for key, value in settings.items():
             setting_message = self._slice_message.getMessage("global_settings").addRepeatedMessage("settings")
             setting_message.name = key
             setting_message.value = str(value).encode("utf-8")

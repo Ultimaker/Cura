@@ -212,11 +212,12 @@ class XmlMaterialProfile(InstanceContainer):
 
         for definition_id, container in machine_container_map.items():
             definition = container.getDefinition()
-            try:
-                product = UM.Dictionary.findKey(product_id_map, definition_id)
-            except ValueError:
-                # An unknown product id; export it anyway
-                product = definition_id
+
+            product = definition_id
+            for product_name, product_id_list in product_id_map.items():
+                if definition_id in product_id_list:
+                    product = product_name
+                    break
 
             builder.start("machine")
             builder.start("machine_identifier", {
@@ -530,106 +531,112 @@ class XmlMaterialProfile(InstanceContainer):
 
             identifiers = machine.iterfind("./um:machine_identifier", self.__namespaces)
             for identifier in identifiers:
-                machine_id = product_id_map.get(identifier.get("product"), None)
-                if machine_id is None:
-                    # Lets try again with some naive heuristics.
-                    machine_id = identifier.get("product").replace(" ", "").lower()
+                machine_id_list = product_id_map.get(identifier.get("product"), [])
+                if not machine_id_list:
+                    machine_id_list = self.getPossibleDefinitionIDsFromName(identifier.get("product"))
 
-                definitions = ContainerRegistry.getInstance().findDefinitionContainersMetadata(id = machine_id)
-                if not definitions:
-                    Logger.log("w", "No definition found for machine ID %s", machine_id)
-                    continue
-
-                definition = definitions[0]
-
-                machine_manufacturer = identifier.get("manufacturer", definition.get("manufacturer", "Unknown")) #If the XML material doesn't specify a manufacturer, use the one in the actual printer definition.
-
-                if machine_compatibility:
-                    new_material_id = self.getId() + "_" + machine_id
-
-                    # The child or derived material container may already exist. This can happen when a material in a
-                    # project file and the a material in Cura have the same ID.
-                    # In the case if a derived material already exists, override that material container because if
-                    # the data in the parent material has been changed, the derived ones should be updated too.
-                    if ContainerRegistry.getInstance().isLoaded(new_material_id):
-                        new_material = ContainerRegistry.getInstance().findContainers(id = new_material_id)[0]
-                        is_new_material = False
-                    else:
-                        new_material = XmlMaterialProfile(new_material_id)
-                        is_new_material = True
-
-                    new_material.setMetaData(copy.deepcopy(self.getMetaData()))
-                    new_material.getMetaData()["id"] = new_material_id
-                    new_material.getMetaData()["name"] = self.getName()
-                    new_material.setDefinition(machine_id)
-                    # Don't use setMetadata, as that overrides it for all materials with same base file
-                    new_material.getMetaData()["compatible"] = machine_compatibility
-                    new_material.getMetaData()["machine_manufacturer"] = machine_manufacturer
-                    new_material.getMetaData()["definition"] = machine_id
-
-                    new_material.setCachedValues(cached_machine_setting_properties)
-
-                    new_material._dirty = False
-
-                    if is_new_material:
-                        containers_to_add.append(new_material)
-
-                hotends = machine.iterfind("./um:hotend", self.__namespaces)
-                for hotend in hotends:
-                    hotend_id = hotend.get("id")
-                    if hotend_id is None:
+                for machine_id in machine_id_list:
+                    definitions = ContainerRegistry.getInstance().findDefinitionContainersMetadata(id = machine_id)
+                    if not definitions:
+                        Logger.log("w", "No definition found for machine ID %s", machine_id)
                         continue
 
-                    variant_containers = ContainerRegistry.getInstance().findInstanceContainersMetadata(id = hotend_id)
-                    if not variant_containers:
-                        # It is not really properly defined what "ID" is so also search for variants by name.
-                        variant_containers = ContainerRegistry.getInstance().findInstanceContainersMetadata(definition = definition["id"], name = hotend_id)
+                    Logger.log("d", "Found definition for machine ID %s", machine_id)
+                    definition = definitions[0]
 
-                    if not variant_containers:
-                        continue
+                    machine_manufacturer = identifier.get("manufacturer", definition.get("manufacturer", "Unknown")) #If the XML material doesn't specify a manufacturer, use the one in the actual printer definition.
 
-                    hotend_compatibility = machine_compatibility
-                    hotend_setting_values = {}
-                    settings = hotend.iterfind("./um:setting", self.__namespaces)
-                    for entry in settings:
-                        key = entry.get("key")
-                        if key in self.__material_settings_setting_map:
-                            hotend_setting_values[self.__material_settings_setting_map[key]] = entry.text
-                        elif key in self.__unmapped_settings:
-                            if key == "hardware compatible":
-                                hotend_compatibility = self._parseCompatibleValue(entry.text)
+                    if machine_compatibility:
+                        new_material_id = self.getId() + "_" + machine_id
+
+                        # The child or derived material container may already exist. This can happen when a material in a
+                        # project file and the a material in Cura have the same ID.
+                        # In the case if a derived material already exists, override that material container because if
+                        # the data in the parent material has been changed, the derived ones should be updated too.
+                        if ContainerRegistry.getInstance().isLoaded(new_material_id):
+                            new_material = ContainerRegistry.getInstance().findContainers(id = new_material_id)[0]
+                            is_new_material = False
                         else:
-                            Logger.log("d", "Unsupported material setting %s", key)
+                            new_material = XmlMaterialProfile(new_material_id)
+                            is_new_material = True
 
-                    new_hotend_id = self.getId() + "_" + machine_id + "_" + hotend_id.replace(" ", "_")
+                        new_material.setMetaData(copy.deepcopy(self.getMetaData()))
+                        new_material.getMetaData()["id"] = new_material_id
+                        new_material.getMetaData()["name"] = self.getName()
+                        new_material.setDefinition(machine_id)
+                        # Don't use setMetadata, as that overrides it for all materials with same base file
+                        new_material.getMetaData()["compatible"] = machine_compatibility
+                        new_material.getMetaData()["machine_manufacturer"] = machine_manufacturer
+                        new_material.getMetaData()["definition"] = machine_id
 
-                    # Same as machine compatibility, keep the derived material containers consistent with the parent
-                    # material
-                    if ContainerRegistry.getInstance().isLoaded(new_hotend_id):
-                        new_hotend_material = ContainerRegistry.getInstance().findContainers(id = new_hotend_id)[0]
-                        is_new_material = False
-                    else:
-                        new_hotend_material = XmlMaterialProfile(new_hotend_id)
-                        is_new_material = True
+                        new_material.setCachedValues(cached_machine_setting_properties)
 
-                    new_hotend_material.setMetaData(copy.deepcopy(self.getMetaData()))
-                    new_hotend_material.getMetaData()["id"] = new_hotend_id
-                    new_hotend_material.getMetaData()["name"] = self.getName()
-                    new_hotend_material.getMetaData()["variant"] = variant_containers[0]["id"]
-                    # Don't use setMetadata, as that overrides it for all materials with same base file
-                    new_hotend_material.getMetaData()["compatible"] = hotend_compatibility
-                    new_hotend_material.getMetaData()["machine_manufacturer"] = machine_manufacturer
-                    new_hotend_material.getMetaData()["definition"] = machine_id
+                        new_material._dirty = False
 
-                    cached_hotend_setting_properties = cached_machine_setting_properties.copy()
-                    cached_hotend_setting_properties.update(hotend_setting_values)
+                        if is_new_material:
+                            containers_to_add.append(new_material)
 
-                    new_hotend_material.setCachedValues(cached_hotend_setting_properties)
+                    hotends = machine.iterfind("./um:hotend", self.__namespaces)
+                    for hotend in hotends:
+                        hotend_id = hotend.get("id")
+                        if hotend_id is None:
+                            continue
 
-                    new_hotend_material._dirty = False
+                        variant_containers = ContainerRegistry.getInstance().findInstanceContainersMetadata(id = hotend_id)
+                        if not variant_containers:
+                            # It is not really properly defined what "ID" is so also search for variants by name.
+                            variant_containers = ContainerRegistry.getInstance().findInstanceContainersMetadata(definition = machine_id, name = hotend_id)
 
-                    if is_new_material:
-                        containers_to_add.append(new_hotend_material)
+                        if not variant_containers:
+                            continue
+
+                        hotend_compatibility = machine_compatibility
+                        hotend_setting_values = {}
+                        settings = hotend.iterfind("./um:setting", self.__namespaces)
+                        for entry in settings:
+                            key = entry.get("key")
+                            if key in self.__material_settings_setting_map:
+                                hotend_setting_values[self.__material_settings_setting_map[key]] = entry.text
+                            elif key in self.__unmapped_settings:
+                                if key == "hardware compatible":
+                                    hotend_compatibility = self._parseCompatibleValue(entry.text)
+                            else:
+                                Logger.log("d", "Unsupported material setting %s", key)
+
+                        new_hotend_id = self.getId() + "_" + machine_id + "_" + hotend_id.replace(" ", "_")
+
+                        # Same as machine compatibility, keep the derived material containers consistent with the parent
+                        # material
+                        if ContainerRegistry.getInstance().isLoaded(new_hotend_id):
+                            new_hotend_material = ContainerRegistry.getInstance().findContainers(id = new_hotend_id)[0]
+                            is_new_material = False
+                        else:
+                            new_hotend_material = XmlMaterialProfile(new_hotend_id)
+                            is_new_material = True
+
+                        new_hotend_material.setMetaData(copy.deepcopy(self.getMetaData()))
+                        new_hotend_material.getMetaData()["id"] = new_hotend_id
+                        new_hotend_material.getMetaData()["name"] = self.getName()
+                        new_hotend_material.getMetaData()["variant"] = variant_containers[0]["id"]
+                        new_hotend_material.setDefinition(machine_id)
+                        # Don't use setMetadata, as that overrides it for all materials with same base file
+                        new_hotend_material.getMetaData()["compatible"] = hotend_compatibility
+                        new_hotend_material.getMetaData()["machine_manufacturer"] = machine_manufacturer
+                        new_hotend_material.getMetaData()["definition"] = machine_id
+
+                        cached_hotend_setting_properties = cached_machine_setting_properties.copy()
+                        cached_hotend_setting_properties.update(hotend_setting_values)
+
+                        new_hotend_material.setCachedValues(cached_hotend_setting_properties)
+
+                        new_hotend_material._dirty = False
+
+                        if is_new_material:
+                            containers_to_add.append(new_hotend_material)
+
+                    # there is only one ID for a machine. Once we have reached here, it means we have already found
+                    # a workable ID for that machine, so there is no need to continue
+                    break
 
         for container_to_add in containers_to_add:
             ContainerRegistry.getInstance().addContainer(container_to_add)
@@ -720,79 +727,86 @@ class XmlMaterialProfile(InstanceContainer):
                     machine_compatibility = cls._parseCompatibleValue(entry.text)
 
             for identifier in machine.iterfind("./um:machine_identifier", cls.__namespaces):
-                machine_id = product_id_map.get(identifier.get("product"), None)
-                if machine_id is None:
-                    # Lets try again with some naive heuristics.
-                    machine_id = identifier.get("product").replace(" ", "").lower()
-                definition_metadata = ContainerRegistry.getInstance().findDefinitionContainersMetadata(id = machine_id)
-                if not definition_metadata:
-                    Logger.log("w", "No definition found for machine ID %s", machine_id)
-                    continue
-                definition_metadata = definition_metadata[0]
+                machine_id_list = product_id_map.get(identifier.get("product"), [])
+                if not machine_id_list:
+                    machine_id_list = cls.getPossibleDefinitionIDsFromName(identifier.get("product"))
 
-                machine_manufacturer = identifier.get("manufacturer", definition_metadata.get("manufacturer", "Unknown")) #If the XML material doesn't specify a manufacturer, use the one in the actual printer definition.
-
-                if machine_compatibility:
-                    new_material_id = container_id + "_" + machine_id
-
-                    # The child or derived material container may already exist. This can happen when a material in a
-                    # project file and the a material in Cura have the same ID.
-                    # In the case if a derived material already exists, override that material container because if
-                    # the data in the parent material has been changed, the derived ones should be updated too.
-                    found_materials = ContainerRegistry.getInstance().findInstanceContainersMetadata(id = new_material_id)
-                    if found_materials:
-                        new_material_metadata = found_materials[0]
-                    else:
-                        new_material_metadata = {}
-
-                    new_material_metadata.update(base_metadata)
-                    new_material_metadata["id"] = new_material_id
-                    new_material_metadata["compatible"] = machine_compatibility
-                    new_material_metadata["machine_manufacturer"] = machine_manufacturer
-                    new_material_metadata["definition"] = machine_id
-
-                    if len(found_materials) == 0: #This is a new material.
-                        result_metadata.append(new_material_metadata)
-
-                for hotend in machine.iterfind("./um:hotend", cls.__namespaces):
-                    hotend_id = hotend.get("id")
-                    if hotend_id is None:
+                for machine_id in machine_id_list:
+                    definition_metadata = ContainerRegistry.getInstance().findDefinitionContainersMetadata(id = machine_id)
+                    if not definition_metadata:
+                        Logger.log("w", "No definition found for machine ID %s", machine_id)
                         continue
 
-                    variant_containers = ContainerRegistry.getInstance().findInstanceContainersMetadata(id = hotend_id)
-                    if not variant_containers:
-                        # It is not really properly defined what "ID" is so also search for variants by name.
-                        variant_containers = ContainerRegistry.getInstance().findInstanceContainersMetadata(definition = machine_id, name = hotend_id)
+                    Logger.log("d", "Found def for machine [%s]", machine_id)
+                    definition_metadata = definition_metadata[0]
 
-                    hotend_compatibility = machine_compatibility
-                    for entry in hotend.iterfind("./um:setting", cls.__namespaces):
-                        key = entry.get("key")
-                        if key == "hardware compatible":
-                            hotend_compatibility = cls._parseCompatibleValue(entry.text)
+                    machine_manufacturer = identifier.get("manufacturer", definition_metadata.get("manufacturer", "Unknown")) #If the XML material doesn't specify a manufacturer, use the one in the actual printer definition.
 
-                    new_hotend_id = container_id + "_" + machine_id + "_" + hotend_id.replace(" ", "_")
+                    if machine_compatibility:
+                        new_material_id = container_id + "_" + machine_id
 
-                    # Same as machine compatibility, keep the derived material containers consistent with the parent
-                    # material
-                    found_materials = ContainerRegistry.getInstance().findInstanceContainersMetadata(id = new_hotend_id)
-                    if found_materials:
-                        new_hotend_material_metadata = found_materials[0]
-                    else:
-                        new_hotend_material_metadata = {}
+                        # The child or derived material container may already exist. This can happen when a material in a
+                        # project file and the a material in Cura have the same ID.
+                        # In the case if a derived material already exists, override that material container because if
+                        # the data in the parent material has been changed, the derived ones should be updated too.
+                        found_materials = ContainerRegistry.getInstance().findInstanceContainersMetadata(id = new_material_id)
+                        if found_materials:
+                            new_material_metadata = found_materials[0]
+                        else:
+                            new_material_metadata = {}
 
-                    new_hotend_material_metadata.update(base_metadata)
-                    if variant_containers:
-                        new_hotend_material_metadata["variant"] = variant_containers[0]["id"]
-                    else:
-                        new_hotend_material_metadata["variant"] = hotend_id
-                        _with_missing_variants.append(new_hotend_material_metadata)
-                    new_hotend_material_metadata["compatible"] = hotend_compatibility
-                    new_hotend_material_metadata["machine_manufacturer"] = machine_manufacturer
-                    new_hotend_material_metadata["id"] = new_hotend_id
-                    new_hotend_material_metadata["definition"] = machine_id
+                        new_material_metadata.update(base_metadata)
+                        new_material_metadata["id"] = new_material_id
+                        new_material_metadata["compatible"] = machine_compatibility
+                        new_material_metadata["machine_manufacturer"] = machine_manufacturer
+                        new_material_metadata["definition"] = machine_id
 
-                    if len(found_materials) == 0:
-                        result_metadata.append(new_hotend_material_metadata)
+                        if len(found_materials) == 0: #This is a new material.
+                            result_metadata.append(new_material_metadata)
+
+                    for hotend in machine.iterfind("./um:hotend", cls.__namespaces):
+                        hotend_id = hotend.get("id")
+                        if hotend_id is None:
+                            continue
+
+                        variant_containers = ContainerRegistry.getInstance().findInstanceContainersMetadata(id = hotend_id)
+                        if not variant_containers:
+                            # It is not really properly defined what "ID" is so also search for variants by name.
+                            variant_containers = ContainerRegistry.getInstance().findInstanceContainersMetadata(definition = machine_id, name = hotend_id)
+
+                        hotend_compatibility = machine_compatibility
+                        for entry in hotend.iterfind("./um:setting", cls.__namespaces):
+                            key = entry.get("key")
+                            if key == "hardware compatible":
+                                hotend_compatibility = cls._parseCompatibleValue(entry.text)
+
+                        new_hotend_id = container_id + "_" + machine_id + "_" + hotend_id.replace(" ", "_")
+
+                        # Same as machine compatibility, keep the derived material containers consistent with the parent
+                        # material
+                        found_materials = ContainerRegistry.getInstance().findInstanceContainersMetadata(id = new_hotend_id)
+                        if found_materials:
+                            new_hotend_material_metadata = found_materials[0]
+                        else:
+                            new_hotend_material_metadata = {}
+
+                        new_hotend_material_metadata.update(base_metadata)
+                        if variant_containers:
+                            new_hotend_material_metadata["variant"] = variant_containers[0]["id"]
+                        else:
+                            new_hotend_material_metadata["variant"] = hotend_id
+                            _with_missing_variants.append(new_hotend_material_metadata)
+                        new_hotend_material_metadata["compatible"] = hotend_compatibility
+                        new_hotend_material_metadata["machine_manufacturer"] = machine_manufacturer
+                        new_hotend_material_metadata["id"] = new_hotend_id
+                        new_hotend_material_metadata["definition"] = machine_id
+
+                        if len(found_materials) == 0:
+                            result_metadata.append(new_hotend_material_metadata)
+
+                    # there is only one ID for a machine. Once we have reached here, it means we have already found
+                    # a workable ID for that machine, so there is no need to continue
+                    break
 
         return result_metadata
 
@@ -813,15 +827,41 @@ class XmlMaterialProfile(InstanceContainer):
         else:
             return material_name
 
+    @classmethod
+    def getPossibleDefinitionIDsFromName(cls, name):
+        name_parts = name.lower().split(" ")
+        merged_name_parts = []
+        for part in name_parts:
+            if len(part) == 0:
+                continue
+            if len(merged_name_parts) == 0:
+                merged_name_parts.append(part)
+                continue
+            if part.isdigit():
+                # for names with digit(s) such as Ultimaker 3 Extended, we generate an ID like
+                # "ultimaker3_extended", ignoring the space between "Ultimaker" and "3".
+                merged_name_parts[-1] = merged_name_parts[-1] + part
+            else:
+                merged_name_parts.append(part)
+
+        id_list = [name.lower().replace(" ", ""),  # simply removing all spaces
+                   name.lower().replace(" ", "_"),  # simply replacing all spaces with underscores
+                   "_".join(merged_name_parts),
+                   ]
+
+        return id_list
+
     ##  Gets a mapping from product names in the XML files to their definition
     #   IDs.
     #
     #   This loads the mapping from a file.
     @classmethod
-    def getProductIdMap(cls) -> Dict[str, str]:
+    def getProductIdMap(cls) -> Dict[str, List[str]]:
         product_to_id_file = os.path.join(os.path.dirname(sys.modules[cls.__module__].__file__), "product_to_id.json")
         with open(product_to_id_file) as f:
-            return json.load(f)
+            product_to_id_map = json.load(f)
+        product_to_id_map = {key: [value] for key, value in product_to_id_map.items()}
+        return product_to_id_map
 
     ##  Parse the value of the "material compatible" property.
     @classmethod

@@ -36,6 +36,11 @@ class CuraContainerRegistry(ContainerRegistry):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
+        # We don't have all the machines loaded in the beginning, so in order to add the missing extruder stack
+        # for single extrusion machines, we subscribe to the containerAdded signal, and whenever a global stack
+        # is added, we check to see if an extruder stack needs to be added.
+        self.containerAdded.connect(self._onContainerAdded)
+
     ##  Overridden from ContainerRegistry
     #
     #   Adds a container to the registry.
@@ -410,6 +415,17 @@ class CuraContainerRegistry(ContainerRegistry):
             if not extruder_stacks:
                 self.addExtruderStackForSingleExtrusionMachine(machine, "fdmextruder")
 
+    def _onContainerAdded(self, container):
+        # We don't have all the machines loaded in the beginning, so in order to add the missing extruder stack
+        # for single extrusion machines, we subscribe to the containerAdded signal, and whenever a global stack
+        # is added, we check to see if an extruder stack needs to be added.
+        if not isinstance(container, ContainerStack) or container.getMetaDataEntry("type") != "machine":
+            return
+
+        extruder_stacks = self.findContainerStacks(type = "extruder_train", machine = container.getId())
+        if not extruder_stacks:
+            self.addExtruderStackForSingleExtrusionMachine(container, "fdmextruder")
+
     def addExtruderStackForSingleExtrusionMachine(self, machine, extruder_id):
         new_extruder_id = extruder_id
 
@@ -425,7 +441,6 @@ class CuraContainerRegistry(ContainerRegistry):
         extruder_stack.setName(extruder_definition.getName())
         extruder_stack.setDefinition(extruder_definition)
         extruder_stack.addMetaDataEntry("position", extruder_definition.getMetaDataEntry("position"))
-        extruder_stack.setNextStack(machine)
 
         # create empty user changes container otherwise
         user_container = InstanceContainer(extruder_stack.id + "_user")
@@ -433,7 +448,7 @@ class CuraContainerRegistry(ContainerRegistry):
         user_container.addMetaDataEntry("machine", extruder_stack.getId())
         from cura.CuraApplication import CuraApplication
         user_container.addMetaDataEntry("setting_version", CuraApplication.SettingVersion)
-        user_container.setDefinition(machine.definition)
+        user_container.setDefinition(machine.definition.getId())
 
         if machine.userChanges:
             # for the newly created extruder stack, we need to move all "per-extruder" settings to the user changes
@@ -444,8 +459,8 @@ class CuraContainerRegistry(ContainerRegistry):
                     user_container.addInstance(machine.userChanges.getInstance(user_setting_key))
                     machine.userChanges.removeInstance(user_setting_key, postpone_emit = True)
 
-        extruder_stack.setUserChanges(user_container)
         self.addContainer(user_container)
+        extruder_stack.setUserChanges(user_container)
 
         variant_id = "default"
         if machine.variant.getId() not in ("empty", "empty_variant"):
@@ -490,6 +505,9 @@ class CuraContainerRegistry(ContainerRegistry):
             extruder_stack.setQualityChangesById("empty_quality_changes")
 
         self.addContainer(extruder_stack)
+
+        # Set next stack at the end
+        extruder_stack.setNextStack(machine)
 
         return extruder_stack
 

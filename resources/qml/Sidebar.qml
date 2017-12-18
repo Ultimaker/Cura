@@ -22,7 +22,6 @@ Rectangle
     property bool printerConnected: Cura.MachineManager.printerOutputDevices.length != 0
     property bool printerAcceptsCommands: printerConnected && Cura.MachineManager.printerOutputDevices[0].acceptsCommands
     property var connectedPrinter: Cura.MachineManager.printerOutputDevices.length >= 1 ? Cura.MachineManager.printerOutputDevices[0] : null
-    property int backendState: UM.Backend.state
 
     property bool monitoringPrint: UM.Controller.activeStage.stageId == "MonitorStage"
 
@@ -87,10 +86,19 @@ Rectangle
         }
     }
 
+    MachineSelection {
+        id: machineSelection
+        width: base.width
+        height: UM.Theme.getSize("sidebar_header").height
+        anchors.top: base.top
+        anchors.right: parent.right
+    }
+
     SidebarHeader {
         id: header
         width: parent.width
         visible: machineExtruderCount.properties.value > 1 || Cura.MachineManager.hasMaterials || Cura.MachineManager.hasVariants
+        anchors.top: machineSelection.bottom
 
         onShowTooltip: base.showTooltip(item, location, text)
         onHideTooltip: base.hideTooltip()
@@ -263,7 +271,7 @@ Rectangle
     {
         id: controlItem
         anchors.bottom: footerSeparator.top
-        anchors.top: monitoringPrint ? base.top : headerSeparator.bottom
+        anchors.top: monitoringPrint ? machineSelection.bottom : headerSeparator.bottom
         anchors.left: base.left
         anchors.right: base.right
         sourceComponent:
@@ -282,7 +290,7 @@ Rectangle
     Loader
     {
         anchors.bottom: footerSeparator.top
-        anchors.top: monitoringPrint ? base.top : headerSeparator.bottom
+        anchors.top: monitoringPrint ? machineSelection.bottom : headerSeparator.bottom
         anchors.left: base.left
         anchors.right: base.right
         source:
