@@ -3869,7 +3869,7 @@
                     "minimum_value_warning": "support_line_width / 4",
                     "maximum_value_warning": "support_line_width * 2",
                     "default_value": 0.4,
-                    "value": "support_line_width",
+                    "value": "support_line_width / 2",
                     "limit_to_extruder": "support_infill_extruder_nr",
                     "enabled": "support_tree_enable and support_tree_branch_diameter_angle > 0",
                     "settable_per_mesh": false,
