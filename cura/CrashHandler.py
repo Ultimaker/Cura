@@ -53,7 +53,7 @@ class CrashHandler:
         self.exception_type = exception_type
         self.value = value
         self.traceback = tb
-        self.dialog = QDialog()
+        self.dialog = None # Don't create a QDialog before there is a QApplication
 
         # While we create the GUI, the information will be stored for sending afterwards
         self.data = dict()
@@ -71,6 +71,7 @@ class CrashHandler:
         if not application:
             sys.exit(1)
 
+        self.dialog = QDialog()
         self._createDialog()
 
     ##  Creates a modal dialog.
