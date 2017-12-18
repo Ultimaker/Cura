@@ -687,6 +687,7 @@ class CuraApplication(QtApplication):
         run_without_gui = self.getCommandLineOption("headless", False) or self.getCommandLineOption("invisible", False)
         if not run_without_gui:
             self.initializeEngine()
+            controller.setActiveStage("PrepareStage")
 
         if run_without_gui or self._engine.rootObjects:
             self.closeSplash()
