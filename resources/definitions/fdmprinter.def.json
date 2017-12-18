@@ -3546,7 +3546,7 @@
                                     "type": "extruder",
                                     "default_value": "0",
                                     "value": "support_interface_extruder_nr",
-                                    "enabled": "support_enable and machine_extruder_count > 1",
+                                    "enabled": "(support_enable or support_tree_enable) and machine_extruder_count > 1",
                                     "settable_per_mesh": false,
                                     "settable_per_extruder": false
                                 }
@@ -3963,7 +3963,7 @@
                             "default_value": false,
                             "value": "extruderValue(support_bottom_extruder_nr, 'support_interface_enable')",
                             "limit_to_extruder": "support_bottom_extruder_nr",
-                            "enabled": "support_enable",
+                            "enabled": "support_enable or support_tree_enable",
                             "settable_per_mesh": true
                         }
                     }
@@ -4085,7 +4085,7 @@
                             "minimum_value": "0",
                             "maximum_value": "100",
                             "limit_to_extruder": "support_bottom_extruder_nr",
-                            "enabled": "support_bottom_enable and support_enable",
+                            "enabled": "support_bottom_enable and (support_enable or support_tree_enable)",
                             "value": "extruderValue(support_bottom_extruder_nr, 'support_interface_density')",
                             "settable_per_mesh": false,
                             "settable_per_extruder": true,
@@ -4102,7 +4102,7 @@
                                     "minimum_value_warning": "support_bottom_line_width - 0.0001",
                                     "value": "0 if support_bottom_density == 0 else (support_bottom_line_width * 100) / support_bottom_density * (2 if support_bottom_pattern == 'grid' else (3 if support_bottom_pattern == 'triangles' else 1))",
                                     "limit_to_extruder": "support_bottom_extruder_nr",
-                                    "enabled": "support_bottom_enable and support_enable",
+                                    "enabled": "support_bottom_enable and (support_enable or support_tree_enable)",
                                     "settable_per_mesh": false,
                                     "settable_per_extruder": true
                                 }
