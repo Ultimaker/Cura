@@ -33,7 +33,7 @@ Please check our [Wiki page](https://github.com/Ultimaker/Cura/wiki/Plugin-Direc
 
 Supported printers
 -------------
-Please check our [Wiki page](https://github.com/Ultimaker/Cura/wiki/Adding-new-machine-profiles-to-Cura/_edit) for guidelines about adding support for new machines.
+Please check our [Wiki page](https://github.com/Ultimaker/Cura/wiki/Adding-new-machine-profiles-to-Cura) for guidelines about adding support for new machines.
 
 Configuring Cura
 ----------------
