@@ -46,7 +46,7 @@
             "default_value": "RepRap (Marlin/Sprinter)"
         },
         "machine_start_gcode": {
-            "default_value": "G28 ; Home extruder\nM107 ; Turn off fan\nG90 ; Absolute positioning\nM82 ; Extruder in absolute mode\nM190 S{material_bed_temperature}\nM104 T0 S{material_print_temperature}\nM109 T0 S{material_print_temperature}\nM104 T1 S{material_print_temperature}\nM109 T1 S{material_print_temperature}\nG32 S3 ; auto level\nG92 E0 ; Reset extruder position"
+            "default_value": "G28 ; Home extruder\nM107 ; Turn off fan\nG90 ; Absolute positioning\nM82 ; Extruder in absolute mode\nM190 S{material_bed_temperature}\nM104 T0 S{material_print_temperature}\nM109 T0 S{material_print_temperature}\nM104 T1 S{material_print_temperature}\nM109 T1 S{material_print_temperature}\n;G32 S3 ; auto level\nG92 E0 ; Reset extruder position"
         },
         "machine_end_gcode": {
             "default_value": "M104 S0 ; turn off extruders\nM140 S0 ; heated bed heater off\nG91 ; relative positioning\nG1 E-2 F5000; retract 2mm\nG28 Z; move bed down\nG90 ; absolute positioning\nM84   ; disable motors"
