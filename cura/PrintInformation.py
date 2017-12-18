@@ -16,6 +16,7 @@ import math
 import os.path
 import unicodedata
 import json
+import re #To create abbreviations for printer names.
 
 from UM.i18n import i18nCatalog
 catalog = i18nCatalog("cura")
@@ -316,15 +317,14 @@ class PrintInformation(QObject):
             return
 
         global_stack_name = global_container_stack.getName()
-        split_name = global_stack_name.split(" ")
         abbr_machine = ""
-        for word in split_name:
+        for word in re.findall(r"[\w']+", global_stack_name):
             if word.lower() == "ultimaker":
                 abbr_machine += "UM"
             elif word.isdigit():
                 abbr_machine += word
             else:
-                stripped_word = self._stripAccents(word.strip("()[]{}#").upper())
+                stripped_word = self._stripAccents(word.upper())
                 # - use only the first character if the word is too long (> 3 characters)
                 # - use the whole word if it's not too long (<= 3 characters)
                 if len(stripped_word) > 3:
