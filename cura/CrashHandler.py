@@ -37,7 +37,7 @@ else:
 # List of exceptions that should be considered "fatal" and abort the program.
 # These are primarily some exception types that we simply cannot really recover from
 # (MemoryError and SystemError) and exceptions that indicate grave errors in the
-# code that cause the Python interpreter to fail (SyntaxError, ImportError). 
+# code that cause the Python interpreter to fail (SyntaxError, ImportError).
 fatal_exception_types = [
     MemoryError,
     SyntaxError,
@@ -289,4 +289,4 @@ class CrashHandler:
         # When the exception is not in the fatal_exception_types list, the dialog is not created, so we don't need to show it
         if self.dialog:
             self.dialog.exec_()
-            os._exit(1)
+        os._exit(1)
