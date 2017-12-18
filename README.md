@@ -23,25 +23,21 @@ Dependencies
 * [PySerial](https://github.com/pyserial/pyserial) Only required for USB printing support.
 * [python-zeroconf](https://github.com/jstasiak/python-zeroconf) Only required to detect mDNS-enabled printers
 
-Configuring Cura
-----------------
-Link your CuraEngine backend by inserting the following lines in `$HOME/.config/cura/config.cfg` :
-```
-[backend]
-location = /[path_to_the..]/CuraEngine/build/CuraEngine
-```
-
 Build scripts
 -------------
-Please checkout [cura-build](https://github.com/Ultimaker/cura-build)
+Please checkout [cura-build](https://github.com/Ultimaker/cura-build) for detailed building instructions.
 
 Plugins
 -------------
-Please check our [Wiki](https://github.com/Ultimaker/Cura/wiki/Plugin-Directory) for details about creating and using plugins.
+Please check our [Wiki page](https://github.com/Ultimaker/Cura/wiki/Plugin-Directory) for details about creating and using plugins.
 
 Supported printers
 -------------
-Please check our [Wiki](https://github.com/Ultimaker/Cura/wiki/Adding-new-machine-profiles-to-Cura/_edit) for guidelines about adding support for new machines.
+Please check our [Wiki page](https://github.com/Ultimaker/Cura/wiki/Adding-new-machine-profiles-to-Cura/_edit) for guidelines about adding support for new machines.
+
+Configuring Cura
+----------------
+Please check out [Wiki page](https://github.com/Ultimaker/Cura/wiki/Cura-Settings) about configuration options for developers.
 
 Translating Cura
 ----------------
