@@ -22,7 +22,7 @@ import serial.tools.list_ports
 i18n_catalog = i18nCatalog("cura")
 
 
-##  Manager class that ensures that a usbPrinteroutput device is created for every connected USB printer.
+##  Manager class that ensures that an USBPrinterOutput device is created for every connected USB printer.
 @signalemitter
 class USBPrinterOutputDeviceManager(QObject, OutputDevicePlugin):
     addUSBOutputDeviceSignal = Signal()

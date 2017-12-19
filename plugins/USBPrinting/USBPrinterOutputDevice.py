@@ -22,6 +22,7 @@ from threading import Thread
 from time import time, sleep
 from queue import Queue
 from enum import IntEnum
+from typing import Union, Optional, List
 
 import re
 import functools  # Used for reduce
@@ -34,20 +35,20 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
     firmwareProgressChanged = pyqtSignal()
     firmwareUpdateStateChanged = pyqtSignal()
 
-    def __init__(self, serial_port, baud_rate = None):
+    def __init__(self, serial_port: str, baud_rate: Optional[int] = None):
         super().__init__(serial_port)
         self.setName(catalog.i18nc("@item:inmenu", "USB printing"))
         self.setShortDescription(catalog.i18nc("@action:button Preceded by 'Ready to'.", "Print via USB"))
         self.setDescription(catalog.i18nc("@info:tooltip", "Print via USB"))
         self.setIconName("print")
 
-        self._serial = None
+        self._serial = None  # type: Optional[Serial]
         self._serial_port = serial_port
 
         self._timeout = 3
 
         # List of gcode lines to be printed
-        self._gcode = []
+        self._gcode = [] # type: List[str]
         self._gcode_position = 0
 
         self._use_auto_detect = True
@@ -61,13 +62,13 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
 
         self._update_firmware_thread = Thread(target=self._updateFirmware, daemon = True)
 
-        self._last_temperature_request = None
+        self._last_temperature_request = None  # type: Optional[int]
 
         self._is_printing = False  # A print is being sent.
 
         ## Set when print is started in order to check running time.
-        self._print_start_time = None
-        self._print_estimated_time = None
+        self._print_start_time = None  # type: Optional[int]
+        self._print_estimated_time = None  # type: Optional[int]
 
         self._accepts_commands = True
 
@@ -90,7 +91,7 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
     #   \param kwargs Keyword arguments.
     def requestWrite(self, nodes, file_name = None, filter_by_machine = False, file_handler = None, **kwargs):
         if self._is_printing:
-            return # Aleady printing
+            return  # Aleady printing
 
         Application.getInstance().getController().setActiveStage("MonitorStage")
 
@@ -181,7 +182,7 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
 
     ##  Start a print based on a g-code.
     #   \param gcode_list List with gcode (strings).
-    def _printGCode(self, gcode_list):
+    def _printGCode(self, gcode_list: List[str]):
         self._gcode.clear()
         self._paused = False
 
@@ -201,13 +202,13 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
 
         self.writeFinished.emit(self)
 
-    def _autoDetectFinished(self, job):
+    def _autoDetectFinished(self, job: AutoDetectBaudJob):
         result = job.getResult()
         if result is not None:
             self.setBaudRate(result)
             self.connect()  # Try to connect (actually create serial, etc)
 
-    def setBaudRate(self, baud_rate):
+    def setBaudRate(self, baud_rate: int):
         if baud_rate not in self._all_baud_rates:
             Logger.log("w", "Not updating baudrate to {baud_rate} as it's an unknown baudrate".format(baud_rate=baud_rate))
             return
@@ -243,13 +244,14 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
         self._update_thread = Thread(target=self._update, daemon=True)
         self._serial = None
 
-    def sendCommand(self, command):
+    ##  Send a command to printer.
+    def sendCommand(self, command: Union[str, bytes]):
         if self._is_printing:
             self._command_queue.put(command)
         elif self._connection_state == ConnectionState.connected:
             self._sendCommand(command)
 
-    def _sendCommand(self, command):
+    def _sendCommand(self, command: Union[str, bytes]):
         if self._serial is None:
             return
 

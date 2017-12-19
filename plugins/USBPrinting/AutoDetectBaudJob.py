@@ -10,6 +10,9 @@ from time import time, sleep
 from serial import Serial, SerialException
 
 
+#   An async job that attempts to find the correct baud rate for a USB printer.
+#   It tries a pre-set list of baud rates. All these baud rates are validated by requesting the temperature a few times
+#   and checking if the results make sense. If getResult() is not None, it was able to find a correct baud rate.
 class AutoDetectBaudJob(Job):
     def __init__(self, serial_port):
         super().__init__()
@@ -43,7 +46,7 @@ class AutoDetectBaudJob(Job):
                     serial.baudrate = baud_rate
                 except:
                     continue
-            sleep(1.5)  # Ensure that we are not talking to the bootloader. 1.5 seconds seems to be the magic number
+            sleep(1.5)  # Ensure that we are not talking to the boot loader. 1.5 seconds seems to be the magic number
             successful_responses = 0
 
             serial.write(b"\n")  # Ensure we clear out previous responses
