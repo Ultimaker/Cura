@@ -138,7 +138,7 @@ class LegacyUM3OutputDevice(NetworkedPrinterOutputDevice):
         self._authentication_timer.stop()
 
     ##  Send all material profiles to the printer.
-    def sendMaterialProfiles(self):
+    def _sendMaterialProfiles(self):
         Logger.log("i", "Sending material profiles to printer")
 
         # TODO: Might want to move this to a job...
@@ -410,7 +410,7 @@ class LegacyUM3OutputDevice(NetworkedPrinterOutputDevice):
         elif status_code == 200:
             self.setAuthenticationState(AuthState.Authenticated)
             # Now we know for sure that we are authenticated, send the material profiles to the machine.
-            self.sendMaterialProfiles()
+            self._sendMaterialProfiles()
 
     def _checkAuthentication(self):
         Logger.log("d", "Checking if authentication is correct for id %s and key %s", self._authentication_id, self._getSafeAuthKey())
