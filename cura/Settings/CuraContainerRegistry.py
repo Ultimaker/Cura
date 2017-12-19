@@ -252,6 +252,9 @@ class CuraContainerRegistry(ContainerRegistry):
                             profile.setMetaDataEntry("extruder", extruder_id)
                         profile_id = (extruder_id + "_" + name_seed).lower().replace(" ", "_")
 
+                    else: #More extruders in the imported file than in the machine.
+                        continue #Delete the additional profiles.
+
                     result = self._configureProfile(profile, profile_id, new_name)
                     if result is not None:
                         return {"status": "error", "message": catalog.i18nc(
