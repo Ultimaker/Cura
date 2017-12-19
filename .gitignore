@@ -48,6 +48,8 @@ plugins/CuraLiveScriptingPlugin
 plugins/CuraPrintProfileCreator
 plugins/OctoPrintPlugin
 plugins/CuraCloudPlugin
+plugins/CuraBlenderPlugin
+plugins/CuraOpenSCADPlugin
 
 #Build stuff
 CMakeCache.txt
