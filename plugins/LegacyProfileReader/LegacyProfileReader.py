@@ -146,7 +146,7 @@ class LegacyProfileReader(ProfileReader):
         profile.addMetaDataEntry("type", "profile")
         # don't know what quality_type it is based on, so use "normal" by default
         profile.addMetaDataEntry("quality_type", "normal")
-        profile.setName("Imported Legacy Profile")
+        profile.setName(profile_id)
         profile.setDirty(True)
 
         #Serialise and deserialise in order to perform the version upgrade.
@@ -164,7 +164,7 @@ class LegacyProfileReader(ProfileReader):
 
         #We need to return one extruder stack and one global stack.
         global_container_id = container_registry.uniqueName("Global Imported Legacy Profile")
-        global_profile = profile.duplicate(new_id = global_container_id, new_name = "Imported Legacy Profile") #Needs to have the same name as the extruder profile.
+        global_profile = profile.duplicate(new_id = global_container_id, new_name = profile_id) #Needs to have the same name as the extruder profile.
         global_profile.setDirty(True)
 
         #Only the extruder stack has an extruder metadata entry.
