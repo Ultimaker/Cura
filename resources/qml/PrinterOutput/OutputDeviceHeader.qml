@@ -48,7 +48,6 @@ Item
             anchors.leftMargin: UM.Theme.getSize("default_margin").width
             anchors.right: parent.right
             anchors.rightMargin: UM.Theme.getSize("default_margin").width
-            anchors.top: outputDevice.bottom
         }
     }
 }

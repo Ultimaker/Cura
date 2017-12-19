@@ -302,7 +302,20 @@ Item
                             }
                         }
                         font: UM.Theme.getFont("action_button")
-                        text: printerModel.isPreheating ? catalog.i18nc("@button Cancel pre-heating", "Cancel") : catalog.i18nc("@button", "Pre-heat")
+                        text:
+                        {
+                            if(printerModel == null)
+                            {
+                                return ""
+                            }
+                            if(printerModel.isPreheating )
+                            {
+                                return catalog.i18nc("@button Cancel pre-heating", "Cancel")
+                            } else
+                            {
+                                return catalog.i18nc("@button", "Pre-heat")
+                            }
+                        }
                     }
                 }
             }
