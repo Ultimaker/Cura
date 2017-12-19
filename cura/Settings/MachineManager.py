@@ -125,6 +125,7 @@ class MachineManager(QObject):
             containers[0].nameChanged.connect(self._onMaterialNameChanged)
 
     globalContainerChanged = pyqtSignal()  # Emitted whenever the global stack is changed (ie: when changing between printers, changing a global profile, but not when changing a value)
+    activeMachineChanged = pyqtSignal()
     activeMaterialChanged = pyqtSignal()
     activeVariantChanged = pyqtSignal()
     activeQualityChanged = pyqtSignal()
@@ -339,6 +340,7 @@ class MachineManager(QObject):
     def __emitChangedSignals(self):
         self.activeQualityChanged.emit()
         self.activeVariantChanged.emit()
+        self.activeMachineChanged.emit()
         self.activeMaterialChanged.emit()
         self._updateStacksHaveErrors()  # Prevents unwanted re-slices after changing machine
         self._error_check_timer.start()
@@ -480,21 +482,21 @@ class MachineManager(QObject):
 
         return ""
 
-    @pyqtProperty(str, notify = globalContainerChanged)
+    @pyqtProperty(str, notify = activeMachineChanged)
     def activeMachineName(self) -> str:
         if self._global_container_stack:
             return self._global_container_stack.getName()
 
         return ""
 
-    @pyqtProperty(str, notify = globalContainerChanged)
+    @pyqtProperty(str, notify = activeMachineChanged)
     def activeMachineId(self) -> str:
         if self._global_container_stack:
             return self._global_container_stack.getId()
 
         return ""
 
-    @pyqtProperty(QObject, notify = globalContainerChanged)
+    @pyqtProperty(QObject, notify = activeMachineChanged)
     def activeMachine(self) -> Optional["GlobalStack"]:
         return self._global_container_stack
 
