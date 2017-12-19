@@ -47,6 +47,7 @@ plugins/CuraVariSlicePlugin
 plugins/CuraLiveScriptingPlugin
 plugins/CuraPrintProfileCreator
 plugins/OctoPrintPlugin
+plugins/CuraCloudPlugin
 
 #Build stuff
 CMakeCache.txt

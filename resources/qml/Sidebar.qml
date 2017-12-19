@@ -22,7 +22,6 @@ Rectangle
     property bool printerConnected: Cura.MachineManager.printerOutputDevices.length != 0
     property bool printerAcceptsCommands: printerConnected && Cura.MachineManager.printerOutputDevices[0].acceptsCommands
     property var connectedPrinter: Cura.MachineManager.printerOutputDevices.length >= 1 ? Cura.MachineManager.printerOutputDevices[0] : null
-    property int backendState: UM.Backend.state
 
     property bool monitoringPrint: UM.Controller.activeStage.stageId == "MonitorStage"
 
@@ -87,70 +86,12 @@ Rectangle
         }
     }
 
-    ToolButton
-    {
+    MachineSelection {
         id: machineSelection
-        text: Cura.MachineManager.activeMachineName
-
         width: base.width
         height: UM.Theme.getSize("sidebar_header").height
-        tooltip: Cura.MachineManager.activeMachineName
-
         anchors.top: base.top
-        //anchors.verticalCenter: parent.verticalCenter
         anchors.right: parent.right
-        style: ButtonStyle
-        {
-            background: Rectangle
-            {
-                color:
-                {
-                    if(control.pressed)
-                    {
-                        return UM.Theme.getColor("sidebar_header_active");
-                    }
-                    else if(control.hovered)
-                    {
-                        return UM.Theme.getColor("sidebar_header_hover");
-                    }
-                    else
-                    {
-                        return UM.Theme.getColor("sidebar_header_bar");
-                    }
-                }
-                Behavior on color { ColorAnimation { duration: 50; } }
-
-                UM.RecolorImage
-                {
-                    id: downArrow
-                    anchors.verticalCenter: parent.verticalCenter
-                    anchors.right: parent.right
-                    anchors.rightMargin: UM.Theme.getSize("default_margin").width
-                    width: UM.Theme.getSize("standard_arrow").width
-                    height: UM.Theme.getSize("standard_arrow").height
-                    sourceSize.width: width
-                    sourceSize.height: width
-                    color: UM.Theme.getColor("text_emphasis")
-                    source: UM.Theme.getIcon("arrow_bottom")
-                }
-                Label
-                {
-                    id: sidebarComboBoxLabel
-                    color: UM.Theme.getColor("sidebar_header_text_active")
-                    text: control.text;
-                    elide: Text.ElideRight;
-                    anchors.left: parent.left;
-                    anchors.leftMargin: UM.Theme.getSize("default_margin").width * 2
-                    anchors.right: downArrow.left;
-                    anchors.rightMargin: control.rightMargin;
-                    anchors.verticalCenter: parent.verticalCenter;
-                    font: UM.Theme.getFont("large")
-                }
-            }
-            label: Label {}
-        }
-
-        menu: PrinterMenu { }
     }
 
     SidebarHeader {
@@ -330,7 +271,7 @@ Rectangle
     {
         id: controlItem
         anchors.bottom: footerSeparator.top
-        anchors.top: monitoringPrint ? base.top : headerSeparator.bottom
+        anchors.top: monitoringPrint ? machineSelection.bottom : headerSeparator.bottom
         anchors.left: base.left
         anchors.right: base.right
         sourceComponent:
@@ -349,7 +290,7 @@ Rectangle
     Loader
     {
         anchors.bottom: footerSeparator.top
-        anchors.top: monitoringPrint ? base.top : headerSeparator.bottom
+        anchors.top: monitoringPrint ? machineSelection.bottom : headerSeparator.bottom
         anchors.left: base.left
         anchors.right: base.right
         source:

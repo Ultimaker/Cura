@@ -122,6 +122,21 @@ class VersionUpgrade30to31(VersionUpgrade):
             if len(all_quality_changes) <= 1 and not parser.has_option("metadata", "extruder"):
                 self._createExtruderQualityChangesForSingleExtrusionMachine(filename, parser)
 
+        if parser["metadata"]["type"] == "definition_changes":
+            if parser["general"]["definition"] == "custom":
+
+                # We are only interested in machine_nozzle_size
+                if parser.has_option("values", "machine_nozzle_size"):
+                    machine_nozzle_size = parser["values"]["machine_nozzle_size"]
+
+                    definition_name = parser["general"]["name"]
+                    machine_extruders = self._getSingleExtrusionMachineExtruders(definition_name)
+
+                    #For single extuder machine we nee only first extruder
+                    if len(machine_extruders) !=0:
+                        if self._updateSingleExtuderDefinitionFile(machine_extruders, machine_nozzle_size):
+                            parser.remove_option("values", "machine_nozzle_size")
+
         # Update version numbers
         parser["general"]["version"] = "2"
         parser["metadata"]["setting_version"] = "4"
@@ -199,6 +214,133 @@ class VersionUpgrade30to31(VersionUpgrade):
             quality_changes_containers.append(parser)
 
         return quality_changes_containers
+
+    def _getSingleExtrusionMachineExtruders(self, definition_name):
+
+        machine_instances_dir = Resources.getPath(CuraApplication.ResourceTypes.MachineStack)
+
+        machine_instances = []
+
+        #Find all machine instances
+        for item in os.listdir(machine_instances_dir):
+            file_path = os.path.join(machine_instances_dir, item)
+            if not os.path.isfile(file_path):
+                continue
+
+            parser = configparser.ConfigParser(interpolation=None)
+            try:
+                parser.read([file_path])
+            except:
+                # skip, it is not a valid stack file
+                continue
+
+            if not parser.has_option("metadata", "type"):
+                continue
+            if "machine" != parser["metadata"]["type"]:
+                continue
+
+            if not parser.has_option("general", "id"):
+                continue
+
+            machine_instances.append(parser)
+
+        #Find for extruders
+        extruders_instances_dir = Resources.getPath(CuraApplication.ResourceTypes.ExtruderStack)
+                    #"machine",[extruders]
+        extruder_instances_per_machine = {}
+
+        #Find all custom extruders for founded machines
+        for item in os.listdir(extruders_instances_dir):
+            file_path = os.path.join(extruders_instances_dir, item)
+            if not os.path.isfile(file_path):
+                continue
+
+            parser = configparser.ConfigParser(interpolation=None)
+            try:
+                parser.read([file_path])
+            except:
+                # skip, it is not a valid stack file
+                continue
+
+            if not parser.has_option("metadata", "type"):
+                continue
+            if "extruder_train" != parser["metadata"]["type"]:
+                continue
+
+            if not parser.has_option("metadata", "machine"):
+                continue
+            if not parser.has_option("metadata", "position"):
+                continue
+
+
+            for machine_instace in machine_instances:
+
+                machine_id = machine_instace["general"]["id"]
+                if machine_id != parser["metadata"]["machine"]:
+                    continue
+
+                if machine_id + "_settings" != definition_name:
+                    continue
+
+                if extruder_instances_per_machine.get(machine_id) is None:
+                    extruder_instances_per_machine.update({machine_id:[]})
+
+                extruder_instances_per_machine.get(machine_id).append(parser)
+                #the extruder can be related only to one machine
+                break
+
+        return extruder_instances_per_machine
+
+    #Find extruder defition at index 0 and update its values
+    def _updateSingleExtuderDefinitionFile(self, extruder_instances_per_machine, machine_nozzle_size):
+
+        defintion_instances_dir = Resources.getPath(CuraApplication.ResourceTypes.DefinitionChangesContainer)
+
+        for item in os.listdir(defintion_instances_dir):
+            file_path = os.path.join(defintion_instances_dir, item)
+            if not os.path.isfile(file_path):
+                continue
+
+            parser = configparser.ConfigParser(interpolation=None)
+            try:
+                parser.read([file_path])
+            except:
+                # skip, it is not a valid stack file
+                continue
+
+            if not parser.has_option("general", "name"):
+                continue
+            name = parser["general"]["name"]
+            custom_extruder_at_0_position = None
+            for machine_extruders in extruder_instances_per_machine:
+                for extruder_instance in extruder_instances_per_machine[machine_extruders]:
+
+                    if extruder_instance["general"]["id"] + "_settings" == name:
+                        defition_position = extruder_instance["metadata"]["position"]
+
+                        if defition_position == "0":
+                            custom_extruder_at_0_position = extruder_instance
+                            break
+                if custom_extruder_at_0_position is not None:
+                    break
+
+            #If not null, then parsed file is for first extuder and then can be updated. I need to update only
+            # first, because this update for single extuder machine
+            if custom_extruder_at_0_position is not None:
+
+                #Add new value
+                parser["values"]["machine_nozzle_size"] = machine_nozzle_size
+
+                definition_output = io.StringIO()
+                parser.write(definition_output)
+
+                with open(file_path, "w") as f:
+                    f.write(definition_output.getvalue())
+
+                return True
+
+        return False
+
 
     def _createExtruderQualityChangesForSingleExtrusionMachine(self, filename, global_quality_changes):
         suffix = "_" + quote_plus(global_quality_changes["general"]["name"].lower())
