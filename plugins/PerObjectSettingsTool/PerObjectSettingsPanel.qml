@@ -145,6 +145,7 @@ Item {
                             property var settingDefinitionsModel: addedSettingsModel
                             property var propertyProvider: provider
                             property var globalPropertyProvider: inheritStackProvider
+                            property var externalResetHandler: false
 
                             //Qt5.4.2 and earlier has a bug where this causes a crash: https://bugreports.qt.io/browse/QTBUG-35989
                             //In addition, while it works for 5.5 and higher, the ordering of the actual combo box drop down changes,

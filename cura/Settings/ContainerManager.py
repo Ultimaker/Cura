@@ -514,7 +514,7 @@ class ContainerManager(QObject):
         for stack in ExtruderManager.getInstance().getActiveGlobalAndExtruderStacks():
             # Find the quality_changes container for this stack and merge the contents of the top container into it.
             quality_changes = stack.qualityChanges
-            if not quality_changes or quality_changes.isReadOnly():
+            if not quality_changes or self._container_registry.isReadOnly(quality_changes.getId()):
                 Logger.log("e", "Could not update quality of a nonexistant or read only quality profile in stack %s", stack.getId())
                 continue
 
@@ -687,7 +687,7 @@ class ContainerManager(QObject):
         global_stack = Application.getInstance().getGlobalContainerStack()
         if not global_stack or not quality_name:
             return ""
-        machine_definition = global_stack.getBottom()
+        machine_definition = global_stack.definition
 
         active_stacks = ExtruderManager.getInstance().getActiveGlobalAndExtruderStacks()
         if active_stacks is None:

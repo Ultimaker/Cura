@@ -737,7 +737,6 @@ class XmlMaterialProfile(InstanceContainer):
                         Logger.log("w", "No definition found for machine ID %s", machine_id)
                         continue
 
-                    Logger.log("d", "Found def for machine [%s]", machine_id)
                     definition_metadata = definition_metadata[0]
 
                     machine_manufacturer = identifier.get("manufacturer", definition_metadata.get("manufacturer", "Unknown")) #If the XML material doesn't specify a manufacturer, use the one in the actual printer definition.
