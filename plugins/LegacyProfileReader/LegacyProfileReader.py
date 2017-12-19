@@ -168,7 +168,7 @@ class LegacyProfileReader(ProfileReader):
         global_profile.setDirty(True)
 
         #Only the extruder stack has an extruder metadata entry.
-        profile.addMetaDataEntry("extruder", ExtruderManager.getInstance().getActiveExtruderStack().definition)
+        profile.addMetaDataEntry("extruder", ExtruderManager.getInstance().getActiveExtruderStack().definition.getId())
 
         #Split all settings into per-extruder and global settings.
         for setting_key in profile.getAllKeys():
