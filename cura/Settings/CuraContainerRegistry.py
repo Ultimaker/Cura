@@ -305,7 +305,7 @@ class CuraContainerRegistry(ContainerRegistry):
             quality_type_criteria["definition"] = profile.getDefinition().getId()
 
         else:
-            profile.setDefinition(fdmprinter)
+            profile.setDefinition("fdmprinter")
             quality_type_criteria["definition"] = "fdmprinter"
 
         machine_definition = Application.getInstance().getGlobalContainerStack().getBottom()
