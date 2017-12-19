@@ -135,7 +135,11 @@ class USBPrinterOutputDeviceManager(QObject, OutputDevicePlugin, Extension):
             Logger.log("w", "There is no firmware for machine %s.", machine_id)
 
         if hex_file:
-            return Resources.getPath(CuraApplication.ResourceTypes.Firmware, hex_file.format(baudrate=baudrate))
+            try:
+                return Resources.getPath(CuraApplication.ResourceTypes.Firmware, hex_file.format(baudrate=baudrate))
+            except FileNotFoundError:
+                Logger.log("w", "Could not find any firmware for machine %s.", machine_id)
+                return ""
         else:
             Logger.log("w", "Could not find any firmware for machine %s.", machine_id)
             return ""
