@@ -32,14 +32,14 @@ class SettingOverrideDecorator(SceneNodeDecorator):
 
     def __init__(self):
         super().__init__()
-        self._stack = PerObjectContainerStack(stack_id = id(self))
+        self._stack = PerObjectContainerStack(stack_id = "per_object_stack")
         self._stack.setDirty(False)  # This stack does not need to be saved.
         self._stack.addContainer(InstanceContainer(container_id = "SettingOverrideInstanceContainer"))
         self._extruder_stack = ExtruderManager.getInstance().getExtruderStack(0).getId()
 
         self._stack.propertyChanged.connect(self._onSettingChanged)
 
-        ContainerRegistry.getInstance().addContainer(self._stack)
+        Application.getInstance().getContainerRegistry().addContainer(self._stack)
 
         Application.getInstance().globalContainerStackChanged.connect(self._updateNextStack)
         self.activeExtruderChanged.connect(self._updateNextStack)
