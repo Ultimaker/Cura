@@ -4,8 +4,11 @@
 from UM.Job import Job
 from UM.Logger import Logger
 
-from time import time
+from .avr_isp.stk500v2 import Stk500v2
+
+from time import time, sleep
 from serial import Serial, SerialException
+
 
 class AutoDetectBaudJob(Job):
     def __init__(self, serial_port):
@@ -17,14 +20,30 @@ class AutoDetectBaudJob(Job):
         Logger.log("d", "Auto detect baud rate started.")
         timeout = 3
 
+        programmer = Stk500v2()
+        serial = None
+        try:
+            programmer.connect(self._serial_port)
+            serial = programmer.leaveISP()
+        except:
+            programmer.close()
+
         for baud_rate in self._all_baud_rates:
             Logger.log("d", "Checking {serial} if baud rate {baud_rate} works".format(serial= self._serial_port, baud_rate = baud_rate))
-            try:
-                serial = Serial(str(self._serial_port), baud_rate, timeout = timeout, writeTimeout = timeout)
-            except SerialException as e:
-                Logger.logException("w", "Unable to create serial")
-                continue
 
+            if serial is None:
+                try:
+                    serial = Serial(str(self._serial_port), baud_rate, timeout = timeout, writeTimeout = timeout)
+                except SerialException as e:
+                    Logger.logException("w", "Unable to create serial")
+                    continue
+            else:
+                # We already have a serial connection, just change the baud rate.
+                try:
+                    serial.baudrate = baud_rate
+                except:
+                    continue
+            sleep(1.5)  # Ensure that we are not talking to the bootloader. 1.5 seconds seems to be the magic number
             successful_responses = 0
 
             serial.write(b"\n")  # Ensure we clear out previous responses

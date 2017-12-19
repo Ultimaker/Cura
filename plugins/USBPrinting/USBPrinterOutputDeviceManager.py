@@ -6,7 +6,6 @@ from . import USBPrinterOutputDevice
 from UM.Application import Application
 from UM.Resources import Resources
 from UM.Logger import Logger
-from UM.PluginRegistry import PluginRegistry
 from UM.OutputDevice.OutputDevicePlugin import OutputDevicePlugin
 from cura.PrinterOutputDevice import ConnectionState
 from UM.Qt.ListModel import ListModel
@@ -41,7 +40,6 @@ class USBPrinterOutputDeviceManager(QObject, OutputDevicePlugin, Extension):
         self._update_thread.setDaemon(True)
 
         self._check_updates = True
-        self._firmware_view = None
 
         Application.getInstance().applicationShuttingDown.connect(self.stop)
         self.addUSBOutputDeviceSignal.connect(self.addOutputDevice) #Because the model needs to be created in the same thread as the QMLEngine, we use a signal.

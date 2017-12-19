@@ -5,6 +5,7 @@ from UM.Logger import Logger
 from UM.i18n import i18nCatalog
 from UM.Application import Application
 from UM.Qt.Duration import DurationFormat
+from UM.PluginRegistry import PluginRegistry
 
 from cura.PrinterOutputDevice import PrinterOutputDevice, ConnectionState
 from cura.PrinterOutput.PrinterOutputModel import PrinterOutputModel
@@ -12,19 +13,27 @@ from cura.PrinterOutput.PrintJobOutputModel import PrintJobOutputModel
 
 from .AutoDetectBaudJob import AutoDetectBaudJob
 from .USBPrinterOutputController import USBPrinterOuptutController
+from .avr_isp import stk500v2, intelHex
+
+from PyQt5.QtCore import pyqtSlot, pyqtSignal, pyqtProperty
 
 from serial import Serial, SerialException
 from threading import Thread
-from time import time
+from time import time, sleep
 from queue import Queue
+from enum import IntEnum
 
 import re
 import functools  # Used for reduce
+import os
 
 catalog = i18nCatalog("cura")
 
 
 class USBPrinterOutputDevice(PrinterOutputDevice):
+    firmwareProgressChanged = pyqtSignal()
+    firmwareUpdateStateChanged = pyqtSignal()
+
     def __init__(self, serial_port, baud_rate = None):
         super().__init__(serial_port)
         self.setName(catalog.i18nc("@item:inmenu", "USB printing"))
@@ -50,6 +59,8 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
         # Instead of using a timer, we really need the update to be as a thread, as reading from serial can block.
         self._update_thread = Thread(target=self._update, daemon = True)
 
+        self._update_firmware_thread = Thread(target=self._updateFirmware, daemon = True)
+
         self._last_temperature_request = None
 
         self._is_printing = False  # A print is being sent.
@@ -61,6 +72,11 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
         self._accepts_commands = True
 
         self._paused = False
+
+        self._firmware_view = None
+        self._firmware_location = None
+        self._firmware_progress = 0
+        self._firmware_update_state = FirmwareUpdateState.idle
 
         # Queue for commands that need to be send. Used when command is sent when a print is active.
         self._command_queue = Queue()
@@ -80,6 +96,88 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
 
         gcode_list = getattr(Application.getInstance().getController().getScene(), "gcode_list")
         self._printGCode(gcode_list)
+
+
+    ##  Show firmware interface.
+    #   This will create the view if its not already created.
+    def showFirmwareInterface(self):
+        if self._firmware_view is None:
+            path = os.path.join(PluginRegistry.getInstance().getPluginPath("USBPrinting"), "FirmwareUpdateWindow.qml")
+            self._firmware_view = Application.getInstance().createQmlComponent(path, {"manager": self})
+
+        self._firmware_view.show()
+
+    @pyqtSlot(str)
+    def updateFirmware(self, file):
+        self._firmware_location = file
+        self.showFirmwareInterface()
+        self.setFirmwareUpdateState(FirmwareUpdateState.updating)
+        self._update_firmware_thread.start()
+
+    def _updateFirmware(self):
+        # Ensure that other connections are closed.
+        if self._connection_state != ConnectionState.closed:
+            self.close()
+
+        hex_file = intelHex.readHex(self._firmware_location)
+        if len(hex_file) == 0:
+            Logger.log("e", "Unable to read provided hex file. Could not update firmware")
+            self.setFirmwareUpdateState(FirmwareUpdateState.firmware_not_found_error)
+            return
+
+        programmer = stk500v2.Stk500v2()
+        programmer.progress_callback = self._onFirmwareProgress
+
+        try:
+            programmer.connect(self._serial_port)
+        except:
+            programmer.close()
+            Logger.logException("e", "Failed to update firmware")
+            self.setFirmwareUpdateState(FirmwareUpdateState.communication_error)
+            return
+
+        # Give programmer some time to connect. Might need more in some cases, but this worked in all tested cases.
+        sleep(1)
+        if not programmer.isConnected():
+            Logger.log("e", "Unable to connect with serial. Could not update firmware")
+            self.setFirmwareUpdateState(FirmwareUpdateState.communication_error)
+        try:
+            programmer.programChip(hex_file)
+        except SerialException:
+            self.setFirmwareUpdateState(FirmwareUpdateState.io_error)
+            return
+        except:
+            self.setFirmwareUpdateState(FirmwareUpdateState.unknown_error)
+            return
+
+        programmer.close()
+
+        # Clean up for next attempt.
+        self._update_firmware_thread = Thread(target=self._updateFirmware, daemon=True)
+        self._firmware_location = ""
+        self._onFirmwareProgress(100)
+        self.setFirmwareUpdateState(FirmwareUpdateState.completed)
+
+        # Try to re-connect with the machine again, which must be done on the Qt thread, so we use call later.
+        Application.getInstance().callLater(self.connect)
+
+    @pyqtProperty(float, notify = firmwareProgressChanged)
+    def firmwareProgress(self):
+        return self._firmware_progress
+
+    @pyqtProperty(int, notify=firmwareUpdateStateChanged)
+    def firmwareUpdateState(self):
+        return self._firmware_update_state
+
+    def setFirmwareUpdateState(self, state):
+        if self._firmware_update_state != state:
+            self._firmware_update_state = state
+            self.firmwareUpdateStateChanged.emit()
+
+    # Callback function for firmware update progress.
+    def _onFirmwareProgress(self, progress, max_progress = 100):
+        self._firmware_progress = (progress / max_progress) * 100  # Convert to scale of 0-100
+        self.firmwareProgressChanged.emit()
 
     ##  Start a print based on a g-code.
     #   \param gcode_list List with gcode (strings).
@@ -136,6 +234,15 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
         self.setConnectionState(ConnectionState.connected)
         self._update_thread.start()
 
+    def close(self):
+        super().close()
+        if self._serial is not None:
+            self._serial.close()
+
+        # Re-create the thread so it can be started again later.
+        self._update_thread = Thread(target=self._update, daemon=True)
+        self._serial = None
+
     def sendCommand(self, command):
         if self._is_printing:
             self._command_queue.put(command)
@@ -155,7 +262,11 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
 
     def _update(self):
         while self._connection_state == ConnectionState.connected and self._serial is not None:
-            line = self._serial.readline()
+            try:
+                line = self._serial.readline()
+            except:
+                continue
+
             if self._last_temperature_request is None or time() > self._last_temperature_request + self._timeout:
                 # Timeout, or no request has been sent at all.
                 self.sendCommand("M105")
@@ -255,3 +366,13 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
         print_job.updateTimeTotal(estimated_time)
 
         self._gcode_position += 1
+
+
+class FirmwareUpdateState(IntEnum):
+    idle = 0
+    updating = 1
+    completed = 2
+    unknown_error = 3
+    communication_error = 4
+    io_error = 5
+    firmware_not_found_error = 6
