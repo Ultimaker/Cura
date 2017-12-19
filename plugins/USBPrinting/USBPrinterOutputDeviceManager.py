@@ -2,32 +2,29 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from UM.Signal import Signal, signalemitter
-from . import USBPrinterOutputDevice
 from UM.Application import Application
 from UM.Resources import Resources
 from UM.Logger import Logger
 from UM.OutputDevice.OutputDevicePlugin import OutputDevicePlugin
-from cura.PrinterOutputDevice import ConnectionState
-from UM.Qt.ListModel import ListModel
-from UM.Message import Message
+from UM.i18n import i18nCatalog
 
+from cura.PrinterOutputDevice import ConnectionState
 from cura.CuraApplication import CuraApplication
+
+from . import USBPrinterOutputDevice
+from PyQt5.QtCore import QObject, pyqtSlot, pyqtProperty, pyqtSignal
 
 import threading
 import platform
 import time
-import os.path
 import serial.tools.list_ports
-from UM.Extension import Extension
 
-from PyQt5.QtCore import QUrl, QObject, pyqtSlot, pyqtProperty, pyqtSignal, Qt
-from UM.i18n import i18nCatalog
 i18n_catalog = i18nCatalog("cura")
 
 
 ##  Manager class that ensures that a usbPrinteroutput device is created for every connected USB printer.
 @signalemitter
-class USBPrinterOutputDeviceManager(QObject, OutputDevicePlugin, Extension):
+class USBPrinterOutputDeviceManager(QObject, OutputDevicePlugin):
     addUSBOutputDeviceSignal = Signal()
     progressChanged = pyqtSignal()
 
@@ -42,7 +39,8 @@ class USBPrinterOutputDeviceManager(QObject, OutputDevicePlugin, Extension):
         self._check_updates = True
 
         Application.getInstance().applicationShuttingDown.connect(self.stop)
-        self.addUSBOutputDeviceSignal.connect(self.addOutputDevice) #Because the model needs to be created in the same thread as the QMLEngine, we use a signal.
+        # Because the model needs to be created in the same thread as the QMLEngine, we use a signal.
+        self.addUSBOutputDeviceSignal.connect(self.addOutputDevice)
 
     def start(self):
         self._check_updates = True
