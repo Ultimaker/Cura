@@ -1,4 +1,4 @@
-# Copyright (c) 2015 Ultimaker B.V.
+# Copyright (c) 2017 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import configparser  # For reading the legacy profile INI files.
@@ -10,6 +10,7 @@ import os.path  # For concatenating the path to the plugin and the relative path
 from UM.Application import Application  # To get the machine manager to create the new profile in.
 from UM.Logger import Logger  # Logging errors.
 from UM.PluginRegistry import PluginRegistry  # For getting the path to this plugin's directory.
+from UM.Settings.ContainerRegistry import ContainerRegistry #To create unique profile IDs.
 from UM.Settings.InstanceContainer import InstanceContainer  # The new profile to make.
 from cura.ProfileReader import ProfileReader  # The plug-in type to implement.
 
@@ -77,7 +78,9 @@ class LegacyProfileReader(ProfileReader):
             raise Exception("Unable to import legacy profile. Multi extrusion is not supported")
 
         Logger.log("i", "Importing legacy profile from file " + file_name + ".")
-        profile = InstanceContainer("Imported Legacy Profile")  # Create an empty profile.
+        container_registry = ContainerRegistry.getInstance()
+        profile_id = container_registry.uniqueName("Imported Legacy Profile")
+        profile = InstanceContainer(profile_id)  # Create an empty profile.
 
         parser = configparser.ConfigParser(interpolation = None)
         try:
@@ -120,7 +123,7 @@ class LegacyProfileReader(ProfileReader):
         if "translation" not in dict_of_doom:
             Logger.log("e", "Dictionary of Doom has no translation. Is it the correct JSON file?")
             return None
-        current_printer_definition = global_container_stack.getBottom()
+        current_printer_definition = global_container_stack.definition
         profile.setDefinition(current_printer_definition.getId())
         for new_setting in dict_of_doom["translation"]:  # Evaluate all new settings that would get a value from the translations.
             old_setting_expression = dict_of_doom["translation"][new_setting]
@@ -139,12 +142,12 @@ class LegacyProfileReader(ProfileReader):
         if len(profile.getAllKeys()) == 0:
             Logger.log("i", "A legacy profile was imported but everything evaluates to the defaults, creating an empty profile.")
 
-
         # We need to downgrade the container to version 1 (in Cura 2.1) so the upgrade system can correctly upgrade
         # it to the latest version.
         profile.addMetaDataEntry("type", "profile")
         # don't know what quality_type it is based on, so use "normal" by default
         profile.addMetaDataEntry("quality_type", "normal")
+        profile.setName("Imported Legacy Profile")
         profile.setDirty(True)
 
         parser = configparser.ConfigParser(interpolation=None)
