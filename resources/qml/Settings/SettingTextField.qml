@@ -17,6 +17,7 @@ SettingItem
     {
         textHasChanged = false;
         textBeforeEdit = focusItem.text;
+        focusItem.selectAll();
     }
 
     contents: Rectangle
