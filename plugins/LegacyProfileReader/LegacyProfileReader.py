@@ -162,4 +162,8 @@ class LegacyProfileReader(ProfileReader):
         data = stream.getvalue()
         profile.deserialize(data)
 
-        return profile
+        global_container_id = container_registry.uniqueName("Global Imported Legacy Profile")
+        global_profile = profile.duplicate(new_id = global_container_id, new_name = "Imported Legacy Profile") #Needs to have the same name as the extruder profile.
+        global_profile.setDirty(True)
+
+        return [global_profile, profile]
