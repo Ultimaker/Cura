@@ -87,6 +87,10 @@ class NetworkCamera(QObject):
     def getImage(self):
         return self._image
 
+    ##  Ensure that close gets called when object is destroyed
+    def __del__(self):
+        self.close()
+
     def _onStreamDownloadProgress(self, bytes_received, bytes_total):
         # An MJPG stream is (for our purpose) a stream of concatenated JPG images.
         # JPG images start with the marker 0xFFD8, and end with 0xFFD9
