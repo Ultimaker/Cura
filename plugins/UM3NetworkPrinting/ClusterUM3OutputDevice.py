@@ -133,6 +133,8 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
     @pyqtSlot(QObject)
     def setActivePrinter(self, printer):
         if self._active_printer != printer:
+            if self._active_printer and self._active_printer.camera:
+                self._active_printer.camera.stop()
             self._active_printer = printer
             self.activePrinterChanged.emit()
 
