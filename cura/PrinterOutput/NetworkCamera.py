@@ -45,6 +45,8 @@ class NetworkCamera(QObject):
 
     @pyqtSlot()
     def start(self):
+        # Ensure that previous requests (if any) are stopped.
+        self.stop()
         if self._target is None:
             Logger.log("w", "Unable to start camera stream without target!")
             return
