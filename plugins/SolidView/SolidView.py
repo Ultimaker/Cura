@@ -110,7 +110,7 @@ class SolidView(View):
                     except ValueError:
                         pass
 
-                    if getattr(node, "_non_printing_mesh", False):
+                    if node.callDecoration("isNonPrintingMesh"):
                         if per_mesh_stack and (per_mesh_stack.getProperty("infill_mesh", "value") or per_mesh_stack.getProperty("cutting_mesh", "value")):
                             renderer.queueNode(node, shader = self._non_printing_shader, uniforms = uniforms, transparent = True)
                         else:
