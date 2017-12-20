@@ -406,6 +406,10 @@ class CuraContainerRegistry(ContainerRegistry):
         if not isinstance(container, ContainerStack) or container.getMetaDataEntry("type") != "machine":
             return
 
+        machine_extruder_trains = container.getMetaDataEntry("machine_extruder_trains")
+        if machine_extruder_trains is not None and machine_extruder_trains != {"0": "fdmextruder"}:
+            return
+
         extruder_stacks = self.findContainerStacks(type = "extruder_train", machine = container.getId())
         if not extruder_stacks:
             self.addExtruderStackForSingleExtrusionMachine(container, "fdmextruder")
