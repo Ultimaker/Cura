@@ -270,6 +270,20 @@ Cura.MachineAction
                                                 }
                                             }
                                         }
+
+                                        Connections
+                                        {
+                                            target: manager
+                                            onDefinedExtruderCountChanged:
+                                            {
+                                                extruderCountModel.clear();
+                                                for(var i = 0; i < manager.definedExtruderCount; ++i)
+                                                {
+                                                    extruderCountModel.append({text: String(i + 1), value: i});
+                                                }
+                                            }
+                                        }
+
                                         currentIndex: machineExtruderCountProvider.properties.value - 1
                                         onActivated:
                                         {
