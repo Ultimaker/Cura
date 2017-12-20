@@ -461,7 +461,8 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                 global_stack_id_new = self.getNewId(global_stack_id_original)
                 global_stack_need_rename = True
 
-            global_stack_name_new = self._container_registry.uniqueName(global_stack_name_original)
+            if self._container_registry.findContainerStacksMetadata(name = global_stack_id_original):
+                global_stack_name_new = self._container_registry.uniqueName(global_stack_name_original)
 
             for each_extruder_stack_file in extruder_stack_files:
                 old_container_id = self._stripFileToId(each_extruder_stack_file)
