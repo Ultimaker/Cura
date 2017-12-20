@@ -583,7 +583,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                         if machine_id:
                             new_machine_id = self.getNewId(machine_id)
                             new_id = new_machine_id + "_current_settings"
-                            instance_container.setMetadataEntry("id", new_id)
+                            instance_container.setMetaDataEntry("id", new_id)
                             instance_container.setName(new_id)
                             instance_container.setMetaDataEntry("machine", new_machine_id)
                             containers_to_add.append(instance_container)
