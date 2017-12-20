@@ -123,6 +123,16 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
             Logger.log("d", "zeroconf close...")
             self._zero_conf.close()
 
+    def removeManualDevice(self, key, address = None):
+        if key in self._discovered_devices:
+            if not address:
+                address = self._printers[key].ipAddress
+            self._onRemoveDevice(key)
+
+        if address in self._manual_instances:
+            self._manual_instances.remove(address)
+            self._preferences.setValue("um3networkprinting/manual_instances", ",".join(self._manual_instances))
+
     def addManualDevice(self, address):
         if address not in self._manual_instances:
             self._manual_instances.append(address)
@@ -206,7 +216,8 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
             if instance_name in self._discovered_devices:
                 device = self._discovered_devices[instance_name]
                 properties = device.getProperties().copy()
-                del properties[b"incomplete"]
+                if b"incomplete" in properties:
+                    del properties[b"incomplete"]
                 properties[b'cluster_size'] = len(cluster_printers_list)
                 self._onRemoveDevice(instance_name)
                 self._onAddDevice(instance_name, address, properties)
