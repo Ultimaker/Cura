@@ -432,7 +432,7 @@ Cura.MachineAction
                                     property int areaHeight: parent.height - y
                                     property string settingKey: "machine_extruder_start_code"
                                     property bool isExtruderSetting: true
-                            }
+                                }
                             }
                             Column {
                                 height: parent.height
@@ -714,7 +714,7 @@ Cura.MachineAction
             width: gcodeArea.width
             text: _tooltip
 
-            property bool _isExtruderSetting: (typeof(isExtruderSetting) === 'undefined') ? false: isExtruderSetting
+            property bool _isExtruderSetting: (typeof(isExtruderSetting) === 'undefined') ? false : isExtruderSetting
             property string _tooltip: (typeof(tooltip) === 'undefined') ? propertyProvider.properties.description : tooltip
 
             UM.SettingPropertyProvider
