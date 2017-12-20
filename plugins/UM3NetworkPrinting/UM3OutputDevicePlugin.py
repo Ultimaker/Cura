@@ -5,14 +5,21 @@ from UM.OutputDevice.OutputDevicePlugin import OutputDevicePlugin
 from UM.Logger import Logger
 from UM.Application import Application
 from UM.Signal import Signal, signalemitter
+from UM.Preferences import Preferences
+from UM.Version import Version
+
+from . import ClusterUM3OutputDevice, LegacyUM3OutputDevice
+
+from PyQt5.QtNetwork import QNetworkRequest, QNetworkAccessManager
+from PyQt5.QtCore import QUrl
 
 from zeroconf import Zeroconf, ServiceBrowser, ServiceStateChange, ServiceInfo
 from queue import Queue
 from threading import Event, Thread
-
 from time import time
 
-from . import ClusterUM3OutputDevice, LegacyUM3OutputDevice
+import json
+
 
 ##      This plugin handles the connection detection & creation of output device objects for the UM3 printer.
 #       Zero-Conf is used to detect printers, which are saved in a dict.
@@ -35,6 +42,23 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
         Application.getInstance().globalContainerStackChanged.connect(self.reCheckConnections)
 
         self._discovered_devices = {}
+        
+        self._network_manager = QNetworkAccessManager()
+        self._network_manager.finished.connect(self._onNetworkRequestFinished)
+
+        self._min_cluster_version = Version("4.0.0")
+
+        self._api_version = "1"
+        self._api_prefix = "/api/v" + self._api_version + "/"
+        self._cluster_api_version = "1"
+        self._cluster_api_prefix = "/cluster-api/v" + self._cluster_api_version + "/"
+
+        # Get list of manual instances from preferences
+        self._preferences = Preferences.getInstance()
+        self._preferences.addPreference("um3networkprinting/manual_instances",
+                                        "")  # A comma-separated list of ip adresses or hostnames
+
+        self._manual_instances = self._preferences.getValue("um3networkprinting/manual_instances").split(",")
 
         # The zero-conf service changed requests are handled in a separate thread, so we can re-schedule the requests
         # which fail to get detailed service info.
@@ -61,6 +85,11 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
         self._zero_conf = Zeroconf()
         self._zero_conf_browser = ServiceBrowser(self._zero_conf, u'_ultimaker._tcp.local.',
                                                  [self._appendServiceChangedRequest])
+
+        # Look for manual instances from preference
+        for address in self._manual_instances:
+            if address:
+                self.addManualDevice(address)
 
     def reCheckConnections(self):
         active_machine = Application.getInstance().getGlobalContainerStack()
@@ -93,6 +122,94 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
         if self._zero_conf is not None:
             Logger.log("d", "zeroconf close...")
             self._zero_conf.close()
+
+    def addManualDevice(self, address):
+        if address not in self._manual_instances:
+            self._manual_instances.append(address)
+            self._preferences.setValue("um3networkprinting/manual_instances", ",".join(self._manual_instances))
+
+        instance_name = "manual:%s" % address
+        properties = {
+            b"name": address.encode("utf-8"),
+            b"address": address.encode("utf-8"),
+            b"manual": b"true",
+            b"incomplete": b"true"
+        }
+
+        if instance_name not in self._discovered_devices:
+            # Add a preliminary printer instance
+            self._onAddDevice(instance_name, address, properties)
+
+        self._checkManualDevice(address)
+
+    def _checkManualDevice(self, address):
+        # Check if a UM3 family device exists at this address.
+        # If a printer responds, it will replace the preliminary printer created above
+        # origin=manual is for tracking back the origin of the call
+        url = QUrl("http://" + address + self._api_prefix + "system")
+        name_request = QNetworkRequest(url)
+        self._network_manager.get(name_request)
+
+    def _onNetworkRequestFinished(self, reply):
+        reply_url = reply.url().toString()
+
+        if "system" in reply_url:
+            if reply.attribute(QNetworkRequest.HttpStatusCodeAttribute) != 200:
+                # Something went wrong with checking the firmware version!
+                return
+
+            try:
+                system_info = json.loads(bytes(reply.readAll()).decode("utf-8"))
+            except:
+                Logger.log("e", "Something went wrong converting the JSON.")
+                return
+
+            address = reply.url().host()
+            has_cluster_capable_firmware = Version(system_info["firmware"]) > self._min_cluster_version
+            instance_name = "manual:%s" % address
+            properties = {
+                b"name": system_info["name"].encode("utf-8"),
+                b"address": address.encode("utf-8"),
+                b"firmware_version": system_info["firmware"].encode("utf-8"),
+                b"manual": b"true",
+                b"machine": system_info["variant"].encode("utf-8")
+            }
+
+            if has_cluster_capable_firmware:
+                # Cluster needs an additional request, before it's completed.
+                properties[b"incomplete"] = b"true"
+
+            # Check if the device is still in the list & re-add it with the updated
+            # information.
+            if instance_name in self._discovered_devices:
+                self._onRemoveDevice(instance_name)
+                self._onAddDevice(instance_name, address, properties)
+
+            if has_cluster_capable_firmware:
+                # We need to request more info in order to figure out the size of the cluster.
+                cluster_url = QUrl("http://" + address + self._cluster_api_prefix + "printers/")
+                cluster_request = QNetworkRequest(cluster_url)
+                self._network_manager.get(cluster_request)
+
+        elif "printers" in reply_url:
+            if reply.attribute(QNetworkRequest.HttpStatusCodeAttribute) != 200:
+                # Something went wrong with checking the amount of printers the cluster has!
+                return
+            # So we confirmed that the device is in fact a cluster printer, and we should now know how big it is.
+            try:
+                cluster_printers_list = json.loads(bytes(reply.readAll()).decode("utf-8"))
+            except:
+                Logger.log("e", "Something went wrong converting the JSON.")
+                return
+            address = reply.url().host()
+            instance_name = "manual:%s" % address
+            if instance_name in self._discovered_devices:
+                device = self._discovered_devices[instance_name]
+                properties = device.getProperties().copy()
+                del properties[b"incomplete"]
+                properties[b'cluster_size'] = len(cluster_printers_list)
+                self._onRemoveDevice(instance_name)
+                self._onAddDevice(instance_name, address, properties)
 
     def _onRemoveDevice(self, device_id):
         device = self._discovered_devices.pop(device_id, None)

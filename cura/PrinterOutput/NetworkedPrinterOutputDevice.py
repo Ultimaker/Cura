@@ -266,6 +266,9 @@ class NetworkedPrinterOutputDevice(PrinterOutputDevice):
         else:
             return ""
 
+    def getProperties(self):
+        return self._properties
+
     ##  Get the unique key of this machine
     #   \return key String containing the key of the machine.
     @pyqtProperty(str, constant=True)

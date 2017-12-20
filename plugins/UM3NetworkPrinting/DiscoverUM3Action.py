@@ -12,7 +12,10 @@ from cura.MachineAction import MachineAction
 
 catalog = i18nCatalog("cura")
 
+
 class DiscoverUM3Action(MachineAction):
+    discoveredDevicesChanged = pyqtSignal()
+
     def __init__(self):
         super().__init__("DiscoverUM3Action", catalog.i18nc("@action","Connect via Network"))
         self._qml_url = "DiscoverUM3Action.qml"
@@ -29,8 +32,6 @@ class DiscoverUM3Action(MachineAction):
 
         # Time to wait after a zero-conf service change before allowing a zeroconf reset
         self._zero_conf_change_grace_period = 0.25
-
-    discoveredDevicesChanged = pyqtSignal()
 
     @pyqtSlot()
     def startDiscovery(self):
@@ -73,7 +74,7 @@ class DiscoverUM3Action(MachineAction):
             self._network_plugin.removeManualDevice(key)
 
         if address != "":
-            self._network_plugin.addManualPrinter(address)
+            self._network_plugin.addManualDevice(address)
 
     def _onDeviceDiscoveryChanged(self, *args):
         self._last_zero_conf_event_time = time.time()
