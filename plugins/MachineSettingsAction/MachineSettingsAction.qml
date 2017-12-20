@@ -726,7 +726,7 @@ Cura.MachineAction
                     {
                         if(settingsTabs.currentIndex > 0)
                         {
-                            return Cura.MachineManager.activeStackId;
+                            return Cura.ExtruderManager.extruderIds[String(settingsTabs.currentIndex - 1)];
                         }
                         return "";
                     }
