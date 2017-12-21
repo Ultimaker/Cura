@@ -227,7 +227,11 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
         if device:
             if device.isConnected():
                 device.disconnect()
-                device.connectionStateChanged.disconnect(self._onDeviceConnectionStateChanged)
+                try:
+                    device.connectionStateChanged.disconnect(self._onDeviceConnectionStateChanged)
+                except TypeError:
+                    # Disconnect already happened.
+                    pass
 
             self.discoveredDevicesChanged.emit()
 
