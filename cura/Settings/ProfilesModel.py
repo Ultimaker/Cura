@@ -49,6 +49,10 @@ class ProfilesModel(InstanceContainersModel):
             ProfilesModel.__instance = cls()
         return ProfilesModel.__instance
 
+    @classmethod
+    def hasInstance(cls) -> bool:
+        return ProfilesModel.__instance is not None
+
     __instance = None   # type: "ProfilesModel"
 
     ##  Fetch the list of containers to display.
@@ -57,8 +61,7 @@ class ProfilesModel(InstanceContainersModel):
     def _fetchInstanceContainers(self):
         global_container_stack = Application.getInstance().getGlobalContainerStack()
         if global_container_stack is None:
-            return []
-
+            return {}, {}
         global_stack_definition = global_container_stack.definition
 
         # Get the list of extruders and place the selected extruder at the front of the list.
@@ -88,11 +91,10 @@ class ProfilesModel(InstanceContainersModel):
             not_supported_container = ContainerRegistry.getInstance().findContainers(id = "empty_quality")[0]
             result.append(not_supported_container)
 
-        return result
+        return {item.getId():item for item in result}, {} #Only return true profiles for now, no metadata. The quality manager is not able to get only metadata yet.
 
     ##  Re-computes the items in this model, and adds the layer height role.
     def _recomputeItems(self):
-
         # Some globals that we can re-use.
         global_container_stack = Application.getInstance().getGlobalContainerStack()
         if global_container_stack is None:
@@ -112,8 +114,12 @@ class ProfilesModel(InstanceContainersModel):
         # active machine and material, and later yield the right ones.
         tmp_all_quality_items = OrderedDict()
         for item in super()._recomputeItems():
-            profile = container_registry.findContainers(id=item["id"])
-            quality_type = profile[0].getMetaDataEntry("quality_type") if profile else ""
+
+            profiles = container_registry.findContainersMetadata(id = item["id"])
+            if not profiles or "quality_type" not in profiles[0]:
+                quality_type = ""
+            else:
+                quality_type = profiles[0]["quality_type"]
 
             if quality_type not in tmp_all_quality_items:
                 tmp_all_quality_items[quality_type] = {"suitable_container": None, "all_containers": []}

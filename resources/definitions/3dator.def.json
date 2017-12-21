@@ -1,5 +1,4 @@
 {
-    "id": "3Dator",
     "version": 2,
     "name": "3Dator",
     "inherits": "fdmprinter",

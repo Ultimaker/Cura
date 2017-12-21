@@ -19,6 +19,10 @@ from UM.Settings.SettingRelation import RelationType
 from cura.OneAtATimeIterator import OneAtATimeIterator
 from cura.Settings.ExtruderManager import ExtruderManager
 
+
+NON_PRINTING_MESH_SETTINGS = ["anti_overhang_mesh", "infill_mesh", "cutting_mesh"]
+
+
 class StartJobResult(IntEnum):
     Finished = 1
     Error = 2
@@ -45,14 +49,6 @@ class GcodeStartEndFormatter(Formatter):
 
 ##  Job class that builds up the message of scene data to send to CuraEngine.
 class StartSliceJob(Job):
-    ##  Meshes that are sent to the engine regardless of being outside of the
-    #   build volume.
-    #
-    #   If these settings are True for any mesh, the build volume is ignored.
-    #   Note that Support Mesh is not in here because it actually generates
-    #   g-code in the volume of the mesh.
-    _not_printed_mesh_settings = {"anti_overhang_mesh", "infill_mesh", "cutting_mesh"}
-
     def __init__(self, slice_message):
         super().__init__()
 
@@ -139,12 +135,24 @@ class StartSliceJob(Job):
                     Logger.log("w", "No objects suitable for one at a time found, or no correct order found")
             else:
                 temp_list = []
+                has_printing_mesh = False
                 for node in DepthFirstIterator(self._scene.getRoot()):
-                    if type(node) is SceneNode and node.getMeshData() and node.getMeshData().getVertices() is not None:
-                        if not getattr(node, "_outside_buildarea", False)\
-                                or (node.callDecoration("getStack") and any(node.callDecoration("getStack").getProperty(setting, "value") for setting in self._not_printed_mesh_settings)):
+                    if node.callDecoration("isSliceable") and type(node) is SceneNode and node.getMeshData() and node.getMeshData().getVertices() is not None:
+                        per_object_stack = node.callDecoration("getStack")
+                        is_non_printing_mesh = False
+                        if per_object_stack:
+                            is_non_printing_mesh = any(per_object_stack.getProperty(key, "value") for key in NON_PRINTING_MESH_SETTINGS)
+
+                        if not getattr(node, "_outside_buildarea", False) or not is_non_printing_mesh:
                             temp_list.append(node)
+                            if not is_non_printing_mesh:
+                                has_printing_mesh = True
                     Job.yieldThread()
+
+                #If the list doesn't have any model with suitable settings then clean the list
+                # otherwise CuraEngine will crash
+                if not has_printing_mesh:
+                    temp_list.clear()
 
                 if temp_list:
                     object_groups.append(temp_list)
@@ -205,32 +213,53 @@ class StartSliceJob(Job):
     def isCancelled(self):
         return self._is_cancelled
 
-    def _expandGcodeTokens(self, key, value, settings):
+    ##  Creates a dictionary of tokens to replace in g-code pieces.
+    #
+    #   This indicates what should be replaced in the start and end g-codes.
+    #   \param stack The stack to get the settings from to replace the tokens
+    #   with.
+    #   \return A dictionary of replacement tokens to the values they should be
+    #   replaced with.
+    def _buildReplacementTokens(self, stack) -> dict:
+        result = {}
+        for key in stack.getAllKeys():
+            result[key] = stack.getProperty(key, "value")
+            Job.yieldThread()
+
+        result["print_bed_temperature"] = result["material_bed_temperature"] # Renamed settings.
+        result["print_temperature"] = result["material_print_temperature"]
+        result["time"] = time.strftime("%H:%M:%S") #Some extra settings.
+        result["date"] = time.strftime("%d-%m-%Y")
+        result["day"] = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"][int(time.strftime("%w"))]
+
+        return result
+
+    ##  Replace setting tokens in a piece of g-code.
+    #   \param value A piece of g-code to replace tokens in.
+    #   \param settings A dictionary of tokens to replace and their respective
+    #   replacement strings.
+    def _expandGcodeTokens(self, value: str, settings: dict):
         try:
             # any setting can be used as a token
             fmt = GcodeStartEndFormatter()
-            return str(fmt.format(value, **settings)).encode("utf-8")
+            return str(fmt.format(value, **settings))
         except:
             Logger.logException("w", "Unable to do token replacement on start/end gcode")
-            return str(value).encode("utf-8")
+            return str(value)
 
     ##  Create extruder message from stack
     def _buildExtruderMessage(self, stack):
         message = self._slice_message.addRepeatedMessage("extruders")
         message.id = int(stack.getMetaDataEntry("position"))
 
-        material_instance_container = stack.findContainer({"type": "material"})
+        settings = self._buildReplacementTokens(stack)
 
-        settings = {}
-        for key in stack.getAllKeys():
-            settings[key] = stack.getProperty(key, "value")
-            Job.yieldThread()
+        # Also send the material GUID. This is a setting in fdmprinter, but we have no interface for it.
+        settings["material_guid"] = stack.material.getMetaDataEntry("GUID", "")
 
-        settings["print_bed_temperature"] = settings["material_bed_temperature"] #Renamed settings.
-        settings["print_temperature"] = settings["material_print_temperature"]
-        settings["time"] = time.strftime("%H:%M:%S") #Some extra settings.
-        settings["date"] = time.strftime("%d-%m-%Y")
-        settings["day"] = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"][int(time.strftime("%w"))]
+        # Replace the setting tokens in start and end g-code.
+        settings["machine_extruder_start_code"] = self._expandGcodeTokens(settings["machine_extruder_start_code"], settings)
+        settings["machine_extruder_end_code"] = self._expandGcodeTokens(settings["machine_extruder_end_code"], settings)
 
         for key, value in settings.items():
             # Do not send settings that are not settable_per_extruder.
@@ -238,13 +267,7 @@ class StartSliceJob(Job):
                 continue
             setting = message.getMessage("settings").addRepeatedMessage("settings")
             setting.name = key
-            if key == "material_guid" and material_instance_container:
-                # Also send the material GUID. This is a setting in fdmprinter, but we have no interface for it.
-                setting.value = str(material_instance_container.getMetaDataEntry("GUID", "")).encode("utf-8")
-            elif key == "machine_extruder_start_code" or key == "machine_extruder_end_code":
-                setting.value = self._expandGcodeTokens(key, value, settings)
-            else:
-                setting.value = str(stack.getProperty(key, "value")).encode("utf-8")
+            setting.value = str(value).encode("utf-8")
             Job.yieldThread()
 
     ##  Sends all global settings to the engine.
@@ -252,33 +275,28 @@ class StartSliceJob(Job):
     #   The settings are taken from the global stack. This does not include any
     #   per-extruder settings or per-object settings.
     def _buildGlobalSettingsMessage(self, stack):
-        keys = stack.getAllKeys()
-        settings = {}
-        for key in keys:
-            settings[key] = stack.getProperty(key, "value")
-            Job.yieldThread()
+        settings = self._buildReplacementTokens(stack)
 
+        # Pre-compute material material_bed_temp_prepend and material_print_temp_prepend
         start_gcode = settings["machine_start_gcode"]
-        #Pre-compute material material_bed_temp_prepend and material_print_temp_prepend
         bed_temperature_settings = {"material_bed_temperature", "material_bed_temperature_layer_0"}
         settings["material_bed_temp_prepend"] = all(("{" + setting + "}" not in start_gcode for setting in bed_temperature_settings))
         print_temperature_settings = {"material_print_temperature", "material_print_temperature_layer_0", "default_material_print_temperature", "material_initial_print_temperature", "material_final_print_temperature", "material_standby_temperature"}
         settings["material_print_temp_prepend"] = all(("{" + setting + "}" not in start_gcode for setting in print_temperature_settings))
 
-        settings["print_bed_temperature"] = settings["material_bed_temperature"]
-        settings["print_temperature"] = settings["material_print_temperature"]
+        # Find the correct temperatures from the first used extruder
+        extruder_stack = Application.getInstance().getExtruderManager().getUsedExtruderStacks()[0]
+        extruder_0_settings = self._buildReplacementTokens(extruder_stack)
 
-        settings["time"] = time.strftime('%H:%M:%S')
-        settings["date"] = time.strftime('%d-%m-%Y')
-        settings["day"] = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'][int(time.strftime('%w'))]
+        # Replace the setting tokens in start and end g-code.
+        settings["machine_start_gcode"] = self._expandGcodeTokens(settings["machine_start_gcode"], extruder_0_settings)
+        settings["machine_end_gcode"] = self._expandGcodeTokens(settings["machine_end_gcode"], extruder_0_settings)
 
-        for key, value in settings.items(): #Add all submessages for each individual setting.
+        # Add all sub-messages for each individual setting.
+        for key, value in settings.items():
             setting_message = self._slice_message.getMessage("global_settings").addRepeatedMessage("settings")
             setting_message.name = key
-            if key == "machine_start_gcode" or key == "machine_end_gcode": #If it's a g-code message, use special formatting.
-                setting_message.value = self._expandGcodeTokens(key, value, settings)
-            else:
-                setting_message.value = str(value).encode("utf-8")
+            setting_message.value = str(value).encode("utf-8")
             Job.yieldThread()
 
     ##  Sends for some settings which extruder they should fallback to if not
@@ -348,3 +366,4 @@ class StartSliceJob(Job):
 
             relations_set.add(relation.target.key)
             self._addRelations(relations_set, relation.target.relations)
+

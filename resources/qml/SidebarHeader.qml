@@ -34,6 +34,7 @@ Column
         width: height
     }
 
+    // Extruder Row
     Item
     {
         id: extruderSelectionRow
@@ -72,7 +73,7 @@ Column
 
             orientation: ListView.Horizontal
 
-            model: Cura.ExtrudersModel { id: extrudersModel; addGlobal: false }
+            model: Cura.ExtrudersModel { id: extrudersModel; }
 
             Connections
             {
@@ -185,6 +186,8 @@ Column
                                 // Only draw the filling colour of the material inside the SVG border.
                                 Rectangle
                                 {
+                                    id: materialColorCircle
+
                                     anchors
                                     {
                                         right: parent.right

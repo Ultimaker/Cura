@@ -16,13 +16,11 @@ from cura.CuraApplication import CuraApplication
 
 import threading
 import platform
-import glob
 import time
 import os.path
 import serial.tools.list_ports
 from UM.Extension import Extension
 
-from PyQt5.QtQml import QQmlComponent, QQmlContext
 from PyQt5.QtCore import QUrl, QObject, pyqtSlot, pyqtProperty, pyqtSignal, Qt
 from UM.i18n import i18nCatalog
 i18n_catalog = i18nCatalog("cura")
@@ -99,7 +97,8 @@ class USBPrinterOutputDeviceManager(QObject, OutputDevicePlugin, Extension):
     @pyqtSlot(str)
     def updateAllFirmware(self, file_name):
         if file_name.startswith("file://"):
-            file_name = QUrl(file_name).toLocalFile() # File dialogs prepend the path with file://, which we don't need / want
+            file_name = QUrl(file_name).toLocalFile()  # File dialogs prepend the path with file://, which we don't need / want
+
         if not self._usb_output_devices:
             Message(i18n_catalog.i18nc("@info", "Unable to update firmware because there are no printers connected."), title = i18n_catalog.i18nc("@info:title", "Warning")).show()
             return

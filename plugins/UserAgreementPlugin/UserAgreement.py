@@ -9,13 +9,12 @@ from UM.Logger import Logger
 
 from cura.CuraApplication import CuraApplication
 
-from PyQt5.QtQml import QQmlComponent, QQmlContext
-from PyQt5.QtCore import QUrl, QObject, pyqtSlot
+from PyQt5.QtCore import QObject, pyqtSlot
 
 import os.path
 
 class UserAgreement(QObject, Extension):
-    def __init__(self, parent = None):
+    def __init__(self):
         super(UserAgreement, self).__init__()
         self._user_agreement_window = None
         self._user_agreement_context = None
@@ -33,8 +32,8 @@ class UserAgreement(QObject, Extension):
         self._user_agreement_window.show()
 
     @pyqtSlot(bool)
-    def didAgree(self, userChoice):
-        if userChoice:
+    def didAgree(self, user_choice):
+        if user_choice:
             Logger.log("i", "User agreed to the user agreement")
             Preferences.getInstance().setValue("general/accepted_user_agreement", True)
             self._user_agreement_window.hide()

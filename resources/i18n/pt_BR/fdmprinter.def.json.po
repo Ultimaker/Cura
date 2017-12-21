@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: Cura 3.0\n"
 "Report-Msgid-Bugs-To: http://github.com/ultimaker/uranium\n"
 "POT-Creation-Date: 2017-11-21 16:58+0000\n"
-"PO-Revision-Date: 2017-10-06 10:00-0300\n"
+"PO-Revision-Date: 2017-12-04 10:20-0300\n"
 "Last-Translator: Cláudio Sampaio <patola@makerlinux.com.br>\n"
 "Language-Team: Cláudio Sampaio <patola@makerlinux.com.br> and CoderSquirrel <jasaneschio@gmail.com>\n"
 "Language: pt_BR\n"
@@ -613,27 +613,27 @@ msgstr "A altura da camada inicial em mm. Uma camada inicial mais espessa faz a 
 #: fdmprinter.def.json
 msgctxt "slicing_tolerance label"
 msgid "Slicing Tolerance"
-msgstr ""
+msgstr "Tolerância de Fatiamento"
 
 #: fdmprinter.def.json
 msgctxt "slicing_tolerance description"
 msgid "How to slice layers with diagonal surfaces. The areas of a layer can be generated based on where the middle of the layer intersects the surface (Middle). Alternatively each layer can have the areas which fall inside of the volume throughout the height of the layer (Exclusive) or a layer has the areas which fall inside anywhere within the layer (Inclusive). Exclusive retains the most details, Inclusive makes for the best fit and Middle takes the least time to process."
-msgstr ""
+msgstr "Como fatiar camadas com superfícies diagonais. As áreas de uma camada podem ser geradas baseadas em onde o meio da camada interseciona a superfície (Meio). Alternativamente, cada camada pode ter as áreas que se encontram dentro do volume por toda a altura da camada (Exclusivo) ou a camada pode abranger todas as áreas que tenham qualquer penetração dentro do volume (Inclusivo). Exclusivo retém mais detalhes, Inclusivo é melhor para encaixes e Meio toma menos tempo para processar."
 
 #: fdmprinter.def.json
 msgctxt "slicing_tolerance option middle"
 msgid "Middle"
-msgstr ""
+msgstr "Meio"
 
 #: fdmprinter.def.json
 msgctxt "slicing_tolerance option exclusive"
 msgid "Exclusive"
-msgstr ""
+msgstr "Exclusivo"
 
 #: fdmprinter.def.json
 msgctxt "slicing_tolerance option inclusive"
 msgid "Inclusive"
-msgstr ""
+msgstr "Inclusivo"
 
 #: fdmprinter.def.json
 msgctxt "line_width label"
@@ -808,7 +808,7 @@ msgstr "O carro extrusor usado para imprimir a parede externa. Este ajuste é us
 #: fdmprinter.def.json
 msgctxt "wall_x_extruder_nr label"
 msgid "Inner Wall Extruder"
-msgstr ""
+msgstr "Extrusor da Parede Interior"
 
 #: fdmprinter.def.json
 msgctxt "wall_x_extruder_nr description"
@@ -1388,7 +1388,7 @@ msgstr "Padrão de Preenchimento"
 #: fdmprinter.def.json
 msgctxt "infill_pattern description"
 msgid "The pattern of the infill material of the print. The line and zig zag infill swap direction on alternate layers, reducing material cost. The grid, triangle, tri-hexagon, cubic, octet, quarter cubic, cross and concentric patterns are fully printed every layer. Cubic, quarter cubic and octet infill change with every layer to provide a more equal distribution of strength over each direction."
-msgstr ""
+msgstr "O padrão do material de preenchimento da impressão. Preenchimento de Linhas e Ziguezague trocam direções em camadas alternadas, reduzindo custo do material. Os padrões de Grade, Triângulo, Tri-Hexágono, Cúbico, Octeto, Quarto Cúbico, Cruzado e Concêntrico são totalmente impressos em cada camada. Os preenchimentos Cúbico, Quarto Cúbico e Octeto mudam em cada camada para prover uma distribuição mais uniforme de forças em cada direção."
 
 #: fdmprinter.def.json
 msgctxt "infill_pattern option grid"
@@ -1408,7 +1408,7 @@ msgstr "Triângulos"
 #: fdmprinter.def.json
 msgctxt "infill_pattern option trihexagon"
 msgid "Tri-Hexagon"
-msgstr ""
+msgstr "Tri-Hexágono"
 
 #: fdmprinter.def.json
 msgctxt "infill_pattern option cubic"
@@ -1463,7 +1463,7 @@ msgstr "Conectar Linhas de Preenchimento"
 #: fdmprinter.def.json
 msgctxt "zig_zaggify_infill description"
 msgid "Connect the ends where the infill pattern meets the inner wall using a line which follows the shape of the inner wall. Enabling this setting can make the infill adhere to the walls better and reduce the effects of infill on the quality of vertical surfaces. Disabling this setting reduces the amount of material used."
-msgstr ""
+msgstr "Conecta as extremidades onde o padrão de preenchimento toca a parede interna usando uma linha que segue a forma da parede interna. Habilitar este ajuste pode fazer o preenchimento aderir melhor às paredes e reduzir o efeito do preenchimento na qualidade de superfícies verticais. Desabilitar este ajuda diminui a quantidade de material usado."
 
 #: fdmprinter.def.json
 msgctxt "infill_angles label"
@@ -1478,22 +1478,22 @@ msgstr "Uma lista de direções de filetes em números inteiros a usar. Elemento
 #: fdmprinter.def.json
 msgctxt "infill_offset_x label"
 msgid "Infill X Offset"
-msgstr ""
+msgstr "Deslocamento X do Preenchimento"
 
 #: fdmprinter.def.json
 msgctxt "infill_offset_x description"
 msgid "The infill pattern is offset this distance along the X axis."
-msgstr ""
+msgstr "O padrão de preenchimento é corrigido/deslocado nesta distância no eixo X."
 
 #: fdmprinter.def.json
 msgctxt "infill_offset_y label"
 msgid "Infill Y Offset"
-msgstr ""
+msgstr "Deslocamento do Preenchimento Y"
 
 #: fdmprinter.def.json
 msgctxt "infill_offset_y description"
 msgid "The infill pattern is offset this distance along the Y axis."
-msgstr ""
+msgstr "O padrão de preenchimento é corrigido/deslocado nesta distância no eixo Y."
 
 #: fdmprinter.def.json
 msgctxt "sub_div_rad_add label"
@@ -1643,7 +1643,7 @@ msgstr "Distância de Expansão do Contorno"
 #: fdmprinter.def.json
 msgctxt "expand_skins_expand_distance description"
 msgid "The distance the skins are expanded into the infill. Higher values makes the skin attach better to the infill pattern and makes the walls on neighboring layers adhere better to the skin. Lower values save amount of material used."
-msgstr ""
+msgstr "A distância em que os contornos são expandidos pra dentro do preenchimento. Valores mais altos fazem o contorno aderir melhor ao padrão de preenchimento e faz as paredes de camadas vizinhas aderirem melhor ao contorno. Valores menores diminuem a quantidade de material usado."
 
 #: fdmprinter.def.json
 msgctxt "top_skin_expand_distance label"
@@ -1808,22 +1808,22 @@ msgstr "Ajusta o diâmetro do filamento utilizado. Acerte este valor com o diâm
 #: fdmprinter.def.json
 msgctxt "material_adhesion_tendency label"
 msgid "Adhesion Tendency"
-msgstr ""
+msgstr "Tendência à Aderência"
 
 #: fdmprinter.def.json
 msgctxt "material_adhesion_tendency description"
 msgid "Surface adhesion tendency."
-msgstr ""
+msgstr "Tendência de aderência da superfície"
 
 #: fdmprinter.def.json
 msgctxt "material_surface_energy label"
 msgid "Surface Energy"
-msgstr ""
+msgstr "Energia de Superfície"
 
 #: fdmprinter.def.json
 msgctxt "material_surface_energy description"
 msgid "Surface energy."
-msgstr ""
+msgstr "Energia de superfície."
 
 #: fdmprinter.def.json
 msgctxt "material_flow label"
@@ -3556,6 +3556,8 @@ msgid ""
 "The horizontal distance between the skirt and the first layer of the print.\n"
 "This is the minimum distance. Multiple skirt lines will extend outwards from this distance."
 msgstr ""
+"A distância horizontal entre o skirt a primeira camada da impressão.\n"
+"Esta é a distância mínima. Linhas múltiplas de skirt estenderão além desta distância."
 
 #: fdmprinter.def.json
 msgctxt "skirt_brim_minimal_length label"
@@ -3615,7 +3617,7 @@ msgstr "Amaciamento do Raft"
 #: fdmprinter.def.json
 msgctxt "raft_smoothing description"
 msgid "This setting controls how much inner corners in the raft outline are rounded. Inward corners are rounded to a semi circle with a radius equal to the value given here. This setting also removes holes in the raft outline which are smaller than such a circle."
-msgstr ""
+msgstr "Este ajuste controla quanto os cantos internos do contorno do raft são arredondados. Esses cantos internos são convertidos em semicírculos com raio igual ao valor dado aqui. Este ajuste também remove furos no contorno do raft que forem menores que o círculo equivalente."
 
 #: fdmprinter.def.json
 msgctxt "raft_airgap label"
@@ -4090,12 +4092,12 @@ msgstr "Normalmente o Cura tenta costurar pequenos furos na malha e remover part
 #: fdmprinter.def.json
 msgctxt "meshfix_maximum_resolution label"
 msgid "Maximum Resolution"
-msgstr ""
+msgstr "Resolução Máxima"
 
 #: fdmprinter.def.json
 msgctxt "meshfix_maximum_resolution description"
 msgid "The minimum size of a line segment after slicing. If you increase this, the mesh will have a lower resolution. This may allow the printer to keep up with the speed it has to process g-code and will increase slice speed by removing details of the mesh that it can't process anyway."
-msgstr ""
+msgstr "O tamanho mínimo de um segmento de linha após o fatiamento. Se você aumentar este valor, a malha terá uma resolução menor. Isto pode permitir que a impressora mantenha a velocidade que precisa para processar o G-Code e aumentará a velocidade de fatiamento ao remover detalhes da malha que não poderia processar de qualquer jeito."
 
 #: fdmprinter.def.json
 msgctxt "multiple_mesh_overlap label"
@@ -4130,12 +4132,12 @@ msgstr "Troca quais volumes sobrepondo malhas vão pertencer a cada camada, de m
 #: fdmprinter.def.json
 msgctxt "remove_empty_first_layers label"
 msgid "Remove Empty First Layers"
-msgstr ""
+msgstr "Remover Camadas Iniciais Vazias"
 
 #: fdmprinter.def.json
 msgctxt "remove_empty_first_layers description"
 msgid "Remove empty layers beneath the first printed layer if they are present. Disabling this setting can cause empty first layers if the Slicing Tolerance setting is set to Exclusive or Middle."
-msgstr ""
+msgstr "Remove camadas vazias entre a primeira camada impressa se estiverem presentes. Desabilitar este ajuste pode criar camadas iniciais vazias se a Tolerância de Fatiamento estiver configurada para Exclusivo ou Meio."
 
 #: fdmprinter.def.json
 msgctxt "blackmagic label"
@@ -4665,22 +4667,22 @@ msgstr "A distância média entre os pontos aleatórios introduzidos em cada seg
 #: fdmprinter.def.json
 msgctxt "flow_rate_max_extrusion_offset label"
 msgid "Flow rate compensation max extrusion offset"
-msgstr ""
+msgstr "Deslocamento de extrusão máxima da compensação de taxa de fluxo."
 
 #: fdmprinter.def.json
 msgctxt "flow_rate_max_extrusion_offset description"
 msgid "The maximum distance in mm to compensate."
-msgstr ""
+msgstr "A distância máxima em mm a compensar."
 
 #: fdmprinter.def.json
 msgctxt "flow_rate_extrusion_offset_factor label"
 msgid "Flow rate compensation factor"
-msgstr ""
+msgstr "Fator de compensaçõ de taxa de fluxo"
 
 #: fdmprinter.def.json
 msgctxt "flow_rate_extrusion_offset_factor description"
 msgid "The multiplication factor for the flow rate -> distance translation."
-msgstr ""
+msgstr "O fator de multiplicação para a tradução entre taxa de fluxo -> distância."
 
 #: fdmprinter.def.json
 msgctxt "wireframe_enabled label"

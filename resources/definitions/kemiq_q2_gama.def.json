@@ -1,5 +1,4 @@
 {
-    "id": "kemiq_q2_gama",
     "version": 2,
     "name": "Kemiq Q2 Gama",
     "inherits": "fdmprinter",

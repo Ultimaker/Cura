@@ -1,5 +1,4 @@
 {
-    "id": "raise3D_N2_plus_dual",
     "version": 2,
     "name": "Raise3D N2 Plus Dual",
     "inherits": "fdmprinter",
@@ -54,9 +53,6 @@
         },
         "machine_min_cool_heat_time_window": {
             "default_value": 3600
-        },
-        "machine_nozzle_size": {
-            "default_value": 0.4
         },
         "material_diameter": {
             "default_value": 1.75

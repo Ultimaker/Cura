@@ -43,6 +43,7 @@ class NetworkPrinterOutputDevicePlugin(QObject, OutputDevicePlugin):
         # List of old printer names. This is used to ensure that a refresh of zeroconf does not needlessly forces
         # authentication requests.
         self._old_printers = []
+        self._excluded_addresses = ["127.0.0.1"]    # Adding a list of not allowed IP addresses. At this moment, just localhost
 
         # Because the model needs to be created in the same thread as the QMLEngine, we use a signal.
         self.addPrinterSignal.connect(self.addPrinter)
@@ -300,6 +301,9 @@ class NetworkPrinterOutputDevicePlugin(QObject, OutputDevicePlugin):
                 if type_of_device:
                     if type_of_device == b"printer":
                         address = '.'.join(map(lambda n: str(n), info.address))
+                        if address in self._excluded_addresses:
+                            Logger.log("d", "The IP address %s of the printer \'%s\' is not correct. Trying to reconnect.", address, name)
+                            return False    # When getting the localhost IP, then try to reconnect
                         self.addPrinterSignal.emit(str(name), address, info.properties)
                     else:
                         Logger.log("w", "The type of the found device is '%s', not 'printer'! Ignoring.." % type_of_device )

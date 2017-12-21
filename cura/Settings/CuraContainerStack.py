@@ -14,7 +14,7 @@ from UM.Settings.ContainerStack import ContainerStack, InvalidContainerStackErro
 from UM.Settings.InstanceContainer import InstanceContainer
 from UM.Settings.DefinitionContainer import DefinitionContainer
 from UM.Settings.ContainerRegistry import ContainerRegistry
-from UM.Settings.Interfaces import ContainerInterface
+from UM.Settings.Interfaces import ContainerInterface, DefinitionContainerInterface
 
 from . import Exceptions
 
@@ -246,7 +246,7 @@ class CuraContainerStack(ContainerStack):
     ##  Set the definition container.
     #
     #   \param new_quality_changes The new definition container. It is expected to have a "type" metadata entry with the value "quality_changes".
-    def setDefinition(self, new_definition: DefinitionContainer) -> None:
+    def setDefinition(self, new_definition: DefinitionContainerInterface) -> None:
         self.replaceContainer(_ContainerIndexes.Definition, new_definition)
 
     ##  Set the definition container by an ID.
@@ -377,7 +377,7 @@ class CuraContainerStack(ContainerStack):
                 if not container or not isinstance(container, DefinitionContainer):
                     definition = self.findContainer(container_type = DefinitionContainer)
                     if not definition:
-                        raise InvalidContainerStackError("Stack {id} does not have a definition!".format(id = self._id))
+                        raise InvalidContainerStackError("Stack {id} does not have a definition!".format(id = self.getId()))
 
                     new_containers[index] = definition
                 continue
@@ -487,11 +487,17 @@ class CuraContainerStack(ContainerStack):
             search_criteria.pop("name", None)
             materials = ContainerRegistry.getInstance().findInstanceContainers(**search_criteria)
 
-        if materials:
-            return materials[0]
+        if not materials:
+            Logger.log("w", "Could not find a valid material for stack {stack}", stack = self.id)
+            return None
 
-        Logger.log("w", "Could not find a valid material for stack {stack}", stack = self.id)
-        return None
+        for material in materials:
+            # Prefer a read-only material
+            if ContainerRegistry.getInstance().isReadOnly(material.getId()):
+                return material
+
+        return materials[0]
+
 
     ##  Find the quality that should be used as "default" quality.
     #
@@ -502,7 +508,7 @@ class CuraContainerStack(ContainerStack):
     def findDefaultQuality(self) -> Optional[ContainerInterface]:
         definition = self._getMachineDefinition()
         registry = ContainerRegistry.getInstance()
-        material_container = self.material if self.material != self._empty_instance_container else None
+        material_container = self.material if self.material.getId() not in (self._empty_material.getId(), self._empty_instance_container.getId()) else None
 
         search_criteria = {"type": "quality"}
 
@@ -546,7 +552,7 @@ class CuraContainerStack(ContainerStack):
             material_search_criteria = {"type": "material", "material": material_container.getMetaDataEntry("material"), "color_name": "Generic"}
             if definition.getMetaDataEntry("has_machine_quality"):
                 if self.material != self._empty_instance_container:
-                    material_search_criteria["definition"] = material_container.getDefinition().id
+                    material_search_criteria["definition"] = material_container.getMetaDataEntry("definition")
 
                     if definition.getMetaDataEntry("has_variants"):
                         material_search_criteria["variant"] = material_container.getMetaDataEntry("variant")
@@ -557,10 +563,10 @@ class CuraContainerStack(ContainerStack):
                         material_search_criteria["variant"] = self.variant.id
             else:
                 material_search_criteria["definition"] = "fdmprinter"
-            material_containers = registry.findInstanceContainers(**material_search_criteria)
+            material_containers = registry.findInstanceContainersMetadata(**material_search_criteria)
             # Try all materials to see if there is a quality profile available.
             for material_container in material_containers:
-                search_criteria["material"] = material_container.getId()
+                search_criteria["material"] = material_container["id"]
 
                 containers = registry.findInstanceContainers(**search_criteria)
                 if containers:

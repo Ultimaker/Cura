@@ -22,16 +22,26 @@ class SettingOverrideDecorator(SceneNodeDecorator):
     ##  Event indicating that the user selected a different extruder.
     activeExtruderChanged = Signal()
 
+    ##  Non-printing meshes
+    #
+    #   If these settings are True for any mesh, the mesh does not need a convex hull,
+    #   and is sent to the slicer regardless of whether it fits inside the build volume.
+    #   Note that Support Mesh is not in here because it actually generates
+    #   g-code in the volume of the mesh.
+    _non_printing_mesh_settings = {"anti_overhang_mesh", "infill_mesh", "cutting_mesh"}
+
     def __init__(self):
         super().__init__()
-        self._stack = PerObjectContainerStack(stack_id = id(self))
+        self._stack = PerObjectContainerStack(stack_id = "per_object_stack_" + str(id(self)))
         self._stack.setDirty(False)  # This stack does not need to be saved.
         self._stack.addContainer(InstanceContainer(container_id = "SettingOverrideInstanceContainer"))
         self._extruder_stack = ExtruderManager.getInstance().getExtruderStack(0).getId()
 
+        self._is_non_printing_mesh = False
+
         self._stack.propertyChanged.connect(self._onSettingChanged)
 
-        ContainerRegistry.getInstance().addContainer(self._stack)
+        Application.getInstance().getContainerRegistry().addContainer(self._stack)
 
         Application.getInstance().globalContainerStackChanged.connect(self._updateNextStack)
         self.activeExtruderChanged.connect(self._updateNextStack)
@@ -48,6 +58,10 @@ class SettingOverrideDecorator(SceneNodeDecorator):
 
         # Properly set the right extruder on the copy
         deep_copy.setActiveExtruder(self._extruder_stack)
+
+        # use value from the stack because there can be a delay in signal triggering and "_is_non_printing_mesh"
+        # has not been updated yet.
+        deep_copy._is_non_printing_mesh = any(bool(self._stack.getProperty(setting, "value")) for setting in self._non_printing_mesh_settings)
 
         return deep_copy
 
@@ -72,9 +86,14 @@ class SettingOverrideDecorator(SceneNodeDecorator):
             container_stack = containers[0]
             return container_stack.getMetaDataEntry("position", default=None)
 
+    def isNonPrintingMesh(self):
+        return self._is_non_printing_mesh
+
     def _onSettingChanged(self, instance, property_name): # Reminder: 'property' is a built-in function
         # Trigger slice/need slicing if the value has changed.
         if property_name == "value":
+            self._is_non_printing_mesh = any(bool(self._stack.getProperty(setting, "value")) for setting in self._non_printing_mesh_settings)
+
             Application.getInstance().getBackend().needsSlicing()
             Application.getInstance().getBackend().tickle()
 

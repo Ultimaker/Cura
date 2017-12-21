@@ -1,5 +1,4 @@
 {
-    "id": "fdmprinter",
     "name": "FDM Printer Base Description",
     "version": 2,
     "metadata":
@@ -314,6 +313,17 @@
                         "Repetier": "Repetier"
                     },
                     "default_value": "RepRap (Marlin/Sprinter)",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false,
+                    "settable_per_meshgroup": false
+                },
+                "machine_firmware_retract":
+                {
+                    "label": "Firmware Retraction",
+                    "description": "Whether to use firmware retract commands (G10/G11) instead of using the E property in G1 commands to retract the material.",
+                    "type": "bool",
+                    "default_value": false,
+                    "value": "machine_gcode_flavor == 'RepRap (Volumetric)' or machine_gcode_flavor == 'UltiGCode' or machine_gcode_flavor == 'BFB'",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false,
                     "settable_per_meshgroup": false
@@ -3368,7 +3378,6 @@
                     "unit": "s",
                     "type": "float",
                     "default_value": 10,
-                    "minimum_value": "cool_min_layer_time",
                     "maximum_value_warning": "600",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
@@ -5980,6 +5989,49 @@
                     "minimum_value_warning": "0",
                     "maximum_value_warning": "10.0",
                     "enabled": "wireframe_enabled",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false,
+                    "settable_per_meshgroup": false
+                },
+                "adaptive_layer_height_enabled":
+                {
+                    "label": "Use adaptive layers",
+                    "description": "Adaptive layers computes the layer heights depending on the shape of the model.",
+                    "type": "bool",
+                    "default_value": false,
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false,
+                    "settable_per_meshgroup": false
+                },
+                "adaptive_layer_height_variation":
+                {
+                    "label": "Adaptive layers maximum variation",
+                    "description": "The maximum allowed height different from the base layer height in mm.",
+                    "type": "float",
+                    "enabled": "adaptive_layer_height_enabled",
+                    "default_value": 0.1,
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false,
+                    "settable_per_meshgroup": false
+                },
+                "adaptive_layer_height_variation_step":
+                {
+                    "label": "Adaptive layers variation step size",
+                    "description": "The difference in height of the next layer height compared to the previous one.",
+                    "type": "float",
+                    "enabled": "adaptive_layer_height_enabled",
+                    "default_value": 0.01,
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false,
+                    "settable_per_meshgroup": false
+                },
+                "adaptive_layer_height_threshold":
+                {
+                    "label": "Adaptive layers threshold",
+                    "description": "Threshold whether to use a smaller layer or not. This number is compared to the tan of the steepest slope in a layer.",
+                    "type": "float",
+                    "enabled": "adaptive_layer_height_enabled",
+                    "default_value": 200.0,
                     "settable_per_mesh": false,
                     "settable_per_extruder": false,
                     "settable_per_meshgroup": false

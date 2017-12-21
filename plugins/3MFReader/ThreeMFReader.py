@@ -117,7 +117,7 @@ class ThreeMFReader(MeshReader):
 
                 # Get the definition & set it
                 definition = QualityManager.getInstance().getParentMachineDefinition(global_container_stack.getBottom())
-                um_node.callDecoration("getStack").getTop().setDefinition(definition)
+                um_node.callDecoration("getStack").getTop().setDefinition(definition.getId())
 
             setting_container = um_node.callDecoration("getStack").getTop()
 
