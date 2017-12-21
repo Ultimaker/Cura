@@ -2,6 +2,7 @@ from UM.Qt.ListModel import ListModel
 from PyQt5.QtCore import pyqtSignal, pyqtProperty, pyqtSlot
 from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 from UM.Scene.SceneNode import SceneNode
+from UM.Scene.Selection import Selection
 from UM.Logger import Logger
 from UM.Application import Application
 
@@ -9,13 +10,17 @@ from UM.Application import Application
 class BuildPlateModel(ListModel):
     maxBuildPlateChanged = pyqtSignal()
     activeBuildPlateChanged = pyqtSignal()
+    selectionChanged = pyqtSignal()
 
     def __init__(self):
         super().__init__()
         Application.getInstance().getController().getScene().sceneChanged.connect(self.updateMaxBuildPlate)  # it may be a bit inefficient when changing a lot simultaneously
+        Application.getInstance().getController().getScene().sceneChanged.connect(self._updateSelectedObjectBuildPlateNumbers)
+        Selection.selectionChanged.connect(self._updateSelectedObjectBuildPlateNumbers)
 
         self._max_build_plate = 1  # default
         self._active_build_plate = -1
+        self._selection_build_plates = []
 
     @pyqtSlot(int)
     def setActiveBuildPlate(self, nr):
@@ -60,3 +65,14 @@ class BuildPlateModel(ListModel):
     @staticmethod
     def createBuildPlateModel():
         return BuildPlateModel()
+
+    def _updateSelectedObjectBuildPlateNumbers(self, *args):
+        result = set()
+        for node in Selection.getAllSelectedObjects():
+            result.add(node.callDecoration("getBuildPlateNumber"))
+        self._selection_build_plates = list(result)
+        self.selectionChanged.emit()
+
+    @pyqtProperty("QVariantList", notify = selectionChanged)
+    def selectionBuildPlates(self):
+        return self._selection_build_plates

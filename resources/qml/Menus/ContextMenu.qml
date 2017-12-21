@@ -49,7 +49,7 @@ Menu
             text: Cura.BuildPlateModel.getItem(index).name;
             onTriggered: CuraActions.setBuildPlateForSelection(Cura.BuildPlateModel.getItem(index).buildPlateNumber);
             checkable: true
-            checked: Cura.BuildPlateModel.getItem(index).buildPlateNumber == Cura.BuildPlateModel.activeBuildPlate
+            checked: Cura.BuildPlateModel.selectionBuildPlates.indexOf(Cura.BuildPlateModel.getItem(index).buildPlateNumber) != -1;
             visible: UM.Preferences.getValue("cura/use_multi_build_plate")
         }
         onObjectAdded: base.insertItem(index, object);
@@ -57,7 +57,10 @@ Menu
     }
     MenuItem {
         text: "New build plate";
-        onTriggered: CuraActions.setBuildPlateForSelection(Cura.BuildPlateModel.maxBuildPlate + 1);
+        onTriggered: {
+            CuraActions.setBuildPlateForSelection(Cura.BuildPlateModel.maxBuildPlate + 1);
+            checked = false;
+        }
         checkable: true
         checked: false
         visible: UM.Preferences.getValue("cura/use_multi_build_plate")
