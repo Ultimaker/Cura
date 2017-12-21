@@ -461,7 +461,8 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                 global_stack_id_new = self.getNewId(global_stack_id_original)
                 global_stack_need_rename = True
 
-            global_stack_name_new = self._container_registry.uniqueName(global_stack_name_original)
+            if self._container_registry.findContainerStacksMetadata(name = global_stack_id_original):
+                global_stack_name_new = self._container_registry.uniqueName(global_stack_name_original)
 
             for each_extruder_stack_file in extruder_stack_files:
                 old_container_id = self._stripFileToId(each_extruder_stack_file)
@@ -583,7 +584,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                         if machine_id:
                             new_machine_id = self.getNewId(machine_id)
                             new_id = new_machine_id + "_current_settings"
-                            instance_container.setMetadataEntry("id", new_id)
+                            instance_container.setMetaDataEntry("id", new_id)
                             instance_container.setName(new_id)
                             instance_container.setMetaDataEntry("machine", new_machine_id)
                             containers_to_add.append(instance_container)
@@ -681,12 +682,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                                   file_name = global_stack_file)
 
                 # Ensure a unique ID and name
-                stack._id = global_stack_id_new
-
-                # Extruder stacks are "bound" to a machine. If we add the machine as a new one, the id of the
-                # bound machine also needs to change.
-                if stack.getMetaDataEntry("machine", None):
-                    stack.setMetaDataEntry("machine", global_stack_id_new)
+                stack.setMetaDataEntry("id", global_stack_id_new)
 
                 # Only machines need a new name, stacks may be non-unique
                 stack.setName(global_stack_name_new)
@@ -740,7 +736,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                     stack.deserialize(extruder_file_content, file_name = extruder_stack_file)
 
                     # Ensure a unique ID and name
-                    stack._id = new_id
+                    stack.setMetaDataEntry("id", new_id)
 
                     self._container_registry.addContainer(stack)
                     extruder_stacks_added.append(stack)

@@ -1,4 +1,4 @@
-# Copyright (c) 2015 Ultimaker B.V.
+# Copyright (c) 2017 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import configparser  # For reading the legacy profile INI files.
@@ -10,8 +10,10 @@ import os.path  # For concatenating the path to the plugin and the relative path
 from UM.Application import Application  # To get the machine manager to create the new profile in.
 from UM.Logger import Logger  # Logging errors.
 from UM.PluginRegistry import PluginRegistry  # For getting the path to this plugin's directory.
+from UM.Settings.ContainerRegistry import ContainerRegistry #To create unique profile IDs.
 from UM.Settings.InstanceContainer import InstanceContainer  # The new profile to make.
 from cura.ProfileReader import ProfileReader  # The plug-in type to implement.
+from cura.Settings.ExtruderManager import ExtruderManager #To get the current extruder definition.
 
 
 ##  A plugin that reads profile data from legacy Cura versions.
@@ -77,7 +79,9 @@ class LegacyProfileReader(ProfileReader):
             raise Exception("Unable to import legacy profile. Multi extrusion is not supported")
 
         Logger.log("i", "Importing legacy profile from file " + file_name + ".")
-        profile = InstanceContainer("Imported Legacy Profile")  # Create an empty profile.
+        container_registry = ContainerRegistry.getInstance()
+        profile_id = container_registry.uniqueName("Imported Legacy Profile")
+        profile = InstanceContainer(profile_id)  # Create an empty profile.
 
         parser = configparser.ConfigParser(interpolation = None)
         try:
@@ -120,7 +124,7 @@ class LegacyProfileReader(ProfileReader):
         if "translation" not in dict_of_doom:
             Logger.log("e", "Dictionary of Doom has no translation. Is it the correct JSON file?")
             return None
-        current_printer_definition = global_container_stack.getBottom()
+        current_printer_definition = global_container_stack.definition
         profile.setDefinition(current_printer_definition.getId())
         for new_setting in dict_of_doom["translation"]:  # Evaluate all new settings that would get a value from the translations.
             old_setting_expression = dict_of_doom["translation"][new_setting]
@@ -139,14 +143,13 @@ class LegacyProfileReader(ProfileReader):
         if len(profile.getAllKeys()) == 0:
             Logger.log("i", "A legacy profile was imported but everything evaluates to the defaults, creating an empty profile.")
 
-
-        # We need to downgrade the container to version 1 (in Cura 2.1) so the upgrade system can correctly upgrade
-        # it to the latest version.
         profile.addMetaDataEntry("type", "profile")
         # don't know what quality_type it is based on, so use "normal" by default
         profile.addMetaDataEntry("quality_type", "normal")
+        profile.setName(profile_id)
         profile.setDirty(True)
 
+        #Serialise and deserialise in order to perform the version upgrade.
         parser = configparser.ConfigParser(interpolation=None)
         data = profile.serialize()
         parser.read_string(data)
@@ -159,4 +162,20 @@ class LegacyProfileReader(ProfileReader):
         data = stream.getvalue()
         profile.deserialize(data)
 
-        return profile
+        #We need to return one extruder stack and one global stack.
+        global_container_id = container_registry.uniqueName("Global Imported Legacy Profile")
+        global_profile = profile.duplicate(new_id = global_container_id, new_name = profile_id) #Needs to have the same name as the extruder profile.
+        global_profile.setDirty(True)
+
+        #Only the extruder stack has an extruder metadata entry.
+        profile.addMetaDataEntry("extruder", ExtruderManager.getInstance().getActiveExtruderStack().definition.getId())
+
+        #Split all settings into per-extruder and global settings.
+        for setting_key in profile.getAllKeys():
+            settable_per_extruder = global_container_stack.getProperty(setting_key, "settable_per_extruder")
+            if settable_per_extruder:
+                global_profile.removeInstance(setting_key)
+            else:
+                profile.removeInstance(setting_key)
+
+        return [global_profile, profile]
