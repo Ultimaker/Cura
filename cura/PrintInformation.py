@@ -74,7 +74,6 @@ class PrintInformation(QObject):
 
         Application.getInstance().globalContainerStackChanged.connect(self._updateJobName)
         Application.getInstance().fileLoaded.connect(self.setBaseName)
-        Application.getInstance().projectFileLoaded.connect(self.setProjectName)
         Application.getInstance().getBuildPlateModel().activeBuildPlateChanged.connect(self._onActiveBuildPlateChanged)
         Application.getInstance().workspaceLoaded.connect(self.setProjectName)
 
