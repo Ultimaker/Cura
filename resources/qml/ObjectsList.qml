@@ -146,6 +146,7 @@ Rectangle
         onClicked: UM.Preferences.setValue("view/filter_current_build_plate", checked)
 
         text: catalog.i18nc("@option:check","See only current build plate");
+        style: UM.Theme.styles.checkbox;
 
         anchors
         {
@@ -192,6 +193,7 @@ Rectangle
         frameVisible: true
         height: UM.Theme.getSize("build_plate_selection_size").height
         width: parent.width - 2 * UM.Theme.getSize("default_margin").height
+        style: UM.Theme.styles.scrollview
 
         anchors
         {
@@ -222,9 +224,8 @@ Rectangle
     {
         id: arrangeAllBuildPlatesButton;
         text: catalog.i18nc("@action:button","Arrange to all build plates");
-        //iconSource: UM.Theme.getIcon("load")
-        //style: UM.Theme.styles.tool_button
-        height: 25
+        style: UM.Theme.styles.sidebar_action_button
+        height: UM.Theme.getSize("objects_menu_button").height;
         tooltip: '';
         anchors
         {
@@ -244,7 +245,8 @@ Rectangle
     {
         id: arrangeBuildPlateButton;
         text: catalog.i18nc("@action:button","Arrange current build plate");
-        height: 25
+        style: UM.Theme.styles.sidebar_action_button
+        height: UM.Theme.getSize("objects_menu_button").height;
         tooltip: '';
         anchors
         {

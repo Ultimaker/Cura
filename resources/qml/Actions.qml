@@ -316,7 +316,6 @@ Item
     {
         id: arrangeAllBuildPlatesAction;
         text: catalog.i18nc("@action:inmenu menubar:edit","Arrange All Models To All Build Plates");
-        //iconName: "document-open";
         onTriggered: Printer.arrangeObjectsToAllBuildPlates();
     }
 

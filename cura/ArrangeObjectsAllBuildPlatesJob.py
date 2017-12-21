@@ -34,8 +34,6 @@ class ArrangeArray:
             if a.isEmpty:
                 self._first_empty = i
                 self._has_empty = True
-
-                Logger.log("d", "lala %s %s", self._first_empty, self._has_empty)
                 return
         self._first_empty = None
         self._has_empty = False

@@ -40,7 +40,11 @@ class BuildPlateModel(ListModel):
     def maxBuildPlate(self):
         return self._max_build_plate
 
-    def updateMaxBuildPlate(self, source):
+    def updateMaxBuildPlate(self, *args):
+        if args:
+            source = args[0]
+        else:
+            source = None
         if not issubclass(type(source), SceneNode):
             return
         max_build_plate = self._calcMaxBuildPlate()
