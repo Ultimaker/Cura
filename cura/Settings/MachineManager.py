@@ -851,6 +851,8 @@ class MachineManager(QObject):
         with postponeSignals(*self._getContainerChangedSignals(), compress = CompressTechnique.CompressPerParameterValue):
             self.blurSettings.emit()
 
+            Logger.log("d", "Attempting to change the active quality to %s", quality_id)
+
             containers = ContainerRegistry.getInstance().findInstanceContainersMetadata(id = quality_id)
             if not containers or not self._global_container_stack:
                 return
@@ -905,6 +907,8 @@ class MachineManager(QObject):
                     "quality_changes": stack_quality_changes
                 })
 
+            Logger.log("d", "Active quality changed")
+
             # show the keep/discard dialog after the containers have been switched. Otherwise, the default values on
             # the dialog will be the those before the switching.
             self._executeDelayedActiveContainerStackChanges()
@@ -917,6 +921,9 @@ class MachineManager(QObject):
     #   before the user decided to keep or discard any of their changes using the dialog.
     #   The Application.onDiscardOrKeepProfileChangesClosed signal triggers this method.
     def _executeDelayedActiveContainerStackChanges(self):
+
+        Logger.log("d", "Applying configuration changes...")
+
         if self._new_variant_container is not None:
             self._active_container_stack.variant = self._new_variant_container
             self._new_variant_container = None
@@ -936,6 +943,8 @@ class MachineManager(QObject):
                 new_quality["stack"].sendPostponedEmits() # Send the signals that were postponed in _replaceQualityOrQualityChangesInStack
 
             self._new_quality_containers.clear()
+
+        Logger.log("d", "New configuration applied")
 
     ##  Cancel set changes for material and variant in the active container stack.
     #   Used for ignoring any changes when switching between printers (setActiveMachine)
