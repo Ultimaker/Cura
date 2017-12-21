@@ -84,16 +84,18 @@ class VersionUpgrade31to32(VersionUpgrade):
                 if parser.has_option("values", "machine_nozzle_size"):
                     machine_nozzle_size = parser["values"]["machine_nozzle_size"]
 
-                    machine_extruder_count = '1' # by default it is 1 and the value cannot be stored in the global stack
+                    # by default it is 1 and the value cannot be stored in the global stack
+                    machine_extruder_count = 1
+                    
                     if parser.has_option("values", "machine_extruder_count"):
-                        machine_extruder_count = parser["values"]["machine_extruder_count"]
+                        machine_extruder_count = int(parser["values"]["machine_extruder_count"])
 
-                    if machine_extruder_count == '1':
+                    if machine_extruder_count == 1:
                         definition_name = parser["general"]["name"]
                         machine_extruders = self._getSingleExtrusionMachineExtruders(definition_name)
 
                         # For single extruder machine we need only first extruder
-                        if len(machine_extruders) !=0:
+                        if len(machine_extruders) != 0:
                             self._updateSingleExtruderDefinitionFile(machine_extruders, machine_nozzle_size)
                             parser.remove_option("values", "machine_nozzle_size")
 
