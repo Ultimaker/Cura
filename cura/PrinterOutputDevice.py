@@ -3,15 +3,14 @@
 
 from UM.i18n import i18nCatalog
 from UM.OutputDevice.OutputDevice import OutputDevice
-from PyQt5.QtCore import pyqtProperty, pyqtSignal, pyqtSlot, QObject, QTimer, pyqtSignal, QUrl
-from PyQt5.QtQml import QQmlComponent, QQmlContext
+from PyQt5.QtCore import pyqtProperty, QObject, QTimer, pyqtSignal
+from PyQt5.QtWidgets import QMessageBox
 
 
 from UM.Logger import Logger
 from UM.Signal import signalemitter
 from UM.Application import Application
 
-import os
 from enum import IntEnum  # For the connection state tracking.
 from typing import List, Optional
 
@@ -36,6 +35,12 @@ class PrinterOutputDevice(QObject, OutputDevice):
     connectionStateChanged = pyqtSignal(str)
     acceptsCommandsChanged = pyqtSignal()
 
+    # Signal to indicate that the material of the active printer on the remote changed.
+    materialIdChanged = pyqtSignal()
+
+    # # Signal to indicate that the hotend of the active printer on the remote changed.
+    hotendIdChanged = pyqtSignal()
+
     def __init__(self, device_id, parent = None):
         super().__init__(device_id = device_id, parent = parent)
 
@@ -58,6 +63,10 @@ class PrinterOutputDevice(QObject, OutputDevice):
         self._update_timer.timeout.connect(self._update)
 
         self._connection_state = ConnectionState.closed
+
+    def materialHotendChangedMessage(self, callback):
+        Logger.log("w", "materialHotendChangedMessage needs to be implemented, returning 'Yes'")
+        callback(QMessageBox.Yes)
 
     def isConnected(self):
         return self._connection_state != ConnectionState.closed and self._connection_state != ConnectionState.error

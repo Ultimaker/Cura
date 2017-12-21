@@ -404,7 +404,6 @@ class LegacyUM3OutputDevice(NetworkedPrinterOutputDevice):
             Logger.log("d",
                        "While trying to verify the authentication state, we got a forbidden response. Our own auth state was %s. ",
                        self._authentication_state)
-            print(reply.readAll())
             self.setAuthenticationState(AuthState.AuthenticationDenied)
             self._authentication_failed_message.show()
         elif status_code == 200:
@@ -533,6 +532,17 @@ class LegacyUM3OutputDevice(NetworkedPrinterOutputDevice):
             Logger.log("w",
                        "Got status code {status_code} while trying to get printer data".format(status_code=status_code))
 
+    def materialHotendChangedMessage(self, callback):
+        Application.getInstance().messageBox(i18n_catalog.i18nc("@window:title", "Sync with your printer"),
+                                             i18n_catalog.i18nc("@label",
+                                                                "Would you like to use your current printer configuration in Cura?"),
+                                             i18n_catalog.i18nc("@label",
+                                                                "The PrintCores and/or materials on your printer differ from those within your current project. For the best result, always slice for the PrintCores and materials that are inserted in your printer."),
+                                             buttons=QMessageBox.Yes + QMessageBox.No,
+                                             icon=QMessageBox.Question,
+                                             callback=callback
+                                             )
+
     def _onGetPrinterDataFinished(self, reply):
         status_code = reply.attribute(QNetworkRequest.HttpStatusCodeAttribute)
         if status_code == 200:
@@ -547,6 +557,9 @@ class LegacyUM3OutputDevice(NetworkedPrinterOutputDevice):
                 firmware_version = self._properties.get(b"firmware_version", b"").decode("utf-8")
                 self._printers = [PrinterOutputModel(output_controller=self._output_controller, number_of_extruders=self._number_of_extruders, firmware_version=firmware_version)]
                 self._printers[0].setCamera(NetworkCamera("http://" + self._address + ":8080/?action=stream"))
+                for extruder in self._printers[0].extruders:
+                    extruder.activeMaterialChanged.connect(self.materialIdChanged)
+                    extruder.hotendIDChanged.connect(self.hotendIdChanged)
                 self.printersChanged.emit()
 
             # LegacyUM3 always has a single printer.

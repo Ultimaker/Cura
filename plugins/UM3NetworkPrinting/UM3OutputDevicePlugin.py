@@ -235,8 +235,7 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
         # Check what kind of device we need to add; Depending on the firmware we either add a "Connect"/"Cluster"
         # or "Legacy" UM3 device.
         cluster_size = int(properties.get(b"cluster_size", -1))
-        # TODO: For debug purposes; force it to be legacy printer.
-        #device = LegacyUM3OutputDevice.LegacyUM3OutputDevice(name, address, properties)
+
         if cluster_size > 0:
             device = ClusterUM3OutputDevice.ClusterUM3OutputDevice(name, address, properties)
         else:
