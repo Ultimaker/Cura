@@ -105,6 +105,7 @@ class VersionUpgrade31to32(VersionUpgrade):
     def _getSingleExtrusionMachineExtruders(self, definition_name):
         machine_instances_dir = Resources.getPath(CuraApplication.ResourceTypes.MachineStack)
         machine_instance_id = None
+        extruder_instances = []
 
         # Find machine instances
         for item in os.listdir(machine_instances_dir):
@@ -136,7 +137,6 @@ class VersionUpgrade31to32(VersionUpgrade):
 
         if machine_instance_id is not None:
             extruders_instances_dir = Resources.getPath(CuraApplication.ResourceTypes.ExtruderStack)
-            extruder_instances = []
 
             # Find all custom extruders for found machines
             for item in os.listdir(extruders_instances_dir):
@@ -168,14 +168,12 @@ class VersionUpgrade31to32(VersionUpgrade):
 
         return extruder_instances
 
-
     # Find extruder definition at index 0 and update its values
     def _updateSingleExtruderDefinitionFile(self, extruder_instances_per_machine, machine_nozzle_size):
+        definition_instances_dir = Resources.getPath(CuraApplication.ResourceTypes.DefinitionChangesContainer)
 
-        defintion_instances_dir = Resources.getPath(CuraApplication.ResourceTypes.DefinitionChangesContainer)
-
-        for item in os.listdir(defintion_instances_dir):
-            file_path = os.path.join(defintion_instances_dir, item)
+        for item in os.listdir(definition_instances_dir):
+            file_path = os.path.join(definition_instances_dir, item)
             if not os.path.isfile(file_path):
                 continue
 
@@ -188,21 +186,20 @@ class VersionUpgrade31to32(VersionUpgrade):
 
             if not parser.has_option("general", "name"):
                 continue
-            name = parser["general"]["name"]
+
             custom_extruder_at_0_position = None
+
             for extruder_instance in extruder_instances_per_machine:
-
                 definition_position = extruder_instance["metadata"]["position"]
-
                 if definition_position == "0":
                     custom_extruder_at_0_position = extruder_instance
                     break
 
-            # If not null, then parsed file is for first extuder and then can be updated. I need to update only
-            # first, because this update for single extuder machine
+            # If not null, then parsed file is for first extruder and then can be updated. I need to update only
+            # first, because this update for single extruder machine
             if custom_extruder_at_0_position is not None:
 
-                #Add new value
+                # Add new value
                 parser["values"]["machine_nozzle_size"] = machine_nozzle_size
 
                 definition_output = io.StringIO()
@@ -214,4 +211,3 @@ class VersionUpgrade31to32(VersionUpgrade):
                 return True
 
         return False
-
