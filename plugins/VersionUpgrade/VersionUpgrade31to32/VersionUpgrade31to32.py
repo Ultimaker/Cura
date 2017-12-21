@@ -86,7 +86,7 @@ class VersionUpgrade31to32(VersionUpgrade):
 
                     # by default it is 1 and the value cannot be stored in the global stack
                     machine_extruder_count = 1
-                    
+
                     if parser.has_option("values", "machine_extruder_count"):
                         machine_extruder_count = int(parser["values"]["machine_extruder_count"])
 
@@ -102,11 +102,8 @@ class VersionUpgrade31to32(VersionUpgrade):
         # Update version numbers
         parser["metadata"]["setting_version"] = "5"
 
-
     def _getSingleExtrusionMachineExtruders(self, definition_name):
-
         machine_instances_dir = Resources.getPath(CuraApplication.ResourceTypes.MachineStack)
-
         machine_instance_id = None
 
         # Find machine instances
@@ -130,17 +127,15 @@ class VersionUpgrade31to32(VersionUpgrade):
             if not parser.has_option("general", "id"):
                 continue
 
-            id = parser["general"]["id"]
-            if id + "_settings" != definition_name:
+            machine_id = parser["general"]["id"]
+            if machine_id + "_settings" != definition_name:
                 continue
             else:
-                machine_instance_id = id
+                machine_instance_id = machine_id
                 break
 
         if machine_instance_id is not None:
-
             extruders_instances_dir = Resources.getPath(CuraApplication.ResourceTypes.ExtruderStack)
-                        #"machine",[extruders]
             extruder_instances = []
 
             # Find all custom extruders for found machines
