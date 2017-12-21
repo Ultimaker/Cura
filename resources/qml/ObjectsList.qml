@@ -52,7 +52,7 @@ Rectangle
                 sourceSize.width: width
                 sourceSize.height: width
                 color:  UM.Theme.getColor("setting_control_text")
-                source: collapsed ? UM.Theme.getIcon("arrow_left") : UM.Theme.getIcon("arrow_bottom")
+                source: collapsed ? UM.Theme.getIcon("arrow_top") : UM.Theme.getIcon("arrow_bottom")
             }
             label: Label{ }
         }
