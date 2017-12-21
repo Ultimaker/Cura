@@ -57,6 +57,7 @@ class PlatformPhysics:
 
         # Only check nodes inside build area.
         nodes = [node for node in nodes if (hasattr(node, "_outside_buildarea") and not node._outside_buildarea)]
+        active_build_plate = Application.getInstance().getBuildPlateModel().activeBuildPlate
 
         random.shuffle(nodes)
         for node in nodes:
@@ -80,7 +81,7 @@ class PlatformPhysics:
                 # Check for collisions between convex hulls
                 for other_node in BreadthFirstIterator(root):
                     # Ignore root, ourselves and anything that is not a normal SceneNode.
-                    if other_node is root or not issubclass(type(other_node), SceneNode) or other_node is node:
+                    if other_node is root or not issubclass(type(other_node), SceneNode) or other_node is node or other_node.callDecoration("getBuildPlateNumber") != node.callDecoration("getBuildPlateNumber"):
                         continue
                     
                     # Ignore collisions of a group with it's own children
