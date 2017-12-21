@@ -259,7 +259,7 @@ class NetworkClusterPrinterOutputDevice(NetworkPrinterOutputDevice.NetworkPrinte
 
         self._add_build_plate_number = len(self._job_list) > 1
         self.writeStarted.emit(self) # Allow postprocessing before sending data to the printer
-        if len(self._printers) > 1 or len(gcodes) > 1:
+        if len(self._printers) > 1:
             self.spawnPrintView()  # Ask user how to print it.
         elif len(self._printers) == 1:
             # If there is only one printer, don't bother asking.
