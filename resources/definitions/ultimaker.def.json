@@ -1,5 +1,4 @@
 {
-    "id": "ultimaker_base",
     "version": 2,
     "name": "Ultimaker",
     "inherits": "fdmprinter",

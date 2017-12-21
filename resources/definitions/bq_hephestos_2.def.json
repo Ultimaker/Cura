@@ -1,5 +1,4 @@
 {
-    "id": "bq_hephestos_2",
     "version": 2,
     "name": "BQ Hephestos 2",
     "inherits": "fdmprinter",

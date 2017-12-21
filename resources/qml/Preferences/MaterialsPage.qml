@@ -182,6 +182,7 @@ UM.ManagementPage
                 {
                     Cura.MachineManager.setActiveMaterial(material_id)
                 }
+                // TODO: this doesn't work because the source is a bit delayed
                 base.objectList.currentIndex = base.getIndexById(material_id);
             }
         },
@@ -292,10 +293,16 @@ UM.ManagementPage
                     base_file = base.currentItem.id
                 }
                 var guid = Cura.ContainerManager.getContainerMetaDataEntry(base.currentItem.id, "GUID")
+                // remove base container first, it otherwise triggers loading the base file while removing other containers
+                var base_containers = Cura.ContainerManager.findInstanceContainers({"GUID": guid, "id": base_file, "base_file": base_file, "type": "material"})
+                for(var i in base_containers)
+                {
+                    Cura.ContainerManager.removeContainer(base_containers[i]);
+                }
                 var containers = Cura.ContainerManager.findInstanceContainers({"GUID": guid, "base_file": base_file, "type": "material"})
                 for(var i in containers)
                 {
-                    Cura.ContainerManager.removeContainer(containers[i])
+                    Cura.ContainerManager.removeContainer(containers[i]);
                 }
                 if(base.objectList.currentIndex > 0)
                 {
@@ -322,7 +329,6 @@ UM.ManagementPage
                 {
                     messageDialog.icon = StandardIcon.Information
                     messageDialog.text = catalog.i18nc("@info:status Don't translate the XML tag <filename>!", "Successfully imported material <filename>%1</filename>").arg(fileUrl)
-                    currentItem = base.model.getItem(base.objectList.currentIndex)
                 }
                 else if(result.status == "duplicate")
                 {

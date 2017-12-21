@@ -31,7 +31,7 @@ Menu
             visible: base.shouldShowExtruders
             enabled: UM.Selection.hasSelection
             checkable: true
-            checked: ExtruderManager.selectedObjectExtruders.indexOf(model.id) != -1
+            checked: Cura.ExtruderManager.selectedObjectExtruders.indexOf(model.id) != -1
             onTriggered: CuraActions.setExtruderForSelection(model.id)
             shortcut: "Ctrl+" + (model.index + 1)
         }

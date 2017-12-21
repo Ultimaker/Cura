@@ -1,5 +1,4 @@
 {
-    "id": "rigid3d_zero2",
     "name": "Rigid3D Zero2",
     "version": 2,
     "inherits": "fdmprinter",

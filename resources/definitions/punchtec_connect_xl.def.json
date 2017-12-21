@@ -1,5 +1,4 @@
 {
-    "id": "punchtec_connect_xl",
     "name": "Punchtec Connect XL",
     "version": 2,
     "inherits": "fdmprinter",

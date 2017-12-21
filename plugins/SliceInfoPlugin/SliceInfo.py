@@ -39,7 +39,7 @@ class SliceInfo(Extension):
         Preferences.getInstance().addPreference("info/send_slice_info", True)
         Preferences.getInstance().addPreference("info/asked_send_slice_info", False)
 
-        if not Preferences.getInstance().getValue("info/asked_send_slice_info"):
+        if not Preferences.getInstance().getValue("info/asked_send_slice_info") and Preferences.getInstance().getValue("info/send_slice_info"):
             self.send_slice_info_message = Message(catalog.i18nc("@info", "Cura collects anonymised slicing statistics. You can disable this in the preferences."),
                                                    lifetime = 0,
                                                    dismissable = False,
@@ -87,15 +87,10 @@ class SliceInfo(Extension):
 
             data["active_machine"] = {"definition_id": global_container_stack.definition.getId(), "manufacturer": global_container_stack.definition.getMetaData().get("manufacturer","")}
 
+            # add extruder specific data to slice info
             data["extruders"] = []
-            extruder_count = len(global_container_stack.extruders)
-            extruders = []
-            if extruder_count > 1:
-                extruders = list(ExtruderManager.getInstance().getMachineExtruders(global_container_stack.getId()))
-                extruders = sorted(extruders, key = lambda extruder: extruder.getMetaDataEntry("position"))
-
-            if not extruders:
-                extruders = [global_container_stack]
+            extruders = list(ExtruderManager.getInstance().getMachineExtruders(global_container_stack.getId()))
+            extruders = sorted(extruders, key = lambda extruder: extruder.getMetaDataEntry("position"))
 
             for extruder in extruders:
                 extruder_dict = dict()
@@ -104,7 +99,9 @@ class SliceInfo(Extension):
                                              "type": extruder.material.getMetaData().get("material", ""),
                                              "brand": extruder.material.getMetaData().get("brand", "")
                                              }
-                extruder_dict["material_used"] = print_information.materialLengths[int(extruder.getMetaDataEntry("position", "0"))]
+                extruder_position = int(extruder.getMetaDataEntry("position", "0"))
+                if extruder_position in print_information.materialLengths:
+                    extruder_dict["material_used"] = print_information.materialLengths[extruder_position]
                 extruder_dict["variant"] = extruder.variant.getName()
                 extruder_dict["nozzle_size"] = extruder.getProperty("machine_nozzle_size", "value")
 

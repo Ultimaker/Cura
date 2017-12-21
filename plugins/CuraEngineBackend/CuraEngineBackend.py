@@ -88,6 +88,7 @@ class CuraEngineBackend(QObject, Backend):
         #
         self._global_container_stack = None
         Application.getInstance().globalContainerStackChanged.connect(self._onGlobalStackChanged)
+        Application.getInstance().getExtruderManager().activeExtruderChanged.connect(self._onGlobalStackChanged)
         self._onGlobalStackChanged()
 
         Application.getInstance().stacksValidationFinished.connect(self._onStackErrorCheckFinished)
@@ -319,12 +320,32 @@ class CuraEngineBackend(QObject, Backend):
                     error_labels.add(definitions[0].label)
 
                 error_labels = ", ".join(error_labels)
-                self._error_message = Message(catalog.i18nc("@info:status", "Unable to slice with the current settings. The following settings have errors: {0}".format(error_labels)),
+                self._error_message = Message(catalog.i18nc("@info:status", "Unable to slice with the current settings. The following settings have errors: {0}").format(error_labels),
                                               title = catalog.i18nc("@info:title", "Unable to slice"))
                 self._error_message.show()
                 self.backendStateChange.emit(BackendState.Error)
             else:
                 self.backendStateChange.emit(BackendState.NotStarted)
+            return
+
+        elif job.getResult() == StartSliceJob.StartJobResult.ObjectSettingError:
+            errors = {}
+            for node in DepthFirstIterator(Application.getInstance().getController().getScene().getRoot()):
+                stack = node.callDecoration("getStack")
+                if not stack:
+                    continue
+                for key in stack.getErrorKeys():
+                    definition = self._global_container_stack.getBottom().findDefinitions(key = key)
+                    if not definition:
+                        Logger.log("e", "When checking settings for errors, unable to find definition for key {key} in per-object stack.".format(key = key))
+                        continue
+                    definition = definition[0]
+                    errors[key] = definition.label
+            error_labels = ", ".join(errors.values())
+            self._error_message = Message(catalog.i18nc("@info:status", "Unable to slice due to some per-model settings. The following settings have errors on one or more models: {error_labels}").format(error_labels = error_labels),
+                                          title = catalog.i18nc("@info:title", "Unable to slice"))
+            self._error_message.show()
+            self.backendStateChange.emit(BackendState.Error)
             return
 
         if job.getResult() == StartSliceJob.StartJobResult.BuildPlateError:
@@ -672,7 +693,7 @@ class CuraEngineBackend(QObject, Backend):
         view = application.getController().getActiveView()
         if view:
             active_build_plate = application.getBuildPlateModel().activeBuildPlate
-            if view.getPluginId() == "LayerView":  # If switching to layer view, we should process the layers if that hasn't been done yet.
+            if view.getPluginId() == "SimulationView":  # If switching to layer view, we should process the layers if that hasn't been done yet.
                 self._layer_view_active = True
                 # There is data and we're not slicing at the moment
                 # if we are slicing, there is no need to re-calculate the data as it will be invalid in a moment.

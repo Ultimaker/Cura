@@ -1,5 +1,4 @@
 {
-    "id": "printrbot_simple",
     "version": 2, 
     "name": "Printrbot Simple",
     "inherits": "fdmprinter",

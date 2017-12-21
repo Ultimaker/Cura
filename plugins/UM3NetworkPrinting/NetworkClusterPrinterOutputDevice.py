@@ -8,12 +8,10 @@ import time
 
 from enum import Enum
 from PyQt5.QtNetwork import QNetworkRequest, QHttpPart, QHttpMultiPart
-from PyQt5.QtCore import QUrl, QByteArray, pyqtSlot, pyqtProperty, QCoreApplication, QTimer, pyqtSignal, QObject
+from PyQt5.QtCore import QUrl, pyqtSlot, pyqtProperty, QCoreApplication, QTimer, pyqtSignal, QObject
 from PyQt5.QtGui import QDesktopServices
 from PyQt5.QtNetwork import QNetworkAccessManager, QNetworkReply
-from PyQt5.QtQml import QQmlComponent, QQmlContext
 from UM.Application import Application
-from UM.Decorators import override
 from UM.Logger import Logger
 from UM.Message import Message
 from UM.OutputDevice import OutputDeviceError
@@ -131,7 +129,7 @@ class NetworkClusterPrinterOutputDevice(NetworkPrinterOutputDevice.NetworkPrinte
     @pyqtProperty(QObject, notify=selectedPrinterChanged)
     def controlItem(self):
         # TODO: Probably not the nicest way to do this. This needs to be done better at some point in time.
-        if not self._control_component:
+        if not self._control_item:
             self._createControlViewFromQML()
         name = self._selected_printer.get("friendly_name")
         if name == self._automatic_printer.get("friendly_name") or name == "":
@@ -235,17 +233,8 @@ class NetworkClusterPrinterOutputDevice(NetworkPrinterOutputDevice.NetworkPrinte
 
     def spawnPrintView(self):
         if self._print_view is None:
-            path = QUrl.fromLocalFile(os.path.join(self._plugin_path, "PrintWindow.qml"))
-            component = QQmlComponent(Application.getInstance()._engine, path)
-
-            self._print_context = QQmlContext(Application.getInstance()._engine.rootContext())
-            self._print_context.setContextProperty("OutputDevice", self)
-            self._print_view = component.create(self._print_context)
-
-            if component.isError():
-                Logger.log("e", " Errors creating component: \n%s", "\n".join(
-                    [e.toString() for e in component.errors()]))
-
+            path = os.path.join(self._plugin_path, "PrintWindow.qml")
+            self._print_view = Application.getInstance().createQmlComponent(path, {"OutputDevice": self})
         if self._print_view is not None:
             self._print_view.show()
 
@@ -269,6 +258,7 @@ class NetworkClusterPrinterOutputDevice(NetworkPrinterOutputDevice.NetworkPrinte
             return
 
         self._add_build_plate_number = len(self._job_list) > 1
+        self.writeStarted.emit(self) # Allow postprocessing before sending data to the printer
         if len(self._printers) > 1 or len(gcodes) > 1:
             self.spawnPrintView()  # Ask user how to print it.
         elif len(self._printers) == 1:
@@ -501,7 +491,7 @@ class NetworkClusterPrinterOutputDevice(NetworkPrinterOutputDevice.NetworkPrinte
 
                 printer_name = self.__getPrinterNameFromUuid(print_job["printer_uuid"])
                 if printer_name is None:
-                    printer_name = i18n_catalog.i18nc("@label", "Unknown")
+                    printer_name = i18n_catalog.i18nc("@label Printer name", "Unknown")
 
                 message_text = (i18n_catalog.i18nc("@info:status",
                                 "Printer '{printer_name}' has finished printing '{job_name}'.")
@@ -722,7 +712,7 @@ class NetworkClusterPrinterOutputDevice(NetworkPrinterOutputDevice.NetworkPrinte
             if self._reply:
                 self._reply.abort()
             self._stage = OutputStage.ready
-            Application.getInstance().showPrintMonitor.emit(False)
+            Application.getInstance().getController().setActiveStage("PrepareStage")
 
     @pyqtSlot(int, result=str)
     def formatDuration(self, seconds):

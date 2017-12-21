@@ -1,5 +1,4 @@
 {
-    "id": "grr_neo",
     "version": 2,
     "name": "German RepRap Neo",
     "inherits": "fdmprinter",

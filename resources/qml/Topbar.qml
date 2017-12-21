@@ -6,7 +6,7 @@ import QtQuick.Controls 1.1
 import QtQuick.Controls.Styles 1.1
 import QtQuick.Layouts 1.1
 
-import UM 1.2 as UM
+import UM 1.4 as UM
 import Cura 1.0 as Cura
 import "Menus"
 
@@ -16,26 +16,25 @@ Rectangle
     anchors.left: parent.left
     anchors.right: parent.right
     height: UM.Theme.getSize("sidebar_header").height
-    color: base.monitoringPrint ? UM.Theme.getColor("topbar_background_color_monitoring") : UM.Theme.getColor("topbar_background_color")
+    color: UM.Controller.activeStage.stageId == "MonitorStage" ? UM.Theme.getColor("topbar_background_color_monitoring") : UM.Theme.getColor("topbar_background_color")
 
     property bool printerConnected: Cura.MachineManager.printerOutputDevices.length != 0
     property bool printerAcceptsCommands: printerConnected && Cura.MachineManager.printerOutputDevices[0].acceptsCommands
-    property bool monitoringPrint: false
 
-    // outgoing signal
-    signal startMonitoringPrint()
-    signal stopMonitoringPrint()
+    property int rightMargin: UM.Theme.getSize("sidebar").width + UM.Theme.getSize("default_margin").width;
+    property int allItemsWidth: 0;
 
-    // update monitoring status when event was triggered outside topbar
-    Component.onCompleted: {
-        startMonitoringPrint.connect(function () {
-            base.monitoringPrint = true
-            UM.Controller.disableModelRendering()
-        })
-        stopMonitoringPrint.connect(function () {
-            base.monitoringPrint = false
-            UM.Controller.enableModelRendering()
-        })
+    function updateMarginsAndSizes() {
+        if (UM.Preferences.getValue("cura/sidebar_collapse")) {
+            rightMargin = UM.Theme.getSize("default_margin").width;
+        } else {
+            rightMargin = UM.Theme.getSize("sidebar").width + UM.Theme.getSize("default_margin").width;
+        }
+        allItemsWidth = (
+            logo.width + UM.Theme.getSize("topbar_logo_right_margin").width +
+            UM.Theme.getSize("topbar_logo_right_margin").width + stagesMenuContainer.width +
+            UM.Theme.getSize("default_margin").width + viewModeButton.width +
+            rightMargin);
     }
 
     UM.I18nCatalog
@@ -61,163 +60,111 @@ Rectangle
 
     Row
     {
+        id: stagesMenuContainer
         anchors.left: logo.right
         anchors.leftMargin: UM.Theme.getSize("topbar_logo_right_margin").width
-        anchors.right: machineSelection.left
-        anchors.rightMargin: UM.Theme.getSize("default_margin").width
         spacing: UM.Theme.getSize("default_margin").width
 
-        Button
+        // The topbar is dynamically filled with all available stages
+        Repeater
         {
-            id: showSettings
-            height: UM.Theme.getSize("sidebar_header").height
-            text: catalog.i18nc("@title:tab", "Prepare")
-            checkable: true
-            checked: isChecked()
-            exclusiveGroup: sidebarHeaderBarGroup
-            style: UM.Theme.styles.topbar_header_tab
+            id: stagesMenu
 
-            // We use a Qt.binding to re-bind the checkbox state after manually setting it
-            // https://stackoverflow.com/questions/38798450/qt-5-7-qml-why-are-my-checkbox-property-bindings-disappearing
-            onClicked: {
-                base.stopMonitoringPrint()
-                checked = Qt.binding(isChecked)
-            }
+            model: UM.StageModel{}
 
-            function isChecked () {
-                return !base.monitoringPrint
-            }
-
-            property color overlayColor: "transparent"
-            property string overlayIconSource: ""
-        }
-
-        Button
-        {
-            id: showMonitor
-            width: UM.Theme.getSize("topbar_button").width
-            height: UM.Theme.getSize("sidebar_header").height
-            text: catalog.i18nc("@title:tab", "Monitor")
-            checkable: true
-            checked: isChecked()
-            exclusiveGroup: sidebarHeaderBarGroup
-            style: UM.Theme.styles.topbar_header_tab_no_overlay
-
-            // We use a Qt.binding to re-bind the checkbox state after manually setting it
-            // https://stackoverflow.com/questions/38798450/qt-5-7-qml-why-are-my-checkbox-property-bindings-disappearing
-            onClicked: {
-                base.startMonitoringPrint()
-                checked = Qt.binding(isChecked)
-            }
-
-            function isChecked () {
-                return base.monitoringPrint
-            }
-
-            property string iconSource:
+            delegate: Button
             {
-                if (!printerConnected)
-                {
-                    return UM.Theme.getIcon("tab_status_unknown");
-                }
-                else if (!printerAcceptsCommands)
-                {
-                    return UM.Theme.getIcon("tab_status_unknown");
-                }
+                text: model.name
+                checkable: true
+                checked: model.active
+                exclusiveGroup: topbarMenuGroup
+                style: (model.stage.iconSource != "") ? UM.Theme.styles.topbar_header_tab_no_overlay : UM.Theme.styles.topbar_header_tab
+                height: UM.Theme.getSize("sidebar_header").height
+                onClicked: UM.Controller.setActiveStage(model.id)
+                iconSource: model.stage.iconSource
 
-                if (Cura.MachineManager.printerOutputDevices[0].printerState == "maintenance")
-                {
-                    return UM.Theme.getIcon("tab_status_busy");
-                }
-
-                switch (Cura.MachineManager.printerOutputDevices[0].jobState)
-                {
-                    case "printing":
-                    case "pre_print":
-                    case "pausing":
-                    case "resuming":
-                        return UM.Theme.getIcon("tab_status_busy");
-                    case "wait_cleanup":
-                        return UM.Theme.getIcon("tab_status_finished");
-                    case "ready":
-                    case "":
-                        return UM.Theme.getIcon("tab_status_connected")
-                    case "paused":
-                        return UM.Theme.getIcon("tab_status_paused")
-                    case "error":
-                        return UM.Theme.getIcon("tab_status_stopped")
-                    default:
-                        return UM.Theme.getIcon("tab_status_unknown")
-                }
+                property color overlayColor: "transparent"
+                property string overlayIconSource: ""
             }
         }
 
-        ExclusiveGroup { id: sidebarHeaderBarGroup }
+        ExclusiveGroup { id: topbarMenuGroup }
     }
 
-    ToolButton
+    // View orientation Item
+    Row
     {
-        id: machineSelection
-        text: Cura.MachineManager.activeMachineName
+        id: viewOrientationControl
+        height: 30
+        spacing: 2
+        visible: UM.Controller.activeStage.stageId != "MonitorStage"
 
-        width: UM.Theme.getSize("sidebar").width
-        height: UM.Theme.getSize("sidebar_header").height
-        tooltip: Cura.MachineManager.activeMachineName
-
-        anchors.verticalCenter: parent.verticalCenter
-        anchors.right: parent.right
-        style: ButtonStyle
+        anchors
         {
-            background: Rectangle
-            {
-                color:
-                {
-                    if(control.pressed)
-                    {
-                        return UM.Theme.getColor("sidebar_header_active");
-                    }
-                    else if(control.hovered)
-                    {
-                        return UM.Theme.getColor("sidebar_header_hover");
-                    }
-                    else
-                    {
-                        return UM.Theme.getColor("sidebar_header_bar");
-                    }
-                }
-                Behavior on color { ColorAnimation { duration: 50; } }
-
-                UM.RecolorImage
-                {
-                    id: downArrow
-                    anchors.verticalCenter: parent.verticalCenter
-                    anchors.right: parent.right
-                    anchors.rightMargin: UM.Theme.getSize("default_margin").width
-                    width: UM.Theme.getSize("standard_arrow").width
-                    height: UM.Theme.getSize("standard_arrow").height
-                    sourceSize.width: width
-                    sourceSize.height: width
-                    color: UM.Theme.getColor("text_emphasis")
-                    source: UM.Theme.getIcon("arrow_bottom")
-                }
-                Label
-                {
-                    id: sidebarComboBoxLabel
-                    color: UM.Theme.getColor("sidebar_header_text_active")
-                    text: control.text;
-                    elide: Text.ElideRight;
-                    anchors.left: parent.left;
-                    anchors.leftMargin: UM.Theme.getSize("default_margin").width * 2
-                    anchors.right: downArrow.left;
-                    anchors.rightMargin: control.rightMargin;
-                    anchors.verticalCenter: parent.verticalCenter;
-                    font: UM.Theme.getFont("large")
-                }
-            }
-            label: Label {}
+            verticalCenter: base.verticalCenter
+            right: viewModeButton.left
+            rightMargin: UM.Theme.getSize("default_margin").width
         }
 
-        menu: PrinterMenu { }
+        // #1 3d view
+        Button
+        {
+            iconSource: UM.Theme.getIcon("view_3d")
+            style: UM.Theme.styles.small_tool_button
+            anchors.verticalCenter: viewOrientationControl.verticalCenter
+            onClicked:{
+                UM.Controller.rotateView("3d", 0);
+            }
+            visible: base.width - allItemsWidth - 4 * this.width > 0;
+        }
+
+        // #2 Front view
+        Button
+        {
+            iconSource: UM.Theme.getIcon("view_front")
+            style: UM.Theme.styles.small_tool_button
+            anchors.verticalCenter: viewOrientationControl.verticalCenter
+            onClicked:{
+                UM.Controller.rotateView("home", 0);
+            }
+            visible: base.width - allItemsWidth - 3 * this.width > 0;
+        }
+
+        // #3 Top view
+        Button
+        {
+            iconSource: UM.Theme.getIcon("view_top")
+            style: UM.Theme.styles.small_tool_button
+            anchors.verticalCenter: viewOrientationControl.verticalCenter
+            onClicked:{
+                UM.Controller.rotateView("y", 90);
+            }
+            visible: base.width - allItemsWidth - 2 * this.width > 0;
+        }
+
+        // #4 Left view
+        Button
+        {
+            iconSource: UM.Theme.getIcon("view_left")
+            style: UM.Theme.styles.small_tool_button
+            anchors.verticalCenter: viewOrientationControl.verticalCenter
+            onClicked:{
+                UM.Controller.rotateView("x", 90);
+            }
+            visible: base.width - allItemsWidth - 1 * this.width > 0;
+        }
+
+        // #5 Left view
+        Button
+        {
+            iconSource: UM.Theme.getIcon("view_right")
+            style: UM.Theme.styles.small_tool_button
+            anchors.verticalCenter: viewOrientationControl.verticalCenter
+            onClicked:{
+                UM.Controller.rotateView("x", -90);
+            }
+            visible: base.width - allItemsWidth > 0;
+        }
     }
 
     ComboBox
@@ -227,11 +174,11 @@ Rectangle
         anchors {
             verticalCenter: parent.verticalCenter
             right: parent.right
-            rightMargin: UM.Theme.getSize("sidebar").width + UM.Theme.getSize("default_margin").width
+            rightMargin: rightMargin
         }
 
         style: UM.Theme.styles.combobox
-        visible: !base.monitoringPrint
+        visible: UM.Controller.activeStage.stageId != "MonitorStage"
 
         model: UM.ViewModel { }
         textRole: "name"
@@ -285,6 +232,18 @@ Rectangle
         width: childrenRect.width
 
         source: UM.ActiveView.valid ? UM.ActiveView.activeViewPanel : "";
+    }
+
+    // Expand or collapse sidebar
+    Connections
+    {
+        target: Cura.Actions.expandSidebar
+        onTriggered: updateMarginsAndSizes()
+    }
+
+    Component.onCompleted:
+    {
+        updateMarginsAndSizes();
     }
 
 }
