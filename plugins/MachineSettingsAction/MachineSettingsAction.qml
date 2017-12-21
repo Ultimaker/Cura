@@ -270,6 +270,20 @@ Cura.MachineAction
                                                 }
                                             }
                                         }
+
+                                        Connections
+                                        {
+                                            target: manager
+                                            onDefinedExtruderCountChanged:
+                                            {
+                                                extruderCountModel.clear();
+                                                for(var i = 0; i < manager.definedExtruderCount; ++i)
+                                                {
+                                                    extruderCountModel.append({text: String(i + 1), value: i});
+                                                }
+                                            }
+                                        }
+
                                         currentIndex: machineExtruderCountProvider.properties.value - 1
                                         onActivated:
                                         {
@@ -432,7 +446,7 @@ Cura.MachineAction
                                     property int areaHeight: parent.height - y
                                     property string settingKey: "machine_extruder_start_code"
                                     property bool isExtruderSetting: true
-                            }
+                                }
                             }
                             Column {
                                 height: parent.height
@@ -714,7 +728,7 @@ Cura.MachineAction
             width: gcodeArea.width
             text: _tooltip
 
-            property bool _isExtruderSetting: (typeof(isExtruderSetting) === 'undefined') ? false: isExtruderSetting
+            property bool _isExtruderSetting: (typeof(isExtruderSetting) === 'undefined') ? false : isExtruderSetting
             property string _tooltip: (typeof(tooltip) === 'undefined') ? propertyProvider.properties.description : tooltip
 
             UM.SettingPropertyProvider
@@ -726,7 +740,7 @@ Cura.MachineAction
                     {
                         if(settingsTabs.currentIndex > 0)
                         {
-                            return Cura.MachineManager.activeStackId;
+                            return Cura.ExtruderManager.extruderIds[String(settingsTabs.currentIndex - 1)];
                         }
                         return "";
                     }

@@ -218,25 +218,6 @@ class CuraContainerRegistry(ContainerRegistry):
                 if type(profile_or_list) is not list:
                     profile_or_list = [profile_or_list]
 
-                if len(profile_or_list) == 1:
-                    # If there is only 1 stack file it means we're loading a legacy (pre-3.1) .curaprofile.
-                    # In that case we find the per-extruder settings and put those in a new quality_changes container
-                    # so that it is compatible with the new stack setup.
-                    profile = profile_or_list[0]
-                    extruder_stack_quality_changes_container = ContainerManager.getInstance().duplicateContainerInstance(profile)
-                    extruder_stack_quality_changes_container.addMetaDataEntry("extruder", "fdmextruder")
-
-                    for quality_changes_setting_key in extruder_stack_quality_changes_container.getAllKeys():
-                        settable_per_extruder = extruder_stack_quality_changes_container.getProperty(quality_changes_setting_key, "settable_per_extruder")
-                        if settable_per_extruder:
-                            profile.removeInstance(quality_changes_setting_key, postpone_emit = True)
-                        else:
-                            extruder_stack_quality_changes_container.removeInstance(quality_changes_setting_key, postpone_emit = True)
-
-                    # We add the new container to the profile list so things like extruder positions are taken care of
-                    # in the next code segment.
-                    profile_or_list.append(extruder_stack_quality_changes_container)
-
                 # Import all profiles
                 for profile_index, profile in enumerate(profile_or_list):
                     if profile_index == 0:
@@ -251,6 +232,9 @@ class CuraContainerRegistry(ContainerRegistry):
                         else:
                             profile.setMetaDataEntry("extruder", extruder_id)
                         profile_id = (extruder_id + "_" + name_seed).lower().replace(" ", "_")
+
+                    else: #More extruders in the imported file than in the machine.
+                        continue #Delete the additional profiles.
 
                     result = self._configureProfile(profile, profile_id, new_name)
                     if result is not None:
@@ -305,7 +289,7 @@ class CuraContainerRegistry(ContainerRegistry):
             quality_type_criteria["definition"] = profile.getDefinition().getId()
 
         else:
-            profile.setDefinition(fdmprinter)
+            profile.setDefinition("fdmprinter")
             quality_type_criteria["definition"] = "fdmprinter"
 
         machine_definition = Application.getInstance().getGlobalContainerStack().getBottom()
@@ -420,6 +404,10 @@ class CuraContainerRegistry(ContainerRegistry):
         # for single extrusion machines, we subscribe to the containerAdded signal, and whenever a global stack
         # is added, we check to see if an extruder stack needs to be added.
         if not isinstance(container, ContainerStack) or container.getMetaDataEntry("type") != "machine":
+            return
+
+        machine_extruder_trains = container.getMetaDataEntry("machine_extruder_trains")
+        if machine_extruder_trains is not None and machine_extruder_trains != {"0": "fdmextruder"}:
             return
 
         extruder_stacks = self.findContainerStacks(type = "extruder_train", machine = container.getId())

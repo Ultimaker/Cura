@@ -33,21 +33,23 @@ cura.desktop
 .settings
 
 #Externally located plug-ins.
-plugins/CuraSolidWorksPlugin
-plugins/Doodle3D-cura-plugin
-plugins/GodMode
-plugins/PostProcessingPlugin
-plugins/X3GWriter
-plugins/FlatProfileExporter
-plugins/ProfileFlattener
-plugins/cura-god-mode-plugin
 plugins/cura-big-flame-graph
+plugins/cura-god-mode-plugin
 plugins/cura-siemensnx-plugin
-plugins/CuraVariSlicePlugin
-plugins/CuraLiveScriptingPlugin
-plugins/CuraPrintProfileCreator
-plugins/OctoPrintPlugin
+plugins/CuraBlenderPlugin
 plugins/CuraCloudPlugin
+plugins/CuraLiveScriptingPlugin
+plugins/CuraOpenSCADPlugin
+plugins/CuraPrintProfileCreator
+plugins/CuraSolidWorksPlugin
+plugins/CuraVariSlicePlugin
+plugins/Doodle3D-cura-plugin
+plugins/FlatProfileExporter
+plugins/GodMode
+plugins/OctoPrintPlugin
+plugins/PostProcessingPlugin
+plugins/ProfileFlattener
+plugins/X3GWriter
 
 #Build stuff
 CMakeCache.txt

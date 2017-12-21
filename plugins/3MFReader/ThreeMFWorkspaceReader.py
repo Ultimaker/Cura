@@ -461,7 +461,8 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                 global_stack_id_new = self.getNewId(global_stack_id_original)
                 global_stack_need_rename = True
 
-            global_stack_name_new = self._container_registry.uniqueName(global_stack_name_original)
+            if self._container_registry.findContainerStacksMetadata(name = global_stack_id_original):
+                global_stack_name_new = self._container_registry.uniqueName(global_stack_name_original)
 
             for each_extruder_stack_file in extruder_stack_files:
                 old_container_id = self._stripFileToId(each_extruder_stack_file)
@@ -583,7 +584,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                         if machine_id:
                             new_machine_id = self.getNewId(machine_id)
                             new_id = new_machine_id + "_current_settings"
-                            instance_container.setMetadataEntry("id", new_id)
+                            instance_container.setMetaDataEntry("id", new_id)
                             instance_container.setName(new_id)
                             instance_container.setMetaDataEntry("machine", new_machine_id)
                             containers_to_add.append(instance_container)

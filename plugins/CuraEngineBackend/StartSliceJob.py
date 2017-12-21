@@ -19,6 +19,10 @@ from UM.Settings.SettingRelation import RelationType
 from cura.OneAtATimeIterator import OneAtATimeIterator
 from cura.Settings.ExtruderManager import ExtruderManager
 
+
+NON_PRINTING_MESH_SETTINGS = ["anti_overhang_mesh", "infill_mesh", "cutting_mesh"]
+
+
 class StartJobResult(IntEnum):
     Finished = 1
     Error = 2
@@ -133,11 +137,15 @@ class StartSliceJob(Job):
                 temp_list = []
                 has_printing_mesh = False
                 for node in DepthFirstIterator(self._scene.getRoot()):
-                    if type(node) is SceneNode and node.getMeshData() and node.getMeshData().getVertices() is not None:
-                        _non_printing_mesh = getattr(node, "_non_printing_mesh", False)
-                        if not getattr(node, "_outside_buildarea", False) or _non_printing_mesh:
+                    if node.callDecoration("isSliceable") and type(node) is SceneNode and node.getMeshData() and node.getMeshData().getVertices() is not None:
+                        per_object_stack = node.callDecoration("getStack")
+                        is_non_printing_mesh = False
+                        if per_object_stack:
+                            is_non_printing_mesh = any(per_object_stack.getProperty(key, "value") for key in NON_PRINTING_MESH_SETTINGS)
+
+                        if not getattr(node, "_outside_buildarea", False) or not is_non_printing_mesh:
                             temp_list.append(node)
-                            if not _non_printing_mesh:
+                            if not is_non_printing_mesh:
                                 has_printing_mesh = True
                     Job.yieldThread()
 
