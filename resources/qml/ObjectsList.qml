@@ -26,6 +26,10 @@ Rectangle
             return UM.Theme.getSize("objects_menu_size").height;
         }
     }
+    Behavior on height { NumberAnimation { duration: 100 } }
+
+    border.width: UM.Theme.getSize("default_lining").width
+    border.color: UM.Theme.getColor("lining")
 
     property bool collapsed: false;
 
