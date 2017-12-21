@@ -59,7 +59,9 @@ class SettingOverrideDecorator(SceneNodeDecorator):
         # Properly set the right extruder on the copy
         deep_copy.setActiveExtruder(self._extruder_stack)
 
-        deep_copy._is_non_printing_mesh = self._is_non_printing_mesh
+        # use value from the stack because there can be a delay in signal triggering and "_is_non_printing_mesh"
+        # has not been updated yet.
+        deep_copy._is_non_printing_mesh = any(bool(self._stack.getProperty(setting, "value")) for setting in self._non_printing_mesh_settings)
 
         return deep_copy
 
