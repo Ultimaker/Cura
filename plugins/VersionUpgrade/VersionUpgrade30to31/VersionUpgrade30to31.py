@@ -153,7 +153,6 @@ class VersionUpgrade30to31(VersionUpgrade):
         parser.write(output)
         return [filename], [output.getvalue()]
 
-
     ##  Upgrades a container stack from version 3.0 to 3.1.
     #
     #   \param serialised The serialised form of a container stack.
@@ -223,10 +222,9 @@ class VersionUpgrade30to31(VersionUpgrade):
         return quality_changes_containers
 
     def _getSingleExtrusionMachineExtruders(self, definition_name):
-
         machine_instances_dir = Resources.getPath(CuraApplication.ResourceTypes.MachineStack)
-
         machine_instance_id = None
+        extruder_instances = []
 
         # Find machine instances
         for item in os.listdir(machine_instances_dir):
@@ -249,18 +247,15 @@ class VersionUpgrade30to31(VersionUpgrade):
             if not parser.has_option("general", "id"):
                 continue
 
-            id = parser["general"]["id"]
-            if id + "_settings" != definition_name:
+            machine_id = parser["general"]["id"]
+            if machine_id + "_settings" != definition_name:
                 continue
             else:
-                machine_instance_id = id
+                machine_instance_id = machine_id
                 break
 
         if machine_instance_id is not None:
-
             extruders_instances_dir = Resources.getPath(CuraApplication.ResourceTypes.ExtruderStack)
-                        #"machine",[extruders]
-            extruder_instances = []
 
             # Find all custom extruders for found machines
             for item in os.listdir(extruders_instances_dir):
@@ -294,11 +289,10 @@ class VersionUpgrade30to31(VersionUpgrade):
 
     # Find extruder definition at index 0 and update its values
     def _updateSingleExtruderDefinitionFile(self, extruder_instances_per_machine, machine_nozzle_size):
+        definition_instances_dir = Resources.getPath(CuraApplication.ResourceTypes.DefinitionChangesContainer)
 
-        defintion_instances_dir = Resources.getPath(CuraApplication.ResourceTypes.DefinitionChangesContainer)
-
-        for item in os.listdir(defintion_instances_dir):
-            file_path = os.path.join(defintion_instances_dir, item)
+        for item in os.listdir(definition_instances_dir):
+            file_path = os.path.join(definition_instances_dir, item)
             if not os.path.isfile(file_path):
                 continue
 
@@ -311,12 +305,11 @@ class VersionUpgrade30to31(VersionUpgrade):
 
             if not parser.has_option("general", "name"):
                 continue
-            name = parser["general"]["name"]
+
             custom_extruder_at_0_position = None
+
             for extruder_instance in extruder_instances_per_machine:
-
                 definition_position = extruder_instance["metadata"]["position"]
-
                 if definition_position == "0":
                     custom_extruder_at_0_position = extruder_instance
                     break
@@ -337,7 +330,6 @@ class VersionUpgrade30to31(VersionUpgrade):
                 return True
 
         return False
-
 
     def _createExtruderQualityChangesForSingleExtrusionMachine(self, filename, global_quality_changes):
         suffix = "_" + quote_plus(global_quality_changes["general"]["name"].lower())

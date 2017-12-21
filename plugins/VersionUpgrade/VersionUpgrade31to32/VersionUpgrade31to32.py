@@ -73,7 +73,6 @@ class VersionUpgrade31to32(VersionUpgrade):
     #   \param serialised The serialised form of the container file.
     #   \param filename The name of the file to upgrade.
     def upgradeInstanceContainer(self, serialised, filename):
-
         parser = configparser.ConfigParser(interpolation=None)
         parser.read_string(serialised)
 
