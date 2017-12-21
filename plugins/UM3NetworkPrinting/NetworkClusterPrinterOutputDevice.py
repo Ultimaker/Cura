@@ -234,7 +234,7 @@ class NetworkClusterPrinterOutputDevice(NetworkPrinterOutputDevice.NetworkPrinte
     def spawnPrintView(self):
         if self._print_view is None:
             path = os.path.join(self._plugin_path, "PrintWindow.qml")
-            self._print_view = Application.getInstance().createQmlComponent(path, {"OutputDevice", self})
+            self._print_view = Application.getInstance().createQmlComponent(path, {"OutputDevice": self})
         if self._print_view is not None:
             self._print_view.show()
 
