@@ -393,6 +393,8 @@
 
         "jobspecs_line": [2.0, 2.0],
 
-        "objects_menu_size": [20, 40]
+        "objects_menu_size": [17, 40],
+        "objects_menu_size_collapsed": [15, 15],
+        "build_plate_selection_size": [15, 5]
     }
 }

@@ -19,25 +19,43 @@ Rectangle
     color: UM.Theme.getColor("tool_panel_background")
 
     width: UM.Theme.getSize("objects_menu_size").width
-    height: UM.Theme.getSize("objects_menu_size").height
+    height: {
+        if (collapsed) {
+            return UM.Theme.getSize("objects_menu_size_collapsed").height;
+        } else {
+            return UM.Theme.getSize("objects_menu_size").height;
+        }
+    }
+
+    property bool collapsed: false;
 
     SystemPalette { id: palette }
 
-    Button
-    {
-        id: openFileButton;
-        text: catalog.i18nc("@action:button","Open File");
-        iconSource: UM.Theme.getIcon("load")
-        style: UM.Theme.styles.tool_button
-        tooltip: '';
-        anchors
+    Button {
+        id: collapseButton
+        anchors.top: parent.top
+        anchors.topMargin: Math.floor(UM.Theme.getSize("default_margin").height + (UM.Theme.getSize("layerview_row").height - UM.Theme.getSize("default_margin").height) / 2)
+        anchors.right: parent.right
+        anchors.rightMargin: UM.Theme.getSize("default_margin").width
+
+        width: UM.Theme.getSize("standard_arrow").width
+        height: UM.Theme.getSize("standard_arrow").height
+
+        onClicked: collapsed = !collapsed
+
+        style: ButtonStyle
         {
-            top: parent.top;
-            topMargin: UM.Theme.getSize("default_margin").height;
-            left: parent.left;
-            leftMargin: UM.Theme.getSize("default_margin").height;
+            background: UM.RecolorImage
+            {
+                width: control.width
+                height: control.height
+                sourceSize.width: width
+                sourceSize.height: width
+                color:  UM.Theme.getColor("setting_control_text")
+                source: collapsed ? UM.Theme.getIcon("arrow_left") : UM.Theme.getIcon("arrow_bottom")
+            }
+            label: Label{ }
         }
-        action: Cura.Actions.open;
     }
 
     Component {
@@ -86,11 +104,12 @@ Rectangle
     {
         id: objectsList
         frameVisible: true
+        visible: !collapsed
         width: parent.width - 2 * UM.Theme.getSize("default_margin").height
 
         anchors
         {
-            top: openFileButton.bottom;
+            top: collapseButton.bottom;
             topMargin: UM.Theme.getSize("default_margin").height;
             left: parent.left;
             leftMargin: UM.Theme.getSize("default_margin").height;
@@ -118,10 +137,11 @@ Rectangle
     CheckBox
     {
         id: filterBuildPlateCheckbox
+        visible: !collapsed
         checked: boolCheck(UM.Preferences.getValue("view/filter_current_build_plate"))
         onClicked: UM.Preferences.setValue("view/filter_current_build_plate", checked)
 
-        text: catalog.i18nc("@option:check","Filter active build plate");
+        text: catalog.i18nc("@option:check","See only current build plate");
 
         anchors
         {
@@ -132,7 +152,6 @@ Rectangle
             bottom: buildPlateSelection.top;
         }
     }
-
 
     Component {
         id: buildPlateDelegate
@@ -167,7 +186,7 @@ Rectangle
     {
         id: buildPlateSelection
         frameVisible: true
-        height: 100
+        height: UM.Theme.getSize("build_plate_selection_size").height
         width: parent.width - 2 * UM.Theme.getSize("default_margin").height
 
         anchors

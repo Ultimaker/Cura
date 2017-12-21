@@ -348,7 +348,6 @@ UM.MainWindow
             Button
             {
                 id: openFileButton;
-                visible: !UM.Preferences.getValue("cura/use_multi_build_plate")
                 text: catalog.i18nc("@action:button","Open File");
                 iconSource: UM.Theme.getIcon("load")
                 style: UM.Theme.styles.tool_button
@@ -362,25 +361,6 @@ UM.MainWindow
                 action: Cura.Actions.open;
             }
 
-            Button
-            {
-                id: objectsButton;
-                visible: UM.Preferences.getValue("cura/use_multi_build_plate")
-
-                text: catalog.i18nc("@action:button","Objects list");
-                iconSource: UM.Theme.getIcon("plus")
-                style: UM.Theme.styles.tool_button
-                tooltip: '';
-                anchors
-                {
-                    top: topbar.bottom;
-                    //top: openFileButton.bottom;
-                    topMargin: UM.Theme.getSize("default_margin").height;
-                    left: parent.left;
-                }
-                action: triggerObjectsList;
-            }
-
             Toolbar
             {
                 id: toolbar;
@@ -389,32 +369,24 @@ UM.MainWindow
                 property int mouseY: base.mouseY
 
                 anchors {
-                    top: objectsButton.bottom;
+                    top: openFileButton.bottom;
                     topMargin: UM.Theme.getSize("window_margin").height;
                     left: parent.left;
                 }
             }
 
-            Action
-            {
-                id: triggerObjectsList;
-                text: catalog.i18nc("@action:inmenu menubar:file","&Open File(s)...");
-                iconName: "document-open";
-                shortcut: StandardKey.Open;
-                onTriggered: objectsList.visible = !objectsList.visible;
-            }
-
             ObjectsList
             {
                 id: objectsList;
-                visible: false;
-                //z: -10;
+                visible: UM.Preferences.getValue("cura/use_multi_build_plate");
                 anchors
                 {
-                    top: objectsButton.top;
-                    left: objectsButton.right;
+                    bottom: parent.bottom;
+                    left: parent.left;
                     leftMargin: UM.Theme.getSize("default_margin").width;
                     rightMargin: UM.Theme.getSize("default_margin").width;
+                    topMargin: UM.Theme.getSize("default_margin").height;
+                    bottomMargin: UM.Theme.getSize("default_margin").height;
                 }
 
             }

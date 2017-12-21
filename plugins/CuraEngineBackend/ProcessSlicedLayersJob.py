@@ -69,7 +69,7 @@ class ProcessSlicedLayersJob(Job):
         return self._build_plate_number
 
     def run(self):
-        Logger.log("d", "########## Processing new layer for [%s]..." % self._build_plate_number)
+        Logger.log("d", "Processing new layer for build plate %s..." % self._build_plate_number)
         start_time = time()
         view = Application.getInstance().getController().getActiveView()
         if view.getPluginId() == "SimulationView":
