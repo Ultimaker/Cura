@@ -67,6 +67,8 @@ class MonitorStage(CuraStage):
                 self._printer_output_device.printersChanged.connect(self._onActivePrinterChanged)
                 self._setActivePrinter(self._printer_output_device.activePrinter)
 
+                # Force an update of the icon source
+                self._updateIconSource()
         except IndexError:
             pass
 
