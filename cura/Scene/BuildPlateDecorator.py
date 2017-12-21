@@ -14,9 +14,13 @@ class BuildPlateDecorator(SceneNodeDecorator):
         # Make sure that groups are set correctly
         # setBuildPlateForSelection in CuraActions makes sure that no single childs are set.
         self._build_plate_number = nr
+        if self._node is not None:
+            self._node.transformationChanged.emit()
+        #self._node.transformationChanged.emit()
         if self._node and self._node.callDecoration("isGroup"):
             for child in self._node.getChildren():
                 child.callDecoration("setBuildPlateNumber", nr)
+                child.transformationChanged.emit()
 
     def getBuildPlateNumber(self):
         return self._build_plate_number
