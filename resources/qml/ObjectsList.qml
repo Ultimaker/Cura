@@ -142,7 +142,7 @@ Rectangle
     {
         id: filterBuildPlateCheckbox
         visible: !collapsed
-        checked: boolCheck(UM.Preferences.getValue("view/filter_current_build_plate"))
+        checked: UM.Preferences.getValue("view/filter_current_build_plate")
         onClicked: UM.Preferences.setValue("view/filter_current_build_plate", checked)
 
         text: catalog.i18nc("@option:check","See only current build plate");
