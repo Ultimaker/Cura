@@ -1426,3 +1426,11 @@ class CuraApplication(QtApplication):
                     node = node.getParent()
 
                 Selection.add(node)
+
+
+    triggerPreferenceWindow = pyqtSignal()
+
+    # This event has a simple logic, display pereference window if user decided to disable "collect information"
+    @pyqtProperty(bool, notify = triggerPreferenceWindow)
+    def showMyTest(self):
+        return True

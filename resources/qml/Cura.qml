@@ -528,6 +528,12 @@ UM.MainWindow
         onTriggered: preferences.visible = true
     }
 
+    Connections
+    {
+        target: CuraApplication
+        onShowMyTestChanged: preferences.visible = true
+    }
+
     MessageDialog
     {
         id: newProjectDialog
