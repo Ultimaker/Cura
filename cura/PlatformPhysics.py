@@ -60,7 +60,7 @@ class PlatformPhysics:
 
         random.shuffle(nodes)
         for node in nodes:
-            if node is root or type(node) is not SceneNode or node.getBoundingBox() is None:
+            if node is root or not issubclass(type(node), SceneNode) or node.getBoundingBox() is None:
                 continue
 
             bbox = node.getBoundingBox()

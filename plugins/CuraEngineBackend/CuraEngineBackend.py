@@ -213,7 +213,7 @@ class CuraEngineBackend(QObject, Backend):
         Logger.log("d", "Going to slice build plate [%s]!" % build_plate_to_be_sliced)
         num_objects = self._numObjects()
         if build_plate_to_be_sliced not in num_objects or num_objects[build_plate_to_be_sliced] == 0:
-            Logger.log("d", "  ## Build plate %s has 0 objects to be sliced, skipping", build_plate_to_be_sliced)
+            Logger.log("d", "Build plate %s has 0 objects to be sliced, skipping", build_plate_to_be_sliced)
             self._invokeSlice()
             return
 
