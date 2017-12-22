@@ -67,6 +67,8 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
         self.setShortDescription(i18n_catalog.i18nc("@action:button Preceded by 'Ready to'.", "Print over network"))
         self.setDescription(i18n_catalog.i18nc("@properties:tooltip", "Print over network"))
 
+        self._finished_jobs = []
+
     @pyqtProperty(QObject, notify=activePrinterChanged)
     def controlItem(self):
         if self._active_printer is None:
@@ -216,6 +218,24 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
 
         return (datetime_completed.strftime("%a %b ") + "{day}".format(day=datetime_completed.day)).upper()
 
+    def _printJobStateChanged(self):
+        username = self._getUserName()
+
+        if username is None:
+            # We only want to show notifications if username is set.
+            return
+
+        finished_jobs = [job for job in self._print_jobs if job.state == "wait_cleanup"]
+
+        newly_finished_jobs = [job for job in finished_jobs if job not in self._finished_jobs and job.owner == username]
+        for job in newly_finished_jobs:
+            job_completed_text = i18n_catalog.i18nc("@info:status", "Printer '{printer_name}' has finished printing '{job_name}'.".format(printer_name=job.assignedPrinter.name, job_name = job.name))
+            job_completed_message = Message(text=job_completed_text, title = i18n_catalog.i18nc("@info:status", "Print finished"))
+            job_completed_message.show()
+
+        # Keep a list of all completed jobs so we know if something changed next time.
+        self._finished_jobs = finished_jobs
+
     def _update(self):
         if not super()._update():
             return
@@ -243,6 +263,7 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
                     print_job = PrintJobOutputModel(output_controller = ClusterUM3PrinterOutputController(self),
                                                     key = print_job_data["uuid"],
                                                     name = print_job_data["name"])
+                    print_job.stateChanged.connect(self._printJobStateChanged)
                     job_list_changed = True
                     self._print_jobs.append(print_job)
                 print_job.updateTimeTotal(print_job_data["time_total"])
@@ -267,6 +288,7 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
             for removed_job in removed_jobs:
                 if removed_job.assignedPrinter:
                     removed_job.assignedPrinter.updateActivePrintJob(None)
+                    removed_job.stateChanged.disconnect(self._printJobStateChanged)
                     self._print_jobs.remove(removed_job)
                     job_list_changed = True
 
