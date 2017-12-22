@@ -180,11 +180,14 @@ class PrinterOutputModel(QObject):
 
     def updateActivePrintJob(self, print_job):
         if self._active_print_job != print_job:
-            if self._active_print_job is not None:
-                self._active_print_job.updateAssignedPrinter(None)
+            old_print_job = self._active_print_job
+
             if print_job is not None:
                 print_job.updateAssignedPrinter(self)
             self._active_print_job = print_job
+
+            if old_print_job is not None:
+                old_print_job.updateAssignedPrinter(None)
             self.activePrintJobChanged.emit()
 
     def updateState(self, printer_state):

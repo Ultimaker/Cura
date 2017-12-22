@@ -44,7 +44,11 @@ class PrintJobOutputModel(QObject):
 
     def updateAssignedPrinter(self, assigned_printer: "PrinterOutputModel"):
         if self._assigned_printer != assigned_printer:
+            old_printer = self._assigned_printer
             self._assigned_printer = assigned_printer
+            if old_printer is not None:
+                # If the previously assigned printer is set, this job is moved away from it.
+                old_printer.updateActivePrintJob(None)
             self.assignedPrinterChanged.emit()
 
     @pyqtProperty(str, notify=keyChanged)
