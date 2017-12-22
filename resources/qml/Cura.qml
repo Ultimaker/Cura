@@ -531,7 +531,7 @@ UM.MainWindow
     Connections
     {
         target: CuraApplication
-        onShowMyTestChanged: preferences.visible = true
+        onShowPreferencesWindow: preferences.visible = true
     }
 
     MessageDialog

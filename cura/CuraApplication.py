@@ -409,6 +409,14 @@ class CuraApplication(QtApplication):
         else:
             self.exit(0)
 
+    ##  Signal to connect preferences action in QML
+    showPreferencesWindow = pyqtSignal()
+
+    ##  Show the preferences window
+    @pyqtSlot()
+    def showPreferences(self):
+        self.showPreferencesWindow.emit()
+
     ## A reusable dialogbox
     #
     showMessageBox = pyqtSignal(str, str, str, str, int, int, arguments = ["title", "text", "informativeText", "detailedText", "buttons", "icon"])
@@ -683,7 +691,7 @@ class CuraApplication(QtApplication):
         self.setMainQml(Resources.getPath(self.ResourceTypes.QmlFiles, "Cura.qml"))
         self._qml_import_paths.append(Resources.getPath(self.ResourceTypes.QmlFiles))
 
-        run_without_gui = self.getCommandLineOption("headless", False) or self.getCommandLineOption("invisible", False)
+        run_without_gui = self.getCommandLineOption("headless", False)
         if not run_without_gui:
             self.initializeEngine()
             controller.setActiveStage("PrepareStage")
@@ -1426,11 +1434,3 @@ class CuraApplication(QtApplication):
                     node = node.getParent()
 
                 Selection.add(node)
-
-
-    triggerPreferenceWindow = pyqtSignal()
-
-    # This event has a simple logic, display pereference window if user decided to disable "collect information"
-    @pyqtProperty(bool, notify = triggerPreferenceWindow)
-    def showMyTest(self):
-        return True

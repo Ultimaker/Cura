@@ -52,11 +52,13 @@ class SliceInfo(Extension):
             self.send_slice_info_message.actionTriggered.connect(self.messageActionTriggered)
             self.send_slice_info_message.show()
 
+    ##  Perform action based on user input.
+    #   Note that clicking "Disable" won't actually disable the data sending, but rather take the user to preferences where they can disable it.
     def messageActionTriggered(self, message_id, action_id):
-        if action_id == "Disable":
-            CuraApplication.getInstance().triggerPreferenceWindow.emit()
-        self.send_slice_info_message.hide()
         Preferences.getInstance().setValue("info/asked_send_slice_info", True)
+        if action_id == "Disable":
+            CuraApplication.getInstance().showPreferences()
+        self.send_slice_info_message.hide()
 
     def _onWriteStarted(self, output_device):
         try:
