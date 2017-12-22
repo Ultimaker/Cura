@@ -76,7 +76,8 @@ class PlatformPhysics:
             if not node.getDecorator(ConvexHullDecorator):
                 node.addDecorator(ConvexHullDecorator())
 
-            if Preferences.getInstance().getValue("physics/automatic_push_free"):
+            # only push away objects if this node is a printing mesh
+            if not node.callDecoration("isNonPrintingMesh") and Preferences.getInstance().getValue("physics/automatic_push_free"):
                 # Check for collisions between convex hulls
                 for other_node in BreadthFirstIterator(root):
                     # Ignore root, ourselves and anything that is not a normal SceneNode.
@@ -97,6 +98,9 @@ class PlatformPhysics:
 
                     if other_node in transformed_nodes:
                         continue  # Other node is already moving, wait for next pass.
+
+                    if other_node.callDecoration("isNonPrintingMesh"):
+                        continue
 
                     overlap = (0, 0)  # Start loop with no overlap
                     current_overlap_checks = 0
