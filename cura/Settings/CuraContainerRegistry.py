@@ -453,7 +453,10 @@ class CuraContainerRegistry(ContainerRegistry):
         extruder_stack.setDefinitionChanges(definition_changes)
 
         # create empty user changes container otherwise
-        user_container = InstanceContainer(extruder_stack.getId() + "_user")
+        user_container_id = self.uniqueName(extruder_stack.getId() + "_user")
+        user_container_name = user_container_id
+        user_container = InstanceContainer(user_container_id)
+        user_container.setName(user_container_name)
         user_container.addMetaDataEntry("type", "user")
         user_container.addMetaDataEntry("machine", extruder_stack.getId())
         user_container.addMetaDataEntry("setting_version", CuraApplication.SettingVersion)
