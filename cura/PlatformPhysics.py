@@ -135,9 +135,9 @@ class PlatformPhysics:
                                     # if the distance between two models less than 2mm then try to find a new factor
                                     if abs(temp_move_vector.x - overlap[0]) < self._minimum_gap and abs(temp_move_vector.y - overlap[1]) < self._minimum_gap:
                                         temp_scale_factor = self._move_factor
-                                        temp_x_factor = (abs(overlap[0]) + self._minimum_gap) / overlap[0] # find x move_factor, like (3.4 + 2) / 3.4 = 1.58
-                                        temp_y_factor = (abs(overlap[1]) + self._minimum_gap) / overlap[1] # find y move_factor
-                                        if temp_x_factor > temp_y_factor:
+                                        temp_x_factor = (abs(overlap[0]) + self._minimum_gap) / overlap[0] if overlap[0] !=0 else 0# find x move_factor, like (3.4 + 2) / 3.4 = 1.58
+                                        temp_y_factor = (abs(overlap[1]) + self._minimum_gap) / overlap[1] if overlap[1] !=0 else 0 # find y move_factor
+                                        if abs(temp_x_factor) > abs(temp_y_factor):
                                             temp_scale_factor = temp_x_factor
                                         else:
                                             temp_scale_factor = temp_y_factor
