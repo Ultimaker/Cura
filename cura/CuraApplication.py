@@ -691,7 +691,7 @@ class CuraApplication(QtApplication):
         self.setMainQml(Resources.getPath(self.ResourceTypes.QmlFiles, "Cura.qml"))
         self._qml_import_paths.append(Resources.getPath(self.ResourceTypes.QmlFiles))
 
-        run_without_gui = self.getCommandLineOption("headless", False) or self.getCommandLineOption("invisible", False)
+        run_without_gui = self.getCommandLineOption("headless", False)
         if not run_without_gui:
             self.initializeEngine()
             controller.setActiveStage("PrepareStage")
