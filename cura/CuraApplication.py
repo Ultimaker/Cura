@@ -646,10 +646,6 @@ class CuraApplication(QtApplication):
         else:
             self.runWithGUI()
 
-    ##  Run Cura without GUI elements and interaction (server mode).
-    def runWithoutGUI(self):
-        self.closeSplash()
-
         for file_name in self.getCommandLineOption("file", []):
             self._openFile(file_name)
         for file_name in self._open_file_queue:  # Open all the files that were queued up while plug-ins were loading.
@@ -657,6 +653,10 @@ class CuraApplication(QtApplication):
 
         self._started = True
         self.exec_()
+
+    ##  Run Cura without GUI elements and interaction (server mode).
+    def runWithoutGUI(self):
+        self.closeSplash()
 
     ##  Run Cura with GUI (desktop mode).
     def runWithGUI(self):
@@ -715,9 +715,6 @@ class CuraApplication(QtApplication):
 
         # Hide the splash screen
         self.closeSplash()
-
-        self._started = True
-        self.exec_()
 
     def getMachineManager(self, *args) -> MachineManager:
         if self._machine_manager is None:
