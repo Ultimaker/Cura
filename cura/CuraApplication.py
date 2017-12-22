@@ -636,13 +636,35 @@ class CuraApplication(QtApplication):
     
     def run(self):
         self.preRun()
-        
-        self.showSplashMessage(self._i18n_catalog.i18nc("@info:progress", "Setting up scene..."))
 
+        # Check if we should run as single instance or not
         self._setUpSingleInstanceServer()
+
+        # Detect in which mode to run and execute that mode
+        if self.getCommandLineOption("headless", False):
+            self.runWithoutGUI()
+        else:
+            self.runWithGUI()
+
+    ##  Run Cura without GUI elements and interaction (server mode).
+    def runWithoutGUI(self):
+        self.closeSplash()
+
+        for file_name in self.getCommandLineOption("file", []):
+            self._openFile(file_name)
+        for file_name in self._open_file_queue:  # Open all the files that were queued up while plug-ins were loading.
+            self._openFile(file_name)
+
+        self._started = True
+        self.exec_()
+
+    ##  Run Cura with GUI (desktop mode).
+    def runWithGUI(self):
+        self.showSplashMessage(self._i18n_catalog.i18nc("@info:progress", "Setting up scene..."))
 
         controller = self.getController()
 
+        # Initialize UI state
         controller.setActiveStage("PrepareStage")
         controller.setActiveView("SolidView")
         controller.setCameraTool("CameraTool")
@@ -662,8 +684,10 @@ class CuraApplication(QtApplication):
         # Set the build volume of the arranger to the used build volume
         Arrange.build_volume = self._volume
 
+        # Set default background color for scene
         self.getRenderer().setBackgroundColor(QColor(245, 245, 245))
 
+        # Initialize platform physics
         self._physics = PlatformPhysics.PlatformPhysics(controller, self._volume)
 
         camera = Camera("3d", root)
@@ -691,22 +715,16 @@ class CuraApplication(QtApplication):
         self.setMainQml(Resources.getPath(self.ResourceTypes.QmlFiles, "Cura.qml"))
         self._qml_import_paths.append(Resources.getPath(self.ResourceTypes.QmlFiles))
 
-        run_without_gui = self.getCommandLineOption("headless", False)
-        if not run_without_gui:
-            self.initializeEngine()
-            controller.setActiveStage("PrepareStage")
+        self.initializeEngine()
 
-        if run_without_gui or self._engine.rootObjects:
-            self.closeSplash()
+        # Make sure the correct stage is activated
+        controller.setActiveStage("PrepareStage")
 
-            for file_name in self.getCommandLineOption("file", []):
-                self._openFile(file_name)
-            for file_name in self._open_file_queue: #Open all the files that were queued up while plug-ins were loading.
-                self._openFile(file_name)
+        # Hide the splash screen
+        self.closeSplash()
 
-            self._started = True
-
-            self.exec_()
+        self._started = True
+        self.exec_()
 
     def getMachineManager(self, *args) -> MachineManager:
         if self._machine_manager is None:
