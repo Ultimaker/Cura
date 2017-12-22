@@ -430,11 +430,35 @@ class CuraContainerRegistry(ContainerRegistry):
         extruder_stack.setDefinition(extruder_definition)
         extruder_stack.addMetaDataEntry("position", extruder_definition.getMetaDataEntry("position"))
 
+        from cura.CuraApplication import CuraApplication
+
+        # create a new definition_changes container for the extruder stack
+        definition_changes_id = self.uniqueName(extruder_stack.getId() + "_settings")
+        definition_changes_name = definition_changes_id
+        definition_changes = InstanceContainer(definition_changes_id)
+        definition_changes.setName(definition_changes_name)
+        definition_changes.addMetaDataEntry("setting_version", CuraApplication.SettingVersion)
+        definition_changes.addMetaDataEntry("type", "definition_changes")
+        definition_changes.addMetaDataEntry("definition", extruder_definition.getId())
+
+        # move definition_changes settings if exist
+        for setting_key in ("machine_nozzle_size", "material_diameter"):
+            setting_instance = machine.definitionChanges.getInstance(setting_key)
+            if setting_instance is not None:
+                # move it to the extruder stack's definition_changes
+                definition_changes.addInstance(setting_instance)
+                machine.definitionChanges.removeInstance(setting_key, postpone_emit = True)
+
+        self.addContainer(definition_changes)
+        extruder_stack.setDefinitionChanges(definition_changes)
+
         # create empty user changes container otherwise
-        user_container = InstanceContainer(extruder_stack.id + "_user")
+        user_container_id = self.uniqueName(extruder_stack.getId() + "_user")
+        user_container_name = user_container_id
+        user_container = InstanceContainer(user_container_id)
+        user_container.setName(user_container_name)
         user_container.addMetaDataEntry("type", "user")
         user_container.addMetaDataEntry("machine", extruder_stack.getId())
-        from cura.CuraApplication import CuraApplication
         user_container.addMetaDataEntry("setting_version", CuraApplication.SettingVersion)
         user_container.setDefinition(machine.definition.getId())
 
