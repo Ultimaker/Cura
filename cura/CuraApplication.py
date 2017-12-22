@@ -640,12 +640,18 @@ class CuraApplication(QtApplication):
         # Check if we should run as single instance or not
         self._setUpSingleInstanceServer()
 
+        # Setup scene and build volume
+        root = self.getController().getScene().getRoot()
+        self._volume = BuildVolume.BuildVolume(self.getController().getScene().getRoot())
+        Arrange.build_volume = self._volume
+
         # Detect in which mode to run and execute that mode
         if self.getCommandLineOption("headless", False):
             self.runWithoutGUI()
         else:
             self.runWithGUI()
 
+        # Pre-load files if requested
         for file_name in self.getCommandLineOption("file", []):
             self._openFile(file_name)
         for file_name in self._open_file_queue:  # Open all the files that were queued up while plug-ins were loading.
@@ -676,41 +682,37 @@ class CuraApplication(QtApplication):
 
         Selection.selectionChanged.connect(self.onSelectionChanged)
 
-        root = controller.getScene().getRoot()
-
-        # The platform is a child of BuildVolume
-        self._volume = BuildVolume.BuildVolume(root)
-
-        # Set the build volume of the arranger to the used build volume
-        Arrange.build_volume = self._volume
-
         # Set default background color for scene
         self.getRenderer().setBackgroundColor(QColor(245, 245, 245))
 
         # Initialize platform physics
         self._physics = PlatformPhysics.PlatformPhysics(controller, self._volume)
 
+        # Initialize camera
+        root = controller.getScene().getRoot()
         camera = Camera("3d", root)
         camera.setPosition(Vector(-80, 250, 700))
         camera.setPerspective(True)
         camera.lookAt(Vector(0, 0, 0))
         controller.getScene().setActiveCamera("3d")
 
-        camera_tool = self.getController().getTool("CameraTool")
+        # Initialize camera tool
+        camera_tool = controller.getTool("CameraTool")
         camera_tool.setOrigin(Vector(0, 100, 0))
         camera_tool.setZoomRange(0.1, 200000)
 
+        # Initialize camera animations
         self._camera_animation = CameraAnimation.CameraAnimation()
         self._camera_animation.setCameraTool(self.getController().getTool("CameraTool"))
 
         self.showSplashMessage(self._i18n_catalog.i18nc("@info:progress", "Loading interface..."))
 
+        # Initialize QML engine
         self.setMainQml(Resources.getPath(self.ResourceTypes.QmlFiles, "Cura.qml"))
         self._qml_import_paths.append(Resources.getPath(self.ResourceTypes.QmlFiles))
-
         self.initializeEngine()
 
-        # Make sure the correct stage is activated
+        # Make sure the correct stage is activated after QML is loaded
         controller.setActiveStage("PrepareStage")
 
         # Hide the splash screen
