@@ -59,12 +59,14 @@ class MonitorStage(CuraStage):
             if new_output_device != self._printer_output_device:
                 if self._printer_output_device:
                     self._printer_output_device.acceptsCommandsChanged.disconnect(self._updateIconSource)
+                    self._printer_output_device.connectionStateChanged.disconnect(self._updateIconSource)
                     self._printer_output_device.printersChanged.disconnect(self._onActivePrinterChanged)
 
                 self._printer_output_device = new_output_device
 
                 self._printer_output_device.acceptsCommandsChanged.connect(self._updateIconSource)
                 self._printer_output_device.printersChanged.connect(self._onActivePrinterChanged)
+                self._printer_output_device.connectionStateChanged.connect(self._updateIconSource)
                 self._setActivePrinter(self._printer_output_device.activePrinter)
 
                 # Force an update of the icon source
