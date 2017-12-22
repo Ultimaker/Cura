@@ -246,8 +246,8 @@ class LegacyUM3OutputDevice(NetworkedPrinterOutputDevice):
                                          i18n_catalog.i18nc("@info:title", "Sending Data"))
         self._progress_message.addAction("Abort", i18n_catalog.i18nc("@action:button", "Cancel"), None, "")
         self._progress_message.actionTriggered.connect(self._progressMessageActionTriggered)
-
         self._progress_message.show()
+        
         compressed_gcode = self._compressGCode()
         if compressed_gcode is None:
             # Abort was called.
