@@ -14,6 +14,7 @@ from UM.Decorators import override
 from UM.Settings.ContainerRegistry import ContainerRegistry
 from UM.Settings.ContainerStack import ContainerStack
 from UM.Settings.InstanceContainer import InstanceContainer
+from UM.Settings.SettingInstance import SettingInstance
 from UM.Application import Application
 from UM.Logger import Logger
 from UM.Message import Message
@@ -443,10 +444,16 @@ class CuraContainerRegistry(ContainerRegistry):
 
         # move definition_changes settings if exist
         for setting_key in ("machine_nozzle_size", "material_diameter"):
-            setting_instance = machine.definitionChanges.getInstance(setting_key)
-            if setting_instance is not None:
+            setting_value = machine.definitionChanges.getProperty(setting_key, "value")
+            if setting_value is not None:
                 # move it to the extruder stack's definition_changes
-                definition_changes.addInstance(setting_instance)
+                setting_definition = machine.getSettingDefinition(setting_key)
+                new_instance = SettingInstance(setting_definition, definition_changes)
+                new_instance.setProperty("value", setting_value)
+                new_instance.resetState()  # Ensure that the state is not seen as a user state.
+                definition_changes.addInstance(new_instance)
+                definition_changes.setDirty(True)
+
                 machine.definitionChanges.removeInstance(setting_key, postpone_emit = True)
 
         self.addContainer(definition_changes)
