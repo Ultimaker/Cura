@@ -51,6 +51,8 @@ class NetworkedPrinterOutputDevice(PrinterOutputDevice):
         self._compressing_gcode = False
         self._gcode = []
 
+        self._connection_state_before_timeout = None
+
     def requestWrite(self, nodes, file_name=None, filter_by_machine=False, file_handler=None, **kwargs):
         raise NotImplementedError("requestWrite needs to be implemented")
 
@@ -114,7 +116,11 @@ class NetworkedPrinterOutputDevice(PrinterOutputDevice):
 
         if time_since_last_response > self._timeout_time >= time_since_last_request:
             # Go (or stay) into timeout.
+            if self._connection_state_before_timeout is None:
+                self._connection_state_before_timeout = self._connection_state
+
             self.setConnectionState(ConnectionState.closed)
+
             # We need to check if the manager needs to be re-created. If we don't, we get some issues when OSX goes to
             # sleep.
             if time_since_last_response > self._recreate_network_manager_time:
@@ -122,6 +128,10 @@ class NetworkedPrinterOutputDevice(PrinterOutputDevice):
                     self._createNetworkManager()
                 if time() - self._last_manager_create_time > self._recreate_network_manager_time:
                     self._createNetworkManager()
+        elif self._connection_state == ConnectionState.closed:
+            # Go out of timeout.
+            self.setConnectionState(self._connection_state_before_timeout)
+            self._connection_state_before_timeout = None
 
         return True
 
