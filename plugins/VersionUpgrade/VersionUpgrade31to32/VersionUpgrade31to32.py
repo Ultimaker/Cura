@@ -101,6 +101,11 @@ class VersionUpgrade31to32(VersionUpgrade):
         # Update version numbers
         parser["metadata"]["setting_version"] = "5"
 
+        # Re-serialise the file.
+        output = io.StringIO()
+        parser.write(output)
+        return [filename], [output.getvalue()]
+
     def _getSingleExtrusionMachineExtruders(self, definition_name):
         machine_instances_dir = Resources.getPath(CuraApplication.ResourceTypes.MachineStack)
         machine_instance_id = None
