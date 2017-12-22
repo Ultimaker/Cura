@@ -475,7 +475,15 @@ class CuraContainerRegistry(ContainerRegistry):
             for user_setting_key in machine.userChanges.getAllKeys():
                 settable_per_extruder = machine.getProperty(user_setting_key, "settable_per_extruder")
                 if settable_per_extruder:
-                    user_container.addInstance(machine.userChanges.getInstance(user_setting_key))
+                    setting_value = machine.getProperty(user_setting_key, "value")
+
+                    setting_definition = machine.getSettingDefinition(user_setting_key)
+                    new_instance = SettingInstance(setting_definition, definition_changes)
+                    new_instance.setProperty("value", setting_value)
+                    new_instance.resetState()  # Ensure that the state is not seen as a user state.
+                    user_container.addInstance(new_instance)
+                    user_container.setDirty(True)
+
                     machine.userChanges.removeInstance(user_setting_key, postpone_emit = True)
 
         self.addContainer(user_container)
