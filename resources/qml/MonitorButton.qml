@@ -204,7 +204,7 @@ Item
 
         Connections {
             target: CuraApplication
-            onAdditionalComponentsChanged: buttonsRow.updateAdditionalComponents
+            onAdditionalComponentsChanged: buttonsRow.updateAdditionalComponents("monitorButtons")
         }
 
         function updateAdditionalComponents (areaId) {
