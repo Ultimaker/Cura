@@ -138,7 +138,7 @@ class VersionUpgrade30to31(VersionUpgrade):
                         machine_extruders = self._getSingleExtrusionMachineExtruders(definition_name)
 
                         # For single extruder machine we need only first extruder
-                        if len(machine_extruders) !=0:
+                        if len(machine_extruders) != 0:
                             self._updateSingleExtruderDefinitionFile(machine_extruders, machine_nozzle_size)
                             parser.remove_option("values", "machine_nozzle_size")
 
