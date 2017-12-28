@@ -34,26 +34,12 @@
         },
         "material_diameter":{
             "default_value":1.75
-        },
-        "machine_head_polygon":{
-            "default_value":[
-                [
-                    0,
-                    0
-                ],
-                [
-                    0,
-                    0
-                ],
-                [
-                    0,
-                    0
-                ],
-                [
-                    0,
-                    0
-                ]
-            ]
+		},
+        "speed_travel":{
+            "default_value":60
+        },		
+        "speed_print":{
+            "default_value":50
         },
         "gantry_height":{
             "default_value":0
