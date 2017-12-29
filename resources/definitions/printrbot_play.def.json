@@ -38,7 +38,7 @@
         "machine_max_jerk_xy": { "default_value": 20 },
         "machine_max_jerk_z": { "default_value": 0.4 },
         "machine_max_jerk_e": { "default_value": 5.0 },
-        "machine_gcode_flavor": { "default_value": "RepRap (Marlin/Sprinter)" },
+        "machine_gcode_flavor": { "default_value": "Marlin" },
         "machine_start_gcode": {
             "default_value": "G21 ;metric values\nG90 ;absolute positioning\nM82 ;set extruder to absolute mode\nM106 ;start with the fan on for filament cooling\nG28 X0 Y0 ;move X/Y to min endstops\nG28 Z0 ;move Z to min endstops\nG29 ;run auto bed leveling\nG1 Z15.0 F9000 ;move the platform down 15mm\nG92 E0 ;zero the extruded length\nG1 F200 E10 ;extrude 10mm of feed stock\nG92 E0 ;zero the extruded length again\nG1 F9000\n;Put printing message on LCD screen\nM117 Printing..."
         },

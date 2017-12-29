@@ -35,7 +35,7 @@
             "default_value": false
         },
         "machine_gcode_flavor": {
-            "default_value": "RepRap (Marlin/Sprinter)"
+            "default_value": "Marlin"
         },
         "material_print_temperature": {
             "default_value": 210

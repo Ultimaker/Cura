@@ -26,7 +26,7 @@
             ]
         },
         "gantry_height": { "default_value": 0 },
-        "machine_gcode_flavor": { "default_value": "RepRap (Marlin/Sprinter)" },
+        "machine_gcode_flavor": { "default_value": "Marlin" },
 
         "machine_start_gcode": {
             "default_value": "M117 Initializing...\nG28 ; home all axes\nG90 ; use absolute coordinates\nG1 F12000 X0 Y0 Z30  ; lift nozzle 30 mm\nT0 ; select extruder 1\nG92 E0 ; reset extruder length\nG1 F100 Z30 E7 ; extrude 7mm while going up\nG92 E0 ; zero the extruder length\nM117 Printing...\n"

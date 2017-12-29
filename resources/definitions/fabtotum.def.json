@@ -34,7 +34,7 @@
     "machine_heated_bed": {	"default_value": true },
     "machine_nozzle_size": { "default_value": 0.4 },
     "machine_head_with_fans_polygon": { "default_value": [[-75, 35], [-75, -18], [18, 35], [18, -18]] },
-    "machine_gcode_flavor": { "default_value": "RepRap (Marlin/Sprinter)" },
+    "machine_gcode_flavor": { "default_value": "Marlin" },
     "machine_max_feedrate_x": { "default_value": 250 },
     "machine_max_feedrate_y": { "default_value": 250 },
     "machine_max_feedrate_z": { "default_value": 15 },

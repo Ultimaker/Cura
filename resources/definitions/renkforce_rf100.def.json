@@ -59,7 +59,7 @@
             "default_value": ";End GCode\nG91 ;relative positioning\nG1 E-1 F300 ;retract the filament a bit before lifting the nozzle, to release some of the pressure\nG1 E-5 X-20 Y-20 ;retract filament even more\nG28 X0 Y0 ;move X/Y to min endstops, so the head is out of the way\nG0 Z{machine_height} ;move the platform all the way down\nM104 S0 ;extruder heater off\nM140 S0 ;heated bed heater off (if you have it)\nM84 ;steppers off\nG90 ;absolute positioning\nM117 Done"
         },
         "machine_gcode_flavor": {
-            "default_value": "RepRap (Marlin/Sprinter)"
+            "default_value": "Marlin"
         },
         "machine_height": {
             "value": "100"
