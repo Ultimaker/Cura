@@ -334,7 +334,7 @@ msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "machine_gcode_flavor option RepRap (Marlin/Sprinter)"
-msgid "Marlin"
+msgid "RepRap (Marlin/Sprinter)"
 msgstr ""
 
 #: fdmprinter.def.json
