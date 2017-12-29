@@ -303,7 +303,7 @@ msgid "The type of gcode to be generated."
 msgstr "需要生成的 G-code 代码类型"
 
 #: fdmprinter.def.json
-msgctxt "machine_gcode_flavor option RepRap (Marlin/Sprinter)"
+msgctxt "machine_gcode_flavor option Marlin"
 msgid "Marlin"
 msgstr "Marlin"
 
@@ -5124,9 +5124,9 @@ msgstr "在将模型从文件中载入时应用在模型上的转换矩阵。"
 #~ msgid "Is center origin"
 #~ msgstr "机器中心为零点"
 
-#~ msgctxt "machine_gcode_flavor option RepRap (Marlin/Sprinter)"
-#~ msgid "RepRap (Marlin/Sprinter)"
-#~ msgstr "RepRap (Marlin/Sprinter)"
+#~ msgctxt "machine_gcode_flavor option Marlin"
+#~ msgid "Marlin"
+#~ msgstr "Marlin"
 
 #~ msgctxt "machine_gcode_flavor option RepRap (Volumatric)"
 #~ msgid "RepRap (Volumetric)"

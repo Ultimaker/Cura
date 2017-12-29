@@ -301,7 +301,7 @@ msgid "The type of gcode to be generated."
 msgstr "Tipo de Gcode que se va a generar."
 
 #: fdmprinter.def.json
-msgctxt "machine_gcode_flavor option RepRap (Marlin/Sprinter)"
+msgctxt "machine_gcode_flavor option Marlin"
 msgid "Marlin"
 msgstr "Marlin"
 
@@ -5130,9 +5130,9 @@ msgstr "Matriz de transformación que se aplicará al modelo cuando se cargue de
 #~ msgid "Is center origin"
 #~ msgstr "El origen está centrado"
 
-#~ msgctxt "machine_gcode_flavor option RepRap (Marlin/Sprinter)"
-#~ msgid "RepRap (Marlin/Sprinter)"
-#~ msgstr "RepRap (Marlin/Sprinter)"
+#~ msgctxt "machine_gcode_flavor option Marlin"
+#~ msgid "Marlin"
+#~ msgstr "Marlin"
 
 #~ msgctxt "machine_gcode_flavor option RepRap (Volumatric)"
 #~ msgid "RepRap (Volumetric)"
