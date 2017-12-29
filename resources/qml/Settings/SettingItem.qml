@@ -1,5 +1,5 @@
-// Copyright (c) 2015 Ultimaker B.V.
-// Uranium is released under the terms of the LGPLv3 or higher.
+// Copyright (c) 2017 Ultimaker B.V.
+// Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.1
 import QtQuick.Layouts 1.1
@@ -154,7 +154,7 @@ Item {
 
                 onEntered: {
                     hoverTimer.stop();
-                    var tooltipText = catalog.i18nc("@label", "This setting is always shared between all extruders. Changing it here will change the value for all extruders") + ".";
+                    var tooltipText = catalog.i18nc("@label", "This setting is always shared between all extruders. Changing it here will change the value for all extruders.");
                     if ((resolve != "None") && (stackLevel != 0)) {
                         // We come here if a setting has a resolve and the setting is not manually edited.
                         tooltipText += " " + catalog.i18nc("@label", "The value is resolved from per-extruder values ") + "[" + Cura.ExtruderManager.getInstanceExtruderValues(definition.key) + "].";
