@@ -28,12 +28,17 @@ function(cura_add_test)
         string(REPLACE "|" ":" _PYTHONPATH ${_PYTHONPATH})
     endif()
 
-    add_test(
-        NAME ${_NAME}
-        COMMAND ${PYTHON_EXECUTABLE} -m pytest --junitxml=${CMAKE_BINARY_DIR}/junit-${_NAME}.xml ${_DIRECTORY}
-    )
-    set_tests_properties(${_NAME} PROPERTIES ENVIRONMENT LANG=C)
-    set_tests_properties(${_NAME} PROPERTIES ENVIRONMENT "PYTHONPATH=${_PYTHONPATH}")
+    get_test_property(${_NAME} ENVIRONMENT test_exists) #Find out if the test exists by getting a property from it that always exists (such as ENVIRONMENT because we set that ourselves).
+    if (${test_exists} EQUAL "NOTFOUND")
+        add_test(
+            NAME ${_NAME}
+            COMMAND ${PYTHON_EXECUTABLE} -m pytest --junitxml=${CMAKE_BINARY_DIR}/junit-${_NAME}.xml ${_DIRECTORY}
+        )
+        set_tests_properties(${_NAME} PROPERTIES ENVIRONMENT LANG=C)
+        set_tests_properties(${_NAME} PROPERTIES ENVIRONMENT "PYTHONPATH=${_PYTHONPATH}")
+    else()
+        message(WARNING "Duplicate test ${_NAME}!")
+    endif()
 endfunction()
 
 cura_add_test(NAME pytest-main DIRECTORY ${CMAKE_SOURCE_DIR}/tests PYTHONPATH "${CMAKE_SOURCE_DIR}|${URANIUM_DIR}")
