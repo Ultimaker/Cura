@@ -43,12 +43,11 @@ class ShapeArray:
         transform_x = transform._data[0][3]
         transform_y = transform._data[2][3]
         hull_verts = node.callDecoration("getConvexHull")
+        # If a model is too small then it will not contain any points
+        if hull_verts is None or not hull_verts.getPoints().any():
+            return None, None
         # For one_at_a_time printing you need the convex hull head.
         hull_head_verts = node.callDecoration("getConvexHullHead") or hull_verts
-
-        # If a model is to small then it will not contain any points
-        if not hull_verts.getPoints().any():
-            return None, None
 
         offset_verts = hull_head_verts.getMinkowskiHull(Polygon.approximatedCircle(min_offset))
         offset_points = copy.deepcopy(offset_verts._points)  # x, y
