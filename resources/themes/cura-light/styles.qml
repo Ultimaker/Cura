@@ -202,9 +202,8 @@ QtObject {
                     height: Theme.getSize("topbar_button_icon").height
                     Label
                     {
+                        id: button_label
                         text: control.text;
-                        anchors.right: (icon.visible || overlayIcon.visible) ? icon.left : parent.right
-                        anchors.rightMargin: (icon.visible || overlayIcon.visible) ? Theme.getSize("default_margin").width : 0
                         anchors.verticalCenter: parent.verticalCenter;
                         font: control.checked ? UM.Theme.getFont("large") : UM.Theme.getFont("large_nonbold")
                         color:
@@ -227,6 +226,8 @@ QtObject {
                     {
                         visible: control.iconSource != ""
                         id: icon
+                        anchors.left: button_label.right
+                        anchors.leftMargin: (icon.visible || overlayIcon.visible) ? Theme.getSize("default_margin").width : 0
                         color: UM.Theme.getColor("text_emphasis")
                         opacity: !control.enabled ? 0.2 : 1.0
                         source: control.iconSource
@@ -238,6 +239,8 @@ QtObject {
                     UM.RecolorImage
                     {
                         id: overlayIcon
+                        anchors.left: button_label.right
+                        anchors.leftMargin: (icon.visible || overlayIcon.visible) ? Theme.getSize("default_margin").width : 0
                         visible: control.overlayIconSource != "" && control.iconSource != ""
                         color: control.overlayColor
                         opacity: !control.enabled ? 0.2 : 1.0

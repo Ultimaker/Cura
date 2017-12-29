@@ -1387,7 +1387,7 @@ class CuraApplication(QtApplication):
 
             if node.callDecoration("isSliceable"):
                 # Only check position if it's not already blatantly obvious that it won't fit.
-                if node.getBoundingBox().width < self._volume.getBoundingBox().width or node.getBoundingBox().depth < self._volume.getBoundingBox().depth:
+                if node.getBoundingBox() is None or self._volume.getBoundingBox() is None or node.getBoundingBox().width < self._volume.getBoundingBox().width or node.getBoundingBox().depth < self._volume.getBoundingBox().depth:
                     # Find node location
                     offset_shape_arr, hull_shape_arr = ShapeArray.fromNode(node, min_offset = min_offset)
 

@@ -1,5 +1,5 @@
-// Copyright (c) 2015 Ultimaker B.V.
-// Uranium is released under the terms of the LGPLv3 or higher.
+// Copyright (c) 2017 Ultimaker B.V.
+// Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.2
 import QtQuick.Controls 1.1
@@ -31,13 +31,17 @@ Button {
 
     onClicked:
     {
-        forceActiveFocus();
         if(definition.expanded)
         {
             settingDefinitionsModel.collapse(definition.key);
-        } else {
+        }
+        else
+        {
             settingDefinitionsModel.expandAll(definition.key);
         }
+        //Set focus so that tab navigation continues from this point on.
+        //NB: This must be set AFTER collapsing/expanding the category so that the scroll position is correct.
+        forceActiveFocus();
     }
     onActiveFocusChanged:
     {
