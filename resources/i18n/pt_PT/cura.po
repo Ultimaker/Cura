@@ -568,7 +568,7 @@ msgstr "Não é possível enviar tarefa de impressão para o grupo {cluster_name
 #, python-brace-format
 msgctxt "@info:status"
 msgid "Sent {file_name} to group {cluster_name}."
-msgstr "{File_name} enviado para o grupo {cluster_name}."
+msgstr "{file_name} enviado para o grupo {cluster_name}."
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/NetworkClusterPrinterOutputDevice.py:423
 msgctxt "@action:button"
@@ -1306,7 +1306,7 @@ msgctxt ""
 "@info 'width', 'depth' and 'height' are variable names that must NOT be "
 "translated; just translate the format of ##x##x## mm."
 msgid "%(width).1f x %(depth).1f x %(height).1f mm"
-msgstr "%(largura).1f x %(profundidade).1f x %(altura).1f mm"
+msgstr "%(width).1f x %(depth).1f x %(height).1f mm"
 
 #: /home/ruben/Projects/Cura/cura/CuraApplication.py:1348
 #, python-brace-format
@@ -2043,7 +2043,7 @@ msgstr "Largura (mm)"
 #: /home/ruben/Projects/Cura/plugins/ImageReader/ConfigUI.qml:103
 msgctxt "@info:tooltip"
 msgid "The depth in millimeters on the build plate"
-msgstr "A profundidade em milímetros na placa de construção."
+msgstr "A profundidade em milímetros na placa de construção"
 
 #: /home/ruben/Projects/Cura/plugins/ImageReader/ConfigUI.qml:108
 msgctxt "@action:label"
@@ -3376,7 +3376,7 @@ msgctxt "@label"
 msgid ""
 "This setting is always shared between all extruders. Changing it here will "
 "change the value for all extruders"
-msgstr "Esta definição é sempre partilhada entre todas as extrusoras. Ao alterá-la aqui, o valor será alterado para todas as extrusoras."
+msgstr "Esta definição é sempre partilhada entre todas as extrusoras. Ao alterá-la aqui, o valor será alterado para todas as extrusoras"
 
 #: /home/ruben/Projects/Cura/resources/qml/Settings/SettingItem.qml:160
 msgctxt "@label"
