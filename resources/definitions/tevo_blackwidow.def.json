@@ -39,7 +39,7 @@
             "default_value": 0
         },
         "machine_gcode_flavor": {
-            "default_value": "RepRap (Marlin/Sprinter)"
+            "default_value": "Marlin"
         },
         "speed_travel": {
             "default_value": 70
