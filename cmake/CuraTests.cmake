@@ -29,7 +29,7 @@ function(cura_add_test)
     endif()
 
     get_test_property(${_NAME} ENVIRONMENT test_exists) #Find out if the test exists by getting a property from it that always exists (such as ENVIRONMENT because we set that ourselves).
-    if (${test_exists} EQUAL "NOTFOUND")
+    if (NOT ${test_exists})
         add_test(
             NAME ${_NAME}
             COMMAND ${PYTHON_EXECUTABLE} -m pytest --junitxml=${CMAKE_BINARY_DIR}/junit-${_NAME}.xml ${_DIRECTORY}
