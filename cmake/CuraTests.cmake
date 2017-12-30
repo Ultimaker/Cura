@@ -24,8 +24,10 @@ function(cura_add_test)
     
     if(WIN32)
         string(REPLACE "|" "\\;" _PYTHONPATH ${_PYTHONPATH})
+        set(_PYTHONPATH "${_PYTHONPATH}\\;$ENV{PYTHONPATH}")
     else()
         string(REPLACE "|" ":" _PYTHONPATH ${_PYTHONPATH})
+        set(_PYTHONPATH "${_PYTHONPATH}:$ENV{PYTHONPATH}")
     endif()
 
     get_test_property(${_NAME} ENVIRONMENT test_exists) #Find out if the test exists by getting a property from it that always exists (such as ENVIRONMENT because we set that ourselves).
