@@ -258,6 +258,10 @@ class StartSliceJob(Job):
         result["date"] = time.strftime("%d-%m-%Y")
         result["day"] = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"][int(time.strftime("%w"))]
 
+        initial_extruder_stack = Application.getInstance().getExtruderManager().getUsedExtruderStacks()[0]
+        initial_extruder_nr = initial_extruder_stack.getProperty("extruder_nr", "value")
+        result["initial_extruder_nr"] = initial_extruder_nr
+
         return result
 
     ##  Replace setting tokens in a piece of g-code.
@@ -266,9 +270,11 @@ class StartSliceJob(Job):
     def _expandGcodeTokens(self, value: str, default_extruder_nr: int = -1):
         if not self._all_extruders_settings:
             global_stack = Application.getInstance().getGlobalContainerStack()
+
             self._all_extruders_settings = {}
-            # keys must be strings for the string formatter
+            # NB: keys must be strings for the string formatter
             self._all_extruders_settings["-1"] = self._buildReplacementTokens(global_stack)
+
             for extruder_stack in ExtruderManager.getInstance().getMachineExtruders(global_stack.getId()):
                 extruder_nr = extruder_stack.getProperty("extruder_nr", "value")
                 self._all_extruders_settings[str(extruder_nr)] = self._buildReplacementTokens(extruder_stack)
@@ -320,11 +326,11 @@ class StartSliceJob(Job):
         print_temperature_settings = {"material_print_temperature", "material_print_temperature_layer_0", "default_material_print_temperature", "material_initial_print_temperature", "material_final_print_temperature", "material_standby_temperature"}
         settings["material_print_temp_prepend"] = all(("{" + setting + "}" not in start_gcode for setting in print_temperature_settings))
 
-        # Find the correct temperatures from the first used extruder
+        # Replace the setting tokens in start and end g-code.
+        # Use values from the first used extruder by default so we get the expected temperatures
         initial_extruder_stack = Application.getInstance().getExtruderManager().getUsedExtruderStacks()[0]
         initial_extruder_nr = initial_extruder_stack.getProperty("extruder_nr", "value")
 
-        # Replace the setting tokens in start and end g-code.
         settings["machine_start_gcode"] = self._expandGcodeTokens(settings["machine_start_gcode"], initial_extruder_nr)
         settings["machine_end_gcode"] = self._expandGcodeTokens(settings["machine_end_gcode"], initial_extruder_nr)
 
