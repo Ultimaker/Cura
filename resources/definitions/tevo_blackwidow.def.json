@@ -8,7 +8,10 @@
         "manufacturer": "Tevo",
         "file_formats": "text/x-gcode",
         "icon": "icon_ultimaker2",
-        "platform": "prusai3_platform.stl"
+		"has_materials": false,
+        "has_machine_quality": true,
+        "platform": "prusai3_platform.stl",
+		"preferred_quality": "*normal*"
     },
     "overrides": {
         "machine_name": {
@@ -33,19 +36,13 @@
             "default_value": 0.4
         },
         "material_diameter": {
-            "default_value": 1.75
+            "default_value": 1.75			
         },
         "gantry_height": {
             "default_value": 0
         },
         "machine_gcode_flavor": {
             "default_value": "RepRap (Marlin/Sprinter)"
-        },
-        "speed_travel": {
-            "default_value": 70
-        },
-        "speed_print": {
-            "default_value": 60
         },
         "machine_start_gcode": {
             "default_value": "M280 P0 S160 ; release BLTouch alarm (OK to send for Non BLTouch)\M420 Z2 ; set fade leveling at 2mm for BLTouch (OK to send for Non BLTouch)\G28 ; home all\G29 ; probe bed\G92 E0 ;zero the extruded length\G1 X0.0 Y50.0 Z10.0 F3600\; perform wipe and prime\G1 Z0.0 F1000\G1 Z0.2 Y70.0 E9.0 F1000.0 ; prime\G1 Y100.0 E12.5 F1000.0 ; prime\G92 E0 ; zero extruder again\M117 Printing..."
