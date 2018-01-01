@@ -453,6 +453,12 @@ msgctxt "@info:status"
 msgid "Sending new jobs (temporarily) blocked, still sending the previous print job."
 msgstr "Das Senden neuer Aufträge ist (vorübergehend) blockiert; der vorherige Druckauftrag wird noch gesendet."
 
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/NetworkPrinterOutputDevice.py:872
+msgctxt "@info:status"
+msgid "Sending new jobs blocked, a print job is currently in progress."
+msgstr "Das Senden neuer Aufträge ist blockiert; ein Druckauftrag wird ausgeführt."
+
+
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/NetworkPrinterOutputDevice.py:873
 msgctxt "@info:status"
 msgid "Sending data to printer"
