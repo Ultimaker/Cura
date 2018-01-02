@@ -54,6 +54,8 @@ class NetworkPrinterOutputDevicePlugin(QObject, OutputDevicePlugin):
         self._preferences = Preferences.getInstance()
         self._preferences.addPreference("um3networkprinting/manual_instances", "") #  A comma-separated list of ip adresses or hostnames
         self._manual_instances = self._preferences.getValue("um3networkprinting/manual_instances").split(",")
+        self._preferences.addPreference("um3networkprinting/prevent_queue", False) # Whether to prevent queuing of prints over network
+        self._prevent_queue = self._preferences.getValue("um3networkprinting/prevent_queue")
 
         self._network_requests_buffer = {}  # store api responses until data is complete
 

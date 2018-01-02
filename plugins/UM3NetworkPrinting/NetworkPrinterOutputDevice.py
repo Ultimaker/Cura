@@ -865,6 +865,14 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
             self._error_message.show()
             return
 
+        # Check if the printer is already printing, if user wants to prevent queuing, stop queuing.
+        if not self._print_finished and self._prevent_queue:
+            self._error_message = Message(
+                i18n_catalog.i18nc("@info:status",
+                                   "Sending new jobs blocked, a print job is currently in progress."))
+            self._error_message.show()
+            return
+
         # Indicate we're starting a new write action, is set back to True at the end of this method
         self._write_finished = False
 
