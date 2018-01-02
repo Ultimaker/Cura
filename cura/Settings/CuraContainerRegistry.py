@@ -443,18 +443,19 @@ class CuraContainerRegistry(ContainerRegistry):
         definition_changes.addMetaDataEntry("definition", extruder_definition.getId())
 
         # move definition_changes settings if exist
-        for setting_key in ("machine_nozzle_size", "material_diameter"):
-            setting_value = machine.definitionChanges.getProperty(setting_key, "value")
-            if setting_value is not None:
-                # move it to the extruder stack's definition_changes
-                setting_definition = machine.getSettingDefinition(setting_key)
-                new_instance = SettingInstance(setting_definition, definition_changes)
-                new_instance.setProperty("value", setting_value)
-                new_instance.resetState()  # Ensure that the state is not seen as a user state.
-                definition_changes.addInstance(new_instance)
-                definition_changes.setDirty(True)
+        for setting_key in definition_changes.getAllKeys():
+            if machine.definition.getProperty(setting_key, "settable_per_extruder"):
+                setting_value = machine.definitionChanges.getProperty(setting_key, "value")
+                if setting_value is not None:
+                    # move it to the extruder stack's definition_changes
+                    setting_definition = machine.getSettingDefinition(setting_key)
+                    new_instance = SettingInstance(setting_definition, definition_changes)
+                    new_instance.setProperty("value", setting_value)
+                    new_instance.resetState()  # Ensure that the state is not seen as a user state.
+                    definition_changes.addInstance(new_instance)
+                    definition_changes.setDirty(True)
 
-                machine.definitionChanges.removeInstance(setting_key, postpone_emit = True)
+                    machine.definitionChanges.removeInstance(setting_key, postpone_emit = True)
 
         self.addContainer(definition_changes)
         extruder_stack.setDefinitionChanges(definition_changes)
