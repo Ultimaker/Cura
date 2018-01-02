@@ -224,7 +224,7 @@ class CuraContainerRegistry(ContainerRegistry):
                         # This is assumed to be the global profile
                         profile_id = (global_container_stack.getBottom().getId() + "_" + name_seed).lower().replace(" ", "_")
 
-                    elif len(machine_extruders) > profile_index:
+                    elif profile_index < len(machine_extruders) + 1:
                         # This is assumed to be an extruder profile
                         extruder_id = Application.getInstance().getMachineManager().getQualityDefinitionId(machine_extruders[profile_index - 1].getBottom())
                         if not profile.getMetaDataEntry("extruder"):
