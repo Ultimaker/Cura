@@ -1,5 +1,4 @@
 {
-    "id": "builder_premium_small",
     "version": 2,
     "name": "Builder Premium Small",
     "inherits": "fdmprinter",

@@ -122,6 +122,26 @@ class VersionUpgrade30to31(VersionUpgrade):
             if len(all_quality_changes) <= 1 and not parser.has_option("metadata", "extruder"):
                 self._createExtruderQualityChangesForSingleExtrusionMachine(filename, parser)
 
+        if parser["metadata"]["type"] == "definition_changes":
+            if parser["general"]["definition"] == "custom":
+
+                # We are only interested in machine_nozzle_size
+                if parser.has_option("values", "machine_nozzle_size"):
+                    machine_nozzle_size = parser["values"]["machine_nozzle_size"]
+
+                    machine_extruder_count = '1' # by default it is 1 and the value cannot be stored in the global stack
+                    if parser.has_option("values", "machine_extruder_count"):
+                        machine_extruder_count = parser["values"]["machine_extruder_count"]
+
+                    if machine_extruder_count == '1':
+                        definition_name = parser["general"]["name"]
+                        machine_extruders = self._getSingleExtrusionMachineExtruders(definition_name)
+
+                        # For single extruder machine we need only first extruder
+                        if len(machine_extruders) != 0:
+                            self._updateSingleExtruderDefinitionFile(machine_extruders, machine_nozzle_size)
+                            parser.remove_option("values", "machine_nozzle_size")
+
         # Update version numbers
         parser["general"]["version"] = "2"
         parser["metadata"]["setting_version"] = "4"
