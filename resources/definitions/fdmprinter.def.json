@@ -1168,6 +1168,14 @@
                     "limit_to_extruder": "wall_0_extruder_nr",
                     "settable_per_mesh": true
                 },
+                "optimize_wall_printing_order":
+                {
+                    "label": "Optimize Wall Printing Order",
+                    "description": "Optimize the order in which walls are printed so as to reduce the number of retractions and the distance travelled. Most parts will benefit from this being enabled but some may actually take longer so please compare the print time estimates with and without optimization.",
+                    "type": "bool",
+                    "default_value": false,
+                    "settable_per_mesh": true
+                },
                 "outer_inset_first":
                 {
                     "label": "Outer Before Inner Walls",
@@ -5216,14 +5224,6 @@
             "description": "experimental!",
             "children":
             {
-                "optimize_wall_printing_order":
-                {
-                    "label": "Optimize Wall Printing Order",
-                    "description": "Optimize the order in which walls are printed so as to reduce the number of retractions and the distance travelled. Most parts will benefit from this being enabled but some may actually take longer so please compare the print time estimates with and without optimization.",
-                    "type": "bool",
-                    "default_value": false,
-                    "settable_per_mesh": true
-                },
                 "support_skip_some_zags":
                 {
                     "label": "Break Up Support In Chunks",
