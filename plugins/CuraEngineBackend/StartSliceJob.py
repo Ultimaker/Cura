@@ -10,7 +10,6 @@ from UM.Job import Job
 from UM.Application import Application
 from UM.Logger import Logger
 
-#from UM.Scene.SceneNode import SceneNode
 from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 
 from UM.Settings.Validator import ValidatorState

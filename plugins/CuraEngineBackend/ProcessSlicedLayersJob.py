@@ -4,7 +4,6 @@
 import gc
 
 from UM.Job import Job
-from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 from UM.Scene.SceneNode import SceneNode
 from UM.Application import Application
 from UM.Mesh.MeshData import MeshData
@@ -22,7 +21,6 @@ from cura.Settings.ExtruderManager import ExtruderManager
 from cura import LayerDataBuilder
 from cura import LayerDataDecorator
 from cura import LayerPolygon
-# from cura.Scene.CuraSceneNode import CuraSceneNode
 
 import numpy
 from time import time

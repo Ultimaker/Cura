@@ -8,7 +8,6 @@ from PyQt5.QtCore import Qt
 
 from UM.Mesh.MeshReader import MeshReader
 from UM.Mesh.MeshBuilder import MeshBuilder
-#from UM.Scene.SceneNode import SceneNode
 from UM.Math.Vector import Vector
 from UM.Job import Job
 from UM.Logger import Logger

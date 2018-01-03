@@ -11,7 +11,6 @@ from UM.Math.Matrix import Matrix
 from UM.Math.Vector import Vector
 from UM.Mesh.MeshBuilder import MeshBuilder
 from UM.Mesh.MeshReader import MeshReader
-#from UM.Scene.SceneNode import SceneNode
 from cura.Scene.CuraSceneNode import CuraSceneNode as SceneNode
 
 MYPY = False

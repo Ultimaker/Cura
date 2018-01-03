@@ -6,7 +6,7 @@ from UM.Operations.Operation import Operation
 
 from cura.Settings.SettingOverrideDecorator import SettingOverrideDecorator
 
-##  Simple operation to set the extruder a certain object should be printed with.
+##  Simple operation to set the buildplate number of a scenenode.
 class SetBuildPlateNumberOperation(Operation):
     def __init__(self, node: SceneNode, build_plate_nr: int) -> None:
         self._node = node

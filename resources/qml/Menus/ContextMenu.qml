@@ -42,6 +42,7 @@ Menu
     MenuSeparator {
         visible: UM.Preferences.getValue("cura/use_multi_build_plate")
     }
+
     Instantiator
     {
         model: Cura.BuildPlateModel
@@ -55,6 +56,7 @@ Menu
         onObjectAdded: base.insertItem(index, object);
         onObjectRemoved: base.removeItem(object);
     }
+
     MenuItem {
         text: "New build plate";
         onTriggered: {
