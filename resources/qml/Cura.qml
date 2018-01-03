@@ -383,10 +383,6 @@ UM.MainWindow
                 {
                     bottom: parent.bottom;
                     left: parent.left;
-                    leftMargin: UM.Theme.getSize("default_margin").width;
-                    rightMargin: UM.Theme.getSize("default_margin").width;
-                    topMargin: UM.Theme.getSize("default_margin").height;
-                    bottomMargin: UM.Theme.getSize("default_margin").height;
                 }
 
             }
