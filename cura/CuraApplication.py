@@ -35,7 +35,7 @@ from UM.Operations.SetTransformOperation import SetTransformOperation
 from cura.Arranging.Arrange import Arrange
 from cura.ShapeArray import ShapeArray
 from cura.ConvexHullDecorator import ConvexHullDecorator
-from cura.SetParentOperation import SetParentOperation
+from cura.Operations.SetParentOperation import SetParentOperation
 from cura.SliceableObjectDecorator import SliceableObjectDecorator
 from cura.BlockSlicingDecorator import BlockSlicingDecorator
 from cura.Scene.BuildPlateDecorator import BuildPlateDecorator

@@ -12,7 +12,7 @@ from UM.Preferences import Preferences
 
 from cura.ConvexHullDecorator import ConvexHullDecorator
 
-from . import PlatformPhysicsOperation
+from cura.Operations import PlatformPhysicsOperation
 from . import ZOffsetDecorator
 
 import random  # used for list shuffling
