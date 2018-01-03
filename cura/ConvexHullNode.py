@@ -64,8 +64,8 @@ class ConvexHullNode(SceneNode):
             ConvexHullNode.shader.setUniformValue("u_diffuseColor", self._color)
             ConvexHullNode.shader.setUniformValue("u_opacity", 0.6)
 
-        if self.getParent() and self.getParent().callDecoration("getBuildPlateNumber") == Application.getInstance().getBuildPlateModel().activeBuildPlate:
-            if self.getMeshData():
+        if self.getParent():
+            if self.getMeshData() and issubclass(type(self._node), SceneNode) and self._node.callDecoration("getBuildPlateNumber") == Application.getInstance().getBuildPlateModel().activeBuildPlate:
                 renderer.queueNode(self, transparent = True, shader = ConvexHullNode.shader, backface_cull = True, sort = -8)
                 if self._convex_hull_head_mesh:
                     renderer.queueNode(self, shader = ConvexHullNode.shader, transparent = True, mesh = self._convex_hull_head_mesh, backface_cull = True, sort = -8)
