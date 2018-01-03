@@ -107,14 +107,18 @@ SettingItem
                 return UM.Theme.getColor("setting_control_border")
             }
         }
+
         contentItem: Item
         {
             Label
             {
                 id: extruderText
+
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.left: parent.left
+                anchors.leftMargin: UM.Theme.getSize("setting_unit_margin").width
                 anchors.right: swatch.left
+
                 text: control.currentText
                 font: UM.Theme.getFont("default")
                 color: enabled ? UM.Theme.getColor("setting_control_text") : UM.Theme.getColor("setting_control_disabled_text")
@@ -122,6 +126,7 @@ SettingItem
                 elide: Text.ElideLeft
                 verticalAlignment: Text.AlignVCenter
             }
+
             Rectangle
             {
                 id: swatch
@@ -129,9 +134,11 @@ SettingItem
                 width: height
 
                 anchors.right: parent.right
-                anchors.rightMargin: control.indicator.width + control.spacing
+                anchors.rightMargin: control.indicator.width + UM.Theme.getSize("setting_unit_margin").width
+                anchors.verticalCenter: parent.verticalCenter
+                anchors.margins: UM.Theme.getSize("default_margin").width / 4
 
-                border.width: UM.Theme.getSize("default_lining").width * 2
+                border.width: UM.Theme.getSize("default_lining").width
                 border.color: enabled ? UM.Theme.getColor("setting_control_border") : UM.Theme.getColor("setting_control_disabled_border")
                 radius: width / 2
 

@@ -16,42 +16,43 @@ SettingItem
         id: control
 
         model: definition.options
-        textRole: "value";
+        textRole: "value"
 
         anchors.fill: parent
 
         MouseArea
         {
-            anchors.fill: parent;
-            acceptedButtons: Qt.NoButton;
-            onWheel: wheel.accepted = true;
+            anchors.fill: parent
+            acceptedButtons: Qt.NoButton
+            onWheel: wheel.accepted = true
         }
 
         background: Rectangle
         {
             color:
             {
-                if(!enabled)
-                {
+                if (!enabled) {
                     return UM.Theme.getColor("setting_control_disabled")
                 }
-                if(control.hovered || control.activeFocus)
-                {
+
+                if (control.hovered || control.activeFocus) {
                     return UM.Theme.getColor("setting_control_highlight")
                 }
+
                 return UM.Theme.getColor("setting_control")
             }
+
             border.width: UM.Theme.getSize("default_lining").width
             border.color:
             {
-                if(!enabled)
-                {
+                if (!enabled) {
                     return UM.Theme.getColor("setting_control_disabled_border")
                 }
-                if(control.hovered || control.activeFocus)
-                {
+
+                if (control.hovered || control.activeFocus) {
                     return UM.Theme.getColor("setting_control_border_highlight")
                 }
+
                 return UM.Theme.getColor("setting_control_border")
             }
         }
@@ -68,29 +69,34 @@ SettingItem
             sourceSize.width: width + 5 * screenScaleFactor
             sourceSize.height: width + 5 * screenScaleFactor
 
-            color: UM.Theme.getColor("setting_control_text");
+            color: UM.Theme.getColor("setting_control_text")
         }
 
         contentItem: Label
         {
-            text: control.currentText;
-            font: UM.Theme.getFont("default");
-            color: !enabled ? UM.Theme.getColor("setting_control_disabled_text") : UM.Theme.getColor("setting_control_text");
-            elide: Text.ElideRight;
-            verticalAlignment: Text.AlignVCenter;
+            anchors.left: parent.left
+            anchors.leftMargin: UM.Theme.getSize("setting_unit_margin").width
+            anchors.verticalCenter: parent.verticalCenter
+            anchors.right: parent.left
+
+            text: control.currentText
+            font: UM.Theme.getFont("default")
+            color: !enabled ? UM.Theme.getColor("setting_control_disabled_text") : UM.Theme.getColor("setting_control_text")
+            elide: Text.ElideRight
+            verticalAlignment: Text.AlignVCenter
         }
 
         onActivated:
         {
-            forceActiveFocus();
-            propertyProvider.setPropertyValue("value", definition.options[index].key);
+            forceActiveFocus()
+            propertyProvider.setPropertyValue("value", definition.options[index].key)
         }
 
         onActiveFocusChanged:
         {
             if(activeFocus)
             {
-                base.focusReceived();
+                base.focusReceived()
             }
         }
 
@@ -98,6 +104,7 @@ SettingItem
         {
             base.setActiveFocusToNextSetting(true)
         }
+
         Keys.onBacktabPressed:
         {
             base.setActiveFocusToNextSetting(false)
