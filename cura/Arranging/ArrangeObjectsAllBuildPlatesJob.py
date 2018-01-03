@@ -18,7 +18,7 @@ from typing import List
 
 
 class ArrangeArray:
-    def __init__(self, x, y, fixed_nodes):
+    def __init__(self, x: int, y: int, fixed_nodes: List[SceneNode]):
         self._x = x
         self._y = y
         self._fixed_nodes = fixed_nodes

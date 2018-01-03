@@ -169,6 +169,7 @@ class Arrange:
     #   \param x x-coordinate
     #   \param y y-coordinate
     #   \param shape_arr ShapeArray object
+    #   \param update_empty updates the _is_empty, used when adding disallowed areas
     def place(self, x, y, shape_arr, update_empty = True):
         x = int(self._scale * x)
         y = int(self._scale * y)
