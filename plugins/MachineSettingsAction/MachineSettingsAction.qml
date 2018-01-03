@@ -393,7 +393,7 @@ Cura.MachineAction
                             property string label: catalog.i18nc("@label", "Material diameter")
                             property string unit: catalog.i18nc("@label", "mm")
                             property string tooltip: catalog.i18nc("@tooltip", "The nominal diameter of filament supported by the printer. The exact diameter will be overridden by the material and/or the profile.")
-                            property var afterOnEditingFinished:
+                            function afterOnEditingFinished()
                             {
                                 if (settingsTabs.currentIndex > 0)
                                 {
