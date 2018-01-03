@@ -306,7 +306,7 @@ msgid "The type of gcode to be generated."
 msgstr "Typ G-code jaki ma być generowany."
 
 #: fdmprinter.def.json
-msgctxt "machine_gcode_flavor option RepRap (Marlin/Sprinter)"
+msgctxt "machine_gcode_flavor option Marlin"
 msgid "Marlin"
 msgstr "Marlin"
 
@@ -5103,9 +5103,9 @@ msgstr "Forma przesunięcia, która ma być zastosowana do modelu podczas ładow
 #~ msgid "Machine depth"
 #~ msgstr "Głębokość Drukarki"
 
-#~ msgctxt "machine_gcode_flavor option RepRap (Marlin/Sprinter)"
-#~ msgid "RepRap (Marlin/Sprinter)"
-#~ msgstr "RepRap (Marlin/Sprinter)"
+#~ msgctxt "machine_gcode_flavor option Marlin"
+#~ msgid "Marlin"
+#~ msgstr "Marlin"
 
 #~ msgctxt "machine_gcode_flavor option RepRap (Volumatric)"
 #~ msgid "RepRap (Volumetric)"

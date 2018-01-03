@@ -41,7 +41,7 @@
         "machine_height": { "default_value": 400 },
         "machine_depth": { "default_value": 270 },
         "machine_width": { "default_value": 430 },
-        "machine_gcode_flavor": { "default_value": "RepRap (Marlin/Sprinter)" },
+        "machine_gcode_flavor": { "default_value": "Marlin" },
         "material_print_temp_wait": { "default_value": false },
         "material_bed_temp_wait": { "default_value": false },
         "prime_tower_enable": { "default_value": true },

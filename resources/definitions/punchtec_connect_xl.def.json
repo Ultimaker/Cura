@@ -31,7 +31,7 @@
         "machine_heated_bed": { "default_value": true },
         "machine_center_is_zero": { "default_value": false },
         "machine_height": { "default_value": 200 },
-        "machine_gcode_flavor": { "default_value": "RepRap (Marlin/Sprinter)" },
+        "machine_gcode_flavor": { "default_value": "Marlin" },
         "machine_depth": { "default_value": 304 },
         "machine_width": { "default_value": 304 },
         "machine_name": { "default_value": "Punchtec Connect XL" }

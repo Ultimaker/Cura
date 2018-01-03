@@ -35,7 +35,7 @@
             "default_value": false
         },
         "machine_gcode_flavor": {
-            "default_value": "RepRap (Marlin/Sprinter)"
+            "default_value": "Marlin"
         },
         "layer_height": {
             "default_value": 0.2

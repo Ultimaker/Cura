@@ -333,7 +333,7 @@ msgid "The type of gcode to be generated."
 msgstr ""
 
 #: fdmprinter.def.json
-msgctxt "machine_gcode_flavor option RepRap (Marlin/Sprinter)"
+msgctxt "machine_gcode_flavor option Marlin"
 msgid "Marlin"
 msgstr ""
 

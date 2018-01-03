@@ -344,7 +344,7 @@ msgid "The type of gcode to be generated."
 msgstr "需要產生的 G-code 類型。"
 
 #: fdmprinter.def.json
-msgctxt "machine_gcode_flavor option RepRap (Marlin/Sprinter)"
+msgctxt "machine_gcode_flavor option Marlin"
 msgid "Marlin"
 msgstr "Marlin"
 

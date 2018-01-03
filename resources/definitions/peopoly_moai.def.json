@@ -37,7 +37,7 @@
             ]
         },
         "machine_gcode_flavor": {
-            "default_value": "RepRap (Marlin/Sprinter)"
+            "default_value": "Marlin"
         },
         "machine_start_gcode": {
             "default_value": "G28 ;Home"

@@ -326,7 +326,7 @@ msgid "The type of gcode to be generated."
 msgstr "生成するGコードの種類"
 
 #: fdmprinter.def.json
-msgctxt "machine_gcode_flavor option RepRap (Marlin/Sprinter)"
+msgctxt "machine_gcode_flavor option Marlin"
 msgid "Marlin"
 msgstr "Marlin"
 
@@ -5259,9 +5259,9 @@ msgstr "ファイルから読み込むときに、モデルに適用するトラ
 #~ msgid "Is center origin"
 #~ msgstr "原点"
 
-#~ msgctxt "machine_gcode_flavor option RepRap (Marlin/Sprinter)"
-#~ msgid "RepRap (Marlin/Sprinter)"
-#~ msgstr "RepRap (Marlin/Sprinter)"
+#~ msgctxt "machine_gcode_flavor option Marlin"
+#~ msgid "Marlin"
+#~ msgstr "Marlin"
 
 #~ msgctxt "wall_thickness description"
 #~ msgid "The thickness of the outside walls in the horizontal direction. This value divided by the wall line width defines the number of walls."

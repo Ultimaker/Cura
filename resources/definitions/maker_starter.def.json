@@ -35,7 +35,7 @@
             "default_value": 55
         },
         "machine_gcode_flavor": {
-            "default_value": "RepRap (Marlin/Sprinter)"
+            "default_value": "Marlin"
         },
         "machine_disallowed_areas": {
             "default_value": []

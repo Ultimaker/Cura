@@ -29,7 +29,7 @@
             ]
         },
         "gantry_height": { "default_value": 99999 },
-        "machine_gcode_flavor": { "default_value": "RepRap (Marlin/Sprinter)" },
+        "machine_gcode_flavor": { "default_value": "Marlin" },
 
         "machine_start_gcode": {
             "default_value": "G21       ;metric values\nG90       ;absolute positioning\nM82       ;set extruder to absolute mode\nM106      ;start with the fan on\nG28 X0 Y0 ;home X/Y\nG28 Z0    ;home Z\nG92 E0    ;zero the extruded length\nG29       ;initiate auto bed leveling sequence\n;start cleaning sequance\nG1 X250 Y150 Z15 F4000\nG1 X250 Y150 Z0.30 F1000\nG1 X1 Y150 Z0.25 E15.0 F2000\nG1 X1 Y150 Z0.25 E14.0 F4000\nG1 X1 Y1 Z0.25 F16000\nG1 X1 Y1 Z0.25 E15.0 F4000\nG92 E0\nM107      ;start with the fan off\n;end cleaning sequance\n;G92 X132.4 Y20 ;correct bed origin (G29 changes it)"

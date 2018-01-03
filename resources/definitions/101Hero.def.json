@@ -39,7 +39,7 @@
         "gantry_height": { "default_value": 0 },
         "retraction_speed": { "default_value" : 10 },
         "retraction_amount": { "default_value" : 2.5 },
-        "machine_gcode_flavor": { "default_value": "RepRap (Marlin/Sprinter)" },
+        "machine_gcode_flavor": { "default_value": "Marlin" },
 
         "machine_start_gcode": {
             "default_value": "G21       ;metric values\nG90       ;absolute positioning\nM82       ;set extruder to absolute mode\nM107      ;start with the fan off\nG28 Z0    ;home Z\nG1 Z15.0 F840\nG92 E0    ;zero the extruded length\nG1 F200 E3              ;extrude 3mm of feed stock\nG92 E0                  ;zero the extruded length again\nG1 F840\n;Put printing message on LCD screen\nM117 Printing...\n"
