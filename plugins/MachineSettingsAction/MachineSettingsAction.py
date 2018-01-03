@@ -241,6 +241,7 @@ class MachineSettingsAction(MachineAction):
                 "type": "material",
                 "approximate_diameter": machine_approximate_diameter,
                 "material": old_material.getMetaDataEntry("material", "value"),
+                "brand": old_material.getMetaDataEntry("brand", "value"),
                 "supplier": old_material.getMetaDataEntry("supplier", "value"),
                 "color_name": old_material.getMetaDataEntry("color_name", "value"),
                 "definition": materials_definition
@@ -251,6 +252,7 @@ class MachineSettingsAction(MachineAction):
             if old_material == self._empty_container:
                 search_criteria.pop("material", None)
                 search_criteria.pop("supplier", None)
+                search_criteria.pop("brand", None)
                 search_criteria.pop("definition", None)
                 search_criteria["id"] = extruder_stack.getMetaDataEntry("preferred_material")
 
