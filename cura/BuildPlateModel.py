@@ -28,6 +28,7 @@ class BuildPlateModel(ListModel):
             return
         Logger.log("d", "Select build plate: %s" % nr)
         self._active_build_plate = nr
+        Selection.clear()
 
         self.activeBuildPlateChanged.emit()
 

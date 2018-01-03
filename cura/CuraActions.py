@@ -153,5 +153,7 @@ class CuraActions(QObject):
             operation.addOperation(SetBuildPlateNumberOperation(node, build_plate_nr))
         operation.push()
 
+        Selection.clear()
+
     def _openUrl(self, url):
         QDesktopServices.openUrl(url)
