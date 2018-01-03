@@ -89,7 +89,7 @@ class NetworkCamera(QObject):
 
     ##  Ensure that close gets called when object is destroyed
     def __del__(self):
-        self.close()
+        self.stop()
 
     def _onStreamDownloadProgress(self, bytes_received, bytes_total):
         # An MJPG stream is (for our purpose) a stream of concatenated JPG images.
