@@ -175,13 +175,10 @@ Rectangle
                 anchors.leftMargin: model.index * Math.floor(settingsModeSelection.width / 2)
                 anchors.verticalCenter: parent.verticalCenter
 
-                text: model.text
-
                 ButtonGroup.group: modeMenuGroup
 
                 checkable: true
                 checked: base.currentModeIndex == index
-
                 onClicked: base.currentModeIndex = index
 
                 onHoveredChanged:
@@ -201,7 +198,7 @@ Rectangle
 
                 contentItem: Text
                 {
-                    text: control.text
+                    text: model.text
                     color: (control.checked || control.pressed) ? UM.Theme.getColor("action_button_active") : control.hovered ? UM.Theme.getColor("action_button_hovered") : UM.Theme.getColor("action_button")
                     font: control.font
                     horizontalAlignment: Text.AlignHCenter

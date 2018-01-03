@@ -96,7 +96,7 @@ SettingItem
             {
                 text: modelData.value
                 color: control.contentItem.color
-                font: control.font
+                font: UM.Theme.getFont("default")
                 elide: Text.ElideRight
                 verticalAlignment: Text.AlignVCenter
             }

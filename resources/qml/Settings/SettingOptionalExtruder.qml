@@ -175,7 +175,7 @@ SettingItem
             {
                 text: model.name
                 color: UM.Theme.getColor("setting_control_text")
-                font: control.font
+                font: UM.Theme.getFont("default")
                 elide: Text.ElideRight
                 verticalAlignment: Text.AlignVCenter
             }
