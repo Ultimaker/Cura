@@ -236,14 +236,12 @@ class NetworkedPrinterOutputDevice(PrinterOutputDevice):
         Logger.log("d", "Creating network manager")
         if self._manager:
             self._manager.finished.disconnect(self.__handleOnFinished)
-            #self._manager.networkAccessibleChanged.disconnect(self._onNetworkAccesibleChanged)
             self._manager.authenticationRequired.disconnect(self._onAuthenticationRequired)
 
         self._manager = QNetworkAccessManager()
         self._manager.finished.connect(self.__handleOnFinished)
         self._last_manager_create_time = time()
         self._manager.authenticationRequired.connect(self._onAuthenticationRequired)
-        #self._manager.networkAccessibleChanged.connect(self._onNetworkAccesibleChanged)  # for debug purposes
 
     def __handleOnFinished(self, reply: QNetworkReply) -> None:
         # Due to garbage collection, we need to cache certain bits of post operations.
