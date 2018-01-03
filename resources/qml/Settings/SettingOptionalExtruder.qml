@@ -174,7 +174,7 @@ SettingItem
             contentItem: Text
             {
                 text: modelData.value
-                color: control.contentItem.color
+                color: extruderText.color
                 font: control.font
                 elide: Text.ElideRight
                 verticalAlignment: Text.AlignVCenter
