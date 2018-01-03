@@ -86,6 +86,22 @@ SettingItem
             verticalAlignment: Text.AlignVCenter
         }
 
+        delegate: ItemDelegate
+        {
+            width: control.width
+            height: control.height
+            highlighted: control.highlightedIndex == index
+
+            contentItem: Text
+            {
+                text: modelData.value
+                color: control.contentItem.color
+                font: control.font
+                elide: Text.ElideRight
+                verticalAlignment: Text.AlignVCenter
+            }
+        }
+
         onActivated:
         {
             forceActiveFocus()
@@ -118,16 +134,14 @@ SettingItem
             {
                 // FIXME this needs to go away once 'resolve' is combined with 'value' in our data model.
                 var value = undefined;
-                if ((base.resolve != "None") && (base.stackLevel != 0) && (base.stackLevel != 1))
-                {
+                if ((base.resolve != "None") && (base.stackLevel != 0) && (base.stackLevel != 1)) {
                     // We have a resolve function. Indicates that the setting is not settable per extruder and that
                     // we have to choose between the resolved value (default) and the global value
                     // (if user has explicitly set this).
                     value = base.resolve;
                 }
 
-                if (value == undefined)
-                {
+                if (value == undefined) {
                     value = propertyProvider.properties.value;
                 }
 
