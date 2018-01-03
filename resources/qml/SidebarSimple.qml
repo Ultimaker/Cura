@@ -19,7 +19,7 @@ Item
     property Action configureSettings;
     property variant minimumPrintTime: PrintInformation.minimumPrintTime;
     property variant maximumPrintTime: PrintInformation.maximumPrintTime;
-    property bool settingsEnabled: ExtruderManager.activeExtruderStackId || machineExtruderCount.properties.value == 1
+    property bool settingsEnabled: Cura.ExtruderManager.activeExtruderStackId || machineExtruderCount.properties.value == 1
 
     Component.onCompleted: PrintInformation.enabled = true
     Component.onDestruction: PrintInformation.enabled = false
@@ -303,7 +303,7 @@ Item
                             // only change if an active machine is set and the slider is visible at all.
                             if (Cura.MachineManager.activeMachine != null && visible) {
                                 // prevent updating during view initializing. Trigger only if the value changed by user
-                                if (qualitySlider.value != qualityModel.qualitySliderActiveIndex) {
+                                if (qualitySlider.value != qualityModel.qualitySliderActiveIndex && qualityModel.qualitySliderActiveIndex != -1) {
                                     // start updating with short delay
                                     qualitySliderChangeTimer.start()
                                 }
@@ -340,6 +340,8 @@ Item
                     text: catalog.i18nc("@label", "Print Speed")
                     font: UM.Theme.getFont("default")
                     color: UM.Theme.getColor("text")
+                    width: parseInt(UM.Theme.getSize("sidebar").width * 0.35)
+                    elide: Text.ElideRight
                 }
 
                 Label
@@ -368,7 +370,7 @@ Item
                 {
                     id: customisedSettings
 
-                    visible: Cura.SimpleModeSettingsManager.isProfileCustomized
+                    visible: Cura.SimpleModeSettingsManager.isProfileCustomized || Cura.SimpleModeSettingsManager.isProfileUserCreated
                     height: speedSlider.height * 0.8
                     width: speedSlider.height * 0.8
 
@@ -381,7 +383,18 @@ Item
 
                     onClicked:
                     {
-                        discardOrKeepProfileChangesDialog.show()
+                        // if the current profile is user-created, switch to a built-in quality
+                        if (Cura.SimpleModeSettingsManager.isProfileUserCreated)
+                        {
+                            if (Cura.ProfilesModel.rowCount() > 0)
+                            {
+                                Cura.MachineManager.setActiveQuality(Cura.ProfilesModel.getItem(0).id)
+                            }
+                        }
+                        if (Cura.SimpleModeSettingsManager.isProfileCustomized)
+                        {
+                            discardOrKeepProfileChangesDialog.show()
+                        }
                     }
                     onEntered:
                     {
@@ -391,8 +404,6 @@ Item
                     onExited: base.hideTooltip()
                 }
             }
-
-
 
             //
             // Infill
@@ -557,18 +568,20 @@ Item
                         model: infillModel
                         anchors.fill: parent
 
-                        property int activeIndex: {
+                        function activeIndex () {
                             for (var i = 0; i < infillModel.count; i++) {
                                 var density = parseInt(infillDensity.properties.value)
                                 var steps = parseInt(infillSteps.properties.value)
                                 var infillModelItem = infillModel.get(i)
 
-                                if (density >= infillModelItem.percentageMin
+                                if (infillModelItem != "undefined"
+                                    && density >= infillModelItem.percentageMin
                                     && density <= infillModelItem.percentageMax
                                     && steps >= infillModelItem.stepsMin
-                                    && steps <= infillModelItem.stepsMax){
-                                        return i
-                                    }
+                                    && steps <= infillModelItem.stepsMax
+                                ){
+                                    return i
+                                }
                             }
                             return -1
                         }
@@ -576,7 +589,7 @@ Item
                         Rectangle
                         {
                             anchors.fill: parent
-                            visible: infillIconList.activeIndex == index
+                            visible: infillIconList.activeIndex() == index
 
                             border.width: UM.Theme.getSize("default_lining").width
                             border.color: UM.Theme.getColor("quality_slider_unavailable")

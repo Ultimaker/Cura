@@ -41,7 +41,7 @@ TabView
 
     Tab
     {
-        title: catalog.i18nc("@title","Information")
+        title: catalog.i18nc("@title", "Information")
 
         anchors.margins: UM.Theme.getSize("default_margin").width
 

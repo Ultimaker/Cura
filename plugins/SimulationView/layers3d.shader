@@ -6,6 +6,10 @@ vertex41core =
     uniform highp mat4 u_modelMatrix;
     uniform highp mat4 u_viewProjectionMatrix;
     uniform lowp float u_active_extruder;
+    uniform lowp float u_max_feedrate;
+    uniform lowp float u_min_feedrate;
+    uniform lowp float u_max_thickness;
+    uniform lowp float u_min_thickness;
     uniform lowp int u_layer_view_type;
     uniform lowp vec4 u_extruder_opacity;  // currently only for max 4 extruders, others always visible
 
@@ -18,6 +22,8 @@ vertex41core =
     in highp vec2 a_line_dim;  // line width and thickness
     in highp float a_extruder;
     in highp float a_line_type;
+    in highp float a_feedrate;
+    in highp float a_thickness;
 
     out lowp vec4 v_color;
 
@@ -31,6 +37,28 @@ vertex41core =
     out lowp vec4 f_color;
     out highp vec3 f_vertex;
     out highp vec3 f_normal;
+
+    vec4 feedrateGradientColor(float abs_value, float min_value, float max_value)
+    {
+        float value = (abs_value - min_value)/(max_value - min_value);
+        float red = value;
+        float green = 1-abs(1-4*value);
+        if (value > 0.375)
+        {
+            green = 0.5;
+        }
+        float blue = max(1-4*value, 0);
+        return vec4(red, green, blue, 1.0);
+    }
+
+    vec4 layerThicknessGradientColor(float abs_value, float min_value, float max_value)
+    {
+        float value = (abs_value - min_value)/(max_value - min_value);
+        float red = max(2*value-1, 0);
+        float green = 1-abs(1-2*value);
+        float blue = max(1-2*value, 0);
+        return vec4(red, green, blue, 1.0);
+    }
 
     void main()
     {
@@ -47,6 +75,12 @@ vertex41core =
                 break;
             case 1:  // "Line type"
                 v_color = a_color;
+                break;
+            case 2:  // "Feedrate"
+                v_color = feedrateGradientColor(a_feedrate, u_min_feedrate, u_max_feedrate);
+                break;
+            case 3:  // "Layer thickness"
+                v_color = layerThicknessGradientColor(a_line_dim.y, u_min_thickness, u_max_thickness);
                 break;
         }
 
@@ -153,35 +187,42 @@ geometry41core =
             myEmitVertex(v_vertex[1], v_color[1], g_vertex_normal_vert, u_viewProjectionMatrix * (gl_in[1].gl_Position - g_vertex_offset_horz + g_vertex_offset_vert));
             myEmitVertex(v_vertex[1], v_color[1], g_vertex_normal_vert, u_viewProjectionMatrix * (gl_in[1].gl_Position + g_vertex_offset_horz + g_vertex_offset_vert));
             myEmitVertex(v_vertex[1], v_color[1], g_vertex_normal_vert, u_viewProjectionMatrix * (gl_in[1].gl_Position - g_vertex_offset_horz_head + g_vertex_offset_vert));
+            //And reverse so that the line is also visible from the back side.
+            myEmitVertex(v_vertex[1], v_color[1], g_vertex_normal_vert, u_viewProjectionMatrix * (gl_in[1].gl_Position + g_vertex_offset_horz + g_vertex_offset_vert));
+            myEmitVertex(v_vertex[1], v_color[1], g_vertex_normal_vert, u_viewProjectionMatrix * (gl_in[1].gl_Position - g_vertex_offset_horz + g_vertex_offset_vert));
+            myEmitVertex(v_vertex[0], v_color[0], g_vertex_normal_vert, u_viewProjectionMatrix * (gl_in[0].gl_Position + g_vertex_offset_horz + g_vertex_offset_vert));
+            myEmitVertex(v_vertex[0], v_color[0], g_vertex_normal_vert, u_viewProjectionMatrix * (gl_in[0].gl_Position - g_vertex_offset_horz + g_vertex_offset_vert));
+            myEmitVertex(v_vertex[0], v_color[0], g_vertex_normal_vert, u_viewProjectionMatrix * (gl_in[0].gl_Position + g_vertex_offset_horz_head + g_vertex_offset_vert));
+            myEmitVertex(v_vertex[0], v_color[0], g_vertex_normal_vert, u_viewProjectionMatrix * (gl_in[0].gl_Position + g_vertex_offset_horz + g_vertex_offset_vert));
 
             EndPrimitive();
         } else {
             // All normal lines are rendered as 3d tubes.
-            myEmitVertex(v_vertex[0], v_color[0], g_vertex_normal_horz, u_viewProjectionMatrix * (gl_in[0].gl_Position + g_vertex_offset_horz));
-            myEmitVertex(v_vertex[1], v_color[1], g_vertex_normal_horz, u_viewProjectionMatrix * (gl_in[1].gl_Position + g_vertex_offset_horz));
-            myEmitVertex(v_vertex[0], v_color[0], g_vertex_normal_vert, u_viewProjectionMatrix * (gl_in[0].gl_Position + g_vertex_offset_vert));
-            myEmitVertex(v_vertex[1], v_color[1], g_vertex_normal_vert, u_viewProjectionMatrix * (gl_in[1].gl_Position + g_vertex_offset_vert));
             myEmitVertex(v_vertex[0], v_color[0], -g_vertex_normal_horz, u_viewProjectionMatrix * (gl_in[0].gl_Position - g_vertex_offset_horz));
             myEmitVertex(v_vertex[1], v_color[1], -g_vertex_normal_horz, u_viewProjectionMatrix * (gl_in[1].gl_Position - g_vertex_offset_horz));
-            myEmitVertex(v_vertex[0], v_color[0], -g_vertex_normal_vert, u_viewProjectionMatrix * (gl_in[0].gl_Position - g_vertex_offset_vert));
-            myEmitVertex(v_vertex[1], v_color[1], -g_vertex_normal_vert, u_viewProjectionMatrix * (gl_in[1].gl_Position - g_vertex_offset_vert));
+            myEmitVertex(v_vertex[0], v_color[0], g_vertex_normal_vert, u_viewProjectionMatrix * (gl_in[0].gl_Position + g_vertex_offset_vert));
+            myEmitVertex(v_vertex[1], v_color[1], g_vertex_normal_vert, u_viewProjectionMatrix * (gl_in[1].gl_Position + g_vertex_offset_vert));
             myEmitVertex(v_vertex[0], v_color[0], g_vertex_normal_horz, u_viewProjectionMatrix * (gl_in[0].gl_Position + g_vertex_offset_horz));
             myEmitVertex(v_vertex[1], v_color[1], g_vertex_normal_horz, u_viewProjectionMatrix * (gl_in[1].gl_Position + g_vertex_offset_horz));
+            myEmitVertex(v_vertex[0], v_color[0], -g_vertex_normal_vert, u_viewProjectionMatrix * (gl_in[0].gl_Position - g_vertex_offset_vert));
+            myEmitVertex(v_vertex[1], v_color[1], -g_vertex_normal_vert, u_viewProjectionMatrix * (gl_in[1].gl_Position - g_vertex_offset_vert));
+            myEmitVertex(v_vertex[0], v_color[0], -g_vertex_normal_horz, u_viewProjectionMatrix * (gl_in[0].gl_Position - g_vertex_offset_horz));
+            myEmitVertex(v_vertex[1], v_color[1], -g_vertex_normal_horz, u_viewProjectionMatrix * (gl_in[1].gl_Position - g_vertex_offset_horz));
 
             EndPrimitive();
 
             // left side
-            myEmitVertex(v_vertex[0], v_color[0], g_vertex_normal_horz, u_viewProjectionMatrix * (gl_in[0].gl_Position + g_vertex_offset_horz));
+            myEmitVertex(v_vertex[0], v_color[0], -g_vertex_normal_horz, u_viewProjectionMatrix * (gl_in[0].gl_Position - g_vertex_offset_horz));
             myEmitVertex(v_vertex[0], v_color[0], g_vertex_normal_vert, u_viewProjectionMatrix * (gl_in[0].gl_Position + g_vertex_offset_vert));
             myEmitVertex(v_vertex[0], v_color[0], g_vertex_normal_horz_head, u_viewProjectionMatrix * (gl_in[0].gl_Position + g_vertex_offset_horz_head));
-            myEmitVertex(v_vertex[0], v_color[0], -g_vertex_normal_horz, u_viewProjectionMatrix * (gl_in[0].gl_Position - g_vertex_offset_horz));
+            myEmitVertex(v_vertex[0], v_color[0], g_vertex_normal_horz, u_viewProjectionMatrix * (gl_in[0].gl_Position + g_vertex_offset_horz));
 
             EndPrimitive();
 
-            myEmitVertex(v_vertex[0], v_color[0], -g_vertex_normal_horz, u_viewProjectionMatrix * (gl_in[0].gl_Position - g_vertex_offset_horz));
+            myEmitVertex(v_vertex[0], v_color[0], g_vertex_normal_horz, u_viewProjectionMatrix * (gl_in[0].gl_Position + g_vertex_offset_horz));
             myEmitVertex(v_vertex[0], v_color[0], -g_vertex_normal_vert, u_viewProjectionMatrix * (gl_in[0].gl_Position - g_vertex_offset_vert));
             myEmitVertex(v_vertex[0], v_color[0], g_vertex_normal_horz_head, u_viewProjectionMatrix * (gl_in[0].gl_Position + g_vertex_offset_horz_head));
-            myEmitVertex(v_vertex[0], v_color[0], g_vertex_normal_horz, u_viewProjectionMatrix * (gl_in[0].gl_Position + g_vertex_offset_horz));
+            myEmitVertex(v_vertex[0], v_color[0], -g_vertex_normal_horz, u_viewProjectionMatrix * (gl_in[0].gl_Position - g_vertex_offset_horz));
 
             EndPrimitive();
 
@@ -247,6 +288,12 @@ u_show_helpers = 1
 u_show_skin = 1
 u_show_infill = 1
 
+u_min_feedrate = 0
+u_max_feedrate = 1
+
+u_min_thickness = 0
+u_max_thickness = 1
+
 [bindings]
 u_modelViewProjectionMatrix = model_view_projection_matrix
 u_modelMatrix = model_matrix
@@ -262,3 +309,5 @@ a_line_dim = line_dim
 a_extruder = extruder
 a_material_color = material_color
 a_line_type = line_type
+a_feedrate = feedrate
+a_thickness = thickness

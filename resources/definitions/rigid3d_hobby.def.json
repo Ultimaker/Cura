@@ -1,5 +1,4 @@
 {
-    "id": "rigid3d_hobby",
     "name": "Rigid3D Hobby",
     "version": 2,
     "inherits": "fdmprinter",

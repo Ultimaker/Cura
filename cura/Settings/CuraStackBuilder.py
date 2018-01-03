@@ -3,7 +3,7 @@
 
 from UM.Logger import Logger
 
-from UM.Settings.DefinitionContainer import DefinitionContainer
+from UM.Settings.Interfaces import DefinitionContainerInterface
 from UM.Settings.InstanceContainer import InstanceContainer
 from UM.Settings.ContainerRegistry import ContainerRegistry
 
@@ -34,7 +34,7 @@ class CuraStackBuilder:
         # Make sure the new name does not collide with any definition or (quality) profile
         # createUniqueName() only looks at other stacks, but not at definitions or quality profiles
         # Note that we don't go for uniqueName() immediately because that function matches with ignore_case set to true
-        if registry.findContainers(id = generated_name):
+        if registry.findContainersMetadata(id = generated_name):
             generated_name = registry.uniqueName(generated_name)
 
         new_global_stack = cls.createGlobalStack(
@@ -47,21 +47,40 @@ class CuraStackBuilder:
 
         new_global_stack.setName(generated_name)
 
-        for extruder_definition in registry.findDefinitionContainers(machine = machine_definition.id):
-            position = extruder_definition.getMetaDataEntry("position", None)
-            if not position:
-                Logger.log("w", "Extruder definition %s specifies no position metadata entry.", extruder_definition.id)
+        extruder_definition = registry.findDefinitionContainers(machine = machine_definition.getId())
 
-            new_extruder_id = registry.uniqueName(extruder_definition.id)
+        if not extruder_definition:
+            # create extruder stack for single extrusion machines that have no separate extruder definition files
+            extruder_definition = registry.findDefinitionContainers(id = "fdmextruder")[0]
+            new_extruder_id = registry.uniqueName(machine_definition.getName() + " " + extruder_definition.id)
             new_extruder = cls.createExtruderStack(
                 new_extruder_id,
                 definition = extruder_definition,
-                machine_definition = machine_definition,
+                machine_definition_id = machine_definition.getId(),
                 quality = "default",
                 material = "default",
                 variant = "default",
                 next_stack = new_global_stack
             )
+            new_global_stack.addExtruder(new_extruder)
+        else:
+            # create extruder stack for each found extruder definition
+            for extruder_definition in registry.findDefinitionContainers(machine = machine_definition.id):
+                position = extruder_definition.getMetaDataEntry("position", None)
+                if not position:
+                    Logger.log("w", "Extruder definition %s specifies no position metadata entry.", extruder_definition.id)
+
+                new_extruder_id = registry.uniqueName(extruder_definition.id)
+                new_extruder = cls.createExtruderStack(
+                    new_extruder_id,
+                    definition = extruder_definition,
+                    machine_definition_id = machine_definition.getId(),
+                    quality = "default",
+                    material = "default",
+                    variant = "default",
+                    next_stack = new_global_stack
+                )
+                new_global_stack.addExtruder(new_extruder)
 
         return new_global_stack
 
@@ -69,17 +88,20 @@ class CuraStackBuilder:
     #
     #   \param new_stack_id The ID of the new stack.
     #   \param definition The definition to base the new stack on.
-    #   \param machine_definition The machine definition to use for the user container.
+    #   \param machine_definition_id The ID of the machine definition to use for
+    #   the user container.
     #   \param kwargs You can add keyword arguments to specify IDs of containers to use for a specific type, for example "variant": "0.4mm"
     #
     #   \return A new Global stack instance with the specified parameters.
     @classmethod
-    def createExtruderStack(cls, new_stack_id: str, definition: DefinitionContainer, machine_definition: DefinitionContainer, **kwargs) -> ExtruderStack:
+    def createExtruderStack(cls, new_stack_id: str, definition: DefinitionContainerInterface, machine_definition_id: str, **kwargs) -> ExtruderStack:
         stack = ExtruderStack(new_stack_id)
         stack.setName(definition.getName())
         stack.setDefinition(definition)
         stack.addMetaDataEntry("position", definition.getMetaDataEntry("position"))
-        if "next_stack" in kwargs: #Add stacks before containers are added, since they may trigger a setting update.
+
+        if "next_stack" in kwargs:
+            # Add stacks before containers are added, since they may trigger a setting update.
             stack.setNextStack(kwargs["next_stack"])
 
         user_container = InstanceContainer(new_stack_id + "_user")
@@ -87,7 +109,7 @@ class CuraStackBuilder:
         user_container.addMetaDataEntry("extruder", new_stack_id)
         from cura.CuraApplication import CuraApplication
         user_container.addMetaDataEntry("setting_version", CuraApplication.SettingVersion)
-        user_container.setDefinition(machine_definition)
+        user_container.setDefinition(machine_definition_id)
 
         stack.setUserChanges(user_container)
 
@@ -127,7 +149,7 @@ class CuraStackBuilder:
     #
     #   \return A new Global stack instance with the specified parameters.
     @classmethod
-    def createGlobalStack(cls, new_stack_id: str, definition: DefinitionContainer, **kwargs) -> GlobalStack:
+    def createGlobalStack(cls, new_stack_id: str, definition: DefinitionContainerInterface, **kwargs) -> GlobalStack:
         stack = GlobalStack(new_stack_id)
         stack.setDefinition(definition)
 
@@ -136,7 +158,7 @@ class CuraStackBuilder:
         user_container.addMetaDataEntry("machine", new_stack_id)
         from cura.CuraApplication import CuraApplication
         user_container.addMetaDataEntry("setting_version", CuraApplication.SettingVersion)
-        user_container.setDefinition(definition)
+        user_container.setDefinition(definition.getId())
 
         stack.setUserChanges(user_container)
 
@@ -172,8 +194,7 @@ class CuraStackBuilder:
         unique_container_name = ContainerRegistry.getInstance().uniqueName(container_name)
 
         definition_changes_container = InstanceContainer(unique_container_name)
-        definition = container_stack.getBottom()
-        definition_changes_container.setDefinition(definition)
+        definition_changes_container.setDefinition(container_stack.getBottom().getId())
         definition_changes_container.addMetaDataEntry("type", "definition_changes")
         definition_changes_container.addMetaDataEntry("setting_version", CuraApplication.SettingVersion)
 

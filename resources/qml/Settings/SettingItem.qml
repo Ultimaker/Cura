@@ -1,5 +1,5 @@
-// Copyright (c) 2015 Ultimaker B.V.
-// Uranium is released under the terms of the LGPLv3 or higher.
+// Copyright (c) 2017 Ultimaker B.V.
+// Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.1
 import QtQuick.Layouts 1.1
@@ -13,9 +13,9 @@ import "."
 Item {
     id: base;
 
-    height: UM.Theme.getSize("section").height;
+    height: UM.Theme.getSize("section").height
 
-    property alias contents: controlContainer.children;
+    property alias contents: controlContainer.children
     property alias hovered: mouse.containsMouse
 
     property var showRevertButton: true
@@ -153,10 +153,10 @@ Item {
 
                 onEntered: {
                     hoverTimer.stop();
-                    var tooltipText = catalog.i18nc("@label", "This setting is always shared between all extruders. Changing it here will change the value for all extruders") + ".";
+                    var tooltipText = catalog.i18nc("@label", "This setting is always shared between all extruders. Changing it here will change the value for all extruders.");
                     if ((resolve != "None") && (stackLevel != 0)) {
                         // We come here if a setting has a resolve and the setting is not manually edited.
-                        tooltipText += " " + catalog.i18nc("@label", "The value is resolved from per-extruder values ") + "[" + ExtruderManager.getInstanceExtruderValues(definition.key) + "].";
+                        tooltipText += " " + catalog.i18nc("@label", "The value is resolved from per-extruder values ") + "[" + Cura.ExtruderManager.getInstanceExtruderValues(definition.key) + "].";
                     }
                     base.showTooltip(tooltipText);
                 }
@@ -178,8 +178,13 @@ Item {
                 iconSource: UM.Theme.getIcon("reset")
 
                 onClicked: {
-                    revertButton.focus = true;
-                    Cura.MachineManager.clearUserSettingAllCurrentStacks(propertyProvider.key);
+                    revertButton.focus = true
+
+                    if (externalResetHandler) {
+                        externalResetHandler(propertyProvider.key)
+                    } else {
+                        Cura.MachineManager.clearUserSettingAllCurrentStacks(propertyProvider.key)
+                    }
                 }
 
                 onEntered: { hoverTimer.stop(); base.showTooltip(catalog.i18nc("@label", "This setting has a value that is different from the profile.\n\nClick to restore the value of the profile.")) }

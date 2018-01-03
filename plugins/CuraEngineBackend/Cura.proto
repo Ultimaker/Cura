@@ -61,6 +61,8 @@ message Polygon {
     Type type = 1; // Type of move
     bytes points = 2; // The points of the polygon, or two points if only a line segment (Currently only line segments are used)
     float line_width = 3; // The width of the line being laid down
+    float line_thickness = 4; // The thickness of the line being laid down
+    float line_feedrate = 5; // The feedrate of the line being laid down
 }
 
 message LayerOptimized {
@@ -82,6 +84,8 @@ message PathSegment {
     bytes points = 3; // The points defining the line segments, bytes of float[2/3] array of length N+1
     bytes line_type = 4; // Type of line segment as an unsigned char array of length 1 or N, where N is the number of line segments in this path
     bytes line_width = 5; // The widths of the line segments as bytes of a float array of length 1 or N
+    bytes line_thickness = 6; // The thickness of the line segments as bytes of a float array of length 1 or N
+    bytes line_feedrate = 7; // The feedrate of the line segments as bytes of a float array of length 1 or N
 }
 
 

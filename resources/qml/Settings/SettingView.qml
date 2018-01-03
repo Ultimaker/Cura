@@ -275,7 +275,7 @@ Item
                 Behavior on opacity { NumberAnimation { duration: 100 } }
                 enabled:
                 {
-                    if(!ExtruderManager.activeExtruderStackId && machineExtruderCount.properties.value > 1)
+                    if (!Cura.ExtruderManager.activeExtruderStackId && machineExtruderCount.properties.value > 1)
                     {
                         // disable all controls on the global tab, except categories
                         return model.type == "category"
@@ -287,6 +287,7 @@ Item
                 property var settingDefinitionsModel: definitionsModel
                 property var propertyProvider: provider
                 property var globalPropertyProvider: inheritStackProvider
+                property var externalResetHandler: false
 
                 //Qt5.4.2 and earlier has a bug where this causes a crash: https://bugreports.qt.io/browse/QTBUG-35989
                 //In addition, while it works for 5.5 and higher, the ordering of the actual combo box drop down changes,
@@ -337,7 +338,7 @@ Item
                         // machine gets changed.
                         var activeMachineId = Cura.MachineManager.activeMachineId;
 
-                        if(!model.settable_per_extruder || machineExtruderCount.properties.value == 1)
+                        if(!model.settable_per_extruder)
                         {
                             //Not settable per extruder or there only is global, so we must pick global.
                             return activeMachineId;
@@ -345,12 +346,12 @@ Item
                         if(inheritStackProvider.properties.limit_to_extruder != null && inheritStackProvider.properties.limit_to_extruder >= 0)
                         {
                             //We have limit_to_extruder, so pick that stack.
-                            return ExtruderManager.extruderIds[String(inheritStackProvider.properties.limit_to_extruder)];
+                            return Cura.ExtruderManager.extruderIds[String(inheritStackProvider.properties.limit_to_extruder)];
                         }
-                        if(ExtruderManager.activeExtruderStackId)
+                        if(Cura.ExtruderManager.activeExtruderStackId)
                         {
                             //We're on an extruder tab. Pick the current extruder.
-                            return ExtruderManager.activeExtruderStackId;
+                            return Cura.ExtruderManager.activeExtruderStackId;
                         }
                         //No extruder tab is selected. Pick the global stack. Shouldn't happen any more since we removed the global tab.
                         return activeMachineId;
