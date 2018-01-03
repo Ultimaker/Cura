@@ -184,7 +184,7 @@ class X3DReader(MeshReader):
         got_center = (center.x != 0 or center.y != 0 or center.z != 0)
         
         T = self.transform
-        if trans.x != 0 or trans.y != 0 or trans.z !=0:
+        if trans.x != 0 or trans.y != 0 or trans.z != 0:
             T.translate(trans)
         if got_center:
             T.translate(center)

@@ -316,7 +316,7 @@ class CuraApplication(QtApplication):
         preferences.addPreference("cura/material_settings", "{}")
 
         preferences.addPreference("view/invert_zoom", False)
-        preferences.addPreference("cura/sidebar_collapse", False)
+        preferences.addPreference("cura/sidebar_collapsed", False)
 
         self._need_to_show_user_agreement = not Preferences.getInstance().getValue("general/accepted_user_agreement")
 
@@ -408,6 +408,14 @@ class CuraApplication(QtApplication):
             main_window.close()
         else:
             self.exit(0)
+
+    ##  Signal to connect preferences action in QML
+    showPreferencesWindow = pyqtSignal()
+
+    ##  Show the preferences window
+    @pyqtSlot()
+    def showPreferences(self):
+        self.showPreferencesWindow.emit()
 
     ## A reusable dialogbox
     #
@@ -683,7 +691,7 @@ class CuraApplication(QtApplication):
         self.setMainQml(Resources.getPath(self.ResourceTypes.QmlFiles, "Cura.qml"))
         self._qml_import_paths.append(Resources.getPath(self.ResourceTypes.QmlFiles))
 
-        run_without_gui = self.getCommandLineOption("headless", False) or self.getCommandLineOption("invisible", False)
+        run_without_gui = self.getCommandLineOption("headless", False)
         if not run_without_gui:
             self.initializeEngine()
             controller.setActiveStage("PrepareStage")
@@ -1379,7 +1387,7 @@ class CuraApplication(QtApplication):
 
             if node.callDecoration("isSliceable"):
                 # Only check position if it's not already blatantly obvious that it won't fit.
-                if node.getBoundingBox().width < self._volume.getBoundingBox().width or node.getBoundingBox().depth < self._volume.getBoundingBox().depth:
+                if node.getBoundingBox() is None or self._volume.getBoundingBox() is None or node.getBoundingBox().width < self._volume.getBoundingBox().width or node.getBoundingBox().depth < self._volume.getBoundingBox().depth:
                     # Find node location
                     offset_shape_arr, hull_shape_arr = ShapeArray.fromNode(node, min_offset = min_offset)
 
