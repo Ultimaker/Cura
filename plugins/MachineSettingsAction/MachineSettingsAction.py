@@ -260,6 +260,7 @@ class MachineSettingsAction(MachineAction):
             if not materials:
                 # Same material with new diameter is not found, search for generic version of the same material type
                 search_criteria.pop("supplier", None)
+                search_criteria.pop("brand", None)
                 search_criteria["color_name"] = "Generic"
                 materials = self._container_registry.findInstanceContainers(**search_criteria)
             if not materials:
@@ -276,6 +277,6 @@ class MachineSettingsAction(MachineAction):
                 # Just use empty material as a final fallback
                 materials = [self._empty_container]
 
-            Logger.log("i", "Selecting new material: %s" % materials[0].getId())
+            Logger.log("i", "Selecting new material: %s", materials[0].getId())
 
             extruder_stack.material = materials[0]
