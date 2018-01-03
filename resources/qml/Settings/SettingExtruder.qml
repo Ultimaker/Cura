@@ -145,5 +145,21 @@ SettingItem
                 color: control.color
             }
         }
+
+        delegate: ItemDelegate
+        {
+            width: control.width
+            height: control.height
+            highlighted: control.highlightedIndex == index
+
+            contentItem: Text
+            {
+                text: modelData.value
+                color: control.contentItem.color
+                font: control.font
+                elide: Text.ElideRight
+                verticalAlignment: Text.AlignVCenter
+            }
+        }
     }
 }
