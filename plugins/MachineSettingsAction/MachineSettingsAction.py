@@ -27,7 +27,9 @@ class MachineSettingsAction(MachineAction):
         self._qml_url = "MachineSettingsAction.qml"
 
         self._global_container_stack = None
-        self._container_index = 0
+
+        from cura.Settings.CuraContainerStack import _ContainerIndexes
+        self._container_index = _ContainerIndexes.DefinitionChanges
 
         self._container_registry = ContainerRegistry.getInstance()
         self._container_registry.containerAdded.connect(self._onContainerAdded)
