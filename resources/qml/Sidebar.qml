@@ -118,11 +118,12 @@ Rectangle
         UM.Preferences.setValue("cura/active_mode", currentModeIndex);
         if(modesListModel.count > base.currentModeIndex)
         {
-            sidebarContents.push(modesListModel.get(base.currentModeIndex).item, {"replace": true });
+            sidebarContents.replace(modesListModel.get(base.currentModeIndex).item, { "replace": true })
         }
     }
 
-    Label {
+    Label
+    {
         id: settingsModeLabel
         text: !hideSettings ? catalog.i18nc("@label:listbox", "Print Setup") : catalog.i18nc("@label:listbox","Print Setup disabled\nG-code files cannot be modified");
         anchors.left: parent.left
@@ -135,13 +136,18 @@ Rectangle
         visible: !monitoringPrint && !hideView
     }
 
-    Rectangle {
+    // Settings mode selection toggle
+    Rectangle
+    {
         id: settingsModeSelection
         color: "transparent"
+
         width: Math.floor(parent.width * 0.55)
         height: UM.Theme.getSize("sidebar_header_mode_toggle").height
+
         anchors.right: parent.right
         anchors.rightMargin: UM.Theme.getSize("sidebar_margin").width
+        anchors.topMargin: UM.Theme.getSize("sidebar_margin").height
         anchors.top:
         {
             if (settingsModeLabel.contentWidth >= parent.width - width - UM.Theme.getSize("sidebar_margin").width * 2)
@@ -153,39 +159,68 @@ Rectangle
                 return headerSeparator.bottom;
             }
         }
-        anchors.topMargin: UM.Theme.getSize("sidebar_margin").height
+
         visible: !monitoringPrint && !hideSettings && !hideView
-        Component{
+
+        Component
+        {
             id: wizardDelegate
-            Button {
+
+            Button
+            {
                 height: settingsModeSelection.height
+                width: Math.floor(0.5 * parent.width)
+
                 anchors.left: parent.left
                 anchors.leftMargin: model.index * Math.floor(settingsModeSelection.width / 2)
                 anchors.verticalCenter: parent.verticalCenter
-                width: Math.floor(0.5 * parent.width)
+
                 text: model.text
-                ButtonGroup.group: modeMenuGroup;
-                checkable: true;
+
+                ButtonGroup.group: modeMenuGroup
+
+                checkable: true
                 checked: base.currentModeIndex == index
+
                 onClicked: base.currentModeIndex = index
 
-                onHoveredChanged: {
+                onHoveredChanged:
+                {
                     if (hovered)
                     {
                         tooltipDelayTimer.item = settingsModeSelection
                         tooltipDelayTimer.text = model.tooltipText
-                        tooltipDelayTimer.start();
+                        tooltipDelayTimer.start()
                     }
                     else
                     {
-                        tooltipDelayTimer.stop();
-                        base.hideTooltip();
+                        tooltipDelayTimer.stop()
+                        base.hideTooltip()
                     }
                 }
 
+                contentItem: Text
+                {
+                    text: control.text
+                    color: (control.checked || control.pressed) ? UM.Theme.getColor("action_button_active") : control.hovered ? UM.Theme.getColor("action_button_hovered") : UM.Theme.getColor("action_button")
+                    font: control.font
+                    horizontalAlignment: Text.AlignHCenter
+                    verticalAlignment: Text.AlignVCenter
+                    elide: Text.ElideRight
+                }
+
+                background: Rectangle
+                {
+                    border.width: control.checked ? UM.Theme.getSize("default_lining").width * 2 : UM.Theme.getSize("default_lining").width
+                    border.color: (control.checked || control.pressed) ? UM.Theme.getColor("action_button_active_border") : control.hovered ? UM.Theme.getColor("action_button_hovered_border"): UM.Theme.getColor("action_button_border")
+                }
             }
         }
-        ButtonGroup { id: modeMenuGroup; }
+
+        ButtonGroup
+        {
+            id: modeMenuGroup
+        }
 
         ListView
         {
@@ -210,7 +245,7 @@ Rectangle
         anchors.right: base.right
         visible: !monitoringPrint && !hideSettings
 
-        pushEnter:Transition {
+        replaceEnter: Transition {
             PropertyAnimation {
                 property: "opacity"
                 from: 0
@@ -219,7 +254,7 @@ Rectangle
             }
         }
 
-        pushExit: Transition {
+        replaceExit: Transition {
             PropertyAnimation {
                 property: "opacity"
                 from: 1
@@ -560,7 +595,7 @@ Rectangle
             tooltipText: catalog.i18nc("@tooltip", "<b>Custom Print Setup</b><br/><br/>Print with finegrained control over every last bit of the slicing process."),
             item: sidebarAdvanced
         })
-        sidebarContents.push( modesListModel.get(base.currentModeIndex).item, {"immediate": true });
+        sidebarContents.replace( modesListModel.get(base.currentModeIndex).item, { "immediate": true })
 
         var index = Math.floor(UM.Preferences.getValue("cura/active_mode"))
         if(index)
