@@ -63,6 +63,70 @@ Rectangle
     }
 
     Component {
+        id: buildPlateDelegate
+        Rectangle
+            {
+                height: childrenRect.height
+                color: Cura.BuildPlateModel.getItem(index).buildPlateNumber == Cura.BuildPlateModel.activeBuildPlate ? palette.highlight : index % 2 ? palette.base : palette.alternateBase
+                width: parent.width
+                Label
+                {
+                    id: buildPlateNameLabel
+                    anchors.left: parent.left
+                    anchors.leftMargin: UM.Theme.getSize("default_margin").width
+                    width: parent.width - 2 * UM.Theme.getSize("default_margin").width - 30
+                    text: Cura.BuildPlateModel.getItem(index) ? Cura.BuildPlateModel.getItem(index).name : "";
+                    color: Cura.BuildPlateModel.activeBuildPlate == index ? palette.highlightedText : palette.text
+                    elide: Text.ElideRight
+                }
+
+                MouseArea
+                {
+                    anchors.fill: parent;
+                    onClicked:
+                    {
+                        Cura.BuildPlateModel.setActiveBuildPlate(index);
+                    }
+                }
+            }
+    }
+
+    ScrollView
+    {
+        id: buildPlateSelection
+        frameVisible: true
+        height: UM.Theme.getSize("build_plate_selection_size").height
+        width: parent.width - 2 * UM.Theme.getSize("default_margin").height
+        style: UM.Theme.styles.scrollview
+
+        anchors
+        {
+            top: collapseButton.bottom;
+            topMargin: UM.Theme.getSize("default_margin").height;
+            left: parent.left;
+            leftMargin: UM.Theme.getSize("default_margin").height;
+            //bottom: objectsList.top;
+            bottomMargin: UM.Theme.getSize("default_margin").height;
+        }
+
+        Rectangle
+        {
+            parent: viewport
+            anchors.fill: parent
+            color: palette.light
+        }
+
+        ListView
+        {
+            id: buildPlateListView
+            model: Cura.BuildPlateModel
+            width: parent.width
+            delegate: buildPlateDelegate
+        }
+    }
+
+
+    Component {
         id: objectDelegate
         Rectangle
             {
@@ -113,7 +177,7 @@ Rectangle
 
         anchors
         {
-            top: collapseButton.bottom;
+            top: buildPlateSelection.bottom;
             topMargin: UM.Theme.getSize("default_margin").height;
             left: parent.left;
             leftMargin: UM.Theme.getSize("default_margin").height;
@@ -154,69 +218,7 @@ Rectangle
             topMargin: UM.Theme.getSize("default_margin").height;
             bottomMargin: UM.Theme.getSize("default_margin").height;
             leftMargin: UM.Theme.getSize("default_margin").height;
-            bottom: buildPlateSelection.top;
-        }
-    }
-
-    Component {
-        id: buildPlateDelegate
-        Rectangle
-            {
-                height: childrenRect.height
-                color: Cura.BuildPlateModel.getItem(index).buildPlateNumber == Cura.BuildPlateModel.activeBuildPlate ? palette.highlight : index % 2 ? palette.base : palette.alternateBase
-                width: parent.width
-                Label
-                {
-                    id: buildPlateNameLabel
-                    anchors.left: parent.left
-                    anchors.leftMargin: UM.Theme.getSize("default_margin").width
-                    width: parent.width - 2 * UM.Theme.getSize("default_margin").width - 30
-                    text: Cura.BuildPlateModel.getItem(index) ? Cura.BuildPlateModel.getItem(index).name : "";
-                    color: Cura.BuildPlateModel.activeBuildPlate == index ? palette.highlightedText : palette.text
-                    elide: Text.ElideRight
-                }
-
-                MouseArea
-                {
-                    anchors.fill: parent;
-                    onClicked:
-                    {
-                        Cura.BuildPlateModel.setActiveBuildPlate(index);
-                    }
-                }
-            }
-    }
-
-    ScrollView
-    {
-        id: buildPlateSelection
-        frameVisible: true
-        height: UM.Theme.getSize("build_plate_selection_size").height
-        width: parent.width - 2 * UM.Theme.getSize("default_margin").height
-        style: UM.Theme.styles.scrollview
-
-        anchors
-        {
-            topMargin: UM.Theme.getSize("default_margin").height;
-            left: parent.left;
-            leftMargin: UM.Theme.getSize("default_margin").height;
             bottom: arrangeAllBuildPlatesButton.top;
-            bottomMargin: UM.Theme.getSize("default_margin").height;
-        }
-
-        Rectangle
-        {
-            parent: viewport
-            anchors.fill: parent
-            color: palette.light
-        }
-
-        ListView
-        {
-            id: buildPlateListView
-            model: Cura.BuildPlateModel
-            width: parent.width
-            delegate: buildPlateDelegate
         }
     }
 
