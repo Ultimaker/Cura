@@ -11,9 +11,9 @@ from UM.Message import Message
 from UM.i18n import i18nCatalog
 i18n_catalog = i18nCatalog("cura")
 
-from cura.ZOffsetDecorator import ZOffsetDecorator
+from cura.Scene.ZOffsetDecorator import ZOffsetDecorator
 from cura.Arranging.Arrange import Arrange
-from cura.ShapeArray import ShapeArray
+from cura.Arranging.ShapeArray import ShapeArray
 
 from typing import List
 

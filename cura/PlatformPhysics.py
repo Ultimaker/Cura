@@ -10,10 +10,10 @@ from UM.Math.Vector import Vector
 from UM.Scene.Selection import Selection
 from UM.Preferences import Preferences
 
-from cura.ConvexHullDecorator import ConvexHullDecorator
+from cura.Scene.ConvexHullDecorator import ConvexHullDecorator
 
 from cura.Operations import PlatformPhysicsOperation
-from . import ZOffsetDecorator
+from cura.Scene import ZOffsetDecorator
 
 import random  # used for list shuffling
 

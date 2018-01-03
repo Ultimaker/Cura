@@ -1,7 +1,7 @@
 import numpy
 
 from cura.Arranging.Arrange import Arrange
-from cura.ShapeArray import ShapeArray
+from cura.Arranging.ShapeArray import ShapeArray
 
 
 def gimmeShapeArray():

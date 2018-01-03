@@ -33,11 +33,11 @@ from UM.Operations.GroupedOperation import GroupedOperation
 from UM.Operations.SetTransformOperation import SetTransformOperation
 
 from cura.Arranging.Arrange import Arrange
-from cura.ShapeArray import ShapeArray
-from cura.ConvexHullDecorator import ConvexHullDecorator
+from cura.Arranging.ShapeArray import ShapeArray
+from cura.Scene.ConvexHullDecorator import ConvexHullDecorator
 from cura.Operations.SetParentOperation import SetParentOperation
-from cura.SliceableObjectDecorator import SliceableObjectDecorator
-from cura.BlockSlicingDecorator import BlockSlicingDecorator
+from cura.Scene.SliceableObjectDecorator import SliceableObjectDecorator
+from cura.Scene.BlockSlicingDecorator import BlockSlicingDecorator
 from cura.Scene.BuildPlateDecorator import BuildPlateDecorator
 from cura.Scene.CuraSceneNode import CuraSceneNode
 
@@ -62,7 +62,7 @@ from . import BuildVolume
 from . import CameraAnimation
 from . import PrintInformation
 from . import CuraActions
-from . import ZOffsetDecorator
+from cura.Scene import ZOffsetDecorator
 from . import CuraSplashScreen
 from . import CameraImageProvider
 from . import MachineActionManager

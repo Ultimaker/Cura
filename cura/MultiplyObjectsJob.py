@@ -8,7 +8,7 @@ from UM.i18n import i18nCatalog
 i18n_catalog = i18nCatalog("cura")
 
 from cura.Arranging.Arrange import Arrange
-from cura.ShapeArray import ShapeArray
+from cura.Arranging.ShapeArray import ShapeArray
 
 from UM.Application import Application
 from UM.Operations.AddSceneNodeOperation import AddSceneNodeOperation
