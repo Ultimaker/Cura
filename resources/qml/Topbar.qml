@@ -125,10 +125,7 @@ Rectangle
             iconSource: UM.Theme.getIcon("view_front")
             style: UM.Theme.styles.small_tool_button
             anchors.verticalCenter: viewOrientationControl.verticalCenter
-            onClicked: {
-                UM.Controller.rotateView("x", 0)
-                UM.Controller.rotateView("y", 0)
-            }
+            onClicked: UM.Controller.rotateView("home", 0);
             visible: base.width - allItemsWidth - 3 * this.width > 0
         }
 
