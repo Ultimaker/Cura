@@ -48,15 +48,17 @@ class SliceInfo(Extension):
             self.send_slice_info_message.addAction("Dismiss", name = catalog.i18nc("@action:button", "Allow"), icon = None,
                     description = catalog.i18nc("@action:tooltip", "Allow Cura to send anonymized usage statistics to help prioritize future improvements to Cura. Some of your preferences and settings are sent, the Cura version and a hash of the models you're slicing."))
             self.send_slice_info_message.addAction("Disable", name = catalog.i18nc("@action:button", "Disable"), icon = None,
-                    description = catalog.i18nc("@action:tooltip", "Don't allow Cura to send anonymized usage statistics. You can enable it again in the preferences."))
+                    description = catalog.i18nc("@action:tooltip", "Don't allow Cura to send anonymized usage statistics. You can enable it again in the preferences."), button_style = Message.ActionButtonStyle.LINK)
             self.send_slice_info_message.actionTriggered.connect(self.messageActionTriggered)
             self.send_slice_info_message.show()
 
+    ##  Perform action based on user input.
+    #   Note that clicking "Disable" won't actually disable the data sending, but rather take the user to preferences where they can disable it.
     def messageActionTriggered(self, message_id, action_id):
-        if action_id == "Disable":
-            Preferences.getInstance().setValue("info/send_slice_info", False)
-        self.send_slice_info_message.hide()
         Preferences.getInstance().setValue("info/asked_send_slice_info", True)
+        if action_id == "Disable":
+            CuraApplication.getInstance().showPreferences()
+        self.send_slice_info_message.hide()
 
     def _onWriteStarted(self, output_device):
         try:
