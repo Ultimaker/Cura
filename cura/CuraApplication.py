@@ -17,7 +17,6 @@ from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 from UM.Mesh.ReadMeshJob import ReadMeshJob
 from UM.Logger import Logger
 from UM.Preferences import Preferences
-from UM.SaveFile import SaveFile
 from UM.Scene.Selection import Selection
 from UM.Scene.GroupDecorator import GroupDecorator
 from UM.Settings.ContainerStack import ContainerStack
@@ -33,17 +32,17 @@ from UM.Operations.RemoveSceneNodeOperation import RemoveSceneNodeOperation
 from UM.Operations.GroupedOperation import GroupedOperation
 from UM.Operations.SetTransformOperation import SetTransformOperation
 
-from cura.Arrange import Arrange
-from cura.ShapeArray import ShapeArray
-from cura.ConvexHullDecorator import ConvexHullDecorator
-from cura.SetParentOperation import SetParentOperation
-from cura.SliceableObjectDecorator import SliceableObjectDecorator
-from cura.BlockSlicingDecorator import BlockSlicingDecorator
+from cura.Arranging.Arrange import Arrange
+from cura.Arranging.ShapeArray import ShapeArray
+from cura.Scene.ConvexHullDecorator import ConvexHullDecorator
+from cura.Operations.SetParentOperation import SetParentOperation
+from cura.Scene.SliceableObjectDecorator import SliceableObjectDecorator
+from cura.Scene.BlockSlicingDecorator import BlockSlicingDecorator
 from cura.Scene.BuildPlateDecorator import BuildPlateDecorator
 from cura.Scene.CuraSceneNode import CuraSceneNode
 
-from cura.ArrangeObjectsJob import ArrangeObjectsJob
-from cura.ArrangeObjectsAllBuildPlatesJob import ArrangeObjectsAllBuildPlatesJob
+from cura.Arranging.ArrangeObjectsJob import ArrangeObjectsJob
+from cura.Arranging.ArrangeObjectsAllBuildPlatesJob import ArrangeObjectsAllBuildPlatesJob
 from cura.MultiplyObjectsJob import MultiplyObjectsJob
 
 from UM.Settings.SettingDefinition import SettingDefinition, DefinitionPropertyType
@@ -63,7 +62,7 @@ from . import BuildVolume
 from . import CameraAnimation
 from . import PrintInformation
 from . import CuraActions
-from . import ZOffsetDecorator
+from cura.Scene import ZOffsetDecorator
 from . import CuraSplashScreen
 from . import CameraImageProvider
 from . import MachineActionManager
@@ -77,8 +76,6 @@ from cura.Settings.ContainerSettingsModel import ContainerSettingsModel
 from cura.Settings.MaterialSettingsVisibilityHandler import MaterialSettingsVisibilityHandler
 from cura.Settings.QualitySettingsModel import QualitySettingsModel
 from cura.Settings.ContainerManager import ContainerManager
-from cura.Settings.GlobalStack import GlobalStack
-from cura.Settings.ExtruderStack import ExtruderStack
 
 from cura.ObjectManager import ObjectManager
 from cura.BuildPlateModel import BuildPlateModel
@@ -93,7 +90,6 @@ import sys
 import os.path
 import numpy
 import copy
-import urllib.parse
 import os
 import argparse
 import json

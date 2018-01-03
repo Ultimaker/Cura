@@ -14,7 +14,7 @@ from UM.Operations.GroupedOperation import GroupedOperation
 from UM.Operations.RemoveSceneNodeOperation import RemoveSceneNodeOperation
 from UM.Operations.SetTransformOperation import SetTransformOperation
 
-from cura.SetParentOperation import SetParentOperation
+from cura.Operations.SetParentOperation import SetParentOperation
 from cura.MultiplyObjectsJob import MultiplyObjectsJob
 from cura.Settings.SetObjectExtruderOperation import SetObjectExtruderOperation
 from cura.Settings.ExtruderManager import ExtruderManager

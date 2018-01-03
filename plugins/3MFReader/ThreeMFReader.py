@@ -4,7 +4,6 @@
 import os.path
 import zipfile
 
-from UM.Job import Job
 from UM.Logger import Logger
 from UM.Math.Matrix import Matrix
 from UM.Math.Vector import Vector
@@ -17,8 +16,8 @@ from cura.Settings.ExtruderManager import ExtruderManager
 from cura.QualityManager import QualityManager
 from cura.Scene.CuraSceneNode import CuraSceneNode
 from cura.Scene.BuildPlateDecorator import BuildPlateDecorator
-from cura.SliceableObjectDecorator import SliceableObjectDecorator
-from cura.ZOffsetDecorator import ZOffsetDecorator
+from cura.Scene.SliceableObjectDecorator import SliceableObjectDecorator
+from cura.Scene.ZOffsetDecorator import ZOffsetDecorator
 
 MYPY = False
 
