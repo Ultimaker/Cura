@@ -173,8 +173,8 @@ SettingItem
 
             contentItem: Text
             {
-                text: modelData.value
-                color: extruderText.color
+                text: model.name
+                color: UM.Theme.getColor("setting_control_text")
                 font: control.font
                 elide: Text.ElideRight
                 verticalAlignment: Text.AlignVCenter
