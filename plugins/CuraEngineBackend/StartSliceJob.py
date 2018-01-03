@@ -153,10 +153,11 @@ class StartSliceJob(Job):
                             is_non_printing_mesh = any(per_object_stack.getProperty(key, "value") for key in NON_PRINTING_MESH_SETTINGS)
 
                         if (node.callDecoration("getBuildPlateNumber") == self._build_plate_number):
-                            if not getattr(node, "_outside_buildarea", False) or not is_non_printing_mesh:
+                            if not getattr(node, "_outside_buildarea", False) or is_non_printing_mesh:
                                 temp_list.append(node)
                                 if not is_non_printing_mesh:
                                     has_printing_mesh = True
+
                     Job.yieldThread()
 
                 #If the list doesn't have any model with suitable settings then clean the list

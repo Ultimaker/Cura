@@ -25,9 +25,12 @@ Rectangle
     property int allItemsWidth: 0;
 
     function updateMarginsAndSizes() {
-        if (UM.Preferences.getValue("cura/sidebar_collapse")) {
+        if (UM.Preferences.getValue("cura/sidebar_collapsed"))
+        {
             rightMargin = UM.Theme.getSize("default_margin").width;
-        } else {
+        }
+        else
+        {
             rightMargin = UM.Theme.getSize("sidebar").width + UM.Theme.getSize("default_margin").width;
         }
         allItemsWidth = (

@@ -159,6 +159,7 @@ UM.PreferencesPage
                             append({ text: "Nederlands", code: "nl_NL" })
                             append({ text: "Polski", code: "pl_PL" })
                             append({ text: "Português do Brasil", code: "pt_BR" })
+                            append({ text: "Português", code: "pt_PT" })
                             append({ text: "Русский", code: "ru_RU" })
                             append({ text: "Türkçe", code: "tr_TR" })
                             append({ text: "简体中文", code: "zh_CN" })

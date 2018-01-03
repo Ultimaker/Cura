@@ -413,7 +413,7 @@ UM.MainWindow
                         collapseSidebarAnimation.start();
                     }
                     collapsed = !collapsed;
-                    UM.Preferences.setValue("cura/sidebar_collapse", collapsed);
+                    UM.Preferences.setValue("cura/sidebar_collapsed", collapsed);
                 }
 
                 anchors
@@ -444,9 +444,10 @@ UM.MainWindow
 
                 Component.onCompleted:
                 {
-                    var sidebarCollapsed = UM.Preferences.getValue("cura/sidebar_collapse");
+                    var sidebar_collapsed = UM.Preferences.getValue("cura/sidebar_collapsed");
 
-                    if (sidebarCollapsed) {
+                    if (sidebar_collapsed)
+                    {
                         sidebar.collapsed = true;
                         viewportRect = Qt.rect(0, 0, 1, 1.0)
                         collapseSidebarAnimation.start();
@@ -538,6 +539,12 @@ UM.MainWindow
     {
         target: Cura.Actions.preferences
         onTriggered: preferences.visible = true
+    }
+
+    Connections
+    {
+        target: CuraApplication
+        onShowPreferencesWindow: preferences.visible = true
     }
 
     MessageDialog

@@ -682,12 +682,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                                   file_name = global_stack_file)
 
                 # Ensure a unique ID and name
-                stack._id = global_stack_id_new
-
-                # Extruder stacks are "bound" to a machine. If we add the machine as a new one, the id of the
-                # bound machine also needs to change.
-                if stack.getMetaDataEntry("machine", None):
-                    stack.setMetaDataEntry("machine", global_stack_id_new)
+                stack.setMetaDataEntry("id", global_stack_id_new)
 
                 # Only machines need a new name, stacks may be non-unique
                 stack.setName(global_stack_name_new)
@@ -741,7 +736,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                     stack.deserialize(extruder_file_content, file_name = extruder_stack_file)
 
                     # Ensure a unique ID and name
-                    stack._id = new_id
+                    stack.setMetaDataEntry("id", new_id)
 
                     self._container_registry.addContainer(stack)
                     extruder_stacks_added.append(stack)
