@@ -80,28 +80,32 @@ class NetworkedPrinterOutputDevice(PrinterOutputDevice):
 
         ## Mash the data into single string
         max_chars_per_line = int(1024 * 1024 / 4)  # 1/4 MB per line.
-        byte_array_file_data = b""
-        batched_line = ""
+        file_data_bytes_list = []
+        batched_lines = []
+        batched_lines_count = 0
 
         for line in self._gcode:
             if not self._compressing_gcode:
                 self._progress_message.hide()
                 # Stop trying to zip / send as abort was called.
                 return None
-            batched_line += line
+
             # if the gcode was read from a gcode file, self._gcode will be a list of all lines in that file.
             # Compressing line by line in this case is extremely slow, so we need to batch them.
-            if len(batched_line) < max_chars_per_line:
-                continue
-            byte_array_file_data += self._compressDataAndNotifyQt(batched_line)
-            batched_line = ""
+            batched_lines.append(line)
+            batched_lines_count += len(line)
+
+            if batched_lines_count >= max_chars_per_line:
+                file_data_bytes_list.append(self._compressDataAndNotifyQt("".join(batched_lines)))
+                batched_lines = []
+                batched_lines_count
 
         # Don't miss the last batch (If any)
-        if batched_line:
-            byte_array_file_data += self._compressDataAndNotifyQt(batched_line)
+        if len(batched_lines) != 0:
+            file_data_bytes_list.append(self._compressDataAndNotifyQt("".join(batched_lines)))
 
         self._compressing_gcode = False
-        return byte_array_file_data
+        return b"".join(file_data_bytes_list)
 
     def _update(self) -> bool:
         if self._last_response_time:
