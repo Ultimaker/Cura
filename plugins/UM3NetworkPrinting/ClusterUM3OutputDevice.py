@@ -216,15 +216,13 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
     def getDateCompleted(self, time_remaining):
         current_time = time()
         datetime_completed = datetime.fromtimestamp(current_time + time_remaining)
-
         return (datetime_completed.strftime("%a %b ") + "{day}".format(day=datetime_completed.day)).upper()
 
     def _printJobStateChanged(self):
         username = self._getUserName()
 
         if username is None:
-            # We only want to show notifications if username is set.
-            return
+            return  # We only want to show notifications if username is set.
 
         finished_jobs = [job for job in self._print_jobs if job.state == "wait_cleanup"]
 
@@ -244,144 +242,165 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
         self.get("print_jobs/", onFinished=self._onGetPrintJobsFinished)
 
     def _onGetPrintJobsFinished(self, reply: QNetworkReply):
-        status_code = reply.attribute(QNetworkRequest.HttpStatusCodeAttribute)
-        if status_code == 200:
-            try:
-                result = json.loads(bytes(reply.readAll()).decode("utf-8"))
-            except json.decoder.JSONDecodeError:
-                Logger.log("w", "Received an invalid print jobs message: Not valid JSON.")
-                return
-            print_jobs_seen = []
-            job_list_changed = False
-            for print_job_data in result:
-                print_job = None
-                for job in self._print_jobs:
-                    if job.key == print_job_data["uuid"]:
-                        print_job = job
-                        break
+        if not checkValidGetReply(reply):
+            return
 
-                if print_job is None:
-                    print_job = PrintJobOutputModel(output_controller = ClusterUM3PrinterOutputController(self),
-                                                    key = print_job_data["uuid"],
-                                                    name = print_job_data["name"])
-                    print_job.stateChanged.connect(self._printJobStateChanged)
-                    job_list_changed = True
-                    self._print_jobs.append(print_job)
-                print_job.updateTimeTotal(print_job_data["time_total"])
-                print_job.updateTimeElapsed(print_job_data["time_elapsed"])
-                print_job.updateState(print_job_data["status"])
-                print_job.updateOwner(print_job_data["owner"])
-                printer = None
-                if print_job.state != "queued":
-                    # Print job should be assigned to a printer.
-                    printer = self._getPrinterByKey(print_job_data["printer_uuid"])
-                else:  # Status is queued
-                    # The job can "reserve" a printer if some changes are required.
-                    printer = self._getPrinterByKey(print_job_data["assigned_to"])
+        result = loadJsonFromReply(reply)
+        if result is None:
+            return
 
-                if printer:
-                    printer.updateActivePrintJob(print_job)
+        print_jobs_seen = []
+        job_list_changed = False
+        for print_job_data in result:
+            print_job = findByKey(self._print_jobs, print_job_data["uuid"])
 
-                print_jobs_seen.append(print_job)
+            if print_job is None:
+                print_job = self._createJobModel()
+                job_list_changed = True
 
-            # Check what jobs need to be removed.
-            removed_jobs = [print_job for print_job in self._print_jobs if print_job not in print_jobs_seen]
-            for removed_job in removed_jobs:
-                if removed_job.assignedPrinter:
-                    removed_job.assignedPrinter.updateActivePrintJob(None)
-                    removed_job.stateChanged.disconnect(self._printJobStateChanged)
-                    self._print_jobs.remove(removed_job)
-                    job_list_changed = True
+            self._updatePrintJob(print_job, print_job_data)
 
-            # Do a single emit for all print job changes.
-            if job_list_changed:
-                self.printJobsChanged.emit()
+            if print_job.state != "queued":  # Print job should be assigned to a printer.
+                printer = self._getPrinterByKey(print_job_data["printer_uuid"])
+            else:  # The job can "reserve" a printer if some changes are required.
+                printer = self._getPrinterByKey(print_job_data["assigned_to"])
+
+            if printer:
+                printer.updateActivePrintJob(print_job)
+
+            print_jobs_seen.append(print_job)
+
+        # Check what jobs need to be removed.
+        removed_jobs = [print_job for print_job in self._print_jobs if print_job not in print_jobs_seen]
+        for removed_job in removed_jobs:
+            job_list_changed |= self._removeJob(removed_job)
+
+        if job_list_changed:
+            self.printJobsChanged.emit()  # Do a single emit for all print job changes.
 
     def _onGetPrintersDataFinished(self, reply: QNetworkReply):
-        status_code = reply.attribute(QNetworkRequest.HttpStatusCodeAttribute)
-        if status_code == 200:
-            try:
-                result = json.loads(bytes(reply.readAll()).decode("utf-8"))
-            except json.decoder.JSONDecodeError:
-                Logger.log("w", "Received an invalid printers state message: Not valid JSON.")
-                return
-            printer_list_changed = False
-            # TODO: Ensure that printers that have been removed are also removed locally.
+        if not checkValidGetReply(reply):
+            return
 
-            printers_seen = []
+        result = loadJsonFromReply(reply)
+        if result is None:
+            return
 
-            for printer_data in result:
-                uuid = printer_data["uuid"]
+        printer_list_changed = False
+        printers_seen = []
 
-                printer = None
-                for device in self._printers:
-                    if device.key == uuid:
-                        printer = device
-                        break
+        for printer_data in result:
+            printer = findByKey(self._printers, printer_data["uuid"])
 
-                if printer is None:
-                    printer = PrinterOutputModel(output_controller=ClusterUM3PrinterOutputController(self), number_of_extruders=self._number_of_extruders)
-                    printer.setCamera(NetworkCamera("http://" + printer_data["ip_address"] + ":8080/?action=stream"))
-                    self._printers.append(printer)
-                    printer_list_changed = True
-
-                printers_seen.append(printer)
-
-                printer.updateName(printer_data["friendly_name"])
-                printer.updateKey(uuid)
-                printer.updateType(printer_data["machine_variant"])
-                if not printer_data["enabled"]:
-                    printer.updateState("disabled")
-                else:
-                    printer.updateState(printer_data["status"])
-
-                for index in range(0, self._number_of_extruders):
-                    extruder = printer.extruders[index]
-                    try:
-                        extruder_data = printer_data["configuration"][index]
-                    except IndexError:
-                        break
-
-                    try:
-                        hotend_id = extruder_data["print_core_id"]
-                    except KeyError:
-                        hotend_id = ""
-                    extruder.updateHotendID(hotend_id)
-
-                    material_data = extruder_data["material"]
-                    if extruder.activeMaterial is None or extruder.activeMaterial.guid != material_data["guid"]:
-                        containers = ContainerRegistry.getInstance().findInstanceContainers(type="material",
-                                                                                            GUID=material_data["guid"])
-                        if containers:
-                            color = containers[0].getMetaDataEntry("color_code")
-                            brand = containers[0].getMetaDataEntry("brand")
-                            material_type = containers[0].getMetaDataEntry("material")
-                            name = containers[0].getName()
-                        else:
-                            Logger.log("w", "Unable to find material with guid {guid}. Using data as provided by cluster".format(guid = material_data["guid"]))
-                            # Unknown material.
-                            color = material_data["color"]
-                            brand = material_data["brand"]
-                            material_type = material_data["material"]
-                            name = "Unknown"
-
-                        material = MaterialOutputModel(guid = material_data["guid"],
-                                                       type = material_type,
-                                                       brand = brand,
-                                                       color = color,
-                                                       name = name)
-                        extruder.updateActiveMaterial(material)
-            removed_printers = [printer for printer in self._printers if printer not in printers_seen]
-
-            for removed_printer in removed_printers:
-                self._printers.remove(removed_printer)
+            if printer is None:
+                printer = self._createPrinterModel(printer_data)
                 printer_list_changed = True
-                if self._active_printer == removed_printer:
-                    self._active_printer = None
-                    self.activePrinterChanged.emit()
 
-            if printer_list_changed:
-                self.printersChanged.emit()
+            printers_seen.append(printer)
+
+            self._updatePrinter(printer, printer_data)
+
+        removed_printers = [printer for printer in self._printers if printer not in printers_seen]
+        for printer in removed_printers:
+            self._removePrinter(printer)
+
+        if removed_printers or printer_list_changed:
+            self.printersChanged.emit()
+
+    def _createPrinterModel(self, data):
+        printer = PrinterOutputModel(output_controller=ClusterUM3PrinterOutputController(self),
+                                     number_of_extruders=self._number_of_extruders)
+        printer.setCamera(NetworkCamera("http://" + data["ip_address"] + ":8080/?action=stream"))
+        self._printers.append(printer)
+        return printer
+
+    def _createPrintJobModel(self, data):
+        print_job = PrintJobOutputModel(output_controller=ClusterUM3PrinterOutputController(self),
+                                        key=data["uuid"], name= data["name"])
+        print_job.stateChanged.connect(self._printJobStateChanged)
+        self._print_jobs.append(print_job)
+        return print_job
+
+    def _updatePrintJob(self, print_job, data):
+        print_job.updateTimeTotal(data["time_total"])
+        print_job.updateTimeElapsed(data["time_elapsed"])
+        print_job.updateState(data["status"])
+        print_job.updateOwner(data["owner"])
+
+    def _updatePrinter(self, printer, data):
+        printer.updateName(data["friendly_name"])
+        printer.updateKey(data["uuid"])
+        printer.updateType(data["machine_variant"])
+        if not data["enabled"]:
+            printer.updateState("disabled")
         else:
-            Logger.log("w",
-                       "Got status code {status_code} while trying to get printer data".format(status_code=status_code))
+            printer.updateState(data["status"])
+
+        for index in range(0, self._number_of_extruders):
+            extruder = printer.extruders[index]
+            try:
+                extruder_data = data["configuration"][index]
+            except IndexError:
+                break
+
+            extruder.updateHotendID(extruder_data.get("print_core_id", ""))
+
+            material_data = extruder_data["material"]
+            if extruder.activeMaterial is None or extruder.activeMaterial.guid != material_data["guid"]:
+                containers = ContainerRegistry.getInstance().findInstanceContainers(type="material",
+                                                                                    GUID=material_data["guid"])
+                if containers:
+                    color = containers[0].getMetaDataEntry("color_code")
+                    brand = containers[0].getMetaDataEntry("brand")
+                    material_type = containers[0].getMetaDataEntry("material")
+                    name = containers[0].getName()
+                else:
+                    Logger.log("w",
+                               "Unable to find material with guid {guid}. Using data as provided by cluster".format(
+                                   guid=material_data["guid"]))
+                    color = material_data["color"]
+                    brand = material_data["brand"]
+                    material_type = material_data["material"]
+                    name = "Unknown"
+
+                material = MaterialOutputModel(guid=material_data["guid"], type=material_type,
+                                               brand=brand, color=color, name=name)
+                extruder.updateActiveMaterial(material)
+
+    def _removeJob(self, job):
+        if job.assignedPrinter:
+            job.assignedPrinter.updateActivePrintJob(None)
+            job.stateChanged.disconnect(self._printJobStateChanged)
+            self._print_jobs.remove(job)
+            return True
+        return False
+
+    def _removePrinter(self, printer):
+        self._printers.remove(printer)
+        if self._active_printer == printer:
+            self._active_printer = None
+            self.activePrinterChanged.emit()
+
+
+def loadJsonFromReply(reply):
+    try:
+        result = json.loads(bytes(reply.readAll()).decode("utf-8"))
+    except json.decoder.JSONDecodeError:
+        Logger.logException("w", "Unable to decode JSON from reply.")
+        return
+    return result
+
+
+def checkValidGetReply(reply):
+    status_code = reply.attribute(QNetworkRequest.HttpStatusCodeAttribute)
+
+    if status_code != 200:
+        Logger.log("w", "Got status code {status_code} while trying to get data".format(status_code=status_code))
+        return False
+    return True
+
+
+def findByKey(list, key):
+    for item in list:
+        if item.key == key:
+            return item
