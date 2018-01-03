@@ -1,5 +1,5 @@
 from UM.Scene.SceneNodeDecorator import SceneNodeDecorator
-from UM.Scene.SceneNode import SceneNode
+from cura.Scene.CuraSceneNode import CuraSceneNode
 
 
 ##  Make a SceneNode build plate aware CuraSceneNode objects all have this decorator.
@@ -13,14 +13,11 @@ class BuildPlateDecorator(SceneNodeDecorator):
         # Make sure that groups are set correctly
         # setBuildPlateForSelection in CuraActions makes sure that no single childs are set.
         self._build_plate_number = nr
-        # if issubclass(type(self._node), SceneNode):  # TODO: Crashes on ArrangeObjectsAllBuildPlatesJob
-        #     self._node.transformationChanged.emit()
-        #self._node.transformationChanged.emit()
+        if issubclass(type(self._node), CuraSceneNode):
+            self._node.transformChanged()  # trigger refresh node without introducing a new signal
         if self._node and self._node.callDecoration("isGroup"):
             for child in self._node.getChildren():
                 child.callDecoration("setBuildPlateNumber", nr)
-                # if issubclass(type(child), SceneNode):
-                #     child.transformationChanged.emit()
 
     def getBuildPlateNumber(self):
         return self._build_plate_number

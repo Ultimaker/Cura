@@ -38,3 +38,6 @@ class CuraSceneNode(SceneNode):
             copy.addChild(deepcopy(child, memo))
         self.calculateBoundingBoxMesh()
         return copy
+
+    def transformChanged(self) -> None:
+        self._transformChanged()
