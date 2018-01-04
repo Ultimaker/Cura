@@ -110,7 +110,7 @@ Button
             id: category_arrow
             anchors.verticalCenter: parent.verticalCenter
             anchors.right: parent.right
-            anchors.rightMargin: UM.Theme.getSize("default_margin").width * 3 - width / 2
+            anchors.rightMargin: UM.Theme.getSize("default_margin").width
             width: UM.Theme.getSize("standard_arrow").width
             height: UM.Theme.getSize("standard_arrow").height
             sourceSize.width: width
@@ -223,7 +223,7 @@ Button
 
         anchors {
             right: inheritButton.visible ? inheritButton.left : parent.right
-            rightMargin: inheritButton.visible? UM.Theme.getSize("default_margin").width / 2 : UM.Theme.getSize("setting_preferences_button_margin").width
+            rightMargin: inheritButton.visible ? UM.Theme.getSize("default_margin").width / 2 : category_arrow.width + UM.Theme.getSize("default_margin").width * 1.9 // 1.9 because there is a 0.1 difference between the settings and inheritance warning icons
             verticalCenter: parent.verticalCenter;
         }
 
@@ -242,7 +242,7 @@ Button
 
         anchors.verticalCenter: parent.verticalCenter
         anchors.right: parent.right
-        anchors.rightMargin: UM.Theme.getSize("setting_preferences_button_margin").width
+        anchors.rightMargin: category_arrow.width + UM.Theme.getSize("default_margin").width * 2
 
         visible:
         {
