@@ -275,6 +275,7 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
 
         # Check what jobs need to be removed.
         removed_jobs = [print_job for print_job in self._print_jobs if print_job not in print_jobs_seen]
+
         for removed_job in removed_jobs:
             job_list_changed |= self._removeJob(removed_job)
 
@@ -371,12 +372,15 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
                 extruder.updateActiveMaterial(material)
 
     def _removeJob(self, job):
+        if job not in self._print_jobs:
+            return False
+
         if job.assignedPrinter:
             job.assignedPrinter.updateActivePrintJob(None)
             job.stateChanged.disconnect(self._printJobStateChanged)
-            self._print_jobs.remove(job)
-            return True
-        return False
+        self._print_jobs.remove(job)
+
+        return True
 
     def _removePrinter(self, printer):
         self._printers.remove(printer)
