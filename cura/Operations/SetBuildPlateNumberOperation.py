@@ -8,7 +8,9 @@ from cura.Settings.SettingOverrideDecorator import SettingOverrideDecorator
 
 ##  Simple operation to set the buildplate number of a scenenode.
 class SetBuildPlateNumberOperation(Operation):
+    
     def __init__(self, node: SceneNode, build_plate_nr: int) -> None:
+        super().__init__()
         self._node = node
         self._build_plate_nr = build_plate_nr
         self._previous_build_plate_nr = None
