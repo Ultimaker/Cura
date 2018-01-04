@@ -10,10 +10,10 @@ from UM.Math.Vector import Vector
 from UM.Scene.Selection import Selection
 from UM.Preferences import Preferences
 
-from cura.ConvexHullDecorator import ConvexHullDecorator
+from cura.Scene.ConvexHullDecorator import ConvexHullDecorator
 
-from . import PlatformPhysicsOperation
-from . import ZOffsetDecorator
+from cura.Operations import PlatformPhysicsOperation
+from cura.Scene import ZOffsetDecorator
 
 import random  # used for list shuffling
 
@@ -58,10 +58,11 @@ class PlatformPhysics:
 
         # Only check nodes inside build area.
         nodes = [node for node in nodes if (hasattr(node, "_outside_buildarea") and not node._outside_buildarea)]
+        active_build_plate = Application.getInstance().getBuildPlateModel().activeBuildPlate
 
         random.shuffle(nodes)
         for node in nodes:
-            if node is root or type(node) is not SceneNode or node.getBoundingBox() is None:
+            if node is root or not issubclass(type(node), SceneNode) or node.getBoundingBox() is None:
                 continue
 
             bbox = node.getBoundingBox()
@@ -82,7 +83,7 @@ class PlatformPhysics:
                 # Check for collisions between convex hulls
                 for other_node in BreadthFirstIterator(root):
                     # Ignore root, ourselves and anything that is not a normal SceneNode.
-                    if other_node is root or type(other_node) is not SceneNode or other_node is node:
+                    if other_node is root or not issubclass(type(other_node), SceneNode) or other_node is node or other_node.callDecoration("getBuildPlateNumber") != node.callDecoration("getBuildPlateNumber"):
                         continue
                     
                     # Ignore collisions of a group with it's own children
@@ -117,33 +118,33 @@ class PlatformPhysics:
                                     overlap = node.callDecoration("getConvexHull").translate(move_vector.x, move_vector.z).intersectsPolygon(other_head_hull)
                                     if overlap:
                                         # Moving ensured that overlap was still there. Try anew!
-                                        move_vector = move_vector.set(x=move_vector.x + overlap[0] * self._move_factor,
-                                                                      z=move_vector.z + overlap[1] * self._move_factor)
+                                        move_vector = move_vector.set(x = move_vector.x + overlap[0] * self._move_factor,
+                                                                      z = move_vector.z + overlap[1] * self._move_factor)
                             else:
                                 # Moving ensured that overlap was still there. Try anew!
-                                move_vector = move_vector.set(x=move_vector.x + overlap[0] * self._move_factor,
-                                                              z=move_vector.z + overlap[1] * self._move_factor)
+                                move_vector = move_vector.set(x = move_vector.x + overlap[0] * self._move_factor,
+                                                              z = move_vector.z + overlap[1] * self._move_factor)
                         else:
                             own_convex_hull = node.callDecoration("getConvexHull")
                             other_convex_hull = other_node.callDecoration("getConvexHull")
                             if own_convex_hull and other_convex_hull:
                                 overlap = own_convex_hull.translate(move_vector.x, move_vector.z).intersectsPolygon(other_convex_hull)
                                 if overlap:  # Moving ensured that overlap was still there. Try anew!
-                                    temp_move_vector = move_vector.set(x=move_vector.x + overlap[0] * self._move_factor,
-                                                                  z=move_vector.z + overlap[1] * self._move_factor)
+                                    temp_move_vector = move_vector.set(x = move_vector.x + overlap[0] * self._move_factor,
+                                                                  z = move_vector.z + overlap[1] * self._move_factor)
 
                                     # if the distance between two models less than 2mm then try to find a new factor
                                     if abs(temp_move_vector.x - overlap[0]) < self._minimum_gap and abs(temp_move_vector.y - overlap[1]) < self._minimum_gap:
                                         temp_scale_factor = self._move_factor
-                                        temp_x_factor = (abs(overlap[0]) + self._minimum_gap) / overlap[0] if overlap[0] !=0 else 0# find x move_factor, like (3.4 + 2) / 3.4 = 1.58
-                                        temp_y_factor = (abs(overlap[1]) + self._minimum_gap) / overlap[1] if overlap[1] !=0 else 0 # find y move_factor
+                                        temp_x_factor = (abs(overlap[0]) + self._minimum_gap) / overlap[0] if overlap[0] != 0 else 0 # find x move_factor, like (3.4 + 2) / 3.4 = 1.58
+                                        temp_y_factor = (abs(overlap[1]) + self._minimum_gap) / overlap[1] if overlap[1] != 0 else 0 # find y move_factor
                                         if abs(temp_x_factor) > abs(temp_y_factor):
                                             temp_scale_factor = temp_x_factor
                                         else:
                                             temp_scale_factor = temp_y_factor
 
-                                        move_vector = move_vector.set(x=move_vector.x + overlap[0] * temp_scale_factor,
-                                                                      z=move_vector.z + overlap[1] * temp_scale_factor)
+                                        move_vector = move_vector.set(x = move_vector.x + overlap[0] * temp_scale_factor,
+                                                                      z = move_vector.z + overlap[1] * temp_scale_factor)
                                     else:
                                         move_vector = temp_move_vector
                             else:
@@ -151,7 +152,7 @@ class PlatformPhysics:
                                 #  Simply waiting for the next tick seems to resolve this correctly.
                                 overlap = None
 
-            if not Vector.Null.equals(move_vector, epsilon=1e-5):
+            if not Vector.Null.equals(move_vector, epsilon = 1e-5):
                 transformed_nodes.append(node)
                 op = PlatformPhysicsOperation.PlatformPhysicsOperation(node, move_vector)
                 op.push()

@@ -675,7 +675,8 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         Application.getInstance().getController().setActiveStage("MonitorStage")
         self._print_finished = True
         self.writeStarted.emit(self)
-        self._gcode = getattr(Application.getInstance().getController().getScene(), "gcode_list")
+        active_build_plate = Application.getInstance().getBuildPlateModel().activeBuildPlate
+        self._gcode = getattr(Application.getInstance().getController().getScene(), "gcode_list")[active_build_plate]
 
         print_information = Application.getInstance().getPrintInformation()
         warnings = []  # There might be multiple things wrong. Keep a list of all the stuff we need to warn about.

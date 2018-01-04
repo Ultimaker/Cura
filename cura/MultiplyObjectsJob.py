@@ -2,24 +2,15 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from UM.Job import Job
-from UM.Scene.SceneNode import SceneNode
-from UM.Math.Vector import Vector
-from UM.Operations.SetTransformOperation import SetTransformOperation
-from UM.Operations.TranslateOperation import TranslateOperation
 from UM.Operations.GroupedOperation import GroupedOperation
-from UM.Logger import Logger
 from UM.Message import Message
 from UM.i18n import i18nCatalog
 i18n_catalog = i18nCatalog("cura")
 
-from cura.ZOffsetDecorator import ZOffsetDecorator
-from cura.Arrange import Arrange
-from cura.ShapeArray import ShapeArray
-
-from typing import List
+from cura.Arranging.Arrange import Arrange
+from cura.Arranging.ShapeArray import ShapeArray
 
 from UM.Application import Application
-from UM.Scene.Selection import Selection
 from UM.Operations.AddSceneNodeOperation import AddSceneNodeOperation
 
 
@@ -64,6 +55,10 @@ class MultiplyObjectsJob(Job):
                     new_location = node.getPosition()
                     new_location = new_location.set(z = 100 - i * 20)
                     node.setPosition(new_location)
+
+                # Same build plate
+                build_plate_number = current_node.callDecoration("getBuildPlateNumber")
+                node.callDecoration("setBuildPlateNumber", build_plate_number)
 
                 nodes.append(node)
                 current_progress += 1

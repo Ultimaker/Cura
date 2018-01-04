@@ -387,9 +387,10 @@ UM.ManagementPage
         {
             id: materialDiameterProvider
 
-            containerStackId: Cura.MachineManager.activeMachineId
+            containerStackId: Cura.ExtruderManager.activeExtruderStackId
             key: "material_diameter"
             watchedProperties: [ "value" ]
+            storeIndex: 5
         }
 
         UM.I18nCatalog { id: catalog; name: "cura"; }

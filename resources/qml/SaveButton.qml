@@ -138,12 +138,12 @@ Item {
         }
 
         Component.onCompleted: {
-            addAdditionalComponents("saveButton")
+            saveRow.addAdditionalComponents("saveButton")
         }
 
         Connections {
             target: CuraApplication
-            onAdditionalComponentsChanged: addAdditionalComponents
+            onAdditionalComponentsChanged: saveRow.addAdditionalComponents("saveButton")
         }
 
         function addAdditionalComponents (areaId) {

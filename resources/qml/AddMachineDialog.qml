@@ -1,4 +1,4 @@
-// Copyright (c) 2016 Ultimaker B.V.
+// Copyright (c) 2017 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.2
@@ -24,6 +24,15 @@ UM.Dialog
     minimumHeight: UM.Theme.getSize("modal_window_minimum").height
     width: minimumWidth
     height: minimumHeight
+
+    flags: {
+        var window_flags = Qt.Dialog | Qt.CustomizeWindowHint | Qt.WindowTitleHint;
+        if (Cura.MachineManager.activeDefinitionId !== "") //Disallow closing the window if we have no active printer yet. You MUST add a printer.
+        {
+            window_flags |= Qt.WindowCloseButtonHint;
+        }
+        return window_flags;
+    }
 
     onVisibilityChanged:
     {
