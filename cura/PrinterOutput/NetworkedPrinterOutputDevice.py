@@ -47,7 +47,7 @@ class NetworkedPrinterOutputDevice(PrinterOutputDevice):
 
         # QHttpMultiPart objects need to be kept alive and not garbage collected during the
         # HTTP which uses them. We hold references to these QHttpMultiPart objects here.
-        self._live_multiparts = {}        # type: Dict[QNetworkReply, QHttpMultiPart]
+        self._kept_alive_multiparts = {}        # type: Dict[QNetworkReply, QHttpMultiPart]
 
         self._sending_gcode = False
         self._compressing_gcode = False
@@ -172,8 +172,8 @@ class NetworkedPrinterOutputDevice(PrinterOutputDevice):
         return "Unknown User"  # Couldn't find out username.
 
     def _clearCachedMultiPart(self, reply: QNetworkReply) -> None:
-        if reply in self._live_multiparts:
-            del self._live_multiparts[reply]
+        if reply in self._kept_alive_multiparts:
+            del self._kept_alive_multiparts[reply]
 
     def put(self, target: str, data: str, onFinished: Optional[Callable[[Any, QNetworkReply], None]]) -> None:
         if self._manager is None:
@@ -221,7 +221,7 @@ class NetworkedPrinterOutputDevice(PrinterOutputDevice):
 
         reply = self._manager.post(request, multi_post_part)
 
-        self._live_multiparts[reply] = multi_post_part
+        self._kept_alive_multiparts[reply] = multi_post_part
 
         if onProgress is not None:
             reply.uploadProgress.connect(onProgress)
