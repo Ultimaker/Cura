@@ -277,10 +277,9 @@ Item
                      (["paused", "printing"].indexOf(activePrintJob.state) >= 0)
 
             text: {
-                var result = "";
                 if (!printerConnected || activePrintJob == null)
                 {
-                  return "";
+                   return catalog.i18nc("@label:", "Pause");
                 }
 
                 if (activePrintJob.state == "paused")
