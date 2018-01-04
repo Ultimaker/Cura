@@ -181,8 +181,7 @@ class NetworkedPrinterOutputDevice(PrinterOutputDevice):
         request = self._createEmptyRequest(target)
         self._last_request_time = time()
         reply = self._manager.put(request, data.encode())
-        if onFinished is not None:
-            self._onFinishedCallbacks[reply.url().toString() + str(reply.operation())] = onFinished
+        self._registerOnFinishedCallback(reply, onFinished)
 
     def get(self, target: str, onFinished: Optional[Callable[[Any, QNetworkReply], None]]) -> None:
         if self._manager is None:
@@ -190,13 +189,7 @@ class NetworkedPrinterOutputDevice(PrinterOutputDevice):
         request = self._createEmptyRequest(target)
         self._last_request_time = time()
         reply = self._manager.get(request)
-        if onFinished is not None:
-            self._onFinishedCallbacks[reply.url().toString() + str(reply.operation())] = onFinished
-
-    def delete(self, target: str, onFinished: Optional[Callable[[Any, QNetworkReply], None]]) -> None:
-        if self._manager is None:
-            self._createNetworkManager()
-        self._last_request_time = time()
+        self._registerOnFinishedCallback(reply, onFinished)
 
     def post(self, target: str, data: str, onFinished: Optional[Callable[[Any, QNetworkReply], None]], onProgress: Callable = None) -> None:
         if self._manager is None:
@@ -206,8 +199,7 @@ class NetworkedPrinterOutputDevice(PrinterOutputDevice):
         reply = self._manager.post(request, data)
         if onProgress is not None:
             reply.uploadProgress.connect(onProgress)
-        if onFinished is not None:
-            self._onFinishedCallbacks[reply.url().toString() + str(reply.operation())] = onFinished
+        self._registerOnFinishedCallback(reply, onFinished)
 
     def postFormWithParts(self, target:str, parts: List[QHttpPart], onFinished: Optional[Callable[[Any, QNetworkReply], None]], onProgress: Callable = None) -> None:
         if self._manager is None:
@@ -225,8 +217,7 @@ class NetworkedPrinterOutputDevice(PrinterOutputDevice):
 
         if onProgress is not None:
             reply.uploadProgress.connect(onProgress)
-        if onFinished is not None:
-            self._onFinishedCallbacks[reply.url().toString() + str(reply.operation())] = onFinished
+        self._registerOnFinishedCallback(reply, onFinished)
 
     def postForm(self, target: str, header_data: str, body_data: bytes, onFinished: Optional[Callable[[Any, QNetworkReply], None]], onProgress: Callable = None) -> None:
         post_part = QHttpPart()
@@ -248,6 +239,10 @@ class NetworkedPrinterOutputDevice(PrinterOutputDevice):
         self._manager.finished.connect(self.__handleOnFinished)
         self._last_manager_create_time = time()
         self._manager.authenticationRequired.connect(self._onAuthenticationRequired)
+
+    def _registerOnFinishedCallback(self, reply: QNetworkReply, onFinished: Optional[Callable[[Any, QNetworkReply], None]]) -> None:
+        if onFinished is not None:
+            self._onFinishedCallbacks[reply.url().toString() + str(reply.operation())] = onFinished
 
     def __handleOnFinished(self, reply: QNetworkReply) -> None:
         # Due to garbage collection, we need to cache certain bits of post operations.
