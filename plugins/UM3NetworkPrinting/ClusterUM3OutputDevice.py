@@ -255,7 +255,7 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
             print_job = findByKey(self._print_jobs, print_job_data["uuid"])
 
             if print_job is None:
-                print_job = self._createPrintJobModel()
+                print_job = self._createPrintJobModel(print_job_data)
                 job_list_changed = True
 
             self._updatePrintJob(print_job, print_job_data)
