@@ -34,7 +34,7 @@ class PlatformPhysics:
         self._change_timer.timeout.connect(self._onChangeTimerFinished)
         self._move_factor = 1.1  # By how much should we multiply overlap to calculate a new spot?
         self._max_overlap_checks = 10  # How many times should we try to find a new spot per tick?
-        self._minimum_gap = 2 # It is a minimum distance between two models, applicable for small models
+        self._minimum_gap = 2  # It is a minimum distance (in mm) between two models, applicable for small models
 
         Preferences.getInstance().addPreference("physics/automatic_push_free", True)
         Preferences.getInstance().addPreference("physics/automatic_drop_down", True)
@@ -71,7 +71,7 @@ class PlatformPhysics:
 
             if Preferences.getInstance().getValue("physics/automatic_drop_down") and not (node.getParent() and node.getParent().callDecoration("isGroup")) and node.isEnabled(): #If an object is grouped, don't move it down
                 z_offset = node.callDecoration("getZOffset") if node.getDecorator(ZOffsetDecorator.ZOffsetDecorator) else 0
-                move_vector = move_vector.set(y=-bbox.bottom + z_offset)
+                move_vector = move_vector.set(y = -bbox.bottom + z_offset)
 
             # If there is no convex hull for the node, start calculating it and continue.
             if not node.getDecorator(ConvexHullDecorator):
@@ -130,7 +130,7 @@ class PlatformPhysics:
                                 overlap = own_convex_hull.translate(move_vector.x, move_vector.z).intersectsPolygon(other_convex_hull)
                                 if overlap:  # Moving ensured that overlap was still there. Try anew!
                                     temp_move_vector = move_vector.set(x = move_vector.x + overlap[0] * self._move_factor,
-                                                                  z = move_vector.z + overlap[1] * self._move_factor)
+                                                                       z = move_vector.z + overlap[1] * self._move_factor)
 
                                     # if the distance between two models less than 2mm then try to find a new factor
                                     if abs(temp_move_vector.x - overlap[0]) < self._minimum_gap and abs(temp_move_vector.y - overlap[1]) < self._minimum_gap:
@@ -148,7 +148,7 @@ class PlatformPhysics:
                                         move_vector = temp_move_vector
                             else:
                                 # This can happen in some cases if the object is not yet done with being loaded.
-                                #  Simply waiting for the next tick seems to resolve this correctly.
+                                # Simply waiting for the next tick seems to resolve this correctly.
                                 overlap = None
 
             if not Vector.Null.equals(move_vector, epsilon = 1e-5):
