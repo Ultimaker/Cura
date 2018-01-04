@@ -231,7 +231,6 @@ Rectangle
         tooltip: '';
         anchors
         {
-            //top: buildPlateSelection.bottom;
             topMargin: UM.Theme.getSize("default_margin").height;
             left: parent.left;
             leftMargin: UM.Theme.getSize("default_margin").height;
