@@ -7,7 +7,7 @@ import QtQuick.Dialogs 1.2
 import QtQuick.Window 2.1
 
 import UM 1.2 as UM
-import Cura 1.0 as Cura
+import Cura 1.2 as Cura
 
 Menu
 {
@@ -37,6 +37,35 @@ Menu
         }
         onObjectAdded: base.insertItem(index, object)
         onObjectRemoved: base.removeItem(object)
+    }
+
+    MenuSeparator {
+        visible: UM.Preferences.getValue("cura/use_multi_build_plate")
+    }
+
+    Instantiator
+    {
+        model: Cura.BuildPlateModel
+        MenuItem {
+            text: Cura.BuildPlateModel.getItem(index).name;
+            onTriggered: CuraActions.setBuildPlateForSelection(Cura.BuildPlateModel.getItem(index).buildPlateNumber);
+            checkable: true
+            checked: Cura.BuildPlateModel.selectionBuildPlates.indexOf(Cura.BuildPlateModel.getItem(index).buildPlateNumber) != -1;
+            visible: UM.Preferences.getValue("cura/use_multi_build_plate")
+        }
+        onObjectAdded: base.insertItem(index, object);
+        onObjectRemoved: base.removeItem(object);
+    }
+
+    MenuItem {
+        text: "New build plate";
+        onTriggered: {
+            CuraActions.setBuildPlateForSelection(Cura.BuildPlateModel.maxBuildPlate + 1);
+            checked = false;
+        }
+        checkable: true
+        checked: false
+        visible: UM.Preferences.getValue("cura/use_multi_build_plate")
     }
 
     // Global actions

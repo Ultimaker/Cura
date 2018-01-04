@@ -96,7 +96,7 @@ Rectangle
     SidebarHeader {
         id: header
         width: parent.width
-        visible: machineExtruderCount.properties.value > 1 || Cura.MachineManager.hasMaterials || Cura.MachineManager.hasVariants
+        visible: (machineExtruderCount.properties.value > 1 || Cura.MachineManager.hasMaterials || Cura.MachineManager.hasVariants) && !monitoringPrint
         anchors.top: machineSelection.bottom
 
         onShowTooltip: base.showTooltip(item, location, text)

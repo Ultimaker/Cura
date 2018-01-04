@@ -375,6 +375,18 @@ UM.MainWindow
                 }
             }
 
+            ObjectsList
+            {
+                id: objectsList;
+                visible: UM.Preferences.getValue("cura/use_multi_build_plate");
+                anchors
+                {
+                    bottom: parent.bottom;
+                    left: parent.left;
+                }
+
+            }
+
             Topbar
             {
                 id: topbar
