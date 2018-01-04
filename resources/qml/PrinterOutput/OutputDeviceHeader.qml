@@ -13,11 +13,12 @@ Item
     implicitWidth: parent.width
     implicitHeight: Math.floor(childrenRect.height + UM.Theme.getSize("default_margin").height * 2)
     property var outputDevice: null
+
     Rectangle
     {
         anchors.fill: parent
         color: UM.Theme.getColor("setting_category")
-
+        property var activePrinter: outputDevice != null ? outputDevice.activePrinter : null
         Label
         {
             id: outputDeviceNameLabel
@@ -26,7 +27,7 @@ Item
             anchors.left: parent.left
             anchors.top: parent.top
             anchors.margins: UM.Theme.getSize("default_margin").width
-            text: outputDevice != null ? outputDevice.name : catalog.i18nc("@info:status", "No printer connected")
+            text: outputDevice != null ? activePrinter.name : ""
         }
         Label
         {
