@@ -85,7 +85,7 @@ Rectangle
                     anchors.fill: parent;
                     onClicked:
                     {
-                        Cura.BuildPlateModel.setActiveBuildPlate(index);
+                        Cura.SceneController.setActiveBuildPlate(index);
                     }
                 }
             }
@@ -131,7 +131,7 @@ Rectangle
         Rectangle
             {
                 height: childrenRect.height
-                color: Cura.ObjectManager.getItem(index).isSelected ? palette.highlight : index % 2 ? palette.base : palette.alternateBase
+                color: Cura.ObjectsModel.getItem(index).isSelected ? palette.highlight : index % 2 ? palette.base : palette.alternateBase
                 width: parent.width
                 Label
                 {
@@ -139,8 +139,8 @@ Rectangle
                     anchors.left: parent.left
                     anchors.leftMargin: UM.Theme.getSize("default_margin").width
                     width: parent.width - 2 * UM.Theme.getSize("default_margin").width - 30
-                    text: Cura.ObjectManager.getItem(index) ? Cura.ObjectManager.getItem(index).name : "";
-                    color: Cura.ObjectManager.getItem(index).isSelected ? palette.highlightedText : (Cura.ObjectManager.getItem(index).isOutsideBuildArea ? palette.mid : palette.text)
+                    text: Cura.ObjectsModel.getItem(index) ? Cura.ObjectsModel.getItem(index).name : "";
+                    color: Cura.ObjectsModel.getItem(index).isSelected ? palette.highlightedText : (Cura.ObjectsModel.getItem(index).isOutsideBuildArea ? palette.mid : palette.text)
                     elide: Text.ElideRight
                 }
 
@@ -151,8 +151,8 @@ Rectangle
                     anchors.left: nodeNameLabel.right
                     anchors.leftMargin: UM.Theme.getSize("default_margin").width
                     anchors.right: parent.right
-                    text: Cura.ObjectManager.getItem(index).buildPlateNumber != -1 ? Cura.ObjectManager.getItem(index).buildPlateNumber + 1 : "";
-                    color: Cura.ObjectManager.getItem(index).isSelected ? palette.highlightedText : palette.text
+                    text: Cura.ObjectsModel.getItem(index).buildPlateNumber != -1 ? Cura.ObjectsModel.getItem(index).buildPlateNumber + 1 : "";
+                    color: Cura.ObjectsModel.getItem(index).isSelected ? palette.highlightedText : palette.text
                     elide: Text.ElideRight
                 }
 
@@ -161,7 +161,7 @@ Rectangle
                     anchors.fill: parent;
                     onClicked:
                     {
-                        Cura.ObjectManager.changeSelection(index);
+                        Cura.SceneController.changeSelection(index);
                     }
                 }
             }
@@ -195,7 +195,7 @@ Rectangle
         ListView
         {
             id: listview
-            model: Cura.ObjectManager
+            model: Cura.ObjectsModel
             width: parent.width
             delegate: objectDelegate
         }

@@ -33,7 +33,10 @@ from UM.Operations.GroupedOperation import GroupedOperation
 from UM.Operations.SetTransformOperation import SetTransformOperation
 
 from cura.Arranging.Arrange import Arrange
+from cura.Arranging.ArrangeObjectsJob import ArrangeObjectsJob
+from cura.Arranging.ArrangeObjectsAllBuildPlatesJob import ArrangeObjectsAllBuildPlatesJob
 from cura.Arranging.ShapeArray import ShapeArray
+from cura.MultiplyObjectsJob import MultiplyObjectsJob
 from cura.Scene.ConvexHullDecorator import ConvexHullDecorator
 from cura.Operations.SetParentOperation import SetParentOperation
 from cura.Scene.SliceableObjectDecorator import SliceableObjectDecorator
@@ -41,9 +44,7 @@ from cura.Scene.BlockSlicingDecorator import BlockSlicingDecorator
 from cura.Scene.BuildPlateDecorator import BuildPlateDecorator
 from cura.Scene.CuraSceneNode import CuraSceneNode
 
-from cura.Arranging.ArrangeObjectsJob import ArrangeObjectsJob
-from cura.Arranging.ArrangeObjectsAllBuildPlatesJob import ArrangeObjectsAllBuildPlatesJob
-from cura.MultiplyObjectsJob import MultiplyObjectsJob
+from cura.CuraSceneController import CuraSceneController
 
 from UM.Settings.SettingDefinition import SettingDefinition, DefinitionPropertyType
 from UM.Settings.ContainerRegistry import ContainerRegistry
@@ -77,7 +78,7 @@ from cura.Settings.MaterialSettingsVisibilityHandler import MaterialSettingsVisi
 from cura.Settings.QualitySettingsModel import QualitySettingsModel
 from cura.Settings.ContainerManager import ContainerManager
 
-from cura.ObjectManager import ObjectManager
+from cura.ObjectsModel import ObjectsModel
 from cura.BuildPlateModel import BuildPlateModel
 
 from PyQt5.QtCore import QUrl, pyqtSignal, pyqtProperty, QEvent, Q_ENUMS
@@ -211,6 +212,7 @@ class CuraApplication(QtApplication):
         self._build_plate_model = None
         self._setting_inheritance_manager = None
         self._simple_mode_settings_manager = None
+        self._cura_scene_controller = None
 
         self._additional_components = {} # Components to add to certain areas in the interface
 
@@ -397,6 +399,8 @@ class CuraApplication(QtApplication):
         self._onGlobalContainerChanged()
 
         self._plugin_registry.addSupportedPluginExtension("curaplugin", "Cura Plugin")
+
+        self.getCuraSceneController().setActiveBuildPlate(0)  # Initialize
 
     def _onEngineCreated(self):
         self._engine.addImageProvider("camera", CameraImageProvider.CameraImageProvider())
@@ -699,8 +703,9 @@ class CuraApplication(QtApplication):
         qmlRegisterSingletonType(SimpleModeSettingsManager, "Cura", 1, 2, "SimpleModeSettingsManager",
                                  self.getSimpleModeSettingsManager)
 
-        qmlRegisterSingletonType(ObjectManager, "Cura", 1, 2, "ObjectManager", self.getObjectManager)
+        qmlRegisterSingletonType(ObjectsModel, "Cura", 1, 2, "ObjectsModel", self.getObjectsModel)
         qmlRegisterSingletonType(BuildPlateModel, "Cura", 1, 2, "BuildPlateModel", self.getBuildPlateModel)
+        qmlRegisterSingletonType(CuraSceneController, "Cura", 1, 2, "SceneController", self.getCuraSceneController)
 
         qmlRegisterSingletonType(MachineActionManager.MachineActionManager, "Cura", 1, 0, "MachineActionManager", self.getMachineActionManager)
 
@@ -739,17 +744,21 @@ class CuraApplication(QtApplication):
             self._material_manager = MaterialManager.createMaterialManager()
         return self._material_manager
 
-    def getObjectManager(self, *args):
+    def getObjectsModel(self, *args):
         if self._object_manager is None:
-            self._object_manager = ObjectManager.createObjectManager()
+            self._object_manager = ObjectsModel.createObjectsModel()
         return self._object_manager
 
     def getBuildPlateModel(self, *args):
         if self._build_plate_model is None:
             self._build_plate_model = BuildPlateModel.createBuildPlateModel()
-            self._build_plate_model.setActiveBuildPlate(0)  # default value
 
         return self._build_plate_model
+
+    def getCuraSceneController(self, *args):
+        if self._cura_scene_controller is None:
+            self._cura_scene_controller = CuraSceneController.createCuraSceneController()
+        return self._cura_scene_controller
 
     def getSettingInheritanceManager(self, *args):
         if self._setting_inheritance_manager is None:
@@ -1115,7 +1124,7 @@ class CuraApplication(QtApplication):
                 nodes.append(node)
         job = ArrangeObjectsAllBuildPlatesJob(nodes)
         job.start()
-        self.getBuildPlateModel().setActiveBuildPlate(0)
+        self.getCuraSceneController().setActiveBuildPlate(0)  # Initialize
 
     # Single build plate
     @pyqtSlot()
