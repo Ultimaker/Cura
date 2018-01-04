@@ -42,7 +42,7 @@ class PlatformPhysics:
     def _onSceneChanged(self, source):
         self._change_timer.start()
 
-    def _onChangeTimerFinished(self, was_triggered_by_tool=False):
+    def _onChangeTimerFinished(self):
         if not self._enabled:
             return
 
@@ -58,7 +58,6 @@ class PlatformPhysics:
 
         # Only check nodes inside build area.
         nodes = [node for node in nodes if (hasattr(node, "_outside_buildarea") and not node._outside_buildarea)]
-        active_build_plate = Application.getInstance().getBuildPlateModel().activeBuildPlate
 
         random.shuffle(nodes)
         for node in nodes:
@@ -181,4 +180,4 @@ class PlatformPhysics:
                         node.removeDecorator(ZOffsetDecorator.ZOffsetDecorator)
 
         self._enabled = True
-        self._onChangeTimerFinished(True)
+        self._onChangeTimerFinished()
