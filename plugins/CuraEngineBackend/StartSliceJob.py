@@ -10,12 +10,12 @@ from UM.Job import Job
 from UM.Application import Application
 from UM.Logger import Logger
 
-from UM.Scene.SceneNode import SceneNode
 from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 
 from UM.Settings.Validator import ValidatorState
 from UM.Settings.SettingRelation import RelationType
 
+from cura.Scene.CuraSceneNode import CuraSceneNode as SceneNode
 from cura.OneAtATimeIterator import OneAtATimeIterator
 from cura.Settings.ExtruderManager import ExtruderManager
 
@@ -78,11 +78,15 @@ class StartSliceJob(Job):
         self._scene = Application.getInstance().getController().getScene()
         self._slice_message = slice_message
         self._is_cancelled = False
+        self._build_plate_number = None
 
         self._all_extruders_settings = None # cache for all setting values from all stacks (global & extruder) for the current machine
 
     def getSliceMessage(self):
         return self._slice_message
+
+    def setBuildPlate(self, build_plate_number):
+        self._build_plate_number = build_plate_number
 
     ##  Check if a stack has any errors.
     ##  returns true if it has errors, false otherwise.
@@ -100,6 +104,10 @@ class StartSliceJob(Job):
 
     ##  Runs the job that initiates the slicing.
     def run(self):
+        if self._build_plate_number is None:
+            self.setResult(StartJobResult.Error)
+            return
+
         stack = Application.getInstance().getGlobalContainerStack()
         if not stack:
             self.setResult(StartJobResult.Error)
@@ -133,7 +141,7 @@ class StartSliceJob(Job):
         with self._scene.getSceneLock():
             # Remove old layer data.
             for node in DepthFirstIterator(self._scene.getRoot()):
-                if node.callDecoration("getLayerData"):
+                if node.callDecoration("getLayerData") and node.callDecoration("getBuildPlateNumber") == self._build_plate_number:
                     node.getParent().removeChild(node)
                     break
 
@@ -168,10 +176,11 @@ class StartSliceJob(Job):
                         if per_object_stack:
                             is_non_printing_mesh = any(per_object_stack.getProperty(key, "value") for key in NON_PRINTING_MESH_SETTINGS)
 
-                        if not getattr(node, "_outside_buildarea", False) or is_non_printing_mesh:
-                            temp_list.append(node)
-                            if not is_non_printing_mesh:
-                                has_printing_mesh = True
+                        if (node.callDecoration("getBuildPlateNumber") == self._build_plate_number):
+                            if not getattr(node, "_outside_buildarea", False) or is_non_printing_mesh:
+                                temp_list.append(node)
+                                if not is_non_printing_mesh:
+                                    has_printing_mesh = True
 
                     Job.yieldThread()
 

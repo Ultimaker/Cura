@@ -15,10 +15,15 @@ from UM.Operations.RemoveSceneNodeOperation import RemoveSceneNodeOperation
 from UM.Operations.SetTransformOperation import SetTransformOperation
 from UM.Operations.TranslateOperation import TranslateOperation
 
-from cura.SetParentOperation import SetParentOperation
+from cura.Operations.SetParentOperation import SetParentOperation
 from cura.MultiplyObjectsJob import MultiplyObjectsJob
 from cura.Settings.SetObjectExtruderOperation import SetObjectExtruderOperation
 from cura.Settings.ExtruderManager import ExtruderManager
+
+from cura.Operations.SetBuildPlateNumberOperation import SetBuildPlateNumberOperation
+
+from UM.Logger import Logger
+
 
 class CuraActions(QObject):
     def __init__(self, parent = None):
@@ -128,6 +133,32 @@ class CuraActions(QObject):
         for node in nodes_to_change:
             operation.addOperation(SetObjectExtruderOperation(node, extruder_id))
         operation.push()
+
+    @pyqtSlot(int)
+    def setBuildPlateForSelection(self, build_plate_nr: int) -> None:
+        Logger.log("d", "Setting build plate number... %d" % build_plate_nr)
+        operation = GroupedOperation()
+
+        root = Application.getInstance().getController().getScene().getRoot()
+
+        nodes_to_change = []
+        for node in Selection.getAllSelectedObjects():
+            parent_node = node  # Find the parent node to change instead
+            while parent_node.getParent() != root:
+                parent_node = parent_node.getParent()
+
+            for single_node in BreadthFirstIterator(parent_node):
+                nodes_to_change.append(single_node)
+
+        if not nodes_to_change:
+            Logger.log("d", "Nothing to change.")
+            return
+
+        for node in nodes_to_change:
+            operation.addOperation(SetBuildPlateNumberOperation(node, build_plate_nr))
+        operation.push()
+
+        Selection.clear()
 
     def _openUrl(self, url):
         QDesktopServices.openUrl(url)

@@ -93,6 +93,7 @@ class SimulationPass(RenderPass):
         self.bind()
 
         tool_handle_batch = RenderBatch(self._tool_handle_shader, type = RenderBatch.RenderType.Overlay, backface_cull = True)
+        active_build_plate = Application.getInstance().getBuildPlateModel().activeBuildPlate
         head_position = None  # Indicates the current position of the print head
         nozzle_node = None
 
@@ -105,7 +106,7 @@ class SimulationPass(RenderPass):
                 nozzle_node = node
                 nozzle_node.setVisible(False)
 
-            elif isinstance(node, SceneNode) and (node.getMeshData() or node.callDecoration("isBlockSlicing")) and node.isVisible():
+            elif issubclass(type(node), SceneNode) and (node.getMeshData() or node.callDecoration("isBlockSlicing")) and node.isVisible() and node.callDecoration("getBuildPlateNumber") == active_build_plate:
                 layer_data = node.callDecoration("getLayerData")
                 if not layer_data:
                     continue

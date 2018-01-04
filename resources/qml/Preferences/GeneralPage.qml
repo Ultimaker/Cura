@@ -306,7 +306,7 @@ UM.PreferencesPage
                     text: catalog.i18nc("@option:check","Slice automatically");
                 }
             }
-            
+
             Item
             {
                 //: Spacer
@@ -451,6 +451,34 @@ UM.PreferencesPage
             {
                 font.bold: true
                 text: catalog.i18nc("@label","Opening and saving files")
+            }
+
+            UM.TooltipArea {
+                width: childrenRect.width
+                height: childrenRect.height
+                text: catalog.i18nc("@info:tooltip","Use multi build plate functionality (EXPERIMENTAL)")
+
+                CheckBox
+                {
+                    id: useMultiBuildPlateCheckbox
+                    text: catalog.i18nc("@option:check","Use multi build plate functionality (EXPERIMENTAL, restart)")
+                    checked: boolCheck(UM.Preferences.getValue("cura/use_multi_build_plate"))
+                    onCheckedChanged: UM.Preferences.setValue("cura/use_multi_build_plate", checked)
+                }
+            }
+
+            UM.TooltipArea {
+                width: childrenRect.width
+                height: childrenRect.height
+                text: catalog.i18nc("@info:tooltip","Should newly loaded models be arranged on the build plate? Used in conjunction with multi build plate (EXPERIMENTAL)")
+
+                CheckBox
+                {
+                    id: arrangeOnLoadCheckbox
+                    text: catalog.i18nc("@option:check","Arrange objects on load (EXPERIMENTAL)")
+                    checked: boolCheck(UM.Preferences.getValue("cura/arrange_objects_on_load"))
+                    onCheckedChanged: UM.Preferences.setValue("cura/arrange_objects_on_load", checked)
+                }
             }
 
             UM.TooltipArea {

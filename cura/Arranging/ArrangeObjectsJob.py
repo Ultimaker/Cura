@@ -4,7 +4,6 @@
 from UM.Job import Job
 from UM.Scene.SceneNode import SceneNode
 from UM.Math.Vector import Vector
-from UM.Operations.SetTransformOperation import SetTransformOperation
 from UM.Operations.TranslateOperation import TranslateOperation
 from UM.Operations.GroupedOperation import GroupedOperation
 from UM.Logger import Logger
@@ -12,9 +11,9 @@ from UM.Message import Message
 from UM.i18n import i18nCatalog
 i18n_catalog = i18nCatalog("cura")
 
-from cura.ZOffsetDecorator import ZOffsetDecorator
-from cura.Arrange import Arrange
-from cura.ShapeArray import ShapeArray
+from cura.Scene.ZOffsetDecorator import ZOffsetDecorator
+from cura.Arranging.Arrange import Arrange
+from cura.Arranging.ShapeArray import ShapeArray
 
 from typing import List
 

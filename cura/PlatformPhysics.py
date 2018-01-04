@@ -10,10 +10,10 @@ from UM.Math.Vector import Vector
 from UM.Scene.Selection import Selection
 from UM.Preferences import Preferences
 
-from cura.ConvexHullDecorator import ConvexHullDecorator
+from cura.Scene.ConvexHullDecorator import ConvexHullDecorator
 
-from . import PlatformPhysicsOperation
-from . import ZOffsetDecorator
+from cura.Operations import PlatformPhysicsOperation
+from cura.Scene import ZOffsetDecorator
 
 import random  # used for list shuffling
 
@@ -58,10 +58,11 @@ class PlatformPhysics:
 
         # Only check nodes inside build area.
         nodes = [node for node in nodes if (hasattr(node, "_outside_buildarea") and not node._outside_buildarea)]
+        active_build_plate = Application.getInstance().getBuildPlateModel().activeBuildPlate
 
         random.shuffle(nodes)
         for node in nodes:
-            if node is root or type(node) is not SceneNode or node.getBoundingBox() is None:
+            if node is root or not issubclass(type(node), SceneNode) or node.getBoundingBox() is None:
                 continue
 
             bbox = node.getBoundingBox()
@@ -82,7 +83,7 @@ class PlatformPhysics:
                 # Check for collisions between convex hulls
                 for other_node in BreadthFirstIterator(root):
                     # Ignore root, ourselves and anything that is not a normal SceneNode.
-                    if other_node is root or type(other_node) is not SceneNode or other_node is node:
+                    if other_node is root or not issubclass(type(other_node), SceneNode) or other_node is node or other_node.callDecoration("getBuildPlateNumber") != node.callDecoration("getBuildPlateNumber"):
                         continue
                     
                     # Ignore collisions of a group with it's own children

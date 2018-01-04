@@ -1,9 +1,7 @@
-import pytest
 import numpy
-import time
 
-from cura.Arrange import Arrange
-from cura.ShapeArray import ShapeArray
+from cura.Arranging.Arrange import Arrange
+from cura.Arranging.ShapeArray import ShapeArray
 
 
 def gimmeShapeArray():

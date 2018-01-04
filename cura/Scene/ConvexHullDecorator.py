@@ -7,7 +7,7 @@ from UM.Scene.SceneNodeDecorator import SceneNodeDecorator
 from UM.Settings.ContainerRegistry import ContainerRegistry
 
 from cura.Settings.ExtruderManager import ExtruderManager
-from . import ConvexHullNode
+from cura.Scene import ConvexHullNode
 
 import numpy
 
