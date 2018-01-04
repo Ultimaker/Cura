@@ -160,48 +160,47 @@ class ConvexHullDecorator(SceneNodeDecorator):
             return offset_hull
 
         else:
+            if not self._node.getMeshData(): #Node has no mesh data, so just return an empty Polygon.
+                return Polygon([])
+
             offset_hull = None
-            mesh = None
-            world_transform = None
-            if self._node.getMeshData():
-                mesh = self._node.getMeshData()
-                world_transform = self._node.getWorldTransformation()
+            mesh = self._node.getMeshData()
+            world_transform = self._node.getWorldTransformation()
 
-                # Check the cache
-                if mesh is self._2d_convex_hull_mesh and world_transform == self._2d_convex_hull_mesh_world_transform:
-                    return self._2d_convex_hull_mesh_result
+            # Check the cache
+            if mesh is self._2d_convex_hull_mesh and world_transform == self._2d_convex_hull_mesh_world_transform:
+                return self._2d_convex_hull_mesh_result
 
-                vertex_data = mesh.getConvexHullTransformedVertices(world_transform)
-                # Don't use data below 0.
-                # TODO; We need a better check for this as this gives poor results for meshes with long edges.
-                # Do not throw away vertices: the convex hull may be too small and objects can collide.
-                # vertex_data = vertex_data[vertex_data[:,1] >= -0.01]
+            vertex_data = mesh.getConvexHullTransformedVertices(world_transform)
+            # Don't use data below 0.
+            # TODO; We need a better check for this as this gives poor results for meshes with long edges.
+            # Do not throw away vertices: the convex hull may be too small and objects can collide.
+            # vertex_data = vertex_data[vertex_data[:,1] >= -0.01]
 
-                if vertex_data and len(vertex_data) >= 4:
-                    # Round the vertex data to 1/10th of a mm, then remove all duplicate vertices
-                    # This is done to greatly speed up further convex hull calculations as the convex hull
-                    # becomes much less complex when dealing with highly detailed models.
-                    vertex_data = numpy.round(vertex_data, 1)
+            if not vertex_data or len(vertex_data) < 4:
+                return Polygon([])
+            # Round the vertex data to 1/10th of a mm, then remove all duplicate vertices
+            # This is done to greatly speed up further convex hull calculations as the convex hull
+            # becomes much less complex when dealing with highly detailed models.
+            vertex_data = numpy.round(vertex_data, 1)
 
-                    vertex_data = vertex_data[:, [0, 2]]  # Drop the Y components to project to 2D.
+            vertex_data = vertex_data[:, [0, 2]]  # Drop the Y components to project to 2D.
 
-                    # Grab the set of unique points.
-                    #
-                    # This basically finds the unique rows in the array by treating them as opaque groups of bytes
-                    # which are as long as the 2 float64s in each row, and giving this view to numpy.unique() to munch.
-                    # See http://stackoverflow.com/questions/16970982/find-unique-rows-in-numpy-array
-                    vertex_byte_view = numpy.ascontiguousarray(vertex_data).view(
-                        numpy.dtype((numpy.void, vertex_data.dtype.itemsize * vertex_data.shape[1])))
-                    _, idx = numpy.unique(vertex_byte_view, return_index=True)
-                    vertex_data = vertex_data[idx]  # Select the unique rows by index.
+            # Grab the set of unique points.
+            #
+            # This basically finds the unique rows in the array by treating them as opaque groups of bytes
+            # which are as long as the 2 float64s in each row, and giving this view to numpy.unique() to munch.
+            # See http://stackoverflow.com/questions/16970982/find-unique-rows-in-numpy-array
+            vertex_byte_view = numpy.ascontiguousarray(vertex_data).view(
+                numpy.dtype((numpy.void, vertex_data.dtype.itemsize * vertex_data.shape[1])))
+            _, idx = numpy.unique(vertex_byte_view, return_index=True)
+            vertex_data = vertex_data[idx]  # Select the unique rows by index.
 
-                    hull = Polygon(vertex_data)
+            hull = Polygon(vertex_data)
 
-                    if len(vertex_data) >= 3:
-                        convex_hull = hull.getConvexHull()
-                        offset_hull = self._offsetHull(convex_hull)
-            else:
-                return Polygon([])  # Node has no mesh data, so just return an empty Polygon.
+            if len(vertex_data) >= 3:
+                convex_hull = hull.getConvexHull()
+                offset_hull = self._offsetHull(convex_hull)
 
             # Store the result in the cache
             self._2d_convex_hull_mesh = mesh
