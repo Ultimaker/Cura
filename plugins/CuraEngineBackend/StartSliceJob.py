@@ -271,13 +271,15 @@ class StartSliceJob(Job):
         if not self._all_extruders_settings:
             global_stack = Application.getInstance().getGlobalContainerStack()
 
-            self._all_extruders_settings = {}
             # NB: keys must be strings for the string formatter
-            self._all_extruders_settings["-1"] = self._buildReplacementTokens(global_stack)
+            self._all_extruders_settings = {
+                "-1": self._buildReplacementTokens(global_stack)
+            }
 
             for extruder_stack in ExtruderManager.getInstance().getMachineExtruders(global_stack.getId()):
                 extruder_nr = extruder_stack.getProperty("extruder_nr", "value")
                 self._all_extruders_settings[str(extruder_nr)] = self._buildReplacementTokens(extruder_stack)
+
         try:
             # any setting can be used as a token
             fmt = GcodeStartEndFormatter()
