@@ -36,9 +36,32 @@ class StartJobResult(IntEnum):
 ##  Formatter class that handles token expansion in start/end gcod
 class GcodeStartEndFormatter(Formatter):
     def get_value(self, key, args, kwargs):  # [CodeStyle: get_value is an overridden function from the Formatter class]
+        # The kwargs dictionary contains a dictionary for each stack (with a string of the extruder_nr as their key),
+        # and a default_extruder_nr to use when no extruder_nr is specified
+
         if isinstance(key, str):
             try:
-                return kwargs[key]
+                extruder_nr = kwargs["default_extruder_nr"]
+            except ValueError:
+                extruder_nr = -1
+
+            key_fragments = [fragment.strip() for fragment in key.split(',')]
+            if len(key_fragments) == 2:
+                try:
+                    extruder_nr = int(key_fragments[1])
+                except ValueError:
+                    try:
+                        extruder_nr = int(kwargs["-1"][key_fragments[1]]) # get extruder_nr values from the global stack
+                    except (KeyError, ValueError):
+                        # either the key does not exist, or the value is not an int
+                        Logger.log("w", "Unable to determine stack nr '%s' for key '%s' in start/end gcode, using global stack", key_fragments[1], key_fragments[0])
+            elif len(key_fragments) != 1:
+                Logger.log("w", "Incorrectly formatted placeholder '%s' in start/end gcode", key)
+                return "{" + str(key) + "}"
+
+            key = key_fragments[0]
+            try:
+                return kwargs[str(extruder_nr)][key]
             except KeyError:
                 Logger.log("w", "Unable to replace '%s' placeholder in start/end gcode", key)
                 return "{" + key + "}"
@@ -56,6 +79,8 @@ class StartSliceJob(Job):
         self._slice_message = slice_message
         self._is_cancelled = False
         self._build_plate_number = None
+
+        self._all_extruders_settings = None # cache for all setting values from all stacks (global & extruder) for the current machine
 
     def getSliceMessage(self):
         return self._slice_message
@@ -242,16 +267,33 @@ class StartSliceJob(Job):
         result["date"] = time.strftime("%d-%m-%Y")
         result["day"] = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"][int(time.strftime("%w"))]
 
+        initial_extruder_stack = Application.getInstance().getExtruderManager().getUsedExtruderStacks()[0]
+        initial_extruder_nr = initial_extruder_stack.getProperty("extruder_nr", "value")
+        result["initial_extruder_nr"] = initial_extruder_nr
+
         return result
 
     ##  Replace setting tokens in a piece of g-code.
     #   \param value A piece of g-code to replace tokens in.
-    #   \param settings A dictionary of tokens to replace and their respective
-    #   replacement strings.
-    def _expandGcodeTokens(self, value: str, settings: dict):
+    #   \param default_extruder_nr Stack nr to use when no stack nr is specified, defaults to the global stack
+    def _expandGcodeTokens(self, value: str, default_extruder_nr: int = -1):
+        if not self._all_extruders_settings:
+            global_stack = Application.getInstance().getGlobalContainerStack()
+
+            # NB: keys must be strings for the string formatter
+            self._all_extruders_settings = {
+                "-1": self._buildReplacementTokens(global_stack)
+            }
+
+            for extruder_stack in ExtruderManager.getInstance().getMachineExtruders(global_stack.getId()):
+                extruder_nr = extruder_stack.getProperty("extruder_nr", "value")
+                self._all_extruders_settings[str(extruder_nr)] = self._buildReplacementTokens(extruder_stack)
+
         try:
             # any setting can be used as a token
             fmt = GcodeStartEndFormatter()
+            settings = self._all_extruders_settings.copy()
+            settings["default_extruder_nr"] = default_extruder_nr
             return str(fmt.format(value, **settings))
         except:
             Logger.logException("w", "Unable to do token replacement on start/end gcode")
@@ -268,8 +310,9 @@ class StartSliceJob(Job):
         settings["material_guid"] = stack.material.getMetaDataEntry("GUID", "")
 
         # Replace the setting tokens in start and end g-code.
-        settings["machine_extruder_start_code"] = self._expandGcodeTokens(settings["machine_extruder_start_code"], settings)
-        settings["machine_extruder_end_code"] = self._expandGcodeTokens(settings["machine_extruder_end_code"], settings)
+        extruder_nr = stack.getProperty("extruder_nr", "value")
+        settings["machine_extruder_start_code"] = self._expandGcodeTokens(settings["machine_extruder_start_code"], extruder_nr)
+        settings["machine_extruder_end_code"] = self._expandGcodeTokens(settings["machine_extruder_end_code"], extruder_nr)
 
         for key, value in settings.items():
             # Do not send settings that are not settable_per_extruder.
@@ -294,13 +337,13 @@ class StartSliceJob(Job):
         print_temperature_settings = {"material_print_temperature", "material_print_temperature_layer_0", "default_material_print_temperature", "material_initial_print_temperature", "material_final_print_temperature", "material_standby_temperature"}
         settings["material_print_temp_prepend"] = all(("{" + setting + "}" not in start_gcode for setting in print_temperature_settings))
 
-        # Find the correct temperatures from the first used extruder
-        extruder_stack = Application.getInstance().getExtruderManager().getUsedExtruderStacks()[0]
-        extruder_0_settings = self._buildReplacementTokens(extruder_stack)
-
         # Replace the setting tokens in start and end g-code.
-        settings["machine_start_gcode"] = self._expandGcodeTokens(settings["machine_start_gcode"], extruder_0_settings)
-        settings["machine_end_gcode"] = self._expandGcodeTokens(settings["machine_end_gcode"], extruder_0_settings)
+        # Use values from the first used extruder by default so we get the expected temperatures
+        initial_extruder_stack = Application.getInstance().getExtruderManager().getUsedExtruderStacks()[0]
+        initial_extruder_nr = initial_extruder_stack.getProperty("extruder_nr", "value")
+
+        settings["machine_start_gcode"] = self._expandGcodeTokens(settings["machine_start_gcode"], initial_extruder_nr)
+        settings["machine_end_gcode"] = self._expandGcodeTokens(settings["machine_end_gcode"], initial_extruder_nr)
 
         # Add all sub-messages for each individual setting.
         for key, value in settings.items():

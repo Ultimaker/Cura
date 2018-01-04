@@ -13,6 +13,7 @@ from UM.Scene.Iterator.BreadthFirstIterator import BreadthFirstIterator
 from UM.Operations.GroupedOperation import GroupedOperation
 from UM.Operations.RemoveSceneNodeOperation import RemoveSceneNodeOperation
 from UM.Operations.SetTransformOperation import SetTransformOperation
+from UM.Operations.TranslateOperation import TranslateOperation
 
 from cura.Operations.SetParentOperation import SetParentOperation
 from cura.MultiplyObjectsJob import MultiplyObjectsJob
@@ -59,7 +60,11 @@ class CuraActions(QObject):
             while current_node.getParent() and current_node.getParent().callDecoration("isGroup"):
                 current_node = current_node.getParent()
 
-            center_operation = SetTransformOperation(current_node, Vector())
+            #   This was formerly done with SetTransformOperation but because of
+            #   unpredictable matrix deconstruction it was possible that mirrors
+            #   could manifest as rotations. Centering is therefore done by
+            #   moving the node to negative whatever its position is:
+            center_operation = TranslateOperation(current_node, -current_node._position)
             operation.addOperation(center_operation)
         operation.push()
 

@@ -31,11 +31,21 @@ Menu
     ExclusiveGroup { id: group }
 
     MenuSeparator {}
-    MenuItem { action: Cura.Actions.homeCamera; }
+
+    Menu
+    {
+        title: catalog.i18nc("@action:inmenu menubar:view","&Camera position");
+        MenuItem { action: Cura.Actions.view3DCamera; }
+        MenuItem { action: Cura.Actions.viewFrontCamera; }
+        MenuItem { action: Cura.Actions.viewTopCamera; }
+        MenuItem { action: Cura.Actions.viewLeftSideCamera; }
+        MenuItem { action: Cura.Actions.viewRightSideCamera; }
+    }
 
     MenuSeparator {
         visible: UM.Preferences.getValue("cura/use_multi_build_plate")
     }
+
     Instantiator
     {
         model: Cura.BuildPlateModel
@@ -53,5 +63,6 @@ Menu
     ExclusiveGroup { id: buildPlateGroup; }
 
     MenuSeparator {}
+
     MenuItem { action: Cura.Actions.expandSidebar; }
 }

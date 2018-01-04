@@ -115,10 +115,8 @@ Rectangle
             iconSource: UM.Theme.getIcon("view_3d")
             style: UM.Theme.styles.small_tool_button
             anchors.verticalCenter: viewOrientationControl.verticalCenter
-            onClicked:{
-                UM.Controller.rotateView("3d", 0);
-            }
-            visible: base.width - allItemsWidth - 4 * this.width > 0;
+            onClicked:UM.Controller.rotateView("3d", 0)
+            visible: base.width - allItemsWidth - 4 * this.width > 0
         }
 
         // #2 Front view
@@ -127,10 +125,8 @@ Rectangle
             iconSource: UM.Theme.getIcon("view_front")
             style: UM.Theme.styles.small_tool_button
             anchors.verticalCenter: viewOrientationControl.verticalCenter
-            onClicked:{
-                UM.Controller.rotateView("home", 0);
-            }
-            visible: base.width - allItemsWidth - 3 * this.width > 0;
+            onClicked: UM.Controller.rotateView("home", 0);
+            visible: base.width - allItemsWidth - 3 * this.width > 0
         }
 
         // #3 Top view
@@ -139,10 +135,8 @@ Rectangle
             iconSource: UM.Theme.getIcon("view_top")
             style: UM.Theme.styles.small_tool_button
             anchors.verticalCenter: viewOrientationControl.verticalCenter
-            onClicked:{
-                UM.Controller.rotateView("y", 90);
-            }
-            visible: base.width - allItemsWidth - 2 * this.width > 0;
+            onClicked: UM.Controller.rotateView("y", 90)
+            visible: base.width - allItemsWidth - 2 * this.width > 0
         }
 
         // #4 Left view
@@ -151,10 +145,8 @@ Rectangle
             iconSource: UM.Theme.getIcon("view_left")
             style: UM.Theme.styles.small_tool_button
             anchors.verticalCenter: viewOrientationControl.verticalCenter
-            onClicked:{
-                UM.Controller.rotateView("x", 90);
-            }
-            visible: base.width - allItemsWidth - 1 * this.width > 0;
+            onClicked: UM.Controller.rotateView("x", 90)
+            visible: base.width - allItemsWidth - 1 * this.width > 0
         }
 
         // #5 Left view
@@ -163,10 +155,8 @@ Rectangle
             iconSource: UM.Theme.getIcon("view_right")
             style: UM.Theme.styles.small_tool_button
             anchors.verticalCenter: viewOrientationControl.verticalCenter
-            onClicked:{
-                UM.Controller.rotateView("x", -90);
-            }
-            visible: base.width - allItemsWidth > 0;
+            onClicked: UM.Controller.rotateView("x", -90)
+            visible: base.width - allItemsWidth > 0
         }
     }
 
