@@ -232,6 +232,9 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
             job_completed_message = Message(text=job_completed_text, title = i18n_catalog.i18nc("@info:status", "Print finished"))
             job_completed_message.show()
 
+        # Ensure UI gets updated
+        self.printJobsChanged.emit()
+
         # Keep a list of all completed jobs so we know if something changed next time.
         self._finished_jobs = finished_jobs
 
