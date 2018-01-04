@@ -46,21 +46,26 @@ Menu
         visible: UM.Preferences.getValue("cura/use_multi_build_plate")
     }
 
-    Instantiator
+    Menu
     {
-        model: Cura.BuildPlateModel
-        MenuItem {
-            text: Cura.BuildPlateModel.getItem(index).name;
-            onTriggered: Cura.BuildPlateModel.setActiveBuildPlate(Cura.BuildPlateModel.getItem(index).buildPlateNumber);
-            checkable: true;
-            checked: Cura.BuildPlateModel.getItem(index).buildPlateNumber == Cura.BuildPlateModel.activeBuildPlate;
-            exclusiveGroup: buildPlateGroup;
-            visible: UM.Preferences.getValue("cura/use_multi_build_plate")
+        id: buildPlateMenu;
+        title: catalog.i18nc("@action:inmenu menubar:view","&Build plate");
+        Instantiator
+        {
+            model: Cura.BuildPlateModel
+            MenuItem {
+                text: Cura.BuildPlateModel.getItem(index).name;
+                onTriggered: Cura.SceneController.setActiveBuildPlate(Cura.BuildPlateModel.getItem(index).buildPlateNumber);
+                checkable: true;
+                checked: Cura.BuildPlateModel.getItem(index).buildPlateNumber == Cura.BuildPlateModel.activeBuildPlate;
+                exclusiveGroup: buildPlateGroup;
+                visible: UM.Preferences.getValue("cura/use_multi_build_plate")
+            }
+            onObjectAdded: buildPlateMenu.insertItem(index, object);
+            onObjectRemoved: buildPlateMenu.removeItem(object)
         }
-        onObjectAdded: base.insertItem(index, object);
-        onObjectRemoved: base.removeItem(object)
+        ExclusiveGroup { id: buildPlateGroup; }
     }
-    ExclusiveGroup { id: buildPlateGroup; }
 
     MenuSeparator {}
 
