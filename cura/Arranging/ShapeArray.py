@@ -29,8 +29,14 @@ class ShapeArray:
         offset_x = int(numpy.amin(flip_vertices[:, 1]))
         flip_vertices[:, 0] = numpy.add(flip_vertices[:, 0], -offset_y)
         flip_vertices[:, 1] = numpy.add(flip_vertices[:, 1], -offset_x)
+        flip_vertices = numpy.ceil(flip_vertices)
         shape = [int(numpy.amax(flip_vertices[:, 0])), int(numpy.amax(flip_vertices[:, 1]))]
+        if shape == [0, 0]:
+            shape = [1, 1]
         arr = cls.arrayFromPolygon(shape, flip_vertices)
+        if not numpy.any(arr):
+            # set at least 1 pixel
+            arr[0][0] = 1
         return cls(arr, offset_x, offset_y)
 
     ##  Instantiate an offset and hull ShapeArray from a scene node.

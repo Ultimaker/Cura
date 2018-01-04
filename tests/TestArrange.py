@@ -118,6 +118,13 @@ def test_arrayFromPolygon2():
     assert numpy.any(array)
 
 
+##  Polygon -> array
+def test_fromPolygon():
+    vertices = numpy.array([[0, 0.5], [0, 0], [0.5, 0]])
+    array = ShapeArray.fromPolygon(vertices, scale=0.5)
+    assert numpy.any(array.arr)
+
+
 ##  Line definition -> array with true/false
 def test_check():
     base_array = numpy.zeros([5, 5], dtype=float)
