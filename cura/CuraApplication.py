@@ -1050,6 +1050,8 @@ class CuraApplication(QtApplication):
             op.push()
             Selection.clear()
 
+        self.getCuraSceneController().setActiveBuildPlate(0)  # Select first build plate
+
     ## Reset all translation on nodes with mesh data.
     @pyqtSlot()
     def resetAllTranslation(self):
@@ -1124,7 +1126,7 @@ class CuraApplication(QtApplication):
                 nodes.append(node)
         job = ArrangeObjectsAllBuildPlatesJob(nodes)
         job.start()
-        self.getCuraSceneController().setActiveBuildPlate(0)  # Initialize
+        self.getCuraSceneController().setActiveBuildPlate(0)  # Select first build plate
 
     # Single build plate
     @pyqtSlot()
