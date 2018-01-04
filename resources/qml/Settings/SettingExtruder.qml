@@ -83,11 +83,11 @@ SettingItem
         {
             color:
             {
-                if(!enabled)
+                if (!enabled)
                 {
                     return UM.Theme.getColor("setting_control_disabled");
                 }
-                if(control.hovered || base.activeFocus)
+                if (control.hovered || base.activeFocus)
                 {
                     return UM.Theme.getColor("setting_control_highlight");
                 }
@@ -96,11 +96,11 @@ SettingItem
             border.width: UM.Theme.getSize("default_lining").width
             border.color:
             {
-                if(!enabled)
+                if (!enabled)
                 {
                     return UM.Theme.getColor("setting_control_disabled_border")
                 }
-                if(control.hovered || control.activeFocus)
+                if (control.hovered || control.activeFocus)
                 {
                     return UM.Theme.getColor("setting_control_border_highlight")
                 }

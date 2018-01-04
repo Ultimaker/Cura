@@ -11,9 +11,9 @@ import "Menus"
 
 Rectangle
 {
-    id: base;
+    id: base
 
-    property int currentModeIndex;
+    property int currentModeIndex
     property bool hideSettings: PrintInformation.preSliced
     property bool hideView: Cura.MachineManager.activeMachineName == ""
 
@@ -77,7 +77,7 @@ Rectangle
     MouseArea
     {
         anchors.fill: parent
-        acceptedButtons: Qt.AllButtons;
+        acceptedButtons: Qt.AllButtons
 
         onWheel:
         {
@@ -125,7 +125,7 @@ Rectangle
     Label
     {
         id: settingsModeLabel
-        text: !hideSettings ? catalog.i18nc("@label:listbox", "Print Setup") : catalog.i18nc("@label:listbox","Print Setup disabled\nG-code files cannot be modified");
+        text: !hideSettings ? catalog.i18nc("@label:listbox", "Print Setup") : catalog.i18nc("@label:listbox", "Print Setup disabled\nG-code files cannot be modified")
         anchors.left: parent.left
         anchors.leftMargin: UM.Theme.getSize("sidebar_margin").width
         anchors.top: headerSeparator.bottom
@@ -557,19 +557,19 @@ Rectangle
 
     SidebarTooltip
     {
-        id: tooltip;
+        id: tooltip
     }
 
     // Setting mode: Recommended or Custom
     ListModel
     {
-        id: modesListModel;
+        id: modesListModel
     }
 
     SidebarSimple
     {
-        id: sidebarSimple;
-        visible: false;
+        id: sidebarSimple
+        visible: false
 
         onShowTooltip: base.showTooltip(item, location, text)
         onHideTooltip: base.hideTooltip()
@@ -577,8 +577,8 @@ Rectangle
 
     SidebarAdvanced
     {
-        id: sidebarAdvanced;
-        visible: false;
+        id: sidebarAdvanced
+        visible: false
 
         onShowTooltip: base.showTooltip(item, location, text)
         onHideTooltip: base.hideTooltip()
@@ -596,7 +596,7 @@ Rectangle
             tooltipText: catalog.i18nc("@tooltip", "<b>Custom Print Setup</b><br/><br/>Print with finegrained control over every last bit of the slicing process."),
             item: sidebarAdvanced
         })
-        sidebarContents.replace( modesListModel.get(base.currentModeIndex).item, { "immediate": true })
+        sidebarContents.replace(modesListModel.get(base.currentModeIndex).item, { "immediate": true })
 
         var index = Math.floor(UM.Preferences.getValue("cura/active_mode"))
         if(index)
