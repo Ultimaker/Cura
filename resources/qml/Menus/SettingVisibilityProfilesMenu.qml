@@ -20,6 +20,15 @@ Menu
 
     MenuItem
     {
+        text: catalog.i18nc("@action:inmenu", "Search Results")
+        checkable: true
+        visible: showingSearchResults
+        checked: showingSearchResults
+        exclusiveGroup: group
+    }
+    MenuSeparator { visible: showingSearchResults }
+    MenuItem
+    {
         text: catalog.i18nc("@action:inmenu", "Normal Set")
         checkable: true
         checked: !showingSearchResults && !showingAllSettings
@@ -29,12 +38,21 @@ Menu
     MenuSeparator {}
     MenuItem
     {
-        text: catalog.i18nc("@action:inmenu", "Search Results")
+        text: catalog.i18nc("@action:inmenu", "Changed settings")
         checkable: true
-        visible: showingSearchResults
-        checked: showingSearchResults
+        checked: showingAllSettings
         exclusiveGroup: group
+        onTriggered: showAllSettings()
     }
+    MenuItem
+    {
+        text: catalog.i18nc("@action:inmenu", "Settings in profile")
+        checkable: true
+        checked: showingAllSettings
+        exclusiveGroup: group
+        onTriggered: showAllSettings()
+    }
+    MenuSeparator {}
     MenuItem
     {
         text: catalog.i18nc("@action:inmenu", "All Settings")
