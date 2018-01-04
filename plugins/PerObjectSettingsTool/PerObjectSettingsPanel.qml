@@ -111,7 +111,7 @@ Item {
             ScrollView
             {
                 height: parent.height
-                width: UM.Theme.getSize("setting").width
+                width: UM.Theme.getSize("setting").width + UM.Theme.getSize("default_margin").width
                 style: UM.Theme.styles.scrollview
 
                 ListView

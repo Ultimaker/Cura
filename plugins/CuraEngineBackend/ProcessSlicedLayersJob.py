@@ -4,7 +4,6 @@
 import gc
 
 from UM.Job import Job
-from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 from UM.Scene.SceneNode import SceneNode
 from UM.Application import Application
 from UM.Mesh.MeshData import MeshData
@@ -17,6 +16,7 @@ from UM.Logger import Logger
 
 from UM.Math.Vector import Vector
 
+from cura.Scene.BuildPlateDecorator import BuildPlateDecorator
 from cura.Settings.ExtruderManager import ExtruderManager
 from cura import LayerDataBuilder
 from cura import LayerDataDecorator
@@ -49,6 +49,7 @@ class ProcessSlicedLayersJob(Job):
         self._scene = Application.getInstance().getController().getScene()
         self._progress_message = Message(catalog.i18nc("@info:status", "Processing Layers"), 0, False, -1)
         self._abort_requested = False
+        self._build_plate_number = None
 
     ##  Aborts the processing of layers.
     #
@@ -59,7 +60,14 @@ class ProcessSlicedLayersJob(Job):
     def abort(self):
         self._abort_requested = True
 
+    def setBuildPlate(self, new_value):
+        self._build_plate_number = new_value
+
+    def getBuildPlate(self):
+        return self._build_plate_number
+
     def run(self):
+        Logger.log("d", "Processing new layer for build plate %s..." % self._build_plate_number)
         start_time = time()
         view = Application.getInstance().getController().getActiveView()
         if view.getPluginId() == "SimulationView":
@@ -74,16 +82,7 @@ class ProcessSlicedLayersJob(Job):
         Application.getInstance().getController().activeViewChanged.connect(self._onActiveViewChanged)
 
         new_node = SceneNode()
-
-        ## Remove old layer data (if any)
-        for node in DepthFirstIterator(self._scene.getRoot()):
-            if node.callDecoration("getLayerData"):
-                node.getParent().removeChild(node)
-                break
-            if self._abort_requested:
-                if self._progress_message:
-                    self._progress_message.hide()
-                return
+        new_node.addDecorator(BuildPlateDecorator(self._build_plate_number))
 
         # Force garbage collection.
         # For some reason, Python has a tendency to keep the layer data

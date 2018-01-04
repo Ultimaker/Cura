@@ -340,6 +340,8 @@ Item
                     text: catalog.i18nc("@label", "Print Speed")
                     font: UM.Theme.getFont("default")
                     color: UM.Theme.getColor("text")
+                    width: parseInt(UM.Theme.getSize("sidebar").width * 0.35)
+                    elide: Text.ElideRight
                 }
 
                 Label

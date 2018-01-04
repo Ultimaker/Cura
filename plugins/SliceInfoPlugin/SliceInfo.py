@@ -166,7 +166,7 @@ class SliceInfo(Extension):
 
                     data["models"].append(model)
 
-            print_times = print_information._print_time_message_values
+            print_times = print_information.printTimes()
             data["print_times"] = {"travel": int(print_times["travel"].getDisplayString(DurationFormat.Format.Seconds)),
                                    "support": int(print_times["support"].getDisplayString(DurationFormat.Format.Seconds)),
                                    "infill": int(print_times["infill"].getDisplayString(DurationFormat.Format.Seconds)),
