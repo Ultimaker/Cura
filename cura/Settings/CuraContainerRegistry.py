@@ -14,6 +14,7 @@ from UM.Decorators import override
 from UM.Settings.ContainerRegistry import ContainerRegistry
 from UM.Settings.ContainerStack import ContainerStack
 from UM.Settings.InstanceContainer import InstanceContainer
+from UM.Settings.SettingInstance import SettingInstance
 from UM.Application import Application
 from UM.Logger import Logger
 from UM.Message import Message
@@ -218,32 +219,13 @@ class CuraContainerRegistry(ContainerRegistry):
                 if type(profile_or_list) is not list:
                     profile_or_list = [profile_or_list]
 
-                if len(profile_or_list) == 1:
-                    # If there is only 1 stack file it means we're loading a legacy (pre-3.1) .curaprofile.
-                    # In that case we find the per-extruder settings and put those in a new quality_changes container
-                    # so that it is compatible with the new stack setup.
-                    profile = profile_or_list[0]
-                    extruder_stack_quality_changes_container = ContainerManager.getInstance().duplicateContainerInstance(profile)
-                    extruder_stack_quality_changes_container.addMetaDataEntry("extruder", "fdmextruder")
-
-                    for quality_changes_setting_key in extruder_stack_quality_changes_container.getAllKeys():
-                        settable_per_extruder = extruder_stack_quality_changes_container.getProperty(quality_changes_setting_key, "settable_per_extruder")
-                        if settable_per_extruder:
-                            profile.removeInstance(quality_changes_setting_key, postpone_emit = True)
-                        else:
-                            extruder_stack_quality_changes_container.removeInstance(quality_changes_setting_key, postpone_emit = True)
-
-                    # We add the new container to the profile list so things like extruder positions are taken care of
-                    # in the next code segment.
-                    profile_or_list.append(extruder_stack_quality_changes_container)
-
                 # Import all profiles
                 for profile_index, profile in enumerate(profile_or_list):
                     if profile_index == 0:
                         # This is assumed to be the global profile
                         profile_id = (global_container_stack.getBottom().getId() + "_" + name_seed).lower().replace(" ", "_")
 
-                    elif len(machine_extruders) > profile_index:
+                    elif profile_index < len(machine_extruders) + 1:
                         # This is assumed to be an extruder profile
                         extruder_id = Application.getInstance().getMachineManager().getQualityDefinitionId(machine_extruders[profile_index - 1].getBottom())
                         if not profile.getMetaDataEntry("extruder"):
@@ -251,6 +233,9 @@ class CuraContainerRegistry(ContainerRegistry):
                         else:
                             profile.setMetaDataEntry("extruder", extruder_id)
                         profile_id = (extruder_id + "_" + name_seed).lower().replace(" ", "_")
+
+                    else: #More extruders in the imported file than in the machine.
+                        continue #Delete the additional profiles.
 
                     result = self._configureProfile(profile, profile_id, new_name)
                     if result is not None:
@@ -305,7 +290,7 @@ class CuraContainerRegistry(ContainerRegistry):
             quality_type_criteria["definition"] = profile.getDefinition().getId()
 
         else:
-            profile.setDefinition(fdmprinter)
+            profile.setDefinition("fdmprinter")
             quality_type_criteria["definition"] = "fdmprinter"
 
         machine_definition = Application.getInstance().getGlobalContainerStack().getBottom()
@@ -422,6 +407,10 @@ class CuraContainerRegistry(ContainerRegistry):
         if not isinstance(container, ContainerStack) or container.getMetaDataEntry("type") != "machine":
             return
 
+        machine_extruder_trains = container.getMetaDataEntry("machine_extruder_trains")
+        if machine_extruder_trains is not None and machine_extruder_trains != {"0": "fdmextruder"}:
+            return
+
         extruder_stacks = self.findContainerStacks(type = "extruder_train", machine = container.getId())
         if not extruder_stacks:
             self.addExtruderStackForSingleExtrusionMachine(container, "fdmextruder")
@@ -442,11 +431,42 @@ class CuraContainerRegistry(ContainerRegistry):
         extruder_stack.setDefinition(extruder_definition)
         extruder_stack.addMetaDataEntry("position", extruder_definition.getMetaDataEntry("position"))
 
+        from cura.CuraApplication import CuraApplication
+
+        # create a new definition_changes container for the extruder stack
+        definition_changes_id = self.uniqueName(extruder_stack.getId() + "_settings")
+        definition_changes_name = definition_changes_id
+        definition_changes = InstanceContainer(definition_changes_id)
+        definition_changes.setName(definition_changes_name)
+        definition_changes.addMetaDataEntry("setting_version", CuraApplication.SettingVersion)
+        definition_changes.addMetaDataEntry("type", "definition_changes")
+        definition_changes.addMetaDataEntry("definition", extruder_definition.getId())
+
+        # move definition_changes settings if exist
+        for setting_key in definition_changes.getAllKeys():
+            if machine.definition.getProperty(setting_key, "settable_per_extruder"):
+                setting_value = machine.definitionChanges.getProperty(setting_key, "value")
+                if setting_value is not None:
+                    # move it to the extruder stack's definition_changes
+                    setting_definition = machine.getSettingDefinition(setting_key)
+                    new_instance = SettingInstance(setting_definition, definition_changes)
+                    new_instance.setProperty("value", setting_value)
+                    new_instance.resetState()  # Ensure that the state is not seen as a user state.
+                    definition_changes.addInstance(new_instance)
+                    definition_changes.setDirty(True)
+
+                    machine.definitionChanges.removeInstance(setting_key, postpone_emit = True)
+
+        self.addContainer(definition_changes)
+        extruder_stack.setDefinitionChanges(definition_changes)
+
         # create empty user changes container otherwise
-        user_container = InstanceContainer(extruder_stack.id + "_user")
+        user_container_id = self.uniqueName(extruder_stack.getId() + "_user")
+        user_container_name = user_container_id
+        user_container = InstanceContainer(user_container_id)
+        user_container.setName(user_container_name)
         user_container.addMetaDataEntry("type", "user")
         user_container.addMetaDataEntry("machine", extruder_stack.getId())
-        from cura.CuraApplication import CuraApplication
         user_container.addMetaDataEntry("setting_version", CuraApplication.SettingVersion)
         user_container.setDefinition(machine.definition.getId())
 
@@ -456,7 +476,15 @@ class CuraContainerRegistry(ContainerRegistry):
             for user_setting_key in machine.userChanges.getAllKeys():
                 settable_per_extruder = machine.getProperty(user_setting_key, "settable_per_extruder")
                 if settable_per_extruder:
-                    user_container.addInstance(machine.userChanges.getInstance(user_setting_key))
+                    setting_value = machine.getProperty(user_setting_key, "value")
+
+                    setting_definition = machine.getSettingDefinition(user_setting_key)
+                    new_instance = SettingInstance(setting_definition, definition_changes)
+                    new_instance.setProperty("value", setting_value)
+                    new_instance.resetState()  # Ensure that the state is not seen as a user state.
+                    user_container.addInstance(new_instance)
+                    user_container.setDirty(True)
+
                     machine.userChanges.removeInstance(user_setting_key, postpone_emit = True)
 
         self.addContainer(user_container)

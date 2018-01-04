@@ -5,12 +5,12 @@ import QtQuick 2.2
 import QtQuick.Controls 1.1
 
 import UM 1.2 as UM
-import Cura 1.0 as Cura
+import Cura 1.2 as Cura
 
 Menu
 {
     title: catalog.i18nc("@title:menu menubar:toplevel", "&View");
-    id: menu
+    id: base
     enabled: !PrintInformation.preSliced
 
     // main views
@@ -25,12 +25,49 @@ Menu
             exclusiveGroup: group
             onTriggered: UM.Controller.setActiveView(model.id)
         }
-        onObjectAdded: menu.insertItem(index, object)
-        onObjectRemoved: menu.removeItem(object)
+        onObjectAdded: base.insertItem(index, object)
+        onObjectRemoved: base.removeItem(object)
     }
     ExclusiveGroup { id: group }
 
     MenuSeparator {}
-    MenuItem { action: Cura.Actions.homeCamera; }
+
+    Menu
+    {
+        title: catalog.i18nc("@action:inmenu menubar:view","&Camera position");
+        MenuItem { action: Cura.Actions.view3DCamera; }
+        MenuItem { action: Cura.Actions.viewFrontCamera; }
+        MenuItem { action: Cura.Actions.viewTopCamera; }
+        MenuItem { action: Cura.Actions.viewLeftSideCamera; }
+        MenuItem { action: Cura.Actions.viewRightSideCamera; }
+    }
+
+    MenuSeparator {
+        visible: UM.Preferences.getValue("cura/use_multi_build_plate")
+    }
+
+    Menu
+    {
+        id: buildPlateMenu;
+        title: catalog.i18nc("@action:inmenu menubar:view","&Build plate");
+        Instantiator
+        {
+            model: Cura.BuildPlateModel
+            MenuItem {
+                text: Cura.BuildPlateModel.getItem(index).name;
+                onTriggered: Cura.SceneController.setActiveBuildPlate(Cura.BuildPlateModel.getItem(index).buildPlateNumber);
+                checkable: true;
+                checked: Cura.BuildPlateModel.getItem(index).buildPlateNumber == Cura.BuildPlateModel.activeBuildPlate;
+                exclusiveGroup: buildPlateGroup;
+                visible: UM.Preferences.getValue("cura/use_multi_build_plate")
+            }
+            onObjectAdded: buildPlateMenu.insertItem(index, object);
+            onObjectRemoved: buildPlateMenu.removeItem(object)
+        }
+        ExclusiveGroup { id: buildPlateGroup; }
+    }
+
+    MenuSeparator {}
+
     MenuItem { action: Cura.Actions.expandSidebar; }
 }

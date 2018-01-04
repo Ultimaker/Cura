@@ -7,6 +7,7 @@ from UM.Logger import Logger
 from UM.Math.Matrix import Matrix
 from UM.Application import Application
 import UM.Scene.SceneNode
+from cura.Scene.CuraSceneNode import CuraSceneNode
 
 import Savitar
 
@@ -63,7 +64,7 @@ class ThreeMFWriter(MeshWriter):
     ##  Convenience function that converts an Uranium SceneNode object to a SavitarSceneNode
     #   \returns Uranium Scenen node.
     def _convertUMNodeToSavitarNode(self, um_node, transformation = Matrix()):
-        if type(um_node) is not UM.Scene.SceneNode.SceneNode:
+        if type(um_node) not in [UM.Scene.SceneNode.SceneNode, CuraSceneNode]:
             return None
 
         savitar_node = Savitar.SceneNode()

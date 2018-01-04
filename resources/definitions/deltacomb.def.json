@@ -1,5 +1,4 @@
 {
-    "id": "deltacomb",
     "version": 2,
     "name": "Deltacomb 3D",
     "inherits": "fdmprinter",

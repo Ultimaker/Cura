@@ -1,4 +1,4 @@
-// Copyright (c) 2017 Ultimaker B.V.
+// Copyright (c) 2018 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.2
@@ -33,9 +33,10 @@ Menu
     {
         id: materialDiameterProvider
 
-        containerStackId: Cura.MachineManager.activeMachineId
+        containerStackId: Cura.ExtruderManager.activeExtruderStackId
         key: "material_diameter"
         watchedProperties: [ "value" ]
+        storeIndex: 5
     }
 
     MenuItem
@@ -207,8 +208,8 @@ Menu
                 // Add to top section
                 var materialId = items[i].id;
                 genericMaterialsModel.append({
-                    id:materialId,
-                    name:items[i].name
+                    id: materialId,
+                    name: items[i].name
                 });
             }
             else
