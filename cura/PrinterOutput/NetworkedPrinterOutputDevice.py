@@ -45,7 +45,9 @@ class NetworkedPrinterOutputDevice(PrinterOutputDevice):
         self._onFinishedCallbacks = {}      # type: Dict[str, Callable[[QNetworkReply], None]]
         self._authentication_state = AuthState.NotAuthenticated
 
-        self._cached_multiparts = {}        # type: Dict[int, Tuple[QHttpMultiPart, QNetworkReply]]
+        # QHttpMultiPart objects need to be kept alive and not garbage collected during the
+        # HTTP which uses them. We hold references to these QHttpMultiPart objects here.
+        self._live_multiparts = {}        # type: Dict[QNetworkReply, QHttpMultiPart]
 
         self._sending_gcode = False
         self._compressing_gcode = False
@@ -170,8 +172,8 @@ class NetworkedPrinterOutputDevice(PrinterOutputDevice):
         return "Unknown User"  # Couldn't find out username.
 
     def _clearCachedMultiPart(self, reply: QNetworkReply) -> None:
-        if id(reply) in self._cached_multiparts:
-            del self._cached_multiparts[id(reply)]
+        if reply in self._live_multiparts:
+            del self._live_multiparts[reply]
 
     def put(self, target: str, data: str, onFinished: Optional[Callable[[Any, QNetworkReply], None]]) -> None:
         if self._manager is None:
@@ -219,7 +221,7 @@ class NetworkedPrinterOutputDevice(PrinterOutputDevice):
 
         reply = self._manager.post(request, multi_post_part)
 
-        self._cached_multiparts[id(reply)] = (multi_post_part, reply)
+        self._live_multiparts[reply] = multi_post_part
 
         if onProgress is not None:
             reply.uploadProgress.connect(onProgress)
