@@ -240,7 +240,7 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
         # or "Legacy" UM3 device.
         cluster_size = int(properties.get(b"cluster_size", -1))
 
-        if cluster_size > 0:
+        if cluster_size >= 0:
             device = ClusterUM3OutputDevice.ClusterUM3OutputDevice(name, address, properties)
         else:
             device = LegacyUM3OutputDevice.LegacyUM3OutputDevice(name, address, properties)
