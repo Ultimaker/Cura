@@ -62,10 +62,14 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
 
         self._active_printer = None  # type: Optional[PrinterOutputModel]
 
+        self._printer_selection_dialog = None
+
         self.setPriority(3)  # Make sure the output device gets selected above local file output
         self.setName(self._id)
         self.setShortDescription(i18n_catalog.i18nc("@action:button Preceded by 'Ready to'.", "Print over network"))
         self.setDescription(i18n_catalog.i18nc("@properties:tooltip", "Print over network"))
+
+        self._printer_uuid_to_unique_name_mapping = {}
 
         self._finished_jobs = []
 
@@ -79,11 +83,21 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
             # Unable to find g-code. Nothing to send
             return
 
-        # TODO; DEBUG
-        self.sendPrintJob()
+        if len(self._printers) > 1:
+            self._spawnPrinterSelectionDialog()
+        else:
+            self.sendPrintJob()
+
+    def _spawnPrinterSelectionDialog(self):
+        if self._printer_selection_dialog is None:
+            path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "PrintWindow.qml")
+            self._printer_selection_dialog = Application.getInstance().createQmlComponent(path, {"OutputDevice": self})
+        if self._printer_selection_dialog is not None:
+            self._printer_selection_dialog.show()
 
     @pyqtSlot()
-    def sendPrintJob(self):
+    @pyqtSlot(str)
+    def sendPrintJob(self, target_printer = ""):
         Logger.log("i", "Sending print job to printer.")
         if self._sending_gcode:
             self._error_message = Message(
@@ -108,9 +122,9 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
         parts = []
 
         # If a specific printer was selected, it should be printed with that machine.
-        require_printer_name = "" # Todo; actually needs to be set
-        if require_printer_name:
-            parts.append(self._createFormPart("name=require_printer_name", bytes(require_printer_name, "utf-8"), "text/plain"))
+        if target_printer:
+            target_printer = self._printer_uuid_to_unique_name_mapping[target_printer]
+            parts.append(self._createFormPart("name=require_printer_name", bytes(target_printer, "utf-8"), "text/plain"))
 
         # Add user name to the print_job
         parts.append(self._createFormPart("name=owner", bytes(self._getUserName(), "utf-8"), "text/plain"))
@@ -324,6 +338,10 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
         print_job.updateOwner(data["owner"])
 
     def _updatePrinter(self, printer, data):
+        # For some unknown reason the cluster wants UUID for everything, except for sending a job directly to a printer.
+        # Then we suddenly need the unique name. So in order to not have to mess up all the other code, we save a mapping.
+        self._printer_uuid_to_unique_name_mapping[data["uuid"]] = data["unique_name"]
+
         printer.updateName(data["friendly_name"])
         printer.updateKey(data["uuid"])
         printer.updateType(data["machine_variant"])
