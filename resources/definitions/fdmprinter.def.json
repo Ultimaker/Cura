@@ -5377,22 +5377,7 @@
                             "enabled": "support_enable and (support_pattern == 'zigzag') and support_skip_some_zags",
                             "limit_to_extruder": "support_infill_extruder_nr",
                             "settable_per_mesh": false,
-                            "settable_per_extruder": true,
-                            "children": {
-                                "support_zag_skip_count": {
-                                    "label": "Support Chunk Line Count",
-                                    "description": "Skip one in every N connection lines to make the support structure easier to break away.",
-                                    "type": "int",
-                                    "default_value": 5,
-                                    "value": "0 if support_line_distance == 0 else round(support_skip_zag_per_mm / support_line_distance)",
-                                    "minimum_value": "1",
-                                    "minimum_value_warning": "3",
-                                    "enabled": "support_enable and (support_pattern == 'zigzag') and support_skip_some_zags",
-                                    "limit_to_extruder": "support_infill_extruder_nr",
-                                    "settable_per_mesh": false,
-                                    "settable_per_extruder": true
-                                }
-                            }
+                            "settable_per_extruder": true
                         }
                     }
                 },
