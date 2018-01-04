@@ -33,12 +33,13 @@ Menu
         checkable: true
         checked: !showingSearchResults && !showingAllSettings
         exclusiveGroup: group
-        onTriggered: showAllSettings()
+        onTriggered: showSettingVisibilityProfile()
     }
     MenuSeparator {}
     MenuItem
     {
         text: catalog.i18nc("@action:inmenu", "Changed settings")
+        enabled: false
         checkable: true
         checked: showingAllSettings
         exclusiveGroup: group
@@ -47,6 +48,7 @@ Menu
     MenuItem
     {
         text: catalog.i18nc("@action:inmenu", "Settings in profile")
+        enabled: false
         checkable: true
         checked: showingAllSettings
         exclusiveGroup: group
