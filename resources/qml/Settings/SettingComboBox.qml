@@ -77,7 +77,7 @@ SettingItem
             anchors.left: parent.left
             anchors.leftMargin: UM.Theme.getSize("setting_unit_margin").width
             anchors.verticalCenter: parent.verticalCenter
-            anchors.right: indicator.left
+            anchors.right: downArrow.left
 
             text: control.currentText
             font: UM.Theme.getFont("default")

@@ -153,7 +153,7 @@ SettingItem
                 width: height
 
                 anchors.right: parent.right
-                anchors.rightMargin: control.indicator.width + UM.Theme.getSize("setting_unit_margin").width
+                anchors.rightMargin: downArrow.width + UM.Theme.getSize("setting_unit_margin").width
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.margins: UM.Theme.getSize("default_margin").width / 4
 
