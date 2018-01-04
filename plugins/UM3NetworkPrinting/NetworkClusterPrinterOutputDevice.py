@@ -8,12 +8,10 @@ import time
 
 from enum import Enum
 from PyQt5.QtNetwork import QNetworkRequest, QHttpPart, QHttpMultiPart
-from PyQt5.QtCore import QUrl, QByteArray, pyqtSlot, pyqtProperty, QCoreApplication, QTimer, pyqtSignal, QObject
+from PyQt5.QtCore import QUrl, pyqtSlot, pyqtProperty, QCoreApplication, QTimer, pyqtSignal, QObject
 from PyQt5.QtGui import QDesktopServices
 from PyQt5.QtNetwork import QNetworkAccessManager, QNetworkReply
-from PyQt5.QtQml import QQmlComponent, QQmlContext
 from UM.Application import Application
-from UM.Decorators import override
 from UM.Logger import Logger
 from UM.Message import Message
 from UM.OutputDevice import OutputDeviceError
@@ -103,6 +101,7 @@ class NetworkClusterPrinterOutputDevice(NetworkPrinterOutputDevice.NetworkPrinte
         self._can_pause = True
         self._can_abort = True
         self._can_pre_heat_bed = False
+        self._can_control_manually = False
         self._cluster_size = int(properties.get(b"cluster_size", 0))
 
         self._cleanupRequest()
@@ -130,7 +129,7 @@ class NetworkClusterPrinterOutputDevice(NetworkPrinterOutputDevice.NetworkPrinte
     @pyqtProperty(QObject, notify=selectedPrinterChanged)
     def controlItem(self):
         # TODO: Probably not the nicest way to do this. This needs to be done better at some point in time.
-        if not self._control_component:
+        if not self._control_item:
             self._createControlViewFromQML()
         name = self._selected_printer.get("friendly_name")
         if name == self._automatic_printer.get("friendly_name") or name == "":
@@ -234,17 +233,8 @@ class NetworkClusterPrinterOutputDevice(NetworkPrinterOutputDevice.NetworkPrinte
 
     def spawnPrintView(self):
         if self._print_view is None:
-            path = QUrl.fromLocalFile(os.path.join(self._plugin_path, "PrintWindow.qml"))
-            component = QQmlComponent(Application.getInstance()._engine, path)
-
-            self._print_context = QQmlContext(Application.getInstance()._engine.rootContext())
-            self._print_context.setContextProperty("OutputDevice", self)
-            self._print_view = component.create(self._print_context)
-
-            if component.isError():
-                Logger.log("e", " Errors creating component: \n%s", "\n".join(
-                    [e.toString() for e in component.errors()]))
-
+            path = os.path.join(self._plugin_path, "PrintWindow.qml")
+            self._print_view = Application.getInstance().createQmlComponent(path, {"OutputDevice": self})
         if self._print_view is not None:
             self._print_view.show()
 
@@ -252,6 +242,11 @@ class NetworkClusterPrinterOutputDevice(NetworkPrinterOutputDevice.NetworkPrinte
     def requestWrite(self, nodes, file_name=None, filter_by_machine=False, file_handler=None, **kwargs):
         self._selected_printer = self._automatic_printer  # reset to default option
         self._request_job = [nodes, file_name, filter_by_machine, file_handler, kwargs]
+
+        # the build plates to be sent
+        gcodes = getattr(Application.getInstance().getController().getScene(), "gcode_list")
+        self._job_list = list(gcodes.keys())
+        Logger.log("d", "build plates to be sent to printer: %s", (self._job_list))
 
         if self._stage != OutputStage.ready:
             if self._error_message:
@@ -262,12 +257,15 @@ class NetworkClusterPrinterOutputDevice(NetworkPrinterOutputDevice.NetworkPrinte
             self._error_message.show()
             return
 
+        self._add_build_plate_number = len(self._job_list) > 1
+        self.writeStarted.emit(self) # Allow postprocessing before sending data to the printer
         if len(self._printers) > 1:
             self.spawnPrintView()  # Ask user how to print it.
         elif len(self._printers) == 1:
             # If there is only one printer, don't bother asking.
             self.selectAutomaticPrinter()
             self.sendPrintJob()
+
         else:
             # Cluster has no printers, warn the user of this.
             if self._error_message:
@@ -282,28 +280,34 @@ class NetworkClusterPrinterOutputDevice(NetworkPrinterOutputDevice.NetworkPrinte
     @pyqtSlot()
     def sendPrintJob(self):
         nodes, file_name, filter_by_machine, file_handler, kwargs = self._request_job
-        require_printer_name = self._selected_printer["unique_name"]
+        output_build_plate_number = self._job_list.pop(0)
+        gcode = getattr(Application.getInstance().getController().getScene(), "gcode_list")[output_build_plate_number]
 
         self._send_gcode_start = time.time()
-        Logger.log("d", "Sending print job [%s] to host..." % file_name)
+        Logger.log("d", "Sending print job [%s] to host, build plate [%s]..." % (file_name, output_build_plate_number))
 
         if self._stage != OutputStage.ready:
             Logger.log("d", "Unable to send print job as the state is %s", self._stage)
             raise OutputDeviceError.DeviceBusyError()
         self._stage = OutputStage.uploading
 
-        self._file_name = "%s.gcode.gz" % file_name
+        if self._add_build_plate_number:
+            self._file_name = "%s_%d.gcode.gz" % (file_name, output_build_plate_number)
+        else:
+            self._file_name = "%s.gcode.gz" % (file_name)
         self._showProgressMessage()
 
-        new_request = self._buildSendPrintJobHttpRequest(require_printer_name)
+        require_printer_name = self._selected_printer["unique_name"]
+
+        new_request = self._buildSendPrintJobHttpRequest(require_printer_name, gcode)
         if new_request is None or self._stage != OutputStage.uploading:
             return
         self._request = new_request
         self._reply = self._manager.post(self._request, self._multipart)
         self._reply.uploadProgress.connect(self._onUploadProgress)
-        # See _finishedPostPrintJobRequest()
+        # See _finishedPrintJobPostRequest()
 
-    def _buildSendPrintJobHttpRequest(self, require_printer_name):
+    def _buildSendPrintJobHttpRequest(self, require_printer_name, gcode):
         api_url = QUrl(self._api_base_uri + "print_jobs/")
         request = QNetworkRequest(api_url)
         # Create multipart request and add the g-code.
@@ -312,9 +316,8 @@ class NetworkClusterPrinterOutputDevice(NetworkPrinterOutputDevice.NetworkPrinte
         # Add gcode
         part = QHttpPart()
         part.setHeader(QNetworkRequest.ContentDispositionHeader,
-                       'form-data; name="file"; filename="%s"' % self._file_name)
+                       'form-data; name="file"; filename="%s"' % (self._file_name))
 
-        gcode = getattr(Application.getInstance().getController().getScene(), "gcode_list")
         compressed_gcode = self._compressGcode(gcode)
         if compressed_gcode is None:
             return None     # User aborted print, so stop trying.
@@ -399,6 +402,9 @@ class NetworkClusterPrinterOutputDevice(NetworkPrinterOutputDevice.NetworkPrinte
             self.writeSuccess.emit(self)
 
         self._cleanupRequest()
+
+        if self._job_list:  # start sending next job
+            self.sendPrintJob()
 
     def _showRequestFailedMessage(self, reply):
         if reply is not None:
@@ -485,7 +491,7 @@ class NetworkClusterPrinterOutputDevice(NetworkPrinterOutputDevice.NetworkPrinte
 
                 printer_name = self.__getPrinterNameFromUuid(print_job["printer_uuid"])
                 if printer_name is None:
-                    printer_name = i18n_catalog.i18nc("@label", "Unknown")
+                    printer_name = i18n_catalog.i18nc("@label Printer name", "Unknown")
 
                 message_text = (i18n_catalog.i18nc("@info:status",
                                 "Printer '{printer_name}' has finished printing '{job_name}'.")
@@ -706,7 +712,7 @@ class NetworkClusterPrinterOutputDevice(NetworkPrinterOutputDevice.NetworkPrinte
             if self._reply:
                 self._reply.abort()
             self._stage = OutputStage.ready
-            Application.getInstance().showPrintMonitor.emit(False)
+            Application.getInstance().getController().setActiveStage("PrepareStage")
 
     @pyqtSlot(int, result=str)
     def formatDuration(self, seconds):

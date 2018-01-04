@@ -17,7 +17,13 @@ Item
     property alias undo: undoAction;
     property alias redo: redoAction;
 
-    property alias homeCamera: homeCameraAction;
+    property alias view3DCamera: view3DCameraAction;
+    property alias viewFrontCamera: viewFrontCameraAction;
+    property alias viewTopCamera: viewTopCameraAction;
+    property alias viewLeftSideCamera: viewLeftSideCameraAction;
+    property alias viewRightSideCamera: viewRightSideCameraAction;
+
+    property alias expandSidebar: expandSidebarAction;
 
     property alias deleteSelection: deleteSelectionAction;
     property alias centerSelection: centerSelectionAction;
@@ -35,6 +41,7 @@ Item
     property alias selectAll: selectAllAction;
     property alias deleteAll: deleteAllAction;
     property alias reloadAll: reloadAllAction;
+    property alias arrangeAllBuildPlates: arrangeAllBuildPlatesAction;
     property alias arrangeAll: arrangeAllAction;
     property alias arrangeSelection: arrangeSelectionAction;
     property alias resetAllTranslation: resetAllTranslationAction;
@@ -103,9 +110,37 @@ Item
 
     Action
     {
-        id: homeCameraAction;
-        text: catalog.i18nc("@action:inmenu menubar:view","&Reset camera position");
-        onTriggered: CuraActions.homeCamera();
+        id: view3DCameraAction;
+        text: catalog.i18nc("@action:inmenu menubar:view","&3D View");
+        onTriggered: UM.Controller.rotateView("3d", 0);
+    }
+
+    Action
+    {
+        id: viewFrontCameraAction;
+        text: catalog.i18nc("@action:inmenu menubar:view","&Front View");
+        onTriggered: UM.Controller.rotateView("home", 0);
+    }
+
+    Action
+    {
+        id: viewTopCameraAction;
+        text: catalog.i18nc("@action:inmenu menubar:view","&Top View");
+        onTriggered: UM.Controller.rotateView("y", 90);
+    }
+
+    Action
+    {
+        id: viewLeftSideCameraAction;
+        text: catalog.i18nc("@action:inmenu menubar:view","&Left Side View");
+        onTriggered: UM.Controller.rotateView("x", 90);
+    }
+
+    Action
+    {
+        id: viewRightSideCameraAction;
+        text: catalog.i18nc("@action:inmenu menubar:view","&Right Side View");
+        onTriggered: UM.Controller.rotateView("x", -90);
     }
 
     Action
@@ -246,6 +281,16 @@ Item
 
     Action
     {
+        id: reloadQmlAction
+        onTriggered:
+        {
+            CuraApplication.reloadQML()
+        }
+        shortcut: "Shift+F5"
+    }
+
+    Action
+    {
         id: unGroupObjectsAction
         text: catalog.i18nc("@action:inmenu menubar:edit","Ungroup Models");
         enabled: UM.Scene.isGroupSelected
@@ -298,6 +343,13 @@ Item
         iconName: "document-revert";
         shortcut: "F5"
         onTriggered: CuraApplication.reloadAll();
+    }
+
+    Action
+    {
+        id: arrangeAllBuildPlatesAction;
+        text: catalog.i18nc("@action:inmenu menubar:edit","Arrange All Models To All Build Plates");
+        onTriggered: Printer.arrangeObjectsToAllBuildPlates();
     }
 
     Action
@@ -378,5 +430,12 @@ Item
         id: configurePluginsAction
         text: catalog.i18nc("@action:menu", "Installed plugins...");
         iconName: "plugins_configure"
+    }
+
+    Action
+    {
+        id: expandSidebarAction;
+        text: catalog.i18nc("@action:inmenu menubar:view","Expand/Collapse Sidebar");
+        shortcut: "Ctrl+E";
     }
 }

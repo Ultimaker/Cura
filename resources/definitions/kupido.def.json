@@ -1,5 +1,4 @@
 {
-    "id": "kupido",
     "name": "Kupido",
     "version": 2,
     "inherits": "fdmprinter",

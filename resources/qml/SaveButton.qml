@@ -12,11 +12,11 @@ Item {
     id: base;
     UM.I18nCatalog { id: catalog; name:"cura"}
 
-    property real progress: UM.Backend.progress;
-    property int backendState: UM.Backend.state;
+    property real progress: UM.Backend.progress
+    property int backendState: UM.Backend.state
+    property bool activity: CuraApplication.platformActivity
 
-    property var backend: CuraApplication.getBackend();
-    property bool activity: CuraApplication.platformActivity;
+    property alias buttonRowWidth: saveRow.width
 
     property string fileBaseName
     property string statusText:
@@ -24,6 +24,10 @@ Item {
         if(!activity)
         {
             return catalog.i18nc("@label:PrintjobStatus", "Please load a 3D model");
+        }
+
+        if (base.backendState == "undefined") {
+            return ""
         }
 
         switch(base.backendState)
@@ -40,6 +44,18 @@ Item {
                 return catalog.i18nc("@label:PrintjobStatus", "Slicing unavailable");
             default:
                 return "";
+        }
+    }
+
+    function sliceOrStopSlicing() {
+        try {
+            if ([1, 5].indexOf(base.backendState) != -1) {
+                CuraApplication.backend.forceSlice();
+            } else {
+                CuraApplication.backend.stopSlicing();
+            }
+        } catch (e) {
+            console.log('Could not start or stop slicing', e)
         }
     }
 
@@ -71,7 +87,7 @@ Item {
             height: parent.height
             color: UM.Theme.getColor("progressbar_control")
             radius: UM.Theme.getSize("progressbar_radius").width
-            visible: base.backendState == 2 ? true : false
+            visible: (base.backendState != "undefined" && base.backendState == 2) ? true : false
         }
     }
 
@@ -84,34 +100,56 @@ Item {
             if (saveToButton.enabled) {
                 saveToButton.clicked();
             }
+            // prepare button
+            if (prepareButton.enabled) {
+                sliceOrStopSlicing();
+            }
         }
     }
 
     Item {
         id: saveRow
-        width: base.width
+        width: {
+            // using childrenRect.width directly causes a binding loop, because setting the width affects the childrenRect
+            var children_width = UM.Theme.getSize("default_margin").width;
+            for (var index in children)
+            {
+                var child = children[index];
+                if(child.visible)
+                {
+                    children_width += child.width + child.anchors.rightMargin;
+                }
+            }
+            return Math.min(children_width, base.width - UM.Theme.getSize("sidebar_margin").width);
+        }
         height: saveToButton.height
-        anchors.top: progressBar.bottom
-        anchors.topMargin: UM.Theme.getSize("sidebar_margin").height
-        anchors.left: parent.left
+        anchors.bottom: parent.bottom
+        anchors.bottomMargin: UM.Theme.getSize("sidebar_margin").height
+        anchors.right: parent.right
+        clip: true
 
         Row {
             id: additionalComponentsRow
             anchors.top: parent.top
             anchors.right: saveToButton.visible ? saveToButton.left : parent.right
-            anchors.rightMargin: UM.Theme.getSize("sidebar_margin").width
+            anchors.rightMargin: UM.Theme.getSize("default_margin").width
 
             spacing: UM.Theme.getSize("default_margin").width
         }
 
+        Component.onCompleted: {
+            saveRow.addAdditionalComponents("saveButton")
+        }
+
         Connections {
-            target: Printer
-            onAdditionalComponentsChanged:
-            {
-                if(areaId == "saveButton") {
-                    for (var component in CuraApplication.additionalComponents["saveButton"]) {
-                        CuraApplication.additionalComponents["saveButton"][component].parent = additionalComponentsRow
-                    }
+            target: CuraApplication
+            onAdditionalComponentsChanged: saveRow.addAdditionalComponents("saveButton")
+        }
+
+        function addAdditionalComponents (areaId) {
+            if(areaId == "saveButton") {
+                for (var component in CuraApplication.additionalComponents["saveButton"]) {
+                    CuraApplication.additionalComponents["saveButton"][component].parent = additionalComponentsRow
                 }
             }
         }
@@ -130,12 +168,10 @@ Item {
         Button {
             id: prepareButton
 
-            tooltip: UM.OutputDeviceManager.activeDeviceDescription;
+            tooltip: [1, 5].indexOf(base.backendState) != -1 ? catalog.i18nc("@info:tooltip","Slice current printjob") : catalog.i18nc("@info:tooltip","Cancel slicing process")
             // 1 = not started, 2 = Processing
-            enabled: (base.backendState == 1 || base.backendState == 2) && base.activity == true
-            visible: {
-                return !autoSlice && (base.backendState == 1 || base.backendState == 2) && base.activity == true;
-                }
+            enabled: base.backendState != "undefined" && (base.backendState == 1 || base.backendState == 2) && base.activity == true
+            visible: base.backendState != "undefined" && !autoSlice && (base.backendState == 1 || base.backendState == 2) && base.activity == true
             property bool autoSlice
             height: UM.Theme.getSize("save_button_save_to_button").height
 
@@ -144,14 +180,10 @@ Item {
             anchors.rightMargin: UM.Theme.getSize("sidebar_margin").width
 
             // 1 = not started, 5 = disabled
-            text: [1, 5].indexOf(UM.Backend.state) != -1 ? catalog.i18nc("@label:Printjob", "Prepare") : catalog.i18nc("@label:Printjob", "Cancel")
+            text: [1, 5].indexOf(base.backendState) != -1 ? catalog.i18nc("@label:Printjob", "Prepare") : catalog.i18nc("@label:Printjob", "Cancel")
             onClicked:
             {
-                if ([1, 5].indexOf(UM.Backend.state) != -1) {
-                    backend.forceSlice();
-                } else {
-                    backend.stopSlicing();
-                }
+                sliceOrStopSlicing();
             }
 
             style: ButtonStyle {
@@ -212,10 +244,8 @@ Item {
 
             tooltip: UM.OutputDeviceManager.activeDeviceDescription;
             // 3 = done, 5 = disabled
-            enabled: (base.backendState == 3 || base.backendState == 5) && base.activity == true
-            visible: {
-                return autoSlice || ((base.backendState == 3 || base.backendState == 5) && base.activity == true);
-            }
+            enabled: base.backendState != "undefined" && (base.backendState == 3 || base.backendState == 5) && base.activity == true
+            visible: base.backendState != "undefined" && autoSlice || ((base.backendState == 3 || base.backendState == 5) && base.activity == true)
             property bool autoSlice
             height: UM.Theme.getSize("save_button_save_to_button").height
 
@@ -292,8 +322,8 @@ Item {
             width: UM.Theme.getSize("save_button_save_to_button").height
             height: UM.Theme.getSize("save_button_save_to_button").height
             // 3 = Done, 5 = Disabled
-            enabled: (base.backendState == 3 || base.backendState == 5) && base.activity == true
-            visible: (devicesModel.deviceCount > 1) && (base.backendState == 3 || base.backendState == 5) && base.activity == true
+            enabled: base.backendState != "undefined" && (base.backendState == 3 || base.backendState == 5) && base.activity == true
+            visible: base.backendState != "undefined" && (devicesModel.deviceCount > 1) && (base.backendState == 3 || base.backendState == 5) && base.activity == true
 
 
             style: ButtonStyle {

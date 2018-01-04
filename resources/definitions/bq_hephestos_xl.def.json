@@ -1,5 +1,4 @@
 {
-    "id": "bq_hephestos_xl",
     "version": 2,
     "name": "BQ Prusa i3 Hephestos XL",
     "inherits": "fdmprinter",

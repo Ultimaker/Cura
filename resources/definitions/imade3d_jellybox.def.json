@@ -1,5 +1,4 @@
 {
-    "id": "imade3d_jellybox",
     "version": 2,
     "name": "IMADE3D JellyBOX",
     "inherits": "fdmprinter",

@@ -16,11 +16,17 @@ Menu
     property bool printerConnected: Cura.MachineManager.printerOutputDevices.length != 0
     property bool isClusterPrinter:
     {
-        var clusterSize = Cura.MachineManager.printerOutputDevices[0].clusterSize
-        // This is a non cluster printer or the cluster it is just one printer
-        if (clusterSize == undefined || clusterSize == 1)
-            return false
-        return true
+        if(Cura.MachineManager.printerOutputDevices.length == 0)
+        {
+            return false;
+        }
+        var clusterSize = Cura.MachineManager.printerOutputDevices[0].clusterSize;
+        // This is not a cluster printer or the cluster it is just one printer
+        if(clusterSize == undefined || clusterSize == 1)
+        {
+            return false;
+        }
+        return true;
     }
 
     MenuItem
@@ -38,15 +44,15 @@ Menu
         visible: printerConnected && Cura.MachineManager.printerOutputDevices[0].hotendIds.length > extruderIndex && !isClusterPrinter
         onTriggered:
         {
-            var activeExtruderIndex = ExtruderManager.activeExtruderIndex;
-            ExtruderManager.setActiveExtruderIndex(extruderIndex);
+            var activeExtruderIndex = Cura.ExtruderManager.activeExtruderIndex;
+            Cura.ExtruderManager.setActiveExtruderIndex(extruderIndex);
             var hotendId = Cura.MachineManager.printerOutputDevices[0].hotendIds[extruderIndex];
             var itemIndex = nozzleInstantiator.model.find("name", hotendId);
             if(itemIndex > -1)
             {
                 Cura.MachineManager.setActiveVariant(nozzleInstantiator.model.getItem(itemIndex).id);
             }
-            ExtruderManager.setActiveExtruderIndex(activeExtruderIndex);
+            Cura.ExtruderManager.setActiveExtruderIndex(activeExtruderIndex);
         }
     }
 
@@ -69,14 +75,14 @@ Menu
         MenuItem {
             text: model.name
             checkable: true
-            checked: model.id == Cura.MachineManager.allActiveVariantIds[ExtruderManager.extruderIds[extruderIndex]]
+            checked: model.id == Cura.MachineManager.allActiveVariantIds[Cura.ExtruderManager.extruderIds[extruderIndex]]
             exclusiveGroup: group
             onTriggered:
             {
-                var activeExtruderIndex = ExtruderManager.activeExtruderIndex;
-                ExtruderManager.setActiveExtruderIndex(extruderIndex);
+                var activeExtruderIndex = Cura.ExtruderManager.activeExtruderIndex;
+                Cura.ExtruderManager.setActiveExtruderIndex(extruderIndex);
                 Cura.MachineManager.setActiveVariant(model.id);
-                ExtruderManager.setActiveExtruderIndex(activeExtruderIndex);
+                Cura.ExtruderManager.setActiveExtruderIndex(activeExtruderIndex);
             }
         }
         onObjectAdded: menu.insertItem(index, object)

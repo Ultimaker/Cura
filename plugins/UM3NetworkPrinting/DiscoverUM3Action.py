@@ -1,17 +1,15 @@
-from cura.MachineAction import MachineAction
+import os.path
+import time
+
+from PyQt5.QtCore import pyqtSignal, pyqtProperty, pyqtSlot, QObject
 
 from UM.Application import Application
 from UM.PluginRegistry import PluginRegistry
 from UM.Logger import Logger
-
-from PyQt5.QtCore import pyqtSignal, pyqtProperty, pyqtSlot, QUrl, QObject
-from PyQt5.QtQml import QQmlComponent, QQmlContext
-
-import os.path
-
-import time
-
 from UM.i18n import i18nCatalog
+
+from cura.MachineAction import MachineAction
+
 catalog = i18nCatalog("cura")
 
 class DiscoverUM3Action(MachineAction):
@@ -136,17 +134,14 @@ class DiscoverUM3Action(MachineAction):
 
     def _createAdditionalComponentsView(self):
         Logger.log("d", "Creating additional ui components for UM3.")
-        path = QUrl.fromLocalFile(os.path.join(PluginRegistry.getInstance().getPluginPath("UM3NetworkPrinting"), "UM3InfoComponents.qml"))
-        self.__additional_component = QQmlComponent(Application.getInstance()._engine, path)
 
-        # We need access to engine (although technically we can't)
-        self.__additional_components_context = QQmlContext(Application.getInstance()._engine.rootContext())
-        self.__additional_components_context.setContextProperty("manager", self)
-
-        self.__additional_components_view = self.__additional_component.create(self.__additional_components_context)
+        # Create networking dialog
+        path = os.path.join(PluginRegistry.getInstance().getPluginPath("UM3NetworkPrinting"), "UM3InfoComponents.qml")
+        self.__additional_components_view = Application.getInstance().createQmlComponent(path, {"manager": self})
         if not self.__additional_components_view:
             Logger.log("w", "Could not create ui components for UM3.")
             return
 
+        # Create extra components
         Application.getInstance().addAdditionalComponent("monitorButtons", self.__additional_components_view.findChild(QObject, "networkPrinterConnectButton"))
         Application.getInstance().addAdditionalComponent("machinesDetailPane", self.__additional_components_view.findChild(QObject, "networkPrinterConnectionInfo"))

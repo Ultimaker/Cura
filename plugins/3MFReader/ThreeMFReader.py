@@ -4,7 +4,6 @@
 import os.path
 import zipfile
 
-from UM.Job import Job
 from UM.Logger import Logger
 from UM.Math.Matrix import Matrix
 from UM.Math.Vector import Vector
@@ -15,9 +14,10 @@ from cura.Settings.SettingOverrideDecorator import SettingOverrideDecorator
 from UM.Application import Application
 from cura.Settings.ExtruderManager import ExtruderManager
 from cura.QualityManager import QualityManager
-from UM.Scene.SceneNode import SceneNode
-from cura.SliceableObjectDecorator import SliceableObjectDecorator
-from cura.ZOffsetDecorator import ZOffsetDecorator
+from cura.Scene.CuraSceneNode import CuraSceneNode
+from cura.Scene.BuildPlateDecorator import BuildPlateDecorator
+from cura.Scene.SliceableObjectDecorator import SliceableObjectDecorator
+from cura.Scene.ZOffsetDecorator import ZOffsetDecorator
 
 MYPY = False
 
@@ -43,6 +43,7 @@ class ThreeMFReader(MeshReader):
         }
         self._base_name = ""
         self._unit = None
+        self._object_count = 0  # Used to name objects as there is no node name yet.
 
     def _createMatrixFromTransformationString(self, transformation):
         if transformation == "":
@@ -77,7 +78,12 @@ class ThreeMFReader(MeshReader):
     ##  Convenience function that converts a SceneNode object (as obtained from libSavitar) to a Uranium scene node.
     #   \returns Uranium scene node.
     def _convertSavitarNodeToUMNode(self, savitar_node):
-        um_node = SceneNode()
+        self._object_count += 1
+        node_name = "Object %s" % self._object_count
+
+        um_node = CuraSceneNode()
+        um_node.addDecorator(BuildPlateDecorator(0))
+        um_node.setName(node_name)
         transformation = self._createMatrixFromTransformationString(savitar_node.getTransformation())
         um_node.setTransformation(transformation)
         mesh_builder = MeshBuilder()
@@ -107,24 +113,17 @@ class ThreeMFReader(MeshReader):
             um_node.addDecorator(SettingOverrideDecorator())
 
             global_container_stack = Application.getInstance().getGlobalContainerStack()
+
             # Ensure the correct next container for the SettingOverride decorator is set.
             if global_container_stack:
-                multi_extrusion = global_container_stack.getProperty("machine_extruder_count", "value") > 1
+                default_stack = ExtruderManager.getInstance().getExtruderStack(0)
 
-                # Ensure that all extruder data is reset
-                if not multi_extrusion:
-                    default_stack_id = global_container_stack.getId()
-                else:
-                    default_stack = ExtruderManager.getInstance().getExtruderStack(0)
-                    if default_stack:
-                        default_stack_id = default_stack.getId()
-                    else:
-                        default_stack_id = global_container_stack.getId()
-                um_node.callDecoration("setActiveExtruder", default_stack_id)
+                if default_stack:
+                    um_node.callDecoration("setActiveExtruder", default_stack.getId())
 
                 # Get the definition & set it
                 definition = QualityManager.getInstance().getParentMachineDefinition(global_container_stack.getBottom())
-                um_node.callDecoration("getStack").getTop().setDefinition(definition)
+                um_node.callDecoration("getStack").getTop().setDefinition(definition.getId())
 
             setting_container = um_node.callDecoration("getStack").getTop()
 
@@ -139,7 +138,7 @@ class ThreeMFReader(MeshReader):
                     else:
                         Logger.log("w", "Unable to find extruder in position %s", setting_value)
                     continue
-                setting_container.setProperty(key,"value", setting_value)
+                setting_container.setProperty(key, "value", setting_value)
 
         if len(um_node.getChildren()) > 0:
             group_decorator = GroupDecorator()
@@ -154,6 +153,7 @@ class ThreeMFReader(MeshReader):
 
     def read(self, file_name):
         result = []
+        self._object_count = 0  # Used to name objects as there is no node name yet.
         # The base object of 3mf is a zipped archive.
         try:
             archive = zipfile.ZipFile(file_name, "r")

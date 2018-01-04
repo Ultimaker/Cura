@@ -1,5 +1,4 @@
 {
-    "id": "Titan",
     "name": "ABAX Titan",
     "version": 2,
     "inherits": "fdmprinter",
