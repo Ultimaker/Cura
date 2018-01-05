@@ -18,6 +18,9 @@ Item {
     width: childrenRect.width;
     height: childrenRect.height;
 
+    property var all_categories_except_support: [ "machine_settings", "resolution", "shell", "infill", "material", "speed",
+                                    "travel", "cooling", "platform_adhesion", "dual", "meshfix", "blackmagic", "experimental"]
+
     Column
     {
         id: items
@@ -106,7 +109,7 @@ Item {
             id: currentSettings
             property int maximumHeight: 200 * screenScaleFactor
             height: Math.min(contents.count * (UM.Theme.getSize("section").height + UM.Theme.getSize("default_lining").height), maximumHeight)
-            visible: ["support_mesh", "anti_overhang_mesh"].indexOf(meshTypeSelection.model.get(meshTypeSelection.currentIndex).type) == -1
+            visible: meshTypeSelection.model.get(meshTypeSelection.currentIndex).type != "anti_overhang_mesh"
 
             ScrollView
             {
@@ -124,7 +127,15 @@ Item {
                         id: addedSettingsModel;
                         containerId: Cura.MachineManager.activeDefinitionId
                         expanded: [ "*" ]
-                        exclude: [ "support_mesh", "anti_overhang_mesh", "cutting_mesh", "infill_mesh" ]
+                        exclude: {
+                            var excluded_settings = [ "support_mesh", "anti_overhang_mesh", "cutting_mesh", "infill_mesh" ];
+
+                            if(meshTypeSelection.model.get(meshTypeSelection.currentIndex).type == "support_mesh")
+                            {
+                                excluded_settings = excluded_settings.concat(base.all_categories_except_support);
+                            }
+                            return excluded_settings;
+                        }
 
                         visibilityHandler: Cura.PerObjectSettingVisibilityHandler
                         {
@@ -306,7 +317,18 @@ Item {
                 }
             }
 
-            onClicked: settingPickDialog.visible = true;
+            onClicked:
+            {
+                settingPickDialog.visible = true;
+                if (meshTypeSelection.model.get(meshTypeSelection.currentIndex).type == "support_mesh")
+                {
+                    settingPickDialog.additional_excluded_settings = base.all_categories_except_support;
+                }
+                else
+                {
+                    settingPickDialog.additional_excluded_settings = []
+                }
+            }
         }
     }
 
@@ -315,9 +337,10 @@ Item {
         id: settingPickDialog
 
         title: catalog.i18nc("@title:window", "Select Settings to Customize for this model")
-        width: screenScaleFactor * 360;
+        width: screenScaleFactor * 360
 
         property string labelFilter: ""
+        property var additional_excluded_settings
 
         onVisibilityChanged:
         {
@@ -394,7 +417,12 @@ Item {
                     }
                     visibilityHandler: UM.SettingPreferenceVisibilityHandler {}
                     expanded: [ "*" ]
-                    exclude: [ "machine_settings", "command_line_settings", "support_mesh", "anti_overhang_mesh", "cutting_mesh", "infill_mesh" ]
+                    exclude:
+                    {
+                        var excluded_settings = [ "machine_settings", "command_line_settings", "support_mesh", "anti_overhang_mesh", "cutting_mesh", "infill_mesh" ];
+                        excluded_settings = excluded_settings.concat(settingPickDialog.additional_excluded_settings);
+                        return excluded_settings;
+                    }
                 }
                 delegate:Loader
                 {
