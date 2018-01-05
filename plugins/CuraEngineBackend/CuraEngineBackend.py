@@ -357,6 +357,18 @@ class CuraEngineBackend(QObject, Backend):
             else:
                 self.backendStateChange.emit(BackendState.NotStarted)
 
+        if job.getResult() == StartSliceJob.StartJobResult.NothingToSlice:
+            if Application.getInstance().platformActivity:
+                self._error_message = Message(catalog.i18nc("@info:status", "Nothing to slice because none of the models fit the build volume. Please scale or rotate models to fit."),
+                                              title = catalog.i18nc("@info:title", "Unable to slice"))
+                self._error_message.show()
+                self.backendStateChange.emit(BackendState.Error)
+            else:
+                self.backendStateChange.emit(BackendState.NotStarted)
+                pass
+            self._invokeSlice()
+            return
+
         # Preparation completed, send it to the backend.
         self._socket.sendMessage(job.getSliceMessage())
 
