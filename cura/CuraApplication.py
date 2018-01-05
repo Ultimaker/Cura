@@ -1020,7 +1020,7 @@ class CuraApplication(QtApplication):
                 continue  # Grouped nodes don't need resetting as their parent (the group) is resetted)
             if not node.isSelectable():
                 continue  # i.e. node with layer data
-            if not node.callDecoration("isSliceable"):
+            if not node.callDecoration("isSliceable") and not node.callDecoration("isGroup"):
                 continue  # i.e. node with layer data
 
             Selection.add(node)
@@ -1092,7 +1092,7 @@ class CuraApplication(QtApplication):
                 continue  # Node that doesnt have a mesh and is not a group.
             if node.getParent() and node.getParent().callDecoration("isGroup"):
                 continue  # Grouped nodes don't need resetting as their parent (the group) is resetted)
-            if not node.callDecoration("isSliceable"):
+            if not node.callDecoration("isSliceable") and not node.callDecoration("isGroup"):
                 continue  # i.e. node with layer data
             nodes.append(node)
 
@@ -1119,7 +1119,7 @@ class CuraApplication(QtApplication):
                 continue  # Node that doesnt have a mesh and is not a group.
             if node.getParent() and node.getParent().callDecoration("isGroup"):
                 continue  # Grouped nodes don't need resetting as their parent (the group) is resetted)
-            if not node.callDecoration("isSliceable"):
+            if not node.callDecoration("isSliceable") and not node.callDecoration("isGroup"):
                 continue  # i.e. node with layer data
             # Skip nodes that are too big
             if node.getBoundingBox().width < self._volume.getBoundingBox().width or node.getBoundingBox().depth < self._volume.getBoundingBox().depth:
@@ -1142,7 +1142,7 @@ class CuraApplication(QtApplication):
                 continue  # Grouped nodes don't need resetting as their parent (the group) is resetted)
             if not node.isSelectable():
                 continue  # i.e. node with layer data
-            if not node.callDecoration("isSliceable"):
+            if not node.callDecoration("isSliceable") and not node.callDecoration("isGroup"):
                 continue  # i.e. node with layer data
             if node.callDecoration("getBuildPlateNumber") == active_build_plate:
                 # Skip nodes that are too big
@@ -1166,7 +1166,7 @@ class CuraApplication(QtApplication):
                 continue  # Grouped nodes don't need resetting as their parent (the group) is resetted)
             if not node.isSelectable():
                 continue  # i.e. node with layer data
-            if not node.callDecoration("isSliceable"):
+            if not node.callDecoration("isSliceable") and not node.callDecoration("isGroup"):
                 continue  # i.e. node with layer data
             if node in nodes:  # exclude selected node from fixed_nodes
                 continue
