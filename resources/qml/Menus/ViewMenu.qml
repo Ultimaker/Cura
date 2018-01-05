@@ -50,6 +50,7 @@ Menu
     {
         id: buildPlateMenu;
         title: catalog.i18nc("@action:inmenu menubar:view","&Build plate");
+        visible: UM.Preferences.getValue("cura/use_multi_build_plate")
         Instantiator
         {
             model: Cura.BuildPlateModel

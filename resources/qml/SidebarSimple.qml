@@ -1,17 +1,17 @@
 // Copyright (c) 2017 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
-import QtQuick 2.2
-import QtQuick.Controls 1.1
-import QtQuick.Controls.Styles 1.1
-import QtQuick.Layouts 1.1
+import QtQuick 2.8
+import QtQuick.Controls 1.4
+import QtQuick.Controls.Styles 1.4
+import QtQuick.Layouts 1.3
 
 import UM 1.2 as UM
 import Cura 1.2 as Cura
 
 Item
 {
-    id: base;
+    id: base
 
     signal showTooltip(Item item, point location, string text);
     signal hideTooltip();
@@ -70,6 +70,18 @@ Item
                     onActiveVariantChanged: qualityModel.update()
                 }
 
+                Connections {
+                    target: base
+                    onVisibleChanged:
+                    {
+                        // update needs to be called when the widgets are visible, otherwise the step width calculation
+                        // will fail because the width of an invisible item is 0.
+                        if (visible) {
+                            qualityModel.update();
+                        }
+                    }
+                }
+
                 ListModel
                 {
                     id: qualityModel
@@ -103,7 +115,7 @@ Item
                                 if (Cura.SimpleModeSettingsManager.isProfileUserCreated) {
                                     qualityModel.qualitySliderActiveIndex = -1
                                 } else {
-                                     qualityModel.qualitySliderActiveIndex = i
+                                    qualityModel.qualitySliderActiveIndex = i
                                 }
 
                                  qualityModel.existingQualityProfile = 1
@@ -183,11 +195,10 @@ Item
                             text:
                             {
                                 var result = ""
-                                if(Cura.MachineManager.activeMachine != null){
+                                if (Cura.MachineManager.activeMachine != null) {
+                                    result = Cura.ProfilesModel.getItem(index).layer_height_without_unit
 
-                                    var result = Cura.ProfilesModel.getItem(index).layer_height_without_unit
-
-                                    if(result == undefined)
+                                    if (result == undefined)
                                         result = ""
                                 }
                                 return result
