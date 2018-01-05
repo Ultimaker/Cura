@@ -204,7 +204,6 @@ class CuraEngineBackend(QObject, Backend):
 
         if self._process_layers_job:
             Logger.log("d", "  ## Process layers job still busy, trying later")
-            self._invokeSlice()
             return
 
         # see if we really have to slice
@@ -214,7 +213,6 @@ class CuraEngineBackend(QObject, Backend):
         num_objects = self._numObjects()
         if build_plate_to_be_sliced not in num_objects or num_objects[build_plate_to_be_sliced] == 0:
             Logger.log("d", "Build plate %s has 0 objects to be sliced, skipping", build_plate_to_be_sliced)
-            self._invokeSlice()
             return
 
         self._stored_layer_data = []
