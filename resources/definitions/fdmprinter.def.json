@@ -3854,12 +3854,11 @@
                 "support_tree_branch_diameter_angle":
                 {
                     "label": "Tree Support Branch Diameter Angle",
-                    "description": "The angle of the branches' diameter as they gradually become thicker towards the bottom. An angle of 0 will cause the branches to have uniform thickness over their length. A negative angle makes them thinner towards the bottom, so be careful as they might disappear. A small positive angle can increase stability of the tree support.",
+                    "description": "The angle of the branches' diameter as they gradually become thicker towards the bottom. An angle of 0 will cause the branches to have uniform thickness over their length. A bit of an angle can increase stability of the tree support.",
                     "unit": "°",
                     "type": "float",
-                    "minimum_value": "-89.9999",
+                    "minimum_value": "0",
                     "maximum_value": "89.9999",
-                    "minimum_value_warning": "0",
                     "maximum_value_warning": "15",
                     "default_value": 5,
                     "limit_to_extruder": "support_infill_extruder_nr",
