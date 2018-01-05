@@ -70,6 +70,18 @@ Item
                     onActiveVariantChanged: qualityModel.update()
                 }
 
+                Connections {
+                    target: base
+                    onVisibleChanged:
+                    {
+                        // update needs to be called when the widgets are visible, otherwise the step width calculation
+                        // will fail because the width of an invisible item is 0.
+                        if (visible) {
+                            qualityModel.update();
+                        }
+                    }
+                }
+
                 ListModel
                 {
                     id: qualityModel
