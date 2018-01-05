@@ -42,6 +42,13 @@ Item {
                 verticalAlignment: Text.AlignVCenter
             }
 
+            UM.SettingPropertyProvider
+            {
+                id: meshTypePropertyProvider
+                containerStackId: Cura.MachineManager.activeMachineId
+                watchedProperties: [ "enabled" ]
+            }
+
             ComboBox
             {
                 id: meshTypeSelection
@@ -52,36 +59,55 @@ Item {
                 model: ListModel
                 {
                     id: meshTypeModel
-                    Component.onCompleted:
+                    Component.onCompleted: meshTypeSelection.populateModel()
+                }
+
+                function populateModel()
+                {
+                    meshTypeModel.append({
+                        type:  "",
+                        text: catalog.i18nc("@label", "Normal model")
+                    });
+                    meshTypePropertyProvider.key = "support_mesh";
+                    if(meshTypePropertyProvider.properties.enabled == "True")
                     {
-                        meshTypeModel.append({
-                            type:  "",
-                            text: catalog.i18nc("@label", "Normal model")
-                        });
                         meshTypeModel.append({
                             type:  "support_mesh",
                             text: catalog.i18nc("@label", "Print as support")
                         });
+                    }
+                    meshTypePropertyProvider.key = "anti_overhang_mesh";
+                    if(meshTypePropertyProvider.properties.enabled == "True")
+                    {
                         meshTypeModel.append({
                             type:  "anti_overhang_mesh",
                             text: catalog.i18nc("@label", "Don't support overlap with other models")
                         });
+                    }
+                    meshTypePropertyProvider.key = "cutting_mesh";
+                    if(meshTypePropertyProvider.properties.enabled == "True")
+                    {
                         meshTypeModel.append({
                             type:  "cutting_mesh",
                             text: catalog.i18nc("@label", "Modify settings for overlap with other models")
                         });
+                    }
+                    meshTypePropertyProvider.key = "infill_mesh";
+                    if(meshTypePropertyProvider.properties.enabled == "True")
+                    {
                         meshTypeModel.append({
                             type:  "infill_mesh",
                             text: catalog.i18nc("@label", "Modify settings for infill of other models")
                         });
-
-                        meshTypeSelection.updateCurrentIndex();
                     }
+
+                    meshTypeSelection.updateCurrentIndex();
                 }
 
                 function updateCurrentIndex()
                 {
                     var mesh_type = UM.ActiveTool.properties.getValue("MeshType");
+                    meshTypeSelection.currentIndex = -1;
                     for(var index=0; index < meshTypeSelection.model.count; index++)
                     {
                         if(meshTypeSelection.model.get(index).type == mesh_type)
@@ -91,6 +117,16 @@ Item {
                         }
                     }
                     meshTypeSelection.currentIndex = 0;
+                }
+            }
+
+            Connections
+            {
+                target: Cura.MachineManager
+                onGlobalContainerChanged:
+                {
+                    meshTypeSelection.model.clear();
+                    meshTypeSelection.populateModel();
                 }
             }
 
