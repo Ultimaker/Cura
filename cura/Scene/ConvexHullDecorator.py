@@ -177,7 +177,7 @@ class ConvexHullDecorator(SceneNodeDecorator):
                 # Do not throw away vertices: the convex hull may be too small and objects can collide.
                 # vertex_data = vertex_data[vertex_data[:,1] >= -0.01]
 
-                if vertex_data and len(vertex_data) >= 4:
+                if len(vertex_data) >= 4:
                     # Round the vertex data to 1/10th of a mm, then remove all duplicate vertices
                     # This is done to greatly speed up further convex hull calculations as the convex hull
                     # becomes much less complex when dealing with highly detailed models.
