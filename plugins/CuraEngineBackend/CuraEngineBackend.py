@@ -198,7 +198,6 @@ class CuraEngineBackend(QObject, Backend):
         self._slice_start_time = time()
         if not self._build_plates_to_be_sliced:
             self.processingProgress.emit(1.0)
-            self.backendStateChange.emit(BackendState.Done)
             Logger.log("w", "Slice unnecessary, nothing has changed that needs reslicing.")
             return
 
