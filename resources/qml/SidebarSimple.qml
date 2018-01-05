@@ -11,7 +11,7 @@ import Cura 1.2 as Cura
 
 Item
 {
-    id: base;
+    id: base
 
     signal showTooltip(Item item, point location, string text);
     signal hideTooltip();
@@ -115,7 +115,7 @@ Item
                                 if (Cura.SimpleModeSettingsManager.isProfileUserCreated) {
                                     qualityModel.qualitySliderActiveIndex = -1
                                 } else {
-                                     qualityModel.qualitySliderActiveIndex = i
+                                    qualityModel.qualitySliderActiveIndex = i
                                 }
 
                                  qualityModel.existingQualityProfile = 1
@@ -195,11 +195,10 @@ Item
                             text:
                             {
                                 var result = ""
-                                if(Cura.MachineManager.activeMachine != null){
+                                if (Cura.MachineManager.activeMachine != null) {
+                                    result = Cura.ProfilesModel.getItem(index).layer_height_without_unit
 
-                                    var result = Cura.ProfilesModel.getItem(index).layer_height_without_unit
-
-                                    if(result == undefined)
+                                    if (result == undefined)
                                         result = ""
                                 }
                                 return result
