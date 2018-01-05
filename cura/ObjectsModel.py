@@ -4,7 +4,9 @@ from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 from UM.Scene.SceneNode import SceneNode
 from UM.Scene.Selection import Selection
 from UM.Preferences import Preferences
+from UM.i18n import i18nCatalog
 
+catalog = i18nCatalog("cura")
 
 ##  Keep track of all objects in the project
 class ObjectsModel(ListModel):
@@ -41,7 +43,7 @@ class ObjectsModel(ListModel):
             if not node.callDecoration("isGroup"):
                 name = node.getName()
             else:
-                name = "Group #" + str(group_nr)
+                name = catalog.i18nc("@label", "Group #{group_nr}").format(group_nr = str(group_nr))
                 group_nr += 1
 
             nodes.append({
