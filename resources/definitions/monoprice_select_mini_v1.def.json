@@ -4,7 +4,7 @@
     "name": "Monoprice Select Mini V1",
     "inherits": "malyan_m200",
     "metadata": {
-        "author": "Brian Corbino",
+        "author": "Brian Corbino, Tyler Gibson",
         "manufacturer": "Monoprice",
         "category": "Other",
         "file_formats": "text/x-gcode",

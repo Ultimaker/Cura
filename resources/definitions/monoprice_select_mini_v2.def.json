@@ -4,11 +4,13 @@
     "name": "Monoprice Select Mini V2 (E3D)",
     "inherits": "malyan_m200",
     "metadata": {
-        "author": "Brian Corbino",
+        "author": "Tyler Gibson",
         "manufacturer": "Monoprice",
         "category": "Other",
         "file_formats": "text/x-gcode",
-        "quality_definition": "malyan_m200",
+        "has_machine_quality": true,
+        "has_materials": true,
+        "preferred_quality": "*normal*",
         "visible": true
    },
 
@@ -17,6 +19,7 @@
         "adhesion_type": { "default_value": "brim" },
         "retraction_combing": { "default_value": "noskin" },
         "retraction_amount" : { "default_value": 2.5},
-        "retraction_speed" : { "default_value": 40}
+        "retraction_speed" : { "default_value": 40},
+        "material_print_temperature_layer_0": { "value": "material_print_temperature + 5" },
     }
 }

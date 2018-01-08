@@ -4,19 +4,14 @@
     "name": "Malyan M200",
     "inherits": "fdmprinter",
     "metadata": {
-        "author": "Brian Corbino",
+        "author": "Brian Corbino, Tyler Gibson",
         "manufacturer": "Malyan",
         "category": "Other",
         "file_formats": "text/x-gcode",
         "platform": "malyan_m200_platform.stl",
-        "has_variants": true,
-        "has_variant_materials": false,
-        "has_materials": true,
-        "has_machine_materials": false,
         "has_machine_quality": true,
-        "preferred_variant": "*0.4*",
-        "preferred_quality": "*0.175*",
-        "variants_name": "Nozzle size",
+        "has_materials": true,
+        "preferred_quality": "*normal*",
         "supports_usb_connection": true,
         "visible": true,
         "first_start_actions": ["MachineSettingsAction"],
@@ -39,9 +34,9 @@
         "line_width": { "value": "round(machine_nozzle_size * 0.875, 2)" },
 
         "material_print_temperature": { "minimum_value": "0" },
-        "material_print_temperature_layer_0": { "value": "material_print_temperature + 5" },
+        "material_print_temperature_layer_0": { "value": "min(material_print_temperature + 5, 245)" },
         "material_bed_temperature": { "minimum_value": "0" },
-        "material_bed_temperature_layer_0": { "value": "material_bed_temperature + 5" },
+        "material_bed_temperature_layer_0": { "value": "min(material_bed_temperature + 5, 70)" },
         "material_standby_temperature": { "minimum_value": "0" },
         "machine_show_variants": { "default_value": true },
         "machine_gcode_flavor": { "default_value": "RepRap (Marlin/Sprinter)" },
@@ -59,7 +54,7 @@
         "material_diameter": { "value": 1.75 },
         "machine_nozzle_size": {
             "default_value": 0.4,
-            "minimum_value": "0.15"
+            "minimum_value": 0.15
         },
         "machine_max_feedrate_x": { "default_value": 150 },
         "machine_max_feedrate_y": { "default_value": 150 },
