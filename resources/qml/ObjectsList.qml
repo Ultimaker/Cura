@@ -105,7 +105,6 @@ Rectangle
             topMargin: UM.Theme.getSize("default_margin").height;
             left: parent.left;
             leftMargin: UM.Theme.getSize("default_margin").height;
-            //bottom: objectsList.top;
             bottomMargin: UM.Theme.getSize("default_margin").height;
         }
 

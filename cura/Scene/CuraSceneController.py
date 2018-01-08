@@ -75,11 +75,11 @@ class CuraSceneController(QObject):
             # Single select
             item = self._objects_model.getItem(index)
             node = item["node"]
-            Selection.clear()
-            Selection.add(node)
             build_plate_number = node.callDecoration("getBuildPlateNumber")
             if build_plate_number is not None and build_plate_number != -1:
-                self._build_plate_model.setActiveBuildPlate(build_plate_number)
+                self.setActiveBuildPlate(build_plate_number)
+            Selection.clear()
+            Selection.add(node)
 
         self._last_selected_index = index
 
