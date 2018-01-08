@@ -19,6 +19,7 @@ Item
         anchors.fill: parent
         color: UM.Theme.getColor("setting_category")
         property var activePrinter: outputDevice != null ? outputDevice.activePrinter : null
+
         Label
         {
             id: outputDeviceNameLabel
@@ -29,6 +30,7 @@ Item
             anchors.margins: UM.Theme.getSize("default_margin").width
             text: outputDevice != null ? activePrinter.name : ""
         }
+
         Label
         {
             id: outputDeviceAddressLabel
@@ -39,6 +41,7 @@ Item
             anchors.right: parent.right
             anchors.margins: UM.Theme.getSize("default_margin").width
         }
+
         Label
         {
             text: outputDevice != null ? outputDevice.connectionText : catalog.i18nc("@info:status", "The printer is not connected.")
@@ -49,6 +52,8 @@ Item
             anchors.leftMargin: UM.Theme.getSize("default_margin").width
             anchors.right: parent.right
             anchors.rightMargin: UM.Theme.getSize("default_margin").width
+            anchors.top: parent.top
+            anchors.topMargin: UM.Theme.getSize("default_margin").height
         }
     }
 }
