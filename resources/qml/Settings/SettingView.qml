@@ -1,7 +1,7 @@
 // Copyright (c) 2017 Ultimaker B.V.
 // Uranium is released under the terms of the LGPLv3 or higher.
 
-import QtQuick 2.2
+import QtQuick 2.7
 import QtQuick.Controls 1.1
 import QtQuick.Controls.Styles 1.1
 import QtQuick.Layouts 1.1
@@ -372,7 +372,7 @@ Item
                 {
                     id: provider
 
-                    containerStackId: Cura.ExtruderManager.activeExtruderStackId
+                    containerStackId: Cura.MachineManager.activeMachineId
                     key: model.key ? model.key : ""
                     watchedProperties: [ "value", "enabled", "state", "validationState", "settable_per_extruder", "resolve" ]
                     storeIndex: 0

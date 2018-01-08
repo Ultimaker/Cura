@@ -27,7 +27,9 @@ class MachineSettingsAction(MachineAction):
         self._qml_url = "MachineSettingsAction.qml"
 
         self._global_container_stack = None
-        self._container_index = 0
+
+        from cura.Settings.CuraContainerStack import _ContainerIndexes
+        self._container_index = _ContainerIndexes.DefinitionChanges
 
         self._container_registry = ContainerRegistry.getInstance()
         self._container_registry.containerAdded.connect(self._onContainerAdded)
@@ -241,6 +243,7 @@ class MachineSettingsAction(MachineAction):
                 "type": "material",
                 "approximate_diameter": machine_approximate_diameter,
                 "material": old_material.getMetaDataEntry("material", "value"),
+                "brand": old_material.getMetaDataEntry("brand", "value"),
                 "supplier": old_material.getMetaDataEntry("supplier", "value"),
                 "color_name": old_material.getMetaDataEntry("color_name", "value"),
                 "definition": materials_definition
@@ -251,6 +254,7 @@ class MachineSettingsAction(MachineAction):
             if old_material == self._empty_container:
                 search_criteria.pop("material", None)
                 search_criteria.pop("supplier", None)
+                search_criteria.pop("brand", None)
                 search_criteria.pop("definition", None)
                 search_criteria["id"] = extruder_stack.getMetaDataEntry("preferred_material")
 
@@ -258,6 +262,7 @@ class MachineSettingsAction(MachineAction):
             if not materials:
                 # Same material with new diameter is not found, search for generic version of the same material type
                 search_criteria.pop("supplier", None)
+                search_criteria.pop("brand", None)
                 search_criteria["color_name"] = "Generic"
                 materials = self._container_registry.findInstanceContainers(**search_criteria)
             if not materials:
@@ -274,6 +279,6 @@ class MachineSettingsAction(MachineAction):
                 # Just use empty material as a final fallback
                 materials = [self._empty_container]
 
-            Logger.log("i", "Selecting new material: %s" % materials[0].getId())
+            Logger.log("i", "Selecting new material: %s", materials[0].getId())
 
             extruder_stack.material = materials[0]

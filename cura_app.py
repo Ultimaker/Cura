@@ -40,11 +40,11 @@ import faulthandler
 if Platform.isLinux(): # Needed for platform.linux_distribution, which is not available on Windows and OSX
     # For Ubuntu: https://bugs.launchpad.net/ubuntu/+source/python-qt4/+bug/941826
     linux_distro_name = platform.linux_distribution()[0].lower()
-    if linux_distro_name in ("debian", "ubuntu", "linuxmint", "fedora"): # TODO: Needs a "if X11_GFX == 'nvidia'" here. The workaround is only needed on Ubuntu+NVidia drivers. Other drivers are not affected, but fine with this fix.
-        import ctypes
-        from ctypes.util import find_library
-        libGL = find_library("GL")
-        ctypes.CDLL(libGL, ctypes.RTLD_GLOBAL)
+    # TODO: Needs a "if X11_GFX == 'nvidia'" here. The workaround is only needed on Ubuntu+NVidia drivers. Other drivers are not affected, but fine with this fix.
+    import ctypes
+    from ctypes.util import find_library
+    libGL = find_library("GL")
+    ctypes.CDLL(libGL, ctypes.RTLD_GLOBAL)
 
 # When frozen, i.e. installer version, don't let PYTHONPATH mess up the search path for DLLs.
 if Platform.isWindows() and hasattr(sys, "frozen"):

@@ -1,9 +1,7 @@
-import pytest
 import numpy
-import time
 
-from cura.Arrange import Arrange
-from cura.ShapeArray import ShapeArray
+from cura.Arranging.Arrange import Arrange
+from cura.Arranging.ShapeArray import ShapeArray
 
 
 def gimmeShapeArray():
@@ -118,6 +116,13 @@ def test_arrayFromPolygon2():
     vertices = numpy.array([[-3, 1], [3, 1], [2, -3]])
     array = ShapeArray.arrayFromPolygon([5, 5], vertices)
     assert numpy.any(array)
+
+
+##  Polygon -> array
+def test_fromPolygon():
+    vertices = numpy.array([[0, 0.5], [0, 0], [0.5, 0]])
+    array = ShapeArray.fromPolygon(vertices, scale=0.5)
+    assert numpy.any(array.arr)
 
 
 ##  Line definition -> array with true/false

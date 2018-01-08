@@ -25,7 +25,7 @@ from UM.View.GL.OpenGL import OpenGL
 from UM.View.GL.OpenGLContext import OpenGLContext
 from UM.View.View import View
 from UM.i18n import i18nCatalog
-from cura.ConvexHullNode import ConvexHullNode
+from cura.Scene.ConvexHullNode import ConvexHullNode
 from cura.CuraApplication import CuraApplication
 
 from .NozzleNode import NozzleNode
