@@ -217,7 +217,7 @@ class CuraEngineBackend(QObject, Backend):
             self._scene.gcode_list[build_plate_to_be_sliced] = []
             Logger.log("d", "Build plate %s has no objects to be sliced, skipping", build_plate_to_be_sliced)
             if self._build_plates_to_be_sliced:
-                self._invokeSlice()
+                return self.slice()
 
         self._stored_layer_data = []
         self._stored_optimized_layer_data[build_plate_to_be_sliced] = []
