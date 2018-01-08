@@ -47,6 +47,7 @@ Menu
     {
         model: Cura.BuildPlateModel
         MenuItem {
+            enabled: UM.Selection.hasSelection
             text: Cura.BuildPlateModel.getItem(index).name;
             onTriggered: CuraActions.setBuildPlateForSelection(Cura.BuildPlateModel.getItem(index).buildPlateNumber);
             checkable: true
@@ -58,6 +59,7 @@ Menu
     }
 
     MenuItem {
+        enabled: UM.Selection.hasSelection
         text: "New build plate";
         onTriggered: {
             CuraActions.setBuildPlateForSelection(Cura.BuildPlateModel.maxBuildPlate + 1);
