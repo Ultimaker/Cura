@@ -44,7 +44,7 @@ Item
 
         Label
         {
-            text: outputDevice != null ? outputDevice.connectionText : catalog.i18nc("@info:status", "The printer is not connected.")
+            text: outputDevice != null ? "" : catalog.i18nc("@info:status", "The printer is not connected.")
             color: outputDevice != null && outputDevice.acceptsCommands ? UM.Theme.getColor("setting_control_text") : UM.Theme.getColor("setting_control_disabled_text")
             font: UM.Theme.getFont("very_small")
             wrapMode: Text.WordWrap

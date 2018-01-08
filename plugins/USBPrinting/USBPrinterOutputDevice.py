@@ -44,6 +44,7 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
 
         self._serial = None  # type: Optional[Serial]
         self._serial_port = serial_port
+        self._address = serial_port
 
         self._timeout = 3
 

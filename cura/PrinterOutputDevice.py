@@ -64,6 +64,12 @@ class PrinterOutputDevice(QObject, OutputDevice):
 
         self._connection_state = ConnectionState.closed
 
+        self._address = ""
+
+    @pyqtProperty(str, constant = True)
+    def address(self):
+        return self._address
+
     def materialHotendChangedMessage(self, callback):
         Logger.log("w", "materialHotendChangedMessage needs to be implemented, returning 'Yes'")
         callback(QMessageBox.Yes)
