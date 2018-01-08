@@ -232,6 +232,7 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
         num_extruders = container_stack.getProperty("machine_extruder_count", "value")
         # Ensure that a printer is created.
         self._printers = [PrinterOutputModel(output_controller=USBPrinterOuptutController(self), number_of_extruders=num_extruders)]
+        self._printers[0].updateName(container_stack.getName())
         self.setConnectionState(ConnectionState.connected)
         self._update_thread.start()
 
