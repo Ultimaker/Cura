@@ -45,8 +45,9 @@ class CuraSceneController(QObject):
                 build_plate_number = 0
                 if self._last_selected_index >= 0:  # go to the buildplate of the item you last selected
                     item = self._objects_model.getItem(self._last_selected_index)
-                    node = item["node"]
-                    build_plate_number = node.callDecoration("getBuildPlateNumber")
+                    if "node" in item:
+                        node = item["node"]
+                        build_plate_number = node.callDecoration("getBuildPlateNumber")
                 self.setActiveBuildPlate(build_plate_number)
             # self.buildPlateItemsChanged.emit()  # TODO: necessary after setItems?
 
