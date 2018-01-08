@@ -17,7 +17,7 @@ catalog = i18nCatalog("cura")
 from cura import LayerDataBuilder
 from cura import LayerDataDecorator
 from cura.LayerPolygon import LayerPolygon
-from cura.GCodeListDecorator import GCodeListDecorator
+from cura.Scene.GCodeListDecorator import GCodeListDecorator
 from cura.Settings.ExtruderManager import ExtruderManager
 
 import numpy
