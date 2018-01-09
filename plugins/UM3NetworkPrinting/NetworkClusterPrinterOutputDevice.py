@@ -244,8 +244,8 @@ class NetworkClusterPrinterOutputDevice(NetworkPrinterOutputDevice.NetworkPrinte
         self._request_job = [nodes, file_name, filter_by_machine, file_handler, kwargs]
 
         # the build plates to be sent
-        gcodes = getattr(Application.getInstance().getController().getScene(), "gcode_list")
-        self._job_list = list(gcodes.keys())
+        gcode_dict = getattr(Application.getInstance().getController().getScene(), "gcode_dict")
+        self._job_list = list(gcode_dict.keys())
         Logger.log("d", "build plates to be sent to printer: %s", (self._job_list))
 
         if self._stage != OutputStage.ready:
@@ -281,7 +281,13 @@ class NetworkClusterPrinterOutputDevice(NetworkPrinterOutputDevice.NetworkPrinte
     def sendPrintJob(self):
         nodes, file_name, filter_by_machine, file_handler, kwargs = self._request_job
         output_build_plate_number = self._job_list.pop(0)
-        gcode = getattr(Application.getInstance().getController().getScene(), "gcode_list")[output_build_plate_number]
+        gcode_dict = getattr(Application.getInstance().getController().getScene(), "gcode_dict")[output_build_plate_number]
+        if not gcode_dict:  # Empty build plate
+            Logger.log("d", "Skipping empty job (build plate number %d).", output_build_plate_number)
+            return self.sendPrintJob()
+
+        active_build_plate_id = Application.getInstance().getBuildPlateModel().activeBuildPlate
+        gcode_list = gcode_dict[active_build_plate_id]
 
         self._send_gcode_start = time.time()
         Logger.log("d", "Sending print job [%s] to host, build plate [%s]..." % (file_name, output_build_plate_number))
@@ -299,7 +305,7 @@ class NetworkClusterPrinterOutputDevice(NetworkPrinterOutputDevice.NetworkPrinte
 
         require_printer_name = self._selected_printer["unique_name"]
 
-        new_request = self._buildSendPrintJobHttpRequest(require_printer_name, gcode)
+        new_request = self._buildSendPrintJobHttpRequest(require_printer_name, gcode_list)
         if new_request is None or self._stage != OutputStage.uploading:
             return
         self._request = new_request
@@ -307,7 +313,7 @@ class NetworkClusterPrinterOutputDevice(NetworkPrinterOutputDevice.NetworkPrinte
         self._reply.uploadProgress.connect(self._onUploadProgress)
         # See _finishedPrintJobPostRequest()
 
-    def _buildSendPrintJobHttpRequest(self, require_printer_name, gcode):
+    def _buildSendPrintJobHttpRequest(self, require_printer_name, gcode_list):
         api_url = QUrl(self._api_base_uri + "print_jobs/")
         request = QNetworkRequest(api_url)
         # Create multipart request and add the g-code.
@@ -318,7 +324,7 @@ class NetworkClusterPrinterOutputDevice(NetworkPrinterOutputDevice.NetworkPrinte
         part.setHeader(QNetworkRequest.ContentDispositionHeader,
                        'form-data; name="file"; filename="%s"' % (self._file_name))
 
-        compressed_gcode = self._compressGcode(gcode)
+        compressed_gcode = self._compressGcode(gcode_list)
         if compressed_gcode is None:
             return None     # User aborted print, so stop trying.
 
@@ -336,7 +342,7 @@ class NetworkClusterPrinterOutputDevice(NetworkPrinterOutputDevice.NetworkPrinte
         self._addUserAgentHeader(request)
         return request
 
-    def _compressGcode(self, gcode):
+    def _compressGcode(self, gcode_list):
         self._compressing_print = True
         batched_line = ""
         max_chars_per_line = int(1024 * 1024 / 4)  # 1 / 4  MB
@@ -351,11 +357,11 @@ class NetworkClusterPrinterOutputDevice(NetworkPrinterOutputDevice.NetworkPrinte
             self._last_response_time = time.time()
             return compressed_data
 
-        if gcode is None:
+        if gcode_list is None:
             Logger.log("e", "Unable to find sliced gcode, returning empty.")
             return byte_array_file_data
 
-        for line in gcode:
+        for line in gcode_list:
             if not self._compressing_print:
                 self._progress_message.hide()
                 return None     # Stop trying to zip, abort was called.

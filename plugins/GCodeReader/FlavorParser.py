@@ -430,7 +430,10 @@ class FlavorParser:
         gcode_list_decorator.setGCodeList(gcode_list)
         scene_node.addDecorator(gcode_list_decorator)
 
-        Application.getInstance().getController().getScene().gcode_list = gcode_list
+        # gcode_dict stores gcode_lists for a number of build plates.
+        active_build_plate_id = Application.getInstance().getBuildPlateModel().activeBuildPlate
+        gcode_dict = {active_build_plate_id: gcode_list}
+        Application.getInstance().getController().getScene().gcode_dict = gcode_dict
 
         Logger.log("d", "Finished parsing %s" % file_name)
         self._message.hide()

@@ -163,7 +163,10 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
 
     def startPrint(self):
         self.writeStarted.emit(self)
-        gcode_list = getattr( Application.getInstance().getController().getScene(), "gcode_list")
+        active_build_plate_id = Application.getInstance().getBuildPlateModel().activeBuildPlate
+        gcode_dict = getattr(Application.getInstance().getController().getScene(), "gcode_dict")
+        gcode_list = gcode_dict[active_build_plate_id]
+
         self._updateJobState("printing")
         self.printGCode(gcode_list)
 
