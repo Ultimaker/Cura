@@ -1432,7 +1432,9 @@ class CuraApplication(QtApplication):
         target_build_plate = self.getBuildPlateModel().activeBuildPlate if arrange_objects_on_load else -1
 
         for original_node in nodes:
-            node = CuraSceneNode()  # We want our own CuraSceneNode
+
+            # Create a CuraSceneNode just if the original node is not that type
+            node = original_node if isinstance(original_node, CuraSceneNode) else CuraSceneNode()
             node.setMeshData(original_node.getMeshData())
 
             node.setSelectable(True)
