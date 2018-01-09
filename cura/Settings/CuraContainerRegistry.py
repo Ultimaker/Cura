@@ -536,7 +536,7 @@ class CuraContainerRegistry(ContainerRegistry):
                     extruder_quality_changes_container.addMetaDataEntry("setting_version", CuraApplication.SettingVersion)
                     extruder_quality_changes_container.addMetaDataEntry("extruder", extruder_stack.definition.getId())
                     extruder_quality_changes_container.addMetaDataEntry("quality_type", machine.qualityChanges.getMetaDataEntry("quality_type"))
-                    extruder_quality_changes_container.setDefinition(machine.definition.getId())
+                    extruder_quality_changes_container.setDefinition(machine.qualityChanges.getDefinition().getId())
 
             if not extruder_quality_changes_container:
                 Logger.log("w", "Could not find quality_changes named [%s] for extruder [%s]",
