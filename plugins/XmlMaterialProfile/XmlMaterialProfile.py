@@ -874,7 +874,7 @@ class XmlMaterialProfile(InstanceContainer):
     # Map XML file setting names to internal names
     __material_settings_setting_map = {
         "print temperature": "default_material_print_temperature",
-        "heated bed temperature": "material_bed_temperature",
+        "heated bed temperature": "default_material_bed_temperature",
         "standby temperature": "material_standby_temperature",
         "processing temperature graph": "material_flow_temp_graph",
         "print cooling": "cool_fan_speed",

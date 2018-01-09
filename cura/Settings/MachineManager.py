@@ -844,6 +844,11 @@ class MachineManager(QObject):
             else:
                 Logger.log("w", "While trying to set the active variant, no variant was found to replace.")
 
+    @pyqtSlot(str)
+    def setActiveVariantBuildplate(self, variant_buildplate_id: str):
+        Logger.log("d", "Attempting to change the active buildplate to %s", variant_buildplate_id)
+        pass
+
     ##  set the active quality
     #   \param quality_id The quality_id of either a quality or a quality_changes
     @pyqtSlot(str)
@@ -1105,6 +1110,15 @@ class MachineManager(QObject):
 
         return ""
 
+    @pyqtProperty(str, notify = activeVariantChanged)
+    def activeVariantBuildplateName(self) -> str:
+        if self._global_container_stack:
+            variant = self._global_container_stack.variant
+            if variant:
+                return variant.getName()
+
+        return ""
+
     @pyqtProperty(str, notify = globalContainerChanged)
     def activeDefinitionId(self) -> str:
         if self._global_container_stack:
@@ -1202,13 +1216,18 @@ class MachineManager(QObject):
     def hasMaterials(self) -> bool:
         if self._global_container_stack:
             return Util.parseBool(self._global_container_stack.getMetaDataEntry("has_materials", False))
-
         return False
 
     @pyqtProperty(bool, notify = globalContainerChanged)
     def hasVariants(self) -> bool:
         if self._global_container_stack:
             return Util.parseBool(self._global_container_stack.getMetaDataEntry("has_variants", False))
+        return False
+
+    @pyqtProperty(bool, notify = globalContainerChanged)
+    def hasVariantBuildplates(self) -> bool:
+        if self._global_container_stack:
+            return Util.parseBool(self._global_container_stack.getMetaDataEntry("has_variant_buildplates", False))
         return False
 
     ##  Property to indicate if a machine has "specialized" material profiles.

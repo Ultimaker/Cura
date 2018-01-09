@@ -279,7 +279,7 @@ Column
     {
         id: variantRow
         height: UM.Theme.getSize("sidebar_setup").height
-        visible: Cura.MachineManager.hasVariants && !sidebar.monitoringPrint && !sidebar.hideSettings
+        visible: Cura.MachineManager.hasBuildPlateVariant && !sidebar.monitoringPrint && !sidebar.hideSettings
 
         anchors
         {
@@ -311,6 +311,46 @@ Column
             activeFocusOnPress: true;
 
             menu: NozzleMenu { extruderIndex: base.currentExtruderIndex }
+        }
+    }
+
+    //Buildplate row
+    Item
+    {
+        id: buildplateRow
+        height: UM.Theme.getSize("sidebar_setup").height
+        visible: Cura.MachineManager.hasVariantBuildplates && !sidebar.monitoringPrint && !sidebar.hideSettings
+
+        anchors
+        {
+            left: parent.left
+            leftMargin: UM.Theme.getSize("sidebar_margin").width
+            right: parent.right
+            rightMargin: UM.Theme.getSize("sidebar_margin").width
+        }
+
+        Label
+        {
+            id: bulidplateLabel
+            text: catalog.i18nc("@label","Buildplate");
+            width: Math.floor(parent.width * 0.45 - UM.Theme.getSize("default_margin").width)
+            font: UM.Theme.getFont("default");
+            color: UM.Theme.getColor("text");
+        }
+
+        ToolButton {
+            id: buildplateSelection
+            text: Cura.MachineManager.activeVariantBuildplateName
+            tooltip: Cura.MachineManager.activeVariantBuildplateName
+            visible: Cura.MachineManager.hasVariantBuildplates
+
+            height: UM.Theme.getSize("setting_control").height
+            width: Math.floor(parent.width * 0.7 + UM.Theme.getSize("sidebar_margin").width)
+            anchors.right: parent.right
+            style: UM.Theme.styles.sidebar_header_button
+            activeFocusOnPress: true;
+
+            menu: BuildplateMenu
         }
     }
 
