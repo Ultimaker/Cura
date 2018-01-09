@@ -1981,14 +1981,28 @@
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
+                "default_material_bed_temperature":
+                {
+                    "label": "Default Build Plate Temperature",
+                    "description": "The default temperature used for the heated build plate. This should be the \"base\" temperature of a build plate. All other print temperatures should use offsets based on this value",
+                    "resolve": "max(extruderValues('default_material_bed_temperature'))",
+                    "default_value": 60,
+                    "minimum_value": "-273.15",
+                    "minimum_value_warning": "0",
+                    "maximum_value_warning": "130",
+                    "enabled": "machine_heated_bed and machine_gcode_flavor != \"UltiGCode\"",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false,
+                    "settable_per_meshgroup": false
+                },
                 "material_bed_temperature":
                 {
                     "label": "Build Plate Temperature",
                     "description": "The temperature used for the heated build plate. If this is 0, the bed temperature will not be adjusted.",
                     "unit": "°C",
                     "type": "float",
-                    "resolve": "max(extruderValues('material_bed_temperature'))",
                     "default_value": 60,
+                    "value": "default_material_bed_temperature",
                     "minimum_value": "-273.15",
                     "minimum_value_warning": "0",
                     "maximum_value_warning": "130",
