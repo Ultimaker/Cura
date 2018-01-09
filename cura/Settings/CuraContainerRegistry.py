@@ -515,6 +515,7 @@ class CuraContainerRegistry(ContainerRegistry):
             extruder_quality_changes_container = self.findInstanceContainers(name = machine.qualityChanges.getName(), extruder = extruder_id)
             if extruder_quality_changes_container:
                 extruder_quality_changes_container = extruder_quality_changes_container[0]
+
                 quality_changes_id = extruder_quality_changes_container.getId()
                 extruder_stack.setQualityChangesById(quality_changes_id)
             else:
@@ -525,10 +526,36 @@ class CuraContainerRegistry(ContainerRegistry):
                 if extruder_quality_changes_container:
                     quality_changes_id = extruder_quality_changes_container.getId()
                     extruder_stack.setQualityChangesById(quality_changes_id)
+                else:
+                    # if we still cannot find a quality changes container for the extruder, create a new one
+                    container_id = self.uniqueName(extruder_stack.getId() + "_user")
+                    container_name = machine.qualityChanges.getName()
+                    extruder_quality_changes_container = InstanceContainer(container_id)
+                    extruder_quality_changes_container.setName(container_name)
+                    extruder_quality_changes_container.addMetaDataEntry("type", "quality_changes")
+                    extruder_quality_changes_container.addMetaDataEntry("setting_version", CuraApplication.SettingVersion)
+                    extruder_quality_changes_container.addMetaDataEntry("extruder", extruder_stack.definition.getId())
+                    extruder_quality_changes_container.addMetaDataEntry("quality_type", machine.qualityChanges.getMetaDataEntry("quality_type"))
+                    extruder_quality_changes_container.setDefinition(machine.definition.getId())
 
             if not extruder_quality_changes_container:
                 Logger.log("w", "Could not find quality_changes named [%s] for extruder [%s]",
                            machine.qualityChanges.getName(), extruder_stack.getId())
+            else:
+                # move all per-extruder settings to the extruder's quality changes
+                for qc_setting_key in machine.qualityChanges.getAllKeys():
+                    settable_per_extruder = machine.getProperty(qc_setting_key, "settable_per_extruder")
+                    if settable_per_extruder:
+                        setting_value = machine.qualityChanges.getProperty(qc_setting_key, "value")
+
+                        setting_definition = machine.getSettingDefinition(qc_setting_key)
+                        new_instance = SettingInstance(setting_definition, definition_changes)
+                        new_instance.setProperty("value", setting_value)
+                        new_instance.resetState()  # Ensure that the state is not seen as a user state.
+                        extruder_quality_changes_container.addInstance(new_instance)
+                        extruder_quality_changes_container.setDirty(True)
+
+                        machine.qualityChanges.removeInstance(qc_setting_key, postpone_emit=True)
         else:
             extruder_stack.setQualityChangesById("empty_quality_changes")
 
