@@ -324,6 +324,8 @@ Item {
             // force updating the model to sync it with addedSettingsModel
             if(visible)
             {
+                // Set skip setting, it will prevent from restting selected mesh_type
+                contents.model.visibilityHandler.setSkipSetting(meshTypeSelection.model.get(meshTypeSelection.currentIndex).type)
                 listview.model.forceUpdate()
             }
         }

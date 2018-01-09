@@ -2,6 +2,7 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from PyQt5.QtCore import QObject, pyqtProperty, pyqtSignal
+from UM.FlameProfiler import pyqtSlot
 
 from UM.Application import Application
 from UM.Settings.ContainerRegistry import ContainerRegistry
@@ -21,6 +22,7 @@ class PerObjectSettingVisibilityHandler(UM.Settings.Models.SettingVisibilityHand
         self._selected_object_id = None
         self._node = None
         self._stack = None
+        self._skip_setting = None
 
     def setSelectedObjectId(self, id):
         if id != self._selected_object_id:
@@ -36,6 +38,10 @@ class PerObjectSettingVisibilityHandler(UM.Settings.Models.SettingVisibilityHand
     def selectedObjectId(self):
         return self._selected_object_id
 
+    @pyqtSlot(str)
+    def setSkipSetting(self, setting_name):
+        self._skip_setting = setting_name
+
     def setVisible(self, visible):
         if not self._node:
             return
@@ -50,6 +56,9 @@ class PerObjectSettingVisibilityHandler(UM.Settings.Models.SettingVisibilityHand
 
         # Remove all instances that are not in visibility list
         for instance in all_instances:
+            # exceptionally skip setting
+            if self._skip_setting is not None and self._skip_setting == instance.definition.key:
+                continue
             if instance.definition.key not in visible:
                 settings.removeInstance(instance.definition.key)
                 visibility_changed = True
