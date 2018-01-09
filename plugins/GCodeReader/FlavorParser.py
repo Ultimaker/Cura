@@ -418,9 +418,15 @@ class FlavorParser:
                     self._layer_number += 1
                     current_path.clear()
 
-        material_color_map = numpy.zeros((10, 4), dtype = numpy.float32)
+        material_color_map = numpy.zeros((8, 4), dtype = numpy.float32)
         material_color_map[0, :] = [0.0, 0.7, 0.9, 1.0]
         material_color_map[1, :] = [0.7, 0.9, 0.0, 1.0]
+        material_color_map[2, :] = [0.9, 0.0, 0.7, 1.0]
+        material_color_map[3, :] = [0.7, 0.0, 0.0, 1.0]
+        material_color_map[4, :] = [0.0, 0.7, 0.0, 1.0]
+        material_color_map[5, :] = [0.0, 0.0, 0.7, 1.0]
+        material_color_map[6, :] = [0.3, 0.3, 0.3, 1.0]
+        material_color_map[7, :] = [0.7, 0.7, 0.7, 1.0]
         layer_mesh = self._layer_data_builder.build(material_color_map)
         decorator = LayerDataDecorator()
         decorator.setLayerData(layer_mesh)
