@@ -176,7 +176,6 @@ Item
                     viewSettings.show_feedrate_gradient = viewSettings.show_gradient && (type_id == 2);
                     viewSettings.show_thickness_gradient = viewSettings.show_gradient && (type_id == 3);
                 }
-
             }
 
             Label
