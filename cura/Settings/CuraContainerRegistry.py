@@ -202,7 +202,6 @@ class CuraContainerRegistry(ContainerRegistry):
         for plugin_id, meta_data in self._getIOPlugins("profile_reader"):
             if meta_data["profile_reader"][0]["extension"] != extension:
                 continue
-
             profile_reader = plugin_registry.getPluginObject(plugin_id)
             try:
                 profile_or_list = profile_reader.read(file_name)  # Try to open the file with the profile reader.
@@ -214,6 +213,20 @@ class CuraContainerRegistry(ContainerRegistry):
             if profile_or_list:
                 name_seed = os.path.splitext(os.path.basename(file_name))[0]
                 new_name = self.uniqueName(name_seed)
+
+                # if the loaded profile comes from g-code then the instance cointaners should be
+                # defined differently
+                file_extension = os.path.splitext(file_name)[1][1:]
+                if file_extension == "gcode":
+                    for item in profile_or_list:
+                        item.metaData["name"] = new_name
+
+                        if item.getMetaDataEntry("extruder") is None:
+                            temp_defintion = item.getMetaDataEntry("definition")
+                            item.metaData["id"] = temp_defintion + "_" + new_name
+                        elif item.getMetaDataEntry("extruder") is not None:
+                            temp_extruder = item.getMetaDataEntry("extruder")
+                            item.metaData["id"] = temp_extruder + "_" + new_name
 
                 # Ensure it is always a list of profiles
                 if type(profile_or_list) is not list:
