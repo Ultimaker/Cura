@@ -561,6 +561,45 @@ class CuraContainerRegistry(ContainerRegistry):
 
         self.addContainer(extruder_stack)
 
+        # Also need to fix the other qualities that are suitable for this machine. Those quality changes may still have
+        # per-extruder settings in the container for the machine instead of the extruder.
+        quality_changes_machine_definition_id = machine.qualityChanges.getDefinition().getId()
+        qcs = self.findInstanceContainers(type = "quality_changes", definition = quality_changes_machine_definition_id)
+        qc_groups = {}  # map of qc names -> qc containers
+        for qc in qcs:
+            qc_name = qc.getName()
+            if qc_name not in qc_groups:
+                qc_groups[qc_name] = []
+            qc_groups[qc_name].append(qc)
+            # try to find from the quality changes cura directory too
+            quality_changes_container = self._findQualityChangesContainerInCuraFolder(machine.qualityChanges.getName())
+            if quality_changes_container:
+                qc_groups[qc_name].append(quality_changes_container)
+
+        for qc_name, qc_list in qc_groups.items():
+            qc_dict = {"global": None, "extruders": []}
+            for qc in qc_list:
+                extruder_def_id = qc.getMetaDataEntry("extruder")
+                if extruder_def_id is not None:
+                    qc_dict["extruders"].append(qc)
+                else:
+                    qc_dict["global"] = qc
+            if qc_dict["global"] is not None and len(qc_dict["extruders"]) == 1:
+                # move per-extruder settings
+                for qc_setting_key in qc_dict["global"].getAllKeys():
+                    settable_per_extruder = machine.getProperty(qc_setting_key, "settable_per_extruder")
+                    if settable_per_extruder:
+                        setting_value = qc_dict["global"].getProperty(qc_setting_key, "value")
+
+                        setting_definition = machine.getSettingDefinition(qc_setting_key)
+                        new_instance = SettingInstance(setting_definition, definition_changes)
+                        new_instance.setProperty("value", setting_value)
+                        new_instance.resetState()  # Ensure that the state is not seen as a user state.
+                        qc_dict["extruders"][0].addInstance(new_instance)
+                        qc_dict["extruders"][0].setDirty(True)
+
+                        qc_dict["global"].removeInstance(qc_setting_key, postpone_emit=True)
+
         # Set next stack at the end
         extruder_stack.setNextStack(machine)
 
