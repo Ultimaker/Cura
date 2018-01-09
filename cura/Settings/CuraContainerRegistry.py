@@ -589,6 +589,9 @@ class CuraContainerRegistry(ContainerRegistry):
             if parser["general"]["name"] == name:
                 # load the container
                 container_id = os.path.basename(file_path).replace(".inst.cfg", "")
+                if self.findInstanceContainers(id = container_id):
+                    # this container is already in the registry, skip it
+                    continue
 
                 instance_container = InstanceContainer(container_id)
                 with open(file_path, "r") as f:
