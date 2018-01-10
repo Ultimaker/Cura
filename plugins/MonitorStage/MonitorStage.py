@@ -77,6 +77,7 @@ class MonitorStage(CuraStage):
     def _onEngineCreated(self):
         # We can only connect now, as we need to be sure that everything is loaded (plugins get created quite early)
         Application.getInstance().getMachineManager().outputDevicesChanged.connect(self._onOutputDevicesChanged)
+        self._onOutputDevicesChanged()
         self._updateMainOverlay()
         self._updateSidebar()
         self._updateIconSource()
