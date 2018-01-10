@@ -77,8 +77,6 @@ Menu
             exclusiveGroup: group
             onTriggered:
             {
-                print("Cura.MachineManager.activeDefinitionId", Cura.MachineManager.activeDefinitionId)
-                print("Cura.MachineManager.allActiveVariantIds[Cura.MachineManager.activeDefinitionId]", JSON.stringify(Cura.MachineManager.globalVariantId))
                 Cura.MachineManager.setActiveVariantBuildplate(model.id);
             }
         }
