@@ -80,6 +80,8 @@ class NetworkClusterPrinterOutputDevice(NetworkPrinterOutputDevice.NetworkPrinte
         self._print_view = None
         self._request_job = []
 
+        self._job_list = []
+
         self._monitor_view_qml_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "ClusterMonitorItem.qml")
         self._control_view_qml_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "ClusterControlItem.qml")
 
@@ -281,13 +283,10 @@ class NetworkClusterPrinterOutputDevice(NetworkPrinterOutputDevice.NetworkPrinte
     def sendPrintJob(self):
         nodes, file_name, filter_by_machine, file_handler, kwargs = self._request_job
         output_build_plate_number = self._job_list.pop(0)
-        gcode_dict = getattr(Application.getInstance().getController().getScene(), "gcode_dict")[output_build_plate_number]
-        if not gcode_dict:  # Empty build plate
+        gcode_list = getattr(Application.getInstance().getController().getScene(), "gcode_dict")[output_build_plate_number]
+        if not gcode_list:  # Empty build plate
             Logger.log("d", "Skipping empty job (build plate number %d).", output_build_plate_number)
             return self.sendPrintJob()
-
-        active_build_plate_id = Application.getInstance().getBuildPlateModel().activeBuildPlate
-        gcode_list = gcode_dict[active_build_plate_id]
 
         self._send_gcode_start = time.time()
         Logger.log("d", "Sending print job [%s] to host, build plate [%s]..." % (file_name, output_build_plate_number))
