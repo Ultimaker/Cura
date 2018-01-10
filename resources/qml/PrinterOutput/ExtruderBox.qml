@@ -34,7 +34,6 @@ Item
         {
             id: extruderTargetTemperature
             text: Math.round(extruderModel.targetHotendTemperature) + "°C"
-            //text: (connectedPrinter != null && connectedPrinter.hotendIds[index] != null && connectedPrinter.targetHotendTemperatures[index] != null) ? Math.round(connectedPrinter.targetHotendTemperatures[index]) + "°C" : ""
             font: UM.Theme.getFont("small")
             color: UM.Theme.getColor("text_inactive")
             anchors.right: parent.right
@@ -67,7 +66,6 @@ Item
         {
             id: extruderCurrentTemperature
             text: Math.round(extruderModel.hotendTemperature) + "°C"
-            //text: (connectedPrinter != null && connectedPrinter.hotendIds[index] != null && connectedPrinter.hotendTemperatures[index] != null) ? Math.round(connectedPrinter.hotendTemperatures[index]) + "°C" : ""
             color: UM.Theme.getColor("text")
             font: UM.Theme.getFont("large")
             anchors.right: extruderTargetTemperature.left
