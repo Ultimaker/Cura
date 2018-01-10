@@ -15,6 +15,18 @@ Item
     //width: index == machineExtruderCount.properties.value - 1 && index % 2 == 0 ? extrudersGrid.width : Math.floor(extrudersGrid.width / 2 - UM.Theme.getSize("sidebar_lining_thin").width / 2)
     implicitWidth: parent.width
     implicitHeight: UM.Theme.getSize("sidebar_extruder_box").height
+
+    UM.SettingPropertyProvider
+    {
+        id: extruderTemperature
+        containerStackId: Cura.ExtruderManager.extruderIds[position]
+        key: "material_print_temperature"
+        watchedProperties: ["value", "minimum_value", "maximum_value", "resolve"]
+        storeIndex: 0
+
+        property var resolve: Cura.MachineManager.activeStackId != Cura.MachineManager.activeMachineId ? properties.resolve : "None"
+    }
+
     Rectangle
     {
         id: background
