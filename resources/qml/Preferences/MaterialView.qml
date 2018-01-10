@@ -104,14 +104,13 @@ TabView
 
                 Label { width: scrollView.columnWidth; height: parent.rowHeight; verticalAlignment: Qt.AlignVCenter; text: catalog.i18nc("@label", "Color") }
 
-                Row
-                {
-                    width: scrollView.columnWidth;
-                    height:  parent.rowHeight;
+                Row {
+                    width: scrollView.columnWidth
+                    height:  parent.rowHeight
                     spacing: Math.floor(UM.Theme.getSize("default_margin").width/2)
 
-                    Rectangle
-                    {
+                    // color indicator square
+                    Rectangle {
                         id: colorSelector
                         color: properties.color_code
 
@@ -121,17 +120,36 @@ TabView
 
                         anchors.verticalCenter: parent.verticalCenter
 
-                        MouseArea { anchors.fill: parent; onClicked: colorDialog.open(); enabled: base.editingEnabled }
+                        // open the color selection dialog on click
+                        MouseArea {
+                            anchors.fill: parent
+                            onClicked: colorDialog.open()
+                            enabled: base.editingEnabled
+                        }
                     }
-                    ReadOnlyTextField
-                    {
+
+                    // make sure the color stays connected after changing the color
+                    Binding {
+                        target: colorSelector
+                        property: "color"
+                        value: properties.color_code
+                    }
+
+                    // pretty color name text field
+                    ReadOnlyTextField {
                         id: colorLabel;
                         text: properties.color_name;
                         readOnly: !base.editingEnabled
                         onEditingFinished: base.setMetaDataEntry("color_name", properties.color_name, text)
                     }
 
-                    ColorDialog { id: colorDialog; color: properties.color_code; onAccepted: base.setMetaDataEntry("color_code", properties.color_code, color) }
+                    // popup dialog to select a new color
+                    // if successful it sets the properties.color_code value to the new color
+                    ColorDialog {
+                        id: colorDialog
+                        color: properties.color_code
+                        onAccepted: base.setMetaDataEntry("color_code", properties.color_code, color)
+                    }
                 }
 
                 Item { width: parent.width; height: UM.Theme.getSize("default_margin").height }
@@ -401,11 +419,11 @@ TabView
     }
 
     // Tiny convenience function to check if a value really changed before trying to set it.
-    function setMetaDataEntry(entry_name, old_value, new_value)
-    {
-        if(old_value != new_value)
-        {
-            Cura.ContainerManager.setContainerMetaDataEntry(base.containerId, entry_name, new_value);
+    function setMetaDataEntry(entry_name, old_value, new_value) {
+        if (old_value != new_value) {
+            Cura.ContainerManager.setContainerMetaDataEntry(base.containerId, entry_name, new_value)
+            // make sure the UI properties are updated as well since we don't re-fetch the entire model here
+            properties[entry_name] = new_value
         }
     }
 

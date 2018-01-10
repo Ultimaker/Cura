@@ -22,7 +22,9 @@ class PerObjectSettingVisibilityHandler(UM.Settings.Models.SettingVisibilityHand
         self._selected_object_id = None
         self._node = None
         self._stack = None
-        self._skip_setting = None
+
+        # this is a set of settings that will be skipped if the user chooses to reset.
+        self._skip_reset_setting_set = set()
 
     def setSelectedObjectId(self, id):
         if id != self._selected_object_id:
@@ -39,8 +41,8 @@ class PerObjectSettingVisibilityHandler(UM.Settings.Models.SettingVisibilityHand
         return self._selected_object_id
 
     @pyqtSlot(str)
-    def setSkipSetting(self, setting_name):
-        self._skip_setting = setting_name
+    def addSkipResetSetting(self, setting_name):
+        self._skip_reset_setting_set.add(setting_name)
 
     def setVisible(self, visible):
         if not self._node:
@@ -57,7 +59,7 @@ class PerObjectSettingVisibilityHandler(UM.Settings.Models.SettingVisibilityHand
         # Remove all instances that are not in visibility list
         for instance in all_instances:
             # exceptionally skip setting
-            if self._skip_setting is not None and self._skip_setting == instance.definition.key:
+            if instance.definition.key in self._skip_reset_setting_set:
                 continue
             if instance.definition.key not in visible:
                 settings.removeInstance(instance.definition.key)

@@ -574,7 +574,19 @@ class CuraContainerRegistry(ContainerRegistry):
 
         # Also need to fix the other qualities that are suitable for this machine. Those quality changes may still have
         # per-extruder settings in the container for the machine instead of the extruder.
-        quality_changes_machine_definition_id = machine.qualityChanges.getDefinition().getId()
+        if machine.qualityChanges.getId() not in ("empty", "empty_quality_changes"):
+            quality_changes_machine_definition_id = machine.qualityChanges.getDefinition().getId()
+        else:
+            whole_machine_definition = machine.definition
+            machine_entry = machine.definition.getMetaDataEntry("machine")
+            if machine_entry is not None:
+                container_registry = ContainerRegistry.getInstance()
+                whole_machine_definition = container_registry.findDefinitionContainers(id = machine_entry)[0]
+
+            quality_changes_machine_definition_id = "fdmprinter"
+            if whole_machine_definition.getMetaDataEntry("has_machine_quality"):
+                quality_changes_machine_definition_id = machine.definition.getMetaDataEntry("quality_definition",
+                                                                                            whole_machine_definition.getId())
         qcs = self.findInstanceContainers(type = "quality_changes", definition = quality_changes_machine_definition_id)
         qc_groups = {}  # map of qc names -> qc containers
         for qc in qcs:
