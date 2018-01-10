@@ -242,7 +242,7 @@ Column
         Label
         {
             id: materialLabel
-            text: catalog.i18nc("@label","Material");
+            text: catalog.i18nc("@label", "Material");
             width: Math.floor(parent.width * 0.45 - UM.Theme.getSize("default_margin").width)
             font: UM.Theme.getFont("default");
             color: UM.Theme.getColor("text");
@@ -279,7 +279,7 @@ Column
     {
         id: variantRow
         height: UM.Theme.getSize("sidebar_setup").height
-        visible: Cura.MachineManager.hasBuildPlateVariant && !sidebar.monitoringPrint && !sidebar.hideSettings
+        visible: Cura.MachineManager.hasVariants && !sidebar.monitoringPrint && !sidebar.hideSettings
 
         anchors
         {
@@ -332,7 +332,7 @@ Column
         Label
         {
             id: bulidplateLabel
-            text: catalog.i18nc("@label","Buildplate");
+            text: catalog.i18nc("@label", "Build plate");
             width: Math.floor(parent.width * 0.45 - UM.Theme.getSize("default_margin").width)
             font: UM.Theme.getFont("default");
             color: UM.Theme.getColor("text");
@@ -350,7 +350,7 @@ Column
             style: UM.Theme.styles.sidebar_header_button
             activeFocusOnPress: true;
 
-            menu: BuildplateMenu
+            menu: BuildplateMenu {}
         }
     }
 

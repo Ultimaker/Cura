@@ -12,7 +12,6 @@ Menu
     id: menu
     title: "Build plate"
 
-    property int buildplateIndex: 0
     property bool printerConnected: Cura.MachineManager.printerOutputDevices.length != 0
     property bool isClusterPrinter:
     {
@@ -66,13 +65,14 @@ Menu
             filter:
             {
                 "type": "variant",
+                "hardware_type": "buildplate",
                 "definition": Cura.MachineManager.activeDefinitionId //Only show variants of this machine
             }
         }
         MenuItem {
             text: model.name
             checkable: true
-            checked: model.id == Cura.MachineManager.buildplateIds[buildplateIndex]
+//            checked: model.id == Cura.MachineManager.buildplateIds[buildplateIndex]
             exclusiveGroup: group
             onTriggered:
             {
