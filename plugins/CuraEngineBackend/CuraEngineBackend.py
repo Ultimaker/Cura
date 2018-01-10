@@ -444,6 +444,7 @@ class CuraEngineBackend(QObject, Backend):
                     return
 
             build_plate_changed.add(source_build_plate_number)
+            self.printDurationMessage.emit(source_build_plate_number, {}, [])
 
         build_plate_changed.discard(None)
         build_plate_changed.discard(-1)  # object not on build plate
