@@ -585,9 +585,10 @@ class CuraEngineBackend(QObject, Backend):
         Logger.log("d", "See if there is more to slice...")
         # Somehow this results in an Arcus Error
         # self.slice()
-        # Testing call slice again, allow backend to restart by using the timer
-        self.enableTimer()  # manually enable timer to be able to invoke slice, also when in manual slice mode
-        self._invokeSlice()
+        # Call slice again using the timer, allowing the backend to restart
+        if self._build_plates_to_be_sliced:
+            self.enableTimer()  # manually enable timer to be able to invoke slice, also when in manual slice mode
+            self._invokeSlice()
 
     ##  Called when a g-code message is received from the engine.
     #
