@@ -214,8 +214,6 @@ class CuraContainerRegistry(ContainerRegistry):
                 name_seed = os.path.splitext(os.path.basename(file_name))[0]
                 new_name = self.uniqueName(name_seed)
 
-
-
                 # Ensure it is always a list of profiles
                 if type(profile_or_list) is not list:
                     profile_or_list = [profile_or_list]
@@ -237,16 +235,6 @@ class CuraContainerRegistry(ContainerRegistry):
 
                     else: #More extruders in the imported file than in the machine.
                         continue #Delete the additional profiles.
-
-                    # if the loaded profile comes from g-code then the instance containers should be
-                    # defined differently
-                    if extension == "gcode":
-                        if profile.getMetaDataEntry("extruder") is None:
-                            temp_defintion = profile.getMetaDataEntry("definition")
-                            profile.metaData["id"] = (temp_defintion + "_" + new_name).lower()
-                        elif profile.getMetaDataEntry("extruder") is not None: # be sure that extruder data exist
-                            temp_extruder = profile.getMetaDataEntry("extruder")
-                            profile.metaData["id"] = (temp_extruder + "_" + new_name).lower()
 
                     result = self._configureProfile(profile, profile_id, new_name)
                     if result is not None:
@@ -279,6 +267,10 @@ class CuraContainerRegistry(ContainerRegistry):
         new_id = self.createUniqueName("quality_changes", "", id_seed, catalog.i18nc("@label", "Custom profile"))
         profile._id = new_id
         profile.setName(new_name)
+
+        # Set the unique Id to the profile, so it's generating a new one even if the user imports the same profile
+        # It also solves an issue with importing profiles from G-Codes
+        profile.setMetaDataEntry("id", new_id)
 
         if "type" in profile.getMetaData():
             profile.setMetaDataEntry("type", "quality_changes")
