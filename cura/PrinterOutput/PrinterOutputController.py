@@ -15,6 +15,7 @@ class PrinterOutputController:
         self.can_pause = True
         self.can_abort = True
         self.can_pre_heat_bed = True
+        self.can_pre_heat_extruders = True
         self.can_control_manually = True
         self._output_device = output_device
 
