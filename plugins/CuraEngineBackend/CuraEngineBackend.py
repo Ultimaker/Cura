@@ -444,7 +444,6 @@ class CuraEngineBackend(QObject, Backend):
                     return
 
             build_plate_changed.add(source_build_plate_number)
-            self.printDurationMessage.emit(source_build_plate_number, {}, [])
 
         build_plate_changed.discard(None)
         build_plate_changed.discard(-1)  # object not on build plate
@@ -461,6 +460,7 @@ class CuraEngineBackend(QObject, Backend):
         for build_plate_number in build_plate_changed:
             if build_plate_number not in self._build_plates_to_be_sliced:
                 self._build_plates_to_be_sliced.append(build_plate_number)
+            self.printDurationMessage.emit(source_build_plate_number, {}, [])
         self.processingProgress.emit(0.0)
         self.backendStateChange.emit(BackendState.NotStarted)
         # if not self._use_timer:
@@ -523,7 +523,7 @@ class CuraEngineBackend(QObject, Backend):
 
     def _onStackErrorCheckFinished(self):
         self._is_error_check_scheduled = False
-        if not self._slicing and self._build_plates_to_be_sliced:  #self._need_slicing:
+        if not self._slicing and self._build_plates_to_be_sliced:
             self.needsSlicing()
             self._onChanged()
 
