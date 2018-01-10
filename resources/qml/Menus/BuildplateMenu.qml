@@ -12,6 +12,7 @@ Menu
     id: menu
     title: "Build plate"
 
+    property int extruderIndex: 0
     property bool printerConnected: Cura.MachineManager.printerOutputDevices.length != 0
     property bool isClusterPrinter:
     {
@@ -72,10 +73,12 @@ Menu
         MenuItem {
             text: model.name
             checkable: true
-//            checked: model.id == Cura.MachineManager.buildplateIds[buildplateIndex]
+            checked: model.id == Cura.MachineManager.globalVariantId
             exclusiveGroup: group
             onTriggered:
             {
+                print("Cura.MachineManager.activeDefinitionId", Cura.MachineManager.activeDefinitionId)
+                print("Cura.MachineManager.allActiveVariantIds[Cura.MachineManager.activeDefinitionId]", JSON.stringify(Cura.MachineManager.globalVariantId))
                 Cura.MachineManager.setActiveVariantBuildplate(model.id);
             }
         }

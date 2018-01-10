@@ -154,6 +154,21 @@
                     "settable_per_extruder": false,
                     "settable_per_meshgroup": false
                 },
+                "machine_buildplate_type":
+                {
+                    "label": "Build Plate Material",
+                    "description": "The material of the build plate installed on the printer.",
+                    "default_value": "glass",
+                    "type": "enum",
+                    "options":
+                    {
+                        "glass": "Glass",
+                        "aluminium": "Aluminium"
+                    },
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false,
+                    "settable_per_meshgroup": false
+                },
                 "machine_height":
                 {
                     "label": "Machine Height",

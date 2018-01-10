@@ -50,6 +50,7 @@ class MachineManager(QObject):
 
         # Used to store the new containers until after confirming the dialog
         self._new_variant_container = None
+        self._new_buildplate_container = None
         self._new_material_container = None
         self._new_quality_containers = []
 
@@ -157,6 +158,10 @@ class MachineManager(QObject):
     @property
     def newVariant(self):
         return self._new_variant_container
+
+    @property
+    def newBuildplate(self):
+        return self._new_buildplate_container
 
     @property
     def newMaterial(self):
@@ -664,6 +669,14 @@ class MachineManager(QObject):
                 return quality.getId()
         return ""
 
+    @pyqtProperty(str, notify=activeVariantChanged)
+    def globalVariantId(self) -> str:
+        if self._global_container_stack:
+            variant = self._global_container_stack.variant
+            if variant and not isinstance(variant, type(self._empty_variant_container)):
+                return variant.getId()
+        return ""
+
     @pyqtProperty(str, notify = activeQualityChanged)
     def activeQualityType(self) -> str:
         if self._active_container_stack:
@@ -846,8 +859,24 @@ class MachineManager(QObject):
 
     @pyqtSlot(str)
     def setActiveVariantBuildplate(self, variant_buildplate_id: str):
-        Logger.log("d", "Attempting to change the active buildplate to %s", variant_buildplate_id)
-        pass
+        with postponeSignals(*self._getContainerChangedSignals(), compress = CompressTechnique.CompressPerParameterValue):
+            containers = ContainerRegistry.getInstance().findInstanceContainers(id = variant_buildplate_id)
+            if not containers or not self._global_container_stack:
+                return
+            Logger.log("d", "Attempting to change the active buildplate to %s", variant_buildplate_id)
+            old_buildplate = self._global_container_stack.variant
+            old_material = self._active_container_stack.material
+            if old_buildplate:
+                self.blurSettings.emit()
+                self._new_buildplate_container = containers[0]  # self._active_container_stack will be updated with a delay
+                Logger.log("d", "Active buildplate changed to {active_variant_buildplate_id}".format(active_variant_buildplate_id = containers[0].getId()))
+                preferred_material_name = None
+                if old_material:
+                    preferred_material_name = old_material.getName()
+                preferred_material_id = self._updateMaterialContainer(self._global_container_stack.definition, self._global_container_stack, containers[0], preferred_material_name).id
+                self.setActiveMaterial(preferred_material_id)
+            else:
+                Logger.log("w", "While trying to set the active buildplate, no buildplate was found to replace.")
 
     ##  set the active quality
     #   \param quality_id The quality_id of either a quality or a quality_changes
@@ -926,6 +955,10 @@ class MachineManager(QObject):
             self._active_container_stack.variant = self._new_variant_container
             self._new_variant_container = None
 
+        if self._new_buildplate_container is not None:
+            self._global_container_stack.variant = self._new_buildplate_container
+            self._new_buildplate_container = None
+
         if self._new_material_container is not None:
             self._active_container_stack.material = self._new_material_container
             self._new_material_container = None
@@ -946,6 +979,7 @@ class MachineManager(QObject):
     #   Used for ignoring any changes when switching between printers (setActiveMachine)
     def _cancelDelayedActiveContainerStackChanges(self):
         self._new_material_container = None
+        self._new_buildplate_container = None
         self._new_variant_container = None
 
     ##  Determine the quality and quality changes settings for the current machine for a quality name.
