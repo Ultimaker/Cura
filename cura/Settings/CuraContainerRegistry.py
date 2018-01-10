@@ -214,19 +214,7 @@ class CuraContainerRegistry(ContainerRegistry):
                 name_seed = os.path.splitext(os.path.basename(file_name))[0]
                 new_name = self.uniqueName(name_seed)
 
-                # if the loaded profile comes from g-code then the instance cointaners should be
-                # defined differently
-                file_extension = os.path.splitext(file_name)[1][1:]
-                if file_extension == "gcode":
-                    for item in profile_or_list:
-                        item.metaData["name"] = new_name
 
-                        if item.getMetaDataEntry("extruder") is None:
-                            temp_defintion = item.getMetaDataEntry("definition")
-                            item.metaData["id"] = temp_defintion + "_" + new_name
-                        elif item.getMetaDataEntry("extruder") is not None:
-                            temp_extruder = item.getMetaDataEntry("extruder")
-                            item.metaData["id"] = temp_extruder + "_" + new_name
 
                 # Ensure it is always a list of profiles
                 if type(profile_or_list) is not list:
@@ -249,6 +237,16 @@ class CuraContainerRegistry(ContainerRegistry):
 
                     else: #More extruders in the imported file than in the machine.
                         continue #Delete the additional profiles.
+
+                    # if the loaded profile comes from g-code then the instance containers should be
+                    # defined differently
+                    if extension == "gcode":
+                        if profile.getMetaDataEntry("extruder") is None:
+                            temp_defintion = profile.getMetaDataEntry("definition")
+                            profile.metaData["id"] = (temp_defintion + "_" + new_name).lower()
+                        elif profile.getMetaDataEntry("extruder") is not None: # be sure that extruder data exist
+                            temp_extruder = profile.getMetaDataEntry("extruder")
+                            profile.metaData["id"] = (temp_extruder + "_" + new_name).lower()
 
                     result = self._configureProfile(profile, profile_id, new_name)
                     if result is not None:
