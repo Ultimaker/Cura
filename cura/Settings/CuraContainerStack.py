@@ -435,6 +435,51 @@ class CuraContainerStack(ContainerStack):
         Logger.log("w", "Could not find a valid default variant for stack {stack}", stack = self.id)
         return None
 
+    ##  Find the global variant that should be used as "default". This is used for the buildplates.
+    #
+    #   This will search for variants that match the current definition and pick the preferred one,
+    #   if specified by the machine definition.
+    #
+    #   The following criteria are used to find the default global variant:
+    #   - If the machine definition does not have a metadata entry "has_variant_buildplates" set to True, return None
+    #   - The definition of the variant should be the same as the machine definition for this stack.
+    #   - The container should have a metadata entry "type" with value "variant" and "hardware_type" with value "buildplate".
+    #   - If the machine definition has a metadata entry "preferred_variant_buildplate", filter the variant IDs based on that.
+    #
+    #   \return The container that should be used as default, or None if nothing was found or the machine does not use variants.
+    #
+    #   \note This method assumes the stack has a valid machine definition.
+    def findDefaultVariantBuildplate(self) -> Optional[ContainerInterface]:
+        definition = self._getMachineDefinition()
+        # has_variant_buildplates can be overridden in other containers and stacks.
+        # In the case of UM2, it is overridden in the GlobalStack
+        if not self.getMetaDataEntry("has_variant_buildplates"):
+            # If the machine does not use variants, we should never set a variant.
+            return None
+
+        # First add any variant. Later, overwrite with preference if the preference is valid.
+        variant = None
+        definition_id = self._findInstanceContainerDefinitionId(definition)
+        variants = ContainerRegistry.getInstance().findInstanceContainers(definition = definition_id, type = "variant", hardware_type = "buildplate")
+        if variants:
+            variant = variants[0]
+
+        preferred_variant_buildplate_id = definition.getMetaDataEntry("preferred_variant_buildplate")
+        if preferred_variant_buildplate_id:
+            preferred_variant_buildplates = ContainerRegistry.getInstance().findInstanceContainers(id = preferred_variant_buildplate_id, definition = definition_id, type = "variant")
+            if preferred_variant_buildplates:
+                variant = preferred_variant_buildplates[0]
+            else:
+                Logger.log("w", "The preferred variant buildplate \"{variant}\" of stack {stack} does not exist or is not a variant.",
+                           variant = preferred_variant_buildplate_id, stack = self.id)
+                # And leave it at the default variant.
+
+        if variant:
+            return variant
+
+        Logger.log("w", "Could not find a valid default buildplate variant for stack {stack}", stack = self.id)
+        return None
+
     ##  Find the material that should be used as "default" material.
     #
     #   This will search for materials that match the current definition and pick the preferred one,
