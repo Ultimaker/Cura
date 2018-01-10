@@ -52,7 +52,7 @@ Item
                     {
                         base.showTooltip(
                             base,
-                            {x: 0, y: extruderTargetTemperature.mapToItem(base, 0, -parent.height / 4).y},
+                            {x: 0, y: extruderTargetTemperature.mapToItem(base, 0, Math.floor(-parent.height / 4)).y},
                             catalog.i18nc("@tooltip", "The target temperature of the hotend. The hotend will heat up or cool down towards this temperature. If this is 0, the hotend heating is turned off.")
                         );
                     }
@@ -85,7 +85,7 @@ Item
                     {
                         base.showTooltip(
                             base,
-                            {x: 0, y: parent.mapToItem(base, 0, -parent.height / 4).y},
+                            {x: 0, y: parent.mapToItem(base, 0, Math.floor(-parent.height / 4)).y},
                             catalog.i18nc("@tooltip", "The current temperature of this extruder.")
                         );
                     }
