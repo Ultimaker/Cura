@@ -64,8 +64,8 @@ class GCodeWriter(MeshWriter):
         gcode_dict = getattr(scene, "gcode_dict")
         if not gcode_dict:
             return False
-        gcode_list = gcode_dict.get(active_build_plate)
-        if gcode_list:
+        gcode_list = gcode_dict.get(active_build_plate, None)
+        if gcode_list is not None:
             for gcode in gcode_list:
                 stream.write(gcode)
             # Serialise the current container stack and put it at the end of the file.
