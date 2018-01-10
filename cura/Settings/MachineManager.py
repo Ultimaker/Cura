@@ -303,10 +303,11 @@ class MachineManager(QObject):
             self._global_container_stack.containersChanged.connect(self._onInstanceContainersChanged)
             self._global_container_stack.propertyChanged.connect(self._onPropertyChanged)
 
-            # set the global variant to empty as we now use the extruder stack at all times - CURA-4482
+            # Global stack can have only a variant if it is a buildplate
             global_variant = self._global_container_stack.variant
             if global_variant != self._empty_variant_container:
-                self._global_container_stack.setVariant(self._empty_variant_container)
+                if global_variant.getMetaDataEntry("hardware_type") != "buildplate":
+                    self._global_container_stack.setVariant(self._empty_variant_container)
 
             # set the global material to empty as we now use the extruder stack at all times - CURA-4482
             global_material = self._global_container_stack.material
@@ -865,16 +866,10 @@ class MachineManager(QObject):
                 return
             Logger.log("d", "Attempting to change the active buildplate to %s", variant_buildplate_id)
             old_buildplate = self._global_container_stack.variant
-            old_material = self._active_container_stack.material
             if old_buildplate:
                 self.blurSettings.emit()
                 self._new_buildplate_container = containers[0]  # self._active_container_stack will be updated with a delay
                 Logger.log("d", "Active buildplate changed to {active_variant_buildplate_id}".format(active_variant_buildplate_id = containers[0].getId()))
-                preferred_material_name = None
-                if old_material:
-                    preferred_material_name = old_material.getName()
-                preferred_material_id = self._updateMaterialContainer(self._global_container_stack.definition, self._global_container_stack, containers[0], preferred_material_name).id
-                self.setActiveMaterial(preferred_material_id)
             else:
                 Logger.log("w", "While trying to set the active buildplate, no buildplate was found to replace.")
 
