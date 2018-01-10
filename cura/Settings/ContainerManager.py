@@ -816,6 +816,22 @@ class ContainerManager(QObject):
             ContainerRegistry.getInstance().addContainer(container_to_add)
         return self._getMaterialContainerIdForActiveMachine(clone_of_original)
 
+    ##  Create a duplicate of a material or it's original entry
+    #
+    #   \return \type{str} the id of the newly created container.
+    @pyqtSlot(str, result = str)
+    def duplicateOriginalMaterial(self, material_id):
+
+        # check if the given material has a base file (i.e. was shipped by default)
+        base_file = self.getContainerMetaDataEntry(material_id, "base_file")
+
+        if base_file == "":
+            # there is no base file, so duplicate by ID
+            return self.duplicateMaterial(material_id)
+        else:
+            # there is a base file, so duplicate the original material
+            return self.duplicateMaterial(base_file)
+
     ##  Create a new material by cloning Generic PLA for the current material diameter and setting the GUID to something unqiue
     #
     #   \return \type{str} the id of the newly created container.

@@ -195,11 +195,22 @@ Item
                             text:
                             {
                                 var result = ""
-                                if (Cura.MachineManager.activeMachine != null) {
+                                if(Cura.MachineManager.activeMachine != null)
+                                {
                                     result = Cura.ProfilesModel.getItem(index).layer_height_without_unit
 
-                                    if (result == undefined)
-                                        result = ""
+                                    if(result == undefined)
+                                    {
+                                        result = "";
+                                    }
+                                    else
+                                    {
+                                        result = Number(Math.round(result + "e+2") + "e-2"); //Round to 2 decimals. Javascript makes this difficult...
+                                        if (result == undefined || result != result) //Parse failure.
+                                        {
+                                            result = "";
+                                        }
+                                    }
                                 }
                                 return result
                             }
