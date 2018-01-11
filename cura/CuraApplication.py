@@ -266,6 +266,7 @@ class CuraApplication(QtApplication):
         self.getController().getScene().sceneChanged.connect(self.updatePlatformActivity)
         self.getController().toolOperationStopped.connect(self._onToolOperationStopped)
         self.getController().contextMenuRequested.connect(self._onContextMenuRequested)
+        self.getCuraSceneController().activeBuildPlateChanged.connect(self.updatePlatformActivity)
 
         Resources.addType(self.ResourceTypes.QmlFiles, "qml")
         Resources.addType(self.ResourceTypes.Firmware, "firmware")
@@ -890,12 +891,17 @@ class CuraApplication(QtApplication):
     def getSceneBoundingBoxString(self):
         return self._i18n_catalog.i18nc("@info 'width', 'depth' and 'height' are variable names that must NOT be translated; just translate the format of ##x##x## mm.", "%(width).1f x %(depth).1f x %(height).1f mm") % {'width' : self._scene_bounding_box.width.item(), 'depth': self._scene_bounding_box.depth.item(), 'height' : self._scene_bounding_box.height.item()}
 
+    ##  Update scene bounding box for current build plate
     def updatePlatformActivity(self, node = None):
         count = 0
         scene_bounding_box = None
         is_block_slicing_node = False
+        active_build_plate = self.getBuildPlateModel().activeBuildPlate
         for node in DepthFirstIterator(self.getController().getScene().getRoot()):
-            if not issubclass(type(node), SceneNode) or (not node.getMeshData() and not node.callDecoration("getLayerData")):
+            if (
+                not issubclass(type(node), CuraSceneNode) or
+                (not node.getMeshData() and not node.callDecoration("getLayerData")) or
+                (node.callDecoration("getBuildPlateNumber") != active_build_plate)):
                 continue
             if node.callDecoration("isBlockSlicing"):
                 is_block_slicing_node = True
@@ -915,7 +921,7 @@ class CuraApplication(QtApplication):
         if not scene_bounding_box:
             scene_bounding_box = AxisAlignedBox.Null
 
-        if repr(self._scene_bounding_box) != repr(scene_bounding_box) and scene_bounding_box.isValid():
+        if repr(self._scene_bounding_box) != repr(scene_bounding_box):
             self._scene_bounding_box = scene_bounding_box
             self.sceneBoundingBoxChanged.emit()
 
