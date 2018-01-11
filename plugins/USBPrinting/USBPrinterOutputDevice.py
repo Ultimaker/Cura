@@ -96,9 +96,12 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
 
         Application.getInstance().getController().setActiveStage("MonitorStage")
 
-        gcode_list = getattr(Application.getInstance().getController().getScene(), "gcode_list")
-        self._printGCode(gcode_list)
+        # find the G-code for the active build plate to print
+        active_build_plate_id = Application.getInstance().getBuildPlateModel().activeBuildPlate
+        gcode_dict = getattr(Application.getInstance().getController().getScene(), "gcode_dict")
+        gcode_list = gcode_dict[active_build_plate_id]
 
+        self._printGCode(gcode_list)
 
     ##  Show firmware interface.
     #   This will create the view if its not already created.

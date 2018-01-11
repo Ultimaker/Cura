@@ -12,4 +12,6 @@ class ProcessGCodeLayerJob(Job):
         self._message = message
 
     def run(self):
-        self._scene.gcode_list.append(self._message.data.decode("utf-8", "replace"))
+        active_build_plate_id = Application.getInstance().getBuildPlateModel().activeBuildPlate
+        gcode_list = self._scene.gcode_dict[active_build_plate_id]
+        gcode_list.append(self._message.data.decode("utf-8", "replace"))

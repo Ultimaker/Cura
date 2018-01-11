@@ -3633,7 +3633,7 @@
                     "minimum_value": "0",
                     "maximum_value_warning": "100",
                     "default_value": 15,
-                    "value": "15 if support_enable else 0",
+                    "value": "15 if support_enable else 0 if support_tree_enable else 15",
                     "enabled": "support_enable or support_tree_enable",
                     "limit_to_extruder": "support_infill_extruder_nr",
                     "settable_per_mesh": false,
@@ -4233,6 +4233,18 @@
                     "limit_to_extruder": "support_infill_extruder_nr",
                     "enabled": "support_enable and support_use_towers",
                     "settable_per_mesh": true
+                },
+                "support_mesh_drop_down":
+                {
+                    "label": "Drop Down Support Mesh",
+                    "description": "Make support everywhere below the support mesh, so that there's no overhang in the support mesh.",
+                    "type": "bool",
+                    "default_value": true,
+                    "enabled": "support_mesh",
+                    "settable_per_mesh": true,
+                    "settable_per_extruder": false,
+                    "settable_per_meshgroup": false,
+                    "settable_globally": false
                 }
             }
         },
@@ -5256,18 +5268,6 @@
                     "description": "Use this mesh to specify support areas. This can be used to generate support structure.",
                     "type": "bool",
                     "default_value": false,
-                    "settable_per_mesh": true,
-                    "settable_per_extruder": false,
-                    "settable_per_meshgroup": false,
-                    "settable_globally": false
-                },
-                "support_mesh_drop_down":
-                {
-                    "label": "Drop Down Support Mesh",
-                    "description": "Make support everywhere below the support mesh, so that there's no overhang in the support mesh.",
-                    "type": "bool",
-                    "default_value": true,
-                    "enabled": "support_mesh",
                     "settable_per_mesh": true,
                     "settable_per_extruder": false,
                     "settable_per_meshgroup": false,

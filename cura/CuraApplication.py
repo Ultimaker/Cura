@@ -319,7 +319,7 @@ class CuraApplication(QtApplication):
         preferences.addPreference("cura/asked_dialog_on_project_save", False)
         preferences.addPreference("cura/choice_on_profile_override", "always_ask")
         preferences.addPreference("cura/choice_on_open_project", "always_ask")
-        preferences.addPreference("cura/arrange_objects_on_load", True)
+        preferences.addPreference("cura/not_arrange_objects_on_load", False)
         preferences.addPreference("cura/use_multi_build_plate", False)
 
         preferences.addPreference("cura/currency", "€")
@@ -1428,11 +1428,13 @@ class CuraApplication(QtApplication):
         self.fileLoaded.emit(filename)
         arrange_objects_on_load = (
             not Preferences.getInstance().getValue("cura/use_multi_build_plate") or
-            Preferences.getInstance().getValue("cura/arrange_objects_on_load"))
+            not Preferences.getInstance().getValue("cura/not_arrange_objects_on_load"))
         target_build_plate = self.getBuildPlateModel().activeBuildPlate if arrange_objects_on_load else -1
 
         for original_node in nodes:
-            node = CuraSceneNode()  # We want our own CuraSceneNode
+
+            # Create a CuraSceneNode just if the original node is not that type
+            node = original_node if isinstance(original_node, CuraSceneNode) else CuraSceneNode()
             node.setMeshData(original_node.getMeshData())
 
             node.setSelectable(True)
@@ -1477,7 +1479,14 @@ class CuraApplication(QtApplication):
                         # Step is for skipping tests to make it a lot faster. it also makes the outcome somewhat rougher
                         node, _ = arranger.findNodePlacement(node, offset_shape_arr, hull_shape_arr, step = 10)
 
-            node.addDecorator(BuildPlateDecorator(target_build_plate))
+            # This node is deepcopied from some other node which already has a BuildPlateDecorator, but the deepcopy
+            # of BuildPlateDecorator produces one that's assoicated with build plate -1. So, here we need to check if
+            # the BuildPlateDecorator exists or not and always set the correct build plate number.
+            build_plate_decorator = node.getDecorator(BuildPlateDecorator)
+            if build_plate_decorator is None:
+                build_plate_decorator = BuildPlateDecorator(target_build_plate)
+                node.addDecorator(build_plate_decorator)
+            build_plate_decorator.setBuildPlateNumber(target_build_plate)
 
             op = AddSceneNodeOperation(node, scene.getRoot())
             op.push()

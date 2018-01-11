@@ -132,93 +132,82 @@ UM.ManagementPage
     }
 
     buttons: [
-        Button
-        {
-            text: catalog.i18nc("@action:button", "Activate");
+
+        // Activate button
+        Button {
+            text: catalog.i18nc("@action:button", "Activate")
             iconName: "list-activate";
             enabled: base.currentItem != null && base.currentItem.id != Cura.MachineManager.activeMaterialId && Cura.MachineManager.hasMaterials
-            onClicked:
-            {
-                forceActiveFocus();
+            onClicked: {
+                forceActiveFocus()
                 Cura.MachineManager.setActiveMaterial(base.currentItem.id)
                 currentItem = base.model.getItem(base.objectList.currentIndex) // Refresh the current item.
             }
         },
-        Button
-        {
+
+        // Create button
+        Button {
             text: catalog.i18nc("@action:button", "Create")
             iconName: "list-add"
-            onClicked:
+            onClicked: {
+                forceActiveFocus()
+                Cura.ContainerManager.createMaterial()
+            }
+
+            Connections
             {
-                forceActiveFocus();
-                var material_id = Cura.ContainerManager.createMaterial()
-                if(material_id == "")
+                target: base.objectList.model
+                onItemsChanged:
                 {
-                    return
+                    base.objectList.currentIndex = base.getIndexById(Cura.MachineManager.activeMaterialId);
                 }
-                if(Cura.MachineManager.hasMaterials)
-                {
-                    Cura.MachineManager.setActiveMaterial(material_id)
-                }
-                base.objectList.currentIndex = base.getIndexById(material_id);
             }
         },
-        Button
-        {
+
+        // Duplicate button
+        Button {
             text: catalog.i18nc("@action:button", "Duplicate");
             iconName: "list-add";
             enabled: base.currentItem != null
-            onClicked:
-            {
-                forceActiveFocus();
-                var base_file = Cura.ContainerManager.getContainerMetaDataEntry(base.currentItem.id, "base_file")
-                // We need to copy the base container instead of the specific variant.
-                var material_id = base_file == "" ? Cura.ContainerManager.duplicateMaterial(base.currentItem.id): Cura.ContainerManager.duplicateMaterial(base_file)
-                if(material_id == "")
-                {
-                    return
-                }
-                if(Cura.MachineManager.hasMaterials)
-                {
-                    Cura.MachineManager.setActiveMaterial(material_id)
-                }
-                // TODO: this doesn't work because the source is a bit delayed
-                base.objectList.currentIndex = base.getIndexById(material_id);
+            onClicked: {
+                forceActiveFocus()
+                Cura.ContainerManager.duplicateOriginalMaterial(base.currentItem.id)
             }
         },
-        Button
-        {
-            text: catalog.i18nc("@action:button", "Remove");
-            iconName: "list-remove";
+
+        // Remove button
+        Button {
+            text: catalog.i18nc("@action:button", "Remove")
+            iconName: "list-remove"
             enabled: base.currentItem != null && !base.currentItem.readOnly && !Cura.ContainerManager.isContainerUsed(base.currentItem.id)
-            onClicked:
-            {
-                forceActiveFocus();
-                confirmDialog.open();
+            onClicked: {
+                forceActiveFocus()
+                confirmDialog.open()
             }
         },
-        Button
-        {
-            text: catalog.i18nc("@action:button", "Import");
-            iconName: "document-import";
-            onClicked:
-            {
-                forceActiveFocus();
-                importDialog.open();
+
+        // Import button
+        Button {
+            text: catalog.i18nc("@action:button", "Import")
+            iconName: "document-import"
+            onClicked: {
+                forceActiveFocus()
+                importDialog.open()
             }
-            visible: true;
+            visible: true
         },
-        Button
-        {
+
+        // Export button
+        Button {
             text: catalog.i18nc("@action:button", "Export")
             iconName: "document-export"
-            onClicked:
-            {
-                forceActiveFocus();
-                exportDialog.open();
+            onClicked: {
+                forceActiveFocus()
+                exportDialog.open()
             }
             enabled: currentItem != null
         }
+
     ]
 
     Item {

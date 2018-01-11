@@ -456,34 +456,6 @@ UM.PreferencesPage
             UM.TooltipArea {
                 width: childrenRect.width
                 height: childrenRect.height
-                text: catalog.i18nc("@info:tooltip","Use multi build plate functionality (EXPERIMENTAL)")
-
-                CheckBox
-                {
-                    id: useMultiBuildPlateCheckbox
-                    text: catalog.i18nc("@option:check","Use multi build plate functionality (EXPERIMENTAL, restart)")
-                    checked: boolCheck(UM.Preferences.getValue("cura/use_multi_build_plate"))
-                    onCheckedChanged: UM.Preferences.setValue("cura/use_multi_build_plate", checked)
-                }
-            }
-
-            UM.TooltipArea {
-                width: childrenRect.width
-                height: childrenRect.height
-                text: catalog.i18nc("@info:tooltip","Should newly loaded models be arranged on the build plate? Used in conjunction with multi build plate (EXPERIMENTAL)")
-
-                CheckBox
-                {
-                    id: arrangeOnLoadCheckbox
-                    text: catalog.i18nc("@option:check","Arrange objects on load (EXPERIMENTAL)")
-                    checked: boolCheck(UM.Preferences.getValue("cura/arrange_objects_on_load"))
-                    onCheckedChanged: UM.Preferences.setValue("cura/arrange_objects_on_load", checked)
-                }
-            }
-
-            UM.TooltipArea {
-                width: childrenRect.width
-                height: childrenRect.height
                 text: catalog.i18nc("@info:tooltip","Should models be scaled to the build volume if they are too large?")
 
                 CheckBox
@@ -688,6 +660,49 @@ UM.PreferencesPage
                     onCheckedChanged: UM.Preferences.setValue("info/send_slice_info", checked)
                 }
             }
+
+            Item
+            {
+                //: Spacer
+                height: UM.Theme.getSize("default_margin").height
+                width: UM.Theme.getSize("default_margin").height
+            }
+
+            Label
+            {
+                font.bold: true
+                text: catalog.i18nc("@label","Experimental")
+            }
+
+            UM.TooltipArea {
+                width: childrenRect.width
+                height: childrenRect.height
+                text: catalog.i18nc("@info:tooltip","Use multi build plate functionality")
+
+                CheckBox
+                {
+                    id: useMultiBuildPlateCheckbox
+                    text: catalog.i18nc("@option:check","Use multi build plate functionality (restart required)")
+                    checked: boolCheck(UM.Preferences.getValue("cura/use_multi_build_plate"))
+                    onCheckedChanged: UM.Preferences.setValue("cura/use_multi_build_plate", checked)
+                }
+            }
+
+            UM.TooltipArea {
+                width: childrenRect.width
+                height: childrenRect.height
+                text: catalog.i18nc("@info:tooltip","Should newly loaded models be arranged on the build plate? Used in conjunction with multi build plate (EXPERIMENTAL)")
+
+                CheckBox
+                {
+                    id: arrangeOnLoadCheckbox
+                    text: catalog.i18nc("@option:check","Do not arrange objects on load")
+                    checked: boolCheck(UM.Preferences.getValue("cura/not_arrange_objects_on_load"))
+                    onCheckedChanged: UM.Preferences.setValue("cura/not_arrange_objects_on_load", checked)
+                }
+            }
+
+
         }
     }
 }
