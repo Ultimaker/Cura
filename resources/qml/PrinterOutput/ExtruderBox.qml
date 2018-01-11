@@ -12,7 +12,6 @@ Item
     property alias color: background.color
     property var extruderModel
     property var position: index
-    //width: index == machineExtruderCount.properties.value - 1 && index % 2 == 0 ? extrudersGrid.width : Math.floor(extrudersGrid.width / 2 - UM.Theme.getSize("sidebar_lining_thin").width / 2)
     implicitWidth: parent.width
     implicitHeight: UM.Theme.getSize("sidebar_extruder_box").height
 
