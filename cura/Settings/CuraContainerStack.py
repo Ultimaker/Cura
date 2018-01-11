@@ -144,7 +144,7 @@ class CuraContainerStack(ContainerStack):
 
     ##  Set the material container.
     #
-    #   \param new_quality_changes The new material container. It is expected to have a "type" metadata entry with the value "quality_changes".
+    #   \param new_material The new material container. It is expected to have a "type" metadata entry with the value "material".
     def setMaterial(self, new_material: InstanceContainer, postpone_emit = False) -> None:
         self.replaceContainer(_ContainerIndexes.Material, new_material, postpone_emit = postpone_emit)
 
@@ -155,7 +155,7 @@ class CuraContainerStack(ContainerStack):
     #   to whatever the machine definition specifies as "preferred" container, or a fallback value. See findDefaultMaterial
     #   for details.
     #
-    #   \param new_quality_changes_id The ID of the new material container.
+    #   \param new_material_id The ID of the new material container.
     #
     #   \throws Exceptions.InvalidContainerError Raised when no container could be found with the specified ID.
     def setMaterialById(self, new_material_id: str) -> None:
@@ -182,7 +182,7 @@ class CuraContainerStack(ContainerStack):
 
     ##  Set the variant container.
     #
-    #   \param new_quality_changes The new variant container. It is expected to have a "type" metadata entry with the value "quality_changes".
+    #   \param new_variant The new variant container. It is expected to have a "type" metadata entry with the value "variant".
     def setVariant(self, new_variant: InstanceContainer) -> None:
         self.replaceContainer(_ContainerIndexes.Variant, new_variant)
 
@@ -193,7 +193,7 @@ class CuraContainerStack(ContainerStack):
     #   to whatever the machine definition specifies as "preferred" container, or a fallback value. See findDefaultVariant
     #   for details.
     #
-    #   \param new_quality_changes_id The ID of the new variant container.
+    #   \param new_variant_id The ID of the new variant container.
     #
     #   \throws Exceptions.InvalidContainerError Raised when no container could be found with the specified ID.
     def setVariantById(self, new_variant_id: str) -> None:
@@ -220,13 +220,13 @@ class CuraContainerStack(ContainerStack):
 
     ##  Set the definition changes container.
     #
-    #   \param new_quality_changes The new definition changes container. It is expected to have a "type" metadata entry with the value "quality_changes".
+    #   \param new_definition_changes The new definition changes container. It is expected to have a "type" metadata entry with the value "definition_changes".
     def setDefinitionChanges(self, new_definition_changes: InstanceContainer) -> None:
         self.replaceContainer(_ContainerIndexes.DefinitionChanges, new_definition_changes)
 
     ##  Set the definition changes container by an ID.
     #
-    #   \param new_quality_changes_id The ID of the new definition changes container.
+    #   \param new_definition_changes_id The ID of the new definition changes container.
     #
     #   \throws Exceptions.InvalidContainerError Raised when no container could be found with the specified ID.
     def setDefinitionChangesById(self, new_definition_changes_id: str) -> None:
@@ -245,13 +245,13 @@ class CuraContainerStack(ContainerStack):
 
     ##  Set the definition container.
     #
-    #   \param new_quality_changes The new definition container. It is expected to have a "type" metadata entry with the value "quality_changes".
+    #   \param new_definition The new definition container. It is expected to have a "type" metadata entry with the value "definition".
     def setDefinition(self, new_definition: DefinitionContainerInterface) -> None:
         self.replaceContainer(_ContainerIndexes.Definition, new_definition)
 
     ##  Set the definition container by an ID.
     #
-    #   \param new_quality_changes_id The ID of the new definition container.
+    #   \param new_definition_id The ID of the new definition container.
     #
     #   \throws Exceptions.InvalidContainerError Raised when no container could be found with the specified ID.
     def setDefinitionById(self, new_definition_id: str) -> None:
