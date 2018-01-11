@@ -1421,15 +1421,19 @@ class CuraApplication(QtApplication):
         filename = job.getFileName()
         self._currently_loading_files.remove(filename)
 
-        root = self.getController().getScene().getRoot()
-        arranger = Arrange.create(scene_root = root)
-        min_offset = 8
-
         self.fileLoaded.emit(filename)
         arrange_objects_on_load = (
             not Preferences.getInstance().getValue("cura/use_multi_build_plate") or
             not Preferences.getInstance().getValue("cura/not_arrange_objects_on_load"))
         target_build_plate = self.getBuildPlateModel().activeBuildPlate if arrange_objects_on_load else -1
+
+        root = self.getController().getScene().getRoot()
+        fixed_nodes = []
+        for node_ in DepthFirstIterator(root):
+            if node_.callDecoration("isSliceable") and node_.callDecoration("getBuildPlateNumber") == target_build_plate:
+                fixed_nodes.append(node_)
+        arranger = Arrange.create(fixed_nodes = fixed_nodes)
+        min_offset = 8
 
         for original_node in nodes:
 
