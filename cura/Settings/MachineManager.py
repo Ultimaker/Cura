@@ -870,6 +870,9 @@ class MachineManager(QObject):
                 self.blurSettings.emit()
                 self._new_buildplate_container = containers[0]  # self._active_container_stack will be updated with a delay
                 Logger.log("d", "Active buildplate changed to {active_variant_buildplate_id}".format(active_variant_buildplate_id = containers[0].getId()))
+
+                # Force set the active quality as it is so the values are updated
+                self.setActiveQuality(self._active_container_stack.quality.getId())
             else:
                 Logger.log("w", "While trying to set the active buildplate, no buildplate was found to replace.")
 
