@@ -17,14 +17,23 @@ class ExtruderOutputModel(QObject):
     targetHotendTemperatureChanged = pyqtSignal()
     hotendTemperatureChanged = pyqtSignal()
     activeMaterialChanged = pyqtSignal()
+    isPreheatingChanged = pyqtSignal()
 
-    def __init__(self, printer: "PrinterOutputModel", parent=None):
+    def __init__(self, printer: "PrinterOutputModel", position: int, parent=None):
         super().__init__(parent)
         self._printer = printer
+        self._position = position
         self._target_hotend_temperature = 0
         self._hotend_temperature = 0
         self._hotend_id = ""
         self._active_material = None  # type: Optional[MaterialOutputModel]
+        self._is_preheating = False
+
+    def getPrinter(self):
+        return self._printer
+
+    def getPosition(self):
+        return self._position
 
     @pyqtProperty(QObject, notify = activeMaterialChanged)
     def activeMaterial(self) -> "MaterialOutputModel":
@@ -68,3 +77,25 @@ class ExtruderOutputModel(QObject):
         if self._hotend_id != id:
             self._hotend_id = id
             self.hotendIDChanged.emit()
+
+    def updateIsPreheating(self, pre_heating):
+        if self._is_preheating != pre_heating:
+            self._is_preheating = pre_heating
+            self.isPreheatingChanged.emit()
+
+    @pyqtProperty(bool, notify=isPreheatingChanged)
+    def isPreheating(self):
+        return self._is_preheating
+
+    ##  Pre-heats the extruder before printer.
+    #
+    #   \param temperature The temperature to heat the extruder to, in degrees
+    #   Celsius.
+    #   \param duration How long the bed should stay warm, in seconds.
+    @pyqtSlot(float, float)
+    def preheatHotend(self, temperature, duration):
+        self._printer._controller.preheatHotend(self, temperature, duration)
+
+    @pyqtSlot()
+    def cancelPreheatHotend(self):
+        self._printer._controller.cancelPreheatHotend(self)

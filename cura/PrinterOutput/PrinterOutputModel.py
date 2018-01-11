@@ -32,7 +32,7 @@ class PrinterOutputModel(QObject):
         self._name = ""
         self._key = ""  # Unique identifier
         self._controller = output_controller
-        self._extruders = [ExtruderOutputModel(printer=self) for i in range(number_of_extruders)]
+        self._extruders = [ExtruderOutputModel(printer=self, position=i) for i in range(number_of_extruders)]
         self._head_position = Vector(0, 0, 0)
         self._active_print_job = None  # type: Optional[PrintJobOutputModel]
         self._firmware_version = firmware_version
@@ -220,9 +220,9 @@ class PrinterOutputModel(QObject):
 
     # Does the printer support pre-heating the bed at all
     @pyqtProperty(bool, constant=True)
-    def canPreHeatExtruders(self):
+    def canPreHeatHotends(self):
         if self._controller:
-            return self._controller.can_pre_heat_extruders
+            return self._controller.can_pre_heat_hotends
         return False
 
     # Does the printer support pause at all

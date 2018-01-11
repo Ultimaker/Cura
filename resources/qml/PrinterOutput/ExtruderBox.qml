@@ -95,7 +95,7 @@ Item
                         base.showTooltip(
                             base,
                             {x: 0, y: parent.mapToItem(base, 0, Math.floor(-parent.height / 4)).y},
-                            catalog.i18nc("@tooltip", "The current temperature of this extruder.")
+                            catalog.i18nc("@tooltip", "The current temperature of this hotend.")
                         );
                     }
                     else
@@ -144,7 +144,7 @@ Item
             anchors.bottomMargin: UM.Theme.getSize("default_margin").height
             width: Math.floor(UM.Theme.getSize("setting_control").width * 0.75)
             height: UM.Theme.getSize("setting_control").height
-            visible: extruderModel != null ? extruderModel.canPreHeatExtruders: true
+            visible: extruderModel != null ? extruderModel.canPreHeatHotends: true
             Rectangle //Highlight of input field.
             {
                 anchors.fill: parent
@@ -166,7 +166,7 @@ Item
                         base.showTooltip(
                             base,
                             {x: 0, y: preheatTemperatureInputMouseArea.mapToItem(base, 0, 0).y},
-                            catalog.i18nc("@tooltip of temperature input", "The temperature to pre-heat the extruder to.")
+                            catalog.i18nc("@tooltip of temperature input", "The temperature to pre-heat the hotend to.")
                         );
                     }
                     else
@@ -208,7 +208,7 @@ Item
         {
             id: preheatButton
             height: UM.Theme.getSize("setting_control").height
-            visible: extruderModel != null ? extruderModel.canPreHeatExtruders: true
+            visible: extruderModel != null ? extruderModel.canPreHeatHotends: true
             enabled:
             {
                 if (!preheatTemperatureControl.enabled)
@@ -333,11 +333,11 @@ Item
             {
                 if (!extruderModel.isPreheating)
                 {
-                    extruderModel.preheatExtruder(preheatTemperatureInput.text, 900);
+                    extruderModel.preheatHotend(preheatTemperatureInput.text, 900);
                 }
                 else
                 {
-                    extruderModel.cancelPreheatExtruder();
+                    extruderModel.cancelPreheatHotend();
                 }
             }
 
@@ -348,7 +348,7 @@ Item
                     base.showTooltip(
                         base,
                         {x: 0, y: preheatButton.mapToItem(base, 0, 0).y},
-                        catalog.i18nc("@tooltip of pre-heat", "Heat the extruder in advance before printing. You can continue adjusting your print while it is heating, and you won't have to wait for the extruder to heat up when you're ready to print.")
+                        catalog.i18nc("@tooltip of pre-heat", "Heat the hotend in advance before printing. You can continue adjusting your print while it is heating, and you won't have to wait for the hotend to heat up when you're ready to print.")
                     );
                 }
                 else
