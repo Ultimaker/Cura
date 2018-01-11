@@ -583,6 +583,8 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
                 hotend_id = ""
             self._setHotendId(index, hotend_id)
 
+        # TODO Set the buildplate id depending on the info from the printer. To be discussed...
+
         bed_temperatures = self._json_printer_state["bed"]["temperature"]
         self._setBedTemperature(bed_temperatures["current"])
         self._updateTargetBedTemperature(bed_temperatures["target"])

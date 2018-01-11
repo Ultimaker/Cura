@@ -36,6 +36,7 @@ class PrinterOutputDevice(QObject, OutputDevice):
         self._target_hotend_temperatures = [0] * self._num_extruders
         self._material_ids = [""] * self._num_extruders
         self._hotend_ids = [""] * self._num_extruders
+        self._buildplate_id = ""
         self._progress = 0
         self._head_x = 0
         self._head_y = 0
@@ -98,6 +99,9 @@ class PrinterOutputDevice(QObject, OutputDevice):
 
     # Signal to be emitted when either of the hotend ids is changed
     hotendIdChanged = pyqtSignal(int, str, arguments = ["index", "id"])
+
+    # Signal to be emitted when the buildplate is changed
+    buildplateChanged = pyqtSignal()
 
     # Signal that is emitted every time connection state is changed.
     # it also sends it's own device_id (for convenience sake)
@@ -494,6 +498,22 @@ class PrinterOutputDevice(QObject, OutputDevice):
             Logger.log("d", "Removing hotend id of hotend %d.", index)
             self._hotend_ids[index] = None
             self.hotendIdChanged.emit(index, None)
+
+    @pyqtProperty(str, notify = buildplateChanged)
+    def buildplateId(self):
+        return self._buildplate_id
+
+    ##  Protected setter for the current buildplate id.
+    #   /param buildplate_id id of the buildplate
+    def _setBuildplateId(self, buildplate_id):
+        if buildplate_id and buildplate_id != self._buildplate_id:
+            Logger.log("d", "Setting buildplate id to %s." % (buildplate_id))
+            self._buildplate_id = buildplate_id
+            self.buildplateChanged.emit(buildplate_id)
+        elif not buildplate_id:
+            Logger.log("d", "Removing buildplate id.")
+            self._buildplate_id = None
+            self.buildplateChanged.emit(None)
 
     ##  Let the user decide if the hotends and/or material should be synced with the printer
     #   NB: the UX needs to be implemented by the plugin

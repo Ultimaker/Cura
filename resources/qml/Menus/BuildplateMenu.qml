@@ -12,7 +12,6 @@ Menu
     id: menu
     title: "Build plate"
 
-    property int extruderIndex: 0
     property bool printerConnected: Cura.MachineManager.printerOutputDevices.length != 0
     property bool isClusterPrinter:
     {
@@ -29,34 +28,34 @@ Menu
         return true;
     }
 
-//    MenuItem
-//    {
-//        id: automaticBuildplate
-//        text:
-//        {
-//            if(printerConnected && Cura.MachineManager.buildplateIds.length > buildplateIndex && !isClusterPrinter)
-//            {
-//                var buildplateName = Cura.MachineManager.buildplateIds[buildplateIndex]
-//                return catalog.i18nc("@title:menuitem %1 is the buildplate currently loaded in the printer", "Automatic: %1").arg(buildplateName)
-//            }
-//            return ""
-//        }
-//        visible: printerConnected && Cura.MachineManager.buildplateIds.length > buildplateIndex && !isClusterPrinter
-//        onTriggered:
-//        {
-//            var buildplateId = Cura.MachineManager.buildplateIds[buildplateIndex]
-//            var itemIndex = buildplateInstantiator.model.find("name", buildplateId);
-//            if(itemIndex > -1)
-//            {
-//                Cura.MachineManager.setActiveVariantBuildplate(buildplateInstantiator.model.getItem(itemIndex).id);
-//            }
-//        }
-//    }
-//
-//    MenuSeparator
-//    {
-//        visible: automaticBuildplate.visible
-//    }
+    MenuItem
+    {
+        id: automaticBuildplate
+        text:
+        {
+            if(printerConnected && Cura.MachineManager.printerOutputDevices[0].buildplateId != "" && !isClusterPrinter)
+            {
+                var buildplateName = Cura.MachineManager.printerOutputDevices[0].buildplateId
+                return catalog.i18nc("@title:menuitem %1 is the buildplate currently loaded in the printer", "Automatic: %1").arg(buildplateName)
+            }
+            return ""
+        }
+        visible: printerConnected && Cura.MachineManager.printerOutputDevices[0].buildplateId != "" && !isClusterPrinter
+        onTriggered:
+        {
+            var buildplateId = Cura.MachineManager.printerOutputDevices[0].buildplateId
+            var itemIndex = buildplateInstantiator.model.find("name", buildplateId)
+            if(itemIndex > -1)
+            {
+                Cura.MachineManager.setActiveVariantBuildplate(buildplateInstantiator.model.getItem(itemIndex).id)
+            }
+        }
+    }
+
+    MenuSeparator
+    {
+        visible: automaticBuildplate.visible
+    }
 
     Instantiator
     {
