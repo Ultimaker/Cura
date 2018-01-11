@@ -1479,7 +1479,14 @@ class CuraApplication(QtApplication):
                         # Step is for skipping tests to make it a lot faster. it also makes the outcome somewhat rougher
                         node, _ = arranger.findNodePlacement(node, offset_shape_arr, hull_shape_arr, step = 10)
 
-            node.addDecorator(BuildPlateDecorator(target_build_plate))
+            # This node is deepcopied from some other node which already has a BuildPlateDecorator, but the deepcopy
+            # of BuildPlateDecorator produces one that's assoicated with build plate -1. So, here we need to check if
+            # the BuildPlateDecorator exists or not and always set the correct build plate number.
+            build_plate_decorator = node.getDecorator(BuildPlateDecorator)
+            if build_plate_decorator is None:
+                build_plate_decorator = BuildPlateDecorator(target_build_plate)
+                node.addDecorator(build_plate_decorator)
+            build_plate_decorator.setBuildPlateNumber(target_build_plate)
 
             op = AddSceneNodeOperation(node, scene.getRoot())
             op.push()
