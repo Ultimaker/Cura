@@ -88,7 +88,7 @@ class CuraEngineBackend(QObject, Backend):
         #
         self._global_container_stack = None
         Application.getInstance().globalContainerStackChanged.connect(self._onGlobalStackChanged)
-        Application.getInstance().getExtruderManager().activeExtruderChanged.connect(self._onGlobalStackChanged)
+        Application.getInstance().getExtruderManager().extrudersAdded.connect(self._onGlobalStackChanged)
         self._onGlobalStackChanged()
 
         Application.getInstance().stacksValidationFinished.connect(self._onStackErrorCheckFinished)
