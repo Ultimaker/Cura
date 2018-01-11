@@ -115,7 +115,6 @@ class LegacyUM3OutputDevice(NetworkedPrinterOutputDevice):
                 self._not_authenticated_message.hide()
 
             self._requestAuthentication()
-        pass  # Cura Connect doesn't do any authorization
 
     def connect(self):
         super().connect()

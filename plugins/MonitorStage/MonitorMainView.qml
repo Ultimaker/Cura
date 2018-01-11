@@ -8,8 +8,9 @@ import Cura 1.0 as Cura
 
 Item
 {
-    width: parent.width
-    height: parent.height
+    // parent could be undefined as this component is not visible at all times
+    width: parent ? parent.width : 0
+    height: parent ? parent.height : 0
 
     // We show a nice overlay on the 3D viewer when the current output device has no monitor view
     Rectangle
