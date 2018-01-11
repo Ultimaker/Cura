@@ -199,7 +199,7 @@ class CuraContainerStack(ContainerStack):
     def setVariantById(self, new_variant_id: str) -> None:
         variant = self._empty_variant
         if new_variant_id == "default":
-            new_variant = self.findDefaultVariant()
+            new_variant = self.findDefaultVariantBuildplate() if self.getMetaDataEntry("type") == "machine" else self.findDefaultVariant()
             if new_variant:
                 variant = new_variant
         else:
