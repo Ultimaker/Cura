@@ -106,7 +106,7 @@ class SimulationPass(RenderPass):
                 nozzle_node = node
                 nozzle_node.setVisible(False)
 
-            elif issubclass(type(node), SceneNode) and (node.getMeshData() or node.callDecoration("isBlockSlicing")) and node.isVisible() and node.callDecoration("getBuildPlateNumber") == active_build_plate:
+            elif issubclass(type(node), SceneNode) and (node.getMeshData() or node.callDecoration("isBlockSlicing")) and node.isVisible():
                 layer_data = node.callDecoration("getLayerData")
                 if not layer_data:
                     continue

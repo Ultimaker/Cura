@@ -105,7 +105,6 @@ Rectangle
             topMargin: UM.Theme.getSize("default_margin").height;
             left: parent.left;
             leftMargin: UM.Theme.getSize("default_margin").height;
-            //bottom: objectsList.top;
             bottomMargin: UM.Theme.getSize("default_margin").height;
         }
 
@@ -139,7 +138,7 @@ Rectangle
                     anchors.left: parent.left
                     anchors.leftMargin: UM.Theme.getSize("default_margin").width
                     width: parent.width - 2 * UM.Theme.getSize("default_margin").width - 30
-                    text: Cura.ObjectsModel.getItem(index) ? Cura.ObjectsModel.getItem(index).name : "";
+                    text: (index >= 0) && Cura.ObjectsModel.getItem(index) ? Cura.ObjectsModel.getItem(index).name : "";
                     color: Cura.ObjectsModel.getItem(index).isSelected ? palette.highlightedText : (Cura.ObjectsModel.getItem(index).isOutsideBuildArea ? palette.mid : palette.text)
                     elide: Text.ElideRight
                 }

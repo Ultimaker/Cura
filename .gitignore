@@ -47,7 +47,6 @@ plugins/Doodle3D-cura-plugin
 plugins/FlatProfileExporter
 plugins/GodMode
 plugins/OctoPrintPlugin
-plugins/PostProcessingPlugin
 plugins/ProfileFlattener
 plugins/X3GWriter
 

@@ -1,4 +1,5 @@
 {
+    "id": "malyan_m180",
     "version": 2,
     "name": "Malyan M180",
     "inherits": "fdmprinter",

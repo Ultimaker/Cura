@@ -202,7 +202,6 @@ class CuraContainerRegistry(ContainerRegistry):
         for plugin_id, meta_data in self._getIOPlugins("profile_reader"):
             if meta_data["profile_reader"][0]["extension"] != extension:
                 continue
-
             profile_reader = plugin_registry.getPluginObject(plugin_id)
             try:
                 profile_or_list = profile_reader.read(file_name)  # Try to open the file with the profile reader.
@@ -268,6 +267,10 @@ class CuraContainerRegistry(ContainerRegistry):
         new_id = self.createUniqueName("quality_changes", "", id_seed, catalog.i18nc("@label", "Custom profile"))
         profile._id = new_id
         profile.setName(new_name)
+
+        # Set the unique Id to the profile, so it's generating a new one even if the user imports the same profile
+        # It also solves an issue with importing profiles from G-Codes
+        profile.setMetaDataEntry("id", new_id)
 
         if "type" in profile.getMetaData():
             profile.setMetaDataEntry("type", "quality_changes")
@@ -515,6 +518,7 @@ class CuraContainerRegistry(ContainerRegistry):
             extruder_quality_changes_container = self.findInstanceContainers(name = machine.qualityChanges.getName(), extruder = extruder_id)
             if extruder_quality_changes_container:
                 extruder_quality_changes_container = extruder_quality_changes_container[0]
+
                 quality_changes_id = extruder_quality_changes_container.getId()
                 extruder_stack.setQualityChangesById(quality_changes_id)
             else:
@@ -525,14 +529,91 @@ class CuraContainerRegistry(ContainerRegistry):
                 if extruder_quality_changes_container:
                     quality_changes_id = extruder_quality_changes_container.getId()
                     extruder_stack.setQualityChangesById(quality_changes_id)
+                else:
+                    # if we still cannot find a quality changes container for the extruder, create a new one
+                    container_id = self.uniqueName(extruder_stack.getId() + "_user")
+                    container_name = machine.qualityChanges.getName()
+                    extruder_quality_changes_container = InstanceContainer(container_id)
+                    extruder_quality_changes_container.setName(container_name)
+                    extruder_quality_changes_container.addMetaDataEntry("type", "quality_changes")
+                    extruder_quality_changes_container.addMetaDataEntry("setting_version", CuraApplication.SettingVersion)
+                    extruder_quality_changes_container.addMetaDataEntry("extruder", extruder_stack.definition.getId())
+                    extruder_quality_changes_container.addMetaDataEntry("quality_type", machine.qualityChanges.getMetaDataEntry("quality_type"))
+                    extruder_quality_changes_container.setDefinition(machine.qualityChanges.getDefinition().getId())
 
             if not extruder_quality_changes_container:
                 Logger.log("w", "Could not find quality_changes named [%s] for extruder [%s]",
                            machine.qualityChanges.getName(), extruder_stack.getId())
+            else:
+                # move all per-extruder settings to the extruder's quality changes
+                for qc_setting_key in machine.qualityChanges.getAllKeys():
+                    settable_per_extruder = machine.getProperty(qc_setting_key, "settable_per_extruder")
+                    if settable_per_extruder:
+                        setting_value = machine.qualityChanges.getProperty(qc_setting_key, "value")
+
+                        setting_definition = machine.getSettingDefinition(qc_setting_key)
+                        new_instance = SettingInstance(setting_definition, definition_changes)
+                        new_instance.setProperty("value", setting_value)
+                        new_instance.resetState()  # Ensure that the state is not seen as a user state.
+                        extruder_quality_changes_container.addInstance(new_instance)
+                        extruder_quality_changes_container.setDirty(True)
+
+                        machine.qualityChanges.removeInstance(qc_setting_key, postpone_emit=True)
         else:
             extruder_stack.setQualityChangesById("empty_quality_changes")
 
         self.addContainer(extruder_stack)
+
+        # Also need to fix the other qualities that are suitable for this machine. Those quality changes may still have
+        # per-extruder settings in the container for the machine instead of the extruder.
+        if machine.qualityChanges.getId() not in ("empty", "empty_quality_changes"):
+            quality_changes_machine_definition_id = machine.qualityChanges.getDefinition().getId()
+        else:
+            whole_machine_definition = machine.definition
+            machine_entry = machine.definition.getMetaDataEntry("machine")
+            if machine_entry is not None:
+                container_registry = ContainerRegistry.getInstance()
+                whole_machine_definition = container_registry.findDefinitionContainers(id = machine_entry)[0]
+
+            quality_changes_machine_definition_id = "fdmprinter"
+            if whole_machine_definition.getMetaDataEntry("has_machine_quality"):
+                quality_changes_machine_definition_id = machine.definition.getMetaDataEntry("quality_definition",
+                                                                                            whole_machine_definition.getId())
+        qcs = self.findInstanceContainers(type = "quality_changes", definition = quality_changes_machine_definition_id)
+        qc_groups = {}  # map of qc names -> qc containers
+        for qc in qcs:
+            qc_name = qc.getName()
+            if qc_name not in qc_groups:
+                qc_groups[qc_name] = []
+            qc_groups[qc_name].append(qc)
+            # try to find from the quality changes cura directory too
+            quality_changes_container = self._findQualityChangesContainerInCuraFolder(machine.qualityChanges.getName())
+            if quality_changes_container:
+                qc_groups[qc_name].append(quality_changes_container)
+
+        for qc_name, qc_list in qc_groups.items():
+            qc_dict = {"global": None, "extruders": []}
+            for qc in qc_list:
+                extruder_def_id = qc.getMetaDataEntry("extruder")
+                if extruder_def_id is not None:
+                    qc_dict["extruders"].append(qc)
+                else:
+                    qc_dict["global"] = qc
+            if qc_dict["global"] is not None and len(qc_dict["extruders"]) == 1:
+                # move per-extruder settings
+                for qc_setting_key in qc_dict["global"].getAllKeys():
+                    settable_per_extruder = machine.getProperty(qc_setting_key, "settable_per_extruder")
+                    if settable_per_extruder:
+                        setting_value = qc_dict["global"].getProperty(qc_setting_key, "value")
+
+                        setting_definition = machine.getSettingDefinition(qc_setting_key)
+                        new_instance = SettingInstance(setting_definition, definition_changes)
+                        new_instance.setProperty("value", setting_value)
+                        new_instance.resetState()  # Ensure that the state is not seen as a user state.
+                        qc_dict["extruders"][0].addInstance(new_instance)
+                        qc_dict["extruders"][0].setDirty(True)
+
+                        qc_dict["global"].removeInstance(qc_setting_key, postpone_emit=True)
 
         # Set next stack at the end
         extruder_stack.setNextStack(machine)
@@ -562,6 +643,9 @@ class CuraContainerRegistry(ContainerRegistry):
             if parser["general"]["name"] == name:
                 # load the container
                 container_id = os.path.basename(file_path).replace(".inst.cfg", "")
+                if self.findInstanceContainers(id = container_id):
+                    # this container is already in the registry, skip it
+                    continue
 
                 instance_container = InstanceContainer(container_id)
                 with open(file_path, "r") as f:

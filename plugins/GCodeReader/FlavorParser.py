@@ -8,14 +8,14 @@ from UM.Logger import Logger
 from UM.Math.AxisAlignedBox import AxisAlignedBox
 from UM.Math.Vector import Vector
 from UM.Message import Message
-from UM.Scene.SceneNode import SceneNode
+from cura.Scene.CuraSceneNode import CuraSceneNode
 from UM.i18n import i18nCatalog
 from UM.Preferences import Preferences
 
 catalog = i18nCatalog("cura")
 
 from cura import LayerDataBuilder
-from cura import LayerDataDecorator
+from cura.LayerDataDecorator import LayerDataDecorator
 from cura.LayerPolygon import LayerPolygon
 from cura.Scene.GCodeListDecorator import GCodeListDecorator
 from cura.Settings.ExtruderManager import ExtruderManager
@@ -292,7 +292,7 @@ class FlavorParser:
         # We obtain the filament diameter from the selected printer to calculate line widths
         self._filament_diameter = Application.getInstance().getGlobalContainerStack().getProperty("material_diameter", "value")
 
-        scene_node = SceneNode()
+        scene_node = CuraSceneNode()
         # Override getBoundingBox function of the sceneNode, as this node should return a bounding box, but there is no
         # real data to calculate it from.
         scene_node.getBoundingBox = self._getNullBoundingBox
@@ -418,11 +418,17 @@ class FlavorParser:
                     self._layer_number += 1
                     current_path.clear()
 
-        material_color_map = numpy.zeros((10, 4), dtype = numpy.float32)
+        material_color_map = numpy.zeros((8, 4), dtype = numpy.float32)
         material_color_map[0, :] = [0.0, 0.7, 0.9, 1.0]
         material_color_map[1, :] = [0.7, 0.9, 0.0, 1.0]
+        material_color_map[2, :] = [0.9, 0.0, 0.7, 1.0]
+        material_color_map[3, :] = [0.7, 0.0, 0.0, 1.0]
+        material_color_map[4, :] = [0.0, 0.7, 0.0, 1.0]
+        material_color_map[5, :] = [0.0, 0.0, 0.7, 1.0]
+        material_color_map[6, :] = [0.3, 0.3, 0.3, 1.0]
+        material_color_map[7, :] = [0.7, 0.7, 0.7, 1.0]
         layer_mesh = self._layer_data_builder.build(material_color_map)
-        decorator = LayerDataDecorator.LayerDataDecorator()
+        decorator = LayerDataDecorator()
         decorator.setLayerData(layer_mesh)
         scene_node.addDecorator(decorator)
 
@@ -430,7 +436,10 @@ class FlavorParser:
         gcode_list_decorator.setGCodeList(gcode_list)
         scene_node.addDecorator(gcode_list_decorator)
 
-        Application.getInstance().getController().getScene().gcode_list = gcode_list
+        # gcode_dict stores gcode_lists for a number of build plates.
+        active_build_plate_id = Application.getInstance().getBuildPlateModel().activeBuildPlate
+        gcode_dict = {active_build_plate_id: gcode_list}
+        Application.getInstance().getController().getScene().gcode_dict = gcode_dict
 
         Logger.log("d", "Finished parsing %s" % file_name)
         self._message.hide()
