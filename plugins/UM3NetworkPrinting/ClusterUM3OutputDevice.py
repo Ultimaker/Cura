@@ -88,6 +88,8 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
             # Unable to find g-code. Nothing to send
             return
 
+        self._gcode = gcode_list
+
         if len(self._printers) > 1:
             self._spawnPrinterSelectionDialog()
         else:
