@@ -88,7 +88,6 @@ class CuraEngineBackend(QObject, Backend):
         #
         self._global_container_stack = None
         Application.getInstance().globalContainerStackChanged.connect(self._onGlobalStackChanged)
-        Application.getInstance().getExtruderManager().extrudersAdded.connect(self._onGlobalStackChanged)
         self._onGlobalStackChanged()
 
         Application.getInstance().stacksValidationFinished.connect(self._onStackErrorCheckFinished)
@@ -722,7 +721,7 @@ class CuraEngineBackend(QObject, Backend):
         if self._global_container_stack:
             self._global_container_stack.propertyChanged.disconnect(self._onSettingChanged)
             self._global_container_stack.containersChanged.disconnect(self._onChanged)
-            extruders = list(ExtruderManager.getInstance().getMachineExtruders(self._global_container_stack.getId()))
+            extruders = list(self._global_container_stack.extruders.values())
 
             for extruder in extruders:
                 extruder.propertyChanged.disconnect(self._onSettingChanged)
@@ -733,7 +732,7 @@ class CuraEngineBackend(QObject, Backend):
         if self._global_container_stack:
             self._global_container_stack.propertyChanged.connect(self._onSettingChanged)  # Note: Only starts slicing when the value changed.
             self._global_container_stack.containersChanged.connect(self._onChanged)
-            extruders = list(ExtruderManager.getInstance().getMachineExtruders(self._global_container_stack.getId()))
+            extruders = list(self._global_container_stack.extruders.values())
             for extruder in extruders:
                 extruder.propertyChanged.connect(self._onSettingChanged)
                 extruder.containersChanged.connect(self._onChanged)

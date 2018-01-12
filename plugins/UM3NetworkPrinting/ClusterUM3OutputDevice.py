@@ -78,8 +78,6 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
         self._cluster_size = int(properties.get(b"cluster_size", 0))
 
     def requestWrite(self, nodes, file_name=None, filter_by_machine=False, file_handler=None, **kwargs):
-        # Notify the UI that a switch to the print monitor should happen
-        Application.getInstance().getController().setActiveStage("MonitorStage")
         self.writeStarted.emit(self)
 
         gcode_dict = getattr(Application.getInstance().getController().getScene(), "gcode_dict", [])
@@ -96,6 +94,9 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
             self._spawnPrinterSelectionDialog()
         else:
             self.sendPrintJob()
+
+        # Notify the UI that a switch to the print monitor should happen
+        Application.getInstance().getController().setActiveStage("MonitorStage")
 
     def _spawnPrinterSelectionDialog(self):
         if self._printer_selection_dialog is None:

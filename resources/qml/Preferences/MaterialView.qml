@@ -72,7 +72,7 @@ TabView
                     width: scrollView.columnWidth;
                     text: properties.name;
                     readOnly: !base.editingEnabled;
-                    onEditingFinished: base.setName(properties.name, text)
+                    onEditingFinished: base.updateMaterialDisplayName(properties.name, text)
                 }
 
                 Label { width: scrollView.columnWidth; height: parent.rowHeight; verticalAlignment: Qt.AlignVCenter; text: catalog.i18nc("@label", "Brand") }
@@ -82,11 +82,7 @@ TabView
                     width: scrollView.columnWidth;
                     text: properties.supplier;
                     readOnly: !base.editingEnabled;
-                    onEditingFinished:
-                    {
-                        base.setMetaDataEntry("brand", properties.supplier, text);
-                        pane.objectList.currentIndex = pane.getIndexById(base.containerId);
-                    }
+                    onEditingFinished: base.updateMaterialSupplier(properties.supplier, text)
                 }
 
                 Label { width: scrollView.columnWidth; height: parent.rowHeight; verticalAlignment: Qt.AlignVCenter; text: catalog.i18nc("@label", "Material Type") }
@@ -95,15 +91,10 @@ TabView
                     width: scrollView.columnWidth;
                     text: properties.material_type;
                     readOnly: !base.editingEnabled;
-                    onEditingFinished:
-                    {
-                        base.setMetaDataEntry("material", properties.material_type, text);
-                        pane.objectList.currentIndex = pane.getIndexById(base.containerId)
-                    }
+                    onEditingFinished: base.updateMaterialType(properties.material_type, text)
                 }
 
                 Label { width: scrollView.columnWidth; height: parent.rowHeight; verticalAlignment: Qt.AlignVCenter; text: catalog.i18nc("@label", "Color") }
-
                 Row {
                     width: scrollView.columnWidth
                     height:  parent.rowHeight
@@ -126,13 +117,6 @@ TabView
                             onClicked: colorDialog.open()
                             enabled: base.editingEnabled
                         }
-                    }
-
-                    // make sure the color stays connected after changing the color
-                    Binding {
-                        target: colorSelector
-                        property: "color"
-                        value: properties.color_code
                     }
 
                     // pretty color name text field
@@ -453,14 +437,28 @@ TabView
         return 0;
     }
 
-    function setName(old_value, new_value)
-    {
-        if(old_value != new_value)
-        {
-            Cura.ContainerManager.setContainerName(base.containerId, new_value);
-            // update material name label. not so pretty, but it works
-            materialProperties.name = new_value;
-            pane.objectList.currentIndex = pane.getIndexById(base.containerId)
+    // update the display name of the material
+    function updateMaterialDisplayName (old_name, new_name) {
+
+        // don't change when new name is the same
+        if (old_name == new_name) {
+            return
         }
+
+        // update the values
+        Cura.ContainerManager.setContainerName(base.containerId, new_name)
+        materialProperties.name = new_name
+    }
+
+    // update the type of the material
+    function updateMaterialType (old_type, new_type) {
+        base.setMetaDataEntry("material", old_type, new_type)
+        materialProperties.material_type = new_type
+    }
+
+    // update the supplier of the material
+    function updateMaterialSupplier (old_supplier, new_supplier) {
+        base.setMetaDataEntry("brand", old_supplier, new_supplier)
+        materialProperties.supplier = new_supplier
     }
 }
