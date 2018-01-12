@@ -13,7 +13,7 @@ Item
     property bool isUM3: Cura.MachineManager.activeQualityDefinitionId == "ultimaker3"
     property bool printerConnected: Cura.MachineManager.printerOutputDevices.length != 0
     property bool printerAcceptsCommands: printerConnected && Cura.MachineManager.printerOutputDevices[0].acceptsCommands
-    property bool authenticationRequested: printerConnected && Cura.MachineManager.printerOutputDevices[0].authenticationState == 2 // AuthState.AuthenticationRequested
+    property bool authenticationRequested: printerConnected && (Cura.MachineManager.printerOutputDevices[0].authenticationState == 2 || Cura.MachineManager.printerOutputDevices[0].authenticationState == 5) // AuthState.AuthenticationRequested or AuthenticationReceived.
 
     Row
     {
@@ -119,7 +119,9 @@ Item
             onClicked: manager.loadConfigurationFromPrinter()
 
             function isClusterPrinter() {
-                if(Cura.MachineManager.printerOutputDevices.length == 0)
+                return false
+                //TODO: Hardcoded this for the moment now. These info components might also need to move.
+                /*if(Cura.MachineManager.printerOutputDevices.length == 0)
                 {
                     return false;
                 }
@@ -129,7 +131,7 @@ Item
                 {
                     return false;
                 }
-                return true;
+                return true;*/
             }
         }
     }

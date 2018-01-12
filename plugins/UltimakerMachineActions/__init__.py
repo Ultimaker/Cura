@@ -3,7 +3,6 @@
 
 from . import BedLevelMachineAction
 from . import UpgradeFirmwareMachineAction
-from . import UMOCheckupMachineAction
 from . import UMOUpgradeSelection
 from . import UM2UpgradeSelection
 
@@ -18,7 +17,6 @@ def register(app):
     return { "machine_action": [
         BedLevelMachineAction.BedLevelMachineAction(),
         UpgradeFirmwareMachineAction.UpgradeFirmwareMachineAction(),
-        UMOCheckupMachineAction.UMOCheckupMachineAction(),
         UMOUpgradeSelection.UMOUpgradeSelection(),
         UM2UpgradeSelection.UM2UpgradeSelection()
     ]}

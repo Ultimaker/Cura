@@ -397,6 +397,29 @@ UM.MainWindow
 
             Loader
             {
+                id: main
+
+                anchors
+                {
+                    top: topbar.bottom
+                    bottom: parent.bottom
+                    left: parent.left
+                    right: sidebar.left
+                }
+
+                MouseArea
+                {
+                    visible: UM.Controller.activeStage.mainComponent != ""
+                    anchors.fill: parent
+                    acceptedButtons: Qt.AllButtons
+                    onWheel: wheel.accepted = true
+                }
+
+                source: UM.Controller.activeStage.mainComponent
+            }
+
+            Loader
+            {
                 id: sidebar
 
                 property bool collapsed: false;
@@ -453,29 +476,6 @@ UM.MainWindow
                         collapseSidebarAnimation.start();
                     }
                 }
-            }
-
-            Loader
-            {
-                id: main
-
-                anchors
-                {
-                    top: topbar.bottom
-                    bottom: parent.bottom
-                    left: parent.left
-                    right: sidebar.left
-                }
-
-                MouseArea
-                {
-                    visible: UM.Controller.activeStage.mainComponent != ""
-                    anchors.fill: parent
-                    acceptedButtons: Qt.AllButtons
-                    onWheel: wheel.accepted = true
-                }
-
-                source: UM.Controller.activeStage.mainComponent
             }
 
             UM.MessageStack

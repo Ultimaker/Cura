@@ -117,7 +117,7 @@ class MachineManager(QObject):
         self._auto_hotends_changed = {}
 
         self._material_incompatible_message = Message(catalog.i18nc("@info:status",
-                                              "The selected material is incompatible with the selected machine or configuration."),
+                                                "The selected material is incompatible with the selected machine or configuration."),
                                                 title = catalog.i18nc("@info:title", "Incompatible Material"))
 
         containers = ContainerRegistry.getInstance().findInstanceContainers(id = self.activeMaterialId)
@@ -135,7 +135,7 @@ class MachineManager(QObject):
     activeStackValidationChanged = pyqtSignal()  # Emitted whenever a validation inside active container is changed
     stacksValidationChanged = pyqtSignal()  # Emitted whenever a validation is changed
 
-    blurSettings = pyqtSignal() # Emitted to force fields in the advanced sidebar to un-focus, so they update properly
+    blurSettings = pyqtSignal()  # Emitted to force fields in the advanced sidebar to un-focus, so they update properly
 
     outputDevicesChanged = pyqtSignal()
 
@@ -144,8 +144,7 @@ class MachineManager(QObject):
             printer_output_device.hotendIdChanged.disconnect(self._onHotendIdChanged)
             printer_output_device.materialIdChanged.disconnect(self._onMaterialIdChanged)
 
-        self._printer_output_devices.clear()
-
+        self._printer_output_devices = []
         for printer_output_device in Application.getInstance().getOutputDeviceManager().getOutputDevices():
             if isinstance(printer_output_device, PrinterOutputDevice):
                 self._printer_output_devices.append(printer_output_device)
@@ -170,58 +169,70 @@ class MachineManager(QObject):
     def totalNumberOfSettings(self) -> int:
         return len(ContainerRegistry.getInstance().findDefinitionContainers(id = "fdmprinter")[0].getAllKeys())
 
-    def _onHotendIdChanged(self, index: Union[str, int], hotend_id: str) -> None:
-        if not self._global_container_stack:
+    def _onHotendIdChanged(self):
+        if not self._global_container_stack or not self._printer_output_devices:
+            return
+        
+        active_printer_model = self._printer_output_devices[0].activePrinter
+        if not active_printer_model:
             return
 
-        containers = ContainerRegistry.getInstance().findInstanceContainersMetadata(type = "variant", definition = self._global_container_stack.definition.getId(), name = hotend_id)
-        if containers:  # New material ID is known
-            extruder_manager = ExtruderManager.getInstance()
-            machine_id = self.activeMachineId
-            extruders = extruder_manager.getMachineExtruders(machine_id)
-            matching_extruder = None
-            for extruder in extruders:
-                if str(index) == extruder.getMetaDataEntry("position"):
-                    matching_extruder = extruder
-                    break
-            if matching_extruder and matching_extruder.variant.getName() != hotend_id:
-                # Save the material that needs to be changed. Multiple changes will be handled by the callback.
-                self._auto_hotends_changed[str(index)] = containers[0]["id"]
-                self._printer_output_devices[0].materialHotendChangedMessage(self._materialHotendChangedCallback)
-        else:
-            Logger.log("w", "No variant found for printer definition %s with id %s" % (self._global_container_stack.definition.getId(), hotend_id))
+        change_found = False
+        machine_id = self.activeMachineId
+        extruders = sorted(ExtruderManager.getInstance().getMachineExtruders(machine_id),
+                           key=lambda k: k.getMetaDataEntry("position"))
 
-    def _onMaterialIdChanged(self, index: Union[str, int], material_id: str):
-        if not self._global_container_stack:
+        for extruder_model, extruder in zip(active_printer_model.extruders, extruders):
+            containers = ContainerRegistry.getInstance().findInstanceContainersMetadata(type="variant",
+                                                                                        definition=self._global_container_stack.definition.getId(),
+                                                                                        name=extruder_model.hotendID)
+            if containers:
+                # The hotend ID is known.
+                machine_id = self.activeMachineId
+                if extruder.variant.getName() != extruder_model.hotendID:
+                    change_found = True
+                    self._auto_hotends_changed[extruder.getMetaDataEntry("position")] = containers[0]["id"]
+
+        if change_found:
+            # A change was found, let the output device handle this.
+            self._printer_output_devices[0].materialHotendChangedMessage(self._materialHotendChangedCallback)
+
+    def _onMaterialIdChanged(self):
+        if not self._global_container_stack or not self._printer_output_devices:
             return
 
-        definition_id = "fdmprinter"
-        if self._global_container_stack.getMetaDataEntry("has_machine_materials", False):
-            definition_id = self.activeQualityDefinitionId
-        extruder_manager = ExtruderManager.getInstance()
-        containers = ContainerRegistry.getInstance().findInstanceContainersMetadata(type = "material", definition = definition_id, GUID = material_id)
-        if containers:  # New material ID is known
-            extruders = list(extruder_manager.getMachineExtruders(self.activeMachineId))
-            matching_extruder = None
-            for extruder in extruders:
-                if str(index) == extruder.getMetaDataEntry("position"):
-                    matching_extruder = extruder
-                    break
+        active_printer_model = self._printer_output_devices[0].activePrinter
+        if not active_printer_model:
+            return
 
-            if matching_extruder and matching_extruder.material.getMetaDataEntry("GUID") != material_id:
-                # Save the material that needs to be changed. Multiple changes will be handled by the callback.
-                if self._global_container_stack.definition.getMetaDataEntry("has_variants") and matching_extruder.variant:
-                    variant_id = self.getQualityVariantId(self._global_container_stack.definition, matching_extruder.variant)
-                    for container in containers:
-                        if container.get("variant") == variant_id:
-                            self._auto_materials_changed[str(index)] = container["id"]
-                            break
-                else:
-                    # Just use the first result we found.
-                    self._auto_materials_changed[str(index)] = containers[0]["id"]
-                self._printer_output_devices[0].materialHotendChangedMessage(self._materialHotendChangedCallback)
-        else:
-            Logger.log("w", "No material definition found for printer definition %s and GUID %s" % (definition_id, material_id))
+        change_found = False
+        machine_id = self.activeMachineId
+        extruders = sorted(ExtruderManager.getInstance().getMachineExtruders(machine_id),
+                           key=lambda k: k.getMetaDataEntry("position"))
+
+        for extruder_model, extruder in zip(active_printer_model.extruders, extruders):
+            if extruder_model.activeMaterial is None:
+                continue
+            containers = ContainerRegistry.getInstance().findInstanceContainersMetadata(type="material",
+                                                                                        definition=self._global_container_stack.definition.getId(),
+                                                                                        GUID=extruder_model.activeMaterial.guid)
+            if containers:
+                # The material is known.
+                if extruder.material.getMetaDataEntry("GUID") != extruder_model.activeMaterial.guid:
+                    change_found = True
+                    if self._global_container_stack.definition.getMetaDataEntry("has_variants") and extruder.variant:
+                        variant_id = self.getQualityVariantId(self._global_container_stack.definition,
+                                                              extruder.variant)
+                        for container in containers:
+                            if container.get("variant") == variant_id:
+                                self._auto_materials_changed[extruder.getMetaDataEntry("position")] = container["id"]
+                                break
+                    else:
+                        # Just use the first result we found.
+                        self._auto_materials_changed[extruder.getMetaDataEntry("position")] = containers[0]["id"]
+        if change_found:
+            # A change was found, let the output device handle this.
+            self._printer_output_devices[0].materialHotendChangedMessage(self._materialHotendChangedCallback)
 
     def _materialHotendChangedCallback(self, button):
         if button == QMessageBox.No:

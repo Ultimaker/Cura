@@ -1,4 +1,4 @@
-// Copyright (c) 2015 Ultimaker B.V.
+// Copyright (c) 2017 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.2
@@ -34,44 +34,22 @@ UM.Dialog
             }
 
             text: {
-                if (manager.errorCode == 0)
+                switch (manager.firmwareUpdateState)
                 {
-                    if (manager.firmwareUpdateCompleteStatus)
-                    {
-                        //: Firmware update status label
-                        return catalog.i18nc("@label","Firmware update completed.")
-                    }
-                    else if (manager.progress == 0)
-                    {
-                        //: Firmware update status label
-                        return catalog.i18nc("@label","Starting firmware update, this may take a while.")
-                    }
-                    else
-                    {
-                        //: Firmware update status label
+                    case 0:
+                        return "" //Not doing anything (eg; idling)
+                    case 1:
                         return catalog.i18nc("@label","Updating firmware.")
-                    }
-                }
-                else
-                {
-                    switch (manager.errorCode)
-                    {
-                        case 1:
-                            //: Firmware update status label
-                            return catalog.i18nc("@label","Firmware update failed due to an unknown error.")
-                        case 2:
-                            //: Firmware update status label
-                            return catalog.i18nc("@label","Firmware update failed due to an communication error.")
-                        case 3:
-                            //: Firmware update status label
-                            return catalog.i18nc("@label","Firmware update failed due to an input/output error.")
-                        case 4:
-                            //: Firmware update status label
-                            return catalog.i18nc("@label","Firmware update failed due to missing firmware.")
-                        default:
-                            //: Firmware update status label
-                            return catalog.i18nc("@label", "Unknown error code: %1").arg(manager.errorCode)
-                    }
+                    case 2:
+                        return catalog.i18nc("@label","Firmware update completed.")
+                    case 3:
+                        return catalog.i18nc("@label","Firmware update failed due to an unknown error.")
+                    case 4:
+                        return catalog.i18nc("@label","Firmware update failed due to an communication error.")
+                    case 5:
+                        return catalog.i18nc("@label","Firmware update failed due to an input/output error.")
+                    case 6:
+                        return catalog.i18nc("@label","Firmware update failed due to missing firmware.")
                 }
             }
 
@@ -81,16 +59,15 @@ UM.Dialog
         ProgressBar
         {
             id: prog
-            value: manager.firmwareUpdateCompleteStatus ? 100 : manager.progress
+            value: manager.firmwareProgress
             minimumValue: 0
             maximumValue: 100
-            indeterminate: (manager.progress < 1) && (!manager.firmwareUpdateCompleteStatus)
+            indeterminate: manager.firmwareProgress < 1 && manager.firmwareProgress > 0
             anchors
             {
                 left: parent.left;
                 right: parent.right;
             }
-
         }
 
         SystemPalette

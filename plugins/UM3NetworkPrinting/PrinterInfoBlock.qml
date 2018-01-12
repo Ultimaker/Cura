@@ -22,16 +22,16 @@ Rectangle
         {
             return "";
         }
-        if (printJob.time_total === 0)
+        if (printJob.timeTotal === 0)
         {
             return "";
         }
-        return Math.min(100, Math.round(printJob.time_elapsed / printJob.time_total * 100)) + "%";
+        return Math.min(100, Math.round(printJob.timeElapsed / printJob.timeTotal * 100)) + "%";
     }
 
     function printerStatusText(printer)
     {
-        switch (printer.status)
+        switch (printer.state)
         {
             case "pre_print":
                 return catalog.i18nc("@label", "Preparing to print")
@@ -49,31 +49,23 @@ Rectangle
     }
 
     id: printerDelegate
-    property var printer
+
+    property var printer: null
+    property var printJob: printer != null ? printer.activePrintJob: null
 
     border.width: UM.Theme.getSize("default_lining").width
     border.color: mouse.containsMouse ? emphasisColor : lineColor
     z: mouse.containsMouse ? 1 : 0  // Push this item up a bit on mouse over to ensure that the highlighted bottom border is visible.
 
-    property var printJob:
-    {
-        if (printer.reserved_by != null)
-        {
-            // Look in another list.
-            return OutputDevice.printJobsByUUID[printer.reserved_by]
-        }
-        return OutputDevice.printJobsByPrinterUUID[printer.uuid]
-    }
-
     MouseArea
     {
         id: mouse
         anchors.fill:parent
-        onClicked: OutputDevice.selectPrinter(printer.unique_name, printer.friendly_name)
+        onClicked: OutputDevice.setActivePrinter(printer)
         hoverEnabled: true;
 
         // Only clickable if no printer is selected
-        enabled: OutputDevice.selectedPrinterName == "" && printer.status !== "unreachable"
+        enabled: OutputDevice.activePrinter == null && printer.state !== "unreachable"
     }
 
     Row
@@ -122,7 +114,7 @@ Rectangle
                 anchors.left: parent.left
                 anchors.right: parent.right
                 anchors.rightMargin: UM.Theme.getSize("default_margin").width
-                text: printJob != null ? getPrettyTime(printJob.time_total) : ""
+                text: printJob != null ? getPrettyTime(printJob.timeTotal) : ""
                 opacity: 0.65
                 font: UM.Theme.getFont("default")
                 elide: Text.ElideRight
@@ -140,7 +132,7 @@ Rectangle
                 anchors.top: parent.top
                 anchors.left: parent.left
                 width: Math.floor(parent.width / 2 - UM.Theme.getSize("default_margin").width - showCameraIcon.width)
-                text: printer.friendly_name
+                text: printer.name
                 font: UM.Theme.getFont("default_bold")
                 elide: Text.ElideRight
             }
@@ -150,7 +142,7 @@ Rectangle
                 id: printerTypeLabel
                 anchors.top: printerNameLabel.bottom
                 width: Math.floor(parent.width / 2 - UM.Theme.getSize("default_margin").width)
-                text: printer.machine_variant
+                text: printer.type
                 anchors.left: parent.left
                 elide: Text.ElideRight
                 font: UM.Theme.getFont("very_small")
@@ -166,7 +158,7 @@ Rectangle
                 anchors.right: printProgressArea.left
                 anchors.rightMargin: UM.Theme.getSize("default_margin").width
                 color: emphasisColor
-                opacity: printer != null && printer.status === "unreachable" ? 0.3 : 1
+                opacity: printer != null && printer.state === "unreachable" ? 0.3 : 1
 
                 Image
                 {
@@ -192,7 +184,7 @@ Rectangle
                 {
                     id: leftExtruderInfo
                     width: Math.floor((parent.width - extruderSeperator.width) / 2)
-                    printCoreConfiguration: printer.configuration[0]
+                    printCoreConfiguration: printer.extruders[0]
                 }
 
                 Rectangle
@@ -207,7 +199,7 @@ Rectangle
                 {
                     id: rightExtruderInfo
                     width: Math.floor((parent.width - extruderSeperator.width) / 2)
-                    printCoreConfiguration: printer.configuration[1]
+                    printCoreConfiguration: printer.extruders[1]
                 }
             }
 
@@ -225,9 +217,9 @@ Rectangle
                     if(printJob != null)
                     {
                         var extendStates = ["sent_to_printer", "wait_for_configuration", "printing", "pre_print", "post_print", "wait_cleanup", "queued"];
-                        return extendStates.indexOf(printJob.status) !== -1;
+                        return extendStates.indexOf(printJob.state) !== -1;
                     }
-                    return !printer.enabled;
+                    return printer.state == "disabled"
                 }
 
                 Item  // Status and Percent
@@ -235,7 +227,7 @@ Rectangle
                     id: printProgressTitleBar
 
                     property var showPercent: {
-                        return printJob != null && (["printing", "post_print", "pre_print", "sent_to_printer"].indexOf(printJob.status) !== -1);
+                        return printJob != null && (["printing", "post_print", "pre_print", "sent_to_printer"].indexOf(printJob.state) !== -1);
                     }
 
                     width: parent.width
@@ -252,19 +244,19 @@ Rectangle
                         anchors.rightMargin: UM.Theme.getSize("default_margin").width
                         anchors.verticalCenter: parent.verticalCenter
                         text: {
-                            if (!printer.enabled)
+                            if (printer.state == "disabled")
                             {
                                 return catalog.i18nc("@label:status", "Disabled");
                             }
 
-                            if (printer.status === "unreachable")
+                            if (printer.state === "unreachable")
                             {
                                 return printerStatusText(printer);
                             }
 
                             if (printJob != null)
                             {
-                                switch (printJob.status)
+                                switch (printJob.state)
                                 {
                                     case "printing":
                                     case "post_print":
@@ -277,14 +269,7 @@ Rectangle
                                     case "sent_to_printer":
                                         return catalog.i18nc("@label", "Preparing to print")
                                     case "queued":
-                                        if (printJob.configuration_changes_required != null && printJob.configuration_changes_required.length !== 0)
-                                        {
                                             return catalog.i18nc("@label:status", "Action required");
-                                        }
-                                        else
-                                        {
-                                            return "";
-                                        }
                                     case "pausing":
                                     case "paused":
                                         return catalog.i18nc("@label:status", "Paused");
@@ -328,26 +313,23 @@ Rectangle
                         visible: !printProgressTitleBar.showPercent
 
                         source: {
-                            if (!printer.enabled)
+                            if (printer.state == "disabled")
                             {
                                 return "blocked-icon.svg";
                             }
 
-                            if (printer.status === "unreachable")
+                            if (printer.state === "unreachable")
                             {
                                 return "";
                             }
 
                             if (printJob != null)
                             {
-                                if(printJob.status === "queued")
+                                if(printJob.state === "queued")
                                 {
-                                    if (printJob.configuration_changes_required != null && printJob.configuration_changes_required.length !== 0)
-                                    {
-                                        return "action-required-icon.svg";
-                                    }
+                                    return "action-required-icon.svg";
                                 }
-                                else if (printJob.status === "wait_cleanup")
+                                else if (printJob.state === "wait_cleanup")
                                 {
                                     return "checkmark-icon.svg";
                                 }
@@ -384,23 +366,23 @@ Rectangle
                     {
                         text:
                         {
-                            if (!printer.enabled)
+                            if (printer.state == "disabled")
                             {
                                 return catalog.i18nc("@label", "Not accepting print jobs");
                             }
 
-                            if (printer.status === "unreachable")
+                            if (printer.state === "unreachable")
                             {
                                 return "";
                             }
 
                             if(printJob != null)
                             {
-                                switch (printJob.status)
+                                switch (printJob.state)
                                 {
                                 case "printing":
                                 case "post_print":
-                                    return catalog.i18nc("@label", "Finishes at: ") + OutputDevice.getTimeCompleted(printJob.time_total - printJob.time_elapsed)
+                                    return catalog.i18nc("@label", "Finishes at: ") + OutputDevice.getTimeCompleted(printJob.timeTotal - printJob.timeElapsed)
                                 case "wait_cleanup":
                                     return catalog.i18nc("@label", "Clear build plate")
                                 case "sent_to_printer":
@@ -409,10 +391,7 @@ Rectangle
                                 case "wait_for_configuration":
                                     return catalog.i18nc("@label", "Not accepting print jobs")
                                 case "queued":
-                                    if (printJob.configuration_changes_required != undefined)
-                                    {
-                                        return catalog.i18nc("@label", "Waiting for configuration change");
-                                    }
+                                    return catalog.i18nc("@label", "Waiting for configuration change");
                                 default:
                                     return "";
                                 }
@@ -432,7 +411,7 @@ Rectangle
                         text: {
                           if(printJob != null)
                           {
-                              if(printJob.status == "printing" || printJob.status == "post_print")
+                              if(printJob.state == "printing" || printJob.state == "post_print")
                               {
                                   return OutputDevice.getDateCompleted(printJob.time_total - printJob.time_elapsed)
                               }
