@@ -30,7 +30,7 @@ class CuraSceneController(QObject):
             source = args[0]
         else:
             source = None
-        if not issubclass(type(source), SceneNode):
+        if not isinstance(source, SceneNode):
             return
         max_build_plate = self._calcMaxBuildPlate()
         changed = False
