@@ -142,6 +142,7 @@ class CuraApplication(QtApplication):
         if not hasattr(sys, "frozen"):
             Resources.addSearchPath(os.path.join(os.path.abspath(os.path.dirname(__file__)), "..", "resources"))
 
+        self._use_gui = True
         self._open_file_queue = []  # Files to open when plug-ins are loaded.
 
         # Need to do this before ContainerRegistry tries to load the machines
@@ -451,7 +452,7 @@ class CuraApplication(QtApplication):
         elif choice == "always_keep":
             # don't show dialog and KEEP the profile
             self.discardOrKeepProfileChangesClosed("keep")
-        else:
+        elif self._use_gui:
             # ALWAYS ask whether to keep or discard the profile
             self.showDiscardOrKeepProfileChanges.emit()
             has_user_interaction = True
@@ -676,10 +677,13 @@ class CuraApplication(QtApplication):
 
     ##  Run Cura without GUI elements and interaction (server mode).
     def runWithoutGUI(self):
+        self._use_gui = False
         self.closeSplash()
 
     ##  Run Cura with GUI (desktop mode).
     def runWithGUI(self):
+        self._use_gui = True
+
         self.showSplashMessage(self._i18n_catalog.i18nc("@info:progress", "Setting up scene..."))
 
         controller = self.getController()
@@ -731,6 +735,9 @@ class CuraApplication(QtApplication):
 
         # Hide the splash screen
         self.closeSplash()
+
+    def hasGui(self):
+        return self._use_gui
 
     def getMachineManager(self, *args) -> MachineManager:
         if self._machine_manager is None:
@@ -1344,6 +1351,7 @@ class CuraApplication(QtApplication):
         pass
 
     fileLoaded = pyqtSignal(str)
+    fileCompleted = pyqtSignal(str)
 
     def _reloadMeshFinished(self, job):
         # TODO; This needs to be fixed properly. We now make the assumption that we only load a single mesh!
@@ -1352,6 +1360,10 @@ class CuraApplication(QtApplication):
             job._node.setMeshData(mesh_data)
         else:
             Logger.log("w", "Could not find a mesh in reloaded node.")
+
+    ##  Import a file from disk
+    def openFile(self, filename):
+        self._openFile(filename)
 
     def _openFile(self, filename):
         self.readLocalFile(QUrl.fromLocalFile(filename))
@@ -1513,6 +1525,8 @@ class CuraApplication(QtApplication):
             op = AddSceneNodeOperation(node, scene.getRoot())
             op.push()
             scene.sceneChanged.emit(node)
+
+        self.fileCompleted.emit(filename)
 
     def addNonSliceableExtension(self, extension):
         self._non_sliceable_extensions.append(extension)
