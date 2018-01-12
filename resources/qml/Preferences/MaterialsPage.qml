@@ -153,15 +153,6 @@ UM.ManagementPage
                 forceActiveFocus()
                 Cura.ContainerManager.createMaterial()
             }
-
-            Connections
-            {
-                target: base.objectList.model
-                onItemsChanged:
-                {
-                    base.objectList.currentIndex = base.getIndexById(Cura.MachineManager.activeMaterialId);
-                }
-            }
         },
 
         // Duplicate button
