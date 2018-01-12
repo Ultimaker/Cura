@@ -80,8 +80,11 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
         Application.getInstance().getController().setActiveStage("MonitorStage")
         self.writeStarted.emit(self)
 
-        self._gcode = getattr(Application.getInstance().getController().getScene(), "gcode_list", [])
-        if not self._gcode:
+        gcode_dict = getattr(Application.getInstance().getController().getScene(), "gcode_dict", [])
+        active_build_plate_id = Application.getInstance().getBuildPlateModel().activeBuildPlate
+        gcode_list = gcode_dict[active_build_plate_id]
+
+        if not gcode_list:
             # Unable to find g-code. Nothing to send
             return
 
