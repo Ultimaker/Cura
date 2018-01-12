@@ -69,6 +69,8 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
         self.setShortDescription(i18n_catalog.i18nc("@action:button Preceded by 'Ready to'.", "Print over network"))
         self.setDescription(i18n_catalog.i18nc("@properties:tooltip", "Print over network"))
 
+        self.setConnectionText(i18n_catalog.i18nc("@info:status", "Connected over the network"))
+
         self._printer_uuid_to_unique_name_mapping = {}
 
         self._finished_jobs = []
