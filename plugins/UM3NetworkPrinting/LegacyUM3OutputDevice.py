@@ -78,10 +78,16 @@ class LegacyUM3OutputDevice(NetworkedPrinterOutputDevice):
 
     def _onAuthenticationStateChanged(self):
         # We only accept commands if we are authenticated.
+        self._setAcceptsCommands(self._authentication_state == AuthState.Authenticated)
+
         if self._authentication_state == AuthState.Authenticated:
-            self._setAcceptsCommands(True)
-        else:
-            self._setAcceptsCommands(False)
+            self.setConnectionText(i18n_catalog.i18nc("@info:status", "Connected over the network."))
+        elif self._authentication_state == AuthState.AuthenticationRequested:
+            self.setConnectionText(i18n_catalog.i18nc("@info:status",
+                                                      "Connected over the network. Please approve the access request on the printer."))
+        elif self._authentication_state == AuthState.AuthenticationDenied:
+            self.setConnectionText(i18n_catalog.i18nc("@info:status", "Connected over the network. No access to control the printer."))
+
 
     def _setupMessages(self):
         self._authentication_requested_message = Message(i18n_catalog.i18nc("@info:status",

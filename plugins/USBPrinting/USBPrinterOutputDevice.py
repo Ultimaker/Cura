@@ -80,6 +80,8 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
         self._firmware_progress = 0
         self._firmware_update_state = FirmwareUpdateState.idle
 
+        self.setConnectionText(catalog.i18nc("@info:status", "Connected via USB"))
+
         # Queue for commands that need to be send. Used when command is sent when a print is active.
         self._command_queue = Queue()
 
