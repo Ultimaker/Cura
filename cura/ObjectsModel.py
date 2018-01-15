@@ -28,7 +28,7 @@ class ObjectsModel(ListModel):
         active_build_plate_number = self._build_plate_number
         group_nr = 1
         for node in DepthFirstIterator(Application.getInstance().getController().getScene().getRoot()):
-            if not issubclass(type(node), SceneNode):
+            if not isinstance(node, SceneNode):
                 continue
             if (not node.getMeshData() and not node.callDecoration("getLayerData")) and not node.callDecoration("isGroup"):
                 continue

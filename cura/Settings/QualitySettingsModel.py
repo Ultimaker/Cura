@@ -1,8 +1,6 @@
 # Copyright (c) 2017 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-import collections
-
 from PyQt5.QtCore import pyqtProperty, pyqtSignal, Qt
 
 from UM.Logger import Logger
@@ -41,6 +39,8 @@ class QualitySettingsModel(UM.Qt.ListModel.ListModel):
         self.addRoleName(self.ProfileValueSourceRole, "profile_value_source")
         self.addRoleName(self.UserValueRole, "user_value")
         self.addRoleName(self.CategoryRole, "category")
+
+        self._empty_quality = self._container_registry.findInstanceContainers(id = "empty_quality")[0]
 
     def setExtruderId(self, extruder_id):
         if extruder_id != self._extruder_id:
@@ -107,77 +107,87 @@ class QualitySettingsModel(UM.Qt.ListModel.ListModel):
         else:
             quality_changes_container = containers[0]
 
-            criteria = {
-                "type": "quality",
-                "quality_type": quality_changes_container.getMetaDataEntry("quality_type"),
-                "definition": quality_changes_container.getDefinition().getId()
-            }
+            if quality_changes_container.getMetaDataEntry("quality_type") == "not_supported":
+                quality_container = self._empty_quality
+            else:
+                criteria = {
+                    "type": "quality",
+                    "quality_type": quality_changes_container.getMetaDataEntry("quality_type"),
+                    "definition": quality_changes_container.getDefinition().getId()
+                }
 
-            quality_container = self._container_registry.findInstanceContainers(**criteria)
-            if not quality_container:
-                Logger.log("w", "Could not find a quality container matching quality changes %s", quality_changes_container.getId())
-                return
-            quality_container = quality_container[0]
+                quality_container = self._container_registry.findInstanceContainers(**criteria)
+                if not quality_container:
+                    Logger.log("w", "Could not find a quality container matching quality changes %s", quality_changes_container.getId())
+                    return
+
+                quality_container = quality_container[0]
 
         quality_type = quality_container.getMetaDataEntry("quality_type")
-        definition_id = Application.getInstance().getMachineManager().getQualityDefinitionId(quality_container.getDefinition())
-        definition = quality_container.getDefinition()
 
-        # Check if the definition container has a translation file.
-        definition_suffix = ContainerRegistry.getMimeTypeForContainer(type(definition)).preferredSuffix
-        catalog = i18nCatalog(os.path.basename(definition_id + "." + definition_suffix))
-        if catalog.hasTranslationLoaded():
-            self._i18n_catalog = catalog
+        if quality_type == "not_supported":
+            containers = []
+        else:
+            definition_id = Application.getInstance().getMachineManager().getQualityDefinitionId(quality_container.getDefinition())
+            definition = quality_container.getDefinition()
 
-        for file_name in quality_container.getDefinition().getInheritedFiles():
-            catalog = i18nCatalog(os.path.basename(file_name))
+            # Check if the definition container has a translation file.
+            definition_suffix = ContainerRegistry.getMimeTypeForContainer(type(definition)).preferredSuffix
+            catalog = i18nCatalog(os.path.basename(definition_id + "." + definition_suffix))
             if catalog.hasTranslationLoaded():
                 self._i18n_catalog = catalog
 
-        criteria = {"type": "quality", "quality_type": quality_type, "definition": definition_id}
+            for file_name in quality_container.getDefinition().getInheritedFiles():
+                catalog = i18nCatalog(os.path.basename(file_name))
+                if catalog.hasTranslationLoaded():
+                    self._i18n_catalog = catalog
 
-        if self._material_id and self._material_id != "empty_material":
-            criteria["material"] = self._material_id
+            criteria = {"type": "quality", "quality_type": quality_type, "definition": definition_id}
 
-        criteria["extruder"] = self._extruder_id
+            if self._material_id and self._material_id != "empty_material":
+                criteria["material"] = self._material_id
 
-        containers = self._container_registry.findInstanceContainers(**criteria)
-        if not containers:
-            # Try again, this time without extruder
-            new_criteria = criteria.copy()
-            new_criteria.pop("extruder")
-            containers = self._container_registry.findInstanceContainers(**new_criteria)
+            criteria["extruder"] = self._extruder_id
 
-        if not containers and "material" in criteria:
-            # Try again, this time without material
-            criteria.pop("material", None)
             containers = self._container_registry.findInstanceContainers(**criteria)
+            if not containers:
+                # Try again, this time without extruder
+                new_criteria = criteria.copy()
+                new_criteria.pop("extruder")
+                containers = self._container_registry.findInstanceContainers(**new_criteria)
 
-        if not containers:
-            # Try again, this time without material or extruder
-            criteria.pop("extruder") # "material" has already been popped
-            containers = self._container_registry.findInstanceContainers(**criteria)
+            if not containers and "material" in criteria:
+                # Try again, this time without material
+                criteria.pop("material", None)
+                containers = self._container_registry.findInstanceContainers(**criteria)
 
-        if not containers:
-            Logger.log("w", "Could not find any quality containers matching the search criteria %s" % str(criteria))
-            return
+            if not containers:
+                # Try again, this time without material or extruder
+                criteria.pop("extruder") # "material" has already been popped
+                containers = self._container_registry.findInstanceContainers(**criteria)
+
+            if not containers:
+                Logger.log("w", "Could not find any quality containers matching the search criteria %s" % str(criteria))
+                return
 
         if quality_changes_container:
-            criteria = {"type": "quality_changes", "quality_type": quality_type, "definition": definition_id, "name": quality_changes_container.getName()}
-            if self._extruder_definition_id != "":
-                extruder_definitions = self._container_registry.findDefinitionContainers(id = self._extruder_definition_id)
-                if extruder_definitions:
-                    criteria["extruder"] = Application.getInstance().getMachineManager().getQualityDefinitionId(extruder_definitions[0])
-                    criteria["name"] = quality_changes_container.getName()
+            if quality_type == "not_supported":
+                criteria = {"type": "quality_changes", "quality_type": quality_type, "name": quality_changes_container.getName()}
             else:
-                criteria["extruder"] = None
+                criteria = {"type": "quality_changes", "quality_type": quality_type, "definition": definition_id, "name": quality_changes_container.getName()}
+                if self._extruder_definition_id != "":
+                    extruder_definitions = self._container_registry.findDefinitionContainers(id = self._extruder_definition_id)
+                    if extruder_definitions:
+                        criteria["extruder"] = Application.getInstance().getMachineManager().getQualityDefinitionId(extruder_definitions[0])
+                        criteria["name"] = quality_changes_container.getName()
+                else:
+                    criteria["extruder"] = None
 
             changes = self._container_registry.findInstanceContainers(**criteria)
             if changes:
                 containers.extend(changes)
 
         global_container_stack = Application.getInstance().getGlobalContainerStack()
-        is_multi_extrusion = global_container_stack.getProperty("machine_extruder_count", "value") > 1
 
         current_category = ""
         for definition in definition_container.findDefinitions():
@@ -213,15 +223,14 @@ class QualitySettingsModel(UM.Qt.ListModel.ListModel):
             if profile_value is None and user_value is None:
                 continue
 
-            if is_multi_extrusion:
-                settable_per_extruder = global_container_stack.getProperty(definition.key, "settable_per_extruder")
-                # If a setting is not settable per extruder (global) and we're looking at an extruder tab, don't show this value.
-                if self._extruder_id != "" and not settable_per_extruder:
-                    continue
+            settable_per_extruder = global_container_stack.getProperty(definition.key, "settable_per_extruder")
+            # If a setting is not settable per extruder (global) and we're looking at an extruder tab, don't show this value.
+            if self._extruder_id != "" and not settable_per_extruder:
+                continue
 
-                # If a setting is settable per extruder (not global) and we're looking at global tab, don't show this value.
-                if self._extruder_id == "" and settable_per_extruder:
-                    continue
+            # If a setting is settable per extruder (not global) and we're looking at global tab, don't show this value.
+            if self._extruder_id == "" and settable_per_extruder:
+                continue
 
             label = definition.label
             if self._i18n_catalog:
