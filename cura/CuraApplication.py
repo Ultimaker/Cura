@@ -1063,7 +1063,8 @@ class CuraApplication(QtApplication):
         Logger.log("i", "Reseting print information")
         self._print_information = PrintInformation.PrintInformation()
         
-        self.getCuraSceneController().setActiveBuildPlate(0)  # Select first build plate
+        # stay on the same build plate
+        #self.getCuraSceneController().setActiveBuildPlate(0)  # Select first build plate
 
     ## Reset all translation on nodes with mesh data.
     @pyqtSlot()
