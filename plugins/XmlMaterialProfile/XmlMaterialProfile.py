@@ -187,7 +187,6 @@ class XmlMaterialProfile(InstanceContainer):
 
         machine_container_map = {}
         machine_nozzle_map = {}
-        machine_buildplate_map = {}
 
         all_containers = registry.findInstanceContainers(GUID = self.getMetaDataEntry("GUID"), base_file = self.getId())
         for container in all_containers:
@@ -203,7 +202,6 @@ class XmlMaterialProfile(InstanceContainer):
 
             variant = container.getMetaDataEntry("variant")
             if variant:
-                print("#############variant", variant)
                 machine_nozzle_map[definition_id][variant] = container
                 continue
 
@@ -262,34 +260,6 @@ class XmlMaterialProfile(InstanceContainer):
                     self._addSettingElement(builder, instance)
 
                 builder.end("hotend")
-
-            # Find all buildplate sub-profiles corresponding to this material and machine and add them to this profile.
-            for buildplate_id, buildplate in machine_buildplate_map[definition_id].items():
-                variant_containers = registry.findInstanceContainersMetadata(id = buildplate.getMetaDataEntry("variant"))
-                if not variant_containers:
-                    continue
-
-                # The buildplate identifier is not the containers name, but its "name".
-                builder.start("buildplate", {"id": variant_containers[0]["name"]})
-
-                # Compatible is a special case, as it's added as a meta data entry (instead of an instance).
-                compatible = buildplate.getMetaDataEntry("compatible")
-                if compatible is not None:
-                    builder.start("setting", {"key": "hardware compatible"})
-                    if compatible:
-                        builder.data("yes")
-                    else:
-                        builder.data("no")
-                    builder.end("setting")
-
-                for instance in buildplate.findInstances():
-                    if container.getInstance(instance.definition.key) and container.getProperty(instance.definition.key, "value") == instance.value:
-                        # If the settings match that of the machine profile, just skip since we inherit the machine profile.
-                        continue
-
-                    self._addSettingElement(builder, instance)
-
-                builder.end("buildplate")
 
             builder.end("machine")
 
