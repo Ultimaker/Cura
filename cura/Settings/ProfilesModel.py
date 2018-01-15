@@ -36,6 +36,8 @@ class ProfilesModel(InstanceContainersModel):
         Application.getInstance().getMachineManager().activeStackChanged.connect(self._update)
         Application.getInstance().getMachineManager().activeMaterialChanged.connect(self._update)
 
+        self._empty_quality = ContainerRegistry.getInstance().findContainers(id = "empty_quality")[0]
+
     # Factory function, used by QML
     @staticmethod
     def createProfilesModel(engine, js_engine):
@@ -72,11 +74,18 @@ class ProfilesModel(InstanceContainersModel):
         # The actual list of quality profiles come from the first extruder in the extruder list.
         result = QualityManager.getInstance().findAllUsableQualitiesForMachineAndExtruders(global_container_stack, extruder_stacks)
 
+        # append empty quality if it's not there
+        if not any(q.getId() == self._empty_quality.getId() for q in result):
+            result.append(self._empty_quality)
+
         # The usable quality types are set
         quality_type_set = set([x.getMetaDataEntry("quality_type") for x in result])
 
         # Fetch all qualities available for this machine and the materials selected in extruders
         all_qualities = QualityManager.getInstance().findAllQualitiesForMachineAndMaterials(global_stack_definition, materials)
+        # append empty quality if it's not there
+        if not any(q.getId() == self._empty_quality.getId() for q in all_qualities):
+            all_qualities.append(self._empty_quality)
 
         # If in the all qualities there is some of them that are not available due to incompatibility with materials
         # we also add it so that they will appear in the slide quality bar. However in recomputeItems will be marked as
@@ -85,13 +94,7 @@ class ProfilesModel(InstanceContainersModel):
             if quality.getMetaDataEntry("quality_type") not in quality_type_set:
                 result.append(quality)
 
-        # if still profiles are found, add a single empty_quality ("Not supported") instance to the drop down list
-        if len(result) == 0:
-            # If not qualities are found we dynamically create a not supported container for this machine + material combination
-            not_supported_container = ContainerRegistry.getInstance().findContainers(id = "empty_quality")[0]
-            result.append(not_supported_container)
-
-        return {item.getId():item for item in result}, {} #Only return true profiles for now, no metadata. The quality manager is not able to get only metadata yet.
+        return {item.getId(): item for item in result}, {} #Only return true profiles for now, no metadata. The quality manager is not able to get only metadata yet.
 
     ##  Re-computes the items in this model, and adds the layer height role.
     def _recomputeItems(self):
@@ -114,7 +117,6 @@ class ProfilesModel(InstanceContainersModel):
         # active machine and material, and later yield the right ones.
         tmp_all_quality_items = OrderedDict()
         for item in super()._recomputeItems():
-
             profiles = container_registry.findContainersMetadata(id = item["id"])
             if not profiles or "quality_type" not in profiles[0]:
                 quality_type = ""

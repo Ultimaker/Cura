@@ -42,5 +42,7 @@ class QualityAndUserProfilesModel(ProfilesModel):
                                      qc.getMetaDataEntry("extruder") == active_extruder.definition.getId())}
 
         result = filtered_quality_changes
-        result.update({q.getId():q for q in quality_list})
+        for q in quality_list:
+            if q.getId() != "empty_quality":
+                result[q.getId()] = q
         return result, {} #Only return true profiles for now, no metadata. The quality manager is not able to get only metadata yet.

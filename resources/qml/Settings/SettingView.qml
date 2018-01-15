@@ -63,11 +63,9 @@ Item
             menu: ProfileMenu { }
 
             function generateActiveQualityText () {
-                var result = catalog.i18nc("@", "No Profile Available") // default text
+                result = Cura.MachineManager.activeQualityName
 
                 if (Cura.MachineManager.isActiveQualitySupported ) {
-                    result = Cura.MachineManager.activeQualityName
-
                     if (Cura.MachineManager.activeQualityLayerHeight > 0) {
                         result += " <font color=\"" + UM.Theme.getColor("text_detail") + "\">"
                         result += " - "
