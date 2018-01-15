@@ -63,9 +63,9 @@ Item
             menu: ProfileMenu { }
 
             function generateActiveQualityText () {
-                result = Cura.MachineManager.activeQualityName
+                var result = Cura.MachineManager.activeQualityName;
 
-                if (Cura.MachineManager.isActiveQualitySupported ) {
+                if (Cura.MachineManager.isActiveQualitySupported) {
                     if (Cura.MachineManager.activeQualityLayerHeight > 0) {
                         result += " <font color=\"" + UM.Theme.getColor("text_detail") + "\">"
                         result += " - "
