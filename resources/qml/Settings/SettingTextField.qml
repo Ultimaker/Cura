@@ -102,6 +102,17 @@ SettingItem
 
         TextInput
         {
+            Timer
+            {
+                id: inputTimer
+                interval: 1000
+                running: false
+                repeat: false
+                onTriggered: {
+                    propertyProvider.setPropertyValue("value", input.text)
+                }
+            }
+
             id: input
 
             anchors
@@ -131,15 +142,7 @@ SettingItem
                 }
                 if (textHasChanged)
                 {
-                    propertyProvider.setPropertyValue("value", text)
-                }
-            }
-
-            onEditingFinished:
-            {
-                if (textHasChanged)
-                {
-                    propertyProvider.setPropertyValue("value", text)
+                    inputTimer.restart()
                 }
             }
 
