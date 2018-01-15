@@ -20,14 +20,34 @@ UM.MainWindow
     viewportRect: Qt.rect(0, 0, (base.width - sidebar.width) / base.width, 1.0)
     property bool showPrintMonitor: false
 
+    // This connection is here to support legacy printer output devices that use the showPrintMonitor signal on Application to switch to the monitor stage
+    // It should be phased out in newer plugin versions.
     Connections
     {
-        target: Printer
+        target: CuraApplication
         onShowPrintMonitor: {
             if (show) {
-                topbar.startMonitoringPrint()
+                UM.Controller.setActiveStage("MonitorStage")
             } else {
-                topbar.stopMonitoringPrint()
+                UM.Controller.setActiveStage("PrepareStage")
+            }
+        }
+    }
+
+    onWidthChanged:
+    {
+        // If slidebar is collapsed then it should be invisible
+        // otherwise after the main_window resize the sidebar will be fully re-drawn
+        if (sidebar.collapsed){
+            if (sidebar.visible == true){
+                sidebar.visible = false
+                sidebar.initialWidth = 0
+            }
+        }
+        else{
+            if (sidebar.visible == false){
+                sidebar.visible = true
+                sidebar.initialWidth = UM.Theme.getSize("sidebar").width
             }
         }
     }
@@ -116,7 +136,7 @@ UM.MainWindow
                 MenuItem
                 {
                     id: saveWorkspaceMenu
-                    text: catalog.i18nc("@title:menu menubar:file","Save project")
+                    text: catalog.i18nc("@title:menu menubar:file","Save &Project...")
                     onTriggered:
                     {
                         if(UM.Preferences.getValue("cura/dialog_on_project_save"))
@@ -331,7 +351,7 @@ UM.MainWindow
                 text: catalog.i18nc("@action:button","Open File");
                 iconSource: UM.Theme.getIcon("load")
                 style: UM.Theme.styles.tool_button
-                tooltip: '';
+                tooltip: ""
                 anchors
                 {
                     top: topbar.bottom;
@@ -355,65 +375,107 @@ UM.MainWindow
                 }
             }
 
+            ObjectsList
+            {
+                id: objectsList;
+                visible: UM.Preferences.getValue("cura/use_multi_build_plate");
+                anchors
+                {
+                    bottom: parent.bottom;
+                    left: parent.left;
+                }
+
+            }
+
             Topbar
             {
                 id: topbar
-                anchors.left:parent.left
+                anchors.left: parent.left
                 anchors.right: parent.right
                 anchors.top: parent.top
-                monitoringPrint: base.showPrintMonitor
-                onStartMonitoringPrint: base.showPrintMonitor = true
-                onStopMonitoringPrint: base.showPrintMonitor = false
-            }
-
-            Sidebar
-            {
-                id: sidebar;
-
-                anchors
-                {
-                    top: topbar.bottom;
-                    bottom: parent.bottom;
-                    right: parent.right;
-                }
-                z: 1
-                width: UM.Theme.getSize("sidebar").width;
-                monitoringPrint: base.showPrintMonitor
-            }
-
-            Rectangle
-            {
-                id: viewportOverlay
-
-                color: UM.Theme.getColor("viewport_overlay")
-                anchors
-                {
-                    top: topbar.bottom
-                    bottom: parent.bottom
-                    left:parent.left
-                    right: sidebar.left
-                }
-                visible: opacity > 0
-                opacity: base.showPrintMonitor ? 1 : 0
-
-                MouseArea {
-                    anchors.fill: parent
-                    acceptedButtons: Qt.AllButtons
-
-                    onWheel: wheel.accepted = true
-                }
             }
 
             Loader
             {
-                sourceComponent: Cura.MachineManager.printerOutputDevices.length > 0 ? Cura.MachineManager.printerOutputDevices[0].monitorItem: null
-                visible: base.showPrintMonitor
-                anchors.horizontalCenter: parent.horizontalCenter
-                anchors.verticalCenter: parent.verticalCenter
-                anchors.horizontalCenterOffset: - UM.Theme.getSize("sidebar").width / 2
-                anchors.verticalCenterOffset: UM.Theme.getSize("sidebar_header").height / 2
-                property real maximumWidth: viewportOverlay.width
-                property real maximumHeight: viewportOverlay.height
+                id: main
+
+                anchors
+                {
+                    top: topbar.bottom
+                    bottom: parent.bottom
+                    left: parent.left
+                    right: sidebar.left
+                }
+
+                MouseArea
+                {
+                    visible: UM.Controller.activeStage.mainComponent != ""
+                    anchors.fill: parent
+                    acceptedButtons: Qt.AllButtons
+                    onWheel: wheel.accepted = true
+                }
+
+                source: UM.Controller.activeStage.mainComponent
+            }
+
+            Loader
+            {
+                id: sidebar
+
+                property bool collapsed: false;
+                property var initialWidth: UM.Theme.getSize("sidebar").width;
+
+                function callExpandOrCollapse() {
+                    if (collapsed) {
+                        sidebar.visible = true;
+                        sidebar.initialWidth = UM.Theme.getSize("sidebar").width;
+                        viewportRect = Qt.rect(0, 0, (base.width - sidebar.width) / base.width, 1.0);
+                        expandSidebarAnimation.start();
+                    } else {
+                        viewportRect = Qt.rect(0, 0, 1, 1.0);
+                        collapseSidebarAnimation.start();
+                    }
+                    collapsed = !collapsed;
+                    UM.Preferences.setValue("cura/sidebar_collapsed", collapsed);
+                }
+
+                anchors
+                {
+                    top: topbar.top
+                    bottom: parent.bottom
+                }
+
+                width: initialWidth
+                x: base.width - sidebar.width
+                source: UM.Controller.activeStage.sidebarComponent
+
+                NumberAnimation {
+                    id: collapseSidebarAnimation
+                    target: sidebar
+                    properties: "x"
+                    to: base.width
+                    duration: 100
+                }
+
+                NumberAnimation {
+                    id: expandSidebarAnimation
+                    target: sidebar
+                    properties: "x"
+                    to: base.width - sidebar.width
+                    duration: 100
+                }
+
+                Component.onCompleted:
+                {
+                    var sidebar_collapsed = UM.Preferences.getValue("cura/sidebar_collapsed");
+
+                    if (sidebar_collapsed)
+                    {
+                        sidebar.collapsed = true;
+                        viewportRect = Qt.rect(0, 0, 1, 1.0)
+                        collapseSidebarAnimation.start();
+                    }
+                }
             }
 
             UM.MessageStack
@@ -427,6 +489,13 @@ UM.MainWindow
                 }
             }
         }
+    }
+
+    // Expand or collapse sidebar
+    Connections
+    {
+        target: Cura.Actions.expandSidebar
+        onTriggered: sidebar.callExpandOrCollapse()
     }
 
     UM.PreferencesDialog
@@ -470,6 +539,12 @@ UM.MainWindow
     {
         target: Cura.Actions.preferences
         onTriggered: preferences.visible = true
+    }
+
+    Connections
+    {
+        target: CuraApplication
+        onShowPreferencesWindow: preferences.visible = true
     }
 
     MessageDialog
@@ -830,7 +905,7 @@ UM.MainWindow
 
     Connections
     {
-        target: Printer
+        target: CuraApplication
         onShowMessageBox:
         {
             messageDialog.title = title
@@ -876,7 +951,7 @@ UM.MainWindow
 
     Connections
     {
-        target: Printer
+        target: CuraApplication
         onRequestAddPrinter:
         {
             addMachineDialog.visible = true

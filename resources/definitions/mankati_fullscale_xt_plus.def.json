@@ -1,5 +1,4 @@
 {
-    "id": "mankati_fullscale_xt_plus",
     "version": 2,
     "name": "Mankati Fullscale XT Plus",
     "inherits": "fdmprinter",

@@ -18,7 +18,7 @@ class QualityAndUserProfilesModel(ProfilesModel):
     def _fetchInstanceContainers(self):
         global_container_stack = Application.getInstance().getGlobalContainerStack()
         if not global_container_stack:
-            return []
+            return {}, {}
 
         # Fetch the list of quality changes.
         quality_manager = QualityManager.getInstance()
@@ -35,10 +35,14 @@ class QualityAndUserProfilesModel(ProfilesModel):
 
         # Filter the quality_change by the list of available quality_types
         quality_type_set = set([x.getMetaDataEntry("quality_type") for x in quality_list])
-        filtered_quality_changes = [qc for qc in quality_changes_list if
+        filtered_quality_changes = {qc.getId():qc for qc in quality_changes_list if
                                     qc.getMetaDataEntry("quality_type") in quality_type_set and
                                     qc.getMetaDataEntry("extruder") is not None and
                                     (qc.getMetaDataEntry("extruder") == active_extruder.definition.getMetaDataEntry("quality_definition") or
-                                     qc.getMetaDataEntry("extruder") == active_extruder.definition.getId())]
+                                     qc.getMetaDataEntry("extruder") == active_extruder.definition.getId())}
 
-        return quality_list + filtered_quality_changes
+        result = filtered_quality_changes
+        for q in quality_list:
+            if q.getId() != "empty_quality":
+                result[q.getId()] = q
+        return result, {} #Only return true profiles for now, no metadata. The quality manager is not able to get only metadata yet.

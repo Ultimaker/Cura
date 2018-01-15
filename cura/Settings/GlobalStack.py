@@ -43,15 +43,11 @@ class GlobalStack(CuraContainerStack):
     def getLoadingPriority(cls) -> int:
         return 2
 
-    def getConfigurationTypeFromSerialized(self, serialized: str) -> Optional[str]:
-        configuration_type = None
-        try:
-            parser = self._readAndValidateSerialized(serialized)
-            configuration_type = parser["metadata"].get("type")
-            if configuration_type == "machine":
-                configuration_type = "machine_stack"
-        except Exception as e:
-            Logger.log("e", "Could not get configuration type: %s", e)
+    @classmethod
+    def getConfigurationTypeFromSerialized(cls, serialized: str) -> Optional[str]:
+        configuration_type = super().getConfigurationTypeFromSerialized(serialized)
+        if configuration_type == "machine":
+            return "machine_stack"
         return configuration_type
 
     ##  Add an extruder to the list of extruders of this stack.
@@ -67,7 +63,7 @@ class GlobalStack(CuraContainerStack):
             return
 
         if any(item.getId() == extruder.id for item in self._extruders.values()):
-            Logger.log("w", "Extruder [%s] has already been added to this stack [%s]", extruder.id, self._id)
+            Logger.log("w", "Extruder [%s] has already been added to this stack [%s]", extruder.id, self.getId())
             return
 
         self._extruders[position] = extruder

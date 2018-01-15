@@ -1,5 +1,4 @@
 {
-    "id": "builder_premium_large",
     "version": 2,
     "name": "Builder Premium Large",
     "inherits": "fdmprinter",

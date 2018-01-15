@@ -18,7 +18,7 @@ class OneAtATimeIterator(Iterator.Iterator):
     def _fillStack(self):
         node_list = []
         for node in self._scene_node.getChildren():
-            if not type(node) is SceneNode:
+            if not isinstance(node, SceneNode):
                 continue
 
             if node.callDecoration("getConvexHull"):

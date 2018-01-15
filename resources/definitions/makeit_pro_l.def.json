@@ -1,5 +1,4 @@
 {
-    "id": "makeit_pro_l",
     "version": 2,
     "name": "MAKEiT Pro-L",
     "inherits": "fdmprinter",

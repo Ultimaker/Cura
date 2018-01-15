@@ -270,7 +270,7 @@ class ExtruderManager(QObject):
             return []
 
         # Get the extruders of all printable meshes in the scene
-        meshes = [node for node in DepthFirstIterator(scene_root) if type(node) is SceneNode and node.isSelectable()]
+        meshes = [node for node in DepthFirstIterator(scene_root) if isinstance(node, SceneNode) and node.isSelectable()]
         for mesh in meshes:
             extruder_stack_id = mesh.callDecoration("getActiveExtruder")
             if not extruder_stack_id:
@@ -356,13 +356,15 @@ class ExtruderManager(QObject):
     #   \return \type{List[ContainerStack]} a list of
     def getActiveExtruderStacks(self) -> List["ExtruderStack"]:
         global_stack = Application.getInstance().getGlobalContainerStack()
+        if not global_stack:
+            return None
 
         result = []
-        machine_extruder_count = global_stack.getProperty("machine_extruder_count", "value")
-
-        if global_stack and global_stack.getId() in self._extruder_trains:
+        if global_stack.getId() in self._extruder_trains:
             for extruder in sorted(self._extruder_trains[global_stack.getId()]):
                 result.append(self._extruder_trains[global_stack.getId()][extruder])
+
+        machine_extruder_count = global_stack.getProperty("machine_extruder_count", "value")
 
         return result[:machine_extruder_count]
 

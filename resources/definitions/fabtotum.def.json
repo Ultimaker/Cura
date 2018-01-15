@@ -1,5 +1,4 @@
 {
-  "id": "fabtotum",
   "version": 2,
   "name": "FABtotum Personal Fabricator",
   "inherits": "fdmprinter",

@@ -179,7 +179,7 @@ class VersionUpgrade30to31(VersionUpgrade):
             if not os.path.isfile(file_path):
                 continue
 
-            parser = configparser.ConfigParser()
+            parser = configparser.ConfigParser(interpolation = None)
             try:
                 parser.read([file_path])
             except:
@@ -203,9 +203,17 @@ class VersionUpgrade30to31(VersionUpgrade):
     def _createExtruderQualityChangesForSingleExtrusionMachine(self, filename, global_quality_changes):
         suffix = "_" + quote_plus(global_quality_changes["general"]["name"].lower())
         machine_name = os.path.os.path.basename(filename).replace(".inst.cfg", "").replace(suffix, "")
+
+        # Why is this here?!
+        # When we load a .curaprofile file the deserialize will trigger a version upgrade, creating a dangling file.
+        # This file can be recognized by it's lack of a machine name in the target filename.
+        # So when we detect that situation here, we don't create the file and return.
+        if machine_name == "":
+            return
+
         new_filename = machine_name + "_" + "fdmextruder" + suffix
 
-        extruder_quality_changes_parser = configparser.ConfigParser()
+        extruder_quality_changes_parser = configparser.ConfigParser(interpolation = None)
         extruder_quality_changes_parser.add_section("general")
         extruder_quality_changes_parser["general"]["version"] = str(2)
         extruder_quality_changes_parser["general"]["name"] = global_quality_changes["general"]["name"]

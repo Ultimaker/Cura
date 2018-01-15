@@ -1,5 +1,4 @@
 {
-    "id": "kossel_pro",
     "version": 2,
     "name": "Kossel Pro",
     "inherits": "fdmprinter",

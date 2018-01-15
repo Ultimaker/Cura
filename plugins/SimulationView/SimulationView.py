@@ -4,6 +4,7 @@
 import sys
 
 from PyQt5.QtCore import Qt
+from PyQt5.QtGui import QOpenGLContext
 from PyQt5.QtWidgets import QApplication
 
 from UM.Application import Application
@@ -13,6 +14,7 @@ from UM.Logger import Logger
 from UM.Math.Color import Color
 from UM.Mesh.MeshBuilder import MeshBuilder
 from UM.Message import Message
+from UM.Platform import Platform
 from UM.PluginRegistry import PluginRegistry
 from UM.Preferences import Preferences
 from UM.Resources import Resources
@@ -23,7 +25,8 @@ from UM.View.GL.OpenGL import OpenGL
 from UM.View.GL.OpenGLContext import OpenGLContext
 from UM.View.View import View
 from UM.i18n import i18nCatalog
-from cura.ConvexHullNode import ConvexHullNode
+from cura.Scene.ConvexHullNode import ConvexHullNode
+from cura.CuraApplication import CuraApplication
 
 from .NozzleNode import NozzleNode
 from .SimulationPass import SimulationPass
@@ -101,7 +104,7 @@ class SimulationView(View):
                                                   title = catalog.i18nc("@info:title", "Simulation View"))
 
     def _resetSettings(self):
-        self._layer_view_type = 0  # 0 is material color, 1 is color by linetype, 2 is speed
+        self._layer_view_type = 0  # 0 is material color, 1 is color by linetype, 2 is speed, 3 is layer thickness
         self._extruder_count = 0
         self._extruder_opacity = [1.0, 1.0, 1.0, 1.0]
         self._show_travel_moves = 0
@@ -414,6 +417,23 @@ class SimulationView(View):
                 return True
 
         if event.type == Event.ViewActivateEvent:
+            # FIX: on Max OS X, somehow QOpenGLContext.currentContext() can become None during View switching.
+            # This can happen when you do the following steps:
+            #   1. Start Cura
+            #   2. Load a model
+            #   3. Switch to Custom mode
+            #   4. Select the model and click on the per-object tool icon
+            #   5. Switch view to Layer view or X-Ray
+            #   6. Cura will very likely crash
+            # It seems to be a timing issue that the currentContext can somehow be empty, but I have no clue why.
+            # This fix tries to reschedule the view changing event call on the Qt thread again if the current OpenGL
+            # context is None.
+            if Platform.isOSX():
+                if QOpenGLContext.currentContext() is None:
+                    Logger.log("d", "current context of OpenGL is empty on Mac OS X, will try to create shaders later")
+                    CuraApplication.getInstance().callLater(lambda e=event: self.event(e))
+                    return
+
             # Make sure the SimulationPass is created
             layer_pass = self.getSimulationPass()
             self.getRenderer().addRenderPass(layer_pass)

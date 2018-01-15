@@ -2,13 +2,13 @@
 # Copyright (C) 2017 Ultimaker
 # This file is distributed under the same license as the Cura package.
 # Ruben Dulek <r.dulek@ultimaker.com>, 2017.
-#
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Cura 3.0\n"
 "Report-Msgid-Bugs-To: http://github.com/ultimaker/uranium\n"
 "POT-Creation-Date: 2017-11-21 16:58+0000\n"
-"PO-Revision-Date: 2017-09-27 12:27+0200\n"
+"PO-Revision-Date: 2017-11-30 13:05+0100\n"
 "Last-Translator: Bothof <info@bothof.nl>\n"
 "Language-Team: Dutch\n"
 "Language: nl_NL\n"
@@ -608,27 +608,27 @@ msgstr "De hoogte van de eerste laag in mm. Met een dikkere eerste laag hecht he
 #: fdmprinter.def.json
 msgctxt "slicing_tolerance label"
 msgid "Slicing Tolerance"
-msgstr ""
+msgstr "Slicetolerantie"
 
 #: fdmprinter.def.json
 msgctxt "slicing_tolerance description"
 msgid "How to slice layers with diagonal surfaces. The areas of a layer can be generated based on where the middle of the layer intersects the surface (Middle). Alternatively each layer can have the areas which fall inside of the volume throughout the height of the layer (Exclusive) or a layer has the areas which fall inside anywhere within the layer (Inclusive). Exclusive retains the most details, Inclusive makes for the best fit and Middle takes the least time to process."
-msgstr ""
+msgstr "Geeft aan hoe lagen met een diagonaal oppervlak worden geslicet. De gebieden van een laag kunnen worden gegenereerd op basis van de locatie waar het midden van de laag het oppervlak snijdt (Midden). Daarnaast kan elke laag gebieden hebben die over de gehele hoogte van de laag binnen het volume vallen (Exclusief), of kan een laag gebieden hebben die overal binnen de laag vallen (Inclusief). Met Exclusief worden de meeste details behouden, met Inclusief verkrijgt u de beste pasvorm en met Midden is de verwerkingstijd het kortst."
 
 #: fdmprinter.def.json
 msgctxt "slicing_tolerance option middle"
 msgid "Middle"
-msgstr ""
+msgstr "Midden"
 
 #: fdmprinter.def.json
 msgctxt "slicing_tolerance option exclusive"
 msgid "Exclusive"
-msgstr ""
+msgstr "Exclusief"
 
 #: fdmprinter.def.json
 msgctxt "slicing_tolerance option inclusive"
 msgid "Inclusive"
-msgstr ""
+msgstr "Inclusief"
 
 #: fdmprinter.def.json
 msgctxt "line_width label"
@@ -803,7 +803,7 @@ msgstr "De extruder train die voor het printen van de buitenwand wordt gebruikt.
 #: fdmprinter.def.json
 msgctxt "wall_x_extruder_nr label"
 msgid "Inner Wall Extruder"
-msgstr ""
+msgstr "Extruder binnenwand"
 
 #: fdmprinter.def.json
 msgctxt "wall_x_extruder_nr description"
@@ -1383,7 +1383,7 @@ msgstr "Vulpatroon"
 #: fdmprinter.def.json
 msgctxt "infill_pattern description"
 msgid "The pattern of the infill material of the print. The line and zig zag infill swap direction on alternate layers, reducing material cost. The grid, triangle, tri-hexagon, cubic, octet, quarter cubic, cross and concentric patterns are fully printed every layer. Cubic, quarter cubic and octet infill change with every layer to provide a more equal distribution of strength over each direction."
-msgstr ""
+msgstr "Het patroon van het vulmateriaal van de print. De lijn- en zigzagvulling veranderen per vullaag van richting, waardoor wordt bespaard op materiaalkosten. De raster-, driehoeks-, tri-hexagonale, kubische, achtvlaks-, afgeknotte kubus-, kruis- en concentrische patronen worden elke laag volledig geprint. Kubische, afgeknotte kubus- en achtvlaksvullingen veranderen elke laag voor een meer gelijke krachtsverdeling in elke richting."
 
 #: fdmprinter.def.json
 msgctxt "infill_pattern option grid"
@@ -1403,7 +1403,7 @@ msgstr "Driehoeken"
 #: fdmprinter.def.json
 msgctxt "infill_pattern option trihexagon"
 msgid "Tri-Hexagon"
-msgstr ""
+msgstr "Tri-hexagonaal"
 
 #: fdmprinter.def.json
 msgctxt "infill_pattern option cubic"
@@ -1458,7 +1458,7 @@ msgstr "Vullijnen verbinden"
 #: fdmprinter.def.json
 msgctxt "zig_zaggify_infill description"
 msgid "Connect the ends where the infill pattern meets the inner wall using a line which follows the shape of the inner wall. Enabling this setting can make the infill adhere to the walls better and reduce the effects of infill on the quality of vertical surfaces. Disabling this setting reduces the amount of material used."
-msgstr ""
+msgstr "Verbindt de uiteinden waar het vulpatroon bij de binnenwand komt, met een lijn die de vorm van de binnenwand volgt. Als u deze instelling inschakelt, kan de vulling beter hechten aan de wanden en wordt de invloed van de vulling op de kwaliteit van de verticale oppervlakken kleiner. Als u deze instelling uitschakelt, wordt er minder materiaal gebruikt."
 
 #: fdmprinter.def.json
 msgctxt "infill_angles label"
@@ -1473,22 +1473,22 @@ msgstr "Een lijst met gehele getallen voor lijnrichtingen die moet worden gebrui
 #: fdmprinter.def.json
 msgctxt "infill_offset_x label"
 msgid "Infill X Offset"
-msgstr ""
+msgstr "Vulling X-offset"
 
 #: fdmprinter.def.json
 msgctxt "infill_offset_x description"
 msgid "The infill pattern is offset this distance along the X axis."
-msgstr ""
+msgstr "Het vulpatroon wordt over deze afstand verplaatst over de X-as."
 
 #: fdmprinter.def.json
 msgctxt "infill_offset_y label"
 msgid "Infill Y Offset"
-msgstr ""
+msgstr "Vulling Y-offset"
 
 #: fdmprinter.def.json
 msgctxt "infill_offset_y description"
 msgid "The infill pattern is offset this distance along the Y axis."
-msgstr ""
+msgstr "Het vulpatroon wordt over deze afstand verplaatst over de Y-as."
 
 #: fdmprinter.def.json
 msgctxt "sub_div_rad_add label"
@@ -1803,22 +1803,22 @@ msgstr "Bepaalt de diameter van het gebruikte filament. Pas deze waarde aan de d
 #: fdmprinter.def.json
 msgctxt "material_adhesion_tendency label"
 msgid "Adhesion Tendency"
-msgstr ""
+msgstr "Hechtingsgevoeligheid"
 
 #: fdmprinter.def.json
 msgctxt "material_adhesion_tendency description"
 msgid "Surface adhesion tendency."
-msgstr ""
+msgstr "Hechtingsgevoeligheid van het oppervlak."
 
 #: fdmprinter.def.json
 msgctxt "material_surface_energy label"
 msgid "Surface Energy"
-msgstr ""
+msgstr "Oppervlakte-energie"
 
 #: fdmprinter.def.json
 msgctxt "material_surface_energy description"
 msgid "Surface energy."
-msgstr ""
+msgstr "Oppervlakte-energie."
 
 #: fdmprinter.def.json
 msgctxt "material_flow label"
@@ -3550,7 +3550,7 @@ msgctxt "skirt_gap description"
 msgid ""
 "The horizontal distance between the skirt and the first layer of the print.\n"
 "This is the minimum distance. Multiple skirt lines will extend outwards from this distance."
-msgstr ""
+msgstr "De horizontale afstand tussen de skirt en de eerste laag van de print.\nDit is de minimumafstand. Als u meerdere skirtlijnen print, worden deze vanaf deze afstand naar buiten geprint."
 
 #: fdmprinter.def.json
 msgctxt "skirt_brim_minimal_length label"
@@ -3610,7 +3610,7 @@ msgstr "Raft effenen"
 #: fdmprinter.def.json
 msgctxt "raft_smoothing description"
 msgid "This setting controls how much inner corners in the raft outline are rounded. Inward corners are rounded to a semi circle with a radius equal to the value given here. This setting also removes holes in the raft outline which are smaller than such a circle."
-msgstr ""
+msgstr "Bepaalt hoeveel binnenhoeken in de raftcontour worden afgerond. Naar binnen gebogen hoeken worden tot een halve cirkel afgerond met een straal die gelijk is aan de hier opgegeven waarde. Met deze instellingen worden ook gaten in de raftcontour verwijderd die kleiner zijn dan een dergelijke cirkel."
 
 #: fdmprinter.def.json
 msgctxt "raft_airgap label"
@@ -4085,12 +4085,12 @@ msgstr "Normaal probeert Cura kleine gaten in het raster te hechten en delen van
 #: fdmprinter.def.json
 msgctxt "meshfix_maximum_resolution label"
 msgid "Maximum Resolution"
-msgstr ""
+msgstr "Maximale resolutie"
 
 #: fdmprinter.def.json
 msgctxt "meshfix_maximum_resolution description"
 msgid "The minimum size of a line segment after slicing. If you increase this, the mesh will have a lower resolution. This may allow the printer to keep up with the speed it has to process g-code and will increase slice speed by removing details of the mesh that it can't process anyway."
-msgstr ""
+msgstr "Het minimale formaat van een lijnsegment na het slicen. Als u deze waarde verhoogt, wordt het model met een lagere resolutie geprint. Hiermee kan de printer de verwerkingssnelheid van de G-code bijhouden en wordt de slicesnelheid verhoogd doordat details van het raster worden verwijderd die niet kunnen worden verwerkt."
 
 #: fdmprinter.def.json
 msgctxt "multiple_mesh_overlap label"
@@ -4125,12 +4125,12 @@ msgstr "Schakel naar de rastersnijpuntvolumes die bij elke laag horen, zodat de 
 #: fdmprinter.def.json
 msgctxt "remove_empty_first_layers label"
 msgid "Remove Empty First Layers"
-msgstr ""
+msgstr "Lege eerste lagen verwijderen"
 
 #: fdmprinter.def.json
 msgctxt "remove_empty_first_layers description"
 msgid "Remove empty layers beneath the first printed layer if they are present. Disabling this setting can cause empty first layers if the Slicing Tolerance setting is set to Exclusive or Middle."
-msgstr ""
+msgstr "Hiermee worden de lege lagen onder de eerste geprinte laag verwijderd, indien aanwezig. Als u deze instelling uitschakelt, kunnen lege eerste lagen ontstaan als de Slicetolerantie is ingesteld op Exclusief of Midden."
 
 #: fdmprinter.def.json
 msgctxt "blackmagic label"
@@ -4660,22 +4660,22 @@ msgstr "De gemiddelde afstand tussen de willekeurig geplaatste punten op elk lij
 #: fdmprinter.def.json
 msgctxt "flow_rate_max_extrusion_offset label"
 msgid "Flow rate compensation max extrusion offset"
-msgstr ""
+msgstr "Maximale extrusieoffset voor doorvoercompensatie"
 
 #: fdmprinter.def.json
 msgctxt "flow_rate_max_extrusion_offset description"
 msgid "The maximum distance in mm to compensate."
-msgstr ""
+msgstr "De maximale afstand in mm die moet worden gecompenseerd."
 
 #: fdmprinter.def.json
 msgctxt "flow_rate_extrusion_offset_factor label"
 msgid "Flow rate compensation factor"
-msgstr ""
+msgstr "Doorvoercompensatiefactor"
 
 #: fdmprinter.def.json
 msgctxt "flow_rate_extrusion_offset_factor description"
 msgid "The multiplication factor for the flow rate -> distance translation."
-msgstr ""
+msgstr "De vermenigvuldigingsfactor voor de vertaling doorvoer -> afstand."
 
 #: fdmprinter.def.json
 msgctxt "wireframe_enabled label"
@@ -4827,9 +4827,7 @@ msgctxt "wireframe_up_half_speed description"
 msgid ""
 "Distance of an upward move which is extruded with half speed.\n"
 "This can cause better adhesion to previous layers, while not heating the material in those layers too much. Only applies to Wire Printing."
-msgstr ""
-"De afstand van een opwaartse beweging waarbij de doorvoersnelheid wordt gehalveerd.\n"
-"Hierdoor ontstaat een betere hechting aan voorgaande lagen, zonder dat het materiaal in die lagen te zeer wordt verwarmd. Alleen van toepassing op Draadprinten."
+msgstr "De afstand van een opwaartse beweging waarbij de doorvoersnelheid wordt gehalveerd.\nHierdoor ontstaat een betere hechting aan voorgaande lagen, zonder dat het materiaal in die lagen te zeer wordt verwarmd. Alleen van toepassing op Draadprinten."
 
 #: fdmprinter.def.json
 msgctxt "wireframe_top_jump label"

@@ -27,24 +27,38 @@ class SolidView(View):
 
         self._enabled_shader = None
         self._disabled_shader = None
+        self._non_printing_shader = None
+        self._support_mesh_shader = None
 
         self._extruders_model = ExtrudersModel()
+        self._theme = None
 
     def beginRendering(self):
         scene = self.getController().getScene()
         renderer = self.getRenderer()
 
+        if not self._theme:
+            self._theme = Application.getInstance().getTheme()
+
         if not self._enabled_shader:
             self._enabled_shader = OpenGL.getInstance().createShaderProgram(Resources.getPath(Resources.Shaders, "overhang.shader"))
-            theme = Application.getInstance().getTheme()
-            self._enabled_shader.setUniformValue("u_overhangColor", Color(*theme.getColor("model_overhang").getRgb()))
+            self._enabled_shader.setUniformValue("u_overhangColor", Color(*self._theme.getColor("model_overhang").getRgb()))
 
         if not self._disabled_shader:
             self._disabled_shader = OpenGL.getInstance().createShaderProgram(Resources.getPath(Resources.Shaders, "striped.shader"))
-            theme = Application.getInstance().getTheme()
-            self._disabled_shader.setUniformValue("u_diffuseColor1", Color(*theme.getColor("model_unslicable").getRgb()))
-            self._disabled_shader.setUniformValue("u_diffuseColor2", Color(*theme.getColor("model_unslicable_alt").getRgb()))
+            self._disabled_shader.setUniformValue("u_diffuseColor1", Color(*self._theme.getColor("model_unslicable").getRgb()))
+            self._disabled_shader.setUniformValue("u_diffuseColor2", Color(*self._theme.getColor("model_unslicable_alt").getRgb()))
             self._disabled_shader.setUniformValue("u_width", 50.0)
+
+        if not self._non_printing_shader:
+            self._non_printing_shader = OpenGL.getInstance().createShaderProgram(Resources.getPath(Resources.Shaders, "transparent_object.shader"))
+            self._non_printing_shader.setUniformValue("u_diffuseColor", Color(*self._theme.getColor("model_non_printing").getRgb()))
+            self._non_printing_shader.setUniformValue("u_opacity", 0.6)
+
+        if not self._support_mesh_shader:
+            self._support_mesh_shader = OpenGL.getInstance().createShaderProgram(Resources.getPath(Resources.Shaders, "striped.shader"))
+            self._support_mesh_shader.setUniformValue("u_vertical_stripes", True)
+            self._support_mesh_shader.setUniformValue("u_width", 5.0)
 
         global_container_stack = Application.getInstance().getGlobalContainerStack()
         if global_container_stack:
@@ -68,11 +82,19 @@ class SolidView(View):
                     uniforms = {}
                     shade_factor = 1.0
 
+                    per_mesh_stack = node.callDecoration("getStack")
+
                     # Get color to render this mesh in from ExtrudersModel
                     extruder_index = 0
                     extruder_id = node.callDecoration("getActiveExtruder")
                     if extruder_id:
                         extruder_index = max(0, self._extruders_model.find("id", extruder_id))
+
+                    # Use the support extruder instead of the active extruder if this is a support_mesh
+                    if per_mesh_stack:
+                        if per_mesh_stack.getProperty("support_mesh", "value"):
+                            extruder_index = int(global_container_stack.getProperty("support_extruder_nr", "value"))
+
                     try:
                         material_color = self._extruders_model.getItem(extruder_index)["color"]
                     except KeyError:
@@ -94,19 +116,27 @@ class SolidView(View):
                     except ValueError:
                         pass
 
-                    if hasattr(node, "_outside_buildarea"):
-                        if node._outside_buildarea:
-                            renderer.queueNode(node, shader = self._disabled_shader)
+                    if node.callDecoration("isNonPrintingMesh"):
+                        if per_mesh_stack and (per_mesh_stack.getProperty("infill_mesh", "value") or per_mesh_stack.getProperty("cutting_mesh", "value")):
+                            renderer.queueNode(node, shader = self._non_printing_shader, uniforms = uniforms, transparent = True)
                         else:
-                            renderer.queueNode(node, shader = self._enabled_shader, uniforms = uniforms)
+                            renderer.queueNode(node, shader = self._non_printing_shader, transparent = True)
+                    elif getattr(node, "_outside_buildarea", False):
+                        renderer.queueNode(node, shader = self._disabled_shader)
+                    elif per_mesh_stack and per_mesh_stack.getProperty("support_mesh", "value"):
+                        # Render support meshes with a vertical stripe that is darker
+                        shade_factor = 0.6
+                        uniforms["diffuse_color_2"] = [
+                            uniforms["diffuse_color"][0] * shade_factor,
+                            uniforms["diffuse_color"][1] * shade_factor,
+                            uniforms["diffuse_color"][2] * shade_factor,
+                            1.0
+                        ]
+                        renderer.queueNode(node, shader = self._support_mesh_shader, uniforms = uniforms)
                     else:
-                        renderer.queueNode(node, material = self._enabled_shader, uniforms = uniforms)
+                        renderer.queueNode(node, shader = self._enabled_shader, uniforms = uniforms)
                 if node.callDecoration("isGroup") and Selection.isSelected(node):
                     renderer.queueNode(scene.getRoot(), mesh = node.getBoundingBoxMesh(), mode = RenderBatch.RenderMode.LineLoop)
 
     def endRendering(self):
         pass
-
-    #def _onPreferenceChanged(self, preference):
-        #if preference == "view/show_overhang": ## Todo: This a printer only setting. Should be removed from Uranium.
-            #self._enabled_material = None

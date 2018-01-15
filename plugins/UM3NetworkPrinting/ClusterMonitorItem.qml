@@ -12,10 +12,10 @@ Component
         width: maximumWidth
         height: maximumHeight
         color: UM.Theme.getColor("viewport_background")
-
         property var emphasisColor: UM.Theme.getColor("setting_control_border_highlight")
         property var lineColor: "#DCDCDC" // TODO: Should be linked to theme.
         property var cornerRadius: 4 * screenScaleFactor // TODO: Should be linked to theme.
+
         UM.I18nCatalog
         {
             id: catalog
@@ -33,9 +33,9 @@ Component
                 horizontalCenter: parent.horizontalCenter
             }
 
-            text: OutputDevice.connectedPrinters.length == 0 ? catalog.i18nc("@label: arg 1 is group name", "%1 is not set up to host a group of connected Ultimaker 3 printers").arg(Cura.MachineManager.printerOutputDevices[0].name) : ""
+            text: OutputDevice.printers.length == 0 ? catalog.i18nc("@label: arg 1 is group name", "%1 is not set up to host a group of connected Ultimaker 3 printers").arg(Cura.MachineManager.printerOutputDevices[0].name) : ""
 
-            visible: OutputDevice.connectedPrinters.length == 0
+            visible: OutputDevice.printers.length == 0
         }
 
         Item
@@ -46,7 +46,7 @@ Component
 
             width: Math.min(800 * screenScaleFactor, maximumWidth)
             height: children.height
-            visible: OutputDevice.connectedPrinters.length != 0
+            visible: OutputDevice.printers.length != 0
 
             Label
             {
@@ -61,7 +61,6 @@ Component
                 onClicked: Cura.MachineManager.printerOutputDevices[0].openPrinterControlPanel()
             }
         }
-
 
         ScrollView
         {
@@ -79,7 +78,7 @@ Component
                 anchors.fill: parent
                 spacing: -UM.Theme.getSize("default_lining").height
 
-                model: OutputDevice.connectedPrinters
+                model: OutputDevice.printers
 
                 delegate: PrinterInfoBlock
                 {
@@ -95,7 +94,7 @@ Component
 
         PrinterVideoStream
         {
-            visible: OutputDevice.selectedPrinterName != ""
+            visible: OutputDevice.activePrinter != null
             anchors.fill:parent
         }
     }

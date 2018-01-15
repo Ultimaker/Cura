@@ -1,5 +1,4 @@
 {
-    "id": "ultimaker3",
     "version": 2,
     "name": "Ultimaker 3",
     "inherits": "ultimaker",

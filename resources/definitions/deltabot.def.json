@@ -1,5 +1,4 @@
 {
-    "id": "deltabot",
     "name": "DeltaBot",
     "version": 2,
     "inherits": "fdmprinter",

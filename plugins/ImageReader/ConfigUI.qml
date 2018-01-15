@@ -43,7 +43,7 @@ UM.Dialog
                 TextField {
                     id: peak_height
                     objectName: "Peak_Height"
-                    validator: DoubleValidator {notation: DoubleValidator.StandardNotation; bottom: -500; top: 500;}
+                    validator: RegExpValidator {regExp: /^-?\d{1,3}([\,|\.]\d*)?$/}
                     width: 180 * screenScaleFactor
                     onTextChanged: { manager.onPeakHeightChanged(text) }
                 }
@@ -66,7 +66,7 @@ UM.Dialog
                 TextField {
                     id: base_height
                     objectName: "Base_Height"
-                    validator: DoubleValidator {notation: DoubleValidator.StandardNotation; bottom: 0; top: 500;}
+                    validator: RegExpValidator {regExp: /^\d{1,3}([\,|\.]\d*)?$/}
                     width: 180 * screenScaleFactor
                     onTextChanged: { manager.onBaseHeightChanged(text) }
                 }
@@ -90,7 +90,7 @@ UM.Dialog
                     id: width
                     objectName: "Width"
                     focus: true
-                    validator: DoubleValidator {notation: DoubleValidator.StandardNotation; bottom: 1; top: 500;}
+                    validator: RegExpValidator {regExp: /^[1-9]\d{0,2}([\,|\.]\d*)?$/}
                     width: 180 * screenScaleFactor
                     onTextChanged: { manager.onWidthChanged(text) }
                 }
@@ -113,7 +113,7 @@ UM.Dialog
                     id: depth
                     objectName: "Depth"
                     focus: true
-                    validator: DoubleValidator {notation: DoubleValidator.StandardNotation; bottom: 1; top: 500;}
+                    validator: RegExpValidator {regExp: /^[1-9]\d{0,2}([\,|\.]\d*)?$/}
                     width: 180 * screenScaleFactor
                     onTextChanged: { manager.onDepthChanged(text) }
                 }

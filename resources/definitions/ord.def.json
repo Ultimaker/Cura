@@ -1,5 +1,4 @@
 {
-    "id": "ord",
     "name": "RoVa3D",
     "version": 2,
     "inherits": "fdmprinter",
