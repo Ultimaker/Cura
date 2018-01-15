@@ -640,35 +640,6 @@ class XmlMaterialProfile(InstanceContainer):
                         buildplate_map[buildplate_id]["buildplate_compatible"] = buildplate_compatibility
                         buildplate_map[buildplate_id]["buildplate_recommended"] = buildplate_recommended
 
-                        # # Same as machine compatibility, keep the derived material containers consistent with the parent
-                        # # material
-                        # if ContainerRegistry.getInstance().isLoaded(new_buildplate_id):
-                        #     new_buildplate_material = ContainerRegistry.getInstance().findContainers(id = new_buildplate_id)[0]
-                        #     is_new_material = False
-                        # else:
-                        #     new_buildplate_material = XmlMaterialProfile(new_buildplate_id)
-                        #     is_new_material = True
-                        #
-                        # new_buildplate_material.setMetaData(copy.deepcopy(self.getMetaData()))
-                        # new_buildplate_material.getMetaData()["id"] = new_buildplate_id
-                        # new_buildplate_material.getMetaData()["name"] = self.getName()
-                        # new_buildplate_material.getMetaData()["variant"] = variant_containers[0]["id"]
-                        # new_buildplate_material.setDefinition(machine_id)
-                        # # Don't use setMetadata, as that overrides it for all materials with same base file
-                        # new_buildplate_material.getMetaData()["compatible"] = buildplate_compatibility
-                        # new_buildplate_material.getMetaData()["machine_manufacturer"] = machine_manufacturer
-                        # new_buildplate_material.getMetaData()["definition"] = machine_id
-                        #
-                        # cached_buildplate_setting_properties = cached_machine_setting_properties.copy()
-                        # cached_buildplate_setting_properties.update(buildplate_setting_values)
-                        #
-                        # new_buildplate_material.setCachedValues(cached_buildplate_setting_properties)
-                        #
-                        # new_buildplate_material._dirty = False
-                        #
-                        # if is_new_material:
-                        #     containers_to_add.append(new_buildplate_material)
-
                     # If no buildplate was found, then the material is created without buildplate information
                     if not buildplate_map:
                         buildplate_map[""] = {"buildplate_compatible" : machine_compatibility,
@@ -703,8 +674,8 @@ class XmlMaterialProfile(InstanceContainer):
 
                         for buildplate_id in buildplate_map:
 
-                            new_hotend_id = self.getId() + "_" + machine_id + "_" + hotend_id.replace(" ", "_") + \
-                                            ("_" if buildplate_id != "" else "") + buildplate_id.replace(" ", "_")
+                            new_hotend_id = self.getId() + "_" + machine_id + ("_" if buildplate_id != "" else "") + \
+                                            buildplate_id.replace(" ", "_") + "_" + hotend_id.replace(" ", "_")
 
                             buildplate_compatibility = buildplate_map[buildplate_id]["buildplate_compatible"]
                             buildplate_recommended = buildplate_map[buildplate_id]["buildplate_recommended"]
@@ -729,6 +700,8 @@ class XmlMaterialProfile(InstanceContainer):
                             new_hotend_material.getMetaData()["buildplate_recommended"] = buildplate_recommended
                             new_hotend_material.getMetaData()["machine_manufacturer"] = machine_manufacturer
                             new_hotend_material.getMetaData()["definition"] = machine_id
+                            # if machine_id == "ultimaker3_xl" and self.getId() == "generic_abs":
+                            #     print("&&&&&&&&&&&& HotendID", new_hotend_id)
 
                             cached_hotend_setting_properties = cached_machine_setting_properties.copy()
                             cached_hotend_setting_properties.update(hotend_setting_values)
@@ -869,6 +842,40 @@ class XmlMaterialProfile(InstanceContainer):
                         if len(found_materials) == 0: #This is a new material.
                             result_metadata.append(new_material_metadata)
 
+                    buildplates = machine.iterfind("./um:buildplate", cls.__namespaces)
+                    buildplate_map = {}
+                    for buildplate in buildplates:
+                        buildplate_id = buildplate.get("id")
+                        if buildplate_id is None:
+                            continue
+
+                        variant_containers = ContainerRegistry.getInstance().findInstanceContainersMetadata(id = buildplate_id)
+                        if not variant_containers:
+                            # It is not really properly defined what "ID" is so also search for variants by name.
+                            variant_containers = ContainerRegistry.getInstance().findInstanceContainersMetadata(definition = machine_id, name = buildplate_id)
+
+                        if not variant_containers:
+                            continue
+
+                        buildplate_compatibility = machine_compatibility
+                        buildplate_recommended = machine_compatibility
+                        settings = buildplate.iterfind("./um:setting", cls.__namespaces)
+                        for entry in settings:
+                            key = entry.get("key")
+                            if key == "hardware compatible":
+                                buildplate_compatibility = cls._parseCompatibleValue(entry.text)
+                            elif key == "hardware recommended":
+                                buildplate_recommended = cls._parseCompatibleValue(entry.text)
+
+                        buildplate_map[buildplate_id] = {}
+                        buildplate_map[buildplate_id]["buildplate_compatible"] = buildplate_compatibility
+                        buildplate_map[buildplate_id]["buildplate_recommended"] = buildplate_recommended
+
+                    # If no buildplate was found, then the material is created without buildplate information
+                    if not buildplate_map:
+                        buildplate_map[""] = {"buildplate_compatible": machine_compatibility,
+                                              "buildplate_recommended": machine_compatibility}
+
                     for hotend in machine.iterfind("./um:hotend", cls.__namespaces):
                         hotend_id = hotend.get("id")
                         if hotend_id is None:
@@ -885,69 +892,38 @@ class XmlMaterialProfile(InstanceContainer):
                             if key == "hardware compatible":
                                 hotend_compatibility = cls._parseCompatibleValue(entry.text)
 
-                        new_hotend_id = container_id + "_" + machine_id + "_" + hotend_id.replace(" ", "_")
+                        for buildplate_id in buildplate_map:
 
-                        # Same as machine compatibility, keep the derived material containers consistent with the parent
-                        # material
-                        found_materials = ContainerRegistry.getInstance().findInstanceContainersMetadata(id = new_hotend_id)
-                        if found_materials:
-                            new_hotend_material_metadata = found_materials[0]
-                        else:
-                            new_hotend_material_metadata = {}
+                            new_hotend_id = container_id + "_" + machine_id + ("_" if buildplate_id != "" else "") + \
+                                            buildplate_id.replace(" ", "_") + "_" + hotend_id.replace(" ", "_")
 
-                        new_hotend_material_metadata.update(base_metadata)
-                        if variant_containers:
-                            new_hotend_material_metadata["variant"] = variant_containers[0]["id"]
-                        else:
-                            new_hotend_material_metadata["variant"] = hotend_id
-                            _with_missing_variants.append(new_hotend_material_metadata)
-                        new_hotend_material_metadata["compatible"] = hotend_compatibility
-                        new_hotend_material_metadata["machine_manufacturer"] = machine_manufacturer
-                        new_hotend_material_metadata["id"] = new_hotend_id
-                        new_hotend_material_metadata["definition"] = machine_id
+                            buildplate_compatibility = buildplate_map[buildplate_id]["buildplate_compatible"]
+                            buildplate_recommended = buildplate_map[buildplate_id]["buildplate_recommended"]
 
-                        if len(found_materials) == 0:
-                            result_metadata.append(new_hotend_material_metadata)
+                            # Same as machine compatibility, keep the derived material containers consistent with the parent material
+                            found_materials = ContainerRegistry.getInstance().findInstanceContainersMetadata(id = new_hotend_id)
+                            if found_materials:
+                                new_hotend_material_metadata = found_materials[0]
+                            else:
+                                new_hotend_material_metadata = {}
 
-                    for buildplate in machine.iterfind("./um:buildplate", cls.__namespaces):
-                        buildplate_id = buildplate.get("id")
-                        if buildplate_id is None:
-                            continue
+                            new_hotend_material_metadata.update(base_metadata)
+                            if variant_containers:
+                                new_hotend_material_metadata["variant"] = variant_containers[0]["id"]
+                            else:
+                                new_hotend_material_metadata["variant"] = hotend_id
+                                _with_missing_variants.append(new_hotend_material_metadata)
+                            new_hotend_material_metadata["compatible"] = hotend_compatibility
+                            new_hotend_material_metadata["buildplate_compatible"] = buildplate_compatibility
+                            new_hotend_material_metadata["buildplate_recommended"] = buildplate_recommended
+                            new_hotend_material_metadata["machine_manufacturer"] = machine_manufacturer
+                            new_hotend_material_metadata["id"] = new_hotend_id
+                            new_hotend_material_metadata["definition"] = machine_id
+                            # if machine_id == "ultimaker3_xl" and container_id == "generic_abs":
+                            #     print("############# HotendID", new_hotend_id)
 
-                        variant_containers = ContainerRegistry.getInstance().findInstanceContainersMetadata(id = buildplate_id)
-                        if not variant_containers:
-                            # It is not really properly defined what "ID" is so also search for variants by name.
-                            variant_containers = ContainerRegistry.getInstance().findInstanceContainersMetadata(definition = machine_id, name = buildplate_id)
-
-                        buildplate_compatibility = machine_compatibility
-                        for entry in buildplate.iterfind("./um:setting", cls.__namespaces):
-                            key = entry.get("key")
-                            if key == "hardware compatible":
-                                buildplate_compatibility = cls._parseCompatibleValue(entry.text)
-
-                        new_buildplate_id = container_id + "_" + machine_id + "_" + buildplate_id.replace(" ", "_")
-
-                        # Same as machine compatibility, keep the derived material containers consistent with the parent
-                        # material
-                        found_materials = ContainerRegistry.getInstance().findInstanceContainersMetadata(id = new_buildplate_id)
-                        if found_materials:
-                            new_buildplate_material_metadata = found_materials[0]
-                        else:
-                            new_buildplate_material_metadata = {}
-
-                        new_buildplate_material_metadata.update(base_metadata)
-                        if variant_containers:
-                            new_buildplate_material_metadata["variant"] = variant_containers[0]["id"]
-                        else:
-                            new_buildplate_material_metadata["variant"] = buildplate_id
-                            _with_missing_variants.append(new_buildplate_material_metadata)
-                        new_buildplate_material_metadata["compatible"] = buildplate_compatibility
-                        new_buildplate_material_metadata["machine_manufacturer"] = machine_manufacturer
-                        new_buildplate_material_metadata["id"] = new_buildplate_id
-                        new_buildplate_material_metadata["definition"] = machine_id
-
-                        if len(found_materials) == 0:
-                            result_metadata.append(new_buildplate_material_metadata)
+                            if len(found_materials) == 0:
+                                result_metadata.append(new_hotend_material_metadata)
 
                     # there is only one ID for a machine. Once we have reached here, it means we have already found
                     # a workable ID for that machine, so there is no need to continue
