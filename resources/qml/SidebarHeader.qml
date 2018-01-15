@@ -351,6 +351,9 @@ Column
             activeFocusOnPress: true;
 
             menu: BuildplateMenu {}
+
+            property var valueError: !Cura.MachineManager.variantBuildplateCompatible && !Cura.MachineManager.variantBuildplateUsable
+            property var valueWarning: Cura.MachineManager.variantBuildplateUsable
         }
     }
 

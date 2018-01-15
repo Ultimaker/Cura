@@ -123,7 +123,8 @@ class StartSliceJob(Job):
             return
 
         # Don't slice if the buildplate or the nozzle type is incompatible with the materials
-        if not Application.getInstance().getMachineManager().variantBuildplateCompatible:
+        if not Application.getInstance().getMachineManager().variantBuildplateCompatible and \
+                not Application.getInstance().getMachineManager().variantBuildplateUsable:
             self.setResult(StartJobResult.MaterialIncompatible)
             return
 

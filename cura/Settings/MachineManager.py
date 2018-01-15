@@ -872,7 +872,7 @@ class MachineManager(QObject):
                 Logger.log("d", "Active buildplate changed to {active_variant_buildplate_id}".format(active_variant_buildplate_id = containers[0].getId()))
 
                 # Force set the active quality as it is so the values are updated
-                self.setActiveQuality(self._active_container_stack.quality.getId())
+                self.setActiveMaterial(self._active_container_stack.material.getId())
             else:
                 Logger.log("w", "While trying to set the active buildplate, no buildplate was found to replace.")
 
@@ -1261,6 +1261,47 @@ class MachineManager(QObject):
         if self._global_container_stack:
             return Util.parseBool(self._global_container_stack.getMetaDataEntry("has_variant_buildplates", False))
         return False
+
+    ##  The selected buildplate is compatible if it is compatible with all the materials in all the extruders
+    @pyqtProperty(bool, notify = activeMaterialChanged)
+    def variantBuildplateCompatible(self) -> bool:
+        if not self._global_container_stack:
+            return True
+
+        buildplate_compatible = True  # It is compatible by default
+        extruder_stacks = self._global_container_stack.extruders.values()
+        for stack in extruder_stacks:
+            material_container = stack.material
+            if material_container == self._empty_material_container:
+                continue
+            if material_container.getMetaDataEntry("buildplate_compatible"):
+                buildplate_compatible = buildplate_compatible and material_container.getMetaDataEntry("buildplate_compatible")[self.activeVariantBuildplateName]
+
+        return buildplate_compatible
+
+    ##  The selected buildplate is usable if it is usable for all materials OR it is compatible for one but not compatible
+    #   for the other material but the buildplate is still usable
+    @pyqtProperty(bool, notify = activeMaterialChanged)
+    def variantBuildplateUsable(self) -> bool:
+        if not self._global_container_stack:
+            return True
+
+        # Here the next formula is being calculated:
+        # result = (not (material_left_compatible and material_right_compatible)) and
+        #           (material_left_compatible or material_left_usable) and
+        #           (material_right_compatible or material_right_usable)
+        result = not self.variantBuildplateCompatible
+        extruder_stacks = self._global_container_stack.extruders.values()
+        for stack in extruder_stacks:
+            material_container = stack.material
+            if material_container == self._empty_material_container:
+                continue
+            buildplate_compatible = material_container.getMetaDataEntry("buildplate_compatible")[self.activeVariantBuildplateName] if material_container.getMetaDataEntry("buildplate_compatible") else True
+            buildplate_usable = material_container.getMetaDataEntry("buildplate_recommended")[self.activeVariantBuildplateName] if material_container.getMetaDataEntry("buildplate_recommended") else True
+
+            result = result and (buildplate_compatible or buildplate_usable)
+
+        return result
 
     ##  Property to indicate if a machine has "specialized" material profiles.
     #   Some machines have their own material profiles that "override" the default catch all profiles.
