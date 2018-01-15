@@ -647,10 +647,10 @@ class CuraApplication(QtApplication):
         if parsed_args["help"]:
             parser.print_help()
             sys.exit(0)
-    
+
     def run(self):
         self.preRun()
-        
+
         self.showSplashMessage(self._i18n_catalog.i18nc("@info:progress", "Setting up scene..."))
 
         self._setUpSingleInstanceServer()
@@ -1060,6 +1060,9 @@ class CuraApplication(QtApplication):
             op.push()
             Selection.clear()
 
+        Logger.log("i", "Reseting print information")
+        self._print_information = PrintInformation.PrintInformation()
+        
         self.getCuraSceneController().setActiveBuildPlate(0)  # Select first build plate
 
     ## Reset all translation on nodes with mesh data.
