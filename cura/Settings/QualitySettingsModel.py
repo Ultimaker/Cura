@@ -107,7 +107,7 @@ class QualitySettingsModel(UM.Qt.ListModel.ListModel):
         else:
             quality_changes_container = containers[0]
 
-            if quality_changes_container.getMetaDataEntry("quality_type") == "not_supported":
+            if quality_changes_container.getMetaDataEntry("quality_type") == self._empty_quality.getMetaDataEntry("quality_type"):
                 quality_container = self._empty_quality
             else:
                 criteria = {
