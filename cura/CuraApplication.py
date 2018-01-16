@@ -23,7 +23,6 @@ from UM.Settings.ContainerStack import ContainerStack
 from UM.Settings.InstanceContainer import InstanceContainer
 from UM.Settings.Validator import Validator
 from UM.Message import Message
-from UM.Signal import Signal
 from UM.i18n import i18nCatalog
 from UM.Workspace.WorkspaceReader import WorkspaceReader
 from UM.Decorators import deprecated
