@@ -609,7 +609,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
 
                         instance_container.setName(self._container_registry.uniqueName(instance_container.getName()))
                         new_changes_container_id = self.getNewId(instance_container.getId())
-                        instance_container._id = new_changes_container_id
+                        instance_container.setMetaDataEntry("id", new_changes_container_id)
 
                         # TODO: we don't know the following is correct or not, need to verify
                         #       AND REFACTOR!!!

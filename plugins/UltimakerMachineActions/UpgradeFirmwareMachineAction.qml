@@ -14,6 +14,9 @@ import Cura 1.0 as Cura
 Cura.MachineAction
 {
     anchors.fill: parent;
+    property bool printerConnected: Cura.MachineManager.printerOutputDevices.length != 0
+    property var activeOutputDevice: printerConnected ? Cura.MachineManager.printerOutputDevices[0] : null
+
     Item
     {
         id: upgradeFirmwareMachineAction
@@ -60,16 +63,17 @@ Cura.MachineAction
             {
                 id: autoUpgradeButton
                 text: catalog.i18nc("@action:button", "Automatically upgrade Firmware");
-                enabled: parent.firmwareName != ""
+                enabled: parent.firmwareName != "" && activeOutputDevice
                 onClicked:
                 {
-                    Cura.USBPrinterManager.updateAllFirmware(parent.firmwareName)
+                    activeOutputDevice.updateFirmware(parent.firmwareName)
                 }
             }
             Button
             {
                 id: manualUpgradeButton
                 text: catalog.i18nc("@action:button", "Upload custom Firmware");
+                enabled: activeOutputDevice != null
                 onClicked:
                 {
                     customFirmwareDialog.open()
@@ -83,7 +87,7 @@ Cura.MachineAction
             title: catalog.i18nc("@title:window", "Select custom firmware")
             nameFilters:  "Firmware image files (*.hex)"
             selectExisting: true
-            onAccepted: Cura.USBPrinterManager.updateAllFirmware(fileUrl)
+            onAccepted: activeOutputDevice.updateFirmware(fileUrl)
         }
     }
 }

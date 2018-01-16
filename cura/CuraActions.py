@@ -73,7 +73,7 @@ class CuraActions(QObject):
     #   \param count The number of times to multiply the selection.
     @pyqtSlot(int)
     def multiplySelection(self, count: int) -> None:
-        job = MultiplyObjectsJob(Selection.getAllSelectedObjects(), count, 8)
+        job = MultiplyObjectsJob(Selection.getAllSelectedObjects(), count, min_offset = 8)
         job.start()
 
     ##  Delete all selected objects.

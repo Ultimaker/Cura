@@ -104,7 +104,7 @@ class SimulationView(View):
                                                   title = catalog.i18nc("@info:title", "Simulation View"))
 
     def _resetSettings(self):
-        self._layer_view_type = 0  # 0 is material color, 1 is color by linetype, 2 is speed
+        self._layer_view_type = 0  # 0 is material color, 1 is color by linetype, 2 is speed, 3 is layer thickness
         self._extruder_count = 0
         self._extruder_opacity = [1.0, 1.0, 1.0, 1.0]
         self._show_travel_moves = 0

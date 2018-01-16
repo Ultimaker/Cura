@@ -36,6 +36,8 @@ class ProfilesModel(InstanceContainersModel):
         Application.getInstance().getMachineManager().activeStackChanged.connect(self._update)
         Application.getInstance().getMachineManager().activeMaterialChanged.connect(self._update)
 
+        self._empty_quality = ContainerRegistry.getInstance().findContainers(id = "empty_quality")[0]
+
     # Factory function, used by QML
     @staticmethod
     def createProfilesModel(engine, js_engine):
@@ -85,13 +87,10 @@ class ProfilesModel(InstanceContainersModel):
             if quality.getMetaDataEntry("quality_type") not in quality_type_set:
                 result.append(quality)
 
-        # if still profiles are found, add a single empty_quality ("Not supported") instance to the drop down list
-        if len(result) == 0:
-            # If not qualities are found we dynamically create a not supported container for this machine + material combination
-            not_supported_container = ContainerRegistry.getInstance().findContainers(id = "empty_quality")[0]
-            result.append(not_supported_container)
+        if len(result) > 1:
+            result.remove(self._empty_quality)
 
-        return {item.getId():item for item in result}, {} #Only return true profiles for now, no metadata. The quality manager is not able to get only metadata yet.
+        return {item.getId(): item for item in result}, {} #Only return true profiles for now, no metadata. The quality manager is not able to get only metadata yet.
 
     ##  Re-computes the items in this model, and adds the layer height role.
     def _recomputeItems(self):
@@ -114,7 +113,6 @@ class ProfilesModel(InstanceContainersModel):
         # active machine and material, and later yield the right ones.
         tmp_all_quality_items = OrderedDict()
         for item in super()._recomputeItems():
-
             profiles = container_registry.findContainersMetadata(id = item["id"])
             if not profiles or "quality_type" not in profiles[0]:
                 quality_type = ""
