@@ -81,8 +81,10 @@ class ThreeMFReader(MeshReader):
         self._object_count += 1
         node_name = "Object %s" % self._object_count
 
+        active_build_plate = Application.getInstance().getBuildPlateModel().activeBuildPlate
+
         um_node = CuraSceneNode()
-        um_node.addDecorator(BuildPlateDecorator(0))
+        um_node.addDecorator(BuildPlateDecorator(active_build_plate))
         um_node.setName(node_name)
         transformation = self._createMatrixFromTransformationString(savitar_node.getTransformation())
         um_node.setTransformation(transformation)
