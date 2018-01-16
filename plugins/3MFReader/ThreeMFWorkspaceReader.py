@@ -168,11 +168,9 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                 Logger.log("w", "Unknown definition container type %s for %s",
                            definition_container_type, each_definition_container_file)
             Job.yieldThread()
-        # sanity check
+
         if machine_definition_container_count != 1:
-            msg = "Expecting one machine definition container but got %s" % machine_definition_container_count
-            Logger.log("e", msg)
-            raise RuntimeError(msg)
+            return WorkspaceReader.PreReadResult.failed #Not a workspace file but ordinary 3MF.
 
         material_labels = []
         material_conflict = False
