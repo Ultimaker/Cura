@@ -10,9 +10,12 @@ from UM.Application import Application
 from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 from UM.Scene.SceneNode import SceneNode
 from UM.Scene.Selection import Selection
+from UM.Signal import Signal
 
 
 class CuraSceneController(QObject):
+    activeBuildPlateChanged = Signal()
+
     def __init__(self, objects_model: ObjectsModel, build_plate_model: BuildPlateModel):
         super().__init__()
 
@@ -30,7 +33,7 @@ class CuraSceneController(QObject):
             source = args[0]
         else:
             source = None
-        if not issubclass(type(source), SceneNode):
+        if not isinstance(source, SceneNode):
             return
         max_build_plate = self._calcMaxBuildPlate()
         changed = False
@@ -101,6 +104,7 @@ class CuraSceneController(QObject):
 
         self._build_plate_model.setActiveBuildPlate(nr)
         self._objects_model.setActiveBuildPlate(nr)
+        self.activeBuildPlateChanged.emit()
 
     @staticmethod
     def createCuraSceneController():

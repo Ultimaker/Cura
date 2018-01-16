@@ -99,6 +99,7 @@ Rectangle
     {
         id: viewOrientationControl
         height: 30
+
         spacing: 2
         visible: UM.Controller.activeStage.stageId != "MonitorStage"
 

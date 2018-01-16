@@ -4,7 +4,6 @@
 import gc
 
 from UM.Job import Job
-from UM.Scene.SceneNode import SceneNode
 from UM.Application import Application
 from UM.Mesh.MeshData import MeshData
 from UM.Preferences import Preferences
@@ -17,6 +16,7 @@ from UM.Logger import Logger
 from UM.Math.Vector import Vector
 
 from cura.Scene.BuildPlateDecorator import BuildPlateDecorator
+from cura.Scene.CuraSceneNode import CuraSceneNode
 from cura.Settings.ExtruderManager import ExtruderManager
 from cura import LayerDataBuilder
 from cura import LayerDataDecorator
@@ -81,7 +81,7 @@ class ProcessSlicedLayersJob(Job):
 
         Application.getInstance().getController().activeViewChanged.connect(self._onActiveViewChanged)
 
-        new_node = SceneNode()
+        new_node = CuraSceneNode()
         new_node.addDecorator(BuildPlateDecorator(self._build_plate_number))
 
         # Force garbage collection.

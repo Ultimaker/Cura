@@ -11,6 +11,7 @@ from UM.Preferences import Preferences
 from UM.Settings.ContainerRegistry import ContainerRegistry
 
 from cura.Settings.ExtruderManager import ExtruderManager
+from typing import Dict
 
 import math
 import os.path
@@ -177,7 +178,7 @@ class PrintInformation(QObject):
         self._material_amounts = material_amounts
         self._calculateInformation(build_plate_number)
 
-    def _updateTotalPrintTimePerFeature(self, build_plate_number, print_time):
+    def _updateTotalPrintTimePerFeature(self, build_plate_number, print_time: Dict[str, int]):
         total_estimated_time = 0
 
         if build_plate_number not in self._print_time_message_values:

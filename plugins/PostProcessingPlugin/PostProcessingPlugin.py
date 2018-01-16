@@ -54,7 +54,11 @@ class PostProcessingPlugin(QObject, Extension):
     ##  Execute all post-processing scripts on the gcode.
     def execute(self, output_device):
         scene = Application.getInstance().getController().getScene()
-        gcode_dict = getattr(scene, "gcode_dict")
+        gcode_dict = None
+
+        if hasattr(scene, "gcode_dict"):
+            gcode_dict = getattr(scene, "gcode_dict")
+
         if not gcode_dict:
             return
 

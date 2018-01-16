@@ -18,6 +18,9 @@ Item {
     width: childrenRect.width;
     height: childrenRect.height;
 
+    property var all_categories_except_support: [ "machine_settings", "resolution", "shell", "infill", "material", "speed",
+                                    "travel", "cooling", "platform_adhesion", "dual", "meshfix", "blackmagic", "experimental"]
+
     Column
     {
         id: items
@@ -39,6 +42,13 @@ Item {
                 verticalAlignment: Text.AlignVCenter
             }
 
+            UM.SettingPropertyProvider
+            {
+                id: meshTypePropertyProvider
+                containerStackId: Cura.MachineManager.activeMachineId
+                watchedProperties: [ "enabled" ]
+            }
+
             ComboBox
             {
                 id: meshTypeSelection
@@ -49,36 +59,55 @@ Item {
                 model: ListModel
                 {
                     id: meshTypeModel
-                    Component.onCompleted:
+                    Component.onCompleted: meshTypeSelection.populateModel()
+                }
+
+                function populateModel()
+                {
+                    meshTypeModel.append({
+                        type:  "",
+                        text: catalog.i18nc("@label", "Normal model")
+                    });
+                    meshTypePropertyProvider.key = "support_mesh";
+                    if(meshTypePropertyProvider.properties.enabled == "True")
                     {
-                        meshTypeModel.append({
-                            type:  "",
-                            text: catalog.i18nc("@label", "Normal model")
-                        });
                         meshTypeModel.append({
                             type:  "support_mesh",
                             text: catalog.i18nc("@label", "Print as support")
                         });
+                    }
+                    meshTypePropertyProvider.key = "anti_overhang_mesh";
+                    if(meshTypePropertyProvider.properties.enabled == "True")
+                    {
                         meshTypeModel.append({
                             type:  "anti_overhang_mesh",
                             text: catalog.i18nc("@label", "Don't support overlap with other models")
                         });
+                    }
+                    meshTypePropertyProvider.key = "cutting_mesh";
+                    if(meshTypePropertyProvider.properties.enabled == "True")
+                    {
                         meshTypeModel.append({
                             type:  "cutting_mesh",
                             text: catalog.i18nc("@label", "Modify settings for overlap with other models")
                         });
+                    }
+                    meshTypePropertyProvider.key = "infill_mesh";
+                    if(meshTypePropertyProvider.properties.enabled == "True")
+                    {
                         meshTypeModel.append({
                             type:  "infill_mesh",
                             text: catalog.i18nc("@label", "Modify settings for infill of other models")
                         });
-
-                        meshTypeSelection.updateCurrentIndex();
                     }
+
+                    meshTypeSelection.updateCurrentIndex();
                 }
 
                 function updateCurrentIndex()
                 {
                     var mesh_type = UM.ActiveTool.properties.getValue("MeshType");
+                    meshTypeSelection.currentIndex = -1;
                     for(var index=0; index < meshTypeSelection.model.count; index++)
                     {
                         if(meshTypeSelection.model.get(index).type == mesh_type)
@@ -88,6 +117,16 @@ Item {
                         }
                     }
                     meshTypeSelection.currentIndex = 0;
+                }
+            }
+
+            Connections
+            {
+                target: Cura.MachineManager
+                onGlobalContainerChanged:
+                {
+                    meshTypeSelection.model.clear();
+                    meshTypeSelection.populateModel();
                 }
             }
 
@@ -106,7 +145,7 @@ Item {
             id: currentSettings
             property int maximumHeight: 200 * screenScaleFactor
             height: Math.min(contents.count * (UM.Theme.getSize("section").height + UM.Theme.getSize("default_lining").height), maximumHeight)
-            visible: ["support_mesh", "anti_overhang_mesh"].indexOf(meshTypeSelection.model.get(meshTypeSelection.currentIndex).type) == -1
+            visible: meshTypeSelection.model.get(meshTypeSelection.currentIndex).type != "anti_overhang_mesh"
 
             ScrollView
             {
@@ -124,7 +163,15 @@ Item {
                         id: addedSettingsModel;
                         containerId: Cura.MachineManager.activeDefinitionId
                         expanded: [ "*" ]
-                        exclude: [ "support_mesh", "anti_overhang_mesh", "cutting_mesh", "infill_mesh" ]
+                        exclude: {
+                            var excluded_settings = [ "support_mesh", "anti_overhang_mesh", "cutting_mesh", "infill_mesh" ];
+
+                            if(meshTypeSelection.model.get(meshTypeSelection.currentIndex).type == "support_mesh")
+                            {
+                                excluded_settings = excluded_settings.concat(base.all_categories_except_support);
+                            }
+                            return excluded_settings;
+                        }
 
                         visibilityHandler: Cura.PerObjectSettingVisibilityHandler
                         {
@@ -306,7 +353,18 @@ Item {
                 }
             }
 
-            onClicked: settingPickDialog.visible = true;
+            onClicked:
+            {
+                settingPickDialog.visible = true;
+                if (meshTypeSelection.model.get(meshTypeSelection.currentIndex).type == "support_mesh")
+                {
+                    settingPickDialog.additional_excluded_settings = base.all_categories_except_support;
+                }
+                else
+                {
+                    settingPickDialog.additional_excluded_settings = []
+                }
+            }
         }
     }
 
@@ -315,17 +373,18 @@ Item {
         id: settingPickDialog
 
         title: catalog.i18nc("@title:window", "Select Settings to Customize for this model")
-        width: screenScaleFactor * 360;
+        width: screenScaleFactor * 360
 
         property string labelFilter: ""
+        property var additional_excluded_settings
 
         onVisibilityChanged:
         {
             // force updating the model to sync it with addedSettingsModel
             if(visible)
             {
-                // Set skip setting, it will prevent from restting selected mesh_type
-                contents.model.visibilityHandler.setSkipSetting(meshTypeSelection.model.get(meshTypeSelection.currentIndex).type)
+                // Set skip setting, it will prevent from resetting selected mesh_type
+                contents.model.visibilityHandler.addSkipResetSetting(meshTypeSelection.model.get(meshTypeSelection.currentIndex).type)
                 listview.model.forceUpdate()
             }
         }
@@ -396,7 +455,12 @@ Item {
                     }
                     visibilityHandler: UM.SettingPreferenceVisibilityHandler {}
                     expanded: [ "*" ]
-                    exclude: [ "machine_settings", "command_line_settings", "support_mesh", "anti_overhang_mesh", "cutting_mesh", "infill_mesh" ]
+                    exclude:
+                    {
+                        var excluded_settings = [ "machine_settings", "command_line_settings", "support_mesh", "anti_overhang_mesh", "cutting_mesh", "infill_mesh" ];
+                        excluded_settings = excluded_settings.concat(settingPickDialog.additional_excluded_settings);
+                        return excluded_settings;
+                    }
                 }
                 delegate:Loader
                 {
