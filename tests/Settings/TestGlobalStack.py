@@ -3,7 +3,9 @@
 
 import pytest #This module contains unit tests.
 import unittest.mock #To monkeypatch some mocks in place of dependencies.
+import copy
 
+import cura.CuraApplication
 import cura.Settings.GlobalStack #The module we're testing.
 import cura.Settings.CuraContainerStack #To get the list of container types.
 from cura.Settings.Exceptions import TooManyExtrudersError, InvalidContainerError, InvalidOperationError #To test raising these errors.
@@ -13,6 +15,7 @@ from UM.Settings.SettingInstance import InstanceState
 import UM.Settings.ContainerRegistry
 import UM.Settings.ContainerStack
 import UM.Settings.SettingDefinition #To add settings to the definition.
+from UM.Settings.ContainerRegistry import ContainerRegistry
 
 ##  Fake container registry that always provides all containers you ask of.
 @pytest.yield_fixture()
@@ -33,6 +36,7 @@ def container_registry():
 #An empty global stack to test with.
 @pytest.fixture()
 def global_stack() -> cura.Settings.GlobalStack.GlobalStack:
+    creteEmptyContainers()
     return cura.Settings.GlobalStack.GlobalStack("TestStack")
 
 ##  Gets an instance container with a specified container type.
@@ -43,6 +47,31 @@ def getInstanceContainer(container_type) -> InstanceContainer:
     container = InstanceContainer(container_id = "InstanceContainer")
     container.addMetaDataEntry("type", container_type)
     return container
+
+def creteEmptyContainers():
+    empty_container = ContainerRegistry.getInstance().getEmptyInstanceContainer()
+    empty_variant_container = copy.deepcopy(empty_container)
+    empty_variant_container.setMetaDataEntry("id", "empty_variant")
+    empty_variant_container.addMetaDataEntry("type", "variant")
+    ContainerRegistry.getInstance().addContainer(empty_variant_container)
+
+    empty_material_container = copy.deepcopy(empty_container)
+    empty_material_container.setMetaDataEntry("id", "empty_material")
+    empty_material_container.addMetaDataEntry("type", "material")
+    ContainerRegistry.getInstance().addContainer(empty_material_container)
+
+    empty_quality_container = copy.deepcopy(empty_container)
+    empty_quality_container.setMetaDataEntry("id", "empty_quality")
+    empty_quality_container.setName("Not Supported")
+    empty_quality_container.addMetaDataEntry("quality_type", "not_supported")
+    empty_quality_container.addMetaDataEntry("type", "quality")
+    empty_quality_container.addMetaDataEntry("supported", False)
+    ContainerRegistry.getInstance().addContainer(empty_quality_container)
+
+    empty_quality_changes_container = copy.deepcopy(empty_container)
+    empty_quality_changes_container.setMetaDataEntry("id", "empty_quality_changes")
+    empty_quality_changes_container.addMetaDataEntry("type", "quality_changes")
+    ContainerRegistry.getInstance().addContainer(empty_quality_changes_container)
 
 class DefinitionContainerSubClass(DefinitionContainer):
     def __init__(self):

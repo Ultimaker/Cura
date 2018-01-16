@@ -163,7 +163,10 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
 
     def startPrint(self):
         self.writeStarted.emit(self)
-        gcode_list = getattr( Application.getInstance().getController().getScene(), "gcode_list")
+        active_build_plate_id = Application.getInstance().getBuildPlateModel().activeBuildPlate
+        gcode_dict = getattr(Application.getInstance().getController().getScene(), "gcode_dict")
+        gcode_list = gcode_dict[active_build_plate_id]
+
         self._updateJobState("printing")
         self.printGCode(gcode_list)
 
@@ -490,7 +493,7 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
         self.setJobName(file_name)
         self._print_estimated_time = int(Application.getInstance().getPrintInformation().currentPrintTime.getDisplayString(DurationFormat.Format.Seconds))
 
-        Application.getInstance().showPrintMonitor.emit(True)
+        Application.getInstance().getController().setActiveStage("MonitorStage")
         self.startPrint()
 
     def _setEndstopState(self, endstop_key, value):
@@ -698,7 +701,7 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
         self._is_printing = False
         self._is_paused = False
         self._updateJobState("ready")
-        Application.getInstance().showPrintMonitor.emit(False)
+        Application.getInstance().getController().setActiveStage("PrepareStage")
 
     ##  Check if the process did not encounter an error yet.
     def hasError(self):

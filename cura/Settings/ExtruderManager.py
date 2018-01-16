@@ -49,6 +49,9 @@ class ExtruderManager(QObject):
     ##  Notify when the user switches the currently active extruder.
     activeExtruderChanged = pyqtSignal()
 
+    ## The signal notifies subscribers if extruders are added
+    extrudersAdded = pyqtSignal()
+
     ##  Gets the unique identifier of the currently active extruder stack.
     #
     #   The currently active extruder stack is the stack that is currently being
@@ -270,7 +273,7 @@ class ExtruderManager(QObject):
             return []
 
         # Get the extruders of all printable meshes in the scene
-        meshes = [node for node in DepthFirstIterator(scene_root) if type(node) is SceneNode and node.isSelectable()]
+        meshes = [node for node in DepthFirstIterator(scene_root) if isinstance(node, SceneNode) and node.isSelectable()]
         for mesh in meshes:
             extruder_stack_id = mesh.callDecoration("getActiveExtruder")
             if not extruder_stack_id:
@@ -406,6 +409,7 @@ class ExtruderManager(QObject):
 
             if extruders_changed:
                 self.extrudersChanged.emit(global_stack_id)
+                self.extrudersAdded.emit()
                 self.setActiveExtruderIndex(0)
 
     ##  Get all extruder values for a certain setting.

@@ -1,5 +1,4 @@
 {
-    "id": "uniqbot_one",
     "version": 2,
     "name": "Uniqbot",
     "inherits": "fdmprinter",

@@ -440,9 +440,9 @@ class PrinterOutputDevice(QObject, OutputDevice):
                 result.append(i18n_catalog.i18nc("@item:material", "No material loaded"))
                 continue
 
-            containers = self._container_registry.findInstanceContainers(type = "material", GUID = material_id)
+            containers = self._container_registry.findInstanceContainersMetadata(type = "material", GUID = material_id)
             if containers:
-                result.append(containers[0].getName())
+                result.append(containers[0]["name"])
             else:
                 result.append(i18n_catalog.i18nc("@item:material", "Unknown material"))
         return result
@@ -462,9 +462,9 @@ class PrinterOutputDevice(QObject, OutputDevice):
                 result.append("#00000000") #No material.
                 continue
 
-            containers = self._container_registry.findInstanceContainers(type = "material", GUID = material_id)
+            containers = self._container_registry.findInstanceContainersMetadata(type = "material", GUID = material_id)
             if containers:
-                result.append(containers[0].getMetaDataEntry("color_code"))
+                result.append(containers[0]["color_code"])
             else:
                 result.append("#00000000") #Unknown material.
         return result

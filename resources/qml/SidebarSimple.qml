@@ -1,17 +1,17 @@
 // Copyright (c) 2017 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
-import QtQuick 2.2
-import QtQuick.Controls 1.1
-import QtQuick.Controls.Styles 1.1
-import QtQuick.Layouts 1.1
+import QtQuick 2.8
+import QtQuick.Controls 1.4
+import QtQuick.Controls.Styles 1.4
+import QtQuick.Layouts 1.3
 
 import UM 1.2 as UM
 import Cura 1.2 as Cura
 
 Item
 {
-    id: base;
+    id: base
 
     signal showTooltip(Item item, point location, string text);
     signal hideTooltip();
@@ -70,6 +70,18 @@ Item
                     onActiveVariantChanged: qualityModel.update()
                 }
 
+                Connections {
+                    target: base
+                    onVisibleChanged:
+                    {
+                        // update needs to be called when the widgets are visible, otherwise the step width calculation
+                        // will fail because the width of an invisible item is 0.
+                        if (visible) {
+                            qualityModel.update();
+                        }
+                    }
+                }
+
                 ListModel
                 {
                     id: qualityModel
@@ -103,7 +115,7 @@ Item
                                 if (Cura.SimpleModeSettingsManager.isProfileUserCreated) {
                                     qualityModel.qualitySliderActiveIndex = -1
                                 } else {
-                                     qualityModel.qualitySliderActiveIndex = i
+                                    qualityModel.qualitySliderActiveIndex = i
                                 }
 
                                  qualityModel.existingQualityProfile = 1
@@ -183,12 +195,22 @@ Item
                             text:
                             {
                                 var result = ""
-                                if(Cura.MachineManager.activeMachine != null){
-
-                                    var result = Cura.ProfilesModel.getItem(index).layer_height_without_unit
+                                if(Cura.MachineManager.activeMachine != null)
+                                {
+                                    result = Cura.ProfilesModel.getItem(index).layer_height_without_unit
 
                                     if(result == undefined)
-                                        result = ""
+                                    {
+                                        result = "";
+                                    }
+                                    else
+                                    {
+                                        result = Number(Math.round(result + "e+2") + "e-2"); //Round to 2 decimals. Javascript makes this difficult...
+                                        if (result == undefined || result != result) //Parse failure.
+                                        {
+                                            result = "";
+                                        }
+                                    }
                                 }
                                 return result
                             }
@@ -340,6 +362,8 @@ Item
                     text: catalog.i18nc("@label", "Print Speed")
                     font: UM.Theme.getFont("default")
                     color: UM.Theme.getColor("text")
+                    width: parseInt(UM.Theme.getSize("sidebar").width * 0.35)
+                    elide: Text.ElideRight
                 }
 
                 Label
@@ -402,8 +426,6 @@ Item
                     onExited: base.hideTooltip()
                 }
             }
-
-
 
             //
             // Infill
@@ -568,18 +590,20 @@ Item
                         model: infillModel
                         anchors.fill: parent
 
-                        property int activeIndex: {
+                        function activeIndex () {
                             for (var i = 0; i < infillModel.count; i++) {
                                 var density = parseInt(infillDensity.properties.value)
                                 var steps = parseInt(infillSteps.properties.value)
                                 var infillModelItem = infillModel.get(i)
 
-                                if (density >= infillModelItem.percentageMin
+                                if (infillModelItem != "undefined"
+                                    && density >= infillModelItem.percentageMin
                                     && density <= infillModelItem.percentageMax
                                     && steps >= infillModelItem.stepsMin
-                                    && steps <= infillModelItem.stepsMax){
-                                        return i
-                                    }
+                                    && steps <= infillModelItem.stepsMax
+                                ){
+                                    return i
+                                }
                             }
                             return -1
                         }
@@ -587,7 +611,7 @@ Item
                         Rectangle
                         {
                             anchors.fill: parent
-                            visible: infillIconList.activeIndex == index
+                            visible: infillIconList.activeIndex() == index
 
                             border.width: UM.Theme.getSize("default_lining").width
                             border.color: UM.Theme.getColor("quality_slider_unavailable")

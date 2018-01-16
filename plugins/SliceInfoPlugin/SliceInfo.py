@@ -39,19 +39,26 @@ class SliceInfo(Extension):
         Preferences.getInstance().addPreference("info/send_slice_info", True)
         Preferences.getInstance().addPreference("info/asked_send_slice_info", False)
 
-        if not Preferences.getInstance().getValue("info/asked_send_slice_info") and Preferences.getInstance().getValue("info/send_slice_info"):
-            self.send_slice_info_message = Message(catalog.i18nc("@info", "Cura collects anonymised slicing statistics. You can disable this in the preferences."),
+        if not Preferences.getInstance().getValue("info/asked_send_slice_info"):
+            self.send_slice_info_message = Message(catalog.i18nc("@info", "Cura collects anonymized usage statistics."),
                                                    lifetime = 0,
                                                    dismissable = False,
                                                    title = catalog.i18nc("@info:title", "Collecting Data"))
 
-            self.send_slice_info_message.addAction("Dismiss", catalog.i18nc("@action:button", "Dismiss"), None, "")
+            self.send_slice_info_message.addAction("Dismiss", name = catalog.i18nc("@action:button", "Allow"), icon = None,
+                    description = catalog.i18nc("@action:tooltip", "Allow Cura to send anonymized usage statistics to help prioritize future improvements to Cura. Some of your preferences and settings are sent, the Cura version and a hash of the models you're slicing."))
+            self.send_slice_info_message.addAction("Disable", name = catalog.i18nc("@action:button", "Disable"), icon = None,
+                    description = catalog.i18nc("@action:tooltip", "Don't allow Cura to send anonymized usage statistics. You can enable it again in the preferences."), button_style = Message.ActionButtonStyle.LINK)
             self.send_slice_info_message.actionTriggered.connect(self.messageActionTriggered)
             self.send_slice_info_message.show()
 
+    ##  Perform action based on user input.
+    #   Note that clicking "Disable" won't actually disable the data sending, but rather take the user to preferences where they can disable it.
     def messageActionTriggered(self, message_id, action_id):
-        self.send_slice_info_message.hide()
         Preferences.getInstance().setValue("info/asked_send_slice_info", True)
+        if action_id == "Disable":
+            CuraApplication.getInstance().showPreferences()
+        self.send_slice_info_message.hide()
 
     def _onWriteStarted(self, output_device):
         try:
@@ -99,7 +106,9 @@ class SliceInfo(Extension):
                                              "type": extruder.material.getMetaData().get("material", ""),
                                              "brand": extruder.material.getMetaData().get("brand", "")
                                              }
-                extruder_dict["material_used"] = print_information.materialLengths[int(extruder.getMetaDataEntry("position", "0"))]
+                extruder_position = int(extruder.getMetaDataEntry("position", "0"))
+                if extruder_position in print_information.materialLengths:
+                    extruder_dict["material_used"] = print_information.materialLengths[extruder_position]
                 extruder_dict["variant"] = extruder.variant.getName()
                 extruder_dict["nozzle_size"] = extruder.getProperty("machine_nozzle_size", "value")
 
@@ -157,7 +166,7 @@ class SliceInfo(Extension):
 
                     data["models"].append(model)
 
-            print_times = print_information._print_time_message_values
+            print_times = print_information.printTimes()
             data["print_times"] = {"travel": int(print_times["travel"].getDisplayString(DurationFormat.Format.Seconds)),
                                    "support": int(print_times["support"].getDisplayString(DurationFormat.Format.Seconds)),
                                    "infill": int(print_times["infill"].getDisplayString(DurationFormat.Format.Seconds)),

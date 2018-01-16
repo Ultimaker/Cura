@@ -1,5 +1,4 @@
 {
-    "id": "101Hero",
     "version": 2, 
     "name": "101Hero",
     "inherits": "fdmprinter",

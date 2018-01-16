@@ -80,6 +80,8 @@ class NetworkClusterPrinterOutputDevice(NetworkPrinterOutputDevice.NetworkPrinte
         self._print_view = None
         self._request_job = []
 
+        self._job_list = []
+
         self._monitor_view_qml_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "ClusterMonitorItem.qml")
         self._control_view_qml_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "ClusterControlItem.qml")
 
@@ -234,7 +236,7 @@ class NetworkClusterPrinterOutputDevice(NetworkPrinterOutputDevice.NetworkPrinte
     def spawnPrintView(self):
         if self._print_view is None:
             path = os.path.join(self._plugin_path, "PrintWindow.qml")
-            self._print_view = Application.getInstance().createQmlComponent(path, {"OutputDevice", self})
+            self._print_view = Application.getInstance().createQmlComponent(path, {"OutputDevice": self})
         if self._print_view is not None:
             self._print_view.show()
 
@@ -242,6 +244,11 @@ class NetworkClusterPrinterOutputDevice(NetworkPrinterOutputDevice.NetworkPrinte
     def requestWrite(self, nodes, file_name=None, filter_by_machine=False, file_handler=None, **kwargs):
         self._selected_printer = self._automatic_printer  # reset to default option
         self._request_job = [nodes, file_name, filter_by_machine, file_handler, kwargs]
+
+        # the build plates to be sent
+        gcode_dict = getattr(Application.getInstance().getController().getScene(), "gcode_dict")
+        self._job_list = list(gcode_dict.keys())
+        Logger.log("d", "build plates to be sent to printer: %s", (self._job_list))
 
         if self._stage != OutputStage.ready:
             if self._error_message:
@@ -252,14 +259,15 @@ class NetworkClusterPrinterOutputDevice(NetworkPrinterOutputDevice.NetworkPrinte
             self._error_message.show()
             return
 
+        self._add_build_plate_number = len(self._job_list) > 1
         self.writeStarted.emit(self) # Allow postprocessing before sending data to the printer
-
         if len(self._printers) > 1:
             self.spawnPrintView()  # Ask user how to print it.
         elif len(self._printers) == 1:
             # If there is only one printer, don't bother asking.
             self.selectAutomaticPrinter()
             self.sendPrintJob()
+
         else:
             # Cluster has no printers, warn the user of this.
             if self._error_message:
@@ -274,28 +282,37 @@ class NetworkClusterPrinterOutputDevice(NetworkPrinterOutputDevice.NetworkPrinte
     @pyqtSlot()
     def sendPrintJob(self):
         nodes, file_name, filter_by_machine, file_handler, kwargs = self._request_job
-        require_printer_name = self._selected_printer["unique_name"]
+        output_build_plate_number = self._job_list.pop(0)
+        gcode_list = getattr(Application.getInstance().getController().getScene(), "gcode_dict")[output_build_plate_number]
+        if not gcode_list:  # Empty build plate
+            Logger.log("d", "Skipping empty job (build plate number %d).", output_build_plate_number)
+            return self.sendPrintJob()
 
         self._send_gcode_start = time.time()
-        Logger.log("d", "Sending print job [%s] to host..." % file_name)
+        Logger.log("d", "Sending print job [%s] to host, build plate [%s]..." % (file_name, output_build_plate_number))
 
         if self._stage != OutputStage.ready:
             Logger.log("d", "Unable to send print job as the state is %s", self._stage)
             raise OutputDeviceError.DeviceBusyError()
         self._stage = OutputStage.uploading
 
-        self._file_name = "%s.gcode.gz" % file_name
+        if self._add_build_plate_number:
+            self._file_name = "%s_%d.gcode.gz" % (file_name, output_build_plate_number)
+        else:
+            self._file_name = "%s.gcode.gz" % (file_name)
         self._showProgressMessage()
 
-        new_request = self._buildSendPrintJobHttpRequest(require_printer_name)
+        require_printer_name = self._selected_printer["unique_name"]
+
+        new_request = self._buildSendPrintJobHttpRequest(require_printer_name, gcode_list)
         if new_request is None or self._stage != OutputStage.uploading:
             return
         self._request = new_request
         self._reply = self._manager.post(self._request, self._multipart)
         self._reply.uploadProgress.connect(self._onUploadProgress)
-        # See _finishedPostPrintJobRequest()
+        # See _finishedPrintJobPostRequest()
 
-    def _buildSendPrintJobHttpRequest(self, require_printer_name):
+    def _buildSendPrintJobHttpRequest(self, require_printer_name, gcode_list):
         api_url = QUrl(self._api_base_uri + "print_jobs/")
         request = QNetworkRequest(api_url)
         # Create multipart request and add the g-code.
@@ -304,10 +321,9 @@ class NetworkClusterPrinterOutputDevice(NetworkPrinterOutputDevice.NetworkPrinte
         # Add gcode
         part = QHttpPart()
         part.setHeader(QNetworkRequest.ContentDispositionHeader,
-                       'form-data; name="file"; filename="%s"' % self._file_name)
+                       'form-data; name="file"; filename="%s"' % (self._file_name))
 
-        gcode = getattr(Application.getInstance().getController().getScene(), "gcode_list")
-        compressed_gcode = self._compressGcode(gcode)
+        compressed_gcode = self._compressGcode(gcode_list)
         if compressed_gcode is None:
             return None     # User aborted print, so stop trying.
 
@@ -325,7 +341,7 @@ class NetworkClusterPrinterOutputDevice(NetworkPrinterOutputDevice.NetworkPrinte
         self._addUserAgentHeader(request)
         return request
 
-    def _compressGcode(self, gcode):
+    def _compressGcode(self, gcode_list):
         self._compressing_print = True
         batched_line = ""
         max_chars_per_line = int(1024 * 1024 / 4)  # 1 / 4  MB
@@ -340,11 +356,11 @@ class NetworkClusterPrinterOutputDevice(NetworkPrinterOutputDevice.NetworkPrinte
             self._last_response_time = time.time()
             return compressed_data
 
-        if gcode is None:
+        if gcode_list is None:
             Logger.log("e", "Unable to find sliced gcode, returning empty.")
             return byte_array_file_data
 
-        for line in gcode:
+        for line in gcode_list:
             if not self._compressing_print:
                 self._progress_message.hide()
                 return None     # Stop trying to zip, abort was called.
@@ -391,6 +407,9 @@ class NetworkClusterPrinterOutputDevice(NetworkPrinterOutputDevice.NetworkPrinte
             self.writeSuccess.emit(self)
 
         self._cleanupRequest()
+
+        if self._job_list:  # start sending next job
+            self.sendPrintJob()
 
     def _showRequestFailedMessage(self, reply):
         if reply is not None:
@@ -698,7 +717,7 @@ class NetworkClusterPrinterOutputDevice(NetworkPrinterOutputDevice.NetworkPrinte
             if self._reply:
                 self._reply.abort()
             self._stage = OutputStage.ready
-            Application.getInstance().showPrintMonitor.emit(False)
+            Application.getInstance().getController().setActiveStage("PrepareStage")
 
     @pyqtSlot(int, result=str)
     def formatDuration(self, seconds):
