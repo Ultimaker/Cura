@@ -135,14 +135,6 @@ SettingItem
                 }
             }
 
-            onEditingFinished:
-            {
-                if (textHasChanged)
-                {
-                    propertyProvider.setPropertyValue("value", text)
-                }
-            }
-
             onActiveFocusChanged:
             {
                 if(activeFocus)
