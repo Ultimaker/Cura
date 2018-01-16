@@ -864,9 +864,10 @@ QtObject {
                 }
             }
             label: Label {
-                text: control.text;
-                color: Theme.getColor("checkbox_text");
-                font: Theme.getFont("default");
+                text: control.text
+                color: Theme.getColor("checkbox_text")
+                font: Theme.getFont("default")
+                elide: Text.ElideRight
             }
         }
     }

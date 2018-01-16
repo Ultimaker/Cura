@@ -423,7 +423,7 @@ class CuraEngineBackend(QObject, Backend):
     #
     #   \param source The scene node that was changed.
     def _onSceneChanged(self, source):
-        if not issubclass(type(source), SceneNode):
+        if not isinstance(source, SceneNode):
             return
 
         build_plate_changed = set()
