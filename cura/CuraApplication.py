@@ -1518,12 +1518,11 @@ class CuraApplication(QtApplication):
         """
         Checks if the given file URL is a valid project file.
         """
+        file_path = QUrl(file_url).toLocalFile()
+        workspace_reader = self.getWorkspaceFileHandler().getReaderForFile(file_path)
+        if workspace_reader is None:
+            return False  # non-project files won't get a reader
         try:
-            file_path = QUrl(file_url).toLocalFile()
-            workspace_reader = self.getWorkspaceFileHandler().getReaderForFile(file_path)
-            if workspace_reader is None:
-                return False  # non-project files won't get a reader
-
             result = workspace_reader.preRead(file_path, show_dialog=False)
             return result == WorkspaceReader.PreReadResult.accepted
         except Exception as e:
