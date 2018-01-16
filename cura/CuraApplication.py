@@ -23,6 +23,7 @@ from UM.Settings.ContainerStack import ContainerStack
 from UM.Settings.InstanceContainer import InstanceContainer
 from UM.Settings.Validator import Validator
 from UM.Message import Message
+from UM.Signal import Signal
 from UM.i18n import i18nCatalog
 from UM.Workspace.WorkspaceReader import WorkspaceReader
 from UM.Decorators import deprecated
@@ -805,10 +806,13 @@ class CuraApplication(QtApplication):
     #   \param engine The QML engine.
     def registerObjects(self, engine):
         super().registerObjects(engine)
+
         engine.rootContext().setContextProperty("Printer", self)
         engine.rootContext().setContextProperty("CuraApplication", self)
+
         self._print_information = PrintInformation.PrintInformation()
         engine.rootContext().setContextProperty("PrintInformation", self._print_information)
+
         self._cura_actions = CuraActions.CuraActions(self)
         engine.rootContext().setContextProperty("CuraActions", self._cura_actions)
 
@@ -1369,10 +1373,6 @@ class CuraApplication(QtApplication):
         else:
             Logger.log("w", "Could not find a mesh in reloaded node.")
 
-    ##  Import a file from disk
-    def openFile(self, filename):
-        self._openFile(filename)
-
     def _openFile(self, filename):
         self.readLocalFile(QUrl.fromLocalFile(filename))
 
@@ -1521,8 +1521,8 @@ class CuraApplication(QtApplication):
                         # Step is for skipping tests to make it a lot faster. it also makes the outcome somewhat rougher
                         node, _ = arranger.findNodePlacement(node, offset_shape_arr, hull_shape_arr, step = 10)
 
-            # This node is deepcopied from some other node which already has a BuildPlateDecorator, but the deepcopy
-            # of BuildPlateDecorator produces one that's assoicated with build plate -1. So, here we need to check if
+            # This node is deep copied from some other node which already has a BuildPlateDecorator, but the deepcopy
+            # of BuildPlateDecorator produces one that's associated with build plate -1. So, here we need to check if
             # the BuildPlateDecorator exists or not and always set the correct build plate number.
             build_plate_decorator = node.getDecorator(BuildPlateDecorator)
             if build_plate_decorator is None:

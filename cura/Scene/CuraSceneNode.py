@@ -9,7 +9,7 @@ from copy import deepcopy
 class CuraSceneNode(SceneNode):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self._outside_buildarea = True
+        self._outside_buildarea = False
 
     def setOutsideBuildArea(self, new_value):
         self._outside_buildarea = new_value
