@@ -1062,7 +1062,8 @@ class CuraApplication(QtApplication):
             Selection.clear()
 
         # Reset the print information:
-        self._print_information.setToZeroPrintInformation(self.getBuildPlateModel().activeBuildPlate)
+        self.getController().getScene().sceneChanged.emit(node)
+        # self._print_information.setToZeroPrintInformation(self.getBuildPlateModel().activeBuildPlate)
 
         # stay on the same build plate
         #self.getCuraSceneController().setActiveBuildPlate(0)  # Select first build plate
