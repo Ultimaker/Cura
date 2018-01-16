@@ -299,6 +299,7 @@ class CuraApplication(QtApplication):
         empty_quality_changes_container = copy.deepcopy(empty_container)
         empty_quality_changes_container.setMetaDataEntry("id", "empty_quality_changes")
         empty_quality_changes_container.addMetaDataEntry("type", "quality_changes")
+        empty_quality_changes_container.addMetaDataEntry("quality_type", "not_supported")
         ContainerRegistry.getInstance().addContainer(empty_quality_changes_container)
 
         with ContainerRegistry.getInstance().lockFile():
@@ -1060,9 +1061,6 @@ class CuraApplication(QtApplication):
             op.push()
             Selection.clear()
 
-        Logger.log("i", "Reseting print information")
-        self._print_information = PrintInformation.PrintInformation()
-        
         # stay on the same build plate
         #self.getCuraSceneController().setActiveBuildPlate(0)  # Select first build plate
 
@@ -1460,11 +1458,7 @@ class CuraApplication(QtApplication):
 
             extension = os.path.splitext(filename)[1]
             if extension.lower() in self._non_sliceable_extensions:
-                self.getController().setActiveView("SimulationView")
-                view = self.getController().getActiveView()
-                view.resetLayerData()
-                view.setLayer(9999999)
-                view.calculateMaxLayers()
+                self.callLater(lambda: self.getController().setActiveView("SimulationView"))
 
                 block_slicing_decorator = BlockSlicingDecorator()
                 node.addDecorator(block_slicing_decorator)
