@@ -1461,11 +1461,7 @@ class CuraApplication(QtApplication):
 
             extension = os.path.splitext(filename)[1]
             if extension.lower() in self._non_sliceable_extensions:
-                self.getController().setActiveView("SimulationView")
-                view = self.getController().getActiveView()
-                view.resetLayerData()
-                view.setLayer(9999999)
-                view.calculateMaxLayers()
+                self.callLater(lambda: self.getController().setActiveView("SimulationView"))
 
                 block_slicing_decorator = BlockSlicingDecorator()
                 node.addDecorator(block_slicing_decorator)
