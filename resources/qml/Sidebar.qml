@@ -96,7 +96,7 @@ Rectangle
     SidebarHeader {
         id: header
         width: parent.width
-        visible: (machineExtruderCount.properties.value > 1 || Cura.MachineManager.hasMaterials || Cura.MachineManager.hasVariants) && !monitoringPrint
+        visible: !hideSettings && (machineExtruderCount.properties.value > 1 || Cura.MachineManager.hasMaterials || Cura.MachineManager.hasVariants) && !monitoringPrint
         anchors.top: machineSelection.bottom
 
         onShowTooltip: base.showTooltip(item, location, text)
@@ -128,7 +128,7 @@ Rectangle
         text: !hideSettings ? catalog.i18nc("@label:listbox", "Print Setup") : catalog.i18nc("@label:listbox", "Print Setup disabled\nG-code files cannot be modified")
         anchors.left: parent.left
         anchors.leftMargin: UM.Theme.getSize("sidebar_margin").width
-        anchors.top: headerSeparator.bottom
+        anchors.top: hideSettings ? machineSelection.bottom : headerSeparator.bottom
         anchors.topMargin: UM.Theme.getSize("sidebar_margin").height
         width: Math.floor(parent.width * 0.45)
         font: UM.Theme.getFont("large")
