@@ -87,7 +87,7 @@ class ProfilesModel(InstanceContainersModel):
             if quality.getMetaDataEntry("quality_type") not in quality_type_set:
                 result.append(quality)
 
-        if len(result) > 1:
+        if len(result) > 1 and self._empty_quality in result:
             result.remove(self._empty_quality)
 
         return {item.getId(): item for item in result}, {} #Only return true profiles for now, no metadata. The quality manager is not able to get only metadata yet.
