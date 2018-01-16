@@ -314,6 +314,19 @@ Column
         }
     }
 
+    //Buildplate row separator
+    Rectangle {
+        id: separator
+
+        anchors.leftMargin: UM.Theme.getSize("sidebar_margin").width
+        anchors.rightMargin: UM.Theme.getSize("sidebar_margin").width
+        anchors.horizontalCenter: parent.horizontalCenter
+        visible: buildplateRow.visible
+        width: parent.width - UM.Theme.getSize("sidebar_margin").width * 2
+        height: visible ? UM.Theme.getSize("sidebar_lining").height / 2 : 0
+        color: UM.Theme.getColor("sidebar_lining")
+    }
+
     //Buildplate row
     Item
     {
