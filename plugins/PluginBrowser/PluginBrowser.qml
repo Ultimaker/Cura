@@ -3,13 +3,14 @@ import QtQuick 2.2
 import QtQuick.Dialogs 1.1
 import QtQuick.Window 2.2
 import QtQuick.Controls 1.1
+import QtQuick.Controls.Styles 1.4
 
 UM.Dialog
 {
     id: base
 
     title: catalog.i18nc("@title:window", "Find & Update plugins")
-    width: 600 * screenScaleFactor
+    width: 800 * screenScaleFactor
     height: 450 * screenScaleFactor
     minimumWidth: 350 * screenScaleFactor
     minimumHeight: 350 * screenScaleFactor
@@ -62,17 +63,7 @@ UM.Dialog
             height: closeButton.height
             anchors.bottom: parent.bottom
             anchors.left: parent.left
-            ProgressBar
-            {
-                id: progressbar
-                anchors.bottom: parent.bottom
-                minimumValue: 0;
-                maximumValue: 100
-                anchors.left:parent.left
-                anchors.right: closeButton.left
-                anchors.rightMargin: UM.Theme.getSize("default_margin").width
-                value: manager.isDownloading ? manager.downloadProgress : 0
-            }
+
 
             Button
             {
@@ -92,91 +83,255 @@ UM.Dialog
             }
         }
 
-        Item
-        {
-            SystemPalette { id: palette }
-            Component
-            {
+        Item {
+            Component {
                 id: pluginDelegate
-                Rectangle
-                {
+
+                Rectangle {
                     width: pluginList.width;
-                    height: texts.height;
-                    color: index % 2 ? palette.base : palette.alternateBase
-                    Column
-                    {
-                        id: texts
-                        width: parent.width
-                        height: childrenRect.height
+                    height: 96
+                    color: index % 2 ? UM.Theme.getColor("secondary") : "white"
+
+                    // Plugin info
+                    Column {
+                        id: pluginInfo
+                        height: parent.height
                         anchors.left: parent.left
                         anchors.leftMargin: UM.Theme.getSize("default_margin").width
-                        anchors.right: downloadButton.left
+                        anchors.top: parent.top
+                        anchors.topMargin: UM.Theme.getSize("default_margin").height
+                        anchors.right: authorInfo.left
                         anchors.rightMargin: UM.Theme.getSize("default_margin").width
-                        Label
-                        {
-                            text: "<b>" + model.name + "</b>" + ((model.author !== "") ? (" - " + model.author) : "")
-                            width: contentWidth
-                            height: contentHeight +  UM.Theme.getSize("default_margin").height
-                            verticalAlignment: Text.AlignVCenter
-                        }
 
-                        Label
-                        {
-                            text: model.short_description
+                        Label {
+                            text: model.name
                             width: parent.width
-                            height: contentHeight +  UM.Theme.getSize("default_margin").height
+                            height: 24
                             wrapMode: Text.WordWrap
                             verticalAlignment: Text.AlignVCenter
+                            font {
+                                pixelSize: 15
+                                bold: true
+                            }
+                        }
+
+                        Label {
+                            text: model.short_description
+                            width: parent.width
+                            height: 72
+                            wrapMode: Text.WordWrap
                         }
                     }
-                    Button
-                    {
-                        id: downloadButton
-                        text:
-                        {
-                            if (manager.isDownloading && pluginList.activePlugin == model)
-                            {
-                                return catalog.i18nc("@action:button", "Cancel");
-                            }
-                            else if (model.already_installed)
-                            {
-                                if (model.can_upgrade)
-                                {
-                                    return catalog.i18nc("@action:button", "Upgrade");
-                                }
-                                return catalog.i18nc("@action:button", "Installed");
-                            }
-                            return catalog.i18nc("@action:button", "Download");
-                        }
-                        onClicked:
-                        {
-                            if(!manager.isDownloading)
-                            {
-                                pluginList.activePlugin = model;
-                                manager.downloadAndInstallPlugin(model.file_location);
-                            }
-                            else
-                            {
-                                manager.cancelDownload();
-                            }
-                        }
-                        anchors.right: parent.right
+
+                    // Author info
+                    Column {
+                        id: authorInfo
+                        width: 192
+                        height: parent.height
+
+
+                        anchors.top: parent.top
+                        anchors.topMargin: UM.Theme.getSize("default_margin").height
+
+                        anchors.right: pluginActions.left
                         anchors.rightMargin: UM.Theme.getSize("default_margin").width
-                        anchors.verticalCenter: parent.verticalCenter
-                        enabled:
-                        {
-                            if (manager.isDownloading)
-                            {
-                                return (pluginList.activePlugin == model);
+
+                        Label {
+                            text: model.author
+                            width: parent.width
+                            height: 24
+                            wrapMode: Text.WordWrap
+                            verticalAlignment: Text.AlignVCenter
+                            horizontalAlignment: Text.AlignRight
+                        }
+
+                        Label {
+                            text: "author@ultimaker.com"
+                            width: parent.width
+                            height: 72
+                            wrapMode: Text.WordWrap
+                            horizontalAlignment: Text.AlignRight
+                        }
+                    }
+
+                    // Plugin actions
+                    Row {
+                        id: pluginActions
+                        width: 180 + UM.Theme.getSize("default_margin").width
+                        height: parent.height
+                        anchors {
+                            top: parent.top
+                            right: parent.right
+                            topMargin: UM.Theme.getSize("default_margin").height
+                            rightMargin: UM.Theme.getSize("default_margin").width
+                        }
+                        layoutDirection: Qt.RightToLeft
+                        spacing: UM.Theme.getSize("default_margin").width
+
+                        Rectangle {
+                            visible: model.already_installed
+                            width: 108
+                            height: 30
+                            color: "transparent"
+                            Button {
+                                id: removeButton
+                                text: "Remove"
+                                enabled: {
+                                    if ( manager.isDownloading && pluginList.activePlugin == model ) {
+                                        return false;
+                                    } else {
+                                        return true;
+                                    }
+                                }
+                                style: ButtonStyle {
+                                    background: Rectangle {
+                                        color: white
+                                        implicitWidth: 108
+                                        implicitHeight: 30
+                                        radius: 4
+                                        border {
+                                            width: 1
+                                            color: "grey"
+                                        }
+                                    }
+                                    label: Text {
+                                        verticalAlignment: Text.AlignVCenter
+                                        color: "grey"
+                                        text: control.text
+                                        horizontalAlignment: Text.AlignLeft
+                                    }
+                                }
                             }
-                            else
-                            {
-                                return (!model.already_installed || model.can_upgrade);
+                            Button {
+                                id: removeDropDown
+                                UM.RecolorImage {
+                                    anchors.centerIn: parent
+                                    height: 10
+                                    width: 10
+                                    source: UM.Theme.getIcon("arrow_bottom")
+                                    color: "grey"
+                                }
+                                enabled: {
+                                    if ( model.required || ( manager.isDownloading && pluginList.activePlugin == model )) {
+                                        return false;
+                                    } else {
+                                        return true;
+                                    }
+                                }
+                                anchors.right: parent.right
+                                style: ButtonStyle {
+                                    background: Rectangle {
+                                        color: "transparent"
+                                        implicitWidth: 30
+                                        implicitHeight: 30
+                                        radius: 4
+                                    }
+                                    label: Text {
+                                        verticalAlignment: Text.AlignVCenter
+                                        color: "grey"
+                                        text: control.text
+                                        horizontalAlignment: Text.AlignHCenter
+                                    }
+                                }
+
+                                // For the disable option:
+                                onClicked: pluginList.model.setEnabled(model.id, checked)
+                            }
+                            Rectangle {
+                                id: divider
+                                width: 1
+                                height: parent.height
+                                anchors.right: removeDropDown.left
+                                color: "grey"
                             }
                         }
+
+
+
+                        Button {
+                            id: updateButton
+                            // visible: model.already_installed && model.can_upgrade
+                            visible: model.already_installed
+                            text: {
+                                // If currently downloading:
+                                if ( manager.isDownloading && pluginList.activePlugin == model ) {
+                                    return catalog.i18nc( "@action:button", "Cancel" );
+                                } else {
+                                    return catalog.i18nc("@action:button", "Update");
+                                }
+                            }
+                            style: ButtonStyle {
+                                background: Rectangle {
+                                    color: UM.Theme.getColor("primary")
+                                    implicitWidth: 72
+                                    implicitHeight: 30
+                                    radius: 4
+                                }
+                                label: Text {
+                                    verticalAlignment: Text.AlignVCenter
+                                    color: "white"
+                                    text: control.text
+                                    horizontalAlignment: Text.AlignHCenter
+                                }
+                            }
+                        }
+                        Button {
+                            id: installButton
+                            visible: !model.already_installed
+                            text: {
+                                // If currently downloading:
+                                if ( manager.isDownloading && pluginList.activePlugin == model ) {
+                                    return catalog.i18nc( "@action:button", "Cancel" );
+                                } else {
+                                    return catalog.i18nc("@action:button", "Install");
+                                }
+                            }
+                            onClicked: {
+                                if ( manager.isDownloading && pluginList.activePlugin == model ) {
+                                    manager.cancelDownload();
+                                } else {
+                                    pluginList.activePlugin = model;
+                                    manager.downloadAndInstallPlugin( model.file_location );
+                                }
+                            }
+                            style: ButtonStyle {
+                                background: Rectangle {
+                                    color: UM.Theme.getColor("primary")
+                                    implicitWidth: 72
+                                    implicitHeight: 30
+                                    radius: 4
+                                }
+                                label: Text {
+                                    verticalAlignment: Text.AlignVCenter
+                                    color: "white"
+                                    text: control.text
+                                    horizontalAlignment: Text.AlignHCenter
+                                }
+                            }
+                        }
+                        ProgressBar {
+                            id: progressbar
+                            minimumValue: 0;
+                            maximumValue: 100
+                            anchors.left: installButton.left
+                            anchors.right: installButton.right
+                            anchors.top: installButton.bottom
+                            anchors.topMargin: 4
+                            value: manager.isDownloading ? manager.downloadProgress : 0
+                            visible: manager.isDownloading && pluginList.activePlugin == model
+                            style: ProgressBarStyle {
+                                background: Rectangle {
+                                    color: "lightgray"
+                                    implicitHeight: 6
+                                }
+                                progress: Rectangle {
+                                    color: UM.Theme.getColor("primary")
+                                }
+                            }
+                        }
+
                     }
                 }
-
             }
         }
         UM.I18nCatalog { id: catalog; name: "cura" }
