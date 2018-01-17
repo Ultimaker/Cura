@@ -1480,6 +1480,7 @@ class CuraApplication(QtApplication):
 
             node.setSelectable(True)
             node.setName(os.path.basename(filename))
+            self.getBuildVolume().checkBoundsAndUpdate(node)
 
             extension = os.path.splitext(filename)[1]
             if extension.lower() in self._non_sliceable_extensions:
