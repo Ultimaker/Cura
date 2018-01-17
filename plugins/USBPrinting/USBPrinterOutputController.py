@@ -1,4 +1,4 @@
-# Copyright (c) 2017 Ultimaker B.V.
+# Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from cura.PrinterOutput.PrinterOutputController import PrinterOutputController
@@ -19,10 +19,39 @@ class USBPrinterOutputController(PrinterOutputController):
         self._preheat_bed_timer.timeout.connect(self._onPreheatBedTimerFinished)
         self._preheat_printer = None
 
-        self._preheat_extruders_timer = QTimer()
-        self._preheat_extruders_timer.setSingleShot(True)
-        self._preheat_extruders_timer.timeout.connect(self._onPreheatHotendsTimerFinished)
-        self._preheat_extruders = set()
+        self._preheat_hotends_timer = QTimer()
+        self._preheat_hotends_timer.setSingleShot(True)
+        self._preheat_hotends_timer.timeout.connect(self._onPreheatHotendsTimerFinished)
+        self._preheat_hotends = set()
+
+        self._output_device.printersChanged.connect(self._onPrintersChanged)
+        self._active_printer = None
+
+    def _onPrintersChanged(self):
+        if self._active_printer:
+            self._active_printer.stateChanged.disconnect(self._onPrinterStateChanged)
+            self._active_printer.targetBedTemperatureChanged.disconnect(self._onTargetBedTemperatureChanged)
+            for extruder in self._active_printer.extruders:
+                extruder.targetHotendTemperatureChanged.disconnect(self._onTargetHotendTemperatureChanged)
+
+        self._active_printer = self._output_device.activePrinter
+        if self._active_printer:
+            self._active_printer.stateChanged.connect(self._onPrinterStateChanged)
+            self._active_printer.targetBedTemperatureChanged.connect(self._onTargetBedTemperatureChanged)
+            for extruder in self._active_printer.extruders:
+                extruder.targetHotendTemperatureChanged.connect(self._onTargetHotendTemperatureChanged)
+
+    def _onPrinterStateChanged(self):
+        if self._active_printer.state != "idle":
+            if self._preheat_bed_timer.isActive():
+                self._preheat_bed_timer.stop()
+                self._preheat_printer.updateIsPreheating(False)
+            if self._preheat_hotends_timer.isActive():
+                self._preheat_hotends_timer.stop()
+                for extruder in self._preheat_hotends:
+                    extruder.updateIsPreheating(False)
+                self._preheat_hotends = set()
+
 
     def moveHead(self, printer: "PrinterOutputModel", x, y, z, speed):
         self._output_device.sendCommand("G91")
@@ -47,8 +76,14 @@ class USBPrinterOutputController(PrinterOutputController):
             self._output_device.cancelPrint()
             pass
 
+
     def setTargetBedTemperature(self, printer: "PrinterOutputModel", temperature: int):
         self._output_device.sendCommand("M140 S%s" % temperature)
+
+    def _onTargetBedTemperatureChanged(self):
+        if self._preheat_bed_timer.isActive() and self._preheat_printer.targetBedTemperature == 0:
+            self._preheat_bed_timer.stop()
+            self._preheat_printer.updateIsPreheating(False)
 
     def preheatBed(self, printer: "PrinterOutputModel", temperature, duration):
         try:
@@ -64,7 +99,7 @@ class USBPrinterOutputController(PrinterOutputController):
         printer.updateIsPreheating(True)
 
     def cancelPreheatBed(self, printer: "PrinterOutputModel"):
-        self.preheatBed(printer, temperature=0, duration=0)
+        self.setTargetBedTemperature(printer, temperature=0)
         self._preheat_bed_timer.stop()
         printer.updateIsPreheating(False)
 
@@ -72,23 +107,20 @@ class USBPrinterOutputController(PrinterOutputController):
         self.setTargetBedTemperature(self._preheat_printer, 0)
         self._preheat_printer.updateIsPreheating(False)
 
+
     def setTargetHotendTemperature(self, printer: "PrinterOutputModel", position: int, temperature: int):
         self._output_device.sendCommand("M104 S%s T%s" % (temperature, position))
 
-    def _onPreheatHotendsTimerFinished(self):
-        for extruder in self._preheat_extruders:
-            self.setTargetHotendTemperature(extruder.getPrinter(), extruder.getPosition(), 0)
-        self._preheat_extruders = set()
-        self._preheat_printer.updateIsPreheating(False)
+    def _onTargetHotendTemperatureChanged(self):
+        if not self._preheat_hotends_timer.isActive():
+            return
 
-    def cancelPreheatHotend(self, extruder: "ExtruderOutputModel"):
-        self.preheatHotend(extruder, temperature=0, duration=0)
-        self._preheat_extruders_timer.stop()
-        try:
-            self._preheat_extruders.remove(extruder)
-        except KeyError:
-            pass
-        extruder.updateIsPreheating(False)
+        for extruder in self._active_printer.extruders:
+            if extruder in self._preheat_hotends and extruder.targetHotendTemperature == 0:
+                extruder.updateIsPreheating(False)
+                self._preheat_hotends.remove(extruder)
+        if not self._preheat_hotends:
+            self._preheat_hotends_timer.stop()
 
     def preheatHotend(self, extruder: "ExtruderOutputModel", temperature, duration):
         position = extruder.getPosition()
@@ -103,7 +135,20 @@ class USBPrinterOutputController(PrinterOutputController):
             return  # Got invalid values, can't pre-heat.
 
         self.setTargetHotendTemperature(extruder.getPrinter(), position, temperature=temperature)
-        self._preheat_extruders_timer.setInterval(duration * 1000)
-        self._preheat_extruders_timer.start()
-        self._preheat_extruders.add(extruder)
+        self._preheat_hotends_timer.setInterval(duration * 1000)
+        self._preheat_hotends_timer.start()
+        self._preheat_hotends.add(extruder)
         extruder.updateIsPreheating(True)
+
+    def cancelPreheatHotend(self, extruder: "ExtruderOutputModel"):
+        self.setTargetHotendTemperature(extruder.getPrinter(), extruder.getPosition(), temperature=0)
+        if extruder in self._preheat_hotends:
+            extruder.updateIsPreheating(False)
+            self._preheat_hotends.remove(extruder)
+        if not self._preheat_hotends and self._preheat_hotends_timer.isActive():
+            self._preheat_hotends_timer.stop()
+
+    def _onPreheatHotendsTimerFinished(self):
+        for extruder in self._preheat_hotends:
+            self.setTargetHotendTemperature(extruder.getPrinter(), extruder.getPosition(), 0)
+        self._preheat_hotends = set()
