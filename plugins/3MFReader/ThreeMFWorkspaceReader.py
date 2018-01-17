@@ -168,11 +168,9 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                 Logger.log("w", "Unknown definition container type %s for %s",
                            definition_container_type, each_definition_container_file)
             Job.yieldThread()
-        # sanity check
+
         if machine_definition_container_count != 1:
-            msg = "Expecting one machine definition container but got %s" % machine_definition_container_count
-            Logger.log("e", msg)
-            raise RuntimeError(msg)
+            return WorkspaceReader.PreReadResult.failed #Not a workspace file but ordinary 3MF.
 
         material_labels = []
         material_conflict = False
@@ -271,7 +269,6 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         # if the global stack is found, we check if there are conflicts in the extruder stacks
         if containers_found_dict["machine"] and not machine_conflict:
             for extruder_stack_file in extruder_stack_files:
-                container_id = self._stripFileToId(extruder_stack_file)
                 serialized = archive.open(extruder_stack_file).read().decode("utf-8")
                 parser = configparser.ConfigParser()
                 parser.read_string(serialized)
@@ -303,7 +300,6 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                         break
 
         num_visible_settings = 0
-        has_visible_settings_string = False
         try:
             temp_preferences = Preferences()
             serialized = archive.open("Cura/preferences.cfg").read().decode("utf-8")

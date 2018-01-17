@@ -52,13 +52,19 @@ Component
             {
                 id: addRemovePrintersLabel
                 anchors.right: parent.right
-                text: "Add / remove printers"
+                text: catalog.i18nc("@label link to connect manager", "Add/Remove printers")
+                font: UM.Theme.getFont("default")
+                color: UM.Theme.getColor("text")
+                linkColor: UM.Theme.getColor("text_link")
             }
 
             MouseArea
             {
                 anchors.fill: addRemovePrintersLabel
+                hoverEnabled: true
                 onClicked: Cura.MachineManager.printerOutputDevices[0].openPrinterControlPanel()
+                onEntered: addRemovePrintersLabel.font.underline = true
+                onExited: addRemovePrintersLabel.font.underline = false
             }
         }
 

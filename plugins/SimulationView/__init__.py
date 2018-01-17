@@ -1,4 +1,4 @@
-# Copyright (c) 2017 Ultimaker B.V.
+# Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from PyQt5.QtQml import qmlRegisterSingletonType
@@ -18,7 +18,7 @@ def getMetaData():
     }
 
 def createSimulationViewProxy(engine, script_engine):
-    return SimulationViewProxy.SimulatorViewProxy()
+    return SimulationViewProxy.SimulationViewProxy()
 
 def register(app):
     simulation_view = SimulationView.SimulationView()

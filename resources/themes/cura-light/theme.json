@@ -91,6 +91,7 @@
         "sidebar_header_text_active": [255, 255, 255, 255],
         "sidebar_header_text_hover": [255, 255, 255, 255],
         "sidebar_lining": [245, 245, 245, 255],
+        "sidebar_lining_thin": [127, 127, 127, 255],
 
         "button": [31, 36, 39, 255],
         "button_hover": [68, 72, 75, 255],

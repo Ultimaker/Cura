@@ -1,4 +1,4 @@
-# Copyright (c) 2017 Ultimaker B.V.
+# Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from PyQt5.QtCore import QObject, pyqtSignal, pyqtProperty
@@ -65,6 +65,7 @@ class PrintInformation(QObject):
         self._backend = Application.getInstance().getBackend()
         if self._backend:
             self._backend.printDurationMessage.connect(self._onPrintDurationMessage)
+        Application.getInstance().getController().getScene().sceneChanged.connect(self.setToZeroPrintInformation)
 
         self._base_name = ""
         self._abbr_machine = ""
@@ -171,7 +172,7 @@ class PrintInformation(QObject):
     def printTimes(self):
         return self._print_time_message_values[self._active_build_plate]
 
-    def _onPrintDurationMessage(self, build_plate_number, print_time, material_amounts):
+    def _onPrintDurationMessage(self, build_plate_number, print_time: Dict[str, int], material_amounts: list):
         self._updateTotalPrintTimePerFeature(build_plate_number, print_time)
         self.currentPrintTimeChanged.emit()
 

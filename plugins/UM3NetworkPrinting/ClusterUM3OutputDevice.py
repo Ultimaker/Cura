@@ -248,7 +248,10 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
 
         newly_finished_jobs = [job for job in finished_jobs if job not in self._finished_jobs and job.owner == username]
         for job in newly_finished_jobs:
-            job_completed_text = i18n_catalog.i18nc("@info:status", "Printer '{printer_name}' has finished printing '{job_name}'.".format(printer_name=job.assignedPrinter.name, job_name = job.name))
+            if job.assignedPrinter:
+                job_completed_text = i18n_catalog.i18nc("@info:status", "Printer '{printer_name}' has finished printing '{job_name}'.".format(printer_name=job.assignedPrinter.name, job_name = job.name))
+            else:
+                job_completed_text =  i18n_catalog.i18nc("@info:status", "The print job '{job_name}' was finished.".format(job_name = job.name))
             job_completed_message = Message(text=job_completed_text, title = i18n_catalog.i18nc("@info:status", "Print finished"))
             job_completed_message.show()
 
