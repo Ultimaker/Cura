@@ -1,5 +1,6 @@
 from UM.Application import Application
 from UM.Logger import Logger
+from UM.Math.AxisAlignedBox import AxisAlignedBox
 from UM.Scene.SceneNode import SceneNode
 from copy import deepcopy
 

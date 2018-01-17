@@ -1,6 +1,7 @@
 # Copyright (c) 2017 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
+from cura.Scene.CuraSceneNode import CuraSceneNode
 from cura.Settings.ExtruderManager import ExtruderManager
 from UM.Settings.ContainerRegistry import ContainerRegistry
 from UM.i18n import i18nCatalog
@@ -25,7 +26,7 @@ catalog = i18nCatalog("cura")
 import numpy
 import math
 
-from typing import List
+from typing import List, Optional
 
 # Setting for clearance around the prime
 PRIME_CLEARANCE = 6.5
@@ -194,8 +195,7 @@ class BuildVolume(SceneNode):
 
         return True
 
-    ##  For every sliceable node, update node._outside_buildarea
-    #
+    ##  For every sliceable node, update outsideBuildArea
     def updateNodeBoundaryCheck(self):
         root = Application.getInstance().getController().getScene().getRoot()
         nodes = list(BreadthFirstIterator(root))
@@ -212,34 +212,50 @@ class BuildVolume(SceneNode):
 
         for node in nodes:
             # Need to check group nodes later
-            if node.callDecoration("isGroup"):
-                group_nodes.append(node)  # Keep list of affected group_nodes
-
-            if node.callDecoration("isSliceable") or node.callDecoration("isGroup"):
-                node._outside_buildarea = False
-                bbox = node.getBoundingBox()
-
-                # Mark the node as outside the build volume if the bounding box test fails.
-                if build_volume_bounding_box.intersectsBox(bbox) != AxisAlignedBox.IntersectionResult.FullIntersection:
-                    node._outside_buildarea = True
-                    continue
-
-                convex_hull = node.callDecoration("getConvexHull")
-                if convex_hull:
-                    if not convex_hull.isValid():
-                        return
-                    # Check for collisions between disallowed areas and the object
-                    for area in self.getDisallowedAreas():
-                        overlap = convex_hull.intersectsPolygon(area)
-                        if overlap is None:
-                            continue
-                        node._outside_buildarea = True
-                        continue
+            self.checkBoundsAndUpdate(node, bounds = build_volume_bounding_box)
 
         # Group nodes should override the _outside_buildarea property of their children.
         for group_node in group_nodes:
             for child_node in group_node.getAllChildren():
                 child_node._outside_buildarea = group_node._outside_buildarea
+
+    ##  Update the outsideBuildArea of a single node, given bounds or current build volume
+    def checkBoundsAndUpdate(self, node: CuraSceneNode, bounds: Optional[AxisAlignedBox] = None):
+        if not isinstance(node, CuraSceneNode):
+            return
+
+        if bounds is None:
+            build_volume_bounding_box = self.getBoundingBox()
+            if build_volume_bounding_box:
+                # It's over 9000!
+                build_volume_bounding_box = build_volume_bounding_box.set(bottom=-9001)
+            else:
+                # No bounding box. This is triggered when running Cura from command line with a model for the first time
+                # In that situation there is a model, but no machine (and therefore no build volume.
+                return
+        else:
+            build_volume_bounding_box = bounds
+
+        if node.callDecoration("isSliceable") or node.callDecoration("isGroup"):
+            bbox = node.getBoundingBox()
+
+            # Mark the node as outside the build volume if the bounding box test fails.
+            if build_volume_bounding_box.intersectsBox(bbox) != AxisAlignedBox.IntersectionResult.FullIntersection:
+                node.setOutsideBuildArea(True)
+                return
+
+            convex_hull = self.callDecoration("getConvexHull")
+            if convex_hull:
+                if not convex_hull.isValid():
+                    return
+                # Check for collisions between disallowed areas and the object
+                for area in self.getDisallowedAreas():
+                    overlap = convex_hull.intersectsPolygon(area)
+                    if overlap is None:
+                        continue
+                    node.setOutsideBuildArea(True)
+                    return
+            node.setOutsideBuildArea(False)
 
     ##  Recalculates the build volume & disallowed areas.
     def rebuild(self):
