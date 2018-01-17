@@ -74,18 +74,11 @@ class ProfilesModel(InstanceContainersModel):
         # The actual list of quality profiles come from the first extruder in the extruder list.
         result = QualityManager.getInstance().findAllUsableQualitiesForMachineAndExtruders(global_container_stack, extruder_stacks)
 
-        # append empty quality if it's not there
-        if not any(q.getId() == self._empty_quality.getId() for q in result):
-            result.append(self._empty_quality)
-
         # The usable quality types are set
         quality_type_set = set([x.getMetaDataEntry("quality_type") for x in result])
 
         # Fetch all qualities available for this machine and the materials selected in extruders
         all_qualities = QualityManager.getInstance().findAllQualitiesForMachineAndMaterials(global_stack_definition, materials)
-        # append empty quality if it's not there
-        if not any(q.getId() == self._empty_quality.getId() for q in all_qualities):
-            all_qualities.append(self._empty_quality)
 
         # If in the all qualities there is some of them that are not available due to incompatibility with materials
         # we also add it so that they will appear in the slide quality bar. However in recomputeItems will be marked as
@@ -93,6 +86,9 @@ class ProfilesModel(InstanceContainersModel):
         for quality in all_qualities:
             if quality.getMetaDataEntry("quality_type") not in quality_type_set:
                 result.append(quality)
+
+        if len(result) > 1:
+            result.remove(self._empty_quality)
 
         return {item.getId(): item for item in result}, {} #Only return true profiles for now, no metadata. The quality manager is not able to get only metadata yet.
 
