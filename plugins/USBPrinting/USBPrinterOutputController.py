@@ -10,7 +10,7 @@ if MYPY:
     from cura.PrinterOutput.PrinterOutputModel import PrinterOutputModel
 
 
-class USBPrinterOuptutController(PrinterOutputController):
+class USBPrinterOutputController(PrinterOutputController):
     def __init__(self, output_device):
         super().__init__(output_device)
 
