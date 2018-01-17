@@ -41,6 +41,9 @@ class PrinterOutputDevice(QObject, OutputDevice):
     # # Signal to indicate that the hotend of the active printer on the remote changed.
     hotendIdChanged = pyqtSignal()
 
+    # Signal to indicate that the info text about the connection has changed.
+    connectionTextChanged = pyqtSignal()
+
     def __init__(self, device_id, parent = None):
         super().__init__(device_id = device_id, parent = parent)
 
@@ -65,10 +68,20 @@ class PrinterOutputDevice(QObject, OutputDevice):
         self._connection_state = ConnectionState.closed
 
         self._address = ""
+        self._connection_text = ""
 
-    @pyqtProperty(str, constant = True)
+    @pyqtProperty(str, notify = connectionTextChanged)
     def address(self):
         return self._address
+
+    def setConnectionText(self, connection_text):
+        if self._connection_text != connection_text:
+            self._connection_text = connection_text
+            self.connectionTextChanged.emit()
+
+    @pyqtProperty(str, constant=True)
+    def connectionText(self):
+        return self._connection_text
 
     def materialHotendChangedMessage(self, callback):
         Logger.log("w", "materialHotendChangedMessage needs to be implemented, returning 'Yes'")
@@ -122,7 +135,6 @@ class PrinterOutputDevice(QObject, OutputDevice):
     def controlItem(self):
         if not self._control_component:
             self._createControlViewFromQML()
-
         return self._control_item
 
     def _createControlViewFromQML(self):

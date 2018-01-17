@@ -122,6 +122,12 @@ class StartSliceJob(Job):
             self.setResult(StartJobResult.BuildPlateError)
             return
 
+        # Don't slice if the buildplate or the nozzle type is incompatible with the materials
+        if not Application.getInstance().getMachineManager().variantBuildplateCompatible and \
+                not Application.getInstance().getMachineManager().variantBuildplateUsable:
+            self.setResult(StartJobResult.MaterialIncompatible)
+            return
+
         for extruder_stack in ExtruderManager.getInstance().getMachineExtruders(stack.getId()):
             material = extruder_stack.findContainer({"type": "material"})
             if material:

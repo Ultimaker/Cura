@@ -78,10 +78,16 @@ class LegacyUM3OutputDevice(NetworkedPrinterOutputDevice):
 
     def _onAuthenticationStateChanged(self):
         # We only accept commands if we are authenticated.
+        self._setAcceptsCommands(self._authentication_state == AuthState.Authenticated)
+
         if self._authentication_state == AuthState.Authenticated:
-            self._setAcceptsCommands(True)
-        else:
-            self._setAcceptsCommands(False)
+            self.setConnectionText(i18n_catalog.i18nc("@info:status", "Connected over the network."))
+        elif self._authentication_state == AuthState.AuthenticationRequested:
+            self.setConnectionText(i18n_catalog.i18nc("@info:status",
+                                                      "Connected over the network. Please approve the access request on the printer."))
+        elif self._authentication_state == AuthState.AuthenticationDenied:
+            self.setConnectionText(i18n_catalog.i18nc("@info:status", "Connected over the network. No access to control the printer."))
+
 
     def _setupMessages(self):
         self._authentication_requested_message = Message(i18n_catalog.i18nc("@info:status",
@@ -175,14 +181,17 @@ class LegacyUM3OutputDevice(NetworkedPrinterOutputDevice):
             # Not authenticated, so unable to send job.
             return
 
-        # Notify the UI that a switch to the print monitor should happen
-        Application.getInstance().getController().setActiveStage("MonitorStage")
         self.writeStarted.emit(self)
 
-        self._gcode = getattr(Application.getInstance().getController().getScene(), "gcode_list", [])
-        if not self._gcode:
+        gcode_dict = getattr(Application.getInstance().getController().getScene(), "gcode_dict", [])
+        active_build_plate_id = Application.getInstance().getBuildPlateModel().activeBuildPlate
+        gcode_list = gcode_dict[active_build_plate_id]
+
+        if not gcode_list:
             # Unable to find g-code. Nothing to send
             return
+
+        self._gcode = gcode_list
 
         errors = self._checkForErrors()
         if errors:
@@ -228,6 +237,9 @@ class LegacyUM3OutputDevice(NetworkedPrinterOutputDevice):
 
         # No warnings or errors, so we're good to go.
         self._startPrint()
+
+        # Notify the UI that a switch to the print monitor should happen
+        Application.getInstance().getController().setActiveStage("MonitorStage")
 
     def _startPrint(self):
         Logger.log("i", "Sending print job to printer.")

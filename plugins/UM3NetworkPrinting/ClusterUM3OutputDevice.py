@@ -69,6 +69,8 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
         self.setShortDescription(i18n_catalog.i18nc("@action:button Preceded by 'Ready to'.", "Print over network"))
         self.setDescription(i18n_catalog.i18nc("@properties:tooltip", "Print over network"))
 
+        self.setConnectionText(i18n_catalog.i18nc("@info:status", "Connected over the network"))
+
         self._printer_uuid_to_unique_name_mapping = {}
 
         self._finished_jobs = []
@@ -76,19 +78,25 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
         self._cluster_size = int(properties.get(b"cluster_size", 0))
 
     def requestWrite(self, nodes, file_name=None, filter_by_machine=False, file_handler=None, **kwargs):
-        # Notify the UI that a switch to the print monitor should happen
-        Application.getInstance().getController().setActiveStage("MonitorStage")
         self.writeStarted.emit(self)
 
-        self._gcode = getattr(Application.getInstance().getController().getScene(), "gcode_list", [])
-        if not self._gcode:
+        gcode_dict = getattr(Application.getInstance().getController().getScene(), "gcode_dict", [])
+        active_build_plate_id = Application.getInstance().getBuildPlateModel().activeBuildPlate
+        gcode_list = gcode_dict[active_build_plate_id]
+
+        if not gcode_list:
             # Unable to find g-code. Nothing to send
             return
+
+        self._gcode = gcode_list
 
         if len(self._printers) > 1:
             self._spawnPrinterSelectionDialog()
         else:
             self.sendPrintJob()
+
+        # Notify the UI that a switch to the print monitor should happen
+        Application.getInstance().getController().setActiveStage("MonitorStage")
 
     def _spawnPrinterSelectionDialog(self):
         if self._printer_selection_dialog is None:
@@ -240,7 +248,10 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
 
         newly_finished_jobs = [job for job in finished_jobs if job not in self._finished_jobs and job.owner == username]
         for job in newly_finished_jobs:
-            job_completed_text = i18n_catalog.i18nc("@info:status", "Printer '{printer_name}' has finished printing '{job_name}'.".format(printer_name=job.assignedPrinter.name, job_name = job.name))
+            if job.assignedPrinter:
+                job_completed_text = i18n_catalog.i18nc("@info:status", "Printer '{printer_name}' has finished printing '{job_name}'.".format(printer_name=job.assignedPrinter.name, job_name = job.name))
+            else:
+                job_completed_text =  i18n_catalog.i18nc("@info:status", "The print job '{job_name}' was finished.".format(job_name = job.name))
             job_completed_message = Message(text=job_completed_text, title = i18n_catalog.i18nc("@info:status", "Print finished"))
             job_completed_message.show()
 

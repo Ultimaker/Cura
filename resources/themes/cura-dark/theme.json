@@ -43,6 +43,7 @@
         "sidebar_header_text_hover": [255, 255, 255, 255],
         "sidebar_header_text_inactive": [255, 255, 255, 127],
         "sidebar_lining": [31, 36, 39, 255],
+        "sidebar_lining_thin": [255, 255, 255, 30],
 
         "button": [39, 44, 48, 255],
         "button_hover": [39, 44, 48, 255],

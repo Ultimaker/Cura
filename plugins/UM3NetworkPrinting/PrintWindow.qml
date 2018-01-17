@@ -31,6 +31,7 @@ UM.Dialog
 
     property var printersModel:  ListModel{}
     function resetPrintersModel() {
+        printersModel.clear()
         printersModel.append({ name: "Automatic", key: ""})
 
         for (var index in OutputDevice.printers)

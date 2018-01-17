@@ -68,8 +68,17 @@ Menu
         {
             filter:
             {
-                "type": "variant",
-                "definition": Cura.MachineManager.activeQualityDefinitionId //Only show variants of this machine
+                var filter_dict =
+                {
+                    "type": "variant",
+                    "definition": Cura.MachineManager.activeQualityDefinitionId //Only show variants of this machine
+                }
+                if (Cura.MachineManager.hasVariantBuildplates)
+                {
+                    filter_dict["hardware_type"] = "nozzle"
+                }
+
+                return filter_dict
             }
         }
         MenuItem {

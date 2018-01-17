@@ -225,7 +225,10 @@ class MachineSettingsAction(MachineAction):
         material_approximate_diameter = str(round(material_diameter))
         machine_diameter = extruder_stack.definitionChanges.getProperty("material_diameter", "value")
         if not machine_diameter:
-            machine_diameter = extruder_stack.definition.getProperty("material_diameter", "value")
+            if extruder_stack.definition.hasProperty("material_diameter", "value"):
+                machine_diameter = extruder_stack.definition.getProperty("material_diameter", "value")
+            else:
+                machine_diameter = self._global_container_stack.definition.getProperty("material_diameter", "value")
         machine_approximate_diameter = str(round(machine_diameter))
 
         if material_approximate_diameter != machine_approximate_diameter:

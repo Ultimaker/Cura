@@ -576,6 +576,42 @@ class XmlMaterialProfile(InstanceContainer):
                         if is_new_material:
                             containers_to_add.append(new_material)
 
+                    # Find the buildplates compatibility
+                    buildplates = machine.iterfind("./um:buildplate", self.__namespaces)
+                    buildplate_map = {}
+                    buildplate_map["buildplate_compatible"] = {}
+                    buildplate_map["buildplate_recommended"] = {}
+                    for buildplate in buildplates:
+                        buildplate_id = buildplate.get("id")
+                        if buildplate_id is None:
+                            continue
+
+                        variant_containers = ContainerRegistry.getInstance().findInstanceContainersMetadata(
+                            id = buildplate_id)
+                        if not variant_containers:
+                            # It is not really properly defined what "ID" is so also search for variants by name.
+                            variant_containers = ContainerRegistry.getInstance().findInstanceContainersMetadata(
+                                definition = machine_id, name = buildplate_id)
+
+                        if not variant_containers:
+                            continue
+
+                        buildplate_compatibility = machine_compatibility
+                        buildplate_recommended = machine_compatibility
+                        settings = buildplate.iterfind("./um:setting", self.__namespaces)
+                        for entry in settings:
+                            key = entry.get("key")
+                            if key in self.__unmapped_settings:
+                                if key == "hardware compatible":
+                                    buildplate_compatibility = self._parseCompatibleValue(entry.text)
+                                elif key == "hardware recommended":
+                                    buildplate_recommended = self._parseCompatibleValue(entry.text)
+                            else:
+                                Logger.log("d", "Unsupported material setting %s", key)
+
+                        buildplate_map["buildplate_compatible"][buildplate_id] = buildplate_compatibility
+                        buildplate_map["buildplate_recommended"][buildplate_id] = buildplate_recommended
+
                     hotends = machine.iterfind("./um:hotend", self.__namespaces)
                     for hotend in hotends:
                         hotend_id = hotend.get("id")
@@ -605,8 +641,7 @@ class XmlMaterialProfile(InstanceContainer):
 
                         new_hotend_id = self.getId() + "_" + machine_id + "_" + hotend_id.replace(" ", "_")
 
-                        # Same as machine compatibility, keep the derived material containers consistent with the parent
-                        # material
+                        # Same as machine compatibility, keep the derived material containers consistent with the parent material
                         if ContainerRegistry.getInstance().isLoaded(new_hotend_id):
                             new_hotend_material = ContainerRegistry.getInstance().findContainers(id = new_hotend_id)[0]
                             is_new_material = False
@@ -623,6 +658,9 @@ class XmlMaterialProfile(InstanceContainer):
                         new_hotend_material.getMetaData()["compatible"] = hotend_compatibility
                         new_hotend_material.getMetaData()["machine_manufacturer"] = machine_manufacturer
                         new_hotend_material.getMetaData()["definition"] = machine_id
+                        if buildplate_map["buildplate_compatible"]:
+                            new_hotend_material.getMetaData()["buildplate_compatible"] = buildplate_map["buildplate_compatible"]
+                            new_hotend_material.getMetaData()["buildplate_recommended"] = buildplate_map["buildplate_recommended"]
 
                         cached_hotend_setting_properties = cached_machine_setting_properties.copy()
                         cached_hotend_setting_properties.update(hotend_setting_values)
@@ -763,6 +801,34 @@ class XmlMaterialProfile(InstanceContainer):
                         if len(found_materials) == 0: #This is a new material.
                             result_metadata.append(new_material_metadata)
 
+                    buildplates = machine.iterfind("./um:buildplate", cls.__namespaces)
+                    buildplate_map = {}
+                    buildplate_map["buildplate_compatible"] = {}
+                    buildplate_map["buildplate_recommended"] = {}
+                    for buildplate in buildplates:
+                        buildplate_id = buildplate.get("id")
+                        if buildplate_id is None:
+                            continue
+
+                        variant_containers = ContainerRegistry.getInstance().findInstanceContainersMetadata(id = buildplate_id)
+                        if not variant_containers:
+                            # It is not really properly defined what "ID" is so also search for variants by name.
+                            variant_containers = ContainerRegistry.getInstance().findInstanceContainersMetadata(definition = machine_id, name = buildplate_id)
+
+                        if not variant_containers:
+                            continue
+
+                        settings = buildplate.iterfind("./um:setting", cls.__namespaces)
+                        for entry in settings:
+                            key = entry.get("key")
+                            if key == "hardware compatible":
+                                buildplate_compatibility = cls._parseCompatibleValue(entry.text)
+                            elif key == "hardware recommended":
+                                buildplate_recommended = cls._parseCompatibleValue(entry.text)
+
+                        buildplate_map["buildplate_compatible"][buildplate_id] = buildplate_map["buildplate_compatible"]
+                        buildplate_map["buildplate_recommended"][buildplate_id] = buildplate_map["buildplate_recommended"]
+
                     for hotend in machine.iterfind("./um:hotend", cls.__namespaces):
                         hotend_id = hotend.get("id")
                         if hotend_id is None:
@@ -781,8 +847,7 @@ class XmlMaterialProfile(InstanceContainer):
 
                         new_hotend_id = container_id + "_" + machine_id + "_" + hotend_id.replace(" ", "_")
 
-                        # Same as machine compatibility, keep the derived material containers consistent with the parent
-                        # material
+                        # Same as machine compatibility, keep the derived material containers consistent with the parent material
                         found_materials = ContainerRegistry.getInstance().findInstanceContainersMetadata(id = new_hotend_id)
                         if found_materials:
                             new_hotend_material_metadata = found_materials[0]
@@ -799,6 +864,9 @@ class XmlMaterialProfile(InstanceContainer):
                         new_hotend_material_metadata["machine_manufacturer"] = machine_manufacturer
                         new_hotend_material_metadata["id"] = new_hotend_id
                         new_hotend_material_metadata["definition"] = machine_id
+                        if buildplate_map["buildplate_compatible"]:
+                            new_hotend_material_metadata["buildplate_compatible"] = buildplate_map["buildplate_compatible"]
+                            new_hotend_material_metadata["buildplate_recommended"] = buildplate_map["buildplate_recommended"]
 
                         if len(found_materials) == 0:
                             result_metadata.append(new_hotend_material_metadata)
@@ -874,7 +942,7 @@ class XmlMaterialProfile(InstanceContainer):
     # Map XML file setting names to internal names
     __material_settings_setting_map = {
         "print temperature": "default_material_print_temperature",
-        "heated bed temperature": "material_bed_temperature",
+        "heated bed temperature": "default_material_bed_temperature",
         "standby temperature": "material_standby_temperature",
         "processing temperature graph": "material_flow_temp_graph",
         "print cooling": "cool_fan_speed",
@@ -884,7 +952,8 @@ class XmlMaterialProfile(InstanceContainer):
         "surface energy": "material_surface_energy"
     }
     __unmapped_settings = [
-        "hardware compatible"
+        "hardware compatible",
+        "hardware recommended"
     ]
     __material_properties_setting_map = {
         "diameter": "material_diameter"

@@ -213,8 +213,8 @@ UM.ManagementPage
             ProfileTab
             {
                 title: catalog.i18nc("@title:tab", "Global Settings");
-                quality: base.currentItem != null ? base.currentItem.id : "";
-                material: Cura.MachineManager.allActiveMaterialIds[Cura.MachineManager.activeMachineId]
+                quality: Cura.MachineManager.activeMachine.qualityChanges.id
+                material: Cura.MachineManager.activeMachine.material.id
             }
 
             Repeater
