@@ -24,6 +24,7 @@ from cura.Settings.ExtruderStack import ExtruderStack
 from cura.Settings.GlobalStack import GlobalStack
 from cura.Settings.CuraContainerStack import _ContainerIndexes
 from cura.QualityManager import QualityManager
+from cura.CuraApplication import CuraApplication
 
 from configparser import ConfigParser
 import zipfile
@@ -750,8 +751,16 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             # If not extruder stacks were saved in the project file (pre 3.1) create one manually
             # We re-use the container registry's addExtruderStackForSingleExtrusionMachine method for this
             if not extruder_stacks:
-                stack = self._container_registry.addExtruderStackForSingleExtrusionMachine(global_stack, "fdmextruder")
+                if self._resolve_strategies["machine"] == "new":
+                    stack = self._container_registry.addExtruderStackForSingleExtrusionMachine(global_stack, "fdmextruder")
+                else:
+                    stack = global_stack.extruders.get("0")
+                    if not stack:
+                        # this should not happen
+                        Logger.log("e", "Cannot find any extruder in an existing global stack [%s].", global_stack.getId())
                 if stack:
+                    if global_stack.quality.getId() in ("empty", "empty_quality"):
+                        stack.quality = empty_quality_container
                     if self._resolve_strategies["machine"] == "override":
                         # in case the extruder is newly created (for a single-extrusion machine), we need to override
                         # the existing extruder stack.
@@ -991,6 +1000,9 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             for stack in extruder_stacks:
                 stack.setNextStack(global_stack)
                 stack.containersChanged.emit(stack.getTop())
+        else:
+            if quality_has_been_changed:
+                CuraApplication.getInstance().getMachineManager().activeQualityChanged.emit()
 
         # Actually change the active machine.
         Application.getInstance().setGlobalContainerStack(global_stack)
@@ -1040,13 +1052,13 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         # find the old material ID
         old_material_id_in_stack = stack.material.getId()
         best_matching_old_material_id = None
-        best_matching_old_meterial_prefix_length = -1
+        best_matching_old_material_prefix_length = -1
         for old_parent_material_id in old_new_material_dict:
-            if len(old_parent_material_id) < best_matching_old_meterial_prefix_length:
+            if len(old_parent_material_id) < best_matching_old_material_prefix_length:
                 continue
             if len(old_parent_material_id) <= len(old_material_id_in_stack):
                 if old_parent_material_id == old_material_id_in_stack[0:len(old_parent_material_id)]:
-                    best_matching_old_meterial_prefix_length = len(old_parent_material_id)
+                    best_matching_old_material_prefix_length = len(old_parent_material_id)
                     best_matching_old_material_id = old_parent_material_id
 
         if best_matching_old_material_id is None:

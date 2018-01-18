@@ -286,7 +286,10 @@ class NetworkClusterPrinterOutputDevice(NetworkPrinterOutputDevice.NetworkPrinte
         gcode_list = getattr(Application.getInstance().getController().getScene(), "gcode_dict")[output_build_plate_number]
         if not gcode_list:  # Empty build plate
             Logger.log("d", "Skipping empty job (build plate number %d).", output_build_plate_number)
-            return self.sendPrintJob()
+            if self._job_list:
+                return self.sendPrintJob()
+            else:
+                return
 
         self._send_gcode_start = time.time()
         Logger.log("d", "Sending print job [%s] to host, build plate [%s]..." % (file_name, output_build_plate_number))
