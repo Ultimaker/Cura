@@ -130,9 +130,12 @@ Item
                 {
                     return false; //Not allowed to do anything.
                 }
-                if (connectedPrinter.jobState == "printing" || connectedPrinter.jobState == "pre_print" || connectedPrinter.jobState == "resuming" || connectedPrinter.jobState == "pausing" || connectedPrinter.jobState == "paused" || connectedPrinter.jobState == "error" || connectedPrinter.jobState == "offline")
+                if (connectedPrinter.activePrinter && connectedPrinter.activePrinter.activePrintJob)
                 {
-                    return false; //Printer is in a state where it can't react to pre-heating.
+                    if((["printing", "pre_print", "resuming", "pausing", "paused", "error", "offline"]).indexOf(connectedPrinter.activePrinter.activePrintJob.state) != -1)
+                    {
+                        return false; //Printer is in a state where it can't react to pre-heating.
+                    }
                 }
                 return true;
             }
@@ -144,7 +147,7 @@ Item
             anchors.bottomMargin: UM.Theme.getSize("default_margin").height
             width: UM.Theme.getSize("monitor_preheat_temperature_control").width
             height: UM.Theme.getSize("monitor_preheat_temperature_control").height
-            visible: extruderModel != null ? extruderModel.canPreHeatHotends && !extruderModel.isPreheating : true
+            visible: extruderModel != null ? enabled && extruderModel.canPreHeatHotends && !extruderModel.isPreheating : true
             Rectangle //Highlight of input field.
             {
                 anchors.fill: parent
