@@ -31,7 +31,7 @@ Rectangle
     border.width: UM.Theme.getSize("default_lining").width
     border.color: UM.Theme.getColor("lining")
 
-    property bool collapsed: false;
+    property bool collapsed: true;
 
     SystemPalette { id: palette }
 
