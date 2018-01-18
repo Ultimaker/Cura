@@ -135,7 +135,6 @@ class PrinterOutputDevice(QObject, OutputDevice):
     def controlItem(self):
         if not self._control_component:
             self._createControlViewFromQML()
-
         return self._control_item
 
     def _createControlViewFromQML(self):

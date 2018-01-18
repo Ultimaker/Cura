@@ -242,7 +242,7 @@ Column
         Label
         {
             id: materialLabel
-            text: catalog.i18nc("@label","Material");
+            text: catalog.i18nc("@label", "Material");
             width: Math.floor(parent.width * 0.45 - UM.Theme.getSize("default_margin").width)
             font: UM.Theme.getFont("default");
             color: UM.Theme.getColor("text");
@@ -311,6 +311,62 @@ Column
             activeFocusOnPress: true;
 
             menu: NozzleMenu { extruderIndex: base.currentExtruderIndex }
+        }
+    }
+
+    //Buildplate row separator
+    Rectangle {
+        id: separator
+
+        anchors.leftMargin: UM.Theme.getSize("sidebar_margin").width
+        anchors.rightMargin: UM.Theme.getSize("sidebar_margin").width
+        anchors.horizontalCenter: parent.horizontalCenter
+        visible: buildplateRow.visible
+        width: parent.width - UM.Theme.getSize("sidebar_margin").width * 2
+        height: visible ? UM.Theme.getSize("sidebar_lining_thin").height / 2 : 0
+        color: UM.Theme.getColor("sidebar_lining_thin")
+    }
+
+    //Buildplate row
+    Item
+    {
+        id: buildplateRow
+        height: UM.Theme.getSize("sidebar_setup").height
+        visible: Cura.MachineManager.hasVariantBuildplates && !sidebar.monitoringPrint && !sidebar.hideSettings
+
+        anchors
+        {
+            left: parent.left
+            leftMargin: UM.Theme.getSize("sidebar_margin").width
+            right: parent.right
+            rightMargin: UM.Theme.getSize("sidebar_margin").width
+        }
+
+        Label
+        {
+            id: bulidplateLabel
+            text: catalog.i18nc("@label", "Build plate");
+            width: Math.floor(parent.width * 0.45 - UM.Theme.getSize("default_margin").width)
+            font: UM.Theme.getFont("default");
+            color: UM.Theme.getColor("text");
+        }
+
+        ToolButton {
+            id: buildplateSelection
+            text: Cura.MachineManager.activeVariantBuildplateName
+            tooltip: Cura.MachineManager.activeVariantBuildplateName
+            visible: Cura.MachineManager.hasVariantBuildplates
+
+            height: UM.Theme.getSize("setting_control").height
+            width: Math.floor(parent.width * 0.7 + UM.Theme.getSize("sidebar_margin").width)
+            anchors.right: parent.right
+            style: UM.Theme.styles.sidebar_header_button
+            activeFocusOnPress: true;
+
+            menu: BuildplateMenu {}
+
+            property var valueError: !Cura.MachineManager.variantBuildplateCompatible && !Cura.MachineManager.variantBuildplateUsable
+            property var valueWarning: Cura.MachineManager.variantBuildplateUsable
         }
     }
 

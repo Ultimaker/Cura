@@ -94,7 +94,7 @@ class CuraContainerRegistry(ContainerRegistry):
     def _containerExists(self, container_type, container_name):
         container_class = ContainerStack if container_type == "machine" else InstanceContainer
 
-        return self.findContainersMetadata(id = container_name, type = container_type, ignore_case = True) or \
+        return self.findContainersMetadata(container_type = container_class, id = container_name, type = container_type, ignore_case = True) or \
                 self.findContainersMetadata(container_type = container_class, name = container_name, type = container_type)
 
     ##  Exports an profile to a file

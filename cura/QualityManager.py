@@ -136,9 +136,6 @@ class QualityManager:
             if basic_materials:
                 result = self._getFilteredContainersForStack(machine_definition, basic_materials, **criteria)
 
-        empty_quality = ContainerRegistry.getInstance().findInstanceContainers(id = "empty_quality")[0]
-        result.append(empty_quality)
-
         return result
 
     ##  Find all quality changes for a machine.
