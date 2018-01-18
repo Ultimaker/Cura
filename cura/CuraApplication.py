@@ -673,6 +673,10 @@ class CuraApplication(QtApplication):
         for file_name in self._open_file_queue:  # Open all the files that were queued up while plug-ins were loading.
             self._openFile(file_name)
 
+        # initialize info objects
+        self._print_information = PrintInformation.PrintInformation()
+        self._cura_actions = CuraActions.CuraActions(self)
+
         self._started = True
         self.exec_()
 
@@ -807,13 +811,10 @@ class CuraApplication(QtApplication):
     def registerObjects(self, engine):
         super().registerObjects(engine)
 
+        # global contexts
         engine.rootContext().setContextProperty("Printer", self)
         engine.rootContext().setContextProperty("CuraApplication", self)
-
-        self._print_information = PrintInformation.PrintInformation()
         engine.rootContext().setContextProperty("PrintInformation", self._print_information)
-
-        self._cura_actions = CuraActions.CuraActions(self)
         engine.rootContext().setContextProperty("CuraActions", self._cura_actions)
 
         qmlRegisterUncreatableType(CuraApplication, "Cura", 1, 0, "ResourceTypes", "Just an Enum type")
