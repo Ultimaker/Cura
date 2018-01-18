@@ -661,6 +661,10 @@ class CuraApplication(QtApplication):
         self._volume = BuildVolume.BuildVolume(self.getController().getScene().getRoot())
         Arrange.build_volume = self._volume
 
+        # initialize info objects
+        self._print_information = PrintInformation.PrintInformation()
+        self._cura_actions = CuraActions.CuraActions(self)
+
         # Detect in which mode to run and execute that mode
         if self.getCommandLineOption("headless", False):
             self.runWithoutGUI()
@@ -672,10 +676,6 @@ class CuraApplication(QtApplication):
             self._openFile(file_name)
         for file_name in self._open_file_queue:  # Open all the files that were queued up while plug-ins were loading.
             self._openFile(file_name)
-
-        # initialize info objects
-        self._print_information = PrintInformation.PrintInformation()
-        self._cura_actions = CuraActions.CuraActions(self)
 
         self._started = True
         self.exec_()
