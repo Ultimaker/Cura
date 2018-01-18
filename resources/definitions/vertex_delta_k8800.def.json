@@ -1,5 +1,4 @@
 {
-  "id": "K8800",
   "name": "Vertex Delta K8800",
   "version": 2,
   "inherits": "fdmprinter",
@@ -124,7 +123,7 @@
         "value": 20
     },
     "travel_retract_before_outer_wall": {
-        "value": true
+        "value": false
     },
     "retraction_hop_enabled": {
         "value": true
