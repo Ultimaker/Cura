@@ -5,11 +5,10 @@ import QtQuick.Window 2.2
 import QtQuick.Controls 1.1
 import QtQuick.Controls.Styles 1.4
 
-UM.Dialog
-{
+UM.Dialog {
     id: base
 
-    title: catalog.i18nc("@title:window", "Find & Update plugins")
+    title: catalog.i18nc("@title:tab", "Plugins");
     width: 800 * screenScaleFactor
     height: 450 * screenScaleFactor
     minimumWidth: 350 * screenScaleFactor
@@ -46,8 +45,7 @@ UM.Dialog
             anchors.bottom: bottomBar.top
             anchors.bottomMargin: UM.Theme.getSize("default_margin").height
             frameVisible: true
-            ListView
-            {
+            ListView {
                 id: pluginList
                 model: manager.pluginsModel
                 anchors.fill: parent
@@ -113,6 +111,7 @@ UM.Dialog
                                 pixelSize: 15
                                 bold: true
                             }
+                            color: model.enabled ? UM.Theme.getColor("text") : "grey"
                         }
 
                         Label {
@@ -169,6 +168,7 @@ UM.Dialog
                         spacing: UM.Theme.getSize("default_margin").width
 
                         Rectangle {
+                            id: removeControls
                             visible: model.already_installed
                             width: 108
                             height: 30
@@ -188,7 +188,7 @@ UM.Dialog
                                         color: white
                                         implicitWidth: 108
                                         implicitHeight: 30
-                                        radius: 4
+                                        // radius: 4
                                         border {
                                             width: 1
                                             color: "grey"
@@ -204,6 +204,7 @@ UM.Dialog
                             }
                             Button {
                                 id: removeDropDown
+                                property bool open: false
                                 UM.RecolorImage {
                                     anchors.centerIn: parent
                                     height: 10
@@ -224,7 +225,7 @@ UM.Dialog
                                         color: "transparent"
                                         implicitWidth: 30
                                         implicitHeight: 30
-                                        radius: 4
+                                        // radius: 4
                                     }
                                     label: Text {
                                         verticalAlignment: Text.AlignVCenter
@@ -234,8 +235,21 @@ UM.Dialog
                                     }
                                 }
 
+
+
                                 // For the disable option:
-                                onClicked: pluginList.model.setEnabled(model.id, checked)
+                                // onClicked: pluginList.model.setEnabled(model.id, checked)
+
+                                onClicked: {
+                                    if ( !removeDropDown.open ) {
+                                        removeDropDown.open = true
+                                    }
+                                    else {
+                                        removeDropDown.open = false
+                                    }
+
+                                }
+
                             }
                             Rectangle {
                                 id: divider
@@ -243,6 +257,26 @@ UM.Dialog
                                 height: parent.height
                                 anchors.right: removeDropDown.left
                                 color: "grey"
+                            }
+                            Column {
+                                id: options
+                                anchors {
+                                    top: removeButton.bottom
+                                    left: parent.left
+                                    right: parent.right
+                                }
+                                height: childrenRect.height
+                                visible: removeDropDown.open
+
+                                Button {
+                                    text: "Disable"
+                                    height: 30
+                                    width: parent.width
+                                    onClicked: {
+                                        removeDropDown.open = false
+                                        model.setEnabled(model.id, checked)
+                                    }
+                                }
                             }
                         }
 
@@ -265,7 +299,7 @@ UM.Dialog
                                     color: UM.Theme.getColor("primary")
                                     implicitWidth: 72
                                     implicitHeight: 30
-                                    radius: 4
+                                    // radius: 4
                                 }
                                 label: Text {
                                     verticalAlignment: Text.AlignVCenter
@@ -299,7 +333,7 @@ UM.Dialog
                                     color: UM.Theme.getColor("primary")
                                     implicitWidth: 72
                                     implicitHeight: 30
-                                    radius: 4
+                                    // radius: 4
                                 }
                                 label: Text {
                                     verticalAlignment: Text.AlignVCenter
