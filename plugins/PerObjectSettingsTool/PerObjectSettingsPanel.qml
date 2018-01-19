@@ -163,7 +163,16 @@ Item {
                         id: addedSettingsModel;
                         containerId: Cura.MachineManager.activeDefinitionId
                         expanded: [ "*" ]
-                        exclude: {
+                        filter:
+                        {
+                            if (printSequencePropertyProvider.properties.value == "one_at_a_time")
+                            {
+                                return {"settable_per_meshgroup": true};
+                            }
+                            return {"settable_per_mesh": true};
+                        }
+                        exclude:
+                        {
                             var excluded_settings = [ "support_mesh", "anti_overhang_mesh", "cutting_mesh", "infill_mesh" ];
 
                             if(meshTypeSelection.model.get(meshTypeSelection.currentIndex).type == "support_mesh")
@@ -451,7 +460,11 @@ Item {
                     containerId: Cura.MachineManager.activeDefinitionId
                     filter:
                     {
-                        "settable_per_mesh": true
+                        if (printSequencePropertyProvider.properties.value == "one_at_a_time")
+                        {
+                            return {"settable_per_meshgroup": true};
+                        }
+                        return {"settable_per_mesh": true};
                     }
                     visibilityHandler: UM.SettingPreferenceVisibilityHandler {}
                     expanded: [ "*" ]
@@ -503,6 +516,16 @@ Item {
 
         containerStackId: Cura.MachineManager.activeMachineId
         key: "machine_extruder_count"
+        watchedProperties: [ "value" ]
+        storeIndex: 0
+    }
+
+    UM.SettingPropertyProvider
+    {
+        id: printSequencePropertyProvider
+
+        containerStackId: Cura.MachineManager.activeMachineId
+        key: "print_sequence"
         watchedProperties: [ "value" ]
         storeIndex: 0
     }
