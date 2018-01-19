@@ -279,6 +279,11 @@ class CuraApplication(QtApplication):
         # We need them to simplify the switching between materials.
         empty_container = ContainerRegistry.getInstance().getEmptyInstanceContainer()
 
+        empty_definition_changes_container = copy.deepcopy(empty_container)
+        empty_definition_changes_container.setMetaDataEntry("id", "empty_definition_changes")
+        empty_definition_changes_container.addMetaDataEntry("type", "definition_changes")
+        ContainerRegistry.getInstance().addContainer(empty_definition_changes_container)
+
         empty_variant_container = copy.deepcopy(empty_container)
         empty_variant_container.setMetaDataEntry("id", "empty_variant")
         empty_variant_container.addMetaDataEntry("type", "variant")

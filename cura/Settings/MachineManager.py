@@ -3,6 +3,8 @@
 
 #Type hinting.
 from typing import Union, List, Dict
+
+from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 from UM.Signal import Signal
 
 from PyQt5.QtCore import QObject, pyqtProperty, pyqtSignal, QTimer
@@ -75,6 +77,7 @@ class MachineManager(QObject):
 
         self._stacks_have_errors = None
 
+        self._empty_definition_changes_container = ContainerRegistry.getInstance().findContainers(id = "empty_definition_changes")[0]
         self._empty_variant_container = ContainerRegistry.getInstance().findContainers(id = "empty_variant")[0]
         self._empty_material_container = ContainerRegistry.getInstance().findContainers(id = "empty_material")[0]
         self._empty_quality_container = ContainerRegistry.getInstance().findContainers(id = "empty_quality")[0]
@@ -1347,6 +1350,68 @@ class MachineManager(QObject):
         containers = ContainerRegistry.getInstance().findContainerStacks(id = machine_id)
         if containers:
             return containers[0].definition.getId()
+
+    ##  Set the amount of extruders on the active machine (global stack)
+    #   \param extruder_count int the number of extruders to set
+    def setActiveMachineExtruderCount(self, extruder_count):
+        extruder_manager = Application.getInstance().getExtruderManager()
+
+        definition_changes_container = self._global_container_stack.definitionChanges
+        if not self._global_container_stack or definition_changes_container == self._empty_definition_changes_container:
+            return
+
+        previous_extruder_count = self._global_container_stack.getProperty("machine_extruder_count", "value")
+        if extruder_count == previous_extruder_count:
+            return
+
+        # reset all extruder number settings whose value is no longer valid
+        for setting_instance in self._global_container_stack.userChanges.findInstances():
+            setting_key = setting_instance.definition.key
+            if not self._global_container_stack.getProperty(setting_key, "type") in ("extruder", "optional_extruder"):
+                continue
+
+            old_value = int(self._global_container_stack.userChanges.getProperty(setting_key, "value"))
+            if old_value >= extruder_count:
+                self._global_container_stack.userChanges.removeInstance(setting_key)
+                Logger.log("d", "Reset [%s] because its old value [%s] is no longer valid ", setting_key, old_value)
+
+        # Check to see if any objects are set to print with an extruder that will no longer exist
+        root_node = Application.getInstance().getController().getScene().getRoot()
+        for node in DepthFirstIterator(root_node):
+            if node.getMeshData():
+                extruder_nr = node.callDecoration("getActiveExtruderPosition")
+
+                if extruder_nr is not None and int(extruder_nr) > extruder_count - 1:
+                    node.callDecoration("setActiveExtruder", extruder_manager.getExtruderStack(extruder_count - 1).getId())
+
+        definition_changes_container.setProperty("machine_extruder_count", "value", extruder_count)
+
+        # Make sure one of the extruder stacks is active
+        extruder_manager.setActiveExtruderIndex(0)
+
+        # Move settable_per_extruder values out of the global container
+        # After CURA-4482 this should not be the case anymore, but we still want to support older project files.
+        global_user_container = self._global_container_stack.getTop()
+
+        # Make sure extruder_stacks exists
+        extruder_stacks = []
+
+        if previous_extruder_count == 1:
+            extruder_stacks = ExtruderManager.getInstance().getActiveExtruderStacks()
+            global_user_container = self._global_container_stack.getTop()
+
+        for setting_instance in global_user_container.findInstances():
+            setting_key = setting_instance.definition.key
+            settable_per_extruder = self._global_container_stack.getProperty(setting_key, "settable_per_extruder")
+
+            if settable_per_extruder:
+                limit_to_extruder = int(self._global_container_stack.getProperty(setting_key, "limit_to_extruder"))
+                extruder_stack = extruder_stacks[max(0, limit_to_extruder)]
+                extruder_stack.getTop().setProperty(setting_key, "value", global_user_container.getProperty(setting_key, "value"))
+                global_user_container.removeInstance(setting_key)
+
+        # Signal that the global stack has changed
+        Application.getInstance().globalContainerStackChanged.emit()
 
     @staticmethod
     def createMachineManager():

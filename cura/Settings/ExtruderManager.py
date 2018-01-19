@@ -407,6 +407,12 @@ class ExtruderManager(QObject):
                 extruder_train.setNextStack(global_stack)
                 extruders_changed = True
 
+            # FIX: We have to remove those settings here because we know that those values have been copied to all
+            # the extruders at this point.
+            for key in ("material_diameter", "machine_nozzle_size"):
+                if global_stack.definitionChanges.hasProperty(key, "value"):
+                    global_stack.definitionChanges.removeInstance(key, postpone_emit = True)
+
             if extruders_changed:
                 self.extrudersChanged.emit(global_stack_id)
                 self.extrudersAdded.emit()

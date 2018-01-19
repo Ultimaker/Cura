@@ -431,7 +431,6 @@ class CuraEngineBackend(QObject, Backend):
         # cached layer data is removed so the previous data is not rendered - CURA-4821
         if source.callDecoration("isBlockSlicing") and source.callDecoration("getLayerData"):
             if self._stored_optimized_layer_data:
-                print(self._stored_optimized_layer_data)
                 del self._stored_optimized_layer_data[source.callDecoration("getBuildPlateNumber")]
 
         build_plate_changed = set()
