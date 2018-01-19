@@ -562,8 +562,8 @@ class CuraContainerRegistry(ContainerRegistry):
                     extruder_stack.setQualityChangesById(quality_changes_id)
                 else:
                     # if we still cannot find a quality changes container for the extruder, create a new one
-                    container_id = self.uniqueName(extruder_stack.getId() + "_user")
                     container_name = machine.qualityChanges.getName()
+                    container_id = self.uniqueName(extruder_stack.getId() + "_qc_" + container_name)
                     extruder_quality_changes_container = InstanceContainer(container_id)
                     extruder_quality_changes_container.setName(container_name)
                     extruder_quality_changes_container.addMetaDataEntry("type", "quality_changes")
@@ -571,6 +571,9 @@ class CuraContainerRegistry(ContainerRegistry):
                     extruder_quality_changes_container.addMetaDataEntry("extruder", extruder_stack.definition.getId())
                     extruder_quality_changes_container.addMetaDataEntry("quality_type", machine.qualityChanges.getMetaDataEntry("quality_type"))
                     extruder_quality_changes_container.setDefinition(machine.qualityChanges.getDefinition().getId())
+
+                    self.addContainer(extruder_quality_changes_container)
+                    extruder_stack.qualityChanges = extruder_quality_changes_container
 
             if not extruder_quality_changes_container:
                 Logger.log("w", "Could not find quality_changes named [%s] for extruder [%s]",
