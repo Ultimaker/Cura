@@ -205,6 +205,7 @@ class CuraContainerRegistry(ContainerRegistry):
             profile_reader = plugin_registry.getPluginObject(plugin_id)
             try:
                 profile_or_list = profile_reader.read(file_name)  # Try to open the file with the profile reader.
+                print
             except Exception as e:
                 # Note that this will fail quickly. That is, if any profile reader throws an exception, it will stop reading. It will only continue reading if the reader returned None.
                 Logger.log("e", "Failed to import profile from %s: %s while using profile reader. Got exception %s", file_name,profile_reader.getPluginId(), str(e))
@@ -244,6 +245,9 @@ class CuraContainerRegistry(ContainerRegistry):
                             file_name, result)}
 
                 return {"status": "ok", "message": catalog.i18nc("@info:status", "Successfully imported profile {0}", profile_or_list[0].getName())}
+
+            # This message is throw when the profile reader doesn't find any profile in the file
+            return {"status": "error", "message": catalog.i18nc("@info:status", "File {0} does not contain any valid profile.", file_name)}
 
         # If it hasn't returned by now, none of the plugins loaded the profile successfully.
         return {"status": "error", "message": catalog.i18nc("@info:status", "Profile {0} has an unknown file type or is corrupted.", file_name)}
