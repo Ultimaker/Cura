@@ -230,7 +230,7 @@ class CuraContainerRegistry(ContainerRegistry):
                              "message": catalog.i18nc("@info:status Don't translate the XML tags <filename> or <message>!", "This profile <filename>{0}</filename> contains incorrect data, could not import it.", file_name)}
                 profile_definition = global_profile.getMetaDataEntry("definition")
                 expected_machine_definition = "fdmprinter"
-                if global_container_stack.getMetaDataEntry("has_machine_quality"):
+                if parseBool(global_container_stack.getMetaDataEntry("has_machine_quality", "False")):
                     expected_machine_definition = global_container_stack.getMetaDataEntry("quality_definition")
                     if not expected_machine_definition:
                         expected_machine_definition = global_container_stack.definition.getId()
