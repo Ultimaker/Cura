@@ -205,7 +205,6 @@ class CuraContainerRegistry(ContainerRegistry):
             profile_reader = plugin_registry.getPluginObject(plugin_id)
             try:
                 profile_or_list = profile_reader.read(file_name)  # Try to open the file with the profile reader.
-                print
             except Exception as e:
                 # Note that this will fail quickly. That is, if any profile reader throws an exception, it will stop reading. It will only continue reading if the reader returned None.
                 Logger.log("e", "Failed to import profile from %s: %s while using profile reader. Got exception %s", file_name,profile_reader.getPluginId(), str(e))
