@@ -390,7 +390,7 @@ Cura.MachineAction
                             visible: Cura.MachineManager.hasMaterials
                             sourceComponent: numericTextFieldWithUnit
                             property string settingKey: "material_diameter"
-                            property string label: catalog.i18nc("@label", "Material diameter")
+                            property string label: catalog.i18nc("@label", "Compatible material diameter")
                             property string unit: catalog.i18nc("@label", "mm")
                             property string tooltip: catalog.i18nc("@tooltip", "The nominal diameter of filament supported by the printer. The exact diameter will be overridden by the material and/or the profile.")
                             function afterOnEditingFinished()
