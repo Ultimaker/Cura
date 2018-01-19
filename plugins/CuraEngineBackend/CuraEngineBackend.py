@@ -291,6 +291,7 @@ class CuraEngineBackend(QObject, Backend):
             self._start_slice_job = None
 
         if job.isCancelled() or job.getError() or job.getResult() == StartSliceJob.StartJobResult.Error:
+            self.backendStateChange.emit(BackendState.Error)
             return
 
         if job.getResult() == StartSliceJob.StartJobResult.MaterialIncompatible:

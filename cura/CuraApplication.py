@@ -142,6 +142,7 @@ class CuraApplication(QtApplication):
         if not hasattr(sys, "frozen"):
             Resources.addSearchPath(os.path.join(os.path.abspath(os.path.dirname(__file__)), "..", "resources"))
 
+        self._use_gui = True
         self._open_file_queue = []  # Files to open when plug-ins are loaded.
 
         # Need to do this before ContainerRegistry tries to load the machines
@@ -452,7 +453,7 @@ class CuraApplication(QtApplication):
         elif choice == "always_keep":
             # don't show dialog and KEEP the profile
             self.discardOrKeepProfileChangesClosed("keep")
-        else:
+        elif self._use_gui:
             # ALWAYS ask whether to keep or discard the profile
             self.showDiscardOrKeepProfileChanges.emit()
             has_user_interaction = True
@@ -652,12 +653,47 @@ class CuraApplication(QtApplication):
     def run(self):
         self.preRun()
 
-        self.showSplashMessage(self._i18n_catalog.i18nc("@info:progress", "Setting up scene..."))
-
+        # Check if we should run as single instance or not
         self._setUpSingleInstanceServer()
+
+        # Setup scene and build volume
+        root = self.getController().getScene().getRoot()
+        self._volume = BuildVolume.BuildVolume(self.getController().getScene().getRoot())
+        Arrange.build_volume = self._volume
+
+        # initialize info objects
+        self._print_information = PrintInformation.PrintInformation()
+        self._cura_actions = CuraActions.CuraActions(self)
+
+        # Detect in which mode to run and execute that mode
+        if self.getCommandLineOption("headless", False):
+            self.runWithoutGUI()
+        else:
+            self.runWithGUI()
+
+        # Pre-load files if requested
+        for file_name in self.getCommandLineOption("file", []):
+            self._openFile(file_name)
+        for file_name in self._open_file_queue:  # Open all the files that were queued up while plug-ins were loading.
+            self._openFile(file_name)
+
+        self._started = True
+        self.exec_()
+
+    ##  Run Cura without GUI elements and interaction (server mode).
+    def runWithoutGUI(self):
+        self._use_gui = False
+        self.closeSplash()
+
+    ##  Run Cura with GUI (desktop mode).
+    def runWithGUI(self):
+        self._use_gui = True
+
+        self.showSplashMessage(self._i18n_catalog.i18nc("@info:progress", "Setting up scene..."))
 
         controller = self.getController()
 
+        # Initialize UI state
         controller.setActiveStage("PrepareStage")
         controller.setActiveView("SolidView")
         controller.setCameraTool("CameraTool")
@@ -669,67 +705,44 @@ class CuraApplication(QtApplication):
 
         Selection.selectionChanged.connect(self.onSelectionChanged)
 
-        root = controller.getScene().getRoot()
-
-        # The platform is a child of BuildVolume
-        self._volume = BuildVolume.BuildVolume(root)
-
-        # Set the build volume of the arranger to the used build volume
-        Arrange.build_volume = self._volume
-
+        # Set default background color for scene
         self.getRenderer().setBackgroundColor(QColor(245, 245, 245))
 
+        # Initialize platform physics
         self._physics = PlatformPhysics.PlatformPhysics(controller, self._volume)
 
+        # Initialize camera
+        root = controller.getScene().getRoot()
         camera = Camera("3d", root)
         camera.setPosition(Vector(-80, 250, 700))
         camera.setPerspective(True)
         camera.lookAt(Vector(0, 0, 0))
         controller.getScene().setActiveCamera("3d")
 
-        camera_tool = self.getController().getTool("CameraTool")
+        # Initialize camera tool
+        camera_tool = controller.getTool("CameraTool")
         camera_tool.setOrigin(Vector(0, 100, 0))
         camera_tool.setZoomRange(0.1, 200000)
 
+        # Initialize camera animations
         self._camera_animation = CameraAnimation.CameraAnimation()
         self._camera_animation.setCameraTool(self.getController().getTool("CameraTool"))
 
         self.showSplashMessage(self._i18n_catalog.i18nc("@info:progress", "Loading interface..."))
 
-        qmlRegisterSingletonType(ExtruderManager, "Cura", 1, 0, "ExtruderManager", self.getExtruderManager)
-        qmlRegisterSingletonType(MachineManager, "Cura", 1, 0, "MachineManager", self.getMachineManager)
-        qmlRegisterSingletonType(MaterialManager, "Cura", 1, 0, "MaterialManager", self.getMaterialManager)
-
-        qmlRegisterSingletonType(SettingInheritanceManager, "Cura", 1, 0, "SettingInheritanceManager",
-                                 self.getSettingInheritanceManager)
-        qmlRegisterSingletonType(SimpleModeSettingsManager, "Cura", 1, 2, "SimpleModeSettingsManager",
-                                 self.getSimpleModeSettingsManager)
-
-        qmlRegisterSingletonType(ObjectsModel, "Cura", 1, 2, "ObjectsModel", self.getObjectsModel)
-        qmlRegisterSingletonType(BuildPlateModel, "Cura", 1, 2, "BuildPlateModel", self.getBuildPlateModel)
-        qmlRegisterSingletonType(CuraSceneController, "Cura", 1, 2, "SceneController", self.getCuraSceneController)
-
-        qmlRegisterSingletonType(MachineActionManager.MachineActionManager, "Cura", 1, 0, "MachineActionManager", self.getMachineActionManager)
-
+        # Initialize QML engine
         self.setMainQml(Resources.getPath(self.ResourceTypes.QmlFiles, "Cura.qml"))
         self._qml_import_paths.append(Resources.getPath(self.ResourceTypes.QmlFiles))
+        self.initializeEngine()
 
-        run_without_gui = self.getCommandLineOption("headless", False)
-        if not run_without_gui:
-            self.initializeEngine()
-            controller.setActiveStage("PrepareStage")
+        # Make sure the correct stage is activated after QML is loaded
+        controller.setActiveStage("PrepareStage")
 
-        if run_without_gui or self._engine.rootObjects:
-            self.closeSplash()
+        # Hide the splash screen
+        self.closeSplash()
 
-            for file_name in self.getCommandLineOption("file", []):
-                self._openFile(file_name)
-            for file_name in self._open_file_queue: #Open all the files that were queued up while plug-ins were loading.
-                self._openFile(file_name)
-
-            self._started = True
-
-            self.exec_()
+    def hasGui(self):
+        return self._use_gui
 
     def getMachineManager(self, *args) -> MachineManager:
         if self._machine_manager is None:
@@ -797,15 +810,25 @@ class CuraApplication(QtApplication):
     #   \param engine The QML engine.
     def registerObjects(self, engine):
         super().registerObjects(engine)
+
+        # global contexts
         engine.rootContext().setContextProperty("Printer", self)
         engine.rootContext().setContextProperty("CuraApplication", self)
-        self._print_information = PrintInformation.PrintInformation()
         engine.rootContext().setContextProperty("PrintInformation", self._print_information)
-        self._cura_actions = CuraActions.CuraActions(self)
         engine.rootContext().setContextProperty("CuraActions", self._cura_actions)
 
         qmlRegisterUncreatableType(CuraApplication, "Cura", 1, 0, "ResourceTypes", "Just an Enum type")
 
+        qmlRegisterSingletonType(CuraSceneController, "Cura", 1, 2, "SceneController", self.getCuraSceneController)
+        qmlRegisterSingletonType(ExtruderManager, "Cura", 1, 0, "ExtruderManager", self.getExtruderManager)
+        qmlRegisterSingletonType(MachineManager, "Cura", 1, 0, "MachineManager", self.getMachineManager)
+        qmlRegisterSingletonType(MaterialManager, "Cura", 1, 0, "MaterialManager", self.getMaterialManager)
+        qmlRegisterSingletonType(SettingInheritanceManager, "Cura", 1, 0, "SettingInheritanceManager", self.getSettingInheritanceManager)
+        qmlRegisterSingletonType(SimpleModeSettingsManager, "Cura", 1, 2, "SimpleModeSettingsManager", self.getSimpleModeSettingsManager)
+        qmlRegisterSingletonType(MachineActionManager.MachineActionManager, "Cura", 1, 0, "MachineActionManager", self.getMachineActionManager)
+
+        qmlRegisterSingletonType(ObjectsModel, "Cura", 1, 2, "ObjectsModel", self.getObjectsModel)
+        qmlRegisterSingletonType(BuildPlateModel, "Cura", 1, 2, "BuildPlateModel", self.getBuildPlateModel)
         qmlRegisterType(InstanceContainer, "Cura", 1, 0, "InstanceContainer")
         qmlRegisterType(ExtrudersModel, "Cura", 1, 0, "ExtrudersModel")
         qmlRegisterType(ContainerSettingsModel, "Cura", 1, 0, "ContainerSettingsModel")
@@ -1342,6 +1365,7 @@ class CuraApplication(QtApplication):
         pass
 
     fileLoaded = pyqtSignal(str)
+    fileCompleted = pyqtSignal(str)
 
     def _reloadMeshFinished(self, job):
         # TODO; This needs to be fixed properly. We now make the assumption that we only load a single mesh!
@@ -1459,6 +1483,7 @@ class CuraApplication(QtApplication):
 
             node.setSelectable(True)
             node.setName(os.path.basename(filename))
+            self.getBuildVolume().checkBoundsAndUpdate(node)
 
             extension = os.path.splitext(filename)[1]
             if extension.lower() in self._non_sliceable_extensions:
@@ -1495,8 +1520,8 @@ class CuraApplication(QtApplication):
                         # Step is for skipping tests to make it a lot faster. it also makes the outcome somewhat rougher
                         node, _ = arranger.findNodePlacement(node, offset_shape_arr, hull_shape_arr, step = 10)
 
-            # This node is deepcopied from some other node which already has a BuildPlateDecorator, but the deepcopy
-            # of BuildPlateDecorator produces one that's assoicated with build plate -1. So, here we need to check if
+            # This node is deep copied from some other node which already has a BuildPlateDecorator, but the deepcopy
+            # of BuildPlateDecorator produces one that's associated with build plate -1. So, here we need to check if
             # the BuildPlateDecorator exists or not and always set the correct build plate number.
             build_plate_decorator = node.getDecorator(BuildPlateDecorator)
             if build_plate_decorator is None:
@@ -1507,6 +1532,8 @@ class CuraApplication(QtApplication):
             op = AddSceneNodeOperation(node, scene.getRoot())
             op.push()
             scene.sceneChanged.emit(node)
+
+        self.fileCompleted.emit(filename)
 
     def addNonSliceableExtension(self, extension):
         self._non_sliceable_extensions.append(extension)

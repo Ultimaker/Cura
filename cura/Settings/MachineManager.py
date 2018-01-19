@@ -764,7 +764,7 @@ class MachineManager(QObject):
     ## Set the active material by switching out a container
     #  Depending on from/to material+current variant, a quality profile is chosen and set.
     @pyqtSlot(str)
-    def setActiveMaterial(self, material_id: str):
+    def setActiveMaterial(self, material_id: str, always_discard_changes = False):
         with postponeSignals(*self._getContainerChangedSignals(), compress = CompressTechnique.CompressPerParameterValue):
             containers = ContainerRegistry.getInstance().findInstanceContainers(id = material_id)
             if not containers or not self._active_container_stack:
@@ -846,10 +846,10 @@ class MachineManager(QObject):
                     if not old_quality_changes:
                         new_quality_id = candidate_quality.getId()
 
-                self.setActiveQuality(new_quality_id)
+                self.setActiveQuality(new_quality_id, always_discard_changes = always_discard_changes)
 
     @pyqtSlot(str)
-    def setActiveVariant(self, variant_id: str):
+    def setActiveVariant(self, variant_id: str, always_discard_changes = False):
         with postponeSignals(*self._getContainerChangedSignals(), compress = CompressTechnique.CompressPerParameterValue):
             containers = ContainerRegistry.getInstance().findInstanceContainers(id = variant_id)
             if not containers or not self._active_container_stack:
@@ -865,7 +865,7 @@ class MachineManager(QObject):
                 if old_material:
                     preferred_material_name = old_material.getName()
                 preferred_material_id = self._updateMaterialContainer(self._global_container_stack.definition, self._global_container_stack, containers[0], preferred_material_name).id
-                self.setActiveMaterial(preferred_material_id)
+                self.setActiveMaterial(preferred_material_id, always_discard_changes = always_discard_changes)
             else:
                 Logger.log("w", "While trying to set the active variant, no variant was found to replace.")
 
@@ -890,9 +890,11 @@ class MachineManager(QObject):
     ##  set the active quality
     #   \param quality_id The quality_id of either a quality or a quality_changes
     @pyqtSlot(str)
-    def setActiveQuality(self, quality_id: str):
+    def setActiveQuality(self, quality_id: str, always_discard_changes = False):
         with postponeSignals(*self._getContainerChangedSignals(), compress = CompressTechnique.CompressPerParameterValue):
             self.blurSettings.emit()
+
+            Logger.log("d", "Attempting to change the active quality to %s", quality_id)
 
             containers = ContainerRegistry.getInstance().findInstanceContainersMetadata(id = quality_id)
             if not containers or not self._global_container_stack:
@@ -948,11 +950,13 @@ class MachineManager(QObject):
                     "quality_changes": stack_quality_changes
                 })
 
+            Logger.log("d", "Active quality changed")
+
             # show the keep/discard dialog after the containers have been switched. Otherwise, the default values on
             # the dialog will be the those before the switching.
             self._executeDelayedActiveContainerStackChanges()
 
-            if self.hasUserSettings and Preferences.getInstance().getValue("cura/active_mode") == 1:
+            if self.hasUserSettings and Preferences.getInstance().getValue("cura/active_mode") == 1 and not always_discard_changes:
                 Application.getInstance().discardOrKeepProfileChanges()
 
     ##  Used to update material and variant in the active container stack with a delay.
@@ -960,6 +964,9 @@ class MachineManager(QObject):
     #   before the user decided to keep or discard any of their changes using the dialog.
     #   The Application.onDiscardOrKeepProfileChangesClosed signal triggers this method.
     def _executeDelayedActiveContainerStackChanges(self):
+
+        Logger.log("d", "Applying configuration changes...")
+
         if self._new_variant_container is not None:
             self._active_container_stack.variant = self._new_variant_container
             self._new_variant_container = None
@@ -983,6 +990,8 @@ class MachineManager(QObject):
                 new_quality["stack"].sendPostponedEmits() # Send the signals that were postponed in _replaceQualityOrQualityChangesInStack
 
             self._new_quality_containers.clear()
+
+        Logger.log("d", "New configuration applied")
 
     ##  Cancel set changes for material and variant in the active container stack.
     #   Used for ignoring any changes when switching between printers (setActiveMachine)
