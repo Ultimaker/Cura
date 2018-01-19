@@ -430,6 +430,7 @@ class CuraEngineBackend(QObject, Backend):
         # cached layer data is removed so the previous data is not rendered - CURA-4821
         if source.callDecoration("isBlockSlicing") and source.callDecoration("getLayerData"):
             if self._stored_optimized_layer_data:
+                print(self._stored_optimized_layer_data)
                 del self._stored_optimized_layer_data[source.callDecoration("getBuildPlateNumber")]
 
         build_plate_changed = set()
@@ -697,7 +698,6 @@ class CuraEngineBackend(QObject, Backend):
         self._process_layers_job.setBuildPlate(build_plate_number)
         self._process_layers_job.finished.connect(self._onProcessLayersFinished)
         self._process_layers_job.start()
-        del self._stored_optimized_layer_data[build_plate_number]
 
     ##  Called when the user changes the active view mode.
     def _onActiveViewChanged(self):
