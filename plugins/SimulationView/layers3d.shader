@@ -54,9 +54,13 @@ vertex41core =
     vec4 layerThicknessGradientColor(float abs_value, float min_value, float max_value)
     {
         float value = (abs_value - min_value)/(max_value - min_value);
-        float red = max(2*value-1, 0);
-        float green = 1-abs(1-2*value);
-        float blue = max(1-2*value, 0);
+        float red = min(max(4*value-2, 0), 1);
+        float green = min(1.5*value, 0.75);
+        if (value > 0.75)
+        {
+            green = value;
+        }
+        float blue = 0.75-abs(0.25-value);
         return vec4(red, green, blue, 1.0);
     }
 
