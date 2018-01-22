@@ -3,6 +3,7 @@
 
 from typing import Any, TYPE_CHECKING, Optional
 
+from UM.Application import Application
 from UM.Decorators import override
 from UM.MimeTypeDatabase import MimeType, MimeTypeDatabase
 from UM.Settings.ContainerStack import ContainerStack
@@ -60,6 +61,12 @@ class ExtruderStack(CuraContainerStack):
 
         for key in keys_to_copy:
 
+            # Since material_diameter is not on the extruder definition, we need to add it here
+            # WARNING: this might be very dangerous and should be refactored ASAP!
+            definition = stack.getSettingDefinition(key)
+            if definition:
+                self.definition.addDefinition(definition)
+
             # Only copy the value when this extruder doesn't have the value.
             if self.definitionChanges.hasProperty(key, "value"):
                 continue
@@ -74,6 +81,11 @@ class ExtruderStack(CuraContainerStack):
             new_instance.resetState()  # Ensure that the state is not seen as a user state.
             self.definitionChanges.addInstance(new_instance)
             self.definitionChanges.setDirty(True)
+
+            # Make sure the material diameter is up to date for the extruder stack.
+            if key == "material_diameter":
+                position = self.getMetaDataEntry("position", "0")
+                Application.getInstance().getExtruderManager().updateMaterialForDiameter(position)
 
             # NOTE: We cannot remove the setting from the global stack's definition changes container because for
             # material diameter, it needs to be applied to all extruders, but here we don't know how many extruders
