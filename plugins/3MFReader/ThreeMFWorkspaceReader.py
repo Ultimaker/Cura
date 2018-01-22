@@ -928,9 +928,10 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
 
                     # sanity checks
                     # NOTE: The following cases SHOULD NOT happen!!!!
-                    if not old_container:
+                    if old_container.getId() in ("empty_quality_changes", "empty_definition_changes", "empty"):
                         Logger.log("e", "We try to get [%s] from the global stack [%s] but we got None instead!",
                                    changes_container_type, global_stack.getId())
+                        continue
 
                     # Replace the quality/definition changes container if it's in the GlobalStack
                     # NOTE: we can get an empty container here, but the IDs will not match,
@@ -954,9 +955,10 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
 
                             # sanity checks
                             # NOTE: The following cases SHOULD NOT happen!!!!
-                            if not changes_container:
+                            if changes_container.getId() in ("empty_quality_changes", "empty_definition_changes", "empty"):
                                 Logger.log("e", "We try to get [%s] from the extruder stack [%s] but we got None instead!",
                                            changes_container_type, each_extruder_stack.getId())
+                                continue
 
                             # NOTE: we can get an empty container here, but the IDs will not match,
                             # so this comparison is fine.
