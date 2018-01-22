@@ -5139,7 +5139,7 @@
                 "support_tree_enable":
                 {
                     "label": "Tree Support",
-                    "description": "Generate a tree-like support with branches that support your print. This may reduce material usage and print time.",
+                    "description": "Generate a tree-like support with branches that support your print. This may reduce material usage and print time, but greatly increases slicing time.",
                     "type": "bool",
                     "default_value": false,
                     "settable_per_mesh": true,
