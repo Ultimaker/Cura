@@ -17,6 +17,7 @@ import os
 import tempfile
 import platform
 import zipfile
+import shutil
 
 i18n_catalog = i18nCatalog("cura")
 
@@ -179,13 +180,23 @@ class PluginBrowser(QObject, Extension):
 
     @pyqtSlot(str)
     def installPlugin(self, file_path):
+        # Ensure that it starts with a /, as otherwise it doesn't work on windows.
         if not file_path.startswith("/"):
-            location = "/" + file_path  # Ensure that it starts with a /, as otherwise it doesn't work on windows.
+            location = "/" + file_path
         else:
             location = file_path
+
         result = PluginRegistry.getInstance().installPlugin("file://" + location)
 
         self._newly_installed_plugin_ids.append(result["id"])
+        self.pluginsMetadataChanged.emit()
+
+        Application.getInstance().messageBox(i18n_catalog.i18nc("@window:title", "Plugin browser"), result["message"])
+
+    @pyqtSlot(str)
+    def removePlugin(self, plugin_id):
+        result = PluginRegistry.getInstance().uninstallPlugin(plugin_id)
+
         self.pluginsMetadataChanged.emit()
 
         Application.getInstance().messageBox(i18n_catalog.i18nc("@window:title", "Plugin browser"), result["message"])
@@ -226,26 +237,29 @@ class PluginBrowser(QObject, Extension):
         if self._plugins_model is None:
             self._plugins_model = ListModel()
             self._plugins_model.addRoleName(Qt.UserRole + 1, "name")
-            self._plugins_model.addRoleName(Qt.UserRole + 2, "version")
-            self._plugins_model.addRoleName(Qt.UserRole + 3, "short_description")
-            self._plugins_model.addRoleName(Qt.UserRole + 4, "author")
-            self._plugins_model.addRoleName(Qt.UserRole + 5, "author_email")
-            self._plugins_model.addRoleName(Qt.UserRole + 6, "already_installed")
-            self._plugins_model.addRoleName(Qt.UserRole + 7, "file_location")
-            self._plugins_model.addRoleName(Qt.UserRole + 8, "enabled")
-            self._plugins_model.addRoleName(Qt.UserRole + 9, "can_upgrade")
+            self._plugins_model.addRoleName(Qt.UserRole + 2, "id")
+            self._plugins_model.addRoleName(Qt.UserRole + 3, "version")
+            self._plugins_model.addRoleName(Qt.UserRole + 4, "short_description")
+            self._plugins_model.addRoleName(Qt.UserRole + 5, "author")
+            self._plugins_model.addRoleName(Qt.UserRole + 6, "author_email")
+            self._plugins_model.addRoleName(Qt.UserRole + 7, "already_installed")
+            self._plugins_model.addRoleName(Qt.UserRole + 8, "file_location")
+            self._plugins_model.addRoleName(Qt.UserRole + 9, "enabled")
+            self._plugins_model.addRoleName(Qt.UserRole + 10, "can_upgrade")
         else:
             self._plugins_model.clear()
         items = []
         for metadata in self._plugins_metadata:
             items.append({
                 "name": metadata["label"],
+                "id": metadata["id"],
                 "version": metadata["version"],
                 "short_description": metadata["short_description"],
                 "author": metadata["author"],
                 "author_email": "author@gmail.com",
                 "already_installed": self._checkAlreadyInstalled(metadata["id"]),
                 "file_location": metadata["file_location"],
+                # "enabled": self._checkEnabled(metadata["id"]),
                 "enabled": True,
                 "can_upgrade": self._checkCanUpgrade(metadata["id"], metadata["version"])
             })
@@ -273,6 +287,18 @@ class PluginBrowser(QObject, Extension):
             if id in self._newly_installed_plugin_ids:
                 return True  # We already installed this plugin, but the registry just doesn't know it yet.
             return False
+
+    def _checkEnabled(self, id):
+        plugin_registry = PluginRegistry.getInstance()
+        metadata = plugin_registry.getMetaData(id)
+        # if metadata != {}:
+            # if id in self._newly_installed_plugin_ids:
+            #     return False  # We already updated this plugin.
+            # current_version = Version(metadata["plugin"]["version"])
+            # new_version = Version(version)
+            # if new_version > current_version:
+            #     return True
+        return False
 
     def _onRequestFinished(self, reply):
         reply_url = reply.url().toString()

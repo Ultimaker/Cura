@@ -154,7 +154,7 @@ UM.Dialog {
                     // Plugin actions
                     Row {
                         id: pluginActions
-                        width: 72 + UM.Theme.getSize("default_margin").width
+                        width: 180 + UM.Theme.getSize("default_margin").width
                         height: parent.height
                         anchors {
                             top: parent.top
@@ -165,7 +165,6 @@ UM.Dialog {
                         layoutDirection: Qt.RightToLeft
                         spacing: UM.Theme.getSize("default_margin").width
 
-                        /*
                         Rectangle {
                             id: removeControls
                             visible: model.already_installed
@@ -182,12 +181,14 @@ UM.Dialog {
                                         return true;
                                     }
                                 }
+                                onClicked: {
+                                    manager.removePlugin(model.id);
+                                }
                                 style: ButtonStyle {
                                     background: Rectangle {
                                         color: white
                                         implicitWidth: 108
                                         implicitHeight: 30
-                                        // radius: 4
                                         border {
                                             width: 1
                                             color: "grey"
@@ -224,7 +225,6 @@ UM.Dialog {
                                         color: "transparent"
                                         implicitWidth: 30
                                         implicitHeight: 30
-                                        // radius: 4
                                     }
                                     label: Text {
                                         verticalAlignment: Text.AlignVCenter
@@ -246,10 +246,9 @@ UM.Dialog {
                                     else {
                                         removeDropDown.open = false
                                     }
-
                                 }
-
                             }
+
                             Rectangle {
                                 id: divider
                                 width: 1
@@ -257,6 +256,7 @@ UM.Dialog {
                                 anchors.right: removeDropDown.left
                                 color: "grey"
                             }
+
                             Column {
                                 id: options
                                 anchors {
@@ -278,7 +278,7 @@ UM.Dialog {
                                 }
                             }
                         }
-                        */
+
                         Button {
                             id: updateButton
                             visible: model.already_installed && model.can_upgrade
