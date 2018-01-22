@@ -1,4 +1,4 @@
-# Copyright (c) 2015 Ultimaker B.V.
+# Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from PyQt5.QtCore import QTimer
@@ -57,7 +57,7 @@ class PlatformPhysics:
         nodes = list(BreadthFirstIterator(root))
 
         # Only check nodes inside build area.
-        nodes = [node for node in nodes if (hasattr(node, "_outside_buildarea") and not node._outside_buildarea)]
+        nodes = [node for node in nodes if getattr(node, "_outside_buildarea", False)]
 
         random.shuffle(nodes)
         for node in nodes:
