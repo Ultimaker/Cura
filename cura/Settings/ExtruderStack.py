@@ -62,11 +62,6 @@ class ExtruderStack(CuraContainerStack):
 
             # Only copy the value when this extruder doesn't have the value.
             if self.definitionChanges.hasProperty(key, "value"):
-                # If the first extruder has a value for this setting, we must copy it to the other extruders via the global stack.
-                # Note: this assumes the extruders are loaded in the same order as they are positioned on the machine.
-                if self.getMetaDataEntry("position") == "0":
-                    setting_value = self.definitionChanges.getProperty(key, "value")
-                    stack.definitionChanges.setProperty(key, "value", setting_value)
                 continue
 
             setting_value = stack.definitionChanges.getProperty(key, "value")
