@@ -229,9 +229,11 @@ class PluginBrowser(QObject, Extension):
             self._plugins_model.addRoleName(Qt.UserRole + 2, "version")
             self._plugins_model.addRoleName(Qt.UserRole + 3, "short_description")
             self._plugins_model.addRoleName(Qt.UserRole + 4, "author")
-            self._plugins_model.addRoleName(Qt.UserRole + 5, "already_installed")
-            self._plugins_model.addRoleName(Qt.UserRole + 6, "file_location")
-            self._plugins_model.addRoleName(Qt.UserRole + 7, "can_upgrade")
+            self._plugins_model.addRoleName(Qt.UserRole + 5, "author_email")
+            self._plugins_model.addRoleName(Qt.UserRole + 6, "already_installed")
+            self._plugins_model.addRoleName(Qt.UserRole + 7, "file_location")
+            self._plugins_model.addRoleName(Qt.UserRole + 8, "enabled")
+            self._plugins_model.addRoleName(Qt.UserRole + 9, "can_upgrade")
         else:
             self._plugins_model.clear()
         items = []
@@ -241,8 +243,10 @@ class PluginBrowser(QObject, Extension):
                 "version": metadata["version"],
                 "short_description": metadata["short_description"],
                 "author": metadata["author"],
+                "author_email": "author@gmail.com",
                 "already_installed": self._checkAlreadyInstalled(metadata["id"]),
                 "file_location": metadata["file_location"],
+                "enabled": True,
                 "can_upgrade": self._checkCanUpgrade(metadata["id"], metadata["version"])
             })
         self._plugins_model.setItems(items)

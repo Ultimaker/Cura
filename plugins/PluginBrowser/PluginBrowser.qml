@@ -2,35 +2,36 @@ import UM 1.1 as UM
 import QtQuick 2.2
 import QtQuick.Dialogs 1.1
 import QtQuick.Window 2.2
-import QtQuick.Controls 1.1
+import QtQuick.Controls 1.4
 import QtQuick.Controls.Styles 1.4
+
+// TODO: Switch to QtQuick.Controls 2.x and remove QtQuick.Controls.Styles
 
 UM.Dialog {
     id: base
 
     title: catalog.i18nc("@title:tab", "Plugins");
     width: 800 * screenScaleFactor
-    height: 450 * screenScaleFactor
+    height: 600 * screenScaleFactor
     minimumWidth: 350 * screenScaleFactor
     minimumHeight: 350 * screenScaleFactor
-    Item
-    {
+
+    Item {
         anchors.fill: parent
-        Item
-        {
+
+        Item {
             id: topBar
             height: childrenRect.height;
             width: parent.width
-            Label
-            {
+
+            Label {
                 id: introText
                 text: catalog.i18nc("@label", "Here you can find a list of Third Party plugins.")
                 width: parent.width
                 height: 30
             }
 
-            Button
-            {
+            Button {
                 id: refresh
                 text: catalog.i18nc("@action:button", "Refresh")
                 onClicked: manager.requestPluginList()
@@ -38,40 +39,37 @@ UM.Dialog {
                 enabled: !manager.isDownloading
             }
         }
-        ScrollView
-        {
+
+        // Scroll view breaks in QtQuick.Controls 2.x
+        ScrollView {
             width: parent.width
             anchors.top: topBar.bottom
             anchors.bottom: bottomBar.top
             anchors.bottomMargin: UM.Theme.getSize("default_margin").height
             frameVisible: true
+
             ListView {
                 id: pluginList
                 model: manager.pluginsModel
                 anchors.fill: parent
-
                 property var activePlugin
                 delegate: pluginDelegate
             }
         }
-        Item
-        {
+
+        Item {
             id: bottomBar
             width: parent.width
             height: closeButton.height
             anchors.bottom: parent.bottom
             anchors.left: parent.left
 
-
-            Button
-            {
+            Button {
                 id: closeButton
                 text: catalog.i18nc("@action:button", "Close")
                 iconName: "dialog-close"
-                onClicked:
-                {
-                    if (manager.isDownloading)
-                    {
+                onClicked: {
+                    if ( manager.isDownloading ) {
                         manager.cancelDownload()
                     }
                     base.close();
@@ -87,7 +85,7 @@ UM.Dialog {
 
                 Rectangle {
                     width: pluginList.width;
-                    height: 96
+                    height: 102
                     color: index % 2 ? UM.Theme.getColor("secondary") : "white"
 
                     // Plugin info
@@ -108,10 +106,10 @@ UM.Dialog {
                             wrapMode: Text.WordWrap
                             verticalAlignment: Text.AlignVCenter
                             font {
-                                pixelSize: 15
+                                pixelSize: 13
                                 bold: true
                             }
-                            color: model.enabled ? UM.Theme.getColor("text") : "grey"
+                            color: model.enabled ? UM.Theme.getColor("text") : UM.Theme.getColor("secondary")
                         }
 
                         Label {
@@ -145,7 +143,7 @@ UM.Dialog {
                         }
 
                         Label {
-                            text: "author@ultimaker.com"
+                            text: model.author_email
                             width: parent.width
                             height: 72
                             wrapMode: Text.WordWrap
@@ -156,7 +154,7 @@ UM.Dialog {
                     // Plugin actions
                     Row {
                         id: pluginActions
-                        width: 180 + UM.Theme.getSize("default_margin").width
+                        width: 72 + UM.Theme.getSize("default_margin").width
                         height: parent.height
                         anchors {
                             top: parent.top
@@ -167,6 +165,7 @@ UM.Dialog {
                         layoutDirection: Qt.RightToLeft
                         spacing: UM.Theme.getSize("default_margin").width
 
+                        /*
                         Rectangle {
                             id: removeControls
                             visible: model.already_installed
@@ -279,13 +278,11 @@ UM.Dialog {
                                 }
                             }
                         }
-
-
-
+                        */
                         Button {
                             id: updateButton
-                            // visible: model.already_installed && model.can_upgrade
-                            visible: model.already_installed
+                            visible: model.already_installed && model.can_upgrade
+                            // visible: model.already_installed
                             text: {
                                 // If currently downloading:
                                 if ( manager.isDownloading && pluginList.activePlugin == model ) {
