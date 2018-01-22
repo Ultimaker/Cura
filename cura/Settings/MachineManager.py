@@ -412,7 +412,13 @@ class MachineManager(QObject):
 
         if self._global_container_stack.hasErrors():
             return True
-        for stack in ExtruderManager.getInstance().getMachineExtruders(self._global_container_stack.getId()):
+
+        # Not a very pretty solution, but the extruder manager doesn't really know how many extruders there are
+        machine_extruder_count = self._global_container_stack.getProperty("machine_extruder_count", "value")
+        extruder_stacks = ExtruderManager.getInstance().getMachineExtruders(self._global_container_stack.getId())
+        if len(extruder_stacks) > machine_extruder_count:
+            extruder_stacks = extruder_stacks[:machine_extruder_count]  # we only have to check the used extruders
+        for stack in extruder_stacks:
             if stack.hasErrors():
                 return True
 
