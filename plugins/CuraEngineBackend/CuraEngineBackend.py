@@ -427,11 +427,10 @@ class CuraEngineBackend(QObject, Backend):
         if not isinstance(source, SceneNode):
             return
 
-        # This case checks if the source node is a node that contains a GCode. In this case the
-        # cached layer data is removed so the previous data is not rendered - CURA-4821
+        # This case checks if the source node is a node that contains GCode. In this case the
+        # current layer data is removed so the previous data is not rendered - CURA-4821
         if source.callDecoration("isBlockSlicing") and source.callDecoration("getLayerData"):
-            if self._stored_optimized_layer_data:
-                del self._stored_optimized_layer_data[source.callDecoration("getBuildPlateNumber")]
+            self._stored_optimized_layer_data = {}
 
         build_plate_changed = set()
         source_build_plate_number = source.callDecoration("getBuildPlateNumber")
