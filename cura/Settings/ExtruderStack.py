@@ -55,15 +55,20 @@ class ExtruderStack(CuraContainerStack):
         # carried to the first extruder.
         # For material diameter, it was supposed to be applied to all extruders, so its value should be copied to all
         # extruders.
-        #
-        keys_to_copy = ["material_diameter"]  # material diameter will be copied to all extruders
-        if self.getMetaDataEntry("position") == "0":
-            keys_to_copy.append("machine_nozzle_size")
+
+        keys_to_copy = ["material_diameter", "machine_nozzle_size"]  # these will be copied over to all extruders
 
         for key in keys_to_copy:
+
             # Only copy the value when this extruder doesn't have the value.
             if self.definitionChanges.hasProperty(key, "value"):
+                # If the first extruder has a value for this setting, we must copy it to the other extruders via the global stack.
+                # Note: this assumes the extruders are loaded in the same order as they are positioned on the machine.
+                if self.getMetaDataEntry("position") == "0":
+                    setting_value = self.definitionChanges.getProperty(key, "value")
+                    stack.definitionChanges.setProperty(key, "value", setting_value)
                 continue
+
             setting_value = stack.definitionChanges.getProperty(key, "value")
             if setting_value is None:
                 continue
