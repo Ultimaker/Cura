@@ -754,25 +754,18 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             # If not extruder stacks were saved in the project file (pre 3.1) create one manually
             # We re-use the container registry's addExtruderStackForSingleExtrusionMachine method for this
             if not extruder_stacks:
-                if self._resolve_strategies["machine"] == "new":
-                    stack = self._container_registry.addExtruderStackForSingleExtrusionMachine(global_stack, "fdmextruder")
+                stack = self._container_registry.addExtruderStackForSingleExtrusionMachine(global_stack, "fdmextruder")
+                if global_stack.quality.getId() in ("empty", "empty_quality"):
+                    stack.quality = empty_quality_container
+                if self._resolve_strategies["machine"] == "override":
+                    # in case the extruder is newly created (for a single-extrusion machine), we need to override
+                    # the existing extruder stack.
+                    existing_extruder_stack = global_stack.extruders[stack.getMetaDataEntry("position")]
+                    for idx in range(len(_ContainerIndexes.IndexTypeMap)):
+                        existing_extruder_stack.replaceContainer(idx, stack._containers[idx], postpone_emit = True)
+                    extruder_stacks.append(existing_extruder_stack)
                 else:
-                    stack = global_stack.extruders.get("0")
-                    if not stack:
-                        # this should not happen
-                        Logger.log("e", "Cannot find any extruder in an existing global stack [%s].", global_stack.getId())
-                if stack:
-                    if global_stack.quality.getId() in ("empty", "empty_quality"):
-                        stack.quality = empty_quality_container
-                    if self._resolve_strategies["machine"] == "override":
-                        # in case the extruder is newly created (for a single-extrusion machine), we need to override
-                        # the existing extruder stack.
-                        existing_extruder_stack = global_stack.extruders[stack.getMetaDataEntry("position")]
-                        for idx in range(len(_ContainerIndexes.IndexTypeMap)):
-                            existing_extruder_stack.replaceContainer(idx, stack._containers[idx], postpone_emit = True)
-                        extruder_stacks.append(existing_extruder_stack)
-                    else:
-                        extruder_stacks.append(stack)
+                    extruder_stacks.append(stack)
 
         except:
             Logger.logException("w", "We failed to serialize the stack. Trying to clean up.")
@@ -870,7 +863,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                 #                  We will first find the correct quality profile for the extruder, then apply the same
                 #                  quality profile for the global stack.
                 #
-                if len(extruder_stacks) == 1:
+                if has_extruder_stack_files and len(extruder_stacks) == 1:
                     extruder_stack = extruder_stacks[0]
 
                     search_criteria = {"type": "quality", "quality_type": global_stack.quality.getMetaDataEntry("quality_type")}
