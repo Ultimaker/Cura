@@ -15,7 +15,7 @@ from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 from UM.Settings.Validator import ValidatorState
 from UM.Settings.SettingRelation import RelationType
 
-from cura.Scene.CuraSceneNode import CuraSceneNode as SceneNode
+from cura.Scene.CuraSceneNode import CuraSceneNode
 from cura.OneAtATimeIterator import OneAtATimeIterator
 from cura.Settings.ExtruderManager import ExtruderManager
 
@@ -137,7 +137,7 @@ class StartSliceJob(Job):
 
         # Don't slice if there is a per object setting with an error value.
         for node in DepthFirstIterator(self._scene.getRoot()):
-            if type(node) is not SceneNode or not node.isSelectable():
+            if type(node) is not CuraSceneNode or not node.isSelectable():
                 continue
 
             if self._checkStackForErrors(node.callDecoration("getStack")):
@@ -161,10 +161,15 @@ class StartSliceJob(Job):
                     if getattr(node, "_outside_buildarea", False):
                         continue
 
+                    # Filter on current build plate
+                    build_plate_number = node.callDecoration("getBuildPlateNumber")
+                    if build_plate_number is not None and build_plate_number != self._build_plate_number:
+                        continue
+
                     children = node.getAllChildren()
                     children.append(node)
                     for child_node in children:
-                        if type(child_node) is SceneNode and child_node.getMeshData() and child_node.getMeshData().getVertices() is not None:
+                        if type(child_node) is CuraSceneNode and child_node.getMeshData() and child_node.getMeshData().getVertices() is not None:
                             temp_list.append(child_node)
 
                     if temp_list:
@@ -176,7 +181,7 @@ class StartSliceJob(Job):
                 temp_list = []
                 has_printing_mesh = False
                 for node in DepthFirstIterator(self._scene.getRoot()):
-                    if node.callDecoration("isSliceable") and type(node) is SceneNode and node.getMeshData() and node.getMeshData().getVertices() is not None:
+                    if node.callDecoration("isSliceable") and type(node) is CuraSceneNode and node.getMeshData() and node.getMeshData().getVertices() is not None:
                         per_object_stack = node.callDecoration("getStack")
                         is_non_printing_mesh = False
                         if per_object_stack:

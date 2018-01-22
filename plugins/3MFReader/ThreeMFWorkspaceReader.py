@@ -703,6 +703,9 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             return
 
         # load extruder stack files
+        has_extruder_stack_files = len(extruder_stack_files) > 0
+        empty_quality_container = self._container_registry.findInstanceContainers(id = "empty_quality")[0]
+        empty_quality_changes_container = self._container_registry.findInstanceContainers(id = "empty_quality_changes")[0]
         try:
             for extruder_stack_file in extruder_stack_files:
                 container_id = self._stripFileToId(extruder_stack_file)
@@ -778,7 +781,6 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                 self._container_registry.removeContainer(container.getId())
             return
 
-
         # Check quality profiles to make sure that if one stack has the "not supported" quality profile,
         # all others should have the same.
         #
@@ -810,17 +812,12 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         quality_has_been_changed = False
 
         if has_not_supported:
-            empty_quality_container = self._container_registry.findInstanceContainers(id = "empty_quality")[0]
             for stack in [global_stack] + extruder_stacks_in_use:
                 stack.replaceContainer(_ContainerIndexes.Quality, empty_quality_container)
-            empty_quality_changes_container = self._container_registry.findInstanceContainers(id = "empty_quality_changes")[0]
-            for stack in [global_stack] + extruder_stacks_in_use:
                 stack.replaceContainer(_ContainerIndexes.QualityChanges, empty_quality_changes_container)
             quality_has_been_changed = True
 
         else:
-            empty_quality_changes_container = self._container_registry.findInstanceContainers(id="empty_quality_changes")[0]
-
             # The machine in the project has non-empty quality and there are usable qualities for this machine.
             # We need to check if the current quality_type is still usable for this machine, if not, then the quality
             # will be reset to the "preferred quality" if present, otherwise "normal".
@@ -946,26 +943,28 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                         continue
 
                     # Replace the quality/definition changes container if it's in one of the ExtruderStacks
-                    for each_extruder_stack in extruder_stacks:
-                        changes_container = None
-                        if changes_container_type == "quality_changes":
-                            changes_container = each_extruder_stack.qualityChanges
-                        elif changes_container_type == "definition_changes":
-                            changes_container = each_extruder_stack.definitionChanges
-
-                        # sanity checks
-                        # NOTE: The following cases SHOULD NOT happen!!!!
-                        if not changes_container:
-                            Logger.log("e", "We try to get [%s] from the extruder stack [%s] but we got None instead!",
-                                       changes_container_type, each_extruder_stack.getId())
-
-                        # NOTE: we can get an empty container here, but the IDs will not match,
-                        # so this comparison is fine.
-                        if self._id_mapping.get(changes_container.getId()) == new_id:
+                    # Only apply the change if we have loaded extruder stacks from the project
+                    if has_extruder_stack_files:
+                        for each_extruder_stack in extruder_stacks:
+                            changes_container = None
                             if changes_container_type == "quality_changes":
-                                each_extruder_stack.qualityChanges = each_changes_container
+                                changes_container = each_extruder_stack.qualityChanges
                             elif changes_container_type == "definition_changes":
-                                each_extruder_stack.definitionChanges = each_changes_container
+                                changes_container = each_extruder_stack.definitionChanges
+
+                            # sanity checks
+                            # NOTE: The following cases SHOULD NOT happen!!!!
+                            if not changes_container:
+                                Logger.log("e", "We try to get [%s] from the extruder stack [%s] but we got None instead!",
+                                           changes_container_type, each_extruder_stack.getId())
+
+                            # NOTE: we can get an empty container here, but the IDs will not match,
+                            # so this comparison is fine.
+                            if self._id_mapping.get(changes_container.getId()) == new_id:
+                                if changes_container_type == "quality_changes":
+                                    each_extruder_stack.qualityChanges = each_changes_container
+                                elif changes_container_type == "definition_changes":
+                                    each_extruder_stack.definitionChanges = each_changes_container
 
         if self._resolve_strategies["material"] == "new":
             # the actual material instance container can have an ID such as

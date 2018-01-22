@@ -211,6 +211,34 @@ class CuraContainerRegistry(ContainerRegistry):
                 return { "status": "error", "message": catalog.i18nc("@info:status Don't translate the XML tags <filename> or <message>!", "Failed to import profile from <filename>{0}</filename>: <message>{1}</message>", file_name, str(e))}
 
             if profile_or_list:
+                # Ensure it is always a list of profiles
+                if not isinstance(profile_or_list, list):
+                    profile_or_list = [profile_or_list]
+
+                # First check if this profile is suitable for this machine
+                global_profile = None
+                if len(profile_or_list) == 1:
+                    global_profile = profile_or_list[0]
+                else:
+                    for profile in profile_or_list:
+                        if not profile.getMetaDataEntry("extruder"):
+                            global_profile = profile
+                            break
+                if not global_profile:
+                    Logger.log("e", "Incorrect profile [%s]. Could not find global profile", file_name)
+                    return { "status": "error",
+                             "message": catalog.i18nc("@info:status Don't translate the XML tags <filename> or <message>!", "This profile <filename>{0}</filename> contains incorrect data, could not import it.", file_name)}
+                profile_definition = global_profile.getMetaDataEntry("definition")
+                expected_machine_definition = "fdmprinter"
+                if parseBool(global_container_stack.getMetaDataEntry("has_machine_quality", "False")):
+                    expected_machine_definition = global_container_stack.getMetaDataEntry("quality_definition")
+                    if not expected_machine_definition:
+                        expected_machine_definition = global_container_stack.definition.getId()
+                if expected_machine_definition is not None and profile_definition is not None and profile_definition != expected_machine_definition:
+                    Logger.log("e", "Profile [%s] is for machine [%s] but the current active machine is [%s]. Will not import the profile", file_name)
+                    return { "status": "error",
+                             "message": catalog.i18nc("@info:status Don't translate the XML tags <filename> or <message>!", "The machine defined in profile <filename>{0}</filename> doesn't match with your current machine, could not import it.", file_name)}
+
                 name_seed = os.path.splitext(os.path.basename(file_name))[0]
                 new_name = self.uniqueName(name_seed)
 
@@ -534,8 +562,8 @@ class CuraContainerRegistry(ContainerRegistry):
                     extruder_stack.setQualityChangesById(quality_changes_id)
                 else:
                     # if we still cannot find a quality changes container for the extruder, create a new one
-                    container_id = self.uniqueName(extruder_stack.getId() + "_user")
                     container_name = machine.qualityChanges.getName()
+                    container_id = self.uniqueName(extruder_stack.getId() + "_qc_" + container_name)
                     extruder_quality_changes_container = InstanceContainer(container_id)
                     extruder_quality_changes_container.setName(container_name)
                     extruder_quality_changes_container.addMetaDataEntry("type", "quality_changes")
@@ -543,6 +571,9 @@ class CuraContainerRegistry(ContainerRegistry):
                     extruder_quality_changes_container.addMetaDataEntry("extruder", extruder_stack.definition.getId())
                     extruder_quality_changes_container.addMetaDataEntry("quality_type", machine.qualityChanges.getMetaDataEntry("quality_type"))
                     extruder_quality_changes_container.setDefinition(machine.qualityChanges.getDefinition().getId())
+
+                    self.addContainer(extruder_quality_changes_container)
+                    extruder_stack.qualityChanges = extruder_quality_changes_container
 
             if not extruder_quality_changes_container:
                 Logger.log("w", "Could not find quality_changes named [%s] for extruder [%s]",
