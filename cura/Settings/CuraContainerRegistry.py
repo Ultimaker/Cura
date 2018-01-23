@@ -449,7 +449,13 @@ class CuraContainerRegistry(ContainerRegistry):
         if not extruder_stacks:
             self.addExtruderStackForSingleExtrusionMachine(container, "fdmextruder")
 
-    def addExtruderStackForSingleExtrusionMachine(self, machine, extruder_id):
+    #
+    # new_global_quality_changes is optional. It is only used in project loading for a scenario like this:
+    #      - override the current machine
+    #      - create new for custom quality profile
+    # new_global_quality_changes is the new global quality changes container in this scenario.
+    #
+    def addExtruderStackForSingleExtrusionMachine(self, machine, extruder_id, new_global_quality_changes = None):
         new_extruder_id = extruder_id
 
         extruder_definitions = self.findDefinitionContainers(id = new_extruder_id)
@@ -545,8 +551,12 @@ class CuraContainerRegistry(ContainerRegistry):
             quality_id = "empty_quality"
         extruder_stack.setQualityById(quality_id)
 
-        if machine.qualityChanges.getId() not in ("empty", "empty_quality_changes"):
-            extruder_quality_changes_container = self.findInstanceContainers(name = machine.qualityChanges.getName(), extruder = extruder_id)
+        machine_quality_changes = machine.qualityChanges
+        if new_global_quality_changes is not None:
+            machine_quality_changes = new_global_quality_changes
+
+        if machine_quality_changes.getId() not in ("empty", "empty_quality_changes"):
+            extruder_quality_changes_container = self.findInstanceContainers(name = machine_quality_changes.getName(), extruder = extruder_id)
             if extruder_quality_changes_container:
                 extruder_quality_changes_container = extruder_quality_changes_container[0]
 
@@ -556,34 +566,34 @@ class CuraContainerRegistry(ContainerRegistry):
                 # Some extruder quality_changes containers can be created at runtime as files in the qualities
                 # folder. Those files won't be loaded in the registry immediately. So we also need to search
                 # the folder to see if the quality_changes exists.
-                extruder_quality_changes_container = self._findQualityChangesContainerInCuraFolder(machine.qualityChanges.getName())
+                extruder_quality_changes_container = self._findQualityChangesContainerInCuraFolder(machine_quality_changes.getName())
                 if extruder_quality_changes_container:
                     quality_changes_id = extruder_quality_changes_container.getId()
                     extruder_stack.setQualityChangesById(quality_changes_id)
                 else:
                     # if we still cannot find a quality changes container for the extruder, create a new one
-                    container_name = machine.qualityChanges.getName()
+                    container_name = machine_quality_changes.getName()
                     container_id = self.uniqueName(extruder_stack.getId() + "_qc_" + container_name)
                     extruder_quality_changes_container = InstanceContainer(container_id)
                     extruder_quality_changes_container.setName(container_name)
                     extruder_quality_changes_container.addMetaDataEntry("type", "quality_changes")
                     extruder_quality_changes_container.addMetaDataEntry("setting_version", CuraApplication.SettingVersion)
                     extruder_quality_changes_container.addMetaDataEntry("extruder", extruder_stack.definition.getId())
-                    extruder_quality_changes_container.addMetaDataEntry("quality_type", machine.qualityChanges.getMetaDataEntry("quality_type"))
-                    extruder_quality_changes_container.setDefinition(machine.qualityChanges.getDefinition().getId())
+                    extruder_quality_changes_container.addMetaDataEntry("quality_type", machine_quality_changes.getMetaDataEntry("quality_type"))
+                    extruder_quality_changes_container.setDefinition(machine_quality_changes.getDefinition().getId())
 
                     self.addContainer(extruder_quality_changes_container)
                     extruder_stack.qualityChanges = extruder_quality_changes_container
 
             if not extruder_quality_changes_container:
                 Logger.log("w", "Could not find quality_changes named [%s] for extruder [%s]",
-                           machine.qualityChanges.getName(), extruder_stack.getId())
+                           machine_quality_changes.getName(), extruder_stack.getId())
             else:
                 # move all per-extruder settings to the extruder's quality changes
-                for qc_setting_key in machine.qualityChanges.getAllKeys():
+                for qc_setting_key in machine_quality_changes.getAllKeys():
                     settable_per_extruder = machine.getProperty(qc_setting_key, "settable_per_extruder")
                     if settable_per_extruder:
-                        setting_value = machine.qualityChanges.getProperty(qc_setting_key, "value")
+                        setting_value = machine_quality_changes.getProperty(qc_setting_key, "value")
 
                         setting_definition = machine.getSettingDefinition(qc_setting_key)
                         new_instance = SettingInstance(setting_definition, definition_changes)
@@ -592,7 +602,7 @@ class CuraContainerRegistry(ContainerRegistry):
                         extruder_quality_changes_container.addInstance(new_instance)
                         extruder_quality_changes_container.setDirty(True)
 
-                        machine.qualityChanges.removeInstance(qc_setting_key, postpone_emit=True)
+                        machine_quality_changes.removeInstance(qc_setting_key, postpone_emit=True)
         else:
             extruder_stack.setQualityChangesById("empty_quality_changes")
 
@@ -600,8 +610,8 @@ class CuraContainerRegistry(ContainerRegistry):
 
         # Also need to fix the other qualities that are suitable for this machine. Those quality changes may still have
         # per-extruder settings in the container for the machine instead of the extruder.
-        if machine.qualityChanges.getId() not in ("empty", "empty_quality_changes"):
-            quality_changes_machine_definition_id = machine.qualityChanges.getDefinition().getId()
+        if machine_quality_changes.getId() not in ("empty", "empty_quality_changes"):
+            quality_changes_machine_definition_id = machine_quality_changes.getDefinition().getId()
         else:
             whole_machine_definition = machine.definition
             machine_entry = machine.definition.getMetaDataEntry("machine")
@@ -621,7 +631,7 @@ class CuraContainerRegistry(ContainerRegistry):
                 qc_groups[qc_name] = []
             qc_groups[qc_name].append(qc)
             # try to find from the quality changes cura directory too
-            quality_changes_container = self._findQualityChangesContainerInCuraFolder(machine.qualityChanges.getName())
+            quality_changes_container = self._findQualityChangesContainerInCuraFolder(machine_quality_changes.getName())
             if quality_changes_container:
                 qc_groups[qc_name].append(quality_changes_container)
 

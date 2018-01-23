@@ -1078,7 +1078,7 @@ class CuraApplication(QtApplication):
                 continue  # Node that doesnt have a mesh and is not a group.
             if only_selectable and not node.isSelectable():
                 continue
-            if not node.callDecoration("isSliceable") and not node.callDecoration("getLayerData"):
+            if not node.callDecoration("isSliceable") and not node.callDecoration("getLayerData") and not node.callDecoration("isGroup"):
                 continue  # Only remove nodes that are selectable.
             if node.getParent() and node.getParent().callDecoration("isGroup"):
                 continue  # Grouped nodes don't need resetting as their parent (the group) is resetted)
@@ -1089,11 +1089,11 @@ class CuraApplication(QtApplication):
             for node in nodes:
                 op.addOperation(RemoveSceneNodeOperation(node))
 
+                # Reset the print information
+                self.getController().getScene().sceneChanged.emit(node)
+
             op.push()
             Selection.clear()
-
-        # Reset the print information:
-        self.getController().getScene().sceneChanged.emit(node)
 
     ## Reset all translation on nodes with mesh data.
     @pyqtSlot()
