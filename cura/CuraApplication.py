@@ -87,6 +87,7 @@ from PyQt5.QtGui import QColor, QIcon
 from PyQt5.QtWidgets import QMessageBox
 from PyQt5.QtQml import qmlRegisterUncreatableType, qmlRegisterSingletonType, qmlRegisterType
 
+from configparser import ConfigParser
 import sys
 import os.path
 import numpy
@@ -348,57 +349,19 @@ class CuraApplication(QtApplication):
 
         preferences.setDefault("local_file/last_used_type", "text/x-gcode")
 
-        preferences.setDefault("general/visible_settings", """
-            machine_settings
-            resolution
-                layer_height
-            shell
-                wall_thickness
-                top_bottom_thickness
-                z_seam_x
-                z_seam_y
-            infill
-                infill_sparse_density
-                gradual_infill_steps
-            material
-                material_print_temperature
-                material_bed_temperature
-                material_diameter
-                material_flow
-                retraction_enable
-            speed
-                speed_print
-                speed_travel
-                acceleration_print
-                acceleration_travel
-                jerk_print
-                jerk_travel
-            travel
-            cooling
-                cool_fan_enabled
-            support
-                support_enable
-                support_extruder_nr
-                support_type
-            platform_adhesion
-                adhesion_type
-                adhesion_extruder_nr
-                brim_width
-                raft_airgap
-                layer_0_z_overlap
-                raft_surface_layers
-            dual
-                prime_tower_enable
-                prime_tower_size
-                prime_tower_position_x
-                prime_tower_position_y
-            meshfix
-            blackmagic
-                print_sequence
-                infill_mesh
-                cutting_mesh
-            experimental
-        """.replace("\n", ";").replace(" ", ""))
+        setting_visibily_preset_names = self.getVisibilitySettingsPresetTypes()
+        preferences.setDefault("general/visible_settings_preset", setting_visibily_preset_names)
+
+        visible_settings_preset_choice = Preferences.getInstance().getValue("general/visible_settings_preset_choice")
+
+        default_visibility_preset = "Basic"
+        if visible_settings_preset_choice == "" or visible_settings_preset_choice is None:
+            if not visible_settings_preset_choice in setting_visibily_preset_names:
+                visible_settings_preset_choice = default_visibility_preset
+
+        visible_settings = self.getVisibilitySettingPreset(settings_preset_name = visible_settings_preset_choice)
+        preferences.setDefault("general/visible_settings", visible_settings)
+        preferences.setDefault("general/visible_settings_preset_choice", visible_settings_preset_choice)
 
         self.applicationShuttingDown.connect(self.saveSettings)
         self.engineCreatedSignal.connect(self._onEngineCreated)
@@ -409,6 +372,92 @@ class CuraApplication(QtApplication):
         self._plugin_registry.addSupportedPluginExtension("curaplugin", "Cura Plugin")
 
         self.getCuraSceneController().setActiveBuildPlate(0)  # Initialize
+
+    @pyqtSlot(str, result=str)
+    def getVisibilitySettingPreset(self, settings_preset_name):
+
+        result = self._load_visibilyty_setting_preset(settings_preset_name)
+
+        formatted_preset_settings = self.format_visibility_setting_preset(result)
+
+        return formatted_preset_settings
+
+    def format_visibility_setting_preset(self, settings_data):
+
+        result_string = ""
+
+        for key in settings_data:
+            result_string += key + ";"
+
+            for value in settings_data[key]:
+                result_string += value + ";"
+
+        return result_string
+
+
+    def _load_visibilyty_setting_preset(self, visibility_preset_name):
+        preset_dir = Resources.getPath(Resources.VisibilitySettingsPreset)
+
+        result = {}
+        right_preset_found = False
+
+        for item in os.listdir(preset_dir):
+            file_path = os.path.join(preset_dir, item)
+            if not os.path.isfile(file_path):
+                continue
+
+            parser = ConfigParser(allow_no_value=True) # accept options without any value,
+
+            try:
+                parser.read([file_path])
+
+                if not parser.has_option("general", "name"):
+                    continue
+
+                if parser["general"]["name"] == visibility_preset_name:
+                    right_preset_found = True
+                    for section in parser.sections():
+                        if section == 'general':
+                            continue
+                        else:
+                            section_settings = []
+                            for option in parser[section]._options():
+                                section_settings.append(option)
+
+                            result[section] = section_settings
+
+                if right_preset_found:
+                    break
+
+            except Exception as e:
+                Logger.log("e", "Failed to load setting visibility preset %s: %s", file_path, str(e))
+
+        return result
+
+    def getVisibilitySettingsPresetTypes(self):
+        preset_dir = Resources.getPath(Resources.VisibilitySettingsPreset)
+        result = {}
+
+        for item in os.listdir(preset_dir):
+            file_path = os.path.join(preset_dir, item)
+            if not os.path.isfile(file_path):
+                continue
+
+            parser = ConfigParser(allow_no_value=True)  # accept options without any value,
+
+            try:
+                parser.read([file_path])
+
+                if not parser.has_option("general", "name") and not parser.has_option("general", "weight"):
+                    continue
+
+                result[parser["general"]["weight"]] = parser["general"]["name"]
+
+            except Exception as e:
+                Logger.log("e", "Failed to load setting preset %s: %s", file_path, str(e))
+
+        return result
+
 
     def _onEngineCreated(self):
         self._engine.addImageProvider("camera", CameraImageProvider.CameraImageProvider())
