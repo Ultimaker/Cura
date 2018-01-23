@@ -1,4 +1,4 @@
-# Copyright (c) 2018 Ultimaker B.V.
+# Copyright (c) 2015 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from PyQt5.QtCore import QTimer
@@ -56,15 +56,12 @@ class PlatformPhysics:
         # By shuffling the order of the nodes, this might happen a few times, but at some point it will resolve.
         nodes = list(BreadthFirstIterator(root))
 
+        # Only check nodes inside build area.
+        nodes = [node for node in nodes if (hasattr(node, "_outside_buildarea") and not node._outside_buildarea)]
+
         random.shuffle(nodes)
         for node in nodes:
             if node is root or not isinstance(node, SceneNode) or node.getBoundingBox() is None:
-                continue
-
-            #Only check nodes inside the build area.
-            if not hasattr(node, "_outside_buildarea"):
-                self._build_volume.updateNodeBoundaryCheck(node)
-            if getattr(node, "_outside_buildarea", True):
                 continue
 
             bbox = node.getBoundingBox()
@@ -158,7 +155,7 @@ class PlatformPhysics:
 
         # After moving, we have to evaluate the boundary checks for nodes
         build_volume = Application.getInstance().getBuildVolume()
-        build_volume.updateAllBoundaryChecks()
+        build_volume.updateNodeBoundaryCheck()
 
     def _onToolOperationStarted(self, tool):
         self._enabled = False
