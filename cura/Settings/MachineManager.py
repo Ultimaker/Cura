@@ -1,6 +1,7 @@
 # Copyright (c) 2017 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
+import time
 #Type hinting.
 from typing import Union, List, Dict
 
@@ -390,6 +391,7 @@ class MachineManager(QObject):
             Logger.log("w", "Failed creating a new machine!")
 
     def _checkStacksHaveErrors(self) -> bool:
+        time_start = time.time()
         if self._global_container_stack is None: #No active machine.
             return False
 
@@ -405,6 +407,7 @@ class MachineManager(QObject):
             if stack.hasErrors():
                 return True
 
+        Logger.log("d", "Checking stacks for errors took %.2f s" % (time.time() - time_start))
         return False
 
     ##  Remove all instances from the top instanceContainer (effectively removing all user-changed settings)
