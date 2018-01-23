@@ -1,6 +1,7 @@
 # Copyright (c) 2017 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
+import time
 #Type hinting.
 from typing import Union, List, Dict
 
@@ -390,21 +391,28 @@ class MachineManager(QObject):
             Logger.log("w", "Failed creating a new machine!")
 
     def _checkStacksHaveErrors(self) -> bool:
+        time_start = time.time()
         if self._global_container_stack is None: #No active machine.
             return False
 
         if self._global_container_stack.hasErrors():
+            Logger.log("d", "Checking global stack for errors took %0.2f s and we found and error" % (time.time() - time_start))
             return True
 
         # Not a very pretty solution, but the extruder manager doesn't really know how many extruders there are
         machine_extruder_count = self._global_container_stack.getProperty("machine_extruder_count", "value")
         extruder_stacks = ExtruderManager.getInstance().getMachineExtruders(self._global_container_stack.getId())
-        if len(extruder_stacks) > machine_extruder_count:
-            extruder_stacks = extruder_stacks[:machine_extruder_count]  # we only have to check the used extruders
+        count = 1  # we start with the global stack
         for stack in extruder_stacks:
+            md = stack.getMetaData()
+            if "position" in md and int(md["position"]) >= machine_extruder_count:
+                continue
+            count += 1
             if stack.hasErrors():
+                Logger.log("d", "Checking %s stacks for errors took %.2f s and we found an error in stack [%s]" % (count, time.time() - time_start, str(stack)))
                 return True
 
+        Logger.log("d", "Checking %s stacks for errors took %.2f s" % (count, time.time() - time_start))
         return False
 
     ##  Remove all instances from the top instanceContainer (effectively removing all user-changed settings)
