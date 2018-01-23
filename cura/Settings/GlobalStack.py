@@ -31,6 +31,7 @@ class GlobalStack(CuraContainerStack):
         # and if so, to bypass the resolve to prevent an infinite recursion that would occur
         # if the resolve function tried to access the same property it is a resolve for.
         self._resolving_settings = set()
+        self._resolving_settings2 = []  # For debugging CURA-4848, if it happens
 
     ##  Get the list of extruders of this stack.
     #
@@ -91,9 +92,17 @@ class GlobalStack(CuraContainerStack):
 
         # Handle the "resolve" property.
         if self._shouldResolve(key, property_name, context):
+            self._resolving_settings2.append(key)
             self._resolving_settings.add(key)
             resolve = super().getProperty(key, "resolve", context)
+            if key not in self._resolving_settings:
+                Logger.log("e", "Key [%s] should really have been in set(%s) and [%s]. Now I'm gonna crash", key, str(self._resolving_settings), str(self._resolving_settings2))
+                Logger.log("d", "------ context ------")
+                for stack in context.stack_of_containers:
+                    Logger.log("d", "Context: %s", stack.getId())
+                Logger.log("d", "------ context end ------")
             self._resolving_settings.remove(key)
+            self._resolving_settings2.pop()
             if resolve is not None:
                 return resolve
 

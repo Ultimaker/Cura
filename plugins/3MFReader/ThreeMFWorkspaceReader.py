@@ -911,7 +911,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                 #                  We will first find the correct quality profile for the extruder, then apply the same
                 #                  quality profile for the global stack.
                 #
-                if has_extruder_stack_files and len(extruder_stacks) == 1:
+                if len(extruder_stacks) == 1:
                     extruder_stack = extruder_stacks[0]
 
                     search_criteria = {"type": "quality", "quality_type": global_stack.quality.getMetaDataEntry("quality_type")}
