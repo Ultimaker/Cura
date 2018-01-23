@@ -1,9 +1,8 @@
-# Copyright (c) 2017 Ultimaker B.V.
+# Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from cura.Scene.CuraSceneNode import CuraSceneNode
 from cura.Settings.ExtruderManager import ExtruderManager
-from UM.Settings.ContainerRegistry import ContainerRegistry
 from UM.i18n import i18nCatalog
 from UM.Scene.Platform import Platform
 from UM.Scene.Iterator.BreadthFirstIterator import BreadthFirstIterator
@@ -195,29 +194,51 @@ class BuildVolume(SceneNode):
 
         return True
 
-    ##  For every sliceable node, update outsideBuildArea
-    def updateNodeBoundaryCheck(self):
-        root = Application.getInstance().getController().getScene().getRoot()
-        nodes = list(BreadthFirstIterator(root))
-        group_nodes = []
+    ##  For every sliceable node, update node._outside_buildarea.
+    def updateAllBoundaryChecks(self):
+        self.updateNodeBoundaryCheck(Application.getInstance().getController().getScene().getRoot())
 
-        build_volume_bounding_box = self.getBoundingBox()
-        if build_volume_bounding_box:
-            # It's over 9000!
-            build_volume_bounding_box = build_volume_bounding_box.set(bottom=-9001)
-        else:
-            # No bounding box. This is triggered when running Cura from command line with a model for the first time
-            # In that situation there is a model, but no machine (and therefore no build volume.
+    ##  For a single node, update _outside_buildarea.
+    #
+    #   If the node is a group node, the child nodes will also get updated.
+    #   \param node The node to update the boundary checks of.
+    def updateNodeBoundaryCheck(self, node: SceneNode):
+        if not node.callDecoration("isSliceable") and not node.callDecoration("isGroup"):
+            for child in node.getChildren(): #Still update the children! For instance, the root is not sliceable.
+                self.updateNodeBoundaryCheck(child)
+            return #Don't compute for non-sliceable nodes.
+
+        #Mark the node as outside the build volume if the bounding box test fails.
+        build_volume = self.getBoundingBox()
+        if build_volume is None:
+            #No bounding box. This is triggered when running Cura from command line with a model for the first time.
+            #In that situation there is a model, but no machine (and therefore no build volume).
             return
+        build_volume = build_volume.set(bottom = -999999) #Allow models to clip the build plate. This should allow printing but remove the bottom side of the model underneath the build plate.
+        bounding_box = node.getBoundingBox()
+        if build_volume.intersectsBox(bounding_box) != AxisAlignedBox.IntersectionResult.FullIntersection:
+            node._outside_buildarea = True
+        else:
 
-        for node in nodes:
-            # Need to check group nodes later
-            self.checkBoundsAndUpdate(node, bounds = build_volume_bounding_box)
+            #Check for collisions between disallowed areas and the object.
+            convex_hull = node.callDecoration("getConvexHull")
+            if not convex_hull or not convex_hull.isValid():
+                return
+            for area in self.getDisallowedAreas():
+                overlap = convex_hull.intersectsPolygon(area)
+                if overlap is not None:
+                    node._outside_buildarea = True
+                    break
+            else:
+                node._outside_buildarea = False
 
-        # Group nodes should override the _outside_buildarea property of their children.
-        for group_node in group_nodes:
-            for child_node in group_node.getAllChildren():
-                child_node._outside_buildarea = group_node._outside_buildarea
+        #Group nodes should override the _outside_buildarea property of their children.
+        if node.callDecoration("isGroup"):
+            for child in node.getAllChildren():
+                child._outside_buildarea = node._outside_buildarea
+        else:
+            for child in node.getChildren():
+                self.updateNodeBoundaryCheck(child)
 
     ##  Update the outsideBuildArea of a single node, given bounds or current build volume
     def checkBoundsAndUpdate(self, node: CuraSceneNode, bounds: Optional[AxisAlignedBox] = None):
@@ -440,7 +461,7 @@ class BuildVolume(SceneNode):
 
         Application.getInstance().getController().getScene()._maximum_bounds = scale_to_max_bounds
 
-        self.updateNodeBoundaryCheck()
+        self.updateAllBoundaryChecks()
 
     def getBoundingBox(self) -> AxisAlignedBox:
         return self._volume_aabb
