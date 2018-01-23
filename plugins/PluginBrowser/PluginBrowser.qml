@@ -1,4 +1,6 @@
-import UM 1.1 as UM
+// Copyright (c) 2017 Ultimaker B.V.
+// PluginBrowser is released under the terms of the LGPLv3 or higher.
+
 import QtQuick 2.2
 import QtQuick.Dialogs 1.1
 import QtQuick.Window 2.2
@@ -7,18 +9,34 @@ import QtQuick.Controls.Styles 1.4
 
 // TODO: Switch to QtQuick.Controls 2.x and remove QtQuick.Controls.Styles
 
+import UM 1.1 as UM
+
 UM.Dialog {
     id: base
 
     title: catalog.i18nc("@title:tab", "Plugins");
     width: 800 * screenScaleFactor
-    height: 600 * screenScaleFactor
+    height: 640 * screenScaleFactor
     minimumWidth: 350 * screenScaleFactor
     minimumHeight: 350 * screenScaleFactor
 
-    Item {
-        anchors.fill: parent
+    Column {
+        // anchors.fill: parent
+        height: parent.height
+        width: parent.width
+        spacing: UM.Theme.getSize("default_margin").height
 
+        Rectangle {
+            id: topBar
+            width: parent.width
+            color: "red"
+            height: 30
+            Text {
+                text: "Search"
+            }
+        }
+
+        /*
         Item {
             id: topBar
             height: childrenRect.height;
@@ -39,14 +57,23 @@ UM.Dialog {
                 enabled: !manager.isDownloading
             }
         }
+        */
 
         // Scroll view breaks in QtQuick.Controls 2.x
+        Label {
+            text: "Installed Plugins"
+        }
         ScrollView {
+            id: installedPluginList
             width: parent.width
+            height: 280
+            /*
             anchors.top: topBar.bottom
-            anchors.bottom: bottomBar.top
+            anchors.bottom: availiblePluginList.top
             anchors.bottomMargin: UM.Theme.getSize("default_margin").height
+            */
             frameVisible: true
+
 
             ListView {
                 id: pluginList
@@ -56,13 +83,45 @@ UM.Dialog {
                 delegate: pluginDelegate
             }
         }
+        Label {
+            text: "Availible plugins..."
+        }
+        /*
+        Rectangle {
+            width: parent.width
+            color: "red"
+            height: 200
+            Text {
+                text: "Plugins not installed yet"
+            }
+        }
+        */
 
-        Item {
+        // Scroll view breaks in QtQuick.Controls 2.x
+        ScrollView {
+            id: availiblePluginList
+            width: parent.width
+            /*
+            anchors.top: installedPluginList.bottom
+            anchors.bottom: bottomBar.top
+            anchors.bottomMargin: UM.Theme.getSize("default_margin").height
+            */
+            frameVisible: true
+            height: 180
+
+            Rectangle {
+                width: parent.width
+                color: "red"
+                height: 1000
+            }
+        }
+
+        Rectangle {
             id: bottomBar
             width: parent.width
-            height: closeButton.height
-            anchors.bottom: parent.bottom
-            anchors.left: parent.left
+            height: childrenRect.height;
+            // anchors.bottom: parent.bottom
+            // anchors.left: parent.left
 
             Button {
                 id: closeButton
@@ -79,7 +138,7 @@ UM.Dialog {
             }
         }
 
-        Item {
+        Rectangle {
             Component {
                 id: pluginDelegate
 
@@ -109,7 +168,8 @@ UM.Dialog {
                                 pixelSize: 13
                                 bold: true
                             }
-                            color: model.enabled ? UM.Theme.getColor("text") : UM.Theme.getColor("secondary")
+                            // color: model.enabled ? UM.Theme.getColor("text") : UM.Theme.getColor("secondary")
+                            color: UM.Theme.getColor("text")
                         }
 
                         Label {
@@ -367,11 +427,9 @@ UM.Dialog {
         }
         UM.I18nCatalog { id: catalog; name: "cura" }
 
-        Connections
-        {
+        Connections {
             target: manager
-            onShowLicenseDialog:
-            {
+            onShowLicenseDialog: {
                 licenseDialog.pluginName = manager.getLicenseDialogPluginName();
                 licenseDialog.licenseContent = manager.getLicenseDialogLicenseContent();
                 licenseDialog.pluginFileLocation = manager.getLicenseDialogPluginFileLocation();
@@ -379,8 +437,7 @@ UM.Dialog {
             }
         }
 
-        UM.Dialog
-        {
+        UM.Dialog {
             id: licenseDialog
             title: catalog.i18nc("@title:window", "Plugin License Agreement")
 
@@ -444,5 +501,44 @@ UM.Dialog {
                 }
             ]
         }
+
+        Connections {
+            target: manager
+            onShowRestartDialog: {
+                restartDialog.message = manager.getRestartDialogMessage();
+                restartDialog.show();
+            }
+        }
+
+        UM.Dialog {
+            id: restartDialog
+            // title: catalog.i18nc("@title:tab", "Plugins");
+            width: 360 * screenScaleFactor
+            height: 180 * screenScaleFactor
+            minimumWidth: 360 * screenScaleFactor
+            minimumHeight: 180 * screenScaleFactor
+            property var message;
+
+            Text {
+                id: message
+                text: restartDialog.message != null ? restartDialog.message : ""
+            }
+            Button {
+                id: laterButton
+                text: "Later"
+                onClicked: restartDialog.close();
+                anchors.left: parent.left
+                anchors.bottom: parent.bottom
+            }
+
+            Button {
+                id: restartButton
+                text: "Restart now"
+                onClicked: restartDialog.close();
+                anchors.right: parent.right
+                anchors.bottom: parent.bottom
+            }
+        }
+
     }
 }

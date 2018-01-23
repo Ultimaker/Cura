@@ -1,16 +1,19 @@
 # Copyright (c) 2017 Ultimaker B.V.
 # PluginBrowser is released under the terms of the LGPLv3 or higher.
+
+from PyQt5.QtCore import QUrl, QObject, Qt, pyqtProperty, pyqtSignal, pyqtSlot
+from PyQt5.QtNetwork import QNetworkAccessManager, QNetworkRequest, QNetworkReply
+
+from UM.Application import Application
+from UM.Qt.ListModel import ListModel
+from UM.Logger import Logger
+from UM.PluginRegistry import PluginRegistry
+from UM.Qt.Bindings.PluginsModel import PluginsModel
 from UM.Extension import Extension
 from UM.i18n import i18nCatalog
-from UM.Logger import Logger
-from UM.Qt.ListModel import ListModel
-from UM.PluginRegistry import PluginRegistry
-from UM.Application import Application
+
 from UM.Version import Version
 from UM.Message import Message
-
-from PyQt5.QtNetwork import QNetworkAccessManager, QNetworkRequest, QNetworkReply
-from PyQt5.QtCore import QUrl, QObject, Qt, pyqtProperty, pyqtSignal, pyqtSlot
 
 import json
 import os
@@ -21,6 +24,39 @@ import shutil
 
 i18n_catalog = i18nCatalog("cura")
 
+# Architecture thoughts:
+# ------------------------------------------------------------------------------
+# The plugin manager has 2 parts: the browser and the installer.
+#
+# UNINSTALLING:
+# ------------------------------------------------------------------------------
+# Uninstalling is done via the PluginRegistry's uninstallPlugin() method,
+# supplied with a plugin_id. Uninstalling is currently done instantly so there's
+# no need to use an list of "newly uninstalled plugins" but this will be needed
+# in the future with more complex plugins, as well as when merging the built-in
+# plugins into the plugin browser.
+#
+# STATUS:
+# ------------------------------------------------------------------------------
+# 'status' is used to keep track of installations and uninstallations. It is
+# intended to replace "newly installed" and "newly uninstalled" lists. These
+# lists introduce a lot of complexity if a plugin finds itself on both lists.
+#
+# 'status' can have several values:
+# - "uninstalled"
+# - "will_install"
+# - "installed"
+# - "will_uninstall"
+#
+# This is more civilized than checking if a plugin's metadata exists. It also
+# means uninstalling doesn't require erasing the metadata.
+#
+# ACTIVE:
+# ------------------------------------------------------------------------------
+# Although 'active' could have been lumped with 'status', it is essentially a
+# sub-status within 'installed' and 'will_uninstall'. Rather than create more
+# statuses such as 'active_installed' and 'active_will_uninstall', the 'active'
+# property is just a boolean used in conjunction with 'status'.
 
 class PluginBrowser(QObject, Extension):
     def __init__(self, parent=None):
@@ -35,11 +71,13 @@ class PluginBrowser(QObject, Extension):
         self._download_plugin_reply = None
 
         self._network_manager = None
+        self._plugin_registry = Application.getInstance().getPluginRegistry()
 
         self._plugins_metadata = []
         self._plugins_model = None
 
         self._dialog = None
+        self._restartDialog = None
         self._download_progress = 0
 
         self._is_downloading = False
@@ -53,16 +91,27 @@ class PluginBrowser(QObject, Extension):
                                           )
                                ]
 
-        # Installed plugins are really installed after reboot. In order to prevent the user from downloading the
-        # same file over and over again, we keep track of the upgraded plugins.
+        # Installed plugins are really installed after reboot. In order to
+        # prevent the user from downloading the same file over and over again,
+        # we keep track of the upgraded plugins.
+
+        # NOTE: This will be depreciated in favor of the 'status' system.
         self._newly_installed_plugin_ids = []
+        self._newly_uninstalled_plugin_ids = []
+
+        self._plugin_statuses = {} # type: Dict[str, str]
 
         # variables for the license agreement dialog
         self._license_dialog_plugin_name = ""
         self._license_dialog_license_content = ""
         self._license_dialog_plugin_file_location = ""
+        self._restart_dialog_message = ""
 
     showLicenseDialog = pyqtSignal()
+    showRestartDialog = pyqtSignal()
+    pluginsMetadataChanged = pyqtSignal()
+    onDownloadProgressChanged = pyqtSignal()
+    onIsDownloadingChanged = pyqtSignal()
 
     @pyqtSlot(result = str)
     def getLicenseDialogPluginName(self):
@@ -76,15 +125,19 @@ class PluginBrowser(QObject, Extension):
     def getLicenseDialogLicenseContent(self):
         return self._license_dialog_license_content
 
+    @pyqtSlot(result = str)
+    def getRestartDialogMessage(self):
+        return self._restart_dialog_message
+
     def openLicenseDialog(self, plugin_name, license_content, plugin_file_location):
         self._license_dialog_plugin_name = plugin_name
         self._license_dialog_license_content = license_content
         self._license_dialog_plugin_file_location = plugin_file_location
         self.showLicenseDialog.emit()
 
-    pluginsMetadataChanged = pyqtSignal()
-    onDownloadProgressChanged = pyqtSignal()
-    onIsDownloadingChanged = pyqtSignal()
+    def openRestartDialog(self, message):
+        self._restart_dialog_message = message
+        self.showRestartDialog.emit()
 
     @pyqtProperty(bool, notify = onIsDownloadingChanged)
     def isDownloading(self):
@@ -191,12 +244,14 @@ class PluginBrowser(QObject, Extension):
         self._newly_installed_plugin_ids.append(result["id"])
         self.pluginsMetadataChanged.emit()
 
-        Application.getInstance().messageBox(i18n_catalog.i18nc("@window:title", "Plugin browser"), result["message"])
+        self.openRestartDialog(result["message"])
+        # Application.getInstance().messageBox(i18n_catalog.i18nc("@window:title", "Plugin browser"), result["message"])
 
     @pyqtSlot(str)
     def removePlugin(self, plugin_id):
         result = PluginRegistry.getInstance().uninstallPlugin(plugin_id)
 
+        self._newly_uninstalled_plugin_ids.append(result["id"])
         self.pluginsMetadataChanged.emit()
 
         Application.getInstance().messageBox(i18n_catalog.i18nc("@window:title", "Plugin browser"), result["message"])
@@ -233,19 +288,12 @@ class PluginBrowser(QObject, Extension):
         self.setIsDownloading(False)
 
     @pyqtProperty(QObject, notify=pluginsMetadataChanged)
+
     def pluginsModel(self):
+        self._plugins_model = PluginsModel()
+        """
         if self._plugins_model is None:
-            self._plugins_model = ListModel()
-            self._plugins_model.addRoleName(Qt.UserRole + 1, "name")
-            self._plugins_model.addRoleName(Qt.UserRole + 2, "id")
-            self._plugins_model.addRoleName(Qt.UserRole + 3, "version")
-            self._plugins_model.addRoleName(Qt.UserRole + 4, "short_description")
-            self._plugins_model.addRoleName(Qt.UserRole + 5, "author")
-            self._plugins_model.addRoleName(Qt.UserRole + 6, "author_email")
-            self._plugins_model.addRoleName(Qt.UserRole + 7, "already_installed")
-            self._plugins_model.addRoleName(Qt.UserRole + 8, "file_location")
-            self._plugins_model.addRoleName(Qt.UserRole + 9, "enabled")
-            self._plugins_model.addRoleName(Qt.UserRole + 10, "can_upgrade")
+            self._plugins_model = PluginsModel()
         else:
             self._plugins_model.clear()
         items = []
@@ -257,16 +305,19 @@ class PluginBrowser(QObject, Extension):
                 "short_description": metadata["short_description"],
                 "author": metadata["author"],
                 "author_email": "author@gmail.com",
+                "status": self._checkInstallStatus(metadata["id"]),
                 "already_installed": self._checkAlreadyInstalled(metadata["id"]),
                 "file_location": metadata["file_location"],
-                # "enabled": self._checkEnabled(metadata["id"]),
+                # "active": self._checkActive(metadata["id"]),
                 "enabled": True,
                 "can_upgrade": self._checkCanUpgrade(metadata["id"], metadata["version"])
             })
         self._plugins_model.setItems(items)
+        """
         return self._plugins_model
 
     def _checkCanUpgrade(self, id, version):
+        plugin_registry = Application.getInstance().getPluginRegistry()
         plugin_registry = PluginRegistry.getInstance()
         metadata = plugin_registry.getMetaData(id)
         if metadata != {}:
@@ -281,12 +332,25 @@ class PluginBrowser(QObject, Extension):
     def _checkAlreadyInstalled(self, id):
         plugin_registry = PluginRegistry.getInstance()
         metadata = plugin_registry.getMetaData(id)
-        if metadata != {}:
+        # We already installed this plugin, but the registry just doesn't know it yet.
+        if id in self._newly_installed_plugin_ids:
+            return True
+        # We already uninstalled this plugin, but the registry just doesn't know it yet:
+        elif id in self._newly_uninstalled_plugin_ids:
+            return False
+        elif metadata != {}:
             return True
         else:
-            if id in self._newly_installed_plugin_ids:
-                return True  # We already installed this plugin, but the registry just doesn't know it yet.
             return False
+
+    def _checkInstallStatus(self, plugin_id):
+        plugin_registry = PluginRegistry.getInstance()
+
+        # If plugin is registered, it's installed:
+        if plugin_id in plugin_registry._plugins:
+            return "installed"
+        else:
+            return "uninstalled"
 
     def _checkEnabled(self, id):
         plugin_registry = PluginRegistry.getInstance()
