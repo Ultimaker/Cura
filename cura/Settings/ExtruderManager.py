@@ -504,7 +504,6 @@ class ExtruderManager(QObject):
 
     ##  Updates the material container to a material that matches the material diameter set for the printer
     def updateMaterialForDiameter(self, extruder_position: int):
-
         global_stack = Application.getInstance().getGlobalContainerStack()
         if not global_stack:
             return

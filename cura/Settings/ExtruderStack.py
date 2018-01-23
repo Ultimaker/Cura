@@ -60,7 +60,6 @@ class ExtruderStack(CuraContainerStack):
         keys_to_copy = ["material_diameter", "machine_nozzle_size"]  # these will be copied over to all extruders
 
         for key in keys_to_copy:
-
             # Since material_diameter is not on the extruder definition, we need to add it here
             # WARNING: this might be very dangerous and should be refactored ASAP!
             definition = stack.getSettingDefinition(key)

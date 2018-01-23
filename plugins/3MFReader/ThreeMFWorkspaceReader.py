@@ -558,6 +558,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         instance_container_files = [name for name in cura_file_names if name.endswith(self._instance_container_suffix)]
         user_instance_containers = []
         quality_and_definition_changes_instance_containers = []
+        quality_changes_instance_containers = []
         for instance_container_file in instance_container_files:
             container_id = self._stripFileToId(instance_container_file)
             serialized = archive.open(instance_container_file).read().decode("utf-8")
@@ -663,6 +664,8 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                         # The ID already exists, but nothing in the values changed, so do nothing.
                         pass
                 quality_and_definition_changes_instance_containers.append(instance_container)
+                if container_type == "quality_changes":
+                    quality_changes_instance_containers.append(instance_container)
 
                 if container_type == "definition_changes":
                     definition_changes_extruder_count = instance_container.getProperty("machine_extruder_count", "value")
@@ -787,7 +790,19 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             # If not extruder stacks were saved in the project file (pre 3.1) create one manually
             # We re-use the container registry's addExtruderStackForSingleExtrusionMachine method for this
             if not extruder_stacks:
-                stack = self._container_registry.addExtruderStackForSingleExtrusionMachine(global_stack, "fdmextruder")
+                # If we choose to override a machine but to create a new custom quality profile, the custom quality
+                # profile is not immediately applied to the global_stack, so this fix for single extrusion machines
+                # will use the current custom quality profile on the existing machine. The extra optional argument
+                # in that function is used in thia case to specify a new global stack quality_changes container so
+                # the fix can correctly create and copy over the custom quality settings to the newly created extruder.
+                new_global_quality_changes = None
+                if self._resolve_strategies["quality_changes"] == "new" and len(quality_changes_instance_containers) > 0:
+                    new_global_quality_changes = quality_changes_instance_containers[0]
+                stack = self._container_registry.addExtruderStackForSingleExtrusionMachine(global_stack, "fdmextruder",
+                                                                                           new_global_quality_changes)
+                if new_global_quality_changes is not None:
+                    quality_changes_instance_containers.append(stack.qualityChanges)
+                    quality_and_definition_changes_instance_containers.append(stack.qualityChanges)
                 if global_stack.quality.getId() in ("empty", "empty_quality"):
                     stack.quality = empty_quality_container
                 if self._resolve_strategies["machine"] == "override":
@@ -1028,8 +1043,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                 stack.setNextStack(global_stack)
                 stack.containersChanged.emit(stack.getTop())
         else:
-            if quality_has_been_changed:
-                CuraApplication.getInstance().getMachineManager().activeQualityChanged.emit()
+            CuraApplication.getInstance().getMachineManager().activeQualityChanged.emit()
 
         # Actually change the active machine.
         Application.getInstance().setGlobalContainerStack(global_stack)
