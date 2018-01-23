@@ -1066,11 +1066,11 @@ class CuraApplication(QtApplication):
             for node in nodes:
                 op.addOperation(RemoveSceneNodeOperation(node))
 
+                # Reset the print information
+                self.getController().getScene().sceneChanged.emit(node)
+
             op.push()
             Selection.clear()
-
-        # Reset the print information:
-        self.getController().getScene().sceneChanged.emit(node)
 
     ## Reset all translation on nodes with mesh data.
     @pyqtSlot()
