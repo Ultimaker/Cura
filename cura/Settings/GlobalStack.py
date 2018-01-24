@@ -1,6 +1,8 @@
 # Copyright (c) 2017 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
+from collections import defaultdict
+import threading
 from typing import Any, Dict, Optional
 
 from PyQt5.QtCore import pyqtProperty
@@ -30,8 +32,8 @@ class GlobalStack(CuraContainerStack):
         # This property is used to track which settings we are calculating the "resolve" for
         # and if so, to bypass the resolve to prevent an infinite recursion that would occur
         # if the resolve function tried to access the same property it is a resolve for.
-        self._resolving_settings = set()
-        self._resolving_settings2 = []  # For debugging CURA-4848, if it happens
+        # Per thread we have our own resolving_settings, or strange things sometimes occur.
+        self._resolving_settings = defaultdict(set)  # keys are thread names
 
     ##  Get the list of extruders of this stack.
     #
@@ -92,17 +94,10 @@ class GlobalStack(CuraContainerStack):
 
         # Handle the "resolve" property.
         if self._shouldResolve(key, property_name, context):
-            self._resolving_settings2.append(key)
-            self._resolving_settings.add(key)
+            current_thread = threading.current_thread()
+            self._resolving_settings[current_thread.name].add(key)
             resolve = super().getProperty(key, "resolve", context)
-            if key not in self._resolving_settings:
-                Logger.log("e", "Key [%s] should really have been in set(%s) and [%s]. Now I'm gonna crash", key, str(self._resolving_settings), str(self._resolving_settings2))
-                Logger.log("d", "------ context ------")
-                for stack in context.stack_of_containers:
-                    Logger.log("d", "Context: %s", stack.getId())
-                Logger.log("d", "------ context end ------")
-            self._resolving_settings.remove(key)
-            self._resolving_settings2.pop()
+            self._resolving_settings[current_thread.name].remove(key)
             if resolve is not None:
                 return resolve
 
@@ -154,7 +149,8 @@ class GlobalStack(CuraContainerStack):
             # Do not try to resolve anything but the "value" property
             return False
 
-        if key in self._resolving_settings:
+        current_thread = threading.current_thread()
+        if key in self._resolving_settings[current_thread.name]:
             # To prevent infinite recursion, if getProperty is called with the same key as
             # we are already trying to resolve, we should not try to resolve again. Since
             # this can happen multiple times when trying to resolve a value, we need to
