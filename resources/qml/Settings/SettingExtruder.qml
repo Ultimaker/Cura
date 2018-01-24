@@ -141,7 +141,6 @@ SettingItem
             }
         }
 
-
         popup: Popup {
             y: control.height - UM.Theme.getSize("default_lining").height
             width: control.width
@@ -176,6 +175,24 @@ SettingItem
                 font: UM.Theme.getFont("default")
                 elide: Text.ElideRight
                 verticalAlignment: Text.AlignVCenter
+                rightPadding: swatch.width + UM.Theme.getSize("setting_unit_margin").width
+
+                background: Rectangle
+                {
+                    id: swatch
+                    height: UM.Theme.getSize("setting_control").height / 2
+                    width: height
+
+                    anchors.right: parent.right
+                    anchors.verticalCenter: parent.verticalCenter
+                    anchors.margins: UM.Theme.getSize("default_margin").width / 4
+
+                    border.width: UM.Theme.getSize("default_lining").width
+                    border.color: enabled ? UM.Theme.getColor("setting_control_border") : UM.Theme.getColor("setting_control_disabled_border")
+                    radius: width / 2
+
+                    color: control.model.getItem(index).color
+                }
             }
 
             background: Rectangle
