@@ -2027,7 +2027,7 @@
                     "default_value": 100,
                     "value": "material_flow",
                     "type": "float",
-                    "minimum_value": "5",
+                    "minimum_value": "0.0001",
                     "minimum_value_warning": "50",
                     "maximum_value_warning": "150",
                     "settable_per_mesh": true
