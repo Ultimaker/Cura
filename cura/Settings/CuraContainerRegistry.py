@@ -454,8 +454,9 @@ class CuraContainerRegistry(ContainerRegistry):
     #      - override the current machine
     #      - create new for custom quality profile
     # new_global_quality_changes is the new global quality changes container in this scenario.
+    # create_new_ids indicates if new unique ids must be created
     #
-    def addExtruderStackForSingleExtrusionMachine(self, machine, extruder_id, new_global_quality_changes = None):
+    def addExtruderStackForSingleExtrusionMachine(self, machine, extruder_id, new_global_quality_changes = None, create_new_ids = True):
         new_extruder_id = extruder_id
 
         extruder_definitions = self.findDefinitionContainers(id = new_extruder_id)
@@ -464,7 +465,7 @@ class CuraContainerRegistry(ContainerRegistry):
             return
 
         extruder_definition = extruder_definitions[0]
-        unique_name = self.uniqueName(machine.getName() + " " + new_extruder_id)
+        unique_name = self.uniqueName(machine.getName() + " " + new_extruder_id) if create_new_ids else machine.getName() + " " + new_extruder_id
 
         extruder_stack = ExtruderStack.ExtruderStack(unique_name)
         extruder_stack.setName(extruder_definition.getName())
@@ -474,7 +475,7 @@ class CuraContainerRegistry(ContainerRegistry):
         from cura.CuraApplication import CuraApplication
 
         # create a new definition_changes container for the extruder stack
-        definition_changes_id = self.uniqueName(extruder_stack.getId() + "_settings")
+        definition_changes_id = self.uniqueName(extruder_stack.getId() + "_settings") if create_new_ids else extruder_stack.getId() + "_settings"
         definition_changes_name = definition_changes_id
         definition_changes = InstanceContainer(definition_changes_id)
         definition_changes.setName(definition_changes_name)
@@ -501,7 +502,7 @@ class CuraContainerRegistry(ContainerRegistry):
         extruder_stack.setDefinitionChanges(definition_changes)
 
         # create empty user changes container otherwise
-        user_container_id = self.uniqueName(extruder_stack.getId() + "_user")
+        user_container_id = self.uniqueName(extruder_stack.getId() + "_user") if create_new_ids else extruder_stack.getId() + "_user"
         user_container_name = user_container_id
         user_container = InstanceContainer(user_container_id)
         user_container.setName(user_container_name)

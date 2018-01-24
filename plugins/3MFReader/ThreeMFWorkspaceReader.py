@@ -721,7 +721,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                 stack.setName(global_stack_name_new)
 
                 container_stacks_added.append(stack)
-                self._container_registry.addContainer(stack)
+                # self._container_registry.addContainer(stack)
                 containers_added.append(stack)
             else:
                 Logger.log("e", "Resolve strategy of %s for machine is not supported", self._resolve_strategies["machine"])
@@ -793,13 +793,16 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                 # If we choose to override a machine but to create a new custom quality profile, the custom quality
                 # profile is not immediately applied to the global_stack, so this fix for single extrusion machines
                 # will use the current custom quality profile on the existing machine. The extra optional argument
-                # in that function is used in thia case to specify a new global stack quality_changes container so
+                # in that function is used in this case to specify a new global stack quality_changes container so
                 # the fix can correctly create and copy over the custom quality settings to the newly created extruder.
                 new_global_quality_changes = None
                 if self._resolve_strategies["quality_changes"] == "new" and len(quality_changes_instance_containers) > 0:
                     new_global_quality_changes = quality_changes_instance_containers[0]
+
+                # Depending if the strategy is to create a new or override, the ids must be or not be unique
                 stack = self._container_registry.addExtruderStackForSingleExtrusionMachine(global_stack, "fdmextruder",
-                                                                                           new_global_quality_changes)
+                                                                                           new_global_quality_changes,
+                                                                                           create_new_ids = self._resolve_strategies["machine"] == "new")
                 if new_global_quality_changes is not None:
                     quality_changes_instance_containers.append(stack.qualityChanges)
                     quality_and_definition_changes_instance_containers.append(stack.qualityChanges)
@@ -821,6 +824,12 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             for container in containers_added:
                 self._container_registry.removeContainer(container.getId())
             return
+
+        ## In case there is a new machine and once the extruders are created, the global stack is added to the registry,
+        # otherwise the accContainers function in CuraContainerRegistry will create an extruder stack and then creating
+        # useless files
+        if self._resolve_strategies["machine"] == "new":
+            self._container_registry.addContainer(global_stack)
 
         # Check quality profiles to make sure that if one stack has the "not supported" quality profile,
         # all others should have the same.
