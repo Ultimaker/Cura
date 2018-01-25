@@ -450,6 +450,43 @@ Item
                 height: UM.Theme.getSize("setting_control").height
                 verticalAlignment: Text.AlignVCenter
             }
+
+            Row
+            {
+                TextInput
+                {
+                    id: customCommandInput
+
+                    font: UM.Theme.getFont("default")
+                    color: !enabled ? UM.Theme.getColor("setting_control_disabled_text") : UM.Theme.getColor("setting_control_text")
+                    selectByMouse: true
+
+                    anchors.left: parent.left
+                    anchors.leftMargin: UM.Theme.getSize("setting_unit_margin").width
+                    anchors.right: parent.right
+                    anchors.verticalCenter: parent.verticalCenter
+
+                    renderType: Text.NativeRendering
+                }
+            }
+
+            Row
+            {
+                Button
+                {
+                    id: sendCustomCommandButton
+
+                    height: UM.Theme.getSize("setting_control").height
+
+                    anchors.right: parent.right
+                    anchors.bottom: parent.bottom
+                    anchors.margins: UM.Theme.getSize("default_margin").width
+
+                    onClicked: {
+                        printerModel.sendCustomCommand(customCommandInput.text)
+                    }
+                }
+            }
         }
 
         ListModel
