@@ -429,6 +429,29 @@ Item
             }
         }
 
+        Row
+        {
+            id: customCommandInputRow
+
+            width: base.width - 2 * UM.Theme.getSize("default_margin").width
+            height: childrenRect.height + UM.Theme.getSize("default_margin").width
+            anchors.left: parent.left
+            anchors.leftMargin: UM.Theme.getSize("default_margin").width
+
+            spacing: UM.Theme.getSize("default_margin").width
+
+            Label
+            {
+                text: catalog.i18nc("@label", "Custom command input")
+                color: UM.Theme.getColor("setting_control_text")
+                font: UM.Theme.getFont("default")
+
+                width: Math.floor(parent.width * 0.4) - UM.Theme.getSize("default_margin").width
+                height: UM.Theme.getSize("setting_control").height
+                verticalAlignment: Text.AlignVCenter
+            }
+        }
+
         ListModel
         {
             id: distancesModel
