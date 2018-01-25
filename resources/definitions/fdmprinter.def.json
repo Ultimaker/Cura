@@ -6200,6 +6200,18 @@
                     "settable_per_extruder": false,
                     "settable_per_meshgroup": false
                 },
+                "bridge_skin_support_threshold":
+                {
+                    "label": "Bridge Skin Support Threshold",
+                    "description": "If a skin region is supported for less than this percentage of its area, print it using the bridge settings. Otherwise it is printed using the normal skin settings.",
+                    "unit": "%",
+                    "default_value": 50,
+                    "type": "float",
+                    "minimum_value": "0",
+                    "maximum_value": "100",
+                    "enabled": "bridge_settings_enabled",
+                    "settable_per_mesh": true
+                },
                 "bridge_skin_line_width":
                 {
                     "label": "Bridge Skin Line Width",
