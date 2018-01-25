@@ -12,7 +12,7 @@ from cura.PrinterOutput.PrinterOutputModel import PrinterOutputModel
 from cura.PrinterOutput.PrintJobOutputModel import PrintJobOutputModel
 
 from .AutoDetectBaudJob import AutoDetectBaudJob
-from .USBPrinterOutputController import USBPrinterOuptutController
+from .USBPrinterOutputController import USBPrinterOutputController
 from .avr_isp import stk500v2, intelHex
 
 from PyQt5.QtCore import pyqtSlot, pyqtSignal, pyqtProperty
