@@ -91,7 +91,7 @@ class PrinterOutputModel(QObject):
         self._controller.homeBed(self)
 
     @pyqtSlot(str)
-    def sendCustomCommand(self, command):
+    def sendCustomCommand(self, command: str):
         self._controller.sendCustomCommand(self, command)
 
     @pyqtProperty("QVariantList", constant = True)
