@@ -39,8 +39,11 @@ class PrinterOutputController:
     def moveHead(self, printer: "PrinterOutputModel", x, y, z, speed):
         Logger.log("w", "Move head not implemented in controller")
 
-    def homeBed(self, printer):
+    def homeBed(self, printer: "PrinterOutputModel"):
         Logger.log("w", "Home bed not implemented in controller")
 
-    def homeHead(self, printer):
+    def homeHead(self, printer: "PrinterOutputModel"):
         Logger.log("w", "Home head not implemented in controller")
+
+    def sendCustomCommand(self, printer: "PrinterOutputModel", command: str):
+        Logger.log("w", "Custom command not implemented in controller")

@@ -90,6 +90,10 @@ class PrinterOutputModel(QObject):
     def homeBed(self):
         self._controller.homeBed(self)
 
+    @pyqtSlot(str)
+    def sendCustomCommand(self, command):
+        self._controller.sendCustomCommand(self, command)
+
     @pyqtProperty("QVariantList", constant = True)
     def extruders(self):
         return self._extruders

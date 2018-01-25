@@ -31,6 +31,9 @@ class USBPrinterOutputController(PrinterOutputController):
     def homeBed(self, printer):
         self._output_device.sendCommand("G28 Z")
 
+    def sendCustomCommand(self, printer, command):
+        self._output_device.sendCommand(str(command))
+
     def setJobState(self, job: "PrintJobOutputModel", state: str):
         if state == "pause":
             self._output_device.pausePrint()
