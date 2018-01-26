@@ -492,6 +492,7 @@ class ContainerManager(QObject):
             return { "status": "error", "message": "Permission denied when trying to read the file"}
 
         container.setName(container_id)
+        container.setDirty(True)
 
         self._container_registry.addContainer(container)
 
