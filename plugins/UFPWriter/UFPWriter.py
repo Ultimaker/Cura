@@ -3,6 +3,7 @@
 
 from charon.VirtualFile import VirtualFile #To open UFP files.
 from charon.OpenMode import OpenMode #To indicate that we want to write to UFP files.
+import os.path #To get the placeholder kitty icon.
 
 from UM.Mesh.MeshWriter import MeshWriter #The writer we need to implement.
 from UM.PluginRegistry import PluginRegistry #To get the g-code writer.
@@ -19,4 +20,8 @@ class UFPWriter(MeshWriter):
         archive.addRelation(target = "/3D/model.gcode", file_type = "http://schemas.ultimaker.org/package/2018/relationships/gcode")
 
         #Store the thumbnail.
-        #TODO
+        #TODO: Generate the thumbnail image. Below is just a placeholder.
+        archive.addContentType(extension = "png", mime_type = "image/png")
+        thumbnail = archive.getStream("/Metadata/thumbnail.png")
+        thumbnail.write(os.path.join(os.path.basename(__file__), "kitten.png"))
+        archive.addRelation(target = "/Metadata/thumbnail.png", file_type = "http://schemas.openxmlformats.org/package/2006/relationships/metadata/thumbnail")
