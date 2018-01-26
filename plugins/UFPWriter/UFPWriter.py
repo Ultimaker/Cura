@@ -30,3 +30,5 @@ class UFPWriter(MeshWriter):
         thumbnail.write(open(os.path.join(os.path.dirname(__file__), "kitten.png"), "rb").read())
         thumbnail.close()
         archive.addRelation(virtual_path = "/Metadata/thumbnail.png", file_type = "http://schemas.openxmlformats.org/package/2006/relationships/metadata/thumbnail")
+
+        archive.close()
