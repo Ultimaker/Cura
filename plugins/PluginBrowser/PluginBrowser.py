@@ -336,7 +336,6 @@ class PluginBrowser(QObject, Extension):
                 for item in self._plugins_metadata:
                     if item["id"] == plugin["id"]:
                         plugin["update_url"] = item["file_location"]
-                        print("Updating from", item["file_location"])
 
         return self._plugins_model
 

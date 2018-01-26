@@ -64,6 +64,7 @@ Component {
                     bold: true
                 }
                 color: pluginInfo.color
+
             }
 
             Text {
@@ -154,7 +155,7 @@ Component {
                         if ( model.can_upgrade ) {
                             manager.downloadAndInstallPlugin( model.update_url );
                         } else {
-                            manager.downloadAndInstallPlugin( model.update_url );
+                            manager.downloadAndInstallPlugin( model.file_location );
                         }
 
                     }
