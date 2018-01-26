@@ -11,7 +11,7 @@ import QtQuick.Controls.Styles 1.4
 
 import UM 1.1 as UM
 
-UM.Dialog {
+Window {
     id: base
 
     title: catalog.i18nc("@title:tab", "Plugins");
@@ -19,109 +19,154 @@ UM.Dialog {
     height: 640 * screenScaleFactor
     minimumWidth: 350 * screenScaleFactor
     minimumHeight: 350 * screenScaleFactor
+    color: "white"
 
-    Column {
-        // anchors.fill: parent
-        height: parent.height
-        width: parent.width
-        spacing: UM.Theme.getSize("default_margin").height
+    Item {
+        id: view
+        anchors {
+            fill: parent
+            leftMargin: UM.Theme.getSize("default_margin").width
+            rightMargin: UM.Theme.getSize("default_margin").width
+            topMargin: UM.Theme.getSize("default_margin").height
+            bottomMargin: UM.Theme.getSize("default_margin").height
+        }
 
         Rectangle {
             id: topBar
             width: parent.width
-            color: "red"
-            height: 30
-            Text {
-                text: "Search"
+            color: "transparent"
+            height: childrenRect.height
+
+            Row {
+                spacing: 12
+                height: childrenRect.height
+                width: childrenRect.width
+                anchors.horizontalCenter: parent.horizontalCenter
+
+                Button {
+                    text: "Install"
+                    style: ButtonStyle {
+                        background: Rectangle {
+                            color: "transparent"
+                            implicitWidth: 96
+                            implicitHeight: 48
+                            Rectangle {
+                                visible: manager.viewing == "available" ? true : false
+                                color: UM.Theme.getColor("primary")
+                                anchors.bottom: parent.bottom
+                                width: parent.width
+                                height: 3
+                            }
+                        }
+                        label: Text {
+                            text: control.text
+                            color: UM.Theme.getColor("text")
+                            font {
+                                pixelSize: 15
+                            }
+                            verticalAlignment: Text.AlignVCenter
+                            horizontalAlignment: Text.AlignHCenter
+                        }
+                    }
+                    onClicked: manager.setView("available")
+                }
+
+                Button {
+                    text: "Manage"
+                    style: ButtonStyle {
+                        background: Rectangle {
+                            color: "transparent"
+                            implicitWidth: 96
+                            implicitHeight: 48
+                            Rectangle {
+                                visible: manager.viewing == "installed" ? true : false
+                                color: UM.Theme.getColor("primary")
+                                anchors.bottom: parent.bottom
+                                width: parent.width
+                                height: 3
+                            }
+                        }
+                        label: Text {
+                            text: control.text
+                            color: UM.Theme.getColor("text")
+                            font {
+                                pixelSize: 15
+                            }
+                            verticalAlignment: Text.AlignVCenter
+                            horizontalAlignment: Text.AlignHCenter
+                        }
+                    }
+                    onClicked: manager.setView("installed")
+                }
             }
         }
-
-        /*
-        Item {
-            id: topBar
-            height: childrenRect.height;
-            width: parent.width
-
-            Label {
-                id: introText
-                text: catalog.i18nc("@label", "Here you can find a list of Third Party plugins.")
-                width: parent.width
-                height: 30
-            }
-
-            Button {
-                id: refresh
-                text: catalog.i18nc("@action:button", "Refresh")
-                onClicked: manager.requestPluginList()
-                anchors.right: parent.right
-                enabled: !manager.isDownloading
-            }
-        }
-        */
 
         // Scroll view breaks in QtQuick.Controls 2.x
-        Label {
-            text: "Installed Plugins"
-        }
         ScrollView {
             id: installedPluginList
             width: parent.width
-            height: 280
-            /*
-            anchors.top: topBar.bottom
-            anchors.bottom: availiblePluginList.top
-            anchors.bottomMargin: UM.Theme.getSize("default_margin").height
-            */
-            frameVisible: true
+            height: 400
 
+            anchors {
+                top: topBar.bottom
+                topMargin: UM.Theme.getSize("default_margin").height
+                bottom: bottomBar.top
+                bottomMargin: UM.Theme.getSize("default_margin").height
+            }
+
+            frameVisible: true
 
             ListView {
                 id: pluginList
-                model: manager.pluginsModel
-                anchors.fill: parent
                 property var activePlugin
-                delegate: pluginDelegate
-            }
-        }
-        Label {
-            text: "Availible plugins..."
-        }
-        /*
-        Rectangle {
-            width: parent.width
-            color: "red"
-            height: 200
-            Text {
-                text: "Plugins not installed yet"
-            }
-        }
-        */
+                property var filter: "installed"
 
-        // Scroll view breaks in QtQuick.Controls 2.x
-        ScrollView {
-            id: availiblePluginList
-            width: parent.width
-            /*
-            anchors.top: installedPluginList.bottom
-            anchors.bottom: bottomBar.top
-            anchors.bottomMargin: UM.Theme.getSize("default_margin").height
-            */
-            frameVisible: true
-            height: 180
+                anchors.fill: parent
 
-            Rectangle {
-                width: parent.width
-                color: "red"
-                height: 1000
+                model: manager.pluginsModel
+                delegate: PluginEntry {}
             }
         }
 
         Rectangle {
             id: bottomBar
             width: parent.width
-            height: childrenRect.height;
-            // anchors.bottom: parent.bottom
-            // anchors.left: parent.left
+            height: childrenRect.height
+            color: "transparent"
+            anchors.bottom: parent.bottom
+
+            Label {
+                visible: manager.restartRequired
+                text: "You will need to restart Cura before changes in plugins have effect."
+                height: 30
+                verticalAlignment: Text.AlignVCenter
+            }
+            Button {
+                id: restartChangedButton
+                text: "Quit Cura"
+                anchors.right: closeButton.left
+                anchors.rightMargin: UM.Theme.getSize("default_margin").width
+                visible: manager.restartRequired
+                iconName: "dialog-restart"
+                onClicked: manager.restart()
+                style: ButtonStyle {
+                    background: Rectangle {
+                        implicitWidth: 96
+                        implicitHeight: 30
+                        color: UM.Theme.getColor("primary")
+                    }
+                    label: Text {
+                        verticalAlignment: Text.AlignVCenter
+                        color: "white"
+                        font {
+                            pixelSize: 13
+                            bold: true
+                        }
+                        text: control.text
+                        horizontalAlignment: Text.AlignHCenter
+                    }
+                }
+            }
 
             Button {
                 id: closeButton
@@ -133,298 +178,27 @@ UM.Dialog {
                     }
                     base.close();
                 }
-                anchors.bottom: parent.bottom
                 anchors.right: parent.right
-            }
-        }
-
-        Rectangle {
-            Component {
-                id: pluginDelegate
-
-                Rectangle {
-                    width: pluginList.width;
-                    height: 102
-                    color: index % 2 ? UM.Theme.getColor("secondary") : "white"
-
-                    // Plugin info
-                    Column {
-                        id: pluginInfo
-                        height: parent.height
-                        anchors.left: parent.left
-                        anchors.leftMargin: UM.Theme.getSize("default_margin").width
-                        anchors.top: parent.top
-                        anchors.topMargin: UM.Theme.getSize("default_margin").height
-                        anchors.right: authorInfo.left
-                        anchors.rightMargin: UM.Theme.getSize("default_margin").width
-
-                        Label {
-                            text: model.name
-                            width: parent.width
-                            height: 24
-                            wrapMode: Text.WordWrap
-                            verticalAlignment: Text.AlignVCenter
-                            font {
-                                pixelSize: 13
-                                bold: true
-                            }
-                            // color: model.enabled ? UM.Theme.getColor("text") : UM.Theme.getColor("secondary")
-                            color: UM.Theme.getColor("text")
-                        }
-
-                        Label {
-                            text: model.short_description
-                            width: parent.width
-                            height: 72
-                            wrapMode: Text.WordWrap
+                style: ButtonStyle {
+                    background: Rectangle {
+                        color: "transparent"
+                        implicitWidth: 96
+                        implicitHeight: 30
+                        border {
+                            width: 1
+                            color: UM.Theme.getColor("lining")
                         }
                     }
-
-                    // Author info
-                    Column {
-                        id: authorInfo
-                        width: 192
-                        height: parent.height
-
-
-                        anchors.top: parent.top
-                        anchors.topMargin: UM.Theme.getSize("default_margin").height
-
-                        anchors.right: pluginActions.left
-                        anchors.rightMargin: UM.Theme.getSize("default_margin").width
-
-                        Label {
-                            text: model.author
-                            width: parent.width
-                            height: 24
-                            wrapMode: Text.WordWrap
-                            verticalAlignment: Text.AlignVCenter
-                            horizontalAlignment: Text.AlignRight
-                        }
-
-                        Label {
-                            text: model.author_email
-                            width: parent.width
-                            height: 72
-                            wrapMode: Text.WordWrap
-                            horizontalAlignment: Text.AlignRight
-                        }
-                    }
-
-                    // Plugin actions
-                    Row {
-                        id: pluginActions
-                        width: 180 + UM.Theme.getSize("default_margin").width
-                        height: parent.height
-                        anchors {
-                            top: parent.top
-                            right: parent.right
-                            topMargin: UM.Theme.getSize("default_margin").height
-                            rightMargin: UM.Theme.getSize("default_margin").width
-                        }
-                        layoutDirection: Qt.RightToLeft
-                        spacing: UM.Theme.getSize("default_margin").width
-
-                        Rectangle {
-                            id: removeControls
-                            visible: model.already_installed
-                            width: 108
-                            height: 30
-                            color: "transparent"
-                            Button {
-                                id: removeButton
-                                text: "Remove"
-                                enabled: {
-                                    if ( manager.isDownloading && pluginList.activePlugin == model ) {
-                                        return false;
-                                    } else {
-                                        return true;
-                                    }
-                                }
-                                onClicked: {
-                                    manager.removePlugin(model.id);
-                                }
-                                style: ButtonStyle {
-                                    background: Rectangle {
-                                        color: white
-                                        implicitWidth: 108
-                                        implicitHeight: 30
-                                        border {
-                                            width: 1
-                                            color: "grey"
-                                        }
-                                    }
-                                    label: Text {
-                                        verticalAlignment: Text.AlignVCenter
-                                        color: "grey"
-                                        text: control.text
-                                        horizontalAlignment: Text.AlignLeft
-                                    }
-                                }
-                            }
-                            Button {
-                                id: removeDropDown
-                                property bool open: false
-                                UM.RecolorImage {
-                                    anchors.centerIn: parent
-                                    height: 10
-                                    width: 10
-                                    source: UM.Theme.getIcon("arrow_bottom")
-                                    color: "grey"
-                                }
-                                enabled: {
-                                    if ( model.required || ( manager.isDownloading && pluginList.activePlugin == model )) {
-                                        return false;
-                                    } else {
-                                        return true;
-                                    }
-                                }
-                                anchors.right: parent.right
-                                style: ButtonStyle {
-                                    background: Rectangle {
-                                        color: "transparent"
-                                        implicitWidth: 30
-                                        implicitHeight: 30
-                                    }
-                                    label: Text {
-                                        verticalAlignment: Text.AlignVCenter
-                                        color: "grey"
-                                        text: control.text
-                                        horizontalAlignment: Text.AlignHCenter
-                                    }
-                                }
-
-
-
-                                // For the disable option:
-                                // onClicked: pluginList.model.setEnabled(model.id, checked)
-
-                                onClicked: {
-                                    if ( !removeDropDown.open ) {
-                                        removeDropDown.open = true
-                                    }
-                                    else {
-                                        removeDropDown.open = false
-                                    }
-                                }
-                            }
-
-                            Rectangle {
-                                id: divider
-                                width: 1
-                                height: parent.height
-                                anchors.right: removeDropDown.left
-                                color: "grey"
-                            }
-
-                            Column {
-                                id: options
-                                anchors {
-                                    top: removeButton.bottom
-                                    left: parent.left
-                                    right: parent.right
-                                }
-                                height: childrenRect.height
-                                visible: removeDropDown.open
-
-                                Button {
-                                    text: "Disable"
-                                    height: 30
-                                    width: parent.width
-                                    onClicked: {
-                                        removeDropDown.open = false
-                                        model.setEnabled(model.id, checked)
-                                    }
-                                }
-                            }
-                        }
-
-                        Button {
-                            id: updateButton
-                            visible: model.already_installed && model.can_upgrade
-                            // visible: model.already_installed
-                            text: {
-                                // If currently downloading:
-                                if ( manager.isDownloading && pluginList.activePlugin == model ) {
-                                    return catalog.i18nc( "@action:button", "Cancel" );
-                                } else {
-                                    return catalog.i18nc("@action:button", "Update");
-                                }
-                            }
-                            style: ButtonStyle {
-                                background: Rectangle {
-                                    color: UM.Theme.getColor("primary")
-                                    implicitWidth: 72
-                                    implicitHeight: 30
-                                    // radius: 4
-                                }
-                                label: Text {
-                                    verticalAlignment: Text.AlignVCenter
-                                    color: "white"
-                                    text: control.text
-                                    horizontalAlignment: Text.AlignHCenter
-                                }
-                            }
-                        }
-                        Button {
-                            id: installButton
-                            visible: !model.already_installed
-                            text: {
-                                // If currently downloading:
-                                if ( manager.isDownloading && pluginList.activePlugin == model ) {
-                                    return catalog.i18nc( "@action:button", "Cancel" );
-                                } else {
-                                    return catalog.i18nc("@action:button", "Install");
-                                }
-                            }
-                            onClicked: {
-                                if ( manager.isDownloading && pluginList.activePlugin == model ) {
-                                    manager.cancelDownload();
-                                } else {
-                                    pluginList.activePlugin = model;
-                                    manager.downloadAndInstallPlugin( model.file_location );
-                                }
-                            }
-                            style: ButtonStyle {
-                                background: Rectangle {
-                                    color: UM.Theme.getColor("primary")
-                                    implicitWidth: 72
-                                    implicitHeight: 30
-                                    // radius: 4
-                                }
-                                label: Text {
-                                    verticalAlignment: Text.AlignVCenter
-                                    color: "white"
-                                    text: control.text
-                                    horizontalAlignment: Text.AlignHCenter
-                                }
-                            }
-                        }
-                        ProgressBar {
-                            id: progressbar
-                            minimumValue: 0;
-                            maximumValue: 100
-                            anchors.left: installButton.left
-                            anchors.right: installButton.right
-                            anchors.top: installButton.bottom
-                            anchors.topMargin: 4
-                            value: manager.isDownloading ? manager.downloadProgress : 0
-                            visible: manager.isDownloading && pluginList.activePlugin == model
-                            style: ProgressBarStyle {
-                                background: Rectangle {
-                                    color: "lightgray"
-                                    implicitHeight: 6
-                                }
-                                progress: Rectangle {
-                                    color: UM.Theme.getColor("primary")
-                                }
-                            }
-                        }
-
+                    label: Text {
+                        verticalAlignment: Text.AlignVCenter
+                        color: "grey"
+                        text: control.text
+                        horizontalAlignment: Text.AlignHCenter
                     }
                 }
             }
         }
+
         UM.I18nCatalog { id: catalog; name: "cura" }
 
         Connections {

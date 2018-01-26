@@ -22,6 +22,8 @@ import platform
 import zipfile
 import shutil
 
+from cura.CuraApplication import CuraApplication
+
 i18n_catalog = i18nCatalog("cura")
 
 # Architecture thoughts:
@@ -76,6 +78,11 @@ class PluginBrowser(QObject, Extension):
         self._plugins_metadata = []
         self._plugins_model = None
 
+        # Can be 'installed' or 'availble'
+        self._view = "available"
+
+        self._restart_required = False
+
         self._dialog = None
         self._restartDialog = None
         self._download_progress = 0
@@ -112,6 +119,8 @@ class PluginBrowser(QObject, Extension):
     pluginsMetadataChanged = pyqtSignal()
     onDownloadProgressChanged = pyqtSignal()
     onIsDownloadingChanged = pyqtSignal()
+    restartRequiredChanged = pyqtSignal()
+    viewChanged = pyqtSignal()
 
     @pyqtSlot(result = str)
     def getLicenseDialogPluginName(self):
@@ -245,6 +254,8 @@ class PluginBrowser(QObject, Extension):
         self.pluginsMetadataChanged.emit()
 
         self.openRestartDialog(result["message"])
+        self._restart_required = True
+        self.restartRequiredChanged.emit()
         # Application.getInstance().messageBox(i18n_catalog.i18nc("@window:title", "Plugin browser"), result["message"])
 
     @pyqtSlot(str)
@@ -254,7 +265,22 @@ class PluginBrowser(QObject, Extension):
         self._newly_uninstalled_plugin_ids.append(result["id"])
         self.pluginsMetadataChanged.emit()
 
+        self._restart_required = True
+        self.restartRequiredChanged.emit()
+
         Application.getInstance().messageBox(i18n_catalog.i18nc("@window:title", "Plugin browser"), result["message"])
+
+    @pyqtSlot(str)
+    def enablePlugin(self, plugin_id):
+        self._plugin_registry.enablePlugin(plugin_id)
+        self.pluginsMetadataChanged.emit()
+        Logger.log("i", "%s was set as 'active'", id)
+
+    @pyqtSlot(str)
+    def disablePlugin(self, plugin_id):
+        self._plugin_registry.disablePlugin(plugin_id)
+        self.pluginsMetadataChanged.emit()
+        Logger.log("i", "%s was set as 'deactive'", id)
 
     @pyqtProperty(int, notify = onDownloadProgressChanged)
     def downloadProgress(self):
@@ -287,51 +313,51 @@ class PluginBrowser(QObject, Extension):
         self.setDownloadProgress(0)
         self.setIsDownloading(False)
 
-    @pyqtProperty(QObject, notify=pluginsMetadataChanged)
+    @pyqtSlot(str)
+    def setView(self, view):
+        self._view = view
+        self.viewChanged.emit()
+        self.pluginsMetadataChanged.emit()
 
+    @pyqtProperty(QObject, notify=pluginsMetadataChanged)
     def pluginsModel(self):
-        self._plugins_model = PluginsModel()
-        """
-        if self._plugins_model is None:
-            self._plugins_model = PluginsModel()
-        else:
-            self._plugins_model.clear()
-        items = []
-        for metadata in self._plugins_metadata:
-            items.append({
-                "name": metadata["label"],
-                "id": metadata["id"],
-                "version": metadata["version"],
-                "short_description": metadata["short_description"],
-                "author": metadata["author"],
-                "author_email": "author@gmail.com",
-                "status": self._checkInstallStatus(metadata["id"]),
-                "already_installed": self._checkAlreadyInstalled(metadata["id"]),
-                "file_location": metadata["file_location"],
-                # "active": self._checkActive(metadata["id"]),
-                "enabled": True,
-                "can_upgrade": self._checkCanUpgrade(metadata["id"], metadata["version"])
-            })
-        self._plugins_model.setItems(items)
-        """
+        print("Updating plugins model...", self._view)
+        self._plugins_model = PluginsModel(self._view)
+        # self._plugins_model.update()
+
+        # Check each plugin the registry for matching plugin from server
+        # metadata, and if found, compare the versions. Higher version sets
+        # 'can_upgrade' to 'True':
+        for plugin in self._plugins_model.items:
+            if self._checkCanUpgrade(plugin["id"], plugin["version"]):
+                plugin["can_upgrade"] = True
+                print(self._plugins_metadata)
+
+                for item in self._plugins_metadata:
+                    if item["id"] == plugin["id"]:
+                        plugin["update_url"] = item["file_location"]
+                        print("Updating from", item["file_location"])
+
         return self._plugins_model
 
+
+
     def _checkCanUpgrade(self, id, version):
-        plugin_registry = Application.getInstance().getPluginRegistry()
-        plugin_registry = PluginRegistry.getInstance()
-        metadata = plugin_registry.getMetaData(id)
-        if metadata != {}:
-            if id in self._newly_installed_plugin_ids:
-                return False  # We already updated this plugin.
-            current_version = Version(metadata["plugin"]["version"])
-            new_version = Version(version)
-            if new_version > current_version:
-                return True
+
+        # TODO: This could maybe be done more efficiently using a dictionary...
+
+        # Scan plugin server data for plugin with the given id:
+        for plugin in self._plugins_metadata:
+            if id == plugin["id"]:
+                reg_version = Version(version)
+                new_version = Version(plugin["version"])
+                if new_version > reg_version:
+                    Logger.log("i", "%s has an update availible: %s", plugin["id"], plugin["version"])
+                    return True
         return False
 
     def _checkAlreadyInstalled(self, id):
-        plugin_registry = PluginRegistry.getInstance()
-        metadata = plugin_registry.getMetaData(id)
+        metadata = self._plugin_registry.getMetaData(id)
         # We already installed this plugin, but the registry just doesn't know it yet.
         if id in self._newly_installed_plugin_ids:
             return True
@@ -344,24 +370,14 @@ class PluginBrowser(QObject, Extension):
             return False
 
     def _checkInstallStatus(self, plugin_id):
-        plugin_registry = PluginRegistry.getInstance()
-
-        # If plugin is registered, it's installed:
-        if plugin_id in plugin_registry._plugins:
+        if plugin_id in self._plugin_registry.getInstalledPlugins():
             return "installed"
         else:
             return "uninstalled"
 
     def _checkEnabled(self, id):
-        plugin_registry = PluginRegistry.getInstance()
-        metadata = plugin_registry.getMetaData(id)
-        # if metadata != {}:
-            # if id in self._newly_installed_plugin_ids:
-            #     return False  # We already updated this plugin.
-            # current_version = Version(metadata["plugin"]["version"])
-            # new_version = Version(version)
-            # if new_version > current_version:
-            #     return True
+        if id in self._plugin_registry.getActivePlugins():
+            return True
         return False
 
     def _onRequestFinished(self, reply):
@@ -384,7 +400,11 @@ class PluginBrowser(QObject, Extension):
             if reply_url == self._api_url + "plugins":
                 try:
                     json_data = json.loads(bytes(reply.readAll()).decode("utf-8"))
+
+                    # Add metadata to the manager:
                     self._plugins_metadata = json_data
+                    print(self._plugins_metadata)
+                    self._plugin_registry.addExternalPlugins(self._plugins_metadata)
                     self.pluginsMetadataChanged.emit()
                 except json.decoder.JSONDecodeError:
                     Logger.log("w", "Received an invalid print job state message: Not valid JSON.")
@@ -410,3 +430,15 @@ class PluginBrowser(QObject, Extension):
         self._network_manager = QNetworkAccessManager()
         self._network_manager.finished.connect(self._onRequestFinished)
         self._network_manager.networkAccessibleChanged.connect(self._onNetworkAccesibleChanged)
+
+    @pyqtProperty(bool, notify=restartRequiredChanged)
+    def restartRequired(self):
+        return self._restart_required
+
+    @pyqtProperty(str, notify=viewChanged)
+    def viewing(self):
+        return self._view
+
+    @pyqtSlot()
+    def restart(self):
+        CuraApplication.getInstance().quit()
