@@ -27,6 +27,6 @@ class UFPWriter(MeshWriter):
         #TODO: Generate the thumbnail image. Below is just a placeholder.
         archive.addContentType(extension = "png", mime_type = "image/png")
         thumbnail = archive.getStream("/Metadata/thumbnail.png")
-        thumbnail.write(os.path.join(os.path.basename(__file__), "kitten.png"))
+        thumbnail.write(open(os.path.join(os.path.dirname(__file__), "kitten.png"), "rb").read())
         thumbnail.close()
         archive.addRelation(virtual_path = "/Metadata/thumbnail.png", file_type = "http://schemas.openxmlformats.org/package/2006/relationships/metadata/thumbnail")
