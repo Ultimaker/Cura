@@ -3,6 +3,7 @@
 
 from charon.VirtualFile import VirtualFile #To open UFP files.
 from charon.OpenMode import OpenMode #To indicate that we want to write to UFP files.
+from io import StringIO #For converting g-code to bytes.
 import os.path #To get the placeholder kitty icon.
 
 from UM.Mesh.MeshWriter import MeshWriter #The writer we need to implement.
@@ -15,8 +16,10 @@ class UFPWriter(MeshWriter):
 
         #Store the g-code from the scene.
         archive.addContentType(extension = "gcode", mime_type = "text/x-gcode")
+        gcode_textio = StringIO() #We have to convert the g-code into bytes.
+        PluginRegistry.getInstance().getPluginObject("GCodeWriter").write(gcode_textio, None)
         gcode = archive.getStream("/3D/model.gcode")
-        PluginRegistry.getInstance().getPluginObject("GCodeWriter").write(gcode, None)
+        gcode.write(gcode_textio.getvalue().encode("UTF-8"))
         archive.addRelation(target = "/3D/model.gcode", file_type = "http://schemas.ultimaker.org/package/2018/relationships/gcode")
 
         #Store the thumbnail.
