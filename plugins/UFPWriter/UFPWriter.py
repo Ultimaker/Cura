@@ -20,6 +20,7 @@ class UFPWriter(MeshWriter):
         PluginRegistry.getInstance().getPluginObject("GCodeWriter").write(gcode_textio, None)
         gcode = archive.getStream("/3D/model.gcode")
         gcode.write(gcode_textio.getvalue().encode("UTF-8"))
+        gcode.close()
         archive.addRelation(virtual_path = "/3D/model.gcode", file_type = "http://schemas.ultimaker.org/package/2018/relationships/gcode")
 
         #Store the thumbnail.
@@ -27,4 +28,5 @@ class UFPWriter(MeshWriter):
         archive.addContentType(extension = "png", mime_type = "image/png")
         thumbnail = archive.getStream("/Metadata/thumbnail.png")
         thumbnail.write(os.path.join(os.path.basename(__file__), "kitten.png"))
+        thumbnail.close()
         archive.addRelation(virtual_path = "/Metadata/thumbnail.png", file_type = "http://schemas.openxmlformats.org/package/2006/relationships/metadata/thumbnail")
