@@ -107,7 +107,7 @@ class SliceInfo(Extension):
                                              "brand": extruder.material.getMetaData().get("brand", "")
                                              }
                 extruder_position = int(extruder.getMetaDataEntry("position", "0"))
-                if extruder_position in print_information.materialLengths:
+                if len(print_information.materialLengths) > extruder_position:
                     extruder_dict["material_used"] = print_information.materialLengths[extruder_position]
                 extruder_dict["variant"] = extruder.variant.getName()
                 extruder_dict["nozzle_size"] = extruder.getProperty("machine_nozzle_size", "value")

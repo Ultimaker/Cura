@@ -1,8 +1,11 @@
 # Copyright (c) 2017 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
+import time
 #Type hinting.
 from typing import Union, List, Dict
+
+from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 from UM.Signal import Signal
 
 from PyQt5.QtCore import QObject, pyqtProperty, pyqtSignal, QTimer
@@ -75,6 +78,7 @@ class MachineManager(QObject):
 
         self._stacks_have_errors = None
 
+        self._empty_definition_changes_container = ContainerRegistry.getInstance().findContainers(id = "empty_definition_changes")[0]
         self._empty_variant_container = ContainerRegistry.getInstance().findContainers(id = "empty_variant")[0]
         self._empty_material_container = ContainerRegistry.getInstance().findContainers(id = "empty_material")[0]
         self._empty_quality_container = ContainerRegistry.getInstance().findContainers(id = "empty_quality")[0]
@@ -404,15 +408,28 @@ class MachineManager(QObject):
             Logger.log("w", "Failed creating a new machine!")
 
     def _checkStacksHaveErrors(self) -> bool:
+        time_start = time.time()
         if self._global_container_stack is None: #No active machine.
             return False
 
         if self._global_container_stack.hasErrors():
+            Logger.log("d", "Checking global stack for errors took %0.2f s and we found and error" % (time.time() - time_start))
             return True
-        for stack in ExtruderManager.getInstance().getMachineExtruders(self._global_container_stack.getId()):
+
+        # Not a very pretty solution, but the extruder manager doesn't really know how many extruders there are
+        machine_extruder_count = self._global_container_stack.getProperty("machine_extruder_count", "value")
+        extruder_stacks = ExtruderManager.getInstance().getMachineExtruders(self._global_container_stack.getId())
+        count = 1  # we start with the global stack
+        for stack in extruder_stacks:
+            md = stack.getMetaData()
+            if "position" in md and int(md["position"]) >= machine_extruder_count:
+                continue
+            count += 1
             if stack.hasErrors():
+                Logger.log("d", "Checking %s stacks for errors took %.2f s and we found an error in stack [%s]" % (count, time.time() - time_start, str(stack)))
                 return True
 
+        Logger.log("d", "Checking %s stacks for errors took %.2f s" % (count, time.time() - time_start))
         return False
 
     ##  Remove all instances from the top instanceContainer (effectively removing all user-changed settings)
@@ -764,7 +781,7 @@ class MachineManager(QObject):
     ## Set the active material by switching out a container
     #  Depending on from/to material+current variant, a quality profile is chosen and set.
     @pyqtSlot(str)
-    def setActiveMaterial(self, material_id: str):
+    def setActiveMaterial(self, material_id: str, always_discard_changes = False):
         with postponeSignals(*self._getContainerChangedSignals(), compress = CompressTechnique.CompressPerParameterValue):
             containers = ContainerRegistry.getInstance().findInstanceContainers(id = material_id)
             if not containers or not self._active_container_stack:
@@ -846,10 +863,10 @@ class MachineManager(QObject):
                     if not old_quality_changes:
                         new_quality_id = candidate_quality.getId()
 
-                self.setActiveQuality(new_quality_id)
+                self.setActiveQuality(new_quality_id, always_discard_changes = always_discard_changes)
 
     @pyqtSlot(str)
-    def setActiveVariant(self, variant_id: str):
+    def setActiveVariant(self, variant_id: str, always_discard_changes = False):
         with postponeSignals(*self._getContainerChangedSignals(), compress = CompressTechnique.CompressPerParameterValue):
             containers = ContainerRegistry.getInstance().findInstanceContainers(id = variant_id)
             if not containers or not self._active_container_stack:
@@ -865,7 +882,7 @@ class MachineManager(QObject):
                 if old_material:
                     preferred_material_name = old_material.getName()
                 preferred_material_id = self._updateMaterialContainer(self._global_container_stack.definition, self._global_container_stack, containers[0], preferred_material_name).id
-                self.setActiveMaterial(preferred_material_id)
+                self.setActiveMaterial(preferred_material_id, always_discard_changes = always_discard_changes)
             else:
                 Logger.log("w", "While trying to set the active variant, no variant was found to replace.")
 
@@ -890,9 +907,11 @@ class MachineManager(QObject):
     ##  set the active quality
     #   \param quality_id The quality_id of either a quality or a quality_changes
     @pyqtSlot(str)
-    def setActiveQuality(self, quality_id: str):
+    def setActiveQuality(self, quality_id: str, always_discard_changes = False):
         with postponeSignals(*self._getContainerChangedSignals(), compress = CompressTechnique.CompressPerParameterValue):
             self.blurSettings.emit()
+
+            Logger.log("d", "Attempting to change the active quality to %s", quality_id)
 
             containers = ContainerRegistry.getInstance().findInstanceContainersMetadata(id = quality_id)
             if not containers or not self._global_container_stack:
@@ -948,11 +967,13 @@ class MachineManager(QObject):
                     "quality_changes": stack_quality_changes
                 })
 
+            Logger.log("d", "Active quality changed")
+
             # show the keep/discard dialog after the containers have been switched. Otherwise, the default values on
             # the dialog will be the those before the switching.
             self._executeDelayedActiveContainerStackChanges()
 
-            if self.hasUserSettings and Preferences.getInstance().getValue("cura/active_mode") == 1:
+            if self.hasUserSettings and Preferences.getInstance().getValue("cura/active_mode") == 1 and not always_discard_changes:
                 Application.getInstance().discardOrKeepProfileChanges()
 
     ##  Used to update material and variant in the active container stack with a delay.
@@ -960,6 +981,9 @@ class MachineManager(QObject):
     #   before the user decided to keep or discard any of their changes using the dialog.
     #   The Application.onDiscardOrKeepProfileChangesClosed signal triggers this method.
     def _executeDelayedActiveContainerStackChanges(self):
+
+        Logger.log("d", "Applying configuration changes...")
+
         if self._new_variant_container is not None:
             self._active_container_stack.variant = self._new_variant_container
             self._new_variant_container = None
@@ -983,6 +1007,8 @@ class MachineManager(QObject):
                 new_quality["stack"].sendPostponedEmits() # Send the signals that were postponed in _replaceQualityOrQualityChangesInStack
 
             self._new_quality_containers.clear()
+
+        Logger.log("d", "New configuration applied")
 
     ##  Cancel set changes for material and variant in the active container stack.
     #   Used for ignoring any changes when switching between printers (setActiveMachine)
@@ -1338,6 +1364,68 @@ class MachineManager(QObject):
         containers = ContainerRegistry.getInstance().findContainerStacks(id = machine_id)
         if containers:
             return containers[0].definition.getId()
+
+    ##  Set the amount of extruders on the active machine (global stack)
+    #   \param extruder_count int the number of extruders to set
+    def setActiveMachineExtruderCount(self, extruder_count):
+        extruder_manager = Application.getInstance().getExtruderManager()
+
+        definition_changes_container = self._global_container_stack.definitionChanges
+        if not self._global_container_stack or definition_changes_container == self._empty_definition_changes_container:
+            return
+
+        previous_extruder_count = self._global_container_stack.getProperty("machine_extruder_count", "value")
+        if extruder_count == previous_extruder_count:
+            return
+
+        # reset all extruder number settings whose value is no longer valid
+        for setting_instance in self._global_container_stack.userChanges.findInstances():
+            setting_key = setting_instance.definition.key
+            if not self._global_container_stack.getProperty(setting_key, "type") in ("extruder", "optional_extruder"):
+                continue
+
+            old_value = int(self._global_container_stack.userChanges.getProperty(setting_key, "value"))
+            if old_value >= extruder_count:
+                self._global_container_stack.userChanges.removeInstance(setting_key)
+                Logger.log("d", "Reset [%s] because its old value [%s] is no longer valid ", setting_key, old_value)
+
+        # Check to see if any objects are set to print with an extruder that will no longer exist
+        root_node = Application.getInstance().getController().getScene().getRoot()
+        for node in DepthFirstIterator(root_node):
+            if node.getMeshData():
+                extruder_nr = node.callDecoration("getActiveExtruderPosition")
+
+                if extruder_nr is not None and int(extruder_nr) > extruder_count - 1:
+                    node.callDecoration("setActiveExtruder", extruder_manager.getExtruderStack(extruder_count - 1).getId())
+
+        definition_changes_container.setProperty("machine_extruder_count", "value", extruder_count)
+
+        # Make sure one of the extruder stacks is active
+        extruder_manager.setActiveExtruderIndex(0)
+
+        # Move settable_per_extruder values out of the global container
+        # After CURA-4482 this should not be the case anymore, but we still want to support older project files.
+        global_user_container = self._global_container_stack.getTop()
+
+        # Make sure extruder_stacks exists
+        extruder_stacks = []
+
+        if previous_extruder_count == 1:
+            extruder_stacks = ExtruderManager.getInstance().getActiveExtruderStacks()
+            global_user_container = self._global_container_stack.getTop()
+
+        for setting_instance in global_user_container.findInstances():
+            setting_key = setting_instance.definition.key
+            settable_per_extruder = self._global_container_stack.getProperty(setting_key, "settable_per_extruder")
+
+            if settable_per_extruder:
+                limit_to_extruder = int(self._global_container_stack.getProperty(setting_key, "limit_to_extruder"))
+                extruder_stack = extruder_stacks[max(0, limit_to_extruder)]
+                extruder_stack.getTop().setProperty(setting_key, "value", global_user_container.getProperty(setting_key, "value"))
+                global_user_container.removeInstance(setting_key)
+
+        # Signal that the global stack has changed
+        Application.getInstance().globalContainerStackChanged.emit()
 
     @staticmethod
     def createMachineManager():

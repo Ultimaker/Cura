@@ -94,6 +94,10 @@ class CuraActions(QObject):
                     removed_group_nodes.append(group_node)
                     op.addOperation(SetParentOperation(remaining_nodes_in_group[0], group_node.getParent()))
                     op.addOperation(RemoveSceneNodeOperation(group_node))
+
+            # Reset the print information
+            Application.getInstance().getController().getScene().sceneChanged.emit(node)
+
         op.push()
 
     ##  Set the extruder that should be used to print the selection.

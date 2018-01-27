@@ -3,6 +3,7 @@
 
 from typing import Any, TYPE_CHECKING, Optional
 
+from UM.Application import Application
 from UM.Decorators import override
 from UM.MimeTypeDatabase import MimeType, MimeTypeDatabase
 from UM.Settings.ContainerStack import ContainerStack
@@ -16,10 +17,6 @@ from .ExtruderManager import ExtruderManager
 
 if TYPE_CHECKING:
     from cura.Settings.GlobalStack import GlobalStack
-
-
-_EXTRUDER_SPECIFIC_DEFINITION_CHANGES_SETTINGS = ["machine_nozzle_size",
-                                                  "material_diameter"]
 
 
 ##  Represents an Extruder and its related containers.
@@ -53,20 +50,48 @@ class ExtruderStack(CuraContainerStack):
         # when we are upgrading a definition_changes container file, there is NO guarantee that other files such as
         # machine an extruder stack files are upgraded before this, so we cannot read those files assuming they are in
         # the latest format.
-        if self.getMetaDataEntry("position") == "0":
-            for key in _EXTRUDER_SPECIFIC_DEFINITION_CHANGES_SETTINGS:
-                setting_value = stack.definitionChanges.getProperty(key, "value")
-                if setting_value is None:
-                    continue
+        #
+        # MORE:
+        # For single-extrusion machines, nozzle size is saved in the global stack, so the nozzle size value should be
+        # carried to the first extruder.
+        # For material diameter, it was supposed to be applied to all extruders, so its value should be copied to all
+        # extruders.
 
-                setting_definition = stack.getSettingDefinition(key)
-                new_instance = SettingInstance(setting_definition, self.definitionChanges)
-                new_instance.setProperty("value", setting_value)
-                new_instance.resetState()  # Ensure that the state is not seen as a user state.
-                self.definitionChanges.addInstance(new_instance)
-                self.definitionChanges.setDirty(True)
+        keys_to_copy = ["material_diameter", "machine_nozzle_size"]  # these will be copied over to all extruders
 
-                stack.definitionChanges.removeInstance(key, postpone_emit = True)
+        for key in keys_to_copy:
+            # Since material_diameter is not on the extruder definition, we need to add it here
+            # WARNING: this might be very dangerous and should be refactored ASAP!
+            definition = stack.getSettingDefinition(key)
+            if definition:
+                self.definition.addDefinition(definition)
+
+            # Only copy the value when this extruder doesn't have the value.
+            if self.definitionChanges.hasProperty(key, "value"):
+                continue
+
+            setting_value = stack.definitionChanges.getProperty(key, "value")
+            if setting_value is None:
+                continue
+
+            setting_definition = stack.getSettingDefinition(key)
+            new_instance = SettingInstance(setting_definition, self.definitionChanges)
+            new_instance.setProperty("value", setting_value)
+            new_instance.resetState()  # Ensure that the state is not seen as a user state.
+            self.definitionChanges.addInstance(new_instance)
+            self.definitionChanges.setDirty(True)
+
+            # Make sure the material diameter is up to date for the extruder stack.
+            if key == "material_diameter":
+                position = self.getMetaDataEntry("position", "0")
+                Application.getInstance().getExtruderManager().updateMaterialForDiameter(position)
+
+            # NOTE: We cannot remove the setting from the global stack's definition changes container because for
+            # material diameter, it needs to be applied to all extruders, but here we don't know how many extruders
+            # a machine actually has and how many extruders has already been loaded for that machine, so we have to
+            # keep this setting for any remaining extruders that haven't been loaded yet.
+            #
+            # Those settings will be removed in ExtruderManager which knows all those info.
 
     @override(ContainerStack)
     def getNextStack(self) -> Optional["GlobalStack"]:

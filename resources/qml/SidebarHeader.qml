@@ -405,7 +405,7 @@ Column
             Label {
                 id: materialInfoLabel
                 wrapMode: Text.WordWrap
-                text: catalog.i18nc("@label", "<a href='%1'>Check compatibility</a>")
+                text: "<a href='%1'>" + catalog.i18nc("@label", "Check compatibility") + "</a>"
                 font: UM.Theme.getFont("default")
                 color: UM.Theme.getColor("text")
                 linkColor: UM.Theme.getColor("text_link")

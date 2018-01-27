@@ -24,7 +24,10 @@ class ConvexHullNode(SceneNode):
         self._original_parent = parent
 
         # Color of the drawn convex hull
-        self._color = Color(*Application.getInstance().getTheme().getColor("convex_hull").getRgb())
+        if Application.getInstance().hasGui():
+            self._color = Color(*Application.getInstance().getTheme().getColor("convex_hull").getRgb())
+        else:
+            self._color = Color(0, 0, 0)
 
         # The y-coordinate of the convex hull mesh. Must not be 0, to prevent z-fighting.
         self._mesh_height = 0.1

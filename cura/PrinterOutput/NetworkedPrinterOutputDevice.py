@@ -100,7 +100,7 @@ class NetworkedPrinterOutputDevice(PrinterOutputDevice):
             if batched_lines_count >= max_chars_per_line:
                 file_data_bytes_list.append(self._compressDataAndNotifyQt("".join(batched_lines)))
                 batched_lines = []
-                batched_lines_count
+                batched_lines_count = 0
 
         # Don't miss the last batch (If any)
         if len(batched_lines) != 0:

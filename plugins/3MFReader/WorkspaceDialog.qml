@@ -390,6 +390,13 @@ UM.Dialog
         }
     }
 
+    function accept() {
+        manager.closeBackend();
+        manager.onOkButtonClicked();
+        base.visible = false;
+        base.accept();
+    }
+
     function reject() {
         manager.onCancelButtonClicked();
         base.visible = false;
