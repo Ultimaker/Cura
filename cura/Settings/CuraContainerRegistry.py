@@ -246,6 +246,41 @@ class CuraContainerRegistry(ContainerRegistry):
                 if type(profile_or_list) is not list:
                     profile_or_list = [profile_or_list]
 
+                # Make sure that there are also extruder stacks' quality_changes, not just one for the global stack
+                if len(profile_or_list) == 1:
+                    global_profile = profile_or_list[0]
+                    extruder_profiles = []
+                    for idx, extruder in enumerate(global_container_stack.extruders.values()):
+                        profile_id = ContainerRegistry.getInstance().uniqueName(global_container_stack.getId() + "_extruder_" + str(idx + 1))
+                        profile = InstanceContainer(profile_id)
+                        profile.setName(global_profile.getName())
+                        profile.addMetaDataEntry("setting_version", CuraApplication.SettingVersion)
+                        profile.addMetaDataEntry("type", "quality_changes")
+                        profile.addMetaDataEntry("definition", global_profile.getMetaDataEntry("definition"))
+                        profile.addMetaDataEntry("quality_type", global_profile.getMetaDataEntry("quality_type"))
+                        profile.addMetaDataEntry("extruder", extruder.getId())
+                        profile.setDirty(True)
+                        if idx == 0:
+                            # move all per-extruder settings to the first extruder's quality_changes
+                            for qc_setting_key in global_profile.getAllKeys():
+                                settable_per_extruder = global_container_stack.getProperty(qc_setting_key,
+                                                                                           "settable_per_extruder")
+                                if settable_per_extruder:
+                                    setting_value = global_profile.getProperty(qc_setting_key, "value")
+
+                                    setting_definition = global_container_stack.getSettingDefinition(qc_setting_key)
+                                    new_instance = SettingInstance(setting_definition, profile)
+                                    new_instance.setProperty("value", setting_value)
+                                    new_instance.resetState()  # Ensure that the state is not seen as a user state.
+                                    profile.addInstance(new_instance)
+                                    profile.setDirty(True)
+
+                                    global_profile.removeInstance(qc_setting_key, postpone_emit=True)
+                        extruder_profiles.append(profile)
+
+                    for profile in extruder_profiles:
+                        profile_or_list.append(profile)
+
                 # Import all profiles
                 for profile_index, profile in enumerate(profile_or_list):
                     if profile_index == 0:
