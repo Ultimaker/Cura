@@ -6212,19 +6212,16 @@
                     "enabled": "bridge_settings_enabled",
                     "settable_per_mesh": true
                 },
-                "bridge_skin_line_width":
+                "bridge_wall_max_air_gap":
                 {
-                    "label": "Bridge Skin Line Width",
-                    "description": "Width of a single skin line used when bridging.",
-                    "unit": "mm",
-                    "minimum_value": "0.001",
-                    "minimum_value_warning": "0.1 + 0.4 * machine_nozzle_size",
-                    "maximum_value_warning": "2 * machine_nozzle_size",
-                    "default_value": 0.4,
+                    "label": "Bridge Wall Max Air Gap",
+                    "description": "The maximum allowed width of the region of air below a wall line before the wall is printed using bridge settings. Expressed as a percentage of the wall line width. When the air gap is wider than this, the wall line is printed using the bridge settings. Otherwise, the wall line is printed using the normal settings. The lower the value, the more likely it is that overhung wall lines will be printed using bridge settings.",
+                    "unit": "%",
+                    "default_value": 50,
                     "type": "float",
-                    "value": "line_width",
+                    "minimum_value": "0",
+                    "maximum_value": "100",
                     "enabled": "bridge_settings_enabled",
-                    "limit_to_extruder": "top_bottom_extruder_nr",
                     "settable_per_mesh": true
                 },
                 "bridge_skin_speed":
@@ -6255,10 +6252,23 @@
                     "enabled": "bridge_settings_enabled",
                     "settable_per_mesh": true
                 },
-                "bridge_material_flow":
+                "bridge_skin_material_flow":
                 {
-                    "label": "Bridge Flow",
-                    "description": "Flow compensation: the amount of material extruded when bridging is multiplied by this value.",
+                    "label": "Bridge Skin Flow",
+                    "description": "Flow compensation: the amount of material extruded when bridging skin is multiplied by this value.",
+                    "unit": "%",
+                    "default_value": 100,
+                    "type": "float",
+                    "minimum_value": "5",
+                    "minimum_value_warning": "50",
+                    "maximum_value_warning": "150",
+                    "enabled": "bridge_settings_enabled",
+                    "settable_per_mesh": true
+                },
+                "bridge_wall_material_flow":
+                {
+                    "label": "Bridge Wall Flow",
+                    "description": "Flow compensation: the amount of material extruded when bridging walls is multiplied by this value.",
                     "unit": "%",
                     "default_value": 100,
                     "type": "float",
