@@ -296,7 +296,7 @@ class CuraContainerRegistry(ContainerRegistry):
         profile.setDirty(True)  # Ensure the profiles are correctly saved
 
         new_id = self.createUniqueName("quality_changes", "", id_seed, catalog.i18nc("@label", "Custom profile"))
-        profile._id = new_id
+        profile.setMetaDataEntry("id", new_id)
         profile.setName(new_name)
 
         # Set the unique Id to the profile, so it's generating a new one even if the user imports the same profile
