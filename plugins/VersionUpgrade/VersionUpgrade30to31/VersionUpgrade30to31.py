@@ -231,5 +231,5 @@ class VersionUpgrade30to31(VersionUpgrade):
 
         quality_changes_dir = Resources.getPath(CuraApplication.ResourceTypes.QualityInstanceContainer)
 
-        with open(os.path.join(quality_changes_dir, extruder_quality_changes_filename), "w") as f:
+        with open(os.path.join(quality_changes_dir, extruder_quality_changes_filename), "w", encoding = "utf-8") as f:
             f.write(extruder_quality_changes_output.getvalue())

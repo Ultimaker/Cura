@@ -693,7 +693,7 @@ class CuraContainerRegistry(ContainerRegistry):
                     continue
 
                 instance_container = InstanceContainer(container_id)
-                with open(file_path, "r") as f:
+                with open(file_path, "r", encoding = "utf-8") as f:
                     serialized = f.read()
                 instance_container.deserialize(serialized, file_path)
                 self.addContainer(instance_container)
