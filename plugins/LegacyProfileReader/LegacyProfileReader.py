@@ -76,7 +76,7 @@ class LegacyProfileReader(ProfileReader):
         multi_extrusion = global_container_stack.getProperty("machine_extruder_count", "value") > 1
         if multi_extrusion:
             Logger.log("e", "Unable to import legacy profile %s. Multi extrusion is not supported", file_name)
-            raise Exception("Unable to import legacy profile. Multi extrusion is not supported")
+            raise Exception("\r\rUnable to import legacy profile. Multi extrusion is not supported")
 
         Logger.log("i", "Importing legacy profile from file " + file_name + ".")
         container_registry = ContainerRegistry.getInstance()
