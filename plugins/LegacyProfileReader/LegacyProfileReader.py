@@ -125,7 +125,10 @@ class LegacyProfileReader(ProfileReader):
             Logger.log("e", "Dictionary of Doom has no translation. Is it the correct JSON file?")
             return None
         current_printer_definition = global_container_stack.definition
-        profile.setDefinition(current_printer_definition.getId())
+        quality_definition = current_printer_definition.getMetaDataEntry("quality_definition")
+        if not quality_definition:
+            quality_definition = current_printer_definition.getId()
+        profile.setDefinition(quality_definition)
         for new_setting in dict_of_doom["translation"]:  # Evaluate all new settings that would get a value from the translations.
             old_setting_expression = dict_of_doom["translation"][new_setting]
             compiled = compile(old_setting_expression, new_setting, "eval")
@@ -161,6 +164,10 @@ class LegacyProfileReader(ProfileReader):
         parser.write(stream)
         data = stream.getvalue()
         profile.deserialize(data)
+
+        # The definition can get reset to fdmprinter during the deserialization's upgrade. Here we set the definition
+        # again.
+        profile.setDefinition(quality_definition)
 
         #We need to return one extruder stack and one global stack.
         global_container_id = container_registry.uniqueName("Global Imported Legacy Profile")
