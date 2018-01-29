@@ -189,7 +189,7 @@ class CrashHandler:
 
             json_metadata_file = os.path.join(directory, "plugin.json")
             try:
-                with open(json_metadata_file, "r") as f:
+                with open(json_metadata_file, "r", encoding = "utf-8") as f:
                     try:
                         metadata = json.loads(f.read())
                         module_version = metadata["version"]
@@ -217,9 +217,9 @@ class CrashHandler:
         text_area = QTextEdit()
         tmp_file_fd, tmp_file_path = tempfile.mkstemp(prefix = "cura-crash", text = True)
         os.close(tmp_file_fd)
-        with open(tmp_file_path, "w") as f:
+        with open(tmp_file_path, "w", encoding = "utf-8") as f:
             faulthandler.dump_traceback(f, all_threads=True)
-        with open(tmp_file_path, "r") as f:
+        with open(tmp_file_path, "r", encoding = "utf-8") as f:
             logdata = f.read()
 
         text_area.setText(logdata)

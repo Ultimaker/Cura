@@ -39,7 +39,7 @@ class CuraProfileReader(ProfileReader):
 
         except zipfile.BadZipFile:
             # It must be an older profile from Cura 2.1.
-            with open(file_name, encoding="utf-8") as fhandle:
+            with open(file_name, encoding = "utf-8") as fhandle:
                 serialized = fhandle.read()
             return [self._loadProfile(serialized, profile_id) for serialized, profile_id in self._upgradeProfile(serialized, file_name)]
 

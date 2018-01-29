@@ -59,6 +59,12 @@ _EMPTY_CONTAINER_DICT = {
 }
 
 
+# Renamed definition files
+_RENAMED_DEFINITION_DICT = {
+    "jellybox": "imade3d_jellybox",
+}
+
+
 class VersionUpgrade30to31(VersionUpgrade):
     ##  Gets the version number from a CFG file in Uranium's 3.0 format.
     #
@@ -122,6 +128,10 @@ class VersionUpgrade30to31(VersionUpgrade):
             if len(all_quality_changes) <= 1 and not parser.has_option("metadata", "extruder"):
                 self._createExtruderQualityChangesForSingleExtrusionMachine(filename, parser)
 
+        # Check renamed definitions
+        if "definition" in parser["general"] and parser["general"]["definition"] in _RENAMED_DEFINITION_DICT:
+            parser["general"]["definition"] = _RENAMED_DEFINITION_DICT[parser["general"]["definition"]]
+
         # Update version numbers
         parser["general"]["version"] = "2"
         parser["metadata"]["setting_version"] = "4"
@@ -155,6 +165,10 @@ class VersionUpgrade30to31(VersionUpgrade):
             for key, specific_empty_container in _EMPTY_CONTAINER_DICT.items():
                 if parser.has_option("containers", key) and parser["containers"][key] == "empty":
                     parser["containers"][key] = specific_empty_container
+
+            # check renamed definition
+            if parser.has_option("containers", "6") and parser["containers"]["6"] in _RENAMED_DEFINITION_DICT:
+                parser["containers"]["6"] = _RENAMED_DEFINITION_DICT[parser["containers"]["6"]]
 
         # Update version numbers
         if "general" not in parser:
@@ -219,6 +233,10 @@ class VersionUpgrade30to31(VersionUpgrade):
         extruder_quality_changes_parser["general"]["name"] = global_quality_changes["general"]["name"]
         extruder_quality_changes_parser["general"]["definition"] = global_quality_changes["general"]["definition"]
 
+        # check renamed definition
+        if extruder_quality_changes_parser["general"]["definition"] in _RENAMED_DEFINITION_DICT:
+            extruder_quality_changes_parser["general"]["definition"] = _RENAMED_DEFINITION_DICT[extruder_quality_changes_parser["general"]["definition"]]
+
         extruder_quality_changes_parser.add_section("metadata")
         extruder_quality_changes_parser["metadata"]["quality_type"] = global_quality_changes["metadata"]["quality_type"]
         extruder_quality_changes_parser["metadata"]["type"] = global_quality_changes["metadata"]["type"]
@@ -231,5 +249,5 @@ class VersionUpgrade30to31(VersionUpgrade):
 
         quality_changes_dir = Resources.getPath(CuraApplication.ResourceTypes.QualityInstanceContainer)
 
-        with open(os.path.join(quality_changes_dir, extruder_quality_changes_filename), "w") as f:
+        with open(os.path.join(quality_changes_dir, extruder_quality_changes_filename), "w", encoding = "utf-8") as f:
             f.write(extruder_quality_changes_output.getvalue())
