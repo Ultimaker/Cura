@@ -12,7 +12,7 @@ from UM.PluginRegistry import PluginRegistry #To get the g-code writer.
 class UFPWriter(MeshWriter):
     def write(self, stream, nodes, mode = MeshWriter.OutputMode.BinaryMode):
         archive = VirtualFile()
-        archive.open(stream, OpenMode.WriteOnly)
+        archive.open_stream(stream, "application/x-ufp", OpenMode.WriteOnly)
 
         #Store the g-code from the scene.
         archive.addContentType(extension = "gcode", mime_type = "text/x-gcode")
