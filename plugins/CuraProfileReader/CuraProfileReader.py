@@ -52,10 +52,10 @@ class CuraProfileReader(ProfileReader):
         parser = configparser.ConfigParser(interpolation=None)
         parser.read_string(serialized)
 
-        if not "general" in parser:
+        if "general" not in parser:
             Logger.log("w", "Missing required section 'general'.")
             return []
-        if not "version" in parser["general"]:
+        if "version" not in parser["general"]:
             Logger.log("w", "Missing required 'version' property")
             return []
 
