@@ -32,3 +32,4 @@ class UFPWriter(MeshWriter):
         archive.addRelation(virtual_path = "/Metadata/thumbnail.png", relation_type = "http://schemas.openxmlformats.org/package/2006/relationships/metadata/thumbnail")
 
         archive.close()
+        return True
