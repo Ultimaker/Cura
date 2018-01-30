@@ -176,8 +176,6 @@ UM.PreferencesPage
                 if (model.get(index).text == "Custom")
                     return
 
-                console.log("SETTING VALUE : " + model.get(index).text)
-
                 var newVisibleSettings = CuraApplication.getVisibilitySettingPreset(model.get(index).text)
                 UM.Preferences.setValue("general/visible_settings", newVisibleSettings)
                 UM.Preferences.setValue("general/visible_settings_preset_choice", model.get(index).text)

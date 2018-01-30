@@ -1,6 +1,7 @@
-# Copyright (c) 2017 Ultimaker B.V.
-# Copyright (c) 2017 Ultimaker B.V.
+# Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
+#Type hinting.
+from typing import Dict
 from PyQt5.QtNetwork import QLocalServer
 from PyQt5.QtNetwork import QLocalSocket
 
@@ -95,6 +96,7 @@ import copy
 import os
 import argparse
 import json
+
 
 numpy.seterr(all="ignore")
 
@@ -349,7 +351,7 @@ class CuraApplication(QtApplication):
 
         preferences.setDefault("local_file/last_used_type", "text/x-gcode")
 
-        setting_visibily_preset_names = self.getVisibilitySettingsPresetTypes()
+        setting_visibily_preset_names = self.getVisibilitySettingPresetTypes()
         preferences.setDefault("general/visible_settings_preset", setting_visibily_preset_names)
 
         visible_settings_preset_choice = Preferences.getInstance().getValue("general/visible_settings_preset_choice")
@@ -373,30 +375,29 @@ class CuraApplication(QtApplication):
 
         self.getCuraSceneController().setActiveBuildPlate(0)  # Initialize
 
-    @pyqtSlot(str, result=str)
-    def getVisibilitySettingPreset(self, settings_preset_name):
-
+    @pyqtSlot(str, result = str)
+    def getVisibilitySettingPreset(self, settings_preset_name) -> str:
         result = self._load_visibilyty_setting_preset(settings_preset_name)
-
         formatted_preset_settings = self.format_visibility_setting_preset(result)
 
         return formatted_preset_settings
 
-    def format_visibility_setting_preset(self, settings_data):
-
+    ## Format visibitlity settings into string which is concatenated by ";"
+    #
+    def format_visibility_setting_preset(self, settings_data) -> str:
         result_string = ""
 
         for key in settings_data:
             result_string += key + ";"
-
             for value in settings_data[key]:
                 result_string += value + ";"
 
         return result_string
 
-
-    def _load_visibilyty_setting_preset(self, visibility_preset_name):
-        preset_dir = Resources.getPath(Resources.VisibilitySettingsPreset)
+    ## Load visibility settings according to selected preset name
+    #
+    def _load_visibilyty_setting_preset(self, visibility_preset_name) -> Dict[str, str]:
+        preset_dir = Resources.getPath(Resources.VisibilitySettingPresets)
 
         result = {}
         right_preset_found = False
@@ -434,8 +435,10 @@ class CuraApplication(QtApplication):
 
         return result
 
-    def getVisibilitySettingsPresetTypes(self):
-        preset_dir = Resources.getPath(Resources.VisibilitySettingsPreset)
+    ## Check visibility setting preset folder and returns available types
+    #
+    def getVisibilitySettingPresetTypes(self):
+        preset_dir = Resources.getPath(Resources.VisibilitySettingPresets)
         result = {}
 
         for item in os.listdir(preset_dir):
