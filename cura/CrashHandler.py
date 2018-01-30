@@ -1,7 +1,6 @@
 # Copyright (c) 2017 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-import sys
 import platform
 import traceback
 import faulthandler
@@ -14,7 +13,7 @@ import ssl
 import urllib.request
 import urllib.error
 
-from PyQt5.QtCore import QT_VERSION_STR, PYQT_VERSION_STR, QCoreApplication
+from PyQt5.QtCore import QT_VERSION_STR, PYQT_VERSION_STR
 from PyQt5.QtWidgets import QDialog, QDialogButtonBox, QVBoxLayout, QLabel, QTextEdit, QGroupBox
 
 from UM.Application import Application
@@ -49,10 +48,11 @@ fatal_exception_types = [
 class CrashHandler:
     crash_url = "https://stats.ultimaker.com/api/cura"
 
-    def __init__(self, exception_type, value, tb):
+    def __init__(self, exception_type, value, tb, has_started = True):
         self.exception_type = exception_type
         self.value = value
         self.traceback = tb
+        self.has_started = has_started
         self.dialog = None # Don't create a QDialog before there is a QApplication
 
         # While we create the GUI, the information will be stored for sending afterwards
@@ -67,10 +67,6 @@ class CrashHandler:
         if not CuraDebugMode and exception_type not in fatal_exception_types:
             return
 
-        application = QCoreApplication.instance()
-        if not application:
-            sys.exit(1)
-
         self.dialog = QDialog()
         self._createDialog()
 
@@ -79,6 +75,7 @@ class CrashHandler:
         self.dialog.setMinimumWidth(640)
         self.dialog.setMinimumHeight(640)
         self.dialog.setWindowTitle(catalog.i18nc("@title:window", "Crash Report"))
+        self.dialog.finished.connect(self._close)
 
         layout = QVBoxLayout(self.dialog)
 
@@ -88,6 +85,9 @@ class CrashHandler:
         layout.addWidget(self._logInfoWidget())
         layout.addWidget(self._userDescriptionWidget())
         layout.addWidget(self._buttonsWidget())
+
+    def _close(self):
+        os._exit(1)
 
     def _messageWidget(self):
         label = QLabel()

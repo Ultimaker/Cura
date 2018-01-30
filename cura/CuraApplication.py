@@ -1,5 +1,4 @@
 # Copyright (c) 2017 Ultimaker B.V.
-# Copyright (c) 2017 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 from PyQt5.QtNetwork import QLocalServer
 from PyQt5.QtNetwork import QLocalSocket
@@ -112,6 +111,8 @@ class CuraApplication(QtApplication):
     # You need to make sure that this version number needs to be increased if there is any non-backwards-compatible
     # changes of the settings.
     SettingVersion = 4
+
+    Created = False
 
     class ResourceTypes:
         QmlFiles = Resources.UserType + 1
@@ -257,7 +258,7 @@ class CuraApplication(QtApplication):
         self._center_after_select = False
         self._camera_animation = None
         self._cura_actions = None
-        self._started = False
+        self.started = False
 
         self._message_box_callback = None
         self._message_box_callback_arguments = []
@@ -410,6 +411,8 @@ class CuraApplication(QtApplication):
 
         self.getCuraSceneController().setActiveBuildPlate(0)  # Initialize
 
+        CuraApplication.Created = True
+
     def _onEngineCreated(self):
         self._engine.addImageProvider("camera", CameraImageProvider.CameraImageProvider())
 
@@ -504,7 +507,7 @@ class CuraApplication(QtApplication):
     #
     #   Note that the AutoSave plugin also calls this method.
     def saveSettings(self):
-        if not self._started: # Do not do saving during application start
+        if not self.started: # Do not do saving during application start
             return
 
         ContainerRegistry.getInstance().saveDirtyContainers()
@@ -682,7 +685,7 @@ class CuraApplication(QtApplication):
         for file_name in self._open_file_queue:  # Open all the files that were queued up while plug-ins were loading.
             self._openFile(file_name)
 
-        self._started = True
+        self.started = True
         self.exec_()
 
     ##  Run Cura without GUI elements and interaction (server mode).
