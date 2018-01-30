@@ -13,6 +13,7 @@ import ssl
 import urllib.request
 import urllib.error
 import shutil
+import sys
 
 from PyQt5.QtCore import QT_VERSION_STR, PYQT_VERSION_STR
 from PyQt5.QtWidgets import QDialog, QDialogButtonBox, QVBoxLayout, QLabel, QTextEdit, QGroupBox, QCheckBox, QPushButton
@@ -140,6 +141,11 @@ class CrashHandler:
         if cache_path not in (config_path, data_path):
             folders_to_remove.append(cache_path)
 
+        # need to close the redirected stdout and stderr files, otherwise, on Windows, those opened files will prevent
+        # the directory removal calls below.
+        sys.stdout.close()
+        sys.stderr.close()
+
         for folder in folders_to_remove:
             shutil.rmtree(folder, ignore_errors = True)
         for folder in folders_to_backup:
@@ -159,7 +165,7 @@ class CrashHandler:
                 shutil.make_archive(zip_file_path, "zip", root_dir = root_dir, base_dir = base_name)
 
                 # remove the folder only when the backup is successful
-                shutil.rmtree(folder)
+                shutil.rmtree(folder, ignore_errors = True)
                 # create an empty folder so Resources will not try to copy the old ones
                 os.makedirs(folder, 0o0755, exist_ok=True)
 
