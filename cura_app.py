@@ -101,7 +101,7 @@ def exceptHook(hook_type, value, traceback):
         _crash_handler = CrashHandler(hook_type, value, traceback, has_started)
         if not has_started:
             CuraApplication.getInstance().removePostedEvents(None)
-            _crash_handler.show()
+            _crash_handler.early_crash_dialog.show()
             sys.exit(CuraApplication.getInstance().exec_())
         else:
             _crash_handler.show()
