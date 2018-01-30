@@ -71,8 +71,40 @@ if "PYTHONPATH" in os.environ.keys():                       # If PYTHONPATH is u
 
 def exceptHook(hook_type, value, traceback):
     from cura.CrashHandler import CrashHandler
-    _crash_handler = CrashHandler(hook_type, value, traceback)
-    _crash_handler.show()
+    from cura.CuraApplication import CuraApplication
+    has_started = False
+    if CuraApplication.Created:
+        has_started = CuraApplication.getInstance().started
+
+    #
+    # When the exception hook is triggered, the QApplication may not have been initialized yet. In this case, we don't
+    # have an QApplication to handle the event loop, which is required by the Crash Dialog.
+    # The flag "CuraApplication.Created" is set to True when CuraApplication finishes its constructor call.
+    #
+    # Before the "started" flag is set to True, the Qt event loop has not started yet. The event loop is a blocking
+    # call to the QApplication.exec_(). In this case, we need to:
+    #   1. Remove all scheduled events so no more unnecessary events will be processed, such as loading the main dialog,
+    #      loading the machine, etc.
+    #   2. Start the Qt event loop with exec_() and show the Crash Dialog.
+    #
+    # If the application has finished its initialization and was running fine, and then something causes a crash,
+    # we run the old routine to show the Crash Dialog.
+    #
+    from PyQt5.Qt import QApplication
+    if CuraApplication.Created:
+        _crash_handler = CrashHandler(hook_type, value, traceback, has_started)
+        if not has_started:
+            CuraApplication.getInstance().removePostedEvents(None)
+            _crash_handler.show()
+            sys.exit(CuraApplication.getInstance().exec_())
+        else:
+            _crash_handler.show()
+            sys.exit(1)
+    else:
+        application = QApplication(sys.argv)
+        _crash_handler = CrashHandler(hook_type, value, traceback, has_started)
+        _crash_handler.dialog.show()
+        sys.exit(application.exec_())
 
 if not known_args["debug"]:
     sys.excepthook = exceptHook
