@@ -6218,7 +6218,7 @@
                     "label": "Bridge Wall Max Air Gap",
                     "description": "The maximum allowed width of the region of air below a wall line before the wall is printed using bridge settings. Expressed as a percentage of the wall line width. When the air gap is wider than this, the wall line is printed using the bridge settings. Otherwise, the wall line is printed using the normal settings. The lower the value, the more likely it is that overhung wall lines will be printed using bridge settings.",
                     "unit": "%",
-                    "default_value": 50,
+                    "default_value": 100,
                     "type": "float",
                     "minimum_value": "0",
                     "maximum_value": "100",
