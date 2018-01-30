@@ -33,14 +33,14 @@ Menu
         id: automaticBuildplate
         text:
         {
-            if(printerConnected && Cura.MachineManager.printerOutputDevices[0].buildplateId != "" && !isClusterPrinter)
+            if (visible)
             {
                 var buildplateName = Cura.MachineManager.printerOutputDevices[0].buildplateId
                 return catalog.i18nc("@title:menuitem %1 is the buildplate currently loaded in the printer", "Automatic: %1").arg(buildplateName)
             }
             return ""
         }
-        visible: printerConnected && Cura.MachineManager.printerOutputDevices[0].buildplateId != "" && !isClusterPrinter
+        visible: printerConnected && Cura.MachineManager.printerOutputDevices[0].hotendIds != undefined && Cura.MachineManager.printerOutputDevices[0].buildplateId != "" && !isClusterPrinter
         onTriggered:
         {
             var buildplateId = Cura.MachineManager.printerOutputDevices[0].buildplateId
