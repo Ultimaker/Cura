@@ -174,15 +174,12 @@ class LegacyProfileReader(ProfileReader):
         global_profile = profile.duplicate(new_id = global_container_id, new_name = profile_id) #Needs to have the same name as the extruder profile.
         global_profile.setDirty(True)
 
-        #Only the extruder stack has an extruder metadata entry.
-        profile.addMetaDataEntry("extruder", ExtruderManager.getInstance().getActiveExtruderStack().definition.getId())
+        profile_definition = "fdmprinter"
+        from UM.Util import parseBool
+        if parseBool(global_container_stack.getMetaDataEntry("has_machine_quality", "False")):
+            profile_definition = global_container_stack.getMetaDataEntry("quality_definition")
+            if not profile_definition:
+                profile_definition = global_container_stack.definition.getId()
+        global_profile.setDefinition(profile_definition)
 
-        #Split all settings into per-extruder and global settings.
-        for setting_key in profile.getAllKeys():
-            settable_per_extruder = global_container_stack.getProperty(setting_key, "settable_per_extruder")
-            if settable_per_extruder:
-                global_profile.removeInstance(setting_key)
-            else:
-                profile.removeInstance(setting_key)
-
-        return [global_profile, profile]
+        return [global_profile]
