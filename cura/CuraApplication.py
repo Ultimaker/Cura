@@ -223,6 +223,10 @@ class CuraApplication(QtApplication):
                          tray_icon_name = "cura-icon-32.png",
                          **kwargs)
 
+        # FOR TESTING ONLY
+        if kwargs["parsed_command_line"].get("trigger_early_crash", False):
+            1/0
+
         self.default_theme = "cura-light"
 
         self.setWindowIcon(QIcon(Resources.getPath(Resources.Images, "cura-icon.png")))
