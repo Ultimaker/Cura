@@ -134,7 +134,6 @@ class CuraApplication(QtApplication):
     stacksValidationFinished = pyqtSignal()  # Emitted whenever a validation is finished
 
     def __init__(self, **kwargs):
-
         # this list of dir names will be used by UM to detect an old cura directory
         for dir_name in ["extruders", "machine_instances", "materials", "plugins", "quality", "user", "variants"]:
             Resources.addExpectedDirNameInData(dir_name)

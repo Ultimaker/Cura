@@ -103,7 +103,7 @@ def exceptHook(hook_type, value, traceback):
     else:
         application = QApplication(sys.argv)
         _crash_handler = CrashHandler(hook_type, value, traceback, has_started)
-        _crash_handler.dialog.show()
+        _crash_handler.early_crash_dialog.show()
         sys.exit(application.exec_())
 
 if not known_args["debug"]:
