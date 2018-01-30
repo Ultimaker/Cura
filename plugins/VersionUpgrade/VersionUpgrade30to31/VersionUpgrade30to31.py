@@ -117,17 +117,6 @@ class VersionUpgrade30to31(VersionUpgrade):
             if not parser.has_section(each_section):
                 parser.add_section(each_section)
 
-        # Copy global quality changes to extruder quality changes for single extrusion machines
-        if parser["metadata"]["type"] == "quality_changes":
-            all_quality_changes = self._getSingleExtrusionMachineQualityChanges(parser)
-            # Note that DO NOT!!! use the quality_changes returned from _getSingleExtrusionMachineQualityChanges().
-            # Those are loaded from the hard drive which are original files that haven't been upgraded yet.
-            # NOTE 2: The number can be 0 or 1 depends on whether you are loading it from the qualities folder or
-            #         from a project file. When you load from a project file, the custom profile may not be in cura
-            #         yet, so you will get 0.
-            if len(all_quality_changes) <= 1 and not parser.has_option("metadata", "extruder"):
-                self._createExtruderQualityChangesForSingleExtrusionMachine(filename, parser)
-
         # Check renamed definitions
         if "definition" in parser["general"] and parser["general"]["definition"] in _RENAMED_DEFINITION_DICT:
             parser["general"]["definition"] = _RENAMED_DEFINITION_DICT[parser["general"]["definition"]]
