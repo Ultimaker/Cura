@@ -12,9 +12,10 @@ import json
 import ssl
 import urllib.request
 import urllib.error
+import shutil
 
 from PyQt5.QtCore import QT_VERSION_STR, PYQT_VERSION_STR
-from PyQt5.QtWidgets import QDialog, QDialogButtonBox, QVBoxLayout, QLabel, QTextEdit, QGroupBox
+from PyQt5.QtWidgets import QDialog, QDialogButtonBox, QVBoxLayout, QLabel, QTextEdit, QGroupBox, QCheckBox, QPushButton
 
 from UM.Application import Application
 from UM.Logger import Logger
@@ -67,15 +68,120 @@ class CrashHandler:
         if not CuraDebugMode and exception_type not in fatal_exception_types:
             return
 
+        self._send_report_checkbox = None
+        self.early_crash_dialog = self._createEarlyCrashDialog()
         self.dialog = QDialog()
         self._createDialog()
+
+    def _createEarlyCrashDialog(self):
+        dialog = QDialog()
+        dialog.setMinimumWidth(500)
+        dialog.setMinimumHeight(170)
+        dialog.setWindowTitle(catalog.i18nc("@title:window", "Cura Crashed"))
+        dialog.finished.connect(self._closeEarlyCrashDialog)
+
+        layout = QVBoxLayout(dialog)
+
+        label = QLabel()
+        label.setText(catalog.i18nc("@label crash message", """<p><b>A fatal error has occurred.</p></b>
+                    <p>Unfortunately, Cura encountered an unrecoverable error during start up. It was possibly caused by some incorrect configuration files. We suggest to backup and reset your configuration.</p>
+                    <p>Please send us this Crash Report to fix the problem.</p>
+                """))
+        label.setWordWrap(True)
+        layout.addWidget(label)
+
+        # "send report" check box and show details
+        self._send_report_checkbox = QCheckBox(catalog.i18nc("@action:button", "Send crash report to Ultimaker"), dialog)
+        self._send_report_checkbox.setChecked(True)
+
+        show_details_button = QPushButton(catalog.i18nc("@action:button", "Show detailed crash report"), dialog)
+        show_details_button.setMaximumWidth(180)
+        show_details_button.clicked.connect(self._showDetailedReport)
+
+        layout.addWidget(self._send_report_checkbox)
+        layout.addWidget(show_details_button)
+
+        # "backup and start clean" and "close" buttons
+        buttons = QDialogButtonBox()
+        buttons.addButton(QDialogButtonBox.Close)
+        buttons.addButton(catalog.i18nc("@action:button", "Backup and Reset Configuration"), QDialogButtonBox.AcceptRole)
+        buttons.rejected.connect(self._closeEarlyCrashDialog)
+        buttons.accepted.connect(self._backupAndStartClean)
+
+        layout.addWidget(buttons)
+
+        return dialog
+
+    def _closeEarlyCrashDialog(self):
+        if self._send_report_checkbox.isChecked():
+            self._sendCrashReport()
+        os._exit(1)
+
+    def _backupAndStartClean(self):
+        # TODO: backup the current cura directories and create clean ones
+        from cura.CuraVersion import CuraVersion
+        from UM.Resources import Resources
+        # The early crash may happen before those information is set in Resources, so we need to set them here to
+        # make sure that Resources can find the correct place.
+        Resources.ApplicationIdentifier = "cura"
+        Resources.ApplicationVersion = CuraVersion
+        config_path = Resources.getConfigStoragePath()
+        data_path = Resources.getDataStoragePath()
+        cache_path = Resources.getCacheStoragePath()
+
+        folders_to_backup = []
+        folders_to_remove = []  # only cache folder needs to be removed
+
+        folders_to_backup.append(config_path)
+        if data_path != config_path:
+            folders_to_backup.append(data_path)
+
+        # Only remove the cache folder if it's not the same as data or config
+        if cache_path not in (config_path, data_path):
+            folders_to_remove.append(cache_path)
+
+        for folder in folders_to_remove:
+            shutil.rmtree(folder, ignore_errors = True)
+        for folder in folders_to_backup:
+            base_name = os.path.basename(folder)
+            root_dir = os.path.dirname(folder)
+
+            idx = 0
+            file_name = base_name + "_" + str(time.time())
+            zip_file_path = os.path.join(root_dir, file_name + ".zip")
+            while os.path.exists(zip_file_path):
+                idx += 1
+                file_name = base_name + "_" + str(time.time()) + "_" + idx
+                zip_file_path = os.path.join(root_dir, file_name + ".zip")
+            try:
+                # remove the .zip extension because make_archive() adds it
+                zip_file_path = zip_file_path[:-4]
+                shutil.make_archive(zip_file_path, "zip", root_dir = root_dir, base_dir = base_name)
+
+                # remove the folder only when the backup is successful
+                shutil.rmtree(folder)
+                # create an empty folder so Resources will not try to copy the old ones
+                os.makedirs(folder, 0o0755, exist_ok=True)
+
+            except Exception as e:
+                Logger.logException("e", "Failed to backup [%s] to file [%s]", folder, zip_file_path)
+                if not self.has_started:
+                    print("Failed to backup [%s] to file [%s]: %s", folder, zip_file_path, e)
+
+        self.early_crash_dialog.close()
+
+    def _showDetailedReport(self):
+        self.dialog.exec_()
 
     ##  Creates a modal dialog.
     def _createDialog(self):
         self.dialog.setMinimumWidth(640)
         self.dialog.setMinimumHeight(640)
         self.dialog.setWindowTitle(catalog.i18nc("@title:window", "Crash Report"))
-        self.dialog.finished.connect(self._close)
+        # if the application has not fully started, this will be a detailed report dialog which should not
+        # close the application when it's closed.
+        if self.has_started:
+            self.dialog.finished.connect(self._close)
 
         layout = QVBoxLayout(self.dialog)
 
@@ -249,9 +355,13 @@ class CrashHandler:
     def _buttonsWidget(self):
         buttons = QDialogButtonBox()
         buttons.addButton(QDialogButtonBox.Close)
-        buttons.addButton(catalog.i18nc("@action:button", "Send report"), QDialogButtonBox.AcceptRole)
+        # Like above, this will be served as a separate detailed report dialog if the application has not yet been
+        # fully loaded. In this case, "send report" will be a check box in the early crash dialog, so there is no
+        # need for this extra button.
+        if self.has_started:
+            buttons.addButton(catalog.i18nc("@action:button", "Send report"), QDialogButtonBox.AcceptRole)
+            buttons.accepted.connect(self._sendCrashReport)
         buttons.rejected.connect(self.dialog.close)
-        buttons.accepted.connect(self._sendCrashReport)
 
         return buttons
 
@@ -269,15 +379,23 @@ class CrashHandler:
             kwoptions["context"] = ssl._create_unverified_context()
 
         Logger.log("i", "Sending crash report info to [%s]...", self.crash_url)
+        if not self.has_started:
+            print("Sending crash report info to [%s]...\n" % self.crash_url)
 
         try:
             f = urllib.request.urlopen(self.crash_url, **kwoptions)
             Logger.log("i", "Sent crash report info.")
+            if not self.has_started:
+                print("Sent crash report info.\n")
             f.close()
-        except urllib.error.HTTPError:
+        except urllib.error.HTTPError as e:
             Logger.logException("e", "An HTTP error occurred while trying to send crash report")
-        except Exception:  # We don't want any exception to cause problems
+            if not self.has_started:
+                print("An HTTP error occurred while trying to send crash report: %s" % e)
+        except Exception as e:  # We don't want any exception to cause problems
             Logger.logException("e", "An exception occurred while trying to send crash report")
+            if not self.has_started:
+                print("An exception occurred while trying to send crash report: %s" % e)
 
         os._exit(1)
 
