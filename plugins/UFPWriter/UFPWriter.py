@@ -29,7 +29,7 @@ class UFPWriter(MeshWriter):
         thumbnail = archive.getStream("/Metadata/thumbnail.png")
         thumbnail.write(open(os.path.join(os.path.dirname(__file__), "kitten.png"), "rb").read())
         thumbnail.close()
-        archive.addRelation(virtual_path = "/Metadata/thumbnail.png", relation_type = "http://schemas.openxmlformats.org/package/2006/relationships/metadata/thumbnail")
+        archive.addRelation(virtual_path = "/Metadata/thumbnail.png", relation_type = "http://schemas.openxmlformats.org/package/2006/relationships/metadata/thumbnail", origin = "/3D/model.gcode")
 
         archive.close()
         return True
