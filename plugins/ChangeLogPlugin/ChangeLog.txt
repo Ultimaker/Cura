@@ -1,6 +1,6 @@
 [3.2.0]
 *Tree support
-Experimental tree-like support structure that uses ‘branches’ to support prints. Branches ‘grow’ and multiply towards towards the model, with fewer contact points than alternative support methods. This results in better surface finishes for organic-shaped prints.
+Experimental tree-like support structure that uses ‘branches’ to support prints. Branches ‘grow’ and multiply towards the model, with fewer contact points than alternative support methods. This results in better surface finishes for organic-shaped prints.
 
 *Adaptive layers
 Prints with a variable layer thickness which adapts to the angle of the model’s surfaces. The result is high-quality surface finishes with a marginally increased print time. This setting can be found under the experimental category.
