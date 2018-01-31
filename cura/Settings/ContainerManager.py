@@ -3,7 +3,7 @@
 
 import copy
 import os.path
-import urllib
+import urllib.parse
 import uuid
 from typing import Any, Dict, List, Union
 
@@ -486,7 +486,7 @@ class ContainerManager(QObject):
         container = container_type(container_id)
 
         try:
-            with open(file_url, "rt") as f:
+            with open(file_url, "rt", encoding = "utf-8") as f:
                 container.deserialize(f.read())
         except PermissionError:
             return { "status": "error", "message": "Permission denied when trying to read the file"}

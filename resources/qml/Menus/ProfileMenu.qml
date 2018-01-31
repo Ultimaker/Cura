@@ -29,7 +29,11 @@ Menu
         onObjectRemoved: menu.removeItem(object);
     }
 
-    MenuSeparator { id: customSeparator }
+    MenuSeparator
+    {
+        id: customSeparator
+        visible: Cura.UserProfilesModel.rowCount > 0
+    }
 
     Instantiator
     {
