@@ -1,4 +1,4 @@
-# Copyright (c) 2017 Ultimaker B.V.
+# Copyright (c) 2018 Ultimaker B.V.
 # Uranium is released under the terms of the LGPLv3 or higher.
 
 from UM.Settings.ContainerRegistry import ContainerRegistry
@@ -21,8 +21,7 @@ class UM2UpgradeSelection(MachineAction):
 
         self._current_global_stack = None
 
-        from cura.CuraApplication import CuraApplication
-        CuraApplication.getInstance().globalContainerStackChanged.connect(self._onGlobalStackChanged)
+        Application.getInstance().globalContainerStackChanged.connect(self._onGlobalStackChanged)
         self._reset()
 
     def _reset(self):
