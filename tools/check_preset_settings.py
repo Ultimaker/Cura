@@ -11,7 +11,7 @@ class PresetSettingsValidator:
         self._cura_dir = os.path.abspath(cura_dir)
         self._resource_dir = os.path.join(self._cura_dir, "resources")
         self._definitions_dir = os.path.join(self._resource_dir, "definitions")
-        self._preset_settings_dir = os.path.join(self._resource_dir, "visibility_presets")
+        self._preset_settings_dir = os.path.join(self._resource_dir, "preset_setting_visibility_groups")
 
         self._fdmprinter_def_path = os.path.join(self._definitions_dir, "fdmprinter.def.json")
 

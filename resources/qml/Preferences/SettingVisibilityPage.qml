@@ -154,7 +154,7 @@ UM.PreferencesPage
             currentIndex:
             {
                 // Load previously selected preset.
-                var text = UM.Preferences.getValue("general/visible_settings_preset_choice");
+                var text = UM.Preferences.getValue("general/preset_setting_visibility_choice");
 
 
 
@@ -178,7 +178,7 @@ UM.PreferencesPage
 
                 var newVisibleSettings = CuraApplication.getVisibilitySettingPreset(model.get(index).text)
                 UM.Preferences.setValue("general/visible_settings", newVisibleSettings)
-                UM.Preferences.setValue("general/visible_settings_preset_choice", model.get(index).text)
+                UM.Preferences.setValue("general/preset_setting_visibility_choice", model.get(index).text)
             }
         }
 

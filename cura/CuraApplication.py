@@ -354,16 +354,16 @@ class CuraApplication(QtApplication):
         setting_visibily_preset_names = self.getVisibilitySettingPresetTypes()
         preferences.setDefault("general/visible_settings_preset", setting_visibily_preset_names)
 
-        visible_settings_preset_choice = Preferences.getInstance().getValue("general/visible_settings_preset_choice")
+        preset_setting_visibility_choice = Preferences.getInstance().getValue("general/preset_setting_visibility_choice")
 
-        default_visibility_preset = "Basic"
-        if visible_settings_preset_choice == "" or visible_settings_preset_choice is None:
-            if not visible_settings_preset_choice in setting_visibily_preset_names:
-                visible_settings_preset_choice = default_visibility_preset
+        default_preset_visibility_group_name = "Basic"
+        if preset_setting_visibility_choice == "" or preset_setting_visibility_choice is None:
+            if preset_setting_visibility_choice not in setting_visibily_preset_names:
+                preset_setting_visibility_choice = default_preset_visibility_group_name
 
-        visible_settings = self.getVisibilitySettingPreset(settings_preset_name = visible_settings_preset_choice)
+        visible_settings = self.getVisibilitySettingPreset(settings_preset_name = preset_setting_visibility_choice)
         preferences.setDefault("general/visible_settings", visible_settings)
-        preferences.setDefault("general/visible_settings_preset_choice", visible_settings_preset_choice)
+        preferences.setDefault("general/preset_setting_visibility_choice", preset_setting_visibility_choice)
 
         self.applicationShuttingDown.connect(self.saveSettings)
         self.engineCreatedSignal.connect(self._onEngineCreated)
@@ -377,14 +377,14 @@ class CuraApplication(QtApplication):
 
     @pyqtSlot(str, result = str)
     def getVisibilitySettingPreset(self, settings_preset_name) -> str:
-        result = self._load_visibilyty_setting_preset(settings_preset_name)
-        formatted_preset_settings = self.format_visibility_setting_preset(result)
+        result = self._loadPresetSettingVisibilityGroup(settings_preset_name)
+        formatted_preset_settings = self._serializePresetSettingVisibilityData(result)
 
         return formatted_preset_settings
 
-    ## Format visibitlity settings into string which is concatenated by ";"
+    ## Serialise the given preset setting visibitlity group dictionary into a string which is concatenated by ";"
     #
-    def format_visibility_setting_preset(self, settings_data) -> str:
+    def _serializePresetSettingVisibilityData(self, settings_data: dict) -> str:
         result_string = ""
 
         for key in settings_data:
@@ -394,10 +394,10 @@ class CuraApplication(QtApplication):
 
         return result_string
 
-    ## Load visibility settings according to selected preset name
+    ## Load the preset setting visibility group with the given name
     #
-    def _load_visibilyty_setting_preset(self, visibility_preset_name) -> Dict[str, str]:
-        preset_dir = Resources.getPath(Resources.VisibilitySettingPresets)
+    def _loadPresetSettingVisibilityGroup(self, visibility_preset_name) -> Dict[str, str]:
+        preset_dir = Resources.getPath(Resources.PresetSettingVisibilityGroups)
 
         result = {}
         right_preset_found = False
@@ -407,7 +407,7 @@ class CuraApplication(QtApplication):
             if not os.path.isfile(file_path):
                 continue
 
-            parser = ConfigParser(allow_no_value=True) # accept options without any value,
+            parser = ConfigParser(allow_no_value = True)  # accept options without any value,
 
             try:
                 parser.read([file_path])
@@ -422,7 +422,7 @@ class CuraApplication(QtApplication):
                             continue
                         else:
                             section_settings = []
-                            for option in parser[section]._options():
+                            for option in parser[section].keys():
                                 section_settings.append(option)
 
                             result[section] = section_settings
@@ -438,7 +438,7 @@ class CuraApplication(QtApplication):
     ## Check visibility setting preset folder and returns available types
     #
     def getVisibilitySettingPresetTypes(self):
-        preset_dir = Resources.getPath(Resources.VisibilitySettingPresets)
+        preset_dir = Resources.getPath(Resources.PresetSettingVisibilityGroups)
         result = {}
 
         for item in os.listdir(preset_dir):
