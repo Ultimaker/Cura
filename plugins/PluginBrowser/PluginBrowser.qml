@@ -19,7 +19,7 @@ Window {
     height: 640 * screenScaleFactor
     minimumWidth: 350 * screenScaleFactor
     minimumHeight: 350 * screenScaleFactor
-    color: "white"
+    color: UM.Theme.getColor("sidebar")
 
     Item {
         id: view
@@ -157,7 +157,7 @@ Window {
                     }
                     label: Text {
                         verticalAlignment: Text.AlignVCenter
-                        color: "white"
+                        color: UM.Theme.getColor("button_text")
                         font {
                             pixelSize: 13
                             bold: true
@@ -191,7 +191,7 @@ Window {
                     }
                     label: Text {
                         verticalAlignment: Text.AlignVCenter
-                        color: "grey"
+                        color: UM.Theme.getColor("text")
                         text: control.text
                         horizontalAlignment: Text.AlignHCenter
                     }
@@ -284,33 +284,83 @@ Window {
             }
         }
 
-        UM.Dialog {
+        Window {
             id: restartDialog
             // title: catalog.i18nc("@title:tab", "Plugins");
             width: 360 * screenScaleFactor
-            height: 180 * screenScaleFactor
+            height: 120 * screenScaleFactor
             minimumWidth: 360 * screenScaleFactor
-            minimumHeight: 180 * screenScaleFactor
+            minimumHeight: 120 * screenScaleFactor
+            color: UM.Theme.getColor("sidebar")
             property var message;
 
             Text {
                 id: message
+                anchors {
+                    left: parent.left
+                    leftMargin: UM.Theme.getSize("default_margin").width
+                    top: parent.top
+                    topMargin: UM.Theme.getSize("default_margin").height
+                }
                 text: restartDialog.message != null ? restartDialog.message : ""
             }
             Button {
                 id: laterButton
                 text: "Later"
                 onClicked: restartDialog.close();
-                anchors.left: parent.left
-                anchors.bottom: parent.bottom
+                anchors {
+                    left: parent.left
+                    leftMargin: UM.Theme.getSize("default_margin").width
+                    bottom: parent.bottom
+                    bottomMargin: UM.Theme.getSize("default_margin").height
+                }
+                style: ButtonStyle {
+                    background: Rectangle {
+                        color: "transparent"
+                        implicitWidth: 96
+                        implicitHeight: 30
+                        border {
+                            width: 1
+                            color: UM.Theme.getColor("lining")
+                        }
+                    }
+                    label: Text {
+                        verticalAlignment: Text.AlignVCenter
+                        color: UM.Theme.getColor("text")
+                        text: control.text
+                        horizontalAlignment: Text.AlignHCenter
+                    }
+                }
             }
+
 
             Button {
                 id: restartButton
-                text: "Restart now"
-                onClicked: restartDialog.close();
-                anchors.right: parent.right
-                anchors.bottom: parent.bottom
+                text: "Quit Cura"
+                anchors {
+                    right: parent.right
+                    rightMargin: UM.Theme.getSize("default_margin").width
+                    bottom: parent.bottom
+                    bottomMargin: UM.Theme.getSize("default_margin").height
+                }
+                onClicked: manager.restart()
+                style: ButtonStyle {
+                    background: Rectangle {
+                        implicitWidth: 96
+                        implicitHeight: 30
+                        color: UM.Theme.getColor("primary")
+                    }
+                    label: Text {
+                        verticalAlignment: Text.AlignVCenter
+                        color: UM.Theme.getColor("button_text")
+                        font {
+                            pixelSize: 13
+                            bold: true
+                        }
+                        text: control.text
+                        horizontalAlignment: Text.AlignHCenter
+                    }
+                }
             }
         }
 

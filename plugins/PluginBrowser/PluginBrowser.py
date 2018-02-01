@@ -26,40 +26,6 @@ from cura.CuraApplication import CuraApplication
 
 i18n_catalog = i18nCatalog("cura")
 
-# Architecture thoughts:
-# ------------------------------------------------------------------------------
-# The plugin manager has 2 parts: the browser and the installer.
-#
-# UNINSTALLING:
-# ------------------------------------------------------------------------------
-# Uninstalling is done via the PluginRegistry's uninstallPlugin() method,
-# supplied with a plugin_id. Uninstalling is currently done instantly so there's
-# no need to use an list of "newly uninstalled plugins" but this will be needed
-# in the future with more complex plugins, as well as when merging the built-in
-# plugins into the plugin browser.
-#
-# STATUS:
-# ------------------------------------------------------------------------------
-# 'status' is used to keep track of installations and uninstallations. It is
-# intended to replace "newly installed" and "newly uninstalled" lists. These
-# lists introduce a lot of complexity if a plugin finds itself on both lists.
-#
-# 'status' can have several values:
-# - "uninstalled"
-# - "will_install"
-# - "installed"
-# - "will_uninstall"
-#
-# This is more civilized than checking if a plugin's metadata exists. It also
-# means uninstalling doesn't require erasing the metadata.
-#
-# ACTIVE:
-# ------------------------------------------------------------------------------
-# Although 'active' could have been lumped with 'status', it is essentially a
-# sub-status within 'installed' and 'will_uninstall'. Rather than create more
-# statuses such as 'active_installed' and 'active_will_uninstall', the 'active'
-# property is just a boolean used in conjunction with 'status'.
-
 class PluginBrowser(QObject, Extension):
     def __init__(self, parent=None):
         super().__init__(parent)
