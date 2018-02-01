@@ -3,7 +3,7 @@
 
 
 
-class XmlMaterialValidater():
+class XmlMaterialValidator():
 
     @classmethod
     def validateMaterialMetaDate(cls, validation_metadata):

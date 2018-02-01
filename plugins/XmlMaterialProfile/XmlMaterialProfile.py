@@ -17,7 +17,7 @@ import UM.Dictionary
 from UM.Settings.InstanceContainer import InstanceContainer
 from UM.Settings.ContainerRegistry import ContainerRegistry
 
-from .XmlMaterialValidator import XmlMaterialValidater
+from .XmlMaterialValidator import XmlMaterialValidator
 
 ##  Handles serializing and deserializing material containers from an XML file
 class XmlMaterialProfile(InstanceContainer):
@@ -482,7 +482,7 @@ class XmlMaterialProfile(InstanceContainer):
         if "adhesion_info" not in meta_data:
             meta_data["adhesion_info"] = ""
 
-        validation_message = XmlMaterialValidater.validateMaterialMetaDate(meta_data)
+        validation_message = XmlMaterialValidator.validateMaterialMetaDate(meta_data)
         if validation_message is not None:
             raise Exception("Not valid material profile: %s" % (validation_message))
 
