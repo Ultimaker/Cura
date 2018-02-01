@@ -67,9 +67,11 @@ class PresetSettingsValidator:
                     print("[INVALID] [%s] is invalid, details below" % file_path)
 
                     # show details
-                    for section_name in incorrect_sections:
+                    for section_name in sorted(incorrect_sections):
                         print(" -- section name [%s] is incorrect, please check fdmprinter.def.json." % section_name)
-                    for setting_name, details_dict in incorrect_settings.items():
+
+                    for setting_name in sorted(incorrect_settings.keys()):
+                        details_dict = incorrect_settings[setting_name]
                         msg = " -- setting [%s] is found in sections [%s], " % (setting_name, ", ".join(details_dict["seen_in"]))
                         if details_dict["should_be_in"] is not None:
                             msg += "but should be in section [%s] only." % details_dict["should_be_in"]
