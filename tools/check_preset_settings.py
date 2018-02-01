@@ -120,8 +120,5 @@ if __name__ == "__main__":
     validator = PresetSettingsValidator(cura_dir)
     is_everything_validate = validator.validate()
 
-    if not is_everything_validate:
-        print("Please")
-
     ret_code = 0 if is_everything_validate else 1
     sys.exit(ret_code)
