@@ -1,7 +1,6 @@
 from typing import List
 
 from UM.Application import Application
-from UM.Logger import Logger
 from UM.Scene.SceneNode import SceneNode
 from copy import deepcopy
 from cura.Settings.ExtrudersModel import ExtrudersModel
