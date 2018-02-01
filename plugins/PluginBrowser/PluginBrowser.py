@@ -1,25 +1,30 @@
 # Copyright (c) 2017 Ultimaker B.V.
 # PluginBrowser is released under the terms of the LGPLv3 or higher.
+
+from PyQt5.QtCore import QUrl, QObject, Qt, pyqtProperty, pyqtSignal, pyqtSlot
+from PyQt5.QtNetwork import QNetworkAccessManager, QNetworkRequest, QNetworkReply
+
+from UM.Application import Application
+from UM.Qt.ListModel import ListModel
+from UM.Logger import Logger
+from UM.PluginRegistry import PluginRegistry
+from UM.Qt.Bindings.PluginsModel import PluginsModel
 from UM.Extension import Extension
 from UM.i18n import i18nCatalog
-from UM.Logger import Logger
-from UM.Qt.ListModel import ListModel
-from UM.PluginRegistry import PluginRegistry
-from UM.Application import Application
+
 from UM.Version import Version
 from UM.Message import Message
-
-from PyQt5.QtNetwork import QNetworkAccessManager, QNetworkRequest, QNetworkReply
-from PyQt5.QtCore import QUrl, QObject, Qt, pyqtProperty, pyqtSignal, pyqtSlot
 
 import json
 import os
 import tempfile
 import platform
 import zipfile
+import shutil
+
+from cura.CuraApplication import CuraApplication
 
 i18n_catalog = i18nCatalog("cura")
-
 
 class PluginBrowser(QObject, Extension):
     def __init__(self, parent=None):
@@ -34,11 +39,18 @@ class PluginBrowser(QObject, Extension):
         self._download_plugin_reply = None
 
         self._network_manager = None
+        self._plugin_registry = Application.getInstance().getPluginRegistry()
 
         self._plugins_metadata = []
         self._plugins_model = None
 
+        # Can be 'installed' or 'availble'
+        self._view = "available"
+
+        self._restart_required = False
+
         self._dialog = None
+        self._restartDialog = None
         self._download_progress = 0
 
         self._is_downloading = False
@@ -52,16 +64,29 @@ class PluginBrowser(QObject, Extension):
                                           )
                                ]
 
-        # Installed plugins are really installed after reboot. In order to prevent the user from downloading the
-        # same file over and over again, we keep track of the upgraded plugins.
+        # Installed plugins are really installed after reboot. In order to
+        # prevent the user from downloading the same file over and over again,
+        # we keep track of the upgraded plugins.
+
+        # NOTE: This will be depreciated in favor of the 'status' system.
         self._newly_installed_plugin_ids = []
+        self._newly_uninstalled_plugin_ids = []
+
+        self._plugin_statuses = {} # type: Dict[str, str]
 
         # variables for the license agreement dialog
         self._license_dialog_plugin_name = ""
         self._license_dialog_license_content = ""
         self._license_dialog_plugin_file_location = ""
+        self._restart_dialog_message = ""
 
     showLicenseDialog = pyqtSignal()
+    showRestartDialog = pyqtSignal()
+    pluginsMetadataChanged = pyqtSignal()
+    onDownloadProgressChanged = pyqtSignal()
+    onIsDownloadingChanged = pyqtSignal()
+    restartRequiredChanged = pyqtSignal()
+    viewChanged = pyqtSignal()
 
     @pyqtSlot(result = str)
     def getLicenseDialogPluginName(self):
@@ -75,15 +100,19 @@ class PluginBrowser(QObject, Extension):
     def getLicenseDialogLicenseContent(self):
         return self._license_dialog_license_content
 
+    @pyqtSlot(result = str)
+    def getRestartDialogMessage(self):
+        return self._restart_dialog_message
+
     def openLicenseDialog(self, plugin_name, license_content, plugin_file_location):
         self._license_dialog_plugin_name = plugin_name
         self._license_dialog_license_content = license_content
         self._license_dialog_plugin_file_location = plugin_file_location
         self.showLicenseDialog.emit()
 
-    pluginsMetadataChanged = pyqtSignal()
-    onDownloadProgressChanged = pyqtSignal()
-    onIsDownloadingChanged = pyqtSignal()
+    def openRestartDialog(self, message):
+        self._restart_dialog_message = message
+        self.showRestartDialog.emit()
 
     @pyqtProperty(bool, notify = onIsDownloadingChanged)
     def isDownloading(self):
@@ -179,16 +208,45 @@ class PluginBrowser(QObject, Extension):
 
     @pyqtSlot(str)
     def installPlugin(self, file_path):
+        # Ensure that it starts with a /, as otherwise it doesn't work on windows.
         if not file_path.startswith("/"):
-            location = "/" + file_path  # Ensure that it starts with a /, as otherwise it doesn't work on windows.
+            location = "/" + file_path
         else:
             location = file_path
+
         result = PluginRegistry.getInstance().installPlugin("file://" + location)
 
         self._newly_installed_plugin_ids.append(result["id"])
         self.pluginsMetadataChanged.emit()
 
+        self.openRestartDialog(result["message"])
+        self._restart_required = True
+        self.restartRequiredChanged.emit()
+        # Application.getInstance().messageBox(i18n_catalog.i18nc("@window:title", "Plugin browser"), result["message"])
+
+    @pyqtSlot(str)
+    def removePlugin(self, plugin_id):
+        result = PluginRegistry.getInstance().uninstallPlugin(plugin_id)
+
+        self._newly_uninstalled_plugin_ids.append(result["id"])
+        self.pluginsMetadataChanged.emit()
+
+        self._restart_required = True
+        self.restartRequiredChanged.emit()
+
         Application.getInstance().messageBox(i18n_catalog.i18nc("@window:title", "Plugin browser"), result["message"])
+
+    @pyqtSlot(str)
+    def enablePlugin(self, plugin_id):
+        self._plugin_registry.enablePlugin(plugin_id)
+        self.pluginsMetadataChanged.emit()
+        Logger.log("i", "%s was set as 'active'", id)
+
+    @pyqtSlot(str)
+    def disablePlugin(self, plugin_id):
+        self._plugin_registry.disablePlugin(plugin_id)
+        self.pluginsMetadataChanged.emit()
+        Logger.log("i", "%s was set as 'deactive'", id)
 
     @pyqtProperty(int, notify = onDownloadProgressChanged)
     def downloadProgress(self):
@@ -221,54 +279,71 @@ class PluginBrowser(QObject, Extension):
         self.setDownloadProgress(0)
         self.setIsDownloading(False)
 
+    @pyqtSlot(str)
+    def setView(self, view):
+        self._view = view
+        self.viewChanged.emit()
+        self.pluginsMetadataChanged.emit()
+
     @pyqtProperty(QObject, notify=pluginsMetadataChanged)
     def pluginsModel(self):
-        if self._plugins_model is None:
-            self._plugins_model = ListModel()
-            self._plugins_model.addRoleName(Qt.UserRole + 1, "name")
-            self._plugins_model.addRoleName(Qt.UserRole + 2, "version")
-            self._plugins_model.addRoleName(Qt.UserRole + 3, "short_description")
-            self._plugins_model.addRoleName(Qt.UserRole + 4, "author")
-            self._plugins_model.addRoleName(Qt.UserRole + 5, "already_installed")
-            self._plugins_model.addRoleName(Qt.UserRole + 6, "file_location")
-            self._plugins_model.addRoleName(Qt.UserRole + 7, "can_upgrade")
-        else:
-            self._plugins_model.clear()
-        items = []
-        for metadata in self._plugins_metadata:
-            items.append({
-                "name": metadata["label"],
-                "version": metadata["version"],
-                "short_description": metadata["short_description"],
-                "author": metadata["author"],
-                "already_installed": self._checkAlreadyInstalled(metadata["id"]),
-                "file_location": metadata["file_location"],
-                "can_upgrade": self._checkCanUpgrade(metadata["id"], metadata["version"])
-            })
-        self._plugins_model.setItems(items)
+        print("Updating plugins model...", self._view)
+        self._plugins_model = PluginsModel(self._view)
+        # self._plugins_model.update()
+
+        # Check each plugin the registry for matching plugin from server
+        # metadata, and if found, compare the versions. Higher version sets
+        # 'can_upgrade' to 'True':
+        for plugin in self._plugins_model.items:
+            if self._checkCanUpgrade(plugin["id"], plugin["version"]):
+                plugin["can_upgrade"] = True
+                print(self._plugins_metadata)
+
+                for item in self._plugins_metadata:
+                    if item["id"] == plugin["id"]:
+                        plugin["update_url"] = item["file_location"]
+
         return self._plugins_model
 
+
+
     def _checkCanUpgrade(self, id, version):
-        plugin_registry = PluginRegistry.getInstance()
-        metadata = plugin_registry.getMetaData(id)
-        if metadata != {}:
-            if id in self._newly_installed_plugin_ids:
-                return False  # We already updated this plugin.
-            current_version = Version(metadata["plugin"]["version"])
-            new_version = Version(version)
-            if new_version > current_version:
-                return True
+
+        # TODO: This could maybe be done more efficiently using a dictionary...
+
+        # Scan plugin server data for plugin with the given id:
+        for plugin in self._plugins_metadata:
+            if id == plugin["id"]:
+                reg_version = Version(version)
+                new_version = Version(plugin["version"])
+                if new_version > reg_version:
+                    Logger.log("i", "%s has an update availible: %s", plugin["id"], plugin["version"])
+                    return True
         return False
 
     def _checkAlreadyInstalled(self, id):
-        plugin_registry = PluginRegistry.getInstance()
-        metadata = plugin_registry.getMetaData(id)
-        if metadata != {}:
+        metadata = self._plugin_registry.getMetaData(id)
+        # We already installed this plugin, but the registry just doesn't know it yet.
+        if id in self._newly_installed_plugin_ids:
+            return True
+        # We already uninstalled this plugin, but the registry just doesn't know it yet:
+        elif id in self._newly_uninstalled_plugin_ids:
+            return False
+        elif metadata != {}:
             return True
         else:
-            if id in self._newly_installed_plugin_ids:
-                return True  # We already installed this plugin, but the registry just doesn't know it yet.
             return False
+
+    def _checkInstallStatus(self, plugin_id):
+        if plugin_id in self._plugin_registry.getInstalledPlugins():
+            return "installed"
+        else:
+            return "uninstalled"
+
+    def _checkEnabled(self, id):
+        if id in self._plugin_registry.getActivePlugins():
+            return True
+        return False
 
     def _onRequestFinished(self, reply):
         reply_url = reply.url().toString()
@@ -290,7 +365,11 @@ class PluginBrowser(QObject, Extension):
             if reply_url == self._api_url + "plugins":
                 try:
                     json_data = json.loads(bytes(reply.readAll()).decode("utf-8"))
+
+                    # Add metadata to the manager:
                     self._plugins_metadata = json_data
+                    print(self._plugins_metadata)
+                    self._plugin_registry.addExternalPlugins(self._plugins_metadata)
                     self.pluginsMetadataChanged.emit()
                 except json.decoder.JSONDecodeError:
                     Logger.log("w", "Received an invalid print job state message: Not valid JSON.")
@@ -316,3 +395,15 @@ class PluginBrowser(QObject, Extension):
         self._network_manager = QNetworkAccessManager()
         self._network_manager.finished.connect(self._onRequestFinished)
         self._network_manager.networkAccessibleChanged.connect(self._onNetworkAccesibleChanged)
+
+    @pyqtProperty(bool, notify=restartRequiredChanged)
+    def restartRequired(self):
+        return self._restart_required
+
+    @pyqtProperty(str, notify=viewChanged)
+    def viewing(self):
+        return self._view
+
+    @pyqtSlot()
+    def restart(self):
+        CuraApplication.getInstance().quit()
