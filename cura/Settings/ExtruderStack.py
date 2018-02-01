@@ -60,18 +60,33 @@ class ExtruderStack(CuraContainerStack):
         keys_to_copy = ["material_diameter", "machine_nozzle_size"]  # these will be copied over to all extruders
 
         for key in keys_to_copy:
-            # Since material_diameter is not on the extruder definition, we need to add it here
-            # WARNING: this might be very dangerous and should be refactored ASAP!
-            definition = stack.getSettingDefinition(key)
-            if definition:
-                self.definition.addDefinition(definition)
-
             # Only copy the value when this extruder doesn't have the value.
             if self.definitionChanges.hasProperty(key, "value"):
                 continue
 
-            setting_value = stack.definitionChanges.getProperty(key, "value")
-            if setting_value is None:
+            # WARNING: this might be very dangerous and should be refactored ASAP!
+            #
+            # We cannot add a setting definition of "material_diameter" into the extruder's definition at runtime
+            # because all other machines which uses "fdmextruder" as the extruder definition will be affected.
+            #
+            # The problem is that single extrusion machines have their default material diameter defined in the global
+            # definitions. Now we automatically create an extruder stack for those machines using "fdmextruder"
+            # definition, which doesn't have the specific "material_diameter" and "machine_nozzle_size" defined for
+            # each machine. This results in wrong values which can be found in the MachineSettings dialog.
+            #
+            # To solve this, we put "material_diameter" back into the "fdmextruder" definition because modifying it in
+            # the extruder definition will affect all machines which uses the "fdmextruder" definition. Moreover, now
+            # we also check the value defined in the machine definition. If present, the value defined in the global
+            # stack's definition changes container will be copied. Otherwise, we will check if the default values in the
+            # machine definition and the extruder definition are the same, and if not, the default value in the machine
+            # definition will be copied to the extruder stack's definition changes.
+            #
+            setting_value_in_global_def_changes = stack.definitionChanges.getProperty(key, "value")
+            setting_value_in_global_def = stack.definition.getProperty(key, "value")
+            setting_value = setting_value_in_global_def
+            if setting_value_in_global_def_changes is not None:
+                setting_value = setting_value_in_global_def_changes
+            if setting_value == self.definition.getProperty(key, "value"):
                 continue
 
             setting_definition = stack.getSettingDefinition(key)
@@ -83,8 +98,11 @@ class ExtruderStack(CuraContainerStack):
 
             # Make sure the material diameter is up to date for the extruder stack.
             if key == "material_diameter":
+                from cura.CuraApplication import CuraApplication
+                machine_manager = CuraApplication.getInstance().getMachineManager()
                 position = self.getMetaDataEntry("position", "0")
-                Application.getInstance().getExtruderManager().updateMaterialForDiameter(position)
+                func = lambda p = position: CuraApplication.getInstance().getExtruderManager().updateMaterialForDiameter(p)
+                machine_manager.machine_extruder_material_update_dict[stack.getId()].append(func)
 
             # NOTE: We cannot remove the setting from the global stack's definition changes container because for
             # material diameter, it needs to be applied to all extruders, but here we don't know how many extruders
