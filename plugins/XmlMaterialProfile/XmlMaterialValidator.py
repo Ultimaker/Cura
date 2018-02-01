@@ -20,12 +20,6 @@ class XmlMaterialValidator():
         if validation_metadata.get("version") is None:
             return "Missing Version"
 
-        if validation_metadata.get("description") is None:
-            return "Missing Description"
-
-        if validation_metadata.get("adhesion_info") is None:
-            return "Missing Adhesion Info"
-
         return None
 
 
