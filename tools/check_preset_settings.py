@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 import configparser
 import json
 import os
