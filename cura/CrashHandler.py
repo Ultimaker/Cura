@@ -66,7 +66,7 @@ class CrashHandler:
             for part in line.rstrip("\n").split("\n"):
                 Logger.log("c", part)
 
-        if not CuraDebugMode and exception_type not in fatal_exception_types:
+        if exception_type not in fatal_exception_types:
             return
 
         self._send_report_checkbox = None
