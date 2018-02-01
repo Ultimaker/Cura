@@ -1,10 +1,9 @@
 #Copyright (c) 2018 Ultimaker B.V.
 #Cura is released under the terms of the LGPLv3 or higher.
 
-from charon.VirtualFile import VirtualFile #To open UFP files.
-from charon.OpenMode import OpenMode #To indicate that we want to write to UFP files.
-from io import BytesIO, StringIO #For converting g-code to bytes.
-import os.path #To get the placeholder kitty icon.
+from Charon.VirtualFile import VirtualFile #To open UFP files.
+from Charon.OpenMode import OpenMode #To indicate that we want to write to UFP files.
+from io import StringIO #For converting g-code to bytes.
 
 from UM.Application import Application
 from UM.Logger import Logger
