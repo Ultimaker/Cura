@@ -16,23 +16,19 @@ class Snapshot:
     @staticmethod
     def snapshot(width = 300, height = 300):
         scene = Application.getInstance().getController().getScene()
-        cam = scene.getActiveCamera()
-        render_width, render_height = cam.getWindowSize()
-        pp = PreviewPass(render_width, render_height)
+        active_camera = scene.getActiveCamera()
+        render_width, render_height = active_camera.getWindowSize()
+        preview_pass = PreviewPass(render_width, render_height)
 
         root = scene.getRoot()
         camera = Camera("snapshot", root)
 
         # determine zoom and look at
-        bbox = None
+        bbox = AxisAlignedBox()
         for node in DepthFirstIterator(root):
             if node.callDecoration("isSliceable") and node.getMeshData() and node.isVisible():
-                if bbox is None:
-                    bbox = node.getBoundingBox()
-                else:
-                    bbox = bbox + node.getBoundingBox()
-        if bbox is None:
-            bbox = AxisAlignedBox()
+                bbox = bbox + node.getBoundingBox()
+
         look_at = bbox.center
         size = max(bbox.width, bbox.height, bbox.depth * 0.5)
 
@@ -52,10 +48,10 @@ class Snapshot:
 
         camera.setProjectionMatrix(projection_matrix)
 
-        pp.setCamera(camera)
-        pp.setSize(render_width, render_height)  # texture size
-        pp.render()
-        pixel_output = pp.getOutput()
+        preview_pass.setCamera(camera)
+        preview_pass.setSize(render_width, render_height)  # texture size
+        preview_pass.render()
+        pixel_output = preview_pass.getOutput()
 
         # It's a bit annoying that window size has to be taken into account
         if pixel_output.width() >= pixel_output.height():
@@ -70,5 +66,3 @@ class Snapshot:
             cropped_image = image.copy(0, image.height() // 2 - height // 2, width, height)
 
         return cropped_image
-        # if cropped_image.save("/home/jack/preview.png"):
-        #     print("yooo")
