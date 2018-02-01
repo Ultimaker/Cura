@@ -9,6 +9,7 @@ from UM.Application import Application
 from UM.Resources import Resources
 from UM.Logger import Logger
 
+
 class AutoSave(Extension):
     def __init__(self):
         super().__init__()
@@ -16,8 +17,6 @@ class AutoSave(Extension):
         Preferences.getInstance().preferenceChanged.connect(self._triggerTimer)
 
         self._global_stack = None
-        Application.getInstance().globalContainerStackChanged.connect(self._onGlobalStackChanged)
-        self._onGlobalStackChanged()
 
         Preferences.getInstance().addPreference("cura/autosave_delay", 1000 * 10)
 
@@ -27,6 +26,21 @@ class AutoSave(Extension):
         self._change_timer.timeout.connect(self._onTimeout)
 
         self._saving = False
+
+        # At this point, the Application instance has not finished its constructor call yet, so directly using something
+        # like Application.getInstance() is not correct. The initialisation now will only gets triggered after the
+        # application finishes its start up successfully.
+        from cura.CuraApplication import applicationStarted
+        applicationStarted.connect(self.initialize)
+
+    def initialize(self):
+        from cura.CuraApplication import applicationStarted
+        applicationStarted.disconnect(self.initialize)
+
+        Application.getInstance().globalContainerStackChanged.connect(self._onGlobalStackChanged)
+        self._onGlobalStackChanged()
+
+        self._triggerTimer()
 
     def _triggerTimer(self, *args):
         if not self._saving:

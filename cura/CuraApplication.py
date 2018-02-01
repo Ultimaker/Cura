@@ -106,6 +106,14 @@ if not MYPY:
         CuraDebugMode = False
 
 
+#
+# A global signal which is triggered when CuraApplication has finished its start up.
+# This is used to initialise some plugins such as AutoSave which should only be started after the application passed
+# the start up successfully.
+#
+applicationStarted = pyqtSignal()
+
+
 class CuraApplication(QtApplication):
     # SettingVersion represents the set of settings available in the machine/extruder definitions.
     # You need to make sure that this version number needs to be increased if there is any non-backwards-compatible
