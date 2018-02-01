@@ -1115,8 +1115,9 @@ class CuraApplication(QtApplication):
             Selection.add(node)
 
     ##  Delete all nodes containing mesh data in the scene.
+    #   \param only_selectable. Set this to False to delete objects from all build plates
     @pyqtSlot()
-    def deleteAll(self):
+    def deleteAll(self, only_selectable = True):
         Logger.log("i", "Clearing scene")
         if not self.getController().getToolsEnabled():
             return
@@ -1127,7 +1128,9 @@ class CuraApplication(QtApplication):
                 continue
             if (not node.getMeshData() and not node.callDecoration("getLayerData")) and not node.callDecoration("isGroup"):
                 continue  # Node that doesnt have a mesh and is not a group.
-            if not node.isSelectable():
+            if only_selectable and not node.isSelectable():
+                continue
+            if not node.callDecoration("isSliceable") and not node.callDecoration("getLayerData") and not node.callDecoration("isGroup"):
                 continue  # Only remove nodes that are selectable.
             if node.getParent() and node.getParent().callDecoration("isGroup"):
                 continue  # Grouped nodes don't need resetting as their parent (the group) is resetted)
@@ -1138,15 +1141,11 @@ class CuraApplication(QtApplication):
             for node in nodes:
                 op.addOperation(RemoveSceneNodeOperation(node))
 
+                # Reset the print information
+                self.getController().getScene().sceneChanged.emit(node)
+
             op.push()
             Selection.clear()
-
-        # Reset the print information:
-        self.getController().getScene().sceneChanged.emit(node)
-        # self._print_information.setToZeroPrintInformation(self.getBuildPlateModel().activeBuildPlate)
-
-        # stay on the same build plate
-        #self.getCuraSceneController().setActiveBuildPlate(0)  # Select first build plate
 
     ## Reset all translation on nodes with mesh data.
     @pyqtSlot()
@@ -1507,7 +1506,7 @@ class CuraApplication(QtApplication):
 
         self._currently_loading_files.append(f)
         if extension in self._non_sliceable_extensions:
-            self.deleteAll()
+            self.deleteAll(only_selectable = False)
 
         job = ReadMeshJob(f)
         job.finished.connect(self._readMeshFinished)

@@ -3,6 +3,7 @@
 
 from typing import Any, TYPE_CHECKING, Optional
 
+from UM.Application import Application
 from UM.Decorators import override
 from UM.MimeTypeDatabase import MimeType, MimeTypeDatabase
 from UM.Settings.ContainerStack import ContainerStack
@@ -55,15 +56,20 @@ class ExtruderStack(CuraContainerStack):
         # carried to the first extruder.
         # For material diameter, it was supposed to be applied to all extruders, so its value should be copied to all
         # extruders.
-        #
-        keys_to_copy = ["material_diameter"]  # material diameter will be copied to all extruders
-        if self.getMetaDataEntry("position") == "0":
-            keys_to_copy.append("machine_nozzle_size")
+
+        keys_to_copy = ["material_diameter", "machine_nozzle_size"]  # these will be copied over to all extruders
 
         for key in keys_to_copy:
+            # Since material_diameter is not on the extruder definition, we need to add it here
+            # WARNING: this might be very dangerous and should be refactored ASAP!
+            definition = stack.getSettingDefinition(key)
+            if definition:
+                self.definition.addDefinition(definition)
+
             # Only copy the value when this extruder doesn't have the value.
             if self.definitionChanges.hasProperty(key, "value"):
                 continue
+
             setting_value = stack.definitionChanges.getProperty(key, "value")
             if setting_value is None:
                 continue
@@ -74,6 +80,11 @@ class ExtruderStack(CuraContainerStack):
             new_instance.resetState()  # Ensure that the state is not seen as a user state.
             self.definitionChanges.addInstance(new_instance)
             self.definitionChanges.setDirty(True)
+
+            # Make sure the material diameter is up to date for the extruder stack.
+            if key == "material_diameter":
+                position = self.getMetaDataEntry("position", "0")
+                Application.getInstance().getExtruderManager().updateMaterialForDiameter(position)
 
             # NOTE: We cannot remove the setting from the global stack's definition changes container because for
             # material diameter, it needs to be applied to all extruders, but here we don't know how many extruders

@@ -485,7 +485,7 @@ Item
                 }
             }
 
-            // Gradient colors for layer thickness
+            // Gradient colors for layer thickness (similar to parula colormap)
             Rectangle { // In QML 5.9 can be changed by LinearGradient
                 // Invert values because then the bar is rotated 90 degrees
                 id: thicknessGradient
@@ -499,23 +499,23 @@ Item
                 gradient: Gradient {
                     GradientStop {
                         position: 0.000
-                        color: Qt.rgba(1, 0, 0, 1)
+                        color: Qt.rgba(1, 1, 0, 1)
                     }
                     GradientStop {
                         position: 0.25
-                        color: Qt.rgba(0.5, 0.5, 0, 1)
+                        color: Qt.rgba(1, 0.75, 0.25, 1)
                     }
                     GradientStop {
                         position: 0.5
-                        color: Qt.rgba(0, 1, 0, 1)
+                        color: Qt.rgba(0, 0.75, 0.5, 1)
                     }
                     GradientStop {
                         position: 0.75
-                        color: Qt.rgba(0, 0.5, 0.5, 1)
+                        color: Qt.rgba(0, 0.375, 0.75, 1)
                     }
                     GradientStop {
                         position: 1.0
-                        color: Qt.rgba(0, 0, 1, 1)
+                        color: Qt.rgba(0, 0, 0.5, 1)
                     }
                 }
             }

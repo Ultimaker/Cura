@@ -195,7 +195,8 @@ class BuildVolume(SceneNode):
 
         return True
 
-    ##  For every sliceable node, update outsideBuildArea
+    ##  For every sliceable node, update node._outside_buildarea
+    #
     def updateNodeBoundaryCheck(self):
         root = Application.getInstance().getController().getScene().getRoot()
         nodes = list(BreadthFirstIterator(root))
@@ -212,7 +213,29 @@ class BuildVolume(SceneNode):
 
         for node in nodes:
             # Need to check group nodes later
-            self.checkBoundsAndUpdate(node, bounds = build_volume_bounding_box)
+            if node.callDecoration("isGroup"):
+                group_nodes.append(node)  # Keep list of affected group_nodes
+
+            if node.callDecoration("isSliceable") or node.callDecoration("isGroup"):
+                node._outside_buildarea = False
+                bbox = node.getBoundingBox()
+
+                # Mark the node as outside the build volume if the bounding box test fails.
+                if build_volume_bounding_box.intersectsBox(bbox) != AxisAlignedBox.IntersectionResult.FullIntersection:
+                    node._outside_buildarea = True
+                    continue
+
+                convex_hull = node.callDecoration("getConvexHull")
+                if convex_hull:
+                    if not convex_hull.isValid():
+                        return
+                    # Check for collisions between disallowed areas and the object
+                    for area in self.getDisallowedAreas():
+                        overlap = convex_hull.intersectsPolygon(area)
+                        if overlap is None:
+                            continue
+                        node._outside_buildarea = True
+                        continue
 
         # Group nodes should override the _outside_buildarea property of their children.
         for group_node in group_nodes:

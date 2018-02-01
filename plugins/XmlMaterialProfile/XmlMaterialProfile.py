@@ -17,6 +17,8 @@ import UM.Dictionary
 from UM.Settings.InstanceContainer import InstanceContainer
 from UM.Settings.ContainerRegistry import ContainerRegistry
 
+from .XmlMaterialValidator import XmlMaterialValidator
+
 ##  Handles serializing and deserializing material containers from an XML file
 class XmlMaterialProfile(InstanceContainer):
     CurrentFdmMaterialVersion = "1.3"
@@ -480,6 +482,10 @@ class XmlMaterialProfile(InstanceContainer):
         if "adhesion_info" not in meta_data:
             meta_data["adhesion_info"] = ""
 
+        validation_message = XmlMaterialValidator.validateMaterialMetaData(meta_data)
+        if validation_message is not None:
+            raise Exception("Not valid material profile: %s" % (validation_message))
+
         property_values = {}
         properties = data.iterfind("./um:properties/*", self.__namespaces)
         for entry in properties:
@@ -541,7 +547,6 @@ class XmlMaterialProfile(InstanceContainer):
                         Logger.log("w", "No definition found for machine ID %s", machine_id)
                         continue
 
-                    Logger.log("d", "Found definition for machine ID %s", machine_id)
                     definition = definitions[0]
 
                     machine_manufacturer = identifier.get("manufacturer", definition.get("manufacturer", "Unknown")) #If the XML material doesn't specify a manufacturer, use the one in the actual printer definition.

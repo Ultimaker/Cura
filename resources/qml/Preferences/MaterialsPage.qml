@@ -301,7 +301,7 @@ UM.ManagementPage
             folder: CuraApplication.getDefaultPath("dialog_material_path")
             onAccepted:
             {
-                var result = Cura.ContainerManager.importContainer(fileUrl)
+                var result = Cura.ContainerManager.importMaterialContainer(fileUrl)
 
                 messageDialog.title = catalog.i18nc("@title:window", "Import Material")
                 messageDialog.text = catalog.i18nc("@info:status Don't translate the XML tags <filename> or <message>!", "Could not import material <filename>%1</filename>: <message>%2</message>").arg(fileUrl).arg(result.message)

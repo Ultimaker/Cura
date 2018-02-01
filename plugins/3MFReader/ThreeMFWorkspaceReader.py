@@ -31,8 +31,40 @@ import zipfile
 import io
 import configparser
 import os
+import threading
 
 i18n_catalog = i18nCatalog("cura")
+
+
+#
+# HACK:
+#
+# In project loading, when override the existing machine is selected, the stacks and containers that are correctly
+# active in the system will be overridden at runtime. Because the project loading is done in a different thread than
+# the Qt thread, something else can kick in the middle of the process. One of them is the rendering. It will access
+# the current stacks and container, which have not completely been updated yet, so Cura will crash in this case.
+#
+# This "@call_on_qt_thread" decorator makes sure that a function will always be called on the Qt thread (blocking).
+# It is applied to the read() function of project loading so it can be guaranteed that only after the project loading
+# process is completely done, everything else that needs to occupy the QT thread will be executed.
+#
+class InterCallObject:
+    def __init__(self):
+        self.finish_event = threading.Event()
+        self.result = None
+
+
+def call_on_qt_thread(func):
+    def _call_on_qt_thread_wrapper(*args, **kwargs):
+        def _handle_call(ico, *args, **kwargs):
+            ico.result = func(*args, **kwargs)
+            ico.finish_event.set()
+        inter_call_object = InterCallObject()
+        new_args = tuple([inter_call_object] + list(args)[:])
+        CuraApplication.getInstance().callLater(_handle_call, *new_args, **kwargs)
+        inter_call_object.finish_event.wait()
+        return inter_call_object.result
+    return _call_on_qt_thread_wrapper
 
 
 ##    Base implementation for reading 3MF workspace files.
@@ -401,6 +433,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
     #   containing global.cfg / extruder.cfg
     #
     #   \param file_name
+    @call_on_qt_thread
     def read(self, file_name):
         archive = zipfile.ZipFile(file_name, "r")
 
@@ -526,6 +559,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         instance_container_files = [name for name in cura_file_names if name.endswith(self._instance_container_suffix)]
         user_instance_containers = []
         quality_and_definition_changes_instance_containers = []
+        quality_changes_instance_containers = []
         for instance_container_file in instance_container_files:
             container_id = self._stripFileToId(instance_container_file)
             serialized = archive.open(instance_container_file).read().decode("utf-8")
@@ -631,6 +665,8 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                         # The ID already exists, but nothing in the values changed, so do nothing.
                         pass
                 quality_and_definition_changes_instance_containers.append(instance_container)
+                if container_type == "quality_changes":
+                    quality_changes_instance_containers.append(instance_container)
 
                 if container_type == "definition_changes":
                     definition_changes_extruder_count = instance_container.getProperty("machine_extruder_count", "value")
@@ -686,7 +722,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                 stack.setName(global_stack_name_new)
 
                 container_stacks_added.append(stack)
-                self._container_registry.addContainer(stack)
+                # self._container_registry.addContainer(stack)
                 containers_added.append(stack)
             else:
                 Logger.log("e", "Resolve strategy of %s for machine is not supported", self._resolve_strategies["machine"])
@@ -704,6 +740,9 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             return
 
         # load extruder stack files
+        has_extruder_stack_files = len(extruder_stack_files) > 0
+        empty_quality_container = self._container_registry.findInstanceContainers(id = "empty_quality")[0]
+        empty_quality_changes_container = self._container_registry.findInstanceContainers(id = "empty_quality_changes")[0]
         try:
             for extruder_stack_file in extruder_stack_files:
                 container_id = self._stripFileToId(extruder_stack_file)
@@ -752,25 +791,33 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             # If not extruder stacks were saved in the project file (pre 3.1) create one manually
             # We re-use the container registry's addExtruderStackForSingleExtrusionMachine method for this
             if not extruder_stacks:
-                if self._resolve_strategies["machine"] == "new":
-                    stack = self._container_registry.addExtruderStackForSingleExtrusionMachine(global_stack, "fdmextruder")
+                # If we choose to override a machine but to create a new custom quality profile, the custom quality
+                # profile is not immediately applied to the global_stack, so this fix for single extrusion machines
+                # will use the current custom quality profile on the existing machine. The extra optional argument
+                # in that function is used in this case to specify a new global stack quality_changes container so
+                # the fix can correctly create and copy over the custom quality settings to the newly created extruder.
+                new_global_quality_changes = None
+                if self._resolve_strategies["quality_changes"] == "new" and len(quality_changes_instance_containers) > 0:
+                    new_global_quality_changes = quality_changes_instance_containers[0]
+
+                # Depending if the strategy is to create a new or override, the ids must be or not be unique
+                stack = self._container_registry.addExtruderStackForSingleExtrusionMachine(global_stack, "fdmextruder",
+                                                                                           new_global_quality_changes,
+                                                                                           create_new_ids = self._resolve_strategies["machine"] == "new")
+                if new_global_quality_changes is not None:
+                    quality_changes_instance_containers.append(stack.qualityChanges)
+                    quality_and_definition_changes_instance_containers.append(stack.qualityChanges)
+                if global_stack.quality.getId() in ("empty", "empty_quality"):
+                    stack.quality = empty_quality_container
+                if self._resolve_strategies["machine"] == "override":
+                    # in case the extruder is newly created (for a single-extrusion machine), we need to override
+                    # the existing extruder stack.
+                    existing_extruder_stack = global_stack.extruders[stack.getMetaDataEntry("position")]
+                    for idx in range(len(_ContainerIndexes.IndexTypeMap)):
+                        existing_extruder_stack.replaceContainer(idx, stack._containers[idx], postpone_emit = True)
+                    extruder_stacks.append(existing_extruder_stack)
                 else:
-                    stack = global_stack.extruders.get("0")
-                    if not stack:
-                        # this should not happen
-                        Logger.log("e", "Cannot find any extruder in an existing global stack [%s].", global_stack.getId())
-                if stack:
-                    if global_stack.quality.getId() in ("empty", "empty_quality"):
-                        stack.quality = empty_quality_container
-                    if self._resolve_strategies["machine"] == "override":
-                        # in case the extruder is newly created (for a single-extrusion machine), we need to override
-                        # the existing extruder stack.
-                        existing_extruder_stack = global_stack.extruders[stack.getMetaDataEntry("position")]
-                        for idx in range(len(_ContainerIndexes.IndexTypeMap)):
-                            existing_extruder_stack.replaceContainer(idx, stack._containers[idx], postpone_emit = True)
-                        extruder_stacks.append(existing_extruder_stack)
-                    else:
-                        extruder_stacks.append(stack)
+                    extruder_stacks.append(stack)
 
         except:
             Logger.logException("w", "We failed to serialize the stack. Trying to clean up.")
@@ -779,6 +826,11 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                 self._container_registry.removeContainer(container.getId())
             return
 
+        ## In case there is a new machine and once the extruders are created, the global stack is added to the registry,
+        # otherwise the accContainers function in CuraContainerRegistry will create an extruder stack and then creating
+        # useless files
+        if self._resolve_strategies["machine"] == "new":
+            self._container_registry.addContainer(global_stack)
 
         # Check quality profiles to make sure that if one stack has the "not supported" quality profile,
         # all others should have the same.
@@ -811,17 +863,12 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         quality_has_been_changed = False
 
         if has_not_supported:
-            empty_quality_container = self._container_registry.findInstanceContainers(id = "empty_quality")[0]
             for stack in [global_stack] + extruder_stacks_in_use:
                 stack.replaceContainer(_ContainerIndexes.Quality, empty_quality_container)
-            empty_quality_changes_container = self._container_registry.findInstanceContainers(id = "empty_quality_changes")[0]
-            for stack in [global_stack] + extruder_stacks_in_use:
                 stack.replaceContainer(_ContainerIndexes.QualityChanges, empty_quality_changes_container)
             quality_has_been_changed = True
 
         else:
-            empty_quality_changes_container = self._container_registry.findInstanceContainers(id="empty_quality_changes")[0]
-
             # The machine in the project has non-empty quality and there are usable qualities for this machine.
             # We need to check if the current quality_type is still usable for this machine, if not, then the quality
             # will be reset to the "preferred quality" if present, otherwise "normal".
@@ -932,9 +979,10 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
 
                     # sanity checks
                     # NOTE: The following cases SHOULD NOT happen!!!!
-                    if not old_container:
+                    if old_container.getId() in ("empty_quality_changes", "empty_definition_changes", "empty"):
                         Logger.log("e", "We try to get [%s] from the global stack [%s] but we got None instead!",
                                    changes_container_type, global_stack.getId())
+                        continue
 
                     # Replace the quality/definition changes container if it's in the GlobalStack
                     # NOTE: we can get an empty container here, but the IDs will not match,
@@ -947,26 +995,29 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                         continue
 
                     # Replace the quality/definition changes container if it's in one of the ExtruderStacks
-                    for each_extruder_stack in extruder_stacks:
-                        changes_container = None
-                        if changes_container_type == "quality_changes":
-                            changes_container = each_extruder_stack.qualityChanges
-                        elif changes_container_type == "definition_changes":
-                            changes_container = each_extruder_stack.definitionChanges
-
-                        # sanity checks
-                        # NOTE: The following cases SHOULD NOT happen!!!!
-                        if not changes_container:
-                            Logger.log("e", "We try to get [%s] from the extruder stack [%s] but we got None instead!",
-                                       changes_container_type, each_extruder_stack.getId())
-
-                        # NOTE: we can get an empty container here, but the IDs will not match,
-                        # so this comparison is fine.
-                        if self._id_mapping.get(changes_container.getId()) == new_id:
+                    # Only apply the change if we have loaded extruder stacks from the project
+                    if has_extruder_stack_files:
+                        for each_extruder_stack in extruder_stacks:
+                            changes_container = None
                             if changes_container_type == "quality_changes":
-                                each_extruder_stack.qualityChanges = each_changes_container
+                                changes_container = each_extruder_stack.qualityChanges
                             elif changes_container_type == "definition_changes":
-                                each_extruder_stack.definitionChanges = each_changes_container
+                                changes_container = each_extruder_stack.definitionChanges
+
+                            # sanity checks
+                            # NOTE: The following cases SHOULD NOT happen!!!!
+                            if changes_container.getId() in ("empty_quality_changes", "empty_definition_changes", "empty"):
+                                Logger.log("e", "We try to get [%s] from the extruder stack [%s] but we got None instead!",
+                                           changes_container_type, each_extruder_stack.getId())
+                                continue
+
+                            # NOTE: we can get an empty container here, but the IDs will not match,
+                            # so this comparison is fine.
+                            if self._id_mapping.get(changes_container.getId()) == new_id:
+                                if changes_container_type == "quality_changes":
+                                    each_extruder_stack.qualityChanges = each_changes_container
+                                elif changes_container_type == "definition_changes":
+                                    each_extruder_stack.definitionChanges = each_changes_container
 
         if self._resolve_strategies["material"] == "new":
             # the actual material instance container can have an ID such as
@@ -1002,8 +1053,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                 stack.setNextStack(global_stack)
                 stack.containersChanged.emit(stack.getTop())
         else:
-            if quality_has_been_changed:
-                CuraApplication.getInstance().getMachineManager().activeQualityChanged.emit()
+            CuraApplication.getInstance().getMachineManager().activeQualityChanged.emit()
 
         # Actually change the active machine.
         Application.getInstance().setGlobalContainerStack(global_stack)
