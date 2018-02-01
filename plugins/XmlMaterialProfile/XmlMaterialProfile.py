@@ -482,7 +482,7 @@ class XmlMaterialProfile(InstanceContainer):
         if "adhesion_info" not in meta_data:
             meta_data["adhesion_info"] = ""
 
-        validation_message = XmlMaterialValidator.validateMaterialMetaDate(meta_data)
+        validation_message = XmlMaterialValidator.validateMaterialMetaData(meta_data)
         if validation_message is not None:
             raise Exception("Not valid material profile: %s" % (validation_message))
 

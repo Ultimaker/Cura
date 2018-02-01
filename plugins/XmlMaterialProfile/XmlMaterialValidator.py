@@ -6,7 +6,7 @@
 class XmlMaterialValidator():
 
     @classmethod
-    def validateMaterialMetaDate(cls, validation_metadata):
+    def validateMaterialMetaData(cls, validation_metadata):
 
         if validation_metadata.get("GUID") is None:
             return "Missing GUID"
