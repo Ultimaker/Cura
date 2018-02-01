@@ -66,7 +66,10 @@ class CrashHandler:
             for part in line.rstrip("\n").split("\n"):
                 Logger.log("c", part)
 
-        if exception_type not in fatal_exception_types:
+        # If Cura has fully started, we only show fatal errors.
+        # If Cura has not fully started yet, we always show the early crash dialog. Otherwise, Cura will just crash
+        # without any information.
+        if has_started and exception_type not in fatal_exception_types:
             return
 
         self._send_report_checkbox = None
