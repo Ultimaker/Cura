@@ -108,6 +108,7 @@ def exceptHook(hook_type, value, traceback):
             sys.exit(1)
     else:
         application = QApplication(sys.argv)
+        application.removePostedEvents(None)
         _crash_handler = CrashHandler(hook_type, value, traceback, has_started)
         _crash_handler.early_crash_dialog.show()
         sys.exit(application.exec_())

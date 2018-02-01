@@ -30,12 +30,21 @@ class AutoSave(Extension):
         # At this point, the Application instance has not finished its constructor call yet, so directly using something
         # like Application.getInstance() is not correct. The initialisation now will only gets triggered after the
         # application finishes its start up successfully.
-        from cura.CuraApplication import applicationStarted
-        applicationStarted.connect(self.initialize)
+        self._init_timer = QTimer()
+        self._init_timer.setInterval(1000)
+        self._init_timer.setSingleShot(True)
+        self._init_timer.timeout.connect(self.initialize)
+        self._init_timer.start()
 
     def initialize(self):
-        from cura.CuraApplication import applicationStarted
-        applicationStarted.disconnect(self.initialize)
+        # only initialise if the application is created and has started
+        from cura.CuraApplication import CuraApplication
+        if not CuraApplication.Created:
+            self._init_timer.start()
+            return
+        if not CuraApplication.getInstance().started:
+            self._init_timer.start()
+            return
 
         Application.getInstance().globalContainerStackChanged.connect(self._onGlobalStackChanged)
         self._onGlobalStackChanged()
