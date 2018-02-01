@@ -30,7 +30,7 @@ class Snapshot:
                 if bbox is None:
                     bbox = node.getBoundingBox()
                 else:
-                    bbox += node.getBoundingBox()
+                    bbox = bbox + node.getBoundingBox()
         if bbox is None:
             bbox = AxisAlignedBox()
         look_at = bbox.center
