@@ -24,10 +24,15 @@ class Snapshot:
         camera = Camera("snapshot", root)
 
         # determine zoom and look at
-        bbox = AxisAlignedBox()
+        bbox = None
         for node in DepthFirstIterator(root):
             if node.callDecoration("isSliceable") and node.getMeshData() and node.isVisible():
-                bbox = bbox + node.getBoundingBox()
+                if bbox is None:
+                    bbox = node.getBoundingBox()
+                else:
+                    bbox = bbox + node.getBoundingBox()
+        if bbox is None:
+            bbox = AxisAlignedBox()
 
         look_at = bbox.center
         size = max(bbox.width, bbox.height, bbox.depth * 0.5)
