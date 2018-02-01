@@ -40,7 +40,6 @@ class CuraSceneNode(SceneNode):
 
         # It's only set if you explicitly choose an extruder
         extruder_id = self.callDecoration("getActiveExtruder")
-        print(extruder_id)
 
         for extruder in extruders:
             # Find out the extruder if we know the id.
