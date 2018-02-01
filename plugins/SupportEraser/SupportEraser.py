@@ -34,8 +34,6 @@ class SupportEraser(Tool):
             self.getController().setActiveTool(None)
 
     def _createEraserMesh(self):
-        # Selection.clear()
-
         node = CuraSceneNode()
 
         node.setName("Eraser")
@@ -55,7 +53,6 @@ class SupportEraser(Tool):
             node.addDecorator(SettingOverrideDecorator())
             stack = node.callDecoration("getStack")
 
-        print(stack)
         settings = stack.getTop()
 
         if not (settings.getInstance("anti_overhang_mesh") and settings.getProperty("anti_overhang_mesh", "value")):
