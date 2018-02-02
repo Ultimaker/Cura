@@ -297,7 +297,6 @@ class PluginBrowser(QObject, Extension):
         for plugin in self._plugins_model.items:
             if self._checkCanUpgrade(plugin["id"], plugin["version"]):
                 plugin["can_upgrade"] = True
-                print(self._plugins_metadata)
 
                 for item in self._plugins_metadata:
                     if item["id"] == plugin["id"]:
