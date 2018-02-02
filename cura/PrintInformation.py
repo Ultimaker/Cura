@@ -362,10 +362,10 @@ class PrintInformation(QObject):
         if not global_container_stack:
             self._abbr_machine = ""
             return
-        active_machine_id = Preferences.getInstance().getValue("cura/active_machine")
+        active_machine_type_id = global_container_stack.definition.getId()
 
         abbr_machine = ""
-        for word in re.findall(r"[\w']+", active_machine_id):
+        for word in re.findall(r"[\w']+", active_machine_type_id):
             if word.lower() == "ultimaker":
                 abbr_machine += "UM"
             elif word.isdigit():
