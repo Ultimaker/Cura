@@ -1,6 +1,7 @@
 # Copyright (c) 2017 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
+import collections
 import time
 #Type hinting.
 from typing import Union, List, Dict
@@ -50,6 +51,8 @@ class MachineManager(QObject):
 
         self._active_container_stack = None     # type: CuraContainerStack
         self._global_container_stack = None     # type: GlobalStack
+
+        self.machine_extruder_material_update_dict = collections.defaultdict(list)
 
         # Used to store the new containers until after confirming the dialog
         self._new_variant_container = None
@@ -333,6 +336,11 @@ class MachineManager(QObject):
             for extruder_stack in ExtruderManager.getInstance().getActiveExtruderStacks():
                 extruder_stack.propertyChanged.connect(self._onPropertyChanged)
                 extruder_stack.containersChanged.connect(self._onInstanceContainersChanged)
+
+            if self._global_container_stack.getId() in self.machine_extruder_material_update_dict:
+                for func in self.machine_extruder_material_update_dict[self._global_container_stack.getId()]:
+                    Application.getInstance().callLater(func)
+                del self.machine_extruder_material_update_dict[self._global_container_stack.getId()]
 
         self._error_check_timer.start()
 

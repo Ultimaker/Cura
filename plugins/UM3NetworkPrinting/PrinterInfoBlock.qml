@@ -413,7 +413,7 @@ Rectangle
                           {
                               if(printJob.state == "printing" || printJob.state == "post_print")
                               {
-                                  return OutputDevice.getDateCompleted(printJob.time_total - printJob.time_elapsed)
+                                  return OutputDevice.getDateCompleted(printJob.timeTotal - printJob.timeElapsed)
                               }
                           }
                           return "";

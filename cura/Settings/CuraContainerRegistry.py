@@ -208,7 +208,7 @@ class CuraContainerRegistry(ContainerRegistry):
             except Exception as e:
                 # Note that this will fail quickly. That is, if any profile reader throws an exception, it will stop reading. It will only continue reading if the reader returned None.
                 Logger.log("e", "Failed to import profile from %s: %s while using profile reader. Got exception %s", file_name,profile_reader.getPluginId(), str(e))
-                return { "status": "error", "message": catalog.i18nc("@info:status Don't translate the XML tags <filename> or <message>!", "Failed to import profile from <filename>{0}</filename>: <message>{1}</message>", file_name, str(e))}
+                return { "status": "error", "message": catalog.i18nc("@info:status Don't translate the XML tags <filename> or <message>!", "Failed to import profile from <filename>{0}</filename>: <message>{1}</message>", file_name, "\n" + str(e))}
 
             if profile_or_list:
                 # Ensure it is always a list of profiles
@@ -245,6 +245,41 @@ class CuraContainerRegistry(ContainerRegistry):
                 # Ensure it is always a list of profiles
                 if type(profile_or_list) is not list:
                     profile_or_list = [profile_or_list]
+
+                # Make sure that there are also extruder stacks' quality_changes, not just one for the global stack
+                if len(profile_or_list) == 1:
+                    global_profile = profile_or_list[0]
+                    extruder_profiles = []
+                    for idx, extruder in enumerate(global_container_stack.extruders.values()):
+                        profile_id = ContainerRegistry.getInstance().uniqueName(global_container_stack.getId() + "_extruder_" + str(idx + 1))
+                        profile = InstanceContainer(profile_id)
+                        profile.setName(global_profile.getName())
+                        profile.addMetaDataEntry("setting_version", CuraApplication.SettingVersion)
+                        profile.addMetaDataEntry("type", "quality_changes")
+                        profile.addMetaDataEntry("definition", global_profile.getMetaDataEntry("definition"))
+                        profile.addMetaDataEntry("quality_type", global_profile.getMetaDataEntry("quality_type"))
+                        profile.addMetaDataEntry("extruder", extruder.getId())
+                        profile.setDirty(True)
+                        if idx == 0:
+                            # move all per-extruder settings to the first extruder's quality_changes
+                            for qc_setting_key in global_profile.getAllKeys():
+                                settable_per_extruder = global_container_stack.getProperty(qc_setting_key,
+                                                                                           "settable_per_extruder")
+                                if settable_per_extruder:
+                                    setting_value = global_profile.getProperty(qc_setting_key, "value")
+
+                                    setting_definition = global_container_stack.getSettingDefinition(qc_setting_key)
+                                    new_instance = SettingInstance(setting_definition, profile)
+                                    new_instance.setProperty("value", setting_value)
+                                    new_instance.resetState()  # Ensure that the state is not seen as a user state.
+                                    profile.addInstance(new_instance)
+                                    profile.setDirty(True)
+
+                                    global_profile.removeInstance(qc_setting_key, postpone_emit=True)
+                        extruder_profiles.append(profile)
+
+                    for profile in extruder_profiles:
+                        profile_or_list.append(profile)
 
                 # Import all profiles
                 for profile_index, profile in enumerate(profile_or_list):
@@ -296,7 +331,7 @@ class CuraContainerRegistry(ContainerRegistry):
         profile.setDirty(True)  # Ensure the profiles are correctly saved
 
         new_id = self.createUniqueName("quality_changes", "", id_seed, catalog.i18nc("@label", "Custom profile"))
-        profile._id = new_id
+        profile.setMetaDataEntry("id", new_id)
         profile.setName(new_name)
 
         # Set the unique Id to the profile, so it's generating a new one even if the user imports the same profile
@@ -454,8 +489,9 @@ class CuraContainerRegistry(ContainerRegistry):
     #      - override the current machine
     #      - create new for custom quality profile
     # new_global_quality_changes is the new global quality changes container in this scenario.
+    # create_new_ids indicates if new unique ids must be created
     #
-    def addExtruderStackForSingleExtrusionMachine(self, machine, extruder_id, new_global_quality_changes = None):
+    def addExtruderStackForSingleExtrusionMachine(self, machine, extruder_id, new_global_quality_changes = None, create_new_ids = True):
         new_extruder_id = extruder_id
 
         extruder_definitions = self.findDefinitionContainers(id = new_extruder_id)
@@ -464,7 +500,7 @@ class CuraContainerRegistry(ContainerRegistry):
             return
 
         extruder_definition = extruder_definitions[0]
-        unique_name = self.uniqueName(machine.getName() + " " + new_extruder_id)
+        unique_name = self.uniqueName(machine.getName() + " " + new_extruder_id) if create_new_ids else machine.getName() + " " + new_extruder_id
 
         extruder_stack = ExtruderStack.ExtruderStack(unique_name)
         extruder_stack.setName(extruder_definition.getName())
@@ -474,7 +510,7 @@ class CuraContainerRegistry(ContainerRegistry):
         from cura.CuraApplication import CuraApplication
 
         # create a new definition_changes container for the extruder stack
-        definition_changes_id = self.uniqueName(extruder_stack.getId() + "_settings")
+        definition_changes_id = self.uniqueName(extruder_stack.getId() + "_settings") if create_new_ids else extruder_stack.getId() + "_settings"
         definition_changes_name = definition_changes_id
         definition_changes = InstanceContainer(definition_changes_id)
         definition_changes.setName(definition_changes_name)
@@ -501,14 +537,15 @@ class CuraContainerRegistry(ContainerRegistry):
         extruder_stack.setDefinitionChanges(definition_changes)
 
         # create empty user changes container otherwise
-        user_container_id = self.uniqueName(extruder_stack.getId() + "_user")
+        user_container_id = self.uniqueName(extruder_stack.getId() + "_user") if create_new_ids else extruder_stack.getId() + "_user"
         user_container_name = user_container_id
         user_container = InstanceContainer(user_container_id)
         user_container.setName(user_container_name)
         user_container.addMetaDataEntry("type", "user")
-        user_container.addMetaDataEntry("machine", extruder_stack.getId())
+        user_container.addMetaDataEntry("machine", machine.getId())
         user_container.addMetaDataEntry("setting_version", CuraApplication.SettingVersion)
         user_container.setDefinition(machine.definition.getId())
+        user_container.setMetaDataEntry("extruder", extruder_stack.getId())
 
         if machine.userChanges:
             # for the newly created extruder stack, we need to move all "per-extruder" settings to the user changes
@@ -692,7 +729,7 @@ class CuraContainerRegistry(ContainerRegistry):
                     continue
 
                 instance_container = InstanceContainer(container_id)
-                with open(file_path, "r") as f:
+                with open(file_path, "r", encoding = "utf-8") as f:
                     serialized = f.read()
                 instance_container.deserialize(serialized, file_path)
                 self.addContainer(instance_container)

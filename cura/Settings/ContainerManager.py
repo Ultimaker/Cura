@@ -3,7 +3,7 @@
 
 import copy
 import os.path
-import urllib
+import urllib.parse
 import uuid
 from typing import Any, Dict, List, Union
 
@@ -459,7 +459,7 @@ class ContainerManager(QObject):
     #   \return \type{Dict} dict with a 'status' key containing the string 'success' or 'error', and a 'message' key
     #       containing a message for the user
     @pyqtSlot(QUrl, result = "QVariantMap")
-    def importContainer(self, file_url_or_string: Union[QUrl, str]) -> Dict[str, str]:
+    def importMaterialContainer(self, file_url_or_string: Union[QUrl, str]) -> Dict[str, str]:
         if not file_url_or_string:
             return { "status": "error", "message": "Invalid path"}
 
@@ -486,12 +486,14 @@ class ContainerManager(QObject):
         container = container_type(container_id)
 
         try:
-            with open(file_url, "rt") as f:
+            with open(file_url, "rt", encoding = "utf-8") as f:
                 container.deserialize(f.read())
         except PermissionError:
             return { "status": "error", "message": "Permission denied when trying to read the file"}
+        except Exception as ex:
+            return {"status": "error", "message": str(ex)}
 
-        container.setName(container_id)
+        container.setDirty(True)
 
         self._container_registry.addContainer(container)
 
