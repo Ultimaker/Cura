@@ -1,7 +1,7 @@
-# Copyright (c) 2017 Ultimaker B.V.
-# Uranium is released under the terms of the LGPLv3 or higher.
-
+# Copyright (c) 2018 Ultimaker B.V.
+# Cura is released under the terms of the LGPLv3 or higher.
 from UM.Application import Application
+from UM.Math.Color import Color
 from UM.Resources import Resources
 
 from UM.View.RenderPass import RenderPass
@@ -39,7 +39,11 @@ class PreviewPass(RenderPass):
 
     def render(self) -> None:
         if not self._shader:
-            self._shader = OpenGL.getInstance().createShaderProgram(Resources.getPath(Resources.Shaders, "object.shader"))
+            self._shader = OpenGL.getInstance().createShaderProgram(Resources.getPath(Resources.Shaders, "overhang.shader"))
+            self._shader.setUniformValue("u_overhangAngle", 1.0)
+
+        self._gl.glClearColor(0.0, 0.0, 0.0, 0.0)
+        self._gl.glClear(self._gl.GL_COLOR_BUFFER_BIT | self._gl.GL_DEPTH_BUFFER_BIT)
 
         # Create a new batch to be rendered
         batch = RenderBatch(self._shader)
@@ -47,7 +51,9 @@ class PreviewPass(RenderPass):
         # Fill up the batch with objects that can be sliced. `
         for node in DepthFirstIterator(self._scene.getRoot()):
             if node.callDecoration("isSliceable") and node.getMeshData() and node.isVisible():
-                batch.addItem(node.getWorldTransformation(), node.getMeshData())
+                uniforms = {}
+                uniforms["diffuse_color"] = node.getDiffuseColor()
+                batch.addItem(node.getWorldTransformation(), node.getMeshData(), uniforms = uniforms)
 
         self.bind()
         if self._camera is None:
@@ -55,3 +61,4 @@ class PreviewPass(RenderPass):
         else:
             batch.render(self._camera)
         self.release()
+
