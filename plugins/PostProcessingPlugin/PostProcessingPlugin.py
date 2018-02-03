@@ -121,7 +121,7 @@ class PostProcessingPlugin(QObject, Extension):
                 spec = importlib.util.spec_from_file_location(__name__ + "." + script_name, os.path.join(path, script_name + ".py"))
                 loaded_script = importlib.util.module_from_spec(spec)
                 spec.loader.exec_module(loaded_script)
-                sys.modules[script_name] = loaded_script
+                sys.modules[script_name] = loaded_script #TODO: This could be a security risk. Overwrite any module with a user-provided name?
 
                 loaded_class = getattr(loaded_script, script_name)
                 temp_object = loaded_class()
