@@ -39,7 +39,7 @@ class PostProcessingPlugin(QObject, Extension):
         Application.getInstance().getOutputDeviceManager().writeStarted.connect(self.execute)
         Application.getInstance().globalContainerStackChanged.connect(self._onGlobalContainerStackChanged) #When the current printer changes, update the list of scripts.
         Application.getInstance().mainWindowChanged.connect(self._createView) #When the main window is created, create the view so that we can display the post-processing icon if necessary.
-        self.scriptListChanged.connect(self._writeScriptsToStack) #Whenever there is a change, save it into the stack.
+        #self.scriptListChanged.connect(self.writeScriptsToStack) #Whenever there is a change, save it into the stack.
 
     selectedIndexChanged = pyqtSignal()
     @pyqtProperty("QVariant", notify = selectedIndexChanged)
@@ -219,7 +219,8 @@ class PostProcessingPlugin(QObject, Extension):
         self.setSelectedScriptIndex(0)
         self.scriptListChanged.emit()
 
-    def _writeScriptsToStack(self):
+    @pyqtSlot()
+    def writeScriptsToStack(self):
         script_list_strs = []
         for script in self._script_list:
             parser = configparser.ConfigParser(interpolation = None) #We'll encode the script as a config with one section. The section header is the key and its values are the settings.
