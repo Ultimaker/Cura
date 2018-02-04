@@ -190,7 +190,7 @@ class PostProcessingPlugin(QObject, Extension):
     ##  When the global container stack is changed, swap out the list of active
     #   scripts.
     def _onGlobalContainerStackChanged(self):
-        self.loadAllScripts()
+        self.loadAllScripts() #Make sure we have all scripts if we didn't have them yet.
         new_stack = Application.getInstance().getGlobalContainerStack()
         self._script_list.clear()
         if not new_stack.getMetaDataEntry("post_processing_scripts"): #Missing or empty.
@@ -202,7 +202,7 @@ class PostProcessingPlugin(QObject, Extension):
         for script_str in scripts_list_strs.split("\n"): #Encoded config files should never contain three newlines in a row. At most 2, just before section headers.
             if not script_str: #There were no scripts in this one (or a corrupt file caused more than 3 consecutive newlines here).
                 continue
-            script_str = script_str.replace("\\n", "\n").replace("\\\\", "\\")
+            script_str = script_str.replace("\\n", "\n").replace("\\\\", "\\") #Unescape escape sequences.
             script_parser = configparser.ConfigParser(interpolation = None)
             script_parser.read_string(script_str)
             for script_name, settings in script_parser.items(): #There should only be one, really! Otherwise we can't guarantee the order or allow multiple uses of the same script.
@@ -231,10 +231,10 @@ class PostProcessingPlugin(QObject, Extension):
             parser.write(serialized)
             serialized.seek(0)
             script_str = serialized.read()
-            script_str = script_str.replace("\\", "\\\\").replace("\n", "\\n")
+            script_str = script_str.replace("\\", "\\\\").replace("\n", "\\n") #Escape newlines because configparser sees those as section delimiters.
             script_list_strs.append(script_str)
 
-        script_list_strs = "\n".join(script_list_strs) #ConfigParser should never output three newlines in a row when serialised, so it's a safe delimiter (and very human-readable).
+        script_list_strs = "\n".join(script_list_strs) #ConfigParser should never output three newlines in a row when serialised, so it's a safe delimiter.
 
         global_stack = Application.getInstance().getGlobalContainerStack()
         if "post_processing_scripts" not in global_stack.getMetaData():
