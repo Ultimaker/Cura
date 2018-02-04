@@ -216,6 +216,7 @@ class PostProcessingPlugin(QObject, Extension):
                     new_script._instance.setProperty(setting_key, "value", setting_value)
                 self._script_list.append(new_script)
 
+        self.setSelectedScriptIndex(0)
         self.scriptListChanged.emit()
 
     def _writeScriptsToStack(self):
