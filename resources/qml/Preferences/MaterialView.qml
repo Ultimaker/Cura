@@ -1,5 +1,5 @@
 // Copyright (c) 2017 Ultimaker B.V.
-// Cura is released under the terms of the AGPLv3 or higher.
+// Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.1
 import QtQuick.Controls 1.3
@@ -16,8 +16,8 @@ TabView
 
     property bool editingEnabled: false;
     property string currency: UM.Preferences.getValue("cura/currency") ? UM.Preferences.getValue("cura/currency") : "€"
-    property real firstColumnWidth: (width * 0.45) | 0
-    property real secondColumnWidth: (width * 0.45) | 0
+    property real firstColumnWidth: (width * 0.50) | 0
+    property real secondColumnWidth: (width * 0.40) | 0
     property string containerId: ""
     property var materialPreferenceValues: UM.Preferences.getValue("cura/material_settings") ? JSON.parse(UM.Preferences.getValue("cura/material_settings")) : {}
 
@@ -41,7 +41,7 @@ TabView
 
     Tab
     {
-        title: catalog.i18nc("@title","Information")
+        title: catalog.i18nc("@title", "Information")
 
         anchors.margins: UM.Theme.getSize("default_margin").width
 
@@ -72,7 +72,7 @@ TabView
                     width: scrollView.columnWidth;
                     text: properties.name;
                     readOnly: !base.editingEnabled;
-                    onEditingFinished: base.setName(properties.name, text)
+                    onEditingFinished: base.updateMaterialDisplayName(properties.name, text)
                 }
 
                 Label { width: scrollView.columnWidth; height: parent.rowHeight; verticalAlignment: Qt.AlignVCenter; text: catalog.i18nc("@label", "Brand") }
@@ -82,11 +82,7 @@ TabView
                     width: scrollView.columnWidth;
                     text: properties.supplier;
                     readOnly: !base.editingEnabled;
-                    onEditingFinished:
-                    {
-                        base.setMetaDataEntry("brand", properties.supplier, text);
-                        pane.objectList.currentIndex = pane.getIndexById(base.containerId);
-                    }
+                    onEditingFinished: base.updateMaterialSupplier(properties.supplier, text)
                 }
 
                 Label { width: scrollView.columnWidth; height: parent.rowHeight; verticalAlignment: Qt.AlignVCenter; text: catalog.i18nc("@label", "Material Type") }
@@ -95,43 +91,49 @@ TabView
                     width: scrollView.columnWidth;
                     text: properties.material_type;
                     readOnly: !base.editingEnabled;
-                    onEditingFinished:
-                    {
-                        base.setMetaDataEntry("material", properties.material_type, text);
-                        pane.objectList.currentIndex = pane.getIndexById(base.containerId)
-                    }
+                    onEditingFinished: base.updateMaterialType(properties.material_type, text)
                 }
 
                 Label { width: scrollView.columnWidth; height: parent.rowHeight; verticalAlignment: Qt.AlignVCenter; text: catalog.i18nc("@label", "Color") }
+                Row {
+                    width: scrollView.columnWidth
+                    height:  parent.rowHeight
+                    spacing: Math.floor(UM.Theme.getSize("default_margin").width/2)
 
-                Row
-                {
-                    width: scrollView.columnWidth;
-                    height:  parent.rowHeight;
-                    spacing: UM.Theme.getSize("default_margin").width/2
-
-                    Rectangle
-                    {
+                    // color indicator square
+                    Rectangle {
                         id: colorSelector
                         color: properties.color_code
 
-                        width: (colorLabel.height * 0.75) | 0
-                        height: (colorLabel.height * 0.75) | 0
+                        width: Math.floor(colorLabel.height * 0.75)
+                        height: Math.floor(colorLabel.height * 0.75)
                         border.width: UM.Theme.getSize("default_lining").height
 
                         anchors.verticalCenter: parent.verticalCenter
 
-                        MouseArea { anchors.fill: parent; onClicked: colorDialog.open(); enabled: base.editingEnabled }
+                        // open the color selection dialog on click
+                        MouseArea {
+                            anchors.fill: parent
+                            onClicked: colorDialog.open()
+                            enabled: base.editingEnabled
+                        }
                     }
-                    ReadOnlyTextField
-                    {
+
+                    // pretty color name text field
+                    ReadOnlyTextField {
                         id: colorLabel;
                         text: properties.color_name;
                         readOnly: !base.editingEnabled
                         onEditingFinished: base.setMetaDataEntry("color_name", properties.color_name, text)
                     }
 
-                    ColorDialog { id: colorDialog; color: properties.color_code; onAccepted: base.setMetaDataEntry("color_code", properties.color_code, color) }
+                    // popup dialog to select a new color
+                    // if successful it sets the properties.color_code value to the new color
+                    ColorDialog {
+                        id: colorDialog
+                        color: properties.color_code
+                        onAccepted: base.setMetaDataEntry("color_code", properties.color_code, color)
+                    }
                 }
 
                 Item { width: parent.width; height: UM.Theme.getSize("default_margin").height }
@@ -401,11 +403,11 @@ TabView
     }
 
     // Tiny convenience function to check if a value really changed before trying to set it.
-    function setMetaDataEntry(entry_name, old_value, new_value)
-    {
-        if(old_value != new_value)
-        {
-            Cura.ContainerManager.setContainerMetaDataEntry(base.containerId, entry_name, new_value);
+    function setMetaDataEntry(entry_name, old_value, new_value) {
+        if (old_value != new_value) {
+            Cura.ContainerManager.setContainerMetaDataEntry(base.containerId, entry_name, new_value)
+            // make sure the UI properties are updated as well since we don't re-fetch the entire model here
+            properties[entry_name] = new_value
         }
     }
 
@@ -435,14 +437,28 @@ TabView
         return 0;
     }
 
-    function setName(old_value, new_value)
-    {
-        if(old_value != new_value)
-        {
-            Cura.ContainerManager.setContainerName(base.containerId, new_value);
-            // update material name label. not so pretty, but it works
-            materialProperties.name = new_value;
-            pane.objectList.currentIndex = pane.getIndexById(base.containerId)
+    // update the display name of the material
+    function updateMaterialDisplayName (old_name, new_name) {
+
+        // don't change when new name is the same
+        if (old_name == new_name) {
+            return
         }
+
+        // update the values
+        Cura.ContainerManager.setContainerName(base.containerId, new_name)
+        materialProperties.name = new_name
+    }
+
+    // update the type of the material
+    function updateMaterialType (old_type, new_type) {
+        base.setMetaDataEntry("material", old_type, new_type)
+        materialProperties.material_type = new_type
+    }
+
+    // update the supplier of the material
+    function updateMaterialSupplier (old_supplier, new_supplier) {
+        base.setMetaDataEntry("brand", old_supplier, new_supplier)
+        materialProperties.supplier = new_supplier
     }
 }

@@ -1,11 +1,10 @@
 # Copyright (c) 2015 Ultimaker B.V.
-# Cura is released under the terms of the AGPLv3 or higher.
+# Cura is released under the terms of the LGPLv3 or higher.
 
 import os
 import threading
 
-from PyQt5.QtCore import Qt, QUrl, pyqtSignal, QObject
-from PyQt5.QtQml import QQmlComponent, QQmlContext
+from PyQt5.QtCore import Qt, pyqtSignal, QObject
 from UM.FlameProfiler import pyqtSlot
 from UM.Application import Application
 from UM.PluginRegistry import PluginRegistry
@@ -81,14 +80,9 @@ class ImageReaderUI(QObject):
     def _createConfigUI(self):
         if self._ui_view is None:
             Logger.log("d", "Creating ImageReader config UI")
-            path = QUrl.fromLocalFile(os.path.join(PluginRegistry.getInstance().getPluginPath("ImageReader"), "ConfigUI.qml"))
-            component = QQmlComponent(Application.getInstance()._engine, path)
-            self._ui_context = QQmlContext(Application.getInstance()._engine.rootContext())
-            self._ui_context.setContextProperty("manager", self)
-            self._ui_view = component.create(self._ui_context)
-
+            path = os.path.join(PluginRegistry.getInstance().getPluginPath("ImageReader"), "ConfigUI.qml")
+            self._ui_view = Application.getInstance().createQmlComponent(path, {"manager": self})
             self._ui_view.setFlags(self._ui_view.flags() & ~Qt.WindowCloseButtonHint & ~Qt.WindowMinimizeButtonHint & ~Qt.WindowMaximizeButtonHint);
-
             self._disable_size_callbacks = False
 
     @pyqtSlot()
@@ -107,7 +101,7 @@ class ImageReaderUI(QObject):
     def onWidthChanged(self, value):
         if self._ui_view and not self._disable_size_callbacks:
             if len(value) > 0:
-                self._width = float(value)
+                self._width = float(value.replace(",", "."))
             else:
                 self._width = 0
 
@@ -120,7 +114,7 @@ class ImageReaderUI(QObject):
     def onDepthChanged(self, value):
         if self._ui_view and not self._disable_size_callbacks:
             if len(value) > 0:
-                self._depth = float(value)
+                self._depth = float(value.replace(",", "."))
             else:
                 self._depth = 0
 
@@ -132,14 +126,14 @@ class ImageReaderUI(QObject):
     @pyqtSlot(str)
     def onBaseHeightChanged(self, value):
         if (len(value) > 0):
-            self.base_height = float(value)
+            self.base_height = float(value.replace(",", "."))
         else:
             self.base_height = 0
 
     @pyqtSlot(str)
     def onPeakHeightChanged(self, value):
         if (len(value) > 0):
-            self.peak_height = float(value)
+            self.peak_height = float(value.replace(",", "."))
         else:
             self.peak_height = 0
 
@@ -149,7 +143,4 @@ class ImageReaderUI(QObject):
 
     @pyqtSlot(int)
     def onImageColorInvertChanged(self, value):
-        if (value == 1):
-            self.image_color_invert = True
-        else:
-            self.image_color_invert = False
+        self.image_color_invert = (value == 1)

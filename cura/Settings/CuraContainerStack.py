@@ -1,5 +1,5 @@
 # Copyright (c) 2017 Ultimaker B.V.
-# Cura is released under the terms of the AGPLv3 or higher.
+# Cura is released under the terms of the LGPLv3 or higher.
 
 import os.path
 
@@ -14,7 +14,7 @@ from UM.Settings.ContainerStack import ContainerStack, InvalidContainerStackErro
 from UM.Settings.InstanceContainer import InstanceContainer
 from UM.Settings.DefinitionContainer import DefinitionContainer
 from UM.Settings.ContainerRegistry import ContainerRegistry
-from UM.Settings.Interfaces import ContainerInterface
+from UM.Settings.Interfaces import ContainerInterface, DefinitionContainerInterface
 
 from . import Exceptions
 
@@ -41,9 +41,20 @@ class CuraContainerStack(ContainerStack):
     def __init__(self, container_id: str, *args, **kwargs):
         super().__init__(container_id, *args, **kwargs)
 
-        self._empty_instance_container = ContainerRegistry.getInstance().getEmptyInstanceContainer()
+        self._container_registry = ContainerRegistry.getInstance()
+
+        self._empty_instance_container = self._container_registry.getEmptyInstanceContainer()
+
+        self._empty_quality_changes = self._container_registry.findInstanceContainers(id = "empty_quality_changes")[0]
+        self._empty_quality = self._container_registry.findInstanceContainers(id = "empty_quality")[0]
+        self._empty_material = self._container_registry.findInstanceContainers(id = "empty_material")[0]
+        self._empty_variant = self._container_registry.findInstanceContainers(id = "empty_variant")[0]
 
         self._containers = [self._empty_instance_container for i in range(len(_ContainerIndexes.IndexTypeMap))]
+        self._containers[_ContainerIndexes.QualityChanges] = self._empty_quality_changes
+        self._containers[_ContainerIndexes.Quality] = self._empty_quality
+        self._containers[_ContainerIndexes.Material] = self._empty_material
+        self._containers[_ContainerIndexes.Variant] = self._empty_variant
 
         self.containersChanged.connect(self._onContainersChanged)
 
@@ -110,7 +121,7 @@ class CuraContainerStack(ContainerStack):
     #
     #   \throws Exceptions.InvalidContainerError Raised when no container could be found with the specified ID.
     def setQualityById(self, new_quality_id: str) -> None:
-        quality = self._empty_instance_container
+        quality = self._empty_quality
         if new_quality_id == "default":
             new_quality = self.findDefaultQuality()
             if new_quality:
@@ -133,7 +144,7 @@ class CuraContainerStack(ContainerStack):
 
     ##  Set the material container.
     #
-    #   \param new_quality_changes The new material container. It is expected to have a "type" metadata entry with the value "quality_changes".
+    #   \param new_material The new material container. It is expected to have a "type" metadata entry with the value "material".
     def setMaterial(self, new_material: InstanceContainer, postpone_emit = False) -> None:
         self.replaceContainer(_ContainerIndexes.Material, new_material, postpone_emit = postpone_emit)
 
@@ -144,11 +155,11 @@ class CuraContainerStack(ContainerStack):
     #   to whatever the machine definition specifies as "preferred" container, or a fallback value. See findDefaultMaterial
     #   for details.
     #
-    #   \param new_quality_changes_id The ID of the new material container.
+    #   \param new_material_id The ID of the new material container.
     #
     #   \throws Exceptions.InvalidContainerError Raised when no container could be found with the specified ID.
     def setMaterialById(self, new_material_id: str) -> None:
-        material = self._empty_instance_container
+        material = self._empty_material
         if new_material_id == "default":
             new_material = self.findDefaultMaterial()
             if new_material:
@@ -171,7 +182,7 @@ class CuraContainerStack(ContainerStack):
 
     ##  Set the variant container.
     #
-    #   \param new_quality_changes The new variant container. It is expected to have a "type" metadata entry with the value "quality_changes".
+    #   \param new_variant The new variant container. It is expected to have a "type" metadata entry with the value "variant".
     def setVariant(self, new_variant: InstanceContainer) -> None:
         self.replaceContainer(_ContainerIndexes.Variant, new_variant)
 
@@ -182,13 +193,13 @@ class CuraContainerStack(ContainerStack):
     #   to whatever the machine definition specifies as "preferred" container, or a fallback value. See findDefaultVariant
     #   for details.
     #
-    #   \param new_quality_changes_id The ID of the new variant container.
+    #   \param new_variant_id The ID of the new variant container.
     #
     #   \throws Exceptions.InvalidContainerError Raised when no container could be found with the specified ID.
     def setVariantById(self, new_variant_id: str) -> None:
-        variant = self._empty_instance_container
+        variant = self._empty_variant
         if new_variant_id == "default":
-            new_variant = self.findDefaultVariant()
+            new_variant = self.findDefaultVariantBuildplate() if self.getMetaDataEntry("type") == "machine" else self.findDefaultVariant()
             if new_variant:
                 variant = new_variant
         else:
@@ -209,13 +220,13 @@ class CuraContainerStack(ContainerStack):
 
     ##  Set the definition changes container.
     #
-    #   \param new_quality_changes The new definition changes container. It is expected to have a "type" metadata entry with the value "quality_changes".
+    #   \param new_definition_changes The new definition changes container. It is expected to have a "type" metadata entry with the value "definition_changes".
     def setDefinitionChanges(self, new_definition_changes: InstanceContainer) -> None:
         self.replaceContainer(_ContainerIndexes.DefinitionChanges, new_definition_changes)
 
     ##  Set the definition changes container by an ID.
     #
-    #   \param new_quality_changes_id The ID of the new definition changes container.
+    #   \param new_definition_changes_id The ID of the new definition changes container.
     #
     #   \throws Exceptions.InvalidContainerError Raised when no container could be found with the specified ID.
     def setDefinitionChangesById(self, new_definition_changes_id: str) -> None:
@@ -234,13 +245,13 @@ class CuraContainerStack(ContainerStack):
 
     ##  Set the definition container.
     #
-    #   \param new_quality_changes The new definition container. It is expected to have a "type" metadata entry with the value "quality_changes".
-    def setDefinition(self, new_definition: DefinitionContainer) -> None:
+    #   \param new_definition The new definition container. It is expected to have a "type" metadata entry with the value "definition".
+    def setDefinition(self, new_definition: DefinitionContainerInterface) -> None:
         self.replaceContainer(_ContainerIndexes.Definition, new_definition)
 
     ##  Set the definition container by an ID.
     #
-    #   \param new_quality_changes_id The ID of the new definition container.
+    #   \param new_definition_id The ID of the new definition container.
     #
     #   \throws Exceptions.InvalidContainerError Raised when no container could be found with the specified ID.
     def setDefinitionById(self, new_definition_id: str) -> None:
@@ -348,8 +359,8 @@ class CuraContainerStack(ContainerStack):
     #
     #   \throws InvalidContainerStackError Raised when no definition can be found for the stack.
     @override(ContainerStack)
-    def deserialize(self, contents: str) -> None:
-        super().deserialize(contents)
+    def deserialize(self, contents: str, file_name: Optional[str] = None) -> None:
+        super().deserialize(contents, file_name)
 
         new_containers = self._containers.copy()
         while len(new_containers) < len(_ContainerIndexes.IndexTypeMap):
@@ -366,7 +377,7 @@ class CuraContainerStack(ContainerStack):
                 if not container or not isinstance(container, DefinitionContainer):
                     definition = self.findContainer(container_type = DefinitionContainer)
                     if not definition:
-                        raise InvalidContainerStackError("Stack {id} does not have a definition!".format(id = self._id))
+                        raise InvalidContainerStackError("Stack {id} does not have a definition!".format(id = self.getId()))
 
                     new_containers[index] = definition
                 continue
@@ -396,7 +407,9 @@ class CuraContainerStack(ContainerStack):
     #   \note This method assumes the stack has a valid machine definition.
     def findDefaultVariant(self) -> Optional[ContainerInterface]:
         definition = self._getMachineDefinition()
-        if not definition.getMetaDataEntry("has_variants"):
+        # has_variants can be overridden in other containers and stacks.
+        # In the case of UM2, it is overridden in the GlobalStack
+        if not self.getMetaDataEntry("has_variants"):
             # If the machine does not use variants, we should never set a variant.
             return None
 
@@ -422,6 +435,51 @@ class CuraContainerStack(ContainerStack):
         Logger.log("w", "Could not find a valid default variant for stack {stack}", stack = self.id)
         return None
 
+    ##  Find the global variant that should be used as "default". This is used for the buildplates.
+    #
+    #   This will search for variants that match the current definition and pick the preferred one,
+    #   if specified by the machine definition.
+    #
+    #   The following criteria are used to find the default global variant:
+    #   - If the machine definition does not have a metadata entry "has_variant_buildplates" set to True, return None
+    #   - The definition of the variant should be the same as the machine definition for this stack.
+    #   - The container should have a metadata entry "type" with value "variant" and "hardware_type" with value "buildplate".
+    #   - If the machine definition has a metadata entry "preferred_variant_buildplate", filter the variant IDs based on that.
+    #
+    #   \return The container that should be used as default, or None if nothing was found or the machine does not use variants.
+    #
+    #   \note This method assumes the stack has a valid machine definition.
+    def findDefaultVariantBuildplate(self) -> Optional[ContainerInterface]:
+        definition = self._getMachineDefinition()
+        # has_variant_buildplates can be overridden in other containers and stacks.
+        # In the case of UM2, it is overridden in the GlobalStack
+        if not self.getMetaDataEntry("has_variant_buildplates"):
+            # If the machine does not use variants, we should never set a variant.
+            return None
+
+        # First add any variant. Later, overwrite with preference if the preference is valid.
+        variant = None
+        definition_id = self._findInstanceContainerDefinitionId(definition)
+        variants = ContainerRegistry.getInstance().findInstanceContainers(definition = definition_id, type = "variant", hardware_type = "buildplate")
+        if variants:
+            variant = variants[0]
+
+        preferred_variant_buildplate_id = definition.getMetaDataEntry("preferred_variant_buildplate")
+        if preferred_variant_buildplate_id:
+            preferred_variant_buildplates = ContainerRegistry.getInstance().findInstanceContainers(id = preferred_variant_buildplate_id, definition = definition_id, type = "variant")
+            if preferred_variant_buildplates:
+                variant = preferred_variant_buildplates[0]
+            else:
+                Logger.log("w", "The preferred variant buildplate \"{variant}\" of stack {stack} does not exist or is not a variant.",
+                           variant = preferred_variant_buildplate_id, stack = self.id)
+                # And leave it at the default variant.
+
+        if variant:
+            return variant
+
+        Logger.log("w", "Could not find a valid default buildplate variant for stack {stack}", stack = self.id)
+        return None
+
     ##  Find the material that should be used as "default" material.
     #
     #   This will search for materials that match the current definition and pick the preferred one,
@@ -432,6 +490,7 @@ class CuraContainerStack(ContainerStack):
     #   - If the machine definition has a metadata entry "has_machine_materials", the definition of the material should
     #     be the same as the machine definition for this stack. Otherwise, the definition should be "fdmprinter".
     #   - The container should have a metadata entry "type" with value "material".
+    #   - The material should have an approximate diameter that matches the machine
     #   - If the machine definition has a metadata entry "has_variants" and set to True, the "variant" metadata entry of
     #     the material should be the same as the ID of the variant in the stack. Only applies if "has_machine_materials" is also True.
     #   - If the stack currently has a material set, try to find a material that matches the current material by name.
@@ -453,12 +512,15 @@ class CuraContainerStack(ContainerStack):
         else:
             search_criteria["definition"] = "fdmprinter"
 
-        if self.material != self._empty_instance_container:
+        if self.material != self._empty_material:
             search_criteria["name"] = self.material.name
         else:
             preferred_material = definition.getMetaDataEntry("preferred_material")
             if preferred_material:
                 search_criteria["id"] = preferred_material
+
+        approximate_material_diameter = str(round(self.getProperty("material_diameter", "value")))
+        search_criteria["approximate_diameter"] = approximate_material_diameter
 
         materials = ContainerRegistry.getInstance().findInstanceContainers(**search_criteria)
         if not materials:
@@ -470,11 +532,17 @@ class CuraContainerStack(ContainerStack):
             search_criteria.pop("name", None)
             materials = ContainerRegistry.getInstance().findInstanceContainers(**search_criteria)
 
-        if materials:
-            return materials[0]
+        if not materials:
+            Logger.log("w", "Could not find a valid material for stack {stack}", stack = self.id)
+            return None
 
-        Logger.log("w", "Could not find a valid material for stack {stack}", stack = self.id)
-        return None
+        for material in materials:
+            # Prefer a read-only material
+            if ContainerRegistry.getInstance().isReadOnly(material.getId()):
+                return material
+
+        return materials[0]
+
 
     ##  Find the quality that should be used as "default" quality.
     #
@@ -485,7 +553,7 @@ class CuraContainerStack(ContainerStack):
     def findDefaultQuality(self) -> Optional[ContainerInterface]:
         definition = self._getMachineDefinition()
         registry = ContainerRegistry.getInstance()
-        material_container = self.material if self.material != self._empty_instance_container else None
+        material_container = self.material if self.material.getId() not in (self._empty_material.getId(), self._empty_instance_container.getId()) else None
 
         search_criteria = {"type": "quality"}
 
@@ -497,7 +565,7 @@ class CuraContainerStack(ContainerStack):
         else:
             search_criteria["definition"] = "fdmprinter"
 
-        if self.quality != self._empty_instance_container:
+        if self.quality != self._empty_quality:
             search_criteria["name"] = self.quality.name
         else:
             preferred_quality = definition.getMetaDataEntry("preferred_quality")
@@ -529,7 +597,7 @@ class CuraContainerStack(ContainerStack):
             material_search_criteria = {"type": "material", "material": material_container.getMetaDataEntry("material"), "color_name": "Generic"}
             if definition.getMetaDataEntry("has_machine_quality"):
                 if self.material != self._empty_instance_container:
-                    material_search_criteria["definition"] = material_container.getDefinition().id
+                    material_search_criteria["definition"] = material_container.getMetaDataEntry("definition")
 
                     if definition.getMetaDataEntry("has_variants"):
                         material_search_criteria["variant"] = material_container.getMetaDataEntry("variant")
@@ -540,10 +608,10 @@ class CuraContainerStack(ContainerStack):
                         material_search_criteria["variant"] = self.variant.id
             else:
                 material_search_criteria["definition"] = "fdmprinter"
-            material_containers = registry.findInstanceContainers(**material_search_criteria)
+            material_containers = registry.findInstanceContainersMetadata(**material_search_criteria)
             # Try all materials to see if there is a quality profile available.
             for material_container in material_containers:
-                search_criteria["material"] = material_container.getId()
+                search_criteria["material"] = material_container["id"]
 
                 containers = registry.findInstanceContainers(**search_criteria)
                 if containers:

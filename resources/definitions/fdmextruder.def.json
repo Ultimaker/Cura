@@ -1,5 +1,4 @@
 {
-    "id": "fdmextruder",
     "name": "Extruder",
     "version": 2,
     "metadata":
@@ -8,7 +7,8 @@
         "author": "Ultimaker",
         "manufacturer": "Unknown",
         "setting_version": 1,
-        "visible": false
+        "visible": false,
+        "position": "0"
     },
     "settings":
     {
@@ -214,6 +214,30 @@
                     "settable_per_mesh": false,
                     "settable_per_extruder": true,
                     "enabled": false
+                }
+            }
+        },
+        "material":
+        {
+            "label": "Material",
+            "icon": "category_material",
+            "description": "Material",
+            "type": "category",
+            "children":
+            {
+                "material_diameter":
+                {
+                    "label": "Diameter",
+                    "description": "Adjusts the diameter of the filament used. Match this value with the diameter of the used filament.",
+                    "unit": "mm",
+                    "type": "float",
+                    "default_value": 2.85,
+                    "minimum_value": "0.0001",
+                    "minimum_value_warning": "0.4",
+                    "maximum_value_warning": "3.5",
+                    "enabled": "machine_gcode_flavor != \"UltiGCode\"",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
                 }
             }
         }

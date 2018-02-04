@@ -1,5 +1,5 @@
 # Copyright (c) 2017 Ultimaker B.V.
-# Cura is released under the terms of the AGPLv3 or higher.
+# Cura is released under the terms of the LGPLv3 or higher.
 
 enable_testing()
 include(CMakeParseArguments)
@@ -24,16 +24,23 @@ function(cura_add_test)
     
     if(WIN32)
         string(REPLACE "|" "\\;" _PYTHONPATH ${_PYTHONPATH})
+        set(_PYTHONPATH "${_PYTHONPATH}\\;$ENV{PYTHONPATH}")
     else()
         string(REPLACE "|" ":" _PYTHONPATH ${_PYTHONPATH})
+        set(_PYTHONPATH "${_PYTHONPATH}:$ENV{PYTHONPATH}")
     endif()
 
-    add_test(
-        NAME ${_NAME}
-        COMMAND ${PYTHON_EXECUTABLE} -m pytest --junitxml=${CMAKE_BINARY_DIR}/junit-${_NAME}.xml ${_DIRECTORY}
-    )
-    set_tests_properties(${_NAME} PROPERTIES ENVIRONMENT LANG=C)
-    set_tests_properties(${_NAME} PROPERTIES ENVIRONMENT "PYTHONPATH=${_PYTHONPATH}")
+    get_test_property(${_NAME} ENVIRONMENT test_exists) #Find out if the test exists by getting a property from it that always exists (such as ENVIRONMENT because we set that ourselves).
+    if (NOT ${test_exists})
+        add_test(
+            NAME ${_NAME}
+            COMMAND ${PYTHON_EXECUTABLE} -m pytest --junitxml=${CMAKE_BINARY_DIR}/junit-${_NAME}.xml ${_DIRECTORY}
+        )
+        set_tests_properties(${_NAME} PROPERTIES ENVIRONMENT LANG=C)
+        set_tests_properties(${_NAME} PROPERTIES ENVIRONMENT "PYTHONPATH=${_PYTHONPATH}")
+    else()
+        message(WARNING "Duplicate test ${_NAME}!")
+    endif()
 endfunction()
 
 cura_add_test(NAME pytest-main DIRECTORY ${CMAKE_SOURCE_DIR}/tests PYTHONPATH "${CMAKE_SOURCE_DIR}|${URANIUM_DIR}")

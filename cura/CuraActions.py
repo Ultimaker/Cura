@@ -1,5 +1,5 @@
 # Copyright (c) 2017 Ultimaker B.V.
-# Cura is released under the terms of the AGPLv3 or higher.
+# Cura is released under the terms of the LGPLv3 or higher.
 
 from PyQt5.QtCore import QObject, QUrl
 from PyQt5.QtGui import QDesktopServices
@@ -13,11 +13,17 @@ from UM.Scene.Iterator.BreadthFirstIterator import BreadthFirstIterator
 from UM.Operations.GroupedOperation import GroupedOperation
 from UM.Operations.RemoveSceneNodeOperation import RemoveSceneNodeOperation
 from UM.Operations.SetTransformOperation import SetTransformOperation
+from UM.Operations.TranslateOperation import TranslateOperation
 
-from cura.SetParentOperation import SetParentOperation
+from cura.Operations.SetParentOperation import SetParentOperation
 from cura.MultiplyObjectsJob import MultiplyObjectsJob
 from cura.Settings.SetObjectExtruderOperation import SetObjectExtruderOperation
 from cura.Settings.ExtruderManager import ExtruderManager
+
+from cura.Operations.SetBuildPlateNumberOperation import SetBuildPlateNumberOperation
+
+from UM.Logger import Logger
+
 
 class CuraActions(QObject):
     def __init__(self, parent = None):
@@ -36,6 +42,15 @@ class CuraActions(QObject):
         event = CallFunctionEvent(self._openUrl, [QUrl("http://github.com/Ultimaker/Cura/issues")], {})
         Application.getInstance().functionEvent(event)
 
+    ##  Reset camera position and direction to default
+    @pyqtSlot()
+    def homeCamera(self) -> None:
+        scene = Application.getInstance().getController().getScene()
+        camera = scene.getActiveCamera()
+        camera.setPosition(Vector(-80, 250, 700))
+        camera.setPerspective(True)
+        camera.lookAt(Vector(0, 0, 0))
+
     ##  Center all objects in the selection
     @pyqtSlot()
     def centerSelection(self) -> None:
@@ -45,7 +60,11 @@ class CuraActions(QObject):
             while current_node.getParent() and current_node.getParent().callDecoration("isGroup"):
                 current_node = current_node.getParent()
 
-            center_operation = SetTransformOperation(current_node, Vector())
+            #   This was formerly done with SetTransformOperation but because of
+            #   unpredictable matrix deconstruction it was possible that mirrors
+            #   could manifest as rotations. Centering is therefore done by
+            #   moving the node to negative whatever its position is:
+            center_operation = TranslateOperation(current_node, -current_node._position)
             operation.addOperation(center_operation)
         operation.push()
 
@@ -54,7 +73,7 @@ class CuraActions(QObject):
     #   \param count The number of times to multiply the selection.
     @pyqtSlot(int)
     def multiplySelection(self, count: int) -> None:
-        job = MultiplyObjectsJob(Selection.getAllSelectedObjects(), count, 8)
+        job = MultiplyObjectsJob(Selection.getAllSelectedObjects(), count, min_offset = 8)
         job.start()
 
     ##  Delete all selected objects.
@@ -75,6 +94,10 @@ class CuraActions(QObject):
                     removed_group_nodes.append(group_node)
                     op.addOperation(SetParentOperation(remaining_nodes_in_group[0], group_node.getParent()))
                     op.addOperation(RemoveSceneNodeOperation(group_node))
+
+            # Reset the print information
+            Application.getInstance().getController().getScene().sceneChanged.emit(node)
+
         op.push()
 
     ##  Set the extruder that should be used to print the selection.
@@ -114,6 +137,32 @@ class CuraActions(QObject):
         for node in nodes_to_change:
             operation.addOperation(SetObjectExtruderOperation(node, extruder_id))
         operation.push()
+
+    @pyqtSlot(int)
+    def setBuildPlateForSelection(self, build_plate_nr: int) -> None:
+        Logger.log("d", "Setting build plate number... %d" % build_plate_nr)
+        operation = GroupedOperation()
+
+        root = Application.getInstance().getController().getScene().getRoot()
+
+        nodes_to_change = []
+        for node in Selection.getAllSelectedObjects():
+            parent_node = node  # Find the parent node to change instead
+            while parent_node.getParent() != root:
+                parent_node = parent_node.getParent()
+
+            for single_node in BreadthFirstIterator(parent_node):
+                nodes_to_change.append(single_node)
+
+        if not nodes_to_change:
+            Logger.log("d", "Nothing to change.")
+            return
+
+        for node in nodes_to_change:
+            operation.addOperation(SetBuildPlateNumberOperation(node, build_plate_nr))
+        operation.push()
+
+        Selection.clear()
 
     def _openUrl(self, url):
         QDesktopServices.openUrl(url)

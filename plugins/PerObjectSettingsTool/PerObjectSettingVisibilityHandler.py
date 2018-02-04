@@ -1,7 +1,8 @@
 # Copyright (c) 2016 Ultimaker B.V.
-# Cura is released under the terms of the AGPLv3 or higher.
+# Cura is released under the terms of the LGPLv3 or higher.
 
 from PyQt5.QtCore import QObject, pyqtProperty, pyqtSignal
+from UM.FlameProfiler import pyqtSlot
 
 from UM.Application import Application
 from UM.Settings.ContainerRegistry import ContainerRegistry
@@ -22,6 +23,9 @@ class PerObjectSettingVisibilityHandler(UM.Settings.Models.SettingVisibilityHand
         self._node = None
         self._stack = None
 
+        # this is a set of settings that will be skipped if the user chooses to reset.
+        self._skip_reset_setting_set = set()
+
     def setSelectedObjectId(self, id):
         if id != self._selected_object_id:
             self._selected_object_id = id
@@ -35,6 +39,10 @@ class PerObjectSettingVisibilityHandler(UM.Settings.Models.SettingVisibilityHand
     @pyqtProperty("quint64", fset = setSelectedObjectId)
     def selectedObjectId(self):
         return self._selected_object_id
+
+    @pyqtSlot(str)
+    def addSkipResetSetting(self, setting_name):
+        self._skip_reset_setting_set.add(setting_name)
 
     def setVisible(self, visible):
         if not self._node:
@@ -50,6 +58,9 @@ class PerObjectSettingVisibilityHandler(UM.Settings.Models.SettingVisibilityHand
 
         # Remove all instances that are not in visibility list
         for instance in all_instances:
+            # exceptionally skip setting
+            if instance.definition.key in self._skip_reset_setting_set:
+                continue
             if instance.definition.key not in visible:
                 settings.removeInstance(instance.definition.key)
                 visibility_changed = True

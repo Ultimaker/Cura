@@ -1,5 +1,4 @@
 {
-    "id": "kemiq_q2_beta",
     "version": 2,
     "name": "Kemiq Q2 Beta",
     "inherits": "fdmprinter",
@@ -7,7 +6,6 @@
         "visible": true,
         "author": "KEMIQ",
         "manufacturer": "KEMIQ",
-        "category": "Other",
         "file_formats": "text/x-gcode",
         "platform": "kemiq_q2.stl",
         "has_machine_quality": true,

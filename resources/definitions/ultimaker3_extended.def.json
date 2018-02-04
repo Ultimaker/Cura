@@ -1,12 +1,10 @@
 {
-    "id": "ultimaker3_extended",
     "version": 2,
     "name": "Ultimaker 3 Extended",
     "inherits": "ultimaker3",
     "metadata": {
         "author": "Ultimaker",
         "manufacturer": "Ultimaker B.V.",
-        "category": "Ultimaker",
         "quality_definition": "ultimaker3",
         "visible": true,
         "file_formats": "text/x-gcode",

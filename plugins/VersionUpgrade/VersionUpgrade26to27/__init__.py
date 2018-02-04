@@ -1,5 +1,5 @@
 # Copyright (c) 2017 Ultimaker B.V.
-# Cura is released under the terms of the AGPLv3 or higher.
+# Cura is released under the terms of the LGPLv3 or higher.
 
 from . import VersionUpgrade26to27
 
@@ -12,7 +12,7 @@ def getMetaData():
     return {
         "version_upgrade": {
             # From                          To                             Upgrade function
-            ("machine_stack", 3000000):     ("machine_stack", 3000002,     upgrade.upgradeStack),
+            ("machine_stack", 3000001):     ("machine_stack", 3000002,     upgrade.upgradeStack),
             ("extruder_train", 3000000):    ("extruder_train", 3000002,    upgrade.upgradeStack),
 
             # In 2.6.x, Preferences are saved with "version = 4" and no setting_version.
@@ -29,6 +29,7 @@ def getMetaData():
             ("user", 2000001):                  ("user", 2000002,               upgrade.upgradeOtherContainer),
             ("quality", 2000001):               ("quality", 2000002,            upgrade.upgradeOtherContainer),
             ("definition_changes", 2000001):    ("definition_changes", 2000002, upgrade.upgradeOtherContainer),
+            ("variant", 2000000):               ("variant", 2000002,            upgrade.upgradeOtherContainer)
         },
         "sources": {
             "machine_stack": {
@@ -54,6 +55,10 @@ def getMetaData():
             "definition_changes": {
                 "get_version": upgrade.getCfgVersion,
                 "location": {"./definition_changes"}
+            },
+            "variant": {
+                "get_version": upgrade.getCfgVersion,
+                "location": {"./variants"}
             }
         }
     }

@@ -1,5 +1,4 @@
 {
-    "id": "101Hero",
     "version": 2, 
     "name": "101Hero",
     "inherits": "fdmprinter",
@@ -7,11 +6,6 @@
         "visible": true,
         "author": "rikky",
         "manufacturer": "101Hero",
-        "category": "Other",
-        "machine_extruder_trains":
-        {
-            "0": "fdmextruder"
-        },
         "file_formats": "text/x-gcode",
         "platform": "101hero-platform.stl",
         "supports_usb_connection": true

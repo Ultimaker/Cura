@@ -1,5 +1,5 @@
 # Copyright (c) 2017 Ultimaker B.V.
-# Cura is released under the terms of the AGPLv3 or higher.
+# Cura is released under the terms of the LGPLv3 or higher.
 
 import configparser #To get version numbers from config files.
 import os
@@ -74,7 +74,7 @@ class VersionUpgrade22to24(VersionUpgrade):
     def __convertVariant(self, variant_path):
         # Copy the variant to the machine_instances/*_settings.inst.cfg
         variant_config = configparser.ConfigParser(interpolation=None)
-        with open(variant_path, "r") as fhandle:
+        with open(variant_path, "r", encoding = "utf-8") as fhandle:
             variant_config.read_file(fhandle)
 
         config_name = "Unknown Variant"

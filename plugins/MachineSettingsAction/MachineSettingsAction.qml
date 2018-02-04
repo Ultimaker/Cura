@@ -1,5 +1,5 @@
 // Copyright (c) 2016 Ultimaker B.V.
-// Cura is released under the terms of the AGPLv3 or higher.
+// Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.2
 import QtQuick.Controls 1.1
@@ -22,7 +22,7 @@ Cura.MachineAction
         onModelChanged:
         {
             var extruderCount = base.extrudersModel.rowCount();
-            base.extruderTabsCount = extruderCount > 1 ? extruderCount : 0;
+            base.extruderTabsCount = extruderCount;
         }
     }
 
@@ -71,6 +71,7 @@ Cura.MachineAction
             anchors.topMargin: UM.Theme.getSize("default_margin").height
 
             property real columnWidth: ((width - 3 * UM.Theme.getSize("default_margin").width) / 2) | 0
+            property real labelColumnWidth: columnWidth * 0.5
 
             Tab
             {
@@ -233,13 +234,13 @@ Cura.MachineAction
                                 property string label: catalog.i18nc("@label", "Gantry height")
                                 property string unit: catalog.i18nc("@label", "mm")
                                 property string tooltip: catalog.i18nc("@tooltip", "The height difference between the tip of the nozzle and the gantry system (X and Y axes). Used to prevent collisions between previous prints and the gantry when printing \"One at a Time\".")
+                                property bool forceUpdateOnChange: true
                             }
 
                             Item { width: UM.Theme.getSize("default_margin").width; height: UM.Theme.getSize("default_margin").height }
 
                             UM.TooltipArea
                             {
-                                visible: manager.definedExtruderCount > 1
                                 height: childrenRect.height
                                 width: childrenRect.width
                                 text: machineExtruderCountProvider.properties.description
@@ -252,7 +253,7 @@ Cura.MachineAction
                                     {
                                         text: catalog.i18nc("@label", "Number of Extruders")
                                         elide: Text.ElideRight
-                                        width: Math.max(0, settingsTabs.columnWidth - 2 * UM.Theme.getSize("default_margin").width - extruderCountComboBox.width)
+                                        width: Math.max(0, settingsTabs.labelColumnWidth)
                                         anchors.verticalCenter: extruderCountComboBox.verticalCenter
                                     }
                                     ComboBox
@@ -269,6 +270,20 @@ Cura.MachineAction
                                                 }
                                             }
                                         }
+
+                                        Connections
+                                        {
+                                            target: manager
+                                            onDefinedExtruderCountChanged:
+                                            {
+                                                extruderCountModel.clear();
+                                                for(var i = 0; i < manager.definedExtruderCount; ++i)
+                                                {
+                                                    extruderCountModel.append({text: String(i + 1), value: i});
+                                                }
+                                            }
+                                        }
+
                                         currentIndex: machineExtruderCountProvider.properties.value - 1
                                         onActivated:
                                         {
@@ -276,26 +291,6 @@ Cura.MachineAction
                                         }
                                     }
                                 }
-                            }
-
-                            Loader
-                            {
-                                id: materialDiameterField
-                                sourceComponent: numericTextFieldWithUnit
-                                property string settingKey: "material_diameter"
-                                property string unit: catalog.i18nc("@label", "mm")
-                                property string tooltip: catalog.i18nc("@tooltip", "The nominal diameter of filament supported by the printer. The exact diameter will be overridden by the material and/or the profile.")
-                                property var afterOnEditingFinished: manager.updateMaterialForDiameter
-                                property string label: catalog.i18nc("@label", "Material diameter")
-                            }
-                            Loader
-                            {
-                                id: nozzleSizeField
-                                visible: !Cura.MachineManager.hasVariants && machineExtruderCountProvider.properties.value == 1
-                                sourceComponent: numericTextFieldWithUnit
-                                property string settingKey: "machine_nozzle_size"
-                                property string label: catalog.i18nc("@label", "Nozzle size")
-                                property string unit: catalog.i18nc("@label", "mm")
                             }
                         }
                     }
@@ -353,7 +348,6 @@ Cura.MachineAction
                 if(currentIndex > 0)
                 {
                     contentItem.forceActiveFocus();
-                    ExtruderManager.setActiveExtruderIndex(currentIndex - 1);
                 }
             }
 
@@ -387,6 +381,25 @@ Cura.MachineAction
                             property string settingKey: "machine_nozzle_size"
                             property string label: catalog.i18nc("@label", "Nozzle size")
                             property string unit: catalog.i18nc("@label", "mm")
+                            property bool isExtruderSetting: true
+                        }
+
+                        Loader
+                        {
+                            id: materialDiameterField
+                            visible: Cura.MachineManager.hasMaterials
+                            sourceComponent: numericTextFieldWithUnit
+                            property string settingKey: "material_diameter"
+                            property string label: catalog.i18nc("@label", "Compatible material diameter")
+                            property string unit: catalog.i18nc("@label", "mm")
+                            property string tooltip: catalog.i18nc("@tooltip", "The nominal diameter of filament supported by the printer. The exact diameter will be overridden by the material and/or the profile.")
+                            function afterOnEditingFinished()
+                            {
+                                if (settingsTabs.currentIndex > 0)
+                                {
+                                    manager.updateMaterialForDiameter(settingsTabs.currentIndex - 1);
+                                }
+                            }
                             property bool isExtruderSetting: true
                         }
 
@@ -439,7 +452,7 @@ Cura.MachineAction
                                     property int areaHeight: parent.height - y
                                     property string settingKey: "machine_extruder_start_code"
                                     property bool isExtruderSetting: true
-                            }
+                                }
                             }
                             Column {
                                 height: parent.height
@@ -488,7 +501,7 @@ Cura.MachineAction
                     {
                         if(settingsTabs.currentIndex > 0)
                         {
-                            return Cura.MachineManager.activeStackId;
+                            return Cura.ExtruderManager.extruderIds[String(settingsTabs.currentIndex - 1)];
                         }
                         return "";
                     }
@@ -506,11 +519,11 @@ Cura.MachineAction
                 checked: String(propertyProvider.properties.value).toLowerCase() != 'false'
                 onClicked:
                 {
-                        propertyProvider.setPropertyValue("value", checked);
-                        if(_forceUpdateOnChange)
-                        {
-                            manager.forceUpdate();
-                        }
+                    propertyProvider.setPropertyValue("value", checked);
+                    if(_forceUpdateOnChange)
+                    {
+                        manager.forceUpdate();
+                    }
                 }
             }
         }
@@ -541,7 +554,7 @@ Cura.MachineAction
                     {
                         if(settingsTabs.currentIndex > 0)
                         {
-                            return Cura.MachineManager.activeStackId;
+                            return Cura.ExtruderManager.extruderIds[String(settingsTabs.currentIndex - 1)];
                         }
                         return "";
                     }
@@ -561,7 +574,7 @@ Cura.MachineAction
                     text: _label
                     visible: _label != ""
                     elide: Text.ElideRight
-                    width: Math.max(0, settingsTabs.columnWidth - 2 * UM.Theme.getSize("default_margin").width - textFieldWithUnit.width)
+                    width: Math.max(0, settingsTabs.labelColumnWidth)
                     anchors.verticalCenter: textFieldWithUnit.verticalCenter
                 }
 
@@ -574,8 +587,11 @@ Cura.MachineAction
                     TextField
                     {
                         id: textField
-                        text: (propertyProvider.properties.value) ? propertyProvider.properties.value : ""
-                        validator: RegExpValidator { regExp: _allowNegative ? /-?[0-9\.]{0,6}/ : /[0-9\.]{0,6}/ }
+                        text: {
+                            const value = propertyProvider.properties.value;
+                            return value ? value : "";
+                        }
+                        validator: RegExpValidator { regExp: _allowNegative ? /-?[0-9\.,]{0,6}/ : /[0-9\.,]{0,6}/ }
                         onEditingFinished:
                         {
                             if (propertyProvider && text != propertyProvider.properties.value)
@@ -583,12 +599,7 @@ Cura.MachineAction
                                 propertyProvider.setPropertyValue("value", text);
                                 if(_forceUpdateOnChange)
                                 {
-                                    var extruderIndex = ExtruderManager.activeExtruderIndex;
                                     manager.forceUpdate();
-                                    if(ExtruderManager.activeExtruderIndex != extruderIndex)
-                                    {
-                                        ExtruderManager.setActiveExtruderIndex(extruderIndex)
-                                    }
                                 }
                                 if(_afterOnEditingFinished)
                                 {
@@ -634,7 +645,7 @@ Cura.MachineAction
                     {
                         if(settingsTabs.currentIndex > 0)
                         {
-                            return Cura.MachineManager.activeStackId;
+                            return Cura.ExtruderManager.extruderIds[String(settingsTabs.currentIndex - 1)];
                         }
                         return "";
                     }
@@ -654,7 +665,7 @@ Cura.MachineAction
                     text: _label
                     visible: _label != ""
                     elide: Text.ElideRight
-                    width: Math.max(0, settingsTabs.columnWidth - 2 * UM.Theme.getSize("default_margin").width - comboBox.width)
+                    width: Math.max(0, settingsTabs.labelColumnWidth)
                     anchors.verticalCenter: comboBox.verticalCenter
                 }
                 ComboBox
@@ -721,7 +732,7 @@ Cura.MachineAction
             width: gcodeArea.width
             text: _tooltip
 
-            property bool _isExtruderSetting: (typeof(isExtruderSetting) === 'undefined') ? false: isExtruderSetting
+            property bool _isExtruderSetting: (typeof(isExtruderSetting) === 'undefined') ? false : isExtruderSetting
             property string _tooltip: (typeof(tooltip) === 'undefined') ? propertyProvider.properties.description : tooltip
 
             UM.SettingPropertyProvider
@@ -733,7 +744,7 @@ Cura.MachineAction
                     {
                         if(settingsTabs.currentIndex > 0)
                         {
-                            return Cura.MachineManager.activeStackId;
+                            return Cura.ExtruderManager.extruderIds[String(settingsTabs.currentIndex - 1)];
                         }
                         return "";
                     }
@@ -786,7 +797,7 @@ Cura.MachineAction
                     text: _label
                     visible: _label != ""
                     elide: Text.ElideRight
-                    width: Math.max(0, settingsTabs.columnWidth - 2 * UM.Theme.getSize("default_margin").width - textFieldWithUnit.width)
+                    width: Math.max(0, settingsTabs.labelColumnWidth)
                     anchors.verticalCenter: textFieldWithUnit.verticalCenter
                 }
 
@@ -815,15 +826,15 @@ Cura.MachineAction
                             printHeadPolygon[axis][side] = result;
                             return result;
                         }
-                        validator: RegExpValidator { regExp: /[0-9\.]{0,6}/ }
+                        validator: RegExpValidator { regExp: /[0-9\.,]{0,6}/ }
                         onEditingFinished:
                         {
-                            printHeadPolygon[axis][side] = parseFloat(textField.text);
+                            printHeadPolygon[axis][side] = parseFloat(textField.text.replace(',','.'));
                             var polygon = [];
                             polygon.push([-printHeadPolygon["x"]["min"], printHeadPolygon["y"]["max"]]);
                             polygon.push([-printHeadPolygon["x"]["min"],-printHeadPolygon["y"]["min"]]);
                             polygon.push([ printHeadPolygon["x"]["max"], printHeadPolygon["y"]["max"]]);
-                            polygon.push([ printHeadPolygon["x"]["max"],-printHeadPolygon["y"]["mìn"]]);
+                            polygon.push([ printHeadPolygon["x"]["max"],-printHeadPolygon["y"]["min"]]);
                             var polygon_string = JSON.stringify(polygon);
                             if(polygon_string != machineHeadPolygonProvider.properties.value)
                             {

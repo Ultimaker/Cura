@@ -1,5 +1,5 @@
 // Copyright (c) 2015 Ultimaker B.V.
-// Cura is released under the terms of the AGPLv3 or higher.
+// Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.2
 import QtQuick.Controls 1.1
@@ -18,41 +18,62 @@ UM.Dialog
     id: base
 
     title: catalog.i18nc("@title:window", "Open project file")
-    width: 450
-    height: 150
+    width: 450 * screenScaleFactor
+    height: 150 * screenScaleFactor
 
     maximumHeight: height
     maximumWidth: width
     minimumHeight: maximumHeight
     minimumWidth: maximumWidth
 
-    modality: UM.Application.platform == "linux" ? Qt.NonModal : Qt.WindowModal;
+    modality: UM.Application.platform == "linux" ? Qt.NonModal : Qt.WindowModal
 
     property var fileUrl
 
-    function loadProjectFile(projectFile)
-    {
-        UM.WorkspaceFileHandler.readLocalFile(projectFile);
+    // load the entire project
+    function loadProjectFile() {
 
-        var meshName = backgroundItem.getMeshName(projectFile.toString());
-        backgroundItem.hasMesh(decodeURIComponent(meshName));
-    }
-
-    function loadModelFiles(fileUrls)
-    {
-        for (var i in fileUrls)
-        {
-            CuraApplication.readLocalFile(fileUrls[i]);
+        // update preference
+        if (rememberChoiceCheckBox.checked) {
+            UM.Preferences.setValue("cura/choice_on_open_project", "open_as_project")
         }
 
-        var meshName = backgroundItem.getMeshName(fileUrls[0].toString());
-        backgroundItem.hasMesh(decodeURIComponent(meshName));
+        UM.WorkspaceFileHandler.readLocalFile(base.fileUrl)
+        var meshName = backgroundItem.getMeshName(base.fileUrl.toString())
+        backgroundItem.hasMesh(decodeURIComponent(meshName))
+
+        base.hide()
     }
 
-    onVisibleChanged:
-    {
-        if (visible)
-        {
+    // load the project file as separated models
+    function loadModelFiles() {
+
+        // update preference
+        if (rememberChoiceCheckBox.checked) {
+            UM.Preferences.setValue("cura/choice_on_open_project", "open_as_model")
+        }
+
+        CuraApplication.readLocalFile(base.fileUrl)
+        var meshName = backgroundItem.getMeshName(base.fileUrl.toString())
+        backgroundItem.hasMesh(decodeURIComponent(meshName))
+
+        base.hide()
+    }
+
+    // override UM.Dialog accept
+    function accept () {
+        var openAsPreference = UM.Preferences.getValue("cura/choice_on_open_project")
+
+        // when hitting 'enter', we always open as project unless open_as_model was explicitly stored as preference
+        if (openAsPreference == "open_as_model") {
+            loadModelFiles()
+        } else {
+            loadProjectFile()
+        }
+    }
+
+    onVisibleChanged: {
+        if (visible) {
             var rememberMyChoice = UM.Preferences.getValue("cura/choice_on_open_project") != "always_ask";
             rememberChoiceCheckBox.checked = rememberMyChoice;
         }
@@ -61,13 +82,14 @@ UM.Dialog
     Column
     {
         anchors.fill: parent
-        anchors.leftMargin: 20
-        anchors.rightMargin: 20
-        anchors.bottomMargin: 20
-        spacing: 10
+        anchors.leftMargin: 20 * screenScaleFactor
+        anchors.rightMargin: 20 * screenScaleFactor
+        anchors.bottomMargin: 10 * screenScaleFactor
+        spacing: 10 * screenScaleFactor
 
         Label
         {
+            id: questionText
             text: catalog.i18nc("@text:window", "This is a Cura project file. Would you like to open it as a project or import the models from it?")
             anchors.left: parent.left
             anchors.right: parent.right
@@ -80,49 +102,35 @@ UM.Dialog
             id: rememberChoiceCheckBox
             text: catalog.i18nc("@text:window", "Remember my choice")
             checked: UM.Preferences.getValue("cura/choice_on_open_project") != "always_ask"
+            style: CheckBoxStyle {
+                label: Label {
+                    text: control.text
+                    font: UM.Theme.getFont("default")
+                }
+            }
         }
 
         // Buttons
-        Item
-        {
+        Item {
+            id: buttonBar
             anchors.right: parent.right
             anchors.left: parent.left
             height: childrenRect.height
 
-            Button
-            {
+            Button {
                 id: openAsProjectButton
-                text: catalog.i18nc("@action:button", "Open as project");
+                text: catalog.i18nc("@action:button", "Open as project")
                 anchors.right: importModelsButton.left
                 anchors.rightMargin: UM.Theme.getSize("default_margin").width
                 isDefault: true
-                onClicked:
-                {
-                    // update preference
-                    if (rememberChoiceCheckBox.checked)
-                        UM.Preferences.setValue("cura/choice_on_open_project", "open_as_project");
-
-                    // load this file as project
-                    base.hide();
-                    loadProjectFile(base.fileUrl);
-                }
+                onClicked: loadProjectFile()
             }
 
-            Button
-            {
+            Button {
                 id: importModelsButton
-                text: catalog.i18nc("@action:button", "Import models");
+                text: catalog.i18nc("@action:button", "Import models")
                 anchors.right: parent.right
-                onClicked:
-                {
-                    // update preference
-                    if (rememberChoiceCheckBox.checked)
-                        UM.Preferences.setValue("cura/choice_on_open_project", "open_as_model");
-
-                    // load models from this project file
-                    base.hide();
-                    loadModelFiles([base.fileUrl]);
-                }
+                onClicked: loadModelFiles()
             }
         }
     }

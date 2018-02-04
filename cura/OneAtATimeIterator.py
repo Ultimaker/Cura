@@ -1,5 +1,5 @@
 # Copyright (c) 2015 Ultimaker B.V.
-# Cura is released under the terms of the AGPLv3 or higher.
+# Cura is released under the terms of the LGPLv3 or higher.
 
 from UM.Scene.Iterator import Iterator
 from UM.Scene.SceneNode import SceneNode
@@ -18,11 +18,12 @@ class OneAtATimeIterator(Iterator.Iterator):
     def _fillStack(self):
         node_list = []
         for node in self._scene_node.getChildren():
-            if not type(node) is SceneNode:
+            if not issubclass(type(node), SceneNode):
                 continue
 
             if node.callDecoration("getConvexHull"):
                 node_list.append(node)
+
 
         if len(node_list) < 2:
             self._node_stack = node_list[:]

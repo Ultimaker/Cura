@@ -1,12 +1,14 @@
 # Copyright (c) 2015 Ultimaker B.V.
-# Uranium is released under the terms of the AGPLv3 or higher.
+# Uranium is released under the terms of the LGPLv3 or higher.
 
 from UM.Mesh.MeshWriter import MeshWriter
 from UM.Math.Vector import Vector
 from UM.Logger import Logger
 from UM.Math.Matrix import Matrix
 from UM.Application import Application
-import UM.Scene.SceneNode
+from UM.Scene.SceneNode import SceneNode
+
+from cura.CuraApplication import CuraApplication
 
 import Savitar
 
@@ -61,10 +63,14 @@ class ThreeMFWriter(MeshWriter):
         self._store_archive = store_archive
 
     ##  Convenience function that converts an Uranium SceneNode object to a SavitarSceneNode
-    #   \returns Uranium Scenen node.
+    #   \returns Uranium Scene node.
     def _convertUMNodeToSavitarNode(self, um_node, transformation = Matrix()):
-        if type(um_node) is not UM.Scene.SceneNode.SceneNode:
+        if not isinstance(um_node, SceneNode):
             return None
+
+        active_build_plate_nr = CuraApplication.getInstance().getBuildPlateModel().activeBuildPlate
+        if um_node.callDecoration("getBuildPlateNumber") != active_build_plate_nr:
+            return
 
         savitar_node = Savitar.SceneNode()
 
@@ -87,7 +93,7 @@ class ThreeMFWriter(MeshWriter):
         if stack is not None:
             changed_setting_keys = set(stack.getTop().getAllKeys())
 
-            # Ensure that we save the extruder used for this object.
+            # Ensure that we save the extruder used for this object in a multi-extrusion setup
             if stack.getProperty("machine_extruder_count", "value") > 1:
                 changed_setting_keys.add("extruder_nr")
 
@@ -96,6 +102,9 @@ class ThreeMFWriter(MeshWriter):
                 savitar_node.setSetting(key, str(stack.getProperty(key, "value")))
 
         for child_node in um_node.getChildren():
+            # only save the nodes on the active build plate
+            if child_node.callDecoration("getBuildPlateNumber") != active_build_plate_nr:
+                continue
             savitar_child_node = self._convertUMNodeToSavitarNode(child_node)
             if savitar_child_node is not None:
                 savitar_node.addChild(savitar_child_node)

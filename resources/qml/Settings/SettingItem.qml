@@ -1,10 +1,9 @@
-// Copyright (c) 2015 Ultimaker B.V.
-// Uranium is released under the terms of the AGPLv3 or higher.
+// Copyright (c) 2017 Ultimaker B.V.
+// Cura is released under the terms of the LGPLv3 or higher.
 
-import QtQuick 2.1
+import QtQuick 2.7
 import QtQuick.Layouts 1.1
-import QtQuick.Controls 1.1
-import QtQuick.Controls.Styles 1.1
+import QtQuick.Controls 2.0
 
 import UM 1.1 as UM
 import Cura 1.0 as Cura
@@ -14,9 +13,9 @@ import "."
 Item {
     id: base;
 
-    height: UM.Theme.getSize("section").height;
+    height: UM.Theme.getSize("section").height
 
-    property alias contents: controlContainer.children;
+    property alias contents: controlContainer.children
     property alias hovered: mouse.containsMouse
 
     property var showRevertButton: true
@@ -130,11 +129,11 @@ Item {
             id: settingControls
 
             height: parent.height / 2
-            spacing: UM.Theme.getSize("default_margin").width / 2
+            spacing: UM.Theme.getSize("sidebar_margin").height / 2
 
             anchors {
                 right: controlContainer.left
-                rightMargin: UM.Theme.getSize("default_margin").width / 2
+                rightMargin: UM.Theme.getSize("sidebar_margin").width / 2
                 verticalCenter: parent.verticalCenter
             }
 
@@ -142,7 +141,7 @@ Item {
             {
                 id: linkedSettingIcon;
 
-                visible: Cura.MachineManager.activeStackId != Cura.MachineManager.activeMachineId && (!definition.settable_per_extruder || globalPropertyProvider.properties.limit_to_extruder != "-1") && base.showLinkedSettingIcon
+                visible: Cura.MachineManager.activeStackId != Cura.MachineManager.activeMachineId && (!definition.settable_per_extruder || String(globalPropertyProvider.properties.limit_to_extruder) != "-1") && base.showLinkedSettingIcon
 
                 height: parent.height;
                 width: height;
@@ -154,10 +153,10 @@ Item {
 
                 onEntered: {
                     hoverTimer.stop();
-                    var tooltipText = catalog.i18nc("@label", "This setting is always shared between all extruders. Changing it here will change the value for all extruders") + ".";
+                    var tooltipText = catalog.i18nc("@label", "This setting is always shared between all extruders. Changing it here will change the value for all extruders.");
                     if ((resolve != "None") && (stackLevel != 0)) {
                         // We come here if a setting has a resolve and the setting is not manually edited.
-                        tooltipText += " " + catalog.i18nc("@label", "The value is resolved from per-extruder values ") + "[" + ExtruderManager.getInstanceExtruderValues(definition.key) + "].";
+                        tooltipText += " " + catalog.i18nc("@label", "The value is resolved from per-extruder values ") + "[" + Cura.ExtruderManager.getInstanceExtruderValues(definition.key) + "].";
                     }
                     base.showTooltip(tooltipText);
                 }
@@ -179,8 +178,13 @@ Item {
                 iconSource: UM.Theme.getIcon("reset")
 
                 onClicked: {
-                    revertButton.focus = true;
-                    Cura.MachineManager.clearUserSettingAllCurrentStacks(propertyProvider.key);
+                    revertButton.focus = true
+
+                    if (externalResetHandler) {
+                        externalResetHandler(propertyProvider.key)
+                    } else {
+                        Cura.MachineManager.clearUserSettingAllCurrentStacks(propertyProvider.key)
+                    }
                 }
 
                 onEntered: { hoverTimer.stop(); base.showTooltip(catalog.i18nc("@label", "This setting has a value that is different from the profile.\n\nClick to restore the value of the profile.")) }
@@ -222,7 +226,7 @@ Item {
                     }
 
                     // If the setting does not have a limit_to_extruder property (or is -1), use the active stack.
-                    if(globalPropertyProvider.properties.limit_to_extruder == null || globalPropertyProvider.properties.limit_to_extruder == -1)
+                    if(globalPropertyProvider.properties.limit_to_extruder == null || String(globalPropertyProvider.properties.limit_to_extruder) == "-1")
                     {
                         return Cura.SettingInheritanceManager.settingsWithInheritanceWarning.indexOf(definition.key) >= 0;
                     }
@@ -232,7 +236,7 @@ Item {
                         // Observed when loading workspace, probably when SettingItems are removed.
                         return false;
                     }
-                    return Cura.SettingInheritanceManager.getOverridesForExtruder(definition.key, globalPropertyProvider.properties.limit_to_extruder).indexOf(definition.key) >= 0;
+                    return Cura.SettingInheritanceManager.getOverridesForExtruder(definition.key, String(globalPropertyProvider.properties.limit_to_extruder)).indexOf(definition.key) >= 0;
                 }
 
                 height: parent.height;
@@ -293,7 +297,7 @@ Item {
             enabled: propertyProvider.isValueUsed
 
             anchors.right: parent.right;
-            anchors.rightMargin: UM.Theme.getSize("default_margin").width
+            anchors.rightMargin: UM.Theme.getSize("sidebar_margin").width
             anchors.verticalCenter: parent.verticalCenter;
             width: UM.Theme.getSize("setting_control").width;
             height: UM.Theme.getSize("setting_control").height

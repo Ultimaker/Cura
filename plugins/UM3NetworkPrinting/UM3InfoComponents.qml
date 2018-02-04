@@ -13,7 +13,7 @@ Item
     property bool isUM3: Cura.MachineManager.activeQualityDefinitionId == "ultimaker3"
     property bool printerConnected: Cura.MachineManager.printerOutputDevices.length != 0
     property bool printerAcceptsCommands: printerConnected && Cura.MachineManager.printerOutputDevices[0].acceptsCommands
-    property bool authenticationRequested: printerConnected && Cura.MachineManager.printerOutputDevices[0].authenticationState == 2 // AuthState.AuthenticationRequested
+    property bool authenticationRequested: printerConnected && (Cura.MachineManager.printerOutputDevices[0].authenticationState == 2 || Cura.MachineManager.printerOutputDevices[0].authenticationState == 5) // AuthState.AuthenticationRequested or AuthenticationReceived.
 
     Row
     {
@@ -115,7 +115,7 @@ Item
         {
             tooltip: catalog.i18nc("@info:tooltip", "Load the configuration of the printer into Cura")
             text: catalog.i18nc("@action:button", "Activate Configuration")
-            visible: printerConnected
+            visible: false // printerConnected && !isClusterPrinter()
             onClicked: manager.loadConfigurationFromPrinter()
         }
     }

@@ -1,5 +1,4 @@
 {
-    "id": "kossel_mini",
     "version": 2,
     "name": "Kossel Mini",
     "inherits": "fdmprinter",
@@ -7,7 +6,6 @@
         "visible": true,
         "author": "Claudio Sampaio (Patola)",
         "manufacturer": "Other",
-        "category": "Other",
         "file_formats": "text/x-gcode",
         "icon": "icon_ultimaker2",
         "platform": "kossel_platform.stl",

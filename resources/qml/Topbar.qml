@@ -1,12 +1,12 @@
 // Copyright (c) 2017 Ultimaker B.V.
-// Cura is released under the terms of the AGPLv3 or higher.
+// Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.2
 import QtQuick.Controls 1.1
 import QtQuick.Controls.Styles 1.1
 import QtQuick.Layouts 1.1
 
-import UM 1.2 as UM
+import UM 1.4 as UM
 import Cura 1.0 as Cura
 import "Menus"
 
@@ -16,201 +16,228 @@ Rectangle
     anchors.left: parent.left
     anchors.right: parent.right
     height: UM.Theme.getSize("sidebar_header").height
-    color: UM.Theme.getColor("sidebar_header_bar")
+    color: UM.Controller.activeStage.stageId == "MonitorStage" ? UM.Theme.getColor("topbar_background_color_monitoring") : UM.Theme.getColor("topbar_background_color")
 
     property bool printerConnected: Cura.MachineManager.printerOutputDevices.length != 0
     property bool printerAcceptsCommands: printerConnected && Cura.MachineManager.printerOutputDevices[0].acceptsCommands
-    property bool monitoringPrint: false
-    signal startMonitoringPrint()
-    signal stopMonitoringPrint()
+
+    property int rightMargin: UM.Theme.getSize("sidebar").width + UM.Theme.getSize("default_margin").width;
+    property int allItemsWidth: 0;
+
+    function updateMarginsAndSizes() {
+        if (UM.Preferences.getValue("cura/sidebar_collapsed"))
+        {
+            rightMargin = UM.Theme.getSize("default_margin").width;
+        }
+        else
+        {
+            rightMargin = UM.Theme.getSize("sidebar").width + UM.Theme.getSize("default_margin").width;
+        }
+        allItemsWidth = (
+            logo.width + UM.Theme.getSize("topbar_logo_right_margin").width +
+            UM.Theme.getSize("topbar_logo_right_margin").width + stagesMenuContainer.width +
+            UM.Theme.getSize("default_margin").width + viewModeButton.width +
+            rightMargin);
+    }
+
     UM.I18nCatalog
     {
         id: catalog
         name:"cura"
     }
 
+    Image
+    {
+        id: logo
+        anchors.left: parent.left
+        anchors.leftMargin: UM.Theme.getSize("default_margin").width
+        anchors.verticalCenter: parent.verticalCenter
+
+        source: UM.Theme.getImage("logo");
+        width: UM.Theme.getSize("logo").width;
+        height: UM.Theme.getSize("logo").height;
+
+        sourceSize.width: width;
+        sourceSize.height: height;
+    }
+
     Row
     {
-        anchors.left: parent.left
-        anchors.right: machineSelection.left
-        anchors.rightMargin: UM.Theme.getSize("default_margin").width
+        id: stagesMenuContainer
+        anchors.left: logo.right
+        anchors.leftMargin: UM.Theme.getSize("topbar_logo_right_margin").width
         spacing: UM.Theme.getSize("default_margin").width
 
-        Button
+        // The topbar is dynamically filled with all available stages
+        Repeater
         {
-            id: showSettings
-            height: UM.Theme.getSize("sidebar_header").height
-            onClicked: base.stopMonitoringPrint()
-            iconSource: UM.Theme.getIcon("tab_settings");
-            property color overlayColor: "transparent"
-            property string overlayIconSource: ""
-            text: catalog.i18nc("@title:tab","Prepare")
-            checkable: true
-            checked: !base.monitoringPrint
-            exclusiveGroup: sidebarHeaderBarGroup
+            id: stagesMenu
 
-            style:  UM.Theme.styles.topbar_header_tab
+            model: UM.StageModel{}
+
+            delegate: Button
+            {
+                text: model.name
+                checkable: true
+                checked: model.active
+                exclusiveGroup: topbarMenuGroup
+                style: (model.stage.iconSource != "") ? UM.Theme.styles.topbar_header_tab_no_overlay : UM.Theme.styles.topbar_header_tab
+                height: UM.Theme.getSize("sidebar_header").height
+                onClicked: UM.Controller.setActiveStage(model.id)
+                iconSource: model.stage.iconSource
+
+                property color overlayColor: "transparent"
+                property string overlayIconSource: ""
+            }
         }
 
-        Button
-        {
-            id: showMonitor
-            height: UM.Theme.getSize("sidebar_header").height
-            onClicked: base.startMonitoringPrint()
-            text: catalog.i18nc("@title:tab", "Print")
-            iconSource: printerConnected ? UM.Theme.getIcon("tab_monitor_with_status") : UM.Theme.getIcon("tab_monitor")
-            property color overlayColor:
-            {
-                if(!printerAcceptsCommands)
-                {
-                    return UM.Theme.getColor("status_unknown");
-                }
-
-                if(Cura.MachineManager.printerOutputDevices[0].printerState == "maintenance")
-                {
-                    return UM.Theme.getColor("status_busy");
-                }
-                switch(Cura.MachineManager.printerOutputDevices[0].jobState)
-                {
-                    case "printing":
-                    case "pre_print":
-                    case "wait_cleanup":
-                    case "pausing":
-                    case "resuming":
-                        return UM.Theme.getColor("status_busy");
-                    case "ready":
-                    case "":
-                        return UM.Theme.getColor("status_ready");
-                    case "paused":
-                        return UM.Theme.getColor("status_paused");
-                    case "error":
-                        return UM.Theme.getColor("status_stopped");
-                    case "offline":
-                        return UM.Theme.getColor("status_offline");
-                    default:
-                        return UM.Theme.getColor("text_reversed");
-                }
-            }
-            property string overlayIconSource:
-            {
-                if(!printerConnected)
-                {
-                    return "";
-                }
-                else if(!printerAcceptsCommands)
-                {
-                    return UM.Theme.getIcon("tab_status_unknown");
-                }
-
-                if(Cura.MachineManager.printerOutputDevices[0].printerState == "maintenance")
-                {
-                    return UM.Theme.getIcon("tab_status_busy");
-                }
-
-                switch(Cura.MachineManager.printerOutputDevices[0].jobState)
-                {
-                    case "printing":
-                    case "pre_print":
-                    case "wait_cleanup":
-                    case "pausing":
-                    case "resuming":
-                        return UM.Theme.getIcon("tab_status_busy");
-                    case "ready":
-                    case "":
-                        return UM.Theme.getIcon("tab_status_connected")
-                    case "paused":
-                        return UM.Theme.getIcon("tab_status_paused")
-                    case "error":
-                        return UM.Theme.getIcon("tab_status_stopped")
-                    case "offline":
-                        return UM.Theme.getIcon("tab_status_offline")
-                    default:
-                        return ""
-                }
-            }
-
-            checkable: true
-            checked: base.monitoringPrint
-            exclusiveGroup: sidebarHeaderBarGroup
-
-            style:  UM.Theme.styles.topbar_header_tab
-        }
-
-        ExclusiveGroup { id: sidebarHeaderBarGroup }
+        ExclusiveGroup { id: topbarMenuGroup }
     }
 
-    ToolButton
+    // View orientation Item
+    Row
     {
-        id: machineSelection
-        text: Cura.MachineManager.activeMachineName
+        id: viewOrientationControl
+        height: 30
 
-        width: UM.Theme.getSize("sidebar").width;
-        height: UM.Theme.getSize("sidebar_header").height
-        tooltip: Cura.MachineManager.activeMachineName
+        spacing: 2
+        visible: UM.Controller.activeStage.stageId != "MonitorStage"
 
-        anchors.verticalCenter: parent.verticalCenter
-        anchors.right: parent.right
-        style: ButtonStyle
+        anchors
         {
-            background: Rectangle
-            {
-                color:
-                {
-                    if(control.pressed)
-                    {
-                        return UM.Theme.getColor("sidebar_header_active");
-                    } else if(control.hovered)
-                    {
-                        return UM.Theme.getColor("sidebar_header_hover");
-                    } else
-                    {
-                        return UM.Theme.getColor("sidebar_header_bar");
-                    }
-                }
-                Behavior on color { ColorAnimation { duration: 50; } }
-
-                Rectangle
-                {
-                    id: underline;
-
-                    anchors.left: parent.left
-                    anchors.right: parent.right
-                    anchors.bottom: parent.bottom
-                    height: UM.Theme.getSize("sidebar_header_highlight").height
-                    color: UM.Theme.getColor("sidebar_header_highlight_hover")
-                    visible: control.hovered || control.pressed
-                }
-
-                UM.RecolorImage
-                {
-                    id: downArrow
-                    anchors.verticalCenter: parent.verticalCenter
-                    anchors.right: parent.right
-                    anchors.rightMargin: UM.Theme.getSize("default_margin").width
-                    width: UM.Theme.getSize("standard_arrow").width
-                    height: UM.Theme.getSize("standard_arrow").height
-                    sourceSize.width: width
-                    sourceSize.height: width
-                    color: UM.Theme.getColor("text_reversed")
-                    source: UM.Theme.getIcon("arrow_bottom")
-                }
-                Label
-                {
-                    id: sidebarComboBoxLabel
-                    color: UM.Theme.getColor("text_reversed")
-                    text: control.text;
-                    elide: Text.ElideRight;
-                    anchors.left: parent.left;
-                    anchors.leftMargin: UM.Theme.getSize("default_margin").width
-                    anchors.right: downArrow.left;
-                    anchors.rightMargin: control.rightMargin;
-                    anchors.verticalCenter: parent.verticalCenter;
-                    font: UM.Theme.getFont("large")
-                }
-            }
-            label: Label {}
+            verticalCenter: base.verticalCenter
+            right: viewModeButton.left
+            rightMargin: UM.Theme.getSize("default_margin").width
         }
 
-        menu: PrinterMenu { }
+        // #1 3d view
+        Button
+        {
+            iconSource: UM.Theme.getIcon("view_3d")
+            style: UM.Theme.styles.small_tool_button
+            anchors.verticalCenter: viewOrientationControl.verticalCenter
+            onClicked:UM.Controller.rotateView("3d", 0)
+            visible: base.width - allItemsWidth - 4 * this.width > 0
+        }
+
+        // #2 Front view
+        Button
+        {
+            iconSource: UM.Theme.getIcon("view_front")
+            style: UM.Theme.styles.small_tool_button
+            anchors.verticalCenter: viewOrientationControl.verticalCenter
+            onClicked: UM.Controller.rotateView("home", 0);
+            visible: base.width - allItemsWidth - 3 * this.width > 0
+        }
+
+        // #3 Top view
+        Button
+        {
+            iconSource: UM.Theme.getIcon("view_top")
+            style: UM.Theme.styles.small_tool_button
+            anchors.verticalCenter: viewOrientationControl.verticalCenter
+            onClicked: UM.Controller.rotateView("y", 90)
+            visible: base.width - allItemsWidth - 2 * this.width > 0
+        }
+
+        // #4 Left view
+        Button
+        {
+            iconSource: UM.Theme.getIcon("view_left")
+            style: UM.Theme.styles.small_tool_button
+            anchors.verticalCenter: viewOrientationControl.verticalCenter
+            onClicked: UM.Controller.rotateView("x", 90)
+            visible: base.width - allItemsWidth - 1 * this.width > 0
+        }
+
+        // #5 Left view
+        Button
+        {
+            iconSource: UM.Theme.getIcon("view_right")
+            style: UM.Theme.styles.small_tool_button
+            anchors.verticalCenter: viewOrientationControl.verticalCenter
+            onClicked: UM.Controller.rotateView("x", -90)
+            visible: base.width - allItemsWidth > 0
+        }
     }
+
+    ComboBox
+    {
+        id: viewModeButton
+
+        anchors {
+            verticalCenter: parent.verticalCenter
+            right: parent.right
+            rightMargin: rightMargin
+        }
+
+        style: UM.Theme.styles.combobox
+        visible: UM.Controller.activeStage.stageId != "MonitorStage"
+
+        model: UM.ViewModel { }
+        textRole: "name"
+
+        // update the model's active index
+        function updateItemActiveFlags () {
+            currentIndex = getActiveIndex()
+            for (var i = 0; i < model.rowCount(); i++) {
+                model.getItem(i).active = (i == currentIndex)
+            }
+        }
+
+        // get the index of the active model item on start
+        function getActiveIndex () {
+            for (var i = 0; i < model.rowCount(); i++) {
+                if (model.getItem(i).active) {
+                    return i
+                }
+            }
+            return 0
+        }
+
+        // set the active index
+        function setActiveIndex (index) {
+            UM.Controller.setActiveView(index)
+            // the connection to UM.ActiveView will trigger update so there is no reason to call it manually here
+        }
+
+        onCurrentIndexChanged: viewModeButton.setActiveIndex(model.getItem(currentIndex).id)
+        currentIndex: getActiveIndex()
+
+        // watch the active view proxy for changes made from the menu item
+        Connections
+        {
+            target: UM.ActiveView
+            onActiveViewChanged: viewModeButton.updateItemActiveFlags()
+        }
+    }
+
+    Loader
+    {
+        id: view_panel
+
+        anchors.top: viewModeButton.bottom
+        anchors.topMargin: UM.Theme.getSize("default_margin").height
+        anchors.right: viewModeButton.right
+
+        property var buttonTarget: Qt.point(viewModeButton.x + viewModeButton.width / 2, viewModeButton.y + viewModeButton.height / 2)
+
+        height: childrenRect.height
+        width: childrenRect.width
+
+        source: UM.ActiveView.valid ? UM.ActiveView.activeViewPanel : "";
+    }
+
+    // Expand or collapse sidebar
+    Connections
+    {
+        target: Cura.Actions.expandSidebar
+        onTriggered: updateMarginsAndSizes()
+    }
+
+    Component.onCompleted:
+    {
+        updateMarginsAndSizes();
+    }
+
 }

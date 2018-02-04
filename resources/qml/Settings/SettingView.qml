@@ -1,13 +1,15 @@
-// Copyright (c) 2015 Ultimaker B.V.
-// Uranium is released under the terms of the AGPLv3 or higher.
+// Copyright (c) 2017 Ultimaker B.V.
+// Uranium is released under the terms of the LGPLv3 or higher.
 
-import QtQuick 2.2
+import QtQuick 2.7
 import QtQuick.Controls 1.1
 import QtQuick.Controls.Styles 1.1
 import QtQuick.Layouts 1.1
 
 import UM 1.2 as UM
 import Cura 1.0 as Cura
+
+import "../Menus"
 
 Item
 {
@@ -17,6 +19,93 @@ Item
     property bool findingSettings;
     signal showTooltip(Item item, point location, string text);
     signal hideTooltip();
+
+    Item
+    {
+        id: globalProfileRow
+        height: UM.Theme.getSize("sidebar_setup").height
+        visible: !sidebar.monitoringPrint && !sidebar.hideSettings
+
+        anchors
+        {
+            top: parent.top
+            left: parent.left
+            leftMargin: UM.Theme.getSize("sidebar_margin").width
+            right: parent.right
+            rightMargin: UM.Theme.getSize("sidebar_margin").width
+        }
+
+        Label
+        {
+            id: globalProfileLabel
+            text: catalog.i18nc("@label","Profile:");
+            width: Math.floor(parent.width * 0.45 - UM.Theme.getSize("sidebar_margin").width - 2)
+            font: UM.Theme.getFont("default");
+            color: UM.Theme.getColor("text");
+            verticalAlignment: Text.AlignVCenter
+            anchors.top: parent.top
+            anchors.bottom: parent.bottom
+        }
+
+        ToolButton
+        {
+            id: globalProfileSelection
+
+            text: generateActiveQualityText()
+            enabled: !header.currentExtruderVisible || header.currentExtruderIndex > -1
+            width: Math.floor(parent.width * 0.55)
+            height: UM.Theme.getSize("setting_control").height
+            anchors.left: globalProfileLabel.right
+            anchors.right: parent.right
+            tooltip: Cura.MachineManager.activeQualityName
+            style: UM.Theme.styles.sidebar_header_button
+            activeFocusOnPress: true
+            menu: ProfileMenu { }
+
+            function generateActiveQualityText () {
+                var result = Cura.MachineManager.activeQualityName;
+
+                if (Cura.MachineManager.isActiveQualitySupported) {
+                    if (Cura.MachineManager.activeQualityLayerHeight > 0) {
+                        result += " <font color=\"" + UM.Theme.getColor("text_detail") + "\">"
+                        result += " - "
+                        result += Cura.MachineManager.activeQualityLayerHeight + "mm"
+                        result += "</font>"
+                    }
+                }
+
+                return result
+            }
+
+            UM.SimpleButton
+            {
+                id: customisedSettings
+
+                visible: Cura.MachineManager.hasUserSettings
+                height: Math.floor(parent.height * 0.6)
+                width: Math.floor(parent.height * 0.6)
+
+                anchors.verticalCenter: parent.verticalCenter
+                anchors.right: parent.right
+                anchors.rightMargin: UM.Theme.getSize("setting_preferences_button_margin").width - UM.Theme.getSize("sidebar_margin").width
+
+                color: hovered ? UM.Theme.getColor("setting_control_button_hover") : UM.Theme.getColor("setting_control_button");
+                iconSource: UM.Theme.getIcon("star");
+
+                onClicked:
+                {
+                    forceActiveFocus();
+                    Cura.Actions.manageProfiles.trigger()
+                }
+                onEntered:
+                {
+                    var content = catalog.i18nc("@tooltip","Some setting/override values are different from the values stored in the profile.\n\nClick to open the profile manager.")
+                    base.showTooltip(globalProfileRow, Qt.point(-UM.Theme.getSize("sidebar_margin").width, 0),  content)
+                }
+                onExited: base.hideTooltip()
+            }
+        }
+    }
 
     Rectangle
     {
@@ -40,11 +129,12 @@ Item
 
         anchors
         {
-            top: parent.top
+            top: globalProfileRow.bottom
+            topMargin: UM.Theme.getSize("sidebar_margin").height
             left: parent.left
-            leftMargin: UM.Theme.getSize("default_margin").width
+            leftMargin: UM.Theme.getSize("sidebar_margin").width
             right: parent.right
-            rightMargin: UM.Theme.getSize("default_margin").width
+            rightMargin: UM.Theme.getSize("sidebar_margin").width
         }
         height: visible ? UM.Theme.getSize("setting_control").height : 0
         Behavior on height { NumberAnimation { duration: 100 } }
@@ -55,13 +145,14 @@ Item
 
             anchors.left: parent.left
             anchors.right: clearFilterButton.left
-            anchors.rightMargin: UM.Theme.getSize("default_margin").width
+            anchors.rightMargin: UM.Theme.getSize("sidebar_margin").width
 
             placeholderText: catalog.i18nc("@label:textbox", "Search...")
 
             style: TextFieldStyle
             {
                 textColor: UM.Theme.getColor("setting_control_text");
+                placeholderTextColor: UM.Theme.getColor("setting_control_text")
                 font: UM.Theme.getFont("default");
                 background: Item {}
             }
@@ -118,7 +209,7 @@ Item
 
             anchors.verticalCenter: parent.verticalCenter
             anchors.right: parent.right
-            anchors.rightMargin: UM.Theme.getSize("default_margin").width
+            anchors.rightMargin: UM.Theme.getSize("sidebar_margin").width
 
             color: UM.Theme.getColor("setting_control_button")
             hoverColor: UM.Theme.getColor("setting_control_button_hover")
@@ -137,7 +228,7 @@ Item
         anchors.bottom: parent.bottom;
         anchors.right: parent.right;
         anchors.left: parent.left;
-        anchors.topMargin: filterContainer.visible ? UM.Theme.getSize("default_margin").width : 0
+        anchors.topMargin: filterContainer.visible ? UM.Theme.getSize("sidebar_margin").height : 0
         Behavior on anchors.topMargin { NumberAnimation { duration: 100 } }
 
         style: UM.Theme.styles.scrollview;
@@ -182,7 +273,7 @@ Item
                 Behavior on opacity { NumberAnimation { duration: 100 } }
                 enabled:
                 {
-                    if(!ExtruderManager.activeExtruderStackId && machineExtruderCount.properties.value > 1)
+                    if (!Cura.ExtruderManager.activeExtruderStackId && machineExtruderCount.properties.value > 1)
                     {
                         // disable all controls on the global tab, except categories
                         return model.type == "category"
@@ -194,6 +285,7 @@ Item
                 property var settingDefinitionsModel: definitionsModel
                 property var propertyProvider: provider
                 property var globalPropertyProvider: inheritStackProvider
+                property var externalResetHandler: false
 
                 //Qt5.4.2 and earlier has a bug where this causes a crash: https://bugreports.qt.io/browse/QTBUG-35989
                 //In addition, while it works for 5.5 and higher, the ordering of the actual combo box drop down changes,
@@ -244,7 +336,7 @@ Item
                         // machine gets changed.
                         var activeMachineId = Cura.MachineManager.activeMachineId;
 
-                        if(!model.settable_per_extruder || machineExtruderCount.properties.value == 1)
+                        if(!model.settable_per_extruder)
                         {
                             //Not settable per extruder or there only is global, so we must pick global.
                             return activeMachineId;
@@ -252,12 +344,12 @@ Item
                         if(inheritStackProvider.properties.limit_to_extruder != null && inheritStackProvider.properties.limit_to_extruder >= 0)
                         {
                             //We have limit_to_extruder, so pick that stack.
-                            return ExtruderManager.extruderIds[String(inheritStackProvider.properties.limit_to_extruder)];
+                            return Cura.ExtruderManager.extruderIds[String(inheritStackProvider.properties.limit_to_extruder)];
                         }
-                        if(ExtruderManager.activeExtruderStackId)
+                        if(Cura.ExtruderManager.activeExtruderStackId)
                         {
                             //We're on an extruder tab. Pick the current extruder.
-                            return ExtruderManager.activeExtruderStackId;
+                            return Cura.ExtruderManager.activeExtruderStackId;
                         }
                         //No extruder tab is selected. Pick the global stack. Shouldn't happen any more since we removed the global tab.
                         return activeMachineId;
@@ -296,7 +388,7 @@ Item
                         contextMenu.provider = provider
                         contextMenu.popup();
                     }
-                    onShowTooltip: base.showTooltip(delegate, { x: 0, y: delegate.height / 2 }, text)
+                    onShowTooltip: base.showTooltip(delegate, { x: -UM.Theme.getSize("default_arrow").width, y: delegate.height / 2 }, text)
                     onHideTooltip: base.hideTooltip()
                     onShowAllHiddenInheritedSettings:
                     {

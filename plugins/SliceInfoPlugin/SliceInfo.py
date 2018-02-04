@@ -1,5 +1,5 @@
 # Copyright (c) 2015 Ultimaker B.V.
-# Cura is released under the terms of the AGPLv3 or higher.
+# Cura is released under the terms of the LGPLv3 or higher.
 
 from cura.CuraApplication import CuraApplication
 from cura.Settings.ExtruderManager import ExtruderManager
@@ -40,14 +40,25 @@ class SliceInfo(Extension):
         Preferences.getInstance().addPreference("info/asked_send_slice_info", False)
 
         if not Preferences.getInstance().getValue("info/asked_send_slice_info"):
-            self.send_slice_info_message = Message(catalog.i18nc("@info", "Cura collects anonymised slicing statistics. You can disable this in the preferences."), lifetime = 0, dismissable = False)
-            self.send_slice_info_message.addAction("Dismiss", catalog.i18nc("@action:button", "Dismiss"), None, "")
+            self.send_slice_info_message = Message(catalog.i18nc("@info", "Cura collects anonymized usage statistics."),
+                                                   lifetime = 0,
+                                                   dismissable = False,
+                                                   title = catalog.i18nc("@info:title", "Collecting Data"))
+
+            self.send_slice_info_message.addAction("Dismiss", name = catalog.i18nc("@action:button", "Allow"), icon = None,
+                    description = catalog.i18nc("@action:tooltip", "Allow Cura to send anonymized usage statistics to help prioritize future improvements to Cura. Some of your preferences and settings are sent, the Cura version and a hash of the models you're slicing."))
+            self.send_slice_info_message.addAction("Disable", name = catalog.i18nc("@action:button", "Disable"), icon = None,
+                    description = catalog.i18nc("@action:tooltip", "Don't allow Cura to send anonymized usage statistics. You can enable it again in the preferences."), button_style = Message.ActionButtonStyle.LINK)
             self.send_slice_info_message.actionTriggered.connect(self.messageActionTriggered)
             self.send_slice_info_message.show()
 
+    ##  Perform action based on user input.
+    #   Note that clicking "Disable" won't actually disable the data sending, but rather take the user to preferences where they can disable it.
     def messageActionTriggered(self, message_id, action_id):
-        self.send_slice_info_message.hide()
         Preferences.getInstance().setValue("info/asked_send_slice_info", True)
+        if action_id == "Disable":
+            CuraApplication.getInstance().showPreferences()
+        self.send_slice_info_message.hide()
 
     def _onWriteStarted(self, output_device):
         try:
@@ -69,18 +80,24 @@ class SliceInfo(Extension):
             else:
                 data["active_mode"] = "custom"
 
-            data["machine_settings_changed_by_user"] = global_container_stack.definitionChanges.getId() != "empty"
+            definition_changes = global_container_stack.definitionChanges
+            machine_settings_changed_by_user = False
+            if definition_changes.getId() != "empty":
+                # Now a definition_changes container will always be created for a stack,
+                # so we also need to check if there is any instance in the definition_changes container
+                if definition_changes.getAllKeys():
+                    machine_settings_changed_by_user = True
+
+            data["machine_settings_changed_by_user"] = machine_settings_changed_by_user
             data["language"] = Preferences.getInstance().getValue("general/language")
             data["os"] = {"type": platform.system(), "version": platform.version()}
 
             data["active_machine"] = {"definition_id": global_container_stack.definition.getId(), "manufacturer": global_container_stack.definition.getMetaData().get("manufacturer","")}
 
+            # add extruder specific data to slice info
             data["extruders"] = []
             extruders = list(ExtruderManager.getInstance().getMachineExtruders(global_container_stack.getId()))
             extruders = sorted(extruders, key = lambda extruder: extruder.getMetaDataEntry("position"))
-
-            if not extruders:
-                extruders = [global_container_stack]
 
             for extruder in extruders:
                 extruder_dict = dict()
@@ -89,7 +106,9 @@ class SliceInfo(Extension):
                                              "type": extruder.material.getMetaData().get("material", ""),
                                              "brand": extruder.material.getMetaData().get("brand", "")
                                              }
-                extruder_dict["material_used"] = print_information.materialLengths[int(extruder.getMetaDataEntry("position", "0"))]
+                extruder_position = int(extruder.getMetaDataEntry("position", "0"))
+                if len(print_information.materialLengths) > extruder_position:
+                    extruder_dict["material_used"] = print_information.materialLengths[extruder_position]
                 extruder_dict["variant"] = extruder.variant.getName()
                 extruder_dict["nozzle_size"] = extruder.getProperty("machine_nozzle_size", "value")
 
@@ -147,7 +166,7 @@ class SliceInfo(Extension):
 
                     data["models"].append(model)
 
-            print_times = print_information.printTimesPerFeature
+            print_times = print_information.printTimes()
             data["print_times"] = {"travel": int(print_times["travel"].getDisplayString(DurationFormat.Format.Seconds)),
                                    "support": int(print_times["support"].getDisplayString(DurationFormat.Format.Seconds)),
                                    "infill": int(print_times["infill"].getDisplayString(DurationFormat.Format.Seconds)),
@@ -178,6 +197,9 @@ class SliceInfo(Extension):
             print_settings["print_sequence"] = global_container_stack.getProperty("print_sequence", "value")
 
             data["print_settings"] = print_settings
+
+            # Send the name of the output device type that is used.
+            data["output_to"] = type(output_device).__name__
 
             # Convert data to bytes
             binary_data = json.dumps(data).encode("utf-8")
