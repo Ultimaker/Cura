@@ -38,6 +38,7 @@ class PostProcessingPlugin(QObject, Extension):
 
         Application.getInstance().getOutputDeviceManager().writeStarted.connect(self.execute)
         Application.getInstance().globalContainerStackChanged.connect(self._onGlobalContainerStackChanged) #When the current printer changes, update the list of scripts.
+        Application.getInstance().mainWindowChanged.connect(self._createView) #When the main window is created, create the view so that we can display the post-processing icon if necessary.
         self.scriptListChanged.connect(self._writeScriptsToStack) #Whenever there is a change, save it into the stack.
 
     selectedIndexChanged = pyqtSignal()
