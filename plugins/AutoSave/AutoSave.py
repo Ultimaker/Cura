@@ -67,6 +67,15 @@ class AutoSave(Extension):
             self._global_stack.containersChanged.connect(self._triggerTimer)
 
     def _onTimeout(self):
+        # only initialise if the application is created and has started
+        from cura.CuraApplication import CuraApplication
+        if not CuraApplication.Created:
+            self._change_timer.start()
+            return
+        if not CuraApplication.getInstance().started:
+            self._change_timer.start()
+            return
+
         self._saving = True # To prevent the save process from triggering another autosave.
         Logger.log("d", "Autosaving preferences, instances and profiles")
 
