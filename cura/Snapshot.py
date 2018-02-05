@@ -3,6 +3,7 @@
 import numpy
 
 from PyQt5 import QtCore
+from PyQt5.QtGui import QImage
 
 from cura.PreviewPass import PreviewPass
 from cura.Scene import ConvexHullNode
@@ -17,6 +18,21 @@ from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 
 
 class Snapshot:
+    @staticmethod
+    def getImageBoundaries(image: QImage):
+        # Look at the resulting image to get a good crop.
+        # Get the pixels as byte array
+        pixel_array = image.bits().asarray(image.byteCount())
+        width, height = image.width(), image.height()
+        # Convert to numpy array, assume it's 32 bit (it should always be)
+        pixels = numpy.frombuffer(pixel_array, dtype=numpy.uint8).reshape([height, width, 4])
+        # Find indices of non zero pixels
+        nonzero_pixels = numpy.nonzero(pixels)
+        min_y, min_x, min_a_ = numpy.amin(nonzero_pixels, axis=1)
+        max_y, max_x, max_a_ = numpy.amax(nonzero_pixels, axis=1)
+
+        return min_x, max_x, min_y, max_y
+
     ##  Return a QImage of the scene
     #   Uses PreviewPass that leaves out some elements
     #   Aspect ratio assumes a square
@@ -27,6 +43,10 @@ class Snapshot:
         render_width, render_height = active_camera.getWindowSize()
         render_width = int(render_width)
         render_height = int(render_height)
+        # Result should have enough resolution; it is cropped and then scaled down.
+        while (render_width < 1000) or (render_height < 1000):
+            render_width *= 2
+            render_height *= 2
         preview_pass = PreviewPass(render_width, render_height)
 
         root = scene.getRoot()
@@ -50,12 +70,6 @@ class Snapshot:
         # guessed size so the objects are hopefully big
         size = max(bbox.width, bbox.height, bbox.depth * 0.5)
 
-        # Somehow the aspect ratio is also influenced in reverse by the screen width/height
-        # So you have to set it to render_width/render_height to get 1
-        projection_matrix = Matrix()
-        projection_matrix.setPerspective(30, render_width / render_height, 1, 500)
-        camera.setProjectionMatrix(projection_matrix)
-
         # Looking from this direction (x, y, z) in OGL coordinates
         looking_from_offset = Vector(1, 1, 2)
         if size > 0:
@@ -64,19 +78,30 @@ class Snapshot:
         camera.setPosition(look_at + looking_from_offset)
         camera.lookAt(look_at)
 
-        preview_pass.setCamera(camera)
-        preview_pass.render()
-        pixel_output = preview_pass.getOutput()
+        satisfied = False
+        size = None
+        fovy = 30
 
-        # Look at the resulting image to get a good crop.
-        # Get the pixels as byte array
-        pixel_array = pixel_output.bits().asarray(pixel_output.byteCount())
-        # Convert to numpy array, assume it's 32 bit (it should always be)
-        pixels = numpy.frombuffer(pixel_array, dtype=numpy.uint8).reshape([render_height, render_width, 4])
-        # Find indices of non zero pixels
-        nonzero_pixels = numpy.nonzero(pixels)
-        min_y, min_x, min_a_ = numpy.amin(nonzero_pixels, axis=1)
-        max_y, max_x, max_a_ = numpy.amax(nonzero_pixels, axis=1)
+        while not satisfied:
+            if size is not None:
+                satisfied = True  # always be satisfied after second try
+            projection_matrix = Matrix()
+            # Somehow the aspect ratio is also influenced in reverse by the screen width/height
+            # So you have to set it to render_width/render_height to get 1
+            projection_matrix.setPerspective(fovy, render_width / render_height, 1, 500)
+            camera.setProjectionMatrix(projection_matrix)
+            preview_pass.setCamera(camera)
+            preview_pass.render()
+            pixel_output = preview_pass.getOutput()
+
+            min_x, max_x, min_y, max_y = Snapshot.getImageBoundaries(pixel_output)
+
+            size = max((max_x - min_x) / render_width, (max_y - min_y) / render_height)
+            if size > 0.5 or satisfied:
+                satisfied = True
+            else:
+                # make it big and allow for some empty space around
+                fovy *= 0.5  # strangely enough this messes up the aspect ratio: fovy *= size * 1.1
 
         # make it a square
         if max_x - min_x >= max_y - min_y:
