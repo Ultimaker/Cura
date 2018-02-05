@@ -72,8 +72,10 @@ class CrashHandler:
         if has_started and exception_type not in fatal_exception_types:
             return
 
-        self._send_report_checkbox = None
-        self.early_crash_dialog = self._createEarlyCrashDialog()
+        if not has_started:
+            self._send_report_checkbox = None
+            self.early_crash_dialog = self._createEarlyCrashDialog()
+
         self.dialog = QDialog()
         self._createDialog()
 
@@ -99,7 +101,7 @@ class CrashHandler:
         self._send_report_checkbox.setChecked(True)
 
         show_details_button = QPushButton(catalog.i18nc("@action:button", "Show detailed crash report"), dialog)
-        show_details_button.setMaximumWidth(180)
+        show_details_button.setMaximumWidth(200)
         show_details_button.clicked.connect(self._showDetailedReport)
 
         layout.addWidget(self._send_report_checkbox)

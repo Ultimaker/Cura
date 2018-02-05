@@ -99,18 +99,21 @@ def exceptHook(hook_type, value, traceback):
     from PyQt5.Qt import QApplication
     if CuraApplication.Created:
         _crash_handler = CrashHandler(hook_type, value, traceback, has_started)
+        if CuraApplication.splash is not None:
+            CuraApplication.splash.close()
         if not has_started:
             CuraApplication.getInstance().removePostedEvents(None)
             _crash_handler.early_crash_dialog.show()
             sys.exit(CuraApplication.getInstance().exec_())
         else:
             _crash_handler.show()
-            sys.exit(1)
     else:
         application = QApplication(sys.argv)
         application.removePostedEvents(None)
         _crash_handler = CrashHandler(hook_type, value, traceback, has_started)
-        CuraApplication.getInstance().closeSplash()
+        # This means the QtApplication could be created and so the splash screen. Then Cura closes it
+        if CuraApplication.splash is not None:
+            CuraApplication.splash.close()
         _crash_handler.early_crash_dialog.show()
         sys.exit(application.exec_())
 
