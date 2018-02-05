@@ -144,23 +144,20 @@ class CrashHandler:
         if cache_path not in (config_path, data_path):
             folders_to_remove.append(cache_path)
 
-        # need to close the redirected stdout and stderr files, otherwise, on Windows, those opened files will prevent
-        # the directory removal calls below.
-        sys.stdout.close()
-        sys.stderr.close()
-
         for folder in folders_to_remove:
             shutil.rmtree(folder, ignore_errors = True)
         for folder in folders_to_backup:
             base_name = os.path.basename(folder)
             root_dir = os.path.dirname(folder)
 
+            import datetime
+            date_now = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
             idx = 0
-            file_name = base_name + "_" + str(time.time())
+            file_name = base_name + "_" + date_now
             zip_file_path = os.path.join(root_dir, file_name + ".zip")
             while os.path.exists(zip_file_path):
                 idx += 1
-                file_name = base_name + "_" + str(time.time()) + "_" + idx
+                file_name = base_name + "_" + date_now + "_" + idx
                 zip_file_path = os.path.join(root_dir, file_name + ".zip")
             try:
                 # remove the .zip extension because make_archive() adds it
