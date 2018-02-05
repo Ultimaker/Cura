@@ -214,6 +214,18 @@ Rectangle
                     horizontalAlignment: Text.AlignHCenter
                     verticalAlignment: Text.AlignVCenter
                     elide: Text.ElideRight
+                    color:
+                    {
+                        if(control.pressed)
+                        {
+                            return UM.Theme.getColor("action_button_active_text");
+                        }
+                        else if(control.hovered)
+                        {
+                            return UM.Theme.getColor("action_button_hovered_text");
+                        }
+                        return UM.Theme.getColor("action_button_text");
+                    }
                 }
             }
         }

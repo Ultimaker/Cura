@@ -137,7 +137,7 @@ class StartSliceJob(Job):
 
         # Don't slice if there is a per object setting with an error value.
         for node in DepthFirstIterator(self._scene.getRoot()):
-            if type(node) is not CuraSceneNode or not node.isSelectable():
+            if node.isSelectable():
                 continue
 
             if self._checkStackForErrors(node.callDecoration("getStack")):
@@ -169,7 +169,7 @@ class StartSliceJob(Job):
                     children = node.getAllChildren()
                     children.append(node)
                     for child_node in children:
-                        if type(child_node) is CuraSceneNode and child_node.getMeshData() and child_node.getMeshData().getVertices() is not None:
+                        if child_node.getMeshData() and child_node.getMeshData().getVertices() is not None:
                             temp_list.append(child_node)
 
                     if temp_list:
@@ -181,13 +181,13 @@ class StartSliceJob(Job):
                 temp_list = []
                 has_printing_mesh = False
                 for node in DepthFirstIterator(self._scene.getRoot()):
-                    if node.callDecoration("isSliceable") and type(node) is CuraSceneNode and node.getMeshData() and node.getMeshData().getVertices() is not None:
+                    if node.callDecoration("isSliceable") and node.getMeshData() and node.getMeshData().getVertices() is not None:
                         per_object_stack = node.callDecoration("getStack")
                         is_non_printing_mesh = False
                         if per_object_stack:
                             is_non_printing_mesh = any(per_object_stack.getProperty(key, "value") for key in NON_PRINTING_MESH_SETTINGS)
 
-                        if (node.callDecoration("getBuildPlateNumber") == self._build_plate_number):
+                        if node.callDecoration("getBuildPlateNumber") == self._build_plate_number:
                             if not getattr(node, "_outside_buildarea", False) or is_non_printing_mesh:
                                 temp_list.append(node)
                                 if not is_non_printing_mesh:

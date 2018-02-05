@@ -6,7 +6,9 @@
     "manufacturer": "Velleman nv",
     "file_formats": "text/x-gcode",
     "visible": true,
-    "author": "Velleman"
+    "author": "Velleman",
+    "has_machine_quality": true,
+    "has_materials": true
   },
   "overrides": {
     "material_diameter": {
@@ -59,6 +61,99 @@
     },
     "machine_end_gcode": {
       "default_value": "; Vertex Delta end code\nM107 ; Turn off fan\nG91 ; Relative positioning\nT0\nG1 E-1 F1500; Reduce filament pressure\nM104 T0 S0\nG90 ; Absolute positioning\nG92 E0 ; Reset extruder position\nM300 S4000 P500\nM300 S3000 P500\nM300 S2000 P800\nG28\nM84 ; Turn steppers off"
+    },
+    "line_width": {
+       "value": 0.35
+    },
+    "infill_line_width": {
+        "value": 0.35
+    },
+    "wall_thickness": {
+        "value": 0.7
+    },
+    "top_bottom_thickness": {
+        "value": 0.6
+    },
+    "infill_sparse_density": {
+        "value": 40
+    },
+    "infill_overlap": {
+        "value": 5
+    },
+    "min_infill_area": {
+        "value": 0.1
+    },
+    "retract_at_layer_change": {
+        "value": true
+    },
+    "retraction_min_travel": {
+        "value": 1
+    },
+    "retraction_count_max": {
+        "value": 15
+    },
+    "retraction_extrusion_window": {
+        "value": 1
+    },
+    "speed_print": {
+        "value": 35 
+    },
+    "speed_infill": {
+        "value": 40
+    },
+    "speed_wall": {
+        "value": 35 
+    },
+    "speed_wall_x": {
+        "value": 35
+    },
+    "speed_topbottom": {
+        "value": 35
+    },
+    "speed_travel": {
+        "value": 190
+    },
+    "speed_layer_0": {
+        "value": 20
+    },
+    "speed_print_layer_0": {
+        "value": 20
+    },
+    "skirt_brim_speed": {
+        "value": 20
+    },
+    "travel_retract_before_outer_wall": {
+        "value": false
+    },
+    "retraction_hop_enabled": {
+        "value": true
+    },
+    "retraction_hop": {
+        "value": 0.1
+    },
+    "cool_fan_full_at_height": {
+        "value": 2
+    },
+    "cool_fan_full_layer": {
+        "value": 11
+    },
+    "cool_min_layer_time": {
+        "value": 8
+    },
+    "support_z_distance": {
+        "value": 0.4 
+    },
+    "support_xy_distance": {
+        "value": 1
+    },
+    "brim_width": {
+        "value": 6 
+    },
+    "skirt_line_count": {
+        "value": 2
+    },
+    "skirt_brim_minimal_length": {
+        "value": 50
     }
   }
 }

@@ -24,6 +24,11 @@ UM.PreferencesPage
     function reset()
     {
         UM.Preferences.resetPreference("general/visible_settings")
+
+        // After calling this function update Setting visibility preset combobox.
+        // Reset should set "Basic" setting preset
+        visibilityPreset.setBasicPreset()
+
     }
     resetEnabled: true;
 
@@ -72,6 +77,9 @@ UM.PreferencesPage
                     {
                         definitionsModel.setAllVisible(false)
                     }
+
+                    // After change set "Custom" option
+                    visibilityPreset.currentIndex = visibilityPreset.model.count - 1
                 }
             }
         }
@@ -85,12 +93,93 @@ UM.PreferencesPage
                 top: parent.top
                 left: toggleVisibleSettings.right
                 leftMargin: UM.Theme.getSize("default_margin").width
-                right: parent.right
+                right: visibilityPreset.left
+                rightMargin: UM.Theme.getSize("default_margin").width
             }
 
             placeholderText: catalog.i18nc("@label:textbox", "Filter...")
 
             onTextChanged: definitionsModel.filter = {"i18n_label": "*" + text}
+        }
+
+        ComboBox
+        {
+            property int customOptionValue: 100
+
+            function setBasicPreset()
+            {
+                var index = 0
+                for(var i = 0; i < presetNamesList.count; ++i)
+                {
+                    if(model.get(i).text == "Basic")
+                    {
+                        index = i;
+                        break;
+                    }
+                }
+
+                visibilityPreset.currentIndex = index
+            }
+
+            id: visibilityPreset
+            width: 150
+            anchors
+            {
+                top: parent.top
+                right: parent.right
+            }
+
+            model: ListModel
+            {
+                id: presetNamesList
+                Component.onCompleted:
+                {
+                    // returned value is Dictionary  (Ex: {1:"Basic"}, The number 1 is the weight and sort by weight)
+                    var itemsDict = UM.Preferences.getValue("general/visible_settings_preset")
+                    var sorted = [];
+                    for(var key in itemsDict) {
+                        sorted[sorted.length] = key;
+                    }
+
+                    sorted.sort();
+                    for(var i = 0; i < sorted.length; i++) {
+                        presetNamesList.append({text: itemsDict[sorted[i]], value: i});
+                    }
+
+                    // By agreement lets "Custom" option will have value 100
+                    presetNamesList.append({text: "Custom", value: visibilityPreset.customOptionValue});
+                }
+            }
+
+            currentIndex:
+            {
+                // Load previously selected preset.
+                var text = UM.Preferences.getValue("general/preset_setting_visibility_choice");
+
+
+
+                var index = 0;
+                for(var i = 0; i < presetNamesList.count; ++i)
+                {
+                    if(model.get(i).text == text)
+                    {
+                        index = i;
+                        break;
+                    }
+                }
+                return index;
+            }
+
+            onActivated:
+            {
+                // TODO What to do if user is selected "Custom from Combobox" ?
+                if (model.get(index).text == "Custom")
+                    return
+
+                var newVisibleSettings = CuraApplication.getVisibilitySettingPreset(model.get(index).text)
+                UM.Preferences.setValue("general/visible_settings", newVisibleSettings)
+                UM.Preferences.setValue("general/preset_setting_visibility_choice", model.get(index).text)
+            }
         }
 
         ScrollView
@@ -162,7 +251,18 @@ UM.PreferencesPage
         {
             id: settingVisibilityItem;
 
-            UM.SettingVisibilityItem { }
+            UM.SettingVisibilityItem {
+
+                // after changing any visibility of settings, set the preset to the "Custom" option
+                visibilityChangeCallback : function()
+                {
+                    // If already "Custom" then don't do nothing
+                    if (visibilityPreset.currentIndex != visibilityPreset.model.count - 1)
+                    {
+                        visibilityPreset.currentIndex = visibilityPreset.model.count - 1
+                    }
+                }
+            }
         }
     }
 }

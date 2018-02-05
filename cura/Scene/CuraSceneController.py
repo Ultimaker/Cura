@@ -59,6 +59,8 @@ class CuraSceneController(QObject):
         for node in DepthFirstIterator(Application.getInstance().getController().getScene().getRoot()):
             if node.callDecoration("isSliceable"):
                 build_plate_number = node.callDecoration("getBuildPlateNumber")
+                if build_plate_number is None:
+                    build_plate_number = 0
                 max_build_plate = max(build_plate_number, max_build_plate)
         return max_build_plate
 

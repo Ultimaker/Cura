@@ -187,10 +187,8 @@ class CuraEngineBackend(QObject, Backend):
     ##  Manually triggers a reslice
     @pyqtSlot()
     def forceSlice(self):
-        if self._use_timer:
-            self._change_timer.start()
-        else:
-            self.slice()
+        self.markSliceAll()
+        self.slice()
 
     ##  Perform a slice of the scene.
     def slice(self):
@@ -369,7 +367,6 @@ class CuraEngineBackend(QObject, Backend):
                 self.backendStateChange.emit(BackendState.Error)
             else:
                 self.backendStateChange.emit(BackendState.NotStarted)
-                pass
             self._invokeSlice()
             return
 
@@ -543,6 +540,8 @@ class CuraEngineBackend(QObject, Backend):
     #
     #   \param message The protobuf message containing sliced layer data.
     def _onOptimizedLayerMessage(self, message):
+        if self._start_slice_job_build_plate not in self._stored_optimized_layer_data:
+            self._stored_optimized_layer_data[self._start_slice_job_build_plate] = []
         self._stored_optimized_layer_data[self._start_slice_job_build_plate].append(message)
 
     ##  Called when a progress message is received from the engine.

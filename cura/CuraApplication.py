@@ -1,6 +1,7 @@
-# Copyright (c) 2017 Ultimaker B.V.
-# Copyright (c) 2017 Ultimaker B.V.
+# Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
+#Type hinting.
+from typing import Dict
 from PyQt5.QtNetwork import QLocalServer
 from PyQt5.QtNetwork import QLocalSocket
 
@@ -87,6 +88,7 @@ from PyQt5.QtGui import QColor, QIcon
 from PyQt5.QtWidgets import QMessageBox
 from PyQt5.QtQml import qmlRegisterUncreatableType, qmlRegisterSingletonType, qmlRegisterType
 
+from configparser import ConfigParser
 import sys
 import os.path
 import numpy
@@ -94,6 +96,7 @@ import copy
 import os
 import argparse
 import json
+
 
 numpy.seterr(all="ignore")
 
@@ -348,57 +351,19 @@ class CuraApplication(QtApplication):
 
         preferences.setDefault("local_file/last_used_type", "text/x-gcode")
 
-        preferences.setDefault("general/visible_settings", """
-            machine_settings
-            resolution
-                layer_height
-            shell
-                wall_thickness
-                top_bottom_thickness
-                z_seam_x
-                z_seam_y
-            infill
-                infill_sparse_density
-                gradual_infill_steps
-            material
-                material_print_temperature
-                material_bed_temperature
-                material_diameter
-                material_flow
-                retraction_enable
-            speed
-                speed_print
-                speed_travel
-                acceleration_print
-                acceleration_travel
-                jerk_print
-                jerk_travel
-            travel
-            cooling
-                cool_fan_enabled
-            support
-                support_enable
-                support_extruder_nr
-                support_type
-            platform_adhesion
-                adhesion_type
-                adhesion_extruder_nr
-                brim_width
-                raft_airgap
-                layer_0_z_overlap
-                raft_surface_layers
-            dual
-                prime_tower_enable
-                prime_tower_size
-                prime_tower_position_x
-                prime_tower_position_y
-            meshfix
-            blackmagic
-                print_sequence
-                infill_mesh
-                cutting_mesh
-            experimental
-        """.replace("\n", ";").replace(" ", ""))
+        setting_visibily_preset_names = self.getVisibilitySettingPresetTypes()
+        preferences.setDefault("general/visible_settings_preset", setting_visibily_preset_names)
+
+        preset_setting_visibility_choice = Preferences.getInstance().getValue("general/preset_setting_visibility_choice")
+
+        default_preset_visibility_group_name = "Basic"
+        if preset_setting_visibility_choice == "" or preset_setting_visibility_choice is None:
+            if preset_setting_visibility_choice not in setting_visibily_preset_names:
+                preset_setting_visibility_choice = default_preset_visibility_group_name
+
+        visible_settings = self.getVisibilitySettingPreset(settings_preset_name = preset_setting_visibility_choice)
+        preferences.setDefault("general/visible_settings", visible_settings)
+        preferences.setDefault("general/preset_setting_visibility_choice", preset_setting_visibility_choice)
 
         self.applicationShuttingDown.connect(self.saveSettings)
         self.engineCreatedSignal.connect(self._onEngineCreated)
@@ -409,6 +374,93 @@ class CuraApplication(QtApplication):
         self._plugin_registry.addSupportedPluginExtension("curaplugin", "Cura Plugin")
 
         self.getCuraSceneController().setActiveBuildPlate(0)  # Initialize
+
+    @pyqtSlot(str, result = str)
+    def getVisibilitySettingPreset(self, settings_preset_name) -> str:
+        result = self._loadPresetSettingVisibilityGroup(settings_preset_name)
+        formatted_preset_settings = self._serializePresetSettingVisibilityData(result)
+
+        return formatted_preset_settings
+
+    ## Serialise the given preset setting visibitlity group dictionary into a string which is concatenated by ";"
+    #
+    def _serializePresetSettingVisibilityData(self, settings_data: dict) -> str:
+        result_string = ""
+
+        for key in settings_data:
+            result_string += key + ";"
+            for value in settings_data[key]:
+                result_string += value + ";"
+
+        return result_string
+
+    ## Load the preset setting visibility group with the given name
+    #
+    def _loadPresetSettingVisibilityGroup(self, visibility_preset_name) -> Dict[str, str]:
+        preset_dir = Resources.getPath(Resources.PresetSettingVisibilityGroups)
+
+        result = {}
+        right_preset_found = False
+
+        for item in os.listdir(preset_dir):
+            file_path = os.path.join(preset_dir, item)
+            if not os.path.isfile(file_path):
+                continue
+
+            parser = ConfigParser(allow_no_value = True)  # accept options without any value,
+
+            try:
+                parser.read([file_path])
+
+                if not parser.has_option("general", "name"):
+                    continue
+
+                if parser["general"]["name"] == visibility_preset_name:
+                    right_preset_found = True
+                    for section in parser.sections():
+                        if section == 'general':
+                            continue
+                        else:
+                            section_settings = []
+                            for option in parser[section].keys():
+                                section_settings.append(option)
+
+                            result[section] = section_settings
+
+                if right_preset_found:
+                    break
+
+            except Exception as e:
+                Logger.log("e", "Failed to load setting visibility preset %s: %s", file_path, str(e))
+
+        return result
+
+    ## Check visibility setting preset folder and returns available types
+    #
+    def getVisibilitySettingPresetTypes(self):
+        preset_dir = Resources.getPath(Resources.PresetSettingVisibilityGroups)
+        result = {}
+
+        for item in os.listdir(preset_dir):
+            file_path = os.path.join(preset_dir, item)
+            if not os.path.isfile(file_path):
+                continue
+
+            parser = ConfigParser(allow_no_value=True)  # accept options without any value,
+
+            try:
+                parser.read([file_path])
+
+                if not parser.has_option("general", "name") and not parser.has_option("general", "weight"):
+                    continue
+
+                result[parser["general"]["weight"]] = parser["general"]["name"]
+
+            except Exception as e:
+                Logger.log("e", "Failed to load setting preset %s: %s", file_path, str(e))
+
+        return result
+
 
     def _onEngineCreated(self):
         self._engine.addImageProvider("camera", CameraImageProvider.CameraImageProvider())

@@ -453,6 +453,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             Logger.log("w", "Workspace did not contain visible settings. Leaving visibility unchanged")
         else:
             global_preferences.setValue("general/visible_settings", visible_settings)
+            global_preferences.setValue("general/preset_setting_visibility_choice", "Custom")
 
         categories_expanded = temp_preferences.getValue("cura/categories_expanded")
         if categories_expanded is None:
