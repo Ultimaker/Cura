@@ -350,12 +350,12 @@ msgstr "반복기"
 #: fdmprinter.def.json
 msgctxt "machine_firmware_retract label"
 msgid "Firmware Retraction"
-msgstr ""
+msgstr "펌웨어 제거"
 
 #: fdmprinter.def.json
 msgctxt "machine_firmware_retract description"
 msgid "Whether to use firmware retract commands (G10/G11) instead of using the E property in G1 commands to retract the material."
-msgstr ""
+msgstr "재료를 제거하는 G1 명령어에서 E 속성을 사용하는 대신 펌웨어 제거 명령어(G10/G11)를 사용할 지 여부."
 
 #: fdmprinter.def.json
 msgctxt "machine_disallowed_areas label"
@@ -1050,12 +1050,12 @@ msgstr "어디에나"
 #: fdmprinter.def.json
 msgctxt "filter_out_tiny_gaps label"
 msgid "Filter Out Tiny Gaps"
-msgstr ""
+msgstr "아주 작은 갭 필터 아웃"
 
 #: fdmprinter.def.json
 msgctxt "filter_out_tiny_gaps description"
 msgid "Filter out tiny gaps to reduce blobs on outside of model."
-msgstr ""
+msgstr "아주 작은 갭을 필터 아웃하여 모델 외부의 얼룩을 줄입니다."
 
 #: fdmprinter.def.json
 msgctxt "fill_outline_gaps label"
@@ -1440,7 +1440,7 @@ msgstr "충진 X 오프셋"
 #: fdmprinter.def.json
 msgctxt "infill_offset_x description"
 msgid "The infill pattern is moved this distance along the X axis."
-msgstr ""
+msgstr "충진 패턴이 X축을 따라 이 거리만큼 이동합니다."
 
 #: fdmprinter.def.json
 msgctxt "infill_offset_y label"
@@ -1450,7 +1450,7 @@ msgstr "충진 Y 오프셋"
 #: fdmprinter.def.json
 msgctxt "infill_offset_y description"
 msgid "The infill pattern is moved this distance along the Y axis."
-msgstr ""
+msgstr "충진 패턴이 Y축을 따라 이 거리만큼 이동합니다."
 
 #: fdmprinter.def.json
 msgctxt "sub_div_rad_add label"
@@ -1470,7 +1470,7 @@ msgstr "충진 오버랩 비율"
 #: fdmprinter.def.json
 msgctxt "infill_overlap description"
 msgid "The amount of overlap between the infill and the walls as a percentage of the infill line width. A slight overlap allows the walls to connect firmly to the infill."
-msgstr ""
+msgstr "충진 라인 폭의 비율인 충진재와 벽 사이의 오버랩 양 약간의 오버랩으로 벽이 충진재와 확실하게 체결됩니다."
 
 #: fdmprinter.def.json
 msgctxt "infill_overlap_mm label"
@@ -1490,7 +1490,7 @@ msgstr "피부 겹침 비율"
 #: fdmprinter.def.json
 msgctxt "skin_overlap description"
 msgid "The amount of overlap between the skin and the walls as a percentage of the skin line width. A slight overlap allows the walls to connect firmly to the skin. This is a percentage of the average line widths of the skin lines and the innermost wall."
-msgstr ""
+msgstr "스킨 라인 폭의 비율인 스킨과 벽 사이의 오버랩 양 약간의 오버랩으로 벽이 스킨과 확실하게 체결됩니다. 이것은 스킨 라인과 가장 안쪽 벽과의 평균 라인 폭의 비율입니다."
 
 #: fdmprinter.def.json
 msgctxt "skin_overlap_mm label"
@@ -1720,7 +1720,7 @@ msgstr "빌드 플레이트 온도"
 #: fdmprinter.def.json
 msgctxt "material_bed_temperature description"
 msgid "The temperature used for the heated build plate. If this is 0, the bed temperature will not be adjusted."
-msgstr ""
+msgstr "가열 된 빌드 플레이트에 사용되는 온도. 이것이 0이면, 베드 온도가 조정되지 않습니다."
 
 #: fdmprinter.def.json
 msgctxt "material_bed_temperature_layer_0 label"
@@ -3502,9 +3502,7 @@ msgctxt "skirt_gap description"
 msgid ""
 "The horizontal distance between the skirt and the first layer of the print.\n"
 "This is the minimum distance. Multiple skirt lines will extend outwards from this distance."
-msgstr ""
-"프린트의 스커트와 첫 번째 레이어 사이의 수직 거리입니다.\n"
-"이는 최소 거리입니다. 여러 개의 스커트 선이 이 거리에서 바깥쪽으로 연장됩니다."
+msgstr "프린트의 스커트와 첫 번째 레이어 사이의 수직 거리입니다.\n이는 최소 거리입니다. 여러 개의 스커트 선이 이 거리에서 바깥쪽으로 연장됩니다."
 
 #: fdmprinter.def.json
 msgctxt "skirt_brim_minimal_length label"
@@ -4264,82 +4262,82 @@ msgstr "실험적인 "
 #: fdmprinter.def.json
 msgctxt "support_tree_enable label"
 msgid "Tree Support"
-msgstr ""
+msgstr "트리 지지물"
 
 #: fdmprinter.def.json
 msgctxt "support_tree_enable description"
 msgid "Generate a tree-like support with branches that support your print. This may reduce material usage and print time, but greatly increases slicing time."
-msgstr ""
+msgstr "프린트물을 지지하는 가지가 달린 나무 모양의 지지물을 생성합니다. 이것이 재료 사용과 인쇄 시간을 줄여줄 수 있지만, 슬라이싱 시간이 상당히 늘어납니다."
 
 #: fdmprinter.def.json
 msgctxt "support_tree_angle label"
 msgid "Tree Support Branch Angle"
-msgstr ""
+msgstr "트리 지지물 브랜치 각도"
 
 #: fdmprinter.def.json
 msgctxt "support_tree_angle description"
 msgid "The angle of the branches. Use a lower angle to make them more vertical and more stable. Use a higher angle to be able to have more reach."
-msgstr ""
+msgstr "브랜치의 각도. 적은 각도를 사용하면 더 수직이 되어 더 안정됩니다. 높은 각도를 사용하면 더 많이 도달할 수 있습니다."
 
 #: fdmprinter.def.json
 msgctxt "support_tree_branch_distance label"
 msgid "Tree Support Branch Distance"
-msgstr ""
+msgstr "트리 지지물 브랜치 거리"
 
 #: fdmprinter.def.json
 msgctxt "support_tree_branch_distance description"
 msgid "How far apart the branches need to be when they touch the model. Making this distance small will cause the tree support to touch the model at more points, causing better overhang but making support harder to remove."
-msgstr ""
+msgstr "모델에 접촉할 때 브랜치를 떨어뜨려야 하는 정도 이 거리를 짧게 하면 트리 지지물이 더 많은 접점에서 모델에 접촉하여, 오버행이 더 좋아지지만 지지물을 제거하기가 더 어렵게 됩니다."
 
 #: fdmprinter.def.json
 msgctxt "support_tree_branch_diameter label"
 msgid "Tree Support Branch Diameter"
-msgstr ""
+msgstr "트리 지지물 브랜치 직경"
 
 #: fdmprinter.def.json
 msgctxt "support_tree_branch_diameter description"
 msgid "The diameter of the thinnest branches of tree support. Thicker branches are more sturdy. Branches towards the base will be thicker than this."
-msgstr ""
+msgstr "트리 지지물의 가장 얇은 브랜치의 직경 브랜치가 두꺼울수록 더 견고해집니다. 베이스를 향한 브랜치는 이보다 더 두꺼워집니다."
 
 #: fdmprinter.def.json
 msgctxt "support_tree_branch_diameter_angle label"
 msgid "Tree Support Branch Diameter Angle"
-msgstr ""
+msgstr "트리 지지물 브랜치 직경 각도"
 
 #: fdmprinter.def.json
 msgctxt "support_tree_branch_diameter_angle description"
 msgid "The angle of the branches' diameter as they gradually become thicker towards the bottom. An angle of 0 will cause the branches to have uniform thickness over their length. A bit of an angle can increase stability of the tree support."
-msgstr ""
+msgstr "하단을 향할수록 점점 더 두꺼워짐에 따른 브랜치의 직경 각도. 이 각도가 0이면 브랜치는 길이 전체에 균일한 두께를 갖게 됩니다. 약간의 각도가 있으면 트리 지지물의 안정성을 높여 줍니다."
 
 #: fdmprinter.def.json
 msgctxt "support_tree_collision_resolution label"
 msgid "Tree Support Collision Resolution"
-msgstr ""
+msgstr "트리 지지물 충돌 해결"
 
 #: fdmprinter.def.json
 msgctxt "support_tree_collision_resolution description"
 msgid "Resolution to compute collisions with to avoid hitting the model. Setting this lower will produce more accurate trees that fail less often, but increases slicing time dramatically."
-msgstr ""
+msgstr "모델에 부딪히는 것을 피하기 위해 충돌을 계산하는 해결책 이 값을 낮게 설정하면 실패도가 낮은 더 정확한 트리를 생성하지만, 슬라이싱 시간이 현격하게 늘어납니다."
 
 #: fdmprinter.def.json
 msgctxt "support_tree_wall_thickness label"
 msgid "Tree Support Wall Thickness"
-msgstr ""
+msgstr "트리 지지물 벽 두께"
 
 #: fdmprinter.def.json
 msgctxt "support_tree_wall_thickness description"
 msgid "The thickness of the walls of the branches of tree support. Thicker walls take longer to print but don't fall over as easily."
-msgstr ""
+msgstr "트리 지지물의 브랜치 벽의 두께 벽이 두꺼울수록 인쇄 시간이 오래 걸리지만 쉽게 넘어지지 않습니다."
 
 #: fdmprinter.def.json
 msgctxt "support_tree_wall_count label"
 msgid "Tree Support Wall Line Count"
-msgstr ""
+msgstr "트리 지지물 벽 라인 카운트"
 
 #: fdmprinter.def.json
 msgctxt "support_tree_wall_count description"
 msgid "The number of walls of the branches of tree support. Thicker walls take longer to print but don't fall over as easily."
-msgstr ""
+msgstr "트리 지지물의 브랜치 벽의 개수 벽이 두꺼울수록 인쇄 시간이 오래 걸리지만 쉽게 넘어지지 않습니다."
 
 #: fdmprinter.def.json
 msgctxt "slicing_tolerance label"
@@ -4414,12 +4412,12 @@ msgstr "상단 표면 스킨 층이 선 또는 지그재그 패턴을 사용할 
 #: fdmprinter.def.json
 msgctxt "infill_enable_travel_optimization label"
 msgid "Infill Travel Optimization"
-msgstr ""
+msgstr "충진재 이동 최적화"
 
 #: fdmprinter.def.json
 msgctxt "infill_enable_travel_optimization description"
 msgid "When enabled, the order in which the infill lines are printed is optimized to reduce the distance travelled. The reduction in travel time achieved very much depends on the model being sliced, infill pattern, density, etc. Note that, for some models that have many small areas of infill, the time to slice the model may be greatly increased."
-msgstr ""
+msgstr "가능하면, 충진 라인 인쇄 순서가 최적화되어 이동 거리를 줄입니다. 이동 시간의 감소는 슬라이스되는 모델, 충진 패턴, 밀도 등에 따라 달라집니다. 작은 충진 영역이 많은 일부 모델의 경우, 모델을 슬라이스하는 시간이 상당히 늘어납니다."
 
 #: fdmprinter.def.json
 msgctxt "material_flow_dependent_temperature label"
@@ -5051,42 +5049,42 @@ msgstr "노즐과 수평 아래쪽 라인 사이의 거리. 클리어런스가 �
 #: fdmprinter.def.json
 msgctxt "adaptive_layer_height_enabled label"
 msgid "Use adaptive layers"
-msgstr ""
+msgstr "어댑티브 레이어 사용"
 
 #: fdmprinter.def.json
 msgctxt "adaptive_layer_height_enabled description"
 msgid "Adaptive layers computes the layer heights depending on the shape of the model."
-msgstr ""
+msgstr "어댑티브 레이어는 모델의 모양에 따라 레이어의 높이를 계산합니다."
 
 #: fdmprinter.def.json
 msgctxt "adaptive_layer_height_variation label"
 msgid "Adaptive layers maximum variation"
-msgstr ""
+msgstr "어댑티브 레이어 최대 변화"
 
 #: fdmprinter.def.json
 msgctxt "adaptive_layer_height_variation description"
 msgid "The maximum allowed height different from the base layer height in mm."
-msgstr ""
+msgstr "기본 레이어 높이와 다른 최대 허용 높이 (mm)."
 
 #: fdmprinter.def.json
 msgctxt "adaptive_layer_height_variation_step label"
 msgid "Adaptive layers variation step size"
-msgstr ""
+msgstr "어댑티브 레이어 변화 단계 크기"
 
 #: fdmprinter.def.json
 msgctxt "adaptive_layer_height_variation_step description"
 msgid "The difference in height of the next layer height compared to the previous one."
-msgstr ""
+msgstr "이전 높이와 비교되는 다음 레이어 높이의 차이."
 
 #: fdmprinter.def.json
 msgctxt "adaptive_layer_height_threshold label"
 msgid "Adaptive layers threshold"
-msgstr ""
+msgstr "어댑티브 레이어 임계 값"
 
 #: fdmprinter.def.json
 msgctxt "adaptive_layer_height_threshold description"
 msgid "Threshold whether to use a smaller layer or not. This number is compared to the tan of the steepest slope in a layer."
-msgstr ""
+msgstr "더 작은 레이어를 사용할지 여부에 대한 임계 값 이 숫자는 레이어의 가장 급한 경사의 탄젠트와 비교됩니다."
 
 #: fdmprinter.def.json
 msgctxt "command_line_settings label"
