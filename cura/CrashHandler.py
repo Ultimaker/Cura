@@ -124,7 +124,7 @@ class CrashHandler:
         os._exit(1)
 
     def _backupAndStartClean(self):
-        # TODO: backup the current cura directories and create clean ones
+        # backup the current cura directories and create clean ones
         from cura.CuraVersion import CuraVersion
         from UM.Resources import Resources
         # The early crash may happen before those information is set in Resources, so we need to set them here to
