@@ -187,10 +187,8 @@ class CuraEngineBackend(QObject, Backend):
     ##  Manually triggers a reslice
     @pyqtSlot()
     def forceSlice(self):
-        if self._use_timer:
-            self._change_timer.start()
-        else:
-            self.slice()
+        self.markSliceAll()
+        self.slice()
 
     ##  Perform a slice of the scene.
     def slice(self):
