@@ -367,7 +367,6 @@ class CuraEngineBackend(QObject, Backend):
                 self.backendStateChange.emit(BackendState.Error)
             else:
                 self.backendStateChange.emit(BackendState.NotStarted)
-                pass
             self._invokeSlice()
             return
 
