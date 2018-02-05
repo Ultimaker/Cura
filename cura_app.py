@@ -32,7 +32,7 @@ if not known_args["debug"]:
             return os.path.expanduser("~/.local/share/cura")
         elif Platform.isOSX():
             return os.path.expanduser("~/Library/Logs/cura")
-    
+
     if hasattr(sys, "frozen"):
         dirpath = get_cura_dir_path()
         os.makedirs(dirpath, exist_ok = True)
@@ -110,6 +110,7 @@ def exceptHook(hook_type, value, traceback):
         application = QApplication(sys.argv)
         application.removePostedEvents(None)
         _crash_handler = CrashHandler(hook_type, value, traceback, has_started)
+        CuraApplication.getInstance().closeSplash()
         _crash_handler.early_crash_dialog.show()
         sys.exit(application.exec_())
 
