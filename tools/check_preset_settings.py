@@ -62,7 +62,7 @@ class PresetSettingsValidator:
 
                 # show results
                 print("==========================================")
-                if incorrect_settings or incorrect_settings:
+                if incorrect_sections or incorrect_settings:
                     has_invalid_files = True
                     print("[INVALID] [%s] is invalid, details below" % file_path)
 
