@@ -110,7 +110,6 @@ class PrintInformation(QObject):
 
         self._print_time_message_values = {}
 
-
     def _initPrintTimeMessageValues(self, build_plate_number):
         # Full fill message values using keys from _print_time_message_translations
         self._print_time_message_values[build_plate_number] = {}
