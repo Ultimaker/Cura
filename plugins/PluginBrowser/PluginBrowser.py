@@ -287,7 +287,6 @@ class PluginBrowser(QObject, Extension):
 
     @pyqtProperty(QObject, notify=pluginsMetadataChanged)
     def pluginsModel(self):
-        print("Updating plugins model...", self._view)
         self._plugins_model = PluginsModel(self._view)
         # self._plugins_model.update()
 
@@ -367,7 +366,6 @@ class PluginBrowser(QObject, Extension):
 
                     # Add metadata to the manager:
                     self._plugins_metadata = json_data
-                    print(self._plugins_metadata)
                     self._plugin_registry.addExternalPlugins(self._plugins_metadata)
                     self.pluginsMetadataChanged.emit()
                 except json.decoder.JSONDecodeError:
