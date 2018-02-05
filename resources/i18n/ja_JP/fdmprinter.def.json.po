@@ -62,9 +62,7 @@ msgctxt "machine_start_gcode description"
 msgid ""
 "Gcode commands to be executed at the very start - separated by \n"
 "."
-msgstr ""
-"Gcodeのコマンドは −で始まり\n"
-"で区切られます。"
+msgstr "Gcodeのコマンドは −で始まり\nで区切られます。"
 
 #: fdmprinter.def.json
 msgctxt "machine_end_gcode label"
@@ -77,9 +75,7 @@ msgctxt "machine_end_gcode description"
 msgid ""
 "Gcode commands to be executed at the very end - separated by \n"
 "."
-msgstr ""
-"Gcodeのコマンドは −で始まり\n"
-"で区切られます。"
+msgstr "Gcodeのコマンドは −で始まり\nで区切られます。"
 
 #: fdmprinter.def.json
 msgctxt "material_guid label"
@@ -384,12 +380,12 @@ msgstr "Repetier"
 #: fdmprinter.def.json
 msgctxt "machine_firmware_retract label"
 msgid "Firmware Retraction"
-msgstr ""
+msgstr "ファームウェア引き戻し"
 
 #: fdmprinter.def.json
 msgctxt "machine_firmware_retract description"
 msgid "Whether to use firmware retract commands (G10/G11) instead of using the E property in G1 commands to retract the material."
-msgstr ""
+msgstr "材料を引き戻すためにG1コマンドのEプロパティーを使用する代わりにファームウェア引き戻しコマンド (G10/G11) を使用するかどうか。"
 
 # msgstr "Repetier"
 #: fdmprinter.def.json
@@ -1101,12 +1097,12 @@ msgstr "全対象"
 #: fdmprinter.def.json
 msgctxt "filter_out_tiny_gaps label"
 msgid "Filter Out Tiny Gaps"
-msgstr ""
+msgstr "小さなギャップのフィルターアウト"
 
 #: fdmprinter.def.json
 msgctxt "filter_out_tiny_gaps description"
 msgid "Filter out tiny gaps to reduce blobs on outside of model."
-msgstr ""
+msgstr "モデル外部の塊を減らすために小さなギャップをフィルターアウトします。"
 
 #: fdmprinter.def.json
 msgctxt "fill_outline_gaps label"
@@ -1179,9 +1175,7 @@ msgstr "ZシームX"
 #: fdmprinter.def.json
 msgctxt "z_seam_x description"
 msgid "The X coordinate of the position near where to start printing each part in a layer."
-msgstr ""
-"レイヤー内の各印刷を開始するX座\n"
-"標の位置。"
+msgstr "レイヤー内の各印刷を開始するX座\n標の位置。"
 
 #: fdmprinter.def.json
 msgctxt "z_seam_y label"
@@ -1523,7 +1517,7 @@ msgstr "インフィルXオフセット"
 #: fdmprinter.def.json
 msgctxt "infill_offset_x description"
 msgid "The infill pattern is moved this distance along the X axis."
-msgstr ""
+msgstr "インフィルパターンはX軸に沿ってこの距離を移動します。"
 
 #: fdmprinter.def.json
 msgctxt "infill_offset_y label"
@@ -1533,7 +1527,7 @@ msgstr "インフィルYオフセット"
 #: fdmprinter.def.json
 msgctxt "infill_offset_y description"
 msgid "The infill pattern is moved this distance along the Y axis."
-msgstr ""
+msgstr "インフィルパターンはY軸に沿ってこの距離を移動します。"
 
 #: fdmprinter.def.json
 msgctxt "sub_div_rad_add label"
@@ -1553,7 +1547,7 @@ msgstr "インフィル公差量"
 #: fdmprinter.def.json
 msgctxt "infill_overlap description"
 msgid "The amount of overlap between the infill and the walls as a percentage of the infill line width. A slight overlap allows the walls to connect firmly to the infill."
-msgstr ""
+msgstr "インフィルと壁のオーバーラップ量 (インフィルライン幅に対する%)。少しのオーバーラップによって壁がインフィルにしっかりつながります。"
 
 #: fdmprinter.def.json
 msgctxt "infill_overlap_mm label"
@@ -1574,7 +1568,7 @@ msgstr "表面公差量"
 #: fdmprinter.def.json
 msgctxt "skin_overlap description"
 msgid "The amount of overlap between the skin and the walls as a percentage of the skin line width. A slight overlap allows the walls to connect firmly to the skin. This is a percentage of the average line widths of the skin lines and the innermost wall."
-msgstr ""
+msgstr "スキンと壁のオーバーラップ量 (スキンライン幅に対する%)。少しのオーバーラップによって壁がスキンにしっかりつながります。これは、スキンライン幅の平均ライン幅と最内壁の%です。"
 
 #: fdmprinter.def.json
 msgctxt "skin_overlap_mm label"
@@ -1636,9 +1630,7 @@ msgstr "インフィル優先"
 #: fdmprinter.def.json
 msgctxt "infill_before_walls description"
 msgid "Print the infill before printing the walls. Printing the walls first may lead to more accurate walls, but overhangs print worse. Printing the infill first leads to sturdier walls, but the infill pattern might sometimes show through the surface."
-msgstr ""
-"壁より前にインフィルをプリントします　はじめに壁をプリントするとより精密な壁になりますが、オーバーハングのプリントは悪化します\n"
-"はじめにインフィルをプリントすると丈夫な壁になりますが、インフィルの模様が時折表面から透けて表れます"
+msgstr "壁より前にインフィルをプリントします　はじめに壁をプリントするとより精密な壁になりますが、オーバーハングのプリントは悪化します\nはじめにインフィルをプリントすると丈夫な壁になりますが、インフィルの模様が時折表面から透けて表れます"
 
 #: fdmprinter.def.json
 msgctxt "min_infill_area label"
@@ -1813,7 +1805,7 @@ msgstr "ビルドプレート温度"
 #: fdmprinter.def.json
 msgctxt "material_bed_temperature description"
 msgid "The temperature used for the heated build plate. If this is 0, the bed temperature will not be adjusted."
-msgstr ""
+msgstr "加熱式ビルドプレート温度。これが 0 の場合、ベッド温度は調整されません。"
 
 #: fdmprinter.def.json
 msgctxt "material_bed_temperature_layer_0 label"
@@ -3644,9 +3636,7 @@ msgctxt "skirt_gap description"
 msgid ""
 "The horizontal distance between the skirt and the first layer of the print.\n"
 "This is the minimum distance. Multiple skirt lines will extend outwards from this distance."
-msgstr ""
-"スカートと印刷の最初の層の間の水平距離。\n"
-"これは最小距離です。複数のスカートラインがこの距離から外側に展開されます。"
+msgstr "スカートと印刷の最初の層の間の水平距離。\nこれは最小距離です。複数のスカートラインがこの距離から外側に展開されます。"
 
 #: fdmprinter.def.json
 msgctxt "skirt_brim_minimal_length label"
@@ -4414,82 +4404,82 @@ msgstr "実験的"
 #: fdmprinter.def.json
 msgctxt "support_tree_enable label"
 msgid "Tree Support"
-msgstr ""
+msgstr "ツリーサポート"
 
 #: fdmprinter.def.json
 msgctxt "support_tree_enable description"
 msgid "Generate a tree-like support with branches that support your print. This may reduce material usage and print time, but greatly increases slicing time."
-msgstr ""
+msgstr "プリントを支えるために枝のついた木のようなサポートを生成します。材料とプリント時間が減る可能性がありますが、スライス時間が大きく増加します。"
 
 #: fdmprinter.def.json
 msgctxt "support_tree_angle label"
 msgid "Tree Support Branch Angle"
-msgstr ""
+msgstr "ツリーサポート枝角度"
 
 #: fdmprinter.def.json
 msgctxt "support_tree_angle description"
 msgid "The angle of the branches. Use a lower angle to make them more vertical and more stable. Use a higher angle to be able to have more reach."
-msgstr ""
+msgstr "枝の角度。枝を垂直で安定したものにするためには小さい角度を使用します。高さを得るためには大きい角度を使用します。"
 
 #: fdmprinter.def.json
 msgctxt "support_tree_branch_distance label"
 msgid "Tree Support Branch Distance"
-msgstr ""
+msgstr "ツリーサポート枝間隔"
 
 #: fdmprinter.def.json
 msgctxt "support_tree_branch_distance description"
 msgid "How far apart the branches need to be when they touch the model. Making this distance small will cause the tree support to touch the model at more points, causing better overhang but making support harder to remove."
-msgstr ""
+msgstr "枝がモデルに接触するところで確保する枝の間隔。この間隔を小さくするとツリーサポートがモデルに接触する点が増え、支える効果が高まりますが、サポートの取り外しが難しくなります。"
 
 #: fdmprinter.def.json
 msgctxt "support_tree_branch_diameter label"
 msgid "Tree Support Branch Diameter"
-msgstr ""
+msgstr "ツリーサポート枝直径"
 
 #: fdmprinter.def.json
 msgctxt "support_tree_branch_diameter description"
 msgid "The diameter of the thinnest branches of tree support. Thicker branches are more sturdy. Branches towards the base will be thicker than this."
-msgstr ""
+msgstr "ツリーサポートの最も細い枝の直径。枝は太いほど丈夫です。基部に近いところでは、枝はこれよりも太くなります。"
 
 #: fdmprinter.def.json
 msgctxt "support_tree_branch_diameter_angle label"
 msgid "Tree Support Branch Diameter Angle"
-msgstr ""
+msgstr "ツリーサポート枝直径角度"
 
 #: fdmprinter.def.json
 msgctxt "support_tree_branch_diameter_angle description"
 msgid "The angle of the branches' diameter as they gradually become thicker towards the bottom. An angle of 0 will cause the branches to have uniform thickness over their length. A bit of an angle can increase stability of the tree support."
-msgstr ""
+msgstr "基部に向かって徐々に太くなる枝の直径の角度。角度が0の場合、枝の太さは全長にわたって同じになります。少し角度を付けると、ツリーサポートの安定性が高まります。"
 
 #: fdmprinter.def.json
 msgctxt "support_tree_collision_resolution label"
 msgid "Tree Support Collision Resolution"
-msgstr ""
+msgstr "ツリーサポート衝突精細度"
 
 #: fdmprinter.def.json
 msgctxt "support_tree_collision_resolution description"
 msgid "Resolution to compute collisions with to avoid hitting the model. Setting this lower will produce more accurate trees that fail less often, but increases slicing time dramatically."
-msgstr ""
+msgstr "モデルに干渉しないようにする衝突計算の精細度。小さい値を設定すると、失敗の少ない正確なツリーが生成されますが、スライス時間は大きく増加します。"
 
 #: fdmprinter.def.json
 msgctxt "support_tree_wall_thickness label"
 msgid "Tree Support Wall Thickness"
-msgstr ""
+msgstr "ツリーサポート壁厚"
 
 #: fdmprinter.def.json
 msgctxt "support_tree_wall_thickness description"
 msgid "The thickness of the walls of the branches of tree support. Thicker walls take longer to print but don't fall over as easily."
-msgstr ""
+msgstr "ツリーサポートの枝の壁の厚さ。壁が厚いほどプリント時間が長くなりますが、崩れにくくなります。"
 
 #: fdmprinter.def.json
 msgctxt "support_tree_wall_count label"
 msgid "Tree Support Wall Line Count"
-msgstr ""
+msgstr "ツリーサポートウォールライン数"
 
 #: fdmprinter.def.json
 msgctxt "support_tree_wall_count description"
 msgid "The number of walls of the branches of tree support. Thicker walls take longer to print but don't fall over as easily."
-msgstr ""
+msgstr "ツリーサポートの枝の壁の数。壁が厚いほどプリント時間が長くなりますが、崩れにくくなります。"
 
 #: fdmprinter.def.json
 msgctxt "slicing_tolerance label"
@@ -4570,12 +4560,12 @@ msgstr "トップ表面層に縦かジグザグパターンを利用する時に
 #: fdmprinter.def.json
 msgctxt "infill_enable_travel_optimization label"
 msgid "Infill Travel Optimization"
-msgstr ""
+msgstr "インフィル移動最適化"
 
 #: fdmprinter.def.json
 msgctxt "infill_enable_travel_optimization description"
 msgid "When enabled, the order in which the infill lines are printed is optimized to reduce the distance travelled. The reduction in travel time achieved very much depends on the model being sliced, infill pattern, density, etc. Note that, for some models that have many small areas of infill, the time to slice the model may be greatly increased."
-msgstr ""
+msgstr "有効化すると、移動距離が減少するようにインフィルラインをプリントする順序が最適化されます。移動時間の削減は、スライスするモデル、インフィルパターン、密度などに大きく依存します。特に、インフィルを行う小さなエリアが多数あるモデルの場合、モデルをスライスする時間が大きく増えることがあります。"
 
 #: fdmprinter.def.json
 msgctxt "material_flow_dependent_temperature label"
@@ -5219,42 +5209,42 @@ msgstr "ノズルと水平方向に下向きの線間の距離。大きな隙間
 #: fdmprinter.def.json
 msgctxt "adaptive_layer_height_enabled label"
 msgid "Use adaptive layers"
-msgstr ""
+msgstr "適応レイヤーの使用"
 
 #: fdmprinter.def.json
 msgctxt "adaptive_layer_height_enabled description"
 msgid "Adaptive layers computes the layer heights depending on the shape of the model."
-msgstr ""
+msgstr "適応レイヤーは、レイヤーの高さをモデルの形状に合わせて計算します。"
 
 #: fdmprinter.def.json
 msgctxt "adaptive_layer_height_variation label"
 msgid "Adaptive layers maximum variation"
-msgstr ""
+msgstr "適応レイヤー最大差分"
 
 #: fdmprinter.def.json
 msgctxt "adaptive_layer_height_variation description"
 msgid "The maximum allowed height different from the base layer height in mm."
-msgstr ""
+msgstr "基準レイヤー高さと比較して許容される最大の高さ (mm)。"
 
 #: fdmprinter.def.json
 msgctxt "adaptive_layer_height_variation_step label"
 msgid "Adaptive layers variation step size"
-msgstr ""
+msgstr "適応レイヤー差分ステップサイズ"
 
 #: fdmprinter.def.json
 msgctxt "adaptive_layer_height_variation_step description"
 msgid "The difference in height of the next layer height compared to the previous one."
-msgstr ""
+msgstr "次のレイヤーの高さを前のレイヤーの高さと比べた差。"
 
 #: fdmprinter.def.json
 msgctxt "adaptive_layer_height_threshold label"
 msgid "Adaptive layers threshold"
-msgstr ""
+msgstr "適応レイヤー閾値"
 
 #: fdmprinter.def.json
 msgctxt "adaptive_layer_height_threshold description"
 msgid "Threshold whether to use a smaller layer or not. This number is compared to the tan of the steepest slope in a layer."
-msgstr ""
+msgstr "小さいレイヤーを使用するかどうかの閾値。この値が、レイヤー中の最も急な斜面のタンジェントと比較されます。"
 
 #: fdmprinter.def.json
 msgctxt "command_line_settings label"
