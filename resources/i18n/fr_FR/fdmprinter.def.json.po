@@ -56,9 +56,7 @@ msgctxt "machine_start_gcode description"
 msgid ""
 "Gcode commands to be executed at the very start - separated by \n"
 "."
-msgstr ""
-"Commandes Gcode à exécuter au tout début, séparées par \n"
-"."
+msgstr "Commandes Gcode à exécuter au tout début, séparées par \n."
 
 #: fdmprinter.def.json
 msgctxt "machine_end_gcode label"
@@ -70,9 +68,7 @@ msgctxt "machine_end_gcode description"
 msgid ""
 "Gcode commands to be executed at the very end - separated by \n"
 "."
-msgstr ""
-"Commandes Gcode à exécuter à la toute fin, séparées par \n"
-"."
+msgstr "Commandes Gcode à exécuter à la toute fin, séparées par \n."
 
 #: fdmprinter.def.json
 msgctxt "material_guid label"
@@ -352,12 +348,12 @@ msgstr "Repetier"
 #: fdmprinter.def.json
 msgctxt "machine_firmware_retract label"
 msgid "Firmware Retraction"
-msgstr ""
+msgstr "Rétraction du firmware"
 
 #: fdmprinter.def.json
 msgctxt "machine_firmware_retract description"
 msgid "Whether to use firmware retract commands (G10/G11) instead of using the E property in G1 commands to retract the material."
-msgstr ""
+msgstr "S'il faut utiliser les commandes de rétraction du firmware (G10 / G11) au lieu d'utiliser la propriété E dans les commandes G1 pour rétracter le matériau."
 
 #: fdmprinter.def.json
 msgctxt "machine_disallowed_areas label"
@@ -1052,12 +1048,12 @@ msgstr "Partout"
 #: fdmprinter.def.json
 msgctxt "filter_out_tiny_gaps label"
 msgid "Filter Out Tiny Gaps"
-msgstr ""
+msgstr "Filtrer les très petits trous"
 
 #: fdmprinter.def.json
 msgctxt "filter_out_tiny_gaps description"
 msgid "Filter out tiny gaps to reduce blobs on outside of model."
-msgstr ""
+msgstr "Filtrer les très petits trous pour réduire la présence de gouttes à l'extérieur du modèle."
 
 #: fdmprinter.def.json
 msgctxt "fill_outline_gaps label"
@@ -1442,7 +1438,7 @@ msgstr "Remplissage Décalage X"
 #: fdmprinter.def.json
 msgctxt "infill_offset_x description"
 msgid "The infill pattern is moved this distance along the X axis."
-msgstr ""
+msgstr "Le motif de remplissage est décalé de cette distance sur l'axe X."
 
 #: fdmprinter.def.json
 msgctxt "infill_offset_y label"
@@ -1452,7 +1448,7 @@ msgstr "Remplissage Décalage Y"
 #: fdmprinter.def.json
 msgctxt "infill_offset_y description"
 msgid "The infill pattern is moved this distance along the Y axis."
-msgstr ""
+msgstr "Le motif de remplissage est décalé de cette distance sur l'axe Y."
 
 #: fdmprinter.def.json
 msgctxt "sub_div_rad_add label"
@@ -1472,7 +1468,7 @@ msgstr "Pourcentage de chevauchement du remplissage"
 #: fdmprinter.def.json
 msgctxt "infill_overlap description"
 msgid "The amount of overlap between the infill and the walls as a percentage of the infill line width. A slight overlap allows the walls to connect firmly to the infill."
-msgstr ""
+msgstr "Le degré de chevauchement entre le remplissage et les parois exprimé en pourcentage de la largeur de ligne de remplissage. Un chevauchement faible permet aux parois de se connecter fermement au remplissage."
 
 #: fdmprinter.def.json
 msgctxt "infill_overlap_mm label"
@@ -1492,7 +1488,7 @@ msgstr "Pourcentage de chevauchement de la couche extérieure"
 #: fdmprinter.def.json
 msgctxt "skin_overlap description"
 msgid "The amount of overlap between the skin and the walls as a percentage of the skin line width. A slight overlap allows the walls to connect firmly to the skin. This is a percentage of the average line widths of the skin lines and the innermost wall."
-msgstr ""
+msgstr "Le montant de chevauchement entre la couche extérieure et les parois en pourcentage de la largeur de ligne de couche extérieure. Un chevauchement faible permet aux parois de se connecter fermement à la couche extérieure. Ce montant est un pourcentage des largeurs moyennes des lignes de la couche extérieure et de la paroi la plus intérieure."
 
 #: fdmprinter.def.json
 msgctxt "skin_overlap_mm label"
@@ -1722,7 +1718,7 @@ msgstr "Température du plateau"
 #: fdmprinter.def.json
 msgctxt "material_bed_temperature description"
 msgid "The temperature used for the heated build plate. If this is 0, the bed temperature will not be adjusted."
-msgstr ""
+msgstr "Température utilisée pour le plateau chauffant. Si elle est définie sur 0, la température du plateau ne sera pas ajustée."
 
 #: fdmprinter.def.json
 msgctxt "material_bed_temperature_layer_0 label"
@@ -3504,9 +3500,7 @@ msgctxt "skirt_gap description"
 msgid ""
 "The horizontal distance between the skirt and the first layer of the print.\n"
 "This is the minimum distance. Multiple skirt lines will extend outwards from this distance."
-msgstr ""
-"La distance horizontale entre la jupe et la première couche de l’impression.\n"
-"Il s’agit de la distance minimale séparant la jupe de l’objet. Si la jupe a d’autres lignes, celles-ci s’étendront vers l’extérieur."
+msgstr "La distance horizontale entre la jupe et la première couche de l’impression.\nIl s’agit de la distance minimale séparant la jupe de l’objet. Si la jupe a d’autres lignes, celles-ci s’étendront vers l’extérieur."
 
 #: fdmprinter.def.json
 msgctxt "skirt_brim_minimal_length label"
@@ -4266,82 +4260,82 @@ msgstr "expérimental !"
 #: fdmprinter.def.json
 msgctxt "support_tree_enable label"
 msgid "Tree Support"
-msgstr ""
+msgstr "Support arborescent"
 
 #: fdmprinter.def.json
 msgctxt "support_tree_enable description"
 msgid "Generate a tree-like support with branches that support your print. This may reduce material usage and print time, but greatly increases slicing time."
-msgstr ""
+msgstr "Générer un support arborescent avec des branches qui soutiennent votre impression. Cela peut réduire l'utilisation de matériau et le temps d'impression, mais augmente considérablement le temps de découpage."
 
 #: fdmprinter.def.json
 msgctxt "support_tree_angle label"
 msgid "Tree Support Branch Angle"
-msgstr ""
+msgstr "Angle des branches de support arborescent"
 
 #: fdmprinter.def.json
 msgctxt "support_tree_angle description"
 msgid "The angle of the branches. Use a lower angle to make them more vertical and more stable. Use a higher angle to be able to have more reach."
-msgstr ""
+msgstr "Angle des branches. Utilisez un angle plus faible pour les rendre plus verticales et plus stables ; utilisez un angle plus élevé pour avoir plus de portée."
 
 #: fdmprinter.def.json
 msgctxt "support_tree_branch_distance label"
 msgid "Tree Support Branch Distance"
-msgstr ""
+msgstr "Distance des branches de support arborescent"
 
 #: fdmprinter.def.json
 msgctxt "support_tree_branch_distance description"
 msgid "How far apart the branches need to be when they touch the model. Making this distance small will cause the tree support to touch the model at more points, causing better overhang but making support harder to remove."
-msgstr ""
+msgstr "Distance à laquelle doivent se trouver les branches lorsqu'elles touchent le modèle. Si vous réduisez cette distance, le support arborescent touchera le modèle à plus d'endroits, ce qui causera un meilleur porte-à-faux mais rendra le support plus difficile à enlever."
 
 #: fdmprinter.def.json
 msgctxt "support_tree_branch_diameter label"
 msgid "Tree Support Branch Diameter"
-msgstr ""
+msgstr "Diamètre des branches de support arborescent"
 
 #: fdmprinter.def.json
 msgctxt "support_tree_branch_diameter description"
 msgid "The diameter of the thinnest branches of tree support. Thicker branches are more sturdy. Branches towards the base will be thicker than this."
-msgstr ""
+msgstr "Diamètre des branches les plus minces du support arborescent. Plus les branches sont épaisses, plus elles sont robustes ; les branches proches de la base seront plus épaisses que cette valeur."
 
 #: fdmprinter.def.json
 msgctxt "support_tree_branch_diameter_angle label"
 msgid "Tree Support Branch Diameter Angle"
-msgstr ""
+msgstr "Angle de diamètre des branches de support arborescent"
 
 #: fdmprinter.def.json
 msgctxt "support_tree_branch_diameter_angle description"
 msgid "The angle of the branches' diameter as they gradually become thicker towards the bottom. An angle of 0 will cause the branches to have uniform thickness over their length. A bit of an angle can increase stability of the tree support."
-msgstr ""
+msgstr "Angle du diamètre des branches au fur et à mesure qu'elles s'épaississent lorsqu'elles sont proches du fond. Avec un angle de 0°, les branches auront une épaisseur uniforme sur toute leur longueur. Donner un peu d'angle permet d'augmenter la stabilité du support arborescent."
 
 #: fdmprinter.def.json
 msgctxt "support_tree_collision_resolution label"
 msgid "Tree Support Collision Resolution"
-msgstr ""
+msgstr "Résolution de collision du support arborescent"
 
 #: fdmprinter.def.json
 msgctxt "support_tree_collision_resolution description"
 msgid "Resolution to compute collisions with to avoid hitting the model. Setting this lower will produce more accurate trees that fail less often, but increases slicing time dramatically."
-msgstr ""
+msgstr "Résolution servant à calculer les collisions afin d'éviter de heurter le modèle. Plus ce paramètre est faible, plus les arborescences seront précises et stables, mais cela augmente considérablement le temps de découpage."
 
 #: fdmprinter.def.json
 msgctxt "support_tree_wall_thickness label"
 msgid "Tree Support Wall Thickness"
-msgstr ""
+msgstr "Épaisseur de la paroi du support arborescent"
 
 #: fdmprinter.def.json
 msgctxt "support_tree_wall_thickness description"
 msgid "The thickness of the walls of the branches of tree support. Thicker walls take longer to print but don't fall over as easily."
-msgstr ""
+msgstr "Épaisseur des parois des branches du support arborescent. Les parois plus épaisses prennent plus de temps à imprimer, mais ne tombent pas aussi facilement."
 
 #: fdmprinter.def.json
 msgctxt "support_tree_wall_count label"
 msgid "Tree Support Wall Line Count"
-msgstr ""
+msgstr "Nombre de lignes de la paroi du support arborescent"
 
 #: fdmprinter.def.json
 msgctxt "support_tree_wall_count description"
 msgid "The number of walls of the branches of tree support. Thicker walls take longer to print but don't fall over as easily."
-msgstr ""
+msgstr "Nombre de parois des branches du support arborescent. Les parois plus épaisses prennent plus de temps à imprimer, mais ne tombent pas aussi facilement."
 
 #: fdmprinter.def.json
 msgctxt "slicing_tolerance label"
@@ -4416,12 +4410,12 @@ msgstr "Une liste de sens de ligne (exprimés en nombres entiers) à utiliser lo
 #: fdmprinter.def.json
 msgctxt "infill_enable_travel_optimization label"
 msgid "Infill Travel Optimization"
-msgstr ""
+msgstr "Optimisation du déplacement de remplissage"
 
 #: fdmprinter.def.json
 msgctxt "infill_enable_travel_optimization description"
 msgid "When enabled, the order in which the infill lines are printed is optimized to reduce the distance travelled. The reduction in travel time achieved very much depends on the model being sliced, infill pattern, density, etc. Note that, for some models that have many small areas of infill, the time to slice the model may be greatly increased."
-msgstr ""
+msgstr "Lorsque cette option est activée, l'ordre dans lequel les lignes de remplissage sont imprimées est optimisé pour réduire la distance parcourue. La réduction du temps de parcours dépend en grande partie du modèle à découper, du type de remplissage, de la densité, etc. Remarque : pour certains modèles possédant beaucoup de petites zones de remplissage, le temps de découpe du modèle peut en être considérablement augmenté."
 
 #: fdmprinter.def.json
 msgctxt "material_flow_dependent_temperature label"
@@ -4943,9 +4937,7 @@ msgctxt "wireframe_up_half_speed description"
 msgid ""
 "Distance of an upward move which is extruded with half speed.\n"
 "This can cause better adhesion to previous layers, while not heating the material in those layers too much. Only applies to Wire Printing."
-msgstr ""
-"Distance d’un déplacement ascendant qui est extrudé à mi-vitesse.\n"
-"Cela peut permettre une meilleure adhérence aux couches précédentes sans surchauffer le matériau dans ces couches. Uniquement applicable à l'impression filaire."
+msgstr "Distance d’un déplacement ascendant qui est extrudé à mi-vitesse.\nCela peut permettre une meilleure adhérence aux couches précédentes sans surchauffer le matériau dans ces couches. Uniquement applicable à l'impression filaire."
 
 #: fdmprinter.def.json
 msgctxt "wireframe_top_jump label"
@@ -5055,42 +5047,42 @@ msgstr "Distance entre la buse et les lignes descendantes horizontalement. Un es
 #: fdmprinter.def.json
 msgctxt "adaptive_layer_height_enabled label"
 msgid "Use adaptive layers"
-msgstr ""
+msgstr "Utiliser des couches adaptatives"
 
 #: fdmprinter.def.json
 msgctxt "adaptive_layer_height_enabled description"
 msgid "Adaptive layers computes the layer heights depending on the shape of the model."
-msgstr ""
+msgstr "Cette option calcule la hauteur des couches en fonction de la forme du modèle."
 
 #: fdmprinter.def.json
 msgctxt "adaptive_layer_height_variation label"
 msgid "Adaptive layers maximum variation"
-msgstr ""
+msgstr "Variation maximale des couches adaptatives"
 
 #: fdmprinter.def.json
 msgctxt "adaptive_layer_height_variation description"
 msgid "The maximum allowed height different from the base layer height in mm."
-msgstr ""
+msgstr "Hauteur maximale autorisée par rapport à la couche de base, en mm."
 
 #: fdmprinter.def.json
 msgctxt "adaptive_layer_height_variation_step label"
 msgid "Adaptive layers variation step size"
-msgstr ""
+msgstr "Taille des étapes de variation des couches adaptatives"
 
 #: fdmprinter.def.json
 msgctxt "adaptive_layer_height_variation_step description"
 msgid "The difference in height of the next layer height compared to the previous one."
-msgstr ""
+msgstr "Différence de hauteur de la couche suivante par rapport à la précédente."
 
 #: fdmprinter.def.json
 msgctxt "adaptive_layer_height_threshold label"
 msgid "Adaptive layers threshold"
-msgstr ""
+msgstr "Limite des couches adaptatives"
 
 #: fdmprinter.def.json
 msgctxt "adaptive_layer_height_threshold description"
 msgid "Threshold whether to use a smaller layer or not. This number is compared to the tan of the steepest slope in a layer."
-msgstr ""
+msgstr "Limite indiquant d'utiliser ou non une couche plus petite. Ce nombre est comparé à la tangente de la pente la plus raide d'une couche."
 
 #: fdmprinter.def.json
 msgctxt "command_line_settings label"
