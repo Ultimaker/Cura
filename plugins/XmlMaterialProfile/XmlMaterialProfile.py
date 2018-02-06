@@ -916,11 +916,11 @@ class XmlMaterialProfile(InstanceContainer):
             else:
                 merged_name_parts.append(part)
 
-        id_list = [name.lower().replace(" ", ""),  # simply removing all spaces
+        id_list = {name.lower().replace(" ", ""),  # simply removing all spaces
                    name.lower().replace(" ", "_"),  # simply replacing all spaces with underscores
                    "_".join(merged_name_parts),
-                   ]
-
+                   }
+        id_list = list(id_list)
         return id_list
 
     ##  Gets a mapping from product names in the XML files to their definition
