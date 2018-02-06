@@ -55,8 +55,6 @@ class Snapshot:
         # determine zoom and look at
         bbox = None
         for node in DepthFirstIterator(root):
-            if type(node) == ConvexHullNode:
-                print(node)
             if node.callDecoration("isSliceable") and node.getMeshData() and node.isVisible():
                 if bbox is None:
                     bbox = node.getBoundingBox()
