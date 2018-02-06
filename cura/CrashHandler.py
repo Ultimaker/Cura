@@ -262,8 +262,8 @@ class CrashHandler:
         layout = QVBoxLayout()
 
         text_area = QTextEdit()
-        trace_dict = traceback.format_exception(self.exception_type, self.value, self.traceback)
-        trace = "".join(trace_dict)
+        trace_list = traceback.format_exception(self.exception_type, self.value, self.traceback)
+        trace = "".join(trace_list)
         text_area.setText(trace)
         text_area.setReadOnly(True)
 
@@ -271,14 +271,28 @@ class CrashHandler:
         group.setLayout(layout)
 
         # Parsing all the information to fill the dictionary
-        summary = trace_dict[len(trace_dict)-1].rstrip("\n")
-        module = trace_dict[len(trace_dict)-2].rstrip("\n").split("\n")
+        summary = ""
+        if len(trace_list) >= 1:
+            summary = trace_list[len(trace_list)-1].rstrip("\n")
+        module = [""]
+        if len(trace_list) >= 2:
+            module = trace_list[len(trace_list)-2].rstrip("\n").split("\n")
         module_split = module[0].split(", ")
-        filepath = module_split[0].split("\"")[1]
+
+        filepath_directory_split = module_split[0].split("\"")
+        filepath = ""
+        if len(filepath_directory_split) > 1:
+            filepath = filepath_directory_split[1]
         directory, filename = os.path.split(filepath)
-        line = int(module_split[1].lstrip("line "))
-        function = module_split[2].lstrip("in ")
-        code = module[1].lstrip(" ")
+        line = ""
+        if len(module_split) > 1:
+            line = int(module_split[1].lstrip("line "))
+        function = ""
+        if len(module_split) > 2:
+            function = module_split[2].lstrip("in ")
+        code = ""
+        if len(module) > 1:
+            code = module[1].lstrip(" ")
 
         # Using this workaround for a cross-platform path splitting
         split_path = []
