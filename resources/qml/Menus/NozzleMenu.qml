@@ -29,38 +29,33 @@ Menu
         return true;
     }
 
-    MenuItem
+    // TODO: single instance??
+    Cura.NozzleModel
     {
-        id: automaticNozzle
-        text:
-        {
-            if(visible)
-            {
-                var nozzleName = Cura.MachineManager.printerOutputDevices[0].hotendIds[extruderIndex];
-                return catalog.i18nc("@title:menuitem %1 is the nozzle currently loaded in the printer", "Automatic: %1").arg(nozzleName);
-            }
-            return "";
-        }
-        visible: printerConnected && Cura.MachineManager.printerOutputDevices[0].hotendIds != undefined && Cura.MachineManager.printerOutputDevices[0].hotendIds.length > extruderIndex && !isClusterPrinter
-        onTriggered:
-        {
-            var activeExtruderIndex = Cura.ExtruderManager.activeExtruderIndex;
-            Cura.ExtruderManager.setActiveExtruderIndex(extruderIndex);
-            var hotendId = Cura.MachineManager.printerOutputDevices[0].hotendIds[extruderIndex];
-            var itemIndex = nozzleInstantiator.model.find("name", hotendId);
-            if(itemIndex > -1)
-            {
-                Cura.MachineManager.setActiveVariant(nozzleInstantiator.model.getItem(itemIndex).id);
-            }
-            Cura.ExtruderManager.setActiveExtruderIndex(activeExtruderIndex);
-        }
+        id: nozzleModel
     }
 
-    MenuSeparator
+    Instantiator
     {
-        visible: automaticNozzle.visible
-    }
+        model: nozzleModel
 
+        MenuItem
+        {
+            text: model.hotend_name
+            checkable: true
+            checked: Cura.MachineManager.activeVariantId == model.hotend_name
+            exclusiveGroup: group
+            onTriggered: {
+                var position = Cura.ExtruderManager.activeExtruderIndex;
+                Cura.MachineManager.setVariantGroup(position, model.container_node);
+            }
+            visible: true
+        }
+
+        onObjectAdded: menu.insertItem(index, object);
+        onObjectRemoved: menu.removeItem(object);
+    }
+    /*
     Instantiator
     {
         id: nozzleInstantiator
@@ -96,7 +91,7 @@ Menu
         }
         onObjectAdded: menu.insertItem(index, object)
         onObjectRemoved: menu.removeItem(object)
-    }
+    } */
 
     ExclusiveGroup { id: group }
 }

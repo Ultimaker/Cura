@@ -59,6 +59,8 @@ from cura.Settings.SettingInheritanceManager import SettingInheritanceManager
 from cura.Settings.UserProfilesModel import UserProfilesModel
 from cura.Settings.SimpleModeSettingsManager import SimpleModeSettingsManager
 
+from cura.Machines.VariantManager import VariantManager
+
 
 from . import PlatformPhysics
 from . import BuildVolume
@@ -232,6 +234,9 @@ class CuraApplication(QtApplication):
         # FOR TESTING ONLY
         if kwargs["parsed_command_line"].get("trigger_early_crash", False):
             assert not "This crash is triggered by the trigger_early_crash command line argument."
+
+        # new stuff
+        self._variant_manager = VariantManager(ContainerRegistry.getInstance())
 
         self.default_theme = "cura-light"
 
@@ -707,6 +712,9 @@ class CuraApplication(QtApplication):
                 return False
         return True
 
+    def getVariantManager(self):
+        return self._variant_manager
+
     def preRun(self):
         # Last check for unknown commandline arguments
         parser = self.getCommandlineParser()
@@ -722,6 +730,9 @@ class CuraApplication(QtApplication):
 
     def run(self):
         self.preRun()
+
+        container_registry = ContainerRegistry.getInstance()
+        self._variant_manager.initialize()
 
         # Check if we should run as single instance or not
         self._setUpSingleInstanceServer()

@@ -590,15 +590,14 @@ class XmlMaterialProfile(InstanceContainer):
                         if buildplate_id is None:
                             continue
 
-                        variant_containers = ContainerRegistry.getInstance().findInstanceContainersMetadata(
-                            id = buildplate_id)
-                        if not variant_containers:
-                            # It is not really properly defined what "ID" is so also search for variants by name.
-                            variant_containers = ContainerRegistry.getInstance().findInstanceContainersMetadata(
-                                definition = machine_id, name = buildplate_id)
-
-                        if not variant_containers:
+                        from cura.Machines.VariantManager import VariantType
+                        variant_manager = CuraApplication.getInstance().getVariantManager()
+                        variant_node = variant_manager.getVariant(machine_id, VariantType.BUILD_PLATE, buildplate_id)
+                        if not variant_node:
                             continue
+                        variant_metadata = variant_node.metadata
+
+                        # TODO: check if build plate variant exists
 
                         buildplate_compatibility = machine_compatibility
                         buildplate_recommended = machine_compatibility
@@ -621,6 +620,11 @@ class XmlMaterialProfile(InstanceContainer):
                         # The "id" field for hotends in material profiles are actually
                         hotend_name = hotend.get("id")
                         if hotend_name is None:
+                            continue
+
+                        variant_manager = CuraApplication.getInstance().getVariantManager()
+                        variant_node = variant_manager.getVariant(machine_id, hotend_name)
+                        if not variant_node:
                             continue
 
                         hotend_compatibility = machine_compatibility
