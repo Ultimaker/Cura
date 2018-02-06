@@ -53,7 +53,7 @@ class TweakAtZ(Script):
 
     def getSettingDataString(self):
         return """{
-            "name":"TweakAtZ """ + self.version + """ (Experimental)",
+            "name":"ChangeAtZ """ + self.version + """ (Experimental)",
             "key":"TweakAtZ",
             "metadata": {},
             "version": 2,
@@ -69,8 +69,8 @@ class TweakAtZ(Script):
                 },
                 "b_targetZ":
                 {
-                    "label": "Tweak Height",
-                    "description": "Z height to tweak at",
+                    "label": "Change Height",
+                    "description": "Z height to change at",
                     "unit": "mm",
                     "type": "float",
                     "default_value": 5.0,
@@ -81,8 +81,8 @@ class TweakAtZ(Script):
                 },
                 "b_targetL":
                 {
-                    "label": "Tweak Layer",
-                    "description": "Layer no. to tweak at",
+                    "label": "Change Layer",
+                    "description": "Layer no. to change at",
                     "unit": "",
                     "type": "int",
                     "default_value": 1,
@@ -93,7 +93,7 @@ class TweakAtZ(Script):
                 "c_behavior":
                 {
                     "label": "Behavior",
-                    "description": "Select behavior: Tweak value and keep it for the rest, Tweak value for single layer only",
+                    "description": "Select behavior: Change value and keep it for the rest, Change value for single layer only",
                     "type": "enum",
                     "options": {"keep_value":"Keep value","single_layer":"Single Layer"},
                     "default_value": "keep_value"
@@ -101,7 +101,7 @@ class TweakAtZ(Script):
                 "d_twLayers":
                 {
                     "label": "No. Layers",
-                    "description": "No. of layers used to tweak",
+                    "description": "No. of layers used to change",
                     "unit": "",
                     "type": "int",
                     "default_value": 1,
@@ -111,8 +111,8 @@ class TweakAtZ(Script):
                 },
                 "e1_Tweak_speed":
                 {
-                    "label": "Tweak Speed",
-                    "description": "Select if total speed (print and travel) has to be tweaked",
+                    "label": "Change Speed",
+                    "description": "Select if total speed (print and travel) has to be cahnged",
                     "type": "bool",
                     "default_value": false
                 },
@@ -130,8 +130,8 @@ class TweakAtZ(Script):
                 },
                 "f1_Tweak_printspeed":
                 {
-                    "label": "Tweak Print Speed",
-                    "description": "Select if print speed has to be tweaked",
+                    "label": "Change Print Speed",
+                    "description": "Select if print speed has to be changed",
                     "type": "bool",
                     "default_value": false
                 },
@@ -149,8 +149,8 @@ class TweakAtZ(Script):
                 },
                 "g1_Tweak_flowrate":
                 {
-                    "label": "Tweak Flow Rate",
-                    "description": "Select if flow rate has to be tweaked",
+                    "label": "Change Flow Rate",
+                    "description": "Select if flow rate has to be changed",
                     "type": "bool",
                     "default_value": false
                 },
@@ -168,8 +168,8 @@ class TweakAtZ(Script):
                 },
                 "g3_Tweak_flowrateOne":
                 {
-                    "label": "Tweak Flow Rate 1",
-                    "description": "Select if first extruder flow rate has to be tweaked",
+                    "label": "Change Flow Rate 1",
+                    "description": "Select if first extruder flow rate has to be changed",
                     "type": "bool",
                     "default_value": false
                 },
@@ -187,8 +187,8 @@ class TweakAtZ(Script):
                 },
                 "g5_Tweak_flowrateTwo":
                 {
-                    "label": "Tweak Flow Rate 2",
-                    "description": "Select if second extruder flow rate has to be tweaked",
+                    "label": "Change Flow Rate 2",
+                    "description": "Select if second extruder flow rate has to be changed",
                     "type": "bool",
                     "default_value": false
                 },
@@ -206,8 +206,8 @@ class TweakAtZ(Script):
                 },
                 "h1_Tweak_bedTemp":
                 {
-                    "label": "Tweak Bed Temp",
-                    "description": "Select if Bed Temperature has to be tweaked",
+                    "label": "Change Bed Temp",
+                    "description": "Select if Bed Temperature has to be changed",
                     "type": "bool",
                     "default_value": false
                 },
@@ -225,8 +225,8 @@ class TweakAtZ(Script):
                 },
                 "i1_Tweak_extruderOne":
                 {
-                    "label": "Tweak Extruder 1 Temp",
-                    "description": "Select if First Extruder Temperature has to be tweaked",
+                    "label": "Change Extruder 1 Temp",
+                    "description": "Select if First Extruder Temperature has to be changed",
                     "type": "bool",
                     "default_value": false
                 },
@@ -244,8 +244,8 @@ class TweakAtZ(Script):
                 },
                 "i3_Tweak_extruderTwo":
                 {
-                    "label": "Tweak Extruder 2 Temp",
-                    "description": "Select if Second Extruder Temperature has to be tweaked",
+                    "label": "Change Extruder 2 Temp",
+                    "description": "Select if Second Extruder Temperature has to be changed",
                     "type": "bool",
                     "default_value": false
                 },
@@ -263,8 +263,8 @@ class TweakAtZ(Script):
                 },
                 "j1_Tweak_fanSpeed":
                 {
-                    "label": "Tweak Fan Speed",
-                    "description": "Select if Fan Speed has to be tweaked",
+                    "label": "Change Fan Speed",
+                    "description": "Select if Fan Speed has to be changed",
                     "type": "bool",
                     "default_value": false
                 },
