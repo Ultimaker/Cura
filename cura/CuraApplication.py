@@ -225,7 +225,7 @@ class CuraApplication(QtApplication):
 
         # FOR TESTING ONLY
         if kwargs["parsed_command_line"].get("trigger_early_crash", False):
-            1/0
+            assert not "This crash is triggered by the trigger_early_crash command line argument."
 
         self.default_theme = "cura-light"
 
