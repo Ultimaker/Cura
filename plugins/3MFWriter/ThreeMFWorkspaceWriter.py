@@ -57,7 +57,7 @@ class ThreeMFWorkspaceWriter(WorkspaceWriter):
 
         # Save Cura version
         version_file = zipfile.ZipInfo("Cura/version.ini")
-        version_config_parser = configparser.ConfigParser()
+        version_config_parser = configparser.ConfigParser(interpolation = None)
         version_config_parser.add_section("versions")
         version_config_parser.set("versions", "cura_version", Application.getInstance().getVersion())
         version_config_parser.set("versions", "build_type", Application.getInstance().getBuildType())
