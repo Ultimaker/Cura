@@ -606,6 +606,7 @@ class CuraContainerRegistry(ContainerRegistry):
                 extruder_quality_changes_container = self._findQualityChangesContainerInCuraFolder(machine_quality_changes.getName())
                 if extruder_quality_changes_container:
                     quality_changes_id = extruder_quality_changes_container.getId()
+                    extruder_quality_changes_container.addMetaDataEntry("extruder", extruder_stack.definition.getId())
                     extruder_stack.setQualityChangesById(quality_changes_id)
                 else:
                     # if we still cannot find a quality changes container for the extruder, create a new one
@@ -711,7 +712,7 @@ class CuraContainerRegistry(ContainerRegistry):
             if not os.path.isfile(file_path):
                 continue
 
-            parser = configparser.ConfigParser()
+            parser = configparser.ConfigParser(interpolation=None)
             try:
                 parser.read([file_path])
             except:

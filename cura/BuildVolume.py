@@ -1,4 +1,4 @@
-# Copyright (c) 2017 Ultimaker B.V.
+# Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from cura.Scene.CuraSceneNode import CuraSceneNode
@@ -74,6 +74,11 @@ class BuildVolume(SceneNode):
         self._adhesion_type = None
         self._platform = Platform(self)
 
+        self._build_volume_message = Message(catalog.i18nc("@info:status",
+            "The build volume height has been reduced due to the value of the"
+            " \"Print Sequence\" setting to prevent the gantry from colliding"
+            " with printed models."), title = catalog.i18nc("@info:title", "Build Volume"))
+
         self._global_container_stack = None
         Application.getInstance().globalContainerStackChanged.connect(self._onStackChanged)
         self._onStackChanged()
@@ -96,11 +101,6 @@ class BuildVolume(SceneNode):
         self._setting_change_timer.setInterval(150)
         self._setting_change_timer.setSingleShot(True)
         self._setting_change_timer.timeout.connect(self._onSettingChangeTimerFinished)
-
-        self._build_volume_message = Message(catalog.i18nc("@info:status",
-            "The build volume height has been reduced due to the value of the"
-            " \"Print Sequence\" setting to prevent the gantry from colliding"
-            " with printed models."), title = catalog.i18nc("@info:title","Build Volume"))
 
         # Must be after setting _build_volume_message, apparently that is used in getMachineManager.
         # activeQualityChanged is always emitted after setActiveVariant, setActiveMaterial and setActiveQuality.

@@ -122,7 +122,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             # The default ContainerStack.deserialize() will connect signals, which is not desired in this case.
             # Since we know that the stack files are INI files, so we directly use the ConfigParser to parse them.
             serialized = archive.open(file_name).read().decode("utf-8")
-            stack_config = ConfigParser()
+            stack_config = ConfigParser(interpolation = None)
             stack_config.read_string(serialized)
 
             # sanity check
@@ -303,7 +303,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         if containers_found_dict["machine"] and not machine_conflict:
             for extruder_stack_file in extruder_stack_files:
                 serialized = archive.open(extruder_stack_file).read().decode("utf-8")
-                parser = configparser.ConfigParser()
+                parser = configparser.ConfigParser(interpolation = None)
                 parser.read_string(serialized)
 
                 # The check should be done for the extruder stack that's associated with the existing global stack,
@@ -407,7 +407,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
     ## Overrides an ExtruderStack in the given GlobalStack and returns the new ExtruderStack.
     def _overrideExtruderStack(self, global_stack, extruder_file_content, extruder_stack_file):
         # Get extruder position first
-        extruder_config = configparser.ConfigParser()
+        extruder_config = configparser.ConfigParser(interpolation = None)
         extruder_config.read_string(extruder_file_content)
         if not extruder_config.has_option("metadata", "position"):
             msg = "Could not find 'metadata/position' in extruder stack file"
@@ -565,7 +565,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             serialized = archive.open(instance_container_file).read().decode("utf-8")
 
             # HACK! we ignore "quality" and "variant" instance containers!
-            parser = configparser.ConfigParser()
+            parser = configparser.ConfigParser(interpolation = None)
             parser.read_string(serialized)
             if not parser.has_option("metadata", "type"):
                 Logger.log("w", "Cannot find metadata/type in %s, ignoring it", instance_container_file)
@@ -763,7 +763,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                     #       deserialize() by setting the metadata, but in the case of ExtruderStack, deserialize()
                     #       also does addExtruder() to its machine stack, so we have to make sure that it's pointing
                     #       to the right machine BEFORE deserialization.
-                    extruder_config = configparser.ConfigParser()
+                    extruder_config = configparser.ConfigParser(interpolation = None)
                     extruder_config.read_string(extruder_file_content)
                     extruder_config.set("metadata", "machine", global_stack_id_new)
                     tmp_string_io = io.StringIO()

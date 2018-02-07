@@ -1343,7 +1343,7 @@ msgstr "인터페이스로드 중 ..."
 #, python-format
 msgctxt "@info 'width', 'depth' and 'height' are variable names that must NOT be translated; just translate the format of ##x##x## mm."
 msgid "%(width).1f x %(depth).1f x %(height).1f mm"
-msgstr "% (너비) .1f x % (깊이) .1f x % (높이) .1f mm"
+msgstr "%(width).1f x %(depth).1f x %(height).1f mm"
 
 #: /home/ruben/Projects/Cura/cura/CuraApplication.py:1417
 #, python-brace-format
