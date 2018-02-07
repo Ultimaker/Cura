@@ -109,6 +109,7 @@
         "material_bed_temperature": { "maximum_value": "115" },
         "material_bed_temperature_layer_0": { "maximum_value": "115" },
         "material_standby_temperature": { "value": "100" },
+		"meshfix_maximum_resolution": { "value": "0.04" },		
         "multiple_mesh_overlap": { "value": "0" },
         "prime_tower_enable": { "default_value": true },
         "raft_airgap": { "value": "0" },
