@@ -519,13 +519,19 @@ class ExtruderManager(QObject):
             material_diameter = 0
 
         material_approximate_diameter = str(round(material_diameter))
-        machine_diameter = extruder_stack.definitionChanges.getProperty("material_diameter", "value")
-        if not machine_diameter:
+        material_diameter = extruder_stack.definitionChanges.getProperty("material_diameter", "value")
+        setting_provider = extruder_stack
+        if not material_diameter:
             if extruder_stack.definition.hasProperty("material_diameter", "value"):
-                machine_diameter = extruder_stack.definition.getProperty("material_diameter", "value")
+                material_diameter = extruder_stack.definition.getProperty("material_diameter", "value")
             else:
-                machine_diameter = global_stack.definition.getProperty("material_diameter", "value")
-        machine_approximate_diameter = str(round(machine_diameter))
+                material_diameter = global_stack.definition.getProperty("material_diameter", "value")
+                setting_provider = global_stack
+
+        if isinstance(material_diameter, SettingFunction):
+            material_diameter = material_diameter(setting_provider)
+
+        machine_approximate_diameter = str(round(material_diameter))
 
         if material_approximate_diameter != machine_approximate_diameter:
             Logger.log("i", "The the currently active material(s) do not match the diameter set for the printer. Finding alternatives.")
