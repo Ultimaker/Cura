@@ -1,8 +1,8 @@
 // Copyright (c) 2018 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
-import QtQuick 2.2
-import QtQuick.Controls 1.1
+import QtQuick 2.8
+import QtQuick.Controls 1.4
 
 import UM 1.2 as UM
 import Cura 1.0 as Cura
@@ -27,16 +27,6 @@ Menu
             return false;
         }
         return true;
-    }
-
-    UM.SettingPropertyProvider
-    {
-        id: materialDiameterProvider
-
-        containerStackId: Cura.ExtruderManager.activeExtruderStackId
-        key: "material_diameter"
-        watchedProperties: [ "value" ]
-        storeIndex: 5
     }
 
     MenuItem
@@ -83,12 +73,16 @@ Menu
             exclusiveGroup: group
             onTriggered:
             {
+
+                const container_id = model.id;
                 // This workaround is done because of the application menus for materials and variants for multiextrusion printers.
                 // The extruder menu would always act on the correspoding extruder only, instead of acting on the extruder selected in the UI.
+
                 var activeExtruderIndex = Cura.ExtruderManager.activeExtruderIndex;
-                Cura.ExtruderManager.setActiveExtruderIndex(extruderIndex);
-                Cura.MachineManager.setActiveMaterial(model.id);
-                Cura.ExtruderManager.setActiveExtruderIndex(activeExtruderIndex);
+                //Cura.ExtruderManager.setActiveExtruderIndex(extruderIndex);
+                //Cura.MachineManager.setActiveMaterial(container_id);
+                //Cura.ExtruderManager.setActiveExtruderIndex(activeExtruderIndex);
+                Cura.MachineManager.setMaterial(activeExtruderIndex, model.container_node);
             }
         }
         onObjectAdded: menu.insertItem(index, object)
@@ -126,11 +120,12 @@ Menu
                             exclusiveGroup: group
                             onTriggered:
                             {
+                                const container_id = model.id;
                                 // This workaround is done because of the application menus for materials and variants for multiextrusion printers.
                                 // The extruder menu would always act on the correspoding extruder only, instead of acting on the extruder selected in the UI.
                                 var activeExtruderIndex = Cura.ExtruderManager.activeExtruderIndex;
                                 Cura.ExtruderManager.setActiveExtruderIndex(extruderIndex);
-                                Cura.MachineManager.setActiveMaterial(model.id);
+                                Cura.MachineManager.setActiveMaterial(container_id);
                                 Cura.ExtruderManager.setActiveExtruderIndex(activeExtruderIndex);
                             }
                         }
@@ -146,24 +141,15 @@ Menu
         onObjectRemoved: menu.removeItem(object)
     }
 
-    ListModel
+    Cura.GenericMaterialsModel
     {
         id: genericMaterialsModel
-        Component.onCompleted: populateMenuModels()
+        //Component.onCompleted: populateMenuModels()
     }
 
-    ListModel
+    Cura.BrandMaterialsModel
     {
         id: brandModel
-    }
-
-    //: Model used to populate the brandModel
-    Cura.MaterialsModel
-    {
-        id: materialsModel
-        filter: materialFilter()
-        onModelReset: populateMenuModels()
-        onDataChanged: populateMenuModels()
     }
 
     ExclusiveGroup { id: group }
@@ -171,80 +157,4 @@ Menu
     MenuSeparator { }
 
     MenuItem { action: Cura.Actions.manageMaterials }
-
-    function materialFilter()
-    {
-        var result = { "type": "material", "approximate_diameter": Math.round(materialDiameterProvider.properties.value).toString() };
-        if(Cura.MachineManager.filterMaterialsByMachine)
-        {
-            result.definition = Cura.MachineManager.activeQualityDefinitionId;
-            if(Cura.MachineManager.hasVariants)
-            {
-                result.variant = Cura.MachineManager.activeQualityVariantId;
-            }
-        }
-        else
-        {
-            result.definition = "fdmprinter";
-            result.compatible = true; //NB: Only checks for compatibility in global version of material, but we don't have machine-specific materials anyway.
-        }
-        return result;
-    }
-
-    function populateMenuModels()
-    {
-        // Create a structure of unique brands and their material-types
-        genericMaterialsModel.clear()
-        brandModel.clear();
-
-        var items = materialsModel.items;
-        var materialsByBrand = {};
-        for (var i in items) {
-            var brandName = items[i]["metadata"]["brand"];
-            var materialName = items[i]["metadata"]["material"];
-
-            if (brandName == "Generic")
-            {
-                // Add to top section
-                var materialId = items[i].id;
-                genericMaterialsModel.append({
-                    id: materialId,
-                    name: items[i].name
-                });
-            }
-            else
-            {
-                // Add to per-brand, per-material menu
-                if (!materialsByBrand.hasOwnProperty(brandName))
-                {
-                    materialsByBrand[brandName] = {};
-                }
-                if (!materialsByBrand[brandName].hasOwnProperty(materialName))
-                {
-                    materialsByBrand[brandName][materialName] = [];
-                }
-                materialsByBrand[brandName][materialName].push({
-                    id: items[i].id,
-                    name: items[i].name
-                });
-            }
-        }
-
-        for (var brand in materialsByBrand)
-        {
-            var materialsByBrandModel = [];
-            var materials = materialsByBrand[brand];
-            for (var material in materials)
-            {
-                materialsByBrandModel.push({
-                    name: material,
-                    colors: materials[material]
-                })
-            }
-            brandModel.append({
-                name: brand,
-                materials: materialsByBrandModel
-            });
-        }
-    }
 }

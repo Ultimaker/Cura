@@ -1237,6 +1237,14 @@ class MachineManager(QObject):
                 return self.getQualityVariantId(self._global_container_stack.definition, variant)
         return ""
 
+    @pyqtProperty(str, notify = activeVariantChanged)
+    def activeQualityVariantName(self) -> str:
+        if self._active_container_stack:
+            variant = self._active_container_stack.variant
+            if variant.getId() != "empty_variant":
+                return variant.getName()
+        return ""
+
     ##  Get the Variant ID to use to select quality profiles for variants of the specified definitions
     #   This is normally the id of the variant itself, but machines can specify a different definition
     #   to inherit qualities from, which has consequences for the variant to use as well

@@ -53,7 +53,7 @@ from UM.Settings.ContainerRegistry import ContainerRegistry
 from UM.Settings.SettingFunction import SettingFunction
 from cura.Settings.MachineNameValidator import MachineNameValidator
 from cura.Settings.ProfilesModel import ProfilesModel
-from cura.Settings.MaterialsModel import MaterialsModel
+from cura.Settings.MaterialsModel import MaterialsModel, BrandMaterialsModel, GenericMaterialsModel
 from cura.Settings.QualityAndUserProfilesModel import QualityAndUserProfilesModel
 from cura.Settings.SettingInheritanceManager import SettingInheritanceManager
 from cura.Settings.UserProfilesModel import UserProfilesModel
@@ -734,6 +734,10 @@ class CuraApplication(QtApplication):
         container_registry = ContainerRegistry.getInstance()
         self._variant_manager.initialize()
 
+        from cura.Machines.MaterialManager import MaterialManager
+        self._material_manager = MaterialManager(container_registry)
+        self._material_manager.initialize()
+
         # Check if we should run as single instance or not
         self._setUpSingleInstanceServer()
 
@@ -914,6 +918,10 @@ class CuraApplication(QtApplication):
         qmlRegisterType(ExtrudersModel, "Cura", 1, 0, "ExtrudersModel")
         qmlRegisterType(ContainerSettingsModel, "Cura", 1, 0, "ContainerSettingsModel")
         qmlRegisterSingletonType(ProfilesModel, "Cura", 1, 0, "ProfilesModel", ProfilesModel.createProfilesModel)
+
+        qmlRegisterType(GenericMaterialsModel, "Cura", 1, 0, "GenericMaterialsModel")
+        qmlRegisterType(BrandMaterialsModel, "Cura", 1, 0, "BrandMaterialsModel")
+
         qmlRegisterType(MaterialsModel, "Cura", 1, 0, "MaterialsModel")
         qmlRegisterType(QualityAndUserProfilesModel, "Cura", 1, 0, "QualityAndUserProfilesModel")
         qmlRegisterType(UserProfilesModel, "Cura", 1, 0, "UserProfilesModel")

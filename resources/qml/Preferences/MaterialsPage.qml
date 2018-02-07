@@ -30,7 +30,7 @@ UM.ManagementPage
                 result.definition = Cura.MachineManager.activeQualityDefinitionId;
                 if(Cura.MachineManager.hasVariants)
                 {
-                    result.variant = Cura.MachineManager.activeQualityVariantId;
+                    result.variant_name = Cura.MachineManager.activeQualityVariantName;
                 }
             }
             else

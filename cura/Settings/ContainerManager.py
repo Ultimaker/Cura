@@ -766,22 +766,20 @@ class ContainerManager(QObject):
     #   \return \type{str} the id of the newly created container.
     @pyqtSlot(str, result = str)
     def duplicateMaterial(self, material_id: str) -> str:
-        original = self._container_registry.findContainersMetadata(id = material_id)
-        if not original:
+        assert material_id
+
+        from cura.CuraApplication import CuraApplication
+        material_manager = CuraApplication.getInstance()._material_manager
+
+        material_group = material_manager.getMaterialGroup(material_id)
+        if not material_group:
             Logger.log("d", "Unable to duplicate the material with id %s, because it doesn't exist.", material_id)
             return ""
-        original = original[0]
 
-        base_container_id = original.get("base_file")
-        base_container = self._container_registry.findContainers(id = base_container_id)
-        if not base_container:
-            Logger.log("d", "Unable to duplicate the material with id {material_id}, because base_file {base_container_id} doesn't exist.".format(material_id = material_id, base_container_id = base_container_id))
-            return ""
-        base_container = base_container[0]
-
-        #We'll copy all containers with the same base.
-        #This way the correct variant and machine still gets assigned when loading the copy of the material.
-        containers_to_copy = self._container_registry.findInstanceContainers(base_file = base_container_id)
+        base_container = material_group.root_material_node.getContainer()
+        containers_to_copy = []
+        for node in material_group.derived_material_node_list:
+            containers_to_copy.append(node.getContainer())
 
         # Ensure all settings are saved.
         Application.getInstance().saveSettings()
@@ -802,9 +800,9 @@ class ContainerManager(QObject):
             new_id = new_base_id
             if container_to_copy.getMetaDataEntry("definition") != "fdmprinter":
                 new_id += "_" + container_to_copy.getMetaDataEntry("definition")
-                if container_to_copy.getMetaDataEntry("variant"):
-                    variant = self._container_registry.findContainers(id = container_to_copy.getMetaDataEntry("variant"))[0]
-                    new_id += "_" + variant.getName().replace(" ", "_")
+                if container_to_copy.getMetaDataEntry("variant_name"):
+                    variant_name = container_to_copy.getMetaDataEntry("variant_name")
+                    new_id += "_" + variant_name.replace(" ", "_")
             if current_id == material_id:
                 clone_of_original = new_id
 
@@ -826,13 +824,7 @@ class ContainerManager(QObject):
 
         # check if the given material has a base file (i.e. was shipped by default)
         base_file = self.getContainerMetaDataEntry(material_id, "base_file")
-
-        if base_file == "":
-            # there is no base file, so duplicate by ID
-            return self.duplicateMaterial(material_id)
-        else:
-            # there is a base file, so duplicate the original material
-            return self.duplicateMaterial(base_file)
+        return self.duplicateMaterial(base_file)
 
     ##  Create a new material by cloning Generic PLA for the current material diameter and setting the GUID to something unqiue
     #
