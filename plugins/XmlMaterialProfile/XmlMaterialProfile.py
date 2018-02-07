@@ -618,16 +618,9 @@ class XmlMaterialProfile(InstanceContainer):
 
                     hotends = machine.iterfind("./um:hotend", self.__namespaces)
                     for hotend in hotends:
-                        hotend_id = hotend.get("id")
-                        if hotend_id is None:
-                            continue
-
-                        variant_containers = ContainerRegistry.getInstance().findInstanceContainersMetadata(id = hotend_id)
-                        if not variant_containers:
-                            # It is not really properly defined what "ID" is so also search for variants by name.
-                            variant_containers = ContainerRegistry.getInstance().findInstanceContainersMetadata(definition = machine_id, name = hotend_id)
-
-                        if not variant_containers:
+                        # The "id" field for hotends in material profiles are actually
+                        hotend_name = hotend.get("id")
+                        if hotend_name is None:
                             continue
 
                         hotend_compatibility = machine_compatibility
@@ -643,20 +636,20 @@ class XmlMaterialProfile(InstanceContainer):
                             else:
                                 Logger.log("d", "Unsupported material setting %s", key)
 
-                        new_hotend_id = self.getId() + "_" + machine_id + "_" + hotend_id.replace(" ", "_")
+                        new_hotend_specific_material_id = self.getId() + "_" + machine_id + "_" + hotend_name.replace(" ", "_")
 
                         # Same as machine compatibility, keep the derived material containers consistent with the parent material
-                        if ContainerRegistry.getInstance().isLoaded(new_hotend_id):
-                            new_hotend_material = ContainerRegistry.getInstance().findContainers(id = new_hotend_id)[0]
+                        if ContainerRegistry.getInstance().isLoaded(new_hotend_specific_material_id):
+                            new_hotend_material = ContainerRegistry.getInstance().findContainers(id = new_hotend_specific_material_id)[0]
                             is_new_material = False
                         else:
-                            new_hotend_material = XmlMaterialProfile(new_hotend_id)
+                            new_hotend_material = XmlMaterialProfile(new_hotend_specific_material_id)
                             is_new_material = True
 
                         new_hotend_material.setMetaData(copy.deepcopy(self.getMetaData()))
-                        new_hotend_material.getMetaData()["id"] = new_hotend_id
+                        new_hotend_material.getMetaData()["id"] = new_hotend_specific_material_id
                         new_hotend_material.getMetaData()["name"] = self.getName()
-                        new_hotend_material.getMetaData()["variant"] = variant_containers[0]["id"]
+                        new_hotend_material.getMetaData()["variant_name"] = hotend_name
                         new_hotend_material.setDefinition(machine_id)
                         # Don't use setMetadata, as that overrides it for all materials with same base file
                         new_hotend_material.getMetaData()["compatible"] = hotend_compatibility
@@ -833,14 +826,9 @@ class XmlMaterialProfile(InstanceContainer):
                         buildplate_map["buildplate_recommended"][buildplate_id] = buildplate_map["buildplate_recommended"]
 
                     for hotend in machine.iterfind("./um:hotend", cls.__namespaces):
-                        hotend_id = hotend.get("id")
-                        if hotend_id is None:
+                        hotend_name = hotend.get("id")
+                        if hotend_name is None:
                             continue
-
-                        variant_containers = ContainerRegistry.getInstance().findInstanceContainersMetadata(id = hotend_id)
-                        if not variant_containers:
-                            # It is not really properly defined what "ID" is so also search for variants by name.
-                            variant_containers = ContainerRegistry.getInstance().findInstanceContainersMetadata(definition = machine_id, name = hotend_id)
 
                         hotend_compatibility = machine_compatibility
                         for entry in hotend.iterfind("./um:setting", cls.__namespaces):
@@ -848,24 +836,20 @@ class XmlMaterialProfile(InstanceContainer):
                             if key == "hardware compatible":
                                 hotend_compatibility = cls._parseCompatibleValue(entry.text)
 
-                        new_hotend_id = container_id + "_" + machine_id + "_" + hotend_id.replace(" ", "_")
+                        new_hotend_specific_material_id = container_id + "_" + machine_id + "_" + hotend_name.replace(" ", "_")
 
                         # Same as machine compatibility, keep the derived material containers consistent with the parent material
-                        found_materials = ContainerRegistry.getInstance().findInstanceContainersMetadata(id = new_hotend_id)
+                        found_materials = ContainerRegistry.getInstance().findInstanceContainersMetadata(id = new_hotend_specific_material_id)
                         if found_materials:
                             new_hotend_material_metadata = found_materials[0]
                         else:
                             new_hotend_material_metadata = {}
 
                         new_hotend_material_metadata.update(base_metadata)
-                        if variant_containers:
-                            new_hotend_material_metadata["variant"] = variant_containers[0]["id"]
-                        else:
-                            new_hotend_material_metadata["variant"] = hotend_id
-                            _with_missing_variants.append(new_hotend_material_metadata)
+                        new_hotend_material_metadata["variant_name"] = hotend_name
                         new_hotend_material_metadata["compatible"] = hotend_compatibility
                         new_hotend_material_metadata["machine_manufacturer"] = machine_manufacturer
-                        new_hotend_material_metadata["id"] = new_hotend_id
+                        new_hotend_material_metadata["id"] = new_hotend_specific_material_id
                         new_hotend_material_metadata["definition"] = machine_id
                         if buildplate_map["buildplate_compatible"]:
                             new_hotend_material_metadata["buildplate_compatible"] = buildplate_map["buildplate_compatible"]
@@ -992,21 +976,3 @@ def _indent(elem, level = 0):
 # before the last }
 def _tag_without_namespace(element):
     return element.tag[element.tag.rfind("}") + 1:]
-
-#While loading XML profiles, some of these profiles don't know what variant
-#they belong to. We'd like to search by the machine ID and the variant's
-#name, but we don't know the variant's ID. Not all variants have been loaded
-#yet so we can't run a filter on the name and machine. The ID is unknown
-#so we can't lazily load the variant either. So we have to wait until all
-#the rest is loaded properly and then assign the correct variant to the
-#material files that were missing it.
-_with_missing_variants = []
-def _fillMissingVariants():
-    registry = ContainerRegistry.getInstance()
-    for variant_metadata in _with_missing_variants:
-        variants = registry.findContainersMetadata(definition = variant_metadata["definition"], name = variant_metadata["variant"])
-        if not variants:
-            Logger.log("w", "Could not find variant for variant-specific material {material_id}.".format(material_id = variant_metadata["id"]))
-            continue
-        variant_metadata["variant"] = variants[0]["id"]
-ContainerRegistry.allMetadataLoaded.connect(_fillMissingVariants)
