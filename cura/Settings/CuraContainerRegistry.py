@@ -711,7 +711,7 @@ class CuraContainerRegistry(ContainerRegistry):
             if not os.path.isfile(file_path):
                 continue
 
-            parser = configparser.ConfigParser()
+            parser = configparser.ConfigParser(interpolation=None)
             try:
                 parser.read([file_path])
             except:
