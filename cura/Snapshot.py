@@ -43,10 +43,6 @@ class Snapshot:
         render_width, render_height = active_camera.getWindowSize()
         render_width = int(render_width)
         render_height = int(render_height)
-        # Result should have enough resolution; it is cropped and then scaled down.
-        while (render_width < 1000) or (render_height < 1000):
-            render_width *= 2
-            render_height *= 2
         preview_pass = PreviewPass(render_width, render_height)
 
         root = scene.getRoot()
