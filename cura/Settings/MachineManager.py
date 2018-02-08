@@ -369,7 +369,6 @@ class MachineManager(QObject):
         self.activeQualityChanged.emit()
         self.activeVariantChanged.emit()
         self.activeMaterialChanged.emit()
-        self._updateStacksHaveErrors()  # Prevents unwanted re-slices after changing machine
         self._error_check_timer.start()
 
     def _onProfilesModelChanged(self, *args):
