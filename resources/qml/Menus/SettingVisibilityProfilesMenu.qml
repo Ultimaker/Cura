@@ -10,13 +10,13 @@ import Cura 1.0 as Cura
 Menu
 {
     id: menu
-    title: "Visible Settings"
+    title: catalog.i18nc("@action:inmenu", "Visible Settings")
 
     property bool showingSearchResults
     property bool showingAllSettings
 
     signal showAllSettings()
-    signal showSettingVisibilityProfile(string profileName)
+    signal showSettingVisibilityProfile()
 
     MenuItem
     {
@@ -40,31 +40,21 @@ Menu
 
     Instantiator
     {
-        model: ListModel
-        {
-            id: presetNamesList
-            Component.onCompleted:
-            {
-                // returned value is Dictionary  (Ex: {1:"Basic"}, The number 1 is the weight and sort by weight)
-                var itemsDict = UM.Preferences.getValue("general/visible_settings_preset")
-                var sorted = [];
-                for(var key in itemsDict) {
-                    sorted[sorted.length] = key;
-                }
-                sorted.sort();
-                for(var i = 0; i < sorted.length; i++) {
-                    presetNamesList.append({text: itemsDict[sorted[i]], value: i});
-                }
-            }
-        }
+        model: Cura.SettingVisibilityProfilesModel
 
         MenuItem
         {
-            text: model.text
+            text: model.name
             checkable: true
             checked: false
             exclusiveGroup: group
-            onTriggered: showSettingVisibilityProfile(model.text)
+            onTriggered:
+            {
+                UM.Preferences.setValue("general/visible_settings", model.settings.join(";"));
+                UM.Preferences.setValue("general/preset_setting_visibility_choice", model.id);
+
+                showSettingVisibilityProfile();
+            }
         }
 
         onObjectAdded: menu.insertItem(index, object)
