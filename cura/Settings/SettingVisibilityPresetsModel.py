@@ -13,7 +13,7 @@ from UM.Qt.ListModel import ListModel
 from UM.Resources import Resources
 from UM.MimeTypeDatabase import MimeTypeDatabase, MimeTypeNotFoundError
 
-class SettingVisibilityProfilesModel(ListModel):
+class SettingVisibilityPresetsModel(ListModel):
     IdRole = Qt.UserRole + 1
     NameRole = Qt.UserRole + 2
     SettingsRole = Qt.UserRole + 4
@@ -31,7 +31,7 @@ class SettingVisibilityProfilesModel(ListModel):
 
     def _populate(self):
         items = []
-        for item in Resources.getAllResourcesOfType(Resources.PresetSettingVisibilityGroups):
+        for item in Resources.getAllResourcesOfType(Resources.PresetSettingVisibilityPresets):
             try:
                 mime_type = MimeTypeDatabase.getMimeTypeForFile(item)
             except MimeTypeNotFoundError:
@@ -76,15 +76,15 @@ class SettingVisibilityProfilesModel(ListModel):
 
     # Factory function, used by QML
     @staticmethod
-    def createSettingVisibilityProfilesModel(engine, js_engine):
-        return SettingVisibilityProfilesModel.getInstance()
+    def createSettingVisibilityPresetsModel(engine, js_engine):
+        return SettingVisibilityPresetsModel.getInstance()
 
     ##  Get the singleton instance for this class.
     @classmethod
-    def getInstance(cls) -> "SettingVisibilityProfilesModel":
+    def getInstance(cls) -> "SettingVisibilityPresetsModel":
         # Note: Explicit use of class name to prevent issues with inheritance.
-        if not SettingVisibilityProfilesModel.__instance:
-            SettingVisibilityProfilesModel.__instance = cls()
-        return SettingVisibilityProfilesModel.__instance
+        if not SettingVisibilityPresetsModel.__instance:
+            SettingVisibilityPresetsModel.__instance = cls()
+        return SettingVisibilityPresetsModel.__instance
 
-    __instance = None   # type: "SettingVisibilityProfilesModel"
+    __instance = None   # type: "SettingVisibilityPresetsModel"

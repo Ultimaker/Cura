@@ -57,7 +57,7 @@ from cura.Settings.QualityAndUserProfilesModel import QualityAndUserProfilesMode
 from cura.Settings.SettingInheritanceManager import SettingInheritanceManager
 from cura.Settings.UserProfilesModel import UserProfilesModel
 from cura.Settings.SimpleModeSettingsManager import SimpleModeSettingsManager
-from cura.Settings.SettingVisibilityProfilesModel import SettingVisibilityProfilesModel
+from cura.Settings.SettingVisibilityPresetsModel import SettingVisibilityPresetsModel
 
 
 from . import PlatformPhysics
@@ -79,7 +79,7 @@ from cura.Settings.ContainerSettingsModel import ContainerSettingsModel
 from cura.Settings.MaterialSettingsVisibilityHandler import MaterialSettingsVisibilityHandler
 from cura.Settings.QualitySettingsModel import QualitySettingsModel
 from cura.Settings.ContainerManager import ContainerManager
-from cura.Settings.SettingVisibilityProfilesModel import SettingVisibilityProfilesModel
+from cura.Settings.SettingVisibilityPresetsModel import SettingVisibilityPresetsModel
 
 from cura.ObjectsModel import ObjectsModel
 from cura.BuildPlateModel import BuildPlateModel
@@ -358,13 +358,13 @@ class CuraApplication(QtApplication):
 
         preferences.setDefault("local_file/last_used_type", "text/x-gcode")
 
-        default_visibility_profile = SettingVisibilityProfilesModel.getInstance().getItem(0)
+        default_visibility_profile = SettingVisibilityPresetsModel.getInstance().getItem(0)
 
         preferences.setDefault("general/visible_settings", ";".join(default_visibility_profile["settings"]))
         preferences.setDefault("general/preset_setting_visibility_choice", default_visibility_profile["id"])
 
         preset_setting_visibility_choice = Preferences.getInstance().getValue("general/preset_setting_visibility_choice")
-        if not SettingVisibilityProfilesModel.getInstance().find("id", preset_setting_visibility_choice):
+        if not SettingVisibilityPresetsModel.getInstance().find("id", preset_setting_visibility_choice):
             Preferences.getInstance().setValue("general/preset_setting_visibility_choice", default_visibility_profile["id"])
 
         self.applicationShuttingDown.connect(self.saveSettings)
@@ -816,7 +816,7 @@ class CuraApplication(QtApplication):
         qmlRegisterType(MachineNameValidator, "Cura", 1, 0, "MachineNameValidator")
         qmlRegisterType(UserChangesModel, "Cura", 1, 1, "UserChangesModel")
         qmlRegisterSingletonType(ContainerManager, "Cura", 1, 0, "ContainerManager", ContainerManager.createContainerManager)
-        qmlRegisterSingletonType(SettingVisibilityProfilesModel, "Cura", 1, 0, "SettingVisibilityProfilesModel", SettingVisibilityProfilesModel.createSettingVisibilityProfilesModel)
+        qmlRegisterSingletonType(SettingVisibilityPresetsModel, "Cura", 1, 0, "SettingVisibilityPresetsModel", SettingVisibilityPresetsModel.createSettingVisibilityPresetsModel)
 
         # As of Qt5.7, it is necessary to get rid of any ".." in the path for the singleton to work.
         actions_url = QUrl.fromLocalFile(os.path.abspath(Resources.getPath(CuraApplication.ResourceTypes.QmlFiles, "Actions.qml")))

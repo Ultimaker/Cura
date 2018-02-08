@@ -40,7 +40,7 @@ Menu
 
     Instantiator
     {
-        model: Cura.SettingVisibilityProfilesModel
+        model: Cura.SettingVisibilityPresetsModel
 
         MenuItem
         {

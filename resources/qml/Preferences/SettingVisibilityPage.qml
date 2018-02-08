@@ -123,7 +123,7 @@ UM.PreferencesPage
                 right: parent.right
             }
 
-            model: Cura.SettingVisibilityProfilesModel
+            model: Cura.SettingVisibilityPresetsModel
             textRole: "name"
 
             currentIndex:

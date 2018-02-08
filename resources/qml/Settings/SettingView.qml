@@ -110,7 +110,7 @@ Item
 
     ToolButton
     {
-        id: settingVisibilityProfileMenu
+        id: settingVisibilityMenu
 
         width: height
         height: UM.Theme.getSize("setting_control").height
@@ -137,7 +137,7 @@ Item
             }
             label: Label{}
         }
-        menu: SettingVisibilityProfilesMenu
+        menu: SettingVisibilityPresetsMenu
         {
             showingSearchResults: findingSettings
             showingAllSettings: showingAllSettings
@@ -185,7 +185,7 @@ Item
             topMargin: UM.Theme.getSize("sidebar_margin").height
             left: parent.left
             leftMargin: UM.Theme.getSize("sidebar_margin").width
-            right: settingVisibilityProfileMenu.left
+            right: settingVisibilityMenu.left
             rightMargin: Math.floor(UM.Theme.getSize("default_margin").width / 2)
         }
         height: visible ? UM.Theme.getSize("setting_control").height : 0
