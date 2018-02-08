@@ -134,7 +134,7 @@ UM.Dialog
                 projectsModel.append({ name:"Clipper", description: catalog.i18nc("@label", "Polygon clipping library"), license: "Boost", url: "http://www.angusj.com/delphi/clipper.php" });
                 projectsModel.append({ name:"Requests", description: catalog.i18nc("@Label", "Python HTTP library"), license: "GPL", url: "http://docs.python-requests.org" });
 
-                projectsModel.append({ name:"Open Sans", description: catalog.i18nc("@label", "Font"), license: "Apache 2.0", url: "https://fonts.google.com/specimen/Open+Sans" });
+                projectsModel.append({ name:"Noto Sans", description: catalog.i18nc("@label", "Font"), license: "Apache 2.0", url: "https://www.google.com/get/noto/" });
                 projectsModel.append({ name:"Font-Awesome-SVG-PNG", description: catalog.i18nc("@label", "SVG icons"), license: "SIL OFL 1.1", url: "https://github.com/encharm/Font-Awesome-SVG-PNG" });
             }
         }
@@ -149,4 +149,3 @@ UM.Dialog
         onClicked: base.visible = false;
     }
 }
-
