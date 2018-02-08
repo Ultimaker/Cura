@@ -1,6 +1,7 @@
-# Copyright (c) 2017 Ultimaker B.V.
+# Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
+from cura.Scene.CuraSceneNode import CuraSceneNode
 from cura.Settings.ExtruderManager import ExtruderManager
 from UM.Settings.ContainerRegistry import ContainerRegistry
 from UM.i18n import i18nCatalog
@@ -25,7 +26,7 @@ catalog = i18nCatalog("cura")
 import numpy
 import math
 
-from typing import List
+from typing import List, Optional
 
 # Setting for clearance around the prime
 PRIME_CLEARANCE = 6.5
@@ -73,6 +74,11 @@ class BuildVolume(SceneNode):
         self._adhesion_type = None
         self._platform = Platform(self)
 
+        self._build_volume_message = Message(catalog.i18nc("@info:status",
+            "The build volume height has been reduced due to the value of the"
+            " \"Print Sequence\" setting to prevent the gantry from colliding"
+            " with printed models."), title = catalog.i18nc("@info:title", "Build Volume"))
+
         self._global_container_stack = None
         Application.getInstance().globalContainerStackChanged.connect(self._onStackChanged)
         self._onStackChanged()
@@ -95,11 +101,6 @@ class BuildVolume(SceneNode):
         self._setting_change_timer.setInterval(150)
         self._setting_change_timer.setSingleShot(True)
         self._setting_change_timer.timeout.connect(self._onSettingChangeTimerFinished)
-
-        self._build_volume_message = Message(catalog.i18nc("@info:status",
-            "The build volume height has been reduced due to the value of the"
-            " \"Print Sequence\" setting to prevent the gantry from colliding"
-            " with printed models."), title = catalog.i18nc("@info:title","Build Volume"))
 
         # Must be after setting _build_volume_message, apparently that is used in getMachineManager.
         # activeQualityChanged is always emitted after setActiveVariant, setActiveMaterial and setActiveQuality.
@@ -240,6 +241,44 @@ class BuildVolume(SceneNode):
         for group_node in group_nodes:
             for child_node in group_node.getAllChildren():
                 child_node._outside_buildarea = group_node._outside_buildarea
+
+    ##  Update the outsideBuildArea of a single node, given bounds or current build volume
+    def checkBoundsAndUpdate(self, node: CuraSceneNode, bounds: Optional[AxisAlignedBox] = None):
+        if not isinstance(node, CuraSceneNode):
+            return
+
+        if bounds is None:
+            build_volume_bounding_box = self.getBoundingBox()
+            if build_volume_bounding_box:
+                # It's over 9000!
+                build_volume_bounding_box = build_volume_bounding_box.set(bottom=-9001)
+            else:
+                # No bounding box. This is triggered when running Cura from command line with a model for the first time
+                # In that situation there is a model, but no machine (and therefore no build volume.
+                return
+        else:
+            build_volume_bounding_box = bounds
+
+        if node.callDecoration("isSliceable") or node.callDecoration("isGroup"):
+            bbox = node.getBoundingBox()
+
+            # Mark the node as outside the build volume if the bounding box test fails.
+            if build_volume_bounding_box.intersectsBox(bbox) != AxisAlignedBox.IntersectionResult.FullIntersection:
+                node.setOutsideBuildArea(True)
+                return
+
+            convex_hull = self.callDecoration("getConvexHull")
+            if convex_hull:
+                if not convex_hull.isValid():
+                    return
+                # Check for collisions between disallowed areas and the object
+                for area in self.getDisallowedAreas():
+                    overlap = convex_hull.intersectsPolygon(area)
+                    if overlap is None:
+                        continue
+                    node.setOutsideBuildArea(True)
+                    return
+            node.setOutsideBuildArea(False)
 
     ##  Recalculates the build volume & disallowed areas.
     def rebuild(self):

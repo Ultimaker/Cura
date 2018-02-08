@@ -1,7 +1,7 @@
 // Copyright (c) 2017 Ultimaker B.V.
 // Uranium is released under the terms of the LGPLv3 or higher.
 
-import QtQuick 2.2
+import QtQuick 2.7
 import QtQuick.Controls 1.1
 import QtQuick.Controls.Styles 1.1
 import QtQuick.Layouts 1.1
@@ -64,11 +64,9 @@ Item
             menu: ProfileMenu { }
 
             function generateActiveQualityText () {
-                var result = catalog.i18nc("@", "No Profile Available") // default text
+                var result = Cura.MachineManager.activeQualityName;
 
-                if (Cura.MachineManager.isActiveQualitySupported ) {
-                    result = Cura.MachineManager.activeQualityName
-
+                if (Cura.MachineManager.isActiveQualitySupported) {
                     if (Cura.MachineManager.activeQualityLayerHeight > 0) {
                         result += " <font color=\"" + UM.Theme.getColor("text_detail") + "\">"
                         result += " - "

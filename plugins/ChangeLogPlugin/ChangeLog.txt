@@ -1,3 +1,49 @@
+[3.2.0]
+*Tree support
+Experimental tree-like support structure that uses ‘branches’ to support prints. Branches ‘grow’ and multiply towards the model, with fewer contact points than alternative support methods. This results in better surface finishes for organic-shaped prints.
+
+*Adaptive layers
+Prints with a variable layer thickness which adapts to the angle of the model’s surfaces. The result is high-quality surface finishes with a marginally increased print time. This setting can be found under the experimental category.
+
+*Faster startup
+Printer definitions are now loaded when adding a printer, instead of loading all available printers on startup.
+
+*Backface culling in layer view
+Doubled frame rate by only rendering visible surfaces of the model in the layer view, instead of rendering the entire model. Good for lower spec GPUs as it is less resource-intensive.
+
+*Multi build plate
+Experimental feature that creates separate build plates with shared settings in a single session, eliminating the need to clear the build plate multiple times. Multiple build plates can be sliced and sent to a printer or printer group in Cura Connect. This feature must be enabled manually in the preferences ‘general’ tab.
+
+*Improved mesh type selection
+New button in the left toolbar to edit per model settings, giving the user more control over where to place support. Objects can be used as meshes, with a drop down list where ‘Print as support’, ‘Don't overlap support with other models’, ‘Modify settings for overlap with other models’, or ‘Modify settings for infill of other models’ can be specified. Contributed by fieldOfView.
+
+*View optimization
+Quick camera controls introduced in version 3.1 have been revised to create more accurate isometric, front, left, and right views.
+
+*Updated sidebar to QtQuick 2.0
+Application framework updated to increase speed, achieve a better width and style fit, and gives users dropdown menus that are styled to fit the enabled Ultimaker Cura theme, instead of the operating system’s theme.
+
+*Hide sidebar
+The sidebar can now be hidden/shown by selecting View > Expand/Collapse Sidebar, or with the hotkey CMD + E (Mac) or CTRL + E (PC and Linux).
+
+*Disable ‘Send slice information’
+A shortcut to disable ‘Send slice information’ has been added to the first launch to make it easier for privacy-conscious users to keep slice information private.
+
+*Signed binaries (Windows)
+For security-conscious users, the Windows installer and Windows binaries have been digitally signed to prevent “Unknown application” warnings and virus scanner false-positives.
+
+*Start/end gcode script per extruder
+Variables from both extruders in the start and end gcode snippets can now be accessed and edited, creating uniformity between profiles in different slicing environments. Contributed by fieldOfView.
+
+*OctoPrint plugin added to plugin browser
+This plugin enables printers managed with OctoPrint to print via Ultimaker Cura interface (version 3.2 or later).
+
+*Bugfixes
+- Fixed a bug where the mirror tool and center model options when used together would reset the model transformations
+- Updated config file path to fix crashes caused by user config files that are located on remote drives
+- Updated Arduino drivers to fix triggering errors during OTA updates in shared environments. This also fixes an issue when upgrading the firmware of the Ultimaker Original.
+- Fixed an issue where arranging small models would fail, due to conflict with small model files combined with the “Ensure models are kept apart” option
+
 [3.1.0]
 *Profile added for 0.25 mm print core
 This new print core gives extra fine line widths which gives prints extra definition and surface quality.

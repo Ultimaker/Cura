@@ -34,7 +34,7 @@ class PlatformPhysics:
         self._change_timer.timeout.connect(self._onChangeTimerFinished)
         self._move_factor = 1.1  # By how much should we multiply overlap to calculate a new spot?
         self._max_overlap_checks = 10  # How many times should we try to find a new spot per tick?
-        self._minimum_gap = 2 # It is a minimum distance between two models, applicable for small models
+        self._minimum_gap = 2  # It is a minimum distance (in mm) between two models, applicable for small models
 
         Preferences.getInstance().addPreference("physics/automatic_push_free", True)
         Preferences.getInstance().addPreference("physics/automatic_drop_down", True)
@@ -42,7 +42,7 @@ class PlatformPhysics:
     def _onSceneChanged(self, source):
         self._change_timer.start()
 
-    def _onChangeTimerFinished(self, was_triggered_by_tool=False):
+    def _onChangeTimerFinished(self):
         if not self._enabled:
             return
 
@@ -58,11 +58,10 @@ class PlatformPhysics:
 
         # Only check nodes inside build area.
         nodes = [node for node in nodes if (hasattr(node, "_outside_buildarea") and not node._outside_buildarea)]
-        active_build_plate = Application.getInstance().getBuildPlateModel().activeBuildPlate
 
         random.shuffle(nodes)
         for node in nodes:
-            if node is root or not issubclass(type(node), SceneNode) or node.getBoundingBox() is None:
+            if node is root or not isinstance(node, SceneNode) or node.getBoundingBox() is None:
                 continue
 
             bbox = node.getBoundingBox()
@@ -72,7 +71,7 @@ class PlatformPhysics:
 
             if Preferences.getInstance().getValue("physics/automatic_drop_down") and not (node.getParent() and node.getParent().callDecoration("isGroup")) and node.isEnabled(): #If an object is grouped, don't move it down
                 z_offset = node.callDecoration("getZOffset") if node.getDecorator(ZOffsetDecorator.ZOffsetDecorator) else 0
-                move_vector = move_vector.set(y=-bbox.bottom + z_offset)
+                move_vector = move_vector.set(y = -bbox.bottom + z_offset)
 
             # If there is no convex hull for the node, start calculating it and continue.
             if not node.getDecorator(ConvexHullDecorator):
@@ -131,17 +130,14 @@ class PlatformPhysics:
                                 overlap = own_convex_hull.translate(move_vector.x, move_vector.z).intersectsPolygon(other_convex_hull)
                                 if overlap:  # Moving ensured that overlap was still there. Try anew!
                                     temp_move_vector = move_vector.set(x = move_vector.x + overlap[0] * self._move_factor,
-                                                                  z = move_vector.z + overlap[1] * self._move_factor)
+                                                                       z = move_vector.z + overlap[1] * self._move_factor)
 
                                     # if the distance between two models less than 2mm then try to find a new factor
                                     if abs(temp_move_vector.x - overlap[0]) < self._minimum_gap and abs(temp_move_vector.y - overlap[1]) < self._minimum_gap:
-                                        temp_scale_factor = self._move_factor
                                         temp_x_factor = (abs(overlap[0]) + self._minimum_gap) / overlap[0] if overlap[0] != 0 else 0 # find x move_factor, like (3.4 + 2) / 3.4 = 1.58
                                         temp_y_factor = (abs(overlap[1]) + self._minimum_gap) / overlap[1] if overlap[1] != 0 else 0 # find y move_factor
-                                        if abs(temp_x_factor) > abs(temp_y_factor):
-                                            temp_scale_factor = temp_x_factor
-                                        else:
-                                            temp_scale_factor = temp_y_factor
+
+                                        temp_scale_factor = temp_x_factor if abs(temp_x_factor) > abs(temp_y_factor) else temp_y_factor
 
                                         move_vector = move_vector.set(x = move_vector.x + overlap[0] * temp_scale_factor,
                                                                       z = move_vector.z + overlap[1] * temp_scale_factor)
@@ -149,7 +145,7 @@ class PlatformPhysics:
                                         move_vector = temp_move_vector
                             else:
                                 # This can happen in some cases if the object is not yet done with being loaded.
-                                #  Simply waiting for the next tick seems to resolve this correctly.
+                                # Simply waiting for the next tick seems to resolve this correctly.
                                 overlap = None
 
             if not Vector.Null.equals(move_vector, epsilon = 1e-5):
@@ -181,4 +177,4 @@ class PlatformPhysics:
                         node.removeDecorator(ZOffsetDecorator.ZOffsetDecorator)
 
         self._enabled = True
-        self._onChangeTimerFinished(True)
+        self._onChangeTimerFinished()

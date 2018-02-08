@@ -57,7 +57,7 @@ class ThreeMFWorkspaceWriter(WorkspaceWriter):
 
         # Save Cura version
         version_file = zipfile.ZipInfo("Cura/version.ini")
-        version_config_parser = configparser.ConfigParser()
+        version_config_parser = configparser.ConfigParser(interpolation = None)
         version_config_parser.add_section("versions")
         version_config_parser.set("versions", "cura_version", Application.getInstance().getVersion())
         version_config_parser.set("versions", "build_type", Application.getInstance().getBuildType())
@@ -97,7 +97,7 @@ class ThreeMFWorkspaceWriter(WorkspaceWriter):
         file_in_archive.compress_type = zipfile.ZIP_DEFLATED
 
         # Do not include the network authentication keys
-        ignore_keys = {"network_authentication_id", "network_authentication_key"}
+        ignore_keys = {"network_authentication_id", "network_authentication_key", "octoprint_api_key"}
         serialized_data = container.serialize(ignored_metadata_keys = ignore_keys)
 
         archive.writestr(file_in_archive, serialized_data)

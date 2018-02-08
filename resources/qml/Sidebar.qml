@@ -1,9 +1,9 @@
 // Copyright (c) 2017 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
-import QtQuick 2.2
+import QtQuick 2.7
 import QtQuick.Controls 2.0
-import QtQuick.Layouts 1.1
+import QtQuick.Layouts 1.3
 
 import UM 1.2 as UM
 import Cura 1.0 as Cura
@@ -11,9 +11,9 @@ import "Menus"
 
 Rectangle
 {
-    id: base;
+    id: base
 
-    property int currentModeIndex;
+    property int currentModeIndex
     property bool hideSettings: PrintInformation.preSliced
     property bool hideView: Cura.MachineManager.activeMachineName == ""
 
@@ -77,7 +77,7 @@ Rectangle
     MouseArea
     {
         anchors.fill: parent
-        acceptedButtons: Qt.AllButtons;
+        acceptedButtons: Qt.AllButtons
 
         onWheel:
         {
@@ -96,7 +96,7 @@ Rectangle
     SidebarHeader {
         id: header
         width: parent.width
-        visible: (machineExtruderCount.properties.value > 1 || Cura.MachineManager.hasMaterials || Cura.MachineManager.hasVariants) && !monitoringPrint
+        visible: !hideSettings && (machineExtruderCount.properties.value > 1 || Cura.MachineManager.hasMaterials || Cura.MachineManager.hasVariants) && !monitoringPrint
         anchors.top: machineSelection.bottom
 
         onShowTooltip: base.showTooltip(item, location, text)
@@ -125,10 +125,10 @@ Rectangle
     Label
     {
         id: settingsModeLabel
-        text: !hideSettings ? catalog.i18nc("@label:listbox", "Print Setup") : catalog.i18nc("@label:listbox","Print Setup disabled\nG-code files cannot be modified");
+        text: !hideSettings ? catalog.i18nc("@label:listbox", "Print Setup") : catalog.i18nc("@label:listbox", "Print Setup disabled\nG-code files cannot be modified")
         anchors.left: parent.left
         anchors.leftMargin: UM.Theme.getSize("sidebar_margin").width
-        anchors.top: headerSeparator.bottom
+        anchors.top: hideSettings ? machineSelection.bottom : headerSeparator.bottom
         anchors.topMargin: UM.Theme.getSize("sidebar_margin").height
         width: Math.floor(parent.width * 0.45)
         font: UM.Theme.getFont("large")
@@ -214,6 +214,18 @@ Rectangle
                     horizontalAlignment: Text.AlignHCenter
                     verticalAlignment: Text.AlignVCenter
                     elide: Text.ElideRight
+                    color:
+                    {
+                        if(control.pressed)
+                        {
+                            return UM.Theme.getColor("action_button_active_text");
+                        }
+                        else if(control.hovered)
+                        {
+                            return UM.Theme.getColor("action_button_hovered_text");
+                        }
+                        return UM.Theme.getColor("action_button_text");
+                    }
                 }
             }
         }
@@ -557,19 +569,19 @@ Rectangle
 
     SidebarTooltip
     {
-        id: tooltip;
+        id: tooltip
     }
 
     // Setting mode: Recommended or Custom
     ListModel
     {
-        id: modesListModel;
+        id: modesListModel
     }
 
     SidebarSimple
     {
-        id: sidebarSimple;
-        visible: false;
+        id: sidebarSimple
+        visible: false
 
         onShowTooltip: base.showTooltip(item, location, text)
         onHideTooltip: base.hideTooltip()
@@ -577,8 +589,8 @@ Rectangle
 
     SidebarAdvanced
     {
-        id: sidebarAdvanced;
-        visible: false;
+        id: sidebarAdvanced
+        visible: false
 
         onShowTooltip: base.showTooltip(item, location, text)
         onHideTooltip: base.hideTooltip()
@@ -596,7 +608,7 @@ Rectangle
             tooltipText: catalog.i18nc("@tooltip", "<b>Custom Print Setup</b><br/><br/>Print with finegrained control over every last bit of the slicing process."),
             item: sidebarAdvanced
         })
-        sidebarContents.replace( modesListModel.get(base.currentModeIndex).item, { "immediate": true })
+        sidebarContents.replace(modesListModel.get(base.currentModeIndex).item, { "immediate": true })
 
         var index = Math.floor(UM.Preferences.getValue("cura/active_mode"))
         if(index)

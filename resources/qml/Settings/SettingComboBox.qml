@@ -1,7 +1,7 @@
 // Copyright (c) 2015 Ultimaker B.V.
 // Uranium is released under the terms of the LGPLv3 or higher.
 
-import QtQuick 2.1
+import QtQuick 2.7
 import QtQuick.Controls 2.0
 
 import UM 1.1 as UM
@@ -77,7 +77,7 @@ SettingItem
             anchors.left: parent.left
             anchors.leftMargin: UM.Theme.getSize("setting_unit_margin").width
             anchors.verticalCenter: parent.verticalCenter
-            anchors.right: indicator.left
+            anchors.right: downArrow.left
 
             text: control.currentText
             font: UM.Theme.getFont("default")
@@ -86,19 +86,46 @@ SettingItem
             verticalAlignment: Text.AlignVCenter
         }
 
+        popup: Popup {
+            y: control.height - UM.Theme.getSize("default_lining").height
+            width: control.width
+            implicitHeight: contentItem.implicitHeight
+            padding: UM.Theme.getSize("default_lining").width
+
+            contentItem: ListView {
+                clip: true
+                implicitHeight: contentHeight
+                model: control.popup.visible ? control.delegateModel : null
+                currentIndex: control.highlightedIndex
+
+                ScrollIndicator.vertical: ScrollIndicator { }
+            }
+
+            background: Rectangle {
+                color: UM.Theme.getColor("setting_control")
+                border.color: UM.Theme.getColor("setting_control_border")
+            }
+        }
+
         delegate: ItemDelegate
         {
-            width: control.width
+            width: control.width - 2 * UM.Theme.getSize("default_lining").width
             height: control.height
             highlighted: control.highlightedIndex == index
 
-            contentItem: Text
+            contentItem: Label
             {
                 text: modelData.value
                 color: control.contentItem.color
                 font: UM.Theme.getFont("default")
                 elide: Text.ElideRight
                 verticalAlignment: Text.AlignVCenter
+            }
+
+            background: Rectangle
+            {
+                color: parent.highlighted ? UM.Theme.getColor("setting_control_highlight") : "transparent"
+                border.color: parent.highlighted ? UM.Theme.getColor("setting_control_border_highlight") : "transparent"
             }
         }
 

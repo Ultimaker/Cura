@@ -390,7 +390,7 @@ Cura.MachineAction
                             visible: Cura.MachineManager.hasMaterials
                             sourceComponent: numericTextFieldWithUnit
                             property string settingKey: "material_diameter"
-                            property string label: catalog.i18nc("@label", "Material diameter")
+                            property string label: catalog.i18nc("@label", "Compatible material diameter")
                             property string unit: catalog.i18nc("@label", "mm")
                             property string tooltip: catalog.i18nc("@tooltip", "The nominal diameter of filament supported by the printer. The exact diameter will be overridden by the material and/or the profile.")
                             function afterOnEditingFinished()
@@ -591,7 +591,7 @@ Cura.MachineAction
                             const value = propertyProvider.properties.value;
                             return value ? value : "";
                         }
-                        validator: RegExpValidator { regExp: _allowNegative ? /-?[0-9\.]{0,6}/ : /[0-9\.]{0,6}/ }
+                        validator: RegExpValidator { regExp: _allowNegative ? /-?[0-9\.,]{0,6}/ : /[0-9\.,]{0,6}/ }
                         onEditingFinished:
                         {
                             if (propertyProvider && text != propertyProvider.properties.value)
@@ -826,10 +826,10 @@ Cura.MachineAction
                             printHeadPolygon[axis][side] = result;
                             return result;
                         }
-                        validator: RegExpValidator { regExp: /[0-9\.]{0,6}/ }
+                        validator: RegExpValidator { regExp: /[0-9\.,]{0,6}/ }
                         onEditingFinished:
                         {
-                            printHeadPolygon[axis][side] = parseFloat(textField.text);
+                            printHeadPolygon[axis][side] = parseFloat(textField.text.replace(',','.'));
                             var polygon = [];
                             polygon.push([-printHeadPolygon["x"]["min"], printHeadPolygon["y"]["max"]]);
                             polygon.push([-printHeadPolygon["x"]["min"],-printHeadPolygon["y"]["min"]]);

@@ -88,7 +88,7 @@ class CuraEngineBackend(QObject, Backend):
         #
         self._global_container_stack = None
         Application.getInstance().globalContainerStackChanged.connect(self._onGlobalStackChanged)
-        Application.getInstance().getExtruderManager().activeExtruderChanged.connect(self._onGlobalStackChanged)
+        Application.getInstance().getExtruderManager().extrudersAdded.connect(self._onGlobalStackChanged)
         self._onGlobalStackChanged()
 
         Application.getInstance().stacksValidationFinished.connect(self._onStackErrorCheckFinished)
@@ -187,10 +187,8 @@ class CuraEngineBackend(QObject, Backend):
     ##  Manually triggers a reslice
     @pyqtSlot()
     def forceSlice(self):
-        if self._use_timer:
-            self._change_timer.start()
-        else:
-            self.slice()
+        self.markSliceAll()
+        self.slice()
 
     ##  Perform a slice of the scene.
     def slice(self):
@@ -198,14 +196,15 @@ class CuraEngineBackend(QObject, Backend):
         self._slice_start_time = time()
         if not self._build_plates_to_be_sliced:
             self.processingProgress.emit(1.0)
-            self.backendStateChange.emit(BackendState.Done)
             Logger.log("w", "Slice unnecessary, nothing has changed that needs reslicing.")
             return
 
         if self._process_layers_job:
             Logger.log("d", "  ## Process layers job still busy, trying later")
-            self._invokeSlice()
             return
+
+        if not hasattr(self._scene, "gcode_dict"):
+            self._scene.gcode_dict = {}
 
         # see if we really have to slice
         active_build_plate = Application.getInstance().getBuildPlateModel().activeBuildPlate
@@ -213,8 +212,10 @@ class CuraEngineBackend(QObject, Backend):
         Logger.log("d", "Going to slice build plate [%s]!" % build_plate_to_be_sliced)
         num_objects = self._numObjects()
         if build_plate_to_be_sliced not in num_objects or num_objects[build_plate_to_be_sliced] == 0:
-            Logger.log("d", "Build plate %s has 0 objects to be sliced, skipping", build_plate_to_be_sliced)
-            self._invokeSlice()
+            self._scene.gcode_dict[build_plate_to_be_sliced] = []
+            Logger.log("d", "Build plate %s has no objects to be sliced, skipping", build_plate_to_be_sliced)
+            if self._build_plates_to_be_sliced:
+                self.slice()
             return
 
         self._stored_layer_data = []
@@ -231,11 +232,11 @@ class CuraEngineBackend(QObject, Backend):
         self.processingProgress.emit(0.0)
         self.backendStateChange.emit(BackendState.NotStarted)
 
-        if not hasattr(self._scene, "gcode_list"):
-            self._scene.gcode_list = {}
-        self._scene.gcode_list[build_plate_to_be_sliced] = []  #[] indexed by build plate number
+        self._scene.gcode_dict[build_plate_to_be_sliced] = []  #[] indexed by build plate number
         self._slicing = True
         self.slicingStarted.emit()
+
+        self.determineAutoSlicing()  # Switch timer on or off if appropriate
 
         slice_message = self._socket.createMessage("cura.proto.Slice")
         self._start_slice_job = StartSliceJob.StartSliceJob(slice_message)
@@ -288,6 +289,7 @@ class CuraEngineBackend(QObject, Backend):
             self._start_slice_job = None
 
         if job.isCancelled() or job.getError() or job.getResult() == StartSliceJob.StartJobResult.Error:
+            self.backendStateChange.emit(BackendState.Error)
             return
 
         if job.getResult() == StartSliceJob.StartJobResult.MaterialIncompatible:
@@ -357,6 +359,17 @@ class CuraEngineBackend(QObject, Backend):
             else:
                 self.backendStateChange.emit(BackendState.NotStarted)
 
+        if job.getResult() == StartSliceJob.StartJobResult.NothingToSlice:
+            if Application.getInstance().platformActivity:
+                self._error_message = Message(catalog.i18nc("@info:status", "Nothing to slice because none of the models fit the build volume. Please scale or rotate models to fit."),
+                                              title = catalog.i18nc("@info:title", "Unable to slice"))
+                self._error_message.show()
+                self.backendStateChange.emit(BackendState.Error)
+            else:
+                self.backendStateChange.emit(BackendState.NotStarted)
+            self._invokeSlice()
+            return
+
         # Preparation completed, send it to the backend.
         self._socket.sendMessage(job.getSliceMessage())
 
@@ -380,7 +393,7 @@ class CuraEngineBackend(QObject, Backend):
                 self.backendStateChange.emit(BackendState.Disabled)
             gcode_list = node.callDecoration("getGCodeList")
             if gcode_list is not None:
-                self._scene.gcode_list[node.callDecoration("getBuildPlateNumber")] = gcode_list
+                self._scene.gcode_dict[node.callDecoration("getBuildPlateNumber")] = gcode_list
 
         if self._use_timer == enable_timer:
             return self._use_timer
@@ -408,8 +421,13 @@ class CuraEngineBackend(QObject, Backend):
     #
     #   \param source The scene node that was changed.
     def _onSceneChanged(self, source):
-        if not issubclass(type(source), SceneNode):
+        if not isinstance(source, SceneNode):
             return
+
+        # This case checks if the source node is a node that contains GCode. In this case the
+        # current layer data is removed so the previous data is not rendered - CURA-4821
+        if source.callDecoration("isBlockSlicing") and source.callDecoration("getLayerData"):
+            self._stored_optimized_layer_data = {}
 
         build_plate_changed = set()
         source_build_plate_number = source.callDecoration("getBuildPlateNumber")
@@ -445,6 +463,7 @@ class CuraEngineBackend(QObject, Backend):
         for build_plate_number in build_plate_changed:
             if build_plate_number not in self._build_plates_to_be_sliced:
                 self._build_plates_to_be_sliced.append(build_plate_number)
+            self.printDurationMessage.emit(source_build_plate_number, {}, [])
         self.processingProgress.emit(0.0)
         self.backendStateChange.emit(BackendState.NotStarted)
         # if not self._use_timer:
@@ -507,7 +526,7 @@ class CuraEngineBackend(QObject, Backend):
 
     def _onStackErrorCheckFinished(self):
         self._is_error_check_scheduled = False
-        if not self._slicing and self._build_plates_to_be_sliced:  #self._need_slicing:
+        if not self._slicing and self._build_plates_to_be_sliced:
             self.needsSlicing()
             self._onChanged()
 
@@ -521,6 +540,8 @@ class CuraEngineBackend(QObject, Backend):
     #
     #   \param message The protobuf message containing sliced layer data.
     def _onOptimizedLayerMessage(self, message):
+        if self._start_slice_job_build_plate not in self._stored_optimized_layer_data:
+            self._stored_optimized_layer_data[self._start_slice_job_build_plate] = []
         self._stored_optimized_layer_data[self._start_slice_job_build_plate].append(message)
 
     ##  Called when a progress message is received from the engine.
@@ -547,7 +568,7 @@ class CuraEngineBackend(QObject, Backend):
         self.backendStateChange.emit(BackendState.Done)
         self.processingProgress.emit(1.0)
 
-        gcode_list = self._scene.gcode_list[self._start_slice_job_build_plate]
+        gcode_list = self._scene.gcode_dict[self._start_slice_job_build_plate]
         for index, line in enumerate(gcode_list):
             replaced = line.replace("{print_time}", str(Application.getInstance().getPrintInformation().currentPrintTime.getDisplayString(DurationFormat.Format.ISO8601)))
             replaced = replaced.replace("{filament_amount}", str(Application.getInstance().getPrintInformation().materialLengths))
@@ -570,21 +591,23 @@ class CuraEngineBackend(QObject, Backend):
         Logger.log("d", "See if there is more to slice...")
         # Somehow this results in an Arcus Error
         # self.slice()
-        # Testing call slice again, allow backend to restart by using the timer
-        self._invokeSlice()
+        # Call slice again using the timer, allowing the backend to restart
+        if self._build_plates_to_be_sliced:
+            self.enableTimer()  # manually enable timer to be able to invoke slice, also when in manual slice mode
+            self._invokeSlice()
 
     ##  Called when a g-code message is received from the engine.
     #
     #   \param message The protobuf message containing g-code, encoded as UTF-8.
     def _onGCodeLayerMessage(self, message):
-        self._scene.gcode_list[self._start_slice_job_build_plate].append(message.data.decode("utf-8", "replace"))
+        self._scene.gcode_dict[self._start_slice_job_build_plate].append(message.data.decode("utf-8", "replace"))
 
     ##  Called when a g-code prefix message is received from the engine.
     #
     #   \param message The protobuf message containing the g-code prefix,
     #   encoded as UTF-8.
     def _onGCodePrefixMessage(self, message):
-        self._scene.gcode_list[self._start_slice_job_build_plate].insert(0, message.data.decode("utf-8", "replace"))
+        self._scene.gcode_dict[self._start_slice_job_build_plate].insert(0, message.data.decode("utf-8", "replace"))
 
     ##  Creates a new socket connection.
     def _createSocket(self):
@@ -704,7 +727,7 @@ class CuraEngineBackend(QObject, Backend):
         if self._global_container_stack:
             self._global_container_stack.propertyChanged.disconnect(self._onSettingChanged)
             self._global_container_stack.containersChanged.disconnect(self._onChanged)
-            extruders = list(ExtruderManager.getInstance().getMachineExtruders(self._global_container_stack.getId()))
+            extruders = list(self._global_container_stack.extruders.values())
 
             for extruder in extruders:
                 extruder.propertyChanged.disconnect(self._onSettingChanged)
@@ -715,7 +738,7 @@ class CuraEngineBackend(QObject, Backend):
         if self._global_container_stack:
             self._global_container_stack.propertyChanged.connect(self._onSettingChanged)  # Note: Only starts slicing when the value changed.
             self._global_container_stack.containersChanged.connect(self._onChanged)
-            extruders = list(ExtruderManager.getInstance().getMachineExtruders(self._global_container_stack.getId()))
+            extruders = list(self._global_container_stack.extruders.values())
             for extruder in extruders:
                 extruder.propertyChanged.connect(self._onSettingChanged)
                 extruder.containersChanged.connect(self._onChanged)

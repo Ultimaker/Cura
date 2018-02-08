@@ -13,7 +13,7 @@ class BuildPlateDecorator(SceneNodeDecorator):
         # Make sure that groups are set correctly
         # setBuildPlateForSelection in CuraActions makes sure that no single childs are set.
         self._build_plate_number = nr
-        if issubclass(type(self._node), CuraSceneNode):
+        if isinstance(self._node, CuraSceneNode):
             self._node.transformChanged()  # trigger refresh node without introducing a new signal
         if self._node and self._node.callDecoration("isGroup"):
             for child in self._node.getChildren():

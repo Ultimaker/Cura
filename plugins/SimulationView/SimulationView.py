@@ -1,4 +1,4 @@
-# Copyright (c) 2017 Ultimaker B.V.
+# Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import sys
@@ -98,13 +98,16 @@ class SimulationView(View):
 
         self._solid_layers = int(Preferences.getInstance().getValue("view/top_layer_count"))
         self._only_show_top_layers = bool(Preferences.getInstance().getValue("view/only_show_top_layers"))
-        self._compatibility_mode = True  # for safety
+        self._compatibility_mode = self._evaluateCompatibilityMode()
 
         self._wireprint_warning_message = Message(catalog.i18nc("@info:status", "Cura does not accurately display layers when Wire Printing is enabled"),
                                                   title = catalog.i18nc("@info:title", "Simulation View"))
 
+    def _evaluateCompatibilityMode(self):
+        return OpenGLContext.isLegacyOpenGL() or bool(Preferences.getInstance().getValue("view/force_layer_view_compatibility_mode"))
+
     def _resetSettings(self):
-        self._layer_view_type = 0  # 0 is material color, 1 is color by linetype, 2 is speed
+        self._layer_view_type = 0  # 0 is material color, 1 is color by linetype, 2 is speed, 3 is layer thickness
         self._extruder_count = 0
         self._extruder_opacity = [1.0, 1.0, 1.0, 1.0]
         self._show_travel_moves = 0
@@ -127,7 +130,7 @@ class SimulationView(View):
             # Currently the RenderPass constructor requires a size > 0
             # This should be fixed in RenderPass's constructor.
             self._layer_pass = SimulationPass(1, 1)
-            self._compatibility_mode = OpenGLContext.isLegacyOpenGL() or bool(Preferences.getInstance().getValue("view/force_layer_view_compatibility_mode"))
+            self._compatibility_mode = self._evaluateCompatibilityMode()
             self._layer_pass.setSimulationView(self)
         return self._layer_pass
 
@@ -344,7 +347,12 @@ class SimulationView(View):
                     self._max_feedrate = max(float(p.lineFeedrates.max()), self._max_feedrate)
                     self._min_feedrate = min(float(p.lineFeedrates.min()), self._min_feedrate)
                     self._max_thickness = max(float(p.lineThicknesses.max()), self._max_thickness)
-                    self._min_thickness = min(float(p.lineThicknesses.min()), self._min_thickness)
+                    try:
+                        self._min_thickness = min(float(p.lineThicknesses[numpy.nonzero(p.lineThicknesses)].min()), self._min_thickness)
+                    except:
+                        # Sometimes, when importing a GCode the line thicknesses are zero and so the minimum (avoiding
+                        # the zero) can't be calculated
+                        Logger.log("i", "Min thickness can't be calculated because all the values are zero")
                 if max_layer_number < layer_id:
                     max_layer_number = layer_id
                 if min_layer_number > layer_id:
@@ -529,8 +537,7 @@ class SimulationView(View):
     def _updateWithPreferences(self):
         self._solid_layers = int(Preferences.getInstance().getValue("view/top_layer_count"))
         self._only_show_top_layers = bool(Preferences.getInstance().getValue("view/only_show_top_layers"))
-        self._compatibility_mode = OpenGLContext.isLegacyOpenGL() or bool(
-            Preferences.getInstance().getValue("view/force_layer_view_compatibility_mode"))
+        self._compatibility_mode = self._evaluateCompatibilityMode()
 
         self.setSimulationViewType(int(float(Preferences.getInstance().getValue("layerview/layer_view_type"))));
 

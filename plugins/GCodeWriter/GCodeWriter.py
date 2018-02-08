@@ -61,8 +61,11 @@ class GCodeWriter(MeshWriter):
 
         active_build_plate = Application.getInstance().getBuildPlateModel().activeBuildPlate
         scene = Application.getInstance().getController().getScene()
-        gcode_list = getattr(scene, "gcode_list")[active_build_plate]
-        if gcode_list:
+        gcode_dict = getattr(scene, "gcode_dict")
+        if not gcode_dict:
+            return False
+        gcode_list = gcode_dict.get(active_build_plate, None)
+        if gcode_list is not None:
             for gcode in gcode_list:
                 stream.write(gcode)
             # Serialise the current container stack and put it at the end of the file.
@@ -104,7 +107,7 @@ class GCodeWriter(MeshWriter):
         prefix_length = len(prefix)
 
         container_with_profile = stack.qualityChanges
-        if not container_with_profile:
+        if container_with_profile.getId() == "empty_quality_changes":
             Logger.log("e", "No valid quality profile found, not writing settings to GCode!")
             return ""
 
@@ -120,9 +123,9 @@ class GCodeWriter(MeshWriter):
         serialized = flat_global_container.serialize()
         data = {"global_quality": serialized}
 
-        for extruder in sorted(ExtruderManager.getInstance().getMachineExtruders(stack.getId()), key = lambda k: k.getMetaDataEntry("position")):
+        for extruder in sorted(stack.extruders.values(), key = lambda k: k.getMetaDataEntry("position")):
             extruder_quality = extruder.qualityChanges
-            if not extruder_quality:
+            if extruder_quality.getId() == "empty_quality_changes":
                 Logger.log("w", "No extruder quality profile found, not writing quality for extruder %s to file!", extruder.getId())
                 continue
             flat_extruder_quality = self._createFlattenedContainerInstance(extruder.getTop(), extruder_quality)

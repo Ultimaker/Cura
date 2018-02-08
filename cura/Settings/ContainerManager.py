@@ -3,7 +3,7 @@
 
 import copy
 import os.path
-import urllib
+import urllib.parse
 import uuid
 from typing import Any, Dict, List, Union
 
@@ -459,7 +459,7 @@ class ContainerManager(QObject):
     #   \return \type{Dict} dict with a 'status' key containing the string 'success' or 'error', and a 'message' key
     #       containing a message for the user
     @pyqtSlot(QUrl, result = "QVariantMap")
-    def importContainer(self, file_url_or_string: Union[QUrl, str]) -> Dict[str, str]:
+    def importMaterialContainer(self, file_url_or_string: Union[QUrl, str]) -> Dict[str, str]:
         if not file_url_or_string:
             return { "status": "error", "message": "Invalid path"}
 
@@ -486,12 +486,14 @@ class ContainerManager(QObject):
         container = container_type(container_id)
 
         try:
-            with open(file_url, "rt") as f:
+            with open(file_url, "rt", encoding = "utf-8") as f:
                 container.deserialize(f.read())
         except PermissionError:
             return { "status": "error", "message": "Permission denied when trying to read the file"}
+        except Exception as ex:
+            return {"status": "error", "message": str(ex)}
 
-        container.setName(container_id)
+        container.setDirty(True)
 
         self._container_registry.addContainer(container)
 
@@ -815,6 +817,22 @@ class ContainerManager(QObject):
             container_to_add.setDirty(True)
             ContainerRegistry.getInstance().addContainer(container_to_add)
         return self._getMaterialContainerIdForActiveMachine(clone_of_original)
+
+    ##  Create a duplicate of a material or it's original entry
+    #
+    #   \return \type{str} the id of the newly created container.
+    @pyqtSlot(str, result = str)
+    def duplicateOriginalMaterial(self, material_id):
+
+        # check if the given material has a base file (i.e. was shipped by default)
+        base_file = self.getContainerMetaDataEntry(material_id, "base_file")
+
+        if base_file == "":
+            # there is no base file, so duplicate by ID
+            return self.duplicateMaterial(material_id)
+        else:
+            # there is a base file, so duplicate the original material
+            return self.duplicateMaterial(base_file)
 
     ##  Create a new material by cloning Generic PLA for the current material diameter and setting the GUID to something unqiue
     #

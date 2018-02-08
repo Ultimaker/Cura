@@ -16,6 +16,12 @@ parser.add_argument('--debug',
                     default = False,
                     help = "Turn on the debug mode by setting this option."
                     )
+parser.add_argument('--trigger-early-crash',
+                    dest = 'trigger_early_crash',
+                    action = 'store_true',
+                    default = False,
+                    help = "FOR TESTING ONLY. Trigger an early crash to show the crash dialog."
+                    )
 known_args = vars(parser.parse_known_args()[0])
 
 if not known_args["debug"]:
@@ -26,12 +32,12 @@ if not known_args["debug"]:
             return os.path.expanduser("~/.local/share/cura")
         elif Platform.isOSX():
             return os.path.expanduser("~/Library/Logs/cura")
-    
+
     if hasattr(sys, "frozen"):
         dirpath = get_cura_dir_path()
         os.makedirs(dirpath, exist_ok = True)
-        sys.stdout = open(os.path.join(dirpath, "stdout.log"), "w")
-        sys.stderr = open(os.path.join(dirpath, "stderr.log"), "w")
+        sys.stdout = open(os.path.join(dirpath, "stdout.log"), "w", encoding = "utf-8")
+        sys.stderr = open(os.path.join(dirpath, "stderr.log"), "w", encoding = "utf-8")
 
 import platform
 import faulthandler
@@ -40,11 +46,11 @@ import faulthandler
 if Platform.isLinux(): # Needed for platform.linux_distribution, which is not available on Windows and OSX
     # For Ubuntu: https://bugs.launchpad.net/ubuntu/+source/python-qt4/+bug/941826
     linux_distro_name = platform.linux_distribution()[0].lower()
-    if linux_distro_name in ("debian", "ubuntu", "linuxmint", "fedora"): # TODO: Needs a "if X11_GFX == 'nvidia'" here. The workaround is only needed on Ubuntu+NVidia drivers. Other drivers are not affected, but fine with this fix.
-        import ctypes
-        from ctypes.util import find_library
-        libGL = find_library("GL")
-        ctypes.CDLL(libGL, ctypes.RTLD_GLOBAL)
+    # TODO: Needs a "if X11_GFX == 'nvidia'" here. The workaround is only needed on Ubuntu+NVidia drivers. Other drivers are not affected, but fine with this fix.
+    import ctypes
+    from ctypes.util import find_library
+    libGL = find_library("GL")
+    ctypes.CDLL(libGL, ctypes.RTLD_GLOBAL)
 
 # When frozen, i.e. installer version, don't let PYTHONPATH mess up the search path for DLLs.
 if Platform.isWindows() and hasattr(sys, "frozen"):
@@ -71,8 +77,45 @@ if "PYTHONPATH" in os.environ.keys():                       # If PYTHONPATH is u
 
 def exceptHook(hook_type, value, traceback):
     from cura.CrashHandler import CrashHandler
-    _crash_handler = CrashHandler(hook_type, value, traceback)
-    _crash_handler.show()
+    from cura.CuraApplication import CuraApplication
+    has_started = False
+    if CuraApplication.Created:
+        has_started = CuraApplication.getInstance().started
+
+    #
+    # When the exception hook is triggered, the QApplication may not have been initialized yet. In this case, we don't
+    # have an QApplication to handle the event loop, which is required by the Crash Dialog.
+    # The flag "CuraApplication.Created" is set to True when CuraApplication finishes its constructor call.
+    #
+    # Before the "started" flag is set to True, the Qt event loop has not started yet. The event loop is a blocking
+    # call to the QApplication.exec_(). In this case, we need to:
+    #   1. Remove all scheduled events so no more unnecessary events will be processed, such as loading the main dialog,
+    #      loading the machine, etc.
+    #   2. Start the Qt event loop with exec_() and show the Crash Dialog.
+    #
+    # If the application has finished its initialization and was running fine, and then something causes a crash,
+    # we run the old routine to show the Crash Dialog.
+    #
+    from PyQt5.Qt import QApplication
+    if CuraApplication.Created:
+        _crash_handler = CrashHandler(hook_type, value, traceback, has_started)
+        if CuraApplication.splash is not None:
+            CuraApplication.splash.close()
+        if not has_started:
+            CuraApplication.getInstance().removePostedEvents(None)
+            _crash_handler.early_crash_dialog.show()
+            sys.exit(CuraApplication.getInstance().exec_())
+        else:
+            _crash_handler.show()
+    else:
+        application = QApplication(sys.argv)
+        application.removePostedEvents(None)
+        _crash_handler = CrashHandler(hook_type, value, traceback, has_started)
+        # This means the QtApplication could be created and so the splash screen. Then Cura closes it
+        if CuraApplication.splash is not None:
+            CuraApplication.splash.close()
+        _crash_handler.early_crash_dialog.show()
+        sys.exit(application.exec_())
 
 if not known_args["debug"]:
     sys.excepthook = exceptHook

@@ -1,4 +1,4 @@
-# Copyright (c) 2017 Ultimaker B.V.
+# Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from PyQt5.QtCore import QObject, pyqtSignal, pyqtProperty
@@ -8,9 +8,12 @@ from UM.Application import Application
 from UM.Logger import Logger
 from UM.Qt.Duration import Duration
 from UM.Preferences import Preferences
+from UM.Scene.SceneNode import SceneNode
 from UM.Settings.ContainerRegistry import ContainerRegistry
+from cura.Scene.CuraSceneNode import CuraSceneNode
 
 from cura.Settings.ExtruderManager import ExtruderManager
+from typing import Dict
 
 import math
 import os.path
@@ -64,6 +67,7 @@ class PrintInformation(QObject):
         self._backend = Application.getInstance().getBackend()
         if self._backend:
             self._backend.printDurationMessage.connect(self._onPrintDurationMessage)
+        Application.getInstance().getController().getScene().sceneChanged.connect(self._onSceneChanged)
 
         self._base_name = ""
         self._abbr_machine = ""
@@ -105,7 +109,6 @@ class PrintInformation(QObject):
         }
 
         self._print_time_message_values = {}
-
 
     def _initPrintTimeMessageValues(self, build_plate_number):
         # Full fill message values using keys from _print_time_message_translations
@@ -170,14 +173,14 @@ class PrintInformation(QObject):
     def printTimes(self):
         return self._print_time_message_values[self._active_build_plate]
 
-    def _onPrintDurationMessage(self, build_plate_number, print_time, material_amounts):
+    def _onPrintDurationMessage(self, build_plate_number, print_time: Dict[str, int], material_amounts: list):
         self._updateTotalPrintTimePerFeature(build_plate_number, print_time)
         self.currentPrintTimeChanged.emit()
 
         self._material_amounts = material_amounts
         self._calculateInformation(build_plate_number)
 
-    def _updateTotalPrintTimePerFeature(self, build_plate_number, print_time):
+    def _updateTotalPrintTimePerFeature(self, build_plate_number, print_time: Dict[str, int]):
         total_estimated_time = 0
 
         if build_plate_number not in self._print_time_message_values:
@@ -358,10 +361,10 @@ class PrintInformation(QObject):
         if not global_container_stack:
             self._abbr_machine = ""
             return
+        active_machine_type_id = global_container_stack.definition.getId()
 
-        global_stack_name = global_container_stack.getName()
         abbr_machine = ""
-        for word in re.findall(r"[\w']+", global_stack_name):
+        for word in re.findall(r"[\w']+", active_machine_type_id):
             if word.lower() == "ultimaker":
                 abbr_machine += "UM"
             elif word.isdigit():
@@ -393,12 +396,25 @@ class PrintInformation(QObject):
         return result
 
     # Simulate message with zero time duration
-    def setToZeroPrintInformation(self, build_plate_number):
-        temp_message = {}
-        if build_plate_number not in self._print_time_message_values:
-            self._print_time_message_values[build_plate_number] = {}
-        for key in self._print_time_message_values[build_plate_number].keys():
-            temp_message[key] = 0
+    def setToZeroPrintInformation(self, build_plate):
 
+        # Construct the 0-time message
+        temp_message = {}
+        if build_plate not in self._print_time_message_values:
+            self._print_time_message_values[build_plate] = {}
+        for key in self._print_time_message_values[build_plate].keys():
+            temp_message[key] = 0
         temp_material_amounts = [0]
-        self._onPrintDurationMessage(build_plate_number, temp_message, temp_material_amounts)
+
+        self._onPrintDurationMessage(build_plate, temp_message, temp_material_amounts)
+
+    ##  Listen to scene changes to check if we need to reset the print information
+    def _onSceneChanged(self, scene_node):
+
+        # Ignore any changes that are not related to sliceable objects
+        if not isinstance(scene_node, SceneNode)\
+                or not scene_node.callDecoration("isSliceable")\
+                or not scene_node.callDecoration("getBuildPlateNumber") == self._active_build_plate:
+            return
+
+        self.setToZeroPrintInformation(self._active_build_plate)

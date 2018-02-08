@@ -10,9 +10,12 @@ from UM.Application import Application
 from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 from UM.Scene.SceneNode import SceneNode
 from UM.Scene.Selection import Selection
+from UM.Signal import Signal
 
 
 class CuraSceneController(QObject):
+    activeBuildPlateChanged = Signal()
+
     def __init__(self, objects_model: ObjectsModel, build_plate_model: BuildPlateModel):
         super().__init__()
 
@@ -30,7 +33,7 @@ class CuraSceneController(QObject):
             source = args[0]
         else:
             source = None
-        if not issubclass(type(source), SceneNode):
+        if not isinstance(source, SceneNode):
             return
         max_build_plate = self._calcMaxBuildPlate()
         changed = False
@@ -41,6 +44,14 @@ class CuraSceneController(QObject):
             self._build_plate_model.setMaxBuildPlate(self._max_build_plate)
             build_plates = [{"name": "Build Plate %d" % (i + 1), "buildPlateNumber": i} for i in range(self._max_build_plate + 1)]
             self._build_plate_model.setItems(build_plates)
+            if self._active_build_plate > self._max_build_plate:
+                build_plate_number = 0
+                if self._last_selected_index >= 0:  # go to the buildplate of the item you last selected
+                    item = self._objects_model.getItem(self._last_selected_index)
+                    if "node" in item:
+                        node = item["node"]
+                        build_plate_number = node.callDecoration("getBuildPlateNumber")
+                self.setActiveBuildPlate(build_plate_number)
             # self.buildPlateItemsChanged.emit()  # TODO: necessary after setItems?
 
     def _calcMaxBuildPlate(self):
@@ -48,6 +59,8 @@ class CuraSceneController(QObject):
         for node in DepthFirstIterator(Application.getInstance().getController().getScene().getRoot()):
             if node.callDecoration("isSliceable"):
                 build_plate_number = node.callDecoration("getBuildPlateNumber")
+                if build_plate_number is None:
+                    build_plate_number = 0
                 max_build_plate = max(build_plate_number, max_build_plate)
         return max_build_plate
 
@@ -75,11 +88,11 @@ class CuraSceneController(QObject):
             # Single select
             item = self._objects_model.getItem(index)
             node = item["node"]
-            Selection.clear()
-            Selection.add(node)
             build_plate_number = node.callDecoration("getBuildPlateNumber")
             if build_plate_number is not None and build_plate_number != -1:
-                self._build_plate_model.setActiveBuildPlate(build_plate_number)
+                self.setActiveBuildPlate(build_plate_number)
+            Selection.clear()
+            Selection.add(node)
 
         self._last_selected_index = index
 
@@ -93,6 +106,7 @@ class CuraSceneController(QObject):
 
         self._build_plate_model.setActiveBuildPlate(nr)
         self._objects_model.setActiveBuildPlate(nr)
+        self.activeBuildPlateChanged.emit()
 
     @staticmethod
     def createCuraSceneController():

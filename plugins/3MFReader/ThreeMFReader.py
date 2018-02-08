@@ -1,4 +1,4 @@
-# Copyright (c) 2015 Ultimaker B.V.
+# Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import os.path
@@ -37,10 +37,6 @@ class ThreeMFReader(MeshReader):
         super().__init__()
         self._supported_extensions = [".3mf"]
         self._root = None
-        self._namespaces = {
-            "3mf": "http://schemas.microsoft.com/3dmanufacturing/core/2015/02",
-            "cura": "http://software.ultimaker.com/xml/cura/3mf/2015/10"
-        }
         self._base_name = ""
         self._unit = None
         self._object_count = 0  # Used to name objects as there is no node name yet.
@@ -81,8 +77,10 @@ class ThreeMFReader(MeshReader):
         self._object_count += 1
         node_name = "Object %s" % self._object_count
 
+        active_build_plate = Application.getInstance().getBuildPlateModel().activeBuildPlate
+
         um_node = CuraSceneNode()
-        um_node.addDecorator(BuildPlateDecorator(0))
+        um_node.addDecorator(BuildPlateDecorator(active_build_plate))
         um_node.setName(node_name)
         transformation = self._createMatrixFromTransformationString(savitar_node.getTransformation())
         um_node.setTransformation(transformation)

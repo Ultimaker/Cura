@@ -204,6 +204,7 @@ UM.MainWindow
                     onObjectRemoved: settingsMenu.removeItem(object)
                 }
 
+                BuildplateMenu { title: catalog.i18nc("@title:menu", "&Build plate"); visible: Cura.MachineManager.hasVariantBuildplates }
                 NozzleMenu { title: Cura.MachineManager.activeDefinitionVariantsName; visible: machineExtruderCount.properties.value <= 1 && Cura.MachineManager.hasVariants }
                 MaterialMenu { title: catalog.i18nc("@title:menu", "&Material"); visible: machineExtruderCount.properties.value <= 1 && Cura.MachineManager.hasMaterials }
                 ProfileMenu { title: catalog.i18nc("@title:menu", "&Profile"); visible: machineExtruderCount.properties.value <= 1 }
@@ -397,6 +398,29 @@ UM.MainWindow
 
             Loader
             {
+                id: main
+
+                anchors
+                {
+                    top: topbar.bottom
+                    bottom: parent.bottom
+                    left: parent.left
+                    right: sidebar.left
+                }
+
+                MouseArea
+                {
+                    visible: UM.Controller.activeStage.mainComponent != ""
+                    anchors.fill: parent
+                    acceptedButtons: Qt.AllButtons
+                    onWheel: wheel.accepted = true
+                }
+
+                source: UM.Controller.activeStage.mainComponent
+            }
+
+            Loader
+            {
                 id: sidebar
 
                 property bool collapsed: false;
@@ -453,29 +477,6 @@ UM.MainWindow
                         collapseSidebarAnimation.start();
                     }
                 }
-            }
-
-            Loader
-            {
-                id: main
-
-                anchors
-                {
-                    top: topbar.bottom
-                    bottom: parent.bottom
-                    left: parent.left
-                    right: sidebar.left
-                }
-
-                MouseArea
-                {
-                    visible: UM.Controller.activeStage.mainComponent != ""
-                    anchors.fill: parent
-                    acceptedButtons: Qt.AllButtons
-                    onWheel: wheel.accepted = true
-                }
-
-                source: UM.Controller.activeStage.mainComponent
             }
 
             UM.MessageStack

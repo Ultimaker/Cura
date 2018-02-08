@@ -34,14 +34,14 @@ Menu
         id: automaticNozzle
         text:
         {
-            if(printerConnected && Cura.MachineManager.printerOutputDevices[0].hotendIds.length > extruderIndex && !isClusterPrinter)
+            if(visible)
             {
                 var nozzleName = Cura.MachineManager.printerOutputDevices[0].hotendIds[extruderIndex];
                 return catalog.i18nc("@title:menuitem %1 is the nozzle currently loaded in the printer", "Automatic: %1").arg(nozzleName);
             }
             return "";
         }
-        visible: printerConnected && Cura.MachineManager.printerOutputDevices[0].hotendIds.length > extruderIndex && !isClusterPrinter
+        visible: printerConnected && Cura.MachineManager.printerOutputDevices[0].hotendIds != undefined && Cura.MachineManager.printerOutputDevices[0].hotendIds.length > extruderIndex && !isClusterPrinter
         onTriggered:
         {
             var activeExtruderIndex = Cura.ExtruderManager.activeExtruderIndex;
@@ -68,8 +68,17 @@ Menu
         {
             filter:
             {
-                "type": "variant",
-                "definition": Cura.MachineManager.activeQualityDefinitionId //Only show variants of this machine
+                var filter_dict =
+                {
+                    "type": "variant",
+                    "definition": Cura.MachineManager.activeQualityDefinitionId //Only show variants of this machine
+                }
+                if (Cura.MachineManager.hasVariantBuildplates)
+                {
+                    filter_dict["hardware_type"] = "nozzle"
+                }
+
+                return filter_dict
             }
         }
         MenuItem {

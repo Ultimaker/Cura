@@ -28,6 +28,7 @@ class SolidView(View):
         self._enabled_shader = None
         self._disabled_shader = None
         self._non_printing_shader = None
+        self._support_mesh_shader = None
 
         self._extruders_model = ExtrudersModel()
         self._theme = None
@@ -53,6 +54,11 @@ class SolidView(View):
             self._non_printing_shader = OpenGL.getInstance().createShaderProgram(Resources.getPath(Resources.Shaders, "transparent_object.shader"))
             self._non_printing_shader.setUniformValue("u_diffuseColor", Color(*self._theme.getColor("model_non_printing").getRgb()))
             self._non_printing_shader.setUniformValue("u_opacity", 0.6)
+
+        if not self._support_mesh_shader:
+            self._support_mesh_shader = OpenGL.getInstance().createShaderProgram(Resources.getPath(Resources.Shaders, "striped.shader"))
+            self._support_mesh_shader.setUniformValue("u_vertical_stripes", True)
+            self._support_mesh_shader.setUniformValue("u_width", 5.0)
 
         global_container_stack = Application.getInstance().getGlobalContainerStack()
         if global_container_stack:
@@ -117,6 +123,16 @@ class SolidView(View):
                             renderer.queueNode(node, shader = self._non_printing_shader, transparent = True)
                     elif getattr(node, "_outside_buildarea", False):
                         renderer.queueNode(node, shader = self._disabled_shader)
+                    elif per_mesh_stack and per_mesh_stack.getProperty("support_mesh", "value"):
+                        # Render support meshes with a vertical stripe that is darker
+                        shade_factor = 0.6
+                        uniforms["diffuse_color_2"] = [
+                            uniforms["diffuse_color"][0] * shade_factor,
+                            uniforms["diffuse_color"][1] * shade_factor,
+                            uniforms["diffuse_color"][2] * shade_factor,
+                            1.0
+                        ]
+                        renderer.queueNode(node, shader = self._support_mesh_shader, uniforms = uniforms)
                     else:
                         renderer.queueNode(node, shader = self._enabled_shader, uniforms = uniforms)
                 if node.callDecoration("isGroup") and Selection.isSelected(node):

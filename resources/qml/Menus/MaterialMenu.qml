@@ -44,14 +44,14 @@ Menu
         id: automaticMaterial
         text:
         {
-            if(printerConnected && Cura.MachineManager.printerOutputDevices[0].materialNames.length > extruderIndex && !isClusterPrinter)
+            if(visible)
             {
                 var materialName = Cura.MachineManager.printerOutputDevices[0].materialNames[extruderIndex];
                 return catalog.i18nc("@title:menuitem %1 is the automatically selected material", "Automatic: %1").arg(materialName);
             }
             return "";
         }
-        visible: printerConnected && Cura.MachineManager.printerOutputDevices[0].materialNames.length > extruderIndex && !isClusterPrinter
+        visible: printerConnected && Cura.MachineManager.printerOutputDevices[0].materialNames != undefined && Cura.MachineManager.printerOutputDevices[0].materialNames.length > extruderIndex && !isClusterPrinter
         onTriggered:
         {
             var materialId = Cura.MachineManager.printerOutputDevices[0].materialIds[extruderIndex];
