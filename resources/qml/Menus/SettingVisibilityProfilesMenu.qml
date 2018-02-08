@@ -16,7 +16,7 @@ Menu
     property bool showingAllSettings
 
     signal showAllSettings()
-    signal showSettingVisibilityProfile()
+    signal showSettingVisibilityProfile(string profileName)
 
     MenuItem
     {
@@ -27,19 +27,56 @@ Menu
         exclusiveGroup: group
     }
     MenuSeparator { visible: showingSearchResults }
+
     MenuItem
     {
-        text: catalog.i18nc("@action:inmenu", "Normal Set")
+        text: catalog.i18nc("@action:inmenu", "Custom selection")
         checkable: true
         checked: !showingSearchResults && !showingAllSettings
         exclusiveGroup: group
-        onTriggered: showSettingVisibilityProfile()
+        onTriggered: showSettingVisibilityProfile("Custom")
     }
-    MenuSeparator {}
+    MenuSeparator { }
+
+    Instantiator
+    {
+        model: ListModel
+        {
+            id: presetNamesList
+            Component.onCompleted:
+            {
+                // returned value is Dictionary  (Ex: {1:"Basic"}, The number 1 is the weight and sort by weight)
+                var itemsDict = UM.Preferences.getValue("general/visible_settings_preset")
+                var sorted = [];
+                for(var key in itemsDict) {
+                    sorted[sorted.length] = key;
+                }
+                sorted.sort();
+                for(var i = 0; i < sorted.length; i++) {
+                    presetNamesList.append({text: itemsDict[sorted[i]], value: i});
+                }
+            }
+        }
+
+        MenuItem
+        {
+            text: model.text
+            checkable: true
+            checked: false
+            exclusiveGroup: group
+            onTriggered: showSettingVisibilityProfile(model.text)
+        }
+
+        onObjectAdded: menu.insertItem(index, object)
+        onObjectRemoved: menu.removeItem(object)
+    }
+
+    MenuSeparator { visible: false }
     MenuItem
     {
         text: catalog.i18nc("@action:inmenu", "Changed settings")
-        enabled: false
+        visible: false
+        enabled: true
         checkable: true
         checked: showingAllSettings
         exclusiveGroup: group
@@ -48,7 +85,8 @@ Menu
     MenuItem
     {
         text: catalog.i18nc("@action:inmenu", "Settings in profile")
-        enabled: false
+        visible: false
+        enabled: true
         checkable: true
         checked: showingAllSettings
         exclusiveGroup: group
@@ -66,7 +104,7 @@ Menu
     MenuSeparator {}
     MenuItem
     {
-        text: catalog.i18nc("@action:inmenu", "Manage Visibility Profiles...")
+        text: catalog.i18nc("@action:inmenu", "Manage Setting Visibility...")
         iconName: "configure"
         onTriggered: Cura.Actions.configureSettingVisibility.trigger()
     }

@@ -151,6 +151,10 @@ Item
             }
             onShowSettingVisibilityProfile:
             {
+                var newVisibleSettings = CuraApplication.getVisibilitySettingPreset(profileName)
+                UM.Preferences.setValue("general/visible_settings", newVisibleSettings)
+                UM.Preferences.setValue("general/preset_setting_visibility_choice", profileName)
+
                 base.showingAllSettings = false;
                 base.findingSettings = false;
                 filter.text = "";
@@ -243,7 +247,10 @@ Item
                 }
                 else
                 {
-                    definitionsModel.expanded = expandedCategories;
+                    if(expandedCategories)
+                    {
+                        definitionsModel.expanded = expandedCategories;
+                    }
                     definitionsModel.showAncestors = false;
                     definitionsModel.showAll = false;
                 }
