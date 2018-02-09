@@ -20,16 +20,6 @@ Menu
 
     MenuItem
     {
-        text: catalog.i18nc("@action:inmenu", "Search Results")
-        checkable: true
-        visible: showingSearchResults
-        checked: showingSearchResults
-        exclusiveGroup: group
-    }
-    MenuSeparator { visible: showingSearchResults }
-
-    MenuItem
-    {
         text: catalog.i18nc("@action:inmenu", "Custom selection")
         checkable: true
         checked: !showingSearchResults && !showingAllSettings && Cura.SettingVisibilityPresetsModel.activePreset == "custom"
