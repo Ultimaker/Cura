@@ -125,28 +125,45 @@ UM.PreferencesPage
                 right: parent.right
             }
 
-            model: Cura.SettingVisibilityPresetsModel
-            textRole: "name"
+            model: ListModel
+            {
+                id: visibilityPresetsModel
+                Component.onCompleted:
+                {
+                    visibilityPresetsModel.append({text: catalog.i18nc("@action:inmenu", "Custom selection"), id: "custom"});
+
+                    var presets = Cura.SettingVisibilityPresetsModel;
+                    for(var i = 0; i < presets.rowCount(); i++)
+                    {
+                        visibilityPresetsModel.append({text: presets.getItem(i)["name"], id: presets.getItem(i)["id"]});
+                    }
+                }
+            }
 
             currentIndex:
             {
                 // Load previously selected preset.
-                var index = model.find("id", model.activePreset);
+                var index = Cura.SettingVisibilityPresetsModel.find("id", Cura.SettingVisibilityPresetsModel.activePreset);
                 if(index == -1)
                 {
-                    index = 0;
+                    return 0;
                 }
 
-                return index;
+                return index + 1; // "Custom selection" entry is added in front, so index is off by 1
             }
 
             onActivated:
             {
                 base.inhibitSwitchToCustom = true;
-                model.setActivePreset(model.getItem(index).id);
+                var preset_id = visibilityPresetsModel.get(index).id;
+                Cura.SettingVisibilityPresetsModel.setActivePreset(preset_id);
 
-                UM.Preferences.setValue("general/visible_settings", model.getItem(index).settings.join(";"));
-                UM.Preferences.setValue("cura/active_setting_visibility_preset", model.getItem(index).id);
+                UM.Preferences.setValue("cura/active_setting_visibility_preset", preset_id);
+                if (preset_id != "custom")
+                {
+                    UM.Preferences.setValue("general/visible_settings", Cura.SettingVisibilityPresetsModel.getItem(index - 1).settings.join(";"));
+                    // "Custom selection" entry is added in front, so index is off by 1
+                }
                 base.inhibitSwitchToCustom = false;
             }
         }
