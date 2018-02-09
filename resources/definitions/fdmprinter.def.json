@@ -163,7 +163,7 @@
                     "options":
                     {
                         "glass": "Glass",
-                        "aluminium": "Aluminium"
+                        "aluminum": "Aluminum"
                     },
                     "settable_per_mesh": false,
                     "settable_per_extruder": false,
