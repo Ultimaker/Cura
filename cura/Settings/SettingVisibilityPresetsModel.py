@@ -9,7 +9,7 @@ from PyQt5.QtCore import pyqtProperty, Qt, pyqtSignal, pyqtSlot, QUrl
 
 from UM.Logger import Logger
 from UM.Qt.ListModel import ListModel
-
+from UM.Preferences import Preferences
 from UM.Resources import Resources
 from UM.MimeTypeDatabase import MimeTypeDatabase, MimeTypeNotFoundError
 
@@ -27,10 +27,17 @@ class SettingVisibilityPresetsModel(ListModel):
         self.addRoleName(self.NameRole, "name")
         self.addRoleName(self.SettingsRole, "settings")
 
-        self._container_ids = []
-        self._containers = []
-
         self._populate()
+
+        preferences = Preferences.getInstance()
+        preferences.addPreference("cura/active_setting_visibility_preset", "custom")
+
+        self._active_preset = Preferences.getInstance().getValue("cura/active_setting_visibility_preset")
+        if self.find("id", self._active_preset) < 0:
+            self._active_preset = "custom"
+
+        self.activePresetChanged.emit()
+
 
     def _populate(self):
         items = []
@@ -76,6 +83,23 @@ class SettingVisibilityPresetsModel(ListModel):
 
         items.sort(key = lambda k: (k["weight"], k["id"]))
         self.setItems(items)
+
+    @pyqtSlot(str)
+    def setActivePreset(self, preset_id):
+        if preset_id != "custom" and self.find("id", preset_id) == -1:
+            Logger.log("w", "Tried to set active preset to unknown id %s", preset_id)
+            return
+
+        Preferences.getInstance().setValue("cura/active_setting_visibility_preset", preset_id);
+
+        self._active_preset = preset_id
+        self.activePresetChanged.emit()
+
+    activePresetChanged = pyqtSignal()
+
+    @pyqtProperty(str, notify = activePresetChanged)
+    def activePreset(self):
+        return self._active_preset
 
     # Factory function, used by QML
     @staticmethod

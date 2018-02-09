@@ -32,9 +32,13 @@ Menu
     {
         text: catalog.i18nc("@action:inmenu", "Custom selection")
         checkable: true
-        checked: !showingSearchResults && !showingAllSettings
+        checked: !showingSearchResults && !showingAllSettings && Cura.SettingVisibilityPresetsModel.activePreset == "custom"
         exclusiveGroup: group
-        onTriggered: showSettingVisibilityProfile("Custom")
+        onTriggered:
+        {
+            Cura.SettingVisibilityPresetsModel.setActivePreset("custom");
+            showSettingVisibilityProfile();
+        }
     }
     MenuSeparator { }
 
@@ -46,12 +50,13 @@ Menu
         {
             text: model.name
             checkable: true
-            checked: false
+            checked: model.id == Cura.SettingVisibilityPresetsModel.activePreset
             exclusiveGroup: group
             onTriggered:
             {
+                Cura.SettingVisibilityPresetsModel.setActivePreset(model.id);
+
                 UM.Preferences.setValue("general/visible_settings", model.settings.join(";"));
-                UM.Preferences.setValue("general/preset_setting_visibility_choice", model.id);
 
                 showSettingVisibilityProfile();
             }
@@ -61,27 +66,6 @@ Menu
         onObjectRemoved: menu.removeItem(object)
     }
 
-    MenuSeparator { visible: false }
-    MenuItem
-    {
-        text: catalog.i18nc("@action:inmenu", "Changed settings")
-        visible: false
-        enabled: true
-        checkable: true
-        checked: showingAllSettings
-        exclusiveGroup: group
-        onTriggered: showAllSettings()
-    }
-    MenuItem
-    {
-        text: catalog.i18nc("@action:inmenu", "Settings in profile")
-        visible: false
-        enabled: true
-        checkable: true
-        checked: showingAllSettings
-        exclusiveGroup: group
-        onTriggered: showAllSettings()
-    }
     MenuSeparator {}
     MenuItem
     {
@@ -89,7 +73,11 @@ Menu
         checkable: true
         checked: showingAllSettings
         exclusiveGroup: group
-        onTriggered: showAllSettings()
+        onTriggered:
+        {
+            Cura.SettingVisibilityPresetsModel.setActivePreset("custom");
+            showAllSettings();
+        }
     }
     MenuSeparator {}
     MenuItem

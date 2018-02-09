@@ -362,12 +362,7 @@ class CuraApplication(QtApplication):
 
         default_visibility_profile = SettingVisibilityPresetsModel.getInstance().getItem(0)
 
-        preferences.addPreference("general/preset_setting_visibility_choice", default_visibility_profile["id"])
         preferences.setDefault("general/visible_settings", ";".join(default_visibility_profile["settings"]))
-
-        preset_setting_visibility_choice = Preferences.getInstance().getValue("general/preset_setting_visibility_choice")
-        if not SettingVisibilityPresetsModel.getInstance().find("id", preset_setting_visibility_choice):
-            Preferences.getInstance().setValue("general/preset_setting_visibility_choice", default_visibility_profile["id"])
 
         self.applicationShuttingDown.connect(self.saveSettings)
         self.engineCreatedSignal.connect(self._onEngineCreated)

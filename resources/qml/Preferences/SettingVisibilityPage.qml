@@ -37,6 +37,8 @@ UM.PreferencesPage
         id: base;
         anchors.fill: parent;
 
+        property bool inhibitSwitchToCustom: false
+
         CheckBox
         {
             id: toggleVisibleSettings
@@ -84,7 +86,7 @@ UM.PreferencesPage
                     if (visibilityPreset.currentIndex != visibilityPreset.model.count - 1)
                     {
                         visibilityPreset.currentIndex = visibilityPreset.model.count - 1
-                        UM.Preferences.setValue("general/preset_setting_visibility_choice", visibilityPreset.model.getItem(visibilityPreset.currentIndex).id)
+                        UM.Preferences.setValue("cura/active_setting_visibility_preset", visibilityPreset.model.getItem(visibilityPreset.currentIndex).id)
                     }
                 }
             }
@@ -129,7 +131,7 @@ UM.PreferencesPage
             currentIndex:
             {
                 // Load previously selected preset.
-                var index = model.find("id", UM.Preferences.getValue("general/preset_setting_visibility_choice"));
+                var index = model.find("id", model.activePreset);
                 if(index == -1)
                 {
                     index = 0;
@@ -140,14 +142,12 @@ UM.PreferencesPage
 
             onActivated:
             {
-                // TODO What to do if user is selected "Custom from Combobox" ?
-                if (model.getItem(index).id == "custom"){
-                    UM.Preferences.setValue("general/preset_setting_visibility_choice", model.get(index).id)
-                    return
-                }
+                base.inhibitSwitchToCustom = true;
+                model.setActivePreset(model.getItem(index).id);
 
-                UM.Preferences.setValue("general/visible_settings", model.getItem(index).settings.join(";"))
-                UM.Preferences.setValue("general/preset_setting_visibility_choice", model.getItem(index).id)
+                UM.Preferences.setValue("general/visible_settings", model.getItem(index).settings.join(";"));
+                UM.Preferences.setValue("cura/active_setting_visibility_preset", model.getItem(index).id);
+                base.inhibitSwitchToCustom = false;
             }
         }
 
@@ -177,7 +177,16 @@ UM.PreferencesPage
                     exclude: ["machine_settings", "command_line_settings"]
                     showAncestors: true
                     expanded: ["*"]
-                    visibilityHandler: UM.SettingPreferenceVisibilityHandler { }
+                    visibilityHandler: UM.SettingPreferenceVisibilityHandler
+                    {
+                        onVisibilityChanged:
+                        {
+                            if(Cura.SettingVisibilityPresetsModel.activePreset != "" && !base.inhibitSwitchToCustom)
+                            {
+                                Cura.SettingVisibilityPresetsModel.setActivePreset("custom");
+                            }
+                        }
+                    }
                 }
 
                 delegate: Loader
@@ -220,19 +229,7 @@ UM.PreferencesPage
         {
             id: settingVisibilityItem;
 
-            UM.SettingVisibilityItem {
-
-                // after changing any visibility of settings, set the preset to the "Custom" option
-                visibilityChangeCallback : function()
-                {
-                    // If already "Custom" then don't do nothing
-                    if (visibilityPreset.currentIndex != visibilityPreset.model.count - 1)
-                    {
-                        visibilityPreset.currentIndex = visibilityPreset.model.count - 1
-                        UM.Preferences.setValue("general/preset_setting_visibility_choice", visibilityPreset.model.getItem(visibilityPreset.currentIndex).id)
-                    }
-                }
-            }
+            UM.SettingVisibilityItem { }
         }
     }
 }
