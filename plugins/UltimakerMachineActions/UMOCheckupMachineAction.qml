@@ -180,7 +180,7 @@ Cura.MachineAction
                 height: childrenRect.height
                 anchors.top: nozzleTempLabel.top
                 anchors.left: bedTempStatus.right
-                anchors.leftMargin: UM.Theme.getSize("default_margin").width/2
+                anchors.leftMargin: Math.floor(UM.Theme.getSize("default_margin").width/2)
                 visible: checkupMachineAction.usbConnected
                 Button
                 {
@@ -241,7 +241,7 @@ Cura.MachineAction
                 height: childrenRect.height
                 anchors.top: bedTempLabel.top
                 anchors.left: bedTempStatus.right
-                anchors.leftMargin: UM.Theme.getSize("default_margin").width/2
+                anchors.leftMargin: Math.floor(UM.Theme.getSize("default_margin").width/2)
                 visible: checkupMachineAction.usbConnected && manager.hasHeatedBed
                 Button
                 {

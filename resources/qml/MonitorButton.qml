@@ -225,7 +225,7 @@ Item
         width: parent.width - 2 * UM.Theme.getSize("sidebar_margin").width;
         height: UM.Theme.getSize("progressbar").height;
         anchors.top: statusLabel.bottom;
-        anchors.topMargin: UM.Theme.getSize("sidebar_margin").height / 4;
+        anchors.topMargin: Math.floor(UM.Theme.getSize("sidebar_margin").height / 4);
         anchors.left: parent.left;
         anchors.leftMargin: UM.Theme.getSize("sidebar_margin").width;
     }

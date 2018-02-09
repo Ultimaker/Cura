@@ -87,7 +87,7 @@ SettingItem
         {
             id: downArrow
             x: control.width - width - control.rightPadding
-            y: control.topPadding + (control.availableHeight - height) / 2
+            y: control.topPadding + Math.floor((control.availableHeight - height) / 2)
 
             source: UM.Theme.getIcon("arrow_bottom")
             width: UM.Theme.getSize("standard_arrow").width
@@ -145,16 +145,16 @@ SettingItem
             background: Rectangle
             {
                 id: swatch
-                height: UM.Theme.getSize("setting_control").height / 2
+                height: Math.floor(UM.Theme.getSize("setting_control").height / 2)
                 width: height
 
                 anchors.right: parent.right
                 anchors.verticalCenter: parent.verticalCenter
-                anchors.margins: UM.Theme.getSize("default_margin").width / 4
+                anchors.margins: Math.floor(UM.Theme.getSize("default_margin").width / 4)
 
                 border.width: UM.Theme.getSize("default_lining").width
                 border.color: enabled ? UM.Theme.getColor("setting_control_border") : UM.Theme.getColor("setting_control_disabled_border")
-                radius: width / 2
+                radius: Math.floor(width / 2)
 
                 color: control.color
             }
@@ -199,16 +199,16 @@ SettingItem
                 background: Rectangle
                 {
                     id: swatch
-                    height: UM.Theme.getSize("setting_control").height / 2
+                    height: Math.floor(UM.Theme.getSize("setting_control").height / 2)
                     width: height
 
                     anchors.right: parent.right
                     anchors.verticalCenter: parent.verticalCenter
-                    anchors.margins: UM.Theme.getSize("default_margin").width / 4
+                    anchors.margins: Math.floor(UM.Theme.getSize("default_margin").width / 4)
 
                     border.width: UM.Theme.getSize("default_lining").width
                     border.color: enabled ? UM.Theme.getColor("setting_control_border") : UM.Theme.getColor("setting_control_disabled_border")
-                    radius: width / 2
+                    radius: Math.floor(width / 2)
 
                     color: control.model.getItem(index).color
                 }

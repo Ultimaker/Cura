@@ -193,7 +193,7 @@ Button
         anchors {
             right: inheritButton.visible ? inheritButton.left : parent.right
             // use 1.9 as the factor because there is a 0.1 difference between the settings and inheritance warning icons
-            rightMargin: inheritButton.visible ? UM.Theme.getSize("default_margin").width / 2 : category_arrow.width + UM.Theme.getSize("default_margin").width * 1.9
+            rightMargin: inheritButton.visible ? Math.floor(UM.Theme.getSize("default_margin").width / 2) : category_arrow.width + Math.floor(UM.Theme.getSize("default_margin").width * 1.9)
             verticalCenter: parent.verticalCenter
         }
 
@@ -231,7 +231,7 @@ Button
             return false
         }
 
-        height: parent.height / 2
+        height: Math.floor(parent.height / 2)
         width: height
 
         onClicked:
