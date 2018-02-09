@@ -128,12 +128,12 @@ Item {
         {
             id: settingControls
 
-            height: parent.height / 2
-            spacing: UM.Theme.getSize("sidebar_margin").height / 2
+            height: Math.floor(parent.height / 2)
+            spacing: Math.floor(UM.Theme.getSize("sidebar_margin").height / 2)
 
             anchors {
                 right: controlContainer.left
-                rightMargin: UM.Theme.getSize("sidebar_margin").width / 2
+                rightMargin: Math.floor(UM.Theme.getSize("sidebar_margin").width / 2)
                 verticalCenter: parent.verticalCenter
             }
 

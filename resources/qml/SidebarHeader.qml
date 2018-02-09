@@ -84,7 +84,7 @@ Column
             delegate: Button
             {
                 height: ListView.view.height
-                width: ListView.view.width / extrudersModel.rowCount()
+                width: Math.floor(ListView.view.width / extrudersModel.rowCount())
 
                 text: model.name
                 tooltip: model.name
@@ -192,15 +192,15 @@ Column
                                     {
                                         right: parent.right
                                         top: parent.top
-                                        rightMargin: parent.sizeToUse * 0.01
-                                        topMargin: parent.sizeToUse * 0.05
+                                        rightMargin: Math.floor(parent.sizeToUse * 0.01)
+                                        topMargin: Math.floor(parent.sizeToUse * 0.05)
                                     }
 
                                     color: model.color
 
-                                    width: parent.width * 0.35
-                                    height: parent.height * 0.35
-                                    radius: width / 2
+                                    width: Math.floor(parent.width * 0.35)
+                                    height: Math.floor(parent.height * 0.35)
+                                    radius: Math.floor(width / 2)
 
                                     border.width: 1
                                     border.color: UM.Theme.getColor("extruder_button_material_border")
@@ -219,7 +219,7 @@ Column
     Item
     {
         id: variantRowSpacer
-        height: UM.Theme.getSize("sidebar_margin").height / 4
+        height: Math.floor(UM.Theme.getSize("sidebar_margin").height / 4)
         width: height
         visible: !extruderSelectionRow.visible
     }

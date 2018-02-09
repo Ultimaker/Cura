@@ -231,7 +231,7 @@ Item
                         width: UM.Theme.getSize("layerview_legend_size").width
                         height: UM.Theme.getSize("layerview_legend_size").height
                         color: model.color
-                        radius: width / 2
+                        radius: Math.floor(width / 2)
                         border.width: UM.Theme.getSize("default_lining").width
                         border.color: UM.Theme.getColor("lining")
                         visible: !viewSettings.show_legend & !viewSettings.show_gradient
@@ -249,7 +249,7 @@ Item
                         anchors.verticalCenter: parent.verticalCenter
                         anchors.left: extrudersModelCheckBox.left;
                         anchors.right: extrudersModelCheckBox.right;
-                        anchors.leftMargin: UM.Theme.getSize("checkbox").width + UM.Theme.getSize("default_margin").width /2
+                        anchors.leftMargin: UM.Theme.getSize("checkbox").width + Math.floor(UM.Theme.getSize("default_margin").width/2)
                         anchors.rightMargin: UM.Theme.getSize("default_margin").width * 2
                     }
                 }
@@ -316,7 +316,7 @@ Item
                         anchors.verticalCenter: parent.verticalCenter
                         anchors.left: legendModelCheckBox.left;
                         anchors.right: legendModelCheckBox.right;
-                        anchors.leftMargin: UM.Theme.getSize("checkbox").width + UM.Theme.getSize("default_margin").width /2
+                        anchors.leftMargin: UM.Theme.getSize("checkbox").width + Math.floor(UM.Theme.getSize("default_margin").width/2)
                         anchors.rightMargin: UM.Theme.getSize("default_margin").width * 2
                     }
                 }

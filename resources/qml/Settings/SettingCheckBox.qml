@@ -118,8 +118,8 @@ SettingItem
             UM.RecolorImage {
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.horizontalCenter: parent.horizontalCenter
-                width: parent.width / 2.5
-                height: parent.height / 2.5
+                width: Math.floor(parent.width / 2.5)
+                height: Math.floor(parent.height / 2.5)
                 sourceSize.width: width
                 sourceSize.height: width
                 color: !enabled ? UM.Theme.getColor("setting_control_disabled_text") : UM.Theme.getColor("setting_control_text");
