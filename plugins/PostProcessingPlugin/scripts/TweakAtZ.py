@@ -285,10 +285,10 @@ class TweakAtZ(Script):
 
     def getValue(self, line, key, default = None): #replace default getvalue due to comment-reading feature
         if not key in line or (";" in line and line.find(key) > line.find(";") and
-                                   not ";TweakAtZ" in key and not ";LAYER:" in key):
+                                   not ";ChangeAtZ" in key and not ";LAYER:" in key):
             return default
         subPart = line[line.find(key) + len(key):] #allows for string lengths larger than 1
-        if ";TweakAtZ" in key:
+        if ";ChangeAtZ" in key:
             m = re.search("^[0-4]", subPart)
         elif ";LAYER:" in key:
             m = re.search("^[+-]?[0-9]*", subPart)
@@ -369,14 +369,14 @@ class TweakAtZ(Script):
             for line in lines:
                 if ";Generated with Cura_SteamEngine" in line:
                     TWinstances += 1
-                    modified_gcode += ";TweakAtZ instances: %d\n" % TWinstances
+                    modified_gcode += ";ChangeAtZ instances: %d\n" % TWinstances
                 if not ("M84" in line or "M25" in line or ("G1" in line and TweakPrintSpeed and (state==3 or state==4)) or
-                                ";TweakAtZ instances:" in line):
+                                ";ChangeAtZ instances:" in line):
                     modified_gcode += line + "\n"
                 IsUM2 = ("FLAVOR:UltiGCode" in line) or IsUM2 #Flavor is UltiGCode!
-                if ";TweakAtZ-state" in line: #checks for state change comment
-                    state = self.getValue(line, ";TweakAtZ-state", state)
-                if ";TweakAtZ instances:" in line:
+                if ";ChangeAtZ-state" in line: #checks for state change comment
+                    state = self.getValue(line, ";ChangeAtZ-state", state)
+                if ";ChangeAtZ instances:" in line:
                     try:
                         tempTWi = int(line[20:])
                     except:
@@ -454,11 +454,11 @@ class TweakAtZ(Script):
                         if state==3:
                             if twLayers-done_layers>0: #still layers to go?
                                 if targetL_i > -100000:
-                                    modified_gcode += ";TweakAtZ V%s: executed at Layer %d\n" % (self.version,layer)
-                                    modified_gcode += "M117 Printing... tw@L%4d\n" % layer
+                                    modified_gcode += ";ChangeAtZ V%s: executed at Layer %d\n" % (self.version,layer)
+                                    modified_gcode += "M117 Printing... ch@L%4d\n" % layer
                                 else:
-                                    modified_gcode += (";TweakAtZ V%s: executed at %1.2f mm\n" % (self.version,z))
-                                    modified_gcode += "M117 Printing... tw@%5.1f\n" % z
+                                    modified_gcode += (";ChangeAtZ V%s: executed at %1.2f mm\n" % (self.version,z))
+                                    modified_gcode += "M117 Printing... ch@%5.1f\n" % z
                                 for key in TweakProp:
                                     if TweakProp[key]:
                                         modified_gcode += TweakStrings[key] % float(old[key]+(float(target_values[key])-float(old[key]))/float(twLayers)*float(done_layers+1))
@@ -467,9 +467,9 @@ class TweakAtZ(Script):
                                 state = 4
                                 if behavior == 1: #reset values after one layer
                                     if targetL_i > -100000:
-                                        modified_gcode += ";TweakAtZ V%s: reset on Layer %d\n" % (self.version,layer)
+                                        modified_gcode += ";ChangeAtZ V%s: reset on Layer %d\n" % (self.version,layer)
                                     else:
-                                        modified_gcode += ";TweakAtZ V%s: reset at %1.2f mm\n" % (self.version,z)
+                                        modified_gcode += ";ChangeAtZ V%s: reset at %1.2f mm\n" % (self.version,z)
                                     if IsUM2 and oldValueUnknown: #executes on UM2 with Ultigcode and machine setting
                                         modified_gcode += "M606 S%d;recalls saved settings\n" % (TWinstances-1)
                                     else: #executes on RepRap, UM2 with Ultigcode and Cura setting
@@ -481,9 +481,9 @@ class TweakAtZ(Script):
                             state = 2
                             done_layers = 0
                             if targetL_i > -100000:
-                                modified_gcode += ";TweakAtZ V%s: reset below Layer %d\n" % (self.version,targetL_i)
+                                modified_gcode += ";ChangeAtZ V%s: reset below Layer %d\n" % (self.version,targetL_i)
                             else:
-                                modified_gcode += ";TweakAtZ V%s: reset below %1.2f mm\n" % (self.version,targetZ)
+                                modified_gcode += ";ChangeAtZ V%s: reset below %1.2f mm\n" % (self.version,targetZ)
                             if IsUM2 and oldValueUnknown: #executes on UM2 with Ultigcode and machine setting
                                 modified_gcode += "M606 S%d;recalls saved settings\n" % (TWinstances-1)
                             else: #executes on RepRap, UM2 with Ultigcode and Cura setting
