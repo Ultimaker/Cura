@@ -130,6 +130,7 @@ class CuraApplication(QtApplication):
         MachineStack = Resources.UserType + 7
         ExtruderStack = Resources.UserType + 8
         DefinitionChangesContainer = Resources.UserType + 9
+        SettingVisibilityPreset = Resources.UserType + 10
 
     Q_ENUMS(ResourceTypes)
 
@@ -183,6 +184,7 @@ class CuraApplication(QtApplication):
         Resources.addStorageType(self.ResourceTypes.ExtruderStack, "extruders")
         Resources.addStorageType(self.ResourceTypes.MachineStack, "machine_instances")
         Resources.addStorageType(self.ResourceTypes.DefinitionChangesContainer, "definition_changes")
+        Resources.addStorageType(self.ResourceTypes.SettingVisibilityPreset, "setting_visibility")
 
         ContainerRegistry.getInstance().addResourceType(self.ResourceTypes.QualityInstanceContainer, "quality")
         ContainerRegistry.getInstance().addResourceType(self.ResourceTypes.QualityInstanceContainer, "quality_changes")
@@ -360,8 +362,8 @@ class CuraApplication(QtApplication):
 
         default_visibility_profile = SettingVisibilityPresetsModel.getInstance().getItem(0)
 
+        preferences.addPreference("general/preset_setting_visibility_choice", default_visibility_profile["id"])
         preferences.setDefault("general/visible_settings", ";".join(default_visibility_profile["settings"]))
-        preferences.setDefault("general/preset_setting_visibility_choice", default_visibility_profile["id"])
 
         preset_setting_visibility_choice = Preferences.getInstance().getValue("general/preset_setting_visibility_choice")
         if not SettingVisibilityPresetsModel.getInstance().find("id", preset_setting_visibility_choice):

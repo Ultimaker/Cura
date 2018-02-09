@@ -13,6 +13,9 @@ from UM.Qt.ListModel import ListModel
 from UM.Resources import Resources
 from UM.MimeTypeDatabase import MimeTypeDatabase, MimeTypeNotFoundError
 
+import cura.CuraApplication
+
+
 class SettingVisibilityPresetsModel(ListModel):
     IdRole = Qt.UserRole + 1
     NameRole = Qt.UserRole + 2
@@ -31,7 +34,7 @@ class SettingVisibilityPresetsModel(ListModel):
 
     def _populate(self):
         items = []
-        for item in Resources.getAllResourcesOfType(Resources.PresetSettingVisibilityPresets):
+        for item in Resources.getAllResourcesOfType(cura.CuraApplication.CuraApplication.ResourceTypes.SettingVisibilityPreset):
             try:
                 mime_type = MimeTypeDatabase.getMimeTypeForFile(item)
             except MimeTypeNotFoundError:
