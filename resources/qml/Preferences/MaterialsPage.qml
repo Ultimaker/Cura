@@ -59,8 +59,8 @@ UM.ManagementPage
             anchors.right: parent.right
             Rectangle
             {
-                width: (parent.height * 0.8) | 0
-                height: (parent.height * 0.8) | 0
+                width: Math.floor(parent.height * 0.8)
+                height: Math.floor(parent.height * 0.8)
                 color: model.metadata.color_code
                 border.color: isCurrentItem ? palette.highlightedText : palette.text;
                 anchors.verticalCenter: parent.verticalCenter

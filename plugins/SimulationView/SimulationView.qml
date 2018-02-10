@@ -461,7 +461,7 @@ Item
                 visible: viewSettings.show_feedrate_gradient
                 anchors.left: parent.right
                 height: parent.width
-                width: UM.Theme.getSize("layerview_row").height * 1.5
+                width: Math.floor(UM.Theme.getSize("layerview_row").height * 1.5)
                 border.width: UM.Theme.getSize("default_lining").width
                 border.color: UM.Theme.getColor("lining")
                 transform: Rotation {origin.x: 0; origin.y: 0; angle: 90}
@@ -492,7 +492,7 @@ Item
                 visible: viewSettings.show_thickness_gradient
                 anchors.left: parent.right
                 height: parent.width
-                width: UM.Theme.getSize("layerview_row").height * 1.5
+                width: Math.floor(UM.Theme.getSize("layerview_row").height * 1.5)
                 border.width: UM.Theme.getSize("default_lining").width
                 border.color: UM.Theme.getColor("lining")
                 transform: Rotation {origin.x: 0; origin.y: 0; angle: 90}

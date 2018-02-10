@@ -187,8 +187,8 @@ Button
         id: settingsButton
 
         visible: base.hovered || settingsButton.hovered
-        height: base.height * 0.6
-        width: base.height * 0.6
+        height: Math.floor(base.height * 0.6)
+        width: Math.floor(base.height * 0.6)
 
         anchors {
             right: inheritButton.visible ? inheritButton.left : parent.right
