@@ -200,11 +200,11 @@ class PrintInformation(QObject):
         self._current_print_time[build_plate_number].setDuration(total_estimated_time)
 
     def _calculateInformation(self, build_plate_number):
-        if Application.getInstance().getGlobalContainerStack() is None:
+        global_container_stack = Application.getInstance().getGlobalContainerStack()
+        if global_container_stack is None:
             return
 
         # Material amount is sent as an amount of mm^3, so calculate length from that
-        radius = Application.getInstance().getGlobalContainerStack().getProperty("material_diameter", "value") / 2
         self._material_lengths[build_plate_number] = []
         self._material_weights[build_plate_number] = []
         self._material_costs[build_plate_number] = []
@@ -218,12 +218,13 @@ class PrintInformation(QObject):
             #  list comprehension filtering to solve this for us.
             material = None
             if extruder_stacks:  # Multi extrusion machine
-                extruder_stack = [extruder for extruder in extruder_stacks if extruder.getMetaDataEntry("position") == str(index)][0]
-                density = extruder_stack.getMetaDataEntry("properties", {}).get("density", 0)
-                material = extruder_stack.findContainer({"type": "material"})
+                stack = [extruder for extruder in extruder_stacks if extruder.getMetaDataEntry("position") == str(index)][0]
             else:  # Machine with no extruder stacks
-                density = Application.getInstance().getGlobalContainerStack().getMetaDataEntry("properties", {}).get("density", 0)
-                material = Application.getInstance().getGlobalContainerStack().findContainer({"type": "material"})
+                stack = global_container_stack
+
+            density = stack.getMetaDataEntry("properties", {}).get("density", 0)
+            material = stack.findContainer({"type": "material"})
+            radius = stack.getProperty("material_diameter", "value") / 2
 
             weight = float(amount) * float(density) / 1000
             cost = 0
