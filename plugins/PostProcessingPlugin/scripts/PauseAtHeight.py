@@ -126,20 +126,19 @@ class PauseAtHeight(Script):
             for line in lines:
                 if ";LAYER:0" in line:
                     layers_started = True
-
                 if not layers_started:
                     continue
 
-                if self.getValue(line, 'G') != 1 and self.getValue(line, 'G') != 0:
+                if self.getValue(line, "G") != 1 and self.getValue(line, "G") != 0:
                     continue
 
-                current_z = self.getValue(line, 'Z')
+                current_z = self.getValue(line, "Z")
                 if not got_first_g_cmd_on_layer_0:
                     layer_0_z = current_z
                     got_first_g_cmd_on_layer_0 = True
 
-                x = self.getValue(line, 'X', x)
-                y = self.getValue(line, 'Y', y)
+                x = self.getValue(line, "X", x)
+                y = self.getValue(line, "Y", y)
                 if current_z is None:
                     continue
 
@@ -152,7 +151,7 @@ class PauseAtHeight(Script):
                 prevLines = prevLayer.split("\n")
                 current_e = 0.
                 for prevLine in reversed(prevLines):
-                    current_e = self.getValue(prevLine, 'E', -1)
+                    current_e = self.getValue(prevLine, "E", -1)
                     if current_e >= 0:
                         break
 
