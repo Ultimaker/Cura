@@ -118,27 +118,30 @@ class PostProcessingPlugin(QObject, Extension):
         for loader, script_name, ispkg in scripts:
             # Iterate over all scripts.
             if script_name not in sys.modules:
-                spec = importlib.util.spec_from_file_location(__name__ + "." + script_name, os.path.join(path, script_name + ".py"))
-                loaded_script = importlib.util.module_from_spec(spec)
-                spec.loader.exec_module(loaded_script)
-                sys.modules[script_name] = loaded_script
-
-                loaded_class = getattr(loaded_script, script_name)
-                temp_object = loaded_class()
-                Logger.log("d", "Begin loading of script: %s", script_name)
                 try:
-                    setting_data = temp_object.getSettingData()
-                    if "name" in setting_data and "key" in setting_data:
-                        self._script_labels[setting_data["key"]] = setting_data["name"]
-                        self._loaded_scripts[setting_data["key"]] = loaded_class
-                    else:
-                        Logger.log("w", "Script %s.py has no name or key", script_name)
-                        self._script_labels[script_name] = script_name
-                        self._loaded_scripts[script_name] = loaded_class
-                except AttributeError:
-                    Logger.log("e", "Script %s.py is not a recognised script type. Ensure it inherits Script", script_name)
-                except NotImplementedError:
-                    Logger.log("e", "Script %s.py has no implemented settings", script_name)
+                    spec = importlib.util.spec_from_file_location(__name__ + "." + script_name, os.path.join(path, script_name + ".py"))
+                    loaded_script = importlib.util.module_from_spec(spec)
+                    spec.loader.exec_module(loaded_script)
+                    sys.modules[script_name] = loaded_script
+
+                    loaded_class = getattr(loaded_script, script_name)
+                    temp_object = loaded_class()
+                    Logger.log("d", "Begin loading of script: %s", script_name)
+                    try:
+                        setting_data = temp_object.getSettingData()
+                        if "name" in setting_data and "key" in setting_data:
+                            self._script_labels[setting_data["key"]] = setting_data["name"]
+                            self._loaded_scripts[setting_data["key"]] = loaded_class
+                        else:
+                            Logger.log("w", "Script %s.py has no name or key", script_name)
+                            self._script_labels[script_name] = script_name
+                            self._loaded_scripts[script_name] = loaded_class
+                    except AttributeError:
+                        Logger.log("e", "Script %s.py is not a recognised script type. Ensure it inherits Script", script_name)
+                    except NotImplementedError:
+                        Logger.log("e", "Script %s.py has no implemented settings", script_name)
+                except Exception as e:
+                    Logger.logException("e", "Exception occurred while loading post processing plugin: {error_msg}".format(error_msg = str(e)))
         self.loadedScriptListChanged.emit()
 
     loadedScriptListChanged = pyqtSignal()
@@ -171,18 +174,15 @@ class PostProcessingPlugin(QObject, Extension):
 
         ## Load all scripts in the scripts folders
         for root in [PluginRegistry.getInstance().getPluginPath("PostProcessingPlugin"), Resources.getStoragePath(Resources.Preferences)]:
-            try:
-                path = os.path.join(root, "scripts")
-                if not os.path.isdir(path):
-                    try:
-                        os.makedirs(path)
-                    except OSError:
-                        Logger.log("w", "Unable to create a folder for scripts: " + path)
-                        continue
+            path = os.path.join(root, "scripts")
+            if not os.path.isdir(path):
+                try:
+                    os.makedirs(path)
+                except OSError:
+                    Logger.log("w", "Unable to create a folder for scripts: " + path)
+                    continue
 
-                self.loadAllScripts(path)
-            except Exception as e:
-                Logger.logException("e", "Exception occurred while loading post processing plugin: {error_msg}".format(error_msg = str(e)))
+            self.loadAllScripts(path)
 
         # Create the plugin dialog component
         path = os.path.join(PluginRegistry.getInstance().getPluginPath("PostProcessingPlugin"), "PostProcessingPlugin.qml")
