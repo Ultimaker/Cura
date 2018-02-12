@@ -108,7 +108,7 @@ Item {
             id: label;
 
             anchors.left: parent.left;
-            anchors.leftMargin: doDepthIndentation ? (UM.Theme.getSize("section_icon_column").width + 5) + ((definition.depth - 1) * UM.Theme.getSize("setting_control_depth_margin").width) : 0
+            anchors.leftMargin: doDepthIndentation ? Math.floor((UM.Theme.getSize("section_icon_column").width + 5) + ((definition.depth - 1) * UM.Theme.getSize("setting_control_depth_margin").width)) : 0
             anchors.right: settingControls.left;
             anchors.verticalCenter: parent.verticalCenter
 

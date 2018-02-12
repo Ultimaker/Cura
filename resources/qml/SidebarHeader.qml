@@ -257,7 +257,7 @@ Column
             visible: Cura.MachineManager.hasMaterials
             enabled: !extrudersList.visible || base.currentExtruderIndex  > -1
             height: UM.Theme.getSize("setting_control").height
-            width: parent.width * 0.7 + UM.Theme.getSize("sidebar_margin").width
+            width: Math.floor(parent.width * 0.7) + UM.Theme.getSize("sidebar_margin").width
             anchors.right: parent.right
             style: UM.Theme.styles.sidebar_header_button
             activeFocusOnPress: true;
