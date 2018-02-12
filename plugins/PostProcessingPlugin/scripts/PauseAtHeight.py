@@ -126,7 +126,6 @@ class PauseAtHeight(Script):
             for line in lines:
                 if ";LAYER:0" in line:
                     layers_started = True
-                    continue
 
                 if not layers_started:
                     continue
