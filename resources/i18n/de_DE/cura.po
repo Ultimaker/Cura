@@ -1,14 +1,14 @@
 # Cura
-# Copyright (C) 2017 Ultimaker
+# Copyright (C) 2018 Ultimaker
 # This file is distributed under the same license as the Cura package.
-# Ruben Dulek <r.dulek@ultimaker.com>, 2017.
+# Ruben Dulek <r.dulek@ultimaker.com>, 2018.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Cura 3.0\n"
+"Project-Id-Version: Cura 3.2\n"
 "Report-Msgid-Bugs-To: r.dulek@ultimaker.com\n"
-"POT-Creation-Date: 2017-08-02 16:53+0000\n"
-"PO-Revision-Date: 2018-02-09 11:34+0100\n"
+"POT-Creation-Date: 2018-01-29 09:48+0000\n"
+"PO-Revision-Date: 2018-02-12 13:25+0100\n"
 "Last-Translator: Bothof <info@bothof.nl>\n"
 "Language-Team: German\n"
 "Language: de_DE\n"
@@ -145,7 +145,6 @@ msgid "Printer Unavailable"
 msgstr "Drucker nicht verfügbar"
 
 #: /home/ruben/Projects/Cura/plugins/USBPrinting/USBPrinterOutputDevice.py:485
-#, fuzzy
 msgctxt "@info:status"
 msgid "This printer does not support USB printing because it uses UltiGCode flavor."
 msgstr "Der Drucker unterstützt keinen USB-Druck, da er UltiGCode verwendet."
@@ -295,7 +294,6 @@ msgid "Print over network"
 msgstr "Drucken über Netzwerk"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/NetworkPrinterOutputDevice.py:110
-#, fuzzy
 msgctxt "@properties:tooltip"
 msgid "Print over network"
 msgstr "Drucken über Netzwerk"
@@ -1633,7 +1631,6 @@ msgid "Unknown error code: %1"
 msgstr "Unbekannter Fehlercode: %1"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/DiscoverUM3Action.qml:55
-#, fuzzy
 msgctxt "@title:window"
 msgid "Connect to Networked Printer"
 msgstr "Anschluss an Netzwerk Drucker"
@@ -2762,7 +2759,6 @@ msgid "Discard"
 msgstr "Verwerfen"
 
 #: /home/ruben/Projects/Cura/resources/qml/DiscardOrKeepProfileChangesDialog.qml:209
-#, fuzzy
 msgctxt "@action:button"
 msgid "Keep"
 msgstr "Beibehalten"
