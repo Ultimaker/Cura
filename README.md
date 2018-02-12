@@ -27,6 +27,10 @@ Build scripts
 -------------
 Please checkout [cura-build](https://github.com/Ultimaker/cura-build) for detailed building instructions.
 
+Running from Source
+-------------
+Please check our [Wiki page](https://github.com/Ultimaker/Cura/wiki/Running-Cura-from-Source) for details about running Cura from source.
+
 Plugins
 -------------
 Please check our [Wiki page](https://github.com/Ultimaker/Cura/wiki/Plugin-Directory) for details about creating and using plugins.
