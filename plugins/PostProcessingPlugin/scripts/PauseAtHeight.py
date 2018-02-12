@@ -7,19 +7,40 @@ class PauseAtHeight(Script):
 
     def getSettingDataString(self):
         return """{
-            "name":"Pause at height",
+            "name": "Pause at height",
             "key": "PauseAtHeight",
             "metadata": {},
             "version": 2,
             "settings":
             {
+                "pause_at":
+                {
+                    "label": "Pause at",
+                    "description": "Whether to pause at a certain height or at a certain layer.",
+                    "type": "enum",
+                    "options": {"height": "Height", "layer_no": "Layer No."},
+                    "default_value": "height"
+                },
                 "pause_height":
                 {
                     "label": "Pause Height",
                     "description": "At what height should the pause occur",
                     "unit": "mm",
                     "type": "float",
-                    "default_value": 5.0
+                    "default_value": 5.0,
+                    "minimum_value": "0",
+                    "minimum_value_warning": "0.27",
+                    "enabled": "pause_at == 'height'"
+                },
+                "pause_layer":
+                {
+                    "label": "Pause Layer",
+                    "description": "At what layer should the pause occur",
+                    "type": "int",
+                    "value": "math.floor((pause_height - 0.27) / 0.1) + 1",
+                    "minimum_value": "0",
+                    "minimum_value_warning": "1",
+                    "enabled": "pause_at == 'layer_no'"
                 },
                 "head_park_x":
                 {
@@ -102,7 +123,9 @@ class PauseAtHeight(Script):
 
         x = 0.
         y = 0.
+        pause_at = self.getSettingValueByKey("pause_at")
         pause_height = self.getSettingValueByKey("pause_height")
+        pause_layer = self.getSettingValueByKey("pause_layer")
         retraction_amount = self.getSettingValueByKey("retraction_amount")
         retraction_speed = self.getSettingValueByKey("retraction_speed")
         extrude_amount = self.getSettingValueByKey("extrude_amount")
@@ -120,6 +143,7 @@ class PauseAtHeight(Script):
 
         # use offset to calculate the current height: <current_height> = <current_z> - <layer_0_z>
         layer_0_z = 0.
+        current_z = 0
         got_first_g_cmd_on_layer_0 = False
         for index, layer in enumerate(data):
             lines = layer.split("\n")
@@ -129,22 +153,36 @@ class PauseAtHeight(Script):
                 if not layers_started:
                     continue
 
-                if self.getValue(line, "G") != 1 and self.getValue(line, "G") != 0:
-                    continue
+                if self.getValue(line, "Z") is not None:
+                    current_z = self.getValue(line, "Z")
 
-                current_z = self.getValue(line, "Z")
-                if not got_first_g_cmd_on_layer_0:
-                    layer_0_z = current_z
-                    got_first_g_cmd_on_layer_0 = True
+                if pause_at == "height":
+                    if self.getValue(line, "G") != 1 and self.getValue(line, "G") != 0:
+                        continue
 
-                x = self.getValue(line, "X", x)
-                y = self.getValue(line, "Y", y)
-                if current_z is None:
-                    continue
+                    if not got_first_g_cmd_on_layer_0:
+                        layer_0_z = current_z
+                        got_first_g_cmd_on_layer_0 = True
 
-                current_height = current_z - layer_0_z
-                if current_height < pause_height:
-                    break #Try the next layer.
+                    x = self.getValue(line, "X", x)
+                    y = self.getValue(line, "Y", y)
+
+                    current_height = current_z - layer_0_z
+                    if current_height < pause_height:
+                        break #Try the next layer.
+                else: #Pause at layer.
+                    if not line.startswith(";LAYER:"):
+                        continue
+                    current_layer = line[len(";LAYER:"):]
+                    print("----------current_layer:", current_layer)
+                    try:
+                        current_layer = int(current_layer)
+                    except ValueError: #Couldn't cast to int. Something is wrong with this g-code data.
+                        print("----------couldn't cast to int")
+                        continue
+                    if current_layer < pause_layer:
+                        break #Try the next layer.
+                    print("------------hit! Got it!")
 
                 prevLayer = data[index - 1]
                 prevLines = prevLayer.split("\n")
@@ -162,8 +200,11 @@ class PauseAtHeight(Script):
                 prepend_gcode = ";TYPE:CUSTOM\n"
                 prepend_gcode += ";added code by post processing\n"
                 prepend_gcode += ";script: PauseAtHeight.py\n"
-                prepend_gcode += ";current z: %f \n" % current_z
-                prepend_gcode += ";current height: %f \n" % current_height
+                if pause_at == "height":
+                    prepend_gcode += ";current z: {z}\n".format(z = current_z)
+                    prepend_gcode += ";current height: {height}\n".format(height = current_height)
+                else:
+                    prepend_gcode += ";current layer: {layer}\n".format(layer = current_layer)
 
                 # Retraction
                 prepend_gcode += "M83\n"
