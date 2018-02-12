@@ -121,7 +121,7 @@ class PauseAtHeight(Script):
         # use offset to calculate the current height: <current_height> = <current_z> - <layer_0_z>
         layer_0_z = 0.
         got_first_g_cmd_on_layer_0 = False
-        for layer in data:
+        for index, layer in enumerate(data):
             lines = layer.split("\n")
             for line in lines:
                 if ";LAYER:0" in line:
@@ -146,7 +146,6 @@ class PauseAtHeight(Script):
                 if current_height < pause_height:
                     break #Try the next layer.
 
-                index = data.index(layer)
                 prevLayer = data[index - 1]
                 prevLines = prevLayer.split("\n")
                 current_e = 0.
