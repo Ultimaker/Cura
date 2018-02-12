@@ -146,16 +146,16 @@ Item
                     }
 
                     function calculateSliderStepWidth (totalTicks) {
-                        qualityModel.qualitySliderStepWidth = totalTicks != 0 ? (base.width * 0.55) / (totalTicks) : 0
+                        qualityModel.qualitySliderStepWidth = totalTicks != 0 ? Math.floor((base.width * 0.55) / (totalTicks)) : 0
                     }
 
                     function calculateSliderMargins (availableMin, availableMax, totalTicks) {
                         if (availableMin == -1 || (availableMin == 0 && availableMax == 0)) {
-                            qualityModel.qualitySliderMarginRight = base.width * 0.55
+                            qualityModel.qualitySliderMarginRight = Math.floor(base.width * 0.55)
                         } else if (availableMin == availableMax) {
-                            qualityModel.qualitySliderMarginRight = (totalTicks - availableMin) * qualitySliderStepWidth
+                            qualityModel.qualitySliderMarginRight = Math.floor((totalTicks - availableMin) * qualitySliderStepWidth)
                         } else {
-                            qualityModel.qualitySliderMarginRight = (totalTicks - availableMax) * qualitySliderStepWidth
+                            qualityModel.qualitySliderMarginRight = Math.floor((totalTicks - availableMax) * qualitySliderStepWidth)
                         }
                     }
 
@@ -236,7 +236,7 @@ Item
                 Item
                 {
                     id: speedSlider
-                    width: base.width * 0.55
+                    width: Math.floor(base.width * 0.55)
                     height: UM.Theme.getSize("sidebar_margin").height
                     anchors.right: parent.right
                     anchors.top: parent.top
@@ -246,7 +246,7 @@ Item
                     Rectangle
                     {
                         id: groovechildrect
-                        width: base.width * 0.55
+                        width: Math.floor(base.width * 0.55)
                         height: 2 * screenScaleFactor
                         color: UM.Theme.getColor("quality_slider_unavailable")
                         anchors.verticalCenter: qualitySlider.verticalCenter
@@ -266,7 +266,7 @@ Item
                             width: 1 * screenScaleFactor
                             height: 6 * screenScaleFactor
                             y: 0
-                            x: qualityModel.qualitySliderStepWidth * index
+                            x: Math.floor(qualityModel.qualitySliderStepWidth * index)
                         }
                     }
 
@@ -362,7 +362,7 @@ Item
                     text: catalog.i18nc("@label", "Print Speed")
                     font: UM.Theme.getFont("default")
                     color: UM.Theme.getColor("text")
-                    width: parseInt(UM.Theme.getSize("sidebar").width * 0.35)
+                    width: Math.floor(UM.Theme.getSize("sidebar").width * 0.35)
                     elide: Text.ElideRight
                 }
 
@@ -438,7 +438,7 @@ Item
                 anchors.topMargin: UM.Theme.getSize("sidebar_margin").height * 2
                 anchors.left: parent.left
 
-                width: parseInt(UM.Theme.getSize("sidebar").width * .45 - UM.Theme.getSize("sidebar_margin").width)
+                width: Math.floor(UM.Theme.getSize("sidebar").width * .45) - UM.Theme.getSize("sidebar_margin").width
 
                 Label
                 {
@@ -448,7 +448,7 @@ Item
                     color: UM.Theme.getColor("text")
 
                     anchors.top: parent.top
-                    anchors.topMargin: parseInt(UM.Theme.getSize("sidebar_margin").height * 1.7)
+                    anchors.topMargin: Math.floor(UM.Theme.getSize("sidebar_margin").height * 1.7)
                     anchors.left: parent.left
                     anchors.leftMargin: UM.Theme.getSize("sidebar_margin").width
                 }
@@ -459,7 +459,7 @@ Item
                 id: infillCellRight
 
                 height: infillSlider.height + UM.Theme.getSize("sidebar_margin").height + enableGradualInfillCheckBox.visible * (enableGradualInfillCheckBox.height + UM.Theme.getSize("sidebar_margin").height)
-                width: parseInt(UM.Theme.getSize("sidebar").width * .55)
+                width: Math.floor(UM.Theme.getSize("sidebar").width * .55)
 
                 anchors.left: infillCellLeft.right
                 anchors.top: infillCellLeft.top
@@ -737,7 +737,7 @@ Item
                 visible: enableSupportCheckBox.visible
 
                 anchors.top: infillCellRight.bottom
-                anchors.topMargin: parseInt(UM.Theme.getSize("sidebar_margin").height * 1.5)
+                anchors.topMargin: Math.floor(UM.Theme.getSize("sidebar_margin").height * 1.5)
                 anchors.left: parent.left
                 anchors.leftMargin: UM.Theme.getSize("sidebar_margin").width
                 anchors.right: infillCellLeft.right
@@ -823,7 +823,7 @@ Item
                 anchors.topMargin: ((supportEnabled.properties.value === "True") && (machineExtruderCount.properties.value > 1)) ? UM.Theme.getSize("sidebar_margin").height : 0
                 anchors.left: infillCellRight.left
 
-                width: UM.Theme.getSize("sidebar").width * .55
+                width: Math.floor(UM.Theme.getSize("sidebar").width * .55)
                 height: ((supportEnabled.properties.value == "True") && (machineExtruderCount.properties.value > 1)) ? UM.Theme.getSize("setting_control").height : 0
 
                 Behavior on height { NumberAnimation { duration: 100 } }
@@ -952,7 +952,7 @@ Item
             {
                 id: tipsCell
                 anchors.top: adhesionCheckBox.visible ? adhesionCheckBox.bottom : (enableSupportCheckBox.visible ? supportExtruderCombobox.bottom : infillCellRight.bottom)
-                anchors.topMargin: parseInt(UM.Theme.getSize("sidebar_margin").height * 2)
+                anchors.topMargin: Math.floor(UM.Theme.getSize("sidebar_margin").height * 2)
                 anchors.left: parent.left
                 width: parent.width
                 height: tipsText.contentHeight * tipsText.lineCount
