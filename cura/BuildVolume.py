@@ -737,12 +737,17 @@ class BuildVolume(SceneNode):
                 prime_tower_x = prime_tower_x - machine_width / 2 #Offset by half machine_width and _depth to put the origin in the front-left.
                 prime_tower_y = prime_tower_y + machine_depth / 2
 
-            prime_tower_area = Polygon([
-                [prime_tower_x - prime_tower_size, prime_tower_y - prime_tower_size],
-                [prime_tower_x, prime_tower_y - prime_tower_size],
-                [prime_tower_x, prime_tower_y],
-                [prime_tower_x - prime_tower_size, prime_tower_y],
-            ])
+            if self._global_container_stack.getProperty("prime_tower_circular", "value"):
+                radius = prime_tower_size / 2
+                prime_tower_area = Polygon.approximatedCircle(radius)
+                prime_tower_area = prime_tower_area.translate(prime_tower_x - radius, prime_tower_y - radius)
+            else:
+                prime_tower_area = Polygon([
+                    [prime_tower_x - prime_tower_size, prime_tower_y - prime_tower_size],
+                    [prime_tower_x, prime_tower_y - prime_tower_size],
+                    [prime_tower_x, prime_tower_y],
+                    [prime_tower_x - prime_tower_size, prime_tower_y],
+                ])
             prime_tower_area = prime_tower_area.getMinkowskiHull(Polygon.approximatedCircle(0))
             for extruder in used_extruders:
                 result[extruder.getId()].append(prime_tower_area) #The prime tower location is the same for each extruder, regardless of offset.

@@ -4747,6 +4747,17 @@
                     "settable_per_mesh": false,
                     "settable_per_extruder": false
                 },
+                "prime_tower_circular":
+                {
+                    "label": "Circular Prime Tower",
+                    "description": "Make the prime tower as a circular shape.",
+                    "type": "bool",
+                    "enabled": "resolveOrValue('prime_tower_enable')",
+                    "default_value": true,
+                    "resolve": "any(extruderValues('prime_tower_circular'))",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false
+                },
                 "prime_tower_size":
                 {
                     "label": "Prime Tower Size",
