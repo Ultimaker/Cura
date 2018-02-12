@@ -952,7 +952,7 @@ Item
             {
                 id: tipsCell
                 anchors.top: adhesionCheckBox.visible ? adhesionCheckBox.bottom : (enableSupportCheckBox.visible ? supportExtruderCombobox.bottom : infillCellRight.bottom)
-                anchors.topMargin: UM.Theme.getSize("sidebar_margin").height * 2
+                anchors.topMargin: Math.floor(UM.Theme.getSize("sidebar_margin").height * 2)
                 anchors.left: parent.left
                 width: parent.width
                 height: tipsText.contentHeight * tipsText.lineCount
