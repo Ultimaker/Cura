@@ -364,18 +364,23 @@ class PrintInformation(QObject):
         active_machine_type_id = global_container_stack.definition.getId()
 
         abbr_machine = ""
-        for word in re.findall(r"[\w']+", active_machine_type_id):
-            if word.lower() == "ultimaker":
-                abbr_machine += "UM"
-            elif word.isdigit():
-                abbr_machine += word
-            else:
-                stripped_word = self._stripAccents(word.upper())
-                # - use only the first character if the word is too long (> 3 characters)
-                # - use the whole word if it's not too long (<= 3 characters)
-                if len(stripped_word) > 3:
-                    stripped_word = stripped_word[0]
-                abbr_machine += stripped_word
+        # If 'ultimaker' is in machine type, we found an ultimaker machine!
+        if re.findall(r"\W*(ultimaker)\W*", active_machine_type_id):
+            abbr_machine += "UM"
+            # In this case, also scan for an edition (e.g. 'ultimaker3')
+            edition = re.findall(r"\W*ultimaker([0-9])*\W*", active_machine_type_id)
+            if edition:
+                abbr_machine += edition[0]
+
+        # Otherwise, just use the first 3 letters of the machine:
+        else:
+            stripped_name = self._stripAccents(active_machine_type_id.upper())
+            print("WAS ANOTHER TYPE", stripped_name)
+            # - use only the first character if the word is too long (> 4 characters)
+            # - use the whole word if it's not too long (<= 4 characters)
+            if len(stripped_name) > 4:
+                stripped_name = stripped_name[0]
+            abbr_machine += stripped_name
 
         self._abbr_machine = abbr_machine
 
