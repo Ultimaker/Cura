@@ -171,7 +171,7 @@ Rectangle
                 id: control
 
                 height: settingsModeSelection.height
-                width: Math.floor(0.5 * parent.width)
+                width: Math.floor(parent.width / 2)
 
                 anchors.left: parent.left
                 anchors.leftMargin: model.index * Math.floor(settingsModeSelection.width / 2)

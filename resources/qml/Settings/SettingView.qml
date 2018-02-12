@@ -204,7 +204,7 @@ Item
             iconSource: UM.Theme.getIcon("cross1")
             visible: findingSettings
 
-            height: parent.height * 0.4
+            height: Math.floor(parent.height * 0.4)
             width: visible ? height : 0
 
             anchors.verticalCenter: parent.verticalCenter
@@ -388,7 +388,7 @@ Item
                         contextMenu.provider = provider
                         contextMenu.popup();
                     }
-                    onShowTooltip: base.showTooltip(delegate, { x: -UM.Theme.getSize("default_arrow").width, y: delegate.height / 2 }, text)
+                    onShowTooltip: base.showTooltip(delegate, { x: -UM.Theme.getSize("default_arrow").width, y: Math.floor(delegate.height / 2) }, text)
                     onHideTooltip: base.hideTooltip()
                     onShowAllHiddenInheritedSettings:
                     {

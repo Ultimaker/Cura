@@ -121,13 +121,13 @@ QtObject {
                 Item
                 {
                     anchors.centerIn: parent
-                    width: textLabel.width + icon.width + Theme.getSize("default_margin").width / 2
+                    width: textLabel.width + icon.width + Math.floor(Theme.getSize("default_margin").width / 2)
                     Label
                     {
                         id: textLabel
                         text: control.text
                         anchors.right: icon.visible ? icon.left : parent.right
-                        anchors.rightMargin: icon.visible ? Theme.getSize("default_margin").width / 2 : 0
+                        anchors.rightMargin: icon.visible ? Math.floor(Theme.getSize("default_margin").width / 2) : 0
                         anchors.verticalCenter: parent.verticalCenter;
                         font: control.checked ? UM.Theme.getFont("large") : UM.Theme.getFont("large_nonbold")
                         color:
@@ -329,9 +329,9 @@ QtObject {
                     UM.RecolorImage {
                         id: tool_button_arrow
                         anchors.right: parent.right;
-                        anchors.rightMargin: (Theme.getSize("button").width - Theme.getSize("button_icon").width) / 4
+                        anchors.rightMargin: (Theme.getSize("button").width - Math.floor(Theme.getSize("button_icon").width) / 4)
                         anchors.bottom: parent.bottom;
-                        anchors.bottomMargin: (Theme.getSize("button").height - Theme.getSize("button_icon").height) / 4
+                        anchors.bottomMargin: (Theme.getSize("button").height - Math.floor(Theme.getSize("button_icon").height) / 4)
                         width: Theme.getSize("standard_arrow").width
                         height: Theme.getSize("standard_arrow").height
                         sourceSize.width: width
@@ -669,7 +669,7 @@ QtObject {
                     id: category_arrow
                     anchors.verticalCenter: parent.verticalCenter
                     anchors.right: parent.right
-                    anchors.rightMargin: Theme.getSize("default_margin").width * 3 - width / 2
+                    anchors.rightMargin: Theme.getSize("default_margin").width * 3 - Math.floor(width / 2)
                     width: Theme.getSize("standard_arrow").width
                     height: Theme.getSize("standard_arrow").height
                     sourceSize.width: width

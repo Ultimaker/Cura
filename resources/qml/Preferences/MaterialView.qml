@@ -98,7 +98,7 @@ TabView
                 Row {
                     width: scrollView.columnWidth
                     height:  parent.rowHeight
-                    spacing: Math.floor(UM.Theme.getSize("default_margin").width/2)
+                    spacing: Math.floor(UM.Theme.getSize("default_margin").width / 2)
 
                     // color indicator square
                     Rectangle {
