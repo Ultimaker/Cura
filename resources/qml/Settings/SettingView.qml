@@ -30,9 +30,9 @@ Item
         {
             top: parent.top
             left: parent.left
-            leftMargin: UM.Theme.getSize("sidebar_margin").width
+            leftMargin: Math.floor(UM.Theme.getSize("sidebar_margin").width)
             right: parent.right
-            rightMargin: UM.Theme.getSize("sidebar_margin").width
+            rightMargin: Math.floor(UM.Theme.getSize("sidebar_margin").width)
         }
 
         Label
@@ -87,7 +87,7 @@ Item
 
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.right: parent.right
-                anchors.rightMargin: UM.Theme.getSize("setting_preferences_button_margin").width - UM.Theme.getSize("sidebar_margin").width
+                anchors.rightMargin: Math.floor(UM.Theme.getSize("setting_preferences_button_margin").width - UM.Theme.getSize("sidebar_margin").width)
 
                 color: hovered ? UM.Theme.getColor("setting_control_button_hover") : UM.Theme.getColor("setting_control_button");
                 iconSource: UM.Theme.getIcon("star");
@@ -112,7 +112,7 @@ Item
         id: filterContainer
         visible: true
 
-        border.width: UM.Theme.getSize("default_lining").width
+        border.width: Math.floor(UM.Theme.getSize("default_lining").width)
         border.color:
         {
             if(hoverMouseArea.containsMouse || clearFilterButton.containsMouse)
@@ -132,9 +132,9 @@ Item
             top: globalProfileRow.bottom
             topMargin: UM.Theme.getSize("sidebar_margin").height
             left: parent.left
-            leftMargin: UM.Theme.getSize("sidebar_margin").width
+            leftMargin: Math.floor(UM.Theme.getSize("sidebar_margin").width)
             right: parent.right
-            rightMargin: UM.Theme.getSize("sidebar_margin").width
+            rightMargin: Math.floor(UM.Theme.getSize("sidebar_margin").width)
         }
         height: visible ? UM.Theme.getSize("setting_control").height : 0
         Behavior on height { NumberAnimation { duration: 100 } }
@@ -145,7 +145,7 @@ Item
 
             anchors.left: parent.left
             anchors.right: clearFilterButton.left
-            anchors.rightMargin: UM.Theme.getSize("sidebar_margin").width
+            anchors.rightMargin: Math.floor(UM.Theme.getSize("sidebar_margin").width)
 
             placeholderText: catalog.i18nc("@label:textbox", "Search...")
 
@@ -209,7 +209,7 @@ Item
 
             anchors.verticalCenter: parent.verticalCenter
             anchors.right: parent.right
-            anchors.rightMargin: UM.Theme.getSize("sidebar_margin").width
+            anchors.rightMargin: Math.floor(UM.Theme.getSize("sidebar_margin").width)
 
             color: UM.Theme.getColor("setting_control_button")
             hoverColor: UM.Theme.getColor("setting_control_button_hover")
@@ -238,7 +238,7 @@ Item
         ListView
         {
             id: contents
-            spacing: UM.Theme.getSize("default_lining").height;
+            spacing: Math.floor(UM.Theme.getSize("default_lining").height);
             cacheBuffer: 1000000;   // Set a large cache to effectively just cache every list item.
 
             model: UM.SettingDefinitionsModel
@@ -266,7 +266,7 @@ Item
             {
                 id: delegate
 
-                width: UM.Theme.getSize("sidebar").width;
+                width: Math.floor(UM.Theme.getSize("sidebar").width);
                 height: provider.properties.enabled == "True" ? UM.Theme.getSize("section").height : - contents.spacing
                 Behavior on height { NumberAnimation { duration: 100 } }
                 opacity: provider.properties.enabled == "True" ? 1 : 0
