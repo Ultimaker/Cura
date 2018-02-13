@@ -1168,11 +1168,11 @@ class MachineManager(QObject):
         return ""
 
     @pyqtProperty(str, notify = activeVariantChanged)
-    def activeVariantId(self) -> str:
+    def activeVariantName(self) -> str:
         if self._active_container_stack:
             variant = self._active_container_stack.variant
             if variant:
-                return variant.getId()
+                return variant.getName()
 
         return ""
 
@@ -1488,7 +1488,9 @@ class MachineManager(QObject):
         stacks.append(self._global_container_stack)
         return [ s.containersChanged for s in stacks ]
 
+    #
     # New
+    #
     def _setEmptyQuality(self):
         self._current_quality_group = None
         self._global_container_stack.quality = self._empty_quality_container
