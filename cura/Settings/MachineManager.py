@@ -132,6 +132,9 @@ class MachineManager(QObject):
         if containers:
             containers[0].nameChanged.connect(self._onMaterialNameChanged)
 
+        ### new
+        self._current_quality_group = None
+
     globalContainerChanged = pyqtSignal()  # Emitted whenever the global stack is changed (ie: when changing between printers, changing a global profile, but not when changing a value)
     activeMaterialChanged = pyqtSignal()
     activeVariantChanged = pyqtSignal()
@@ -1500,21 +1503,105 @@ class MachineManager(QObject):
         return [ s.containersChanged for s in stacks ]
 
     # New
+    def _setEmptyQuality(self):
+        self._current_quality_group = None
+        self._global_container_stack.quality = self._empty_quality_container
+        self._global_container_stack.qualityChanges = self._empty_quality_changes_container
+        for extruder in self._global_container_stack.extruders.values():
+            extruder.quality = self._empty_quality_container
+            extruder.qualityChanges = self._empty_quality_changes_container
+
+    def _setQualityGroup(self, quality_group, empty_quality_changes = True):
+        self._current_quality_group = quality_group
+        self._global_container_stack.quality = quality_group.node_for_global.getContainer()
+        if empty_quality_changes:
+            self._global_container_stack.qualityChanges = self._empty_quality_changes_container
+        for position, node in quality_group.nodes_for_extruders.items():
+            self._global_container_stack.extruders[position].quality = node.getContainer()
+            if empty_quality_changes:
+                self._global_container_stack.extruders[position].qualityChanges = self._empty_quality_changes_container
+
+    def _setVariantGroup(self, position, container_node):
+        self._global_container_stack.extruders[position].variant = container_node.getContainer()
+
+    def _setMaterial(self, position, container_node = None):
+        if container_node:
+            self._global_container_stack.extruders[position].material = container_node.getContainer()
+        else:
+            self._global_container_stack.extruders[position].material = self._empty_material_container
+
+    ## Update current quality type and machine after setting material
+    def _updateQualityWithMaterial(self):
+        current_quality = None
+        if self._current_quality_group:
+            current_quality = self._current_quality_group.quality_type
+        quality_manager = Application.getInstance()._quality_manager
+        candidate_quality_groups = quality_manager.getQualityGroups(self._global_container_stack)
+        available_quality_types = {qt for qt, g in candidate_quality_groups.items() if g.is_available}
+
+        if not available_quality_types:
+            self._setEmptyQuality()
+            return
+
+        if current_quality in available_quality_types:
+            self._setQualityGroup(candidate_quality_groups[current_quality], empty_quality_changes = False)
+            return
+
+        quality_type = sorted(list(available_quality_types))[0]
+        preferred_quality_type = self._global_container_stack.getMetaDataEntry("preferred_quality_type")
+        if preferred_quality_type in available_quality_types:
+            quality_type = preferred_quality_type
+
+        self._setQualityGroup(candidate_quality_groups[quality_type], empty_quality_changes = False)
+
+    def _updateMaterialWithVariant(self, position, current_material_base_name, current_variant_name):
+        material_manager = Application.getInstance()._material_manager
+        material_diameter = self._global_container_stack.getProperty("material_diameter", "value")
+        candidate_materials = material_manager.getAvailableMaterials(
+            self._global_container_stack.getId(),
+            current_variant_name,
+            material_diameter)
+
+        if not candidate_materials:
+            self._setMaterial(position, container_node = None)
+            return
+
+        if current_material_base_name in candidate_materials:
+            new_material = candidate_materials[current_material_base_name]
+            self._setMaterial(position, new_material)
+            return
+
+        # # Find a fallback material
+        # preferred_material_query = self._global_container_stack.getMetaDataEntry("preferred_material")
+        # preferred_material_key = preferred_material_query.replace("*", "")
+        # if preferred_material_key in candidate_materials:
+        #     self._setMaterial(position, candidate_materials[preferred_material_key])
+        #     return
+
+    @pyqtSlot(str, "QVariant")
+    def setMaterial(self, position, container_node):
+        Logger.log("d", "----------------  container = [%s]", container_node)
+        position = str(position)
+        self.blurSettings.emit()
+        with postponeSignals(*self._getContainerChangedSignals(), compress = CompressTechnique.CompressPerParameterValue):
+            self._setMaterial(position, container_node)
+            self._updateQualityWithMaterial()
+
     @pyqtSlot(str, "QVariant")
     def setVariantGroup(self, position, container_node):
         Logger.log("d", "----------------  container = [%s]", container_node)
         position = str(position)
         self.blurSettings.emit()
         with postponeSignals(*self._getContainerChangedSignals(), compress = CompressTechnique.CompressPerParameterValue):
-            self._global_container_stack.extruders[position].variant = container_node.getContainer()
+            self._setVariantGroup(position, container_node)
+            current_variant_name = container_node.metadata["name"]
+            current_material_base_name = self._global_container_stack.extruders[position].material.getMetaDataEntry("base_file")
+            self._updateMaterialWithVariant(position, current_material_base_name, current_variant_name)
+            self._updateQualityWithMaterial()
 
     @pyqtSlot("QVariant")
-    def handleQualityGroup(self, qg):
-        Logger.log("d", "----------------  qg = [%s]", qg.name)
+    def handleQualityGroup(self, quality_group):
+        Logger.log("d", "----------------  qg = [%s]", quality_group.name)
         self.blurSettings.emit()
         with postponeSignals(*self._getContainerChangedSignals(), compress = CompressTechnique.CompressPerParameterValue):
-            self._global_container_stack.quality = qg.node_for_global.getContainer()
-            self._global_container_stack.qualityChanges = self._empty_quality_changes_container
-            for position, node in qg.nodes_for_extruders.items():
-                self._global_container_stack.extruders[position].quality = node.getContainer()
-                self._global_container_stack.extruders[position].qualityChanges = self._empty_quality_changes_container
+            self._setQualityGroup(quality_group)
