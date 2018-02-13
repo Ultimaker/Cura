@@ -1,15 +1,15 @@
-# Cura JSON setting files
-# Copyright (C) 2017 Ultimaker
+# Cura
+# Copyright (C) 2018 Ultimaker
 # This file is distributed under the same license as the Cura package.
-# Ruben Dulek <r.dulek@ultimaker.com>, 2017.
+# Ruben Dulek <r.dulek@ultimaker.com>, 2018.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Cura 3.0\n"
+"Project-Id-Version: Cura 3.2\n"
 "Report-Msgid-Bugs-To: r.dulek@ultimaker.com\n"
-"POT-Creation-Date: 2017-08-02 16:53+0000\n"
+"POT-Creation-Date: 2018-01-29 09:48+0000\n"
 "PO-Revision-Date: 2017-11-30 13:05+0100\n"
-"Last-Translator: Bothof <info@bothof.nl>\n"
+"Last-Translator: Crea-3D <carmine.iacoviello@crea-3d.com>\n"
 "Language-Team: Italian\n"
 "Language: it_IT\n"
 "MIME-Version: 1.0\n"
@@ -383,7 +383,7 @@ msgstr "Poligono testa macchina"
 #: fdmprinter.def.json
 msgctxt "machine_head_polygon description"
 msgid "A 2D silhouette of the print head (fan caps excluded)."
-msgstr "Una silhouette 2D della testa di stampa (coperture  ventola escluse)."
+msgstr "Una silhouette 2D della testa di stampa (coperture ventola escluse)."
 
 #: fdmprinter.def.json
 msgctxt "machine_head_with_fans_polygon label"
@@ -393,7 +393,7 @@ msgstr "Poligono testa macchina e ventola"
 #: fdmprinter.def.json
 msgctxt "machine_head_with_fans_polygon description"
 msgid "A 2D silhouette of the print head (fan caps included)."
-msgstr "Una silhouette 2D della testa di stampa (coperture  ventola incluse)."
+msgstr "Una silhouette 2D della testa di stampa (coperture ventola incluse)."
 
 #: fdmprinter.def.json
 msgctxt "gantry_height label"
@@ -3560,7 +3560,7 @@ msgstr "Smoothing raft"
 #: fdmprinter.def.json
 msgctxt "raft_smoothing description"
 msgid "This setting controls how much inner corners in the raft outline are rounded. Inward corners are rounded to a semi circle with a radius equal to the value given here. This setting also removes holes in the raft outline which are smaller than such a circle."
-msgstr "Questa impostazione controlla l'entit� dell'arrotondamento degli angoli interni sul profilo raft. Gli angoli interni vengono arrotondati a semicerchio con un raggio pari al valore indicato. Questa impostazione elimina inoltre i fori sul profilo raft più piccoli di tale cerchio."
+msgstr "Questa impostazione controlla l'entità dell'arrotondamento degli angoli interni sul profilo raft. Gli angoli interni vengono arrotondati a semicerchio con un raggio pari al valore indicato. Questa impostazione elimina inoltre i fori sul profilo raft più piccoli di tale cerchio."
 
 #: fdmprinter.def.json
 msgctxt "raft_airgap label"
@@ -3590,7 +3590,7 @@ msgstr "Layers superiori del raft"
 #: fdmprinter.def.json
 msgctxt "raft_surface_layers description"
 msgid "The number of top layers on top of the 2nd raft layer. These are fully filled layers that the model sits on. 2 layers result in a smoother top surface than 1."
-msgstr "Numero di layers sulla parte superiore del secondo layer  del raft. Si tratta di layers completamente riempiti su cui poggia il modello. 2 layers danno come risultato una superficie superiore più levigata rispetto ad 1 solo layer."
+msgstr "Numero di layers sulla parte superiore del secondo layer del raft. Si tratta di layers completamente riempiti su cui poggia il modello. 2 layers danno come risultato una superficie superiore più levigata rispetto ad 1 solo layer."
 
 #: fdmprinter.def.json
 msgctxt "raft_surface_thickness label"
@@ -4425,7 +4425,7 @@ msgstr "Temperatura automatica"
 #: fdmprinter.def.json
 msgctxt "material_flow_dependent_temperature description"
 msgid "Change the temperature for each layer automatically with the average flow speed of that layer."
-msgstr "Modifica automaticamente la temperatura per ciascun layer  con la velocità media del flusso per tale strato."
+msgstr "Modifica automaticamente la temperatura per ciascun layer con la velocità media del flusso per tale strato."
 
 #: fdmprinter.def.json
 msgctxt "material_flow_temp_graph label"
