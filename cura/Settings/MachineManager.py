@@ -46,6 +46,7 @@ if TYPE_CHECKING:
 
 
 class MachineManager(QObject):
+
     def __init__(self, parent = None):
         super().__init__(parent)
 
@@ -132,8 +133,12 @@ class MachineManager(QObject):
         if containers:
             containers[0].nameChanged.connect(self._onMaterialNameChanged)
 
-        ### new
+        ### NEW
         self._current_quality_group = None
+
+    ### NEW
+    activeQualityGroupChanged = pyqtSignal()
+
 
     globalContainerChanged = pyqtSignal()  # Emitted whenever the global stack is changed (ie: when changing between printers, changing a global profile, but not when changing a value)
     activeMaterialChanged = pyqtSignal()
@@ -1494,13 +1499,19 @@ class MachineManager(QObject):
 
     def _setQualityGroup(self, quality_group, empty_quality_changes = True):
         self._current_quality_group = quality_group
+
+        # Set quality and quality_changes for the GlobalStack
         self._global_container_stack.quality = quality_group.node_for_global.getContainer()
         if empty_quality_changes:
             self._global_container_stack.qualityChanges = self._empty_quality_changes_container
+
+        # Set quality and quality_changes for each ExtruderStack
         for position, node in quality_group.nodes_for_extruders.items():
             self._global_container_stack.extruders[position].quality = node.getContainer()
             if empty_quality_changes:
                 self._global_container_stack.extruders[position].qualityChanges = self._empty_quality_changes_container
+
+        self.activeQualityGroupChanged.emit()
 
     def _setVariantGroup(self, position, container_node):
         self._global_container_stack.extruders[position].variant = container_node.getContainer()
@@ -1581,8 +1592,13 @@ class MachineManager(QObject):
             self._updateQualityWithMaterial()
 
     @pyqtSlot("QVariant")
-    def handleQualityGroup(self, quality_group):
+    def setQualityGroup(self, quality_group):
         Logger.log("d", "----------------  qg = [%s]", quality_group.name)
         self.blurSettings.emit()
         with postponeSignals(*self._getContainerChangedSignals(), compress = CompressTechnique.CompressPerParameterValue):
             self._setQualityGroup(quality_group)
+
+    @pyqtProperty("QVariant", fset = setQualityGroup, notify = activeQualityGroupChanged)
+    def activeQualityGroup(self):
+        return self._current_quality_group
+

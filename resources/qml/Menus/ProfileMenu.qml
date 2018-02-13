@@ -1,8 +1,8 @@
 // Copyright (c) 2016 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
-import QtQuick 2.2
-import QtQuick.Controls 1.1
+import QtQuick 2.8
+import QtQuick.Controls 1.4
 
 import UM 1.2 as UM
 import Cura 1.0 as Cura
@@ -11,25 +11,18 @@ Menu
 {
     id: menu
 
-    // TODO: single instance
-    Cura.NewQualityProfilesModel
-    {
-        id: qualityProfilesModel
-    }
-
     Instantiator
     {
-        model: qualityProfilesModel
+        model: Cura.NewQualityProfilesModel
 
         MenuItem
         {
             text: (model.layer_height != "") ? model.name + " - " + model.layer_height : model.name
             checkable: true
-            checked: Cura.MachineManager.activeQualityId == model.id
+            checked: Cura.MachineManager.activeQualityGroup.getName() == model.name
             exclusiveGroup: group
             onTriggered: {
-                Cura.MachineManager.handleQualityGroup(model.quality_group)
-                //Cura.MachineManager.setActiveQuality(model.id)
+                Cura.MachineManager.setQualityGroup(model.quality_group)
             }
             visible: model.available
         }
@@ -82,23 +75,4 @@ Menu
     MenuItem { action: Cura.Actions.resetProfile }
     MenuSeparator { }
     MenuItem { action: Cura.Actions.manageProfiles }
-
-    function getFilter(initial_conditions)
-    {
-        var result = initial_conditions;
-
-        if(Cura.MachineManager.filterQualityByMachine)
-        {
-            result.definition = Cura.MachineManager.activeQualityDefinitionId;
-            if(Cura.MachineManager.hasMaterials)
-            {
-                result.material = Cura.MachineManager.activeQualityMaterialId;
-            }
-        }
-        else
-        {
-            result.definition = "fdmprinter"
-        }
-        return result
-    }
 }

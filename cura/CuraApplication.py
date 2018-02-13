@@ -388,6 +388,8 @@ class CuraApplication(QtApplication):
 
         self.getCuraSceneController().setActiveBuildPlate(0)  # Initialize
 
+        self._new_quality_profile_model = None
+
         CuraApplication.Created = True
 
     @pyqtSlot(str, result = str)
@@ -896,6 +898,11 @@ class CuraApplication(QtApplication):
     def getPrintInformation(self):
         return self._print_information
 
+    def getNewQualityProfileModel(self, *args, **kwargs):
+        if self._new_quality_profile_model is None:
+            self._new_quality_profile_model = NewQualityProfilesModel(self)
+        return self._new_quality_profile_model
+
     ##  Registers objects for the QML engine to use.
     #
     #   \param engine The QML engine.
@@ -928,7 +935,7 @@ class CuraApplication(QtApplication):
         qmlRegisterType(GenericMaterialsModel, "Cura", 1, 0, "GenericMaterialsModel")
         qmlRegisterType(BrandMaterialsModel, "Cura", 1, 0, "BrandMaterialsModel")
 
-        qmlRegisterType(NewQualityProfilesModel, "Cura", 1, 0, "NewQualityProfilesModel")
+        qmlRegisterSingletonType(NewQualityProfilesModel, "Cura", 1, 0, "NewQualityProfilesModel", self.getNewQualityProfileModel)
         qmlRegisterType(NozzleModel, "Cura", 1, 0, "NozzleModel")
 
         qmlRegisterType(MaterialsModel, "Cura", 1, 0, "MaterialsModel")

@@ -55,9 +55,8 @@ class QualityChangesGroup:
 
 class QualityGroup(ContainerGroup):
 
-    def __init__(self, name, quality_type, parent = None):
-        super().__init__(parent)
-        self.name = name
+    def __init__(self, name: str, quality_type: str, parent = None):
+        super().__init__(name, parent)
         self.quality_type = quality_type
         self.is_available = False
 

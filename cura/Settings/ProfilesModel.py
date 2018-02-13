@@ -2,23 +2,22 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from collections import OrderedDict
+from typing import List, TYPE_CHECKING
 
 from PyQt5.QtCore import Qt
 
 from UM.Application import Application
+from UM.Logger import Logger
+from UM.Qt.ListModel import ListModel
 from UM.Settings.ContainerRegistry import ContainerRegistry
 from UM.Settings.Models.InstanceContainersModel import InstanceContainersModel
 
 from cura.QualityManager import QualityManager
 from cura.Settings.ExtruderManager import ExtruderManager
-
-from typing import List, TYPE_CHECKING
+from cura.Machines.QualityManager import QualityGroup
 
 if TYPE_CHECKING:
     from cura.Settings.ExtruderStack import ExtruderStack
-
-
-from UM.Qt.ListModel import ListModel
 
 
 class NewQualityProfilesModel(ListModel):
@@ -39,32 +38,35 @@ class NewQualityProfilesModel(ListModel):
         self.addRoleName(self.AvailableRole, "available")
         self.addRoleName(self.QualityGroupRole, "quality_group")
 
-        # TODO: connect signals
+        # connect signals
         Application.getInstance().globalContainerStackChanged.connect(self._update)
-        Application.getInstance().getMachineManager().activeVariantChanged.connect(self._update)
-        Application.getInstance().getMachineManager().activeStackChanged.connect(self._update)
-        Application.getInstance().getMachineManager().activeMaterialChanged.connect(self._update)
+        Application.getInstance().getMachineManager().activeQualityGroupChanged.connect(self._update)
+
+        self._quality_manager = Application.getInstance()._quality_manager
+
+        self._layer_height_unit = ""  # This is cached
 
     def _update(self):
-        # TODO: get all available qualities
-        self.items.clear()
+        Logger.log("d", "Updating quality profile model ...")
 
-        quality_manager = Application.getInstance()._quality_manager
         active_global_stack = Application.getInstance().getMachineManager()._global_container_stack
         if active_global_stack is None:
             self.setItems([])
+            Logger.log("d", "No active GlobalStack, set quality profile model as empty.")
             return
 
-        quality_group_dict = quality_manager.getQualityGroups(active_global_stack)
+        quality_group_dict = self._quality_manager.getQualityGroups(active_global_stack)
 
         item_list = []
-
         for key in sorted(quality_group_dict):
             quality_group = quality_group_dict[key]
 
-            item = {"id": "TODO",
+            layer_height = self._fetchLayerHeight(quality_group)
+
+            item = {"id": "TODO",  # TODO: probably will be removed
                     "name": quality_group.name,
-                    "layer_height": "TODO",
+                    "layer_height": layer_height + self._layer_height_unit,
+                    "layer_height_without_unit": layer_height,
                     "available": quality_group.is_available,
                     "quality_group": quality_group}
 
@@ -72,6 +74,31 @@ class NewQualityProfilesModel(ListModel):
 
         self.setItems(item_list)
 
+    def _fetchLayerHeight(self, quality_group: "QualityGroup"):
+        active_global_stack = Application.getInstance().getMachineManager()._global_container_stack
+        if not self._layer_height_unit:
+            unit = active_global_stack.definition.getProperty("layer_height", "unit")
+            if not unit:
+                unit = ""
+            self._layer_height_unit = unit
+
+        if not quality_group.is_available:
+            return ""
+
+        # Get layer_height from the quality profile for the GlobalStack
+        container = quality_group.node_for_global.getContainer()
+
+        layer_height = ""
+        if container.hasProperty("layer_height", "value"):
+            layer_height = str(container.getProperty("layer_height", "value"))
+        else:
+            # Look for layer_height in the GlobalStack from material -> definition
+            for idx in range(4):
+                container = active_global_stack.getContainer(idx)
+                if container.hasProperty("layer_height", "value"):
+                    layer_height = container.getProperty("layer_height", "value")
+                    break
+        return str(layer_height)
 
 
 ##  QML Model for listing the current list of valid quality profiles.
