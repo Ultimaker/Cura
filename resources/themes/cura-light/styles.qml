@@ -121,7 +121,7 @@ QtObject {
                 Item
                 {
                     anchors.centerIn: parent
-                    width: textLabel.width + icon.width + Math.floor(Theme.getSize("default_margin").width / 2)
+                    width: Math.floor(textLabel.width + icon.width + Theme.getSize("default_margin").width / 2)
                     Label
                     {
                         id: textLabel
@@ -329,9 +329,9 @@ QtObject {
                     UM.RecolorImage {
                         id: tool_button_arrow
                         anchors.right: parent.right;
-                        anchors.rightMargin: (Theme.getSize("button").width - Math.floor(Theme.getSize("button_icon").width) / 4)
+                        anchors.rightMargin: Theme.getSize("button").width - Math.floor(Theme.getSize("button_icon").width / 4)
                         anchors.bottom: parent.bottom;
-                        anchors.bottomMargin: (Theme.getSize("button").height - Math.floor(Theme.getSize("button_icon").height) / 4)
+                        anchors.bottomMargin: Theme.getSize("button").height - Math.floor(Theme.getSize("button_icon").height / 4)
                         width: Theme.getSize("standard_arrow").width
                         height: Theme.getSize("standard_arrow").height
                         sourceSize.width: width
