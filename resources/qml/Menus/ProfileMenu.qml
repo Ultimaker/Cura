@@ -11,9 +11,15 @@ Menu
 {
     id: menu
 
+    // TODO: single instance
+    Cura.NewQualityProfilesModel
+    {
+        id: qualityProfilesModel
+    }
+
     Instantiator
     {
-        model: Cura.ProfilesModel 
+        model: qualityProfilesModel
 
         MenuItem
         {
@@ -21,7 +27,10 @@ Menu
             checkable: true
             checked: Cura.MachineManager.activeQualityId == model.id
             exclusiveGroup: group
-            onTriggered: Cura.MachineManager.setActiveQuality(model.id)
+            onTriggered: {
+                Cura.MachineManager.handleQualityGroup(model.quality_group)
+                //Cura.MachineManager.setActiveQuality(model.id)
+            }
             visible: model.available
         }
 

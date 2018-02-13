@@ -52,7 +52,8 @@ from UM.Settings.SettingDefinition import SettingDefinition, DefinitionPropertyT
 from UM.Settings.ContainerRegistry import ContainerRegistry
 from UM.Settings.SettingFunction import SettingFunction
 from cura.Settings.MachineNameValidator import MachineNameValidator
-from cura.Settings.ProfilesModel import ProfilesModel
+from cura.Settings.NozzleModel import NozzleModel
+from cura.Settings.ProfilesModel import ProfilesModel, NewQualityProfilesModel
 from cura.Settings.MaterialsModel import MaterialsModel, BrandMaterialsModel, GenericMaterialsModel
 from cura.Settings.QualityAndUserProfilesModel import QualityAndUserProfilesModel
 from cura.Settings.SettingInheritanceManager import SettingInheritanceManager
@@ -60,6 +61,7 @@ from cura.Settings.UserProfilesModel import UserProfilesModel
 from cura.Settings.SimpleModeSettingsManager import SimpleModeSettingsManager
 
 from cura.Machines.VariantManager import VariantManager
+from cura.Machines.QualityManager import QualityGroup
 
 
 from . import PlatformPhysics
@@ -738,6 +740,10 @@ class CuraApplication(QtApplication):
         self._material_manager = MaterialManager(container_registry)
         self._material_manager.initialize()
 
+        from cura.Machines.QualityManager import QualityManager
+        self._quality_manager = QualityManager(container_registry)
+        self._quality_manager.initialize()
+
         # Check if we should run as single instance or not
         self._setUpSingleInstanceServer()
 
@@ -921,6 +927,9 @@ class CuraApplication(QtApplication):
 
         qmlRegisterType(GenericMaterialsModel, "Cura", 1, 0, "GenericMaterialsModel")
         qmlRegisterType(BrandMaterialsModel, "Cura", 1, 0, "BrandMaterialsModel")
+
+        qmlRegisterType(NewQualityProfilesModel, "Cura", 1, 0, "NewQualityProfilesModel")
+        qmlRegisterType(NozzleModel, "Cura", 1, 0, "NozzleModel")
 
         qmlRegisterType(MaterialsModel, "Cura", 1, 0, "MaterialsModel")
         qmlRegisterType(QualityAndUserProfilesModel, "Cura", 1, 0, "QualityAndUserProfilesModel")

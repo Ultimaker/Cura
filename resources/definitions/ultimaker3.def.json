@@ -17,6 +17,7 @@
         "has_variants": true,
         "preferred_variant": "*aa04*",
         "preferred_quality": "*Normal*",
+        "preferred_quality_type": "fine",
         "variants_name": "Print core",
         "machine_extruder_trains":
         {

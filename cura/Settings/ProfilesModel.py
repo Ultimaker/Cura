@@ -18,6 +18,62 @@ if TYPE_CHECKING:
     from cura.Settings.ExtruderStack import ExtruderStack
 
 
+from UM.Qt.ListModel import ListModel
+
+
+class NewQualityProfilesModel(ListModel):
+    IdRole = Qt.UserRole + 1
+    NameRole = Qt.UserRole + 2
+    QualityTypeRole = Qt.UserRole + 3
+    LayerHeightRole = Qt.UserRole + 4
+    AvailableRole = Qt.UserRole + 5
+    QualityGroupRole = Qt.UserRole + 6
+
+    def __init__(self, parent = None):
+        super().__init__(parent)
+
+        self.addRoleName(self.IdRole, "id")
+        self.addRoleName(self.NameRole, "name")
+        self.addRoleName(self.QualityTypeRole, "quality_type")
+        self.addRoleName(self.LayerHeightRole, "layer_height")
+        self.addRoleName(self.AvailableRole, "available")
+        self.addRoleName(self.QualityGroupRole, "quality_group")
+
+        # TODO: connect signals
+        Application.getInstance().globalContainerStackChanged.connect(self._update)
+        Application.getInstance().getMachineManager().activeVariantChanged.connect(self._update)
+        Application.getInstance().getMachineManager().activeStackChanged.connect(self._update)
+        Application.getInstance().getMachineManager().activeMaterialChanged.connect(self._update)
+
+    def _update(self):
+        # TODO: get all available qualities
+        self.items.clear()
+
+        quality_manager = Application.getInstance()._quality_manager
+        active_global_stack = Application.getInstance().getMachineManager()._global_container_stack
+        if active_global_stack is None:
+            self.setItems([])
+            return
+
+        quality_group_dict = quality_manager.getQualityGroups(active_global_stack)
+
+        item_list = []
+
+        for key in sorted(quality_group_dict):
+            quality_group = quality_group_dict[key]
+
+            item = {"id": "TODO",
+                    "name": quality_group.name,
+                    "layer_height": "TODO",
+                    "available": quality_group.is_available,
+                    "quality_group": quality_group}
+
+            item_list.append(item)
+
+        self.setItems(item_list)
+
+
+
 ##  QML Model for listing the current list of valid quality profiles.
 #
 class ProfilesModel(InstanceContainersModel):

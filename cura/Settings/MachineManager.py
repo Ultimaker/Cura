@@ -1509,12 +1509,12 @@ class MachineManager(QObject):
             self._global_container_stack.extruders[position].variant = container_node.getContainer()
 
     @pyqtSlot("QVariant")
-    def handleQualityGroup(self, quality_group):
-        Logger.log("d", "----------------  qg = [%s]", quality_group.name)
+    def handleQualityGroup(self, qg):
+        Logger.log("d", "----------------  qg = [%s]", qg.name)
         self.blurSettings.emit()
         with postponeSignals(*self._getContainerChangedSignals(), compress = CompressTechnique.CompressPerParameterValue):
-            self._global_container_stack.quality = quality_group.node_for_global.getContainer()
+            self._global_container_stack.quality = qg.node_for_global.getContainer()
             self._global_container_stack.qualityChanges = self._empty_quality_changes_container
-            for position, node in quality_group.nodes_for_extruders.items():
+            for position, node in qg.nodes_for_extruders.items():
                 self._global_container_stack.extruders[position].quality = node.getContainer()
                 self._global_container_stack.extruders[position].qualityChanges = self._empty_quality_changes_container
