@@ -652,25 +652,6 @@ class MachineManager(QObject):
 
         return 0 # No quality profile.
 
-    ##  Get the Material ID associated with the currently active material
-    #   \returns MaterialID (string) if found, empty string otherwise
-    @pyqtProperty(str, notify=activeQualityChanged)
-    def activeQualityMaterialId(self) -> str:
-        if self._active_container_stack:
-            quality = self._active_container_stack.quality
-            if quality:
-                material_id = quality.getMetaDataEntry("material")
-                if material_id:
-                    # if the currently active machine inherits its qualities from a different machine
-                    # definition, make sure to return a material that is relevant to that machine definition
-                    definition_id = self.activeDefinitionId
-                    quality_definition_id = self.activeQualityDefinitionId
-                    if definition_id != quality_definition_id:
-                        material_id = material_id.replace(definition_id, quality_definition_id, 1)
-
-                    return material_id
-        return ""
-
     @pyqtProperty(str, notify=activeQualityChanged)
     def activeQualityName(self) -> str:
         if self._active_container_stack and self._global_container_stack:
