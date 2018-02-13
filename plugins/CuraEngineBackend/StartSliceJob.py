@@ -55,19 +55,19 @@ class GcodeStartEndFormatter(Formatter):
                         extruder_nr = int(kwargs["-1"][key_fragments[1]]) # get extruder_nr values from the global stack
                     except (KeyError, ValueError):
                         # either the key does not exist, or the value is not an int
-                        Logger.log("w", "Unable to determine stack nr '%s' for key '%s' in start/end gcode, using global stack", key_fragments[1], key_fragments[0])
+                        Logger.log("w", "Unable to determine stack nr '%s' for key '%s' in start/end g-code, using global stack", key_fragments[1], key_fragments[0])
             elif len(key_fragments) != 1:
-                Logger.log("w", "Incorrectly formatted placeholder '%s' in start/end gcode", key)
+                Logger.log("w", "Incorrectly formatted placeholder '%s' in start/end g-code", key)
                 return "{" + str(key) + "}"
 
             key = key_fragments[0]
             try:
                 return kwargs[str(extruder_nr)][key]
             except KeyError:
-                Logger.log("w", "Unable to replace '%s' placeholder in start/end gcode", key)
+                Logger.log("w", "Unable to replace '%s' placeholder in start/end g-code", key)
                 return "{" + key + "}"
         else:
-            Logger.log("w", "Incorrectly formatted placeholder '%s' in start/end gcode", key)
+            Logger.log("w", "Incorrectly formatted placeholder '%s' in start/end g-code", key)
             return "{" + str(key) + "}"
 
 
@@ -308,7 +308,7 @@ class StartSliceJob(Job):
             settings["default_extruder_nr"] = default_extruder_nr
             return str(fmt.format(value, **settings))
         except:
-            Logger.logException("w", "Unable to do token replacement on start/end gcode")
+            Logger.logException("w", "Unable to do token replacement on start/end g-code")
             return str(value)
 
     ##  Create extruder message from stack

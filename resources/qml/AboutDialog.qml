@@ -117,7 +117,7 @@ UM.Dialog
             {
                 projectsModel.append({ name:"Cura", description: catalog.i18nc("@label", "Graphical user interface"), license: "LGPLv3", url: "https://github.com/Ultimaker/Cura" });
                 projectsModel.append({ name:"Uranium", description: catalog.i18nc("@label", "Application framework"), license: "LGPLv3", url: "https://github.com/Ultimaker/Uranium" });
-                projectsModel.append({ name:"CuraEngine", description: catalog.i18nc("@label", "GCode generator"), license: "AGPLv3", url: "https://github.com/Ultimaker/CuraEngine" });
+                projectsModel.append({ name:"CuraEngine", description: catalog.i18nc("@label", "G-code generator"), license: "AGPLv3", url: "https://github.com/Ultimaker/CuraEngine" });
                 projectsModel.append({ name:"libArcus", description: catalog.i18nc("@label", "Interprocess communication library"), license: "LGPLv3", url: "https://github.com/Ultimaker/libArcus" });
 
                 projectsModel.append({ name:"Python", description: catalog.i18nc("@label", "Programming language"), license: "Python", url: "http://python.org/" });

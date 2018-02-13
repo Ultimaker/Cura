@@ -51,8 +51,8 @@
                 },
                 "machine_start_gcode":
                 {
-                    "label": "Start GCode",
-                    "description": "Gcode commands to be executed at the very start - separated by \\n.",
+                    "label": "Start G-code",
+                    "description": "G-code commands to be executed at the very start - separated by \\n.",
                     "default_value": "G28 ;Home\nG1 Z15.0 F6000 ;Move the platform down 15mm\n;Prime the extruder\nG92 E0\nG1 F200 E3\nG92 E0",
                     "type": "str",
                     "settable_per_mesh": false,
@@ -61,8 +61,8 @@
                 },
                 "machine_end_gcode":
                 {
-                    "label": "End GCode",
-                    "description": "Gcode commands to be executed at the very end - separated by \\n.",
+                    "label": "End G-code",
+                    "description": "G-code commands to be executed at the very end - separated by \\n.",
                     "default_value": "M104 S0\nM140 S0\n;Retract the filament\nG92 E1\nG1 E-1 F300\nG28 X0 Y0\nM84",
                     "type": "str",
                     "settable_per_mesh": false,
@@ -312,8 +312,8 @@
                 },
                 "machine_gcode_flavor":
                 {
-                    "label": "Gcode flavour",
-                    "description": "The type of gcode to be generated.",
+                    "label": "G-code flavour",
+                    "description": "The type of g-code to be generated.",
                     "type": "enum",
                     "options":
                     {
@@ -4947,7 +4947,7 @@
                 "meshfix_keep_open_polygons":
                 {
                     "label": "Keep Disconnected Faces",
-                    "description": "Normally Cura tries to stitch up small holes in the mesh and remove parts of a layer with big holes. Enabling this option keeps those parts which cannot be stitched. This option should be used as a last resort option when everything else fails to produce proper GCode.",
+                    "description": "Normally Cura tries to stitch up small holes in the mesh and remove parts of a layer with big holes. Enabling this option keeps those parts which cannot be stitched. This option should be used as a last resort option when everything else fails to produce proper g-code.",
                     "type": "bool",
                     "default_value": false,
                     "settable_per_mesh": true
@@ -5162,7 +5162,7 @@
                 "relative_extrusion":
                 {
                     "label": "Relative Extrusion",
-                    "description": "Use relative extrusion rather than absolute extrusion. Using relative E-steps makes for easier post-processing of the Gcode. However, it's not supported by all printers and it may produce very slight deviations in the amount of deposited material compared to absolute E-steps. Irrespective of this setting, the extrusion mode will always be set to absolute before any Gcode script is output.",
+                    "description": "Use relative extrusion rather than absolute extrusion. Using relative E-steps makes for easier post-processing of the g-code. However, it's not supported by all printers and it may produce very slight deviations in the amount of deposited material compared to absolute E-steps. Irrespective of this setting, the extrusion mode will always be set to absolute before any g-code script is output.",
                     "type": "bool",
                     "default_value": false,
                     "value": "machine_gcode_flavor==\"RepRap (RepRap)\"",

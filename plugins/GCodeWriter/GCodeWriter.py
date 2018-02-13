@@ -56,7 +56,7 @@ class GCodeWriter(MeshWriter):
     #   file. This must always be text mode.
     def write(self, stream, nodes, mode = MeshWriter.OutputMode.TextMode):
         if mode != MeshWriter.OutputMode.TextMode:
-            Logger.log("e", "GCode Writer does not support non-text mode.")
+            Logger.log("e", "GCodeWriter does not support non-text mode.")
             return False
 
         active_build_plate = Application.getInstance().getBuildPlateModel().activeBuildPlate
@@ -108,7 +108,7 @@ class GCodeWriter(MeshWriter):
 
         container_with_profile = stack.qualityChanges
         if container_with_profile.getId() == "empty_quality_changes":
-            Logger.log("e", "No valid quality profile found, not writing settings to GCode!")
+            Logger.log("e", "No valid quality profile found, not writing settings to g-code!")
             return ""
 
         flat_global_container = self._createFlattenedContainerInstance(stack.getTop(), container_with_profile)
