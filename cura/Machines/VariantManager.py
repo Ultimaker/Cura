@@ -72,8 +72,8 @@ class VariantManager:
     # Gets the variant InstanceContainer with the given information.
     # Almost the same as getVariantMetadata() except that this returns an InstanceContainer if present.
     #
-    def getVariant(self, machine_type_name: str, variant_name: str,
-                   variant_type: Optional[str] = None) -> Optional["InstanceContainer"]:
+    def getVariantNode(self, machine_type_name: str, variant_name: str,
+                       variant_type: Optional[str] = None) -> Optional["InstanceContainer"]:
         return self._machine_to_variant_dict_map[machine_type_name].get(variant_name)
 
     def getVariantNodes(self, machine: "GlobalStack"):

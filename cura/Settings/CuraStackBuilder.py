@@ -44,7 +44,7 @@ class CuraStackBuilder:
         if parseBool(machine_definition.getMetaDataEntry("has_variants", False)):
             variant_name = machine_definition.getMetaDataEntry("preferred_variant_name")
             if variant_name:
-                variant_node = variant_manager.getVariant(definition_id, variant_name)
+                variant_node = variant_manager.getVariantNode(definition_id, variant_name)
                 # Sanity check. If you see this error, the related definition files should be fixed.
                 if variant_node is None:
                     raise RuntimeError("Cannot find variant with definition [%s] and variant name [%s]" % (definition_id, variant_name))
