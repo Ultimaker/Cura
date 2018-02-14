@@ -55,7 +55,9 @@ class CuraStackBuilder:
         # Only look for the preferred material if this machine has materials
         if parseBool(machine_definition.getMetaDataEntry("has_materials", False)):
             material_diameter = machine_definition.getProperty("material_diameter", "value")
+            approximate_material_diameter = str(round(material_diameter))
             root_material_id = machine_definition.getMetaDataEntry("preferred_material")
+            root_material_id = material_manager.getRootMaterialIDForDiameter(root_material_id, approximate_material_diameter)
             material_node = material_manager.getMaterialNode(definition_id, variant_name, material_diameter, root_material_id)
             # Sanity check. If you see this error, the related definition files should be fixed.
             if not material_node:

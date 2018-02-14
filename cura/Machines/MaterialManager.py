@@ -1,3 +1,4 @@
+from collections import defaultdict
 from typing import Optional
 
 from PyQt5.Qt import QTimer, QObject, pyqtSignal
@@ -37,6 +38,7 @@ class MaterialManager(QObject):
         self._fallback_materials_map = dict()  # material_type -> generic material metadata
         self._material_group_map = dict()  # root_material_id -> MaterialGroup
         self._diameter_machine_variant_material_map = dict()  # diameter -> dict(machine_definition_id -> MaterialNode)
+        self._material_diameter_map = defaultdict()  # root_material_id -> diameter -> root_material_id for that diameter
 
         # The machine definition ID for the non-machine-specific materials.
         # This is used as the last fallback option if the given machine-specific material(s) cannot be found.
@@ -58,7 +60,7 @@ class MaterialManager(QObject):
         self._material_group_map = {}
         self._diameter_machine_variant_material_map = {}
 
-        # Table #1
+        # Map #1
         #    root_material_id -> MaterialGroup
         for material_metadata in material_metadata_list:
             material_id = material_metadata["id"]
@@ -78,7 +80,7 @@ class MaterialManager(QObject):
                 new_node = MaterialNode(material_metadata)
                 group.derived_material_node_list.append(new_node)
 
-        # Table #2
+        # Map #2
         # Lookup table for material type -> fallback material metadata
         grouped_by_type_dict = dict()
         for root_material_id, material_node in self._material_group_map.items():
@@ -91,7 +93,35 @@ class MaterialManager(QObject):
                 grouped_by_type_dict[material_type] = material_node.root_material_node.metadata
         self._fallback_materials_map = grouped_by_type_dict
 
-        # Table #3
+        # Map #3
+        # There can be multiple material profiles for the same material with different diameters, such as "generic_pla"
+        # and "generic_pla_175". This is inconvenient when we do material-specific quality lookup because a quality can
+        # be for either "generic_pla" or "generic_pla_175", but not both. This map helps to get the correct material ID
+        # for quality search.
+        self._material_diameter_map = defaultdict(defaultdict)
+
+        # Group the material IDs by the same name, material, brand, and color but with different diameters.
+        material_group_dict = dict()
+        keys_to_fetch = ("name", "material", "brand", "color")
+        for root_material_id, machine_node in self._material_group_map.items():
+            root_material_metadata = machine_node.root_material_node.metadata
+
+            key_data = []
+            for key in keys_to_fetch:
+                key_data.append(root_material_metadata.get(key))
+            key_data = tuple(key_data)
+
+            if key_data not in material_group_dict:
+                material_group_dict[key_data] = dict()
+            approximate_diameter = root_material_metadata.get("approximate_diameter")
+            material_group_dict[key_data][approximate_diameter] = root_material_metadata["id"]
+
+        for data_dict in material_group_dict.values():
+            for rmid1 in data_dict.values():
+                for ad2, rmid2 in data_dict.items():
+                    self._material_diameter_map[rmid1][ad2] = rmid2
+
+        # Map #4
         #    "machine" -> "variant_name" -> "root material ID" -> specific material InstanceContainer
         # Construct the "machine" -> "variant" -> "root material ID" -> specific material InstanceContainer
         for material_metadata in material_metadata_list:
@@ -148,43 +178,8 @@ class MaterialManager(QObject):
     def getMaterialGroup(self, root_material_id: str) -> Optional[MaterialGroup]:
         return self._material_group_map.get(root_material_id)
 
-    def _test_metadata(self):
-        # print all metadata
-        import os
-        with open("c:/workspace/guid_map.txt", "w", encoding = "utf-8") as f:
-            for machine_id, node in self._guid_to_root_materials_map.items():
-                f.write((" -   %s   ->   %s" % (machine_id, node.metadata["id"])) + os.linesep)
-
-        if False:
-            with open("c:/workspace/material_map.txt", "w", encoding = "utf-8") as f:
-                for machine_id in self._machine_variant_material_map:
-                    f.write((" ->   %s" % machine_id) + os.linesep)
-
-        test_cases = [{"machine": "ultimaker3", "variant": "AA 0.4", "material": "generic_pla", "diameter": 2.85},
-                      {"machine": "ultimaker2_plus", "variant": None, "material": "generic_abs", "diameter": 2.85},
-                      {"machine": "fdmprinter", "variant": None, "material": "generic_cpe", "diameter": 2.85},
-                      {"machine": "fdmprinter", "variant": None, "material": "generic_abs_175", "diameter": 2.85},
-                      {"machine": "fdmprinter", "variant": None, "material": "generic_nylon", "diameter": 1.75},
-                      {"machine": "fdmprinter", "variant": None, "material": "generic_nylon_175", "diameter": 1.75},
-                      ]
-        for tc in test_cases:
-            result = self.getMaterialNode(
-                tc['machine'],
-                tc['variant'],
-                tc['diameter'],
-                tc['material'])
-            tc['result_id'] = result.getContainer().getId() if result else "None"
-            Logger.log("d", "!!!!!!!! MaterialManager test: %s", tc)
-
-        # test available materials
-        with open("c:/workspace/test.txt", "w", encoding="utf-8") as f:
-            for tc in test_cases:
-                result = self.getAvailableMaterials(tc['machine'],
-                                                    tc['variant'],
-                                                    tc['diameter'])
-                f.write("--- [%s] [%s] [%s]:" % (tc['machine'], tc['variant'], tc['diameter']) + "\n")
-                for r, md in result.items():
-                    f.write("     -   %s  ->  %s" % (r, md["id"]) + "\n")
+    def getRootMaterialIDForDiameter(self, root_material_id: str, approximate_diameter: str) -> str:
+        return self._material_diameter_map.get(root_material_id).get(approximate_diameter, root_material_id)
 
     #
     # Return a dict with all root material IDs (k) and ContainerNodes (v) that's suitable for the given setup.
