@@ -1,10 +1,10 @@
-# TweakAtZ script - Change printing parameters at a given height
+# ChangeAtZ script - Change printing parameters at a given height
 # This script is the successor of the TweakAtZ plugin for legacy Cura.
 # It contains code from the TweakAtZ plugin V1.0-V4.x and from the ExampleScript by Jaime van Kessel, Ultimaker B.V.
 # It runs with the PostProcessingPlugin which is released under the terms of the AGPLv3 or higher.
 # This script is licensed under the Creative Commons - Attribution - Share Alike (CC BY-SA) terms
 
-#Authors of the TweakAtZ plugin / script:
+#Authors of the ChangeAtZ plugin / script:
 # Written by Steven Morlock, smorloc@gmail.com
 # Modified by Ricardo Gomez, ricardoga@otulook.com, to add Bed Temperature and make it work with Cura_13.06.04+
 # Modified by Stefan Heule, Dim3nsioneer@gmx.ch since V3.0 (see changelog below)
@@ -46,7 +46,7 @@ from ..Script import Script
 #from UM.Logger import Logger
 import re
 
-class TweakAtZ(Script):
+class ChangeAtZ(Script):
     version = "5.1.1"
     def __init__(self):
         super().__init__()
@@ -54,7 +54,7 @@ class TweakAtZ(Script):
     def getSettingDataString(self):
         return """{
             "name":"ChangeAtZ """ + self.version + """ (Experimental)",
-            "key":"TweakAtZ",
+            "key":"ChangeAtZ",
             "metadata": {},
             "version": 2,
             "settings":
@@ -109,7 +109,7 @@ class TweakAtZ(Script):
                     "maximum_value_warning": "50",
                     "enabled": "c_behavior == 'keep_value'"
                 },
-                "e1_Tweak_speed":
+                "e1_Change_speed":
                 {
                     "label": "Change Speed",
                     "description": "Select if total speed (print and travel) has to be cahnged",
@@ -126,9 +126,9 @@ class TweakAtZ(Script):
                     "minimum_value": "1",
                     "minimum_value_warning": "10",
                     "maximum_value_warning": "200",
-                    "enabled": "e1_Tweak_speed"
+                    "enabled": "e1_Change_speed"
                 },
-                "f1_Tweak_printspeed":
+                "f1_Change_printspeed":
                 {
                     "label": "Change Print Speed",
                     "description": "Select if print speed has to be changed",
@@ -145,9 +145,9 @@ class TweakAtZ(Script):
                     "minimum_value": "1",
                     "minimum_value_warning": "10",
                     "maximum_value_warning": "200",
-                    "enabled": "f1_Tweak_printspeed"
+                    "enabled": "f1_Change_printspeed"
                 },
-                "g1_Tweak_flowrate":
+                "g1_Change_flowrate":
                 {
                     "label": "Change Flow Rate",
                     "description": "Select if flow rate has to be changed",
@@ -164,9 +164,9 @@ class TweakAtZ(Script):
                     "minimum_value": "1",
                     "minimum_value_warning": "10",
                     "maximum_value_warning": "200",
-                    "enabled": "g1_Tweak_flowrate"
+                    "enabled": "g1_Change_flowrate"
                 },
-                "g3_Tweak_flowrateOne":
+                "g3_Change_flowrateOne":
                 {
                     "label": "Change Flow Rate 1",
                     "description": "Select if first extruder flow rate has to be changed",
@@ -183,9 +183,9 @@ class TweakAtZ(Script):
                     "minimum_value": "1",
                     "minimum_value_warning": "10",
                     "maximum_value_warning": "200",
-                    "enabled": "g3_Tweak_flowrateOne"
+                    "enabled": "g3_Change_flowrateOne"
                 },
-                "g5_Tweak_flowrateTwo":
+                "g5_Change_flowrateTwo":
                 {
                     "label": "Change Flow Rate 2",
                     "description": "Select if second extruder flow rate has to be changed",
@@ -202,9 +202,9 @@ class TweakAtZ(Script):
                     "minimum_value": "1",
                     "minimum_value_warning": "10",
                     "maximum_value_warning": "200",
-                    "enabled": "g5_Tweak_flowrateTwo"
+                    "enabled": "g5_Change_flowrateTwo"
                 },
-                "h1_Tweak_bedTemp":
+                "h1_Change_bedTemp":
                 {
                     "label": "Change Bed Temp",
                     "description": "Select if Bed Temperature has to be changed",
@@ -221,9 +221,9 @@ class TweakAtZ(Script):
                     "minimum_value": "0",
                     "minimum_value_warning": "30",
                     "maximum_value_warning": "120",
-                    "enabled": "h1_Tweak_bedTemp"
+                    "enabled": "h1_Change_bedTemp"
                 },
-                "i1_Tweak_extruderOne":
+                "i1_Change_extruderOne":
                 {
                     "label": "Change Extruder 1 Temp",
                     "description": "Select if First Extruder Temperature has to be changed",
@@ -240,9 +240,9 @@ class TweakAtZ(Script):
                     "minimum_value": "0",
                     "minimum_value_warning": "160",
                     "maximum_value_warning": "250",
-                    "enabled": "i1_Tweak_extruderOne"
+                    "enabled": "i1_Change_extruderOne"
                 },
-                "i3_Tweak_extruderTwo":
+                "i3_Change_extruderTwo":
                 {
                     "label": "Change Extruder 2 Temp",
                     "description": "Select if Second Extruder Temperature has to be changed",
@@ -259,9 +259,9 @@ class TweakAtZ(Script):
                     "minimum_value": "0",
                     "minimum_value_warning": "160",
                     "maximum_value_warning": "250",
-                    "enabled": "i3_Tweak_extruderTwo"
+                    "enabled": "i3_Change_extruderTwo"
                 },
-                "j1_Tweak_fanSpeed":
+                "j1_Change_fanSpeed":
                 {
                     "label": "Change Fan Speed",
                     "description": "Select if Fan Speed has to be changed",
@@ -278,7 +278,7 @@ class TweakAtZ(Script):
                     "minimum_value": "0",
                     "minimum_value_warning": "15",
                     "maximum_value_warning": "255",
-                    "enabled": "j1_Tweak_fanSpeed"
+                    "enabled": "j1_Change_fanSpeed"
                 }
             }
         }"""
@@ -303,17 +303,17 @@ class TweakAtZ(Script):
             return default
 
     def execute(self, data):
-        #Check which tweaks should apply
-        TweakProp = {"speed": self.getSettingValueByKey("e1_Tweak_speed"),
-             "flowrate": self.getSettingValueByKey("g1_Tweak_flowrate"),
-             "flowrateOne": self.getSettingValueByKey("g3_Tweak_flowrateOne"),
-             "flowrateTwo": self.getSettingValueByKey("g5_Tweak_flowrateTwo"),
-             "bedTemp": self.getSettingValueByKey("h1_Tweak_bedTemp"),
-             "extruderOne": self.getSettingValueByKey("i1_Tweak_extruderOne"),
-             "extruderTwo": self.getSettingValueByKey("i3_Tweak_extruderTwo"),
-             "fanSpeed": self.getSettingValueByKey("j1_Tweak_fanSpeed")}
-        TweakPrintSpeed = self.getSettingValueByKey("f1_Tweak_printspeed")
-        TweakStrings = {"speed": "M220 S%f\n",
+        #Check which changes should apply
+        ChangeProp = {"speed": self.getSettingValueByKey("e1_Change_speed"),
+             "flowrate": self.getSettingValueByKey("g1_Change_flowrate"),
+             "flowrateOne": self.getSettingValueByKey("g3_Change_flowrateOne"),
+             "flowrateTwo": self.getSettingValueByKey("g5_Change_flowrateTwo"),
+             "bedTemp": self.getSettingValueByKey("h1_Change_bedTemp"),
+             "extruderOne": self.getSettingValueByKey("i1_Change_extruderOne"),
+             "extruderTwo": self.getSettingValueByKey("i3_Change_extruderTwo"),
+             "fanSpeed": self.getSettingValueByKey("j1_Change_fanSpeed")}
+        ChangePrintSpeed = self.getSettingValueByKey("f1_Change_printspeed")
+        ChangeStrings = {"speed": "M220 S%f\n",
             "flowrate": "M221 S%f\n",
             "flowrateOne": "M221 T0 S%f\n",
             "flowrateTwo": "M221 T1 S%f\n",
@@ -370,7 +370,7 @@ class TweakAtZ(Script):
                 if ";Generated with Cura_SteamEngine" in line:
                     TWinstances += 1
                     modified_gcode += ";ChangeAtZ instances: %d\n" % TWinstances
-                if not ("M84" in line or "M25" in line or ("G1" in line and TweakPrintSpeed and (state==3 or state==4)) or
+                if not ("M84" in line or "M25" in line or ("G1" in line and ChangePrintSpeed and (state==3 or state==4)) or
                                 ";ChangeAtZ instances:" in line):
                     modified_gcode += line + "\n"
                 IsUM2 = ("FLAVOR:UltiGCode" in line) or IsUM2 #Flavor is UltiGCode!
@@ -390,7 +390,7 @@ class TweakAtZ(Script):
                         state = old["state"]
                     layer = self.getValue(line, ";LAYER:", layer)
                     if targetL_i > -100000: #target selected by layer no.
-                        if (state == 2 or targetL_i == 0) and layer == targetL_i: #determine targetZ from layer no.; checks for tweak on layer 0
+                        if (state == 2 or targetL_i == 0) and layer == targetL_i: #determine targetZ from layer no.; checks for change on layer 0
                             state = 2
                             targetZ = z + 0.001
                 if (self.getValue(line, "T", None) is not None) and (self.getValue(line, "M", None) is None): #looking for single T-cmd
@@ -415,7 +415,7 @@ class TweakAtZ(Script):
                     elif tmp_extruder == 1: #second extruder
                         old["flowrateOne"] = self.getValue(line, "S", old["flowrateOne"])
                 if ("M84" in line or "M25" in line):
-                    if state>0 and TweakProp["speed"]: #"finish" commands for UM Original and UM2
+                    if state>0 and ChangeProp["speed"]: #"finish" commands for UM Original and UM2
                         modified_gcode += "M220 S100 ; speed reset to 100% at the end of print\n"
                         modified_gcode += "M117                     \n"
                     modified_gcode += line + "\n"
@@ -425,14 +425,14 @@ class TweakAtZ(Script):
                     y = self.getValue(line, "Y", None)
                     e = self.getValue(line, "E", None)
                     f = self.getValue(line, "F", None)
-                    if 'G1' in line and TweakPrintSpeed and (state==3 or state==4):
+                    if 'G1' in line and ChangePrintSpeed and (state==3 or state==4):
                         # check for pure print movement in target range:
                         if x != None and y != None and f != None and e != None and newZ==z:
                             modified_gcode += "G1 F%d X%1.3f Y%1.3f E%1.5f\n" % (int(f / 100.0 * float(target_values["printspeed"])), self.getValue(line, "X"),
                                                                           self.getValue(line, "Y"), self.getValue(line, "E"))
                         else: #G1 command but not a print movement
                             modified_gcode += line + "\n"
-                    # no tweaking on retraction hops which have no x and y coordinate:
+                    # no changing on retraction hops which have no x and y coordinate:
                     if (newZ != z) and (x is not None) and (y is not None):
                         z = newZ
                         if z < targetZ and state == 1:
@@ -440,16 +440,16 @@ class TweakAtZ(Script):
                         if z >= targetZ and state == 2:
                             state = 3
                             done_layers = 0
-                            for key in TweakProp:
-                                if TweakProp[key] and old[key]==-1: #old value is not known
+                            for key in ChangeProp:
+                                if ChangeProp[key] and old[key]==-1: #old value is not known
                                     oldValueUnknown = True
-                            if oldValueUnknown: #the tweaking has to happen within one layer
+                            if oldValueUnknown: #the changing has to happen within one layer
                                 twLayers = 1
                                 if IsUM2: #Parameters have to be stored in the printer (UltiGCode=UM2)
-                                    modified_gcode += "M605 S%d;stores parameters before tweaking\n" % (TWinstances-1)
-                            if behavior == 1: #single layer tweak only and then reset
+                                    modified_gcode += "M605 S%d;stores parameters before changing\n" % (TWinstances-1)
+                            if behavior == 1: #single layer change only and then reset
                                 twLayers = 1
-                            if TweakPrintSpeed and behavior == 0:
+                            if ChangePrintSpeed and behavior == 0:
                                 twLayers = done_layers + 1
                         if state==3:
                             if twLayers-done_layers>0: #still layers to go?
@@ -459,9 +459,9 @@ class TweakAtZ(Script):
                                 else:
                                     modified_gcode += (";ChangeAtZ V%s: executed at %1.2f mm\n" % (self.version,z))
                                     modified_gcode += "M117 Printing... ch@%5.1f\n" % z
-                                for key in TweakProp:
-                                    if TweakProp[key]:
-                                        modified_gcode += TweakStrings[key] % float(old[key]+(float(target_values[key])-float(old[key]))/float(twLayers)*float(done_layers+1))
+                                for key in ChangeProp:
+                                    if ChangeProp[key]:
+                                        modified_gcode += ChangeStrings[key] % float(old[key]+(float(target_values[key])-float(old[key]))/float(twLayers)*float(done_layers+1))
                                 done_layers += 1
                             else:
                                 state = 4
@@ -473,11 +473,11 @@ class TweakAtZ(Script):
                                     if IsUM2 and oldValueUnknown: #executes on UM2 with Ultigcode and machine setting
                                         modified_gcode += "M606 S%d;recalls saved settings\n" % (TWinstances-1)
                                     else: #executes on RepRap, UM2 with Ultigcode and Cura setting
-                                        for key in TweakProp:
-                                            if TweakProp[key]:
-                                                modified_gcode += TweakStrings[key] % float(old[key])
+                                        for key in ChangeProp:
+                                            if ChangeProp[key]:
+                                                modified_gcode += ChangeStrings[key] % float(old[key])
                         # re-activates the plugin if executed by pre-print G-command, resets settings:
-                        if (z < targetZ or layer == 0) and state >= 3: #resets if below tweak level or at level 0
+                        if (z < targetZ or layer == 0) and state >= 3: #resets if below change level or at level 0
                             state = 2
                             done_layers = 0
                             if targetL_i > -100000:
@@ -487,9 +487,9 @@ class TweakAtZ(Script):
                             if IsUM2 and oldValueUnknown: #executes on UM2 with Ultigcode and machine setting
                                 modified_gcode += "M606 S%d;recalls saved settings\n" % (TWinstances-1)
                             else: #executes on RepRap, UM2 with Ultigcode and Cura setting
-                                for key in TweakProp:
-                                    if TweakProp[key]:
-                                        modified_gcode += TweakStrings[key] % float(old[key])
+                                for key in ChangeProp:
+                                    if ChangeProp[key]:
+                                        modified_gcode += ChangeStrings[key] % float(old[key])
             data[index] = modified_gcode
             index += 1
         return data
