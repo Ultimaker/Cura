@@ -1,0 +1,8 @@
+{
+    "name": "STEP Reader",
+    "author": "Ultimaker B.V.",
+    "version": "1.0.0",
+    "description": "Provides support for reading STEP files.",
+    "api": 4,
+    "i18n-catalog": "uranium"
+}
