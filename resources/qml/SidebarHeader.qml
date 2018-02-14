@@ -421,7 +421,7 @@ Column
                         // open the material URL with web browser
                         var version = UM.Application.version;
                         var machineName = Cura.MachineManager.activeMachine.definition.id;
-                        var url = "https://ultimaker.com/materialcompatibility/" + version + "/" + machineName;
+                        var url = "https://ultimaker.com/materialcompatibility/" + version + "/" + machineName + "?utm_source=cura&utm_medium=software&utm_campaign=resources";
                         Qt.openUrlExternally(url);
                     }
                     onEntered: {

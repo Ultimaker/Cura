@@ -342,6 +342,11 @@ class SimulationView(View):
             min_layer_number = sys.maxsize
             max_layer_number = -sys.maxsize
             for layer_id in layer_data.getLayers():
+
+                # If a layer doesn't contain any polygons, skip it (for infill meshes taller than print objects
+                if len(layer_data.getLayer(layer_id).polygons) < 1:
+                    continue
+
                 # Store the max and min feedrates and thicknesses for display purposes
                 for p in layer_data.getLayer(layer_id).polygons:
                     self._max_feedrate = max(float(p.lineFeedrates.max()), self._max_feedrate)
@@ -634,4 +639,3 @@ class _CreateTopLayersJob(Job):
     def cancel(self):
         self._cancel = True
         super().cancel()
-
