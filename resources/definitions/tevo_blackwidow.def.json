@@ -11,7 +11,7 @@
         "has_materials": false,
         "has_machine_quality": true,
         "platform": "tevo_blackwidow.stl",
-        "preferred_quality": "*normal*"
+        "preferred_quality_type": "normal"
     },
     "overrides":
     {

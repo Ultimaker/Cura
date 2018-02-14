@@ -11,7 +11,7 @@
         "platform": "malyan_m200_platform.stl",
         "has_machine_quality": true,
         "has_materials": true,
-        "preferred_quality": "*normal*",
+        "preferred_quality_type": "normal",
         "supports_usb_connection": true,
         "visible": true,
         "first_start_actions": ["MachineSettingsAction"],

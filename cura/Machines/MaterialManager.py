@@ -249,15 +249,15 @@ class MaterialManager(QObject):
         #  1. variant-specific material
         #  2. machine-specific material
         #  3. generic material (for fdmprinter)
-        material_node = None
-        if variant_node is not None:
-            if root_material_id in variant_node.material_map:
-                material_node = variant_node.material_map.get(root_material_id)
+        nodes_to_check = [variant_node, machine_node,
+                          machine_variant_material_map.get(self._default_machine_definition_id)]
 
-        # Fallback: machine-specific materials, including "fdmprinter"
-        if material_node is None:
-            if machine_node is not None:
-                material_node = machine_node.material_map.get(root_material_id)
+        material_node = None
+        for node in nodes_to_check:
+            if node is not None:
+                material_node = node.material_map.get(root_material_id)
+                if material_node:
+                    break
 
         return material_node
 

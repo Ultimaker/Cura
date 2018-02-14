@@ -320,7 +320,7 @@ class QualityManager(QObject):
                         # No suitable quality found: not supported
                         Logger.log("d", "Cannot find quality with machine [%s], variant name [%s], and materials [%s].",
                                    machine_definition_id, variant_name, ", ".join(root_material_id_list))
-                        continue
+
             else:
                 # In this case, we only have a specific material but NOT a variant
                 if has_material:
@@ -332,7 +332,6 @@ class QualityManager(QObject):
                         # No suitable quality found: not supported
                         Logger.log("d", "Cannot find quality with machine [%s], variant name [%s], and materials [%s].",
                                    machine_definition_id, variant_name, ", ".join(root_material_id_list))
-                        continue
 
             node_to_check = material_node
             if not node_to_check:
