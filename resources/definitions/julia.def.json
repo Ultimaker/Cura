@@ -7,8 +7,7 @@
         "author": "Ultimaker",
         "manufacturer": "Fracktal",
         "file_formats": "text/x-gcode",
-        "platform_offset": [ 0, 0, 0],
-        "preferred_material": "generic_pla_175"
+        "platform_offset": [ 0, 0, 0]
     },
 
     "overrides": {

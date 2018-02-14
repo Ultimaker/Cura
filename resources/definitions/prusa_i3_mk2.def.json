@@ -9,8 +9,7 @@
         "file_formats": "text/x-gcode",
         "icon": "icon_ultimaker2",
         "platform": "prusai3_platform.stl",
-        "has_materials": true,
-        "preferred_material": "generic_pla_175"
+        "has_materials": true
     },
 
     "overrides": {

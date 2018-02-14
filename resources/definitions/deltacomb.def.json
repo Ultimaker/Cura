@@ -10,8 +10,7 @@
         "file_formats": "text/x-gcode",
         "icon": "icon_ultimaker2",
         "platform": "deltacomb.stl",
-        "has_machine_quality": true,
-        "preferred_material": "generic_pla_175"
+        "has_machine_quality": true
     },
 
     "overrides": {

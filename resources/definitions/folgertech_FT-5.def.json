@@ -7,8 +7,7 @@
         "author": "Jaime van Kessel & Paul Bussiere",
         "manufacturer": "Folger Tech",
         "file_formats": "text/x-gcode",
-        "platform": "FT-5_build_plate.stl",
-        "preferred_material": "generic_pla_175"
+        "platform": "FT-5_build_plate.stl"
     },
     "overrides": {
         "machine_heated_bed": { "default_value": true },

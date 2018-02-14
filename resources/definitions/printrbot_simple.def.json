@@ -8,8 +8,7 @@
         "manufacturer": "PrintrBot",
         "platform": "printrbot_simple_metal_platform.stl",
         "platform_offset": [0, -3.45, 0],
-        "file_formats": "text/x-gcode",
-        "preferred_material": "generic_pla_175"
+        "file_formats": "text/x-gcode"
     },
 
     "overrides": {

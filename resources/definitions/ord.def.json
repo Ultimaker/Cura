@@ -7,7 +7,6 @@
         "author": "Ultimaker",
         "manufacturer": "ORD Solutions",
         "file_formats": "text/x-gcode",
-        "preferred_material": "generic_pla_175",
         "machine_extruder_trains":
         {
             "0": "ord_extruder_0",

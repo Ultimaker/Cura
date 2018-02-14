@@ -17,7 +17,6 @@
         "variants_name": "Nozzle size",
         "preferred_variant_name": "0.8 mm",
         "preferred_quality_type": "normal",
-        "preferred_material": "generic_pla_175",
 
         "machine_extruder_trains":
         {

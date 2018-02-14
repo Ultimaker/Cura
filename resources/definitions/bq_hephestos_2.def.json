@@ -8,7 +8,6 @@
         "manufacturer": "BQ",
         "platform": "bq_hephestos_2_platform.stl",
         "platform_offset": [6, 1320, 0 ],
-        "preferred_material": "generic_pla_175",
         "file_formats": "text/x-gcode"
     },
 
