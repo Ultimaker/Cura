@@ -40,18 +40,21 @@ Menu
     Instantiator
     {
         id: customProfileInstantiator
-        model: Cura.UserProfilesModel
+        model: Cura.NewCustomQualityProfilesModel
+
+        Connections
         {
-            onModelReset: customSeparator.visible = rowCount() > 0
+            target: Cura.NewCustomQualityProfilesModel
+            onModelReset: customSeparator.visible = Cura.NewCustomQualityProfilesModel.rowCount() > 0
         }
 
         MenuItem
         {
             text: model.name
-            checkable: true
-            checked: Cura.MachineManager.activeQualityChangesId == model.id
+            checkable: model.available
+            checked: Cura.MachineManager.activeQualityChangesId == model.id  // TODO: fix for new
             exclusiveGroup: group
-            onTriggered: Cura.MachineManager.setActiveQuality(model.id)
+            onTriggered: Cura.MachineManager.setActiveQuality(model.id) // TODO: fix for new
         }
 
         onObjectAdded:

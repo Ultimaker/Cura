@@ -53,7 +53,7 @@ from UM.Settings.ContainerRegistry import ContainerRegistry
 from UM.Settings.SettingFunction import SettingFunction
 from cura.Settings.MachineNameValidator import MachineNameValidator
 from cura.Settings.NozzleModel import NozzleModel
-from cura.Settings.ProfilesModel import ProfilesModel, NewQualityProfilesModel
+from cura.Settings.ProfilesModel import ProfilesModel, NewQualityProfilesModel, NewCustomQualityProfilesModel
 from cura.Settings.MaterialsModel import MaterialsModel, BrandMaterialsModel, GenericMaterialsModel
 from cura.Settings.QualityAndUserProfilesModel import QualityAndUserProfilesModel
 from cura.Settings.SettingInheritanceManager import SettingInheritanceManager
@@ -389,6 +389,7 @@ class CuraApplication(QtApplication):
         self.getCuraSceneController().setActiveBuildPlate(0)  # Initialize
 
         self._new_quality_profile_model = None
+        self._new_custom_quality_profile_model = None
 
         CuraApplication.Created = True
 
@@ -903,6 +904,11 @@ class CuraApplication(QtApplication):
             self._new_quality_profile_model = NewQualityProfilesModel(self)
         return self._new_quality_profile_model
 
+    def getNewCustomQualityProfilesModel(self, *args, **kwargs):
+        if self._new_custom_quality_profile_model is None:
+            self._new_custom_quality_profile_model = NewCustomQualityProfilesModel(self)
+        return self._new_custom_quality_profile_model
+
     ##  Registers objects for the QML engine to use.
     #
     #   \param engine The QML engine.
@@ -936,6 +942,7 @@ class CuraApplication(QtApplication):
         qmlRegisterType(BrandMaterialsModel, "Cura", 1, 0, "BrandMaterialsModel")
 
         qmlRegisterSingletonType(NewQualityProfilesModel, "Cura", 1, 0, "NewQualityProfilesModel", self.getNewQualityProfileModel)
+        qmlRegisterSingletonType(NewCustomQualityProfilesModel, "Cura", 1, 0, "NewCustomQualityProfilesModel", self.getNewCustomQualityProfilesModel)
         qmlRegisterType(NozzleModel, "Cura", 1, 0, "NozzleModel")
 
         qmlRegisterType(MaterialsModel, "Cura", 1, 0, "MaterialsModel")

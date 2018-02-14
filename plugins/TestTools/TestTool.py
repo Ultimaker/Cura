@@ -33,5 +33,6 @@ class TestTool(Extension, QObject):
         from cura.CuraApplication import CuraApplication
         result_dict = {}
         global_stack = CuraApplication.getInstance().getMachineManager()._global_container_stack
-        result = CuraApplication.getInstance()._quality_manager.getQualityChangesGroup(global_stack)
-        print("!!!!!!!!!!!!!!!!!!!")
+        result = CuraApplication.getInstance()._quality_manager.getQualityChangesGroups(global_stack)
+        for name, r in result.items():
+            print("!!!!!!!!!! [%s]  - %s" % (name, r))

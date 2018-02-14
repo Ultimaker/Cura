@@ -27,10 +27,18 @@ from cura.Machines.ContainerNode import ContainerNode
 #
 
 
-class QualityChangesGroup(ContainerGroup):
+class QualityGroup(ContainerGroup):
 
-    def __init__(self, name: str, parent = None):
+    def __init__(self, name: str, quality_type: str, parent = None):
         super().__init__(name, parent)
+        self.quality_type = quality_type
+        self.is_available = False
+
+
+class QualityChangesGroup(QualityGroup):
+
+    def __init__(self, name: str, quality_type: str, parent = None):
+        super().__init__(name, quality_type, parent)
 
     def addNode(self, node: "QualityNode"):
         # TODO: in 3.2 and earlier, a quality_changes container may have a field called "extruder" which contains the
@@ -70,13 +78,9 @@ class QualityChangesGroup(ContainerGroup):
                                    (self, self.node_for_global, node))
             self.node_for_global = node
 
+    def __str__(self) -> str:
+        return "%s[<%s>, available = %s]" % (self.__class__.__name__, self.name, self.is_available)
 
-class QualityGroup(ContainerGroup):
-
-    def __init__(self, name: str, quality_type: str, parent = None):
-        super().__init__(name, parent)
-        self.quality_type = quality_type
-        self.is_available = False
 
 #
 # QualityNode is used for BOTH quality and quality_changes containers.
@@ -101,7 +105,7 @@ class QualityNode(ContainerNode):
 
         name = metadata["name"]
         if name not in quality_type_node.children_map:
-            quality_type_node.children_map[name] = QualityChangesGroup(name)
+            quality_type_node.children_map[name] = QualityChangesGroup(name, quality_type)
         quality_changes_group = quality_type_node.children_map[name]
         quality_changes_group.addNode(QualityNode(metadata))
 
@@ -224,7 +228,7 @@ class QualityManager(QObject):
             quality_group.is_available = is_available
 
     # Returns a dict of "custom profile name" -> QualityChangesGroup
-    def getQualityChangesGroup(self, machine: "GlobalStack") -> dict:
+    def getQualityChangesGroups(self, machine: "GlobalStack") -> dict:
         # TODO: How to make this simpler?
         # Get machine definition ID
         machine_definition_id = self._default_machine_definition_id
@@ -237,14 +241,17 @@ class QualityManager(QObject):
         if not machine_node:
             raise RuntimeError("Cannot find node for machine def [%s] in QualityChanges lookup table" % machine_definition_id)
 
-        # iterate over all quality_types in the machine node
+        # Update availability for each QualityChangesGroup:
+        # A custom profile is always available as long as the quality_type it's based on is available
+        quality_group_dict = self.getQualityGroups(machine)
+        available_quality_type_list = [qt for qt, qg in quality_group_dict.items() if qg.is_available]
+
+        # Iterate over all quality_types in the machine node
         quality_changes_group_dict = dict()
         for quality_type, quality_changes_node in machine_node.quality_type_map.items():
             for quality_changes_name, quality_changes_group in quality_changes_node.children_map.items():
                 quality_changes_group_dict[quality_changes_name] = quality_changes_group
-
-        # Update availabilities for each quality group
-        self._updateQualityGroupsAvailability(machine, quality_changes_group_dict.values())
+                quality_changes_group.is_available = quality_type in available_quality_type_list
 
         return quality_changes_group_dict
 
