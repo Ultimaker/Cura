@@ -530,15 +530,3 @@ def test_setPropertyOtherContainers(target_container, stack_variable, global_sta
     global_stack.setProperty(key, property, value, target_container = target_container) #The actual test.
 
     getattr(global_stack, stack_variable).setProperty.assert_called_once_with(key, property, value) #Make sure that the proper container gets a setProperty call.
-
-##  Smoke test for findDefaultVariant
-def test_smoke_findDefaultVariant(global_stack):
-    global_stack.findDefaultVariant()
-
-##  Smoke test for findDefaultMaterial
-def test_smoke_findDefaultMaterial(global_stack):
-    global_stack.findDefaultMaterial()
-
-##  Smoke test for findDefaultQuality
-def test_smoke_findDefaultQuality(global_stack):
-    global_stack.findDefaultQuality()
