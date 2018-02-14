@@ -10,6 +10,7 @@
         "platform": "ultimaker2_platform.obj",
         "platform_texture": "Ultimaker2Plusbackplate.png",
         "preferred_variant": "*0.4*",
+        "preferred_variant_name": "0.4 mm",
         "has_variants": true,
         "has_materials": true,
         "has_machine_materials": true,

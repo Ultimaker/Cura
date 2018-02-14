@@ -294,21 +294,25 @@ class CuraApplication(QtApplication):
         # Since they are empty, they should never be serialized and instead just programmatically created.
         # We need them to simplify the switching between materials.
         empty_container = ContainerRegistry.getInstance().getEmptyInstanceContainer()
+        self.empty_container = empty_container
 
         empty_definition_changes_container = copy.deepcopy(empty_container)
         empty_definition_changes_container.setMetaDataEntry("id", "empty_definition_changes")
         empty_definition_changes_container.addMetaDataEntry("type", "definition_changes")
         ContainerRegistry.getInstance().addContainer(empty_definition_changes_container)
+        self.empty_definition_changes_container = empty_definition_changes_container
 
         empty_variant_container = copy.deepcopy(empty_container)
         empty_variant_container.setMetaDataEntry("id", "empty_variant")
         empty_variant_container.addMetaDataEntry("type", "variant")
         ContainerRegistry.getInstance().addContainer(empty_variant_container)
+        self.empty_variant_container = empty_variant_container
 
         empty_material_container = copy.deepcopy(empty_container)
         empty_material_container.setMetaDataEntry("id", "empty_material")
         empty_material_container.addMetaDataEntry("type", "material")
         ContainerRegistry.getInstance().addContainer(empty_material_container)
+        self.empty_material_container = empty_material_container
 
         empty_quality_container = copy.deepcopy(empty_container)
         empty_quality_container.setMetaDataEntry("id", "empty_quality")
@@ -317,12 +321,14 @@ class CuraApplication(QtApplication):
         empty_quality_container.addMetaDataEntry("type", "quality")
         empty_quality_container.addMetaDataEntry("supported", False)
         ContainerRegistry.getInstance().addContainer(empty_quality_container)
+        self.empty_quality_container = empty_quality_container
 
         empty_quality_changes_container = copy.deepcopy(empty_container)
         empty_quality_changes_container.setMetaDataEntry("id", "empty_quality_changes")
         empty_quality_changes_container.addMetaDataEntry("type", "quality_changes")
         empty_quality_changes_container.addMetaDataEntry("quality_type", "not_supported")
         ContainerRegistry.getInstance().addContainer(empty_quality_changes_container)
+        self.empty_quality_changes_container = empty_quality_changes_container
 
         with ContainerRegistry.getInstance().lockFile():
             ContainerRegistry.getInstance().loadAllMetadata()

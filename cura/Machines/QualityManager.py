@@ -257,7 +257,7 @@ class QualityManager(QObject):
         return quality_changes_group_dict
 
     def getQualityGroups(self, machine: "GlobalStack") -> dict:
-        # TODO: How to make this simpler, including the fallbacks.
+        # TODO: How to make this simpler, including the fall backs.
         # Get machine definition ID
         machine_definition_id = self._default_machine_definition_id
         if parseBool(machine.getMetaDataEntry("has_machine_quality", False)):
@@ -270,8 +270,13 @@ class QualityManager(QObject):
             raise RuntimeError("Cannot find node for machine def [%s] in Quality lookup table" % machine_definition_id)
 
         # iterate over all quality_types in the machine node
+        node_to_fetch_global = machine_node
         quality_group_dict = {}
-        for quality_type, quality_node in machine_node.quality_type_map.items():
+        if not node_to_fetch_global.quality_type_map:
+            # Fallback mechanism:
+            # If there is no machine-specific quality, fallback to use the default fdmprinter's.
+            node_to_fetch_global = self._machine_variant_material_quality_type_to_quality_dict.get(self._default_machine_definition_id)
+        for quality_type, quality_node in node_to_fetch_global.quality_type_map.items():
             quality_group = QualityGroup(quality_node.metadata["name"], quality_type)
             quality_group.node_for_global = quality_node
 
