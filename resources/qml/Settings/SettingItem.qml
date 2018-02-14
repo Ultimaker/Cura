@@ -108,7 +108,7 @@ Item {
             id: label;
 
             anchors.left: parent.left;
-            anchors.leftMargin: doDepthIndentation ? Math.floor((UM.Theme.getSize("section_icon_column").width + 5) + ((definition.depth - 1) * UM.Theme.getSize("setting_control_depth_margin").width)) : 0
+            anchors.leftMargin: doDepthIndentation ? Math.round((UM.Theme.getSize("section_icon_column").width + 5) + ((definition.depth - 1) * UM.Theme.getSize("setting_control_depth_margin").width)) : 0
             anchors.right: settingControls.left;
             anchors.verticalCenter: parent.verticalCenter
 
@@ -128,12 +128,12 @@ Item {
         {
             id: settingControls
 
-            height: Math.floor(parent.height / 2)
-            spacing: Math.floor(UM.Theme.getSize("sidebar_margin").height / 2)
+            height: Math.round(parent.height / 2)
+            spacing: Math.round(UM.Theme.getSize("sidebar_margin").height / 2)
 
             anchors {
                 right: controlContainer.left
-                rightMargin: Math.floor(UM.Theme.getSize("sidebar_margin").width / 2)
+                rightMargin: Math.round(UM.Theme.getSize("sidebar_margin").width / 2)
                 verticalCenter: parent.verticalCenter
             }
 

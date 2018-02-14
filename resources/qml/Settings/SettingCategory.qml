@@ -187,13 +187,13 @@ Button
         id: settingsButton
 
         visible: base.hovered || settingsButton.hovered
-        height: Math.floor(base.height * 0.6)
-        width: Math.floor(base.height * 0.6)
+        height: Math.round(base.height * 0.6)
+        width: Math.round(base.height * 0.6)
 
         anchors {
             right: inheritButton.visible ? inheritButton.left : parent.right
             // use 1.9 as the factor because there is a 0.1 difference between the settings and inheritance warning icons
-            rightMargin: inheritButton.visible ? Math.floor(UM.Theme.getSize("default_margin").width / 2) : category_arrow.width + Math.floor(UM.Theme.getSize("default_margin").width * 1.9)
+            rightMargin: inheritButton.visible ? Math.round(UM.Theme.getSize("default_margin").width / 2) : category_arrow.width + Math.round(UM.Theme.getSize("default_margin").width * 1.9)
             verticalCenter: parent.verticalCenter
         }
 
@@ -231,7 +231,7 @@ Button
             return false
         }
 
-        height: Math.floor(parent.height / 2)
+        height: Math.round(parent.height / 2)
         width: height
 
         onClicked:

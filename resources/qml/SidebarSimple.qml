@@ -146,16 +146,16 @@ Item
                     }
 
                     function calculateSliderStepWidth (totalTicks) {
-                        qualityModel.qualitySliderStepWidth = totalTicks != 0 ? Math.floor((base.width * 0.55) / (totalTicks)) : 0
+                        qualityModel.qualitySliderStepWidth = totalTicks != 0 ? Math.round((base.width * 0.55) / (totalTicks)) : 0
                     }
 
                     function calculateSliderMargins (availableMin, availableMax, totalTicks) {
                         if (availableMin == -1 || (availableMin == 0 && availableMax == 0)) {
-                            qualityModel.qualitySliderMarginRight = Math.floor(base.width * 0.55)
+                            qualityModel.qualitySliderMarginRight = Math.round(base.width * 0.55)
                         } else if (availableMin == availableMax) {
-                            qualityModel.qualitySliderMarginRight = Math.floor((totalTicks - availableMin) * qualitySliderStepWidth)
+                            qualityModel.qualitySliderMarginRight = Math.round((totalTicks - availableMin) * qualitySliderStepWidth)
                         } else {
-                            qualityModel.qualitySliderMarginRight = Math.floor((totalTicks - availableMax) * qualitySliderStepWidth)
+                            qualityModel.qualitySliderMarginRight = Math.round((totalTicks - availableMax) * qualitySliderStepWidth)
                         }
                     }
 
@@ -190,7 +190,7 @@ Item
                         {
                             anchors.verticalCenter: parent.verticalCenter
                             anchors.top: parent.top
-                            anchors.topMargin: Math.floor(UM.Theme.getSize("sidebar_margin").height / 2)
+                            anchors.topMargin: Math.round(UM.Theme.getSize("sidebar_margin").height / 2)
                             color: (Cura.MachineManager.activeMachine != null && Cura.ProfilesModel.getItem(index).available) ? UM.Theme.getColor("quality_slider_available") : UM.Theme.getColor("quality_slider_unavailable")
                             text:
                             {
@@ -219,13 +219,13 @@ Item
                                 // Make sure the text aligns correctly with each tick
                                 if (qualityModel.totalTicks == 0) {
                                     // If there is only one tick, align it centrally
-                                    return Math.floor(((base.width * 0.55) - width) / 2)
+                                    return Math.round(((base.width * 0.55) - width) / 2)
                                 } else if (index == 0) {
-                                    return Math.floor(base.width * 0.55 / qualityModel.totalTicks) * index
+                                    return Math.round(base.width * 0.55 / qualityModel.totalTicks) * index
                                 } else if (index == qualityModel.totalTicks) {
-                                    return Math.floor(base.width * 0.55 / qualityModel.totalTicks) * index - width
+                                    return Math.round(base.width * 0.55 / qualityModel.totalTicks) * index - width
                                 } else {
-                                    return Math.floor((base.width * 0.55 / qualityModel.totalTicks) * index - (width / 2))
+                                    return Math.round((base.width * 0.55 / qualityModel.totalTicks) * index - (width / 2))
                                 }
                             }
                         }
@@ -236,7 +236,7 @@ Item
                 Item
                 {
                     id: speedSlider
-                    width: Math.floor(base.width * 0.55)
+                    width: Math.round(base.width * 0.55)
                     height: UM.Theme.getSize("sidebar_margin").height
                     anchors.right: parent.right
                     anchors.top: parent.top
@@ -246,7 +246,7 @@ Item
                     Rectangle
                     {
                         id: groovechildrect
-                        width: Math.floor(base.width * 0.55)
+                        width: Math.round(base.width * 0.55)
                         height: 2 * screenScaleFactor
                         color: UM.Theme.getColor("quality_slider_unavailable")
                         anchors.verticalCenter: qualitySlider.verticalCenter
@@ -266,7 +266,7 @@ Item
                             width: 1 * screenScaleFactor
                             height: 6 * screenScaleFactor
                             y: 0
-                            x: Math.floor(qualityModel.qualitySliderStepWidth * index)
+                            x: Math.round(qualityModel.qualitySliderStepWidth * index)
                         }
                     }
 
@@ -277,7 +277,7 @@ Item
                         color: UM.Theme.getColor("quality_slider_unavailable")
                         implicitWidth: 10 * screenScaleFactor
                         implicitHeight: implicitWidth
-                        radius: Math.floor(width / 2)
+                        radius: Math.round(width / 2)
                     }
 
                     Slider
@@ -306,7 +306,7 @@ Item
                             groove: Rectangle {
                                 implicitHeight: 2 * screenScaleFactor
                                 color: UM.Theme.getColor("quality_slider_available")
-                                radius: Math.floor(height / 2)
+                                radius: Math.round(height / 2)
                             }
                             handle: Item {
                                 Rectangle {
@@ -315,7 +315,7 @@ Item
                                     color: UM.Theme.getColor("quality_slider_available")
                                     implicitWidth: 10 * screenScaleFactor
                                     implicitHeight: implicitWidth
-                                    radius: Math.floor(implicitWidth / 2)
+                                    radius: Math.round(implicitWidth / 2)
                                     visible: !Cura.SimpleModeSettingsManager.isProfileCustomized && !Cura.SimpleModeSettingsManager.isProfileUserCreated && qualityModel.existingQualityProfile
                                 }
                             }
@@ -362,7 +362,7 @@ Item
                     text: catalog.i18nc("@label", "Print Speed")
                     font: UM.Theme.getFont("default")
                     color: UM.Theme.getColor("text")
-                    width: Math.floor(UM.Theme.getSize("sidebar").width * 0.35)
+                    width: Math.round(UM.Theme.getSize("sidebar").width * 0.35)
                     elide: Text.ElideRight
                 }
 
@@ -393,12 +393,12 @@ Item
                     id: customisedSettings
 
                     visible: Cura.SimpleModeSettingsManager.isProfileCustomized || Cura.SimpleModeSettingsManager.isProfileUserCreated
-                    height: Math.floor(speedSlider.height * 0.8)
-                    width: Math.floor(speedSlider.height * 0.8)
+                    height: Math.round(speedSlider.height * 0.8)
+                    width: Math.round(speedSlider.height * 0.8)
 
                     anchors.verticalCenter: speedSlider.verticalCenter
                     anchors.right: speedSlider.left
-                    anchors.rightMargin: Math.floor(UM.Theme.getSize("sidebar_margin").width / 2)
+                    anchors.rightMargin: Math.round(UM.Theme.getSize("sidebar_margin").width / 2)
 
                     color: hovered ? UM.Theme.getColor("setting_control_button_hover") : UM.Theme.getColor("setting_control_button");
                     iconSource: UM.Theme.getIcon("reset");
@@ -438,7 +438,7 @@ Item
                 anchors.topMargin: UM.Theme.getSize("sidebar_margin").height * 2
                 anchors.left: parent.left
 
-                width: Math.floor(UM.Theme.getSize("sidebar").width * .45) - UM.Theme.getSize("sidebar_margin").width
+                width: Math.round(UM.Theme.getSize("sidebar").width * .45) - UM.Theme.getSize("sidebar_margin").width
 
                 Label
                 {
@@ -448,7 +448,7 @@ Item
                     color: UM.Theme.getColor("text")
 
                     anchors.top: parent.top
-                    anchors.topMargin: Math.floor(UM.Theme.getSize("sidebar_margin").height * 1.7)
+                    anchors.topMargin: Math.round(UM.Theme.getSize("sidebar_margin").height * 1.7)
                     anchors.left: parent.left
                     anchors.leftMargin: UM.Theme.getSize("sidebar_margin").width
                 }
@@ -459,7 +459,7 @@ Item
                 id: infillCellRight
 
                 height: infillSlider.height + UM.Theme.getSize("sidebar_margin").height + enableGradualInfillCheckBox.visible * (enableGradualInfillCheckBox.height + UM.Theme.getSize("sidebar_margin").height)
-                width: Math.floor(UM.Theme.getSize("sidebar").width * .55)
+                width: Math.round(UM.Theme.getSize("sidebar").width * .55)
 
                 anchors.left: infillCellLeft.right
                 anchors.top: infillCellLeft.top
@@ -470,7 +470,7 @@ Item
 
                     //anchors.top: parent.top
                     anchors.left: infillSlider.left
-                    anchors.leftMargin: Math.floor((infillSlider.value / infillSlider.stepSize) * (infillSlider.width / (infillSlider.maximumValue / infillSlider.stepSize)) - 10 * screenScaleFactor)
+                    anchors.leftMargin: Math.round((infillSlider.value / infillSlider.stepSize) * (infillSlider.width / (infillSlider.maximumValue / infillSlider.stepSize)) - 10 * screenScaleFactor)
                     anchors.right: parent.right
 
                     text: parseInt(infillDensity.properties.value) + "%"
@@ -576,12 +576,12 @@ Item
                 {
                     id: infillIcon
 
-                    width: Math.floor((parent.width / 5) - (UM.Theme.getSize("sidebar_margin").width))
+                    width: Math.round((parent.width / 5) - (UM.Theme.getSize("sidebar_margin").width))
                     height: width
 
                     anchors.right: parent.right
                     anchors.top: parent.top
-                    anchors.topMargin: Math.floor(UM.Theme.getSize("sidebar_margin").height / 2)
+                    anchors.topMargin: Math.round(UM.Theme.getSize("sidebar_margin").height / 2)
 
                     // we loop over all density icons and only show the one that has the current density and steps
                     Repeater
@@ -592,8 +592,8 @@ Item
 
                         function activeIndex () {
                             for (var i = 0; i < infillModel.count; i++) {
-                                var density = Math.floor(infillDensity.properties.value)
-                                var steps = Math.floor(infillSteps.properties.value)
+                                var density = Math.round(infillDensity.properties.value)
+                                var steps = Math.round(infillSteps.properties.value)
                                 var infillModelItem = infillModel.get(i)
 
                                 if (infillModelItem != "undefined"
@@ -634,7 +634,7 @@ Item
                     property alias _hovered: enableGradualInfillMouseArea.containsMouse
 
                     anchors.top: infillSlider.bottom
-                    anchors.topMargin: Math.floor(UM.Theme.getSize("sidebar_margin").height / 2) // closer to slider since it belongs to the same category
+                    anchors.topMargin: Math.round(UM.Theme.getSize("sidebar_margin").height / 2) // closer to slider since it belongs to the same category
                     anchors.left: infillCellRight.left
 
                     style: UM.Theme.styles.checkbox
@@ -676,7 +676,7 @@ Item
                     Label {
                         id: gradualInfillLabel
                         anchors.left: enableGradualInfillCheckBox.right
-                        anchors.leftMargin: Math.floor(UM.Theme.getSize("sidebar_margin").width / 2)
+                        anchors.leftMargin: Math.round(UM.Theme.getSize("sidebar_margin").width / 2)
                         text: catalog.i18nc("@label", "Enable gradual")
                         font: UM.Theme.getFont("default")
                         color: UM.Theme.getColor("text")
@@ -737,7 +737,7 @@ Item
                 visible: enableSupportCheckBox.visible
 
                 anchors.top: infillCellRight.bottom
-                anchors.topMargin: Math.floor(UM.Theme.getSize("sidebar_margin").height * 1.5)
+                anchors.topMargin: Math.round(UM.Theme.getSize("sidebar_margin").height * 1.5)
                 anchors.left: parent.left
                 anchors.leftMargin: UM.Theme.getSize("sidebar_margin").width
                 anchors.right: infillCellLeft.right
@@ -823,7 +823,7 @@ Item
                 anchors.topMargin: ((supportEnabled.properties.value === "True") && (machineExtruderCount.properties.value > 1)) ? UM.Theme.getSize("sidebar_margin").height : 0
                 anchors.left: infillCellRight.left
 
-                width: Math.floor(UM.Theme.getSize("sidebar").width * .55)
+                width: Math.round(UM.Theme.getSize("sidebar").width * .55)
                 height: ((supportEnabled.properties.value == "True") && (machineExtruderCount.properties.value > 1)) ? UM.Theme.getSize("setting_control").height : 0
 
                 Behavior on height { NumberAnimation { duration: 100 } }
@@ -952,7 +952,7 @@ Item
             {
                 id: tipsCell
                 anchors.top: adhesionCheckBox.visible ? adhesionCheckBox.bottom : (enableSupportCheckBox.visible ? supportExtruderCombobox.bottom : infillCellRight.bottom)
-                anchors.topMargin: Math.floor(UM.Theme.getSize("sidebar_margin").height * 2)
+                anchors.topMargin: Math.round(UM.Theme.getSize("sidebar_margin").height * 2)
                 anchors.left: parent.left
                 width: parent.width
                 height: tipsText.contentHeight * tipsText.lineCount
