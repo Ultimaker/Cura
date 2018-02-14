@@ -348,6 +348,10 @@ class CuraContainerStack(ContainerStack):
         elif container != self._empty_instance_container and container.getMetaDataEntry("type") != expected_type:
             raise Exceptions.InvalidContainerError("Cannot replace container at index {index} with a container that is not of {type} type, but {actual_type} type.".format(index = index, type = expected_type, actual_type = container.getMetaDataEntry("type")))
 
+        current_container = self._containers[index]
+        if current_container.getId() == container.getId():
+            return
+
         super().replaceContainer(index, container, postpone_emit)
 
     ##  Overridden from ContainerStack

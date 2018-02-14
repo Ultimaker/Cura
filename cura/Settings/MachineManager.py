@@ -1642,6 +1642,7 @@ class MachineManager(QObject):
         self.blurSettings.emit()
         with postponeSignals(*self._getContainerChangedSignals(), compress = CompressTechnique.CompressPerParameterValue):
             self._setQualityGroup(quality_group)
+        Logger.log("d", "Quality set!")
 
     @pyqtProperty("QVariant", fset = setQualityGroup, notify = activeQualityGroupChanged)
     def activeQualityGroup(self):

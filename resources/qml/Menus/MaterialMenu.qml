@@ -13,12 +13,6 @@ Menu
     title: "Material"
 
     property int extruderIndex: 0
-    property bool printerConnected: Cura.MachineManager.printerOutputDevices.length != 0
-
-    MenuSeparator
-    {
-        visible: automaticMaterial.visible
-    }
 
     Instantiator
     {

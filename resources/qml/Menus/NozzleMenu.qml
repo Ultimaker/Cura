@@ -13,21 +13,6 @@ Menu
     title: "Nozzle"
 
     property int extruderIndex: 0
-    property bool printerConnected: Cura.MachineManager.printerOutputDevices.length != 0
-    property bool isClusterPrinter:
-    {
-        if (Cura.MachineManager.printerOutputDevices.length == 0)
-        {
-            return false;
-        }
-        var clusterSize = Cura.MachineManager.printerOutputDevices[0].clusterSize;
-        // This is not a cluster printer or the cluster it is just one printer
-        if (clusterSize == undefined || clusterSize == 1)
-        {
-            return false;
-        }
-        return true;
-    }
 
     Cura.NozzleModel
     {

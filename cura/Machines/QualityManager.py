@@ -239,7 +239,8 @@ class QualityManager(QObject):
 
         machine_node = self._machine_quality_type_to_quality_changes_dict.get(machine_definition_id)
         if not machine_node:
-            raise RuntimeError("Cannot find node for machine def [%s] in QualityChanges lookup table" % machine_definition_id)
+            Logger.log("e", "Cannot find node for machine def [%s] in QualityChanges lookup table", machine_definition_id)
+            return {}
 
         # Update availability for each QualityChangesGroup:
         # A custom profile is always available as long as the quality_type it's based on is available

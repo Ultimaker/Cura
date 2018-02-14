@@ -19,7 +19,7 @@ Menu
         {
             text: (model.layer_height != "") ? model.name + " - " + model.layer_height : model.name
             checkable: true
-            checked: Cura.MachineManager.activeQualityGroup.getName() == model.name
+            checked: Cura.MachineManager.activeQualityGroup && (Cura.MachineManager.activeQualityGroup.getName() == model.name)
             exclusiveGroup: group
             onTriggered: {
                 Cura.MachineManager.setQualityGroup(model.quality_group)
