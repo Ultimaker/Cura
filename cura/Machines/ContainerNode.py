@@ -43,4 +43,4 @@ class ContainerNode:
         return self.container
 
     def __str__(self) -> str:
-        return "ContainerNode[%s]" % self.metadata.get("id")
+        return "%s[%s]" % (self.__class__.__name__, self.metadata.get("id"))

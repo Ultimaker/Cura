@@ -27,30 +27,48 @@ from cura.Machines.ContainerNode import ContainerNode
 #
 
 
-class QualityChangesGroup:
-    __slots__ = ("name", "qc_for_global", "qc_for_extruders_dict")
+class QualityChangesGroup(ContainerGroup):
 
-    def __init__(self, name: str):
-        self.name = name  # type: str
-        self.qc_for_global = None  # type: Optional["QualityNode"]
-        self.qc_for_extruders_dict = dict()  # <extruder_id> -> QualityNode
+    def __init__(self, name: str, parent = None):
+        super().__init__(name, parent)
 
-    def addMetadata(self, metadata: dict):
-        extruder_id = metadata.get("extruder")
-        if extruder_id is not None:
-            self.qc_for_extruders_dict[extruder_id] = QualityNode(metadata)
+    def addNode(self, node: "QualityNode"):
+        # TODO: in 3.2 and earlier, a quality_changes container may have a field called "extruder" which contains the
+        # extruder definition ID it belongs to. But, in fact, we only need to know the following things:
+        #  1. which machine a custom profile is suitable for,
+        #  2. if this profile is for the GlobalStack,
+        #  3. if this profile is for an ExtruderStack and which one (the position).
+        #
+        # So, it is preferred to have a field like this:
+        #     extruder_position = 1
+        # instead of this:
+        #     extruder = custom_extruder_1
+        #
+        # An upgrade needs to be done if we want to do it this way. Before that, we use the extruder's definition
+        # to figure out its position.
+        #
+        extruder_definition_id = node.metadata.get("extruder")
+        if extruder_definition_id:
+            container_registry = Application.getInstance().getContainerRegistry()
+            metadata_list = container_registry.findDefinitionContainersMetadata(id = extruder_definition_id)
+            if not metadata_list:
+                raise RuntimeError("%s cannot get metadata for extruder definition [%s]" %
+                                   (self, extruder_definition_id))
+            extruder_definition_metadata = metadata_list[0]
+            extruder_position = str(extruder_definition_metadata["position"])
+
+            if extruder_position in self.nodes_for_extruders:
+                raise RuntimeError("%s tries to overwrite the existing nodes_for_extruders position [%s] %s with %s" %
+                                   (self, extruder_position, self.node_for_global, node))
+
+            self.nodes_for_extruders[extruder_position] = node
+
         else:
-            self.qc_for_global = QualityNode(metadata)
-
-    def getContainerForGlobalStack(self) -> "InstanceContainer":
-        return self.qc_for_global.getContainer()
-
-    def getContainerForExtruderStack(self, extruder_definition_id: str) -> Optional["InstanceContainer"]:
-        qc_node = self.qc_for_extruders_dict.get(extruder_definition_id)
-        container = None
-        if qc_node is not None:
-            container = qc_node.getContainer()
-        return container
+            # This is a quality_changes for the GlobalStack
+            if self.node_for_global is not None:
+                raise RuntimeError("%s tries to overwrite the existing node_for_global %s with %s" %
+                                   (self, self.node_for_global, node))
+            self.node_for_global = node
 
 
 class QualityGroup(ContainerGroup):
@@ -60,20 +78,20 @@ class QualityGroup(ContainerGroup):
         self.quality_type = quality_type
         self.is_available = False
 
-
+#
+# QualityNode is used for BOTH quality and quality_changes containers.
+#
 class QualityNode(ContainerNode):
-    __slots__ = ("metadata", "container", "quality_type_map", "children_map")
 
-    def __init__(self, metadata = None):
+    def __init__(self, metadata: Optional[dict] = None):
         super().__init__(metadata = metadata)
-        self.quality_type_map = {}
-
+        self.quality_type_map = {}  # quality_type -> QualityNode for InstanceContainer
 
     def addQualityMetadata(self, quality_type: str, metadata: dict):
         if quality_type not in self.quality_type_map:
             self.quality_type_map[quality_type] = QualityNode(metadata)
 
-    def getQualityNode(self, quality_type: str):
+    def getQualityNode(self, quality_type: str) -> Optional["QualityNode"]:
         return self.quality_type_map.get(quality_type)
 
     def addQualityChangesMetadata(self, quality_type: str, metadata: dict):
@@ -84,8 +102,8 @@ class QualityNode(ContainerNode):
         name = metadata["name"]
         if name not in quality_type_node.children_map:
             quality_type_node.children_map[name] = QualityChangesGroup(name)
-        qc_group = quality_type_node.children_map[name]
-        qc_group.addMetadata(metadata)
+        quality_changes_group = quality_type_node.children_map[name]
+        quality_changes_group.addNode(QualityNode(metadata))
 
 
 class QualityManager(QObject):
@@ -164,6 +182,11 @@ class QualityManager(QObject):
 
                     material_node.addQualityMetadata(quality_type, metadata)
 
+        # Initialize quality
+        self._initializeQualityChangesTables()
+
+
+    def _initializeQualityChangesTables(self):
         # Initialize the lookup tree for quality_changes profiles with following structure:
         # <machine> -> <quality_type> -> <name>
         quality_changes_metadata_list = self._container_registry.findContainersMetadata(type = "quality_changes")
@@ -180,6 +203,51 @@ class QualityManager(QObject):
 
             machine_node.addQualityChangesMetadata(quality_type, metadata)
 
+    # Updates the given quality groups' availabilities according to which extruders are being used/ enabled.
+    def _updateQualityGroupsAvailability(self, machine: "GlobalStack", quality_group_list):
+        used_extruders = set()
+        # TODO: This will change after the Machine refactoring
+        for i in range(machine.getProperty("machine_extruder_count", "value")):
+            used_extruders.add(str(i))
+
+        # Update the "is_available" flag for each quality group.
+        for quality_group in quality_group_list:
+            is_available = True
+            if quality_group.node_for_global is None:
+                is_available = False
+            if is_available:
+                for position in used_extruders:
+                    if position not in quality_group.nodes_for_extruders:
+                        is_available = False
+                        break
+
+            quality_group.is_available = is_available
+
+    # Returns a dict of "custom profile name" -> QualityChangesGroup
+    def getQualityChangesGroup(self, machine: "GlobalStack") -> dict:
+        # TODO: How to make this simpler?
+        # Get machine definition ID
+        machine_definition_id = self._default_machine_definition_id
+        if parseBool(machine.getMetaDataEntry("has_machine_quality", False)):
+            machine_definition_id = machine.getMetaDataEntry("quality_definition")
+            if machine_definition_id is None:
+                machine_definition_id = machine.definition.getId()
+
+        machine_node = self._machine_quality_type_to_quality_changes_dict.get(machine_definition_id)
+        if not machine_node:
+            raise RuntimeError("Cannot find node for machine def [%s] in QualityChanges lookup table" % machine_definition_id)
+
+        # iterate over all quality_types in the machine node
+        quality_changes_group_dict = dict()
+        for quality_type, quality_changes_node in machine_node.quality_type_map.items():
+            for quality_changes_name, quality_changes_group in quality_changes_node.children_map.items():
+                quality_changes_group_dict[quality_changes_name] = quality_changes_group
+
+        # Update availabilities for each quality group
+        self._updateQualityGroupsAvailability(machine, quality_changes_group_dict.values())
+
+        return quality_changes_group_dict
+
     def getQualityGroups(self, machine: "GlobalStack") -> dict:
         # TODO: How to make this simpler, including the fallbacks.
         # Get machine definition ID
@@ -191,7 +259,7 @@ class QualityManager(QObject):
 
         machine_node = self._machine_variant_material_quality_type_to_quality_dict.get(machine_definition_id)
         if not machine_node:
-            Logger.log("e", "Cannot find node for machine def [%s] in quality lookup table", machine_definition_id)
+            raise RuntimeError("Cannot find node for machine def [%s] in Quality lookup table" % machine_definition_id)
 
         # iterate over all quality_types in the machine node
         quality_group_dict = {}
@@ -268,23 +336,8 @@ class QualityManager(QObject):
 
                 quality_group.nodes_for_extruders[position] = quality_node
 
-        used_extruders = set()
-        # TODO: This will change after the Machine refactoring
-        for i in range(machine.getProperty("machine_extruder_count", "value")):
-            used_extruders.add(str(i))
-
-        # Update the "is_available" flag for each quality group.
-        for quality_group in quality_group_dict.values():
-            is_available = True
-            if quality_group.node_for_global is None:
-                is_available = False
-            if is_available:
-                for position in used_extruders:
-                    if position not in quality_group.nodes_for_extruders:
-                        is_available = False
-                        break
-
-            quality_group.is_available = is_available
+        # Update availabilities for each quality group
+        self._updateQualityGroupsAvailability(machine, quality_group_dict.values())
 
         return quality_group_dict
 
