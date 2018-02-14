@@ -365,7 +365,6 @@ class PrintInformation(QObject):
 
         abbr_machine = ""
         for word in re.findall(r"[\w']", active_machine_type_name):
-            print(word)
             if word.lower() == "ultimaker":
                 abbr_machine += "UM"
             elif word.isdigit():
