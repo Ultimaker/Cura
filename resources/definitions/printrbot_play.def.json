@@ -7,7 +7,8 @@
         "author": "Chris Pearson",
         "manufacturer": "Printrbot",
         "file_formats": "text/x-gcode",
-        "platform": "printrbot_play.stl"
+        "platform": "printrbot_play.stl",
+        "preferred_material": "generic_pla_175"
     },
 
     "overrides": {

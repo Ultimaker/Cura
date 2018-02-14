@@ -12,6 +12,7 @@
         "platform": "gmax_1-5_xt-plus_s3d_full model_150707.stl",
         "has_variants": true,
 		"variants_name": "Hotend",
+        "preferred_material": "generic_pla_175",
 		"preferred_variant_name": "0.5mm E3D (Default)"
     },
 

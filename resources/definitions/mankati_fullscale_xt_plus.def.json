@@ -7,7 +7,8 @@
         "author": "RBC",
         "manufacturer": "Mankati",
         "file_formats": "text/x-gcode",
-        "platform": "mankati_fullscale_xt_plus_platform.stl"
+        "platform": "mankati_fullscale_xt_plus_platform.stl",
+        "preferred_material": "generic_pla_175"
     },
     "overrides": {
         "machine_name": { "default_value": "Mankati Fullscale XT Plus" },

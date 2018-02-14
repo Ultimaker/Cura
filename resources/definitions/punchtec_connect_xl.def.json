@@ -12,7 +12,8 @@
             "0": "punchtec_connect_xl_extruder_0",
             "1": "punchtec_connect_xl_extruder_1"
         },
-        "platform_offset": [ 0, 0, 0]
+        "platform_offset": [ 0, 0, 0],
+        "preferred_material": "generic_pla_175"
     },
 
     "overrides": {

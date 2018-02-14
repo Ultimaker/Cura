@@ -8,6 +8,7 @@
         "manufacturer": "101Hero",
         "file_formats": "text/x-gcode",
         "platform": "101hero-platform.stl",
+        "preferred_material": "generic_pla_175",
         "supports_usb_connection": true
     },
 

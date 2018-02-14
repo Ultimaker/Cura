@@ -12,6 +12,7 @@
         "platform_offset": [-126, -36, 117],
         "has_machine_quality": true,
         "preferred_quality_type": "normal",
+        "preferred_material": "generic_pla_175",
         "machine_extruder_trains":
         {
             "0": "builder_premium_small_rear",

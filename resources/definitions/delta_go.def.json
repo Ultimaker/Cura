@@ -8,7 +8,8 @@
         "manufacturer": "Deltaprintr",
         "file_formats": "text/x-gcode",
         "platform_offset": [0, 0, 0],
-        "platform": ""
+        "platform": "",
+        "preferred_material": "generic_pla_175"
     },
     "overrides": {
         "machine_name":                       { "default_value": "Delta Go" },

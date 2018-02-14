@@ -9,6 +9,7 @@
         "platform": "BEEVERYCREATIVE-helloBEEprusa.stl",
         "platform_offset": [-226, -75, -196],
         "file_formats": "text/x-gcode",
+        "preferred_material": "generic_pla_175",
         "machine_extruder_trains":
         {
             "0": "hBp_extruder_left",
