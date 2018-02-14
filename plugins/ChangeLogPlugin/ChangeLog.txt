@@ -1,3 +1,9 @@
+[3.2.1]
+*Bug fixes
+- Fixed issues where Cura crashes on startup and loading profiles
+- Updated translations
+- Fixed an issue where the text would not render properly
+
 [3.2.0]
 *Tree support
 Experimental tree-like support structure that uses ‘branches’ to support prints. Branches ‘grow’ and multiply towards the model, with fewer contact points than alternative support methods. This results in better surface finishes for organic-shaped prints.
