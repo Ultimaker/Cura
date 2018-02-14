@@ -1,4 +1,4 @@
-# Copyright (c) 2017 Ultimaker B.V.
+# Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from UM.Logger import Logger
@@ -206,9 +206,8 @@ class CuraStackBuilder:
 
         return container
 
-
     @classmethod
-    def createDefinitionChangesContainer(cls, container_stack, container_name, container_index = None):
+    def createDefinitionChangesContainer(cls, container_stack, container_name):
         from cura.CuraApplication import CuraApplication
 
         unique_container_name = ContainerRegistry.getInstance().uniqueName(container_name)

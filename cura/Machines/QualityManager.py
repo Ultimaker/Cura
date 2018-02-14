@@ -1,14 +1,14 @@
 from typing import Optional
 
-from PyQt5.Qt import pyqtSignal, QObject
+from PyQt5.Qt import QObject
 
 from UM.Application import Application
 from UM.Logger import Logger
-from UM.Settings.InstanceContainer import InstanceContainer
 from UM.Util import parseBool
 
 from cura.Machines.ContainerGroup import ContainerGroup
 from cura.Machines.ContainerNode import ContainerNode
+from cura.Machines.MachineTools import getMachineDefinitionIDForQualitySearch
 
 
 #
@@ -114,12 +114,12 @@ class QualityManager(QObject):
 
     def __init__(self, container_registry, parent = None):
         super().__init__(parent)
-
-        self._material_manager = Application.getInstance()._material_manager
-
+        self._application = Application.getInstance()
+        self._material_manager = self._application._material_manager
         self._container_registry = container_registry
-        self._empty_quality_container = self._container_registry.findInstanceContainers(id = "empty_quality")[0]
-        #self._empty_quality_changes_container = self._container_registry.findInstanceContainers(id = "empty_quality_changes")[0]
+
+        self._empty_quality_container = self._application.empty_quality_container
+        self._empty_quality_changes_container = self._application.empty_quality_changes_container
 
         self._machine_variant_material_quality_type_to_quality_dict = {}  # for quality lookup
         self._machine_quality_type_to_quality_changes_dict = {}  # for quality_changes lookup
@@ -229,12 +229,8 @@ class QualityManager(QObject):
     # Returns a dict of "custom profile name" -> QualityChangesGroup
     def getQualityChangesGroups(self, machine: "GlobalStack") -> dict:
         # TODO: How to make this simpler?
-        # Get machine definition ID
-        machine_definition_id = self._default_machine_definition_id
-        if parseBool(machine.getMetaDataEntry("has_machine_quality", False)):
-            machine_definition_id = machine.getMetaDataEntry("quality_definition")
-            if machine_definition_id is None:
-                machine_definition_id = machine.definition.getId()
+        # Get machine definition ID for quality search
+        machine_definition_id = getMachineDefinitionIDForQualitySearch(machine)
 
         machine_node = self._machine_quality_type_to_quality_changes_dict.get(machine_definition_id)
         if not machine_node:
@@ -257,12 +253,8 @@ class QualityManager(QObject):
 
     def getQualityGroups(self, machine: "GlobalStack") -> dict:
         # TODO: How to make this simpler, including the fall backs.
-        # Get machine definition ID
-        machine_definition_id = self._default_machine_definition_id
-        if parseBool(machine.getMetaDataEntry("has_machine_quality", False)):
-            machine_definition_id = machine.getMetaDataEntry("quality_definition")
-            if machine_definition_id is None:
-                machine_definition_id = machine.definition.getId()
+        # Get machine definition ID for quality search
+        machine_definition_id = getMachineDefinitionIDForQualitySearch(machine)
 
         # To find the quality container for the GlobalStack, check in the following fall-back manner:
         #   (1) the machine-specific node
