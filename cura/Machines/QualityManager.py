@@ -189,7 +189,6 @@ class QualityManager(QObject):
         # Initialize quality
         self._initializeQualityChangesTables()
 
-
     def _initializeQualityChangesTables(self):
         # Initialize the lookup tree for quality_changes profiles with following structure:
         # <machine> -> <quality_type> -> <name>
@@ -265,24 +264,24 @@ class QualityManager(QObject):
             if machine_definition_id is None:
                 machine_definition_id = machine.definition.getId()
 
+        # To find the quality container for the GlobalStack, check in the following fall-back manner:
+        #   (1) the machine-specific node
+        #   (2) the generic node
         machine_node = self._machine_variant_material_quality_type_to_quality_dict.get(machine_definition_id)
-        if not machine_node:
-            raise RuntimeError("Cannot find node for machine def [%s] in Quality lookup table" % machine_definition_id)
+        default_machine_node = self._machine_variant_material_quality_type_to_quality_dict.get(self._default_machine_definition_id)
+        nodes_to_check = [machine_node, default_machine_node]
 
-        # iterate over all quality_types in the machine node
-        node_to_fetch_global = machine_node
+        # Iterate over all quality_types in the machine node
         quality_group_dict = {}
-        if not node_to_fetch_global.quality_type_map:
-            # Fallback mechanism:
-            # If there is no machine-specific quality, fallback to use the default fdmprinter's.
-            node_to_fetch_global = self._machine_variant_material_quality_type_to_quality_dict.get(self._default_machine_definition_id)
-        for quality_type, quality_node in node_to_fetch_global.quality_type_map.items():
-            quality_group = QualityGroup(quality_node.metadata["name"], quality_type)
-            quality_group.node_for_global = quality_node
+        for node in nodes_to_check:
+            if node and node.quality_type_map:
+                for quality_type, quality_node in node.quality_type_map.items():
+                    quality_group = QualityGroup(quality_node.metadata["name"], quality_type)
+                    quality_group.node_for_global = quality_node
+                    quality_group_dict[quality_type] = quality_group
+                break
 
-            quality_group_dict[quality_type] = quality_group
-
-        # Iterate over all extruders
+        # Iterate over all extruders to find quality containers for each extruder
         for position, extruder in machine.extruders.items():
             variant_name = None
             if extruder.variant.getId() != "empty_variant":
@@ -303,120 +302,40 @@ class QualityManager(QObject):
                 if fallback_root_material_metadata:
                     root_material_id_list.append(fallback_root_material_metadata["id"])
 
-            variant_node = None
-            material_node = None
+            nodes_to_check = []
 
             if variant_name:
                 # In this case, we have both a specific variant and a specific material
                 variant_node = machine_node.getChildNode(variant_name)
-                if not variant_node:
-                    continue
-                if has_material:
+                if variant_node and has_material:
                     for root_material_id in root_material_id_list:
                         material_node = variant_node.getChildNode(root_material_id)
                         if material_node:
+                            nodes_to_check.append(material_node)
                             break
-                    if not material_node:
-                        # No suitable quality found: not supported
-                        Logger.log("d", "Cannot find quality with machine [%s], variant name [%s], and materials [%s].",
-                                   machine_definition_id, variant_name, ", ".join(root_material_id_list))
+                nodes_to_check.append(variant_node)
 
-            else:
-                # In this case, we only have a specific material but NOT a variant
-                if has_material:
-                    for root_material_id in root_material_id_list:
-                        material_node = machine_node.getChildNode(root_material_id)
-                        if material_node:
-                            break
-                    if not material_node:
-                        # No suitable quality found: not supported
-                        Logger.log("d", "Cannot find quality with machine [%s], variant name [%s], and materials [%s].",
-                                   machine_definition_id, variant_name, ", ".join(root_material_id_list))
+            # In this case, we only have a specific material but NOT a variant
+            if has_material:
+                for root_material_id in root_material_id_list:
+                    material_node = machine_node.getChildNode(root_material_id)
+                    if material_node:
+                        nodes_to_check.append(material_node)
+                        break
 
-            node_to_check = material_node
-            if not node_to_check:
-                node_to_check = variant_node
-            if not node_to_check:
-                node_to_check = machine_node
+            nodes_to_check += [machine_node, default_machine_node]
+            for node in nodes_to_check:
+                if node and node.quality_type_map:
+                    for quality_type, quality_node in node.quality_type_map.items():
+                        if quality_type not in quality_group_dict:
+                            quality_group = QualityGroup(quality_node.metadata["name"], quality_type)
+                            quality_group_dict[quality_type] = quality_group
 
-            for quality_type, quality_node in node_to_check.quality_type_map.items():
-                if quality_type not in quality_group_dict:
-                    quality_group = QualityGroup(quality_node.metadata["name"], quality_type)
-                    quality_group_dict[quality_type] = quality_group
-
-                quality_group = quality_group_dict[quality_type]
-
-                quality_group.nodes_for_extruders[position] = quality_node
+                        quality_group = quality_group_dict[quality_type]
+                        quality_group.nodes_for_extruders[position] = quality_node
+                    break
 
         # Update availabilities for each quality group
         self._updateQualityGroupsAvailability(machine, quality_group_dict.values())
 
         return quality_group_dict
-
-
-    def getQuality(self, quality_type: str, machine: "GlobalStack"):
-        # Get machine definition ID
-        machine_definition_id = self._default_machine_definition_id
-        if parseBool(machine.getMetaDataEntry("has_machine_quality", False)):
-            machine_definition_id = machine.getMetaDataEntry("quality_definition")
-            if machine_definition_id is None:
-                machine_definition_id = machine.definition.getId()
-
-        machine_quality = self.getQualityContainer(quality_type, machine_definition_id)
-        extruder_quality_dict = {}
-        for position, extruder in machine.extruders.items():
-            variant = extruder.variant
-            material = extruder.material
-
-            variant_name = variant.getName()
-            if variant.getId() == "empty_variant":
-                variant_name = None
-            root_material_id = material.getMetaDataEntry("base_file")
-            if material.getId() == "empty_material":
-                root_material_id = None
-
-            extruder_quality = self.getQualityContainer(quality_type, machine_definition_id,
-                                                        variant_name, root_material_id)
-            extruder_quality_dict[position] = extruder_quality
-
-        # TODO: return as a group
-        return machine_quality, extruder_quality_dict
-
-    def getQualityContainer(self, quality_type: str, machine_definition_id: dict,
-                            variant_name: Optional[str] = None,
-                            root_material_id: Optional[str] = None) -> "InstanceContainer":
-        assert machine_definition_id is not None
-        assert quality_type is not None
-
-        # If the specified quality cannot be found, empty_quality will be returned.
-        container = self._empty_quality_container
-
-        machine_node = self._machine_variant_material_quality_type_to_quality_dict.get(machine_definition_id)
-        variant_node = None
-        material_node = None
-        if machine_node is not None:
-            if variant_name is not None:
-                variant_node = machine_node.getChildNode(variant_name)
-                if variant_node is not None:
-                    if root_material_id is not None:
-                        material_node = variant_node.getChildNode(root_material_id)
-            elif root_material_id is not None:
-                material_node = machine_node.getChildNode(root_material_id)
-
-        nodes_to_try = [material_node, variant_node, machine_node]
-        if machine_definition_id != self._default_machine_definition_id:
-            default_machine_node = self._machine_variant_material_quality_type_to_quality_dict.get(self._default_machine_definition_id)
-            nodes_to_try.append(default_machine_node)
-
-        for node in nodes_to_try:
-            if node is None:
-                continue
-            quality_node = node.getQualityNode(quality_type)
-            if quality_node is None:
-                continue
-
-            container = quality_node.getContainer()
-            break
-
-        return container
-
