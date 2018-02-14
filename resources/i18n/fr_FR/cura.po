@@ -1,13 +1,13 @@
 # Cura
-# Copyright (C) 2017 Ultimaker
+# Copyright (C) 2018 Ultimaker
 # This file is distributed under the same license as the Cura package.
-# Ruben Dulek <r.dulek@ultimaker.com>, 2017.
+# Ruben Dulek <r.dulek@ultimaker.com>, 2018.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Cura 3.0\n"
+"Project-Id-Version: Cura 3.2\n"
 "Report-Msgid-Bugs-To: r.dulek@ultimaker.com\n"
-"POT-Creation-Date: 2017-08-02 16:53+0000\n"
+"POT-Creation-Date: 2018-01-29 09:48+0000\n"
 "PO-Revision-Date: 2018-02-13 17:26+0100\n"
 "Last-Translator: Bothof <info@bothof.nl>\n"
 "Language-Team: French\n"
@@ -374,7 +374,7 @@ msgstr "Connecté sur le réseau. Pas d'accès pour commander l'imprimante."
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/NetworkPrinterOutputDevice.py:410
 msgctxt "@info:status"
 msgid "Access request was denied on the printer."
-msgstr "La demande d'accès à l'imprimante.a été refusée."
+msgstr "La demande d'accès à l'imprimante a été refusée."
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/NetworkPrinterOutputDevice.py:413
 msgctxt "@info:status"
@@ -430,7 +430,7 @@ msgstr "PrintCore différent (Cura : {0}, Imprimante : {1}) sélectionné pour
 #, python-brace-format
 msgctxt "@label"
 msgid "Different material (Cura: {0}, Printer: {1}) selected for extruder {2}"
-msgstr "Matériau différent (Cura : {0}, Imprimante : {1}) sélectionné pour l' {2}"
+msgstr "Matériau différent (Cura : {0}, Imprimante : {1}) sélectionné pour l'extrudeur {2}"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/NetworkPrinterOutputDevice.py:742
 #, python-brace-format
@@ -1444,7 +1444,7 @@ msgstr "Plateau chauffant"
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:168
 msgctxt "@label"
 msgid "Gcode flavor"
-msgstr "GCode"
+msgstr "GCode Parfum"
 
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:181
 msgctxt "@label"
@@ -1504,7 +1504,7 @@ msgstr "La différence de hauteur entre la pointe de la buse et le système de p
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:254
 msgctxt "@label"
 msgid "Number of Extruders"
-msgstr "Nombre d's"
+msgstr "Nombre d'extrudeurs"
 
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:310
 msgctxt "@label"
@@ -2640,7 +2640,7 @@ msgstr "Contrôlée"
 #: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UMOCheckupMachineAction.qml:284
 msgctxt "@label"
 msgid "Everything is in order! You're done with your CheckUp."
-msgstr "Tout est en ordre ! Vous avez terminé votre vérification. "
+msgstr "Tout est en ordre ! Vous avez terminé votre vérification."
 
 #: /home/ruben/Projects/Cura/resources/qml/MonitorButton.qml:87
 msgctxt "@label:MonitorStatus"
@@ -4762,7 +4762,6 @@ msgid "Plugin Browser"
 msgstr "Navigateur de plug-ins"
 
 #: SolidView/plugin.json
-#, fuzzy
 msgctxt "description"
 msgid "Provides a normal solid mesh view."
 msgstr "Affiche une vue en maille solide normale."
@@ -4820,7 +4819,7 @@ msgstr "Demander à l'utilisateur une fois s'il est d'accord avec les termes de 
 #: UserAgreementPlugin/plugin.json
 msgctxt "name"
 msgid "UserAgreement"
-msgstr "Accord de l'utilisateur. "
+msgstr "Accord de l'utilisateur"
 
 #: UltimakerMachineActions/plugin.json
 msgctxt "description"

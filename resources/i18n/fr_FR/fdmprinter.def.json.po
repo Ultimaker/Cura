@@ -1,13 +1,13 @@
-# Cura JSON setting files
-# Copyright (C) 2017 Ultimaker
+# Cura
+# Copyright (C) 2018 Ultimaker
 # This file is distributed under the same license as the Cura package.
-# Ruben Dulek <r.dulek@ultimaker.com>, 2017.
+# Ruben Dulek <r.dulek@ultimaker.com>, 2018.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Cura 3.0\n"
+"Project-Id-Version: Cura 3.2\n"
 "Report-Msgid-Bugs-To: r.dulek@ultimaker.com\n"
-"POT-Creation-Date: 2017-08-02 16:53+0000\n"
+"POT-Creation-Date: 2018-01-29 09:48+0000\n"
 "PO-Revision-Date: 2018-02-13 15:31+0100\n"
 "Last-Translator: Bothof <info@bothof.nl>\n"
 "Language-Team: French\n"
@@ -83,7 +83,7 @@ msgstr "Identification GUID du matériau"
 #: fdmprinter.def.json
 msgctxt "material_guid description"
 msgid "GUID of the material. This is set automatically. "
-msgstr "identification GUID du matériau. Cela est configuré automatiquement. "
+msgstr "Identification GUID du matériau. Cela est configuré automatiquement. "
 
 #: fdmprinter.def.json
 msgctxt "material_bed_temp_wait label"
@@ -298,7 +298,7 @@ msgstr "La durée minimale pendant laquelle une extrudeuse doit être inactive a
 #: fdmprinter.def.json
 msgctxt "machine_gcode_flavor label"
 msgid "Gcode flavour"
-msgstr "Gcode"
+msgstr "Gcode parfum"
 
 #: fdmprinter.def.json
 msgctxt "machine_gcode_flavor description"
@@ -638,7 +638,7 @@ msgstr "Largeur de ligne de la coque"
 #: fdmprinter.def.json
 msgctxt "wall_line_width description"
 msgid "Width of a single wall line."
-msgstr "Largeur d'une seule ligne de la paroie"
+msgstr "Largeur d'une seule ligne de la paroie."
 
 #: fdmprinter.def.json
 msgctxt "wall_line_width_0 label"
@@ -963,12 +963,12 @@ msgstr "Une liste de sens de ligne (exprimés en nombres entiers) à utiliser lo
 #: fdmprinter.def.json
 msgctxt "wall_0_inset label"
 msgid "Outer Wall Inset"
-msgstr "enchevêtrement de la paroi externe"
+msgstr "Enchevêtrement de la paroi externe"
 
 #: fdmprinter.def.json
 msgctxt "wall_0_inset description"
 msgid "Inset applied to the path of the outer wall. If the outer wall is smaller than the nozzle, and printed after the inner walls, use this offset to get the hole in the nozzle to overlap with the inner walls instead of the outside of the model."
-msgstr "enchevêtrement appliqué sur le passage de la paroi externe. Si la paroi externe est plus petite que la buse et imprimée après les parois intérieures, utiliser cet Offset pour que le trou dans la buse chevauche les parois internes et non l'extérieur du modèle."
+msgstr "Enchevêtrement appliqué sur le passage de la paroi externe. Si la paroi externe est plus petite que la buse et imprimée après les parois intérieures, utiliser cet Offset pour que le trou dans la buse chevauche les parois internes et non l'extérieur du modèle."
 
 #: fdmprinter.def.json
 msgctxt "optimize_wall_printing_order label"
@@ -1263,12 +1263,12 @@ msgstr "La quantité de matériau, relative à une ligne de couche extérieure n
 #: fdmprinter.def.json
 msgctxt "ironing_inset label"
 msgid "Ironing Inset"
-msgstr "chevauchement du lissage"
+msgstr "Chevauchement du lissage"
 
 #: fdmprinter.def.json
 msgctxt "ironing_inset description"
 msgid "A distance to keep from the edges of the model. Ironing all the way to the edge of the mesh may result in a jagged edge on your print."
-msgstr "Distance à garder à partir des bords du modèle. lisser jusqu'au bord de la maille peut entraîner l'apparition d'un bord denté sur votre impression."
+msgstr "Distance à garder à partir des bords du modèle. Lisser jusqu'au bord de la maille peut entraîner l'apparition d'un bord denté sur votre impression."
 
 #: fdmprinter.def.json
 msgctxt "speed_ironing label"
@@ -1298,7 +1298,7 @@ msgstr "Saccade du lissage"
 #: fdmprinter.def.json
 msgctxt "jerk_ironing description"
 msgid "The maximum instantaneous velocity change while performing ironing."
-msgstr "Le changement instantané maximal de vitesse lors du lissage"
+msgstr "Le changement instantané maximal de vitesse lors du lissage."
 
 #: fdmprinter.def.json
 msgctxt "infill label"
@@ -1793,7 +1793,7 @@ msgstr "Rétracter au changement de couche"
 #: fdmprinter.def.json
 msgctxt "retract_at_layer_change description"
 msgid "Retract the filament when the nozzle is moving to the next layer."
-msgstr "Rétracter le filament quand la buse se déplace vers la prochaine couche. "
+msgstr "Rétracter le filament quand la buse se déplace vers la prochaine couche."
 
 #: fdmprinter.def.json
 msgctxt "retraction_amount label"
