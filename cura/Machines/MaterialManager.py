@@ -4,7 +4,6 @@ from PyQt5.Qt import QTimer, QObject, pyqtSignal
 
 from UM.Logger import Logger
 from UM.Settings import ContainerRegistry
-from UM.Settings import InstanceContainer
 
 from cura.Machines.ContainerNode import ContainerNode
 
@@ -227,7 +226,7 @@ class MaterialManager(QObject):
     #  1. the given machine doesn't have materials;
     #  2. cannot find any material InstanceContainers with the given settings.
     #
-    def getMaterial(self, machine_definition_id: str, variant_name: Optional[str], diameter: float, root_material_id: str) -> Optional["InstanceContainer"]:
+    def getMaterialNode(self, machine_definition_id: str, variant_name: Optional[str], diameter: float, root_material_id: str) -> Optional["InstanceContainer"]:
         # round the diameter to get the approximate diameter
         rounded_diameter = str(round(diameter))
         if rounded_diameter not in self._diameter_machine_variant_material_map:

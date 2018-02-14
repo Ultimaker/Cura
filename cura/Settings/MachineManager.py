@@ -135,10 +135,10 @@ class MachineManager(QObject):
 
         ### NEW
         self._current_quality_group = None
+        self._current_root_material_id = {}
 
     ### NEW
     activeQualityGroupChanged = pyqtSignal()
-
 
     globalContainerChanged = pyqtSignal()  # Emitted whenever the global stack is changed (ie: when changing between printers, changing a global profile, but not when changing a value)
     activeMaterialChanged = pyqtSignal()
@@ -154,6 +154,8 @@ class MachineManager(QObject):
     blurSettings = pyqtSignal()  # Emitted to force fields in the advanced sidebar to un-focus, so they update properly
 
     outputDevicesChanged = pyqtSignal()
+
+    rootMaterialChanged = pyqtSignal()
 
     def _onOutputDevicesChanged(self) -> None:
         for printer_output_device in self._printer_output_devices:
@@ -1491,6 +1493,15 @@ class MachineManager(QObject):
     #
     # New
     #
+
+    @pyqtProperty("QVariant", notify = rootMaterialChanged)
+    def currentRootMaterialId(self):
+        # initial filling the current_root_material_id
+        for position in self._global_container_stack.extruders:
+            if position not in self._current_root_material_id:
+                self._current_root_material_id[position] = self._global_container_stack.extruders[position].material.getMetaDataEntry("base_file")
+        return self._current_root_material_id
+
     def _setEmptyQuality(self):
         self._current_quality_group = None
         self._global_container_stack.quality = self._empty_quality_container
@@ -1523,6 +1534,11 @@ class MachineManager(QObject):
             self._global_container_stack.extruders[position].material = container_node.getContainer()
         else:
             self._global_container_stack.extruders[position].material = self._empty_material_container
+        # The _current_root_material_id is used in the MaterialMenu to see which material is selected
+        root_material_id = container_node.metadata["base_file"]
+        if root_material_id != self._current_root_material_id[position]:
+            self._current_root_material_id[position] = root_material_id
+            self.rootMaterialChanged.emit()
 
     ## Update current quality type and machine after setting material
     def _updateQualityWithMaterial(self):
