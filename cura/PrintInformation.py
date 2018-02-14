@@ -364,7 +364,7 @@ class PrintInformation(QObject):
         active_machine_type_name = global_container_stack.definition.getName()
 
         abbr_machine = ""
-        for word in re.findall(r"[\w']", active_machine_type_name):
+        for word in re.findall(r"[\w']+", active_machine_type_name):
             if word.lower() == "ultimaker":
                 abbr_machine += "UM"
             elif word.isdigit():
