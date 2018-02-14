@@ -220,7 +220,7 @@ Rectangle
         anchors.topMargin: UM.Theme.getSize("default_margin").height
         anchors.right: viewModeButton.right
 
-        property var buttonTarget: Qt.point(viewModeButton.x + Math.floor(viewModeButton.width / 2), viewModeButton.y + Math.floor(viewModeButton.height / 2))
+        property var buttonTarget: Qt.point(viewModeButton.x + Math.round(viewModeButton.width / 2), viewModeButton.y + Math.round(viewModeButton.height / 2))
 
         height: childrenRect.height
         width: childrenRect.width

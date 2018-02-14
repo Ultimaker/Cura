@@ -61,7 +61,7 @@ SettingItem
         {
             id: downArrow
             x: control.width - width - control.rightPadding
-            y: control.topPadding + Math.floor((control.availableHeight - height) / 2)
+            y: control.topPadding + Math.round((control.availableHeight - height) / 2)
 
             source: UM.Theme.getIcon("arrow_bottom")
             width: UM.Theme.getSize("standard_arrow").width

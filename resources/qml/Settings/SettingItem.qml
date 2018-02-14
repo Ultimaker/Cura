@@ -1,9 +1,9 @@
-// Copyright (c) 2017 Ultimaker B.V.
+// Copyright (c) 2018 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
-import QtQuick 2.7
-import QtQuick.Layouts 1.1
-import QtQuick.Controls 2.0
+import QtQuick 2.8
+import QtQuick.Layouts 1.2
+import QtQuick.Controls 2.1
 
 import UM 1.1 as UM
 import Cura 1.0 as Cura
@@ -108,7 +108,7 @@ Item {
             id: label;
 
             anchors.left: parent.left;
-            anchors.leftMargin: doDepthIndentation ? Math.floor((UM.Theme.getSize("section_icon_column").width + 5) + ((definition.depth - 1) * UM.Theme.getSize("setting_control_depth_margin").width)) : 0
+            anchors.leftMargin: doDepthIndentation ? Math.round((UM.Theme.getSize("section_icon_column").width + 5) + ((definition.depth - 1) * UM.Theme.getSize("setting_control_depth_margin").width)) : 0
             anchors.right: settingControls.left;
             anchors.verticalCenter: parent.verticalCenter
 
@@ -128,12 +128,12 @@ Item {
         {
             id: settingControls
 
-            height: Math.floor(parent.height / 2)
-            spacing: Math.floor(UM.Theme.getSize("sidebar_margin").height / 2)
+            height: Math.round(parent.height / 2)
+            spacing: Math.round(UM.Theme.getSize("sidebar_margin").height / 2)
 
             anchors {
                 right: controlContainer.left
-                rightMargin: Math.floor(UM.Theme.getSize("sidebar_margin").width / 2)
+                rightMargin: Math.round(UM.Theme.getSize("sidebar_margin").width / 2)
                 verticalCenter: parent.verticalCenter
             }
 

@@ -59,15 +59,15 @@ UM.ManagementPage
             anchors.right: parent.right
             Rectangle
             {
-                width: Math.floor(parent.height * 0.8)
-                height: Math.floor(parent.height * 0.8)
+                width: Math.round(parent.height * 0.8)
+                height: Math.round(parent.height * 0.8)
                 color: model.metadata.color_code
                 border.color: isCurrentItem ? palette.highlightedText : palette.text;
                 anchors.verticalCenter: parent.verticalCenter
             }
             Label
             {
-                width: Math.floor((parent.width * 0.3))
+                width: Math.round((parent.width * 0.3))
                 text: model.metadata.material
                 elide: Text.ElideRight
                 font.italic: model.id == activeId

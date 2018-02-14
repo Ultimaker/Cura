@@ -26,7 +26,7 @@ SettingItem
 
         anchors.fill: parent
 
-        border.width: Math.floor(UM.Theme.getSize("default_lining").width)
+        border.width: Math.round(UM.Theme.getSize("default_lining").width)
         border.color:
         {
             if(!enabled)
@@ -76,7 +76,7 @@ SettingItem
         Rectangle
         {
             anchors.fill: parent;
-            anchors.margins: Math.floor(UM.Theme.getSize("default_lining").width);
+            anchors.margins: Math.round(UM.Theme.getSize("default_lining").width);
             color: UM.Theme.getColor("setting_control_highlight")
             opacity: !control.hovered ? 0 : propertyProvider.properties.validationState == "ValidatorState.Valid" ? 1.0 : 0.35;
         }
@@ -84,7 +84,7 @@ SettingItem
         Label
         {
             anchors.right: parent.right;
-            anchors.rightMargin: Math.floor(UM.Theme.getSize("setting_unit_margin").width)
+            anchors.rightMargin: Math.round(UM.Theme.getSize("setting_unit_margin").width)
             anchors.verticalCenter: parent.verticalCenter;
 
             text: definition.unit;
@@ -107,9 +107,9 @@ SettingItem
             anchors
             {
                 left: parent.left
-                leftMargin: Math.floor(UM.Theme.getSize("setting_unit_margin").width)
+                leftMargin: Math.round(UM.Theme.getSize("setting_unit_margin").width)
                 right: parent.right
-                rightMargin: Math.floor(UM.Theme.getSize("setting_unit_margin").width)
+                rightMargin: Math.round(UM.Theme.getSize("setting_unit_margin").width)
                 verticalCenter: parent.verticalCenter
             }
             renderType: Text.NativeRendering

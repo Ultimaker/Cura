@@ -1,9 +1,9 @@
-// Copyright (c) 2015 Ultimaker B.V.
+// Copyright (c) 2018 Ultimaker B.V.
 // Uranium is released under the terms of the LGPLv3 or higher.
 
-import QtQuick 2.7
-import QtQuick.Layouts 1.1
-import QtQuick.Controls 2.0
+import QtQuick 2.8
+import QtQuick.Layouts 1.2
+import QtQuick.Controls 2.1
 
 import UM 1.2 as UM
 
@@ -118,8 +118,8 @@ SettingItem
             UM.RecolorImage {
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.horizontalCenter: parent.horizontalCenter
-                width: Math.floor(parent.width / 2.5)
-                height: Math.floor(parent.height / 2.5)
+                width: Math.round(parent.width / 2.5)
+                height: Math.round(parent.height / 2.5)
                 sourceSize.width: width
                 sourceSize.height: width
                 color: !enabled ? UM.Theme.getColor("setting_control_disabled_text") : UM.Theme.getColor("setting_control_text");

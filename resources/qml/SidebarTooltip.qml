@@ -1,7 +1,7 @@
 // Copyright (c) 2015 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
-import QtQuick 2.2
+import QtQuick 2.8
 import QtQuick.Controls 1.1
 import QtQuick.Controls.Styles 1.1
 import QtQuick.Layouts 1.1
@@ -36,7 +36,7 @@ UM.PointingRectangle {
             }
         }
         base.opacity = 1;
-        target = Qt.point(40 , position.y + Math.floor(UM.Theme.getSize("tooltip_arrow_margins").height / 2))
+        target = Qt.point(40 , position.y + Math.round(UM.Theme.getSize("tooltip_arrow_margins").height / 2))
     }
 
     function hide() {

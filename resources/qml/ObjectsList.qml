@@ -38,7 +38,7 @@ Rectangle
     Button {
         id: collapseButton
         anchors.top: parent.top
-        anchors.topMargin: Math.floor(UM.Theme.getSize("default_margin").height + (UM.Theme.getSize("layerview_row").height - UM.Theme.getSize("default_margin").height) / 2)
+        anchors.topMargin: Math.round(UM.Theme.getSize("default_margin").height + (UM.Theme.getSize("layerview_row").height - UM.Theme.getSize("default_margin").height) / 2)
         anchors.right: parent.right
         anchors.rightMargin: UM.Theme.getSize("default_margin").width
 
