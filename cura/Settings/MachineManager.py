@@ -750,27 +750,6 @@ class MachineManager(QObject):
                 self.setActiveQuality(new_quality_id, always_discard_changes = always_discard_changes)
 
     @pyqtSlot(str)
-    def setActiveVariant(self, variant_id: str, always_discard_changes = False):
-        with postponeSignals(*self._getContainerChangedSignals(), compress = CompressTechnique.CompressPerParameterValue):
-            containers = ContainerRegistry.getInstance().findInstanceContainers(id = variant_id)
-            if not containers or not self._active_container_stack:
-                return
-            Logger.log("d", "Attempting to change the active variant to %s", variant_id)
-            old_variant = self._active_container_stack.variant
-            old_material = self._active_container_stack.material
-            if old_variant:
-                self.blurSettings.emit()
-                self._new_variant_container = containers[0]  # self._active_container_stack will be updated with a delay
-                Logger.log("d", "Active variant changed to {active_variant_id}".format(active_variant_id = containers[0].getId()))
-                preferred_material_name = None
-                if old_material:
-                    preferred_material_name = old_material.getName()
-                preferred_material_id = self._updateMaterialContainer(self._global_container_stack.definition, self._global_container_stack, containers[0], preferred_material_name).id
-                self.setActiveMaterial(preferred_material_id, always_discard_changes = always_discard_changes)
-            else:
-                Logger.log("w", "While trying to set the active variant, no variant was found to replace.")
-
-    @pyqtSlot(str)
     def setActiveVariantBuildplate(self, variant_buildplate_id: str):
         with postponeSignals(*self._getContainerChangedSignals(), compress = CompressTechnique.CompressPerParameterValue):
             containers = ContainerRegistry.getInstance().findInstanceContainers(id = variant_buildplate_id)
