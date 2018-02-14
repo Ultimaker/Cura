@@ -83,20 +83,6 @@ class CuraContainerStack(ContainerStack):
     def setQualityChanges(self, new_quality_changes: InstanceContainer, postpone_emit = False) -> None:
         self.replaceContainer(_ContainerIndexes.QualityChanges, new_quality_changes, postpone_emit = postpone_emit)
 
-    ##  Set the quality changes container by an ID.
-    #
-    #   This will search for the specified container and set it. If no container was found, an error will be raised.
-    #
-    #   \param new_quality_changes_id The ID of the new quality changes container.
-    #
-    #   \throws Exceptions.InvalidContainerError Raised when no container could be found with the specified ID.
-    def setQualityChangesById(self, new_quality_changes_id: str) -> None:
-        quality_changes = ContainerRegistry.getInstance().findInstanceContainers(id = new_quality_changes_id)
-        if quality_changes:
-            self.setQualityChanges(quality_changes[0])
-        else:
-            raise Exceptions.InvalidContainerError("Could not find container with id {id}".format(id = new_quality_changes_id))
-
     ##  Get the quality changes container.
     #
     #   \return The quality changes container. Should always be a valid container, but can be equal to the empty InstanceContainer.
@@ -109,31 +95,6 @@ class CuraContainerStack(ContainerStack):
     #   \param new_quality The new quality container. It is expected to have a "type" metadata entry with the value "quality".
     def setQuality(self, new_quality: InstanceContainer, postpone_emit = False) -> None:
         self.replaceContainer(_ContainerIndexes.Quality, new_quality, postpone_emit = postpone_emit)
-
-    ##  Set the quality container by an ID.
-    #
-    #   This will search for the specified container and set it. If no container was found, an error will be raised.
-    #   There is a special value for ID, which is "default". The "default" value indicates the quality should be set
-    #   to whatever the machine definition specifies as "preferred" container, or a fallback value. See findDefaultQuality
-    #   for details.
-    #
-    #   \param new_quality_id The ID of the new quality container.
-    #
-    #   \throws Exceptions.InvalidContainerError Raised when no container could be found with the specified ID.
-    def setQualityById(self, new_quality_id: str) -> None:
-        quality = self._empty_quality
-        if new_quality_id == "default":
-            new_quality = self.findDefaultQuality()
-            if new_quality:
-                quality = new_quality
-        else:
-            qualities = ContainerRegistry.getInstance().findInstanceContainers(id = new_quality_id)
-            if qualities:
-                quality = qualities[0]
-            else:
-                raise Exceptions.InvalidContainerError("Could not find container with id {id}".format(id = new_quality_id))
-
-        self.setQuality(quality)
 
     ##  Get the quality container.
     #
@@ -148,31 +109,6 @@ class CuraContainerStack(ContainerStack):
     def setMaterial(self, new_material: InstanceContainer, postpone_emit = False) -> None:
         self.replaceContainer(_ContainerIndexes.Material, new_material, postpone_emit = postpone_emit)
 
-    ##  Set the material container by an ID.
-    #
-    #   This will search for the specified container and set it. If no container was found, an error will be raised.
-    #   There is a special value for ID, which is "default". The "default" value indicates the quality should be set
-    #   to whatever the machine definition specifies as "preferred" container, or a fallback value. See findDefaultMaterial
-    #   for details.
-    #
-    #   \param new_material_id The ID of the new material container.
-    #
-    #   \throws Exceptions.InvalidContainerError Raised when no container could be found with the specified ID.
-    def setMaterialById(self, new_material_id: str) -> None:
-        material = self._empty_material
-        if new_material_id == "default":
-            new_material = self.findDefaultMaterial()
-            if new_material:
-                material = new_material
-        else:
-            materials = ContainerRegistry.getInstance().findInstanceContainers(id = new_material_id)
-            if materials:
-                material = materials[0]
-            else:
-                raise Exceptions.InvalidContainerError("Could not find container with id {id}".format(id = new_material_id))
-
-        self.setMaterial(material)
-
     ##  Get the material container.
     #
     #   \return The material container. Should always be a valid container, but can be equal to the empty InstanceContainer.
@@ -185,31 +121,6 @@ class CuraContainerStack(ContainerStack):
     #   \param new_variant The new variant container. It is expected to have a "type" metadata entry with the value "variant".
     def setVariant(self, new_variant: InstanceContainer) -> None:
         self.replaceContainer(_ContainerIndexes.Variant, new_variant)
-
-    ##  Set the variant container by an ID.
-    #
-    #   This will search for the specified container and set it. If no container was found, an error will be raised.
-    #   There is a special value for ID, which is "default". The "default" value indicates the quality should be set
-    #   to whatever the machine definition specifies as "preferred" container, or a fallback value. See findDefaultVariant
-    #   for details.
-    #
-    #   \param new_variant_id The ID of the new variant container.
-    #
-    #   \throws Exceptions.InvalidContainerError Raised when no container could be found with the specified ID.
-    def setVariantById(self, new_variant_id: str) -> None:
-        variant = self._empty_variant
-        if new_variant_id == "default":
-            new_variant = self.findDefaultVariantBuildplate() if self.getMetaDataEntry("type") == "machine" else self.findDefaultVariant()
-            if new_variant:
-                variant = new_variant
-        else:
-            variants = ContainerRegistry.getInstance().findInstanceContainers(id = new_variant_id)
-            if variants:
-                variant = variants[0]
-            else:
-                raise Exceptions.InvalidContainerError("Could not find container with id {id}".format(id = new_variant_id))
-
-        self.setVariant(variant)
 
     ##  Get the variant container.
     #
@@ -224,18 +135,6 @@ class CuraContainerStack(ContainerStack):
     def setDefinitionChanges(self, new_definition_changes: InstanceContainer) -> None:
         self.replaceContainer(_ContainerIndexes.DefinitionChanges, new_definition_changes)
 
-    ##  Set the definition changes container by an ID.
-    #
-    #   \param new_definition_changes_id The ID of the new definition changes container.
-    #
-    #   \throws Exceptions.InvalidContainerError Raised when no container could be found with the specified ID.
-    def setDefinitionChangesById(self, new_definition_changes_id: str) -> None:
-        new_definition_changes = ContainerRegistry.getInstance().findInstanceContainers(id = new_definition_changes_id)
-        if new_definition_changes:
-            self.setDefinitionChanges(new_definition_changes[0])
-        else:
-            raise Exceptions.InvalidContainerError("Could not find container with id {id}".format(id = new_definition_changes_id))
-
     ##  Get the definition changes container.
     #
     #   \return The definition changes container. Should always be a valid container, but can be equal to the empty InstanceContainer.
@@ -248,18 +147,6 @@ class CuraContainerStack(ContainerStack):
     #   \param new_definition The new definition container. It is expected to have a "type" metadata entry with the value "definition".
     def setDefinition(self, new_definition: DefinitionContainerInterface) -> None:
         self.replaceContainer(_ContainerIndexes.Definition, new_definition)
-
-    ##  Set the definition container by an ID.
-    #
-    #   \param new_definition_id The ID of the new definition container.
-    #
-    #   \throws Exceptions.InvalidContainerError Raised when no container could be found with the specified ID.
-    def setDefinitionById(self, new_definition_id: str) -> None:
-        new_definition = ContainerRegistry.getInstance().findDefinitionContainers(id = new_definition_id)
-        if new_definition:
-            self.setDefinition(new_definition[0])
-        else:
-            raise Exceptions.InvalidContainerError("Could not find container with id {id}".format(id = new_definition_id))
 
     ##  Get the definition container.
     #

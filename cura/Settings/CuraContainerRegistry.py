@@ -579,21 +579,21 @@ class CuraContainerRegistry(ContainerRegistry):
             variant_id = machine.variant.getId()
         else:
             variant_id = "empty_variant"
-        extruder_stack.setVariantById(variant_id)
+        extruder_stack.variant = self.findInstanceContainers(id = variant_id)[0]
 
         material_id = "default"
         if machine.material.getId() not in ("empty", "empty_material"):
             material_id = machine.material.getId()
         else:
             material_id = "empty_material"
-        extruder_stack.setMaterialById(material_id)
+        extruder_stack.material = self.findInstanceContainers(id = material_id)[0]
 
         quality_id = "default"
         if machine.quality.getId() not in ("empty", "empty_quality"):
             quality_id = machine.quality.getId()
         else:
             quality_id = "empty_quality"
-        extruder_stack.setQualityById(quality_id)
+        extruder_stack.quality = self.findInstanceContainers(id = quality_id)[0]
 
         machine_quality_changes = machine.qualityChanges
         if new_global_quality_changes is not None:
@@ -605,7 +605,7 @@ class CuraContainerRegistry(ContainerRegistry):
                 extruder_quality_changes_container = extruder_quality_changes_container[0]
 
                 quality_changes_id = extruder_quality_changes_container.getId()
-                extruder_stack.setQualityChangesById(quality_changes_id)
+                extruder_stack.qualityChanges = self.findInstanceContainers(id = quality_changes_id)[0]
             else:
                 # Some extruder quality_changes containers can be created at runtime as files in the qualities
                 # folder. Those files won't be loaded in the registry immediately. So we also need to search
@@ -614,7 +614,7 @@ class CuraContainerRegistry(ContainerRegistry):
                 if extruder_quality_changes_container:
                     quality_changes_id = extruder_quality_changes_container.getId()
                     extruder_quality_changes_container.addMetaDataEntry("extruder", extruder_stack.definition.getId())
-                    extruder_stack.setQualityChangesById(quality_changes_id)
+                    extruder_stack.qualityChanges = self.findInstanceContainers(id = quality_changes_id)[0]
                 else:
                     # if we still cannot find a quality changes container for the extruder, create a new one
                     container_name = machine_quality_changes.getName()
@@ -649,7 +649,7 @@ class CuraContainerRegistry(ContainerRegistry):
 
                         machine_quality_changes.removeInstance(qc_setting_key, postpone_emit=True)
         else:
-            extruder_stack.setQualityChangesById("empty_quality_changes")
+            extruder_stack.qualityChanges = self.findInstanceContainers(id = "empty_quality_changes")[0]
 
         self.addContainer(extruder_stack)
 
