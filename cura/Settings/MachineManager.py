@@ -122,9 +122,6 @@ class MachineManager(QObject):
             # Make sure _active_container_stack is properly initiated
             ExtruderManager.getInstance().setActiveExtruderIndex(0)
 
-        self._auto_materials_changed = {}
-        self._auto_hotends_changed = {}
-
         self._material_incompatible_message = Message(catalog.i18nc("@info:status",
                                                 "The selected material is incompatible with the selected machine or configuration."),
                                                 title = catalog.i18nc("@info:title", "Incompatible Material"))

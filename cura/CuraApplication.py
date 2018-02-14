@@ -52,7 +52,7 @@ from UM.Settings.SettingDefinition import SettingDefinition, DefinitionPropertyT
 from UM.Settings.ContainerRegistry import ContainerRegistry
 from UM.Settings.SettingFunction import SettingFunction
 from cura.Settings.MachineNameValidator import MachineNameValidator
-from cura.Settings.NozzleModel import NozzleModel
+from cura.Machines.Models.NozzleModel import NozzleModel
 from cura.Settings.ProfilesModel import ProfilesModel, NewQualityProfilesModel, NewCustomQualityProfilesModel
 from cura.Settings.MaterialsModel import MaterialsModel, BrandMaterialsModel, GenericMaterialsModel
 from cura.Settings.QualityAndUserProfilesModel import QualityAndUserProfilesModel
@@ -61,8 +61,6 @@ from cura.Settings.UserProfilesModel import UserProfilesModel
 from cura.Settings.SimpleModeSettingsManager import SimpleModeSettingsManager
 
 from cura.Machines.VariantManager import VariantManager
-from cura.Machines.QualityManager import QualityGroup
-
 
 from . import PlatformPhysics
 from . import BuildVolume
