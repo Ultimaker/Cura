@@ -160,7 +160,7 @@ UM.ManagementPage
             }
             Label
             {
-                width: (parent.width * 0.7) | 0
+                width: Math.round(parent.width * 0.7) | 0
                 text: machineInfo.printerConnected ? machineInfo.connectedPrinter.connectionText : catalog.i18nc("@info:status", "The printer is not connected.")
                 visible: base.currentItem && base.currentItem.id == Cura.MachineManager.activeMachineId
                 wrapMode: Text.WordWrap
@@ -171,7 +171,7 @@ UM.ManagementPage
                 visible: base.currentItem && base.currentItem.id == Cura.MachineManager.activeMachineId && machineInfo.printerAcceptsCommands
             }
             Label {
-                width: (parent.width * 0.7) | 0
+                width: Math.round(parent.width * 0.7) | 0
                 text:
                 {
                     if(!machineInfo.printerConnected || !machineInfo.printerAcceptsCommands) {
