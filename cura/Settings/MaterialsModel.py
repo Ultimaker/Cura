@@ -205,6 +205,7 @@ class NewMaterialsModel(ListModel):
     GuidRole = Qt.UserRole + 12
     DensityRole = Qt.UserRole + 13
     DiameterRole = Qt.UserRole + 14
+    IsReadOnlyRole = Qt.UserRole + 15
 
     def __init__(self, parent = None):
         super().__init__(parent)
@@ -224,8 +225,10 @@ class NewMaterialsModel(ListModel):
         self.addRoleName(self.GuidRole, "guid")
         self.addRoleName(self.DensityRole, "density")
         self.addRoleName(self.DiameterRole, "diameter")
+        self.addRoleName(self.IsReadOnlyRole, "is_read_only")
 
         from cura.CuraApplication import CuraApplication
+        self._container_registry = CuraApplication.getInstance().getContainerRegistry()
         machine_manager = CuraApplication.getInstance().getMachineManager()
         extruder_manager = CuraApplication.getInstance().getExtruderManager()
         material_manager = CuraApplication.getInstance()._material_manager
@@ -259,6 +262,7 @@ class NewMaterialsModel(ListModel):
                     "container_id": container_node.metadata["id"],
                     "density": container_node.metadata.get("properties", {}).get("density", ""),
                     "diameter": container_node.metadata.get("properties", {}).get("diameter", ""),
+                    "is_read_only": self._container_registry.isReadOnly(container_node.metadata["id"]),
                     }
 
             for key in keys_to_fetch:

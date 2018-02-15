@@ -34,6 +34,19 @@ Item
         text: catalog.i18nc("@title:tab", "Materials")
     }
 
+    property var currentItem:
+    {
+        var current_index = materialListView.currentIndex;
+        return materialsModel.getItem(current_index);
+    }
+
+    property var isCurrentItemActivated:
+    {
+        const extruder_position = Cura.ExtruderManager.activeExtruderIndex;
+        const root_material_id = Cura.MachineManager.currentRootMaterialId[extruder_position];
+        return base.currentItem.root_material_id == root_material_id;
+    }
+
     Row  // Button Row
     {
         id: buttonRow
@@ -48,12 +61,15 @@ Item
         Button {
             text: catalog.i18nc("@action:button", "Activate")
             iconName: "list-activate"
-            //enabled: base.currentItem != null && base.currentItem.id != Cura.MachineManager.activeMaterialId && Cura.MachineManager.hasMaterials
-            enabled: true // TODO
+            enabled: !isCurrentItemActivated
             onClicked: {
                 forceActiveFocus()
-                Cura.MachineManager.setActiveMaterial(base.currentItem.id)
-                currentItem = base.model.getItem(base.objectList.currentIndex) // Refresh the current item.
+
+                var current_index = materialListView.currentIndex;
+                var item = materialsModel.getItem(current_index);
+
+                const extruder_position = Cura.ExtruderManager.activeExtruderIndex;
+                Cura.MachineManager.setMaterial(extruder_position, base.currentItem.container_node);
             }
         }
 
@@ -147,7 +163,16 @@ Item
                 top: parent.top
                 left: parent.left
             }
-            text: "TODO"
+            visible: text != ""
+            text: {
+                // OLD STUFF
+                var caption = catalog.i18nc("@action:label", "Printer") + ": " + Cura.MachineManager.activeMachineName;
+                if (Cura.MachineManager.hasVariants)
+                {
+                    caption += ", " + Cura.MachineManager.activeDefinitionVariantsName + ": " + Cura.MachineManager.activeVariantName;
+                }
+                return caption;
+            }
             width: materialScrollView.width
             elide: Text.ElideRight
         }
@@ -219,10 +244,10 @@ Item
                             width: Math.floor((parent.width * 0.3))
                             text: model.material
                             elide: Text.ElideRight
-                            font.italic: {
+                            font.italic: {  // TODO: make it easier
                                 const extruder_position = Cura.ExtruderManager.activeExtruderIndex;
                                 const root_material_id = Cura.MachineManager.currentRootMaterialId[extruder_position];
-                                return model.root_material_id == root_material_id; // TODO
+                                return model.root_material_id == root_material_id
                             }
                             color: parent.ListView.isCurrentItem ? palette.highlightedText : palette.text;
                         }
@@ -230,10 +255,10 @@ Item
                         {
                             text: (model.name != model.material) ? model.name : ""
                             elide: Text.ElideRight
-                            font.italic: {
+                            font.italic: {  // TODO: make it easier
                                 const extruder_position = Cura.ExtruderManager.activeExtruderIndex;
                                 const root_material_id = Cura.MachineManager.currentRootMaterialId[extruder_position];
-                                return model.root_material_id == root_material_id; // TODO
+                                return model.root_material_id == root_material_id;
                             }
                             color: parent.ListView.isCurrentItem ? palette.highlightedText : palette.text;
                         }
@@ -329,7 +354,7 @@ Item
                         bottom: parent.bottom
                     }
 
-                    editingEnabled: base.currentItem != null && !base.currentItem.readOnly
+                    editingEnabled: base.currentItem != null && !base.currentItem.is_read_only
 
                     properties: materialProperties
                     containerId: base.currentItem != null ? base.currentItem.id : ""
