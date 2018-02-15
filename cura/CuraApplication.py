@@ -1294,7 +1294,7 @@ class CuraApplication(QtApplication):
         Logger.log("i", "Reloading all loaded mesh data.")
         nodes = []
         for node in DepthFirstIterator(self.getController().getScene().getRoot()):
-            if not isinstance(node, SceneNode) or not node.getMeshData():
+            if not isinstance(node, CuraSceneNode) or not node.getMeshData():
                 continue
 
             nodes.append(node)
