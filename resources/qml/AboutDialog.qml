@@ -22,8 +22,8 @@ UM.Dialog
     Image
     {
         id: logo
-        width: Math.round(base.minimumWidth * 0.85) | 0
-        height: Math.round(width * (1/4.25)) | 0
+        width: (base.minimumWidth * 0.85) | 0
+        height: (width * (1/4.25)) | 0
 
         source: UM.Theme.getImage("logo")
 
