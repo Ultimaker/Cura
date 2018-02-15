@@ -54,7 +54,7 @@ from UM.Settings.SettingFunction import SettingFunction
 from cura.Settings.MachineNameValidator import MachineNameValidator
 from cura.Machines.Models.NozzleModel import NozzleModel
 from cura.Settings.ProfilesModel import ProfilesModel, NewQualityProfilesModel, NewCustomQualityProfilesModel
-from cura.Settings.MaterialsModel import MaterialsModel, BrandMaterialsModel, GenericMaterialsModel
+from cura.Settings.MaterialsModel import MaterialsModel, BrandMaterialsModel, GenericMaterialsModel, NewMaterialsModel
 from cura.Settings.QualityAndUserProfilesModel import QualityAndUserProfilesModel
 from cura.Settings.SettingInheritanceManager import SettingInheritanceManager
 from cura.Settings.UserProfilesModel import UserProfilesModel
@@ -944,6 +944,7 @@ class CuraApplication(QtApplication):
 
         qmlRegisterType(GenericMaterialsModel, "Cura", 1, 0, "GenericMaterialsModel")
         qmlRegisterType(BrandMaterialsModel, "Cura", 1, 0, "BrandMaterialsModel")
+        qmlRegisterType(NewMaterialsModel, "Cura", 1, 0, "NewMaterialsModel")
 
         qmlRegisterSingletonType(NewQualityProfilesModel, "Cura", 1, 0, "NewQualityProfilesModel", self.getNewQualityProfileModel)
         qmlRegisterSingletonType(NewCustomQualityProfilesModel, "Cura", 1, 0, "NewCustomQualityProfilesModel", self.getNewCustomQualityProfilesModel)

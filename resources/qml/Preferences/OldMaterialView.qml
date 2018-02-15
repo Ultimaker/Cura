@@ -98,15 +98,15 @@ TabView
                 Row {
                     width: scrollView.columnWidth
                     height:  parent.rowHeight
-                    spacing: Math.round(UM.Theme.getSize("default_margin").width / 2)
+                    spacing: Math.floor(UM.Theme.getSize("default_margin").width / 2)
 
                     // color indicator square
                     Rectangle {
                         id: colorSelector
                         color: properties.color_code
 
-                        width: Math.round(colorLabel.height * 0.75)
-                        height: Math.round(colorLabel.height * 0.75)
+                        width: Math.floor(colorLabel.height * 0.75)
+                        height: Math.floor(colorLabel.height * 0.75)
                         border.width: UM.Theme.getSize("default_lining").height
 
                         anchors.verticalCenter: parent.verticalCenter
@@ -357,18 +357,8 @@ TabView
                         onEditingFinished: materialPropertyProvider.setPropertyValue("value", value)
                     }
 
-                    UM.ContainerPropertyProvider {
-                        id: materialPropertyProvider
-                        containerId: base.containerId
-                        watchedProperties: [ "value" ]
-                        key: model.key
-                    }
-                    UM.ContainerPropertyProvider {
-                        id: machinePropertyProvider
-                        containerId: Cura.MachineManager.activeDefinitionId
-                        watchedProperties: [ "value" ]
-                        key: model.key
-                    }
+                    UM.ContainerPropertyProvider { id: materialPropertyProvider; containerId: base.containerId; watchedProperties: [ "value" ]; key: model.key }
+                    UM.ContainerPropertyProvider { id: machinePropertyProvider; containerId: Cura.MachineManager.activeDefinitionId; watchedProperties: [ "value" ]; key: model.key }
                 }
             }
         }
