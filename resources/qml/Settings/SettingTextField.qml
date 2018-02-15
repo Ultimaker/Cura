@@ -83,11 +83,12 @@ SettingItem
 
         Label
         {
-            anchors.right: parent.right;
+            anchors.right: parent.right
             anchors.rightMargin: Math.round(UM.Theme.getSize("setting_unit_margin").width)
-            anchors.verticalCenter: parent.verticalCenter;
+            anchors.verticalCenter: parent.verticalCenter
 
-            text: definition.unit;
+            text: definition.unit
+            renderType: Text.NativeRendering
             color: UM.Theme.getColor("setting_unit")
             font: UM.Theme.getFont("default")
         }
