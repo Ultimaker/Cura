@@ -207,12 +207,13 @@ Rectangle
                     color: (control.checked || control.pressed) ? UM.Theme.getColor("action_button_active") : control.hovered ? UM.Theme.getColor("action_button_hovered") : UM.Theme.getColor("action_button")
                 }
 
-                contentItem: Text
+                contentItem: Label
                 {
                     text: model.text
                     font: UM.Theme.getFont("default")
                     horizontalAlignment: Text.AlignHCenter
                     verticalAlignment: Text.AlignVCenter
+                    renderType: Text.NativeRendering
                     elide: Text.ElideRight
                     color:
                     {
@@ -352,6 +353,7 @@ Rectangle
             font: UM.Theme.getFont("large")
             color: UM.Theme.getColor("text_subtext")
             text: (!base.printDuration || !base.printDuration.valid) ? catalog.i18nc("@label Hours and minutes", "00h 00min") : base.printDuration.getDisplayString(UM.DurationFormat.Short)
+            renderType: Text.NativeRendering
 
             MouseArea
             {
@@ -479,6 +481,7 @@ Rectangle
             anchors.left: parent.left
             anchors.bottom: parent.bottom
             font: UM.Theme.getFont("very_small")
+            renderType: Text.NativeRendering
             color: UM.Theme.getColor("text_subtext")
             elide: Text.ElideMiddle
             width: parent.width
