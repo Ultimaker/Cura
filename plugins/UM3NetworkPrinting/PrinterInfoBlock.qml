@@ -78,7 +78,7 @@ Rectangle
 
         Rectangle
         {
-            width: Math.floor(parent.width / 3)
+            width: Math.round(parent.width / 3)
             height: parent.height
 
             Label   // Print job name
@@ -123,7 +123,7 @@ Rectangle
 
         Rectangle
         {
-            width: Math.floor(parent.width / 3 * 2)
+            width: Math.round(parent.width / 3 * 2)
             height: parent.height
 
             Label   // Friendly machine name
@@ -131,7 +131,7 @@ Rectangle
                 id: printerNameLabel
                 anchors.top: parent.top
                 anchors.left: parent.left
-                width: Math.floor(parent.width / 2 - UM.Theme.getSize("default_margin").width - showCameraIcon.width)
+                width: Math.round(parent.width / 2 - UM.Theme.getSize("default_margin").width - showCameraIcon.width)
                 text: printer.name
                 font: UM.Theme.getFont("default_bold")
                 elide: Text.ElideRight
@@ -141,7 +141,7 @@ Rectangle
             {
                 id: printerTypeLabel
                 anchors.top: printerNameLabel.bottom
-                width: Math.floor(parent.width / 2 - UM.Theme.getSize("default_margin").width)
+                width: Math.round(parent.width / 2 - UM.Theme.getSize("default_margin").width)
                 text: printer.type
                 anchors.left: parent.left
                 elide: Text.ElideRight
@@ -175,7 +175,7 @@ Rectangle
                 id: extruderInfo
                 anchors.bottom: parent.bottom
 
-                width: Math.floor(parent.width / 2 - UM.Theme.getSize("default_margin").width)
+                width: Math.round(parent.width / 2 - UM.Theme.getSize("default_margin").width)
                 height: childrenRect.height
 
                 spacing: UM.Theme.getSize("default_margin").width
@@ -183,7 +183,7 @@ Rectangle
                 PrintCoreConfiguration
                 {
                     id: leftExtruderInfo
-                    width: Math.floor((parent.width - extruderSeperator.width) / 2)
+                    width: Math.round((parent.width - extruderSeperator.width) / 2)
                     printCoreConfiguration: printer.extruders[0]
                 }
 
@@ -198,7 +198,7 @@ Rectangle
                 PrintCoreConfiguration
                 {
                     id: rightExtruderInfo
-                    width: Math.floor((parent.width - extruderSeperator.width) / 2)
+                    width: Math.round((parent.width - extruderSeperator.width) / 2)
                     printCoreConfiguration: printer.extruders[1]
                 }
             }
@@ -209,7 +209,7 @@ Rectangle
                 anchors.right: parent.right
                 anchors.top: parent.top
                 height: showExtended ? parent.height: printProgressTitleBar.height
-                width: Math.floor(parent.width / 2 - UM.Theme.getSize("default_margin").width)
+                width: Math.round(parent.width / 2 - UM.Theme.getSize("default_margin").width)
                 border.width: UM.Theme.getSize("default_lining").width
                 border.color: lineColor
                 radius: cornerRadius

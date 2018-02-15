@@ -163,7 +163,7 @@ UM.PreferencesPage
                             append({ text: "Русский", code: "ru_RU" })
                             append({ text: "Türkçe", code: "tr_TR" })
                             append({ text: "简体中文", code: "zh_CN" })
-                            append({ text: "正體字", code: "zh_TW" })
+                            //Traditional Chinese is disabled for being incomplete: append({ text: "正體字", code: "zh_TW" })
 
                             var date_object = new Date();
                             if (date_object.getUTCMonth() == 8 && date_object.getUTCDate() == 19) //Only add Pirate on the 19th of September.
@@ -413,7 +413,7 @@ UM.PreferencesPage
                 width: childrenRect.width;
                 height: childrenRect.height;
 
-                text: catalog.i18nc("@info:tooltip","Show caution message in gcode reader.")
+                text: catalog.i18nc("@info:tooltip","Show caution message in g-code reader.")
 
                 CheckBox
                 {
@@ -422,7 +422,7 @@ UM.PreferencesPage
                     checked: boolCheck(UM.Preferences.getValue("gcodereader/show_caution"))
                     onClicked: UM.Preferences.setValue("gcodereader/show_caution", checked)
 
-                    text: catalog.i18nc("@option:check","Caution message in gcode reader");
+                    text: catalog.i18nc("@option:check","Caution message in g-code reader");
                 }
             }
 

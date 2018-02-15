@@ -287,7 +287,7 @@ class PluginBrowser(QObject, Extension):
 
     @pyqtProperty(QObject, notify=pluginsMetadataChanged)
     def pluginsModel(self):
-        self._plugins_model = PluginsModel(self._view)
+        self._plugins_model = PluginsModel(None, self._view)
         # self._plugins_model.update()
 
         # Check each plugin the registry for matching plugin from server

@@ -4,7 +4,7 @@
 import QtQuick 2.7
 import QtQuick.Controls 1.1
 import QtQuick.Controls.Styles 1.1
-import QtQuick.Layouts 1.1
+import QtQuick.Layouts 1.2
 
 import UM 1.2 as UM
 import Cura 1.0 as Cura
@@ -32,16 +32,16 @@ Item
         {
             top: parent.top
             left: parent.left
-            leftMargin: UM.Theme.getSize("sidebar_margin").width
+            leftMargin: Math.round(UM.Theme.getSize("sidebar_margin").width)
             right: parent.right
-            rightMargin: UM.Theme.getSize("sidebar_margin").width
+            rightMargin: Math.round(UM.Theme.getSize("sidebar_margin").width)
         }
 
         Label
         {
             id: globalProfileLabel
             text: catalog.i18nc("@label","Profile:");
-            width: Math.floor(parent.width * 0.45 - UM.Theme.getSize("sidebar_margin").width - 2)
+            width: Math.round(parent.width * 0.45 - UM.Theme.getSize("sidebar_margin").width - 2)
             font: UM.Theme.getFont("default");
             color: UM.Theme.getColor("text");
             verticalAlignment: Text.AlignVCenter
@@ -55,7 +55,7 @@ Item
 
             text: generateActiveQualityText()
             enabled: !header.currentExtruderVisible || header.currentExtruderIndex > -1
-            width: Math.floor(parent.width * 0.55)
+            width: Math.round(parent.width * 0.55)
             height: UM.Theme.getSize("setting_control").height
             anchors.left: globalProfileLabel.right
             anchors.right: parent.right
@@ -84,12 +84,12 @@ Item
                 id: customisedSettings
 
                 visible: Cura.MachineManager.hasUserSettings
-                height: Math.floor(parent.height * 0.6)
-                width: Math.floor(parent.height * 0.6)
+                height: Math.round(parent.height * 0.6)
+                width: Math.round(parent.height * 0.6)
 
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.right: parent.right
-                anchors.rightMargin: UM.Theme.getSize("setting_preferences_button_margin").width - UM.Theme.getSize("sidebar_margin").width
+                anchors.rightMargin: Math.round(UM.Theme.getSize("setting_preferences_button_margin").width - UM.Theme.getSize("sidebar_margin").width)
 
                 color: hovered ? UM.Theme.getColor("setting_control_button_hover") : UM.Theme.getColor("setting_control_button");
                 iconSource: UM.Theme.getIcon("star");
@@ -165,7 +165,7 @@ Item
         id: filterContainer
         visible: true
 
-        border.width: UM.Theme.getSize("default_lining").width
+        border.width: Math.round(UM.Theme.getSize("default_lining").width)
         border.color:
         {
             if(hoverMouseArea.containsMouse || clearFilterButton.containsMouse)
@@ -198,7 +198,7 @@ Item
 
             anchors.left: parent.left
             anchors.right: clearFilterButton.left
-            anchors.rightMargin: UM.Theme.getSize("sidebar_margin").width
+            anchors.rightMargin: Math.round(UM.Theme.getSize("sidebar_margin").width)
 
             placeholderText: catalog.i18nc("@label:textbox", "Search...")
 
@@ -269,7 +269,7 @@ Item
             iconSource: UM.Theme.getIcon("cross1")
             visible: findingSettings
 
-            height: parent.height * 0.4
+            height: Math.round(parent.height * 0.4)
             width: visible ? height : 0
 
             anchors.verticalCenter: parent.verticalCenter
@@ -303,7 +303,7 @@ Item
         ListView
         {
             id: contents
-            spacing: UM.Theme.getSize("default_lining").height;
+            spacing: Math.round(UM.Theme.getSize("default_lining").height);
             cacheBuffer: 1000000;   // Set a large cache to effectively just cache every list item.
 
             model: UM.SettingDefinitionsModel
@@ -331,7 +331,7 @@ Item
             {
                 id: delegate
 
-                width: UM.Theme.getSize("sidebar").width;
+                width: Math.round(UM.Theme.getSize("sidebar").width);
                 height: provider.properties.enabled == "True" ? UM.Theme.getSize("section").height : - contents.spacing
                 Behavior on height { NumberAnimation { duration: 100 } }
                 opacity: provider.properties.enabled == "True" ? 1 : 0
@@ -453,7 +453,7 @@ Item
                         contextMenu.provider = provider
                         contextMenu.popup();
                     }
-                    onShowTooltip: base.showTooltip(delegate, { x: -UM.Theme.getSize("default_arrow").width, y: delegate.height / 2 }, text)
+                    onShowTooltip: base.showTooltip(delegate, { x: -UM.Theme.getSize("default_arrow").width, y: Math.round(delegate.height / 2) }, text)
                     onHideTooltip: base.hideTooltip()
                     onShowAllHiddenInheritedSettings:
                     {

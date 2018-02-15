@@ -8,13 +8,15 @@ msgstr ""
 "Project-Id-Version: Cura 3.2\n"
 "Report-Msgid-Bugs-To: r.dulek@ultimaker.com\n"
 "POT-Creation-Date: 2018-01-29 09:48+0000\n"
-"PO-Revision-Date: 2018-02-05 13:25+0100\n"
+"PO-Revision-Date: 2018-02-12 13:40+0100\n"
 "Last-Translator: Bothof <info@bothof.nl>\n"
 "Language-Team: Spanish\n"
 "Language: es_ES\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 2.0.6\n"
 
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.py:26
 msgctxt "@action"
@@ -630,7 +632,10 @@ msgid ""
 "Found no models inside your drawing. Could you please check it's content again and make sure one part or assembly is inside?\n"
 "\n"
 " Thanks!."
-msgstr "No se han encontrado modelos en el dibujo. ¿Puede comprobar el contenido de nuevo y asegurarse de que hay una parte o un ensamblado dentro?\n\n Gracias."
+msgstr ""
+"No se han encontrado modelos en el dibujo. ¿Puede comprobar el contenido de nuevo y asegurarse de que hay una parte o un ensamblado dentro?\n"
+"\n"
+" Gracias."
 
 #: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/SolidWorksReader.py:595
 msgctxt "@info:status"
@@ -638,7 +643,10 @@ msgid ""
 "Found more then one part or assembly inside your drawing. We currently only support drawings with exactly one part or assembly inside.\n"
 "\n"
 "Sorry!"
-msgstr "Se ha encontrado más de una parte o ensamblado en el dibujo. Actualmente únicamente son compatibles dibujos con una sola parte o ensamblado.\n\n Disculpe."
+msgstr ""
+"Se ha encontrado más de una parte o ensamblado en el dibujo. Actualmente únicamente son compatibles dibujos con una sola parte o ensamblado.\n"
+"\n"
+" Disculpe."
 
 #: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/__init__.py:25
 msgctxt "@item:inlistbox"
@@ -663,7 +671,12 @@ msgid ""
 "\n"
 "With kind regards\n"
 " - Thomas Karl Pietrowski"
-msgstr "Estimado cliente:\nNo hemos encontrado una instalación válida de SolidWorks en el sistema. Esto significa que SolidWorks no está instalado o que no dispone de una licencia válida. Asegúrese de que la ejecución del propio SolidWorks funciona sin problemas o póngase en contacto con su CDTI.\n\nAtentamente\n - Thomas Karl Pietrowski"
+msgstr ""
+"Estimado cliente:\n"
+"No hemos encontrado una instalación válida de SolidWorks en el sistema. Esto significa que SolidWorks no está instalado o que no dispone de una licencia válida. Asegúrese de que la ejecución del propio SolidWorks funciona sin problemas o póngase en contacto con su CDTI.\n"
+"\n"
+"Atentamente\n"
+" - Thomas Karl Pietrowski"
 
 #: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/__init__.py:57
 msgctxt "@info:status"
@@ -673,7 +686,12 @@ msgid ""
 "\n"
 "With kind regards\n"
 " - Thomas Karl Pietrowski"
-msgstr "Estimado cliente:\nActualmente está ejecutando este complemento en un sistema operativo diferente a Windows. Este complemento solo funcionará en Windows con SolidWorks instalado, siempre que se disponga de una licencia válida. Instale este complemento en un equipo Windows con SolidWorks instalado.\n\nAtentamente\n - Thomas Karl Pietrowski"
+msgstr ""
+"Estimado cliente:\n"
+"Actualmente está ejecutando este complemento en un sistema operativo diferente a Windows. Este complemento solo funcionará en Windows con SolidWorks instalado, siempre que se disponga de una licencia válida. Instale este complemento en un equipo Windows con SolidWorks instalado.\n"
+"\n"
+"Atentamente\n"
+" - Thomas Karl Pietrowski"
 
 #: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/SolidWorksDialogHandler.py:70
 msgid "Configure"
@@ -747,7 +765,9 @@ msgctxt "@info:status"
 msgid ""
 "Could not export using \"{}\" quality!\n"
 "Felt back to \"{}\"."
-msgstr "No ha podido exportarse con la calidad \"{}\"\nRetroceder a \"{}»."
+msgstr ""
+"No ha podido exportarse con la calidad \"{}\"\n"
+"Retroceder a \"{}»."
 
 #: /home/ruben/Projects/Cura/plugins/GCodeProfileReader/__init__.py:14
 #: /home/ruben/Projects/Cura/plugins/GCodeReader/__init__.py:14
@@ -995,12 +1015,12 @@ msgstr "Relleno"
 #: /home/ruben/Projects/Cura/cura/PrintInformation.py:102
 msgctxt "@tooltip"
 msgid "Support Infill"
-msgstr "Relleno de soporte"
+msgstr "Relleno del soporte"
 
 #: /home/ruben/Projects/Cura/cura/PrintInformation.py:103
 msgctxt "@tooltip"
 msgid "Support Interface"
-msgstr "Interfaz de soporte"
+msgstr "Interfaz del soporte"
 
 #: /home/ruben/Projects/Cura/cura/PrintInformation.py:104
 msgctxt "@tooltip"
@@ -1242,7 +1262,10 @@ msgid ""
 "<p><b>A fatal error has occurred. Please send us this Crash Report to fix the problem</p></b>\n"
 "            <p>Please use the \"Send report\" button to post a bug report automatically to our servers</p>\n"
 "        "
-msgstr "<p><b>Se ha producido un error grave. Envíenos este informe de incidencias para que podamos solucionar el problema.</p></b>\n            <p>Utilice el botón «Enviar informe» para publicar automáticamente un informe de errores en nuestros servidores.</p>\n        "
+msgstr ""
+"<p><b>Se ha producido un error grave. Envíenos este informe de incidencias para que podamos solucionar el problema.</p></b>\n"
+"            <p>Utilice el botón «Enviar informe» para publicar automáticamente un informe de errores en nuestros servidores.</p>\n"
+"        "
 
 #: /home/ruben/Projects/Cura/cura/CrashHandler.py:102
 msgctxt "@title:groupbox"
@@ -1618,7 +1641,10 @@ msgid ""
 "To print directly to your printer over the network, please make sure your printer is connected to the network using a network cable or by connecting your printer to your WIFI network. If you don't connect Cura with your printer, you can still use a USB drive to transfer g-code files to your printer.\n"
 "\n"
 "Select your printer from the list below:"
-msgstr "Para imprimir directamente en la impresora a través de la red, asegúrese de que esta está conectada a la red utilizando un cable de red o conéctela a la red wifi. Si no conecta Cura con la impresora, también puede utilizar una unidad USB para transferir archivos GCode a la impresora.\n\nSeleccione la impresora de la siguiente lista:"
+msgstr ""
+"Para imprimir directamente en la impresora a través de la red, asegúrese de que esta está conectada a la red utilizando un cable de red o conéctela a la red wifi. Si no conecta Cura con la impresora, también puede utilizar una unidad USB para transferir archivos GCode a la impresora.\n"
+"\n"
+"Seleccione la impresora de la siguiente lista:"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/DiscoverUM3Action.qml:75
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/MachinesPage.qml:44
@@ -1928,7 +1954,9 @@ msgctxt "@action:button"
 msgid ""
 "Open the directory\n"
 "with macro and icon"
-msgstr "Abra el directorio\ncon la macro y el icono"
+msgstr ""
+"Abra el directorio\n"
+"con la macro y el icono"
 
 #: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/SolidWorksMacroTutorial.qml:160
 msgctxt "@description:label"
@@ -2420,7 +2448,10 @@ msgid ""
 "This plugin contains a license.\n"
 "You need to accept this license to install this plugin.\n"
 "Do you agree with the terms below?"
-msgstr "Este complemento incluye una licencia.\nDebe aceptar dicha licencia para instalar el complemento.\n¿Acepta las condiciones que aparecen a continuación?"
+msgstr ""
+"Este complemento incluye una licencia.\n"
+"Debe aceptar dicha licencia para instalar el complemento.\n"
+"¿Acepta las condiciones que aparecen a continuación?"
 
 #: /home/ruben/Projects/Cura/plugins/PluginBrowser/PluginBrowser.qml:242
 msgctxt "@action:button"
@@ -2685,7 +2716,9 @@ msgctxt "@text:window"
 msgid ""
 "You have customized some profile settings.\n"
 "Would you like to keep or discard those settings?"
-msgstr "Ha personalizado parte de los ajustes del perfil.\n¿Desea descartar los cambios o guardarlos?"
+msgstr ""
+"Ha personalizado parte de los ajustes del perfil.\n"
+"¿Desea descartar los cambios o guardarlos?"
 
 #: /home/ruben/Projects/Cura/resources/qml/DiscardOrKeepProfileChangesDialog.qml:110
 msgctxt "@title:column"
@@ -2783,7 +2816,7 @@ msgstr "Coste del filamento"
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/MaterialView.qml:203
 msgctxt "@label"
 msgid "Filament weight"
-msgstr "Anchura del filamento"
+msgstr "Peso del filamento"
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/MaterialView.qml:220
 msgctxt "@label"
@@ -3353,7 +3386,9 @@ msgctxt "@info:credit"
 msgid ""
 "Cura is developed by Ultimaker B.V. in cooperation with the community.\n"
 "Cura proudly uses the following open source projects:"
-msgstr "Ultimaker B.V. ha desarrollado Cura en cooperación con la comunidad.\nCura se enorgullece de utilizar los siguientes proyectos de código abierto:"
+msgstr ""
+"Ultimaker B.V. ha desarrollado Cura en cooperación con la comunidad.\n"
+"Cura se enorgullece de utilizar los siguientes proyectos de código abierto:"
 
 #: /home/ruben/Projects/Cura/resources/qml/AboutDialog.qml:118
 msgctxt "@label"
@@ -3461,7 +3496,10 @@ msgid ""
 "Some setting/override values are different from the values stored in the profile.\n"
 "\n"
 "Click to open the profile manager."
-msgstr "Algunos valores de los ajustes o sobrescrituras son distintos a los valores almacenados en el perfil.\n\nHaga clic para abrir el administrador de perfiles."
+msgstr ""
+"Algunos valores de los ajustes o sobrescrituras son distintos a los valores almacenados en el perfil.\n"
+"\n"
+"Haga clic para abrir el administrador de perfiles."
 
 #: /home/ruben/Projects/Cura/resources/qml/Settings/SettingView.qml:150
 msgctxt "@label:textbox"
@@ -3499,7 +3537,10 @@ msgid ""
 "Some hidden settings use values different from their normal calculated value.\n"
 "\n"
 "Click to make these settings visible."
-msgstr "Algunos ajustes ocultos utilizan valores diferentes de los valores normales calculados.\n\nHaga clic para mostrar estos ajustes."
+msgstr ""
+"Algunos ajustes ocultos utilizan valores diferentes de los valores normales calculados.\n"
+"\n"
+"Haga clic para mostrar estos ajustes."
 
 #: /home/ruben/Projects/Cura/resources/qml/Settings/SettingItem.qml:61
 msgctxt "@label Header for list of settings."
@@ -3527,7 +3568,10 @@ msgid ""
 "This setting has a value that is different from the profile.\n"
 "\n"
 "Click to restore the value of the profile."
-msgstr "Este ajuste tiene un valor distinto del perfil.\n\nHaga clic para restaurar el valor del perfil."
+msgstr ""
+"Este ajuste tiene un valor distinto del perfil.\n"
+"\n"
+"Haga clic para restaurar el valor del perfil."
 
 #: /home/ruben/Projects/Cura/resources/qml/Settings/SettingItem.qml:288
 msgctxt "@label"
@@ -3535,7 +3579,10 @@ msgid ""
 "This setting is normally calculated, but it currently has an absolute value set.\n"
 "\n"
 "Click to restore the calculated value."
-msgstr "Este ajuste se calcula normalmente pero actualmente tiene un valor absoluto establecido.\n\nHaga clic para restaurar el valor calculado."
+msgstr ""
+"Este ajuste se calcula normalmente pero actualmente tiene un valor absoluto establecido.\n"
+"\n"
+"Haga clic para restaurar el valor calculado."
 
 #: /home/ruben/Projects/Cura/resources/qml/Sidebar.qml:128
 msgctxt "@label:listbox"
@@ -3547,7 +3594,9 @@ msgctxt "@label:listbox"
 msgid ""
 "Print Setup disabled\n"
 "G-code files cannot be modified"
-msgstr "Ajustes de impresión deshabilitados\nNo se pueden modificar los archivos GCode"
+msgstr ""
+"Ajustes de impresión deshabilitados\n"
+"No se pueden modificar los archivos GCode"
 
 #: /home/ruben/Projects/Cura/resources/qml/Sidebar.qml:342
 msgctxt "@label Hours and minutes"
@@ -3824,7 +3873,7 @@ msgstr "&Agregar impresora..."
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:162
 msgctxt "@action:inmenu menubar:printer"
 msgid "Manage Pr&inters..."
-msgstr "Adm&inistrar impresoras ..."
+msgstr "Adm&inistrar impresoras..."
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:169
 msgctxt "@action:inmenu"
@@ -4020,12 +4069,12 @@ msgstr "Listo para %1"
 #: /home/ruben/Projects/Cura/resources/qml/SaveButton.qml:42
 msgctxt "@label:PrintjobStatus"
 msgid "Unable to Slice"
-msgstr "No se puede segmentar."
+msgstr "No se puede segmentar"
 
 #: /home/ruben/Projects/Cura/resources/qml/SaveButton.qml:44
 msgctxt "@label:PrintjobStatus"
 msgid "Slicing unavailable"
-msgstr "No se puede segmentar"
+msgstr "Segmentación no disponible"
 
 #: /home/ruben/Projects/Cura/resources/qml/SaveButton.qml:171
 msgctxt "@info:tooltip"
@@ -4685,7 +4734,7 @@ msgstr "Herramienta de ajustes por modelo"
 #: cura-siemensnx-plugin/plugin.json
 msgctxt "description"
 msgid "Helps you to install an 'export to Cura' button in Siemens NX."
-msgstr "Ayuda a instalar el botón para exportar a Cura en in Siemens NX."
+msgstr "Ayuda a instalar el botón para exportar a Cura en Siemens NX."
 
 #: cura-siemensnx-plugin/plugin.json
 msgctxt "name"

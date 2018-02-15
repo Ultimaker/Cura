@@ -162,12 +162,15 @@ class CrashHandler:
                 file_name = base_name + "_" + date_now + "_" + idx
                 zip_file_path = os.path.join(root_dir, file_name + ".zip")
             try:
-                # remove the .zip extension because make_archive() adds it
-                zip_file_path = zip_file_path[:-4]
-                shutil.make_archive(zip_file_path, "zip", root_dir = root_dir, base_dir = base_name)
+                # only create the zip backup when the folder exists
+                if os.path.exists(folder):
+                    # remove the .zip extension because make_archive() adds it
+                    zip_file_path = zip_file_path[:-4]
+                    shutil.make_archive(zip_file_path, "zip", root_dir = root_dir, base_dir = base_name)
 
-                # remove the folder only when the backup is successful
-                shutil.rmtree(folder, ignore_errors = True)
+                    # remove the folder only when the backup is successful
+                    shutil.rmtree(folder, ignore_errors = True)
+
                 # create an empty folder so Resources will not try to copy the old ones
                 os.makedirs(folder, 0o0755, exist_ok=True)
 

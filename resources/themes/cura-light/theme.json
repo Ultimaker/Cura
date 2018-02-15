@@ -7,48 +7,48 @@
         "large": {
             "size": 1.25,
             "bold": true,
-            "family": "Open Sans"
+            "family": "Noto Sans"
         },
         "large_nonbold": {
             "size": 1.25,
-            "family": "Open Sans"
+            "family": "Noto Sans"
         },
         "default": {
-            "size": 1.15,
-            "family": "Open Sans"
+            "size": 1.0,
+            "family": "Noto Sans"
         },
         "default_bold": {
-            "size": 1.15,
+            "size": 1.0,
             "bold": true,
-            "family": "Open Sans"
+            "family": "Noto Sans"
         },
         "default_italic": {
             "size": 1.15,
             "italic": true,
-            "family": "Open Sans"
+            "family": "Noto Sans"
         },
         "small": {
             "size": 1.0,
             "bold": true,
-            "family": "Open Sans"
+            "family": "Noto Sans"
         },
         "very_small": {
             "size": 1.0,
-            "family": "Open Sans"
+            "family": "Noto Sans"
         },
         "button_tooltip": {
             "size": 1.0,
-            "family": "Open Sans"
+            "family": "Noto Sans"
         },
         "setting_category": {
             "size": 1.15,
             "bold": true,
-            "family": "Open Sans"
+            "family": "Noto Sans"
         },
         "action_button": {
             "size": 1.15,
             "bold": true,
-            "family": "Open Sans"
+            "family": "Noto Sans"
         }
     },
 

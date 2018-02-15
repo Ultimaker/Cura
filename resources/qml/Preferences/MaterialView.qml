@@ -98,15 +98,15 @@ TabView
                 Row {
                     width: scrollView.columnWidth
                     height:  parent.rowHeight
-                    spacing: Math.floor(UM.Theme.getSize("default_margin").width/2)
+                    spacing: Math.round(UM.Theme.getSize("default_margin").width / 2)
 
                     // color indicator square
                     Rectangle {
                         id: colorSelector
                         color: properties.color_code
 
-                        width: Math.floor(colorLabel.height * 0.75)
-                        height: Math.floor(colorLabel.height * 0.75)
+                        width: Math.round(colorLabel.height * 0.75)
+                        height: Math.round(colorLabel.height * 0.75)
                         border.width: UM.Theme.getSize("default_lining").height
 
                         anchors.verticalCenter: parent.verticalCenter
@@ -407,7 +407,10 @@ TabView
         if (old_value != new_value) {
             Cura.ContainerManager.setContainerMetaDataEntry(base.containerId, entry_name, new_value)
             // make sure the UI properties are updated as well since we don't re-fetch the entire model here
-            properties[entry_name] = new_value
+            // When the entry_name is something like properties/diameter, we take the last part of the entry_name
+            var list = entry_name.split("/")
+            var key = list[list.length - 1]
+            properties[key] = new_value
         }
     }
 
