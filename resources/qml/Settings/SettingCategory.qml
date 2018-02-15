@@ -78,6 +78,7 @@ Button
                 verticalCenter: parent.verticalCenter;
             }
             text: definition.label
+            renderType: Text.NativeRendering
             font: UM.Theme.getFont("setting_category")
             color:
             {
@@ -187,13 +188,13 @@ Button
         id: settingsButton
 
         visible: base.hovered || settingsButton.hovered
-        height: base.height * 0.6
-        width: base.height * 0.6
+        height: Math.round(base.height * 0.6)
+        width: Math.round(base.height * 0.6)
 
         anchors {
             right: inheritButton.visible ? inheritButton.left : parent.right
             // use 1.9 as the factor because there is a 0.1 difference between the settings and inheritance warning icons
-            rightMargin: inheritButton.visible ? UM.Theme.getSize("default_margin").width / 2 : category_arrow.width + UM.Theme.getSize("default_margin").width * 1.9
+            rightMargin: inheritButton.visible ? Math.round(UM.Theme.getSize("default_margin").width / 2) : category_arrow.width + Math.round(UM.Theme.getSize("default_margin").width * 1.9)
             verticalCenter: parent.verticalCenter
         }
 
@@ -231,7 +232,7 @@ Button
             return false
         }
 
-        height: parent.height / 2
+        height: Math.round(parent.height / 2)
         width: height
 
         onClicked:

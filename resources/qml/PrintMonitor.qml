@@ -1,7 +1,7 @@
 // Copyright (c) 2017 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
-import QtQuick 2.2
+import QtQuick 2.8
 import QtQuick.Controls 1.1
 import QtQuick.Controls.Styles 1.1
 import QtQuick.Layouts 1.1
@@ -24,7 +24,7 @@ Column
     {
         id: connectedPrinterHeader
         width: parent.width
-        height: Math.floor(childrenRect.height + UM.Theme.getSize("default_margin").height * 2)
+        height: Math.round(childrenRect.height + UM.Theme.getSize("default_margin").height * 2)
         color: UM.Theme.getColor("setting_category")
 
         Label
@@ -82,7 +82,7 @@ Column
                 {
                     id: extruderRectangle
                     color: UM.Theme.getColor("sidebar")
-                    width: index == machineExtruderCount.properties.value - 1 && index % 2 == 0 ? extrudersGrid.width : Math.floor(extrudersGrid.width / 2 - UM.Theme.getSize("sidebar_lining_thin").width / 2)
+                    width: index == machineExtruderCount.properties.value - 1 && index % 2 == 0 ? extrudersGrid.width : Math.round(extrudersGrid.width / 2 - UM.Theme.getSize("sidebar_lining_thin").width / 2)
                     height: UM.Theme.getSize("sidebar_extruder_box").height
 
                     Label //Extruder name.
@@ -162,8 +162,8 @@ Column
                     Rectangle //Material colour indication.
                     {
                         id: materialColor
-                        width: Math.floor(materialName.height * 0.75)
-                        height: Math.floor(materialName.height * 0.75)
+                        width: Math.round(materialName.height * 0.75)
+                        height: Math.round(materialName.height * 0.75)
                         radius: width / 2
                         color: (connectedPrinter != null && connectedPrinter.materialColors[index] != null && connectedPrinter.materialIds[index] != "") ? connectedPrinter.materialColors[index] : "#00000000"
                         border.width: UM.Theme.getSize("default_lining").width
@@ -357,7 +357,7 @@ Column
             color: !enabled ? UM.Theme.getColor("setting_control_disabled") : showError ? UM.Theme.getColor("setting_validation_error_background") : UM.Theme.getColor("setting_validation_ok")
             property var showError:
             {
-                if(bedTemperature.properties.maximum_value != "None" && bedTemperature.properties.maximum_value <  Math.floor(preheatTemperatureInput.text))
+                if(bedTemperature.properties.maximum_value != "None" && bedTemperature.properties.maximum_value <  Math.round(preheatTemperatureInput.text))
                 {
                     return true;
                 } else
@@ -476,7 +476,7 @@ Column
             visible: preheatCountdown.visible
             source: UM.Theme.getIcon("print_time")
             anchors.right: preheatCountdown.left
-            anchors.rightMargin: Math.floor(UM.Theme.getSize("default_margin").width / 2)
+            anchors.rightMargin: Math.round(UM.Theme.getSize("default_margin").width / 2)
             anchors.verticalCenter: preheatCountdown.verticalCenter
         }
 
@@ -528,15 +528,15 @@ Column
                 {
                     return true; //Can always cancel if the timer is running.
                 }
-                if (bedTemperature.properties.minimum_value != "None" && Math.floor(preheatTemperatureInput.text) < Math.floor(bedTemperature.properties.minimum_value))
+                if (bedTemperature.properties.minimum_value != "None" && Math.round(preheatTemperatureInput.text) < Math.round(bedTemperature.properties.minimum_value))
                 {
                     return false; //Target temperature too low.
                 }
-                if (bedTemperature.properties.maximum_value != "None" && Math.floor(preheatTemperatureInput.text) > Math.floor(bedTemperature.properties.maximum_value))
+                if (bedTemperature.properties.maximum_value != "None" && Math.round(preheatTemperatureInput.text) > Math.round(bedTemperature.properties.maximum_value))
                 {
                     return false; //Target temperature too high.
                 }
-                if (Math.floor(preheatTemperatureInput.text) == 0)
+                if (Math.round(preheatTemperatureInput.text) == 0)
                 {
                     return false; //Setting the temperature to 0 is not allowed (since that cancels the pre-heating).
                 }
@@ -718,7 +718,7 @@ Column
                 color: UM.Theme.getColor("setting_control_text")
                 font: UM.Theme.getFont("default")
 
-                width: Math.floor(parent.width * 0.4) - UM.Theme.getSize("default_margin").width
+                width: Math.round(parent.width * 0.4) - UM.Theme.getSize("default_margin").width
                 height: UM.Theme.getSize("setting_control").height
                 verticalAlignment: Text.AlignVCenter
             }
@@ -908,7 +908,7 @@ Column
                 color: UM.Theme.getColor("setting_control_text")
                 font: UM.Theme.getFont("default")
 
-                width: Math.floor(parent.width * 0.4) - UM.Theme.getSize("default_margin").width
+                width: Math.round(parent.width * 0.4) - UM.Theme.getSize("default_margin").width
                 height: UM.Theme.getSize("setting_control").height
                 verticalAlignment: Text.AlignVCenter
             }
@@ -1044,13 +1044,13 @@ Column
         Row
         {
             height: UM.Theme.getSize("setting_control").height
-            width: Math.floor(base.width - 2 * UM.Theme.getSize("default_margin").width)
+            width: Math.round(base.width - 2 * UM.Theme.getSize("default_margin").width)
             anchors.left: parent.left
             anchors.leftMargin: UM.Theme.getSize("default_margin").width
 
             Label
             {
-                width: Math.floor(parent.width * 0.4)
+                width: Math.round(parent.width * 0.4)
                 anchors.verticalCenter: parent.verticalCenter
                 text: label
                 color: connectedPrinter != null && connectedPrinter.acceptsCommands ? UM.Theme.getColor("setting_control_text") : UM.Theme.getColor("setting_control_disabled_text")
@@ -1059,7 +1059,7 @@ Column
             }
             Label
             {
-                width: Math.floor(parent.width * 0.6)
+                width: Math.round(parent.width * 0.6)
                 anchors.verticalCenter: parent.verticalCenter
                 text: value
                 color: connectedPrinter != null && connectedPrinter.acceptsCommands ? UM.Theme.getColor("setting_control_text") : UM.Theme.getColor("setting_control_disabled_text")
@@ -1146,8 +1146,8 @@ Column
                 {
                     anchors.verticalCenter: parent.verticalCenter
                     anchors.horizontalCenter: parent.horizontalCenter
-                    width: Math.floor(control.width / 2)
-                    height: Math.floor(control.height / 2)
+                    width: Math.round(control.width / 2)
+                    height: Math.round(control.height / 2)
                     sourceSize.width: width
                     sourceSize.height: width
                     color:

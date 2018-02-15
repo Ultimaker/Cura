@@ -61,7 +61,7 @@ SettingItem
         {
             id: downArrow
             x: control.width - width - control.rightPadding
-            y: control.topPadding + (control.availableHeight - height) / 2
+            y: control.topPadding + Math.round((control.availableHeight - height) / 2)
 
             source: UM.Theme.getIcon("arrow_bottom")
             width: UM.Theme.getSize("standard_arrow").width
@@ -80,25 +80,54 @@ SettingItem
             anchors.right: downArrow.left
 
             text: control.currentText
+            renderType: Text.NativeRendering
             font: UM.Theme.getFont("default")
             color: !enabled ? UM.Theme.getColor("setting_control_disabled_text") : UM.Theme.getColor("setting_control_text")
             elide: Text.ElideRight
             verticalAlignment: Text.AlignVCenter
         }
 
+        popup: Popup {
+            y: control.height - UM.Theme.getSize("default_lining").height
+            width: control.width
+            implicitHeight: contentItem.implicitHeight
+            padding: UM.Theme.getSize("default_lining").width
+
+            contentItem: ListView {
+                clip: true
+                implicitHeight: contentHeight
+                model: control.popup.visible ? control.delegateModel : null
+                currentIndex: control.highlightedIndex
+
+                ScrollIndicator.vertical: ScrollIndicator { }
+            }
+
+            background: Rectangle {
+                color: UM.Theme.getColor("setting_control")
+                border.color: UM.Theme.getColor("setting_control_border")
+            }
+        }
+
         delegate: ItemDelegate
         {
-            width: control.width
+            width: control.width - 2 * UM.Theme.getSize("default_lining").width
             height: control.height
             highlighted: control.highlightedIndex == index
 
-            contentItem: Text
+            contentItem: Label
             {
                 text: modelData.value
+                renderType: Text.NativeRendering
                 color: control.contentItem.color
                 font: UM.Theme.getFont("default")
                 elide: Text.ElideRight
                 verticalAlignment: Text.AlignVCenter
+            }
+
+            background: Rectangle
+            {
+                color: parent.highlighted ? UM.Theme.getColor("setting_control_highlight") : "transparent"
+                border.color: parent.highlighted ? UM.Theme.getColor("setting_control_border_highlight") : "transparent"
             }
         }
 

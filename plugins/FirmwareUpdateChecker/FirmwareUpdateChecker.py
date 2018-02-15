@@ -49,7 +49,6 @@ class FirmwareUpdateChecker(Extension):
     def _onContainerAdded(self, container):
         # Only take care when a new GlobalStack was added
         if isinstance(container, GlobalStack):
-            Logger.log("i", "You have a '%s' in printer list. Let's check the firmware!", container.getId())
             self.checkFirmwareVersion(container, True)
 
     ##  Connect with software.ultimaker.com, load latest.version and check version info.

@@ -1,5 +1,4 @@
 # Copyright (c) 2017 Ultimaker B.V.
-# Copyright (c) 2017 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 from PyQt5.QtNetwork import QLocalServer
 from PyQt5.QtNetwork import QLocalSocket
@@ -113,6 +112,8 @@ class CuraApplication(QtApplication):
     # changes of the settings.
     SettingVersion = 4
 
+    Created = False
+
     class ResourceTypes:
         QmlFiles = Resources.UserType + 1
         Firmware = Resources.UserType + 2
@@ -133,7 +134,6 @@ class CuraApplication(QtApplication):
     stacksValidationFinished = pyqtSignal()  # Emitted whenever a validation is finished
 
     def __init__(self, **kwargs):
-
         # this list of dir names will be used by UM to detect an old cura directory
         for dir_name in ["extruders", "machine_instances", "materials", "plugins", "quality", "user", "variants"]:
             Resources.addExpectedDirNameInData(dir_name)
@@ -223,6 +223,10 @@ class CuraApplication(QtApplication):
                          tray_icon_name = "cura-icon-32.png",
                          **kwargs)
 
+        # FOR TESTING ONLY
+        if kwargs["parsed_command_line"].get("trigger_early_crash", False):
+            assert not "This crash is triggered by the trigger_early_crash command line argument."
+
         self.default_theme = "cura-light"
 
         self.setWindowIcon(QIcon(Resources.getPath(Resources.Images, "cura-icon.png")))
@@ -256,7 +260,7 @@ class CuraApplication(QtApplication):
         self._center_after_select = False
         self._camera_animation = None
         self._cura_actions = None
-        self._started = False
+        self.started = False
 
         self._message_box_callback = None
         self._message_box_callback_arguments = []
@@ -277,6 +281,11 @@ class CuraApplication(QtApplication):
         # Since they are empty, they should never be serialized and instead just programmatically created.
         # We need them to simplify the switching between materials.
         empty_container = ContainerRegistry.getInstance().getEmptyInstanceContainer()
+
+        empty_definition_changes_container = copy.deepcopy(empty_container)
+        empty_definition_changes_container.setMetaDataEntry("id", "empty_definition_changes")
+        empty_definition_changes_container.addMetaDataEntry("type", "definition_changes")
+        ContainerRegistry.getInstance().addContainer(empty_definition_changes_container)
 
         empty_variant_container = copy.deepcopy(empty_container)
         empty_variant_container.setMetaDataEntry("id", "empty_variant")
@@ -404,6 +413,8 @@ class CuraApplication(QtApplication):
 
         self.getCuraSceneController().setActiveBuildPlate(0)  # Initialize
 
+        CuraApplication.Created = True
+
     def _onEngineCreated(self):
         self._engine.addImageProvider("camera", CameraImageProvider.CameraImageProvider())
 
@@ -498,7 +509,7 @@ class CuraApplication(QtApplication):
     #
     #   Note that the AutoSave plugin also calls this method.
     def saveSettings(self):
-        if not self._started: # Do not do saving during application start
+        if not self.started: # Do not do saving during application start
             return
 
         ContainerRegistry.getInstance().saveDirtyContainers()
@@ -727,7 +738,7 @@ class CuraApplication(QtApplication):
             for file_name in self._open_file_queue: #Open all the files that were queued up while plug-ins were loading.
                 self._openFile(file_name)
 
-            self._started = True
+            self.started = True
 
             self.exec_()
 
@@ -1035,8 +1046,9 @@ class CuraApplication(QtApplication):
             Selection.add(node)
 
     ##  Delete all nodes containing mesh data in the scene.
+    #   \param only_selectable. Set this to False to delete objects from all build plates
     @pyqtSlot()
-    def deleteAll(self):
+    def deleteAll(self, only_selectable = True):
         Logger.log("i", "Clearing scene")
         if not self.getController().getToolsEnabled():
             return
@@ -1047,7 +1059,9 @@ class CuraApplication(QtApplication):
                 continue
             if (not node.getMeshData() and not node.callDecoration("getLayerData")) and not node.callDecoration("isGroup"):
                 continue  # Node that doesnt have a mesh and is not a group.
-            if not node.isSelectable():
+            if only_selectable and not node.isSelectable():
+                continue
+            if not node.callDecoration("isSliceable") and not node.callDecoration("getLayerData") and not node.callDecoration("isGroup"):
                 continue  # Only remove nodes that are selectable.
             if node.getParent() and node.getParent().callDecoration("isGroup"):
                 continue  # Grouped nodes don't need resetting as their parent (the group) is resetted)
@@ -1058,15 +1072,11 @@ class CuraApplication(QtApplication):
             for node in nodes:
                 op.addOperation(RemoveSceneNodeOperation(node))
 
+                # Reset the print information
+                self.getController().getScene().sceneChanged.emit(node)
+
             op.push()
             Selection.clear()
-
-        # Reset the print information:
-        self.getController().getScene().sceneChanged.emit(node)
-        # self._print_information.setToZeroPrintInformation(self.getBuildPlateModel().activeBuildPlate)
-
-        # stay on the same build plate
-        #self.getCuraSceneController().setActiveBuildPlate(0)  # Select first build plate
 
     ## Reset all translation on nodes with mesh data.
     @pyqtSlot()
@@ -1426,7 +1436,7 @@ class CuraApplication(QtApplication):
 
         self._currently_loading_files.append(f)
         if extension in self._non_sliceable_extensions:
-            self.deleteAll()
+            self.deleteAll(only_selectable = False)
 
         job = ReadMeshJob(f)
         job.finished.connect(self._readMeshFinished)

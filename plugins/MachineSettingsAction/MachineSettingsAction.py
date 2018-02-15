@@ -105,60 +105,9 @@ class MachineSettingsAction(MachineAction):
 
     @pyqtSlot(int)
     def setMachineExtruderCount(self, extruder_count):
-        extruder_manager = Application.getInstance().getExtruderManager()
-
-        definition_changes_container = self._global_container_stack.definitionChanges
-        if not self._global_container_stack or definition_changes_container == self._empty_container:
-            return
-
-        previous_extruder_count = self._global_container_stack.getProperty("machine_extruder_count", "value")
-        if extruder_count == previous_extruder_count:
-            return
-
-        # reset all extruder number settings whose value is no longer valid
-        for setting_instance in self._global_container_stack.userChanges.findInstances():
-            setting_key = setting_instance.definition.key
-            if not self._global_container_stack.getProperty(setting_key, "type") in ("extruder", "optional_extruder"):
-                continue
-
-            old_value = int(self._global_container_stack.userChanges.getProperty(setting_key, "value"))
-            if old_value >= extruder_count:
-                self._global_container_stack.userChanges.removeInstance(setting_key)
-                Logger.log("d", "Reset [%s] because its old value [%s] is no longer valid ", setting_key, old_value)
-
-        # Check to see if any objects are set to print with an extruder that will no longer exist
-        root_node = Application.getInstance().getController().getScene().getRoot()
-        for node in DepthFirstIterator(root_node):
-            if node.getMeshData():
-                extruder_nr = node.callDecoration("getActiveExtruderPosition")
-
-                if extruder_nr is not None and int(extruder_nr) > extruder_count - 1:
-                    node.callDecoration("setActiveExtruder", extruder_manager.getExtruderStack(extruder_count - 1).getId())
-
-        definition_changes_container.setProperty("machine_extruder_count", "value", extruder_count)
-
-        # Make sure one of the extruder stacks is active
-        extruder_manager.setActiveExtruderIndex(0)
-
-        # Move settable_per_extruder values out of the global container
-        # After CURA-4482 this should not be the case anymore, but we still want to support older project files.
-        global_user_container = self._global_container_stack.getTop()
-
-        if previous_extruder_count == 1:
-            extruder_stacks = ExtruderManager.getInstance().getActiveExtruderStacks()
-            global_user_container = self._global_container_stack.getTop()
-
-        for setting_instance in global_user_container.findInstances():
-            setting_key = setting_instance.definition.key
-            settable_per_extruder = self._global_container_stack.getProperty(setting_key, "settable_per_extruder")
-
-            if settable_per_extruder:
-                limit_to_extruder = int(self._global_container_stack.getProperty(setting_key, "limit_to_extruder"))
-                extruder_stack = extruder_stacks[max(0, limit_to_extruder)]
-                extruder_stack.getTop().setProperty(setting_key, "value", global_user_container.getProperty(setting_key, "value"))
-                global_user_container.removeInstance(setting_key)
-
-        self.forceUpdate()
+        # Note: this method was in this class before, but since it's quite generic and other plugins also need it
+        # it was moved to the machine manager instead. Now this method just calls the machine manager.
+        Application.getInstance().getMachineManager().setActiveMachineExtruderCount(extruder_count)
 
     @pyqtSlot()
     def forceUpdate(self):
@@ -209,79 +158,4 @@ class MachineSettingsAction(MachineAction):
     @pyqtSlot(int)
     def updateMaterialForDiameter(self, extruder_position: int):
         # Updates the material container to a material that matches the material diameter set for the printer
-        if not self._global_container_stack:
-            return
-
-        if not self._global_container_stack.getMetaDataEntry("has_materials", False):
-            return
-
-        extruder_stack = self._global_container_stack.extruders[str(extruder_position)]
-
-        material_diameter = extruder_stack.material.getProperty("material_diameter", "value")
-        if not material_diameter:
-            # in case of "empty" material
-            material_diameter = 0
-
-        material_approximate_diameter = str(round(material_diameter))
-        machine_diameter = extruder_stack.definitionChanges.getProperty("material_diameter", "value")
-        if not machine_diameter:
-            if extruder_stack.definition.hasProperty("material_diameter", "value"):
-                machine_diameter = extruder_stack.definition.getProperty("material_diameter", "value")
-            else:
-                machine_diameter = self._global_container_stack.definition.getProperty("material_diameter", "value")
-        machine_approximate_diameter = str(round(machine_diameter))
-
-        if material_approximate_diameter != machine_approximate_diameter:
-            Logger.log("i", "The the currently active material(s) do not match the diameter set for the printer. Finding alternatives.")
-
-            if self._global_container_stack.getMetaDataEntry("has_machine_materials", False):
-                materials_definition = self._global_container_stack.definition.getId()
-                has_material_variants = self._global_container_stack.getMetaDataEntry("has_variants", False)
-            else:
-                materials_definition = "fdmprinter"
-                has_material_variants = False
-
-            old_material = extruder_stack.material
-            search_criteria = {
-                "type": "material",
-                "approximate_diameter": machine_approximate_diameter,
-                "material": old_material.getMetaDataEntry("material", "value"),
-                "brand": old_material.getMetaDataEntry("brand", "value"),
-                "supplier": old_material.getMetaDataEntry("supplier", "value"),
-                "color_name": old_material.getMetaDataEntry("color_name", "value"),
-                "definition": materials_definition
-            }
-            if has_material_variants:
-                search_criteria["variant"] = extruder_stack.variant.getId()
-
-            if old_material == self._empty_container:
-                search_criteria.pop("material", None)
-                search_criteria.pop("supplier", None)
-                search_criteria.pop("brand", None)
-                search_criteria.pop("definition", None)
-                search_criteria["id"] = extruder_stack.getMetaDataEntry("preferred_material")
-
-            materials = self._container_registry.findInstanceContainers(**search_criteria)
-            if not materials:
-                # Same material with new diameter is not found, search for generic version of the same material type
-                search_criteria.pop("supplier", None)
-                search_criteria.pop("brand", None)
-                search_criteria["color_name"] = "Generic"
-                materials = self._container_registry.findInstanceContainers(**search_criteria)
-            if not materials:
-                # Generic material with new diameter is not found, search for preferred material
-                search_criteria.pop("color_name", None)
-                search_criteria.pop("material", None)
-                search_criteria["id"] = extruder_stack.getMetaDataEntry("preferred_material")
-                materials = self._container_registry.findInstanceContainers(**search_criteria)
-            if not materials:
-                # Preferred material with new diameter is not found, search for any material
-                search_criteria.pop("id", None)
-                materials = self._container_registry.findInstanceContainers(**search_criteria)
-            if not materials:
-                # Just use empty material as a final fallback
-                materials = [self._empty_container]
-
-            Logger.log("i", "Selecting new material: %s", materials[0].getId())
-
-            extruder_stack.material = materials[0]
+        Application.getInstance().getExtruderManager().updateMaterialForDiameter(extruder_position)

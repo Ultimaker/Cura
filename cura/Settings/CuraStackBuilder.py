@@ -63,6 +63,7 @@ class CuraStackBuilder:
                 next_stack = new_global_stack
             )
             new_global_stack.addExtruder(new_extruder)
+            registry.addContainer(new_extruder)
         else:
             # create extruder stack for each found extruder definition
             for extruder_definition in registry.findDefinitionContainers(machine = machine_definition.id):
@@ -81,6 +82,11 @@ class CuraStackBuilder:
                     next_stack = new_global_stack
                 )
                 new_global_stack.addExtruder(new_extruder)
+                registry.addContainer(new_extruder)
+
+        # Register the global stack after the extruder stacks are created. This prevents the registry from adding another
+        # extruder stack because the global stack didn't have one yet (which is enforced since Cura 3.1).
+        registry.addContainer(new_global_stack)
 
         return new_global_stack
 
@@ -135,9 +141,7 @@ class CuraStackBuilder:
         # Only add the created containers to the registry after we have set all the other
         # properties. This makes the create operation more transactional, since any problems
         # setting properties will not result in incomplete containers being added.
-        registry = ContainerRegistry.getInstance()
-        registry.addContainer(stack)
-        registry.addContainer(user_container)
+        ContainerRegistry.getInstance().addContainer(user_container)
 
         return stack
 
@@ -181,9 +185,7 @@ class CuraStackBuilder:
         if "quality_changes" in kwargs:
             stack.setQualityChangesById(kwargs["quality_changes"])
 
-        registry = ContainerRegistry.getInstance()
-        registry.addContainer(stack)
-        registry.addContainer(user_container)
+        ContainerRegistry.getInstance().addContainer(user_container)
 
         return stack
 

@@ -31,14 +31,14 @@ Rectangle
     border.width: UM.Theme.getSize("default_lining").width
     border.color: UM.Theme.getColor("lining")
 
-    property bool collapsed: false;
+    property bool collapsed: true;
 
     SystemPalette { id: palette }
 
     Button {
         id: collapseButton
         anchors.top: parent.top
-        anchors.topMargin: Math.floor(UM.Theme.getSize("default_margin").height + (UM.Theme.getSize("layerview_row").height - UM.Theme.getSize("default_margin").height) / 2)
+        anchors.topMargin: Math.round(UM.Theme.getSize("default_margin").height + (UM.Theme.getSize("layerview_row").height - UM.Theme.getSize("default_margin").height) / 2)
         anchors.right: parent.right
         anchors.rightMargin: UM.Theme.getSize("default_margin").width
 

@@ -70,8 +70,8 @@ Cura.MachineAction
             anchors.top: pageTitle.bottom
             anchors.topMargin: UM.Theme.getSize("default_margin").height
 
-            property real columnWidth: ((width - 3 * UM.Theme.getSize("default_margin").width) / 2) | 0
-            property real labelColumnWidth: columnWidth * 0.5
+            property real columnWidth: Math.round((width - 3 * UM.Theme.getSize("default_margin").width) / 2)
+            property real labelColumnWidth: Math.round(columnWidth / 2)
 
             Tab
             {
@@ -390,7 +390,7 @@ Cura.MachineAction
                             visible: Cura.MachineManager.hasMaterials
                             sourceComponent: numericTextFieldWithUnit
                             property string settingKey: "material_diameter"
-                            property string label: catalog.i18nc("@label", "Material diameter")
+                            property string label: catalog.i18nc("@label", "Compatible material diameter")
                             property string unit: catalog.i18nc("@label", "mm")
                             property string tooltip: catalog.i18nc("@tooltip", "The nominal diameter of filament supported by the printer. The exact diameter will be overridden by the material and/or the profile.")
                             function afterOnEditingFinished()
