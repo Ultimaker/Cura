@@ -38,11 +38,17 @@ class MaterialManager(QObject):
         self._fallback_materials_map = dict()  # material_type -> generic material metadata
         self._material_group_map = dict()  # root_material_id -> MaterialGroup
         self._diameter_machine_variant_material_map = dict()  # diameter -> dict(machine_definition_id -> MaterialNode)
+
+        # We're using these two maps to convert between the specific diameter material id and the generic material id
+        # because the generic material ids are used in qualities and definitions, while the specific diameter material is meant
+        # i.e. generic_pla -> generic_pla_175
         self._material_diameter_map = defaultdict()  # root_material_id -> diameter -> root_material_id for that diameter
+        self._diameter_material_map = dict()  # material id including diameter (generic_pla_175) -> material root id (generic_pla)
 
         # The machine definition ID for the non-machine-specific materials.
         # This is used as the last fallback option if the given machine-specific material(s) cannot be found.
         self._default_machine_definition_id = "fdmprinter"
+        self._default_approximate_diameter_for_quality_search = "3"
 
         self._update_timer = QTimer(self)
         self._update_timer.setInterval(300)
@@ -99,6 +105,7 @@ class MaterialManager(QObject):
         # be for either "generic_pla" or "generic_pla_175", but not both. This map helps to get the correct material ID
         # for quality search.
         self._material_diameter_map = defaultdict(defaultdict)
+        self._diameter_material_map = dict()
 
         # Group the material IDs by the same name, material, brand, and color but with different diameters.
         material_group_dict = dict()
@@ -116,10 +123,17 @@ class MaterialManager(QObject):
             approximate_diameter = root_material_metadata.get("approximate_diameter")
             material_group_dict[key_data][approximate_diameter] = root_material_metadata["id"]
 
+        # Map [root_material_id][diameter] -> root_material_id for this diameter
         for data_dict in material_group_dict.values():
-            for rmid1 in data_dict.values():
-                for ad2, rmid2 in data_dict.items():
-                    self._material_diameter_map[rmid1][ad2] = rmid2
+            for root_material_id1 in data_dict.values():
+                for approximate_diameter2, root_material_id2 in data_dict.items():
+                    self._material_diameter_map[root_material_id1][approximate_diameter2] = root_material_id2
+
+            default_root_material_id = data_dict.get(self._default_approximate_diameter_for_quality_search)
+            if default_root_material_id is None:
+                default_root_material_id = list(data_dict.values())[0]  # no default diameter present, just take "the" only one
+            for root_material_id in data_dict.values():
+                self._diameter_material_map[root_material_id] = default_root_material_id
 
         # Map #4
         #    "machine" -> "variant_name" -> "root material ID" -> specific material InstanceContainer
@@ -180,6 +194,9 @@ class MaterialManager(QObject):
 
     def getRootMaterialIDForDiameter(self, root_material_id: str, approximate_diameter: str) -> str:
         return self._material_diameter_map.get(root_material_id).get(approximate_diameter, root_material_id)
+
+    def getRootMaterialIDWithoutDiameter(self, root_material_id: str) -> str:
+        return self._diameter_material_map.get(root_material_id)
 
     #
     # Return a dict with all root material IDs (k) and ContainerNodes (v) that's suitable for the given setup.
@@ -264,8 +281,12 @@ class MaterialManager(QObject):
     # This function returns the generic root material ID for the given material type, where material types are "PLA",
     # "ABS", etc.
     #
-    def getFallbackMaterialForType(self, material_type: str) -> dict:
+    def getFallbackMaterialId(self, material_type: str) -> str:
         # For safety
         if material_type not in self._fallback_materials_map:
             raise RuntimeError("Material type [%s] is not in the fallback materials table." % material_type)
-        return self._fallback_materials_map[material_type]
+        fallback_material = self._fallback_materials_map[material_type]
+        if fallback_material:
+            return self.getRootMaterialIDWithoutDiameter(fallback_material["id"])
+        else:
+            return None

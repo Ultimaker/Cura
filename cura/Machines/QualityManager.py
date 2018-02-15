@@ -286,13 +286,15 @@ class QualityManager(QObject):
             if extruder.material.getId() != "empty_material":
                 has_material = True
                 root_material_id = extruder.material.getMetaDataEntry("base_file")
+                # Convert possible generic_pla_175 -> generic_pla
+                root_material_id = self._material_manager.getRootMaterialIDWithoutDiameter(root_material_id)
                 root_material_id_list.append(root_material_id)
 
                 # Also try to get the fallback material
                 material_type = extruder.material.getMetaDataEntry("material")
-                fallback_root_material_metadata = self._material_manager.getFallbackMaterialForType(material_type)
-                if fallback_root_material_metadata:
-                    root_material_id_list.append(fallback_root_material_metadata["id"])
+                fallback_root_material_id = self._material_manager.getFallbackMaterialId(material_type)
+                if fallback_root_material_id:
+                    root_material_id_list.append(fallback_root_material_id)
 
             nodes_to_check = []
 
