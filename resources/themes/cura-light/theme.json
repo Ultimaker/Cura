@@ -5,12 +5,12 @@
 
     "fonts": {
         "large": {
-            "size": 1.25,
+            "size": 1.35,
             "bold": true,
             "family": "Noto Sans"
         },
         "large_nonbold": {
-            "size": 1.25,
+            "size": 1.35,
             "family": "Noto Sans"
         },
         "default": {
