@@ -13,9 +13,8 @@ import ssl
 import urllib.request
 import urllib.error
 import shutil
-import sys
 
-from PyQt5.QtCore import QT_VERSION_STR, PYQT_VERSION_STR
+from PyQt5.QtCore import QT_VERSION_STR, PYQT_VERSION_STR, QFile
 from PyQt5.QtWidgets import QDialog, QDialogButtonBox, QVBoxLayout, QLabel, QTextEdit, QGroupBox, QCheckBox, QPushButton
 
 from UM.Application import Application
@@ -23,6 +22,7 @@ from UM.Logger import Logger
 from UM.View.GL.OpenGL import OpenGL
 from UM.i18n import i18nCatalog
 from UM.Platform import Platform
+from UM.Resources import Resources
 
 catalog = i18nCatalog("cura")
 
@@ -91,6 +91,7 @@ class CrashHandler:
         label = QLabel()
         label.setText(catalog.i18nc("@label crash message", """<p><b>A fatal error has occurred.</p></b>
                     <p>Unfortunately, Cura encountered an unrecoverable error during start up. It was possibly caused by some incorrect configuration files. We suggest to backup and reset your configuration.</p>
+                    <p>Your backup can be found in your Configuration folder.</p>
                     <p>Please send us this Crash Report to fix the problem.</p>
                 """))
         label.setWordWrap(True)
