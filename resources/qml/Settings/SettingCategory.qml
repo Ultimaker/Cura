@@ -78,6 +78,7 @@ Button
                 verticalCenter: parent.verticalCenter;
             }
             text: definition.label
+            renderType: Text.NativeRendering
             font: UM.Theme.getFont("setting_category")
             color:
             {
