@@ -1302,6 +1302,12 @@ class MachineManager(QObject):
     def createMachineManager():
         return MachineManager()
 
+    @pyqtSlot(int, result = "QVariant")
+    def getExtruder(self, position: int):
+        if self._global_container_stack:
+            return self._global_container_stack.extruders.get(str(position))
+        return None
+
     @deprecated("Use ExtruderStack.material = ... and it won't be necessary", "2.7")
     def _updateMaterialContainer(self, definition: "DefinitionContainer", stack: "ContainerStack", variant_container: Optional["InstanceContainer"] = None, preferred_material_name: Optional[str] = None) -> InstanceContainer:
         if not definition.getMetaDataEntry("has_materials"):
@@ -1357,7 +1363,6 @@ class MachineManager(QObject):
     #
     # New
     #
-
     @pyqtProperty("QVariant", notify = rootMaterialChanged)
     def currentRootMaterialId(self):
         # initial filling the current_root_material_id

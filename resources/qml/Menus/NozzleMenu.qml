@@ -19,6 +19,16 @@ Menu
         id: nozzleModel
     }
 
+    property var extruderStack: Cura.MachineManager.getExtruder(extruderIndex)
+
+    Connections
+    {
+        target: Cura.MachineManager
+        onGlobalContainerChanged: {
+            menu.extruderStack = Cura.MachineManager.getExtruder(extruderIndex)
+        }
+    }
+
     Instantiator
     {
         model: nozzleModel
@@ -27,7 +37,7 @@ Menu
         {
             text: model.hotend_name
             checkable: true
-            checked: Cura.MachineManager.activeMachine.extruders[extruderIndex].variant.name == model.hotend_name
+            checked: extruderStack.variant.name == model.hotend_name
             exclusiveGroup: group
             onTriggered: {
                 Cura.MachineManager.setVariantGroup(extruderIndex, model.container_node);
