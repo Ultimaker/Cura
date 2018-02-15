@@ -112,11 +112,9 @@ Item {
             anchors.right: settingControls.left;
             anchors.verticalCenter: parent.verticalCenter
 
-            height: UM.Theme.getSize("section").height;
-            verticalAlignment: Text.AlignVCenter;
-
             text: definition.label
             elide: Text.ElideMiddle;
+            renderType: Text.NativeRendering
 
             color: UM.Theme.getColor("setting_control_text");
             opacity: (definition.visible) ? 1 : 0.5

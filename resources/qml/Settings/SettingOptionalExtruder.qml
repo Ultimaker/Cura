@@ -136,6 +136,7 @@ SettingItem
             rightPadding: swatch.width + UM.Theme.getSize("setting_unit_margin").width
 
             text: control.currentText
+            renderType: Text.NativeRendering
             font: UM.Theme.getFont("default")
             color: enabled ? UM.Theme.getColor("setting_control_text") : UM.Theme.getColor("setting_control_disabled_text")
 
@@ -190,6 +191,7 @@ SettingItem
             contentItem: Label
             {
                 text: model.name
+                renderType: Text.NativeRendering
                 color: UM.Theme.getColor("setting_control_text")
                 font: UM.Theme.getFont("default")
                 elide: Text.ElideRight
