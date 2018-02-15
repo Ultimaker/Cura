@@ -25,13 +25,13 @@ from UM.Resources import Resources
 
 from . import ExtruderStack
 from . import GlobalStack
-from .ContainerManager import ContainerManager
 from .ExtruderManager import ExtruderManager
 
 from cura.CuraApplication import CuraApplication
 
 from UM.i18n import i18nCatalog
 catalog = i18nCatalog("cura")
+
 
 class CuraContainerRegistry(ContainerRegistry):
     def __init__(self, *args, **kwargs):
@@ -514,8 +514,6 @@ class CuraContainerRegistry(ContainerRegistry):
         extruder_stack.setDefinition(extruder_definition)
         extruder_stack.addMetaDataEntry("position", extruder_definition.getMetaDataEntry("position"))
 
-        from cura.CuraApplication import CuraApplication
-
         # create a new definition_changes container for the extruder stack
         definition_changes_id = self.uniqueName(extruder_stack.getId() + "_settings") if create_new_ids else extruder_stack.getId() + "_settings"
         definition_changes_name = definition_changes_id
@@ -574,26 +572,28 @@ class CuraContainerRegistry(ContainerRegistry):
         self.addContainer(user_container)
         extruder_stack.setUserChanges(user_container)
 
-        variant_id = "default"
+        application = CuraApplication.getInstance()
+        empty_variant = application.empty_variant_container
+        empty_material = application.empty_material_container
+        empty_quality = application.empty_quality_container
+
         if machine.variant.getId() not in ("empty", "empty_variant"):
-            variant_id = machine.variant.getId()
+            variant = machine.variant
         else:
-            variant_id = "empty_variant"
-        extruder_stack.variant = self.findInstanceContainers(id = variant_id)[0]
+            variant = empty_variant
+        extruder_stack.variant = variant
 
-        material_id = "default"
         if machine.material.getId() not in ("empty", "empty_material"):
-            material_id = machine.material.getId()
+            material = machine.material
         else:
-            material_id = "empty_material"
-        extruder_stack.material = self.findInstanceContainers(id = material_id)[0]
+            material = empty_material
+        extruder_stack.material = material
 
-        quality_id = "default"
         if machine.quality.getId() not in ("empty", "empty_quality"):
-            quality_id = machine.quality.getId()
+            quality = machine.quality
         else:
-            quality_id = "empty_quality"
-        extruder_stack.quality = self.findInstanceContainers(id = quality_id)[0]
+            quality = empty_quality
+        extruder_stack.quality = quality
 
         machine_quality_changes = machine.qualityChanges
         if new_global_quality_changes is not None:
