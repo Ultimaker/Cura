@@ -61,6 +61,7 @@ from cura.Settings.UserProfilesModel import UserProfilesModel
 from cura.Settings.SimpleModeSettingsManager import SimpleModeSettingsManager
 
 from cura.Machines.VariantManager import VariantManager
+from cura.Machines.Models.QualityManagementModel import QualityManagementModel
 
 from . import PlatformPhysics
 from . import BuildVolume
@@ -938,6 +939,9 @@ class CuraApplication(QtApplication):
         qmlRegisterType(GenericMaterialsModel, "Cura", 1, 0, "GenericMaterialsModel")
         qmlRegisterType(BrandMaterialsModel, "Cura", 1, 0, "BrandMaterialsModel")
         qmlRegisterType(NewMaterialsModel, "Cura", 1, 0, "NewMaterialsModel")
+
+        # TODO: make this singleton?
+        qmlRegisterType(QualityManagementModel, "Cura", 1, 0, "QualityManagementModel")
 
         qmlRegisterSingletonType(NewQualityProfilesModel, "Cura", 1, 0, "NewQualityProfilesModel", self.getNewQualityProfileModel)
         qmlRegisterSingletonType(NewCustomQualityProfilesModel, "Cura", 1, 0, "NewCustomQualityProfilesModel", self.getNewCustomQualityProfilesModel)

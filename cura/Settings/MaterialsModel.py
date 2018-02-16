@@ -2,7 +2,7 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from typing import Any, List, Optional
-from PyQt5.QtCore import Qt, QObject
+from PyQt5.QtCore import Qt
 
 from UM.Logger import Logger
 from UM.Qt.ListModel import ListModel

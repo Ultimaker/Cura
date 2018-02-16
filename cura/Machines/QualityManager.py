@@ -1,10 +1,9 @@
 from typing import Optional
 
-from PyQt5.Qt import QObject
+from PyQt5.QtCore import QObject, QTimer
 
 from UM.Application import Application
 from UM.Logger import Logger
-from UM.Util import parseBool
 
 from cura.Machines.ContainerGroup import ContainerGroup
 from cura.Machines.ContainerNode import ContainerNode
@@ -126,6 +125,15 @@ class QualityManager(QObject):
 
         self._default_machine_definition_id = "fdmprinter"
 
+        self._container_registry.containerMetaDataChanged.connect(self._onContainerMetadataChanged)
+        self._container_registry.containerAdded.connect(self._onContainerMetadataChanged)
+        self._container_registry.containerRemoved.connect(self._onContainerMetadataChanged)
+
+        self._update_timer = QTimer(self)
+        self._update_timer.setInterval(300)
+        self._update_timer.setSingleShot(True)
+        self._update_timer.timeout.connect(self._updateMaps)
+
     def initialize(self):
         # Initialize the lookup tree for quality profiles with following structure:
         # <machine> -> <variant> -> <material>
@@ -186,10 +194,6 @@ class QualityManager(QObject):
 
                     material_node.addQualityMetadata(quality_type, metadata)
 
-        # Initialize quality
-        self._initializeQualityChangesTables()
-
-    def _initializeQualityChangesTables(self):
         # Initialize the lookup tree for quality_changes profiles with following structure:
         # <machine> -> <quality_type> -> <name>
         quality_changes_metadata_list = self._container_registry.findContainersMetadata(type = "quality_changes")
@@ -205,6 +209,20 @@ class QualityManager(QObject):
             machine_node = self._machine_quality_type_to_quality_changes_dict[machine_definition_id]
 
             machine_node.addQualityChangesMetadata(quality_type, metadata)
+
+    def _updateMaps(self):
+        self.initialize()
+
+    def _onContainerMetadataChanged(self, container):
+        self._onContainerChanged(container)
+
+    def _onContainerChanged(self, container):
+        container_type = container.getMetaDataEntry("type")
+        if container_type not in ("quality", "quality_changes"):
+            return
+
+        # update the cache table
+        self._update_timer.start()
 
     # Updates the given quality groups' availabilities according to which extruders are being used/ enabled.
     def _updateQualityGroupsAvailability(self, machine: "GlobalStack", quality_group_list):
@@ -234,8 +252,8 @@ class QualityManager(QObject):
 
         machine_node = self._machine_quality_type_to_quality_changes_dict.get(machine_definition_id)
         if not machine_node:
-            Logger.log("e", "Cannot find node for machine def [%s] in QualityChanges lookup table", machine_definition_id)
-            return {}
+            Logger.log("i", "Cannot find node for machine def [%s] in QualityChanges lookup table", machine_definition_id)
+            return dict()
 
         # Update availability for each QualityChangesGroup:
         # A custom profile is always available as long as the quality_type it's based on is available

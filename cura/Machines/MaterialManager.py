@@ -59,7 +59,7 @@ class MaterialManager(QObject):
         self._update_timer = QTimer(self)
         self._update_timer.setInterval(300)
         self._update_timer.setSingleShot(True)
-        self._update_timer.timeout.connect(self._updateTables)
+        self._update_timer.timeout.connect(self._updateMaps)
 
         self._container_registry.containerMetaDataChanged.connect(self._onContainerMetadataChanged)
         self._container_registry.containerAdded.connect(self._onContainerMetadataChanged)
@@ -192,7 +192,7 @@ class MaterialManager(QObject):
 
         self.materialsUpdated.emit()
 
-    def _updateTables(self):
+    def _updateMaps(self):
         self.initialize()
 
     def _onContainerMetadataChanged(self, container):
@@ -203,7 +203,7 @@ class MaterialManager(QObject):
         if container_type != "material":
             return
 
-        # TODO: update the cache table
+        # update the maps
         self._update_timer.start()
 
     def getMaterialGroup(self, root_material_id: str) -> Optional[MaterialGroup]:

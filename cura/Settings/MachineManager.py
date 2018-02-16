@@ -12,7 +12,6 @@ from UM.Signal import Signal
 from PyQt5.QtCore import QObject, pyqtProperty, pyqtSignal, QTimer
 import UM.FlameProfiler
 from UM.FlameProfiler import pyqtSlot
-from PyQt5.QtWidgets import QMessageBox
 from UM import Util
 
 from UM.Application import Application
@@ -1371,27 +1370,6 @@ class MachineManager(QObject):
                 self._current_root_material_id[position] = self._global_container_stack.extruders[position].material.getMetaDataEntry("base_file")
         return self._current_root_material_id
 
-    def _setQualityChangesGroup(self, quality_changes_group):
-        self._current_quality_changes_group = quality_changes_group
-
-        # TODO: quality_changes groups depend on a quality_type. Here it's fetching the quality_types every time.
-        #       Can we do this better, like caching the quality group a quality_changes group depends on?
-        quality_manager = Application.getInstance()._quality_manager
-        quality_group_dict = quality_manager.getQualityGroups(self._global_container_stack)
-
-        quality_type = quality_changes_group.quality_type
-
-        container = self._empty_quality_changes_container
-        if quality_changes_group.node_for_global is not None:
-            container = quality_changes_group.node_for_global.getContainer()
-        self._global_container_stack.qualityChanges = container
-        self._global_container_stack.quality = quality_group_dict[quality_type]
-
-        for position, extruder in self._global_container_stack.extruders.items():
-            container = quality_changes_group.nodes_for_extruders.get(position,
-                                                                      self._empty_quality_changes_container)
-            extruder.qualityChanges = container
-
     def _setEmptyQuality(self):
         self._current_quality_group = None
         self._global_container_stack.quality = self._empty_quality_container
@@ -1405,8 +1383,6 @@ class MachineManager(QObject):
     def _setQualityGroup(self, quality_group, empty_quality_changes = True):
         self._current_quality_group = quality_group
 
-        #TODO: check quality_changes
-
         # Set quality and quality_changes for the GlobalStack
         self._global_container_stack.quality = quality_group.node_for_global.getContainer()
         if empty_quality_changes:
@@ -1419,6 +1395,44 @@ class MachineManager(QObject):
                 self._global_container_stack.extruders[position].qualityChanges = self._empty_quality_changes_container
 
         self.activeQualityGroupChanged.emit()
+        self.activeQualityChangesGroupChanged.emit()
+
+    def _setQualityChangesGroup(self, quality_changes_group):
+        # TODO: quality_changes groups depend on a quality_type. Here it's fetching the quality_types every time.
+        #       Can we do this better, like caching the quality group a quality_changes group depends on?
+        quality_type = quality_changes_group.quality_type
+        quality_manager = Application.getInstance()._quality_manager
+        quality_group_dict = quality_manager.getQualityGroups(self._global_container_stack)
+        quality_group = quality_group_dict[quality_type]
+
+        quality_changes_container = self._empty_quality_changes_container
+        quality_container = self._empty_quality_changes_container
+        if quality_changes_group.node_for_global:
+            quality_changes_container = quality_changes_group.node_for_global.getContainer()
+        if quality_group.node_for_global:
+            quality_container = quality_group.node_for_global.getContainer()
+
+        self._global_container_stack.quality = quality_container
+        self._global_container_stack.qualityChanges = quality_changes_container
+
+        for position, extruder in self._global_container_stack.extruders.items():
+            quality_changes_node = quality_changes_group.nodes_for_extruders.get(position)
+            quality_node = quality_group.nodes_for_extruders.get(position)
+
+            quality_changes_container = self._empty_quality_changes_container
+            quality_container = self._empty_quality_changes_container
+            if quality_changes_node:
+                quality_changes_container = quality_changes_node.getContainer()
+            if quality_node:
+                quality_container = quality_node.getContainer()
+
+            extruder.quality = quality_container
+            extruder.qualityChanges = quality_changes_container
+
+        self._current_quality_group = quality_group
+        self._current_quality_changes_group = quality_changes_group
+        self.activeQualityGroupChanged.emit()
+        self.activeQualityChangesGroupChanged.emit()
 
     def _setVariantGroup(self, position, container_node):
         self._global_container_stack.extruders[position].variant = container_node.getContainer()
@@ -1515,3 +1529,23 @@ class MachineManager(QObject):
     def activeQualityGroup(self):
         return self._current_quality_group
 
+    @pyqtSlot("QVariant")
+    def setQualityChangesGroup(self, quality_changes_group):
+        Logger.log("d", "----------------  qcg = [%s]", quality_changes_group.name)
+        self.blurSettings.emit()
+        with postponeSignals(*self._getContainerChangedSignals(), compress = CompressTechnique.CompressPerParameterValue):
+            self._setQualityChangesGroup(quality_changes_group)
+        Logger.log("d", "Quality changes set!")
+
+    @pyqtProperty("QVariant", fset = setQualityChangesGroup, notify = activeQualityChangesGroupChanged)
+    def activeQualityChangesGroup(self):
+        return self._current_quality_changes_group
+
+    @pyqtProperty(str, notify = activeQualityGroupChanged)
+    def activeQualityOrQualityChangesName(self):
+        name = ""
+        if self._current_quality_changes_group:
+            name = self._current_quality_changes_group.name
+        elif self._current_quality_group:
+            name = self._current_quality_group.name
+        return name

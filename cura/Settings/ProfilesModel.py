@@ -27,6 +27,7 @@ class NewQualityProfilesModel(ListModel):
     LayerHeightRole = Qt.UserRole + 4
     AvailableRole = Qt.UserRole + 5
     QualityGroupRole = Qt.UserRole + 6
+    QualityChangesGroupRole = Qt.UserRole + 7
 
     def __init__(self, parent = None):
         super().__init__(parent)
@@ -37,6 +38,7 @@ class NewQualityProfilesModel(ListModel):
         self.addRoleName(self.LayerHeightRole, "layer_height")
         self.addRoleName(self.AvailableRole, "available")
         self.addRoleName(self.QualityGroupRole, "quality_group")
+        self.addRoleName(self.QualityChangesGroupRole, "quality_changes_group")
 
         # connect signals
         Application.getInstance().globalContainerStackChanged.connect(self._update)
