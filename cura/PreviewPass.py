@@ -19,13 +19,14 @@ if MYPY:
 
 
 # Make color brighter by normalizing it (maximum factor 2.5 brighter)
-def prettier_color(l):
-    maximum = max(l[:3])
+# color_list is a list of 4 elements: [r, g, b, a], each element is a float 0..1
+def prettier_color(color_list):
+    maximum = max(color_list[:3])
     if maximum > 0:
         factor = min(1 / maximum, 2.5)
     else:
         factor = 1.0
-    return [min(i * factor, 1.0) for i in l]
+    return [min(i * factor, 1.0) for i in color_list]
 
 
 ##  A render pass subclass that renders slicable objects with default parameters.
