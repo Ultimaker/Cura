@@ -58,7 +58,7 @@ class BlackBeltPlugin(Extension):
             if definition_container.getId() == "blackbelt":
                 quality_container = self._global_container_stack.quality
                 if quality_container.getDefinition().getId() != "blackbelt":
-                    containers = ContainerRegistry.getInstance().findContainers(None, id="blackbelt_normal")
+                    containers = ContainerRegistry.getInstance().findContainers(id="blackbelt_normal")
                     if containers:
                         self._global_container_stack.quality = containers[0]
 
