@@ -45,7 +45,7 @@ class MaterialManager(QObject):
         # We're using these two maps to convert between the specific diameter material id and the generic material id
         # because the generic material ids are used in qualities and definitions, while the specific diameter material is meant
         # i.e. generic_pla -> generic_pla_175
-        self._material_diameter_map = defaultdict()  # root_material_id -> diameter -> root_material_id for that diameter
+        self._material_diameter_map = defaultdict(dict)  # root_material_id -> diameter -> root_material_id for that diameter
         self._diameter_material_map = dict()  # material id including diameter (generic_pla_175) -> material root id (generic_pla)
 
         # This is used in Legacy UM3 send material function and the material management page.
@@ -118,7 +118,7 @@ class MaterialManager(QObject):
         # and "generic_pla_175". This is inconvenient when we do material-specific quality lookup because a quality can
         # be for either "generic_pla" or "generic_pla_175", but not both. This map helps to get the correct material ID
         # for quality search.
-        self._material_diameter_map = defaultdict(defaultdict)
+        self._material_diameter_map = defaultdict(dict)
         self._diameter_material_map = dict()
 
         # Group the material IDs by the same name, material, brand, and color but with different diameters.
@@ -140,8 +140,11 @@ class MaterialManager(QObject):
         # Map [root_material_id][diameter] -> root_material_id for this diameter
         for data_dict in material_group_dict.values():
             for root_material_id1 in data_dict.values():
-                for approximate_diameter2, root_material_id2 in data_dict.items():
-                    self._material_diameter_map[root_material_id1][approximate_diameter2] = root_material_id2
+                if root_material_id1 in self._material_diameter_map:
+                    continue
+                diameter_map = data_dict
+                for root_material_id2 in data_dict.values():
+                    self._material_diameter_map[root_material_id2] = diameter_map
 
             default_root_material_id = data_dict.get(self._default_approximate_diameter_for_quality_search)
             if default_root_material_id is None:
