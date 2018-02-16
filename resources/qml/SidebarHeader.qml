@@ -125,7 +125,7 @@ Column
                             }
 
                             // Static text "Extruder"
-                            Text
+                            Label
                             {
                                 id: extruderStaticText
                                 anchors.verticalCenter: parent.verticalCenter
@@ -171,7 +171,7 @@ Column
                                     color: extruderNumberText.color
                                 }
 
-                                Text
+                                Label
                                 {
                                     id: extruderNumberText
                                     anchors.centerIn: parent
@@ -239,7 +239,7 @@ Column
             rightMargin: UM.Theme.getSize("sidebar_margin").width
         }
 
-        Text
+        Label
         {
             id: variantLabel
             text: Cura.MachineManager.activeDefinitionVariantsName;
@@ -337,7 +337,7 @@ Column
             rightMargin: UM.Theme.getSize("sidebar_margin").width
         }
 
-        Text
+        Label
         {
             id: materialLabel
             text: catalog.i18nc("@label","Material");
