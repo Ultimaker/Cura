@@ -333,16 +333,6 @@ class MachineManager(QObject):
         Logger.log("d", "Checking %s stacks for errors took %.2f s" % (count, time.time() - time_start))
         return False
 
-    ##  Remove all instances from the top instanceContainer (effectively removing all user-changed settings)
-    @pyqtSlot()
-    def clearUserSettings(self) -> None:
-        if not self._active_container_stack:
-            return
-
-        self.blurSettings.emit()
-        user_settings = self._active_container_stack.getTop()
-        user_settings.clear()
-
     ##  Check if the global_container has instances in the user container
     @pyqtProperty(bool, notify = activeStackValueChanged)
     def hasUserSettings(self) -> bool:
@@ -484,21 +474,6 @@ class MachineManager(QObject):
 
         return ""
 
-    @pyqtProperty("QVariantMap", notify = activeVariantChanged)
-    def allActiveVariantIds(self) -> Dict[str, str]:
-        result = {}
-
-        active_stacks = ExtruderManager.getInstance().getActiveExtruderStacks()
-        if active_stacks is not None: #If we have a global stack.
-            for stack in active_stacks:
-                variant_container = stack.variant
-                if not variant_container:
-                    continue
-
-                result[stack.getId()] = variant_container.getId()
-
-        return result
-
     ##  Gets a dict with the active materials ids set in all extruder stacks and the global stack
     #   (when there is one extruder, the material is set in the global stack)
     #
@@ -622,21 +597,6 @@ class MachineManager(QObject):
                     return False
         return True
 
-    ##  Get the Quality ID associated with the currently active extruder
-    #   Note that this only returns the "quality", not the "quality_changes"
-    #   \returns QualityID (string) if found, empty string otherwise
-    #   \sa activeQualityId()
-    #   \todo Ideally, this method would be named activeQualityId(), and the other one
-    #         would be named something like activeQualityOrQualityChanges() for consistency
-    @pyqtProperty(str, notify = activeQualityChanged)
-    def activeQualityContainerId(self) -> str:
-        # We're using the active stack instead of the global stack in case the list of qualities differs per extruder
-        if self._global_container_stack:
-            quality = self._active_container_stack.quality
-            if quality:
-                return quality.getId()
-        return ""
-
     @pyqtProperty(str, notify = activeQualityChanged)
     def activeQualityChangesId(self) -> str:
         if self._active_container_stack:
@@ -748,6 +708,7 @@ class MachineManager(QObject):
 
                 self.setActiveQuality(new_quality_id, always_discard_changes = always_discard_changes)
 
+    # TODO: refactor this
     @pyqtSlot(str)
     def setActiveVariantBuildplate(self, variant_buildplate_id: str):
         with postponeSignals(*self._getContainerChangedSignals(), compress = CompressTechnique.CompressPerParameterValue):
@@ -843,7 +804,6 @@ class MachineManager(QObject):
     #   before the user decided to keep or discard any of their changes using the dialog.
     #   The Application.onDiscardOrKeepProfileChangesClosed signal triggers this method.
     def _executeDelayedActiveContainerStackChanges(self):
-
         Logger.log("d", "Applying configuration changes...")
 
         if self._new_variant_container is not None:
@@ -1033,15 +993,6 @@ class MachineManager(QObject):
         return ""
 
     @pyqtProperty(str, notify = activeVariantChanged)
-    def activeVariantName(self) -> str:
-        if self._active_container_stack:
-            variant = self._active_container_stack.variant
-            if variant:
-                return variant.getName()
-
-        return ""
-
-    @pyqtProperty(str, notify = activeVariantChanged)
     def activeVariantBuildplateName(self) -> str:
         if self._global_container_stack:
             variant = self._global_container_stack.variant
@@ -1079,25 +1030,6 @@ class MachineManager(QObject):
     #   \returns DefinitionID (string) if found, empty string otherwise
     def getQualityDefinitionId(self, definition: "DefinitionContainer") -> str:
         return QualityManager.getInstance().getParentMachineDefinition(definition).getId()
-
-    ##  Get the Variant ID to use to select quality profiles for the currently active variant
-    #   \returns VariantID (string) if found, empty string otherwise
-    #   \sa getQualityVariantId
-    @pyqtProperty(str, notify = activeVariantChanged)
-    def activeQualityVariantId(self) -> str:
-        if self._active_container_stack:
-            variant = self._active_container_stack.variant
-            if variant:
-                return self.getQualityVariantId(self._global_container_stack.definition, variant)
-        return ""
-
-    @pyqtProperty(str, notify = activeVariantChanged)
-    def activeQualityVariantName(self) -> str:
-        if self._active_container_stack:
-            variant = self._active_container_stack.variant
-            if variant.getId() != "empty_variant":
-                return variant.getName()
-        return ""
 
     ##  Get the Variant ID to use to select quality profiles for variants of the specified definitions
     #   This is normally the id of the variant itself, but machines can specify a different definition
@@ -1307,44 +1239,6 @@ class MachineManager(QObject):
             return self._global_container_stack.extruders.get(str(position))
         return None
 
-    @deprecated("Use ExtruderStack.material = ... and it won't be necessary", "2.7")
-    def _updateMaterialContainer(self, definition: "DefinitionContainer", stack: "ContainerStack", variant_container: Optional["InstanceContainer"] = None, preferred_material_name: Optional[str] = None) -> InstanceContainer:
-        if not definition.getMetaDataEntry("has_materials"):
-            return self._empty_material_container
-
-        approximate_material_diameter = str(round(stack.getProperty("material_diameter", "value")))
-        search_criteria = { "type": "material", "approximate_diameter": approximate_material_diameter }
-
-        if definition.getMetaDataEntry("has_machine_materials"):
-            search_criteria["definition"] = self.getQualityDefinitionId(definition)
-
-            if definition.getMetaDataEntry("has_variants") and variant_container:
-                search_criteria["variant"] = self.getQualityVariantId(definition, variant_container)
-        else:
-            search_criteria["definition"] = "fdmprinter"
-
-        if preferred_material_name:
-            search_criteria["name"] = preferred_material_name
-        else:
-            preferred_material = definition.getMetaDataEntry("preferred_material")
-            if preferred_material:
-                search_criteria["id"] = preferred_material
-
-        containers = ContainerRegistry.getInstance().findInstanceContainers(**search_criteria)
-        if containers:
-            return containers[0]
-
-        if "variant" in search_criteria or "id" in search_criteria:
-            # If a material by this name can not be found, try a wider set of search criteria
-            search_criteria.pop("variant", None)
-            search_criteria.pop("id", None)
-
-            containers = ContainerRegistry.getInstance().findInstanceContainers(**search_criteria)
-            if containers:
-                return containers[0]
-        Logger.log("w", "Unable to find a material container with provided criteria, returning an empty one instead.")
-        return self._empty_material_container
-
     def _onMachineNameChanged(self):
         self.globalContainerChanged.emit()
 
@@ -1434,7 +1328,7 @@ class MachineManager(QObject):
         self.activeQualityGroupChanged.emit()
         self.activeQualityChangesGroupChanged.emit()
 
-    def _setVariantGroup(self, position, container_node):
+    def _setVariantNode(self, position, container_node):
         self._global_container_stack.extruders[position].variant = container_node.getContainer()
 
     def _setMaterial(self, position, container_node = None):
@@ -1511,7 +1405,7 @@ class MachineManager(QObject):
         position = str(position)
         self.blurSettings.emit()
         with postponeSignals(*self._getContainerChangedSignals(), compress = CompressTechnique.CompressPerParameterValue):
-            self._setVariantGroup(position, container_node)
+            self._setVariantNode(position, container_node)
             current_variant_name = container_node.metadata["name"]
             current_material_base_name = self._global_container_stack.extruders[position].material.getMetaDataEntry("base_file")
             self._updateMaterialWithVariant(position, current_material_base_name, current_variant_name)
