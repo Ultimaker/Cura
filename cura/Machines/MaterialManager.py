@@ -245,7 +245,7 @@ class MaterialManager(QObject):
         material_id_metadata_dict = dict()
         for node in nodes_to_check:
             if node is not None:
-                material_id_metadata_dict = {mid: node for mid, node in variant_node.material_map.items()}
+                material_id_metadata_dict = {mid: node for mid, node in node.material_map.items()}
                 break
 
         return material_id_metadata_dict
