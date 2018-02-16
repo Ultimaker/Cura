@@ -454,14 +454,13 @@ TabView
 
     // update the display name of the material
     function updateMaterialDisplayName (old_name, new_name) {
-
         // don't change when new name is the same
         if (old_name == new_name) {
             return
         }
 
         // update the values
-        Cura.ContainerManager.setContainerName(base.containerId, new_name)
+        Cura.ContainerManager.setMaterialName(base.currentMaterialNode, new_name)
         materialProperties.name = new_name
     }
 
