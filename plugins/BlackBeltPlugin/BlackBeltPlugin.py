@@ -42,6 +42,17 @@ class BlackBeltPlugin(Extension):
         self._application.engineCreatedSignal.connect(self._onEngineCreated)
         self._application.getOutputDeviceManager().writeStarted.connect(self._filterGcode)
 
+        self._application.pluginsLoaded.connect(self._onPluginsLoaded)
+
+    def _onPluginsLoaded(self):
+        # make sure the we connect to engineCreatedSignal later than PrepareStage does, so we can substitute our own sidebar
+        self._application.engineCreatedSignal.connect(self._engineCreated)
+
+    def _engineCreated(self):
+        sidebar_component_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "sidebar", "Sidebar.qml")
+        prepare_stage = Application.getInstance().getController().getStage("PrepareStage")
+        prepare_stage.addDisplayComponent("sidebar", sidebar_component_path)
+
     def _onGlobalContainerStackChanged(self):
         if self._global_container_stack:
             self._global_container_stack.propertyChanged.disconnect(self._onSettingValueChanged)
