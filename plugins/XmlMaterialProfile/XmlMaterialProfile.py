@@ -190,6 +190,8 @@ class XmlMaterialProfile(InstanceContainer):
         machine_container_map = {}
         machine_nozzle_map = {}
 
+        variant_manager = CuraApplication.getInstance()._variant_manager
+
         all_containers = registry.findInstanceContainers(GUID = self.getMetaDataEntry("GUID"), base_file = self.getId())
         for container in all_containers:
             definition_id = container.getDefinition().getId()
@@ -202,9 +204,10 @@ class XmlMaterialProfile(InstanceContainer):
             if definition_id not in machine_nozzle_map:
                 machine_nozzle_map[definition_id] = {}
 
-            variant = container.getMetaDataEntry("variant")
-            if variant:
-                machine_nozzle_map[definition_id][variant] = container
+            variant_name = container.getMetaDataEntry("variant_name")
+            if variant_name:
+                machine_nozzle_map[definition_id][variant_name] = variant_manager.getVariantNode(definition_id,
+                                                                                                 variant_name)
                 continue
 
             machine_container_map[definition_id] = container
@@ -236,16 +239,12 @@ class XmlMaterialProfile(InstanceContainer):
                 self._addSettingElement(builder, instance)
 
             # Find all hotend sub-profiles corresponding to this material and machine and add them to this profile.
-            for hotend_id, hotend in machine_nozzle_map[definition_id].items():
-                variant_containers = registry.findInstanceContainersMetadata(id = hotend.getMetaDataEntry("variant"))
-                if not variant_containers:
-                    continue
-
+            for hotend_name, variant_node in machine_nozzle_map[definition_id].items():
                 # The hotend identifier is not the containers name, but its "name".
-                builder.start("hotend", {"id": variant_containers[0]["name"]})
+                builder.start("hotend", {"id": hotend_name})
 
                 # Compatible is a special case, as it's added as a meta data entry (instead of an instance).
-                compatible = hotend.getMetaDataEntry("compatible")
+                compatible = variant_node.metadata.get("compatible")
                 if compatible is not None:
                     builder.start("setting", {"key": "hardware compatible"})
                     if compatible:
@@ -254,7 +253,7 @@ class XmlMaterialProfile(InstanceContainer):
                         builder.data("no")
                     builder.end("setting")
 
-                for instance in hotend.findInstances():
+                for instance in variant_node.getContainer().findInstances():
                     if container.getInstance(instance.definition.key) and container.getProperty(instance.definition.key, "value") == instance.value:
                         # If the settings match that of the machine profile, just skip since we inherit the machine profile.
                         continue
