@@ -48,18 +48,28 @@ class XmlMaterialProfile(InstanceContainer):
 
     ##  Overridden from InstanceContainer
     #   set the meta data for all machine / variant combinations
-    def setMetaDataEntry(self, key, value):
+    def setMetaDataEntry(self, key, value, is_first_call = True):
         registry = ContainerRegistry.getInstance()
         if registry.isReadOnly(self.getId()):
             return
 
-        super().setMetaDataEntry(key, value)
+        # Prevent recursion
+        if is_first_call:
+            super().setMetaDataEntry(key, value)
 
-        basefile = self.getMetaDataEntry("base_file", self.getId())  #if basefile is self.getId, this is a basefile.
-        # Update all containers that share basefile
-        for container in registry.findInstanceContainers(base_file = basefile):
-            if container.getMetaDataEntry(key, None) != value: # Prevent recursion
-                container.setMetaDataEntry(key, value)
+        # Get the MaterialGroup
+        material_manager = CuraApplication.getInstance()._material_manager
+        root_material_id = self.getMetaDataEntry("base_file")  #if basefile is self.getId, this is a basefile.
+        material_group = material_manager.getMaterialGroup(root_material_id)
+
+        # Update the root material container
+        root_material_container = material_group.root_material_node.getContainer()
+        root_material_container.setMetaDataEntry(key, value, is_first_call = False)
+
+        # Update all containers derived from it
+        for node in material_group.derived_material_node_list:
+            container = node.getContainer()
+            container.setMetaDataEntry(key, value, is_first_call = False)
 
     ##  Overridden from InstanceContainer, similar to setMetaDataEntry.
     #   without this function the setName would only set the name of the specific nozzle / material / machine combination container

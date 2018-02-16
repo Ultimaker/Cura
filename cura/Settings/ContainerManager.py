@@ -764,16 +764,16 @@ class ContainerManager(QObject):
     ##  Create a duplicate of a material, which has the same GUID and base_file metadata
     #
     #   \return \type{str} the id of the newly created container.
-    @pyqtSlot(str, result = str)
-    def duplicateMaterial(self, material_id: str) -> str:
-        assert material_id
+    @pyqtSlot("QVariant")
+    def duplicateMaterial(self, material_node):
+        root_material_id = material_node.metadata["base_file"]
 
         from cura.CuraApplication import CuraApplication
         material_manager = CuraApplication.getInstance()._material_manager
 
-        material_group = material_manager.getMaterialGroup(material_id)
+        material_group = material_manager.getMaterialGroup(root_material_id)
         if not material_group:
-            Logger.log("d", "Unable to duplicate the material with id %s, because it doesn't exist.", material_id)
+            Logger.log("d", "Unable to duplicate the material with id %s, because it doesn't exist.", root_material_id)
             return ""
 
         base_container = material_group.root_material_node.getContainer()
@@ -803,7 +803,7 @@ class ContainerManager(QObject):
                 if container_to_copy.getMetaDataEntry("variant_name"):
                     variant_name = container_to_copy.getMetaDataEntry("variant_name")
                     new_id += "_" + variant_name.replace(" ", "_")
-            if current_id == material_id:
+            if current_id == root_material_id:
                 clone_of_original = new_id
 
             new_container = copy.deepcopy(container_to_copy)
@@ -814,17 +814,6 @@ class ContainerManager(QObject):
         for container_to_add in new_containers:
             container_to_add.setDirty(True)
             ContainerRegistry.getInstance().addContainer(container_to_add)
-        return self._getMaterialContainerIdForActiveMachine(clone_of_original)
-
-    ##  Create a duplicate of a material or it's original entry
-    #
-    #   \return \type{str} the id of the newly created container.
-    @pyqtSlot(str, result = str)
-    def duplicateOriginalMaterial(self, material_id):
-
-        # check if the given material has a base file (i.e. was shipped by default)
-        base_file = self.getContainerMetaDataEntry(material_id, "base_file")
-        return self.duplicateMaterial(base_file)
 
     ##  Create a new material by cloning Generic PLA for the current material diameter and setting the GUID to something unqiue
     #
@@ -869,72 +858,43 @@ class ContainerManager(QObject):
         duplicated_container.setName(catalog.i18nc("@label", "Custom Material"))
 
         self._container_registry.addContainer(duplicated_container)
-        return self._getMaterialContainerIdForActiveMachine(new_id)
-
-    ##  Find the id of a material container based on the new material
-    #   Utilty function that is shared between duplicateMaterial and createMaterial
-    #
-    #   \param base_file \type{str} the id of the created container.
-    def _getMaterialContainerIdForActiveMachine(self, base_file):
-        global_stack = Application.getInstance().getGlobalContainerStack()
-        if not global_stack:
-            return base_file
-
-        has_machine_materials = parseBool(global_stack.getMetaDataEntry("has_machine_materials", default = False))
-        has_variant_materials = parseBool(global_stack.getMetaDataEntry("has_variant_materials", default = False))
-        has_variants = parseBool(global_stack.getMetaDataEntry("has_variants", default = False))
-        if has_machine_materials or has_variant_materials:
-            if has_variants:
-                materials = self._container_registry.findInstanceContainersMetadata(type = "material", base_file = base_file, definition = global_stack.getBottom().getId(), variant = self._machine_manager.activeVariantId)
-            else:
-                materials = self._container_registry.findInstanceContainersMetadata(type = "material", base_file = base_file, definition = global_stack.getBottom().getId())
-
-            if materials:
-                return materials[0]["id"]
-
-            Logger.log("w", "Unable to find a suitable container based on %s for the current machine.", base_file)
-            return "" # do not activate a new material if a container can not be found
-
-        return base_file
 
     ##  Get a list of materials that have the same GUID as the reference material
     #
     #   \param material_id \type{str} the id of the material for which to get the linked materials.
     #   \return \type{list} a list of names of materials with the same GUID
-    @pyqtSlot(str, result = "QStringList")
-    def getLinkedMaterials(self, material_id: str):
-        containers = self._container_registry.findInstanceContainersMetadata(id = material_id)
-        if not containers:
-            Logger.log("d", "Unable to find materials linked to material with id %s, because it doesn't exist.", material_id)
-            return []
+    @pyqtSlot("QVariant", result = "QStringList")
+    def getLinkedMaterials(self, material_node):
+        guid = material_node.metadata["GUID"]
 
-        material_container = containers[0]
-        material_base_file = material_container.get("base_file", "")
-        material_guid = material_container.get("GUID", "")
-        if not material_guid:
-            Logger.log("d", "Unable to find materials linked to material with id %s, because it doesn't have a GUID.", material_id)
-            return []
+        from cura.CuraApplication import CuraApplication
+        material_manager = CuraApplication.getInstance()._material_manager
 
-        containers = self._container_registry.findInstanceContainersMetadata(type = "material", GUID = material_guid)
+        material_group_list = material_manager.getMaterialGroupListByGUID(guid)
+
         linked_material_names = []
-        for container in containers:
-            if container["id"] in [material_id, material_base_file] or container.get("base_file") != container["id"]:
-                continue
-
-            linked_material_names.append(container["name"])
+        if material_group_list:
+            for material_group in material_group_list:
+                linked_material_names.append(material_group.root_material_node.metadata["name"])
         return linked_material_names
 
     ##  Unlink a material from all other materials by creating a new GUID
     #   \param material_id \type{str} the id of the material to create a new GUID for.
-    @pyqtSlot(str)
-    def unlinkMaterial(self, material_id: str):
-        containers = self._container_registry.findInstanceContainers(id=material_id)
-        if not containers:
-            Logger.log("d", "Unable to make the material with id %s unique, because it doesn't exist.", material_id)
-            return ""
+    @pyqtSlot("QVariant")
+    def unlinkMaterial(self, material_node):
+        # Get the material group
+        from cura.CuraApplication import CuraApplication
+        material_manager = CuraApplication.getInstance()._material_manager
+        material_group = material_manager.getMaterialGroup(material_node.metadata["base_file"])
 
-        containers[0].setMetaDataEntry("GUID", str(uuid.uuid4()))
+        # Generate a new GUID
+        new_guid = str(uuid.uuid4())
 
+        # Update the GUID
+        # NOTE: We only need to set the root material container because XmlMaterialProfile.setMetaDataEntry() will
+        # take care of the derived containers too
+        container = material_group.root_material_node.getContainer()
+        container.setMetaDataEntry("GUID", new_guid)
 
     ##  Get the singleton instance for this class.
     @classmethod

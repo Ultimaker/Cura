@@ -1,4 +1,4 @@
-from collections import defaultdict
+from collections import defaultdict, OrderedDict
 from typing import Optional
 
 from PyQt5.Qt import QTimer, QObject, pyqtSignal
@@ -16,6 +16,9 @@ class MaterialGroup:
         self.name = name
         self.root_material_node = None
         self.derived_material_node_list = []
+
+    def __str__(self) -> str:
+        return "%s[%s]" % (self.__class__.__name__, self.name)
 
 
 class MaterialNode(ContainerNode):
@@ -45,6 +48,9 @@ class MaterialManager(QObject):
         self._material_diameter_map = defaultdict()  # root_material_id -> diameter -> root_material_id for that diameter
         self._diameter_material_map = dict()  # material id including diameter (generic_pla_175) -> material root id (generic_pla)
 
+        # This is used in Legacy UM3 send material function and the material management page.
+        self._guid_material_groups_map = defaultdict(list)  # GUID -> a list of material_groups
+
         # The machine definition ID for the non-machine-specific materials.
         # This is used as the last fallback option if the given machine-specific material(s) cannot be found.
         self._default_machine_definition_id = "fdmprinter"
@@ -63,7 +69,7 @@ class MaterialManager(QObject):
         # Find all materials and put them in a matrix for quick search.
         material_metadata_list = self._container_registry.findContainersMetadata(type = "material")
 
-        self._material_group_map = {}
+        self._material_group_map = OrderedDict()
         self._diameter_machine_variant_material_map = {}
 
         # Map #1
@@ -85,6 +91,14 @@ class MaterialManager(QObject):
             else:
                 new_node = MaterialNode(material_metadata)
                 group.derived_material_node_list.append(new_node)
+        self._material_group_map = OrderedDict(sorted(self._material_group_map.items(), key = lambda x: x[0]))
+
+        # Map #1.5
+        #    GUID -> material group list
+        self._guid_material_groups_map = defaultdict(list)
+        for root_material_id, material_group in self._material_group_map.items():
+            guid = material_group.root_material_node.metadata["GUID"]
+            self._guid_material_groups_map[guid].append(material_group)
 
         # Map #2
         # Lookup table for material type -> fallback material metadata
@@ -198,6 +212,9 @@ class MaterialManager(QObject):
     def getRootMaterialIDWithoutDiameter(self, root_material_id: str) -> str:
         return self._diameter_material_map.get(root_material_id)
 
+    def getMaterialGroupListByGUID(self, guid: str) -> Optional[list]:
+        return self._guid_material_groups_map.get(guid)
+
     #
     # Return a dict with all root material IDs (k) and ContainerNodes (v) that's suitable for the given setup.
     #
@@ -206,29 +223,27 @@ class MaterialManager(QObject):
         rounded_diameter = str(round(diameter))
         if rounded_diameter not in self._diameter_machine_variant_material_map:
             Logger.log("i", "Cannot find materials with diameter [%s] (rounded to [%s])", diameter, rounded_diameter)
-            return {}
+            return dict()
 
         # If there are variant materials, get the variant material
         machine_variant_material_map = self._diameter_machine_variant_material_map[rounded_diameter]
         machine_node = machine_variant_material_map.get(machine_definition_id)
+        default_machine_node = machine_variant_material_map.get(self._default_machine_definition_id)
         variant_node = None
-        if machine_node is None:
-            machine_node = machine_variant_material_map.get(self._default_machine_definition_id)
         if variant_name is not None and machine_node is not None:
             variant_node = machine_node.getChildNode(variant_name)
+
+        nodes_to_check = [variant_node, machine_node, default_machine_node]
 
         # Fallback mechanism of finding materials:
         #  1. variant-specific material
         #  2. machine-specific material
         #  3. generic material (for fdmprinter)
-        material_id_metadata_dict = {}
-        if variant_node is not None:
-            material_id_metadata_dict = {mid: node for mid, node in variant_node.material_map.items()}
-
-        # Fallback: machine-specific materials, including "fdmprinter"
-        if not material_id_metadata_dict:
-            if machine_node is not None:
-                material_id_metadata_dict = {mid: node for mid, node in machine_node.material_map.items()}
+        material_id_metadata_dict = dict()
+        for node in nodes_to_check:
+            if node is not None:
+                material_id_metadata_dict = {mid: node for mid, node in variant_node.material_map.items()}
+                break
 
         return material_id_metadata_dict
 

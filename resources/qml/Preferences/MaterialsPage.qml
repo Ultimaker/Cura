@@ -34,6 +34,8 @@ Item
         text: catalog.i18nc("@title:tab", "Materials")
     }
 
+    property var hasCurrentItem: materialListView.currentItem != null;
+
     property var currentItem:
     {
         var current_index = materialListView.currentIndex;
@@ -65,9 +67,6 @@ Item
             onClicked: {
                 forceActiveFocus()
 
-                var current_index = materialListView.currentIndex;
-                var item = materialsModel.getItem(current_index);
-
                 const extruder_position = Cura.ExtruderManager.activeExtruderIndex;
                 Cura.MachineManager.setMaterial(extruder_position, base.currentItem.container_node);
             }
@@ -87,10 +86,11 @@ Item
         Button {
             text: catalog.i18nc("@action:button", "Duplicate");
             iconName: "list-add"
-            enabled: true //TODO
+            enabled: base.hasCurrentItem
             onClicked: {
                 forceActiveFocus()
-                // TODO
+
+                Cura.ContainerManager.duplicateMaterial(base.currentItem.container_node);
             }
         }
 
@@ -277,6 +277,7 @@ Item
                 {
                     var model = materialsModel.getItem(currentIndex);
                     materialDetailsView.containerId = model.container_id;
+                    materialDetailsView.currentMaterialNode = model.container_node;
 
                     detailsPanel.updateMaterialPropertiesObject();
                 }
@@ -303,8 +304,8 @@ Item
                 materialProperties.name = currentItem.name;
                 materialProperties.guid = currentItem.guid;
 
-                materialProperties.supplier = currentItem.brand ? currentItem.brand : "Unknown";
-                materialProperties.material_type = currentItem.material ? currentItem.material : "Unknown";
+                materialProperties.brand = currentItem.brand ? currentItem.brand : "Unknown";
+                materialProperties.material = currentItem.material ? currentItem.material : "Unknown";
                 materialProperties.color_name = currentItem.color_name ? currentItem.color_name : "Yellow";
                 materialProperties.color_code = currentItem.color_code ? currentItem.color_code : "yellow";
 
@@ -358,6 +359,7 @@ Item
 
                     properties: materialProperties
                     containerId: base.currentItem != null ? base.currentItem.id : ""
+                    currentMaterialNode: base.currentItem
 
                     property alias pane: base
                 }
@@ -369,8 +371,9 @@ Item
                     property string guid: "00000000-0000-0000-0000-000000000000"
                     property string name: "Unknown";
                     property string profile_type: "Unknown";
-                    property string supplier: "Unknown";
-                    property string material_type: "Unknown";
+                    property string brand: "Unknown";
+                    property string material: "Unknown";  // This needs to be named as "material" to be consistent with
+                                                          // the material container's metadata entry
 
                     property string color_name: "Yellow";
                     property color color_code: "yellow";

@@ -12,7 +12,8 @@ TabView
 {
     id: base
 
-    property QtObject properties;
+    property QtObject properties
+    property var currentMaterialNode: null
 
     property bool editingEnabled: false;
     property string currency: UM.Preferences.getValue("cura/currency") ? UM.Preferences.getValue("cura/currency") : "€"
@@ -27,15 +28,16 @@ TabView
     property bool reevaluateLinkedMaterials: false
     property string linkedMaterialNames:
     {
-        if (reevaluateLinkedMaterials)
-        {
+        if (reevaluateLinkedMaterials) {
             reevaluateLinkedMaterials = false;
         }
-        if(!base.containerId || !base.editingEnabled)
-        {
+        if (!base.containerId || !base.editingEnabled) {
             return ""
         }
-        var linkedMaterials = Cura.ContainerManager.getLinkedMaterials(base.containerId);
+        var linkedMaterials = Cura.ContainerManager.getLinkedMaterials(base.currentMaterialNode);
+        if (linkedMaterials.length <= 1) {
+            return ""
+        }
         return linkedMaterials.join(", ");
     }
 
@@ -80,18 +82,18 @@ TabView
                 {
                     id: textField;
                     width: scrollView.columnWidth;
-                    text: properties.supplier;
+                    text: properties.brand;
                     readOnly: !base.editingEnabled;
-                    onEditingFinished: base.updateMaterialSupplier(properties.supplier, text)
+                    onEditingFinished: base.updateMaterialBrand(properties.brand, text)
                 }
 
                 Label { width: scrollView.columnWidth; height: parent.rowHeight; verticalAlignment: Qt.AlignVCenter; text: catalog.i18nc("@label", "Material Type") }
                 ReadOnlyTextField
                 {
                     width: scrollView.columnWidth;
-                    text: properties.material_type;
+                    text: properties.material;
                     readOnly: !base.editingEnabled;
-                    onEditingFinished: base.updateMaterialType(properties.material_type, text)
+                    onEditingFinished: base.updateMaterialType(properties.material, text)
                 }
 
                 Label { width: scrollView.columnWidth; height: parent.rowHeight; verticalAlignment: Qt.AlignVCenter; text: catalog.i18nc("@label", "Color") }
@@ -251,7 +253,7 @@ TabView
                     visible: base.linkedMaterialNames != ""
                     onClicked:
                     {
-                        Cura.ContainerManager.unlinkMaterial(base.containerId)
+                        Cura.ContainerManager.unlinkMaterial(base.currentMaterialNode)
                         base.reevaluateLinkedMaterials = true
                     }
                 }
@@ -466,12 +468,12 @@ TabView
     // update the type of the material
     function updateMaterialType (old_type, new_type) {
         base.setMetaDataEntry("material", old_type, new_type)
-        materialProperties.material_type = new_type
+        materialProperties.material= new_type
     }
 
-    // update the supplier of the material
-    function updateMaterialSupplier (old_supplier, new_supplier) {
-        base.setMetaDataEntry("brand", old_supplier, new_supplier)
-        materialProperties.supplier = new_supplier
+    // update the brand of the material
+    function updateMaterialBrand (old_brand, new_brand) {
+        base.setMetaDataEntry("brand", old_brand, new_brand)
+        materialProperties.brand = new_brand
     }
 }
