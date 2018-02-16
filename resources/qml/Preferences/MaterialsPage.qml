@@ -76,8 +76,8 @@ Item
             text: catalog.i18nc("@action:button", "Create")
             iconName: "list-add"
             onClicked: {
-                forceActiveFocus()
-                // TODO
+                forceActiveFocus();
+                Cura.ContainerManager.createMaterial();
             }
         }
 

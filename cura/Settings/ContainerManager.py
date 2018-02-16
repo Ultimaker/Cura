@@ -776,7 +776,7 @@ class ContainerManager(QObject):
     #
     #   \return \type{str} the id of the newly created container.
     @pyqtSlot("QVariant")
-    def duplicateMaterial(self, material_node):
+    def duplicateMaterial(self, material_node, new_base_id = None, new_metadata = None):
         root_material_id = material_node.metadata["base_file"]
 
         material_group = self._material_manager.getMaterialGroup(root_material_id)
@@ -794,16 +794,19 @@ class ContainerManager(QObject):
 
         # Create a new ID & container to hold the data.
         new_containers = []
-        new_base_id = self._container_registry.uniqueName(base_container.getId())
+        if new_base_id is None:
+            new_base_id = self._container_registry.uniqueName(base_container.getId())
         new_base_container = copy.deepcopy(base_container)
         new_base_container.getMetaData()["id"] = new_base_id
         new_base_container.getMetaData()["base_file"] = new_base_id
+        if new_metadata is not None:
+            for key, value in new_metadata.items():
+                new_base_container.getMetaData()[key] = value
         new_containers.append(new_base_container)
 
         # Clone all of them.
         for container_to_copy in containers_to_copy:
             # Create unique IDs for every clone.
-            current_id = container_to_copy.getId()
             new_id = new_base_id
             if container_to_copy.getMetaDataEntry("definition") != "fdmprinter":
                 new_id += "_" + container_to_copy.getMetaDataEntry("definition")
@@ -814,6 +817,10 @@ class ContainerManager(QObject):
             new_container = copy.deepcopy(container_to_copy)
             new_container.getMetaData()["id"] = new_id
             new_container.getMetaData()["base_file"] = new_base_id
+            if new_metadata is not None:
+                for key, value in new_metadata.items():
+                    new_container.getMetaData()[key] = value
+
             new_containers.append(new_container)
 
         for container_to_add in new_containers:
@@ -823,46 +830,27 @@ class ContainerManager(QObject):
     ##  Create a new material by cloning Generic PLA for the current material diameter and setting the GUID to something unqiue
     #
     #   \return \type{str} the id of the newly created container.
-    @pyqtSlot(result = str)
-    def createMaterial(self) -> str:
+    @pyqtSlot()
+    def createMaterial(self):
         # Ensure all settings are saved.
         Application.getInstance().saveSettings()
 
         global_stack = Application.getInstance().getGlobalContainerStack()
-        if not global_stack:
-            return ""
-
         approximate_diameter = str(round(global_stack.getProperty("material_diameter", "value")))
-        containers = self._container_registry.findInstanceContainersMetadata(id = "generic_pla*", approximate_diameter = approximate_diameter)
-        if not containers:
-            Logger.log("d", "Unable to create a new material by cloning Generic PLA, because it cannot be found for the material diameter for this machine.")
-            return ""
-
-        base_file = containers[0].get("base_file")
-        containers = self._container_registry.findInstanceContainers(id = base_file)
-        if not containers:
-            Logger.log("d", "Unable to create a new material by cloning Generic PLA, because the base file for Generic PLA for this machine can not be found.")
-            return ""
+        root_material_id = "generic_pla"
+        root_material_id = self._material_manager.getRootMaterialIDForDiameter(root_material_id, approximate_diameter)
+        material_group = self._material_manager.getMaterialGroup(root_material_id)
 
         # Create a new ID & container to hold the data.
         new_id = self._container_registry.uniqueName("custom_material")
-        container_type = type(containers[0])  # Always XMLMaterialProfile, since we specifically clone the base_file
-        duplicated_container = container_type(new_id)
+        new_metadata = {"name": catalog.i18nc("@label", "Custom Material"),
+                        "brand": catalog.i18nc("@label", "Custom"),
+                        "GUID": str(uuid.uuid4()),
+                        }
 
-        # Instead of duplicating we load the data from the basefile again.
-        # This ensures that the inheritance goes well and all "cut up" subclasses of the xmlMaterial profile
-        # are also correctly created.
-        with open(containers[0].getPath(), encoding="utf-8") as f:
-            duplicated_container.deserialize(f.read())
-
-        duplicated_container.setMetaDataEntry("GUID", str(uuid.uuid4()))
-        duplicated_container.setMetaDataEntry("brand", catalog.i18nc("@label", "Custom"))
-        # We're defaulting to PLA, as machines with material profiles don't like material types they don't know.
-        # TODO: This is a hack, the only reason this is in now is to bandaid the problem as we're close to a release!
-        duplicated_container.setMetaDataEntry("material", "PLA")
-        duplicated_container.setName(catalog.i18nc("@label", "Custom Material"))
-
-        self._container_registry.addContainer(duplicated_container)
+        self.duplicateMaterial(material_group.root_material_node,
+                               new_base_id = new_id,
+                               new_metadata = new_metadata)
 
     ##  Get a list of materials that have the same GUID as the reference material
     #
