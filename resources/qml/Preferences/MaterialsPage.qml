@@ -119,8 +119,8 @@ Item
             text: catalog.i18nc("@action:button", "Export")
             iconName: "document-export"
             onClicked: {
-                forceActiveFocus()
-                // TODO
+                forceActiveFocus();
+                exportMaterialDialog.open();
             }
             enabled: currentItem != null
         }
@@ -142,6 +142,37 @@ Item
             // reset current item to the first if available
             materialListView.currentIndex = 0;
         }
+    }
+
+    FileDialog
+    {
+        id: exportMaterialDialog
+        title: catalog.i18nc("@title:window", "Export Material")
+        selectExisting: false
+        nameFilters: Cura.ContainerManager.getContainerNameFilters("material")
+        folder: CuraApplication.getDefaultPath("dialog_material_path")
+        onAccepted:
+        {
+            var result = Cura.ContainerManager.exportContainer(base.currentItem.root_material_id, selectedNameFilter, fileUrl);
+
+            messageDialog.title = catalog.i18nc("@title:window", "Export Material");
+            if (result.status == "error") {
+                messageDialog.icon = StandardIcon.Critical;
+                messageDialog.text = catalog.i18nc("@info:status Don't translate the XML tags <filename> and <message>!", "Failed to export material to <filename>%1</filename>: <message>%2</message>").arg(fileUrl).arg(result.message);
+                messageDialog.open();
+            }
+            else if (result.status == "success") {
+                messageDialog.icon = StandardIcon.Information;
+                messageDialog.text = catalog.i18nc("@info:status Don't translate the XML tag <filename>!", "Successfully exported material to <filename>%1</filename>").arg(result.path);
+                messageDialog.open();
+            }
+            CuraApplication.setDefaultPath("dialog_material_path", folder);
+        }
+    }
+
+    MessageDialog
+    {
+        id: messageDialog
     }
 
 

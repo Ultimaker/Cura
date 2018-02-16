@@ -397,7 +397,7 @@ class ContainerManager(QObject):
     @pyqtSlot(str, str, QUrl, result = "QVariantMap")
     def exportContainer(self, container_id: str, file_type: str, file_url_or_string: Union[QUrl, str]) -> Dict[str, str]:
         if not container_id or not file_type or not file_url_or_string:
-            return { "status": "error", "message": "Invalid arguments"}
+            return {"status": "error", "message": "Invalid arguments"}
 
         if isinstance(file_url_or_string, QUrl):
             file_url = file_url_or_string.toLocalFile()
@@ -405,20 +405,20 @@ class ContainerManager(QObject):
             file_url = file_url_or_string
 
         if not file_url:
-            return { "status": "error", "message": "Invalid path"}
+            return {"status": "error", "message": "Invalid path"}
 
         mime_type = None
-        if not file_type in self._container_name_filters:
+        if file_type not in self._container_name_filters:
             try:
                 mime_type = MimeTypeDatabase.getMimeTypeForFile(file_url)
             except MimeTypeNotFoundError:
-                return { "status": "error", "message": "Unknown File Type" }
+                return {"status": "error", "message": "Unknown File Type"}
         else:
             mime_type = self._container_name_filters[file_type]["mime"]
 
         containers = self._container_registry.findContainers(id = container_id)
         if not containers:
-            return { "status": "error", "message": "Container not found"}
+            return {"status": "error", "message": "Container not found"}
         container = containers[0]
 
         if Platform.isOSX() and "." in file_url:
@@ -435,12 +435,12 @@ class ContainerManager(QObject):
                 result = QMessageBox.question(None, catalog.i18nc("@title:window", "File Already Exists"),
                                               catalog.i18nc("@label Don't translate the XML tag <filename>!", "The file <filename>{0}</filename> already exists. Are you sure you want to overwrite it?").format(file_url))
                 if result == QMessageBox.No:
-                    return { "status": "cancelled", "message": "User cancelled"}
+                    return {"status": "cancelled", "message": "User cancelled"}
 
         try:
             contents = container.serialize()
         except NotImplementedError:
-            return { "status": "error", "message": "Unable to serialize container"}
+            return {"status": "error", "message": "Unable to serialize container"}
 
         if contents is None:
             return {"status": "error", "message": "Serialization returned None. Unable to write to file"}
@@ -448,7 +448,7 @@ class ContainerManager(QObject):
         with SaveFile(file_url, "w") as f:
             f.write(contents)
 
-        return { "status": "success", "message": "Succesfully exported container", "path": file_url}
+        return {"status": "success", "message": "Successfully exported container", "path": file_url}
 
     ##  Imports a profile from a file
     #
