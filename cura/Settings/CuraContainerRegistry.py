@@ -235,7 +235,7 @@ class CuraContainerRegistry(ContainerRegistry):
                     if not expected_machine_definition:
                         expected_machine_definition = global_container_stack.definition.getId()
                 if expected_machine_definition is not None and profile_definition is not None and profile_definition != expected_machine_definition:
-                    Logger.log("e", "Profile [%s] is for machine [%s] but the current active machine is [%s]. Will not import the profile", file_name)
+                    Logger.log("e", "Profile [%s] is for machine [%s] but the current active machine is [%s]. Will not import the profile", file_name, profile_definition, expected_machine_definition)
                     return { "status": "error",
                              "message": catalog.i18nc("@info:status Don't translate the XML tags <filename> or <message>!", "The machine defined in profile <filename>{0}</filename> doesn't match with your current machine, could not import it.", file_name)}
 
