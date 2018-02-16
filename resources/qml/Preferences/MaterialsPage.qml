@@ -4,6 +4,7 @@
 import QtQuick 2.8
 import QtQuick.Controls 1.4
 import QtQuick.Layouts 1.3
+import QtQuick.Dialogs 1.3
 
 import UM 1.2 as UM
 import Cura 1.0 as Cura
@@ -34,16 +35,14 @@ Item
         text: catalog.i18nc("@title:tab", "Materials")
     }
 
-    property var hasCurrentItem: materialListView.currentItem != null;
+    property var hasCurrentItem: materialListView.currentItem != null
 
-    property var currentItem:
-    {
+    property var currentItem: {
         var current_index = materialListView.currentIndex;
         return materialsModel.getItem(current_index);
     }
 
-    property var isCurrentItemActivated:
-    {
+    property var isCurrentItemActivated: {
         const extruder_position = Cura.ExtruderManager.activeExtruderIndex;
         const root_material_id = Cura.MachineManager.currentRootMaterialId[extruder_position];
         return base.currentItem.root_material_id == root_material_id;
@@ -88,8 +87,7 @@ Item
             iconName: "list-add"
             enabled: base.hasCurrentItem
             onClicked: {
-                forceActiveFocus()
-
+                forceActiveFocus();
                 Cura.ContainerManager.duplicateMaterial(base.currentItem.container_node);
             }
         }
@@ -98,11 +96,10 @@ Item
         Button {
             text: catalog.i18nc("@action:button", "Remove")
             iconName: "list-remove"
-            //enabled: base.currentItem != null && !base.currentItem.readOnly && !Cura.ContainerManager.isContainerUsed(base.currentItem.id)
-            enabled: true // TODO
+            enabled: base.hasCurrentItem && !base.currentItem.is_read_only && !base.isCurrentItemActivated
             onClicked: {
-                forceActiveFocus()
-                // TODO
+                forceActiveFocus();
+                confirmRemoveMaterialDialog.open();
             }
         }
 
@@ -128,6 +125,25 @@ Item
             enabled: currentItem != null
         }
     }
+
+    MessageDialog
+    {
+        id: confirmRemoveMaterialDialog
+
+        icon: StandardIcon.Question;
+        title: catalog.i18nc("@title:window", "Confirm Remove")
+        text: catalog.i18nc("@label (%1 is object name)", "Are you sure you wish to remove %1? This cannot be undone!").arg(base.currentItem.name)
+        standardButtons: StandardButton.Yes | StandardButton.No
+        modality: Qt.ApplicationModal
+
+        onYes:
+        {
+            Cura.ContainerManager.removeMaterial(base.currentItem.container_node);
+            // reset current item to the first if available
+            materialListView.currentIndex = 0;
+        }
+    }
+
 
     Item {
         id: contentsItem

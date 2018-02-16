@@ -759,6 +759,19 @@ class ContainerManager(QObject):
 
         return new_change_instances
 
+    @pyqtSlot("QVariant")
+    def removeMaterial(self, material_node):
+        root_material_id = material_node.metadata["base_file"]
+        material_group = self._material_manager.getMaterialGroup(root_material_id)
+        if not material_group:
+            Logger.log("d", "Unable to remove the material with id %s, because it doesn't exist.", root_material_id)
+            return
+
+        nodes_to_remove = [material_group.root_material_node] + material_group.derived_material_node_list
+        for node in nodes_to_remove:
+            self._container_registry.removeContainer(node.metadata["id"])
+
+
     ##  Create a duplicate of a material, which has the same GUID and base_file metadata
     #
     #   \return \type{str} the id of the newly created container.
@@ -769,7 +782,7 @@ class ContainerManager(QObject):
         material_group = self._material_manager.getMaterialGroup(root_material_id)
         if not material_group:
             Logger.log("d", "Unable to duplicate the material with id %s, because it doesn't exist.", root_material_id)
-            return ""
+            return
 
         base_container = material_group.root_material_node.getContainer()
         containers_to_copy = []
@@ -787,10 +800,9 @@ class ContainerManager(QObject):
         new_base_container.getMetaData()["base_file"] = new_base_id
         new_containers.append(new_base_container)
 
-        #Clone all of them.
-        clone_of_original = None #Keeping track of which one is the clone of the original material, since we need to return that.
+        # Clone all of them.
         for container_to_copy in containers_to_copy:
-            #Create unique IDs for every clone.
+            # Create unique IDs for every clone.
             current_id = container_to_copy.getId()
             new_id = new_base_id
             if container_to_copy.getMetaDataEntry("definition") != "fdmprinter":
@@ -798,8 +810,6 @@ class ContainerManager(QObject):
                 if container_to_copy.getMetaDataEntry("variant_name"):
                     variant_name = container_to_copy.getMetaDataEntry("variant_name")
                     new_id += "_" + variant_name.replace(" ", "_")
-            if current_id == root_material_id:
-                clone_of_original = new_id
 
             new_container = copy.deepcopy(container_to_copy)
             new_container.getMetaData()["id"] = new_id
