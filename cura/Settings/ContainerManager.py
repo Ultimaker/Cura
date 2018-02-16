@@ -459,7 +459,7 @@ class ContainerManager(QObject):
     @pyqtSlot(QUrl, result = "QVariantMap")
     def importMaterialContainer(self, file_url_or_string: Union[QUrl, str]) -> Dict[str, str]:
         if not file_url_or_string:
-            return { "status": "error", "message": "Invalid path"}
+            return {"status": "error", "message": "Invalid path"}
 
         if isinstance(file_url_or_string, QUrl):
             file_url = file_url_or_string.toLocalFile()
@@ -467,16 +467,16 @@ class ContainerManager(QObject):
             file_url = file_url_or_string
 
         if not file_url or not os.path.exists(file_url):
-            return { "status": "error", "message": "Invalid path" }
+            return {"status": "error", "message": "Invalid path"}
 
         try:
             mime_type = MimeTypeDatabase.getMimeTypeForFile(file_url)
         except MimeTypeNotFoundError:
-            return { "status": "error", "message": "Could not determine mime type of file" }
+            return {"status": "error", "message": "Could not determine mime type of file"}
 
         container_type = self._container_registry.getContainerForMimeType(mime_type)
         if not container_type:
-            return { "status": "error", "message": "Could not find a container to handle the specified file."}
+            return {"status": "error", "message": "Could not find a container to handle the specified file."}
 
         container_id = urllib.parse.unquote_plus(mime_type.stripExtension(os.path.basename(file_url)))
         container_id = self._container_registry.uniqueName(container_id)
@@ -487,7 +487,7 @@ class ContainerManager(QObject):
             with open(file_url, "rt", encoding = "utf-8") as f:
                 container.deserialize(f.read())
         except PermissionError:
-            return { "status": "error", "message": "Permission denied when trying to read the file"}
+            return {"status": "error", "message": "Permission denied when trying to read the file"}
         except Exception as ex:
             return {"status": "error", "message": str(ex)}
 
@@ -495,7 +495,7 @@ class ContainerManager(QObject):
 
         self._container_registry.addContainer(container)
 
-        return { "status": "success", "message": "Successfully imported container {0}".format(container.getName()) }
+        return {"status": "success", "message": "Successfully imported container {0}".format(container.getName())}
 
     ##  Update the current active quality changes container with the settings from the user container.
     #

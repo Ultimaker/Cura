@@ -108,8 +108,8 @@ Item
             text: catalog.i18nc("@action:button", "Import")
             iconName: "document-import"
             onClicked: {
-                forceActiveFocus()
-                // TODO
+                forceActiveFocus();
+                importMaterialDialog.open();
             }
             visible: true
         }
@@ -141,6 +141,34 @@ Item
             Cura.ContainerManager.removeMaterial(base.currentItem.container_node);
             // reset current item to the first if available
             materialListView.currentIndex = 0;
+        }
+    }
+
+    FileDialog
+    {
+        id: importMaterialDialog
+        title: catalog.i18nc("@title:window", "Import Material")
+        selectExisting: true
+        nameFilters: Cura.ContainerManager.getContainerNameFilters("material")
+        folder: CuraApplication.getDefaultPath("dialog_material_path")
+        onAccepted:
+        {
+            var result = Cura.ContainerManager.importMaterialContainer(fileUrl);
+
+            messageDialog.title = catalog.i18nc("@title:window", "Import Material");
+            messageDialog.text = catalog.i18nc("@info:status Don't translate the XML tags <filename> or <message>!", "Could not import material <filename>%1</filename>: <message>%2</message>").arg(fileUrl).arg(result.message);
+            if (result.status == "success") {
+                messageDialog.icon = StandardIcon.Information;
+                messageDialog.text = catalog.i18nc("@info:status Don't translate the XML tag <filename>!", "Successfully imported material <filename>%1</filename>").arg(fileUrl);
+            }
+            else if (result.status == "duplicate") {
+                messageDialog.icon = StandardIcon.Warning;
+            }
+            else {
+                messageDialog.icon = StandardIcon.Critical;
+            }
+            messageDialog.open();
+            CuraApplication.setDefaultPath("dialog_material_path", folder);
         }
     }
 
