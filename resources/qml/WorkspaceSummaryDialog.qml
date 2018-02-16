@@ -120,6 +120,31 @@ UM.Dialog
                     width: (parent.width / 3) | 0
                 }
             }
+            Column
+            {
+                width: parent.width
+                visible: Cura.MachineManager.hasVariantBuildplates
+                Item // Spacer
+                {
+                    height: spacerHeight
+                    width: height
+                }
+                Row
+                {
+                    width: parent.width
+                    height: childrenRect.height
+                    Label
+                    {
+                        text: catalog.i18nc("@action:label", "Build plate")
+                        width: (parent.width / 3) | 0
+                    }
+                    Label
+                    {
+                        text: Cura.MachineManager.activeVariantBuildplateName
+                        width: (parent.width / 3) | 0
+                    }
+                }
+            }
 
             Repeater
             {
