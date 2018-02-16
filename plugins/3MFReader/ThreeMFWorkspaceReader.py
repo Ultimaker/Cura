@@ -775,6 +775,9 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                     # Ensure a unique ID and name
                     stack.setMetaDataEntry("id", new_id)
 
+                    # Keep same quality between extruders and global stack
+                    stack.quality = global_stack.quality
+
                     self._container_registry.addContainer(stack)
                     extruder_stacks_added.append(stack)
                     containers_added.append(stack)
