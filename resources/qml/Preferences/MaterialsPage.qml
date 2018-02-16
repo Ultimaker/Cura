@@ -59,15 +59,15 @@ UM.ManagementPage
             anchors.right: parent.right
             Rectangle
             {
-                width: (parent.height * 0.8) | 0
-                height: (parent.height * 0.8) | 0
+                width: Math.round(parent.height * 0.8)
+                height: Math.round(parent.height * 0.8)
                 color: model.metadata.color_code
                 border.color: isCurrentItem ? palette.highlightedText : palette.text;
                 anchors.verticalCenter: parent.verticalCenter
             }
             Label
             {
-                width: Math.floor((parent.width * 0.3))
+                width: Math.round((parent.width * 0.3))
                 text: model.metadata.material
                 elide: Text.ElideRight
                 font.italic: model.id == activeId
@@ -111,14 +111,12 @@ UM.ManagementPage
 
     scrollviewCaption:
     {
+        var caption = catalog.i18nc("@action:label", "Printer") + ": " + Cura.MachineManager.activeMachineName;
         if (Cura.MachineManager.hasVariants)
         {
-            catalog.i18nc("@action:label %1 is printer name, %2 is how this printer names variants, %3 is variant name", "Printer: %1, %2: %3").arg(Cura.MachineManager.activeMachineName).arg(Cura.MachineManager.activeDefinitionVariantsName).arg(Cura.MachineManager.activeVariantName)
+            caption += ", " + Cura.MachineManager.activeDefinitionVariantsName + ": " + Cura.MachineManager.activeVariantName;
         }
-        else
-        {
-            catalog.i18nc("@action:label %1 is printer name","Printer: %1").arg(Cura.MachineManager.activeMachineName)
-        }
+        return caption;
     }
     detailsVisible: true
 

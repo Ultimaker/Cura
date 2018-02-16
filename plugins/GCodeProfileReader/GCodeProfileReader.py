@@ -71,7 +71,7 @@ class GCodeProfileReader(ProfileReader):
         try:
             json_data = json.loads(serialized)
         except Exception as e:
-            Logger.log("e", "Could not parse serialized JSON data from GCode %s, error: %s", file_name, e)
+            Logger.log("e", "Could not parse serialized JSON data from g-code %s, error: %s", file_name, e)
             return None
 
         profiles = []

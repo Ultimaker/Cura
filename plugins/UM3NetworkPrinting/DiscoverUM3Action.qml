@@ -114,7 +114,7 @@ Cura.MachineAction
 
             Column
             {
-                width: Math.floor(parent.width * 0.5)
+                width: Math.round(parent.width * 0.5)
                 spacing: UM.Theme.getSize("default_margin").height
 
                 ScrollView
@@ -198,7 +198,7 @@ Cura.MachineAction
             }
             Column
             {
-                width: Math.floor(parent.width * 0.5)
+                width: Math.round(parent.width * 0.5)
                 visible: base.selectedDevice ? true : false
                 spacing: UM.Theme.getSize("default_margin").height
                 Label
@@ -216,13 +216,13 @@ Cura.MachineAction
                     columns: 2
                     Label
                     {
-                        width: Math.floor(parent.width * 0.5)
+                        width: Math.round(parent.width * 0.5)
                         wrapMode: Text.WordWrap
                         text: catalog.i18nc("@label", "Type")
                     }
                     Label
                     {
-                        width: Math.floor(parent.width * 0.5)
+                        width: Math.round(parent.width * 0.5)
                         wrapMode: Text.WordWrap
                         text:
                         {
@@ -247,25 +247,25 @@ Cura.MachineAction
                     }
                     Label
                     {
-                        width: Math.floor(parent.width * 0.5)
+                        width: Math.round(parent.width * 0.5)
                         wrapMode: Text.WordWrap
                         text: catalog.i18nc("@label", "Firmware version")
                     }
                     Label
                     {
-                        width: Math.floor(parent.width * 0.5)
+                        width: Math.round(parent.width * 0.5)
                         wrapMode: Text.WordWrap
                         text: base.selectedDevice ? base.selectedDevice.firmwareVersion : ""
                     }
                     Label
                     {
-                        width: Math.floor(parent.width * 0.5)
+                        width: Math.round(parent.width * 0.5)
                         wrapMode: Text.WordWrap
                         text: catalog.i18nc("@label", "Address")
                     }
                     Label
                     {
-                        width: Math.floor(parent.width * 0.5)
+                        width: Math.round(parent.width * 0.5)
                         wrapMode: Text.WordWrap
                         text: base.selectedDevice ? base.selectedDevice.ipAddress : ""
                     }

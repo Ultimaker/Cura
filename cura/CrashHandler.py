@@ -13,9 +13,8 @@ import ssl
 import urllib.request
 import urllib.error
 import shutil
-import sys
 
-from PyQt5.QtCore import QT_VERSION_STR, PYQT_VERSION_STR
+from PyQt5.QtCore import QT_VERSION_STR, PYQT_VERSION_STR, QFile
 from PyQt5.QtWidgets import QDialog, QDialogButtonBox, QVBoxLayout, QLabel, QTextEdit, QGroupBox, QCheckBox, QPushButton
 
 from UM.Application import Application
@@ -23,6 +22,7 @@ from UM.Logger import Logger
 from UM.View.GL.OpenGL import OpenGL
 from UM.i18n import i18nCatalog
 from UM.Platform import Platform
+from UM.Resources import Resources
 
 catalog = i18nCatalog("cura")
 
@@ -91,6 +91,7 @@ class CrashHandler:
         label = QLabel()
         label.setText(catalog.i18nc("@label crash message", """<p><b>A fatal error has occurred.</p></b>
                     <p>Unfortunately, Cura encountered an unrecoverable error during start up. It was possibly caused by some incorrect configuration files. We suggest to backup and reset your configuration.</p>
+                    <p>Your backup can be found in your Configuration folder.</p>
                     <p>Please send us this Crash Report to fix the problem.</p>
                 """))
         label.setWordWrap(True)
@@ -162,12 +163,15 @@ class CrashHandler:
                 file_name = base_name + "_" + date_now + "_" + idx
                 zip_file_path = os.path.join(root_dir, file_name + ".zip")
             try:
-                # remove the .zip extension because make_archive() adds it
-                zip_file_path = zip_file_path[:-4]
-                shutil.make_archive(zip_file_path, "zip", root_dir = root_dir, base_dir = base_name)
+                # only create the zip backup when the folder exists
+                if os.path.exists(folder):
+                    # remove the .zip extension because make_archive() adds it
+                    zip_file_path = zip_file_path[:-4]
+                    shutil.make_archive(zip_file_path, "zip", root_dir = root_dir, base_dir = base_name)
 
-                # remove the folder only when the backup is successful
-                shutil.rmtree(folder, ignore_errors = True)
+                    # remove the folder only when the backup is successful
+                    shutil.rmtree(folder, ignore_errors = True)
+
                 # create an empty folder so Resources will not try to copy the old ones
                 os.makedirs(folder, 0o0755, exist_ok=True)
 

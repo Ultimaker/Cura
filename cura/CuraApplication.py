@@ -12,6 +12,7 @@ from UM.Math.Vector import Vector
 from UM.Math.Quaternion import Quaternion
 from UM.Math.AxisAlignedBox import AxisAlignedBox
 from UM.Math.Matrix import Matrix
+from UM.Platform import Platform
 from UM.Resources import Resources
 from UM.Scene.ToolHandle import ToolHandle
 from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
@@ -588,7 +589,13 @@ class CuraApplication(QtApplication):
     def _loadPlugins(self):
         self._plugin_registry.addType("profile_reader", self._addProfileReader)
         self._plugin_registry.addType("profile_writer", self._addProfileWriter)
-        self._plugin_registry.addPluginLocation(os.path.join(QtApplication.getInstallPrefix(), "lib", "cura"))
+
+        if Platform.isLinux():
+            lib_suffixes = {"", "64", "32", "x32"} #A few common ones on different distributions.
+        else:
+            lib_suffixes = {""}
+        for suffix in lib_suffixes:
+            self._plugin_registry.addPluginLocation(os.path.join(QtApplication.getInstallPrefix(), "lib" + suffix, "cura"))
         if not hasattr(sys, "frozen"):
             self._plugin_registry.addPluginLocation(os.path.join(os.path.abspath(os.path.dirname(__file__)), "..", "plugins"))
             self._plugin_registry.loadPlugin("ConsoleLogger")
@@ -1287,7 +1294,7 @@ class CuraApplication(QtApplication):
         Logger.log("i", "Reloading all loaded mesh data.")
         nodes = []
         for node in DepthFirstIterator(self.getController().getScene().getRoot()):
-            if not isinstance(node, SceneNode) or not node.getMeshData():
+            if not isinstance(node, CuraSceneNode) or not node.getMeshData():
                 continue
 
             nodes.append(node)

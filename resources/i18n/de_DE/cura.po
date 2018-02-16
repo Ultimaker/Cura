@@ -8,13 +8,15 @@ msgstr ""
 "Project-Id-Version: Cura 3.2\n"
 "Report-Msgid-Bugs-To: r.dulek@ultimaker.com\n"
 "POT-Creation-Date: 2018-01-29 09:48+0000\n"
-"PO-Revision-Date: 2018-02-05 13:25+0100\n"
+"PO-Revision-Date: 2018-02-12 13:25+0100\n"
 "Last-Translator: Bothof <info@bothof.nl>\n"
 "Language-Team: German\n"
 "Language: de_DE\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 2.0.4\n"
 
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.py:26
 msgctxt "@action"
@@ -145,7 +147,7 @@ msgstr "Drucker nicht verfügbar"
 #: /home/ruben/Projects/Cura/plugins/USBPrinting/USBPrinterOutputDevice.py:485
 msgctxt "@info:status"
 msgid "This printer does not support USB printing because it uses UltiGCode flavor."
-msgstr "Der Drucker unterstützt keinen USB-Druck, da er die UltiGCode-Variante verwendet."
+msgstr "Der Drucker unterstützt keinen USB-Druck, da er UltiGCode verwendet."
 
 #: /home/ruben/Projects/Cura/plugins/USBPrinting/USBPrinterOutputDevice.py:485
 msgctxt "@info:title"
@@ -294,7 +296,7 @@ msgstr "Drucken über Netzwerk"
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/NetworkPrinterOutputDevice.py:110
 msgctxt "@properties:tooltip"
 msgid "Print over network"
-msgstr "Drücken über Netzwerk"
+msgstr "Drucken über Netzwerk"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/NetworkPrinterOutputDevice.py:159
 msgctxt "@info:status"
@@ -630,7 +632,10 @@ msgid ""
 "Found no models inside your drawing. Could you please check it's content again and make sure one part or assembly is inside?\n"
 "\n"
 " Thanks!."
-msgstr "Keine Modelle in Ihrer Zeichnung gefunden. Bitte überprüfen Sie den Inhalt erneut und stellen Sie sicher, dass ein Teil oder eine Baugruppe enthalten ist.\n\n Danke!"
+msgstr ""
+"Keine Modelle in Ihrer Zeichnung gefunden. Bitte überprüfen Sie den Inhalt erneut und stellen Sie sicher, dass ein Teil oder eine Baugruppe enthalten ist.\n"
+"\n"
+" Danke!"
 
 #: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/SolidWorksReader.py:595
 msgctxt "@info:status"
@@ -638,7 +643,10 @@ msgid ""
 "Found more then one part or assembly inside your drawing. We currently only support drawings with exactly one part or assembly inside.\n"
 "\n"
 "Sorry!"
-msgstr "Es wurde mehr als ein Teil oder eine Baugruppe in Ihrer Zeichnung gefunden. Wir unterstützen derzeit nur Zeichnungen mit exakt einem Teil oder einer Baugruppe.\n\nEs tut uns leid!"
+msgstr ""
+"Es wurde mehr als ein Teil oder eine Baugruppe in Ihrer Zeichnung gefunden. Wir unterstützen derzeit nur Zeichnungen mit exakt einem Teil oder einer Baugruppe.\n"
+"\n"
+"Es tut uns leid!"
 
 #: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/__init__.py:25
 msgctxt "@item:inlistbox"
@@ -663,7 +671,12 @@ msgid ""
 "\n"
 "With kind regards\n"
 " - Thomas Karl Pietrowski"
-msgstr "Sehr geehrter Kunde,\nwir konnten keine gültige Installation von SolidWorks auf Ihrem System finden. Das bedeutet, dass SolidWorks entweder nicht installiert ist oder sie keine gültige Lizenz besitzen. Stellen Sie bitte sicher, dass SolidWorks problemlos läuft und/oder wenden Sie sich an Ihre ICT-Abteilung.\n\nMit freundlichen Grüßen\n - Thomas Karl Pietrowski"
+msgstr ""
+"Sehr geehrter Kunde,\n"
+"wir konnten keine gültige Installation von SolidWorks auf Ihrem System finden. Das bedeutet, dass SolidWorks entweder nicht installiert ist oder sie keine gültige Lizenz besitzen. Stellen Sie bitte sicher, dass SolidWorks problemlos läuft und/oder wenden Sie sich an Ihre ICT-Abteilung.\n"
+"\n"
+"Mit freundlichen Grüßen\n"
+" - Thomas Karl Pietrowski"
 
 #: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/__init__.py:57
 msgctxt "@info:status"
@@ -673,7 +686,12 @@ msgid ""
 "\n"
 "With kind regards\n"
 " - Thomas Karl Pietrowski"
-msgstr "Sehr geehrter Kunde,\nSie verwenden dieses Plugin derzeit auf einem anderen Betriebssystem als Windows. Dieses Plugin funktioniert nur auf Windows mit installiertem SolidWorks und einer gültigen Lizenz. Installieren Sie dieses Plugin bitte auf einem Windows-Rechner mit installiertem SolidWorks.\n\nMit freundlichen Grüßen\n - Thomas Karl Pietrowski"
+msgstr ""
+"Sehr geehrter Kunde,\n"
+"Sie verwenden dieses Plugin derzeit auf einem anderen Betriebssystem als Windows. Dieses Plugin funktioniert nur auf Windows mit installiertem SolidWorks und einer gültigen Lizenz. Installieren Sie dieses Plugin bitte auf einem Windows-Rechner mit installiertem SolidWorks.\n"
+"\n"
+"Mit freundlichen Grüßen\n"
+" - Thomas Karl Pietrowski"
 
 #: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/SolidWorksDialogHandler.py:70
 msgid "Configure"
@@ -747,7 +765,9 @@ msgctxt "@info:status"
 msgid ""
 "Could not export using \"{}\" quality!\n"
 "Felt back to \"{}\"."
-msgstr "Exportieren in \"{}\" Qualität nicht möglich!\nZurückgeschaltet auf \"{}\"."
+msgstr ""
+"Exportieren in \"{}\" Qualität nicht möglich!\n"
+"Zurückgeschaltet auf \"{}\"."
 
 #: /home/ruben/Projects/Cura/plugins/GCodeProfileReader/__init__.py:14
 #: /home/ruben/Projects/Cura/plugins/GCodeReader/__init__.py:14
@@ -1242,7 +1262,10 @@ msgid ""
 "<p><b>A fatal error has occurred. Please send us this Crash Report to fix the problem</p></b>\n"
 "            <p>Please use the \"Send report\" button to post a bug report automatically to our servers</p>\n"
 "        "
-msgstr "<p><b>Ein schwerer Fehler ist aufgetreten. Senden Sie uns diesen Absturzbericht, um das Problem zu beheben</p></b>\n            <p>Verwenden Sie bitte die Schaltfläche „Bericht senden“, um den Fehlerbericht automatisch an unsere Server zu senden</p>\n        "
+msgstr ""
+"<p><b>Ein schwerer Fehler ist aufgetreten. Senden Sie uns diesen Absturzbericht, um das Problem zu beheben</p></b>\n"
+"            <p>Verwenden Sie bitte die Schaltfläche „Bericht senden“, um den Fehlerbericht automatisch an unsere Server zu senden</p>\n"
+"        "
 
 #: /home/ruben/Projects/Cura/cura/CrashHandler.py:102
 msgctxt "@title:groupbox"
@@ -1610,7 +1633,7 @@ msgstr "Unbekannter Fehlercode: %1"
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/DiscoverUM3Action.qml:55
 msgctxt "@title:window"
 msgid "Connect to Networked Printer"
-msgstr "Anschluss an vernetzten Drucker"
+msgstr "Anschluss an Netzwerk Drucker"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/DiscoverUM3Action.qml:65
 msgctxt "@label"
@@ -1618,7 +1641,10 @@ msgid ""
 "To print directly to your printer over the network, please make sure your printer is connected to the network using a network cable or by connecting your printer to your WIFI network. If you don't connect Cura with your printer, you can still use a USB drive to transfer g-code files to your printer.\n"
 "\n"
 "Select your printer from the list below:"
-msgstr "Um über das Netzwerk direkt auf Ihrem Drucker zu drucken, stellen Sie bitte sicher, dass der Drucker mit dem Netzwerkkabel verbunden ist oder verbinden Sie Ihren Drucker mit Ihrem WLAN-Netzwerk. Wenn Sie Cura nicht mit Ihrem Drucker verbinden, können Sie dennoch ein USB-Laufwerk für die Übertragung von G-Code-Dateien auf Ihren Drucker verwenden.\n\nWählen Sie Ihren Drucker aus der folgenden Liste:"
+msgstr ""
+"Um über das Netzwerk direkt auf Ihrem Drucker zu drucken, stellen Sie bitte sicher, dass der Drucker mit dem Netzwerkkabel verbunden ist oder verbinden Sie Ihren Drucker mit Ihrem WLAN-Netzwerk. Wenn Sie Cura nicht mit Ihrem Drucker verbinden, können Sie dennoch ein USB-Laufwerk für die Übertragung von G-Code-Dateien auf Ihren Drucker verwenden.\n"
+"\n"
+"Wählen Sie Ihren Drucker aus der folgenden Liste:"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/DiscoverUM3Action.qml:75
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/MachinesPage.qml:44
@@ -1928,7 +1954,9 @@ msgctxt "@action:button"
 msgid ""
 "Open the directory\n"
 "with macro and icon"
-msgstr "Verzeichnis\nmit Makro und Symbol öffnen"
+msgstr ""
+"Verzeichnis\n"
+"mit Makro und Symbol öffnen"
 
 #: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/SolidWorksMacroTutorial.qml:160
 msgctxt "@description:label"
@@ -2420,7 +2448,10 @@ msgid ""
 "This plugin contains a license.\n"
 "You need to accept this license to install this plugin.\n"
 "Do you agree with the terms below?"
-msgstr "Dieses Plugin enthält eine Lizenz.\nSie müssen diese Lizenz akzeptieren, um das Plugin zu installieren.\nStimmen Sie den nachfolgenden Bedingungen zu?"
+msgstr ""
+"Dieses Plugin enthält eine Lizenz.\n"
+"Sie müssen diese Lizenz akzeptieren, um das Plugin zu installieren.\n"
+"Stimmen Sie den nachfolgenden Bedingungen zu?"
 
 #: /home/ruben/Projects/Cura/plugins/PluginBrowser/PluginBrowser.qml:242
 msgctxt "@action:button"
@@ -2685,7 +2716,9 @@ msgctxt "@text:window"
 msgid ""
 "You have customized some profile settings.\n"
 "Would you like to keep or discard those settings?"
-msgstr "Sie haben einige Profileinstellungen angepasst.\nMöchten Sie diese Einstellungen übernehmen oder verwerfen?"
+msgstr ""
+"Sie haben einige Profileinstellungen angepasst.\n"
+"Möchten Sie diese Einstellungen übernehmen oder verwerfen?"
 
 #: /home/ruben/Projects/Cura/resources/qml/DiscardOrKeepProfileChangesDialog.qml:110
 msgctxt "@title:column"
@@ -2728,7 +2761,7 @@ msgstr "Verwerfen"
 #: /home/ruben/Projects/Cura/resources/qml/DiscardOrKeepProfileChangesDialog.qml:209
 msgctxt "@action:button"
 msgid "Keep"
-msgstr "Übernehmen"
+msgstr "Beibehalten"
 
 #: /home/ruben/Projects/Cura/resources/qml/DiscardOrKeepProfileChangesDialog.qml:222
 msgctxt "@action:button"
@@ -3353,7 +3386,9 @@ msgctxt "@info:credit"
 msgid ""
 "Cura is developed by Ultimaker B.V. in cooperation with the community.\n"
 "Cura proudly uses the following open source projects:"
-msgstr "Cura wurde von Ultimaker B.V. in Zusammenarbeit mit der Community entwickelt.\nCura verwendet mit Stolz die folgenden Open Source-Projekte:"
+msgstr ""
+"Cura wurde von Ultimaker B.V. in Zusammenarbeit mit der Community entwickelt.\n"
+"Cura verwendet mit Stolz die folgenden Open Source-Projekte:"
 
 #: /home/ruben/Projects/Cura/resources/qml/AboutDialog.qml:118
 msgctxt "@label"
@@ -3461,7 +3496,10 @@ msgid ""
 "Some setting/override values are different from the values stored in the profile.\n"
 "\n"
 "Click to open the profile manager."
-msgstr "Einige Einstellungs-/Überschreibungswerte unterscheiden sich von den im Profil gespeicherten Werten.\n\nKlicken Sie, um den Profilmanager zu öffnen."
+msgstr ""
+"Einige Einstellungs-/Überschreibungswerte unterscheiden sich von den im Profil gespeicherten Werten.\n"
+"\n"
+"Klicken Sie, um den Profilmanager zu öffnen."
 
 #: /home/ruben/Projects/Cura/resources/qml/Settings/SettingView.qml:150
 msgctxt "@label:textbox"
@@ -3499,7 +3537,10 @@ msgid ""
 "Some hidden settings use values different from their normal calculated value.\n"
 "\n"
 "Click to make these settings visible."
-msgstr "Einige ausgeblendete Einstellungen verwenden Werte, die von ihren normalen, berechneten Werten abweichen.\n\nKlicken Sie, um diese Einstellungen sichtbar zu machen."
+msgstr ""
+"Einige ausgeblendete Einstellungen verwenden Werte, die von ihren normalen, berechneten Werten abweichen.\n"
+"\n"
+"Klicken Sie, um diese Einstellungen sichtbar zu machen."
 
 #: /home/ruben/Projects/Cura/resources/qml/Settings/SettingItem.qml:61
 msgctxt "@label Header for list of settings."
@@ -3527,7 +3568,10 @@ msgid ""
 "This setting has a value that is different from the profile.\n"
 "\n"
 "Click to restore the value of the profile."
-msgstr "Diese Einstellung hat einen vom Profil abweichenden Wert.\n\nKlicken Sie, um den Wert des Profils wiederherzustellen."
+msgstr ""
+"Diese Einstellung hat einen vom Profil abweichenden Wert.\n"
+"\n"
+"Klicken Sie, um den Wert des Profils wiederherzustellen."
 
 #: /home/ruben/Projects/Cura/resources/qml/Settings/SettingItem.qml:288
 msgctxt "@label"
@@ -3535,7 +3579,10 @@ msgid ""
 "This setting is normally calculated, but it currently has an absolute value set.\n"
 "\n"
 "Click to restore the calculated value."
-msgstr "Diese Einstellung wird normalerweise berechnet; aktuell ist jedoch ein Absolutwert eingestellt.\n\nKlicken Sie, um den berechneten Wert wiederherzustellen."
+msgstr ""
+"Diese Einstellung wird normalerweise berechnet; aktuell ist jedoch ein Absolutwert eingestellt.\n"
+"\n"
+"Klicken Sie, um den berechneten Wert wiederherzustellen."
 
 #: /home/ruben/Projects/Cura/resources/qml/Sidebar.qml:128
 msgctxt "@label:listbox"
@@ -3547,7 +3594,9 @@ msgctxt "@label:listbox"
 msgid ""
 "Print Setup disabled\n"
 "G-code files cannot be modified"
-msgstr "Druckeinrichtung deaktiviert\nG-Code-Dateien können nicht geändert werden"
+msgstr ""
+"Druckeinrichtung deaktiviert\n"
+"G-Code-Dateien können nicht geändert werden"
 
 #: /home/ruben/Projects/Cura/resources/qml/Sidebar.qml:342
 msgctxt "@label Hours and minutes"

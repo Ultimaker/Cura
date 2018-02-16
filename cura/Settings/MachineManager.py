@@ -4,12 +4,13 @@
 import collections
 import time
 #Type hinting.
-from typing import Union, List, Dict
+from typing import Union, List, Dict, TYPE_CHECKING, Optional
 
 from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 from UM.Signal import Signal
 
 from PyQt5.QtCore import QObject, pyqtProperty, pyqtSignal, QTimer
+import UM.FlameProfiler
 from UM.FlameProfiler import pyqtSlot
 from PyQt5.QtWidgets import QMessageBox
 from UM import Util
@@ -25,7 +26,7 @@ from UM.Settings.ContainerStack import ContainerStack
 from UM.Settings.InstanceContainer import InstanceContainer
 from UM.Settings.SettingFunction import SettingFunction
 from UM.Signal import postponeSignals, CompressTechnique
-import UM.FlameProfiler
+
 
 from cura.QualityManager import QualityManager
 from cura.PrinterOutputDevice import PrinterOutputDevice
@@ -37,7 +38,6 @@ from UM.i18n import i18nCatalog
 catalog = i18nCatalog("cura")
 
 from cura.Settings.ProfilesModel import ProfilesModel
-from typing import TYPE_CHECKING, Optional
 
 if TYPE_CHECKING:
     from UM.Settings.DefinitionContainer import DefinitionContainer
@@ -55,10 +55,10 @@ class MachineManager(QObject):
         self.machine_extruder_material_update_dict = collections.defaultdict(list)
 
         # Used to store the new containers until after confirming the dialog
-        self._new_variant_container = None
-        self._new_buildplate_container = None
-        self._new_material_container = None
-        self._new_quality_containers = []
+        self._new_variant_container = None  # type: Optional[InstanceContainer]
+        self._new_buildplate_container = None  # type: Optional[InstanceContainer]
+        self._new_material_container = None  # type: Optional[InstanceContainer]
+        self._new_quality_containers = [] # type: List[Dict]
 
         self._error_check_timer = QTimer()
         self._error_check_timer.setInterval(250)
@@ -79,7 +79,7 @@ class MachineManager(QObject):
         self.globalContainerChanged.connect(self.activeVariantChanged)
         self.globalContainerChanged.connect(self.activeQualityChanged)
 
-        self._stacks_have_errors = None
+        self._stacks_have_errors = None  # type:Optional[bool]
 
         self._empty_definition_changes_container = ContainerRegistry.getInstance().findContainers(id = "empty_definition_changes")[0]
         self._empty_variant_container = ContainerRegistry.getInstance().findContainers(id = "empty_variant")[0]
@@ -181,7 +181,7 @@ class MachineManager(QObject):
     def totalNumberOfSettings(self) -> int:
         return len(ContainerRegistry.getInstance().findDefinitionContainers(id = "fdmprinter")[0].getAllKeys())
 
-    def _onHotendIdChanged(self):
+    def _onHotendIdChanged(self) -> None:
         if not self._global_container_stack or not self._printer_output_devices:
             return
         
@@ -209,7 +209,7 @@ class MachineManager(QObject):
             # A change was found, let the output device handle this.
             self._printer_output_devices[0].materialHotendChangedMessage(self._materialHotendChangedCallback)
 
-    def _onMaterialIdChanged(self):
+    def _onMaterialIdChanged(self) -> None:
         if not self._global_container_stack or not self._printer_output_devices:
             return
 
@@ -246,7 +246,7 @@ class MachineManager(QObject):
             # A change was found, let the output device handle this.
             self._printer_output_devices[0].materialHotendChangedMessage(self._materialHotendChangedCallback)
 
-    def _materialHotendChangedCallback(self, button):
+    def _materialHotendChangedCallback(self, button) -> None:
         if button == QMessageBox.No:
             self._auto_materials_changed = {}
             self._auto_hotends_changed = {}
@@ -254,7 +254,7 @@ class MachineManager(QObject):
         self._autoUpdateMaterials()
         self._autoUpdateHotends()
 
-    def _autoUpdateMaterials(self):
+    def _autoUpdateMaterials(self) -> None:
         extruder_manager = ExtruderManager.getInstance()
         for position in self._auto_materials_changed:
             material_id = self._auto_materials_changed[position]
@@ -270,9 +270,9 @@ class MachineManager(QObject):
 
             if old_index is not None:
                 extruder_manager.setActiveExtruderIndex(old_index)
-        self._auto_materials_changed = {} #Processed all of them now.
+        self._auto_materials_changed = {}  # Processed all of them now.
 
-    def _autoUpdateHotends(self):
+    def _autoUpdateHotends(self) -> None:
         extruder_manager = ExtruderManager.getInstance()
         for position in self._auto_hotends_changed:
             hotend_id = self._auto_hotends_changed[position]
@@ -289,7 +289,7 @@ class MachineManager(QObject):
                 extruder_manager.setActiveExtruderIndex(old_index)
         self._auto_hotends_changed = {}  # Processed all of them now.
 
-    def _onGlobalContainerChanged(self):
+    def _onGlobalContainerChanged(self) -> None:
         if self._global_container_stack:
             try:
                 self._global_container_stack.nameChanged.disconnect(self._onMachineNameChanged)
@@ -308,7 +308,7 @@ class MachineManager(QObject):
                 extruder_stack.propertyChanged.disconnect(self._onPropertyChanged)
                 extruder_stack.containersChanged.disconnect(self._onInstanceContainersChanged)
 
-        # update the local global container stack reference
+        # Update the local global container stack reference
         self._global_container_stack = Application.getInstance().getGlobalContainerStack()
 
         self.globalContainerChanged.emit()
@@ -345,14 +345,14 @@ class MachineManager(QObject):
         self._error_check_timer.start()
 
     ##  Update self._stacks_valid according to _checkStacksForErrors and emit if change.
-    def _updateStacksHaveErrors(self):
+    def _updateStacksHaveErrors(self) -> None:
         old_stacks_have_errors = self._stacks_have_errors
         self._stacks_have_errors = self._checkStacksHaveErrors()
         if old_stacks_have_errors != self._stacks_have_errors:
             self.stacksValidationChanged.emit()
         Application.getInstance().stacksValidationFinished.emit()
 
-    def _onActiveExtruderStackChanged(self):
+    def _onActiveExtruderStackChanged(self) -> None:
         self.blurSettings.emit()  # Ensure no-one has focus.
         old_active_container_stack = self._active_container_stack
 
@@ -365,17 +365,16 @@ class MachineManager(QObject):
             # on _active_container_stack. If it changes, then the properties change.
             self.activeQualityChanged.emit()
 
-    def __emitChangedSignals(self):
+    def __emitChangedSignals(self) -> None:
         self.activeQualityChanged.emit()
         self.activeVariantChanged.emit()
         self.activeMaterialChanged.emit()
-        self._updateStacksHaveErrors()  # Prevents unwanted re-slices after changing machine
         self._error_check_timer.start()
 
-    def _onProfilesModelChanged(self, *args):
+    def _onProfilesModelChanged(self, *args) -> None:
         self.__emitChangedSignals()
 
-    def _onInstanceContainersChanged(self, container):
+    def _onInstanceContainersChanged(self, container) -> None:
         # This should not trigger the ProfilesModel to be created, or there will be an infinite recursion
         if not self._connected_to_profiles_model and ProfilesModel.hasInstance():
             # This triggers updating the qualityModel in SidebarSimple whenever ProfilesModel is updated
@@ -385,7 +384,7 @@ class MachineManager(QObject):
 
         self._instance_container_timer.start()
 
-    def _onPropertyChanged(self, key: str, property_name: str):
+    def _onPropertyChanged(self, key: str, property_name: str) -> None:
         if property_name == "value":
             # Notify UI items, such as the "changed" star in profile pull down menu.
             self.activeStackValueChanged.emit()
@@ -442,7 +441,7 @@ class MachineManager(QObject):
 
     ##  Remove all instances from the top instanceContainer (effectively removing all user-changed settings)
     @pyqtSlot()
-    def clearUserSettings(self):
+    def clearUserSettings(self) -> None:
         if not self._active_container_stack:
             return
 
@@ -480,7 +479,7 @@ class MachineManager(QObject):
     ##  Delete a user setting from the global stack and all extruder stacks.
     #   \param key \type{str} the name of the key to delete
     @pyqtSlot(str)
-    def clearUserSettingAllCurrentStacks(self, key: str):
+    def clearUserSettingAllCurrentStacks(self, key: str) -> None:
         if not self._global_container_stack:
             return
 

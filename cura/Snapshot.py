@@ -57,8 +57,9 @@ class Snapshot:
                 else:
                     bbox = bbox + node.getBoundingBox()
 
+        # If there is no bounding box, it means that there is no model in the buildplate
         if bbox is None:
-            bbox = AxisAlignedBox()
+            return None
 
         look_at = bbox.center
         # guessed size so the objects are hopefully big
