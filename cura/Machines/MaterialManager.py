@@ -69,8 +69,7 @@ class MaterialManager(QObject):
         # Find all materials and put them in a matrix for quick search.
         material_metadata_list = self._container_registry.findContainersMetadata(type = "material")
 
-        self._material_group_map = OrderedDict()
-        self._diameter_machine_variant_material_map = {}
+        self._material_group_map = dict()
 
         # Map #1
         #    root_material_id -> MaterialGroup
@@ -155,6 +154,7 @@ class MaterialManager(QObject):
         # Map #4
         #    "machine" -> "variant_name" -> "root material ID" -> specific material InstanceContainer
         # Construct the "machine" -> "variant" -> "root material ID" -> specific material InstanceContainer
+        self._diameter_machine_variant_material_map = dict()
         for material_metadata in material_metadata_list:
             # We don't store empty material in the lookup tables
             if material_metadata["id"] == "empty_material":

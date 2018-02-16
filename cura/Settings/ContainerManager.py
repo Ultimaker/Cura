@@ -42,8 +42,10 @@ class ContainerManager(QObject):
     def __init__(self, parent = None):
         super().__init__(parent)
 
+        self._application = Application.getInstance()
         self._container_registry = ContainerRegistry.getInstance()
-        self._machine_manager = Application.getInstance().getMachineManager()
+        self._machine_manager = self._application.getMachineManager()
+        self._material_manager = self._application._material_manager
         self._container_name_filters = {}
 
     ##  Create a duplicate of the specified container
@@ -211,18 +213,15 @@ class ContainerManager(QObject):
     #   \param entry_value The new value of the entry.
     #
     #   \return True if successful, False if not.
-    @pyqtSlot(str, str, str, result = bool)
-    def setContainerMetaDataEntry(self, container_id, entry_name, entry_value):
-        if self._container_registry.isReadOnly(container_id):
-            Logger.log("w", "Cannot set metadata of read-only container %s.", container_id)
+    #  TODO: This is ONLY used by MaterialView for material containers. Maybe refactor this.
+    @pyqtSlot("QVariant", str, str)
+    def setContainerMetaDataEntry(self, container_node, entry_name, entry_value):
+        root_material_id = container_node.metadata["base_file"]
+        if self._container_registry.isReadOnly(root_material_id):
+            Logger.log("w", "Cannot set metadata of read-only container %s.", root_material_id)
             return False
 
-        containers = self._container_registry.findContainers(id = container_id) #We need the complete container, since we need to know whether the container is read-only or not.
-        if not containers:
-            Logger.log("w", "Could not set metadata of container %s because it was not found.", container_id)
-            return False
-
-        container = containers[0]
+        material_group = self._material_manager.getMaterialGroup(root_material_id)
 
         entries = entry_name.split("/")
         entry_name = entries.pop()
@@ -230,7 +229,7 @@ class ContainerManager(QObject):
         sub_item_changed = False
         if entries:
             root_name = entries.pop(0)
-            root = container.getMetaDataEntry(root_name)
+            root = material_group.root_material_node.metadata.get(root_name)
 
             item = root
             for _ in range(len(entries)):
@@ -243,11 +242,10 @@ class ContainerManager(QObject):
             entry_name = root_name
             entry_value = root
 
+        container = material_group.root_material_node.getContainer()
         container.setMetaDataEntry(entry_name, entry_value)
         if sub_item_changed: #If it was only a sub-item that has changed then the setMetaDataEntry won't correctly notice that something changed, and we must manually signal that the metadata changed.
             container.metaDataChanged.emit(container)
-
-        return True
 
     ##  Set a setting property of the specified container.
     #
@@ -768,10 +766,7 @@ class ContainerManager(QObject):
     def duplicateMaterial(self, material_node):
         root_material_id = material_node.metadata["base_file"]
 
-        from cura.CuraApplication import CuraApplication
-        material_manager = CuraApplication.getInstance()._material_manager
-
-        material_group = material_manager.getMaterialGroup(root_material_id)
+        material_group = self._material_manager.getMaterialGroup(root_material_id)
         if not material_group:
             Logger.log("d", "Unable to duplicate the material with id %s, because it doesn't exist.", root_material_id)
             return ""
@@ -867,10 +862,7 @@ class ContainerManager(QObject):
     def getLinkedMaterials(self, material_node):
         guid = material_node.metadata["GUID"]
 
-        from cura.CuraApplication import CuraApplication
-        material_manager = CuraApplication.getInstance()._material_manager
-
-        material_group_list = material_manager.getMaterialGroupListByGUID(guid)
+        material_group_list = self._material_manager.getMaterialGroupListByGUID(guid)
 
         linked_material_names = []
         if material_group_list:
@@ -883,9 +875,7 @@ class ContainerManager(QObject):
     @pyqtSlot("QVariant")
     def unlinkMaterial(self, material_node):
         # Get the material group
-        from cura.CuraApplication import CuraApplication
-        material_manager = CuraApplication.getInstance()._material_manager
-        material_group = material_manager.getMaterialGroup(material_node.metadata["base_file"])
+        material_group = self._material_manager.getMaterialGroup(material_node.metadata["base_file"])
 
         # Generate a new GUID
         new_guid = str(uuid.uuid4())

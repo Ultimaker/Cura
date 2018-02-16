@@ -417,7 +417,7 @@ TabView
     // Tiny convenience function to check if a value really changed before trying to set it.
     function setMetaDataEntry(entry_name, old_value, new_value) {
         if (old_value != new_value) {
-            Cura.ContainerManager.setContainerMetaDataEntry(base.containerId, entry_name, new_value)
+            Cura.ContainerManager.setContainerMetaDataEntry(base.currentMaterialNode, entry_name, new_value)
             // make sure the UI properties are updated as well since we don't re-fetch the entire model here
             // When the entry_name is something like properties/diameter, we take the last part of the entry_name
             var list = entry_name.split("/")

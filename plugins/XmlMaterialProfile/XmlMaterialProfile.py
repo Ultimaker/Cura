@@ -48,14 +48,15 @@ class XmlMaterialProfile(InstanceContainer):
 
     ##  Overridden from InstanceContainer
     #   set the meta data for all machine / variant combinations
-    def setMetaDataEntry(self, key, value, is_first_call = True):
+    def setMetaDataEntry(self, key, value, apply_to_all = True):
         registry = ContainerRegistry.getInstance()
         if registry.isReadOnly(self.getId()):
             return
 
         # Prevent recursion
-        if is_first_call:
+        if not apply_to_all:
             super().setMetaDataEntry(key, value)
+            return
 
         # Get the MaterialGroup
         material_manager = CuraApplication.getInstance()._material_manager
@@ -64,12 +65,12 @@ class XmlMaterialProfile(InstanceContainer):
 
         # Update the root material container
         root_material_container = material_group.root_material_node.getContainer()
-        root_material_container.setMetaDataEntry(key, value, is_first_call = False)
+        root_material_container.setMetaDataEntry(key, value, apply_to_all = False)
 
         # Update all containers derived from it
         for node in material_group.derived_material_node_list:
             container = node.getContainer()
-            container.setMetaDataEntry(key, value, is_first_call = False)
+            container.setMetaDataEntry(key, value, apply_to_all = False)
 
     ##  Overridden from InstanceContainer, similar to setMetaDataEntry.
     #   without this function the setName would only set the name of the specific nozzle / material / machine combination container
