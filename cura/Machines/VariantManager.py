@@ -1,8 +1,11 @@
+# Copyright (c) 2018 Ultimaker B.V.
+# Cura is released under the terms of the LGPLv3 or higher.
+
+from collections import OrderedDict
 from typing import Optional
 
 from UM.Logger import Logger
 from UM.Settings.ContainerRegistry import ContainerRegistry
-from UM.Settings.InstanceContainer import InstanceContainer
 
 from cura.Machines.ContainerNode import ContainerNode
 from cura.Settings.GlobalStack import GlobalStack
@@ -35,7 +38,7 @@ class VariantManager:
     def __init__(self, container_registry):
         self._container_registry = container_registry  # type: ContainerRegistry
 
-        self._machine_to_variant_dict_map = {}  # <machine_type> -> <variant_dict>
+        self._machine_to_variant_dict_map = dict()  # <machine_type> -> <variant_dict>
 
         self._exclude_variant_id_list = ["empty_variant"]
 
@@ -44,6 +47,8 @@ class VariantManager:
     #  - initializing the variant lookup table based on the metadata in ContainerRegistry.
     #
     def initialize(self):
+        self._machine_to_variant_dict_map = OrderedDict()
+
         # Cache all variants from the container registry to a variant map for better searching and organization.
         variant_metadata_list = self._container_registry.findContainersMetadata(type = "variant")
         for variant_metadata in variant_metadata_list:
@@ -54,13 +59,12 @@ class VariantManager:
             variant_name = variant_metadata["name"]
             variant_definition = variant_metadata["definition"]
             if variant_definition not in self._machine_to_variant_dict_map:
-                self._machine_to_variant_dict_map[variant_definition] = {}
-                #for variant_type in ALL_VARIANT_TYPES:
-                #    self._machine_to_variant_dict_map[variant_definition][variant_type] = {}
+                self._machine_to_variant_dict_map[variant_definition] = OrderedDict()
+                for variant_type in ALL_VARIANT_TYPES:
+                    self._machine_to_variant_dict_map[variant_definition][variant_type] = dict()
 
             variant_type = variant_metadata["hardware_type"]
-            #variant_dict = self._machine_to_variant_dict_map[variant_definition][variant_type]
-            variant_dict = self._machine_to_variant_dict_map[variant_definition]
+            variant_dict = self._machine_to_variant_dict_map[variant_definition][variant_type]
             if variant_name in variant_dict:
                 # ERROR: duplicated variant name.
                 raise RuntimeError("Found duplicated variant name [%s], type [%s] for machine [%s]" %
@@ -72,10 +76,11 @@ class VariantManager:
     # Gets the variant InstanceContainer with the given information.
     # Almost the same as getVariantMetadata() except that this returns an InstanceContainer if present.
     #
-    def getVariantNode(self, machine_type_name: str, variant_name: str,
-                       variant_type: Optional[str] = None) -> Optional["InstanceContainer"]:
-        return self._machine_to_variant_dict_map[machine_type_name].get(variant_name)
+    def getVariantNode(self, machine_definition_id: str, variant_name: str,
+                       variant_type: Optional[str] = VariantType.NOZZLE) -> Optional["ContainerNode"]:
+        return self._machine_to_variant_dict_map[machine_definition_id].get(variant_type, {}).get(variant_name)
 
-    def getVariantNodes(self, machine: "GlobalStack"):
-        machine_type_name = machine.definition.getId()
-        return self._machine_to_variant_dict_map.get(machine_type_name)
+    def getVariantNodes(self, machine: "GlobalStack",
+                        variant_type: Optional[str] = VariantType.NOZZLE) -> dict:
+        machine_definition_id = machine.definition.getId()
+        return self._machine_to_variant_dict_map[machine_definition_id].get(variant_type, {})

@@ -33,13 +33,13 @@ class NozzleModel(ListModel):
             self.setItems([])
             return
 
-        variant_group_dict = variant_manager.getVariantNodes(active_global_stack)
-        if not variant_group_dict:
+        variant_node_dict = variant_manager.getVariantNodes(active_global_stack)
+        if not variant_node_dict:
             self.setItems([])
             return
 
         item_list = []
-        for hotend_name, container_node in sorted(variant_group_dict.items(), key = lambda i: i[0]):
+        for hotend_name, container_node in sorted(variant_node_dict.items(), key = lambda i: i[0]):
             item = {"id": hotend_name,
                     "hotend_name": hotend_name,
                     "container_node": container_node
