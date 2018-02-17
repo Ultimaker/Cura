@@ -148,7 +148,8 @@
 
         "support_enable": {
             "enabled": false,
-            "default_value": true
+            "default_value": true,
+            "settable_per_mesh": false
         },
         "support_angle": {
             "enabled": false,
@@ -171,6 +172,14 @@
         },
         "support_use_towers": {
             "enabled": false
+        },
+        "support_tree_enable": {
+            "enabled": false,
+            "settable_per_mesh": false
+        },
+        "support_tree_branch_distance": {
+            "enabled": false,
+            "settable_per_mesh": false
         },
         "remove_empty_first_layers": {
             "enabled": false
@@ -231,6 +240,18 @@
         "conical_overhang_enabled":
         {
             "enabled": false
+        },
+        "support_conical_enabled":
+        {
+            "settable_per_mesh": false
+        },
+        "support_conical_angle":
+        {
+            "settable_per_mesh": false
+        },
+        "support_conical_min_width":
+        {
+            "settable_per_mesh": false
         },
         "switch_extruder_retraction_amount":
         {
