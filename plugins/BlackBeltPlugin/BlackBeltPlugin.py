@@ -132,8 +132,15 @@ class BlackBeltPlugin(Extension):
             return
 
         scene = Application.getInstance().getController().getScene()
-        if hasattr(scene, "gcode_list"):
-            gcode_list = getattr(scene, "gcode_list")
+        gcode_dict = getattr(scene, "gcode_dict", {})
+        if not gcode_dict: # this also checks for an empty dict
+            Logger.log("w", "Scene has no gcode to process")
+            return
+
+        dict_changed = False
+
+        for plate_id in gcode_dict:
+            gcode_list = gcode_dict[plate_id]
             if gcode_list:
                 if ";BLACKBELTPROCESSED" not in gcode_list[0]:
                     search_regex = re.compile(r"M106 S(\d*\.?\d*?)")
@@ -143,9 +150,13 @@ class BlackBeltPlugin(Extension):
                         gcode_list[layer_number] = re.sub(search_regex, replace_pattern, layer) #Replace all.
 
                     gcode_list[0] += ";BLACKBELTPROCESSED\n"
-                    setattr(scene, "gcode_list", gcode_list)
+                    gcode_dict[plate_id] = gcode_list
+                    dict_changed = True
                 else:
                     Logger.log("e", "Already post processed")
+
+        if dict_changed:
+            setattr(scene, "gcode_dict", gcode_dict)
 
 ## QML-accessible singleton for access to extended data on definition and variants
 class BlackBeltSingleton(QObject):
