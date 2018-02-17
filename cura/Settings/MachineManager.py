@@ -18,10 +18,8 @@ from UM.Application import Application
 from UM.Preferences import Preferences
 from UM.Logger import Logger
 from UM.Message import Message
-from UM.Decorators import deprecated
 
 from UM.Settings.ContainerRegistry import ContainerRegistry
-from UM.Settings.ContainerStack import ContainerStack
 from UM.Settings.InstanceContainer import InstanceContainer
 from UM.Settings.SettingFunction import SettingFunction
 from UM.Signal import postponeSignals, CompressTechnique
@@ -35,8 +33,6 @@ from .CuraStackBuilder import CuraStackBuilder
 
 from UM.i18n import i18nCatalog
 catalog = i18nCatalog("cura")
-
-from cura.Settings.ProfilesModel import ProfilesModel
 
 if TYPE_CHECKING:
     from UM.Settings.DefinitionContainer import DefinitionContainer
@@ -72,7 +68,6 @@ class MachineManager(QObject):
 
         Application.getInstance().globalContainerStackChanged.connect(self._onGlobalContainerChanged)
         Application.getInstance().getContainerRegistry().containerLoadComplete.connect(self._onInstanceContainersChanged)
-        self._connected_to_profiles_model = False
 
         ##  When the global container is changed, active material probably needs to be updated.
         self.globalContainerChanged.connect(self.activeMaterialChanged)
@@ -269,13 +264,6 @@ class MachineManager(QObject):
         self.__emitChangedSignals()
 
     def _onInstanceContainersChanged(self, container) -> None:
-        # This should not trigger the ProfilesModel to be created, or there will be an infinite recursion
-        if not self._connected_to_profiles_model and ProfilesModel.hasInstance():
-            # This triggers updating the qualityModel in SidebarSimple whenever ProfilesModel is updated
-            Logger.log("d", "Connecting profiles model...")
-            ProfilesModel.getInstance().itemsChanged.connect(self._onProfilesModelChanged)
-            self._connected_to_profiles_model = True
-
         self._instance_container_timer.start()
 
     def _onPropertyChanged(self, key: str, property_name: str) -> None:

@@ -53,11 +53,9 @@ from UM.Settings.ContainerRegistry import ContainerRegistry
 from UM.Settings.SettingFunction import SettingFunction
 from cura.Settings.MachineNameValidator import MachineNameValidator
 from cura.Machines.Models.NozzleModel import NozzleModel
-from cura.Settings.ProfilesModel import ProfilesModel, NewQualityProfilesModel, NewCustomQualityProfilesModel
+from cura.Settings.ProfilesModel import NewQualityProfilesModel, NewCustomQualityProfilesModel
 from cura.Settings.MaterialsModel import MaterialsModel, BrandMaterialsModel, GenericMaterialsModel, NewMaterialsModel
-from cura.Settings.QualityAndUserProfilesModel import QualityAndUserProfilesModel
 from cura.Settings.SettingInheritanceManager import SettingInheritanceManager
-from cura.Settings.UserProfilesModel import UserProfilesModel
 from cura.Settings.SimpleModeSettingsManager import SimpleModeSettingsManager
 
 from cura.Machines.VariantManager import VariantManager
@@ -934,7 +932,6 @@ class CuraApplication(QtApplication):
         qmlRegisterType(InstanceContainer, "Cura", 1, 0, "InstanceContainer")
         qmlRegisterType(ExtrudersModel, "Cura", 1, 0, "ExtrudersModel")
         qmlRegisterType(ContainerSettingsModel, "Cura", 1, 0, "ContainerSettingsModel")
-        qmlRegisterSingletonType(ProfilesModel, "Cura", 1, 0, "ProfilesModel", ProfilesModel.createProfilesModel)
 
         qmlRegisterType(GenericMaterialsModel, "Cura", 1, 0, "GenericMaterialsModel")
         qmlRegisterType(BrandMaterialsModel, "Cura", 1, 0, "BrandMaterialsModel")
@@ -948,8 +945,6 @@ class CuraApplication(QtApplication):
         qmlRegisterType(NozzleModel, "Cura", 1, 0, "NozzleModel")
 
         qmlRegisterType(MaterialsModel, "Cura", 1, 0, "MaterialsModel")
-        qmlRegisterType(QualityAndUserProfilesModel, "Cura", 1, 0, "QualityAndUserProfilesModel")
-        qmlRegisterType(UserProfilesModel, "Cura", 1, 0, "UserProfilesModel")
         qmlRegisterType(MaterialSettingsVisibilityHandler, "Cura", 1, 0, "MaterialSettingsVisibilityHandler")
         qmlRegisterType(QualitySettingsModel, "Cura", 1, 0, "QualitySettingsModel")
         qmlRegisterType(MachineNameValidator, "Cura", 1, 0, "MachineNameValidator")
