@@ -88,10 +88,12 @@ class NewQualityProfilesModel(ListModel):
                 unit = ""
             self._layer_height_unit = unit
 
+        default_layer_height = active_global_stack.definition.getProperty("layer_height", "value")
+
         # Get layer_height from the quality profile for the GlobalStack
         container = quality_group.node_for_global.getContainer()
 
-        layer_height = ""
+        layer_height = default_layer_height
         if container.hasProperty("layer_height", "value"):
             layer_height = str(container.getProperty("layer_height", "value"))
         else:
