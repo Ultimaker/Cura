@@ -5,7 +5,7 @@ import QtQuick 2.2
 import QtQuick.Controls 1.1
 
 import UM 1.2 as UM
-import Cura 1.2 as Cura
+import Cura 1.0 as Cura
 
 Menu
 {
@@ -53,12 +53,12 @@ Menu
         visible: UM.Preferences.getValue("cura/use_multi_build_plate")
         Instantiator
         {
-            model: Cura.BuildPlateModel
+            model: Cura.MultiBuildPlateModel
             MenuItem {
-                text: Cura.BuildPlateModel.getItem(index).name;
-                onTriggered: Cura.SceneController.setActiveBuildPlate(Cura.BuildPlateModel.getItem(index).buildPlateNumber);
+                text: Cura.MultiBuildPlateModel.getItem(index).name;
+                onTriggered: Cura.SceneController.setActiveBuildPlate(Cura.MultiBuildPlateModel.getItem(index).buildPlateNumber);
                 checkable: true;
-                checked: Cura.BuildPlateModel.getItem(index).buildPlateNumber == Cura.BuildPlateModel.activeBuildPlate;
+                checked: Cura.MultiBuildPlateModel.getItem(index).buildPlateNumber == Cura.MultiBuildPlateModel.activeBuildPlate;
                 exclusiveGroup: buildPlateGroup;
                 visible: UM.Preferences.getValue("cura/use_multi_build_plate")
             }

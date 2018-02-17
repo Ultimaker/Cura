@@ -8,7 +8,7 @@ import QtQuick.Layouts 1.1
 import QtQuick.Dialogs 1.1
 
 import UM 1.3 as UM
-import Cura 1.2 as Cura
+import Cura 1.0 as Cura
 
 import "Menus"
 
@@ -67,7 +67,7 @@ Rectangle
         Rectangle
             {
                 height: childrenRect.height
-                color: Cura.BuildPlateModel.getItem(index).buildPlateNumber == Cura.BuildPlateModel.activeBuildPlate ? palette.highlight : index % 2 ? palette.base : palette.alternateBase
+                color: Cura.MultiBuildPlateModel.getItem(index).buildPlateNumber == Cura.MultiBuildPlateModel.activeBuildPlate ? palette.highlight : index % 2 ? palette.base : palette.alternateBase
                 width: parent.width
                 Label
                 {
@@ -75,8 +75,8 @@ Rectangle
                     anchors.left: parent.left
                     anchors.leftMargin: UM.Theme.getSize("default_margin").width
                     width: parent.width - 2 * UM.Theme.getSize("default_margin").width - 30
-                    text: Cura.BuildPlateModel.getItem(index) ? Cura.BuildPlateModel.getItem(index).name : "";
-                    color: Cura.BuildPlateModel.activeBuildPlate == index ? palette.highlightedText : palette.text
+                    text: Cura.MultiBuildPlateModel.getItem(index) ? Cura.MultiBuildPlateModel.getItem(index).name : "";
+                    color: Cura.MultiBuildPlateModel.activeBuildPlate == index ? palette.highlightedText : palette.text
                     elide: Text.ElideRight
                 }
 
@@ -118,7 +118,7 @@ Rectangle
         ListView
         {
             id: buildPlateListView
-            model: Cura.BuildPlateModel
+            model: Cura.MultiBuildPlateModel
             width: parent.width
             delegate: buildPlateDelegate
         }

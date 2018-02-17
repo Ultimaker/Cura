@@ -14,26 +14,18 @@ Menu
 
     Instantiator
     {
-        id: buildplateInstantiator
-        model: UM.InstanceContainersModel
-        {
-            filter:
-            {
-                "type": "variant",
-                "hardware_type": "buildplate",
-                "definition": Cura.MachineManager.activeDefinitionId //Only show variants of this machine
-            }
-        }
+        model: Cura.BuildPlateModel
+
         MenuItem {
             text: model.name
             checkable: true
-            checked: model.id == Cura.MachineManager.globalVariantId
+            checked: model.name == Cura.MachineManager.globalVariantName // TODO
             exclusiveGroup: group
-            onTriggered:
-            {
-                Cura.MachineManager.setActiveVariantBuildplate(model.id);
+            onTriggered: {
+                Cura.MachineManager.setGlobalVariant(model.container_node); // TODO
             }
         }
+
         onObjectAdded: menu.insertItem(index, object)
         onObjectRemoved: menu.removeItem(object)
     }

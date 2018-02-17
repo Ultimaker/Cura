@@ -545,11 +545,11 @@ class MachineManager(QObject):
         return ""
 
     @pyqtProperty(str, notify=activeVariantChanged)
-    def globalVariantId(self) -> str:
+    def globalVariantName(self) -> str:
         if self._global_container_stack:
             variant = self._global_container_stack.variant
             if variant and not isinstance(variant, type(self._empty_variant_container)):
-                return variant.getId()
+                return variant.getName()
         return ""
 
     @pyqtProperty(str, notify = activeQualityChanged)
@@ -1319,6 +1319,9 @@ class MachineManager(QObject):
     def _setVariantNode(self, position, container_node):
         self._global_container_stack.extruders[position].variant = container_node.getContainer()
 
+    def _setGlobalVariant(self, container_node):
+        self._global_container_stack.variant = container_node.getContainer()
+
     def _setMaterial(self, position, container_node = None):
         if container_node:
             self._global_container_stack.extruders[position].material = container_node.getContainer()
@@ -1354,22 +1357,33 @@ class MachineManager(QObject):
 
         self._setQualityGroup(candidate_quality_groups[quality_type], empty_quality_changes = False)
 
-    def _updateMaterialWithVariant(self, position, current_material_base_name, current_variant_name):
-        material_manager = Application.getInstance()._material_manager
-        material_diameter = self._global_container_stack.getProperty("material_diameter", "value")
-        candidate_materials = material_manager.getAvailableMaterials(
-            self._global_container_stack.getId(),
-            current_variant_name,
-            material_diameter)
+    def _updateMaterialWithVariant(self, position: Optional[str]):
+        if position is None:
+            position_list = list(self._global_container_stack.extruders.keys())
+        else:
+            position_list = [position]
 
-        if not candidate_materials:
-            self._setMaterial(position, container_node = None)
-            return
+        for position in position_list:
+            extruder = self._global_container_stack.extruders[position]
 
-        if current_material_base_name in candidate_materials:
-            new_material = candidate_materials[current_material_base_name]
-            self._setMaterial(position, new_material)
-            return
+            current_material_base_name = extruder.material.getMetaDataEntry("base_file")
+            current_variant_name = extruder.variant.getMetaDataEntry("name")
+
+            material_manager = Application.getInstance()._material_manager
+            material_diameter = self._global_container_stack.getProperty("material_diameter", "value")
+            candidate_materials = material_manager.getAvailableMaterials(
+                self._global_container_stack.getId(),
+                current_variant_name,
+                material_diameter)
+
+            if not candidate_materials:
+                self._setMaterial(position, container_node = None)
+                continue
+
+            if current_material_base_name in candidate_materials:
+                new_material = candidate_materials[current_material_base_name]
+                self._setMaterial(position, new_material)
+                continue
 
         # # Find a fallback material
         # preferred_material_query = self._global_container_stack.getMetaDataEntry("preferred_material")
@@ -1377,6 +1391,15 @@ class MachineManager(QObject):
         # if preferred_material_key in candidate_materials:
         #     self._setMaterial(position, candidate_materials[preferred_material_key])
         #     return
+
+    @pyqtSlot("QVariant")
+    def setGlobalVariant(self, container_node):
+        Logger.log("d", "----------------  container = [%s]", container_node)
+        self.blurSettings.emit()
+        with postponeSignals(*self._getContainerChangedSignals(), compress = CompressTechnique.CompressPerParameterValue):
+            self._setGlobalVariant(container_node)
+            self._updateMaterialWithVariant(None)  # Update all materials
+            self._updateQualityWithMaterial()
 
     @pyqtSlot(str, "QVariant")
     def setMaterial(self, position, container_node):
@@ -1394,9 +1417,7 @@ class MachineManager(QObject):
         self.blurSettings.emit()
         with postponeSignals(*self._getContainerChangedSignals(), compress = CompressTechnique.CompressPerParameterValue):
             self._setVariantNode(position, container_node)
-            current_variant_name = container_node.metadata["name"]
-            current_material_base_name = self._global_container_stack.extruders[position].material.getMetaDataEntry("base_file")
-            self._updateMaterialWithVariant(position, current_material_base_name, current_variant_name)
+            self._updateMaterialWithVariant(position)
             self._updateQualityWithMaterial()
 
     @pyqtSlot("QVariant")

@@ -184,7 +184,7 @@ class LegacyUM3OutputDevice(NetworkedPrinterOutputDevice):
         self.writeStarted.emit(self)
 
         gcode_dict = getattr(Application.getInstance().getController().getScene(), "gcode_dict", [])
-        active_build_plate_id = Application.getInstance().getBuildPlateModel().activeBuildPlate
+        active_build_plate_id = Application.getInstance().getMultiBuildPlateModel().activeBuildPlate
         gcode_list = gcode_dict[active_build_plate_id]
 
         if not gcode_list:

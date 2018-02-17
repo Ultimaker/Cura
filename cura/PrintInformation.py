@@ -76,15 +76,18 @@ class PrintInformation(QObject):
         self._active_build_plate = 0
         self._initVariablesWithBuildPlate(self._active_build_plate)
 
-        Application.getInstance().globalContainerStackChanged.connect(self._updateJobName)
-        Application.getInstance().fileLoaded.connect(self.setBaseName)
-        Application.getInstance().getBuildPlateModel().activeBuildPlateChanged.connect(self._onActiveBuildPlateChanged)
-        Application.getInstance().workspaceLoaded.connect(self.setProjectName)
+        self._application = Application.getInstance()
+        self._multi_build_plate_model = self._application.getMultiBuildPlateModel()
+
+        self._application.globalContainerStackChanged.connect(self._updateJobName)
+        self._application.fileLoaded.connect(self.setBaseName)
+        self._application.workspaceLoaded.connect(self.setProjectName)
+        self._multi_build_plate_model.activeBuildPlateChanged.connect(self._onActiveBuildPlateChanged)
 
         Preferences.getInstance().preferenceChanged.connect(self._onPreferencesChanged)
 
         self._active_material_container = None
-        Application.getInstance().getMachineManager().activeMaterialChanged.connect(self._onActiveMaterialChanged)
+        self._application.getMachineManager().activeMaterialChanged.connect(self._onActiveMaterialChanged)
         self._onActiveMaterialChanged()
 
         self._material_amounts = []
@@ -260,7 +263,7 @@ class PrintInformation(QObject):
         if preference != "cura/material_settings":
             return
 
-        for build_plate_number in range(Application.getInstance().getBuildPlateModel().maxBuildPlate + 1):
+        for build_plate_number in range(self._multi_build_plate_model.maxBuildPlate + 1):
             self._calculateInformation(build_plate_number)
 
     def _onActiveMaterialChanged(self):
@@ -278,7 +281,7 @@ class PrintInformation(QObject):
             self._active_material_container.metaDataChanged.connect(self._onMaterialMetaDataChanged)
 
     def _onActiveBuildPlateChanged(self):
-        new_active_build_plate = Application.getInstance().getBuildPlateModel().activeBuildPlate
+        new_active_build_plate = self._multi_build_plate_model.activeBuildPlate
         if new_active_build_plate != self._active_build_plate:
             self._active_build_plate = new_active_build_plate
 
@@ -291,7 +294,7 @@ class PrintInformation(QObject):
             self.currentPrintTimeChanged.emit()
 
     def _onMaterialMetaDataChanged(self, *args, **kwargs):
-        for build_plate_number in range(Application.getInstance().getBuildPlateModel().maxBuildPlate + 1):
+        for build_plate_number in range(self._multi_build_plate_model.maxBuildPlate + 1):
             self._calculateInformation(build_plate_number)
 
     @pyqtSlot(str)

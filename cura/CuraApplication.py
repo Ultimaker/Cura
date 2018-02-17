@@ -53,9 +53,12 @@ from UM.Settings.ContainerRegistry import ContainerRegistry
 from UM.Settings.SettingFunction import SettingFunction
 from cura.Settings.MachineNameValidator import MachineNameValidator
 
+from cura.Machines.Models.BuildPlateModel import BuildPlateModel
 from cura.Machines.Models.NozzleModel import NozzleModel
 from cura.Machines.Models.QualityProfilesModel import QualityProfilesModel
 from cura.Machines.Models.CustomQualityProfilesModel import CustomQualityProfilesModel
+
+from cura.Machines.Models.Other.MultiBuildPlateModel import MultiBuildPlateModel
 
 from cura.Settings.MaterialsModel import MaterialsModel, BrandMaterialsModel, GenericMaterialsModel, NewMaterialsModel
 from cura.Settings.SettingInheritanceManager import SettingInheritanceManager
@@ -84,7 +87,6 @@ from cura.Settings.QualitySettingsModel import QualitySettingsModel
 from cura.Settings.ContainerManager import ContainerManager
 
 from cura.ObjectsModel import ObjectsModel
-from cura.BuildPlateModel import BuildPlateModel
 
 from PyQt5.QtCore import QUrl, pyqtSignal, pyqtProperty, QEvent, Q_ENUMS
 from UM.FlameProfiler import pyqtSlot
@@ -219,6 +221,7 @@ class CuraApplication(QtApplication):
         self._material_manager = None
         self._object_manager = None
         self._build_plate_model = None
+        self._multi_build_plate_model = None
         self._setting_inheritance_manager = None
         self._simple_mode_settings_manager = None
         self._cura_scene_controller = None
@@ -858,10 +861,14 @@ class CuraApplication(QtApplication):
             self._object_manager = ObjectsModel.createObjectsModel()
         return self._object_manager
 
+    def getMultiBuildPlateModel(self, *args):
+        if self._multi_build_plate_model is None:
+            self._multi_build_plate_model = MultiBuildPlateModel(self)
+        return self._multi_build_plate_model
+
     def getBuildPlateModel(self, *args):
         if self._build_plate_model is None:
-            self._build_plate_model = BuildPlateModel.createBuildPlateModel()
-
+            self._build_plate_model = BuildPlateModel(self)
         return self._build_plate_model
 
     def getCuraSceneController(self, *args):
@@ -923,15 +930,16 @@ class CuraApplication(QtApplication):
 
         qmlRegisterUncreatableType(CuraApplication, "Cura", 1, 0, "ResourceTypes", "Just an Enum type")
 
-        qmlRegisterSingletonType(CuraSceneController, "Cura", 1, 2, "SceneController", self.getCuraSceneController)
+        qmlRegisterSingletonType(CuraSceneController, "Cura", 1, 0, "SceneController", self.getCuraSceneController)
         qmlRegisterSingletonType(ExtruderManager, "Cura", 1, 0, "ExtruderManager", self.getExtruderManager)
         qmlRegisterSingletonType(MachineManager, "Cura", 1, 0, "MachineManager", self.getMachineManager)
         qmlRegisterSingletonType(SettingInheritanceManager, "Cura", 1, 0, "SettingInheritanceManager", self.getSettingInheritanceManager)
-        qmlRegisterSingletonType(SimpleModeSettingsManager, "Cura", 1, 2, "SimpleModeSettingsManager", self.getSimpleModeSettingsManager)
+        qmlRegisterSingletonType(SimpleModeSettingsManager, "Cura", 1, 0, "SimpleModeSettingsManager", self.getSimpleModeSettingsManager)
         qmlRegisterSingletonType(MachineActionManager.MachineActionManager, "Cura", 1, 0, "MachineActionManager", self.getMachineActionManager)
 
-        qmlRegisterSingletonType(ObjectsModel, "Cura", 1, 2, "ObjectsModel", self.getObjectsModel)
-        qmlRegisterSingletonType(BuildPlateModel, "Cura", 1, 2, "BuildPlateModel", self.getBuildPlateModel)
+        qmlRegisterSingletonType(ObjectsModel, "Cura", 1, 0, "ObjectsModel", self.getObjectsModel)
+        qmlRegisterSingletonType(BuildPlateModel, "Cura", 1, 0, "BuildPlateModel", self.getBuildPlateModel)
+        qmlRegisterSingletonType(MultiBuildPlateModel, "Cura", 1, 0, "MultiBuildPlateModel", self.getMultiBuildPlateModel)
         qmlRegisterType(InstanceContainer, "Cura", 1, 0, "InstanceContainer")
         qmlRegisterType(ExtrudersModel, "Cura", 1, 0, "ExtrudersModel")
         qmlRegisterType(ContainerSettingsModel, "Cura", 1, 0, "ContainerSettingsModel")
@@ -951,7 +959,7 @@ class CuraApplication(QtApplication):
         qmlRegisterType(MaterialSettingsVisibilityHandler, "Cura", 1, 0, "MaterialSettingsVisibilityHandler")
         qmlRegisterType(QualitySettingsModel, "Cura", 1, 0, "QualitySettingsModel")
         qmlRegisterType(MachineNameValidator, "Cura", 1, 0, "MachineNameValidator")
-        qmlRegisterType(UserChangesModel, "Cura", 1, 1, "UserChangesModel")
+        qmlRegisterType(UserChangesModel, "Cura", 1, 0, "UserChangesModel")
         qmlRegisterSingletonType(ContainerManager, "Cura", 1, 0, "ContainerManager", ContainerManager.createContainerManager)
 
         # As of Qt5.7, it is necessary to get rid of any ".." in the path for the singleton to work.
@@ -1033,7 +1041,7 @@ class CuraApplication(QtApplication):
         count = 0
         scene_bounding_box = None
         is_block_slicing_node = False
-        active_build_plate = self.getBuildPlateModel().activeBuildPlate
+        active_build_plate = self._multi_build_plate_model.activeBuildPlate
         for node in DepthFirstIterator(self.getController().getScene().getRoot()):
             if (
                 not issubclass(type(node), CuraSceneNode) or
@@ -1282,7 +1290,7 @@ class CuraApplication(QtApplication):
     @pyqtSlot()
     def arrangeAll(self):
         nodes = []
-        active_build_plate = self.getBuildPlateModel().activeBuildPlate
+        active_build_plate = self._multi_build_plate_model.activeBuildPlate
         for node in DepthFirstIterator(self.getController().getScene().getRoot()):
             if not isinstance(node, SceneNode):
                 continue
@@ -1431,7 +1439,7 @@ class CuraApplication(QtApplication):
         group_decorator = GroupDecorator()
         group_node.addDecorator(group_decorator)
         group_node.addDecorator(ConvexHullDecorator())
-        group_node.addDecorator(BuildPlateDecorator(self.getBuildPlateModel().activeBuildPlate))
+        group_node.addDecorator(BuildPlateDecorator(self._multi_build_plate_model.activeBuildPlate))
         group_node.setParent(self.getController().getScene().getRoot())
         group_node.setSelectable(True)
         center = Selection.getSelectionCenter()
@@ -1576,7 +1584,7 @@ class CuraApplication(QtApplication):
         arrange_objects_on_load = (
             not Preferences.getInstance().getValue("cura/use_multi_build_plate") or
             not Preferences.getInstance().getValue("cura/not_arrange_objects_on_load"))
-        target_build_plate = self.getBuildPlateModel().activeBuildPlate if arrange_objects_on_load else -1
+        target_build_plate = self._multi_build_plate_model.activeBuildPlate if arrange_objects_on_load else -1
 
         root = self.getController().getScene().getRoot()
         fixed_nodes = []

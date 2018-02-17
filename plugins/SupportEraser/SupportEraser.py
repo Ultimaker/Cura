@@ -42,7 +42,7 @@ class SupportEraser(Tool):
         mesh.addCube(10,10,10)
         node.setMeshData(mesh.build())
 
-        active_build_plate = Application.getInstance().getBuildPlateModel().activeBuildPlate
+        active_build_plate = Application.getInstance().getMultiBuildPlateModel().activeBuildPlate
 
         node.addDecorator(SettingOverrideDecorator())
         node.addDecorator(BuildPlateDecorator(active_build_plate))

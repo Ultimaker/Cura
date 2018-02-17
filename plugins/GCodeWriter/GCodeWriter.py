@@ -60,7 +60,7 @@ class GCodeWriter(MeshWriter):
             Logger.log("e", "GCodeWriter does not support non-text mode.")
             return False
 
-        active_build_plate = Application.getInstance().getBuildPlateModel().activeBuildPlate
+        active_build_plate = Application.getInstance().getMultiBuildPlateModel().activeBuildPlate
         scene = Application.getInstance().getController().getScene()
         gcode_dict = getattr(scene, "gcode_dict")
         if not gcode_dict:

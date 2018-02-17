@@ -77,7 +77,7 @@ class ThreeMFReader(MeshReader):
         self._object_count += 1
         node_name = "Object %s" % self._object_count
 
-        active_build_plate = Application.getInstance().getBuildPlateModel().activeBuildPlate
+        active_build_plate = Application.getInstance().getMultiBuildPlateModel().activeBuildPlate
 
         um_node = CuraSceneNode()
         um_node.addDecorator(BuildPlateDecorator(active_build_plate))
