@@ -1,4 +1,4 @@
-// Copyright (c) 2016 Ultimaker B.V.
+// Copyright (c) 2018 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.8
@@ -13,7 +13,7 @@ Menu
 
     Instantiator
     {
-        model: Cura.NewQualityProfilesModel
+        model: Cura.QualityProfilesModel
 
         MenuItem
         {
@@ -34,18 +34,18 @@ Menu
     MenuSeparator
     {
         id: customSeparator
-        visible: Cura.NewCustomQualityProfilesModel.rowCount > 0
+        visible: Cura.CustomQualityProfilesModel.rowCount > 0
     }
 
     Instantiator
     {
         id: customProfileInstantiator
-        model: Cura.NewCustomQualityProfilesModel
+        model: Cura.CustomQualityProfilesModel
 
         Connections
         {
-            target: Cura.NewCustomQualityProfilesModel
-            onModelReset: customSeparator.visible = Cura.NewCustomQualityProfilesModel.rowCount() > 0
+            target: Cura.CustomQualityProfilesModel
+            onModelReset: customSeparator.visible = Cura.CustomQualityProfilesModel.rowCount() > 0
         }
 
         MenuItem

@@ -1,7 +1,7 @@
-// Copyright (c) 2017 Ultimaker B.V.
+// Copyright (c) 2018 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
-import QtQuick 2.7
+import QtQuick 2.8
 import QtQuick.Controls 1.4
 import QtQuick.Controls.Styles 1.4
 import QtQuick.Layouts 1.3
@@ -58,7 +58,7 @@ Item
                     running: false
                     repeat: false
                     onTriggered: {
-                        var item = Cura.NewQualityProfilesModel.getItem(qualitySlider.value);
+                        var item = Cura.QualityProfilesModel.getItem(qualitySlider.value);
                         Cura.MachineManager.activeQualityGroup = item.quality_group;
                     }
                 }
@@ -105,8 +105,8 @@ Item
                         var availableMin = -1
                         var availableMax = -1
 
-                        for (var i = 0; i < Cura.NewQualityProfilesModel.rowCount(); i++) {
-                            var qualityItem = Cura.NewQualityProfilesModel.getItem(i)
+                        for (var i = 0; i < Cura.QualityProfilesModel.rowCount(); i++) {
+                            var qualityItem = Cura.QualityProfilesModel.getItem(i)
 
                             // Add each quality item to the UI quality model
                             qualityModel.append(qualityItem)
@@ -168,7 +168,7 @@ Item
                         qualityModel.existingQualityProfile = 0
 
                         // check, the ticks count cannot be less than zero
-                        qualityModel.totalTicks = Math.max(0, Cura.NewQualityProfilesModel.rowCount() - 1)
+                        qualityModel.totalTicks = Math.max(0, Cura.QualityProfilesModel.rowCount() - 1)
                     }
                 }
 
@@ -194,13 +194,13 @@ Item
                             anchors.verticalCenter: parent.verticalCenter
                             anchors.top: parent.top
                             anchors.topMargin: Math.round(UM.Theme.getSize("sidebar_margin").height / 2)
-                            color: (Cura.MachineManager.activeMachine != null && Cura.NewQualityProfilesModel.getItem(index).available) ? UM.Theme.getColor("quality_slider_available") : UM.Theme.getColor("quality_slider_unavailable")
+                            color: (Cura.MachineManager.activeMachine != null && Cura.QualityProfilesModel.getItem(index).available) ? UM.Theme.getColor("quality_slider_available") : UM.Theme.getColor("quality_slider_unavailable")
                             text:
                             {
                                 var result = ""
                                 if(Cura.MachineManager.activeMachine != null)
                                 {
-                                    result = Cura.NewQualityProfilesModel.getItem(index).layer_height_without_unit
+                                    result = Cura.QualityProfilesModel.getItem(index).layer_height_without_unit
 
                                     if(result == undefined)
                                     {
@@ -265,7 +265,7 @@ Item
                         Rectangle
                         {
                             anchors.verticalCenter: parent.verticalCenter
-                            color: Cura.NewQualityProfilesModel.getItem(index).available ? UM.Theme.getColor("quality_slider_available") : UM.Theme.getColor("quality_slider_unavailable")
+                            color: Cura.QualityProfilesModel.getItem(index).available ? UM.Theme.getColor("quality_slider_available") : UM.Theme.getColor("quality_slider_unavailable")
                             width: 1 * screenScaleFactor
                             height: 6 * screenScaleFactor
                             y: 0
@@ -411,9 +411,9 @@ Item
                         // if the current profile is user-created, switch to a built-in quality
                         if (Cura.SimpleModeSettingsManager.isProfileUserCreated)
                         {
-                            if (Cura.NewQualityProfilesModel.rowCount() > 0)
+                            if (Cura.QualityProfilesModel.rowCount() > 0)
                             {
-                                var item = Cura.NewQualityProfilesModel.getItem(0);
+                                var item = Cura.QualityProfilesModel.getItem(0);
                                 Cura.MachineManager.activeQualityGroup = item.quality_group;
                             }
                         }

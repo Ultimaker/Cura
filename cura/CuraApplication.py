@@ -52,8 +52,11 @@ from UM.Settings.SettingDefinition import SettingDefinition, DefinitionPropertyT
 from UM.Settings.ContainerRegistry import ContainerRegistry
 from UM.Settings.SettingFunction import SettingFunction
 from cura.Settings.MachineNameValidator import MachineNameValidator
+
 from cura.Machines.Models.NozzleModel import NozzleModel
-from cura.Settings.ProfilesModel import NewQualityProfilesModel, NewCustomQualityProfilesModel
+from cura.Machines.Models.QualityProfilesModel import QualityProfilesModel
+from cura.Machines.Models.CustomQualityProfilesModel import CustomQualityProfilesModel
+
 from cura.Settings.MaterialsModel import MaterialsModel, BrandMaterialsModel, GenericMaterialsModel, NewMaterialsModel
 from cura.Settings.SettingInheritanceManager import SettingInheritanceManager
 from cura.Settings.SimpleModeSettingsManager import SimpleModeSettingsManager
@@ -390,8 +393,8 @@ class CuraApplication(QtApplication):
 
         self.getCuraSceneController().setActiveBuildPlate(0)  # Initialize
 
-        self._new_quality_profile_model = None
-        self._new_custom_quality_profile_model = None
+        self._quality_profile_model = None
+        self._custom_quality_profile_model = None
 
         CuraApplication.Created = True
 
@@ -896,15 +899,15 @@ class CuraApplication(QtApplication):
     def getPrintInformation(self):
         return self._print_information
 
-    def getNewQualityProfileModel(self, *args, **kwargs):
-        if self._new_quality_profile_model is None:
-            self._new_quality_profile_model = NewQualityProfilesModel(self)
-        return self._new_quality_profile_model
+    def getQualityProfileModel(self, *args, **kwargs):
+        if self._quality_profile_model is None:
+            self._quality_profile_model = QualityProfilesModel(self)
+        return self._quality_profile_model
 
-    def getNewCustomQualityProfilesModel(self, *args, **kwargs):
-        if self._new_custom_quality_profile_model is None:
-            self._new_custom_quality_profile_model = NewCustomQualityProfilesModel(self)
-        return self._new_custom_quality_profile_model
+    def getCustomQualityProfilesModel(self, *args, **kwargs):
+        if self._custom_quality_profile_model is None:
+            self._custom_quality_profile_model = CustomQualityProfilesModel(self)
+        return self._custom_quality_profile_model
 
     ##  Registers objects for the QML engine to use.
     #
@@ -940,8 +943,8 @@ class CuraApplication(QtApplication):
         # TODO: make this singleton?
         qmlRegisterType(QualityManagementModel, "Cura", 1, 0, "QualityManagementModel")
 
-        qmlRegisterSingletonType(NewQualityProfilesModel, "Cura", 1, 0, "NewQualityProfilesModel", self.getNewQualityProfileModel)
-        qmlRegisterSingletonType(NewCustomQualityProfilesModel, "Cura", 1, 0, "NewCustomQualityProfilesModel", self.getNewCustomQualityProfilesModel)
+        qmlRegisterSingletonType(QualityProfilesModel, "Cura", 1, 0, "QualityProfilesModel", self.getQualityProfileModel)
+        qmlRegisterSingletonType(CustomQualityProfilesModel, "Cura", 1, 0, "CustomQualityProfilesModel", self.getCustomQualityProfilesModel)
         qmlRegisterType(NozzleModel, "Cura", 1, 0, "NozzleModel")
 
         qmlRegisterType(MaterialsModel, "Cura", 1, 0, "MaterialsModel")
