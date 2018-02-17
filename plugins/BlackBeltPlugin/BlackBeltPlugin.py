@@ -252,12 +252,13 @@ class BlackBeltDecorator(SceneNodeDecorator):
         machine_depth = global_stack.getProperty("machine_depth", "value")
 
         matrix = Matrix()
-        matrix.setColumn(1, [0, 1 / math.tan(self._gantry_angle), 1, (machine_depth / 2) * (2 - math.cos(self._gantry_angle))])
+        matrix.setColumn(1, [0, 1 / math.tan(self._gantry_angle), 1, (machine_depth / 2) * (1 - math.cos(self._gantry_angle))])
         matrix.setColumn(2, [0, - 1 / math.sin(self._gantry_angle), 0, machine_depth / 2])
         self._transform_matrix = matrix
 
         # The above magic transform matrix is composed as follows:
         """
+        import numpy
         matrix_data = numpy.identity(4)
         matrix_data[2, 2] = 1/math.sin(self._gantry_angle)  # scale Z
         matrix_data[1, 2] = -1/math.tan(self._gantry_angle) # shear ZY
@@ -276,7 +277,7 @@ class BlackBeltDecorator(SceneNodeDecorator):
         # bottom face has origin at the center, front face has origin at one side
         matrix.translate(Vector(0, - math.sin(self._gantry_angle) * machine_depth / 2, 0))
         # make sure objects are not transformed to be below the buildplate
-        matrix.translate(Vector(0, 0, machine_depth))
+        matrix.translate(Vector(0, 0, machine_depth / 2))
 
         self._transform_matrix = matrix
         """
