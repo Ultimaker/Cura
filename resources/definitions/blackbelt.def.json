@@ -63,7 +63,7 @@
                     "unit": "mm",
                     "default_value": 0.2,
                     "minimum_value": "0",
-                    "maximum_value": "0.4",
+                    "maximum_value": "5",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false
                 },
@@ -106,7 +106,7 @@
                     "type": "float",
                     "unit": "mm",
                     "default_value": 0.2,
-                    "value": "0.4 - blackbelt_z_offset_gap",
+                    "value": "(5 - blackbelt_z_offset_gap) / math.sin(math.radians(float(blackbelt_gantry_angle)))",
                     "minimum_value": "0",
                     "maximum_value_warning": "machine_nozzle_size",
                     "settable_per_mesh": false,
