@@ -67,12 +67,16 @@ class NewQualityProfilesModel(ListModel):
 
             item = {"id": "TODO",  # TODO: probably will be removed
                     "name": quality_group.name,
+                    "quality_type": quality_group.quality_type,
                     "layer_height": layer_height + self._layer_height_unit,
                     "layer_height_without_unit": layer_height,
                     "available": quality_group.is_available,
                     "quality_group": quality_group}
 
             item_list.append(item)
+
+        # Sort items based on layer_height
+        item_list = sorted(item_list, key = lambda x: float(x["layer_height_without_unit"]))
 
         self.setItems(item_list)
 
@@ -83,9 +87,6 @@ class NewQualityProfilesModel(ListModel):
             if not unit:
                 unit = ""
             self._layer_height_unit = unit
-
-        if not quality_group.is_available:
-            return ""
 
         # Get layer_height from the quality profile for the GlobalStack
         container = quality_group.node_for_global.getContainer()

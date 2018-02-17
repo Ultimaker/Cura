@@ -57,7 +57,10 @@ Item
                     interval: 50
                     running: false
                     repeat: false
-                    onTriggered: Cura.MachineManager.setActiveQuality(Cura.ProfilesModel.getItem(qualitySlider.value).id)
+                    onTriggered: {
+                        var item = Cura.NewQualityProfilesModel.getItem(qualitySlider.value);
+                        Cura.MachineManager.activeQualityGroup = item.quality_group;
+                    }
                 }
 
                 Component.onCompleted: qualityModel.update()
@@ -102,14 +105,14 @@ Item
                         var availableMin = -1
                         var availableMax = -1
 
-                        for (var i = 0; i < Cura.ProfilesModel.rowCount(); i++) {
-                            var qualityItem = Cura.ProfilesModel.getItem(i)
+                        for (var i = 0; i < Cura.NewQualityProfilesModel.rowCount(); i++) {
+                            var qualityItem = Cura.NewQualityProfilesModel.getItem(i)
 
                             // Add each quality item to the UI quality model
                             qualityModel.append(qualityItem)
 
                             // Set selected value
-                            if (Cura.MachineManager.activeQualityType == qualityItem.metadata.quality_type) {
+                            if (Cura.MachineManager.activeQualityType == qualityItem.quality_type) {
 
                                 // set to -1 when switching to user created profile so all ticks are clickable
                                 if (Cura.SimpleModeSettingsManager.isProfileUserCreated) {
@@ -165,7 +168,7 @@ Item
                         qualityModel.existingQualityProfile = 0
 
                         // check, the ticks count cannot be less than zero
-                        qualityModel.totalTicks = Math.max(0, Cura.ProfilesModel.rowCount() - 1)
+                        qualityModel.totalTicks = Math.max(0, Cura.NewQualityProfilesModel.rowCount() - 1)
                     }
                 }
 
@@ -191,13 +194,13 @@ Item
                             anchors.verticalCenter: parent.verticalCenter
                             anchors.top: parent.top
                             anchors.topMargin: Math.round(UM.Theme.getSize("sidebar_margin").height / 2)
-                            color: (Cura.MachineManager.activeMachine != null && Cura.ProfilesModel.getItem(index).available) ? UM.Theme.getColor("quality_slider_available") : UM.Theme.getColor("quality_slider_unavailable")
+                            color: (Cura.MachineManager.activeMachine != null && Cura.NewQualityProfilesModel.getItem(index).available) ? UM.Theme.getColor("quality_slider_available") : UM.Theme.getColor("quality_slider_unavailable")
                             text:
                             {
                                 var result = ""
                                 if(Cura.MachineManager.activeMachine != null)
                                 {
-                                    result = Cura.ProfilesModel.getItem(index).layer_height_without_unit
+                                    result = Cura.NewQualityProfilesModel.getItem(index).layer_height_without_unit
 
                                     if(result == undefined)
                                     {
@@ -262,7 +265,7 @@ Item
                         Rectangle
                         {
                             anchors.verticalCenter: parent.verticalCenter
-                            color: Cura.ProfilesModel.getItem(index).available ? UM.Theme.getColor("quality_slider_available") : UM.Theme.getColor("quality_slider_unavailable")
+                            color: Cura.NewQualityProfilesModel.getItem(index).available ? UM.Theme.getColor("quality_slider_available") : UM.Theme.getColor("quality_slider_unavailable")
                             width: 1 * screenScaleFactor
                             height: 6 * screenScaleFactor
                             y: 0
@@ -408,9 +411,10 @@ Item
                         // if the current profile is user-created, switch to a built-in quality
                         if (Cura.SimpleModeSettingsManager.isProfileUserCreated)
                         {
-                            if (Cura.ProfilesModel.rowCount() > 0)
+                            if (Cura.NewQualityProfilesModel.rowCount() > 0)
                             {
-                                Cura.MachineManager.setActiveQuality(Cura.ProfilesModel.getItem(0).id)
+                                var item = Cura.NewQualityProfilesModel.getItem(0);
+                                Cura.MachineManager.activeQualityGroup = item.quality_group;
                             }
                         }
                         if (Cura.SimpleModeSettingsManager.isProfileCustomized)

@@ -34,7 +34,7 @@ Menu
     MenuSeparator
     {
         id: customSeparator
-        visible: Cura.UserProfilesModel.rowCount > 0
+        visible: Cura.NewCustomQualityProfilesModel.rowCount > 0
     }
 
     Instantiator
