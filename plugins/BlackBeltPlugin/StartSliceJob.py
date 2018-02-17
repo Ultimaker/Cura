@@ -280,9 +280,15 @@ class StartSliceJob(Job):
                     if transform_matrix:
                         verts = transformVertices(verts, transform_matrix)
 
-                        _front_offset = verts[:, 1].min()
-                        if front_offset is None or _front_offset < front_offset:
-                            front_offset = _front_offset
+                        per_object_stack = object.callDecoration("getStack")
+                        is_non_printing_mesh = False
+                        if per_object_stack:
+                            is_non_printing_mesh = any(per_object_stack.getProperty(key, "value") for key in NON_PRINTING_MESH_SETTINGS)
+
+                        if not is_non_printing_mesh:
+                            _front_offset = verts[:, 1].min()
+                            if front_offset is None or _front_offset < front_offset:
+                                front_offset = _front_offset
 
                     # Convert from Y up axes to Z up axes. Equals a 90 degree rotation.
                     verts[:, [1, 2]] = verts[:, [2, 1]]
