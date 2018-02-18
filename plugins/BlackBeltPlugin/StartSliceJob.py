@@ -19,7 +19,9 @@ from UM.Settings.Validator import ValidatorState
 from UM.Settings.SettingRelation import RelationType
 from cura.Settings.CuraContainerStack import CuraContainerStack
 
+from UM.Math.Vector import Vector
 from UM.Mesh.MeshData import transformVertices
+from UM.Mesh.MeshBuilder import MeshBuilder
 from cura.Scene.CuraSceneNode import CuraSceneNode
 from cura.OneAtATimeIterator import OneAtATimeIterator
 from cura.Settings.ExtruderManager import ExtruderManager
@@ -259,8 +261,49 @@ class StartSliceJob(Job):
                         extruder_stack.setProperty(key, "value", current_value * math.sin(gantry_angle))
                 self._buildExtruderMessage(extruder_stack)
 
-            transform_matrix = self._scene.getRoot().callDecoration("getTransformMatrix")
+            if gantry_angle: # not 0 or None
+                # Add a modifier mesh to all printable meshes touching the belt
 
+                extruder_stack_index = node.callDecoration("getActiveExtruderPosition")
+                if not extruder_stack_index:
+                    extruder_stack_index = 0
+                extruder_stack = ExtruderManager.getInstance().getMachineExtruders(Application.getInstance().getGlobalContainerStack().getId())[extruder_stack_index]
+                wall_line_width = extruder_stack.getProperty("wall_line_width_0", "value")
+
+                for group in object_groups:
+                    added_meshes = []
+                    for object in group:
+                        is_non_printing_mesh = False
+                        per_object_stack = object.callDecoration("getStack")
+                        if per_object_stack:
+                            is_non_printing_mesh = any(per_object_stack.getProperty(key, "value") for key in NON_PRINTING_MESH_SETTINGS)
+                            wall_line_width_0 = per_object_stack.getProperty("wall_line_width_0", "value")
+
+                        if not is_non_printing_mesh and not object.getName().startswith("beltLayerModifierMesh"):
+                            aabb = object.getBoundingBox()
+                            if aabb.bottom <= 0:
+                                height = wall_line_width * math.sin(gantry_angle)
+                                center = Vector(aabb.center.x, height/2, aabb.center.z)
+
+                                mb = MeshBuilder()
+
+                                mb.addCube(
+                                    width = aabb.width,
+                                    height = height,
+                                    depth = aabb.depth,
+                                    center = center
+                                )
+
+                                new_node = CuraSceneNode(parent = self._scene.getRoot())
+                                new_node.setMeshData(mb.build())
+                                new_node.setName("beltLayerModifierMesh" + hex(id(new_node)))
+
+                                # Note: adding a SettingOverrideDecorator here causes a slicing loop
+                                added_meshes.append(new_node)
+                    if added_meshes:
+                        group += added_meshes
+
+            transform_matrix = self._scene.getRoot().callDecoration("getTransformMatrix")
             front_offset = None
 
             for group in object_groups:
@@ -280,8 +323,8 @@ class StartSliceJob(Job):
                     if transform_matrix:
                         verts = transformVertices(verts, transform_matrix)
 
+                        is_non_printing_mesh = object.getName().startswith("beltLayerModifierMesh")
                         per_object_stack = object.callDecoration("getStack")
-                        is_non_printing_mesh = False
                         if per_object_stack:
                             is_non_printing_mesh = any(per_object_stack.getProperty(key, "value") for key in NON_PRINTING_MESH_SETTINGS)
 
@@ -304,6 +347,19 @@ class StartSliceJob(Job):
                         flat_verts = numpy.array(verts)
 
                     obj.vertices = flat_verts
+
+                    if object.getName().startswith("beltLayerModifierMesh"):
+                        for (key, value) in {
+                            "cutting_mesh": "True",
+                            "infill_line_distance": 0,
+                            "bottom_layers": 0,
+                            "top_layers": 0,
+                            "speed_wall_0": 10,
+                            "speed_wall_x": 10
+                        }.items():
+                            setting = obj.addRepeatedMessage("settings")
+                            setting.name = key
+                            setting.value = str(value).encode("utf-8")
 
                     self._handlePerObjectSettings(object, obj)
 
