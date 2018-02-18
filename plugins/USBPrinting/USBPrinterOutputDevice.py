@@ -304,7 +304,7 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
                         self._sendCommand(self._command_queue.get())
                     elif self._paused:
                         pass  # Nothing to do!
-                    else:
+                    elif self._serial.in_waiting < 256: # Do not send new G-CODE when the RX buffer is filling up
                         self._sendNextGcodeLine()
                 elif b"resend" in line.lower() or b"rs" in line:
                     # A resend can be requested either by Resend, resend or rs.
