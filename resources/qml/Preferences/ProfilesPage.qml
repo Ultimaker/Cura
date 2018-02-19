@@ -103,7 +103,9 @@ Item
             visible: !base.canCreateProfile
 
             onClicked: {
-                // TODO
+                newDuplicateNameDialog.object = Cura.ContainerManager.makeUniqueName(base.currentItem.name);
+                newDuplicateNameDialog.open();
+                newDuplicateNameDialog.selectText();
             }
         }
 
@@ -154,8 +156,7 @@ Item
         }
     }
 
-
-     // Dialog to request a name when creating a new profile
+    // Dialog to request a name when creating a new profile
     UM.RenameDialog
     {
         title: catalog.i18nc("@title:window", "Create Profile")
@@ -164,6 +165,19 @@ Item
         onAccepted:
         {
             var selectedContainer = Cura.ContainerManager.createQualityChanges(newName);
+            objectList.currentIndex = -1 //Reset selection.
+        }
+    }
+
+    // Dialog to request a name when duplicating a new profile
+    UM.RenameDialog
+    {
+        title: catalog.i18nc("@title:window", "Duplicate Profile")
+        id: newDuplicateNameDialog;
+        object: "<new name>";
+        onAccepted:
+        {
+            Cura.ContainerManager.duplicateQualityChanges(newName, base.currentItem);
             objectList.currentIndex = -1 //Reset selection.
         }
     }

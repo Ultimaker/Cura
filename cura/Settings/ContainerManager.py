@@ -424,7 +424,8 @@ class ContainerManager(QObject):
                 continue
 
             extruder_id = None if stack is global_stack else QualityManager.getInstance().getParentMachineDefinition(stack.getBottom()).getId()
-            new_changes = self._createQualityChanges(quality_container, unique_name,
+            quality_type = quality_container.getMetaDataEntry("quality_type")
+            new_changes = self._createQualityChanges(quality_type, unique_name,
                                                      Application.getInstance().getGlobalContainerStack().getBottom(),
                                                      extruder_id)
             self._performMerge(new_changes, quality_changes_container, clear_settings = False)
@@ -526,91 +527,22 @@ class ContainerManager(QObject):
         self._machine_manager.activeQualityChanged.emit()
         return True
 
-    ##  Duplicate a specified set of quality or quality_changes containers.
-    #
-    #   This will search for containers matching the specified name. If the container is a "quality" type container, a new
-    #   quality_changes container will be created with the specified quality as base. If the container is a "quality_changes"
-    #   container, it is simply duplicated and renamed.
-    #
-    #   \param quality_name The name of the quality to duplicate.
-    #
-    #   \return A string containing the name of the duplicated containers, or an empty string if it failed.
-    @pyqtSlot(str, str, result = str)
-    def duplicateQualityOrQualityChanges(self, quality_name, base_name):
-        global_stack = Application.getInstance().getGlobalContainerStack()
-        if not global_stack or not quality_name:
-            return ""
-        machine_definition = global_stack.definition
-
-        active_stacks = ExtruderManager.getInstance().getActiveGlobalAndExtruderStacks()
-        if active_stacks is None:
-            return ""
-        material_metadatas = [stack.material.getMetaData() for stack in active_stacks]
-
-        result = self._duplicateQualityOrQualityChangesForMachineType(quality_name, base_name,
-                    QualityManager.getInstance().getParentMachineDefinition(machine_definition),
-                    material_metadatas)
-        return result[0].getName() if result else ""
-
-    ##  Duplicate a quality or quality changes profile specific to a machine type
-    #
-    #   \param quality_name The name of the quality or quality changes container to duplicate.
-    #   \param base_name The desired name for the new container.
-    #   \param machine_definition The machine with the specific machine type.
-    #   \param material_metadatas Metadata of materials
-    #   \return List of duplicated quality profiles.
-    def _duplicateQualityOrQualityChangesForMachineType(self, quality_name: str, base_name: str, machine_definition: DefinitionContainer, material_metadatas: List[Dict[str, Any]]) -> List[InstanceContainer]:
-        Logger.log("d", "Attempting to duplicate the quality %s", quality_name)
-
-        if base_name is None:
-            base_name = quality_name
-        # Try to find a Quality with the name.
-        container = QualityManager.getInstance().findQualityByName(quality_name, machine_definition, material_metadatas)
-        if container:
-            Logger.log("d", "We found a quality to duplicate.")
-            return self._duplicateQualityForMachineType(container, base_name, machine_definition)
-        Logger.log("d", "We found a quality_changes to duplicate.")
-        # Assume it is a quality changes.
-        return self._duplicateQualityChangesForMachineType(quality_name, base_name, machine_definition)
-
-    # Duplicate a quality profile
-    def _duplicateQualityForMachineType(self, quality_container, base_name, machine_definition) -> List[InstanceContainer]:
-        if base_name is None:
-            base_name = quality_container.getName()
-        new_name = self._container_registry.uniqueName(base_name)
-
-        new_change_instances = []
-
-        # Handle the global stack first.
-        global_changes = self._createQualityChanges(quality_container, new_name, machine_definition, None)
-        new_change_instances.append(global_changes)
-        self._container_registry.addContainer(global_changes)
-
-        # Handle the extruders if present.
-        extruders = machine_definition.getMetaDataEntry("machine_extruder_trains")
-        if extruders:
-            for extruder_id in extruders:
-                extruder = extruders[extruder_id]
-                new_changes = self._createQualityChanges(quality_container, new_name, machine_definition, extruder)
-                new_change_instances.append(new_changes)
-                self._container_registry.addContainer(new_changes)
-
-        return new_change_instances
-
-    #  Duplicate a quality changes container
-    def _duplicateQualityChangesForMachineType(self, quality_changes_name, base_name, machine_definition) -> List[InstanceContainer]:
-        new_change_instances = []
-        for container in QualityManager.getInstance().findQualityChangesByName(quality_changes_name,
-                                                              machine_definition):
-            base_id = container.getMetaDataEntry("extruder")
-            if not base_id:
-                base_id = container.getDefinition().getId()
-            new_unique_id = self._createUniqueId(base_id, base_name)
-            new_container = container.duplicate(new_unique_id, base_name)
-            new_change_instances.append(new_container)
-            self._container_registry.addContainer(new_container)
-
-        return new_change_instances
+    @pyqtSlot(str, dict)
+    def duplicateQualityChanges(self, quality_changes_name, quality_model_item):
+        quality_group = quality_model_item["quality_group"]
+        quality_changes_group = quality_model_item["quality_changes_group"]
+        if quality_changes_group is None:
+            # create global quality changes only
+            new_quality_changes = self._createQualityChanges(
+                quality_group.quality_type, quality_changes_name,
+                Application.getInstance().getGlobalContainerStack().definition,
+                extruder_id = None)
+            self._container_registry.addContainer(new_quality_changes)
+        else:
+            for node in quality_changes_group.getAllNodes():
+                container = node.getContainer()
+                new_id = self._container_registry.uniqueName(container.getId())
+                self._container_registry.addContainer(container.duplicate(new_id, quality_changes_name))
 
     @pyqtSlot("QVariant")
     def removeMaterial(self, material_node):
@@ -832,14 +764,14 @@ class ContainerManager(QObject):
     #   \param extruder_id
     #
     #   \return A new quality_changes container with the specified container as base.
-    def _createQualityChanges(self, quality_container, new_name, machine_definition, extruder_id):
+    def _createQualityChanges(self, quality_type, new_name, machine_definition, extruder_id):
         base_id = machine_definition.getId() if extruder_id is None else extruder_id
 
         # Create a new quality_changes container for the quality.
         quality_changes = InstanceContainer(self._createUniqueId(base_id, new_name))
         quality_changes.setName(new_name)
         quality_changes.addMetaDataEntry("type", "quality_changes")
-        quality_changes.addMetaDataEntry("quality_type", quality_container.getMetaDataEntry("quality_type"))
+        quality_changes.addMetaDataEntry("quality_type", quality_type)
 
         # If we are creating a container for an extruder, ensure we add that to the container
         if extruder_id is not None:

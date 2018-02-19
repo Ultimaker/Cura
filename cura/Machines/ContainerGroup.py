@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import List, Optional
 
 from PyQt5.Qt import QObject, pyqtSlot
 
@@ -24,4 +24,12 @@ class ContainerGroup(QObject):
                 continue
             for key in node.getContainer().getAllKeys():
                 result.add(key)
+        return result
+
+    def getAllNodes(self) -> List[ContainerNode]:
+        result = []
+        if self.node_for_global is not None:
+            result.append(self.node_for_global)
+        for extruder_node in self.nodes_for_extruders.values():
+            result.append(extruder_node)
         return result
