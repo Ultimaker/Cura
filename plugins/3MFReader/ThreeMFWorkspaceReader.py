@@ -23,7 +23,6 @@ from cura.Settings.ExtruderManager import ExtruderManager
 from cura.Settings.ExtruderStack import ExtruderStack
 from cura.Settings.GlobalStack import GlobalStack
 from cura.Settings.CuraContainerStack import _ContainerIndexes
-from cura.QualityManager import QualityManager
 from cura.CuraApplication import CuraApplication
 
 from configparser import ConfigParser
@@ -858,10 +857,11 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         if machine_extruder_count is not None:
             extruder_stacks_in_use = extruder_stacks[:machine_extruder_count]
 
-        available_quality = QualityManager.getInstance().findAllUsableQualitiesForMachineAndExtruders(global_stack,
-                                                                                                      extruder_stacks_in_use)
+        quality_manager = CuraApplication.getInstance()._quality_manager
+        all_quality_groups = quality_manager.getQualityGroups(global_stack)
+        available_quality_types = [qt for qt, qg in all_quality_groups.items() if qg.is_available]
         if not has_not_supported:
-            has_not_supported = not available_quality
+            has_not_supported = not available_quality_types
 
         quality_has_been_changed = False
 
@@ -875,8 +875,6 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             # The machine in the project has non-empty quality and there are usable qualities for this machine.
             # We need to check if the current quality_type is still usable for this machine, if not, then the quality
             # will be reset to the "preferred quality" if present, otherwise "normal".
-            available_quality_types = [q.getMetaDataEntry("quality_type") for q in available_quality]
-
             if global_stack.quality.getMetaDataEntry("quality_type") not in available_quality_types:
                 # We are here because the quality_type specified in the project is not supported any more,
                 # so we need to switch it to the "preferred quality" if present, otherwise "normal".

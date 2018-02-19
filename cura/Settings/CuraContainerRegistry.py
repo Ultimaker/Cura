@@ -335,41 +335,16 @@ class CuraContainerRegistry(ContainerRegistry):
             return catalog.i18nc("@info:status", "Profile is missing a quality type.")
 
         quality_type_criteria = {"quality_type": quality_type}
-        if self._machineHasOwnQualities():
-            global_container_stack = Application.getInstance().getGlobalContainerStack()
-            definition_id = getMachineDefinitionIDForQualitySearch(global_container_stack)
-            profile.setDefinition(definition_id)
-            if self._machineHasOwnMaterials():
-                active_material_id = self._activeMaterialId()
-                if active_material_id and active_material_id != "empty":  # only update if there is an active material
-                    profile.addMetaDataEntry("material", active_material_id)
-                    quality_type_criteria["material"] = active_material_id
-
-            quality_type_criteria["definition"] = profile.getDefinition().getId()
-
-        else:
-            profile.setDefinition("fdmprinter")
-            quality_type_criteria["definition"] = "fdmprinter"
-
-        machine_definition = Application.getInstance().getGlobalContainerStack().getBottom()
-        del quality_type_criteria["definition"]
-
-        # materials = None
-
-        if "material" in quality_type_criteria:
-            # materials = ContainerRegistry.getInstance().findInstanceContainers(id = quality_type_criteria["material"])
-            del quality_type_criteria["material"]
-
-        # Do not filter quality containers here with materials because we are trying to import a profile, so it should
-        # NOT be restricted by the active materials on the current machine.
-        materials = None
+        global_stack = Application.getInstance().getGlobalContainerStack()
+        definition_id = getMachineDefinitionIDForQualitySearch(global_stack)
+        profile.setDefinition(definition_id)
 
         # Check to make sure the imported profile actually makes sense in context of the current configuration.
         # This prevents issues where importing a "draft" profile for a machine without "draft" qualities would report as
         # successfully imported but then fail to show up.
-        from cura.QualityManager import QualityManager
-        qualities = QualityManager.getInstance()._getFilteredContainersForStack(machine_definition, materials, **quality_type_criteria)
-        if not qualities:
+        quality_manager = CuraApplication.getInstance()._quality_manager
+        quality_group_dict = quality_manager.getQualityGroupsForMachineDefinition(global_stack)
+        if quality_type not in quality_group_dict:
             return catalog.i18nc("@info:status", "Could not find a quality type {0} for the current configuration.", quality_type)
 
         ContainerRegistry.getInstance().addContainer(profile)

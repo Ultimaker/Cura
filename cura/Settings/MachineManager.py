@@ -26,7 +26,6 @@ from UM.Signal import postponeSignals, CompressTechnique
 
 from cura.Machines.MachineTools import getMachineDefinitionIDForQualitySearch
 
-from cura.QualityManager import QualityManager
 from cura.PrinterOutputDevice import PrinterOutputDevice
 from cura.Settings.ExtruderManager import ExtruderManager
 
@@ -36,7 +35,6 @@ from UM.i18n import i18nCatalog
 catalog = i18nCatalog("cura")
 
 if TYPE_CHECKING:
-    from UM.Settings.DefinitionContainer import DefinitionContainer
     from cura.Settings.CuraContainerStack import CuraContainerStack
     from cura.Settings.GlobalStack import GlobalStack
 

@@ -360,3 +360,27 @@ class QualityManager(QObject):
         self._updateQualityGroupsAvailability(machine, quality_group_dict.values())
 
         return quality_group_dict
+
+    def getQualityGroupsForMachineDefinition(self, machine: str) -> dict:
+        # Get machine definition ID for quality search
+        machine_definition_id = getMachineDefinitionIDForQualitySearch(machine)
+
+        # To find the quality container for the GlobalStack, check in the following fall-back manner:
+        #   (1) the machine-specific node
+        #   (2) the generic node
+        machine_node = self._machine_variant_material_quality_type_to_quality_dict.get(machine_definition_id)
+        default_machine_node = self._machine_variant_material_quality_type_to_quality_dict.get(
+            self._default_machine_definition_id)
+        nodes_to_check = [machine_node, default_machine_node]
+
+        # Iterate over all quality_types in the machine node
+        quality_group_dict = dict()
+        for node in nodes_to_check:
+            if node and node.quality_type_map:
+                for quality_type, quality_node in node.quality_type_map.items():
+                    quality_group = QualityGroup(quality_node.metadata["name"], quality_type)
+                    quality_group.node_for_global = quality_node
+                    quality_group_dict[quality_type] = quality_group
+                break
+
+        return quality_group_dict
