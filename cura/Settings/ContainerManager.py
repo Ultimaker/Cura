@@ -439,49 +439,14 @@ class ContainerManager(QObject):
         #self._machine_manager.activeQualityGroupChanged.emit()
         #self._machine_manager.activeQualityChangesGroupChanged.emit()
 
-    ##  Remove all quality changes containers matching a specified name.
     #
-    #   This will search for quality_changes containers matching the supplied name and remove them.
-    #   Note that if the machine specifies that qualities should be filtered by machine and/or material
-    #   only the containers related to the active machine/material are removed.
+    # Remove the given quality changes group
     #
-    #   \param quality_name The name of the quality changes to remove.
-    #
-    #   \return \type{bool} True if successful, False if not.
-    @pyqtSlot(str, result = bool)
-    def removeQualityChanges(self, quality_name):
-        Logger.log("d", "Attempting to remove the quality change containers with name %s", quality_name)
-        containers_found = False
-
-        if not quality_name:
-            return containers_found  # Without a name we will never find a container to remove.
-
-        # If the container that is being removed is the currently active quality, set another quality as the active quality
-        activate_quality = quality_name == self._machine_manager.activeQualityName
-        activate_quality_type = None
-
-        global_stack = Application.getInstance().getGlobalContainerStack()
-        if not global_stack or not quality_name:
-            return ""
-        machine_definition = QualityManager.getInstance().getParentMachineDefinition(global_stack.getBottom())
-
-        for container in QualityManager.getInstance().findQualityChangesByName(quality_name, machine_definition):
-            containers_found = True
-            if activate_quality and not activate_quality_type:
-                activate_quality_type = container.getMetaDataEntry("quality")
-            self._container_registry.removeContainer(container.getId())
-
-        if not containers_found:
-            Logger.log("d", "Unable to remove quality containers, as we did not find any by the name of %s", quality_name)
-
-        elif activate_quality:
-            definition_id = "fdmprinter" if not self._machine_manager.filterQualityByMachine else self._machine_manager.activeDefinitionId
-            containers = self._container_registry.findInstanceContainersMetadata(type = "quality", definition = definition_id, quality_type = activate_quality_type)
-            if containers:
-                self._machine_manager.setActiveQuality(containers[0]["id"])
-                self._machine_manager.activeQualityChanged.emit()
-
-        return containers_found
+    @pyqtSlot(QObject)
+    def removeQualityChangesGroup(self, quality_changes_group):
+        Logger.log("i", "Removing quality changes group [%s]", quality_changes_group.name)
+        for node in quality_changes_group.getAllNodes():
+            self._container_registry.removeContainer(node.metadata["id"])
 
     ##  Rename a set of quality changes containers.
     #
@@ -527,7 +492,7 @@ class ContainerManager(QObject):
         self._machine_manager.activeQualityChanged.emit()
         return True
 
-    @pyqtSlot(str, dict)
+    @pyqtSlot(str, "QVariantMap")
     def duplicateQualityChanges(self, quality_changes_name, quality_model_item):
         quality_group = quality_model_item["quality_group"]
         quality_changes_group = quality_model_item["quality_changes_group"]

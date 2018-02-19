@@ -112,10 +112,10 @@ Item
         {
             text: catalog.i18nc("@action:button", "Remove")
             iconName: "list-remove"
-            //enabled: base.currentItem != null ? !base.currentItem.readOnly && !Cura.ContainerManager.isContainerUsed(base.currentItem.id) : false;
-            enabled: true // TODO
+            enabled: base.hasCurrentItem && !base.currentItem.is_read_only && !base.isCurrentItemActivated
             onClicked: {
-                // TODO
+                forceActiveFocus();
+                confirmRemoveQualityDialog.open();
             }
         }
 
@@ -162,7 +162,7 @@ Item
         object: "<new name>"
         onAccepted:
         {
-            var selectedContainer = Cura.ContainerManager.createQualityChanges(newName);
+            Cura.ContainerManager.createQualityChanges(newName);
             qualityListView.currentIndex = -1 // TODO: Reset selection.
         }
     }
@@ -177,6 +177,25 @@ Item
         {
             Cura.ContainerManager.duplicateQualityChanges(newName, base.currentItem);
             qualityListView.currentIndex = -1; // TODO: Reset selection.
+        }
+    }
+
+    // Confirmation dialog for removing a profile
+    MessageDialog
+    {
+        id: confirmRemoveQualityDialog
+
+        icon: StandardIcon.Question;
+        title: catalog.i18nc("@title:window", "Confirm Remove")
+        text: catalog.i18nc("@label (%1 is object name)", "Are you sure you wish to remove %1? This cannot be undone!").arg(base.currentItem.name)
+        standardButtons: StandardButton.Yes | StandardButton.No
+        modality: Qt.ApplicationModal
+
+        onYes:
+        {
+            Cura.ContainerManager.removeQualityChangesGroup(base.currentItem.quality_changes_group);
+            // reset current item to the first if available
+            qualityListView.currentIndex = -1;
         }
     }
 
