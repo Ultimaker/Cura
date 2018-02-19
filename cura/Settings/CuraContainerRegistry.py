@@ -28,6 +28,7 @@ from . import GlobalStack
 from .ExtruderManager import ExtruderManager
 
 from cura.CuraApplication import CuraApplication
+from cura.Machines.MachineTools import getMachineDefinitionIDForQualitySearch
 
 from UM.i18n import i18nCatalog
 catalog = i18nCatalog("cura")
@@ -296,7 +297,7 @@ class CuraContainerRegistry(ContainerRegistry):
 
                     elif profile_index < len(machine_extruders) + 1:
                         # This is assumed to be an extruder profile
-                        extruder_id = Application.getInstance().getMachineManager().getQualityDefinitionId(machine_extruders[profile_index - 1].getBottom())
+                        extruder_id = machine_extruders[profile_index - 1].definition.getId()
                         if not profile.getMetaDataEntry("extruder"):
                             profile.addMetaDataEntry("extruder", extruder_id)
                         else:
@@ -356,7 +357,9 @@ class CuraContainerRegistry(ContainerRegistry):
 
         quality_type_criteria = {"quality_type": quality_type}
         if self._machineHasOwnQualities():
-            profile.setDefinition(self._activeQualityDefinition().getId())
+            global_container_stack = Application.getInstance().getGlobalContainerStack()
+            definition_id = getMachineDefinitionIDForQualitySearch(global_container_stack)
+            profile.setDefinition(definition_id)
             if self._machineHasOwnMaterials():
                 active_material_id = self._activeMaterialId()
                 if active_material_id and active_material_id != "empty":  # only update if there is an active material
@@ -406,18 +409,6 @@ class CuraContainerRegistry(ContainerRegistry):
             if io_type in meta_data:
                 result.append( (plugin_id, meta_data) )
         return result
-
-    ##  Get the definition to use to select quality profiles for the active machine
-    #   \return the active quality definition object or None if there is no quality definition
-    def _activeQualityDefinition(self):
-        global_container_stack = Application.getInstance().getGlobalContainerStack()
-        if global_container_stack:
-            definition_id = Application.getInstance().getMachineManager().getQualityDefinitionId(global_container_stack.getBottom())
-            definition = self.findDefinitionContainers(id = definition_id)[0]
-
-            if definition:
-                return definition
-        return None
 
     ##  Returns true if the current machine requires its own materials
     #   \return True if the current machine requires its own materials

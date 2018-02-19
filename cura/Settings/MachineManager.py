@@ -24,6 +24,7 @@ from UM.Settings.InstanceContainer import InstanceContainer
 from UM.Settings.SettingFunction import SettingFunction
 from UM.Signal import postponeSignals, CompressTechnique
 
+from cura.Machines.MachineTools import getMachineDefinitionIDForQualitySearch
 
 from cura.QualityManager import QualityManager
 from cura.PrinterOutputDevice import PrinterOutputDevice
@@ -698,34 +699,11 @@ class MachineManager(QObject):
 
     ##  Get the Definition ID to use to select quality profiles for the currently active machine
     #   \returns DefinitionID (string) if found, empty string otherwise
-    #   \sa getQualityDefinitionId
     @pyqtProperty(str, notify = globalContainerChanged)
     def activeQualityDefinitionId(self) -> str:
         if self._global_container_stack:
-            return self.getQualityDefinitionId(self._global_container_stack.definition)
+            return getMachineDefinitionIDForQualitySearch(self._global_container_stack)
         return ""
-
-    ##  Get the Definition ID to use to select quality profiles for machines of the specified definition
-    #   This is normally the id of the definition itself, but machines can specify a different definition to inherit qualities from
-    #   \param definition (DefinitionContainer) machine definition
-    #   \returns DefinitionID (string) if found, empty string otherwise
-    def getQualityDefinitionId(self, definition: "DefinitionContainer") -> str:
-        return QualityManager.getInstance().getParentMachineDefinition(definition).getId()
-
-    ##  Get the Variant ID to use to select quality profiles for variants of the specified definitions
-    #   This is normally the id of the variant itself, but machines can specify a different definition
-    #   to inherit qualities from, which has consequences for the variant to use as well
-    #   \param definition (DefinitionContainer) machine definition
-    #   \param variant (InstanceContainer) variant definition
-    #   \returns VariantID (string) if found, empty string otherwise
-    def getQualityVariantId(self, definition: "DefinitionContainer", variant: "InstanceContainer") -> str:
-        variant_id = variant.getId()
-        definition_id = definition.getId()
-        quality_definition_id = self.getQualityDefinitionId(definition)
-
-        if definition_id != quality_definition_id:
-            variant_id = variant_id.replace(definition_id, quality_definition_id, 1)
-        return variant_id
 
     ##  Gets how the active definition calls variants
     #   Caveat: per-definition-variant-title is currently not translated (though the fallback is)

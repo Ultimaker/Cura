@@ -147,8 +147,7 @@ Item
         {
             text: catalog.i18nc("@action:button", "Export")
             iconName: "document-export"
-            //enabled: currentItem != null && !base.currentItem.readOnly
-            enabled: true // TODO
+            enabled: base.hasCurrentItem && !base.currentItem.is_read_only
             onClicked: {
                 // TODO
             }
