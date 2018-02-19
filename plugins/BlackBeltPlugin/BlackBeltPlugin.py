@@ -128,8 +128,12 @@ class BlackBeltPlugin(Extension):
         global_stack = Application.getInstance().getGlobalContainerStack()
 
         enable_secondary_fans = global_stack.getProperty("blackbelt_secondary_fans_enabled", "value")
-        if not enable_secondary_fans:
+        repetitions = global_stack.getProperty("blackbelt_repetitions", "value")
+        if not (enable_secondary_fans or repetitions > 1):
             return
+
+        repetitions_distance = global_stack.getProperty("blackbelt_repetitions_distance", "value")
+        repetitions_gcode = global_stack.getProperty("blackbelt_repetitions_gcode", "value")
 
         scene = Application.getInstance().getController().getScene()
         gcode_dict = getattr(scene, "gcode_dict", {})
@@ -143,11 +147,21 @@ class BlackBeltPlugin(Extension):
             gcode_list = gcode_dict[plate_id]
             if gcode_list:
                 if ";BLACKBELTPROCESSED" not in gcode_list[0]:
-                    search_regex = re.compile(r"M106 S(\d*\.?\d*?)")
-                    replace_pattern = r"M106 P1 S\1\nM106 S\1"
+                    if enable_secondary_fans:
+                        search_regex = re.compile(r"M106 S(\d*\.?\d*?)")
+                        replace_pattern = r"M106 P1 S\1\nM106 S\1"
 
-                    for layer_number, layer in enumerate(gcode_list):
-                        gcode_list[layer_number] = re.sub(search_regex, replace_pattern, layer) #Replace all.
+                        for layer_number, layer in enumerate(gcode_list):
+                            gcode_list[layer_number] = re.sub(search_regex, replace_pattern, layer) #Replace all.
+
+                    if repetitions > 1 and len(gcode_list) > 2:
+                        # gcode_list[0]: curaengine header
+                        # gcode_list[1]: start gcode
+                        # gcode_list[2] - gcode_list[n-1]: layers
+                        # gcode_list[n]: end gcode
+                        layers = gcode_list[2:-1]
+                        layers.append(repetitions_gcode.replace("{blackbelt_repetitions_distance}", str(repetitions_distance)))
+                        gcode_list[2:-1] = (layers * int(repetitions))[0:-1]
 
                     gcode_list[0] += ";BLACKBELTPROCESSED\n"
                     gcode_dict[plate_id] = gcode_list
