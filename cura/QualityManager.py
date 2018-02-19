@@ -27,42 +27,6 @@ class QualityManager:
 
     __instance = None   # type: "QualityManager"
 
-    ##  Find a quality by name for a specific machine definition and materials.
-    #
-    #   \param quality_name
-    #   \param machine_definition (Optional) \type{DefinitionContainerInterface} If nothing is
-    #                               specified then the currently selected machine definition is used.
-    #   \param material_containers_metadata If nothing is specified then the
-    #   current set of selected materials is used.
-    #   \return the matching quality container \type{InstanceContainer}
-    def findQualityByName(self, quality_name: str, machine_definition: Optional["DefinitionContainerInterface"] = None, material_containers_metadata: Optional[List[Dict[str, Any]]] = None) -> Optional[InstanceContainer]:
-        criteria = {"type": "quality", "name": quality_name}
-        result = self._getFilteredContainersForStack(machine_definition, material_containers_metadata, **criteria)
-
-        # Fall back to using generic materials and qualities if nothing could be found.
-        if not result and material_containers_metadata and len(material_containers_metadata) == 1:
-            basic_materials = self._getBasicMaterialMetadatas(material_containers_metadata[0])
-            result = self._getFilteredContainersForStack(machine_definition, basic_materials, **criteria)
-
-        return result[0] if result else None
-
-    ##  Find a quality changes container by name.
-    #
-    #   \param quality_changes_name \type{str} the name of the quality changes container.
-    #   \param machine_definition (Optional) \type{DefinitionContainer} If nothing is
-    #                               specified then the currently selected machine definition is used..
-    #   \return the matching quality changes containers \type{List[InstanceContainer]}
-    def findQualityChangesByName(self, quality_changes_name: str, machine_definition: Optional["DefinitionContainerInterface"] = None):
-        if not machine_definition:
-            global_stack = Application.getGlobalContainerStack()
-            if not global_stack:
-                return [] #No stack, so no current definition could be found, so there are no quality changes either.
-            machine_definition = global_stack.definition
-
-        result = self.findAllQualityChangesForMachine(machine_definition)
-        result = [quality_change for quality_change in result if quality_change.getName() == quality_changes_name]
-        return result
-
     ##  Fetch the list of available quality types for this combination of machine definition and materials.
     #
     #   \param machine_definition \type{DefinitionContainer}
