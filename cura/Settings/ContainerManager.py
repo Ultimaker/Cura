@@ -161,7 +161,7 @@ class ContainerManager(QObject):
         return container.getProperty(setting_key, property_name)
 
     ##  Set the name of the specified material.
-    @pyqtSlot(QObject, str)
+    @pyqtSlot("QVariant", str)
     def setMaterialName(self, material_node, new_name):
         root_material_id = material_node.metadata["base_file"]
         if self._container_registry.isReadOnly(root_material_id):
