@@ -313,7 +313,7 @@ class StartSliceJob(Job):
                                 new_node.setName(node_name)
                                 belt_layer_mesh_data[node_name] = {
                                     "blackbelt_belt_wall_speed": belt_wall_speed,
-                                    "blackbelt_belt_wall_flow" : belt_wall_flow
+                                    "blackbelt_belt_wall_flow" : belt_wall_flow * math.sin(gantry_angle)
                                 }
 
                                 # Note: adding a SettingOverrideDecorator here causes a slicing loop
