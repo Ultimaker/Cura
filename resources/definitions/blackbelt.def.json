@@ -76,6 +76,45 @@
                     "default_value": false,
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
+                },
+                "blackbelt_belt_wall_enabled":
+                {
+                    "label": "Adjust Belt Wall",
+                    "description": "Adjust settings for the wall touching the belt.",
+                    "type": "bool",
+                    "default_value": false,
+                    "settable_per_mesh": true,
+                    "settable_per_extruder": true
+                },
+                "blackbelt_belt_wall_speed":
+                {
+                    "label": "Belt Wall Speed",
+                    "description": "The speed at which the walls touching the belt are printed. Printing the belt layer at a lower speed improves adhesion.",
+                    "type": "float",
+                    "unit": "mm/s",
+                    "minimum_value": "0.1",
+                    "maximum_value": "math.sqrt(machine_max_feedrate_x ** 2 + machine_max_feedrate_y ** 2)",
+                    "maximum_value_warning": "150",
+                    "default_value": 30,
+                    "value": "speed_wall_0 * 0.6",
+                    "enabled": "blackbelt_belt_wall_enabled",
+                    "settable_per_mesh": true,
+                    "settable_per_extruder": true
+                },
+                "blackbelt_belt_wall_flow":
+                {
+                    "label": "Belt Wall Flow",
+                    "description": "The extrusion multiplier for the walls touching the belt.",
+                    "type": "float",
+                    "unit": "%",
+                    "minimum_value": "5",
+                    "minimum_value_warning": "50",
+                    "maximum_value_warning": "150",
+                    "default_value": 100,
+                    "value": "material_flow",
+                    "enabled": "blackbelt_belt_wall_enabled",
+                    "settable_per_mesh": true,
+                    "settable_per_extruder": true
                 }
             }
         },
