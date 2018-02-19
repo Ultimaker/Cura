@@ -60,7 +60,7 @@ class QualitySettingsModel(ListModel):
             self._update()
             self.qualityChanged.emit()
 
-    @pyqtProperty(dict, fset = setQuality, notify = qualityChanged)
+    @pyqtProperty("QVariantMap", fset = setQuality, notify = qualityChanged)
     def quality(self):
         return self._quality
 
