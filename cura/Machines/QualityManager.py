@@ -1,5 +1,6 @@
 from typing import Optional
 
+from PyQt5.Qt import pyqtSignal
 from PyQt5.QtCore import QObject, QTimer
 
 from UM.Application import Application
@@ -111,6 +112,8 @@ class QualityNode(ContainerNode):
 
 class QualityManager(QObject):
 
+    qualitiesUpdated = pyqtSignal()
+
     def __init__(self, container_registry, parent = None):
         super().__init__(parent)
         self._application = Application.getInstance()
@@ -212,6 +215,9 @@ class QualityManager(QObject):
                 self._machine_quality_type_to_quality_changes_dict[machine_definition_id] = QualityNode()
             machine_node = self._machine_quality_type_to_quality_changes_dict[machine_definition_id]
             machine_node.addQualityChangesMetadata(quality_type, metadata)
+
+        Logger.log("d", "Lookup tables updated.")
+        self.qualitiesUpdated.emit()
 
     def _updateMaps(self):
         self.initialize()

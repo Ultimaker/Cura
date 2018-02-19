@@ -398,16 +398,16 @@ class ContainerManager(QObject):
     #   stack and clear the user settings.
     #
     #   \return \type{bool} True if the operation was successfully, False if not.
-    @pyqtSlot(str, result = bool)
+    @pyqtSlot(str)
     def createQualityChanges(self, base_name):
         global_stack = Application.getInstance().getGlobalContainerStack()
         if not global_stack:
-            return False
+            return
 
         active_quality_name = self._machine_manager.activeQualityName
         if active_quality_name == "":
             Logger.log("w", "No quality container found in stack %s, cannot create profile", global_stack.getId())
-            return False
+            return
 
         self._machine_manager.blurSettings.emit()
         if base_name is None or base_name == "":
@@ -416,7 +416,7 @@ class ContainerManager(QObject):
 
         # Go through the active stacks and create quality_changes containers from the user containers.
         for stack in ExtruderManager.getInstance().getActiveGlobalAndExtruderStacks():
-            user_container = stack.getTop()
+            user_container = stack.userChanges
             quality_container = stack.quality
             quality_changes_container = stack.qualityChanges
             if not quality_container or not quality_changes_container:
@@ -431,10 +431,12 @@ class ContainerManager(QObject):
             self._performMerge(new_changes, user_container)
 
             self._container_registry.addContainer(new_changes)
-            stack.replaceContainer(stack.getContainerIndex(quality_changes_container), new_changes)
+            #stack.replaceContainer(stack.getContainerIndex(quality_changes_container), new_changes)
 
-        self._machine_manager.activeQualityChanged.emit()
-        return True
+        #self._machine_manager.activeQualityChanged.emit()
+
+        #self._machine_manager.activeQualityGroupChanged.emit()
+        #self._machine_manager.activeQualityChangesGroupChanged.emit()
 
     ##  Remove all quality changes containers matching a specified name.
     #

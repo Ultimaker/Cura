@@ -26,6 +26,7 @@ class QualitySettingsModel(UM.Qt.ListModel.ListModel):
 
         self._container_registry = ContainerRegistry.getInstance()
         self._application = Application.getInstance()
+        self._quality_manager = self._application._quality_manager
 
         self._extruder_position = ""
         self._quality = None
@@ -42,6 +43,7 @@ class QualitySettingsModel(UM.Qt.ListModel.ListModel):
         self._empty_quality = self._container_registry.findInstanceContainers(id = "empty_quality")[0]
 
         self._update()
+        self._quality_manager.qualitiesUpdated.connect(self._update)
 
     def setExtruderPosition(self, extruder_position):
         if extruder_position != self._extruder_position:

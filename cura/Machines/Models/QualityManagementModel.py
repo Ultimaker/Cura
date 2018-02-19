@@ -27,7 +27,7 @@ class QualityManagementModel(ListModel):
         self._quality_manager = CuraApplication.getInstance()._quality_manager
 
         self._machine_manager.globalContainerChanged.connect(self._update)
-        #self._quality_manager.materialsUpdated.connect(self._update)  # TODO
+        self._quality_manager.qualitiesUpdated.connect(self._update)
 
         self._update()
 

@@ -50,6 +50,10 @@ Item
         return base.currentItem.name == Cura.MachineManager.activeQualityOrQualityChangesName;
     }
 
+    property var canCreateProfile: {
+        return isCurrentItemActivated && Cura.MachineManager.hasUserSettings;
+    }
+
     Row  // Button Row
     {
         id: buttonRow
@@ -80,13 +84,13 @@ Item
         {
             text: catalog.i18nc("@label", "Create")
             iconName: "list-add"
-            //enabled: base.canCreateProfile() && !Cura.MachineManager.stacksHaveErrors
-            enabled: true // TODO
-            //visible: base.canCreateProfile()
-            visible: true // TODO
+            enabled: base.canCreateProfile && !Cura.MachineManager.stacksHaveErrors
+            visible: base.canCreateProfile
 
             onClicked: {
-                // TODO
+                newNameDialog.object = base.currentItem != null ? Cura.ContainerManager.makeUniqueName(Cura.MachineManager.activeQualityOrQualityChangesName) : "";
+                newNameDialog.open();
+                newNameDialog.selectText();
             }
         }
 
@@ -95,10 +99,8 @@ Item
         {
             text: catalog.i18nc("@label", "Duplicate")
             iconName: "list-add"
-            //enabled: ! base.canCreateProfile()
-            enabled: true // TODO
-            //visible: ! base.canCreateProfile()
-            visible: true // TODO
+            enabled: !base.canCreateProfile
+            visible: !base.canCreateProfile
 
             onClicked: {
                 // TODO
@@ -153,6 +155,18 @@ Item
     }
 
 
+     // Dialog to request a name when creating a new profile
+    UM.RenameDialog
+    {
+        title: catalog.i18nc("@title:window", "Create Profile")
+        id: newNameDialog;
+        object: "<new name>";
+        onAccepted:
+        {
+            var selectedContainer = Cura.ContainerManager.createQualityChanges(newName);
+            objectList.currentIndex = -1 //Reset selection.
+        }
+    }
 
     Item {
         id: contentsItem
