@@ -5,12 +5,11 @@ import copy
 import os.path
 import urllib.parse
 import uuid
-from typing import Any, Dict, List, Union
+from typing import Dict, Union
 
 from PyQt5.QtCore import QObject, QUrl, QVariant
 from UM.FlameProfiler import pyqtSlot
 from PyQt5.QtWidgets import QMessageBox
-from UM.Util import parseBool
 
 from UM.PluginRegistry import PluginRegistry
 from UM.SaveFile import SaveFile
@@ -22,7 +21,6 @@ from UM.Application import Application
 from UM.Settings.ContainerStack import ContainerStack
 from UM.Settings.DefinitionContainer import DefinitionContainer
 from UM.Settings.InstanceContainer import InstanceContainer
-from cura.QualityManager import QualityManager
 
 from UM.MimeTypeDatabase import MimeTypeNotFoundError
 from UM.Settings.ContainerRegistry import ContainerRegistry
@@ -30,6 +28,8 @@ from UM.Settings.ContainerRegistry import ContainerRegistry
 from UM.i18n import i18nCatalog
 
 from cura.Settings.ExtruderManager import ExtruderManager
+from cura.Settings.ExtruderStack import ExtruderStack
+from cura.Machines.MachineTools import getMachineDefinitionIDForQualitySearch
 
 catalog = i18nCatalog("cura")
 
@@ -182,32 +182,6 @@ class ContainerManager(QObject):
     @pyqtSlot("QVariantMap", result = "QVariantList")
     def findInstanceContainers(self, criteria):
         return [entry["id"] for entry in self._container_registry.findInstanceContainersMetadata(**criteria)]
-
-    @pyqtSlot(str, result = bool)
-    def isContainerUsed(self, container_id):
-        Logger.log("d", "Checking if container %s is currently used", container_id)
-        # check if this is a material container. If so, check if any material with the same base is being used by any
-        # stacks.
-        container_ids_to_check = [container_id]
-        container_results = self._container_registry.findInstanceContainersMetadata(id = container_id, type = "material")
-        if container_results:
-            this_container = container_results[0]
-            material_base_file = this_container["id"]
-            if "base_file" in this_container:
-                material_base_file = this_container["base_file"]
-            # check all material container IDs with the same base
-            material_containers = self._container_registry.findInstanceContainersMetadata(base_file = material_base_file,
-                                                                                  type = "material")
-            if material_containers:
-                container_ids_to_check = [container["id"] for container in material_containers]
-
-        all_stacks = self._container_registry.findContainerStacks()
-        for stack in all_stacks:
-            for used_container_id in container_ids_to_check:
-                if used_container_id in [child.getId() for child in stack.getContainers()]:
-                    Logger.log("d", "The container is in use by %s", stack.getId())
-                    return True
-        return False
 
     @pyqtSlot(str, result = str)
     def makeUniqueName(self, original_name):
@@ -423,11 +397,11 @@ class ContainerManager(QObject):
                 Logger.log("w", "No quality or quality changes container found in stack %s, ignoring it", stack.getId())
                 continue
 
-            extruder_id = None if stack is global_stack else QualityManager.getInstance().getParentMachineDefinition(stack.getBottom()).getId()
+            extruder_definition_id = None
+            if isinstance(stack, ExtruderStack):
+                extruder_definition_id = stack.definition.getId()
             quality_type = quality_container.getMetaDataEntry("quality_type")
-            new_changes = self._createQualityChanges(quality_type, unique_name,
-                                                     Application.getInstance().getGlobalContainerStack().getBottom(),
-                                                     extruder_id)
+            new_changes = self._createQualityChanges(quality_type, unique_name, global_stack, extruder_definition_id)
             self._performMerge(new_changes, quality_changes_container, clear_settings = False)
             self._performMerge(new_changes, user_container)
 
@@ -476,14 +450,14 @@ class ContainerManager(QObject):
 
     @pyqtSlot(str, "QVariantMap")
     def duplicateQualityChanges(self, quality_changes_name, quality_model_item):
+        global_stack = Application.getInstance().getGlobalContainerStack()
+
         quality_group = quality_model_item["quality_group"]
         quality_changes_group = quality_model_item["quality_changes_group"]
         if quality_changes_group is None:
             # create global quality changes only
-            new_quality_changes = self._createQualityChanges(
-                quality_group.quality_type, quality_changes_name,
-                Application.getInstance().getGlobalContainerStack().definition,
-                extruder_id = None)
+            new_quality_changes = self._createQualityChanges(quality_group.quality_type, quality_changes_name,
+                                                             global_stack, extruder_id = None)
             self._container_registry.addContainer(new_quality_changes)
         else:
             for node in quality_changes_group.getAllNodes():
@@ -711,8 +685,8 @@ class ContainerManager(QObject):
     #   \param extruder_id
     #
     #   \return A new quality_changes container with the specified container as base.
-    def _createQualityChanges(self, quality_type, new_name, machine_definition, extruder_id):
-        base_id = machine_definition.getId() if extruder_id is None else extruder_id
+    def _createQualityChanges(self, quality_type, new_name, machine, extruder_id):
+        base_id = machine.definition.getId() if extruder_id is None else extruder_id
 
         # Create a new quality_changes container for the quality.
         quality_changes = InstanceContainer(self._createUniqueId(base_id, new_name))
@@ -725,10 +699,8 @@ class ContainerManager(QObject):
             quality_changes.addMetaDataEntry("extruder", extruder_id)
 
         # If the machine specifies qualities should be filtered, ensure we match the current criteria.
-        if not machine_definition.getMetaDataEntry("has_machine_quality"):
-            quality_changes.setDefinition("fdmprinter")
-        else:
-            quality_changes.setDefinition(QualityManager.getInstance().getParentMachineDefinition(machine_definition).getId())
+        machine_definition_id = getMachineDefinitionIDForQualitySearch(machine)
+        quality_changes.setDefinition(machine_definition_id)
 
         from cura.CuraApplication import CuraApplication
         quality_changes.addMetaDataEntry("setting_version", CuraApplication.SettingVersion)
