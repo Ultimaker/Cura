@@ -58,8 +58,7 @@ class QualityProfilesModel(ListModel):
 
             layer_height = self._fetchLayerHeight(quality_group)
 
-            item = {"id": "TODO",  # TODO: probably will be removed
-                    "name": quality_group.name,
+            item = {"name": quality_group.name,
                     "quality_type": quality_group.quality_type,
                     "layer_height": layer_height + self._layer_height_unit,
                     "layer_height_without_unit": layer_height,

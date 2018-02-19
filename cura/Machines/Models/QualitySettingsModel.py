@@ -1,18 +1,14 @@
-# Copyright (c) 2017 Ultimaker B.V.
+# Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from PyQt5.QtCore import pyqtProperty, pyqtSignal, Qt
 
-from UM.Logger import Logger
-import UM.Qt
 from UM.Application import Application
+from UM.Qt.ListModel import ListModel
 from UM.Settings.ContainerRegistry import ContainerRegistry
-import os
-
-from UM.i18n import i18nCatalog
 
 
-class QualitySettingsModel(UM.Qt.ListModel.ListModel):
+class QualitySettingsModel(ListModel):
     KeyRole = Qt.UserRole + 1
     LabelRole = Qt.UserRole + 2
     UnitRole = Qt.UserRole + 3
@@ -45,13 +41,15 @@ class QualitySettingsModel(UM.Qt.ListModel.ListModel):
         self._update()
         self._quality_manager.qualitiesUpdated.connect(self._update)
 
+    extruderPositionChanged = pyqtSignal()
+    qualityChanged = pyqtSignal()
+
     def setExtruderPosition(self, extruder_position):
         if extruder_position != self._extruder_position:
             self._extruder_position = extruder_position
             self._update()
             self.extruderPositionChanged.emit()
 
-    extruderPositionChanged = pyqtSignal()
     @pyqtProperty(str, fset = setExtruderPosition, notify = extruderPositionChanged)
     def extruderPosition(self):
         return self._extruder_position
@@ -62,7 +60,6 @@ class QualitySettingsModel(UM.Qt.ListModel.ListModel):
             self._update()
             self.qualityChanged.emit()
 
-    qualityChanged = pyqtSignal()
     @pyqtProperty(dict, fset = setQuality, notify = qualityChanged)
     def quality(self):
         return self._quality
@@ -122,7 +119,6 @@ class QualitySettingsModel(UM.Qt.ListModel.ListModel):
                 if profile_value is not None:
                     break
 
-            user_value = None
             if not self._extruder_position:
                 user_value = global_container_stack.userChanges.getProperty(definition.key, "value")
             else:

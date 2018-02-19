@@ -24,8 +24,7 @@ class CustomQualityProfilesModel(QualityProfilesModel):
         for key in sorted(quality_changes_group_dict):
             quality_changes_group = quality_changes_group_dict[key]
 
-            item = {"id": "TODO",  # TODO: probably will be removed
-                    "name": quality_changes_group.name,
+            item = {"name": quality_changes_group.name,
                     "layer_height": "",
                     "layer_height_without_unit": "",
                     "available": quality_changes_group.is_available,
