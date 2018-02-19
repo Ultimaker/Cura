@@ -101,7 +101,7 @@ UM.Dialog
                 }
                 Label
                 {
-                    text: Cura.MachineManager.activeDefinitionName
+                    text: Cura.MachineManager.activeMachine.definition.name
                     width: (parent.width / 3) | 0
                 }
             }
