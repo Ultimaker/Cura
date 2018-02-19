@@ -706,34 +706,6 @@ class ContainerManager(QObject):
         quality_changes.addMetaDataEntry("setting_version", CuraApplication.SettingVersion)
         return quality_changes
 
-
-    ##  Import profiles from a list of file_urls.
-    #   Each QUrl item must end with .curaprofile, or it will not be imported.
-    #
-    #   \param QVariant<QUrl>, essentially a list with QUrl objects.
-    #   \return Dict with keys status, text
-    @pyqtSlot("QVariantList", result="QVariantMap")
-    def importProfiles(self, file_urls):
-        status = "ok"
-        results = {"ok": [], "error": []}
-        for file_url in file_urls:
-            if not file_url.isValid():
-                continue
-            path = file_url.toLocalFile()
-            if not path:
-                continue
-            if not path.endswith(".curaprofile"):
-                continue
-
-            single_result = self._container_registry.importProfile(path)
-            if single_result["status"] == "error":
-                status = "error"
-            results[single_result["status"]].append(single_result["message"])
-
-        return {
-            "status": status,
-            "message": "\n".join(results["ok"] + results["error"])}
-
     ##  Import single profile, file_url does not have to end with curaprofile
     @pyqtSlot(QUrl, result="QVariantMap")
     def importProfile(self, file_url):
