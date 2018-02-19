@@ -14,6 +14,7 @@ Item
 {
     id: base
     property var resetEnabled: false  // Keep PreferencesDialog happy
+    property var extrudersModel: Cura.ExtrudersModel{}
 
     UM.I18nCatalog { id: catalog; name: "cura"; }
 
@@ -35,6 +36,17 @@ Item
         text: catalog.i18nc("@title:tab", "Profiles")
     }
 
+    property var hasCurrentItem: qualityListView.currentItem != null
+
+    property var currentItem: {
+        var current_index = qualityListView.currentIndex;
+        return qualitiesModel.getItem(current_index);
+    }
+
+    property var isCurrentItemActivated: {
+        // TODO
+    }
+
     Row  // Button Row
     {
         id: buttonRow
@@ -50,8 +62,7 @@ Item
         {
             text: catalog.i18nc("@action:button", "Activate")
             iconName: "list-activate"
-            //enabled: base.currentItem != null ? base.currentItem.id != Cura.MachineManager.activeQualityId : false;
-            enabled: true // TODO
+            enabled: base.currentItem != null ? base.currentItem.name != Cura.MachineManager.activeQualityOrQualityChangesName : false;
             onClicked: {
                 // TODO
             }
@@ -259,6 +270,7 @@ Item
         }
 
 
+        // details panel on the right
         Item
         {
             id: detailsPanel
@@ -283,11 +295,89 @@ Item
                     height: childrenRect.height
 
                     Label {
-                        text: "TODO" // TODO
+                        text: base.currentItem.name  // TODO
                         font: UM.Theme.getFont("large")
                     }
                 }
 
+                Flow {
+                    id: currentSettingsActions
+                    visible: true  // TODO //currentItem && currentItem.id == Cura.MachineManager.activeQualityId
+                    anchors.left: parent.left
+                    anchors.right: parent.right
+                    anchors.top: profileName.bottom
+                    anchors.topMargin: UM.Theme.getSize("default_margin").height
+
+                    Button
+                    {
+                        text: {
+                            return catalog.i18nc("@action:button", "Update profile with current settings/overrides");
+                        }
+                        enabled: Cura.MachineManager.hasUserSettings && !Cura.MachineManager.isReadOnly(Cura.MachineManager.activeQualityId)
+                        onClicked: Cura.ContainerManager.updateQualityChanges()
+                    }
+
+                    Button
+                    {
+                        text: catalog.i18nc("@action:button", "Discard current changes");
+                        enabled: Cura.MachineManager.hasUserSettings
+                        onClicked: Cura.ContainerManager.clearUserContainers();
+                    }
+                }
+
+                Column {
+                    id: profileNotices
+                    anchors.top: currentSettingsActions.visible ? currentSettingsActions.bottom : currentSettingsActions.anchors.top
+                    anchors.topMargin: UM.Theme.getSize("default_margin").height
+                    anchors.left: parent.left
+                    anchors.right: parent.right
+                    spacing: UM.Theme.getSize("default_margin").height
+
+                    Label {
+                        id: defaultsMessage
+                        visible: false
+                        text: catalog.i18nc("@action:label", "This profile uses the defaults specified by the printer, so it has no settings/overrides in the list below.")
+                        wrapMode: Text.WordWrap
+                        width: parent.width
+                    }
+                    Label {
+                        id: noCurrentSettingsMessage
+                        visible: currentItem && currentItem.id == Cura.MachineManager.activeQualityId && !Cura.MachineManager.hasUserSettings
+                        text: catalog.i18nc("@action:label", "Your current settings match the selected profile.")
+                        wrapMode: Text.WordWrap
+                        width: parent.width
+                    }
+                }
+
+
+                TabView
+                {
+                    anchors.left: parent.left
+                    anchors.top: profileNotices.visible ? profileNotices.bottom : profileNotices.anchors.top
+                    anchors.topMargin: UM.Theme.getSize("default_margin").height
+                    anchors.right: parent.right
+                    anchors.bottom: parent.bottom
+
+                    currentIndex: 0
+
+                    ProfileTab
+                    {
+                        title: catalog.i18nc("@title:tab", "Global Settings");
+                        quality: base.currentItem;
+                    }
+
+                    Repeater
+                    {
+                        model: base.extrudersModel
+
+                        ProfileTab
+                        {
+                            title: model.name;
+                            extruderPosition: model.index;
+                            quality: base.currentItem;
+                        }
+                    }
+                }
             }
         }
     }

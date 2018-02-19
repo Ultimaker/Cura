@@ -83,7 +83,7 @@ from cura.Settings.UserChangesModel import UserChangesModel
 from cura.Settings.ExtrudersModel import ExtrudersModel
 from cura.Settings.ContainerSettingsModel import ContainerSettingsModel
 from cura.Settings.MaterialSettingsVisibilityHandler import MaterialSettingsVisibilityHandler
-from cura.Settings.QualitySettingsModel import QualitySettingsModel
+from cura.Machines.Models.QualitySettingsModel import QualitySettingsModel
 from cura.Settings.ContainerManager import ContainerManager
 
 from cura.ObjectsModel import ObjectsModel

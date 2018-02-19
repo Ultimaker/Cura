@@ -16,3 +16,12 @@ class ContainerGroup(QObject):
     @pyqtSlot(result = str)
     def getName(self) -> str:
         return self.name
+
+    def getAllKeys(self) -> set:
+        result = set()
+        for node in [self.node_for_global] + list(self.nodes_for_extruders.values()):
+            if node is None:
+                continue
+            for key in node.getContainer().getAllKeys():
+                result.add(key)
+        return result

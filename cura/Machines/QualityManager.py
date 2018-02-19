@@ -138,6 +138,10 @@ class QualityManager(QObject):
         # Initialize the lookup tree for quality profiles with following structure:
         # <machine> -> <variant> -> <material>
         #           -> <material>
+
+        self._machine_variant_material_quality_type_to_quality_dict = {}  # for quality lookup
+        self._machine_quality_type_to_quality_changes_dict = {}  # for quality_changes lookup
+
         quality_metadata_list = self._container_registry.findContainersMetadata(type = "quality")
         for metadata in quality_metadata_list:
             if metadata["id"] == "empty_quality":
@@ -207,7 +211,6 @@ class QualityManager(QObject):
             if machine_definition_id not in self._machine_quality_type_to_quality_changes_dict:
                 self._machine_quality_type_to_quality_changes_dict[machine_definition_id] = QualityNode()
             machine_node = self._machine_quality_type_to_quality_changes_dict[machine_definition_id]
-
             machine_node.addQualityChangesMetadata(quality_type, metadata)
 
     def _updateMaps(self):
