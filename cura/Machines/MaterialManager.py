@@ -100,16 +100,24 @@ class MaterialManager(QObject):
             self._guid_material_groups_map[guid].append(material_group)
 
         # Map #2
-        # Lookup table for material type -> fallback material metadata
+        # Lookup table for material type -> fallback material metadata, only for read-only materials
         grouped_by_type_dict = dict()
         for root_material_id, material_node in self._material_group_map.items():
+            if not self._container_registry.isReadOnly(root_material_id):
+                continue
             material_type = material_node.root_material_node.metadata["material"]
             if material_type not in grouped_by_type_dict:
                 grouped_by_type_dict[material_type] = {"generic": None,
                                                        "others": []}
             brand = material_node.root_material_node.metadata["brand"]
             if brand.lower() == "generic":
-                grouped_by_type_dict[material_type] = material_node.root_material_node.metadata
+                to_add = True
+                if material_type in grouped_by_type_dict:
+                    diameter = material_node.root_material_node.metadata.get("approximate_diameter")
+                    if diameter != self._default_approximate_diameter_for_quality_search:
+                        to_add = False  # don't add if it's not the default diameter
+                if to_add:
+                    grouped_by_type_dict[material_type] = material_node.root_material_node.metadata
         self._fallback_materials_map = grouped_by_type_dict
 
         # Map #3
@@ -124,6 +132,9 @@ class MaterialManager(QObject):
         material_group_dict = dict()
         keys_to_fetch = ("name", "material", "brand", "color")
         for root_material_id, machine_node in self._material_group_map.items():
+            if not self._container_registry.isReadOnly(root_material_id):
+                continue
+
             root_material_metadata = machine_node.root_material_node.metadata
 
             key_data = []
