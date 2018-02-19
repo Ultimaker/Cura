@@ -11,8 +11,8 @@ Tab
 {
     id: base
 
-    property string extruderPosition: "";
-    property var quality: null;
+    property string extruderPosition: ""
+    property var qualityItem: null
 
     TableView
     {
@@ -86,7 +86,7 @@ Tab
         {
             id: qualitySettings
             extruderPosition: base.extruderPosition
-            quality: base.quality != null ? base.quality : ""
+            qualityItem: base.qualityItem
         }
 
         SystemPalette { id: palette }

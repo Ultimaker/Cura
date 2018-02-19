@@ -14,7 +14,7 @@ Item
 {
     id: base
     property var resetEnabled: false  // Keep PreferencesDialog happy
-    property var extrudersModel: Cura.ExtrudersModel{}
+    property var extrudersModel: Cura.ExtrudersModel {}
 
     UM.I18nCatalog { id: catalog; name: "cura"; }
 
@@ -24,14 +24,12 @@ Item
 
     Label {
         id: titleLabel
-
         anchors {
             top: parent.top
             left: parent.left
             right: parent.right
             margins: 5 * screenScaleFactor
         }
-
         font.pointSize: 18
         text: catalog.i18nc("@title:tab", "Profiles")
     }
@@ -160,12 +158,12 @@ Item
     UM.RenameDialog
     {
         title: catalog.i18nc("@title:window", "Create Profile")
-        id: newNameDialog;
-        object: "<new name>";
+        id: newNameDialog
+        object: "<new name>"
         onAccepted:
         {
             var selectedContainer = Cura.ContainerManager.createQualityChanges(newName);
-            objectList.currentIndex = -1 //Reset selection.
+            qualityListView.currentIndex = -1 // TODO: Reset selection.
         }
     }
 
@@ -173,12 +171,12 @@ Item
     UM.RenameDialog
     {
         title: catalog.i18nc("@title:window", "Duplicate Profile")
-        id: newDuplicateNameDialog;
-        object: "<new name>";
+        id: newDuplicateNameDialog
+        object: "<new name>"
         onAccepted:
         {
             Cura.ContainerManager.duplicateQualityChanges(newName, base.currentItem);
-            objectList.currentIndex = -1 //Reset selection.
+            qualityListView.currentIndex = -1; // TODO: Reset selection.
         }
     }
 
@@ -217,10 +215,7 @@ Item
                 left: parent.left
             }
             visible: text != ""
-            text: {
-                // OLD STUFF
-                return catalog.i18nc("@label %1 is printer name", "Printer: %1").arg(Cura.MachineManager.activeMachineName);
-            }
+            text: catalog.i18nc("@label %1 is printer name", "Printer: %1").arg(Cura.MachineManager.activeMachineName)
             width: profileScrollView.width
             elide: Text.ElideRight
         }
@@ -280,10 +275,8 @@ Item
                             width: Math.floor((parent.width * 0.3))
                             text: model.name
                             elide: Text.ElideRight
-                            font.italic: {  // TODO: make it easier
-                                return model.name == Cura.MachineManager.activeQualityOrQualityChangesName;
-                            }
-                            color: parent.ListView.isCurrentItem ? palette.highlightedText : palette.text;
+                            font.italic: model.name == Cura.MachineManager.activeQualityOrQualityChangesName  // TODO: make it easier
+                            color: parent.ListView.isCurrentItem ? palette.highlightedText : palette.text
                         }
                     }
 
@@ -345,9 +338,7 @@ Item
 
                     Button
                     {
-                        text: {
-                            return catalog.i18nc("@action:button", "Update profile with current settings/overrides");
-                        }
+                        text: catalog.i18nc("@action:button", "Update profile with current settings/overrides")
                         enabled: Cura.MachineManager.hasUserSettings && !Cura.MachineManager.isReadOnly(Cura.MachineManager.activeQualityId)
                         onClicked: Cura.ContainerManager.updateQualityChanges()
                     }
@@ -397,8 +388,8 @@ Item
 
                     ProfileTab
                     {
-                        title: catalog.i18nc("@title:tab", "Global Settings");
-                        quality: base.currentItem;
+                        title: catalog.i18nc("@title:tab", "Global Settings")
+                        qualityItem: base.currentItem
                     }
 
                     Repeater
@@ -407,9 +398,9 @@ Item
 
                         ProfileTab
                         {
-                            title: model.name;
-                            extruderPosition: model.index;
-                            quality: base.currentItem;
+                            title: model.name
+                            extruderPosition: model.index
+                            qualityItem: base.currentItem
                         }
                     }
                 }

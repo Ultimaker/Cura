@@ -20,14 +20,6 @@ class QualitySettingsModel(ListModel):
     def __init__(self, parent = None):
         super().__init__(parent = parent)
 
-        self._container_registry = ContainerRegistry.getInstance()
-        self._application = Application.getInstance()
-        self._quality_manager = self._application._quality_manager
-
-        self._extruder_position = ""
-        self._quality = None
-        self._i18n_catalog = None
-
         self.addRoleName(self.KeyRole, "key")
         self.addRoleName(self.LabelRole, "label")
         self.addRoleName(self.UnitRole, "unit")
@@ -36,36 +28,43 @@ class QualitySettingsModel(ListModel):
         self.addRoleName(self.UserValueRole, "user_value")
         self.addRoleName(self.CategoryRole, "category")
 
-        self._empty_quality = self._container_registry.findInstanceContainers(id = "empty_quality")[0]
+        self._container_registry = ContainerRegistry.getInstance()
+        self._application = Application.getInstance()
+        self._quality_manager = self._application._quality_manager
 
-        self._update()
+        self._extruder_position = ""
+        self._quality_item = None
+        self._i18n_catalog = None
+
         self._quality_manager.qualitiesUpdated.connect(self._update)
 
+        self._update()
+
     extruderPositionChanged = pyqtSignal()
-    qualityChanged = pyqtSignal()
+    qualityItemChanged = pyqtSignal()
 
     def setExtruderPosition(self, extruder_position):
         if extruder_position != self._extruder_position:
             self._extruder_position = extruder_position
-            self._update()
             self.extruderPositionChanged.emit()
+            self._update()
 
     @pyqtProperty(str, fset = setExtruderPosition, notify = extruderPositionChanged)
     def extruderPosition(self):
         return self._extruder_position
 
-    def setQuality(self, quality):
-        if quality != self._quality:
-            self._quality = quality
+    def setQualityItem(self, quality_item):
+        if quality_item != self._quality_item:
+            self._quality_item = quality_item
+            self.qualityItemChanged.emit()
             self._update()
-            self.qualityChanged.emit()
 
-    @pyqtProperty("QVariantMap", fset = setQuality, notify = qualityChanged)
-    def quality(self):
-        return self._quality
+    @pyqtProperty("QVariantMap", fset = setQualityItem, notify = qualityItemChanged)
+    def qualityItem(self):
+        return self._quality_item
 
     def _update(self):
-        if self._quality is None:
+        if self._quality_item is None:
             self.setItems([])
             return
 
@@ -74,8 +73,8 @@ class QualitySettingsModel(ListModel):
         global_container_stack = Application.getInstance().getGlobalContainerStack()
         definition_container = global_container_stack.definition
 
-        quality_group = self._quality["quality_group"]
-        quality_changes_group = self._quality["quality_changes_group"]
+        quality_group = self._quality_item["quality_group"]
+        quality_changes_group = self._quality_item["quality_changes_group"]
 
         if self._extruder_position == "":
             quality_node = quality_group.node_for_global
