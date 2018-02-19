@@ -44,7 +44,10 @@ Item
     }
 
     property var isCurrentItemActivated: {
-        // TODO
+        if (!base.currentItem) {
+            return false;
+        }
+        return base.currentItem.name == Cura.MachineManager.activeQualityOrQualityChangesName;
     }
 
     Row  // Button Row
@@ -62,9 +65,13 @@ Item
         {
             text: catalog.i18nc("@action:button", "Activate")
             iconName: "list-activate"
-            enabled: base.currentItem != null ? base.currentItem.name != Cura.MachineManager.activeQualityOrQualityChangesName : false;
+            enabled: !isCurrentItemActivated
             onClicked: {
-                // TODO
+                if (base.currentItem.is_read_only) {
+                    Cura.MachineManager.setQualityGroup(base.currentItem.quality_group);
+                } else {
+                    Cura.MachineManager.setQualityChangesGroup(base.currentItem.quality_changes_group);
+                }
             }
         }
 

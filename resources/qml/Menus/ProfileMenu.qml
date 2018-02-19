@@ -19,7 +19,7 @@ Menu
         {
             text: (model.layer_height != "") ? model.name + " - " + model.layer_height : model.name
             checkable: true
-            checked: Cura.MachineManager.activeQualityGroup && (Cura.MachineManager.activeQualityGroup.getName() == model.name)
+            checked: Cura.MachineManager.activeQualityOrQualityChangesName == model.name
             exclusiveGroup: group
             onTriggered: {
                 Cura.MachineManager.setQualityGroup(model.quality_group)
@@ -52,9 +52,9 @@ Menu
         {
             text: model.name
             checkable: model.available
-            checked: Cura.MachineManager.activeQualityChangesId == model.id  // TODO: fix for new
+            checked: Cura.MachineManager.activeQualityOrQualityChangesName == model.name
             exclusiveGroup: group
-            onTriggered: Cura.MachineManager.setActiveQuality(model.id) // TODO: fix for new
+            onTriggered: Cura.MachineManager.setQualityChangesGroup(model.quality_changes_group)
         }
 
         onObjectAdded:
