@@ -263,23 +263,36 @@ class StartSliceJob(Job):
 
             if gantry_angle: # not 0 or None
                 # Add a modifier mesh to all printable meshes touching the belt
-
-                extruder_stack_index = node.callDecoration("getActiveExtruderPosition")
-                if not extruder_stack_index:
-                    extruder_stack_index = 0
-                extruder_stack = ExtruderManager.getInstance().getMachineExtruders(Application.getInstance().getGlobalContainerStack().getId())[extruder_stack_index]
-                wall_line_width = extruder_stack.getProperty("wall_line_width_0", "value")
-
+                belt_layer_mesh_data = {}
                 for group in object_groups:
                     added_meshes = []
                     for object in group:
+
                         is_non_printing_mesh = False
                         per_object_stack = object.callDecoration("getStack")
                         if per_object_stack:
                             is_non_printing_mesh = any(per_object_stack.getProperty(key, "value") for key in NON_PRINTING_MESH_SETTINGS)
-                            wall_line_width_0 = per_object_stack.getProperty("wall_line_width_0", "value")
 
                         if not is_non_printing_mesh and not object.getName().startswith("beltLayerModifierMesh"):
+                            extruder_stack_index = object.callDecoration("getActiveExtruderPosition")
+                            if not extruder_stack_index:
+                                extruder_stack_index = 0
+                            extruder_stack = ExtruderManager.getInstance().getMachineExtruders(Application.getInstance().getGlobalContainerStack().getId())[int(extruder_stack_index)]
+
+                            belt_wall_enabled = extruder_stack.getProperty("blackbelt_belt_wall_enabled", "value")
+                            belt_wall_speed = extruder_stack.getProperty("blackbelt_belt_wall_speed", "value")
+                            belt_wall_flow = extruder_stack.getProperty("blackbelt_belt_wall_flow", "value")
+                            wall_line_width = extruder_stack.getProperty("wall_line_width_0", "value")
+
+                            if per_object_stack:
+                                belt_wall_enabled = per_object_stack.getProperty("blackbelt_belt_wall_enabled", "value")
+                                belt_wall_speed = per_object_stack.getProperty("blackbelt_belt_wall_speed", "value")
+                                belt_wall_flow = per_object_stack.getProperty("blackbelt_belt_wall_flow", "value")
+                                wall_line_width = per_object_stack.getProperty("wall_line_width_0", "value")
+
+                            if not belt_wall_enabled:
+                                continue
+
                             aabb = object.getBoundingBox()
                             if aabb.bottom <= 0:
                                 height = wall_line_width * math.sin(gantry_angle)
@@ -296,7 +309,12 @@ class StartSliceJob(Job):
 
                                 new_node = CuraSceneNode(parent = self._scene.getRoot())
                                 new_node.setMeshData(mb.build())
-                                new_node.setName("beltLayerModifierMesh" + hex(id(new_node)))
+                                node_name = "beltLayerModifierMesh" + hex(id(new_node))
+                                new_node.setName(node_name)
+                                belt_layer_mesh_data[node_name] = {
+                                    "blackbelt_belt_wall_speed": belt_wall_speed,
+                                    "blackbelt_belt_wall_flow" : belt_wall_flow
+                                }
 
                                 # Note: adding a SettingOverrideDecorator here causes a slicing loop
                                 added_meshes.append(new_node)
@@ -323,7 +341,7 @@ class StartSliceJob(Job):
                     if transform_matrix:
                         verts = transformVertices(verts, transform_matrix)
 
-                        is_non_printing_mesh = object.getName().startswith("beltLayerModifierMesh")
+                        is_non_printing_mesh = object.getName() in belt_layer_mesh_data
                         per_object_stack = object.callDecoration("getStack")
                         if per_object_stack:
                             is_non_printing_mesh = any(per_object_stack.getProperty(key, "value") for key in NON_PRINTING_MESH_SETTINGS)
@@ -348,14 +366,15 @@ class StartSliceJob(Job):
 
                     obj.vertices = flat_verts
 
-                    if object.getName().startswith("beltLayerModifierMesh"):
+                    if object.getName() in belt_layer_mesh_data:
+                        data = belt_layer_mesh_data[object.getName()]
                         for (key, value) in {
                             "cutting_mesh": "True",
-                            "infill_line_distance": 0,
-                            "bottom_layers": 0,
-                            "top_layers": 0,
-                            "speed_wall_0": 10,
-                            "speed_wall_x": 10
+                            "wall_line_count": 1,
+                            "magic_mesh_surface_mode": "normal",
+                            "speed_wall_0": data["blackbelt_belt_wall_speed"],
+                            "speed_wall_x": data["blackbelt_belt_wall_speed"],
+                            "material_flow": data["blackbelt_belt_wall_flow"]
                         }.items():
                             setting = obj.addRepeatedMessage("settings")
                             setting.name = key
