@@ -13,19 +13,18 @@ Menu
     title: "Nozzle"
 
     property int extruderIndex: 0
+    property var extruderStack: Cura.MachineManager.getExtruder(menu.extruderIndex)
 
     Cura.NozzleModel
     {
         id: nozzleModel
     }
 
-    property var extruderStack: Cura.MachineManager.getExtruder(extruderIndex)
-
     Connections
     {
         target: Cura.MachineManager
         onGlobalContainerChanged: {
-            menu.extruderStack = Cura.MachineManager.getExtruder(extruderIndex)
+            menu.extruderStack = Cura.MachineManager.getExtruder(extruderIndex);
         }
     }
 

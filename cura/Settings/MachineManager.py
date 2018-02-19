@@ -1115,7 +1115,7 @@ class MachineManager(QObject):
     def createMachineManager():
         return MachineManager()
 
-    @pyqtSlot(int, result = "QVariant")
+    @pyqtSlot(int, result = QObject)
     def getExtruder(self, position: int):
         if self._global_container_stack:
             return self._global_container_stack.extruders.get(str(position))
