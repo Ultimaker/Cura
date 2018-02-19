@@ -5,6 +5,7 @@ from UM.Mesh.MeshWriter import MeshWriter
 from UM.Logger import Logger
 from UM.Application import Application
 from UM.Settings.InstanceContainer import InstanceContainer
+from UM.Util import parseBool
 
 from cura.Settings.ExtruderManager import ExtruderManager
 
@@ -119,6 +120,10 @@ class GCodeWriter(MeshWriter):
         # Ensure that quality_type is set. (Can happen if we have empty quality changes).
         if flat_global_container.getMetaDataEntry("quality_type", None) is None:
             flat_global_container.addMetaDataEntry("quality_type", stack.quality.getMetaDataEntry("quality_type", "normal"))
+
+        # Ensure that quality_definition is set. (Can happen if we have empty quality changes).
+        if parseBool(stack.getMetaDataEntry("has_machine_quality", "False")):
+            flat_global_container.addMetaDataEntry("quality_definition", stack.getMetaDataEntry("quality_definition"))
 
         serialized = flat_global_container.serialize()
         data = {"global_quality": serialized}

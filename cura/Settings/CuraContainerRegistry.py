@@ -228,16 +228,23 @@ class CuraContainerRegistry(ContainerRegistry):
                     Logger.log("e", "Incorrect profile [%s]. Could not find global profile", file_name)
                     return { "status": "error",
                              "message": catalog.i18nc("@info:status Don't translate the XML tags <filename> or <message>!", "This profile <filename>{0}</filename> contains incorrect data, could not import it.", file_name)}
-                profile_definition = global_profile.getMetaDataEntry("definition")
-                expected_machine_definition = "fdmprinter"
+
+                # In a profile we can have the quality_definition metadata, but if not, we get the definition
+                profile_definition = global_profile.getMetaDataEntry("quality_definition")
+                if not profile_definition:
+                    profile_definition = global_profile.getMetaDataEntry("definition")
+
+                # The expected machine definition may be the quality_definition if defined or the current definition id
+                expected_machine_definition = None
                 if parseBool(global_container_stack.getMetaDataEntry("has_machine_quality", "False")):
                     expected_machine_definition = global_container_stack.getMetaDataEntry("quality_definition")
-                    if not expected_machine_definition:
-                        expected_machine_definition = global_container_stack.definition.getId()
+                if not expected_machine_definition:
+                    expected_machine_definition = global_container_stack.definition.getId()
+
                 if expected_machine_definition is not None and profile_definition is not None and profile_definition != expected_machine_definition:
-                    Logger.log("e", "Profile [%s] is for machine [%s] but the current active machine is [%s]. Will not import the profile", file_name)
+                    Logger.log("e", "Profile [%s] is for machine [%s] but the current active machine is [%s]. Will not import the profile", file_name, profile_definition, expected_machine_definition)
                     return { "status": "error",
-                             "message": catalog.i18nc("@info:status Don't translate the XML tags <filename> or <message>!", "The machine defined in profile <filename>{0}</filename> doesn't match with your current machine, could not import it.", file_name)}
+                             "message": catalog.i18nc("@info:status Don't translate the XML tags <filename> or <message>!", "The machine defined in profile <filename>{0}</filename> ({1}) doesn't match with your current machine ({2}), could not import it.", file_name, profile_definition, expected_machine_definition)}
 
                 name_seed = os.path.splitext(os.path.basename(file_name))[0]
                 new_name = self.uniqueName(name_seed)

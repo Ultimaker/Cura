@@ -559,7 +559,8 @@ class MachineManager(QObject):
     def activeVariantNames(self) -> List[str]:
         result = []
 
-        active_stacks = ExtruderManager.getInstance().getActiveGlobalAndExtruderStacks()
+        # Just return the variants in the extruder stack(s). For the variant in the global stack, use activeVariantBuildplateName
+        active_stacks = ExtruderManager.getInstance().getActiveExtruderStacks()
         if active_stacks is not None:
             for stack in active_stacks:
                 variant_container = stack.variant
