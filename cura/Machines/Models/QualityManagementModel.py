@@ -1,7 +1,7 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from PyQt5.QtCore import Qt
+from PyQt5.QtCore import Qt, pyqtSlot
 
 from UM.Qt.ListModel import ListModel
 
@@ -74,3 +74,45 @@ class QualityManagementModel(ListModel):
         item_list += quality_changes_item_list
 
         self.setItems(item_list)
+
+    # TODO: Duplicated code here from InstanceContainersModel. Refactor and remove this later.
+    #
+    ##  Gets a list of the possible file filters that the plugins have
+    #   registered they can read or write. The convenience meta-filters
+    #   "All Supported Types" and "All Files" are added when listing
+    #   readers, but not when listing writers.
+    #
+    #   \param io_type \type{str} name of the needed IO type
+    #   \return A list of strings indicating file name filters for a file
+    #   dialog.
+    @pyqtSlot(str, result = "QVariantList")
+    def getFileNameFilters(self, io_type):
+        from UM.i18n import i18nCatalog
+        catalog = i18nCatalog("uranium")
+        #TODO: This function should be in UM.Resources!
+        filters = []
+        all_types = []
+        for plugin_id, meta_data in self._getIOPlugins(io_type):
+            for io_plugin in meta_data[io_type]:
+                filters.append(io_plugin["description"] + " (*." + io_plugin["extension"] + ")")
+                all_types.append("*.{0}".format(io_plugin["extension"]))
+
+        if "_reader" in io_type:
+            # if we're listing readers, add the option to show all supported files as the default option
+            filters.insert(0, catalog.i18nc("@item:inlistbox", "All Supported Types ({0})", " ".join(all_types)))
+            filters.append(catalog.i18nc("@item:inlistbox", "All Files (*)"))  # Also allow arbitrary files, if the user so prefers.
+        return filters
+
+    ##  Gets a list of profile reader or writer plugins
+    #   \return List of tuples of (plugin_id, meta_data).
+    def _getIOPlugins(self, io_type):
+        from UM.PluginRegistry import PluginRegistry
+        pr = PluginRegistry.getInstance()
+        active_plugin_ids = pr.getActivePlugins()
+
+        result = []
+        for plugin_id in active_plugin_ids:
+            meta_data = pr.getMetaData(plugin_id)
+            if io_type in meta_data:
+                result.append( (plugin_id, meta_data) )
+        return result

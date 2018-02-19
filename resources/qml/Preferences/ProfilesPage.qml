@@ -138,7 +138,7 @@ Item
             text: catalog.i18nc("@action:button", "Import")
             iconName: "document-import"
             onClicked: {
-                // TODO
+                importDialog.open();
             }
         }
 
@@ -149,7 +149,7 @@ Item
             iconName: "document-export"
             enabled: base.hasCurrentItem && !base.currentItem.is_read_only
             onClicked: {
-                // TODO
+                exportDialog.open();
             }
         }
     }
@@ -209,6 +209,57 @@ Item
         {
             Cura.ContainerManager.renameQualityChangesGroup(base.currentItem.quality_changes_group, newName);
             qualityListView.currentIndex = -1;  // TODO: Reset selection.
+        }
+    }
+
+    // Dialog for importing a quality profile
+    FileDialog
+    {
+        id: importDialog
+        title: catalog.i18nc("@title:window", "Import Profile")
+        selectExisting: true
+        nameFilters: qualitiesModel.getFileNameFilters("profile_reader")  // TODO: make this easier
+        folder: CuraApplication.getDefaultPath("dialog_profile_path")
+        onAccepted:
+        {
+            var result = Cura.ContainerManager.importProfile(fileUrl);
+            messageDialog.text = result.message;
+            if (result.status == "ok") {
+                messageDialog.icon = StandardIcon.Information;
+            }
+            else if (result.status == "duplicate") {
+                messageDialog.icon = StandardIcon.Warning;
+            }
+            else {
+                messageDialog.icon = StandardIcon.Critical;
+            }
+            messageDialog.open();
+            CuraApplication.setDefaultPath("dialog_profile_path", folder);
+        }
+    }
+
+    // Dialog for exporting a quality profile
+    FileDialog
+    {
+        id: exportDialog
+        title: catalog.i18nc("@title:window", "Export Profile")
+        selectExisting: false
+        nameFilters: qualitiesModel.getFileNameFilters("profile_writer")  // TODO: make this easier
+        folder: CuraApplication.getDefaultPath("dialog_profile_path")
+        onAccepted:
+        {
+            // TODO: make this easier
+            var result = Cura.ContainerManager.exportQualityChangesGroup(base.currentItem.quality_changes_group,
+                                                                         fileUrl, selectedNameFilter);
+
+            if (result && result.status == "error") {
+                messageDialog.icon = StandardIcon.Critical;
+                messageDialog.text = result.message;
+                messageDialog.open();
+            }
+
+            // else pop-up Message thing from python code
+            CuraApplication.setDefaultPath("dialog_profile_path", folder);
         }
     }
 

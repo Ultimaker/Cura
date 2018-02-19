@@ -171,18 +171,6 @@ class ContainerManager(QObject):
         material_group = self._material_manager.getMaterialGroup(root_material_id)
         material_group.root_material_node.getContainer().setName(new_name)
 
-    ##  Find instance containers matching certain criteria.
-    #
-    #   This effectively forwards to
-    #   ContainerRegistry::findInstanceContainersMetadata.
-    #
-    #   \param criteria A dict of key - value pairs to search for.
-    #
-    #   \return A list of container IDs that match the given criteria.
-    @pyqtSlot("QVariantMap", result = "QVariantList")
-    def findInstanceContainers(self, criteria):
-        return [entry["id"] for entry in self._container_registry.findInstanceContainersMetadata(**criteria)]
-
     @pyqtSlot(str, result = str)
     def makeUniqueName(self, original_name):
         return self._container_registry.uniqueName(original_name)
@@ -716,11 +704,13 @@ class ContainerManager(QObject):
             return
         return self._container_registry.importProfile(path)
 
-    @pyqtSlot("QVariantList", QUrl, str)
-    def exportProfile(self, instance_id: str, file_url: QUrl, file_type: str) -> None:
+    @pyqtSlot(QObject, QUrl, str)
+    def exportQualityChangesGroup(self, quality_changes_group, file_url: QUrl, file_type: str):
         if not file_url.isValid():
             return
         path = file_url.toLocalFile()
         if not path:
             return
-        self._container_registry.exportProfile(instance_id, path, file_type)
+
+        container_list = [n.getContainer() for n in quality_changes_group.getAllNodes()]
+        self._container_registry.exportQualityProfile(container_list, path, file_type)

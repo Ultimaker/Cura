@@ -103,7 +103,7 @@ class CuraContainerRegistry(ContainerRegistry):
     #   \param instance_ids \type{list} the IDs of the profiles to export.
     #   \param file_name \type{str} the full path and filename to export to.
     #   \param file_type \type{str} the file type with the format "<description> (*.<extension>)"
-    def exportProfile(self, instance_ids, file_name, file_type):
+    def exportQualityProfile(self, container_list, file_name, file_type):
         # Parse the fileType to deduce what plugin can save the file format.
         # fileType has the format "<description> (*.<extension>)"
         split = file_type.rfind(" (*.")  # Find where the description ends and the extension starts.
@@ -122,31 +122,10 @@ class CuraContainerRegistry(ContainerRegistry):
                                               catalog.i18nc("@label Don't translate the XML tag <filename>!", "The file <filename>{0}</filename> already exists. Are you sure you want to overwrite it?").format(file_name))
                 if result == QMessageBox.No:
                     return
-        found_containers = []
-        extruder_positions = []
-        for instance_id in instance_ids:
-            containers = ContainerRegistry.getInstance().findInstanceContainers(id = instance_id)
-            if containers:
-                found_containers.append(containers[0])
-
-                # Determine the position of the extruder of this container
-                extruder_id = containers[0].getMetaDataEntry("extruder", "")
-                if extruder_id == "":
-                    # Global stack
-                    extruder_positions.append(-1)
-                else:
-                    extruder_containers = ContainerRegistry.getInstance().findDefinitionContainersMetadata(id = extruder_id)
-                    if extruder_containers:
-                        extruder_positions.append(int(extruder_containers[0].get("position", 0)))
-                    else:
-                        extruder_positions.append(0)
-        # Ensure the profiles are always exported in order (global, extruder 0, extruder 1, ...)
-        found_containers = [containers for (positions, containers) in sorted(zip(extruder_positions, found_containers))]
 
         profile_writer = self._findProfileWriter(extension, description)
-
         try:
-            success = profile_writer.write(file_name, found_containers)
+            success = profile_writer.write(file_name, container_list)
         except Exception as e:
             Logger.log("e", "Failed to export profile to %s: %s", file_name, str(e))
             m = Message(catalog.i18nc("@info:status Don't translate the XML tags <filename> or <message>!", "Failed to export profile to <filename>{0}</filename>: <message>{1}</message>", file_name, str(e)),
