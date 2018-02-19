@@ -1,9 +1,11 @@
 # Copyright (c) 2017 Ultimaker B.V.
-# Cura is released under the terms of the AGPLv3 or higher.
+# Cura is released under the terms of the LGPLv3 or higher.
 
 import pytest #This module contains automated tests.
 import unittest.mock #For the mocking and monkeypatching functionality.
+import copy
 
+import cura.CuraApplication
 import UM.Settings.ContainerRegistry #To create empty instance containers.
 import UM.Settings.ContainerStack #To set the container registry the container stacks use.
 from UM.Settings.DefinitionContainer import DefinitionContainer #To check against the class of DefinitionContainer.
@@ -12,6 +14,8 @@ import cura.Settings.ExtruderStack #The module we're testing.
 from cura.Settings.Exceptions import InvalidContainerError, InvalidOperationError #To check whether the correct exceptions are raised.
 
 from cura.Settings.ExtruderManager import ExtruderManager
+from UM.Settings.ContainerRegistry import ContainerRegistry
+from cura.Settings.GlobalStack import GlobalStack
 
 ##  Fake container registry that always provides all containers you ask of.
 @pytest.yield_fixture()
@@ -32,6 +36,7 @@ def container_registry():
 ##  An empty extruder stack to test with.
 @pytest.fixture()
 def extruder_stack() -> cura.Settings.ExtruderStack.ExtruderStack:
+    creteEmptyContainers()
     return cura.Settings.ExtruderStack.ExtruderStack("TestStack")
 
 ##  Gets an instance container with a specified container type.
@@ -42,6 +47,31 @@ def getInstanceContainer(container_type) -> InstanceContainer:
     container = InstanceContainer(container_id = "InstanceContainer")
     container.addMetaDataEntry("type", container_type)
     return container
+
+def creteEmptyContainers():
+    empty_container = ContainerRegistry.getInstance().getEmptyInstanceContainer()
+    empty_variant_container = copy.deepcopy(empty_container)
+    empty_variant_container.setMetaDataEntry("id", "empty_variant")
+    empty_variant_container.addMetaDataEntry("type", "variant")
+    ContainerRegistry.getInstance().addContainer(empty_variant_container)
+
+    empty_material_container = copy.deepcopy(empty_container)
+    empty_material_container.setMetaDataEntry("id", "empty_material")
+    empty_material_container.addMetaDataEntry("type", "material")
+    ContainerRegistry.getInstance().addContainer(empty_material_container)
+
+    empty_quality_container = copy.deepcopy(empty_container)
+    empty_quality_container.setMetaDataEntry("id", "empty_quality")
+    empty_quality_container.setName("Not Supported")
+    empty_quality_container.addMetaDataEntry("quality_type", "not_supported")
+    empty_quality_container.addMetaDataEntry("type", "quality")
+    empty_quality_container.addMetaDataEntry("supported", False)
+    ContainerRegistry.getInstance().addContainer(empty_quality_container)
+
+    empty_quality_changes_container = copy.deepcopy(empty_container)
+    empty_quality_changes_container.setMetaDataEntry("id", "empty_quality_changes")
+    empty_quality_changes_container.addMetaDataEntry("type", "quality_changes")
+    ContainerRegistry.getInstance().addContainer(empty_quality_changes_container)
 
 class DefinitionContainerSubClass(DefinitionContainer):
     def __init__(self):
@@ -223,7 +253,7 @@ def test_deserializeMoveInstanceContainer(extruder_stack):
 
     assert extruder_stack.quality.getId() == "empty"
     assert extruder_stack.material.getId() != "empty"
-
+from UM.Settings.Validator import Validator
 ##  Tests whether a definition container in the wrong spot is moved into the
 #   correct spot by deserialising.
 @pytest.mark.skip #The test currently fails because the definition container doesn't have a category, which is wrong but we don't have time to refactor that right now.
@@ -250,8 +280,8 @@ def test_getPropertyFallThrough(extruder_stack):
     container_indices = cura.Settings.CuraContainerStack._ContainerIndexes #Cache.
     for type_id, type_name in container_indices.IndexTypeMap.items():
         container = unittest.mock.MagicMock()
-        # Return type_id when asking for value and -1 when asking for limit_to_extruder
-        container.getProperty = lambda key, property, type_id = type_id: type_id if (key == "layer_height" and property == "value") else (None if property != "limit_to_extruder" else "-1") #Returns the container type ID as layer height, in order to identify it.
+        # Return type_id when asking for value and -1 when asking for settable_per_extruder
+        container.getProperty = lambda key, property, context = None, type_id = type_id: type_id if (key == "layer_height" and property == "value") else (None if property != "settable_per_extruder" else "-1") #Returns the container type ID as layer height, in order to identify it.
         container.hasProperty = lambda key, property: key == "layer_height"
         container.getMetaDataEntry = unittest.mock.MagicMock(return_value = type_name)
         mock_layer_heights[type_id] = container
@@ -269,7 +299,9 @@ def test_getPropertyFallThrough(extruder_stack):
     extruder_stack.variant = mock_no_settings[container_indices.Variant]
     with unittest.mock.patch("cura.Settings.CuraContainerStack.DefinitionContainer", unittest.mock.MagicMock): #To guard against the type checking.
         extruder_stack.definition = mock_layer_heights[container_indices.Definition] #There's a layer height in here!
-    extruder_stack.setNextStack(unittest.mock.MagicMock())
+
+    stack = GlobalStack("PyTest GlobalStack")
+    extruder_stack.setNextStack(stack)
 
     assert extruder_stack.getProperty("layer_height", "value") == container_indices.Definition
     extruder_stack.variant = mock_layer_heights[container_indices.Variant]

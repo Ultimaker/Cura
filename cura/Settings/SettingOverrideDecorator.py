@@ -1,17 +1,17 @@
 # Copyright (c) 2016 Ultimaker B.V.
-# Cura is released under the terms of the AGPLv3 or higher.
+# Cura is released under the terms of the LGPLv3 or higher.
 
 import copy
 
 from UM.Scene.SceneNodeDecorator import SceneNodeDecorator
 from UM.Signal import Signal, signalemitter
-from UM.Settings.ContainerStack import ContainerStack
 from UM.Settings.InstanceContainer import InstanceContainer
 from UM.Settings.ContainerRegistry import ContainerRegistry
 from UM.Logger import Logger
 
 from UM.Application import Application
 
+from cura.Settings.PerObjectContainerStack import PerObjectContainerStack
 from cura.Settings.ExtruderManager import ExtruderManager
 
 ##  A decorator that adds a container stack to a Node. This stack should be queried for all settings regarding
@@ -22,21 +22,26 @@ class SettingOverrideDecorator(SceneNodeDecorator):
     ##  Event indicating that the user selected a different extruder.
     activeExtruderChanged = Signal()
 
+    ##  Non-printing meshes
+    #
+    #   If these settings are True for any mesh, the mesh does not need a convex hull,
+    #   and is sent to the slicer regardless of whether it fits inside the build volume.
+    #   Note that Support Mesh is not in here because it actually generates
+    #   g-code in the volume of the mesh.
+    _non_printing_mesh_settings = {"anti_overhang_mesh", "infill_mesh", "cutting_mesh"}
+
     def __init__(self):
         super().__init__()
-        self._stack = ContainerStack(stack_id = id(self))
+        self._stack = PerObjectContainerStack(stack_id = "per_object_stack_" + str(id(self)))
         self._stack.setDirty(False)  # This stack does not need to be saved.
-        self._instance = InstanceContainer(container_id = "SettingOverrideInstanceContainer")
-        self._stack.addContainer(self._instance)
+        self._stack.addContainer(InstanceContainer(container_id = "SettingOverrideInstanceContainer"))
+        self._extruder_stack = ExtruderManager.getInstance().getExtruderStack(0).getId()
 
-        if ExtruderManager.getInstance().extruderCount > 1:
-            self._extruder_stack = ExtruderManager.getInstance().getExtruderStack(0).getId()
-        else:
-            self._extruder_stack = None
+        self._is_non_printing_mesh = False
 
         self._stack.propertyChanged.connect(self._onSettingChanged)
 
-        ContainerRegistry.getInstance().addContainer(self._stack)
+        Application.getInstance().getContainerRegistry().addContainer(self._stack)
 
         Application.getInstance().globalContainerStackChanged.connect(self._updateNextStack)
         self.activeExtruderChanged.connect(self._updateNextStack)
@@ -46,13 +51,18 @@ class SettingOverrideDecorator(SceneNodeDecorator):
         ## Create a fresh decorator object
         deep_copy = SettingOverrideDecorator()
         ## Copy the instance
-        deep_copy._instance = copy.deepcopy(self._instance, memo)
+        instance_container = copy.deepcopy(self._stack.getContainer(0), memo)
+
+        ## Set the copied instance as the first (and only) instance container of the stack.
+        deep_copy._stack.replaceContainer(0, instance_container)
 
         # Properly set the right extruder on the copy
         deep_copy.setActiveExtruder(self._extruder_stack)
 
-        ## Set the copied instance as the first (and only) instance container of the stack.
-        deep_copy._stack.replaceContainer(0, deep_copy._instance)
+        # use value from the stack because there can be a delay in signal triggering and "_is_non_printing_mesh"
+        # has not been updated yet.
+        deep_copy._is_non_printing_mesh = any(bool(self._stack.getProperty(setting, "value")) for setting in self._non_printing_mesh_settings)
+
         return deep_copy
 
     ##  Gets the currently active extruder to print this object with.
@@ -76,9 +86,14 @@ class SettingOverrideDecorator(SceneNodeDecorator):
             container_stack = containers[0]
             return container_stack.getMetaDataEntry("position", default=None)
 
+    def isNonPrintingMesh(self):
+        return self._is_non_printing_mesh
+
     def _onSettingChanged(self, instance, property_name): # Reminder: 'property' is a built-in function
         # Trigger slice/need slicing if the value has changed.
         if property_name == "value":
+            self._is_non_printing_mesh = any(bool(self._stack.getProperty(setting, "value")) for setting in self._non_printing_mesh_settings)
+
             Application.getInstance().getBackend().needsSlicing()
             Application.getInstance().getBackend().tickle()
 

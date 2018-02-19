@@ -1,6 +1,6 @@
 {
     "name": "UM3 Network Connection",
-    "author": "Ultimaker",
+    "author": "Ultimaker B.V.",
     "description": "Manages network connections to Ultimaker 3 printers",
     "version": "1.0.0",
     "api": 4,

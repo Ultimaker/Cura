@@ -1,5 +1,4 @@
 {
-    "id": "prusa_i3_xl",
     "version": 2,
     "name": "Prusa i3 xl",
     "inherits": "fdmprinter",
@@ -7,7 +6,6 @@
         "visible": true,
         "author": "guigashm",
         "manufacturer": "Prusajr",
-        "category": "Other",
         "file_formats": "text/x-gcode",
         "icon": "icon_ultimaker2.png",
         "platform": "prusai3_xl_platform.stl"
@@ -35,12 +33,6 @@
         },
         "material_diameter": {
             "default_value": 1.75
-        },
-        "machine_nozzle_heat_up_speed": {
-            "default_value": 2.0
-        },
-        "machine_nozzle_cool_down_speed": {
-            "default_value": 2.0
         },
         "machine_head_polygon": {
             "default_value": [

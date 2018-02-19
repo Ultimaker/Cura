@@ -1,5 +1,5 @@
 # Copyright (c) 2016 Ultimaker B.V.
-# Uranium is released under the terms of the AGPLv3 or higher.
+# Uranium is released under the terms of the LGPLv3 or higher.
 
 from UM.Tool import Tool
 from UM.Scene.Selection import Selection
@@ -8,6 +8,7 @@ from UM.Application import Application
 from UM.Preferences import Preferences
 from cura.Settings.SettingOverrideDecorator import SettingOverrideDecorator
 from cura.Settings.ExtruderManager import ExtruderManager
+from UM.Settings.SettingInstance import SettingInstance
 from UM.Event import Event
 
 
@@ -18,7 +19,7 @@ class PerObjectSettingsTool(Tool):
         super().__init__()
         self._model = None
 
-        self.setExposedProperties("SelectedObjectId", "ContainerID", "SelectedActiveExtruder")
+        self.setExposedProperties("SelectedObjectId", "ContainerID", "SelectedActiveExtruder", "MeshType")
 
         self._advanced_mode = False
         self._multi_extrusion = False
@@ -70,6 +71,39 @@ class PerObjectSettingsTool(Tool):
             selected_object.addDecorator(SettingOverrideDecorator())
         selected_object.callDecoration("setActiveExtruder", extruder_stack_id)
 
+    def setMeshType(self, mesh_type):
+        selected_object = Selection.getSelectedObject(0)
+        stack = selected_object.callDecoration("getStack") #Don't try to get the active extruder since it may be None anyway.
+        if not stack:
+            selected_object.addDecorator(SettingOverrideDecorator())
+            stack = selected_object.callDecoration("getStack")
+
+        settings = stack.getTop()
+        for property_key in ["infill_mesh", "cutting_mesh", "support_mesh", "anti_overhang_mesh"]:
+            if property_key != mesh_type:
+                if settings.getInstance(property_key):
+                    settings.removeInstance(property_key)
+            else:
+                if not (settings.getInstance(property_key) and settings.getProperty(property_key, "value")):
+                    definition = stack.getSettingDefinition(property_key)
+                    new_instance = SettingInstance(definition, settings)
+                    new_instance.setProperty("value", True)
+                    new_instance.resetState()  # Ensure that the state is not seen as a user state.
+                    settings.addInstance(new_instance)
+
+    def getMeshType(self):
+        selected_object = Selection.getSelectedObject(0)
+        stack = selected_object.callDecoration("getStack") #Don't try to get the active extruder since it may be None anyway.
+        if not stack:
+            return ""
+
+        settings = stack.getTop()
+        for property_key in ["infill_mesh", "cutting_mesh", "support_mesh", "anti_overhang_mesh"]:
+            if settings.getInstance(property_key) and settings.getProperty(property_key, "value"):
+                return property_key
+
+        return ""
+
     def _onPreferenceChanged(self, preference):
         if preference == "cura/active_mode":
             self._advanced_mode = Preferences.getInstance().getValue(preference) == 1
@@ -78,31 +112,26 @@ class PerObjectSettingsTool(Tool):
     def _onGlobalContainerChanged(self):
         global_container_stack = Application.getInstance().getGlobalContainerStack()
         if global_container_stack:
+
+            # used for enabling or disabling per extruder settings per object
             self._multi_extrusion = global_container_stack.getProperty("machine_extruder_count", "value") > 1
 
-            # Ensure that all extruder data is reset
-            if not self._multi_extrusion:
-                default_stack_id = global_container_stack.getId()
-            else:
-                default_stack = ExtruderManager.getInstance().getExtruderStack(0)
-                if default_stack:
-                    default_stack_id = default_stack.getId()
-                else:
-                    default_stack_id = global_container_stack.getId()
+            extruder_stack = ExtruderManager.getInstance().getExtruderStack(0)
 
-            root_node = Application.getInstance().getController().getScene().getRoot()
-            for node in DepthFirstIterator(root_node):
-                new_stack_id = default_stack_id
-                # Get position of old extruder stack for this node
-                old_extruder_pos = node.callDecoration("getActiveExtruderPosition")
-                if old_extruder_pos is not None:
-                    # Fetch current (new) extruder stack at position
-                    new_stack = ExtruderManager.getInstance().getExtruderStack(old_extruder_pos)
-                    if new_stack:
-                        new_stack_id = new_stack.getId()
-                node.callDecoration("setActiveExtruder", new_stack_id)
+            if extruder_stack:
+                root_node = Application.getInstance().getController().getScene().getRoot()
+                for node in DepthFirstIterator(root_node):
+                    new_stack_id = extruder_stack.getId()
+                    # Get position of old extruder stack for this node
+                    old_extruder_pos = node.callDecoration("getActiveExtruderPosition")
+                    if old_extruder_pos is not None:
+                        # Fetch current (new) extruder stack at position
+                        new_stack = ExtruderManager.getInstance().getExtruderStack(old_extruder_pos)
+                        if new_stack:
+                            new_stack_id = new_stack.getId()
+                    node.callDecoration("setActiveExtruder", new_stack_id)
 
-            self._updateEnabled()
+                self._updateEnabled()
 
     def _updateEnabled(self):
         selected_objects = Selection.getAllSelectedObjects()

@@ -1,6 +1,6 @@
 {
     "name": "Per Model Settings Tool",
-    "author": "Ultimaker",
+    "author": "Ultimaker B.V.",
     "version": "1.0.0",
     "description": "Provides the Per Model Settings.",
     "api": 4,

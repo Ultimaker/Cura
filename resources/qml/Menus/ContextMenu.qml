@@ -1,5 +1,5 @@
 // Copyright (c) 2016 Ultimaker B.V.
-// Cura is released under the terms of the AGPLv3 or higher.
+// Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.2
 import QtQuick.Controls 1.1
@@ -7,7 +7,7 @@ import QtQuick.Dialogs 1.2
 import QtQuick.Window 2.1
 
 import UM 1.2 as UM
-import Cura 1.0 as Cura
+import Cura 1.2 as Cura
 
 Menu
 {
@@ -31,12 +31,43 @@ Menu
             visible: base.shouldShowExtruders
             enabled: UM.Selection.hasSelection
             checkable: true
-            checked: ExtruderManager.selectedObjectExtruders.indexOf(model.id) != -1
+            checked: Cura.ExtruderManager.selectedObjectExtruders.indexOf(model.id) != -1
             onTriggered: CuraActions.setExtruderForSelection(model.id)
             shortcut: "Ctrl+" + (model.index + 1)
         }
         onObjectAdded: base.insertItem(index, object)
         onObjectRemoved: base.removeItem(object)
+    }
+
+    MenuSeparator {
+        visible: UM.Preferences.getValue("cura/use_multi_build_plate")
+    }
+
+    Instantiator
+    {
+        model: Cura.BuildPlateModel
+        MenuItem {
+            enabled: UM.Selection.hasSelection
+            text: Cura.BuildPlateModel.getItem(index).name;
+            onTriggered: CuraActions.setBuildPlateForSelection(Cura.BuildPlateModel.getItem(index).buildPlateNumber);
+            checkable: true
+            checked: Cura.BuildPlateModel.selectionBuildPlates.indexOf(Cura.BuildPlateModel.getItem(index).buildPlateNumber) != -1;
+            visible: UM.Preferences.getValue("cura/use_multi_build_plate")
+        }
+        onObjectAdded: base.insertItem(index, object);
+        onObjectRemoved: base.removeItem(object);
+    }
+
+    MenuItem {
+        enabled: UM.Selection.hasSelection
+        text: "New build plate";
+        onTriggered: {
+            CuraActions.setBuildPlateForSelection(Cura.BuildPlateModel.maxBuildPlate + 1);
+            checked = false;
+        }
+        checkable: true
+        checked: false
+        visible: UM.Preferences.getValue("cura/use_multi_build_plate")
     }
 
     // Global actions
@@ -78,6 +109,7 @@ Menu
     Dialog
     {
         id: multiplyDialog
+        modality: Qt.ApplicationModal
 
         title: catalog.i18ncp("@title:window", "Multiply Selected Model", "Multiply Selected Models", UM.Selection.selectionCount)
 

@@ -1,5 +1,5 @@
 // Copyright (c) 2017 Ultimaker B.V.
-// Cura is released under the terms of the AGPLv3 or higher.
+// Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.1
 import QtQuick.Controls 1.1
@@ -14,8 +14,8 @@ UM.Dialog
     id: base
     title: catalog.i18nc("@title:window", "Discard or Keep changes")
 
-    width: 800
-    height: 400
+    width: 800 * screenScaleFactor
+    height: 400 * screenScaleFactor
     property var changesModel: Cura.UserChangesModel{ id: userChangesModel}
     onVisibilityChanged:
     {
@@ -109,20 +109,20 @@ UM.Dialog
                 role: "label"
                 title: catalog.i18nc("@title:column", "Profile settings")
                 delegate: labelDelegate
-                width: tableView.width * 0.4
+                width: (tableView.width * 0.4) | 0
             }
             TableViewColumn
             {
                 role: "original_value"
                 title: catalog.i18nc("@title:column", "Default")
-                width: tableView.width * 0.3
+                width: (tableView.width * 0.3) | 0
                 delegate: defaultDelegate
             }
             TableViewColumn
             {
                 role: "user_value"
                 title: catalog.i18nc("@title:column", "Customized")
-                width: tableView.width * 0.3 - 1
+                width: (tableView.width * 0.3) | 0
             }
             section.property: "category"
             section.delegate: Label

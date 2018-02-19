@@ -1,5 +1,4 @@
 {
-    "id": "makeR_pegasus",
     "version": 2,
     "name": "makeR Pegasus",
     "inherits": "fdmprinter",
@@ -7,7 +6,6 @@
         "visible": true,
         "author": "makeR",
         "manufacturer": "makeR",
-        "category": "Other",
         "file_formats": "text/x-gcode",
         "icon": "icon_ultimaker2",
         "platform": "makeR_pegasus_platform.stl",
@@ -36,12 +34,6 @@
         },
         "material_diameter": {
             "default_value": 2.85
-        },
-        "machine_nozzle_heat_up_speed": {
-            "default_value": 2
-        },
-        "machine_nozzle_cool_down_speed": {
-            "default_value": 2
         },
         "machine_head_polygon": {
             "default_value": [

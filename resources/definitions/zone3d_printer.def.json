@@ -1,5 +1,4 @@
 {
-    "id": "zone3d_printer",
     "name": "Zone3d Printer",
     "version": 2,
     "inherits": "fdmprinter",
@@ -7,7 +6,6 @@
         "visible": true,
         "author": "Ultimaker",
         "manufacturer": "Unknown",
-        "category": "Other",
         "file_formats": "text/x-gcode",
         "platform_offset": [ 0, 0, 0]
     },

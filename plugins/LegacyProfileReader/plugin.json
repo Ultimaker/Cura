@@ -1,6 +1,6 @@
 {
     "name": "Legacy Cura Profile Reader",
-    "author": "Ultimaker",
+    "author": "Ultimaker B.V.",
     "version": "1.0.0",
     "description": "Provides support for importing profiles from legacy Cura versions.",
     "api": 4,

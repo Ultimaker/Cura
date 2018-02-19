@@ -1,5 +1,4 @@
 {
-    "id": "101Hero",
     "version": 2, 
     "name": "101Hero",
     "inherits": "fdmprinter",
@@ -7,12 +6,8 @@
         "visible": true,
         "author": "rikky",
         "manufacturer": "101Hero",
-        "category": "Other",
-        "machine_extruder_trains":
-        {
-            "0": "fdmextruder"
-        },
         "file_formats": "text/x-gcode",
+        "platform": "101hero-platform.stl",
         "supports_usb_connection": true
     },
 
@@ -27,8 +22,6 @@
         "layer_height": { "default_value": 0.2 },
         "machine_nozzle_size": { "default_value": 0.4 },
         "material_diameter": { "default_value": 1.75 },
-        "machine_nozzle_heat_up_speed": { "default_value": 2 },
-        "machine_nozzle_cool_down_speed": { "default_value": 2 },
         "machine_head_with_fans_polygon": {
             "default_value": [
                 [ 0, 0 ],

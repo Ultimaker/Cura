@@ -1,5 +1,5 @@
 # Copyright (c) 2017 Ultimaker B.V.
-# Cura is released under the terms of the AGPLv3 or higher.
+# Cura is released under the terms of the LGPLv3 or higher.
 
 from PyQt5.QtCore import QObject, pyqtProperty, pyqtSignal
 from UM.FlameProfiler import pyqtSlot
@@ -47,21 +47,20 @@ class SettingInheritanceManager(QObject):
 
     @pyqtSlot(str, str, result = "QStringList")
     def getOverridesForExtruder(self, key, extruder_index):
-        multi_extrusion = self._global_container_stack.getProperty("machine_extruder_count", "value") > 1
-        if not multi_extrusion:
-            return self._settings_with_inheritance_warning
-        extruder = ExtruderManager.getInstance().getExtruderStack(extruder_index)
-        if not extruder:
-            Logger.log("w", "Unable to find extruder for current machine with index %s", extruder_index)
-            return []
+        result = []
 
-        definitions = self._global_container_stack.definition.findDefinitions(key=key)
+        extruder_stack = ExtruderManager.getInstance().getExtruderStack(extruder_index)
+        if not extruder_stack:
+            Logger.log("w", "Unable to find extruder for current machine with index %s", extruder_index)
+            return result
+
+        definitions = self._global_container_stack.definition.findDefinitions(key = key)
         if not definitions:
             Logger.log("w", "Could not find definition for key [%s] (2)", key)
-            return []
-        result = []
+            return result
+
         for key in definitions[0].getAllKeys():
-            if self._settingIsOverwritingInheritance(key, extruder):
+            if self._settingIsOverwritingInheritance(key, extruder_stack):
                 result.append(key)
 
         return result
@@ -78,8 +77,8 @@ class SettingInheritanceManager(QObject):
 
     def _onActiveExtruderChanged(self):
         new_active_stack = ExtruderManager.getInstance().getActiveExtruderStack()
-        if not new_active_stack:
-            new_active_stack = self._global_container_stack
+        # if not new_active_stack:
+        #     new_active_stack = self._global_container_stack
 
         if new_active_stack != self._active_container_stack:  # Check if changed
             if self._active_container_stack:  # Disconnect signal from old container (if any)

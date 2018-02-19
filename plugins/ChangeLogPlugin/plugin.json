@@ -1,6 +1,6 @@
 {
     "name": "Changelog",
-    "author": "Ultimaker",
+    "author": "Ultimaker B.V.",
     "version": "1.0.0",
     "description": "Shows changes since latest checked version.",
     "api": 4,

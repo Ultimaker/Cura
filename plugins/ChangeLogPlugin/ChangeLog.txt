@@ -1,3 +1,291 @@
+[3.2.0]
+*Tree support
+Experimental tree-like support structure that uses ‘branches’ to support prints. Branches ‘grow’ and multiply towards the model, with fewer contact points than alternative support methods. This results in better surface finishes for organic-shaped prints.
+
+*Adaptive layers
+Prints with a variable layer thickness which adapts to the angle of the model’s surfaces. The result is high-quality surface finishes with a marginally increased print time. This setting can be found under the experimental category.
+
+*Faster startup
+Printer definitions are now loaded when adding a printer, instead of loading all available printers on startup.
+
+*Backface culling in layer view
+Doubled frame rate by only rendering visible surfaces of the model in the layer view, instead of rendering the entire model. Good for lower spec GPUs as it is less resource-intensive.
+
+*Multi build plate
+Experimental feature that creates separate build plates with shared settings in a single session, eliminating the need to clear the build plate multiple times. Multiple build plates can be sliced and sent to a printer or printer group in Cura Connect. This feature must be enabled manually in the preferences ‘general’ tab.
+
+*Improved mesh type selection
+New button in the left toolbar to edit per model settings, giving the user more control over where to place support. Objects can be used as meshes, with a drop down list where ‘Print as support’, ‘Don't overlap support with other models’, ‘Modify settings for overlap with other models’, or ‘Modify settings for infill of other models’ can be specified. Contributed by fieldOfView.
+
+*View optimization
+Quick camera controls introduced in version 3.1 have been revised to create more accurate isometric, front, left, and right views.
+
+*Updated sidebar to QtQuick 2.0
+Application framework updated to increase speed, achieve a better width and style fit, and gives users dropdown menus that are styled to fit the enabled Ultimaker Cura theme, instead of the operating system’s theme.
+
+*Hide sidebar
+The sidebar can now be hidden/shown by selecting View > Expand/Collapse Sidebar, or with the hotkey CMD + E (Mac) or CTRL + E (PC and Linux).
+
+*Disable ‘Send slice information’
+A shortcut to disable ‘Send slice information’ has been added to the first launch to make it easier for privacy-conscious users to keep slice information private.
+
+*Signed binaries (Windows)
+For security-conscious users, the Windows installer and Windows binaries have been digitally signed to prevent “Unknown application” warnings and virus scanner false-positives.
+
+*Start/end gcode script per extruder
+Variables from both extruders in the start and end gcode snippets can now be accessed and edited, creating uniformity between profiles in different slicing environments. Contributed by fieldOfView.
+
+*OctoPrint plugin added to plugin browser
+This plugin enables printers managed with OctoPrint to print via Ultimaker Cura interface (version 3.2 or later).
+
+*Bugfixes
+- Fixed a bug where the mirror tool and center model options when used together would reset the model transformations
+- Updated config file path to fix crashes caused by user config files that are located on remote drives
+- Updated Arduino drivers to fix triggering errors during OTA updates in shared environments. This also fixes an issue when upgrading the firmware of the Ultimaker Original.
+- Fixed an issue where arranging small models would fail, due to conflict with small model files combined with the “Ensure models are kept apart” option
+
+[3.1.0]
+*Profile added for 0.25 mm print core
+This new print core gives extra fine line widths which gives prints extra definition and surface quality.
+
+*Profile added for Breakaway material
+New material profile for Breakaway material, a new dry post processing support material, which can be used for models with flat surface area overhangs.
+
+*Layer view
+The existing Layer View has been updated in order to see a live simulation of all the paths within a layer.
+
+*Quick camera controls
+New buttons have been added to the interface that can quickly reposition the camera view of the buildplate.
+
+*Lock model on platform
+The move tool has a new option to lock a selected model to the platform.
+
+*Faster profile switching speed
+Duplicating and removing a profile could take Ultimaker Cura quite some time, it now happens instantly.
+
+*Faster printer selection
+Removing a printer from the library is now instant. No more unresponsive screens.
+
+*Faster processing speed
+A 5 - 10 % speed increase when calculating normals, loading models, and slicing.
+
+*Feedrate visualization
+Feedrate visualization has been added to the Layer view. Using this gives the user an idea of the print speeds per model part, allowing for better control over prints.
+
+*Jogging
+It allows the printhead to be moved with on-screen controls. Contributed by fieldOfView.
+
+*Large model loading
+A new feature has been added which unloads the layer view when switching to solid mode, speeding Ultimaker Cura back up without losing your G-code/layer view information.
+
+*Scripts folder
+A scripts folder is now available in the Ultimaker Cura configuration folder. This folder can be loaded with post processing plugins scripts, which will automatically show in Ultimaker Cura. Contributed by fieldOfView.
+
+*Optimized workflow for crash reporting
+Crash reports are automatically generated and allow the user, in case of a crash, to easily send their report with a description to developers.
+
+*Floating models enabled
+In previous releases, models were dropped to the build plate when support was disabled. Models now float when the setting is enabled (even if creates an impossible-to-print situation). This can be used to stack separate models on top of each other.
+
+*Slicing tolerance
+A new setting that affects the intersect point to influence the dimensional accuracy for diagonal surfaces. The user can select the behaviour: ‘Inclusive’ makes gaps narrower, ‘Exclusive’ makes gaps wider, and ‘Middle’ is the fastest to process. This can be used to create better tolerances for printed screw holes. Contributed by BagelOrb.
+
+*Optimized zig zag patterns
+Zig zag patterns now print more consistently. Lines now have a 5 micron tolerance in which they are printed any way, resulting in longer connected lines. Contributed by smartavionics.
+
+*Aligned z-seam inner wall moves
+Inner wall travel moves are aligned with the z-seam. This reduces the number of travel moves and reduces the chance of more unwanted seams.
+
+*Relative positioning of infill patterns
+Infill patterns are now positioned relative to the center of loaded models and an offset can be applied to control the infill more precisely and adjust it to preference or strength. Contributed by smartavionics.
+
+*Line resolution
+Enables the user to specify the minimum allowed distance value between two points in G-code to create lower or higher resolution polygons.
+
+*Custom mode changes
+If profile settings have been modified in recommended mode under custom mode, a reset icon will appear to notify the user. Click the icon to show the changes that have been made, and revert back to the default profile settings.
+
+*Bugfixes
+- Fix for layer numbers being displayed incorrectly when switching between solid and layer mode
+- Fix for Ultimaker Cura engine crashes on certain models
+- Fix for Uninstalling previous versions of Cura on Windows platforms
+- Fix for displaying visible settings
+- Fix for importing legacy .ini files
+- Prevent skipping user agreement dialog by pressing escape
+
+[3.0.4]
+*Bug fixes
+- Fixed OpenGL issue that prevents Cura from starting.
+
+*License agreement on the first startup has been added
+
+[3.0.3]
+*Bug fixes
+- Add missing libraries for the MakePrintable plugin.
+
+[3.0.0]
+*Faster start-up
+Start-up speed has been cut in half compared to the previous version.
+
+*New color scheme
+Color scheme has been updated to reflect Ultimaker Cura rebrand.
+
+*Updated UX design
+The Ultimaker Cura logo has moved from the bottom to the top of the interface. Print status icons have been updated and repositioned.
+
+*Redesigned splash screen
+A new splash screen on Ultimaker Cura startup has been added.
+
+*Top navigation bar improvements
+The width of tab functionality changes accordingly to the word space (multilingual).
+
+*Print quality slider
+A slider can now be used to control the quality profile in recommended mode.
+
+*Infill slider
+Model infill can now be changed using a slider in recommended mode.
+
+*Changed layer view
+Layer view icon, panel and slider have moved to top-right of interface.
+
+*Rasterized build plate
+The build plate now shows graduations of 10 mm and 1 mm for easy model positioning.
+
+*Changed row of extruder buttons
+Extruder tabs have become buttons and icons have been updated.
+
+*Add an "Export to Cura" button in SOLIDWORKS
+A macro can be added to your SOLIDWORKS installation that loads your model into Ultimaker Cura.
+
+*Siemens NX macro
+When a user updates models in Siemens NX and clicks the button, the updated models replace the models opened in Ultimaker Cura.
+
+*Skin removal width
+Remove thin strips of skin from a model to prevent print head zigzagging, in turn preventing vibrations.
+
+*Skin expand distance
+Cutting away skins on steep overhangs makes prints less sturdy. By expanding skins with the thickness of walls, features will be better supported. In addition, features such as towers on top of infill will be stronger.
+
+*Extra skin wall count
+Printing extra skin directly on top of infill can lead to gaps, curling and pillowing. This is reduced by printing a wall around the skin first, and also improves the printing speed.
+
+*Minimum extrusion for skin
+Will prevent filling small gaps that are probably filled already, resulting in less strings, better top details and faster prints.
+
+*PVA retractions
+PVA (switch) retraction length is increased, minimum travel distance for retraction is decreased and max count is slightly increased, this reduces stringing by a lot at the cost of slightly increased print time.
+
+*Z seam options
+Gives the user control over where to place the seam - hide it in convex corners or in easy to remove locations such as concave corners. Don’t let corner angles influence the seam position.
+
+*Quarter cubic infill
+Similar to tetrahedral (octet) infill, but half of the lines are shifted half of the period up. This pattern sacrifices some rigidity of octet infill for greater toughness.
+
+*Cross infill
+A fractal pattern infill that requires fewer retractions than other infill types. This is useful for flexible materials as it causes less material elongation. The internal structure given by this infill also assists flexible models having more resistance, while retaining ‘soft’ properties in all directions.
+
+*Layer start negative position
+Layer start X/Y values can be less than 0 when the machine centre is zero.
+
+*PostProcessing stretch script
+This new script performs "post stretch" algorithm to fix the problem of insufficient inner and outer diameters. Thanks to electrocbd for contributing.
+
+*Ironing speed settings
+Ironing speed settings have been moved to experimental category.
+
+*Doodle3D plugin
+Update Doodle3D plugin to connect with printers. Thanks to mith for contributing.
+
+*Bug fixes
+- Customized profiles are not sent when connecting to a printer
+- Sync z-hop with layer changes, thanks to smartavionics for contributing
+- Memory leaks on MacOS
+- Printer name not loaded when project file is opened
+- Doodle3D Wifi box was selected by default on non-UM3 printers
+
+[2.7.0]
+*Top surface skin
+Specify print settings of the top-most layers separately in order to improve print duration and achieve higher quality top surfaces.
+
+*Print thin walls
+An experimental function that enables features to be printed up to two times smaller than the nozzle size.
+
+*Ironing (a.k.a. Neosanding)
+An experimental function that enables the heated nozzle to travel over printed top layers without extrusion to create a smooth finish. Made after an idea by Neotko.
+
+*Gradual support infill
+Supports will print faster and with less material while improving overhang quality.
+
+*Support infill layer thickness
+Users are able to configure “Support infill layer thickness” for thicker support layers.
+
+*Relative Z seam
+A function that positions the Z seam relative to the bounding box of the model, so that the seam stays at the same location no matter what the position of the object is.
+
+*Prime tower purge
+In order to prevent under extrusion when printing a prime tower, and to prevent a prime tower failing half way through a job, a feature has been added to wipe off oozed/purged material in the middle of a hollow prime tower before starting to print the next layer of it. The amount of material to purge can be specified in the “Prime Tower Purge Volume” setting.
+
+*First layer line width
+A multiplier setting for the line width of the first layer of a print. Multiplying line width gives fewer lines but with greater width, which improves build plate adhesion.
+
+*Pause standby and resume temperature
+Turn off the nozzle when printing with extended pauses to prevent burned filament and nozzle clogging. At the end of a pause, the nozzle will reach printing temperature before resuming a print.
+
+*Extruder per feature
+Assign specific print features (walls, infill, skin, etc.) to a specific nozzle. A possible application of this would be to print an outer shell of an object with a fine nozzle at a greater level of detail while using a larger second nozzle to print infill faster.
+
+*Dark theme
+A dark theme for Cura. Select this theme to reduce eyestrain when working in dark environments. Activate it by selecting “Preferences > Themes > Dark".
+
+*Top navigation bar redesign
+The top bar user interface been improved so that “Prepare” and “Print” have moved from the right side of the interface to the left side.
+
+*New keyboard shortcuts
+Models can now be manipulated on the build plate using hotkeys Q, A, Z, W, and tab keys. Q selects “move”, A selects “scale”, Z selects “rotate”, and W selects “mirror”. Use the tab key to navigate between settings.
+
+*Plugin browser
+Easily download and install plugins using an integrated plugin browser. Go to “Extensions > Plugin Browser > Browse plugins” to select it.
+
+*Import SolidWorks files as STL
+A new plugin that enables SolidWorks compatible .SLDPRT files to be imported directly into Cura, where they are automatically converted to .STL format. This plugin can be found in the plugin browser.
+
+*Zoom towards mouse cursor position
+Cura preferences now include an option to zoom towards the cursor position on screen.
+
+*Increased scroll speed in setting lists
+The scroll speed in the setting lists is now three times faster than previous versions.
+
+*Extra tooltips
+Extra tooltips have been added to clarify the machine settings.
+
+*Polish now supported
+Polish language support added. This can be selected in the preferences menu.
+
+*Chinese now supported
+Chinese language support added. This can be selected in the preferences menu.
+
+*Bug fixes
+- Cura project Mac extensions
+- Crashes when adding printers
+- Jerk fixes
+- Z-hop over-extrusion
+- Material diameter in machine settings
+
+*3rd party printers
+- Peopoly Moai
+- DiscoEasy200
+- Cartesio
+- EasyArt Ares
+- 3Dator
+- Rigid3D
+- Type A Series 1
+- HelloBEEPrusa
+
+[2.6.2]
+
+*Bug fixes
+- Fixed an issue with Cura crashing on older versions of MacOS.
+
 [2.6.1]
 *New profiles
 The Polypropylene material is added and supported with the Ultimaker 3. Support for CPE+ and PC with 0.8mm nozzles is added as well.
@@ -398,10 +686,10 @@ The new GUI allows custom profiles to load easily and intuitively, directly from
 *3MF File Loading Support
 We’re happy to report we now support loading 3MF files. This is a new file format similar to AMF, but freely available.
 
-*Intuitive Cut-Off Object Bottom 
+*Intuitive Cut-Off Object Bottom
 We’ve added a feature that allows you to move objects below the build plate. You can either correct a model with a rough bottom, or print only a part of an object. Please note that the implementation differs greatly from the old one when it was just a setting.
 
-*64-bit Windows Builds 
+*64-bit Windows Builds
 An optimized 64-bit Windows Cura version is now available. This allows you to load larger model files.
 
 *Automatic calculations
@@ -466,3 +754,165 @@ Prints the outer walls with a jittering motion to give your object a diffuse fin
 
 *Wire Printing
 The object is printed with a mid-air / net-like structure, following the mesh surface. The build plate will move up and down during diagonal segments. Though not visible in layer view, you can view the result in other software, such as Repetier Host or http://chilipeppr.com/tinyg.
+
+
+[15.06 Beta]
+
+Cura 15.06 is a new release built from the ground up on a completely new
+framework called Uranium. This framework has been designed to make it easier to
+extend Cura with additional functionality as well as provide a cleaner UI.
+
+[15.05.95]
+
+* Fixed: Selection ghost remains visible after deleting an object
+* Fixed: Window does not show up immediately after starting application on OSX
+* Fixed: Added display of rotation angle during rotation
+* Fixed: Object changes position while rotating/scaling
+* Fixed: Loading improvements in the layer view
+* Fixed: Added application icons
+* Fixed: Improved feedback when loading models
+* Fixed: Eject device on MacOSX now provides proper feedback
+* Fixed: Make it possible to show retraction settings for UM2
+* Fixed: Opening the machine preferences page will switch to the first available machine
+* Fixed: Improved tool handle hit area size
+* Fixed: Render lines with a thickness based on screen DPI
+
+[15.05.94]
+
+* Added Russian translations
+* Fixed: Infill not displayed in layer view
+* Fixed: Cannot select/scale/rotate when first activating the tool and then trying to select a model.
+* Fixed: Improved font rendering on Windows
+* Fixed: Help > Show Documentation crashes Cura on Windows
+* Fixed: "There is no disk in the drive" repeating messages on Windows
+* Fixed: Retraction settings not visible for Ultimaker2
+* Fixed: Display rotation angle when rotating an object
+* Fixed: Time/Quality slider values are properly rounded
+* Fixed: Improved clarity of buttons and text
+* Fixed: No indication that anything is happening when loading a model
+* Fixed: Eject device now works on Windows
+
+[15.05.93]
+
+* Fixed: No shortcuts for moving up/down layers in layer view.
+* Fixed: Last view layers could not be scrolled through in layer view.
+* Fixed: Files provided on command line would not actually show up on the build
+  platform.
+* Fixed: Render a ghost of the selection in Layer view to make the actual object
+  position clear.
+* Fixed: Showing a menu would clear the selection.
+* Fixed: Size and scaling factor display for scale tool.
+* Fixed: Missing background for additional tool controls.
+* Fixed: Loading message times out when loading large files.
+* Fixed: Show recent files in the file menu.
+* Fixed: Windows installer will now install MSVC 2010 redistributable, to
+  prevent issues with missing DLL's.
+* Fixed: Collapsed/expanded state of setting categories not stored.
+
+[15.05.91]
+
+* There is now a working MacOSX version. Currently it supports OSX 10.7 and
+  higher.
+* Fixed: Need to deselect before selecting a different object.
+* Fixed: Object can be moved on Z axis.
+* Fixed: Error values should be considered invalid values and will not trigger a
+  slice.
+* Fixed: Text fields used a locale-aware validator while the underlying code did
+  not.
+* Fixed: Text fields will trigger a slice on text change, not only after focus
+  change/enter press.
+* Fixed: Rotate Tool snaps to incorrect value.
+* Fixed: Object Collision would only moved objects to the right.
+* Fixed: Object Collision would move the selected object when it should not.
+* Fixed: Camera panning now works correctly instead of doing nothing.
+* Fixed: Camera would flip around center point at maximum rotation.
+* Fixed: Build platform grid blocked view from below objects.
+* Fixed: Viewport on MacOSX with high-DPI screens was only taking 1/4th of the
+window
+
+[15.05.90]
+
+* Fixed: Additional UI elements for tools and views not loading.
+* Fixed: Double click needed to change setting dialog page.
+* Fixed: Context menu entries (reload, center object, etc.) not working.
+* Fixed: "Open With" or passing files from command line not working.
+* Fixed: "Reload All" would not reload files.
+
+In addition, a lot of work has gone into getting a usable Mac OSX version.
+
+New Features
+------------
+
+* Plugin based system
+  The Uranium framework provides us with a plugin-based system
+  that provides additional flexibility when extending Cura. Think
+  of new views, tools, file formats, etc. This is probably the
+  biggest new feature.
+* Improved UI
+  The UI has received a complete overhaul.
+* Time-Quality Slider
+  The 4 static quick print profiles have been replaced with
+  a slider that should make it easier to find the right spot
+  between print time and print quality.
+* More Settings
+  The Advanced mode is now configurable and can show many
+  additional settings that were previously not available, while at
+  the same time not overwhelming new users with too many settings.
+  Custom set of visible settings can be created by the user.
+* Support for high-DPI screens
+  The refreshed UI has been designed with high-DPI screens in
+  mind which should improve the experience of Cura on such
+  devices.
+* Improved language support
+  (Not yet available for the Beta release.)
+* Improved support structure generation
+  The new version of the CuraEngine now features improved
+  support generation algorithms and additional options for support
+  structure generation.
+* Experimental Feature: Wire Printing
+  Wire Printing has been added as an experimental new feature. It
+  will print objects as a structure of lines. It can be enabled by
+  from Advanced Mode -> Fixes -> Wire Printing.
+* Undo/Redo
+  It is now possible to undo and redo most scene operations, like
+  moving or rotating objects.
+
+Features from earlier versions not (yet) in this release
+--------------------------------------------------------
+
+* The All-at-once/One-at-a-time toggle is not available.
+  We are working on an improved implementation of this mechanism
+  but it will not be available for this release.
+* No dual extrusion features are available yet.
+  We are working on a completely new workflow for this but this
+  needs additional time.
+* “Lay Flat” has been removed.
+  The existing implementation was unfortunately not salvageable.
+  We will be looking into an improved implementation for this
+  feature.
+* "Split Object Into Parts" has been removed.
+  Due to the same reason as Lay Flat.
+* Support for AMF and DAE file formats has been removed.
+  Both of these will be implemented as plugins in the future.
+* Support for directly loading a GCode file is not yet available.
+  This will be implemented as a plugin in the future.
+* Support for PNG, JPG and other image formats has been removed.
+  These can be supported by a plugin with an improved UI.
+* Support for loading Minecraft levels has been removed.
+  This can be implemented as a plugin.
+* Windows XP support has been dropped.
+  Microsoft is no longer supporting xp, so they no longer back
+  port certain features that we require.
+* X-Ray view is missing.
+  Will be implemented as a (you might have guessed it) plugin.
+* Fixes: Follow Mesh Surface
+  Has been removed from the engine, the same result can be
+  achieved using no infill or top/bottom layers.
+
+Known Issues
+------------
+* Some OBJ files are rendered as black objects due to missing
+  normals.
+* Disabling plugins does not work correctly yet.
+* Unicorn occasionally still requires feeding. Do not feed it
+  after midnight.

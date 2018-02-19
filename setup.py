@@ -1,5 +1,5 @@
 # Copyright (c) 2015 Ultimaker B.V.
-# Cura is released under the terms of the AGPLv3 or higher.
+# Cura is released under the terms of the LGPLv3 or higher.
 
 from distutils.core import setup
 import py2exe
@@ -45,7 +45,7 @@ setup(name="Cura",
         author="Ultimaker",
         author_email="a.hiemstra@ultimaker.com",
         url="http://software.ultimaker.com/",
-        license="GNU AFFERO GENERAL PUBLIC LICENSE (AGPL)",
+        license="GNU LESSER GENERAL PUBLIC LICENSE (LGPL)",
         scripts=["cura_app.py"],
         windows=[{"script": "cura_app.py", "dest_name": "Cura", "icon_resources": [(1, "icons/cura.ico")]}],
         #console=[{"script": "cura_app.py"}],

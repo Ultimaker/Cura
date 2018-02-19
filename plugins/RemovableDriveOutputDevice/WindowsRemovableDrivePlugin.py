@@ -1,18 +1,17 @@
 # Copyright (c) 2015 Ultimaker B.V.
 # Copyright (c) 2013 David Braam
-# Uranium is released under the terms of the AGPLv3 or higher.
-
-from UM.i18n import i18nCatalog
-catalog = i18nCatalog("cura")
-
+# Uranium is released under the terms of the LGPLv3 or higher.
 from . import RemovableDrivePlugin
 
 import string
-import ctypes   # type: ignore
-from ctypes import wintypes # Using ctypes.wintypes in the code below does not seem to work
+import ctypes
+from ctypes import wintypes  # Using ctypes.wintypes in the code below does not seem to work
 
 from UM.i18n import i18nCatalog
 catalog = i18nCatalog("cura")
+
+# Ignore windows error popups. Fixes the whole "Can't open drive X" when user has an SD card reader.
+ctypes.windll.kernel32.SetErrorMode(1)
 
 # WinAPI Constants that we need
 # Hardcoded here due to stupid WinDLL stuff that does not give us access to these values.

@@ -1,5 +1,4 @@
 {
-    "id": "peopoly_moai",
     "version": 2,
     "name": "Peopoly Moai",
     "inherits": "fdmprinter",
@@ -7,7 +6,6 @@
         "visible": true,
         "author": "fieldOfView",
         "manufacturer": "Peopoly",
-        "category": "Other",
         "file_formats": "text/x-gcode",
         "has_machine_quality": true,
         "has_materials": false
@@ -138,7 +136,7 @@
         },
         "material_diameter": {
             "enabled": false,
-            "value": "1.75"
+            "default_value": 1.75
         },
         "cool_fan_enabled": {
             "enabled": false,

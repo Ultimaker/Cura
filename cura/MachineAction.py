@@ -1,12 +1,10 @@
 # Copyright (c) 2016 Ultimaker B.V.
-# Cura is released under the terms of the AGPLv3 or higher.
+# Cura is released under the terms of the LGPLv3 or higher.
 
-from PyQt5.QtCore import QObject, pyqtSlot, pyqtProperty, pyqtSignal, QUrl
-from PyQt5.QtQml import QQmlComponent, QQmlContext
+from PyQt5.QtCore import QObject, pyqtSlot, pyqtProperty, pyqtSignal
 
 from UM.PluginObject import PluginObject
 from UM.PluginRegistry import PluginRegistry
-from UM.Logger import Logger
 from UM.Application import Application
 
 import os
@@ -26,9 +24,6 @@ class MachineAction(QObject, PluginObject):
         self._key = key
         self._label = label
         self._qml_url = ""
-
-        self._component = None
-        self._context = None
         self._view = None
         self._finished = False
 
@@ -52,7 +47,6 @@ class MachineAction(QObject, PluginObject):
     #   /sa _reset
     @pyqtSlot()
     def reset(self):
-        self._component = None
         self._finished = False
         self._reset()
 
@@ -73,18 +67,11 @@ class MachineAction(QObject, PluginObject):
 
     ##  Protected helper to create a view object based on provided QML.
     def _createViewFromQML(self):
-        path = QUrl.fromLocalFile(os.path.join(PluginRegistry.getInstance().getPluginPath(self.getPluginId()), self._qml_url))
-        self._component = QQmlComponent(Application.getInstance()._engine, path)
-        self._context = QQmlContext(Application.getInstance()._engine.rootContext())
-        self._context.setContextProperty("manager", self)
-        self._view = self._component.create(self._context)
-        if self._view is None:
-            Logger.log("c", "QQmlComponent status %s", self._component.status())
-            Logger.log("c", "QQmlComponent error string %s", self._component.errorString())
+        path = os.path.join(PluginRegistry.getInstance().getPluginPath(self.getPluginId()), self._qml_url)
+        self._view = Application.getInstance().createQmlComponent(path, {"manager": self})
 
     @pyqtProperty(QObject, constant = True)
     def displayItem(self):
-        if not self._component:
+        if not self._view:
             self._createViewFromQML()
-
         return self._view

@@ -1,5 +1,5 @@
 # Copyright (c) 2017 Ultimaker B.V.
-# Cura is released under the terms of the AGPLv3 or higher.
+# Cura is released under the terms of the LGPLv3 or higher.
 
 from PyQt5.QtCore import QObject, pyqtSlot #To expose data to QML.
 
@@ -21,7 +21,7 @@ class MaterialManager(QObject):
 
         #Material diameter changed warning message.
         self._material_diameter_warning_message = Message(catalog.i18nc("@info:status Has a cancel button next to it.",
-            "The selected material diameter causes the material to become incompatible with the current printer."))
+            "The selected material diameter causes the material to become incompatible with the current printer."), title = catalog.i18nc("@info:title", "Incompatible Material"))
         self._material_diameter_warning_message.addAction("Undo", catalog.i18nc("@action:button", "Undo"), None, catalog.i18nc("@action", "Undo changing the material diameter."))
         self._material_diameter_warning_message.actionTriggered.connect(self._materialWarningMessageAction)
 
@@ -49,6 +49,9 @@ class MaterialManager(QObject):
         if button == "Undo":
             container_manager = ContainerManager.getInstance()
             container_manager.setContainerMetaDataEntry(self._material_diameter_warning_message.material_id, "properties/diameter", self._material_diameter_warning_message.previous_diameter)
+            approximate_previous_diameter = str(round(float(self._material_diameter_warning_message.previous_diameter)))
+            container_manager.setContainerMetaDataEntry(self._material_diameter_warning_message.material_id, "approximate_diameter", approximate_previous_diameter)
+            container_manager.setContainerProperty(self._material_diameter_warning_message.material_id, "material_diameter", "value", self._material_diameter_warning_message.previous_diameter);
             message.hide()
         else:
             Logger.log("w", "Unknown button action for material diameter warning message: {action}".format(action = button))

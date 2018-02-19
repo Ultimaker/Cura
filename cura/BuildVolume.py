@@ -1,6 +1,7 @@
-# Copyright (c) 2016 Ultimaker B.V.
-# Cura is released under the terms of the AGPLv3 or higher.
+# Copyright (c) 2018 Ultimaker B.V.
+# Cura is released under the terms of the LGPLv3 or higher.
 
+from cura.Scene.CuraSceneNode import CuraSceneNode
 from cura.Settings.ExtruderManager import ExtruderManager
 from UM.Settings.ContainerRegistry import ContainerRegistry
 from UM.i18n import i18nCatalog
@@ -25,7 +26,7 @@ catalog = i18nCatalog("cura")
 import numpy
 import math
 
-from typing import List
+from typing import List, Optional
 
 # Setting for clearance around the prime
 PRIME_CLEARANCE = 6.5
@@ -73,6 +74,11 @@ class BuildVolume(SceneNode):
         self._adhesion_type = None
         self._platform = Platform(self)
 
+        self._build_volume_message = Message(catalog.i18nc("@info:status",
+            "The build volume height has been reduced due to the value of the"
+            " \"Print Sequence\" setting to prevent the gantry from colliding"
+            " with printed models."), title = catalog.i18nc("@info:title", "Build Volume"))
+
         self._global_container_stack = None
         Application.getInstance().globalContainerStackChanged.connect(self._onStackChanged)
         self._onStackChanged()
@@ -86,29 +92,33 @@ class BuildVolume(SceneNode):
         #Objects loaded at the moment. We are connected to the property changed events of these objects.
         self._scene_objects = set()
 
-        self._change_timer = QTimer()
-        self._change_timer.setInterval(100)
-        self._change_timer.setSingleShot(True)
-        self._change_timer.timeout.connect(self._onChangeTimerFinished)
+        self._scene_change_timer = QTimer()
+        self._scene_change_timer.setInterval(100)
+        self._scene_change_timer.setSingleShot(True)
+        self._scene_change_timer.timeout.connect(self._onSceneChangeTimerFinished)
 
-        self._build_volume_message = Message(catalog.i18nc("@info:status",
-            "The build volume height has been reduced due to the value of the"
-            " \"Print Sequence\" setting to prevent the gantry from colliding"
-            " with printed models."))
+        self._setting_change_timer = QTimer()
+        self._setting_change_timer.setInterval(150)
+        self._setting_change_timer.setSingleShot(True)
+        self._setting_change_timer.timeout.connect(self._onSettingChangeTimerFinished)
 
         # Must be after setting _build_volume_message, apparently that is used in getMachineManager.
         # activeQualityChanged is always emitted after setActiveVariant, setActiveMaterial and setActiveQuality.
         # Therefore this works.
         Application.getInstance().getMachineManager().activeQualityChanged.connect(self._onStackChanged)
+
         # This should also ways work, and it is semantically more correct,
         # but it does not update the disallowed areas after material change
         Application.getInstance().getMachineManager().activeStackChanged.connect(self._onStackChanged)
 
+        # list of settings which were updated
+        self._changed_settings_since_last_rebuild = []
+
     def _onSceneChanged(self, source):
         if self._global_container_stack:
-            self._change_timer.start()
+            self._scene_change_timer.start()
 
-    def _onChangeTimerFinished(self):
+    def _onSceneChangeTimerFinished(self):
         root = Application.getInstance().getController().getScene().getRoot()
         new_scene_objects = set(node for node in BreadthFirstIterator(root) if node.callDecoration("isSliceable"))
         if new_scene_objects != self._scene_objects:
@@ -169,8 +179,9 @@ class BuildVolume(SceneNode):
             self._shader = OpenGL.getInstance().createShaderProgram(Resources.getPath(Resources.Shaders, "default.shader"))
             self._grid_shader = OpenGL.getInstance().createShaderProgram(Resources.getPath(Resources.Shaders, "grid.shader"))
             theme = Application.getInstance().getTheme()
-            self._grid_shader.setUniformValue("u_gridColor0", Color(*theme.getColor("buildplate").getRgb()))
-            self._grid_shader.setUniformValue("u_gridColor1", Color(*theme.getColor("buildplate_alt").getRgb()))
+            self._grid_shader.setUniformValue("u_plateColor", Color(*theme.getColor("buildplate").getRgb()))
+            self._grid_shader.setUniformValue("u_gridColor0", Color(*theme.getColor("buildplate_grid").getRgb()))
+            self._grid_shader.setUniformValue("u_gridColor1", Color(*theme.getColor("buildplate_grid_minor").getRgb()))
 
         renderer.queueNode(self, mode = RenderBatch.RenderMode.Lines)
         renderer.queueNode(self, mesh = self._origin_mesh)
@@ -230,6 +241,44 @@ class BuildVolume(SceneNode):
         for group_node in group_nodes:
             for child_node in group_node.getAllChildren():
                 child_node._outside_buildarea = group_node._outside_buildarea
+
+    ##  Update the outsideBuildArea of a single node, given bounds or current build volume
+    def checkBoundsAndUpdate(self, node: CuraSceneNode, bounds: Optional[AxisAlignedBox] = None):
+        if not isinstance(node, CuraSceneNode):
+            return
+
+        if bounds is None:
+            build_volume_bounding_box = self.getBoundingBox()
+            if build_volume_bounding_box:
+                # It's over 9000!
+                build_volume_bounding_box = build_volume_bounding_box.set(bottom=-9001)
+            else:
+                # No bounding box. This is triggered when running Cura from command line with a model for the first time
+                # In that situation there is a model, but no machine (and therefore no build volume.
+                return
+        else:
+            build_volume_bounding_box = bounds
+
+        if node.callDecoration("isSliceable") or node.callDecoration("isGroup"):
+            bbox = node.getBoundingBox()
+
+            # Mark the node as outside the build volume if the bounding box test fails.
+            if build_volume_bounding_box.intersectsBox(bbox) != AxisAlignedBox.IntersectionResult.FullIntersection:
+                node.setOutsideBuildArea(True)
+                return
+
+            convex_hull = self.callDecoration("getConvexHull")
+            if convex_hull:
+                if not convex_hull.isValid():
+                    return
+                # Check for collisions between disallowed areas and the object
+                for area in self.getDisallowedAreas():
+                    overlap = convex_hull.intersectsPolygon(area)
+                    if overlap is None:
+                        continue
+                    node.setOutsideBuildArea(True)
+                    return
+            node.setOutsideBuildArea(False)
 
     ##  Recalculates the build volume & disallowed areas.
     def rebuild(self):
@@ -442,7 +491,7 @@ class BuildVolume(SceneNode):
 
     def _updateExtraZClearance(self) -> None:
         extra_z = 0.0
-        extruders = ExtruderManager.getInstance().getMachineExtruders(self._global_container_stack.getId())
+        extruders = ExtruderManager.getInstance().getUsedExtruderStacks()
         use_extruders = False
         for extruder in extruders:
             if extruder.getProperty("retraction_hop_enabled", "value"):
@@ -489,6 +538,7 @@ class BuildVolume(SceneNode):
 
             self._updateDisallowedAreas()
             self._updateRaftThickness()
+            self._updateExtraZClearance()
 
             if self._engine_ready:
                 self.rebuild()
@@ -497,38 +547,77 @@ class BuildVolume(SceneNode):
         self._engine_ready = True
         self.rebuild()
 
+    def _onSettingChangeTimerFinished(self):
+        rebuild_me = False
+        update_disallowed_areas = False
+        update_raft_thickness = False
+        update_extra_z_clearance = True
+
+        for setting_key in self._changed_settings_since_last_rebuild:
+
+            if setting_key == "print_sequence":
+                machine_height = self._global_container_stack.getProperty("machine_height", "value")
+                if Application.getInstance().getGlobalContainerStack().getProperty("print_sequence", "value") == "one_at_a_time" and len(self._scene_objects) > 1:
+                    self._height = min(self._global_container_stack.getProperty("gantry_height", "value"), machine_height)
+                    if self._height < machine_height:
+                        self._build_volume_message.show()
+                    else:
+                        self._build_volume_message.hide()
+                else:
+                    self._height = self._global_container_stack.getProperty("machine_height", "value")
+                    self._build_volume_message.hide()
+                update_disallowed_areas = True
+                rebuild_me = True
+
+            # sometimes the machine size or shape settings are adjusted on the active machine, we should reflect this
+            if setting_key in self._machine_settings:
+                self._height = self._global_container_stack.getProperty("machine_height", "value")
+                self._width = self._global_container_stack.getProperty("machine_width", "value")
+                self._depth = self._global_container_stack.getProperty("machine_depth", "value")
+                self._shape = self._global_container_stack.getProperty("machine_shape", "value")
+                update_extra_z_clearance = True
+                update_disallowed_areas = True
+                rebuild_me = True
+
+            if setting_key in self._skirt_settings + self._prime_settings + self._tower_settings + self._ooze_shield_settings + self._distance_settings + self._extruder_settings:
+                update_disallowed_areas = True
+                rebuild_me = True
+
+            if setting_key in self._raft_settings:
+                update_raft_thickness = True
+                rebuild_me = True
+
+            if setting_key in self._extra_z_settings:
+                update_extra_z_clearance = True
+                rebuild_me = True
+
+            if setting_key in self._limit_to_extruder_settings:
+                update_disallowed_areas = True
+                rebuild_me = True
+
+        # We only want to update all of them once.
+        if update_disallowed_areas:
+            self._updateDisallowedAreas()
+
+        if update_raft_thickness:
+            self._updateRaftThickness()
+
+        if update_extra_z_clearance:
+            self._updateExtraZClearance()
+
+        if rebuild_me:
+            self.rebuild()
+
+        # We just did a rebuild, reset the list.
+        self._changed_settings_since_last_rebuild = []
+
     def _onSettingPropertyChanged(self, setting_key: str, property_name: str):
         if property_name != "value":
             return
 
-        rebuild_me = False
-        if setting_key == "print_sequence":
-            machine_height = self._global_container_stack.getProperty("machine_height", "value")
-            if Application.getInstance().getGlobalContainerStack().getProperty("print_sequence", "value") == "one_at_a_time" and len(self._scene_objects) > 1:
-                self._height = min(self._global_container_stack.getProperty("gantry_height", "value"), machine_height)
-                if self._height < machine_height:
-                    self._build_volume_message.show()
-                else:
-                    self._build_volume_message.hide()
-            else:
-                self._height = self._global_container_stack.getProperty("machine_height", "value")
-                self._build_volume_message.hide()
-            rebuild_me = True
-
-        if setting_key in self._skirt_settings or setting_key in self._prime_settings or setting_key in self._tower_settings or setting_key == "print_sequence" or setting_key in self._ooze_shield_settings or setting_key in self._distance_settings or setting_key in self._extruder_settings:
-            self._updateDisallowedAreas()
-            rebuild_me = True
-
-        if setting_key in self._raft_settings:
-            self._updateRaftThickness()
-            rebuild_me = True
-
-        if setting_key in self._extra_z_settings:
-            self._updateExtraZClearance()
-            rebuild_me = True
-
-        if rebuild_me:
-            self.rebuild()
+        if setting_key not in self._changed_settings_since_last_rebuild:
+            self._changed_settings_since_last_rebuild.append(setting_key)
+            self._setting_change_timer.start()
 
     def hasErrors(self) -> bool:
         return self._has_errors
@@ -542,6 +631,8 @@ class BuildVolume(SceneNode):
     #   would hit performance.
     def _updateDisallowedAreasAndRebuild(self):
         self._updateDisallowedAreas()
+        self._updateRaftThickness()
+        self._updateExtraZClearance()
         self.rebuild()
 
     def _updateDisallowedAreas(self):
@@ -646,12 +737,17 @@ class BuildVolume(SceneNode):
                 prime_tower_x = prime_tower_x - machine_width / 2 #Offset by half machine_width and _depth to put the origin in the front-left.
                 prime_tower_y = prime_tower_y + machine_depth / 2
 
-            prime_tower_area = Polygon([
-                [prime_tower_x - prime_tower_size, prime_tower_y - prime_tower_size],
-                [prime_tower_x, prime_tower_y - prime_tower_size],
-                [prime_tower_x, prime_tower_y],
-                [prime_tower_x - prime_tower_size, prime_tower_y],
-            ])
+            if self._global_container_stack.getProperty("prime_tower_circular", "value"):
+                radius = prime_tower_size / 2
+                prime_tower_area = Polygon.approximatedCircle(radius)
+                prime_tower_area = prime_tower_area.translate(prime_tower_x - radius, prime_tower_y - radius)
+            else:
+                prime_tower_area = Polygon([
+                    [prime_tower_x - prime_tower_size, prime_tower_y - prime_tower_size],
+                    [prime_tower_x, prime_tower_y - prime_tower_size],
+                    [prime_tower_x, prime_tower_y],
+                    [prime_tower_x - prime_tower_size, prime_tower_y],
+                ])
             prime_tower_area = prime_tower_area.getMinkowskiHull(Polygon.approximatedCircle(0))
             for extruder in used_extruders:
                 result[extruder.getId()].append(prime_tower_area) #The prime tower location is the same for each extruder, regardless of offset.
@@ -718,8 +814,8 @@ class BuildVolume(SceneNode):
 
         # For certain machines we don't need to compute disallowed areas for each nozzle.
         # So we check here and only do the nozzle offsetting if needed.
-        no_nozzle_offsetting_for_disallowed_areas = self._global_container_stack.getMetaDataEntry(
-            "no_nozzle_offsetting_for_disallowed_areas", False)
+        nozzle_offsetting_for_disallowed_areas = self._global_container_stack.getMetaDataEntry(
+            "nozzle_offsetting_for_disallowed_areas", True)
 
         result = {}
         for extruder in used_extruders:
@@ -727,7 +823,7 @@ class BuildVolume(SceneNode):
             offset_x = extruder.getProperty("machine_nozzle_offset_x", "value")
             if offset_x is None:
                 offset_x = 0
-            offset_y = -extruder.getProperty("machine_nozzle_offset_y", "value")
+            offset_y = extruder.getProperty("machine_nozzle_offset_y", "value")
             if offset_y is None:
                 offset_y = 0
             result[extruder_id] = []
@@ -742,11 +838,16 @@ class BuildVolume(SceneNode):
             bottom_unreachable_border = 0
 
             # Only do nozzle offsetting if needed
-            if not no_nozzle_offsetting_for_disallowed_areas:
+            if nozzle_offsetting_for_disallowed_areas:
                 #The build volume is defined as the union of the area that all extruders can reach, so we need to know the relative offset to all extruders.
                 for other_extruder in ExtruderManager.getInstance().getActiveExtruderStacks():
                     other_offset_x = other_extruder.getProperty("machine_nozzle_offset_x", "value")
-                    other_offset_y = -other_extruder.getProperty("machine_nozzle_offset_y", "value")
+                    if other_offset_x is None:
+                        other_offset_x = 0
+                    other_offset_y = other_extruder.getProperty("machine_nozzle_offset_y", "value")
+                    if other_offset_y is None:
+                        other_offset_y = 0
+                    other_offset_y = -other_offset_y
                     left_unreachable_border = min(left_unreachable_border, other_offset_x - offset_x)
                     right_unreachable_border = max(right_unreachable_border, other_offset_x - offset_x)
                     top_unreachable_border = min(top_unreachable_border, other_offset_y - offset_y)
@@ -829,15 +930,6 @@ class BuildVolume(SceneNode):
 
         return result
 
-    ##  Private convenience function to get a setting from the adhesion
-    #   extruder.
-    #
-    #   \param setting_key The key of the setting to get.
-    #   \param property The property to get from the setting.
-    #   \return The property of the specified setting in the adhesion extruder.
-    def _getSettingFromAdhesionExtruder(self, setting_key, property = "value"):
-        return self._getSettingFromExtruder(setting_key, "adhesion_extruder_nr", property)
-
     ##  Private convenience function to get a setting from every extruder.
     #
     #   For single extrusion machines, this gets the setting from the global
@@ -852,44 +944,6 @@ class BuildVolume(SceneNode):
                 all_values[i] = 0
         return all_values
 
-    ##  Private convenience function to get a setting from the support infill
-    #   extruder.
-    #
-    #   \param setting_key The key of the setting to get.
-    #   \param property The property to get from the setting.
-    #   \return The property of the specified setting in the support infill
-    #   extruder.
-    def _getSettingFromSupportInfillExtruder(self, setting_key, property = "value"):
-        return self._getSettingFromExtruder(setting_key, "support_infill_extruder_nr", property)
-
-    ##  Helper function to get a setting from an extruder specified in another
-    #   setting.
-    #
-    #   \param setting_key The key of the setting to get.
-    #   \param extruder_setting_key The key of the setting that specifies from
-    #   which extruder to get the setting, if there are multiple extruders.
-    #   \param property The property to get from the setting.
-    #   \return The property of the specified setting in the specified extruder.
-    def _getSettingFromExtruder(self, setting_key, extruder_setting_key, property = "value"):
-        multi_extrusion = self._global_container_stack.getProperty("machine_extruder_count", "value") > 1
-
-        if not multi_extrusion:
-            stack = self._global_container_stack
-        else:
-            extruder_index = self._global_container_stack.getProperty(extruder_setting_key, "value")
-
-            if str(extruder_index) == "-1":  # If extruder index is -1 use global instead
-                stack = self._global_container_stack
-            else:
-                extruder_stack_id = ExtruderManager.getInstance().extruderIds[str(extruder_index)]
-                stack = ContainerRegistry.getInstance().findContainerStacks(id = extruder_stack_id)[0]
-
-        value = stack.getProperty(setting_key, property)
-        setting_type = stack.getProperty(setting_key, "type")
-        if not value and (setting_type == "int" or setting_type == "float"):
-            return 0
-        return value
-
     ##  Convenience function to calculate the disallowed radius around the edge.
     #
     #   This disallowed radius is to allow for space around the models that is
@@ -898,41 +952,53 @@ class BuildVolume(SceneNode):
     def _getEdgeDisallowedSize(self):
         if not self._global_container_stack:
             return 0
+
         container_stack = self._global_container_stack
+        used_extruders = ExtruderManager.getInstance().getUsedExtruderStacks()
 
         # If we are printing one at a time, we need to add the bed adhesion size to the disallowed areas of the objects
         if container_stack.getProperty("print_sequence", "value") == "one_at_a_time":
             return 0.1  # Return a very small value, so we do draw disallowed area's near the edges.
 
         adhesion_type = container_stack.getProperty("adhesion_type", "value")
+        skirt_brim_line_width = self._global_container_stack.getProperty("skirt_brim_line_width", "value")
+        initial_layer_line_width_factor = self._global_container_stack.getProperty("initial_layer_line_width_factor", "value")
         if adhesion_type == "skirt":
-            skirt_distance = self._getSettingFromAdhesionExtruder("skirt_gap")
-            skirt_line_count = self._getSettingFromAdhesionExtruder("skirt_line_count")
-            bed_adhesion_size = skirt_distance + (skirt_line_count * self._getSettingFromAdhesionExtruder("skirt_brim_line_width"))
-            if len(ExtruderManager.getInstance().getUsedExtruderStacks()) > 1:
-                adhesion_extruder_nr = int(self._global_container_stack.getProperty("adhesion_extruder_nr", "value"))
-                extruder_values = ExtruderManager.getInstance().getAllExtruderValues("skirt_brim_line_width")
-                del extruder_values[adhesion_extruder_nr]  # Remove the value of the adhesion extruder nr.
-                for value in extruder_values:
-                    bed_adhesion_size += value
+            skirt_distance = self._global_container_stack.getProperty("skirt_gap", "value")
+            skirt_line_count = self._global_container_stack.getProperty("skirt_line_count", "value")
+
+            bed_adhesion_size = skirt_distance + (skirt_brim_line_width * skirt_line_count) * initial_layer_line_width_factor / 100.0
+
+            for extruder_stack in used_extruders:
+                bed_adhesion_size += extruder_stack.getProperty("skirt_brim_line_width", "value") * extruder_stack.getProperty("initial_layer_line_width_factor", "value") / 100.0
+
+            # We don't create an additional line for the extruder we're printing the skirt with.
+            bed_adhesion_size -= skirt_brim_line_width * initial_layer_line_width_factor / 100.0
+
         elif adhesion_type == "brim":
-            bed_adhesion_size = self._getSettingFromAdhesionExtruder("brim_line_count") * self._getSettingFromAdhesionExtruder("skirt_brim_line_width")
-            if self._global_container_stack.getProperty("machine_extruder_count", "value") > 1:
-                adhesion_extruder_nr = int(self._global_container_stack.getProperty("adhesion_extruder_nr", "value"))
-                extruder_values = ExtruderManager.getInstance().getAllExtruderValues("skirt_brim_line_width")
-                del extruder_values[adhesion_extruder_nr]  # Remove the value of the adhesion extruder nr.
-                for value in extruder_values:
-                    bed_adhesion_size += value
+            brim_line_count = self._global_container_stack.getProperty("brim_line_count", "value")
+            bed_adhesion_size = skirt_brim_line_width * brim_line_count * initial_layer_line_width_factor / 100.0
+
+            for extruder_stack in used_extruders:
+                bed_adhesion_size += extruder_stack.getProperty("skirt_brim_line_width", "value") * extruder_stack.getProperty("initial_layer_line_width_factor", "value") / 100.0
+
+            # We don't create an additional line for the extruder we're printing the brim with.
+            bed_adhesion_size -= skirt_brim_line_width * initial_layer_line_width_factor / 100.0
+
         elif adhesion_type == "raft":
-            bed_adhesion_size = self._getSettingFromAdhesionExtruder("raft_margin")
+            bed_adhesion_size = self._global_container_stack.getProperty("raft_margin", "value")
+
         elif adhesion_type == "none":
             bed_adhesion_size = 0
+
         else:
             raise Exception("Unknown bed adhesion type. Did you forget to update the build volume calculations for your new bed adhesion type?")
 
         support_expansion = 0
-        if self._getSettingFromSupportInfillExtruder("support_offset") and self._global_container_stack.getProperty("support_enable", "value"):
-            support_expansion += self._getSettingFromSupportInfillExtruder("support_offset")
+        support_enabled = self._global_container_stack.getProperty("support_enable", "value")
+        support_offset = self._global_container_stack.getProperty("support_offset", "value")
+        if support_enabled and support_offset:
+            support_expansion += support_offset
 
         farthest_shield_distance = 0
         if container_stack.getProperty("draft_shield_enabled", "value"):
@@ -942,7 +1008,6 @@ class BuildVolume(SceneNode):
 
         move_from_wall_radius = 0  # Moves that start from outer wall.
         move_from_wall_radius = max(move_from_wall_radius, max(self._getSettingFromAllExtruders("infill_wipe_dist")))
-        used_extruders = ExtruderManager.getInstance().getUsedExtruderStacks()
         avoid_enabled_per_extruder = [stack.getProperty("travel_avoid_other_parts","value") for stack in used_extruders]
         travel_avoid_distance_per_extruder = [stack.getProperty("travel_avoid_distance", "value") for stack in used_extruders]
         for avoid_other_parts_enabled, avoid_distance in zip(avoid_enabled_per_extruder, travel_avoid_distance_per_extruder): #For each extruder (or just global).
@@ -958,11 +1023,13 @@ class BuildVolume(SceneNode):
     def _clamp(self, value, min_value, max_value):
         return max(min(value, max_value), min_value)
 
-    _skirt_settings = ["adhesion_type", "skirt_gap", "skirt_line_count", "skirt_brim_line_width", "brim_width", "brim_line_count", "raft_margin", "draft_shield_enabled", "draft_shield_dist"]
+    _machine_settings = ["machine_width", "machine_depth", "machine_height", "machine_shape", "machine_center_is_zero"]
+    _skirt_settings = ["adhesion_type", "skirt_gap", "skirt_line_count", "skirt_brim_line_width", "brim_width", "brim_line_count", "raft_margin", "draft_shield_enabled", "draft_shield_dist", "initial_layer_line_width_factor"]
     _raft_settings = ["adhesion_type", "raft_base_thickness", "raft_interface_thickness", "raft_surface_layers", "raft_surface_thickness", "raft_airgap", "layer_0_z_overlap"]
     _extra_z_settings = ["retraction_hop_enabled", "retraction_hop"]
     _prime_settings = ["extruder_prime_pos_x", "extruder_prime_pos_y", "extruder_prime_pos_z", "prime_blob_enable"]
-    _tower_settings = ["prime_tower_enable", "prime_tower_size", "prime_tower_position_x", "prime_tower_position_y"]
+    _tower_settings = ["prime_tower_enable", "prime_tower_circular", "prime_tower_size", "prime_tower_position_x", "prime_tower_position_y"]
     _ooze_shield_settings = ["ooze_shield_enabled", "ooze_shield_dist"]
     _distance_settings = ["infill_wipe_dist", "travel_avoid_distance", "support_offset", "support_enable", "travel_avoid_other_parts"]
     _extruder_settings = ["support_enable", "support_bottom_enable", "support_roof_enable", "support_infill_extruder_nr", "support_extruder_nr_layer_0", "support_bottom_extruder_nr", "support_roof_extruder_nr", "brim_line_count", "adhesion_extruder_nr", "adhesion_type"] #Settings that can affect which extruders are used.
+    _limit_to_extruder_settings = ["wall_extruder_nr", "wall_0_extruder_nr", "wall_x_extruder_nr", "top_bottom_extruder_nr", "infill_extruder_nr", "support_infill_extruder_nr", "support_extruder_nr_layer_0", "support_bottom_extruder_nr", "support_roof_extruder_nr", "adhesion_extruder_nr"]

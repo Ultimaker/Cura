@@ -1,6 +1,6 @@
 {
     "name": "Version Upgrade 2.1 to 2.2",
-    "author": "Ultimaker",
+    "author": "Ultimaker B.V.",
     "version": "1.0.0",
     "description": "Upgrades configurations from Cura 2.1 to Cura 2.2.",
     "api": 4,

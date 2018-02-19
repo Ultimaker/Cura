@@ -1,10 +1,9 @@
-# Copyright (c) 2015 Ultimaker B.V.
-# Cura is released under the terms of the AGPLv3 or higher.
+# Copyright (c) 2018 Ultimaker B.V.
+# Cura is released under the terms of the LGPLv3 or higher.
 
 import os.path
 import zipfile
 
-from UM.Job import Job
 from UM.Logger import Logger
 from UM.Math.Matrix import Matrix
 from UM.Math.Vector import Vector
@@ -15,8 +14,10 @@ from cura.Settings.SettingOverrideDecorator import SettingOverrideDecorator
 from UM.Application import Application
 from cura.Settings.ExtruderManager import ExtruderManager
 from cura.QualityManager import QualityManager
-from UM.Scene.SceneNode import SceneNode
-from cura.SliceableObjectDecorator import SliceableObjectDecorator
+from cura.Scene.CuraSceneNode import CuraSceneNode
+from cura.Scene.BuildPlateDecorator import BuildPlateDecorator
+from cura.Scene.SliceableObjectDecorator import SliceableObjectDecorator
+from cura.Scene.ZOffsetDecorator import ZOffsetDecorator
 
 MYPY = False
 
@@ -36,12 +37,9 @@ class ThreeMFReader(MeshReader):
         super().__init__()
         self._supported_extensions = [".3mf"]
         self._root = None
-        self._namespaces = {
-            "3mf": "http://schemas.microsoft.com/3dmanufacturing/core/2015/02",
-            "cura": "http://software.ultimaker.com/xml/cura/3mf/2015/10"
-        }
         self._base_name = ""
         self._unit = None
+        self._object_count = 0  # Used to name objects as there is no node name yet.
 
     def _createMatrixFromTransformationString(self, transformation):
         if transformation == "":
@@ -73,11 +71,17 @@ class ThreeMFReader(MeshReader):
 
         return temp_mat
 
-
-    ##  Convenience function that converts a SceneNode object (as obtained from libSavitar) to a Uranium scenenode.
-    #   \returns Uranium Scenen node.
+    ##  Convenience function that converts a SceneNode object (as obtained from libSavitar) to a Uranium scene node.
+    #   \returns Uranium scene node.
     def _convertSavitarNodeToUMNode(self, savitar_node):
-        um_node = SceneNode()
+        self._object_count += 1
+        node_name = "Object %s" % self._object_count
+
+        active_build_plate = Application.getInstance().getBuildPlateModel().activeBuildPlate
+
+        um_node = CuraSceneNode()
+        um_node.addDecorator(BuildPlateDecorator(active_build_plate))
+        um_node.setName(node_name)
         transformation = self._createMatrixFromTransformationString(savitar_node.getTransformation())
         um_node.setTransformation(transformation)
         mesh_builder = MeshBuilder()
@@ -107,24 +111,17 @@ class ThreeMFReader(MeshReader):
             um_node.addDecorator(SettingOverrideDecorator())
 
             global_container_stack = Application.getInstance().getGlobalContainerStack()
+
             # Ensure the correct next container for the SettingOverride decorator is set.
             if global_container_stack:
-                multi_extrusion = global_container_stack.getProperty("machine_extruder_count", "value") > 1
+                default_stack = ExtruderManager.getInstance().getExtruderStack(0)
 
-                # Ensure that all extruder data is reset
-                if not multi_extrusion:
-                    default_stack_id = global_container_stack.getId()
-                else:
-                    default_stack = ExtruderManager.getInstance().getExtruderStack(0)
-                    if default_stack:
-                        default_stack_id = default_stack.getId()
-                    else:
-                        default_stack_id = global_container_stack.getId()
-                um_node.callDecoration("setActiveExtruder", default_stack_id)
+                if default_stack:
+                    um_node.callDecoration("setActiveExtruder", default_stack.getId())
 
                 # Get the definition & set it
                 definition = QualityManager.getInstance().getParentMachineDefinition(global_container_stack.getBottom())
-                um_node.callDecoration("getStack").getTop().setDefinition(definition)
+                um_node.callDecoration("getStack").getTop().setDefinition(definition.getId())
 
             setting_container = um_node.callDecoration("getStack").getTop()
 
@@ -139,7 +136,7 @@ class ThreeMFReader(MeshReader):
                     else:
                         Logger.log("w", "Unable to find extruder in position %s", setting_value)
                     continue
-                setting_container.setProperty(key,"value", setting_value)
+                setting_container.setProperty(key, "value", setting_value)
 
         if len(um_node.getChildren()) > 0:
             group_decorator = GroupDecorator()
@@ -154,6 +151,7 @@ class ThreeMFReader(MeshReader):
 
     def read(self, file_name):
         result = []
+        self._object_count = 0  # Used to name objects as there is no node name yet.
         # The base object of 3mf is a zipped archive.
         try:
             archive = zipfile.ZipFile(file_name, "r")
@@ -196,13 +194,20 @@ class ThreeMFReader(MeshReader):
                     translation_matrix.setByTranslation(translation_vector)
                     transformation_matrix.multiply(translation_matrix)
 
-                # Third step: 3MF also defines a unit, wheras Cura always assumes mm.
+                # Third step: 3MF also defines a unit, whereas Cura always assumes mm.
                 scale_matrix = Matrix()
                 scale_matrix.setByScaleVector(self._getScaleFromUnit(self._unit))
                 transformation_matrix.multiply(scale_matrix)
 
                 # Pre multiply the transformation with the loaded transformation, so the data is handled correctly.
                 um_node.setTransformation(um_node.getLocalTransformation().preMultiply(transformation_matrix))
+
+                # Check if the model is positioned below the build plate and honor that when loading project files.
+                if um_node.getMeshData() is not None:
+                    minimum_z_value = um_node.getMeshData().getExtents(um_node.getWorldTransformation()).minimum.y  # y is z in transformation coordinates
+                    if minimum_z_value < 0:
+                        um_node.addDecorator(ZOffsetDecorator())
+                        um_node.callDecoration("setZOffset", minimum_z_value)
 
                 result.append(um_node)
 

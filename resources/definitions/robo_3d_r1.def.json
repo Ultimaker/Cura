@@ -1,5 +1,4 @@
 {
-    "id": "robo_3d_r1",
     "name": "Robo 3D R1",
     "version": 2,
     "inherits": "fdmprinter",
@@ -7,7 +6,6 @@
         "visible": true,
         "author": "Ultimaker",
         "manufacturer": "Robo 3D",
-        "category": "Other",
         "file_formats": "text/x-gcode",
         "platform_offset": [ 0, 0, 0]
     },

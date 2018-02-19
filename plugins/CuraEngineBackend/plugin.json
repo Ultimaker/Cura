@@ -1,6 +1,6 @@
 {
     "name": "CuraEngine Backend",
-    "author": "Ultimaker",
+    "author": "Ultimaker B.V.",
     "description": "Provides the link to the CuraEngine slicing backend.",
     "api": 4,
     "version": "1.0.0",

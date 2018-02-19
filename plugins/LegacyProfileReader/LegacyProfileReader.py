@@ -1,7 +1,8 @@
-# Copyright (c) 2015 Ultimaker B.V.
-# Cura is released under the terms of the AGPLv3 or higher.
+# Copyright (c) 2017 Ultimaker B.V.
+# Cura is released under the terms of the LGPLv3 or higher.
 
 import configparser  # For reading the legacy profile INI files.
+import io
 import json  # For reading the Dictionary of Doom.
 import math  # For mathematical operations included in the Dictionary of Doom.
 import os.path  # For concatenating the path to the plugin and the relative path to the Dictionary of Doom.
@@ -9,8 +10,10 @@ import os.path  # For concatenating the path to the plugin and the relative path
 from UM.Application import Application  # To get the machine manager to create the new profile in.
 from UM.Logger import Logger  # Logging errors.
 from UM.PluginRegistry import PluginRegistry  # For getting the path to this plugin's directory.
+from UM.Settings.ContainerRegistry import ContainerRegistry #To create unique profile IDs.
 from UM.Settings.InstanceContainer import InstanceContainer  # The new profile to make.
 from cura.ProfileReader import ProfileReader  # The plug-in type to implement.
+from cura.Settings.ExtruderManager import ExtruderManager #To get the current extruder definition.
 
 
 ##  A plugin that reads profile data from legacy Cura versions.
@@ -76,12 +79,13 @@ class LegacyProfileReader(ProfileReader):
             raise Exception("Unable to import legacy profile. Multi extrusion is not supported")
 
         Logger.log("i", "Importing legacy profile from file " + file_name + ".")
-        profile = InstanceContainer("Imported Legacy Profile")  # Create an empty profile.
+        container_registry = ContainerRegistry.getInstance()
+        profile_id = container_registry.uniqueName("Imported Legacy Profile")
+        profile = InstanceContainer(profile_id)  # Create an empty profile.
 
         parser = configparser.ConfigParser(interpolation = None)
         try:
-            with open(file_name) as f:
-                parser.readfp(f)  # Parse the INI file.
+            parser.read([file_name])  # Parse the INI file.
         except Exception as e:
             Logger.log("e", "Unable to open legacy profile %s: %s", file_name, str(e))
             return None
@@ -120,8 +124,11 @@ class LegacyProfileReader(ProfileReader):
         if "translation" not in dict_of_doom:
             Logger.log("e", "Dictionary of Doom has no translation. Is it the correct JSON file?")
             return None
-        current_printer_definition = global_container_stack.getBottom()
-        profile.setDefinition(current_printer_definition)
+        current_printer_definition = global_container_stack.definition
+        quality_definition = current_printer_definition.getMetaDataEntry("quality_definition")
+        if not quality_definition:
+            quality_definition = current_printer_definition.getId()
+        profile.setDefinition(quality_definition)
         for new_setting in dict_of_doom["translation"]:  # Evaluate all new settings that would get a value from the translations.
             old_setting_expression = dict_of_doom["translation"][new_setting]
             compiled = compile(old_setting_expression, new_setting, "eval")
@@ -138,7 +145,41 @@ class LegacyProfileReader(ProfileReader):
 
         if len(profile.getAllKeys()) == 0:
             Logger.log("i", "A legacy profile was imported but everything evaluates to the defaults, creating an empty profile.")
-        profile.setDirty(True)
-        profile.addMetaDataEntry("type", "quality_changes")
+
+        profile.addMetaDataEntry("type", "profile")
+        # don't know what quality_type it is based on, so use "normal" by default
         profile.addMetaDataEntry("quality_type", "normal")
-        return profile
+        profile.setName(profile_id)
+        profile.setDirty(True)
+
+        #Serialise and deserialise in order to perform the version upgrade.
+        parser = configparser.ConfigParser(interpolation=None)
+        data = profile.serialize()
+        parser.read_string(data)
+        parser["general"]["version"] = "1"
+        if parser.has_section("values"):
+            parser["settings"] = parser["values"]
+            del parser["values"]
+        stream = io.StringIO()
+        parser.write(stream)
+        data = stream.getvalue()
+        profile.deserialize(data)
+
+        # The definition can get reset to fdmprinter during the deserialization's upgrade. Here we set the definition
+        # again.
+        profile.setDefinition(quality_definition)
+
+        #We need to return one extruder stack and one global stack.
+        global_container_id = container_registry.uniqueName("Global Imported Legacy Profile")
+        global_profile = profile.duplicate(new_id = global_container_id, new_name = profile_id) #Needs to have the same name as the extruder profile.
+        global_profile.setDirty(True)
+
+        profile_definition = "fdmprinter"
+        from UM.Util import parseBool
+        if parseBool(global_container_stack.getMetaDataEntry("has_machine_quality", "False")):
+            profile_definition = global_container_stack.getMetaDataEntry("quality_definition")
+            if not profile_definition:
+                profile_definition = global_container_stack.definition.getId()
+        global_profile.setDefinition(profile_definition)
+
+        return [global_profile]

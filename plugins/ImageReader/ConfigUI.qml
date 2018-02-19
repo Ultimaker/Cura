@@ -1,5 +1,5 @@
 // Copyright (c) 2015 Ultimaker B.V.
-// Cura is released under the terms of the AGPLv3 or higher.
+// Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.1
 import QtQuick.Controls 1.1
@@ -10,11 +10,11 @@ import UM 1.1 as UM
 
 UM.Dialog
 {
-    width: 350 * Screen.devicePixelRatio;
-    minimumWidth: 350 * Screen.devicePixelRatio;
+    width: minimumWidth;
+    minimumWidth: 350 * screenScaleFactor;
 
-    height: 250 * Screen.devicePixelRatio;
-    minimumHeight: 250 * Screen.devicePixelRatio;
+    height: minimumHeight;
+    minimumHeight: 250 * screenScaleFactor;
 
     title: catalog.i18nc("@title:window", "Convert Image...")
 
@@ -23,8 +23,8 @@ UM.Dialog
         UM.I18nCatalog{id: catalog; name:"cura"}
         anchors.fill: parent;
         Layout.fillWidth: true
-        columnSpacing: 16
-        rowSpacing: 4
+        columnSpacing: 16 * screenScaleFactor
+        rowSpacing: 4 * screenScaleFactor
         columns: 1
 
         UM.TooltipArea {
@@ -36,15 +36,15 @@ UM.Dialog
 
                 Label {
                     text: catalog.i18nc("@action:label","Height (mm)")
-                    width: 150
+                    width: 150 * screenScaleFactor
                     anchors.verticalCenter: parent.verticalCenter
                 }
 
                 TextField {
                     id: peak_height
                     objectName: "Peak_Height"
-                    validator: DoubleValidator {notation: DoubleValidator.StandardNotation; bottom: -500; top: 500;}
-                    width: 180
+                    validator: RegExpValidator {regExp: /^-?\d{1,3}([\,|\.]\d*)?$/}
+                    width: 180 * screenScaleFactor
                     onTextChanged: { manager.onPeakHeightChanged(text) }
                 }
             }
@@ -59,15 +59,15 @@ UM.Dialog
 
                 Label {
                     text: catalog.i18nc("@action:label","Base (mm)")
-                    width: 150
+                    width: 150 * screenScaleFactor
                     anchors.verticalCenter: parent.verticalCenter
                 }
 
                 TextField {
                     id: base_height
                     objectName: "Base_Height"
-                    validator: DoubleValidator {notation: DoubleValidator.StandardNotation; bottom: 0; top: 500;}
-                    width: 180
+                    validator: RegExpValidator {regExp: /^\d{1,3}([\,|\.]\d*)?$/}
+                    width: 180 * screenScaleFactor
                     onTextChanged: { manager.onBaseHeightChanged(text) }
                 }
             }
@@ -82,7 +82,7 @@ UM.Dialog
 
                 Label {
                     text: catalog.i18nc("@action:label","Width (mm)")
-                    width: 150
+                    width: 150 * screenScaleFactor
                     anchors.verticalCenter: parent.verticalCenter
                 }
 
@@ -90,8 +90,8 @@ UM.Dialog
                     id: width
                     objectName: "Width"
                     focus: true
-                    validator: DoubleValidator {notation: DoubleValidator.StandardNotation; bottom: 1; top: 500;}
-                    width: 180
+                    validator: RegExpValidator {regExp: /^[1-9]\d{0,2}([\,|\.]\d*)?$/}
+                    width: 180 * screenScaleFactor
                     onTextChanged: { manager.onWidthChanged(text) }
                 }
             }
@@ -106,15 +106,15 @@ UM.Dialog
 
                 Label {
                     text: catalog.i18nc("@action:label","Depth (mm)")
-                    width: 150
+                    width: 150 * screenScaleFactor
                     anchors.verticalCenter: parent.verticalCenter
                 }
                 TextField {
                     id: depth
                     objectName: "Depth"
                     focus: true
-                    validator: DoubleValidator {notation: DoubleValidator.StandardNotation; bottom: 1; top: 500;}
-                    width: 180
+                    validator: RegExpValidator {regExp: /^[1-9]\d{0,2}([\,|\.]\d*)?$/}
+                    width: 180 * screenScaleFactor
                     onTextChanged: { manager.onDepthChanged(text) }
                 }
             }
@@ -130,14 +130,14 @@ UM.Dialog
                 //Empty label so 2 column layout works.
                 Label {
                     text: ""
-                    width: 150
+                    width: 150 * screenScaleFactor
                     anchors.verticalCenter: parent.verticalCenter
                 }
                 ComboBox {
                     id: image_color_invert
                     objectName: "Image_Color_Invert"
                     model: [ catalog.i18nc("@item:inlistbox","Lighter is higher"), catalog.i18nc("@item:inlistbox","Darker is higher") ]
-                    width: 180
+                    width: 180 * screenScaleFactor
                     onCurrentIndexChanged: { manager.onImageColorInvertChanged(currentIndex) }
                 }
             }
@@ -152,13 +152,13 @@ UM.Dialog
 
                 Label {
                     text: catalog.i18nc("@action:label","Smoothing")
-                    width: 150
+                    width: 150 * screenScaleFactor
                     anchors.verticalCenter: parent.verticalCenter
                 }
 
                 Item {
-                    width: 180
-                    height: 20
+                    width: 180 * screenScaleFactor
+                    height: 20 * screenScaleFactor
                     Layout.fillWidth: true
 
                     Slider {

@@ -1,12 +1,13 @@
+# Copyright (c) 2017 Ultimaker B.V.
+# Cura is released under the terms of the LGPLv3 or higher.
+
 from UM.Workspace.WorkspaceWriter import WorkspaceWriter
 from UM.Application import Application
 from UM.Preferences import Preferences
 from UM.Settings.ContainerRegistry import ContainerRegistry
-from UM.Settings.ContainerStack import ContainerStack
 from cura.Settings.ExtruderManager import ExtruderManager
 import zipfile
 from io import StringIO
-import copy
 import configparser
 
 
@@ -44,16 +45,23 @@ class ThreeMFWorkspaceWriter(WorkspaceWriter):
                 self._writeContainerToArchive(container, archive)
 
         # Write preferences to archive
-        preferences_file = zipfile.ZipInfo("Cura/preferences.cfg")
+        original_preferences = Preferences.getInstance() #Copy only the preferences that we use to the workspace.
+        temp_preferences = Preferences()
+        for preference in {"general/visible_settings", "cura/active_mode", "cura/categories_expanded"}:
+            temp_preferences.addPreference(preference, None)
+            temp_preferences.setValue(preference, original_preferences.getValue(preference))
         preferences_string = StringIO()
-        Preferences.getInstance().writeToFile(preferences_string)
+        temp_preferences.writeToFile(preferences_string)
+        preferences_file = zipfile.ZipInfo("Cura/preferences.cfg")
         archive.writestr(preferences_file, preferences_string.getvalue())
 
         # Save Cura version
         version_file = zipfile.ZipInfo("Cura/version.ini")
-        version_config_parser = configparser.ConfigParser()
+        version_config_parser = configparser.ConfigParser(interpolation = None)
         version_config_parser.add_section("versions")
-        version_config_parser.set("versions", "cura_version", Application.getStaticVersion())
+        version_config_parser.set("versions", "cura_version", Application.getInstance().getVersion())
+        version_config_parser.set("versions", "build_type", Application.getInstance().getBuildType())
+        version_config_parser.set("versions", "is_debug_mode", str(Application.getInstance().getIsDebugMode()))
 
         version_file_string = StringIO()
         version_config_parser.write(version_file_string)
@@ -69,7 +77,7 @@ class ThreeMFWorkspaceWriter(WorkspaceWriter):
     #   \param archive The archive to write to.
     @staticmethod
     def _writeContainerToArchive(container, archive):
-        if type(container) == type(ContainerRegistry.getInstance().getEmptyInstanceContainer()):
+        if isinstance(container, type(ContainerRegistry.getInstance().getEmptyInstanceContainer())):
             return  # Empty file, do nothing.
 
         file_suffix = ContainerRegistry.getMimeTypeForContainer(type(container)).preferredSuffix
@@ -87,14 +95,9 @@ class ThreeMFWorkspaceWriter(WorkspaceWriter):
         file_in_archive = zipfile.ZipInfo(file_name)
         # For some reason we have to set the compress type of each file as well (it doesn't keep the type of the entire archive)
         file_in_archive.compress_type = zipfile.ZIP_DEFLATED
-        if type(container) == ContainerStack and (container.getMetaDataEntry("network_authentication_id") or container.getMetaDataEntry("network_authentication_key")):
-            # TODO: Hack
-            # Create a shallow copy of the container, so we can filter out the network auth (if any)
-            container_copy = copy.deepcopy(container)
-            container_copy.removeMetaDataEntry("network_authentication_id")
-            container_copy.removeMetaDataEntry("network_authentication_key")
-            serialized_data = container_copy.serialize()
-        else:
-            serialized_data = container.serialize()
+
+        # Do not include the network authentication keys
+        ignore_keys = {"network_authentication_id", "network_authentication_key", "octoprint_api_key"}
+        serialized_data = container.serialize(ignored_metadata_keys = ignore_keys)
 
         archive.writestr(file_in_archive, serialized_data)

@@ -1,5 +1,5 @@
 # Copyright (c) 2015 Ultimaker B.V.
-# Cura is released under the terms of the AGPLv3 or higher.
+# Cura is released under the terms of the LGPLv3 or higher.
 
 from . import GCodeWriter
 
@@ -13,7 +13,7 @@ def getMetaData():
         "mesh_writer": {
             "output": [{
                 "extension": "gcode",
-                "description": catalog.i18nc("@item:inlistbox", "GCode File"),
+                "description": catalog.i18nc("@item:inlistbox", "G-code File"),
                 "mime_type": "text/x-gcode",
                 "mode": GCodeWriter.GCodeWriter.OutputMode.TextMode
             }]

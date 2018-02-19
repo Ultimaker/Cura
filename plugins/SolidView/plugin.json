@@ -1,6 +1,6 @@
 {
     "name": "Solid View",
-    "author": "Ultimaker",
+    "author": "Ultimaker B.V.",
     "version": "1.0.0",
     "description": "Provides a normal solid mesh view.",
     "api": 4,

@@ -1,5 +1,5 @@
 // Copyright (c) 2016 Ultimaker B.V.
-// Cura is released under the terms of the AGPLv3 or higher.
+// Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.1
 import QtQuick.Controls 1.1
@@ -208,7 +208,7 @@ UM.ManagementPage
             anchors.right: parent.right
             anchors.bottom: parent.bottom
 
-            currentIndex: ExtruderManager.extruderCount > 0 ? ExtruderManager.activeExtruderIndex + 1 : 0
+            currentIndex: Cura.ExtruderManager.extruderCount > 0 ? Cura.ExtruderManager.activeExtruderIndex + 1 : 0
 
             ProfileTab
             {

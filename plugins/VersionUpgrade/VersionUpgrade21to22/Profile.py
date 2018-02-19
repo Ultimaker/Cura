@@ -1,5 +1,5 @@
 # Copyright (c) 2016 Ultimaker B.V.
-# Cura is released under the terms of the AGPLv3 or higher.
+# Cura is released under the terms of the LGPLv3 or higher.
 
 import configparser #To read config files.
 import io #To write config files to strings as if they were files.
@@ -98,7 +98,7 @@ class Profile:
 
         config.add_section("metadata")
         config.set("metadata", "quality_type", "normal") #This feature doesn't exist in 2.1 yet, so we don't know the actual quality type. For now, always base it on normal.
-        config.set("metadata", "type", "quality_changes")
+        config.set("metadata", "type", "quality")
         if self._weight:
             config.set("metadata", "weight", str(self._weight))
         if self._machine_variant_name:

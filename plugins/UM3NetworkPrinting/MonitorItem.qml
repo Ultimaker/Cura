@@ -6,29 +6,49 @@ import Cura 1.0 as Cura
 
 Component
 {
-    Image
+    Item
     {
-        id: cameraImage
-        width: sourceSize.width
-        height: sourceSize.height * width / sourceSize.width
-        anchors.horizontalCenter: parent.horizontalCenter
-        onVisibleChanged:
+        width: maximumWidth
+        height: maximumHeight
+        Image
         {
-            if(visible)
+            id: cameraImage
+            width: Math.min(sourceSize.width === 0 ? 800 * screenScaleFactor : sourceSize.width, maximumWidth)
+            height: Math.floor((sourceSize.height === 0 ? 600 * screenScaleFactor : sourceSize.height) * width / sourceSize.width)
+            anchors.horizontalCenter: parent.horizontalCenter
+            anchors.verticalCenter: parent.verticalCenter
+            z: 1
+            Component.onCompleted:
             {
-                OutputDevice.startCamera()
-            } else
-            {
-                OutputDevice.stopCamera()
+                if(OutputDevice.activePrinter != null && OutputDevice.activePrinter.camera != null)
+                {
+                    OutputDevice.activePrinter.camera.start()
+                }
             }
-        }
-        source:
-        {
-            if(OutputDevice.cameraImage)
+            onVisibleChanged:
             {
-                return OutputDevice.cameraImage;
+                if(visible)
+                {
+                    if(OutputDevice.activePrinter != null && OutputDevice.activePrinter.camera != null)
+                    {
+                        OutputDevice.activePrinter.camera.start()
+                    }
+                } else
+                {
+                    if(OutputDevice.activePrinter != null && OutputDevice.activePrinter.camera != null)
+                    {
+                        OutputDevice.activePrinter.camera.stop()
+                    }
+                }
             }
-            return "";
+            source:
+            {
+                if(OutputDevice.activePrinter != null && OutputDevice.activePrinter.camera != null && OutputDevice.activePrinter.camera.latestImage)
+                {
+                    return OutputDevice.activePrinter.camera.latestImage;
+                }
+                return "";
+            }
         }
     }
 }

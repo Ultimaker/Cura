@@ -10,7 +10,7 @@ Cura.MachineAction
 {
     id: base
     anchors.fill: parent;
-    property var selectedPrinter: null
+    property var selectedDevice: null
     property bool completeProperties: true
 
     Connections
@@ -29,9 +29,9 @@ Cura.MachineAction
 
     function connectToPrinter()
     {
-        if(base.selectedPrinter && base.completeProperties)
+        if(base.selectedDevice && base.completeProperties)
         {
-            var printerKey = base.selectedPrinter.getKey()
+            var printerKey = base.selectedDevice.key
             if(manager.getStoredKey() != printerKey)
             {
                 manager.setKey(printerKey);
@@ -83,10 +83,10 @@ Cura.MachineAction
             {
                 id: editButton
                 text: catalog.i18nc("@action:button", "Edit")
-                enabled: base.selectedPrinter != null && base.selectedPrinter.getProperty("manual") == "true"
+                enabled: base.selectedDevice != null && base.selectedDevice.getProperty("manual") == "true"
                 onClicked:
                 {
-                    manualPrinterDialog.showDialog(base.selectedPrinter.getKey(), base.selectedPrinter.ipAddress);
+                    manualPrinterDialog.showDialog(base.selectedDevice.key, base.selectedDevice.ipAddress);
                 }
             }
 
@@ -94,8 +94,8 @@ Cura.MachineAction
             {
                 id: removeButton
                 text: catalog.i18nc("@action:button", "Remove")
-                enabled: base.selectedPrinter != null && base.selectedPrinter.getProperty("manual") == "true"
-                onClicked: manager.removeManualPrinter(base.selectedPrinter.getKey(), base.selectedPrinter.ipAddress)
+                enabled: base.selectedDevice != null && base.selectedDevice.getProperty("manual") == "true"
+                onClicked: manager.removeManualDevice(base.selectedDevice.key, base.selectedDevice.ipAddress)
             }
 
             Button
@@ -114,7 +114,7 @@ Cura.MachineAction
 
             Column
             {
-                width: parent.width * 0.5
+                width: Math.round(parent.width * 0.5)
                 spacing: UM.Theme.getSize("default_margin").height
 
                 ScrollView
@@ -139,7 +139,7 @@ Cura.MachineAction
                         {
                             var selectedKey = manager.getStoredKey();
                             for(var i = 0; i < model.length; i++) {
-                                if(model[i].getKey() == selectedKey)
+                                if(model[i].key == selectedKey)
                                 {
                                     currentIndex = i;
                                     return
@@ -151,9 +151,9 @@ Cura.MachineAction
                         currentIndex: -1
                         onCurrentIndexChanged:
                         {
-                            base.selectedPrinter = listview.model[currentIndex];
+                            base.selectedDevice = listview.model[currentIndex];
                             // Only allow connecting if the printer has responded to API query since the last refresh
-                            base.completeProperties = base.selectedPrinter != null && base.selectedPrinter.getProperty("incomplete") != "true";
+                            base.completeProperties = base.selectedDevice != null && base.selectedDevice.getProperty("incomplete") != "true";
                         }
                         Component.onCompleted: manager.startDiscovery()
                         delegate: Rectangle
@@ -191,23 +191,21 @@ Cura.MachineAction
                     anchors.left: parent.left
                     anchors.right: parent.right
                     wrapMode: Text.WordWrap
-                    //: Tips label
-                    //TODO: get actual link from webteam
-                    text: catalog.i18nc("@label", "If your printer is not listed, read the <a href='%1'>network-printing troubleshooting guide</a>").arg("https://ultimaker.com/en/troubleshooting");
+                    text: catalog.i18nc("@label", "If your printer is not listed, read the <a href='%1'>network printing troubleshooting guide</a>").arg("https://ultimaker.com/en/troubleshooting");
                     onLinkActivated: Qt.openUrlExternally(link)
                 }
 
             }
             Column
             {
-                width: parent.width * 0.5
-                visible: base.selectedPrinter ? true : false
+                width: Math.round(parent.width * 0.5)
+                visible: base.selectedDevice ? true : false
                 spacing: UM.Theme.getSize("default_margin").height
                 Label
                 {
                     width: parent.width
                     wrapMode: Text.WordWrap
-                    text: base.selectedPrinter ? base.selectedPrinter.name : ""
+                    text: base.selectedDevice ? base.selectedDevice.name : ""
                     font: UM.Theme.getFont("large")
                     elide: Text.ElideRight
                 }
@@ -218,22 +216,22 @@ Cura.MachineAction
                     columns: 2
                     Label
                     {
-                        width: parent.width * 0.5
+                        width: Math.round(parent.width * 0.5)
                         wrapMode: Text.WordWrap
                         text: catalog.i18nc("@label", "Type")
                     }
                     Label
                     {
-                        width: parent.width * 0.5
+                        width: Math.round(parent.width * 0.5)
                         wrapMode: Text.WordWrap
                         text:
                         {
-                            if(base.selectedPrinter)
+                            if(base.selectedDevice)
                             {
-                                if(base.selectedPrinter.printerType == "ultimaker3")
+                                if(base.selectedDevice.printerType == "ultimaker3")
                                 {
                                     return catalog.i18nc("@label", "Ultimaker 3")
-                                } else if(base.selectedPrinter.printerType == "ultimaker3_extended")
+                                } else if(base.selectedDevice.printerType == "ultimaker3_extended")
                                 {
                                     return catalog.i18nc("@label", "Ultimaker 3 Extended")
                                 } else
@@ -249,41 +247,63 @@ Cura.MachineAction
                     }
                     Label
                     {
-                        width: parent.width * 0.5
+                        width: Math.round(parent.width * 0.5)
                         wrapMode: Text.WordWrap
                         text: catalog.i18nc("@label", "Firmware version")
                     }
                     Label
                     {
-                        width: parent.width * 0.5
+                        width: Math.round(parent.width * 0.5)
                         wrapMode: Text.WordWrap
-                        text: base.selectedPrinter ? base.selectedPrinter.firmwareVersion : ""
+                        text: base.selectedDevice ? base.selectedDevice.firmwareVersion : ""
                     }
                     Label
                     {
-                        width: parent.width * 0.5
+                        width: Math.round(parent.width * 0.5)
                         wrapMode: Text.WordWrap
                         text: catalog.i18nc("@label", "Address")
                     }
                     Label
                     {
-                        width: parent.width * 0.5
+                        width: Math.round(parent.width * 0.5)
                         wrapMode: Text.WordWrap
-                        text: base.selectedPrinter ? base.selectedPrinter.ipAddress : ""
+                        text: base.selectedDevice ? base.selectedDevice.ipAddress : ""
                     }
+                }
+
+                Label
+                {
+                    width: parent.width
+                    wrapMode: Text.WordWrap
+                    text:{
+                        // The property cluster size does not exist for older UM3 devices.
+                        if(!base.selectedDevice || base.selectedDevice.clusterSize == null || base.selectedDevice.clusterSize == 1)
+                        {
+                            return "";
+                        }
+                        else if (base.selectedDevice.clusterSize === 0)
+                        {
+                            return catalog.i18nc("@label", "This printer is not set up to host a group of Ultimaker 3 printers.");
+                        }
+                        else
+                        {
+                            return catalog.i18nc("@label", "This printer is the host for a group of %1 Ultimaker 3 printers.".arg(base.selectedDevice.clusterSize));
+                        }
+                    }
+
                 }
                 Label
                 {
                     width: parent.width
                     wrapMode: Text.WordWrap
-                    visible: base.selectedPrinter != null && !base.completeProperties
+                    visible: base.selectedDevice != null && !base.completeProperties
                     text: catalog.i18nc("@label", "The printer at this address has not yet responded." )
                 }
 
                 Button
                 {
                     text: catalog.i18nc("@action:button", "Connect")
-                    enabled: (base.selectedPrinter && base.completeProperties) ? true : false
+                    enabled: (base.selectedDevice && base.completeProperties) ? true : false
                     onClicked: connectToPrinter()
                 }
             }
@@ -298,8 +318,8 @@ Cura.MachineAction
 
         title: catalog.i18nc("@title:window", "Printer Address")
 
-        minimumWidth: 400 * Screen.devicePixelRatio
-        minimumHeight: 120 * Screen.devicePixelRatio
+        minimumWidth: 400 * screenScaleFactor
+        minimumHeight: 130 * screenScaleFactor
         width: minimumWidth
         height: minimumHeight
 
@@ -317,7 +337,7 @@ Cura.MachineAction
 
         onAccepted:
         {
-            manager.setManualPrinter(printerKey, addressText)
+            manager.setManualDevice(printerKey, addressText)
         }
 
         Column {
@@ -356,7 +376,7 @@ Cura.MachineAction
             },
             Button {
                 id: btnOk
-                text: catalog.i18nc("@action:button", "Ok")
+                text: catalog.i18nc("@action:button", "OK")
                 onClicked:
                 {
                     manualPrinterDialog.accept()

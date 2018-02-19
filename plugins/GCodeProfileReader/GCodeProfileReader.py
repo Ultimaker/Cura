@@ -1,5 +1,5 @@
 # Copyright (c) 2015 Ultimaker B.V.
-# Cura is released under the terms of the AGPLv3 or higher.
+# Cura is released under the terms of the LGPLv3 or higher.
 
 import re #Regular expressions for parsing escape characters in the settings.
 import json
@@ -71,7 +71,7 @@ class GCodeProfileReader(ProfileReader):
         try:
             json_data = json.loads(serialized)
         except Exception as e:
-            Logger.log("e", "Could not parse serialized JSON data from GCode %s, error: %s", file_name, e)
+            Logger.log("e", "Could not parse serialized JSON data from g-code %s, error: %s", file_name, e)
             return None
 
         profiles = []

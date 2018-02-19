@@ -1,5 +1,5 @@
 # Copyright (c) 2015 Ultimaker B.V.
-# Cura is released under the terms of the AGPLv3 or higher.
+# Cura is released under the terms of the LGPLv3 or higher.
 
 import numpy
 
@@ -8,11 +8,12 @@ from PyQt5.QtCore import Qt
 
 from UM.Mesh.MeshReader import MeshReader
 from UM.Mesh.MeshBuilder import MeshBuilder
-from UM.Scene.SceneNode import SceneNode
 from UM.Math.Vector import Vector
 from UM.Job import Job
 from UM.Logger import Logger
 from .ImageReaderUI import ImageReaderUI
+
+from cura.Scene.CuraSceneNode import CuraSceneNode as SceneNode
 
 
 class ImageReader(MeshReader):

@@ -32,6 +32,7 @@ fragment =
     uniform highp vec3 u_viewPosition;
 
     uniform mediump float u_width;
+    uniform mediump bool u_vertical_stripes;
 
     varying highp vec3 v_position;
     varying highp vec3 v_vertex;
@@ -40,7 +41,9 @@ fragment =
     void main()
     {
         mediump vec4 finalColor = vec4(0.0);
-        mediump vec4 diffuseColor = (mod((-v_position.x + v_position.y), u_width) < (u_width / 2.)) ? u_diffuseColor1 : u_diffuseColor2;
+        mediump vec4 diffuseColor = u_vertical_stripes ?
+            (((mod(v_vertex.x, u_width) < (u_width / 2.)) ^^ (mod(v_vertex.z, u_width) < (u_width / 2.))) ? u_diffuseColor1 : u_diffuseColor2) :
+            ((mod((-v_position.x + v_position.y), u_width) < (u_width / 2.)) ? u_diffuseColor1 : u_diffuseColor2);
 
         /* Ambient Component */
         finalColor += u_ambientColor;
@@ -98,6 +101,7 @@ fragment41core =
     uniform highp vec3 u_viewPosition;
 
     uniform mediump float u_width;
+    uniform mediump bool u_vertical_stripes;
 
     in highp vec3 v_position;
     in highp vec3 v_vertex;
@@ -108,7 +112,9 @@ fragment41core =
     void main()
     {
         mediump vec4 finalColor = vec4(0.0);
-        mediump vec4 diffuseColor = (mod((-v_position.x + v_position.y), u_width) < (u_width / 2.)) ? u_diffuseColor1 : u_diffuseColor2;
+        mediump vec4 diffuseColor = u_vertical_stripes ?
+            (((mod(v_vertex.x, u_width) < (u_width / 2.)) ^^ (mod(v_vertex.z, u_width) < (u_width / 2.))) ? u_diffuseColor1 : u_diffuseColor2) :
+            ((mod((-v_position.x + v_position.y), u_width) < (u_width / 2.)) ? u_diffuseColor1 : u_diffuseColor2);
 
         /* Ambient Component */
         finalColor += u_ambientColor;
@@ -138,6 +144,7 @@ u_diffuseColor2 = [0.5, 0.5, 0.5, 1.0]
 u_specularColor = [0.4, 0.4, 0.4, 1.0]
 u_shininess = 20.0
 u_width = 5.0
+u_vertical_stripes = 0
 
 [bindings]
 u_modelMatrix = model_matrix
@@ -145,7 +152,8 @@ u_viewProjectionMatrix = view_projection_matrix
 u_normalMatrix = normal_matrix
 u_viewPosition = view_position
 u_lightPosition = light_0_position
-u_diffuseColor = diffuse_color
+u_diffuseColor1 = diffuse_color
+u_diffuseColor2 = diffuse_color_2
 
 [attributes]
 a_vertex = vertex

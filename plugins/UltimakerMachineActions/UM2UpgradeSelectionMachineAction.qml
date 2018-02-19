@@ -1,5 +1,5 @@
 // Copyright (c) 2016 Ultimaker B.V.
-// Cura is released under the terms of the AGPLv3 or higher.
+// Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.2
 import QtQuick.Controls 1.1
@@ -13,6 +13,7 @@ import Cura 1.0 as Cura
 Cura.MachineAction
 {
     anchors.fill: parent;
+
     Item
     {
         id: upgradeSelectionMachineAction
@@ -39,12 +40,19 @@ Cura.MachineAction
 
         CheckBox
         {
+            id: olssonBlockCheckBox
             anchors.top: pageDescription.bottom
             anchors.topMargin: UM.Theme.getSize("default_margin").height
 
             text: catalog.i18nc("@label", "Olsson Block")
             checked: manager.hasVariants
-            onClicked: manager.setHasVariants(checked)
+            onClicked: manager.hasVariants = checked
+
+            Connections
+            {
+                target: manager
+                onHasVariantsChanged: olssonBlockCheckBox.checked = manager.hasVariants
+            }
         }
 
         UM.I18nCatalog { id: catalog; name: "cura"; }

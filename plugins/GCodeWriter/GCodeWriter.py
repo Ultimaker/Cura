@@ -1,10 +1,11 @@
-# Copyright (c) 2016 Ultimaker B.V.
-# Cura is released under the terms of the AGPLv3 or higher.
+# Copyright (c) 2017 Ultimaker B.V.
+# Cura is released under the terms of the LGPLv3 or higher.
 
 from UM.Mesh.MeshWriter import MeshWriter
 from UM.Logger import Logger
 from UM.Application import Application
 from UM.Settings.InstanceContainer import InstanceContainer
+from UM.Util import parseBool
 
 from cura.Settings.ExtruderManager import ExtruderManager
 
@@ -56,12 +57,16 @@ class GCodeWriter(MeshWriter):
     #   file. This must always be text mode.
     def write(self, stream, nodes, mode = MeshWriter.OutputMode.TextMode):
         if mode != MeshWriter.OutputMode.TextMode:
-            Logger.log("e", "GCode Writer does not support non-text mode.")
+            Logger.log("e", "GCodeWriter does not support non-text mode.")
             return False
 
+        active_build_plate = Application.getInstance().getBuildPlateModel().activeBuildPlate
         scene = Application.getInstance().getController().getScene()
-        gcode_list = getattr(scene, "gcode_list")
-        if gcode_list:
+        gcode_dict = getattr(scene, "gcode_dict")
+        if not gcode_dict:
+            return False
+        gcode_list = gcode_dict.get(active_build_plate, None)
+        if gcode_list is not None:
             for gcode in gcode_list:
                 stream.write(gcode)
             # Serialise the current container stack and put it at the end of the file.
@@ -74,11 +79,12 @@ class GCodeWriter(MeshWriter):
     ##  Create a new container with container 2 as base and container 1 written over it.
     def _createFlattenedContainerInstance(self, instance_container1, instance_container2):
         flat_container = InstanceContainer(instance_container2.getName())
-        if instance_container1.getDefinition():
-            flat_container.setDefinition(instance_container1.getDefinition())
-        else:
-            flat_container.setDefinition(instance_container2.getDefinition())
+
+        # The metadata includes id, name and definition
         flat_container.setMetaData(copy.deepcopy(instance_container2.getMetaData()))
+
+        if instance_container1.getDefinition():
+            flat_container.setDefinition(instance_container1.getDefinition().getId())
 
         for key in instance_container2.getAllKeys():
             flat_container.setProperty(key, "value", instance_container2.getProperty(key, "value"))
@@ -102,8 +108,8 @@ class GCodeWriter(MeshWriter):
         prefix_length = len(prefix)
 
         container_with_profile = stack.qualityChanges
-        if not container_with_profile:
-            Logger.log("e", "No valid quality profile found, not writing settings to GCode!")
+        if container_with_profile.getId() == "empty_quality_changes":
+            Logger.log("e", "No valid quality profile found, not writing settings to g-code!")
             return ""
 
         flat_global_container = self._createFlattenedContainerInstance(stack.getTop(), container_with_profile)
@@ -113,14 +119,18 @@ class GCodeWriter(MeshWriter):
 
         # Ensure that quality_type is set. (Can happen if we have empty quality changes).
         if flat_global_container.getMetaDataEntry("quality_type", None) is None:
-            flat_global_container.addMetaDataEntry("quality_type", stack.findContainer({"type": "quality"}).getMetaDataEntry("quality_type", "normal"))
+            flat_global_container.addMetaDataEntry("quality_type", stack.quality.getMetaDataEntry("quality_type", "normal"))
+
+        # Ensure that quality_definition is set. (Can happen if we have empty quality changes).
+        if parseBool(stack.getMetaDataEntry("has_machine_quality", "False")):
+            flat_global_container.addMetaDataEntry("quality_definition", stack.getMetaDataEntry("quality_definition"))
 
         serialized = flat_global_container.serialize()
         data = {"global_quality": serialized}
 
-        for extruder in sorted(ExtruderManager.getInstance().getMachineExtruders(stack.getId()), key = lambda k: k.getMetaDataEntry("position")):
+        for extruder in sorted(stack.extruders.values(), key = lambda k: k.getMetaDataEntry("position")):
             extruder_quality = extruder.qualityChanges
-            if not extruder_quality:
+            if extruder_quality.getId() == "empty_quality_changes":
                 Logger.log("w", "No extruder quality profile found, not writing quality for extruder %s to file!", extruder.getId())
                 continue
             flat_extruder_quality = self._createFlattenedContainerInstance(extruder.getTop(), extruder_quality)
@@ -134,7 +144,7 @@ class GCodeWriter(MeshWriter):
 
             # Ensure that quality_type is set. (Can happen if we have empty quality changes).
             if flat_extruder_quality.getMetaDataEntry("quality_type", None) is None:
-                flat_extruder_quality.addMetaDataEntry("quality_type", extruder.findContainer({"type": "quality"}).getMetaDataEntry("quality_type", "normal"))
+                flat_extruder_quality.addMetaDataEntry("quality_type", extruder.quality.getMetaDataEntry("quality_type", "normal"))
             extruder_serialized = flat_extruder_quality.serialize()
             data.setdefault("extruder_quality", []).append(extruder_serialized)
 
