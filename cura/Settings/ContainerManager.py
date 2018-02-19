@@ -458,39 +458,21 @@ class ContainerManager(QObject):
     #   \param new_name The new name of the quality changes.
     #
     #   \return True if successful, False if not.
-    @pyqtSlot(str, str, result = bool)
-    def renameQualityChanges(self, quality_name, new_name):
-        Logger.log("d", "User requested QualityChanges container rename of %s to %s", quality_name, new_name)
-        if not quality_name or not new_name:
-            return False
-
-        if quality_name == new_name:
-            Logger.log("w", "Unable to rename %s to %s, because they are the same.", quality_name, new_name)
-            return True
-
-        global_stack = Application.getInstance().getGlobalContainerStack()
-        if not global_stack:
-            return False
-
+    @pyqtSlot(QObject, str)
+    def renameQualityChangesGroup(self, quality_changes_group, new_name):
+        Logger.log("i", "Renaming QualityChangesGroup[%s] to [%s]", quality_changes_group.name, new_name)
         self._machine_manager.blurSettings.emit()
 
+        if new_name == quality_changes_group.name:
+            Logger.log("i", "QualityChangesGroup name [%s] unchanged.", quality_changes_group.name)
+            return
+
         new_name = self._container_registry.uniqueName(new_name)
-
-        container_registry = self._container_registry
-
-        containers_to_rename = self._container_registry.findInstanceContainersMetadata(type = "quality_changes", name = quality_name)
-
-        for container in containers_to_rename:
-            stack_id = global_stack.getId()
-            if "extruder" in container:
-                stack_id = container["extruder"]
-            container_registry.renameContainer(container["id"], new_name, self._createUniqueId(stack_id, new_name))
-
-        if not containers_to_rename:
-            Logger.log("e", "Unable to rename %s, because we could not find the profile", quality_name)
+        for node in quality_changes_group.getAllNodes():
+            node.getContainer().setName(new_name)
 
         self._machine_manager.activeQualityChanged.emit()
-        return True
+        self._machine_manager.activeQualityGroupChanged.emit()
 
     @pyqtSlot(str, "QVariantMap")
     def duplicateQualityChanges(self, quality_changes_name, quality_model_item):

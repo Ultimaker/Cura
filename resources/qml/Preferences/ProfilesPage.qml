@@ -86,9 +86,9 @@ Item
             visible: base.canCreateProfile
 
             onClicked: {
-                newNameDialog.object = base.currentItem != null ? Cura.ContainerManager.makeUniqueName(Cura.MachineManager.activeQualityOrQualityChangesName) : "";
-                newNameDialog.open();
-                newNameDialog.selectText();
+                createQualityDialog.object = Cura.ContainerManager.makeUniqueName(base.currentItem.name);
+                createQualityDialog.open();
+                createQualityDialog.selectText();
             }
         }
 
@@ -101,9 +101,9 @@ Item
             visible: !base.canCreateProfile
 
             onClicked: {
-                newDuplicateNameDialog.object = Cura.ContainerManager.makeUniqueName(base.currentItem.name);
-                newDuplicateNameDialog.open();
-                newDuplicateNameDialog.selectText();
+                duplicateQualityDialog.object = Cura.ContainerManager.makeUniqueName(base.currentItem.name);
+                duplicateQualityDialog.open();
+                duplicateQualityDialog.selectText();
             }
         }
 
@@ -124,10 +124,11 @@ Item
         {
             text: catalog.i18nc("@action:button", "Rename")
             iconName: "edit-rename"
-            //enabled: base.currentItem != null ? !base.currentItem.readOnly : false;
-            enabled: true // TODO
+            enabled: base.hasCurrentItem && !base.currentItem.is_read_only
             onClicked: {
-                // TODO
+                renameQualityDialog.object = base.currentItem.name;
+                renameQualityDialog.open();
+                renameQualityDialog.selectText();
             }
         }
 
@@ -157,26 +158,26 @@ Item
     // Dialog to request a name when creating a new profile
     UM.RenameDialog
     {
+        id: createQualityDialog
         title: catalog.i18nc("@title:window", "Create Profile")
-        id: newNameDialog
         object: "<new name>"
         onAccepted:
         {
             Cura.ContainerManager.createQualityChanges(newName);
-            qualityListView.currentIndex = -1 // TODO: Reset selection.
+            qualityListView.currentIndex = -1;  // TODO: Reset selection.
         }
     }
 
     // Dialog to request a name when duplicating a new profile
     UM.RenameDialog
     {
+        id: duplicateQualityDialog
         title: catalog.i18nc("@title:window", "Duplicate Profile")
-        id: newDuplicateNameDialog
         object: "<new name>"
         onAccepted:
         {
             Cura.ContainerManager.duplicateQualityChanges(newName, base.currentItem);
-            qualityListView.currentIndex = -1; // TODO: Reset selection.
+            qualityListView.currentIndex = -1;  // TODO: Reset selection.
         }
     }
 
@@ -195,7 +196,20 @@ Item
         {
             Cura.ContainerManager.removeQualityChangesGroup(base.currentItem.quality_changes_group);
             // reset current item to the first if available
-            qualityListView.currentIndex = -1;
+            qualityListView.currentIndex = -1;  // TODO: Reset selection.
+        }
+    }
+
+    // Dialog to rename a quality profile
+    UM.RenameDialog
+    {
+        id: renameQualityDialog
+        title: catalog.i18nc("@title:window", "Rename Profile")
+        object: "<new name>"
+        onAccepted:
+        {
+            Cura.ContainerManager.renameQualityChangesGroup(base.currentItem.quality_changes_group, newName);
+            qualityListView.currentIndex = -1;  // TODO: Reset selection.
         }
     }
 
