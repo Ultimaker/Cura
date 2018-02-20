@@ -3,7 +3,6 @@
 
 from typing import Any, TYPE_CHECKING, Optional
 
-from UM.Application import Application
 from UM.Decorators import override
 from UM.MimeTypeDatabase import MimeType, MimeTypeDatabase
 from UM.Settings.ContainerStack import ContainerStack
@@ -34,7 +33,7 @@ class ExtruderStack(CuraContainerStack):
     #
     #   This will set the next stack and ensure that we register this stack as an extruder.
     @override(ContainerStack)
-    def setNextStack(self, stack: ContainerStack) -> None:
+    def setNextStack(self, stack: CuraContainerStack) -> None:
         super().setNextStack(stack)
         stack.addExtruder(self)
         self.addMetaDataEntry("machine", stack.id)

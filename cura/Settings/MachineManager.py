@@ -283,6 +283,7 @@ class MachineManager(QObject):
         containers = container_registry.findContainerStacks(id = stack_id)
         if containers:
             Application.getInstance().setGlobalContainerStack(containers[0])
+            ExtruderManager.getInstance()._globalContainerStackChanged()
 
         self.__emitChangedSignals()
 
@@ -877,9 +878,10 @@ class MachineManager(QObject):
 
     @pyqtSlot(int, result = QObject)
     def getExtruder(self, position: int):
+        extruder = None
         if self._global_container_stack:
-            return self._global_container_stack.extruders.get(str(position))
-        return None
+            extruder = self._global_container_stack.extruders.get(str(position))
+        return extruder
 
     def _onMachineNameChanged(self):
         self.globalContainerChanged.emit()
