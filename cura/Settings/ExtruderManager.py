@@ -396,6 +396,7 @@ class ExtruderManager(QObject):
                 self._extruder_trains[global_stack_id][extruder_train.getMetaDataEntry("position")] = extruder_train
 
                 # regardless of what the next stack is, we have to set it again, because of signal routing. ???
+                extruder_train.setParent(global_stack)
                 extruder_train.setNextStack(global_stack)
                 extruders_changed = True
 
