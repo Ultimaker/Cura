@@ -1110,7 +1110,12 @@ class MachineManager(QObject):
         self.blurSettings.emit()
         with postponeSignals(*self._getContainerChangedSignals(), compress = CompressTechnique.CompressPerParameterValue):
             self._setQualityGroup(quality_group)
+
         Logger.log("d", "Quality set!")
+
+        # See if we need to show the Discard or Keep changes screen
+        if self.hasUserSettings and Preferences.getInstance().getValue("cura/active_mode") == 1:
+            Application.getInstance().discardOrKeepProfileChanges()
 
     @pyqtProperty("QVariant", fset = setQualityGroup, notify = activeQualityGroupChanged)
     def activeQualityGroup(self):
