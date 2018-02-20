@@ -154,6 +154,15 @@ Item
         }
     }
 
+    // Click create profile from ... in Profile context menu
+    signal createProfile()
+    onCreateProfile:
+    {
+        createQualityDialog.object = Cura.ContainerManager.makeUniqueName(Cura.MachineManager.activeQualityOrQualityChangesName);
+        createQualityDialog.open();
+        createQualityDialog.selectText();
+    }
+
     // Dialog to request a name when creating a new profile
     UM.RenameDialog
     {
