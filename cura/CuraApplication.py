@@ -754,6 +754,8 @@ class CuraApplication(QtApplication):
         self._quality_manager = QualityManager(container_registry)
         self._quality_manager.initialize()
 
+        self.getMachineManager()  # ensure creation of machine manager
+
         # Check if we should run as single instance or not
         self._setUpSingleInstanceServer()
 

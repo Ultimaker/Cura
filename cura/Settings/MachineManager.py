@@ -107,18 +107,12 @@ class MachineManager(QObject):
 
         self._global_event_keys = set()
 
-        active_machine_id = Preferences.getInstance().getValue("cura/active_machine")
-
         self._printer_output_devices = []
         Application.getInstance().getOutputDeviceManager().outputDevicesChanged.connect(self._onOutputDevicesChanged)
         # There might already be some output devices by the time the signal is connected
         self._onOutputDevicesChanged()
 
-        if active_machine_id != "" and ContainerRegistry.getInstance().findContainerStacksMetadata(id = active_machine_id):
-            # An active machine was saved, so restore it.
-            self.setActiveMachine(active_machine_id)
-            # Make sure _active_container_stack is properly initiated
-            ExtruderManager.getInstance().setActiveExtruderIndex(0)
+        self._application.callLater(self.setInitialActiveMachine)
 
         self._material_incompatible_message = Message(catalog.i18nc("@info:status",
                                                 "The selected material is incompatible with the selected machine or configuration."),
@@ -149,6 +143,14 @@ class MachineManager(QObject):
     outputDevicesChanged = pyqtSignal()
 
     rootMaterialChanged = pyqtSignal()
+
+    def setInitialActiveMachine(self):
+        active_machine_id = Preferences.getInstance().getValue("cura/active_machine")
+        if active_machine_id != "" and ContainerRegistry.getInstance().findContainerStacksMetadata(id = active_machine_id):
+            # An active machine was saved, so restore it.
+            self.setActiveMachine(active_machine_id)
+            # Make sure _active_container_stack is properly initiated
+            ExtruderManager.getInstance().setActiveExtruderIndex(0)
 
     def _onOutputDevicesChanged(self) -> None:
         self._printer_output_devices = []
@@ -285,11 +287,10 @@ class MachineManager(QObject):
 
         quality_groups = self._application._quality_manager.getQualityGroups(global_stack)
         quality_type = global_quality.getMetaDataEntry("quality_type")
-        if quality_type in quality_groups:
-            new_quality_group = quality_groups[quality_type]
-        else:
-            new_quality_group = quality_groups.values()[0]
-            Logger.log("e", "Quality type [%s] not found in available qualities [%s]", quality_type, str(quality_groups.values()))
+        if not quality_type in quality_groups:
+            Logger.log("w", "Quality type [%s] not found in available qualities [%s]", quality_type, str(quality_groups.values()))
+            return
+        new_quality_group = quality_groups[quality_type]
         self._setQualityGroup(new_quality_group)
 
         if global_quality_changes.getId() != "empty_quality_changes":

@@ -43,6 +43,8 @@ class QualityProfilesModel(ListModel):
 
         self._layer_height_unit = ""  # This is cached
 
+        self._update()
+
     def _update(self):
         Logger.log("d", "Updating quality profile model ...")
 
