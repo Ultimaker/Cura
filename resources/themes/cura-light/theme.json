@@ -12,12 +12,12 @@
         },
         "large_nonbold": {
             "size": 1.35,
-            "weight": 25,
+            "weight": 50,
             "family": "Noto Sans"
         },
         "default": {
             "size": 1.0,
-            "weight": 25,
+            "weight": 50,
             "family": "Noto Sans"
         },
         "default_bold": {
@@ -28,7 +28,7 @@
         },
         "default_italic": {
             "size": 1.15,
-            "weight": 25,
+            "weight": 50,
             "italic": true,
             "family": "Noto Sans"
         },
@@ -40,12 +40,12 @@
         },
         "very_small": {
             "size": 1.0,
-            "weight": 25,
+            "weight": 50,
             "family": "Noto Sans"
         },
         "button_tooltip": {
             "size": 1.0,
-            "weight": 25,
+            "weight": 50,
             "family": "Noto Sans"
         },
         "setting_category": {
@@ -56,7 +56,7 @@
         },
         "action_button": {
             "size": 1.15,
-            "weight": 25,
+            "weight": 50,
             "bold": true,
             "family": "Noto Sans"
         }
