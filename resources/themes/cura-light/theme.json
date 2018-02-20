@@ -7,7 +7,6 @@
         "large": {
             "size": 1.35,
             "weight": 63,
-            "bold": true,
             "family": "Noto Sans"
         },
         "large_nonbold": {
@@ -23,7 +22,6 @@
         "default_bold": {
             "size": 1.0,
             "weight": 63,
-            "bold": true,
             "family": "Noto Sans"
         },
         "default_italic": {
@@ -35,7 +33,6 @@
         "small": {
             "size": 1.0,
             "weight": 63,
-            "bold": true,
             "family": "Noto Sans"
         },
         "very_small": {
@@ -51,13 +48,11 @@
         "setting_category": {
             "size": 1.15,
             "weight": 63,
-            "bold": true,
             "family": "Noto Sans"
         },
         "action_button": {
             "size": 1.15,
             "weight": 50,
-            "bold": true,
             "family": "Noto Sans"
         }
     },
