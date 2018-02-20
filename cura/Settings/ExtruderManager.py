@@ -36,21 +36,14 @@ class ExtruderManager(QObject):
         self._global_container_stack_definition_id = None
         self._addCurrentMachineExtruders()
 
-        Application.getInstance().globalContainerStackChanged.connect(self.__globalContainerStackChanged)
+        #Application.getInstance().globalContainerStackChanged.connect(self._globalContainerStackChanged)
         Selection.selectionChanged.connect(self.resetSelectedObjectExtruders)
 
     ##  Signal to notify other components when the list of extruders for a machine definition changes.
     extrudersChanged = pyqtSignal(QVariant)
 
-    ## Signal to notify other components when the global container stack is switched to a definition
-    #  that has different extruders than the previous global container stack
-    globalContainerStackDefinitionChanged = pyqtSignal()
-
     ##  Notify when the user switches the currently active extruder.
     activeExtruderChanged = pyqtSignal()
-
-    ## The signal notifies subscribers if extruders are added
-    extrudersAdded = pyqtSignal()
 
     ##  Gets the unique identifier of the currently active extruder stack.
     #
@@ -371,11 +364,10 @@ class ExtruderManager(QObject):
 
         return result[:machine_extruder_count]
 
-    def __globalContainerStackChanged(self) -> None:
+    def _globalContainerStackChanged(self) -> None:
         global_container_stack = Application.getInstance().getGlobalContainerStack()
         if global_container_stack and global_container_stack.getBottom() and global_container_stack.getBottom().getId() != self._global_container_stack_definition_id:
             self._global_container_stack_definition_id = global_container_stack.getBottom().getId()
-            self.globalContainerStackDefinitionChanged.emit()
 
         # If the global container changed, the machine changed and might have extruders that were not registered yet
         self._addCurrentMachineExtruders()
@@ -415,7 +407,6 @@ class ExtruderManager(QObject):
 
             if extruders_changed:
                 self.extrudersChanged.emit(global_stack_id)
-                self.extrudersAdded.emit()
                 self.setActiveExtruderIndex(0)
 
     ##  Get all extruder values for a certain setting.

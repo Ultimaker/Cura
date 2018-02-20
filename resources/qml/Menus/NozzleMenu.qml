@@ -13,7 +13,8 @@ Menu
     title: "Nozzle"
 
     property int extruderIndex: 0
-    property var extruderStack: Cura.MachineManager.getExtruder(menu.extruderIndex)
+    property QtObject extruderStack: Cura.MachineManager.getExtruder(menu.extruderIndex)
+    property bool hasExtruderStack: extruderStack != null
 
     Cura.NozzleModel
     {
@@ -24,7 +25,7 @@ Menu
     {
         target: Cura.MachineManager
         onGlobalContainerChanged: {
-            menu.extruderStack = Cura.MachineManager.getExtruder(extruderIndex);
+            menu.extruderStack = Cura.MachineManager.getExtruder(menu.extruderIndex);
         }
     }
 
@@ -36,7 +37,7 @@ Menu
         {
             text: model.hotend_name
             checkable: true
-            checked: extruderStack.variant.name == model.hotend_name
+            checked: menu.hasExtruderStack && extruderStack.variant.name == model.hotend_name
             exclusiveGroup: group
             onTriggered: {
                 Cura.MachineManager.setVariantGroup(extruderIndex, model.container_node);
