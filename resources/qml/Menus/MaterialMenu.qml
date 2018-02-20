@@ -21,12 +21,11 @@ Menu
         {
             text: model.name
             checkable: true
-            checked: model.root_material_id == Cura.MachineManager.currentRootMaterialId[Cura.ExtruderManager.activeExtruderIndex]
+            checked: model.root_material_id == Cura.MachineManager.currentRootMaterialId[extruderIndex]
             exclusiveGroup: group
             onTriggered:
             {
-                var activeExtruderIndex = Cura.ExtruderManager.activeExtruderIndex;
-                Cura.MachineManager.setMaterial(activeExtruderIndex, model.container_node);
+                Cura.MachineManager.setMaterial(extruderIndex, model.container_node);
             }
         }
         onObjectAdded: menu.insertItem(index, object)
