@@ -1,16 +1,17 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from UM.Logger import Logger
+from typing import Optional
 
+from UM.Logger import Logger
 from UM.Settings.Interfaces import DefinitionContainerInterface
 from UM.Settings.InstanceContainer import InstanceContainer
 from UM.Settings.ContainerRegistry import ContainerRegistry
 from UM.Util import parseBool
 
+from cura.Machines.VariantManager import VariantType
 from .GlobalStack import GlobalStack
 from .ExtruderStack import ExtruderStack
-from typing import Optional
 
 
 ##  Contains helper functions to create new machines.
@@ -37,18 +38,32 @@ class CuraStackBuilder:
 
         machine_definition = definitions[0]
 
+        # get variant container for the global stack
+        global_variant_container = application.empty_variant_container
+        if parseBool(machine_definition.getMetaDataEntry("has_variant_buildplates", False)):
+            global_variant_name = machine_definition.getMetaDataEntry("preferred_variant_buildplate_name")
+            if global_variant_name:
+                variant_node = variant_manager.getVariantNode(definition_id, global_variant_name,
+                                                              variant_type = VariantType.BUILD_PLATE)
+                if variant_node is None:
+                    raise RuntimeError("Cannot find buildplate variant with definition [%s] and variant name [%s]" %
+                                       (definition_id, global_variant_name))
+                global_variant_container = variant_node.getContainer()
+
+
         # get variant container for extruders
-        variant_container = application.empty_variant_container
+        extruder_variant_container = application.empty_variant_container
         # Only look for the preferred variant if this machine has variants
-        variant_name = None
+        extruder_variant_name = None
         if parseBool(machine_definition.getMetaDataEntry("has_variants", False)):
-            variant_name = machine_definition.getMetaDataEntry("preferred_variant_name")
-            if variant_name:
-                variant_node = variant_manager.getVariantNode(definition_id, variant_name)
+            extruder_variant_name = machine_definition.getMetaDataEntry("preferred_variant_name")
+            if extruder_variant_name:
+                variant_node = variant_manager.getVariantNode(definition_id, extruder_variant_name)
                 # Sanity check. If you see this error, the related definition files should be fixed.
                 if variant_node is None:
-                    raise RuntimeError("Cannot find variant with definition [%s] and variant name [%s]" % (definition_id, variant_name))
-                variant_container = variant_node.getContainer()
+                    raise RuntimeError("Cannot find extruder variant with definition [%s] and variant name [%s]" %
+                                       (definition_id, extruder_variant_name))
+                extruder_variant_container = variant_node.getContainer()
 
         # get material container for extruders
         material_container = application.empty_material_container
@@ -58,11 +73,11 @@ class CuraStackBuilder:
             approximate_material_diameter = str(round(material_diameter))
             root_material_id = machine_definition.getMetaDataEntry("preferred_material")
             root_material_id = material_manager.getRootMaterialIDForDiameter(root_material_id, approximate_material_diameter)
-            material_node = material_manager.getMaterialNode(definition_id, variant_name, material_diameter, root_material_id)
+            material_node = material_manager.getMaterialNode(definition_id, extruder_variant_name, material_diameter, root_material_id)
             # Sanity check. If you see this error, the related definition files should be fixed.
             if not material_node:
-                raise RuntimeError("Cannot find material with definition [%s], variant_name [%s], and root_material_id [%s]" %
-                                   (definition_id, variant_name, root_material_id))
+                raise RuntimeError("Cannot find material with definition [%s], extruder_variant_name [%s], and root_material_id [%s]" %
+                                   (definition_id, extruder_variant_name, root_material_id))
             material_container = material_node.getContainer()
 
         generated_name = registry.createUniqueName("machine", "", name, machine_definition.getName())
@@ -75,7 +90,7 @@ class CuraStackBuilder:
         new_global_stack = cls.createGlobalStack(
             new_stack_id = generated_name,
             definition = machine_definition,
-            variant_container = application.empty_variant_container,  # TODO: fix for build plate
+            variant_container = global_variant_container,
             material_container = application.empty_material_container,
             quality_container = application.empty_quality_container,
         )
@@ -99,7 +114,7 @@ class CuraStackBuilder:
                 extruder_definition = extruder_definition,
                 machine_definition_id = definition_id,
                 position = position,
-                variant_container = variant_container,
+                variant_container = extruder_variant_container,
                 material_container = material_container,
                 quality_container = application.empty_quality_container,
                 global_stack = new_global_stack,
