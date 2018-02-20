@@ -17,9 +17,10 @@ class QualityProfilesModel(ListModel):
     NameRole = Qt.UserRole + 2
     QualityTypeRole = Qt.UserRole + 3
     LayerHeightRole = Qt.UserRole + 4
-    AvailableRole = Qt.UserRole + 5
-    QualityGroupRole = Qt.UserRole + 6
-    QualityChangesGroupRole = Qt.UserRole + 7
+    LayerHeightWithoutUnitRole = Qt.UserRole + 5
+    AvailableRole = Qt.UserRole + 6
+    QualityGroupRole = Qt.UserRole + 7
+    QualityChangesGroupRole = Qt.UserRole + 8
 
     def __init__(self, parent = None):
         super().__init__(parent)
@@ -28,6 +29,7 @@ class QualityProfilesModel(ListModel):
         self.addRoleName(self.NameRole, "name")
         self.addRoleName(self.QualityTypeRole, "quality_type")
         self.addRoleName(self.LayerHeightRole, "layer_height")
+        self.addRoleName(self.LayerHeightWithoutUnitRole, "layer_height_without_unit")
         self.addRoleName(self.AvailableRole, "available")
         self.addRoleName(self.QualityGroupRole, "quality_group")
         self.addRoleName(self.QualityChangesGroupRole, "quality_changes_group")
