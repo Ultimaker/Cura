@@ -581,7 +581,7 @@ Rectangle
         id: modesListModel
     }
 
-    Cura.SidebarSimple
+    SidebarSimple
     {
         id: sidebarSimple
         visible: false
