@@ -74,6 +74,8 @@ class GenericMaterialsModel(BaseMaterialsModel):
         extruder_manager.activeExtruderChanged.connect(self._update)
         material_manager.materialsUpdated.connect(self._update)
 
+        self._update()
+
     def _update(self):
         item_list = []
         result_dict = getAvailableMaterials()
