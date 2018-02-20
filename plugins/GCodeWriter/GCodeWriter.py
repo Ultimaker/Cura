@@ -5,6 +5,7 @@ from UM.Mesh.MeshWriter import MeshWriter
 from UM.Logger import Logger
 from UM.Application import Application
 from UM.Settings.InstanceContainer import InstanceContainer
+from UM.Util import parseBool
 
 from cura.Settings.ExtruderManager import ExtruderManager
 
@@ -120,6 +121,14 @@ class GCodeWriter(MeshWriter):
         if flat_global_container.getMetaDataEntry("quality_type", None) is None:
             flat_global_container.addMetaDataEntry("quality_type", stack.quality.getMetaDataEntry("quality_type", "normal"))
 
+        # Change the default defintion
+        default_machine_definition = "fdmprinter"
+        if parseBool(stack.getMetaDataEntry("has_machine_quality", "False")):
+            default_machine_definition = stack.getMetaDataEntry("quality_definition")
+            if not default_machine_definition:
+                default_machine_definition = stack.definition.getId()
+        flat_global_container.setMetaDataEntry("definition", default_machine_definition)
+
         serialized = flat_global_container.serialize()
         data = {"global_quality": serialized}
 
@@ -140,6 +149,15 @@ class GCodeWriter(MeshWriter):
             # Ensure that quality_type is set. (Can happen if we have empty quality changes).
             if flat_extruder_quality.getMetaDataEntry("quality_type", None) is None:
                 flat_extruder_quality.addMetaDataEntry("quality_type", extruder.quality.getMetaDataEntry("quality_type", "normal"))
+
+            # Change the default defintion
+            default_extruder_definition = "fdmextruder"
+            if parseBool(stack.getMetaDataEntry("has_machine_quality", "False")):
+                default_extruder_definition = extruder.getMetaDataEntry("quality_definition")
+                if not default_extruder_definition:
+                    default_extruder_definition = extruder.definition.getId()
+            flat_extruder_quality.setMetaDataEntry("definition", default_extruder_definition)
+
             extruder_serialized = flat_extruder_quality.serialize()
             data.setdefault("extruder_quality", []).append(extruder_serialized)
 
