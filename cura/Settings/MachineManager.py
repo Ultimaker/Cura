@@ -47,6 +47,10 @@ class MachineManager(QObject):
         self._active_container_stack = None     # type: CuraContainerStack
         self._global_container_stack = None     # type: GlobalStack
 
+        self._current_root_material_id = {}
+        self._current_quality_group = None
+        self._current_quality_changes_group = None
+
         self.machine_extruder_material_update_dict = collections.defaultdict(list)
 
         # Used to store the new containers until after confirming the dialog
@@ -65,8 +69,9 @@ class MachineManager(QObject):
         self._instance_container_timer.setSingleShot(True)
         self._instance_container_timer.timeout.connect(self.__emitChangedSignals)
 
-        Application.getInstance().globalContainerStackChanged.connect(self._onGlobalContainerChanged)
-        Application.getInstance().getContainerRegistry().containerLoadComplete.connect(self._onInstanceContainersChanged)
+        self._application = Application.getInstance()
+        self._application.globalContainerStackChanged.connect(self._onGlobalContainerChanged)
+        self._application.getContainerRegistry().containerLoadComplete.connect(self._onInstanceContainersChanged)
 
         ##  When the global container is changed, active material probably needs to be updated.
         self.globalContainerChanged.connect(self.activeMaterialChanged)
@@ -123,10 +128,6 @@ class MachineManager(QObject):
         if containers:
             containers[0].nameChanged.connect(self._onMaterialNameChanged)
 
-        ### NEW
-        self._current_root_material_id = {}
-        self._current_quality_group = None
-        self._current_quality_changes_group = None
 
     ### NEW
     activeQualityGroupChanged = pyqtSignal()
@@ -273,6 +274,30 @@ class MachineManager(QObject):
         elif property_name == "validationState":
             self._error_check_timer.start()
 
+    ## Given a global_stack, make sure that it's all valid by searching for this quality group and applying it again
+    def _initMachineState(self, global_stack):
+        material_dict = {}
+        for position, extruder in global_stack.extruders.items():
+            material_dict[position] = extruder.material.getMetaDataEntry("base_file")
+        self._current_root_material_id = material_dict
+        global_quality = global_stack.quality
+        global_quality_changes = global_stack.qualityChanges
+
+        quality_groups = self._application._quality_manager.getQualityGroups(global_stack)
+        quality_type = global_quality.getMetaDataEntry("quality_type")
+        if quality_type in quality_groups:
+            new_quality_group = quality_groups[quality_type]
+        else:
+            new_quality_group = quality_groups.values()[0]
+            Logger.log("e", "Quality type [%s] not found in available qualities [%s]", quality_type, str(quality_groups.values()))
+        self._setQualityGroup(new_quality_group)
+
+        if global_quality_changes.getId() != "empty_quality_changes":
+            quality_changes_groups = self._application._quality_manager.getQualityChangesGroups(global_stack)
+            if quality_type in quality_changes_groups:
+                new_quality_changes_group = quality_changes_groups[quality_type]
+                self._setQualityChangesGroup(new_quality_changes_group)
+
     @pyqtSlot(str)
     def setActiveMachine(self, stack_id: str) -> None:
         self.blurSettings.emit()  # Ensure no-one has focus.
@@ -284,6 +309,7 @@ class MachineManager(QObject):
         if containers:
             Application.getInstance().setGlobalContainerStack(containers[0])
             ExtruderManager.getInstance()._globalContainerStackChanged()
+            self._initMachineState(containers[0])
 
         self.__emitChangedSignals()
 
