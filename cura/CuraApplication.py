@@ -60,7 +60,7 @@ from cura.Machines.Models.CustomQualityProfilesModel import CustomQualityProfile
 
 from cura.Machines.Models.Other.MultiBuildPlateModel import MultiBuildPlateModel
 
-from cura.Settings.MaterialsModel import MaterialsModel, BrandMaterialsModel, GenericMaterialsModel, NewMaterialsModel
+from cura.Machines.Models.MaterialsModel import BrandMaterialsModel, GenericMaterialsModel, MaterialsModel
 from cura.Settings.SettingInheritanceManager import SettingInheritanceManager
 from cura.Settings.SimpleModeSettingsManager import SimpleModeSettingsManager
 
@@ -944,7 +944,7 @@ class CuraApplication(QtApplication):
 
         qmlRegisterType(GenericMaterialsModel, "Cura", 1, 0, "GenericMaterialsModel")
         qmlRegisterType(BrandMaterialsModel, "Cura", 1, 0, "BrandMaterialsModel")
-        qmlRegisterType(NewMaterialsModel, "Cura", 1, 0, "NewMaterialsModel")
+        qmlRegisterType(MaterialsModel, "Cura", 1, 0, "MaterialsModel")
 
         # TODO: make this singleton?
         qmlRegisterType(QualityManagementModel, "Cura", 1, 0, "QualityManagementModel")
@@ -953,7 +953,6 @@ class CuraApplication(QtApplication):
         qmlRegisterSingletonType(CustomQualityProfilesModel, "Cura", 1, 0, "CustomQualityProfilesModel", self.getCustomQualityProfilesModel)
         qmlRegisterType(NozzleModel, "Cura", 1, 0, "NozzleModel")
 
-        qmlRegisterType(MaterialsModel, "Cura", 1, 0, "MaterialsModel")
         qmlRegisterType(MaterialSettingsVisibilityHandler, "Cura", 1, 0, "MaterialSettingsVisibilityHandler")
         qmlRegisterType(QualitySettingsModel, "Cura", 1, 0, "QualitySettingsModel")
         qmlRegisterType(MachineNameValidator, "Cura", 1, 0, "MachineNameValidator")

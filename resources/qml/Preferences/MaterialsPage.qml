@@ -17,7 +17,7 @@ Item
 
     UM.I18nCatalog { id: catalog; name: "cura"; }
 
-    Cura.NewMaterialsModel {
+    Cura.MaterialsModel {
         id: materialsModel
     }
 
