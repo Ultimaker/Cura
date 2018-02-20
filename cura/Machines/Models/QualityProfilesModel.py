@@ -90,9 +90,7 @@ class QualityProfilesModel(ListModel):
             layer_height = str(container.getProperty("layer_height", "value"))
         else:
             # Look for layer_height in the GlobalStack from material -> definition
-            for idx in range(4):
-                container = active_global_stack.getContainer(idx)
-                if container.hasProperty("layer_height", "value"):
-                    layer_height = container.getProperty("layer_height", "value")
-                    break
+            container = active_global_stack.definition
+            if container.hasProperty("layer_height", "value"):
+                layer_height = container.getProperty("layer_height", "value")
         return str(layer_height)
