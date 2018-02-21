@@ -283,6 +283,8 @@ class QualityManager(QObject):
         # TODO: How to make this simpler, including the fall backs.
         # Get machine definition ID for quality search
         machine_definition_id = getMachineDefinitionIDForQualitySearch(machine)
+        # This determines if we should only get the global qualities for the global stack and skip the global qualities for the extruder stacks
+        has_variant_materials = parseBool(machine.getMetaDataEntry("has_variant_materials", False))
 
         # To find the quality container for the GlobalStack, check in the following fall-back manner:
         #   (1) the machine-specific node
@@ -296,10 +298,11 @@ class QualityManager(QObject):
         for node in nodes_to_check:
             if node and node.quality_type_map:
                 # Only include global qualities
-                quality_node = list(node.quality_type_map.values())[0]
-                is_global_quality = parseBool(quality_node.metadata.get("global_quality", False))
-                if not is_global_quality:
-                    continue
+                if has_variant_materials:
+                    quality_node = list(node.quality_type_map.values())[0]
+                    is_global_quality = parseBool(quality_node.metadata.get("global_quality", False))
+                    if not is_global_quality:
+                        continue
 
                 for quality_type, quality_node in node.quality_type_map.items():
                     quality_group = QualityGroup(quality_node.metadata["name"], quality_type)
@@ -354,11 +357,12 @@ class QualityManager(QObject):
             nodes_to_check += [machine_node, default_machine_node]
             for node in nodes_to_check:
                 if node and node.quality_type_map:
-                    # Only include variant qualities; skip non global qualities
-                    quality_node = list(node.quality_type_map.values())[0]
-                    is_global_quality = parseBool(quality_node.metadata.get("global_quality", False))
-                    if is_global_quality:
-                        continue
+                    if has_variant_materials:
+                        # Only include variant qualities; skip non global qualities
+                        quality_node = list(node.quality_type_map.values())[0]
+                        is_global_quality = parseBool(quality_node.metadata.get("global_quality", False))
+                        if is_global_quality:
+                            continue
 
                     for quality_type, quality_node in node.quality_type_map.items():
                         if quality_type not in quality_group_dict:
