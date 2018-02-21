@@ -1008,9 +1008,10 @@ class MachineManager(QObject):
 
     def activeMaterialsCompatible(self):
         # check material - variant compatibility
-        for position, extruder in self._global_container_stack.extruders.items():
-            if not extruder.material.getMetaDataEntry("compatible"):
-                return False
+        if Util.parseBool(self._global_container_stack.getMetaDataEntry("has_materials", False)):
+            for position, extruder in self._global_container_stack.extruders.items():
+                if not extruder.material.getMetaDataEntry("compatible"):
+                    return False
         return True
 
     ## Update current quality type and machine after setting material
