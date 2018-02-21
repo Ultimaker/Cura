@@ -30,10 +30,11 @@ class ExtruderManager(QObject):
     def __init__(self, parent = None):
         super().__init__(parent)
 
+        self._application = Application.getInstance()
+
         self._extruder_trains = {}  # Per machine, a dictionary of extruder container stack IDs. Only for separately defined extruders.
         self._active_extruder_index = -1  # Indicates the index of the active extruder stack. -1 means no active extruder stack
         self._selected_object_extruders = []
-        self._global_container_stack_definition_id = None
         self._addCurrentMachineExtruders()
 
         #Application.getInstance().globalContainerStackChanged.connect(self._globalContainerStackChanged)
@@ -365,10 +366,6 @@ class ExtruderManager(QObject):
         return result[:machine_extruder_count]
 
     def _globalContainerStackChanged(self) -> None:
-        global_container_stack = Application.getInstance().getGlobalContainerStack()
-        if global_container_stack and global_container_stack.getBottom() and global_container_stack.getBottom().getId() != self._global_container_stack_definition_id:
-            self._global_container_stack_definition_id = global_container_stack.getBottom().getId()
-
         # If the global container changed, the machine changed and might have extruders that were not registered yet
         self._addCurrentMachineExtruders()
 
@@ -376,7 +373,7 @@ class ExtruderManager(QObject):
 
     ##  Adds the extruders of the currently active machine.
     def _addCurrentMachineExtruders(self) -> None:
-        global_stack = Application.getInstance().getGlobalContainerStack()
+        global_stack = self._application.getGlobalContainerStack()
         extruders_changed = False
 
         if global_stack:
