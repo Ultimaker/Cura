@@ -252,8 +252,18 @@ Column
         {
             id: materialSelection
 
-            text: Cura.MachineManager.currentRootMaterialName[base.currentExtruderIndex]
-            tooltip: Cura.MachineManager.currentRootMaterialName[base.currentExtruderIndex]
+            property var currentRootMaterialName:
+            {
+                var materials = Cura.MachineManager.currentRootMaterialName;
+                var materialName = "";
+                if (base.currentExtruderIndex in materials) {
+                    materialName = materials[base.currentExtruderIndex];
+                }
+                return materialName;
+            }
+
+            text: currentRootMaterialName
+            tooltip: currentRootMaterialName
             visible: Cura.MachineManager.hasMaterials
             enabled: !extrudersList.visible || base.currentExtruderIndex  > -1
             height: UM.Theme.getSize("setting_control").height
