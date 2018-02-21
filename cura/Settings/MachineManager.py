@@ -308,6 +308,7 @@ class MachineManager(QObject):
         containers = container_registry.findContainerStacks(id = stack_id)
         if containers:
             global_stack = containers[0]
+            ExtruderManager.getInstance().setActiveExtruderIndex(0)  # Switch to first extruder
             Application.getInstance().setGlobalContainerStack(global_stack)
             self._global_container_stack = global_stack
             self.globalContainerChanged.emit()
