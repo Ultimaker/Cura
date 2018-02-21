@@ -48,6 +48,7 @@ class MachineManager(QObject):
         self._global_container_stack = None     # type: GlobalStack
 
         self._current_root_material_id = {}
+        self._current_root_material_name = {}
         self._current_quality_group = None
         self._current_quality_changes_group = None
 
@@ -445,15 +446,6 @@ class MachineManager(QObject):
 
         return ""
 
-    @pyqtProperty(str, notify = activeMaterialChanged)
-    def activeMaterialName(self) -> str:
-        if self._active_container_stack:
-            material = self._active_container_stack.material
-            if material:
-                return material.getName()
-
-        return ""
-
     @pyqtProperty("QVariantList", notify=activeVariantChanged)
     def activeVariantNames(self) -> List[str]:
         result = []
@@ -532,17 +524,6 @@ class MachineManager(QObject):
             return value
 
         return 0 # No quality profile.
-
-    @pyqtProperty(str, notify=activeQualityChanged)
-    def activeQualityName(self) -> str:
-        if self._active_container_stack and self._global_container_stack:
-            quality = self._global_container_stack.qualityChanges
-            if quality and not isinstance(quality, type(self._empty_quality_changes_container)):
-                return quality.getName()
-            quality = self._active_container_stack.quality
-            if quality:
-                return quality.getName()
-        return ""
 
     @pyqtProperty(str, notify=activeQualityChanged)
     def activeQualityId(self) -> str:
@@ -935,6 +916,15 @@ class MachineManager(QObject):
                 self._current_root_material_id[position] = self._global_container_stack.extruders[position].material.getMetaDataEntry("base_file")
         return self._current_root_material_id
 
+    @pyqtProperty("QVariant", notify = rootMaterialChanged)
+    def currentRootMaterialName(self):
+        # initial filling the current_root_material_name
+        for position in self._global_container_stack.extruders:
+            if position not in self._current_root_material_name:
+                material = self._global_container_stack.extruders[position].material
+                self._current_root_material_name[position] = material.getName()
+        return self._current_root_material_name
+
     def _setEmptyQuality(self):
         self._current_quality_group = None
         self._current_quality_changes_group = None
@@ -1015,8 +1005,10 @@ class MachineManager(QObject):
             self._global_container_stack.extruders[position].material = self._empty_material_container
         # The _current_root_material_id is used in the MaterialMenu to see which material is selected
         root_material_id = container_node.metadata["base_file"]
+        root_material_name = container_node.getContainer().getName()
         if root_material_id != self._current_root_material_id[position]:
             self._current_root_material_id[position] = root_material_id
+            self._current_root_material_name[position] = root_material_name
             self.rootMaterialChanged.emit()
 
     def activeMaterialsCompatible(self):

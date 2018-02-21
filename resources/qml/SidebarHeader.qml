@@ -252,8 +252,8 @@ Column
         {
             id: materialSelection
 
-            text: Cura.MachineManager.activeMaterialName
-            tooltip: Cura.MachineManager.activeMaterialName
+            text: Cura.MachineManager.currentRootMaterialName[base.currentExtruderIndex]
+            tooltip: Cura.MachineManager.currentRootMaterialName[base.currentExtruderIndex]
             visible: Cura.MachineManager.hasMaterials
             enabled: !extrudersList.visible || base.currentExtruderIndex  > -1
             height: UM.Theme.getSize("setting_control").height
