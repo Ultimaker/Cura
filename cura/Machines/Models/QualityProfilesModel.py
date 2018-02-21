@@ -48,10 +48,16 @@ class QualityProfilesModel(ListModel):
     def _update(self):
         Logger.log("d", "Updating quality profile model ...")
 
-        active_global_stack = Application.getInstance().getMachineManager()._global_container_stack
+        machine_manager = Application.getInstance().getMachineManager()
+        active_global_stack = machine_manager._global_container_stack
         if active_global_stack is None:
             self.setItems([])
             Logger.log("d", "No active GlobalStack, set quality profile model as empty.")
+            return
+
+        # Check for material compatibility
+        if not machine_manager.activeMaterialsCompatible():
+            self.setItems([])
             return
 
         quality_group_dict = self._quality_manager.getQualityGroups(active_global_stack)

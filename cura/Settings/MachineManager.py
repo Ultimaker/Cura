@@ -1018,6 +1018,13 @@ class MachineManager(QObject):
             self._current_root_material_id[position] = root_material_id
             self.rootMaterialChanged.emit()
 
+    def activeMaterialsCompatible(self):
+        # check material - variant compatibility
+        for position, extruder in self._global_container_stack.extruders.items():
+            if not extruder.material.getMetaDataEntry("compatible"):
+                return False
+        return True
+
     ## Update current quality type and machine after setting material
     def _updateQualityWithMaterial(self):
         current_quality = None
@@ -1026,6 +1033,11 @@ class MachineManager(QObject):
         quality_manager = Application.getInstance()._quality_manager
         candidate_quality_groups = quality_manager.getQualityGroups(self._global_container_stack)
         available_quality_types = {qt for qt, g in candidate_quality_groups.items() if g.is_available}
+
+        if not self.activeMaterialsCompatible:
+            Logger.log("d", "Material [%s] is not compatible, setting empty material." % str(extruder.material))
+            self._setEmptyQuality()
+            return
 
         if not available_quality_types:
             self._setEmptyQuality()
