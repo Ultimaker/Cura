@@ -123,6 +123,14 @@ class MachineManager(QObject):
         if containers:
             containers[0].nameChanged.connect(self._onMaterialNameChanged)
 
+        # NEW
+        self._material_manager = self._application._material_manager
+        self._material_manager.materialsUpdated.connect(self._onMaterialsUpdated)
+
+    def _onMaterialsUpdated(self):
+        # When the materials lookup table gets updated, it can mean that a material has its name changed, which should
+        # be reflected on the GUI. This signal emission makes sure that it happens.
+        self.rootMaterialChanged.emit()
 
     ### NEW
     activeQualityGroupChanged = pyqtSignal()
