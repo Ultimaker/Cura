@@ -49,8 +49,8 @@ class QualityProfilesModel(ListModel):
         Logger.log("d", "Updating quality profile model ...")
 
         machine_manager = Application.getInstance().getMachineManager()
-        active_global_stack = machine_manager._global_container_stack
-        if active_global_stack is None:
+        global_stack = machine_manager._global_container_stack
+        if global_stack is None:
             self.setItems([])
             Logger.log("d", "No active GlobalStack, set quality profile model as empty.")
             return
@@ -60,7 +60,7 @@ class QualityProfilesModel(ListModel):
             self.setItems([])
             return
 
-        quality_group_dict = self._quality_manager.getQualityGroups(active_global_stack)
+        quality_group_dict = self._quality_manager.getQualityGroups(global_stack)
 
         item_list = []
         for key in sorted(quality_group_dict):
@@ -83,14 +83,14 @@ class QualityProfilesModel(ListModel):
         self.setItems(item_list)
 
     def _fetchLayerHeight(self, quality_group: "QualityGroup"):
-        active_global_stack = Application.getInstance().getMachineManager()._global_container_stack
+        global_stack = Application.getInstance().getMachineManager()._global_container_stack
         if not self._layer_height_unit:
-            unit = active_global_stack.definition.getProperty("layer_height", "unit")
+            unit = global_stack.definition.getProperty("layer_height", "unit")
             if not unit:
                 unit = ""
             self._layer_height_unit = unit
 
-        default_layer_height = active_global_stack.definition.getProperty("layer_height", "value")
+        default_layer_height = global_stack.definition.getProperty("layer_height", "value")
 
         # Get layer_height from the quality profile for the GlobalStack
         container = quality_group.node_for_global.getContainer()
@@ -100,7 +100,7 @@ class QualityProfilesModel(ListModel):
             layer_height = str(container.getProperty("layer_height", "value"))
         else:
             # Look for layer_height in the GlobalStack from material -> definition
-            container = active_global_stack.definition
+            container = global_stack.definition
             if container.hasProperty("layer_height", "value"):
                 layer_height = container.getProperty("layer_height", "value")
         return str(layer_height)
