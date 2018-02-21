@@ -518,6 +518,9 @@ UM.MainWindow
 
             insertPage(4, catalog.i18nc("@title:tab", "Profiles"), Qt.resolvedUrl("Preferences/ProfilesPage.qml"));
 
+            // Remove plug-ins page because we will use the shiny new plugin browser:
+            removePage(5);
+
             //Force refresh
             setPage(0);
         }
@@ -626,17 +629,6 @@ UM.MainWindow
             preferences.visible = true;
             preferences.setPage(1);
             preferences.getCurrentItem().scrollToSection(source.key);
-        }
-    }
-
-    // show the installed plugins page in the preferences dialog
-    Connections
-    {
-        target: Cura.Actions.configurePlugins
-        onTriggered:
-        {
-            preferences.visible = true
-            preferences.setPage(5)
         }
     }
 
