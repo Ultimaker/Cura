@@ -259,10 +259,10 @@ class MachineManager(QObject):
         self.activeQualityChanged.emit()
         self.activeVariantChanged.emit()
         self.activeMaterialChanged.emit()
-        self._error_check_timer.start()
 
-    def _onProfilesModelChanged(self, *args) -> None:
-        self.__emitChangedSignals()
+        self.rootMaterialChanged.emit()
+
+        self._error_check_timer.start()
 
     def _onInstanceContainersChanged(self, container) -> None:
         self._instance_container_timer.start()
@@ -307,7 +307,11 @@ class MachineManager(QObject):
 
         containers = container_registry.findContainerStacks(id = stack_id)
         if containers:
-            Application.getInstance().setGlobalContainerStack(containers[0])
+            global_stack = containers[0]
+            Application.getInstance().setGlobalContainerStack(global_stack)
+            self._global_container_stack = global_stack
+            self.globalContainerChanged.emit()
+            self._onGlobalContainerChanged()
             ExtruderManager.getInstance()._globalContainerStackChanged()
             self._initMachineState(containers[0])
 
@@ -898,6 +902,7 @@ class MachineManager(QObject):
     def currentRootMaterialName(self):
         # initial filling the current_root_material_name
         if self._global_container_stack:
+            self._current_root_material_name = {}
             for position in self._global_container_stack.extruders:
                 if position not in self._current_root_material_name:
                     material = self._global_container_stack.extruders[position].material

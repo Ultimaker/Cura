@@ -265,7 +265,7 @@ Column
             text: currentRootMaterialName
             tooltip: currentRootMaterialName
             visible: Cura.MachineManager.hasMaterials
-            enabled: !extrudersList.visible || base.currentExtruderIndex  > -1
+            enabled: !extrudersList.visible || base.currentExtruderIndex > -1
             height: UM.Theme.getSize("setting_control").height
             width: Math.round(parent.width * 0.7) + UM.Theme.getSize("sidebar_margin").width
             anchors.right: parent.right
