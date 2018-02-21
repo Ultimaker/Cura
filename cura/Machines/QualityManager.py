@@ -354,6 +354,12 @@ class QualityManager(QObject):
             nodes_to_check += [machine_node, default_machine_node]
             for node in nodes_to_check:
                 if node and node.quality_type_map:
+                    # Only include variant qualities; skip non global qualities
+                    quality_node = list(node.quality_type_map.values())[0]
+                    is_global_quality = parseBool(quality_node.metadata.get("global_quality", False))
+                    if is_global_quality:
+                        continue
+
                     for quality_type, quality_node in node.quality_type_map.items():
                         if quality_type not in quality_group_dict:
                             quality_group = QualityGroup(quality_node.metadata["name"], quality_type)
