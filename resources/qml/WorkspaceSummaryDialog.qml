@@ -148,7 +148,7 @@ UM.Dialog
 
             Repeater
             {
-                model: Cura.MachineManager.activeMaterialNames
+                model: Cura.MachineManager.currentExtruderPositions
                 delegate: Column
                 {
                     Item // Spacer
@@ -158,7 +158,7 @@ UM.Dialog
                     }
                     Label
                     {
-                        text: catalog.i18nc("@action:label", "Extruder %1").arg(index+1)
+                        text: catalog.i18nc("@action:label", "Extruder %1").arg(modelData)
                     }
                     height: childrenRect.height
                     width: parent.width
@@ -173,7 +173,7 @@ UM.Dialog
                         }
                         Label
                         {
-                            text: Cura.MachineManager.activeVariantNames[index] + ", " + modelData
+                            text: Cura.MachineManager.activeVariantNames[modelData] + ", " + Cura.MachineManager.currentRootMaterialName[modelData]
                             width: (parent.width / 3) | 0
                         }
                     }

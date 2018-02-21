@@ -444,24 +444,6 @@ class MachineManager(QObject):
 
         return ""
 
-    @pyqtProperty("QVariantList", notify=activeVariantChanged)
-    def activeVariantNames(self) -> List[str]:
-        result = []
-
-        # Just return the variants in the extruder stack(s). For the variant in the global stack, use activeVariantBuildplateName
-        active_stacks = ExtruderManager.getInstance().getActiveExtruderStacks()
-        if active_stacks is not None:
-            for stack in active_stacks:
-                variant_container = stack.variant
-                if variant_container and variant_container != self._empty_variant_container:
-                    result.append(variant_container.getName())
-
-        return result
-
-    @pyqtProperty("QVariantList", notify = activeMaterialChanged)
-    def activeMaterialNames(self) -> List[str]:
-        return list(self._current_root_material_name.values())
-
     @pyqtProperty(str, notify=activeMaterialChanged)
     def activeMaterialId(self) -> str:
         if self._active_container_stack:
@@ -898,6 +880,12 @@ class MachineManager(QObject):
     #
     # New
     #
+
+    # We not fetch it from _current_root_material_id, but later we can get it from somewhere else
+    @pyqtProperty("QVariantList", notify = rootMaterialChanged)
+    def currentExtruderPositions(self):
+        return sorted(list(self._current_root_material_id.keys()))
+
     @pyqtProperty("QVariant", notify = rootMaterialChanged)
     def currentRootMaterialId(self):
         # initial filling the current_root_material_id
@@ -909,11 +897,28 @@ class MachineManager(QObject):
     @pyqtProperty("QVariant", notify = rootMaterialChanged)
     def currentRootMaterialName(self):
         # initial filling the current_root_material_name
-        for position in self._global_container_stack.extruders:
-            if position not in self._current_root_material_name:
-                material = self._global_container_stack.extruders[position].material
-                self._current_root_material_name[position] = material.getName()
+        if self._global_container_stack:
+            for position in self._global_container_stack.extruders:
+                if position not in self._current_root_material_name:
+                    material = self._global_container_stack.extruders[position].material
+                    self._current_root_material_name[position] = material.getName()
         return self._current_root_material_name
+
+    ##  Return the variant names in the extruder stack(s).
+    ##  For the variant in the global stack, use activeVariantBuildplateName
+    @pyqtProperty("QVariant", notify = activeVariantChanged)
+    def activeVariantNames(self):
+        result = {}
+
+        active_stacks = ExtruderManager.getInstance().getActiveExtruderStacks()
+        if active_stacks is not None:
+            for stack in active_stacks:
+                variant_container = stack.variant
+                position = stack.getMetaDataEntry("position")
+                if variant_container and variant_container != self._empty_variant_container:
+                    result[position] = variant_container.getName()
+
+        return result
 
     def _setEmptyQuality(self):
         self._current_quality_group = None
