@@ -250,8 +250,6 @@ class MachineManager(QObject):
 
         self._active_container_stack = ExtruderManager.getInstance().getActiveExtruderStack()
 
-        self._error_check_timer.start()
-
         if old_active_container_stack != self._active_container_stack:
             # Many methods and properties related to the active quality actually depend
             # on _active_container_stack. If it changes, then the properties change.
