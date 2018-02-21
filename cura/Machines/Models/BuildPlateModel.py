@@ -2,6 +2,7 @@ from PyQt5.QtCore import Qt
 
 from UM.Application import Application
 from UM.Qt.ListModel import ListModel
+from UM.Util import parseBool
 
 from cura.Machines.VariantManager import VariantType
 
@@ -27,6 +28,11 @@ class BuildPlateModel(ListModel):
     def _update(self):
         global_stack = self._machine_manager._global_container_stack
         if not global_stack:
+            self.setItems([])
+            return
+
+        has_variants = parseBool(global_stack.getMetaDataEntry("has_variant_buildplates", False))
+        if not has_variants:
             self.setItems([])
             return
 

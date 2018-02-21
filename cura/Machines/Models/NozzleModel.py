@@ -5,6 +5,7 @@ from PyQt5.QtCore import Qt
 
 from UM.Application import Application
 from UM.Qt.ListModel import ListModel
+from UM.Util import parseBool
 
 
 class NozzleModel(ListModel):
@@ -30,6 +31,11 @@ class NozzleModel(ListModel):
         variant_manager = Application.getInstance()._variant_manager
         active_global_stack = Application.getInstance().getMachineManager()._global_container_stack
         if active_global_stack is None:
+            self.setItems([])
+            return
+
+        has_variants = parseBool(active_global_stack.getMetaDataEntry("has_variants", False))
+        if not has_variants:
             self.setItems([])
             return
 
