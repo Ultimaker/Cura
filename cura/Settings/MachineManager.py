@@ -460,15 +460,7 @@ class MachineManager(QObject):
 
     @pyqtProperty("QVariantList", notify = activeMaterialChanged)
     def activeMaterialNames(self) -> List[str]:
-        result = []
-
-        active_stacks = ExtruderManager.getInstance().getActiveGlobalAndExtruderStacks()
-        if active_stacks is not None:
-            for stack in active_stacks:
-                material_container = stack.material
-                if material_container and material_container != self._empty_material_container:
-                    result.append(material_container.getName())
-        return result
+        return list(self._current_root_material_name.values())
 
     @pyqtProperty(str, notify=activeMaterialChanged)
     def activeMaterialId(self) -> str:
