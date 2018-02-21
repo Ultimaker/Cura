@@ -6,7 +6,8 @@
         "visible": true,
         "author": "ABAX 3d Technologies",
         "manufacturer": "ABAX 3d Technologies",
-        "file_formats": "text/x-gcode"
+        "file_formats": "text/x-gcode",
+        "has_machine_quality": true
     },
     "overrides": {
         "machine_start_gcode": {
