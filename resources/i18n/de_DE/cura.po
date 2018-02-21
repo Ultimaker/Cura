@@ -3485,6 +3485,11 @@ msgctxt "@label"
 msgid "SVG icons"
 msgstr "SVG-Symbole"
 
+#: /home/ruben/Projects/Cura/resources/qml/AboutDialog.qml:139
+msgctxt "@label"
+msgid "Linux cross-distribution application deployment"
+msgstr "Distributionsunabhängiges Format für Linux-Anwendungen"
+
 #: /home/ruben/Projects/Cura/resources/qml/Settings/SettingView.qml:41
 msgctxt "@label"
 msgid "Profile:"
