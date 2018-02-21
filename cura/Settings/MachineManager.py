@@ -1003,6 +1003,7 @@ class MachineManager(QObject):
 
     def _setVariantNode(self, position, container_node):
         self._global_container_stack.extruders[position].variant = container_node.getContainer()
+        self.activeVariantChanged.emit()
 
     def _setGlobalVariant(self, container_node):
         self._global_container_stack.variant = container_node.getContainer()
