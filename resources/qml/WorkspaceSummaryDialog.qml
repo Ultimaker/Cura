@@ -217,7 +217,7 @@ UM.Dialog
                 }
                 Label
                 {
-                    text: Cura.MachineManager.activeQualityName
+                    text: Cura.MachineManager.activeQualityOrQualityChangesName
                     width: (parent.width / 3) | 0
                 }
 
