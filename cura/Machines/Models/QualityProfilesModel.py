@@ -13,19 +13,17 @@ from cura.Machines.QualityManager import QualityGroup
 # QML Model for all built-in quality profiles.
 #
 class QualityProfilesModel(ListModel):
-    IdRole = Qt.UserRole + 1
-    NameRole = Qt.UserRole + 2
-    QualityTypeRole = Qt.UserRole + 3
-    LayerHeightRole = Qt.UserRole + 4
-    LayerHeightWithoutUnitRole = Qt.UserRole + 5
-    AvailableRole = Qt.UserRole + 6
-    QualityGroupRole = Qt.UserRole + 7
-    QualityChangesGroupRole = Qt.UserRole + 8
+    NameRole = Qt.UserRole + 1
+    QualityTypeRole = Qt.UserRole + 2
+    LayerHeightRole = Qt.UserRole + 3
+    LayerHeightWithoutUnitRole = Qt.UserRole + 4
+    AvailableRole = Qt.UserRole + 5
+    QualityGroupRole = Qt.UserRole + 6
+    QualityChangesGroupRole = Qt.UserRole + 7
 
     def __init__(self, parent = None):
         super().__init__(parent)
 
-        self.addRoleName(self.IdRole, "id")
         self.addRoleName(self.NameRole, "name")
         self.addRoleName(self.QualityTypeRole, "quality_type")
         self.addRoleName(self.LayerHeightRole, "layer_height")
