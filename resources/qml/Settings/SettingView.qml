@@ -57,7 +57,7 @@ Item
             height: UM.Theme.getSize("setting_control").height
             anchors.left: globalProfileLabel.right
             anchors.right: parent.right
-            tooltip: Cura.MachineManager.activeQualityName
+            tooltip: Cura.MachineManager.activeQualityOrQualityChangesName
             style: UM.Theme.styles.sidebar_header_button
             activeFocusOnPress: true
             menu: ProfileMenu { }
