@@ -66,23 +66,28 @@ class GenericMaterialsModel(BaseMaterialsModel):
         super().__init__(parent)
 
         from cura.CuraApplication import CuraApplication
-        machine_manager = CuraApplication.getInstance().getMachineManager()
-        extruder_manager = CuraApplication.getInstance().getExtruderManager()
-        material_manager = CuraApplication.getInstance()._material_manager
+        self._machine_manager = CuraApplication.getInstance().getMachineManager()
+        self._extruder_manager = CuraApplication.getInstance().getExtruderManager()
+        self._material_manager = CuraApplication.getInstance()._material_manager
 
-        machine_manager.globalContainerChanged.connect(self._update)
-        extruder_manager.activeExtruderChanged.connect(self._update)
-        material_manager.materialsUpdated.connect(self._update)
+        self._machine_manager.globalContainerChanged.connect(self._update)
+        self._extruder_manager.activeExtruderChanged.connect(self._update)
+        self._material_manager.materialsUpdated.connect(self._update)
 
         self._update()
 
     def _update(self):
-        item_list = []
+        global_stack = self._machine_manager.activeMachine
+        if global_stack is None:
+            self.setItems([])
+            return
+
         result_dict = getAvailableMaterials()
         if result_dict is None:
             self.setItems([])
             return
 
+        item_list = []
         for root_material_id, container_node in result_dict.items():
             metadata = container_node.metadata
             # Only add results for generic materials
@@ -128,21 +133,26 @@ class BrandMaterialsModel(ListModel):
         self.addRoleName(self.MaterialsRole, "materials")
 
         from cura.CuraApplication import CuraApplication
-        machine_manager = CuraApplication.getInstance().getMachineManager()
+        self._machine_manager = CuraApplication.getInstance().getMachineManager()
         extruder_manager = CuraApplication.getInstance().getExtruderManager()
         material_manager = CuraApplication.getInstance()._material_manager
 
-        machine_manager.globalContainerChanged.connect(self._update)
+        self._machine_manager.globalContainerChanged.connect(self._update)
         extruder_manager.activeExtruderChanged.connect(self._update)
         material_manager.materialsUpdated.connect(self._update)
 
     def _update(self):
-        brand_item_list = []
+        global_stack = self._machine_manager.activeMachine
+        if global_stack is None:
+            self.setItems([])
+            return
+
         result_dict = getAvailableMaterials()
         if result_dict is None:
             self.setItems([])
             return
 
+        brand_item_list = []
         brand_group_dict = {}
         for root_material_id, container_node in result_dict.items():
             metadata = container_node.metadata
@@ -231,17 +241,22 @@ class MaterialsModel(ListModel):
 
         from cura.CuraApplication import CuraApplication
         self._container_registry = CuraApplication.getInstance().getContainerRegistry()
-        machine_manager = CuraApplication.getInstance().getMachineManager()
+        self._machine_manager = CuraApplication.getInstance().getMachineManager()
         extruder_manager = CuraApplication.getInstance().getExtruderManager()
         material_manager = CuraApplication.getInstance()._material_manager
 
-        machine_manager.globalContainerChanged.connect(self._update)
+        self._machine_manager.globalContainerChanged.connect(self._update)
         extruder_manager.activeExtruderChanged.connect(self._update)
         material_manager.materialsUpdated.connect(self._update)
 
         self._update()
 
     def _update(self):
+        global_stack = self._machine_manager.activeMachine
+        if global_stack is None:
+            self.setItems([])
+            return
+
         result_dict = getAvailableMaterials()
         if result_dict is None:
             self.setItems([])
