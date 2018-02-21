@@ -367,7 +367,7 @@ Item
                             width: Math.floor((parent.width * 0.8))
                             text: model.name
                             elide: Text.ElideRight
-                            font.italic: model.name == Cura.MachineManager.activeQualityOrQualityChangesName  // TODO: make it easier
+                            font.italic: model.name == Cura.MachineManager.activeQualityOrQualityChangesName
                             color: parent.ListView.isCurrentItem ? palette.highlightedText : palette.text
                         }
                     }
@@ -380,15 +380,8 @@ Item
                         }
                     }
                 }
-
-                onCurrentIndexChanged:
-                {
-                    var model = qualitiesModel.getItem(currentIndex);
-                    // TODO
-                }
             }
         }
-
 
         // details panel on the right
         Item
