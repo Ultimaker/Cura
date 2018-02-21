@@ -364,7 +364,7 @@ Item
                         anchors.right: parent.right
                         Label
                         {
-                            width: Math.floor((parent.width * 0.3))
+                            width: Math.floor((parent.width * 0.8))
                             text: model.name
                             elide: Text.ElideRight
                             font.italic: model.name == Cura.MachineManager.activeQualityOrQualityChangesName  // TODO: make it easier
