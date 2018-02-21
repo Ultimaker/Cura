@@ -63,7 +63,7 @@ Item
             menu: ProfileMenu { }
 
             function generateActiveQualityText () {
-                var result = Cura.MachineManager.activeQualityName;
+                var result = Cura.MachineManager.activeQualityOrQualityChangesName;
 
                 if (Cura.MachineManager.isActiveQualitySupported) {
                     if (Cura.MachineManager.activeQualityLayerHeight > 0) {

@@ -1025,8 +1025,7 @@ class MachineManager(QObject):
         candidate_quality_groups = quality_manager.getQualityGroups(self._global_container_stack)
         available_quality_types = {qt for qt, g in candidate_quality_groups.items() if g.is_available}
 
-        if not self.activeMaterialsCompatible:
-            Logger.log("d", "Material [%s] is not compatible, setting empty material." % str(extruder.material))
+        if not self.activeMaterialsCompatible():
             self._setEmptyQuality()
             return
 
@@ -1139,7 +1138,7 @@ class MachineManager(QObject):
 
     @pyqtProperty(str, notify = activeQualityGroupChanged)
     def activeQualityOrQualityChangesName(self):
-        name = ""
+        name = self._empty_quality_container.getName()
         if self._current_quality_changes_group:
             name = self._current_quality_changes_group.name
         elif self._current_quality_group:
