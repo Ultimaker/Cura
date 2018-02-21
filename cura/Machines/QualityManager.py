@@ -5,6 +5,7 @@ from PyQt5.QtCore import QObject, QTimer
 
 from UM.Application import Application
 from UM.Logger import Logger
+from UM.Util import parseBool
 
 from cura.Machines.ContainerGroup import ContainerGroup
 from cura.Machines.ContainerNode import ContainerNode
@@ -294,6 +295,12 @@ class QualityManager(QObject):
         quality_group_dict = {}
         for node in nodes_to_check:
             if node and node.quality_type_map:
+                # Only include global qualities
+                quality_node = list(node.quality_type_map.values())[0]
+                is_global_quality = parseBool(quality_node.metadata.get("global_quality", False))
+                if not is_global_quality:
+                    continue
+
                 for quality_type, quality_node in node.quality_type_map.items():
                     quality_group = QualityGroup(quality_node.metadata["name"], quality_type)
                     quality_group.node_for_global = quality_node
