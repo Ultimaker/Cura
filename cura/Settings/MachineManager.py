@@ -1063,7 +1063,7 @@ class MachineManager(QObject):
             material_manager = Application.getInstance()._material_manager
             material_diameter = self._global_container_stack.getProperty("material_diameter", "value")
             candidate_materials = material_manager.getAvailableMaterials(
-                self._global_container_stack.getId(),
+                self._global_container_stack.definition.getId(),
                 current_variant_name,
                 material_diameter)
 
