@@ -129,7 +129,10 @@ class CuraStackBuilder:
 
         new_global_stack.quality = quality_group.node_for_global.getContainer()
         for position, extruder_stack in new_global_stack.extruders.items():
-            extruder_stack.quality = quality_group.nodes_for_extruders[position].getContainer()
+            if position in quality_group.nodes_for_extruders:
+                extruder_stack.quality = quality_group.nodes_for_extruders[position].getContainer()
+            else:
+                extruder_stack.quality = application.empty_quality_container
 
         # Register the global stack after the extruder stacks are created. This prevents the registry from adding another
         # extruder stack because the global stack didn't have one yet (which is enforced since Cura 3.1).
