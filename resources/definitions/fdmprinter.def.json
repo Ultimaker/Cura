@@ -1527,7 +1527,8 @@
                     "label": "Connect Infill Lines",
                     "description": "Connect the ends where the infill pattern meets the inner wall using a line which follows the shape of the inner wall. Enabling this setting can make the infill adhere to the walls better and reduce the effects of infill on the quality of vertical surfaces. Disabling this setting reduces the amount of material used.",
                     "type": "bool",
-                    "default_value": true,
+                    "default_value": false,
+                    "value": "infill_pattern == 'cross' || infill_pattern == 'cross_3d'",
                     "enabled": "infill_pattern == 'grid' || infill_pattern == 'triangles' || infill_pattern == 'trihexagon' || infill_pattern == 'cubic' || infill_pattern == 'tetrahedral' || infill_pattern == 'quarter_cubic' || infill_pattern == 'cross' || infill_pattern == 'cross_3d'",
                     "settable_per_mesh": true
                 },
