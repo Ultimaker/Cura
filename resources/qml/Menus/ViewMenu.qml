@@ -13,6 +13,8 @@ Menu
     id: base
     enabled: !PrintInformation.preSliced
 
+    property Cura.MultiBuildPlateModel multiBuildPlateModel: CuraApplication.getMultiBuildPlateModel()
+
     // main views
     Instantiator
     {
@@ -53,12 +55,12 @@ Menu
         visible: UM.Preferences.getValue("cura/use_multi_build_plate")
         Instantiator
         {
-            model: Cura.MultiBuildPlateModel
+            model: base.multiBuildPlateModel
             MenuItem {
-                text: Cura.MultiBuildPlateModel.getItem(index).name;
-                onTriggered: Cura.SceneController.setActiveBuildPlate(Cura.MultiBuildPlateModel.getItem(index).buildPlateNumber);
+                text: base.multiBuildPlateModel.getItem(index).name;
+                onTriggered: Cura.SceneController.setActiveBuildPlate(base.multiBuildPlateModel.getItem(index).buildPlateNumber);
                 checkable: true;
-                checked: Cura.MultiBuildPlateModel.getItem(index).buildPlateNumber == Cura.MultiBuildPlateModel.activeBuildPlate;
+                checked: base.multiBuildPlateModel.getItem(index).buildPlateNumber == base.multiBuildPlateModel.activeBuildPlate;
                 exclusiveGroup: buildPlateGroup;
                 visible: UM.Preferences.getValue("cura/use_multi_build_plate")
             }

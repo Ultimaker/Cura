@@ -12,17 +12,19 @@ Menu
     id: menu
     title: "Build plate"
 
+    property Cura.BuildPlateModel buildPlateModel: CuraApplication.getBuildPlateModel()
+
     Instantiator
     {
-        model: Cura.BuildPlateModel
+        model: menu.buildPlateModel
 
         MenuItem {
             text: model.name
             checkable: true
-            checked: model.name == Cura.MachineManager.globalVariantName // TODO
+            checked: model.name == Cura.MachineManager.globalVariantName
             exclusiveGroup: group
             onTriggered: {
-                Cura.MachineManager.setGlobalVariant(model.container_node); // TODO
+                Cura.MachineManager.setGlobalVariant(model.container_node);
             }
         }
 

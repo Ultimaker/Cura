@@ -2,6 +2,8 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 #Type hinting.
 from typing import Dict
+
+from PyQt5.QtCore import QObject
 from PyQt5.QtNetwork import QLocalServer
 from PyQt5.QtNetwork import QLocalSocket
 
@@ -859,11 +861,13 @@ class CuraApplication(QtApplication):
             self._object_manager = ObjectsModel.createObjectsModel()
         return self._object_manager
 
+    @pyqtSlot(result = QObject)
     def getMultiBuildPlateModel(self, *args):
         if self._multi_build_plate_model is None:
             self._multi_build_plate_model = MultiBuildPlateModel(self)
         return self._multi_build_plate_model
 
+    @pyqtSlot(result = QObject)
     def getBuildPlateModel(self, *args):
         if self._build_plate_model is None:
             self._build_plate_model = BuildPlateModel(self)
@@ -936,8 +940,8 @@ class CuraApplication(QtApplication):
         qmlRegisterSingletonType(MachineActionManager.MachineActionManager, "Cura", 1, 0, "MachineActionManager", self.getMachineActionManager)
 
         qmlRegisterSingletonType(ObjectsModel, "Cura", 1, 0, "ObjectsModel", self.getObjectsModel)
-        qmlRegisterSingletonType(BuildPlateModel, "Cura", 1, 0, "BuildPlateModel", self.getBuildPlateModel)
-        qmlRegisterSingletonType(MultiBuildPlateModel, "Cura", 1, 0, "MultiBuildPlateModel", self.getMultiBuildPlateModel)
+        qmlRegisterType(BuildPlateModel, "Cura", 1, 0, "BuildPlateModel")
+        qmlRegisterType(MultiBuildPlateModel, "Cura", 1, 0, "MultiBuildPlateModel")
         qmlRegisterType(InstanceContainer, "Cura", 1, 0, "InstanceContainer")
         qmlRegisterType(ExtrudersModel, "Cura", 1, 0, "ExtrudersModel")
 
