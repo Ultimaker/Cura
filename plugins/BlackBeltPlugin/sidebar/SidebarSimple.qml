@@ -935,6 +935,132 @@ Item
                 }
             }
 
+            Label
+            {
+                id: repetitionsLabel
+                visible: repetitionsCount.visible
+
+                text: catalog.i18nc("@label", "Number of copies")
+                font: UM.Theme.getFont("default")
+                color: UM.Theme.getColor("text")
+                elide: Text.ElideRight
+
+                anchors {
+                    left: parent.left
+                    leftMargin: UM.Theme.getSize("sidebar_margin").width
+                    right: infillCellLeft.right
+                    rightMargin: UM.Theme.getSize("sidebar_margin").width
+                    verticalCenter: repetitionsCount.verticalCenter
+                }
+            }
+
+            Rectangle
+            {
+                id: repetitionsCount
+                visible: blackbeltRepetitions.properties.value > 0
+
+                anchors.top:
+                {
+                    if (adhesionCheckBox.visible)
+                    {
+                        return adhesionCheckBox.bottom;
+                    }
+                    else if (enableSupportCheckBox.visible)
+                    {
+                        return supportExtruderCombobox.bottom;
+                    }
+                    return infillCellRight.bottom
+                }
+                anchors.topMargin: UM.Theme.getSize("sidebar_margin").height
+                anchors.left: infillCellRight.left
+
+                width: UM.Theme.getSize("setting_control").width
+                height: UM.Theme.getSize("setting_control").height
+
+                border.width: Math.round(UM.Theme.getSize("default_lining").width)
+                border.color:
+                {
+                    if(repetitionsCountMouseArea.containsMouse || repetitionsCountInput.activeFocus)
+                    {
+                        return UM.Theme.getColor("setting_control_border_highlight")
+                    }
+                    return UM.Theme.getColor("setting_control_border")
+                }
+
+                MouseArea
+                {
+                    id: repetitionsCountMouseArea
+                    anchors.fill: parent;
+                    hoverEnabled: true;
+                    cursorShape: Qt.IBeamCursor
+                }
+
+                TextInput
+                {
+                    id: repetitionsCountInput
+
+                    property string textBeforeEdit
+                    property bool textHasChanged
+                    onActiveFocusChanged:
+                    {
+                        if (activeFocus) {
+                            textHasChanged = false;
+                            textBeforeEdit = text;
+                            selectAll();
+                        }
+                    }
+
+                    Keys.onReleased:
+                    {
+                        if (text != textBeforeEdit)
+                        {
+                            textHasChanged = true;
+                        }
+                        if (textHasChanged && text != "" && parseInt(text) != 0)
+                        {
+                            blackbeltRepetitions.setPropertyValue("value", text)
+                        }
+                    }
+
+                    color: !enabled ? UM.Theme.getColor("setting_control_disabled_text") : UM.Theme.getColor("setting_control_text")
+                    font: UM.Theme.getFont("default")
+                    renderType: Text.NativeRendering
+                    anchors
+                    {
+                        left: parent.left
+                        leftMargin: Math.round(UM.Theme.getSize("setting_unit_margin").width)
+                        right: parent.right
+                        rightMargin: Math.round(UM.Theme.getSize("setting_unit_margin").width)
+                        verticalCenter: parent.verticalCenter
+                    }
+
+                    selectByMouse: true;
+
+                    maximumLength: 3
+                    clip: true  //Hide any text that exceeds the width of the text box.
+
+                    validator: RegExpValidator { regExp: /^[1-9][0-9]*$/ }
+
+                    Binding
+                    {
+                        target: repetitionsCountInput
+                        property: "text"
+                        value: blackbeltRepetitions.properties.value;
+                        when: !repetitionsCountInput.activeFocus
+                    }
+                }
+            }
+
+            UM.SettingPropertyProvider
+            {
+                id: blackbeltRepetitions
+                containerStackId: Cura.MachineManager.activeMachineId
+                key: "blackbelt_repetitions"
+                watchedProperties: [ "value" ]
+                storeIndex: 0
+            }
+
+
             ListModel
             {
                 id: extruderModel
@@ -948,31 +1074,6 @@ Item
                 onModelChanged: populateExtruderModel()
             }
 
-            Item
-            {
-                id: tipsCell
-                anchors.top: adhesionCheckBox.visible ? adhesionCheckBox.bottom : (enableSupportCheckBox.visible ? supportExtruderCombobox.bottom : infillCellRight.bottom)
-                anchors.topMargin: Math.round(UM.Theme.getSize("sidebar_margin").height * 2)
-                anchors.left: parent.left
-                width: parent.width
-                height: tipsText.contentHeight * tipsText.lineCount
-
-                Label
-                {
-                    id: tipsText
-                    anchors.left: parent.left
-                    anchors.leftMargin: UM.Theme.getSize("sidebar_margin").width
-                    anchors.right: parent.right
-                    anchors.rightMargin: UM.Theme.getSize("sidebar_margin").width
-                    anchors.top: parent.top
-                    wrapMode: Text.WordWrap
-                    text: catalog.i18nc("@label", "Need help improving your prints?<br>Read the <a href='%1'>Ultimaker Troubleshooting Guides</a>").arg("https://ultimaker.com/en/troubleshooting")
-                    font: UM.Theme.getFont("default");
-                    color: UM.Theme.getColor("text");
-                    linkColor: UM.Theme.getColor("text_link")
-                    onLinkActivated: Qt.openUrlExternally(link)
-                }
-            }
 
             UM.SettingPropertyProvider
             {
