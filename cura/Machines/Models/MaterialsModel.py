@@ -287,5 +287,5 @@ class MaterialsModel(ListModel):
 
             material_list.append(item)
 
-        material_list = sorted(material_list, key = lambda k: (k["brand"], k["name"]))
+        material_list = sorted(material_list, key = lambda k: (k["brand"].lower(), k["name"]))
         self.setItems(material_list)
