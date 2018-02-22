@@ -36,8 +36,8 @@ Tab
                     anchors.leftMargin: UM.Theme.getSize("default_margin").width
                     anchors.right: parent.right
                     text: (styleData.value.substr(0,1) == "=") ? catalog.i18nc("@info:status", "Calculated") : styleData.value
-                    font.strikeout: styleData.column == 1 && setting.user_value != "" // TODO && quality == Cura.MachineManager.globalQualityId
-                    font.italic: setting.profile_value_source == "quality_changes" || (setting.user_value != "")  // TODO: (setting.user_value != "" && quality == Cura.MachineManager.globalQualityId)
+                    font.strikeout: styleData.column == 1 && setting.user_value != "" && qualityItem.name == Cura.MachineManager.activeQualityOrQualityChangesName
+                    font.italic: setting.profile_value_source == "quality_changes" || (setting.user_value != "" && qualityItem.name == Cura.MachineManager.activeQualityOrQualityChangesName)
                     opacity: font.strikeout ? 0.5 : 1
                     color: styleData.textColor
                     elide: Text.ElideRight
@@ -63,7 +63,7 @@ Tab
         {
             role: "user_value"
             title: catalog.i18nc("@title:column", "Current");
-            visible: true  // TODO quality == Cura.MachineManager.globalQualityId
+            visible: qualityItem.name == Cura.MachineManager.activeQualityOrQualityChangesName
             width: (parent.width * 0.18) | 0
             delegate: itemDelegate
         }

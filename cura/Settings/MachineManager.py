@@ -527,18 +527,7 @@ class MachineManager(QObject):
                     return quality_changes.getId()
         return ""
 
-    @pyqtProperty(str, notify=activeQualityChanged)
-    def globalQualityId(self) -> str:
-        if self._global_container_stack:
-            quality = self._global_container_stack.qualityChanges
-            if quality and not isinstance(quality, type(self._empty_quality_changes_container)):
-                return quality.getId()
-            quality = self._global_container_stack.quality
-            if quality:
-                return quality.getId()
-        return ""
-
-    @pyqtProperty(str, notify=activeVariantChanged)
+    @pyqtProperty(str, notify = activeVariantChanged)
     def globalVariantName(self) -> str:
         if self._global_container_stack:
             variant = self._global_container_stack.variant
@@ -546,21 +535,21 @@ class MachineManager(QObject):
                 return variant.getName()
         return ""
 
-    @pyqtProperty(str, notify = activeQualityChanged)
+    @pyqtProperty(str, notify = activeQualityGroupChanged)
     def activeQualityType(self) -> str:
+        quality_type = ""
         if self._active_container_stack:
-            quality = self._active_container_stack.quality
-            if quality:
-                return quality.getMetaDataEntry("quality_type")
-        return ""
+            if self._current_quality_group:
+                quality_type = self._current_quality_group.quality_type
+        return quality_type
 
-    @pyqtProperty(bool, notify = activeQualityChanged)
+    @pyqtProperty(bool, notify = activeQualityGroupChanged)
     def isActiveQualitySupported(self) -> bool:
-        if self._active_container_stack:
-            quality = self._active_container_stack.quality
-            if quality:
-                return Util.parseBool(quality.getMetaDataEntry("supported", True))
-        return False
+        is_supported = False
+        if self._global_container_stack:
+            if self._current_quality_group:
+                is_supported = self._current_quality_group.is_available
+        return is_supported
 
     ##  Returns whether there is anything unsupported in the current set-up.
     #
