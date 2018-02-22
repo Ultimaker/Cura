@@ -388,18 +388,9 @@ Item
                 materialProperties.description = currentItem.description ? currentItem.description : "";
                 materialProperties.adhesion_info = currentItem.adhesion_info ? currentItem.adhesion_info : "";
 
-                if(currentItem.properties != undefined && currentItem.properties != null)
-                {
-                    materialProperties.density = currentItem.density ? currentItem.density : 0.0;
-                    materialProperties.diameter = currentItem.diameter ? currentItem.diameter : 0.0;
-                    materialProperties.approximate_diameter = currentItem.approximate_diameter ? currentItem.approximate_diameter : "0";
-                }
-                else
-                {
-                    materialProperties.density = 0.0;
-                    materialProperties.diameter = 0.0;
-                    materialProperties.approximate_diameter = "0";
-                }
+                materialProperties.density = currentItem.density ? currentItem.density : 0.0;
+                materialProperties.diameter = currentItem.diameter ? currentItem.diameter : 0.0;
+                materialProperties.approximate_diameter = currentItem.approximate_diameter ? currentItem.approximate_diameter : "0";
             }
 
             Item
