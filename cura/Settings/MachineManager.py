@@ -290,21 +290,21 @@ class MachineManager(QObject):
             material_dict[position] = extruder.material.getMetaDataEntry("base_file")
         self._current_root_material_id = material_dict
         global_quality = global_stack.quality
-        global_quality_changes = global_stack.qualityChanges
-
-        quality_groups = self._application._quality_manager.getQualityGroups(global_stack)
         quality_type = global_quality.getMetaDataEntry("quality_type")
-        if not quality_type in quality_groups:
-            Logger.log("w", "Quality type [%s] not found in available qualities [%s]", quality_type, str(quality_groups.values()))
-            return
-        new_quality_group = quality_groups[quality_type]
-        self._setQualityGroup(new_quality_group)
+        global_quality_changes = global_stack.qualityChanges
 
         if global_quality_changes.getId() != "empty_quality_changes":
             quality_changes_groups = self._application._quality_manager.getQualityChangesGroups(global_stack)
             if quality_type in quality_changes_groups:
                 new_quality_changes_group = quality_changes_groups[quality_type]
                 self._setQualityChangesGroup(new_quality_changes_group)
+        else:
+            quality_groups = self._application._quality_manager.getQualityGroups(global_stack)
+            if quality_type not in quality_groups:
+                Logger.log("w", "Quality type [%s] not found in available qualities [%s]", quality_type, str(quality_groups.values()))
+                return
+            new_quality_group = quality_groups[quality_type]
+            self._setQualityGroup(new_quality_group)
 
     @pyqtSlot(str)
     def setActiveMachine(self, stack_id: str) -> None:
