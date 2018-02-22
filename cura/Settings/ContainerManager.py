@@ -404,24 +404,17 @@ class ContainerManager(QObject):
         for node in quality_changes_group.getAllNodes():
             self._container_registry.removeContainer(node.metadata["id"])
 
-    ##  Rename a set of quality changes containers.
     #
-    #   This will search for quality_changes containers matching the supplied name and rename them.
-    #   Note that if the machine specifies that qualities should be filtered by machine and/or material
-    #   only the containers related to the active machine/material are renamed.
+    # Rename a set of quality changes containers. Returns the new name.
     #
-    #   \param quality_name The name of the quality changes containers to rename.
-    #   \param new_name The new name of the quality changes.
-    #
-    #   \return True if successful, False if not.
-    @pyqtSlot(QObject, str)
-    def renameQualityChangesGroup(self, quality_changes_group, new_name):
+    @pyqtSlot(QObject, str, result = str)
+    def renameQualityChangesGroup(self, quality_changes_group, new_name) -> str:
         Logger.log("i", "Renaming QualityChangesGroup[%s] to [%s]", quality_changes_group.name, new_name)
         self._machine_manager.blurSettings.emit()
 
         if new_name == quality_changes_group.name:
             Logger.log("i", "QualityChangesGroup name [%s] unchanged.", quality_changes_group.name)
-            return
+            return new_name
 
         new_name = self._container_registry.uniqueName(new_name)
         for node in quality_changes_group.getAllNodes():
@@ -429,6 +422,8 @@ class ContainerManager(QObject):
 
         self._machine_manager.activeQualityChanged.emit()
         self._machine_manager.activeQualityGroupChanged.emit()
+
+        return new_name
 
     @pyqtSlot(str, "QVariantMap")
     def duplicateQualityChanges(self, quality_changes_name, quality_model_item):

@@ -171,32 +171,46 @@ Item
         object: "<new name>"
         onAccepted:
         {
-            base.newQualityChangesNameToSwitchTo = newName;  // We want to switch to the new profile once it's created
+            base.newQualityNameToSelect = newName;  // We want to switch to the new profile once it's created
+            base.toActivateNewQuality = true;
             Cura.ContainerManager.createQualityChanges(newName);
         }
     }
 
-    property string newQualityChangesNameToSwitchTo: ""
+    property string newQualityNameToSelect: ""
+    property bool toActivateNewQuality: false
 
-    // This connection makes sure that we will switch to the new
+    // This connection makes sure that we will switch to the correct quality after the model gets updated
     Connections
     {
         target: qualitiesModel
         onItemsChanged: {
-            var currentItemName = base.currentItem == null ? "" : base.currentItem.name;
+            var toSelectItemName = base.currentItem == null ? "" : base.currentItem.name;
+            if (newQualityNameToSelect != "") {
+                toSelectItemName = newQualityNameToSelect;
+            }
 
-            if (base.newQualityChangesNameToSwitchTo != "") {
+            var newIdx = -1;  // Default to nothing if nothing can be found
+            if (toSelectItemName != "") {
+                // Select the required quality name if given
                 for (var idx = 0; idx < qualitiesModel.rowCount(); ++idx) {
                     var item = qualitiesModel.getItem(idx);
-                    if (item.name == base.newQualityChangesNameToSwitchTo) {
+                    if (item.name == toSelectItemName) {
                         // Switch to the newly created profile if needed
-                        qualityListView.currentIndex = idx;
-                        Cura.MachineManager.setQualityChangesGroup(item.quality_changes_group);
-                        base.newQualityChangesNameToSwitchTo = "";
+                        newIdx = idx;
+                        if (base.toActivateNewQuality) {
+                            // Activate this custom quality if required
+                            Cura.MachineManager.setQualityChangesGroup(item.quality_changes_group);
+                        }
                         break;
                     }
                 }
             }
+            qualityListView.currentIndex = newIdx;
+
+            // Reset states
+            base.newQualityNameToSelect = "";
+            base.toActivateNewQuality = false;
         }
     }
 
@@ -209,7 +223,6 @@ Item
         onAccepted:
         {
             Cura.ContainerManager.duplicateQualityChanges(newName, base.currentItem);
-            qualityListView.currentIndex = -1;  // TODO: Reset selection.
         }
     }
 
@@ -240,8 +253,8 @@ Item
         object: "<new name>"
         onAccepted:
         {
-            Cura.ContainerManager.renameQualityChangesGroup(base.currentItem.quality_changes_group, newName);
-            qualityListView.currentIndex = -1;  // TODO: Reset selection.
+            var actualNewName = Cura.ContainerManager.renameQualityChangesGroup(base.currentItem.quality_changes_group, newName);
+            base.newQualityNameToSelect = actualNewName;  // Select the new name after the model gets updated
         }
     }
 
