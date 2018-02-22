@@ -1012,7 +1012,7 @@ class MachineManager(QObject):
             self._updateMaterialWithVariant(position)
             self._updateQualityWithMaterial()
 
-    @pyqtSlot("QVariant")
+    @pyqtSlot(QObject)
     def setQualityGroup(self, quality_group):
         self.blurSettings.emit()
         with postponeSignals(*self._getContainerChangedSignals(), compress = CompressTechnique.CompressPerParameterValue):
@@ -1022,17 +1022,17 @@ class MachineManager(QObject):
         if self.hasUserSettings and Preferences.getInstance().getValue("cura/active_mode") == 1:
             Application.getInstance().discardOrKeepProfileChanges()
 
-    @pyqtProperty("QVariant", fset = setQualityGroup, notify = activeQualityGroupChanged)
+    @pyqtProperty(QObject, fset = setQualityGroup, notify = activeQualityGroupChanged)
     def activeQualityGroup(self):
         return self._current_quality_group
 
-    @pyqtSlot("QVariant")
+    @pyqtSlot(QObject)
     def setQualityChangesGroup(self, quality_changes_group):
         self.blurSettings.emit()
         with postponeSignals(*self._getContainerChangedSignals(), compress = CompressTechnique.CompressPerParameterValue):
             self._setQualityChangesGroup(quality_changes_group)
 
-    @pyqtProperty("QVariant", fset = setQualityChangesGroup, notify = activeQualityChangesGroupChanged)
+    @pyqtProperty(QObject, fset = setQualityChangesGroup, notify = activeQualityChangesGroupChanged)
     def activeQualityChangesGroup(self):
         return self._current_quality_changes_group
 
