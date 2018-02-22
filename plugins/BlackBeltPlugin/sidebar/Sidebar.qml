@@ -298,30 +298,6 @@ Rectangle
         }
     }
 
-    Loader
-    {
-        anchors.bottom: footerSeparator.top
-        anchors.top: monitoringPrint ? machineSelection.bottom : headerSeparator.bottom
-        anchors.left: base.left
-        anchors.right: base.right
-        source:
-        {
-            if(controlItem.sourceComponent == null)
-            {
-                if(monitoringPrint)
-                {
-                    return "PrintMonitor.qml"
-                } else
-                {
-                    return "SidebarContents.qml"
-                }
-            }
-            else
-            {
-                return ""
-            }
-        }
-    }
 
     Rectangle
     {
