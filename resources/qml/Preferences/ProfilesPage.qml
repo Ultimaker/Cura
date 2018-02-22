@@ -171,8 +171,36 @@ Item
         object: "<new name>"
         onAccepted:
         {
+            base.newQualityChangesNameToSwitchTo = newName;  // We want to switch to the new profile once it's created
             Cura.ContainerManager.createQualityChanges(newName);
-            qualityListView.currentIndex = -1;  // TODO: Reset selection.
+        }
+    }
+
+    property string newQualityChangesNameToSwitchTo: ""
+
+    // This connection makes sure that we will switch to the new
+    Connections
+    {
+        target: qualitiesModel
+        onItemsChanged: {
+            var currentItemName = base.currentItem == null ? "" : base.currentItem.name;
+
+            for (var idx = 0; idx < qualitiesModel.rowCount(); ++idx) {
+                var item = qualitiesModel.getItem(idx);
+                if (base.newQualityChangesNameToSwitchTo != "") {
+                    if (item.name == base.newQualityChangesNameToSwitchTo) {
+                        // Switch to the newly created profile if needed
+                        qualityListView.currentIndex = idx;
+                        if (item.is_read_only) {
+                            Cura.MachineManager.setQualityGroup(item.quality_group);
+                        } else {
+                            Cura.MachineManager.setQualityChangesGroup(item.quality_changes_group);
+                        }
+                        base.newQualityChangesNameToSwitchTo = "";
+                    }
+                    break;
+                }
+            }
         }
     }
 

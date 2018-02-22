@@ -333,7 +333,7 @@ class ContainerManager(QObject):
 
             self._performMerge(quality_changes, stack.getTop())
 
-        self._machine_manager.activeQualityChanged.emit()
+        self._machine_manager.activeQualityChangesGroupChanged.emit()
 
         return True
 
@@ -394,12 +394,6 @@ class ContainerManager(QObject):
             self._performMerge(new_changes, user_container)
 
             self._container_registry.addContainer(new_changes)
-            #stack.replaceContainer(stack.getContainerIndex(quality_changes_container), new_changes)
-
-        #self._machine_manager.activeQualityChanged.emit()
-
-        #self._machine_manager.activeQualityGroupChanged.emit()
-        #self._machine_manager.activeQualityChangesGroupChanged.emit()
 
     #
     # Remove the given quality changes group

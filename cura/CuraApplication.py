@@ -240,8 +240,7 @@ class CuraApplication(QtApplication):
         if kwargs["parsed_command_line"].get("trigger_early_crash", False):
             assert not "This crash is triggered by the trigger_early_crash command line argument."
 
-        # new stuff
-        self._variant_manager = VariantManager(ContainerRegistry.getInstance())
+        self._variant_manager = None
 
         self.default_theme = "cura-light"
 
@@ -723,9 +722,6 @@ class CuraApplication(QtApplication):
                 return False
         return True
 
-    def getVariantManager(self):
-        return self._variant_manager
-
     def preRun(self):
         # Last check for unknown commandline arguments
         parser = self.getCommandlineParser()
@@ -743,14 +739,15 @@ class CuraApplication(QtApplication):
         self.preRun()
 
         container_registry = ContainerRegistry.getInstance()
+        self._variant_manager = VariantManager(container_registry)
         self._variant_manager.initialize()
 
         from cura.Machines.MaterialManager import MaterialManager
-        self._material_manager = MaterialManager(container_registry)
+        self._material_manager = MaterialManager(container_registry, parent = self)
         self._material_manager.initialize()
 
         from cura.Machines.QualityManager import QualityManager
-        self._quality_manager = QualityManager(container_registry)
+        self._quality_manager = QualityManager(container_registry, parent = self)
         self._quality_manager.initialize()
 
         self.getMachineManager()  # ensure creation of machine manager
@@ -855,6 +852,16 @@ class CuraApplication(QtApplication):
         if self._extruder_manager is None:
             self._extruder_manager = ExtruderManager.createExtruderManager()
         return self._extruder_manager
+
+    def getVariantManager(self, *args):
+        return self._variant_manager
+
+    def getMaterialManager(self, *args):
+        return self._material_manager
+
+    @pyqtSlot(result = QObject)
+    def getQualityManager(self, *args):
+        return self._quality_manager
 
     def getObjectsModel(self, *args):
         if self._object_manager is None:
