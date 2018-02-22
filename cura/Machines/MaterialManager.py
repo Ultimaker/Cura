@@ -314,7 +314,8 @@ class MaterialManager(QObject):
     def getFallbackMaterialId(self, material_type: str) -> str:
         # For safety
         if material_type not in self._fallback_materials_map:
-            raise RuntimeError("Material type [%s] is not in the fallback materials table." % material_type)
+            Logger.log("w", "The material type [%s] does not have a fallback material" % material_type)
+            return None
         fallback_material = self._fallback_materials_map[material_type]
         if fallback_material:
             return self.getRootMaterialIDWithoutDiameter(fallback_material["id"])

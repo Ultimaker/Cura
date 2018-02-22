@@ -350,6 +350,7 @@ Item
 
                 onCurrentIndexChanged:
                 {
+                    forceActiveFocus();  // causes the changed fields to be saved
                     var model = materialsModel.getItem(currentIndex);
                     materialDetailsView.containerId = model.container_id;
                     materialDetailsView.currentMaterialNode = model.container_node;
