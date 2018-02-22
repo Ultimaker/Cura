@@ -151,12 +151,7 @@ class GCodeWriter(MeshWriter):
                 flat_extruder_quality.addMetaDataEntry("quality_type", extruder.quality.getMetaDataEntry("quality_type", "normal"))
 
             # Change the default defintion
-            default_extruder_definition = "fdmextruder"
-            if parseBool(stack.getMetaDataEntry("has_machine_quality", "False")):
-                default_extruder_definition = extruder.getMetaDataEntry("quality_definition")
-                if not default_extruder_definition:
-                    default_extruder_definition = extruder.definition.getId()
-            flat_extruder_quality.setMetaDataEntry("definition", default_extruder_definition)
+            flat_extruder_quality.setMetaDataEntry("definition", default_machine_definition)
 
             extruder_serialized = flat_extruder_quality.serialize()
             data.setdefault("extruder_quality", []).append(extruder_serialized)
