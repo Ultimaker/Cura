@@ -496,7 +496,7 @@ class MachineManager(QObject):
     #
     #   \return The layer height of the currently active quality profile. If
     #   there is no quality profile, this returns 0.
-    @pyqtProperty(float, notify=activeQualityChanged)
+    @pyqtProperty(float, notify = activeQualityGroupChanged)
     def activeQualityLayerHeight(self) -> float:
         if not self._global_container_stack:
             return 0
@@ -515,22 +515,6 @@ class MachineManager(QObject):
             return value
 
         return 0 # No quality profile.
-
-    @pyqtProperty(str, notify=activeQualityChanged)
-    def activeQualityId(self) -> str:
-        if self._active_container_stack:
-            quality = self._active_container_stack.quality
-            if isinstance(quality, type(self._empty_quality_container)):
-                return ""
-            quality_changes = self._active_container_stack.qualityChanges
-            if quality and quality_changes:
-                if isinstance(quality_changes, type(self._empty_quality_changes_container)):
-                    # It's a built-in profile
-                    return quality.getId()
-                else:
-                    # Custom profile
-                    return quality_changes.getId()
-        return ""
 
     @pyqtProperty(str, notify = activeVariantChanged)
     def globalVariantName(self) -> str:
@@ -939,6 +923,7 @@ class MachineManager(QObject):
             extruder.qualityChanges = self._empty_quality_changes_container
 
         self.activeQualityGroupChanged.emit()
+        self.activeQualityChangesGroupChanged.emit()
 
     def _setQualityGroup(self, quality_group, empty_quality_changes = True):
         self._current_quality_group = quality_group
