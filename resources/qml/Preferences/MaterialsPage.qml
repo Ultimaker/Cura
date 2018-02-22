@@ -77,7 +77,7 @@ Item
             iconName: "list-add"
             onClicked: {
                 forceActiveFocus();
-                Cura.ContainerManager.createMaterial();
+                base.newRootMaterialIdToSwitchTo = Cura.ContainerManager.createMaterial();
             }
         }
 
@@ -88,6 +88,7 @@ Item
             enabled: base.hasCurrentItem
             onClicked: {
                 forceActiveFocus();
+                base.newRootMaterialIdToSwitchTo = base.currentItem.root_material_id;
                 Cura.ContainerManager.duplicateMaterial(base.currentItem.container_node);
             }
         }
@@ -123,6 +124,31 @@ Item
                 exportMaterialDialog.open();
             }
             enabled: currentItem != null
+        }
+    }
+
+    property string newRootMaterialIdToSwitchTo: ""
+
+    // This connection makes sure that we will switch to the new
+    Connections
+    {
+        target: materialsModel
+        onItemsChanged: {
+            var currentItemName = base.currentItem == null ? "" : base.currentItem.name;
+            var position = Cura.ExtruderManager.activeExtruderIndex;
+
+            if (base.newRootMaterialIdToSwitchTo != "") {
+                for (var idx = 0; idx < materialsModel.rowCount(); ++idx) {
+                    var item = materialsModel.getItem(idx);
+                    if (item.root_material_id == base.newRootMaterialIdToSwitchTo) {
+                        // Switch to the newly created profile if needed
+                        materialListView.currentIndex = idx;
+                        Cura.MachineManager.setMaterial(position, item.container_node);
+                        base.newRootMaterialIdToSwitchTo = "";
+                        break;
+                    }
+                }
+            }
         }
     }
 
