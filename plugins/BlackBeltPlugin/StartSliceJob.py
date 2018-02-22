@@ -261,9 +261,9 @@ class StartSliceJob(Job):
                         extruder_stack.setProperty(key, "value", current_value * math.sin(gantry_angle))
                 self._buildExtruderMessage(extruder_stack)
 
+            belt_layer_mesh_data = {}
             if gantry_angle: # not 0 or None
                 # Add a modifier mesh to all printable meshes touching the belt
-                belt_layer_mesh_data = {}
                 for group in object_groups:
                     added_meshes = []
                     for object in group:
