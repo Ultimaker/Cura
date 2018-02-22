@@ -955,8 +955,6 @@ class CuraApplication(QtApplication):
         qmlRegisterType(GenericMaterialsModel, "Cura", 1, 0, "GenericMaterialsModel")
         qmlRegisterType(BrandMaterialsModel, "Cura", 1, 0, "BrandMaterialsModel")
         qmlRegisterType(MaterialsModel, "Cura", 1, 0, "MaterialsModel")
-
-        # TODO: make this singleton?
         qmlRegisterType(QualityManagementModel, "Cura", 1, 0, "QualityManagementModel")
 
         qmlRegisterSingletonType(QualityProfilesModel, "Cura", 1, 0, "QualityProfilesModel", self.getQualityProfileModel)
