@@ -185,20 +185,16 @@ Item
         onItemsChanged: {
             var currentItemName = base.currentItem == null ? "" : base.currentItem.name;
 
-            for (var idx = 0; idx < qualitiesModel.rowCount(); ++idx) {
-                var item = qualitiesModel.getItem(idx);
-                if (base.newQualityChangesNameToSwitchTo != "") {
+            if (base.newQualityChangesNameToSwitchTo != "") {
+                for (var idx = 0; idx < qualitiesModel.rowCount(); ++idx) {
+                    var item = qualitiesModel.getItem(idx);
                     if (item.name == base.newQualityChangesNameToSwitchTo) {
                         // Switch to the newly created profile if needed
                         qualityListView.currentIndex = idx;
-                        if (item.is_read_only) {
-                            Cura.MachineManager.setQualityGroup(item.quality_group);
-                        } else {
-                            Cura.MachineManager.setQualityChangesGroup(item.quality_changes_group);
-                        }
+                        Cura.MachineManager.setQualityChangesGroup(item.quality_changes_group);
                         base.newQualityChangesNameToSwitchTo = "";
+                        break;
                     }
-                    break;
                 }
             }
         }
