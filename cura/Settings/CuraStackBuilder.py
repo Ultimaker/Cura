@@ -7,6 +7,7 @@ from UM.Logger import Logger
 from UM.Settings.Interfaces import DefinitionContainerInterface
 from UM.Settings.InstanceContainer import InstanceContainer
 from UM.Settings.ContainerRegistry import ContainerRegistry
+from UM.Settings.SettingFunction import SettingFunction
 from UM.Util import parseBool
 
 from cura.Machines.VariantManager import VariantType
@@ -50,7 +51,6 @@ class CuraStackBuilder:
                                        (definition_id, global_variant_name))
                 global_variant_container = variant_node.getContainer()
 
-
         # get variant container for extruders
         extruder_variant_container = application.empty_variant_container
         # Only look for the preferred variant if this machine has variants
@@ -64,21 +64,6 @@ class CuraStackBuilder:
                     raise RuntimeError("Cannot find extruder variant with definition [%s] and variant name [%s]" %
                                        (definition_id, extruder_variant_name))
                 extruder_variant_container = variant_node.getContainer()
-
-        # get material container for extruders
-        material_container = application.empty_material_container
-        # Only look for the preferred material if this machine has materials
-        if parseBool(machine_definition.getMetaDataEntry("has_materials", False)):
-            material_diameter = machine_definition.getProperty("material_diameter", "value")
-            approximate_material_diameter = str(round(material_diameter))
-            root_material_id = machine_definition.getMetaDataEntry("preferred_material")
-            root_material_id = material_manager.getRootMaterialIDForDiameter(root_material_id, approximate_material_diameter)
-            material_node = material_manager.getMaterialNode(definition_id, extruder_variant_name, material_diameter, root_material_id)
-            # Sanity check. If you see this error, the related definition files should be fixed.
-            if not material_node:
-                raise RuntimeError("Cannot find material with definition [%s], extruder_variant_name [%s], and root_material_id [%s]" %
-                                   (definition_id, extruder_variant_name, root_material_id))
-            material_container = material_node.getContainer()
 
         generated_name = registry.createUniqueName("machine", "", name, machine_definition.getName())
         # Make sure the new name does not collide with any definition or (quality) profile
@@ -95,6 +80,23 @@ class CuraStackBuilder:
             quality_container = application.empty_quality_container,
         )
         new_global_stack.setName(generated_name)
+
+        # get material container for extruders
+        material_container = application.empty_material_container
+        # Only look for the preferred material if this machine has materials
+        if parseBool(machine_definition.getMetaDataEntry("has_materials", False)):
+            material_diameter = machine_definition.getProperty("material_diameter", "value")
+            if isinstance(material_diameter, SettingFunction):
+                material_diameter = material_diameter(new_global_stack)
+            approximate_material_diameter = str(round(material_diameter))
+            root_material_id = machine_definition.getMetaDataEntry("preferred_material")
+            root_material_id = material_manager.getRootMaterialIDForDiameter(root_material_id, approximate_material_diameter)
+            material_node = material_manager.getMaterialNode(definition_id, extruder_variant_name, material_diameter, root_material_id)
+            # Sanity check. If you see this error, the related definition files should be fixed.
+            if not material_node:
+                raise RuntimeError("Cannot find material with definition [%s], extruder_variant_name [%s], and root_material_id [%s]" %
+                                   (definition_id, extruder_variant_name, root_material_id))
+            material_container = material_node.getContainer()
 
         # Create ExtruderStacks
         extruder_dict = machine_definition.getMetaDataEntry("machine_extruder_trains")
