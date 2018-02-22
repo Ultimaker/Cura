@@ -409,25 +409,16 @@ class MachineManager(QObject):
     def stacksHaveErrors(self) -> bool:
         return bool(self._stacks_have_errors)
 
-    @pyqtProperty(str, notify = activeStackChanged)
-    def activeUserProfileId(self) -> str:
-        if self._active_container_stack:
-            return self._active_container_stack.getTop().getId()
-
-        return ""
-
     @pyqtProperty(str, notify = globalContainerChanged)
     def activeMachineName(self) -> str:
         if self._global_container_stack:
             return self._global_container_stack.getName()
-
         return ""
 
     @pyqtProperty(str, notify = globalContainerChanged)
     def activeMachineId(self) -> str:
         if self._global_container_stack:
             return self._global_container_stack.getId()
-
         return ""
 
     @pyqtProperty(QObject, notify = globalContainerChanged)
@@ -438,8 +429,11 @@ class MachineManager(QObject):
     def activeStackId(self) -> str:
         if self._active_container_stack:
             return self._active_container_stack.getId()
-
         return ""
+
+    @pyqtProperty(QObject, notify = activeStackChanged)
+    def activeStack(self) -> Optional["ExtruderStack"]:
+        return self._active_container_stack
 
     @pyqtProperty(str, notify=activeMaterialChanged)
     def activeMaterialId(self) -> str:
@@ -447,7 +441,6 @@ class MachineManager(QObject):
             material = self._active_container_stack.material
             if material:
                 return material.getId()
-
         return ""
 
     ##  Gets a dict with the active materials ids set in all extruder stacks and the global stack
@@ -804,9 +797,9 @@ class MachineManager(QObject):
     @pyqtProperty("QVariant", notify = rootMaterialChanged)
     def currentRootMaterialId(self):
         # initial filling the current_root_material_id
+        self._current_root_material_id = {}
         for position in self._global_container_stack.extruders:
-            if position not in self._current_root_material_id:
-                self._current_root_material_id[position] = self._global_container_stack.extruders[position].material.getMetaDataEntry("base_file")
+            self._current_root_material_id[position] = self._global_container_stack.extruders[position].material.getMetaDataEntry("base_file")
         return self._current_root_material_id
 
     @pyqtProperty("QVariant", notify = rootMaterialChanged)
