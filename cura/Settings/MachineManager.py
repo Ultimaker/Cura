@@ -54,12 +54,6 @@ class MachineManager(QObject):
 
         self.machine_extruder_material_update_dict = collections.defaultdict(list)
 
-        # Used to store the new containers until after confirming the dialog
-        self._new_variant_container = None  # type: Optional[InstanceContainer]
-        self._new_buildplate_container = None  # type: Optional[InstanceContainer]
-        self._new_material_container = None  # type: Optional[InstanceContainer]
-        self._new_quality_containers = [] # type: List[Dict]
-
         self._error_check_timer = QTimer()
         self._error_check_timer.setInterval(250)
         self._error_check_timer.setSingleShot(True)
@@ -103,9 +97,6 @@ class MachineManager(QObject):
         self.globalValueChanged.connect(self.activeStackValueChanged)
         ExtruderManager.getInstance().activeExtruderChanged.connect(self.activeStackChanged)
         self.activeStackChanged.connect(self.activeStackValueChanged)
-
-        # when a user closed dialog check if any delayed material or variant changes need to be applied
-        Application.getInstance().onDiscardOrKeepProfileChangesClosed.connect(self._executeDelayedActiveContainerStackChanges)
 
         Preferences.getInstance().addPreference("cura/active_machine", "")
 
@@ -171,18 +162,6 @@ class MachineManager(QObject):
                 self._printer_output_devices.append(printer_output_device)
 
         self.outputDevicesChanged.emit()
-
-    @property
-    def newVariant(self):
-        return self._new_variant_container
-
-    @property
-    def newBuildplate(self):
-        return self._new_buildplate_container
-
-    @property
-    def newMaterial(self):
-        return self._new_material_container
 
     @pyqtProperty("QVariantList", notify = outputDevicesChanged)
     def printerOutputDevices(self):
@@ -314,7 +293,6 @@ class MachineManager(QObject):
     @pyqtSlot(str)
     def setActiveMachine(self, stack_id: str) -> None:
         self.blurSettings.emit()  # Ensure no-one has focus.
-        self._cancelDelayedActiveContainerStackChanges()
 
         container_registry = ContainerRegistry.getInstance()
 
@@ -572,61 +550,6 @@ class MachineManager(QObject):
         for extruder_stack in extruder_stacks:
             if extruder_stack != self._active_container_stack and extruder_stack.getProperty(key, "value") != new_value:
                 extruder_stack.userChanges.setProperty(key, "value", new_value)  # TODO: nested property access, should be improved
-
-    ##  Used to update material and variant in the active container stack with a delay.
-    #   This delay prevents the stack from triggering a lot of signals (eventually resulting in slicing)
-    #   before the user decided to keep or discard any of their changes using the dialog.
-    #   The Application.onDiscardOrKeepProfileChangesClosed signal triggers this method.
-    def _executeDelayedActiveContainerStackChanges(self):
-        Logger.log("d", "Applying configuration changes...")
-
-        if self._new_variant_container is not None:
-            self._active_container_stack.variant = self._new_variant_container
-            self._new_variant_container = None
-
-        if self._new_buildplate_container is not None:
-            self._global_container_stack.variant = self._new_buildplate_container
-            self._new_buildplate_container = None
-
-        if self._new_material_container is not None:
-            self._active_container_stack.material = self._new_material_container
-            self._new_material_container = None
-
-        # apply the new quality to all stacks
-        if self._new_quality_containers:
-            for new_quality in self._new_quality_containers:
-                self._replaceQualityOrQualityChangesInStack(new_quality["stack"], new_quality["quality"], postpone_emit = True)
-                self._replaceQualityOrQualityChangesInStack(new_quality["stack"], new_quality["quality_changes"], postpone_emit = True)
-
-            for new_quality in self._new_quality_containers:
-                new_quality["stack"].nameChanged.connect(self._onQualityNameChanged)
-                new_quality["stack"].sendPostponedEmits() # Send the signals that were postponed in _replaceQualityOrQualityChangesInStack
-
-            self._new_quality_containers.clear()
-
-        Logger.log("d", "New configuration applied")
-
-    ##  Cancel set changes for material and variant in the active container stack.
-    #   Used for ignoring any changes when switching between printers (setActiveMachine)
-    def _cancelDelayedActiveContainerStackChanges(self):
-        self._new_material_container = None
-        self._new_buildplate_container = None
-        self._new_variant_container = None
-
-    def _replaceQualityOrQualityChangesInStack(self, stack: "CuraContainerStack", container: "InstanceContainer", postpone_emit = False):
-        # Disconnect the signal handling from the old container.
-        container_type = container.getMetaDataEntry("type")
-        if container_type == "quality":
-            stack.quality.nameChanged.disconnect(self._onQualityNameChanged)
-            stack.setQuality(container, postpone_emit = postpone_emit)
-            stack.quality.nameChanged.connect(self._onQualityNameChanged)
-        elif container_type == "quality_changes" or container_type is None:
-            # If the container is an empty container, we need to change the quality_changes.
-            # Quality can never be set to empty.
-            stack.qualityChanges.nameChanged.disconnect(self._onQualityNameChanged)
-            stack.setQualityChanges(container, postpone_emit = postpone_emit)
-            stack.qualityChanges.nameChanged.connect(self._onQualityNameChanged)
-        self._onQualityNameChanged()
 
     @pyqtProperty(str, notify = activeVariantChanged)
     def activeVariantName(self) -> str:

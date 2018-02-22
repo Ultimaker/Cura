@@ -540,8 +540,6 @@ class CuraApplication(QtApplication):
             has_user_interaction = True
         return has_user_interaction
 
-    onDiscardOrKeepProfileChangesClosed = pyqtSignal()  # Used to notify other managers that the dialog was closed
-
     @pyqtSlot(str)
     def discardOrKeepProfileChangesClosed(self, option):
         if option == "discard":
@@ -564,7 +562,6 @@ class CuraApplication(QtApplication):
                 user_global_container.update()
 
         # notify listeners that quality has changed (after user selected discard or keep)
-        self.onDiscardOrKeepProfileChangesClosed.emit()
         self.getMachineManager().activeQualityChanged.emit()
 
     @pyqtSlot(int)
