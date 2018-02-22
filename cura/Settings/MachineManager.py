@@ -79,6 +79,9 @@ class MachineManager(QObject):
         self.globalContainerChanged.connect(self.activeVariantChanged)
         self.globalContainerChanged.connect(self.activeQualityChanged)
 
+        self.globalContainerChanged.connect(self.activeQualityChangesGroupChanged)
+        self.globalContainerChanged.connect(self.activeQualityGroupChanged)
+
         self._stacks_have_errors = None  # type:Optional[bool]
 
         self._empty_definition_changes_container = ContainerRegistry.getInstance().findContainers(id = "empty_definition_changes")[0]
@@ -242,6 +245,7 @@ class MachineManager(QObject):
                     Application.getInstance().callLater(func)
                 del self.machine_extruder_material_update_dict[self._global_container_stack.getId()]
 
+        self.activeQualityGroupChanged.emit()
         self._error_check_timer.start()
 
     ##  Update self._stacks_valid according to _checkStacksForErrors and emit if change.
@@ -292,11 +296,12 @@ class MachineManager(QObject):
         global_quality = global_stack.quality
         quality_type = global_quality.getMetaDataEntry("quality_type")
         global_quality_changes = global_stack.qualityChanges
+        global_quality_changes_name = global_quality_changes.getName()
 
         if global_quality_changes.getId() != "empty_quality_changes":
             quality_changes_groups = self._application._quality_manager.getQualityChangesGroups(global_stack)
-            if quality_type in quality_changes_groups:
-                new_quality_changes_group = quality_changes_groups[quality_type]
+            if global_quality_changes_name in quality_changes_groups:
+                new_quality_changes_group = quality_changes_groups[global_quality_changes_name]
                 self._setQualityChangesGroup(new_quality_changes_group)
         else:
             quality_groups = self._application._quality_manager.getQualityGroups(global_stack)
