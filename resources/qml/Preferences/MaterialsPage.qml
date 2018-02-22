@@ -433,8 +433,8 @@ Item
                     editingEnabled: base.currentItem != null && !base.currentItem.is_read_only
 
                     properties: materialProperties
-                    containerId: base.currentItem != null ? base.currentItem.id : ""
-                    currentMaterialNode: base.currentItem
+                    containerId: base.currentItem != null ? base.currentItem.container_id : ""
+                    currentMaterialNode: base.currentItem.container_node
 
                     property alias pane: base
                 }
