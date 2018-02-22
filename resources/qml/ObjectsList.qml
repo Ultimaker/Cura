@@ -33,6 +33,8 @@ Rectangle
 
     property bool collapsed: true;
 
+    property Cura.MultiBuildPlateModel multiBuildPlateModel: CuraApplication.getMultiBuildPlateModel()
+
     SystemPalette { id: palette }
 
     Button {
@@ -67,7 +69,7 @@ Rectangle
         Rectangle
             {
                 height: childrenRect.height
-                color: Cura.MultiBuildPlateModel.getItem(index).buildPlateNumber == Cura.MultiBuildPlateModel.activeBuildPlate ? palette.highlight : index % 2 ? palette.base : palette.alternateBase
+                color: multiBuildPlateModel.getItem(index).buildPlateNumber == multiBuildPlateModel.activeBuildPlate ? palette.highlight : index % 2 ? palette.base : palette.alternateBase
                 width: parent.width
                 Label
                 {
@@ -75,8 +77,8 @@ Rectangle
                     anchors.left: parent.left
                     anchors.leftMargin: UM.Theme.getSize("default_margin").width
                     width: parent.width - 2 * UM.Theme.getSize("default_margin").width - 30
-                    text: Cura.MultiBuildPlateModel.getItem(index) ? Cura.MultiBuildPlateModel.getItem(index).name : "";
-                    color: Cura.MultiBuildPlateModel.activeBuildPlate == index ? palette.highlightedText : palette.text
+                    text: multiBuildPlateModel.getItem(index) ? multiBuildPlateModel.getItem(index).name : "";
+                    color: multiBuildPlateModel.activeBuildPlate == index ? palette.highlightedText : palette.text
                     elide: Text.ElideRight
                 }
 
@@ -118,12 +120,11 @@ Rectangle
         ListView
         {
             id: buildPlateListView
-            model: Cura.MultiBuildPlateModel
+            model: multiBuildPlateModel
             width: parent.width
             delegate: buildPlateDelegate
         }
     }
-
 
     Component {
         id: objectDelegate
@@ -200,7 +201,6 @@ Rectangle
         }
     }
 
-
     CheckBox
     {
         id: filterBuildPlateCheckbox
@@ -260,6 +260,4 @@ Rectangle
         }
         action: Cura.Actions.arrangeAll;
     }
-
-
 }

@@ -408,14 +408,14 @@ Item
                     height: childrenRect.height
 
                     Label {
-                        text: base.currentItem.name  // TODO
+                        text: base.currentItem.name
                         font: UM.Theme.getFont("large")
                     }
                 }
 
                 Flow {
                     id: currentSettingsActions
-                    visible: true  // TODO //currentItem && currentItem.id == Cura.MachineManager.activeQualityId
+                    visible: base.hasCurrentItem && base.currentItem.name == Cura.MachineManager.activeQualityOrQualityChangesName
                     anchors.left: parent.left
                     anchors.right: parent.right
                     anchors.top: profileName.bottom
@@ -424,7 +424,7 @@ Item
                     Button
                     {
                         text: catalog.i18nc("@action:button", "Update profile with current settings/overrides")
-                        enabled: Cura.MachineManager.hasUserSettings && !Cura.MachineManager.isReadOnly(Cura.MachineManager.activeQualityId)
+                        enabled: Cura.MachineManager.hasUserSettings && !base.currentItem.is_read_only
                         onClicked: Cura.ContainerManager.updateQualityChanges()
                     }
 
@@ -453,7 +453,7 @@ Item
                     }
                     Label {
                         id: noCurrentSettingsMessage
-                        visible: currentItem && currentItem.id == Cura.MachineManager.activeQualityId && !Cura.MachineManager.hasUserSettings
+                        visible: base.isCurrentItemActivated && !Cura.MachineManager.hasUserSettings
                         text: catalog.i18nc("@action:label", "Your current settings match the selected profile.")
                         wrapMode: Text.WordWrap
                         width: parent.width
