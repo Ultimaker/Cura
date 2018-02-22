@@ -3572,6 +3572,18 @@
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
+                "zig_zaggify_support":
+                {
+                    "label": "Connect Support Lines",
+                    "description": "Connect the ends of the support lines together. Enabling this setting can make your support more sturdy and reduce underextrusion, but it will cost more material.",
+                    "type": "bool",
+                    "default_value": false,
+                    "value": "support_pattern == 'cross'",
+                    "enabled": "support_pattern == 'grid' or support_pattern == 'triangles' or support_pattern == 'cross'",
+                    "limit_to_extruder": "support_infill_extruder_nr",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
+                },
                 "support_connect_zigzags":
                 {
                     "label": "Connect Support ZigZags",
