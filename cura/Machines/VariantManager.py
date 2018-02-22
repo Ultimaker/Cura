@@ -83,4 +83,4 @@ class VariantManager:
     def getVariantNodes(self, machine: "GlobalStack",
                         variant_type: Optional[str] = VariantType.NOZZLE) -> dict:
         machine_definition_id = machine.definition.getId()
-        return self._machine_to_variant_dict_map[machine_definition_id].get(variant_type, {})
+        return self._machine_to_variant_dict_map.get(machine_definition_id, {}).get(variant_type, {})
