@@ -280,7 +280,7 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
                 self.sendCommand("M105")
                 self._last_temperature_request = time()
 
-            if b"ok T:" in line or line.startswith(b"T:"):  # Temperature message
+            if b"ok T:" in line or line.startswith(b"T:") or b"ok B:" in line or line.startswith(b"B:"):  # Temperature message. 'T:' for extruder and 'B:' for bed
                 extruder_temperature_matches = re.findall(b"T(\d*): ?([\d\.]+) ?\/?([\d\.]+)?", line)
                 # Update all temperature values
                 for match, extruder in zip(extruder_temperature_matches, self._printers[0].extruders):
