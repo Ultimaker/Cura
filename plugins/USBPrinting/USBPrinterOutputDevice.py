@@ -266,7 +266,6 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
             command = (command + "\n").encode()
         if not command.endswith(b"\n"):
             command += b"\n"
-        self._serial.write(b"\n")
         self._serial.write(command)
 
     def _update(self):
