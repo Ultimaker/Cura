@@ -69,9 +69,11 @@ class MonitorStage(CuraStage):
                 self._printer_output_device.connectionStateChanged.connect(self._updateIconSource)
                 self._setActivePrinter(self._printer_output_device.activePrinter)
 
-                # Force an update of the icon source
-                self._updateIconSource()
+            # Force an update of the icon source
+            self._updateIconSource()
         except IndexError:
+            #If index error occurs, then the icon on monitor button also should be updated
+            self._updateIconSource()
             pass
 
     def _onEngineCreated(self):

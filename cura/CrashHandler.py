@@ -14,8 +14,9 @@ import urllib.request
 import urllib.error
 import shutil
 
-from PyQt5.QtCore import QT_VERSION_STR, PYQT_VERSION_STR, QFile
+from PyQt5.QtCore import QT_VERSION_STR, PYQT_VERSION_STR, QUrl
 from PyQt5.QtWidgets import QDialog, QDialogButtonBox, QVBoxLayout, QLabel, QTextEdit, QGroupBox, QCheckBox, QPushButton
+from PyQt5.QtGui import QDesktopServices
 
 from UM.Application import Application
 from UM.Logger import Logger
@@ -91,7 +92,7 @@ class CrashHandler:
         label = QLabel()
         label.setText(catalog.i18nc("@label crash message", """<p><b>A fatal error has occurred.</p></b>
                     <p>Unfortunately, Cura encountered an unrecoverable error during start up. It was possibly caused by some incorrect configuration files. We suggest to backup and reset your configuration.</p>
-                    <p>Your backup can be found in your Configuration folder.</p>
+                    <p>Backups can be found in the configuration folder.</p>
                     <p>Please send us this Crash Report to fix the problem.</p>
                 """))
         label.setWordWrap(True)
@@ -105,8 +106,13 @@ class CrashHandler:
         show_details_button.setMaximumWidth(200)
         show_details_button.clicked.connect(self._showDetailedReport)
 
+        show_configuration_folder_button = QPushButton(catalog.i18nc("@action:button", "Show configuration folder"), dialog)
+        show_configuration_folder_button.setMaximumWidth(200)
+        show_configuration_folder_button.clicked.connect(self._showConfigurationFolder)
+
         layout.addWidget(self._send_report_checkbox)
         layout.addWidget(show_details_button)
+        layout.addWidget(show_configuration_folder_button)
 
         # "backup and start clean" and "close" buttons
         buttons = QDialogButtonBox()
@@ -181,6 +187,10 @@ class CrashHandler:
                     print("Failed to backup [%s] to file [%s]: %s", folder, zip_file_path, e)
 
         self.early_crash_dialog.close()
+
+    def _showConfigurationFolder(self):
+        path = Resources.getConfigStoragePath();
+        QDesktopServices.openUrl(QUrl.fromLocalFile( path ))
 
     def _showDetailedReport(self):
         self.dialog.exec_()

@@ -1527,8 +1527,10 @@
                     "label": "Connect Infill Lines",
                     "description": "Connect the ends where the infill pattern meets the inner wall using a line which follows the shape of the inner wall. Enabling this setting can make the infill adhere to the walls better and reduce the effects of infill on the quality of vertical surfaces. Disabling this setting reduces the amount of material used.",
                     "type": "bool",
-                    "default_value": true,
-                    "enabled": "infill_pattern == 'cross' or infill_pattern == 'cross_3d'",
+                    "default_value": false,
+                    "value": "infill_pattern == 'cross' or infill_pattern == 'cross_3d'",
+                    "enabled": "infill_pattern == 'grid' or infill_pattern == 'triangles' or infill_pattern == 'trihexagon' or infill_pattern == 'cubic' or infill_pattern == 'tetrahedral' or infill_pattern == 'quarter_cubic' or infill_pattern == 'cross' or infill_pattern == 'cross_3d'",
+                    "limit_to_extruder": "infill_extruder_nr",
                     "settable_per_mesh": true
                 },
                 "infill_angles":
@@ -3567,6 +3569,18 @@
                     },
                     "default_value": "zigzag",
                     "enabled": "support_enable or support_tree_enable",
+                    "limit_to_extruder": "support_infill_extruder_nr",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
+                },
+                "zig_zaggify_support":
+                {
+                    "label": "Connect Support Lines",
+                    "description": "Connect the ends of the support lines together. Enabling this setting can make your support more sturdy and reduce underextrusion, but it will cost more material.",
+                    "type": "bool",
+                    "default_value": false,
+                    "value": "support_pattern == 'cross'",
+                    "enabled": "support_pattern == 'grid' or support_pattern == 'triangles' or support_pattern == 'cross'",
                     "limit_to_extruder": "support_infill_extruder_nr",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true

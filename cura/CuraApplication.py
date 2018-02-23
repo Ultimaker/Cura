@@ -1547,8 +1547,16 @@ class CuraApplication(QtApplication):
         for original_node in nodes:
 
             # Create a CuraSceneNode just if the original node is not that type
-            node = original_node if isinstance(original_node, CuraSceneNode) else CuraSceneNode()
-            node.setMeshData(original_node.getMeshData())
+            if isinstance(original_node, CuraSceneNode):
+                node = original_node
+            else:
+                node = CuraSceneNode()
+                node.setMeshData(original_node.getMeshData())
+
+                #Setting meshdata does not apply scaling.
+                if(original_node.getScale() != Vector(1.0, 1.0, 1.0)):
+                    node.scale(original_node.getScale())
+
 
             node.setSelectable(True)
             node.setName(os.path.basename(filename))

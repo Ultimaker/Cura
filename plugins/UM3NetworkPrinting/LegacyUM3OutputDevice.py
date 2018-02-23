@@ -419,8 +419,6 @@ class LegacyUM3OutputDevice(NetworkedPrinterOutputDevice):
             self._authentication_failed_message.show()
         elif status_code == 200:
             self.setAuthenticationState(AuthState.Authenticated)
-            # Now we know for sure that we are authenticated, send the material profiles to the machine.
-            self._sendMaterialProfiles()
 
     def _checkAuthentication(self):
         Logger.log("d", "Checking if authentication is correct for id %s and key %s", self._authentication_id, self._getSafeAuthKey())

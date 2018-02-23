@@ -192,7 +192,7 @@ class CuraEngineBackend(QObject, Backend):
 
     ##  Perform a slice of the scene.
     def slice(self):
-        Logger.log("d", "starting to slice!")
+        Logger.log("d", "Starting to slice...")
         self._slice_start_time = time()
         if not self._build_plates_to_be_sliced:
             self.processingProgress.emit(1.0)
@@ -200,7 +200,7 @@ class CuraEngineBackend(QObject, Backend):
             return
 
         if self._process_layers_job:
-            Logger.log("d", "  ## Process layers job still busy, trying later")
+            Logger.log("d", "Process layers job still busy, trying later.")
             return
 
         if not hasattr(self._scene, "gcode_dict"):
