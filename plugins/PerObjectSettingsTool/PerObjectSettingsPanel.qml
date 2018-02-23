@@ -54,12 +54,6 @@ Item {
                 id: meshTypeSelection
                 style: UM.Theme.styles.combobox
                 onActivated: {
-
-                    console.log("!!!!!!!!!!!!!!!!!!!")
-
-                    if(model.get(index).type == "anti_overhang_mesh")
-                         console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
-
                     UM.ActiveTool.setProperty("MeshType", model.get(index).type)
                 }
                 model: ListModel
