@@ -298,6 +298,9 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
                         self._printers[0].updateTargetBedTemperature(float(match[1]))
 
             if self._is_printing:
+                if line.startswith(b'!!'):
+                    Logger.log('e', "Printer signals fatal error. Cancelling print. {}".format(line))
+                    self.cancelPrint()
                 if b"ok" in line:
                     if not self._command_queue.empty():
                         self._sendCommand(self._command_queue.get())
