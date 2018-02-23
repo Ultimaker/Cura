@@ -198,7 +198,6 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
         # Reset line number. If this is not done, first line is sometimes ignored
         self._gcode.insert(0, "M110")
         self._gcode_position = 0
-        self._is_printing = True
         self._print_start_time = time()
 
         self._print_estimated_time = int(Application.getInstance().getPrintInformation().currentPrintTime.getDisplayString(DurationFormat.Format.Seconds))
@@ -206,6 +205,7 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
         for i in range(0, 4):  # Push first 4 entries before accepting other inputs
             self._sendNextGcodeLine()
 
+        self._is_printing = True
         self.writeFinished.emit(self)
 
     def _autoDetectFinished(self, job: AutoDetectBaudJob):
