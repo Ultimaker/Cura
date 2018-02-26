@@ -137,7 +137,7 @@ class Script:
 
         #Write the new g-code line.
         result = ""
-        priority_parameters = ["G", "M", "T", "S", "F", "X", "Y", "Z"] #First some parameters that get priority. In order of priority!
+        priority_parameters = ["G", "M", "T", "S", "F", "X", "Y", "Z", "E"] #First some parameters that get priority. In order of priority!
         for priority_key in priority_parameters:
             if priority_key in kwargs:
                 if result != "":
