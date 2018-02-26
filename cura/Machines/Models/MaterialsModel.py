@@ -1,13 +1,11 @@
-# Copyright (c) 2017 Ultimaker B.V.
+# Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from typing import Any, List, Optional
-from PyQt5.QtCore import Qt
+from typing import Optional
+from PyQt5.QtCore import Qt, pyqtSignal, pyqtProperty
 
 from UM.Logger import Logger
 from UM.Qt.ListModel import ListModel
-from UM.Settings.ContainerRegistry import ContainerRegistry
-from UM.Settings.Models.InstanceContainersModel import InstanceContainersModel
 
 
 def getAvailableMaterials(extruder_position: Optional[int] = None):
@@ -48,6 +46,8 @@ class BaseMaterialsModel(ListModel):
     ColorRole = Qt.UserRole + 6
     ContainerNodeRole = Qt.UserRole + 7
 
+    extruderPositionChanged = pyqtSignal()
+
     def __init__(self, parent = None):
         super().__init__(parent)
 
@@ -58,6 +58,17 @@ class BaseMaterialsModel(ListModel):
         self.addRoleName(self.MaterialRole, "material")
         self.addRoleName(self.ColorRole, "color_name")
         self.addRoleName(self.ContainerNodeRole, "container_node")
+
+        self._extruder_position = 0
+
+    def setExtruderPosition(self, position: int):
+        if self._extruder_position != position:
+            self._extruder_position = position
+            self.extruderPositionChanged.emit()
+
+    @pyqtProperty(int, fset = setExtruderPosition, notify = extruderPositionChanged)
+    def extruderPosition(self) -> int:
+        return self._extruder_positoin
 
 
 class GenericMaterialsModel(BaseMaterialsModel):
@@ -82,7 +93,7 @@ class GenericMaterialsModel(BaseMaterialsModel):
             self.setItems([])
             return
 
-        result_dict = getAvailableMaterials()
+        result_dict = getAvailableMaterials(self._extruder_position)
         if result_dict is None:
             self.setItems([])
             return
@@ -126,11 +137,15 @@ class BrandMaterialsModel(ListModel):
     NameRole = Qt.UserRole + 1
     MaterialsRole = Qt.UserRole + 2
 
+    extruderPositionChanged = pyqtSignal()
+
     def __init__(self, parent = None):
         super().__init__(parent)
 
         self.addRoleName(self.NameRole, "name")
         self.addRoleName(self.MaterialsRole, "materials")
+
+        self._extruder_position = 0
 
         from cura.CuraApplication import CuraApplication
         self._machine_manager = CuraApplication.getInstance().getMachineManager()
@@ -141,13 +156,24 @@ class BrandMaterialsModel(ListModel):
         extruder_manager.activeExtruderChanged.connect(self._update)
         material_manager.materialsUpdated.connect(self._update)
 
+        self._update()
+
+    def setExtruderPosition(self, position: int):
+        if self._extruder_position != position:
+            self._extruder_position = position
+            self.extruderPositionChanged.emit()
+
+    @pyqtProperty(int, fset = setExtruderPosition, notify = extruderPositionChanged)
+    def extruderPosition(self) -> int:
+        return self._extruder_position
+
     def _update(self):
         global_stack = self._machine_manager.activeMachine
         if global_stack is None:
             self.setItems([])
             return
 
-        result_dict = getAvailableMaterials()
+        result_dict = getAvailableMaterials(self._extruder_position)
         if result_dict is None:
             self.setItems([])
             return
@@ -180,7 +206,7 @@ class BrandMaterialsModel(ListModel):
 
         for brand, material_dict in brand_group_dict.items():
             brand_item = {"name": brand,
-                          "materials": MaterialsModelGroupedByType(self)}  # TODO
+                          "materials": MaterialsModelGroupedByType(self)}
 
             material_type_item_list = []
             for material_type, material_list in material_dict.items():

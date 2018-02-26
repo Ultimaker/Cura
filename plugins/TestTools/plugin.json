@@ -1,7 +1,0 @@
-{
-    "name": "Test Tools",
-    "author": "Ultimaker",
-    "version": "1.0",
-    "description": "Dump the contents of all settings to a HTML file.",
-    "api": 4
-}

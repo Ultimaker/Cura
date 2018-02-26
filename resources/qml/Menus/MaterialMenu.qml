@@ -82,12 +82,13 @@ Menu
     Cura.GenericMaterialsModel
     {
         id: genericMaterialsModel
-        //Component.onCompleted: populateMenuModels()
+        extruderPosition: menu.extruderIndex
     }
 
     Cura.BrandMaterialsModel
     {
         id: brandModel
+        extruderPosition: menu.extruderIndex
     }
 
     ExclusiveGroup { id: group }

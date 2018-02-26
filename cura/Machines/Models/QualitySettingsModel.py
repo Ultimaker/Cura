@@ -89,7 +89,11 @@ class QualitySettingsModel(ListModel):
             else:
                 quality_changes_node = quality_changes_group.nodes_for_extruders.get(self._extruder_position)
             if quality_changes_node is not None:  # it can be None if number of extruders are changed during runtime
-                quality_containers.insert(0, quality_changes_node.getContainer())
+                try:
+                    quality_containers.insert(0, quality_changes_node.getContainer())
+                except:
+                    # FIXME: This is to prevent incomplete update of QualityManager
+                    return
             settings_keys.update(quality_changes_group.getAllKeys())
 
         current_category = ""

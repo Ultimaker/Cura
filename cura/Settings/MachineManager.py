@@ -989,7 +989,6 @@ class MachineManager(QObject):
 
     @pyqtSlot("QVariant")
     def setGlobalVariant(self, container_node):
-        Logger.log("d", "----------------  container = [%s]", container_node)
         self.blurSettings.emit()
         with postponeSignals(*self._getContainerChangedSignals(), compress = CompressTechnique.CompressPerParameterValue):
             self._setGlobalVariant(container_node)
@@ -998,7 +997,6 @@ class MachineManager(QObject):
 
     @pyqtSlot(str, "QVariant")
     def setMaterial(self, position, container_node):
-        Logger.log("d", "----------------  container = [%s]", container_node)
         position = str(position)
         self.blurSettings.emit()
         with postponeSignals(*self._getContainerChangedSignals(), compress = CompressTechnique.CompressPerParameterValue):
@@ -1007,7 +1005,6 @@ class MachineManager(QObject):
 
     @pyqtSlot(str, "QVariant")
     def setVariantGroup(self, position, container_node):
-        Logger.log("d", "----------------  container = [%s]", container_node)
         position = str(position)
         self.blurSettings.emit()
         with postponeSignals(*self._getContainerChangedSignals(), compress = CompressTechnique.CompressPerParameterValue):
@@ -1015,32 +1012,27 @@ class MachineManager(QObject):
             self._updateMaterialWithVariant(position)
             self._updateQualityWithMaterial()
 
-    @pyqtSlot("QVariant")
+    @pyqtSlot(QObject)
     def setQualityGroup(self, quality_group):
-        Logger.log("d", "----------------  qg = [%s]", quality_group.name)
         self.blurSettings.emit()
         with postponeSignals(*self._getContainerChangedSignals(), compress = CompressTechnique.CompressPerParameterValue):
             self._setQualityGroup(quality_group)
-
-        Logger.log("d", "Quality set!")
 
         # See if we need to show the Discard or Keep changes screen
         if self.hasUserSettings and Preferences.getInstance().getValue("cura/active_mode") == 1:
             Application.getInstance().discardOrKeepProfileChanges()
 
-    @pyqtProperty("QVariant", fset = setQualityGroup, notify = activeQualityGroupChanged)
+    @pyqtProperty(QObject, fset = setQualityGroup, notify = activeQualityGroupChanged)
     def activeQualityGroup(self):
         return self._current_quality_group
 
-    @pyqtSlot("QVariant")
+    @pyqtSlot(QObject)
     def setQualityChangesGroup(self, quality_changes_group):
-        Logger.log("d", "----------------  qcg = [%s]", quality_changes_group.name)
         self.blurSettings.emit()
         with postponeSignals(*self._getContainerChangedSignals(), compress = CompressTechnique.CompressPerParameterValue):
             self._setQualityChangesGroup(quality_changes_group)
-        Logger.log("d", "Quality changes set!")
 
-    @pyqtProperty("QVariant", fset = setQualityChangesGroup, notify = activeQualityChangesGroupChanged)
+    @pyqtProperty(QObject, fset = setQualityChangesGroup, notify = activeQualityChangesGroupChanged)
     def activeQualityChangesGroup(self):
         return self._current_quality_changes_group
 
