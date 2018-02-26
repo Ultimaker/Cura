@@ -2137,6 +2137,7 @@
                     "default_value": 1.5,
                     "value": "line_width * 2",
                     "minimum_value": "0",
+                    "minimum_value_warning": "line_width * 1.5",
                     "maximum_value_warning": "10",
                     "enabled": "retraction_enable",
                     "settable_per_mesh": false,
