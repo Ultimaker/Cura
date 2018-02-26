@@ -37,7 +37,7 @@ Item
 
     property var hasCurrentItem: materialListView.currentItem != null
 
-    property var currentItem: {
+    property var currentItem: {  // is soon to be overwritten
         var current_index = materialListView.currentIndex;
         return materialsModel.getItem(current_index);
     }
@@ -78,6 +78,7 @@ Item
             onClicked: {
                 forceActiveFocus();
                 base.newRootMaterialIdToSwitchTo = Cura.ContainerManager.createMaterial();
+                base.toActivateNewMaterial = true;
             }
         }
 
@@ -88,8 +89,8 @@ Item
             enabled: base.hasCurrentItem
             onClicked: {
                 forceActiveFocus();
-                base.newRootMaterialIdToSwitchTo = base.currentItem.root_material_id;
-                Cura.ContainerManager.duplicateMaterial(base.currentItem.container_node);
+                base.newRootMaterialIdToSwitchTo = Cura.ContainerManager.duplicateMaterial(base.currentItem.container_node);
+                base.toActivateNewMaterial = true;
             }
         }
 
@@ -128,27 +129,43 @@ Item
     }
 
     property string newRootMaterialIdToSwitchTo: ""
+    property bool toActivateNewMaterial: false
 
     // This connection makes sure that we will switch to the new
     Connections
     {
         target: materialsModel
         onItemsChanged: {
-            var currentItemName = base.currentItem == null ? "" : base.currentItem.name;
+            var currentItemId = base.currentItem == null ? "" : base.currentItem.root_material_id;
             var position = Cura.ExtruderManager.activeExtruderIndex;
 
-            if (base.newRootMaterialIdToSwitchTo != "") {
-                for (var idx = 0; idx < materialsModel.rowCount(); ++idx) {
-                    var item = materialsModel.getItem(idx);
-                    if (item.root_material_id == base.newRootMaterialIdToSwitchTo) {
-                        // Switch to the newly created profile if needed
-                        materialListView.currentIndex = idx;
+            // try to pick the currently selected item; it may have been moved
+            if (base.newRootMaterialIdToSwitchTo == "") {
+                base.newRootMaterialIdToSwitchTo = currentItemId;
+            }
+
+            for (var idx = 0; idx < materialsModel.rowCount(); ++idx) {
+                var item = materialsModel.getItem(idx);
+                if (item.root_material_id == base.newRootMaterialIdToSwitchTo) {
+                    // Switch to the newly created profile if needed
+                    materialListView.currentIndex = idx;
+                    materialListView.activateDetailsWithIndex(materialListView.currentIndex);
+                    if (base.toActivateNewMaterial) {
                         Cura.MachineManager.setMaterial(position, item.container_node);
-                        base.newRootMaterialIdToSwitchTo = "";
-                        break;
                     }
+                    base.newRootMaterialIdToSwitchTo = "";
+                    base.toActivateNewMaterial = false;
+                    return
                 }
             }
+
+            materialListView.currentIndex = 0;
+            materialListView.activateDetailsWithIndex(materialListView.currentIndex);
+            if (base.toActivateNewMaterial) {
+                Cura.MachineManager.setMaterial(position, materialsModel.getItem(0).container_node);
+            }
+            base.newRootMaterialIdToSwitchTo = "";
+            base.toActivateNewMaterial = false;
         }
     }
 
@@ -165,8 +182,6 @@ Item
         onYes:
         {
             Cura.ContainerManager.removeMaterial(base.currentItem.container_node);
-            // reset current item to the first if available
-            materialListView.currentIndex = 0;
         }
     }
 
@@ -374,14 +389,19 @@ Item
                     }
                 }
 
-                onCurrentIndexChanged:
-                {
-                    forceActiveFocus();  // causes the changed fields to be saved
-                    var model = materialsModel.getItem(currentIndex);
+                function activateDetailsWithIndex(index) {
+                    var model = materialsModel.getItem(index);
+                    base.currentItem = model;
                     materialDetailsView.containerId = model.container_id;
                     materialDetailsView.currentMaterialNode = model.container_node;
 
                     detailsPanel.updateMaterialPropertiesObject();
+                }
+
+                onCurrentIndexChanged:
+                {
+                    forceActiveFocus();  // causes the changed fields to be saved
+                    activateDetailsWithIndex(currentIndex);
                 }
             }
         }

@@ -458,7 +458,7 @@ class ContainerManager(QObject):
     ##  Create a duplicate of a material, which has the same GUID and base_file metadata
     #
     #   \return \type{str} the id of the newly created container.
-    @pyqtSlot("QVariant")
+    @pyqtSlot("QVariant", result = str)
     def duplicateMaterial(self, material_node, new_base_id = None, new_metadata = None):
         root_material_id = material_node.metadata["base_file"]
 
@@ -509,6 +509,7 @@ class ContainerManager(QObject):
         for container_to_add in new_containers:
             container_to_add.setDirty(True)
             ContainerRegistry.getInstance().addContainer(container_to_add)
+        return new_base_id
 
     ##  Create a new material by cloning Generic PLA for the current material diameter and setting the GUID to something unqiue
     #
