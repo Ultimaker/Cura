@@ -184,6 +184,9 @@ class PauseAtHeight(Script):
                 prevLayer = data[index - 1]
                 prevLines = prevLayer.split("\n")
                 current_e = 0.
+
+                # Access last layer, browse it backwards to find
+                # last extruder absolute position
                 for prevLine in reversed(prevLines):
                     current_e = self.getValue(prevLine, "E", -1)
                     if current_e >= 0:
@@ -193,6 +196,18 @@ class PauseAtHeight(Script):
                 for i in range(1, redo_layers + 1):
                     prevLayer = data[index - i]
                     layer = prevLayer + layer
+
+                    # Get extruder's absolute position at the
+                    # begining of the first layer redone
+                    # see https://github.com/nallath/PostProcessingPlugin/issues/55
+                    if i == redo_layers:
+                        prevLines = prevLayer.split("\n")
+                        for line in prevLines:
+                            new_e = self.getValue(line, 'E', current_e)
+
+                            if new_e != current_e:
+                                current_e = new_e
+                                break
 
                 prepend_gcode = ";TYPE:CUSTOM\n"
                 prepend_gcode += ";added code by post processing\n"
