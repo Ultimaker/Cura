@@ -75,6 +75,7 @@ class PrintInformation(QObject):
         self._multi_build_plate_model = self._application.getMultiBuildPlateModel()
 
         self._application.globalContainerStackChanged.connect(self._updateJobName)
+        self._application.globalContainerStackChanged.connect(self.setToZeroPrintInformation)
         self._application.fileLoaded.connect(self.setBaseName)
         self._application.workspaceLoaded.connect(self.setProjectName)
         self._multi_build_plate_model.activeBuildPlateChanged.connect(self._onActiveBuildPlateChanged)
@@ -211,7 +212,12 @@ class PrintInformation(QObject):
         material_preference_values = json.loads(Preferences.getInstance().getValue("cura/material_settings"))
 
         extruder_stacks = global_stack.extruders
-        for index, amount in enumerate(self._material_amounts):
+        #for index, amount in enumerate(self._material_amounts):
+        for extruder_key in global_stack.extruders.keys():
+            index = int(extruder_key)
+            if index >= len(self._material_amounts):  # Right now the _material_amounts is a list, where the index is the extruder number
+                continue
+            amount = self._material_amounts[index]
             ## Find the right extruder stack. As the list isn't sorted because it's a annoying generator, we do some
             #  list comprehension filtering to solve this for us.
             extruder_stack = extruder_stacks[str(index)]
@@ -375,7 +381,9 @@ class PrintInformation(QObject):
         return result
 
     # Simulate message with zero time duration
-    def setToZeroPrintInformation(self, build_plate):
+    def setToZeroPrintInformation(self, build_plate = None):
+        if build_plate is None:
+            build_plate = self._active_build_plate
 
         # Construct the 0-time message
         temp_message = {}
