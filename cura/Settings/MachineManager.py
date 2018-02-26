@@ -760,10 +760,6 @@ class MachineManager(QObject):
         # Signal that the global stack has changed
         Application.getInstance().globalContainerStackChanged.emit()
 
-    @staticmethod
-    def createMachineManager():
-        return MachineManager()
-
     @pyqtSlot(int, result = QObject)
     def getExtruder(self, position: int):
         extruder = None

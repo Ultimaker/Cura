@@ -750,7 +750,7 @@ class CuraApplication(QtApplication):
         self._quality_manager = QualityManager(container_registry, parent = self)
         self._quality_manager.initialize()
 
-        self.getMachineManager()  # ensure creation of machine manager
+        self._machine_manager = MachineManager(self)
 
         # Check if we should run as single instance or not
         self._setUpSingleInstanceServer()
@@ -845,7 +845,7 @@ class CuraApplication(QtApplication):
 
     def getMachineManager(self, *args) -> MachineManager:
         if self._machine_manager is None:
-            self._machine_manager = MachineManager.createMachineManager()
+            self._machine_manager = MachineManager(self)
         return self._machine_manager
 
     def getExtruderManager(self, *args):
