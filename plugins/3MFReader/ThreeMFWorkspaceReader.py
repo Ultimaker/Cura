@@ -947,7 +947,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                 for extruder_stack in extruder_stacks_in_use:
 
                     # If the quality is different in the stacks, then the quality in the global stack is trusted
-                    if extruder_stack.quality.getMetaDataEntry("quality_type", None) != global_stack.quality.getMetaDataEntry("quality_type", None):
+                    if extruder_stack.quality.getMetaDataEntry("quality_type") != global_stack.quality.getMetaDataEntry("quality_type"):
                         search_criteria = {"id": global_stack.quality.getId(),
                                            "type": "quality",
                                            "definition": definition_id}
