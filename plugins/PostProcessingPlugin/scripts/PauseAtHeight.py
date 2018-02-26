@@ -174,15 +174,12 @@ class PauseAtHeight(Script):
                     if not line.startswith(";LAYER:"):
                         continue
                     current_layer = line[len(";LAYER:"):]
-                    print("----------current_layer:", current_layer)
                     try:
                         current_layer = int(current_layer)
                     except ValueError: #Couldn't cast to int. Something is wrong with this g-code data.
-                        print("----------couldn't cast to int")
                         continue
                     if current_layer < pause_layer:
                         break #Try the next layer.
-                    print("------------hit! Got it!")
 
                 prevLayer = data[index - 1]
                 prevLines = prevLayer.split("\n")
