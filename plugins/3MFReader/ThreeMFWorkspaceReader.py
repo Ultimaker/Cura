@@ -1057,7 +1057,8 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             CuraApplication.getInstance().getMachineManager().activeQualityChanged.emit()
 
         # Actually change the active machine.
-        Application.getInstance().setGlobalContainerStack(global_stack)
+        machine_manager = Application.getInstance().getMachineManager()
+        machine_manager.setActiveMachine(global_stack.getId())
 
         # Notify everything/one that is to notify about changes.
         global_stack.containersChanged.emit(global_stack.getTop())
