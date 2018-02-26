@@ -145,6 +145,7 @@ class BlackBeltPlugin(Extension):
             gcode_list = gcode_dict[plate_id]
             if gcode_list:
                 if ";BLACKBELTPROCESSED" not in gcode_list[0]:
+                    # secondary fans should do the same as print cooling fans
                     if enable_secondary_fans:
                         search_regex = re.compile(r"M106 S(\d*\.?\d*?)")
                         replace_pattern = r"M106 P1 S\1\nM106 S\1"
@@ -152,6 +153,7 @@ class BlackBeltPlugin(Extension):
                         for layer_number, layer in enumerate(gcode_list):
                             gcode_list[layer_number] = re.sub(search_regex, replace_pattern, layer) #Replace all.
 
+                    # make repetitions
                     if repetitions > 1 and len(gcode_list) > 2:
                         # gcode_list[0]: curaengine header
                         # gcode_list[1]: start gcode

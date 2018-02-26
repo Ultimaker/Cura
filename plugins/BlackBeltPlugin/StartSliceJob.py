@@ -213,12 +213,13 @@ class StartSliceJob(Job):
                 return
 
             container_registry = ContainerRegistry.getInstance()
+            stack_id = stack.getId()
 
             # Adapt layer_height and material_flow for a slanted gantry
             gantry_angle = self._scene.getRoot().callDecoration("getGantryAngle")
             if gantry_angle: # not 0 or None
                 # Act on a copy of the stack, so these changes don't cause a reslice
-                _stack = CuraContainerStack(stack.getId() + "_temp")
+                _stack = CuraContainerStack(stack_id + "_temp")
                 index = 0
                 for container in stack.getContainers():
                     if container_registry.isReadOnly(container.getId()):
@@ -244,21 +245,23 @@ class StartSliceJob(Job):
             self._buildGlobalInheritsStackMessage(stack)
 
             # Build messages for extruder stacks
-            for extruder_stack in ExtruderManager.getInstance().getMachineExtruders(stack.getId()):
+            for extruder_stack in ExtruderManager.getInstance().getMachineExtruders(stack_id):
                 if gantry_angle: # not 0 or None
                     # Act on a copy of the stack, so these changes don't cause a reslice
-                    _extruder_stack = ContainerStack(extruder_stack.getId() + "_temp")
+                    _extruder_stack = CuraContainerStack(extruder_stack.getId() + "_temp")
                     index = 0
-                    for container in reversed(extruder_stack.getContainers()):
+                    for container in extruder_stack.getContainers():
                         if container_registry.isReadOnly(container.getId()):
-                            _stack.replaceContainer(index, container)
+                            _extruder_stack.replaceContainer(index, container)
                         else:
-                            _stack.replaceContainer(index, copy.deepcopy(container))
+                            _extruder_stack.replaceContainer(index, copy.deepcopy(container))
                         index = index + 1
                     extruder_stack = _extruder_stack
+                    extruder_stack.setNextStack(stack)
                     for key in ["material_flow", "prime_tower_flow", "spaghetti_flow"]:
                         current_value = extruder_stack.getProperty(key, "value")
-                        extruder_stack.setProperty(key, "value", current_value * math.sin(gantry_angle))
+                        if current_value:
+                            extruder_stack.setProperty(key, "value", current_value * math.sin(gantry_angle))
                 self._buildExtruderMessage(extruder_stack)
 
             belt_layer_mesh_data = {}
