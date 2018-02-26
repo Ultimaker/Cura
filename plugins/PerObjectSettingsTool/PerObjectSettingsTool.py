@@ -10,7 +10,10 @@ from cura.Settings.SettingOverrideDecorator import SettingOverrideDecorator
 from cura.Settings.ExtruderManager import ExtruderManager
 from UM.Settings.SettingInstance import SettingInstance
 from UM.Event import Event
+from UM.Settings.Validator import ValidatorState
+from UM.Logger import Logger
 
+from PyQt5.QtCore import QTimer
 
 ##  This tool allows the user to add & change settings per node in the scene.
 #   The settings per object are kept in a ContainerStack, which is linked to a node by decorator.
@@ -33,6 +36,13 @@ class PerObjectSettingsTool(Tool):
         Application.getInstance().globalContainerStackChanged.connect(self._onGlobalContainerChanged)
         self._onGlobalContainerChanged()
         Selection.selectionChanged.connect(self._updateEnabled)
+
+        self._scene = Application.getInstance().getController().getScene()
+
+        self._error_check_timer = QTimer()
+        self._error_check_timer.setInterval(250)
+        self._error_check_timer.setSingleShot(True)
+        self._error_check_timer.timeout.connect(self._updateStacksHaveErrors)
 
 
     def event(self, event):
@@ -142,3 +152,62 @@ class PerObjectSettingsTool(Tool):
         else:
             self._single_model_selected = True
         Application.getInstance().getController().toolEnabledChanged.emit(self._plugin_id, self._advanced_mode and self._single_model_selected)
+
+
+    def _onPropertyChanged(self, key: str, property_name: str) -> None:
+        if property_name == "validationState":
+            self._error_check_timer.start()
+
+    def _updateStacksHaveErrors(self) -> None:
+        self._checkStacksHaveErrors()
+
+
+    def _checkStacksHaveErrors(self):
+
+        for node in DepthFirstIterator(self._scene.getRoot()):
+
+            # valdiate only objects which can be selected because the settings per object
+            # can be applied only for them
+            if not node.isSelectable():
+                continue
+
+            hasErrors = self._checkStackForErrors(node.callDecoration("getStack"))
+            Application.getInstance().getObjectsModel().setStacksHaveErrors(hasErrors)
+
+            #If any of models has an error then no reason check next objects on the build plate
+            if hasErrors:
+                break
+
+
+    def _checkStackForErrors(self, stack):
+        if stack is None:
+            return False
+
+        for key in stack.getAllKeys():
+            validation_state = stack.getProperty(key, "validationState")
+            if validation_state in (ValidatorState.Exception, ValidatorState.MaximumError, ValidatorState.MinimumError):
+                Logger.log("w", "Setting Per Object %s is not valid.", key)
+                return True
+        return False
+
+    def subscribeForSettingValidation(self, setting_name):
+        selected_object = Selection.getSelectedObject(0)
+        stack = selected_object.callDecoration("getStack")  # Don't try to get the active extruder since it may be None anyway.
+        if not stack:
+            return ""
+
+        settings = stack.getTop()
+        setting_instance = settings.getInstance(setting_name)
+        if setting_instance:
+            setting_instance.propertyChanged.connect(self._onPropertyChanged)
+
+    def unsubscribeForSettingValidation(self, setting_name):
+        selected_object = Selection.getSelectedObject(0)
+        stack = selected_object.callDecoration("getStack")  # Don't try to get the active extruder since it may be None anyway.
+        if not stack:
+            return ""
+
+        settings = stack.getTop()
+        setting_instance = settings.getInstance(setting_name)
+        if setting_instance:
+            setting_instance.propertyChanged.disconnect(self._onPropertyChanged)
