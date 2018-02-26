@@ -45,7 +45,7 @@ class ContainerManager(QObject):
         self._application = Application.getInstance()
         self._container_registry = ContainerRegistry.getInstance()
         self._machine_manager = self._application.getMachineManager()
-        self._material_manager = self._application._material_manager
+        self._material_manager = self._application.getMaterialManager()
         self._container_name_filters = {}
 
     @pyqtSlot(str, str, result=str)
