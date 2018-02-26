@@ -90,6 +90,7 @@ class MaterialManager(QObject):
             else:
                 new_node = MaterialNode(material_metadata)
                 group.derived_material_node_list.append(new_node)
+        # Order this map alphabetically so it's easier to navigate in a debugger
         self._material_group_map = OrderedDict(sorted(self._material_group_map.items(), key = lambda x: x[0]))
 
         # Map #1.5
