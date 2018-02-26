@@ -212,7 +212,6 @@ class PrintInformation(QObject):
         material_preference_values = json.loads(Preferences.getInstance().getValue("cura/material_settings"))
 
         extruder_stacks = global_stack.extruders
-        #for index, amount in enumerate(self._material_amounts):
         for extruder_key in global_stack.extruders.keys():
             index = int(extruder_key)
             if index >= len(self._material_amounts):  # Right now the _material_amounts is a list, where the index is the extruder number
