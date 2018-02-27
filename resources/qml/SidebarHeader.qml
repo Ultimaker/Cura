@@ -16,6 +16,7 @@ Column
 
     property int currentExtruderIndex: Cura.ExtruderManager.activeExtruderIndex;
     property bool currentExtruderVisible: extrudersList.visible;
+    property bool printerConnected: Cura.MachineManager.printerOutputDevices.length != 0
 
     spacing: Math.round(UM.Theme.getSize("sidebar_margin").width * 0.9)
 
@@ -32,6 +33,55 @@ Column
         visible: extruderSelectionRow.visible
         height: UM.Theme.getSize("default_lining").height
         width: height
+    }
+
+    // Printer Type Row
+    Item
+    {
+        id: printerTypeSelectionRow
+        height: UM.Theme.getSize("sidebar_setup").height
+        visible: printerConnected && !sidebar.monitoringPrint && !sidebar.hideSettings
+
+        anchors
+        {
+            left: parent.left
+            leftMargin: UM.Theme.getSize("sidebar_margin").width
+            right: parent.right
+            rightMargin: UM.Theme.getSize("sidebar_margin").width
+        }
+
+        Label
+        {
+            id: configurationLabel
+            text: catalog.i18nc("@label", "Printer type");
+            width: Math.round(parent.width * 0.4 - UM.Theme.getSize("default_margin").width)
+            height: parent.height
+            verticalAlignment: Text.AlignVCenter
+            font: UM.Theme.getFont("default");
+            color: UM.Theme.getColor("text");
+        }
+
+        ToolButton
+        {
+            id: configurationSelection
+
+            text: catalog.i18nc("@label", "Printer type");
+            height: UM.Theme.getSize("setting_control").height
+            width: Math.round(parent.width * 0.7) + UM.Theme.getSize("sidebar_margin").width
+            anchors.right: parent.right
+            style: UM.Theme.styles.sidebar_header_button
+            activeFocusOnPress: true;
+            menu: Menu {
+                MenuItem
+                {
+                    text: "Printer type 1"
+                }
+                MenuItem
+                {
+                    text: "Printer type 2"
+                }
+            }
+        }
     }
 
     // Extruder Row
@@ -244,6 +294,8 @@ Column
             id: materialLabel
             text: catalog.i18nc("@label", "Material");
             width: Math.round(parent.width * 0.45 - UM.Theme.getSize("default_margin").width)
+            height: parent.height
+            verticalAlignment: Text.AlignVCenter
             font: UM.Theme.getFont("default");
             color: UM.Theme.getColor("text");
         }
@@ -294,6 +346,8 @@ Column
             id: variantLabel
             text: Cura.MachineManager.activeDefinitionVariantsName;
             width: Math.round(parent.width * 0.45 - UM.Theme.getSize("default_margin").width)
+            height: parent.height
+            verticalAlignment: Text.AlignVCenter
             font: UM.Theme.getFont("default");
             color: UM.Theme.getColor("text");
         }
@@ -347,6 +401,8 @@ Column
             id: bulidplateLabel
             text: catalog.i18nc("@label", "Build plate");
             width: Math.floor(parent.width * 0.45 - UM.Theme.getSize("default_margin").width)
+            height: parent.height
+            verticalAlignment: Text.AlignVCenter
             font: UM.Theme.getFont("default");
             color: UM.Theme.getColor("text");
         }
