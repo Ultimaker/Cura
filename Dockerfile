@@ -32,10 +32,7 @@ RUN git fetch origin
 RUN git checkout $URANIUM_BRANCH
 RUN mkdir build
 WORKDIR $CURA_APP_DIR/CuraEngine/build
-RUN cmake3 .. \
-    -DCMAKE_BUILD_TYPE=$CURA_BENV_BUILD_TYPE \
-    -DCMAKE_C_COMPILER=gcc \
-    -DCMAKE_CXX_COMPILER=g++
+RUN cmake3 ..
 RUN make
 
 # Make sure Cura can find CuraEngine
