@@ -150,7 +150,7 @@ Rectangle
             visible: base.width - allItemsWidth - 1 * this.width > 0
         }
 
-        // #5 Left view
+        // #5 Right view
         Button
         {
             iconSource: UM.Theme.getIcon("view_right")
