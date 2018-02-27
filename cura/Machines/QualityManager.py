@@ -256,7 +256,6 @@ class QualityManager(QObject):
 
     # Returns a dict of "custom profile name" -> QualityChangesGroup
     def getQualityChangesGroups(self, machine: "GlobalStack") -> dict:
-        # TODO: How to make this simpler?
         # Get machine definition ID for quality search
         machine_definition_id = getMachineDefinitionIDForQualitySearch(machine)
 
@@ -280,7 +279,6 @@ class QualityManager(QObject):
         return quality_changes_group_dict
 
     def getQualityGroups(self, machine: "GlobalStack") -> dict:
-        # TODO: How to make this simpler, including the fall backs.
         # Get machine definition ID for quality search
         machine_definition_id = getMachineDefinitionIDForQualitySearch(machine)
         # This determines if we should only get the global qualities for the global stack and skip the global qualities for the extruder stacks
