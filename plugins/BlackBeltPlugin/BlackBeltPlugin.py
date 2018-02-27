@@ -38,23 +38,13 @@ class BlackBeltPlugin(Extension):
         self._scene_root.addDecorator(BlackBeltDecorator.BlackBeltDecorator())
 
         qmlRegisterSingletonType(BlackBeltSingleton.BlackBeltSingleton, "Cura", 1, 0, "BlackBeltPlugin", BlackBeltSingleton.BlackBeltSingleton.getInstance)
-        self._application.engineCreatedSignal.connect(self._onEngineCreated)
         self._application.getOutputDeviceManager().writeStarted.connect(self._filterGcode)
 
         self._application.pluginsLoaded.connect(self._onPluginsLoaded)
 
     def _onPluginsLoaded(self):
         # make sure the we connect to engineCreatedSignal later than PrepareStage does, so we can substitute our own sidebar
-        self._application.engineCreatedSignal.connect(self._engineCreated)
-
-    def _engineCreated(self):
-        # set window title
-        self._application._engine.rootObjects()[0].setTitle(i18n_catalog.i18nc("@title:window","BlackBelt Cura"))
-
-        # substitute our own sidebar
-        sidebar_component_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "sidebar", "Sidebar.qml")
-        prepare_stage = Application.getInstance().getController().getStage("PrepareStage")
-        prepare_stage.addDisplayComponent("sidebar", sidebar_component_path)
+        self._application.engineCreatedSignal.connect(self._onEngineCreated)
 
     def _onGlobalContainerStackChanged(self):
         if self._global_container_stack:
@@ -90,6 +80,14 @@ class BlackBeltPlugin(Extension):
             self._application.globalContainerStackChanged.emit()
 
     def _onEngineCreated(self):
+        # Set window title
+        self._application._engine.rootObjects()[0].setTitle(i18n_catalog.i18nc("@title:window","BlackBelt Cura"))
+
+        # Substitute our own sidebar
+        sidebar_component_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "sidebar", "Sidebar.qml")
+        prepare_stage = Application.getInstance().getController().getStage("PrepareStage")
+        prepare_stage.addDisplayComponent("sidebar", sidebar_component_path)
+
         # Apply patches
         self._build_volume_patches = BuildVolumePatches.BuildVolumePatches(self._application.getBuildVolume())
         self._cura_engine_backend_patched = CuraEngineBackendPatches.CuraEngineBackendPatches(self._application.getBackend())
