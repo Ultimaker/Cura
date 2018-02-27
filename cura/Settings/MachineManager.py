@@ -472,21 +472,17 @@ class MachineManager(QObject):
     def activeQualityLayerHeight(self) -> float:
         if not self._global_container_stack:
             return 0
-
-        quality_changes = self._global_container_stack.qualityChanges
-        if quality_changes:
-            value = self._global_container_stack.getRawProperty("layer_height", "value", skip_until_container = quality_changes.getId())
+        if self._current_quality_changes_group:
+            value = self._global_container_stack.getRawProperty("layer_height", "value", skip_until_container = self._global_container_stack.qualityChanges.getId())
             if isinstance(value, SettingFunction):
                 value = value(self._global_container_stack)
             return value
-        quality = self._global_container_stack.quality
-        if quality:
-            value = self._global_container_stack.getRawProperty("layer_height", "value", skip_until_container = quality.getId())
+        elif self._current_quality_group:
+            value = self._global_container_stack.getRawProperty("layer_height", "value", skip_until_container = self._global_container_stack.quality.getId())
             if isinstance(value, SettingFunction):
                 value = value(self._global_container_stack)
             return value
-
-        return 0 # No quality profile.
+        return 0
 
     @pyqtProperty(str, notify = activeVariantChanged)
     def globalVariantName(self) -> str:
