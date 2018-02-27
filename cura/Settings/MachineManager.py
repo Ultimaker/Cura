@@ -286,6 +286,7 @@ class MachineManager(QObject):
             quality_groups = self._application._quality_manager.getQualityGroups(global_stack)
             if quality_type not in quality_groups:
                 Logger.log("w", "Quality type [%s] not found in available qualities [%s]", quality_type, str(quality_groups.values()))
+                self._setEmptyQuality()
                 return
             new_quality_group = quality_groups[quality_type]
             self._setQualityGroup(new_quality_group, empty_quality_changes = True)
