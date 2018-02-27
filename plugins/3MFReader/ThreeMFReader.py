@@ -122,7 +122,7 @@ class ThreeMFReader(MeshReader):
                     um_node.callDecoration("setActiveExtruder", default_stack.getId())
 
                 # Get the definition & set it
-                definition_id = getMachineDefinitionIDForQualitySearch(global_container_stack.definition)
+                definition_id = getMachineDefinitionIDForQualitySearch(global_container_stack)
                 um_node.callDecoration("getStack").getTop().setDefinition(definition_id)
 
             setting_container = um_node.callDecoration("getStack").getTop()
