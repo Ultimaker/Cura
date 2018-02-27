@@ -13,8 +13,8 @@ Menu
 
     MenuItem
     {
-        text: "Network printers"
-        checkable: false
+        text: catalog.i18nc("@label:category menu label", "Network printers")
+        enabled: false
     }
 
     NetworkPrinterMenu { }
@@ -23,8 +23,8 @@ Menu
 
     MenuItem
     {
-        text: "Local printers"
-        checkable: false
+        text: catalog.i18nc("@label:category menu label", "Local printers")
+        enabled: false
     }
 
     LocalPrinterMenu { }
