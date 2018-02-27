@@ -437,10 +437,11 @@ class ContainerManager(QObject):
                                                              global_stack, extruder_id = None)
             self._container_registry.addContainer(new_quality_changes)
         else:
+            new_name = self._container_registry.uniqueName(quality_changes_name)
             for node in quality_changes_group.getAllNodes():
                 container = node.getContainer()
                 new_id = self._container_registry.uniqueName(container.getId())
-                self._container_registry.addContainer(container.duplicate(new_id, quality_changes_name))
+                self._container_registry.addContainer(container.duplicate(new_id, new_name))
 
     @pyqtSlot("QVariant")
     def removeMaterial(self, material_node):
