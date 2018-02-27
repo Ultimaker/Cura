@@ -1029,6 +1029,10 @@ class MachineManager(QObject):
         with postponeSignals(*self._getContainerChangedSignals(), compress = CompressTechnique.CompressPerParameterValue):
             self._setQualityChangesGroup(quality_changes_group)
 
+        # See if we need to show the Discard or Keep changes screen
+        if self.hasUserSettings and Preferences.getInstance().getValue("cura/active_mode") == 1:
+            Application.getInstance().discardOrKeepProfileChanges()
+
     @pyqtProperty(QObject, fset = setQualityChangesGroup, notify = activeQualityChangesGroupChanged)
     def activeQualityChangesGroup(self):
         return self._current_quality_changes_group
