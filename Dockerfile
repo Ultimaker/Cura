@@ -15,7 +15,7 @@ RUN git clone https://github.com/Ultimaker/Uranium
 WORKDIR $CURA_APP_DIR/Uranium
 RUN git fetch origin
 RUN git checkout $URANIUM_BRANCH
-RUN export PYTHOHPATH="${PYTHONPATH}:$CURA_APP_DIR/Uranium"
+RUN export PYTHONPATH="${PYTHONPATH}:$CURA_APP_DIR/Uranium"
 
 # Setup Cura
 WORKDIR $CURA_APP_DIR
