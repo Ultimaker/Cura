@@ -839,7 +839,8 @@ class MachineManager(QObject):
 
     def _setQualityGroup(self, quality_group, empty_quality_changes = True):
         self._current_quality_group = quality_group
-        self._current_quality_changes_group = None
+        if empty_quality_changes:
+            self._current_quality_changes_group = None
 
         # Set quality and quality_changes for the GlobalStack
         self._global_container_stack.quality = quality_group.node_for_global.getContainer()
@@ -946,7 +947,7 @@ class MachineManager(QObject):
         if preferred_quality_type in available_quality_types:
             quality_type = preferred_quality_type
 
-        self._setQualityGroup(candidate_quality_groups[quality_type], empty_quality_changes = False)
+        self._setQualityGroup(candidate_quality_groups[quality_type], empty_quality_changes = True)
 
     def _updateMaterialWithVariant(self, position: Optional[str]):
         if position is None:
