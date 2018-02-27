@@ -46,6 +46,8 @@ class BlackBeltPlugin(Extension):
         # make sure the we connect to engineCreatedSignal later than PrepareStage does, so we can substitute our own sidebar
         self._application.engineCreatedSignal.connect(self._onEngineCreated)
 
+        self._application.getController().activeViewChanged.connect(self._onActiveViewChanged)
+
     def _onGlobalContainerStackChanged(self):
         if self._global_container_stack:
             self._global_container_stack.propertyChanged.disconnect(self._onSettingValueChanged)
@@ -65,6 +67,8 @@ class BlackBeltPlugin(Extension):
                     containers = ContainerRegistry.getInstance().findContainers(id="blackbelt_normal")
                     if containers:
                         self._global_container_stack.quality = containers[0]
+
+        self._adjustLayerViewNozzle()
 
     def _onSlicingStarted(self):
         self._scene_root.callDecoration("calculateTransformData")
@@ -120,6 +124,23 @@ class BlackBeltPlugin(Extension):
                 expanded_settings += ";%s" % key
         preferences.setValue("cura/categories_expanded", expanded_settings)
         self._application.expandedCategoriesChanged.emit()
+
+    def _onActiveViewChanged(self):
+        self._adjustLayerViewNozzle()
+
+    def _adjustLayerViewNozzle(self):
+        global_stack = Application.getInstance().getGlobalContainerStack()
+        if not global_stack:
+            return
+
+        view = self._application.getController().getActiveView()
+        if view and view.getPluginId() == "SimulationView":
+            gantry_angle = global_stack.getProperty("blackbelt_gantry_angle", "value")
+            if gantry_angle and float(gantry_angle) > 0:
+                view.getNozzleNode().setParent(None)
+            else:
+                view.getNozzleNode().setParent(self._application.getController().getScene().getRoot())
+
 
     def _filterGcode(self, output_device):
         global_stack = Application.getInstance().getGlobalContainerStack()
