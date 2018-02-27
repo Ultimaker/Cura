@@ -41,6 +41,10 @@ TabView
         return linkedMaterials.join(", ");
     }
 
+    function getApproximateDiameter(diameter) {
+        return Math.round(diameter);
+    }
+
     Tab
     {
         title: catalog.i18nc("@title", "Information")
@@ -66,6 +70,34 @@ TabView
 
                 width: base.width
                 property real rowHeight: textField.height + UM.Theme.getSize("default_lining").height
+
+                MessageDialog
+                {
+                    id: confirmDiameterChangeDialog
+
+                    icon: StandardIcon.Question;
+                    title: catalog.i18nc("@title:window", "Confirm Diameter Change")
+                    text: catalog.i18nc("@label (%1 is object name)", "The new material diameter is set to %1 mm, which is not compatible to the current machine. Do you wish to continue?".arg(new_diameter_value))
+                    standardButtons: StandardButton.Yes | StandardButton.No
+                    modality: Qt.ApplicationModal
+
+                    property var new_diameter_value: null;
+                    property var old_diameter_value: null;
+                    property var old_approximate_diameter_value: null;
+
+                    onYes:
+                    {
+                        Cura.ContainerManager.setContainerProperty(base.containerId, "material_diameter", "value", new_diameter_value);
+                        base.setMetaDataEntry("approximate_diameter", old_approximate_diameter_value, getApproximateDiameter(new_diameter_value).toString());
+                        base.setMetaDataEntry("properties/diameter", properties.diameter, new_diameter_value);
+                    }
+
+                    onNo:
+                    {
+                        properties.diameter = old_diameter_value;
+                        diameterSpinBox.value = properties.diameter;
+                    }
+                }
 
                 Label { width: scrollView.columnWidth; height: parent.rowHeight; verticalAlignment: Qt.AlignVCenter; text: catalog.i18nc("@label", "Display Name") }
                 ReadOnlyTextField
@@ -174,14 +206,19 @@ TabView
                         // which derive from the same base_file
                         var old_diameter = Cura.ContainerManager.getContainerProperty(base.containerId, "material_diameter", "value").toString();
                         var old_approximate_diameter = Cura.ContainerManager.getContainerMetaDataEntry(base.containerId, "approximate_diameter");
-                        base.setMetaDataEntry("approximate_diameter", old_approximate_diameter, Math.round(value).toString());
-                        base.setMetaDataEntry("properties/diameter", properties.diameter, value);
-                        var new_approximate_diameter = Cura.ContainerManager.getContainerMetaDataEntry(base.containerId, "approximate_diameter");
+                        var new_approximate_diameter = getApproximateDiameter(value);
                         if (Cura.MachineManager.filterMaterialsByMachine && new_approximate_diameter != Cura.MachineManager.activeMachine.approximateMaterialDiameter)
                         {
-                            Cura.MaterialManager.showMaterialWarningMessage(base.containerId, old_diameter);
+                            confirmDiameterChangeDialog.old_diameter_value = old_diameter;
+                            confirmDiameterChangeDialog.new_diameter_value = value;
+                            confirmDiameterChangeDialog.old_approximate_diameter_value = old_approximate_diameter;
+
+                            confirmDiameterChangeDialog.open()
+                        } else {
+                            Cura.ContainerManager.setContainerProperty(base.containerId, "material_diameter", "value", value);
+                            base.setMetaDataEntry("approximate_diameter", old_approximate_diameter, getApproximateDiameter(value).toString());
+                            base.setMetaDataEntry("properties/diameter", properties.diameter, value);
                         }
-                        Cura.ContainerManager.setContainerProperty(base.containerId, "material_diameter", "value", value);
                     }
                     onValueChanged: updateCostPerMeter()
                 }
