@@ -3,6 +3,8 @@
 
 from typing import Any, TYPE_CHECKING, Optional
 
+from PyQt5.QtCore import pyqtProperty
+
 from UM.Decorators import override
 from UM.MimeTypeDatabase import MimeType, MimeTypeDatabase
 from UM.Settings.ContainerStack import ContainerStack
@@ -48,6 +50,33 @@ class ExtruderStack(CuraContainerStack):
     @classmethod
     def getLoadingPriority(cls) -> int:
         return 3
+
+    ##  Return the filament diameter that the machine requires.
+    #
+    #   If the machine has no requirement for the diameter, -1 is returned.
+    #   \return The filament diameter for the printer
+    @property
+    def materialDiameter(self) -> float:
+        containers_to_check = [self.variant, self.definitionChanges, self.definition]
+
+        for container in containers_to_check:
+            if container is not None:
+                material_diameter = container.getProperty("material_diameter", "value")
+                if material_diameter is not None:
+                    return material_diameter
+        return -1
+
+    ##  Return the approximate filament diameter that the machine requires.
+    #
+    #   The approximate material diameter is the material diameter rounded to
+    #   the nearest millimetre.
+    #
+    #   If the machine has no requirement for the diameter, -1 is returned.
+    #
+    #   \return The approximate filament diameter for the printer
+    @pyqtProperty(float)
+    def approximateMaterialDiameter(self) -> float:
+        return round(float(self.materialDiameter))
 
     ##  Overridden from ContainerStack
     #

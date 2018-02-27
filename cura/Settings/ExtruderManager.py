@@ -179,6 +179,7 @@ class ExtruderManager(QObject):
         self._selected_object_extruders = []
         self.selectedObjectExtrudersChanged.emit()
 
+    @pyqtSlot(result = QObject)
     def getActiveExtruderStack(self) -> Optional["ExtruderStack"]:
         global_container_stack = Application.getInstance().getGlobalContainerStack()
 

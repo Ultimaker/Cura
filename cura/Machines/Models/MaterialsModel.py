@@ -30,7 +30,7 @@ def getAvailableMaterials(extruder_position: Optional[int] = None):
     variant_name = None
     if extruder_stack.variant.getId() != "empty_variant":
         variant_name = extruder_stack.variant.getName()
-    diameter = extruder_stack.getProperty("material_diameter", "value")
+    diameter = extruder_stack.approximateMaterialDiameter
 
     # Fetch the available materials (ContainerNode) for the current active machine and extruder setup.
     result_dict = material_manager.getAvailableMaterials(machine_definition_id, variant_name, diameter)
