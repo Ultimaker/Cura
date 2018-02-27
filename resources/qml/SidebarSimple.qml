@@ -137,7 +137,7 @@ Item
 
                         // Set total available ticks for active slider part
                         if (availableMin != -1) {
-                            qualityModel.availableTotalTicks = availableMax - availableMin
+                            qualityModel.availableTotalTicks = availableMax - availableMin + 1
                         }
 
                         // Calculate slider values
@@ -164,7 +164,7 @@ Item
 
                     function reset () {
                         qualityModel.clear()
-                        qualityModel.availableTotalTicks = -1
+                        qualityModel.availableTotalTicks = 0
                         qualityModel.existingQualityProfile = 0
 
                         // check, the ticks count cannot be less than zero
@@ -273,32 +273,24 @@ Item
                         }
                     }
 
-                    Rectangle {
-                        id: disabledHandleButton
-                        visible: !qualitySlider.visible
-                        anchors.centerIn: parent
-                        color: UM.Theme.getColor("quality_slider_unavailable")
-                        implicitWidth: 10 * screenScaleFactor
-                        implicitHeight: implicitWidth
-                        radius: Math.round(width / 2)
-                    }
-
                     Slider
                     {
                         id: qualitySlider
                         height: UM.Theme.getSize("sidebar_margin").height
                         anchors.bottom: speedSlider.bottom
-                        enabled: qualityModel.availableTotalTicks > 0 && !Cura.SimpleModeSettingsManager.isProfileCustomized
-                        visible: qualityModel.totalTicks > 0
+                        enabled: qualityModel.totalTicks > 0 && !Cura.SimpleModeSettingsManager.isProfileCustomized
+                        visible: qualityModel.availableTotalTicks > 0
                         updateValueWhileDragging : false
 
                         minimumValue: qualityModel.qualitySliderAvailableMin >= 0 ? qualityModel.qualitySliderAvailableMin : 0
-                        maximumValue: qualityModel.qualitySliderAvailableMax >= 0 ? qualityModel.qualitySliderAvailableMax : 0
+                        // maximumValue must be greater than minimumValue to be able to see the handle. While the value is strictly
+                        // speaking not always correct, it seems to have the correct behavior (switching from 0 available to 1 available)
+                        maximumValue: qualityModel.qualitySliderAvailableMax >= 1 ? qualityModel.qualitySliderAvailableMax : 1
                         stepSize: 1
 
                         value: qualityModel.qualitySliderActiveIndex
 
-                        width: qualityModel.qualitySliderStepWidth * qualityModel.availableTotalTicks
+                        width: qualityModel.qualitySliderStepWidth * (qualityModel.availableTotalTicks - 1)
 
                         anchors.right: parent.right
                         anchors.rightMargin: qualityModel.qualitySliderMarginRight
@@ -376,7 +368,7 @@ Item
 
                     text: catalog.i18nc("@label", "Slower")
                     font: UM.Theme.getFont("default")
-                    color: (qualityModel.availableTotalTicks > 0) ? UM.Theme.getColor("quality_slider_available") : UM.Theme.getColor("quality_slider_unavailable")
+                    color: (qualityModel.availableTotalTicks > 1) ? UM.Theme.getColor("quality_slider_available") : UM.Theme.getColor("quality_slider_unavailable")
                     horizontalAlignment: Text.AlignLeft
                 }
 
@@ -387,7 +379,7 @@ Item
 
                     text: catalog.i18nc("@label", "Faster")
                     font: UM.Theme.getFont("default")
-                    color: (qualityModel.availableTotalTicks > 0) ? UM.Theme.getColor("quality_slider_available") : UM.Theme.getColor("quality_slider_unavailable")
+                    color: (qualityModel.availableTotalTicks > 1) ? UM.Theme.getColor("quality_slider_available") : UM.Theme.getColor("quality_slider_unavailable")
                     horizontalAlignment: Text.AlignRight
                 }
 
