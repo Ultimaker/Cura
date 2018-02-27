@@ -240,7 +240,10 @@ Item {
                             width: Math.round(UM.Theme.getSize("setting").height / 2)
                             height: UM.Theme.getSize("setting").height
 
-                            onClicked: addedSettingsModel.setVisible(model.key, false)
+                            onClicked: {
+                                UM.ActiveTool.triggerAction("unsubscribeForSettingValidation", model.key)
+                                addedSettingsModel.setVisible(model.key, false)
+                            }
 
                             style: ButtonStyle
                             {

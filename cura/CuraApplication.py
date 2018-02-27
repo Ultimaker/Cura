@@ -1362,7 +1362,7 @@ class CuraApplication(QtApplication):
             if file_name:
                 job = ReadMeshJob(file_name)
                 job._node = node
-                job.finished.connect(self._reloadMeshFinished)
+                job.finished.connect(node._reloadJobFinished)
                 job.start()
             else:
                 Logger.log("w", "Unable to reload data because we don't have a filename.")
@@ -1490,14 +1490,6 @@ class CuraApplication(QtApplication):
 
     fileLoaded = pyqtSignal(str)
     fileCompleted = pyqtSignal(str)
-
-    def _reloadMeshFinished(self, job):
-        # TODO; This needs to be fixed properly. We now make the assumption that we only load a single mesh!
-        mesh_data = job.getResult()[0].getMeshData()
-        if mesh_data:
-            job._node.setMeshData(mesh_data)
-        else:
-            Logger.log("w", "Could not find a mesh in reloaded node.")
 
     def _openFile(self, filename):
         self.readLocalFile(QUrl.fromLocalFile(filename))
