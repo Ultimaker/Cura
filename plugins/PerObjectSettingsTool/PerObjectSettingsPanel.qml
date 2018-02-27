@@ -241,8 +241,8 @@ Item {
                             height: UM.Theme.getSize("setting").height
 
                             onClicked: {
-                                UM.ActiveTool.triggerAction("unsubscribeForSettingValidation", model.key)
                                 addedSettingsModel.setVisible(model.key, false)
+                                UM.ActiveTool.triggerAction("unsubscribeForSettingValidation", model.key)
                             }
 
                             style: ButtonStyle
