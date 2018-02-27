@@ -18,6 +18,7 @@ from PyQt5.QtQml import qmlRegisterSingletonType
 
 import math
 import os.path
+import re
 
 class BlackBeltPlugin(Extension):
     def __init__(self):
