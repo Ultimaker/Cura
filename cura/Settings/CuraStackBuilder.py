@@ -27,9 +27,9 @@ class CuraStackBuilder:
     def createMachine(cls, name: str, definition_id: str) -> Optional[GlobalStack]:
         from cura.CuraApplication import CuraApplication
         application = CuraApplication.getInstance()
-        variant_manager = CuraApplication.getInstance()._variant_manager
-        material_manager = CuraApplication.getInstance()._material_manager
-        quality_manager = CuraApplication.getInstance()._quality_manager
+        variant_manager = application.getVariantManager()
+        material_manager = application.getMaterialManager()
+        quality_manager = application.getQualityManager()
         registry = ContainerRegistry.getInstance()
 
         definitions = registry.findDefinitionContainers(id = definition_id)
