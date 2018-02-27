@@ -288,7 +288,7 @@ class MachineManager(QObject):
                 Logger.log("w", "Quality type [%s] not found in available qualities [%s]", quality_type, str(quality_groups.values()))
                 return
             new_quality_group = quality_groups[quality_type]
-            self._setQualityGroup(new_quality_group)
+            self._setQualityGroup(new_quality_group, empty_quality_changes = True)
 
     @pyqtSlot(str)
     def setActiveMachine(self, stack_id: str) -> None:

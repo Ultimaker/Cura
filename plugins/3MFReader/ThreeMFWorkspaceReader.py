@@ -1082,11 +1082,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             CuraApplication.getInstance().getMachineManager().activeQualityChanged.emit()
 
         # Actually change the active machine.
-        machine_manager = Application.getInstance().getMachineManager()
-        machine_manager.setActiveMachine(global_stack.getId())
-
-        # Notify everything/one that is to notify about changes.
-        global_stack.containersChanged.emit(global_stack.getTop())
+        CuraApplication.getInstance().callLater(self._updateActiveMachine, global_stack)
 
         # Load all the nodes / meshdata of the workspace
         nodes = self._3mf_mesh_reader.read(file_name)
@@ -1098,6 +1094,14 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             base_file_name = base_file_name[:base_file_name.rfind(".curaproject.3mf")]
         self.setWorkspaceName(base_file_name)
         return nodes
+
+    def _updateActiveMachine(self, global_stack):
+        # Actually change the active machine.
+        machine_manager = Application.getInstance().getMachineManager()
+        machine_manager.setActiveMachine(global_stack.getId())
+
+        # Notify everything/one that is to notify about changes.
+        global_stack.containersChanged.emit(global_stack.getTop())
 
     ##  HACK: Replaces the material container in the given stack with a newly created material container.
     #         This function is used when the user chooses to resolve material conflicts by creating new ones.
