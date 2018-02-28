@@ -61,12 +61,10 @@ class BlackBeltPlugin(Extension):
                 definition_container._definitions.insert(0, definition_container._definitions.pop(len(definition_container._definitions) -1))
 
             # HOTFIX: Make sure the BlackBelt printer has the right quality profile
-            if definition_container.getId() == "blackbelt":
-                quality_container = self._global_container_stack.quality
-                if quality_container.getDefinition().getId() != "blackbelt":
-                    containers = ContainerRegistry.getInstance().findContainers(id="blackbelt_normal")
-                    if containers:
-                        self._global_container_stack.setQuality(containers[0])
+            if definition_container.getId() == "blackbelt" and self._application._machine_manager:
+                extruder_stack = self._application.getMachineManager()._active_container_stack
+                if extruder_stack.quality.getDefinition().getId() != "blackbelt":
+                    extruder_stack.setQualityById("blackbelt_normal")
 
         self._adjustLayerViewNozzle()
 
