@@ -3574,6 +3574,19 @@
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
+                "support_wall_count":
+                {
+                    "label": "Support Wall Line Count",
+                    "description": "The number of walls with which to surround support infill. Adding a wall can make support print more reliably and can support overhangs better, but increases print time and material used.",
+                    "default_value": 1,
+                    "minimum_value": "0",
+                    "minimum_value_warning": "1 if support_pattern == 'concentric' else 0",
+                    "maximum_value_warning": "3",
+                    "type": "int",
+                    "value": "1 if (support_pattern == 'grid' or support_pattern == 'triangles' or support_pattern == 'concentric') else 0",
+                    "limit_to_extruder": "support_infill_extruder_nr",
+                    "settable_per_mesh": true
+                },
                 "zig_zaggify_support":
                 {
                     "label": "Connect Support Lines",
