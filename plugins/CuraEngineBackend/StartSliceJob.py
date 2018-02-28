@@ -110,6 +110,7 @@ class StartSliceJob(Job):
             return
 
         stack = Application.getInstance().getGlobalContainerStack()
+        extruder_stack_id_to_position = {}  # a lookup table because we need the position, not the id.
         if not stack:
             self.setResult(StartJobResult.Error)
             return
@@ -129,7 +130,8 @@ class StartSliceJob(Job):
             self.setResult(StartJobResult.MaterialIncompatible)
             return
 
-        for extruder_stack in ExtruderManager.getInstance().getMachineExtruders(stack.getId()):
+        for position, extruder_stack in stack.extruders.items():
+            extruder_stack_id_to_position[extruder_stack.getId()] = position
             material = extruder_stack.findContainer({"type": "material"})
             if material:
                 if material.getMetaDataEntry("compatible") == False:
@@ -193,11 +195,19 @@ class StartSliceJob(Job):
                         if per_object_stack:
                             is_non_printing_mesh = any(per_object_stack.getProperty(key, "value") for key in NON_PRINTING_MESH_SETTINGS)
 
-                        if node.callDecoration("getBuildPlateNumber") == self._build_plate_number:
-                            if not getattr(node, "_outside_buildarea", False) or is_non_printing_mesh:
-                                temp_list.append(node)
-                                if not is_non_printing_mesh:
-                                    has_printing_mesh = True
+                        # Find a reason not to add the node
+                        if node.callDecoration("getBuildPlateNumber") != self._build_plate_number:
+                            continue
+                        if getattr(node, "_outside_buildarea", False) and is_non_printing_mesh:
+                            continue
+                        node_extruder_id = node.callDecoration("getActiveExtruder")
+                        node_position = extruder_stack_id_to_position.get(node_extruder_id, "0")
+                        if not stack.extruders[str(node_position)].isEnabled:
+                            continue
+
+                        temp_list.append(node)
+                        if not is_non_printing_mesh:
+                            has_printing_mesh = True
 
                     Job.yieldThread()
 
@@ -382,7 +392,7 @@ class StartSliceJob(Job):
     def _buildGlobalInheritsStackMessage(self, stack):
         for key in stack.getAllKeys():
             extruder = int(round(float(stack.getProperty(key, "limit_to_extruder"))))
-            if extruder >= 0: #Set to a specific extruder.
+            if extruder >= 0 and stack.extruders[str(extruder)].isEnabled: #Set to a specific extruder.
                 setting_extruder = self._slice_message.addRepeatedMessage("limit_to_extruder")
                 setting_extruder.name = key
                 setting_extruder.extruder = extruder

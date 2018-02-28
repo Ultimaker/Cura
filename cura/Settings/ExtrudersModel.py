@@ -43,6 +43,7 @@ class ExtrudersModel(UM.Qt.ListModel.ListModel):
 
     # The variant of the extruder.
     VariantRole = Qt.UserRole + 7
+    StackRole = Qt.UserRole + 8
 
     ##  List of colours to display if there is no material or the material has no known
     #   colour.
@@ -62,6 +63,7 @@ class ExtrudersModel(UM.Qt.ListModel.ListModel):
         self.addRoleName(self.DefinitionRole, "definition")
         self.addRoleName(self.MaterialRole, "material")
         self.addRoleName(self.VariantRole, "variant")
+        self.addRoleName(self.StackRole, "stack")
 
         self._update_extruder_timer = QTimer()
         self._update_extruder_timer.setInterval(100)
@@ -188,6 +190,7 @@ class ExtrudersModel(UM.Qt.ListModel.ListModel):
                     "definition": extruder.getBottom().getId(),
                     "material": extruder.material.getName() if extruder.material else "",
                     "variant": extruder.variant.getName() if extruder.variant else "",  # e.g. print core
+                    "stack": extruder,
                 }
 
                 items.append(item)
