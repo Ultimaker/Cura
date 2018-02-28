@@ -3,7 +3,7 @@
 
 from typing import Any, TYPE_CHECKING, Optional
 
-from PyQt5.QtCore import pyqtProperty
+from PyQt5.QtCore import pyqtProperty, pyqtSignal
 
 from UM.Decorators import override
 from UM.MimeTypeDatabase import MimeType, MimeTypeDatabase
@@ -28,8 +28,11 @@ class ExtruderStack(CuraContainerStack):
         super().__init__(container_id, *args, **kwargs)
 
         self.addMetaDataEntry("type", "extruder_train") # For backward compatibility
+        self._enabled = True
 
         self.propertiesChanged.connect(self._onPropertiesChanged)
+
+    enabledChanged = pyqtSignal()
 
     ##  Overridden from ContainerStack
     #
@@ -46,6 +49,14 @@ class ExtruderStack(CuraContainerStack):
     @override(ContainerStack)
     def getNextStack(self) -> Optional["GlobalStack"]:
         return super().getNextStack()
+
+    def setEnabled(self, enabled):
+        self._enabled = enabled
+        self.enabledChanged.emit()
+
+    @pyqtProperty(bool, notify = enabledChanged)
+    def isEnabled(self):
+        return self._enabled
 
     @classmethod
     def getLoadingPriority(cls) -> int:

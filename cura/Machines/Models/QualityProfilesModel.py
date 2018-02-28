@@ -35,6 +35,7 @@ class QualityProfilesModel(ListModel):
         # connect signals
         Application.getInstance().globalContainerStackChanged.connect(self._update)
         Application.getInstance().getMachineManager().activeQualityGroupChanged.connect(self._update)
+        Application.getInstance().getMachineManager().extruderChanged.connect(self._update)
 
         self._quality_manager = Application.getInstance()._quality_manager
         self._quality_manager.qualitiesUpdated.connect(self._update)

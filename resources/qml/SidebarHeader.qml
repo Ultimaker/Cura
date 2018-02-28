@@ -114,6 +114,18 @@ Column
                             Behavior on color { ColorAnimation { duration: 50; } }
                         }
 
+                        function buttonColor(index) {
+                            var extruder = Cura.MachineManager.getExtruder(index);
+                            if (extruder.isEnabled) {
+                                return (
+                                    control.checked || control.pressed) ? UM.Theme.getColor("action_button_active_text") :
+                                    control.hovered ? UM.Theme.getColor("action_button_hovered_text") :
+                                    UM.Theme.getColor("action_button_text");
+                            } else {
+                                return UM.Theme.getColor("action_button_disabled");
+                            }
+                        }
+
                         Item
                         {
                             id: extruderButtonFace
@@ -131,9 +143,7 @@ Column
                                 anchors.verticalCenter: parent.verticalCenter
                                 anchors.left: parent.left
 
-                                color: (control.checked || control.pressed) ? UM.Theme.getColor("action_button_active_text") :
-                                       control.hovered ? UM.Theme.getColor("action_button_hovered_text") :
-                                       UM.Theme.getColor("action_button_text")
+                                color: buttonColor(index)
 
                                 font: UM.Theme.getFont("large_nonbold")
                                 text: catalog.i18nc("@label", "Extruder")
@@ -176,9 +186,7 @@ Column
                                     id: extruderNumberText
                                     anchors.centerIn: parent
                                     text: index + 1;
-                                    color: (control.checked || control.pressed) ? UM.Theme.getColor("action_button_active_text") :
-                                           control.hovered ? UM.Theme.getColor("action_button_hovered_text") :
-                                           UM.Theme.getColor("action_button_text")
+                                    color: buttonColor(index)
                                     font: UM.Theme.getFont("default_bold")
                                 }
 

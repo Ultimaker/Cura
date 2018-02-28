@@ -67,10 +67,8 @@ Item
 
                 Connections
                 {
-                    target: Cura.MachineManager
-                    onActiveQualityChanged: qualityModel.update()
-                    onActiveMaterialChanged: qualityModel.update()
-                    onActiveVariantChanged: qualityModel.update()
+                    target: Cura.QualityProfilesModel
+                    onItemsChanged: qualityModel.update()
                 }
 
                 Connections {

@@ -200,8 +200,21 @@ UM.MainWindow
 
                         MenuItem {
                             text: catalog.i18nc("@action:inmenu", "Set as Active Extruder")
-                            onTriggered: Cura.ExtruderManager.setActiveExtruderIndex(model.index)
+                            onTriggered: Cura.MachineManager.setExtruderIndex(model.index)
                         }
+
+                        MenuItem {
+                            text: catalog.i18nc("@action:inmenu", "Enable Extruder")
+                            onTriggered: Cura.MachineManager.setExtruderEnabled(model.index, true)
+                            visible: !Cura.MachineManager.getExtruder(model.index).isEnabled
+                        }
+
+                        MenuItem {
+                            text: catalog.i18nc("@action:inmenu", "Disable Extruder")
+                            onTriggered: Cura.MachineManager.setExtruderEnabled(model.index, false)
+                            visible: Cura.MachineManager.getExtruder(model.index).isEnabled
+                        }
+
                     }
                     onObjectAdded: settingsMenu.insertItem(index, object)
                     onObjectRemoved: settingsMenu.removeItem(object)
