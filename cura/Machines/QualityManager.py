@@ -378,7 +378,7 @@ class QualityManager(QObject):
 
         return quality_group_dict
 
-    def getQualityGroupsForMachineDefinition(self, machine: str) -> dict:
+    def getQualityGroupsForMachineDefinition(self, machine: "GlobalStack") -> dict:
         # Get machine definition ID for quality search
         machine_definition_id = getMachineDefinitionIDForQualitySearch(machine)
 
