@@ -69,7 +69,6 @@ Item
     property alias configureSettingVisibility: configureSettingVisibilityAction
 
     property alias browsePlugins: browsePluginsAction
-    property alias configurePlugins: configurePluginsAction
 
     UM.I18nCatalog{id: catalog; name:"cura"}
 
