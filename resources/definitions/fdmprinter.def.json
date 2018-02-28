@@ -2169,6 +2169,16 @@
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
+                "limit_support_retractions":
+                {
+                    "label": "Limit Support Retractions",
+                    "description": "Omit retraction when moving from support to support in a straight line. Enabling this setting saves print time, but can lead to excesive stringing within the support structure.",
+                    "type": "bool",
+                    "default_value": true,
+                    "enabled": "retraction_enable and support_enable",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
+                },
                 "material_standby_temperature":
                 {
                     "label": "Standby Temperature",
