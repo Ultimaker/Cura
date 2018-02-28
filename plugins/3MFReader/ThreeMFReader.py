@@ -22,7 +22,7 @@ from cura.Scene.CuraSceneNode import CuraSceneNode
 from cura.Scene.BuildPlateDecorator import BuildPlateDecorator
 from cura.Scene.SliceableObjectDecorator import SliceableObjectDecorator
 from cura.Scene.ZOffsetDecorator import ZOffsetDecorator
-from cura.Machines.MachineTools import getMachineDefinitionIDForQualitySearch
+from cura.Machines.QualityManager import getMachineDefinitionIDForQualitySearch
 
 MYPY = False
 

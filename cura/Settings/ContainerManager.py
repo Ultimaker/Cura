@@ -29,7 +29,7 @@ from UM.i18n import i18nCatalog
 
 from cura.Settings.ExtruderManager import ExtruderManager
 from cura.Settings.ExtruderStack import ExtruderStack
-from cura.Machines.MachineTools import getMachineDefinitionIDForQualitySearch
+from cura.Machines.QualityManager import getMachineDefinitionIDForQualitySearch
 
 catalog = i18nCatalog("cura")
 

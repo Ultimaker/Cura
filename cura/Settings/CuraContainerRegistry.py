@@ -28,7 +28,7 @@ from . import GlobalStack
 from .ExtruderManager import ExtruderManager
 
 from cura.CuraApplication import CuraApplication
-from cura.Machines.MachineTools import getMachineDefinitionIDForQualitySearch
+from cura.Machines.QualityManager import getMachineDefinitionIDForQualitySearch
 
 from UM.i18n import i18nCatalog
 catalog = i18nCatalog("cura")

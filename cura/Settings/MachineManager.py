@@ -24,7 +24,7 @@ from UM.Settings.InstanceContainer import InstanceContainer
 from UM.Settings.SettingFunction import SettingFunction
 from UM.Signal import postponeSignals, CompressTechnique
 
-from cura.Machines.MachineTools import getMachineDefinitionIDForQualitySearch
+from cura.Machines.QualityManager import getMachineDefinitionIDForQualitySearch
 
 from cura.PrinterOutputDevice import PrinterOutputDevice
 from cura.Settings.ExtruderManager import ExtruderManager
