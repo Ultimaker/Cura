@@ -1807,6 +1807,30 @@
                     "limit_to_extruder": "infill_extruder_nr",
                     "settable_per_mesh": true
                 },
+                "infill_support_enabled":
+                {
+                    "label": "Infill Support",
+                    "description": "Print infill structures only where tops of the model should be supported. Enabling this reduces print time and material usage, but leads to ununiform object strength.",
+                    "type": "bool",
+                    "default_value": false,
+                    "enabled": "infill_sparse_density > 0",
+                    "limit_to_extruder": "infill_extruder_nr",
+                    "settable_per_mesh": true
+                },
+                "infill_support_angle":
+                {
+                    "label": "Infill Overhang Angle",
+                    "description": "The minimum angle of internal overhangs for which infill is added. At a value of 0° objects are totally filled with infill, 90° will not provide any infill.",
+                    "unit": "°",
+                    "type": "float",
+                    "minimum_value": "0",
+                    "minimum_value_warning": "2",
+                    "maximum_value": "90",
+                    "default_value": 40,
+                    "enabled": "infill_sparse_density > 0 and infill_support_enabled",
+                    "limit_to_extruder": "infill_extruder_nr",
+                    "settable_per_mesh": true
+                },
                 "skin_preshrink":
                 {
                     "label": "Skin Removal Width",
