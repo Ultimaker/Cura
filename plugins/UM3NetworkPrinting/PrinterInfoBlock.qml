@@ -264,6 +264,7 @@ Rectangle
                                     case "wait_for_configuration":
                                         return catalog.i18nc("@label:status", "Reserved")
                                     case "wait_cleanup":
+                                    case "wait_user_action":
                                         return catalog.i18nc("@label:status", "Finished")
                                     case "pre_print":
                                     case "sent_to_printer":
@@ -278,6 +279,7 @@ Rectangle
                                     case "aborted":
                                         return catalog.i18nc("@label:status", "Print aborted");
                                     default:
+                                        // If print job has unknown status show printer.status
                                         return printerStatusText(printer);
                                 }
                             }

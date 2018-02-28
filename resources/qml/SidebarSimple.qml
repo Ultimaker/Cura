@@ -522,8 +522,7 @@ Item
                         // Update the slider value to represent the rounded value
                         infillSlider.value = roundedSliderValue
 
-                        // Explicitly cast to string to make sure the value passed to Python is an integer.
-                        infillDensity.setPropertyValue("value", String(roundedSliderValue))
+                        Cura.MachineManager.setSettingForAllExtruders("infill_sparse_density", "value", roundedSliderValue)
                     }
 
                     style: SliderStyle
@@ -653,14 +652,20 @@ Item
 
                         onClicked: {
                             // Set to 90% only when enabling gradual infill
+                            var newInfillDensity;
                             if (parseInt(infillSteps.properties.value) == 0) {
                                 previousInfillDensity = parseInt(infillDensity.properties.value)
-                                infillDensity.setPropertyValue("value", String(90))
+                                newInfillDensity = 90;
                             } else {
-                                infillDensity.setPropertyValue("value", String(previousInfillDensity))
+                                newInfillDensity = previousInfillDensity;
                             }
+                            Cura.MachineManager.setSettingForAllExtruders("infill_sparse_density", "value", String(newInfillDensity))
 
-                            infillSteps.setPropertyValue("value", (parseInt(infillSteps.properties.value) == 0) ? 5 : 0)
+                            var infill_steps_value = 0;
+                            if (parseInt(infillSteps.properties.value) == 0)
+                                infill_steps_value = 5;
+
+                            Cura.MachineManager.setSettingForAllExtruders("gradual_infill_steps", "value", infill_steps_value)
                         }
 
                         onEntered: {

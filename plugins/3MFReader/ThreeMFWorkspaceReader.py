@@ -827,7 +827,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             return
 
         ## In case there is a new machine and once the extruders are created, the global stack is added to the registry,
-        # otherwise the accContainers function in CuraContainerRegistry will create an extruder stack and then creating
+        # otherwise the addContainers function in CuraContainerRegistry will create an extruder stack and then creating
         # useless files
         if self._resolve_strategies["machine"] == "new":
             self._container_registry.addContainer(global_stack)
@@ -936,6 +936,34 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                         new_quality_container = containers[0]
                         extruder_stack.quality = new_quality_container
                         global_stack.quality = new_quality_container
+
+                # Now we are checking if the quality in the extruder stacks is the same as in the global. In other case,
+                # the quality is set to be the same.
+                definition_id = global_stack.definition.getId()
+                definition_id = global_stack.definition.getMetaDataEntry("quality_definition", definition_id)
+                if not parseBool(global_stack.getMetaDataEntry("has_machine_quality", "False")):
+                    definition_id = "fdmprinter"
+
+                for extruder_stack in extruder_stacks_in_use:
+
+                    # If the quality is different in the stacks, then the quality in the global stack is trusted
+                    if extruder_stack.quality.getMetaDataEntry("quality_type") != global_stack.quality.getMetaDataEntry("quality_type"):
+                        search_criteria = {"id": global_stack.quality.getId(),
+                                           "type": "quality",
+                                           "definition": definition_id}
+                        if global_stack.getMetaDataEntry("has_machine_materials") and extruder_stack.material.getId() not in ("empty", "empty_material"):
+                            search_criteria["material"] = extruder_stack.material.getId()
+                        containers = self._container_registry.findInstanceContainers(**search_criteria)
+                        if containers:
+                            extruder_stack.quality = containers[0]
+                            extruder_stack.qualityChanges = empty_quality_changes_container
+                        else:
+                            Logger.log("e", "Cannot find a suitable quality for extruder [%s].", extruder_stack.getId())
+
+                        quality_has_been_changed = True
+
+                    else:
+                        Logger.log("i", "The quality is the same for the global and the extruder stack [%s]", global_stack.quality.getId())
 
         # Replacing the old containers if resolve is "new".
         # When resolve is "new", some containers will get renamed, so all the other containers that reference to those

@@ -1,6 +1,6 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
-
+from UM.Math.Vector import Vector
 from UM.Tool import Tool
 from PyQt5.QtCore import Qt, QUrl
 from UM.Application import Application
@@ -41,6 +41,9 @@ class SupportEraser(Tool):
         mesh = MeshBuilder()
         mesh.addCube(10,10,10)
         node.setMeshData(mesh.build())
+        # Place the cube in the platform. Do it manually so it works if the "automatic drop models" is OFF
+        move_vector = Vector(0, 5, 0)
+        node.setPosition(move_vector)
 
         active_build_plate = Application.getInstance().getBuildPlateModel().activeBuildPlate
 

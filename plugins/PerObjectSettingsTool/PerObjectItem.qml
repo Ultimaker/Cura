@@ -25,7 +25,20 @@ UM.TooltipArea
 
         onClicked:
         {
-            addedSettingsModel.setVisible(model.key, checked);
+            // Important first set visible and then subscribe
+            // otherwise the setting is not yet in list
+            // For unsubscribe is important first remove the subscription and then
+            // set as invisible
+            if(checked)
+            {
+                addedSettingsModel.setVisible(model.key, checked);
+                UM.ActiveTool.triggerAction("subscribeForSettingValidation", model.key)
+            }
+            else
+            {
+                UM.ActiveTool.triggerAction("unsubscribeForSettingValidation", model.key)
+                addedSettingsModel.setVisible(model.key, checked);
+            }
             UM.ActiveTool.forceUpdate();
         }
     }
