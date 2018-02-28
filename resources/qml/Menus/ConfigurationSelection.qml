@@ -2,126 +2,99 @@
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.7
-import QtQuick.Controls 2.0
+import QtQuick.Controls 1.4
+import QtQuick.Controls 2.3 as QQC2
+import QtQuick.Layouts 1.1
+import QtQuick.Controls.Styles 1.4
 
 import UM 1.2 as UM
 import Cura 1.0 as Cura
 
-ComboBox
+Item
 {
-    id: control
-
+    id: configurationSelector
     property var panelWidth: control.width
-
-    model: ListModel {
-
-        ListElement {
-            name: "Configuration 1"
-            color: "yellow"
-        }
-        ListElement {
-            name: "Configuration 2"
-            color: "black"
-        }
-        ListElement {
-            name: "Configuration 3"
-            color: "green"
-        }
-        ListElement {
-            name: "Configuration 4"
-            color: "red"
-        }
-    }
-
-    textRole: "name"
-
-    indicator: UM.RecolorImage
+    property var panelVisible: false
+    Button
     {
-        id: downArrow
-        x: control.width - width - control.rightPadding
-        y: control.topPadding + Math.round((control.availableHeight - height) / 2)
+        text: "SYNC"
+        width: parent.width
+        height: parent.height
 
-        source: UM.Theme.getIcon("arrow_bottom")
-        width: UM.Theme.getSize("standard_arrow").width
-        height: UM.Theme.getSize("standard_arrow").height
-        sourceSize.width: width + 5 * screenScaleFactor
-        sourceSize.height: width + 5 * screenScaleFactor
-
-        color: UM.Theme.getColor("setting_control_text");
-    }
-
-    background: Rectangle
-    {
-        color:
+        style: ButtonStyle
         {
-            if (!enabled)
+            background: Rectangle
             {
-                return UM.Theme.getColor("setting_control_disabled");
+                color:
+                {
+                    if(control.pressed)
+                    {
+                        return UM.Theme.getColor("sidebar_header_active");
+                    }
+                    else if(control.hovered)
+                    {
+                        return UM.Theme.getColor("sidebar_header_hover");
+                    }
+                    else
+                    {
+                        return UM.Theme.getColor("sidebar_header_bar");
+                    }
+                }
+                Behavior on color { ColorAnimation { duration: 50; } }
+
+                UM.RecolorImage
+                {
+                    id: downArrow
+                    anchors.verticalCenter: parent.verticalCenter
+                    anchors.right: parent.right
+                    anchors.rightMargin: UM.Theme.getSize("default_margin").width
+                    width: UM.Theme.getSize("standard_arrow").width
+                    height: UM.Theme.getSize("standard_arrow").height
+                    sourceSize.width: width
+                    sourceSize.height: width
+                    color: UM.Theme.getColor("text_emphasis")
+                    source: UM.Theme.getIcon("arrow_bottom")
+                }
+                Label
+                {
+                    id: sidebarComboBoxLabel
+                    color: UM.Theme.getColor("sidebar_header_text_active")
+                    text: control.text
+                    elide: Text.ElideRight
+                    anchors.left: parent.left
+                    anchors.leftMargin: UM.Theme.getSize("default_margin").width * 2
+                    anchors.right: downArrow.left
+                    anchors.rightMargin: control.rightMargin
+                    anchors.verticalCenter: parent.verticalCenter;
+                    font: UM.Theme.getFont("large")
+                }
             }
-            if (control.hovered || control.activeFocus)
-            {
-                return UM.Theme.getColor("setting_control_highlight");
-            }
-            return UM.Theme.getColor("setting_control");
+            label: Label {}
         }
-        border.width: UM.Theme.getSize("default_lining").width
-        border.color:
+
+        onClicked:
         {
-            if (!enabled)
-            {
-                return UM.Theme.getColor("setting_control_disabled_border")
-            }
-            if (control.hovered || control.activeFocus)
-            {
-                return UM.Theme.getColor("setting_control_border_highlight")
-            }
-            return UM.Theme.getColor("setting_control_border")
+            panelVisible = !panelVisible
         }
     }
 
-    contentItem: Label
+    QQC2.Popup
     {
-        anchors.verticalCenter: parent.verticalCenter
-        anchors.left: parent.left
-        anchors.leftMargin: UM.Theme.getSize("setting_unit_margin").width
-        anchors.right: downArrow.left
-        rightPadding: swatch.width + UM.Theme.getSize("setting_unit_margin").width
-
-        text: "HOLA"
-        renderType: Text.NativeRendering
-        font: UM.Theme.getFont("default")
-        color: enabled ? UM.Theme.getColor("setting_control_text") : UM.Theme.getColor("setting_control_disabled_text")
-
-        elide: Text.ElideRight
-        verticalAlignment: Text.AlignVCenter
-    }
-
-    popup: Popup {
-        y: control.height - UM.Theme.getSize("default_lining").height
-        x: control.width - width
+        id: popup
+        y: configurationSelector.height - UM.Theme.getSize("default_lining").height
+        x: configurationSelector.width - width
         width: panelWidth
-        implicitHeight: contentItem.implicitHeight
+        height: 300 //contentItem.height
+        visible: panelVisible
         padding: UM.Theme.getSize("default_lining").width
 
-        contentItem: ListView {
-            clip: true
-            implicitHeight: contentHeight
-            model: control.popup.visible ? control.delegateModel : null
-            currentIndex: control.highlightedIndex
-
-            ScrollIndicator.vertical: ScrollIndicator { }
+        contentItem: ConfigurationListView {
+            width: panelWidth - 2 * UM.Theme.getSize("default_lining").width
         }
 
         background: Rectangle {
             color: UM.Theme.getColor("setting_control")
             border.color: UM.Theme.getColor("setting_control_border")
         }
-    }
-
-    delegate: ConfigurationItem
-    {
-        width: panelWidth - 2 * UM.Theme.getSize("default_lining").width
-        height: control.height - 2 * UM.Theme.getSize("default_lining").height
-        highlighted: control.highlightedIndex == index
     }
 }

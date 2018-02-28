@@ -7,39 +7,82 @@ import QtQuick.Controls 2.0
 import UM 1.2 as UM
 import Cura 1.0 as Cura
 
-ItemDelegate
+Rectangle
 {
-    contentItem: Label
+    id: configurationItem
+
+    property var printer: null
+    signal configurationSelected()
+
+    anchors.leftMargin: 25
+    border.width: UM.Theme.getSize("default_lining").width
+    border.color: "black"
+
+    Rectangle
     {
-        text: model.name
-        renderType: Text.NativeRendering
-        color: UM.Theme.getColor("setting_control_text")
-        font: UM.Theme.getFont("default")
-        elide: Text.ElideRight
-        verticalAlignment: Text.AlignVCenter
-        rightPadding: swatch.width + UM.Theme.getSize("setting_unit_margin").width
+        id: printerInformation
 
-        background: Rectangle
+        Label
         {
-            id: swatch
-            height: Math.round(UM.Theme.getSize("setting_control").height / 2)
-            width: height
-
-            anchors.right: parent.right
-            anchors.verticalCenter: parent.verticalCenter
-            anchors.margins: Math.round(UM.Theme.getSize("default_margin").width / 4)
-
-            border.width: UM.Theme.getSize("default_lining").width
-            border.color: enabled ? UM.Theme.getColor("setting_control_border") : UM.Theme.getColor("setting_control_disabled_border")
-            radius: Math.round(width / 2)
-
-            color: model.color
+            text: printer.name
         }
     }
 
-    background: Rectangle
+    Rectangle
     {
-        color: parent.highlighted ? UM.Theme.getColor("setting_control_highlight") : "transparent"
-        border.color: parent.highlighted ? UM.Theme.getColor("setting_control_border_highlight") : "transparent"
+        id: extruderInformation
+
+        Row
+        {
+            id: extrudersRow
+
+            Repeater
+            {
+                model: printer.extruders
+                delegate: Item
+                {
+                    id: extruderInfo
+
+                    width: Math.round(parent.width / 2)
+                    height: childrenRect.height
+                    Label
+                    {
+                        id: materialLabel
+                        text: modelData.activeMaterial != null ? modelData.activeMaterial.name : ""
+                        elide: Text.ElideRight
+                        width: parent.width
+                        font: UM.Theme.getFont("very_small")
+                    }
+                    Label
+                    {
+                        id: printCoreLabel
+                        text: modelData.hotendID
+                        anchors.top: materialLabel.bottom
+                        elide: Text.ElideRight
+                        width: parent.width
+                        font: UM.Theme.getFont("very_small")
+                        opacity: 0.5
+                    }
+                }
+            }
+        }
+    }
+
+//    Rectangle
+//    {
+//        id: buildplateInformation
+//
+//        Label
+//        {
+//            text: printer.name + "-" + printer.type
+//        }
+//    }
+
+    MouseArea
+    {
+        id: mouse
+        anchors.fill: parent
+        onClicked: configurationSelected()
+        hoverEnabled: true
     }
 }
