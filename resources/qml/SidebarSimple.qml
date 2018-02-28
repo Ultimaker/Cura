@@ -524,6 +524,8 @@ Item
 
                         // Explicitly cast to string to make sure the value passed to Python is an integer.
                         infillDensity.setPropertyValue("value", String(roundedSliderValue))
+
+                        Cura.MachineManager.setSettingForAllExtruders("infill_sparse_density", "value", roundedSliderValue)
                     }
 
                     style: SliderStyle
@@ -656,11 +658,19 @@ Item
                             if (parseInt(infillSteps.properties.value) == 0) {
                                 previousInfillDensity = parseInt(infillDensity.properties.value)
                                 infillDensity.setPropertyValue("value", String(90))
+                                Cura.MachineManager.setSettingForAllExtruders("infill_sparse_density", "value", String(90))
                             } else {
                                 infillDensity.setPropertyValue("value", String(previousInfillDensity))
+                                Cura.MachineManager.setSettingForAllExtruders("infill_sparse_density", "value", String(previousInfillDensity))
                             }
 
-                            infillSteps.setPropertyValue("value", (parseInt(infillSteps.properties.value) == 0) ? 5 : 0)
+                            var infill_steps_value = 0;
+                            if (parseInt(infillSteps.properties.value) == 0)
+                                infill_steps_value = 5;
+
+                            infillSteps.setPropertyValue("value", infill_steps_value)
+
+                            Cura.MachineManager.setSettingForAllExtruders("gradual_infill_steps", "value", infill_steps_value)
                         }
 
                         onEntered: {
