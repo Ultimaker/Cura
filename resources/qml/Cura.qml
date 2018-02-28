@@ -254,7 +254,6 @@ UM.MainWindow
                 title: catalog.i18nc("@title:menu menubar:toplevel", "P&lugins")
 
                 MenuItem { action: Cura.Actions.browsePlugins }
-                MenuItem { action: Cura.Actions.configurePlugins }
             }
 
             Menu

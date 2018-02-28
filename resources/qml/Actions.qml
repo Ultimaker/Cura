@@ -427,13 +427,6 @@ Item
 
     Action
     {
-        id: configurePluginsAction
-        text: catalog.i18nc("@action:menu", "Installed plugins...");
-        iconName: "plugins_configure"
-    }
-
-    Action
-    {
         id: expandSidebarAction;
         text: catalog.i18nc("@action:inmenu menubar:view","Expand/Collapse Sidebar");
         shortcut: "Ctrl+E";
