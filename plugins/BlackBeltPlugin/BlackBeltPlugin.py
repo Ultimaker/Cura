@@ -66,12 +66,25 @@ class BlackBeltPlugin(Extension):
                 if quality_container.getDefinition().getId() != "blackbelt":
                     containers = ContainerRegistry.getInstance().findContainers(id="blackbelt_normal")
                     if containers:
-                        self._global_container_stack.quality = containers[0]
+                        self._global_container_stack.setQuality(containers[0])
 
         self._adjustLayerViewNozzle()
 
     def _onSlicingStarted(self):
         self._scene_root.callDecoration("calculateTransformData")
+
+    def _onActiveVariantChanged(self):
+        # HOTFIX: copy extruder variant to global stack
+        if not self._global_container_stack:
+            return
+
+        definition_container = self._global_container_stack.getBottom()
+        if definition_container.getId() != "blackbelt":
+            return
+
+        variant_id = self._application.getMachineManager().activeVariantId
+        if self._global_container_stack.variant.getId() != variant_id:
+            self._global_container_stack.setVariantById(variant_id)
 
     def _onSettingValueChanged(self, key, property_name):
         if property_name != "value" or not self._global_container_stack.hasProperty("blackbelt_gantry_angle", "value"):
@@ -84,6 +97,8 @@ class BlackBeltPlugin(Extension):
             self._application.globalContainerStackChanged.emit()
 
     def _onEngineCreated(self):
+        self._application.getMachineManager().activeVariantChanged.connect(self._onActiveVariantChanged)
+
         # Set window title
         self._application._engine.rootObjects()[0].setTitle(i18n_catalog.i18nc("@title:window","BlackBelt Cura"))
 
