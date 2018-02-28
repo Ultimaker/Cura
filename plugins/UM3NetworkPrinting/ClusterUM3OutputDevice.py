@@ -381,8 +381,6 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
             extruder.updateHotendID(extruder_data.get("print_core_id", ""))
 
             material_data = extruder_data["material"]
-
-            print()
             if extruder.activeMaterial is None or extruder.activeMaterial.guid != material_data["guid"]:
                 containers = ContainerRegistry.getInstance().findInstanceContainers(type="material",
                                                                                     GUID=material_data["guid"])
