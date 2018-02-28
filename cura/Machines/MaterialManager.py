@@ -6,28 +6,8 @@ from PyQt5.Qt import QTimer, QObject, pyqtSignal
 from UM.Logger import Logger
 from UM.Settings import ContainerRegistry
 
-from cura.Machines.ContainerNode import ContainerNode
-
-
-class MaterialGroup:
-    __slots__ = ("name", "root_material_node", "derived_material_node_list")
-
-    def __init__(self, name: str):
-        self.name = name
-        self.root_material_node = None
-        self.derived_material_node_list = []
-
-    def __str__(self) -> str:
-        return "%s[%s]" % (self.__class__.__name__, self.name)
-
-
-class MaterialNode(ContainerNode):
-    __slots__ = ("material_map", "children_map")
-
-    def __init__(self, metadata: Optional[dict] = None):
-        super().__init__(metadata = metadata)
-        self.material_map = {}
-        self.children_map = {}
+from .MaterialNode import MaterialNode
+from .MaterialGroup import MaterialGroup
 
 
 class MaterialManager(QObject):
