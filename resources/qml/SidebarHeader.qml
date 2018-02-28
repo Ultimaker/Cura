@@ -71,16 +71,7 @@ Column
             anchors.right: parent.right
             style: UM.Theme.styles.sidebar_header_button
             activeFocusOnPress: true;
-            menu: Menu {
-                MenuItem
-                {
-                    text: "Printer type 1"
-                }
-                MenuItem
-                {
-                    text: "Printer type 2"
-                }
-            }
+            menu: PrinterTypeMenu { }
         }
     }
 

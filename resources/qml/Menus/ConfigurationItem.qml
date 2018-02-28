@@ -33,7 +33,7 @@ ItemDelegate
             border.color: enabled ? UM.Theme.getColor("setting_control_border") : UM.Theme.getColor("setting_control_disabled_border")
             radius: Math.round(width / 2)
 
-            color: control.model.getItem(index).color
+            color: model.color
         }
     }
 

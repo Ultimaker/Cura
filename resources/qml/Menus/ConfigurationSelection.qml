@@ -13,7 +13,25 @@ ComboBox
 
     property var panelWidth: control.width
 
-    model: Cura.ExtrudersModel { }
+    model: ListModel {
+
+        ListElement {
+            name: "Configuration 1"
+            color: "yellow"
+        }
+        ListElement {
+            name: "Configuration 2"
+            color: "black"
+        }
+        ListElement {
+            name: "Configuration 3"
+            color: "green"
+        }
+        ListElement {
+            name: "Configuration 4"
+            color: "red"
+        }
+    }
 
     textRole: "name"
 
@@ -85,7 +103,7 @@ ComboBox
         implicitHeight: contentItem.implicitHeight
         padding: UM.Theme.getSize("default_lining").width
 
-        contentItem: GridView {
+        contentItem: ListView {
             clip: true
             implicitHeight: contentHeight
             model: control.popup.visible ? control.delegateModel : null
@@ -103,7 +121,7 @@ ComboBox
     delegate: ConfigurationItem
     {
         width: panelWidth - 2 * UM.Theme.getSize("default_lining").width
-        height: control.height
+        height: control.height - 2 * UM.Theme.getSize("default_lining").height
         highlighted: control.highlightedIndex == index
     }
 }
