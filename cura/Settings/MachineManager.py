@@ -52,6 +52,8 @@ class MachineManager(QObject):
         self._current_quality_group = None
         self._current_quality_changes_group = None
 
+        self._default_extruder_position = "0"  # to be updated when extruders are switched on and off
+
         self.machine_extruder_material_update_dict = collections.defaultdict(list)
 
         self._error_check_timer = QTimer()
@@ -696,6 +698,39 @@ class MachineManager(QObject):
         if containers:
             return containers[0].definition.getId()
 
+    ##  Update extruder number to a valid value when the number of extruders are changed, or when an extruder is changed
+    def correctExtruderSettings(self):
+        definition_changes_container = self._global_container_stack.definitionChanges
+        extruder_count = definition_changes_container.getProperty("machine_extruder_count", "value")
+
+        # reset all extruder number settings whose value is no longer valid
+        for setting_instance in self._global_container_stack.userChanges.findInstances():
+            setting_key = setting_instance.definition.key
+            if not self._global_container_stack.getProperty(setting_key, "type") in ("extruder", "optional_extruder"):
+                continue
+
+            old_value = self._global_container_stack.userChanges.getProperty(setting_key, "value")
+            if int(old_value) >= extruder_count:
+                self._global_container_stack.userChanges.removeInstance(setting_key)
+                Logger.log("d", "Reset [%s] because its old value [%s] is no longer valid", setting_key, old_value)
+            if not self._global_container_stack.extruders[str(old_value)].isEnabled:
+                self._global_container_stack.userChanges.removeInstance(setting_key)
+                Logger.log("d", "Reset [%s] because its old value [%s] is no longer valid (2)", setting_key, old_value)
+
+        for setting_key in self._global_container_stack.definition.getAllKeys():
+            if not self._global_container_stack.getProperty(setting_key, "type") in ("extruder", "optional_extruder"):
+                continue
+            if setting_key == "support_infill_extruder_nr":
+                print("asdf")
+            current_value = self._global_container_stack.getProperty(setting_key, "value")
+            if current_value is None:
+                continue
+            if current_value == "-1":
+                continue
+            if not self._global_container_stack.extruders[str(current_value)].isEnabled:
+                self._global_container_stack.userChanges.setProperty(setting_key, "value", str(self._default_extruder_position))
+                Logger.log("d", "Change [%s] to [%s] because its value [%s] is not valid", setting_key, self._default_extruder_position, current_value)
+
     ##  Set the amount of extruders on the active machine (global stack)
     #   \param extruder_count int the number of extruders to set
     def setActiveMachineExtruderCount(self, extruder_count):
@@ -709,16 +744,10 @@ class MachineManager(QObject):
         if extruder_count == previous_extruder_count:
             return
 
-        # reset all extruder number settings whose value is no longer valid
-        for setting_instance in self._global_container_stack.userChanges.findInstances():
-            setting_key = setting_instance.definition.key
-            if not self._global_container_stack.getProperty(setting_key, "type") in ("extruder", "optional_extruder"):
-                continue
+        definition_changes_container.setProperty("machine_extruder_count", "value", extruder_count)
 
-            old_value = int(self._global_container_stack.userChanges.getProperty(setting_key, "value"))
-            if old_value >= extruder_count:
-                self._global_container_stack.userChanges.removeInstance(setting_key)
-                Logger.log("d", "Reset [%s] because its old value [%s] is no longer valid ", setting_key, old_value)
+        self.updateDefaultExtruder()
+        self.correctExtruderSettings()
 
         # Check to see if any objects are set to print with an extruder that will no longer exist
         root_node = Application.getInstance().getController().getScene().getRoot()
@@ -728,8 +757,6 @@ class MachineManager(QObject):
 
                 if extruder_nr is not None and int(extruder_nr) > extruder_count - 1:
                     node.callDecoration("setActiveExtruder", extruder_manager.getExtruderStack(extruder_count - 1).getId())
-
-        definition_changes_container.setProperty("machine_extruder_count", "value", extruder_count)
 
         # Make sure one of the extruder stacks is active
         extruder_manager.setActiveExtruderIndex(0)
@@ -765,11 +792,26 @@ class MachineManager(QObject):
             extruder = self._global_container_stack.extruders.get(str(position))
         return extruder
 
+    def updateDefaultExtruder(self):
+        extruder_items = sorted(self._global_container_stack.extruders.items())
+        new_default_position = "0"
+        for position, extruder in extruder_items:
+            if extruder.isEnabled:
+                new_default_position = position
+                break
+        self._default_extruder_position = new_default_position
+
+    @pyqtProperty(str, notify = extruderChanged)
+    def defaultExtruderPosition(self):
+        return self._default_extruder_position
+
     @pyqtSlot(int, bool)
     def setExtruderEnabled(self, position: int, enabled) -> None:
         extruder = self.getExtruder(position)
         extruder.setEnabled(enabled)
-
+        if enabled == False:
+            self.updateDefaultExtruder()
+            self.correctExtruderSettings()
         self.extruderChanged.emit()
 
     def _onMachineNameChanged(self):

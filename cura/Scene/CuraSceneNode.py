@@ -1,9 +1,12 @@
+# Copyright (c) 2018 Ultimaker B.V.
+# Cura is released under the terms of the LGPLv3 or higher.
+from copy import deepcopy
 from typing import List
 
 from UM.Application import Application
 from UM.Scene.SceneNode import SceneNode
-from copy import deepcopy
-from cura.Settings.ExtrudersModel import ExtrudersModel
+
+from cura.Settings.SettingOverrideDecorator import SettingOverrideDecorator
 
 
 ##  Scene nodes that are models are only seen when selecting the corresponding build plate
@@ -11,6 +14,8 @@ from cura.Settings.ExtrudersModel import ExtrudersModel
 class CuraSceneNode(SceneNode):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        if "no_setting_override" not in kwargs:
+            self.addDecorator(SettingOverrideDecorator())  # now we always have a getActiveExtruderPosition, unless explicitly disabled
         self._outside_buildarea = False
 
     def setOutsideBuildArea(self, new_value):

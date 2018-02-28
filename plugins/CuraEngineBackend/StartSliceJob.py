@@ -110,7 +110,6 @@ class StartSliceJob(Job):
             return
 
         stack = Application.getInstance().getGlobalContainerStack()
-        extruder_stack_id_to_position = {}  # a lookup table because we need the position, not the id.
         if not stack:
             self.setResult(StartJobResult.Error)
             return
@@ -131,7 +130,6 @@ class StartSliceJob(Job):
             return
 
         for position, extruder_stack in stack.extruders.items():
-            extruder_stack_id_to_position[extruder_stack.getId()] = position
             material = extruder_stack.findContainer({"type": "material"})
             if material:
                 if material.getMetaDataEntry("compatible") == False:
@@ -200,8 +198,7 @@ class StartSliceJob(Job):
                             continue
                         if getattr(node, "_outside_buildarea", False) and is_non_printing_mesh:
                             continue
-                        node_extruder_id = node.callDecoration("getActiveExtruder")
-                        node_position = extruder_stack_id_to_position.get(node_extruder_id, "0")
+                        node_position = node.callDecoration("getActiveExtruderPosition")
                         if not stack.extruders[str(node_position)].isEnabled:
                             continue
 
@@ -391,11 +388,11 @@ class StartSliceJob(Job):
     #   limit_to_extruder property.
     def _buildGlobalInheritsStackMessage(self, stack):
         for key in stack.getAllKeys():
-            extruder = int(round(float(stack.getProperty(key, "limit_to_extruder"))))
-            if extruder >= 0 and stack.extruders[str(extruder)].isEnabled: #Set to a specific extruder.
+            extruder_position = int(round(float(stack.getProperty(key, "limit_to_extruder"))))
+            if extruder_position >= 0:  # Set to a specific extruder.
                 setting_extruder = self._slice_message.addRepeatedMessage("limit_to_extruder")
                 setting_extruder.name = key
-                setting_extruder.extruder = extruder
+                setting_extruder.extruder = extruder_position
             Job.yieldThread()
 
     ##  Check if a node has per object settings and ensure that they are set correctly in the message
