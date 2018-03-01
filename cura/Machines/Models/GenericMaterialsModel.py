@@ -27,13 +27,14 @@ class GenericMaterialsModel(BaseMaterialsModel):
             return
         extruder_stack = global_stack.extruders[str(self._extruder_position)]
 
-        result_dict = self._material_manager.getAvailableMaterialsForMachineExtruder(global_stack, extruder_stack)
-        if result_dict is None:
+        available_material_dict = self._material_manager.getAvailableMaterialsForMachineExtruder(global_stack,
+                                                                                                 extruder_stack)
+        if available_material_dict is None:
             self.setItems([])
             return
 
         item_list = []
-        for root_material_id, container_node in result_dict.items():
+        for root_material_id, container_node in available_material_dict.items():
             metadata = container_node.metadata
             # Only add results for generic materials
             if metadata["brand"].lower() != "generic":

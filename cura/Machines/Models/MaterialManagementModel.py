@@ -66,14 +66,14 @@ class MaterialManagementModel(ListModel):
             return
         active_extruder_stack = self._machine_manager.activeStack
 
-        result_dict = self._material_manager.getAvailableMaterialsForMachineExtruder(global_stack,
-                                                                                     active_extruder_stack)
-        if result_dict is None:
+        available_material_dict = self._material_manager.getAvailableMaterialsForMachineExtruder(global_stack,
+                                                                                                 active_extruder_stack)
+        if available_material_dict is None:
             self.setItems([])
             return
 
         material_list = []
-        for root_material_id, container_node in result_dict.items():
+        for root_material_id, container_node in available_material_dict.items():
             keys_to_fetch = ("name",
                              "brand",
                              "material",
