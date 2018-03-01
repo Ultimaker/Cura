@@ -6,6 +6,9 @@ from PyQt5.QtCore import Qt, pyqtSlot
 from UM.Qt.ListModel import ListModel
 
 
+#
+# This the QML model for the quality management page.
+#
 class QualityManagementModel(ListModel):
     NameRole = Qt.UserRole + 1
     IsReadOnlyRole = Qt.UserRole + 2

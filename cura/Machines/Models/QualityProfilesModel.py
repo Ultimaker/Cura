@@ -6,11 +6,12 @@ from PyQt5.QtCore import Qt
 from UM.Application import Application
 from UM.Logger import Logger
 from UM.Qt.ListModel import ListModel
+
 from cura.Machines.QualityManager import QualityGroup
 
 
 #
-# QML Model for all built-in quality profiles.
+# QML Model for all built-in quality profiles. This model is used for the drop-down quality menu.
 #
 class QualityProfilesModel(ListModel):
     NameRole = Qt.UserRole + 1
