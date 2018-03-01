@@ -12,10 +12,9 @@ def getAvailableMaterials(extruder_position: Optional[int] = None):
     from cura.CuraApplication import CuraApplication
     machine_manager = CuraApplication.getInstance().getMachineManager()
     extruder_manager = CuraApplication.getInstance().getExtruderManager()
+    material_manager = CuraApplication.getInstance().getMaterialManager()
 
-    material_manager = CuraApplication.getInstance()._material_manager
-
-    active_global_stack = machine_manager._global_container_stack
+    active_global_stack = machine_manager.activeMachine
     extruder_stack = extruder_manager.getActiveExtruderStack()
     if extruder_position is not None:
         if active_global_stack is not None:

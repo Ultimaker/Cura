@@ -53,7 +53,7 @@ class MaterialManagementModel(ListModel):
         self._container_registry = CuraApplication.getInstance().getContainerRegistry()
         self._machine_manager = CuraApplication.getInstance().getMachineManager()
         extruder_manager = CuraApplication.getInstance().getExtruderManager()
-        material_manager = CuraApplication.getInstance()._material_manager
+        material_manager = CuraApplication.getInstance().getMaterialManager()
 
         self._machine_manager.globalContainerChanged.connect(self._update)
         extruder_manager.activeExtruderChanged.connect(self._update)

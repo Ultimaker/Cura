@@ -12,7 +12,7 @@ class GenericMaterialsModel(BaseMaterialsModel):
         from cura.CuraApplication import CuraApplication
         self._machine_manager = CuraApplication.getInstance().getMachineManager()
         self._extruder_manager = CuraApplication.getInstance().getExtruderManager()
-        self._material_manager = CuraApplication.getInstance()._material_manager
+        self._material_manager = CuraApplication.getInstance().getMaterialManager()
 
         self._machine_manager.globalContainerChanged.connect(self._update)
         self._extruder_manager.activeExtruderChanged.connect(self._update)
