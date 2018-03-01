@@ -1,16 +1,14 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from typing import Optional, List
-
-from PyQt5.QtCore import QObject, QTimer, pyqtSignal, pyqtSlot
+from PyQt5.QtCore import QObject, QTimer, pyqtSignal
 
 from UM.Application import Application
 from UM.Logger import Logger
 from UM.Util import parseBool
 
-from cura.Machines.ContainerNode import ContainerNode
-
+from .QualityGroup import QualityGroup
+from .QualityNode import QualityNode
 
 #
 # Quality lookup tree structure:
@@ -26,125 +24,6 @@ from cura.Machines.ContainerNode import ContainerNode
 #            <quality_name>
 #       + <quality_changes_name>
 #
-
-#
-# A QualityGroup represents a group of containers that must be applied to each ContainerStack when it's used.
-# Some concrete examples are Quality and QualityChanges: when we select quality type "normal", this quality type
-# must be applied to all stacks in a machine, although each stack can have different containers. Use an Ultimaker 3
-# as an example, suppose we choose quality type "normal", the actual InstanceContainers on each stack may look
-# as below:
-#                       GlobalStack         ExtruderStack 1         ExtruderStack 2
-# quality container:    um3_global_normal   um3_aa04_pla_normal     um3_aa04_abs_normal
-#
-# This QualityGroup is mainly used in quality and quality_changes to group the containers that can be applied to
-# a machine, so when a quality/custom quality is selected, the container can be directly applied to each stack instead
-# of looking them up again.
-#
-class QualityGroup(QObject):
-
-    def __init__(self, name: str, quality_type: str, parent = None):
-        super().__init__(parent)
-        self.name = name
-        self.node_for_global = None  # type: Optional["QualityGroup"]
-        self.nodes_for_extruders = dict()  # position str -> QualityGroup
-        self.quality_type = quality_type
-        self.is_available = False
-
-    @pyqtSlot(result = str)
-    def getName(self) -> str:
-        return self.name
-
-    def getAllKeys(self) -> set:
-        result = set()
-        for node in [self.node_for_global] + list(self.nodes_for_extruders.values()):
-            if node is None:
-                continue
-            for key in node.getContainer().getAllKeys():
-                result.add(key)
-        return result
-
-    def getAllNodes(self) -> List["QualityGroup"]:
-        result = []
-        if self.node_for_global is not None:
-            result.append(self.node_for_global)
-        for extruder_node in self.nodes_for_extruders.values():
-            result.append(extruder_node)
-        return result
-
-
-class QualityChangesGroup(QualityGroup):
-
-    def __init__(self, name: str, quality_type: str, parent = None):
-        super().__init__(name, quality_type, parent)
-
-    def addNode(self, node: "QualityNode"):
-        # TODO: in 3.2 and earlier, a quality_changes container may have a field called "extruder" which contains the
-        # extruder definition ID it belongs to. But, in fact, we only need to know the following things:
-        #  1. which machine a custom profile is suitable for,
-        #  2. if this profile is for the GlobalStack,
-        #  3. if this profile is for an ExtruderStack and which one (the position).
-        #
-        # So, it is preferred to have a field like this:
-        #     extruder_position = 1
-        # instead of this:
-        #     extruder = custom_extruder_1
-        #
-        # An upgrade needs to be done if we want to do it this way. Before that, we use the extruder's definition
-        # to figure out its position.
-        #
-        extruder_definition_id = node.metadata.get("extruder")
-        if extruder_definition_id:
-            container_registry = Application.getInstance().getContainerRegistry()
-            metadata_list = container_registry.findDefinitionContainersMetadata(id = extruder_definition_id)
-            if not metadata_list:
-                raise RuntimeError("%s cannot get metadata for extruder definition [%s]" %
-                                   (self, extruder_definition_id))
-            extruder_definition_metadata = metadata_list[0]
-            extruder_position = str(extruder_definition_metadata["position"])
-
-            if extruder_position in self.nodes_for_extruders:
-                raise RuntimeError("%s tries to overwrite the existing nodes_for_extruders position [%s] %s with %s" %
-                                   (self, extruder_position, self.node_for_global, node))
-
-            self.nodes_for_extruders[extruder_position] = node
-
-        else:
-            # This is a quality_changes for the GlobalStack
-            if self.node_for_global is not None:
-                raise RuntimeError("%s tries to overwrite the existing node_for_global %s with %s" %
-                                   (self, self.node_for_global, node))
-            self.node_for_global = node
-
-    def __str__(self) -> str:
-        return "%s[<%s>, available = %s]" % (self.__class__.__name__, self.name, self.is_available)
-
-
-#
-# QualityNode is used for BOTH quality and quality_changes containers.
-#
-class QualityNode(ContainerNode):
-
-    def __init__(self, metadata: Optional[dict] = None):
-        super().__init__(metadata = metadata)
-        self.quality_type_map = {}  # quality_type -> QualityNode for InstanceContainer
-
-    def addQualityMetadata(self, quality_type: str, metadata: dict):
-        if quality_type not in self.quality_type_map:
-            self.quality_type_map[quality_type] = QualityNode(metadata)
-
-    def getQualityNode(self, quality_type: str) -> Optional["QualityNode"]:
-        return self.quality_type_map.get(quality_type)
-
-    def addQualityChangesMetadata(self, quality_type: str, metadata: dict):
-        if quality_type not in self.quality_type_map:
-            self.quality_type_map[quality_type] = QualityNode()
-        quality_type_node = self.quality_type_map[quality_type]
-
-        name = metadata["name"]
-        if name not in quality_type_node.children_map:
-            quality_type_node.children_map[name] = QualityChangesGroup(name, quality_type)
-        quality_changes_group = quality_type_node.children_map[name]
-        quality_changes_group.addNode(QualityNode(metadata))
 
 
 #
@@ -164,7 +43,7 @@ class QualityManager(QObject):
     def __init__(self, container_registry, parent = None):
         super().__init__(parent)
         self._application = Application.getInstance()
-        self._material_manager = self._application._material_manager
+        self._material_manager = self._application.getMaterialManager()
         self._container_registry = container_registry
 
         self._empty_quality_container = self._application.empty_quality_container
