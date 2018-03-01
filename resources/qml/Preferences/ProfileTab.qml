@@ -85,7 +85,7 @@ Tab
         model: Cura.QualitySettingsModel
         {
             id: qualitySettings
-            extruderPosition: base.extruderPosition
+            selectedPosition: base.extruderPosition
             selectedQualityItem: base.qualityItem
         }
 

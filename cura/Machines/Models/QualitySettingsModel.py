@@ -35,7 +35,8 @@ class QualitySettingsModel(ListModel):
         self._application = Application.getInstance()
         self._quality_manager = self._application.getQualityManager()
 
-        self._extruder_position = ""
+        self._selected_position = ""  # empty string means GlobalStack
+                                      # strings such as "0", "1", etc. mean extruder positions
         self._selected_quality_item = None  # The selected quality in the quality management page
         self._i18n_catalog = None
 
@@ -43,18 +44,18 @@ class QualitySettingsModel(ListModel):
 
         self._update()
 
-    extruderPositionChanged = pyqtSignal()
+    selectedPositionChanged = pyqtSignal()
     selectedQualityItemChanged = pyqtSignal()
 
-    def setExtruderPosition(self, extruder_position):
-        if extruder_position != self._extruder_position:
-            self._extruder_position = extruder_position
-            self.extruderPositionChanged.emit()
+    def setSelectedPosition(self, selected_position):
+        if selected_position != self._selected_position:
+            self._selected_position = selected_position
+            self.selectedPositionChanged.emit()
             self._update()
 
-    @pyqtProperty(str, fset = setExtruderPosition, notify = extruderPositionChanged)
-    def extruderPosition(self):
-        return self._extruder_position
+    @pyqtProperty(str, fset = setSelectedPosition, notify = selectedPositionChanged)
+    def selectedPosition(self):
+        return self._selected_position
 
     def setSelectedQualityItem(self, selected_quality_item):
         if selected_quality_item != self._selected_quality_item:
@@ -79,18 +80,18 @@ class QualitySettingsModel(ListModel):
         quality_group = self._selected_quality_item["quality_group"]
         quality_changes_group = self._selected_quality_item["quality_changes_group"]
 
-        if self._extruder_position == "":
+        if self._selected_position == "":
             quality_node = quality_group.node_for_global
         else:
-            quality_node = quality_group.nodes_for_extruders.get(self._extruder_position)
+            quality_node = quality_group.nodes_for_extruders.get(self._selected_position)
         settings_keys = quality_group.getAllKeys()
         quality_containers = [quality_node.getContainer()]
 
         if quality_changes_group is not None:
-            if self._extruder_position == "":
+            if self._selected_position == "":
                 quality_changes_node = quality_changes_group.node_for_global
             else:
-                quality_changes_node = quality_changes_group.nodes_for_extruders.get(self._extruder_position)
+                quality_changes_node = quality_changes_group.nodes_for_extruders.get(self._selected_position)
             if quality_changes_node is not None:  # it can be None if number of extruders are changed during runtime
                 try:
                     quality_containers.insert(0, quality_changes_node.getContainer())
@@ -117,7 +118,7 @@ class QualitySettingsModel(ListModel):
                     profile_value = new_value
 
                 # Global tab should use resolve (if there is one)
-                if self._extruder_position == "":
+                if self._selected_position == "":
                     resolve_value = global_container_stack.getProperty(definition.key, "resolve")
                     if resolve_value is not None and definition.key in settings_keys:
                         profile_value = resolve_value
@@ -125,10 +126,10 @@ class QualitySettingsModel(ListModel):
                 if profile_value is not None:
                     break
 
-            if not self._extruder_position:
+            if not self._selected_position:
                 user_value = global_container_stack.userChanges.getProperty(definition.key, "value")
             else:
-                extruder_stack = global_container_stack.extruders[self._extruder_position]
+                extruder_stack = global_container_stack.extruders[self._selected_position]
                 user_value = extruder_stack.userChanges.getProperty(definition.key, "value")
 
             if profile_value is None and user_value is None:
