@@ -811,10 +811,12 @@ class MachineManager(QObject):
     def setExtruderEnabled(self, position: int, enabled) -> None:
         extruder = self.getExtruder(position)
         extruder.setEnabled(enabled)
+        self.updateDefaultExtruder()
         if enabled == False:
-            self.updateDefaultExtruder()
             self.correctExtruderSettings()
         self.extruderChanged.emit()
+        # HACK to update items in SettingExtruder
+        ExtruderManager.getInstance().extrudersChanged.emit(self._global_container_stack.getId())
 
     def _onMachineNameChanged(self):
         self.globalContainerChanged.emit()

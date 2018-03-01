@@ -24,6 +24,8 @@ class ExtrudersModel(UM.Qt.ListModel.ListModel):
 
     ##  Human-readable name of the extruder.
     NameRole = Qt.UserRole + 2
+    ##  Is the extruder enabled?
+    EnabledRole = Qt.UserRole + 9
 
     ##  Colour of the material loaded in the extruder.
     ColorRole = Qt.UserRole + 3
@@ -58,6 +60,7 @@ class ExtrudersModel(UM.Qt.ListModel.ListModel):
 
         self.addRoleName(self.IdRole, "id")
         self.addRoleName(self.NameRole, "name")
+        self.addRoleName(self.EnabledRole, "enabled")
         self.addRoleName(self.ColorRole, "color")
         self.addRoleName(self.IndexRole, "index")
         self.addRoleName(self.DefinitionRole, "definition")
@@ -185,6 +188,7 @@ class ExtrudersModel(UM.Qt.ListModel.ListModel):
                 item = {
                     "id": extruder.getId(),
                     "name": extruder.getName(),
+                    "enabled": extruder.isEnabled,
                     "color": color,
                     "index": position,
                     "definition": extruder.getBottom().getId(),

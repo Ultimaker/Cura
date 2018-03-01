@@ -17,14 +17,22 @@ SettingItem
         id: control
         anchors.fill: parent
 
-        model: Cura.ExtrudersModel { onModelChanged: control.color = getItem(control.currentIndex).color }
+        model: Cura.ExtrudersModel {
+            onModelChanged: {
+                control.color = getItem(control.currentIndex).color;
+            }
+        }
 
         textRole: "name"
 
         onActivated:
         {
-            forceActiveFocus();
-            propertyProvider.setPropertyValue("value", model.getItem(index).index);
+            if (model.getItem(index).enabled) {
+                forceActiveFocus();
+                propertyProvider.setPropertyValue("value", model.getItem(index).index);
+            } else {
+                currentIndex = propertyProvider.properties.value;  // keep the old value
+            }
         }
 
         onActiveFocusChanged:
@@ -173,7 +181,13 @@ SettingItem
             {
                 text: model.name
                 renderType: Text.NativeRendering
-                color: UM.Theme.getColor("setting_control_text")
+                color: {
+                    if (model.enabled) {
+                        UM.Theme.getColor("setting_control_text")
+                    } else {
+                        UM.Theme.getColor("action_button_disabled_text");
+                    }
+                }
                 font: UM.Theme.getFont("default")
                 elide: Text.ElideRight
                 verticalAlignment: Text.AlignVCenter
