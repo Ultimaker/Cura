@@ -62,7 +62,10 @@ from cura.Machines.Models.CustomQualityProfilesModel import CustomQualityProfile
 
 from cura.Machines.Models.Other.MultiBuildPlateModel import MultiBuildPlateModel
 
-from cura.Machines.Models.MaterialsModel import BrandMaterialsModel, GenericMaterialsModel, MaterialsModel
+from cura.Machines.Models.MaterialManagementModel import MaterialManagementModel
+from cura.Machines.Models.GenericMaterialsModel import GenericMaterialsModel
+from cura.Machines.Models.BrandMaterialsModel import BrandMaterialsModel
+
 from cura.Settings.SettingInheritanceManager import SettingInheritanceManager
 from cura.Settings.SimpleModeSettingsManager import SimpleModeSettingsManager
 
@@ -954,7 +957,7 @@ class CuraApplication(QtApplication):
 
         qmlRegisterType(GenericMaterialsModel, "Cura", 1, 0, "GenericMaterialsModel")
         qmlRegisterType(BrandMaterialsModel, "Cura", 1, 0, "BrandMaterialsModel")
-        qmlRegisterType(MaterialsModel, "Cura", 1, 0, "MaterialsModel")
+        qmlRegisterType(MaterialManagementModel, "Cura", 1, 0, "MaterialManagementModel")
         qmlRegisterType(QualityManagementModel, "Cura", 1, 0, "QualityManagementModel")
 
         qmlRegisterSingletonType(QualityProfilesModel, "Cura", 1, 0, "QualityProfilesModel", self.getQualityProfileModel)
