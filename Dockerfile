@@ -3,9 +3,9 @@ FROM ultimaker/cura-build-environment:1
 # Environment vars for easy configuration
 ENV CURA_BENV_BUILD_TYPE=Release
 ENV CURA_BRANCH=docker
-ENV URANIUM_BRANCH=3.2
-ENV CURA_ENGINE_BRANCH=3.2
-ENV MATERIALS_BRANCH=3.2
+ENV URANIUM_BRANCH=master
+ENV CURA_ENGINE_BRANCH=master
+ENV MATERIALS_BRANCH=master
 ENV CURA_APP_DIR=/srv/cura
 
 # Ensure our sources dir exists
