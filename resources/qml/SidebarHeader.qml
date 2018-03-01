@@ -91,10 +91,39 @@ Column
                 exclusiveGroup: extruderMenuGroup
                 checked: base.currentExtruderIndex == index
 
-                onClicked:
+                MouseArea
                 {
-                    forceActiveFocus() // Changing focus applies the currently-being-typed values so it can change the displayed setting values.
-                    Cura.ExtruderManager.setActiveExtruderIndex(index);
+                    anchors.fill: parent
+                    acceptedButtons: Qt.LeftButton | Qt.RightButton
+                    onClicked: {
+                        switch (mouse.button) {
+                            case Qt.LeftButton:
+                                forceActiveFocus(); // Changing focus applies the currently-being-typed values so it can change the displayed setting values.
+                                Cura.ExtruderManager.setActiveExtruderIndex(index);
+                                break;
+                            case Qt.RightButton:
+                                extruderMenu.popup();
+                                break;
+                        }
+
+                    }
+                }
+
+                Menu
+                {
+                    id: extruderMenu
+
+                    MenuItem {
+                        text: catalog.i18nc("@action:inmenu", "Enable Extruder")
+                        onTriggered: Cura.MachineManager.setExtruderEnabled(model.index, true)
+                        visible: !Cura.MachineManager.getExtruder(model.index).isEnabled
+                    }
+
+                    MenuItem {
+                        text: catalog.i18nc("@action:inmenu", "Disable Extruder")
+                        onTriggered: Cura.MachineManager.setExtruderEnabled(model.index, false)
+                        visible: Cura.MachineManager.getExtruder(model.index).isEnabled
+                    }
                 }
 
                 style: ButtonStyle
