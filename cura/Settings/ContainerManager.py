@@ -346,9 +346,11 @@ class ContainerManager(QObject):
 
         # Go through global and extruder stacks and clear their topmost container (the user settings).
         for stack in ExtruderManager.getInstance().getActiveGlobalAndExtruderStacks():
-            container = stack.getTop()
+            container = stack.userChanges
             container.clear()
             send_emits_containers.append(container)
+
+        Application.getInstance().getMachineManager().correctExtruderSettings()
 
         for container in send_emits_containers:
             container.sendPostponedEmits()
