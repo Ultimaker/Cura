@@ -33,7 +33,7 @@ class QualitySettingsModel(ListModel):
 
         self._container_registry = ContainerRegistry.getInstance()
         self._application = Application.getInstance()
-        self._quality_manager = self._application._quality_manager
+        self._quality_manager = self._application.getQualityManager()
 
         self._extruder_position = ""
         self._selected_quality_item = None  # The selected quality in the quality management page
@@ -73,7 +73,7 @@ class QualitySettingsModel(ListModel):
 
         items = []
 
-        global_container_stack = Application.getInstance().getGlobalContainerStack()
+        global_container_stack = self._application.getGlobalContainerStack()
         definition_container = global_container_stack.definition
 
         quality_group = self._selected_quality_item["quality_group"]

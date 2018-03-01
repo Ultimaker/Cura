@@ -1,7 +1,6 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from UM.Application import Application
 from UM.Logger import Logger
 
 from cura.Machines.Models.QualityProfilesDropDownMenuModel import QualityProfilesDropDownMenuModel
@@ -15,7 +14,7 @@ class CustomQualityProfilesDropDownMenuModel(QualityProfilesDropDownMenuModel):
     def _update(self):
         Logger.log("d", "Updating %s ...", self.__class__.__name__)
 
-        active_global_stack = Application.getInstance().getMachineManager().activeMachine
+        active_global_stack = self._machine_manager.activeMachine
         if active_global_stack is None:
             self.setItems([])
             Logger.log("d", "No active GlobalStack, set %s as empty.", self.__class__.__name__)

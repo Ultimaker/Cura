@@ -33,11 +33,13 @@ class QualityProfilesDropDownMenuModel(ListModel):
         self.addRoleName(self.QualityGroupRole, "quality_group")
         self.addRoleName(self.QualityChangesGroupRole, "quality_changes_group")
 
-        # connect signals
-        Application.getInstance().globalContainerStackChanged.connect(self._update)
-        Application.getInstance().getMachineManager().activeQualityGroupChanged.connect(self._update)
+        self._application = Application.getInstance()
+        self._machine_manager = self._application.getMachineManager()
+        self._quality_manager = Application.getInstance().getQualityManager()
 
-        self._quality_manager = Application.getInstance()._quality_manager
+        # connect signals
+        self._application.globalContainerStackChanged.connect(self._update)
+        self._machine_manager.activeQualityGroupChanged.connect(self._update)
         self._quality_manager.qualitiesUpdated.connect(self._update)
 
         self._layer_height_unit = ""  # This is cached
@@ -47,15 +49,14 @@ class QualityProfilesDropDownMenuModel(ListModel):
     def _update(self):
         Logger.log("d", "Updating quality profile model ...")
 
-        machine_manager = Application.getInstance().getMachineManager()
-        global_stack = machine_manager._global_container_stack
+        global_stack = self._machine_manager.activeMachine
         if global_stack is None:
             self.setItems([])
             Logger.log("d", "No active GlobalStack, set quality profile model as empty.")
             return
 
         # Check for material compatibility
-        if not machine_manager.activeMaterialsCompatible():
+        if not self._machine_manager.activeMaterialsCompatible():
             self.setItems([])
             return
 
@@ -82,7 +83,7 @@ class QualityProfilesDropDownMenuModel(ListModel):
         self.setItems(item_list)
 
     def _fetchLayerHeight(self, quality_group: "QualityGroup"):
-        global_stack = Application.getInstance().getMachineManager()._global_container_stack
+        global_stack = self._machine_manager.activeMachine
         if not self._layer_height_unit:
             unit = global_stack.definition.getProperty("layer_height", "unit")
             if not unit:
