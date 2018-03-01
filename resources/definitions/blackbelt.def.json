@@ -349,7 +349,17 @@
         },
 
         "layer_height_0": {
-            "value": "layer_height + 0.1"
+            "enabled": false,
+            "value": "layer_height"
+        },
+        "top_bottom_pattern_0": {
+            "enabled": false
+        },
+        "xy_offset_layer_0": {
+            "enabled": false
+        },
+        "initial_layer_line_width_factor": {
+            "enabled": false
         },
         "line_width": {
             "value": "machine_nozzle_size"
