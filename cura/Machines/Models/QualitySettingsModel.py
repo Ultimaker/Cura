@@ -100,6 +100,9 @@ class QualitySettingsModel(ListModel):
                     return
             settings_keys.update(quality_changes_group.getAllKeys())
 
+        # We iterate over all definitions instead of settings in a quality/qualtiy_changes group is because in the GUI,
+        # the settings are grouped together by categories, and we had to go over all the definitions to figure out
+        # which setting belongs in which category.
         current_category = ""
         for definition in definition_container.findDefinitions():
             if definition.type == "category":
