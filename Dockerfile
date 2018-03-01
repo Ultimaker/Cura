@@ -13,32 +13,23 @@ RUN mkdir $CURA_APP_DIR
 
 # Setup Uranium
 WORKDIR $CURA_APP_DIR
-RUN git clone https://github.com/Ultimaker/Uranium
+RUN git clone -b $URANIUM_BRANCH --depth 1 https://github.com/Ultimaker/Uranium
 WORKDIR $CURA_APP_DIR/Uranium
-RUN git fetch origin
-RUN git checkout $URANIUM_BRANCH
-RUN export PYTHONPATH=${PYTHONPATH}:$CURA_APP_DIR/Uranium
 
 # Setup Cura
 WORKDIR $CURA_APP_DIR
-RUN git clone https://github.com/Ultimaker/Cura
+RUN git clone -b $CURA_BRANCH --depth 1 https://github.com/Ultimaker/Cura
 WORKDIR $CURA_APP_DIR/Cura
-RUN git fetch origin
-RUN git checkout origin $CURA_BRANCH
 
 # Setup materials
 WORKDIR $CURA_APP_DIR/Cura/resources
-RUN git clone https://github.com/Ultimaker/fdm_materials materials
+RUN git clone -b $MATERIALS_BRANCH --depth 1 https://github.com/Ultimaker/fdm_materials materials
 WORKDIR $CURA_APP_DIR/Cura/resources/materials
-RUN git fetch origin
-RUN git checkout origin $MATERIALS_BRANCH
 
 # Setup CuraEngine
 WORKDIR $CURA_APP_DIR
-RUN git clone https://github.com/Ultimaker/CuraEngine
+RUN git clone -b $CURA_ENGINE_BRANCH --depth 1 https://github.com/Ultimaker/CuraEngine
 WORKDIR $CURA_APP_DIR/CuraEngine
-RUN git fetch origin
-RUN git checkout $URANIUM_BRANCH
 RUN mkdir build
 WORKDIR $CURA_APP_DIR/CuraEngine/build
 RUN cmake3 ..
@@ -50,6 +41,13 @@ RUN make install
 # Make sure Cura can find CuraEngine
 RUN ln -s /usr/local/bin/CuraEngine $CURA_APP_DIR/Cura
 
+# Tmp cleanup
+RUN rm -Rf /var/cache
+
 # Run Cura
 WORKDIR $CURA_APP_DIR/Cura
-CMD ["python3", "cura_app.py", "--headless"]
+ENV PYTHONPATH=${PYTHONPATH}:$CURA_APP_DIR/Uranium
+ENV DISPLAY=:1.0
+ADD run_in_docker.sh .
+RUN chmod +x ./run_in_docker.sh
+CMD "./run_in_docker.sh"
