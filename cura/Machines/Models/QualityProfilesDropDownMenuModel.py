@@ -78,7 +78,7 @@ class QualityProfilesDropDownMenuModel(ListModel):
             item_list.append(item)
 
         # Sort items based on layer_height
-        item_list = sorted(item_list, key = lambda x: float(x["layer_height"]))
+        item_list = sorted(item_list, key = lambda x: x["layer_height"])
 
         self.setItems(item_list)
 
@@ -97,10 +97,10 @@ class QualityProfilesDropDownMenuModel(ListModel):
 
         layer_height = default_layer_height
         if container.hasProperty("layer_height", "value"):
-            layer_height = str(container.getProperty("layer_height", "value"))
+            layer_height = container.getProperty("layer_height", "value")
         else:
             # Look for layer_height in the GlobalStack from material -> definition
             container = global_stack.definition
             if container.hasProperty("layer_height", "value"):
                 layer_height = container.getProperty("layer_height", "value")
-        return str(layer_height)
+        return float(layer_height)
