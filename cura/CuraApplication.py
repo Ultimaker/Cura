@@ -57,8 +57,8 @@ from cura.Settings.MachineNameValidator import MachineNameValidator
 
 from cura.Machines.Models.BuildPlateModel import BuildPlateModel
 from cura.Machines.Models.NozzleModel import NozzleModel
-from cura.Machines.Models.QualityProfilesModel import QualityProfilesModel
-from cura.Machines.Models.CustomQualityProfilesModel import CustomQualityProfilesModel
+from cura.Machines.Models.QualityProfilesDropDownMenuModel import QualityProfilesDropDownMenuModel
+from cura.Machines.Models.CustomQualityProfilesDropDownMenuModel import CustomQualityProfilesDropDownMenuModel
 
 from cura.Machines.Models.MultiBuildPlateModel import MultiBuildPlateModel
 
@@ -399,8 +399,8 @@ class CuraApplication(QtApplication):
 
         self.getCuraSceneController().setActiveBuildPlate(0)  # Initialize
 
-        self._quality_profile_model = None
-        self._custom_quality_profile_model = None
+        self._quality_profile_drop_down_menu_model = None
+        self._custom_quality_profile_drop_down_menu_model = None
 
         CuraApplication.Created = True
 
@@ -918,15 +918,15 @@ class CuraApplication(QtApplication):
     def getPrintInformation(self):
         return self._print_information
 
-    def getQualityProfileModel(self, *args, **kwargs):
-        if self._quality_profile_model is None:
-            self._quality_profile_model = QualityProfilesModel(self)
-        return self._quality_profile_model
+    def getQualityProfilesDropDownMenuModel(self, *args, **kwargs):
+        if self._quality_profile_drop_down_menu_model is None:
+            self._quality_profile_drop_down_menu_model = QualityProfilesDropDownMenuModel(self)
+        return self._quality_profile_drop_down_menu_model
 
-    def getCustomQualityProfilesModel(self, *args, **kwargs):
-        if self._custom_quality_profile_model is None:
-            self._custom_quality_profile_model = CustomQualityProfilesModel(self)
-        return self._custom_quality_profile_model
+    def getCustomQualityProfilesDropDownMenuModel(self, *args, **kwargs):
+        if self._custom_quality_profile_drop_down_menu_model is None:
+            self._custom_quality_profile_drop_down_menu_model = CustomQualityProfilesDropDownMenuModel(self)
+        return self._custom_quality_profile_drop_down_menu_model
 
     ##  Registers objects for the QML engine to use.
     #
@@ -960,8 +960,10 @@ class CuraApplication(QtApplication):
         qmlRegisterType(MaterialManagementModel, "Cura", 1, 0, "MaterialManagementModel")
         qmlRegisterType(QualityManagementModel, "Cura", 1, 0, "QualityManagementModel")
 
-        qmlRegisterSingletonType(QualityProfilesModel, "Cura", 1, 0, "QualityProfilesModel", self.getQualityProfileModel)
-        qmlRegisterSingletonType(CustomQualityProfilesModel, "Cura", 1, 0, "CustomQualityProfilesModel", self.getCustomQualityProfilesModel)
+        qmlRegisterSingletonType(QualityProfilesDropDownMenuModel, "Cura", 1, 0,
+                                 "QualityProfilesDropDownMenuModel", self.getQualityProfilesDropDownMenuModel)
+        qmlRegisterSingletonType(CustomQualityProfilesDropDownMenuModel, "Cura", 1, 0,
+                                 "CustomQualityProfilesDropDownMenuModel", self.getCustomQualityProfilesDropDownMenuModel)
         qmlRegisterType(NozzleModel, "Cura", 1, 0, "NozzleModel")
 
         qmlRegisterType(MaterialSettingsVisibilityHandler, "Cura", 1, 0, "MaterialSettingsVisibilityHandler")

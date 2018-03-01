@@ -13,7 +13,7 @@ Menu
 
     Instantiator
     {
-        model: Cura.QualityProfilesModel
+        model: Cura.QualityProfilesDropDownMenuModel
 
         MenuItem
         {
@@ -34,18 +34,18 @@ Menu
     MenuSeparator
     {
         id: customSeparator
-        visible: Cura.CustomQualityProfilesModel.rowCount > 0
+        visible: Cura.CustomQualityProfilesDropDownMenuModel.rowCount > 0
     }
 
     Instantiator
     {
         id: customProfileInstantiator
-        model: Cura.CustomQualityProfilesModel
+        model: Cura.CustomQualityProfilesDropDownMenuModel
 
         Connections
         {
-            target: Cura.CustomQualityProfilesModel
-            onModelReset: customSeparator.visible = Cura.CustomQualityProfilesModel.rowCount() > 0
+            target: Cura.CustomQualityProfilesDropDownMenuModel
+            onModelReset: customSeparator.visible = Cura.CustomQualityProfilesDropDownMenuModel.rowCount() > 0
         }
 
         MenuItem

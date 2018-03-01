@@ -13,7 +13,7 @@ from cura.Machines.QualityManager import QualityGroup
 #
 # QML Model for all built-in quality profiles. This model is used for the drop-down quality menu.
 #
-class QualityProfilesModel(ListModel):
+class QualityProfilesDropDownMenuModel(ListModel):
     NameRole = Qt.UserRole + 1
     QualityTypeRole = Qt.UserRole + 2
     LayerHeightRole = Qt.UserRole + 3

@@ -4,13 +4,13 @@
 from UM.Application import Application
 from UM.Logger import Logger
 
-from cura.Machines.Models.QualityProfilesModel import QualityProfilesModel
+from cura.Machines.Models.QualityProfilesDropDownMenuModel import QualityProfilesDropDownMenuModel
 
 
 #
 # This model is used for the custom profile items in the profile drop down menu.
 #
-class CustomQualityProfilesModel(QualityProfilesModel):
+class CustomQualityProfilesDropDownMenuModel(QualityProfilesDropDownMenuModel):
 
     def _update(self):
         Logger.log("d", "Updating %s ...", self.__class__.__name__)
