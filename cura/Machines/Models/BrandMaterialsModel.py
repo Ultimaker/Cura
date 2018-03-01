@@ -5,7 +5,7 @@ from PyQt5.QtCore import Qt, pyqtSignal, pyqtProperty
 
 from UM.Qt.ListModel import ListModel
 
-from .BaseMaterialsModel import BaseMaterialsModel, getAvailableMaterials
+from .BaseMaterialsModel import BaseMaterialsModel
 
 
 class MaterialsModelGroupedByType(ListModel):
@@ -36,12 +36,12 @@ class BrandMaterialsModel(ListModel):
 
         from cura.CuraApplication import CuraApplication
         self._machine_manager = CuraApplication.getInstance().getMachineManager()
-        extruder_manager = CuraApplication.getInstance().getExtruderManager()
-        material_manager = CuraApplication.getInstance().getMaterialManager()
+        self._extruder_manager = CuraApplication.getInstance().getExtruderManager()
+        self._material_manager = CuraApplication.getInstance().getMaterialManager()
 
         self._machine_manager.globalContainerChanged.connect(self._update)
-        extruder_manager.activeExtruderChanged.connect(self._update)
-        material_manager.materialsUpdated.connect(self._update)
+        self._extruder_manager.activeExtruderChanged.connect(self._update)
+        self._material_manager.materialsUpdated.connect(self._update)
 
         self._update()
 
@@ -59,8 +59,9 @@ class BrandMaterialsModel(ListModel):
         if global_stack is None:
             self.setItems([])
             return
+        extruder_stack = global_stack.extruders[str(self._extruder_position)]
 
-        result_dict = getAvailableMaterials(self._extruder_position)
+        result_dict = self._material_manager.getAvailableMaterialsForMachineExtruder(global_stack, extruder_stack)
         if result_dict is None:
             self.setItems([])
             return

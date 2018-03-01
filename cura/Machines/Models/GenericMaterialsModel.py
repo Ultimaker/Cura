@@ -1,7 +1,7 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from .BaseMaterialsModel import BaseMaterialsModel, getAvailableMaterials
+from .BaseMaterialsModel import BaseMaterialsModel
 
 
 class GenericMaterialsModel(BaseMaterialsModel):
@@ -25,8 +25,9 @@ class GenericMaterialsModel(BaseMaterialsModel):
         if global_stack is None:
             self.setItems([])
             return
+        extruder_stack = global_stack.extruders[str(self._extruder_position)]
 
-        result_dict = getAvailableMaterials(self._extruder_position)
+        result_dict = self._material_manager.getAvailableMaterialsForMachineExtruder(global_stack, extruder_stack)
         if result_dict is None:
             self.setItems([])
             return

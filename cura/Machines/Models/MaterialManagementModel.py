@@ -5,8 +5,6 @@ from PyQt5.QtCore import Qt, pyqtProperty
 
 from UM.Qt.ListModel import ListModel
 
-from .BaseMaterialsModel import getAvailableMaterials
-
 
 #
 # This model is for the Material management page.
@@ -52,12 +50,12 @@ class MaterialManagementModel(ListModel):
         from cura.CuraApplication import CuraApplication
         self._container_registry = CuraApplication.getInstance().getContainerRegistry()
         self._machine_manager = CuraApplication.getInstance().getMachineManager()
-        extruder_manager = CuraApplication.getInstance().getExtruderManager()
-        material_manager = CuraApplication.getInstance().getMaterialManager()
+        self._extruder_manager = CuraApplication.getInstance().getExtruderManager()
+        self._material_manager = CuraApplication.getInstance().getMaterialManager()
 
         self._machine_manager.globalContainerChanged.connect(self._update)
-        extruder_manager.activeExtruderChanged.connect(self._update)
-        material_manager.materialsUpdated.connect(self._update)
+        self._extruder_manager.activeExtruderChanged.connect(self._update)
+        self._material_manager.materialsUpdated.connect(self._update)
 
         self._update()
 
@@ -66,8 +64,10 @@ class MaterialManagementModel(ListModel):
         if global_stack is None:
             self.setItems([])
             return
+        active_extruder_stack = self._machine_manager.activeStack
 
-        result_dict = getAvailableMaterials()
+        result_dict = self._material_manager.getAvailableMaterialsForMachineExtruder(global_stack,
+                                                                                     active_extruder_stack)
         if result_dict is None:
             self.setItems([])
             return

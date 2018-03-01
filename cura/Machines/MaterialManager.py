@@ -261,6 +261,20 @@ class MaterialManager(QObject):
         return material_id_metadata_dict
 
     #
+    # A convenience function to get available materials for the given machine with the extruder position.
+    #
+    def getAvailableMaterialsForMachineExtruder(self, machine: "GlobalStack",
+                                                extruder_stack: "ExtruderStack") -> Optional[dict]:
+        machine_definition_id = machine.definition.getId()
+        variant_name = None
+        if extruder_stack.variant.getId() != "empty_variant":
+            variant_name = extruder_stack.variant.getName()
+        diameter = extruder_stack.approximateMaterialDiameter
+
+        # Fetch the available materials (ContainerNode) for the current active machine and extruder setup.
+        return self.getAvailableMaterials(machine_definition_id, variant_name, diameter)
+
+    #
     # Gets MaterialNode for the given extruder and machine with the given material name.
     # Returns None if:
     #  1. the given machine doesn't have materials;
