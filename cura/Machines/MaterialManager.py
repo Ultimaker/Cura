@@ -13,6 +13,11 @@ from .MaterialNode import MaterialNode
 from .MaterialGroup import MaterialGroup
 
 
+#
+# MaterialManager maintains a number of maps and trees for material lookup.
+# The models GUI and QML use are now only dependent on the MaterialManager. That means as long as the data in
+# MaterialManager gets updated correctly, the GUI models should be updated correctly too, and the same goes for GUI.
+#
 class MaterialManager(QObject):
 
     materialsUpdated = pyqtSignal()  # Emitted whenever the material lookup tables are updated.
