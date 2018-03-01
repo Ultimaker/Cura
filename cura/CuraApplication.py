@@ -60,7 +60,7 @@ from cura.Machines.Models.NozzleModel import NozzleModel
 from cura.Machines.Models.QualityProfilesModel import QualityProfilesModel
 from cura.Machines.Models.CustomQualityProfilesModel import CustomQualityProfilesModel
 
-from cura.Machines.Models.Other.MultiBuildPlateModel import MultiBuildPlateModel
+from cura.Machines.Models.MultiBuildPlateModel import MultiBuildPlateModel
 
 from cura.Machines.Models.MaterialManagementModel import MaterialManagementModel
 from cura.Machines.Models.GenericMaterialsModel import GenericMaterialsModel

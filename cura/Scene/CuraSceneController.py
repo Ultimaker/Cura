@@ -4,7 +4,7 @@ from PyQt5.QtCore import Qt, pyqtSlot, QObject
 from PyQt5.QtWidgets import QApplication
 
 from cura.ObjectsModel import ObjectsModel
-from cura.Machines.Models.Other.MultiBuildPlateModel import MultiBuildPlateModel
+from cura.Machines.Models.MultiBuildPlateModel import MultiBuildPlateModel
 
 from UM.Application import Application
 from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
