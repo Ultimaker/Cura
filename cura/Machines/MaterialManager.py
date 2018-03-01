@@ -307,10 +307,15 @@ class MaterialManager(QObject):
     # For materials such as ultimaker_pla_orange, no quality profiles may be found, so we should fall back to use
     # the generic material IDs to search for qualities.
     #
+    # An example would be, suppose we have machine with preferred material set to "filo3d_pla" (1.75mm), but its
+    # extruders only use 2.85mm materials, then we won't be able to find the preferred material for this machine.
+    # A fallback would be to fetch a generic material of the same type "PLA" as "filo3d_pla", and in this case it will
+    # be "generic_pla". This function is intended to get a generic fallback material for the given material type.
+    #
     # This function returns the generic root material ID for the given material type, where material types are "PLA",
     # "ABS", etc.
     #
-    def getFallbackMaterialId(self, material_type: str) -> str:
+    def getFallbackMaterialIdByMaterialType(self, material_type: str) -> str:
         # For safety
         if material_type not in self._fallback_materials_map:
             Logger.log("w", "The material type [%s] does not have a fallback material" % material_type)

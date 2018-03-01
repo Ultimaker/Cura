@@ -376,7 +376,7 @@ class QualityManager(QObject):
 
                 # Also try to get the fallback material
                 material_type = extruder.material.getMetaDataEntry("material")
-                fallback_root_material_id = self._material_manager.getFallbackMaterialId(material_type)
+                fallback_root_material_id = self._material_manager.getFallbackMaterialIdByMaterialType(material_type)
                 if fallback_root_material_id:
                     root_material_id_list.append(fallback_root_material_id)
 
