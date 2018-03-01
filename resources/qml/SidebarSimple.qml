@@ -200,7 +200,7 @@ Item
                                 var result = ""
                                 if(Cura.MachineManager.activeMachine != null)
                                 {
-                                    result = Cura.QualityProfilesDropDownMenuModel.getItem(index).layer_height_without_unit
+                                    result = Cura.QualityProfilesDropDownMenuModel.getItem(index).layer_height
 
                                     if(result == undefined)
                                     {
