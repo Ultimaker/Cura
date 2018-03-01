@@ -18,6 +18,11 @@ from .MaterialGroup import MaterialGroup
 # The models GUI and QML use are now only dependent on the MaterialManager. That means as long as the data in
 # MaterialManager gets updated correctly, the GUI models should be updated correctly too, and the same goes for GUI.
 #
+# For now, updating the lookup maps and trees here is very simple: we discard the old data completely and recreate them
+# again. This means the update is exactly the same as initialization. There are performance concerns about this approach
+# but so far the creation of the tables and maps is very fast and there is no noticeable slowness, we keep it like this
+# because it's simple.
+#
 class MaterialManager(QObject):
 
     materialsUpdated = pyqtSignal()  # Emitted whenever the material lookup tables are updated.
