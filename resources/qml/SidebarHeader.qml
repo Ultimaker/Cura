@@ -151,7 +151,7 @@ Column
                                     control.hovered ? UM.Theme.getColor("action_button_hovered_text") :
                                     UM.Theme.getColor("action_button_text");
                             } else {
-                                return UM.Theme.getColor("action_button_disabled");
+                                return UM.Theme.getColor("action_button_disabled_text");
                             }
                         }
 
