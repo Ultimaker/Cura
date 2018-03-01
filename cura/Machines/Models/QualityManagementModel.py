@@ -40,7 +40,8 @@ class QualityManagementModel(ListModel):
         quality_group_dict = self._quality_manager.getQualityGroups(global_stack)
         quality_changes_group_dict = self._quality_manager.getQualityChangesGroups(global_stack)
 
-        available_quality_types = set(qt for qt, qg in quality_group_dict.items() if qg.is_available)
+        available_quality_types = set(quality_type for quality_type, quality_group in quality_group_dict.items()
+                                      if quality_group.is_available)
         if not available_quality_types and not quality_changes_group_dict:
             # Nothing to show
             self.setItems([])
