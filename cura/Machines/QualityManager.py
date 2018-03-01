@@ -169,6 +169,9 @@ class QualityManager(QObject):
         self._container_registry.containerAdded.connect(self._onContainerMetadataChanged)
         self._container_registry.containerRemoved.connect(self._onContainerMetadataChanged)
 
+        # When a custom quality gets added/imported, there can be more than one InstanceContainers. In those cases,
+        # we don't want to react on every container/metadata changed signal. The timer here is to buffer it a bit so
+        # we don't react too many time.
         self._update_timer = QTimer(self)
         self._update_timer.setInterval(300)
         self._update_timer.setSingleShot(True)

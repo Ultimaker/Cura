@@ -39,6 +39,9 @@ class MaterialManager(QObject):
         self._default_machine_definition_id = "fdmprinter"
         self._default_approximate_diameter_for_quality_search = "3"
 
+        # When a material gets added/imported, there can be more than one InstanceContainers. In those cases, we don't
+        # want to react on every container/metadata changed signal. The timer here is to buffer it a bit so we don't
+        # react too many time.
         self._update_timer = QTimer(self)
         self._update_timer.setInterval(300)
         self._update_timer.setSingleShot(True)
