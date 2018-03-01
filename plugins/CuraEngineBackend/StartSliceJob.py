@@ -280,9 +280,15 @@ class StartSliceJob(Job):
     #   \return A dictionary of replacement tokens to the values they should be
     #   replaced with.
     def _buildReplacementTokens(self, stack) -> dict:
+        default_extruder_position = Application.getInstance().getMachineManager().defaultExtruderPosition
         result = {}
         for key in stack.getAllKeys():
-            result[key] = stack.getProperty(key, "value")
+            setting_type = stack.getProperty(key, "type")
+            value = stack.getProperty(key, "value")
+            if setting_type == "extruder" and value == "-1":
+                # replace with the default value
+                value = default_extruder_position
+            result[key] = value
             Job.yieldThread()
 
         result["print_bed_temperature"] = result["material_bed_temperature"] # Renamed settings.

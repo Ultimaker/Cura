@@ -699,7 +699,6 @@ class MachineManager(QObject):
             return containers[0].definition.getId()
 
     ##  Update extruder number to a valid value when the number of extruders are changed, or when an extruder is changed
-    #   \return if any properties has been added
     def correctExtruderSettings(self):
         extruder_count = self._global_container_stack.getProperty("machine_extruder_count", "value")
 
@@ -716,22 +715,6 @@ class MachineManager(QObject):
             if not self._global_container_stack.extruders[str(old_value)].isEnabled:
                 self._global_container_stack.userChanges.removeInstance(setting_key)
                 Logger.log("d", "Reset [%s] because its old value [%s] is no longer valid (2)", setting_key, old_value)
-
-        added_properties = False
-        for setting_key in self._global_container_stack.definition.getAllKeys():
-            if not self._global_container_stack.getProperty(setting_key, "type") in ("extruder", "optional_extruder"):
-                continue
-            current_value = self._global_container_stack.getProperty(setting_key, "value")
-            if current_value is None:
-                continue
-            if current_value == "-1":
-                continue
-            if not self._global_container_stack.extruders[str(current_value)].isEnabled:
-                self._global_container_stack.userChanges.setProperty(setting_key, "value", str(self._default_extruder_position))
-                added_properties = True
-                Logger.log("d", "Change [%s] to [%s] because its value [%s] is not valid", setting_key, self._default_extruder_position, current_value)
-
-        return added_properties
 
     ##  Set the amount of extruders on the active machine (global stack)
     #   \param extruder_count int the number of extruders to set

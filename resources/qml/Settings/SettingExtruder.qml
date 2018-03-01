@@ -72,6 +72,24 @@ SettingItem
             value: control.currentText != "" ? control.model.getItem(control.currentIndex).color : ""
         }
 
+        Binding
+        {
+            target: control
+            property: "currentIndex"
+            value:
+            {
+                if(propertyProvider.properties.value == -1)
+                {
+                    // TODO: accidently the extruder position is also the index. fix it
+                    return Cura.MachineManager.defaultExtruderPosition;
+                }
+                return propertyProvider.properties.value
+            }
+            // Sometimes when the value is already changed, the model is still being built.
+            // The when clause ensures that the current index is not updated when this happens.
+            when: control.model.items.length > 0
+        }
+
         indicator: UM.RecolorImage
         {
             id: downArrow
