@@ -7,12 +7,15 @@ from UM.Logger import Logger
 from cura.Machines.Models.QualityProfilesModel import QualityProfilesModel
 
 
+#
+# This model is used for the custom profile items in the profile drop down menu.
+#
 class CustomQualityProfilesModel(QualityProfilesModel):
 
     def _update(self):
         Logger.log("d", "Updating %s ...", self.__class__.__name__)
 
-        active_global_stack = Application.getInstance().getMachineManager()._global_container_stack
+        active_global_stack = Application.getInstance().getMachineManager().activeMachine
         if active_global_stack is None:
             self.setItems([])
             Logger.log("d", "No active GlobalStack, set %s as empty.", self.__class__.__name__)

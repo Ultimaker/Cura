@@ -62,7 +62,10 @@ from cura.Machines.Models.CustomQualityProfilesModel import CustomQualityProfile
 
 from cura.Machines.Models.Other.MultiBuildPlateModel import MultiBuildPlateModel
 
-from cura.Machines.Models.MaterialsModel import BrandMaterialsModel, GenericMaterialsModel, MaterialsModel
+from cura.Machines.Models.MaterialManagementModel import MaterialManagementModel
+from cura.Machines.Models.GenericMaterialsModel import GenericMaterialsModel
+from cura.Machines.Models.BrandMaterialsModel import BrandMaterialsModel
+
 from cura.Settings.SettingInheritanceManager import SettingInheritanceManager
 from cura.Settings.SimpleModeSettingsManager import SimpleModeSettingsManager
 
@@ -954,7 +957,7 @@ class CuraApplication(QtApplication):
 
         qmlRegisterType(GenericMaterialsModel, "Cura", 1, 0, "GenericMaterialsModel")
         qmlRegisterType(BrandMaterialsModel, "Cura", 1, 0, "BrandMaterialsModel")
-        qmlRegisterType(MaterialsModel, "Cura", 1, 0, "MaterialsModel")
+        qmlRegisterType(MaterialManagementModel, "Cura", 1, 0, "MaterialManagementModel")
         qmlRegisterType(QualityManagementModel, "Cura", 1, 0, "QualityManagementModel")
 
         qmlRegisterSingletonType(QualityProfilesModel, "Cura", 1, 0, "QualityProfilesModel", self.getQualityProfileModel)
@@ -1046,7 +1049,7 @@ class CuraApplication(QtApplication):
         count = 0
         scene_bounding_box = None
         is_block_slicing_node = False
-        active_build_plate = self._multi_build_plate_model.activeBuildPlate
+        active_build_plate = self.getMultiBuildPlateModel().activeBuildPlate
         for node in DepthFirstIterator(self.getController().getScene().getRoot()):
             if (
                 not issubclass(type(node), CuraSceneNode) or
@@ -1295,7 +1298,7 @@ class CuraApplication(QtApplication):
     @pyqtSlot()
     def arrangeAll(self):
         nodes = []
-        active_build_plate = self._multi_build_plate_model.activeBuildPlate
+        active_build_plate = self.getMultiBuildPlateModel().activeBuildPlate
         for node in DepthFirstIterator(self.getController().getScene().getRoot()):
             if not isinstance(node, SceneNode):
                 continue
@@ -1444,7 +1447,7 @@ class CuraApplication(QtApplication):
         group_decorator = GroupDecorator()
         group_node.addDecorator(group_decorator)
         group_node.addDecorator(ConvexHullDecorator())
-        group_node.addDecorator(BuildPlateDecorator(self._multi_build_plate_model.activeBuildPlate))
+        group_node.addDecorator(BuildPlateDecorator(self.getMultiBuildPlateModel().activeBuildPlate))
         group_node.setParent(self.getController().getScene().getRoot())
         group_node.setSelectable(True)
         center = Selection.getSelectionCenter()
@@ -1589,7 +1592,7 @@ class CuraApplication(QtApplication):
         arrange_objects_on_load = (
             not Preferences.getInstance().getValue("cura/use_multi_build_plate") or
             not Preferences.getInstance().getValue("cura/not_arrange_objects_on_load"))
-        target_build_plate = self._multi_build_plate_model.activeBuildPlate if arrange_objects_on_load else -1
+        target_build_plate = self.getMultiBuildPlateModel().activeBuildPlate if arrange_objects_on_load else -1
 
         root = self.getController().getScene().getRoot()
         fixed_nodes = []

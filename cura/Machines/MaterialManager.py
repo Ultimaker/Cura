@@ -1,3 +1,6 @@
+# Copyright (c) 2018 Ultimaker B.V.
+# Cura is released under the terms of the LGPLv3 or higher.
+
 from collections import defaultdict, OrderedDict
 from typing import Optional
 
@@ -6,30 +9,20 @@ from PyQt5.Qt import QTimer, QObject, pyqtSignal
 from UM.Logger import Logger
 from UM.Settings import ContainerRegistry
 
-from cura.Machines.ContainerNode import ContainerNode
+from .MaterialNode import MaterialNode
+from .MaterialGroup import MaterialGroup
 
 
-class MaterialGroup:
-    __slots__ = ("name", "root_material_node", "derived_material_node_list")
-
-    def __init__(self, name: str):
-        self.name = name
-        self.root_material_node = None
-        self.derived_material_node_list = []
-
-    def __str__(self) -> str:
-        return "%s[%s]" % (self.__class__.__name__, self.name)
-
-
-class MaterialNode(ContainerNode):
-    __slots__ = ("material_map", "children_map")
-
-    def __init__(self, metadata: Optional[dict] = None):
-        super().__init__(metadata = metadata)
-        self.material_map = {}
-        self.children_map = {}
-
-
+#
+# MaterialManager maintains a number of maps and trees for material lookup.
+# The models GUI and QML use are now only dependent on the MaterialManager. That means as long as the data in
+# MaterialManager gets updated correctly, the GUI models should be updated correctly too, and the same goes for GUI.
+#
+# For now, updating the lookup maps and trees here is very simple: we discard the old data completely and recreate them
+# again. This means the update is exactly the same as initialization. There are performance concerns about this approach
+# but so far the creation of the tables and maps is very fast and there is no noticeable slowness, we keep it like this
+# because it's simple.
+#
 class MaterialManager(QObject):
 
     materialsUpdated = pyqtSignal()  # Emitted whenever the material lookup tables are updated.
@@ -40,12 +33,12 @@ class MaterialManager(QObject):
 
         self._fallback_materials_map = dict()  # material_type -> generic material metadata
         self._material_group_map = dict()  # root_material_id -> MaterialGroup
-        self._diameter_machine_variant_material_map = dict()  # diameter -> dict(machine_definition_id -> MaterialNode)
+        self._diameter_machine_variant_material_map = dict()  # approximate diameter str -> dict(machine_definition_id -> MaterialNode)
 
         # We're using these two maps to convert between the specific diameter material id and the generic material id
         # because the generic material ids are used in qualities and definitions, while the specific diameter material is meant
         # i.e. generic_pla -> generic_pla_175
-        self._material_diameter_map = defaultdict(dict)  # root_material_id -> diameter -> root_material_id for that diameter
+        self._material_diameter_map = defaultdict(dict)  # root_material_id -> approximate diameter str -> root_material_id for that diameter
         self._diameter_material_map = dict()  # material id including diameter (generic_pla_175) -> material root id (generic_pla)
 
         # This is used in Legacy UM3 send material function and the material management page.
@@ -56,6 +49,9 @@ class MaterialManager(QObject):
         self._default_machine_definition_id = "fdmprinter"
         self._default_approximate_diameter_for_quality_search = "3"
 
+        # When a material gets added/imported, there can be more than one InstanceContainers. In those cases, we don't
+        # want to react on every container/metadata changed signal. The timer here is to buffer it a bit so we don't
+        # react too many time.
         self._update_timer = QTimer(self)
         self._update_timer.setInterval(300)
         self._update_timer.setSingleShot(True)
@@ -233,7 +229,8 @@ class MaterialManager(QObject):
     #
     # Return a dict with all root material IDs (k) and ContainerNodes (v) that's suitable for the given setup.
     #
-    def getAvailableMaterials(self, machine_definition_id: str, variant_name: Optional[str], diameter: float) -> dict:
+    def getAvailableMaterials(self, machine_definition_id: str, extruder_variant_name: Optional[str],
+                              diameter: float) -> dict:
         # round the diameter to get the approximate diameter
         rounded_diameter = str(round(diameter))
         if rounded_diameter not in self._diameter_machine_variant_material_map:
@@ -245,8 +242,8 @@ class MaterialManager(QObject):
         machine_node = machine_variant_material_map.get(machine_definition_id)
         default_machine_node = machine_variant_material_map.get(self._default_machine_definition_id)
         variant_node = None
-        if variant_name is not None and machine_node is not None:
-            variant_node = machine_node.getChildNode(variant_name)
+        if extruder_variant_name is not None and machine_node is not None:
+            variant_node = machine_node.getChildNode(extruder_variant_name)
 
         nodes_to_check = [variant_node, machine_node, default_machine_node]
 
@@ -269,7 +266,8 @@ class MaterialManager(QObject):
     #  1. the given machine doesn't have materials;
     #  2. cannot find any material InstanceContainers with the given settings.
     #
-    def getMaterialNode(self, machine_definition_id: str, variant_name: Optional[str], diameter: float, root_material_id: str) -> Optional["InstanceContainer"]:
+    def getMaterialNode(self, machine_definition_id: str, extruder_variant_name: Optional[str],
+                        diameter: float, root_material_id: str) -> Optional["InstanceContainer"]:
         # round the diameter to get the approximate diameter
         rounded_diameter = str(round(diameter))
         if rounded_diameter not in self._diameter_machine_variant_material_map:
@@ -285,8 +283,8 @@ class MaterialManager(QObject):
         # Fallback for "fdmprinter" if the machine-specific materials cannot be found
         if machine_node is None:
             machine_node = machine_variant_material_map.get(self._default_machine_definition_id)
-        if machine_node is not None and variant_name is not None:
-            variant_node = machine_node.getChildNode(variant_name)
+        if machine_node is not None and extruder_variant_name is not None:
+            variant_node = machine_node.getChildNode(extruder_variant_name)
 
         # Fallback mechanism of finding materials:
         #  1. variant-specific material
@@ -309,10 +307,15 @@ class MaterialManager(QObject):
     # For materials such as ultimaker_pla_orange, no quality profiles may be found, so we should fall back to use
     # the generic material IDs to search for qualities.
     #
+    # An example would be, suppose we have machine with preferred material set to "filo3d_pla" (1.75mm), but its
+    # extruders only use 2.85mm materials, then we won't be able to find the preferred material for this machine.
+    # A fallback would be to fetch a generic material of the same type "PLA" as "filo3d_pla", and in this case it will
+    # be "generic_pla". This function is intended to get a generic fallback material for the given material type.
+    #
     # This function returns the generic root material ID for the given material type, where material types are "PLA",
     # "ABS", etc.
     #
-    def getFallbackMaterialId(self, material_type: str) -> str:
+    def getFallbackMaterialIdByMaterialType(self, material_type: str) -> str:
         # For safety
         if material_type not in self._fallback_materials_map:
             Logger.log("w", "The material type [%s] does not have a fallback material" % material_type)

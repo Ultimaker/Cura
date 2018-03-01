@@ -396,7 +396,7 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
                     color = material_data["color"]
                     brand = material_data["brand"]
                     material_type = material_data["material"]
-                    name = "Unknown"
+                    name = "Empty" if material_data["material"] == "empty" else "Unknown"
 
                 material = MaterialOutputModel(guid=material_data["guid"], type=material_type,
                                                brand=brand, color=color, name=name)

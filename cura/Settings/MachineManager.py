@@ -24,7 +24,7 @@ from UM.Settings.InstanceContainer import InstanceContainer
 from UM.Settings.SettingFunction import SettingFunction
 from UM.Signal import postponeSignals, CompressTechnique
 
-from cura.Machines.MachineTools import getMachineDefinitionIDForQualitySearch
+from cura.Machines.QualityManager import getMachineDefinitionIDForQualitySearch
 
 from cura.PrinterOutputDevice import PrinterOutputDevice
 from cura.Settings.ExtruderManager import ExtruderManager
@@ -825,6 +825,12 @@ class MachineManager(QObject):
         stacks = ExtruderManager.getInstance().getActiveExtruderStacks()
         stacks.append(self._global_container_stack)
         return [ s.containersChanged for s in stacks ]
+
+    @pyqtSlot(str, str, str)
+    def setSettingForAllExtruders(self, setting_name: str, property_name: str, property_value: str):
+        for key, extruder in self._global_container_stack.extruders.items():
+            container = extruder.userChanges
+            container.setProperty(setting_name, property_name, property_value)
 
     #
     # New

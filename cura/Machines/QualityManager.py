@@ -1,15 +1,15 @@
-from typing import Optional
+# Copyright (c) 2018 Ultimaker B.V.
+# Cura is released under the terms of the LGPLv3 or higher.
 
-from PyQt5.Qt import pyqtSignal
-from PyQt5.QtCore import QObject, QTimer
+from typing import Optional, List
+
+from PyQt5.QtCore import QObject, QTimer, pyqtSignal, pyqtSlot
 
 from UM.Application import Application
 from UM.Logger import Logger
 from UM.Util import parseBool
 
-from cura.Machines.ContainerGroup import ContainerGroup
 from cura.Machines.ContainerNode import ContainerNode
-from cura.Machines.MachineTools import getMachineDefinitionIDForQualitySearch
 
 
 #
@@ -27,13 +27,49 @@ from cura.Machines.MachineTools import getMachineDefinitionIDForQualitySearch
 #       + <quality_changes_name>
 #
 
-
-class QualityGroup(ContainerGroup):
+#
+# A QualityGroup represents a group of containers that must be applied to each ContainerStack when it's used.
+# Some concrete examples are Quality and QualityChanges: when we select quality type "normal", this quality type
+# must be applied to all stacks in a machine, although each stack can have different containers. Use an Ultimaker 3
+# as an example, suppose we choose quality type "normal", the actual InstanceContainers on each stack may look
+# as below:
+#                       GlobalStack         ExtruderStack 1         ExtruderStack 2
+# quality container:    um3_global_normal   um3_aa04_pla_normal     um3_aa04_abs_normal
+#
+# This QualityGroup is mainly used in quality and quality_changes to group the containers that can be applied to
+# a machine, so when a quality/custom quality is selected, the container can be directly applied to each stack instead
+# of looking them up again.
+#
+class QualityGroup(QObject):
 
     def __init__(self, name: str, quality_type: str, parent = None):
-        super().__init__(name, parent)
+        super().__init__(parent)
+        self.name = name
+        self.node_for_global = None  # type: Optional["QualityGroup"]
+        self.nodes_for_extruders = dict()  # position str -> QualityGroup
         self.quality_type = quality_type
         self.is_available = False
+
+    @pyqtSlot(result = str)
+    def getName(self) -> str:
+        return self.name
+
+    def getAllKeys(self) -> set:
+        result = set()
+        for node in [self.node_for_global] + list(self.nodes_for_extruders.values()):
+            if node is None:
+                continue
+            for key in node.getContainer().getAllKeys():
+                result.add(key)
+        return result
+
+    def getAllNodes(self) -> List["QualityGroup"]:
+        result = []
+        if self.node_for_global is not None:
+            result.append(self.node_for_global)
+        for extruder_node in self.nodes_for_extruders.values():
+            result.append(extruder_node)
+        return result
 
 
 class QualityChangesGroup(QualityGroup):
@@ -111,6 +147,16 @@ class QualityNode(ContainerNode):
         quality_changes_group.addNode(QualityNode(metadata))
 
 
+#
+# Similar to MaterialManager, QualityManager maintains a number of maps and trees for material lookup.
+# The models GUI and QML use are now only dependent on the QualityManager. That means as long as the data in
+# QualityManager gets updated correctly, the GUI models should be updated correctly too, and the same goes for GUI.
+#
+# For now, updating the lookup maps and trees here is very simple: we discard the old data completely and recreate them
+# again. This means the update is exactly the same as initialization. There are performance concerns about this approach
+# but so far the creation of the tables and maps is very fast and there is no noticeable slowness, we keep it like this
+# because it's simple.
+#
 class QualityManager(QObject):
 
     qualitiesUpdated = pyqtSignal()
@@ -133,6 +179,9 @@ class QualityManager(QObject):
         self._container_registry.containerAdded.connect(self._onContainerMetadataChanged)
         self._container_registry.containerRemoved.connect(self._onContainerMetadataChanged)
 
+        # When a custom quality gets added/imported, there can be more than one InstanceContainers. In those cases,
+        # we don't want to react on every container/metadata changed signal. The timer here is to buffer it a bit so
+        # we don't react too many time.
         self._update_timer = QTimer(self)
         self._update_timer.setInterval(300)
         self._update_timer.setSingleShot(True)
@@ -327,7 +376,7 @@ class QualityManager(QObject):
 
                 # Also try to get the fallback material
                 material_type = extruder.material.getMetaDataEntry("material")
-                fallback_root_material_id = self._material_manager.getFallbackMaterialId(material_type)
+                fallback_root_material_id = self._material_manager.getFallbackMaterialIdByMaterialType(material_type)
                 if fallback_root_material_id:
                     root_material_id_list.append(fallback_root_material_id)
 
@@ -376,7 +425,7 @@ class QualityManager(QObject):
 
         return quality_group_dict
 
-    def getQualityGroupsForMachineDefinition(self, machine: str) -> dict:
+    def getQualityGroupsForMachineDefinition(self, machine: "GlobalStack") -> dict:
         # Get machine definition ID for quality search
         machine_definition_id = getMachineDefinitionIDForQualitySearch(machine)
 
@@ -399,3 +448,27 @@ class QualityManager(QObject):
                 break
 
         return quality_group_dict
+
+
+#
+# Gets the machine definition ID that can be used to search for Quality containers that are suitable for the given
+# machine. The rule is as follows:
+#   1. By default, the machine definition ID for quality container search will be "fdmprinter", which is the generic
+#      machine.
+#   2. If a machine has its own machine quality (with "has_machine_quality = True"), we should use the given machine's
+#      own machine definition ID for quality search.
+#      Example: for an Ultimaker 3, the definition ID should be "ultimaker3".
+#   3. When condition (2) is met, AND the machine has "quality_definition" defined in its definition file, then the
+#      definition ID specified in "quality_definition" should be used.
+#      Example: for an Ultimaker 3 Extended, it has "quality_definition = ultimaker3". This means Ultimaker 3 Extended
+#               shares the same set of qualities profiles as Ultimaker 3.
+#
+def getMachineDefinitionIDForQualitySearch(machine: "GlobalStack", default_definition_id: str = "fdmprinter") -> str:
+    machine_definition_id = default_definition_id
+    if parseBool(machine.getMetaDataEntry("has_machine_quality", False)):
+        # Only use the machine's own quality definition ID if this machine has machine quality.
+        machine_definition_id = machine.getMetaDataEntry("quality_definition")
+        if machine_definition_id is None:
+            machine_definition_id = machine.definition.getId()
+
+    return machine_definition_id
