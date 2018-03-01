@@ -229,7 +229,8 @@ class MaterialManager(QObject):
     #
     # Return a dict with all root material IDs (k) and ContainerNodes (v) that's suitable for the given setup.
     #
-    def getAvailableMaterials(self, machine_definition_id: str, variant_name: Optional[str], diameter: float) -> dict:
+    def getAvailableMaterials(self, machine_definition_id: str, extruder_variant_name: Optional[str],
+                              diameter: float) -> dict:
         # round the diameter to get the approximate diameter
         rounded_diameter = str(round(diameter))
         if rounded_diameter not in self._diameter_machine_variant_material_map:
@@ -241,8 +242,8 @@ class MaterialManager(QObject):
         machine_node = machine_variant_material_map.get(machine_definition_id)
         default_machine_node = machine_variant_material_map.get(self._default_machine_definition_id)
         variant_node = None
-        if variant_name is not None and machine_node is not None:
-            variant_node = machine_node.getChildNode(variant_name)
+        if extruder_variant_name is not None and machine_node is not None:
+            variant_node = machine_node.getChildNode(extruder_variant_name)
 
         nodes_to_check = [variant_node, machine_node, default_machine_node]
 
@@ -265,7 +266,8 @@ class MaterialManager(QObject):
     #  1. the given machine doesn't have materials;
     #  2. cannot find any material InstanceContainers with the given settings.
     #
-    def getMaterialNode(self, machine_definition_id: str, variant_name: Optional[str], diameter: float, root_material_id: str) -> Optional["InstanceContainer"]:
+    def getMaterialNode(self, machine_definition_id: str, extruder_variant_name: Optional[str],
+                        diameter: float, root_material_id: str) -> Optional["InstanceContainer"]:
         # round the diameter to get the approximate diameter
         rounded_diameter = str(round(diameter))
         if rounded_diameter not in self._diameter_machine_variant_material_map:
@@ -281,8 +283,8 @@ class MaterialManager(QObject):
         # Fallback for "fdmprinter" if the machine-specific materials cannot be found
         if machine_node is None:
             machine_node = machine_variant_material_map.get(self._default_machine_definition_id)
-        if machine_node is not None and variant_name is not None:
-            variant_node = machine_node.getChildNode(variant_name)
+        if machine_node is not None and extruder_variant_name is not None:
+            variant_node = machine_node.getChildNode(extruder_variant_name)
 
         # Fallback mechanism of finding materials:
         #  1. variant-specific material
