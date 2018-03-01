@@ -476,6 +476,14 @@ UM.MainWindow
                         collapseSidebarAnimation.start();
                     }
                 }
+
+                MouseArea
+                {
+                    visible: UM.Controller.activeStage.sidebarComponent != ""
+                    anchors.fill: parent
+                    acceptedButtons: Qt.AllButtons
+                    onWheel: wheel.accepted = true
+                }
             }
 
             UM.MessageStack
