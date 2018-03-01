@@ -720,8 +720,6 @@ class MachineManager(QObject):
         for setting_key in self._global_container_stack.definition.getAllKeys():
             if not self._global_container_stack.getProperty(setting_key, "type") in ("extruder", "optional_extruder"):
                 continue
-            if setting_key == "support_infill_extruder_nr":
-                print("asdf")
             current_value = self._global_container_stack.getProperty(setting_key, "value")
             if current_value is None:
                 continue

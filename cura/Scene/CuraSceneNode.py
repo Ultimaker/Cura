@@ -4,6 +4,7 @@ from copy import deepcopy
 from typing import List
 
 from UM.Application import Application
+from UM.Math.AxisAlignedBox import AxisAlignedBox
 from UM.Scene.SceneNode import SceneNode
 
 from cura.Settings.SettingOverrideDecorator import SettingOverrideDecorator
@@ -76,6 +77,29 @@ class CuraSceneNode(SceneNode):
             int(material_color[5:7], 16) / 255,
             1.0
         ]
+
+    def collidesWithBbox(self, check_bbox):
+        bbox = self.getBoundingBox()
+
+        # Mark the node as outside the build volume if the bounding box test fails.
+        if check_bbox.intersectsBox(bbox) != AxisAlignedBox.IntersectionResult.FullIntersection:
+            return True
+
+        return False
+
+    def collidesWithArea(self, areas):
+        convex_hull = self.callDecoration("getConvexHull")
+        if convex_hull:
+            if not convex_hull.isValid():
+                return False
+
+            # Check for collisions between disallowed areas and the object
+            for area in areas:
+                overlap = convex_hull.intersectsPolygon(area)
+                if overlap is None:
+                    continue
+                return True
+        return False
 
     ##  Taken from SceneNode, but replaced SceneNode with CuraSceneNode
     def __deepcopy__(self, memo):

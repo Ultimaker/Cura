@@ -84,11 +84,7 @@ class SolidView(View):
 
                     per_mesh_stack = node.callDecoration("getStack")
 
-                    # Get color to render this mesh in from ExtrudersModel
-                    extruder_index = 0
-                    extruder_id = node.callDecoration("getActiveExtruder")
-                    if extruder_id:
-                        extruder_index = max(0, self._extruders_model.find("id", extruder_id))
+                    extruder_index = int(node.callDecoration("getActiveExtruderPosition"))
 
                     # Use the support extruder instead of the active extruder if this is a support_mesh
                     if per_mesh_stack:
