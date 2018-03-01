@@ -86,7 +86,7 @@ Tab
         {
             id: qualitySettings
             extruderPosition: base.extruderPosition
-            qualityItem: base.qualityItem
+            selectedQualityItem: base.qualityItem
         }
 
         SystemPalette { id: palette }

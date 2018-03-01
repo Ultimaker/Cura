@@ -8,6 +8,9 @@ from UM.Qt.ListModel import ListModel
 from UM.Settings.ContainerRegistry import ContainerRegistry
 
 
+#
+# This model is used to show details settings of the selected quality in the quality management page.
+#
 class QualitySettingsModel(ListModel):
     KeyRole = Qt.UserRole + 1
     LabelRole = Qt.UserRole + 2
@@ -33,7 +36,7 @@ class QualitySettingsModel(ListModel):
         self._quality_manager = self._application._quality_manager
 
         self._extruder_position = ""
-        self._quality_item = None
+        self._selected_quality_item = None  # The selected quality in the quality management page
         self._i18n_catalog = None
 
         self._quality_manager.qualitiesUpdated.connect(self._update)
@@ -41,7 +44,7 @@ class QualitySettingsModel(ListModel):
         self._update()
 
     extruderPositionChanged = pyqtSignal()
-    qualityItemChanged = pyqtSignal()
+    selectedQualityItemChanged = pyqtSignal()
 
     def setExtruderPosition(self, extruder_position):
         if extruder_position != self._extruder_position:
@@ -53,18 +56,18 @@ class QualitySettingsModel(ListModel):
     def extruderPosition(self):
         return self._extruder_position
 
-    def setQualityItem(self, quality_item):
-        if quality_item != self._quality_item:
-            self._quality_item = quality_item
-            self.qualityItemChanged.emit()
+    def setSelectedQualityItem(self, selected_quality_item):
+        if selected_quality_item != self._selected_quality_item:
+            self._selected_quality_item = selected_quality_item
+            self.selectedQualityItemChanged.emit()
             self._update()
 
-    @pyqtProperty("QVariantMap", fset = setQualityItem, notify = qualityItemChanged)
-    def qualityItem(self):
-        return self._quality_item
+    @pyqtProperty("QVariantMap", fset = setSelectedQualityItem, notify = selectedQualityItemChanged)
+    def selectedQualityItem(self):
+        return self._selected_quality_item
 
     def _update(self):
-        if self._quality_item is None:
+        if self._selected_quality_item is None:
             self.setItems([])
             return
 
@@ -73,8 +76,8 @@ class QualitySettingsModel(ListModel):
         global_container_stack = Application.getInstance().getGlobalContainerStack()
         definition_container = global_container_stack.definition
 
-        quality_group = self._quality_item["quality_group"]
-        quality_changes_group = self._quality_item["quality_changes_group"]
+        quality_group = self._selected_quality_item["quality_group"]
+        quality_changes_group = self._selected_quality_item["quality_changes_group"]
 
         if self._extruder_position == "":
             quality_node = quality_group.node_for_global
