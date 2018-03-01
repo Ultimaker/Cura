@@ -8,6 +8,9 @@ from UM.Qt.ListModel import ListModel
 from .BaseMaterialsModel import BaseMaterialsModel
 
 
+#
+# This is an intermediate model to group materials with different colours for a same brand and type.
+#
 class MaterialsModelGroupedByType(ListModel):
     NameRole = Qt.UserRole + 1
     ColorsRole = Qt.UserRole + 2
@@ -19,7 +22,18 @@ class MaterialsModelGroupedByType(ListModel):
         self.addRoleName(self.ColorsRole, "colors")
 
 
-## Brand --> Material Type -> list of materials
+#
+# This model is used to show branded materials in the material drop down menu.
+# The structure of the menu looks like this:
+#       Brand -> Material Type -> list of materials
+#
+# To illustrate, a branded material menu may look like this:
+#      Ultimaker -> PLA -> Yellow PLA
+#                       -> Black PLA
+#                       -> ...
+#                -> ABS -> White ABS
+#                          ...
+#
 class BrandMaterialsModel(ListModel):
     NameRole = Qt.UserRole + 1
     MaterialsRole = Qt.UserRole + 2
