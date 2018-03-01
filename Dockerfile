@@ -2,10 +2,10 @@ FROM ultimaker/cura-build-environment:1
 
 # Environment vars for easy configuration
 ENV CURA_BENV_BUILD_TYPE=Release
-ENV CURA_BRANCH=3.2
-ENV URANIUM_BRANCH=$CURA_BRANCH
-ENV CURA_ENGINE_BRANCH=$CURA_BRANCH
-ENV MATERIALS_BRANCH=$CURA_BRANCH
+ENV CURA_BRANCH=docker
+ENV URANIUM_BRANCH=3.2
+ENV CURA_ENGINE_BRANCH=3.2
+ENV MATERIALS_BRANCH=3.2
 ENV CURA_APP_DIR=/srv/cura
 
 # Ensure our sources dir exists
@@ -41,13 +41,8 @@ RUN make install
 # Make sure Cura can find CuraEngine
 RUN ln -s /usr/local/bin/CuraEngine $CURA_APP_DIR/Cura
 
-# Tmp cleanup
-RUN rm -Rf /var/cache
-
 # Run Cura
 WORKDIR $CURA_APP_DIR/Cura
 ENV PYTHONPATH=${PYTHONPATH}:$CURA_APP_DIR/Uranium
-ENV DISPLAY=:1.0
-ADD run_in_docker.sh .
 RUN chmod +x ./run_in_docker.sh
 CMD "./run_in_docker.sh"
