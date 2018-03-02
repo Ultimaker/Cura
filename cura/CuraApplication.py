@@ -859,6 +859,7 @@ class CuraApplication(QtApplication):
     def getVariantManager(self, *args):
         return self._variant_manager
 
+    @pyqtSlot(result = QObject)
     def getMaterialManager(self, *args):
         return self._material_manager
 

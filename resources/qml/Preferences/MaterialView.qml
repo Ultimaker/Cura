@@ -12,6 +12,8 @@ TabView
 {
     id: base
 
+    property QtObject materialManager: CuraApplication.getMaterialManager()
+
     property QtObject properties
     property var currentMaterialNode: null
 
@@ -497,7 +499,7 @@ TabView
         }
 
         // update the values
-        Cura.ContainerManager.setMaterialName(base.currentMaterialNode, new_name)
+        base.materialManager.setMaterialName(base.currentMaterialNode, new_name)
         materialProperties.name = new_name
     }
 

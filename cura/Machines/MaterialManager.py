@@ -4,7 +4,7 @@
 from collections import defaultdict, OrderedDict
 from typing import Optional
 
-from PyQt5.Qt import QTimer, QObject, pyqtSignal
+from PyQt5.Qt import QTimer, QObject, pyqtSignal, pyqtSlot
 
 from UM.Logger import Logger
 from UM.Settings import ContainerRegistry
@@ -339,3 +339,20 @@ class MaterialManager(QObject):
             return self.getRootMaterialIDWithoutDiameter(fallback_material["id"])
         else:
             return None
+
+    #
+    # Methods for GUI
+    #
+
+    #
+    # Sets the new name for the given material.
+    #
+    @pyqtSlot("QVariant", str)
+    def setMaterialName(self, material_node: "MaterialNode", name: str):
+        root_material_id = material_node.metadata["base_file"]
+        if self._container_registry.isReadOnly(root_material_id):
+            Logger.log("w", "Cannot set name of read-only container %s.", root_material_id)
+            return
+
+        material_group = self.getMaterialGroup(root_material_id)
+        material_group.root_material_node.getContainer().setName(name)
