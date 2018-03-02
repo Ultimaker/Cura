@@ -1,7 +1,8 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from PyQt5.QtCore import QObject, QTimer, pyqtSignal
+from typing import TYPE_CHECKING
+from PyQt5.QtCore import QObject, QTimer, pyqtSignal, pyqtSlot
 
 from UM.Application import Application
 from UM.Logger import Logger
@@ -9,6 +10,10 @@ from UM.Util import parseBool
 
 from .QualityGroup import QualityGroup
 from .QualityNode import QualityNode
+
+if TYPE_CHECKING:
+    from cura.Settings.GlobalStack import GlobalStack
+    from .QualityChangesGroup import QualityChangesGroup
 
 #
 # Quality lookup tree structure:
@@ -331,6 +336,19 @@ class QualityManager(QObject):
                 break
 
         return quality_group_dict
+
+    #
+    # Methods for GUI
+    #
+
+    #
+    # Remove the given quality changes group.
+    #
+    @pyqtSlot(QObject)
+    def removeQualityChangesGroup(self, quality_changes_group: "QualityChangesGroup"):
+        Logger.log("i", "Removing quality changes group [%s]", quality_changes_group.name)
+        for node in quality_changes_group.getAllNodes():
+            self._container_registry.removeContainer(node.metadata["id"])
 
 
 #

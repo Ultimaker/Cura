@@ -383,15 +383,6 @@ class ContainerManager(QObject):
             self._container_registry.addContainer(new_changes)
 
     #
-    # Remove the given quality changes group
-    #
-    @pyqtSlot(QObject)
-    def removeQualityChangesGroup(self, quality_changes_group):
-        Logger.log("i", "Removing quality changes group [%s]", quality_changes_group.name)
-        for node in quality_changes_group.getAllNodes():
-            self._container_registry.removeContainer(node.metadata["id"])
-
-    #
     # Rename a set of quality changes containers. Returns the new name.
     #
     @pyqtSlot(QObject, str, result = str)

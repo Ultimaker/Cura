@@ -13,6 +13,8 @@ import Cura 1.0 as Cura
 Item
 {
     id: base
+
+    property QtObject qualityManager: CuraApplication.getQualityManager()
     property var resetEnabled: false  // Keep PreferencesDialog happy
     property var extrudersModel: Cura.ExtrudersModel {}
 
@@ -239,9 +241,9 @@ Item
 
         onYes:
         {
-            Cura.ContainerManager.removeQualityChangesGroup(base.currentItem.quality_changes_group);
+            base.qualityManager.removeQualityChangesGroup(base.currentItem.quality_changes_group);
             // reset current item to the first if available
-            qualityListView.currentIndex = -1;  // TODO: Reset selection.
+            qualityListView.currentIndex = -1;  // Reset selection.
         }
     }
 
