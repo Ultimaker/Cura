@@ -347,8 +347,6 @@ class ContainerManager(QObject):
     #   This will go through the global and extruder stacks and create quality_changes containers from
     #   the user containers in each stack. These then replace the quality_changes containers in the
     #   stack and clear the user settings.
-    #
-    #   \return \type{bool} True if the operation was successfully, False if not.
     @pyqtSlot(str)
     def createQualityChanges(self, base_name):
         global_stack = Application.getInstance().getGlobalContainerStack()
