@@ -382,20 +382,6 @@ class ContainerManager(QObject):
 
             self._container_registry.addContainer(new_changes)
 
-    @pyqtSlot("QVariant")
-    def removeMaterial(self, material_node):
-        root_material_id = material_node.metadata["base_file"]
-        material_group = self._material_manager.getMaterialGroup(root_material_id)
-        if not material_group:
-            Logger.log("d", "Unable to remove the material with id %s, because it doesn't exist.", root_material_id)
-            return
-
-        nodes_to_remove = [material_group.root_material_node] + material_group.derived_material_node_list
-        for node in nodes_to_remove:
-            self._container_registry.removeContainer(node.metadata["id"])
-
-
-
     ##  Create a new material by cloning Generic PLA for the current material diameter and setting the GUID to something unqiue
     #
     #   \return \type{str} the id of the newly created container.

@@ -183,7 +183,7 @@ Item
 
         onYes:
         {
-            Cura.ContainerManager.removeMaterial(base.currentItem.container_node);
+            base.materialManager.removeMaterial(base.currentItem.container_node);
         }
     }
 
