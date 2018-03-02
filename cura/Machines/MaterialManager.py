@@ -329,7 +329,7 @@ class MaterialManager(QObject):
     # This function returns the generic root material ID for the given material type, where material types are "PLA",
     # "ABS", etc.
     #
-    def getFallbackMaterialIdByMaterialType(self, material_type: str) -> str:
+    def getFallbackMaterialIdByMaterialType(self, material_type: str) -> Optional[str]:
         # For safety
         if material_type not in self._fallback_materials_map:
             Logger.log("w", "The material type [%s] does not have a fallback material" % material_type)
