@@ -79,7 +79,7 @@ Item
             iconName: "list-add"
             onClicked: {
                 forceActiveFocus();
-                base.newRootMaterialIdToSwitchTo = Cura.ContainerManager.createMaterial();
+                base.newRootMaterialIdToSwitchTo = base.materialManager.createMaterial();
                 base.toActivateNewMaterial = true;
             }
         }

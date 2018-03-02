@@ -3,6 +3,7 @@
 
 from collections import defaultdict, OrderedDict
 import copy
+import uuid
 from typing import Optional
 
 from PyQt5.Qt import QTimer, QObject, pyqtSignal, pyqtSlot
@@ -429,3 +430,31 @@ class MaterialManager(QObject):
             container_to_add.setDirty(True)
             self._container_registry.addContainer(container_to_add)
         return new_base_id
+
+    #
+    # Create a new material by cloning Generic PLA for the current material diameter and generate a new GUID.
+    #
+    @pyqtSlot(result = str)
+    def createMaterial(self) -> str:
+        from UM.i18n import i18nCatalog
+        catalog = i18nCatalog("cura")
+        # Ensure all settings are saved.
+        self._application.saveSettings()
+
+        global_stack = self._application.getGlobalContainerStack()
+        approximate_diameter = str(round(global_stack.getProperty("material_diameter", "value")))
+        root_material_id = "generic_pla"
+        root_material_id = self.getRootMaterialIDForDiameter(root_material_id, approximate_diameter)
+        material_group = self.getMaterialGroup(root_material_id)
+
+        # Create a new ID & container to hold the data.
+        new_id = self._container_registry.uniqueName("custom_material")
+        new_metadata = {"name": catalog.i18nc("@label", "Custom Material"),
+                        "brand": catalog.i18nc("@label", "Custom"),
+                        "GUID": str(uuid.uuid4()),
+                        }
+
+        self.duplicateMaterial(material_group.root_material_node,
+                               new_base_id = new_id,
+                               new_metadata = new_metadata)
+        return new_id

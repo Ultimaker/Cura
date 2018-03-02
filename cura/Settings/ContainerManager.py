@@ -382,32 +382,6 @@ class ContainerManager(QObject):
 
             self._container_registry.addContainer(new_changes)
 
-    ##  Create a new material by cloning Generic PLA for the current material diameter and setting the GUID to something unqiue
-    #
-    #   \return \type{str} the id of the newly created container.
-    @pyqtSlot(result = str)
-    def createMaterial(self):
-        # Ensure all settings are saved.
-        Application.getInstance().saveSettings()
-
-        global_stack = Application.getInstance().getGlobalContainerStack()
-        approximate_diameter = str(round(global_stack.getProperty("material_diameter", "value")))
-        root_material_id = "generic_pla"
-        root_material_id = self._material_manager.getRootMaterialIDForDiameter(root_material_id, approximate_diameter)
-        material_group = self._material_manager.getMaterialGroup(root_material_id)
-
-        # Create a new ID & container to hold the data.
-        new_id = self._container_registry.uniqueName("custom_material")
-        new_metadata = {"name": catalog.i18nc("@label", "Custom Material"),
-                        "brand": catalog.i18nc("@label", "Custom"),
-                        "GUID": str(uuid.uuid4()),
-                        }
-
-        self.duplicateMaterial(material_group.root_material_node,
-                               new_base_id = new_id,
-                               new_metadata = new_metadata)
-        return new_id
-
     ##  Get a list of materials that have the same GUID as the reference material
     #
     #   \param material_id \type{str} the id of the material for which to get the linked materials.
