@@ -8,6 +8,7 @@ import QtQuick.Layouts 1.3
 import UM 1.2 as UM
 import Cura 1.0 as Cura
 import "Menus"
+import "Menus/ConfigurationMenu"
 
 Rectangle
 {

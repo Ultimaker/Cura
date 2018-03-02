@@ -17,7 +17,7 @@ Item
     property var panelVisible: false
     Button
     {
-        text: "SYNC"
+        text: "Matched"
         width: parent.width
         height: parent.height
 
@@ -84,12 +84,11 @@ Item
         y: configurationSelector.height - UM.Theme.getSize("default_lining").height
         x: configurationSelector.width - width
         width: panelWidth
-        height: 300 //contentItem.height
         visible: panelVisible
         padding: UM.Theme.getSize("default_lining").width
 
         contentItem: ConfigurationListView {
-            width: panelWidth - 2 * UM.Theme.getSize("default_lining").width
+            width: panelWidth - 2 * popup.padding
         }
 
         background: Rectangle {
