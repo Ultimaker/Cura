@@ -1,13 +1,14 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Optional
 
 from PyQt5.QtCore import QObject, QTimer, pyqtSignal, pyqtSlot
 
 from UM.Application import Application
 from UM.Logger import Logger
 from UM.Util import parseBool
+from UM.Settings.InstanceContainer import InstanceContainer
 
 from .QualityGroup import QualityGroup
 from .QualityNode import QualityNode
@@ -371,6 +372,57 @@ class QualityManager(QObject):
         self._application.getMachineManager().activeQualityGroupChanged.emit()
 
         return new_name
+
+    #
+    # Duplicates the given quality.
+    #
+    @pyqtSlot(str, "QVariantMap")
+    def duplicateQualityChanges(self, quality_changes_name, quality_model_item):
+        global_stack = self._application.getGlobalContainerStack()
+        if not global_stack:
+            Logger.log("i", "No active global stack, cannot duplicate quality changes.")
+            return
+
+        quality_group = quality_model_item["quality_group"]
+        quality_changes_group = quality_model_item["quality_changes_group"]
+        if quality_changes_group is None:
+            # create global quality changes only
+            new_quality_changes = self._createQualityChanges(quality_group.quality_type, quality_changes_name,
+                                                             global_stack, extruder_id = None)
+            self._container_registry.addContainer(new_quality_changes)
+        else:
+            new_name = self._container_registry.uniqueName(quality_changes_name)
+            for node in quality_changes_group.getAllNodes():
+                container = node.getContainer()
+                new_id = self._container_registry.uniqueName(container.getId())
+                self._container_registry.addContainer(container.duplicate(new_id, new_name))
+
+    #
+    # Create a quality changes container with the given setup.
+    #
+    def _createQualityChanges(self, quality_type: str, new_name: str, machine: "GlobalStack",
+                              extruder_id: Optional[str]) -> "InstanceContainer":
+        base_id = machine.definition.getId() if extruder_id is None else extruder_id
+        new_id = base_id + "_" + new_name
+        new_id = new_id.lower().replace(" ", "_")
+        new_id = self._container_registry.uniqueName(new_id)
+
+        # Create a new quality_changes container for the quality.
+        quality_changes = InstanceContainer(new_id)
+        quality_changes.setName(new_name)
+        quality_changes.addMetaDataEntry("type", "quality_changes")
+        quality_changes.addMetaDataEntry("quality_type", quality_type)
+
+        # If we are creating a container for an extruder, ensure we add that to the container
+        if extruder_id is not None:
+            quality_changes.addMetaDataEntry("extruder", extruder_id)
+
+        # If the machine specifies qualities should be filtered, ensure we match the current criteria.
+        machine_definition_id = getMachineDefinitionIDForQualitySearch(machine)
+        quality_changes.setDefinition(machine_definition_id)
+
+        quality_changes.addMetaDataEntry("setting_version", self._application.SettingVersion)
+        return quality_changes
 
 
 #

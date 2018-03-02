@@ -224,7 +224,7 @@ Item
         object: "<new name>"
         onAccepted:
         {
-            Cura.ContainerManager.duplicateQualityChanges(newName, base.currentItem);
+            base.qualityManager.duplicateQualityChanges(newName, base.currentItem);
         }
     }
 

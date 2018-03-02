@@ -382,24 +382,6 @@ class ContainerManager(QObject):
 
             self._container_registry.addContainer(new_changes)
 
-    @pyqtSlot(str, "QVariantMap")
-    def duplicateQualityChanges(self, quality_changes_name, quality_model_item):
-        global_stack = Application.getInstance().getGlobalContainerStack()
-
-        quality_group = quality_model_item["quality_group"]
-        quality_changes_group = quality_model_item["quality_changes_group"]
-        if quality_changes_group is None:
-            # create global quality changes only
-            new_quality_changes = self._createQualityChanges(quality_group.quality_type, quality_changes_name,
-                                                             global_stack, extruder_id = None)
-            self._container_registry.addContainer(new_quality_changes)
-        else:
-            new_name = self._container_registry.uniqueName(quality_changes_name)
-            for node in quality_changes_group.getAllNodes():
-                container = node.getContainer()
-                new_id = self._container_registry.uniqueName(container.getId())
-                self._container_registry.addContainer(container.duplicate(new_id, new_name))
-
     @pyqtSlot("QVariant")
     def removeMaterial(self, material_node):
         root_material_id = material_node.metadata["base_file"]
@@ -597,51 +579,6 @@ class ContainerManager(QObject):
 
             name_filter = "{0} ({1})".format(mime_type.comment, suffix_list)
             self._container_name_filters[name_filter] = entry
-
-    ##  Creates a unique ID for a container by prefixing the name with the stack ID.
-    #
-    #   This method creates a unique ID for a container by prefixing it with a specified stack ID.
-    #   This is done to ensure we have an easily identified ID for quality changes, which have the
-    #   same name across several stacks.
-    #
-    #   \param stack_id The ID of the stack to prepend.
-    #   \param container_name The name of the container that we are creating a unique ID for.
-    #
-    #   \return Container name prefixed with stack ID, in lower case with spaces replaced by underscores.
-    def _createUniqueId(self, stack_id, container_name):
-        result = stack_id + "_" + container_name
-        result = result.lower()
-        result.replace(" ", "_")
-        return result
-
-    ##  Create a quality changes container for a specified quality container.
-    #
-    #   \param quality_container The quality container to create a changes container for.
-    #   \param new_name The name of the new quality_changes container.
-    #   \param machine_definition The machine definition this quality changes container is specific to.
-    #   \param extruder_id
-    #
-    #   \return A new quality_changes container with the specified container as base.
-    def _createQualityChanges(self, quality_type, new_name, machine, extruder_id):
-        base_id = machine.definition.getId() if extruder_id is None else extruder_id
-
-        # Create a new quality_changes container for the quality.
-        quality_changes = InstanceContainer(self._createUniqueId(base_id, new_name))
-        quality_changes.setName(new_name)
-        quality_changes.addMetaDataEntry("type", "quality_changes")
-        quality_changes.addMetaDataEntry("quality_type", quality_type)
-
-        # If we are creating a container for an extruder, ensure we add that to the container
-        if extruder_id is not None:
-            quality_changes.addMetaDataEntry("extruder", extruder_id)
-
-        # If the machine specifies qualities should be filtered, ensure we match the current criteria.
-        machine_definition_id = getMachineDefinitionIDForQualitySearch(machine)
-        quality_changes.setDefinition(machine_definition_id)
-
-        from cura.CuraApplication import CuraApplication
-        quality_changes.addMetaDataEntry("setting_version", CuraApplication.SettingVersion)
-        return quality_changes
 
     ##  Import single profile, file_url does not have to end with curaprofile
     @pyqtSlot(QUrl, result="QVariantMap")
