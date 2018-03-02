@@ -13,6 +13,8 @@ import Cura 1.0 as Cura
 Item
 {
     id: base
+
+    property QtObject materialManager: CuraApplication.getMaterialManager()
     property var resetEnabled: false  // Keep PreferencesDialog happy
 
     UM.I18nCatalog { id: catalog; name: "cura"; }
@@ -89,7 +91,7 @@ Item
             enabled: base.hasCurrentItem
             onClicked: {
                 forceActiveFocus();
-                base.newRootMaterialIdToSwitchTo = Cura.ContainerManager.duplicateMaterial(base.currentItem.container_node);
+                base.newRootMaterialIdToSwitchTo = base.materialManager.duplicateMaterial(base.currentItem.container_node);
                 base.toActivateNewMaterial = true;
             }
         }

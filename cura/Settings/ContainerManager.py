@@ -395,61 +395,6 @@ class ContainerManager(QObject):
             self._container_registry.removeContainer(node.metadata["id"])
 
 
-    ##  Create a duplicate of a material, which has the same GUID and base_file metadata
-    #
-    #   \return \type{str} the id of the newly created container.
-    @pyqtSlot("QVariant", result = str)
-    def duplicateMaterial(self, material_node, new_base_id = None, new_metadata = None):
-        root_material_id = material_node.metadata["base_file"]
-
-        material_group = self._material_manager.getMaterialGroup(root_material_id)
-        if not material_group:
-            Logger.log("d", "Unable to duplicate the material with id %s, because it doesn't exist.", root_material_id)
-            return
-
-        base_container = material_group.root_material_node.getContainer()
-        containers_to_copy = []
-        for node in material_group.derived_material_node_list:
-            containers_to_copy.append(node.getContainer())
-
-        # Ensure all settings are saved.
-        Application.getInstance().saveSettings()
-
-        # Create a new ID & container to hold the data.
-        new_containers = []
-        if new_base_id is None:
-            new_base_id = self._container_registry.uniqueName(base_container.getId())
-        new_base_container = copy.deepcopy(base_container)
-        new_base_container.getMetaData()["id"] = new_base_id
-        new_base_container.getMetaData()["base_file"] = new_base_id
-        if new_metadata is not None:
-            for key, value in new_metadata.items():
-                new_base_container.getMetaData()[key] = value
-        new_containers.append(new_base_container)
-
-        # Clone all of them.
-        for container_to_copy in containers_to_copy:
-            # Create unique IDs for every clone.
-            new_id = new_base_id
-            if container_to_copy.getMetaDataEntry("definition") != "fdmprinter":
-                new_id += "_" + container_to_copy.getMetaDataEntry("definition")
-                if container_to_copy.getMetaDataEntry("variant_name"):
-                    variant_name = container_to_copy.getMetaDataEntry("variant_name")
-                    new_id += "_" + variant_name.replace(" ", "_")
-
-            new_container = copy.deepcopy(container_to_copy)
-            new_container.getMetaData()["id"] = new_id
-            new_container.getMetaData()["base_file"] = new_base_id
-            if new_metadata is not None:
-                for key, value in new_metadata.items():
-                    new_container.getMetaData()[key] = value
-
-            new_containers.append(new_container)
-
-        for container_to_add in new_containers:
-            container_to_add.setDirty(True)
-            ContainerRegistry.getInstance().addContainer(container_to_add)
-        return new_base_id
 
     ##  Create a new material by cloning Generic PLA for the current material diameter and setting the GUID to something unqiue
     #
