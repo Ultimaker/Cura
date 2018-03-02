@@ -214,7 +214,7 @@ class PrintInformation(QObject):
         extruder_stacks = global_stack.extruders
         for position, extruder_stack in extruder_stacks.keys():
             index = int(position)
-            if index >= len(self._material_amounts):  # Right now the _material_amounts is a list, where the index is the extruder number
+            if index >= len(self._material_amounts):
                 continue
             amount = self._material_amounts[index]
             ## Find the right extruder stack. As the list isn't sorted because it's a annoying generator, we do some
