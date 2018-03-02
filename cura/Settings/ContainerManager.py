@@ -382,27 +382,6 @@ class ContainerManager(QObject):
 
             self._container_registry.addContainer(new_changes)
 
-    #
-    # Rename a set of quality changes containers. Returns the new name.
-    #
-    @pyqtSlot(QObject, str, result = str)
-    def renameQualityChangesGroup(self, quality_changes_group, new_name) -> str:
-        Logger.log("i", "Renaming QualityChangesGroup[%s] to [%s]", quality_changes_group.name, new_name)
-        self._machine_manager.blurSettings.emit()
-
-        if new_name == quality_changes_group.name:
-            Logger.log("i", "QualityChangesGroup name [%s] unchanged.", quality_changes_group.name)
-            return new_name
-
-        new_name = self._container_registry.uniqueName(new_name)
-        for node in quality_changes_group.getAllNodes():
-            node.getContainer().setName(new_name)
-
-        self._machine_manager.activeQualityChanged.emit()
-        self._machine_manager.activeQualityGroupChanged.emit()
-
-        return new_name
-
     @pyqtSlot(str, "QVariantMap")
     def duplicateQualityChanges(self, quality_changes_name, quality_model_item):
         global_stack = Application.getInstance().getGlobalContainerStack()

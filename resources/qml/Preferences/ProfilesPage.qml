@@ -255,7 +255,7 @@ Item
         object: "<new name>"
         onAccepted:
         {
-            var actualNewName = Cura.ContainerManager.renameQualityChangesGroup(base.currentItem.quality_changes_group, newName);
+            var actualNewName = base.qualityManager.renameQualityChangesGroup(base.currentItem.quality_changes_group, newName);
             base.newQualityNameToSelect = actualNewName;  // Select the new name after the model gets updated
         }
     }

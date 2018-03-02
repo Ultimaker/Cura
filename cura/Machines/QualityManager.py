@@ -2,6 +2,7 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from typing import TYPE_CHECKING
+
 from PyQt5.QtCore import QObject, QTimer, pyqtSignal, pyqtSlot
 
 from UM.Application import Application
@@ -349,6 +350,27 @@ class QualityManager(QObject):
         Logger.log("i", "Removing quality changes group [%s]", quality_changes_group.name)
         for node in quality_changes_group.getAllNodes():
             self._container_registry.removeContainer(node.metadata["id"])
+
+    #
+    # Rename a set of quality changes containers. Returns the new name.
+    #
+    @pyqtSlot(QObject, str, result = str)
+    def renameQualityChangesGroup(self, quality_changes_group: "QualityChangesGroup", new_name: str) -> str:
+        Logger.log("i", "Renaming QualityChangesGroup[%s] to [%s]", quality_changes_group.name, new_name)
+        if new_name == quality_changes_group.name:
+            Logger.log("i", "QualityChangesGroup name [%s] unchanged.", quality_changes_group.name)
+            return new_name
+
+        new_name = self._container_registry.uniqueName(new_name)
+        for node in quality_changes_group.getAllNodes():
+            node.getContainer().setName(new_name)
+
+        quality_changes_group.name = new_name
+
+        self._application.getMachineManager().activeQualityChanged.emit()
+        self._application.getMachineManager().activeQualityGroupChanged.emit()
+
+        return new_name
 
 
 #
