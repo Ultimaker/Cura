@@ -389,9 +389,6 @@ class MaterialManager(QObject):
             return None
 
         base_container = material_group.root_material_node.getContainer()
-        containers_to_copy = []
-        for node in material_group.derived_material_node_list:
-            containers_to_copy.append(node.getContainer())
 
         # Ensure all settings are saved.
         self._application.saveSettings()
@@ -409,7 +406,8 @@ class MaterialManager(QObject):
         new_containers.append(new_base_container)
 
         # Clone all of them.
-        for container_to_copy in containers_to_copy:
+        for node in material_group.derived_material_node_list:
+            container_to_copy = node.getContainer()
             # Create unique IDs for every clone.
             new_id = new_base_id
             if container_to_copy.getMetaDataEntry("definition") != "fdmprinter":
