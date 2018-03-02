@@ -6213,9 +6213,9 @@
                     "enabled": "bridge_settings_enabled",
                     "settable_per_mesh": true
                 },
-                "bridge_wall_max_air_gap":
+                "bridge_wall_max_overhang":
                 {
-                    "label": "Bridge Wall Max Air Gap",
+                    "label": "Bridge Wall Max Overhang",
                     "description": "The maximum allowed width of the region of air below a wall line before the wall is printed using bridge settings. Expressed as a percentage of the wall line width. When the air gap is wider than this, the wall line is printed using the bridge settings. Otherwise, the wall line is printed using the normal settings. The lower the value, the more likely it is that overhung wall lines will be printed using bridge settings.",
                     "unit": "%",
                     "default_value": 100,
