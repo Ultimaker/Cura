@@ -27,7 +27,7 @@ from .QualityNode import QualityNode
 
 
 #
-# Similar to MaterialManager, QualityManager maintains a number of maps and trees for material lookup.
+# Similar to MaterialManager, QualityManager maintains a number of maps and trees for quality profile lookup.
 # The models GUI and QML use are now only dependent on the QualityManager. That means as long as the data in
 # QualityManager gets updated correctly, the GUI models should be updated correctly too, and the same goes for GUI.
 #
