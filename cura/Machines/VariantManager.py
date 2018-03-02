@@ -1,6 +1,7 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
+from enum import Enum
 from collections import OrderedDict
 from typing import Optional
 
@@ -11,7 +12,7 @@ from cura.Machines.ContainerNode import ContainerNode
 from cura.Settings.GlobalStack import GlobalStack
 
 
-class VariantType:
+class VariantType(Enum):
     BUILD_PLATE = "buildplate"
     NOZZLE = "nozzle"
 
@@ -64,6 +65,7 @@ class VariantManager:
                     self._machine_to_variant_dict_map[variant_definition][variant_type] = dict()
 
             variant_type = variant_metadata["hardware_type"]
+            variant_type = VariantType(variant_type)
             variant_dict = self._machine_to_variant_dict_map[variant_definition][variant_type]
             if variant_name in variant_dict:
                 # ERROR: duplicated variant name.
@@ -77,10 +79,10 @@ class VariantManager:
     # Almost the same as getVariantMetadata() except that this returns an InstanceContainer if present.
     #
     def getVariantNode(self, machine_definition_id: str, variant_name: str,
-                       variant_type: Optional[str] = VariantType.NOZZLE) -> Optional["ContainerNode"]:
+                       variant_type: Optional["VariantType"] = VariantType.NOZZLE) -> Optional["ContainerNode"]:
         return self._machine_to_variant_dict_map[machine_definition_id].get(variant_type, {}).get(variant_name)
 
     def getVariantNodes(self, machine: "GlobalStack",
-                        variant_type: Optional[str] = VariantType.NOZZLE) -> dict:
+                        variant_type: Optional["VariantType"] = VariantType.NOZZLE) -> dict:
         machine_definition_id = machine.definition.getId()
         return self._machine_to_variant_dict_map.get(machine_definition_id, {}).get(variant_type, {})
