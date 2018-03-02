@@ -236,6 +236,16 @@ Item
         onTriggered: CuraActions.deleteSelection();
     }
 
+    Action //Also add backspace as the same function as delete because on Macintosh keyboards the button called "delete" is actually a backspace, and the user expects it to function as a delete.
+    {
+        id: backspaceSelectionAction
+        text: catalog.i18ncp("@action:inmenu menubar:edit", "Delete &Selected Model", "Delete &Selected Models", UM.Selection.selectionCount)
+        enabled: UM.Controller.toolsEnabled && UM.Selection.hasSelection
+        iconName: "edit-delete"
+        shortcut: StandardKey.Backspace
+        onTriggered: CuraActions.deleteSelection()
+    }
+
     Action
     {
         id: centerSelectionAction;
