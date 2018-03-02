@@ -73,6 +73,10 @@ class BrandMaterialsModel(ListModel):
         if global_stack is None:
             self.setItems([])
             return
+        extruder_position = str(self._extruder_position)
+        if extruder_position not in global_stack.extruders:
+            self.setItems([])
+            return
         extruder_stack = global_stack.extruders[str(self._extruder_position)]
 
         available_material_dict = self._material_manager.getAvailableMaterialsForMachineExtruder(global_stack,
