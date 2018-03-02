@@ -44,7 +44,6 @@ class PerObjectSettingsTool(Tool):
         self._error_check_timer.setSingleShot(True)
         self._error_check_timer.timeout.connect(self._updateStacksHaveErrors)
 
-
     def event(self, event):
         super().event(event)
         if event.type == Event.MousePressEvent and self._controller.getToolsEnabled():
@@ -156,10 +155,12 @@ class PerObjectSettingsTool(Tool):
 
     def _onPropertyChanged(self, key: str, property_name: str) -> None:
         if property_name == "validationState":
-            self._error_check_timer.start()
+            # self._error_check_timer.start()
+            return
 
     def _updateStacksHaveErrors(self) -> None:
-        self._checkStacksHaveErrors()
+        return
+        # self._checkStacksHaveErrors()
 
 
     def _checkStacksHaveErrors(self):
@@ -180,6 +181,7 @@ class PerObjectSettingsTool(Tool):
 
 
     def _checkStackForErrors(self, stack):
+        print("checking for errors")
         if stack is None:
             return False
 
