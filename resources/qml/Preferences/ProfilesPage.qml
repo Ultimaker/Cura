@@ -266,7 +266,7 @@ Item
         id: importDialog
         title: catalog.i18nc("@title:window", "Import Profile")
         selectExisting: true
-        nameFilters: qualitiesModel.getFileNameFilters("profile_reader")  // TODO: make this easier
+        nameFilters: qualitiesModel.getFileNameFilters("profile_reader")
         folder: CuraApplication.getDefaultPath("dialog_profile_path")
         onAccepted:
         {
@@ -292,11 +292,10 @@ Item
         id: exportDialog
         title: catalog.i18nc("@title:window", "Export Profile")
         selectExisting: false
-        nameFilters: qualitiesModel.getFileNameFilters("profile_writer")  // TODO: make this easier
+        nameFilters: qualitiesModel.getFileNameFilters("profile_writer")
         folder: CuraApplication.getDefaultPath("dialog_profile_path")
         onAccepted:
         {
-            // TODO: make this easier
             var result = Cura.ContainerManager.exportQualityChangesGroup(base.currentItem.quality_changes_group,
                                                                          fileUrl, selectedNameFilter);
 
