@@ -17,21 +17,6 @@ if TYPE_CHECKING:
     from cura.Settings.GlobalStack import GlobalStack
     from .QualityChangesGroup import QualityChangesGroup
 
-#
-# Quality lookup tree structure:
-#
-#      <machine_definition_id>------|
-#                |                  |
-#          <variant_name>        <root_material_id>
-#                |
-#        <root_material_id>
-#                |
-#          <quality_type>
-#                |
-#            <quality_name>
-#       + <quality_changes_name>
-#
-
 
 #
 # Similar to MaterialManager, QualityManager maintains a number of maps and trees for quality profile lookup.
