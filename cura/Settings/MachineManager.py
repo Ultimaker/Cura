@@ -118,6 +118,7 @@ class MachineManager(QObject):
             containers[0].nameChanged.connect(self._onMaterialNameChanged)
 
         self._material_manager = self._application._material_manager
+        self._quality_manager = self._application.getQualityManager()
 
         # When the materials lookup table gets updated, it can mean that a material has its name changed, which should
         # be reflected on the GUI. This signal emission makes sure that it happens.
@@ -853,11 +854,8 @@ class MachineManager(QObject):
         self.activeQualityChangesGroupChanged.emit()
 
     def _setQualityChangesGroup(self, quality_changes_group):
-        # TODO: quality_changes groups depend on a quality_type. Here it's fetching the quality_types every time.
-        #       Can we do this better, like caching the quality group a quality_changes group depends on?
         quality_type = quality_changes_group.quality_type
-        quality_manager = Application.getInstance()._quality_manager
-        quality_group_dict = quality_manager.getQualityGroups(self._global_container_stack)
+        quality_group_dict = self._quality_manager.getQualityGroups(self._global_container_stack)
         quality_group = quality_group_dict[quality_type]
 
         quality_changes_container = self._empty_quality_changes_container
