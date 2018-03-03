@@ -971,13 +971,6 @@ class MachineManager(QObject):
                 self._setMaterial(position, new_material)
                 continue
 
-        # # Find a fallback material
-        # preferred_material_query = self._global_container_stack.getMetaDataEntry("preferred_material")
-        # preferred_material_key = preferred_material_query.replace("*", "")
-        # if preferred_material_key in candidate_materials:
-        #     self._setMaterial(position, candidate_materials[preferred_material_key])
-        #     return
-
     @pyqtSlot("QVariant")
     def setGlobalVariant(self, container_node):
         self.blurSettings.emit()
