@@ -344,10 +344,19 @@ Item
 
                     Row
                     {
+                        id: materialRow
                         spacing: (UM.Theme.getSize("default_margin").width / 2) | 0
                         anchors.left: parent.left
                         anchors.leftMargin: UM.Theme.getSize("default_margin").width
                         anchors.right: parent.right
+
+                        property bool isItemActivated:
+                        {
+                            const extruder_position = Cura.ExtruderManager.activeExtruderIndex;
+                            const root_material_id = Cura.MachineManager.currentRootMaterialId[extruder_position];
+                            return model.root_material_id == root_material_id;
+                        }
+
                         Rectangle
                         {
                             width: Math.floor(parent.height * 0.8)
@@ -361,22 +370,14 @@ Item
                             width: Math.floor((parent.width * 0.3))
                             text: model.material
                             elide: Text.ElideRight
-                            font.italic: {
-                                const extruder_position = Cura.ExtruderManager.activeExtruderIndex;
-                                const root_material_id = Cura.MachineManager.currentRootMaterialId[extruder_position];
-                                return model.root_material_id == root_material_id
-                            }
+                            font.italic: materialRow.isItemActivated
                             color: parent.ListView.isCurrentItem ? palette.highlightedText : palette.text;
                         }
                         Label
                         {
                             text: (model.name != model.material) ? model.name : ""
                             elide: Text.ElideRight
-                            font.italic: {
-                                const extruder_position = Cura.ExtruderManager.activeExtruderIndex;
-                                const root_material_id = Cura.MachineManager.currentRootMaterialId[extruder_position];
-                                return model.root_material_id == root_material_id;
-                            }
+                            font.italic: materialRow.isItemActivated
                             color: parent.ListView.isCurrentItem ? palette.highlightedText : palette.text;
                         }
                     }
