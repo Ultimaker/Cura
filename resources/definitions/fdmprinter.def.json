@@ -6303,6 +6303,15 @@
                     "enabled": "bridge_settings_enabled",
                     "settable_per_mesh": true
                 },
+                "bridge_modify_skins_above":
+                {
+                    "label": "Modify Skins Above Bridge",
+                    "description": "If enabled, the skin regions present on the 2nd and 3rd layers above the air gap are printed using Bridge Skin Speed. Otherwise, those skins are printed using the normal skin speed.",
+                    "type": "bool",
+                    "default_value": true,
+                    "enabled": "bridge_settings_enabled",
+                    "settable_per_mesh": true
+                },
                 "bridge_fan_speed":
                 {
                     "label": "Bridge Fan Speed",
