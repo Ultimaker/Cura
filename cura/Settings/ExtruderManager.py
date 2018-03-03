@@ -404,6 +404,25 @@ class ExtruderManager(QObject):
                 self.extrudersChanged.emit(global_stack_id)
                 self.setActiveExtruderIndex(0)
 
+    #
+    # This function tries to fix the problem with per-extruder-settable nozzle size and material diameter problems
+    # in early versions (3.0 - 3.2.1).
+    #
+    # We cannot add a setting definition of "material_diameter" into the extruder's definition at runtime
+    # because all other machines which uses "fdmextruder" as the extruder definition will be affected.
+    #
+    # The problem is that single extrusion machines have their default material diameter defined in the global
+    # definitions. Now we automatically create an extruder stack for those machines using "fdmextruder"
+    # definition, which doesn't have the specific "material_diameter" and "machine_nozzle_size" defined for
+    # each machine. This results in wrong values which can be found in the MachineSettings dialog.
+    #
+    # To solve this, we put "material_diameter" back into the "fdmextruder" definition because modifying it in
+    # the extruder definition will affect all machines which uses the "fdmextruder" definition. Moreover, now
+    # we also check the value defined in the machine definition. If present, the value defined in the global
+    # stack's definition changes container will be copied. Otherwise, we will check if the default values in the
+    # machine definition and the extruder definition are the same, and if not, the default value in the machine
+    # definition will be copied to the extruder stack's definition changes.
+    #
     def _fixMaterialDiameterAndNozzleSize(self, global_stack, extruder_stack_list):
         keys_to_copy = ["material_diameter", "machine_nozzle_size"]  # these will be copied over to all extruders
 
@@ -414,22 +433,6 @@ class ExtruderManager(QObject):
                 if extruder_stack.definitionChanges.hasProperty(key, "value"):
                     continue
 
-                #
-                # We cannot add a setting definition of "material_diameter" into the extruder's definition at runtime
-                # because all other machines which uses "fdmextruder" as the extruder definition will be affected.
-                #
-                # The problem is that single extrusion machines have their default material diameter defined in the global
-                # definitions. Now we automatically create an extruder stack for those machines using "fdmextruder"
-                # definition, which doesn't have the specific "material_diameter" and "machine_nozzle_size" defined for
-                # each machine. This results in wrong values which can be found in the MachineSettings dialog.
-                #
-                # To solve this, we put "material_diameter" back into the "fdmextruder" definition because modifying it in
-                # the extruder definition will affect all machines which uses the "fdmextruder" definition. Moreover, now
-                # we also check the value defined in the machine definition. If present, the value defined in the global
-                # stack's definition changes container will be copied. Otherwise, we will check if the default values in the
-                # machine definition and the extruder definition are the same, and if not, the default value in the machine
-                # definition will be copied to the extruder stack's definition changes.
-                #
                 setting_value_in_global_def_changes = global_stack.definitionChanges.getProperty(key, "value")
                 setting_value_in_global_def = global_stack.definition.getProperty(key, "value")
                 setting_value = setting_value_in_global_def
