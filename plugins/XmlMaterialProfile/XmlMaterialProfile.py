@@ -606,8 +606,6 @@ class XmlMaterialProfile(InstanceContainer):
                         if not variant_node:
                             continue
 
-                        # TODO: check if build plate variant exists
-
                         buildplate_compatibility = machine_compatibility
                         buildplate_recommended = machine_compatibility
                         settings = buildplate.iterfind("./um:setting", self.__namespaces)
