@@ -256,6 +256,17 @@ class QualityManager(QObject):
                 if fallback_root_material_id:
                     root_material_id_list.append(fallback_root_material_id)
 
+            # Here we construct a list of nodes we want to look for qualities with the highest priority first.
+            # The use case is that, when we look for qualities for a machine, we first want to search in the following
+            # order:
+            #   1. machine-variant-and-material-specific qualities if exist
+            #   2. machine-variant-specific qualities if exist
+            #   3. machine-material-specific qualities if exist
+            #   4. machine-specific qualities if exist
+            #   5. generic qualities if exist
+            # Each points above can be represented as a node in the lookup tree, so here we simply put those nodes into
+            # the list with priorities as the order. Later, we just need to loop over each node in this list and fetch
+            # qualities from there.
             nodes_to_check = []
 
             if variant_name:
