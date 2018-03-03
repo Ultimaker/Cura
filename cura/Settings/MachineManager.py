@@ -817,6 +817,10 @@ class MachineManager(QObject):
 
         return result
 
+    #
+    # Sets all quality and quality_changes containers to empty_quality and empty_quality_changes containers
+    # for all stacks in the currently active machine.
+    #
     def _setEmptyQuality(self):
         self._current_quality_group = None
         self._current_quality_changes_group = None
