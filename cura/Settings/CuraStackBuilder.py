@@ -71,19 +71,8 @@ class CuraStackBuilder:
 
         # get material container for extruders
         material_container = application.empty_material_container
-        # Only look for the preferred material if this machine has materials
-        if parseBool(machine_definition.getMetaDataEntry("has_materials", False)):
-            material_diameter = machine_definition.getProperty("material_diameter", "value")
-            if isinstance(material_diameter, SettingFunction):
-                material_diameter = material_diameter(new_global_stack)
-            approximate_material_diameter = str(round(material_diameter))
-            root_material_id = machine_definition.getMetaDataEntry("preferred_material")
-            root_material_id = material_manager.getRootMaterialIDForDiameter(root_material_id, approximate_material_diameter)
-            material_node = material_manager.getMaterialNode(definition_id, extruder_variant_name, material_diameter, root_material_id)
-            # Sanity check. If you see this error, the related definition files should be fixed.
-            if not material_node:
-                raise RuntimeError("Cannot find material with definition [%s], extruder_variant_name [%s], and root_material_id [%s]" %
-                                   (definition_id, extruder_variant_name, root_material_id))
+        material_node = material_manager.getDefaultMaterial(new_global_stack, extruder_variant_name)
+        if material_node:
             material_container = material_node.getContainer()
 
         # Create ExtruderStacks

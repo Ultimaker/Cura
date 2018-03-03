@@ -4,16 +4,21 @@
 from collections import defaultdict, OrderedDict
 import copy
 import uuid
-from typing import Optional
+from typing import Optional, TYPE_CHECKING
 
 from PyQt5.Qt import QTimer, QObject, pyqtSignal, pyqtSlot
 
 from UM.Application import Application
 from UM.Logger import Logger
-from UM.Settings import ContainerRegistry
+from UM.Settings.ContainerRegistry import ContainerRegistry
+from UM.Settings.SettingFunction import SettingFunction
+from UM.Util import parseBool
 
 from .MaterialNode import MaterialNode
 from .MaterialGroup import MaterialGroup
+
+if TYPE_CHECKING:
+    from cura.Settings.GlobalStack import GlobalStack
 
 
 #
@@ -343,6 +348,20 @@ class MaterialManager(QObject):
             return self.getRootMaterialIDWithoutDiameter(fallback_material["id"])
         else:
             return None
+
+    def getDefaultMaterial(self, global_stack: "GlobalStack", extruder_variant_name: str) -> Optional["MaterialNode"]:
+        node = None
+        machine_definition = global_stack.definition
+        if parseBool(machine_definition.getMetaDataEntry("has_materials", False)):
+            material_diameter = machine_definition.getProperty("material_diameter", "value")
+            if isinstance(material_diameter, SettingFunction):
+                material_diameter = material_diameter(global_stack)
+            approximate_material_diameter = str(round(material_diameter))
+            root_material_id = machine_definition.getMetaDataEntry("preferred_material")
+            root_material_id = self.getRootMaterialIDForDiameter(root_material_id, approximate_material_diameter)
+            node = self.getMaterialNode(machine_definition.getId(), extruder_variant_name,
+                                        material_diameter, root_material_id)
+        return node
 
     #
     # Methods for GUI
