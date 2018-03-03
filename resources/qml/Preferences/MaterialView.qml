@@ -399,13 +399,15 @@ TabView
                         onEditingFinished: materialPropertyProvider.setPropertyValue("value", value)
                     }
 
-                    UM.ContainerPropertyProvider {
+                    UM.ContainerPropertyProvider
+                    {
                         id: materialPropertyProvider
                         containerId: base.containerId
                         watchedProperties: [ "value" ]
                         key: model.key
                     }
-                    UM.ContainerPropertyProvider {
+                    UM.ContainerPropertyProvider
+                    {
                         id: machinePropertyProvider
                         containerId: Cura.MachineManager.activeDefinitionId
                         watchedProperties: [ "value" ]
