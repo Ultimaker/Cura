@@ -117,7 +117,6 @@ class MachineManager(QObject):
         if containers:
             containers[0].nameChanged.connect(self._onMaterialNameChanged)
 
-        # NEW
         self._material_manager = self._application._material_manager
         self._material_manager.materialsUpdated.connect(self._onMaterialsUpdated)
 
@@ -126,7 +125,6 @@ class MachineManager(QObject):
         # be reflected on the GUI. This signal emission makes sure that it happens.
         self.rootMaterialChanged.emit()
 
-    ### NEW
     activeQualityGroupChanged = pyqtSignal()
     activeQualityChangesGroupChanged = pyqtSignal()
 
@@ -783,10 +781,6 @@ class MachineManager(QObject):
         for key, extruder in self._global_container_stack.extruders.items():
             container = extruder.userChanges
             container.setProperty(setting_name, property_name, property_value)
-
-    #
-    # New
-    #
 
     # We not fetch it from _current_root_material_id, but later we can get it from somewhere else
     @pyqtProperty("QVariantList", notify = rootMaterialChanged)
