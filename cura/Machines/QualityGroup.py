@@ -38,8 +38,7 @@ class QualityGroup(QObject):
         for node in [self.node_for_global] + list(self.nodes_for_extruders.values()):
             if node is None:
                 continue
-            for key in node.getContainer().getAllKeys():
-                result.add(key)
+            result.update(node.getContainer().getAllKeys())
         return result
 
     def getAllNodes(self) -> List["QualityGroup"]:
