@@ -361,7 +361,7 @@ Item
                             width: Math.floor((parent.width * 0.3))
                             text: model.material
                             elide: Text.ElideRight
-                            font.italic: {  // TODO: make it easier
+                            font.italic: {
                                 const extruder_position = Cura.ExtruderManager.activeExtruderIndex;
                                 const root_material_id = Cura.MachineManager.currentRootMaterialId[extruder_position];
                                 return model.root_material_id == root_material_id
@@ -372,7 +372,7 @@ Item
                         {
                             text: (model.name != model.material) ? model.name : ""
                             elide: Text.ElideRight
-                            font.italic: {  // TODO: make it easier
+                            font.italic: {
                                 const extruder_position = Cura.ExtruderManager.activeExtruderIndex;
                                 const root_material_id = Cura.MachineManager.currentRootMaterialId[extruder_position];
                                 return model.root_material_id == root_material_id;
