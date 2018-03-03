@@ -778,7 +778,6 @@ class MachineManager(QObject):
             container = extruder.userChanges
             container.setProperty(setting_name, property_name, property_value)
 
-    # We not fetch it from _current_root_material_id, but later we can get it from somewhere else
     @pyqtProperty("QVariantList", notify = rootMaterialChanged)
     def currentExtruderPositions(self):
         return sorted(list(self._current_root_material_id.keys()))
