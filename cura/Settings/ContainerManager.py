@@ -1,7 +1,6 @@
 # Copyright (c) 2017 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-import copy
 import os.path
 import urllib.parse
 import uuid
@@ -29,9 +28,9 @@ from UM.i18n import i18nCatalog
 
 from cura.Settings.ExtruderManager import ExtruderManager
 from cura.Settings.ExtruderStack import ExtruderStack
-from cura.Machines.QualityManager import getMachineDefinitionIDForQualitySearch
 
 catalog = i18nCatalog("cura")
+
 
 ##  Manager class that contains common actions to deal with containers in Cura.
 #
