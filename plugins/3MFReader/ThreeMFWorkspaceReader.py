@@ -1082,6 +1082,12 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             CuraApplication.getInstance().getMachineManager().activeQualityChanged.emit()
 
         # Actually change the active machine.
+        #
+        # This is scheduled for later is because it depends on the Variant/Material/Qualitiy Managers to have the latest
+        # data, but those managers will only update upon a container/container metadata changed signal. Because this
+        # function is running on the main thread (Qt thread), although those "changed" signals have been emitted, but
+        # they won't take effect until this function is done.
+        # To solve this, we schedule _updateActiveMachine() for later so it will have the latest data.
         CuraApplication.getInstance().callLater(self._updateActiveMachine, global_stack)
 
         # Load all the nodes / meshdata of the workspace
