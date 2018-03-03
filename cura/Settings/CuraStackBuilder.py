@@ -41,29 +41,17 @@ class CuraStackBuilder:
 
         # get variant container for the global stack
         global_variant_container = application.empty_variant_container
-        if parseBool(machine_definition.getMetaDataEntry("has_variant_buildplates", False)):
-            global_variant_name = machine_definition.getMetaDataEntry("preferred_variant_buildplate_name")
-            if global_variant_name:
-                variant_node = variant_manager.getVariantNode(definition_id, global_variant_name,
-                                                              variant_type = VariantType.BUILD_PLATE)
-                if variant_node is None:
-                    raise RuntimeError("Cannot find buildplate variant with definition [%s] and variant name [%s]" %
-                                       (definition_id, global_variant_name))
-                global_variant_container = variant_node.getContainer()
+        global_variant_node = variant_manager.getDefaultVariantNode(machine_definition, VariantType.BUILD_PLATE)
+        if global_variant_node:
+            global_variant_container = global_variant_node.getContainer()
 
         # get variant container for extruders
         extruder_variant_container = application.empty_variant_container
-        # Only look for the preferred variant if this machine has variants
+        extruder_variant_node = variant_manager.getDefaultVariantNode(machine_definition, VariantType.NOZZLE)
         extruder_variant_name = None
-        if parseBool(machine_definition.getMetaDataEntry("has_variants", False)):
-            extruder_variant_name = machine_definition.getMetaDataEntry("preferred_variant_name")
-            if extruder_variant_name:
-                variant_node = variant_manager.getVariantNode(definition_id, extruder_variant_name)
-                # Sanity check. If you see this error, the related definition files should be fixed.
-                if variant_node is None:
-                    raise RuntimeError("Cannot find extruder variant with definition [%s] and variant name [%s]" %
-                                       (definition_id, extruder_variant_name))
-                extruder_variant_container = variant_node.getContainer()
+        if extruder_variant_node:
+            extruder_variant_container = extruder_variant_node.getContainer()
+            extruder_variant_name = extruder_variant_container.getName()
 
         generated_name = registry.createUniqueName("machine", "", name, machine_definition.getName())
         # Make sure the new name does not collide with any definition or (quality) profile
