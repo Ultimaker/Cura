@@ -17,14 +17,20 @@ class ExtruderOutputModel(QObject):
     targetHotendTemperatureChanged = pyqtSignal()
     hotendTemperatureChanged = pyqtSignal()
     activeMaterialChanged = pyqtSignal()
+    extruderConfigurationChanged = pyqtSignal()
 
-    def __init__(self, printer: "PrinterOutputModel", parent=None):
+    def __init__(self, printer: "PrinterOutputModel", position, parent=None):
         super().__init__(parent)
         self._printer = printer
+        self._position = position
         self._target_hotend_temperature = 0
         self._hotend_temperature = 0
         self._hotend_id = ""
         self._active_material = None  # type: Optional[MaterialOutputModel]
+        self._extruder_configuration = {}
+        # Update the configuration every time the hotend or the active material change
+        self.hotendIDChanged.connect(self._updateExtruderConfiguration)
+        self.activeMaterialChanged.connect(self._updateExtruderConfiguration)
 
     @pyqtProperty(QObject, notify = activeMaterialChanged)
     def activeMaterial(self) -> "MaterialOutputModel":
@@ -68,3 +74,16 @@ class ExtruderOutputModel(QObject):
         if self._hotend_id != id:
             self._hotend_id = id
             self.hotendIDChanged.emit()
+
+    @pyqtProperty("QVariantMap", notify = extruderConfigurationChanged)
+    def extruderConfiguration(self):
+        return self._extruder_configuration
+
+    def _updateExtruderConfiguration(self):
+        self._extruder_configuration = {
+            "position": self._position,
+            "material": self._active_material.type if self.activeMaterial is not None else None,
+            "hotend_id": self._hotend_id
+        }
+        print("Recalculating extruder configuration:", self._extruder_configuration)
+        self.extruderConfigurationChanged.emit()

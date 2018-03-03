@@ -5,6 +5,7 @@ from PyQt5.QtCore import pyqtSignal, pyqtProperty, QObject, QVariant, pyqtSlot
 from UM.Logger import Logger
 from typing import Optional, List
 from UM.Math.Vector import Vector
+from cura.PrinterOutput.ConfigurationModel import ConfigurationModel
 from cura.PrinterOutput.ExtruderOutputModel import ExtruderOutputModel
 
 MYPY = False
@@ -24,6 +25,7 @@ class PrinterOutputModel(QObject):
     keyChanged = pyqtSignal()
     typeChanged = pyqtSignal()
     cameraChanged = pyqtSignal()
+    configurationChanged = pyqtSignal()
 
     def __init__(self, output_controller: "PrinterOutputController", number_of_extruders: int = 1, parent=None, firmware_version = ""):
         super().__init__(parent)
@@ -32,13 +34,17 @@ class PrinterOutputModel(QObject):
         self._name = ""
         self._key = ""  # Unique identifier
         self._controller = output_controller
-        self._extruders = [ExtruderOutputModel(printer=self) for i in range(number_of_extruders)]
+        self._extruders = [ExtruderOutputModel(printer = self, position = i) for i in range(number_of_extruders)]
+        self._printer_configuration = ConfigurationModel()    # Indicates the current configuration setup in this printer
         self._head_position = Vector(0, 0, 0)
         self._active_print_job = None  # type: Optional[PrintJobOutputModel]
         self._firmware_version = firmware_version
         self._printer_state = "unknown"
         self._is_preheating = False
         self._type = ""
+        # Update the configuration every time the one of the extruders changes its configuration
+        for extruder in self._extruders:
+            extruder.extruderConfigurationChanged.connect(self._updatePrinterConfiguration)
 
         self._camera = None
 
@@ -238,3 +244,15 @@ class PrinterOutputModel(QObject):
         if self._controller:
             return self._controller.can_control_manually
         return False
+
+    # Returns the configuration (material, variant and buildplate) of the current printer
+    @pyqtProperty(QObject, notify = configurationChanged)
+    def printerConfiguration(self):
+        return self._printer_configuration
+
+    def _updatePrinterConfiguration(self):
+        self._printer_configuration.printerType = self._type
+        self._printer_configuration.extruderConfigurations = [extruder.extruderConfiguration for extruder in self._extruders]
+        self._printer_configuration.buildplateConfiguration = None # TODO Add the buildplate information
+        print("Recalculating printer configuration", self.name, ":", self._printer_configuration)
+        self.configurationChanged.emit()

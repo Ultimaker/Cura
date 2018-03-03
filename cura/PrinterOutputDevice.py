@@ -17,6 +17,7 @@ from typing import List, Optional
 MYPY = False
 if MYPY:
     from cura.PrinterOutput.PrinterOutputModel import PrinterOutputModel
+    from cura.PrinterOutput.ConfigurationModel import ConfigurationModel
 
 i18n_catalog = i18nCatalog("cura")
 
@@ -44,10 +45,14 @@ class PrinterOutputDevice(QObject, OutputDevice):
     # Signal to indicate that the info text about the connection has changed.
     connectionTextChanged = pyqtSignal()
 
+    # Signal to indicate that the configuration of one of the printers has changed.
+    configurationChanged = pyqtSignal()
+
     def __init__(self, device_id, parent = None):
         super().__init__(device_id = device_id, parent = parent)
 
         self._printers = []  # type: List[PrinterOutputModel]
+        self._unique_configurations = []   # type: List[ConfigurationModel]
 
         self._monitor_view_qml_path = ""
         self._monitor_component = None
@@ -69,6 +74,7 @@ class PrinterOutputDevice(QObject, OutputDevice):
 
         self._address = ""
         self._connection_text = ""
+        self.printersChanged.connect(self._onPrintersChanged)
 
     @pyqtProperty(str, notify = connectionTextChanged)
     def address(self):
@@ -174,6 +180,21 @@ class PrinterOutputDevice(QObject, OutputDevice):
             self._accepts_commands = accepts_commands
 
             self.acceptsCommandsChanged.emit()
+
+    # Returns the unique configurations of the current printers
+    @pyqtProperty("QVariantList", notify = configurationChanged)
+    def uniqueConfiguration(self):
+        return self._unique_configurations
+
+    def _updateUniqueConfigurations(self):
+        print("Calculating the unique configurations")
+        self._unique_configurations = list(set([printer.printerConfiguration for printer in self._printers]))
+        print(self._unique_configurations)
+        self.configurationChanged.emit()
+
+    def _onPrintersChanged(self):
+        for printer in self._printers:
+            printer.configurationChanged.connect(self._updateUniqueConfigurations)
 
 
 ##  The current processing state of the backend.
