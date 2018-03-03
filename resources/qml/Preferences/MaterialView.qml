@@ -216,7 +216,8 @@ TabView
                             confirmDiameterChangeDialog.old_approximate_diameter_value = old_approximate_diameter;
 
                             confirmDiameterChangeDialog.open()
-                        } else {
+                        }
+                        else {
                             Cura.ContainerManager.setContainerProperty(base.containerId, "material_diameter", "value", value);
                             base.setMetaDataEntry("approximate_diameter", old_approximate_diameter, getApproximateDiameter(value).toString());
                             base.setMetaDataEntry("properties/diameter", properties.diameter, value);
