@@ -283,7 +283,6 @@ Item
             }
             visible: text != ""
             text: {
-                // OLD STUFF
                 var caption = catalog.i18nc("@action:label", "Printer") + ": " + Cura.MachineManager.activeMachineName;
                 if (Cura.MachineManager.hasVariants)
                 {
