@@ -176,16 +176,17 @@ class MachineManager(QObject):
         if not self._global_container_stack:
             return
 
-        self._printer_configuration.printerType = self._global_container_stack.definition.getName()
+        self._current_printer_configuration.printerType = self._global_container_stack.definition.getName()
         extruder_configurations = []
-        for extruder in self._global_container_stack.extruders:
+        for extruder in self._global_container_stack.extruders.values():
             extruder_configurations.append({
                 "position": len(extruder_configurations),
                 "material": extruder.material.getName() if extruder.material != self._empty_material_container else None,
                 "hotendID": extruder.variant.getName() if extruder.variant != self._empty_variant_container else None
             })
-        self._printer_configuration.extruderConfigurations = extruder_configurations
-        self._printer_configuration.buildplateConfiguration = self._global_container_stack.variant.getName() if self._global_container_stack.variant is not None else None
+        self._current_printer_configuration.extruderConfigurations = extruder_configurations
+        self._current_printer_configuration.buildplateConfiguration = self._global_container_stack.variant.getName() if self._global_container_stack.variant is not None else None
+        print(self._current_printer_configuration.extruderConfigurations)
         self.currentConfigurationChanged.emit()
 
     @property
