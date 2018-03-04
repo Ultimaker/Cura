@@ -11,7 +11,7 @@ Rectangle
 {
     id: configurationItem
 
-    property var printer: null
+    property var configuration: null
     signal configurationSelected()
 
     height: childrenRect.height
@@ -26,7 +26,7 @@ Rectangle
 
         Label
         {
-            text: printer.name
+            text: configuration.printerType
         }
 
         Row
@@ -41,7 +41,7 @@ Rectangle
             Repeater
             {
                 height: childrenRect.height
-                model: printer.extruders
+                model: configuration.extruderConfigurations
                 delegate: PrintCoreConfiguration
                 {
                     printCoreConfiguration: modelData
@@ -55,7 +55,7 @@ Rectangle
 //
 //            Label
 //            {
-//                text: printer.name + "-" + printer.type
+//                text: configuration.buildplateConfiguration
 //            }
 //        }
     }

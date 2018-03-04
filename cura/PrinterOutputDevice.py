@@ -1,4 +1,4 @@
-# Copyright (c) 2017 Ultimaker B.V.
+# Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from UM.i18n import i18nCatalog
@@ -6,13 +6,12 @@ from UM.OutputDevice.OutputDevice import OutputDevice
 from PyQt5.QtCore import pyqtProperty, QObject, QTimer, pyqtSignal
 from PyQt5.QtWidgets import QMessageBox
 
-
 from UM.Logger import Logger
 from UM.Signal import signalemitter
 from UM.Application import Application
 
 from enum import IntEnum  # For the connection state tracking.
-from typing import List, Optional
+from typing import List, Set, Optional
 
 MYPY = False
 if MYPY:
@@ -46,13 +45,13 @@ class PrinterOutputDevice(QObject, OutputDevice):
     connectionTextChanged = pyqtSignal()
 
     # Signal to indicate that the configuration of one of the printers has changed.
-    configurationChanged = pyqtSignal()
+    uniqueConfigurationsChanged = pyqtSignal()
 
     def __init__(self, device_id, parent = None):
         super().__init__(device_id = device_id, parent = parent)
 
         self._printers = []  # type: List[PrinterOutputModel]
-        self._unique_configurations = []   # type: List[ConfigurationModel]
+        self._unique_configurations = {}   # type: Set[ConfigurationModel]
 
         self._monitor_view_qml_path = ""
         self._monitor_component = None
@@ -182,19 +181,21 @@ class PrinterOutputDevice(QObject, OutputDevice):
             self.acceptsCommandsChanged.emit()
 
     # Returns the unique configurations of the current printers
-    @pyqtProperty("QVariantList", notify = configurationChanged)
-    def uniqueConfiguration(self):
+    @pyqtProperty("QVariantMap", notify = uniqueConfigurationsChanged)
+    def uniqueConfigurations(self):
         return self._unique_configurations
 
     def _updateUniqueConfigurations(self):
-        print("Calculating the unique configurations")
-        self._unique_configurations = list(set([printer.printerConfiguration for printer in self._printers]))
-        print(self._unique_configurations)
-        self.configurationChanged.emit()
+        self._unique_configurations = set([printer.printerConfiguration for printer in self._printers])
+        self.uniqueConfigurationsChanged.emit()
 
     def _onPrintersChanged(self):
         for printer in self._printers:
             printer.configurationChanged.connect(self._updateUniqueConfigurations)
+
+        # If at this point the list of unique configurations is empty, we force the calculation
+        if not self._unique_configurations:
+            self._updateUniqueConfigurations()
 
 
 ##  The current processing state of the backend.

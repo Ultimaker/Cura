@@ -1,10 +1,12 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from PyQt5.QtCore import pyqtProperty, QObject
+from PyQt5.QtCore import pyqtProperty, QObject, pyqtSignal
 
 
 class ConfigurationModel(QObject):
+
+    configurationChanged = pyqtSignal()
 
     def __init__(self):
         self._printer_type = None
@@ -21,14 +23,14 @@ class ConfigurationModel(QObject):
     def setExtruderConfigurations(self, extruder_configurations):
         self._extruder_configurations = extruder_configurations
 
-    @pyqtProperty("QVariantList", fset = setExtruderConfigurations, constant = True)
+    @pyqtProperty("QVariantList", fset = setExtruderConfigurations, notify = configurationChanged)
     def extruderConfigurations(self):
         return self._extruder_configurations
 
     def setBuildplateConfiguration(self, buildplate_configuration):
         self._buildplate_configuration = buildplate_configuration
 
-    @pyqtProperty(str, fset = setBuildplateConfiguration, constant = True)
+    @pyqtProperty(str, fset = setBuildplateConfiguration, notify = configurationChanged)
     def buildplateConfiguration(self):
         return self._buildplate_configuration
 

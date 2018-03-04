@@ -1,9 +1,8 @@
-# Copyright (c) 2017 Ultimaker B.V.
+# Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from PyQt5.QtCore import pyqtSignal, pyqtProperty, QObject, QVariant, pyqtSlot
-from UM.Logger import Logger
-from typing import Optional, List
+from typing import Optional
 from UM.Math.Vector import Vector
 from cura.PrinterOutput.ConfigurationModel import ConfigurationModel
 from cura.PrinterOutput.ExtruderOutputModel import ExtruderOutputModel
@@ -42,7 +41,7 @@ class PrinterOutputModel(QObject):
         self._printer_state = "unknown"
         self._is_preheating = False
         self._type = ""
-        # Update the configuration every time the one of the extruders changes its configuration
+        # Update the printer configuration every time any of the extruders changes its configuration
         for extruder in self._extruders:
             extruder.extruderConfigurationChanged.connect(self._updatePrinterConfiguration)
 

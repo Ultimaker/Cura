@@ -1,8 +1,7 @@
-# Copyright (c) 2017 Ultimaker B.V.
+# Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from PyQt5.QtCore import pyqtSignal, pyqtProperty, QObject, QVariant, pyqtSlot
-from UM.Logger import Logger
+from PyQt5.QtCore import pyqtSignal, pyqtProperty, QObject, pyqtSlot
 
 from typing import Optional
 
@@ -83,7 +82,7 @@ class ExtruderOutputModel(QObject):
         self._extruder_configuration = {
             "position": self._position,
             "material": self._active_material.type if self.activeMaterial is not None else None,
-            "hotend_id": self._hotend_id
+            "hotendID": self._hotend_id
         }
         print("Recalculating extruder configuration:", self._extruder_configuration)
         self.extruderConfigurationChanged.emit()
