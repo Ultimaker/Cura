@@ -27,9 +27,9 @@ from UM.Settings.InstanceContainer import InstanceContainer
 from UM.Settings.SettingFunction import SettingFunction
 from UM.Signal import postponeSignals, CompressTechnique
 
-
 from cura.QualityManager import QualityManager
 from cura.PrinterOutputDevice import PrinterOutputDevice
+from cura.PrinterOutput.ConfigurationModel import ConfigurationModel
 from cura.Settings.ExtruderManager import ExtruderManager
 
 from .CuraStackBuilder import CuraStackBuilder
@@ -115,6 +115,12 @@ class MachineManager(QObject):
         # There might already be some output devices by the time the signal is connected
         self._onOutputDevicesChanged()
 
+        self._current_printer_configuration = ConfigurationModel()   # Indicates the current configuration setup in this printer
+        self.activeMaterialChanged.connect(self._onCurrentConfigurationChanged)
+        self.activeVariantChanged.connect(self._onCurrentConfigurationChanged)
+        # Force to compute the current configuration
+        self._onCurrentConfigurationChanged()
+
         if active_machine_id != "" and ContainerRegistry.getInstance().findContainerStacksMetadata(id = active_machine_id):
             # An active machine was saved, so restore it.
             self.setActiveMachine(active_machine_id)
@@ -146,6 +152,7 @@ class MachineManager(QObject):
     blurSettings = pyqtSignal()  # Emitted to force fields in the advanced sidebar to un-focus, so they update properly
 
     outputDevicesChanged = pyqtSignal()
+    currentConfigurationChanged = pyqtSignal() # Emitted every time the current configurations of the machine changes
 
     def _onOutputDevicesChanged(self) -> None:
         for printer_output_device in self._printer_output_devices:
@@ -160,6 +167,26 @@ class MachineManager(QObject):
                 printer_output_device.materialIdChanged.connect(self._onMaterialIdChanged)
 
         self.outputDevicesChanged.emit()
+
+    @pyqtProperty(QObject, notify = currentConfigurationChanged)
+    def currentConfiguration(self):
+        return self._current_printer_configuration
+
+    def _onCurrentConfigurationChanged(self) -> None:
+        if not self._global_container_stack:
+            return
+
+        self._printer_configuration.printerType = self._global_container_stack.definition.getName()
+        extruder_configurations = []
+        for extruder in self._global_container_stack.extruders:
+            extruder_configurations.append({
+                "position": len(extruder_configurations),
+                "material": extruder.material.getName() if extruder.material != self._empty_material_container else None,
+                "hotendID": extruder.variant.getName() if extruder.variant != self._empty_variant_container else None
+            })
+        self._printer_configuration.extruderConfigurations = extruder_configurations
+        self._printer_configuration.buildplateConfiguration = self._global_container_stack.variant.getName() if self._global_container_stack.variant is not None else None
+        self.currentConfigurationChanged.emit()
 
     @property
     def newVariant(self):

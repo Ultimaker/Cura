@@ -193,9 +193,8 @@ class PrinterOutputDevice(QObject, OutputDevice):
         for printer in self._printers:
             printer.configurationChanged.connect(self._updateUniqueConfigurations)
 
-        # If at this point the list of unique configurations is empty, we force the calculation
-        if not self._unique_configurations:
-            self._updateUniqueConfigurations()
+        # At this point there may be non-updated configurations
+        self._updateUniqueConfigurations()
 
 
 ##  The current processing state of the backend.
