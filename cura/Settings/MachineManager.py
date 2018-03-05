@@ -30,6 +30,7 @@ from UM.Signal import postponeSignals, CompressTechnique
 from cura.QualityManager import QualityManager
 from cura.PrinterOutputDevice import PrinterOutputDevice
 from cura.PrinterOutput.ConfigurationModel import ConfigurationModel
+from cura.PrinterOutput.ExtruderConfigurationModel import ExtruderConfigurationModel
 from cura.Settings.ExtruderManager import ExtruderManager
 
 from .CuraStackBuilder import CuraStackBuilder
@@ -177,19 +178,21 @@ class MachineManager(QObject):
             return
 
         self._current_printer_configuration.printerType = self._global_container_stack.definition.getName()
-        extruder_configurations = []
+        self._current_printer_configuration.extruderConfigurations = []
         for extruder in self._global_container_stack.extruders.values():
-            extruder_configurations.append({
-                "position": int(extruder.getMetaDataEntry("position")),
-                "material": extruder.material.getName() if extruder.material != self._empty_material_container else None,
-                "hotendID": extruder.variant.getName() if extruder.variant != self._empty_variant_container else None
-            })
-        self._current_printer_configuration.extruderConfigurations = extruder_configurations
+            extruder_configuration = ExtruderConfigurationModel()
+            extruder_configuration.position = int(extruder.getMetaDataEntry("position"))
+            extruder_configuration.material = extruder.material.getName() if extruder.material != self._empty_material_container else None
+            extruder_configuration.hotendID = extruder.variant.getName() if extruder.variant != self._empty_variant_container else None
+            self._current_printer_configuration.extruderConfigurations.append(extruder_configuration)
+
         self._current_printer_configuration.buildplateConfiguration = self._global_container_stack.variant.getName() if self._global_container_stack.variant != self._empty_variant_container else None
         self.currentConfigurationChanged.emit()
 
     @pyqtSlot(QObject, result = bool)
     def matchesConfiguration(self, configuration: ConfigurationModel) -> bool:
+        # print("@@@@@@@@@@@@@@@@@@", configuration.extruderConfigurations)
+        # print("##################", self._current_printer_configuration.extruderConfigurations, configuration == self._current_printer_configuration)
         return self._current_printer_configuration == configuration
 
     @property

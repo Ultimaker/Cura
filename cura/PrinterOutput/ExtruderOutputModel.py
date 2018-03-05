@@ -2,6 +2,7 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from PyQt5.QtCore import pyqtSignal, pyqtProperty, QObject, pyqtSlot
+from cura.PrinterOutput.ExtruderConfigurationModel import ExtruderConfigurationModel
 
 from typing import Optional
 
@@ -26,7 +27,7 @@ class ExtruderOutputModel(QObject):
         self._hotend_temperature = 0
         self._hotend_id = ""
         self._active_material = None  # type: Optional[MaterialOutputModel]
-        self._extruder_configuration = {}
+        self._extruder_configuration = ExtruderConfigurationModel()
         # Update the configuration every time the hotend or the active material change
         self.hotendIDChanged.connect(self._updateExtruderConfiguration)
         self.activeMaterialChanged.connect(self._updateExtruderConfiguration)
@@ -74,15 +75,13 @@ class ExtruderOutputModel(QObject):
             self._hotend_id = id
             self.hotendIDChanged.emit()
 
-    @pyqtProperty("QVariantMap", notify = extruderConfigurationChanged)
+    @pyqtProperty(QObject, notify = extruderConfigurationChanged)
     def extruderConfiguration(self):
         return self._extruder_configuration
 
     def _updateExtruderConfiguration(self):
-        self._extruder_configuration = {
-            "position": self._position,
-            "material": self._active_material.type if self.activeMaterial is not None else None,
-            "hotendID": self._hotend_id
-        }
+        self._extruder_configuration.position = self._position
+        self._extruder_configuration.material = self._active_material.type if self.activeMaterial is not None else None
+        self._extruder_configuration.hotendID = self._hotend_id
         print("Recalculating extruder configuration:", self._extruder_configuration)
         self.extruderConfigurationChanged.emit()

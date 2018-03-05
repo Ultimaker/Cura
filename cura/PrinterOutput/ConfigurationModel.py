@@ -2,6 +2,11 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from PyQt5.QtCore import pyqtProperty, QObject, pyqtSignal
+from typing import List
+
+MYPY = False
+if MYPY:
+    from cura.PrinterOutput.ExtruderConfigurationModel import ExtruderConfigurationModel
 
 
 class ConfigurationModel(QObject):
@@ -11,13 +16,13 @@ class ConfigurationModel(QObject):
     def __init__(self):
         super().__init__()
         self._printer_type = None
-        self._extruder_configurations = []
+        self._extruder_configurations = []     # type: List[ExtruderConfigurationModel]
         self._buildplate_configuration = None
 
     def setPrinterType(self, printer_type):
         self._printer_type = printer_type
 
-    @pyqtProperty(str, fset = setPrinterType, constant = True)
+    @pyqtProperty(str, fset = setPrinterType, notify = configurationChanged)
     def printerType(self):
         return self._printer_type
 
@@ -41,5 +46,5 @@ class ConfigurationModel(QObject):
     def __hash__(self):
         extruder_hash = hash(0)
         for configuration in self.extruderConfigurations:
-            extruder_hash ^= hash(frozenset(configuration.items()))
+            extruder_hash ^= configuration.__hash__()
         return hash(self.printerType) ^ extruder_hash ^ hash(self.buildplateConfiguration)

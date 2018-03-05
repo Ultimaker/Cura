@@ -108,4 +108,11 @@ Rectangle
             configurationItem.selected = Cura.MachineManager.matchesConfiguration(configuration)
         }
     }
+
+    Connections {
+        target: configuration
+        onConfigurationChanged: {
+            configurationItem.selected = Cura.MachineManager.matchesConfiguration(configuration)
+        }
+    }
 }

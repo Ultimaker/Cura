@@ -42,6 +42,15 @@ Column
                     font: UM.Theme.getFont("default_bold")
                 }
 
+                Connections {
+                    target: outputDevice
+                    onUniqueConfigurationsChanged: {
+                        // FIXME For now the model should be removed and then created again, otherwise changes in the printer don't automatically update the UI
+                        configurationList.model = null
+                        configurationList.model = outputDevice.uniqueConfigurations
+                    }
+                }
+
                 ListView
                 {
                     id: configurationList
