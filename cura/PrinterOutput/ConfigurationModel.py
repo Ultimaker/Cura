@@ -9,6 +9,7 @@ class ConfigurationModel(QObject):
     configurationChanged = pyqtSignal()
 
     def __init__(self):
+        super().__init__()
         self._printer_type = None
         self._extruder_configurations = []
         self._buildplate_configuration = None
