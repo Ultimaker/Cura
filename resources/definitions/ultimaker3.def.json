@@ -123,7 +123,6 @@
         "raft_margin": { "value": "10" },
         "raft_surface_layers": { "value": "1" },
         "retraction_amount": { "value": "2" },
-        "retraction_combing": { "default_value": "noskin" },		
         "retraction_count_max": { "value": "10" },
         "retraction_extrusion_window": { "value": "1" },
         "retraction_hop": { "value": "2" },
@@ -154,6 +153,7 @@
         "travel_avoid_distance": { "value": "3" },
         "wall_0_inset": { "value": "0" },
         "wall_line_width_x": { "value": "round(wall_line_width * 0.3 / 0.35, 2)" },
-        "wall_thickness": { "value": "1" }
+        "wall_thickness": { "value": "1" },
+        "zig_zaggify_infill": { "value": "True" }
     }
 }
