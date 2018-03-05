@@ -31,9 +31,9 @@ Rectangle
     border.width: UM.Theme.getSize("default_lining").width
     border.color: UM.Theme.getColor("lining")
 
-    property bool collapsed: true;
+    property bool collapsed: true
 
-    property Cura.MultiBuildPlateModel multiBuildPlateModel: CuraApplication.getMultiBuildPlateModel()
+    property var multiBuildPlateModel: CuraApplication.getMultiBuildPlateModel()
 
     SystemPalette { id: palette }
 

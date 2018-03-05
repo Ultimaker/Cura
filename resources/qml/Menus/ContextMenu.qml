@@ -15,7 +15,7 @@ Menu
 
     property bool shouldShowExtruders: machineExtruderCount.properties.value > 1;
 
-    property Cura.MultiBuildPlateModel multiBuildPlateModel: CuraApplication.getMultiBuildPlateModel()
+    property var multiBuildPlateModel: CuraApplication.getMultiBuildPlateModel()
 
     // Selection-related actions.
     MenuItem { action: Cura.Actions.centerSelection; }
