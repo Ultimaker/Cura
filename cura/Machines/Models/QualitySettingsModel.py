@@ -87,6 +87,8 @@ class QualitySettingsModel(ListModel):
         settings_keys = quality_group.getAllKeys()
         quality_containers = [quality_node.getContainer()]
 
+        # Here, if the user has selected a quality changes, then "quality_changes_group" will not be None, and we fetch
+        # the settings in that quality_changes_group.
         if quality_changes_group is not None:
             if self._selected_position == "":
                 quality_changes_node = quality_changes_group.node_for_global
