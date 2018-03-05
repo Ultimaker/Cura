@@ -57,6 +57,7 @@ class QualityProfilesDropDownMenuModel(ListModel):
 
         # Check for material compatibility
         if not self._machine_manager.activeMaterialsCompatible():
+            Logger.log("d", "No active material compatibility, set quality profile model as empty.")
             self.setItems([])
             return
 
