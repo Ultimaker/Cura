@@ -28,7 +28,7 @@ Column
             elide: Text.ElideRight
             anchors.verticalCenter: parent.verticalCenter
             anchors.left: parent.left
-            font: UM.Theme.getFont("small")
+            font: UM.Theme.getFont("default")
         }
 
         // Rounded item to show the extruder number
@@ -58,7 +58,7 @@ Column
                 id: extruderNumberText
                 anchors.centerIn: parent
                 text: printCoreConfiguration.position + 1
-                font: UM.Theme.getFont("small")
+                font: UM.Theme.getFont("default")
             }
         }
     }
@@ -69,14 +69,15 @@ Column
         text: printCoreConfiguration.material
         elide: Text.ElideRight
         width: parent.width
-        font: UM.Theme.getFont("small")
+        font: UM.Theme.getFont("default_bold")
     }
+
     Label
     {
         id: printCoreTypeLabel
         text: printCoreConfiguration.hotendID
         elide: Text.ElideRight
         width: parent.width
-        font: UM.Theme.getFont("very_small")
+        font: UM.Theme.getFont("default")
     }
 }

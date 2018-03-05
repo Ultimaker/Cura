@@ -44,7 +44,6 @@ Rectangle
                     width: Math.round(parent.width / 2)
                     printCoreConfiguration: modelData
                 }
-                Component.onCompleted: {print("ELEMENTOS:", repeater.model.count)}
             }
         }
 
@@ -69,11 +68,11 @@ Rectangle
                 id: buildplateIcon
                 anchors.left: parent.left
                 anchors.verticalCenter: parent.verticalCenter
-                width: UM.Theme.getSize("standard_arrow").width
-                height: UM.Theme.getSize("standard_arrow").height
+                width: UM.Theme.getSize("topbar_button_icon").width
+                height: UM.Theme.getSize("topbar_button_icon").height
                 sourceSize.width: width
                 sourceSize.height: height
-                source: UM.Theme.getIcon("extruder_button")
+                source: UM.Theme.getIcon("buildplate")
 
                 color: "black"
             }
