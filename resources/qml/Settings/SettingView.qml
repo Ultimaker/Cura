@@ -235,12 +235,13 @@ Item
 
             function updateDefinitionModel()
             {
-                if(findingSettings || base.showingAllSettings)
+                if(findingSettings || showingAllSettings)
                 {
                     expandedCategories = definitionsModel.expanded.slice();
-                    definitionsModel.expanded = ["*"];
+                    definitionsModel.expanded = [""]; // keep categories closed while to prevent render while making settings visible one by one
                     definitionsModel.showAncestors = true;
                     definitionsModel.showAll = true;
+                    definitionsModel.expanded = ["*"];
                 }
                 else
                 {
