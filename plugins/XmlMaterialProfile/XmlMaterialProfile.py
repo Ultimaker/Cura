@@ -59,7 +59,7 @@ class XmlMaterialProfile(InstanceContainer):
             return
 
         # Get the MaterialGroup
-        material_manager = CuraApplication.getInstance()._material_manager
+        material_manager = CuraApplication.getInstance().getMaterialManager()
         root_material_id = self.getMetaDataEntry("base_file")  #if basefile is self.getId, this is a basefile.
         material_group = material_manager.getMaterialGroup(root_material_id)
 
