@@ -1601,6 +1601,8 @@ class CuraApplication(QtApplication):
                 fixed_nodes.append(node_)
         arranger = Arrange.create(fixed_nodes = fixed_nodes)
         min_offset = 8
+        default_extruder_position = self.getMachineManager().defaultExtruderPosition
+        default_extruder_id = self._global_container_stack.extruders[default_extruder_position].getId()
 
         for original_node in nodes:
 
@@ -1666,6 +1668,8 @@ class CuraApplication(QtApplication):
 
             op = AddSceneNodeOperation(node, scene.getRoot())
             op.push()
+
+            node.callDecoration("setActiveExtruder", default_extruder_id)
             scene.sceneChanged.emit(node)
 
         self.fileCompleted.emit(filename)
