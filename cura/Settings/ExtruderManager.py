@@ -484,6 +484,8 @@ class ExtruderManager(QObject):
 
         result = []
         for extruder in ExtruderManager.getInstance().getMachineExtruders(global_stack.getId()):
+            if not extruder.isEnabled:
+                continue
             # only include values from extruders that are "active" for the current machine instance
             if int(extruder.getMetaDataEntry("position")) >= global_stack.getProperty("machine_extruder_count", "value"):
                 continue
