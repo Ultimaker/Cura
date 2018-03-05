@@ -341,46 +341,6 @@ class ContainerManager(QObject):
         for container in send_emits_containers:
             container.sendPostponedEmits()
 
-    ##  Create quality changes containers from the user containers in the active stacks.
-    #
-    #   This will go through the global and extruder stacks and create quality_changes containers from
-    #   the user containers in each stack. These then replace the quality_changes containers in the
-    #   stack and clear the user settings.
-    @pyqtSlot(str)
-    def createQualityChanges(self, base_name):
-        global_stack = Application.getInstance().getGlobalContainerStack()
-        if not global_stack:
-            return
-
-        active_quality_name = self._machine_manager.activeQualityOrQualityChangesName
-        if active_quality_name == "":
-            Logger.log("w", "No quality container found in stack %s, cannot create profile", global_stack.getId())
-            return
-
-        self._machine_manager.blurSettings.emit()
-        if base_name is None or base_name == "":
-            base_name = active_quality_name
-        unique_name = self._container_registry.uniqueName(base_name)
-
-        # Go through the active stacks and create quality_changes containers from the user containers.
-        for stack in ExtruderManager.getInstance().getActiveGlobalAndExtruderStacks():
-            user_container = stack.userChanges
-            quality_container = stack.quality
-            quality_changes_container = stack.qualityChanges
-            if not quality_container or not quality_changes_container:
-                Logger.log("w", "No quality or quality changes container found in stack %s, ignoring it", stack.getId())
-                continue
-
-            extruder_definition_id = None
-            if isinstance(stack, ExtruderStack):
-                extruder_definition_id = stack.definition.getId()
-            quality_type = quality_container.getMetaDataEntry("quality_type")
-            new_changes = self._createQualityChanges(quality_type, unique_name, global_stack, extruder_definition_id)
-            self._performMerge(new_changes, quality_changes_container, clear_settings = False)
-            self._performMerge(new_changes, user_container)
-
-            self._container_registry.addContainer(new_changes)
-
     ##  Get a list of materials that have the same GUID as the reference material
     #
     #   \param material_id \type{str} the id of the material for which to get the linked materials.

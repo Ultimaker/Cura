@@ -175,7 +175,7 @@ Item
         {
             base.newQualityNameToSelect = newName;  // We want to switch to the new profile once it's created
             base.toActivateNewQuality = true;
-            Cura.ContainerManager.createQualityChanges(newName);
+            base.qualityManager.createQualityChanges(newName);
         }
     }
 
