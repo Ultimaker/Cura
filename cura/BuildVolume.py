@@ -826,6 +826,7 @@ class BuildVolume(SceneNode):
             offset_y = extruder.getProperty("machine_nozzle_offset_y", "value")
             if offset_y is None:
                 offset_y = 0
+            offset_y = -offset_y #Y direction of g-code is the inverse of Y direction of Cura's scene space.
             result[extruder_id] = []
 
             for polygon in machine_disallowed_polygons:
