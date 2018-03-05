@@ -15,8 +15,8 @@
         "has_machine_materials": true,
         "has_variant_materials": true,
         "has_variants": true,
-        "preferred_variant": "*aa04*",
-        "preferred_quality": "*Normal*",
+        "preferred_variant_name": "AA 0.4",
+        "preferred_quality_type": "normal",
         "variants_name": "Print core",
         "machine_extruder_trains":
         {

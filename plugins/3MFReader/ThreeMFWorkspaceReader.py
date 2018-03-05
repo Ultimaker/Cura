@@ -23,7 +23,6 @@ from cura.Settings.ExtruderManager import ExtruderManager
 from cura.Settings.ExtruderStack import ExtruderStack
 from cura.Settings.GlobalStack import GlobalStack
 from cura.Settings.CuraContainerStack import _ContainerIndexes
-from cura.QualityManager import QualityManager
 from cura.CuraApplication import CuraApplication
 
 from configparser import ConfigParser
@@ -855,10 +854,11 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         if machine_extruder_count is not None:
             extruder_stacks_in_use = extruder_stacks[:machine_extruder_count]
 
-        available_quality = QualityManager.getInstance().findAllUsableQualitiesForMachineAndExtruders(global_stack,
-                                                                                                      extruder_stacks_in_use)
+        quality_manager = CuraApplication.getInstance()._quality_manager
+        all_quality_groups = quality_manager.getQualityGroups(global_stack)
+        available_quality_types = [qt for qt, qg in all_quality_groups.items() if qg.is_available]
         if not has_not_supported:
-            has_not_supported = not available_quality
+            has_not_supported = not available_quality_types
 
         quality_has_been_changed = False
 
@@ -872,8 +872,6 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             # The machine in the project has non-empty quality and there are usable qualities for this machine.
             # We need to check if the current quality_type is still usable for this machine, if not, then the quality
             # will be reset to the "preferred quality" if present, otherwise "normal".
-            available_quality_types = [q.getMetaDataEntry("quality_type") for q in available_quality]
-
             if global_stack.quality.getMetaDataEntry("quality_type") not in available_quality_types:
                 # We are here because the quality_type specified in the project is not supported any more,
                 # so we need to switch it to the "preferred quality" if present, otherwise "normal".
@@ -1084,10 +1082,13 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             CuraApplication.getInstance().getMachineManager().activeQualityChanged.emit()
 
         # Actually change the active machine.
-        Application.getInstance().setGlobalContainerStack(global_stack)
-
-        # Notify everything/one that is to notify about changes.
-        global_stack.containersChanged.emit(global_stack.getTop())
+        #
+        # This is scheduled for later is because it depends on the Variant/Material/Qualitiy Managers to have the latest
+        # data, but those managers will only update upon a container/container metadata changed signal. Because this
+        # function is running on the main thread (Qt thread), although those "changed" signals have been emitted, but
+        # they won't take effect until this function is done.
+        # To solve this, we schedule _updateActiveMachine() for later so it will have the latest data.
+        CuraApplication.getInstance().callLater(self._updateActiveMachine, global_stack)
 
         # Load all the nodes / meshdata of the workspace
         nodes = self._3mf_mesh_reader.read(file_name)
@@ -1099,6 +1100,14 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             base_file_name = base_file_name[:base_file_name.rfind(".curaproject.3mf")]
         self.setWorkspaceName(base_file_name)
         return nodes
+
+    def _updateActiveMachine(self, global_stack):
+        # Actually change the active machine.
+        machine_manager = Application.getInstance().getMachineManager()
+        machine_manager.setActiveMachine(global_stack.getId())
+
+        # Notify everything/one that is to notify about changes.
+        global_stack.containersChanged.emit(global_stack.getTop())
 
     ##  HACK: Replaces the material container in the given stack with a newly created material container.
     #         This function is used when the user chooses to resolve material conflicts by creating new ones.

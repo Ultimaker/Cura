@@ -11,12 +11,13 @@
         "file_formats": "text/x-gcode",
         "platform": "gmax_1-5_xt-plus_s3d_full model_150707.stl",
 		"has_variants": true,
+        "has_machine_quality": true,
 		"variants_name": "Hotend",
-		"preferred_variant": "*0.5mm E3D (Default)*",
+		"preferred_variant_name": "0.5mm E3D (Default)",
 		"machine_extruder_trains": {
 			"0": "gmax15plus_dual_extruder_0",
 			"1": "gmax15plus_dual_extruder_1"
-			}
+        }
     },
 
     "overrides": {

@@ -45,7 +45,7 @@ class SupportEraser(Tool):
         move_vector = Vector(0, 5, 0)
         node.setPosition(move_vector)
 
-        active_build_plate = Application.getInstance().getBuildPlateModel().activeBuildPlate
+        active_build_plate = Application.getInstance().getMultiBuildPlateModel().activeBuildPlate
 
         node.addDecorator(SettingOverrideDecorator())
         node.addDecorator(BuildPlateDecorator(active_build_plate))

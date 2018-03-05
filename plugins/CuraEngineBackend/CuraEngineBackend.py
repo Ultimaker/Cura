@@ -70,7 +70,7 @@ class CuraEngineBackend(QObject, Backend):
         # Workaround to disable layer view processing if layer view is not active.
         self._layer_view_active = False
         Application.getInstance().getController().activeViewChanged.connect(self._onActiveViewChanged)
-        Application.getInstance().getBuildPlateModel().activeBuildPlateChanged.connect(self._onActiveViewChanged)
+        Application.getInstance().getMultiBuildPlateModel().activeBuildPlateChanged.connect(self._onActiveViewChanged)
         self._onActiveViewChanged()
         self._stored_layer_data = []
         self._stored_optimized_layer_data = {}  # key is build plate number, then arrays are stored until they go to the ProcessSlicesLayersJob
@@ -88,7 +88,6 @@ class CuraEngineBackend(QObject, Backend):
         #
         self._global_container_stack = None
         Application.getInstance().globalContainerStackChanged.connect(self._onGlobalStackChanged)
-        Application.getInstance().getExtruderManager().extrudersAdded.connect(self._onGlobalStackChanged)
         self._onGlobalStackChanged()
 
         Application.getInstance().stacksValidationFinished.connect(self._onStackErrorCheckFinished)
@@ -207,7 +206,7 @@ class CuraEngineBackend(QObject, Backend):
             self._scene.gcode_dict = {}
 
         # see if we really have to slice
-        active_build_plate = Application.getInstance().getBuildPlateModel().activeBuildPlate
+        active_build_plate = Application.getInstance().getMultiBuildPlateModel().activeBuildPlate
         build_plate_to_be_sliced = self._build_plates_to_be_sliced.pop(0)
         Logger.log("d", "Going to slice build plate [%s]!" % build_plate_to_be_sliced)
         num_objects = self._numObjects()
@@ -497,7 +496,7 @@ class CuraEngineBackend(QObject, Backend):
                     node.getParent().removeChild(node)
 
     def markSliceAll(self):
-        for build_plate_number in range(Application.getInstance().getBuildPlateModel().maxBuildPlate + 1):
+        for build_plate_number in range(Application.getInstance().getMultiBuildPlateModel().maxBuildPlate + 1):
             if build_plate_number not in self._build_plates_to_be_sliced:
                 self._build_plates_to_be_sliced.append(build_plate_number)
 
@@ -582,7 +581,7 @@ class CuraEngineBackend(QObject, Backend):
         Logger.log("d", "Slicing took %s seconds", time() - self._slice_start_time )
 
         # See if we need to process the sliced layers job.
-        active_build_plate = Application.getInstance().getBuildPlateModel().activeBuildPlate
+        active_build_plate = Application.getInstance().getMultiBuildPlateModel().activeBuildPlate
         if self._layer_view_active and (self._process_layers_job is None or not self._process_layers_job.isRunning()) and active_build_plate == self._start_slice_job_build_plate:
             self._startProcessSlicedLayersJob(active_build_plate)
         # self._onActiveViewChanged()
@@ -702,7 +701,7 @@ class CuraEngineBackend(QObject, Backend):
         application = Application.getInstance()
         view = application.getController().getActiveView()
         if view:
-            active_build_plate = application.getBuildPlateModel().activeBuildPlate
+            active_build_plate = application.getMultiBuildPlateModel().activeBuildPlate
             if view.getPluginId() == "SimulationView":  # If switching to layer view, we should process the layers if that hasn't been done yet.
                 self._layer_view_active = True
                 # There is data and we're not slicing at the moment

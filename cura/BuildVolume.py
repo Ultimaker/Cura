@@ -937,8 +937,8 @@ class BuildVolume(SceneNode):
     #   stack.
     #
     #   \return A sequence of setting values, one for each extruder.
-    def _getSettingFromAllExtruders(self, setting_key, property = "value"):
-        all_values = ExtruderManager.getInstance().getAllExtruderSettings(setting_key, property)
+    def _getSettingFromAllExtruders(self, setting_key):
+        all_values = ExtruderManager.getInstance().getAllExtruderSettings(setting_key, "value")
         all_types = ExtruderManager.getInstance().getAllExtruderSettings(setting_key, "type")
         for i in range(len(all_values)):
             if not all_values[i] and (all_types[i] == "int" or all_types[i] == "float"):
@@ -951,7 +951,7 @@ class BuildVolume(SceneNode):
     #   not part of the collision radius, such as bed adhesion (skirt/brim/raft)
     #   and travel avoid distance.
     def _getEdgeDisallowedSize(self):
-        if not self._global_container_stack:
+        if not self._global_container_stack or not self._global_container_stack.extruders:
             return 0
 
         container_stack = self._global_container_stack

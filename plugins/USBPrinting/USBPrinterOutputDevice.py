@@ -99,7 +99,7 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
         Application.getInstance().getController().setActiveStage("MonitorStage")
 
         # find the G-code for the active build plate to print
-        active_build_plate_id = Application.getInstance().getBuildPlateModel().activeBuildPlate
+        active_build_plate_id = Application.getInstance().getMultiBuildPlateModel().activeBuildPlate
         gcode_dict = getattr(Application.getInstance().getController().getScene(), "gcode_dict")
         gcode_list = gcode_dict[active_build_plate_id]
 
