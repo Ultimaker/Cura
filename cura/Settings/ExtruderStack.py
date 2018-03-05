@@ -10,7 +10,7 @@ from UM.MimeTypeDatabase import MimeType, MimeTypeDatabase
 from UM.Settings.ContainerStack import ContainerStack
 from UM.Settings.ContainerRegistry import ContainerRegistry
 from UM.Settings.Interfaces import ContainerInterface, PropertyEvaluationContext
-from UM.Settings.SettingInstance import SettingInstance
+from UM.Util import parseBool
 
 from . import Exceptions
 from .CuraContainerStack import CuraContainerStack
@@ -28,7 +28,6 @@ class ExtruderStack(CuraContainerStack):
         super().__init__(container_id, *args, **kwargs)
 
         self.addMetaDataEntry("type", "extruder_train") # For backward compatibility
-        self._enabled = True
 
         self.propertiesChanged.connect(self._onPropertiesChanged)
 
@@ -51,12 +50,14 @@ class ExtruderStack(CuraContainerStack):
         return super().getNextStack()
 
     def setEnabled(self, enabled):
-        self._enabled = enabled
+        if "enabled" not in self._metadata:
+            self.addMetaDataEntry("enabled", "True")
+        self.setMetaDataEntry("enabled", str(enabled))
         self.enabledChanged.emit()
 
     @pyqtProperty(bool, notify = enabledChanged)
     def isEnabled(self):
-        return self._enabled
+        return parseBool(self.getMetaDataEntry("enabled", "True"))
 
     @classmethod
     def getLoadingPriority(cls) -> int:
