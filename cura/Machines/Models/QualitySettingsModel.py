@@ -4,6 +4,7 @@
 from PyQt5.QtCore import pyqtProperty, pyqtSignal, Qt
 
 from UM.Application import Application
+from UM.Logger import Logger
 from UM.Qt.ListModel import ListModel
 from UM.Settings.ContainerRegistry import ContainerRegistry
 
@@ -99,6 +100,7 @@ class QualitySettingsModel(ListModel):
                     quality_containers.insert(0, quality_changes_node.getContainer())
                 except:
                     # FIXME: This is to prevent incomplete update of QualityManager
+                    Logger.logException("d", "Failed to get container for quality changes node %s", quality_changes_node)
                     return
             settings_keys.update(quality_changes_group.getAllKeys())
 
