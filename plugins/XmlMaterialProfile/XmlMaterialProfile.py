@@ -48,6 +48,12 @@ class XmlMaterialProfile(InstanceContainer):
 
     ##  Overridden from InstanceContainer
     #   set the meta data for all machine / variant combinations
+    #
+    #   The "apply_to_all" flag indicates whether this piece of metadata should be applied to all material containers
+    #   or just this specific container.
+    #   For example, when you change the material name, you want to apply it to all its derived containers, but for
+    #   some specific settings, they should only be applied to a machine/variant-specific container.
+    #
     def setMetaDataEntry(self, key, value, apply_to_all = True):
         registry = ContainerRegistry.getInstance()
         if registry.isReadOnly(self.getId()):
