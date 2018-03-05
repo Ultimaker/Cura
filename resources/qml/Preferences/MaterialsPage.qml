@@ -55,7 +55,8 @@ Item
     Row  // Button Row
     {
         id: buttonRow
-        anchors {
+        anchors
+        {
             left: parent.left
             right: parent.right
             top: titleLabel.bottom
@@ -63,11 +64,13 @@ Item
         height: childrenRect.height
 
         // Activate button
-        Button {
+        Button
+        {
             text: catalog.i18nc("@action:button", "Activate")
             iconName: "list-activate"
             enabled: !isCurrentItemActivated
-            onClicked: {
+            onClicked:
+            {
                 forceActiveFocus()
 
                 const extruder_position = Cura.ExtruderManager.activeExtruderIndex;
@@ -76,10 +79,12 @@ Item
         }
 
         // Create button
-        Button {
+        Button
+        {
             text: catalog.i18nc("@action:button", "Create")
             iconName: "list-add"
-            onClicked: {
+            onClicked:
+            {
                 forceActiveFocus();
                 base.newRootMaterialIdToSwitchTo = base.materialManager.createMaterial();
                 base.toActivateNewMaterial = true;
@@ -87,11 +92,13 @@ Item
         }
 
         // Duplicate button
-        Button {
+        Button
+        {
             text: catalog.i18nc("@action:button", "Duplicate");
             iconName: "list-add"
             enabled: base.hasCurrentItem
-            onClicked: {
+            onClicked:
+            {
                 forceActiveFocus();
                 base.newRootMaterialIdToSwitchTo = base.materialManager.duplicateMaterial(base.currentItem.container_node);
                 base.toActivateNewMaterial = true;
@@ -99,21 +106,25 @@ Item
         }
 
         // Remove button
-        Button {
+        Button
+        {
             text: catalog.i18nc("@action:button", "Remove")
             iconName: "list-remove"
             enabled: base.hasCurrentItem && !base.currentItem.is_read_only && !base.isCurrentItemActivated
-            onClicked: {
+            onClicked:
+            {
                 forceActiveFocus();
                 confirmRemoveMaterialDialog.open();
             }
         }
 
         // Import button
-        Button {
+        Button
+        {
             text: catalog.i18nc("@action:button", "Import")
             iconName: "document-import"
-            onClicked: {
+            onClicked:
+            {
                 forceActiveFocus();
                 importMaterialDialog.open();
             }
@@ -121,10 +132,12 @@ Item
         }
 
         // Export button
-        Button {
+        Button
+        {
             text: catalog.i18nc("@action:button", "Export")
             iconName: "document-export"
-            onClicked: {
+            onClicked:
+            {
                 forceActiveFocus();
                 exportMaterialDialog.open();
             }
