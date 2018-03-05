@@ -37,7 +37,6 @@ class QualityProfilesDropDownMenuModel(ListModel):
         self._machine_manager = self._application.getMachineManager()
         self._quality_manager = Application.getInstance().getQualityManager()
 
-        # connect signals
         self._application.globalContainerStackChanged.connect(self._update)
         self._machine_manager.activeQualityGroupChanged.connect(self._update)
         self._quality_manager.qualitiesUpdated.connect(self._update)
