@@ -306,6 +306,14 @@ class MachineManager(QObject):
 
         self.__emitChangedSignals()
 
+    @staticmethod
+    def getMachine(definition_id: str) -> Optional["GlobalStack"]:
+        machines = ContainerRegistry.getInstance().findContainerStacks(type = "machine")
+        for machine in machines:
+            if machine.definition.getId() == definition_id:
+                return machine
+        return None
+
     @pyqtSlot(str, str)
     def addMachine(self, name: str, definition_id: str) -> None:
         new_stack = CuraStackBuilder.createMachine(name, definition_id)
