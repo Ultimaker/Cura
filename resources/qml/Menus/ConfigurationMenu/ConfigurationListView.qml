@@ -14,7 +14,7 @@ Column
     property var outputDevice: Cura.MachineManager.printerOutputDevices[0]
     height: childrenRect.height + 2 * padding
     padding: UM.Theme.getSize("default_margin").width
-    spacing: UM.Theme.getSize("default_margin").height
+    spacing: Math.round(UM.Theme.getSize("default_margin").height / 2)
 
     Label {
         text: catalog.i18nc("@label:header configurations", "Available configurations")
@@ -25,7 +25,7 @@ Column
     ScrollView {
         id: container
         width: parent.width - 2 * parent.padding
-        height: childrenRect.height
+        height: 500 //childrenRect.height
 
         style: UM.Theme.styles.scrollview
 
@@ -52,16 +52,13 @@ Column
                     model: outputDevice.uniqueConfigurations
                     delegate: ConfigurationItem
                     {
-                        height: parent.height
                         width: parent.width
                         configuration: modelData
                         onConfigurationSelected:
                         {
                             print("SELECCIONANDO CONFIGURACION", JSON.stringify(configuration))
                         }
-                        Component.onCompleted: {print("$$$$$$$$$$$$$$$$$$ Configuracion", JSON.stringify(configuration))}
                     }
-                    Component.onCompleted: {print("$$$$$$$$$$$$$$$$$$ Elementos del modelo", JSON.stringify(outputDevice.uniqueConfigurations))}
                 }
             }
         }

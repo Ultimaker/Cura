@@ -43,7 +43,7 @@ Button
                 width: UM.Theme.getSize("standard_arrow").width
                 height: UM.Theme.getSize("standard_arrow").height
                 sourceSize.width: width
-                sourceSize.height: width
+                sourceSize.height: height
                 color: UM.Theme.getColor("text_emphasis")
                 source: UM.Theme.getIcon("arrow_bottom")
             }
