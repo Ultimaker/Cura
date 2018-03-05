@@ -39,12 +39,14 @@ Item
 
     property var hasCurrentItem: materialListView.currentItem != null
 
-    property var currentItem: {  // is soon to be overwritten
+    property var currentItem:
+    {  // is soon to be overwritten
         var current_index = materialListView.currentIndex;
         return materialsModel.getItem(current_index);
     }
 
-    property var isCurrentItemActivated: {
+    property var isCurrentItemActivated:
+    {
         const extruder_position = Cura.ExtruderManager.activeExtruderIndex;
         const root_material_id = Cura.MachineManager.currentRootMaterialId[extruder_position];
         return base.currentItem.root_material_id == root_material_id;
