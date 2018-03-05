@@ -12,11 +12,14 @@ Rectangle
     id: configurationItem
 
     property var configuration: null
+    property var selected: false
     signal configurationSelected()
 
     height: childrenRect.height
     border.width: UM.Theme.getSize("default_lining").width
     border.color: UM.Theme.getColor("sidebar_lining_thin")
+    color: selected ? UM.Theme.getColor("configuration_item_active") : UM.Theme.getColor("configuration_item")
+    property var textColor: selected ? UM.Theme.getColor("configuration_item_text_active") : UM.Theme.getColor("configuration_item_text")
 
     Column
     {
@@ -43,6 +46,7 @@ Rectangle
                 {
                     width: Math.round(parent.width / 2)
                     printCoreConfiguration: modelData
+                    mainColor: textColor
                 }
             }
         }
@@ -54,7 +58,7 @@ Rectangle
             visible: buildplateInformation.visible
             width: parent.width - 2 * parent.padding
             height: visible ? Math.round(UM.Theme.getSize("sidebar_lining_thin").height / 2) : 0
-            color: UM.Theme.getColor("sidebar_lining_thin")
+            color: textColor
         }
 
         Item
@@ -73,8 +77,7 @@ Rectangle
                 sourceSize.width: width
                 sourceSize.height: height
                 source: UM.Theme.getIcon("buildplate")
-
-                color: "black"
+                color: textColor
             }
 
             Label
@@ -84,6 +87,7 @@ Rectangle
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.leftMargin: Math.round(UM.Theme.getSize("default_margin").height / 2)
                 text: configuration.buildplateConfiguration
+                color: textColor
             }
         }
     }
@@ -96,5 +100,12 @@ Rectangle
         hoverEnabled: true
         onEntered: parent.border.color = UM.Theme.getColor("primary_hover")
         onExited: parent.border.color = "black"
+    }
+
+    Connections {
+        target: Cura.MachineManager
+        onCurrentConfigurationChanged: {
+            configurationItem.selected = Cura.MachineManager.matchesConfiguration(configuration)
+        }
     }
 }

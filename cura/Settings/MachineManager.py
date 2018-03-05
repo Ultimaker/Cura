@@ -180,14 +180,17 @@ class MachineManager(QObject):
         extruder_configurations = []
         for extruder in self._global_container_stack.extruders.values():
             extruder_configurations.append({
-                "position": len(extruder_configurations),
+                "position": int(extruder.getMetaDataEntry("position")),
                 "material": extruder.material.getName() if extruder.material != self._empty_material_container else None,
                 "hotendID": extruder.variant.getName() if extruder.variant != self._empty_variant_container else None
             })
         self._current_printer_configuration.extruderConfigurations = extruder_configurations
-        self._current_printer_configuration.buildplateConfiguration = self._global_container_stack.variant.getName() if self._global_container_stack.variant is not None else None
-        print(self._current_printer_configuration.extruderConfigurations)
+        self._current_printer_configuration.buildplateConfiguration = self._global_container_stack.variant.getName() if self._global_container_stack.variant != self._empty_variant_container else None
         self.currentConfigurationChanged.emit()
+
+    @pyqtSlot(QObject, result = bool)
+    def matchesConfiguration(self, configuration: ConfigurationModel) -> bool:
+        return self._current_printer_configuration == configuration
 
     @property
     def newVariant(self):

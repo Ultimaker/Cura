@@ -9,7 +9,7 @@ import UM 1.2 as UM
 
 Button
 {
-    text: "Matched"
+    text: "No match"
     width: parent.width
     height: parent.height
 
@@ -54,11 +54,11 @@ Button
                 text: control.text
                 elide: Text.ElideRight
                 anchors.left: parent.left
-                anchors.leftMargin: UM.Theme.getSize("default_margin").width * 2
+                anchors.leftMargin: UM.Theme.getSize("default_margin").width
                 anchors.right: downArrow.left
                 anchors.rightMargin: control.rightMargin
                 anchors.verticalCenter: parent.verticalCenter;
-                font: UM.Theme.getFont("large")
+                font: UM.Theme.getFont("medium_bold")
             }
         }
         label: Label {}

@@ -11,6 +11,7 @@ Column
 {
     id: extruderInfo
     property var printCoreConfiguration
+    property var mainColor: "black"
     spacing: Math.round(UM.Theme.getSize("default_margin").height / 2)
 
     height: childrenRect.height
@@ -29,6 +30,7 @@ Column
             anchors.verticalCenter: parent.verticalCenter
             anchors.left: parent.left
             font: UM.Theme.getFont("default")
+            color: mainColor
         }
 
         // Rounded item to show the extruder number
@@ -46,11 +48,11 @@ Column
                 id: mainCircle
                 anchors.fill: parent
 
+                anchors.centerIn: parent
                 sourceSize.width: parent.width
                 sourceSize.height: parent.height
                 source: UM.Theme.getIcon("extruder_button")
-
-                color: extruderNumberText.color
+                color: mainColor
             }
 
             Label
@@ -59,6 +61,7 @@ Column
                 anchors.centerIn: parent
                 text: printCoreConfiguration.position + 1
                 font: UM.Theme.getFont("default")
+                color: mainColor
             }
         }
     }
@@ -70,6 +73,7 @@ Column
         elide: Text.ElideRight
         width: parent.width
         font: UM.Theme.getFont("default_bold")
+        color: mainColor
     }
 
     Label
@@ -79,5 +83,6 @@ Column
         elide: Text.ElideRight
         width: parent.width
         font: UM.Theme.getFont("default")
+        color: mainColor
     }
 }

@@ -14,6 +14,16 @@
             "weight": 50,
             "family": "Noto Sans"
         },
+        "medium": {
+            "size": 1.16,
+            "weight": 50,
+            "family": "Noto Sans"
+        },
+        "medium_bold": {
+            "size": 1.16,
+            "weight": 63,
+            "family": "Noto Sans"
+        },
         "default": {
             "size": 1.0,
             "weight": 50,
@@ -289,7 +299,12 @@
         "layerview_move_combing": [0,  0,  255, 255],
         "layerview_move_retraction": [128,  128,  255, 255],
         "layerview_support_interface": [64, 192, 255, 255],
-        "layerview_nozzle": [181, 166, 66, 50]
+        "layerview_nozzle": [181, 166, 66, 50],
+
+        "configuration_item": [255, 255, 255, 0],
+        "configuration_item_active": [31, 36, 39, 255],
+        "configuration_item_text": [0, 0, 0, 255],
+        "configuration_item_text_active": [255, 255, 255, 255]
     },
 
     "sizes": {
