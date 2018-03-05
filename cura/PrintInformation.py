@@ -203,8 +203,6 @@ class PrintInformation(QObject):
         if Application.getInstance().getGlobalContainerStack() is None:
             return
 
-        # Material amount is sent as an amount of mm^3, so calculate length from that
-        radius = Application.getInstance().getGlobalContainerStack().getProperty("material_diameter", "value") / 2
         self._material_lengths[build_plate_number] = []
         self._material_weights[build_plate_number] = []
         self._material_costs[build_plate_number] = []
@@ -216,14 +214,15 @@ class PrintInformation(QObject):
         for index, amount in enumerate(self._material_amounts):
             ## Find the right extruder stack. As the list isn't sorted because it's a annoying generator, we do some
             #  list comprehension filtering to solve this for us.
-            material = None
             if extruder_stacks:  # Multi extrusion machine
                 extruder_stack = [extruder for extruder in extruder_stacks if extruder.getMetaDataEntry("position") == str(index)][0]
                 density = extruder_stack.getMetaDataEntry("properties", {}).get("density", 0)
                 material = extruder_stack.findContainer({"type": "material"})
+                radius = extruder_stack.getProperty("material_diameter", "value") / 2
             else:  # Machine with no extruder stacks
                 density = Application.getInstance().getGlobalContainerStack().getMetaDataEntry("properties", {}).get("density", 0)
                 material = Application.getInstance().getGlobalContainerStack().findContainer({"type": "material"})
+                radius = Application.getInstance().getGlobalContainerStack().getProperty("material_diameter", "value") / 2
 
             weight = float(amount) * float(density) / 1000
             cost = 0
@@ -242,6 +241,7 @@ class PrintInformation(QObject):
                     else:
                         cost = 0
 
+            # Material amount is sent as an amount of mm^3, so calculate length from that
             if radius != 0:
                 length = round((amount / (math.pi * radius ** 2)) / 1000, 2)
             else:
