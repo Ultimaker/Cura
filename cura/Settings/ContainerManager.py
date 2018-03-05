@@ -1,7 +1,6 @@
 # Copyright (c) 2017 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-import copy
 import os.path
 import urllib.parse
 import uuid
@@ -29,9 +28,9 @@ from UM.i18n import i18nCatalog
 
 from cura.Settings.ExtruderManager import ExtruderManager
 from cura.Settings.ExtruderStack import ExtruderStack
-from cura.Machines.QualityManager import getMachineDefinitionIDForQualitySearch
 
 catalog = i18nCatalog("cura")
+
 
 ##  Manager class that contains common actions to deal with containers in Cura.
 #
@@ -159,17 +158,6 @@ class ContainerManager(QObject):
         container = containers[0]
 
         return container.getProperty(setting_key, property_name)
-
-    ##  Set the name of the specified material.
-    @pyqtSlot("QVariant", str)
-    def setMaterialName(self, material_node, new_name):
-        root_material_id = material_node.metadata["base_file"]
-        if self._container_registry.isReadOnly(root_material_id):
-            Logger.log("w", "Cannot set name of read-only container %s.", root_material_id)
-            return
-
-        material_group = self._material_manager.getMaterialGroup(root_material_id)
-        material_group.root_material_node.getContainer().setName(new_name)
 
     @pyqtSlot(str, result = str)
     def makeUniqueName(self, original_name):
@@ -355,191 +343,6 @@ class ContainerManager(QObject):
         for container in send_emits_containers:
             container.sendPostponedEmits()
 
-    ##  Create quality changes containers from the user containers in the active stacks.
-    #
-    #   This will go through the global and extruder stacks and create quality_changes containers from
-    #   the user containers in each stack. These then replace the quality_changes containers in the
-    #   stack and clear the user settings.
-    #
-    #   \return \type{bool} True if the operation was successfully, False if not.
-    @pyqtSlot(str)
-    def createQualityChanges(self, base_name):
-        global_stack = Application.getInstance().getGlobalContainerStack()
-        if not global_stack:
-            return
-
-        active_quality_name = self._machine_manager.activeQualityOrQualityChangesName
-        if active_quality_name == "":
-            Logger.log("w", "No quality container found in stack %s, cannot create profile", global_stack.getId())
-            return
-
-        self._machine_manager.blurSettings.emit()
-        if base_name is None or base_name == "":
-            base_name = active_quality_name
-        unique_name = self._container_registry.uniqueName(base_name)
-
-        # Go through the active stacks and create quality_changes containers from the user containers.
-        for stack in ExtruderManager.getInstance().getActiveGlobalAndExtruderStacks():
-            user_container = stack.userChanges
-            quality_container = stack.quality
-            quality_changes_container = stack.qualityChanges
-            if not quality_container or not quality_changes_container:
-                Logger.log("w", "No quality or quality changes container found in stack %s, ignoring it", stack.getId())
-                continue
-
-            extruder_definition_id = None
-            if isinstance(stack, ExtruderStack):
-                extruder_definition_id = stack.definition.getId()
-            quality_type = quality_container.getMetaDataEntry("quality_type")
-            new_changes = self._createQualityChanges(quality_type, unique_name, global_stack, extruder_definition_id)
-            self._performMerge(new_changes, quality_changes_container, clear_settings = False)
-            self._performMerge(new_changes, user_container)
-
-            self._container_registry.addContainer(new_changes)
-
-    #
-    # Remove the given quality changes group
-    #
-    @pyqtSlot(QObject)
-    def removeQualityChangesGroup(self, quality_changes_group):
-        Logger.log("i", "Removing quality changes group [%s]", quality_changes_group.name)
-        for node in quality_changes_group.getAllNodes():
-            self._container_registry.removeContainer(node.metadata["id"])
-
-    #
-    # Rename a set of quality changes containers. Returns the new name.
-    #
-    @pyqtSlot(QObject, str, result = str)
-    def renameQualityChangesGroup(self, quality_changes_group, new_name) -> str:
-        Logger.log("i", "Renaming QualityChangesGroup[%s] to [%s]", quality_changes_group.name, new_name)
-        self._machine_manager.blurSettings.emit()
-
-        if new_name == quality_changes_group.name:
-            Logger.log("i", "QualityChangesGroup name [%s] unchanged.", quality_changes_group.name)
-            return new_name
-
-        new_name = self._container_registry.uniqueName(new_name)
-        for node in quality_changes_group.getAllNodes():
-            node.getContainer().setName(new_name)
-
-        self._machine_manager.activeQualityChanged.emit()
-        self._machine_manager.activeQualityGroupChanged.emit()
-
-        return new_name
-
-    @pyqtSlot(str, "QVariantMap")
-    def duplicateQualityChanges(self, quality_changes_name, quality_model_item):
-        global_stack = Application.getInstance().getGlobalContainerStack()
-
-        quality_group = quality_model_item["quality_group"]
-        quality_changes_group = quality_model_item["quality_changes_group"]
-        if quality_changes_group is None:
-            # create global quality changes only
-            new_quality_changes = self._createQualityChanges(quality_group.quality_type, quality_changes_name,
-                                                             global_stack, extruder_id = None)
-            self._container_registry.addContainer(new_quality_changes)
-        else:
-            new_name = self._container_registry.uniqueName(quality_changes_name)
-            for node in quality_changes_group.getAllNodes():
-                container = node.getContainer()
-                new_id = self._container_registry.uniqueName(container.getId())
-                self._container_registry.addContainer(container.duplicate(new_id, new_name))
-
-    @pyqtSlot("QVariant")
-    def removeMaterial(self, material_node):
-        root_material_id = material_node.metadata["base_file"]
-        material_group = self._material_manager.getMaterialGroup(root_material_id)
-        if not material_group:
-            Logger.log("d", "Unable to remove the material with id %s, because it doesn't exist.", root_material_id)
-            return
-
-        nodes_to_remove = [material_group.root_material_node] + material_group.derived_material_node_list
-        for node in nodes_to_remove:
-            self._container_registry.removeContainer(node.metadata["id"])
-
-
-    ##  Create a duplicate of a material, which has the same GUID and base_file metadata
-    #
-    #   \return \type{str} the id of the newly created container.
-    @pyqtSlot("QVariant", result = str)
-    def duplicateMaterial(self, material_node, new_base_id = None, new_metadata = None):
-        root_material_id = material_node.metadata["base_file"]
-
-        material_group = self._material_manager.getMaterialGroup(root_material_id)
-        if not material_group:
-            Logger.log("d", "Unable to duplicate the material with id %s, because it doesn't exist.", root_material_id)
-            return
-
-        base_container = material_group.root_material_node.getContainer()
-        containers_to_copy = []
-        for node in material_group.derived_material_node_list:
-            containers_to_copy.append(node.getContainer())
-
-        # Ensure all settings are saved.
-        Application.getInstance().saveSettings()
-
-        # Create a new ID & container to hold the data.
-        new_containers = []
-        if new_base_id is None:
-            new_base_id = self._container_registry.uniqueName(base_container.getId())
-        new_base_container = copy.deepcopy(base_container)
-        new_base_container.getMetaData()["id"] = new_base_id
-        new_base_container.getMetaData()["base_file"] = new_base_id
-        if new_metadata is not None:
-            for key, value in new_metadata.items():
-                new_base_container.getMetaData()[key] = value
-        new_containers.append(new_base_container)
-
-        # Clone all of them.
-        for container_to_copy in containers_to_copy:
-            # Create unique IDs for every clone.
-            new_id = new_base_id
-            if container_to_copy.getMetaDataEntry("definition") != "fdmprinter":
-                new_id += "_" + container_to_copy.getMetaDataEntry("definition")
-                if container_to_copy.getMetaDataEntry("variant_name"):
-                    variant_name = container_to_copy.getMetaDataEntry("variant_name")
-                    new_id += "_" + variant_name.replace(" ", "_")
-
-            new_container = copy.deepcopy(container_to_copy)
-            new_container.getMetaData()["id"] = new_id
-            new_container.getMetaData()["base_file"] = new_base_id
-            if new_metadata is not None:
-                for key, value in new_metadata.items():
-                    new_container.getMetaData()[key] = value
-
-            new_containers.append(new_container)
-
-        for container_to_add in new_containers:
-            container_to_add.setDirty(True)
-            ContainerRegistry.getInstance().addContainer(container_to_add)
-        return new_base_id
-
-    ##  Create a new material by cloning Generic PLA for the current material diameter and setting the GUID to something unqiue
-    #
-    #   \return \type{str} the id of the newly created container.
-    @pyqtSlot(result = str)
-    def createMaterial(self):
-        # Ensure all settings are saved.
-        Application.getInstance().saveSettings()
-
-        global_stack = Application.getInstance().getGlobalContainerStack()
-        approximate_diameter = str(round(global_stack.getProperty("material_diameter", "value")))
-        root_material_id = "generic_pla"
-        root_material_id = self._material_manager.getRootMaterialIDForDiameter(root_material_id, approximate_diameter)
-        material_group = self._material_manager.getMaterialGroup(root_material_id)
-
-        # Create a new ID & container to hold the data.
-        new_id = self._container_registry.uniqueName("custom_material")
-        new_metadata = {"name": catalog.i18nc("@label", "Custom Material"),
-                        "brand": catalog.i18nc("@label", "Custom"),
-                        "GUID": str(uuid.uuid4()),
-                        }
-
-        self.duplicateMaterial(material_group.root_material_node,
-                               new_base_id = new_id,
-                               new_metadata = new_metadata)
-        return new_id
-
     ##  Get a list of materials that have the same GUID as the reference material
     #
     #   \param material_id \type{str} the id of the material for which to get the linked materials.
@@ -642,51 +445,6 @@ class ContainerManager(QObject):
 
             name_filter = "{0} ({1})".format(mime_type.comment, suffix_list)
             self._container_name_filters[name_filter] = entry
-
-    ##  Creates a unique ID for a container by prefixing the name with the stack ID.
-    #
-    #   This method creates a unique ID for a container by prefixing it with a specified stack ID.
-    #   This is done to ensure we have an easily identified ID for quality changes, which have the
-    #   same name across several stacks.
-    #
-    #   \param stack_id The ID of the stack to prepend.
-    #   \param container_name The name of the container that we are creating a unique ID for.
-    #
-    #   \return Container name prefixed with stack ID, in lower case with spaces replaced by underscores.
-    def _createUniqueId(self, stack_id, container_name):
-        result = stack_id + "_" + container_name
-        result = result.lower()
-        result.replace(" ", "_")
-        return result
-
-    ##  Create a quality changes container for a specified quality container.
-    #
-    #   \param quality_container The quality container to create a changes container for.
-    #   \param new_name The name of the new quality_changes container.
-    #   \param machine_definition The machine definition this quality changes container is specific to.
-    #   \param extruder_id
-    #
-    #   \return A new quality_changes container with the specified container as base.
-    def _createQualityChanges(self, quality_type, new_name, machine, extruder_id):
-        base_id = machine.definition.getId() if extruder_id is None else extruder_id
-
-        # Create a new quality_changes container for the quality.
-        quality_changes = InstanceContainer(self._createUniqueId(base_id, new_name))
-        quality_changes.setName(new_name)
-        quality_changes.addMetaDataEntry("type", "quality_changes")
-        quality_changes.addMetaDataEntry("quality_type", quality_type)
-
-        # If we are creating a container for an extruder, ensure we add that to the container
-        if extruder_id is not None:
-            quality_changes.addMetaDataEntry("extruder", extruder_id)
-
-        # If the machine specifies qualities should be filtered, ensure we match the current criteria.
-        machine_definition_id = getMachineDefinitionIDForQualitySearch(machine)
-        quality_changes.setDefinition(machine_definition_id)
-
-        from cura.CuraApplication import CuraApplication
-        quality_changes.addMetaDataEntry("setting_version", CuraApplication.SettingVersion)
-        return quality_changes
 
     ##  Import single profile, file_url does not have to end with curaprofile
     @pyqtSlot(QUrl, result="QVariantMap")

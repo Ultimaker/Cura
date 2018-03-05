@@ -1,7 +1,7 @@
 // Copyright (c) 2018 Ultimaker B.V.
 // Uranium is released under the terms of the LGPLv3 or higher.
 
-import QtQuick 2.8
+import QtQuick 2.7
 import QtQuick.Controls 1.4
 import QtQuick.Layouts 1.3
 import QtQuick.Dialogs 1.2
@@ -13,6 +13,8 @@ import Cura 1.0 as Cura
 Item
 {
     id: base
+
+    property QtObject materialManager: CuraApplication.getMaterialManager()
     property var resetEnabled: false  // Keep PreferencesDialog happy
 
     UM.I18nCatalog { id: catalog; name: "cura"; }
@@ -37,12 +39,14 @@ Item
 
     property var hasCurrentItem: materialListView.currentItem != null
 
-    property var currentItem: {  // is soon to be overwritten
+    property var currentItem:
+    {  // is soon to be overwritten
         var current_index = materialListView.currentIndex;
         return materialsModel.getItem(current_index);
     }
 
-    property var isCurrentItemActivated: {
+    property var isCurrentItemActivated:
+    {
         const extruder_position = Cura.ExtruderManager.activeExtruderIndex;
         const root_material_id = Cura.MachineManager.currentRootMaterialId[extruder_position];
         return base.currentItem.root_material_id == root_material_id;
@@ -51,7 +55,8 @@ Item
     Row  // Button Row
     {
         id: buttonRow
-        anchors {
+        anchors
+        {
             left: parent.left
             right: parent.right
             top: titleLabel.bottom
@@ -59,11 +64,13 @@ Item
         height: childrenRect.height
 
         // Activate button
-        Button {
+        Button
+        {
             text: catalog.i18nc("@action:button", "Activate")
             iconName: "list-activate"
             enabled: !isCurrentItemActivated
-            onClicked: {
+            onClicked:
+            {
                 forceActiveFocus()
 
                 const extruder_position = Cura.ExtruderManager.activeExtruderIndex;
@@ -72,44 +79,52 @@ Item
         }
 
         // Create button
-        Button {
+        Button
+        {
             text: catalog.i18nc("@action:button", "Create")
             iconName: "list-add"
-            onClicked: {
+            onClicked:
+            {
                 forceActiveFocus();
-                base.newRootMaterialIdToSwitchTo = Cura.ContainerManager.createMaterial();
+                base.newRootMaterialIdToSwitchTo = base.materialManager.createMaterial();
                 base.toActivateNewMaterial = true;
             }
         }
 
         // Duplicate button
-        Button {
+        Button
+        {
             text: catalog.i18nc("@action:button", "Duplicate");
             iconName: "list-add"
             enabled: base.hasCurrentItem
-            onClicked: {
+            onClicked:
+            {
                 forceActiveFocus();
-                base.newRootMaterialIdToSwitchTo = Cura.ContainerManager.duplicateMaterial(base.currentItem.container_node);
+                base.newRootMaterialIdToSwitchTo = base.materialManager.duplicateMaterial(base.currentItem.container_node);
                 base.toActivateNewMaterial = true;
             }
         }
 
         // Remove button
-        Button {
+        Button
+        {
             text: catalog.i18nc("@action:button", "Remove")
             iconName: "list-remove"
             enabled: base.hasCurrentItem && !base.currentItem.is_read_only && !base.isCurrentItemActivated
-            onClicked: {
+            onClicked:
+            {
                 forceActiveFocus();
                 confirmRemoveMaterialDialog.open();
             }
         }
 
         // Import button
-        Button {
+        Button
+        {
             text: catalog.i18nc("@action:button", "Import")
             iconName: "document-import"
-            onClicked: {
+            onClicked:
+            {
                 forceActiveFocus();
                 importMaterialDialog.open();
             }
@@ -117,10 +132,12 @@ Item
         }
 
         // Export button
-        Button {
+        Button
+        {
             text: catalog.i18nc("@action:button", "Export")
             iconName: "document-export"
-            onClicked: {
+            onClicked:
+            {
                 forceActiveFocus();
                 exportMaterialDialog.open();
             }
@@ -181,7 +198,7 @@ Item
 
         onYes:
         {
-            Cura.ContainerManager.removeMaterial(base.currentItem.container_node);
+            base.materialManager.removeMaterial(base.currentItem.container_node);
         }
     }
 
@@ -281,7 +298,6 @@ Item
             }
             visible: text != ""
             text: {
-                // OLD STUFF
                 var caption = catalog.i18nc("@action:label", "Printer") + ": " + Cura.MachineManager.activeMachineName;
                 if (Cura.MachineManager.hasVariants)
                 {
@@ -343,10 +359,19 @@ Item
 
                     Row
                     {
+                        id: materialRow
                         spacing: (UM.Theme.getSize("default_margin").width / 2) | 0
                         anchors.left: parent.left
                         anchors.leftMargin: UM.Theme.getSize("default_margin").width
                         anchors.right: parent.right
+
+                        property bool isItemActivated:
+                        {
+                            const extruder_position = Cura.ExtruderManager.activeExtruderIndex;
+                            const root_material_id = Cura.MachineManager.currentRootMaterialId[extruder_position];
+                            return model.root_material_id == root_material_id;
+                        }
+
                         Rectangle
                         {
                             width: Math.floor(parent.height * 0.8)
@@ -360,22 +385,14 @@ Item
                             width: Math.floor((parent.width * 0.3))
                             text: model.material
                             elide: Text.ElideRight
-                            font.italic: {  // TODO: make it easier
-                                const extruder_position = Cura.ExtruderManager.activeExtruderIndex;
-                                const root_material_id = Cura.MachineManager.currentRootMaterialId[extruder_position];
-                                return model.root_material_id == root_material_id
-                            }
+                            font.italic: materialRow.isItemActivated
                             color: parent.ListView.isCurrentItem ? palette.highlightedText : palette.text;
                         }
                         Label
                         {
                             text: (model.name != model.material) ? model.name : ""
                             elide: Text.ElideRight
-                            font.italic: {  // TODO: make it easier
-                                const extruder_position = Cura.ExtruderManager.activeExtruderIndex;
-                                const root_material_id = Cura.MachineManager.currentRootMaterialId[extruder_position];
-                                return model.root_material_id == root_material_id;
-                            }
+                            font.italic: materialRow.isItemActivated
                             color: parent.ListView.isCurrentItem ? palette.highlightedText : palette.text;
                         }
                     }

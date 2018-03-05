@@ -13,7 +13,7 @@ Menu
     id: base
     enabled: !PrintInformation.preSliced
 
-    property Cura.MultiBuildPlateModel multiBuildPlateModel: CuraApplication.getMultiBuildPlateModel()
+    property var multiBuildPlateModel: CuraApplication.getMultiBuildPlateModel()
 
     // main views
     Instantiator

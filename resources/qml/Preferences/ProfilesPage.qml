@@ -1,7 +1,7 @@
 // Copyright (c) 2018 Ultimaker B.V.
 // Uranium is released under the terms of the LGPLv3 or higher.
 
-import QtQuick 2.8
+import QtQuick 2.7
 import QtQuick.Controls 1.4
 import QtQuick.Layouts 1.3
 import QtQuick.Dialogs 1.2
@@ -13,6 +13,8 @@ import Cura 1.0 as Cura
 Item
 {
     id: base
+
+    property QtObject qualityManager: CuraApplication.getQualityManager()
     property var resetEnabled: false  // Keep PreferencesDialog happy
     property var extrudersModel: Cura.ExtrudersModel {}
 
@@ -173,7 +175,7 @@ Item
         {
             base.newQualityNameToSelect = newName;  // We want to switch to the new profile once it's created
             base.toActivateNewQuality = true;
-            Cura.ContainerManager.createQualityChanges(newName);
+            base.qualityManager.createQualityChanges(newName);
         }
     }
 
@@ -222,7 +224,7 @@ Item
         object: "<new name>"
         onAccepted:
         {
-            Cura.ContainerManager.duplicateQualityChanges(newName, base.currentItem);
+            base.qualityManager.duplicateQualityChanges(newName, base.currentItem);
         }
     }
 
@@ -239,9 +241,9 @@ Item
 
         onYes:
         {
-            Cura.ContainerManager.removeQualityChangesGroup(base.currentItem.quality_changes_group);
+            base.qualityManager.removeQualityChangesGroup(base.currentItem.quality_changes_group);
             // reset current item to the first if available
-            qualityListView.currentIndex = -1;  // TODO: Reset selection.
+            qualityListView.currentIndex = -1;  // Reset selection.
         }
     }
 
@@ -253,7 +255,7 @@ Item
         object: "<new name>"
         onAccepted:
         {
-            var actualNewName = Cura.ContainerManager.renameQualityChangesGroup(base.currentItem.quality_changes_group, newName);
+            var actualNewName = base.qualityManager.renameQualityChangesGroup(base.currentItem.quality_changes_group, newName);
             base.newQualityNameToSelect = actualNewName;  // Select the new name after the model gets updated
         }
     }
@@ -264,7 +266,7 @@ Item
         id: importDialog
         title: catalog.i18nc("@title:window", "Import Profile")
         selectExisting: true
-        nameFilters: qualitiesModel.getFileNameFilters("profile_reader")  // TODO: make this easier
+        nameFilters: qualitiesModel.getFileNameFilters("profile_reader")
         folder: CuraApplication.getDefaultPath("dialog_profile_path")
         onAccepted:
         {
@@ -290,11 +292,10 @@ Item
         id: exportDialog
         title: catalog.i18nc("@title:window", "Export Profile")
         selectExisting: false
-        nameFilters: qualitiesModel.getFileNameFilters("profile_writer")  // TODO: make this easier
+        nameFilters: qualitiesModel.getFileNameFilters("profile_writer")
         folder: CuraApplication.getDefaultPath("dialog_profile_path")
         onAccepted:
         {
-            // TODO: make this easier
             var result = Cura.ContainerManager.exportQualityChangesGroup(base.currentItem.quality_changes_group,
                                                                          fileUrl, selectedNameFilter);
 

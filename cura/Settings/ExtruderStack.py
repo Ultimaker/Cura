@@ -13,7 +13,7 @@ from UM.Settings.Interfaces import ContainerInterface, PropertyEvaluationContext
 from UM.Util import parseBool
 
 from . import Exceptions
-from .CuraContainerStack import CuraContainerStack
+from .CuraContainerStack import CuraContainerStack, _ContainerIndexes
 from .ExtruderManager import ExtruderManager
 
 if TYPE_CHECKING:
@@ -69,14 +69,10 @@ class ExtruderStack(CuraContainerStack):
     #   \return The filament diameter for the printer
     @property
     def materialDiameter(self) -> float:
-        containers_to_check = [self.variant, self.definitionChanges, self.definition]
+        context = PropertyEvaluationContext(self)
+        context.context["evaluate_from_container_index"] = _ContainerIndexes.Variant
 
-        for container in containers_to_check:
-            if container is not None:
-                material_diameter = container.getProperty("material_diameter", "value")
-                if material_diameter is not None:
-                    return material_diameter
-        return -1
+        return self.getProperty("material_diameter", "value", context = context)
 
     ##  Return the approximate filament diameter that the machine requires.
     #

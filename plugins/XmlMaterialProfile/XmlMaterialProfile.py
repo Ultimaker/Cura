@@ -48,6 +48,12 @@ class XmlMaterialProfile(InstanceContainer):
 
     ##  Overridden from InstanceContainer
     #   set the meta data for all machine / variant combinations
+    #
+    #   The "apply_to_all" flag indicates whether this piece of metadata should be applied to all material containers
+    #   or just this specific container.
+    #   For example, when you change the material name, you want to apply it to all its derived containers, but for
+    #   some specific settings, they should only be applied to a machine/variant-specific container.
+    #
     def setMetaDataEntry(self, key, value, apply_to_all = True):
         registry = ContainerRegistry.getInstance()
         if registry.isReadOnly(self.getId()):
@@ -59,7 +65,7 @@ class XmlMaterialProfile(InstanceContainer):
             return
 
         # Get the MaterialGroup
-        material_manager = CuraApplication.getInstance()._material_manager
+        material_manager = CuraApplication.getInstance().getMaterialManager()
         root_material_id = self.getMetaDataEntry("base_file")  #if basefile is self.getId, this is a basefile.
         material_group = material_manager.getMaterialGroup(root_material_id)
 
@@ -605,8 +611,6 @@ class XmlMaterialProfile(InstanceContainer):
                         variant_node = variant_manager.getVariantNode(machine_id, buildplate_id)
                         if not variant_node:
                             continue
-
-                        # TODO: check if build plate variant exists
 
                         buildplate_compatibility = machine_compatibility
                         buildplate_recommended = machine_compatibility

@@ -1,7 +1,7 @@
 // Copyright (c) 2018 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
-import QtQuick 2.8
+import QtQuick 2.7
 import QtQuick.Controls 1.4
 
 import UM 1.2 as UM
@@ -85,7 +85,7 @@ Tab
         model: Cura.QualitySettingsModel
         {
             id: qualitySettings
-            extruderPosition: base.extruderPosition
+            selectedPosition: base.extruderPosition
             selectedQualityItem: base.qualityItem
         }
 

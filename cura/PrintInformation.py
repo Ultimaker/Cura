@@ -202,8 +202,6 @@ class PrintInformation(QObject):
         if global_stack is None:
             return
 
-        # Material amount is sent as an amount of mm^3, so calculate length from that
-        radius = Application.getInstance().getGlobalContainerStack().getProperty("material_diameter", "value") / 2
         self._material_lengths[build_plate_number] = []
         self._material_weights[build_plate_number] = []
         self._material_costs[build_plate_number] = []
@@ -212,16 +210,16 @@ class PrintInformation(QObject):
         material_preference_values = json.loads(Preferences.getInstance().getValue("cura/material_settings"))
 
         extruder_stacks = global_stack.extruders
-        for extruder_key in global_stack.extruders.keys():
-            index = int(extruder_key)
-            if index >= len(self._material_amounts):  # Right now the _material_amounts is a list, where the index is the extruder number
+        for position, extruder_stack in extruder_stacks.items():
+            index = int(position)
+            if index >= len(self._material_amounts):
                 continue
             amount = self._material_amounts[index]
             ## Find the right extruder stack. As the list isn't sorted because it's a annoying generator, we do some
             #  list comprehension filtering to solve this for us.
-            extruder_stack = extruder_stacks[str(index)]
             density = extruder_stack.getMetaDataEntry("properties", {}).get("density", 0)
             material = extruder_stack.findContainer({"type": "material"})
+            radius = extruder_stack.getProperty("material_diameter", "value") / 2
 
             weight = float(amount) * float(density) / 1000
             cost = 0
@@ -240,6 +238,7 @@ class PrintInformation(QObject):
                     else:
                         cost = 0
 
+            # Material amount is sent as an amount of mm^3, so calculate length from that
             if radius != 0:
                 length = round((amount / (math.pi * radius ** 2)) / 1000, 2)
             else:

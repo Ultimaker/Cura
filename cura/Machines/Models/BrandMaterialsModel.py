@@ -5,9 +5,12 @@ from PyQt5.QtCore import Qt, pyqtSignal, pyqtProperty
 
 from UM.Qt.ListModel import ListModel
 
-from .BaseMaterialsModel import BaseMaterialsModel, getAvailableMaterials
+from .BaseMaterialsModel import BaseMaterialsModel
 
 
+#
+# This is an intermediate model to group materials with different colours for a same brand and type.
+#
 class MaterialsModelGroupedByType(ListModel):
     NameRole = Qt.UserRole + 1
     ColorsRole = Qt.UserRole + 2
@@ -19,7 +22,18 @@ class MaterialsModelGroupedByType(ListModel):
         self.addRoleName(self.ColorsRole, "colors")
 
 
-## Brand --> Material Type -> list of materials
+#
+# This model is used to show branded materials in the material drop down menu.
+# The structure of the menu looks like this:
+#       Brand -> Material Type -> list of materials
+#
+# To illustrate, a branded material menu may look like this:
+#      Ultimaker -> PLA -> Yellow PLA
+#                       -> Black PLA
+#                       -> ...
+#                -> ABS -> White ABS
+#                          ...
+#
 class BrandMaterialsModel(ListModel):
     NameRole = Qt.UserRole + 1
     MaterialsRole = Qt.UserRole + 2
@@ -36,12 +50,12 @@ class BrandMaterialsModel(ListModel):
 
         from cura.CuraApplication import CuraApplication
         self._machine_manager = CuraApplication.getInstance().getMachineManager()
-        extruder_manager = CuraApplication.getInstance().getExtruderManager()
-        material_manager = CuraApplication.getInstance().getMaterialManager()
+        self._extruder_manager = CuraApplication.getInstance().getExtruderManager()
+        self._material_manager = CuraApplication.getInstance().getMaterialManager()
 
         self._machine_manager.globalContainerChanged.connect(self._update)
-        extruder_manager.activeExtruderChanged.connect(self._update)
-        material_manager.materialsUpdated.connect(self._update)
+        self._extruder_manager.activeExtruderChanged.connect(self._update)
+        self._material_manager.materialsUpdated.connect(self._update)
 
         self._update()
 
@@ -59,15 +73,21 @@ class BrandMaterialsModel(ListModel):
         if global_stack is None:
             self.setItems([])
             return
+        extruder_position = str(self._extruder_position)
+        if extruder_position not in global_stack.extruders:
+            self.setItems([])
+            return
+        extruder_stack = global_stack.extruders[str(self._extruder_position)]
 
-        result_dict = getAvailableMaterials(self._extruder_position)
-        if result_dict is None:
+        available_material_dict = self._material_manager.getAvailableMaterialsForMachineExtruder(global_stack,
+                                                                                                 extruder_stack)
+        if available_material_dict is None:
             self.setItems([])
             return
 
         brand_item_list = []
         brand_group_dict = {}
-        for root_material_id, container_node in result_dict.items():
+        for root_material_id, container_node in available_material_dict.items():
             metadata = container_node.metadata
             brand = metadata["brand"]
             # Only add results for generic materials
@@ -109,4 +129,3 @@ class BrandMaterialsModel(ListModel):
             brand_item_list.append(brand_item)
 
         self.setItems(brand_item_list)
-

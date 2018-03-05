@@ -1,3 +1,6 @@
+# Copyright (c) 2018 Ultimaker B.V.
+# Cura is released under the terms of the LGPLv3 or higher.
+
 from PyQt5.QtCore import pyqtSignal, pyqtProperty
 
 from UM.Application import Application
@@ -5,6 +8,10 @@ from UM.Scene.Selection import Selection
 from UM.Qt.ListModel import ListModel
 
 
+#
+# This is the model for multi build plate feature.
+# This has nothing to do with the build plate types you can choose on the sidebar for a machine.
+#
 class MultiBuildPlateModel(ListModel):
 
     maxBuildPlateChanged = pyqtSignal()

@@ -242,7 +242,7 @@ Item {
 
                             onClicked: {
                                 addedSettingsModel.setVisible(model.key, false)
-                                UM.ActiveTool.triggerAction("unsubscribeForSettingValidation", model.key)
+                                UM.ActiveTool.triggerActionWithData("unsubscribeForSettingValidation", model.key)
                             }
 
                             style: ButtonStyle

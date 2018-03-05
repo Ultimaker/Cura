@@ -119,16 +119,13 @@ class MachineManager(QObject):
         if containers:
             containers[0].nameChanged.connect(self._onMaterialNameChanged)
 
-        # NEW
         self._material_manager = self._application._material_manager
-        self._material_manager.materialsUpdated.connect(self._onMaterialsUpdated)
+        self._quality_manager = self._application.getQualityManager()
 
-    def _onMaterialsUpdated(self):
         # When the materials lookup table gets updated, it can mean that a material has its name changed, which should
         # be reflected on the GUI. This signal emission makes sure that it happens.
-        self.rootMaterialChanged.emit()
+        self._material_manager.materialsUpdated.connect(self.rootMaterialChanged)
 
-    ### NEW
     activeQualityGroupChanged = pyqtSignal()
     activeQualityChangesGroupChanged = pyqtSignal()
 
@@ -303,14 +300,12 @@ class MachineManager(QObject):
         if containers:
             global_stack = containers[0]
             ExtruderManager.getInstance().setActiveExtruderIndex(0)  # Switch to first extruder
-            Application.getInstance().setGlobalContainerStack(global_stack)
             self._global_container_stack = global_stack
             Application.getInstance().setGlobalContainerStack(global_stack)
             ExtruderManager.getInstance()._globalContainerStackChanged()
             self._initMachineState(containers[0])
             self.updateDefaultExtruder()
             self.updateNumberExtrudersEnabled()
-            self.globalContainerChanged.emit()
             self._onGlobalContainerChanged()
 
         self.__emitChangedSignals()
@@ -835,11 +830,6 @@ class MachineManager(QObject):
             container = extruder.userChanges
             container.setProperty(setting_name, property_name, property_value)
 
-    #
-    # New
-    #
-
-    # We not fetch it from _current_root_material_id, but later we can get it from somewhere else
     @pyqtProperty("QVariantList", notify = rootMaterialChanged)
     def currentExtruderPositions(self):
         return sorted(list(self._current_root_material_id.keys()))
@@ -879,6 +869,10 @@ class MachineManager(QObject):
 
         return result
 
+    #
+    # Sets all quality and quality_changes containers to empty_quality and empty_quality_changes containers
+    # for all stacks in the currently active machine.
+    #
     def _setEmptyQuality(self):
         self._current_quality_group = None
         self._current_quality_changes_group = None
@@ -911,11 +905,8 @@ class MachineManager(QObject):
         self.activeQualityChangesGroupChanged.emit()
 
     def _setQualityChangesGroup(self, quality_changes_group):
-        # TODO: quality_changes groups depend on a quality_type. Here it's fetching the quality_types every time.
-        #       Can we do this better, like caching the quality group a quality_changes group depends on?
         quality_type = quality_changes_group.quality_type
-        quality_manager = Application.getInstance()._quality_manager
-        quality_group_dict = quality_manager.getQualityGroups(self._global_container_stack)
+        quality_group_dict = self._quality_manager.getQualityGroups(self._global_container_stack)
         quality_group = quality_group_dict[quality_type]
 
         quality_changes_container = self._empty_quality_changes_container
@@ -1030,13 +1021,6 @@ class MachineManager(QObject):
                 new_material = candidate_materials[current_material_base_name]
                 self._setMaterial(position, new_material)
                 continue
-
-        # # Find a fallback material
-        # preferred_material_query = self._global_container_stack.getMetaDataEntry("preferred_material")
-        # preferred_material_key = preferred_material_query.replace("*", "")
-        # if preferred_material_key in candidate_materials:
-        #     self._setMaterial(position, candidate_materials[preferred_material_key])
-        #     return
 
     @pyqtSlot("QVariant")
     def setGlobalVariant(self, container_node):

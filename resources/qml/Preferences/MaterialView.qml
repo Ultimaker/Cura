@@ -1,7 +1,7 @@
 // Copyright (c) 2017 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
-import QtQuick 2.8
+import QtQuick 2.7
 import QtQuick.Controls 1.4
 import QtQuick.Dialogs 1.2
 
@@ -11,6 +11,8 @@ import Cura 1.0 as Cura
 TabView
 {
     id: base
+
+    property QtObject materialManager: CuraApplication.getMaterialManager()
 
     property QtObject properties
     property var currentMaterialNode: null
@@ -214,7 +216,8 @@ TabView
                             confirmDiameterChangeDialog.old_approximate_diameter_value = old_approximate_diameter;
 
                             confirmDiameterChangeDialog.open()
-                        } else {
+                        }
+                        else {
                             Cura.ContainerManager.setContainerProperty(base.containerId, "material_diameter", "value", value);
                             base.setMetaDataEntry("approximate_diameter", old_approximate_diameter, getApproximateDiameter(value).toString());
                             base.setMetaDataEntry("properties/diameter", properties.diameter, value);
@@ -396,13 +399,15 @@ TabView
                         onEditingFinished: materialPropertyProvider.setPropertyValue("value", value)
                     }
 
-                    UM.ContainerPropertyProvider {
+                    UM.ContainerPropertyProvider
+                    {
                         id: materialPropertyProvider
                         containerId: base.containerId
                         watchedProperties: [ "value" ]
                         key: model.key
                     }
-                    UM.ContainerPropertyProvider {
+                    UM.ContainerPropertyProvider
+                    {
                         id: machinePropertyProvider
                         containerId: Cura.MachineManager.activeDefinitionId
                         watchedProperties: [ "value" ]
@@ -497,7 +502,7 @@ TabView
         }
 
         // update the values
-        Cura.ContainerManager.setMaterialName(base.currentMaterialNode, new_name)
+        base.materialManager.setMaterialName(base.currentMaterialNode, new_name)
         materialProperties.name = new_name
     }
 

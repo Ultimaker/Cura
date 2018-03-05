@@ -4,6 +4,7 @@
 from PyQt5.QtCore import pyqtProperty, pyqtSignal, Qt
 
 from UM.Application import Application
+from UM.Logger import Logger
 from UM.Qt.ListModel import ListModel
 from UM.Settings.ContainerRegistry import ContainerRegistry
 
@@ -33,9 +34,10 @@ class QualitySettingsModel(ListModel):
 
         self._container_registry = ContainerRegistry.getInstance()
         self._application = Application.getInstance()
-        self._quality_manager = self._application._quality_manager
+        self._quality_manager = self._application.getQualityManager()
 
-        self._extruder_position = ""
+        self._selected_position = ""  # empty string means GlobalStack
+                                      # strings such as "0", "1", etc. mean extruder positions
         self._selected_quality_item = None  # The selected quality in the quality management page
         self._i18n_catalog = None
 
@@ -43,18 +45,18 @@ class QualitySettingsModel(ListModel):
 
         self._update()
 
-    extruderPositionChanged = pyqtSignal()
+    selectedPositionChanged = pyqtSignal()
     selectedQualityItemChanged = pyqtSignal()
 
-    def setExtruderPosition(self, extruder_position):
-        if extruder_position != self._extruder_position:
-            self._extruder_position = extruder_position
-            self.extruderPositionChanged.emit()
+    def setSelectedPosition(self, selected_position):
+        if selected_position != self._selected_position:
+            self._selected_position = selected_position
+            self.selectedPositionChanged.emit()
             self._update()
 
-    @pyqtProperty(str, fset = setExtruderPosition, notify = extruderPositionChanged)
-    def extruderPosition(self):
-        return self._extruder_position
+    @pyqtProperty(str, fset = setSelectedPosition, notify = selectedPositionChanged)
+    def selectedPosition(self):
+        return self._selected_position
 
     def setSelectedQualityItem(self, selected_quality_item):
         if selected_quality_item != self._selected_quality_item:
@@ -73,32 +75,38 @@ class QualitySettingsModel(ListModel):
 
         items = []
 
-        global_container_stack = Application.getInstance().getGlobalContainerStack()
+        global_container_stack = self._application.getGlobalContainerStack()
         definition_container = global_container_stack.definition
 
         quality_group = self._selected_quality_item["quality_group"]
         quality_changes_group = self._selected_quality_item["quality_changes_group"]
 
-        if self._extruder_position == "":
+        if self._selected_position == "":
             quality_node = quality_group.node_for_global
         else:
-            quality_node = quality_group.nodes_for_extruders.get(self._extruder_position)
+            quality_node = quality_group.nodes_for_extruders.get(self._selected_position)
         settings_keys = quality_group.getAllKeys()
         quality_containers = [quality_node.getContainer()]
 
+        # Here, if the user has selected a quality changes, then "quality_changes_group" will not be None, and we fetch
+        # the settings in that quality_changes_group.
         if quality_changes_group is not None:
-            if self._extruder_position == "":
+            if self._selected_position == "":
                 quality_changes_node = quality_changes_group.node_for_global
             else:
-                quality_changes_node = quality_changes_group.nodes_for_extruders.get(self._extruder_position)
+                quality_changes_node = quality_changes_group.nodes_for_extruders.get(self._selected_position)
             if quality_changes_node is not None:  # it can be None if number of extruders are changed during runtime
                 try:
                     quality_containers.insert(0, quality_changes_node.getContainer())
                 except:
                     # FIXME: This is to prevent incomplete update of QualityManager
+                    Logger.logException("d", "Failed to get container for quality changes node %s", quality_changes_node)
                     return
             settings_keys.update(quality_changes_group.getAllKeys())
 
+        # We iterate over all definitions instead of settings in a quality/qualtiy_changes group is because in the GUI,
+        # the settings are grouped together by categories, and we had to go over all the definitions to figure out
+        # which setting belongs in which category.
         current_category = ""
         for definition in definition_container.findDefinitions():
             if definition.type == "category":
@@ -117,7 +125,7 @@ class QualitySettingsModel(ListModel):
                     profile_value = new_value
 
                 # Global tab should use resolve (if there is one)
-                if self._extruder_position == "":
+                if self._selected_position == "":
                     resolve_value = global_container_stack.getProperty(definition.key, "resolve")
                     if resolve_value is not None and definition.key in settings_keys:
                         profile_value = resolve_value
@@ -125,10 +133,10 @@ class QualitySettingsModel(ListModel):
                 if profile_value is not None:
                     break
 
-            if not self._extruder_position:
+            if not self._selected_position:
                 user_value = global_container_stack.userChanges.getProperty(definition.key, "value")
             else:
-                extruder_stack = global_container_stack.extruders[self._extruder_position]
+                extruder_stack = global_container_stack.extruders[self._selected_position]
                 user_value = extruder_stack.userChanges.getProperty(definition.key, "value")
 
             if profile_value is None and user_value is None:

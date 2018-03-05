@@ -6,6 +6,9 @@ from PyQt5.QtCore import Qt, pyqtSlot
 from UM.Qt.ListModel import ListModel
 
 
+#
+# This the QML model for the quality management page.
+#
 class QualityManagementModel(ListModel):
     NameRole = Qt.UserRole + 1
     IsReadOnlyRole = Qt.UserRole + 2
@@ -24,7 +27,7 @@ class QualityManagementModel(ListModel):
         self._container_registry = CuraApplication.getInstance().getContainerRegistry()
         self._machine_manager = CuraApplication.getInstance().getMachineManager()
         self._extruder_manager = CuraApplication.getInstance().getExtruderManager()
-        self._quality_manager = CuraApplication.getInstance()._quality_manager
+        self._quality_manager = CuraApplication.getInstance().getQualityManager()
 
         self._machine_manager.globalContainerChanged.connect(self._update)
         self._quality_manager.qualitiesUpdated.connect(self._update)
@@ -32,12 +35,13 @@ class QualityManagementModel(ListModel):
         self._update()
 
     def _update(self):
-        global_stack = self._machine_manager._global_container_stack
+        global_stack = self._machine_manager.activeMachine
 
         quality_group_dict = self._quality_manager.getQualityGroups(global_stack)
         quality_changes_group_dict = self._quality_manager.getQualityChangesGroups(global_stack)
 
-        available_quality_types = set(qt for qt, qg in quality_group_dict.items() if qg.is_available)
+        available_quality_types = set(quality_type for quality_type, quality_group in quality_group_dict.items()
+                                      if quality_group.is_available)
         if not available_quality_types and not quality_changes_group_dict:
             # Nothing to show
             self.setItems([])

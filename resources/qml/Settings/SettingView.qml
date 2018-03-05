@@ -142,7 +142,7 @@ Item
         TextField
         {
             id: filter;
-
+            height: parent.height
             anchors.left: parent.left
             anchors.right: clearFilterButton.left
             anchors.rightMargin: Math.round(UM.Theme.getSize("sidebar_margin").width)

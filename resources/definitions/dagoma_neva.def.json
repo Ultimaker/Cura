@@ -42,7 +42,7 @@
             "default_value": "elliptic"
         },
         "machine_gcode_flavor": {
-            "default_value": "RepRap"
+            "default_value": "RepRap (RepRap)"
         },
         "machine_start_gcode": {
             "default_value": ";Gcode by Cura\nG90\nG28\nM109 S100\nG29\nM104 S{material_print_temperature_layer_0}\nG0 X0 Y-85\nG0 Z0.26\nM109 S{material_print_temperature_layer_0}\nM82\nG92 E0\nG1 F200 E6\nG92 E0\nG1 F200 E-3.5\nG0 Z0.15\nG0 X10\nG0 Z3\nG1 F6000\n"

@@ -1,7 +1,7 @@
 // Copyright (c) 2018 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
-import QtQuick 2.8
+import QtQuick 2.7
 import QtQuick.Controls 1.4
 
 import UM 1.2 as UM
@@ -13,11 +13,11 @@ Menu
 
     Instantiator
     {
-        model: Cura.QualityProfilesModel
+        model: Cura.QualityProfilesDropDownMenuModel
 
         MenuItem
         {
-            text: (model.layer_height != "") ? model.name + " - " + model.layer_height : model.name
+            text: (model.layer_height != "") ? model.name + " - " + model.layer_height + model.layer_height_unit : model.name
             checkable: true
             checked: Cura.MachineManager.activeQualityOrQualityChangesName == model.name
             exclusiveGroup: group
@@ -34,18 +34,18 @@ Menu
     MenuSeparator
     {
         id: customSeparator
-        visible: Cura.CustomQualityProfilesModel.rowCount > 0
+        visible: Cura.CustomQualityProfilesDropDownMenuModel.rowCount > 0
     }
 
     Instantiator
     {
         id: customProfileInstantiator
-        model: Cura.CustomQualityProfilesModel
+        model: Cura.CustomQualityProfilesDropDownMenuModel
 
         Connections
         {
-            target: Cura.CustomQualityProfilesModel
-            onModelReset: customSeparator.visible = Cura.CustomQualityProfilesModel.rowCount() > 0
+            target: Cura.CustomQualityProfilesDropDownMenuModel
+            onModelReset: customSeparator.visible = Cura.CustomQualityProfilesDropDownMenuModel.rowCount() > 0
         }
 
         MenuItem

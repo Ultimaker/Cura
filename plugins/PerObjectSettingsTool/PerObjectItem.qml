@@ -32,11 +32,11 @@ UM.TooltipArea
             if(checked)
             {
                 addedSettingsModel.setVisible(model.key, checked);
-                UM.ActiveTool.triggerAction("subscribeForSettingValidation", model.key)
+                UM.ActiveTool.triggerActionWithData("subscribeForSettingValidation", model.key)
             }
             else
             {
-                UM.ActiveTool.triggerAction("unsubscribeForSettingValidation", model.key)
+                UM.ActiveTool.triggerActionWithData("unsubscribeForSettingValidation", model.key)
                 addedSettingsModel.setVisible(model.key, checked);
             }
             UM.ActiveTool.forceUpdate();

@@ -3,12 +3,14 @@
 
 import copy
 
+from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 from UM.Scene.SceneNodeDecorator import SceneNodeDecorator
 from UM.Signal import Signal, signalemitter
 from UM.Settings.InstanceContainer import InstanceContainer
 from UM.Settings.ContainerRegistry import ContainerRegistry
 from UM.Logger import Logger
-
+from UM.Settings.Validator import ValidatorState
+from PyQt5.QtCore import QTimer
 from UM.Application import Application
 
 from cura.Settings.PerObjectContainerStack import PerObjectContainerStack
@@ -38,6 +40,10 @@ class SettingOverrideDecorator(SceneNodeDecorator):
         self._extruder_stack = ExtruderManager.getInstance().getExtruderStack(0).getId()
 
         self._is_non_printing_mesh = False
+        self._error_check_timer = QTimer()
+        self._error_check_timer.setInterval(250)
+        self._error_check_timer.setSingleShot(True)
+        self._error_check_timer.timeout.connect(self._checkStackForErrors)
 
         self._stack.propertyChanged.connect(self._onSettingChanged)
 
@@ -97,8 +103,21 @@ class SettingOverrideDecorator(SceneNodeDecorator):
         if property_name == "value":
             self._is_non_printing_mesh = self.evaluateIsNonPrintingMesh()
 
-            Application.getInstance().getBackend().needsSlicing()
-            Application.getInstance().getBackend().tickle()
+            if not self._is_non_printing_mesh:
+                # self._error_check_timer.start()
+                self._checkStackForErrors()
+        Application.getInstance().getBackend().needsSlicing()
+        Application.getInstance().getBackend().tickle()
+
+    def _checkStackForErrors(self):
+        hasErrors = False;
+        for key in self._stack.getAllKeys():
+            validation_state = self._stack.getProperty(key, "validationState")
+            if validation_state in (ValidatorState.Exception, ValidatorState.MaximumError, ValidatorState.MinimumError):
+                Logger.log("w", "Setting Per Object %s is not valid.", key)
+                hasErrors = True
+                break
+        Application.getInstance().getObjectsModel().setStacksHaveErrors(hasErrors)
 
     ##  Makes sure that the stack upon which the container stack is placed is
     #   kept up to date.
