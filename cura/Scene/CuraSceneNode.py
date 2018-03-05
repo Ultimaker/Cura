@@ -103,7 +103,7 @@ class CuraSceneNode(SceneNode):
 
     ##  Taken from SceneNode, but replaced SceneNode with CuraSceneNode
     def __deepcopy__(self, memo):
-        copy = CuraSceneNode()
+        copy = CuraSceneNode(no_setting_override = True)  # Setting override will be added later
         copy.setTransformation(self.getLocalTransformation())
         copy.setMeshData(self._mesh_data)
         copy.setVisible(deepcopy(self._visible, memo))
