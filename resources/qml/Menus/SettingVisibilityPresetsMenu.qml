@@ -65,7 +65,6 @@ Menu
         exclusiveGroup: group
         onTriggered:
         {
-            Cura.SettingVisibilityPresetsModel.setActivePreset("custom");
             showAllSettings();
         }
     }
