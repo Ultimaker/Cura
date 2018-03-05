@@ -12,6 +12,7 @@ from UM.Scene.Selection import Selection
 from UM.Scene.Iterator.BreadthFirstIterator import BreadthFirstIterator
 from UM.Settings.ContainerRegistry import ContainerRegistry  # Finding containers by ID.
 from UM.Settings.SettingFunction import SettingFunction
+from UM.Settings.SettingInstance import SettingInstance
 from UM.Settings.ContainerStack import ContainerStack
 from UM.Settings.PropertyEvaluationContext import PropertyEvaluationContext
 from typing import Optional, List, TYPE_CHECKING, Union
@@ -30,27 +31,21 @@ class ExtruderManager(QObject):
     def __init__(self, parent = None):
         super().__init__(parent)
 
+        self._application = Application.getInstance()
+
         self._extruder_trains = {}  # Per machine, a dictionary of extruder container stack IDs. Only for separately defined extruders.
         self._active_extruder_index = -1  # Indicates the index of the active extruder stack. -1 means no active extruder stack
         self._selected_object_extruders = []
-        self._global_container_stack_definition_id = None
         self._addCurrentMachineExtruders()
 
-        Application.getInstance().globalContainerStackChanged.connect(self.__globalContainerStackChanged)
+        #Application.getInstance().globalContainerStackChanged.connect(self._globalContainerStackChanged)
         Selection.selectionChanged.connect(self.resetSelectedObjectExtruders)
 
     ##  Signal to notify other components when the list of extruders for a machine definition changes.
     extrudersChanged = pyqtSignal(QVariant)
 
-    ## Signal to notify other components when the global container stack is switched to a definition
-    #  that has different extruders than the previous global container stack
-    globalContainerStackDefinitionChanged = pyqtSignal()
-
     ##  Notify when the user switches the currently active extruder.
     activeExtruderChanged = pyqtSignal()
-
-    ## The signal notifies subscribers if extruders are added
-    extrudersAdded = pyqtSignal()
 
     ##  Gets the unique identifier of the currently active extruder stack.
     #
@@ -184,6 +179,7 @@ class ExtruderManager(QObject):
         self._selected_object_extruders = []
         self.selectedObjectExtrudersChanged.emit()
 
+    @pyqtSlot(result = QObject)
     def getActiveExtruderStack(self) -> Optional["ExtruderStack"]:
         global_container_stack = Application.getInstance().getGlobalContainerStack()
 
@@ -371,12 +367,7 @@ class ExtruderManager(QObject):
 
         return result[:machine_extruder_count]
 
-    def __globalContainerStackChanged(self) -> None:
-        global_container_stack = Application.getInstance().getGlobalContainerStack()
-        if global_container_stack and global_container_stack.getBottom() and global_container_stack.getBottom().getId() != self._global_container_stack_definition_id:
-            self._global_container_stack_definition_id = global_container_stack.getBottom().getId()
-            self.globalContainerStackDefinitionChanged.emit()
-
+    def _globalContainerStackChanged(self) -> None:
         # If the global container changed, the machine changed and might have extruders that were not registered yet
         self._addCurrentMachineExtruders()
 
@@ -384,7 +375,7 @@ class ExtruderManager(QObject):
 
     ##  Adds the extruders of the currently active machine.
     def _addCurrentMachineExtruders(self) -> None:
-        global_stack = Application.getInstance().getGlobalContainerStack()
+        global_stack = self._application.getGlobalContainerStack()
         extruders_changed = False
 
         if global_stack:
@@ -404,19 +395,81 @@ class ExtruderManager(QObject):
                 self._extruder_trains[global_stack_id][extruder_train.getMetaDataEntry("position")] = extruder_train
 
                 # regardless of what the next stack is, we have to set it again, because of signal routing. ???
+                extruder_train.setParent(global_stack)
                 extruder_train.setNextStack(global_stack)
                 extruders_changed = True
 
-            # FIX: We have to remove those settings here because we know that those values have been copied to all
-            # the extruders at this point.
-            for key in ("material_diameter", "machine_nozzle_size"):
-                if global_stack.definitionChanges.hasProperty(key, "value"):
-                    global_stack.definitionChanges.removeInstance(key, postpone_emit = True)
-
+            self._fixMaterialDiameterAndNozzleSize(global_stack, extruder_trains)
             if extruders_changed:
                 self.extrudersChanged.emit(global_stack_id)
-                self.extrudersAdded.emit()
                 self.setActiveExtruderIndex(0)
+
+    #
+    # This function tries to fix the problem with per-extruder-settable nozzle size and material diameter problems
+    # in early versions (3.0 - 3.2.1).
+    #
+    # In earlier versions, "nozzle size" and "material diameter" are only applicable to the complete machine, so all
+    # extruders share the same values. In this case, "nozzle size" and "material diameter" are saved in the
+    # GlobalStack's DefinitionChanges container.
+    #
+    # Later, we could have different "nozzle size" for each extruder, but "material diameter" could only be set for
+    # the entire machine. In this case, "nozzle size" should be saved in each ExtruderStack's DefinitionChanges, but
+    # "material diameter" still remains in the GlobalStack's DefinitionChanges.
+    #
+    # Lateer, both "nozzle size" and "material diameter" are settable per-extruder, and both settings should be saved
+    # in the ExtruderStack's DefinitionChanges.
+    #
+    # There were some bugs in upgrade so the data weren't saved correct as described above. This function tries fix
+    # this.
+    #
+    # One more thing is about material diameter and single-extrusion machines. Most single-extrusion machines don't
+    # specifically define their extruder definition, so they reuse "fdmextruder", but for those machines, they may
+    # define "material diameter = 1.75" in their machine definition, but in "fdmextruder", it's still "2.85". This
+    # causes a problem with incorrect default values.
+    #
+    # This is also fixed here in this way: If no "material diameter" is specified, it will look for the default value
+    # in both the Extruder's definition and the Global's definition. If 2 values don't match, we will use the value
+    # from the Global definition by setting it in the Extruder's DefinitionChanges container.
+    #
+    def _fixMaterialDiameterAndNozzleSize(self, global_stack, extruder_stack_list):
+        keys_to_copy = ["material_diameter", "machine_nozzle_size"]  # these will be copied over to all extruders
+
+        extruder_positions_to_update = set()
+        for extruder_stack in extruder_stack_list:
+            for key in keys_to_copy:
+                # Only copy the value when this extruder doesn't have the value.
+                if extruder_stack.definitionChanges.hasProperty(key, "value"):
+                    continue
+
+                setting_value_in_global_def_changes = global_stack.definitionChanges.getProperty(key, "value")
+                setting_value_in_global_def = global_stack.definition.getProperty(key, "value")
+                setting_value = setting_value_in_global_def
+                if setting_value_in_global_def_changes is not None:
+                    setting_value = setting_value_in_global_def_changes
+                if setting_value == extruder_stack.definition.getProperty(key, "value"):
+                    continue
+
+                setting_definition = global_stack.getSettingDefinition(key)
+                new_instance = SettingInstance(setting_definition, extruder_stack.definitionChanges)
+                new_instance.setProperty("value", setting_value)
+                new_instance.resetState()  # Ensure that the state is not seen as a user state.
+                extruder_stack.definitionChanges.addInstance(new_instance)
+                extruder_stack.definitionChanges.setDirty(True)
+
+                # Make sure the material diameter is up to date for the extruder stack.
+                if key == "material_diameter":
+                    position = int(extruder_stack.getMetaDataEntry("position"))
+                    extruder_positions_to_update.add(position)
+
+        # We have to remove those settings here because we know that those values have been copied to all
+        # the extruders at this point.
+        for key in keys_to_copy:
+            if global_stack.definitionChanges.hasProperty(key, "value"):
+                global_stack.definitionChanges.removeInstance(key, postpone_emit = True)
+
+        # Update material diameter for extruders
+        for position in extruder_positions_to_update:
+            self.updateMaterialForDiameter(position, global_stack = global_stack)
 
     ##  Get all extruder values for a certain setting.
     #
@@ -503,10 +556,11 @@ class ExtruderManager(QObject):
         return ExtruderManager.getExtruderValues(key)
 
     ##  Updates the material container to a material that matches the material diameter set for the printer
-    def updateMaterialForDiameter(self, extruder_position: int):
-        global_stack = Application.getInstance().getGlobalContainerStack()
+    def updateMaterialForDiameter(self, extruder_position: int, global_stack = None):
         if not global_stack:
-            return
+            global_stack = Application.getInstance().getGlobalContainerStack()
+            if not global_stack:
+                return
 
         if not global_stack.getMetaDataEntry("has_materials", False):
             return

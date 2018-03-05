@@ -1,8 +1,8 @@
-// Copyright (c) 2016 Ultimaker B.V.
+// Copyright (c) 2018 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
-import QtQuick 2.1
-import QtQuick.Controls 1.1
+import QtQuick 2.7
+import QtQuick.Controls 1.4
 
 import UM 1.2 as UM
 import Cura 1.0 as Cura
@@ -11,10 +11,8 @@ Tab
 {
     id: base
 
-    property string extruderId: "";
-    property string extruderDefinition: "";
-    property string quality: "";
-    property string material: "";
+    property string extruderPosition: ""
+    property var qualityItem: null
 
     TableView
     {
@@ -38,8 +36,8 @@ Tab
                     anchors.leftMargin: UM.Theme.getSize("default_margin").width
                     anchors.right: parent.right
                     text: (styleData.value.substr(0,1) == "=") ? catalog.i18nc("@info:status", "Calculated") : styleData.value
-                    font.strikeout: styleData.column == 1 && quality == Cura.MachineManager.globalQualityId && setting.user_value != ""
-                    font.italic: setting.profile_value_source == "quality_changes" || (quality == Cura.MachineManager.globalQualityId && setting.user_value != "")
+                    font.strikeout: styleData.column == 1 && setting.user_value != "" && qualityItem.name == Cura.MachineManager.activeQualityOrQualityChangesName
+                    font.italic: setting.profile_value_source == "quality_changes" || (setting.user_value != "" && qualityItem.name == Cura.MachineManager.activeQualityOrQualityChangesName)
                     opacity: font.strikeout ? 0.5 : 1
                     color: styleData.textColor
                     elide: Text.ElideRight
@@ -65,7 +63,7 @@ Tab
         {
             role: "user_value"
             title: catalog.i18nc("@title:column", "Current");
-            visible: quality == Cura.MachineManager.globalQualityId
+            visible: qualityItem.name == Cura.MachineManager.activeQualityOrQualityChangesName
             width: (parent.width * 0.18) | 0
             delegate: itemDelegate
         }
@@ -87,10 +85,8 @@ Tab
         model: Cura.QualitySettingsModel
         {
             id: qualitySettings
-            extruderId: base.extruderId
-            extruderDefinition: base.extruderDefinition
-            quality: base.quality != null ? base.quality : ""
-            material: base.material != null ? base.material : ""
+            selectedPosition: base.extruderPosition
+            selectedQualityItem: base.qualityItem
         }
 
         SystemPalette { id: palette }

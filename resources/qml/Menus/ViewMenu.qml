@@ -5,13 +5,15 @@ import QtQuick 2.2
 import QtQuick.Controls 1.1
 
 import UM 1.2 as UM
-import Cura 1.2 as Cura
+import Cura 1.0 as Cura
 
 Menu
 {
     title: catalog.i18nc("@title:menu menubar:toplevel", "&View");
     id: base
     enabled: !PrintInformation.preSliced
+
+    property var multiBuildPlateModel: CuraApplication.getMultiBuildPlateModel()
 
     // main views
     Instantiator
@@ -53,12 +55,12 @@ Menu
         visible: UM.Preferences.getValue("cura/use_multi_build_plate")
         Instantiator
         {
-            model: Cura.BuildPlateModel
+            model: base.multiBuildPlateModel
             MenuItem {
-                text: Cura.BuildPlateModel.getItem(index).name;
-                onTriggered: Cura.SceneController.setActiveBuildPlate(Cura.BuildPlateModel.getItem(index).buildPlateNumber);
+                text: base.multiBuildPlateModel.getItem(index).name;
+                onTriggered: Cura.SceneController.setActiveBuildPlate(base.multiBuildPlateModel.getItem(index).buildPlateNumber);
                 checkable: true;
-                checked: Cura.BuildPlateModel.getItem(index).buildPlateNumber == Cura.BuildPlateModel.activeBuildPlate;
+                checked: base.multiBuildPlateModel.getItem(index).buildPlateNumber == base.multiBuildPlateModel.activeBuildPlate;
                 exclusiveGroup: buildPlateGroup;
                 visible: UM.Preferences.getValue("cura/use_multi_build_plate")
             }

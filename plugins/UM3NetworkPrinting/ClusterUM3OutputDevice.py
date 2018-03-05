@@ -77,11 +77,14 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
 
         self._cluster_size = int(properties.get(b"cluster_size", 0))
 
+        self._latest_reply_handler = None
+
+
     def requestWrite(self, nodes, file_name=None, filter_by_machine=False, file_handler=None, **kwargs):
         self.writeStarted.emit(self)
 
         gcode_dict = getattr(Application.getInstance().getController().getScene(), "gcode_dict", [])
-        active_build_plate_id = Application.getInstance().getBuildPlateModel().activeBuildPlate
+        active_build_plate_id = Application.getInstance().getMultiBuildPlateModel().activeBuildPlate
         gcode_list = gcode_dict[active_build_plate_id]
 
         if not gcode_list:
@@ -147,7 +150,7 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
 
         parts.append(self._createFormPart("name=\"file\"; filename=\"%s\"" % file_name, compressed_gcode))
 
-        self.postFormWithParts("print_jobs/", parts, onFinished=self._onPostPrintJobFinished, onProgress=self._onUploadPrintJobProgress)
+        self._latest_reply_handler = self.postFormWithParts("print_jobs/", parts, onFinished=self._onPostPrintJobFinished, onProgress=self._onUploadPrintJobProgress)
 
     @pyqtProperty(QObject, notify=activePrinterChanged)
     def activePrinter(self) -> Optional["PrinterOutputModel"]:
@@ -186,6 +189,12 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
             self._compressing_gcode = False
             self._sending_gcode = False
             Application.getInstance().getController().setActiveStage("PrepareStage")
+
+            # After compressing the sliced model Cura sends data to printer, to stop receiving updates from the request
+            # the "reply" should be disconnected
+            if self._latest_reply_handler:
+                self._latest_reply_handler.disconnect()
+
 
     @pyqtSlot()
     def openPrintJobControlPanel(self):
@@ -396,7 +405,7 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
                     color = material_data["color"]
                     brand = material_data["brand"]
                     material_type = material_data["material"]
-                    name = "Unknown"
+                    name = "Empty" if material_data["material"] == "empty" else "Unknown"
 
                 material = MaterialOutputModel(guid=material_data["guid"], type=material_type,
                                                brand=brand, color=color, name=name)

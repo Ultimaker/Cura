@@ -59,13 +59,13 @@ Item
             height: UM.Theme.getSize("setting_control").height
             anchors.left: globalProfileLabel.right
             anchors.right: parent.right
-            tooltip: Cura.MachineManager.activeQualityName
+            tooltip: Cura.MachineManager.activeQualityOrQualityChangesName
             style: UM.Theme.styles.sidebar_header_button
             activeFocusOnPress: true
             menu: ProfileMenu { }
 
             function generateActiveQualityText () {
-                var result = Cura.MachineManager.activeQualityName;
+                var result = Cura.MachineManager.activeQualityOrQualityChangesName;
 
                 if (Cura.MachineManager.isActiveQualitySupported) {
                     if (Cura.MachineManager.activeQualityLayerHeight > 0) {
@@ -195,7 +195,7 @@ Item
         TextField
         {
             id: filter;
-
+            height: parent.height
             anchors.left: parent.left
             anchors.right: clearFilterButton.left
             anchors.rightMargin: Math.round(UM.Theme.getSize("sidebar_margin").width)

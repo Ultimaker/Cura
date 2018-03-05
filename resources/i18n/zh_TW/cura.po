@@ -1,22 +1,22 @@
 # Cura
-# Copyright (C) 2017 Ultimaker
+# Copyright (C) 2018 Ultimaker
 # This file is distributed under the same license as the Cura package.
-# Ruben Dulek <r.dulek@ultimaker.com>, 2017.
+# Ruben Dulek <r.dulek@ultimaker.com>, 2018.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Cura 3.1\n"
+"Project-Id-Version: Cura 3.2\n"
 "Report-Msgid-Bugs-To: r.dulek@ultimaker.com\n"
-"POT-Creation-Date: 2017-08-02 16:53+0000\n"
-"PO-Revision-Date: 2017-11-28 23:48+0800\n"
+"POT-Creation-Date: 2018-01-29 16:53+0000\n"
+"PO-Revision-Date: 2018-02-04 11:18+0800\n"
 "Last-Translator: Zhang Heh Ji <dinowchang@gmail.com>\n"
-"Language-Team: TEAM\n"
+"Language-Team: Zhang Heh Ji <dinowchang@gmail.com>\n"
 "Language: zh_TW\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Poedit 2.0.4\n"
+"X-Generator: Poedit 2.0.6\n"
 
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.py:26
 msgctxt "@action"
@@ -189,7 +189,7 @@ msgstr "印表機韌體"
 #: /home/ruben/Projects/Cura/plugins/PrepareStage/__init__.py:12
 msgctxt "@item:inmenu"
 msgid "Prepare"
-msgstr ""
+msgstr "準備"
 
 #: /home/ruben/Projects/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:23
 msgctxt "@action:button Preceded by 'Ready to'."
@@ -562,7 +562,7 @@ msgstr "使用瀏覽器開啟列印作業介面。"
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/DiscoverUM3Action.qml:239
 msgctxt "@label Printer name"
 msgid "Unknown"
-msgstr ""
+msgstr "未知"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/NetworkClusterPrinterOutputDevice.py:505
 #, python-brace-format
@@ -597,7 +597,7 @@ msgstr "透過網路連接"
 #: /home/ruben/Projects/Cura/plugins/MonitorStage/__init__.py:12
 msgctxt "@item:inmenu"
 msgid "Monitor"
-msgstr ""
+msgstr "監控"
 
 #: /home/ruben/Projects/Cura/plugins/FirmwareUpdateChecker/FirmwareUpdateCheckerJob.py:66
 #, python-brace-format
@@ -624,7 +624,7 @@ msgstr "無法存取更新資訊。"
 #: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/SolidWorksReader.py:579
 msgctxt "@info:status"
 msgid "SolidWorks reported errors, while opening your file. We recommend to solve these issues inside SolidWorks itself."
-msgstr ""
+msgstr "SolidWorks 在開啟檔案時回報了錯誤。建議在 SolidWorks 內部解決這些問題。"
 
 #: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/SolidWorksReader.py:591
 msgctxt "@info:status"
@@ -633,6 +633,9 @@ msgid ""
 "\n"
 " Thanks!."
 msgstr ""
+"在你的繪圖找不到模型。請你再次檢查它的內容並確認裡面有一個零件或組件。\n"
+"\n"
+"謝謝。"
 
 #: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/SolidWorksReader.py:595
 msgctxt "@info:status"
@@ -641,6 +644,9 @@ msgid ""
 "\n"
 "Sorry!"
 msgstr ""
+"在你的繪圖找到了超過一個的零件或組件。我們目前只支援一個零件或組件的繪圖。\n"
+"\n"
+"抱歉！"
 
 #: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/__init__.py:25
 msgctxt "@item:inlistbox"
@@ -655,7 +661,7 @@ msgstr "SolidWorks 組件檔案"
 #: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/__init__.py:33
 msgctxt "@item:inlistbox"
 msgid "SolidWorks drawing file"
-msgstr ""
+msgstr "SolidWorks 繪圖檔案"
 
 #: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/__init__.py:48
 msgctxt "@info:status"
@@ -666,6 +672,11 @@ msgid ""
 "With kind regards\n"
 " - Thomas Karl Pietrowski"
 msgstr ""
+"親愛的客戶，\n"
+"我們無法在您的系統上找到有效安裝的 SolidWorks。這表示未安裝 SolidWorks，或者您沒有擁有有效的授權。請確認 SolidWorks 本身是可以正常執行的，或是聯絡您的技術部門處理。\n"
+"\n"
+"順頌　時祺\n"
+" - Thomas Karl Pietrowski"
 
 #: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/__init__.py:57
 msgctxt "@info:status"
@@ -676,6 +687,11 @@ msgid ""
 "With kind regards\n"
 " - Thomas Karl Pietrowski"
 msgstr ""
+"親愛的客戶，\n"
+"您目前正在 Windows 以外的作業系統上執行此外掛。此外掛只能在有安裝有效授權 SolidWorks 的 Windows 上執行。請在有安裝 SolidWorks 的 windows 電腦上安裝此外掛。\n"
+"\n"
+"順頌　時祺\n"
+" - Thomas Karl Pietrowski"
 
 #: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/SolidWorksDialogHandler.py:70
 msgid "Configure"
@@ -683,7 +699,7 @@ msgstr "設定"
 
 #: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/SolidWorksDialogHandler.py:71
 msgid "Installation guide for SolidWorks macro"
-msgstr ""
+msgstr "SolidWorks 巨集的安裝指南"
 
 # Added manually to fix a string that was changed after string freeze.
 #: /home/ruben/Projects/Cura/plugins/SimulationView/__init__.py:14
@@ -708,7 +724,7 @@ msgstr "修改 G-Code 檔案"
 #: /home/ruben/Projects/Cura/plugins/SliceInfoPlugin/SliceInfo.py:43
 msgctxt "@info"
 msgid "Cura collects anonymized usage statistics."
-msgstr ""
+msgstr "Cura 以匿名方式蒐集使用狀況統計資料。"
 
 #: /home/ruben/Projects/Cura/plugins/SliceInfoPlugin/SliceInfo.py:46
 msgctxt "@info:title"
@@ -718,22 +734,22 @@ msgstr "收集資料中"
 #: /home/ruben/Projects/Cura/plugins/SliceInfoPlugin/SliceInfo.py:48
 msgctxt "@action:button"
 msgid "Allow"
-msgstr ""
+msgstr "允許"
 
 #: /home/ruben/Projects/Cura/plugins/SliceInfoPlugin/SliceInfo.py:49
 msgctxt "@action:tooltip"
 msgid "Allow Cura to send anonymized usage statistics to help prioritize future improvements to Cura. Some of your preferences and settings are sent, the Cura version and a hash of the models you're slicing."
-msgstr ""
+msgstr "允許 Cura 以匿名方式傳送使用狀況統計資料，用來協助 Cura 的未來改善工作。你的部份偏好設定和參數，Cura 的版本及你切片模型的雜湊值會被傳送。"
 
 #: /home/ruben/Projects/Cura/plugins/SliceInfoPlugin/SliceInfo.py:50
 msgctxt "@action:button"
 msgid "Disable"
-msgstr ""
+msgstr "關閉"
 
 #: /home/ruben/Projects/Cura/plugins/SliceInfoPlugin/SliceInfo.py:51
 msgctxt "@action:tooltip"
 msgid "Don't allow Cura to send anonymized usage statistics. You can enable it again in the preferences."
-msgstr ""
+msgstr "不允許 Cura 傳送匿名的使用狀況統計資料。你可以在偏好設定中再次啟用此功能。"
 
 #: /home/ruben/Projects/Cura/plugins/LegacyProfileReader/__init__.py:14
 msgctxt "@item:inlistbox"
@@ -743,7 +759,7 @@ msgstr "Cura 15.04 列印參數"
 #: /home/ruben/Projects/Cura/plugins/CuraBlenderPlugin/__init__.py:15
 msgctxt "@item:inlistbox"
 msgid "Blender file"
-msgstr ""
+msgstr "Blender 檔案"
 
 #: /home/ruben/Projects/Cura/plugins/CuraBlenderPlugin/CadIntegrationUtils/CommonReader.py:199
 msgctxt "@info:status"
@@ -751,6 +767,8 @@ msgid ""
 "Could not export using \"{}\" quality!\n"
 "Felt back to \"{}\"."
 msgstr ""
+"無法使用 \"{}\" 品質導出！\n"
+"覆蓋回 \"{}\"。"
 
 #: /home/ruben/Projects/Cura/plugins/GCodeProfileReader/__init__.py:14
 #: /home/ruben/Projects/Cura/plugins/GCodeReader/__init__.py:14
@@ -937,12 +955,12 @@ msgstr "Cura 列印參數"
 #: /home/ruben/Projects/Cura/plugins/CuraPrintProfileCreator/__init__.py:12
 msgctxt "@item:inmenu"
 msgid "Profile Assistant"
-msgstr ""
+msgstr "參數助手"
 
 #: /home/ruben/Projects/Cura/plugins/CuraPrintProfileCreator/__init__.py:17
 msgctxt "@item:inlistbox"
 msgid "Profile Assistant"
-msgstr ""
+msgstr "參數助手"
 
 #: /home/ruben/Projects/Cura/plugins/3MFWriter/__init__.py:30
 msgctxt "@item:inlistbox"
@@ -1140,13 +1158,13 @@ msgstr "無法從 <filename>{0}</filename> 匯入列印參數：<message>{1}</me
 #, python-brace-format
 msgctxt "@info:status Don't translate the XML tags <filename> or <message>!"
 msgid "This profile <filename>{0}</filename> contains incorrect data, could not import it."
-msgstr ""
+msgstr "此列印參數 <filename>{0}</filename> 含有錯誤的資料，無法導入。"
 
 #: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:240
 #, python-brace-format
 msgctxt "@info:status Don't translate the XML tags <filename> or <message>!"
 msgid "The machine defined in profile <filename>{0}</filename> doesn't match with your current machine, could not import it."
-msgstr ""
+msgstr "列印參數 <filename>{0}</filename> 中的機器設定與你目前的機器不相符，無法導入。"
 
 #: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:274
 #, python-brace-format
@@ -1158,7 +1176,7 @@ msgstr "已成功匯入列印參數 {0}"
 #, python-brace-format
 msgctxt "@info:status"
 msgid "File {0} does not contain any valid profile."
-msgstr ""
+msgstr "檔案 {0} 內未含有效的列印參數。"
 
 #: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:280
 #, python-brace-format
@@ -1186,7 +1204,7 @@ msgstr "無法為目前設定找到品質類型 {0}。"
 #, python-brace-format
 msgctxt "@label"
 msgid "Group #{group_nr}"
-msgstr ""
+msgstr "群組 #{group_nr}"
 
 #: /home/ruben/Projects/Cura/cura/BuildVolume.py:100
 msgctxt "@info:status"
@@ -1246,6 +1264,9 @@ msgid ""
 "            <p>Please use the \"Send report\" button to post a bug report automatically to our servers</p>\n"
 "        "
 msgstr ""
+"<p><b>發生致命錯誤。請將錯誤報告傳送給我們以便修正此問題。</p></b>\n"
+"            <p>請使用\"送出報告\"按鈕自動發送一份問題報告給我們的伺服器</p>\n"
+"        "
 
 #: /home/ruben/Projects/Cura/cura/CrashHandler.py:102
 msgctxt "@title:groupbox"
@@ -1260,32 +1281,32 @@ msgstr "未知"
 #: /home/ruben/Projects/Cura/cura/CrashHandler.py:112
 msgctxt "@label Cura version number"
 msgid "Cura version"
-msgstr ""
+msgstr "Cura 版本"
 
 #: /home/ruben/Projects/Cura/cura/CrashHandler.py:113
 msgctxt "@label Type of platform"
 msgid "Platform"
-msgstr ""
+msgstr "平台"
 
 #: /home/ruben/Projects/Cura/cura/CrashHandler.py:114
 msgctxt "@label"
 msgid "Qt version"
-msgstr ""
+msgstr "Qt 版本"
 
 #: /home/ruben/Projects/Cura/cura/CrashHandler.py:115
 msgctxt "@label"
 msgid "PyQt version"
-msgstr ""
+msgstr "PyQt 版本"
 
 #: /home/ruben/Projects/Cura/cura/CrashHandler.py:116
 msgctxt "@label OpenGL version"
 msgid "OpenGL"
-msgstr ""
+msgstr "OpenGL"
 
 #: /home/ruben/Projects/Cura/cura/CrashHandler.py:133
 msgctxt "@label"
 msgid "not yet initialised<br/>"
-msgstr ""
+msgstr "尚未初始化<br/>"
 
 #: /home/ruben/Projects/Cura/cura/CrashHandler.py:136
 #, python-brace-format
@@ -1308,7 +1329,7 @@ msgstr "<li>OpenGL 渲染器：{renderer}</li>"
 #: /home/ruben/Projects/Cura/cura/CrashHandler.py:147
 msgctxt "@title:groupbox"
 msgid "Error traceback"
-msgstr ""
+msgstr "錯誤追溯"
 
 #: /home/ruben/Projects/Cura/cura/CrashHandler.py:214
 msgctxt "@title:groupbox"
@@ -1519,7 +1540,7 @@ msgstr "噴頭孔徑"
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:393
 msgctxt "@label"
 msgid "Compatible material diameter"
-msgstr ""
+msgstr "相容的耗材直徑"
 
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:395
 msgctxt "@tooltip"
@@ -1664,12 +1685,12 @@ msgstr "類型"
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/DiscoverUM3Action.qml:233
 msgctxt "@label Printer name"
 msgid "Ultimaker 3"
-msgstr ""
+msgstr "Ultimaker 3"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/DiscoverUM3Action.qml:236
 msgctxt "@label Printer name"
 msgid "Ultimaker 3 Extended"
-msgstr ""
+msgstr "Ultimaker 3 Extended"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/DiscoverUM3Action.qml:252
 msgctxt "@label"
@@ -1736,7 +1757,7 @@ msgstr "%1 未設定成管理一組連線的 Ultimaker 3 印表機的主機"
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/ClusterMonitorItem.qml:55
 msgctxt "@label link to connect manager"
 msgid "Add/Remove printers"
-msgstr ""
+msgstr "新增/移除印表機"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/OpenPanelButton.qml:14
 msgctxt "@info:tooltip"
@@ -1776,7 +1797,7 @@ msgstr "與印表機的連接中斷"
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/PrinterInfoBlock.qml:47
 msgctxt "@label Printer status"
 msgid "Unknown"
-msgstr ""
+msgstr "未知"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/PrinterInfoBlock.qml:257
 msgctxt "@label:status"
@@ -1872,62 +1893,62 @@ msgstr "啟用設定"
 #: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/SolidWorksWizard.qml:21
 msgctxt "@title:window"
 msgid "SolidWorks: Export wizard"
-msgstr ""
+msgstr "SolidWorks: 導出精靈"
 
 #: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/SolidWorksWizard.qml:45
 #: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/SolidWorksConfiguration.qml:140
 msgctxt "@action:label"
 msgid "Quality:"
-msgstr ""
+msgstr "品質："
 
 #: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/SolidWorksWizard.qml:78
 #: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/SolidWorksConfiguration.qml:179
 msgctxt "@option:curaSolidworksStlQuality"
 msgid "Fine (3D-printing)"
-msgstr ""
+msgstr "精細 (3D-printing)"
 
 #: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/SolidWorksWizard.qml:79
 #: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/SolidWorksConfiguration.qml:180
 msgctxt "@option:curaSolidworksStlQuality"
 msgid "Coarse (3D-printing)"
-msgstr ""
+msgstr "粗糙 (3D-printing)"
 
 #: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/SolidWorksWizard.qml:80
 #: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/SolidWorksConfiguration.qml:181
 msgctxt "@option:curaSolidworksStlQuality"
 msgid "Fine (SolidWorks)"
-msgstr ""
+msgstr "精細 (SolidWorks)"
 
 #: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/SolidWorksWizard.qml:81
 #: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/SolidWorksConfiguration.qml:182
 msgctxt "@option:curaSolidworksStlQuality"
 msgid "Coarse (SolidWorks)"
-msgstr ""
+msgstr "粗糙 (SolidWorks)"
 
 #: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/SolidWorksWizard.qml:94
 msgctxt "@text:window"
 msgid "Show this dialog again"
-msgstr ""
+msgstr "再次顯示這個對話框"
 
 #: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/SolidWorksWizard.qml:104
 msgctxt "@action:button"
 msgid "Continue"
-msgstr ""
+msgstr "繼續"
 
 #: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/SolidWorksWizard.qml:116
 msgctxt "@action:button"
 msgid "Abort"
-msgstr ""
+msgstr "取消"
 
 #: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/SolidWorksMacroTutorial.qml:21
 msgctxt "@title:window"
 msgid "How to install Cura SolidWorks macro"
-msgstr ""
+msgstr "如何安裝 Cura SolidWorks 巨集"
 
 #: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/SolidWorksMacroTutorial.qml:62
 msgctxt "@description:label"
 msgid "Steps:"
-msgstr ""
+msgstr "步驟："
 
 #: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/SolidWorksMacroTutorial.qml:140
 msgctxt "@action:button"
@@ -1935,101 +1956,103 @@ msgid ""
 "Open the directory\n"
 "with macro and icon"
 msgstr ""
+"使用巨集和圖示\n"
+"開啟目錄"
 
 #: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/SolidWorksMacroTutorial.qml:160
 msgctxt "@description:label"
 msgid "Instructions:"
-msgstr ""
+msgstr "操作說明："
 
 #: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/SolidWorksMacroTutorial.qml:202
 msgctxt "@action:playpause"
 msgid "Play"
-msgstr ""
+msgstr "播放"
 
 #: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/SolidWorksMacroTutorial.qml:206
 msgctxt "@action:playpause"
 msgid "Pause"
-msgstr ""
+msgstr "暫停"
 
 #: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/SolidWorksMacroTutorial.qml:268
 msgctxt "@action:button"
 msgid "Previous Step"
-msgstr ""
+msgstr "前一步"
 
 #: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/SolidWorksMacroTutorial.qml:283
 msgctxt "@action:button"
 msgid "Done"
-msgstr ""
+msgstr "完成"
 
 #: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/SolidWorksMacroTutorial.qml:287
 msgctxt "@action:button"
 msgid "Next Step"
-msgstr ""
+msgstr "下一步"
 
 #: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/SolidWorksConfiguration.qml:21
 msgctxt "@title:window"
 msgid "SolidWorks plugin: Configuration"
-msgstr ""
+msgstr "SolidWorks 外掛：設定"
 
 #: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/SolidWorksConfiguration.qml:39
 msgctxt "@title:tab"
 msgid "Conversion settings"
-msgstr ""
+msgstr "轉換設定"
 
 #: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/SolidWorksConfiguration.qml:66
 msgctxt "@label"
 msgid "First choice:"
-msgstr ""
+msgstr "第一選擇："
 
 #: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/SolidWorksConfiguration.qml:86
 msgctxt "@text:menu"
 msgid "Latest installed version (Recommended)"
-msgstr ""
+msgstr "最新安裝的版本（建議）"
 
 #: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/SolidWorksConfiguration.qml:95
 msgctxt "@text:menu"
 msgid "Default version"
-msgstr ""
+msgstr "預設的版本"
 
 #: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/SolidWorksConfiguration.qml:193
 msgctxt "@label"
 msgid "Show wizard before opening SolidWorks files"
-msgstr ""
+msgstr "開啟 SolidWorks 檔案時顯示精靈"
 
 #: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/SolidWorksConfiguration.qml:203
 msgctxt "@label"
 msgid "Automatically rotate opened file into normed orientation"
-msgstr ""
+msgstr "自動將開啟的檔案旋轉到正常方向"
 
 #: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/SolidWorksConfiguration.qml:210
 msgctxt "@title:tab"
 msgid "Installation(s)"
-msgstr ""
+msgstr "安裝"
 
 #: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/SolidWorksConfiguration.qml:284
 msgctxt "@label"
 msgid "COM service found"
-msgstr ""
+msgstr "找到 COM 服務"
 
 #: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/SolidWorksConfiguration.qml:295
 msgctxt "@label"
 msgid "Executable found"
-msgstr ""
+msgstr "找到可執行檔案"
 
 #: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/SolidWorksConfiguration.qml:306
 msgctxt "@label"
 msgid "COM starting"
-msgstr ""
+msgstr "COM 啟動中"
 
 #: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/SolidWorksConfiguration.qml:317
 msgctxt "@label"
 msgid "Revision number"
-msgstr ""
+msgstr "版本號碼"
 
 #: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/SolidWorksConfiguration.qml:328
 msgctxt "@label"
 msgid "Functions available"
-msgstr ""
+msgstr "可用功能"
 
 #: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/SolidWorksConfiguration.qml:341
 #: /home/ruben/Projects/Cura/resources/qml/WorkspaceSummaryDialog.qml:264
@@ -2215,32 +2238,32 @@ msgstr "平滑"
 #: /home/ruben/Projects/Cura/plugins/PerObjectSettingsTool/PerObjectSettingsPanel.qml:38
 msgctxt "@label"
 msgid "Mesh Type"
-msgstr ""
+msgstr "網格類型"
 
 #: /home/ruben/Projects/Cura/plugins/PerObjectSettingsTool/PerObjectSettingsPanel.qml:69
 msgctxt "@label"
 msgid "Normal model"
-msgstr ""
+msgstr "普通模型"
 
 #: /home/ruben/Projects/Cura/plugins/PerObjectSettingsTool/PerObjectSettingsPanel.qml:76
 msgctxt "@label"
 msgid "Print as support"
-msgstr ""
+msgstr "做為支撐"
 
 #: /home/ruben/Projects/Cura/plugins/PerObjectSettingsTool/PerObjectSettingsPanel.qml:84
 msgctxt "@label"
 msgid "Don't support overlap with other models"
-msgstr ""
+msgstr "不支援與其他模型重疊"
 
 #: /home/ruben/Projects/Cura/plugins/PerObjectSettingsTool/PerObjectSettingsPanel.qml:92
 msgctxt "@label"
 msgid "Modify settings for overlap with other models"
-msgstr ""
+msgstr "修改其他模型的重疊設定"
 
 #: /home/ruben/Projects/Cura/plugins/PerObjectSettingsTool/PerObjectSettingsPanel.qml:100
 msgctxt "@label"
 msgid "Modify settings for infill of other models"
-msgstr ""
+msgstr "修改其他模型的填充設定"
 
 #: /home/ruben/Projects/Cura/plugins/PerObjectSettingsTool/PerObjectSettingsPanel.qml:333
 msgctxt "@action:button"
@@ -2742,7 +2765,7 @@ msgstr "保留"
 #: /home/ruben/Projects/Cura/resources/qml/DiscardOrKeepProfileChangesDialog.qml:222
 msgctxt "@action:button"
 msgid "Create New Profile"
-msgstr "創建新的列印參數"
+msgstr "建立新的列印參數"
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/MaterialView.qml:44
 msgctxt "@title"
@@ -3098,27 +3121,27 @@ msgstr "（匿名）發送列印資訊"
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:674
 msgctxt "@label"
 msgid "Experimental"
-msgstr ""
+msgstr "實驗功能"
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:680
 msgctxt "@info:tooltip"
 msgid "Use multi build plate functionality"
-msgstr ""
+msgstr "使用多列印平台功能"
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:685
 msgctxt "@option:check"
 msgid "Use multi build plate functionality (restart required)"
-msgstr ""
+msgstr "使用多列印平台功能（需重啟軟體）"
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:694
 msgctxt "@info:tooltip"
 msgid "Should newly loaded models be arranged on the build plate? Used in conjunction with multi build plate (EXPERIMENTAL)"
-msgstr ""
+msgstr "新載入的模型要擺放在列印平台上嗎？必需與多列印平台功能一起使用（實驗功能）"
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:699
 msgctxt "@option:check"
 msgid "Do not arrange objects on load"
-msgstr ""
+msgstr "載入時不要擺放物件"
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/MachinesPage.qml:15
 #: /home/ruben/Projects/Cura/resources/qml/Cura.qml:514
@@ -3189,7 +3212,7 @@ msgstr "自訂列印參數"
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/ProfilesPage.qml:64
 msgctxt "@label"
 msgid "Create"
-msgstr "創建"
+msgstr "建立"
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/ProfilesPage.qml:80
 msgctxt "@label"
@@ -3246,7 +3269,7 @@ msgstr "重命名列印參數"
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/ProfilesPage.qml:271
 msgctxt "@title:window"
 msgid "Create Profile"
-msgstr "創建列印參數"
+msgstr "建立列印參數"
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/ProfilesPage.qml:285
 msgctxt "@title:window"
@@ -3287,7 +3310,7 @@ msgstr "印表機：%1"
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/MaterialsPage.qml:150
 msgctxt "@action:button"
 msgid "Create"
-msgstr "創建"
+msgstr "建立"
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/MaterialsPage.qml:160
 msgctxt "@action:button"
@@ -3531,7 +3554,7 @@ msgstr "影響因素"
 #: /home/ruben/Projects/Cura/resources/qml/Settings/SettingItem.qml:156
 msgctxt "@label"
 msgid "This setting is always shared between all extruders. Changing it here will change the value for all extruders."
-msgstr ""
+msgstr "這個設定是所有擠出機共用的。修改它會同時更動到所有擠出機的值。"
 
 #: /home/ruben/Projects/Cura/resources/qml/Settings/SettingItem.qml:159
 msgctxt "@label"
@@ -3582,7 +3605,7 @@ msgstr "00 小時 00 分"
 #: /home/ruben/Projects/Cura/resources/qml/Sidebar.qml:359
 msgctxt "@tooltip"
 msgid "Time specification"
-msgstr ""
+msgstr "時間規格"
 
 #: /home/ruben/Projects/Cura/resources/qml/Sidebar.qml:441
 msgctxt "@label"
@@ -3639,12 +3662,12 @@ msgstr "檢視(&V)"
 #: /home/ruben/Projects/Cura/resources/qml/Menus/ViewMenu.qml:37
 msgctxt "@action:inmenu menubar:view"
 msgid "&Camera position"
-msgstr ""
+msgstr "視角位置(&C)"
 
 #: /home/ruben/Projects/Cura/resources/qml/Menus/ViewMenu.qml:52
 msgctxt "@action:inmenu menubar:view"
 msgid "&Build plate"
-msgstr ""
+msgstr "列印平台(&B)"
 
 #: /home/ruben/Projects/Cura/resources/qml/Menus/NozzleMenu.qml:40
 msgctxt "@title:menuitem %1 is the nozzle currently loaded in the printer"
@@ -3812,27 +3835,27 @@ msgstr "退出(&Q)"
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:114
 msgctxt "@action:inmenu menubar:view"
 msgid "&3D View"
-msgstr ""
+msgstr "立體圖(&3)"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:121
 msgctxt "@action:inmenu menubar:view"
 msgid "&Front View"
-msgstr ""
+msgstr "前視圖(&F)"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:128
 msgctxt "@action:inmenu menubar:view"
 msgid "&Top View"
-msgstr ""
+msgstr "上視圖(&T)"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:135
 msgctxt "@action:inmenu menubar:view"
 msgid "&Left Side View"
-msgstr ""
+msgstr "左視圖(&L)"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:142
 msgctxt "@action:inmenu menubar:view"
 msgid "&Right Side View"
-msgstr ""
+msgstr "右視圖(&R)"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:149
 msgctxt "@action:inmenu"
@@ -3867,7 +3890,7 @@ msgstr "捨棄目前更改（&D）"
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:197
 msgctxt "@action:inmenu menubar:profile"
 msgid "&Create profile from current settings/overrides..."
-msgstr "從目前設定 / 覆寫值創建列印參數（&C）…"
+msgstr "從目前設定 / 覆寫值建立列印參數（&C）…"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:203
 msgctxt "@action:inmenu menubar:profile"
@@ -3955,17 +3978,17 @@ msgstr "重新載入所有模型（&L）"
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:351
 msgctxt "@action:inmenu menubar:edit"
 msgid "Arrange All Models To All Build Plates"
-msgstr ""
+msgstr "將所有模型排列到所有列印平台上"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:358
 msgctxt "@action:inmenu menubar:edit"
 msgid "Arrange All Models"
-msgstr "編位所有的模型"
+msgstr "排列所有模型"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:366
 msgctxt "@action:inmenu menubar:edit"
 msgid "Arrange Selection"
-msgstr "為所選模型編位"
+msgstr "排列所選模型"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:373
 msgctxt "@action:inmenu menubar:edit"
@@ -4015,7 +4038,7 @@ msgstr "安裝外掛..."
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:438
 msgctxt "@action:inmenu menubar:view"
 msgid "Expand/Collapse Sidebar"
-msgstr ""
+msgstr "展開/收合側邊欄"
 
 #: /home/ruben/Projects/Cura/resources/qml/SaveButton.qml:26
 msgctxt "@label:PrintjobStatus"
@@ -4050,12 +4073,12 @@ msgstr "切片無法使用"
 #: /home/ruben/Projects/Cura/resources/qml/SaveButton.qml:171
 msgctxt "@info:tooltip"
 msgid "Slice current printjob"
-msgstr ""
+msgstr "對目前列印工作進行切片"
 
 #: /home/ruben/Projects/Cura/resources/qml/SaveButton.qml:171
 msgctxt "@info:tooltip"
 msgid "Cancel slicing process"
-msgstr ""
+msgstr "取消進行中的切片程序"
 
 #: /home/ruben/Projects/Cura/resources/qml/SaveButton.qml:183
 msgctxt "@label:Printjob"
@@ -4111,7 +4134,7 @@ msgstr "另存為（&A）…"
 #: /home/ruben/Projects/Cura/resources/qml/Cura.qml:139
 msgctxt "@title:menu menubar:file"
 msgid "Save &Project..."
-msgstr ""
+msgstr "儲存專案...(&P)"
 
 #: /home/ruben/Projects/Cura/resources/qml/Cura.qml:162
 msgctxt "@title:menu menubar:toplevel"
@@ -4349,7 +4372,7 @@ msgstr "耗材"
 #: /home/ruben/Projects/Cura/resources/qml/SidebarHeader.qml:352
 msgctxt "@label"
 msgid "Check compatibility"
-msgstr ""
+msgstr "檢查相容性"
 
 #: /home/ruben/Projects/Cura/resources/qml/SidebarHeader.qml:372
 msgctxt "@tooltip"
@@ -4359,17 +4382,17 @@ msgstr "點擊查看 Ultimaker.com 上的耗材相容性。"
 #: /home/ruben/Projects/Cura/resources/qml/ObjectsList.qml:211
 msgctxt "@option:check"
 msgid "See only current build plate"
-msgstr ""
+msgstr "只顯示目前的列印平台"
 
 #: /home/ruben/Projects/Cura/resources/qml/ObjectsList.qml:227
 msgctxt "@action:button"
 msgid "Arrange to all build plates"
-msgstr ""
+msgstr "擺放到所有的列印平台"
 
 #: /home/ruben/Projects/Cura/resources/qml/ObjectsList.qml:247
 msgctxt "@action:button"
 msgid "Arrange current build plate"
-msgstr ""
+msgstr "擺放到目前的列印平台"
 
 #: MachineSettingsAction/plugin.json
 msgctxt "description"
@@ -4444,7 +4467,7 @@ msgstr "更新日誌"
 #: ProfileFlattener/plugin.json
 msgctxt "description"
 msgid "Create a flattend quality changes profile."
-msgstr "創建一份合併品質變化列印參數。"
+msgstr "建立一份合併品質變化列印參數。"
 
 #: ProfileFlattener/plugin.json
 msgctxt "name"
@@ -4464,22 +4487,22 @@ msgstr "USB 連線列印"
 #: PrepareStage/plugin.json
 msgctxt "description"
 msgid "Provides a prepare stage in Cura."
-msgstr ""
+msgstr "在 cura 提供一個準備介面。"
 
 #: PrepareStage/plugin.json
 msgctxt "name"
 msgid "Prepare Stage"
-msgstr ""
+msgstr "準備介面"
 
 #: CuraLiveScriptingPlugin/plugin.json
 msgctxt "description"
 msgid "Provides an edit window for direct script editing."
-msgstr ""
+msgstr "提供一個直接編輯描述檔的編輯視窗。"
 
 #: CuraLiveScriptingPlugin/plugin.json
 msgctxt "name"
 msgid "Live scripting tool"
-msgstr ""
+msgstr "即時描述檔工具"
 
 #: RemovableDriveOutputDevice/plugin.json
 msgctxt "description"
@@ -4504,12 +4527,12 @@ msgstr "UM3 網路連接"
 #: MonitorStage/plugin.json
 msgctxt "description"
 msgid "Provides a monitor stage in Cura."
-msgstr ""
+msgstr "在 cura 提供一個監控介面。"
 
 #: MonitorStage/plugin.json
 msgctxt "name"
 msgid "Monitor Stage"
-msgstr ""
+msgstr "監控介面"
 
 #: FirmwareUpdateChecker/plugin.json
 msgctxt "description"
@@ -4524,7 +4547,7 @@ msgstr "韌體更新檢查"
 #: CuraSolidWorksPlugin/plugin.json
 msgctxt "description"
 msgid "Gives you the possibility to open certain files using SolidWorks itself. Conversion is done by this plugin and additional optimizations."
-msgstr ""
+msgstr "讓你可以使用 SolidWorks 開啟某些檔案。此外掛會完成轉換和最佳化的工作。"
 
 #: CuraSolidWorksPlugin/plugin.json
 msgctxt "name"
@@ -4594,12 +4617,12 @@ msgstr "舊版 Cura 列印參數讀取器"
 #: CuraBlenderPlugin/plugin.json
 msgctxt "description"
 msgid "Helps to open Blender files directly in Cura."
-msgstr ""
+msgstr "協助你直接在 Cura 中打開 Blender 檔案。"
 
 #: CuraBlenderPlugin/plugin.json
 msgctxt "name"
 msgid "Blender Integration (experimental)"
-msgstr ""
+msgstr "Blender 整合（實驗功能）"
 
 #: GCodeProfileReader/plugin.json
 msgctxt "description"
@@ -4764,12 +4787,12 @@ msgstr "Cura 列印參數寫入器"
 #: CuraPrintProfileCreator/plugin.json
 msgctxt "description"
 msgid "Allows material manufacturers to create new material and quality profiles using a drop-in UI."
-msgstr ""
+msgstr "允許耗材製造商使用下拉式 UI 建立新的耗材和品質設定參數。"
 
 #: CuraPrintProfileCreator/plugin.json
 msgctxt "name"
 msgid "Print Profile Assistant"
-msgstr ""
+msgstr "列印參數設定助手"
 
 #: 3MFWriter/plugin.json
 msgctxt "description"

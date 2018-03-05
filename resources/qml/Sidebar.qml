@@ -126,6 +126,7 @@ Rectangle
     {
         id: settingsModeLabel
         text: !hideSettings ? catalog.i18nc("@label:listbox", "Print Setup") : catalog.i18nc("@label:listbox", "Print Setup disabled\nG-code files cannot be modified")
+        renderType: Text.NativeRendering
         anchors.left: parent.left
         anchors.leftMargin: UM.Theme.getSize("sidebar_margin").width
         anchors.top: hideSettings ? machineSelection.bottom : headerSeparator.bottom
@@ -514,15 +515,12 @@ Rectangle
                     weights = ["0"];
                     costs = ["0.00"];
                 }
+                var result = lengths.join(" + ") + "m / ~ " + weights.join(" + ") + "g";
                 if(someCostsKnown)
                 {
-                    return catalog.i18nc("@label Print estimates: m for meters, g for grams, %4 is currency and %3 is print cost", "%1m / ~ %2g / ~ %4 %3").arg(lengths.join(" + "))
-                            .arg(weights.join(" + ")).arg(costs.join(" + ")).arg(UM.Preferences.getValue("cura/currency"));
+                    result += " / ~ " + costs.join(" + ") + " " + UM.Preferences.getValue("cura/currency");
                 }
-                else
-                {
-                    return catalog.i18nc("@label Print estimates: m for meters, g for grams", "%1m / ~ %2g").arg(lengths.join(" + ")).arg(weights.join(" + "));
-                }
+                return result;
             }
             MouseArea
             {
