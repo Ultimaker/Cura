@@ -1,7 +1,7 @@
 // Copyright (c) 2018 Ultimaker B.V.
 // Uranium is released under the terms of the LGPLv3 or higher.
 
-import QtQuick 2.8
+import QtQuick 2.7
 import QtQuick.Controls 1.4
 import QtQuick.Layouts 1.3
 import QtQuick.Dialogs 1.2
@@ -175,7 +175,7 @@ Item
         {
             base.newQualityNameToSelect = newName;  // We want to switch to the new profile once it's created
             base.toActivateNewQuality = true;
-            Cura.ContainerManager.createQualityChanges(newName);
+            base.qualityManager.createQualityChanges(newName);
         }
     }
 

@@ -77,6 +77,9 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
 
         self._cluster_size = int(properties.get(b"cluster_size", 0))
 
+        self._latest_reply_handler = None
+
+
     def requestWrite(self, nodes, file_name=None, filter_by_machine=False, file_handler=None, **kwargs):
         self.writeStarted.emit(self)
 
@@ -147,7 +150,7 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
 
         parts.append(self._createFormPart("name=\"file\"; filename=\"%s\"" % file_name, compressed_gcode))
 
-        self.postFormWithParts("print_jobs/", parts, onFinished=self._onPostPrintJobFinished, onProgress=self._onUploadPrintJobProgress)
+        self._latest_reply_handler = self.postFormWithParts("print_jobs/", parts, onFinished=self._onPostPrintJobFinished, onProgress=self._onUploadPrintJobProgress)
 
     @pyqtProperty(QObject, notify=activePrinterChanged)
     def activePrinter(self) -> Optional["PrinterOutputModel"]:
@@ -186,6 +189,12 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
             self._compressing_gcode = False
             self._sending_gcode = False
             Application.getInstance().getController().setActiveStage("PrepareStage")
+
+            # After compressing the sliced model Cura sends data to printer, to stop receiving updates from the request
+            # the "reply" should be disconnected
+            if self._latest_reply_handler:
+                self._latest_reply_handler.disconnect()
+
 
     @pyqtSlot()
     def openPrintJobControlPanel(self):
