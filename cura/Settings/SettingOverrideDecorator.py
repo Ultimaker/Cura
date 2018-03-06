@@ -3,12 +3,14 @@
 
 import copy
 
+from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 from UM.Scene.SceneNodeDecorator import SceneNodeDecorator
 from UM.Signal import Signal, signalemitter
 from UM.Settings.InstanceContainer import InstanceContainer
 from UM.Settings.ContainerRegistry import ContainerRegistry
 from UM.Logger import Logger
-
+from UM.Settings.Validator import ValidatorState
+from PyQt5.QtCore import QTimer
 from UM.Application import Application
 
 from cura.Settings.PerObjectContainerStack import PerObjectContainerStack
@@ -32,14 +34,20 @@ class SettingOverrideDecorator(SceneNodeDecorator):
 
     def __init__(self):
         super().__init__()
-        self._stack = PerObjectContainerStack(stack_id = id(self))
+        self._stack = PerObjectContainerStack(stack_id = "per_object_stack_" + str(id(self)))
         self._stack.setDirty(False)  # This stack does not need to be saved.
         self._stack.addContainer(InstanceContainer(container_id = "SettingOverrideInstanceContainer"))
         self._extruder_stack = ExtruderManager.getInstance().getExtruderStack(0).getId()
 
+        self._is_non_printing_mesh = False
+        self._error_check_timer = QTimer()
+        self._error_check_timer.setInterval(250)
+        self._error_check_timer.setSingleShot(True)
+        self._error_check_timer.timeout.connect(self._checkStackForErrors)
+
         self._stack.propertyChanged.connect(self._onSettingChanged)
 
-        ContainerRegistry.getInstance().addContainer(self._stack)
+        Application.getInstance().getContainerRegistry().addContainer(self._stack)
 
         Application.getInstance().globalContainerStackChanged.connect(self._updateNextStack)
         self.activeExtruderChanged.connect(self._updateNextStack)
@@ -56,6 +64,10 @@ class SettingOverrideDecorator(SceneNodeDecorator):
 
         # Properly set the right extruder on the copy
         deep_copy.setActiveExtruder(self._extruder_stack)
+
+        # use value from the stack because there can be a delay in signal triggering and "_is_non_printing_mesh"
+        # has not been updated yet.
+        deep_copy._is_non_printing_mesh = any(bool(self._stack.getProperty(setting, "value")) for setting in self._non_printing_mesh_settings)
 
         return deep_copy
 
@@ -80,13 +92,28 @@ class SettingOverrideDecorator(SceneNodeDecorator):
             container_stack = containers[0]
             return container_stack.getMetaDataEntry("position", default=None)
 
+    def isNonPrintingMesh(self):
+        return self._is_non_printing_mesh
+
     def _onSettingChanged(self, instance, property_name): # Reminder: 'property' is a built-in function
         # Trigger slice/need slicing if the value has changed.
         if property_name == "value":
-            Application.getInstance().getBackend().needsSlicing()
-            Application.getInstance().getBackend().tickle()
+            self._is_non_printing_mesh = any(bool(self._stack.getProperty(setting, "value")) for setting in self._non_printing_mesh_settings)
+            if not self._is_non_printing_mesh:
+                # self._error_check_timer.start()
+                self._checkStackForErrors()
+        Application.getInstance().getBackend().needsSlicing()
+        Application.getInstance().getBackend().tickle()
 
-            self._node._non_printing_mesh = any(self._stack.getProperty(setting, "value") for setting in self._non_printing_mesh_settings)
+    def _checkStackForErrors(self):
+        hasErrors = False;
+        for key in self._stack.getAllKeys():
+            validation_state = self._stack.getProperty(key, "validationState")
+            if validation_state in (ValidatorState.Exception, ValidatorState.MaximumError, ValidatorState.MinimumError):
+                Logger.log("w", "Setting Per Object %s is not valid.", key)
+                hasErrors = True
+                break
+        Application.getInstance().getObjectsModel().setStacksHaveErrors(hasErrors)
 
     ##  Makes sure that the stack upon which the container stack is placed is
     #   kept up to date.

@@ -3,6 +3,8 @@
 
 from typing import Any, TYPE_CHECKING, Optional
 
+from PyQt5.QtCore import pyqtProperty
+
 from UM.Decorators import override
 from UM.MimeTypeDatabase import MimeType, MimeTypeDatabase
 from UM.Settings.ContainerStack import ContainerStack
@@ -10,11 +12,12 @@ from UM.Settings.ContainerRegistry import ContainerRegistry
 from UM.Settings.Interfaces import ContainerInterface, PropertyEvaluationContext
 
 from . import Exceptions
-from .CuraContainerStack import CuraContainerStack
+from .CuraContainerStack import CuraContainerStack, _ContainerIndexes
 from .ExtruderManager import ExtruderManager
 
 if TYPE_CHECKING:
     from cura.Settings.GlobalStack import GlobalStack
+
 
 ##  Represents an Extruder and its related containers.
 #
@@ -31,7 +34,7 @@ class ExtruderStack(CuraContainerStack):
     #
     #   This will set the next stack and ensure that we register this stack as an extruder.
     @override(ContainerStack)
-    def setNextStack(self, stack: ContainerStack) -> None:
+    def setNextStack(self, stack: CuraContainerStack) -> None:
         super().setNextStack(stack)
         stack.addExtruder(self)
         self.addMetaDataEntry("machine", stack.id)
@@ -46,6 +49,29 @@ class ExtruderStack(CuraContainerStack):
     @classmethod
     def getLoadingPriority(cls) -> int:
         return 3
+
+    ##  Return the filament diameter that the machine requires.
+    #
+    #   If the machine has no requirement for the diameter, -1 is returned.
+    #   \return The filament diameter for the printer
+    @property
+    def materialDiameter(self) -> float:
+        context = PropertyEvaluationContext(self)
+        context.context["evaluate_from_container_index"] = _ContainerIndexes.Variant
+
+        return self.getProperty("material_diameter", "value", context = context)
+
+    ##  Return the approximate filament diameter that the machine requires.
+    #
+    #   The approximate material diameter is the material diameter rounded to
+    #   the nearest millimetre.
+    #
+    #   If the machine has no requirement for the diameter, -1 is returned.
+    #
+    #   \return The approximate filament diameter for the printer
+    @pyqtProperty(float)
+    def approximateMaterialDiameter(self) -> float:
+        return round(float(self.materialDiameter))
 
     ##  Overridden from ContainerStack
     #
@@ -114,11 +140,6 @@ class ExtruderStack(CuraContainerStack):
 
             if has_global_dependencies:
                 self.getNextStack().propertiesChanged.emit(key, properties)
-
-    def findDefaultVariant(self):
-        # The default variant is defined in the machine stack and/or definition, so use the machine stack to find
-        # the default variant.
-        return self.getNextStack().findDefaultVariant()
 
 
 extruder_stack_mime = MimeType(

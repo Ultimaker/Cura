@@ -70,8 +70,8 @@ Cura.MachineAction
             anchors.top: pageTitle.bottom
             anchors.topMargin: UM.Theme.getSize("default_margin").height
 
-            property real columnWidth: ((width - 3 * UM.Theme.getSize("default_margin").width) / 2) | 0
-            property real labelColumnWidth: columnWidth * 0.5
+            property real columnWidth: Math.round((width - 3 * UM.Theme.getSize("default_margin").width) / 2)
+            property real labelColumnWidth: Math.round(columnWidth / 2)
 
             Tab
             {
@@ -165,7 +165,7 @@ Cura.MachineAction
                                 id: gcodeFlavorComboBox
                                 sourceComponent: comboBoxWithOptions
                                 property string settingKey: "machine_gcode_flavor"
-                                property string label: catalog.i18nc("@label", "Gcode flavor")
+                                property string label: catalog.i18nc("@label", "G-code flavor")
                                 property bool forceUpdateOnChange: true
                                 property var afterOnActivate: manager.updateHasMaterialsMetadata
                             }
@@ -270,6 +270,20 @@ Cura.MachineAction
                                                 }
                                             }
                                         }
+
+                                        Connections
+                                        {
+                                            target: manager
+                                            onDefinedExtruderCountChanged:
+                                            {
+                                                extruderCountModel.clear();
+                                                for(var i = 0; i < manager.definedExtruderCount; ++i)
+                                                {
+                                                    extruderCountModel.append({text: String(i + 1), value: i});
+                                                }
+                                            }
+                                        }
+
                                         currentIndex: machineExtruderCountProvider.properties.value - 1
                                         onActivated:
                                         {
@@ -277,18 +291,6 @@ Cura.MachineAction
                                         }
                                     }
                                 }
-                            }
-
-                            Loader
-                            {
-                                id: materialDiameterField
-                                visible: Cura.MachineManager.hasMaterials
-                                sourceComponent: numericTextFieldWithUnit
-                                property string settingKey: "material_diameter"
-                                property string unit: catalog.i18nc("@label", "mm")
-                                property string tooltip: catalog.i18nc("@tooltip", "The nominal diameter of filament supported by the printer. The exact diameter will be overridden by the material and/or the profile.")
-                                property var afterOnEditingFinished: manager.updateMaterialForDiameter
-                                property string label: catalog.i18nc("@label", "Material diameter")
                             }
                         }
                     }
@@ -305,7 +307,7 @@ Cura.MachineAction
                             width: settingsTabs.columnWidth
                             Label
                             {
-                                text: catalog.i18nc("@label", "Start Gcode")
+                                text: catalog.i18nc("@label", "Start G-code")
                                 font.bold: true
                             }
                             Loader
@@ -315,7 +317,7 @@ Cura.MachineAction
                                 property int areaWidth: parent.width
                                 property int areaHeight: parent.height - y
                                 property string settingKey: "machine_start_gcode"
-                                property string tooltip: catalog.i18nc("@tooltip", "Gcode commands to be executed at the very start.")
+                                property string tooltip: catalog.i18nc("@tooltip", "G-code commands to be executed at the very start.")
                             }
                         }
 
@@ -324,7 +326,7 @@ Cura.MachineAction
                             width: settingsTabs.columnWidth
                             Label
                             {
-                                text: catalog.i18nc("@label", "End Gcode")
+                                text: catalog.i18nc("@label", "End G-code")
                                 font.bold: true
                             }
                             Loader
@@ -334,7 +336,7 @@ Cura.MachineAction
                                 property int areaWidth: parent.width
                                 property int areaHeight: parent.height - y
                                 property string settingKey: "machine_end_gcode"
-                                property string tooltip: catalog.i18nc("@tooltip", "Gcode commands to be executed at the very end.")
+                                property string tooltip: catalog.i18nc("@tooltip", "G-code commands to be executed at the very end.")
                             }
                         }
                     }
@@ -346,7 +348,6 @@ Cura.MachineAction
                 if(currentIndex > 0)
                 {
                     contentItem.forceActiveFocus();
-                    Cura.ExtruderManager.setActiveExtruderIndex(currentIndex - 1);
                 }
             }
 
@@ -380,6 +381,25 @@ Cura.MachineAction
                             property string settingKey: "machine_nozzle_size"
                             property string label: catalog.i18nc("@label", "Nozzle size")
                             property string unit: catalog.i18nc("@label", "mm")
+                            property bool isExtruderSetting: true
+                        }
+
+                        Loader
+                        {
+                            id: materialDiameterField
+                            visible: Cura.MachineManager.hasMaterials
+                            sourceComponent: numericTextFieldWithUnit
+                            property string settingKey: "material_diameter"
+                            property string label: catalog.i18nc("@label", "Compatible material diameter")
+                            property string unit: catalog.i18nc("@label", "mm")
+                            property string tooltip: catalog.i18nc("@tooltip", "The nominal diameter of filament supported by the printer. The exact diameter will be overridden by the material and/or the profile.")
+                            function afterOnEditingFinished()
+                            {
+                                if (settingsTabs.currentIndex > 0)
+                                {
+                                    manager.updateMaterialForDiameter(settingsTabs.currentIndex - 1);
+                                }
+                            }
                             property bool isExtruderSetting: true
                         }
 
@@ -421,7 +441,7 @@ Cura.MachineAction
                                 width: settingsTabs.columnWidth
                                 Label
                                 {
-                                    text: catalog.i18nc("@label", "Extruder Start Gcode")
+                                    text: catalog.i18nc("@label", "Extruder Start G-code")
                                     font.bold: true
                                 }
                                 Loader
@@ -432,14 +452,14 @@ Cura.MachineAction
                                     property int areaHeight: parent.height - y
                                     property string settingKey: "machine_extruder_start_code"
                                     property bool isExtruderSetting: true
-                            }
+                                }
                             }
                             Column {
                                 height: parent.height
                                 width: settingsTabs.columnWidth
                                 Label
                                 {
-                                    text: catalog.i18nc("@label", "Extruder End Gcode")
+                                    text: catalog.i18nc("@label", "Extruder End G-code")
                                     font.bold: true
                                 }
                                 Loader
@@ -481,7 +501,7 @@ Cura.MachineAction
                     {
                         if(settingsTabs.currentIndex > 0)
                         {
-                            return Cura.MachineManager.activeStackId;
+                            return Cura.ExtruderManager.extruderIds[String(settingsTabs.currentIndex - 1)];
                         }
                         return "";
                     }
@@ -499,11 +519,11 @@ Cura.MachineAction
                 checked: String(propertyProvider.properties.value).toLowerCase() != 'false'
                 onClicked:
                 {
-                        propertyProvider.setPropertyValue("value", checked);
-                        if(_forceUpdateOnChange)
-                        {
-                            manager.forceUpdate();
-                        }
+                    propertyProvider.setPropertyValue("value", checked);
+                    if(_forceUpdateOnChange)
+                    {
+                        manager.forceUpdate();
+                    }
                 }
             }
         }
@@ -534,7 +554,7 @@ Cura.MachineAction
                     {
                         if(settingsTabs.currentIndex > 0)
                         {
-                            return Cura.MachineManager.activeStackId;
+                            return Cura.ExtruderManager.extruderIds[String(settingsTabs.currentIndex - 1)];
                         }
                         return "";
                     }
@@ -567,8 +587,11 @@ Cura.MachineAction
                     TextField
                     {
                         id: textField
-                        text: (propertyProvider.properties.value) ? propertyProvider.properties.value : ""
-                        validator: RegExpValidator { regExp: _allowNegative ? /-?[0-9\.]{0,6}/ : /[0-9\.]{0,6}/ }
+                        text: {
+                            const value = propertyProvider.properties.value;
+                            return value ? value : "";
+                        }
+                        validator: RegExpValidator { regExp: _allowNegative ? /-?[0-9\.,]{0,6}/ : /[0-9\.,]{0,6}/ }
                         onEditingFinished:
                         {
                             if (propertyProvider && text != propertyProvider.properties.value)
@@ -576,12 +599,7 @@ Cura.MachineAction
                                 propertyProvider.setPropertyValue("value", text);
                                 if(_forceUpdateOnChange)
                                 {
-                                    var extruderIndex = Cura.ExtruderManager.activeExtruderIndex;
                                     manager.forceUpdate();
-                                    if(Cura.ExtruderManager.activeExtruderIndex != extruderIndex)
-                                    {
-                                        Cura.ExtruderManager.setActiveExtruderIndex(extruderIndex)
-                                    }
                                 }
                                 if(_afterOnEditingFinished)
                                 {
@@ -627,7 +645,7 @@ Cura.MachineAction
                     {
                         if(settingsTabs.currentIndex > 0)
                         {
-                            return Cura.MachineManager.activeStackId;
+                            return Cura.ExtruderManager.extruderIds[String(settingsTabs.currentIndex - 1)];
                         }
                         return "";
                     }
@@ -714,7 +732,7 @@ Cura.MachineAction
             width: gcodeArea.width
             text: _tooltip
 
-            property bool _isExtruderSetting: (typeof(isExtruderSetting) === 'undefined') ? false: isExtruderSetting
+            property bool _isExtruderSetting: (typeof(isExtruderSetting) === 'undefined') ? false : isExtruderSetting
             property string _tooltip: (typeof(tooltip) === 'undefined') ? propertyProvider.properties.description : tooltip
 
             UM.SettingPropertyProvider
@@ -726,7 +744,7 @@ Cura.MachineAction
                     {
                         if(settingsTabs.currentIndex > 0)
                         {
-                            return Cura.MachineManager.activeStackId;
+                            return Cura.ExtruderManager.extruderIds[String(settingsTabs.currentIndex - 1)];
                         }
                         return "";
                     }
@@ -808,10 +826,10 @@ Cura.MachineAction
                             printHeadPolygon[axis][side] = result;
                             return result;
                         }
-                        validator: RegExpValidator { regExp: /[0-9\.]{0,6}/ }
+                        validator: RegExpValidator { regExp: /[0-9\.,]{0,6}/ }
                         onEditingFinished:
                         {
-                            printHeadPolygon[axis][side] = parseFloat(textField.text);
+                            printHeadPolygon[axis][side] = parseFloat(textField.text.replace(',','.'));
                             var polygon = [];
                             polygon.push([-printHeadPolygon["x"]["min"], printHeadPolygon["y"]["max"]]);
                             polygon.push([-printHeadPolygon["x"]["min"],-printHeadPolygon["y"]["min"]]);

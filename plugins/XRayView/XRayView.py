@@ -2,16 +2,21 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import os.path
+from PyQt5.QtGui import QOpenGLContext
 
 from UM.Application import Application
+from UM.Logger import Logger
 from UM.Math.Color import Color
 from UM.PluginRegistry import PluginRegistry
+from UM.Platform import Platform
 from UM.Event import Event
 from UM.View.View import View
 from UM.Scene.Iterator.BreadthFirstIterator import BreadthFirstIterator
 
 from UM.View.RenderBatch import RenderBatch
 from UM.View.GL.OpenGL import OpenGL
+
+from cura.CuraApplication import CuraApplication
 
 from . import XRayPass
 
@@ -52,6 +57,23 @@ class XRayView(View):
 
     def event(self, event):
         if event.type == Event.ViewActivateEvent:
+            # FIX: on Max OS X, somehow QOpenGLContext.currentContext() can become None during View switching.
+            # This can happen when you do the following steps:
+            #   1. Start Cura
+            #   2. Load a model
+            #   3. Switch to Custom mode
+            #   4. Select the model and click on the per-object tool icon
+            #   5. Switch view to Layer view or X-Ray
+            #   6. Cura will very likely crash
+            # It seems to be a timing issue that the currentContext can somehow be empty, but I have no clue why.
+            # This fix tries to reschedule the view changing event call on the Qt thread again if the current OpenGL
+            # context is None.
+            if Platform.isOSX():
+                if QOpenGLContext.currentContext() is None:
+                    Logger.log("d", "current context of OpenGL is empty on Mac OS X, will try to create shaders later")
+                    CuraApplication.getInstance().callLater(lambda e = event: self.event(e))
+                    return
+
             if not self._xray_pass:
                 # Currently the RenderPass constructor requires a size > 0
                 # This should be fixed in RenderPass's constructor.

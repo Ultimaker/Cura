@@ -1,10 +1,9 @@
-// Copyright (c) 2015 Ultimaker B.V.
-// Uranium is released under the terms of the LGPLv3 or higher.
+// Copyright (c) 2018 Ultimaker B.V.
+// Cura is released under the terms of the LGPLv3 or higher.
 
-import QtQuick 2.1
-import QtQuick.Layouts 1.1
-import QtQuick.Controls 1.1
-import QtQuick.Controls.Styles 1.1
+import QtQuick 2.7
+import QtQuick.Layouts 1.2
+import QtQuick.Controls 2.0
 
 import UM 1.1 as UM
 import Cura 1.0 as Cura
@@ -109,15 +108,13 @@ Item {
             id: label;
 
             anchors.left: parent.left;
-            anchors.leftMargin: doDepthIndentation ? (UM.Theme.getSize("section_icon_column").width + 5) + ((definition.depth - 1) * UM.Theme.getSize("setting_control_depth_margin").width) : 0
+            anchors.leftMargin: doDepthIndentation ? Math.round((UM.Theme.getSize("section_icon_column").width + 5) + ((definition.depth - 1) * UM.Theme.getSize("setting_control_depth_margin").width)) : 0
             anchors.right: settingControls.left;
             anchors.verticalCenter: parent.verticalCenter
 
-            height: UM.Theme.getSize("section").height;
-            verticalAlignment: Text.AlignVCenter;
-
             text: definition.label
             elide: Text.ElideMiddle;
+            renderType: Text.NativeRendering
 
             color: UM.Theme.getColor("setting_control_text");
             opacity: (definition.visible) ? 1 : 0.5
@@ -129,12 +126,12 @@ Item {
         {
             id: settingControls
 
-            height: parent.height / 2
-            spacing: UM.Theme.getSize("sidebar_margin").height / 2
+            height: Math.round(parent.height / 2)
+            spacing: Math.round(UM.Theme.getSize("sidebar_margin").height / 2)
 
             anchors {
                 right: controlContainer.left
-                rightMargin: UM.Theme.getSize("sidebar_margin").width / 2
+                rightMargin: Math.round(UM.Theme.getSize("sidebar_margin").width / 2)
                 verticalCenter: parent.verticalCenter
             }
 
@@ -154,7 +151,7 @@ Item {
 
                 onEntered: {
                     hoverTimer.stop();
-                    var tooltipText = catalog.i18nc("@label", "This setting is always shared between all extruders. Changing it here will change the value for all extruders") + ".";
+                    var tooltipText = catalog.i18nc("@label", "This setting is always shared between all extruders. Changing it here will change the value for all extruders.");
                     if ((resolve != "None") && (stackLevel != 0)) {
                         // We come here if a setting has a resolve and the setting is not manually edited.
                         tooltipText += " " + catalog.i18nc("@label", "The value is resolved from per-extruder values ") + "[" + Cura.ExtruderManager.getInstanceExtruderValues(definition.key) + "].";

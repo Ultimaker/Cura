@@ -51,24 +51,24 @@ setup(name="Cura",
         #console=[{"script": "cura_app.py"}],
         options={"py2exe": {"skip_archive": False, "includes": includes}})
 
-print("Coping Cura plugins.")
+print("Copying Cura plugins.")
 shutil.copytree(os.path.dirname(UM.__file__) + "/../plugins", "dist/plugins", ignore = shutil.ignore_patterns("ConsoleLogger", "OBJWriter", "MLPWriter", "MLPReader"))
 for path in os.listdir("plugins"):
     copytree("plugins/" + path, "dist/plugins/" + path)
-print("Coping resources.")
+print("Copying resources.")
 copytree(os.path.dirname(UM.__file__) + "/../resources", "dist/resources")
 copytree("resources", "dist/resources")
-print("Coping Uranium QML.")
+print("Copying Uranium QML.")
 shutil.copytree(os.path.dirname(UM.__file__) + "/Qt/qml/UM", "dist/qml/UM")
 for site_package in site.getsitepackages():
     qt_origin_path = os.path.join(site_package, "PyQt5")
     if os.path.isdir(qt_origin_path):
-        print("Coping PyQt5 plugins from: %s" % qt_origin_path)
+        print("Copying PyQt5 plugins from: %s" % qt_origin_path)
         shutil.copytree(os.path.join(qt_origin_path, "plugins"), "dist/PyQt5/plugins")
-        print("Coping PyQt5 QtQuick from: %s" % qt_origin_path)
+        print("Copying PyQt5 QtQuick from: %s" % qt_origin_path)
         shutil.copytree(os.path.join(qt_origin_path, "qml/QtQuick"), "dist/qml/QtQuick")
         shutil.copytree(os.path.join(qt_origin_path, "qml/QtQuick.2"), "dist/qml/QtQuick.2")
-        print("Coping PyQt5 svg library from: %s" % qt_origin_path)
+        print("Copying PyQt5 svg library from: %s" % qt_origin_path)
         shutil.copy(os.path.join(qt_origin_path, "Qt5Svg.dll"), "dist/Qt5Svg.dll")
         print("Copying Angle libraries from %s" % qt_origin_path)
         shutil.copy(os.path.join(qt_origin_path, "libEGL.dll"), "dist/libEGL.dll")

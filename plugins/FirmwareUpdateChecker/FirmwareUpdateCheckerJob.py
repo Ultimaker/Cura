@@ -44,6 +44,8 @@ class FirmwareUpdateCheckerJob(Job):
             # Now we just do that if the active printer is Ultimaker 3 or Ultimaker 3 Extended or any
             # other Ultimaker 3 that will come in the future
             if len(machine_name_parts) >= 2 and machine_name_parts[:2] == ["ultimaker", "3"]:
+                Logger.log("i", "You have a UM3 in printer list. Let's check the firmware!")
+
                 # Nothing to parse, just get the string
                 # TODO: In the future may be done by parsing a JSON file with diferent version for each printer model
                 current_version = reader(current_version_file).readline().rstrip()

@@ -190,23 +190,25 @@ UM.MainWindow
                     model: Cura.ExtrudersModel { simpleNames: true }
                     Menu {
                         title: model.name
-                        visible: machineExtruderCount.properties.value > 1
 
                         NozzleMenu { title: Cura.MachineManager.activeDefinitionVariantsName; visible: Cura.MachineManager.hasVariants; extruderIndex: index }
                         MaterialMenu { title: catalog.i18nc("@title:menu", "&Material"); visible: Cura.MachineManager.hasMaterials; extruderIndex: index }
-                        ProfileMenu { title: catalog.i18nc("@title:menu", "&Profile"); }
 
-                        MenuSeparator { }
+                        MenuSeparator {
+                            visible: Cura.MachineManager.hasVariants || Cura.MachineManager.hasMaterials
+                        }
 
-                        MenuItem { text: catalog.i18nc("@action:inmenu", "Set as Active Extruder"); onTriggered: Cura.ExtruderManager.setActiveExtruderIndex(model.index) }
+                        MenuItem {
+                            text: catalog.i18nc("@action:inmenu", "Set as Active Extruder")
+                            onTriggered: Cura.ExtruderManager.setActiveExtruderIndex(model.index)
+                        }
                     }
                     onObjectAdded: settingsMenu.insertItem(index, object)
                     onObjectRemoved: settingsMenu.removeItem(object)
                 }
 
-                NozzleMenu { title: Cura.MachineManager.activeDefinitionVariantsName; visible: machineExtruderCount.properties.value <= 1 && Cura.MachineManager.hasVariants }
-                MaterialMenu { title: catalog.i18nc("@title:menu", "&Material"); visible: machineExtruderCount.properties.value <= 1 && Cura.MachineManager.hasMaterials }
-                ProfileMenu { title: catalog.i18nc("@title:menu", "&Profile"); visible: machineExtruderCount.properties.value <= 1 }
+                BuildplateMenu { title: catalog.i18nc("@title:menu", "&Build plate"); visible: Cura.MachineManager.hasVariantBuildplates }
+                ProfileMenu { title: catalog.i18nc("@title:menu", "&Profile"); }
 
                 MenuSeparator { }
 
@@ -253,7 +255,6 @@ UM.MainWindow
                 title: catalog.i18nc("@title:menu menubar:toplevel", "P&lugins")
 
                 MenuItem { action: Cura.Actions.browsePlugins }
-                MenuItem { action: Cura.Actions.configurePlugins }
             }
 
             Menu
@@ -375,12 +376,47 @@ UM.MainWindow
                 }
             }
 
+            ObjectsList
+            {
+                id: objectsList;
+                visible: UM.Preferences.getValue("cura/use_multi_build_plate");
+                anchors
+                {
+                    bottom: parent.bottom;
+                    left: parent.left;
+                }
+
+            }
+
             Topbar
             {
                 id: topbar
                 anchors.left: parent.left
                 anchors.right: parent.right
                 anchors.top: parent.top
+            }
+
+            Loader
+            {
+                id: main
+
+                anchors
+                {
+                    top: topbar.bottom
+                    bottom: parent.bottom
+                    left: parent.left
+                    right: sidebar.left
+                }
+
+                MouseArea
+                {
+                    visible: UM.Controller.activeStage.mainComponent != ""
+                    anchors.fill: parent
+                    acceptedButtons: Qt.AllButtons
+                    onWheel: wheel.accepted = true
+                }
+
+                source: UM.Controller.activeStage.mainComponent
             }
 
             Loader
@@ -401,7 +437,7 @@ UM.MainWindow
                         collapseSidebarAnimation.start();
                     }
                     collapsed = !collapsed;
-                    UM.Preferences.setValue("cura/sidebar_collapse", collapsed);
+                    UM.Preferences.setValue("cura/sidebar_collapsed", collapsed);
                 }
 
                 anchors
@@ -432,37 +468,23 @@ UM.MainWindow
 
                 Component.onCompleted:
                 {
-                    var sidebarCollapsed = UM.Preferences.getValue("cura/sidebar_collapse");
+                    var sidebar_collapsed = UM.Preferences.getValue("cura/sidebar_collapsed");
 
-                    if (sidebarCollapsed) {
+                    if (sidebar_collapsed)
+                    {
                         sidebar.collapsed = true;
                         viewportRect = Qt.rect(0, 0, 1, 1.0)
                         collapseSidebarAnimation.start();
                     }
                 }
-            }
-
-            Loader
-            {
-                id: main
-
-                anchors
-                {
-                    top: topbar.bottom
-                    bottom: parent.bottom
-                    left: parent.left
-                    right: sidebar.left
-                }
 
                 MouseArea
                 {
-                    visible: UM.Controller.activeStage.mainComponent != ""
+                    visible: UM.Controller.activeStage.sidebarComponent != ""
                     anchors.fill: parent
                     acceptedButtons: Qt.AllButtons
                     onWheel: wheel.accepted = true
                 }
-
-                source: UM.Controller.activeStage.mainComponent
             }
 
             UM.MessageStack
@@ -470,7 +492,7 @@ UM.MainWindow
                 anchors
                 {
                     horizontalCenter: parent.horizontalCenter
-                    horizontalCenterOffset: -(UM.Theme.getSize("sidebar").width/ 2)
+                    horizontalCenterOffset: -(Math.round(UM.Theme.getSize("sidebar").width / 2))
                     top: parent.verticalCenter;
                     bottom: parent.bottom;
                 }
@@ -504,6 +526,9 @@ UM.MainWindow
 
             insertPage(4, catalog.i18nc("@title:tab", "Profiles"), Qt.resolvedUrl("Preferences/ProfilesPage.qml"));
 
+            // Remove plug-ins page because we will use the shiny new plugin browser:
+            removePage(5);
+
             //Force refresh
             setPage(0);
         }
@@ -526,6 +551,12 @@ UM.MainWindow
     {
         target: Cura.Actions.preferences
         onTriggered: preferences.visible = true
+    }
+
+    Connections
+    {
+        target: CuraApplication
+        onShowPreferencesWindow: preferences.visible = true
     }
 
     MessageDialog
@@ -606,17 +637,6 @@ UM.MainWindow
             preferences.visible = true;
             preferences.setPage(1);
             preferences.getCurrentItem().scrollToSection(source.key);
-        }
-    }
-
-    // show the installed plugins page in the preferences dialog
-    Connections
-    {
-        target: Cura.Actions.configurePlugins
-        onTriggered:
-        {
-            preferences.visible = true
-            preferences.setPage(5)
         }
     }
 

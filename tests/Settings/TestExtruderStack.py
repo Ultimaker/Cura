@@ -15,6 +15,7 @@ from cura.Settings.Exceptions import InvalidContainerError, InvalidOperationErro
 
 from cura.Settings.ExtruderManager import ExtruderManager
 from UM.Settings.ContainerRegistry import ContainerRegistry
+from cura.Settings.GlobalStack import GlobalStack
 
 ##  Fake container registry that always provides all containers you ask of.
 @pytest.yield_fixture()
@@ -252,7 +253,7 @@ def test_deserializeMoveInstanceContainer(extruder_stack):
 
     assert extruder_stack.quality.getId() == "empty"
     assert extruder_stack.material.getId() != "empty"
-
+from UM.Settings.Validator import Validator
 ##  Tests whether a definition container in the wrong spot is moved into the
 #   correct spot by deserialising.
 @pytest.mark.skip #The test currently fails because the definition container doesn't have a category, which is wrong but we don't have time to refactor that right now.
@@ -279,8 +280,8 @@ def test_getPropertyFallThrough(extruder_stack):
     container_indices = cura.Settings.CuraContainerStack._ContainerIndexes #Cache.
     for type_id, type_name in container_indices.IndexTypeMap.items():
         container = unittest.mock.MagicMock()
-        # Return type_id when asking for value and -1 when asking for limit_to_extruder
-        container.getProperty = lambda key, property, context = None, type_id = type_id: type_id if (key == "layer_height" and property == "value") else (None if property != "limit_to_extruder" else "-1") #Returns the container type ID as layer height, in order to identify it.
+        # Return type_id when asking for value and -1 when asking for settable_per_extruder
+        container.getProperty = lambda key, property, context = None, type_id = type_id: type_id if (key == "layer_height" and property == "value") else (None if property != "settable_per_extruder" else "-1") #Returns the container type ID as layer height, in order to identify it.
         container.hasProperty = lambda key, property: key == "layer_height"
         container.getMetaDataEntry = unittest.mock.MagicMock(return_value = type_name)
         mock_layer_heights[type_id] = container
@@ -298,7 +299,9 @@ def test_getPropertyFallThrough(extruder_stack):
     extruder_stack.variant = mock_no_settings[container_indices.Variant]
     with unittest.mock.patch("cura.Settings.CuraContainerStack.DefinitionContainer", unittest.mock.MagicMock): #To guard against the type checking.
         extruder_stack.definition = mock_layer_heights[container_indices.Definition] #There's a layer height in here!
-    extruder_stack.setNextStack(unittest.mock.MagicMock())
+
+    stack = GlobalStack("PyTest GlobalStack")
+    extruder_stack.setNextStack(stack)
 
     assert extruder_stack.getProperty("layer_height", "value") == container_indices.Definition
     extruder_stack.variant = mock_layer_heights[container_indices.Variant]
@@ -321,30 +324,6 @@ def test_insertContainer(extruder_stack):
 def test_removeContainer(extruder_stack):
     with pytest.raises(InvalidOperationError):
         extruder_stack.removeContainer(unittest.mock.MagicMock())
-
-##  Tests setting definitions by specifying an ID of a definition that exists.
-def test_setDefinitionByIdExists(extruder_stack, container_registry):
-    container_registry.return_value = DefinitionContainer(container_id = "some_definition")
-    extruder_stack.setDefinitionById("some_definition")
-    assert extruder_stack.definition.getId() == "some_definition"
-
-##  Tests setting definitions by specifying an ID of a definition that doesn't
-#   exist.
-def test_setDefinitionByIdDoesntExist(extruder_stack):
-    with pytest.raises(InvalidContainerError):
-        extruder_stack.setDefinitionById("some_definition") #Container registry is empty now.
-
-##  Tests setting materials by specifying an ID of a material that exists.
-def test_setMaterialByIdExists(extruder_stack, container_registry):
-    container_registry.return_value = getInstanceContainer(container_type = "material")
-    extruder_stack.setMaterialById("InstanceContainer")
-    assert extruder_stack.material.getId() == "InstanceContainer"
-
-##  Tests setting materials by specifying an ID of a material that doesn't
-#   exist.
-def test_setMaterialByIdDoesntExist(extruder_stack):
-    with pytest.raises(InvalidContainerError):
-        extruder_stack.setMaterialById("some_material") #Container registry is empty now.
 
 ##  Tests setting properties directly on the extruder stack.
 @pytest.mark.parametrize("key,              property,         value", [
@@ -384,38 +363,3 @@ def test_setPropertyOtherContainers(target_container, stack_variable, extruder_s
     extruder_stack.setProperty(key, property, value, target_container = target_container) #The actual test.
 
     getattr(extruder_stack, stack_variable).setProperty.assert_called_once_with(key, property, value) #Make sure that the proper container gets a setProperty call.
-
-##  Tests setting qualities by specifying an ID of a quality that exists.
-def test_setQualityByIdExists(extruder_stack, container_registry):
-    container_registry.return_value = getInstanceContainer(container_type = "quality")
-    extruder_stack.setQualityById("InstanceContainer")
-    assert extruder_stack.quality.getId() == "InstanceContainer"
-
-##  Tests setting qualities by specifying an ID of a quality that doesn't exist.
-def test_setQualityByIdDoesntExist(extruder_stack):
-    with pytest.raises(InvalidContainerError):
-        extruder_stack.setQualityById("some_quality") #Container registry is empty now.
-
-##  Tests setting quality changes by specifying an ID of a quality change that
-#   exists.
-def test_setQualityChangesByIdExists(extruder_stack, container_registry):
-    container_registry.return_value = getInstanceContainer(container_type = "quality_changes")
-    extruder_stack.setQualityChangesById("InstanceContainer")
-    assert extruder_stack.qualityChanges.getId() == "InstanceContainer"
-
-##  Tests setting quality changes by specifying an ID of a quality change that
-#   doesn't exist.
-def test_setQualityChangesByIdDoesntExist(extruder_stack):
-    with pytest.raises(InvalidContainerError):
-        extruder_stack.setQualityChangesById("some_quality_changes") #Container registry is empty now.
-
-##  Tests setting variants by specifying an ID of a variant that exists.
-def test_setVariantByIdExists(extruder_stack, container_registry):
-    container_registry.return_value = getInstanceContainer(container_type = "variant")
-    extruder_stack.setVariantById("InstanceContainer")
-    assert extruder_stack.variant.getId() == "InstanceContainer"
-
-##  Tests setting variants by specifying an ID of a variant that doesn't exist.
-def test_setVariantByIdDoesntExist(extruder_stack):
-    with pytest.raises(InvalidContainerError):
-        extruder_stack.setVariantById("some_variant") #Container registry is empty now.

@@ -121,13 +121,13 @@ QtObject {
                 Item
                 {
                     anchors.centerIn: parent
-                    width: textLabel.width + icon.width + Theme.getSize("default_margin").width / 2
+                    width: Math.round(textLabel.width + icon.width + Theme.getSize("default_margin").width / 2)
                     Label
                     {
                         id: textLabel
                         text: control.text
                         anchors.right: icon.visible ? icon.left : parent.right
-                        anchors.rightMargin: icon.visible ? Theme.getSize("default_margin").width / 2 : 0
+                        anchors.rightMargin: icon.visible ? Math.round(Theme.getSize("default_margin").width / 2) : 0
                         anchors.verticalCenter: parent.verticalCenter;
                         font: control.checked ? UM.Theme.getFont("large") : UM.Theme.getFont("large_nonbold")
                         color:
@@ -202,9 +202,8 @@ QtObject {
                     height: Theme.getSize("topbar_button_icon").height
                     Label
                     {
+                        id: button_label
                         text: control.text;
-                        anchors.right: (icon.visible || overlayIcon.visible) ? icon.left : parent.right
-                        anchors.rightMargin: (icon.visible || overlayIcon.visible) ? Theme.getSize("default_margin").width : 0
                         anchors.verticalCenter: parent.verticalCenter;
                         font: control.checked ? UM.Theme.getFont("large") : UM.Theme.getFont("large_nonbold")
                         color:
@@ -227,6 +226,8 @@ QtObject {
                     {
                         visible: control.iconSource != ""
                         id: icon
+                        anchors.left: button_label.right
+                        anchors.leftMargin: (icon.visible || overlayIcon.visible) ? Theme.getSize("default_margin").width : 0
                         color: UM.Theme.getColor("text_emphasis")
                         opacity: !control.enabled ? 0.2 : 1.0
                         source: control.iconSource
@@ -238,6 +239,8 @@ QtObject {
                     UM.RecolorImage
                     {
                         id: overlayIcon
+                        anchors.left: button_label.right
+                        anchors.leftMargin: (icon.visible || overlayIcon.visible) ? Theme.getSize("default_margin").width : 0
                         visible: control.overlayIconSource != "" && control.iconSource != ""
                         color: control.overlayColor
                         opacity: !control.enabled ? 0.2 : 1.0
@@ -265,7 +268,7 @@ QtObject {
                     anchors.leftMargin: Theme.getSize("button_tooltip_arrow").width * 2
                     anchors.verticalCenter: parent.verticalCenter
 
-                    target: Qt.point(parent.x, y + height/2)
+                    target: Qt.point(parent.x, y + Math.round(height/2))
                     arrowSize: Theme.getSize("button_tooltip_arrow").width
                     color: Theme.getColor("button_tooltip")
                     opacity: control.hovered ? 1.0 : 0.0;
@@ -326,9 +329,9 @@ QtObject {
                     UM.RecolorImage {
                         id: tool_button_arrow
                         anchors.right: parent.right;
-                        anchors.rightMargin: (Theme.getSize("button").width - Theme.getSize("button_icon").width) / 4
+                        anchors.rightMargin: Theme.getSize("button").width - Math.round(Theme.getSize("button_icon").width / 4)
                         anchors.bottom: parent.bottom;
-                        anchors.bottomMargin: (Theme.getSize("button").height - Theme.getSize("button_icon").height) / 4
+                        anchors.bottomMargin: Theme.getSize("button").height - Math.round(Theme.getSize("button_icon").height / 4)
                         width: Theme.getSize("standard_arrow").width
                         height: Theme.getSize("standard_arrow").height
                         sourceSize.width: width
@@ -666,7 +669,7 @@ QtObject {
                     id: category_arrow
                     anchors.verticalCenter: parent.verticalCenter
                     anchors.right: parent.right
-                    anchors.rightMargin: Theme.getSize("default_margin").width * 3 - width / 2
+                    anchors.rightMargin: Theme.getSize("default_margin").width * 3 - Math.round(width / 2)
                     width: Theme.getSize("standard_arrow").width
                     height: Theme.getSize("standard_arrow").height
                     sourceSize.width: width
@@ -709,14 +712,14 @@ QtObject {
 
             scrollBarBackground: Rectangle {
                 implicitWidth: Theme.getSize("scrollbar").width
-                radius: implicitWidth / 2
+                radius: Math.round(implicitWidth / 2)
                 color: Theme.getColor("scrollbar_background");
             }
 
             handle: Rectangle {
                 id: scrollViewHandle
                 implicitWidth: Theme.getSize("scrollbar").width;
-                radius: implicitWidth / 2
+                radius: Math.round(implicitWidth / 2)
 
                 color: styleData.pressed ? Theme.getColor("scrollbar_handle_down") : styleData.hovered ? Theme.getColor("scrollbar_handle_hover") : Theme.getColor("scrollbar_handle");
                 Behavior on color { ColorAnimation { duration: 50; } }
@@ -803,12 +806,12 @@ QtObject {
 
                 Rectangle {
                     id: swatch
-                    height: UM.Theme.getSize("setting_control").height / 2
+                    height: Math.round(UM.Theme.getSize("setting_control").height / 2)
                     width: height
                     anchors.right: downArrow.left
                     anchors.verticalCenter: parent.verticalCenter
-                    anchors.margins: UM.Theme.getSize("default_margin").width / 4
-                    radius: width / 2
+                    anchors.margins: Math.round(UM.Theme.getSize("default_margin").width / 4)
+                    radius: Math.round(width / 2)
                     border.width: UM.Theme.getSize("default_lining").width
                     border.color: UM.Theme.getColor("lining")
                     color: (control.color_override !== "") ? control.color_override : control.color
@@ -842,7 +845,7 @@ QtObject {
                 color: (control.hovered || control._hovered) ? Theme.getColor("checkbox_hover") : Theme.getColor("checkbox");
                 Behavior on color { ColorAnimation { duration: 50; } }
 
-                radius: control.exclusiveGroup ? Theme.getSize("checkbox").width / 2 : 0
+                radius: control.exclusiveGroup ? Math.round(Theme.getSize("checkbox").width / 2) : 0
 
                 border.width: Theme.getSize("default_lining").width;
                 border.color: (control.hovered || control._hovered) ? Theme.getColor("checkbox_border_hover") : Theme.getColor("checkbox_border");
@@ -850,8 +853,8 @@ QtObject {
                 UM.RecolorImage {
                     anchors.verticalCenter: parent.verticalCenter
                     anchors.horizontalCenter: parent.horizontalCenter
-                    width: parent.width / 2.5
-                    height: parent.height / 2.5
+                    width: Math.round(parent.width / 2.5)
+                    height: Math.round(parent.height / 2.5)
                     sourceSize.width: width
                     sourceSize.height: width
                     color: Theme.getColor("checkbox_mark")
@@ -861,9 +864,10 @@ QtObject {
                 }
             }
             label: Label {
-                text: control.text;
-                color: Theme.getColor("checkbox_text");
-                font: Theme.getFont("default");
+                text: control.text
+                color: Theme.getColor("checkbox_text")
+                font: Theme.getFont("default")
+                elide: Text.ElideRight
             }
         }
     }
@@ -878,7 +882,7 @@ QtObject {
                 color: (control.hovered || control._hovered) ? Theme.getColor("checkbox_hover") : Theme.getColor("checkbox");
                 Behavior on color { ColorAnimation { duration: 50; } }
 
-                radius: control.exclusiveGroup ? Theme.getSize("checkbox").width / 2 : 0
+                radius: control.exclusiveGroup ? Math.round(Theme.getSize("checkbox").width / 2) : 0
 
                 border.width: Theme.getSize("default_lining").width;
                 border.color: (control.hovered || control._hovered) ? Theme.getColor("checkbox_border_hover") : Theme.getColor("checkbox_border");
@@ -886,8 +890,8 @@ QtObject {
                 UM.RecolorImage {
                     anchors.verticalCenter: parent.verticalCenter
                     anchors.horizontalCenter: parent.horizontalCenter
-                    width: parent.width / 2.5
-                    height: parent.height / 2.5
+                    width: Math.round(parent.width / 2.5)
+                    height: Math.round(parent.height / 2.5)
                     sourceSize.width: width
                     sourceSize.height: width
                     color: Theme.getColor("checkbox_mark")
@@ -921,7 +925,7 @@ QtObject {
                 border.width: Theme.getSize("default_lining").width;
                 border.color: Theme.getColor("slider_groove_border");
 
-                radius: width / 2;
+                radius: Math.round(width / 2);
 
                 Rectangle {
                     anchors {
@@ -930,8 +934,8 @@ QtObject {
                         bottom: parent.bottom;
                     }
                     color: Theme.getColor("slider_groove_fill");
-                    width: (control.value / (control.maximumValue - control.minimumValue)) * parent.width;
-                    radius: width / 2;
+                    width: Math.round((control.value / (control.maximumValue - control.minimumValue)) * parent.width);
+                    radius: Math.round(width / 2);
                 }
             }
             handle: Rectangle {
@@ -940,7 +944,7 @@ QtObject {
                 color: control.hovered ? Theme.getColor("slider_handle_hover") : Theme.getColor("slider_handle");
                 border.width: Theme.getSize("default_lining").width
                 border.color: control.hovered ? Theme.getColor("slider_handle_hover_border") : Theme.getColor("slider_handle_border")
-                radius: Theme.getSize("slider_handle").width / 2; //Round.
+                radius: Math.round(Theme.getSize("slider_handle").width / 2); //Round.
                 Behavior on color { ColorAnimation { duration: 50; } }
             }
         }

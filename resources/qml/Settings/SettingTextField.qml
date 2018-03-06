@@ -1,8 +1,8 @@
 // Copyright (c) 2017 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
-import QtQuick 2.2
-import QtQuick.Controls 1.2
+import QtQuick 2.7
+import QtQuick.Controls 2.0
 
 import UM 1.1 as UM
 
@@ -17,6 +17,7 @@ SettingItem
     {
         textHasChanged = false;
         textBeforeEdit = focusItem.text;
+        focusItem.selectAll();
     }
 
     contents: Rectangle
@@ -25,7 +26,7 @@ SettingItem
 
         anchors.fill: parent
 
-        border.width: UM.Theme.getSize("default_lining").width
+        border.width: Math.round(UM.Theme.getSize("default_lining").width)
         border.color:
         {
             if(!enabled)
@@ -75,18 +76,19 @@ SettingItem
         Rectangle
         {
             anchors.fill: parent;
-            anchors.margins: UM.Theme.getSize("default_lining").width;
+            anchors.margins: Math.round(UM.Theme.getSize("default_lining").width);
             color: UM.Theme.getColor("setting_control_highlight")
             opacity: !control.hovered ? 0 : propertyProvider.properties.validationState == "ValidatorState.Valid" ? 1.0 : 0.35;
         }
 
         Label
         {
-            anchors.right: parent.right;
-            anchors.rightMargin: UM.Theme.getSize("setting_unit_margin").width
-            anchors.verticalCenter: parent.verticalCenter;
+            anchors.right: parent.right
+            anchors.rightMargin: Math.round(UM.Theme.getSize("setting_unit_margin").width)
+            anchors.verticalCenter: parent.verticalCenter
 
-            text: definition.unit;
+            text: definition.unit
+            renderType: Text.NativeRendering
             color: UM.Theme.getColor("setting_unit")
             font: UM.Theme.getFont("default")
         }
@@ -106,9 +108,9 @@ SettingItem
             anchors
             {
                 left: parent.left
-                leftMargin: UM.Theme.getSize("setting_unit_margin").width
+                leftMargin: Math.round(UM.Theme.getSize("setting_unit_margin").width)
                 right: parent.right
-                rightMargin: UM.Theme.getSize("setting_unit_margin").width
+                rightMargin: Math.round(UM.Theme.getSize("setting_unit_margin").width)
                 verticalCenter: parent.verticalCenter
             }
             renderType: Text.NativeRendering
@@ -128,14 +130,6 @@ SettingItem
                 {
                     textHasChanged = true;
                 }
-                if (textHasChanged)
-                {
-                    propertyProvider.setPropertyValue("value", text)
-                }
-            }
-
-            onEditingFinished:
-            {
                 if (textHasChanged)
                 {
                     propertyProvider.setPropertyValue("value", text)

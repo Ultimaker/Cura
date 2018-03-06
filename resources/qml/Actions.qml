@@ -17,7 +17,12 @@ Item
     property alias undo: undoAction;
     property alias redo: redoAction;
 
-    property alias homeCamera: homeCameraAction;
+    property alias view3DCamera: view3DCameraAction;
+    property alias viewFrontCamera: viewFrontCameraAction;
+    property alias viewTopCamera: viewTopCameraAction;
+    property alias viewLeftSideCamera: viewLeftSideCameraAction;
+    property alias viewRightSideCamera: viewRightSideCameraAction;
+
     property alias expandSidebar: expandSidebarAction;
 
     property alias deleteSelection: deleteSelectionAction;
@@ -36,6 +41,7 @@ Item
     property alias selectAll: selectAllAction;
     property alias deleteAll: deleteAllAction;
     property alias reloadAll: reloadAllAction;
+    property alias arrangeAllBuildPlates: arrangeAllBuildPlatesAction;
     property alias arrangeAll: arrangeAllAction;
     property alias arrangeSelection: arrangeSelectionAction;
     property alias resetAllTranslation: resetAllTranslationAction;
@@ -63,7 +69,6 @@ Item
     property alias configureSettingVisibility: configureSettingVisibilityAction
 
     property alias browsePlugins: browsePluginsAction
-    property alias configurePlugins: configurePluginsAction
 
     UM.I18nCatalog{id: catalog; name:"cura"}
 
@@ -104,9 +109,37 @@ Item
 
     Action
     {
-        id: homeCameraAction;
-        text: catalog.i18nc("@action:inmenu menubar:view","&Reset camera position");
-        onTriggered: CuraActions.homeCamera();
+        id: view3DCameraAction;
+        text: catalog.i18nc("@action:inmenu menubar:view","&3D View");
+        onTriggered: UM.Controller.rotateView("3d", 0);
+    }
+
+    Action
+    {
+        id: viewFrontCameraAction;
+        text: catalog.i18nc("@action:inmenu menubar:view","&Front View");
+        onTriggered: UM.Controller.rotateView("home", 0);
+    }
+
+    Action
+    {
+        id: viewTopCameraAction;
+        text: catalog.i18nc("@action:inmenu menubar:view","&Top View");
+        onTriggered: UM.Controller.rotateView("y", 90);
+    }
+
+    Action
+    {
+        id: viewLeftSideCameraAction;
+        text: catalog.i18nc("@action:inmenu menubar:view","&Left Side View");
+        onTriggered: UM.Controller.rotateView("x", 90);
+    }
+
+    Action
+    {
+        id: viewRightSideCameraAction;
+        text: catalog.i18nc("@action:inmenu menubar:view","&Right Side View");
+        onTriggered: UM.Controller.rotateView("x", -90);
     }
 
     Action
@@ -139,7 +172,7 @@ Item
     Action
     {
         id: updateProfileAction;
-        enabled: !Cura.MachineManager.stacksHaveErrors && Cura.MachineManager.hasUserSettings && !Cura.MachineManager.isReadOnly(Cura.MachineManager.activeQualityId)
+        enabled: !Cura.MachineManager.stacksHaveErrors && Cura.MachineManager.hasUserSettings && Cura.MachineManager.activeQualityChangesGroup != null
         text: catalog.i18nc("@action:inmenu menubar:profile","&Update profile with current settings/overrides");
         onTriggered: Cura.ContainerManager.updateQualityChanges();
     }
@@ -201,6 +234,16 @@ Item
         iconName: "edit-delete";
         shortcut: StandardKey.Delete;
         onTriggered: CuraActions.deleteSelection();
+    }
+
+    Action //Also add backspace as the same function as delete because on Macintosh keyboards the button called "delete" is actually a backspace, and the user expects it to function as a delete.
+    {
+        id: backspaceSelectionAction
+        text: catalog.i18ncp("@action:inmenu menubar:edit", "Delete &Selected Model", "Delete &Selected Models", UM.Selection.selectionCount)
+        enabled: UM.Controller.toolsEnabled && UM.Selection.hasSelection
+        iconName: "edit-delete"
+        shortcut: StandardKey.Backspace
+        onTriggered: CuraActions.deleteSelection()
     }
 
     Action
@@ -313,6 +356,13 @@ Item
 
     Action
     {
+        id: arrangeAllBuildPlatesAction;
+        text: catalog.i18nc("@action:inmenu menubar:edit","Arrange All Models To All Build Plates");
+        onTriggered: Printer.arrangeObjectsToAllBuildPlates();
+    }
+
+    Action
+    {
         id: arrangeAllAction;
         text: catalog.i18nc("@action:inmenu menubar:edit","Arrange All Models");
         onTriggered: Printer.arrangeAll();
@@ -382,13 +432,6 @@ Item
         id: browsePluginsAction
         text: catalog.i18nc("@action:menu", "Browse plugins...")
         iconName: "plugins_browse"
-    }
-
-    Action
-    {
-        id: configurePluginsAction
-        text: catalog.i18nc("@action:menu", "Installed plugins...");
-        iconName: "plugins_configure"
     }
 
     Action

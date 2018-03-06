@@ -1,24 +1,22 @@
-# Copyright (c) 2017 Ultimaker B.V.
+# Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from PyQt5.QtCore import QObject, pyqtSignal, pyqtProperty
-from UM.FlameProfiler import pyqtSlot
+from typing import Dict
+import math
+import os.path
+import unicodedata
+import json
+import re  # To create abbreviations for printer names.
+
+from PyQt5.QtCore import QObject, pyqtSignal, pyqtProperty, pyqtSlot
 
 from UM.Application import Application
 from UM.Logger import Logger
 from UM.Qt.Duration import Duration
 from UM.Preferences import Preferences
-from UM.Settings.ContainerRegistry import ContainerRegistry
-
-from cura.Settings.ExtruderManager import ExtruderManager
-
-import math
-import os.path
-import unicodedata
-import json
-import re #To create abbreviations for printer names.
-
+from UM.Scene.SceneNode import SceneNode
 from UM.i18n import i18nCatalog
+
 catalog = i18nCatalog("cura")
 
 ##  A class for processing and calculating minimum, current and maximum print time as well as managing the job name
@@ -54,36 +52,45 @@ class PrintInformation(QObject):
 
         self.initializeCuraMessagePrintTimeProperties()
 
-        self._material_lengths = []
-        self._material_weights = []
-        self._material_costs = []
-        self._material_names = []
+        self._material_lengths = {}  # indexed by build plate number
+        self._material_weights = {}
+        self._material_costs = {}
+        self._material_names = {}
 
         self._pre_sliced = False
 
         self._backend = Application.getInstance().getBackend()
         if self._backend:
             self._backend.printDurationMessage.connect(self._onPrintDurationMessage)
+        Application.getInstance().getController().getScene().sceneChanged.connect(self._onSceneChanged)
 
         self._base_name = ""
         self._abbr_machine = ""
         self._job_name = ""
+        self._project_name = ""
+        self._active_build_plate = 0
+        self._initVariablesWithBuildPlate(self._active_build_plate)
 
-        Application.getInstance().globalContainerStackChanged.connect(self._updateJobName)
-        Application.getInstance().fileLoaded.connect(self.setBaseName)
-        Application.getInstance().workspaceLoaded.connect(self.setProjectName)
+        self._application = Application.getInstance()
+        self._multi_build_plate_model = self._application.getMultiBuildPlateModel()
+
+        self._application.globalContainerStackChanged.connect(self._updateJobName)
+        self._application.globalContainerStackChanged.connect(self.setToZeroPrintInformation)
+        self._application.fileLoaded.connect(self.setBaseName)
+        self._application.workspaceLoaded.connect(self.setProjectName)
+        self._multi_build_plate_model.activeBuildPlateChanged.connect(self._onActiveBuildPlateChanged)
+
         Preferences.getInstance().preferenceChanged.connect(self._onPreferencesChanged)
 
-        self._active_material_container = None
-        Application.getInstance().getMachineManager().activeMaterialChanged.connect(self._onActiveMaterialChanged)
-        self._onActiveMaterialChanged()
+        self._application.getMachineManager().rootMaterialChanged.connect(self._onActiveMaterialsChanged)
+        self._onActiveMaterialsChanged()
 
         self._material_amounts = []
 
     # Crate cura message translations and using translation keys initialize empty time Duration object for total time
     # and time for each feature
     def initializeCuraMessagePrintTimeProperties(self):
-        self._current_print_time = Duration(None, self)
+        self._current_print_time = {}  # Duration(None, self)
 
         self._print_time_message_translations = {
             "inset_0": catalog.i18nc("@tooltip", "Outer Wall"),
@@ -101,10 +108,25 @@ class PrintInformation(QObject):
 
         self._print_time_message_values = {}
 
+    def _initPrintTimeMessageValues(self, build_plate_number):
         # Full fill message values using keys from _print_time_message_translations
+        self._print_time_message_values[build_plate_number] = {}
         for key in self._print_time_message_translations.keys():
-            self._print_time_message_values[key] = Duration(None, self)
+            self._print_time_message_values[build_plate_number][key] = Duration(None, self)
 
+    def _initVariablesWithBuildPlate(self, build_plate_number):
+        if build_plate_number not in self._print_time_message_values:
+            self._initPrintTimeMessageValues(build_plate_number)
+        if self._active_build_plate not in self._material_lengths:
+            self._material_lengths[self._active_build_plate] = []
+        if self._active_build_plate not in self._material_weights:
+            self._material_weights[self._active_build_plate] = []
+        if self._active_build_plate not in self._material_costs:
+            self._material_costs[self._active_build_plate] = []
+        if self._active_build_plate not in self._material_names:
+            self._material_names[self._active_build_plate] = []
+        if self._active_build_plate not in self._current_print_time:
+            self._current_print_time[self._active_build_plate] = Duration(None, self)
 
     currentPrintTimeChanged = pyqtSignal()
 
@@ -120,79 +142,84 @@ class PrintInformation(QObject):
 
     @pyqtProperty(Duration, notify = currentPrintTimeChanged)
     def currentPrintTime(self):
-        return self._current_print_time
+        return self._current_print_time[self._active_build_plate]
 
     materialLengthsChanged = pyqtSignal()
 
     @pyqtProperty("QVariantList", notify = materialLengthsChanged)
     def materialLengths(self):
-        return self._material_lengths
+        return self._material_lengths[self._active_build_plate]
 
     materialWeightsChanged = pyqtSignal()
 
     @pyqtProperty("QVariantList", notify = materialWeightsChanged)
     def materialWeights(self):
-        return self._material_weights
+        return self._material_weights[self._active_build_plate]
 
     materialCostsChanged = pyqtSignal()
 
     @pyqtProperty("QVariantList", notify = materialCostsChanged)
     def materialCosts(self):
-        return self._material_costs
+        return self._material_costs[self._active_build_plate]
 
     materialNamesChanged = pyqtSignal()
 
     @pyqtProperty("QVariantList", notify = materialNamesChanged)
     def materialNames(self):
-        return self._material_names
+        return self._material_names[self._active_build_plate]
 
-    def _onPrintDurationMessage(self, print_time, material_amounts):
+    def printTimes(self):
+        return self._print_time_message_values[self._active_build_plate]
 
-        self._updateTotalPrintTimePerFeature(print_time)
+    def _onPrintDurationMessage(self, build_plate_number, print_time: Dict[str, int], material_amounts: list):
+        self._updateTotalPrintTimePerFeature(build_plate_number, print_time)
         self.currentPrintTimeChanged.emit()
 
         self._material_amounts = material_amounts
-        self._calculateInformation()
+        self._calculateInformation(build_plate_number)
 
-    def _updateTotalPrintTimePerFeature(self, print_time):
+    def _updateTotalPrintTimePerFeature(self, build_plate_number, print_time: Dict[str, int]):
         total_estimated_time = 0
+
+        if build_plate_number not in self._print_time_message_values:
+            self._initPrintTimeMessageValues(build_plate_number)
 
         for feature, time in print_time.items():
             if time != time:  # Check for NaN. Engine can sometimes give us weird values.
-                self._print_time_message_values.get(feature).setDuration(0)
+                self._print_time_message_values[build_plate_number].get(feature).setDuration(0)
                 Logger.log("w", "Received NaN for print duration message")
                 continue
 
             total_estimated_time += time
-            self._print_time_message_values.get(feature).setDuration(time)
+            self._print_time_message_values[build_plate_number].get(feature).setDuration(time)
 
-        self._current_print_time.setDuration(total_estimated_time)
+        if build_plate_number not in self._current_print_time:
+            self._current_print_time[build_plate_number] = Duration(None, self)
+        self._current_print_time[build_plate_number].setDuration(total_estimated_time)
 
-    def _calculateInformation(self):
-        if Application.getInstance().getGlobalContainerStack() is None:
+    def _calculateInformation(self, build_plate_number):
+        global_stack = Application.getInstance().getGlobalContainerStack()
+        if global_stack is None:
             return
 
-        # Material amount is sent as an amount of mm^3, so calculate length from that
-        radius = Application.getInstance().getGlobalContainerStack().getProperty("material_diameter", "value") / 2
-        self._material_lengths = []
-        self._material_weights = []
-        self._material_costs = []
-        self._material_names = []
+        self._material_lengths[build_plate_number] = []
+        self._material_weights[build_plate_number] = []
+        self._material_costs[build_plate_number] = []
+        self._material_names[build_plate_number] = []
 
         material_preference_values = json.loads(Preferences.getInstance().getValue("cura/material_settings"))
 
-        extruder_stacks = list(ExtruderManager.getInstance().getMachineExtruders(Application.getInstance().getGlobalContainerStack().getId()))
-        for index, amount in enumerate(self._material_amounts):
+        extruder_stacks = global_stack.extruders
+        for position, extruder_stack in extruder_stacks.items():
+            index = int(position)
+            if index >= len(self._material_amounts):
+                continue
+            amount = self._material_amounts[index]
             ## Find the right extruder stack. As the list isn't sorted because it's a annoying generator, we do some
             #  list comprehension filtering to solve this for us.
-            material = None
-            if extruder_stacks:  # Multi extrusion machine
-                extruder_stack = [extruder for extruder in extruder_stacks if extruder.getMetaDataEntry("position") == str(index)][0]
-                density = extruder_stack.getMetaDataEntry("properties", {}).get("density", 0)
-                material = extruder_stack.findContainer({"type": "material"})
-            else:  # Machine with no extruder stacks
-                density = Application.getInstance().getGlobalContainerStack().getMetaDataEntry("properties", {}).get("density", 0)
-                material = Application.getInstance().getGlobalContainerStack().findContainer({"type": "material"})
+            density = extruder_stack.getMetaDataEntry("properties", {}).get("density", 0)
+            material = extruder_stack.findContainer({"type": "material"})
+            radius = extruder_stack.getProperty("material_diameter", "value") / 2
 
             weight = float(amount) * float(density) / 1000
             cost = 0
@@ -211,14 +238,15 @@ class PrintInformation(QObject):
                     else:
                         cost = 0
 
+            # Material amount is sent as an amount of mm^3, so calculate length from that
             if radius != 0:
                 length = round((amount / (math.pi * radius ** 2)) / 1000, 2)
             else:
                 length = 0
-            self._material_weights.append(weight)
-            self._material_lengths.append(length)
-            self._material_costs.append(cost)
-            self._material_names.append(material_name)
+            self._material_weights[build_plate_number].append(weight)
+            self._material_lengths[build_plate_number].append(length)
+            self._material_costs[build_plate_number].append(cost)
+            self._material_names[build_plate_number].append(material_name)
 
         self.materialLengthsChanged.emit()
         self.materialWeightsChanged.emit()
@@ -229,24 +257,25 @@ class PrintInformation(QObject):
         if preference != "cura/material_settings":
             return
 
-        self._calculateInformation()
+        for build_plate_number in range(self._multi_build_plate_model.maxBuildPlate + 1):
+            self._calculateInformation(build_plate_number)
 
-    def _onActiveMaterialChanged(self):
-        if self._active_material_container:
-            try:
-                self._active_material_container.metaDataChanged.disconnect(self._onMaterialMetaDataChanged)
-            except TypeError: #pyQtSignal gives a TypeError when disconnecting from something that is already disconnected.
-                pass
+    def _onActiveBuildPlateChanged(self):
+        new_active_build_plate = self._multi_build_plate_model.activeBuildPlate
+        if new_active_build_plate != self._active_build_plate:
+            self._active_build_plate = new_active_build_plate
 
-        active_material_id = Application.getInstance().getMachineManager().activeMaterialId
-        active_material_containers = ContainerRegistry.getInstance().findInstanceContainers(id = active_material_id)
+            self._initVariablesWithBuildPlate(self._active_build_plate)
 
-        if active_material_containers:
-            self._active_material_container = active_material_containers[0]
-            self._active_material_container.metaDataChanged.connect(self._onMaterialMetaDataChanged)
+            self.materialLengthsChanged.emit()
+            self.materialWeightsChanged.emit()
+            self.materialCostsChanged.emit()
+            self.materialNamesChanged.emit()
+            self.currentPrintTimeChanged.emit()
 
-    def _onMaterialMetaDataChanged(self, *args, **kwargs):
-        self._calculateInformation()
+    def _onActiveMaterialsChanged(self, *args, **kwargs):
+        for build_plate_number in range(self._multi_build_plate_model.maxBuildPlate + 1):
+            self._calculateInformation(build_plate_number)
 
     @pyqtSlot(str)
     def setJobName(self, name):
@@ -315,10 +344,10 @@ class PrintInformation(QObject):
         if not global_container_stack:
             self._abbr_machine = ""
             return
+        active_machine_type_name = global_container_stack.definition.getName()
 
-        global_stack_name = global_container_stack.getName()
         abbr_machine = ""
-        for word in re.findall(r"[\w']+", global_stack_name):
+        for word in re.findall(r"[\w']+", active_machine_type_name):
             if word.lower() == "ultimaker":
                 abbr_machine += "UM"
             elif word.isdigit():
@@ -340,7 +369,9 @@ class PrintInformation(QObject):
     @pyqtSlot(result = "QVariantMap")
     def getFeaturePrintTimes(self):
         result = {}
-        for feature, time in self._print_time_message_values.items():
+        if self._active_build_plate not in self._print_time_message_values:
+            self._initPrintTimeMessageValues(self._active_build_plate)
+        for feature, time in self._print_time_message_values[self._active_build_plate].items():
             if feature in self._print_time_message_translations:
                 result[self._print_time_message_translations[feature]] = time
             else:
@@ -348,10 +379,27 @@ class PrintInformation(QObject):
         return result
 
     # Simulate message with zero time duration
-    def setToZeroPrintInformation(self):
-        temp_message = {}
-        for key in self._print_time_message_values.keys():
-            temp_message[key] = 0
+    def setToZeroPrintInformation(self, build_plate = None):
+        if build_plate is None:
+            build_plate = self._active_build_plate
 
+        # Construct the 0-time message
+        temp_message = {}
+        if build_plate not in self._print_time_message_values:
+            self._print_time_message_values[build_plate] = {}
+        for key in self._print_time_message_values[build_plate].keys():
+            temp_message[key] = 0
         temp_material_amounts = [0]
-        self._onPrintDurationMessage(temp_message, temp_material_amounts)
+
+        self._onPrintDurationMessage(build_plate, temp_message, temp_material_amounts)
+
+    ##  Listen to scene changes to check if we need to reset the print information
+    def _onSceneChanged(self, scene_node):
+
+        # Ignore any changes that are not related to sliceable objects
+        if not isinstance(scene_node, SceneNode)\
+                or not scene_node.callDecoration("isSliceable")\
+                or not scene_node.callDecoration("getBuildPlateNumber") == self._active_build_plate:
+            return
+
+        self.setToZeroPrintInformation(self._active_build_plate)

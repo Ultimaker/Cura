@@ -15,6 +15,8 @@ Menu
 
     property bool shouldShowExtruders: machineExtruderCount.properties.value > 1;
 
+    property var multiBuildPlateModel: CuraApplication.getMultiBuildPlateModel()
+
     // Selection-related actions.
     MenuItem { action: Cura.Actions.centerSelection; }
     MenuItem { action: Cura.Actions.deleteSelection; }
@@ -37,6 +39,37 @@ Menu
         }
         onObjectAdded: base.insertItem(index, object)
         onObjectRemoved: base.removeItem(object)
+    }
+
+    MenuSeparator {
+        visible: UM.Preferences.getValue("cura/use_multi_build_plate")
+    }
+
+    Instantiator
+    {
+        model: base.multiBuildPlateModel
+        MenuItem {
+            enabled: UM.Selection.hasSelection
+            text: base.multiBuildPlateModel.getItem(index).name;
+            onTriggered: CuraActions.setBuildPlateForSelection(base.multiBuildPlateModel.getItem(index).buildPlateNumber);
+            checkable: true
+            checked: base.multiBuildPlateModel.selectionBuildPlates.indexOf(base.multiBuildPlateModel.getItem(index).buildPlateNumber) != -1;
+            visible: UM.Preferences.getValue("cura/use_multi_build_plate")
+        }
+        onObjectAdded: base.insertItem(index, object);
+        onObjectRemoved: base.removeItem(object);
+    }
+
+    MenuItem {
+        enabled: UM.Selection.hasSelection
+        text: "New build plate";
+        onTriggered: {
+            CuraActions.setBuildPlateForSelection(base.multiBuildPlateModel.maxBuildPlate + 1);
+            checked = false;
+        }
+        checkable: true
+        checked: false
+        visible: UM.Preferences.getValue("cura/use_multi_build_plate")
     }
 
     // Global actions
