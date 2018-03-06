@@ -26,6 +26,9 @@ Thank you for using Cura!
 **Display Driver**
 <!--  Video driver name and version -->
 
+**Printer**
+<!-- Which printer was selected in Cura. Please attach project file as .curaproject.3mf.zip -->
+
 **Steps to Reproduce**
 <!-- Add the steps needed that lead up to the issue (replace this text) -->
 
