@@ -57,6 +57,7 @@ Column
                     id: configurationList
                     anchors.top: printerTypeHeader.bottom
                     anchors.topMargin: UM.Theme.getSize("default_margin").height
+                    spacing: Math.round(UM.Theme.getSize("default_margin").height / 2)
                     width: container.width
                     height: childrenRect.height
                     model: outputDevice.uniqueConfigurations
