@@ -194,6 +194,7 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
             # the "reply" should be disconnected
             if self._latest_reply_handler:
                 self._latest_reply_handler.disconnect()
+                self._latest_reply_handler = None
 
 
     @pyqtSlot()
