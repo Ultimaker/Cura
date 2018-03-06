@@ -68,7 +68,7 @@ class ThreeMFWriter(MeshWriter):
         if not isinstance(um_node, SceneNode):
             return None
 
-        active_build_plate_nr = CuraApplication.getInstance().getBuildPlateModel().activeBuildPlate
+        active_build_plate_nr = CuraApplication.getInstance().getMultiBuildPlateModel().activeBuildPlate
         if um_node.callDecoration("getBuildPlateNumber") != active_build_plate_nr:
             return
 

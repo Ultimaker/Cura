@@ -1,4 +1,4 @@
-// Copyright (c) 2017 Ultimaker B.V.
+// Copyright (c) 2018 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.7
@@ -7,7 +7,7 @@ import QtQuick.Controls.Styles 1.4
 import QtQuick.Layouts 1.3
 
 import UM 1.2 as UM
-import Cura 1.2 as Cura
+import Cura 1.0 as Cura
 
 Item
 {
@@ -57,7 +57,10 @@ Item
                     interval: 50
                     running: false
                     repeat: false
-                    onTriggered: Cura.MachineManager.setActiveQuality(Cura.ProfilesModel.getItem(qualitySlider.value).id)
+                    onTriggered: {
+                        var item = Cura.QualityProfilesDropDownMenuModel.getItem(qualitySlider.value);
+                        Cura.MachineManager.activeQualityGroup = item.quality_group;
+                    }
                 }
 
                 Component.onCompleted: qualityModel.update()
@@ -102,14 +105,14 @@ Item
                         var availableMin = -1
                         var availableMax = -1
 
-                        for (var i = 0; i < Cura.ProfilesModel.rowCount(); i++) {
-                            var qualityItem = Cura.ProfilesModel.getItem(i)
+                        for (var i = 0; i < Cura.QualityProfilesDropDownMenuModel.rowCount(); i++) {
+                            var qualityItem = Cura.QualityProfilesDropDownMenuModel.getItem(i)
 
                             // Add each quality item to the UI quality model
                             qualityModel.append(qualityItem)
 
                             // Set selected value
-                            if (Cura.MachineManager.activeQualityType == qualityItem.metadata.quality_type) {
+                            if (Cura.MachineManager.activeQualityType == qualityItem.quality_type) {
 
                                 // set to -1 when switching to user created profile so all ticks are clickable
                                 if (Cura.SimpleModeSettingsManager.isProfileUserCreated) {
@@ -134,7 +137,7 @@ Item
 
                         // Set total available ticks for active slider part
                         if (availableMin != -1) {
-                            qualityModel.availableTotalTicks = availableMax - availableMin
+                            qualityModel.availableTotalTicks = availableMax - availableMin + 1
                         }
 
                         // Calculate slider values
@@ -161,11 +164,11 @@ Item
 
                     function reset () {
                         qualityModel.clear()
-                        qualityModel.availableTotalTicks = -1
+                        qualityModel.availableTotalTicks = 0
                         qualityModel.existingQualityProfile = 0
 
                         // check, the ticks count cannot be less than zero
-                        qualityModel.totalTicks = Math.max(0, Cura.ProfilesModel.rowCount() - 1)
+                        qualityModel.totalTicks = Math.max(0, Cura.QualityProfilesDropDownMenuModel.rowCount() - 1)
                     }
                 }
 
@@ -191,13 +194,13 @@ Item
                             anchors.verticalCenter: parent.verticalCenter
                             anchors.top: parent.top
                             anchors.topMargin: Math.round(UM.Theme.getSize("sidebar_margin").height / 2)
-                            color: (Cura.MachineManager.activeMachine != null && Cura.ProfilesModel.getItem(index).available) ? UM.Theme.getColor("quality_slider_available") : UM.Theme.getColor("quality_slider_unavailable")
+                            color: (Cura.MachineManager.activeMachine != null && Cura.QualityProfilesDropDownMenuModel.getItem(index).available) ? UM.Theme.getColor("quality_slider_available") : UM.Theme.getColor("quality_slider_unavailable")
                             text:
                             {
                                 var result = ""
                                 if(Cura.MachineManager.activeMachine != null)
                                 {
-                                    result = Cura.ProfilesModel.getItem(index).layer_height_without_unit
+                                    result = Cura.QualityProfilesDropDownMenuModel.getItem(index).layer_height
 
                                     if(result == undefined)
                                     {
@@ -262,7 +265,7 @@ Item
                         Rectangle
                         {
                             anchors.verticalCenter: parent.verticalCenter
-                            color: Cura.ProfilesModel.getItem(index).available ? UM.Theme.getColor("quality_slider_available") : UM.Theme.getColor("quality_slider_unavailable")
+                            color: Cura.QualityProfilesDropDownMenuModel.getItem(index).available ? UM.Theme.getColor("quality_slider_available") : UM.Theme.getColor("quality_slider_unavailable")
                             width: 1 * screenScaleFactor
                             height: 6 * screenScaleFactor
                             y: 0
@@ -270,32 +273,24 @@ Item
                         }
                     }
 
-                    Rectangle {
-                        id: disabledHandleButton
-                        visible: !qualitySlider.visible
-                        anchors.centerIn: parent
-                        color: UM.Theme.getColor("quality_slider_unavailable")
-                        implicitWidth: 10 * screenScaleFactor
-                        implicitHeight: implicitWidth
-                        radius: Math.round(width / 2)
-                    }
-
                     Slider
                     {
                         id: qualitySlider
                         height: UM.Theme.getSize("sidebar_margin").height
                         anchors.bottom: speedSlider.bottom
-                        enabled: qualityModel.availableTotalTicks > 0 && !Cura.SimpleModeSettingsManager.isProfileCustomized
-                        visible: qualityModel.totalTicks > 0
+                        enabled: qualityModel.totalTicks > 0 && !Cura.SimpleModeSettingsManager.isProfileCustomized
+                        visible: qualityModel.availableTotalTicks > 0
                         updateValueWhileDragging : false
 
                         minimumValue: qualityModel.qualitySliderAvailableMin >= 0 ? qualityModel.qualitySliderAvailableMin : 0
-                        maximumValue: qualityModel.qualitySliderAvailableMax >= 0 ? qualityModel.qualitySliderAvailableMax : 0
+                        // maximumValue must be greater than minimumValue to be able to see the handle. While the value is strictly
+                        // speaking not always correct, it seems to have the correct behavior (switching from 0 available to 1 available)
+                        maximumValue: qualityModel.qualitySliderAvailableMax >= 1 ? qualityModel.qualitySliderAvailableMax : 1
                         stepSize: 1
 
                         value: qualityModel.qualitySliderActiveIndex
 
-                        width: qualityModel.qualitySliderStepWidth * qualityModel.availableTotalTicks
+                        width: qualityModel.qualitySliderStepWidth * (qualityModel.availableTotalTicks - 1)
 
                         anchors.right: parent.right
                         anchors.rightMargin: qualityModel.qualitySliderMarginRight
@@ -373,7 +368,7 @@ Item
 
                     text: catalog.i18nc("@label", "Slower")
                     font: UM.Theme.getFont("default")
-                    color: (qualityModel.availableTotalTicks > 0) ? UM.Theme.getColor("quality_slider_available") : UM.Theme.getColor("quality_slider_unavailable")
+                    color: (qualityModel.availableTotalTicks > 1) ? UM.Theme.getColor("quality_slider_available") : UM.Theme.getColor("quality_slider_unavailable")
                     horizontalAlignment: Text.AlignLeft
                 }
 
@@ -384,7 +379,7 @@ Item
 
                     text: catalog.i18nc("@label", "Faster")
                     font: UM.Theme.getFont("default")
-                    color: (qualityModel.availableTotalTicks > 0) ? UM.Theme.getColor("quality_slider_available") : UM.Theme.getColor("quality_slider_unavailable")
+                    color: (qualityModel.availableTotalTicks > 1) ? UM.Theme.getColor("quality_slider_available") : UM.Theme.getColor("quality_slider_unavailable")
                     horizontalAlignment: Text.AlignRight
                 }
 
@@ -408,9 +403,10 @@ Item
                         // if the current profile is user-created, switch to a built-in quality
                         if (Cura.SimpleModeSettingsManager.isProfileUserCreated)
                         {
-                            if (Cura.ProfilesModel.rowCount() > 0)
+                            if (Cura.QualityProfilesDropDownMenuModel.rowCount() > 0)
                             {
-                                Cura.MachineManager.setActiveQuality(Cura.ProfilesModel.getItem(0).id)
+                                var item = Cura.QualityProfilesDropDownMenuModel.getItem(0);
+                                Cura.MachineManager.activeQualityGroup = item.quality_group;
                             }
                         }
                         if (Cura.SimpleModeSettingsManager.isProfileCustomized)
@@ -522,8 +518,7 @@ Item
                         // Update the slider value to represent the rounded value
                         infillSlider.value = roundedSliderValue
 
-                        // Explicitly cast to string to make sure the value passed to Python is an integer.
-                        infillDensity.setPropertyValue("value", String(roundedSliderValue))
+                        Cura.MachineManager.setSettingForAllExtruders("infill_sparse_density", "value", roundedSliderValue)
                     }
 
                     style: SliderStyle
@@ -653,14 +648,20 @@ Item
 
                         onClicked: {
                             // Set to 90% only when enabling gradual infill
+                            var newInfillDensity;
                             if (parseInt(infillSteps.properties.value) == 0) {
                                 previousInfillDensity = parseInt(infillDensity.properties.value)
-                                infillDensity.setPropertyValue("value", String(90))
+                                newInfillDensity = 90;
                             } else {
-                                infillDensity.setPropertyValue("value", String(previousInfillDensity))
+                                newInfillDensity = previousInfillDensity;
                             }
+                            Cura.MachineManager.setSettingForAllExtruders("infill_sparse_density", "value", String(newInfillDensity))
 
-                            infillSteps.setPropertyValue("value", (parseInt(infillSteps.properties.value) == 0) ? 5 : 0)
+                            var infill_steps_value = 0;
+                            if (parseInt(infillSteps.properties.value) == 0)
+                                infill_steps_value = 5;
+
+                            Cura.MachineManager.setSettingForAllExtruders("gradual_infill_steps", "value", infill_steps_value)
                         }
 
                         onEntered: {

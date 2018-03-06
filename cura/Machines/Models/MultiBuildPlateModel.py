@@ -1,24 +1,32 @@
-from PyQt5.QtCore import pyqtSignal, pyqtProperty, pyqtSlot
+# Copyright (c) 2018 Ultimaker B.V.
+# Cura is released under the terms of the LGPLv3 or higher.
 
-from UM.Qt.ListModel import ListModel
-from UM.Scene.Selection import Selection
-from UM.Logger import Logger
+from PyQt5.QtCore import pyqtSignal, pyqtProperty
+
 from UM.Application import Application
+from UM.Scene.Selection import Selection
+from UM.Qt.ListModel import ListModel
 
 
-class BuildPlateModel(ListModel):
+#
+# This is the model for multi build plate feature.
+# This has nothing to do with the build plate types you can choose on the sidebar for a machine.
+#
+class MultiBuildPlateModel(ListModel):
+
     maxBuildPlateChanged = pyqtSignal()
     activeBuildPlateChanged = pyqtSignal()
     selectionChanged = pyqtSignal()
 
-    def __init__(self):
-        super().__init__()
-        Application.getInstance().getController().getScene().sceneChanged.connect(self._updateSelectedObjectBuildPlateNumbers)
+    def __init__(self, parent = None):
+        super().__init__(parent)
+
+        self._application = Application.getInstance()
+        self._application.getController().getScene().sceneChanged.connect(self._updateSelectedObjectBuildPlateNumbers)
         Selection.selectionChanged.connect(self._updateSelectedObjectBuildPlateNumbers)
 
         self._max_build_plate = 1  # default
         self._active_build_plate = -1
-        self._selection_build_plates = []
 
     def setMaxBuildPlate(self, max_build_plate):
         self._max_build_plate = max_build_plate
@@ -36,10 +44,6 @@ class BuildPlateModel(ListModel):
     @pyqtProperty(int, notify = activeBuildPlateChanged)
     def activeBuildPlate(self):
         return self._active_build_plate
-
-    @staticmethod
-    def createBuildPlateModel():
-        return BuildPlateModel()
 
     def _updateSelectedObjectBuildPlateNumbers(self, *args):
         result = set()

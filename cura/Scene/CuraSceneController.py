@@ -4,7 +4,7 @@ from PyQt5.QtCore import Qt, pyqtSlot, QObject
 from PyQt5.QtWidgets import QApplication
 
 from cura.ObjectsModel import ObjectsModel
-from cura.BuildPlateModel import BuildPlateModel
+from cura.Machines.Models.MultiBuildPlateModel import MultiBuildPlateModel
 
 from UM.Application import Application
 from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
@@ -16,11 +16,11 @@ from UM.Signal import Signal
 class CuraSceneController(QObject):
     activeBuildPlateChanged = Signal()
 
-    def __init__(self, objects_model: ObjectsModel, build_plate_model: BuildPlateModel):
+    def __init__(self, objects_model: ObjectsModel, multi_build_plate_model: MultiBuildPlateModel):
         super().__init__()
 
         self._objects_model = objects_model
-        self._build_plate_model = build_plate_model
+        self._multi_build_plate_model = multi_build_plate_model
         self._active_build_plate = -1
 
         self._last_selected_index = 0
@@ -41,9 +41,9 @@ class CuraSceneController(QObject):
             self._max_build_plate = max_build_plate
             changed = True
         if changed:
-            self._build_plate_model.setMaxBuildPlate(self._max_build_plate)
+            self._multi_build_plate_model.setMaxBuildPlate(self._max_build_plate)
             build_plates = [{"name": "Build Plate %d" % (i + 1), "buildPlateNumber": i} for i in range(self._max_build_plate + 1)]
-            self._build_plate_model.setItems(build_plates)
+            self._multi_build_plate_model.setItems(build_plates)
             if self._active_build_plate > self._max_build_plate:
                 build_plate_number = 0
                 if self._last_selected_index >= 0:  # go to the buildplate of the item you last selected
@@ -104,12 +104,12 @@ class CuraSceneController(QObject):
         self._active_build_plate = nr
         Selection.clear()
 
-        self._build_plate_model.setActiveBuildPlate(nr)
+        self._multi_build_plate_model.setActiveBuildPlate(nr)
         self._objects_model.setActiveBuildPlate(nr)
         self.activeBuildPlateChanged.emit()
 
     @staticmethod
     def createCuraSceneController():
         objects_model = Application.getInstance().getObjectsModel()
-        build_plate_model = Application.getInstance().getBuildPlateModel()
-        return CuraSceneController(objects_model = objects_model, build_plate_model = build_plate_model)
+        multi_build_plate_model = Application.getInstance().getMultiBuildPlateModel()
+        return CuraSceneController(objects_model = objects_model, multi_build_plate_model = multi_build_plate_model)

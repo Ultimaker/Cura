@@ -190,24 +190,25 @@ UM.MainWindow
                     model: Cura.ExtrudersModel { simpleNames: true }
                     Menu {
                         title: model.name
-                        visible: machineExtruderCount.properties.value > 1
 
                         NozzleMenu { title: Cura.MachineManager.activeDefinitionVariantsName; visible: Cura.MachineManager.hasVariants; extruderIndex: index }
                         MaterialMenu { title: catalog.i18nc("@title:menu", "&Material"); visible: Cura.MachineManager.hasMaterials; extruderIndex: index }
-                        ProfileMenu { title: catalog.i18nc("@title:menu", "&Profile"); }
 
-                        MenuSeparator { }
+                        MenuSeparator {
+                            visible: Cura.MachineManager.hasVariants || Cura.MachineManager.hasMaterials
+                        }
 
-                        MenuItem { text: catalog.i18nc("@action:inmenu", "Set as Active Extruder"); onTriggered: Cura.ExtruderManager.setActiveExtruderIndex(model.index) }
+                        MenuItem {
+                            text: catalog.i18nc("@action:inmenu", "Set as Active Extruder")
+                            onTriggered: Cura.ExtruderManager.setActiveExtruderIndex(model.index)
+                        }
                     }
                     onObjectAdded: settingsMenu.insertItem(index, object)
                     onObjectRemoved: settingsMenu.removeItem(object)
                 }
 
                 BuildplateMenu { title: catalog.i18nc("@title:menu", "&Build plate"); visible: Cura.MachineManager.hasVariantBuildplates }
-                NozzleMenu { title: Cura.MachineManager.activeDefinitionVariantsName; visible: machineExtruderCount.properties.value <= 1 && Cura.MachineManager.hasVariants }
-                MaterialMenu { title: catalog.i18nc("@title:menu", "&Material"); visible: machineExtruderCount.properties.value <= 1 && Cura.MachineManager.hasMaterials }
-                ProfileMenu { title: catalog.i18nc("@title:menu", "&Profile"); visible: machineExtruderCount.properties.value <= 1 }
+                ProfileMenu { title: catalog.i18nc("@title:menu", "&Profile"); }
 
                 MenuSeparator { }
 
@@ -254,7 +255,6 @@ UM.MainWindow
                 title: catalog.i18nc("@title:menu menubar:toplevel", "P&lugins")
 
                 MenuItem { action: Cura.Actions.browsePlugins }
-                MenuItem { action: Cura.Actions.configurePlugins }
             }
 
             Menu
@@ -476,6 +476,14 @@ UM.MainWindow
                         viewportRect = Qt.rect(0, 0, 1, 1.0)
                         collapseSidebarAnimation.start();
                     }
+                }
+
+                MouseArea
+                {
+                    visible: UM.Controller.activeStage.sidebarComponent != ""
+                    anchors.fill: parent
+                    acceptedButtons: Qt.AllButtons
+                    onWheel: wheel.accepted = true
                 }
             }
 

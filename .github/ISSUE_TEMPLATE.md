@@ -1,9 +1,12 @@
 <!--
-The following template is useful for filing new issues. Processing an issue will go much faster when this is filled out.
-Before filing, please check if the issue already exists (either open or closed).
+The following template is useful for filing new issues. Processing an issue will go much faster when this is filled out, and issues which do not use this template will be removed.
 
-It is also helpful to attach a project (.3MF) file and Cura log file so we can debug issues quicker.
-Information about how to find the log file can be found at https://github.com/Ultimaker/Cura/wiki/Cura-Preferences-and-Settings-Locations.
+Before filing, PLEASE check if the issue already exists (either open or closed) by using the search bar on the issues page. If it does, comment there. Even if it's closed, we can reopen it based on your comment.
+
+Also, please note the application version in the title of the issue. For example: "[3.2.1] Cannot connect to 3rd-party printer". Please do not write thigns like "Request:" or "[BUG]" in the title; this is what labels are for.
+
+It is also helpful to attach a project (.3mf or .curaproject) file and Cura log file so we can debug issues quicker.
+Information about how to find the log file can be found at https://github.com/Ultimaker/Cura/wiki/Cura-Preferences-and-Settings-Locations. To upload a project, we recommend http://wetransfer.com, but other file hosts like Google Drive or Dropbox work well too.
 
 Thank you for using Cura!
 -->

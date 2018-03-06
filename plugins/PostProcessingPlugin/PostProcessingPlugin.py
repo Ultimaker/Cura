@@ -62,7 +62,7 @@ class PostProcessingPlugin(QObject, Extension):
             return
 
         # get gcode list for the active build plate
-        active_build_plate_id = Application.getInstance().getBuildPlateModel().activeBuildPlate
+        active_build_plate_id = Application.getInstance().getMultiBuildPlateModel().activeBuildPlate
         gcode_list = gcode_dict[active_build_plate_id]
         if not gcode_list:
             return

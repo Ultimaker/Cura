@@ -136,6 +136,11 @@ class StartSliceJob(Job):
                     self.setResult(StartJobResult.MaterialIncompatible)
                     return
 
+        # Validate settings per selectable model
+        if Application.getInstance().getObjectsModel().stacksHaveErrors():
+            self.setResult(StartJobResult.ObjectSettingError)
+            return
+
         # Don't slice if there is a per object setting with an error value.
         for node in DepthFirstIterator(self._scene.getRoot()):
             if node.isSelectable():
