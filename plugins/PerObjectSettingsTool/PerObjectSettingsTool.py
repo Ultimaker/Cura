@@ -181,7 +181,6 @@ class PerObjectSettingsTool(Tool):
 
 
     def _checkStackForErrors(self, stack):
-        print("checking for errors")
         if stack is None:
             return False
 
