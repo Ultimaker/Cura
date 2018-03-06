@@ -40,11 +40,19 @@ class ConfigurationModel(QObject):
     def buildplateConfiguration(self):
         return self._buildplate_configuration
 
+    def __str__(self):
+        info =  "Printer type: " + self.printerType + "\n"
+        info += "Extruders: [\n"
+        for configuration in self.extruderConfigurations:
+            info += "   " + str(configuration) + "\n"
+        info += "]"
+        return info
+
     def __eq__(self, other):
         return hash(self) == hash(other)
 
     def __hash__(self):
-        extruder_hash = hash(0)
+        extruder_hash = hash(self.extruderConfigurations[0])    # Use the hash of the first extruder as a seed
         for configuration in self.extruderConfigurations:
-            extruder_hash ^= configuration.__hash__()
-        return hash(self.printerType) ^ extruder_hash ^ hash(self.buildplateConfiguration)
+            extruder_hash ^= hash(configuration)
+        return hash(self._printer_type) ^ extruder_hash ^ hash(self._buildplate_configuration)

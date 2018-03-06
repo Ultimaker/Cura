@@ -35,8 +35,13 @@ class ExtruderConfigurationModel(QObject):
     def hotendID(self):
         return self._hotend_id
 
+    def __str__(self):
+        if self._material is None or self._hotend_id is None:
+            return "No information"
+        return "Position: " + str(self._position) + " - Material: " + self._material + " - HotendID: " + self._hotend_id
+
     def __eq__(self, other):
         return hash(self) == hash(other)
 
     def __hash__(self):
-        return hash(self.position) ^ hash(self.material) ^ hash(self.hotendID)
+        return hash(self._position) ^ hash(self._material) ^ hash(self._hotend_id)
