@@ -6,12 +6,29 @@ import QtQuick.Controls 1.4
 import QtQuick.Controls.Styles 1.4
 
 import UM 1.2 as UM
+import Cura 1.0 as Cura
 
 Button
 {
-    text: "No match"
+    id: base
+    property var outputDevice: Cura.MachineManager.printerOutputDevices[0] != null ? Cura.MachineManager.printerOutputDevices[0] : null
+    text: catalog.i18nc("@label:sync indicator", "No match")
     width: parent.width
     height: parent.height
+
+    function updateOnSync()
+    {
+        for (var index in outputDevice.uniqueConfigurations)
+        {
+            var configuration = outputDevice.uniqueConfigurations[index]
+            if (Cura.MachineManager.matchesConfiguration(configuration))
+            {
+                base.text = catalog.i18nc("@label:sync indicator", "Matched")
+                return
+            }
+        }
+        base.text = catalog.i18nc("@label:sync indicator", "No match")
+    }
 
     style: ButtonStyle
     {
@@ -67,5 +84,19 @@ Button
     onClicked:
     {
         panelVisible = !panelVisible
+    }
+
+    Connections {
+        target: outputDevice
+        onUniqueConfigurationsChanged: {
+            updateOnSync()
+        }
+    }
+
+    Connections {
+        target: Cura.MachineManager
+        onCurrentConfigurationChanged: {
+            updateOnSync()
+        }
     }
 }

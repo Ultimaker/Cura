@@ -63,8 +63,7 @@ Column
 
         ToolButton
         {
-            id: configurationSelection
-
+            id: printerTypeSelection
             text: catalog.i18nc("@label", "Printer type");
             height: UM.Theme.getSize("setting_control").height
             width: Math.round(parent.width * 0.7) + UM.Theme.getSize("sidebar_margin").width
