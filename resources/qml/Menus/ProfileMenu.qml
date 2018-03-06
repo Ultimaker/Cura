@@ -52,6 +52,7 @@ Menu
         {
             text: model.name
             checkable: model.available
+            enabled: model.available
             checked: Cura.MachineManager.activeQualityOrQualityChangesName == model.name
             exclusiveGroup: group
             onTriggered: Cura.MachineManager.setQualityChangesGroup(model.quality_changes_group)

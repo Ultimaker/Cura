@@ -982,30 +982,38 @@ class MachineManager(QObject):
 
     ## Update current quality type and machine after setting material
     def _updateQualityWithMaterial(self):
-        current_quality = None
+        Logger.log("i", "Updating quality/quality_changes due to material change")
+        current_quality_type = None
         if self._current_quality_group:
-            current_quality = self._current_quality_group.quality_type
-        quality_manager = Application.getInstance()._quality_manager
-        candidate_quality_groups = quality_manager.getQualityGroups(self._global_container_stack)
+            current_quality_type = self._current_quality_group.quality_type
+        candidate_quality_groups = self._quality_manager.getQualityGroups(self._global_container_stack)
         available_quality_types = {qt for qt, g in candidate_quality_groups.items() if g.is_available}
 
+        Logger.log("d", "Current quality type = [%s]", current_quality_type)
         if not self.activeMaterialsCompatible():
+            Logger.log("i", "Active materials are not compatible, setting all qualities to empty (Not Supported).")
             self._setEmptyQuality()
             return
 
         if not available_quality_types:
+            Logger.log("i", "No available quality types found, setting all qualities to empty (Not Supported).")
             self._setEmptyQuality()
             return
 
-        if current_quality in available_quality_types:
-            self._setQualityGroup(candidate_quality_groups[current_quality], empty_quality_changes = False)
+        if current_quality_type in available_quality_types:
+            Logger.log("i", "Current available quality type [%s] is available, applying changes.", current_quality_type)
+            self._setQualityGroup(candidate_quality_groups[current_quality_type], empty_quality_changes = False)
             return
 
+        # The current quality type is not available so we use the preferred quality type if it's available,
+        # otherwise use one of the available quality types.
         quality_type = sorted(list(available_quality_types))[0]
         preferred_quality_type = self._global_container_stack.getMetaDataEntry("preferred_quality_type")
         if preferred_quality_type in available_quality_types:
             quality_type = preferred_quality_type
 
+        Logger.log("i", "The current quality type [%s] is not available, switching to [%s] instead",
+                   current_quality_type, quality_type)
         self._setQualityGroup(candidate_quality_groups[quality_type], empty_quality_changes = True)
 
     def _updateMaterialWithVariant(self, position: Optional[str]):
@@ -1020,9 +1028,8 @@ class MachineManager(QObject):
             current_material_base_name = extruder.material.getMetaDataEntry("base_file")
             current_variant_name = extruder.variant.getMetaDataEntry("name")
 
-            material_manager = Application.getInstance()._material_manager
             material_diameter = self._global_container_stack.getProperty("material_diameter", "value")
-            candidate_materials = material_manager.getAvailableMaterials(
+            candidate_materials = self._material_manager.getAvailableMaterials(
                 self._global_container_stack.definition.getId(),
                 current_variant_name,
                 material_diameter)
@@ -1069,7 +1076,7 @@ class MachineManager(QObject):
 
         # See if we need to show the Discard or Keep changes screen
         if self.hasUserSettings and Preferences.getInstance().getValue("cura/active_mode") == 1:
-            Application.getInstance().discardOrKeepProfileChanges()
+            self._application.discardOrKeepProfileChanges()
 
     @pyqtProperty(QObject, fset = setQualityGroup, notify = activeQualityGroupChanged)
     def activeQualityGroup(self):
@@ -1083,7 +1090,7 @@ class MachineManager(QObject):
 
         # See if we need to show the Discard or Keep changes screen
         if self.hasUserSettings and Preferences.getInstance().getValue("cura/active_mode") == 1:
-            Application.getInstance().discardOrKeepProfileChanges()
+            self._application.discardOrKeepProfileChanges()
 
     @pyqtProperty(QObject, fset = setQualityChangesGroup, notify = activeQualityChangesGroupChanged)
     def activeQualityChangesGroup(self):

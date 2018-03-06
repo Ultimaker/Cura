@@ -13,9 +13,9 @@ vertex =
     }
 
 fragment =
-    uniform sampler2D u_layer0;
-    uniform sampler2D u_layer1;
-    uniform sampler2D u_layer2;
+    uniform sampler2D u_layer0; //Default pass.
+    uniform sampler2D u_layer1; //Selection pass.
+    uniform sampler2D u_layer2; //X-ray pass.
 
     uniform vec2 u_offset[9];
 
@@ -83,9 +83,9 @@ vertex41core =
 
 fragment41core =
     #version 410
-    uniform sampler2D u_layer0;
-    uniform sampler2D u_layer1;
-    uniform sampler2D u_layer2;
+    uniform sampler2D u_layer0; //Default pass.
+    uniform sampler2D u_layer1; //Selection pass.
+    uniform sampler2D u_layer2; //X-ray pass.
 
     uniform vec2 u_offset[9];
 
