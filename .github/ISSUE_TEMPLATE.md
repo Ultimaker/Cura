@@ -6,7 +6,7 @@ Before filing, PLEASE check if the issue already exists (either open or closed) 
 Also, please note the application version in the title of the issue. For example: "[3.2.1] Cannot connect to 3rd-party printer". Please do not write thigns like "Request:" or "[BUG]" in the title; this is what labels are for.
 
 It is also helpful to attach a project (.3mf or .curaproject) file and Cura log file so we can debug issues quicker.
-Information about how to find the log file can be found at https://github.com/Ultimaker/Cura/wiki/Cura-Preferences-and-Settings-Locations. To upload a project, we recommend http://wetransfer.com, but other file hosts like Google Drive or Dropbox work well too.
+Information about how to find the log file can be found at https://github.com/Ultimaker/Cura/wiki/Cura-Preferences-and-Settings-Locations. To upload a project, try changing the extension to e.g. .curaproject.3mf.zip so that github accepts uploading the file. Otherwise we recommend http://wetransfer.com, but other file hosts like Google Drive or Dropbox work well too.
 
 Thank you for using Cura!
 -->
