@@ -66,7 +66,7 @@ Column
                         configuration: modelData
                         onActivateConfiguration:
                         {
-                            print("SELECCIONANDO CONFIGURACION", JSON.stringify(configuration))
+                            Cura.MachineManager.applyRemoteConfiguration(configuration)
                         }
                     }
                 }

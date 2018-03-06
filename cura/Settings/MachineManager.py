@@ -196,6 +196,11 @@ class MachineManager(QObject):
         # print("%%%%%%%%", configuration == self._current_printer_configuration)
         return self._current_printer_configuration == configuration
 
+    @pyqtSlot(QObject)
+    def applyRemoteConfiguration(self, configuration: ConfigurationModel):
+        print("Applying remote configuration", configuration)
+
+
     @property
     def newVariant(self):
         return self._new_variant_container
