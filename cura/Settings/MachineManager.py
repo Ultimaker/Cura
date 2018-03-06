@@ -772,6 +772,7 @@ class MachineManager(QObject):
 
         # Signal that the global stack has changed
         Application.getInstance().globalContainerStackChanged.emit()
+        self.forceUpdateAllSettings()
 
     @pyqtSlot(int, result = QObject)
     def getExtruder(self, position: int):
@@ -804,6 +805,12 @@ class MachineManager(QObject):
     def defaultExtruderPosition(self):
         return self._default_extruder_position
 
+    ##  This will fire the propertiesChanged for all settings so they will be updated in the front-end
+    def forceUpdateAllSettings(self):
+        property_names = ["value", "resolve"]
+        for setting_key in self._global_container_stack.getAllKeys():
+            self._global_container_stack.propertiesChanged.emit(setting_key, property_names)
+
     @pyqtSlot(int, bool)
     def setExtruderEnabled(self, position: int, enabled) -> None:
         extruder = self.getExtruder(position)
@@ -814,6 +821,8 @@ class MachineManager(QObject):
         self.extruderChanged.emit()
         # update items in SettingExtruder
         ExtruderManager.getInstance().extrudersChanged.emit(self._global_container_stack.getId())
+        # Make sure the front end reflects changes
+        self.forceUpdateAllSettings()
 
     def _onMachineNameChanged(self):
         self.globalContainerChanged.emit()
