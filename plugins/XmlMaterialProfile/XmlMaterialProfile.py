@@ -200,18 +200,25 @@ class XmlMaterialProfile(InstanceContainer):
         ## Begin Settings Block
         builder.start("settings")
 
-        if self.getDefinition().getId() == "fdmprinter":
+        if self.getMetaDataEntry("definition") == "fdmprinter":
             for instance in self.findInstances():
                 self._addSettingElement(builder, instance)
 
         machine_container_map = {}
         machine_nozzle_map = {}
 
-        variant_manager = CuraApplication.getInstance()._variant_manager
+        variant_manager = CuraApplication.getInstance().getVariantManager()
+        material_manager = CuraApplication.getInstance().getMaterialManager()
 
-        all_containers = registry.findInstanceContainers(GUID = self.getMetaDataEntry("GUID"), base_file = self.getId())
+        root_material_id = self.getMetaDataEntry("base_file")  # if basefile is self.getId, this is a basefile.
+        material_group = material_manager.getMaterialGroup(root_material_id)
+
+        all_containers = []
+        for node in [material_group.root_material_node] + material_group.derived_material_node_list:
+            all_containers.append(node.getContainer())
+
         for container in all_containers:
-            definition_id = container.getDefinition().getId()
+            definition_id = container.getMetaDataEntry("definition")
             if definition_id == "fdmprinter":
                 continue
 
@@ -233,7 +240,8 @@ class XmlMaterialProfile(InstanceContainer):
         product_id_map = self.getProductIdMap()
 
         for definition_id, container in machine_container_map.items():
-            definition = container.getDefinition()
+            definition_id = container.getMetaDataEntry("definition")
+            definition_metadata = ContainerRegistry.getInstance().findDefinitionContainersMetadata(id = definition_id)[0]
 
             product = definition_id
             for product_name, product_id_list in product_id_map.items():
@@ -243,13 +251,14 @@ class XmlMaterialProfile(InstanceContainer):
 
             builder.start("machine")
             builder.start("machine_identifier", {
-                "manufacturer": container.getMetaDataEntry("machine_manufacturer", definition.getMetaDataEntry("manufacturer", "Unknown")),
+                "manufacturer": container.getMetaDataEntry("machine_manufacturer",
+                                                           definition_metadata.get("manufacturer", "Unknown")),
                 "product":  product
             })
             builder.end("machine_identifier")
 
             for instance in container.findInstances():
-                if self.getDefinition().getId() == "fdmprinter" and self.getInstance(instance.definition.key) and self.getProperty(instance.definition.key, "value") == instance.value:
+                if self.getMetaDataEntry("definition") == "fdmprinter" and self.getInstance(instance.definition.key) and self.getProperty(instance.definition.key, "value") == instance.value:
                     # If the settings match that of the base profile, just skip since we inherit the base profile.
                     continue
 

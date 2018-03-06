@@ -1,14 +1,15 @@
-# Copyright (c) 2017 Ultimaker B.V.
+# Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from UM.Workspace.WorkspaceWriter import WorkspaceWriter
+import configparser
+from io import StringIO
+import zipfile
+
 from UM.Application import Application
+from UM.Logger import Logger
 from UM.Preferences import Preferences
 from UM.Settings.ContainerRegistry import ContainerRegistry
-from cura.Settings.ExtruderManager import ExtruderManager
-import zipfile
-from io import StringIO
-import configparser
+from UM.Workspace.WorkspaceWriter import WorkspaceWriter
 
 
 class ThreeMFWorkspaceWriter(WorkspaceWriter):
@@ -16,7 +17,10 @@ class ThreeMFWorkspaceWriter(WorkspaceWriter):
         super().__init__()
 
     def write(self, stream, nodes, mode=WorkspaceWriter.OutputMode.BinaryMode):
-        mesh_writer = Application.getInstance().getMeshFileHandler().getWriter("3MFWriter")
+        application = Application.getInstance()
+        machine_manager = application.getMachineManager()
+
+        mesh_writer = application.getMeshFileHandler().getWriter("3MFWriter")
 
         if not mesh_writer:  # We need to have the 3mf mesh writer, otherwise we can't save the entire workspace
             return False
@@ -29,17 +33,17 @@ class ThreeMFWorkspaceWriter(WorkspaceWriter):
         if archive is None:  # This happens if there was no mesh data to write.
             archive = zipfile.ZipFile(stream, "w", compression = zipfile.ZIP_DEFLATED)
 
-        global_container_stack = Application.getInstance().getGlobalContainerStack()
+        global_stack = machine_manager.activeMachine
 
         # Add global container stack data to the archive.
-        self._writeContainerToArchive(global_container_stack, archive)
+        self._writeContainerToArchive(global_stack, archive)
 
         # Also write all containers in the stack to the file
-        for container in global_container_stack.getContainers():
+        for container in global_stack.getContainers():
             self._writeContainerToArchive(container, archive)
 
         # Check if the machine has extruders and save all that data as well.
-        for extruder_stack in ExtruderManager.getInstance().getMachineExtruders(global_container_stack.getId()):
+        for extruder_stack in global_stack.extruders.values():
             self._writeContainerToArchive(extruder_stack, archive)
             for container in extruder_stack.getContainers():
                 self._writeContainerToArchive(container, archive)
@@ -59,9 +63,9 @@ class ThreeMFWorkspaceWriter(WorkspaceWriter):
         version_file = zipfile.ZipInfo("Cura/version.ini")
         version_config_parser = configparser.ConfigParser(interpolation = None)
         version_config_parser.add_section("versions")
-        version_config_parser.set("versions", "cura_version", Application.getInstance().getVersion())
-        version_config_parser.set("versions", "build_type", Application.getInstance().getBuildType())
-        version_config_parser.set("versions", "is_debug_mode", str(Application.getInstance().getIsDebugMode()))
+        version_config_parser.set("versions", "cura_version", application.getVersion())
+        version_config_parser.set("versions", "build_type", application.getBuildType())
+        version_config_parser.set("versions", "is_debug_mode", str(application.getIsDebugMode()))
 
         version_file_string = StringIO()
         version_config_parser.write(version_file_string)
@@ -85,7 +89,8 @@ class ThreeMFWorkspaceWriter(WorkspaceWriter):
         # Some containers have a base file, which should then be the file to use.
         if "base_file" in container.getMetaData():
             base_file = container.getMetaDataEntry("base_file")
-            container = ContainerRegistry.getInstance().findContainers(id = base_file)[0]
+            if base_file != container.getId():
+                container = ContainerRegistry.getInstance().findContainers(id = base_file)[0]
 
         file_name = "Cura/%s.%s" % (container.getId(), file_suffix)
 
