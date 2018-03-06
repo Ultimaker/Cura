@@ -46,6 +46,7 @@ Column
                     target: outputDevice
                     onUniqueConfigurationsChanged: {
                         // FIXME For now the model should be removed and then created again, otherwise changes in the printer don't automatically update the UI
+                        print("Update unique configurations")
                         configurationList.model = null
                         configurationList.model = outputDevice.uniqueConfigurations
                     }
@@ -63,7 +64,7 @@ Column
                     {
                         width: parent.width
                         configuration: modelData
-                        onConfigurationSelected:
+                        onActivateConfiguration:
                         {
                             print("SELECCIONANDO CONFIGURACION", JSON.stringify(configuration))
                         }

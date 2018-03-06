@@ -13,7 +13,7 @@ Rectangle
 
     property var configuration: null
     property var selected: false
-    signal configurationSelected()
+    signal activateConfiguration()
 
     height: childrenRect.height
     border.width: UM.Theme.getSize("default_lining").width
@@ -96,7 +96,7 @@ Rectangle
     {
         id: mouse
         anchors.fill: parent
-        onClicked: configurationSelected()
+        onClicked: activateConfiguration()
         hoverEnabled: true
         onEntered: parent.border.color = UM.Theme.getColor("primary_hover")
         onExited: parent.border.color = "black"
@@ -109,10 +109,7 @@ Rectangle
         }
     }
 
-    Connections {
-        target: configuration
-        onConfigurationChanged: {
-            configurationItem.selected = Cura.MachineManager.matchesConfiguration(configuration)
-        }
+    Component.onCompleted: {
+        configurationItem.selected = Cura.MachineManager.matchesConfiguration(configuration)
     }
 }

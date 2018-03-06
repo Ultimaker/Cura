@@ -52,7 +52,13 @@ class ConfigurationModel(QObject):
         return hash(self) == hash(other)
 
     def __hash__(self):
-        extruder_hash = hash(self.extruderConfigurations[0])    # Use the hash of the first extruder as a seed
+        extruder_hash = hash(0)
+        first_extruder = None
         for configuration in self.extruderConfigurations:
             extruder_hash ^= hash(configuration)
+            if configuration.position == 0:
+                first_extruder = configuration
+        if first_extruder:
+            extruder_hash &= hash(first_extruder)
+
         return hash(self._printer_type) ^ extruder_hash ^ hash(self._buildplate_configuration)
