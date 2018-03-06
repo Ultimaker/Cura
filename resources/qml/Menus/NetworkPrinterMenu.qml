@@ -7,14 +7,13 @@ import QtQuick.Controls 1.4
 import UM 1.2 as UM
 import Cura 1.0 as Cura
 
-Instantiator
-{
-    model: UM.ContainerStacksModel
-    {
+Instantiator {
+    model: UM.ContainerStacksModel {
         filter: {"type": "machine", "um_network_key": "*"}
     }
-    MenuItem
-    {
+    MenuItem {
+        // TODO: Use printer_group icon when it's a cluster.
+        iconSource: UM.Theme.getIcon("printer_single")
         text: model.name;
         checkable: true;
         checked: Cura.MachineManager.activeMachineId == model.id
