@@ -95,7 +95,7 @@ class SettingOverrideDecorator(SceneNodeDecorator):
 
     def _onSettingChanged(self, instance, property_name): # Reminder: 'property' is a built-in function
         # Trigger slice/need slicing if the value has changed.
-        if property_name == "value":
+        if property_name == "value" and instance in self._non_printing_mesh_settings:
             self._is_non_printing_mesh = self.evaluateIsNonPrintingMesh()
 
             Application.getInstance().getBackend().needsSlicing()
