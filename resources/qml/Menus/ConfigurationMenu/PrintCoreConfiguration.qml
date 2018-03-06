@@ -69,7 +69,7 @@ Column
     Label
     {
         id: materialLabel
-        text: printCoreConfiguration.material
+        text: printCoreConfiguration.material.name
         elide: Text.ElideRight
         width: parent.width
         font: UM.Theme.getFont("default_bold")

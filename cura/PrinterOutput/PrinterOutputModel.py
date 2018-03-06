@@ -253,5 +253,4 @@ class PrinterOutputModel(QObject):
         self._printer_configuration.printerType = self._type
         self._printer_configuration.extruderConfigurations = [extruder.extruderConfiguration for extruder in self._extruders]
         self._printer_configuration.buildplateConfiguration = None # TODO Add the buildplate information
-        print("Recalculating printer configuration", self.name, ":", self._printer_configuration)
         self.configurationChanged.emit()

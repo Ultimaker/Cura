@@ -81,7 +81,6 @@ class ExtruderOutputModel(QObject):
 
     def _updateExtruderConfiguration(self):
         self._extruder_configuration.position = self._position
-        self._extruder_configuration.material = self._active_material.type if self.activeMaterial is not None else None
+        self._extruder_configuration.material = self._active_material
         self._extruder_configuration.hotendID = self._hotend_id
-        print("Recalculating extruder configuration:", self._extruder_configuration)
         self.extruderConfigurationChanged.emit()

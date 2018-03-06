@@ -20,7 +20,6 @@ from UM.Logger import Logger
 from UM.Message import Message
 
 from UM.Settings.ContainerRegistry import ContainerRegistry
-from UM.Settings.InstanceContainer import InstanceContainer
 from UM.Settings.SettingFunction import SettingFunction
 from UM.Signal import postponeSignals, CompressTechnique
 
@@ -28,6 +27,7 @@ from cura.Machines.QualityManager import getMachineDefinitionIDForQualitySearch
 from cura.PrinterOutputDevice import PrinterOutputDevice
 from cura.PrinterOutput.ConfigurationModel import ConfigurationModel
 from cura.PrinterOutput.ExtruderConfigurationModel import ExtruderConfigurationModel
+from cura.PrinterOutput.MaterialOutputModel import MaterialOutputModel
 from cura.Settings.ExtruderManager import ExtruderManager
 
 from .CuraStackBuilder import CuraStackBuilder
@@ -124,7 +124,8 @@ class MachineManager(QObject):
         if containers:
             containers[0].nameChanged.connect(self._onMaterialNameChanged)
 
-        self._material_manager = self._application._material_manager
+        self._material_manager = self._application.getMaterialManager()
+        self._variant_manager = self._application.getVariantManager()
         self._quality_manager = self._application.getQualityManager()
 
         # When the materials lookup table gets updated, it can mean that a material has its name changed, which should
@@ -176,12 +177,21 @@ class MachineManager(QObject):
         if not self._global_container_stack:
             return
 
+        # Create the configuration model with the current data in Cura
         self._current_printer_configuration.printerType = self._global_container_stack.definition.getName()
         self._current_printer_configuration.extruderConfigurations = []
         for extruder in self._global_container_stack.extruders.values():
             extruder_configuration = ExtruderConfigurationModel()
+            # For compare just the GUID is needed at this moment
+            mat_type = extruder.material.getMetaDataEntry("material") if extruder.material != self._empty_material_container else None
+            mat_guid = extruder.material.getMetaDataEntry("GUID") if extruder.material != self._empty_material_container else None
+            mat_color = extruder.material.getMetaDataEntry("color_name") if extruder.material != self._empty_material_container else None
+            mat_brand = extruder.material.getMetaDataEntry("brand") if extruder.material != self._empty_material_container else None
+            mat_name = extruder.material.getMetaDataEntry("name") if extruder.material != self._empty_material_container else None
+            material_model = MaterialOutputModel(mat_guid, mat_type, mat_color, mat_brand, mat_name)
+
             extruder_configuration.position = int(extruder.getMetaDataEntry("position"))
-            extruder_configuration.material = extruder.material.getName() if extruder.material != self._empty_material_container else None
+            extruder_configuration.material = material_model
             extruder_configuration.hotendID = extruder.variant.getName() if extruder.variant != self._empty_variant_container else None
             self._current_printer_configuration.extruderConfigurations.append(extruder_configuration)
 
@@ -197,7 +207,8 @@ class MachineManager(QObject):
 
     @pyqtSlot(QObject)
     def applyRemoteConfiguration(self, configuration: ConfigurationModel):
-        print("Applying remote configuration", configuration)
+        for extruder_configuration in configuration.extruderConfigurations:
+            self.setConfiguration(extruder_configuration.position, extruder_configuration.hotendID, extruder_configuration.material.guid)
 
     @pyqtProperty("QVariantList", notify = outputDevicesChanged)
     def printerOutputDevices(self):
@@ -355,6 +366,7 @@ class MachineManager(QObject):
             Logger.log("w", "Failed creating a new machine!")
 
     def _checkStacksHaveErrors(self) -> bool:
+        return False
         time_start = time.time()
         if self._global_container_stack is None: #No active machine.
             return False
@@ -1016,6 +1028,16 @@ class MachineManager(QObject):
         with postponeSignals(*self._getContainerChangedSignals(), compress = CompressTechnique.CompressPerParameterValue):
             self._setGlobalVariant(container_node)
             self._updateMaterialWithVariant(None)  # Update all materials
+            self._updateQualityWithMaterial()
+
+    def setConfiguration(self, position, variant_name, material_guid):
+        position = str(position)
+        variant_container_node = self._variant_manager.getVariantNode(self._global_container_stack.definition.getId(), variant_name)
+        material_container_node = self._material_manager.getMaterialNodeByType(self._global_container_stack, variant_name, material_guid)
+        with postponeSignals(*self._getContainerChangedSignals(), compress = CompressTechnique.CompressPerParameterValue):
+            self._setVariantNode(position, variant_container_node)
+            self._setMaterial(position, material_container_node)
+            self._updateMaterialWithVariant(position)
             self._updateQualityWithMaterial()
 
     @pyqtSlot(str, "QVariant")

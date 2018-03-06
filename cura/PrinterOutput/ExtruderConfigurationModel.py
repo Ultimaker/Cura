@@ -24,7 +24,7 @@ class ExtruderConfigurationModel(QObject):
     def setMaterial(self, material):
         self._material = material
 
-    @pyqtProperty(str, fset = setMaterial, notify = extruderConfigurationChanged)
+    @pyqtProperty(QObject, fset = setMaterial, notify = extruderConfigurationChanged)
     def material(self):
         return self._material
 
@@ -36,12 +36,14 @@ class ExtruderConfigurationModel(QObject):
         return self._hotend_id
 
     def __str__(self):
-        if self._material is None or self._hotend_id is None:
+        if self._material is None or self._hotend_id is None or self.material.type is None:
             return "No information"
-        return "Position: " + str(self._position) + " - Material: " + self._material + " - HotendID: " + self._hotend_id
+        return "Position: " + str(self._position) + " - Material: " + self._material.type + " - HotendID: " + self._hotend_id
 
     def __eq__(self, other):
         return hash(self) == hash(other)
 
+    #   Calculating a hash function using the position of the extruder, the material GUID and the hotend id to check if is
+    #   unique within a set
     def __hash__(self):
-        return hash(self._position) ^ hash(self._material) ^ hash(self._hotend_id)
+        return hash(self._position) ^ (hash(self._material.guid) if self.material is not None else hash(0)) ^ hash(self._hotend_id)
