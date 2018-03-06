@@ -701,16 +701,22 @@ class MachineManager(QObject):
         # reset all extruder number settings whose value is no longer valid
         for setting_instance in self._global_container_stack.userChanges.findInstances():
             setting_key = setting_instance.definition.key
+            enabled = self._global_container_stack.getProperty(setting_key, "enabled")
+            if not enabled:
+                self._global_container_stack.userChanges.removeInstance(setting_key)
+                Logger.log("d", "Reset setting [%s] because the setting is no longer enabled", setting_key)
+                continue
+
             if not self._global_container_stack.getProperty(setting_key, "type") in ("extruder", "optional_extruder"):
                 continue
 
             old_value = self._global_container_stack.userChanges.getProperty(setting_key, "value")
             if int(old_value) >= extruder_count:
                 self._global_container_stack.userChanges.removeInstance(setting_key)
-                Logger.log("d", "Reset [%s] because its old value [%s] is no longer valid", setting_key, old_value)
+                Logger.log("d", "Reset setting [%s] because its old value [%s] is no longer valid", setting_key, old_value)
             if not self._global_container_stack.extruders[str(old_value)].isEnabled:
                 self._global_container_stack.userChanges.removeInstance(setting_key)
-                Logger.log("d", "Reset [%s] because its old value [%s] is no longer valid (2)", setting_key, old_value)
+                Logger.log("d", "Reset setting [%s] because its old value [%s] is no longer valid (2)", setting_key, old_value)
 
     ##  Set the amount of extruders on the active machine (global stack)
     #   \param extruder_count int the number of extruders to set
@@ -804,8 +810,7 @@ class MachineManager(QObject):
         extruder.setEnabled(enabled)
         self.updateDefaultExtruder()
         self.updateNumberExtrudersEnabled()
-        if enabled == False:
-            self.correctExtruderSettings()
+        self.correctExtruderSettings()
         self.extruderChanged.emit()
         # update items in SettingExtruder
         ExtruderManager.getInstance().extrudersChanged.emit(self._global_container_stack.getId())
