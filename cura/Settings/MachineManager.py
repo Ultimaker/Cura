@@ -366,7 +366,6 @@ class MachineManager(QObject):
             Logger.log("w", "Failed creating a new machine!")
 
     def _checkStacksHaveErrors(self) -> bool:
-        return False
         time_start = time.time()
         if self._global_container_stack is None: #No active machine.
             return False
