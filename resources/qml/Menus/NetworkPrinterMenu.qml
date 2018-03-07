@@ -12,8 +12,8 @@ Instantiator {
         filter: {"type": "machine", "um_network_key": "*"}
     }
     MenuItem {
-        // TODO: Use printer_group icon when it's a cluster.
-        iconSource: UM.Theme.getIcon("printer_single")
+        // TODO: Use printer_group icon when it's a cluster. Not use it for now since it doesn't look as expected
+//        iconSource: UM.Theme.getIcon("printer_single")
         text: model.name;
         checkable: true;
         checked: Cura.MachineManager.activeMachineId == model.id

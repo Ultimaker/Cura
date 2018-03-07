@@ -17,9 +17,14 @@ Rectangle
 
     height: childrenRect.height
     border.width: UM.Theme.getSize("default_lining").width
-    border.color: UM.Theme.getColor("sidebar_lining_thin")
+    border.color: updateBorderColor()
     color: selected ? UM.Theme.getColor("configuration_item_active") : UM.Theme.getColor("configuration_item")
     property var textColor: selected ? UM.Theme.getColor("configuration_item_text_active") : UM.Theme.getColor("configuration_item_text")
+
+    function updateBorderColor()
+    {
+        border.color = selected ? UM.Theme.getColor("configuration_item_border_active") : UM.Theme.getColor("configuration_item_border")
+    }
 
     Column
     {
@@ -52,7 +57,8 @@ Rectangle
         }
 
         //Buildplate row separator
-        Rectangle {
+        Rectangle
+        {
             id: separator
 
             visible: buildplateInformation.visible
@@ -98,18 +104,22 @@ Rectangle
         anchors.fill: parent
         onClicked: activateConfiguration()
         hoverEnabled: true
-        onEntered: parent.border.color = UM.Theme.getColor("primary_hover")
-        onExited: parent.border.color = "black"
+        onEntered: parent.border.color = UM.Theme.getColor("configuration_item_border_hover")
+        onExited:  updateBorderColor()
     }
 
-    Connections {
+    Connections
+    {
         target: Cura.MachineManager
         onCurrentConfigurationChanged: {
             configurationItem.selected = Cura.MachineManager.matchesConfiguration(configuration)
+            updateBorderColor()
         }
     }
 
-    Component.onCompleted: {
+    Component.onCompleted:
+    {
         configurationItem.selected = Cura.MachineManager.matchesConfiguration(configuration)
+        updateBorderColor()
     }
 }
