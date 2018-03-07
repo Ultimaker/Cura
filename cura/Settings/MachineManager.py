@@ -818,7 +818,11 @@ class MachineManager(QObject):
         self.updateDefaultExtruder()
         self.updateNumberExtrudersEnabled()
         self.correctExtruderSettings()
+        # ensure that the quality profile is compatible with current combination, or choose a compatible one if available
+        self._updateQualityWithMaterial()
         self.extruderChanged.emit()
+        # update material compatibility color
+        self.activeQualityGroupChanged.emit()
         # update items in SettingExtruder
         ExtruderManager.getInstance().extrudersChanged.emit(self._global_container_stack.getId())
         # Make sure the front end reflects changes
@@ -976,7 +980,7 @@ class MachineManager(QObject):
         # check material - variant compatibility
         if Util.parseBool(self._global_container_stack.getMetaDataEntry("has_materials", False)):
             for position, extruder in self._global_container_stack.extruders.items():
-                if not extruder.material.getMetaDataEntry("compatible"):
+                if extruder.isEnabled and not extruder.material.getMetaDataEntry("compatible"):
                     return False
         return True
 
