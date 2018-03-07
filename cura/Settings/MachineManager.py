@@ -24,6 +24,7 @@ from UM.Settings.SettingFunction import SettingFunction
 from UM.Signal import postponeSignals, CompressTechnique
 
 from cura.Machines.QualityManager import getMachineDefinitionIDForQualitySearch
+from cura.Machines.VariantManager import VariantType
 from cura.PrinterOutputDevice import PrinterOutputDevice
 from cura.PrinterOutput.ConfigurationModel import ConfigurationModel
 from cura.PrinterOutput.ExtruderConfigurationModel import ExtruderConfigurationModel
@@ -204,11 +205,6 @@ class MachineManager(QObject):
         # print(self._current_printer_configuration)
         # print("%%%%%%%%", configuration == self._current_printer_configuration)
         return self._current_printer_configuration == configuration
-
-    @pyqtSlot(QObject)
-    def applyRemoteConfiguration(self, configuration: ConfigurationModel):
-        for extruder_configuration in configuration.extruderConfigurations:
-            self.setConfiguration(extruder_configuration.position, extruder_configuration.hotendID, extruder_configuration.material.guid)
 
     @pyqtProperty("QVariantList", notify = outputDevicesChanged)
     def printerOutputDevices(self):
@@ -1028,22 +1024,35 @@ class MachineManager(QObject):
                 self._setMaterial(position, new_material)
                 continue
 
+    @pyqtSlot(QObject)
+    def applyRemoteConfiguration(self, configuration: ConfigurationModel):
+        self.blurSettings.emit()
+        with postponeSignals(*self._getContainerChangedSignals(),
+                             compress=CompressTechnique.CompressPerParameterValue):
+            for extruder_configuration in configuration.extruderConfigurations:
+                position = str(extruder_configuration.position)
+                variant_container_node = self._variant_manager.getVariantNode(
+                    self._global_container_stack.definition.getId(), extruder_configuration.hotendID)
+                material_container_node = self._material_manager.getMaterialNodeByType(
+                    self._global_container_stack, extruder_configuration.hotendID,
+                    extruder_configuration.material.guid)
+                self._setVariantNode(position, variant_container_node)
+                self._setMaterial(position, material_container_node)
+                self._updateMaterialWithVariant(position)
+
+            if configuration.buildplateConfiguration is not None:
+                global_variant_container_node = self._variant_manager.getVariantNode(
+                    self._global_container_stack.definition.getId(), configuration.buildplateConfiguration,
+                    variant_type=VariantType.BUILD_PLATE)
+                self._setGlobalVariant(global_variant_container_node)
+            self._updateQualityWithMaterial()
+
     @pyqtSlot("QVariant")
     def setGlobalVariant(self, container_node):
         self.blurSettings.emit()
         with postponeSignals(*self._getContainerChangedSignals(), compress = CompressTechnique.CompressPerParameterValue):
             self._setGlobalVariant(container_node)
             self._updateMaterialWithVariant(None)  # Update all materials
-            self._updateQualityWithMaterial()
-
-    def setConfiguration(self, position, variant_name, material_guid):
-        position = str(position)
-        variant_container_node = self._variant_manager.getVariantNode(self._global_container_stack.definition.getId(), variant_name)
-        material_container_node = self._material_manager.getMaterialNodeByType(self._global_container_stack, variant_name, material_guid)
-        with postponeSignals(*self._getContainerChangedSignals(), compress = CompressTechnique.CompressPerParameterValue):
-            self._setVariantNode(position, variant_container_node)
-            self._setMaterial(position, material_container_node)
-            self._updateMaterialWithVariant(position)
             self._updateQualityWithMaterial()
 
     @pyqtSlot(str, "QVariant")

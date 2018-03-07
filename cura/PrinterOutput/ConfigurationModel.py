@@ -41,11 +41,13 @@ class ConfigurationModel(QObject):
         return self._buildplate_configuration
 
     def __str__(self):
-        info =  "Printer type: " + self.printerType + "\n"
+        info =  "Printer type: " + self._printer_type + "\n"
         info += "Extruders: [\n"
-        for configuration in self.extruderConfigurations:
+        for configuration in self._extruder_configurations:
             info += "   " + str(configuration) + "\n"
         info += "]"
+        if self._buildplate_configuration is not None:
+            info +=  "\nBuildplate: " + self._buildplate_configuration
         return info
 
     def __eq__(self, other):
@@ -54,7 +56,7 @@ class ConfigurationModel(QObject):
     def __hash__(self):
         extruder_hash = hash(0)
         first_extruder = None
-        for configuration in self.extruderConfigurations:
+        for configuration in self._extruder_configurations:
             extruder_hash ^= hash(configuration)
             if configuration.position == 0:
                 first_extruder = configuration

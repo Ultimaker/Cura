@@ -46,4 +46,4 @@ class ExtruderConfigurationModel(QObject):
     #   Calculating a hash function using the position of the extruder, the material GUID and the hotend id to check if is
     #   unique within a set
     def __hash__(self):
-        return hash(self._position) ^ (hash(self._material.guid) if self.material is not None else hash(0)) ^ hash(self._hotend_id)
+        return hash(self._position) ^ (hash(self._material.guid) if self._material is not None else hash(0)) ^ hash(self._hotend_id)

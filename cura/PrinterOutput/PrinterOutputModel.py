@@ -23,6 +23,7 @@ class PrinterOutputModel(QObject):
     headPositionChanged = pyqtSignal()
     keyChanged = pyqtSignal()
     typeChanged = pyqtSignal()
+    buildplateChanged = pyqtSignal()
     cameraChanged = pyqtSignal()
     configurationChanged = pyqtSignal()
 
@@ -41,6 +42,7 @@ class PrinterOutputModel(QObject):
         self._printer_state = "unknown"
         self._is_preheating = False
         self._type = ""
+        self._buildplate_name = None
         # Update the printer configuration every time any of the extruders changes its configuration
         for extruder in self._extruders:
             extruder.extruderConfigurationChanged.connect(self._updatePrinterConfiguration)
@@ -77,6 +79,15 @@ class PrinterOutputModel(QObject):
         if self._type != type:
             self._type = type
             self.typeChanged.emit()
+
+    @pyqtProperty(str, notify = buildplateChanged)
+    def buildplate(self):
+        return self._buildplate_name
+
+    def updateBuildplate(self, buildplate_name):
+        if self._buildplate_name != buildplate_name:
+            self._buildplate_name = buildplate_name
+            self.buildplateChanged.emit()
 
     @pyqtProperty(str, notify=keyChanged)
     def key(self):
@@ -252,5 +263,5 @@ class PrinterOutputModel(QObject):
     def _updatePrinterConfiguration(self):
         self._printer_configuration.printerType = self._type
         self._printer_configuration.extruderConfigurations = [extruder.extruderConfiguration for extruder in self._extruders]
-        self._printer_configuration.buildplateConfiguration = None # TODO Add the buildplate information
+        self._printer_configuration.buildplateConfiguration = self._buildplate_name
         self.configurationChanged.emit()
