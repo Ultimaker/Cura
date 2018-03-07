@@ -1032,13 +1032,22 @@ class MachineManager(QObject):
                 position = str(extruder_configuration.position)
                 variant_container_node = self._variant_manager.getVariantNode(self._global_container_stack.definition.getId(), extruder_configuration.hotendID)
                 material_container_node = self._material_manager.getMaterialNodeByType(self._global_container_stack, extruder_configuration.hotendID,extruder_configuration.material.guid)
-                self._setVariantNode(position, variant_container_node)
-                self._setMaterial(position, material_container_node)
+                if variant_container_node:
+                    self._setVariantNode(position, variant_container_node)
+                else:
+                    self._global_container_stack.extruders[position].variant = self._empty_variant_container
+
+                if material_container_node:
+                    self._setMaterial(position, material_container_node)
+                else:
+                    self._global_container_stack.extruders[position].material = self._empty_material_container
                 self._updateMaterialWithVariant(position)
 
             if configuration.buildplateConfiguration is not None:
                 global_variant_container_node = self._variant_manager.getBuildplateVariantNode(self._global_container_stack.definition.getId(), configuration.buildplateConfiguration)
                 self._setGlobalVariant(global_variant_container_node)
+            else:
+                self._global_container_stack.variant = self._empty_variant_container
             self._updateQualityWithMaterial()
 
     @pyqtSlot("QVariant")
