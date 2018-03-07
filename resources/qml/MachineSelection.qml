@@ -10,35 +10,28 @@ import UM 1.2 as UM
 import Cura 1.0 as Cura
 import "Menus"
 
-ToolButton
-{
+ToolButton {
+    property bool printerConnected: Cura.MachineManager.printerOutputDevices.length != 0
     text: Cura.MachineManager.activeMachineName
 
     tooltip: Cura.MachineManager.activeMachineName
 
-    style: ButtonStyle
-    {
-        background: Rectangle
-        {
-            color:
-            {
-                if(control.pressed)
-                {
+    style: ButtonStyle {
+        background: Rectangle {
+            color: {
+                if (control.pressed) {
                     return UM.Theme.getColor("sidebar_header_active");
                 }
-                else if(control.hovered)
-                {
+                else if (control.hovered) {
                     return UM.Theme.getColor("sidebar_header_hover");
                 }
-                else
-                {
+                else {
                     return UM.Theme.getColor("sidebar_header_bar");
                 }
             }
             Behavior on color { ColorAnimation { duration: 50; } }
 
-            UM.RecolorImage
-            {
+            UM.RecolorImage {
                 id: downArrow
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.right: parent.right
@@ -50,14 +43,23 @@ ToolButton
                 color: UM.Theme.getColor("text_emphasis")
                 source: UM.Theme.getIcon("arrow_bottom")
             }
-            Label
-            {
+
+            PrinterStatusIcon {
+                visible: printerConnected
+                anchors {
+                    verticalCenter: parent.verticalCenter
+                    left: parent.left
+                    leftMargin: UM.Theme.getSize("default_margin").width
+                }
+            }
+
+            Label {
                 id: sidebarComboBoxLabel
                 color: UM.Theme.getColor("sidebar_header_text_active")
                 text: control.text;
                 elide: Text.ElideRight;
                 anchors.left: parent.left;
-                anchors.leftMargin: UM.Theme.getSize("default_margin").width * 2
+                anchors.leftMargin: printerConnected ? UM.Theme.getSize("default_margin").width * 3 : UM.Theme.getSize("default_margin").width * 2
                 anchors.right: downArrow.left;
                 anchors.rightMargin: control.rightMargin;
                 anchors.verticalCenter: parent.verticalCenter;
