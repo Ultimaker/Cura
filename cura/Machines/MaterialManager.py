@@ -102,6 +102,13 @@ class MaterialManager(QObject):
         #    GUID -> material group list
         self._guid_material_groups_map = defaultdict(list)
         for root_material_id, material_group in self._material_group_map.items():
+            # This can happen when we are updating with incomplete data.
+            if material_group.root_material_node is None:
+                Logger.log("e", "Missing root material node for [%s]. Probably caused by update using incomplete data."
+                           " Check all related signals for further debugging.",
+                           material_group.name)
+                # Do nothing here, we wait for a next signal to trigger an update.
+                return
             guid = material_group.root_material_node.metadata["GUID"]
             self._guid_material_groups_map[guid].append(material_group)
 
