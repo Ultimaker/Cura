@@ -107,7 +107,7 @@ class MaterialManager(QObject):
                 Logger.log("e", "Missing root material node for [%s]. Probably caused by update using incomplete data."
                            " Check all related signals for further debugging.",
                            material_group.name)
-                # Do nothing here, we wait for a next signal to trigger an update.
+                self._update_timer.start()
                 return
             guid = material_group.root_material_node.metadata["GUID"]
             self._guid_material_groups_map[guid].append(material_group)
@@ -217,6 +217,7 @@ class MaterialManager(QObject):
         self.materialsUpdated.emit()
 
     def _updateMaps(self):
+        Logger.log("i", "Updating material lookup data ...")
         self.initialize()
 
     def _onContainerMetadataChanged(self, container):
