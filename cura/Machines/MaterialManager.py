@@ -371,6 +371,16 @@ class MaterialManager(QObject):
                                         material_diameter, root_material_id)
         return node
 
+    def removeMaterialByRootId(self, root_material_id: str):
+        material_group = self.getMaterialGroup(root_material_id)
+        if not material_group:
+            Logger.log("i", "Unable to remove the material with id %s, because it doesn't exist.", root_material_id)
+            return
+
+        nodes_to_remove = [material_group.root_material_node] + material_group.derived_material_node_list
+        for node in nodes_to_remove:
+            self._container_registry.removeContainer(node.metadata["id"])
+
     #
     # Methods for GUI
     #
@@ -394,14 +404,7 @@ class MaterialManager(QObject):
     @pyqtSlot("QVariant")
     def removeMaterial(self, material_node: "MaterialNode"):
         root_material_id = material_node.metadata["base_file"]
-        material_group = self.getMaterialGroup(root_material_id)
-        if not material_group:
-            Logger.log("d", "Unable to remove the material with id %s, because it doesn't exist.", root_material_id)
-            return
-
-        nodes_to_remove = [material_group.root_material_node] + material_group.derived_material_node_list
-        for node in nodes_to_remove:
-            self._container_registry.removeContainer(node.metadata["id"])
+        self.removeMaterialByRootId(root_material_id)
 
     #
     # Creates a duplicate of a material, which has the same GUID and base_file metadata.
