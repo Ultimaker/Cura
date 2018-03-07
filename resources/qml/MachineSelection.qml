@@ -63,7 +63,7 @@ ToolButton {
                 anchors.right: downArrow.left;
                 anchors.rightMargin: control.rightMargin;
                 anchors.verticalCenter: parent.verticalCenter;
-                font: UM.Theme.getFont("large")
+                font: UM.Theme.getFont("medium_bold")
             }
         }
         label: Label {}
