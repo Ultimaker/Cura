@@ -131,6 +131,8 @@ class StartSliceJob(Job):
 
         for position, extruder_stack in stack.extruders.items():
             material = extruder_stack.findContainer({"type": "material"})
+            if not extruder_stack.isEnabled:
+                continue
             if material:
                 if material.getMetaDataEntry("compatible") == False:
                     self.setResult(StartJobResult.MaterialIncompatible)

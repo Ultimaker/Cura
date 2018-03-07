@@ -637,6 +637,8 @@ class MachineManager(QObject):
         buildplate_compatible = True  # It is compatible by default
         extruder_stacks = self._global_container_stack.extruders.values()
         for stack in extruder_stacks:
+            if not stack.isEnabled:
+                continue
             material_container = stack.material
             if material_container == self._empty_material_container:
                 continue
