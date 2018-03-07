@@ -93,13 +93,15 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
 
         self._gcode = gcode_list
 
+        is_job_sent = True
         if len(self._printers) > 1:
             self._spawnPrinterSelectionDialog()
         else:
-            self.sendPrintJob()
+            is_job_sent = self.sendPrintJob()
 
         # Notify the UI that a switch to the print monitor should happen
-        Application.getInstance().getController().setActiveStage("MonitorStage")
+        if is_job_sent:
+            Application.getInstance().getController().setActiveStage("MonitorStage")
 
     def _spawnPrinterSelectionDialog(self):
         if self._printer_selection_dialog is None:
@@ -121,7 +123,7 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
                 i18n_catalog.i18nc("@info:status",
                                    "Sending new jobs (temporarily) blocked, still sending the previous print job."))
             self._error_message.show()
-            return
+            return False
 
         self._sending_gcode = True
 
@@ -134,7 +136,7 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
         compressed_gcode = self._compressGCode()
         if compressed_gcode is None:
             # Abort was called.
-            return
+            return False
 
         parts = []
 
@@ -151,6 +153,8 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
         parts.append(self._createFormPart("name=\"file\"; filename=\"%s\"" % file_name, compressed_gcode))
 
         self._latest_reply_handler = self.postFormWithParts("print_jobs/", parts, onFinished=self._onPostPrintJobFinished, onProgress=self._onUploadPrintJobProgress)
+
+        return True
 
     @pyqtProperty(QObject, notify=activePrinterChanged)
     def activePrinter(self) -> Optional["PrinterOutputModel"]:
