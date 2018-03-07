@@ -16,61 +16,68 @@ Column
     padding: UM.Theme.getSize("default_margin").width
     spacing: Math.round(UM.Theme.getSize("default_margin").height / 2)
 
-    Label {
+    Label
+    {
         text: catalog.i18nc("@label:header configurations", "Available configurations")
         font: UM.Theme.getFont("large")
         width: parent.width - 2 * parent.padding
     }
 
-    ScrollView {
+    Component
+    {
+        id: sectionHeading
+        Rectangle
+        {
+            height: childrenRect.height + UM.Theme.getSize("default_margin").height
+            Label
+            {
+                text: section
+                font: UM.Theme.getFont("default_bold")
+            }
+        }
+    }
+
+    ScrollView
+    {
         id: container
-        width: parent.width - 2 * parent.padding
-        height: 500 //childrenRect.height
+        width: parent.width - parent.padding
+        height: Math.min(configurationList.contentHeight, 300 * screenScaleFactor)
 
         style: UM.Theme.styles.scrollview
+        __wheelAreaScrollSpeed: 75 // Scroll three lines in one scroll event
 
-        Repeater {
-            height: childrenRect.height
-            model: outputDevice != null ? outputDevice.connectedPrintersTypeCount : null
-            delegate: Rectangle
+        ListView
+        {
+            id: configurationList
+            spacing: Math.round(UM.Theme.getSize("default_margin").height / 2)
+            width: container.width
+            contentHeight: childrenRect.height
+
+            section.property: "modelData.printerType"
+            section.criteria: ViewSection.FullString
+            section.delegate: sectionHeading
+
+            model: outputDevice.uniqueConfigurations
+            delegate: ConfigurationItem
             {
-                height: childrenRect.height
-                Label
+                width: parent.width - UM.Theme.getSize("default_margin").width
+                configuration: modelData
+                onActivateConfiguration:
                 {
-                    id: printerTypeHeader
-                    text: modelData.machine_type
-                    font: UM.Theme.getFont("default_bold")
-                }
-
-                Connections {
-                    target: outputDevice
-                    onUniqueConfigurationsChanged: {
-                        // FIXME For now the model should be removed and then created again, otherwise changes in the printer don't automatically update the UI
-                        configurationList.model = null
-                        configurationList.model = outputDevice.uniqueConfigurations
-                    }
-                }
-
-                ListView
-                {
-                    id: configurationList
-                    anchors.top: printerTypeHeader.bottom
-                    anchors.topMargin: UM.Theme.getSize("default_margin").height
-                    spacing: Math.round(UM.Theme.getSize("default_margin").height / 2)
-                    width: container.width
-                    height: childrenRect.height
-                    model: outputDevice.uniqueConfigurations
-                    delegate: ConfigurationItem
-                    {
-                        width: parent.width
-                        configuration: modelData
-                        onActivateConfiguration:
-                        {
-                            Cura.MachineManager.applyRemoteConfiguration(configuration)
-                        }
-                    }
+                    Cura.MachineManager.applyRemoteConfiguration(configuration)
                 }
             }
+        }
+    }
+
+    Connections
+    {
+        target: outputDevice
+        onUniqueConfigurationsChanged:
+        {
+            // FIXME For now the model should be removed and then created again, otherwise changes in the printer don't automatically update the UI
+            configurationList.model = null
+            configurationList.model = outputDevice.uniqueConfigurations
         }
     }
 }
