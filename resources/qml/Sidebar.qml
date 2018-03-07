@@ -88,10 +88,20 @@ Rectangle
 
     MachineSelection {
         id: machineSelection
-        width: base.width - configSelection.width
+        width: base.width - configSelection.width - separator.width
         height: UM.Theme.getSize("sidebar_header").height
         anchors.top: base.top
         anchors.left: parent.left
+    }
+
+    Rectangle
+    {
+        id: separator
+        visible: configSelection.visible
+        width: visible ? Math.round(UM.Theme.getSize("sidebar_lining_thin").height / 2) : 0
+        height: UM.Theme.getSize("sidebar_header").height
+        color: UM.Theme.getColor("sidebar_lining_thin")
+        anchors.left: machineSelection.right
     }
 
     ConfigurationSelection {
