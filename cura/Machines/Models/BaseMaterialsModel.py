@@ -40,8 +40,6 @@ class BaseMaterialsModel(ListModel):
         self._extruder_position = 0
         self._extruder_stack = None
 
-        self._machine_manager.globalContainerChanged.connect(self._updateExtruderStack)
-
     def _updateExtruderStack(self):
         global_stack = self._machine_manager.activeMachine
         if global_stack is None:
