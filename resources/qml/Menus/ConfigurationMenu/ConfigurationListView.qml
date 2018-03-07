@@ -57,7 +57,7 @@ Column
             section.criteria: ViewSection.FullString
             section.delegate: sectionHeading
 
-            model: outputDevice.uniqueConfigurations
+            model: (ouputDevice != null) ? outputDevice.uniqueConfigurations : []
             delegate: ConfigurationItem
             {
                 width: parent.width - UM.Theme.getSize("default_margin").width

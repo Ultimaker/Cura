@@ -452,6 +452,12 @@ class MachineManager(QObject):
         return bool(self._stacks_have_errors)
 
     @pyqtProperty(str, notify = globalContainerChanged)
+    def activeMachineDefinitionName(self) -> str:
+        if self._global_container_stack:
+            return self._global_container_stack.definition.getName()
+        return ""
+
+    @pyqtProperty(str, notify = globalContainerChanged)
     def activeMachineName(self) -> str:
         if self._global_container_stack:
             return self._global_container_stack.getName()
@@ -1023,6 +1029,17 @@ class MachineManager(QObject):
                 new_material = candidate_materials[current_material_base_name]
                 self._setMaterial(position, new_material)
                 continue
+
+    def switchPrinterType(self, machine_type):
+        container_registry = ContainerRegistry.getInstance()
+        machine_definition = container_registry.findDefinitionContainers(name = machine_type)[0]
+        self._global_container_stack.definition = machine_definition
+        self.globalContainerChanged.emit()
+        # machine_stack = CuraStackBuilder.createMachine("ultimaker_s5" + "_instance", "ultimaker_s5")
+        # # if not machine_stack:
+        # #     raise Exception("No machine found for ID {}".format(machine_id))
+        # Logger.log("d", "Setting active machine to %s", machine_stack.getId())
+        # self.setActiveMachine(machine_stack.getId())
 
     @pyqtSlot(QObject)
     def applyRemoteConfiguration(self, configuration: ConfigurationModel):

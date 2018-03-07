@@ -18,13 +18,16 @@ Button
 
     function updateOnSync()
     {
-        for (var index in outputDevice.uniqueConfigurations)
+        if (outputDevice != undefined)
         {
-            var configuration = outputDevice.uniqueConfigurations[index]
-            if (Cura.MachineManager.matchesConfiguration(configuration))
+            for (var index in outputDevice.uniqueConfigurations)
             {
-                base.text = catalog.i18nc("@label:sync indicator", "Matched")
-                return
+                var configuration = outputDevice.uniqueConfigurations[index]
+                if (Cura.MachineManager.matchesConfiguration(configuration))
+                {
+                    base.text = catalog.i18nc("@label:sync indicator", "Matched")
+                    return
+                }
             }
         }
         base.text = catalog.i18nc("@label:sync indicator", "No match")

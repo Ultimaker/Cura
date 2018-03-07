@@ -17,6 +17,7 @@ Column
     property int currentExtruderIndex: Cura.ExtruderManager.activeExtruderIndex;
     property bool currentExtruderVisible: extrudersList.visible;
     property bool printerConnected: Cura.MachineManager.printerOutputDevices.length != 0
+    property bool hasManyPrinterTypes: printerConnected ? Cura.MachineManager.printerOutputDevices[0].connectedPrintersTypeCount.length > 1 : false
 
     spacing: Math.round(UM.Theme.getSize("sidebar_margin").width * 0.9)
 
@@ -33,45 +34,6 @@ Column
         visible: extruderSelectionRow.visible
         height: UM.Theme.getSize("default_lining").height
         width: height
-    }
-
-    // Printer Type Row
-    Item
-    {
-        id: printerTypeSelectionRow
-        height: UM.Theme.getSize("sidebar_setup").height
-        visible: printerConnected && !sidebar.monitoringPrint && !sidebar.hideSettings
-
-        anchors
-        {
-            left: parent.left
-            leftMargin: UM.Theme.getSize("sidebar_margin").width
-            right: parent.right
-            rightMargin: UM.Theme.getSize("sidebar_margin").width
-        }
-
-        Label
-        {
-            id: configurationLabel
-            text: catalog.i18nc("@label", "Printer type");
-            width: Math.round(parent.width * 0.4 - UM.Theme.getSize("default_margin").width)
-            height: parent.height
-            verticalAlignment: Text.AlignVCenter
-            font: UM.Theme.getFont("default");
-            color: UM.Theme.getColor("text");
-        }
-
-        ToolButton
-        {
-            id: printerTypeSelection
-            text: catalog.i18nc("@label", "Printer type");
-            height: UM.Theme.getSize("setting_control").height
-            width: Math.round(parent.width * 0.7) + UM.Theme.getSize("sidebar_margin").width
-            anchors.right: parent.right
-            style: UM.Theme.styles.sidebar_header_button
-            activeFocusOnPress: true;
-            menu: PrinterTypeMenu { }
-        }
     }
 
     // Extruder Row
@@ -262,6 +224,47 @@ Column
         height: Math.round(UM.Theme.getSize("sidebar_margin").height / 4)
         width: height
         visible: !extruderSelectionRow.visible
+    }
+
+    // Printer Type Row
+    Item
+    {
+        id: printerTypeSelectionRow
+        height: UM.Theme.getSize("sidebar_setup").height
+        visible: printerConnected && hasManyPrinterTypes && !sidebar.monitoringPrint && !sidebar.hideSettings
+
+        anchors
+        {
+            left: parent.left
+            leftMargin: UM.Theme.getSize("sidebar_margin").width
+            right: parent.right
+            rightMargin: UM.Theme.getSize("sidebar_margin").width
+        }
+
+        Label
+        {
+            id: configurationLabel
+            text: catalog.i18nc("@label", "Printer type");
+            width: Math.round(parent.width * 0.4 - UM.Theme.getSize("default_margin").width)
+            height: parent.height
+            verticalAlignment: Text.AlignVCenter
+            font: UM.Theme.getFont("default");
+            color: UM.Theme.getColor("text");
+        }
+
+        ToolButton
+        {
+            id: printerTypeSelection
+            text: Cura.MachineManager.activeMachineDefinitionName
+            tooltip: Cura.MachineManager.activeMachineDefinitionName
+            height: UM.Theme.getSize("setting_control").height
+            width: Math.round(parent.width * 0.7) + UM.Theme.getSize("sidebar_margin").width
+            anchors.right: parent.right
+            style: UM.Theme.styles.sidebar_header_button
+            activeFocusOnPress: true;
+
+            menu: PrinterTypeMenu { }
+        }
     }
 
     // Material Row

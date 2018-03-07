@@ -1,8 +1,8 @@
 // Copyright (c) 2018 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
-import QtQuick 2.2
-import QtQuick.Controls 1.1
+import QtQuick 2.7
+import QtQuick.Controls 1.4
 
 import UM 1.3 as UM
 import Cura 1.0 as Cura
@@ -16,12 +16,12 @@ Menu
     Instantiator
     {
         id: printerTypeInstantiator
-        model: outputDevice != null ? outputDevice.connectedPrintersTypeCount : null
+        model: outputDevice != null ? outputDevice.connectedPrintersTypeCount : []
 
         MenuItem {
             text: modelData.machine_type
             checkable: true
-            checked: false
+            checked: Cura.MachineManager.activeMachineDefinitionName == modelData.machine_type
             exclusiveGroup: group
 //            onTriggered:
 //            {
