@@ -41,7 +41,7 @@ Column
     {
         id: container
         width: parent.width - parent.padding
-        height: Math.min(configurationList.contentHeight, 300 * screenScaleFactor)
+        height: Math.min(configurationList.contentHeight, 350 * screenScaleFactor)
 
         style: UM.Theme.styles.scrollview
         __wheelAreaScrollSpeed: 75 // Scroll three lines in one scroll event
