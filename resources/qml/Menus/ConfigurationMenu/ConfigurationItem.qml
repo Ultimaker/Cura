@@ -77,7 +77,6 @@ Rectangle
             UM.RecolorImage {
                 id: buildplateIcon
                 anchors.left: parent.left
-                anchors.verticalCenter: parent.verticalCenter
                 width: UM.Theme.getSize("topbar_button_icon").width
                 height: UM.Theme.getSize("topbar_button_icon").height
                 sourceSize.width: width
@@ -90,7 +89,7 @@ Rectangle
             {
                 id: buildplateLabel
                 anchors.left: buildplateIcon.right
-                anchors.verticalCenter: parent.verticalCenter
+                anchors.verticalCenter: buildplateIcon.verticalCenter
                 anchors.leftMargin: Math.round(UM.Theme.getSize("default_margin").height / 2)
                 text: configuration.buildplateConfiguration
                 color: textColor

@@ -27,7 +27,6 @@ Column
             id: extruderLabel
             text: catalog.i18nc("@label:extruder label", "Extruder")
             elide: Text.ElideRight
-            anchors.verticalCenter: parent.verticalCenter
             anchors.left: parent.left
             font: UM.Theme.getFont("default")
             color: mainColor
@@ -37,7 +36,7 @@ Column
         Item
         {
             id: extruderIconItem
-            anchors.verticalCenter: parent.verticalCenter
+            anchors.verticalCenter: extruderLabel.verticalCenter
             anchors.left: extruderLabel.right
             anchors.leftMargin: Math.round(UM.Theme.getSize("default_margin").width / 2)
 

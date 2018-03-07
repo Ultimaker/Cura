@@ -11,7 +11,7 @@ import Cura 1.0 as Cura
 Button
 {
     id: base
-    property var outputDevice: Cura.MachineManager.printerOutputDevices[0] != null ? Cura.MachineManager.printerOutputDevices[0] : null
+    property var outputDevice: Cura.MachineManager.printerOutputDevices[0]
     text: catalog.i18nc("@label:sync indicator", "No match")
     width: parent.width
     height: parent.height
