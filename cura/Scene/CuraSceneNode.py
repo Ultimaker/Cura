@@ -78,6 +78,7 @@ class CuraSceneNode(SceneNode):
             1.0
         ]
 
+    ##  Return if the provided bbox collides with the bbox of this scene node
     def collidesWithBbox(self, check_bbox):
         bbox = self.getBoundingBox()
 
@@ -87,6 +88,7 @@ class CuraSceneNode(SceneNode):
 
         return False
 
+    ##  Return if any area collides with the convex hull of this scene node
     def collidesWithArea(self, areas):
         convex_hull = self.callDecoration("getConvexHull")
         if convex_hull:
