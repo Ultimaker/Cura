@@ -196,7 +196,7 @@ class MachineManager(QObject):
             extruder_configuration.hotendID = extruder.variant.getName() if extruder.variant != self._empty_variant_container else None
             self._current_printer_configuration.extruderConfigurations.append(extruder_configuration)
 
-        self._current_printer_configuration.buildplateConfiguration = self._global_container_stack.variant.getName() if self._global_container_stack.variant != self._empty_variant_container else None
+        self._current_printer_configuration.buildplateConfiguration = self._global_container_stack.getProperty("machine_buildplate_type", "value") if self._global_container_stack.variant != self._empty_variant_container else None
         self.currentConfigurationChanged.emit()
 
     @pyqtSlot(QObject, result = bool)
@@ -1027,23 +1027,17 @@ class MachineManager(QObject):
     @pyqtSlot(QObject)
     def applyRemoteConfiguration(self, configuration: ConfigurationModel):
         self.blurSettings.emit()
-        with postponeSignals(*self._getContainerChangedSignals(),
-                             compress=CompressTechnique.CompressPerParameterValue):
+        with postponeSignals(*self._getContainerChangedSignals(), compress = CompressTechnique.CompressPerParameterValue):
             for extruder_configuration in configuration.extruderConfigurations:
                 position = str(extruder_configuration.position)
-                variant_container_node = self._variant_manager.getVariantNode(
-                    self._global_container_stack.definition.getId(), extruder_configuration.hotendID)
-                material_container_node = self._material_manager.getMaterialNodeByType(
-                    self._global_container_stack, extruder_configuration.hotendID,
-                    extruder_configuration.material.guid)
+                variant_container_node = self._variant_manager.getVariantNode(self._global_container_stack.definition.getId(), extruder_configuration.hotendID)
+                material_container_node = self._material_manager.getMaterialNodeByType(self._global_container_stack, extruder_configuration.hotendID,extruder_configuration.material.guid)
                 self._setVariantNode(position, variant_container_node)
                 self._setMaterial(position, material_container_node)
                 self._updateMaterialWithVariant(position)
 
             if configuration.buildplateConfiguration is not None:
-                global_variant_container_node = self._variant_manager.getVariantNode(
-                    self._global_container_stack.definition.getId(), configuration.buildplateConfiguration,
-                    variant_type=VariantType.BUILD_PLATE)
+                global_variant_container_node = self._variant_manager.getBuildplateVariantNode(self._global_container_stack.definition.getId(), configuration.buildplateConfiguration)
                 self._setGlobalVariant(global_variant_container_node)
             self._updateQualityWithMaterial()
 

@@ -381,7 +381,7 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
         printer.updateKey(data["uuid"])
         printer.updateType(data["machine_variant"])
         if "build_plate" in data:
-            printer.updateBuildplate(data["build_plate"]["name"])
+            printer.updateBuildplate(data["build_plate"]["type"])
         if not data["enabled"]:
             printer.updateState("disabled")
         else:
