@@ -391,8 +391,6 @@ class ContainerManager(QObject):
         return ContainerManager.getInstance()
 
     def _performMerge(self, merge_into, merge, clear_settings = True):
-        assert isinstance(merge, type(merge_into))
-
         if merge == merge_into:
             return
 
