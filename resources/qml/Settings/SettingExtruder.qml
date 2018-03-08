@@ -17,7 +17,8 @@ SettingItem
         id: control
         anchors.fill: parent
 
-        model: Cura.ExtrudersModel {
+        model: Cura.ExtrudersModel
+        {
             onModelChanged: {
                 control.color = getItem(control.currentIndex).color;
             }
@@ -27,10 +28,12 @@ SettingItem
 
         onActivated:
         {
-            if (model.getItem(index).enabled) {
+            if (model.getItem(index).enabled)
+            {
                 forceActiveFocus();
                 propertyProvider.setPropertyValue("value", model.getItem(index).index);
-            } else {
+            } else
+            {
                 currentIndex = propertyProvider.properties.value;  // keep the old value
             }
         }
