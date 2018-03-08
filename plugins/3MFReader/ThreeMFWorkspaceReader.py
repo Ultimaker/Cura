@@ -97,6 +97,14 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         # In Cura 2.5 and 2.6, the empty profiles used to have those long names
         self._old_empty_profile_id_dict = {"empty_%s" % k: "empty" for k in ["material", "variant"]}
 
+        self._old_new_materials = {}
+        self._materials_to_select = {}
+
+    def _clearState(self):
+        self._id_mapping = {}
+        self._old_new_materials = {}
+        self._materials_to_select = {}
+
     ##  Get a unique name based on the old_id. This is different from directly calling the registry in that it caches results.
     #   This has nothing to do with speed, but with getting consistent new naming for instances & objects.
     def getNewId(self, old_id):
@@ -449,10 +457,15 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         # To avoid this, we postpone all signals so they don't get emitted immediately. But, please also be aware that,
         # because of this, do not expect to have the latest data in the lookup tables in project loading.
         #
-        with postponeSignals(*signals, compress = CompressTechnique.CompressSingle):
+        with postponeSignals(*signals, compress = CompressTechnique.NoCompression):
             return self._read(file_name)
 
     def _read(self, file_name):
+        application = CuraApplication.getInstance()
+        material_manager = application.getMaterialManager()
+
+        self._clearState()
+
         archive = zipfile.ZipFile(file_name, "r")
 
         cura_file_names = [name for name in archive.namelist() if name.startswith("Cura/")]
@@ -545,31 +558,41 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         if self._material_container_suffix is None:
             self._material_container_suffix = ContainerRegistry.getMimeTypeForContainer(xml_material_profile).suffixes[0]
         if xml_material_profile:
+            to_deserialize_material = False
             material_container_files = [name for name in cura_file_names if name.endswith(self._material_container_suffix)]
             for material_container_file in material_container_files:
                 container_id = self._stripFileToId(material_container_file)
+                need_new_name = False
                 materials = self._container_registry.findInstanceContainers(id = container_id)
 
                 if not materials:
-                    material_container = xml_material_profile(container_id)
-                    material_container.deserialize(archive.open(material_container_file).read().decode("utf-8"),
-                                                   file_name = material_container_file)
-                    containers_to_add.append(material_container)
+                    # No material found, deserialize this material later and add it
+                    to_deserialize_material = True
                 else:
                     material_container = materials[0]
+                    old_material_root_id = material_container.getMetaDataEntry("base_file")
                     if not self._container_registry.isReadOnly(container_id):  # Only create new materials if they are not read only.
+                        to_deserialize_material = True
+
                         if self._resolve_strategies["material"] == "override":
-                            material_container.deserialize(archive.open(material_container_file).read().decode("utf-8"),
-                                                           file_name = material_container_file)
+                            # Remove the old materials and then deserialize the one from the project
+                            root_material_id = material_container.getMetaDataEntry("base_file")
+                            material_manager.removeMaterialByRootId(root_material_id)
                         elif self._resolve_strategies["material"] == "new":
                             # Note that we *must* deserialize it with a new ID, as multiple containers will be
                             # auto created & added.
-                            material_container = xml_material_profile(self.getNewId(container_id))
-                            material_container.deserialize(archive.open(material_container_file).read().decode("utf-8"),
-                                                           file_name = material_container_file)
-                            containers_to_add.append(material_container)
+                            container_id = self.getNewId(container_id)
+                            self._old_new_materials[old_material_root_id] = container_id
+                            need_new_name = True
 
-                material_containers.append(material_container)
+                if to_deserialize_material:
+                    material_container = xml_material_profile(container_id)
+                    material_container.deserialize(archive.open(material_container_file).read().decode("utf-8"),
+                                                   file_name = container_id + "." + self._material_container_suffix)
+                    if need_new_name:
+                        new_name = ContainerRegistry.getInstance().uniqueName(material_container.getName())
+                        material_container.setName(new_name)
+                    containers_to_add.append(material_container)
                 Job.yieldThread()
 
         Logger.log("d", "Workspace loading is checking instance containers...")
@@ -1081,11 +1104,18 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                         old_to_new_material_dict[old_id] = each_material
                         break
 
+            global_stack.quality = empty_quality_container
+
             # replace old material in global and extruder stacks with new
             self._replaceStackMaterialWithNew(global_stack, old_to_new_material_dict)
             if extruder_stacks:
-                for each_extruder_stack in extruder_stacks:
-                    self._replaceStackMaterialWithNew(each_extruder_stack, old_to_new_material_dict)
+                for extruder_stack in extruder_stacks:
+                    if extruder_stack.material.getId() in ("empty", "empty_material"):
+                        continue
+                    old_root_material_id = extruder_stack.material.getMetaDataEntry("base_file")
+                    if old_root_material_id in self._old_new_materials:
+                        new_root_material_id = self._old_new_materials[old_root_material_id]
+                        self._materials_to_select[extruder_stack.getMetaDataEntry("position")] = new_root_material_id
 
         if extruder_stacks:
             for stack in extruder_stacks:
@@ -1123,6 +1153,22 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
     def _updateActiveMachine(self, global_stack):
         # Actually change the active machine.
         machine_manager = Application.getInstance().getMachineManager()
+        material_manager = Application.getInstance().getMaterialManager()
+
+        # Switch materials if new materials are created due to conflicts
+        # We do it here because MaterialManager hasn't been updated in _read() yet.
+        for position, root_material_id in self._materials_to_select.items():
+            extruder_stack = global_stack.extruders[position]
+            material_diameter = extruder_stack.materialDiameter
+            material_node = material_manager.getMaterialNode(global_stack.getMetaDataEntry("definition"),
+                                                             extruder_stack.variant.getName(),
+                                                             material_diameter, root_material_id)
+            if material_node is None:
+                Application.getInstance().callLater(self._updateActiveMachine, global_stack)
+                return
+            extruder_stack.material = material_node.getContainer()
+            Logger.log("d", "Changed extruder [%s] to material [%s]", position, root_material_id)
+
         machine_manager.setActiveMachine(global_stack.getId())
 
         # Notify everything/one that is to notify about changes.
