@@ -78,7 +78,7 @@ Button
                 anchors.right: downArrow.left
                 anchors.rightMargin: control.rightMargin
                 anchors.verticalCenter: parent.verticalCenter;
-                font: UM.Theme.getFont("medium_bold")
+                font: UM.Theme.getFont("medium")
             }
         }
         label: Label {}
