@@ -11,7 +11,8 @@ import Cura 1.0 as Cura
 import "Menus"
 
 ToolButton {
-    property bool printerConnected: Cura.MachineManager.printerOutputDevices.length != 0
+    property var isNetworkPrinter: Cura.MachineManager.activeMachineNetworkKey ? true : false
+    property var printerStatus: Cura.MachineManager.printerOutputDevices.length != 0 ? "connected" : "unknown"
     text: Cura.MachineManager.activeMachineName
 
     tooltip: Cura.MachineManager.activeMachineName
@@ -45,7 +46,8 @@ ToolButton {
             }
 
             PrinterStatusIcon {
-                visible: printerConnected
+                visible: isNetworkPrinter
+                status: printerStatus
                 anchors {
                     verticalCenter: parent.verticalCenter
                     left: parent.left
@@ -59,7 +61,7 @@ ToolButton {
                 text: control.text;
                 elide: Text.ElideRight;
                 anchors.left: parent.left;
-                anchors.leftMargin: printerConnected ? UM.Theme.getSize("default_margin").width * 3 : UM.Theme.getSize("default_margin").width * 2
+                anchors.leftMargin: isNetworkPrinter ? UM.Theme.getSize("default_margin").width * 3 : UM.Theme.getSize("default_margin").width * 2
                 anchors.right: downArrow.left;
                 anchors.rightMargin: control.rightMargin;
                 anchors.verticalCenter: parent.verticalCenter;

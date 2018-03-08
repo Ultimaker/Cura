@@ -307,7 +307,14 @@
         "configuration_item_text_active": [0, 0, 0, 255],
         "configuration_item_border": [127, 127, 127, 255],
         "configuration_item_border_active": [12, 169, 227, 32],
-        "configuration_item_border_hover": [12, 169, 227, 255]
+        "configuration_item_border_hover": [12, 169, 227, 255],
+
+        "tab_status_busy": [255, 255, 255, 255],
+        "tab_status_connected": [12, 169, 227, 255],
+        "tab_status_finished": [255, 255, 255, 255],
+        "tab_status_paused": [255, 255, 255, 255],
+        "tab_status_stopped": [255, 255, 255, 255],
+        "tab_status_unknown": [200, 200, 200, 255]
     },
 
     "sizes": {
@@ -360,7 +367,7 @@
         "small_button": [2, 2],
         "small_button_icon": [1.5, 1.5],
 
-        "status_icon": [1.0, 1.0],
+        "printer_status_icon": [1.0, 1.0],
 
         "topbar_logo_right_margin": [3, 0],
         "topbar_button": [8, 4],

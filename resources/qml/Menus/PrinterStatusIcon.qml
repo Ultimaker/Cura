@@ -10,16 +10,17 @@ import UM 1.2 as UM
 import Cura 1.0 as Cura
 
 Item {
-    property bool printerConnected: Cura.MachineManager.printerOutputDevices.length != 0
+    property var status: "unknown"
     width: childrenRect.width
     height: childrenRect.height
-    Image {
+    UM.RecolorImage {
         id: statusIcon
-        width: UM.Theme.getSize("status_icon").width
-        height: UM.Theme.getSize("status_icon").height
+        width: UM.Theme.getSize("printer_status_icon").width
+        height: UM.Theme.getSize("printer_status_icon").height
         sourceSize.width: width
         sourceSize.height: width
-        source: printerConnected ? UM.Theme.getIcon("tab_status_connected") : UM.Theme.getIcon("tab_status_busy")
+        color: UM.Theme.getColor("tab_status_" + parent.status )
+        source: UM.Theme.getIcon("tab_status_" + parent.status )
     }
 }
 
