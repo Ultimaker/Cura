@@ -722,12 +722,9 @@ class MachineManager(QObject):
                 continue
 
             old_value = self._global_container_stack.userChanges.getProperty(setting_key, "value")
-            if int(old_value) >= extruder_count:
+            if int(old_value) >= extruder_count or not self._global_container_stack.extruders[str(old_value)].isEnabled:
                 self._global_container_stack.userChanges.removeInstance(setting_key)
                 Logger.log("d", "Reset setting [%s] because its old value [%s] is no longer valid", setting_key, old_value)
-            if not self._global_container_stack.extruders[str(old_value)].isEnabled:
-                self._global_container_stack.userChanges.removeInstance(setting_key)
-                Logger.log("d", "Reset setting [%s] because its old value [%s] is no longer valid (2)", setting_key, old_value)
 
     ##  Set the amount of extruders on the active machine (global stack)
     #   \param extruder_count int the number of extruders to set
