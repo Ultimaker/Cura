@@ -14,24 +14,50 @@ Item
     property var panelWidth: control.width
     property var panelVisible: false
 
-    SyncButton { }
+    SyncButton {
+        onClicked: configurationSelector.state == "open" ? configurationSelector.state = "closed" : configurationSelector.state = "open"
+    }
 
-    Popup
-    {
+    Popup {
         id: popup
+        clip: true
         y: configurationSelector.height - UM.Theme.getSize("default_lining").height
         x: configurationSelector.width - width
         width: panelWidth
         visible: panelVisible
         padding: UM.Theme.getSize("default_lining").width
-
         contentItem: ConfigurationListView {
+            id: configList
             width: panelWidth - 2 * popup.padding
         }
-
         background: Rectangle {
             color: UM.Theme.getColor("setting_control")
             border.color: UM.Theme.getColor("setting_control_border")
         }
     }
+
+    states: [
+        // This adds a second state to the container where the rectangle is farther to the right
+        State {
+            name: "open"
+            PropertyChanges {
+                target: popup
+                height: configList.computedHeight
+            }
+        },
+        State {
+            name: "closed"
+            PropertyChanges {
+                target: popup
+                height: 0
+            }
+        }
+    ]
+    transitions: [
+        // This adds a transition that defaults to applying to all state changes
+        Transition {
+            // This applies a default NumberAnimation to any changes a state change makes to x or y properties
+            NumberAnimation { properties: "height"; duration: 200; easing.type: Easing.InOutQuad; }
+        }
+    ]
 }

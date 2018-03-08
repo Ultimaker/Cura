@@ -12,12 +12,14 @@ Column
 {
     id: base
     property var outputDevice: Cura.MachineManager.printerOutputDevices[0]
+    property var computedHeight: container.height + configurationListHeading.height + 3 * padding
     height: childrenRect.height + 2 * padding
     padding: UM.Theme.getSize("default_margin").width
     spacing: Math.round(UM.Theme.getSize("default_margin").height / 2)
 
     Label
     {
+        id: configurationListHeading
         text: catalog.i18nc("@label:header configurations", "Available configurations")
         font: UM.Theme.getFont("large")
         width: parent.width - 2 * parent.padding
