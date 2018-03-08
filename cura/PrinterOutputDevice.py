@@ -74,6 +74,7 @@ class PrinterOutputDevice(QObject, OutputDevice):
         self._address = ""
         self._connection_text = ""
         self.printersChanged.connect(self._onPrintersChanged)
+        Application.getInstance().getOutputDeviceManager().outputDevicesChanged.connect(self._updateUniqueConfigurations)
 
     @pyqtProperty(str, notify = connectionTextChanged)
     def address(self):
