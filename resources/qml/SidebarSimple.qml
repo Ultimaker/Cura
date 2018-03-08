@@ -67,7 +67,7 @@ Item
 
                 Connections
                 {
-                    target: Cura.QualityProfilesModel
+                    target: Cura.QualityProfilesDropDownMenuModel
                     onItemsChanged: qualityModel.update()
                 }
 
