@@ -299,6 +299,7 @@ class MachineManager(QObject):
         containers = container_registry.findContainerStacks(id = stack_id)
         if containers:
             global_stack = containers[0]
+            self._default_extruder_position = "0"  # start off with position 0, later on update the default extruder
             ExtruderManager.getInstance().setActiveExtruderIndex(0)  # Switch to first extruder
             self._global_container_stack = global_stack
             Application.getInstance().setGlobalContainerStack(global_stack)
