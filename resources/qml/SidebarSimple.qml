@@ -19,7 +19,7 @@ Item
     property Action configureSettings;
     property variant minimumPrintTime: PrintInformation.minimumPrintTime;
     property variant maximumPrintTime: PrintInformation.maximumPrintTime;
-    property bool settingsEnabled: Cura.ExtruderManager.activeExtruderStackId || machineExtruderCount.properties.value == 1
+    property bool settingsEnabled: Cura.ExtruderManager.activeExtruderStackId || extrudersEnabledCount.properties.value == 1
 
     Component.onCompleted: PrintInformation.enabled = true
     Component.onDestruction: PrintInformation.enabled = false
@@ -804,7 +804,7 @@ Item
             ComboBox
             {
                 id: supportExtruderCombobox
-                visible: enableSupportCheckBox.visible && (supportEnabled.properties.value == "True") && (machineExtruderCount.properties.value > 1)
+                visible: enableSupportCheckBox.visible && (supportEnabled.properties.value == "True") && (extrudersEnabledCount.properties.value > 1)
                 model: extruderModel
 
                 property string color_override: ""  // for manually setting values
@@ -819,11 +819,11 @@ Item
                 textRole: "text"  // this solves that the combobox isn't populated in the first time Cura is started
 
                 anchors.top: enableSupportCheckBox.bottom
-                anchors.topMargin: ((supportEnabled.properties.value === "True") && (machineExtruderCount.properties.value > 1)) ? UM.Theme.getSize("sidebar_margin").height : 0
+                anchors.topMargin: ((supportEnabled.properties.value === "True") && (extrudersEnabledCount.properties.value > 1)) ? UM.Theme.getSize("sidebar_margin").height : 0
                 anchors.left: infillCellRight.left
 
                 width: Math.round(UM.Theme.getSize("sidebar").width * .55)
-                height: ((supportEnabled.properties.value == "True") && (machineExtruderCount.properties.value > 1)) ? UM.Theme.getSize("setting_control").height : 0
+                height: ((supportEnabled.properties.value == "True") && (extrudersEnabledCount.properties.value > 1)) ? UM.Theme.getSize("setting_control").height : 0
 
                 Behavior on height { NumberAnimation { duration: 100 } }
 
@@ -1020,9 +1020,9 @@ Item
 
             UM.SettingPropertyProvider
             {
-                id: machineExtruderCount
+                id: extrudersEnabledCount
                 containerStackId: Cura.MachineManager.activeMachineId
-                key: "machine_extruder_count"
+                key: "extruders_enabled_count"
                 watchedProperties: [ "value" ]
                 storeIndex: 0
             }
