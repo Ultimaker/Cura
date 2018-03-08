@@ -217,7 +217,6 @@ class PrintInformation(QObject):
             amount = self._material_amounts[index]
             ## Find the right extruder stack. As the list isn't sorted because it's a annoying generator, we do some
             #  list comprehension filtering to solve this for us.
-            material = None
             if extruder_stacks:  # Multi extrusion machine
                 stack = [extruder for extruder in extruder_stacks if extruder.getMetaDataEntry("position") == str(index)][0]
             else:  # Machine with no extruder stacks
