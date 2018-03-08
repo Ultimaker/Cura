@@ -1068,7 +1068,10 @@ class MachineManager(QObject):
 
             if configuration.buildplateConfiguration is not None:
                 global_variant_container_node = self._variant_manager.getBuildplateVariantNode(self._global_container_stack.definition.getId(), configuration.buildplateConfiguration)
-                self._setGlobalVariant(global_variant_container_node)
+                if global_variant_container_node:
+                    self._setGlobalVariant(global_variant_container_node)
+                else:
+                    self._global_container_stack.variant = self._empty_variant_container
             else:
                 self._global_container_stack.variant = self._empty_variant_container
             self._updateQualityWithMaterial()

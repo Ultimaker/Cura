@@ -132,4 +132,6 @@ class VariantManager:
         return node
 
     def getBuildplateVariantNode(self, machine_definition_id: str, buildplate_type: str) -> Optional["ContainerNode"]:
-        return self._machine_to_buildplate_dict_map[machine_definition_id].get(buildplate_type)
+        if machine_definition_id in self._machine_to_buildplate_dict_map:
+            return self._machine_to_buildplate_dict_map[machine_definition_id].get(buildplate_type)
+        return None
