@@ -980,7 +980,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                 Logger.log("e", "Could not find quality_changes [%s]", self._quality_changes_to_apply)
                 return
             quality_changes_group = quality_changes_group_dict[self._quality_changes_to_apply]
-            machine_manager.setQualityChangesGroup(quality_changes_group)
+            machine_manager.setQualityChangesGroup(quality_changes_group, no_dialog = True)
         else:
             self._quality_type_to_apply = self._quality_type_to_apply.lower()
             quality_group_dict = quality_manager.getQualityGroups(global_stack)
@@ -995,7 +995,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                     Logger.log("e", "Could not get preferred quality type [%s]", preferred_quality_type)
 
             if quality_group is not None:
-                machine_manager.setQualityGroup(quality_group)
+                machine_manager.setQualityGroup(quality_group, no_dialog = True)
 
         # Notify everything/one that is to notify about changes.
         global_stack.containersChanged.emit(global_stack.getTop())
