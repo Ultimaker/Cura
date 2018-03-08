@@ -1689,7 +1689,7 @@ class CuraApplication(QtApplication):
             result = workspace_reader.preRead(file_path, show_dialog=False)
             return result == WorkspaceReader.PreReadResult.accepted
         except Exception as e:
-            Logger.log("e", "Could not check file %s: %s", file_url, e)
+            Logger.logException("e", "Could not check file %s: %s", file_url)
             return False
 
     def _onContextMenuRequested(self, x: float, y: float) -> None:
