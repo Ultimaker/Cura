@@ -367,7 +367,7 @@
         "small_button": [2, 2],
         "small_button_icon": [1.5, 1.5],
 
-        "printer_status_icon": [1.0, 1.0],
+        "printer_status_icon": [1.2, 1.2],
 
         "topbar_logo_right_margin": [3, 0],
         "topbar_button": [8, 4],

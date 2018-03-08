@@ -46,12 +46,13 @@ ToolButton {
             }
 
             PrinterStatusIcon {
+                id: printerStatusIcon
                 visible: isNetworkPrinter
                 status: printerStatus
                 anchors {
                     verticalCenter: parent.verticalCenter
                     left: parent.left
-                    leftMargin: UM.Theme.getSize("default_margin").width
+                    leftMargin: UM.Theme.getSize("sidebar_margin").width
                 }
             }
 
@@ -60,8 +61,8 @@ ToolButton {
                 color: UM.Theme.getColor("sidebar_header_text_active")
                 text: control.text;
                 elide: Text.ElideRight;
-                anchors.left: parent.left;
-                anchors.leftMargin: isNetworkPrinter ? UM.Theme.getSize("default_margin").width * 3 : UM.Theme.getSize("default_margin").width * 2
+                anchors.left: isNetworkPrinter ? printerStatusIcon.right : parent.left;
+                anchors.leftMargin: isNetworkPrinter ? UM.Theme.getSize("sidebar_lining").width : UM.Theme.getSize("sidebar_margin").width
                 anchors.right: downArrow.left;
                 anchors.rightMargin: control.rightMargin;
                 anchors.verticalCenter: parent.verticalCenter;
