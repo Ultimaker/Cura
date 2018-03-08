@@ -192,6 +192,9 @@ class MachineManager(QObject):
 
         # Update the local global container stack reference
         self._global_container_stack = Application.getInstance().getGlobalContainerStack()
+        if self._global_container_stack:
+            self.updateDefaultExtruder()
+            self.updateNumberExtrudersEnabled()
         self.globalContainerChanged.emit()
 
         # after switching the global stack we reconnect all the signals and set the variant and material references
@@ -299,14 +302,11 @@ class MachineManager(QObject):
         containers = container_registry.findContainerStacks(id = stack_id)
         if containers:
             global_stack = containers[0]
-            self._default_extruder_position = "0"  # start off with position 0, later on update the default extruder
             ExtruderManager.getInstance().setActiveExtruderIndex(0)  # Switch to first extruder
             self._global_container_stack = global_stack
             Application.getInstance().setGlobalContainerStack(global_stack)
             ExtruderManager.getInstance()._globalContainerStackChanged()
             self._initMachineState(containers[0])
-            self.updateDefaultExtruder()
-            self.updateNumberExtrudersEnabled()
             self._onGlobalContainerChanged()
 
         self.__emitChangedSignals()
