@@ -881,7 +881,7 @@ class MachineManager(QObject):
             quality_node = quality_group.nodes_for_extruders.get(position)
 
             quality_changes_container = self._empty_quality_changes_container
-            quality_container = self._empty_quality_changes_container
+            quality_container = self._empty_quality_container
             if quality_changes_node:
                 quality_changes_container = quality_changes_node.getContainer()
             if quality_node:
