@@ -69,7 +69,6 @@ Item
     property alias configureSettingVisibility: configureSettingVisibilityAction
 
     property alias browsePlugins: browsePluginsAction
-    property alias configurePlugins: configurePluginsAction
 
     UM.I18nCatalog{id: catalog; name:"cura"}
 
@@ -173,7 +172,7 @@ Item
     Action
     {
         id: updateProfileAction;
-        enabled: !Cura.MachineManager.stacksHaveErrors && Cura.MachineManager.hasUserSettings && !Cura.MachineManager.isReadOnly(Cura.MachineManager.activeQualityId)
+        enabled: !Cura.MachineManager.stacksHaveErrors && Cura.MachineManager.hasUserSettings && Cura.MachineManager.activeQualityChangesGroup != null
         text: catalog.i18nc("@action:inmenu menubar:profile","&Update profile with current settings/overrides");
         onTriggered: Cura.ContainerManager.updateQualityChanges();
     }
@@ -235,6 +234,16 @@ Item
         iconName: "edit-delete";
         shortcut: StandardKey.Delete;
         onTriggered: CuraActions.deleteSelection();
+    }
+
+    Action //Also add backspace as the same function as delete because on Macintosh keyboards the button called "delete" is actually a backspace, and the user expects it to function as a delete.
+    {
+        id: backspaceSelectionAction
+        text: catalog.i18ncp("@action:inmenu menubar:edit", "Delete &Selected Model", "Delete &Selected Models", UM.Selection.selectionCount)
+        enabled: UM.Controller.toolsEnabled && UM.Selection.hasSelection
+        iconName: "edit-delete"
+        shortcut: StandardKey.Backspace
+        onTriggered: CuraActions.deleteSelection()
     }
 
     Action
@@ -423,13 +432,6 @@ Item
         id: browsePluginsAction
         text: catalog.i18nc("@action:menu", "Browse plugins...")
         iconName: "plugins_browse"
-    }
-
-    Action
-    {
-        id: configurePluginsAction
-        text: catalog.i18nc("@action:menu", "Installed plugins...");
-        iconName: "plugins_configure"
     }
 
     Action

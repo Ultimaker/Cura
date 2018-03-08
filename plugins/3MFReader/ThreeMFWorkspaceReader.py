@@ -6,6 +6,7 @@ from UM.Application import Application
 
 from UM.Logger import Logger
 from UM.i18n import i18nCatalog
+from UM.Signal import postponeSignals, CompressTechnique
 from UM.Settings.ContainerStack import ContainerStack
 from UM.Settings.DefinitionContainer import DefinitionContainer
 from UM.Settings.InstanceContainer import InstanceContainer
@@ -23,7 +24,6 @@ from cura.Settings.ExtruderManager import ExtruderManager
 from cura.Settings.ExtruderStack import ExtruderStack
 from cura.Settings.GlobalStack import GlobalStack
 from cura.Settings.CuraContainerStack import _ContainerIndexes
-from cura.QualityManager import QualityManager
 from cura.CuraApplication import CuraApplication
 
 from configparser import ConfigParser
@@ -96,6 +96,14 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
 
         # In Cura 2.5 and 2.6, the empty profiles used to have those long names
         self._old_empty_profile_id_dict = {"empty_%s" % k: "empty" for k in ["material", "variant"]}
+
+        self._old_new_materials = {}
+        self._materials_to_select = {}
+
+    def _clearState(self):
+        self._id_mapping = {}
+        self._old_new_materials = {}
+        self._materials_to_select = {}
 
     ##  Get a unique name based on the old_id. This is different from directly calling the registry in that it caches results.
     #   This has nothing to do with speed, but with getting consistent new naming for instances & objects.
@@ -435,6 +443,29 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
     #   \param file_name
     @call_on_qt_thread
     def read(self, file_name):
+        container_registry = ContainerRegistry.getInstance()
+        signals = [container_registry.containerAdded,
+                   container_registry.containerRemoved,
+                   container_registry.containerMetaDataChanged]
+        #
+        # We now have different managers updating their lookup tables upon container changes. It is critical to make
+        # sure that the managers have a complete set of data when they update.
+        #
+        # In project loading, lots of the container-related signals are loosely emitted, which can create timing gaps
+        # for incomplete data update or other kinds of issues to happen.
+        #
+        # To avoid this, we postpone all signals so they don't get emitted immediately. But, please also be aware that,
+        # because of this, do not expect to have the latest data in the lookup tables in project loading.
+        #
+        with postponeSignals(*signals, compress = CompressTechnique.NoCompression):
+            return self._read(file_name)
+
+    def _read(self, file_name):
+        application = CuraApplication.getInstance()
+        material_manager = application.getMaterialManager()
+
+        self._clearState()
+
         archive = zipfile.ZipFile(file_name, "r")
 
         cura_file_names = [name for name in archive.namelist() if name.startswith("Cura/")]
@@ -527,31 +558,41 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         if self._material_container_suffix is None:
             self._material_container_suffix = ContainerRegistry.getMimeTypeForContainer(xml_material_profile).suffixes[0]
         if xml_material_profile:
+            to_deserialize_material = False
             material_container_files = [name for name in cura_file_names if name.endswith(self._material_container_suffix)]
             for material_container_file in material_container_files:
                 container_id = self._stripFileToId(material_container_file)
+                need_new_name = False
                 materials = self._container_registry.findInstanceContainers(id = container_id)
 
                 if not materials:
-                    material_container = xml_material_profile(container_id)
-                    material_container.deserialize(archive.open(material_container_file).read().decode("utf-8"),
-                                                   file_name = material_container_file)
-                    containers_to_add.append(material_container)
+                    # No material found, deserialize this material later and add it
+                    to_deserialize_material = True
                 else:
                     material_container = materials[0]
+                    old_material_root_id = material_container.getMetaDataEntry("base_file")
                     if not self._container_registry.isReadOnly(container_id):  # Only create new materials if they are not read only.
+                        to_deserialize_material = True
+
                         if self._resolve_strategies["material"] == "override":
-                            material_container.deserialize(archive.open(material_container_file).read().decode("utf-8"),
-                                                           file_name = material_container_file)
+                            # Remove the old materials and then deserialize the one from the project
+                            root_material_id = material_container.getMetaDataEntry("base_file")
+                            material_manager.removeMaterialByRootId(root_material_id)
                         elif self._resolve_strategies["material"] == "new":
                             # Note that we *must* deserialize it with a new ID, as multiple containers will be
                             # auto created & added.
-                            material_container = xml_material_profile(self.getNewId(container_id))
-                            material_container.deserialize(archive.open(material_container_file).read().decode("utf-8"),
-                                                           file_name = material_container_file)
-                            containers_to_add.append(material_container)
+                            container_id = self.getNewId(container_id)
+                            self._old_new_materials[old_material_root_id] = container_id
+                            need_new_name = True
 
-                material_containers.append(material_container)
+                if to_deserialize_material:
+                    material_container = xml_material_profile(container_id)
+                    material_container.deserialize(archive.open(material_container_file).read().decode("utf-8"),
+                                                   file_name = container_id + "." + self._material_container_suffix)
+                    if need_new_name:
+                        new_name = ContainerRegistry.getInstance().uniqueName(material_container.getName())
+                        material_container.setName(new_name)
+                    containers_to_add.append(material_container)
                 Job.yieldThread()
 
         Logger.log("d", "Workspace loading is checking instance containers...")
@@ -827,7 +868,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             return
 
         ## In case there is a new machine and once the extruders are created, the global stack is added to the registry,
-        # otherwise the accContainers function in CuraContainerRegistry will create an extruder stack and then creating
+        # otherwise the addContainers function in CuraContainerRegistry will create an extruder stack and then creating
         # useless files
         if self._resolve_strategies["machine"] == "new":
             self._container_registry.addContainer(global_stack)
@@ -855,10 +896,11 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         if machine_extruder_count is not None:
             extruder_stacks_in_use = extruder_stacks[:machine_extruder_count]
 
-        available_quality = QualityManager.getInstance().findAllUsableQualitiesForMachineAndExtruders(global_stack,
-                                                                                                      extruder_stacks_in_use)
+        quality_manager = CuraApplication.getInstance()._quality_manager
+        all_quality_groups = quality_manager.getQualityGroups(global_stack)
+        available_quality_types = [qt for qt, qg in all_quality_groups.items() if qg.is_available]
         if not has_not_supported:
-            has_not_supported = not available_quality
+            has_not_supported = not available_quality_types
 
         quality_has_been_changed = False
 
@@ -872,8 +914,6 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             # The machine in the project has non-empty quality and there are usable qualities for this machine.
             # We need to check if the current quality_type is still usable for this machine, if not, then the quality
             # will be reset to the "preferred quality" if present, otherwise "normal".
-            available_quality_types = [q.getMetaDataEntry("quality_type") for q in available_quality]
-
             if global_stack.quality.getMetaDataEntry("quality_type") not in available_quality_types:
                 # We are here because the quality_type specified in the project is not supported any more,
                 # so we need to switch it to the "preferred quality" if present, otherwise "normal".
@@ -936,6 +976,34 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                         new_quality_container = containers[0]
                         extruder_stack.quality = new_quality_container
                         global_stack.quality = new_quality_container
+
+                # Now we are checking if the quality in the extruder stacks is the same as in the global. In other case,
+                # the quality is set to be the same.
+                definition_id = global_stack.definition.getId()
+                definition_id = global_stack.definition.getMetaDataEntry("quality_definition", definition_id)
+                if not parseBool(global_stack.getMetaDataEntry("has_machine_quality", "False")):
+                    definition_id = "fdmprinter"
+
+                for extruder_stack in extruder_stacks_in_use:
+
+                    # If the quality is different in the stacks, then the quality in the global stack is trusted
+                    if extruder_stack.quality.getMetaDataEntry("quality_type") != global_stack.quality.getMetaDataEntry("quality_type"):
+                        search_criteria = {"id": global_stack.quality.getId(),
+                                           "type": "quality",
+                                           "definition": definition_id}
+                        if global_stack.getMetaDataEntry("has_machine_materials") and extruder_stack.material.getId() not in ("empty", "empty_material"):
+                            search_criteria["material"] = extruder_stack.material.getId()
+                        containers = self._container_registry.findInstanceContainers(**search_criteria)
+                        if containers:
+                            extruder_stack.quality = containers[0]
+                            extruder_stack.qualityChanges = empty_quality_changes_container
+                        else:
+                            Logger.log("e", "Cannot find a suitable quality for extruder [%s].", extruder_stack.getId())
+
+                        quality_has_been_changed = True
+
+                    else:
+                        Logger.log("i", "The quality is the same for the global and the extruder stack [%s]", global_stack.quality.getId())
 
         # Replacing the old containers if resolve is "new".
         # When resolve is "new", some containers will get renamed, so all the other containers that reference to those
@@ -1036,11 +1104,18 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                         old_to_new_material_dict[old_id] = each_material
                         break
 
+            global_stack.quality = empty_quality_container
+
             # replace old material in global and extruder stacks with new
             self._replaceStackMaterialWithNew(global_stack, old_to_new_material_dict)
             if extruder_stacks:
-                for each_extruder_stack in extruder_stacks:
-                    self._replaceStackMaterialWithNew(each_extruder_stack, old_to_new_material_dict)
+                for extruder_stack in extruder_stacks:
+                    if extruder_stack.material.getId() in ("empty", "empty_material"):
+                        continue
+                    old_root_material_id = extruder_stack.material.getMetaDataEntry("base_file")
+                    if old_root_material_id in self._old_new_materials:
+                        new_root_material_id = self._old_new_materials[old_root_material_id]
+                        self._materials_to_select[extruder_stack.getMetaDataEntry("position")] = new_root_material_id
 
         if extruder_stacks:
             for stack in extruder_stacks:
@@ -1056,10 +1131,13 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             CuraApplication.getInstance().getMachineManager().activeQualityChanged.emit()
 
         # Actually change the active machine.
-        Application.getInstance().setGlobalContainerStack(global_stack)
-
-        # Notify everything/one that is to notify about changes.
-        global_stack.containersChanged.emit(global_stack.getTop())
+        #
+        # This is scheduled for later is because it depends on the Variant/Material/Qualitiy Managers to have the latest
+        # data, but those managers will only update upon a container/container metadata changed signal. Because this
+        # function is running on the main thread (Qt thread), although those "changed" signals have been emitted, but
+        # they won't take effect until this function is done.
+        # To solve this, we schedule _updateActiveMachine() for later so it will have the latest data.
+        CuraApplication.getInstance().callLater(self._updateActiveMachine, global_stack)
 
         # Load all the nodes / meshdata of the workspace
         nodes = self._3mf_mesh_reader.read(file_name)
@@ -1071,6 +1149,30 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             base_file_name = base_file_name[:base_file_name.rfind(".curaproject.3mf")]
         self.setWorkspaceName(base_file_name)
         return nodes
+
+    def _updateActiveMachine(self, global_stack):
+        # Actually change the active machine.
+        machine_manager = Application.getInstance().getMachineManager()
+        material_manager = Application.getInstance().getMaterialManager()
+
+        # Switch materials if new materials are created due to conflicts
+        # We do it here because MaterialManager hasn't been updated in _read() yet.
+        for position, root_material_id in self._materials_to_select.items():
+            extruder_stack = global_stack.extruders[position]
+            material_diameter = extruder_stack.materialDiameter
+            material_node = material_manager.getMaterialNode(global_stack.getMetaDataEntry("definition"),
+                                                             extruder_stack.variant.getName(),
+                                                             material_diameter, root_material_id)
+            if material_node is None:
+                Application.getInstance().callLater(self._updateActiveMachine, global_stack)
+                return
+            extruder_stack.material = material_node.getContainer()
+            Logger.log("d", "Changed extruder [%s] to material [%s]", position, root_material_id)
+
+        machine_manager.setActiveMachine(global_stack.getId())
+
+        # Notify everything/one that is to notify about changes.
+        global_stack.containersChanged.emit(global_stack.getTop())
 
     ##  HACK: Replaces the material container in the given stack with a newly created material container.
     #         This function is used when the user chooses to resolve material conflicts by creating new ones.

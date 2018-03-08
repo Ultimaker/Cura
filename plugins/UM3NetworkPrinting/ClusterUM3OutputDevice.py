@@ -77,11 +77,14 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
 
         self._cluster_size = int(properties.get(b"cluster_size", 0))
 
+        self._latest_reply_handler = None
+
+
     def requestWrite(self, nodes, file_name=None, filter_by_machine=False, file_handler=None, **kwargs):
         self.writeStarted.emit(self)
 
         gcode_dict = getattr(Application.getInstance().getController().getScene(), "gcode_dict", [])
-        active_build_plate_id = Application.getInstance().getBuildPlateModel().activeBuildPlate
+        active_build_plate_id = Application.getInstance().getMultiBuildPlateModel().activeBuildPlate
         gcode_list = gcode_dict[active_build_plate_id]
 
         if not gcode_list:
@@ -90,13 +93,15 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
 
         self._gcode = gcode_list
 
+        is_job_sent = True
         if len(self._printers) > 1:
             self._spawnPrinterSelectionDialog()
         else:
-            self.sendPrintJob()
+            is_job_sent = self.sendPrintJob()
 
         # Notify the UI that a switch to the print monitor should happen
-        Application.getInstance().getController().setActiveStage("MonitorStage")
+        if is_job_sent:
+            Application.getInstance().getController().setActiveStage("MonitorStage")
 
     def _spawnPrinterSelectionDialog(self):
         if self._printer_selection_dialog is None:
@@ -118,7 +123,7 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
                 i18n_catalog.i18nc("@info:status",
                                    "Sending new jobs (temporarily) blocked, still sending the previous print job."))
             self._error_message.show()
-            return
+            return False
 
         self._sending_gcode = True
 
@@ -131,7 +136,7 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
         compressed_gcode = self._compressGCode()
         if compressed_gcode is None:
             # Abort was called.
-            return
+            return False
 
         parts = []
 
@@ -147,7 +152,9 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
 
         parts.append(self._createFormPart("name=\"file\"; filename=\"%s\"" % file_name, compressed_gcode))
 
-        self.postFormWithParts("print_jobs/", parts, onFinished=self._onPostPrintJobFinished, onProgress=self._onUploadPrintJobProgress)
+        self._latest_reply_handler = self.postFormWithParts("print_jobs/", parts, onFinished=self._onPostPrintJobFinished, onProgress=self._onUploadPrintJobProgress)
+
+        return True
 
     @pyqtProperty(QObject, notify=activePrinterChanged)
     def activePrinter(self) -> Optional["PrinterOutputModel"]:
@@ -186,6 +193,13 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
             self._compressing_gcode = False
             self._sending_gcode = False
             Application.getInstance().getController().setActiveStage("PrepareStage")
+
+            # After compressing the sliced model Cura sends data to printer, to stop receiving updates from the request
+            # the "reply" should be disconnected
+            if self._latest_reply_handler:
+                self._latest_reply_handler.disconnect()
+                self._latest_reply_handler = None
+
 
     @pyqtSlot()
     def openPrintJobControlPanel(self):
@@ -396,7 +410,7 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
                     color = material_data["color"]
                     brand = material_data["brand"]
                     material_type = material_data["material"]
-                    name = "Unknown"
+                    name = "Empty" if material_data["material"] == "empty" else "Unknown"
 
                 material = MaterialOutputModel(guid=material_data["guid"], type=material_type,
                                                brand=brand, color=color, name=name)

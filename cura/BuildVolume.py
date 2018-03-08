@@ -737,12 +737,17 @@ class BuildVolume(SceneNode):
                 prime_tower_x = prime_tower_x - machine_width / 2 #Offset by half machine_width and _depth to put the origin in the front-left.
                 prime_tower_y = prime_tower_y + machine_depth / 2
 
-            prime_tower_area = Polygon([
-                [prime_tower_x - prime_tower_size, prime_tower_y - prime_tower_size],
-                [prime_tower_x, prime_tower_y - prime_tower_size],
-                [prime_tower_x, prime_tower_y],
-                [prime_tower_x - prime_tower_size, prime_tower_y],
-            ])
+            if self._global_container_stack.getProperty("prime_tower_circular", "value"):
+                radius = prime_tower_size / 2
+                prime_tower_area = Polygon.approximatedCircle(radius)
+                prime_tower_area = prime_tower_area.translate(prime_tower_x - radius, prime_tower_y - radius)
+            else:
+                prime_tower_area = Polygon([
+                    [prime_tower_x - prime_tower_size, prime_tower_y - prime_tower_size],
+                    [prime_tower_x, prime_tower_y - prime_tower_size],
+                    [prime_tower_x, prime_tower_y],
+                    [prime_tower_x - prime_tower_size, prime_tower_y],
+                ])
             prime_tower_area = prime_tower_area.getMinkowskiHull(Polygon.approximatedCircle(0))
             for extruder in used_extruders:
                 result[extruder.getId()].append(prime_tower_area) #The prime tower location is the same for each extruder, regardless of offset.
@@ -821,6 +826,7 @@ class BuildVolume(SceneNode):
             offset_y = extruder.getProperty("machine_nozzle_offset_y", "value")
             if offset_y is None:
                 offset_y = 0
+            offset_y = -offset_y #Y direction of g-code is the inverse of Y direction of Cura's scene space.
             result[extruder_id] = []
 
             for polygon in machine_disallowed_polygons:
@@ -931,8 +937,8 @@ class BuildVolume(SceneNode):
     #   stack.
     #
     #   \return A sequence of setting values, one for each extruder.
-    def _getSettingFromAllExtruders(self, setting_key, property = "value"):
-        all_values = ExtruderManager.getInstance().getAllExtruderSettings(setting_key, property)
+    def _getSettingFromAllExtruders(self, setting_key):
+        all_values = ExtruderManager.getInstance().getAllExtruderSettings(setting_key, "value")
         all_types = ExtruderManager.getInstance().getAllExtruderSettings(setting_key, "type")
         for i in range(len(all_values)):
             if not all_values[i] and (all_types[i] == "int" or all_types[i] == "float"):
@@ -945,7 +951,7 @@ class BuildVolume(SceneNode):
     #   not part of the collision radius, such as bed adhesion (skirt/brim/raft)
     #   and travel avoid distance.
     def _getEdgeDisallowedSize(self):
-        if not self._global_container_stack:
+        if not self._global_container_stack or not self._global_container_stack.extruders:
             return 0
 
         container_stack = self._global_container_stack
@@ -1023,7 +1029,7 @@ class BuildVolume(SceneNode):
     _raft_settings = ["adhesion_type", "raft_base_thickness", "raft_interface_thickness", "raft_surface_layers", "raft_surface_thickness", "raft_airgap", "layer_0_z_overlap"]
     _extra_z_settings = ["retraction_hop_enabled", "retraction_hop"]
     _prime_settings = ["extruder_prime_pos_x", "extruder_prime_pos_y", "extruder_prime_pos_z", "prime_blob_enable"]
-    _tower_settings = ["prime_tower_enable", "prime_tower_size", "prime_tower_position_x", "prime_tower_position_y"]
+    _tower_settings = ["prime_tower_enable", "prime_tower_circular", "prime_tower_size", "prime_tower_position_x", "prime_tower_position_y"]
     _ooze_shield_settings = ["ooze_shield_enabled", "ooze_shield_dist"]
     _distance_settings = ["infill_wipe_dist", "travel_avoid_distance", "support_offset", "support_enable", "travel_avoid_other_parts"]
     _extruder_settings = ["support_enable", "support_bottom_enable", "support_roof_enable", "support_infill_extruder_nr", "support_extruder_nr_layer_0", "support_bottom_extruder_nr", "support_roof_extruder_nr", "brim_line_count", "adhesion_extruder_nr", "adhesion_type"] #Settings that can affect which extruders are used.

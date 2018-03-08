@@ -1,4 +1,4 @@
-# Copyright (c) 2016 Ultimaker B.V.
+# Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from UM.Logger import Logger
@@ -17,7 +17,7 @@ from .avr_isp import stk500v2, intelHex
 
 from PyQt5.QtCore import pyqtSlot, pyqtSignal, pyqtProperty
 
-from serial import Serial, SerialException
+from serial import Serial, SerialException, SerialTimeoutException
 from threading import Thread
 from time import time, sleep
 from queue import Queue
@@ -99,7 +99,7 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
         Application.getInstance().getController().setActiveStage("MonitorStage")
 
         # find the G-code for the active build plate to print
-        active_build_plate_id = Application.getInstance().getBuildPlateModel().activeBuildPlate
+        active_build_plate_id = Application.getInstance().getMultiBuildPlateModel().activeBuildPlate
         gcode_dict = getattr(Application.getInstance().getController().getScene(), "gcode_dict")
         gcode_list = gcode_dict[active_build_plate_id]
 
@@ -266,8 +266,11 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
             command = (command + "\n").encode()
         if not command.endswith(b"\n"):
             command += b"\n"
-        self._serial.write(b"\n")
-        self._serial.write(command)
+        try:
+            self._serial.write(b"\n")
+            self._serial.write(command)
+        except SerialTimeoutException:
+            Logger.log("w", "Timeout when sending command to printer via USB.")
 
     def _update(self):
         while self._connection_state == ConnectionState.connected and self._serial is not None:

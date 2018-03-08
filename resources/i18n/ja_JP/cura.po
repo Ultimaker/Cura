@@ -8,15 +8,15 @@ msgstr ""
 "Project-Id-Version: Cura 3.2\n"
 "Report-Msgid-Bugs-To: r.dulek@ultimaker.com\n"
 "POT-Creation-Date: 2018-01-29 09:48+0000\n"
-"PO-Revision-Date: 2018-02-05 13:25+0100\n"
-"Last-Translator: Bothof <info@bothof.nl>\n"
+"PO-Revision-Date: 2018-02-10 04:58+0900\n"
+"Last-Translator: Brule <jason@brule.co.jp>\n"
 "Language-Team: Japanese\n"
 "Language: ja_JP\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Poedit 1.8.7.1\n"
+"X-Generator: Poedit 2.0.4\n"
 
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.py:26
 msgctxt "@action"
@@ -634,7 +634,10 @@ msgid ""
 "Found no models inside your drawing. Could you please check it's content again and make sure one part or assembly is inside?\n"
 "\n"
 " Thanks!."
-msgstr "図面の中にモデルが見つかりません。中身を確認し、パートかアセンブリーが中に入っていることを確認してください。\n\n 再確認をお願いします。"
+msgstr ""
+"図面の中にモデルが見つかりません。中身を確認し、パートかアセンブリーが中に入っていることを確認してください。\n"
+"\n"
+" 再確認をお願いします。"
 
 #: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/SolidWorksReader.py:595
 msgctxt "@info:status"
@@ -642,7 +645,10 @@ msgid ""
 "Found more then one part or assembly inside your drawing. We currently only support drawings with exactly one part or assembly inside.\n"
 "\n"
 "Sorry!"
-msgstr "図面の中にパートかアセンブリーが2個以上見つかりました。今のところ、本製品はパートかアセンブリーが1個の図面のみに対応しています。\n\n申し訳ありません。"
+msgstr ""
+"図面の中にパートかアセンブリーが2個以上見つかりました。今のところ、本製品はパートかアセンブリーが1個の図面のみに対応しています。\n"
+"\n"
+"申し訳ありません。"
 
 #: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/__init__.py:25
 msgctxt "@item:inlistbox"
@@ -667,7 +673,12 @@ msgid ""
 "\n"
 "With kind regards\n"
 " - Thomas Karl Pietrowski"
-msgstr "お客様へ\nシステム上に正規のソリッドワークスがインストールされていません。つまり、ソリッドワークスがインストールされていないか、有効なライセンスが存在しません。ソリッドワークスだけを問題なく使用できるようになっているか確認するか、自社のIT部門にご相談ください。\n\nお願いいたします。\n - Thomas Karl Pietrowski"
+msgstr ""
+"お客様へ\n"
+"システム上に正規のソリッドワークスがインストールされていません。つまり、ソリッドワークスがインストールされていないか、有効なライセンスが存在しません。ソリッドワークスだけを問題なく使用できるようになっているか確認するか、自社のIT部門にご相談ください。\n"
+"\n"
+"お願いいたします。\n"
+" - Thomas Karl Pietrowski"
 
 #: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/__init__.py:57
 msgctxt "@info:status"
@@ -677,7 +688,12 @@ msgid ""
 "\n"
 "With kind regards\n"
 " - Thomas Karl Pietrowski"
-msgstr "お客様へ\nこのプラグインは現在Windows以外のOSで実行されています。このプラグインは、ソリッドワークスがインストールされたWindowsでしか動作しません。有効なライセンスも必要です。ソリッドワークスがインストールされたWindowsマシンにこのプラグインをインストールしてください。\n\nお願いいたします。\n - Thomas Karl Pietrowski"
+msgstr ""
+"お客様へ\n"
+"このプラグインは現在Windows以外のOSで実行されています。このプラグインは、ソリッドワークスがインストールされたWindowsでしか動作しません。有効なライセンスも必要です。ソリッドワークスがインストールされたWindowsマシンにこのプラグインをインストールしてください。\n"
+"\n"
+"お願いいたします。\n"
+" - Thomas Karl Pietrowski"
 
 #: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/SolidWorksDialogHandler.py:70
 msgid "Configure"
@@ -751,7 +767,9 @@ msgctxt "@info:status"
 msgid ""
 "Could not export using \"{}\" quality!\n"
 "Felt back to \"{}\"."
-msgstr "\"{}\"品質を使用したエクスポートができませんでした!\n\"{}\"になりました。"
+msgstr ""
+"\"{}\"品質を使用したエクスポートができませんでした!\n"
+"\"{}\"になりました。"
 
 #: /home/ruben/Projects/Cura/plugins/GCodeProfileReader/__init__.py:14
 #: /home/ruben/Projects/Cura/plugins/GCodeReader/__init__.py:14
@@ -1246,7 +1264,10 @@ msgid ""
 "<p><b>A fatal error has occurred. Please send us this Crash Report to fix the problem</p></b>\n"
 "            <p>Please use the \"Send report\" button to post a bug report automatically to our servers</p>\n"
 "        "
-msgstr "<p><b>致命的なエラーが発生しました。問題解決のためこのクラッシュレポートを送信してください</p></b>\n            <p>「レポート送信」ボタンを使用してバグレポートが自動的に当社サーバーに送られるようにしてください</p>\n        "
+msgstr ""
+"<p><b>致命的なエラーが発生しました。問題解決のためこのクラッシュレポートを送信してください</p></b>\n"
+"            <p>「レポート送信」ボタンを使用してバグレポートが自動的に当社サーバーに送られるようにしてください</p>\n"
+"        "
 
 #: /home/ruben/Projects/Cura/cura/CrashHandler.py:102
 msgctxt "@title:groupbox"
@@ -1932,7 +1953,9 @@ msgctxt "@action:button"
 msgid ""
 "Open the directory\n"
 "with macro and icon"
-msgstr "ディレクトリーを開きます\n(マクロとアイコンで)"
+msgstr ""
+"ディレクトリーを開きます\n"
+"(マクロとアイコンで)"
 
 #: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/SolidWorksMacroTutorial.qml:160
 msgctxt "@description:label"
@@ -2426,7 +2449,10 @@ msgid ""
 "This plugin contains a license.\n"
 "You need to accept this license to install this plugin.\n"
 "Do you agree with the terms below?"
-msgstr "このプラグインにはライセンスが含まれています。\nこのプラグインをインストールするにはこのライセンスに同意する必要があります。\n下の利用規約に同意しますか？"
+msgstr ""
+"このプラグインにはライセンスが含まれています。\n"
+"このプラグインをインストールするにはこのライセンスに同意する必要があります。\n"
+"下の利用規約に同意しますか？"
 
 #: /home/ruben/Projects/Cura/plugins/PluginBrowser/PluginBrowser.qml:242
 msgctxt "@action:button"
@@ -2555,10 +2581,9 @@ msgid "Not connected"
 msgstr "プリンターにつながっていません。"
 
 #: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UMOCheckupMachineAction.qml:99
-#, fuzzy
 msgctxt "@label"
 msgid "Min endstop X: "
-msgstr "エンドストップ X:"
+msgstr "最小エンドストップ X:"
 
 #: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UMOCheckupMachineAction.qml:109
 #: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UMOCheckupMachineAction.qml:130
@@ -2577,16 +2602,14 @@ msgid "Not checked"
 msgstr "チェックされていません。"
 
 #: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UMOCheckupMachineAction.qml:120
-#, fuzzy
 msgctxt "@label"
 msgid "Min endstop Y: "
-msgstr "エンドストップ Y:"
+msgstr "最小エンドストップ Y:"
 
 #: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UMOCheckupMachineAction.qml:141
-#, fuzzy
 msgctxt "@label"
 msgid "Min endstop Z: "
-msgstr "エンドストップ Z:"
+msgstr "最小エンドストップ Z:"
 
 #: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UMOCheckupMachineAction.qml:163
 msgctxt "@label"
@@ -3470,7 +3493,9 @@ msgid ""
 "Some setting/override values are different from the values stored in the profile.\n"
 "\n"
 "Click to open the profile manager."
-msgstr "いくらかの設定プロファイルにある値とことなる場合無効にします。\nプロファイルマネージャーをクリックして開いてください。"
+msgstr ""
+"いくらかの設定プロファイルにある値とことなる場合無効にします。\n"
+"プロファイルマネージャーをクリックして開いてください。"
 
 #: /home/ruben/Projects/Cura/resources/qml/Settings/SettingView.qml:150
 msgctxt "@label:textbox"
@@ -3508,7 +3533,9 @@ msgid ""
 "Some hidden settings use values different from their normal calculated value.\n"
 "\n"
 "Click to make these settings visible."
-msgstr "いくらかの非表示設定は通常の計算された値と異なる値を使用します。\n表示されるようにクリックしてください。"
+msgstr ""
+"いくらかの非表示設定は通常の計算された値と異なる値を使用します。\n"
+"表示されるようにクリックしてください。"
 
 #: /home/ruben/Projects/Cura/resources/qml/Settings/SettingItem.qml:61
 msgctxt "@label Header for list of settings."
@@ -3536,7 +3563,9 @@ msgid ""
 "This setting has a value that is different from the profile.\n"
 "\n"
 "Click to restore the value of the profile."
-msgstr "この設定にプロファイルと異なった値があります。\nプロファイルの値を戻すためにクリックしてください。"
+msgstr ""
+"この設定にプロファイルと異なった値があります。\n"
+"プロファイルの値を戻すためにクリックしてください。"
 
 #: /home/ruben/Projects/Cura/resources/qml/Settings/SettingItem.qml:288
 msgctxt "@label"
@@ -3544,7 +3573,9 @@ msgid ""
 "This setting is normally calculated, but it currently has an absolute value set.\n"
 "\n"
 "Click to restore the calculated value."
-msgstr "このセッティングは通常計算されます、今は絶対値に固定されています。\n計算された値に変更するためにクリックを押してください。"
+msgstr ""
+"このセッティングは通常計算されます、今は絶対値に固定されています。\n"
+"計算された値に変更するためにクリックを押してください。"
 
 #: /home/ruben/Projects/Cura/resources/qml/Sidebar.qml:128
 msgctxt "@label:listbox"
@@ -3556,7 +3587,9 @@ msgctxt "@label:listbox"
 msgid ""
 "Print Setup disabled\n"
 "G-code files cannot be modified"
-msgstr "プリントセットアップが無効\nG-codeファイルを修正することができません。"
+msgstr ""
+"プリントセットアップが無効\n"
+"G-codeファイルを修正することができません。"
 
 #: /home/ruben/Projects/Cura/resources/qml/Sidebar.qml:342
 msgctxt "@label Hours and minutes"

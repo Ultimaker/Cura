@@ -1,21 +1,21 @@
 # Cura JSON setting files
-# Copyright (C) 2017 Ultimaker
+# Copyright (C) 2018 Ultimaker
 # This file is distributed under the same license as the Cura package.
-# Ruben Dulek <r.dulek@ultimaker.com>, 2017.
+# Ruben Dulek <r.dulek@ultimaker.com>, 2018.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Cura 3.1\n"
+"Project-Id-Version: Cura 3.2\n"
 "Report-Msgid-Bugs-To: r.dulek@ultimaker.com\n"
-"POT-Creation-Date: 2017-08-02 16:53+0000\n"
-"PO-Revision-Date: 2017-11-25 00:31+0800\n"
+"POT-Creation-Date: 2018-01-29 16:53+0000\n"
+"PO-Revision-Date: 2018-02-01 20:58+0800\n"
 "Last-Translator: Zhang Heh Ji <dinowchang@gmail.com>\n"
-"Language-Team: TEAM\n"
+"Language-Team: Zhang Heh Ji <dinowchang@gmail.com>\n"
 "Language: zh_TW\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 2.0.4\n"
+"X-Generator: Poedit 2.0.6\n"
 
 #: fdmprinter.def.json
 msgctxt "machine_settings label"
@@ -353,12 +353,12 @@ msgstr "Repetier"
 #: fdmprinter.def.json
 msgctxt "machine_firmware_retract label"
 msgid "Firmware Retraction"
-msgstr ""
+msgstr "韌體回抽"
 
 #: fdmprinter.def.json
 msgctxt "machine_firmware_retract description"
 msgid "Whether to use firmware retract commands (G10/G11) instead of using the E property in G1 commands to retract the material."
-msgstr ""
+msgstr "是否使用韌體回抽命令（G10/G11）取代 G1 命令的 E 參數來回抽線材。"
 
 #: fdmprinter.def.json
 msgctxt "machine_disallowed_areas label"
@@ -1053,12 +1053,12 @@ msgstr "全部填充"
 #: fdmprinter.def.json
 msgctxt "filter_out_tiny_gaps label"
 msgid "Filter Out Tiny Gaps"
-msgstr ""
+msgstr "濾除微小間隙"
 
 #: fdmprinter.def.json
 msgctxt "filter_out_tiny_gaps description"
 msgid "Filter out tiny gaps to reduce blobs on outside of model."
-msgstr ""
+msgstr "濾除微小間隙以減少模型外側的斑點 。"
 
 #: fdmprinter.def.json
 msgctxt "fill_outline_gaps label"
@@ -1443,7 +1443,7 @@ msgstr "填充 X 軸偏移"
 #: fdmprinter.def.json
 msgctxt "infill_offset_x description"
 msgid "The infill pattern is moved this distance along the X axis."
-msgstr ""
+msgstr "填充樣式在 X 軸方向平移此距離。"
 
 #: fdmprinter.def.json
 msgctxt "infill_offset_y label"
@@ -1453,7 +1453,7 @@ msgstr "填充 Y 軸偏移"
 #: fdmprinter.def.json
 msgctxt "infill_offset_y description"
 msgid "The infill pattern is moved this distance along the Y axis."
-msgstr ""
+msgstr "填充樣式在 Y 軸方向平移此距離。"
 
 #: fdmprinter.def.json
 msgctxt "sub_div_rad_add label"
@@ -1473,7 +1473,7 @@ msgstr "填充重疊百分比"
 #: fdmprinter.def.json
 msgctxt "infill_overlap description"
 msgid "The amount of overlap between the infill and the walls as a percentage of the infill line width. A slight overlap allows the walls to connect firmly to the infill."
-msgstr ""
+msgstr "填充與牆壁的重疊量佔填充線寬的百分比。輕微的重疊能讓填充與牆壁牢固地連接。"
 
 #: fdmprinter.def.json
 msgctxt "infill_overlap_mm label"
@@ -1493,7 +1493,7 @@ msgstr "表層重疊百分比"
 #: fdmprinter.def.json
 msgctxt "skin_overlap description"
 msgid "The amount of overlap between the skin and the walls as a percentage of the skin line width. A slight overlap allows the walls to connect firmly to the skin. This is a percentage of the average line widths of the skin lines and the innermost wall."
-msgstr ""
+msgstr "表層與牆壁的重疊量佔表層線寬的百分比。輕微的重疊能讓填充與表層牢固地連接。這是表層線寬和最內層牆壁線寬平均的百分比。"
 
 #: fdmprinter.def.json
 msgctxt "skin_overlap_mm label"
@@ -1723,7 +1723,7 @@ msgstr "列印平台溫度"
 #: fdmprinter.def.json
 msgctxt "material_bed_temperature description"
 msgid "The temperature used for the heated build plate. If this is 0, the bed temperature will not be adjusted."
-msgstr ""
+msgstr "設定列印平台的溫度。如果設定為 0，就不會加熱列印平台。"
 
 #: fdmprinter.def.json
 msgctxt "material_bed_temperature_layer_0 label"
@@ -4267,82 +4267,82 @@ msgstr "實驗性！"
 #: fdmprinter.def.json
 msgctxt "support_tree_enable label"
 msgid "Tree Support"
-msgstr ""
+msgstr "樹狀支撐"
 
 #: fdmprinter.def.json
 msgctxt "support_tree_enable description"
 msgid "Generate a tree-like support with branches that support your print. This may reduce material usage and print time, but greatly increases slicing time."
-msgstr ""
+msgstr "產生帶有樹枝樹狀支撐結構支撐你的模型。這可能可以減少耗材的使用和列印的時間，但會大大的增加切片時間。"
 
 #: fdmprinter.def.json
 msgctxt "support_tree_angle label"
 msgid "Tree Support Branch Angle"
-msgstr ""
+msgstr "樹狀支撐樹枝角度"
 
 #: fdmprinter.def.json
 msgctxt "support_tree_angle description"
 msgid "The angle of the branches. Use a lower angle to make them more vertical and more stable. Use a higher angle to be able to have more reach."
-msgstr ""
+msgstr "樹枝的角度。使用較小的角度讓樹枝較垂直且較平穩。使用較大的角度則可以支撐較大的範圍。"
 
 #: fdmprinter.def.json
 msgctxt "support_tree_branch_distance label"
 msgid "Tree Support Branch Distance"
-msgstr ""
+msgstr "樹狀支撐樹枝距離"
 
 #: fdmprinter.def.json
 msgctxt "support_tree_branch_distance description"
 msgid "How far apart the branches need to be when they touch the model. Making this distance small will cause the tree support to touch the model at more points, causing better overhang but making support harder to remove."
-msgstr ""
+msgstr "樹支與模型接觸的點與點之間的間隔距離。較小的距離會讓支撐和模型有較多的接觸點，會有較佳的懸垂但支撐也較難移除。"
 
 #: fdmprinter.def.json
 msgctxt "support_tree_branch_diameter label"
 msgid "Tree Support Branch Diameter"
-msgstr ""
+msgstr "樹狀支撐樹枝直徑"
 
 #: fdmprinter.def.json
 msgctxt "support_tree_branch_diameter description"
 msgid "The diameter of the thinnest branches of tree support. Thicker branches are more sturdy. Branches towards the base will be thicker than this."
-msgstr ""
+msgstr "樹狀支撐中最細樹枝的直徑。越粗的樹枝越堅固。底部的樹枝會比這更粗。"
 
 #: fdmprinter.def.json
 msgctxt "support_tree_branch_diameter_angle label"
 msgid "Tree Support Branch Diameter Angle"
-msgstr ""
+msgstr "樹狀支撐樹枝外徑角度"
 
 #: fdmprinter.def.json
 msgctxt "support_tree_branch_diameter_angle description"
 msgid "The angle of the branches' diameter as they gradually become thicker towards the bottom. An angle of 0 will cause the branches to have uniform thickness over their length. A bit of an angle can increase stability of the tree support."
-msgstr ""
+msgstr "樹枝向底部逐漸變粗時，外徑變化的角度。設為 0 可讓整條樹枝的粗細一致, 而有點角度可增加樹狀支撐的穩定性。"
 
 #: fdmprinter.def.json
 msgctxt "support_tree_collision_resolution label"
 msgid "Tree Support Collision Resolution"
-msgstr ""
+msgstr "樹狀支撐碰撞計算精度"
 
 #: fdmprinter.def.json
 msgctxt "support_tree_collision_resolution description"
 msgid "Resolution to compute collisions with to avoid hitting the model. Setting this lower will produce more accurate trees that fail less often, but increases slicing time dramatically."
-msgstr ""
+msgstr "計算避免碰撞模型的計算精度。設定較低的值可產生較精確的樹狀支撐，這樣的支撐問題較少但會嚴重的增加切片所需的時間。"
 
 #: fdmprinter.def.json
 msgctxt "support_tree_wall_thickness label"
 msgid "Tree Support Wall Thickness"
-msgstr ""
+msgstr "樹狀支撐牆厚"
 
 #: fdmprinter.def.json
 msgctxt "support_tree_wall_thickness description"
 msgid "The thickness of the walls of the branches of tree support. Thicker walls take longer to print but don't fall over as easily."
-msgstr ""
+msgstr "樹狀支撐樹枝的牆壁厚度。較厚的牆壁需要花較長的時間列印，但較不易倒下。"
 
 #: fdmprinter.def.json
 msgctxt "support_tree_wall_count label"
 msgid "Tree Support Wall Line Count"
-msgstr ""
+msgstr "樹狀支撐牆壁線條數量"
 
 #: fdmprinter.def.json
 msgctxt "support_tree_wall_count description"
 msgid "The number of walls of the branches of tree support. Thicker walls take longer to print but don't fall over as easily."
-msgstr ""
+msgstr "樹狀支撐樹枝牆壁的圈數。較厚的牆壁需要花較長的時間列印，但較不易倒下。"
 
 #: fdmprinter.def.json
 msgctxt "slicing_tolerance label"
@@ -4417,12 +4417,12 @@ msgstr "當頂部表層採用線條或鋸齒狀的列印樣式時使用的整數
 #: fdmprinter.def.json
 msgctxt "infill_enable_travel_optimization label"
 msgid "Infill Travel Optimization"
-msgstr ""
+msgstr "填充空跑最佳化"
 
 #: fdmprinter.def.json
 msgctxt "infill_enable_travel_optimization description"
 msgid "When enabled, the order in which the infill lines are printed is optimized to reduce the distance travelled. The reduction in travel time achieved very much depends on the model being sliced, infill pattern, density, etc. Note that, for some models that have many small areas of infill, the time to slice the model may be greatly increased."
-msgstr ""
+msgstr "當功能啟用時，填充線條的列印順序會對降低空跑距離做最佳化。所能減少的空跑時間取決於模型、填充樣式、填充密度等。請注意，對於有很多小型填充區域的模型，切片時間可能會大量增加。"
 
 #: fdmprinter.def.json
 msgctxt "material_flow_dependent_temperature label"
@@ -5056,42 +5056,42 @@ msgstr "噴頭和水平下行線之間的距離。較大的間隙會讓斜下行
 #: fdmprinter.def.json
 msgctxt "adaptive_layer_height_enabled label"
 msgid "Use adaptive layers"
-msgstr ""
+msgstr "使用適應層高"
 
 #: fdmprinter.def.json
 msgctxt "adaptive_layer_height_enabled description"
 msgid "Adaptive layers computes the layer heights depending on the shape of the model."
-msgstr ""
+msgstr "適應層高會依據模型的形狀計算列印的層高。"
 
 #: fdmprinter.def.json
 msgctxt "adaptive_layer_height_variation label"
 msgid "Adaptive layers maximum variation"
-msgstr ""
+msgstr "適應層高最大變化量"
 
 #: fdmprinter.def.json
 msgctxt "adaptive_layer_height_variation description"
 msgid "The maximum allowed height different from the base layer height in mm."
-msgstr ""
+msgstr "允許與層高基礎值相差的最大值（以毫米為單位）。"
 
 #: fdmprinter.def.json
 msgctxt "adaptive_layer_height_variation_step label"
 msgid "Adaptive layers variation step size"
-msgstr ""
+msgstr "適應層高變化幅度"
 
 #: fdmprinter.def.json
 msgctxt "adaptive_layer_height_variation_step description"
 msgid "The difference in height of the next layer height compared to the previous one."
-msgstr ""
+msgstr "下一列印層與前一列印層的層高差。"
 
 #: fdmprinter.def.json
 msgctxt "adaptive_layer_height_threshold label"
 msgid "Adaptive layers threshold"
-msgstr ""
+msgstr "適應層高門檻值"
 
 #: fdmprinter.def.json
 msgctxt "adaptive_layer_height_threshold description"
 msgid "Threshold whether to use a smaller layer or not. This number is compared to the tan of the steepest slope in a layer."
-msgstr ""
+msgstr "決定是否使用較小層高的門檻值。此值會與一層中最陡坡度的 tan 值做比較。"
 
 #: fdmprinter.def.json
 msgctxt "command_line_settings label"

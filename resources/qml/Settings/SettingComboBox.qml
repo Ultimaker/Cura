@@ -61,7 +61,7 @@ SettingItem
         {
             id: downArrow
             x: control.width - width - control.rightPadding
-            y: control.topPadding + (control.availableHeight - height) / 2
+            y: control.topPadding + Math.round((control.availableHeight - height) / 2)
 
             source: UM.Theme.getIcon("arrow_bottom")
             width: UM.Theme.getSize("standard_arrow").width
@@ -80,6 +80,7 @@ SettingItem
             anchors.right: downArrow.left
 
             text: control.currentText
+            renderType: Text.NativeRendering
             font: UM.Theme.getFont("default")
             color: !enabled ? UM.Theme.getColor("setting_control_disabled_text") : UM.Theme.getColor("setting_control_text")
             elide: Text.ElideRight
@@ -116,6 +117,7 @@ SettingItem
             contentItem: Label
             {
                 text: modelData.value
+                renderType: Text.NativeRendering
                 color: control.contentItem.color
                 font: UM.Theme.getFont("default")
                 elide: Text.ElideRight

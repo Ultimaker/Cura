@@ -7,7 +7,7 @@
         "author": "Michael Wildermuth",
         "manufacturer": "Creality3D",
         "file_formats": "text/x-gcode",
-        "preferred_quality": "*Draft*"
+        "preferred_quality_type": "draft"
     },
     "overrides": {
         "machine_width": {

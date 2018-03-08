@@ -125,21 +125,6 @@ class GlobalStack(CuraContainerStack):
     def setNextStack(self, next_stack: ContainerStack) -> None:
         raise Exceptions.InvalidOperationError("Global stack cannot have a next stack!")
 
-    ##  Gets the approximate filament diameter that the machine requires.
-    #
-    #   The approximate material diameter is the material diameter rounded to
-    #   the nearest millimetre.
-    #
-    #   If the machine has no requirement for the diameter, -1 is returned.
-    #
-    #   \return The approximate filament diameter for the printer, as a string.
-    @pyqtProperty(str)
-    def approximateMaterialDiameter(self) -> str:
-        material_diameter = self.definition.getProperty("material_diameter", "value")
-        if material_diameter is None:
-            return "-1"
-        return str(round(float(material_diameter))) #Round, then convert back to string.
-
     # protected:
 
     # Determine whether or not we should try to get the "resolve" property instead of the

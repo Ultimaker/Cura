@@ -437,7 +437,7 @@ class FlavorParser:
         scene_node.addDecorator(gcode_list_decorator)
 
         # gcode_dict stores gcode_lists for a number of build plates.
-        active_build_plate_id = Application.getInstance().getBuildPlateModel().activeBuildPlate
+        active_build_plate_id = Application.getInstance().getMultiBuildPlateModel().activeBuildPlate
         gcode_dict = {active_build_plate_id: gcode_list}
         Application.getInstance().getController().getScene().gcode_dict = gcode_dict
 

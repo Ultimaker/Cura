@@ -70,8 +70,8 @@ Cura.MachineAction
             anchors.top: pageTitle.bottom
             anchors.topMargin: UM.Theme.getSize("default_margin").height
 
-            property real columnWidth: ((width - 3 * UM.Theme.getSize("default_margin").width) / 2) | 0
-            property real labelColumnWidth: columnWidth * 0.5
+            property real columnWidth: Math.round((width - 3 * UM.Theme.getSize("default_margin").width) / 2)
+            property real labelColumnWidth: Math.round(columnWidth / 2)
 
             Tab
             {
@@ -165,7 +165,7 @@ Cura.MachineAction
                                 id: gcodeFlavorComboBox
                                 sourceComponent: comboBoxWithOptions
                                 property string settingKey: "machine_gcode_flavor"
-                                property string label: catalog.i18nc("@label", "Gcode flavor")
+                                property string label: catalog.i18nc("@label", "G-code flavor")
                                 property bool forceUpdateOnChange: true
                                 property var afterOnActivate: manager.updateHasMaterialsMetadata
                             }
@@ -307,7 +307,7 @@ Cura.MachineAction
                             width: settingsTabs.columnWidth
                             Label
                             {
-                                text: catalog.i18nc("@label", "Start Gcode")
+                                text: catalog.i18nc("@label", "Start G-code")
                                 font.bold: true
                             }
                             Loader
@@ -317,7 +317,7 @@ Cura.MachineAction
                                 property int areaWidth: parent.width
                                 property int areaHeight: parent.height - y
                                 property string settingKey: "machine_start_gcode"
-                                property string tooltip: catalog.i18nc("@tooltip", "Gcode commands to be executed at the very start.")
+                                property string tooltip: catalog.i18nc("@tooltip", "G-code commands to be executed at the very start.")
                             }
                         }
 
@@ -326,7 +326,7 @@ Cura.MachineAction
                             width: settingsTabs.columnWidth
                             Label
                             {
-                                text: catalog.i18nc("@label", "End Gcode")
+                                text: catalog.i18nc("@label", "End G-code")
                                 font.bold: true
                             }
                             Loader
@@ -336,7 +336,7 @@ Cura.MachineAction
                                 property int areaWidth: parent.width
                                 property int areaHeight: parent.height - y
                                 property string settingKey: "machine_end_gcode"
-                                property string tooltip: catalog.i18nc("@tooltip", "Gcode commands to be executed at the very end.")
+                                property string tooltip: catalog.i18nc("@tooltip", "G-code commands to be executed at the very end.")
                             }
                         }
                     }
@@ -441,7 +441,7 @@ Cura.MachineAction
                                 width: settingsTabs.columnWidth
                                 Label
                                 {
-                                    text: catalog.i18nc("@label", "Extruder Start Gcode")
+                                    text: catalog.i18nc("@label", "Extruder Start G-code")
                                     font.bold: true
                                 }
                                 Loader
@@ -459,7 +459,7 @@ Cura.MachineAction
                                 width: settingsTabs.columnWidth
                                 Label
                                 {
-                                    text: catalog.i18nc("@label", "Extruder End Gcode")
+                                    text: catalog.i18nc("@label", "Extruder End G-code")
                                     font.bold: true
                                 }
                                 Loader
