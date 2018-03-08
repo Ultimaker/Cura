@@ -1,3 +1,8 @@
+# Copyright (c) 2018 Ultimaker B.V.
+# Cura is released under the terms of the LGPLv3 or higher.
+
+from typing import List
+
 from cura.MachineAction import MachineAction
 from cura.PrinterOutputDevice import PrinterOutputDevice
 
@@ -32,7 +37,7 @@ class BedLevelMachineAction(MachineAction):
             printer_output_devices[0].moveHead(0, 0, 3)
             printer_output_devices[0].homeHead()
 
-    def _getPrinterOutputDevices(self):
+    def _getPrinterOutputDevices(self) -> List[PrinterOutputDevice]:
         return [printer_output_device for printer_output_device in Application.getInstance().getOutputDeviceManager().getOutputDevices() if isinstance(printer_output_device, PrinterOutputDevice)]
 
     @pyqtSlot()
