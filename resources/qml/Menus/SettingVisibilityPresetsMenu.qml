@@ -27,6 +27,8 @@ Menu
         onTriggered:
         {
             Cura.SettingVisibilityPresetsModel.setActivePreset("custom");
+            // Restore custom set from preference
+            UM.Preferences.setValue("general/visible_settings", UM.Preferences.getValue("cura/custom_visible_settings"));
             showSettingVisibilityProfile();
         }
     }

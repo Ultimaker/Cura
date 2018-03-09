@@ -164,6 +164,11 @@ UM.PreferencesPage
                     UM.Preferences.setValue("general/visible_settings", Cura.SettingVisibilityPresetsModel.getItem(index - 1).settings.join(";"));
                     // "Custom selection" entry is added in front, so index is off by 1
                 }
+                else
+                {
+                    // Restore custom set from preference
+                    UM.Preferences.setValue("general/visible_settings", UM.Preferences.getValue("cura/custom_visible_settings"));
+                }
                 base.inhibitSwitchToCustom = false;
             }
         }

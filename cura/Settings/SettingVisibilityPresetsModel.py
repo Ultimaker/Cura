@@ -29,10 +29,12 @@ class SettingVisibilityPresetsModel(ListModel):
 
         self._populate()
 
-        preferences = Preferences.getInstance()
-        preferences.addPreference("cura/active_setting_visibility_preset", "custom")
+        self._preferences = Preferences.getInstance()
+        self._preferences.addPreference("cura/active_setting_visibility_preset", "custom") # Preference to store which preset is currently selected
+        self._preferences.addPreference("cura/custom_visible_settings", "") # Preference that stores the "custom" set so it can always be restored (even after a restart)
+        self._preferences.preferenceChanged.connect(self._onPreferencesChanged)
 
-        self._active_preset = Preferences.getInstance().getValue("cura/active_setting_visibility_preset")
+        self._active_preset = self._preferences.getValue("cura/active_setting_visibility_preset")
         if self.find("id", self._active_preset) < 0:
             self._active_preset = "custom"
 
@@ -90,7 +92,12 @@ class SettingVisibilityPresetsModel(ListModel):
             Logger.log("w", "Tried to set active preset to unknown id %s", preset_id)
             return
 
-        Preferences.getInstance().setValue("cura/active_setting_visibility_preset", preset_id);
+        if preset_id == "custom" and self._active_preset == "custom":
+            # Copy current visibility set to custom visibility set preference so it can be restored later
+            visibility_string = self._preferences.getValue("general/visible_settings")
+            self._preferences.setValue("cura/custom_visible_settings", visibility_string)
+
+        self._preferences.setValue("cura/active_setting_visibility_preset", preset_id)
 
         self._active_preset = preset_id
         self.activePresetChanged.emit()
@@ -100,6 +107,18 @@ class SettingVisibilityPresetsModel(ListModel):
     @pyqtProperty(str, notify = activePresetChanged)
     def activePreset(self):
         return self._active_preset
+
+    def _onPreferencesChanged(self, name):
+        if name != "general/visible_settings":
+            return
+
+        if self._active_preset != "custom":
+            return
+
+        # Copy current visibility set to custom visibility set preference so it can be restored later
+        visibility_string = self._preferences.getValue("general/visible_settings")
+        self._preferences.setValue("cura/custom_visible_settings", visibility_string)
+
 
     # Factory function, used by QML
     @staticmethod
