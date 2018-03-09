@@ -26,6 +26,8 @@ class MachineSettingsAction(MachineAction):
         super().__init__("MachineSettingsAction", catalog.i18nc("@action", "Machine Settings"))
         self._qml_url = "MachineSettingsAction.qml"
 
+        self._application = Application.getInstance()
+
         self._global_container_stack = None
 
         from cura.Settings.CuraContainerStack import _ContainerIndexes
@@ -34,16 +36,16 @@ class MachineSettingsAction(MachineAction):
         self._container_registry = ContainerRegistry.getInstance()
         self._container_registry.containerAdded.connect(self._onContainerAdded)
         self._container_registry.containerRemoved.connect(self._onContainerRemoved)
-        Application.getInstance().globalContainerStackChanged.connect(self._onGlobalContainerChanged)
+        self._application.globalContainerStackChanged.connect(self._onGlobalContainerChanged)
 
         self._empty_container = self._container_registry.getEmptyInstanceContainer()
 
-        self._backend = Application.getInstance().getBackend()
+        self._backend = self._application.getBackend()
 
     def _onContainerAdded(self, container):
         # Add this action as a supported action to all machine definitions
         if isinstance(container, DefinitionContainer) and container.getMetaDataEntry("type") == "machine":
-            Application.getInstance().getMachineActionManager().addSupportedAction(container.getId(), self.getKey())
+            self._application.getMachineActionManager().addSupportedAction(container.getId(), self.getKey())
 
     def _onContainerRemoved(self, container):
         # Remove definition_changes containers when a stack is removed
@@ -61,11 +63,11 @@ class MachineSettingsAction(MachineAction):
         # Make sure there is a definition_changes container to store the machine settings
         definition_changes_container = self._global_container_stack.definitionChanges
         if definition_changes_container == self._empty_container:
-            definition_changes_container = CuraStackBuilder.createDefinitionChangesContainer(
-                self._global_container_stack, self._global_container_stack.getName() + "_settings")
+            CuraStackBuilder.createDefinitionChangesContainer(self._global_container_stack,
+                                                              self._global_container_stack.getName() + "_settings")
 
         # Notify the UI in which container to store the machine settings data
-        from cura.Settings.CuraContainerStack import CuraContainerStack, _ContainerIndexes
+        from cura.Settings.CuraContainerStack import _ContainerIndexes
 
         container_index = _ContainerIndexes.DefinitionChanges
         if container_index != self._container_index:
@@ -107,13 +109,13 @@ class MachineSettingsAction(MachineAction):
     def setMachineExtruderCount(self, extruder_count):
         # Note: this method was in this class before, but since it's quite generic and other plugins also need it
         # it was moved to the machine manager instead. Now this method just calls the machine manager.
-        Application.getInstance().getMachineManager().setActiveMachineExtruderCount(extruder_count)
+        self._application.getMachineManager().setActiveMachineExtruderCount(extruder_count)
 
     @pyqtSlot()
     def forceUpdate(self):
         # Force rebuilding the build volume by reloading the global container stack.
         # This is a bit of a hack, but it seems quick enough.
-        Application.getInstance().globalContainerStackChanged.emit()
+        self._application.globalContainerStackChanged.emit()
 
     @pyqtSlot()
     def updateHasMaterialsMetadata(self):
@@ -126,9 +128,11 @@ class MachineSettingsAction(MachineAction):
             # In other words: only continue for the UM2 (extended), but not for the UM2+
             return
 
-        stacks = ExtruderManager.getInstance().getExtruderStacks()
+        machine_manager = self._application.getMachineManager()
+        extruder_positions = list(self._global_container_stack.extruders.keys())
         has_materials = self._global_container_stack.getProperty("machine_gcode_flavor", "value") != "UltiGCode"
 
+        material_node = None
         if has_materials:
             if "has_materials" in self._global_container_stack.getMetaData():
                 self._global_container_stack.setMetaDataEntry("has_materials", True)
@@ -136,26 +140,23 @@ class MachineSettingsAction(MachineAction):
                 self._global_container_stack.addMetaDataEntry("has_materials", True)
 
             # Set the material container for each extruder to a sane default
-            for stack in stacks:
-                material_container = stack.material
-                if material_container == self._empty_container:
-                    machine_approximate_diameter = str(round(self._global_container_stack.getProperty("material_diameter", "value")))
-                    search_criteria = { "type": "material", "definition": "fdmprinter", "id": self._global_container_stack.getMetaDataEntry("preferred_material"), "approximate_diameter": machine_approximate_diameter}
-                    materials = self._container_registry.findInstanceContainers(**search_criteria)
-                    if materials:
-                        stack.material = materials[0]
+            material_manager = self._application.getMaterialManager()
+            #material_manager.initialize()
+            material_node = material_manager.getDefaultMaterial(self._global_container_stack, None)
+
         else:
             # The metadata entry is stored in an ini, and ini files are parsed as strings only.
             # Because any non-empty string evaluates to a boolean True, we have to remove the entry to make it False.
             if "has_materials" in self._global_container_stack.getMetaData():
                 self._global_container_stack.removeMetaDataEntry("has_materials")
 
-            for stack in stacks:
-                stack.material = ContainerRegistry.getInstance().getEmptyInstanceContainer()
+        # set materials
+        for position in extruder_positions:
+            machine_manager.setMaterial(position, material_node)
 
-        Application.getInstance().globalContainerStackChanged.emit()
+        self._application.globalContainerStackChanged.emit()
 
     @pyqtSlot(int)
     def updateMaterialForDiameter(self, extruder_position: int):
         # Updates the material container to a material that matches the material diameter set for the printer
-        Application.getInstance().getExtruderManager().updateMaterialForDiameter(extruder_position)
+        self._application.getExtruderManager().updateMaterialForDiameter(extruder_position)
