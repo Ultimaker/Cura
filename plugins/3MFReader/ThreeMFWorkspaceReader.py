@@ -709,7 +709,6 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         # function is running on the main thread (Qt thread), although those "changed" signals have been emitted, but
         # they won't take effect until this function is done.
         # To solve this, we schedule _updateActiveMachine() for later so it will have the latest data.
-        Application.getInstance().setGlobalContainerStack(global_stack)
         self._updateActiveMachine(global_stack)
 
         # Load all the nodes / meshdata of the workspace

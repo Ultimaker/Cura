@@ -905,11 +905,13 @@ class MachineManager(QObject):
     def _setMaterial(self, position, container_node = None):
         if container_node:
             self._global_container_stack.extruders[position].material = container_node.getContainer()
+            root_material_id = container_node.metadata["base_file"]
+            root_material_name = container_node.getContainer().getName()
         else:
             self._global_container_stack.extruders[position].material = self._empty_material_container
+            root_material_id = None
+            root_material_name = None
         # The _current_root_material_id is used in the MaterialMenu to see which material is selected
-        root_material_id = container_node.metadata["base_file"]
-        root_material_name = container_node.getContainer().getName()
         if root_material_id != self._current_root_material_id[position]:
             self._current_root_material_id[position] = root_material_id
             self._current_root_material_name[position] = root_material_name

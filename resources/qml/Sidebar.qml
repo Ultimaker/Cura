@@ -64,11 +64,11 @@ Rectangle
 
     function getPrettyTime(time)
     {
-        var hours = Math.round(time / 3600)
+        var hours = Math.floor(time / 3600)
         time -= hours * 3600
-        var minutes = Math.round(time / 60);
+        var minutes = Math.floor(time / 60);
         time -= minutes * 60
-        var seconds = Math.round(time);
+        var seconds = Math.floor(time);
 
         var finalTime = strPadLeft(hours, "0", 2) + ':' + strPadLeft(minutes,'0',2)+ ':' + strPadLeft(seconds,'0',2);
         return finalTime;
