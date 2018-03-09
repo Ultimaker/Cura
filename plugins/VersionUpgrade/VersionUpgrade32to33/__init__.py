@@ -9,7 +9,7 @@ def getMetaData():
     return {
         "version_upgrade": {
             # From                        To                   Upgrade function
-            ("quality_changes", 2000004): ("quality", 3000004, upgrade.upgradeQualityChanges),
+            ("quality_changes", 2000004): ("quality_changes", 3000004, upgrade.upgradeQualityChanges),
         },
         "sources": {
             "quality_changes": {
