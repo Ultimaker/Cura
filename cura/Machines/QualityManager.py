@@ -428,11 +428,11 @@ class QualityManager(QObject):
                 Logger.log("w", "No quality or quality changes container found in stack %s, ignoring it", stack.getId())
                 continue
 
-            extruder_definition_id = None
-            if isinstance(stack, ExtruderStack):
-                extruder_definition_id = stack.definition.getId()
             quality_type = quality_container.getMetaDataEntry("quality_type")
-            new_changes = self._createQualityChanges(quality_type, unique_name, global_stack, extruder_definition_id)
+            extruder_stack = None
+            if isinstance(stack, ExtruderStack):
+                extruder_stack = stack
+            new_changes = self._createQualityChanges(quality_type, unique_name, global_stack, extruder_stack)
             from cura.Settings.ContainerManager import ContainerManager
             ContainerManager.getInstance()._performMerge(new_changes, quality_changes_container, clear_settings = False)
             ContainerManager.getInstance()._performMerge(new_changes, user_container)
@@ -443,8 +443,8 @@ class QualityManager(QObject):
     # Create a quality changes container with the given setup.
     #
     def _createQualityChanges(self, quality_type: str, new_name: str, machine: "GlobalStack",
-                              extruder_id: Optional[str]) -> "InstanceContainer":
-        base_id = machine.definition.getId() if extruder_id is None else extruder_id
+                              extruder_stack: Optional["ExtruderStack"]) -> "InstanceContainer":
+        base_id = machine.definition.getId() if extruder_stack is None else extruder_stack.getId()
         new_id = base_id + "_" + new_name
         new_id = new_id.lower().replace(" ", "_")
         new_id = self._container_registry.uniqueName(new_id)
@@ -456,8 +456,8 @@ class QualityManager(QObject):
         quality_changes.addMetaDataEntry("quality_type", quality_type)
 
         # If we are creating a container for an extruder, ensure we add that to the container
-        if extruder_id is not None:
-            quality_changes.addMetaDataEntry("extruder", extruder_id)
+        if extruder_stack is not None:
+            quality_changes.addMetaDataEntry("position", extruder_stack.getMetaDataEntry("position"))
 
         # If the machine specifies qualities should be filtered, ensure we match the current criteria.
         machine_definition_id = getMachineDefinitionIDForQualitySearch(machine)

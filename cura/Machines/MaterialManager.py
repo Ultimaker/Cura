@@ -387,10 +387,10 @@ class MaterialManager(QObject):
         else:
             return None
 
-    def getDefaultMaterial(self, global_stack: "GlobalStack", extruder_variant_name: str) -> Optional["MaterialNode"]:
+    def getDefaultMaterial(self, global_stack: "GlobalStack", extruder_variant_name: Optional[str]) -> Optional["MaterialNode"]:
         node = None
         machine_definition = global_stack.definition
-        if parseBool(machine_definition.getMetaDataEntry("has_materials", False)):
+        if parseBool(global_stack.getMetaDataEntry("has_materials", False)):
             material_diameter = machine_definition.getProperty("material_diameter", "value")
             if isinstance(material_diameter, SettingFunction):
                 material_diameter = material_diameter(global_stack)

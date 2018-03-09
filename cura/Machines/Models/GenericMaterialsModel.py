@@ -55,6 +55,6 @@ class GenericMaterialsModel(BaseMaterialsModel):
             item_list.append(item)
 
         # Sort the item list by material name alphabetically
-        item_list = sorted(item_list, key = lambda d: d["name"])
+        item_list = sorted(item_list, key = lambda d: d["name"].upper())
 
         self.setItems(item_list)

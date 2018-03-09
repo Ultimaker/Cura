@@ -23,7 +23,7 @@ class CustomQualityProfilesDropDownMenuModel(QualityProfilesDropDownMenuModel):
         quality_changes_group_dict = self._quality_manager.getQualityChangesGroups(active_global_stack)
 
         item_list = []
-        for key in sorted(quality_changes_group_dict):
+        for key in sorted(quality_changes_group_dict, key = lambda name: name.upper()):
             quality_changes_group = quality_changes_group_dict[key]
 
             item = {"name": quality_changes_group.name,

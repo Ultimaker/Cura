@@ -1,4 +1,4 @@
-# Copyright (c) 2017 Ultimaker B.V.
+# Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import platform
@@ -14,10 +14,11 @@ import urllib.request
 import urllib.error
 import shutil
 
-from PyQt5.QtCore import QT_VERSION_STR, PYQT_VERSION_STR, QUrl
+from PyQt5.QtCore import QT_VERSION_STR, PYQT_VERSION_STR, Qt, QUrl
 from PyQt5.QtWidgets import QDialog, QDialogButtonBox, QVBoxLayout, QLabel, QTextEdit, QGroupBox, QCheckBox, QPushButton
 from PyQt5.QtGui import QDesktopServices
 
+from UM.Resources import Resources
 from UM.Application import Application
 from UM.Logger import Logger
 from UM.View.GL.OpenGL import OpenGL
@@ -258,7 +259,7 @@ class CrashHandler:
         opengl_instance = OpenGL.getInstance()
         if not opengl_instance:
             self.data["opengl"] = {"version": "n/a", "vendor": "n/a", "type": "n/a"}
-            return catalog.i18nc("@label", "not yet initialised<br/>")
+            return catalog.i18nc("@label", "Not yet initialized<br/>")
 
         info = "<ul>"
         info += catalog.i18nc("@label OpenGL version", "<li>OpenGL Version: {version}</li>").format(version = opengl_instance.getOpenGLVersion())

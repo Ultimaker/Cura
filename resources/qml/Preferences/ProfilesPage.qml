@@ -36,12 +36,14 @@ Item
         text: catalog.i18nc("@title:tab", "Profiles")
     }
 
-    property var hasCurrentItem: qualityListView.currentItem != null
+    property var hasCurrentItem: base.currentItem != null
 
     property var currentItem: {
         var current_index = qualityListView.currentIndex;
-        return qualitiesModel.getItem(current_index);
+        return (current_index == -1) ? null : qualitiesModel.getItem(current_index);
     }
+
+    property var currentItemName: hasCurrentItem ? base.currentItem.name : ""
 
     property var isCurrentItemActivated: {
         if (!base.currentItem) {
@@ -235,7 +237,7 @@ Item
 
         icon: StandardIcon.Question;
         title: catalog.i18nc("@title:window", "Confirm Remove")
-        text: catalog.i18nc("@label (%1 is object name)", "Are you sure you wish to remove %1? This cannot be undone!").arg(base.currentItem.name)
+        text: catalog.i18nc("@label (%1 is object name)", "Are you sure you wish to remove %1? This cannot be undone!").arg(base.currentItemName)
         standardButtons: StandardButton.Yes | StandardButton.No
         modality: Qt.ApplicationModal
 
@@ -437,6 +439,7 @@ Item
             Item
             {
                 anchors.fill: parent
+                visible: base.currentItem != null
 
                 Item    // Profile title Label
                 {
@@ -446,7 +449,7 @@ Item
                     height: childrenRect.height
 
                     Label {
-                        text: base.currentItem.name
+                        text: base.currentItemName
                         font: UM.Theme.getFont("large")
                     }
                 }
