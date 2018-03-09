@@ -74,6 +74,19 @@ class VersionUpgrade32to33(VersionUpgrade):
         setting_version = int(parser.get("metadata", "setting_version", fallback = 0))
         return format_version * 1000000 + setting_version
 
+    ##  Upgrades non-quality-changes instance containers to have the new version
+    #   number.
+    def upgradeInstanceContainer(self, serialized, filename):
+        parser = configparser.ConfigParser(interpolation = None)
+        parser.read_string(serialized)
+
+        #Update version number.
+        parser["general"]["version"] = "3"
+
+        result = io.StringIO()
+        parser.write(result)
+        return [filename], [result.getvalue()]
+
     ##  Upgrades a quality changes container to the new format.
     def upgradeQualityChanges(self, serialized, filename):
         parser = configparser.ConfigParser(interpolation = None)
