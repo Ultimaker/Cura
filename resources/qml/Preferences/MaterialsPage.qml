@@ -52,6 +52,24 @@ Item
         return base.currentItem.root_material_id == root_material_id;
     }
 
+    Component.onCompleted:
+    {
+        // Select the activated material when this page shows up
+        const extruder_position = Cura.ExtruderManager.activeExtruderIndex;
+        const active_root_material_id = Cura.MachineManager.currentRootMaterialId[extruder_position];
+        var itemIndex = -1;
+        for (var i = 0; i < materialsModel.rowCount(); ++i)
+        {
+            var item = materialsModel.getItem(i);
+            if (item.root_material_id == active_root_material_id)
+            {
+                itemIndex = i;
+                break;
+            }
+        }
+        materialListView.currentIndex = itemIndex;
+    }
+
     Row  // Button Row
     {
         id: buttonRow

@@ -33,6 +33,9 @@ from UM.i18n import i18nCatalog
 catalog = i18nCatalog("cura")
 
 class CuraEngineBackend(QObject, Backend):
+
+    backendError = Signal()
+
     ##  Starts the back-end plug-in.
     #
     #   This registers all the signal listeners and prepares for communication
@@ -289,6 +292,7 @@ class CuraEngineBackend(QObject, Backend):
 
         if job.isCancelled() or job.getError() or job.getResult() == StartSliceJob.StartJobResult.Error:
             self.backendStateChange.emit(BackendState.Error)
+            self.backendError.emit(job)
             return
 
         if job.getResult() == StartSliceJob.StartJobResult.MaterialIncompatible:
@@ -297,6 +301,7 @@ class CuraEngineBackend(QObject, Backend):
                                             "Unable to slice with the current material as it is incompatible with the selected machine or configuration."), title = catalog.i18nc("@info:title", "Unable to slice"))
                 self._error_message.show()
                 self.backendStateChange.emit(BackendState.Error)
+                self.backendError.emit(job)
             else:
                 self.backendStateChange.emit(BackendState.NotStarted)
             return
@@ -325,6 +330,7 @@ class CuraEngineBackend(QObject, Backend):
                                               title = catalog.i18nc("@info:title", "Unable to slice"))
                 self._error_message.show()
                 self.backendStateChange.emit(BackendState.Error)
+                self.backendError.emit(job)
             else:
                 self.backendStateChange.emit(BackendState.NotStarted)
             return
@@ -347,6 +353,7 @@ class CuraEngineBackend(QObject, Backend):
                                           title = catalog.i18nc("@info:title", "Unable to slice"))
             self._error_message.show()
             self.backendStateChange.emit(BackendState.Error)
+            self.backendError.emit(job)
             return
 
         if job.getResult() == StartSliceJob.StartJobResult.BuildPlateError:
@@ -355,6 +362,7 @@ class CuraEngineBackend(QObject, Backend):
                                               title = catalog.i18nc("@info:title", "Unable to slice"))
                 self._error_message.show()
                 self.backendStateChange.emit(BackendState.Error)
+                self.backendError.emit(job)
             else:
                 self.backendStateChange.emit(BackendState.NotStarted)
 
@@ -364,6 +372,7 @@ class CuraEngineBackend(QObject, Backend):
                                               title = catalog.i18nc("@info:title", "Unable to slice"))
                 self._error_message.show()
                 self.backendStateChange.emit(BackendState.Error)
+                self.backendError.emit(job)
             else:
                 self.backendStateChange.emit(BackendState.NotStarted)
             self._invokeSlice()

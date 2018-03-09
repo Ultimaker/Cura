@@ -3,6 +3,7 @@
 
 from PyQt5.QtCore import Qt, pyqtSignal, pyqtProperty
 
+from UM.Application import Application
 from UM.Qt.ListModel import ListModel
 
 
@@ -25,6 +26,8 @@ class BaseMaterialsModel(ListModel):
 
     def __init__(self, parent = None):
         super().__init__(parent)
+        self._application = Application.getInstance()
+        self._machine_manager = self._application.getMachineManager()
 
         self.addRoleName(self.RootMaterialIdRole, "root_material_id")
         self.addRoleName(self.IdRole, "id")
@@ -35,12 +38,31 @@ class BaseMaterialsModel(ListModel):
         self.addRoleName(self.ContainerNodeRole, "container_node")
 
         self._extruder_position = 0
+        self._extruder_stack = None
+
+    def _updateExtruderStack(self):
+        global_stack = self._machine_manager.activeMachine
+        if global_stack is None:
+            return
+
+        if self._extruder_stack is not None:
+            self._extruder_stack.pyqtContainersChanged.disconnect(self._update)
+        self._extruder_stack = global_stack.extruders.get(str(self._extruder_position))
+        if self._extruder_stack is not None:
+            self._extruder_stack.pyqtContainersChanged.connect(self._update)
 
     def setExtruderPosition(self, position: int):
         if self._extruder_position != position:
             self._extruder_position = position
+            self._updateExtruderStack()
             self.extruderPositionChanged.emit()
 
     @pyqtProperty(int, fset = setExtruderPosition, notify = extruderPositionChanged)
     def extruderPosition(self) -> int:
-        return self._extruder_positoin
+        return self._extruder_position
+
+    #
+    # This is an abstract method that needs to be implemented by
+    #
+    def _update(self):
+        pass

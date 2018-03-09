@@ -47,6 +47,19 @@ TabView
         return Math.round(diameter);
     }
 
+    // This trick makes sure to make all fields lose focus so their onEditingFinished will be triggered
+    // and modified values will be saved. This can happen when a user changes a value and then closes the
+    // dialog directly.
+    //
+    // Please note that somehow this callback is ONLY triggered when visible is false.
+    onVisibleChanged:
+    {
+        if (!visible)
+        {
+            base.focus = false;
+        }
+    }
+
     Tab
     {
         title: catalog.i18nc("@title", "Information")

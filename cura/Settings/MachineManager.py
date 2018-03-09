@@ -306,6 +306,14 @@ class MachineManager(QObject):
 
         self.__emitChangedSignals()
 
+    @staticmethod
+    def getMachine(definition_id: str) -> Optional["GlobalStack"]:
+        machines = ContainerRegistry.getInstance().findContainerStacks(type = "machine")
+        for machine in machines:
+            if machine.definition.getId() == definition_id:
+                return machine
+        return None
+
     @pyqtSlot(str, str)
     def addMachine(self, name: str, definition_id: str) -> None:
         new_stack = CuraStackBuilder.createMachine(name, definition_id)
@@ -873,7 +881,7 @@ class MachineManager(QObject):
             quality_node = quality_group.nodes_for_extruders.get(position)
 
             quality_changes_container = self._empty_quality_changes_container
-            quality_container = self._empty_quality_changes_container
+            quality_container = self._empty_quality_container
             if quality_changes_node:
                 quality_changes_container = quality_changes_node.getContainer()
             if quality_node:
@@ -897,11 +905,13 @@ class MachineManager(QObject):
     def _setMaterial(self, position, container_node = None):
         if container_node:
             self._global_container_stack.extruders[position].material = container_node.getContainer()
+            root_material_id = container_node.metadata["base_file"]
+            root_material_name = container_node.getContainer().getName()
         else:
             self._global_container_stack.extruders[position].material = self._empty_material_container
+            root_material_id = None
+            root_material_name = None
         # The _current_root_material_id is used in the MaterialMenu to see which material is selected
-        root_material_id = container_node.metadata["base_file"]
-        root_material_name = container_node.getContainer().getName()
         if root_material_id != self._current_root_material_id[position]:
             self._current_root_material_id[position] = root_material_id
             self._current_root_material_name[position] = root_material_name
@@ -917,30 +927,38 @@ class MachineManager(QObject):
 
     ## Update current quality type and machine after setting material
     def _updateQualityWithMaterial(self):
-        current_quality = None
+        Logger.log("i", "Updating quality/quality_changes due to material change")
+        current_quality_type = None
         if self._current_quality_group:
-            current_quality = self._current_quality_group.quality_type
-        quality_manager = Application.getInstance()._quality_manager
-        candidate_quality_groups = quality_manager.getQualityGroups(self._global_container_stack)
+            current_quality_type = self._current_quality_group.quality_type
+        candidate_quality_groups = self._quality_manager.getQualityGroups(self._global_container_stack)
         available_quality_types = {qt for qt, g in candidate_quality_groups.items() if g.is_available}
 
+        Logger.log("d", "Current quality type = [%s]", current_quality_type)
         if not self.activeMaterialsCompatible():
+            Logger.log("i", "Active materials are not compatible, setting all qualities to empty (Not Supported).")
             self._setEmptyQuality()
             return
 
         if not available_quality_types:
+            Logger.log("i", "No available quality types found, setting all qualities to empty (Not Supported).")
             self._setEmptyQuality()
             return
 
-        if current_quality in available_quality_types:
-            self._setQualityGroup(candidate_quality_groups[current_quality], empty_quality_changes = False)
+        if current_quality_type in available_quality_types:
+            Logger.log("i", "Current available quality type [%s] is available, applying changes.", current_quality_type)
+            self._setQualityGroup(candidate_quality_groups[current_quality_type], empty_quality_changes = False)
             return
 
+        # The current quality type is not available so we use the preferred quality type if it's available,
+        # otherwise use one of the available quality types.
         quality_type = sorted(list(available_quality_types))[0]
         preferred_quality_type = self._global_container_stack.getMetaDataEntry("preferred_quality_type")
         if preferred_quality_type in available_quality_types:
             quality_type = preferred_quality_type
 
+        Logger.log("i", "The current quality type [%s] is not available, switching to [%s] instead",
+                   current_quality_type, quality_type)
         self._setQualityGroup(candidate_quality_groups[quality_type], empty_quality_changes = True)
 
     def _updateMaterialWithVariant(self, position: Optional[str]):
@@ -955,9 +973,8 @@ class MachineManager(QObject):
             current_material_base_name = extruder.material.getMetaDataEntry("base_file")
             current_variant_name = extruder.variant.getMetaDataEntry("name")
 
-            material_manager = Application.getInstance()._material_manager
             material_diameter = self._global_container_stack.getProperty("material_diameter", "value")
-            candidate_materials = material_manager.getAvailableMaterials(
+            candidate_materials = self._material_manager.getAvailableMaterials(
                 self._global_container_stack.definition.getId(),
                 current_variant_name,
                 material_diameter)
@@ -997,28 +1014,28 @@ class MachineManager(QObject):
             self._updateQualityWithMaterial()
 
     @pyqtSlot(QObject)
-    def setQualityGroup(self, quality_group):
+    def setQualityGroup(self, quality_group, no_dialog = False):
         self.blurSettings.emit()
         with postponeSignals(*self._getContainerChangedSignals(), compress = CompressTechnique.CompressPerParameterValue):
             self._setQualityGroup(quality_group)
 
         # See if we need to show the Discard or Keep changes screen
-        if self.hasUserSettings and Preferences.getInstance().getValue("cura/active_mode") == 1:
-            Application.getInstance().discardOrKeepProfileChanges()
+        if not no_dialog and self.hasUserSettings and Preferences.getInstance().getValue("cura/active_mode") == 1:
+            self._application.discardOrKeepProfileChanges()
 
     @pyqtProperty(QObject, fset = setQualityGroup, notify = activeQualityGroupChanged)
     def activeQualityGroup(self):
         return self._current_quality_group
 
     @pyqtSlot(QObject)
-    def setQualityChangesGroup(self, quality_changes_group):
+    def setQualityChangesGroup(self, quality_changes_group, no_dialog = False):
         self.blurSettings.emit()
         with postponeSignals(*self._getContainerChangedSignals(), compress = CompressTechnique.CompressPerParameterValue):
             self._setQualityChangesGroup(quality_changes_group)
 
         # See if we need to show the Discard or Keep changes screen
-        if self.hasUserSettings and Preferences.getInstance().getValue("cura/active_mode") == 1:
-            Application.getInstance().discardOrKeepProfileChanges()
+        if not no_dialog and self.hasUserSettings and Preferences.getInstance().getValue("cura/active_mode") == 1:
+            self._application.discardOrKeepProfileChanges()
 
     @pyqtProperty(QObject, fset = setQualityChangesGroup, notify = activeQualityChangesGroupChanged)
     def activeQualityChangesGroup(self):
