@@ -386,7 +386,7 @@ class QualityManager(QObject):
         if quality_changes_group is None:
             # create global quality changes only
             new_quality_changes = self._createQualityChanges(quality_group.quality_type, quality_changes_name,
-                                                             global_stack, extruder_id = None)
+                                                             global_stack, None)
             self._container_registry.addContainer(new_quality_changes)
         else:
             new_name = self._container_registry.uniqueName(quality_changes_name)

@@ -216,11 +216,6 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         archive = zipfile.ZipFile(file_name, "r")
         cura_file_names = [name for name in archive.namelist() if name.startswith("Cura/")]
 
-        # A few lists of containers in this project files.
-        # When loading the global stack file, it may be associated with those containers, which may or may not be
-        # in Cura already, so we need to provide them as alternative search lists.
-        instance_container_list = []
-
         resolve_strategy_keys = ["machine", "material", "quality_changes"]
         self._resolve_strategies = {k: None for k in resolve_strategy_keys}
         containers_found_dict = {k: False for k in resolve_strategy_keys}
@@ -307,13 +302,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             container_info = ContainerInfo(instance_container_file_name, serialized, parser)
             instance_container_info_dict[container_id] = container_info
 
-            instance_container = InstanceContainer(container_id)
-
-            # Deserialize InstanceContainer by converting read data from bytes to string
-            instance_container.deserialize(serialized, file_name = instance_container_file_name)
-            instance_container_list.append(instance_container)
-
-            container_type = instance_container.getMetaDataEntry("type")
+            container_type = parser["metadata"]["type"]
             if container_type == "quality_changes":
                 quality_changes_info_list.append(container_info)
 
@@ -321,20 +310,22 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                     self._machine_info.quality_changes_info.name = parser["general"]["name"]
                     self._machine_info.quality_changes_info.global_info = container_info
 
-                quality_name = instance_container.getName()
-                num_settings_overriden_by_quality_changes += len(instance_container._instances)
+                quality_name = parser["general"]["name"]
+                num_settings_overriden_by_quality_changes += len(parser.get("values", {}))
                 # Check if quality changes already exists.
                 quality_changes = self._container_registry.findInstanceContainers(id = container_id)
                 if quality_changes:
                     containers_found_dict["quality_changes"] = True
                     # Check if there really is a conflict by comparing the values
+                    instance_container = InstanceContainer(container_id)
+                    instance_container.deserialize(serialized, file_name = instance_container_file_name)
                     if quality_changes[0] != instance_container:
                         quality_changes_conflict = True
             elif container_type == "quality":
                 if not quality_name:
-                    quality_name = instance_container.getName()
+                    quality_name = parser["general"]["name"]
             elif container_type == "user":
-                num_user_settings += len(instance_container._instances)
+                num_user_settings += len(parser["values"])
             elif container_type in self._ignored_instance_container_types:
                 # Ignore certain instance container types
                 Logger.log("w", "Ignoring instance container [%s] with type [%s]", container_id, container_type)
@@ -739,7 +730,6 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             from cura.Machines.QualityManager import getMachineDefinitionIDForQualitySearch
             machine_definition_id_for_quality = getMachineDefinitionIDForQualitySearch(global_stack)
             machine_definition_for_quality = self._container_registry.findDefinitionContainers(id = machine_definition_id_for_quality)[0]
-            extruder_dict_for_quality = machine_definition_for_quality.getMetaDataEntry("machine_extruder_trains")
 
             quality_changes_info = self._machine_info.quality_changes_info
             quality_changes_quality_type = quality_changes_info.global_info.parser["metadata"]["quality_type"]
@@ -752,13 +742,12 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
 
                 quality_changes_name = self._container_registry.uniqueName(quality_changes_name)
                 for position, container_info in container_info_dict.items():
-                    extruder_definition_id = None
+                    extruder_stack = None
                     if position is not None:
-                        extruder_definition_id = extruder_dict_for_quality[position]
-
+                        extruder_stack = global_stack.extruders[position]
                     container = quality_manager._createQualityChanges(quality_changes_quality_type,
                                                                       quality_changes_name,
-                                                                      global_stack, extruder_definition_id)
+                                                                      global_stack, extruder_stack)
                     container_info.container = container
                     container.setDirty(True)
                     self._container_registry.addContainer(container)
@@ -781,18 +770,14 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                         container_info = quality_changes_info.extruder_info_dict[position]
                         container_info.container = container
 
-            for position, container_info in quality_changes_info.extruder_info_dict.items():
-                container_info.definition_id = extruder_dict_for_quality[position]
-
             # If there is no quality changes for any extruder, create one.
             if not quality_changes_info.extruder_info_dict:
                 container_info = ContainerInfo(None, None, None)
                 quality_changes_info.extruder_info_dict["0"] = container_info
-                extruder_definition_id = extruder_dict_for_quality["0"]
-                container_info.definition_id = extruder_definition_id
+                extruder_stack = global_stack.extruders["0"]
 
                 container = quality_manager._createQualityChanges(quality_changes_quality_type, quality_changes_name,
-                                                                  global_stack, extruder_definition_id)
+                                                                  global_stack, extruder_stack)
                 container_info.container = container
                 container.setDirty(True)
                 self._container_registry.addContainer(container)
@@ -818,9 +803,9 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                     continue
 
                 if container_info.container is None:
-                    extruder_definition_id = extruder_dict_for_quality[position]
+                    extruder_stack = global_stack.extruders[position]
                     container = quality_manager._createQualityChanges(quality_changes_quality_type, quality_changes_name,
-                                                                      global_stack, extruder_definition_id)
+                                                                      global_stack, extruder_stack)
                     container_info.container = container
 
                 for key, value in container_info.parser["values"].items():
