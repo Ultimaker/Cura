@@ -59,7 +59,7 @@ class QualityManagementModel(ListModel):
                     "quality_changes_group": None}
             item_list.append(item)
         # Sort by quality names
-        item_list = sorted(item_list, key = lambda x: x["name"])
+        item_list = sorted(item_list, key = lambda x: x["name"].upper())
 
         # Create quality_changes group items
         quality_changes_item_list = []
@@ -74,7 +74,7 @@ class QualityManagementModel(ListModel):
             quality_changes_item_list.append(item)
 
         # Sort quality_changes items by names and append to the item list
-        quality_changes_item_list = sorted(quality_changes_item_list, key = lambda x: x["name"])
+        quality_changes_item_list = sorted(quality_changes_item_list, key = lambda x: x["name"].upper())
         item_list += quality_changes_item_list
 
         self.setItems(item_list)

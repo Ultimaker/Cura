@@ -122,17 +122,17 @@ class BrandMaterialsModel(ListModel):
                 material_type_item["colors"].clear()
 
                 # Sort materials by name
-                material_list = sorted(material_list, key = lambda x: x["name"])
+                material_list = sorted(material_list, key = lambda x: x["name"].upper())
                 material_type_item["colors"].setItems(material_list)
 
                 material_type_item_list.append(material_type_item)
 
             # Sort material type by name
-            material_type_item_list = sorted(material_type_item_list, key = lambda x: x["name"])
+            material_type_item_list = sorted(material_type_item_list, key = lambda x: x["name"].upper())
             brand_item["materials"].setItems(material_type_item_list)
 
             brand_item_list.append(brand_item)
 
         # Sort brand by name
-        brand_item_list = sorted(brand_item_list, key = lambda x: x["name"])
+        brand_item_list = sorted(brand_item_list, key = lambda x: x["name"].upper())
         self.setItems(brand_item_list)

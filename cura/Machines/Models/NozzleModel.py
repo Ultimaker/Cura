@@ -45,7 +45,7 @@ class NozzleModel(ListModel):
             return
 
         item_list = []
-        for hotend_name, container_node in sorted(variant_node_dict.items(), key = lambda i: i[0]):
+        for hotend_name, container_node in sorted(variant_node_dict.items(), key = lambda i: i[0].upper()):
             item = {"id": hotend_name,
                     "hotend_name": hotend_name,
                     "container_node": container_node
