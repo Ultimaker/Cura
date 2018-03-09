@@ -12,25 +12,22 @@ Button
 {
     id: base
     property var outputDevice: Cura.MachineManager.printerOutputDevices[0]
-    text: catalog.i18nc("@label:sync indicator", "No match")
+    property var matched: updateOnSync()
+    text: matched == true ? "Yes" : "No"
     width: parent.width
     height: parent.height
 
-    function updateOnSync()
-    {
-        if (outputDevice != undefined)
-        {
-            for (var index in outputDevice.uniqueConfigurations)
-            {
+    function updateOnSync() {
+        if (outputDevice != undefined) {
+            for (var index in outputDevice.uniqueConfigurations) {
                 var configuration = outputDevice.uniqueConfigurations[index]
-                if (Cura.MachineManager.matchesConfiguration(configuration))
-                {
-                    base.text = catalog.i18nc("@label:sync indicator", "Matched")
-                    return
+                if (Cura.MachineManager.matchesConfiguration(configuration)) {
+                    base.matched = true;
+                    return;
                 }
             }
         }
-        base.text = catalog.i18nc("@label:sync indicator", "No match")
+        base.matched = false;
     }
 
     style: ButtonStyle
@@ -67,18 +64,19 @@ Button
                 color: UM.Theme.getColor("text_emphasis")
                 source: UM.Theme.getIcon("arrow_bottom")
             }
-            Label
-            {
+            UM.RecolorImage {
                 id: sidebarComboBoxLabel
-                color: UM.Theme.getColor("sidebar_header_text_active")
-                text: control.text
-                elide: Text.ElideRight
                 anchors.left: parent.left
                 anchors.leftMargin: UM.Theme.getSize("default_margin").width
-                anchors.right: downArrow.left
-                anchors.rightMargin: control.rightMargin
                 anchors.verticalCenter: parent.verticalCenter;
-                font: UM.Theme.getFont("medium")
+
+                width: UM.Theme.getSize("printer_status_icon").width
+                height: UM.Theme.getSize("printer_status_icon").height
+
+                color:  control.matched ? UM.Theme.getColor("printer_config_matched") : UM.Theme.getColor("printer_config_mismatch")
+                source: control.matched ? UM.Theme.getIcon("tab_status_connected") : UM.Theme.getIcon("tab_status_unknown")
+                sourceSize.width: width
+                sourceSize.height: height
             }
         }
         label: Label {}

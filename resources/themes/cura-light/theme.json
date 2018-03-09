@@ -314,7 +314,10 @@
         "tab_status_finished": [255, 255, 255, 255],
         "tab_status_paused": [255, 255, 255, 255],
         "tab_status_stopped": [255, 255, 255, 255],
-        "tab_status_unknown": [200, 200, 200, 255]
+        "tab_status_disconnected": [200, 200, 200, 255],
+
+        "printer_config_matched": [12, 169, 227, 255],
+        "printer_config_mismatch": [255, 145, 62, 255]
     },
 
     "sizes": {

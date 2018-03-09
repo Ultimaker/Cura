@@ -107,7 +107,7 @@ Rectangle
     ConfigurationSelection {
         id: configSelection
         visible: printerConnected && !sidebar.monitoringPrint && !sidebar.hideSettings
-        width: visible ? Math.round(base.width * 0.25) : 0
+        width: visible ? Math.round(base.width * 0.15) : 0
         height: UM.Theme.getSize("sidebar_header").height
         anchors.top: base.top
         anchors.right: parent.right

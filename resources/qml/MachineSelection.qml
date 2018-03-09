@@ -13,7 +13,7 @@ import "Menus"
 ToolButton {
     id: base
     property var isNetworkPrinter: Cura.MachineManager.activeMachineNetworkKey != ""
-    property var printerStatus: Cura.MachineManager.printerOutputDevices.length != 0 ? "connected" : "unknown"
+    property var printerStatus: Cura.MachineManager.printerOutputDevices.length != 0 ? "connected" : "disconnected"
     text: isNetworkPrinter ? Cura.MachineManager.activeMachineNetworkGroupName : Cura.MachineManager.activeMachineName
 
     tooltip: Cura.MachineManager.activeMachineName
