@@ -14,10 +14,7 @@ UM.ManagementPage
     id: base;
 
     title: catalog.i18nc("@title:tab", "Printers");
-    model: UM.ContainerStacksModel
-    {
-        filter: {"type": "machine"}
-    }
+    model: Cura.MachineManagementModel { }
 
     activeId: Cura.MachineManager.activeMachineId
     activeIndex: activeMachineIndex()
