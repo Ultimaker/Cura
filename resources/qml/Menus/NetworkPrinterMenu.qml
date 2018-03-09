@@ -9,14 +9,14 @@ import Cura 1.0 as Cura
 
 Instantiator {
     model: UM.ContainerStacksModel {
-        filter: {"type": "machine", "um_network_key": "*"}
+        filter: {"type": "machine", "um_network_key": "*", "hidden": "False"}
     }
     MenuItem {
         // TODO: Use printer_group icon when it's a cluster. Not use it for now since it doesn't look as expected
 //        iconSource: UM.Theme.getIcon("printer_single")
-        text: model.name;
+        text: model.metadata["connect_group_name"]
         checkable: true;
-        checked: Cura.MachineManager.activeMachineId == model.id
+        checked: Cura.MachineManager.activeMachineNetworkGroupName == model.metadata["connect_group_name"]
         exclusiveGroup: group;
         onTriggered: Cura.MachineManager.setActiveMachine(model.id);
     }

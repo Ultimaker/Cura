@@ -496,6 +496,12 @@ class MachineManager(QObject):
             return self._global_container_stack.getMetaDataEntry("um_network_key")
         return ""
 
+    @pyqtProperty(str, notify = globalContainerChanged)
+    def activeMachineNetworkGroupName(self) -> str:
+        if self._global_container_stack:
+            return self._global_container_stack.getMetaDataEntry("connect_group_name")
+        return ""
+
     @pyqtProperty(QObject, notify = globalContainerChanged)
     def activeMachine(self) -> Optional["GlobalStack"]:
         return self._global_container_stack
@@ -1070,8 +1076,10 @@ class MachineManager(QObject):
         new_machine = self.getMachine(machine_definition_id, metadata_filter = {"um_network_key": self.activeMachineNetworkKey})
         # If there is no machine, then create a new one
         if not new_machine:
-            new_machine = CuraStackBuilder.createMachine(machine_definition_id + "_instance", machine_definition_id)
+            new_machine = CuraStackBuilder.createMachine(machine_definition_id + "_sync", machine_definition_id)
             new_machine.addMetaDataEntry("um_network_key", self.activeMachineNetworkKey)
+            new_machine.addMetaDataEntry("connect_group_name", self.activeMachineNetworkGroupName)
+            new_machine.addMetaDataEntry("hidden", True)
         else:
             Logger.log("i", "Found a %s with the key %s. Let's use it!", machine_name, self.activeMachineNetworkKey)
 

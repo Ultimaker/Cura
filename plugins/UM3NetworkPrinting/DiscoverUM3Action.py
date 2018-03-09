@@ -98,6 +98,23 @@ class DiscoverUM3Action(MachineAction):
             return []
 
     @pyqtSlot(str)
+    def setGroupName(self, group_name):
+        Logger.log("d", "Attempting to set the group name of the active machine to %s", group_name)
+        global_container_stack = Application.getInstance().getGlobalContainerStack()
+        if global_container_stack:
+            meta_data = global_container_stack.getMetaData()
+            if "connect_group_name" in meta_data:
+                global_container_stack.setMetaDataEntry("connect_group_name", group_name)
+                # TODO Find all the places where there is the same group name and change it accordingly
+            else:
+                global_container_stack.addMetaDataEntry("connect_group_name", group_name)
+                global_container_stack.addMetaDataEntry("hidden", False)
+
+        if self._network_plugin:
+            # Ensure that the connection states are refreshed.
+            self._network_plugin.reCheckConnections()
+
+    @pyqtSlot(str)
     def setKey(self, key):
         Logger.log("d", "Attempting to set the network key of the active machine to %s", key)
         global_container_stack = Application.getInstance().getGlobalContainerStack()
@@ -109,6 +126,7 @@ class DiscoverUM3Action(MachineAction):
                 Logger.log("d", "Removing old authentication id %s for device %s", global_container_stack.getMetaDataEntry("network_authentication_id", None), key)
                 global_container_stack.removeMetaDataEntry("network_authentication_id")
                 global_container_stack.removeMetaDataEntry("network_authentication_key")
+                # TODO Find all the places where there is the same key and change it accordingly
             else:
                 global_container_stack.addMetaDataEntry("um_network_key", key)
 

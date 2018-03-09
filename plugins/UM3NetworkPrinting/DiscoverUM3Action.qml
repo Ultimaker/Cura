@@ -32,10 +32,12 @@ Cura.MachineAction
         if(base.selectedDevice && base.completeProperties)
         {
             var printerKey = base.selectedDevice.key
+            var printerName = base.selectedDevice.name  // TODO To change when the groups have a name
             if(manager.getStoredKey() != printerKey)
             {
-                manager.setKey(printerKey);
-                completed();
+                manager.setKey(printerKey)
+                manager.setGroupName(printerName)   // TODO To change when the groups have a name
+                completed()
             }
         }
     }
