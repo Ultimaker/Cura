@@ -352,12 +352,25 @@ class MachineManager(QObject):
 
         self.__emitChangedSignals()
 
+    ##  Given a definition id, return the machine with this id.
+    #   Optional: add a list of keys and values to filter the list of machines with the given definition id
+    #   \param definition_id \type{str} definition id that needs to look for
+    #   \param metadata_filter \type{dict} list of metadata keys and values used for filtering
     @staticmethod
-    def getMachine(definition_id: str) -> Optional["GlobalStack"]:
+    def getMachine(definition_id: str, metadata_filter: Dict[str, str] = None) -> Optional["GlobalStack"]:
         machines = ContainerRegistry.getInstance().findContainerStacks(type = "machine")
         for machine in machines:
             if machine.definition.getId() == definition_id:
-                return machine
+                if metadata_filter:
+                    pass_all_filters = True
+                    for key in metadata_filter:
+                        if machine.getMetaDataEntry(key) != metadata_filter[key]:
+                            pass_all_filters = False
+                            break
+                    if pass_all_filters:
+                        return machine
+                else:
+                    return machine
         return None
 
     @pyqtSlot(str, str)
@@ -1044,21 +1057,31 @@ class MachineManager(QObject):
                 self._setMaterial(position, new_material)
                 continue
 
-    def switchPrinterType(self, machine_type):
-        container_registry = ContainerRegistry.getInstance()
-        machine_definition = container_registry.findDefinitionContainers(name = machine_type)[0]
-        self._global_container_stack.definition = machine_definition
-        self.globalContainerChanged.emit()
-        # machine_stack = CuraStackBuilder.createMachine("ultimaker_s5" + "_instance", "ultimaker_s5")
-        # # if not machine_stack:
-        # #     raise Exception("No machine found for ID {}".format(machine_id))
-        # Logger.log("d", "Setting active machine to %s", machine_stack.getId())
-        # self.setActiveMachine(machine_stack.getId())
+    ##  Given a printer definition name, select the right machine instance. In case it doesn't exist, create a new
+    #   instance with the same network key.
+    @pyqtSlot(str)
+    def switchPrinterType(self, machine_name):
+        # Don't switch if the user tries to change to the same type of printer
+        if self.activeMachineDefinitionName == machine_name:
+            return
+        # Get the definition id corresponding to this machine name
+        machine_definition_id = ContainerRegistry.getInstance().findDefinitionContainers(name = machine_name)[0].getId()
+        # Try to find a machine with the same network key
+        new_machine = self.getMachine(machine_definition_id, metadata_filter = {"um_network_key": self.activeMachineNetworkKey})
+        # If there is no machine, then create a new one
+        if not new_machine:
+            new_machine = CuraStackBuilder.createMachine(machine_definition_id + "_instance", machine_definition_id)
+            new_machine.addMetaDataEntry("um_network_key", self.activeMachineNetworkKey)
+        else:
+            Logger.log("i", "Found a %s with the key %s. Let's use it!", machine_name, self.activeMachineNetworkKey)
+
+        self.setActiveMachine(new_machine.getId())
 
     @pyqtSlot(QObject)
     def applyRemoteConfiguration(self, configuration: ConfigurationModel):
         self.blurSettings.emit()
         with postponeSignals(*self._getContainerChangedSignals(), compress = CompressTechnique.CompressPerParameterValue):
+            self.switchPrinterType(configuration.printerType)
             for extruder_configuration in configuration.extruderConfigurations:
                 position = str(extruder_configuration.position)
                 variant_container_node = self._variant_manager.getVariantNode(self._global_container_stack.definition.getId(), extruder_configuration.hotendID)

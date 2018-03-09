@@ -23,10 +23,10 @@ Menu
             checkable: true
             checked: Cura.MachineManager.activeMachineDefinitionName == modelData.machine_type
             exclusiveGroup: group
-//            onTriggered:
-//            {
-//                TODO
-//            }
+            onTriggered:
+            {
+                Cura.MachineManager.switchPrinterType(modelData.machine_type)
+            }
         }
         onObjectAdded: menu.insertItem(index, object)
         onObjectRemoved: menu.removeItem(object)
