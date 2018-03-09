@@ -2,20 +2,16 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from PyQt5.QtCore import pyqtProperty, pyqtSignal
+
+import UM.i18n
 from UM.FlameProfiler import pyqtSlot
-
-from cura.MachineAction import MachineAction
-
 from UM.Application import Application
 from UM.Settings.ContainerRegistry import ContainerRegistry
 from UM.Settings.DefinitionContainer import DefinitionContainer
-from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
-from UM.Logger import Logger
 
-from cura.Settings.ExtruderManager import ExtruderManager
+from cura.MachineAction import MachineAction
 from cura.Settings.CuraStackBuilder import CuraStackBuilder
 
-import UM.i18n
 catalog = UM.i18n.i18nCatalog("cura")
 
 
