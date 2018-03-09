@@ -11,9 +11,10 @@ import Cura 1.0 as Cura
 import "Menus"
 
 ToolButton {
-    property var isNetworkPrinter: Cura.MachineManager.activeMachineNetworkKey ? true : false
+    id: base
+    property var isNetworkPrinter: Cura.MachineManager.activeMachineNetworkKey != ""
     property var printerStatus: Cura.MachineManager.printerOutputDevices.length != 0 ? "connected" : "unknown"
-    text: Cura.MachineManager.activeMachineName
+    text: isNetworkPrinter ? Cura.MachineManager.activeMachineNetworkGroupName : Cura.MachineManager.activeMachineName
 
     tooltip: Cura.MachineManager.activeMachineName
 
@@ -73,4 +74,14 @@ ToolButton {
     }
 
     menu: PrinterMenu { }
+
+    // Make the toolbutton react when the outputdevice changes
+    Connections
+    {
+        target: Cura.MachineManager
+        onOutputDevicesChanged:
+        {
+            base.isNetworkPrinter = Cura.MachineManager.activeMachineNetworkKey != ""
+        }
+    }
 }
