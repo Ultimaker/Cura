@@ -34,9 +34,15 @@ class MachineSettingsAction(MachineAction):
         self._container_registry.containerRemoved.connect(self._onContainerRemoved)
         self._application.globalContainerStackChanged.connect(self._onGlobalContainerChanged)
 
-        self._empty_container = self._container_registry.getEmptyInstanceContainer()
-
         self._backend = self._application.getBackend()
+
+        self._empty_definition_container_id_list = []
+
+    def _isEmptyDefinitionChanges(self, container_id: str):
+        if not self._empty_definition_container_id_list:
+            self._empty_definition_container_id_list = [self._application.empty_container.getId(),
+                                                        self._application.empty_definition_changes_container.getId()]
+        return container_id in self._empty_definition_container_id_list
 
     def _onContainerAdded(self, container):
         # Add this action as a supported action to all machine definitions
@@ -46,19 +52,19 @@ class MachineSettingsAction(MachineAction):
     def _onContainerRemoved(self, container):
         # Remove definition_changes containers when a stack is removed
         if container.getMetaDataEntry("type") in ["machine", "extruder_train"]:
-            definition_changes_container = container.definitionChanges
-            if definition_changes_container == self._empty_container:
+            definition_changes_id = container.definitionChanges.getId()
+            if self._isEmptyDefinitionChanges(definition_changes_id):
                 return
 
-            self._container_registry.removeContainer(definition_changes_container.getId())
+            self._container_registry.removeContainer(definition_changes_id)
 
     def _reset(self):
         if not self._global_container_stack:
             return
 
         # Make sure there is a definition_changes container to store the machine settings
-        definition_changes_container = self._global_container_stack.definitionChanges
-        if definition_changes_container == self._empty_container:
+        definition_changes_id = self._global_container_stack.definitionChanges.getId()
+        if self._isEmptyDefinitionChanges(definition_changes_id):
             CuraStackBuilder.createDefinitionChangesContainer(self._global_container_stack,
                                                               self._global_container_stack.getName() + "_settings")
 
