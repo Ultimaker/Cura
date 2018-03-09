@@ -7,7 +7,7 @@ import UM 1.2 as UM
 import Cura 1.0 as Cura
 
 Item {
-    property var status: "unknown"
+    property var status: "disconnected"
     width: childrenRect.width
     height: childrenRect.height
     UM.RecolorImage {
@@ -17,7 +17,7 @@ Item {
         sourceSize.width: width
         sourceSize.height: width
         color: UM.Theme.getColor("tab_status_" + parent.status )
-        source: UM.Theme.getIcon("tab_status_" + parent.status )
+        source: UM.Theme.getIcon( parent.status )
     }
 }
 
