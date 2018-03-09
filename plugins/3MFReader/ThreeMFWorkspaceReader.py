@@ -691,6 +691,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                     if need_new_name:
                         new_name = ContainerRegistry.getInstance().uniqueName(material_container.getName())
                         material_container.setName(new_name)
+                    material_container.setDirty(True)
                     self._container_registry.addContainer(material_container)
                 Job.yieldThread()
 
