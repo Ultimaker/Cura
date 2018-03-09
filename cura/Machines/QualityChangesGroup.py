@@ -16,7 +16,7 @@ class QualityChangesGroup(QualityGroup):
 
     def addNode(self, node: "QualityNode"):
         extruder_position = node.metadata.get("position")
-        if not extruder_position: #Then we're a global quality changes profile.
+        if extruder_position is None: #Then we're a global quality changes profile.
             if self.node_for_global is not None:
                 raise RuntimeError("{group} tries to overwrite the existing node_for_global {original_global} with {new_global}".format(group = self, original_global = self.node_for_global, new_global = node))
             self.node_for_global = node
