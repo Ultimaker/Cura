@@ -6236,7 +6236,6 @@
                     "description": "Detect bridges and modify print speed, flow and fan settings while bridges are printed.",
                     "type": "bool",
                     "default_value": false,
-                    "value": "not support_enable and not support_tree_enable",
                     "settable_per_mesh": true,
                     "settable_per_extruder": false,
                     "settable_per_meshgroup": false
