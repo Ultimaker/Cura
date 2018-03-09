@@ -7,6 +7,8 @@ from .QualityGroup import QualityGroup
 
 
 class QualityChangesGroup(QualityGroup):
+    ##  The file format version of quality changes.
+    Version = 3
 
     def __init__(self, name: str, quality_type: str, parent = None):
         super().__init__(name, quality_type, parent)
