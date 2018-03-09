@@ -1115,6 +1115,13 @@ class MachineManager(QObject):
                 self._global_container_stack.variant = self._empty_variant_container
             self._updateQualityWithMaterial()
 
+    ##  Find all container stacks that has the pair 'key = value' in its metadata and replaces the value with 'new_value'
+    def replaceContainersMetadata(self, key: str, value: str, new_value: str):
+        machines = ContainerRegistry.getInstance().findContainerStacks(type = "machine")
+        for machine in machines:
+            if machine.getMetaDataEntry(key) == value:
+                machine.setMetaDataEntry(key, new_value)
+
     @pyqtSlot("QVariant")
     def setGlobalVariant(self, container_node):
         self.blurSettings.emit()
