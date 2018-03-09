@@ -18,7 +18,6 @@ Item
     property Action configureSettings
     property bool findingSettings
     property bool showingAllSettings
-    property bool inhibitSwitchToCustom: false
     signal showTooltip(Item item, point location, string text)
     signal hideTooltip()
 
@@ -559,13 +558,13 @@ Item
                 MenuItem
                 {
                     //: Settings context menu action
-                    visible: !findingSettings;
+                    visible: !(findingSettings || showingAllSettings);
                     text: catalog.i18nc("@action:menu", "Hide this setting");
                     onTriggered:
                     {
                         definitionsModel.hide(contextMenu.key);
                         // visible settings have changed, so we're no longer showing a preset
-                        if (Cura.SettingVisibilityPresetsModel.activePreset != "")
+                        if (Cura.SettingVisibilityPresetsModel.activePreset != "" && !showingAllSettings)
                         {
                             Cura.SettingVisibilityPresetsModel.setActivePreset("custom");
                         }
@@ -585,7 +584,7 @@ Item
                             return catalog.i18nc("@action:menu", "Keep this setting visible");
                         }
                     }
-                    visible: findingSettings;
+                    visible: (findingSettings || showingAllSettings);
                     onTriggered:
                     {
                         if (contextMenu.settingVisible)
@@ -597,7 +596,7 @@ Item
                             definitionsModel.show(contextMenu.key);
                         }
                         // visible settings have changed, so we're no longer showing a preset
-                        if (Cura.SettingVisibilityPresetsModel.activePreset != "")
+                        if (Cura.SettingVisibilityPresetsModel.activePreset != "" && !showingAllSettings)
                         {
                             Cura.SettingVisibilityPresetsModel.setActivePreset("custom");
                         }
