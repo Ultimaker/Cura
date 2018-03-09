@@ -306,12 +306,16 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             if container_type == "quality_changes":
                 quality_changes_info_list.append(container_info)
 
-                if not parser.has_option("metadata", "extruder"):
+                if not parser.has_option("metadata", "position"):
                     self._machine_info.quality_changes_info.name = parser["general"]["name"]
                     self._machine_info.quality_changes_info.global_info = container_info
+                else:
+                    position = parser["metadata"]["position"]
+                    self._machine_info.quality_changes_info.extruder_info_dict[position] = container_info
 
                 quality_name = parser["general"]["name"]
-                num_settings_overriden_by_quality_changes += len(parser.get("values", {}))
+                values = parser["values"] if parser.has_section("values") else dict()
+                num_settings_overriden_by_quality_changes += len(values)
                 # Check if quality changes already exists.
                 quality_changes = self._container_registry.findInstanceContainers(id = container_id)
                 if quality_changes:
@@ -443,15 +447,6 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                     if existing_extruder_stack.getContainer(index).getId() != container_id:
                         machine_conflict = True
                         break
-
-        if self._machine_info.quality_changes_info is not None:
-            for quality_changes_info in quality_changes_info_list:
-                if not quality_changes_info.parser.has_option("metadata", "extruder"):
-                    continue
-                extruder_definition_id = quality_changes_info.parser["metadata"]["extruder"]
-                extruder_definition_metadata = self._container_registry.findDefinitionContainersMetadata(id = extruder_definition_id)[0]
-                position = extruder_definition_metadata["position"]
-                self._machine_info.quality_changes_info.extruder_info_dict[position] = quality_changes_info
 
         num_visible_settings = 0
         try:
