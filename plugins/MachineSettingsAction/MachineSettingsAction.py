@@ -141,7 +141,6 @@ class MachineSettingsAction(MachineAction):
 
             # Set the material container for each extruder to a sane default
             material_manager = self._application.getMaterialManager()
-            #material_manager.initialize()
             material_node = material_manager.getDefaultMaterial(self._global_container_stack, None)
 
         else:
