@@ -87,7 +87,8 @@ class VersionUpgrade32to33(VersionUpgrade):
             else:
                 extruder_position = 0 #The user was using custom extruder definitions. He's on his own then.
 
-            parser["metadata"]["extruder"] = str(extruder_position)
+            parser["metadata"]["position"] = str(extruder_position)
+            del parser["metadata"]["extruder"]
 
         #Update version number.
         parser["general"]["version"] = "3"
