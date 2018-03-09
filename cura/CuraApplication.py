@@ -70,7 +70,6 @@ from cura.Machines.Models.BrandMaterialsModel import BrandMaterialsModel
 
 from cura.Settings.SettingInheritanceManager import SettingInheritanceManager
 from cura.Settings.SimpleModeSettingsManager import SimpleModeSettingsManager
-from cura.Settings.SettingVisibilityPresetsModel import SettingVisibilityPresetsModel
 
 from cura.Machines.VariantManager import VariantManager
 from cura.Machines.Models.QualityManagementModel import QualityManagementModel
