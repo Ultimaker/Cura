@@ -69,6 +69,8 @@ class QualitySettingsModel(ListModel):
         return self._selected_quality_item
 
     def _update(self):
+        Logger.log("d", "Updating {model_class_name}.".format(model_class_name = self.__class__.__name__))
+
         if not self._selected_quality_item:
             self.setItems([])
             return

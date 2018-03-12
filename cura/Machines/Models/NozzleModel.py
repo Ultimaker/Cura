@@ -4,6 +4,7 @@
 from PyQt5.QtCore import Qt
 
 from UM.Application import Application
+from UM.Logger import Logger
 from UM.Qt.ListModel import ListModel
 from UM.Util import parseBool
 
@@ -26,6 +27,8 @@ class NozzleModel(ListModel):
         Application.getInstance().getMachineManager().activeMaterialChanged.connect(self._update)
 
     def _update(self):
+        Logger.log("d", "Updating {model_class_name}.".format(model_class_name = self.__class__.__name__))
+
         self.items.clear()
 
         variant_manager = Application.getInstance()._variant_manager

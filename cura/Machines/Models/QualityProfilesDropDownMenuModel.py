@@ -47,7 +47,7 @@ class QualityProfilesDropDownMenuModel(ListModel):
         self._update()
 
     def _update(self):
-        Logger.log("d", "Updating quality profile model ...")
+        Logger.log("d", "Updating {model_class_name}.".format(model_class_name = self.__class__.__name__))
 
         global_stack = self._machine_manager.activeMachine
         if global_stack is None:
