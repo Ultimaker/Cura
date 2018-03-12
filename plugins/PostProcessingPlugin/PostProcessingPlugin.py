@@ -173,7 +173,7 @@ class PostProcessingPlugin(QObject, Extension):
         Logger.log("d", "Creating post processing plugin view.")
 
         ## Load all scripts in the scripts folders
-        for root in [PluginRegistry.getInstance().getPluginPath("PostProcessingPlugin"), Resources.getStoragePath(Resources.Preferences)]:
+        for root in [PluginRegistry.getInstance().getPluginPath("PostProcessingPlugin"), Resources.getStoragePath(Resources.Resources)]:
             path = os.path.join(root, "scripts")
             if not os.path.isdir(path):
                 try:
