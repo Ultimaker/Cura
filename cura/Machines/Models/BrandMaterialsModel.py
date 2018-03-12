@@ -54,9 +54,7 @@ class BrandMaterialsModel(ListModel):
         self._material_manager = CuraApplication.getInstance().getMaterialManager()
 
         self._machine_manager.globalContainerChanged.connect(self._update)
-        self._extruder_manager.activeExtruderChanged.connect(self._update)
         self._material_manager.materialsUpdated.connect(self._update)
-
         self._update()
 
     def setExtruderPosition(self, position: int):

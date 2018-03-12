@@ -29,7 +29,7 @@ class QualityProfilesDropDownMenuModel(ListModel):
         self.addRoleName(self.QualityTypeRole, "quality_type")
         self.addRoleName(self.LayerHeightRole, "layer_height")
         self.addRoleName(self.LayerHeightUnitRole, "layer_height_unit")
-        self.addRoleName(self.AvailableRole, "available")
+        self.addRoleName(self.AvailableRole, "available") #Whether the quality profile is available in our current nozzle + material.
         self.addRoleName(self.QualityGroupRole, "quality_group")
         self.addRoleName(self.QualityChangesGroupRole, "quality_changes_group")
 
