@@ -617,7 +617,8 @@ class XmlMaterialProfile(InstanceContainer):
 
                         from cura.Machines.VariantManager import VariantType
                         variant_manager = CuraApplication.getInstance().getVariantManager()
-                        variant_node = variant_manager.getVariantNode(machine_id, buildplate_id)
+                        variant_node = variant_manager.getVariantNode(machine_id, buildplate_id,
+                                                                      variant_type = VariantType.BUILD_PLATE)
                         if not variant_node:
                             continue
 
