@@ -26,14 +26,109 @@ Column
 
     Item
     {
+        id: initialSeparator
         anchors
         {
             left: parent.left
             right: parent.right
         }
-        visible: extruderSelectionRow.visible
+        visible: printerTypeSelectionRow.visible || buildplateRow.visible || extruderSelectionRow.visible
         height: UM.Theme.getSize("default_lining").height
         width: height
+    }
+
+    // Printer Type Row
+    Item
+    {
+        id: printerTypeSelectionRow
+        height: UM.Theme.getSize("sidebar_setup").height
+        visible: printerConnected && hasManyPrinterTypes && !sidebar.monitoringPrint && !sidebar.hideSettings
+
+        anchors
+        {
+            left: parent.left
+            leftMargin: UM.Theme.getSize("sidebar_margin").width
+            right: parent.right
+            rightMargin: UM.Theme.getSize("sidebar_margin").width
+        }
+
+        Label
+        {
+            id: configurationLabel
+            text: catalog.i18nc("@label", "Printer type");
+            width: Math.round(parent.width * 0.4 - UM.Theme.getSize("default_margin").width)
+            height: parent.height
+            verticalAlignment: Text.AlignVCenter
+            font: UM.Theme.getFont("default");
+            color: UM.Theme.getColor("text");
+        }
+
+        ToolButton
+        {
+            id: printerTypeSelection
+            text: Cura.MachineManager.activeMachineDefinitionName
+            tooltip: Cura.MachineManager.activeMachineDefinitionName
+            height: UM.Theme.getSize("setting_control").height
+            width: Math.round(parent.width * 0.7) + UM.Theme.getSize("sidebar_margin").width
+            anchors.right: parent.right
+            style: UM.Theme.styles.sidebar_header_button
+            activeFocusOnPress: true;
+
+            menu: PrinterTypeMenu { }
+        }
+    }
+
+    //Buildplate row
+    Item
+    {
+        id: buildplateRow
+        height: UM.Theme.getSize("sidebar_setup").height
+        visible: Cura.MachineManager.hasVariantBuildplates && !sidebar.monitoringPrint && !sidebar.hideSettings
+
+        anchors
+        {
+            left: parent.left
+            leftMargin: UM.Theme.getSize("sidebar_margin").width
+            right: parent.right
+            rightMargin: UM.Theme.getSize("sidebar_margin").width
+        }
+
+        Label
+        {
+            id: bulidplateLabel
+            text: catalog.i18nc("@label", "Build plate");
+            width: Math.floor(parent.width * 0.45 - UM.Theme.getSize("default_margin").width)
+            height: parent.height
+            verticalAlignment: Text.AlignVCenter
+            font: UM.Theme.getFont("default");
+            color: UM.Theme.getColor("text");
+        }
+
+        ToolButton {
+            id: buildplateSelection
+            text: Cura.MachineManager.activeVariantBuildplateName
+            tooltip: Cura.MachineManager.activeVariantBuildplateName
+            visible: Cura.MachineManager.hasVariantBuildplates
+
+            height: UM.Theme.getSize("setting_control").height
+            width: Math.floor(parent.width * 0.7 + UM.Theme.getSize("sidebar_margin").width)
+            anchors.right: parent.right
+            style: UM.Theme.styles.sidebar_header_button
+            activeFocusOnPress: true;
+
+            menu: BuildplateMenu {}
+
+            property var valueError: !Cura.MachineManager.variantBuildplateCompatible && !Cura.MachineManager.variantBuildplateUsable
+            property var valueWarning: Cura.MachineManager.variantBuildplateUsable
+        }
+    }
+
+    Rectangle {
+        id: headerSeparator
+        width: parent.width
+        visible: printerTypeSelectionRow.visible || buildplateRow.visible
+        height: visible ? UM.Theme.getSize("sidebar_lining").height : 0
+        color: UM.Theme.getColor("sidebar_lining")
     }
 
     // Extruder Row
@@ -223,48 +318,7 @@ Column
         id: variantRowSpacer
         height: Math.round(UM.Theme.getSize("sidebar_margin").height / 4)
         width: height
-        visible: !extruderSelectionRow.visible
-    }
-
-    // Printer Type Row
-    Item
-    {
-        id: printerTypeSelectionRow
-        height: UM.Theme.getSize("sidebar_setup").height
-        visible: printerConnected && hasManyPrinterTypes && !sidebar.monitoringPrint && !sidebar.hideSettings
-
-        anchors
-        {
-            left: parent.left
-            leftMargin: UM.Theme.getSize("sidebar_margin").width
-            right: parent.right
-            rightMargin: UM.Theme.getSize("sidebar_margin").width
-        }
-
-        Label
-        {
-            id: configurationLabel
-            text: catalog.i18nc("@label", "Printer type");
-            width: Math.round(parent.width * 0.4 - UM.Theme.getSize("default_margin").width)
-            height: parent.height
-            verticalAlignment: Text.AlignVCenter
-            font: UM.Theme.getFont("default");
-            color: UM.Theme.getColor("text");
-        }
-
-        ToolButton
-        {
-            id: printerTypeSelection
-            text: Cura.MachineManager.activeMachineDefinitionName
-            tooltip: Cura.MachineManager.activeMachineDefinitionName
-            height: UM.Theme.getSize("setting_control").height
-            width: Math.round(parent.width * 0.7) + UM.Theme.getSize("sidebar_margin").width
-            anchors.right: parent.right
-            style: UM.Theme.styles.sidebar_header_button
-            activeFocusOnPress: true;
-
-            menu: PrinterTypeMenu { }
-        }
+        visible: !extruderSelectionRow.visible && !initialSeparator.visible
     }
 
     // Material Row
@@ -368,64 +422,6 @@ Column
             activeFocusOnPress: true;
 
             menu: NozzleMenu { extruderIndex: base.currentExtruderIndex }
-        }
-    }
-
-    //Buildplate row separator
-    Rectangle {
-        id: separator
-
-        anchors.leftMargin: UM.Theme.getSize("sidebar_margin").width
-        anchors.rightMargin: UM.Theme.getSize("sidebar_margin").width
-        anchors.horizontalCenter: parent.horizontalCenter
-        visible: buildplateRow.visible
-        width: parent.width - UM.Theme.getSize("sidebar_margin").width * 2
-        height: visible ? Math.floor(UM.Theme.getSize("sidebar_lining_thin").height / 2) : 0
-        color: UM.Theme.getColor("sidebar_lining_thin")
-    }
-
-    //Buildplate row
-    Item
-    {
-        id: buildplateRow
-        height: UM.Theme.getSize("sidebar_setup").height
-        visible: Cura.MachineManager.hasVariantBuildplates && !sidebar.monitoringPrint && !sidebar.hideSettings
-
-        anchors
-        {
-            left: parent.left
-            leftMargin: UM.Theme.getSize("sidebar_margin").width
-            right: parent.right
-            rightMargin: UM.Theme.getSize("sidebar_margin").width
-        }
-
-        Label
-        {
-            id: bulidplateLabel
-            text: catalog.i18nc("@label", "Build plate");
-            width: Math.floor(parent.width * 0.45 - UM.Theme.getSize("default_margin").width)
-            height: parent.height
-            verticalAlignment: Text.AlignVCenter
-            font: UM.Theme.getFont("default");
-            color: UM.Theme.getColor("text");
-        }
-
-        ToolButton {
-            id: buildplateSelection
-            text: Cura.MachineManager.activeVariantBuildplateName
-            tooltip: Cura.MachineManager.activeVariantBuildplateName
-            visible: Cura.MachineManager.hasVariantBuildplates
-
-            height: UM.Theme.getSize("setting_control").height
-            width: Math.floor(parent.width * 0.7 + UM.Theme.getSize("sidebar_margin").width)
-            anchors.right: parent.right
-            style: UM.Theme.styles.sidebar_header_button
-            activeFocusOnPress: true;
-
-            menu: BuildplateMenu {}
-
-            property var valueError: !Cura.MachineManager.variantBuildplateCompatible && !Cura.MachineManager.variantBuildplateUsable
-            property var valueWarning: Cura.MachineManager.variantBuildplateUsable
         }
     }
 
