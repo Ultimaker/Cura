@@ -44,6 +44,7 @@
                 }
             }
         ],
+        "supported_actions": ["UpgradeFirmware"],
         "file_formats": "text/x-gcode"
     },
 

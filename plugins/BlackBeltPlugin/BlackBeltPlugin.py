@@ -49,6 +49,26 @@ class BlackBeltPlugin(Extension):
         self._application.getController().activeViewChanged.connect(self._onActiveViewChanged)
 
         Preferences.getInstance().preferenceChanged.connect(self._onPreferencesChanged)
+        Application.getInstance().getOutputDeviceManager().outputDevicesChanged.connect(self._onOutputDevicesChanged)
+
+    def _onOutputDevicesChanged(self):
+        if not self._global_container_stack:
+            return
+
+        definition_container = self._global_container_stack.getBottom()
+        if definition_container.getId() != "blackbelt":
+            return
+
+        # HACK: Remove USB output device for blackbelt printers
+        devices_to_remove = []
+        output_device_manager = Application.getInstance().getOutputDeviceManager()
+        for output_device in output_device_manager.getOutputDevices():
+            if "USBPrinterOutputDevice" in str(output_device):
+                devices_to_remove.append(output_device.getId())
+
+        for output_device in devices_to_remove:
+            Logger.log("d", "Removing USB printer output device %s from printer %s" % (output_device, self._global_container_stack.getId()))
+            output_device_manager.removeOutputDevice(output_device)
 
     def _onGlobalContainerStackChanged(self):
         if self._global_container_stack:
