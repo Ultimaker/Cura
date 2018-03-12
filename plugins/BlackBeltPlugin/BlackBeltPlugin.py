@@ -48,6 +48,8 @@ class BlackBeltPlugin(Extension):
 
         self._application.getController().activeViewChanged.connect(self._onActiveViewChanged)
 
+        Preferences.getInstance().preferenceChanged.connect(self._onPreferencesChanged)
+
     def _onGlobalContainerStackChanged(self):
         if self._global_container_stack:
             self._global_container_stack.propertyChanged.disconnect(self._onSettingValueChanged)
@@ -134,15 +136,31 @@ class BlackBeltPlugin(Extension):
 
         self._application.getBackend().slicingStarted.connect(self._onSlicingStarted)
 
-        # Fix preferences
+        self._fixVisibilityPreferences()
+
+    def _onPreferencesChanged(self, preference):
+        if preference == "general/visible_settings":
+            self._fixVisibilityPreferences()
+
+    def _fixVisibilityPreferences(self):
+        # Fix setting visibility preferences
         preferences = Preferences.getInstance()
         visible_settings = preferences.getValue("general/visible_settings")
         if not visible_settings:
             # Wait until the default visible settings have been set
             return
 
+        if "blackbelt_settings" in visible_settings:
+            return
         visible_settings_changed = False
-        for key in ["blackbelt_settings"]:
+        default_visible_settings = [
+            "blackbelt_settings", "blackbelt_z_offset_gap", "blackbelt_secondary_fans_enabled", "blackbelt_belt_wall_enabled", "blackbelt_belt_wall_speed", "blackbelt_repetitions",
+            "wall_line_count", "top_layers", "bottom_layers", "top_bottom_pattern", "fill_perimeter_gaps", "xy_offset", "z_seam_type", "z_seam_x", "z_seam_y", "z_seam_corner",
+            "infill_line_distance", "min_infill_area", "retraction_amount", "retraction_speed", "retraction_extra_prime_amount", "speed_infill", "speed_wall_0", "speed_slowdown_layers",
+            "cool_fan_speed", "cool_fan_full_at_height", "cool_fan_full_at_layer", "cool_min_layer_time", "meshfix_union_all", "meshfix_union_all_remove_holes", "meshfix_extensive_stiching",
+            "meshfix_keep_open_polygons", "multiple_mesh_overlap", "carve_multiple_volumes", "magic_spiralize", "coasting_enable"
+        ]
+        for key in default_visible_settings:
             if key not in visible_settings:
                 visible_settings += ";%s" % key
                 visible_settings_changed = True
@@ -152,14 +170,6 @@ class BlackBeltPlugin(Extension):
 
         preferences.setValue("general/visible_settings", visible_settings)
 
-        expanded_settings = preferences.getValue("cura/categories_expanded")
-        if expanded_settings is None:
-            expanded_settings = ""
-        for key in ["blackbelt_settings"]:
-            if key not in expanded_settings:
-                expanded_settings += ";%s" % key
-        preferences.setValue("cura/categories_expanded", expanded_settings)
-        self._application.expandedCategoriesChanged.emit()
 
     def _onActiveViewChanged(self):
         self._adjustLayerViewNozzle()
