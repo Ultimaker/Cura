@@ -16,8 +16,8 @@ Item {
         height: UM.Theme.getSize("printer_status_icon").height
         sourceSize.width: width
         sourceSize.height: width
-        color: UM.Theme.getColor("tab_status_" + parent.status )
-        source: UM.Theme.getIcon( parent.status )
+        color: UM.Theme.getColor("tab_status_" + parent.status)
+        source: UM.Theme.getIcon(parent.status)
     }
 }
 

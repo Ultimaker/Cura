@@ -70,11 +70,11 @@ Button
                 anchors.leftMargin: UM.Theme.getSize("default_margin").width
                 anchors.verticalCenter: parent.verticalCenter;
 
-                width: UM.Theme.getSize("printer_status_icon").width
-                height: UM.Theme.getSize("printer_status_icon").height
+                width: UM.Theme.getSize("printer_sync_icon").width
+                height: UM.Theme.getSize("printer_sync_icon").height
 
                 color:  control.matched ? UM.Theme.getColor("printer_config_matched") : UM.Theme.getColor("printer_config_mismatch")
-                source: control.matched ? UM.Theme.getIcon("tab_status_connected") : UM.Theme.getIcon("tab_status_unknown")
+                source: UM.Theme.getIcon("tab_status_connected")
                 sourceSize.width: width
                 sourceSize.height: height
             }
