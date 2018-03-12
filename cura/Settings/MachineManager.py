@@ -201,9 +201,6 @@ class MachineManager(QObject):
 
     @pyqtSlot(QObject, result = bool)
     def matchesConfiguration(self, configuration: ConfigurationModel) -> bool:
-        # print(configuration)
-        # print(self._current_printer_configuration)
-        # print("%%%%%%%%", configuration == self._current_printer_configuration)
         return self._current_printer_configuration == configuration
 
     @pyqtProperty("QVariantList", notify = outputDevicesChanged)
