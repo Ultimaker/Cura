@@ -26,6 +26,20 @@ SettingItem
 
         textRole: "name"
 
+        // knowing the extruder position, try to find the item index in the model
+        function getIndexByPosition(position)
+        {
+            for (var item_index in model.items)
+            {
+                var item = model.getItem(item_index)
+                if (item.index == position)
+                {
+                    return item_index
+                }
+            }
+            return -1
+        }
+
         onActivated:
         {
             if (model.getItem(index).enabled)
@@ -83,8 +97,7 @@ SettingItem
             {
                 if(propertyProvider.properties.value == -1)
                 {
-                    // TODO: accidently the extruder position is also the index. fix it
-                    return Cura.MachineManager.defaultExtruderPosition;
+                    return control.getIndexByPosition(Cura.MachineManager.defaultExtruderPosition);
                 }
                 return propertyProvider.properties.value
             }
