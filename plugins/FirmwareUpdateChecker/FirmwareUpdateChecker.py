@@ -20,7 +20,7 @@ i18n_catalog = i18nCatalog("cura")
 #  The plugin is currently only usable for applications maintained by Ultimaker. But it should be relatively easy
 #  to change it to work for other applications.
 class FirmwareUpdateChecker(Extension):
-    JEDI_VERSION_URL = "http://software.ultimaker.com/jedi/releases/latest.version"
+    JEDI_VERSION_URL = "http://software.ultimaker.com/jedi/releases/latest.version?utm_source=cura&utm_medium=software&utm_campaign=resources"
 
     def __init__(self):
         super().__init__()

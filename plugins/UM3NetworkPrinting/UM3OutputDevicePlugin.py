@@ -126,7 +126,7 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
     def removeManualDevice(self, key, address = None):
         if key in self._discovered_devices:
             if not address:
-                address = self._printers[key].ipAddress
+                address = self._discovered_devices[key].ipAddress
             self._onRemoveDevice(key)
 
         if address in self._manual_instances:

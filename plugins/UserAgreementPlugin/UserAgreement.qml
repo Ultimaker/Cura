@@ -9,8 +9,8 @@ import UM 1.3 as UM
 UM.Dialog
 {
     id: baseDialog
-    minimumWidth: Math.floor(UM.Theme.getSize("modal_window_minimum").width * 0.75)
-    minimumHeight: Math.floor(UM.Theme.getSize("modal_window_minimum").height * 0.5)
+    minimumWidth: Math.round(UM.Theme.getSize("modal_window_minimum").width * 0.75)
+    minimumHeight: Math.round(UM.Theme.getSize("modal_window_minimum").height * 0.5)
     width: minimumWidth
     height: minimumHeight
     title: catalog.i18nc("@title:window", "User Agreement")

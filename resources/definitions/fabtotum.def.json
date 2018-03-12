@@ -13,18 +13,18 @@
     "has_machine_quality": true,
     "has_variants": true,
     "variants_name": "Head",
-    "preferred_variant": "*lite04*",
-    "preferred_material": "*fabtotum_pla*",
+    "preferred_variant_name": "Lite 0.4 mm",
+    "preferred_material": "fabtotum_pla",
     "supports_usb_connection": false
  },
 
   "overrides": {
     "machine_name": { "default_value": "FABtotum Personal Fabricator" },
     "machine_start_gcode": {
-      "default_value": ";Layer height: {layer_height}\n;Walls: {wall_thickness}\n;Fill: {infill_sparse_density}\n;Top\\Bottom Thickness: {top_bottom_thickness}\nG90 ;absolute positioning\nM82 ;set extruder to absolute mode\nG4 S1 ;1 millisecond pause to buffer the bep bep \nM728 ;FAB bep bep (start the print, go check the oozing and skirt lines adesion) \nG4 S1 ;1 second pause to reach the printer (run fast)\nG92 E0 ;zero the extruded length \nG1 F200 E35  ;slowly extrude 35mm of filament to clean the nozzle and build up extrusion pressure \nG92 E0 ;zero the extruded length again \nG1 F{speed_travel} ;Set travel speed \n;print"
+      "default_value": ";Layer height: {layer_height}\n;Walls: {wall_thickness}\n;Fill: {infill_sparse_density}\n;Top\\Bottom Thickness: {top_bottom_thickness}\nG90 ;absolute positioning\nM82 ;set extruder to absolute mode\nG4 S1 ;1 millisecond pause to buffer the bep bep \nM300 S2 ;FAB bep bep (start the print, go check the oozing and skirt lines adesion) \nG4 S1 ;1 second pause to reach the printer (run fast)\nG92 E0 ;zero the extruded length \nG1 F200 E35  ;slowly extrude 35mm of filament to clean the nozzle and build up extrusion pressure \nG92 E0 ;zero the extruded length again \n;print"
     },
     "machine_end_gcode": {
-      "default_value": "M104 S0 ;extruder heater off\nM140 S0 ;heated bed heater off (if you have it)\nG91 ;relative positioning\nG1 E-1 F300  ;retract the filament a bit before lifting the nozzle, to release some of the pressure\nG1 Z+0.5 E-3 X+5 Y+5 F5000 ;move Z up a bit and retract filament even more\n;end of the print\nM84 ;steppers off\nG90 ;absolute positioning\nM728 ;FAB bep bep (end print)"
+      "default_value": "M104 S0 ;extruder heater off\nM140 S0 ;heated bed heater off (if you have it)\nG91 ;relative positioning\nG1 E-1 F300  ;retract the filament a bit before lifting the nozzle, to release some of the pressure\nG1 Z+0.5 E-3 X+5 Y+5 F5000 ;move Z up a bit and retract filament even more\n;end of the print\nM84 ;steppers off\nG90 ;absolute positioning\nM300 S2 ;FAB bep bep (end print)"
     },
     "gantry_height": { "default_value": 55 },
     "machine_width": { "default_value": 214 },

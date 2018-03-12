@@ -12,7 +12,7 @@
         "platform": "anycubic_i3_mega_platform.stl",
         "has_materials": false,
         "has_machine_quality": true,
-        "preferred_quality": "*normal*"
+        "preferred_quality_type": "normal"
     },
 
     "overrides":

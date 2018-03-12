@@ -5,6 +5,7 @@ import numpy
 from string import Formatter
 from enum import IntEnum
 import time
+import re
 
 from UM.Job import Job
 from UM.Application import Application
@@ -54,19 +55,19 @@ class GcodeStartEndFormatter(Formatter):
                         extruder_nr = int(kwargs["-1"][key_fragments[1]]) # get extruder_nr values from the global stack
                     except (KeyError, ValueError):
                         # either the key does not exist, or the value is not an int
-                        Logger.log("w", "Unable to determine stack nr '%s' for key '%s' in start/end gcode, using global stack", key_fragments[1], key_fragments[0])
+                        Logger.log("w", "Unable to determine stack nr '%s' for key '%s' in start/end g-code, using global stack", key_fragments[1], key_fragments[0])
             elif len(key_fragments) != 1:
-                Logger.log("w", "Incorrectly formatted placeholder '%s' in start/end gcode", key)
+                Logger.log("w", "Incorrectly formatted placeholder '%s' in start/end g-code", key)
                 return "{" + str(key) + "}"
 
             key = key_fragments[0]
             try:
                 return kwargs[str(extruder_nr)][key]
             except KeyError:
-                Logger.log("w", "Unable to replace '%s' placeholder in start/end gcode", key)
+                Logger.log("w", "Unable to replace '%s' placeholder in start/end g-code", key)
                 return "{" + key + "}"
         else:
-            Logger.log("w", "Incorrectly formatted placeholder '%s' in start/end gcode", key)
+            Logger.log("w", "Incorrectly formatted placeholder '%s' in start/end g-code", key)
             return "{" + str(key) + "}"
 
 
@@ -135,9 +136,10 @@ class StartSliceJob(Job):
                     self.setResult(StartJobResult.MaterialIncompatible)
                     return
 
+
         # Don't slice if there is a per object setting with an error value.
         for node in DepthFirstIterator(self._scene.getRoot()):
-            if type(node) is not CuraSceneNode or not node.isSelectable():
+            if not isinstance(node, CuraSceneNode) or not node.isSelectable():
                 continue
 
             if self._checkStackForErrors(node.callDecoration("getStack")):
@@ -169,7 +171,7 @@ class StartSliceJob(Job):
                     children = node.getAllChildren()
                     children.append(node)
                     for child_node in children:
-                        if type(child_node) is CuraSceneNode and child_node.getMeshData() and child_node.getMeshData().getVertices() is not None:
+                        if child_node.getMeshData() and child_node.getMeshData().getVertices() is not None:
                             temp_list.append(child_node)
 
                     if temp_list:
@@ -181,13 +183,13 @@ class StartSliceJob(Job):
                 temp_list = []
                 has_printing_mesh = False
                 for node in DepthFirstIterator(self._scene.getRoot()):
-                    if node.callDecoration("isSliceable") and type(node) is CuraSceneNode and node.getMeshData() and node.getMeshData().getVertices() is not None:
+                    if node.callDecoration("isSliceable") and node.getMeshData() and node.getMeshData().getVertices() is not None:
                         per_object_stack = node.callDecoration("getStack")
                         is_non_printing_mesh = False
                         if per_object_stack:
                             is_non_printing_mesh = any(per_object_stack.getProperty(key, "value") for key in NON_PRINTING_MESH_SETTINGS)
 
-                        if (node.callDecoration("getBuildPlateNumber") == self._build_plate_number):
+                        if node.callDecoration("getBuildPlateNumber") == self._build_plate_number:
                             if not getattr(node, "_outside_buildarea", False) or is_non_printing_mesh:
                                 temp_list.append(node)
                                 if not is_non_printing_mesh:
@@ -307,7 +309,7 @@ class StartSliceJob(Job):
             settings["default_extruder_nr"] = default_extruder_nr
             return str(fmt.format(value, **settings))
         except:
-            Logger.logException("w", "Unable to do token replacement on start/end gcode")
+            Logger.logException("w", "Unable to do token replacement on start/end g-code")
             return str(value)
 
     ##  Create extruder message from stack
@@ -343,10 +345,12 @@ class StartSliceJob(Job):
 
         # Pre-compute material material_bed_temp_prepend and material_print_temp_prepend
         start_gcode = settings["machine_start_gcode"]
-        bed_temperature_settings = {"material_bed_temperature", "material_bed_temperature_layer_0"}
-        settings["material_bed_temp_prepend"] = all(("{" + setting + "}" not in start_gcode for setting in bed_temperature_settings))
-        print_temperature_settings = {"material_print_temperature", "material_print_temperature_layer_0", "default_material_print_temperature", "material_initial_print_temperature", "material_final_print_temperature", "material_standby_temperature"}
-        settings["material_print_temp_prepend"] = all(("{" + setting + "}" not in start_gcode for setting in print_temperature_settings))
+        bed_temperature_settings = ["material_bed_temperature", "material_bed_temperature_layer_0"]
+        pattern = r"\{(%s)(,\s?\w+)?\}" % "|".join(bed_temperature_settings) # match {setting} as well as {setting, extruder_nr}
+        settings["material_bed_temp_prepend"] = re.search(pattern, start_gcode) == None
+        print_temperature_settings = ["material_print_temperature", "material_print_temperature_layer_0", "default_material_print_temperature", "material_initial_print_temperature", "material_final_print_temperature", "material_standby_temperature"]
+        pattern = r"\{(%s)(,\s?\w+)?\}" % "|".join(print_temperature_settings) # match {setting} as well as {setting, extruder_nr}
+        settings["material_print_temp_prepend"] = re.search(pattern, start_gcode) == None
 
         # Replace the setting tokens in start and end g-code.
         # Use values from the first used extruder by default so we get the expected temperatures

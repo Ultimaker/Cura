@@ -25,8 +25,8 @@ UM.Dialog
     {
         UM.I18nCatalog{id: catalog; name:"cura"}
         id: base
-        property int columnWidth: Math.floor((base.width / 2) - UM.Theme.getSize("default_margin").width)
-        property int textMargin: Math.floor(UM.Theme.getSize("default_margin").width / 2)
+        property int columnWidth: Math.round((base.width / 2) - UM.Theme.getSize("default_margin").width)
+        property int textMargin: Math.round(UM.Theme.getSize("default_margin").width / 2)
         property string activeScriptName
         SystemPalette{ id: palette }
         SystemPalette{ id: disabledPalette; colorGroup: SystemPalette.Disabled }
@@ -129,8 +129,8 @@ UM.Dialog
                                 {
                                     anchors.verticalCenter: parent.verticalCenter
                                     anchors.horizontalCenter: parent.horizontalCenter
-                                    width: Math.floor(control.width / 2.7)
-                                    height: Math.floor(control.height / 2.7)
+                                    width: Math.round(control.width / 2.7)
+                                    height: Math.round(control.height / 2.7)
                                     sourceSize.width: width
                                     sourceSize.height: width
                                     color: palette.text
@@ -164,8 +164,8 @@ UM.Dialog
                                 {
                                     anchors.verticalCenter: parent.verticalCenter
                                     anchors.horizontalCenter: parent.horizontalCenter
-                                    width: Math.floor(control.width / 2.5)
-                                    height: Math.floor(control.height / 2.5)
+                                    width: Math.round(control.width / 2.5)
+                                    height: Math.round(control.height / 2.5)
                                     sourceSize.width: width
                                     sourceSize.height: width
                                     color: control.enabled ? palette.text : disabledPalette.text
@@ -199,8 +199,8 @@ UM.Dialog
                                 {
                                     anchors.verticalCenter: parent.verticalCenter
                                     anchors.horizontalCenter: parent.horizontalCenter
-                                    width: Math.floor(control.width / 2.5)
-                                    height: Math.floor(control.height / 2.5)
+                                    width: Math.round(control.width / 2.5)
+                                    height: Math.round(control.height / 2.5)
                                     sourceSize.width: width
                                     sourceSize.height: width
                                     color: control.enabled ? palette.text : disabledPalette.text
@@ -478,15 +478,15 @@ UM.Dialog
                            control.hovered ? UM.Theme.getColor("action_button_hovered") : UM.Theme.getColor("action_button")
                 Behavior on color { ColorAnimation { duration: 50; } }
                 anchors.left: parent.left
-                anchors.leftMargin: Math.floor(UM.Theme.getSize("save_button_text_margin").width / 2);
+                anchors.leftMargin: Math.round(UM.Theme.getSize("save_button_text_margin").width / 2);
                 width: parent.height
                 height: parent.height
 
                 UM.RecolorImage {
                     anchors.verticalCenter: parent.verticalCenter
                     anchors.horizontalCenter: parent.horizontalCenter
-                    width: Math.floor(parent.width / 2)
-                    height: Math.floor(parent.height / 2)
+                    width: Math.round(parent.width / 2)
+                    height: Math.round(parent.height / 2)
                     sourceSize.width: width
                     sourceSize.height: height
                     color: !control.enabled ? UM.Theme.getColor("action_button_disabled_text") :

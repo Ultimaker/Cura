@@ -125,7 +125,10 @@ class LegacyProfileReader(ProfileReader):
             Logger.log("e", "Dictionary of Doom has no translation. Is it the correct JSON file?")
             return None
         current_printer_definition = global_container_stack.definition
-        profile.setDefinition(current_printer_definition.getId())
+        quality_definition = current_printer_definition.getMetaDataEntry("quality_definition")
+        if not quality_definition:
+            quality_definition = current_printer_definition.getId()
+        profile.setDefinition(quality_definition)
         for new_setting in dict_of_doom["translation"]:  # Evaluate all new settings that would get a value from the translations.
             old_setting_expression = dict_of_doom["translation"][new_setting]
             compiled = compile(old_setting_expression, new_setting, "eval")
@@ -162,20 +165,21 @@ class LegacyProfileReader(ProfileReader):
         data = stream.getvalue()
         profile.deserialize(data)
 
+        # The definition can get reset to fdmprinter during the deserialization's upgrade. Here we set the definition
+        # again.
+        profile.setDefinition(quality_definition)
+
         #We need to return one extruder stack and one global stack.
         global_container_id = container_registry.uniqueName("Global Imported Legacy Profile")
         global_profile = profile.duplicate(new_id = global_container_id, new_name = profile_id) #Needs to have the same name as the extruder profile.
         global_profile.setDirty(True)
 
-        #Only the extruder stack has an extruder metadata entry.
-        profile.addMetaDataEntry("extruder", ExtruderManager.getInstance().getActiveExtruderStack().definition.getId())
+        profile_definition = "fdmprinter"
+        from UM.Util import parseBool
+        if parseBool(global_container_stack.getMetaDataEntry("has_machine_quality", "False")):
+            profile_definition = global_container_stack.getMetaDataEntry("quality_definition")
+            if not profile_definition:
+                profile_definition = global_container_stack.definition.getId()
+        global_profile.setDefinition(profile_definition)
 
-        #Split all settings into per-extruder and global settings.
-        for setting_key in profile.getAllKeys():
-            settable_per_extruder = global_container_stack.getProperty(setting_key, "settable_per_extruder")
-            if settable_per_extruder:
-                global_profile.removeInstance(setting_key)
-            else:
-                profile.removeInstance(setting_key)
-
-        return [global_profile, profile]
+        return [global_profile]

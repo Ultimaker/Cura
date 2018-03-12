@@ -103,32 +103,32 @@ class PrinterOutputModel(QObject):
             self._head_position = Vector(x, y, z)
             self.headPositionChanged.emit()
 
-    @pyqtProperty("long", "long", "long")
-    @pyqtProperty("long", "long", "long", "long")
+    @pyqtProperty(float, float, float)
+    @pyqtProperty(float, float, float, float)
     def setHeadPosition(self, x, y, z, speed = 3000):
         self.updateHeadPosition(x, y, z)
         self._controller.setHeadPosition(self, x, y, z, speed)
 
-    @pyqtProperty("long")
-    @pyqtProperty("long", "long")
+    @pyqtProperty(float)
+    @pyqtProperty(float, float)
     def setHeadX(self, x, speed = 3000):
         self.updateHeadPosition(x, self._head_position.y, self._head_position.z)
         self._controller.setHeadPosition(self, x, self._head_position.y, self._head_position.z, speed)
 
-    @pyqtProperty("long")
-    @pyqtProperty("long", "long")
+    @pyqtProperty(float)
+    @pyqtProperty(float, float)
     def setHeadY(self, y, speed = 3000):
         self.updateHeadPosition(self._head_position.x, y, self._head_position.z)
         self._controller.setHeadPosition(self, self._head_position.x, y, self._head_position.z, speed)
 
-    @pyqtProperty("long")
-    @pyqtProperty("long", "long")
+    @pyqtProperty(float)
+    @pyqtProperty(float, float)
     def setHeadZ(self, z, speed = 3000):
         self.updateHeadPosition(self._head_position.x, self._head_position.y, z)
         self._controller.setHeadPosition(self, self._head_position.x, self._head_position.y, z, speed)
 
-    @pyqtSlot("long", "long", "long")
-    @pyqtSlot("long", "long", "long", "long")
+    @pyqtSlot(float, float, float)
+    @pyqtSlot(float, float, float, float)
     def moveHead(self, x = 0, y = 0, z = 0, speed = 3000):
         self._controller.moveHead(self, x, y, z, speed)
 

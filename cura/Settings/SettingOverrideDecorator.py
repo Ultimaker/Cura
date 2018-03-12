@@ -3,6 +3,7 @@
 
 import copy
 
+from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 from UM.Scene.SceneNodeDecorator import SceneNodeDecorator
 from UM.Signal import Signal, signalemitter
 from UM.Settings.InstanceContainer import InstanceContainer
