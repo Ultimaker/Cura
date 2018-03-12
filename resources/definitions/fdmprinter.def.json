@@ -1181,6 +1181,28 @@
                             "value": "travel_compensate_overlapping_walls_enabled",
                             "limit_to_extruder": "wall_x_extruder_nr",
                             "settable_per_mesh": true
+                        },
+                        "wall_min_flow":
+                        {
+                            "label": "Minimum Wall Flow",
+                            "description": "Minimum allowed percentage flow for a wall line. The wall overlap compensation reduces a wall's flow when it lies close to an existing wall. Walls whose flow is less than this value will be replaced with a travel move. When using this setting you must have the wall overlap compensation enabled and also print the outer before inner walls.",
+                            "unit": "%",
+                            "minimum_value": "0",
+                            "maximum_value": "100",
+                            "default_value": 0,
+                            "type": "float",
+                            "settable_per_mesh": false,
+                            "settable_per_extruder": true
+                        },
+                        "wall_min_flow_retract":
+                        {
+                            "label": "Prefer Retract",
+                            "description": "If enabled, retraction is used rather than combing for travel moves that replace walls whose flow is below the minimum flow threshold.",
+                            "type": "bool",
+                            "default_value": false,
+                            "enabled": "wall_min_flow > 0",
+                            "settable_per_mesh": false,
+                            "settable_per_extruder": true
                         }
                     }
                 },
