@@ -372,7 +372,7 @@ Item
 
                     containerStackId: Cura.MachineManager.activeMachineId
                     key: model.key ? model.key : ""
-                    watchedProperties: [ "value", "enabled", "state", "validationState", "settable_per_extruder" ]
+                    watchedProperties: [ "value", "enabled", "state", "validationState", "settable_per_extruder", "resolve" ]
                     storeIndex: 0
                 }
 
