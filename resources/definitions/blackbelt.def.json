@@ -58,7 +58,7 @@
                 "blackbelt_z_offset_gap":
                 {
                     "label": "Belt Offset",
-                    "description": "The gap between the nozzle and the belt (0.3 = big gap, 0.1 = small gap)",
+                    "description": "The distance between the part and the conveyor belt. Adjust the gap to the belt to control adhesion between the print and the belt. Smaller gap means more adhesion, a bigger gap means less adhesion.",
                     "type": "float",
                     "unit": "mm",
                     "default_value": 0.2,
@@ -176,7 +176,7 @@
                     "label": "Repetitions GCode",
                     "description": "Gcode commands to be executed between repetitions - separated by \\n.",
                     "type": "str",
-                    "default_value": "\nG92 E0   ; Set Extruder to zero\nG1 E-6   ; Retract 6mm\nG92 Z0   ; Set Belt to zero\nG1 Z{blackbelt_repetitions_distance}   ; Advance belt between repetitions\nG92 Z0   ; Set Belt to zero again\n\n;˄˄˄˄˄˄˄˄˄˄˄˄˄˄˄˄ - repetition - ˄˄˄˄˄˄˄˄˄˄˄˄˄˄˄˄\n\nM107     ; Start with the fan off\n\n",
+                    "default_value": "\nG92 E0   ; Set Extruder to zero\nG1 E-4 F3900  ; Retract 4mm at 65mm/s\nG92 Z0   ; Set Belt to zero\nG1 Z{blackbelt_repetitions_distance}   ; Advance belt between repetitions\nG92 Z0   ; Set Belt to zero again\n\n;˄˄˄˄˄˄˄˄˄˄˄˄˄˄˄˄ - repetition - ˄˄˄˄˄˄˄˄˄˄˄˄˄˄˄˄\n\nM107    ; Start with the fan off\nG0 X170 ; Move X to the center\nG1 Y1   ; Move y to the belt\nG1 E0   ; Move extruder back to 0\nG92 E-5 ; Add 5mm restart distance\n\n",
                     "enabled": "blackbelt_repetitions > 1",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false
@@ -190,10 +190,10 @@
             "default_value": "BLACKBELT 3D Printer"
         },
         "machine_start_gcode" : {
-            "default_value": "G90      ; Set to Absolute Positioning\nM82      ; Set extruder to absolute mode\nG21      ; Metric values\nM107     ; Start with the fan off\nG92 X0 Y{blackbelt_z_offset} Z0 E0 ; Set all axis to 0. Set Y offset to the belt (Y0.1 = big gap, Y0.3 = small gap)\nG1 Y1    ; Move print head up 1mm\nG28 X0 F2000      ; Home X axis\nG1 E15   ; Extruder 15mm material (purge nozzle)\nG1 Z20 E30 F500   ; Move belt and keep extruding\nG1 Z30 E20        ; Stop extruding, move the belt a bit further\nG92 Z0 E-14       ; Zero Belt and Extuder\nG1 F1000          ; Move to the next point with a Speed of 1000mm per minute\nM117 BLACKBELT Printing...\n\n;˅˅˅˅˅˅˅˅˅˅˅˅˅˅˅˅ - copy from here / paste codes just under here - ˅˅˅˅˅˅˅˅˅˅˅˅˅˅˅˅\n\nM107 ;start with the fan off"
+            "default_value": "G90      ; Set to Absolute Positioning\nM82      ; Set extruder to absolute mode\nG21      ; Metric values\nM107     ; Start with the fan off\nG92 X0 Y{blackbelt_z_offset} Z0 E0 ; Set all axis to 0. Set Y starting position\nG1 Y3    ; Move print head up 3mm\nG28 X0 F2000  ; Home X axis\nG1 E10   ; Extruder 10mm material (purge nozzle)\nG1 Z20 E15 F500   ; Move belt 20mm and keep extruding\nG1 Z40   ; Move the belt a bit further without extruding\nG92 Z0   ; Zero Belt\nG92 E0   ; Zero the extruded length\nG1 E-4 F3900  ; Retract 4mm at 65mm/s\nG0 X170  ; Move X to the center\nG1 Y{blackbelt_z_offset}    ; Move y to the belt\nG1 E0    ; Move extruder back to 0\nG92 E-1  ; Add 1mm start distance\n\nM117 BLACKBELT Printing...\n\n;˅˅˅˅˅˅˅˅˅˅˅˅˅˅˅˅ - copy from here / paste codes just under here - ˅˅˅˅˅˅˅˅˅˅˅˅˅˅˅˅\n\nM107 ;start with the fan off"
         },
         "machine_end_gcode" : {
-            "default_value": "G92 E0   ; Set Extruder to zero\nG1 E-6   ; Retract 6mm\nG92 Z0   ; Set Belt to zero\nG1 Z{blackbelt_repetitions_distance}   ; Move Belt 15mm before starting up the next product\nG92 Z0   ; Set Belt to zero again\n\n;˄˄˄˄˄˄˄˄˄˄˄˄˄˄˄˄ - copy up to here / paste codes just above here - ˄˄˄˄˄˄˄˄˄˄˄˄˄˄˄˄\nM104 S0  ; Extruder heater off\nM140 S0  ; Heated bed heater off\nG92 Z0\nG1 Z10 F1000\nG28 X0 F2000\nG1 Z20 F1000\nG1 X170 F2000\nG1 Y 1 F2000\nM18      ; Disable all stepper motors"
+            "default_value": "G92 E0   ; Set Extruder to zero\nG1 E-6   ; Retract 6mm\nG92 Z0   ; Set Belt to zero\nG1 Z{blackbelt_repetitions_distance}   ; Move Belt 15mm before starting up the next product\nG92 Z0   ; Set Belt to zero again\n\n;˄˄˄˄˄˄˄˄˄˄˄˄˄˄˄˄ - copy up to here / paste codes just above here - ˄˄˄˄˄˄˄˄˄˄˄˄˄˄˄˄\nM104 S0  ; Extruder heater off\nM140 S0  ; Heated bed heater off\nG92 Z0\nG1 Z10 F1000\nG28 X0 F2000\nG1 Z20 F1000\nG1 X170 F2000\nG1 Y{blackbelt_z_offset} F2000\nM18      ; Disable all stepper motors"
         },
         "machine_width": {
             "default_value": 340
@@ -294,9 +294,9 @@
         {
             "value": "'[' + str(round(45 * math.sin(math.radians(float(blackbelt_gantry_angle))))) + ',-' + str(round(45 * math.sin(math.radians(float(blackbelt_gantry_angle))))) + ']' if infill_pattern == 'lines' else '[ ]'"
         },
-        "gradual_infill_steps":
+        "travel_avoid_other_parts":
         {
-            "enabled": false
+            "default_value": false
         },
         "ooze_shield_enabled":
         {
