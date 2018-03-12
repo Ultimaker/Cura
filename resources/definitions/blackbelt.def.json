@@ -44,8 +44,6 @@
                 }
             }
         ],
-        "supports_usb_connection": false,
-        "supported_actions": [ "DiscoverOctoPrintAction" ],
         "file_formats": "text/x-gcode"
     },
 
