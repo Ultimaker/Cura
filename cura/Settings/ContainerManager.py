@@ -338,8 +338,6 @@ class ContainerManager(QObject):
             container.clear()
             send_emits_containers.append(container)
 
-        Application.getInstance().getMachineManager().correctExtruderSettings()
-
         for container in send_emits_containers:
             container.sendPostponedEmits()
 
