@@ -295,6 +295,10 @@
         {
             "value": "'[' + str(round(45 * math.sin(math.radians(float(blackbelt_gantry_angle))))) + ',-' + str(round(45 * math.sin(math.radians(float(blackbelt_gantry_angle))))) + ']' if infill_pattern == 'lines' else '[ ]'"
         },
+        "infill_line_distance":
+        {
+            "minimum_value_warning": "0 if infill_sparse_density == 0 else infill_line_width"
+        },
         "travel_avoid_other_parts":
         {
             "default_value": false
