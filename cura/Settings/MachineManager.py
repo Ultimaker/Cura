@@ -705,26 +705,42 @@ class MachineManager(QObject):
         if containers:
             return containers[0].definition.getId()
 
-    ##  Update extruder number to a valid value when the number of extruders are changed, or when an extruder is changed
-    def correctExtruderSettings(self):
+    def getIncompatibleSettingsOnEnabledExtruders(self, container):
         extruder_count = self._global_container_stack.getProperty("machine_extruder_count", "value")
-
-        # reset all extruder number settings whose value is no longer valid
-        for setting_instance in self._global_container_stack.userChanges.findInstances():
+        result = []
+        for setting_instance in container.findInstances():
             setting_key = setting_instance.definition.key
-            enabled = self._global_container_stack.getProperty(setting_key, "enabled")
-            if not enabled:
-                self._global_container_stack.userChanges.removeInstance(setting_key)
-                Logger.log("d", "Reset setting [%s] because the setting is no longer enabled", setting_key)
+            setting_enabled = self._global_container_stack.getProperty(setting_key, "enabled")
+            if not setting_enabled:
+                # A setting is not visible anymore
+                result.append(setting_key)
+                Logger.log("d", "Reset setting [%s] from [%s] because the setting is no longer enabled", setting_key, container)
                 continue
 
             if not self._global_container_stack.getProperty(setting_key, "type") in ("extruder", "optional_extruder"):
                 continue
 
-            old_value = self._global_container_stack.userChanges.getProperty(setting_key, "value")
+            old_value = container.getProperty(setting_key, "value")
             if int(old_value) >= extruder_count or not self._global_container_stack.extruders[str(old_value)].isEnabled:
-                self._global_container_stack.userChanges.removeInstance(setting_key)
-                Logger.log("d", "Reset setting [%s] because its old value [%s] is no longer valid", setting_key, old_value)
+                result.append(setting_key)
+                Logger.log("d", "Reset setting [%s] in [%s] because its old value [%s] is no longer valid", setting_key, container, old_value)
+        return result
+
+    ##  Update extruder number to a valid value when the number of extruders are changed, or when an extruder is changed
+    def correctExtruderSettings(self):
+        for setting_key in self.getIncompatibleSettingsOnEnabledExtruders(self._global_container_stack.userChanges):
+            self._global_container_stack.userChanges.removeInstance(setting_key)
+        add_user_changes = self.getIncompatibleSettingsOnEnabledExtruders(self._global_container_stack.qualityChanges)
+        for setting_key in add_user_changes:
+            # Apply quality changes that are incompatible to user changes, so we do not change the quality changes itself.
+            self._global_container_stack.userChanges.setProperty(setting_key, "value", self._default_extruder_position)
+        if add_user_changes:
+            caution_message = Message(catalog.i18nc(
+                "@info:generic",
+                "Settings have been changed to match the current availability of extruders: [%s]" % ", ".join(add_user_changes)),
+                lifetime=0,
+                title = catalog.i18nc("@info:title", "Settings updated"))
+            caution_message.show()
 
     ##  Set the amount of extruders on the active machine (global stack)
     #   \param extruder_count int the number of extruders to set

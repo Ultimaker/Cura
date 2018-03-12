@@ -338,6 +338,9 @@ class ContainerManager(QObject):
             container.clear()
             send_emits_containers.append(container)
 
+        # user changes are possibly added to make the current setup match the current enabled extruders
+        Application.getInstance().getMachineManager().correctExtruderSettings()
+
         for container in send_emits_containers:
             container.sendPostponedEmits()
 
