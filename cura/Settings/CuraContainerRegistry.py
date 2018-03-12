@@ -29,6 +29,7 @@ from .ExtruderManager import ExtruderManager
 
 from cura.CuraApplication import CuraApplication
 from cura.Machines.QualityManager import getMachineDefinitionIDForQualitySearch
+from cura.ProfileReader import NoProfileException
 
 from UM.i18n import i18nCatalog
 catalog = i18nCatalog("cura")
@@ -185,6 +186,8 @@ class CuraContainerRegistry(ContainerRegistry):
             profile_reader = plugin_registry.getPluginObject(plugin_id)
             try:
                 profile_or_list = profile_reader.read(file_name)  # Try to open the file with the profile reader.
+            except NoProfileException:
+                return { "status": "ok", "message": catalog.i18nc("@info:status Don't translate the XML tags <filename> or <message>!", "No custom profile to import in file <filename>{0}</filename>", file_name)}
             except Exception as e:
                 # Note that this will fail quickly. That is, if any profile reader throws an exception, it will stop reading. It will only continue reading if the reader returned None.
                 Logger.log("e", "Failed to import profile from %s: %s while using profile reader. Got exception %s", file_name,profile_reader.getPluginId(), str(e))

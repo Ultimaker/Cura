@@ -69,7 +69,7 @@ class QualitySettingsModel(ListModel):
         return self._selected_quality_item
 
     def _update(self):
-        if self._selected_quality_item is None:
+        if not self._selected_quality_item:
             self.setItems([])
             return
 

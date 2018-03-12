@@ -9,7 +9,7 @@ from UM.Logger import Logger
 from UM.i18n import i18nCatalog
 catalog = i18nCatalog("cura")
 
-from cura.ProfileReader import ProfileReader
+from cura.ProfileReader import ProfileReader, NoProfileException
 
 ##  A class that reads profile data from g-code files.
 #
@@ -66,6 +66,11 @@ class GCodeProfileReader(ProfileReader):
             return None
 
         serialized = unescapeGcodeComment(serialized)
+        serialized = serialized.strip()
+
+        if not serialized:
+            Logger.log("i", "No custom profile to import from this g-code: %s", file_name)
+            raise NoProfileException()
 
         # serialized data can be invalid JSON
         try:
