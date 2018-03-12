@@ -244,6 +244,7 @@ Cura.MachineAction
                                 height: childrenRect.height
                                 width: childrenRect.width
                                 text: machineExtruderCountProvider.properties.description
+                                visible: extruderCountModel.count >= 2
 
                                 Row
                                 {
