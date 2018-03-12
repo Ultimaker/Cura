@@ -26,9 +26,7 @@ class NozzleModel(ListModel):
         self._variant_manager = self._application.getVariantManager()
 
         self._machine_manager.globalContainerChanged.connect(self._update)
-        self._machine_manager.activeVariantChanged.connect(self._update)
-        self._machine_manager.activeStackChanged.connect(self._update)
-        self._machine_manager.activeMaterialChanged.connect(self._update)
+        self._update()
 
     def _update(self):
         Logger.log("d", "Updating {model_class_name}.".format(model_class_name = self.__class__.__name__))
