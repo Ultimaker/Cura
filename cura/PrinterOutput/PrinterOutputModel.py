@@ -46,6 +46,8 @@ class PrinterOutputModel(QObject):
         # Update the printer configuration every time any of the extruders changes its configuration
         for extruder in self._extruders:
             extruder.extruderConfigurationChanged.connect(self._updatePrinterConfiguration)
+        self.typeChanged.connect(self._updatePrinterConfiguration)
+        self.buildplateChanged.connect(self._updatePrinterConfiguration)
 
         self._camera = None
 
