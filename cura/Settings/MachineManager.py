@@ -919,11 +919,21 @@ class MachineManager(QObject):
 
     def activeMaterialsCompatible(self):
         # check material - variant compatibility
+        result = True
+        machine_has_buildplate = Util.parseBool(self._global_container_stack.getMetaDataEntry("has_variant_buildplates", False))
         if Util.parseBool(self._global_container_stack.getMetaDataEntry("has_materials", False)):
             for position, extruder in self._global_container_stack.extruders.items():
                 if not extruder.material.getMetaDataEntry("compatible"):
-                    return False
-        return True
+                    result = False
+                    break
+                if machine_has_buildplate:
+                    buildplate_compatibility_dict = extruder.material.getMetaDataEntry("buildplate_compatible")
+                    if buildplate_compatibility_dict:
+                        buildplate_name = self._global_container_stack.variant.getName()
+                        result = buildplate_compatibility_dict.get(buildplate_name, True)
+                        if not result:
+                            break
+        return result
 
     ## Update current quality type and machine after setting material
     def _updateQualityWithMaterial(self):
