@@ -194,7 +194,7 @@ class StartSliceJob(Job):
                         # Find a reason not to add the node
                         if node.callDecoration("getBuildPlateNumber") != self._build_plate_number:
                             continue
-                        if getattr(node, "_outside_buildarea", False) and is_non_printing_mesh:
+                        if getattr(node, "_outside_buildarea", False) and not is_non_printing_mesh:
                             continue
                         node_position = node.callDecoration("getActiveExtruderPosition")
                         if not stack.extruders[str(node_position)].isEnabled:
