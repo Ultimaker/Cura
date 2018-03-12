@@ -786,21 +786,6 @@ Item
                 }
             }
 
-            Label
-            {
-                id: supportExtruderLabel
-                visible: supportExtruderCombobox.visible
-                anchors.left: parent.left
-                anchors.leftMargin: UM.Theme.getSize("sidebar_margin").width
-                anchors.right: infillCellLeft.right
-                anchors.rightMargin: UM.Theme.getSize("sidebar_margin").width
-                anchors.verticalCenter: supportExtruderCombobox.verticalCenter
-                text: catalog.i18nc("@label", "Support Extruder");
-                font: UM.Theme.getFont("default");
-                color: UM.Theme.getColor("text");
-                elide: Text.ElideRight
-            }
-
             ComboBox
             {
                 id: supportExtruderCombobox
@@ -818,12 +803,13 @@ Item
 
                 textRole: "text"  // this solves that the combobox isn't populated in the first time Cura is started
 
-                anchors.top: enableSupportCheckBox.bottom
-                anchors.topMargin: ((supportEnabled.properties.value === "True") && (extrudersEnabledCount.properties.value > 1)) ? UM.Theme.getSize("sidebar_margin").height : 0
-                anchors.left: infillCellRight.left
+                anchors.top: enableSupportCheckBox.top
+                //anchors.topMargin: ((supportEnabled.properties.value === "True") && (machineExtruderCount.properties.value > 1)) ? UM.Theme.getSize("sidebar_margin").height : 0
+                anchors.left: enableSupportCheckBox.right
+                anchors.leftMargin: Math.round(UM.Theme.getSize("sidebar_margin").width / 2)
 
-                width: Math.round(UM.Theme.getSize("sidebar").width * .55)
-                height: ((supportEnabled.properties.value == "True") && (extrudersEnabledCount.properties.value > 1)) ? UM.Theme.getSize("setting_control").height : 0
+                width: Math.round(UM.Theme.getSize("sidebar").width * .55) - Math.round(UM.Theme.getSize("sidebar_margin").width / 2) - enableSupportCheckBox.width
+                height: ((supportEnabled.properties.value == "True") && (machineExtruderCount.properties.value > 1)) ? UM.Theme.getSize("setting_control").height : 0
 
                 Behavior on height { NumberAnimation { duration: 100 } }
 
@@ -889,7 +875,7 @@ Item
                 id: adhesionCheckBox
                 property alias _hovered: adhesionMouseArea.containsMouse
 
-                anchors.top: enableSupportCheckBox.visible ? supportExtruderCombobox.bottom : infillCellRight.bottom
+                anchors.top: enableSupportCheckBox.bottom
                 anchors.topMargin: UM.Theme.getSize("sidebar_margin").height
                 anchors.left: infillCellRight.left
 
