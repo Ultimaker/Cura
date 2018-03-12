@@ -1,8 +1,9 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from PyQt5.QtCore import Qt, pyqtProperty
+from PyQt5.QtCore import Qt
 
+from UM.Logger import Logger
 from UM.Qt.ListModel import ListModel
 
 
@@ -60,6 +61,8 @@ class MaterialManagementModel(ListModel):
         self._update()
 
     def _update(self):
+        Logger.log("d", "Updating {model_class_name}.".format(model_class_name = self.__class__.__name__))
+
         global_stack = self._machine_manager.activeMachine
         if global_stack is None:
             self.setItems([])

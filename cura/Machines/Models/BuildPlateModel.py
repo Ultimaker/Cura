@@ -4,6 +4,7 @@
 from PyQt5.QtCore import Qt
 
 from UM.Application import Application
+from UM.Logger import Logger
 from UM.Qt.ListModel import ListModel
 from UM.Util import parseBool
 
@@ -29,6 +30,7 @@ class BuildPlateModel(ListModel):
         self._update()
 
     def _update(self):
+        Logger.log("d", "Updating {model_class_name}.".format(model_class_name = self.__class__.__name__))
         global_stack = self._machine_manager._global_container_stack
         if not global_stack:
             self.setItems([])
