@@ -52,6 +52,8 @@ class MachineManager(QObject):
         self._current_quality_group = None
         self._current_quality_changes_group = None
 
+        self._default_extruder_position = "0"  # to be updated when extruders are switched on and off
+
         self.machine_extruder_material_update_dict = collections.defaultdict(list)
 
         self._error_check_timer = QTimer()
@@ -132,6 +134,7 @@ class MachineManager(QObject):
     activeVariantChanged = pyqtSignal()
     activeQualityChanged = pyqtSignal()
     activeStackChanged = pyqtSignal()  # Emitted whenever the active stack is changed (ie: when changing between extruders, changing a profile, but not when changing a value)
+    extruderChanged = pyqtSignal()
 
     globalValueChanged = pyqtSignal()  # Emitted whenever a value inside global container is changed.
     activeStackValueChanged = pyqtSignal()  # Emitted whenever a value inside the active stack is changed.
@@ -189,7 +192,9 @@ class MachineManager(QObject):
 
         # Update the local global container stack reference
         self._global_container_stack = Application.getInstance().getGlobalContainerStack()
-
+        if self._global_container_stack:
+            self.updateDefaultExtruder()
+            self.updateNumberExtrudersEnabled()
         self.globalContainerChanged.emit()
 
         # after switching the global stack we reconnect all the signals and set the variant and material references
@@ -641,6 +646,8 @@ class MachineManager(QObject):
         buildplate_compatible = True  # It is compatible by default
         extruder_stacks = self._global_container_stack.extruders.values()
         for stack in extruder_stacks:
+            if not stack.isEnabled:
+                continue
             material_container = stack.material
             if material_container == self._empty_material_container:
                 continue
@@ -698,6 +705,43 @@ class MachineManager(QObject):
         if containers:
             return containers[0].definition.getId()
 
+    def getIncompatibleSettingsOnEnabledExtruders(self, container):
+        extruder_count = self._global_container_stack.getProperty("machine_extruder_count", "value")
+        result = []
+        for setting_instance in container.findInstances():
+            setting_key = setting_instance.definition.key
+            setting_enabled = self._global_container_stack.getProperty(setting_key, "enabled")
+            if not setting_enabled:
+                # A setting is not visible anymore
+                result.append(setting_key)
+                Logger.log("d", "Reset setting [%s] from [%s] because the setting is no longer enabled", setting_key, container)
+                continue
+
+            if not self._global_container_stack.getProperty(setting_key, "type") in ("extruder", "optional_extruder"):
+                continue
+
+            old_value = container.getProperty(setting_key, "value")
+            if int(old_value) >= extruder_count or not self._global_container_stack.extruders[str(old_value)].isEnabled:
+                result.append(setting_key)
+                Logger.log("d", "Reset setting [%s] in [%s] because its old value [%s] is no longer valid", setting_key, container, old_value)
+        return result
+
+    ##  Update extruder number to a valid value when the number of extruders are changed, or when an extruder is changed
+    def correctExtruderSettings(self):
+        for setting_key in self.getIncompatibleSettingsOnEnabledExtruders(self._global_container_stack.userChanges):
+            self._global_container_stack.userChanges.removeInstance(setting_key)
+        add_user_changes = self.getIncompatibleSettingsOnEnabledExtruders(self._global_container_stack.qualityChanges)
+        for setting_key in add_user_changes:
+            # Apply quality changes that are incompatible to user changes, so we do not change the quality changes itself.
+            self._global_container_stack.userChanges.setProperty(setting_key, "value", self._default_extruder_position)
+        if add_user_changes:
+            caution_message = Message(catalog.i18nc(
+                "@info:generic",
+                "Settings have been changed to match the current availability of extruders: [%s]" % ", ".join(add_user_changes)),
+                lifetime=0,
+                title = catalog.i18nc("@info:title", "Settings updated"))
+            caution_message.show()
+
     ##  Set the amount of extruders on the active machine (global stack)
     #   \param extruder_count int the number of extruders to set
     def setActiveMachineExtruderCount(self, extruder_count):
@@ -711,16 +755,11 @@ class MachineManager(QObject):
         if extruder_count == previous_extruder_count:
             return
 
-        # reset all extruder number settings whose value is no longer valid
-        for setting_instance in self._global_container_stack.userChanges.findInstances():
-            setting_key = setting_instance.definition.key
-            if not self._global_container_stack.getProperty(setting_key, "type") in ("extruder", "optional_extruder"):
-                continue
+        definition_changes_container.setProperty("machine_extruder_count", "value", extruder_count)
 
-            old_value = int(self._global_container_stack.userChanges.getProperty(setting_key, "value"))
-            if old_value >= extruder_count:
-                self._global_container_stack.userChanges.removeInstance(setting_key)
-                Logger.log("d", "Reset [%s] because its old value [%s] is no longer valid ", setting_key, old_value)
+        self.updateDefaultExtruder()
+        self.updateNumberExtrudersEnabled()
+        self.correctExtruderSettings()
 
         # Check to see if any objects are set to print with an extruder that will no longer exist
         root_node = Application.getInstance().getController().getScene().getRoot()
@@ -731,21 +770,19 @@ class MachineManager(QObject):
                 if extruder_nr is not None and int(extruder_nr) > extruder_count - 1:
                     node.callDecoration("setActiveExtruder", extruder_manager.getExtruderStack(extruder_count - 1).getId())
 
-        definition_changes_container.setProperty("machine_extruder_count", "value", extruder_count)
-
         # Make sure one of the extruder stacks is active
         extruder_manager.setActiveExtruderIndex(0)
 
         # Move settable_per_extruder values out of the global container
         # After CURA-4482 this should not be the case anymore, but we still want to support older project files.
-        global_user_container = self._global_container_stack.getTop()
+        global_user_container = self._global_container_stack.userChanges
 
         # Make sure extruder_stacks exists
         extruder_stacks = []
 
         if previous_extruder_count == 1:
             extruder_stacks = ExtruderManager.getInstance().getActiveExtruderStacks()
-            global_user_container = self._global_container_stack.getTop()
+            global_user_container = self._global_container_stack.userChanges
 
         for setting_instance in global_user_container.findInstances():
             setting_key = setting_instance.definition.key
@@ -754,11 +791,12 @@ class MachineManager(QObject):
             if settable_per_extruder:
                 limit_to_extruder = int(self._global_container_stack.getProperty(setting_key, "limit_to_extruder"))
                 extruder_stack = extruder_stacks[max(0, limit_to_extruder)]
-                extruder_stack.getTop().setProperty(setting_key, "value", global_user_container.getProperty(setting_key, "value"))
+                extruder_stack.userChanges.setProperty(setting_key, "value", global_user_container.getProperty(setting_key, "value"))
                 global_user_container.removeInstance(setting_key)
 
         # Signal that the global stack has changed
         Application.getInstance().globalContainerStackChanged.emit()
+        self.forceUpdateAllSettings()
 
     @pyqtSlot(int, result = QObject)
     def getExtruder(self, position: int):
@@ -766,6 +804,53 @@ class MachineManager(QObject):
         if self._global_container_stack:
             extruder = self._global_container_stack.extruders.get(str(position))
         return extruder
+
+    def updateDefaultExtruder(self):
+        extruder_items = sorted(self._global_container_stack.extruders.items())
+        old_position = self._default_extruder_position
+        new_default_position = "0"
+        for position, extruder in extruder_items:
+            if extruder.isEnabled:
+                new_default_position = position
+                break
+        if new_default_position != old_position:
+            self._default_extruder_position = new_default_position
+            self.extruderChanged.emit()
+
+    def updateNumberExtrudersEnabled(self):
+        definition_changes_container = self._global_container_stack.definitionChanges
+        extruder_count = 0
+        for position, extruder in self._global_container_stack.extruders.items():
+            if extruder.isEnabled:
+                extruder_count += 1
+        definition_changes_container.setProperty("extruders_enabled_count", "value", extruder_count)
+
+    @pyqtProperty(str, notify = extruderChanged)
+    def defaultExtruderPosition(self):
+        return self._default_extruder_position
+
+    ##  This will fire the propertiesChanged for all settings so they will be updated in the front-end
+    def forceUpdateAllSettings(self):
+        property_names = ["value", "resolve"]
+        for setting_key in self._global_container_stack.getAllKeys():
+            self._global_container_stack.propertiesChanged.emit(setting_key, property_names)
+
+    @pyqtSlot(int, bool)
+    def setExtruderEnabled(self, position: int, enabled) -> None:
+        extruder = self.getExtruder(position)
+        extruder.setEnabled(enabled)
+        self.updateDefaultExtruder()
+        self.updateNumberExtrudersEnabled()
+        self.correctExtruderSettings()
+        # ensure that the quality profile is compatible with current combination, or choose a compatible one if available
+        self._updateQualityWithMaterial()
+        self.extruderChanged.emit()
+        # update material compatibility color
+        self.activeQualityGroupChanged.emit()
+        # update items in SettingExtruder
+        ExtruderManager.getInstance().extrudersChanged.emit(self._global_container_stack.getId())
+        # Make sure the front end reflects changes
+        self.forceUpdateAllSettings()
 
     def _onMachineNameChanged(self):
         self.globalContainerChanged.emit()
@@ -921,6 +1006,8 @@ class MachineManager(QObject):
         # check material - variant compatibility
         if Util.parseBool(self._global_container_stack.getMetaDataEntry("has_materials", False)):
             for position, extruder in self._global_container_stack.extruders.items():
+                if extruder.isEnabled and not extruder.material.getMetaDataEntry("compatible"):
+                    return False
                 if not extruder.material.getMetaDataEntry("compatible"):
                     return False
         return True

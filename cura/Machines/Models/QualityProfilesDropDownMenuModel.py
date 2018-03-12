@@ -39,6 +39,7 @@ class QualityProfilesDropDownMenuModel(ListModel):
 
         self._application.globalContainerStackChanged.connect(self._update)
         self._machine_manager.activeQualityGroupChanged.connect(self._update)
+        self._machine_manager.extruderChanged.connect(self._update)
         self._quality_manager.qualitiesUpdated.connect(self._update)
 
         self._layer_height_unit = ""  # This is cached
