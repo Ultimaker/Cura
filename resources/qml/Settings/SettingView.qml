@@ -372,10 +372,8 @@ Item
 
                     containerStackId: Cura.MachineManager.activeMachineId
                     key: model.key ? model.key : ""
-                    watchedProperties: [ "value", "enabled", "state", "validationState", "settable_per_extruder", "resolve" ]
+                    watchedProperties: [ "value", "enabled", "state", "validationState", "settable_per_extruder" ]
                     storeIndex: 0
-                    // Due to the way setPropertyValue works, removeUnusedValue gives the correct output in case of resolve
-                    removeUnusedValue: model.resolve == undefined
                 }
 
                 Connections
