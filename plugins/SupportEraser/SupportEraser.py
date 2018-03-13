@@ -13,7 +13,7 @@ from cura.Scene.SliceableObjectDecorator import SliceableObjectDecorator
 from cura.Scene.BuildPlateDecorator import BuildPlateDecorator
 from UM.Scene.Iterator.BreadthFirstIterator import BreadthFirstIterator
 from cura.Settings.SettingOverrideDecorator import SettingOverrideDecorator
-from cura.DepthPass import DepthPass
+from cura.PickingPass import PickingPass
 
 import os
 import os.path
@@ -30,13 +30,13 @@ class SupportEraser(Tool):
         if event.type == Event.MousePressEvent and self._controller.getToolsEnabled():
             active_camera = self._controller.getScene().getActiveCamera()
 
-            # Create depth pass for picking
-            depth_pass = DepthPass(active_camera.getViewportWidth(), active_camera.getViewportHeight())
-            depth_pass.render()
+            # Create a pass for picking a world-space location from the mouse location
+            picking_pass = PickingPass(active_camera.getViewportWidth(), active_camera.getViewportHeight())
+            picking_pass.render()
 
-            picked_position = depth_pass.getPickedPosition(event.x, event.y)
+            picked_position = picking_pass.getPickedPosition(event.x, event.y)
 
-            # Add the anto_overhang_mesh cube:
+            # Add the anti_overhang_mesh cube at the picked location
             self._createEraserMesh(picked_position)
 
     def _createEraserMesh(self, position: Vector):

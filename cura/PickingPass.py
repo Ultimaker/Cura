@@ -15,9 +15,9 @@ from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 #   The texture is used to map a 2d location (eg the mouse location) to a world space position
 #
 #   Note that in order to increase precision, the 24 bit depth value is encoded into all three of the R,G & B channels
-class DepthPass(RenderPass):
+class PickingPass(RenderPass):
     def __init__(self, width: int, height: int):
-        super().__init__("depth", width, height)
+        super().__init__("picking", width, height)
 
         self._renderer = Application.getInstance().getRenderer()
 
