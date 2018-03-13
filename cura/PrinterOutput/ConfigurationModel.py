@@ -40,6 +40,16 @@ class ConfigurationModel(QObject):
     def buildplateConfiguration(self):
         return self._buildplate_configuration
 
+    ##  This method is intended to indicate whether the configuration is valid or not.
+    #   The method checks if the mandatory fields are or not set
+    def isValid(self):
+        if not self._extruder_configurations:
+            return False
+        for configuration in self._extruder_configurations:
+            if configuration is None:
+                return False
+        return self._printer_type is not None
+
     def __str__(self):
         message_chunks = []
         message_chunks.append("Printer type: " + self._printer_type)

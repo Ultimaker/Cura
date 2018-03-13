@@ -35,8 +35,13 @@ class ExtruderConfigurationModel(QObject):
     def hotendID(self):
         return self._hotend_id
 
+    ##  This method is intended to indicate whether the configuration is valid or not.
+    #   The method checks if the mandatory fields are or not set
+    def isValid(self):
+        return self._material is not None and self._hotend_id is not None and self.material.guid is not None
+
     def __str__(self):
-        if self._material is None or self._hotend_id is None or self.material.type is None:
+        if not self.isValid():
             return "No information"
         return "Position: " + str(self._position) + " - Material: " + self._material.type + " - HotendID: " + self._hotend_id
 

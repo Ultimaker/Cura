@@ -28,9 +28,7 @@ class ExtruderOutputModel(QObject):
         self._hotend_id = ""
         self._active_material = None  # type: Optional[MaterialOutputModel]
         self._extruder_configuration = ExtruderConfigurationModel()
-        # Update the configuration every time the hotend or the active material change
-        self.hotendIDChanged.connect(self._updateExtruderConfiguration)
-        self.activeMaterialChanged.connect(self._updateExtruderConfiguration)
+        self._extruder_configuration.position = self._position
 
     @pyqtProperty(QObject, notify = activeMaterialChanged)
     def activeMaterial(self) -> "MaterialOutputModel":
@@ -39,7 +37,9 @@ class ExtruderOutputModel(QObject):
     def updateActiveMaterial(self, material: Optional["MaterialOutputModel"]):
         if self._active_material != material:
             self._active_material = material
+            self._extruder_configuration.material = self._active_material
             self.activeMaterialChanged.emit()
+            self.extruderConfigurationChanged.emit()
 
     ##  Update the hotend temperature. This only changes it locally.
     def updateHotendTemperature(self, temperature: float):
@@ -73,14 +73,12 @@ class ExtruderOutputModel(QObject):
     def updateHotendID(self, id: str):
         if self._hotend_id != id:
             self._hotend_id = id
+            self._extruder_configuration.hotendID = self._hotend_id
             self.hotendIDChanged.emit()
+            self.extruderConfigurationChanged.emit()
 
     @pyqtProperty(QObject, notify = extruderConfigurationChanged)
     def extruderConfiguration(self):
-        return self._extruder_configuration
-
-    def _updateExtruderConfiguration(self):
-        self._extruder_configuration.position = self._position
-        self._extruder_configuration.material = self._active_material
-        self._extruder_configuration.hotendID = self._hotend_id
-        self.extruderConfigurationChanged.emit()
+        if self._extruder_configuration.isValid():
+            return self._extruder_configuration
+        return None

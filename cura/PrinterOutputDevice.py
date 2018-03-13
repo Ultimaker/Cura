@@ -187,7 +187,7 @@ class PrinterOutputDevice(QObject, OutputDevice):
         return self._unique_configurations
 
     def _updateUniqueConfigurations(self):
-        self._unique_configurations = list(set([printer.printerConfiguration for printer in self._printers]))
+        self._unique_configurations = list(set([printer.printerConfiguration for printer in self._printers if printer.printerConfiguration is not None]))
         self._unique_configurations.sort(key = lambda k: k.printerType)
         self.uniqueConfigurationsChanged.emit()
 
