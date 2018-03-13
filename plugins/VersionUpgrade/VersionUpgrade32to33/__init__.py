@@ -8,10 +8,10 @@ upgrade = VersionUpgrade32to33.VersionUpgrade32to33()
 def getMetaData():
     return {
         "version_upgrade": {
-            # From                        To                   Upgrade function
+            # From                           To                              Upgrade function
             ("definition_changes", 2000004): ("definition_changes", 3000004, upgrade.upgradeInstanceContainer),
-            ("quality_changes", 2000004):    ("quality_changes", 3000004, upgrade.upgradeQualityChanges),
-            ("user", 2000004):               ("user", 3000004, upgrade.upgradeInstanceContainer)
+            ("quality_changes", 2000004):    ("quality_changes", 3000004,    upgrade.upgradeQualityChanges),
+            ("user", 2000004):               ("user", 3000004,               upgrade.upgradeInstanceContainer)
         },
         "sources": {
             "definition_changes": {

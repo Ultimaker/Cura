@@ -94,6 +94,8 @@ class CuraEngineBackend(QObject, Backend):
         self._onGlobalStackChanged()
 
         Application.getInstance().stacksValidationFinished.connect(self._onStackErrorCheckFinished)
+        # extruder enable / disable. Actually wanted to use machine manager here, but the initialization order causes it to crash
+        ExtruderManager.getInstance().extrudersChanged.connect(self._extruderChanged)
 
         # A flag indicating if an error check was scheduled
         # If so, we will stop the auto-slice timer and start upon the error check
@@ -782,3 +784,9 @@ class CuraEngineBackend(QObject, Backend):
     def tickle(self):
         if self._use_timer:
             self._change_timer.start()
+
+    def _extruderChanged(self):
+        for build_plate_number in range(Application.getInstance().getMultiBuildPlateModel().maxBuildPlate + 1):
+            if build_plate_number not in self._build_plates_to_be_sliced:
+                self._build_plates_to_be_sliced.append(build_plate_number)
+        self._invokeSlice()

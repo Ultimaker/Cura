@@ -159,9 +159,9 @@ class QualityManager(QObject):
     # Updates the given quality groups' availabilities according to which extruders are being used/ enabled.
     def _updateQualityGroupsAvailability(self, machine: "GlobalStack", quality_group_list):
         used_extruders = set()
-        # TODO: This will change after the Machine refactoring
         for i in range(machine.getProperty("machine_extruder_count", "value")):
-            used_extruders.add(str(i))
+            if machine.extruders[str(i)].isEnabled:
+                used_extruders.add(str(i))
 
         # Update the "is_available" flag for each quality group.
         for quality_group in quality_group_list:
@@ -386,7 +386,7 @@ class QualityManager(QObject):
         if quality_changes_group is None:
             # create global quality changes only
             new_quality_changes = self._createQualityChanges(quality_group.quality_type, quality_changes_name,
-                                                             global_stack, extruder_id = None)
+                                                             global_stack, None)
             self._container_registry.addContainer(new_quality_changes)
         else:
             new_name = self._container_registry.uniqueName(quality_changes_name)

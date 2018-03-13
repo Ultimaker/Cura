@@ -4,6 +4,7 @@
 from PyQt5.QtCore import Qt
 
 from UM.Application import Application
+from UM.Logger import Logger
 from UM.Qt.ListModel import ListModel
 from UM.Util import parseBool
 
@@ -20,26 +21,30 @@ class NozzleModel(ListModel):
         self.addRoleName(self.HotendNameRole, "hotend_name")
         self.addRoleName(self.ContainerNodeRole, "container_node")
 
-        Application.getInstance().globalContainerStackChanged.connect(self._update)
-        Application.getInstance().getMachineManager().activeVariantChanged.connect(self._update)
-        Application.getInstance().getMachineManager().activeStackChanged.connect(self._update)
-        Application.getInstance().getMachineManager().activeMaterialChanged.connect(self._update)
+        self._application = Application.getInstance()
+        self._machine_manager = self._application.getMachineManager()
+        self._variant_manager = self._application.getVariantManager()
+
+        self._machine_manager.globalContainerChanged.connect(self._update)
+        self._update()
 
     def _update(self):
+        Logger.log("d", "Updating {model_class_name}.".format(model_class_name = self.__class__.__name__))
+
         self.items.clear()
 
-        variant_manager = Application.getInstance()._variant_manager
-        active_global_stack = Application.getInstance().getMachineManager()._global_container_stack
-        if active_global_stack is None:
+        global_stack = self._machine_manager.activeMachine
+        if global_stack is None:
             self.setItems([])
             return
 
-        has_variants = parseBool(active_global_stack.getMetaDataEntry("has_variants", False))
+        has_variants = parseBool(global_stack.getMetaDataEntry("has_variants", False))
         if not has_variants:
             self.setItems([])
             return
 
-        variant_node_dict = variant_manager.getVariantNodes(active_global_stack)
+        from cura.Machines.VariantManager import VariantType
+        variant_node_dict = self._variant_manager.getVariantNodes(global_stack, VariantType.NOZZLE)
         if not variant_node_dict:
             self.setItems([])
             return

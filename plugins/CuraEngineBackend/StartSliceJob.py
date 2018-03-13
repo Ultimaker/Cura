@@ -129,8 +129,10 @@ class StartSliceJob(Job):
             self.setResult(StartJobResult.MaterialIncompatible)
             return
 
-        for extruder_stack in ExtruderManager.getInstance().getMachineExtruders(stack.getId()):
+        for position, extruder_stack in stack.extruders.items():
             material = extruder_stack.findContainer({"type": "material"})
+            if not extruder_stack.isEnabled:
+                continue
             if material:
                 if material.getMetaDataEntry("compatible") == False:
                     self.setResult(StartJobResult.MaterialIncompatible)
@@ -189,11 +191,18 @@ class StartSliceJob(Job):
                         if per_object_stack:
                             is_non_printing_mesh = any(per_object_stack.getProperty(key, "value") for key in NON_PRINTING_MESH_SETTINGS)
 
-                        if node.callDecoration("getBuildPlateNumber") == self._build_plate_number:
-                            if not getattr(node, "_outside_buildarea", False) or is_non_printing_mesh:
-                                temp_list.append(node)
-                                if not is_non_printing_mesh:
-                                    has_printing_mesh = True
+                        # Find a reason not to add the node
+                        if node.callDecoration("getBuildPlateNumber") != self._build_plate_number:
+                            continue
+                        if getattr(node, "_outside_buildarea", False) and not is_non_printing_mesh:
+                            continue
+                        node_position = node.callDecoration("getActiveExtruderPosition")
+                        if not stack.extruders[str(node_position)].isEnabled:
+                            continue
+
+                        temp_list.append(node)
+                        if not is_non_printing_mesh:
+                            has_printing_mesh = True
 
                     Job.yieldThread()
 
@@ -269,9 +278,15 @@ class StartSliceJob(Job):
     #   \return A dictionary of replacement tokens to the values they should be
     #   replaced with.
     def _buildReplacementTokens(self, stack) -> dict:
+        default_extruder_position = int(Application.getInstance().getMachineManager().defaultExtruderPosition)
         result = {}
         for key in stack.getAllKeys():
-            result[key] = stack.getProperty(key, "value")
+            setting_type = stack.getProperty(key, "type")
+            value = stack.getProperty(key, "value")
+            if setting_type == "extruder" and value == -1:
+                # replace with the default value
+                value = default_extruder_position
+            result[key] = value
             Job.yieldThread()
 
         result["print_bed_temperature"] = result["material_bed_temperature"] # Renamed settings.
@@ -377,11 +392,11 @@ class StartSliceJob(Job):
     #   limit_to_extruder property.
     def _buildGlobalInheritsStackMessage(self, stack):
         for key in stack.getAllKeys():
-            extruder = int(round(float(stack.getProperty(key, "limit_to_extruder"))))
-            if extruder >= 0: #Set to a specific extruder.
+            extruder_position = int(round(float(stack.getProperty(key, "limit_to_extruder"))))
+            if extruder_position >= 0:  # Set to a specific extruder.
                 setting_extruder = self._slice_message.addRepeatedMessage("limit_to_extruder")
                 setting_extruder.name = key
-                setting_extruder.extruder = extruder
+                setting_extruder.extruder = extruder_position
             Job.yieldThread()
 
     ##  Check if a node has per object settings and ensure that they are set correctly in the message

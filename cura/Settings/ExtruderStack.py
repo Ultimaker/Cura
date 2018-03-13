@@ -3,13 +3,14 @@
 
 from typing import Any, TYPE_CHECKING, Optional
 
-from PyQt5.QtCore import pyqtProperty
+from PyQt5.QtCore import pyqtProperty, pyqtSignal
 
 from UM.Decorators import override
 from UM.MimeTypeDatabase import MimeType, MimeTypeDatabase
 from UM.Settings.ContainerStack import ContainerStack
 from UM.Settings.ContainerRegistry import ContainerRegistry
 from UM.Settings.Interfaces import ContainerInterface, PropertyEvaluationContext
+from UM.Util import parseBool
 
 from . import Exceptions
 from .CuraContainerStack import CuraContainerStack, _ContainerIndexes
@@ -30,6 +31,8 @@ class ExtruderStack(CuraContainerStack):
 
         self.propertiesChanged.connect(self._onPropertiesChanged)
 
+    enabledChanged = pyqtSignal()
+
     ##  Overridden from ContainerStack
     #
     #   This will set the next stack and ensure that we register this stack as an extruder.
@@ -45,6 +48,16 @@ class ExtruderStack(CuraContainerStack):
     @override(ContainerStack)
     def getNextStack(self) -> Optional["GlobalStack"]:
         return super().getNextStack()
+
+    def setEnabled(self, enabled):
+        if "enabled" not in self._metadata:
+            self.addMetaDataEntry("enabled", "True")
+        self.setMetaDataEntry("enabled", str(enabled))
+        self.enabledChanged.emit()
+
+    @pyqtProperty(bool, notify = enabledChanged)
+    def isEnabled(self):
+        return parseBool(self.getMetaDataEntry("enabled", "True"))
 
     @classmethod
     def getLoadingPriority(cls) -> int:

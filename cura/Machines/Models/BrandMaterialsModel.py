@@ -4,8 +4,8 @@
 from PyQt5.QtCore import Qt, pyqtSignal, pyqtProperty
 
 from UM.Qt.ListModel import ListModel
-
-from .BaseMaterialsModel import BaseMaterialsModel
+from UM.Logger import Logger
+from cura.Machines.Models.BaseMaterialsModel import BaseMaterialsModel
 
 
 #
@@ -54,9 +54,7 @@ class BrandMaterialsModel(ListModel):
         self._material_manager = CuraApplication.getInstance().getMaterialManager()
 
         self._machine_manager.globalContainerChanged.connect(self._update)
-        self._extruder_manager.activeExtruderChanged.connect(self._update)
         self._material_manager.materialsUpdated.connect(self._update)
-
         self._update()
 
     def setExtruderPosition(self, position: int):
@@ -69,6 +67,7 @@ class BrandMaterialsModel(ListModel):
         return self._extruder_position
 
     def _update(self):
+        Logger.log("d", "Updating {model_class_name}.".format(model_class_name = self.__class__.__name__))
         global_stack = self._machine_manager.activeMachine
         if global_stack is None:
             self.setItems([])

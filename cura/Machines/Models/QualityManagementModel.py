@@ -4,7 +4,7 @@
 from PyQt5.QtCore import Qt, pyqtSlot
 
 from UM.Qt.ListModel import ListModel
-
+from UM.Logger import Logger
 
 #
 # This the QML model for the quality management page.
@@ -35,6 +35,8 @@ class QualityManagementModel(ListModel):
         self._update()
 
     def _update(self):
+        Logger.log("d", "Updating {model_class_name}.".format(model_class_name = self.__class__.__name__))
+
         global_stack = self._machine_manager.activeMachine
 
         quality_group_dict = self._quality_manager.getQualityGroups(global_stack)

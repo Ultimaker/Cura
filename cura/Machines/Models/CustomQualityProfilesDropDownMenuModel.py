@@ -12,7 +12,7 @@ from cura.Machines.Models.QualityProfilesDropDownMenuModel import QualityProfile
 class CustomQualityProfilesDropDownMenuModel(QualityProfilesDropDownMenuModel):
 
     def _update(self):
-        Logger.log("d", "Updating %s ...", self.__class__.__name__)
+        Logger.log("d", "Updating {model_class_name}.".format(model_class_name = self.__class__.__name__))
 
         active_global_stack = self._machine_manager.activeMachine
         if active_global_stack is None:
