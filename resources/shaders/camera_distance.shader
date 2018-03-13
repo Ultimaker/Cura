@@ -63,9 +63,9 @@ fragment41core =
         highp float distance_to_camera = distance(v_vertex, u_viewPosition) * 1000.; // distance in micron
 
         vec3 encoded; // encode float into 3 8-bit channels; this gives a precision of a micron at a range of up to ~16 meter
-        encoded.b = floor(distance_to_camera / 65536.0);
-        encoded.g = floor((distance_to_camera - encoded.b * 65536.0) / 256.0);
-        encoded.r = floor(distance_to_camera - encoded.b * 65536.0 - encoded.g * 256.0);
+        encoded.r = floor(distance_to_camera / 65536.0);
+        encoded.g = floor((distance_to_camera - encoded.r * 65536.0) / 256.0);
+        encoded.b = floor(distance_to_camera - encoded.r * 65536.0 - encoded.g * 256.0);
 
         frag_color.rgb = encoded / 255.;
         frag_color.a = 1.0;

@@ -31,8 +31,7 @@ class SupportEraser(Tool):
             active_camera = self._controller.getScene().getActiveCamera()
 
             # Create depth pass for picking
-            render_width, render_height = active_camera.getWindowSize()
-            depth_pass = DepthPass(int(render_width), int(render_height))
+            depth_pass = DepthPass(active_camera.getViewportWidth(), active_camera.getViewportHeight())
             depth_pass.render()
 
             distance = depth_pass.getDepthAtPosition(event.x, event.y)

@@ -17,7 +17,7 @@ from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 #   Note that in order to increase precision, the 24 bit depth value is encoded into all three of the R,G & B channels
 class DepthPass(RenderPass):
     def __init__(self, width: int, height: int):
-        super().__init__("preview", width, height, 0)
+        super().__init__("depth", width, height)
 
         self._renderer = Application.getInstance().getRenderer()
 
@@ -29,7 +29,9 @@ class DepthPass(RenderPass):
         if not self._shader:
             self._shader = OpenGL.getInstance().createShaderProgram(Resources.getPath(Resources.Shaders, "camera_distance.shader"))
 
-        self._gl.glClearColor(0.0, 0.0, 0.0, 0.0)
+        width, height = self.getSize()
+        self._gl.glViewport(0, 0, width, height)
+        self._gl.glClearColor(1.0, 1.0, 1.0, 0.0)
         self._gl.glClear(self._gl.GL_COLOR_BUFFER_BIT | self._gl.GL_DEPTH_BUFFER_BIT)
 
         # Create a new batch to be rendered
@@ -57,4 +59,5 @@ class DepthPass(RenderPass):
             return None
 
         distance = output.pixel(px, py) # distance in micron, from in r, g & b channels
-        return distance / 1000.
+        distance = (distance & 0x00ffffff) / 1000. # drop the alpha channel and covert to mm
+        return distance
