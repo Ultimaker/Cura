@@ -11,7 +11,7 @@ import Cura 1.0 as Cura
 Column
 {
     id: base
-    property var outputDevice: Cura.MachineManager.printerOutputDevices[0]
+    property var outputDevice: null
     property var computedHeight: container.height + configurationListHeading.height + 3 * padding
     height: childrenRect.height + 2 * padding
     padding: UM.Theme.getSize("default_margin").width
@@ -78,7 +78,7 @@ Column
         onUniqueConfigurationsChanged:
         {
             // FIXME For now the model should be removed and then created again, otherwise changes in the printer don't automatically update the UI
-            configurationList.model = null
+            configurationList.model = []
             configurationList.model = outputDevice.uniqueConfigurations
         }
     }

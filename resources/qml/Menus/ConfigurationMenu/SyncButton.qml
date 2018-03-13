@@ -11,7 +11,7 @@ import Cura 1.0 as Cura
 Button
 {
     id: base
-    property var outputDevice: Cura.MachineManager.printerOutputDevices[0]
+    property var outputDevice: null
     property var matched: updateOnSync()
     text: matched == true ? "Yes" : "No"
     width: parent.width

@@ -11,11 +11,13 @@ import Cura 1.0 as Cura
 Item
 {
     id: configurationSelector
+    property var connectedDevice: Cura.MachineManager.printerOutputDevices.length >= 1 ? Cura.MachineManager.printerOutputDevices[0] : null
     property var panelWidth: control.width
     property var panelVisible: false
 
     SyncButton {
         onClicked: configurationSelector.state == "open" ? configurationSelector.state = "closed" : configurationSelector.state = "open"
+        outputDevice: connectedDevice
     }
 
     Popup {
@@ -24,11 +26,12 @@ Item
         y: configurationSelector.height - UM.Theme.getSize("default_lining").height
         x: configurationSelector.width - width
         width: panelWidth
-        visible: panelVisible
+        visible: panelVisible && connectedDevice != null
         padding: UM.Theme.getSize("default_lining").width
         contentItem: ConfigurationListView {
             id: configList
             width: panelWidth - 2 * popup.padding
+            outputDevice: connectedDevice
         }
         background: Rectangle {
             color: UM.Theme.getColor("setting_control")
