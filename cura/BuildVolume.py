@@ -239,7 +239,7 @@ class BuildVolume(SceneNode):
         # Group nodes should override the _outside_buildarea property of their children.
         for group_node in group_nodes:
             for child_node in group_node.getAllChildren():
-                child_node.setOutsideBuildArea(group_node.isOutsideBuildArea)
+                child_node.setOutsideBuildArea(group_node.isOutsideBuildArea())
 
     ##  Update the outsideBuildArea of a single node, given bounds or current build volume
     def checkBoundsAndUpdate(self, node: CuraSceneNode, bounds: Optional[AxisAlignedBox] = None):
