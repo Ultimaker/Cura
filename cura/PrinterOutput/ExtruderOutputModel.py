@@ -62,7 +62,7 @@ class ExtruderOutputModel(QObject):
     def targetHotendTemperature(self) -> float:
         return self._target_hotend_temperature
 
-    @pyqtProperty(float, notify=hotendTemperatureChanged)
+    @pyqtProperty(float, notify = hotendTemperatureChanged)
     def hotendTemperature(self) -> float:
         return self._hotend_temperature
 

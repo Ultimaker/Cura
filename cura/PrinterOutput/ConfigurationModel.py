@@ -41,18 +41,22 @@ class ConfigurationModel(QObject):
         return self._buildplate_configuration
 
     def __str__(self):
-        info =  "Printer type: " + self._printer_type + "\n"
-        info += "Extruders: [\n"
+        message_chunks = []
+        message_chunks.append("Printer type: " + self._printer_type)
+        message_chunks.append("Extruders: [")
         for configuration in self._extruder_configurations:
-            info += "   " + str(configuration) + "\n"
-        info += "]"
+            message_chunks.append("   " + str(configuration))
+        message_chunks.append("]")
         if self._buildplate_configuration is not None:
-            info +=  "\nBuildplate: " + self._buildplate_configuration
-        return info
+            message_chunks.append("Buildplate: " + self._buildplate_configuration)
+
+        return "\n".join(message_chunks)
 
     def __eq__(self, other):
         return hash(self) == hash(other)
 
+    ##  The hash function is used to compare and create unique sets. The configuration is unique if the configuration
+    #   of the extruders is unique (the order of the extruders matters), and the type and buildplate is the same.
     def __hash__(self):
         extruder_hash = hash(0)
         first_extruder = None
@@ -60,6 +64,7 @@ class ConfigurationModel(QObject):
             extruder_hash ^= hash(configuration)
             if configuration.position == 0:
                 first_extruder = configuration
+        # To ensure the correct order of the extruders, we add an "and" operation using the first extruder hash value
         if first_extruder:
             extruder_hash &= hash(first_extruder)
 
