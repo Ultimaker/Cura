@@ -273,11 +273,11 @@ class CuraContainerRegistry(ContainerRegistry):
                     elif profile_index < len(machine_extruders) + 1:
                         # This is assumed to be an extruder profile
                         extruder_id = machine_extruders[profile_index - 1].definition.getId()
-                        extuder_position = str(profile_index - 1)
+                        extruder_position = str(profile_index - 1)
                         if not profile.getMetaDataEntry("position"):
-                            profile.addMetaDataEntry("position", extuder_position)
+                            profile.addMetaDataEntry("position", extruder_position)
                         else:
-                            profile.setMetaDataEntry("position", extuder_position)
+                            profile.setMetaDataEntry("position", extruder_position)
                         profile_id = (extruder_id + "_" + name_seed).lower().replace(" ", "_")
 
                     else: #More extruders in the imported file than in the machine.
