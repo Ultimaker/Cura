@@ -4,7 +4,7 @@
 import collections
 import time
 #Type hinting.
-from typing import Union, List, Dict, TYPE_CHECKING, Optional
+from typing import List, Dict, TYPE_CHECKING, Optional
 
 from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 from UM.Signal import Signal
@@ -20,7 +20,6 @@ from UM.Logger import Logger
 from UM.Message import Message
 
 from UM.Settings.ContainerRegistry import ContainerRegistry
-from UM.Settings.InstanceContainer import InstanceContainer
 from UM.Settings.SettingFunction import SettingFunction
 from UM.Signal import postponeSignals, CompressTechnique
 
@@ -55,11 +54,6 @@ class MachineManager(QObject):
         self._default_extruder_position = "0"  # to be updated when extruders are switched on and off
 
         self.machine_extruder_material_update_dict = collections.defaultdict(list)
-
-        self._error_check_timer = QTimer()
-        self._error_check_timer.setInterval(250)
-        self._error_check_timer.setSingleShot(True)
-        self._error_check_timer.timeout.connect(self._updateStacksHaveErrors)
 
         self._instance_container_timer = QTimer()
         self._instance_container_timer.setInterval(250)
@@ -228,15 +222,6 @@ class MachineManager(QObject):
                 del self.machine_extruder_material_update_dict[self._global_container_stack.getId()]
 
         self.activeQualityGroupChanged.emit()
-        self._error_check_timer.start()
-
-    ##  Update self._stacks_valid according to _checkStacksForErrors and emit if change.
-    def _updateStacksHaveErrors(self) -> None:
-        old_stacks_have_errors = self._stacks_have_errors
-        self._stacks_have_errors = self._checkStacksHaveErrors()
-        if old_stacks_have_errors != self._stacks_have_errors:
-            self.stacksValidationChanged.emit()
-        Application.getInstance().stacksValidationFinished.emit()
 
     def _onActiveExtruderStackChanged(self) -> None:
         self.blurSettings.emit()  # Ensure no-one has focus.
@@ -256,8 +241,6 @@ class MachineManager(QObject):
 
         self.rootMaterialChanged.emit()
 
-        self._error_check_timer.start()
-
     def _onInstanceContainersChanged(self, container) -> None:
         self._instance_container_timer.start()
 
@@ -265,9 +248,6 @@ class MachineManager(QObject):
         if property_name == "value":
             # Notify UI items, such as the "changed" star in profile pull down menu.
             self.activeStackValueChanged.emit()
-
-        elif property_name == "validationState":
-            self._error_check_timer.start()
 
     ## Given a global_stack, make sure that it's all valid by searching for this quality group and applying it again
     def _initMachineState(self, global_stack):
@@ -832,9 +812,10 @@ class MachineManager(QObject):
 
     ##  This will fire the propertiesChanged for all settings so they will be updated in the front-end
     def forceUpdateAllSettings(self):
-        property_names = ["value", "resolve"]
-        for setting_key in self._global_container_stack.getAllKeys():
-            self._global_container_stack.propertiesChanged.emit(setting_key, property_names)
+        with postponeSignals(*self._getContainerChangedSignals(), compress = CompressTechnique.CompressPerParameterValue):
+            property_names = ["value", "resolve"]
+            for setting_key in self._global_container_stack.getAllKeys():
+                self._global_container_stack.propertiesChanged.emit(setting_key, property_names)
 
     @pyqtSlot(int, bool)
     def setExtruderEnabled(self, position: int, enabled) -> None:
