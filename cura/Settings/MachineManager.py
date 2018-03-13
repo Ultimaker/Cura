@@ -831,10 +831,12 @@ class MachineManager(QObject):
         return self._default_extruder_position
 
     ##  This will fire the propertiesChanged for all settings so they will be updated in the front-end
+    @pyqtSlot()
     def forceUpdateAllSettings(self):
         property_names = ["value", "resolve"]
-        for setting_key in self._global_container_stack.getAllKeys():
-            self._global_container_stack.propertiesChanged.emit(setting_key, property_names)
+        for container in [self._global_container_stack] + list(self._global_container_stack.extruders.values()):
+            for setting_key in container.getAllKeys():
+                container.propertiesChanged.emit(setting_key, property_names)
 
     @pyqtSlot(int, bool)
     def setExtruderEnabled(self, position: int, enabled) -> None:
