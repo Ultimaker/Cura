@@ -875,6 +875,8 @@ class MachineManager(QObject):
 
     @pyqtProperty("QVariantList", notify = globalContainerChanged)
     def currentExtruderPositions(self):
+        if self._global_container_stack is None:
+            return []
         return sorted(list(self._global_container_stack.extruders.keys()))
 
     ##  Update _current_root_material_id and _current_root_material_name when
