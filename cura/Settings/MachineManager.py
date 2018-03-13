@@ -883,10 +883,10 @@ class MachineManager(QObject):
     #   the current root material was changed.
     def _onRootMaterialChanged(self):
         self._current_root_material_id = {}
-        for position in self._global_container_stack.extruders:
-            self._current_root_material_id[position] = self._global_container_stack.extruders[position].material.getMetaDataEntry("base_file")
 
         if self._global_container_stack:
+            for position in self._global_container_stack.extruders:
+                self._current_root_material_id[position] = self._global_container_stack.extruders[position].material.getMetaDataEntry("base_file")
             self._current_root_material_name = {}
             for position in self._global_container_stack.extruders:
                 if position not in self._current_root_material_name:
