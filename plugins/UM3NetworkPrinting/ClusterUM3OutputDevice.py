@@ -376,10 +376,15 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
         # For some unknown reason the cluster wants UUID for everything, except for sending a job directly to a printer.
         # Then we suddenly need the unique name. So in order to not have to mess up all the other code, we save a mapping.
         self._printer_uuid_to_unique_name_mapping[data["uuid"]] = data["unique_name"]
+        machine_definition = ContainerRegistry.getInstance().findDefinitionContainers(name = data["machine_variant"])[0]
 
         printer.updateName(data["friendly_name"])
         printer.updateKey(data["uuid"])
         printer.updateType(data["machine_variant"])
+
+        # Do not store the buildplate information that comes from connect if the current printer has not buildplate information
+        if "build_plate" in data and machine_definition.getMetaDataEntry("has_variant_buildplates", False):
+            printer.updateBuildplateName(data["build_plate"]["type"])
         if not data["enabled"]:
             printer.updateState("disabled")
         else:

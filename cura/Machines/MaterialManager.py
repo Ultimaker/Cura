@@ -86,6 +86,7 @@ class MaterialManager(QObject):
             root_material_id = material_metadata.get("base_file")
             if root_material_id not in self._material_group_map:
                 self._material_group_map[root_material_id] = MaterialGroup(root_material_id, MaterialNode(material_metadatas[root_material_id]))
+                self._material_group_map[root_material_id].is_read_only = self._container_registry.isReadOnly(root_material_id)
             group = self._material_group_map[root_material_id]
 
             #Store this material in the group of the appropriate root material.
@@ -330,6 +331,35 @@ class MaterialManager(QObject):
                     break
 
         return material_node
+
+    #
+    # Gets MaterialNode for the given extruder and machine with the given material type.
+    # Returns None if:
+    #  1. the given machine doesn't have materials;
+    #  2. cannot find any material InstanceContainers with the given settings.
+    #
+    def getMaterialNodeByType(self, global_stack: "GlobalStack", extruder_variant_name: str, material_guid: str) -> Optional["MaterialNode"]:
+        node = None
+        machine_definition = global_stack.definition
+        if parseBool(machine_definition.getMetaDataEntry("has_materials", False)):
+            material_diameter = machine_definition.getProperty("material_diameter", "value")
+            if isinstance(material_diameter, SettingFunction):
+                material_diameter = material_diameter(global_stack)
+
+            # Look at the guid to material dictionary
+            root_material_id = None
+            for material_group in self._guid_material_groups_map[material_guid]:
+                if material_group.is_read_only:
+                    root_material_id = material_group.root_material_node.metadata["id"]
+                    break
+
+            if not root_material_id:
+                Logger.log("i", "Cannot find materials with guid [%s] ", material_guid)
+                return None
+
+            node = self.getMaterialNode(machine_definition.getId(), extruder_variant_name,
+                                        material_diameter, root_material_id)
+        return node
 
     #
     # Used by QualityManager. Built-in quality profiles may be based on generic material IDs such as "generic_pla".
