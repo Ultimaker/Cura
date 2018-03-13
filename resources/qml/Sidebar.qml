@@ -8,6 +8,7 @@ import QtQuick.Layouts 1.3
 import UM 1.2 as UM
 import Cura 1.0 as Cura
 import "Menus"
+import "Menus/ConfigurationMenu"
 
 Rectangle
 {
@@ -87,10 +88,30 @@ Rectangle
 
     MachineSelection {
         id: machineSelection
-        width: base.width
+        width: base.width - configSelection.width - separator.width
+        height: UM.Theme.getSize("sidebar_header").height
+        anchors.top: base.top
+        anchors.left: parent.left
+    }
+
+    Rectangle
+    {
+        id: separator
+        visible: configSelection.visible
+        width: visible ? Math.round(UM.Theme.getSize("sidebar_lining_thin").height / 2) : 0
+        height: UM.Theme.getSize("sidebar_header").height
+        color: UM.Theme.getColor("sidebar_lining_thin")
+        anchors.left: machineSelection.right
+    }
+
+    ConfigurationSelection {
+        id: configSelection
+        visible: printerConnected && !sidebar.monitoringPrint && !sidebar.hideSettings
+        width: visible ? Math.round(base.width * 0.15) : 0
         height: UM.Theme.getSize("sidebar_header").height
         anchors.top: base.top
         anchors.right: parent.right
+        panelWidth: base.width
     }
 
     SidebarHeader {

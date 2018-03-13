@@ -14,10 +14,7 @@ UM.ManagementPage
     id: base;
 
     title: catalog.i18nc("@title:tab", "Printers");
-    model: UM.ContainerStacksModel
-    {
-        filter: {"type": "machine"}
-    }
+    model: Cura.MachineManagementModel { }
 
     activeId: Cura.MachineManager.activeMachineId
     activeIndex: activeMachineIndex()
@@ -57,7 +54,7 @@ UM.ManagementPage
         {
             text: catalog.i18nc("@action:button", "Rename");
             iconName: "edit-rename";
-            enabled: base.currentItem != null
+            enabled: base.currentItem != null && base.currentItem.metadata.connect_group_name == null
             onClicked: renameDialog.open();
         }
     ]
