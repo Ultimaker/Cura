@@ -361,19 +361,10 @@ class MachineManager(QObject):
     #   \param metadata_filter \type{dict} list of metadata keys and values used for filtering
     @staticmethod
     def getMachine(definition_id: str, metadata_filter: Dict[str, str] = None) -> Optional["GlobalStack"]:
-        machines = ContainerRegistry.getInstance().findContainerStacks(type = "machine")
+        machines = ContainerRegistry.getInstance().findContainerStacks(type = "machine", **metadata_filter)
         for machine in machines:
             if machine.definition.getId() == definition_id:
-                if metadata_filter:
-                    pass_all_filters = True
-                    for key in metadata_filter:
-                        if machine.getMetaDataEntry(key) != metadata_filter[key]:
-                            pass_all_filters = False
-                            break
-                    if pass_all_filters:
-                        return machine
-                else:
-                    return machine
+                return machine
         return None
 
     @pyqtSlot(str, str)

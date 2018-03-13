@@ -37,13 +37,18 @@ class ExtruderConfigurationModel(QObject):
 
     ##  This method is intended to indicate whether the configuration is valid or not.
     #   The method checks if the mandatory fields are or not set
+    #   At this moment is always valid since we allow to have empty material and variants.
     def isValid(self):
-        return self._material is not None and self._hotend_id is not None and self.material.guid is not None
+        return True
 
     def __str__(self):
-        if not self.isValid():
-            return "No information"
-        return "Position: " + str(self._position) + " - Material: " + self._material.type + " - HotendID: " + self._hotend_id
+        message_chunks = []
+        message_chunks.append("Position: " + str(self._position))
+        message_chunks.append("-")
+        message_chunks.append("Material: " + self.material.type if self.material else "empty")
+        message_chunks.append("-")
+        message_chunks.append("HotendID: " + self.hotendID if self.hotendID else "empty")
+        return " ".join(message_chunks)
 
     def __eq__(self, other):
         return hash(self) == hash(other)
