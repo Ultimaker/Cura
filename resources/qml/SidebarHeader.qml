@@ -91,6 +91,8 @@ Column
                 exclusiveGroup: extruderMenuGroup
                 checked: base.currentExtruderIndex == index
 
+                property bool extruder_enabled: true
+
                 MouseArea
                 {
                     anchors.fill: parent
@@ -102,6 +104,7 @@ Column
                                 Cura.ExtruderManager.setActiveExtruderIndex(index);
                                 break;
                             case Qt.RightButton:
+                                extruder_enabled = Cura.MachineManager.getExtruder(model.index).isEnabled
                                 extruderMenu.popup();
                                 break;
                         }
@@ -116,13 +119,13 @@ Column
                     MenuItem {
                         text: catalog.i18nc("@action:inmenu", "Enable Extruder")
                         onTriggered: Cura.MachineManager.setExtruderEnabled(model.index, true)
-                        visible: !Cura.MachineManager.getExtruder(model.index).isEnabled
+                        visible: !extruder_enabled  // using an intermediate variable prevents an empty popup that occured now and then
                     }
 
                     MenuItem {
                         text: catalog.i18nc("@action:inmenu", "Disable Extruder")
                         onTriggered: Cura.MachineManager.setExtruderEnabled(model.index, false)
-                        visible: Cura.MachineManager.getExtruder(model.index).isEnabled
+                        visible: extruder_enabled
                     }
                 }
 
