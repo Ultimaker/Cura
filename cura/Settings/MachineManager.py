@@ -335,7 +335,7 @@ class MachineManager(QObject):
             return False
 
         if self._global_container_stack.hasErrors():
-            Logger.log("d", "Checking global stack for errors took %0.2f s and we found and error" % (time.time() - time_start))
+            Logger.log("d", "Checking global stack for errors took %0.2f s and we found an error" % (time.time() - time_start))
             return True
 
         # Not a very pretty solution, but the extruder manager doesn't really know how many extruders there are
