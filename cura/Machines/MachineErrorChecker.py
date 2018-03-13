@@ -9,6 +9,8 @@ from PyQt5.QtCore import QObject, QTimer, pyqtSignal, pyqtProperty
 
 from UM.Application import Application
 from UM.Logger import Logger
+from UM.Settings.SettingDefinition import SettingDefinition
+from UM.Settings.Validator import ValidatorState
 
 
 #
@@ -31,8 +33,7 @@ class MachineErrorChecker(QObject):
         self._error_keys = set()  # A set of settings keys that have errors
         self._error_keys_in_progress = set()  # The variable that stores the results of the currently in progress check
 
-        self._stacks_to_check = None  # a FIFO queue of stacks to check for errors
-        self._keys_to_check = None  # a FIFO queue of setting keys to check for errors
+        self._stacks_and_keys_to_check = None  # a FIFO queue of tuples (stack, key) to check for errors
 
         self._need_to_check = False  # Whether we need to schedule a new check or not. This flag is set when a new
                                      # error check needs to take place while there is already one running at the moment.
@@ -117,17 +118,17 @@ class MachineErrorChecker(QObject):
             Logger.log("i", "No active machine, nothing to check.")
             return
 
-        self._stacks_to_check = deque([global_stack] + list(global_stack.extruders.values()))
-        self._keys_to_check = deque(global_stack.getAllKeys())
+        # Populate the (stack, key) tuples to check
+        self._stacks_and_keys_to_check = deque()
+        for stack in [global_stack] + list(global_stack.extruders.values()):
+            for key in stack.getAllKeys():
+                self._stacks_and_keys_to_check.append((stack, key))
 
         self._application.callLater(self._checkStack)
         self._start_time = time.time()
         Logger.log("d", "New error check scheduled.")
 
     def _checkStack(self):
-        from UM.Settings.SettingDefinition import SettingDefinition
-        from UM.Settings.Validator import ValidatorState
-
         if self._need_to_check:
             Logger.log("d", "Need to check for errors again. Discard the current progress and reschedule a check.")
             self._check_in_progress = False
@@ -137,22 +138,13 @@ class MachineErrorChecker(QObject):
         self._check_in_progress = True
 
         # If there is nothing to check any more, it means there is no error.
-        if not self._stacks_to_check or not self._keys_to_check:
+        if not self._stacks_and_keys_to_check:
             # Finish
             self._setResult(False)
             return
 
-        stack = self._stacks_to_check[0]
-        key = self._keys_to_check.popleft()
-
-        # If there is no key left in this stack, check the next stack later.
-        if not self._keys_to_check:
-            if len(self._stacks_to_check) == 1:
-                stacks = None
-                keys = None
-            else:
-                stack = self._stacks_to_check.popleft()
-                self._keys_to_check = deque(stack.getAllKeys())
+        # Get the next stack and key to check
+        stack, key = self._stacks_and_keys_to_check.popleft()
 
         enabled = stack.getProperty(key, "enabled")
         if not enabled:
