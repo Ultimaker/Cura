@@ -42,18 +42,9 @@ class MachineManagementModel(ListModel):
         if isinstance(container, ContainerStack):
             self._update()
 
-    ##  Handler for container name change events.
-    def _onContainerNameChanged(self):
-        self._update()
-
     ##  Private convenience function to reset & repopulate the model.
     def _update(self):
         items = []
-        # Remove all connections
-        for container in self._local_container_stacks:
-            container.nameChanged.disconnect(self._onContainerNameChanged)
-        for container in self._network_container_stacks:
-            container.nameChanged.disconnect(self._onContainerNameChanged)
 
         # Get first the network enabled printers
         network_filter_printers = {"type": "machine", "um_network_key": "*", "hidden": "False"}
@@ -65,7 +56,6 @@ class MachineManagementModel(ListModel):
             if container.getBottom():
                 metadata["definition_name"] = container.getBottom().getName()
 
-            container.nameChanged.connect(self._onContainerNameChanged)
             items.append({"name": metadata["connect_group_name"],
                              "id": container.getId(),
                              "metadata": metadata,
@@ -81,7 +71,6 @@ class MachineManagementModel(ListModel):
             if container.getBottom():
                 metadata["definition_name"] = container.getBottom().getName()
 
-            container.nameChanged.connect(self._onContainerNameChanged)
             items.append({"name": container.getName(),
                              "id": container.getId(),
                              "metadata": metadata,
