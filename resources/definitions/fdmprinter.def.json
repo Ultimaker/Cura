@@ -1185,12 +1185,13 @@
                         "wall_min_flow":
                         {
                             "label": "Minimum Wall Flow",
-                            "description": "Minimum allowed percentage flow for a wall line. The wall overlap compensation reduces a wall's flow when it lies close to an existing wall. Walls whose flow is less than this value will be replaced with a travel move. When using this setting you must have the wall overlap compensation enabled and also print the outer before inner walls.",
+                            "description": "Minimum allowed percentage flow for a wall line. The wall overlap compensation reduces a wall's flow when it lies close to an existing wall. Walls whose flow is less than this value will be replaced with a travel move. When using this setting, you must enable the wall overlap compensation and print the outer wall before inner walls.",
                             "unit": "%",
                             "minimum_value": "0",
                             "maximum_value": "100",
                             "default_value": 0,
                             "type": "float",
+                            "enabled": "travel_compensate_overlapping_walls_0_enabled or travel_compensate_overlapping_walls_x_enabled",
                             "settable_per_mesh": false,
                             "settable_per_extruder": true
                         },
@@ -1200,7 +1201,7 @@
                             "description": "If enabled, retraction is used rather than combing for travel moves that replace walls whose flow is below the minimum flow threshold.",
                             "type": "bool",
                             "default_value": false,
-                            "enabled": "wall_min_flow > 0",
+                            "enabled": "(travel_compensate_overlapping_walls_0_enabled or travel_compensate_overlapping_walls_x_enabled) and wall_min_flow > 0",
                             "settable_per_mesh": false,
                             "settable_per_extruder": true
                         }
