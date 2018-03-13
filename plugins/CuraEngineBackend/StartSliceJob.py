@@ -55,19 +55,19 @@ class GcodeStartEndFormatter(Formatter):
                         extruder_nr = int(kwargs["-1"][key_fragments[1]]) # get extruder_nr values from the global stack
                     except (KeyError, ValueError):
                         # either the key does not exist, or the value is not an int
-                        Logger.log("w", "Unable to determine stack nr '%s' for key '%s' in start/end gcode, using global stack", key_fragments[1], key_fragments[0])
+                        Logger.log("w", "Unable to determine stack nr '%s' for key '%s' in start/end g-code, using global stack", key_fragments[1], key_fragments[0])
             elif len(key_fragments) != 1:
-                Logger.log("w", "Incorrectly formatted placeholder '%s' in start/end gcode", key)
+                Logger.log("w", "Incorrectly formatted placeholder '%s' in start/end g-code", key)
                 return "{" + str(key) + "}"
 
             key = key_fragments[0]
             try:
                 return kwargs[str(extruder_nr)][key]
             except KeyError:
-                Logger.log("w", "Unable to replace '%s' placeholder in start/end gcode", key)
+                Logger.log("w", "Unable to replace '%s' placeholder in start/end g-code", key)
                 return "{" + key + "}"
         else:
-            Logger.log("w", "Incorrectly formatted placeholder '%s' in start/end gcode", key)
+            Logger.log("w", "Incorrectly formatted placeholder '%s' in start/end g-code", key)
             return "{" + str(key) + "}"
 
 
@@ -129,16 +129,19 @@ class StartSliceJob(Job):
             self.setResult(StartJobResult.MaterialIncompatible)
             return
 
-        for extruder_stack in ExtruderManager.getInstance().getMachineExtruders(stack.getId()):
+        for position, extruder_stack in stack.extruders.items():
             material = extruder_stack.findContainer({"type": "material"})
+            if not extruder_stack.isEnabled:
+                continue
             if material:
                 if material.getMetaDataEntry("compatible") == False:
                     self.setResult(StartJobResult.MaterialIncompatible)
                     return
 
+
         # Don't slice if there is a per object setting with an error value.
         for node in DepthFirstIterator(self._scene.getRoot()):
-            if node.isSelectable():
+            if not isinstance(node, CuraSceneNode) or not node.isSelectable():
                 continue
 
             if self._checkStackForErrors(node.callDecoration("getStack")):
@@ -188,11 +191,18 @@ class StartSliceJob(Job):
                         if per_object_stack:
                             is_non_printing_mesh = any(per_object_stack.getProperty(key, "value") for key in NON_PRINTING_MESH_SETTINGS)
 
-                        if node.callDecoration("getBuildPlateNumber") == self._build_plate_number:
-                            if not getattr(node, "_outside_buildarea", False) or is_non_printing_mesh:
-                                temp_list.append(node)
-                                if not is_non_printing_mesh:
-                                    has_printing_mesh = True
+                        # Find a reason not to add the node
+                        if node.callDecoration("getBuildPlateNumber") != self._build_plate_number:
+                            continue
+                        if getattr(node, "_outside_buildarea", False) and not is_non_printing_mesh:
+                            continue
+                        node_position = node.callDecoration("getActiveExtruderPosition")
+                        if not stack.extruders[str(node_position)].isEnabled:
+                            continue
+
+                        temp_list.append(node)
+                        if not is_non_printing_mesh:
+                            has_printing_mesh = True
 
                     Job.yieldThread()
 
@@ -268,9 +278,15 @@ class StartSliceJob(Job):
     #   \return A dictionary of replacement tokens to the values they should be
     #   replaced with.
     def _buildReplacementTokens(self, stack) -> dict:
+        default_extruder_position = int(Application.getInstance().getMachineManager().defaultExtruderPosition)
         result = {}
         for key in stack.getAllKeys():
-            result[key] = stack.getProperty(key, "value")
+            setting_type = stack.getProperty(key, "type")
+            value = stack.getProperty(key, "value")
+            if setting_type == "extruder" and value == -1:
+                # replace with the default value
+                value = default_extruder_position
+            result[key] = value
             Job.yieldThread()
 
         result["print_bed_temperature"] = result["material_bed_temperature"] # Renamed settings.
@@ -308,7 +324,7 @@ class StartSliceJob(Job):
             settings["default_extruder_nr"] = default_extruder_nr
             return str(fmt.format(value, **settings))
         except:
-            Logger.logException("w", "Unable to do token replacement on start/end gcode")
+            Logger.logException("w", "Unable to do token replacement on start/end g-code")
             return str(value)
 
     ##  Create extruder message from stack
@@ -376,11 +392,11 @@ class StartSliceJob(Job):
     #   limit_to_extruder property.
     def _buildGlobalInheritsStackMessage(self, stack):
         for key in stack.getAllKeys():
-            extruder = int(round(float(stack.getProperty(key, "limit_to_extruder"))))
-            if extruder >= 0: #Set to a specific extruder.
+            extruder_position = int(round(float(stack.getProperty(key, "limit_to_extruder"))))
+            if extruder_position >= 0:  # Set to a specific extruder.
                 setting_extruder = self._slice_message.addRepeatedMessage("limit_to_extruder")
                 setting_extruder.name = key
-                setting_extruder.extruder = extruder
+                setting_extruder.extruder = extruder_position
             Job.yieldThread()
 
     ##  Check if a node has per object settings and ensure that they are set correctly in the message

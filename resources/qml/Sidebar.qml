@@ -126,11 +126,12 @@ Rectangle
     {
         id: settingsModeLabel
         text: !hideSettings ? catalog.i18nc("@label:listbox", "Print Setup") : catalog.i18nc("@label:listbox", "Print Setup disabled\nG-code files cannot be modified")
+        renderType: Text.NativeRendering
         anchors.left: parent.left
         anchors.leftMargin: UM.Theme.getSize("sidebar_margin").width
         anchors.top: hideSettings ? machineSelection.bottom : headerSeparator.bottom
         anchors.topMargin: UM.Theme.getSize("sidebar_margin").height
-        width: Math.floor(parent.width * 0.45)
+        width: Math.round(parent.width * 0.45)
         font: UM.Theme.getFont("large")
         color: UM.Theme.getColor("text")
         visible: !monitoringPrint && !hideView
@@ -142,7 +143,7 @@ Rectangle
         id: settingsModeSelection
         color: "transparent"
 
-        width: Math.floor(parent.width * 0.55)
+        width: Math.round(parent.width * 0.55)
         height: UM.Theme.getSize("sidebar_header_mode_toggle").height
 
         anchors.right: parent.right
@@ -171,10 +172,10 @@ Rectangle
                 id: control
 
                 height: settingsModeSelection.height
-                width: Math.floor(0.5 * parent.width)
+                width: Math.round(parent.width / 2)
 
                 anchors.left: parent.left
-                anchors.leftMargin: model.index * Math.floor(settingsModeSelection.width / 2)
+                anchors.leftMargin: model.index * Math.round(settingsModeSelection.width / 2)
                 anchors.verticalCenter: parent.verticalCenter
 
                 ButtonGroup.group: modeMenuGroup
@@ -207,12 +208,13 @@ Rectangle
                     color: (control.checked || control.pressed) ? UM.Theme.getColor("action_button_active") : control.hovered ? UM.Theme.getColor("action_button_hovered") : UM.Theme.getColor("action_button")
                 }
 
-                contentItem: Text
+                contentItem: Label
                 {
                     text: model.text
                     font: UM.Theme.getFont("default")
                     horizontalAlignment: Text.AlignHCenter
                     verticalAlignment: Text.AlignVCenter
+                    renderType: Text.NativeRendering
                     elide: Text.ElideRight
                     color:
                     {
@@ -329,7 +331,7 @@ Rectangle
         height: UM.Theme.getSize("sidebar_lining").height
         color: UM.Theme.getColor("sidebar_lining")
         anchors.bottom: printSpecs.top
-        anchors.bottomMargin: Math.floor(UM.Theme.getSize("sidebar_margin").height * 2 + UM.Theme.getSize("progressbar").height + UM.Theme.getFont("default_bold").pixelSize)
+        anchors.bottomMargin: Math.round(UM.Theme.getSize("sidebar_margin").height * 2 + UM.Theme.getSize("progressbar").height + UM.Theme.getFont("default_bold").pixelSize)
     }
 
     Item
@@ -352,6 +354,7 @@ Rectangle
             font: UM.Theme.getFont("large")
             color: UM.Theme.getColor("text_subtext")
             text: (!base.printDuration || !base.printDuration.valid) ? catalog.i18nc("@label Hours and minutes", "00h 00min") : base.printDuration.getDisplayString(UM.DurationFormat.Short)
+            renderType: Text.NativeRendering
 
             MouseArea
             {
@@ -429,7 +432,7 @@ Rectangle
                         {
                             names.push(base.printMaterialNames[index]);
                             lengths.push(base.printMaterialLengths[index].toFixed(2));
-                            weights.push(String(Math.floor(base.printMaterialWeights[index])));
+                            weights.push(String(Math.round(base.printMaterialWeights[index])));
                             var cost = base.printMaterialCosts[index] == undefined ? 0 : base.printMaterialCosts[index].toFixed(2);
                             costs.push(cost);
                             if(cost > 0)
@@ -479,6 +482,7 @@ Rectangle
             anchors.left: parent.left
             anchors.bottom: parent.bottom
             font: UM.Theme.getFont("very_small")
+            renderType: Text.NativeRendering
             color: UM.Theme.getColor("text_subtext")
             elide: Text.ElideMiddle
             width: parent.width
@@ -495,7 +499,7 @@ Rectangle
                         if(base.printMaterialLengths[index] > 0)
                         {
                             lengths.push(base.printMaterialLengths[index].toFixed(2));
-                            weights.push(String(Math.floor(base.printMaterialWeights[index])));
+                            weights.push(String(Math.round(base.printMaterialWeights[index])));
                             var cost = base.printMaterialCosts[index] == undefined ? 0 : base.printMaterialCosts[index].toFixed(2);
                             costs.push(cost);
                             if(cost > 0)
@@ -511,15 +515,12 @@ Rectangle
                     weights = ["0"];
                     costs = ["0.00"];
                 }
+                var result = lengths.join(" + ") + "m / ~ " + weights.join(" + ") + "g";
                 if(someCostsKnown)
                 {
-                    return catalog.i18nc("@label Print estimates: m for meters, g for grams, %4 is currency and %3 is print cost", "%1m / ~ %2g / ~ %4 %3").arg(lengths.join(" + "))
-                            .arg(weights.join(" + ")).arg(costs.join(" + ")).arg(UM.Preferences.getValue("cura/currency"));
+                    result += " / ~ " + costs.join(" + ") + " " + UM.Preferences.getValue("cura/currency");
                 }
-                else
-                {
-                    return catalog.i18nc("@label Print estimates: m for meters, g for grams", "%1m / ~ %2g").arg(lengths.join(" + ")).arg(weights.join(" + "));
-                }
+                return result;
             }
             MouseArea
             {
@@ -610,7 +611,7 @@ Rectangle
         })
         sidebarContents.replace(modesListModel.get(base.currentModeIndex).item, { "immediate": true })
 
-        var index = Math.floor(UM.Preferences.getValue("cura/active_mode"))
+        var index = Math.round(UM.Preferences.getValue("cura/active_mode"))
         if(index)
         {
             currentModeIndex = index;

@@ -1,4 +1,4 @@
-# Copyright (c) 2017 Ultimaker B.V.
+# Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import platform
@@ -13,16 +13,18 @@ import ssl
 import urllib.request
 import urllib.error
 import shutil
-import sys
 
-from PyQt5.QtCore import QT_VERSION_STR, PYQT_VERSION_STR
+from PyQt5.QtCore import QT_VERSION_STR, PYQT_VERSION_STR, Qt, QUrl
 from PyQt5.QtWidgets import QDialog, QDialogButtonBox, QVBoxLayout, QLabel, QTextEdit, QGroupBox, QCheckBox, QPushButton
+from PyQt5.QtGui import QDesktopServices
 
+from UM.Resources import Resources
 from UM.Application import Application
 from UM.Logger import Logger
 from UM.View.GL.OpenGL import OpenGL
 from UM.i18n import i18nCatalog
 from UM.Platform import Platform
+from UM.Resources import Resources
 
 catalog = i18nCatalog("cura")
 
@@ -91,6 +93,7 @@ class CrashHandler:
         label = QLabel()
         label.setText(catalog.i18nc("@label crash message", """<p><b>A fatal error has occurred.</p></b>
                     <p>Unfortunately, Cura encountered an unrecoverable error during start up. It was possibly caused by some incorrect configuration files. We suggest to backup and reset your configuration.</p>
+                    <p>Backups can be found in the configuration folder.</p>
                     <p>Please send us this Crash Report to fix the problem.</p>
                 """))
         label.setWordWrap(True)
@@ -104,8 +107,13 @@ class CrashHandler:
         show_details_button.setMaximumWidth(200)
         show_details_button.clicked.connect(self._showDetailedReport)
 
+        show_configuration_folder_button = QPushButton(catalog.i18nc("@action:button", "Show configuration folder"), dialog)
+        show_configuration_folder_button.setMaximumWidth(200)
+        show_configuration_folder_button.clicked.connect(self._showConfigurationFolder)
+
         layout.addWidget(self._send_report_checkbox)
         layout.addWidget(show_details_button)
+        layout.addWidget(show_configuration_folder_button)
 
         # "backup and start clean" and "close" buttons
         buttons = QDialogButtonBox()
@@ -162,12 +170,15 @@ class CrashHandler:
                 file_name = base_name + "_" + date_now + "_" + idx
                 zip_file_path = os.path.join(root_dir, file_name + ".zip")
             try:
-                # remove the .zip extension because make_archive() adds it
-                zip_file_path = zip_file_path[:-4]
-                shutil.make_archive(zip_file_path, "zip", root_dir = root_dir, base_dir = base_name)
+                # only create the zip backup when the folder exists
+                if os.path.exists(folder):
+                    # remove the .zip extension because make_archive() adds it
+                    zip_file_path = zip_file_path[:-4]
+                    shutil.make_archive(zip_file_path, "zip", root_dir = root_dir, base_dir = base_name)
 
-                # remove the folder only when the backup is successful
-                shutil.rmtree(folder, ignore_errors = True)
+                    # remove the folder only when the backup is successful
+                    shutil.rmtree(folder, ignore_errors = True)
+
                 # create an empty folder so Resources will not try to copy the old ones
                 os.makedirs(folder, 0o0755, exist_ok=True)
 
@@ -177,6 +188,10 @@ class CrashHandler:
                     print("Failed to backup [%s] to file [%s]: %s", folder, zip_file_path, e)
 
         self.early_crash_dialog.close()
+
+    def _showConfigurationFolder(self):
+        path = Resources.getConfigStoragePath();
+        QDesktopServices.openUrl(QUrl.fromLocalFile( path ))
 
     def _showDetailedReport(self):
         self.dialog.exec_()
@@ -244,7 +259,7 @@ class CrashHandler:
         opengl_instance = OpenGL.getInstance()
         if not opengl_instance:
             self.data["opengl"] = {"version": "n/a", "vendor": "n/a", "type": "n/a"}
-            return catalog.i18nc("@label", "not yet initialised<br/>")
+            return catalog.i18nc("@label", "Not yet initialized<br/>")
 
         info = "<ul>"
         info += catalog.i18nc("@label OpenGL version", "<li>OpenGL Version: {version}</li>").format(version = opengl_instance.getOpenGLVersion())

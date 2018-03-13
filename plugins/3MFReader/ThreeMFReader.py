@@ -4,25 +4,27 @@
 import os.path
 import zipfile
 
+import numpy
+
+import Savitar
+
+from UM.Application import Application
 from UM.Logger import Logger
 from UM.Math.Matrix import Matrix
 from UM.Math.Vector import Vector
 from UM.Mesh.MeshBuilder import MeshBuilder
 from UM.Mesh.MeshReader import MeshReader
 from UM.Scene.GroupDecorator import GroupDecorator
+
 from cura.Settings.SettingOverrideDecorator import SettingOverrideDecorator
-from UM.Application import Application
 from cura.Settings.ExtruderManager import ExtruderManager
-from cura.QualityManager import QualityManager
 from cura.Scene.CuraSceneNode import CuraSceneNode
 from cura.Scene.BuildPlateDecorator import BuildPlateDecorator
 from cura.Scene.SliceableObjectDecorator import SliceableObjectDecorator
 from cura.Scene.ZOffsetDecorator import ZOffsetDecorator
+from cura.Machines.QualityManager import getMachineDefinitionIDForQualitySearch
 
 MYPY = False
-
-import Savitar
-import numpy
 
 try:
     if not MYPY:
@@ -77,7 +79,7 @@ class ThreeMFReader(MeshReader):
         self._object_count += 1
         node_name = "Object %s" % self._object_count
 
-        active_build_plate = Application.getInstance().getBuildPlateModel().activeBuildPlate
+        active_build_plate = Application.getInstance().getMultiBuildPlateModel().activeBuildPlate
 
         um_node = CuraSceneNode()
         um_node.addDecorator(BuildPlateDecorator(active_build_plate))
@@ -120,8 +122,8 @@ class ThreeMFReader(MeshReader):
                     um_node.callDecoration("setActiveExtruder", default_stack.getId())
 
                 # Get the definition & set it
-                definition = QualityManager.getInstance().getParentMachineDefinition(global_container_stack.getBottom())
-                um_node.callDecoration("getStack").getTop().setDefinition(definition.getId())
+                definition_id = getMachineDefinitionIDForQualitySearch(global_container_stack)
+                um_node.callDecoration("getStack").getTop().setDefinition(definition_id)
 
             setting_container = um_node.callDecoration("getStack").getTop()
 

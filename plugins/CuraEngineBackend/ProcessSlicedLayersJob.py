@@ -81,7 +81,8 @@ class ProcessSlicedLayersJob(Job):
 
         Application.getInstance().getController().activeViewChanged.connect(self._onActiveViewChanged)
 
-        new_node = CuraSceneNode()
+        # The no_setting_override is here because adding the SettingOverrideDecorator will trigger a reslice
+        new_node = CuraSceneNode(no_setting_override = True)
         new_node.addDecorator(BuildPlateDecorator(self._build_plate_number))
 
         # Force garbage collection.

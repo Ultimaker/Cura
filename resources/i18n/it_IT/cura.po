@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: Cura 3.2\n"
 "Report-Msgid-Bugs-To: r.dulek@ultimaker.com\n"
 "POT-Creation-Date: 2018-01-29 09:48+0000\n"
-"PO-Revision-Date: 2018-02-05 13:25+0100\n"
-"Last-Translator: Bothof <info@bothof.nl>\n"
+"PO-Revision-Date: 2018-02-13 13:15+0100\n"
+"Last-Translator: Crea-3D <carmine.iacoviello@crea-3d.com>\n"
 "Language-Team: Italian\n"
 "Language: it_IT\n"
 "MIME-Version: 1.0\n"
@@ -105,12 +105,12 @@ msgstr "Visualizza registro modifiche"
 #: /home/ruben/Projects/Cura/plugins/ProfileFlattener/ProfileFlattener.py:20
 msgctxt "@item:inmenu"
 msgid "Flatten active settings"
-msgstr "Impostazioni attive profilo appiattito"
+msgstr "Resetta impostazioni attive"
 
 #: /home/ruben/Projects/Cura/plugins/ProfileFlattener/ProfileFlattener.py:32
 msgctxt "@info:status"
 msgid "Profile has been flattened & activated."
-msgstr "Il profilo è stato appiattito e attivato."
+msgstr "Il profilo è stato resettato e attivato."
 
 #: /home/ruben/Projects/Cura/plugins/USBPrinting/USBPrinterOutputDevice.py:27
 msgctxt "@item:inmenu"
@@ -166,7 +166,7 @@ msgstr "Impossibile avviare un nuovo processo di stampa perché la stampante non
 #: /home/ruben/Projects/Cura/cura/CuraApplication.py:1496
 msgctxt "@info:title"
 msgid "Warning"
-msgstr "Avvertenza"
+msgstr "Attenzione"
 
 #: /home/ruben/Projects/Cura/plugins/USBPrinting/USBPrinterOutputDeviceManager.py:103
 msgctxt "@info"
@@ -261,7 +261,7 @@ msgstr "Rimuovi"
 #, python-brace-format
 msgctxt "@action"
 msgid "Eject removable device {0}"
-msgstr "Rimuovi il dispositivo rimovibile {0}"
+msgstr "Espelli il dispositivo rimovibile {0}"
 
 #: /home/ruben/Projects/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:156
 #, python-brace-format
@@ -444,7 +444,7 @@ msgstr "Sei sicuro di voler stampare con la configurazione selezionata?"
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/NetworkPrinterOutputDevice.py:748
 msgctxt "@label"
 msgid "There is a mismatch between the configuration or calibration of the printer and Cura. For the best result, always slice for the PrintCores and materials that are inserted in your printer."
-msgstr "Le configurazioni o la calibrazione della stampante e di Cura non corrispondono. Per ottenere i migliori risultati, sezionare sempre per i PrintCore e i materiali inseriti nella stampante utilizzata."
+msgstr "Le configurazioni o la calibrazione della stampante e di Cura non corrispondono. Per risultati ottimali, sezionare sempre i PrintCore e i materiali inseriti nella stampante utilizzata."
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/NetworkPrinterOutputDevice.py:754
 msgctxt "@window:title"
@@ -506,7 +506,7 @@ msgstr "Desideri utilizzare la configurazione corrente della tua stampante in Cu
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/NetworkPrinterOutputDevice.py:1295
 msgctxt "@label"
 msgid "The PrintCores and/or materials on your printer differ from those within your current project. For the best result, always slice for the PrintCores and materials that are inserted in your printer."
-msgstr "I PrintCore e/o i materiali sulla stampante differiscono da quelli contenuti nel tuo attuale progetto. Per ottenere i risultati migliori, sezionare sempre per i PrintCore e i materiali inseriti nella stampante utilizzata."
+msgstr "I PrintCore e/o i materiali sulla stampante differiscono da quelli contenuti nel tuo attuale progetto. Per risultati ottimali, sezionare sempre i PrintCore e i materiali inseriti nella stampante utilizzata."
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/NetworkClusterPrinterOutputDevice.py:112
 msgid "This printer is not set up to host a group of connected Ultimaker 3 printers."
@@ -521,7 +521,7 @@ msgstr "Questa stampante fa da host per un gruppo di {count} stampanti Ultimaker
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/NetworkClusterPrinterOutputDevice.py:114
 #, python-brace-format
 msgid "{printer_name} has finished printing '{job_name}'. Please collect the print and confirm clearing the build plate."
-msgstr "{printer_name} ha terminato la stampa '{job_name}'. Raccogliere la stampa e confermare la liberazione del piano di stampa."
+msgstr "{printer_name} ha terminato la stampa '{job_name}'. Rimuovere la stampa e confermare la pulizia del piano di stampa."
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/NetworkClusterPrinterOutputDevice.py:115
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/NetworkClusterPrinterOutputDevice.py:533
@@ -579,7 +579,7 @@ msgstr "Stampa finita"
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/PrinterInfoBlock.qml:282
 msgctxt "@label:status"
 msgid "Action required"
-msgstr "Richiede un'azione"
+msgstr "Azione richiesta"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/NetworkClusterPrinterOutputDevice.py:656
 #, python-brace-format
@@ -686,7 +686,7 @@ msgstr "Guida per l’installazione di macro SolidWorks"
 #: /home/ruben/Projects/Cura/plugins/SimulationView/__init__.py:14
 msgctxt "@item:inlistbox"
 msgid "Layer view"
-msgstr "Visualizzazione strato"
+msgstr "Visualizzazione layer"
 
 #: /home/ruben/Projects/Cura/plugins/SimulationView/SimulationView.py:103
 msgctxt "@info:status"
@@ -783,7 +783,7 @@ msgstr "Immagine GIF"
 #: /home/ruben/Projects/Cura/plugins/CuraEngineBackend/CuraEngineBackend.py:299
 msgctxt "@info:status"
 msgid "Unable to slice with the current material as it is incompatible with the selected machine or configuration."
-msgstr "Impossibile eseguire il sezionamento con il materiale corrente in quanto incompatibile con la macchina o la configurazione selezionata."
+msgstr "Impossibile eseguire lo slicing con il materiale corrente in quanto incompatibile con la macchina o la configurazione selezionata."
 
 #: /home/ruben/Projects/Cura/plugins/CuraEngineBackend/CuraEngineBackend.py:299
 #: /home/ruben/Projects/Cura/plugins/CuraEngineBackend/CuraEngineBackend.py:327
@@ -792,24 +792,24 @@ msgstr "Impossibile eseguire il sezionamento con il materiale corrente in quanto
 #: /home/ruben/Projects/Cura/plugins/CuraEngineBackend/CuraEngineBackend.py:366
 msgctxt "@info:title"
 msgid "Unable to slice"
-msgstr "Sezionamento impossibile"
+msgstr "Slicing impossibile"
 
 #: /home/ruben/Projects/Cura/plugins/CuraEngineBackend/CuraEngineBackend.py:326
 #, python-brace-format
 msgctxt "@info:status"
 msgid "Unable to slice with the current settings. The following settings have errors: {0}"
-msgstr "Impossibile eseguire il sezionamento con le impostazioni attuali. Le seguenti impostazioni presentano errori: {0}"
+msgstr "Impossibile eseguire lo slicing con le impostazioni attuali. Le seguenti impostazioni presentano errori: {0}"
 
 #: /home/ruben/Projects/Cura/plugins/CuraEngineBackend/CuraEngineBackend.py:348
 #, python-brace-format
 msgctxt "@info:status"
 msgid "Unable to slice due to some per-model settings. The following settings have errors on one or more models: {error_labels}"
-msgstr "Impossibile eseguire il sezionamento a causa di alcune impostazioni per modello. Le seguenti impostazioni presentano errori su uno o più modelli: {error_labels}"
+msgstr "Impossibile eseguire lo slicing a causa di alcune impostazioni del modello. Le seguenti impostazioni presentano errori su uno o più modelli: {error_labels}"
 
 #: /home/ruben/Projects/Cura/plugins/CuraEngineBackend/CuraEngineBackend.py:356
 msgctxt "@info:status"
 msgid "Unable to slice because the prime tower or prime position(s) are invalid."
-msgstr "Impossibile eseguire il sezionamento perché la torre di innesco o la posizione di innesco non sono valide."
+msgstr "Impossibile eseguire lo slicing perché la prime tower o la prime position non sono valide."
 
 #: /home/ruben/Projects/Cura/plugins/CuraEngineBackend/CuraEngineBackend.py:365
 msgctxt "@info:status"
@@ -843,21 +843,21 @@ msgstr "Installazione"
 
 #: /home/ruben/Projects/Cura/plugins/cura-siemensnx-plugin/Installer.py:43
 msgid "Failed to copy Siemens NX plugins files. Please check your UGII_USER_DIR. It is not set to a directory."
-msgstr "Impossibile copiare i file di plugin Siemens NX. Controllare UGII_USER_DIR. Non è assegnato ad alcuna directory."
+msgstr "Impossibile copiare i file dei plugin Siemens NX. Controllare UGII_USER_DIR. Non è assegnato ad alcuna directory."
 
 #: /home/ruben/Projects/Cura/plugins/cura-siemensnx-plugin/Installer.py:50
 #: /home/ruben/Projects/Cura/plugins/cura-siemensnx-plugin/Installer.py:59
 #: /home/ruben/Projects/Cura/plugins/cura-siemensnx-plugin/Installer.py:81
 msgid "Successfully installed Siemens NX Cura plugin."
-msgstr "Installato correttamente plugin Siemens NX Cura."
+msgstr "Siemens NX Cura plugin installato correttamente."
 
 #: /home/ruben/Projects/Cura/plugins/cura-siemensnx-plugin/Installer.py:65
 msgid "Failed to copy Siemens NX plugins files. Please check your UGII_USER_DIR."
-msgstr "Impossibile copiare i file di plugin Siemens NX. Controllare UGII_USER_DIR."
+msgstr "Impossibile copiare i file dei plugin Siemens NX. Controllare UGII_USER_DIR."
 
 #: /home/ruben/Projects/Cura/plugins/cura-siemensnx-plugin/Installer.py:85
 msgid "Failed to install Siemens NX plugin. Could not set environment variable UGII_USER_DIR for Siemens NX."
-msgstr "Impossibile installare plugin Siemens NX. Impossibile impostare la variabile di ambiente UGII_USER_DIR per Siemens NX."
+msgstr "Impossibile installare il plugin Siemens NX. Impossibile impostare la variabile di ambiente UGII_USER_DIR per Siemens NX."
 
 #: /home/ruben/Projects/Cura/plugins/3MFReader/WorkspaceDialog.py:165
 #: /home/ruben/Projects/Cura/resources/qml/Sidebar.qml:590
@@ -887,12 +887,12 @@ msgstr "Ugello"
 #, python-brace-format
 msgctxt "@info:status"
 msgid "Failed to get plugin ID from <filename>{0}</filename>"
-msgstr "Impossibile ottenere ID plugin da <filename>{0}</filename>"
+msgstr "Impossibile ottenere ID del plugin da <filename>{0}</filename>"
 
 #: /home/ruben/Projects/Cura/plugins/PluginBrowser/PluginBrowser.py:153
 msgctxt "@info:tile"
 msgid "Warning"
-msgstr "Avvertenza"
+msgstr "Attenzione"
 
 #: /home/ruben/Projects/Cura/plugins/PluginBrowser/PluginBrowser.py:191
 msgctxt "@window:title"
@@ -912,18 +912,18 @@ msgstr "File G"
 #: /home/ruben/Projects/Cura/plugins/GCodeReader/FlavorParser.py:321
 msgctxt "@info:status"
 msgid "Parsing G-code"
-msgstr "Parsing codice G"
+msgstr "Analisi G-code"
 
 #: /home/ruben/Projects/Cura/plugins/GCodeReader/FlavorParser.py:323
 #: /home/ruben/Projects/Cura/plugins/GCodeReader/FlavorParser.py:464
 msgctxt "@info:title"
 msgid "G-code Details"
-msgstr "Dettagli codice G"
+msgstr "Dettagli G-code"
 
 #: /home/ruben/Projects/Cura/plugins/GCodeReader/FlavorParser.py:462
 msgctxt "@info:generic"
 msgid "Make sure the g-code is suitable for your printer and printer configuration before sending the file to it. The g-code representation may not be accurate."
-msgstr "Verifica che il codice G sia idoneo alla tua stampante e alla sua configurazione prima di trasmettere il file. La rappresentazione del codice G potrebbe non essere accurata."
+msgstr "Verifica che il G-code sia idoneo alla tua stampante e alla sua configurazione prima di trasmettere il file. La rappresentazione del G-code potrebbe non essere accurata."
 
 #: /home/ruben/Projects/Cura/plugins/CuraProfileWriter/__init__.py:14
 #: /home/ruben/Projects/Cura/plugins/CuraProfileReader/__init__.py:14
@@ -1234,7 +1234,7 @@ msgstr "Impossibile individuare posizione"
 #: /home/ruben/Projects/Cura/cura/CrashHandler.py:81
 msgctxt "@title:window"
 msgid "Crash Report"
-msgstr "Rapporto su crash"
+msgstr "Rapporto sul crash"
 
 #: /home/ruben/Projects/Cura/cura/CrashHandler.py:94
 msgctxt "@label crash message"
@@ -1347,13 +1347,13 @@ msgstr "%(width).1f x %(depth).1f x %(height).1f mm"
 #, python-brace-format
 msgctxt "@info:status"
 msgid "Only one G-code file can be loaded at a time. Skipped importing {0}"
-msgstr "È possibile caricare un solo file codice G per volta. Importazione saltata {0}"
+msgstr "È possibile caricare un solo file G-code per volta. Importazione saltata {0}"
 
 #: /home/ruben/Projects/Cura/cura/CuraApplication.py:1426
 #, python-brace-format
 msgctxt "@info:status"
 msgid "Can't open any other file if G-code is loading. Skipped importing {0}"
-msgstr "Impossibile aprire altri file durante il caricamento del codice G. Importazione saltata {0}"
+msgstr "Impossibile aprire altri file durante il caricamento del G-code. Importazione saltata {0}"
 
 #: /home/ruben/Projects/Cura/cura/CuraApplication.py:1495
 msgctxt "@info:status"
@@ -1426,7 +1426,7 @@ msgstr "Versione GCode"
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:181
 msgctxt "@label"
 msgid "Printhead Settings"
-msgstr "Impostazioni della testina di stampa"
+msgstr "Impostazioni della testa di stampa"
 
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:191
 msgctxt "@label"
@@ -1436,7 +1436,7 @@ msgstr "X min"
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:192
 msgctxt "@tooltip"
 msgid "Distance from the left of the printhead to the center of the nozzle. Used to prevent colissions between previous prints and the printhead when printing \"One at a Time\"."
-msgstr "Distanza tra il lato sinistro della testina di stampa e il centro dell'ugello. Utilizzata per evitare collisioni tra le stampe precedenti e la testina di stampa durante la stampa \"Uno alla volta\"."
+msgstr "Distanza tra il lato sinistro della testa di stampa e il centro dell'ugello. Utilizzata per evitare collisioni tra le stampe precedenti e la testa di stampa durante la stampa \"Uno alla volta\"."
 
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:201
 msgctxt "@label"
@@ -1446,7 +1446,7 @@ msgstr "Y min"
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:202
 msgctxt "@tooltip"
 msgid "Distance from the front of the printhead to the center of the nozzle. Used to prevent colissions between previous prints and the printhead when printing \"One at a Time\"."
-msgstr "Distanza tra il lato anteriore della testina di stampa e il centro dell'ugello. Utilizzata per evitare collisioni tra le stampe precedenti e la testina di stampa durante la stampa \"Uno alla volta\"."
+msgstr "Distanza tra il lato anteriore della testa di stampa e il centro dell'ugello. Utilizzata per evitare collisioni tra le stampe precedenti e la testa di stampa durante la stampa \"Uno alla volta\"."
 
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:211
 msgctxt "@label"
@@ -1456,7 +1456,7 @@ msgstr "X max"
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:212
 msgctxt "@tooltip"
 msgid "Distance from the right of the printhead to the center of the nozzle. Used to prevent colissions between previous prints and the printhead when printing \"One at a Time\"."
-msgstr "Distanza tra il lato destro della testina di stampa e il centro dell'ugello. Utilizzata per evitare collisioni tra le stampe precedenti e la testina di stampa durante la stampa \"Uno alla volta\"."
+msgstr "Distanza tra il lato destro della testa di stampa e il centro dell'ugello. Utilizzata per evitare collisioni tra le stampe precedenti e la testa di stampa durante la stampa \"Uno alla volta\"."
 
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:221
 msgctxt "@label"
@@ -1466,7 +1466,7 @@ msgstr "Y max"
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:222
 msgctxt "@tooltip"
 msgid "Distance from the rear of the printhead to the center of the nozzle. Used to prevent colissions between previous prints and the printhead when printing \"One at a Time\"."
-msgstr "Distanza tra il lato posteriore della testina di stampa e il centro dell'ugello. Utilizzata per evitare collisioni tra le stampe precedenti e la testina di stampa durante la stampa \"Uno alla volta\"."
+msgstr "Distanza tra il lato posteriore della testa di stampa e il centro dell'ugello. Utilizzata per evitare collisioni tra le stampe precedenti e la testa di stampa durante la stampa \"Uno alla volta\"."
 
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:234
 msgctxt "@label"
@@ -1521,7 +1521,7 @@ msgstr "Diametro del materiale compatibile"
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:395
 msgctxt "@tooltip"
 msgid "The nominal diameter of filament supported by the printer. The exact diameter will be overridden by the material and/or the profile."
-msgstr "Diametro nominale del filamento supportato dalla stampante. Il diametro esatto verrà sovrapposto dal materiale e/o dal profilo."
+msgstr "Diametro nominale del filamento supportato dalla stampante. Il diametro esatto verrà sovrascritto dal materiale e/o dal profilo."
 
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:411
 msgctxt "@label"
@@ -1536,12 +1536,12 @@ msgstr "Scostamento Y ugello"
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:444
 msgctxt "@label"
 msgid "Extruder Start Gcode"
-msgstr "Codice G avvio estrusore"
+msgstr "Gcode avvio estrusore"
 
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:462
 msgctxt "@label"
 msgid "Extruder End Gcode"
-msgstr "Codice G fine estrusore"
+msgstr "Gcode fine estrusore"
 
 #: /home/ruben/Projects/Cura/plugins/ChangeLogPlugin/ChangeLog.qml:18
 msgctxt "@label"
@@ -1618,7 +1618,7 @@ msgid ""
 "To print directly to your printer over the network, please make sure your printer is connected to the network using a network cable or by connecting your printer to your WIFI network. If you don't connect Cura with your printer, you can still use a USB drive to transfer g-code files to your printer.\n"
 "\n"
 "Select your printer from the list below:"
-msgstr "Per stampare direttamente sulla stampante in rete, verificare che la stampante desiderata sia collegata alla rete mediante un cavo di rete o mediante collegamento alla rete WIFI. Se si collega Cura alla stampante, è comunque possibile utilizzare una chiavetta USB per trasferire i file codice G alla stampante.\n\nSelezionare la stampante dall’elenco seguente:"
+msgstr "Per stampare direttamente sulla stampante in rete, verificare che la stampante desiderata sia collegata alla rete mediante un cavo di rete o mediante collegamento alla rete WIFI. Se si collega Cura alla stampante, è comunque possibile utilizzare una chiavetta USB per trasferire i file Gcode alla stampante.\n\nSelezionare la stampante dall’elenco seguente:"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/DiscoverUM3Action.qml:75
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/MachinesPage.qml:44
@@ -1715,7 +1715,7 @@ msgstr "OK"
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/PrintWindow.qml:24
 msgctxt "@title:window"
 msgid "Print over network"
-msgstr "Stampa sulla rete"
+msgstr "Stampa tramite rete"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/PrintWindow.qml:92
 msgctxt "@action:button"
@@ -1816,7 +1816,7 @@ msgstr "Finisce alle: "
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/PrinterInfoBlock.qml:405
 msgctxt "@label"
 msgid "Clear build plate"
-msgstr "Cancellare piano di stampa"
+msgstr "Pulire piano di stampa"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/PrinterInfoBlock.qml:414
 msgctxt "@label"
@@ -2054,7 +2054,7 @@ msgstr "Velocità"
 #: /home/ruben/Projects/Cura/plugins/SimulationView/SimulationView.qml:144
 msgctxt "@label:listbox"
 msgid "Layer thickness"
-msgstr "Spessore strato"
+msgstr "Spessore layer"
 
 #: /home/ruben/Projects/Cura/plugins/SimulationView/SimulationView.qml:185
 msgctxt "@label"
@@ -2089,7 +2089,7 @@ msgstr "Mostra solo strati superiori"
 #: /home/ruben/Projects/Cura/plugins/SimulationView/SimulationView.qml:339
 msgctxt "@label"
 msgid "Show 5 Detailed Layers On Top"
-msgstr "Mostra 5 strati superiori in dettaglio"
+msgstr "Mostra 5 layer superiori in dettaglio"
 
 #: /home/ruben/Projects/Cura/plugins/SimulationView/SimulationView.qml:350
 msgctxt "@label"
@@ -2451,7 +2451,7 @@ msgstr "Seleziona qualsiasi aggiornamento realizzato per questa Ultimaker 2."
 #: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UM2UpgradeSelectionMachineAction.qml:45
 msgctxt "@label"
 msgid "Olsson Block"
-msgstr "Blocco Olsson"
+msgstr "Olsson Block"
 
 #: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/BedLevelMachineAction.qml:27
 msgctxt "@title"
@@ -2466,7 +2466,7 @@ msgstr "Per assicurarsi stampe di alta qualità, è ora possibile regolare il pi
 #: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/BedLevelMachineAction.qml:47
 msgctxt "@label"
 msgid "For every position; insert a piece of paper under the nozzle and adjust the print build plate height. The print build plate height is right when the paper is slightly gripped by the tip of the nozzle."
-msgstr "Per ciascuna posizione: inserire un pezzo di carta sotto l'ugello e regolare la stampa dell'altezza del piano di stampa. L'altezza del piano di stampa è corretta quando la carta sfiora la punta dell'ugello."
+msgstr "Per ciascuna posizione: inserire un pezzo di carta sotto l'ugello e regolare l'altezza del piano di stampa. L'altezza del piano di stampa è corretta quando la carta sfiora la punta dell'ugello."
 
 #: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/BedLevelMachineAction.qml:62
 msgctxt "@action:button"
@@ -2914,12 +2914,12 @@ msgstr "Visualizza sbalzo"
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:344
 msgctxt "@info:tooltip"
 msgid "Moves the camera so the model is in the center of the view when a model is selected"
-msgstr "Sposta la fotocamera in modo che il modello si trovi al centro della visualizzazione quando è selezionato"
+msgstr "Sposta la camera in modo che il modello si trovi al centro della visualizzazione quando è selezionato"
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:349
 msgctxt "@action:button"
 msgid "Center camera when item is selected"
-msgstr "Centratura fotocamera alla selezione dell'elemento"
+msgstr "Centratura camera alla selezione dell'elemento"
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:358
 msgctxt "@info:tooltip"
@@ -2929,7 +2929,7 @@ msgstr "Il comportamento dello zoom predefinito di Cura dovrebbe essere invertit
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:363
 msgctxt "@action:button"
 msgid "Invert the direction of camera zoom."
-msgstr "Inverti la direzione dello zoom della fotocamera."
+msgstr "Inverti la direzione dello zoom della camera."
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:372
 msgctxt "@info:tooltip"
@@ -2964,22 +2964,22 @@ msgstr "Rilascia automaticamente i modelli sul piano di stampa"
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:416
 msgctxt "@info:tooltip"
 msgid "Show caution message in gcode reader."
-msgstr "Visualizza il messaggio di avvertimento sul lettore codice G."
+msgstr "Visualizza il messaggio di avvertimento sul lettore gcode."
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:425
 msgctxt "@option:check"
 msgid "Caution message in gcode reader"
-msgstr "Messaggio di avvertimento sul lettore codice G"
+msgstr "Messaggio di avvertimento sul lettore gcode"
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:432
 msgctxt "@info:tooltip"
 msgid "Should layer be forced into compatibility mode?"
-msgstr "Lo strato deve essere forzato in modalità di compatibilità?"
+msgstr "Il layer deve essere forzato in modalità di compatibilità?"
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:437
 msgctxt "@option:check"
 msgid "Force layer view compatibility mode (restart required)"
-msgstr "Forzare la modalità di compatibilità visualizzazione strato (riavvio necessario)"
+msgstr "Forzare la modalità di compatibilità visualizzazione layer (riavvio necessario)"
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:453
 msgctxt "@label"
@@ -3109,7 +3109,7 @@ msgstr "I modelli appena caricati devono essere sistemati sul piano di stampa? U
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:699
 msgctxt "@option:check"
 msgid "Do not arrange objects on load"
-msgstr "Non posizionare oggetti sul carico"
+msgstr "Non posizionare oggetti dopo il caricamento"
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/MachinesPage.qml:15
 #: /home/ruben/Projects/Cura/resources/qml/Cura.qml:514
@@ -3154,7 +3154,7 @@ msgstr "Stato:"
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/MachinesPage.qml:190
 msgctxt "@label:MonitorStatus"
 msgid "Waiting for someone to clear the build plate"
-msgstr "In attesa di qualcuno che cancelli il piano di stampa"
+msgstr "In attesa che qualcuno liberi il piano di stampa"
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/MachinesPage.qml:199
 msgctxt "@label:MonitorStatus"
@@ -3547,7 +3547,7 @@ msgctxt "@label:listbox"
 msgid ""
 "Print Setup disabled\n"
 "G-code files cannot be modified"
-msgstr "Impostazione di stampa disabilitata\nI file codice G non possono essere modificati"
+msgstr "Impostazione di stampa disabilitata\nI file G-code non possono essere modificati"
 
 #: /home/ruben/Projects/Cura/resources/qml/Sidebar.qml:342
 msgctxt "@label Hours and minutes"
@@ -3599,7 +3599,7 @@ msgstr "<b>Impostazione di stampa consigliata</b><br/><br/>Stampa con le imposta
 #: /home/ruben/Projects/Cura/resources/qml/Sidebar.qml:596
 msgctxt "@tooltip"
 msgid "<b>Custom Print Setup</b><br/><br/>Print with finegrained control over every last bit of the slicing process."
-msgstr "<b>Impostazione di stampa personalizzata</b><br/><br/>Stampa con il controllo grana fine su ogni sezione finale del processo di sezionamento."
+msgstr "<b>Impostazione di stampa personalizzata</b><br/><br/>Stampa con il controllo grana fine su ogni sezione finale del processo di slicing."
 
 #: /home/ruben/Projects/Cura/resources/qml/Menus/MaterialMenu.qml:50
 msgctxt "@title:menuitem %1 is the automatically selected material"
@@ -3704,7 +3704,7 @@ msgstr "La temperatura corrente del piano riscaldato."
 #: /home/ruben/Projects/Cura/resources/qml/PrintMonitor.qml:423
 msgctxt "@tooltip of temperature input"
 msgid "The temperature to pre-heat the bed to."
-msgstr "La temperatura di preriscaldo del piano."
+msgstr "La temperatura di preriscaldamento del piano."
 
 #: /home/ruben/Projects/Cura/resources/qml/PrintMonitor.qml:623
 msgctxt "@button Cancel pre-heating"
@@ -3714,7 +3714,7 @@ msgstr "Annulla"
 #: /home/ruben/Projects/Cura/resources/qml/PrintMonitor.qml:623
 msgctxt "@button"
 msgid "Pre-heat"
-msgstr "Pre-riscaldo"
+msgstr "Pre-riscaldamento"
 
 #: /home/ruben/Projects/Cura/resources/qml/PrintMonitor.qml:650
 msgctxt "@tooltip of pre-heat"
@@ -3925,7 +3925,7 @@ msgstr "Sel&eziona tutti i modelli"
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:332
 msgctxt "@action:inmenu menubar:edit"
 msgid "&Clear Build Plate"
-msgstr "&Cancellare piano di stampa"
+msgstr "&Pulire piano di stampa"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:342
 msgctxt "@action:inmenu menubar:file"
@@ -3970,7 +3970,7 @@ msgstr "&Nuovo Progetto..."
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:402
 msgctxt "@action:inmenu menubar:help"
 msgid "Show Engine &Log..."
-msgstr "M&ostra log motore..."
+msgstr "M&ostra motore log..."
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:410
 msgctxt "@action:inmenu menubar:help"
@@ -4010,7 +4010,7 @@ msgstr "Pronto per il sezionamento"
 #: /home/ruben/Projects/Cura/resources/qml/SaveButton.qml:38
 msgctxt "@label:PrintjobStatus"
 msgid "Slicing..."
-msgstr "Sezionamento in corso..."
+msgstr "Slicing in corso..."
 
 #: /home/ruben/Projects/Cura/resources/qml/SaveButton.qml:40
 msgctxt "@label:PrintjobStatus %1 is target operation"
@@ -4020,7 +4020,7 @@ msgstr "Pronto a %1"
 #: /home/ruben/Projects/Cura/resources/qml/SaveButton.qml:42
 msgctxt "@label:PrintjobStatus"
 msgid "Unable to Slice"
-msgstr "Sezionamento impossibile"
+msgstr "Slicing impossibile"
 
 #: /home/ruben/Projects/Cura/resources/qml/SaveButton.qml:44
 msgctxt "@label:PrintjobStatus"
@@ -4035,7 +4035,7 @@ msgstr "Seziona processo di stampa corrente"
 #: /home/ruben/Projects/Cura/resources/qml/SaveButton.qml:171
 msgctxt "@info:tooltip"
 msgid "Cancel slicing process"
-msgstr "Annulla processo di sezionamento"
+msgstr "Annulla processo di slicing"
 
 #: /home/ruben/Projects/Cura/resources/qml/SaveButton.qml:183
 msgctxt "@label:Printjob"
@@ -4050,7 +4050,7 @@ msgstr "Annulla"
 #: /home/ruben/Projects/Cura/resources/qml/SaveButton.qml:317
 msgctxt "@info:tooltip"
 msgid "Select the active output device"
-msgstr "Seleziona l'unità di uscita attiva"
+msgstr "Seleziona l'unità output attiva"
 
 #: /home/ruben/Projects/Cura/resources/qml/OpenFilesIncludingProjectsDialog.qml:19
 #: /home/ruben/Projects/Cura/resources/qml/Cura.qml:696
@@ -4320,7 +4320,7 @@ msgstr "Importa i modelli"
 #: /home/ruben/Projects/Cura/resources/qml/EngineLog.qml:15
 msgctxt "@title:window"
 msgid "Engine Log"
-msgstr "Log motore"
+msgstr "Motore Log"
 
 #: /home/ruben/Projects/Cura/resources/qml/SidebarHeader.qml:245
 msgctxt "@label"
@@ -4665,7 +4665,7 @@ msgstr "Lettore di immagine"
 #: CuraEngineBackend/plugin.json
 msgctxt "description"
 msgid "Provides the link to the CuraEngine slicing backend."
-msgstr "Fornisce il collegamento al back-end di sezionamento CuraEngine."
+msgstr "Fornisce il collegamento al back-end di slicing di CuraEngine."
 
 #: CuraEngineBackend/plugin.json
 msgctxt "name"
@@ -4725,12 +4725,12 @@ msgstr "Visualizzazione compatta"
 #: GCodeReader/plugin.json
 msgctxt "description"
 msgid "Allows loading and displaying G-code files."
-msgstr "Consente il caricamento e la visualizzazione dei file codice G."
+msgstr "Consente il caricamento e la visualizzazione dei file G-code."
 
 #: GCodeReader/plugin.json
 msgctxt "name"
 msgid "G-code Reader"
-msgstr "Lettore codice G"
+msgstr "Lettore G-code"
 
 #: CuraProfileWriter/plugin.json
 msgctxt "description"
@@ -4944,7 +4944,7 @@ msgstr "Lettore profilo Cura"
 
 #~ msgctxt "@label:status"
 #~ msgid "Blocked"
-#~ msgstr "Ostacolato"
+#~ msgstr "Bloccato"
 
 #~ msgctxt "@label:status"
 #~ msgid "Can't start print"
@@ -4964,7 +4964,7 @@ msgstr "Lettore profilo Cura"
 
 #~ msgctxt "@info:title"
 #~ msgid "Layer View"
-#~ msgstr "Visualizzazione strato"
+#~ msgstr "Visualizzazione layer"
 
 #~ msgctxt "@menuitem"
 #~ msgid "Browse plugins"
@@ -5068,7 +5068,7 @@ msgstr "Lettore profilo Cura"
 
 #~ msgctxt "name"
 #~ msgid "Layer View"
-#~ msgstr "Visualizzazione strato"
+#~ msgstr "Visualizzazione layer"
 
 #~ msgctxt "@item:inlistbox"
 #~ msgid "X-Ray"
@@ -5199,7 +5199,7 @@ msgstr "Lettore profilo Cura"
 
 #~ msgctxt "@label"
 #~ msgid "Hotend"
-#~ msgstr "Estremità calda"
+#~ msgstr "Hotend"
 
 #~ msgctxt "@action:button"
 #~ msgid "View Mode"
@@ -5335,7 +5335,7 @@ msgstr "Lettore profilo Cura"
 
 #~ msgctxt "@label"
 #~ msgid "The print cores and/or materials on your printer differ from those within your current project. For the best result, always slice for the print cores and materials that are inserted in your printer."
-#~ msgstr "I PrintCore e/o i materiali della stampante sono diversi da quelli del progetto corrente. Per ottenere i migliori risultati, sezionare sempre per i PrintCore e i materiali inseriti nella stampante utilizzata."
+#~ msgstr "I PrintCore e/o i materiali della stampante sono diversi da quelli del progetto corrente. Per risultati ottimali, sezionare sempre i PrintCore e i materiali inseriti nella stampante utilizzata."
 
 #~ msgctxt "@label"
 #~ msgid "Post Processing"
@@ -5391,11 +5391,11 @@ msgstr "Lettore profilo Cura"
 
 #~ msgctxt "@label"
 #~ msgid "Layer View"
-#~ msgstr "Visualizzazione strato"
+#~ msgstr "Visualizzazione layer"
 
 #~ msgctxt "@info:whatsthis"
 #~ msgid "Provides the Layer view."
-#~ msgstr "Fornisce la visualizzazione degli strati."
+#~ msgstr "Fornisce la visualizzazione dei layer."
 
 #~ msgctxt "@label"
 #~ msgid "Version Upgrade 2.5 to 2.6"
@@ -5435,7 +5435,7 @@ msgstr "Lettore profilo Cura"
 
 #~ msgctxt "@info:whatsthis"
 #~ msgid "Provides the link to the CuraEngine slicing backend."
-#~ msgstr "Fornisce il collegamento al back-end di sezionamento CuraEngine."
+#~ msgstr "Fornisce il collegamento al back-end di slicing di CuraEngine."
 
 #~ msgctxt "@label"
 #~ msgid "Per Model Settings Tool"
@@ -5463,11 +5463,11 @@ msgstr "Lettore profilo Cura"
 
 #~ msgctxt "@label"
 #~ msgid "G-code Reader"
-#~ msgstr "Lettore codice G"
+#~ msgstr "Lettore G-code"
 
 #~ msgctxt "@info:whatsthis"
 #~ msgid "Allows loading and displaying G-code files."
-#~ msgstr "Consente il caricamento e la visualizzazione dei file codice G."
+#~ msgstr "Consente il caricamento e la visualizzazione dei file G-code."
 
 #~ msgctxt "@label"
 #~ msgid "Cura Profile Writer"
@@ -5736,7 +5736,7 @@ msgstr "Lettore profilo Cura"
 
 #~ msgctxt "@option:check"
 #~ msgid "Only display top layer(s) in layer view"
-#~ msgstr "In visualizzazione strato, visualizza solo lo/gli strato/i superiore/i"
+#~ msgstr "In visualizzazione layer, visualizza solo il/i layer(s) superiore/i"
 
 #~ msgctxt "@label"
 #~ msgid "Opening files"

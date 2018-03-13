@@ -413,7 +413,7 @@ UM.PreferencesPage
                 width: childrenRect.width;
                 height: childrenRect.height;
 
-                text: catalog.i18nc("@info:tooltip","Show caution message in gcode reader.")
+                text: catalog.i18nc("@info:tooltip","Show caution message in g-code reader.")
 
                 CheckBox
                 {
@@ -422,7 +422,7 @@ UM.PreferencesPage
                     checked: boolCheck(UM.Preferences.getValue("gcodereader/show_caution"))
                     onClicked: UM.Preferences.setValue("gcodereader/show_caution", checked)
 
-                    text: catalog.i18nc("@option:check","Caution message in gcode reader");
+                    text: catalog.i18nc("@option:check","Caution message in g-code reader");
                 }
             }
 
