@@ -72,29 +72,27 @@ class MaterialManager(QObject):
 
     def initialize(self):
         # Find all materials and put them in a matrix for quick search.
-        material_metadata_list = self._container_registry.findContainersMetadata(type = "material")
+        material_metadatas = {metadata["id"]: metadata for metadata in self._container_registry.findContainersMetadata(type = "material")}
 
         self._material_group_map = dict()
 
         # Map #1
         #    root_material_id -> MaterialGroup
-        for material_metadata in material_metadata_list:
-            material_id = material_metadata["id"]
+        for material_id, material_metadata in material_metadatas.items():
             # We don't store empty material in the lookup tables
             if material_id == "empty_material":
                 continue
 
             root_material_id = material_metadata.get("base_file")
             if root_material_id not in self._material_group_map:
-                self._material_group_map[root_material_id] = MaterialGroup(root_material_id)
+                self._material_group_map[root_material_id] = MaterialGroup(root_material_id, MaterialNode(material_metadatas[root_material_id]))
             group = self._material_group_map[root_material_id]
 
-            # We only add root materials here
-            if material_id == root_material_id:
-                group.root_material_node = MaterialNode(material_metadata)
-            else:
+            #Store this material in the group of the appropriate root material.
+            if material_id != root_material_id:
                 new_node = MaterialNode(material_metadata)
                 group.derived_material_node_list.append(new_node)
+
         # Order this map alphabetically so it's easier to navigate in a debugger
         self._material_group_map = OrderedDict(sorted(self._material_group_map.items(), key = lambda x: x[0]))
 
@@ -179,7 +177,7 @@ class MaterialManager(QObject):
         #    "machine" -> "variant_name" -> "root material ID" -> specific material InstanceContainer
         # Construct the "machine" -> "variant" -> "root material ID" -> specific material InstanceContainer
         self._diameter_machine_variant_material_map = dict()
-        for material_metadata in material_metadata_list:
+        for material_metadata in material_metadatas.values():
             # We don't store empty material in the lookup tables
             if material_metadata["id"] == "empty_material":
                 continue

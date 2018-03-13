@@ -29,7 +29,7 @@ class QualityProfilesDropDownMenuModel(ListModel):
         self.addRoleName(self.QualityTypeRole, "quality_type")
         self.addRoleName(self.LayerHeightRole, "layer_height")
         self.addRoleName(self.LayerHeightUnitRole, "layer_height_unit")
-        self.addRoleName(self.AvailableRole, "available")
+        self.addRoleName(self.AvailableRole, "available") #Whether the quality profile is available in our current nozzle + material.
         self.addRoleName(self.QualityGroupRole, "quality_group")
         self.addRoleName(self.QualityChangesGroupRole, "quality_changes_group")
 
@@ -39,6 +39,7 @@ class QualityProfilesDropDownMenuModel(ListModel):
 
         self._application.globalContainerStackChanged.connect(self._update)
         self._machine_manager.activeQualityGroupChanged.connect(self._update)
+        self._machine_manager.extruderChanged.connect(self._update)
         self._quality_manager.qualitiesUpdated.connect(self._update)
 
         self._layer_height_unit = ""  # This is cached

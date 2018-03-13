@@ -83,11 +83,19 @@ class VariantManager:
     # Almost the same as getVariantMetadata() except that this returns an InstanceContainer if present.
     #
     def getVariantNode(self, machine_definition_id: str, variant_name: str,
-                       variant_type: Optional["VariantType"] = VariantType.NOZZLE) -> Optional["ContainerNode"]:
+                       variant_type: Optional["VariantType"] = None) -> Optional["ContainerNode"]:
+        if variant_type is None:
+            variant_node = None
+            variant_type_dict = self._machine_to_variant_dict_map[machine_definition_id]
+            for variant_dict in variant_type_dict.values():
+                if variant_name in variant_dict:
+                    variant_node = variant_dict[variant_name]
+                    break
+            return variant_node
         return self._machine_to_variant_dict_map[machine_definition_id].get(variant_type, {}).get(variant_name)
 
     def getVariantNodes(self, machine: "GlobalStack",
-                        variant_type: Optional["VariantType"] = VariantType.NOZZLE) -> dict:
+                        variant_type: Optional["VariantType"] = None) -> dict:
         machine_definition_id = machine.definition.getId()
         return self._machine_to_variant_dict_map.get(machine_definition_id, {}).get(variant_type, {})
 

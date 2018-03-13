@@ -241,6 +241,13 @@ class ExtruderManager(QObject):
             result.append(extruder_stack.getProperty(setting_key, prop))
         return result
 
+    def extruderValueWithDefault(self, value):
+        machine_manager = self._application.getMachineManager()
+        if value == "-1":
+            return machine_manager.defaultExtruderPosition
+        else:
+            return value
+
     ##  Gets the extruder stacks that are actually being used at the moment.
     #
     #   An extruder stack is being used if it is the extruder to print any mesh
@@ -252,7 +259,7 @@ class ExtruderManager(QObject):
     #
     #   \return A list of extruder stacks.
     def getUsedExtruderStacks(self) -> List["ContainerStack"]:
-        global_stack = Application.getInstance().getGlobalContainerStack()
+        global_stack = self._application.getGlobalContainerStack()
         container_registry = ContainerRegistry.getInstance()
 
         used_extruder_stack_ids = set()
@@ -302,16 +309,19 @@ class ExtruderManager(QObject):
 
         # Check support extruders
         if support_enabled:
-            used_extruder_stack_ids.add(self.extruderIds[str(global_stack.getProperty("support_infill_extruder_nr", "value"))])
-            used_extruder_stack_ids.add(self.extruderIds[str(global_stack.getProperty("support_extruder_nr_layer_0", "value"))])
+            used_extruder_stack_ids.add(self.extruderIds[self.extruderValueWithDefault(str(global_stack.getProperty("support_infill_extruder_nr", "value")))])
+            used_extruder_stack_ids.add(self.extruderIds[self.extruderValueWithDefault(str(global_stack.getProperty("support_extruder_nr_layer_0", "value")))])
             if support_bottom_enabled:
-                used_extruder_stack_ids.add(self.extruderIds[str(global_stack.getProperty("support_bottom_extruder_nr", "value"))])
+                used_extruder_stack_ids.add(self.extruderIds[self.extruderValueWithDefault(str(global_stack.getProperty("support_bottom_extruder_nr", "value")))])
             if support_roof_enabled:
-                used_extruder_stack_ids.add(self.extruderIds[str(global_stack.getProperty("support_roof_extruder_nr", "value"))])
+                used_extruder_stack_ids.add(self.extruderIds[self.extruderValueWithDefault(str(global_stack.getProperty("support_roof_extruder_nr", "value")))])
 
         # The platform adhesion extruder. Not used if using none.
         if global_stack.getProperty("adhesion_type", "value") != "none":
-            used_extruder_stack_ids.add(self.extruderIds[str(global_stack.getProperty("adhesion_extruder_nr", "value"))])
+            extruder_nr = str(global_stack.getProperty("adhesion_extruder_nr", "value"))
+            if extruder_nr == "-1":
+                extruder_nr = Application.getInstance().getMachineManager().defaultExtruderPosition
+            used_extruder_stack_ids.add(self.extruderIds[extruder_nr])
 
         try:
             return [container_registry.findContainerStacks(id = stack_id)[0] for stack_id in used_extruder_stack_ids]
@@ -485,6 +495,8 @@ class ExtruderManager(QObject):
 
         result = []
         for extruder in ExtruderManager.getInstance().getMachineExtruders(global_stack.getId()):
+            if not extruder.isEnabled:
+                continue
             # only include values from extruders that are "active" for the current machine instance
             if int(extruder.getMetaDataEntry("position")) >= global_stack.getProperty("machine_extruder_count", "value"):
                 continue

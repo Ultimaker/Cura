@@ -11,7 +11,7 @@ Tab
 {
     id: base
 
-    property string extruderPosition: ""
+    property int extruderPosition: -1 //Denotes the global stack.
     property var qualityItem: null
 
     property bool isQualityItemCurrentlyActivated:

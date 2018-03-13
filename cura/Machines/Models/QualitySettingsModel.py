@@ -21,6 +21,8 @@ class QualitySettingsModel(ListModel):
     UserValueRole = Qt.UserRole + 6
     CategoryRole = Qt.UserRole + 7
 
+    GLOBAL_STACK_POSITION = -1
+
     def __init__(self, parent = None):
         super().__init__(parent = parent)
 
@@ -36,8 +38,7 @@ class QualitySettingsModel(ListModel):
         self._application = Application.getInstance()
         self._quality_manager = self._application.getQualityManager()
 
-        self._selected_position = ""  # empty string means GlobalStack
-                                      # strings such as "0", "1", etc. mean extruder positions
+        self._selected_position = self.GLOBAL_STACK_POSITION #Must be either GLOBAL_STACK_POSITION or an extruder position (0, 1, etc.)
         self._selected_quality_item = None  # The selected quality in the quality management page
         self._i18n_catalog = None
 
@@ -54,7 +55,7 @@ class QualitySettingsModel(ListModel):
             self.selectedPositionChanged.emit()
             self._update()
 
-    @pyqtProperty(str, fset = setSelectedPosition, notify = selectedPositionChanged)
+    @pyqtProperty(int, fset = setSelectedPosition, notify = selectedPositionChanged)
     def selectedPosition(self):
         return self._selected_position
 
@@ -83,7 +84,7 @@ class QualitySettingsModel(ListModel):
         quality_group = self._selected_quality_item["quality_group"]
         quality_changes_group = self._selected_quality_item["quality_changes_group"]
 
-        if self._selected_position == "":
+        if self._selected_position == self.GLOBAL_STACK_POSITION:
             quality_node = quality_group.node_for_global
         else:
             quality_node = quality_group.nodes_for_extruders.get(self._selected_position)
@@ -93,14 +94,14 @@ class QualitySettingsModel(ListModel):
         # Here, if the user has selected a quality changes, then "quality_changes_group" will not be None, and we fetch
         # the settings in that quality_changes_group.
         if quality_changes_group is not None:
-            if self._selected_position == "":
+            if self._selected_position == self.GLOBAL_STACK_POSITION:
                 quality_changes_node = quality_changes_group.node_for_global
             else:
                 quality_changes_node = quality_changes_group.nodes_for_extruders.get(self._selected_position)
             if quality_changes_node is not None:  # it can be None if number of extruders are changed during runtime
                 try:
                     quality_containers.insert(0, quality_changes_node.getContainer())
-                except:
+                except RuntimeError:
                     # FIXME: This is to prevent incomplete update of QualityManager
                     Logger.logException("d", "Failed to get container for quality changes node %s", quality_changes_node)
                     return
@@ -127,7 +128,7 @@ class QualitySettingsModel(ListModel):
                     profile_value = new_value
 
                 # Global tab should use resolve (if there is one)
-                if self._selected_position == "":
+                if self._selected_position == self.GLOBAL_STACK_POSITION:
                     resolve_value = global_container_stack.getProperty(definition.key, "resolve")
                     if resolve_value is not None and definition.key in settings_keys:
                         profile_value = resolve_value
@@ -135,10 +136,10 @@ class QualitySettingsModel(ListModel):
                 if profile_value is not None:
                     break
 
-            if not self._selected_position:
+            if self._selected_position == self.GLOBAL_STACK_POSITION:
                 user_value = global_container_stack.userChanges.getProperty(definition.key, "value")
             else:
-                extruder_stack = global_container_stack.extruders[self._selected_position]
+                extruder_stack = global_container_stack.extruders[str(self._selected_position)]
                 user_value = extruder_stack.userChanges.getProperty(definition.key, "value")
 
             if profile_value is None and user_value is None:
