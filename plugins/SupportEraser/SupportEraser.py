@@ -4,14 +4,16 @@ from UM.Math.Vector import Vector
 from UM.Tool import Tool
 from PyQt5.QtCore import Qt, QUrl
 from UM.Application import Application
-from UM.Event import Event
+from UM.Event import Event, MouseEvent
 from UM.Mesh.MeshBuilder import MeshBuilder
 from UM.Operations.AddSceneNodeOperation import AddSceneNodeOperation
 from UM.Settings.SettingInstance import SettingInstance
 from cura.Scene.CuraSceneNode import CuraSceneNode
 from cura.Scene.SliceableObjectDecorator import SliceableObjectDecorator
 from cura.Scene.BuildPlateDecorator import BuildPlateDecorator
+from UM.Scene.Iterator.BreadthFirstIterator import BreadthFirstIterator
 from cura.Settings.SettingOverrideDecorator import SettingOverrideDecorator
+from cura.DepthPass import DepthPass
 
 import os
 import os.path
@@ -25,15 +27,22 @@ class SupportEraser(Tool):
     def event(self, event):
         super().event(event)
 
-        if event.type == Event.ToolActivateEvent:
+        if event.type == Event.MousePressEvent and self._controller.getToolsEnabled():
+            active_camera = self._controller.getScene().getActiveCamera()
 
-            # Load the remover mesh:
-            self._createEraserMesh()
+            # Create depth pass for picking
+            render_width, render_height = active_camera.getWindowSize()
+            depth_pass = DepthPass(int(render_width), int(render_height))
+            depth_pass.render()
 
-            # After we load the mesh, deactivate the tool again:
-            self.getController().setActiveTool(None)
+            distance = depth_pass.getDepthAtPosition(event.x, event.y)
+            ray = active_camera.getRay(event.x, event.y)
+            picked_position = ray.getPointAlongRay(distance)
 
-    def _createEraserMesh(self):
+            # Add the anto_overhang_mesh cube:
+            self._createEraserMesh(picked_position)
+
+    def _createEraserMesh(self, position: Vector):
         node = CuraSceneNode()
 
         node.setName("Eraser")
@@ -41,9 +50,7 @@ class SupportEraser(Tool):
         mesh = MeshBuilder()
         mesh.addCube(10,10,10)
         node.setMeshData(mesh.build())
-        # Place the cube in the platform. Do it manually so it works if the "automatic drop models" is OFF
-        move_vector = Vector(0, 5, 0)
-        node.setPosition(move_vector)
+        node.setPosition(position)
 
         active_build_plate = Application.getInstance().getMultiBuildPlateModel().activeBuildPlate
 
