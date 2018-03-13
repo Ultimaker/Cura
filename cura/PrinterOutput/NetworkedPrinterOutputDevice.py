@@ -55,6 +55,14 @@ class NetworkedPrinterOutputDevice(PrinterOutputDevice):
 
         self._connection_state_before_timeout = None    # type: Optional[ConnectionState]
 
+        printer_type = self._properties.get(b"machine", b"").decode("utf-8")
+        if printer_type.startswith("9511"):
+            self._printer_type = "ultimaker3_extended"
+        elif printer_type.startswith("9066"):
+            self._printer_type = "ultimaker3"
+        else:
+            self._printer_type = "unknown"
+
     def requestWrite(self, nodes, file_name=None, filter_by_machine=False, file_handler=None, **kwargs) -> None:
         raise NotImplementedError("requestWrite needs to be implemented")
 
@@ -300,6 +308,10 @@ class NetworkedPrinterOutputDevice(PrinterOutputDevice):
     @pyqtProperty(str, constant=True)
     def firmwareVersion(self) -> str:
         return self._properties.get(b"firmware_version", b"").decode("utf-8")
+
+    @pyqtProperty(str, constant=True)
+    def printerType(self) -> str:
+        return self._printer_type
 
     ## IPadress of this printer
     @pyqtProperty(str, constant=True)

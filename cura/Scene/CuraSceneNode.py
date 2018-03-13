@@ -1,9 +1,13 @@
+# Copyright (c) 2018 Ultimaker B.V.
+# Cura is released under the terms of the LGPLv3 or higher.
+from copy import deepcopy
 from typing import List
 
 from UM.Application import Application
+from UM.Math.AxisAlignedBox import AxisAlignedBox
 from UM.Scene.SceneNode import SceneNode
-from copy import deepcopy
-from cura.Settings.ExtrudersModel import ExtrudersModel
+
+from cura.Settings.SettingOverrideDecorator import SettingOverrideDecorator
 
 
 ##  Scene nodes that are models are only seen when selecting the corresponding build plate
@@ -11,6 +15,8 @@ from cura.Settings.ExtrudersModel import ExtrudersModel
 class CuraSceneNode(SceneNode):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        if "no_setting_override" not in kwargs:
+            self.addDecorator(SettingOverrideDecorator())  # now we always have a getActiveExtruderPosition, unless explicitly disabled
         self._outside_buildarea = False
 
     def setOutsideBuildArea(self, new_value):
@@ -72,9 +78,34 @@ class CuraSceneNode(SceneNode):
             1.0
         ]
 
+    ##  Return if the provided bbox collides with the bbox of this scene node
+    def collidesWithBbox(self, check_bbox):
+        bbox = self.getBoundingBox()
+
+        # Mark the node as outside the build volume if the bounding box test fails.
+        if check_bbox.intersectsBox(bbox) != AxisAlignedBox.IntersectionResult.FullIntersection:
+            return True
+
+        return False
+
+    ##  Return if any area collides with the convex hull of this scene node
+    def collidesWithArea(self, areas):
+        convex_hull = self.callDecoration("getConvexHull")
+        if convex_hull:
+            if not convex_hull.isValid():
+                return False
+
+            # Check for collisions between disallowed areas and the object
+            for area in areas:
+                overlap = convex_hull.intersectsPolygon(area)
+                if overlap is None:
+                    continue
+                return True
+        return False
+
     ##  Taken from SceneNode, but replaced SceneNode with CuraSceneNode
     def __deepcopy__(self, memo):
-        copy = CuraSceneNode()
+        copy = CuraSceneNode(no_setting_override = True)  # Setting override will be added later
         copy.setTransformation(self.getLocalTransformation())
         copy.setMeshData(self._mesh_data)
         copy.setVisible(deepcopy(self._visible, memo))

@@ -277,7 +277,7 @@ class XmlMaterialProfile(InstanceContainer):
 
                     # Compatible is a special case, as it's added as a meta data entry (instead of an instance).
                     material_container = variant_dict["material_container"]
-                    compatible = container.getMetaDataEntry("compatible")
+                    compatible = material_container.getMetaDataEntry("compatible")
                     if compatible is not None:
                         builder.start("setting", {"key": "hardware compatible"})
                         if compatible:
