@@ -516,7 +516,11 @@ Item
                         // Update the slider value to represent the rounded value
                         infillSlider.value = roundedSliderValue
 
-                        Cura.MachineManager.setSettingForAllExtruders("infill_sparse_density", "value", roundedSliderValue)
+                        // Update value only if the Recomended mode is Active,
+                        // Otherwise if I change the value in the Custom mode the Recomended view will try to repeat
+                        // same operation
+                        if (UM.Preferences.getValue("cura/active_mode") == 0)
+                            Cura.MachineManager.setSettingForAllExtruders("infill_sparse_density", "value", roundedSliderValue)
                     }
 
                     style: SliderStyle
