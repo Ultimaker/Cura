@@ -22,7 +22,7 @@ class PrinterOutputModel(QObject):
     nameChanged = pyqtSignal()
     headPositionChanged = pyqtSignal()
     keyChanged = pyqtSignal()
-    typeChanged = pyqtSignal()
+    printerTypeChanged = pyqtSignal()
     buildplateChanged = pyqtSignal()
     cameraChanged = pyqtSignal()
     configurationChanged = pyqtSignal()
@@ -41,12 +41,12 @@ class PrinterOutputModel(QObject):
         self._firmware_version = firmware_version
         self._printer_state = "unknown"
         self._is_preheating = False
-        self._type = ""
+        self._printer_type = ""
         self._buildplate_name = None
         # Update the printer configuration every time any of the extruders changes its configuration
         for extruder in self._extruders:
             extruder.extruderConfigurationChanged.connect(self._updatePrinterConfiguration)
-        self.typeChanged.connect(self._updatePrinterConfiguration)
+        self.printerTypeChanged.connect(self._updatePrinterConfiguration)
         self.buildplateChanged.connect(self._updatePrinterConfiguration)
 
         self._camera = None
@@ -73,14 +73,14 @@ class PrinterOutputModel(QObject):
     def camera(self):
         return self._camera
 
-    @pyqtProperty(str, notify = typeChanged)
+    @pyqtProperty(str, notify = printerTypeChanged)
     def type(self):
-        return self._type
+        return self._printer_type
 
-    def updateType(self, type):
-        if self._type != type:
-            self._type = type
-            self.typeChanged.emit()
+    def updateType(self, printer_type):
+        if self._printer_type != printer_type:
+            self._printer_type = printer_type
+            self.printerTypeChanged.emit()
 
     @pyqtProperty(str, notify = buildplateChanged)
     def buildplate(self):
@@ -263,7 +263,7 @@ class PrinterOutputModel(QObject):
         return self._printer_configuration
 
     def _updatePrinterConfiguration(self):
-        self._printer_configuration.printerType = self._type
+        self._printer_configuration.printerType = self._printer_type
         self._printer_configuration.extruderConfigurations = [extruder.extruderConfiguration for extruder in self._extruders]
         self._printer_configuration.buildplateConfiguration = self._buildplate_name
         self.configurationChanged.emit()
