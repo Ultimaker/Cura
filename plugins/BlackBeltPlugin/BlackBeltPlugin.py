@@ -4,7 +4,9 @@
 from UM.Extension import Extension
 from UM.Application import Application
 from UM.Preferences import Preferences
+from UM.PluginRegistry import PluginRegistry
 from UM.Settings.ContainerRegistry import ContainerRegistry
+from UM.Logger import Logger
 
 from UM.i18n import i18nCatalog
 i18n_catalog = i18nCatalog("BlackBeltPlugin")
@@ -41,6 +43,12 @@ class BlackBeltPlugin(Extension):
         self._application.getOutputDeviceManager().writeStarted.connect(self._filterGcode)
 
         self._application.pluginsLoaded.connect(self._onPluginsLoaded)
+
+        # disable update checker plugin (because it checks the wrong version)
+        plugin_registry = PluginRegistry.getInstance()
+        if "UpdateChecker" not in plugin_registry._disabled_plugins:
+            Logger.log("d", "Disabling Update Checker plugin")
+            plugin_registry._disabled_plugins.append("UpdateChecker")
 
     def _onPluginsLoaded(self):
         # make sure the we connect to engineCreatedSignal later than PrepareStage does, so we can substitute our own sidebar
