@@ -34,9 +34,7 @@ class SupportEraser(Tool):
             depth_pass = DepthPass(active_camera.getViewportWidth(), active_camera.getViewportHeight())
             depth_pass.render()
 
-            distance = depth_pass.getDepthAtPosition(event.x, event.y)
-            ray = active_camera.getRay(event.x, event.y)
-            picked_position = ray.getPointAlongRay(distance)
+            picked_position = depth_pass.getPickedPosition(event.x, event.y)
 
             # Add the anto_overhang_mesh cube:
             self._createEraserMesh(picked_position)

@@ -1,7 +1,7 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 from UM.Application import Application
-from UM.Math.Color import Color
+from UM.Math.Vector import Vector
 from UM.Resources import Resources
 
 from UM.View.RenderPass import RenderPass
@@ -11,8 +11,8 @@ from UM.View.RenderBatch import RenderBatch
 from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 
 
-##  A RenderPass subclass that renders a depthmap of selectable objects to a texture.
-#   It uses the active camera by default, but it can be overridden to use a different camera.
+##  A RenderPass subclass that renders a the distance of selectable objects from the active camera to a texture.
+#   The texture is used to map a 2d location (eg the mouse location) to a world space position
 #
 #   Note that in order to increase precision, the 24 bit depth value is encoded into all three of the R,G & B channels
 class DepthPass(RenderPass):
@@ -47,7 +47,7 @@ class DepthPass(RenderPass):
         self.release()
 
     ##  Get the distance in mm from the camera to at a certain pixel coordinate.
-    def getDepthAtPosition(self, x, y):
+    def getPickedDepth(self, x, y) -> float:
         output = self.getOutput()
 
         window_size = self._renderer.getWindowSize()
@@ -61,3 +61,10 @@ class DepthPass(RenderPass):
         distance = output.pixel(px, py) # distance in micron, from in r, g & b channels
         distance = (distance & 0x00ffffff) / 1000. # drop the alpha channel and covert to mm
         return distance
+
+    ## Get the world coordinates of a picked point
+    def getPickedPosition(self, x, y) -> Vector:
+        distance = self.getPickedDepth(x, y)
+        ray = self._scene.getActiveCamera().getRay(x, y)
+
+        return ray.getPointAlongRay(distance)
