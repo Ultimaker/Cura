@@ -346,15 +346,8 @@ Column
         {
             id: materialSelection
 
-            property var currentRootMaterialName:
-            {
-                var materials = Cura.MachineManager.currentRootMaterialName;
-                var materialName = "";
-                if (base.currentExtruderIndex in materials) {
-                    materialName = materials[base.currentExtruderIndex];
-                }
-                return materialName;
-            }
+            property var activeExtruder: Cura.MachineManager.activeStack
+            property var currentRootMaterialName: activeExtruder.material.name
 
             text: currentRootMaterialName
             tooltip: currentRootMaterialName
@@ -373,7 +366,7 @@ Column
             property var valueWarning: ! Cura.MachineManager.isActiveQualitySupported
 
             function isMaterialSupported () {
-                return Cura.ContainerManager.getContainerMetaDataEntry(Cura.MachineManager.activeMaterialId, "compatible") == "True"
+                return Cura.ContainerManager.getContainerMetaDataEntry(activeExtruder.material.id, "compatible") == "True"
             }
         }
     }

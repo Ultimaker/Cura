@@ -50,7 +50,6 @@ class MachineManager(QObject):
         self._global_container_stack = None     # type: GlobalStack
 
         self._current_root_material_id = {}
-        self._current_root_material_name = {}
         self._current_quality_group = None
         self._current_quality_changes_group = None
 
@@ -926,27 +925,17 @@ class MachineManager(QObject):
             return []
         return sorted(list(self._global_container_stack.extruders.keys()))
 
-    ##  Update _current_root_material_id and _current_root_material_name when
-    #   the current root material was changed.
+    ##  Update _current_root_material_id when the current root material was changed.
     def _onRootMaterialChanged(self):
         self._current_root_material_id = {}
 
         if self._global_container_stack:
             for position in self._global_container_stack.extruders:
                 self._current_root_material_id[position] = self._global_container_stack.extruders[position].material.getMetaDataEntry("base_file")
-            self._current_root_material_name = {}
-            for position in self._global_container_stack.extruders:
-                if position not in self._current_root_material_name:
-                    material = self._global_container_stack.extruders[position].material
-                    self._current_root_material_name[position] = material.getName()
 
     @pyqtProperty("QVariant", notify = rootMaterialChanged)
     def currentRootMaterialId(self):
         return self._current_root_material_id
-
-    @pyqtProperty("QVariant", notify = rootMaterialChanged)
-    def currentRootMaterialName(self):
-        return self._current_root_material_name
 
     ##  Return the variant names in the extruder stack(s).
     ##  For the variant in the global stack, use activeVariantBuildplateName
@@ -1052,7 +1041,6 @@ class MachineManager(QObject):
         # The _current_root_material_id is used in the MaterialMenu to see which material is selected
         if root_material_id != self._current_root_material_id[position]:
             self._current_root_material_id[position] = root_material_id
-            self._current_root_material_name[position] = root_material_name
             self.rootMaterialChanged.emit()
 
     def activeMaterialsCompatible(self):
