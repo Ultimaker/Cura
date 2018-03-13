@@ -668,6 +668,8 @@ class ExtruderManager(QObject):
     #   global stack if not found.
     @staticmethod
     def getExtruderValue(extruder_index, key):
+        if extruder_index == -1:
+            extruder_index = int(Application.getInstance().getMachineManager().defaultExtruderPosition)
         extruder = ExtruderManager.getInstance().getExtruderStack(extruder_index)
 
         if extruder:
