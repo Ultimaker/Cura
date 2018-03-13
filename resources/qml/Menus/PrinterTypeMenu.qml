@@ -18,7 +18,8 @@ Menu
         id: printerTypeInstantiator
         model: outputDevice != null ? outputDevice.connectedPrintersTypeCount : []
 
-        MenuItem {
+        MenuItem
+        {
             text: modelData.machine_type
             checkable: true
             checked: Cura.MachineManager.activeMachineDefinitionName == modelData.machine_type
