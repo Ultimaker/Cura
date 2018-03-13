@@ -1,6 +1,8 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
+import time
+
 from collections import deque
 
 from PyQt5.QtCore import QObject, QTimer, pyqtSignal, pyqtProperty
@@ -39,10 +41,12 @@ class MachineErrorChecker(QObject):
         self._application = Application.getInstance()
         self._machine_manager = self._application.getMachineManager()
 
+        self._start_time = 0  # measure checking time
+
         # This timer delays the starting of error check so we can react less frequently if the user is frequently
         # changing settings.
         self._error_check_timer = QTimer(self)
-        self._error_check_timer.setInterval(300)
+        self._error_check_timer.setInterval(100)
         self._error_check_timer.setSingleShot(True)
 
     def initialize(self):
@@ -117,6 +121,7 @@ class MachineErrorChecker(QObject):
         self._keys_to_check = deque(global_stack.getAllKeys())
 
         self._application.callLater(self._checkStack)
+        self._start_time = time.time()
         Logger.log("d", "New error check scheduled.")
 
     def _checkStack(self):
@@ -181,4 +186,4 @@ class MachineErrorChecker(QObject):
         self._check_in_progress = False
         self.needToWaitForResultChanged.emit()
         self.errorCheckFinished.emit()
-        Logger.log("i", "Error check finished, result = %s", result)
+        Logger.log("i", "Error check finished, result = %s, time = %0.1fs", result, time.time() - self._start_time)
