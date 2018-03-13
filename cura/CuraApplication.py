@@ -67,6 +67,8 @@ from cura.Machines.Models.MaterialManagementModel import MaterialManagementModel
 from cura.Machines.Models.GenericMaterialsModel import GenericMaterialsModel
 from cura.Machines.Models.BrandMaterialsModel import BrandMaterialsModel
 
+from cura.Machines.MachineErrorChecker import MachineErrorChecker
+
 from cura.Settings.SettingInheritanceManager import SettingInheritanceManager
 from cura.Settings.SimpleModeSettingsManager import SimpleModeSettingsManager
 
@@ -141,12 +143,6 @@ class CuraApplication(QtApplication):
         DefinitionChangesContainer = Resources.UserType + 9
 
     Q_ENUMS(ResourceTypes)
-
-    # FIXME: This signal belongs to the MachineManager, but the CuraEngineBackend plugin requires on it.
-    #        Because plugins are initialized before the ContainerRegistry, putting this signal in MachineManager
-    #        will make it initialized before ContainerRegistry does, and it won't find the active machine, thus
-    #        Cura will always show the Add Machine Dialog upon start.
-    stacksValidationFinished = pyqtSignal()  # Emitted whenever a validation is finished
 
     def __init__(self, **kwargs):
         # this list of dir names will be used by UM to detect an old cura directory
@@ -224,12 +220,14 @@ class CuraApplication(QtApplication):
         self._machine_manager = None    # This is initialized on demand.
         self._extruder_manager = None
         self._material_manager = None
+        self._quality_manager = None
         self._object_manager = None
         self._build_plate_model = None
         self._multi_build_plate_model = None
         self._setting_inheritance_manager = None
         self._simple_mode_settings_manager = None
         self._cura_scene_controller = None
+        self._machine_error_checker = None
 
         self._additional_components = {} # Components to add to certain areas in the interface
 
@@ -743,18 +741,27 @@ class CuraApplication(QtApplication):
         self.preRun()
 
         container_registry = ContainerRegistry.getInstance()
+
+        Logger.log("i", "Initializing variant manager")
         self._variant_manager = VariantManager(container_registry)
         self._variant_manager.initialize()
 
+        Logger.log("i", "Initializing material manager")
         from cura.Machines.MaterialManager import MaterialManager
         self._material_manager = MaterialManager(container_registry, parent = self)
         self._material_manager.initialize()
 
+        Logger.log("i", "Initializing quality manager")
         from cura.Machines.QualityManager import QualityManager
         self._quality_manager = QualityManager(container_registry, parent = self)
         self._quality_manager.initialize()
 
+        Logger.log("i", "Initializing machine manager")
         self._machine_manager = MachineManager(self)
+
+        Logger.log("i", "Initializing machine error checker")
+        self._machine_error_checker = MachineErrorChecker(self)
+        self._machine_error_checker.initialize()
 
         # Check if we should run as single instance or not
         self._setUpSingleInstanceServer()
@@ -781,7 +788,10 @@ class CuraApplication(QtApplication):
             self._openFile(file_name)
 
         self.started = True
+        self.initializationFinished.emit()
         self.exec_()
+
+    initializationFinished = pyqtSignal()
 
     ##  Run Cura without GUI elements and interaction (server mode).
     def runWithoutGUI(self):
@@ -846,6 +856,9 @@ class CuraApplication(QtApplication):
 
     def hasGui(self):
         return self._use_gui
+
+    def getMachineErrorChecker(self, *args) -> MachineErrorChecker:
+        return self._machine_error_checker
 
     def getMachineManager(self, *args) -> MachineManager:
         if self._machine_manager is None:
