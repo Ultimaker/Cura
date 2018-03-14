@@ -204,7 +204,7 @@ class CuraContainerRegistry(ContainerRegistry):
                     global_profile = profile_or_list[0]
                 else:
                     for profile in profile_or_list:
-                        if not profile.getMetaDataEntry("extruder"):
+                        if not profile.getMetaDataEntry("position"):
                             global_profile = profile
                             break
                 if not global_profile:
@@ -296,7 +296,7 @@ class CuraContainerRegistry(ContainerRegistry):
                     else: #More extruders in the imported file than in the machine.
                         continue #Delete the additional profiles.
 
-                    result = self._configureProfile(profile, profile_id, new_name)
+                    result = self._configureProfile(profile, profile_id, new_name, expected_machine_definition)
                     if result is not None:
                         return {"status": "error", "message": catalog.i18nc(
                             "@info:status Don't translate the XML tags <filename> or <message>!",
@@ -324,7 +324,7 @@ class CuraContainerRegistry(ContainerRegistry):
     #   \param new_name The new name for the profile.
     #
     #   \return None if configuring was successful or an error message if an error occurred.
-    def _configureProfile(self, profile: InstanceContainer, id_seed: str, new_name: str) -> Optional[str]:
+    def _configureProfile(self, profile: InstanceContainer, id_seed: str, new_name: str, machine_definition_id: str) -> Optional[str]:
         profile.setDirty(True)  # Ensure the profiles are correctly saved
 
         new_id = self.createUniqueName("quality_changes", "", id_seed, catalog.i18nc("@label", "Custom profile"))
@@ -334,6 +334,7 @@ class CuraContainerRegistry(ContainerRegistry):
         # Set the unique Id to the profile, so it's generating a new one even if the user imports the same profile
         # It also solves an issue with importing profiles from G-Codes
         profile.setMetaDataEntry("id", new_id)
+        profile.setMetaDataEntry("definition", machine_definition_id)
 
         if "type" in profile.getMetaData():
             profile.setMetaDataEntry("type", "quality_changes")
