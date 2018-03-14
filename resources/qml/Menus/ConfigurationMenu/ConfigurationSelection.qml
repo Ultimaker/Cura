@@ -16,7 +16,7 @@ Item
 
     function switchPopupState()
     {
-        popup.opened ? popup.close() : popup.open()
+        popup.visible ? popup.close() : popup.open()
     }
 
     SyncButton
@@ -28,15 +28,14 @@ Item
 
     Popup
     {
-        // TODO Change once updating to Qt5.10 - This property is already in 5.10 but is manually implemented until upgrade
-        property bool opened: false
+        // TODO Change once updating to Qt5.10 - The 'opened' property is in 5.10 but the behavior is now implemented with the visible property
         id: popup
         clip: true
         closePolicy: Popup.CloseOnPressOutsideParent
         y: configurationSelector.height - UM.Theme.getSize("default_lining").height
         x: configurationSelector.width - width
         width: panelWidth
-        visible: opened
+        visible: false
         padding: UM.Theme.getSize("default_lining").width
         transformOrigin: Popup.Top
         contentItem: ConfigurationListView
@@ -60,7 +59,7 @@ Item
             // This applies a default NumberAnimation to any changes a state change makes to x or y properties
             NumberAnimation { property: "visible"; duration: 75; }
         }
-        onClosed: opened = false
-        onOpened: opened = true
+        onClosed: visible = false
+        onOpened: visible = true
     }
 }
