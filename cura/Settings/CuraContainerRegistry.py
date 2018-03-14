@@ -230,6 +230,11 @@ class CuraContainerRegistry(ContainerRegistry):
                     return { "status": "error",
                              "message": catalog.i18nc("@info:status Don't translate the XML tags <filename> or <message>!", "The machine defined in profile <filename>{0}</filename> ({1}) doesn't match with your current machine ({2}), could not import it.", file_name, profile_definition, expected_machine_definition)}
 
+                # Fix the global quality profile's definition field in case it's not correct
+                global_profile.setMetaDataEntry("definition", expected_machine_definition)
+                quality_name = global_profile.getName()
+                quality_type = global_profile.getMetaDataEntry("quality_type")
+
                 name_seed = os.path.splitext(os.path.basename(file_name))[0]
                 new_name = self.uniqueName(name_seed)
 
@@ -244,11 +249,11 @@ class CuraContainerRegistry(ContainerRegistry):
                     for idx, extruder in enumerate(global_container_stack.extruders.values()):
                         profile_id = ContainerRegistry.getInstance().uniqueName(global_container_stack.getId() + "_extruder_" + str(idx + 1))
                         profile = InstanceContainer(profile_id)
-                        profile.setName(global_profile.getName())
+                        profile.setName(quality_name)
                         profile.addMetaDataEntry("setting_version", CuraApplication.SettingVersion)
                         profile.addMetaDataEntry("type", "quality_changes")
-                        profile.addMetaDataEntry("definition", global_profile.getMetaDataEntry("definition"))
-                        profile.addMetaDataEntry("quality_type", global_profile.getMetaDataEntry("quality_type"))
+                        profile.addMetaDataEntry("definition", expected_machine_definition)
+                        profile.addMetaDataEntry("quality_type", quality_type)
                         profile.addMetaDataEntry("position", "0")
                         profile.setDirty(True)
                         if idx == 0:
