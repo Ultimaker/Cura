@@ -22,6 +22,8 @@ class SupportEraser(Tool):
         self._shortcut_key = Qt.Key_G
         self._controller = Application.getInstance().getController()
 
+        Application.getInstance().globalContainerStackChanged.connect(self._updateEnabled)
+
     def event(self, event):
         super().event(event)
 
@@ -69,3 +71,12 @@ class SupportEraser(Tool):
         op = AddSceneNodeOperation(node, scene.getRoot())
         op.push()
         Application.getInstance().getController().getScene().sceneChanged.emit(node)
+
+    def _updateEnabled(self):
+        plugin_enabled = False
+
+        global_container_stack = Application.getInstance().getGlobalContainerStack()
+        if global_container_stack:
+            plugin_enabled = global_container_stack.getProperty("anti_overhang_mesh", "enabled")
+
+        Application.getInstance().getController().toolEnabledChanged.emit(self._plugin_id, plugin_enabled)
