@@ -838,15 +838,11 @@ class XmlMaterialProfile(InstanceContainer):
                     if machine_compatibility:
                         new_material_id = container_id + "_" + machine_id
 
-                        # The child or derived material container may already exist. This can happen when a material in a
-                        # project file and the a material in Cura have the same ID.
-                        # In the case if a derived material already exists, override that material container because if
-                        # the data in the parent material has been changed, the derived ones should be updated too.
-                        found_materials = ContainerRegistry.getInstance().findInstanceContainersMetadata(id = new_material_id)
-                        if found_materials:
-                            new_material_metadata = found_materials[0]
-                        else:
-                            new_material_metadata = {}
+                        # Do not look for existing container/container metadata with the same ID although they may exist.
+                        # In project loading and perhaps some other places, we only want to get information (metadata)
+                        # from a file without changing the current state of the system. If we overwrite the existing
+                        # metadata here, deserializeMetadata() will not be safe for retrieving information.
+                        new_material_metadata = {}
 
                         new_material_metadata.update(base_metadata)
                         new_material_metadata["id"] = new_material_id
@@ -854,8 +850,7 @@ class XmlMaterialProfile(InstanceContainer):
                         new_material_metadata["machine_manufacturer"] = machine_manufacturer
                         new_material_metadata["definition"] = machine_id
 
-                        if len(found_materials) == 0: #This is a new material.
-                            result_metadata.append(new_material_metadata)
+                        result_metadata.append(new_material_metadata)
 
                     buildplates = machine.iterfind("./um:buildplate", cls.__namespaces)
                     buildplate_map = {}
@@ -866,12 +861,12 @@ class XmlMaterialProfile(InstanceContainer):
                         if buildplate_id is None:
                             continue
 
-                        variant_containers = ContainerRegistry.getInstance().findInstanceContainersMetadata(id = buildplate_id)
-                        if not variant_containers:
+                        variant_metadata = ContainerRegistry.getInstance().findInstanceContainersMetadata(id = buildplate_id)
+                        if not variant_metadata:
                             # It is not really properly defined what "ID" is so also search for variants by name.
-                            variant_containers = ContainerRegistry.getInstance().findInstanceContainersMetadata(definition = machine_id, name = buildplate_id)
+                            variant_metadata = ContainerRegistry.getInstance().findInstanceContainersMetadata(definition = machine_id, name = buildplate_id)
 
-                        if not variant_containers:
+                        if not variant_metadata:
                             continue
 
                         settings = buildplate.iterfind("./um:setting", cls.__namespaces)
@@ -900,12 +895,8 @@ class XmlMaterialProfile(InstanceContainer):
 
                         new_hotend_specific_material_id = container_id + "_" + machine_id + "_" + hotend_name.replace(" ", "_")
 
-                        # Same as machine compatibility, keep the derived material containers consistent with the parent material
-                        found_materials = ContainerRegistry.getInstance().findInstanceContainersMetadata(id = new_hotend_specific_material_id)
-                        if found_materials:
-                            new_hotend_material_metadata = found_materials[0]
-                        else:
-                            new_hotend_material_metadata = {}
+                        # Same as above, do not overwrite existing metadata.
+                        new_hotend_material_metadata = {}
 
                         new_hotend_material_metadata.update(base_metadata)
                         new_hotend_material_metadata["variant_name"] = hotend_name
@@ -917,8 +908,7 @@ class XmlMaterialProfile(InstanceContainer):
                             new_hotend_material_metadata["buildplate_compatible"] = buildplate_map["buildplate_compatible"]
                             new_hotend_material_metadata["buildplate_recommended"] = buildplate_map["buildplate_recommended"]
 
-                        if len(found_materials) == 0:
-                            result_metadata.append(new_hotend_material_metadata)
+                        result_metadata.append(new_hotend_material_metadata)
 
                     # there is only one ID for a machine. Once we have reached here, it means we have already found
                     # a workable ID for that machine, so there is no need to continue

@@ -265,13 +265,9 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             for material_container_file in material_container_files:
                 container_id = self._stripFileToId(material_container_file)
 
-                from hashlib import sha1
-                hex_container_id = sha1(container_id.encode('utf-8')).hexdigest()
-
                 serialized = archive.open(material_container_file).read().decode("utf-8")
-                metadata_list = xml_material_profile.deserializeMetadata(serialized, hex_container_id)
-                reverse_map = {metadata["id"].replace(hex_container_id, container_id): container_id.replace(hex_container_id, container_id)
-                               for metadata in metadata_list}
+                metadata_list = xml_material_profile.deserializeMetadata(serialized, container_id)
+                reverse_map = {metadata["id"]: container_id for metadata in metadata_list}
                 reverse_material_id_dict.update(reverse_map)
 
                 material_labels.append(self._getMaterialLabelFromSerialized(serialized))
