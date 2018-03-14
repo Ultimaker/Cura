@@ -17,11 +17,15 @@ Button
     width: parent.width
     height: parent.height
 
-    function updateOnSync() {
-        if (outputDevice != undefined) {
-            for (var index in outputDevice.uniqueConfigurations) {
+    function updateOnSync()
+    {
+        if (outputDevice != undefined)
+        {
+            for (var index in outputDevice.uniqueConfigurations)
+            {
                 var configuration = outputDevice.uniqueConfigurations[index]
-                if (Cura.MachineManager.matchesConfiguration(configuration)) {
+                if (Cura.MachineManager.matchesConfiguration(configuration))
+                {
                     base.matched = true;
                     return;
                 }
