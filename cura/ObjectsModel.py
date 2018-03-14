@@ -1,3 +1,8 @@
+# Copyright (c) 2018 Ultimaker B.V.
+# Cura is released under the terms of the LGPLv3 or higher.
+
+from PyQt5.QtCore import QTimer
+
 from UM.Application import Application
 from UM.Qt.ListModel import ListModel
 from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
@@ -14,14 +19,22 @@ class ObjectsModel(ListModel):
     def __init__(self):
         super().__init__()
 
-        Application.getInstance().getController().getScene().sceneChanged.connect(self._update)
-        Preferences.getInstance().preferenceChanged.connect(self._update)
+        Application.getInstance().getController().getScene().sceneChanged.connect(self._updateDelayed)
+        Preferences.getInstance().preferenceChanged.connect(self._updateDelayed)
+
+        self._update_timer = QTimer()
+        self._update_timer.setInterval(100)
+        self._update_timer.setSingleShot(True)
+        self._update_timer.timeout.connect(self._update)
 
         self._build_plate_number = -1
 
     def setActiveBuildPlate(self, nr):
         self._build_plate_number = nr
         self._update()
+
+    def _updateDelayed(self, *args):
+        self._update_timer.start()
 
     def _update(self, *args):
         nodes = []
