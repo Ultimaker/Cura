@@ -32,10 +32,12 @@ Cura.MachineAction
         if(base.selectedDevice && base.completeProperties)
         {
             var printerKey = base.selectedDevice.key
+            var printerName = base.selectedDevice.name  // TODO To change when the groups have a name
             if(manager.getStoredKey() != printerKey)
             {
-                manager.setKey(printerKey);
-                completed();
+                manager.setKey(printerKey)
+                manager.setGroupName(printerName)   // TODO To change when the groups have a name
+                completed()
             }
         }
     }
@@ -114,7 +116,7 @@ Cura.MachineAction
 
             Column
             {
-                width: Math.floor(parent.width * 0.5)
+                width: Math.round(parent.width * 0.5)
                 spacing: UM.Theme.getSize("default_margin").height
 
                 ScrollView
@@ -198,7 +200,7 @@ Cura.MachineAction
             }
             Column
             {
-                width: Math.floor(parent.width * 0.5)
+                width: Math.round(parent.width * 0.5)
                 visible: base.selectedDevice ? true : false
                 spacing: UM.Theme.getSize("default_margin").height
                 Label
@@ -216,13 +218,13 @@ Cura.MachineAction
                     columns: 2
                     Label
                     {
-                        width: Math.floor(parent.width * 0.5)
+                        width: Math.round(parent.width * 0.5)
                         wrapMode: Text.WordWrap
                         text: catalog.i18nc("@label", "Type")
                     }
                     Label
                     {
-                        width: Math.floor(parent.width * 0.5)
+                        width: Math.round(parent.width * 0.5)
                         wrapMode: Text.WordWrap
                         text:
                         {
@@ -247,25 +249,25 @@ Cura.MachineAction
                     }
                     Label
                     {
-                        width: Math.floor(parent.width * 0.5)
+                        width: Math.round(parent.width * 0.5)
                         wrapMode: Text.WordWrap
                         text: catalog.i18nc("@label", "Firmware version")
                     }
                     Label
                     {
-                        width: Math.floor(parent.width * 0.5)
+                        width: Math.round(parent.width * 0.5)
                         wrapMode: Text.WordWrap
                         text: base.selectedDevice ? base.selectedDevice.firmwareVersion : ""
                     }
                     Label
                     {
-                        width: Math.floor(parent.width * 0.5)
+                        width: Math.round(parent.width * 0.5)
                         wrapMode: Text.WordWrap
                         text: catalog.i18nc("@label", "Address")
                     }
                     Label
                     {
-                        width: Math.floor(parent.width * 0.5)
+                        width: Math.round(parent.width * 0.5)
                         wrapMode: Text.WordWrap
                         text: base.selectedDevice ? base.selectedDevice.ipAddress : ""
                     }
@@ -303,7 +305,7 @@ Cura.MachineAction
                 Button
                 {
                     text: catalog.i18nc("@action:button", "Connect")
-                    enabled: (base.selectedDevice && base.completeProperties) ? true : false
+                    enabled: (base.selectedDevice && base.completeProperties && base.selectedDevice.clusterSize > 0) ? true : false
                     onClicked: connectToPrinter()
                 }
             }

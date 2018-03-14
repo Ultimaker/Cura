@@ -8,6 +8,7 @@ from UM.i18n import i18nCatalog
 
 catalog = i18nCatalog("cura")
 
+
 ##  Keep track of all objects in the project
 class ObjectsModel(ListModel):
     def __init__(self):
@@ -46,10 +47,15 @@ class ObjectsModel(ListModel):
                 name = catalog.i18nc("@label", "Group #{group_nr}").format(group_nr = str(group_nr))
                 group_nr += 1
 
+            if hasattr(node, "isOutsideBuildArea"):
+                is_outside_build_area = node.isOutsideBuildArea()
+            else:
+                is_outside_build_area = False
+
             nodes.append({
                 "name": name,
                 "isSelected": Selection.isSelected(node),
-                "isOutsideBuildArea": node.isOutsideBuildArea(),
+                "isOutsideBuildArea": is_outside_build_area,
                 "buildPlateNumber": node_build_plate_number,
                 "node": node
             })

@@ -6,7 +6,7 @@ from UM.Logger import Logger
 MYPY = False
 if MYPY:
     from cura.PrinterOutput.PrintJobOutputModel import PrintJobOutputModel
-    from cura.PrinterOutput.ExtruderOuputModel import ExtruderOutputModel
+    from cura.PrinterOutput.ExtruderOutputModel import ExtruderOutputModel
     from cura.PrinterOutput.PrinterOutputModel import PrinterOutputModel
 
 
