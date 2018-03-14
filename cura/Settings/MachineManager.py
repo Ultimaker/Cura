@@ -628,7 +628,7 @@ class MachineManager(QObject):
     @pyqtProperty(str, notify = globalContainerChanged)
     def activeQualityDefinitionId(self) -> str:
         if self._global_container_stack:
-            return getMachineDefinitionIDForQualitySearch(self._global_container_stack)
+            return getMachineDefinitionIDForQualitySearch(self._global_container_stack.definition)
         return ""
 
     ##  Gets how the active definition calls variants

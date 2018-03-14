@@ -116,7 +116,8 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
 
     @pyqtSlot(str)
     def updateFirmware(self, file):
-        self._firmware_location = file
+        # the file path is qurl encoded.
+        self._firmware_location = file.replace("file://", "")
         self.showFirmwareInterface()
         self.setFirmwareUpdateState(FirmwareUpdateState.updating)
         self._update_firmware_thread.start()
@@ -126,9 +127,11 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
         if self._connection_state != ConnectionState.closed:
             self.close()
 
-        hex_file = intelHex.readHex(self._firmware_location)
-        if len(hex_file) == 0:
-            Logger.log("e", "Unable to read provided hex file. Could not update firmware")
+        try:
+            hex_file = intelHex.readHex(self._firmware_location)
+            assert len(hex_file) > 0
+        except (FileNotFoundError, AssertionError):
+            Logger.log("e", "Unable to read provided hex file. Could not update firmware.")
             self.setFirmwareUpdateState(FirmwareUpdateState.firmware_not_found_error)
             return
 
