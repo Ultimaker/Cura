@@ -4,7 +4,7 @@
 #Type hinting.
 from typing import Dict
 
-from PyQt5.QtCore import QObject
+from PyQt5.QtCore import QObject, QTimer
 from PyQt5.QtNetwork import QLocalServer
 from PyQt5.QtNetwork import QLocalSocket
 
@@ -283,10 +283,15 @@ class CuraApplication(QtApplication):
         self._preferred_mimetype = ""
         self._i18n_catalog = i18nCatalog("cura")
 
-        self.getController().getScene().sceneChanged.connect(self.updatePlatformActivity)
+        self._update_platform_activity_timer = QTimer()
+        self._update_platform_activity_timer.setInterval(500)
+        self._update_platform_activity_timer.setSingleShot(True)
+        self._update_platform_activity_timer.timeout.connect(self.updatePlatformActivity)
+
+        self.getController().getScene().sceneChanged.connect(self.updatePlatformActivityDelayed)
         self.getController().toolOperationStopped.connect(self._onToolOperationStopped)
         self.getController().contextMenuRequested.connect(self._onContextMenuRequested)
-        self.getCuraSceneController().activeBuildPlateChanged.connect(self.updatePlatformActivity)
+        self.getCuraSceneController().activeBuildPlateChanged.connect(self.updatePlatformActivityDelayed)
 
         Resources.addType(self.ResourceTypes.QmlFiles, "qml")
         Resources.addType(self.ResourceTypes.Firmware, "firmware")
@@ -1060,6 +1065,10 @@ class CuraApplication(QtApplication):
     @pyqtProperty(str, notify = sceneBoundingBoxChanged)
     def getSceneBoundingBoxString(self):
         return self._i18n_catalog.i18nc("@info 'width', 'depth' and 'height' are variable names that must NOT be translated; just translate the format of ##x##x## mm.", "%(width).1f x %(depth).1f x %(height).1f mm") % {'width' : self._scene_bounding_box.width.item(), 'depth': self._scene_bounding_box.depth.item(), 'height' : self._scene_bounding_box.height.item()}
+
+    def updatePlatformActivityDelayed(self, node = None):
+        if node is not None and node.getMeshData() is not None:
+            self._update_platform_activity_timer.start()
 
     ##  Update scene bounding box for current build plate
     def updatePlatformActivity(self, node = None):
