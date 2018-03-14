@@ -1,11 +1,10 @@
-# Copyright (c) 2017 Ultimaker B.V.
+# Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from UM.i18n import i18nCatalog
 from UM.OutputDevice.OutputDevice import OutputDevice
-from PyQt5.QtCore import pyqtProperty, QObject, QTimer, pyqtSignal
+from PyQt5.QtCore import pyqtProperty, QObject, QTimer, pyqtSignal, QVariant
 from PyQt5.QtWidgets import QMessageBox
-
 
 from UM.Logger import Logger
 from UM.Signal import signalemitter
@@ -17,6 +16,7 @@ from typing import List, Optional
 MYPY = False
 if MYPY:
     from cura.PrinterOutput.PrinterOutputModel import PrinterOutputModel
+    from cura.PrinterOutput.ConfigurationModel import ConfigurationModel
 
 i18n_catalog = i18nCatalog("cura")
 
@@ -44,10 +44,14 @@ class PrinterOutputDevice(QObject, OutputDevice):
     # Signal to indicate that the info text about the connection has changed.
     connectionTextChanged = pyqtSignal()
 
+    # Signal to indicate that the configuration of one of the printers has changed.
+    uniqueConfigurationsChanged = pyqtSignal()
+
     def __init__(self, device_id, parent = None):
         super().__init__(device_id = device_id, parent = parent)
 
         self._printers = []  # type: List[PrinterOutputModel]
+        self._unique_configurations = []   # type: List[ConfigurationModel]
 
         self._monitor_view_qml_path = ""
         self._monitor_component = None
@@ -69,6 +73,8 @@ class PrinterOutputDevice(QObject, OutputDevice):
 
         self._address = ""
         self._connection_text = ""
+        self.printersChanged.connect(self._onPrintersChanged)
+        Application.getInstance().getOutputDeviceManager().outputDevicesChanged.connect(self._updateUniqueConfigurations)
 
     @pyqtProperty(str, notify = connectionTextChanged)
     def address(self):
@@ -174,6 +180,23 @@ class PrinterOutputDevice(QObject, OutputDevice):
             self._accepts_commands = accepts_commands
 
             self.acceptsCommandsChanged.emit()
+
+    # Returns the unique configurations of the printers within this output device
+    @pyqtProperty("QVariantList", notify = uniqueConfigurationsChanged)
+    def uniqueConfigurations(self):
+        return self._unique_configurations
+
+    def _updateUniqueConfigurations(self):
+        self._unique_configurations = list(set([printer.printerConfiguration for printer in self._printers if printer.printerConfiguration is not None]))
+        self._unique_configurations.sort(key = lambda k: k.printerType)
+        self.uniqueConfigurationsChanged.emit()
+
+    def _onPrintersChanged(self):
+        for printer in self._printers:
+            printer.configurationChanged.connect(self._updateUniqueConfigurations)
+
+        # At this point there may be non-updated configurations
+        self._updateUniqueConfigurations()
 
 
 ##  The current processing state of the backend.

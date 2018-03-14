@@ -66,7 +66,7 @@ class Snapshot:
         size = max(bbox.width, bbox.height, bbox.depth * 0.5)
 
         # Looking from this direction (x, y, z) in OGL coordinates
-        looking_from_offset = Vector(1, 1, 2)
+        looking_from_offset = Vector(1, 1, -2)
         if size > 0:
             # determine the watch distance depending on the size
             looking_from_offset = looking_from_offset * size * 1.3

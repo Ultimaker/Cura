@@ -1,11 +1,11 @@
-# Copyright (c) 2017 Ultimaker B.V.
+# Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from PyQt5.QtCore import pyqtSignal, pyqtProperty, QObject, QVariant, pyqtSlot
-from UM.Logger import Logger
-from typing import Optional, List
+from typing import Optional
 from UM.Math.Vector import Vector
-from cura.PrinterOutput.ExtruderOuputModel import ExtruderOutputModel
+from cura.PrinterOutput.ConfigurationModel import ConfigurationModel
+from cura.PrinterOutput.ExtruderOutputModel import ExtruderOutputModel
 
 MYPY = False
 if MYPY:
@@ -22,8 +22,10 @@ class PrinterOutputModel(QObject):
     nameChanged = pyqtSignal()
     headPositionChanged = pyqtSignal()
     keyChanged = pyqtSignal()
-    typeChanged = pyqtSignal()
+    printerTypeChanged = pyqtSignal()
+    buildplateChanged = pyqtSignal()
     cameraChanged = pyqtSignal()
+    configurationChanged = pyqtSignal()
 
     def __init__(self, output_controller: "PrinterOutputController", number_of_extruders: int = 1, parent=None, firmware_version = ""):
         super().__init__(parent)
@@ -32,13 +34,18 @@ class PrinterOutputModel(QObject):
         self._name = ""
         self._key = ""  # Unique identifier
         self._controller = output_controller
-        self._extruders = [ExtruderOutputModel(printer=self) for i in range(number_of_extruders)]
+        self._extruders = [ExtruderOutputModel(printer = self, position = i) for i in range(number_of_extruders)]
+        self._printer_configuration = ConfigurationModel()    # Indicates the current configuration setup in this printer
         self._head_position = Vector(0, 0, 0)
         self._active_print_job = None  # type: Optional[PrintJobOutputModel]
         self._firmware_version = firmware_version
         self._printer_state = "unknown"
         self._is_preheating = False
-        self._type = ""
+        self._printer_type = ""
+        self._buildplate_name = None
+        # Update the printer configuration every time any of the extruders changes its configuration
+        for extruder in self._extruders:
+            extruder.extruderConfigurationChanged.connect(self._updateExtruderConfiguration)
 
         self._camera = None
 
@@ -64,14 +71,27 @@ class PrinterOutputModel(QObject):
     def camera(self):
         return self._camera
 
-    @pyqtProperty(str, notify = typeChanged)
+    @pyqtProperty(str, notify = printerTypeChanged)
     def type(self):
-        return self._type
+        return self._printer_type
 
-    def updateType(self, type):
-        if self._type != type:
-            self._type = type
-            self.typeChanged.emit()
+    def updateType(self, printer_type):
+        if self._printer_type != printer_type:
+            self._printer_type = printer_type
+            self._printer_configuration.printerType = self._printer_type
+            self.printerTypeChanged.emit()
+            self.configurationChanged.emit()
+
+    @pyqtProperty(str, notify = buildplateChanged)
+    def buildplate(self):
+        return self._buildplate_name
+
+    def updateBuildplateName(self, buildplate_name):
+        if self._buildplate_name != buildplate_name:
+            self._buildplate_name = buildplate_name
+            self._printer_configuration.buildplateConfiguration = self._buildplate_name
+            self.buildplateChanged.emit()
+            self.configurationChanged.emit()
 
     @pyqtProperty(str, notify=keyChanged)
     def key(self):
@@ -238,3 +258,14 @@ class PrinterOutputModel(QObject):
         if self._controller:
             return self._controller.can_control_manually
         return False
+
+    # Returns the configuration (material, variant and buildplate) of the current printer
+    @pyqtProperty(QObject, notify = configurationChanged)
+    def printerConfiguration(self):
+        if self._printer_configuration.isValid():
+            return self._printer_configuration
+        return None
+
+    def _updateExtruderConfiguration(self):
+        self._printer_configuration.extruderConfigurations = [extruder.extruderConfiguration for extruder in self._extruders]
+        self.configurationChanged.emit()

@@ -16,6 +16,8 @@ Column
 
     property int currentExtruderIndex: Cura.ExtruderManager.activeExtruderIndex;
     property bool currentExtruderVisible: extrudersList.visible;
+    property bool printerConnected: Cura.MachineManager.printerOutputDevices.length != 0
+    property bool hasManyPrinterTypes: printerConnected ? Cura.MachineManager.printerOutputDevices[0].connectedPrintersTypeCount.length > 1 : false
 
     spacing: Math.round(UM.Theme.getSize("sidebar_margin").width * 0.9)
 
@@ -24,14 +26,64 @@ Column
 
     Item
     {
+        id: initialSeparator
         anchors
         {
             left: parent.left
             right: parent.right
         }
-        visible: extruderSelectionRow.visible
+        visible: printerTypeSelectionRow.visible || buildplateRow.visible || extruderSelectionRow.visible
         height: UM.Theme.getSize("default_lining").height
         width: height
+    }
+
+    // Printer Type Row
+    Item
+    {
+        id: printerTypeSelectionRow
+        height: UM.Theme.getSize("sidebar_setup").height
+        visible: printerConnected && hasManyPrinterTypes && !sidebar.monitoringPrint && !sidebar.hideSettings
+
+        anchors
+        {
+            left: parent.left
+            leftMargin: UM.Theme.getSize("sidebar_margin").width
+            right: parent.right
+            rightMargin: UM.Theme.getSize("sidebar_margin").width
+        }
+
+        Label
+        {
+            id: configurationLabel
+            text: catalog.i18nc("@label", "Printer type");
+            width: Math.round(parent.width * 0.4 - UM.Theme.getSize("default_margin").width)
+            height: parent.height
+            verticalAlignment: Text.AlignVCenter
+            font: UM.Theme.getFont("default");
+            color: UM.Theme.getColor("text");
+        }
+
+        ToolButton
+        {
+            id: printerTypeSelection
+            text: Cura.MachineManager.activeMachineDefinitionName
+            tooltip: Cura.MachineManager.activeMachineDefinitionName
+            height: UM.Theme.getSize("setting_control").height
+            width: Math.round(parent.width * 0.7) + UM.Theme.getSize("sidebar_margin").width
+            anchors.right: parent.right
+            style: UM.Theme.styles.sidebar_header_button
+            activeFocusOnPress: true;
+
+            menu: PrinterTypeMenu { }
+        }
+    }
+
+    Rectangle {
+        id: headerSeparator
+        width: parent.width
+        visible: printerTypeSelectionRow.visible
+        height: visible ? UM.Theme.getSize("sidebar_lining").height : 0
+        color: UM.Theme.getColor("sidebar_lining")
     }
 
     // Extruder Row
@@ -261,7 +313,7 @@ Column
         id: variantRowSpacer
         height: Math.round(UM.Theme.getSize("sidebar_margin").height / 4)
         width: height
-        visible: !extruderSelectionRow.visible
+        visible: !extruderSelectionRow.visible && !initialSeparator.visible
     }
 
     // Material Row
@@ -284,6 +336,8 @@ Column
             id: materialLabel
             text: catalog.i18nc("@label", "Material");
             width: Math.round(parent.width * 0.45 - UM.Theme.getSize("default_margin").width)
+            height: parent.height
+            verticalAlignment: Text.AlignVCenter
             font: UM.Theme.getFont("default");
             color: UM.Theme.getColor("text");
         }
@@ -292,15 +346,8 @@ Column
         {
             id: materialSelection
 
-            property var currentRootMaterialName:
-            {
-                var materials = Cura.MachineManager.currentRootMaterialName;
-                var materialName = "";
-                if (base.currentExtruderIndex in materials) {
-                    materialName = materials[base.currentExtruderIndex];
-                }
-                return materialName;
-            }
+            property var activeExtruder: Cura.MachineManager.activeStack
+            property var currentRootMaterialName: activeExtruder.material.name
 
             text: currentRootMaterialName
             tooltip: currentRootMaterialName
@@ -319,7 +366,7 @@ Column
             property var valueWarning: ! Cura.MachineManager.isActiveQualitySupported
 
             function isMaterialSupported () {
-                return Cura.ContainerManager.getContainerMetaDataEntry(Cura.MachineManager.activeMaterialId, "compatible") == "True"
+                return Cura.ContainerManager.getContainerMetaDataEntry(activeExtruder.material.id, "compatible") == "True"
             }
         }
     }
@@ -344,6 +391,8 @@ Column
             id: variantLabel
             text: Cura.MachineManager.activeDefinitionVariantsName;
             width: Math.round(parent.width * 0.45 - UM.Theme.getSize("default_margin").width)
+            height: parent.height
+            verticalAlignment: Text.AlignVCenter
             font: UM.Theme.getFont("default");
             color: UM.Theme.getColor("text");
         }
@@ -364,17 +413,14 @@ Column
         }
     }
 
-    //Buildplate row separator
     Rectangle {
-        id: separator
-
+        id: buildplateSeparator
+        anchors.left: parent.left
         anchors.leftMargin: UM.Theme.getSize("sidebar_margin").width
-        anchors.rightMargin: UM.Theme.getSize("sidebar_margin").width
-        anchors.horizontalCenter: parent.horizontalCenter
+        width: parent.width - 2 * UM.Theme.getSize("sidebar_margin").width
         visible: buildplateRow.visible
-        width: parent.width - UM.Theme.getSize("sidebar_margin").width * 2
-        height: visible ? Math.floor(UM.Theme.getSize("sidebar_lining_thin").height / 2) : 0
-        color: UM.Theme.getColor("sidebar_lining_thin")
+        height: visible ? UM.Theme.getSize("sidebar_lining_thin").height : 0
+        color: UM.Theme.getColor("sidebar_lining")
     }
 
     //Buildplate row
@@ -397,6 +443,8 @@ Column
             id: bulidplateLabel
             text: catalog.i18nc("@label", "Build plate");
             width: Math.floor(parent.width * 0.45 - UM.Theme.getSize("default_margin").width)
+            height: parent.height
+            verticalAlignment: Text.AlignVCenter
             font: UM.Theme.getFont("default");
             color: UM.Theme.getColor("text");
         }
@@ -417,74 +465,6 @@ Column
 
             property var valueError: !Cura.MachineManager.variantBuildplateCompatible && !Cura.MachineManager.variantBuildplateUsable
             property var valueWarning: Cura.MachineManager.variantBuildplateUsable
-        }
-    }
-
-    // Material info row
-    Item
-    {
-        id: materialInfoRow
-        height: Math.round(UM.Theme.getSize("sidebar_setup").height / 2)
-        visible: (Cura.MachineManager.hasVariants || Cura.MachineManager.hasMaterials) && !sidebar.monitoringPrint && !sidebar.hideSettings
-
-        anchors
-        {
-            left: parent.left
-            leftMargin: UM.Theme.getSize("sidebar_margin").width
-            right: parent.right
-            rightMargin: UM.Theme.getSize("sidebar_margin").width
-        }
-
-        Item {
-            height: UM.Theme.getSize("sidebar_setup").height
-            anchors.right: parent.right
-            width: Math.round(parent.width * 0.7 + UM.Theme.getSize("sidebar_margin").width)
-
-            UM.RecolorImage {
-                id: warningImage
-                anchors.right: materialInfoLabel.left
-                anchors.rightMargin: UM.Theme.getSize("default_margin").width
-                anchors.verticalCenter: parent.Bottom
-                source: UM.Theme.getIcon("warning")
-                width: UM.Theme.getSize("section_icon").width
-                height: UM.Theme.getSize("section_icon").height
-                color: UM.Theme.getColor("material_compatibility_warning")
-                visible: !Cura.MachineManager.isCurrentSetupSupported
-            }
-
-            Label {
-                id: materialInfoLabel
-                wrapMode: Text.WordWrap
-                text: "<a href='%1'>" + catalog.i18nc("@label", "Check compatibility") + "</a>"
-                font: UM.Theme.getFont("default")
-                color: UM.Theme.getColor("text")
-                linkColor: UM.Theme.getColor("text_link")
-                verticalAlignment: Text.AlignTop
-                anchors.top: parent.top
-                anchors.right: parent.right
-                anchors.bottom: parent.bottom
-
-                MouseArea {
-                    anchors.fill: parent
-                    hoverEnabled: true
-                    onClicked: {
-                        // open the material URL with web browser
-                        var version = UM.Application.version;
-                        var machineName = Cura.MachineManager.activeMachine.definition.id;
-                        var url = "https://ultimaker.com/materialcompatibility/" + version + "/" + machineName + "?utm_source=cura&utm_medium=software&utm_campaign=resources";
-                        Qt.openUrlExternally(url);
-                    }
-                    onEntered: {
-                        var content = catalog.i18nc("@tooltip", "Click to check the material compatibility on Ultimaker.com.");
-                        base.showTooltip(
-                            materialInfoRow,
-                            Qt.point(-UM.Theme.getSize("sidebar_margin").width, 0),
-                            catalog.i18nc("@tooltip", content)
-                        );
-                    }
-                    onExited: base.hideTooltip();
-                }
-            }
         }
     }
 
