@@ -244,15 +244,17 @@ Item
                     anchors.topMargin: UM.Theme.getSize("sidebar_margin").height
 
                     // This Item is used only for tooltip, for slider area which is unavailable
-                    Item{
-
-                        function showTooltip (showTooltip) {
-                            if(showTooltip){
-                                var content = catalog.i18nc("@tooltip","This quality profile is not available for you current material and nozzle configuration. Please change these to enable this quality profile")
-                                base.showTooltip(qualityRow, Qt.point(-UM.Theme.getSize("sidebar_margin").width, customisedSettings.height),  content)
+                    Item
+                    {
+                        function showTooltip (showTooltip)
+                        {
+                            if (showTooltip) {
+                                var content = catalog.i18nc("@tooltip", "This quality profile is not available for you current material and nozzle configuration. Please change these to enable this quality profile")
+                                base.showTooltip(qualityRow, Qt.point(-UM.Theme.getSize("sidebar_margin").width, customisedSettings.height), content)
                             }
-                            else
-                                base.hideTooltip();
+                            else {
+                                base.hideTooltip()
+                            }
                         }
 
                         id: unavailableLineToolTip
@@ -261,7 +263,8 @@ Item
                         x: 0
                         anchors.verticalCenter: qualitySlider.verticalCenter
 
-                        Rectangle{
+                        Rectangle
+                        {
                             id: leftArea
                             width: {
                                 if(qualityModel.availableTotalTicks == 0)
@@ -272,7 +275,8 @@ Item
                             height: parent.height
                             color: "transparent"
 
-                            MouseArea {
+                            MouseArea
+                            {
                                 anchors.fill: parent
                                 hoverEnabled: true
                                 enabled: Cura.SimpleModeSettingsManager.isProfileUserCreated == false
@@ -281,7 +285,8 @@ Item
                             }
                         }
 
-                        Rectangle{
+                        Rectangle
+                        {
                             id: rightArea
                             width: {
                                 if(qualityModel.availableTotalTicks == 0)
@@ -292,7 +297,7 @@ Item
                             height: parent.height
                             color: "transparent"
                             x: {
-                                if(qualityModel.availableTotalTicks == 0){
+                                if (qualityModel.availableTotalTicks == 0) {
                                     return 0
                                 }
 
