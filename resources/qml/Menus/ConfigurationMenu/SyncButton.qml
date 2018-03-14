@@ -86,11 +86,6 @@ Button
         label: Label {}
     }
 
-    onClicked:
-    {
-        panelVisible = !panelVisible
-    }
-
     Connections {
         target: outputDevice
         onUniqueConfigurationsChanged: {

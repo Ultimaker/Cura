@@ -66,6 +66,7 @@ Column
                 configuration: modelData
                 onActivateConfiguration:
                 {
+                    switchPopupState()
                     Cura.MachineManager.applyRemoteConfiguration(configuration)
                 }
             }
