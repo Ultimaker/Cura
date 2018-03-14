@@ -216,16 +216,21 @@ class CuraContainerRegistry(ContainerRegistry):
                 # Make sure we have a profile_definition in the file:
                 if profile_definition is None:
                     break
+                machine_definition = self.findDefinitionContainers(id = profile_definition)
+                if not machine_definition:
+                    Logger.log("e", "Incorrect profile [%s]. Unknown machine type [%s]", file_name, profile_definition)
+                    return {"status": "error",
+                            "message": catalog.i18nc("@info:status Don't translate the XML tags <filename> or <message>!", "This profile <filename>{0}</filename> contains incorrect data, could not import it.", file_name)
+                            }
+                machine_definition = machine_definition[0]
 
                 # Get the expected machine definition.
                 # i.e.: We expect gcode for a UM2 Extended to be defined as normal UM2 gcode...
+                profile_definition = getMachineDefinitionIDForQualitySearch(machine_definition)
                 expected_machine_definition = getMachineDefinitionIDForQualitySearch(global_container_stack.definition)
 
-                # ...but that's not always the case for Cura 3.1 and older, so also get the current machine:
-                current_machine_definition = global_container_stack.definition.getId()
-
                 # And check if the profile_definition matches either one (showing error if not):
-                if profile_definition not in (expected_machine_definition, current_machine_definition):
+                if profile_definition != expected_machine_definition:
                     Logger.log("e", "Profile [%s] is for machine [%s] but the current active machine is [%s]. Will not import the profile", file_name, profile_definition, expected_machine_definition)
                     return { "status": "error",
                              "message": catalog.i18nc("@info:status Don't translate the XML tags <filename> or <message>!", "The machine defined in profile <filename>{0}</filename> ({1}) doesn't match with your current machine ({2}), could not import it.", file_name, profile_definition, expected_machine_definition)}
@@ -345,9 +350,8 @@ class CuraContainerRegistry(ContainerRegistry):
         if not quality_type:
             return catalog.i18nc("@info:status", "Profile is missing a quality type.")
 
-        quality_type_criteria = {"quality_type": quality_type}
         global_stack = Application.getInstance().getGlobalContainerStack()
-        definition_id = getMachineDefinitionIDForQualitySearch(global_stack)
+        definition_id = getMachineDefinitionIDForQualitySearch(global_stack.definition)
         profile.setDefinition(definition_id)
 
         # Check to make sure the imported profile actually makes sense in context of the current configuration.

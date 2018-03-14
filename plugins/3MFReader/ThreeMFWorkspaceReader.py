@@ -719,7 +719,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
 
             # Get the correct extruder definition IDs for quality changes
             from cura.Machines.QualityManager import getMachineDefinitionIDForQualitySearch
-            machine_definition_id_for_quality = getMachineDefinitionIDForQualitySearch(global_stack)
+            machine_definition_id_for_quality = getMachineDefinitionIDForQualitySearch(global_stack.definition)
             machine_definition_for_quality = self._container_registry.findDefinitionContainers(id = machine_definition_id_for_quality)[0]
 
             quality_changes_info = self._machine_info.quality_changes_info
