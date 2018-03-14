@@ -754,15 +754,13 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                 quality_changes_containers = self._container_registry.findInstanceContainers(name = quality_changes_name,
                                                                                              type = "quality_changes")
                 for container in quality_changes_containers:
-                    extruder_definition_id = container.getMetaDataEntry("extruder")
-                    if not extruder_definition_id:
+                    extruder_position = container.getMetaDataEntry("position")
+                    if extruder_position is None:
                         quality_changes_info.global_info.container = container
                     else:
-                        extruder_definition_metadata = self._container_registry.findDefinitionContainersMetadata(id = extruder_definition_id)[0]
-                        position = extruder_definition_metadata["position"]
-                        if position not in quality_changes_info.extruder_info_dict:
-                            quality_changes_info.extruder_info_dict[position] = ContainerInfo(None, None, None)
-                        container_info = quality_changes_info.extruder_info_dict[position]
+                        if extruder_position not in quality_changes_info.extruder_info_dict:
+                            quality_changes_info.extruder_info_dict[extruder_position] = ContainerInfo(None, None, None)
+                        container_info = quality_changes_info.extruder_info_dict[extruder_position]
                         container_info.container = container
 
             # If there is no quality changes for any extruder, create one.
