@@ -266,10 +266,11 @@ Item
                         Rectangle
                         {
                             id: leftArea
-                            width: {
-                                if(qualityModel.availableTotalTicks == 0)
-                                    return 0
-
+                            width:
+                            {
+                                if (qualityModel.availableTotalTicks == 0) {
+                                    return qualityModel.qualitySliderStepWidth * qualityModel.totalTicks
+                                }
                                 return qualityModel.qualitySliderStepWidth * qualityModel.qualitySliderAvailableMin - 10
                             }
                             height: parent.height
