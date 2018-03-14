@@ -467,13 +467,13 @@ class MachineManager(QObject):
             return self._global_container_stack.getId()
         return ""
 
-    @pyqtProperty(str, notify = globalContainerChanged)
+    @pyqtProperty(str, notify = outputDevicesChanged)
     def activeMachineNetworkKey(self) -> str:
         if self._global_container_stack:
             return self._global_container_stack.getMetaDataEntry("um_network_key")
         return ""
 
-    @pyqtProperty(str, notify = globalContainerChanged)
+    @pyqtProperty(str, notify = outputDevicesChanged)
     def activeMachineNetworkGroupName(self) -> str:
         if self._global_container_stack:
             return self._global_container_stack.getMetaDataEntry("connect_group_name")
