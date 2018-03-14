@@ -212,15 +212,28 @@ class CuraContainerRegistry(ContainerRegistry):
                     return { "status": "error",
                              "message": catalog.i18nc("@info:status Don't translate the XML tags <filename> or <message>!", "This profile <filename>{0}</filename> contains incorrect data, could not import it.", file_name)}
                 profile_definition = global_profile.getMetaDataEntry("definition")
-                expected_machine_definition = "fdmprinter"
-                if parseBool(global_container_stack.getMetaDataEntry("has_machine_quality", "False")):
-                    expected_machine_definition = global_container_stack.getMetaDataEntry("quality_definition")
-                    if not expected_machine_definition:
-                        expected_machine_definition = global_container_stack.definition.getId()
-                if expected_machine_definition is not None and profile_definition is not None and profile_definition != expected_machine_definition:
+
+                # Make sure we have a profile_definition in the file:
+                if profile_definition is None:
+                    break
+
+                # Get the expected machine definition.
+                # i.e.: We expect gcode for a UM2 Extended to be defined as normal UM2 gcode...
+                expected_machine_definition = getMachineDefinitionIDForQualitySearch(global_container_stack.definition)
+
+                # ...but that's not always the case for Cura 3.1 and older, so also get the current machine:
+                current_machine_definition = global_container_stack.definition.getId()
+
+                # And check if the profile_definition matches either one (showing error if not):
+                if profile_definition not in (expected_machine_definition, current_machine_definition):
                     Logger.log("e", "Profile [%s] is for machine [%s] but the current active machine is [%s]. Will not import the profile", file_name, profile_definition, expected_machine_definition)
                     return { "status": "error",
                              "message": catalog.i18nc("@info:status Don't translate the XML tags <filename> or <message>!", "The machine defined in profile <filename>{0}</filename> ({1}) doesn't match with your current machine ({2}), could not import it.", file_name, profile_definition, expected_machine_definition)}
+
+                # Fix the global quality profile's definition field in case it's not correct
+                global_profile.setMetaDataEntry("definition", expected_machine_definition)
+                quality_name = global_profile.getName()
+                quality_type = global_profile.getMetaDataEntry("quality_type")
 
                 name_seed = os.path.splitext(os.path.basename(file_name))[0]
                 new_name = self.uniqueName(name_seed)
@@ -236,11 +249,11 @@ class CuraContainerRegistry(ContainerRegistry):
                     for idx, extruder in enumerate(global_container_stack.extruders.values()):
                         profile_id = ContainerRegistry.getInstance().uniqueName(global_container_stack.getId() + "_extruder_" + str(idx + 1))
                         profile = InstanceContainer(profile_id)
-                        profile.setName(global_profile.getName())
+                        profile.setName(quality_name)
                         profile.addMetaDataEntry("setting_version", CuraApplication.SettingVersion)
                         profile.addMetaDataEntry("type", "quality_changes")
-                        profile.addMetaDataEntry("definition", global_profile.getMetaDataEntry("definition"))
-                        profile.addMetaDataEntry("quality_type", global_profile.getMetaDataEntry("quality_type"))
+                        profile.addMetaDataEntry("definition", expected_machine_definition)
+                        profile.addMetaDataEntry("quality_type", quality_type)
                         profile.addMetaDataEntry("position", "0")
                         profile.setDirty(True)
                         if idx == 0:

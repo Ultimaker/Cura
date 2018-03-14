@@ -347,7 +347,8 @@ Column
             id: materialSelection
 
             property var activeExtruder: Cura.MachineManager.activeStack
-            property var currentRootMaterialName: activeExtruder.material.name
+            property var hasActiveExtruder: activeExtruder != null
+            property var currentRootMaterialName: hasActiveExtruder ? activeExtruder.material.name : ""
 
             text: currentRootMaterialName
             tooltip: currentRootMaterialName
@@ -366,6 +367,10 @@ Column
             property var valueWarning: ! Cura.MachineManager.isActiveQualitySupported
 
             function isMaterialSupported () {
+                if (!hasActiveExtruder)
+                {
+                    return false;
+                }
                 return Cura.ContainerManager.getContainerMetaDataEntry(activeExtruder.material.id, "compatible") == "True"
             }
         }

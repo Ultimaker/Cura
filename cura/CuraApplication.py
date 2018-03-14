@@ -91,6 +91,7 @@ from cura.Settings.UserChangesModel import UserChangesModel
 from cura.Settings.ExtrudersModel import ExtrudersModel
 from cura.Settings.MaterialSettingsVisibilityHandler import MaterialSettingsVisibilityHandler
 from cura.Settings.ContainerManager import ContainerManager
+from cura.Settings.SettingVisibilityPresetsModel import SettingVisibilityPresetsModel
 
 from cura.ObjectsModel import ObjectsModel
 
@@ -140,6 +141,7 @@ class CuraApplication(QtApplication):
         MachineStack = Resources.UserType + 7
         ExtruderStack = Resources.UserType + 8
         DefinitionChangesContainer = Resources.UserType + 9
+        SettingVisibilityPreset = Resources.UserType + 10
 
     Q_ENUMS(ResourceTypes)
 
@@ -187,6 +189,7 @@ class CuraApplication(QtApplication):
         Resources.addStorageType(self.ResourceTypes.ExtruderStack, "extruders")
         Resources.addStorageType(self.ResourceTypes.MachineStack, "machine_instances")
         Resources.addStorageType(self.ResourceTypes.DefinitionChangesContainer, "definition_changes")
+        Resources.addStorageType(self.ResourceTypes.SettingVisibilityPreset, "setting_visibility")
 
         ContainerRegistry.getInstance().addResourceType(self.ResourceTypes.QualityInstanceContainer, "quality")
         ContainerRegistry.getInstance().addResourceType(self.ResourceTypes.QualityInstanceContainer, "quality_changes")
@@ -373,19 +376,9 @@ class CuraApplication(QtApplication):
 
         preferences.setDefault("local_file/last_used_type", "text/x-gcode")
 
-        setting_visibily_preset_names = self.getVisibilitySettingPresetTypes()
-        preferences.setDefault("general/visible_settings_preset", setting_visibily_preset_names)
+        default_visibility_profile = SettingVisibilityPresetsModel.getInstance().getItem(0)
 
-        preset_setting_visibility_choice = Preferences.getInstance().getValue("general/preset_setting_visibility_choice")
-
-        default_preset_visibility_group_name = "Basic"
-        if preset_setting_visibility_choice == "" or preset_setting_visibility_choice is None:
-            if preset_setting_visibility_choice not in setting_visibily_preset_names:
-                preset_setting_visibility_choice = default_preset_visibility_group_name
-
-        visible_settings = self.getVisibilitySettingPreset(settings_preset_name = preset_setting_visibility_choice)
-        preferences.setDefault("general/visible_settings", visible_settings)
-        preferences.setDefault("general/preset_setting_visibility_choice", preset_setting_visibility_choice)
+        preferences.setDefault("general/visible_settings", ";".join(default_visibility_profile["settings"]))
 
         self.applicationShuttingDown.connect(self.saveSettings)
         self.engineCreatedSignal.connect(self._onEngineCreated)
@@ -402,91 +395,6 @@ class CuraApplication(QtApplication):
 
         CuraApplication.Created = True
 
-    @pyqtSlot(str, result = str)
-    def getVisibilitySettingPreset(self, settings_preset_name) -> str:
-        result = self._loadPresetSettingVisibilityGroup(settings_preset_name)
-        formatted_preset_settings = self._serializePresetSettingVisibilityData(result)
-
-        return formatted_preset_settings
-
-    ## Serialise the given preset setting visibitlity group dictionary into a string which is concatenated by ";"
-    #
-    def _serializePresetSettingVisibilityData(self, settings_data: dict) -> str:
-        result_string = ""
-
-        for key in settings_data:
-            result_string += key + ";"
-            for value in settings_data[key]:
-                result_string += value + ";"
-
-        return result_string
-
-    ## Load the preset setting visibility group with the given name
-    #
-    def _loadPresetSettingVisibilityGroup(self, visibility_preset_name) -> Dict[str, str]:
-        preset_dir = Resources.getPath(Resources.PresetSettingVisibilityGroups)
-
-        result = {}
-        right_preset_found = False
-
-        for item in os.listdir(preset_dir):
-            file_path = os.path.join(preset_dir, item)
-            if not os.path.isfile(file_path):
-                continue
-
-            parser = ConfigParser(allow_no_value = True)  # accept options without any value,
-
-            try:
-                parser.read([file_path])
-
-                if not parser.has_option("general", "name"):
-                    continue
-
-                if parser["general"]["name"] == visibility_preset_name:
-                    right_preset_found = True
-                    for section in parser.sections():
-                        if section == 'general':
-                            continue
-                        else:
-                            section_settings = []
-                            for option in parser[section].keys():
-                                section_settings.append(option)
-
-                            result[section] = section_settings
-
-                if right_preset_found:
-                    break
-
-            except Exception as e:
-                Logger.log("e", "Failed to load setting visibility preset %s: %s", file_path, str(e))
-
-        return result
-
-    ## Check visibility setting preset folder and returns available types
-    #
-    def getVisibilitySettingPresetTypes(self):
-        preset_dir = Resources.getPath(Resources.PresetSettingVisibilityGroups)
-        result = {}
-
-        for item in os.listdir(preset_dir):
-            file_path = os.path.join(preset_dir, item)
-            if not os.path.isfile(file_path):
-                continue
-
-            parser = ConfigParser(allow_no_value=True)  # accept options without any value,
-
-            try:
-                parser.read([file_path])
-
-                if not parser.has_option("general", "name") and not parser.has_option("general", "weight"):
-                    continue
-
-                result[parser["general"]["weight"]] = parser["general"]["name"]
-
-            except Exception as e:
-                Logger.log("e", "Failed to load setting preset %s: %s", file_path, str(e))
-
-        return result
 
     def _onEngineCreated(self):
         self._engine.addImageProvider("camera", CameraImageProvider.CameraImageProvider())
@@ -986,6 +894,7 @@ class CuraApplication(QtApplication):
         qmlRegisterType(MachineNameValidator, "Cura", 1, 0, "MachineNameValidator")
         qmlRegisterType(UserChangesModel, "Cura", 1, 0, "UserChangesModel")
         qmlRegisterSingletonType(ContainerManager, "Cura", 1, 0, "ContainerManager", ContainerManager.createContainerManager)
+        qmlRegisterSingletonType(SettingVisibilityPresetsModel, "Cura", 1, 0, "SettingVisibilityPresetsModel", SettingVisibilityPresetsModel.createSettingVisibilityPresetsModel)
 
         # As of Qt5.7, it is necessary to get rid of any ".." in the path for the singleton to work.
         actions_url = QUrl.fromLocalFile(os.path.abspath(Resources.getPath(CuraApplication.ResourceTypes.QmlFiles, "Actions.qml")))
