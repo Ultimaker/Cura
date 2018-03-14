@@ -372,11 +372,17 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
         print_job.updateState(data["status"])
         print_job.updateOwner(data["owner"])
 
-    def _updatePrinter(self, printer, data):
+    def _updatePrinter(self, printer, data) -> None:
         # For some unknown reason the cluster wants UUID for everything, except for sending a job directly to a printer.
         # Then we suddenly need the unique name. So in order to not have to mess up all the other code, we save a mapping.
         self._printer_uuid_to_unique_name_mapping[data["uuid"]] = data["unique_name"]
-        machine_definition = ContainerRegistry.getInstance().findDefinitionContainers(name = data["machine_variant"])[0]
+
+        definitions = ContainerRegistry.getInstance().findDefinitionContainers(name = data["machine_variant"])
+        if not definitions:
+            Logger.log("w", "Unable to find definition for machine variant %s", data["machine_variant"])
+            return
+
+        machine_definition = definitions[0]
 
         printer.updateName(data["friendly_name"])
         printer.updateKey(data["uuid"])
