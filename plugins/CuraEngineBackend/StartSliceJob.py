@@ -281,7 +281,7 @@ class StartSliceJob(Job):
         default_extruder_position = int(Application.getInstance().getMachineManager().defaultExtruderPosition)
         result = {}
         for key in stack.getAllKeys():
-            setting_type = stack.getProperty(key, "type")
+            setting_type = stack.definition.getProperty(key, "type")
             value = stack.getProperty(key, "value")
             if setting_type == "extruder" and value == -1:
                 # replace with the default value

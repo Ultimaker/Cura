@@ -50,7 +50,6 @@ class MachineManager(QObject):
         self._global_container_stack = None     # type: GlobalStack
 
         self._current_root_material_id = {}
-        self._current_root_material_name = {}
         self._current_quality_group = None
         self._current_quality_changes_group = None
 
@@ -129,6 +128,9 @@ class MachineManager(QObject):
         # When the materials lookup table gets updated, it can mean that a material has its name changed, which should
         # be reflected on the GUI. This signal emission makes sure that it happens.
         self._material_manager.materialsUpdated.connect(self.rootMaterialChanged)
+        # When the materials get updated, it can be that an activated material's diameter gets changed. In that case,
+        # a material update should be triggered to make sure that the machine still has compatible materials activated.
+        self._material_manager.materialsUpdated.connect(self._updateUponMaterialMetadataChange)
         self.rootMaterialChanged.connect(self._onRootMaterialChanged)
 
     activeQualityGroupChanged = pyqtSignal()
@@ -877,11 +879,13 @@ class MachineManager(QObject):
         return self._default_extruder_position
 
     ##  This will fire the propertiesChanged for all settings so they will be updated in the front-end
+    @pyqtSlot()
     def forceUpdateAllSettings(self):
         with postponeSignals(*self._getContainerChangedSignals(), compress = CompressTechnique.CompressPerParameterValue):
             property_names = ["value", "resolve"]
-            for setting_key in self._global_container_stack.getAllKeys():
-                self._global_container_stack.propertiesChanged.emit(setting_key, property_names)
+            for container in [self._global_container_stack] + list(self._global_container_stack.extruders.values()):
+                for setting_key in container.getAllKeys():
+                    container.propertiesChanged.emit(setting_key, property_names)
 
     @pyqtSlot(int, bool)
     def setExtruderEnabled(self, position: int, enabled) -> None:
@@ -926,27 +930,17 @@ class MachineManager(QObject):
             return []
         return sorted(list(self._global_container_stack.extruders.keys()))
 
-    ##  Update _current_root_material_id and _current_root_material_name when
-    #   the current root material was changed.
+    ##  Update _current_root_material_id when the current root material was changed.
     def _onRootMaterialChanged(self):
         self._current_root_material_id = {}
 
         if self._global_container_stack:
             for position in self._global_container_stack.extruders:
                 self._current_root_material_id[position] = self._global_container_stack.extruders[position].material.getMetaDataEntry("base_file")
-            self._current_root_material_name = {}
-            for position in self._global_container_stack.extruders:
-                if position not in self._current_root_material_name:
-                    material = self._global_container_stack.extruders[position].material
-                    self._current_root_material_name[position] = material.getName()
 
     @pyqtProperty("QVariant", notify = rootMaterialChanged)
     def currentRootMaterialId(self):
         return self._current_root_material_id
-
-    @pyqtProperty("QVariant", notify = rootMaterialChanged)
-    def currentRootMaterialName(self):
-        return self._current_root_material_name
 
     ##  Return the variant names in the extruder stack(s).
     ##  For the variant in the global stack, use activeVariantBuildplateName
@@ -1044,15 +1038,12 @@ class MachineManager(QObject):
         if container_node:
             self._global_container_stack.extruders[position].material = container_node.getContainer()
             root_material_id = container_node.metadata["base_file"]
-            root_material_name = container_node.getContainer().getName()
         else:
             self._global_container_stack.extruders[position].material = self._empty_material_container
             root_material_id = None
-            root_material_name = None
         # The _current_root_material_id is used in the MaterialMenu to see which material is selected
         if root_material_id != self._current_root_material_id[position]:
             self._current_root_material_id[position] = root_material_id
-            self._current_root_material_name[position] = root_material_name
             self.rootMaterialChanged.emit()
 
     def activeMaterialsCompatible(self):
@@ -1066,7 +1057,7 @@ class MachineManager(QObject):
         return True
 
     ## Update current quality type and machine after setting material
-    def _updateQualityWithMaterial(self):
+    def _updateQualityWithMaterial(self, *args):
         Logger.log("i", "Updating quality/quality_changes due to material change")
         current_quality_type = None
         if self._current_quality_group:
@@ -1111,9 +1102,15 @@ class MachineManager(QObject):
             extruder = self._global_container_stack.extruders[position]
 
             current_material_base_name = extruder.material.getMetaDataEntry("base_file")
-            current_variant_name = extruder.variant.getMetaDataEntry("name")
+            current_variant_name = None
+            if extruder.variant.getId() != self._empty_variant_container.getId():
+                current_variant_name = extruder.variant.getMetaDataEntry("name")
 
-            material_diameter = self._global_container_stack.getProperty("material_diameter", "value")
+            from UM.Settings.Interfaces import PropertyEvaluationContext
+            from cura.Settings.CuraContainerStack import _ContainerIndexes
+            context = PropertyEvaluationContext(extruder)
+            context.context["evaluate_from_container_index"] = _ContainerIndexes.DefinitionChanges
+            material_diameter = self._global_container_stack.getProperty("material_diameter", "value", context)
             candidate_materials = self._material_manager.getAvailableMaterials(
                 self._global_container_stack.definition.getId(),
                 current_variant_name,
@@ -1127,6 +1124,11 @@ class MachineManager(QObject):
                 new_material = candidate_materials[current_material_base_name]
                 self._setMaterial(position, new_material)
                 continue
+
+            # The current material is not available, find the preferred one
+            material_node = self._material_manager.getDefaultMaterial(self._global_container_stack, current_variant_name)
+            if material_node is not None:
+                self._setMaterial(position, material_node)
 
     ##  Given a printer definition name, select the right machine instance. In case it doesn't exist, create a new
     #   instance with the same network key.
@@ -1252,3 +1254,8 @@ class MachineManager(QObject):
         elif self._current_quality_group:
             name = self._current_quality_group.name
         return name
+
+    def _updateUponMaterialMetadataChange(self):
+        with postponeSignals(*self._getContainerChangedSignals(), compress = CompressTechnique.CompressPerParameterValue):
+            self._updateMaterialWithVariant(None)
+            self._updateQualityWithMaterial()

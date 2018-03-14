@@ -15,8 +15,8 @@ class GenericMaterialsModel(BaseMaterialsModel):
         self._extruder_manager = CuraApplication.getInstance().getExtruderManager()
         self._material_manager = CuraApplication.getInstance().getMaterialManager()
 
-        self._machine_manager.globalContainerChanged.connect(self._update)
-        self._material_manager.materialsUpdated.connect(self._update)
+        self._machine_manager.activeStackChanged.connect(self._update) #Update when switching machines.
+        self._material_manager.materialsUpdated.connect(self._update) #Update when the list of materials changes.
         self._update()
 
     def _update(self):
