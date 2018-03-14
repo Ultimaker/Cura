@@ -127,9 +127,11 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
         if self._connection_state != ConnectionState.closed:
             self.close()
 
-        hex_file = intelHex.readHex(self._firmware_location)
-        if len(hex_file) == 0:
-            Logger.log("e", "Unable to read provided hex file. Could not update firmware")
+        try:
+            hex_file = intelHex.readHex(self._firmware_location)
+            assert len(hex_file) > 0
+        except (FileNotFoundError, AssertionError):
+            Logger.log("e", "Unable to read provided hex file. Could not update firmware.")
             self.setFirmwareUpdateState(FirmwareUpdateState.firmware_not_found_error)
             return
 
