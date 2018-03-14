@@ -10,17 +10,22 @@ import UM 1.2 as UM
 import Cura 1.0 as Cura
 import "Menus"
 
-ToolButton {
+ToolButton
+{
     id: base
     property bool isNetworkPrinter: Cura.MachineManager.activeMachineNetworkKey != ""
+    property bool printerConnected: Cura.MachineManager.printerOutputDevices.length != 0
     property var printerStatus: Cura.MachineManager.printerOutputDevices.length != 0 ? "connected" : "disconnected"
     text: isNetworkPrinter ? Cura.MachineManager.activeMachineNetworkGroupName : Cura.MachineManager.activeMachineName
 
     tooltip: Cura.MachineManager.activeMachineName
 
-    style: ButtonStyle {
-        background: Rectangle {
-            color: {
+    style: ButtonStyle
+    {
+        background: Rectangle
+        {
+            color:
+            {
                 if (control.pressed) {
                     return UM.Theme.getColor("sidebar_header_active");
                 }
@@ -33,7 +38,8 @@ ToolButton {
             }
             Behavior on color { ColorAnimation { duration: 50; } }
 
-            UM.RecolorImage {
+            UM.RecolorImage
+            {
                 id: downArrow
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.right: parent.right
@@ -46,18 +52,21 @@ ToolButton {
                 source: UM.Theme.getIcon("arrow_bottom")
             }
 
-            PrinterStatusIcon {
+            PrinterStatusIcon
+            {
                 id: printerStatusIcon
-                visible: isNetworkPrinter
+                visible: printerConnected
                 status: printerStatus
-                anchors {
+                anchors
+                {
                     verticalCenter: parent.verticalCenter
                     left: parent.left
                     leftMargin: UM.Theme.getSize("sidebar_margin").width
                 }
             }
 
-            Label {
+            Label
+            {
                 id: sidebarComboBoxLabel
                 color: UM.Theme.getColor("sidebar_header_text_active")
                 text: control.text;
@@ -74,14 +83,4 @@ ToolButton {
     }
 
     menu: PrinterMenu { }
-
-    // Make the toolbutton react when the outputdevice changes
-    Connections
-    {
-        target: Cura.MachineManager
-        onOutputDevicesChanged:
-        {
-            base.isNetworkPrinter = Cura.MachineManager.activeMachineNetworkKey != ""
-        }
-    }
 }
