@@ -19,6 +19,7 @@ Rectangle
     property bool hideView: Cura.MachineManager.activeMachineName == ""
 
     // Is there an output device for this printer?
+    property bool isNetworkPrinter: Cura.MachineManager.activeMachineNetworkKey != ""
     property bool printerConnected: Cura.MachineManager.printerOutputDevices.length != 0
     property bool printerAcceptsCommands: printerConnected && Cura.MachineManager.printerOutputDevices[0].acceptsCommands
     property var connectedPrinter: Cura.MachineManager.printerOutputDevices.length >= 1 ? Cura.MachineManager.printerOutputDevices[0] : null
@@ -106,7 +107,7 @@ Rectangle
 
     ConfigurationSelection {
         id: configSelection
-        visible: printerConnected && !sidebar.monitoringPrint && !sidebar.hideSettings
+        visible: isNetworkPrinter && !sidebar.monitoringPrint && !sidebar.hideSettings
         width: visible ? Math.round(base.width * 0.15) : 0
         height: UM.Theme.getSize("sidebar_header").height
         anchors.top: base.top

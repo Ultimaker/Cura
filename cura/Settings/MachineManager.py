@@ -628,7 +628,7 @@ class MachineManager(QObject):
     @pyqtProperty(str, notify = globalContainerChanged)
     def activeQualityDefinitionId(self) -> str:
         if self._global_container_stack:
-            return getMachineDefinitionIDForQualitySearch(self._global_container_stack)
+            return getMachineDefinitionIDForQualitySearch(self._global_container_stack.definition)
         return ""
 
     ##  Gets how the active definition calls variants
@@ -882,7 +882,7 @@ class MachineManager(QObject):
     @pyqtSlot()
     def forceUpdateAllSettings(self):
         with postponeSignals(*self._getContainerChangedSignals(), compress = CompressTechnique.CompressPerParameterValue):
-            property_names = ["value", "resolve"]
+            property_names = ["value", "resolve", "validationState"]
             for container in [self._global_container_stack] + list(self._global_container_stack.extruders.values()):
                 for setting_key in container.getAllKeys():
                     container.propertiesChanged.emit(setting_key, property_names)
