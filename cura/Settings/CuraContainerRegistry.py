@@ -212,12 +212,20 @@ class CuraContainerRegistry(ContainerRegistry):
                     return { "status": "error",
                              "message": catalog.i18nc("@info:status Don't translate the XML tags <filename> or <message>!", "This profile <filename>{0}</filename> contains incorrect data, could not import it.", file_name)}
                 profile_definition = global_profile.getMetaDataEntry("definition")
-                expected_machine_definition = "fdmprinter"
-                if parseBool(global_container_stack.getMetaDataEntry("has_machine_quality", "False")):
-                    expected_machine_definition = global_container_stack.getMetaDataEntry("quality_definition")
-                    if not expected_machine_definition:
-                        expected_machine_definition = global_container_stack.definition.getId()
-                if expected_machine_definition is not None and profile_definition is not None and profile_definition != expected_machine_definition:
+
+                # Make sure we have a profile_definition in the file:
+                if profile_definition is None:
+                    break
+
+                # Get the expected machine definition.
+                # i.e.: We expect gcode for a UM2 Extended to be defined as normal UM2 gcode...
+                expected_machine_definition = getMachineDefinitionIDForQualitySearch(global_container_stack.definition)
+
+                # ...but that's not always the case for Cura 3.1 and older, so also get the current machine:
+                current_machine_definition = global_container_stack.definition.getId()
+
+                # And check if the profile_definition matches either one (showing error if not):
+                if profile_definition not in (expected_machine_definition, current_machine_definition):
                     Logger.log("e", "Profile [%s] is for machine [%s] but the current active machine is [%s]. Will not import the profile", file_name, profile_definition, expected_machine_definition)
                     return { "status": "error",
                              "message": catalog.i18nc("@info:status Don't translate the XML tags <filename> or <message>!", "The machine defined in profile <filename>{0}</filename> ({1}) doesn't match with your current machine ({2}), could not import it.", file_name, profile_definition, expected_machine_definition)}
