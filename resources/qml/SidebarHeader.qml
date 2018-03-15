@@ -178,6 +178,7 @@ Column
                         text: catalog.i18nc("@action:inmenu", "Disable Extruder")
                         onTriggered: Cura.MachineManager.setExtruderEnabled(model.index, false)
                         visible: extruder_enabled
+                        enabled: Cura.MachineManager.numberExtrudersEnabled > 1
                     }
                 }
 
