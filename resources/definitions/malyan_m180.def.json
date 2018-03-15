@@ -25,8 +25,7 @@
             "default_value": true
         },
         "machine_nozzle_size": {
-            "default_value": 0.4,
-            "minimum_value": "0.001"
+            "default_value": 0.4
         },
         "machine_head_with_fans_polygon": {
             "default_value": [
@@ -35,6 +34,21 @@
                 [ 18, -18 ],
                 [ 18, 35 ]
             ]
+        },
+        "machine_max_feedrate_z": {
+            "default_value": 400
+        },
+        "machine_steps_per_mm_x": {
+            "default_value": 93
+        },
+        "machine_steps_per_mm_y": {
+            "default_value": 93
+        },
+        "machine_steps_per_mm_z": {
+            "default_value": 1600
+        },
+        "machine_steps_per_mm_e": {
+            "default_value": 92
         },
         "gantry_height": {
             "default_value": 55
