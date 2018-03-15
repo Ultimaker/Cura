@@ -1220,6 +1220,14 @@ class MachineManager(QObject):
                 for container in hidden_containers:
                     container.setMetaDataEntry("connect_group_name", group_name)
 
+    ##  This method checks if there is an instance connected to the given network_key
+    def existNetworkInstances(self, network_key: str) -> bool:
+        metadata_filter = {"um_network_key": network_key}
+        containers = ContainerRegistry.getInstance().findContainerStacks(type = "machine", **metadata_filter)
+        if containers:
+            return True
+        return False
+
     @pyqtSlot("QVariant")
     def setGlobalVariant(self, container_node):
         self.blurSettings.emit()
