@@ -65,6 +65,8 @@ from cura.Machines.Models.QualityManagementModel import QualityManagementModel
 from cura.Machines.Models.QualitySettingsModel import QualitySettingsModel
 from cura.Machines.Models.MachineManagementModel import MachineManagementModel
 
+from cura.Machines.Models.SettingVisibilityPresetsModel import SettingVisibilityPresetsModel
+
 from cura.Machines.MachineErrorChecker import MachineErrorChecker
 
 from cura.Settings.SettingInheritanceManager import SettingInheritanceManager
@@ -88,7 +90,6 @@ from cura.Settings.UserChangesModel import UserChangesModel
 from cura.Settings.ExtrudersModel import ExtrudersModel
 from cura.Settings.MaterialSettingsVisibilityHandler import MaterialSettingsVisibilityHandler
 from cura.Settings.ContainerManager import ContainerManager
-from cura.Machines.Models.SettingVisibilityPresetsModel import SettingVisibilityPresetsModel
 
 from cura.ObjectsModel import ObjectsModel
 
@@ -222,6 +223,7 @@ class CuraApplication(QtApplication):
         self._object_manager = None
         self._build_plate_model = None
         self._multi_build_plate_model = None
+        self._setting_visibility_presets_model = None
         self._setting_inheritance_manager = None
         self._simple_mode_settings_manager = None
         self._cura_scene_controller = None
@@ -376,10 +378,6 @@ class CuraApplication(QtApplication):
             preferences.addPreference("local_file/%s" % key, os.path.expanduser("~/"))
 
         preferences.setDefault("local_file/last_used_type", "text/x-gcode")
-
-        default_visibility_profile = SettingVisibilityPresetsModel.getInstance().getItem(0)
-
-        preferences.setDefault("general/visible_settings", ";".join(default_visibility_profile["settings"]))
 
         self.applicationShuttingDown.connect(self.saveSettings)
         self.engineCreatedSignal.connect(self._onEngineCreated)
@@ -683,6 +681,11 @@ class CuraApplication(QtApplication):
         self._print_information = PrintInformation.PrintInformation()
         self._cura_actions = CuraActions.CuraActions(self)
 
+        # Initialize setting visibility presets model
+        self._setting_visibility_presets_model = SettingVisibilityPresetsModel(self)
+        default_visibility_profile = self._setting_visibility_presets_model.getItem(0)
+        Preferences.getInstance().setDefault("general/visible_settings", ";".join(default_visibility_profile["settings"]))
+
         # Detect in which mode to run and execute that mode
         if self.getCommandLineOption("headless", False):
             self.runWithoutGUI()
@@ -764,6 +767,10 @@ class CuraApplication(QtApplication):
 
     def hasGui(self):
         return self._use_gui
+
+    @pyqtSlot(result = QObject)
+    def getSettingVisibilityPresetsModel(self, *args) -> SettingVisibilityPresetsModel:
+        return self._setting_visibility_presets_model
 
     def getMachineErrorChecker(self, *args) -> MachineErrorChecker:
         return self._machine_error_checker
@@ -891,11 +898,11 @@ class CuraApplication(QtApplication):
         qmlRegisterType(NozzleModel, "Cura", 1, 0, "NozzleModel")
 
         qmlRegisterType(MaterialSettingsVisibilityHandler, "Cura", 1, 0, "MaterialSettingsVisibilityHandler")
+        qmlRegisterType(SettingVisibilityPresetsModel, "Cura", 1, 0, "SettingVisibilityPresetsModel")
         qmlRegisterType(QualitySettingsModel, "Cura", 1, 0, "QualitySettingsModel")
         qmlRegisterType(MachineNameValidator, "Cura", 1, 0, "MachineNameValidator")
         qmlRegisterType(UserChangesModel, "Cura", 1, 0, "UserChangesModel")
         qmlRegisterSingletonType(ContainerManager, "Cura", 1, 0, "ContainerManager", ContainerManager.createContainerManager)
-        qmlRegisterSingletonType(SettingVisibilityPresetsModel, "Cura", 1, 0, "SettingVisibilityPresetsModel", SettingVisibilityPresetsModel.createSettingVisibilityPresetsModel)
 
         # As of Qt5.7, it is necessary to get rid of any ".." in the path for the singleton to work.
         actions_url = QUrl.fromLocalFile(os.path.abspath(Resources.getPath(CuraApplication.ResourceTypes.QmlFiles, "Actions.qml")))

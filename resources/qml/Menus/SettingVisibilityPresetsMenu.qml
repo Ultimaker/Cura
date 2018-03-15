@@ -12,6 +12,7 @@ Menu
     id: menu
     title: catalog.i18nc("@action:inmenu", "Visible Settings")
 
+    property QtObject settingVisibilityPresetsModel: CuraApplication.getSettingVisibilityPresetsModel()
     property bool showingSearchResults
     property bool showingAllSettings
 
@@ -22,11 +23,11 @@ Menu
     {
         text: catalog.i18nc("@action:inmenu", "Custom selection")
         checkable: true
-        checked: !showingSearchResults && !showingAllSettings && Cura.SettingVisibilityPresetsModel.activePreset == "custom"
+        checked: !showingSearchResults && !showingAllSettings && settingVisibilityPresetsModel.activePreset == "custom"
         exclusiveGroup: group
         onTriggered:
         {
-            Cura.SettingVisibilityPresetsModel.setActivePreset("custom");
+            settingVisibilityPresetsModel.setActivePreset("custom");
             // Restore custom set from preference
             UM.Preferences.setValue("general/visible_settings", UM.Preferences.getValue("cura/custom_visible_settings"));
             showSettingVisibilityProfile();
@@ -36,17 +37,17 @@ Menu
 
     Instantiator
     {
-        model: Cura.SettingVisibilityPresetsModel
+        model: settingVisibilityPresetsModel
 
         MenuItem
         {
             text: model.name
             checkable: true
-            checked: model.id == Cura.SettingVisibilityPresetsModel.activePreset
+            checked: model.id == settingVisibilityPresetsModel.activePreset
             exclusiveGroup: group
             onTriggered:
             {
-                Cura.SettingVisibilityPresetsModel.setActivePreset(model.id);
+                settingVisibilityPresetsModel.setActivePreset(model.id);
 
                 UM.Preferences.setValue("general/visible_settings", model.settings.join(";"));
 

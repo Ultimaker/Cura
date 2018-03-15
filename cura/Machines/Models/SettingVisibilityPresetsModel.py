@@ -118,19 +118,3 @@ class SettingVisibilityPresetsModel(ListModel):
         # Copy current visibility set to custom visibility set preference so it can be restored later
         visibility_string = self._preferences.getValue("general/visible_settings")
         self._preferences.setValue("cura/custom_visible_settings", visibility_string)
-
-
-    # Factory function, used by QML
-    @staticmethod
-    def createSettingVisibilityPresetsModel(engine, js_engine):
-        return SettingVisibilityPresetsModel.getInstance()
-
-    ##  Get the singleton instance for this class.
-    @classmethod
-    def getInstance(cls) -> "SettingVisibilityPresetsModel":
-        # Note: Explicit use of class name to prevent issues with inheritance.
-        if not SettingVisibilityPresetsModel.__instance:
-            SettingVisibilityPresetsModel.__instance = cls()
-        return SettingVisibilityPresetsModel.__instance
-
-    __instance = None   # type: "SettingVisibilityPresetsModel"

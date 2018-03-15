@@ -13,6 +13,8 @@ UM.PreferencesPage
 {
     title: catalog.i18nc("@title:tab", "Setting Visibility");
 
+    property QtObject settingVisibilityPresetsModel: CuraApplication.getSettingVisibilityPresetsModel()
+
     property int scrollToIndex: 0
 
     signal scrollToSection( string key )
@@ -132,10 +134,9 @@ UM.PreferencesPage
                 {
                     visibilityPresetsModel.append({text: catalog.i18nc("@action:inmenu", "Custom selection"), id: "custom"});
 
-                    var presets = Cura.SettingVisibilityPresetsModel;
-                    for(var i = 0; i < presets.rowCount(); i++)
+                    for(var i = 0; i < settingVisibilityPresetsModel.rowCount(); i++)
                     {
-                        visibilityPresetsModel.append({text: presets.getItem(i)["name"], id: presets.getItem(i)["id"]});
+                        visibilityPresetsModel.append({text: settingVisibilityPresetsModel.getItem(i)["name"], id: settingVisibilityPresetsModel.getItem(i)["id"]});
                     }
                 }
             }
@@ -143,7 +144,7 @@ UM.PreferencesPage
             currentIndex:
             {
                 // Load previously selected preset.
-                var index = Cura.SettingVisibilityPresetsModel.find("id", Cura.SettingVisibilityPresetsModel.activePreset);
+                var index = settingVisibilityPresetsModel.find("id", settingVisibilityPresetsModel.activePreset);
                 if(index == -1)
                 {
                     return 0;
@@ -156,12 +157,12 @@ UM.PreferencesPage
             {
                 base.inhibitSwitchToCustom = true;
                 var preset_id = visibilityPresetsModel.get(index).id;
-                Cura.SettingVisibilityPresetsModel.setActivePreset(preset_id);
+                settingVisibilityPresetsModel.setActivePreset(preset_id);
 
                 UM.Preferences.setValue("cura/active_setting_visibility_preset", preset_id);
                 if (preset_id != "custom")
                 {
-                    UM.Preferences.setValue("general/visible_settings", Cura.SettingVisibilityPresetsModel.getItem(index - 1).settings.join(";"));
+                    UM.Preferences.setValue("general/visible_settings", settingVisibilityPresetsModel.getItem(index - 1).settings.join(";"));
                     // "Custom selection" entry is added in front, so index is off by 1
                 }
                 else
@@ -203,9 +204,9 @@ UM.PreferencesPage
                     {
                         onVisibilityChanged:
                         {
-                            if(Cura.SettingVisibilityPresetsModel.activePreset != "" && !base.inhibitSwitchToCustom)
+                            if(settingVisibilityPresetsModel.activePreset != "" && !base.inhibitSwitchToCustom)
                             {
-                                Cura.SettingVisibilityPresetsModel.setActivePreset("custom");
+                                settingVisibilityPresetsModel.setActivePreset("custom");
                             }
                         }
                     }
