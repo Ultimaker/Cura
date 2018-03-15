@@ -265,13 +265,9 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             for material_container_file in material_container_files:
                 container_id = self._stripFileToId(material_container_file)
 
-                from hashlib import sha1
-                hex_container_id = sha1(container_id.encode('utf-8')).hexdigest()
-
                 serialized = archive.open(material_container_file).read().decode("utf-8")
-                metadata_list = xml_material_profile.deserializeMetadata(serialized, hex_container_id)
-                reverse_map = {metadata["id"].replace(hex_container_id, container_id): container_id.replace(hex_container_id, container_id)
-                               for metadata in metadata_list}
+                metadata_list = xml_material_profile.deserializeMetadata(serialized, container_id)
+                reverse_map = {metadata["id"]: container_id for metadata in metadata_list}
                 reverse_material_id_dict.update(reverse_map)
 
                 material_labels.append(self._getMaterialLabelFromSerialized(serialized))
@@ -598,7 +594,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             Logger.log("w", "Workspace did not contain visible settings. Leaving visibility unchanged")
         else:
             global_preferences.setValue("general/visible_settings", visible_settings)
-            global_preferences.setValue("general/preset_setting_visibility_choice", "Custom")
+            global_preferences.setValue("cura/active_setting_visibility_preset", "custom")
 
         categories_expanded = temp_preferences.getValue("cura/categories_expanded")
         if categories_expanded is None:
@@ -723,7 +719,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
 
             # Get the correct extruder definition IDs for quality changes
             from cura.Machines.QualityManager import getMachineDefinitionIDForQualitySearch
-            machine_definition_id_for_quality = getMachineDefinitionIDForQualitySearch(global_stack)
+            machine_definition_id_for_quality = getMachineDefinitionIDForQualitySearch(global_stack.definition)
             machine_definition_for_quality = self._container_registry.findDefinitionContainers(id = machine_definition_id_for_quality)[0]
 
             quality_changes_info = self._machine_info.quality_changes_info
@@ -754,15 +750,13 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                 quality_changes_containers = self._container_registry.findInstanceContainers(name = quality_changes_name,
                                                                                              type = "quality_changes")
                 for container in quality_changes_containers:
-                    extruder_definition_id = container.getMetaDataEntry("extruder")
-                    if not extruder_definition_id:
+                    extruder_position = container.getMetaDataEntry("position")
+                    if extruder_position is None:
                         quality_changes_info.global_info.container = container
                     else:
-                        extruder_definition_metadata = self._container_registry.findDefinitionContainersMetadata(id = extruder_definition_id)[0]
-                        position = extruder_definition_metadata["position"]
-                        if position not in quality_changes_info.extruder_info_dict:
-                            quality_changes_info.extruder_info_dict[position] = ContainerInfo(None, None, None)
-                        container_info = quality_changes_info.extruder_info_dict[position]
+                        if extruder_position not in quality_changes_info.extruder_info_dict:
+                            quality_changes_info.extruder_info_dict[extruder_position] = ContainerInfo(None, None, None)
+                        container_info = quality_changes_info.extruder_info_dict[extruder_position]
                         container_info.container = container
 
             # If there is no quality changes for any extruder, create one.

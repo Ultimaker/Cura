@@ -26,8 +26,8 @@ UM.PreferencesPage
         UM.Preferences.resetPreference("general/visible_settings")
 
         // After calling this function update Setting visibility preset combobox.
-        // Reset should set "Basic" setting preset
-        visibilityPreset.setBasicPreset()
+        // Reset should set default setting preset ("Basic")
+        visibilityPreset.setDefaultPreset()
 
     }
     resetEnabled: true;
@@ -36,6 +36,8 @@ UM.PreferencesPage
     {
         id: base;
         anchors.fill: parent;
+
+        property bool inhibitSwitchToCustom: false
 
         CheckBox
         {
@@ -84,7 +86,7 @@ UM.PreferencesPage
                     if (visibilityPreset.currentIndex != visibilityPreset.model.count - 1)
                     {
                         visibilityPreset.currentIndex = visibilityPreset.model.count - 1
-                        UM.Preferences.setValue("general/preset_setting_visibility_choice", visibilityPreset.model.get(visibilityPreset.currentIndex).text)
+                        UM.Preferences.setValue("cura/active_setting_visibility_preset", visibilityPreset.model.getItem(visibilityPreset.currentIndex).id)
                     }
                 }
             }
@@ -110,25 +112,13 @@ UM.PreferencesPage
 
         ComboBox
         {
-            property int customOptionValue: 100
-
-            function setBasicPreset()
+            function setDefaultPreset()
             {
-                var index = 0
-                for(var i = 0; i < presetNamesList.count; ++i)
-                {
-                    if(model.get(i).text == "Basic")
-                    {
-                        index = i;
-                        break;
-                    }
-                }
-
-                visibilityPreset.currentIndex = index
+                visibilityPreset.currentIndex = 0
             }
 
             id: visibilityPreset
-            width: 150
+            width: 150 * screenScaleFactor
             anchors
             {
                 top: parent.top
@@ -137,56 +127,49 @@ UM.PreferencesPage
 
             model: ListModel
             {
-                id: presetNamesList
+                id: visibilityPresetsModel
                 Component.onCompleted:
                 {
-                    // returned value is Dictionary  (Ex: {1:"Basic"}, The number 1 is the weight and sort by weight)
-                    var itemsDict = UM.Preferences.getValue("general/visible_settings_preset")
-                    var sorted = [];
-                    for(var key in itemsDict) {
-                        sorted[sorted.length] = key;
-                    }
+                    visibilityPresetsModel.append({text: catalog.i18nc("@action:inmenu", "Custom selection"), id: "custom"});
 
-                    sorted.sort();
-                    for(var i = 0; i < sorted.length; i++) {
-                        presetNamesList.append({text: itemsDict[sorted[i]], value: i});
+                    var presets = Cura.SettingVisibilityPresetsModel;
+                    for(var i = 0; i < presets.rowCount(); i++)
+                    {
+                        visibilityPresetsModel.append({text: presets.getItem(i)["name"], id: presets.getItem(i)["id"]});
                     }
-
-                    // By agreement lets "Custom" option will have value 100
-                    presetNamesList.append({text: "Custom", value: visibilityPreset.customOptionValue});
                 }
             }
 
             currentIndex:
             {
                 // Load previously selected preset.
-                var text = UM.Preferences.getValue("general/preset_setting_visibility_choice");
-
-
-
-                var index = 0;
-                for(var i = 0; i < presetNamesList.count; ++i)
+                var index = Cura.SettingVisibilityPresetsModel.find("id", Cura.SettingVisibilityPresetsModel.activePreset);
+                if(index == -1)
                 {
-                    if(model.get(i).text == text)
-                    {
-                        index = i;
-                        break;
-                    }
+                    return 0;
                 }
-                return index;
+
+                return index + 1; // "Custom selection" entry is added in front, so index is off by 1
             }
 
             onActivated:
             {
-                // TODO What to do if user is selected "Custom from Combobox" ?
-                if (model.get(index).text == "Custom"){
-                    UM.Preferences.setValue("general/preset_setting_visibility_choice", model.get(index).text)
-                    return
-                }
+                base.inhibitSwitchToCustom = true;
+                var preset_id = visibilityPresetsModel.get(index).id;
+                Cura.SettingVisibilityPresetsModel.setActivePreset(preset_id);
 
-                var newVisibleSettings = CuraApplication.getVisibilitySettingPreset(model.get(index).text)
-                UM.Preferences.setValue("general/visible_settings", newVisibleSettings)
-                UM.Preferences.setValue("general/preset_setting_visibility_choice", model.get(index).text)
+                UM.Preferences.setValue("cura/active_setting_visibility_preset", preset_id);
+                if (preset_id != "custom")
+                {
+                    UM.Preferences.setValue("general/visible_settings", Cura.SettingVisibilityPresetsModel.getItem(index - 1).settings.join(";"));
+                    // "Custom selection" entry is added in front, so index is off by 1
+                }
+                else
+                {
+                    // Restore custom set from preference
+                    UM.Preferences.setValue("general/visible_settings", UM.Preferences.getValue("cura/custom_visible_settings"));
+                }
+                base.inhibitSwitchToCustom = false;
             }
         }
 
@@ -216,7 +199,16 @@ UM.PreferencesPage
                     exclude: ["machine_settings", "command_line_settings"]
                     showAncestors: true
                     expanded: ["*"]
-                    visibilityHandler: UM.SettingPreferenceVisibilityHandler { }
+                    visibilityHandler: UM.SettingPreferenceVisibilityHandler
+                    {
+                        onVisibilityChanged:
+                        {
+                            if(Cura.SettingVisibilityPresetsModel.activePreset != "" && !base.inhibitSwitchToCustom)
+                            {
+                                Cura.SettingVisibilityPresetsModel.setActivePreset("custom");
+                            }
+                        }
+                    }
                 }
 
                 delegate: Loader
@@ -259,19 +251,7 @@ UM.PreferencesPage
         {
             id: settingVisibilityItem;
 
-            UM.SettingVisibilityItem {
-
-                // after changing any visibility of settings, set the preset to the "Custom" option
-                visibilityChangeCallback : function()
-                {
-                    // If already "Custom" then don't do nothing
-                    if (visibilityPreset.currentIndex != visibilityPreset.model.count - 1)
-                    {
-                        visibilityPreset.currentIndex = visibilityPreset.model.count - 1
-                        UM.Preferences.setValue("general/preset_setting_visibility_choice", visibilityPreset.model.get(visibilityPreset.currentIndex).text)
-                    }
-                }
-            }
+            UM.SettingVisibilityItem { }
         }
     }
 }

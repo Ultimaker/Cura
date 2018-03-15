@@ -653,7 +653,10 @@ UM.MainWindow
         {
             preferences.visible = true;
             preferences.setPage(1);
-            preferences.getCurrentItem().scrollToSection(source.key);
+            if(source && source.key)
+            {
+                preferences.getCurrentItem().scrollToSection(source.key);
+            }
         }
     }
 

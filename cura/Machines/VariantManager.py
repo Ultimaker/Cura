@@ -25,7 +25,7 @@ ALL_VARIANT_TYPES = (VariantType.BUILD_PLATE, VariantType.NOZZLE)
 
 
 #
-# VariantManager is THE place to look for a specific variant. It maintains a variant lookup table with the following
+# VariantManager is THE place to look for a specific variant. It maintains two variant lookup tables with the following
 # structure:
 #
 #   [machine_definition_id] ->  [variant_type]  -> [variant_name]   -> ContainerNode(metadata / container)
@@ -34,6 +34,9 @@ ALL_VARIANT_TYPES = (VariantType.BUILD_PLATE, VariantType.NOZZLE)
 #                           ->    "nozzle"      ->   "AA 0.4"
 #                                               ->   "BB 0.8"
 #                                               ->    ...
+#
+#   [machine_definition_id] -> [machine_buildplate_type] -> ContainerNode(metadata / container)
+# Example:   "ultimaker3"   -> "glass" (this is different from the variant name) -> ContainerNode
 #
 # Note that the "container" field is not loaded in the beginning because it would defeat the purpose of lazy-loading.
 # A container is loaded when getVariant() is called to load a variant InstanceContainer.
@@ -44,6 +47,7 @@ class VariantManager:
         self._container_registry = container_registry  # type: ContainerRegistry
 
         self._machine_to_variant_dict_map = dict()  # <machine_type> -> <variant_dict>
+        self._machine_to_buildplate_dict_map = dict()
 
         self._exclude_variant_id_list = ["empty_variant"]
 
@@ -53,6 +57,7 @@ class VariantManager:
     #
     def initialize(self):
         self._machine_to_variant_dict_map = OrderedDict()
+        self._machine_to_buildplate_dict_map = OrderedDict()
 
         # Cache all variants from the container registry to a variant map for better searching and organization.
         variant_metadata_list = self._container_registry.findContainersMetadata(type = "variant")
@@ -77,6 +82,22 @@ class VariantManager:
                                    (variant_name, variant_type, variant_definition))
 
             variant_dict[variant_name] = ContainerNode(metadata = variant_metadata)
+
+            # If the variant is a buildplate then fill also the buildplate map
+            if variant_type == VariantType.BUILD_PLATE:
+                if variant_definition not in self._machine_to_buildplate_dict_map:
+                    self._machine_to_buildplate_dict_map[variant_definition] = OrderedDict()
+
+                variant_container = self._container_registry.findContainers(type = "variant", id = variant_metadata["id"])
+                if not variant_container:
+                    # ERROR: not variant container. This should never happen
+                    raise RuntimeError("Not variant found [%s], type [%s] for machine [%s]" %
+                                       (variant_name, variant_type, variant_definition))
+                buildplate_type = variant_container[0].getProperty("machine_buildplate_type", "value")
+                if buildplate_type not in self._machine_to_buildplate_dict_map[variant_definition]:
+                    self._machine_to_variant_dict_map[variant_definition][buildplate_type] = dict()
+
+                self._machine_to_buildplate_dict_map[variant_definition][buildplate_type] = variant_dict[variant_name]
 
     #
     # Gets the variant InstanceContainer with the given information.
@@ -117,3 +138,8 @@ class VariantManager:
         if preferred_variant_name:
             node = self.getVariantNode(machine_definition_id, preferred_variant_name, variant_type)
         return node
+
+    def getBuildplateVariantNode(self, machine_definition_id: str, buildplate_type: str) -> Optional["ContainerNode"]:
+        if machine_definition_id in self._machine_to_buildplate_dict_map:
+            return self._machine_to_buildplate_dict_map[machine_definition_id].get(buildplate_type)
+        return None

@@ -4,7 +4,7 @@
 #Type hinting.
 from typing import Dict
 
-from PyQt5.QtCore import QObject
+from PyQt5.QtCore import QObject, QTimer
 from PyQt5.QtNetwork import QLocalServer
 from PyQt5.QtNetwork import QLocalSocket
 
@@ -60,18 +60,20 @@ from cura.Machines.Models.BuildPlateModel import BuildPlateModel
 from cura.Machines.Models.NozzleModel import NozzleModel
 from cura.Machines.Models.QualityProfilesDropDownMenuModel import QualityProfilesDropDownMenuModel
 from cura.Machines.Models.CustomQualityProfilesDropDownMenuModel import CustomQualityProfilesDropDownMenuModel
-
 from cura.Machines.Models.MultiBuildPlateModel import MultiBuildPlateModel
-
 from cura.Machines.Models.MaterialManagementModel import MaterialManagementModel
 from cura.Machines.Models.GenericMaterialsModel import GenericMaterialsModel
 from cura.Machines.Models.BrandMaterialsModel import BrandMaterialsModel
+from cura.Machines.Models.QualityManagementModel import QualityManagementModel
+from cura.Machines.Models.QualitySettingsModel import QualitySettingsModel
+from cura.Machines.Models.MachineManagementModel import MachineManagementModel
+
+from cura.Machines.MachineErrorChecker import MachineErrorChecker
 
 from cura.Settings.SettingInheritanceManager import SettingInheritanceManager
 from cura.Settings.SimpleModeSettingsManager import SimpleModeSettingsManager
 
 from cura.Machines.VariantManager import VariantManager
-from cura.Machines.Models.QualityManagementModel import QualityManagementModel
 
 from . import PlatformPhysics
 from . import BuildVolume
@@ -88,8 +90,8 @@ from cura.Settings.ExtruderManager import ExtruderManager
 from cura.Settings.UserChangesModel import UserChangesModel
 from cura.Settings.ExtrudersModel import ExtrudersModel
 from cura.Settings.MaterialSettingsVisibilityHandler import MaterialSettingsVisibilityHandler
-from cura.Machines.Models.QualitySettingsModel import QualitySettingsModel
 from cura.Settings.ContainerManager import ContainerManager
+from cura.Settings.SettingVisibilityPresetsModel import SettingVisibilityPresetsModel
 
 from cura.ObjectsModel import ObjectsModel
 
@@ -139,14 +141,9 @@ class CuraApplication(QtApplication):
         MachineStack = Resources.UserType + 7
         ExtruderStack = Resources.UserType + 8
         DefinitionChangesContainer = Resources.UserType + 9
+        SettingVisibilityPreset = Resources.UserType + 10
 
     Q_ENUMS(ResourceTypes)
-
-    # FIXME: This signal belongs to the MachineManager, but the CuraEngineBackend plugin requires on it.
-    #        Because plugins are initialized before the ContainerRegistry, putting this signal in MachineManager
-    #        will make it initialized before ContainerRegistry does, and it won't find the active machine, thus
-    #        Cura will always show the Add Machine Dialog upon start.
-    stacksValidationFinished = pyqtSignal()  # Emitted whenever a validation is finished
 
     def __init__(self, **kwargs):
         # this list of dir names will be used by UM to detect an old cura directory
@@ -192,6 +189,7 @@ class CuraApplication(QtApplication):
         Resources.addStorageType(self.ResourceTypes.ExtruderStack, "extruders")
         Resources.addStorageType(self.ResourceTypes.MachineStack, "machine_instances")
         Resources.addStorageType(self.ResourceTypes.DefinitionChangesContainer, "definition_changes")
+        Resources.addStorageType(self.ResourceTypes.SettingVisibilityPreset, "setting_visibility")
 
         ContainerRegistry.getInstance().addResourceType(self.ResourceTypes.QualityInstanceContainer, "quality")
         ContainerRegistry.getInstance().addResourceType(self.ResourceTypes.QualityInstanceContainer, "quality_changes")
@@ -224,12 +222,14 @@ class CuraApplication(QtApplication):
         self._machine_manager = None    # This is initialized on demand.
         self._extruder_manager = None
         self._material_manager = None
+        self._quality_manager = None
         self._object_manager = None
         self._build_plate_model = None
         self._multi_build_plate_model = None
         self._setting_inheritance_manager = None
         self._simple_mode_settings_manager = None
         self._cura_scene_controller = None
+        self._machine_error_checker = None
 
         self._additional_components = {} # Components to add to certain areas in the interface
 
@@ -286,10 +286,15 @@ class CuraApplication(QtApplication):
         self._preferred_mimetype = ""
         self._i18n_catalog = i18nCatalog("cura")
 
-        self.getController().getScene().sceneChanged.connect(self.updatePlatformActivity)
+        self._update_platform_activity_timer = QTimer()
+        self._update_platform_activity_timer.setInterval(500)
+        self._update_platform_activity_timer.setSingleShot(True)
+        self._update_platform_activity_timer.timeout.connect(self.updatePlatformActivity)
+
+        self.getController().getScene().sceneChanged.connect(self.updatePlatformActivityDelayed)
         self.getController().toolOperationStopped.connect(self._onToolOperationStopped)
         self.getController().contextMenuRequested.connect(self._onContextMenuRequested)
-        self.getCuraSceneController().activeBuildPlateChanged.connect(self.updatePlatformActivity)
+        self.getCuraSceneController().activeBuildPlateChanged.connect(self.updatePlatformActivityDelayed)
 
         Resources.addType(self.ResourceTypes.QmlFiles, "qml")
         Resources.addType(self.ResourceTypes.Firmware, "firmware")
@@ -376,19 +381,9 @@ class CuraApplication(QtApplication):
 
         preferences.setDefault("local_file/last_used_type", "text/x-gcode")
 
-        setting_visibily_preset_names = self.getVisibilitySettingPresetTypes()
-        preferences.setDefault("general/visible_settings_preset", setting_visibily_preset_names)
+        default_visibility_profile = SettingVisibilityPresetsModel.getInstance().getItem(0)
 
-        preset_setting_visibility_choice = Preferences.getInstance().getValue("general/preset_setting_visibility_choice")
-
-        default_preset_visibility_group_name = "Basic"
-        if preset_setting_visibility_choice == "" or preset_setting_visibility_choice is None:
-            if preset_setting_visibility_choice not in setting_visibily_preset_names:
-                preset_setting_visibility_choice = default_preset_visibility_group_name
-
-        visible_settings = self.getVisibilitySettingPreset(settings_preset_name = preset_setting_visibility_choice)
-        preferences.setDefault("general/visible_settings", visible_settings)
-        preferences.setDefault("general/preset_setting_visibility_choice", preset_setting_visibility_choice)
+        preferences.setDefault("general/visible_settings", ";".join(default_visibility_profile["settings"]))
 
         self.applicationShuttingDown.connect(self.saveSettings)
         self.engineCreatedSignal.connect(self._onEngineCreated)
@@ -405,91 +400,6 @@ class CuraApplication(QtApplication):
 
         CuraApplication.Created = True
 
-    @pyqtSlot(str, result = str)
-    def getVisibilitySettingPreset(self, settings_preset_name) -> str:
-        result = self._loadPresetSettingVisibilityGroup(settings_preset_name)
-        formatted_preset_settings = self._serializePresetSettingVisibilityData(result)
-
-        return formatted_preset_settings
-
-    ## Serialise the given preset setting visibitlity group dictionary into a string which is concatenated by ";"
-    #
-    def _serializePresetSettingVisibilityData(self, settings_data: dict) -> str:
-        result_string = ""
-
-        for key in settings_data:
-            result_string += key + ";"
-            for value in settings_data[key]:
-                result_string += value + ";"
-
-        return result_string
-
-    ## Load the preset setting visibility group with the given name
-    #
-    def _loadPresetSettingVisibilityGroup(self, visibility_preset_name) -> Dict[str, str]:
-        preset_dir = Resources.getPath(Resources.PresetSettingVisibilityGroups)
-
-        result = {}
-        right_preset_found = False
-
-        for item in os.listdir(preset_dir):
-            file_path = os.path.join(preset_dir, item)
-            if not os.path.isfile(file_path):
-                continue
-
-            parser = ConfigParser(allow_no_value = True)  # accept options without any value,
-
-            try:
-                parser.read([file_path])
-
-                if not parser.has_option("general", "name"):
-                    continue
-
-                if parser["general"]["name"] == visibility_preset_name:
-                    right_preset_found = True
-                    for section in parser.sections():
-                        if section == 'general':
-                            continue
-                        else:
-                            section_settings = []
-                            for option in parser[section].keys():
-                                section_settings.append(option)
-
-                            result[section] = section_settings
-
-                if right_preset_found:
-                    break
-
-            except Exception as e:
-                Logger.log("e", "Failed to load setting visibility preset %s: %s", file_path, str(e))
-
-        return result
-
-    ## Check visibility setting preset folder and returns available types
-    #
-    def getVisibilitySettingPresetTypes(self):
-        preset_dir = Resources.getPath(Resources.PresetSettingVisibilityGroups)
-        result = {}
-
-        for item in os.listdir(preset_dir):
-            file_path = os.path.join(preset_dir, item)
-            if not os.path.isfile(file_path):
-                continue
-
-            parser = ConfigParser(allow_no_value=True)  # accept options without any value,
-
-            try:
-                parser.read([file_path])
-
-                if not parser.has_option("general", "name") and not parser.has_option("general", "weight"):
-                    continue
-
-                result[parser["general"]["weight"]] = parser["general"]["name"]
-
-            except Exception as e:
-                Logger.log("e", "Failed to load setting preset %s: %s", file_path, str(e))
-
-        return result
 
     def _onEngineCreated(self):
         self._engine.addImageProvider("camera", CameraImageProvider.CameraImageProvider())
@@ -743,18 +653,27 @@ class CuraApplication(QtApplication):
         self.preRun()
 
         container_registry = ContainerRegistry.getInstance()
+
+        Logger.log("i", "Initializing variant manager")
         self._variant_manager = VariantManager(container_registry)
         self._variant_manager.initialize()
 
+        Logger.log("i", "Initializing material manager")
         from cura.Machines.MaterialManager import MaterialManager
         self._material_manager = MaterialManager(container_registry, parent = self)
         self._material_manager.initialize()
 
+        Logger.log("i", "Initializing quality manager")
         from cura.Machines.QualityManager import QualityManager
         self._quality_manager = QualityManager(container_registry, parent = self)
         self._quality_manager.initialize()
 
+        Logger.log("i", "Initializing machine manager")
         self._machine_manager = MachineManager(self)
+
+        Logger.log("i", "Initializing machine error checker")
+        self._machine_error_checker = MachineErrorChecker(self)
+        self._machine_error_checker.initialize()
 
         # Check if we should run as single instance or not
         self._setUpSingleInstanceServer()
@@ -781,7 +700,10 @@ class CuraApplication(QtApplication):
             self._openFile(file_name)
 
         self.started = True
+        self.initializationFinished.emit()
         self.exec_()
+
+    initializationFinished = pyqtSignal()
 
     ##  Run Cura without GUI elements and interaction (server mode).
     def runWithoutGUI(self):
@@ -846,6 +768,9 @@ class CuraApplication(QtApplication):
 
     def hasGui(self):
         return self._use_gui
+
+    def getMachineErrorChecker(self, *args) -> MachineErrorChecker:
+        return self._machine_error_checker
 
     def getMachineManager(self, *args) -> MachineManager:
         if self._machine_manager is None:
@@ -961,6 +886,7 @@ class CuraApplication(QtApplication):
         qmlRegisterType(BrandMaterialsModel, "Cura", 1, 0, "BrandMaterialsModel")
         qmlRegisterType(MaterialManagementModel, "Cura", 1, 0, "MaterialManagementModel")
         qmlRegisterType(QualityManagementModel, "Cura", 1, 0, "QualityManagementModel")
+        qmlRegisterType(MachineManagementModel, "Cura", 1, 0, "MachineManagementModel")
 
         qmlRegisterSingletonType(QualityProfilesDropDownMenuModel, "Cura", 1, 0,
                                  "QualityProfilesDropDownMenuModel", self.getQualityProfilesDropDownMenuModel)
@@ -973,6 +899,7 @@ class CuraApplication(QtApplication):
         qmlRegisterType(MachineNameValidator, "Cura", 1, 0, "MachineNameValidator")
         qmlRegisterType(UserChangesModel, "Cura", 1, 0, "UserChangesModel")
         qmlRegisterSingletonType(ContainerManager, "Cura", 1, 0, "ContainerManager", ContainerManager.createContainerManager)
+        qmlRegisterSingletonType(SettingVisibilityPresetsModel, "Cura", 1, 0, "SettingVisibilityPresetsModel", SettingVisibilityPresetsModel.createSettingVisibilityPresetsModel)
 
         # As of Qt5.7, it is necessary to get rid of any ".." in the path for the singleton to work.
         actions_url = QUrl.fromLocalFile(os.path.abspath(Resources.getPath(CuraApplication.ResourceTypes.QmlFiles, "Actions.qml")))
@@ -1047,6 +974,10 @@ class CuraApplication(QtApplication):
     @pyqtProperty(str, notify = sceneBoundingBoxChanged)
     def getSceneBoundingBoxString(self):
         return self._i18n_catalog.i18nc("@info 'width', 'depth' and 'height' are variable names that must NOT be translated; just translate the format of ##x##x## mm.", "%(width).1f x %(depth).1f x %(height).1f mm") % {'width' : self._scene_bounding_box.width.item(), 'depth': self._scene_bounding_box.depth.item(), 'height' : self._scene_bounding_box.height.item()}
+
+    def updatePlatformActivityDelayed(self, node = None):
+        if node is not None and node.getMeshData() is not None:
+            self._update_platform_activity_timer.start()
 
     ##  Update scene bounding box for current build plate
     def updatePlatformActivity(self, node = None):

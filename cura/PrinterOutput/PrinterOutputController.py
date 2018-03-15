@@ -6,7 +6,7 @@ from UM.Logger import Logger
 MYPY = False
 if MYPY:
     from cura.PrinterOutput.PrintJobOutputModel import PrintJobOutputModel
-    from cura.PrinterOutput.ExtruderOuputModel import ExtruderOuputModel
+    from cura.PrinterOutput.ExtruderOutputModel import ExtruderOutputModel
     from cura.PrinterOutput.PrinterOutputModel import PrinterOutputModel
 
 
@@ -18,7 +18,7 @@ class PrinterOutputController:
         self.can_control_manually = True
         self._output_device = output_device
 
-    def setTargetHotendTemperature(self, printer: "PrinterOutputModel", extruder: "ExtruderOuputModel", temperature: int):
+    def setTargetHotendTemperature(self, printer: "PrinterOutputModel", extruder: "ExtruderOutputModel", temperature: int):
         Logger.log("w", "Set target hotend temperature not implemented in controller")
 
     def setTargetBedTemperature(self, printer: "PrinterOutputModel", temperature: int):

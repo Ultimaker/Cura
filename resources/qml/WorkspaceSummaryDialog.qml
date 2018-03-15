@@ -101,7 +101,7 @@ UM.Dialog
                 }
                 Label
                 {
-                    text: Cura.MachineManager.activeMachine.definition.name
+                    text: (Cura.MachineManager.activeMachine == null) ? "" : Cura.MachineManager.activeMachine.definition.name
                     width: (parent.width / 3) | 0
                 }
             }
@@ -173,7 +173,7 @@ UM.Dialog
                         }
                         Label
                         {
-                            text: Cura.MachineManager.activeVariantNames[modelData] + ", " + Cura.MachineManager.currentRootMaterialName[modelData]
+                            text: Cura.MachineManager.activeVariantNames[modelData] + ", " + Cura.MachineManager.getExtruder(modelData).material.name
                             width: (parent.width / 3) | 0
                         }
                     }

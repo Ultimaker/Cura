@@ -136,6 +136,7 @@ class BuildVolume(SceneNode):
                 if active_extruder_changed is not None:
                     node.callDecoration("getActiveExtruderChangedSignal").disconnect(self._updateDisallowedAreasAndRebuild)
                 node.decoratorsChanged.disconnect(self._updateNodeListeners)
+            self._updateDisallowedAreasAndRebuild()  # make sure we didn't miss anything before we updated the node listeners
 
             self._scene_objects = new_scene_objects
             self._onSettingPropertyChanged("print_sequence", "value")  # Create fake event, so right settings are triggered.
@@ -150,7 +151,6 @@ class BuildVolume(SceneNode):
         active_extruder_changed = node.callDecoration("getActiveExtruderChangedSignal")
         if active_extruder_changed is not None:
             active_extruder_changed.connect(self._updateDisallowedAreasAndRebuild)
-            self._updateDisallowedAreasAndRebuild()
 
     def setWidth(self, width):
         if width is not None:
@@ -239,7 +239,7 @@ class BuildVolume(SceneNode):
         # Group nodes should override the _outside_buildarea property of their children.
         for group_node in group_nodes:
             for child_node in group_node.getAllChildren():
-                child_node.setOutsideBuildArea(group_node.isOutsideBuildArea)
+                child_node.setOutsideBuildArea(group_node.isOutsideBuildArea())
 
     ##  Update the outsideBuildArea of a single node, given bounds or current build volume
     def checkBoundsAndUpdate(self, node: CuraSceneNode, bounds: Optional[AxisAlignedBox] = None):

@@ -116,7 +116,8 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
 
     @pyqtSlot(str)
     def updateFirmware(self, file):
-        self._firmware_location = file
+        # the file path is qurl encoded.
+        self._firmware_location = file.replace("file://", "")
         self.showFirmwareInterface()
         self.setFirmwareUpdateState(FirmwareUpdateState.updating)
         self._update_firmware_thread.start()
@@ -126,9 +127,11 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
         if self._connection_state != ConnectionState.closed:
             self.close()
 
-        hex_file = intelHex.readHex(self._firmware_location)
-        if len(hex_file) == 0:
-            Logger.log("e", "Unable to read provided hex file. Could not update firmware")
+        try:
+            hex_file = intelHex.readHex(self._firmware_location)
+            assert len(hex_file) > 0
+        except (FileNotFoundError, AssertionError):
+            Logger.log("e", "Unable to read provided hex file. Could not update firmware.")
             self.setFirmwareUpdateState(FirmwareUpdateState.firmware_not_found_error)
             return
 
@@ -198,7 +201,6 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
         # Reset line number. If this is not done, first line is sometimes ignored
         self._gcode.insert(0, "M110")
         self._gcode_position = 0
-        self._is_printing = True
         self._print_start_time = time()
 
         self._print_estimated_time = int(Application.getInstance().getPrintInformation().currentPrintTime.getDisplayString(DurationFormat.Format.Seconds))
@@ -206,6 +208,7 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
         for i in range(0, 4):  # Push first 4 entries before accepting other inputs
             self._sendNextGcodeLine()
 
+        self._is_printing = True
         self.writeFinished.emit(self)
 
     def _autoDetectFinished(self, job: AutoDetectBaudJob):
@@ -267,7 +270,6 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
         if not command.endswith(b"\n"):
             command += b"\n"
         try:
-            self._serial.write(b"\n")
             self._serial.write(command)
         except SerialTimeoutException:
             Logger.log("w", "Timeout when sending command to printer via USB.")
@@ -284,7 +286,7 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
                 self.sendCommand("M105")
                 self._last_temperature_request = time()
 
-            if b"ok T:" in line or line.startswith(b"T:"):  # Temperature message
+            if b"ok T:" in line or line.startswith(b"T:") or b"ok B:" in line or line.startswith(b"B:"):  # Temperature message. 'T:' for extruder and 'B:' for bed
                 extruder_temperature_matches = re.findall(b"T(\d*): ?([\d\.]+) ?\/?([\d\.]+)?", line)
                 # Update all temperature values
                 for match, extruder in zip(extruder_temperature_matches, self._printers[0].extruders):
@@ -302,6 +304,9 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
                         self._printers[0].updateTargetBedTemperature(float(match[1]))
 
             if self._is_printing:
+                if line.startswith(b'!!'):
+                    Logger.log('e', "Printer signals fatal error. Cancelling print. {}".format(line))
+                    self.cancelPrint()
                 if b"ok" in line:
                     if not self._command_queue.empty():
                         self._sendCommand(self._command_queue.get())

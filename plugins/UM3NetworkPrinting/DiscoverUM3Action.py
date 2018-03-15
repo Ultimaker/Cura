@@ -98,17 +98,38 @@ class DiscoverUM3Action(MachineAction):
             return []
 
     @pyqtSlot(str)
+    def setGroupName(self, group_name):
+        Logger.log("d", "Attempting to set the group name of the active machine to %s", group_name)
+        global_container_stack = Application.getInstance().getGlobalContainerStack()
+        if global_container_stack:
+            meta_data = global_container_stack.getMetaData()
+            if "connect_group_name" in meta_data:
+                previous_connect_group_name = meta_data["connect_group_name"]
+                global_container_stack.setMetaDataEntry("connect_group_name", group_name)
+                # Find all the places where there is the same group name and change it accordingly
+                Application.getInstance().getMachineManager().replaceContainersMetadata(key = "connect_group_name", value = previous_connect_group_name, new_value = group_name)
+            else:
+                global_container_stack.addMetaDataEntry("connect_group_name", group_name)
+                global_container_stack.addMetaDataEntry("hidden", False)
+
+        if self._network_plugin:
+            # Ensure that the connection states are refreshed.
+            self._network_plugin.reCheckConnections()
+
+    @pyqtSlot(str)
     def setKey(self, key):
         Logger.log("d", "Attempting to set the network key of the active machine to %s", key)
         global_container_stack = Application.getInstance().getGlobalContainerStack()
         if global_container_stack:
             meta_data = global_container_stack.getMetaData()
             if "um_network_key" in meta_data:
+                previous_network_key= meta_data["um_network_key"]
                 global_container_stack.setMetaDataEntry("um_network_key", key)
                 # Delete old authentication data.
                 Logger.log("d", "Removing old authentication id %s for device %s", global_container_stack.getMetaDataEntry("network_authentication_id", None), key)
                 global_container_stack.removeMetaDataEntry("network_authentication_id")
                 global_container_stack.removeMetaDataEntry("network_authentication_key")
+                Application.getInstance().getMachineManager().replaceContainersMetadata(key = "um_network_key", value = previous_network_key, new_value = key)
             else:
                 global_container_stack.addMetaDataEntry("um_network_key", key)
 

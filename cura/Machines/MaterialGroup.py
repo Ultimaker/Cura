@@ -16,10 +16,11 @@ from cura.Machines.MaterialNode import MaterialNode #For type checking.
 #                                so "generic_abs_ultimaker3", "generic_abs_ultimaker3_AA_0.4", etc.
 #
 class MaterialGroup:
-    __slots__ = ("name", "root_material_node", "derived_material_node_list")
+    __slots__ = ("name", "is_read_only", "root_material_node", "derived_material_node_list")
 
     def __init__(self, name: str, root_material_node: MaterialNode):
         self.name = name
+        self.is_read_only = False
         self.root_material_node = root_material_node
         self.derived_material_node_list = [] #type: List[MaterialNode]
 

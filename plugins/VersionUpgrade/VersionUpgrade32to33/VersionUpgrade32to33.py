@@ -56,6 +56,8 @@ _EXTRUDER_TO_POSITION = {
 ##  Upgrades configurations from the state they were in at version 3.2 to the
 #   state they should be in at version 3.3.
 class VersionUpgrade32to33(VersionUpgrade):
+
+    temporary_group_name_counter = 1
     ##  Gets the version number from a CFG file in Uranium's 3.2 format.
     #
     #   Since the format may change, this is implemented for the 3.2 format only
@@ -73,6 +75,28 @@ class VersionUpgrade32to33(VersionUpgrade):
         format_version = int(parser.get("general", "version")) #Explicitly give an exception when this fails. That means that the file format is not recognised.
         setting_version = int(parser.get("metadata", "setting_version", fallback = 0))
         return format_version * 1000000 + setting_version
+
+    ##  Upgrades a container stack from version 3.2 to 3.3.
+    #
+    #   \param serialised The serialised form of a container stack.
+    #   \param filename The name of the file to upgrade.
+    def upgradeStack(self, serialized, filename):
+        parser = configparser.ConfigParser(interpolation = None)
+        parser.read_string(serialized)
+
+        if "metadata" in parser and "um_network_key" in parser["metadata"]:
+            if "hidden" not in parser["metadata"]:
+                parser["metadata"]["hidden"] = "False"
+            if "connect_group_name" not in parser["metadata"]:
+                parser["metadata"]["connect_group_name"] = "Temporary group name #" + str(self.temporary_group_name_counter)
+                self.temporary_group_name_counter += 1
+
+        #Update version number.
+        parser["general"]["version"] = "4"
+
+        result = io.StringIO()
+        parser.write(result)
+        return [filename], [result.getvalue()]
 
     ##  Upgrades non-quality-changes instance containers to have the new version
     #   number.

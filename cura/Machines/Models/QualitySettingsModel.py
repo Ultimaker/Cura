@@ -87,9 +87,11 @@ class QualitySettingsModel(ListModel):
         if self._selected_position == self.GLOBAL_STACK_POSITION:
             quality_node = quality_group.node_for_global
         else:
-            quality_node = quality_group.nodes_for_extruders.get(self._selected_position)
+            quality_node = quality_group.nodes_for_extruders.get(str(self._selected_position))
         settings_keys = quality_group.getAllKeys()
-        quality_containers = [quality_node.getContainer()]
+        quality_containers = []
+        if quality_node is not None:
+            quality_containers.append(quality_node.getContainer())
 
         # Here, if the user has selected a quality changes, then "quality_changes_group" will not be None, and we fetch
         # the settings in that quality_changes_group.
@@ -97,7 +99,7 @@ class QualitySettingsModel(ListModel):
             if self._selected_position == self.GLOBAL_STACK_POSITION:
                 quality_changes_node = quality_changes_group.node_for_global
             else:
-                quality_changes_node = quality_changes_group.nodes_for_extruders.get(self._selected_position)
+                quality_changes_node = quality_changes_group.nodes_for_extruders.get(str(self._selected_position))
             if quality_changes_node is not None:  # it can be None if number of extruders are changed during runtime
                 try:
                     quality_containers.insert(0, quality_changes_node.getContainer())

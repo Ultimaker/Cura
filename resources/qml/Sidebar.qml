@@ -8,6 +8,7 @@ import QtQuick.Layouts 1.3
 import UM 1.2 as UM
 import Cura 1.0 as Cura
 import "Menus"
+import "Menus/ConfigurationMenu"
 
 Rectangle
 {
@@ -18,6 +19,7 @@ Rectangle
     property bool hideView: Cura.MachineManager.activeMachineName == ""
 
     // Is there an output device for this printer?
+    property bool isNetworkPrinter: Cura.MachineManager.activeMachineNetworkKey != ""
     property bool printerConnected: Cura.MachineManager.printerOutputDevices.length != 0
     property bool printerAcceptsCommands: printerConnected && Cura.MachineManager.printerOutputDevices[0].acceptsCommands
     property var connectedPrinter: Cura.MachineManager.printerOutputDevices.length >= 1 ? Cura.MachineManager.printerOutputDevices[0] : null
@@ -85,12 +87,34 @@ Rectangle
         }
     }
 
-    MachineSelection {
+    MachineSelection
+    {
         id: machineSelection
-        width: base.width
+        width: base.width - configSelection.width - separator.width
+        height: UM.Theme.getSize("sidebar_header").height
+        anchors.top: base.top
+        anchors.left: parent.left
+    }
+
+    Rectangle
+    {
+        id: separator
+        visible: configSelection.visible
+        width: visible ? Math.round(UM.Theme.getSize("sidebar_lining_thin").height / 2) : 0
+        height: UM.Theme.getSize("sidebar_header").height
+        color: UM.Theme.getColor("sidebar_lining_thin")
+        anchors.left: machineSelection.right
+    }
+
+    ConfigurationSelection
+    {
+        id: configSelection
+        visible: isNetworkPrinter
+        width: visible ? Math.round(base.width * 0.15) : 0
         height: UM.Theme.getSize("sidebar_header").height
         anchors.top: base.top
         anchors.right: parent.right
+        panelWidth: base.width
     }
 
     SidebarHeader {
