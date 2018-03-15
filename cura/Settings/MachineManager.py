@@ -1201,6 +1201,18 @@ class MachineManager(QObject):
             if machine.getMetaDataEntry(key) == value:
                 machine.setMetaDataEntry(key, new_value)
 
+    ##  This method checks if the name of the group stored in the definition container is correct.
+    #   After updating from 3.2 to 3.3 some group names may be temporary. If there is a mismatch in the name of the group
+    #   then all the container stacks are updated, both the current and the hidden ones.
+    def checkCorrectGroupName(self, device_id: str, group_name: str):
+        if self._global_container_stack and device_id == self.activeMachineNetworkKey:
+            # Check if the connect_group_name is correct. If not, update all the containers connected to the same printer
+            if self.activeMachineNetworkGroupName != group_name:
+                metadata_filter = {"um_network_key": self.activeMachineNetworkKey}
+                hidden_containers = ContainerRegistry.getInstance().findContainerStacks(type = "machine", **metadata_filter)
+                for container in hidden_containers:
+                    container.setMetaDataEntry("connect_group_name", group_name)
+
     @pyqtSlot("QVariant")
     def setGlobalVariant(self, container_node):
         self.blurSettings.emit()

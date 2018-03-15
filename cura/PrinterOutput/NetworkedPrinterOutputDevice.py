@@ -4,6 +4,7 @@
 from UM.Application import Application
 from UM.Logger import Logger
 from UM.Settings.ContainerRegistry import ContainerRegistry
+from cura.CuraApplication import CuraApplication
 
 from cura.PrinterOutputDevice import PrinterOutputDevice, ConnectionState
 
@@ -255,20 +256,8 @@ class NetworkedPrinterOutputDevice(PrinterOutputDevice):
         self._last_manager_create_time = time()
         self._manager.authenticationRequired.connect(self._onAuthenticationRequired)
 
-        self._checkCorrectGroupName()
-
-    ##  This method checks if the name of the group stored in the definition container is correct.
-    #   After updating from 3.2 to 3.3 some group names may be temporary. If there is a mismatch in the name of the group
-    #   then all the container stacks are updated, both the current and the hidden ones.
-    def _checkCorrectGroupName(self):
-        global_container_stack = Application.getInstance().getGlobalContainerStack()
-        if global_container_stack and self.getId() == global_container_stack.getMetaDataEntry("um_network_key"):
-            # Check if the connect_group_name is correct. If not, update all the containers connected to the same printer
-            if global_container_stack.getMetaDataEntry("connect_group_name") != self.name:
-                metadata_filter = {"um_network_key": global_container_stack.getMetaDataEntry("um_network_key")}
-                hidden_containers = ContainerRegistry.getInstance().findContainerStacks(type = "machine", **metadata_filter)
-                for container in hidden_containers:
-                    container.setMetaDataEntry("connect_group_name", self.name)
+        machine_manager = CuraApplication.getInstance().getMachineManager()
+        machine_manager.checkCorrectGroupName(self.getId(), self.name)
 
     def _registerOnFinishedCallback(self, reply: QNetworkReply, onFinished: Optional[Callable[[Any, QNetworkReply], None]]) -> None:
         if onFinished is not None:
