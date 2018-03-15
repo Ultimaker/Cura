@@ -60,7 +60,7 @@ class RemovableDriveOutputDevice(OutputDevice):
 
         if len(file_formats) == 0:
             Logger.log("e", "There are no file formats available to write with!")
-            raise OutputDeviceError.WriteRequestFailedError(catalog.i18nc("There are no file formats available to write with!"))
+            raise OutputDeviceError.WriteRequestFailedError(catalog.i18nc("@info:status", "There are no file formats available to write with!"))
 
         # Just take the first file format available.
         if file_handler is not None:
