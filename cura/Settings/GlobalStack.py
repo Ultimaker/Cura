@@ -1,6 +1,8 @@
 # Copyright (c) 2017 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
+from collections import defaultdict
+import threading
 from typing import Any, Dict, Optional
 
 from PyQt5.QtCore import pyqtProperty
@@ -30,7 +32,8 @@ class GlobalStack(CuraContainerStack):
         # This property is used to track which settings we are calculating the "resolve" for
         # and if so, to bypass the resolve to prevent an infinite recursion that would occur
         # if the resolve function tried to access the same property it is a resolve for.
-        self._resolving_settings = set()
+        # Per thread we have our own resolving_settings, or strange things sometimes occur.
+        self._resolving_settings = defaultdict(set)  # keys are thread names
 
     ##  Get the list of extruders of this stack.
     #
@@ -91,9 +94,10 @@ class GlobalStack(CuraContainerStack):
 
         # Handle the "resolve" property.
         if self._shouldResolve(key, property_name, context):
-            self._resolving_settings.add(key)
+            current_thread = threading.current_thread()
+            self._resolving_settings[current_thread.name].add(key)
             resolve = super().getProperty(key, "resolve", context)
-            self._resolving_settings.remove(key)
+            self._resolving_settings[current_thread.name].remove(key)
             if resolve is not None:
                 return resolve
 
@@ -121,21 +125,6 @@ class GlobalStack(CuraContainerStack):
     def setNextStack(self, next_stack: ContainerStack) -> None:
         raise Exceptions.InvalidOperationError("Global stack cannot have a next stack!")
 
-    ##  Gets the approximate filament diameter that the machine requires.
-    #
-    #   The approximate material diameter is the material diameter rounded to
-    #   the nearest millimetre.
-    #
-    #   If the machine has no requirement for the diameter, -1 is returned.
-    #
-    #   \return The approximate filament diameter for the printer, as a string.
-    @pyqtProperty(str)
-    def approximateMaterialDiameter(self) -> str:
-        material_diameter = self.definition.getProperty("material_diameter", "value")
-        if material_diameter is None:
-            return "-1"
-        return str(round(float(material_diameter))) #Round, then convert back to string.
-
     # protected:
 
     # Determine whether or not we should try to get the "resolve" property instead of the
@@ -145,7 +134,8 @@ class GlobalStack(CuraContainerStack):
             # Do not try to resolve anything but the "value" property
             return False
 
-        if key in self._resolving_settings:
+        current_thread = threading.current_thread()
+        if key in self._resolving_settings[current_thread.name]:
             # To prevent infinite recursion, if getProperty is called with the same key as
             # we are already trying to resolve, we should not try to resolve again. Since
             # this can happen multiple times when trying to resolve a value, we need to

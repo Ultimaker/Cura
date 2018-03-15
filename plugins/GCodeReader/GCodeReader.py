@@ -26,7 +26,7 @@ class GCodeReader(MeshReader):
 
     # PreRead is used to get the correct flavor. If not, Marlin is set by default
     def preRead(self, file_name, *args, **kwargs):
-        with open(file_name, "r") as file:
+        with open(file_name, "r", encoding = "utf-8") as file:
             for line in file:
                 if line[:len(self._flavor_keyword)] == self._flavor_keyword:
                     try:

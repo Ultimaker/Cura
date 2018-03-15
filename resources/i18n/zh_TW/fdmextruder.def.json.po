@@ -54,9 +54,7 @@ msgstr "噴頭直徑"
 
 #: fdmextruder.def.json
 msgctxt "machine_nozzle_size description"
-msgid ""
-"The inner diameter of the nozzle. Change this setting when using a non-"
-"standard nozzle size."
+msgid "The inner diameter of the nozzle. Change this setting when using a non-standard nozzle size."
 msgstr "噴頭內徑，在使用非標準噴頭尺寸時需更改此設定。"
 
 #: fdmextruder.def.json
@@ -96,9 +94,7 @@ msgstr "擠出機起點絕對位置"
 
 #: fdmextruder.def.json
 msgctxt "machine_extruder_start_pos_abs description"
-msgid ""
-"Make the extruder starting position absolute rather than relative to the "
-"last-known location of the head."
+msgid "Make the extruder starting position absolute rather than relative to the last-known location of the head."
 msgstr "讓擠出機以絕對位置做為起點，而不是與前一次位置的相對位置。"
 
 #: fdmextruder.def.json
@@ -138,9 +134,7 @@ msgstr "擠出機終點絕對位置"
 
 #: fdmextruder.def.json
 msgctxt "machine_extruder_end_pos_abs description"
-msgid ""
-"Make the extruder ending position absolute rather than relative to the last-"
-"known location of the head."
+msgid "Make the extruder ending position absolute rather than relative to the last-known location of the head."
 msgstr "讓擠出機以絕對位置為終點，而不是與前一次位置的相對位置。"
 
 #: fdmextruder.def.json
@@ -170,9 +164,7 @@ msgstr "擠出機初始 Z 軸位置"
 
 #: fdmextruder.def.json
 msgctxt "extruder_prime_pos_z description"
-msgid ""
-"The Z coordinate of the position where the nozzle primes at the start of "
-"printing."
+msgid "The Z coordinate of the position where the nozzle primes at the start of printing."
 msgstr "列印開始時，噴頭在 Z 軸座標上的起始位置."
 
 #: fdmextruder.def.json
@@ -192,9 +184,7 @@ msgstr "擠出機 X 軸座標"
 
 #: fdmextruder.def.json
 msgctxt "extruder_prime_pos_x description"
-msgid ""
-"The X coordinate of the position where the nozzle primes at the start of "
-"printing."
+msgid "The X coordinate of the position where the nozzle primes at the start of printing."
 msgstr "列印開始時，噴頭在 X 軸上初始位置。"
 
 #: fdmextruder.def.json
@@ -204,7 +194,5 @@ msgstr "擠出機 Y 軸起始位置"
 
 #: fdmextruder.def.json
 msgctxt "extruder_prime_pos_y description"
-msgid ""
-"The Y coordinate of the position where the nozzle primes at the start of "
-"printing."
+msgid "The Y coordinate of the position where the nozzle primes at the start of printing."
 msgstr "列印開始時，噴頭在 Y 軸座標上初始位置。"

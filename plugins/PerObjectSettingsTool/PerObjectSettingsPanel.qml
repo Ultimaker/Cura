@@ -246,7 +246,7 @@ Item {
 
                         Button
                         {
-                            width: Math.floor(UM.Theme.getSize("setting").height / 2)
+                            width: Math.round(UM.Theme.getSize("setting").height / 2)
                             height: UM.Theme.getSize("setting").height
 
                             onClicked: addedSettingsModel.setVisible(model.key, false)

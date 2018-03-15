@@ -1,7 +1,7 @@
 # Copyright (c) 2017 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from PyQt5.QtCore import Qt, pyqtSignal, pyqtProperty, QTimer
+from PyQt5.QtCore import Qt, pyqtSignal, pyqtSlot, pyqtProperty, QTimer
 from typing import Iterable
 
 from UM.i18n import i18nCatalog
@@ -24,6 +24,8 @@ class ExtrudersModel(UM.Qt.ListModel.ListModel):
 
     ##  Human-readable name of the extruder.
     NameRole = Qt.UserRole + 2
+    ##  Is the extruder enabled?
+    EnabledRole = Qt.UserRole + 9
 
     ##  Colour of the material loaded in the extruder.
     ColorRole = Qt.UserRole + 3
@@ -43,6 +45,7 @@ class ExtrudersModel(UM.Qt.ListModel.ListModel):
 
     # The variant of the extruder.
     VariantRole = Qt.UserRole + 7
+    StackRole = Qt.UserRole + 8
 
     ##  List of colours to display if there is no material or the material has no known
     #   colour.
@@ -57,11 +60,13 @@ class ExtrudersModel(UM.Qt.ListModel.ListModel):
 
         self.addRoleName(self.IdRole, "id")
         self.addRoleName(self.NameRole, "name")
+        self.addRoleName(self.EnabledRole, "enabled")
         self.addRoleName(self.ColorRole, "color")
         self.addRoleName(self.IndexRole, "index")
         self.addRoleName(self.DefinitionRole, "definition")
         self.addRoleName(self.MaterialRole, "material")
         self.addRoleName(self.VariantRole, "variant")
+        self.addRoleName(self.StackRole, "stack")
 
         self._update_extruder_timer = QTimer()
         self._update_extruder_timer.setInterval(100)
@@ -183,11 +188,13 @@ class ExtrudersModel(UM.Qt.ListModel.ListModel):
                 item = {
                     "id": extruder.getId(),
                     "name": extruder.getName(),
+                    "enabled": extruder.isEnabled,
                     "color": color,
                     "index": position,
                     "definition": extruder.getBottom().getId(),
                     "material": extruder.material.getName() if extruder.material else "",
                     "variant": extruder.variant.getName() if extruder.variant else "",  # e.g. print core
+                    "stack": extruder,
                 }
 
                 items.append(item)

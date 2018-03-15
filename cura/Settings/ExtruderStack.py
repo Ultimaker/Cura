@@ -3,23 +3,21 @@
 
 from typing import Any, TYPE_CHECKING, Optional
 
+from PyQt5.QtCore import pyqtProperty, pyqtSignal
+
 from UM.Decorators import override
 from UM.MimeTypeDatabase import MimeType, MimeTypeDatabase
 from UM.Settings.ContainerStack import ContainerStack
 from UM.Settings.ContainerRegistry import ContainerRegistry
 from UM.Settings.Interfaces import ContainerInterface, PropertyEvaluationContext
-from UM.Settings.SettingInstance import SettingInstance
+from UM.Util import parseBool
 
 from . import Exceptions
-from .CuraContainerStack import CuraContainerStack
+from .CuraContainerStack import CuraContainerStack, _ContainerIndexes
 from .ExtruderManager import ExtruderManager
 
 if TYPE_CHECKING:
     from cura.Settings.GlobalStack import GlobalStack
-
-
-_EXTRUDER_SPECIFIC_DEFINITION_CHANGES_SETTINGS = ["machine_nozzle_size",
-                                                  "material_diameter"]
 
 
 ##  Represents an Extruder and its related containers.
@@ -33,11 +31,13 @@ class ExtruderStack(CuraContainerStack):
 
         self.propertiesChanged.connect(self._onPropertiesChanged)
 
+    enabledChanged = pyqtSignal()
+
     ##  Overridden from ContainerStack
     #
     #   This will set the next stack and ensure that we register this stack as an extruder.
     @override(ContainerStack)
-    def setNextStack(self, stack: ContainerStack) -> None:
+    def setNextStack(self, stack: CuraContainerStack) -> None:
         super().setNextStack(stack)
         stack.addExtruder(self)
         self.addMetaDataEntry("machine", stack.id)
@@ -45,36 +45,46 @@ class ExtruderStack(CuraContainerStack):
         # For backward compatibility: Register the extruder with the Extruder Manager
         ExtruderManager.getInstance().registerExtruder(self, stack.id)
 
-        # Now each machine will have at least one extruder stack. If this is the first extruder, the extruder-specific
-        # settings such as nozzle size and material diameter should be moved from the machine's definition_changes to
-        # the this extruder's definition_changes.
-        #
-        # We do this here because it is tooooo expansive to do it in the version upgrade: During the version upgrade,
-        # when we are upgrading a definition_changes container file, there is NO guarantee that other files such as
-        # machine an extruder stack files are upgraded before this, so we cannot read those files assuming they are in
-        # the latest format.
-        if self.getMetaDataEntry("position") == "0":
-            for key in _EXTRUDER_SPECIFIC_DEFINITION_CHANGES_SETTINGS:
-                setting_value = stack.definitionChanges.getProperty(key, "value")
-                if setting_value is None:
-                    continue
-
-                setting_definition = stack.getSettingDefinition(key)
-                new_instance = SettingInstance(setting_definition, self.definitionChanges)
-                new_instance.setProperty("value", setting_value)
-                new_instance.resetState()  # Ensure that the state is not seen as a user state.
-                self.definitionChanges.addInstance(new_instance)
-                self.definitionChanges.setDirty(True)
-
-                stack.definitionChanges.removeInstance(key, postpone_emit = True)
-
     @override(ContainerStack)
     def getNextStack(self) -> Optional["GlobalStack"]:
         return super().getNextStack()
 
+    def setEnabled(self, enabled):
+        if "enabled" not in self._metadata:
+            self.addMetaDataEntry("enabled", "True")
+        self.setMetaDataEntry("enabled", str(enabled))
+        self.enabledChanged.emit()
+
+    @pyqtProperty(bool, notify = enabledChanged)
+    def isEnabled(self):
+        return parseBool(self.getMetaDataEntry("enabled", "True"))
+
     @classmethod
     def getLoadingPriority(cls) -> int:
         return 3
+
+    ##  Return the filament diameter that the machine requires.
+    #
+    #   If the machine has no requirement for the diameter, -1 is returned.
+    #   \return The filament diameter for the printer
+    @property
+    def materialDiameter(self) -> float:
+        context = PropertyEvaluationContext(self)
+        context.context["evaluate_from_container_index"] = _ContainerIndexes.Variant
+
+        return self.getProperty("material_diameter", "value", context = context)
+
+    ##  Return the approximate filament diameter that the machine requires.
+    #
+    #   The approximate material diameter is the material diameter rounded to
+    #   the nearest millimetre.
+    #
+    #   If the machine has no requirement for the diameter, -1 is returned.
+    #
+    #   \return The approximate filament diameter for the printer
+    @pyqtProperty(float)
+    def approximateMaterialDiameter(self) -> float:
+        return round(float(self.materialDiameter))
 
     ##  Overridden from ContainerStack
     #
@@ -143,11 +153,6 @@ class ExtruderStack(CuraContainerStack):
 
             if has_global_dependencies:
                 self.getNextStack().propertiesChanged.emit(key, properties)
-
-    def findDefaultVariant(self):
-        # The default variant is defined in the machine stack and/or definition, so use the machine stack to find
-        # the default variant.
-        return self.getNextStack().findDefaultVariant()
 
 
 extruder_stack_mime = MimeType(

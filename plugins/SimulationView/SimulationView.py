@@ -98,10 +98,13 @@ class SimulationView(View):
 
         self._solid_layers = int(Preferences.getInstance().getValue("view/top_layer_count"))
         self._only_show_top_layers = bool(Preferences.getInstance().getValue("view/only_show_top_layers"))
-        self._compatibility_mode = True  # for safety
+        self._compatibility_mode = self._evaluateCompatibilityMode()
 
         self._wireprint_warning_message = Message(catalog.i18nc("@info:status", "Cura does not accurately display layers when Wire Printing is enabled"),
                                                   title = catalog.i18nc("@info:title", "Simulation View"))
+
+    def _evaluateCompatibilityMode(self):
+        return OpenGLContext.isLegacyOpenGL() or bool(Preferences.getInstance().getValue("view/force_layer_view_compatibility_mode"))
 
     def _resetSettings(self):
         self._layer_view_type = 0  # 0 is material color, 1 is color by linetype, 2 is speed, 3 is layer thickness
@@ -127,7 +130,7 @@ class SimulationView(View):
             # Currently the RenderPass constructor requires a size > 0
             # This should be fixed in RenderPass's constructor.
             self._layer_pass = SimulationPass(1, 1)
-            self._compatibility_mode = OpenGLContext.isLegacyOpenGL() or bool(Preferences.getInstance().getValue("view/force_layer_view_compatibility_mode"))
+            self._compatibility_mode = self._evaluateCompatibilityMode()
             self._layer_pass.setSimulationView(self)
         return self._layer_pass
 
@@ -155,9 +158,10 @@ class SimulationView(View):
         return self._nozzle_node
 
     def _onSceneChanged(self, node):
-        self.setActivity(False)
-        self.calculateMaxLayers()
-        self.calculateMaxPathsOnLayer(self._current_layer_num)
+        if node.getMeshData() is not None:
+            self.setActivity(False)
+            self.calculateMaxLayers()
+            self.calculateMaxPathsOnLayer(self._current_layer_num)
 
     def isBusy(self):
         return self._busy
@@ -339,6 +343,11 @@ class SimulationView(View):
             min_layer_number = sys.maxsize
             max_layer_number = -sys.maxsize
             for layer_id in layer_data.getLayers():
+
+                # If a layer doesn't contain any polygons, skip it (for infill meshes taller than print objects
+                if len(layer_data.getLayer(layer_id).polygons) < 1:
+                    continue
+
                 # Store the max and min feedrates and thicknesses for display purposes
                 for p in layer_data.getLayer(layer_id).polygons:
                     self._max_feedrate = max(float(p.lineFeedrates.max()), self._max_feedrate)
@@ -534,8 +543,7 @@ class SimulationView(View):
     def _updateWithPreferences(self):
         self._solid_layers = int(Preferences.getInstance().getValue("view/top_layer_count"))
         self._only_show_top_layers = bool(Preferences.getInstance().getValue("view/only_show_top_layers"))
-        self._compatibility_mode = OpenGLContext.isLegacyOpenGL() or bool(
-            Preferences.getInstance().getValue("view/force_layer_view_compatibility_mode"))
+        self._compatibility_mode = self._evaluateCompatibilityMode()
 
         self.setSimulationViewType(int(float(Preferences.getInstance().getValue("layerview/layer_view_type"))));
 
@@ -632,4 +640,3 @@ class _CreateTopLayersJob(Job):
     def cancel(self):
         self._cancel = True
         super().cancel()
-

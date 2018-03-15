@@ -3,6 +3,13 @@
 
 from UM.PluginObject import PluginObject
 
+
+# Exception when there is no profile to import from a given files.
+# Note that this should not be treated as an exception but as an information instead.
+class NoProfileException(Exception):
+    pass
+
+
 ##  A type of plug-ins that reads profiles from a file.
 #
 #   The profile is then stored as instance container of the type user profile.
