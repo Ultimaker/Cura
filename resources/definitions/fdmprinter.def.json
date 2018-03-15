@@ -2097,6 +2097,19 @@
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
+                "material_shrinkage_ratio_percentage":
+                {
+                    "label": "Shrinkage Ratio",
+                    "description": "Shrinkage ratio in percentage.",
+                    "unit": "%",
+                    "type": "float",
+                    "default_value": 0,
+                    "minimum_value": "0",
+                    "maximum_value": "100",
+                    "enabled": false,
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
+                },
                 "material_flow":
                 {
                     "label": "Flow",
