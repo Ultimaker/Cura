@@ -145,6 +145,7 @@ class MachineManager(QObject):
     activeStackValueChanged = pyqtSignal()  # Emitted whenever a value inside the active stack is changed.
     activeStackValidationChanged = pyqtSignal()  # Emitted whenever a validation inside active container is changed
     stacksValidationChanged = pyqtSignal()  # Emitted whenever a validation is changed
+    numberExtrudersEnabledChanged = pyqtSignal()  # Emitted when the number of extruders that are enabled changed
 
     blurSettings = pyqtSignal()  # Emitted to force fields in the advanced sidebar to un-focus, so they update properly
 
@@ -880,7 +881,13 @@ class MachineManager(QObject):
         for position, extruder in self._global_container_stack.extruders.items():
             if extruder.isEnabled:
                 extruder_count += 1
-        definition_changes_container.setProperty("extruders_enabled_count", "value", extruder_count)
+        if self.numberExtrudersEnabled != extruder_count:
+            definition_changes_container.setProperty("extruders_enabled_count", "value", extruder_count)
+            self.numberExtrudersEnabledChanged.emit()
+
+    @pyqtProperty(int, notify = numberExtrudersEnabledChanged)
+    def numberExtrudersEnabled(self):
+        return self._global_container_stack.definitionChanges.getProperty("extruders_enabled_count", "value")
 
     @pyqtProperty(str, notify = extruderChanged)
     def defaultExtruderPosition(self):

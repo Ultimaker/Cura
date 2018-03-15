@@ -440,6 +440,7 @@ Item
                     key: model.key ? model.key : ""
                     watchedProperties: [ "value", "enabled", "state", "validationState", "settable_per_extruder", "resolve" ]
                     storeIndex: 0
+                    removeUnusedValue: model.resolve == undefined
                 }
 
                 Connections
