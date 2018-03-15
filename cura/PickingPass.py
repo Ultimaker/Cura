@@ -24,7 +24,6 @@ class PickingPass(RenderPass):
         self._shader = None
         self._scene = Application.getInstance().getController().getScene()
 
-
     def render(self) -> None:
         if not self._shader:
             self._shader = OpenGL.getInstance().createShaderProgram(Resources.getPath(Resources.Shaders, "camera_distance.shader"))
@@ -47,7 +46,7 @@ class PickingPass(RenderPass):
         self.release()
 
     ##  Get the distance in mm from the camera to at a certain pixel coordinate.
-    def getPickedDepth(self, x, y) -> float:
+    def getPickedDepth(self, x: int, y: int) -> float:
         output = self.getOutput()
 
         window_size = self._renderer.getWindowSize()
@@ -56,14 +55,14 @@ class PickingPass(RenderPass):
         py = (0.5 + y / 2.0) * window_size[1]
 
         if px < 0 or px > (output.width() - 1) or py < 0 or py > (output.height() - 1):
-            return None
+            return -1
 
         distance = output.pixel(px, py) # distance in micron, from in r, g & b channels
         distance = (distance & 0x00ffffff) / 1000. # drop the alpha channel and covert to mm
         return distance
 
     ## Get the world coordinates of a picked point
-    def getPickedPosition(self, x, y) -> Vector:
+    def getPickedPosition(self, x: int, y: int) -> Vector:
         distance = self.getPickedDepth(x, y)
         ray = self._scene.getActiveCamera().getRay(x, y)
 
