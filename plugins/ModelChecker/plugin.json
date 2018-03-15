@@ -1,0 +1,8 @@
+{
+    "name": "Model Checker",
+    "author": "Ultimaker",
+    "version": "0.1",
+    "api": 4,
+    "description": "Checks models for possible printing issues and give suggestions.",
+    "catalog": "cura"
+}
