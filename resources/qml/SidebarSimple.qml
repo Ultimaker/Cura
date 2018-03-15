@@ -594,7 +594,9 @@ Item
                         // Update value only if the Recomended mode is Active,
                         // Otherwise if I change the value in the Custom mode the Recomended view will try to repeat
                         // same operation
-                        if (UM.Preferences.getValue("cura/active_mode") == 0) {
+                        var active_mode = UM.Preferences.getValue("cura/active_mode")
+
+                        if (active_mode == 0 || active_mode == "simple") {
                             Cura.MachineManager.setSettingForAllExtruders("infill_sparse_density", "value", roundedSliderValue)
                         }
                     }
