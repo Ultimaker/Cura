@@ -55,7 +55,7 @@ ToolButton
             PrinterStatusIcon
             {
                 id: printerStatusIcon
-                visible: printerConnected
+                visible: printerConnected || isNetworkPrinter
                 status: printerStatus
                 anchors
                 {
