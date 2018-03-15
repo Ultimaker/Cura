@@ -19,7 +19,7 @@ Item
     property Action configureSettings;
     property variant minimumPrintTime: PrintInformation.minimumPrintTime;
     property variant maximumPrintTime: PrintInformation.maximumPrintTime;
-    property bool settingsEnabled: Cura.ExtruderManager.activeExtruderStackId || extrudersEnabledCount.properties.value == 1
+    property bool settingsEnabled: extrudersEnabledCount.properties.value == 1
 
     Component.onCompleted: PrintInformation.enabled = true
     Component.onDestruction: PrintInformation.enabled = false
@@ -111,7 +111,6 @@ Item
 
                             // Set selected value
                             if (Cura.MachineManager.activeQualityType == qualityItem.quality_type) {
-
                                 // set to -1 when switching to user created profile so all ticks are clickable
                                 if (Cura.SimpleModeSettingsManager.isProfileUserCreated) {
                                     qualityModel.qualitySliderActiveIndex = -1
@@ -474,18 +473,7 @@ Item
                     onClicked:
                     {
                         // if the current profile is user-created, switch to a built-in quality
-                        if (Cura.SimpleModeSettingsManager.isProfileUserCreated)
-                        {
-                            if (Cura.QualityProfilesDropDownMenuModel.rowCount() > 0)
-                            {
-                                var item = Cura.QualityProfilesDropDownMenuModel.getItem(0);
-                                Cura.MachineManager.activeQualityGroup = item.quality_group;
-                            }
-                        }
-                        if (Cura.SimpleModeSettingsManager.isProfileCustomized)
-                        {
-                            discardOrKeepProfileChangesDialog.show()
-                        }
+                        Cura.MachineManager.resetToUseDefaultQuality()
                     }
                     onEntered:
                     {
@@ -594,7 +582,9 @@ Item
                         // Update value only if the Recomended mode is Active,
                         // Otherwise if I change the value in the Custom mode the Recomended view will try to repeat
                         // same operation
-                        if (UM.Preferences.getValue("cura/active_mode") == 0) {
+                        var active_mode = UM.Preferences.getValue("cura/active_mode")
+
+                        if (active_mode == 0 || active_mode == "simple") {
                             Cura.MachineManager.setSettingForAllExtruders("infill_sparse_density", "value", roundedSliderValue)
                         }
                     }

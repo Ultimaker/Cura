@@ -16,7 +16,8 @@ class SimpleModeSettingsManager(QObject):
         self._is_profile_user_created = False  # True when profile was custom created by user
 
         self._machine_manager.activeStackValueChanged.connect(self._updateIsProfileCustomized)
-        self._machine_manager.activeQualityChanged.connect(self._updateIsProfileUserCreated)
+        self._machine_manager.activeQualityGroupChanged.connect(self._updateIsProfileUserCreated)
+        self._machine_manager.activeQualityChangesGroupChanged.connect(self._updateIsProfileUserCreated)
 
         # update on create as the activeQualityChanged signal is emitted before this manager is created when Cura starts
         self._updateIsProfileCustomized()

@@ -1269,6 +1269,13 @@ class MachineManager(QObject):
         if not no_dialog and self.hasUserSettings and Preferences.getInstance().getValue("cura/active_mode") == 1:
             self._application.discardOrKeepProfileChanges()
 
+    @pyqtSlot()
+    def resetToUseDefaultQuality(self):
+        with postponeSignals(*self._getContainerChangedSignals(), compress = CompressTechnique.CompressPerParameterValue):
+            self._setQualityGroup(self._current_quality_group)
+            for stack in [self._global_container_stack] + list(self._global_container_stack.extruders.values()):
+                stack.userChanges.clear()
+
     @pyqtProperty(QObject, fset = setQualityChangesGroup, notify = activeQualityChangesGroupChanged)
     def activeQualityChangesGroup(self):
         return self._current_quality_changes_group

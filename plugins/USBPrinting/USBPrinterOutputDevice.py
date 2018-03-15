@@ -10,9 +10,9 @@ from UM.PluginRegistry import PluginRegistry
 from cura.PrinterOutputDevice import PrinterOutputDevice, ConnectionState
 from cura.PrinterOutput.PrinterOutputModel import PrinterOutputModel
 from cura.PrinterOutput.PrintJobOutputModel import PrintJobOutputModel
+from cura.PrinterOutput.GenericOutputController import GenericOutputController
 
 from .AutoDetectBaudJob import AutoDetectBaudJob
-from .USBPrinterOutputController import USBPrinterOutputController
 from .avr_isp import stk500v2, intelHex
 
 from PyQt5.QtCore import pyqtSlot, pyqtSignal, pyqtProperty
@@ -240,7 +240,7 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
         container_stack = Application.getInstance().getGlobalContainerStack()
         num_extruders = container_stack.getProperty("machine_extruder_count", "value")
         # Ensure that a printer is created.
-        self._printers = [PrinterOutputModel(output_controller=USBPrinterOutputController(self), number_of_extruders=num_extruders)]
+        self._printers = [PrinterOutputModel(output_controller=GenericOutputController(self), number_of_extruders=num_extruders)]
         self._printers[0].updateName(container_stack.getName())
         self.setConnectionState(ConnectionState.connected)
         self._update_thread.start()
@@ -372,7 +372,7 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
         elapsed_time = int(time() - self._print_start_time)
         print_job = self._printers[0].activePrintJob
         if print_job is None:
-            print_job = PrintJobOutputModel(output_controller = USBPrinterOutputController(self), name= Application.getInstance().getPrintInformation().jobName)
+            print_job = PrintJobOutputModel(output_controller = GenericOutputController(self), name= Application.getInstance().getPrintInformation().jobName)
             print_job.updateState("printing")
             self._printers[0].updateActivePrintJob(print_job)
 
