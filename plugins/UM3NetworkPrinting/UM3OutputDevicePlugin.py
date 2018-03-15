@@ -82,6 +82,9 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
             self._zero_conf_browser.cancel()
             self._zero_conf_browser = None  # Force the old ServiceBrowser to be destroyed.
 
+        for instance_name in list(self._discovered_devices):
+            self._onRemoveDevice(instance_name)
+
         self._zero_conf = Zeroconf()
         self._zero_conf_browser = ServiceBrowser(self._zero_conf, u'_ultimaker._tcp.local.',
                                                  [self._appendServiceChangedRequest])
