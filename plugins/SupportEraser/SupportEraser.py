@@ -125,9 +125,23 @@ class SupportEraser(Tool):
             Selection.add(parent)
 
     def _removeEraserMesh(self, node: CuraSceneNode):
-        op = RemoveSceneNodeOperation(node)
+        group = node.getParent()
+        if group.callDecoration("isGroup"):
+            parent = group.getChildren()[0]
+
+        op = GroupedOperation()
+        op.addOperation(RemoveSceneNodeOperation(node))
+        if len(group.getChildren()) == 2:
+            op.addOperation(SetParentOperation(parent, group.getParent()))
+
         op.push()
         Application.getInstance().getController().getScene().sceneChanged.emit(node)
+
+        # Select the picked node so the group does not get drawn as a wireframe (yet)
+        if Selection.isSelected(group):
+            Selection.remove(group)
+        if parent and not Selection.isSelected(parent):
+            Selection.add(parent)
 
     def _updateEnabled(self):
         plugin_enabled = False
