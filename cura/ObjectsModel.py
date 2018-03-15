@@ -1,3 +1,8 @@
+# Copyright (c) 2018 Ultimaker B.V.
+# Cura is released under the terms of the LGPLv3 or higher.
+
+from PyQt5.QtCore import QTimer
+
 from UM.Application import Application
 from UM.Qt.ListModel import ListModel
 from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
@@ -8,19 +13,28 @@ from UM.i18n import i18nCatalog
 
 catalog = i18nCatalog("cura")
 
+
 ##  Keep track of all objects in the project
 class ObjectsModel(ListModel):
     def __init__(self):
         super().__init__()
 
-        Application.getInstance().getController().getScene().sceneChanged.connect(self._update)
-        Preferences.getInstance().preferenceChanged.connect(self._update)
+        Application.getInstance().getController().getScene().sceneChanged.connect(self._updateDelayed)
+        Preferences.getInstance().preferenceChanged.connect(self._updateDelayed)
+
+        self._update_timer = QTimer()
+        self._update_timer.setInterval(100)
+        self._update_timer.setSingleShot(True)
+        self._update_timer.timeout.connect(self._update)
 
         self._build_plate_number = -1
 
     def setActiveBuildPlate(self, nr):
         self._build_plate_number = nr
         self._update()
+
+    def _updateDelayed(self, *args):
+        self._update_timer.start()
 
     def _update(self, *args):
         nodes = []
@@ -46,10 +60,15 @@ class ObjectsModel(ListModel):
                 name = catalog.i18nc("@label", "Group #{group_nr}").format(group_nr = str(group_nr))
                 group_nr += 1
 
+            if hasattr(node, "isOutsideBuildArea"):
+                is_outside_build_area = node.isOutsideBuildArea()
+            else:
+                is_outside_build_area = False
+
             nodes.append({
                 "name": name,
                 "isSelected": Selection.isSelected(node),
-                "isOutsideBuildArea": node.isOutsideBuildArea(),
+                "isOutsideBuildArea": is_outside_build_area,
                 "buildPlateNumber": node_build_plate_number,
                 "node": node
             })

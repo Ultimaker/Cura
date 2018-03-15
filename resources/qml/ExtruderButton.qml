@@ -19,7 +19,7 @@ Button
     iconSource: UM.Theme.getIcon("extruder_button")
 
     checked: Cura.ExtruderManager.selectedObjectExtruders.indexOf(extruder.id) != -1
-    enabled: UM.Selection.hasSelection
+    enabled: UM.Selection.hasSelection && extruder.stack.isEnabled
 
     property color customColor: base.hovered ? UM.Theme.getColor("button_hover") : UM.Theme.getColor("button");
 
@@ -65,7 +65,7 @@ Button
 
         width: UM.Theme.getSize("extruder_button_material").width
         height: UM.Theme.getSize("extruder_button_material").height
-        radius: width / 2
+        radius: Math.round(width / 2)
 
         border.width: UM.Theme.getSize("default_lining").width
         border.color: UM.Theme.getColor("extruder_button_material_border")

@@ -1,7 +1,7 @@
-// Copyright (c) 2017 Ultimaker B.V.
+// Copyright (c) 2018 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
-import QtQuick 2.2
+import QtQuick 2.7
 import QtQuick.Controls 1.1
 import QtQuick.Controls.Styles 1.1
 import QtQuick.Layouts 1.1
@@ -76,7 +76,7 @@ Item {
         width: parent.width - 2 * UM.Theme.getSize("sidebar_margin").width
         height: UM.Theme.getSize("progressbar").height
         anchors.top: statusLabel.bottom
-        anchors.topMargin: UM.Theme.getSize("sidebar_margin").height/4
+        anchors.topMargin: Math.round(UM.Theme.getSize("sidebar_margin").height / 4)
         anchors.left: parent.left
         anchors.leftMargin: UM.Theme.getSize("sidebar_margin").width
         radius: UM.Theme.getSize("progressbar_radius").width
@@ -131,7 +131,7 @@ Item {
         Row {
             id: additionalComponentsRow
             anchors.top: parent.top
-            anchors.right: saveToButton.visible ? saveToButton.left : parent.right
+            anchors.right: saveToButton.visible ? saveToButton.left : (prepareButton.visible ? prepareButton.left : parent.right)
             anchors.rightMargin: UM.Theme.getSize("default_margin").width
 
             spacing: UM.Theme.getSize("default_margin").width
@@ -354,7 +354,7 @@ Item {
                     }
                     Behavior on color { ColorAnimation { duration: 50; } }
                     anchors.left: parent.left
-                    anchors.leftMargin: UM.Theme.getSize("save_button_text_margin").width / 2;
+                    anchors.leftMargin: Math.round(UM.Theme.getSize("save_button_text_margin").width / 2);
                     width: parent.height
                     height: parent.height
 

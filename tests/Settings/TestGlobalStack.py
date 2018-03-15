@@ -116,31 +116,6 @@ def test_addExtruder(global_stack):
     #         global_stack.addExtruder(unittest.mock.MagicMock())
     assert len(global_stack.extruders) == 2 #Didn't add the faulty extruder.
 
-##  Tests getting the approximate material diameter.
-@pytest.mark.parametrize("diameter, approximate_diameter", [
-    #Some real-life cases that are common in printers.
-    (2.85, 3),
-    (1.75, 2),
-    (3.0, 3),
-    (2.0, 2),
-    #Exceptional cases.
-    (0, 0),
-    (-10.1, -10),
-    (-1, -1),
-    (9000.1, 9000)
-])
-def test_approximateMaterialDiameter(diameter, approximate_diameter, global_stack):
-    global_stack.definition = DefinitionContainer(container_id = "TestDefinition")
-    material_diameter = UM.Settings.SettingDefinition.SettingDefinition(key = "material_diameter", container = global_stack.definition)
-    material_diameter.addSupportedProperty("value", UM.Settings.SettingDefinition.DefinitionPropertyType.Any, default = diameter)
-    global_stack.definition.definitions.append(material_diameter)
-    assert float(global_stack.approximateMaterialDiameter) == approximate_diameter
-
-##  Tests getting the material diameter when there is no material diameter.
-def test_approximateMaterialDiameterNoDiameter(global_stack):
-    global_stack.definition = DefinitionContainer(container_id = "TestDefinition")
-    assert global_stack.approximateMaterialDiameter == "-1"
-
 #Tests setting user changes profiles to invalid containers.
 @pytest.mark.parametrize("container", [
     getInstanceContainer(container_type = "wrong container type"),
@@ -486,43 +461,6 @@ def test_removeContainer(global_stack):
     with pytest.raises(InvalidOperationError):
         global_stack.removeContainer(unittest.mock.MagicMock())
 
-##  Tests setting definitions by specifying an ID of a definition that exists.
-def test_setDefinitionByIdExists(global_stack, container_registry):
-    container_registry.return_value = DefinitionContainer(container_id = "some_definition")
-    global_stack.setDefinitionById("some_definition")
-    assert global_stack.definition.getId() == "some_definition"
-
-##  Tests setting definitions by specifying an ID of a definition that doesn't
-#   exist.
-def test_setDefinitionByIdDoesntExist(global_stack):
-    with pytest.raises(InvalidContainerError):
-        global_stack.setDefinitionById("some_definition") #Container registry is empty now.
-
-##  Tests setting definition changes by specifying an ID of a container that
-#   exists.
-def test_setDefinitionChangesByIdExists(global_stack, container_registry):
-    container_registry.return_value = getInstanceContainer(container_type = "definition_changes")
-    global_stack.setDefinitionChangesById("InstanceContainer")
-    assert global_stack.definitionChanges.getId() == "InstanceContainer"
-
-##  Tests setting definition changes by specifying an ID of a container that
-#   doesn't exist.
-def test_setDefinitionChangesByIdDoesntExist(global_stack):
-    with pytest.raises(InvalidContainerError):
-        global_stack.setDefinitionChangesById("some_definition_changes") #Container registry is empty now.
-
-##  Tests setting materials by specifying an ID of a material that exists.
-def test_setMaterialByIdExists(global_stack, container_registry):
-    container_registry.return_value = getInstanceContainer(container_type = "material")
-    global_stack.setMaterialById("InstanceContainer")
-    assert global_stack.material.getId() == "InstanceContainer"
-
-##  Tests setting materials by specifying an ID of a material that doesn't
-#   exist.
-def test_setMaterialByIdDoesntExist(global_stack):
-    with pytest.raises(InvalidContainerError):
-        global_stack.setMaterialById("some_material") #Container registry is empty now.
-
 ##  Tests whether changing the next stack is properly forbidden.
 def test_setNextStack(global_stack):
     with pytest.raises(InvalidOperationError):
@@ -567,50 +505,3 @@ def test_setPropertyOtherContainers(target_container, stack_variable, global_sta
     global_stack.setProperty(key, property, value, target_container = target_container) #The actual test.
 
     getattr(global_stack, stack_variable).setProperty.assert_called_once_with(key, property, value) #Make sure that the proper container gets a setProperty call.
-
-##  Tests setting qualities by specifying an ID of a quality that exists.
-def test_setQualityByIdExists(global_stack, container_registry):
-    container_registry.return_value = getInstanceContainer(container_type = "quality")
-    global_stack.setQualityById("InstanceContainer")
-    assert global_stack.quality.getId() == "InstanceContainer"
-
-##  Tests setting qualities by specifying an ID of a quality that doesn't exist.
-def test_setQualityByIdDoesntExist(global_stack):
-    with pytest.raises(InvalidContainerError):
-        global_stack.setQualityById("some_quality") #Container registry is empty now.
-
-##  Tests setting quality changes by specifying an ID of a quality change that
-#   exists.
-def test_setQualityChangesByIdExists(global_stack, container_registry):
-    container_registry.return_value = getInstanceContainer(container_type = "quality_changes")
-    global_stack.setQualityChangesById("InstanceContainer")
-    assert global_stack.qualityChanges.getId() == "InstanceContainer"
-
-##  Tests setting quality changes by specifying an ID of a quality change that
-#   doesn't exist.
-def test_setQualityChangesByIdDoesntExist(global_stack):
-    with pytest.raises(InvalidContainerError):
-        global_stack.setQualityChangesById("some_quality_changes") #Container registry is empty now.
-
-##  Tests setting variants by specifying an ID of a variant that exists.
-def test_setVariantByIdExists(global_stack, container_registry):
-    container_registry.return_value = getInstanceContainer(container_type = "variant")
-    global_stack.setVariantById("InstanceContainer")
-    assert global_stack.variant.getId() == "InstanceContainer"
-
-##  Tests setting variants by specifying an ID of a variant that doesn't exist.
-def test_setVariantByIdDoesntExist(global_stack):
-    with pytest.raises(InvalidContainerError):
-        global_stack.setVariantById("some_variant") #Container registry is empty now.
-
-##  Smoke test for findDefaultVariant
-def test_smoke_findDefaultVariant(global_stack):
-    global_stack.findDefaultVariant()
-
-##  Smoke test for findDefaultMaterial
-def test_smoke_findDefaultMaterial(global_stack):
-    global_stack.findDefaultMaterial()
-
-##  Smoke test for findDefaultQuality
-def test_smoke_findDefaultQuality(global_stack):
-    global_stack.findDefaultQuality()

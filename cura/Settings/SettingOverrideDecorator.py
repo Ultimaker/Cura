@@ -3,6 +3,7 @@
 
 import copy
 
+from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 from UM.Scene.SceneNodeDecorator import SceneNodeDecorator
 from UM.Signal import Signal, signalemitter
 from UM.Settings.InstanceContainer import InstanceContainer
@@ -61,7 +62,7 @@ class SettingOverrideDecorator(SceneNodeDecorator):
 
         # use value from the stack because there can be a delay in signal triggering and "_is_non_printing_mesh"
         # has not been updated yet.
-        deep_copy._is_non_printing_mesh = any(bool(self._stack.getProperty(setting, "value")) for setting in self._non_printing_mesh_settings)
+        deep_copy._is_non_printing_mesh = self.evaluateIsNonPrintingMesh()
 
         return deep_copy
 
@@ -89,10 +90,18 @@ class SettingOverrideDecorator(SceneNodeDecorator):
     def isNonPrintingMesh(self):
         return self._is_non_printing_mesh
 
+    def evaluateIsNonPrintingMesh(self):
+        return any(bool(self._stack.getProperty(setting, "value")) for setting in self._non_printing_mesh_settings)
+
     def _onSettingChanged(self, instance, property_name): # Reminder: 'property' is a built-in function
-        # Trigger slice/need slicing if the value has changed.
-        if property_name == "value":
-            self._is_non_printing_mesh = any(bool(self._stack.getProperty(setting, "value")) for setting in self._non_printing_mesh_settings)
+        object_has_instance_setting = False
+        for container in self._stack.getContainers():
+            if container.hasProperty(instance, "value"):
+                object_has_instance_setting = True
+                break
+        if property_name == "value" and object_has_instance_setting:
+            # Trigger slice/need slicing if the value has changed.
+            self._is_non_printing_mesh = self.evaluateIsNonPrintingMesh()
 
             Application.getInstance().getBackend().needsSlicing()
             Application.getInstance().getBackend().tickle()

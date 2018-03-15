@@ -40,6 +40,8 @@ class PlatformPhysics:
         Preferences.getInstance().addPreference("physics/automatic_drop_down", True)
 
     def _onSceneChanged(self, source):
+        if not source.getMeshData():
+            return
         self._change_timer.start()
 
     def _onChangeTimerFinished(self):

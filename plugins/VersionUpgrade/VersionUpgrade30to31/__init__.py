@@ -33,6 +33,10 @@ def getMetaData():
                 "get_version": upgrade.getCfgVersion,
                 "location": {"./extruders"}
             },
+            "quality": {
+                "get_version": upgrade.getCfgVersion,
+                "location": {"./quality"}
+            },
             "quality_changes": {
                 "get_version": upgrade.getCfgVersion,
                 "location": {"./quality"}
