@@ -111,8 +111,8 @@ class PrinterOutputModel(QObject):
         self._controller.homeBed(self)
 
     @pyqtSlot(str)
-    def sendCustomCommand(self, command: str):
-        self._controller.sendCustomCommand(self, command)
+    def sendRawCommand(self, command: str):
+        self._controller.sendRawCommand(self, command)
 
     @pyqtProperty("QVariantList", constant = True)
     def extruders(self):
@@ -240,6 +240,20 @@ class PrinterOutputModel(QObject):
     def canPreHeatBed(self):
         if self._controller:
             return self._controller.can_pre_heat_bed
+        return False
+
+    # Does the printer support pre-heating the bed at all
+    @pyqtProperty(bool, constant=True)
+    def canPreHeatHotends(self):
+        if self._controller:
+            return self._controller.can_pre_heat_hotends
+        return False
+
+    # Does the printer support sending raw G-code at all
+    @pyqtProperty(bool, constant=True)
+    def canSendRawGcode(self):
+        if self._controller:
+            return self._controller.can_send_raw_gcode
         return False
 
     # Does the printer support pause at all

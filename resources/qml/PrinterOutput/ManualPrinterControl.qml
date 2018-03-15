@@ -100,30 +100,29 @@ Item
 
     Column
     {
-//        enabled:
-//        {
-//            if (printerModel == null)
-//            {
-//                return false; //Can't control the printer if not connected
-//            }
-//
-//            if (!connectedDevice.acceptsCommands)
-//            {
-//                return false; //Not allowed to do anything.
-//            }
-//
-//            if(activePrintJob == null)
-//            {
-//                return true
-//            }
-//
-//            if (activePrintJob.state == "printing" || activePrintJob.state == "resuming" || activePrintJob.state == "pausing" || activePrintJob.state == "error" || activePrintJob.state == "offline")
-//            {
-//                return false; //Printer is in a state where it can't react to manual control
-//            }
-//            return true;
-//        }
+        enabled:
+        {
+            if (printerModel == null)
+            {
+                return false; //Can't control the printer if not connected
+            }
 
+            if (!connectedDevice.acceptsCommands)
+            {
+                return false; //Not allowed to do anything.
+            }
+
+            if(activePrintJob == null)
+            {
+                return true
+            }
+
+            if (activePrintJob.state == "printing" || activePrintJob.state == "resuming" || activePrintJob.state == "pausing" || activePrintJob.state == "error" || activePrintJob.state == "offline")
+            {
+                return false; //Printer is in a state where it can't react to manual control
+            }
+            return true;
+        }
 
         MonitorSection
         {
@@ -458,7 +457,7 @@ Item
                     id: customCommandControl
 
                     // state
-                    visible: printerModel != null ? printerModel.canPreHeatBed: true
+                    visible: printerModel != null ? printerModel.canSendRawGcode: true
                     enabled: {
                         if (printerModel == null) {
                             return false // Can't preheat if not connected
@@ -534,7 +533,7 @@ Item
                         // we also clear the text field
                         Keys.onReturnPressed:
                         {
-                            printerModel.sendCustomCommand(customCommandControlInput.text)
+                            printerModel.sendRawCommand(customCommandControlInput.text)
                             customCommandControlInput.text = ""
                         }
                     }
