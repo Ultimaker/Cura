@@ -29,8 +29,7 @@ UM.PreferencesPage
 
         // After calling this function update Setting visibility preset combobox.
         // Reset should set default setting preset ("Basic")
-        visibilityPreset.setDefaultPreset()
-
+        visibilityPreset.currentIndex = 1
     }
     resetEnabled: true;
 
@@ -38,8 +37,6 @@ UM.PreferencesPage
     {
         id: base;
         anchors.fill: parent;
-
-        property bool inhibitSwitchToCustom: false
 
         CheckBox
         {
@@ -114,11 +111,6 @@ UM.PreferencesPage
 
         ComboBox
         {
-            function setDefaultPreset()
-            {
-                visibilityPreset.currentIndex = 0
-            }
-
             id: visibilityPreset
             width: 150 * screenScaleFactor
             anchors
@@ -127,50 +119,25 @@ UM.PreferencesPage
                 right: parent.right
             }
 
-            model: ListModel
-            {
-                id: visibilityPresetsModel
-                Component.onCompleted:
-                {
-                    visibilityPresetsModel.append({text: catalog.i18nc("@action:inmenu", "Custom selection"), id: "custom"});
-
-                    for(var i = 0; i < settingVisibilityPresetsModel.rowCount(); i++)
-                    {
-                        visibilityPresetsModel.append({text: settingVisibilityPresetsModel.getItem(i)["name"], id: settingVisibilityPresetsModel.getItem(i)["id"]});
-                    }
-                }
-            }
+            model: settingVisibilityPresetsModel
+            textRole: "name"
 
             currentIndex:
             {
                 // Load previously selected preset.
-                var index = settingVisibilityPresetsModel.find("id", settingVisibilityPresetsModel.activePreset);
-                if(index == -1)
+                var index = settingVisibilityPresetsModel.find("id", settingVisibilityPresetsModel.activePreset)
+                if (index == -1)
                 {
-                    return 0;
+                    return 0
                 }
 
-                return index + 1; // "Custom selection" entry is added in front, so index is off by 1
+                return index
             }
 
             onActivated:
             {
-                base.inhibitSwitchToCustom = true;
-                var preset_id = visibilityPresetsModel.get(index).id;
+                var preset_id = settingVisibilityPresetsModel.getItem(index).id;
                 settingVisibilityPresetsModel.setActivePreset(preset_id);
-
-                UM.Preferences.setValue("cura/active_setting_visibility_preset", preset_id);
-                if (preset_id != "custom")
-                {
-                    UM.Preferences.setValue("general/visible_settings", settingVisibilityPresetsModel.getItem(index - 1).settings.join(";"));
-                    // "Custom selection" entry is added in front, so index is off by 1
-                }
-                else
-                {
-                    // Restore custom set from preference
-                    UM.Preferences.setValue("general/visible_settings", UM.Preferences.getValue("cura/custom_visible_settings"));
-                }
-                base.inhibitSwitchToCustom = false;
             }
         }
 
@@ -200,16 +167,7 @@ UM.PreferencesPage
                     exclude: ["machine_settings", "command_line_settings"]
                     showAncestors: true
                     expanded: ["*"]
-                    visibilityHandler: UM.SettingPreferenceVisibilityHandler
-                    {
-                        onVisibilityChanged:
-                        {
-                            if(settingVisibilityPresetsModel.activePreset != "" && !base.inhibitSwitchToCustom)
-                            {
-                                settingVisibilityPresetsModel.setActivePreset("custom");
-                            }
-                        }
-                    }
+                    visibilityHandler: UM.SettingPreferenceVisibilityHandler {}
                 }
 
                 delegate: Loader

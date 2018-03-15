@@ -1,8 +1,8 @@
 // Copyright (c) 2018 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
-import QtQuick 2.2
-import QtQuick.Controls 1.1
+import QtQuick 2.7
+import QtQuick.Controls 1.4
 
 import UM 1.2 as UM
 import Cura 1.0 as Cura
@@ -19,22 +19,6 @@ Menu
     signal showAllSettings()
     signal showSettingVisibilityProfile()
 
-    MenuItem
-    {
-        text: catalog.i18nc("@action:inmenu", "Custom selection")
-        checkable: true
-        checked: !showingSearchResults && !showingAllSettings && settingVisibilityPresetsModel.activePreset == "custom"
-        exclusiveGroup: group
-        onTriggered:
-        {
-            settingVisibilityPresetsModel.setActivePreset("custom");
-            // Restore custom set from preference
-            UM.Preferences.setValue("general/visible_settings", UM.Preferences.getValue("cura/custom_visible_settings"));
-            showSettingVisibilityProfile();
-        }
-    }
-    MenuSeparator { }
-
     Instantiator
     {
         model: settingVisibilityPresetsModel
@@ -48,9 +32,6 @@ Menu
             onTriggered:
             {
                 settingVisibilityPresetsModel.setActivePreset(model.id);
-
-                UM.Preferences.setValue("general/visible_settings", model.settings.join(";"));
-
                 showSettingVisibilityProfile();
             }
         }
