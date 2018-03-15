@@ -28,6 +28,7 @@ class SolidView(View):
         self._enabled_shader = None
         self._disabled_shader = None
         self._non_printing_shader = None
+        self._support_mesh_shader = None
 
         self._extruders_model = ExtrudersModel()
         self._theme = None
@@ -54,6 +55,11 @@ class SolidView(View):
             self._non_printing_shader.setUniformValue("u_diffuseColor", Color(*self._theme.getColor("model_non_printing").getRgb()))
             self._non_printing_shader.setUniformValue("u_opacity", 0.6)
 
+        if not self._support_mesh_shader:
+            self._support_mesh_shader = OpenGL.getInstance().createShaderProgram(Resources.getPath(Resources.Shaders, "striped.shader"))
+            self._support_mesh_shader.setUniformValue("u_vertical_stripes", True)
+            self._support_mesh_shader.setUniformValue("u_width", 5.0)
+
         global_container_stack = Application.getInstance().getGlobalContainerStack()
         if global_container_stack:
             support_extruder_nr = global_container_stack.getProperty("support_extruder_nr", "value")
@@ -72,17 +78,13 @@ class SolidView(View):
 
         for node in DepthFirstIterator(scene.getRoot()):
             if not node.render(renderer):
-                if node.getMeshData() and node.isVisible():
+                if node.getMeshData() and node.isVisible() and not node.callDecoration("getLayerData"):
                     uniforms = {}
                     shade_factor = 1.0
 
                     per_mesh_stack = node.callDecoration("getStack")
 
-                    # Get color to render this mesh in from ExtrudersModel
-                    extruder_index = 0
-                    extruder_id = node.callDecoration("getActiveExtruder")
-                    if extruder_id:
-                        extruder_index = max(0, self._extruders_model.find("id", extruder_id))
+                    extruder_index = int(node.callDecoration("getActiveExtruderPosition"))
 
                     # Use the support extruder instead of the active extruder if this is a support_mesh
                     if per_mesh_stack:
@@ -110,13 +112,23 @@ class SolidView(View):
                     except ValueError:
                         pass
 
-                    if getattr(node, "_non_printing_mesh", False):
+                    if node.callDecoration("isNonPrintingMesh"):
                         if per_mesh_stack and (per_mesh_stack.getProperty("infill_mesh", "value") or per_mesh_stack.getProperty("cutting_mesh", "value")):
                             renderer.queueNode(node, shader = self._non_printing_shader, uniforms = uniforms, transparent = True)
                         else:
                             renderer.queueNode(node, shader = self._non_printing_shader, transparent = True)
                     elif getattr(node, "_outside_buildarea", False):
                         renderer.queueNode(node, shader = self._disabled_shader)
+                    elif per_mesh_stack and per_mesh_stack.getProperty("support_mesh", "value"):
+                        # Render support meshes with a vertical stripe that is darker
+                        shade_factor = 0.6
+                        uniforms["diffuse_color_2"] = [
+                            uniforms["diffuse_color"][0] * shade_factor,
+                            uniforms["diffuse_color"][1] * shade_factor,
+                            uniforms["diffuse_color"][2] * shade_factor,
+                            1.0
+                        ]
+                        renderer.queueNode(node, shader = self._support_mesh_shader, uniforms = uniforms)
                     else:
                         renderer.queueNode(node, shader = self._enabled_shader, uniforms = uniforms)
                 if node.callDecoration("isGroup") and Selection.isSelected(node):

@@ -17,7 +17,7 @@ Item
     MouseArea
     {
       anchors.fill: parent
-      onClicked: OutputDevice.selectAutomaticPrinter()
+      onClicked: OutputDevice.setActivePrinter(null)
       z: 0
     }
 
@@ -32,7 +32,7 @@ Item
         width: 20 * screenScaleFactor
         height: 20 * screenScaleFactor
 
-        onClicked: OutputDevice.selectAutomaticPrinter()
+        onClicked: OutputDevice.setActivePrinter(null)
 
         style: ButtonStyle
         {
@@ -57,7 +57,7 @@ Item
     {
         id: cameraImage
         width: Math.min(sourceSize.width === 0 ? 800 * screenScaleFactor : sourceSize.width, maximumWidth)
-        height: Math.floor((sourceSize.height === 0 ? 600 * screenScaleFactor : sourceSize.height) * width / sourceSize.width)
+        height: Math.round((sourceSize.height === 0 ? 600 * screenScaleFactor : sourceSize.height) * width / sourceSize.width)
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.verticalCenter: parent.verticalCenter
         z: 1
@@ -65,17 +65,23 @@ Item
         {
             if(visible)
             {
-                OutputDevice.startCamera()
+                if(OutputDevice.activePrinter != null && OutputDevice.activePrinter.camera != null)
+                {
+                    OutputDevice.activePrinter.camera.start()
+                }
             } else
             {
-                OutputDevice.stopCamera()
+                if(OutputDevice.activePrinter != null && OutputDevice.activePrinter.camera != null)
+                {
+                    OutputDevice.activePrinter.camera.stop()
+                }
             }
         }
         source:
         {
-            if(OutputDevice.cameraImage)
+            if(OutputDevice.activePrinter != null && OutputDevice.activePrinter.camera != null && OutputDevice.activePrinter.camera.latestImage)
             {
-                return OutputDevice.cameraImage;
+                return OutputDevice.activePrinter.camera.latestImage;
             }
             return "";
         }

@@ -1,9 +1,10 @@
-# Copyright (c) 2017 Ultimaker B.V.
+# Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import sys
 
 from PyQt5.QtCore import Qt
+from PyQt5.QtGui import QOpenGLContext
 from PyQt5.QtWidgets import QApplication
 
 from UM.Application import Application
@@ -13,6 +14,7 @@ from UM.Logger import Logger
 from UM.Math.Color import Color
 from UM.Mesh.MeshBuilder import MeshBuilder
 from UM.Message import Message
+from UM.Platform import Platform
 from UM.PluginRegistry import PluginRegistry
 from UM.Preferences import Preferences
 from UM.Resources import Resources
@@ -23,7 +25,8 @@ from UM.View.GL.OpenGL import OpenGL
 from UM.View.GL.OpenGLContext import OpenGLContext
 from UM.View.View import View
 from UM.i18n import i18nCatalog
-from cura.ConvexHullNode import ConvexHullNode
+from cura.Scene.ConvexHullNode import ConvexHullNode
+from cura.CuraApplication import CuraApplication
 
 from .NozzleNode import NozzleNode
 from .SimulationPass import SimulationPass
@@ -95,13 +98,16 @@ class SimulationView(View):
 
         self._solid_layers = int(Preferences.getInstance().getValue("view/top_layer_count"))
         self._only_show_top_layers = bool(Preferences.getInstance().getValue("view/only_show_top_layers"))
-        self._compatibility_mode = True  # for safety
+        self._compatibility_mode = self._evaluateCompatibilityMode()
 
         self._wireprint_warning_message = Message(catalog.i18nc("@info:status", "Cura does not accurately display layers when Wire Printing is enabled"),
                                                   title = catalog.i18nc("@info:title", "Simulation View"))
 
+    def _evaluateCompatibilityMode(self):
+        return OpenGLContext.isLegacyOpenGL() or bool(Preferences.getInstance().getValue("view/force_layer_view_compatibility_mode"))
+
     def _resetSettings(self):
-        self._layer_view_type = 0  # 0 is material color, 1 is color by linetype, 2 is speed
+        self._layer_view_type = 0  # 0 is material color, 1 is color by linetype, 2 is speed, 3 is layer thickness
         self._extruder_count = 0
         self._extruder_opacity = [1.0, 1.0, 1.0, 1.0]
         self._show_travel_moves = 0
@@ -124,7 +130,7 @@ class SimulationView(View):
             # Currently the RenderPass constructor requires a size > 0
             # This should be fixed in RenderPass's constructor.
             self._layer_pass = SimulationPass(1, 1)
-            self._compatibility_mode = OpenGLContext.isLegacyOpenGL() or bool(Preferences.getInstance().getValue("view/force_layer_view_compatibility_mode"))
+            self._compatibility_mode = self._evaluateCompatibilityMode()
             self._layer_pass.setSimulationView(self)
         return self._layer_pass
 
@@ -152,9 +158,10 @@ class SimulationView(View):
         return self._nozzle_node
 
     def _onSceneChanged(self, node):
-        self.setActivity(False)
-        self.calculateMaxLayers()
-        self.calculateMaxPathsOnLayer(self._current_layer_num)
+        if node.getMeshData() is not None:
+            self.setActivity(False)
+            self.calculateMaxLayers()
+            self.calculateMaxPathsOnLayer(self._current_layer_num)
 
     def isBusy(self):
         return self._busy
@@ -336,12 +343,22 @@ class SimulationView(View):
             min_layer_number = sys.maxsize
             max_layer_number = -sys.maxsize
             for layer_id in layer_data.getLayers():
+
+                # If a layer doesn't contain any polygons, skip it (for infill meshes taller than print objects
+                if len(layer_data.getLayer(layer_id).polygons) < 1:
+                    continue
+
                 # Store the max and min feedrates and thicknesses for display purposes
                 for p in layer_data.getLayer(layer_id).polygons:
                     self._max_feedrate = max(float(p.lineFeedrates.max()), self._max_feedrate)
                     self._min_feedrate = min(float(p.lineFeedrates.min()), self._min_feedrate)
                     self._max_thickness = max(float(p.lineThicknesses.max()), self._max_thickness)
-                    self._min_thickness = min(float(p.lineThicknesses.min()), self._min_thickness)
+                    try:
+                        self._min_thickness = min(float(p.lineThicknesses[numpy.nonzero(p.lineThicknesses)].min()), self._min_thickness)
+                    except:
+                        # Sometimes, when importing a GCode the line thicknesses are zero and so the minimum (avoiding
+                        # the zero) can't be calculated
+                        Logger.log("i", "Min thickness can't be calculated because all the values are zero")
                 if max_layer_number < layer_id:
                     max_layer_number = layer_id
                 if min_layer_number > layer_id:
@@ -414,6 +431,23 @@ class SimulationView(View):
                 return True
 
         if event.type == Event.ViewActivateEvent:
+            # FIX: on Max OS X, somehow QOpenGLContext.currentContext() can become None during View switching.
+            # This can happen when you do the following steps:
+            #   1. Start Cura
+            #   2. Load a model
+            #   3. Switch to Custom mode
+            #   4. Select the model and click on the per-object tool icon
+            #   5. Switch view to Layer view or X-Ray
+            #   6. Cura will very likely crash
+            # It seems to be a timing issue that the currentContext can somehow be empty, but I have no clue why.
+            # This fix tries to reschedule the view changing event call on the Qt thread again if the current OpenGL
+            # context is None.
+            if Platform.isOSX():
+                if QOpenGLContext.currentContext() is None:
+                    Logger.log("d", "current context of OpenGL is empty on Mac OS X, will try to create shaders later")
+                    CuraApplication.getInstance().callLater(lambda e=event: self.event(e))
+                    return
+
             # Make sure the SimulationPass is created
             layer_pass = self.getSimulationPass()
             self.getRenderer().addRenderPass(layer_pass)
@@ -509,8 +543,7 @@ class SimulationView(View):
     def _updateWithPreferences(self):
         self._solid_layers = int(Preferences.getInstance().getValue("view/top_layer_count"))
         self._only_show_top_layers = bool(Preferences.getInstance().getValue("view/only_show_top_layers"))
-        self._compatibility_mode = OpenGLContext.isLegacyOpenGL() or bool(
-            Preferences.getInstance().getValue("view/force_layer_view_compatibility_mode"))
+        self._compatibility_mode = self._evaluateCompatibilityMode()
 
         self.setSimulationViewType(int(float(Preferences.getInstance().getValue("layerview/layer_view_type"))));
 
@@ -607,4 +640,3 @@ class _CreateTopLayersJob(Job):
     def cancel(self):
         self._cancel = True
         super().cancel()
-

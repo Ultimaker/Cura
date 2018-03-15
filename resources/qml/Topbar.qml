@@ -21,6 +21,25 @@ Rectangle
     property bool printerConnected: Cura.MachineManager.printerOutputDevices.length != 0
     property bool printerAcceptsCommands: printerConnected && Cura.MachineManager.printerOutputDevices[0].acceptsCommands
 
+    property int rightMargin: UM.Theme.getSize("sidebar").width + UM.Theme.getSize("default_margin").width;
+    property int allItemsWidth: 0;
+
+    function updateMarginsAndSizes() {
+        if (UM.Preferences.getValue("cura/sidebar_collapsed"))
+        {
+            rightMargin = UM.Theme.getSize("default_margin").width;
+        }
+        else
+        {
+            rightMargin = UM.Theme.getSize("sidebar").width + UM.Theme.getSize("default_margin").width;
+        }
+        allItemsWidth = (
+            logo.width + UM.Theme.getSize("topbar_logo_right_margin").width +
+            UM.Theme.getSize("topbar_logo_right_margin").width + stagesMenuContainer.width +
+            UM.Theme.getSize("default_margin").width + viewModeButton.width +
+            rightMargin);
+    }
+
     UM.I18nCatalog
     {
         id: catalog
@@ -44,10 +63,9 @@ Rectangle
 
     Row
     {
+        id: stagesMenuContainer
         anchors.left: logo.right
         anchors.leftMargin: UM.Theme.getSize("topbar_logo_right_margin").width
-        anchors.right: machineSelection.left
-        anchors.rightMargin: UM.Theme.getSize("default_margin").width
         spacing: UM.Theme.getSize("default_margin").width
 
         // The topbar is dynamically filled with all available stages
@@ -76,84 +94,20 @@ Rectangle
         ExclusiveGroup { id: topbarMenuGroup }
     }
 
-    ToolButton
-    {
-        id: machineSelection
-        text: Cura.MachineManager.activeMachineName
-
-        width: UM.Theme.getSize("sidebar").width
-        height: UM.Theme.getSize("sidebar_header").height
-        tooltip: Cura.MachineManager.activeMachineName
-
-        anchors.verticalCenter: parent.verticalCenter
-        anchors.right: parent.right
-        style: ButtonStyle
-        {
-            background: Rectangle
-            {
-                color:
-                {
-                    if(control.pressed)
-                    {
-                        return UM.Theme.getColor("sidebar_header_active");
-                    }
-                    else if(control.hovered)
-                    {
-                        return UM.Theme.getColor("sidebar_header_hover");
-                    }
-                    else
-                    {
-                        return UM.Theme.getColor("sidebar_header_bar");
-                    }
-                }
-                Behavior on color { ColorAnimation { duration: 50; } }
-
-                UM.RecolorImage
-                {
-                    id: downArrow
-                    anchors.verticalCenter: parent.verticalCenter
-                    anchors.right: parent.right
-                    anchors.rightMargin: UM.Theme.getSize("default_margin").width
-                    width: UM.Theme.getSize("standard_arrow").width
-                    height: UM.Theme.getSize("standard_arrow").height
-                    sourceSize.width: width
-                    sourceSize.height: width
-                    color: UM.Theme.getColor("text_emphasis")
-                    source: UM.Theme.getIcon("arrow_bottom")
-                }
-                Label
-                {
-                    id: sidebarComboBoxLabel
-                    color: UM.Theme.getColor("sidebar_header_text_active")
-                    text: control.text;
-                    elide: Text.ElideRight;
-                    anchors.left: parent.left;
-                    anchors.leftMargin: UM.Theme.getSize("default_margin").width * 2
-                    anchors.right: downArrow.left;
-                    anchors.rightMargin: control.rightMargin;
-                    anchors.verticalCenter: parent.verticalCenter;
-                    font: UM.Theme.getFont("large")
-                }
-            }
-            label: Label {}
-        }
-
-        menu: PrinterMenu { }
-    }
-
     // View orientation Item
     Row
     {
         id: viewOrientationControl
         height: 30
+
         spacing: 2
         visible: UM.Controller.activeStage.stageId != "MonitorStage"
 
         anchors
         {
             verticalCenter: base.verticalCenter
-            right: viewModeButton.right
-            rightMargin: UM.Theme.getSize("default_margin").width + viewModeButton.width
+            right: viewModeButton.left
+            rightMargin: UM.Theme.getSize("default_margin").width
         }
 
         // #1 3d view
@@ -162,10 +116,8 @@ Rectangle
             iconSource: UM.Theme.getIcon("view_3d")
             style: UM.Theme.styles.small_tool_button
             anchors.verticalCenter: viewOrientationControl.verticalCenter
-            onClicked:{
-                UM.Controller.rotateView("3d", 0);
-            }
-            visible: base.width > 1100
+            onClicked:UM.Controller.rotateView("3d", 0)
+            visible: base.width - allItemsWidth - 4 * this.width > 0
         }
 
         // #2 Front view
@@ -174,10 +126,8 @@ Rectangle
             iconSource: UM.Theme.getIcon("view_front")
             style: UM.Theme.styles.small_tool_button
             anchors.verticalCenter: viewOrientationControl.verticalCenter
-            onClicked:{
-                UM.Controller.rotateView("home", 0);
-            }
-            visible: base.width > 1130
+            onClicked: UM.Controller.rotateView("home", 0);
+            visible: base.width - allItemsWidth - 3 * this.width > 0
         }
 
         // #3 Top view
@@ -186,10 +136,8 @@ Rectangle
             iconSource: UM.Theme.getIcon("view_top")
             style: UM.Theme.styles.small_tool_button
             anchors.verticalCenter: viewOrientationControl.verticalCenter
-            onClicked:{
-                UM.Controller.rotateView("y", 90);
-            }
-            visible: base.width > 1160
+            onClicked: UM.Controller.rotateView("y", 90)
+            visible: base.width - allItemsWidth - 2 * this.width > 0
         }
 
         // #4 Left view
@@ -198,22 +146,18 @@ Rectangle
             iconSource: UM.Theme.getIcon("view_left")
             style: UM.Theme.styles.small_tool_button
             anchors.verticalCenter: viewOrientationControl.verticalCenter
-            onClicked:{
-                UM.Controller.rotateView("x", 90);
-            }
-            visible: base.width > 1190
+            onClicked: UM.Controller.rotateView("x", 90)
+            visible: base.width - allItemsWidth - 1 * this.width > 0
         }
 
-        // #5 Left view
+        // #5 Right view
         Button
         {
             iconSource: UM.Theme.getIcon("view_right")
             style: UM.Theme.styles.small_tool_button
             anchors.verticalCenter: viewOrientationControl.verticalCenter
-            onClicked:{
-                UM.Controller.rotateView("x", -90);
-            }
-            visible: base.width > 1210
+            onClicked: UM.Controller.rotateView("x", -90)
+            visible: base.width - allItemsWidth > 0
         }
     }
 
@@ -224,7 +168,7 @@ Rectangle
         anchors {
             verticalCenter: parent.verticalCenter
             right: parent.right
-            rightMargin: UM.Theme.getSize("sidebar").width + UM.Theme.getSize("default_margin").width
+            rightMargin: rightMargin
         }
 
         style: UM.Theme.styles.combobox
@@ -276,12 +220,24 @@ Rectangle
         anchors.topMargin: UM.Theme.getSize("default_margin").height
         anchors.right: viewModeButton.right
 
-        property var buttonTarget: Qt.point(viewModeButton.x + viewModeButton.width / 2, viewModeButton.y + viewModeButton.height / 2)
+        property var buttonTarget: Qt.point(viewModeButton.x + Math.round(viewModeButton.width / 2), viewModeButton.y + Math.round(viewModeButton.height / 2))
 
         height: childrenRect.height
         width: childrenRect.width
 
         source: UM.ActiveView.valid ? UM.ActiveView.activeViewPanel : "";
+    }
+
+    // Expand or collapse sidebar
+    Connections
+    {
+        target: Cura.Actions.expandSidebar
+        onTriggered: updateMarginsAndSizes()
+    }
+
+    Component.onCompleted:
+    {
+        updateMarginsAndSizes();
     }
 
 }

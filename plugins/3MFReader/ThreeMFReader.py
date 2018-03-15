@@ -1,28 +1,30 @@
-# Copyright (c) 2015 Ultimaker B.V.
+# Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import os.path
 import zipfile
 
-from UM.Job import Job
+import numpy
+
+import Savitar
+
+from UM.Application import Application
 from UM.Logger import Logger
 from UM.Math.Matrix import Matrix
 from UM.Math.Vector import Vector
 from UM.Mesh.MeshBuilder import MeshBuilder
 from UM.Mesh.MeshReader import MeshReader
 from UM.Scene.GroupDecorator import GroupDecorator
+
 from cura.Settings.SettingOverrideDecorator import SettingOverrideDecorator
-from UM.Application import Application
 from cura.Settings.ExtruderManager import ExtruderManager
-from cura.QualityManager import QualityManager
-from UM.Scene.SceneNode import SceneNode
-from cura.SliceableObjectDecorator import SliceableObjectDecorator
-from cura.ZOffsetDecorator import ZOffsetDecorator
+from cura.Scene.CuraSceneNode import CuraSceneNode
+from cura.Scene.BuildPlateDecorator import BuildPlateDecorator
+from cura.Scene.SliceableObjectDecorator import SliceableObjectDecorator
+from cura.Scene.ZOffsetDecorator import ZOffsetDecorator
+from cura.Machines.QualityManager import getMachineDefinitionIDForQualitySearch
 
 MYPY = False
-
-import Savitar
-import numpy
 
 try:
     if not MYPY:
@@ -37,12 +39,9 @@ class ThreeMFReader(MeshReader):
         super().__init__()
         self._supported_extensions = [".3mf"]
         self._root = None
-        self._namespaces = {
-            "3mf": "http://schemas.microsoft.com/3dmanufacturing/core/2015/02",
-            "cura": "http://software.ultimaker.com/xml/cura/3mf/2015/10"
-        }
         self._base_name = ""
         self._unit = None
+        self._object_count = 0  # Used to name objects as there is no node name yet.
 
     def _createMatrixFromTransformationString(self, transformation):
         if transformation == "":
@@ -77,7 +76,14 @@ class ThreeMFReader(MeshReader):
     ##  Convenience function that converts a SceneNode object (as obtained from libSavitar) to a Uranium scene node.
     #   \returns Uranium scene node.
     def _convertSavitarNodeToUMNode(self, savitar_node):
-        um_node = SceneNode()
+        self._object_count += 1
+        node_name = "Object %s" % self._object_count
+
+        active_build_plate = Application.getInstance().getMultiBuildPlateModel().activeBuildPlate
+
+        um_node = CuraSceneNode()
+        um_node.addDecorator(BuildPlateDecorator(active_build_plate))
+        um_node.setName(node_name)
         transformation = self._createMatrixFromTransformationString(savitar_node.getTransformation())
         um_node.setTransformation(transformation)
         mesh_builder = MeshBuilder()
@@ -116,8 +122,8 @@ class ThreeMFReader(MeshReader):
                     um_node.callDecoration("setActiveExtruder", default_stack.getId())
 
                 # Get the definition & set it
-                definition = QualityManager.getInstance().getParentMachineDefinition(global_container_stack.getBottom())
-                um_node.callDecoration("getStack").getTop().setDefinition(definition)
+                definition_id = getMachineDefinitionIDForQualitySearch(global_container_stack.definition)
+                um_node.callDecoration("getStack").getTop().setDefinition(definition_id)
 
             setting_container = um_node.callDecoration("getStack").getTop()
 
@@ -147,6 +153,7 @@ class ThreeMFReader(MeshReader):
 
     def read(self, file_name):
         result = []
+        self._object_count = 0  # Used to name objects as there is no node name yet.
         # The base object of 3mf is a zipped archive.
         try:
             archive = zipfile.ZipFile(file_name, "r")

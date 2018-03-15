@@ -10,13 +10,12 @@ Component
     {
         id: base
         property var manager: Cura.MachineManager.printerOutputDevices[0]
-        anchors.fill: parent
-        color: UM.Theme.getColor("viewport_background")
-
         property var lineColor: "#DCDCDC" // TODO: Should be linked to theme.
         property var cornerRadius: 4 * screenScaleFactor // TODO: Should be linked to theme.
 
         visible: manager != null
+        anchors.fill: parent
+        color: UM.Theme.getColor("viewport_background")
 
         UM.I18nCatalog
         {
@@ -97,7 +96,7 @@ Component
                     }
                     Label
                     {
-                        text: manager.numJobsPrinting
+                        text: manager.activePrintJobs.length
                         font: UM.Theme.getFont("small")
                         anchors.right: parent.right
                     }
@@ -114,7 +113,7 @@ Component
                     }
                     Label
                     {
-                        text: manager.numJobsQueued
+                        text: manager.queuedPrintJobs.length
                         font: UM.Theme.getFont("small")
                         anchors.right: parent.right
                     }

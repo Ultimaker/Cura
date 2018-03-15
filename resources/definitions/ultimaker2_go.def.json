@@ -1,5 +1,4 @@
 {
-    "id": "ultimaker2_go",
     "version": 2, 
     "name": "Ultimaker 2 Go",
     "inherits": "ultimaker2",

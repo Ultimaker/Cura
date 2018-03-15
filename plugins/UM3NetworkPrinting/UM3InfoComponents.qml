@@ -10,10 +10,11 @@ Item
 {
     id: base
 
-    property bool isUM3: Cura.MachineManager.activeQualityDefinitionId == "ultimaker3"
+    property string activeQualityDefinitionId: Cura.MachineManager.activeQualityDefinitionId
+    property bool isUM3: activeQualityDefinitionId == "ultimaker3" || activeQualityDefinitionId.match("ultimaker_") != null
     property bool printerConnected: Cura.MachineManager.printerOutputDevices.length != 0
     property bool printerAcceptsCommands: printerConnected && Cura.MachineManager.printerOutputDevices[0].acceptsCommands
-    property bool authenticationRequested: printerConnected && Cura.MachineManager.printerOutputDevices[0].authenticationState == 2 // AuthState.AuthenticationRequested
+    property bool authenticationRequested: printerConnected && (Cura.MachineManager.printerOutputDevices[0].authenticationState == 2 || Cura.MachineManager.printerOutputDevices[0].authenticationState == 5) // AuthState.AuthenticationRequested or AuthenticationReceived.
 
     Row
     {
@@ -115,22 +116,8 @@ Item
         {
             tooltip: catalog.i18nc("@info:tooltip", "Load the configuration of the printer into Cura")
             text: catalog.i18nc("@action:button", "Activate Configuration")
-            visible: printerConnected && !isClusterPrinter()
+            visible: false // printerConnected && !isClusterPrinter()
             onClicked: manager.loadConfigurationFromPrinter()
-
-            function isClusterPrinter() {
-                if(Cura.MachineManager.printerOutputDevices.length == 0)
-                {
-                    return false;
-                }
-                var clusterSize = Cura.MachineManager.printerOutputDevices[0].clusterSize;
-                // This is not a cluster printer or the cluster it is just one printer
-                if(clusterSize == undefined || clusterSize == 1)
-                {
-                    return false;
-                }
-                return true;
-            }
         }
     }
 

@@ -20,7 +20,7 @@ i18n_catalog = i18nCatalog("cura")
 #  The plugin is currently only usable for applications maintained by Ultimaker. But it should be relatively easy
 #  to change it to work for other applications.
 class FirmwareUpdateChecker(Extension):
-    JEDI_VERSION_URL = "http://software.ultimaker.com/jedi/releases/latest.version"
+    JEDI_VERSION_URL = "http://software.ultimaker.com/jedi/releases/latest.version?utm_source=cura&utm_medium=software&utm_campaign=resources"
 
     def __init__(self):
         super().__init__()
@@ -49,7 +49,6 @@ class FirmwareUpdateChecker(Extension):
     def _onContainerAdded(self, container):
         # Only take care when a new GlobalStack was added
         if isinstance(container, GlobalStack):
-            Logger.log("i", "You have a '%s' in printer list. Let's check the firmware!", container.getId())
             self.checkFirmwareVersion(container, True)
 
     ##  Connect with software.ultimaker.com, load latest.version and check version info.

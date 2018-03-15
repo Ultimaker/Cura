@@ -1,5 +1,4 @@
 {
-    "id": "maker_starter",
     "version": 2,
     "name": "3DMaker Starter",
     "inherits": "fdmprinter",

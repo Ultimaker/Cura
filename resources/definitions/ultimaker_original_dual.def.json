@@ -1,5 +1,4 @@
 {
-    "id": "ultimaker_original_dual",
     "version": 2,
     "name": "Ultimaker Original Dual Extrusion",
     "inherits": "ultimaker",

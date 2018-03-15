@@ -1,28 +1,28 @@
 // Copyright (c) 2017 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
-import QtQuick 2.2
-import QtQuick.Controls 1.1
-import QtQuick.Controls.Styles 1.1
-import QtQuick.Layouts 1.1
+import QtQuick 2.7
+import QtQuick.Controls 2.0
+import QtQuick.Layouts 1.3
 
 import UM 1.2 as UM
 import Cura 1.0 as Cura
 import "Menus"
+import "Menus/ConfigurationMenu"
 
 Rectangle
 {
-    id: base;
+    id: base
 
-    property int currentModeIndex;
+    property int currentModeIndex
     property bool hideSettings: PrintInformation.preSliced
     property bool hideView: Cura.MachineManager.activeMachineName == ""
 
     // Is there an output device for this printer?
+    property bool isNetworkPrinter: Cura.MachineManager.activeMachineNetworkKey != ""
     property bool printerConnected: Cura.MachineManager.printerOutputDevices.length != 0
     property bool printerAcceptsCommands: printerConnected && Cura.MachineManager.printerOutputDevices[0].acceptsCommands
     property var connectedPrinter: Cura.MachineManager.printerOutputDevices.length >= 1 ? Cura.MachineManager.printerOutputDevices[0] : null
-    property int backendState: UM.Backend.state
 
     property bool monitoringPrint: UM.Controller.activeStage.stageId == "MonitorStage"
 
@@ -79,7 +79,7 @@ Rectangle
     MouseArea
     {
         anchors.fill: parent
-        acceptedButtons: Qt.AllButtons;
+        acceptedButtons: Qt.AllButtons
 
         onWheel:
         {
@@ -87,10 +87,41 @@ Rectangle
         }
     }
 
+    MachineSelection
+    {
+        id: machineSelection
+        width: base.width - configSelection.width - separator.width
+        height: UM.Theme.getSize("sidebar_header").height
+        anchors.top: base.top
+        anchors.left: parent.left
+    }
+
+    Rectangle
+    {
+        id: separator
+        visible: configSelection.visible
+        width: visible ? Math.round(UM.Theme.getSize("sidebar_lining_thin").height / 2) : 0
+        height: UM.Theme.getSize("sidebar_header").height
+        color: UM.Theme.getColor("sidebar_lining_thin")
+        anchors.left: machineSelection.right
+    }
+
+    ConfigurationSelection
+    {
+        id: configSelection
+        visible: isNetworkPrinter
+        width: visible ? Math.round(base.width * 0.15) : 0
+        height: UM.Theme.getSize("sidebar_header").height
+        anchors.top: base.top
+        anchors.right: parent.right
+        panelWidth: base.width
+    }
+
     SidebarHeader {
         id: header
         width: parent.width
-        visible: machineExtruderCount.properties.value > 1 || Cura.MachineManager.hasMaterials || Cura.MachineManager.hasVariants
+        visible: !hideSettings && (machineExtruderCount.properties.value > 1 || Cura.MachineManager.hasMaterials || Cura.MachineManager.hasVariants) && !monitoringPrint
+        anchors.top: machineSelection.bottom
 
         onShowTooltip: base.showTooltip(item, location, text)
         onHideTooltip: base.hideTooltip()
@@ -111,30 +142,37 @@ Rectangle
         UM.Preferences.setValue("cura/active_mode", currentModeIndex);
         if(modesListModel.count > base.currentModeIndex)
         {
-            sidebarContents.push({ "item": modesListModel.get(base.currentModeIndex).item, "replace": true });
+            sidebarContents.replace(modesListModel.get(base.currentModeIndex).item, { "replace": true })
         }
     }
 
-    Label {
+    Label
+    {
         id: settingsModeLabel
-        text: !hideSettings ? catalog.i18nc("@label:listbox", "Print Setup") : catalog.i18nc("@label:listbox","Print Setup disabled\nG-code files cannot be modified");
+        text: !hideSettings ? catalog.i18nc("@label:listbox", "Print Setup") : catalog.i18nc("@label:listbox", "Print Setup disabled\nG-code files cannot be modified")
+        renderType: Text.NativeRendering
         anchors.left: parent.left
         anchors.leftMargin: UM.Theme.getSize("sidebar_margin").width
-        anchors.top: headerSeparator.bottom
+        anchors.top: hideSettings ? machineSelection.bottom : headerSeparator.bottom
         anchors.topMargin: UM.Theme.getSize("sidebar_margin").height
-        width: Math.floor(parent.width * 0.45)
+        width: Math.round(parent.width * 0.45)
         font: UM.Theme.getFont("large")
         color: UM.Theme.getColor("text")
         visible: !monitoringPrint && !hideView
     }
 
-    Rectangle {
+    // Settings mode selection toggle
+    Rectangle
+    {
         id: settingsModeSelection
         color: "transparent"
-        width: Math.floor(parent.width * 0.55)
+
+        width: Math.round(parent.width * 0.55)
         height: UM.Theme.getSize("sidebar_header_mode_toggle").height
+
         anchors.right: parent.right
         anchors.rightMargin: UM.Theme.getSize("sidebar_margin").width
+        anchors.topMargin: UM.Theme.getSize("sidebar_margin").height
         anchors.top:
         {
             if (settingsModeLabel.contentWidth >= parent.width - width - UM.Theme.getSize("sidebar_margin").width * 2)
@@ -146,66 +184,82 @@ Rectangle
                 return headerSeparator.bottom;
             }
         }
-        anchors.topMargin: UM.Theme.getSize("sidebar_margin").height
+
         visible: !monitoringPrint && !hideSettings && !hideView
-        Component{
+
+        Component
+        {
             id: wizardDelegate
-            Button {
+
+            Button
+            {
+                id: control
+
                 height: settingsModeSelection.height
+                width: Math.round(parent.width / 2)
+
                 anchors.left: parent.left
-                anchors.leftMargin: model.index * Math.floor(settingsModeSelection.width / 2)
+                anchors.leftMargin: model.index * Math.round(settingsModeSelection.width / 2)
                 anchors.verticalCenter: parent.verticalCenter
-                width: Math.floor(0.5 * parent.width)
-                text: model.text
-                exclusiveGroup: modeMenuGroup;
-                checkable: true;
+
+                ButtonGroup.group: modeMenuGroup
+
+                checkable: true
                 checked: base.currentModeIndex == index
                 onClicked: base.currentModeIndex = index
 
-                onHoveredChanged: {
+                onHoveredChanged:
+                {
                     if (hovered)
                     {
                         tooltipDelayTimer.item = settingsModeSelection
                         tooltipDelayTimer.text = model.tooltipText
-                        tooltipDelayTimer.start();
+                        tooltipDelayTimer.start()
                     }
                     else
                     {
-                        tooltipDelayTimer.stop();
-                        base.hideTooltip();
+                        tooltipDelayTimer.stop()
+                        base.hideTooltip()
                     }
                 }
 
-                style: ButtonStyle {
-                    background: Rectangle {
-                        border.width: control.checked ? UM.Theme.getSize("default_lining").width * 2 : UM.Theme.getSize("default_lining").width
-                        border.color: (control.checked || control.pressed) ? UM.Theme.getColor("action_button_active_border") :
-                                          control.hovered ? UM.Theme.getColor("action_button_hovered_border") :
-                                          UM.Theme.getColor("action_button_border")
-                        color: (control.checked || control.pressed) ? UM.Theme.getColor("action_button_active") :
-                                   control.hovered ? UM.Theme.getColor("action_button_hovered") :
-                                   UM.Theme.getColor("action_button")
-                        Behavior on color { ColorAnimation { duration: 50; } }
-                        Label {
-                            anchors.left: parent.left
-                            anchors.right: parent.right
-                            anchors.verticalCenter: parent.verticalCenter
-                            anchors.leftMargin: UM.Theme.getSize("default_lining").width * 2
-                            anchors.rightMargin: UM.Theme.getSize("default_lining").width * 2
-                            color: (control.checked || control.pressed) ? UM.Theme.getColor("action_button_active_text") :
-                                       control.hovered ? UM.Theme.getColor("action_button_hovered_text") :
-                                       UM.Theme.getColor("action_button_text")
-                            font: UM.Theme.getFont("default")
-                            text: control.text
-                            horizontalAlignment: Text.AlignHCenter
-                            elide: Text.ElideMiddle
+                background: Rectangle
+                {
+                    border.width: control.checked ? UM.Theme.getSize("default_lining").width * 2 : UM.Theme.getSize("default_lining").width
+                    border.color: (control.checked || control.pressed) ? UM.Theme.getColor("action_button_active_border") : control.hovered ? UM.Theme.getColor("action_button_hovered_border"): UM.Theme.getColor("action_button_border")
+
+                    // for some reason, QtQuick decided to use the color of the background property as text color for the contentItem, so here it is
+                    color: (control.checked || control.pressed) ? UM.Theme.getColor("action_button_active") : control.hovered ? UM.Theme.getColor("action_button_hovered") : UM.Theme.getColor("action_button")
+                }
+
+                contentItem: Label
+                {
+                    text: model.text
+                    font: UM.Theme.getFont("default")
+                    horizontalAlignment: Text.AlignHCenter
+                    verticalAlignment: Text.AlignVCenter
+                    renderType: Text.NativeRendering
+                    elide: Text.ElideRight
+                    color:
+                    {
+                        if(control.pressed)
+                        {
+                            return UM.Theme.getColor("action_button_active_text");
                         }
+                        else if(control.hovered)
+                        {
+                            return UM.Theme.getColor("action_button_hovered_text");
+                        }
+                        return UM.Theme.getColor("action_button_text");
                     }
-                    label: Item { }
                 }
             }
         }
-        ExclusiveGroup { id: modeMenuGroup; }
+
+        ButtonGroup
+        {
+            id: modeMenuGroup
+        }
 
         ListView
         {
@@ -230,31 +284,21 @@ Rectangle
         anchors.right: base.right
         visible: !monitoringPrint && !hideSettings
 
-        delegate: StackViewDelegate
-        {
-            function transitionFinished(properties)
-            {
-                properties.exitItem.opacity = 1
+        replaceEnter: Transition {
+            PropertyAnimation {
+                property: "opacity"
+                from: 0
+                to:1
+                duration: 100
             }
+        }
 
-            pushTransition: StackViewTransition
-            {
-                PropertyAnimation
-                {
-                    target: enterItem
-                    property: "opacity"
-                    from: 0
-                    to: 1
-                    duration: 100
-                }
-                PropertyAnimation
-                {
-                    target: exitItem
-                    property: "opacity"
-                    from: 1
-                    to: 0
-                    duration: 100
-                }
+        replaceExit: Transition {
+            PropertyAnimation {
+                property: "opacity"
+                from: 1
+                to:0
+                duration: 100
             }
         }
     }
@@ -263,7 +307,7 @@ Rectangle
     {
         id: controlItem
         anchors.bottom: footerSeparator.top
-        anchors.top: monitoringPrint ? base.top : headerSeparator.bottom
+        anchors.top: monitoringPrint ? machineSelection.bottom : headerSeparator.bottom
         anchors.left: base.left
         anchors.right: base.right
         sourceComponent:
@@ -282,7 +326,7 @@ Rectangle
     Loader
     {
         anchors.bottom: footerSeparator.top
-        anchors.top: monitoringPrint ? base.top : headerSeparator.bottom
+        anchors.top: monitoringPrint ? machineSelection.bottom : headerSeparator.bottom
         anchors.left: base.left
         anchors.right: base.right
         source:
@@ -311,7 +355,7 @@ Rectangle
         height: UM.Theme.getSize("sidebar_lining").height
         color: UM.Theme.getColor("sidebar_lining")
         anchors.bottom: printSpecs.top
-        anchors.bottomMargin: Math.floor(UM.Theme.getSize("sidebar_margin").height * 2 + UM.Theme.getSize("progressbar").height + UM.Theme.getFont("default_bold").pixelSize)
+        anchors.bottomMargin: Math.round(UM.Theme.getSize("sidebar_margin").height * 2 + UM.Theme.getSize("progressbar").height + UM.Theme.getFont("default_bold").pixelSize)
     }
 
     Item
@@ -334,6 +378,7 @@ Rectangle
             font: UM.Theme.getFont("large")
             color: UM.Theme.getColor("text_subtext")
             text: (!base.printDuration || !base.printDuration.valid) ? catalog.i18nc("@label Hours and minutes", "00h 00min") : base.printDuration.getDisplayString(UM.DurationFormat.Short)
+            renderType: Text.NativeRendering
 
             MouseArea
             {
@@ -411,7 +456,7 @@ Rectangle
                         {
                             names.push(base.printMaterialNames[index]);
                             lengths.push(base.printMaterialLengths[index].toFixed(2));
-                            weights.push(String(Math.floor(base.printMaterialWeights[index])));
+                            weights.push(String(Math.round(base.printMaterialWeights[index])));
                             var cost = base.printMaterialCosts[index] == undefined ? 0 : base.printMaterialCosts[index].toFixed(2);
                             costs.push(cost);
                             if(cost > 0)
@@ -461,6 +506,7 @@ Rectangle
             anchors.left: parent.left
             anchors.bottom: parent.bottom
             font: UM.Theme.getFont("very_small")
+            renderType: Text.NativeRendering
             color: UM.Theme.getColor("text_subtext")
             elide: Text.ElideMiddle
             width: parent.width
@@ -477,7 +523,7 @@ Rectangle
                         if(base.printMaterialLengths[index] > 0)
                         {
                             lengths.push(base.printMaterialLengths[index].toFixed(2));
-                            weights.push(String(Math.floor(base.printMaterialWeights[index])));
+                            weights.push(String(Math.round(base.printMaterialWeights[index])));
                             var cost = base.printMaterialCosts[index] == undefined ? 0 : base.printMaterialCosts[index].toFixed(2);
                             costs.push(cost);
                             if(cost > 0)
@@ -493,15 +539,12 @@ Rectangle
                     weights = ["0"];
                     costs = ["0.00"];
                 }
+                var result = lengths.join(" + ") + "m / ~ " + weights.join(" + ") + "g";
                 if(someCostsKnown)
                 {
-                    return catalog.i18nc("@label Print estimates: m for meters, g for grams, %4 is currency and %3 is print cost", "%1m / ~ %2g / ~ %4 %3").arg(lengths.join(" + "))
-                            .arg(weights.join(" + ")).arg(costs.join(" + ")).arg(UM.Preferences.getValue("cura/currency"));
+                    result += " / ~ " + costs.join(" + ") + " " + UM.Preferences.getValue("cura/currency");
                 }
-                else
-                {
-                    return catalog.i18nc("@label Print estimates: m for meters, g for grams", "%1m / ~ %2g").arg(lengths.join(" + ")).arg(weights.join(" + "));
-                }
+                return result;
             }
             MouseArea
             {
@@ -551,19 +594,19 @@ Rectangle
 
     SidebarTooltip
     {
-        id: tooltip;
+        id: tooltip
     }
 
     // Setting mode: Recommended or Custom
     ListModel
     {
-        id: modesListModel;
+        id: modesListModel
     }
 
     SidebarSimple
     {
-        id: sidebarSimple;
-        visible: false;
+        id: sidebarSimple
+        visible: false
 
         onShowTooltip: base.showTooltip(item, location, text)
         onHideTooltip: base.hideTooltip()
@@ -571,8 +614,8 @@ Rectangle
 
     SidebarAdvanced
     {
-        id: sidebarAdvanced;
-        visible: false;
+        id: sidebarAdvanced
+        visible: false
 
         onShowTooltip: base.showTooltip(item, location, text)
         onHideTooltip: base.hideTooltip()
@@ -590,9 +633,9 @@ Rectangle
             tooltipText: catalog.i18nc("@tooltip", "<b>Custom Print Setup</b><br/><br/>Print with finegrained control over every last bit of the slicing process."),
             item: sidebarAdvanced
         })
-        sidebarContents.push({ "item": modesListModel.get(base.currentModeIndex).item, "immediate": true });
+        sidebarContents.replace(modesListModel.get(base.currentModeIndex).item, { "immediate": true })
 
-        var index = Math.floor(UM.Preferences.getValue("cura/active_mode"))
+        var index = Math.round(UM.Preferences.getValue("cura/active_mode"))
         if(index)
         {
             currentModeIndex = index;

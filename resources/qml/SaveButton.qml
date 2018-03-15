@@ -1,7 +1,7 @@
-// Copyright (c) 2017 Ultimaker B.V.
+// Copyright (c) 2018 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
-import QtQuick 2.2
+import QtQuick 2.7
 import QtQuick.Controls 1.1
 import QtQuick.Controls.Styles 1.1
 import QtQuick.Layouts 1.1
@@ -12,11 +12,9 @@ Item {
     id: base;
     UM.I18nCatalog { id: catalog; name:"cura"}
 
-    property real progress: UM.Backend.progress;
-    property int backendState: UM.Backend.state;
-
-    property var backend: CuraApplication.getBackend();
-    property bool activity: CuraApplication.platformActivity;
+    property real progress: UM.Backend.progress
+    property int backendState: UM.Backend.state
+    property bool activity: CuraApplication.platformActivity
 
     property alias buttonRowWidth: saveRow.width
 
@@ -50,10 +48,14 @@ Item {
     }
 
     function sliceOrStopSlicing() {
-        if (backend != "undefined" && [1, 5].indexOf(UM.Backend.state) != -1) {
-            backend.forceSlice();
-        } else {
-            backend.stopSlicing();
+        try {
+            if ([1, 5].indexOf(base.backendState) != -1) {
+                CuraApplication.backend.forceSlice();
+            } else {
+                CuraApplication.backend.stopSlicing();
+            }
+        } catch (e) {
+            console.log('Could not start or stop slicing', e)
         }
     }
 
@@ -74,7 +76,7 @@ Item {
         width: parent.width - 2 * UM.Theme.getSize("sidebar_margin").width
         height: UM.Theme.getSize("progressbar").height
         anchors.top: statusLabel.bottom
-        anchors.topMargin: UM.Theme.getSize("sidebar_margin").height/4
+        anchors.topMargin: Math.round(UM.Theme.getSize("sidebar_margin").height / 4)
         anchors.left: parent.left
         anchors.leftMargin: UM.Theme.getSize("sidebar_margin").width
         radius: UM.Theme.getSize("progressbar_radius").width
@@ -129,19 +131,19 @@ Item {
         Row {
             id: additionalComponentsRow
             anchors.top: parent.top
-            anchors.right: saveToButton.visible ? saveToButton.left : parent.right
+            anchors.right: saveToButton.visible ? saveToButton.left : (prepareButton.visible ? prepareButton.left : parent.right)
             anchors.rightMargin: UM.Theme.getSize("default_margin").width
 
             spacing: UM.Theme.getSize("default_margin").width
         }
 
         Component.onCompleted: {
-            addAdditionalComponents("saveButton")
+            saveRow.addAdditionalComponents("saveButton")
         }
 
         Connections {
             target: CuraApplication
-            onAdditionalComponentsChanged: addAdditionalComponents
+            onAdditionalComponentsChanged: saveRow.addAdditionalComponents("saveButton")
         }
 
         function addAdditionalComponents (areaId) {
@@ -166,10 +168,10 @@ Item {
         Button {
             id: prepareButton
 
-            tooltip: [1, 5].indexOf(UM.Backend.state) != -1 ? catalog.i18nc("@info:tooltip","Slice current printjob") : catalog.i18nc("@info:tooltip","Cancel slicing process")
+            tooltip: [1, 5].indexOf(base.backendState) != -1 ? catalog.i18nc("@info:tooltip","Slice current printjob") : catalog.i18nc("@info:tooltip","Cancel slicing process")
             // 1 = not started, 2 = Processing
-            enabled: base.backendState != "undefined" && (base.backendState == 1 || base.backendState == 2) && base.activity == true
-            visible: base.backendState != "undefined" && !autoSlice && (base.backendState == 1 || base.backendState == 2) && base.activity == true
+            enabled: base.backendState != "undefined" && ([1, 2].indexOf(base.backendState) != -1) && base.activity
+            visible: base.backendState != "undefined" && !autoSlice && ([1, 2, 4].indexOf(base.backendState) != -1) && base.activity
             property bool autoSlice
             height: UM.Theme.getSize("save_button_save_to_button").height
 
@@ -177,8 +179,8 @@ Item {
             anchors.right: parent.right
             anchors.rightMargin: UM.Theme.getSize("sidebar_margin").width
 
-            // 1 = not started, 5 = disabled
-            text: [1, 5].indexOf(UM.Backend.state) != -1 ? catalog.i18nc("@label:Printjob", "Prepare") : catalog.i18nc("@label:Printjob", "Cancel")
+            // 1 = not started, 4 = error, 5 = disabled
+            text: [1, 4, 5].indexOf(base.backendState) != -1 ? catalog.i18nc("@label:Printjob", "Prepare") : catalog.i18nc("@label:Printjob", "Cancel")
             onClicked:
             {
                 sliceOrStopSlicing();
@@ -352,7 +354,7 @@ Item {
                     }
                     Behavior on color { ColorAnimation { duration: 50; } }
                     anchors.left: parent.left
-                    anchors.leftMargin: UM.Theme.getSize("save_button_text_margin").width / 2;
+                    anchors.leftMargin: Math.round(UM.Theme.getSize("save_button_text_margin").width / 2);
                     width: parent.height
                     height: parent.height
 

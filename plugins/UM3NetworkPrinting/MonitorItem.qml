@@ -6,40 +6,49 @@ import Cura 1.0 as Cura
 
 Component
 {
-    Image
+    Item
     {
-        id: cameraImage
-        property bool proportionalHeight:
+        width: maximumWidth
+        height: maximumHeight
+        Image
         {
-            if(sourceSize.height == 0 || maximumHeight == 0)
+            id: cameraImage
+            width: Math.min(sourceSize.width === 0 ? 800 * screenScaleFactor : sourceSize.width, maximumWidth)
+            height: Math.floor((sourceSize.height === 0 ? 600 * screenScaleFactor : sourceSize.height) * width / sourceSize.width)
+            anchors.horizontalCenter: parent.horizontalCenter
+            anchors.verticalCenter: parent.verticalCenter
+            z: 1
+            Component.onCompleted:
             {
-                return true;
+                if(OutputDevice.activePrinter != null && OutputDevice.activePrinter.camera != null)
+                {
+                    OutputDevice.activePrinter.camera.start()
+                }
             }
-            return (sourceSize.width / sourceSize.height) > (maximumWidth / maximumHeight);
-        }
-        property real _width: Math.floor(Math.min(maximumWidth, sourceSize.width))
-        property real _height: Math.floor(Math.min(maximumHeight, sourceSize.height))
-        width: proportionalHeight ? _width : Math.floor(sourceSize.width * _height / sourceSize.height)
-        height: !proportionalHeight ? _height : Math.floor(sourceSize.height * _width / sourceSize.width)
-        anchors.horizontalCenter: parent.horizontalCenter
-
-        onVisibleChanged:
-        {
-            if(visible)
+            onVisibleChanged:
             {
-                OutputDevice.startCamera()
-            } else
-            {
-                OutputDevice.stopCamera()
+                if(visible)
+                {
+                    if(OutputDevice.activePrinter != null && OutputDevice.activePrinter.camera != null)
+                    {
+                        OutputDevice.activePrinter.camera.start()
+                    }
+                } else
+                {
+                    if(OutputDevice.activePrinter != null && OutputDevice.activePrinter.camera != null)
+                    {
+                        OutputDevice.activePrinter.camera.stop()
+                    }
+                }
             }
-        }
-        source:
-        {
-            if(OutputDevice.cameraImage)
+            source:
             {
-                return OutputDevice.cameraImage;
+                if(OutputDevice.activePrinter != null && OutputDevice.activePrinter.camera != null && OutputDevice.activePrinter.camera.latestImage)
+                {
+                    return OutputDevice.activePrinter.camera.latestImage;
+                }
+                return "";
             }
-            return "";
         }
     }
 }

@@ -1,22 +1,20 @@
 // Copyright (c) 2016 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
-import QtQuick 2.1
-import QtQuick.Controls 1.1
+import QtQuick 2.7
+import QtQuick.Controls 1.4
 import QtQuick.Window 2.1
 
 import UM 1.2 as UM
 import Cura 1.0 as Cura
+
 
 UM.ManagementPage
 {
     id: base;
 
     title: catalog.i18nc("@title:tab", "Printers");
-    model: UM.ContainerStacksModel
-    {
-        filter: {"type": "machine"}
-    }
+    model: Cura.MachineManagementModel { }
 
     activeId: Cura.MachineManager.activeMachineId
     activeIndex: activeMachineIndex()
@@ -56,7 +54,7 @@ UM.ManagementPage
         {
             text: catalog.i18nc("@action:button", "Rename");
             iconName: "edit-rename";
-            enabled: base.currentItem != null
+            enabled: base.currentItem != null && base.currentItem.metadata.connect_group_name == null
             onClicked: renameDialog.open();
         }
     ]
@@ -143,7 +141,7 @@ UM.ManagementPage
             property bool printerConnected: Cura.MachineManager.printerOutputDevices.length != 0
             property var connectedPrinter: printerConnected ? Cura.MachineManager.printerOutputDevices[0] : null
             property bool printerAcceptsCommands: printerConnected && Cura.MachineManager.printerOutputDevices[0].acceptsCommands
-
+            property var printJob: connectedPrinter != null ? connectedPrinter.activePrintJob: null
             Label
             {
                 text: catalog.i18nc("@label", "Printer type:")
@@ -178,7 +176,12 @@ UM.ManagementPage
                         return "";
                     }
 
-                    switch(Cura.MachineManager.printerOutputDevices[0].jobState)
+                    if (machineInfo.printJob == null)
+                    {
+                        return catalog.i18nc("@label:MonitorStatus", "Waiting for a printjob");
+                    }
+
+                    switch(machineInfo.printJob.state)
                     {
                         case "printing":
                             return catalog.i18nc("@label:MonitorStatus", "Printing...");
@@ -194,10 +197,9 @@ UM.ManagementPage
                             return catalog.i18nc("@label:MonitorStatus", "In maintenance. Please check the printer");
                         case "abort":  // note sure if this jobState actually occurs in the wild
                             return catalog.i18nc("@label:MonitorStatus", "Aborting print...");
-                        case "ready":  // ready to print or getting ready
-                        case "":  // ready to print or getting ready
-                            return catalog.i18nc("@label:MonitorStatus", "Waiting for a printjob");
+
                     }
+                    return ""
                 }
                 visible: base.currentItem && base.currentItem.id == Cura.MachineManager.activeMachineId && machineInfo.printerAcceptsCommands
                 wrapMode: Text.WordWrap

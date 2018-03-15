@@ -1,5 +1,4 @@
 {
-    "id": "makeR_pegasus",
     "version": 2,
     "name": "makeR Pegasus",
     "inherits": "fdmprinter",
