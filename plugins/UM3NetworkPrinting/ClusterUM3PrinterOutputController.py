@@ -13,6 +13,7 @@ class ClusterUM3PrinterOutputController(PrinterOutputController):
     def __init__(self, output_device):
         super().__init__(output_device)
         self.can_pre_heat_bed = False
+        self.can_pre_heat_hotends = False
         self.can_control_manually = False
 
     def setJobState(self, job: "PrintJobOutputModel", state: str):

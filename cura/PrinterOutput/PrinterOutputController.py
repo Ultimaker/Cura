@@ -15,6 +15,7 @@ class PrinterOutputController:
         self.can_pause = True
         self.can_abort = True
         self.can_pre_heat_bed = True
+        self.can_pre_heat_hotends = True
         self.can_control_manually = True
         self._output_device = output_device
 
@@ -32,6 +33,12 @@ class PrinterOutputController:
 
     def preheatBed(self, printer: "PrinterOutputModel", temperature, duration):
         Logger.log("w", "Preheat bed not implemented in controller")
+
+    def cancelPreheatHotend(self, extruder: "ExtruderOutputModel"):
+        Logger.log("w", "Cancel preheat hotend not implemented in controller")
+
+    def preheatHotend(self, extruder: "ExtruderOutputModel", temperature, duration):
+        Logger.log("w", "Preheat hotend not implemented in controller")
 
     def setHeadPosition(self, printer: "PrinterOutputModel", x, y, z, speed):
         Logger.log("w", "Set head position not implemented in controller")

@@ -411,6 +411,8 @@
         "save_button_save_to_button": [0.3, 2.7],
         "save_button_specs_icons": [1.4, 1.4],
 
+        "monitor_preheat_temperature_control": [4.5, 2.0],
+
         "modal_window_minimum": [60.0, 45],
         "license_window_minimum": [45, 45],
         "wizard_progress": [10.0, 0.0],

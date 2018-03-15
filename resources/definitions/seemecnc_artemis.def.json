@@ -25,6 +25,7 @@
         "machine_nozzle_size": { "default_value": 0.5 },
         "machine_shape": { "default_value": "elliptic" },
         "machine_width": { "default_value": 290 },
+        "material_diameter": { "default_value": 1.75 },
         "relative_extrusion": { "default_value": false },
         "retraction_amount": { "default_value": 3.2 },
         "retraction_combing": { "default_value": "off" },
