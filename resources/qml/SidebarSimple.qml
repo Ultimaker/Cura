@@ -19,7 +19,7 @@ Item
     property Action configureSettings;
     property variant minimumPrintTime: PrintInformation.minimumPrintTime;
     property variant maximumPrintTime: PrintInformation.maximumPrintTime;
-    property bool settingsEnabled: Cura.ExtruderManager.activeExtruderStackId || extrudersEnabledCount.properties.value == 1
+    property bool settingsEnabled: extrudersEnabledCount.properties.value == 1
 
     Component.onCompleted: PrintInformation.enabled = true
     Component.onDestruction: PrintInformation.enabled = false
@@ -474,18 +474,7 @@ Item
                     onClicked:
                     {
                         // if the current profile is user-created, switch to a built-in quality
-                        if (Cura.SimpleModeSettingsManager.isProfileUserCreated)
-                        {
-                            if (Cura.QualityProfilesDropDownMenuModel.rowCount() > 0)
-                            {
-                                var item = Cura.QualityProfilesDropDownMenuModel.getItem(0);
-                                Cura.MachineManager.activeQualityGroup = item.quality_group;
-                            }
-                        }
-                        if (Cura.SimpleModeSettingsManager.isProfileCustomized)
-                        {
-                            discardOrKeepProfileChangesDialog.show()
-                        }
+                        Cura.MachineManager.clearQualityChangesGroup()
                     }
                     onEntered:
                     {
