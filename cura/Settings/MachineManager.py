@@ -10,7 +10,6 @@ from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 from UM.Signal import Signal
 
 from PyQt5.QtCore import QObject, pyqtProperty, pyqtSignal, QTimer
-import UM.FlameProfiler
 from UM.FlameProfiler import pyqtSlot
 from UM import Util
 
@@ -24,7 +23,6 @@ from UM.Settings.SettingFunction import SettingFunction
 from UM.Signal import postponeSignals, CompressTechnique
 
 from cura.Machines.QualityManager import getMachineDefinitionIDForQualitySearch
-from cura.Machines.VariantManager import VariantType
 from cura.PrinterOutputDevice import PrinterOutputDevice
 from cura.PrinterOutput.ConfigurationModel import ConfigurationModel
 from cura.PrinterOutput.ExtruderConfigurationModel import ExtruderConfigurationModel
