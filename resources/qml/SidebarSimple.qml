@@ -111,7 +111,6 @@ Item
 
                             // Set selected value
                             if (Cura.MachineManager.activeQualityType == qualityItem.quality_type) {
-
                                 // set to -1 when switching to user created profile so all ticks are clickable
                                 if (Cura.SimpleModeSettingsManager.isProfileUserCreated) {
                                     qualityModel.qualitySliderActiveIndex = -1
@@ -474,7 +473,7 @@ Item
                     onClicked:
                     {
                         // if the current profile is user-created, switch to a built-in quality
-                        Cura.MachineManager.clearQualityChangesGroup()
+                        Cura.MachineManager.resetToUseDefaultQuality()
                     }
                     onEntered:
                     {
