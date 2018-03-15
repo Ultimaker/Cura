@@ -1,23 +1,34 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
-from UM.Math.Vector import Vector
-from UM.Tool import Tool
-from PyQt5.QtCore import Qt, QUrl
-from UM.Application import Application
-from UM.Event import Event, MouseEvent
-from UM.Mesh.MeshBuilder import MeshBuilder
-from UM.Operations.AddSceneNodeOperation import AddSceneNodeOperation
-from UM.Operations.RemoveSceneNodeOperation import RemoveSceneNodeOperation
-from UM.Settings.SettingInstance import SettingInstance
-from cura.Scene.CuraSceneNode import CuraSceneNode
-from cura.Scene.SliceableObjectDecorator import SliceableObjectDecorator
-from cura.Scene.BuildPlateDecorator import BuildPlateDecorator
-from UM.Scene.Iterator.BreadthFirstIterator import BreadthFirstIterator
-from cura.Settings.SettingOverrideDecorator import SettingOverrideDecorator
-from cura.PickingPass import PickingPass
 
 import os
 import os.path
+
+from PyQt5.QtCore import Qt, QUrl
+
+from UM.Math.Vector import Vector
+from UM.Tool import Tool
+from UM.Application import Application
+from UM.Event import Event, MouseEvent
+
+from UM.Mesh.MeshBuilder import MeshBuilder
+from UM.Scene.Selection import Selection
+from UM.Scene.Iterator.BreadthFirstIterator import BreadthFirstIterator
+from cura.Scene.CuraSceneNode import CuraSceneNode
+
+from cura.PickingPass import PickingPass
+
+from UM.Operations.GroupedOperation import GroupedOperation
+from UM.Operations.AddSceneNodeOperation import AddSceneNodeOperation
+from UM.Operations.RemoveSceneNodeOperation import RemoveSceneNodeOperation
+from cura.Operations.SetParentOperation import SetParentOperation
+
+from cura.Scene.SliceableObjectDecorator import SliceableObjectDecorator
+from cura.Scene.BuildPlateDecorator import BuildPlateDecorator
+from UM.Scene.GroupDecorator import GroupDecorator
+from cura.Settings.SettingOverrideDecorator import SettingOverrideDecorator
+
+from UM.Settings.SettingInstance import SettingInstance
 
 class SupportEraser(Tool):
     def __init__(self):
@@ -45,6 +56,7 @@ class SupportEraser(Tool):
                     return
 
                 elif node_stack.getProperty("support_mesh", "value") or node_stack.getProperty("infill_mesh", "value") or node_stack.getProperty("cutting_mesh", "value"):
+                    # Only "normal" meshes can have anti_overhang_meshes added to them
                     return
 
             # Create a pass for picking a world-space location from the mouse location
@@ -73,22 +85,36 @@ class SupportEraser(Tool):
         node.addDecorator(BuildPlateDecorator(active_build_plate))
         node.addDecorator(SliceableObjectDecorator())
 
-        stack = node.callDecoration("getStack") #Don't try to get the active extruder since it may be None anyway.
-        if not stack:
-            node.addDecorator(SettingOverrideDecorator())
-            stack = node.callDecoration("getStack")
-
+        stack = node.callDecoration("getStack") # created by SettingOverrideDecorator
         settings = stack.getTop()
 
-        if not (settings.getInstance("anti_overhang_mesh") and settings.getProperty("anti_overhang_mesh", "value")):
-            definition = stack.getSettingDefinition("anti_overhang_mesh")
-            new_instance = SettingInstance(definition, settings)
-            new_instance.setProperty("value", True)
-            new_instance.resetState()  # Ensure that the state is not seen as a user state.
-            settings.addInstance(new_instance)
+        definition = stack.getSettingDefinition("anti_overhang_mesh")
+        new_instance = SettingInstance(definition, settings)
+        new_instance.setProperty("value", True)
+        new_instance.resetState()  # Ensure that the state is not seen as a user state.
+        settings.addInstance(new_instance)
 
-        scene = self._controller.getScene()
-        op = AddSceneNodeOperation(node, scene.getRoot())
+        root = self._controller.getScene().getRoot()
+
+        op = GroupedOperation()
+        # First add the node to the scene, so it gets the expected transform
+        op.addOperation(AddSceneNodeOperation(node, root))
+
+        # Determine the parent group the node should be put in
+        if parent.getParent().callDecoration("isGroup"):
+            group = parent.getParent()
+        else:
+            # Create a group-node
+            group = CuraSceneNode()
+            group.addDecorator(GroupDecorator())
+            group.addDecorator(BuildPlateDecorator(active_build_plate))
+            group.setParent(root)
+            center = parent.getPosition()
+            group.setPosition(center)
+            group.setCenterPosition(center)
+            op.addOperation(SetParentOperation(parent, group))
+
+        op.addOperation(SetParentOperation(node, group))
         op.push()
         Application.getInstance().getController().getScene().sceneChanged.emit(node)
 
