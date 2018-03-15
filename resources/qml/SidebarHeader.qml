@@ -178,6 +178,7 @@ Column
                         text: catalog.i18nc("@action:inmenu", "Disable Extruder")
                         onTriggered: Cura.MachineManager.setExtruderEnabled(model.index, false)
                         visible: extruder_enabled
+                        enabled: Cura.MachineManager.numberExtrudersEnabled > 1
                     }
                 }
 
@@ -347,7 +348,8 @@ Column
             id: materialSelection
 
             property var activeExtruder: Cura.MachineManager.activeStack
-            property var currentRootMaterialName: activeExtruder.material.name
+            property var hasActiveExtruder: activeExtruder != null
+            property var currentRootMaterialName: hasActiveExtruder ? activeExtruder.material.name : ""
 
             text: currentRootMaterialName
             tooltip: currentRootMaterialName
@@ -366,6 +368,10 @@ Column
             property var valueWarning: ! Cura.MachineManager.isActiveQualitySupported
 
             function isMaterialSupported () {
+                if (!hasActiveExtruder)
+                {
+                    return false;
+                }
                 return Cura.ContainerManager.getContainerMetaDataEntry(activeExtruder.material.id, "compatible") == "True"
             }
         }
@@ -465,6 +471,74 @@ Column
 
             property var valueError: !Cura.MachineManager.variantBuildplateCompatible && !Cura.MachineManager.variantBuildplateUsable
             property var valueWarning: Cura.MachineManager.variantBuildplateUsable
+        }
+    }
+
+    // Material info row
+    Item
+    {
+        id: materialInfoRow
+        height: Math.round(UM.Theme.getSize("sidebar_setup").height / 2)
+        visible: (Cura.MachineManager.hasVariants || Cura.MachineManager.hasMaterials) && !sidebar.monitoringPrint && !sidebar.hideSettings
+
+        anchors
+        {
+            left: parent.left
+            leftMargin: UM.Theme.getSize("sidebar_margin").width
+            right: parent.right
+            rightMargin: UM.Theme.getSize("sidebar_margin").width
+        }
+
+        Item {
+            height: UM.Theme.getSize("sidebar_setup").height
+            anchors.right: parent.right
+            width: Math.round(parent.width * 0.7 + UM.Theme.getSize("sidebar_margin").width)
+
+            UM.RecolorImage {
+                id: warningImage
+                anchors.right: materialInfoLabel.left
+                anchors.rightMargin: UM.Theme.getSize("default_margin").width
+                anchors.verticalCenter: parent.Bottom
+                source: UM.Theme.getIcon("warning")
+                width: UM.Theme.getSize("section_icon").width
+                height: UM.Theme.getSize("section_icon").height
+                color: UM.Theme.getColor("material_compatibility_warning")
+                visible: !Cura.MachineManager.isCurrentSetupSupported
+            }
+
+            Label {
+                id: materialInfoLabel
+                wrapMode: Text.WordWrap
+                text: "<a href='%1'>" + catalog.i18nc("@label", "Check compatibility") + "</a>"
+                font: UM.Theme.getFont("default")
+                color: UM.Theme.getColor("text")
+                linkColor: UM.Theme.getColor("text_link")
+                verticalAlignment: Text.AlignTop
+                anchors.top: parent.top
+                anchors.right: parent.right
+                anchors.bottom: parent.bottom
+
+                MouseArea {
+                    anchors.fill: parent
+                    hoverEnabled: true
+                    onClicked: {
+                        // open the material URL with web browser
+                        var version = UM.Application.version;
+                        var machineName = Cura.MachineManager.activeMachine.definition.id;
+                        var url = "https://ultimaker.com/materialcompatibility/" + version + "/" + machineName + "?utm_source=cura&utm_medium=software&utm_campaign=resources";
+                        Qt.openUrlExternally(url);
+                    }
+                    onEntered: {
+                        var content = catalog.i18nc("@tooltip", "Click to check the material compatibility on Ultimaker.com.");
+                        base.showTooltip(
+                            materialInfoRow,
+                            Qt.point(-UM.Theme.getSize("sidebar_margin").width, 0),
+                            catalog.i18nc("@tooltip", content)
+                        );
+                    }
+                    onExited: base.hideTooltip();
+                }
+            }
         }
     }
 

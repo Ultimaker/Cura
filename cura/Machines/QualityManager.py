@@ -16,6 +16,7 @@ from .QualityGroup import QualityGroup
 from .QualityNode import QualityNode
 
 if TYPE_CHECKING:
+    from UM.Settings.DefinitionContainer import DefinitionContainer
     from cura.Settings.GlobalStack import GlobalStack
     from .QualityChangesGroup import QualityChangesGroup
 
@@ -178,7 +179,7 @@ class QualityManager(QObject):
 
     # Returns a dict of "custom profile name" -> QualityChangesGroup
     def getQualityChangesGroups(self, machine: "GlobalStack") -> dict:
-        machine_definition_id = getMachineDefinitionIDForQualitySearch(machine)
+        machine_definition_id = getMachineDefinitionIDForQualitySearch(machine.definition)
 
         machine_node = self._machine_quality_type_to_quality_changes_dict.get(machine_definition_id)
         if not machine_node:
@@ -206,7 +207,7 @@ class QualityManager(QObject):
     # For more details, see QualityGroup.
     #
     def getQualityGroups(self, machine: "GlobalStack") -> dict:
-        machine_definition_id = getMachineDefinitionIDForQualitySearch(machine)
+        machine_definition_id = getMachineDefinitionIDForQualitySearch(machine.definition)
 
         # This determines if we should only get the global qualities for the global stack and skip the global qualities for the extruder stacks
         has_variant_materials = parseBool(machine.getMetaDataEntry("has_variant_materials", False))
@@ -315,7 +316,7 @@ class QualityManager(QObject):
         return quality_group_dict
 
     def getQualityGroupsForMachineDefinition(self, machine: "GlobalStack") -> dict:
-        machine_definition_id = getMachineDefinitionIDForQualitySearch(machine)
+        machine_definition_id = getMachineDefinitionIDForQualitySearch(machine.definition)
 
         # To find the quality container for the GlobalStack, check in the following fall-back manner:
         #   (1) the machine-specific node
@@ -460,7 +461,7 @@ class QualityManager(QObject):
             quality_changes.addMetaDataEntry("position", extruder_stack.getMetaDataEntry("position"))
 
         # If the machine specifies qualities should be filtered, ensure we match the current criteria.
-        machine_definition_id = getMachineDefinitionIDForQualitySearch(machine)
+        machine_definition_id = getMachineDefinitionIDForQualitySearch(machine.definition)
         quality_changes.setDefinition(machine_definition_id)
 
         quality_changes.addMetaDataEntry("setting_version", self._application.SettingVersion)
@@ -480,12 +481,13 @@ class QualityManager(QObject):
 #      Example: for an Ultimaker 3 Extended, it has "quality_definition = ultimaker3". This means Ultimaker 3 Extended
 #               shares the same set of qualities profiles as Ultimaker 3.
 #
-def getMachineDefinitionIDForQualitySearch(machine: "GlobalStack", default_definition_id: str = "fdmprinter") -> str:
+def getMachineDefinitionIDForQualitySearch(machine_definition: "DefinitionContainer",
+                                           default_definition_id: str = "fdmprinter") -> str:
     machine_definition_id = default_definition_id
-    if parseBool(machine.getMetaDataEntry("has_machine_quality", False)):
+    if parseBool(machine_definition.getMetaDataEntry("has_machine_quality", False)):
         # Only use the machine's own quality definition ID if this machine has machine quality.
-        machine_definition_id = machine.getMetaDataEntry("quality_definition")
+        machine_definition_id = machine_definition.getMetaDataEntry("quality_definition")
         if machine_definition_id is None:
-            machine_definition_id = machine.definition.getId()
+            machine_definition_id = machine_definition.getId()
 
     return machine_definition_id

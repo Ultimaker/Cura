@@ -1,7 +1,7 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from PyQt5.QtCore import pyqtSignal, pyqtProperty
+from PyQt5.QtCore import QTimer, pyqtSignal, pyqtProperty
 
 from UM.Application import Application
 from UM.Scene.Selection import Selection
@@ -21,8 +21,13 @@ class MultiBuildPlateModel(ListModel):
     def __init__(self, parent = None):
         super().__init__(parent)
 
+        self._update_timer = QTimer()
+        self._update_timer.setInterval(100)
+        self._update_timer.setSingleShot(True)
+        self._update_timer.timeout.connect(self._updateSelectedObjectBuildPlateNumbers)
+
         self._application = Application.getInstance()
-        self._application.getController().getScene().sceneChanged.connect(self._updateSelectedObjectBuildPlateNumbers)
+        self._application.getController().getScene().sceneChanged.connect(self._updateSelectedObjectBuildPlateNumbersDelayed)
         Selection.selectionChanged.connect(self._updateSelectedObjectBuildPlateNumbers)
 
         self._max_build_plate = 1  # default
@@ -44,6 +49,9 @@ class MultiBuildPlateModel(ListModel):
     @pyqtProperty(int, notify = activeBuildPlateChanged)
     def activeBuildPlate(self):
         return self._active_build_plate
+
+    def _updateSelectedObjectBuildPlateNumbersDelayed(self, *args):
+        self._update_timer.start()
 
     def _updateSelectedObjectBuildPlateNumbers(self, *args):
         result = set()

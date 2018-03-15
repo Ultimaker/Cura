@@ -1,6 +1,8 @@
 # Copyright (c) 2016 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
+from PyQt5.QtCore import QTimer
+
 from UM.Application import Application
 from UM.Math.Polygon import Polygon
 from UM.Scene.SceneNodeDecorator import SceneNodeDecorator
@@ -22,6 +24,10 @@ class ConvexHullDecorator(SceneNodeDecorator):
 
         self._global_stack = None
 
+        # Make sure the timer is created on the main thread
+        self._recompute_convex_hull_timer = None
+        Application.getInstance().callLater(self.createRecomputeConvexHullTimer)
+
         self._raft_thickness = 0.0
         # For raft thickness, DRY
         self._build_volume = Application.getInstance().getBuildVolume()
@@ -32,6 +38,12 @@ class ConvexHullDecorator(SceneNodeDecorator):
         Application.getInstance().getController().toolOperationStopped.connect(self._onChanged)
 
         self._onGlobalStackChanged()
+
+    def createRecomputeConvexHullTimer(self):
+        self._recompute_convex_hull_timer = QTimer()
+        self._recompute_convex_hull_timer.setInterval(200)
+        self._recompute_convex_hull_timer.setSingleShot(True)
+        self._recompute_convex_hull_timer.timeout.connect(self.recomputeConvexHull)
 
     def setNode(self, node):
         previous_node = self._node
@@ -98,6 +110,12 @@ class ConvexHullDecorator(SceneNodeDecorator):
                 # Printing one at a time and it's not an object in a group
                 return self._compute2DConvexHull()
         return None
+
+    def recomputeConvexHullDelayed(self):
+        if self._recompute_convex_hull_timer is not None:
+            self._recompute_convex_hull_timer.start()
+        else:
+            self.recomputeConvexHull()
 
     def recomputeConvexHull(self):
         controller = Application.getInstance().getController()
@@ -279,7 +297,8 @@ class ConvexHullDecorator(SceneNodeDecorator):
 
     def _onChanged(self, *args):
         self._raft_thickness = self._build_volume.getRaftThickness()
-        self.recomputeConvexHull()
+        if not args or args[0] == self._node:
+            self.recomputeConvexHullDelayed()
 
     def _onGlobalStackChanged(self):
         if self._global_stack:

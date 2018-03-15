@@ -210,6 +210,7 @@ class ExtrudersModel(UM.Qt.ListModel.ListModel):
                 item = {
                     "id": "",
                     "name": catalog.i18nc("@menuitem", "Not overridden"),
+                    "enabled": True,
                     "color": "#ffffff",
                     "index": -1,
                     "definition": ""

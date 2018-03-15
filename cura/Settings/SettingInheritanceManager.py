@@ -1,7 +1,7 @@
 # Copyright (c) 2017 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from PyQt5.QtCore import QObject, pyqtProperty, pyqtSignal
+from PyQt5.QtCore import QObject, QTimer, pyqtProperty, pyqtSignal
 from UM.FlameProfiler import pyqtSlot
 from UM.Application import Application
 from UM.Logger import Logger
@@ -29,6 +29,11 @@ class SettingInheritanceManager(QObject):
 
         ExtruderManager.getInstance().activeExtruderChanged.connect(self._onActiveExtruderChanged)
         self._onActiveExtruderChanged()
+
+        self._update_timer = QTimer()
+        self._update_timer.setInterval(500)
+        self._update_timer.setSingleShot(True)
+        self._update_timer.timeout.connect(self._update)
 
     settingsWithIntheritanceChanged = pyqtSignal()
 
@@ -226,9 +231,7 @@ class SettingInheritanceManager(QObject):
         self._onActiveExtruderChanged()
 
     def _onContainersChanged(self, container):
-        # TODO: Multiple container changes in sequence now cause quite a few recalculations.
-        # This isn't that big of an issue, but it could be in the future.
-        self._update()
+        self._update_timer.start()
 
     @staticmethod
     def createSettingInheritanceManager(engine=None, script_engine=None):

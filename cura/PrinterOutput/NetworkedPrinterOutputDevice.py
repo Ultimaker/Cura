@@ -3,6 +3,8 @@
 
 from UM.Application import Application
 from UM.Logger import Logger
+from UM.Settings.ContainerRegistry import ContainerRegistry
+from cura.CuraApplication import CuraApplication
 
 from cura.PrinterOutputDevice import PrinterOutputDevice, ConnectionState
 
@@ -56,12 +58,15 @@ class NetworkedPrinterOutputDevice(PrinterOutputDevice):
         self._connection_state_before_timeout = None    # type: Optional[ConnectionState]
 
         printer_type = self._properties.get(b"machine", b"").decode("utf-8")
-        if printer_type.startswith("9511"):
-            self._printer_type = "ultimaker3_extended"
-        elif printer_type.startswith("9066"):
-            self._printer_type = "ultimaker3"
-        else:
-            self._printer_type = "unknown"
+        printer_type_identifiers = {
+            "9066": "ultimaker3",
+            "9511": "ultimaker3_extended"
+        }
+        self._printer_type = "Unknown"
+        for key, value in printer_type_identifiers.items():
+            if printer_type.startswith(key):
+                self._printer_type = value
+                break
 
     def requestWrite(self, nodes, file_name=None, filter_by_machine=False, file_handler=None, **kwargs) -> None:
         raise NotImplementedError("requestWrite needs to be implemented")
@@ -250,6 +255,9 @@ class NetworkedPrinterOutputDevice(PrinterOutputDevice):
         self._manager.finished.connect(self.__handleOnFinished)
         self._last_manager_create_time = time()
         self._manager.authenticationRequired.connect(self._onAuthenticationRequired)
+
+        machine_manager = CuraApplication.getInstance().getMachineManager()
+        machine_manager.checkCorrectGroupName(self.getId(), self.name)
 
     def _registerOnFinishedCallback(self, reply: QNetworkReply, onFinished: Optional[Callable[[Any, QNetworkReply], None]]) -> None:
         if onFinished is not None:

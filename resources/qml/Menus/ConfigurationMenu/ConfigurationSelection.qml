@@ -13,54 +13,53 @@ Item
     id: configurationSelector
     property var connectedDevice: Cura.MachineManager.printerOutputDevices.length >= 1 ? Cura.MachineManager.printerOutputDevices[0] : null
     property var panelWidth: control.width
-    property var panelVisible: false
 
-    SyncButton {
-        onClicked: configurationSelector.state == "open" ? configurationSelector.state = "closed" : configurationSelector.state = "open"
+    function switchPopupState()
+    {
+        popup.visible ? popup.close() : popup.open()
+    }
+
+    SyncButton
+    {
+        id: syncButton
+        onClicked: switchPopupState()
         outputDevice: connectedDevice
     }
 
-    Popup {
+    Popup
+    {
+        // TODO Change once updating to Qt5.10 - The 'opened' property is in 5.10 but the behavior is now implemented with the visible property
         id: popup
         clip: true
+        closePolicy: Popup.CloseOnPressOutsideParent
         y: configurationSelector.height - UM.Theme.getSize("default_lining").height
         x: configurationSelector.width - width
         width: panelWidth
-        visible: panelVisible && connectedDevice != null
+        visible: false
         padding: UM.Theme.getSize("default_lining").width
-        contentItem: ConfigurationListView {
+        transformOrigin: Popup.Top
+        contentItem: ConfigurationListView
+        {
             id: configList
             width: panelWidth - 2 * popup.padding
             outputDevice: connectedDevice
         }
-        background: Rectangle {
+        background: Rectangle
+        {
             color: UM.Theme.getColor("setting_control")
             border.color: UM.Theme.getColor("setting_control_border")
         }
-    }
-
-    states: [
-        // This adds a second state to the container where the rectangle is farther to the right
-        State {
-            name: "open"
-            PropertyChanges {
-                target: popup
-                height: configList.computedHeight
-            }
-        },
-        State {
-            name: "closed"
-            PropertyChanges {
-                target: popup
-                height: 0
-            }
-        }
-    ]
-    transitions: [
-        // This adds a transition that defaults to applying to all state changes
-        Transition {
+        exit: Transition
+        {
             // This applies a default NumberAnimation to any changes a state change makes to x or y properties
-            NumberAnimation { properties: "height"; duration: 200; easing.type: Easing.InOutQuad; }
+            NumberAnimation { property: "visible"; duration: 75; }
         }
-    ]
+        enter: Transition
+        {
+            // This applies a default NumberAnimation to any changes a state change makes to x or y properties
+            NumberAnimation { property: "visible"; duration: 75; }
+        }
+        onClosed: visible = false
+        onOpened: visible = true
+    }
 }
