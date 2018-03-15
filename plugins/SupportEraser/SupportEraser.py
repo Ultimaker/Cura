@@ -7,6 +7,7 @@ from UM.Application import Application
 from UM.Event import Event, MouseEvent
 from UM.Mesh.MeshBuilder import MeshBuilder
 from UM.Operations.AddSceneNodeOperation import AddSceneNodeOperation
+from UM.Operations.RemoveSceneNodeOperation import RemoveSceneNodeOperation
 from UM.Settings.SettingInstance import SettingInstance
 from cura.Scene.CuraSceneNode import CuraSceneNode
 from cura.Scene.SliceableObjectDecorator import SliceableObjectDecorator
@@ -24,24 +25,39 @@ class SupportEraser(Tool):
         self._shortcut_key = Qt.Key_G
         self._controller = Application.getInstance().getController()
 
+        self._selection_pass = None
         Application.getInstance().globalContainerStackChanged.connect(self._updateEnabled)
 
     def event(self, event):
         super().event(event)
 
         if event.type == Event.MousePressEvent and self._controller.getToolsEnabled():
-            active_camera = self._controller.getScene().getActiveCamera()
+
+            if self._selection_pass is None:
+                # The selection renderpass is used to identify objects in the current view
+                self._selection_pass = Application.getInstance().getRenderer().getRenderPass("selection")
+            picked_node = self._controller.getScene().findObject(self._selection_pass.getIdAtPosition(event.x, event.y))
+
+            node_stack = picked_node.callDecoration("getStack")
+            if node_stack:
+                if node_stack.getProperty("anti_overhang_mesh", "value"):
+                    self._removeEraserMesh(picked_node)
+                    return
+
+                elif node_stack.getProperty("support_mesh", "value") or node_stack.getProperty("infill_mesh", "value") or node_stack.getProperty("cutting_mesh", "value"):
+                    return
 
             # Create a pass for picking a world-space location from the mouse location
+            active_camera = self._controller.getScene().getActiveCamera()
             picking_pass = PickingPass(active_camera.getViewportWidth(), active_camera.getViewportHeight())
             picking_pass.render()
 
             picked_position = picking_pass.getPickedPosition(event.x, event.y)
 
             # Add the anti_overhang_mesh cube at the picked location
-            self._createEraserMesh(picked_position)
+            self._createEraserMesh(picked_node, picked_position)
 
-    def _createEraserMesh(self, position: Vector):
+    def _createEraserMesh(self, parent: CuraSceneNode, position: Vector):
         node = CuraSceneNode()
 
         node.setName("Eraser")
@@ -73,6 +89,11 @@ class SupportEraser(Tool):
 
         scene = self._controller.getScene()
         op = AddSceneNodeOperation(node, scene.getRoot())
+        op.push()
+        Application.getInstance().getController().getScene().sceneChanged.emit(node)
+
+    def _removeEraserMesh(self, node: CuraSceneNode):
+        op = RemoveSceneNodeOperation(node)
         op.push()
         Application.getInstance().getController().getScene().sceneChanged.emit(node)
 
