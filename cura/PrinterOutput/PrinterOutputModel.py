@@ -238,6 +238,13 @@ class PrinterOutputModel(QObject):
             return self._controller.can_pre_heat_bed
         return False
 
+    # Does the printer support pre-heating the bed at all
+    @pyqtProperty(bool, constant=True)
+    def canPreHeatHotends(self):
+        if self._controller:
+            return self._controller.can_pre_heat_hotends
+        return False
+
     # Does the printer support pause at all
     @pyqtProperty(bool, constant=True)
     def canPause(self):
