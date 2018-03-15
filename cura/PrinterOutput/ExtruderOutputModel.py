@@ -20,7 +20,7 @@ class ExtruderOutputModel(QObject):
     extruderConfigurationChanged = pyqtSignal()
     isPreheatingChanged = pyqtSignal()
 
-    def __init__(self, printer: "PrinterOutputModel", position: int, parent=None):
+    def __init__(self, printer: "PrinterOutputModel", position, parent=None):
         super().__init__(parent)
         self._printer = printer
         self._position = position
@@ -98,6 +98,7 @@ class ExtruderOutputModel(QObject):
         if self._extruder_configuration.isValid():
             return self._extruder_configuration
         return None
+
     def updateIsPreheating(self, pre_heating):
         if self._is_preheating != pre_heating:
             self._is_preheating = pre_heating

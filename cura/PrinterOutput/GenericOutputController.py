@@ -52,7 +52,6 @@ class GenericOutputController(PrinterOutputController):
                     extruder.updateIsPreheating(False)
                 self._preheat_hotends = set()
 
-
     def moveHead(self, printer: "PrinterOutputModel", x, y, z, speed):
         self._output_device.sendCommand("G91")
         self._output_device.sendCommand("G0 X%s Y%s Z%s F%s" % (x, y, z, speed))
@@ -75,7 +74,6 @@ class GenericOutputController(PrinterOutputController):
         elif state == "abort":
             self._output_device.cancelPrint()
             pass
-
 
     def setTargetBedTemperature(self, printer: "PrinterOutputModel", temperature: int):
         self._output_device.sendCommand("M140 S%s" % temperature)
@@ -106,7 +104,6 @@ class GenericOutputController(PrinterOutputController):
     def _onPreheatBedTimerFinished(self):
         self.setTargetBedTemperature(self._preheat_printer, 0)
         self._preheat_printer.updateIsPreheating(False)
-
 
     def setTargetHotendTemperature(self, printer: "PrinterOutputModel", position: int, temperature: int):
         self._output_device.sendCommand("M104 S%s T%s" % (temperature, position))
