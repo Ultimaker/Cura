@@ -173,12 +173,13 @@ class CuraContainerRegistry(ContainerRegistry):
         plugin_registry = PluginRegistry.getInstance()
         extension = file_name.split(".")[-1]
 
-        global_container_stack = Application.getInstance().getGlobalContainerStack()
-        if not global_container_stack:
+        global_stack = Application.getInstance().getGlobalContainerStack()
+        if not global_stack:
             return
 
-        machine_extruders = list(ExtruderManager.getInstance().getMachineExtruders(global_container_stack.getId()))
-        machine_extruders.sort(key = lambda k: k.getMetaDataEntry("position"))
+        machine_extruders = []
+        for position in sorted(global_stack.extruders):
+            machine_extruders.append(global_stack.extruders[position])
 
         for plugin_id, meta_data in self._getIOPlugins("profile_reader"):
             if meta_data["profile_reader"][0]["extension"] != extension:
@@ -200,13 +201,18 @@ class CuraContainerRegistry(ContainerRegistry):
 
                 # First check if this profile is suitable for this machine
                 global_profile = None
+                extruder_profiles = []
                 if len(profile_or_list) == 1:
                     global_profile = profile_or_list[0]
                 else:
                     for profile in profile_or_list:
                         if not profile.getMetaDataEntry("position"):
                             global_profile = profile
-                            break
+                        else:
+                            extruder_profiles.append(profile)
+                extruder_profiles = sorted(extruder_profiles, key = lambda x: int(x.getMetaDataEntry("position")))
+                profile_or_list = [global_profile] + extruder_profiles
+
                 if not global_profile:
                     Logger.log("e", "Incorrect profile [%s]. Could not find global profile", file_name)
                     return { "status": "error",
@@ -227,7 +233,7 @@ class CuraContainerRegistry(ContainerRegistry):
                 # Get the expected machine definition.
                 # i.e.: We expect gcode for a UM2 Extended to be defined as normal UM2 gcode...
                 profile_definition = getMachineDefinitionIDForQualitySearch(machine_definition)
-                expected_machine_definition = getMachineDefinitionIDForQualitySearch(global_container_stack.definition)
+                expected_machine_definition = getMachineDefinitionIDForQualitySearch(global_stack.definition)
 
                 # And check if the profile_definition matches either one (showing error if not):
                 if profile_definition != expected_machine_definition:
@@ -251,8 +257,8 @@ class CuraContainerRegistry(ContainerRegistry):
                 if len(profile_or_list) == 1:
                     global_profile = profile_or_list[0]
                     extruder_profiles = []
-                    for idx, extruder in enumerate(global_container_stack.extruders.values()):
-                        profile_id = ContainerRegistry.getInstance().uniqueName(global_container_stack.getId() + "_extruder_" + str(idx + 1))
+                    for idx, extruder in enumerate(global_stack.extruders.values()):
+                        profile_id = ContainerRegistry.getInstance().uniqueName(global_stack.getId() + "_extruder_" + str(idx + 1))
                         profile = InstanceContainer(profile_id)
                         profile.setName(quality_name)
                         profile.addMetaDataEntry("setting_version", CuraApplication.SettingVersion)
@@ -264,12 +270,12 @@ class CuraContainerRegistry(ContainerRegistry):
                         if idx == 0:
                             # move all per-extruder settings to the first extruder's quality_changes
                             for qc_setting_key in global_profile.getAllKeys():
-                                settable_per_extruder = global_container_stack.getProperty(qc_setting_key,
+                                settable_per_extruder = global_stack.getProperty(qc_setting_key,
                                                                                            "settable_per_extruder")
                                 if settable_per_extruder:
                                     setting_value = global_profile.getProperty(qc_setting_key, "value")
 
-                                    setting_definition = global_container_stack.getSettingDefinition(qc_setting_key)
+                                    setting_definition = global_stack.getSettingDefinition(qc_setting_key)
                                     new_instance = SettingInstance(setting_definition, profile)
                                     new_instance.setProperty("value", setting_value)
                                     new_instance.resetState()  # Ensure that the state is not seen as a user state.
@@ -286,7 +292,7 @@ class CuraContainerRegistry(ContainerRegistry):
                 for profile_index, profile in enumerate(profile_or_list):
                     if profile_index == 0:
                         # This is assumed to be the global profile
-                        profile_id = (global_container_stack.getBottom().getId() + "_" + name_seed).lower().replace(" ", "_")
+                        profile_id = (global_stack.getBottom().getId() + "_" + name_seed).lower().replace(" ", "_")
 
                     elif profile_index < len(machine_extruders) + 1:
                         # This is assumed to be an extruder profile
