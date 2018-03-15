@@ -27,8 +27,19 @@ SettingItem
 
         onActivated:
         {
-            forceActiveFocus();
-            propertyProvider.setPropertyValue("value", model.getItem(index).index);
+            if (model.getItem(index).enabled)
+            {
+                forceActiveFocus();
+                propertyProvider.setPropertyValue("value", model.getItem(index).index);
+            } else
+            {
+                if (propertyProvider.properties.value == -1)
+                {
+                    control.currentIndex = model.rowCount() - 1;  // we know the last item is "Not overriden"
+                } else {
+                    control.currentIndex = propertyProvider.properties.value;  // revert to the old value
+                }
+            }
         }
 
         onActiveFocusChanged:
@@ -192,7 +203,14 @@ SettingItem
             {
                 text: model.name
                 renderType: Text.NativeRendering
-                color: UM.Theme.getColor("setting_control_text")
+                color:
+                {
+                    if (model.enabled) {
+                        UM.Theme.getColor("setting_control_text")
+                    } else {
+                        UM.Theme.getColor("action_button_disabled_text");
+                    }
+                }
                 font: UM.Theme.getFont("default")
                 elide: Text.ElideRight
                 verticalAlignment: Text.AlignVCenter
