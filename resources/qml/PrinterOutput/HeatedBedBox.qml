@@ -114,21 +114,24 @@ Item
                 {
                     return false; //Not allowed to do anything.
                 }
-                if (connectedPrinter.jobState == "printing" || connectedPrinter.jobState == "pre_print" || connectedPrinter.jobState == "resuming" || connectedPrinter.jobState == "pausing" || connectedPrinter.jobState == "paused" || connectedPrinter.jobState == "error" || connectedPrinter.jobState == "offline")
+                if (connectedPrinter.activePrinter && connectedPrinter.activePrinter.activePrintJob)
                 {
-                    return false; //Printer is in a state where it can't react to pre-heating.
+                    if((["printing", "pre_print", "resuming", "pausing", "paused", "error", "offline"]).indexOf(connectedPrinter.activePrinter.activePrintJob.state) != -1)
+                    {
+                        return false; //Printer is in a state where it can't react to pre-heating.
+                    }
                 }
                 return true;
             }
             border.width: UM.Theme.getSize("default_lining").width
             border.color: !enabled ? UM.Theme.getColor("setting_control_disabled_border") : preheatTemperatureInputMouseArea.containsMouse ? UM.Theme.getColor("setting_control_border_highlight") : UM.Theme.getColor("setting_control_border")
-            anchors.left: parent.left
-            anchors.leftMargin: UM.Theme.getSize("default_margin").width
+            anchors.right: preheatButton.left
+            anchors.rightMargin: UM.Theme.getSize("default_margin").width
             anchors.bottom: parent.bottom
             anchors.bottomMargin: UM.Theme.getSize("default_margin").height
-            width: UM.Theme.getSize("setting_control").width
-            height: UM.Theme.getSize("setting_control").height
-            visible: printerModel != null ? printerModel.canPreHeatBed: true
+            width: UM.Theme.getSize("monitor_preheat_temperature_control").width
+            height: UM.Theme.getSize("monitor_preheat_temperature_control").height
+            visible: printerModel != null ? enabled && printerModel.canPreHeatBed && !printerModel.isPreheating : true
             Rectangle //Highlight of input field.
             {
                 anchors.fill: parent
@@ -159,18 +162,29 @@ Item
                     }
                 }
             }
+            Label
+            {
+                id: unit
+                anchors.right: parent.right
+                anchors.rightMargin: UM.Theme.getSize("setting_unit_margin").width
+                anchors.verticalCenter: parent.verticalCenter
+
+                text: "°C";
+                color: UM.Theme.getColor("setting_unit")
+                font: UM.Theme.getFont("default")
+            }
             TextInput
             {
                 id: preheatTemperatureInput
                 font: UM.Theme.getFont("default")
                 color: !enabled ? UM.Theme.getColor("setting_control_disabled_text") : UM.Theme.getColor("setting_control_text")
                 selectByMouse: true
-                maximumLength: 10
+                maximumLength: 5
                 enabled: parent.enabled
                 validator: RegExpValidator { regExp: /^-?[0-9]{0,9}[.,]?[0-9]{0,10}$/ } //Floating point regex.
                 anchors.left: parent.left
                 anchors.leftMargin: UM.Theme.getSize("setting_unit_margin").width
-                anchors.right: parent.right
+                anchors.right: unit.left
                 anchors.verticalCenter: parent.verticalCenter
                 renderType: Text.NativeRendering
 

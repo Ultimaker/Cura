@@ -18,6 +18,7 @@ class ExtruderOutputModel(QObject):
     hotendTemperatureChanged = pyqtSignal()
     activeMaterialChanged = pyqtSignal()
     extruderConfigurationChanged = pyqtSignal()
+    isPreheatingChanged = pyqtSignal()
 
     def __init__(self, printer: "PrinterOutputModel", position, parent=None):
         super().__init__(parent)
@@ -29,6 +30,21 @@ class ExtruderOutputModel(QObject):
         self._active_material = None  # type: Optional[MaterialOutputModel]
         self._extruder_configuration = ExtruderConfigurationModel()
         self._extruder_configuration.position = self._position
+
+        self._is_preheating = False
+
+    def getPrinter(self):
+        return self._printer
+
+    def getPosition(self):
+        return self._position
+
+    # Does the printer support pre-heating the bed at all
+    @pyqtProperty(bool, constant=True)
+    def canPreHeatHotends(self):
+        if self._printer:
+            return self._printer.canPreHeatHotends
+        return False
 
     @pyqtProperty(QObject, notify = activeMaterialChanged)
     def activeMaterial(self) -> "MaterialOutputModel":
@@ -82,3 +98,25 @@ class ExtruderOutputModel(QObject):
         if self._extruder_configuration.isValid():
             return self._extruder_configuration
         return None
+
+    def updateIsPreheating(self, pre_heating):
+        if self._is_preheating != pre_heating:
+            self._is_preheating = pre_heating
+            self.isPreheatingChanged.emit()
+
+    @pyqtProperty(bool, notify=isPreheatingChanged)
+    def isPreheating(self):
+        return self._is_preheating
+
+    ##  Pre-heats the extruder before printer.
+    #
+    #   \param temperature The temperature to heat the extruder to, in degrees
+    #   Celsius.
+    #   \param duration How long the bed should stay warm, in seconds.
+    @pyqtSlot(float, float)
+    def preheatHotend(self, temperature, duration):
+        self._printer._controller.preheatHotend(self, temperature, duration)
+
+    @pyqtSlot()
+    def cancelPreheatHotend(self):
+        self._printer._controller.cancelPreheatHotend(self)

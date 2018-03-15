@@ -71,8 +71,8 @@ ToolButton
                 color: UM.Theme.getColor("sidebar_header_text_active")
                 text: control.text;
                 elide: Text.ElideRight;
-                anchors.left: isNetworkPrinter ? printerStatusIcon.right : parent.left;
-                anchors.leftMargin: isNetworkPrinter ? UM.Theme.getSize("sidebar_lining").width : UM.Theme.getSize("sidebar_margin").width
+                anchors.left: printerStatusIcon.visible ? printerStatusIcon.right : parent.left;
+                anchors.leftMargin: printerStatusIcon.visible ? UM.Theme.getSize("sidebar_lining").width : UM.Theme.getSize("sidebar_margin").width
                 anchors.right: downArrow.left;
                 anchors.rightMargin: control.rightMargin;
                 anchors.verticalCenter: parent.verticalCenter;

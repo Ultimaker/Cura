@@ -15,6 +15,7 @@ Item
 {
     id: base;
 
+    property QtObject settingVisibilityPresetsModel: CuraApplication.getSettingVisibilityPresetsModel()
     property Action configureSettings
     property bool findingSettings
     property bool showingAllSettings
@@ -439,6 +440,7 @@ Item
                     key: model.key ? model.key : ""
                     watchedProperties: [ "value", "enabled", "state", "validationState", "settable_per_extruder", "resolve" ]
                     storeIndex: 0
+                    removeUnusedValue: model.resolve == undefined
                 }
 
                 Connections
@@ -562,9 +564,9 @@ Item
                     {
                         definitionsModel.hide(contextMenu.key);
                         // visible settings have changed, so we're no longer showing a preset
-                        if (Cura.SettingVisibilityPresetsModel.activePreset != "" && !showingAllSettings)
+                        if (settingVisibilityPresetsModel.activePreset != "" && !showingAllSettings)
                         {
-                            Cura.SettingVisibilityPresetsModel.setActivePreset("custom");
+                            settingVisibilityPresetsModel.setActivePreset("custom");
                         }
                     }
                 }
@@ -594,16 +596,16 @@ Item
                             definitionsModel.show(contextMenu.key);
                         }
                         // visible settings have changed, so we're no longer showing a preset
-                        if (Cura.SettingVisibilityPresetsModel.activePreset != "" && !showingAllSettings)
+                        if (settingVisibilityPresetsModel.activePreset != "" && !showingAllSettings)
                         {
-                            Cura.SettingVisibilityPresetsModel.setActivePreset("custom");
+                            settingVisibilityPresetsModel.setActivePreset("custom");
                         }
                     }
                 }
                 MenuItem
                 {
                     //: Settings context menu action
-                    text: catalog.i18nc("@action:menu", "Configure setting visiblity...");
+                    text: catalog.i18nc("@action:menu", "Configure setting visibility...");
 
                     onTriggered: Cura.Actions.configureSettingVisibility.trigger(contextMenu);
                 }

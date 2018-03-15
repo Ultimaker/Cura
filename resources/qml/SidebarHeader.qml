@@ -178,6 +178,7 @@ Column
                         text: catalog.i18nc("@action:inmenu", "Disable Extruder")
                         onTriggered: Cura.MachineManager.setExtruderEnabled(model.index, false)
                         visible: extruder_enabled
+                        enabled: Cura.MachineManager.numberExtrudersEnabled > 1
                     }
                 }
 
@@ -185,22 +186,34 @@ Column
                 {
                     background: Item
                     {
-                        Rectangle
+                        function buttonBackgroundColor(index)
                         {
-                            anchors.fill: parent
-                            border.width: control.checked ? UM.Theme.getSize("default_lining").width * 2 : UM.Theme.getSize("default_lining").width
-                            border.color: (control.checked || control.pressed) ? UM.Theme.getColor("action_button_active_border") :
-                                          control.hovered ? UM.Theme.getColor("action_button_hovered_border") :
-                                          UM.Theme.getColor("action_button_border")
-                            color: (control.checked || control.pressed) ? UM.Theme.getColor("action_button_active") :
-                                   control.hovered ? UM.Theme.getColor("action_button_hovered") :
-                                   UM.Theme.getColor("action_button")
-                            Behavior on color { ColorAnimation { duration: 50; } }
+                            var extruder = Cura.MachineManager.getExtruder(index)
+                            if (extruder.isEnabled) {
+                                return (control.checked || control.pressed) ? UM.Theme.getColor("action_button_active") :
+                                        control.hovered ? UM.Theme.getColor("action_button_hovered") :
+                                        UM.Theme.getColor("action_button")
+                            } else {
+                                return UM.Theme.getColor("action_button_disabled")
+                            }
+                        }
+
+                        function buttonBorderColor(index)
+                        {
+                            var extruder = Cura.MachineManager.getExtruder(index)
+                            if (extruder.isEnabled) {
+                                return (control.checked || control.pressed) ? UM.Theme.getColor("action_button_active_border") :
+                                        control.hovered ? UM.Theme.getColor("action_button_hovered_border") :
+                                        UM.Theme.getColor("action_button_border")
+                            } else {
+                                return UM.Theme.getColor("action_button_disabled_border")
+                            }
                         }
 
                         function buttonColor(index) {
                             var extruder = Cura.MachineManager.getExtruder(index);
-                            if (extruder.isEnabled) {
+                            if (extruder.isEnabled)
+                            {
                                 return (
                                     control.checked || control.pressed) ? UM.Theme.getColor("action_button_active_text") :
                                     control.hovered ? UM.Theme.getColor("action_button_hovered_text") :
@@ -210,10 +223,20 @@ Column
                             }
                         }
 
+                        Rectangle
+                        {
+                            anchors.fill: parent
+                            border.width: control.checked ? UM.Theme.getSize("default_lining").width * 2 : UM.Theme.getSize("default_lining").width
+                            border.color: buttonBorderColor(index)
+                            color: buttonBackgroundColor(index)
+                            Behavior on color { ColorAnimation { duration: 50; } }
+                        }
+
                         Item
                         {
                             id: extruderButtonFace
                             anchors.centerIn: parent
+
                             width: {
                                 var extruderTextWidth = extruderStaticText.visible ? extruderStaticText.width : 0;
                                 var iconWidth = extruderIconItem.width;
