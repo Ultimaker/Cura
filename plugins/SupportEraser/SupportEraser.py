@@ -4,7 +4,7 @@
 import os
 import os.path
 
-from PyQt5.QtCore import Qt, QUrl
+from PyQt5.QtCore import Qt, QTimer
 
 from UM.Math.Vector import Vector
 from UM.Tool import Tool
@@ -39,10 +39,28 @@ class SupportEraser(Tool):
         self._selection_pass = None
         Application.getInstance().globalContainerStackChanged.connect(self._updateEnabled)
 
+        # Note: if the selection is cleared with this tool active, there is no way to switch to
+        # another tool than to reselect an object (by clicking it) because the tool buttons in the
+        # toolbar will have been disabled. That is why we need to ignore the first press event
+        # after the selection has been cleared.
+        Selection.selectionChanged.connect(self._onSelectionChanged)
+        self._had_selection = False
+        self._skip_press = False
+
+        self._had_selection_timer = QTimer()
+        self._had_selection_timer.setInterval(0)
+        self._had_selection_timer.setSingleShot(True)
+        self._had_selection_timer.timeout.connect(self._selectionChangeDelay)
+
     def event(self, event):
         super().event(event)
 
         if event.type == Event.MousePressEvent and self._controller.getToolsEnabled():
+            if self._skip_press:
+                # The selection was previously cleared, do not add/remove an anti-support mesh but
+                # use this click for selection and reactivating this tool only.
+                self._skip_press = False
+                return
 
             if self._selection_pass is None:
                 # The selection renderpass is used to identify objects in the current view
@@ -119,10 +137,10 @@ class SupportEraser(Tool):
         Application.getInstance().getController().getScene().sceneChanged.emit(node)
 
         # Select the picked node so the group does not get drawn as a wireframe (yet)
-        if Selection.isSelected(group):
-            Selection.remove(group)
         if not Selection.isSelected(parent):
             Selection.add(parent)
+        if Selection.isSelected(group):
+            Selection.remove(group)
 
     def _removeEraserMesh(self, node: CuraSceneNode):
         group = node.getParent()
@@ -138,10 +156,10 @@ class SupportEraser(Tool):
         Application.getInstance().getController().getScene().sceneChanged.emit(node)
 
         # Select the picked node so the group does not get drawn as a wireframe (yet)
-        if Selection.isSelected(group):
-            Selection.remove(group)
         if parent and not Selection.isSelected(parent):
             Selection.add(parent)
+        if Selection.isSelected(group):
+            Selection.remove(group)
 
     def _updateEnabled(self):
         plugin_enabled = False
@@ -151,3 +169,22 @@ class SupportEraser(Tool):
             plugin_enabled = global_container_stack.getProperty("anti_overhang_mesh", "enabled")
 
         Application.getInstance().getController().toolEnabledChanged.emit(self._plugin_id, plugin_enabled)
+
+
+
+    def _onSelectionChanged(self):
+        # When selection is passed from one object to another object, first the selection is cleared
+        # and then it is set to the new object. We are only interested in the change from no selection
+        # to a selection or vice-versa, not in a change from one object to another. A timer is used to
+        # "merge" a possible clear/select action in a single frame
+        if Selection.hasSelection() != self._had_selection:
+            self._had_selection_timer.start()
+
+    def _selectionChangeDelay(self):
+        has_selection = Selection.hasSelection()
+        if not has_selection and self._had_selection:
+            self._skip_press = True
+        else:
+            self._skip_press = False
+
+        self._had_selection = has_selection
