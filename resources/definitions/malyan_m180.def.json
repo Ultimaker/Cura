@@ -38,16 +38,16 @@
         "machine_max_feedrate_z": {
             "default_value": 400
         },
-        "steps_per_mm_x": {
+        "machine_steps_per_mm_x": {
             "default_value": 93
         },
-        "steps_per_mm_y": {
+        "machine_steps_per_mm_y": {
             "default_value": 93
         },
-        "steps_per_mm_z": {
+        "machine_steps_per_mm_z": {
             "default_value": 1600
         },
-        "steps_per_mm_e": {
+        "machine_steps_per_mm_e": {
             "default_value": 92
         },
         "gantry_height": {
