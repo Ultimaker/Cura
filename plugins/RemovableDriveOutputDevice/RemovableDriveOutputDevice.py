@@ -1,4 +1,4 @@
-# Copyright (c) 2016 Ultimaker B.V.
+# Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import os.path
@@ -39,7 +39,7 @@ class RemovableDriveOutputDevice(OutputDevice):
     #   MIME types available to the currently active machine?
     #
     def requestWrite(self, nodes, file_name = None, filter_by_machine = False, file_handler = None, **kwargs):
-        filter_by_machine = True # This plugin is indended to be used by machine (regardless of what it was told to do)
+        filter_by_machine = True # This plugin is intended to be used by machine (regardless of what it was told to do)
         if self._writing:
             raise OutputDeviceError.DeviceBusyError()
 
@@ -56,7 +56,8 @@ class RemovableDriveOutputDevice(OutputDevice):
             machine_file_formats = [file_type.strip() for file_type in container.getMetaDataEntry("file_formats").split(";")]
 
             # Take the intersection between file_formats and machine_file_formats.
-            file_formats = list(filter(lambda file_format: file_format["mime_type"] in machine_file_formats, file_formats))
+            format_by_mimetype = {format["mime_type"]: format for format in file_formats}
+            file_formats = [format_by_mimetype[mimetype] for mimetype in machine_file_formats] #Keep them ordered according to the preference in machine_file_formats.
 
         if len(file_formats) == 0:
             Logger.log("e", "There are no file formats available to write with!")
