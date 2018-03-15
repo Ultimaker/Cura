@@ -470,13 +470,13 @@ class MachineManager(QObject):
     @pyqtProperty(str, notify = outputDevicesChanged)
     def activeMachineNetworkKey(self) -> str:
         if self._global_container_stack:
-            return self._global_container_stack.getMetaDataEntry("um_network_key")
+            return self._global_container_stack.getMetaDataEntry("um_network_key", "")
         return ""
 
     @pyqtProperty(str, notify = outputDevicesChanged)
     def activeMachineNetworkGroupName(self) -> str:
         if self._global_container_stack:
-            return self._global_container_stack.getMetaDataEntry("connect_group_name")
+            return self._global_container_stack.getMetaDataEntry("connect_group_name", "")
         return ""
 
     @pyqtProperty(QObject, notify = globalContainerChanged)
@@ -662,11 +662,21 @@ class MachineManager(QObject):
             if other_machine_stacks:
                 self.setActiveMachine(other_machine_stacks[0]["id"])
 
+        metadata = ContainerRegistry.getInstance().findContainerStacksMetadata(id = machine_id)[0]
+        network_key = metadata["um_network_key"] if "um_network_key" in metadata else None
         ExtruderManager.getInstance().removeMachineExtruders(machine_id)
         containers = ContainerRegistry.getInstance().findInstanceContainersMetadata(type = "user", machine = machine_id)
         for container in containers:
             ContainerRegistry.getInstance().removeContainer(container["id"])
         ContainerRegistry.getInstance().removeContainer(machine_id)
+
+        # If the printer that is being removed is a network printer, the hidden printers have to be also removed
+        if network_key:
+            metadata_filter = {"um_network_key": network_key}
+            hidden_containers = ContainerRegistry.getInstance().findContainerStacks(type = "machine", **metadata_filter)
+            if hidden_containers:
+                # This reuses the method and remove all printers recursively
+                self.removeMachine(hidden_containers[0].getId())
 
     @pyqtProperty(bool, notify = globalContainerChanged)
     def hasMaterials(self) -> bool:
