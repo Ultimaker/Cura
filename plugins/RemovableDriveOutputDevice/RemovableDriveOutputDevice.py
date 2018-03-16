@@ -7,7 +7,7 @@ from UM.Application import Application
 from UM.Logger import Logger
 from UM.Message import Message
 from UM.FileHandler.WriteFileJob import WriteFileJob
-from UM.Mesh.MeshWriter import MeshWriter
+from UM.FileHandler.FileWriter import FileWriter #To check against the write modes (text vs. binary).
 from UM.Scene.Iterator.BreadthFirstIterator import BreadthFirstIterator
 from UM.OutputDevice.OutputDevice import OutputDevice
 from UM.OutputDevice import OutputDeviceError
@@ -82,8 +82,11 @@ class RemovableDriveOutputDevice(OutputDevice):
         try:
             Logger.log("d", "Writing to %s", file_name)
             # Using buffering greatly reduces the write time for many lines of gcode
-            self._stream = open(file_name, "wt", buffering = 1, encoding = "utf-8")
-            job = WriteFileJob(writer, self._stream, nodes, MeshWriter.OutputMode.TextMode)
+            if preferred_format["mode"] == FileWriter.OutputMode.TextMode:
+                self._stream = open(file_name, "wt", buffering = 1, encoding = "utf-8")
+            else: #Binary mode.
+                self._stream = open(file_name, "wb", buffering = 1)
+            job = WriteFileJob(writer, self._stream, nodes, preferred_format["mode"])
             job.setFileName(file_name)
             job.progress.connect(self._onProgress)
             job.finished.connect(self._onFinished)
