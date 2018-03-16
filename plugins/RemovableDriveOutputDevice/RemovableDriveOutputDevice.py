@@ -62,14 +62,15 @@ class RemovableDriveOutputDevice(OutputDevice):
         if len(file_formats) == 0:
             Logger.log("e", "There are no file formats available to write with!")
             raise OutputDeviceError.WriteRequestFailedError(catalog.i18nc("@info:status", "There are no file formats available to write with!"))
+        preferred_format = file_formats[0]
 
         # Just take the first file format available.
         if file_handler is not None:
-            writer = file_handler.getWriterByMimeType(file_formats[0]["mime_type"])
+            writer = file_handler.getWriterByMimeType(preferred_format["mime_type"])
         else:
-            writer = Application.getInstance().getMeshFileHandler().getWriterByMimeType(file_formats[0]["mime_type"])
+            writer = Application.getInstance().getMeshFileHandler().getWriterByMimeType(preferred_format["mime_type"])
 
-        extension = file_formats[0]["extension"]
+        extension = preferred_format["extension"]
 
         if file_name is None:
             file_name = self._automaticFileName(nodes)
