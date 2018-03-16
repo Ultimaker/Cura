@@ -524,6 +524,8 @@ Column
                 source: UM.Theme.getIcon("warning")
                 width: UM.Theme.getSize("section_icon").width
                 height: UM.Theme.getSize("section_icon").height
+                sourceSize.width: width
+                sourceSize.height: height
                 color: UM.Theme.getColor("material_compatibility_warning")
                 visible: !Cura.MachineManager.isCurrentSetupSupported
             }
@@ -545,9 +547,7 @@ Column
                     hoverEnabled: true
                     onClicked: {
                         // open the material URL with web browser
-                        var version = UM.Application.version;
-                        var machineName = Cura.MachineManager.activeMachine.definition.id;
-                        var url = "https://ultimaker.com/materialcompatibility/" + version + "/" + machineName + "?utm_source=cura&utm_medium=software&utm_campaign=resources";
+                        var url = "https://ultimaker.com/incoming-links/cura/material-compatibilty"
                         Qt.openUrlExternally(url);
                     }
                     onEntered: {
