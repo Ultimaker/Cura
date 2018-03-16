@@ -36,6 +36,6 @@ class GCodeGzWriter(MeshWriter):
         if not success: #Writing the g-code failed. Then I can also not write the gzipped g-code.
             return False
 
-        result = gzip.compress(gcode_textio.getvalue())
+        result = gzip.compress(gcode_textio.getvalue().encode("utf-8"))
         stream.write(result)
         return True
