@@ -1224,9 +1224,7 @@ class MachineManager(QObject):
     def existNetworkInstances(self, network_key: str) -> bool:
         metadata_filter = {"um_network_key": network_key}
         containers = ContainerRegistry.getInstance().findContainerStacks(type = "machine", **metadata_filter)
-        if containers:
-            return True
-        return False
+        return bool(containers)
 
     @pyqtSlot("QVariant")
     def setGlobalVariant(self, container_node):
