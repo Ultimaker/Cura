@@ -111,7 +111,6 @@ class GCodeWriter(MeshWriter):
         prefix = ";SETTING_" + str(GCodeWriter.version) + " "  # The prefix to put before each line.
         prefix_length = len(prefix)
 
-        quality_name = stack.qualityChanges.getName()
         quality_type = stack.quality.getMetaDataEntry("quality_type")
         container_with_profile = stack.qualityChanges
         if container_with_profile.getId() == "empty_quality_changes":
