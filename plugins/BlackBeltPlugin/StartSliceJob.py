@@ -234,6 +234,10 @@ class StartSliceJob(Job):
                 # but CuraEngine support structures don't work for slanted gantry
                 stack.setProperty("support_enable", "value", False)
 
+                # HOTFIX: make sure the bed temperature is taken from the extruder stack
+                extruder_stack = ExtruderManager.getInstance().getMachineExtruders(stack_id)[0]
+                stack.setProperty("material_bed_temperature", "value", extruder_stack.getProperty("material_bed_temperature", "value"))
+
                 for key in ["layer_height", "layer_height_0"]:
                     current_value = stack.getProperty(key, "value")
                     stack.setProperty(key, "value", current_value / math.sin(gantry_angle))
