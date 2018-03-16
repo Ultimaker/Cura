@@ -107,6 +107,7 @@ class MaterialManager(QObject):
         # Map #2
         # Lookup table for material type -> fallback material metadata, only for read-only materials
         grouped_by_type_dict = dict()
+        material_types_without_fallback = set()
         for root_material_id, material_node in self._material_group_map.items():
             if not self._container_registry.isReadOnly(root_material_id):
                 continue
@@ -114,6 +115,7 @@ class MaterialManager(QObject):
             if material_type not in grouped_by_type_dict:
                 grouped_by_type_dict[material_type] = {"generic": None,
                                                        "others": []}
+                material_types_without_fallback.add(material_type)
             brand = material_node.root_material_node.metadata["brand"]
             if brand.lower() == "generic":
                 to_add = True
@@ -123,6 +125,10 @@ class MaterialManager(QObject):
                         to_add = False  # don't add if it's not the default diameter
                 if to_add:
                     grouped_by_type_dict[material_type] = material_node.root_material_node.metadata
+                    material_types_without_fallback.remove(material_type)
+        # Remove the materials that have no fallback materials
+        for material_type in material_types_without_fallback:
+            del grouped_by_type_dict[material_type]
         self._fallback_materials_map = grouped_by_type_dict
 
         # Map #3

@@ -280,6 +280,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         # Check if any quality_changes instance container is in conflict.
         instance_container_files = [name for name in cura_file_names if name.endswith(self._instance_container_suffix)]
         quality_name = ""
+        custom_quality_name = ""
         num_settings_overriden_by_quality_changes = 0 # How many settings are changed by the quality changes
         num_user_settings = 0
         quality_changes_conflict = False
@@ -292,7 +293,14 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             container_id = self._stripFileToId(instance_container_file_name)
 
             serialized = archive.open(instance_container_file_name).read().decode("utf-8")
-            serialized = InstanceContainer._updateSerialized(serialized, instance_container_file_name)
+
+            # Qualities and variants don't have upgrades, so don't upgrade them
+            parser = ConfigParser(interpolation = None)
+            parser.read_string(serialized)
+            container_type = parser["metadata"]["type"]
+            if container_type not in ("quality", "variant"):
+                serialized = InstanceContainer._updateSerialized(serialized, instance_container_file_name)
+
             parser = ConfigParser(interpolation = None)
             parser.read_string(serialized)
             container_info = ContainerInfo(instance_container_file_name, serialized, parser)
@@ -309,7 +317,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                     position = parser["metadata"]["position"]
                     self._machine_info.quality_changes_info.extruder_info_dict[position] = container_info
 
-                quality_name = parser["general"]["name"]
+                custom_quality_name = parser["general"]["name"]
                 values = parser["values"] if parser.has_section("values") else dict()
                 num_settings_overriden_by_quality_changes += len(values)
                 # Check if quality changes already exists.
@@ -472,6 +480,8 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             num_extruders = 1  # No extruder stacks found, which means there is one extruder
 
         extruders = num_extruders * [""]
+
+        quality_name = custom_quality_name if custom_quality_name else quality_name
 
         self._machine_info.container_id = global_stack_id
         self._machine_info.name = machine_name

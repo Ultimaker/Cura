@@ -215,7 +215,8 @@ SettingItem
             {
                 text: model.name
                 renderType: Text.NativeRendering
-                color: {
+                color:
+                {
                     if (model.enabled) {
                         UM.Theme.getColor("setting_control_text")
                     } else {

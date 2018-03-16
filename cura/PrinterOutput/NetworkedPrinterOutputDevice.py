@@ -3,6 +3,8 @@
 
 from UM.Application import Application
 from UM.Logger import Logger
+from UM.Settings.ContainerRegistry import ContainerRegistry
+from cura.CuraApplication import CuraApplication
 
 from cura.PrinterOutputDevice import PrinterOutputDevice, ConnectionState
 
@@ -253,6 +255,9 @@ class NetworkedPrinterOutputDevice(PrinterOutputDevice):
         self._manager.finished.connect(self.__handleOnFinished)
         self._last_manager_create_time = time()
         self._manager.authenticationRequired.connect(self._onAuthenticationRequired)
+
+        machine_manager = CuraApplication.getInstance().getMachineManager()
+        machine_manager.checkCorrectGroupName(self.getId(), self.name)
 
     def _registerOnFinishedCallback(self, reply: QNetworkReply, onFinished: Optional[Callable[[Any, QNetworkReply], None]]) -> None:
         if onFinished is not None:

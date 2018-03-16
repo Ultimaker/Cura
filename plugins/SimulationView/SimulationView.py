@@ -158,9 +158,12 @@ class SimulationView(View):
         return self._nozzle_node
 
     def _onSceneChanged(self, node):
-        self.setActivity(False)
-        self.calculateMaxLayers()
-        self.calculateMaxPathsOnLayer(self._current_layer_num)
+        if node.getMeshData() is None:
+            self.resetLayerData()
+        else:
+            self.setActivity(False)
+            self.calculateMaxLayers()
+            self.calculateMaxPathsOnLayer(self._current_layer_num)
 
     def isBusy(self):
         return self._busy

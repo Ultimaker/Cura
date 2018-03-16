@@ -153,6 +153,10 @@ class VersionUpgrade26to27(VersionUpgrade):
                 if new_id is not None:
                     parser.set("containers", key, new_id)
 
+        if "6" not in parser["containers"]:
+            parser["containers"]["6"] = parser["containers"]["5"]
+            parser["containers"]["5"] = "empty"
+
         for each_section in ("general", "metadata"):
             if not parser.has_section(each_section):
                 parser.add_section(each_section)

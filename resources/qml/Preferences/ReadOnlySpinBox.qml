@@ -34,6 +34,8 @@ Item
         anchors.fill: parent
 
         onEditingFinished: base.editingFinished()
+        Keys.onEnterPressed: base.editingFinished()
+        Keys.onReturnPressed: base.editingFinished()
     }
 
     Label

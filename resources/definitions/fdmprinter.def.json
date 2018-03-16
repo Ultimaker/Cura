@@ -632,6 +632,73 @@
                     "settable_per_extruder": false,
                     "settable_per_meshgroup": false
                 },
+                "machine_steps_per_mm_x":
+                {
+                    "label": "Steps per Millimeter (X)",
+                    "description": "How many steps of the stepper motor will result in one millimeter of movement in the X direction.",
+                    "type": "int",
+                    "default_value": 50,
+                    "minimum_value": "0.0000001",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
+                },
+                "machine_steps_per_mm_y":
+                {
+                    "label": "Steps per Millimeter (Y)",
+                    "description": "How many steps of the stepper motor will result in one millimeter of movement in the Y direction.",
+                    "type": "int",
+                    "default_value": 50,
+                    "minimum_value": "0.0000001",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
+                },
+                "machine_steps_per_mm_z":
+                {
+                    "label": "Steps per Millimeter (Z)",
+                    "description": "How many steps of the stepper motor will result in one millimeter of movement in the Z direction.",
+                    "type": "int",
+                    "default_value": 50,
+                    "minimum_value": "0.0000001",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
+                },
+                "machine_steps_per_mm_e":
+                {
+                    "label": "Steps per Millimeter (E)",
+                    "description": "How many steps of the stepper motors will result in one millimeter of extrusion.",
+                    "type": "int",
+                    "default_value": 1600,
+                    "minimum_value": "0.0000001",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
+                },
+                "machine_endstop_positive_direction_x":
+                {
+                    "label": "X Endstop in Positive Direction",
+                    "description": "Whether the endstop of the X axis is in the positive direction (high X coordinate) or negative (low X coordinate).",
+                    "type": "bool",
+                    "default_value": false,
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
+                },
+                "machine_endstop_positive_direction_y":
+                {
+                    "label": "Y Endstop in Positive Direction",
+                    "description": "Whether the endstop of the Y axis is in the positive direction (high Y coordinate) or negative (low Y coordinate).",
+                    "type": "bool",
+                    "default_value": false,
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
+                },
+                "machine_endstop_positive_direction_z":
+                {
+                    "label": "Z Endstop in Positive Direction",
+                    "description": "Whether the endstop of the Z axis is in the positive direction (high Z coordinate) or negative (low Z coordinate).",
+                    "type": "bool",
+                    "default_value": true,
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
+                },
                 "machine_minimum_feedrate":
                 {
                     "label": "Minimum Feedrate",
@@ -642,6 +709,16 @@
                     "settable_per_mesh": false,
                     "settable_per_extruder": false,
                     "settable_per_meshgroup": false
+                },
+                "machine_feeder_wheel_diameter":
+                {
+                    "label": "Feeder Wheel Diameter",
+                    "description": "The diameter of the wheel that drives the material in the feeder.",
+                    "unit": "mm",
+                    "type": "float",
+                    "default_value": 10.0,
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
                 }
             }
         },

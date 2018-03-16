@@ -1,10 +1,7 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-#Type hinting.
-from typing import Dict
-
-from PyQt5.QtCore import QObject
+from PyQt5.QtCore import QObject, QTimer
 from PyQt5.QtNetwork import QLocalServer
 from PyQt5.QtNetwork import QLocalSocket
 
@@ -68,6 +65,8 @@ from cura.Machines.Models.QualityManagementModel import QualityManagementModel
 from cura.Machines.Models.QualitySettingsModel import QualitySettingsModel
 from cura.Machines.Models.MachineManagementModel import MachineManagementModel
 
+from cura.Machines.Models.SettingVisibilityPresetsModel import SettingVisibilityPresetsModel
+
 from cura.Machines.MachineErrorChecker import MachineErrorChecker
 
 from cura.Settings.SettingInheritanceManager import SettingInheritanceManager
@@ -91,7 +90,6 @@ from cura.Settings.UserChangesModel import UserChangesModel
 from cura.Settings.ExtrudersModel import ExtrudersModel
 from cura.Settings.MaterialSettingsVisibilityHandler import MaterialSettingsVisibilityHandler
 from cura.Settings.ContainerManager import ContainerManager
-from cura.Settings.SettingVisibilityPresetsModel import SettingVisibilityPresetsModel
 
 from cura.ObjectsModel import ObjectsModel
 
@@ -101,7 +99,6 @@ from PyQt5.QtGui import QColor, QIcon
 from PyQt5.QtWidgets import QMessageBox
 from PyQt5.QtQml import qmlRegisterUncreatableType, qmlRegisterSingletonType, qmlRegisterType
 
-from configparser import ConfigParser
 import sys
 import os.path
 import numpy
@@ -226,6 +223,7 @@ class CuraApplication(QtApplication):
         self._object_manager = None
         self._build_plate_model = None
         self._multi_build_plate_model = None
+        self._setting_visibility_presets_model = None
         self._setting_inheritance_manager = None
         self._simple_mode_settings_manager = None
         self._cura_scene_controller = None
@@ -286,10 +284,15 @@ class CuraApplication(QtApplication):
         self._preferred_mimetype = ""
         self._i18n_catalog = i18nCatalog("cura")
 
-        self.getController().getScene().sceneChanged.connect(self.updatePlatformActivity)
+        self._update_platform_activity_timer = QTimer()
+        self._update_platform_activity_timer.setInterval(500)
+        self._update_platform_activity_timer.setSingleShot(True)
+        self._update_platform_activity_timer.timeout.connect(self.updatePlatformActivity)
+
+        self.getController().getScene().sceneChanged.connect(self.updatePlatformActivityDelayed)
         self.getController().toolOperationStopped.connect(self._onToolOperationStopped)
         self.getController().contextMenuRequested.connect(self._onContextMenuRequested)
-        self.getCuraSceneController().activeBuildPlateChanged.connect(self.updatePlatformActivity)
+        self.getCuraSceneController().activeBuildPlateChanged.connect(self.updatePlatformActivityDelayed)
 
         Resources.addType(self.ResourceTypes.QmlFiles, "qml")
         Resources.addType(self.ResourceTypes.Firmware, "firmware")
@@ -376,10 +379,6 @@ class CuraApplication(QtApplication):
 
         preferences.setDefault("local_file/last_used_type", "text/x-gcode")
 
-        default_visibility_profile = SettingVisibilityPresetsModel.getInstance().getItem(0)
-
-        preferences.setDefault("general/visible_settings", ";".join(default_visibility_profile["settings"]))
-
         self.applicationShuttingDown.connect(self.saveSettings)
         self.engineCreatedSignal.connect(self._onEngineCreated)
 
@@ -452,27 +451,18 @@ class CuraApplication(QtApplication):
 
     @pyqtSlot(str)
     def discardOrKeepProfileChangesClosed(self, option):
+        global_stack = self.getGlobalContainerStack()
         if option == "discard":
-            global_stack = self.getGlobalContainerStack()
-            for extruder in self._extruder_manager.getMachineExtruders(global_stack.getId()):
-                extruder.getTop().clear()
-            global_stack.getTop().clear()
+            for extruder in global_stack.extruders.values():
+                extruder.userChanges.clear()
+            global_stack.userChanges.clear()
 
         # if the user decided to keep settings then the user settings should be re-calculated and validated for errors
         # before slicing. To ensure that slicer uses right settings values
         elif option == "keep":
-            global_stack = self.getGlobalContainerStack()
-            for extruder in self._extruder_manager.getMachineExtruders(global_stack.getId()):
-                user_extruder_container = extruder.getTop()
-                if user_extruder_container:
-                    user_extruder_container.update()
-
-            user_global_container = global_stack.getTop()
-            if user_global_container:
-                user_global_container.update()
-
-        # notify listeners that quality has changed (after user selected discard or keep)
-        self.getMachineManager().activeQualityChanged.emit()
+            for extruder in global_stack.extruders.values():
+                extruder.userChanges.update()
+            global_stack.userChanges.update()
 
     @pyqtSlot(int)
     def messageBoxClosed(self, button):
@@ -682,6 +672,11 @@ class CuraApplication(QtApplication):
         self._print_information = PrintInformation.PrintInformation()
         self._cura_actions = CuraActions.CuraActions(self)
 
+        # Initialize setting visibility presets model
+        self._setting_visibility_presets_model = SettingVisibilityPresetsModel(self)
+        default_visibility_profile = self._setting_visibility_presets_model.getItem(0)
+        Preferences.getInstance().setDefault("general/visible_settings", ";".join(default_visibility_profile["settings"]))
+
         # Detect in which mode to run and execute that mode
         if self.getCommandLineOption("headless", False):
             self.runWithoutGUI()
@@ -763,6 +758,10 @@ class CuraApplication(QtApplication):
 
     def hasGui(self):
         return self._use_gui
+
+    @pyqtSlot(result = QObject)
+    def getSettingVisibilityPresetsModel(self, *args) -> SettingVisibilityPresetsModel:
+        return self._setting_visibility_presets_model
 
     def getMachineErrorChecker(self, *args) -> MachineErrorChecker:
         return self._machine_error_checker
@@ -890,11 +889,11 @@ class CuraApplication(QtApplication):
         qmlRegisterType(NozzleModel, "Cura", 1, 0, "NozzleModel")
 
         qmlRegisterType(MaterialSettingsVisibilityHandler, "Cura", 1, 0, "MaterialSettingsVisibilityHandler")
+        qmlRegisterType(SettingVisibilityPresetsModel, "Cura", 1, 0, "SettingVisibilityPresetsModel")
         qmlRegisterType(QualitySettingsModel, "Cura", 1, 0, "QualitySettingsModel")
         qmlRegisterType(MachineNameValidator, "Cura", 1, 0, "MachineNameValidator")
         qmlRegisterType(UserChangesModel, "Cura", 1, 0, "UserChangesModel")
         qmlRegisterSingletonType(ContainerManager, "Cura", 1, 0, "ContainerManager", ContainerManager.createContainerManager)
-        qmlRegisterSingletonType(SettingVisibilityPresetsModel, "Cura", 1, 0, "SettingVisibilityPresetsModel", SettingVisibilityPresetsModel.createSettingVisibilityPresetsModel)
 
         # As of Qt5.7, it is necessary to get rid of any ".." in the path for the singleton to work.
         actions_url = QUrl.fromLocalFile(os.path.abspath(Resources.getPath(CuraApplication.ResourceTypes.QmlFiles, "Actions.qml")))
@@ -969,6 +968,10 @@ class CuraApplication(QtApplication):
     @pyqtProperty(str, notify = sceneBoundingBoxChanged)
     def getSceneBoundingBoxString(self):
         return self._i18n_catalog.i18nc("@info 'width', 'depth' and 'height' are variable names that must NOT be translated; just translate the format of ##x##x## mm.", "%(width).1f x %(depth).1f x %(height).1f mm") % {'width' : self._scene_bounding_box.width.item(), 'depth': self._scene_bounding_box.depth.item(), 'height' : self._scene_bounding_box.height.item()}
+
+    def updatePlatformActivityDelayed(self, node = None):
+        if node is not None and node.getMeshData() is not None:
+            self._update_platform_activity_timer.start()
 
     ##  Update scene bounding box for current build plate
     def updatePlatformActivity(self, node = None):

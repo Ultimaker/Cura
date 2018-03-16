@@ -5,6 +5,7 @@ import QtQuick 2.2
 import QtQuick.Controls 1.1
 import QtQuick.Layouts 1.1
 import QtQuick.Window 2.1
+import QtQuick.Dialogs 1.2
 
 Cura.MachineAction
 {
@@ -33,13 +34,31 @@ Cura.MachineAction
         {
             var printerKey = base.selectedDevice.key
             var printerName = base.selectedDevice.name  // TODO To change when the groups have a name
-            if(manager.getStoredKey() != printerKey)
+            if (manager.getStoredKey() != printerKey)
             {
-                manager.setKey(printerKey)
-                manager.setGroupName(printerName)   // TODO To change when the groups have a name
-                completed()
+                // Check if there is another instance with the same key
+                if (!manager.existsKey(printerKey))
+                {
+                    manager.setKey(printerKey)
+                    manager.setGroupName(printerName)   // TODO To change when the groups have a name
+                    completed()
+                }
+                else
+                {
+                    existingConnectionDialog.open()
+                }
             }
         }
+    }
+
+    MessageDialog
+    {
+        id: existingConnectionDialog
+        title: catalog.i18nc("@window:title", "Existing Connection")
+        icon: StandardIcon.Information
+        text: catalog.i18nc("@message:text", "This printer/group is already added to Cura. Please select another printer/group.")
+        standardButtons: StandardButton.Ok
+        modality: Qt.ApplicationModal
     }
 
     Column

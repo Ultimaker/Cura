@@ -87,7 +87,8 @@ Rectangle
         }
     }
 
-    MachineSelection {
+    MachineSelection
+    {
         id: machineSelection
         width: base.width - configSelection.width - separator.width
         height: UM.Theme.getSize("sidebar_header").height
@@ -105,9 +106,10 @@ Rectangle
         anchors.left: machineSelection.right
     }
 
-    ConfigurationSelection {
+    ConfigurationSelection
+    {
         id: configSelection
-        visible: isNetworkPrinter && !sidebar.monitoringPrint && !sidebar.hideSettings
+        visible: isNetworkPrinter && printerConnected
         width: visible ? Math.round(base.width * 0.15) : 0
         height: UM.Theme.getSize("sidebar_header").height
         anchors.top: base.top
