@@ -133,7 +133,7 @@
                     "description": "The distance the belt moves between repetitions.",
                     "type": "float",
                     "minimum_value": "0",
-                    "default_value": 15,
+                    "default_value": 300,
                     "enabled": "blackbelt_repetitions > 1",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false
@@ -302,6 +302,10 @@
         "travel_avoid_other_parts":
         {
             "default_value": false
+        },
+        "max_feedrate_z_override":
+        {
+            "enabled": false
         },
         "ooze_shield_enabled":
         {
