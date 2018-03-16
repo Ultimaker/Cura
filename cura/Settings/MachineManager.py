@@ -1109,7 +1109,7 @@ class MachineManager(QObject):
             from cura.Settings.CuraContainerStack import _ContainerIndexes
             context = PropertyEvaluationContext(extruder)
             context.context["evaluate_from_container_index"] = _ContainerIndexes.DefinitionChanges
-            material_diameter = self._global_container_stack.getProperty("material_diameter", "value", context)
+            material_diameter = extruder.getProperty("material_diameter", "value", context)
             candidate_materials = self._material_manager.getAvailableMaterials(
                 self._global_container_stack.definition.getId(),
                 current_variant_name,
