@@ -45,6 +45,8 @@ class SettingVisibilityPresetsModel(ListModel):
         visible_settings = self._preferences.getValue("general/visible_settings")
         if not visible_settings:
             self._preferences.setValue("general/visible_settings", ";".join(self._active_preset_item["settings"]))
+        else:
+            self._onPreferencesChanged("general/visible_settings")
 
         self.activePresetChanged.emit()
 
