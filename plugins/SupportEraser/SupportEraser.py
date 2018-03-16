@@ -126,8 +126,15 @@ class SupportEraser(Tool):
         Application.getInstance().getController().getScene().sceneChanged.emit(node)
 
     def _removeEraserMesh(self, node: CuraSceneNode):
+        parent = node.getParent()
+        if parent == self._controller.getScene().getRoot():
+            parent = None
+
         op = RemoveSceneNodeOperation(node)
         op.push()
+
+        if parent and not Selection.isSelected(parent):
+            Selection.add(parent)
 
         Application.getInstance().getController().getScene().sceneChanged.emit(node)
 
