@@ -227,7 +227,7 @@ class BlackBeltPlugin(Extension):
         global_stack = Application.getInstance().getGlobalContainerStack()
 
         enable_secondary_fans = global_stack.getProperty("blackbelt_secondary_fans_enabled", "value")
-        repetitions = global_stack.getProperty("blackbelt_repetitions", "value")
+        repetitions = global_stack.getProperty("blackbelt_repetitions", "value") or 1
         if not (enable_secondary_fans or repetitions > 1):
             return
 
