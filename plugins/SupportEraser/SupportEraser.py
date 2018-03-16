@@ -154,8 +154,6 @@ class SupportEraser(Tool):
 
         Application.getInstance().getController().toolEnabledChanged.emit(self._plugin_id, plugin_enabled)
 
-
-
     def _onSelectionChanged(self):
         # When selection is passed from one object to another object, first the selection is cleared
         # and then it is set to the new object. We are only interested in the change from no selection
