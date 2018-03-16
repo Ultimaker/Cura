@@ -5,6 +5,7 @@ import os
 import os.path
 
 from PyQt5.QtCore import Qt, QTimer
+from PyQt5.QtWidgets import QApplication
 
 from UM.Math.Vector import Vector
 from UM.Tool import Tool
@@ -34,7 +35,7 @@ class SupportEraser(Tool):
     def __init__(self):
         super().__init__()
         self._shortcut_key = Qt.Key_G
-        self._controller = Application.getInstance().getController()
+        self._controller = self.getController()
 
         self._selection_pass = None
         Application.getInstance().globalContainerStackChanged.connect(self._updateEnabled)
@@ -54,8 +55,14 @@ class SupportEraser(Tool):
 
     def event(self, event):
         super().event(event)
+        modifiers = QApplication.keyboardModifiers()
+        ctrl_is_active = modifiers & Qt.ControlModifier
 
         if event.type == Event.MousePressEvent and self._controller.getToolsEnabled():
+            if ctrl_is_active:
+                self._controller.setActiveTool("TranslateTool")
+                return
+
             if self._skip_press:
                 # The selection was previously cleared, do not add/remove an anti-support mesh but
                 # use this click for selection and reactivating this tool only.
