@@ -5,6 +5,7 @@ import os
 import os.path
 
 from PyQt5.QtCore import Qt, QTimer
+from PyQt5.QtWidgets import QApplication
 
 from UM.Math.Vector import Vector
 from UM.Tool import Tool
@@ -34,7 +35,7 @@ class SupportEraser(Tool):
     def __init__(self):
         super().__init__()
         self._shortcut_key = Qt.Key_G
-        self._controller = Application.getInstance().getController()
+        self._controller = self.getController()
 
         self._selection_pass = None
         Application.getInstance().globalContainerStackChanged.connect(self._updateEnabled)
@@ -54,8 +55,14 @@ class SupportEraser(Tool):
 
     def event(self, event):
         super().event(event)
+        modifiers = QApplication.keyboardModifiers()
+        ctrl_is_active = modifiers & Qt.ControlModifier
 
         if event.type == Event.MousePressEvent and self._controller.getToolsEnabled():
+            if ctrl_is_active:
+                self._controller.setActiveTool("TranslateTool")
+                return
+
             if self._skip_press:
                 # The selection was previously cleared, do not add/remove an anti-support mesh but
                 # use this click for selection and reactivating this tool only.
@@ -120,49 +127,23 @@ class SupportEraser(Tool):
         op = GroupedOperation()
         # First add the node to the scene, so it gets the expected transform
         op.addOperation(AddSceneNodeOperation(node, root))
-
-        # Determine the parent group the node should be put in
-        if parent.getParent().callDecoration("isGroup"):
-            group = parent.getParent()
-        else:
-            # Create a group-node
-            group = CuraSceneNode()
-            group.addDecorator(GroupDecorator())
-            group.addDecorator(BuildPlateDecorator(active_build_plate))
-            group.setParent(root)
-            center = parent.getPosition()
-            group.setPosition(center)
-            group.setCenterPosition(center)
-            op.addOperation(SetParentOperation(parent, group))
-
-        op.addOperation(SetParentOperation(node, group))
+        op.addOperation(SetParentOperation(node, parent))
         op.push()
-        Application.getInstance().getController().getScene().sceneChanged.emit(node)
 
-        # Select the picked node so the group does not get drawn as a wireframe (yet)
-        if not Selection.isSelected(parent):
-            Selection.add(parent)
-        if Selection.isSelected(group):
-            Selection.remove(group)
+        Application.getInstance().getController().getScene().sceneChanged.emit(node)
 
     def _removeEraserMesh(self, node: CuraSceneNode):
-        group = node.getParent()
-        if group.callDecoration("isGroup"):
-            parent = group.getChildren()[0]
+        parent = node.getParent()
+        if parent == self._controller.getScene().getRoot():
+            parent = None
 
-        op = GroupedOperation()
-        op.addOperation(RemoveSceneNodeOperation(node))
-        if len(group.getChildren()) == 2:
-            op.addOperation(SetParentOperation(parent, group.getParent()))
-
+        op = RemoveSceneNodeOperation(node)
         op.push()
-        Application.getInstance().getController().getScene().sceneChanged.emit(node)
 
-        # Select the picked node so the group does not get drawn as a wireframe (yet)
         if parent and not Selection.isSelected(parent):
             Selection.add(parent)
-        if Selection.isSelected(group):
-            Selection.remove(group)
+
+        Application.getInstance().getController().getScene().sceneChanged.emit(node)
 
     def _updateEnabled(self):
         plugin_enabled = False
@@ -172,8 +153,6 @@ class SupportEraser(Tool):
             plugin_enabled = global_container_stack.getProperty("anti_overhang_mesh", "enabled")
 
         Application.getInstance().getController().toolEnabledChanged.emit(self._plugin_id, plugin_enabled)
-
-
 
     def _onSelectionChanged(self):
         # When selection is passed from one object to another object, first the selection is cleared
