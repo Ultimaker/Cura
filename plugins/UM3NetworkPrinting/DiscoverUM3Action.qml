@@ -56,8 +56,7 @@ Cura.MachineAction
         id: existingConnectionDialog
         title: catalog.i18nc("@window:title", "Existing Connection")
         icon: StandardIcon.Information
-        text: catalog.i18nc("@message:text", "There is an instance already connected to this group")
-        detailedText: catalog.i18nc("@message:description", "You can't connect two instances to the same group. Please use the other instance or connect to another group.")
+        text: catalog.i18nc("@message:text", "This printer/group is already added to Cura. Please select another printer/group.")
         standardButtons: StandardButton.Ok
         modality: Qt.ApplicationModal
     }
