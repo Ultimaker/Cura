@@ -7,6 +7,7 @@ from UM.Preferences import Preferences
 from UM.PluginRegistry import PluginRegistry
 from UM.Settings.ContainerRegistry import ContainerRegistry
 from UM.Logger import Logger
+from UM.Version import Version
 
 from UM.i18n import i18nCatalog
 i18n_catalog = i18nCatalog("BlackBeltPlugin")
@@ -54,9 +55,15 @@ class BlackBeltPlugin(Extension):
         # make sure the we connect to engineCreatedSignal later than PrepareStage does, so we can substitute our own sidebar
         self._application.engineCreatedSignal.connect(self._onEngineCreated)
 
+        # Hide nozzle in simulation view
         self._application.getController().activeViewChanged.connect(self._onActiveViewChanged)
 
+        # Handle default setting visibility
         Preferences.getInstance().preferenceChanged.connect(self._onPreferencesChanged)
+        if self._application.getVersion() != "master" and Version(Preferences.getInstance().getValue("general/latest_version_changelog_shown")) < Version("3.2.1"):
+            self._fixVisibilityPreferences(forced = True)
+
+        # Disable USB printing output device
         Application.getInstance().getOutputDeviceManager().outputDevicesChanged.connect(self._onOutputDevicesChanged)
 
     def _onOutputDevicesChanged(self):
@@ -170,7 +177,7 @@ class BlackBeltPlugin(Extension):
         if preference == "general/visible_settings":
             self._fixVisibilityPreferences()
 
-    def _fixVisibilityPreferences(self):
+    def _fixVisibilityPreferences(self, forced = False):
         # Fix setting visibility preferences
         preferences = Preferences.getInstance()
         visible_settings = preferences.getValue("general/visible_settings")
@@ -178,11 +185,11 @@ class BlackBeltPlugin(Extension):
             # Wait until the default visible settings have been set
             return
 
-        if "blackbelt_settings" in visible_settings:
+        if "blackbelt_settings" in visible_settings and not forced:
             return
         visible_settings_changed = False
         default_visible_settings = [
-            "blackbelt_settings", "blackbelt_z_offset_gap", "blackbelt_secondary_fans_enabled", "blackbelt_belt_wall_enabled", "blackbelt_belt_wall_speed", "blackbelt_repetitions",
+            "blackbelt_settings", "blackbelt_z_offset_gap", "blackbelt_secondary_fans_enabled", "blackbelt_belt_wall_enabled", "blackbelt_belt_wall_speed", "blackbelt_repetitions", "blackbelt_repetitions_distance",
             "wall_line_count", "top_layers", "bottom_layers", "top_bottom_pattern", "fill_perimeter_gaps", "xy_offset", "z_seam_type", "z_seam_x", "z_seam_y", "z_seam_corner",
             "infill_line_distance", "min_infill_area", "retraction_amount", "retraction_speed", "retraction_extra_prime_amount", "speed_infill", "speed_wall_0", "speed_slowdown_layers",
             "cool_fan_speed", "cool_fan_full_at_height", "cool_fan_full_at_layer", "cool_min_layer_time", "meshfix_union_all", "meshfix_union_all_remove_holes", "meshfix_extensive_stiching",
