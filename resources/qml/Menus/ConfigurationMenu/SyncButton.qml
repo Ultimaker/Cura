@@ -68,7 +68,8 @@ Button
                 color: UM.Theme.getColor("text_emphasis")
                 source: UM.Theme.getIcon("arrow_bottom")
             }
-            UM.RecolorImage {
+            UM.RecolorImage
+            {
                 id: sidebarComboBoxLabel
                 anchors.left: parent.left
                 anchors.leftMargin: UM.Theme.getSize("default_margin").width
@@ -86,17 +87,15 @@ Button
         label: Label {}
     }
 
-    Connections {
+    Connections
+    {
         target: outputDevice
-        onUniqueConfigurationsChanged: {
-            updateOnSync()
-        }
+        onUniqueConfigurationsChanged: updateOnSync()
     }
 
-    Connections {
+    Connections
+    {
         target: Cura.MachineManager
-        onCurrentConfigurationChanged: {
-            updateOnSync()
-        }
+        onCurrentConfigurationChanged: updateOnSync()
     }
 }
