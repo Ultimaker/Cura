@@ -66,6 +66,9 @@ class SupportEraser(Tool):
                 # The selection renderpass is used to identify objects in the current view
                 self._selection_pass = Application.getInstance().getRenderer().getRenderPass("selection")
             picked_node = self._controller.getScene().findObject(self._selection_pass.getIdAtPosition(event.x, event.y))
+            if not picked_node:
+                # There is no slicable object at the picked location
+                return
 
             node_stack = picked_node.callDecoration("getStack")
             if node_stack:
