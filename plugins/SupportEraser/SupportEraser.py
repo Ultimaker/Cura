@@ -120,49 +120,16 @@ class SupportEraser(Tool):
         op = GroupedOperation()
         # First add the node to the scene, so it gets the expected transform
         op.addOperation(AddSceneNodeOperation(node, root))
-
-        # Determine the parent group the node should be put in
-        if parent.getParent().callDecoration("isGroup"):
-            group = parent.getParent()
-        else:
-            # Create a group-node
-            group = CuraSceneNode()
-            group.addDecorator(GroupDecorator())
-            group.addDecorator(BuildPlateDecorator(active_build_plate))
-            group.setParent(root)
-            center = parent.getPosition()
-            group.setPosition(center)
-            group.setCenterPosition(center)
-            op.addOperation(SetParentOperation(parent, group))
-
-        op.addOperation(SetParentOperation(node, group))
+        op.addOperation(SetParentOperation(node, parent))
         op.push()
-        Application.getInstance().getController().getScene().sceneChanged.emit(node)
 
-        # Select the picked node so the group does not get drawn as a wireframe (yet)
-        if not Selection.isSelected(parent):
-            Selection.add(parent)
-        if Selection.isSelected(group):
-            Selection.remove(group)
+        Application.getInstance().getController().getScene().sceneChanged.emit(node)
 
     def _removeEraserMesh(self, node: CuraSceneNode):
-        group = node.getParent()
-        if group.callDecoration("isGroup"):
-            parent = group.getChildren()[0]
-
-        op = GroupedOperation()
-        op.addOperation(RemoveSceneNodeOperation(node))
-        if len(group.getChildren()) == 2:
-            op.addOperation(SetParentOperation(parent, group.getParent()))
-
+        op = RemoveSceneNodeOperation(node)
         op.push()
-        Application.getInstance().getController().getScene().sceneChanged.emit(node)
 
-        # Select the picked node so the group does not get drawn as a wireframe (yet)
-        if parent and not Selection.isSelected(parent):
-            Selection.add(parent)
-        if Selection.isSelected(group):
-            Selection.remove(group)
+        Application.getInstance().getController().getScene().sceneChanged.emit(node)
 
     def _updateEnabled(self):
         plugin_enabled = False
