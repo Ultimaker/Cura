@@ -36,8 +36,8 @@ TabView
         if (!base.containerId || !base.editingEnabled) {
             return ""
         }
-        var linkedMaterials = Cura.ContainerManager.getLinkedMaterials(base.currentMaterialNode);
-        if (linkedMaterials.length <= 1) {
+        var linkedMaterials = Cura.ContainerManager.getLinkedMaterials(base.currentMaterialNode, true);
+        if (linkedMaterials.length == 0) {
             return ""
         }
         return linkedMaterials.join(", ");
