@@ -233,7 +233,7 @@ TabView
                         var old_diameter = Cura.ContainerManager.getContainerProperty(base.containerId, "material_diameter", "value").toString();
                         var old_approximate_diameter = Cura.ContainerManager.getContainerMetaDataEntry(base.containerId, "approximate_diameter");
                         var new_approximate_diameter = getApproximateDiameter(value);
-                        if (Cura.MachineManager.filterMaterialsByMachine && new_approximate_diameter != Cura.ExtruderManager.getActiveExtruderStack().approximateMaterialDiameter)
+                        if (new_approximate_diameter != Cura.ExtruderManager.getActiveExtruderStack().approximateMaterialDiameter)
                         {
                             confirmDiameterChangeDialog.old_diameter_value = old_diameter;
                             confirmDiameterChangeDialog.new_diameter_value = value;
