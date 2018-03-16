@@ -1,20 +1,34 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
-from UM.Math.Vector import Vector
-from UM.Tool import Tool
-from PyQt5.QtCore import Qt, QUrl
-from UM.Application import Application
-from UM.Event import Event
-from UM.Mesh.MeshBuilder import MeshBuilder
-from UM.Operations.AddSceneNodeOperation import AddSceneNodeOperation
-from UM.Settings.SettingInstance import SettingInstance
-from cura.Scene.CuraSceneNode import CuraSceneNode
-from cura.Scene.SliceableObjectDecorator import SliceableObjectDecorator
-from cura.Scene.BuildPlateDecorator import BuildPlateDecorator
-from cura.Settings.SettingOverrideDecorator import SettingOverrideDecorator
 
 import os
 import os.path
+
+from PyQt5.QtCore import Qt, QTimer
+
+from UM.Math.Vector import Vector
+from UM.Tool import Tool
+from UM.Application import Application
+from UM.Event import Event, MouseEvent
+
+from UM.Mesh.MeshBuilder import MeshBuilder
+from UM.Scene.Selection import Selection
+from UM.Scene.Iterator.BreadthFirstIterator import BreadthFirstIterator
+from cura.Scene.CuraSceneNode import CuraSceneNode
+
+from cura.PickingPass import PickingPass
+
+from UM.Operations.GroupedOperation import GroupedOperation
+from UM.Operations.AddSceneNodeOperation import AddSceneNodeOperation
+from UM.Operations.RemoveSceneNodeOperation import RemoveSceneNodeOperation
+from cura.Operations.SetParentOperation import SetParentOperation
+
+from cura.Scene.SliceableObjectDecorator import SliceableObjectDecorator
+from cura.Scene.BuildPlateDecorator import BuildPlateDecorator
+from UM.Scene.GroupDecorator import GroupDecorator
+from cura.Settings.SettingOverrideDecorator import SettingOverrideDecorator
+
+from UM.Settings.SettingInstance import SettingInstance
 
 class SupportEraser(Tool):
     def __init__(self):
@@ -22,18 +36,61 @@ class SupportEraser(Tool):
         self._shortcut_key = Qt.Key_G
         self._controller = Application.getInstance().getController()
 
+        self._selection_pass = None
+        Application.getInstance().globalContainerStackChanged.connect(self._updateEnabled)
+
+        # Note: if the selection is cleared with this tool active, there is no way to switch to
+        # another tool than to reselect an object (by clicking it) because the tool buttons in the
+        # toolbar will have been disabled. That is why we need to ignore the first press event
+        # after the selection has been cleared.
+        Selection.selectionChanged.connect(self._onSelectionChanged)
+        self._had_selection = False
+        self._skip_press = False
+
+        self._had_selection_timer = QTimer()
+        self._had_selection_timer.setInterval(0)
+        self._had_selection_timer.setSingleShot(True)
+        self._had_selection_timer.timeout.connect(self._selectionChangeDelay)
+
     def event(self, event):
         super().event(event)
 
-        if event.type == Event.ToolActivateEvent:
+        if event.type == Event.MousePressEvent and self._controller.getToolsEnabled():
+            if self._skip_press:
+                # The selection was previously cleared, do not add/remove an anti-support mesh but
+                # use this click for selection and reactivating this tool only.
+                self._skip_press = False
+                return
 
-            # Load the remover mesh:
-            self._createEraserMesh()
+            if self._selection_pass is None:
+                # The selection renderpass is used to identify objects in the current view
+                self._selection_pass = Application.getInstance().getRenderer().getRenderPass("selection")
+            picked_node = self._controller.getScene().findObject(self._selection_pass.getIdAtPosition(event.x, event.y))
+            if not picked_node:
+                # There is no slicable object at the picked location
+                return
 
-            # After we load the mesh, deactivate the tool again:
-            self.getController().setActiveTool(None)
+            node_stack = picked_node.callDecoration("getStack")
+            if node_stack:
+                if node_stack.getProperty("anti_overhang_mesh", "value"):
+                    self._removeEraserMesh(picked_node)
+                    return
 
-    def _createEraserMesh(self):
+                elif node_stack.getProperty("support_mesh", "value") or node_stack.getProperty("infill_mesh", "value") or node_stack.getProperty("cutting_mesh", "value"):
+                    # Only "normal" meshes can have anti_overhang_meshes added to them
+                    return
+
+            # Create a pass for picking a world-space location from the mouse location
+            active_camera = self._controller.getScene().getActiveCamera()
+            picking_pass = PickingPass(active_camera.getViewportWidth(), active_camera.getViewportHeight())
+            picking_pass.render()
+
+            picked_position = picking_pass.getPickedPosition(event.x, event.y)
+
+            # Add the anti_overhang_mesh cube at the picked location
+            self._createEraserMesh(picked_node, picked_position)
+
+    def _createEraserMesh(self, parent: CuraSceneNode, position: Vector):
         node = CuraSceneNode()
 
         node.setName("Eraser")
@@ -41,9 +98,7 @@ class SupportEraser(Tool):
         mesh = MeshBuilder()
         mesh.addCube(10,10,10)
         node.setMeshData(mesh.build())
-        # Place the cube in the platform. Do it manually so it works if the "automatic drop models" is OFF
-        move_vector = Vector(0, 5, 0)
-        node.setPosition(move_vector)
+        node.setPosition(position)
 
         active_build_plate = Application.getInstance().getMultiBuildPlateModel().activeBuildPlate
 
@@ -51,21 +106,88 @@ class SupportEraser(Tool):
         node.addDecorator(BuildPlateDecorator(active_build_plate))
         node.addDecorator(SliceableObjectDecorator())
 
-        stack = node.callDecoration("getStack") #Don't try to get the active extruder since it may be None anyway.
-        if not stack:
-            node.addDecorator(SettingOverrideDecorator())
-            stack = node.callDecoration("getStack")
-
+        stack = node.callDecoration("getStack") # created by SettingOverrideDecorator
         settings = stack.getTop()
 
-        if not (settings.getInstance("anti_overhang_mesh") and settings.getProperty("anti_overhang_mesh", "value")):
-            definition = stack.getSettingDefinition("anti_overhang_mesh")
-            new_instance = SettingInstance(definition, settings)
-            new_instance.setProperty("value", True)
-            new_instance.resetState()  # Ensure that the state is not seen as a user state.
-            settings.addInstance(new_instance)
+        definition = stack.getSettingDefinition("anti_overhang_mesh")
+        new_instance = SettingInstance(definition, settings)
+        new_instance.setProperty("value", True)
+        new_instance.resetState()  # Ensure that the state is not seen as a user state.
+        settings.addInstance(new_instance)
 
-        scene = self._controller.getScene()
-        op = AddSceneNodeOperation(node, scene.getRoot())
+        root = self._controller.getScene().getRoot()
+
+        op = GroupedOperation()
+        # First add the node to the scene, so it gets the expected transform
+        op.addOperation(AddSceneNodeOperation(node, root))
+
+        # Determine the parent group the node should be put in
+        if parent.getParent().callDecoration("isGroup"):
+            group = parent.getParent()
+        else:
+            # Create a group-node
+            group = CuraSceneNode()
+            group.addDecorator(GroupDecorator())
+            group.addDecorator(BuildPlateDecorator(active_build_plate))
+            group.setParent(root)
+            center = parent.getPosition()
+            group.setPosition(center)
+            group.setCenterPosition(center)
+            op.addOperation(SetParentOperation(parent, group))
+
+        op.addOperation(SetParentOperation(node, group))
         op.push()
         Application.getInstance().getController().getScene().sceneChanged.emit(node)
+
+        # Select the picked node so the group does not get drawn as a wireframe (yet)
+        if not Selection.isSelected(parent):
+            Selection.add(parent)
+        if Selection.isSelected(group):
+            Selection.remove(group)
+
+    def _removeEraserMesh(self, node: CuraSceneNode):
+        group = node.getParent()
+        if group.callDecoration("isGroup"):
+            parent = group.getChildren()[0]
+
+        op = GroupedOperation()
+        op.addOperation(RemoveSceneNodeOperation(node))
+        if len(group.getChildren()) == 2:
+            op.addOperation(SetParentOperation(parent, group.getParent()))
+
+        op.push()
+        Application.getInstance().getController().getScene().sceneChanged.emit(node)
+
+        # Select the picked node so the group does not get drawn as a wireframe (yet)
+        if parent and not Selection.isSelected(parent):
+            Selection.add(parent)
+        if Selection.isSelected(group):
+            Selection.remove(group)
+
+    def _updateEnabled(self):
+        plugin_enabled = False
+
+        global_container_stack = Application.getInstance().getGlobalContainerStack()
+        if global_container_stack:
+            plugin_enabled = global_container_stack.getProperty("anti_overhang_mesh", "enabled")
+
+        Application.getInstance().getController().toolEnabledChanged.emit(self._plugin_id, plugin_enabled)
+
+
+
+    def _onSelectionChanged(self):
+        # When selection is passed from one object to another object, first the selection is cleared
+        # and then it is set to the new object. We are only interested in the change from no selection
+        # to a selection or vice-versa, not in a change from one object to another. A timer is used to
+        # "merge" a possible clear/select action in a single frame
+        if Selection.hasSelection() != self._had_selection:
+            self._had_selection_timer.start()
+
+    def _selectionChangeDelay(self):
+        has_selection = Selection.hasSelection()
+        if not has_selection and self._had_selection:
+            self._skip_press = True
+        else:
+            self._skip_press = False
+
+        self._had_selection = has_selection
