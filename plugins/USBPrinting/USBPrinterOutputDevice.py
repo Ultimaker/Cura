@@ -58,12 +58,17 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
 
         self._all_baud_rates = [115200, 250000, 230400, 57600, 38400, 19200, 9600]
 
+        self._supports_gcode_upload = None # use None as unknown
+        self._gcode_transfer_mode = GCodeTransferMode.unknown
+        self._is_uploading = False
+
         # Instead of using a timer, we really need the update to be as a thread, as reading from serial can block.
         self._update_thread = Thread(target=self._update, daemon = True)
 
         self._update_firmware_thread = Thread(target=self._updateFirmware, daemon = True)
 
         self._last_temperature_request = None  # type: Optional[int]
+        self._last_progress_request = None  # type: Optional[int]
 
         self._is_printing = False  # A print is being sent.
 
@@ -191,22 +196,62 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
     def _printGCode(self, gcode_list: List[str]):
         self._gcode.clear()
         self._paused = False
+        self._gcode_position = 0
 
         for layer in gcode_list:
             self._gcode.extend(layer.split("\n"))
 
-        # Reset line number. If this is not done, first line is sometimes ignored
-        self._gcode.insert(0, "M110")
-        self._gcode_position = 0
         self._print_start_time = time()
-
         self._print_estimated_time = int(Application.getInstance().getPrintInformation().currentPrintTime.getDisplayString(DurationFormat.Format.Seconds))
 
-        for i in range(0, 4):  # Push first 4 entries before accepting other inputs
-            self._sendNextGcodeLine()
+        self._gcode_transfer_mode = GCodeTransferMode.upload if self._supports_gcode_upload else GCodeTransferMode.stream
+        
+        if self._gcode_transfer_mode == GCodeTransferMode.stream:
+            # Reset line number. If this is not done, first line is sometimes ignored
+            self._gcode.insert(0, "M110")
+            
+
+            for i in range(0, 4):  # Push first 4 entries before accepting other inputs
+                self._sendNextGcodeLine()
+
+        elif self._gcode_transfer_mode == GCodeTransferMode.upload:
+            self._is_uploading = True
+
 
         self._is_printing = True
         self.writeFinished.emit(self)
+
+
+
+    def _detectTransferMode(self):
+        
+        try:
+            
+            self._sendCommand("progress\r\n")
+            response = self._waitFor([b"Not currently playing\r\n", b"SD printing byte ", b"file: /sd/cura-print.gcode"])
+
+            if response is None:
+                self._supports_gcode_upload = False
+                Logger.log('d', "Response timed out")
+            elif response == 0:
+                self._supports_gcode_upload = True
+                Logger.log('d', "Correct response from printer. Supports gcode upload")
+            elif response in [1, 2]:
+                self._supports_gcode_upload = True
+                self._is_printing = True
+                self._print_start_time = time()
+                self._gcode_transfer_mode = GCodeTransferMode.upload
+                Application.getInstance().getController().setActiveStage("MonitorStage")
+                Logger.log('d', "Correct response from printer. Supports gcode upload. Currently printing")
+            else:
+                self._supports_gcode_upload = False
+                Logger.log('d', "Unknown response from printer. Assumes it does not support gcode upload. {}".format(line))
+        except Exception as e:
+            Logger.log('w', e)
+            self._supports_gcode_upload = False
+            Logger.log('d', "No response from progress command, assuming printer does not support gcode upload")
+        
+
 
     def _autoDetectFinished(self, job: AutoDetectBaudJob):
         result = job.getResult()
@@ -221,6 +266,24 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
 
         self._baud_rate = baud_rate
 
+
+
+
+    def _waitFor(self, responses, timeout=None):
+        timeout = self._timeout if timeout is None else timeout
+
+        timeout_time = time() + timeout
+        while timeout_time > time():
+
+            line = self._serial.readline()
+            Logger.log('d',"Read line: {}".format(line))
+            for c, response in enumerate(responses):
+                if response in line:
+                    Logger.log('d',"Got the response ({}) we were waiting for ({})".format(c, response))
+                    return c
+        return None
+
+
     def connect(self):
         if self._baud_rate is None:
             if self._use_auto_detect:
@@ -231,15 +294,23 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
         if self._serial is None:
             try:
                 self._serial = Serial(str(self._serial_port), self._baud_rate, timeout=self._timeout, writeTimeout=self._timeout)
-            except SerialException:
+            except SerialException as e:
                 Logger.log("w", "An exception occured while trying to create serial connection")
+                Logger.log('w', e)
                 return
+        
+        self._detectTransferMode()
+
         container_stack = Application.getInstance().getGlobalContainerStack()
         num_extruders = container_stack.getProperty("machine_extruder_count", "value")
         # Ensure that a printer is created.
         self._printers = [PrinterOutputModel(output_controller=USBPrinterOutputController(self), number_of_extruders=num_extruders)]
         self._printers[0].updateName(container_stack.getName())
         self.setConnectionState(ConnectionState.connected)
+
+
+        
+
         self._update_thread.start()
 
     def close(self):
@@ -251,10 +322,16 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
         self._update_thread = Thread(target=self._update, daemon=True)
         self._serial = None
 
+
+
+
+
     ##  Send a command to printer.
     def sendCommand(self, command: Union[str, bytes]):
-        if self._is_printing:
+        if self._is_printing and self._gcode_transfer_mode == GCodeTransferMode.stream:
+            Logger.log('d', "Queueing command {} Queue is {}".format(command, "empty" if self._command_queue.empty() else "not empty"))
             self._command_queue.put(command)
+            
         elif self._connection_state == ConnectionState.connected:
             self._sendCommand(command)
 
@@ -266,16 +343,87 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
             command = (command + "\n").encode()
         if not command.endswith(b"\n"):
             command += b"\n"
+        if not self._is_uploading:
+            Logger.log('d', "Send command: {}".format(command))
         self._serial.write(command)
 
     def _update(self):
         while self._connection_state == ConnectionState.connected and self._serial is not None:
+            Logger.log('d',"_update")
+            if self._is_uploading and self._gcode_transfer_mode == GCodeTransferMode.upload:
+                Logger.log('d', "Transfer progress: {:0.2f}".format(100 * self._gcode_position / len(self._gcode)))
+
+                if self._gcode_position >= len(self._gcode):
+                    self._is_printing = False
+                    self._is_uploading = False
+                    self._gcode_position = 0
+                    continue
+                    
+                if self._gcode_position == 0:
+                    Logger.log('d',"start upload gcode")
+                    
+                    filename = "cura-print.gcode"
+
+                    sleep(3)
+
+                    self._sendCommand("cd /sd/")
+                    self._waitFor([b'ok\r\n'])
+                    self._sendCommand("upload {}".format(filename))
+                    self._waitFor([b'uploading'])
+                    
+
+                
+                self._batch_size = 1024
+                for _ in range(self._batch_size):
+                    self._sendCommand(self._gcode[self._gcode_position])
+                    self._gcode_position += 1
+
+                    if self._gcode_position >= len(self._gcode):
+                        Logger.log('d', "Gcode sent. Sending ctrl+D")
+                        self._serial.write([0x04]) # ctrl+D
+                        
+                        if self._waitFor([b"uploaded "], self._timeout * 3) is None:
+                            raise Exception
+
+                        self._is_uploading = False
+                        self._gcode_position = 0
+
+                        self._sendCommand("M32 cura-print.gcode")
+
+                        break
+                continue
             try:
                 line = self._serial.readline()
+                Logger.log('d',"Read from serial: {}".format(line))
             except:
                 continue
 
-            if self._last_temperature_request is None or time() > self._last_temperature_request + self._timeout:
+
+            if self._is_printing and self._gcode_transfer_mode == GCodeTransferMode.upload:
+                if self._last_progress_request is None or time() > self._last_progress_request + self._timeout * 2:
+                    self.sendCommand("M27")
+                    self._last_progress_request = time() + self._timeout if self._last_progress_request is None else time()
+
+
+            # Example response to "M27": b'SD printing byte 1508908/4873000\r\n'
+
+            # Example response to "progress":
+            # file: /sd/cura-print.gcode, 11 % complete, elapsed time: 00:03:27, est time: 00:27:21
+            #if progress response
+                #update progress.
+
+            '''
+            if line.startswith(b"file:"):
+                Logger.log('d', "Progress response: {}".format(line))
+                if not self._command_queue.empty():
+                    self._sendCommand(self._command_queue.get())
+                elif self._paused:
+                    pass  # Nothing to do!
+                else:
+                    self._sendNextGcodeLine()
+            '''
+
+            if self._last_temperature_request is None or time() > self._last_temperature_request + self._timeout * 2:
                 # Timeout, or no request has been sent at all.
                 self.sendCommand("M105")
                 self._last_temperature_request = time()
@@ -298,16 +446,60 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
                         self._printers[0].updateTargetBedTemperature(float(match[1]))
 
             if self._is_printing:
+
                 if line.startswith(b'!!'):
                     Logger.log('e', "Printer signals fatal error. Cancelling print. {}".format(line))
                     self.cancelPrint()
-                if b"ok" in line:
+                
+                progress_matches = re.findall(b"SD printing byte ?([\d\.]+) ?\/?([\d\.]+)?", line)
+
+                if progress_matches:
+                    
+                    match = progress_matches[0]
+                    if match[0]:
+                        bytes_done = float(match[0])
+                    if match[1]:
+                        bytes_tot = float(match[1])
+
+                    #Logger.log('d', "Logger matches: {} {}".format(bytes_done, bytes_tot))
+
+                    if match[0] and match[1]:
+                        progress = bytes_done / bytes_tot
+                        Logger.log('d', "Progress {:.2f}%".format(100 * progress))
+                        
+                        
+                        
+                        '''
+                        elapsed_time = int(time() - self._print_start_time)
+                        print_job = self._printers[0].activePrintJob
+                        if print_job is None:
+                            print_job = PrintJobOutputModel(output_controller = USBPrinterOutputController(self), name= Application.getInstance().getPrintInformation().jobName)
+                        
+                            print_job.updateState("printing-2")
+                        
+                        
+                            self._printers[0].updateActivePrintJob(print_job)
+                        
+                        
+                        print_job.updateTimeElapsed(elapsed_time)
+                        estimated_time = self._print_estimated_time
+                        if progress > .1:
+                            estimated_time = self._print_estimated_time * (1 - progress) + elapsed_time
+                        print_job.updateTimeTotal(estimated_time)
+                        '''                
+        
+                    
+                elif b"Not currently playing" in line:
+                    self._finalizePrint()
+
+                elif b"ok" in line:
                     if not self._command_queue.empty():
                         self._sendCommand(self._command_queue.get())
                     elif self._paused:
                         pass  # Nothing to do!
-                    else:
+                    elif self._gcode_transfer_mode == GCodeTransferMode.stream:
                         self._sendNextGcodeLine()
+
                 elif b"resend" in line.lower() or b"rs" in line:
                     # A resend can be requested either by Resend, resend or rs.
                     try:
@@ -323,12 +515,17 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
     def resumePrint(self):
         self._paused = False
 
-    def cancelPrint(self):
+    def _finalizePrint(self):
         self._gcode_position = 0
         self._gcode.clear()
         self._printers[0].updateActivePrintJob(None)
         self._is_printing = False
         self._is_paused = False
+        self._is_uploading = False
+        Application.getInstance().getController().setActiveStage("PrepareStage")
+
+    def cancelPrint(self):
+        self._finalizePrint()
 
         # Turn off temperatures, fan and steppers
         self._sendCommand("M140 S0")
@@ -362,7 +559,6 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
         self._sendCommand("N%d%s*%d" % (self._gcode_position, line, checksum))
 
         progress = (self._gcode_position / len(self._gcode))
-
         elapsed_time = int(time() - self._print_start_time)
         print_job = self._printers[0].activePrintJob
         if print_job is None:
@@ -376,7 +572,11 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
             estimated_time = self._print_estimated_time * (1 - progress) + elapsed_time
         print_job.updateTimeTotal(estimated_time)
 
+
+
+
         self._gcode_position += 1
+
 
 
 class FirmwareUpdateState(IntEnum):
@@ -387,3 +587,10 @@ class FirmwareUpdateState(IntEnum):
     communication_error = 4
     io_error = 5
     firmware_not_found_error = 6
+
+
+class GCodeTransferMode(IntEnum):
+    unknown = 0
+    stream = 1
+    upload = 2
+    transfer = 3
