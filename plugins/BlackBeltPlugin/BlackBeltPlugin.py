@@ -68,6 +68,26 @@ class BlackBeltPlugin(Extension):
         # Disable USB printing output device
         Application.getInstance().getOutputDeviceManager().outputDevicesChanged.connect(self._onOutputDevicesChanged)
 
+    def _onEngineCreated(self):
+        self._application.getMachineManager().activeVariantChanged.connect(self._onActiveVariantChanged)
+
+        # Set window title
+        self._application._engine.rootObjects()[0].setTitle(i18n_catalog.i18nc("@title:window","BlackBelt Cura"))
+
+        # Substitute our own sidebar
+        sidebar_component_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "sidebar", "Sidebar.qml")
+        prepare_stage = Application.getInstance().getController().getStage("PrepareStage")
+        prepare_stage.addDisplayComponent("sidebar", sidebar_component_path)
+
+        # Apply patches
+        self._build_volume_patches = BuildVolumePatches.BuildVolumePatches(self._application.getBuildVolume())
+        self._cura_engine_backend_patched = CuraEngineBackendPatches.CuraEngineBackendPatches(self._application.getBackend())
+
+        self._application.getBackend().slicingStarted.connect(self._onSlicingStarted)
+
+        self._fixVisibilityPreferences(forced = self._force_visibility_update)
+        self._force_visibility_update = False
+
     def _onOutputDevicesChanged(self):
         if not self._global_container_stack:
             return
@@ -155,26 +175,6 @@ class BlackBeltPlugin(Extension):
             # Force rebuilding the build volume by reloading the global container stack.
             # This is a bit of a hack, but it seems quick enough.
             self._application.globalContainerStackChanged.emit()
-
-    def _onEngineCreated(self):
-        self._application.getMachineManager().activeVariantChanged.connect(self._onActiveVariantChanged)
-
-        # Set window title
-        self._application._engine.rootObjects()[0].setTitle(i18n_catalog.i18nc("@title:window","BlackBelt Cura"))
-
-        # Substitute our own sidebar
-        sidebar_component_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "sidebar", "Sidebar.qml")
-        prepare_stage = Application.getInstance().getController().getStage("PrepareStage")
-        prepare_stage.addDisplayComponent("sidebar", sidebar_component_path)
-
-        # Apply patches
-        self._build_volume_patches = BuildVolumePatches.BuildVolumePatches(self._application.getBuildVolume())
-        self._cura_engine_backend_patched = CuraEngineBackendPatches.CuraEngineBackendPatches(self._application.getBackend())
-
-        self._application.getBackend().slicingStarted.connect(self._onSlicingStarted)
-
-        self._fixVisibilityPreferences(forced = self._force_visibility_update)
-        self._force_visibility_update = False
 
     def _onPreferencesChanged(self, preference):
         if preference == "general/visible_settings":
