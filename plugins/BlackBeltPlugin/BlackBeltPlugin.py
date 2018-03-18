@@ -45,6 +45,8 @@ class BlackBeltPlugin(Extension):
 
         self._application.pluginsLoaded.connect(self._onPluginsLoaded)
 
+        self._force_visibility_update = False
+
         # disable update checker plugin (because it checks the wrong version)
         plugin_registry = PluginRegistry.getInstance()
         if "UpdateChecker" not in plugin_registry._disabled_plugins:
@@ -61,7 +63,7 @@ class BlackBeltPlugin(Extension):
         # Handle default setting visibility
         Preferences.getInstance().preferenceChanged.connect(self._onPreferencesChanged)
         if self._application.getVersion() != "master" and Version(Preferences.getInstance().getValue("general/latest_version_changelog_shown")) < Version("3.2.1"):
-            self._fixVisibilityPreferences(forced = True)
+            self._force_visibility_update = True
 
         # Disable USB printing output device
         Application.getInstance().getOutputDeviceManager().outputDevicesChanged.connect(self._onOutputDevicesChanged)
@@ -171,7 +173,8 @@ class BlackBeltPlugin(Extension):
 
         self._application.getBackend().slicingStarted.connect(self._onSlicingStarted)
 
-        self._fixVisibilityPreferences()
+        self._fixVisibilityPreferences(forced = self._force_visibility_update)
+        self._force_visibility_update = False
 
     def _onPreferencesChanged(self, preference):
         if preference == "general/visible_settings":
