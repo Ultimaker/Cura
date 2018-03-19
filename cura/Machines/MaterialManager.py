@@ -498,8 +498,10 @@ class MaterialManager(QObject):
         # Ensure all settings are saved.
         self._application.saveSettings()
 
-        global_stack = self._application.getGlobalContainerStack()
-        approximate_diameter = str(round(global_stack.getProperty("material_diameter", "value")))
+        machine_manager = self._application.getMachineManager()
+        extruder_stack = machine_manager.activeStack
+
+        approximate_diameter = str(extruder_stack.approximateMaterialDiameter)
         root_material_id = "generic_pla"
         root_material_id = self.getRootMaterialIDForDiameter(root_material_id, approximate_diameter)
         material_group = self.getMaterialGroup(root_material_id)

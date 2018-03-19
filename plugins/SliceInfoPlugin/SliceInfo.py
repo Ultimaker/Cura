@@ -146,7 +146,7 @@ class SliceInfo(Extension):
                     model_stack = node.callDecoration("getStack")
                     if model_stack:
                         model_settings["support_enabled"] = model_stack.getProperty("support_enable", "value")
-                        model_settings["support_extruder_nr"] = int(model_stack.getProperty("support_extruder_nr", "value"))
+                        model_settings["support_extruder_nr"] = int(model_stack.getExtruderPositionValueWithDefault("support_extruder_nr"))
 
                         # Mesh modifiers;
                         model_settings["infill_mesh"] = model_stack.getProperty("infill_mesh", "value")
@@ -177,7 +177,7 @@ class SliceInfo(Extension):
 
             # Support settings
             print_settings["support_enabled"] = global_container_stack.getProperty("support_enable", "value")
-            print_settings["support_extruder_nr"] = int(global_container_stack.getProperty("support_extruder_nr", "value"))
+            print_settings["support_extruder_nr"] = int(global_container_stack.getExtruderPositionValueWithDefault("support_extruder_nr"))
 
             # Platform adhesion settings
             print_settings["adhesion_type"] = global_container_stack.getProperty("adhesion_type", "value")

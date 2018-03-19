@@ -1227,7 +1227,7 @@ class MachineManager(QObject):
             self._updateQualityWithMaterial()
 
     @pyqtSlot(str, "QVariant")
-    def setVariantGroup(self, position, container_node):
+    def setVariant(self, position, container_node):
         position = str(position)
         self.blurSettings.emit()
         with postponeSignals(*self._getContainerChangedSignals(), compress = CompressTechnique.CompressPerParameterValue):

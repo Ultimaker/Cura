@@ -18,7 +18,6 @@ Item
     property QtObject settingVisibilityPresetsModel: CuraApplication.getSettingVisibilityPresetsModel()
     property Action configureSettings
     property bool findingSettings
-    property bool showingAllSettings
     signal showTooltip(Item item, point location, string text)
     signal hideTooltip()
 
@@ -140,21 +139,9 @@ Item
         }
         menu: SettingVisibilityPresetsMenu
         {
-            showingSearchResults: findingSettings
-            showingAllSettings: showingAllSettings
-
             onShowAllSettings:
             {
-                base.showingAllSettings = true;
-                base.findingSettings = false;
-                filter.text = "";
-                filter.updateDefinitionModel();
-            }
-            onShowSettingVisibilityProfile:
-            {
-                base.showingAllSettings = false;
-                base.findingSettings = false;
-                filter.text = "";
+                definitionsModel.setAllVisible(true);
                 filter.updateDefinitionModel();
             }
         }
@@ -219,10 +206,6 @@ Item
                 findingSettings = (text.length > 0);
                 if(findingSettings != lastFindingSettings)
                 {
-                    if(findingSettings)
-                    {
-                        showingAllSettings = false;
-                    }
                     updateDefinitionModel();
                     lastFindingSettings = findingSettings;
                 }
@@ -235,7 +218,7 @@ Item
 
             function updateDefinitionModel()
             {
-                if(findingSettings || showingAllSettings)
+                if(findingSettings)
                 {
                     expandedCategories = definitionsModel.expanded.slice();
                     definitionsModel.expanded = [""]; // keep categories closed while to prevent render while making settings visible one by one
@@ -558,13 +541,13 @@ Item
                 MenuItem
                 {
                     //: Settings context menu action
-                    visible: !(findingSettings || showingAllSettings);
+                    visible: !findingSettings
                     text: catalog.i18nc("@action:menu", "Hide this setting");
                     onTriggered:
                     {
                         definitionsModel.hide(contextMenu.key);
                         // visible settings have changed, so we're no longer showing a preset
-                        if (settingVisibilityPresetsModel.activePreset != "" && !showingAllSettings)
+                        if (settingVisibilityPresetsModel.activePreset != "")
                         {
                             settingVisibilityPresetsModel.setActivePreset("custom");
                         }
@@ -584,7 +567,7 @@ Item
                             return catalog.i18nc("@action:menu", "Keep this setting visible");
                         }
                     }
-                    visible: (findingSettings || showingAllSettings);
+                    visible: findingSettings
                     onTriggered:
                     {
                         if (contextMenu.settingVisible)
@@ -596,7 +579,7 @@ Item
                             definitionsModel.show(contextMenu.key);
                         }
                         // visible settings have changed, so we're no longer showing a preset
-                        if (settingVisibilityPresetsModel.activePreset != "" && !showingAllSettings)
+                        if (settingVisibilityPresetsModel.activePreset != "")
                         {
                             settingVisibilityPresetsModel.setActivePreset("custom");
                         }
