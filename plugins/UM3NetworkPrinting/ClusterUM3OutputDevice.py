@@ -197,7 +197,7 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
         # Add user name to the print_job
         parts.append(self._createFormPart("name=owner", bytes(self._getUserName(), "utf-8"), "text/plain"))
 
-        file_name = "%s.gcode.gz" % Application.getInstance().getPrintInformation().jobName
+        file_name = Application.getInstance().getPrintInformation().jobName + "." + preferred_format["extension"]
 
         while not job.isFinished():
             sleep(0.1)
