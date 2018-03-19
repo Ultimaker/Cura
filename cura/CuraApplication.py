@@ -1105,7 +1105,7 @@ class CuraApplication(QtApplication):
                 continue
             if not node.getMeshData() and not node.callDecoration("isGroup"):
                 continue  # Node that doesnt have a mesh and is not a group.
-            if node.getParent() and node.getParent().callDecoration("isGroup"):
+            if node.getParent() and node.getParent().callDecoration("isGroup") or node.getParent().callDecoration("isSliceable"):
                 continue  # Grouped nodes don't need resetting as their parent (the group) is resetted)
             if not node.isSelectable():
                 continue  # i.e. node with layer data
