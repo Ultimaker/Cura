@@ -216,7 +216,7 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
 
     @pyqtProperty("QVariantList", notify=printJobsChanged)
     def queuedPrintJobs(self) -> List[PrintJobOutputModel]:
-        return [print_job for print_job in self._print_jobs if print_job.assignedPrinter is None or print_job.state == "queued"]
+        return [print_job for print_job in self._print_jobs if print_job.state == "queued"]
 
     @pyqtProperty("QVariantList", notify=printJobsChanged)
     def activePrintJobs(self) -> List[PrintJobOutputModel]:
