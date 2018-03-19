@@ -1401,6 +1401,10 @@ class CuraApplication(QtApplication):
                 group_parent = node.getParent()
                 children = node.getChildren().copy()
                 for child in children:
+                    # Ungroup only 1 level deep
+                    if child.getParent() != node:
+                        continue
+
                     # Set the parent of the children to the parent of the group-node
                     op.addOperation(SetParentOperation(child, group_parent))
 
