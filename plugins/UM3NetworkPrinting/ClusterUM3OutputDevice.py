@@ -11,6 +11,7 @@ from UM.Message import Message
 from UM.Qt.Duration import Duration, DurationFormat
 from UM.OutputDevice import OutputDeviceError #To show that something went wrong when writing.
 from UM.Scene.SceneNode import SceneNode #For typing.
+from UM.Version import Version #To check against firmware versions for support.
 
 from cura.PrinterOutput.NetworkedPrinterOutputDevice import NetworkedPrinterOutputDevice, AuthState
 from cura.PrinterOutput.PrinterOutputModel import PrinterOutputModel
@@ -96,6 +97,9 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
         #Create a list from the supported file formats string.
         machine_file_formats = Application.getInstance().getGlobalContainerStack().getMetaDataEntry("file_formats").split(";")
         machine_file_formats = [file_type.strip() for file_type in machine_file_formats]
+        #Exception for UM3 firmware version >=4.4: UFP is now supported and should be the preferred file format.
+        if "application/x-ufp" not in machine_file_formats and self.printerType == "ultimaker3" and Version(self.firmwareVersion) >= Version("4.4"):
+            machine_file_formats = ["application/x-ufp"] + machine_file_formats
 
         # Take the intersection between file_formats and machine_file_formats.
         format_by_mimetype = {format["mime_type"]: format for format in file_formats}
