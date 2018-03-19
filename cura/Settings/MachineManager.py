@@ -1218,6 +1218,16 @@ class MachineManager(QObject):
             self._updateMaterialWithVariant(None)  # Update all materials
             self._updateQualityWithMaterial()
 
+    @pyqtSlot(str, str)
+    def setMaterialById(self, position, root_material_id):
+        machine_definition_id = self._global_container_stack.definition.id
+        position = str(position)
+        extruder_stack = self._global_container_stack.extruders[position]
+        variant_name = extruder_stack.variant.getName()
+        material_diameter = extruder_stack.approximateMaterialDiameter
+        material_node = self._material_manager.getMaterialNode(machine_definition_id, variant_name, material_diameter, root_material_id)
+        self.setMaterial(position, material_node)
+
     @pyqtSlot(str, "QVariant")
     def setMaterial(self, position, container_node):
         position = str(position)
@@ -1225,6 +1235,12 @@ class MachineManager(QObject):
         with postponeSignals(*self._getContainerChangedSignals(), compress = CompressTechnique.CompressPerParameterValue):
             self._setMaterial(position, container_node)
             self._updateQualityWithMaterial()
+
+    @pyqtSlot(str, str)
+    def setVariantByName(self, position, variant_name):
+        machine_definition_id = self._global_container_stack.definition.id
+        variant_node = self._variant_manager.getVariantNode(machine_definition_id, variant_name)
+        self.setVariant(position, variant_node)
 
     @pyqtSlot(str, "QVariant")
     def setVariant(self, position, container_node):
@@ -1234,6 +1250,13 @@ class MachineManager(QObject):
             self._setVariantNode(position, container_node)
             self._updateMaterialWithVariant(position)
             self._updateQualityWithMaterial()
+
+    @pyqtSlot(str)
+    def setQualityGroupByQualityType(self, quality_type):
+        # Get all the quality groups for this global stack and filter out by quality_type
+        quality_group_dict = self._quality_manager.getQualityGroups(self._global_container_stack)
+        quality_group = quality_group_dict[quality_type]
+        self.setQualityGroup(quality_group)
 
     @pyqtSlot(QObject)
     def setQualityGroup(self, quality_group, no_dialog = False):
