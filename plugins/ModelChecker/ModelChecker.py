@@ -8,6 +8,7 @@ from UM.Application import Application
 from UM.Extension import Extension
 from UM.Message import Message
 from UM.i18n import i18nCatalog
+from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 
 catalog = i18nCatalog("cura")
 
@@ -24,7 +25,7 @@ class ModelChecker(Extension):
         super().__init__()
 
         self._update_timer = QTimer()
-        self._update_timer.setInterval(5000)
+        self._update_timer.setInterval(2000)
         self._update_timer.setSingleShot(True)
         self._update_timer.timeout.connect(self.checkObjects)
 
@@ -32,8 +33,11 @@ class ModelChecker(Extension):
 
         self._warning_model_names = set()  # Collect the names of models so we show the next warning with timeout
 
-        ## Reacting to an event. ##
+        Application.getInstance().initializationFinished.connect(self.bindSignals)
+
+    def bindSignals(self):
         Application.getInstance().getController().getScene().sceneChanged.connect(self._onSceneChanged)
+        Application.getInstance().getMachineManager().rootMaterialChanged.connect(self._checkAllSliceableNodes)
 
     def checkObjects(self):
         warning_nodes = []
@@ -61,6 +65,7 @@ class ModelChecker(Extension):
                 bbox = node.getBoundingBox()
                 if bbox.width >= WARNING_SIZE_XY or bbox.depth >= WARNING_SIZE_XY or bbox.height >= WARNING_SIZE_Z:
                     warning_nodes.append(node)
+        self._nodes_to_check = set()
 
         # Display warning message
         if warning_nodes:
@@ -83,4 +88,13 @@ class ModelChecker(Extension):
     def _onSceneChanged(self, source):
         if isinstance(source, CuraSceneNode) and source.callDecoration("isSliceable"):
             self._nodes_to_check.add(source)
+            self._update_timer.start()
+
+    def _checkAllSliceableNodes(self, *args):
+        # Add all scene nodes
+        scene = Application.getInstance().getController().getScene()
+        for node in DepthFirstIterator(scene.getRoot()):
+            if node.callDecoration("isSliceable"):
+                self._nodes_to_check.add(node)
+        if self._nodes_to_check:
             self._update_timer.start()
