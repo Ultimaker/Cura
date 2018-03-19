@@ -1383,6 +1383,12 @@ class CuraApplication(QtApplication):
         group_node.setPosition(center)
         group_node.setCenterPosition(center)
 
+        # Remove nodes that are directly parented to another selected node from the selection so they remain parented
+        selected_nodes = Selection.getAllSelectedObjects().copy()
+        for node in selected_nodes:
+            if node.getParent() in selected_nodes and not node.getParent().callDecoration("isGroup"):
+                Selection.remove(node)
+
         # Move selected nodes into the group-node
         Selection.applyOperation(SetParentOperation, group_node)
 
