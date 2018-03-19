@@ -3,7 +3,6 @@
 
 import copy
 
-from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 from UM.Scene.SceneNodeDecorator import SceneNodeDecorator
 from UM.Signal import Signal, signalemitter
 from UM.Settings.InstanceContainer import InstanceContainer
@@ -33,9 +32,11 @@ class SettingOverrideDecorator(SceneNodeDecorator):
 
     def __init__(self):
         super().__init__()
-        self._stack = PerObjectContainerStack(stack_id = "per_object_stack_" + str(id(self)))
+        self._stack = PerObjectContainerStack(container_id = "per_object_stack_" + str(id(self)))
         self._stack.setDirty(False)  # This stack does not need to be saved.
-        self._stack.addContainer(InstanceContainer(container_id = "SettingOverrideInstanceContainer"))
+        user_container = InstanceContainer(container_id = "SettingOverrideInstanceContainer")
+        user_container.addMetaDataEntry("type", "user")
+        self._stack.userChanges = user_container
         self._extruder_stack = ExtruderManager.getInstance().getExtruderStack(0).getId()
 
         self._is_non_printing_mesh = False
@@ -94,12 +95,7 @@ class SettingOverrideDecorator(SceneNodeDecorator):
         return any(bool(self._stack.getProperty(setting, "value")) for setting in self._non_printing_mesh_settings)
 
     def _onSettingChanged(self, instance, property_name): # Reminder: 'property' is a built-in function
-        object_has_instance_setting = False
-        for container in self._stack.getContainers():
-            if container.hasProperty(instance, "value"):
-                object_has_instance_setting = True
-                break
-        if property_name == "value" and object_has_instance_setting:
+        if property_name == "value":
             # Trigger slice/need slicing if the value has changed.
             self._is_non_printing_mesh = self.evaluateIsNonPrintingMesh()
 

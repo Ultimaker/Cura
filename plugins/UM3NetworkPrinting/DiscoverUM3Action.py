@@ -147,6 +147,10 @@ class DiscoverUM3Action(MachineAction):
 
         return ""
 
+    @pyqtSlot(str, result = bool)
+    def existsKey(self, key) -> bool:
+        return Application.getInstance().getMachineManager().existNetworkInstances(network_key = key)
+
     @pyqtSlot()
     def loadConfigurationFromPrinter(self):
         machine_manager = Application.getInstance().getMachineManager()

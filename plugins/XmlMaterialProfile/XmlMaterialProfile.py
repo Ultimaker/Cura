@@ -208,14 +208,9 @@ class XmlMaterialProfile(InstanceContainer):
         machine_variant_map = {}
 
         variant_manager = CuraApplication.getInstance().getVariantManager()
-        material_manager = CuraApplication.getInstance().getMaterialManager()
 
         root_material_id = self.getMetaDataEntry("base_file")  # if basefile is self.getId, this is a basefile.
-        material_group = material_manager.getMaterialGroup(root_material_id)
-
-        all_containers = []
-        for node in [material_group.root_material_node] + material_group.derived_material_node_list:
-            all_containers.append(node.getContainer())
+        all_containers = registry.findInstanceContainers(base_file = root_material_id)
 
         for container in all_containers:
             definition_id = container.getMetaDataEntry("definition")
@@ -242,7 +237,7 @@ class XmlMaterialProfile(InstanceContainer):
 
         for definition_id, container in machine_container_map.items():
             definition_id = container.getMetaDataEntry("definition")
-            definition_metadata = ContainerRegistry.getInstance().findDefinitionContainersMetadata(id = definition_id)[0]
+            definition_metadata = registry.findDefinitionContainersMetadata(id = definition_id)[0]
 
             product = definition_id
             for product_name, product_id_list in product_id_map.items():

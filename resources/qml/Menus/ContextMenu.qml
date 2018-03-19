@@ -31,7 +31,7 @@ Menu
         MenuItem {
             text: "%1: %2 - %3".arg(model.name).arg(model.material).arg(model.variant)
             visible: base.shouldShowExtruders
-            enabled: UM.Selection.hasSelection
+            enabled: UM.Selection.hasSelection && model.enabled
             checkable: true
             checked: Cura.ExtruderManager.selectedObjectExtruders.indexOf(model.id) != -1
             onTriggered: CuraActions.setExtruderForSelection(model.id)

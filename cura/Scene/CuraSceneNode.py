@@ -41,7 +41,7 @@ class CuraSceneNode(SceneNode):
         # Use the support extruder instead of the active extruder if this is a support_mesh
         if per_mesh_stack:
             if per_mesh_stack.getProperty("support_mesh", "value"):
-                return extruders[int(global_container_stack.getProperty("support_extruder_nr", "value"))]
+                return extruders[int(global_container_stack.getExtruderPositionValueWithDefault("support_extruder_nr"))]
 
         # It's only set if you explicitly choose an extruder
         extruder_id = self.callDecoration("getActiveExtruder")

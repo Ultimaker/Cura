@@ -36,8 +36,8 @@ TabView
         if (!base.containerId || !base.editingEnabled) {
             return ""
         }
-        var linkedMaterials = Cura.ContainerManager.getLinkedMaterials(base.currentMaterialNode);
-        if (linkedMaterials.length <= 1) {
+        var linkedMaterials = Cura.ContainerManager.getLinkedMaterials(base.currentMaterialNode, true);
+        if (linkedMaterials.length == 0) {
             return ""
         }
         return linkedMaterials.join(", ");
@@ -99,6 +99,7 @@ TabView
                     property var new_diameter_value: null;
                     property var old_diameter_value: null;
                     property var old_approximate_diameter_value: null;
+                    property bool keyPressed: false
 
                     onYes:
                     {
@@ -111,6 +112,16 @@ TabView
                     {
                         properties.diameter = old_diameter_value;
                         diameterSpinBox.value = properties.diameter;
+                    }
+
+                    onVisibilityChanged:
+                    {
+                        if (!visible && !keyPressed)
+                        {
+                            // If the user closes this dialog without clicking on any button, it's the same as clicking "No".
+                            no();
+                        }
+                        keyPressed = false;
                     }
                 }
 
@@ -222,7 +233,7 @@ TabView
                         var old_diameter = Cura.ContainerManager.getContainerProperty(base.containerId, "material_diameter", "value").toString();
                         var old_approximate_diameter = Cura.ContainerManager.getContainerMetaDataEntry(base.containerId, "approximate_diameter");
                         var new_approximate_diameter = getApproximateDiameter(value);
-                        if (Cura.MachineManager.filterMaterialsByMachine && new_approximate_diameter != Cura.ExtruderManager.getActiveExtruderStack().approximateMaterialDiameter)
+                        if (new_approximate_diameter != Cura.ExtruderManager.getActiveExtruderStack().approximateMaterialDiameter)
                         {
                             confirmDiameterChangeDialog.old_diameter_value = old_diameter;
                             confirmDiameterChangeDialog.new_diameter_value = value;

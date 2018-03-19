@@ -48,7 +48,11 @@ class MonitorStage(CuraStage):
             new_output_device = Application.getInstance().getMachineManager().printerOutputDevices[0]
             if new_output_device != self._printer_output_device:
                 if self._printer_output_device:
-                    self._printer_output_device.printersChanged.disconnect(self._onActivePrinterChanged)
+                    try:
+                        self._printer_output_device.printersChanged.disconnect(self._onActivePrinterChanged)
+                    except TypeError:
+                        # Ignore stupid "Not connected" errors.
+                        pass
 
                 self._printer_output_device = new_output_device
 

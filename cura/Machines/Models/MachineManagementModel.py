@@ -3,13 +3,14 @@
 
 from UM.Qt.ListModel import ListModel
 
-from PyQt5.QtCore import pyqtSlot, pyqtProperty, Qt, pyqtSignal
+from PyQt5.QtCore import Qt
 
 from UM.Settings.ContainerRegistry import ContainerRegistry
 from UM.Settings.ContainerStack import ContainerStack
 
 from UM.i18n import i18nCatalog
 catalog = i18nCatalog("cura")
+
 
 #
 # This the QML model for the quality management page.
@@ -39,7 +40,7 @@ class MachineManagementModel(ListModel):
     ##  Handler for container added/removed events from registry
     def _onContainerChanged(self, container):
         # We only need to update when the added / removed container is a stack.
-        if isinstance(container, ContainerStack):
+        if isinstance(container, ContainerStack) and container.getMetaDataEntry("type") == "machine":
             self._update()
 
     ##  Private convenience function to reset & repopulate the model.
@@ -47,7 +48,9 @@ class MachineManagementModel(ListModel):
         items = []
 
         # Get first the network enabled printers
-        network_filter_printers = {"type": "machine", "um_network_key": "*", "hidden": "False"}
+        network_filter_printers = {"type": "machine",
+                                   "um_network_key": "*",
+                                   "hidden": "False"}
         self._network_container_stacks = ContainerRegistry.getInstance().findContainerStacks(**network_filter_printers)
         self._network_container_stacks.sort(key = lambda i: i.getMetaDataEntry("connect_group_name"))
 
@@ -57,11 +60,11 @@ class MachineManagementModel(ListModel):
                 metadata["definition_name"] = container.getBottom().getName()
 
             items.append({"name": metadata["connect_group_name"],
-                             "id": container.getId(),
-                             "metadata": metadata,
-                             "group": catalog.i18nc("@info:title", "Network enabled printers")})
+                          "id": container.getId(),
+                          "metadata": metadata,
+                          "group": catalog.i18nc("@info:title", "Network enabled printers")})
 
-        # Get now the local printes
+        # Get now the local printers
         local_filter_printers = {"type": "machine", "um_network_key": None}
         self._local_container_stacks = ContainerRegistry.getInstance().findContainerStacks(**local_filter_printers)
         self._local_container_stacks.sort(key = lambda i: i.getName())
@@ -72,8 +75,8 @@ class MachineManagementModel(ListModel):
                 metadata["definition_name"] = container.getBottom().getName()
 
             items.append({"name": container.getName(),
-                             "id": container.getId(),
-                             "metadata": metadata,
-                             "group": catalog.i18nc("@info:title", "Local printers")})
+                          "id": container.getId(),
+                          "metadata": metadata,
+                          "group": catalog.i18nc("@info:title", "Local printers")})
 
         self.setItems(items)

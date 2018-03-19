@@ -217,6 +217,7 @@ UM.MainWindow
                             text: catalog.i18nc("@action:inmenu", "Disable Extruder")
                             onTriggered: Cura.MachineManager.setExtruderEnabled(model.index, false)
                             visible: Cura.MachineManager.getExtruder(model.index).isEnabled
+                            enabled: Cura.MachineManager.numberExtrudersEnabled > 1
                         }
 
                     }
