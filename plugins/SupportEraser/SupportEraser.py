@@ -19,10 +19,8 @@ from cura.Scene.CuraSceneNode import CuraSceneNode
 
 from cura.PickingPass import PickingPass
 
-from UM.Operations.GroupedOperation import GroupedOperation
 from UM.Operations.AddSceneNodeOperation import AddSceneNodeOperation
 from UM.Operations.RemoveSceneNodeOperation import RemoveSceneNodeOperation
-from cura.Operations.SetParentOperation import SetParentOperation
 
 from cura.Scene.SliceableObjectDecorator import SliceableObjectDecorator
 from cura.Scene.BuildPlateDecorator import BuildPlateDecorator
@@ -105,7 +103,6 @@ class SupportEraser(Tool):
         mesh = MeshBuilder()
         mesh.addCube(10,10,10)
         node.setMeshData(mesh.build())
-        node.setPosition(position)
 
         active_build_plate = Application.getInstance().getMultiBuildPlateModel().activeBuildPlate
         node.addDecorator(BuildPlateDecorator(active_build_plate))
@@ -120,13 +117,9 @@ class SupportEraser(Tool):
         new_instance.resetState()  # Ensure that the state is not seen as a user state.
         settings.addInstance(new_instance)
 
-        root = self._controller.getScene().getRoot()
-
-        op = GroupedOperation()
-        # First add the node to the scene, so it gets the expected transform
-        op.addOperation(AddSceneNodeOperation(node, root))
-        op.addOperation(SetParentOperation(node, parent))
+        op = AddSceneNodeOperation(node, parent)
         op.push()
+        node.setPosition(position, CuraSceneNode.TransformSpace.World)
 
         Application.getInstance().getController().getScene().sceneChanged.emit(node)
 
