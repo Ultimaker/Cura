@@ -17,6 +17,13 @@ Column
     padding: UM.Theme.getSize("default_margin").width
     spacing: Math.round(UM.Theme.getSize("default_margin").height / 2)
 
+    function forceModelUpdate()
+    {
+        // FIXME For now the model should be removed and then created again, otherwise changes in the printer don't automatically update the UI
+        configurationList.model = []
+        configurationList.model = outputDevice.uniqueConfigurations
+    }
+
     Label
     {
         id: configurationListHeading
@@ -78,9 +85,16 @@ Column
         target: outputDevice
         onUniqueConfigurationsChanged:
         {
-            // FIXME For now the model should be removed and then created again, otherwise changes in the printer don't automatically update the UI
-            configurationList.model = []
-            configurationList.model = outputDevice.uniqueConfigurations
+            forceModelUpdate()
+        }
+    }
+
+    Connections
+    {
+        target: Cura.MachineManager
+        onOutputDevicesChanged:
+        {
+            forceModelUpdate()
         }
     }
 }
