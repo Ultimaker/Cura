@@ -136,7 +136,7 @@
         },
         "material_diameter": {
             "enabled": false,
-            "value": "1.75"
+            "default_value": 1.75
         },
         "cool_fan_enabled": {
             "enabled": false,

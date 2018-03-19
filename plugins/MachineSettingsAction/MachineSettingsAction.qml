@@ -165,7 +165,7 @@ Cura.MachineAction
                                 id: gcodeFlavorComboBox
                                 sourceComponent: comboBoxWithOptions
                                 property string settingKey: "machine_gcode_flavor"
-                                property string label: catalog.i18nc("@label", "Gcode flavor")
+                                property string label: catalog.i18nc("@label", "G-code flavor")
                                 property bool forceUpdateOnChange: true
                                 property var afterOnActivate: manager.updateHasMaterialsMetadata
                             }
@@ -244,6 +244,7 @@ Cura.MachineAction
                                 height: childrenRect.height
                                 width: childrenRect.width
                                 text: machineExtruderCountProvider.properties.description
+                                visible: extruderCountModel.count >= 2
 
                                 Row
                                 {
@@ -307,7 +308,7 @@ Cura.MachineAction
                             width: settingsTabs.columnWidth
                             Label
                             {
-                                text: catalog.i18nc("@label", "Start Gcode")
+                                text: catalog.i18nc("@label", "Start G-code")
                                 font.bold: true
                             }
                             Loader
@@ -317,7 +318,7 @@ Cura.MachineAction
                                 property int areaWidth: parent.width
                                 property int areaHeight: parent.height - y
                                 property string settingKey: "machine_start_gcode"
-                                property string tooltip: catalog.i18nc("@tooltip", "Gcode commands to be executed at the very start.")
+                                property string tooltip: catalog.i18nc("@tooltip", "G-code commands to be executed at the very start.")
                             }
                         }
 
@@ -326,7 +327,7 @@ Cura.MachineAction
                             width: settingsTabs.columnWidth
                             Label
                             {
-                                text: catalog.i18nc("@label", "End Gcode")
+                                text: catalog.i18nc("@label", "End G-code")
                                 font.bold: true
                             }
                             Loader
@@ -336,7 +337,7 @@ Cura.MachineAction
                                 property int areaWidth: parent.width
                                 property int areaHeight: parent.height - y
                                 property string settingKey: "machine_end_gcode"
-                                property string tooltip: catalog.i18nc("@tooltip", "Gcode commands to be executed at the very end.")
+                                property string tooltip: catalog.i18nc("@tooltip", "G-code commands to be executed at the very end.")
                             }
                         }
                     }
@@ -381,6 +382,11 @@ Cura.MachineAction
                             property string settingKey: "machine_nozzle_size"
                             property string label: catalog.i18nc("@label", "Nozzle size")
                             property string unit: catalog.i18nc("@label", "mm")
+                            function afterOnEditingFinished()
+                            {
+                                // Somehow the machine_nozzle_size dependent settings are not updated otherwise
+                                Cura.MachineManager.forceUpdateAllSettings()
+                            }
                             property bool isExtruderSetting: true
                         }
 
@@ -441,7 +447,7 @@ Cura.MachineAction
                                 width: settingsTabs.columnWidth
                                 Label
                                 {
-                                    text: catalog.i18nc("@label", "Extruder Start Gcode")
+                                    text: catalog.i18nc("@label", "Extruder Start G-code")
                                     font.bold: true
                                 }
                                 Loader
@@ -459,7 +465,7 @@ Cura.MachineAction
                                 width: settingsTabs.columnWidth
                                 Label
                                 {
-                                    text: catalog.i18nc("@label", "Extruder End Gcode")
+                                    text: catalog.i18nc("@label", "Extruder End G-code")
                                     font.bold: true
                                 }
                                 Loader
@@ -591,7 +597,7 @@ Cura.MachineAction
                             const value = propertyProvider.properties.value;
                             return value ? value : "";
                         }
-                        validator: RegExpValidator { regExp: _allowNegative ? /-?[0-9\.]{0,6}/ : /[0-9\.]{0,6}/ }
+                        validator: RegExpValidator { regExp: _allowNegative ? /-?[0-9\.,]{0,6}/ : /[0-9\.,]{0,6}/ }
                         onEditingFinished:
                         {
                             if (propertyProvider && text != propertyProvider.properties.value)
@@ -826,10 +832,10 @@ Cura.MachineAction
                             printHeadPolygon[axis][side] = result;
                             return result;
                         }
-                        validator: RegExpValidator { regExp: /[0-9\.]{0,6}/ }
+                        validator: RegExpValidator { regExp: /[0-9\.,]{0,6}/ }
                         onEditingFinished:
                         {
-                            printHeadPolygon[axis][side] = parseFloat(textField.text);
+                            printHeadPolygon[axis][side] = parseFloat(textField.text.replace(',','.'));
                             var polygon = [];
                             polygon.push([-printHeadPolygon["x"]["min"], printHeadPolygon["y"]["max"]]);
                             polygon.push([-printHeadPolygon["x"]["min"],-printHeadPolygon["y"]["min"]]);

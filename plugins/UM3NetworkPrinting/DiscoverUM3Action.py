@@ -12,7 +12,10 @@ from cura.MachineAction import MachineAction
 
 catalog = i18nCatalog("cura")
 
+
 class DiscoverUM3Action(MachineAction):
+    discoveredDevicesChanged = pyqtSignal()
+
     def __init__(self):
         super().__init__("DiscoverUM3Action", catalog.i18nc("@action","Connect via Network"))
         self._qml_url = "DiscoverUM3Action.qml"
@@ -25,24 +28,24 @@ class DiscoverUM3Action(MachineAction):
 
         Application.getInstance().engineCreatedSignal.connect(self._createAdditionalComponentsView)
 
-        self._last_zeroconf_event_time = time.time()
-        self._zeroconf_change_grace_period = 0.25 # Time to wait after a zeroconf service change before allowing a zeroconf reset
+        self._last_zero_conf_event_time = time.time()
 
-    printersChanged = pyqtSignal()
+        # Time to wait after a zero-conf service change before allowing a zeroconf reset
+        self._zero_conf_change_grace_period = 0.25
 
     @pyqtSlot()
     def startDiscovery(self):
         if not self._network_plugin:
-            Logger.log("d", "Starting printer discovery.")
+            Logger.log("d", "Starting device discovery.")
             self._network_plugin = Application.getInstance().getOutputDeviceManager().getOutputDevicePlugin("UM3NetworkPrinting")
-            self._network_plugin.printerListChanged.connect(self._onPrinterDiscoveryChanged)
-            self.printersChanged.emit()
+            self._network_plugin.discoveredDevicesChanged.connect(self._onDeviceDiscoveryChanged)
+            self.discoveredDevicesChanged.emit()
 
-    ##  Re-filters the list of printers.
+    ##  Re-filters the list of devices.
     @pyqtSlot()
     def reset(self):
-        Logger.log("d", "Reset the list of found printers.")
-        self.printersChanged.emit()
+        Logger.log("d", "Reset the list of found devices.")
+        self.discoveredDevicesChanged.emit()
 
     @pyqtSlot()
     def restartDiscovery(self):
@@ -51,47 +54,67 @@ class DiscoverUM3Action(MachineAction):
         # It's most likely that the QML engine is still creating delegates, where the python side already deleted or
         # garbage collected the data.
         # Whatever the case, waiting a bit ensures that it doesn't crash.
-        if time.time() - self._last_zeroconf_event_time > self._zeroconf_change_grace_period:
+        if time.time() - self._last_zero_conf_event_time > self._zero_conf_change_grace_period:
             if not self._network_plugin:
                 self.startDiscovery()
             else:
                 self._network_plugin.startDiscovery()
 
     @pyqtSlot(str, str)
-    def removeManualPrinter(self, key, address):
+    def removeManualDevice(self, key, address):
         if not self._network_plugin:
             return
 
-        self._network_plugin.removeManualPrinter(key, address)
+        self._network_plugin.removeManualDevice(key, address)
 
     @pyqtSlot(str, str)
-    def setManualPrinter(self, key, address):
+    def setManualDevice(self, key, address):
         if key != "":
             # This manual printer replaces a current manual printer
-            self._network_plugin.removeManualPrinter(key)
+            self._network_plugin.removeManualDevice(key)
 
         if address != "":
-            self._network_plugin.addManualPrinter(address)
+            self._network_plugin.addManualDevice(address)
 
-    def _onPrinterDiscoveryChanged(self, *args):
-        self._last_zeroconf_event_time = time.time()
-        self.printersChanged.emit()
+    def _onDeviceDiscoveryChanged(self, *args):
+        self._last_zero_conf_event_time = time.time()
+        self.discoveredDevicesChanged.emit()
 
-    @pyqtProperty("QVariantList", notify = printersChanged)
+    @pyqtProperty("QVariantList", notify = discoveredDevicesChanged)
     def foundDevices(self):
         if self._network_plugin:
+            # TODO: Check if this needs to stay.
             if Application.getInstance().getGlobalContainerStack():
                 global_printer_type = Application.getInstance().getGlobalContainerStack().getBottom().getId()
             else:
                 global_printer_type = "unknown"
 
-            printers = list(self._network_plugin.getPrinters().values())
+            printers = list(self._network_plugin.getDiscoveredDevices().values())
             # TODO; There are still some testing printers that don't have a correct printer type, so don't filter out unkown ones just yet.
-            printers = [printer for printer in printers if printer.printerType == global_printer_type or printer.printerType == "unknown"]
+            #printers = [printer for printer in printers if printer.printerType == global_printer_type or printer.printerType == "unknown"]
             printers.sort(key = lambda k: k.name)
             return printers
         else:
             return []
+
+    @pyqtSlot(str)
+    def setGroupName(self, group_name):
+        Logger.log("d", "Attempting to set the group name of the active machine to %s", group_name)
+        global_container_stack = Application.getInstance().getGlobalContainerStack()
+        if global_container_stack:
+            meta_data = global_container_stack.getMetaData()
+            if "connect_group_name" in meta_data:
+                previous_connect_group_name = meta_data["connect_group_name"]
+                global_container_stack.setMetaDataEntry("connect_group_name", group_name)
+                # Find all the places where there is the same group name and change it accordingly
+                Application.getInstance().getMachineManager().replaceContainersMetadata(key = "connect_group_name", value = previous_connect_group_name, new_value = group_name)
+            else:
+                global_container_stack.addMetaDataEntry("connect_group_name", group_name)
+                global_container_stack.addMetaDataEntry("hidden", False)
+
+        if self._network_plugin:
+            # Ensure that the connection states are refreshed.
+            self._network_plugin.reCheckConnections()
 
     @pyqtSlot(str)
     def setKey(self, key):
@@ -100,11 +123,13 @@ class DiscoverUM3Action(MachineAction):
         if global_container_stack:
             meta_data = global_container_stack.getMetaData()
             if "um_network_key" in meta_data:
+                previous_network_key= meta_data["um_network_key"]
                 global_container_stack.setMetaDataEntry("um_network_key", key)
                 # Delete old authentication data.
                 Logger.log("d", "Removing old authentication id %s for device %s", global_container_stack.getMetaDataEntry("network_authentication_id", None), key)
                 global_container_stack.removeMetaDataEntry("network_authentication_id")
                 global_container_stack.removeMetaDataEntry("network_authentication_key")
+                Application.getInstance().getMachineManager().replaceContainersMetadata(key = "um_network_key", value = previous_network_key, new_value = key)
             else:
                 global_container_stack.addMetaDataEntry("um_network_key", key)
 
@@ -121,6 +146,10 @@ class DiscoverUM3Action(MachineAction):
                 return global_container_stack.getMetaDataEntry("um_network_key")
 
         return ""
+
+    @pyqtSlot(str, result = bool)
+    def existsKey(self, key) -> bool:
+        return Application.getInstance().getMachineManager().existNetworkInstances(network_key = key)
 
     @pyqtSlot()
     def loadConfigurationFromPrinter(self):

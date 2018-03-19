@@ -24,7 +24,10 @@ class ConvexHullNode(SceneNode):
         self._original_parent = parent
 
         # Color of the drawn convex hull
-        self._color = Color(*Application.getInstance().getTheme().getColor("convex_hull").getRgb())
+        if Application.getInstance().hasGui():
+            self._color = Color(*Application.getInstance().getTheme().getColor("convex_hull").getRgb())
+        else:
+            self._color = Color(0, 0, 0)
 
         # The y-coordinate of the convex hull mesh. Must not be 0, to prevent z-fighting.
         self._mesh_height = 0.1
@@ -65,7 +68,7 @@ class ConvexHullNode(SceneNode):
             ConvexHullNode.shader.setUniformValue("u_opacity", 0.6)
 
         if self.getParent():
-            if self.getMeshData() and isinstance(self._node, SceneNode) and self._node.callDecoration("getBuildPlateNumber") == Application.getInstance().getBuildPlateModel().activeBuildPlate:
+            if self.getMeshData() and isinstance(self._node, SceneNode) and self._node.callDecoration("getBuildPlateNumber") == Application.getInstance().getMultiBuildPlateModel().activeBuildPlate:
                 renderer.queueNode(self, transparent = True, shader = ConvexHullNode.shader, backface_cull = True, sort = -8)
                 if self._convex_hull_head_mesh:
                     renderer.queueNode(self, shader = ConvexHullNode.shader, transparent = True, mesh = self._convex_hull_head_mesh, backface_cull = True, sort = -8)

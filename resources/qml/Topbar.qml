@@ -99,6 +99,7 @@ Rectangle
     {
         id: viewOrientationControl
         height: 30
+
         spacing: 2
         visible: UM.Controller.activeStage.stageId != "MonitorStage"
 
@@ -149,7 +150,7 @@ Rectangle
             visible: base.width - allItemsWidth - 1 * this.width > 0
         }
 
-        // #5 Left view
+        // #5 Right view
         Button
         {
             iconSource: UM.Theme.getIcon("view_right")

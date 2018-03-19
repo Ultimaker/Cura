@@ -15,7 +15,7 @@ Item
     Label
     {
         id: materialLabel
-        text: printCoreConfiguration.material.material + " (" + printCoreConfiguration.material.color + ")"
+        text: printCoreConfiguration.activeMaterial != null ? printCoreConfiguration.activeMaterial.name : ""
         elide: Text.ElideRight
         width: parent.width
         font: UM.Theme.getFont("very_small")
@@ -23,7 +23,7 @@ Item
     Label
     {
         id: printCoreLabel
-        text: printCoreConfiguration.print_core_id
+        text: printCoreConfiguration.hotendID
         anchors.top: materialLabel.bottom
         elide: Text.ElideRight
         width: parent.width

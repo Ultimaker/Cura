@@ -17,7 +17,7 @@ Item
     MouseArea
     {
       anchors.fill: parent
-      onClicked: OutputDevice.selectAutomaticPrinter()
+      onClicked: OutputDevice.setActivePrinter(null)
       z: 0
     }
 
@@ -32,7 +32,7 @@ Item
         width: 20 * screenScaleFactor
         height: 20 * screenScaleFactor
 
-        onClicked: OutputDevice.selectAutomaticPrinter()
+        onClicked: OutputDevice.setActivePrinter(null)
 
         style: ButtonStyle
         {
@@ -65,17 +65,23 @@ Item
         {
             if(visible)
             {
-                OutputDevice.startCamera()
+                if(OutputDevice.activePrinter != null && OutputDevice.activePrinter.camera != null)
+                {
+                    OutputDevice.activePrinter.camera.start()
+                }
             } else
             {
-                OutputDevice.stopCamera()
+                if(OutputDevice.activePrinter != null && OutputDevice.activePrinter.camera != null)
+                {
+                    OutputDevice.activePrinter.camera.stop()
+                }
             }
         }
         source:
         {
-            if(OutputDevice.cameraImage)
+            if(OutputDevice.activePrinter != null && OutputDevice.activePrinter.camera != null && OutputDevice.activePrinter.camera.latestImage)
             {
-                return OutputDevice.cameraImage;
+                return OutputDevice.activePrinter.camera.latestImage;
             }
             return "";
         }
