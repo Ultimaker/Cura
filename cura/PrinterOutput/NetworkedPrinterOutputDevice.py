@@ -1,9 +1,8 @@
-# Copyright (c) 2017 Ultimaker B.V.
+# Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from UM.Application import Application
 from UM.Logger import Logger
-from UM.Settings.ContainerRegistry import ContainerRegistry
 from cura.CuraApplication import CuraApplication
 
 from cura.PrinterOutputDevice import PrinterOutputDevice, ConnectionState
@@ -231,7 +230,6 @@ class NetworkedPrinterOutputDevice(PrinterOutputDevice):
         if onProgress is not None:
             reply.uploadProgress.connect(onProgress)
         self._registerOnFinishedCallback(reply, onFinished)
-
 
         return reply
 
