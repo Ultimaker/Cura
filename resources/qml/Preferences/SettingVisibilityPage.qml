@@ -78,15 +78,6 @@ UM.PreferencesPage
                     {
                         definitionsModel.setAllExpandedVisible(false)
                     }
-
-                    // After change set "Custom" option
-
-                    // If already "Custom" then don't do nothing
-                    if (visibilityPreset.currentIndex != visibilityPreset.model.count - 1)
-                    {
-                        visibilityPreset.currentIndex = visibilityPreset.model.count - 1
-                        UM.Preferences.setValue("cura/active_setting_visibility_preset", visibilityPreset.model.getItem(visibilityPreset.currentIndex).id)
-                    }
                 }
             }
         }
