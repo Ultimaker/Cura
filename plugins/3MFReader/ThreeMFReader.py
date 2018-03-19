@@ -137,7 +137,7 @@ class ThreeMFReader(MeshReader):
                     continue
                 setting_container.setProperty(key, "value", setting_value)
 
-        if len(um_node.getChildren()) > 0:
+        if len(um_node.getChildren()) > 0 and um_node.getMeshData() is None:
             group_decorator = GroupDecorator()
             um_node.addDecorator(group_decorator)
         um_node.setSelectable(True)
