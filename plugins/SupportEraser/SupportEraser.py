@@ -108,12 +108,10 @@ class SupportEraser(Tool):
         node.setPosition(position)
 
         active_build_plate = Application.getInstance().getMultiBuildPlateModel().activeBuildPlate
-
-        node.addDecorator(SettingOverrideDecorator())
         node.addDecorator(BuildPlateDecorator(active_build_plate))
         node.addDecorator(SliceableObjectDecorator())
 
-        stack = node.callDecoration("getStack") # created by SettingOverrideDecorator
+        stack = node.callDecoration("getStack") # created by SettingOverrideDecorator that is automatically added to CuraSceneNode
         settings = stack.getTop()
 
         definition = stack.getSettingDefinition("anti_overhang_mesh")
