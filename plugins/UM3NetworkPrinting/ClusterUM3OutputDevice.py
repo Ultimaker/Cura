@@ -94,8 +94,8 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
             file_formats = Application.getInstance().getMeshFileHandler().getSupportedFileTypesWrite()
 
         #Create a list from the supported file formats string.
-        container = Application.getInstance().getGlobalContainerStack().findContainer({"file_formats": "*"})
-        machine_file_formats = [file_type.strip() for file_type in container.getMetaDataEntry("file_formats").split(";")]
+        machine_file_formats = Application.getInstance().getGlobalContainerStack().getMetaDataEntry("file_formats").split(";")
+        machine_file_formats = [file_type.strip() for file_type in machine_file_formats]
 
         # Take the intersection between file_formats and machine_file_formats.
         format_by_mimetype = {format["mime_type"]: format for format in file_formats}
