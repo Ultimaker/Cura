@@ -16,7 +16,6 @@ from UM.Mesh.MeshBuilder import MeshBuilder
 from UM.Mesh.MeshReader import MeshReader
 from UM.Scene.GroupDecorator import GroupDecorator
 
-from cura.Settings.SettingOverrideDecorator import SettingOverrideDecorator
 from cura.Settings.ExtruderManager import ExtruderManager
 from cura.Scene.CuraSceneNode import CuraSceneNode
 from cura.Scene.BuildPlateDecorator import BuildPlateDecorator
@@ -81,7 +80,7 @@ class ThreeMFReader(MeshReader):
 
         active_build_plate = Application.getInstance().getMultiBuildPlateModel().activeBuildPlate
 
-        um_node = CuraSceneNode()
+        um_node = CuraSceneNode() # This adds a SettingOverrideDecorator
         um_node.addDecorator(BuildPlateDecorator(active_build_plate))
         um_node.setName(node_name)
         transformation = self._createMatrixFromTransformationString(savitar_node.getTransformation())
@@ -110,8 +109,6 @@ class ThreeMFReader(MeshReader):
 
         # Add the setting override decorator, so we can add settings to this node.
         if settings:
-            um_node.addDecorator(SettingOverrideDecorator())
-
             global_container_stack = Application.getInstance().getGlobalContainerStack()
 
             # Ensure the correct next container for the SettingOverride decorator is set.
