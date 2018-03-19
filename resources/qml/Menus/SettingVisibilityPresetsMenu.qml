@@ -41,8 +41,7 @@ Menu
     MenuItem
     {
         text: catalog.i18nc("@action:inmenu", "Show All Settings")
-        checkable: true
-        checked: showingAllSettings
+        checkable: false
         exclusiveGroup: group
         onTriggered:
         {
