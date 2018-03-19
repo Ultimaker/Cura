@@ -13,11 +13,8 @@ Menu
     title: catalog.i18nc("@action:inmenu", "Visible Settings")
 
     property QtObject settingVisibilityPresetsModel: CuraApplication.getSettingVisibilityPresetsModel()
-    property bool showingSearchResults
-    property bool showingAllSettings
 
     signal showAllSettings()
-    signal showSettingVisibilityProfile()
 
     Instantiator
     {
@@ -43,7 +40,7 @@ Menu
     MenuSeparator {}
     MenuItem
     {
-        text: catalog.i18nc("@action:inmenu", "All Settings")
+        text: catalog.i18nc("@action:inmenu", "Show All Settings")
         checkable: true
         checked: showingAllSettings
         exclusiveGroup: group
