@@ -488,7 +488,7 @@ Item
                 MenuItem
                 {
                     //: Settings context menu action
-                    text: catalog.i18nc("@action:menu", "Copy all values to all extruders")
+                    text: catalog.i18nc("@action:menu", "Copy all changed values to all extruders")
                     visible: machineExtruderCount.properties.value > 1
                     enabled: contextMenu.provider != undefined
                     onTriggered: Cura.MachineManager.copyAllValuesToExtruders()
