@@ -111,12 +111,12 @@ UM.Dialog
                 height: childrenRect.height
                 Label
                 {
-                    text: catalog.i18nc("@action:label", "Name")
+                    text: catalog.i18nc("@action:label", Cura.MachineManager.activeMachineNetworkGroupName != "" ? "Printer Group" : "Name")
                     width: (parent.width / 3) | 0
                 }
                 Label
                 {
-                    text: Cura.MachineManager.activeMachineName
+                    text: Cura.MachineManager.activeMachineNetworkGroupName != "" ? Cura.MachineManager.activeMachineNetworkGroupName : Cura.MachineManager.activeMachineName
                     width: (parent.width / 3) | 0
                 }
             }
