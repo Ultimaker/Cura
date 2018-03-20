@@ -5,7 +5,7 @@ from PyQt5.QtCore import QTimer
 from cura.Scene.CuraSceneNode import CuraSceneNode
 
 from UM.Application import Application
-from UM.Extension import Extension
+from UM.Tool import Tool
 from UM.Message import Message
 from UM.i18n import i18nCatalog
 from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
@@ -17,31 +17,20 @@ SHRINKAGE_THRESHOLD = 0.5
 WARNING_SIZE_XY = 150
 WARNING_SIZE_Z = 100
 
-MESSAGE_LIFETIME = 10
 
-
-class ModelChecker(Extension):
+class ModelChecker(Tool):
     def __init__(self):
         super().__init__()
 
-        self._update_timer = QTimer()
-        self._update_timer.setInterval(2000)
-        self._update_timer.setSingleShot(True)
-        self._update_timer.timeout.connect(self.checkObjects)
+        self._last_known_tool_id = None
 
-        self._nodes_to_check = set()
+        self._controller.activeToolChanged.connect(self._onActiveToolChanged)
 
-        self._warning_model_names = set()  # Collect the names of models so we show the next warning with timeout
-
-        Application.getInstance().initializationFinished.connect(self.bindSignals)
-
-    def bindSignals(self):
-        Application.getInstance().getController().getScene().sceneChanged.connect(self._onSceneChanged)
-        Application.getInstance().getMachineManager().rootMaterialChanged.connect(self._checkAllSliceableNodes)
-
-    def checkObjects(self):
+    def checkObjects(self, nodes_to_check):
         warning_nodes = []
         global_container_stack = Application.getInstance().getGlobalContainerStack()
+        if global_container_stack is None:
+            return []
         material_shrinkage = {}
         need_check = False
 
@@ -59,42 +48,57 @@ class ModelChecker(Extension):
             return
 
         # Check node material shrinkage and bounding box size
-        for node in self._nodes_to_check:
+        for node in nodes_to_check:
             node_extruder_position = node.callDecoration("getActiveExtruderPosition")
             if material_shrinkage[node_extruder_position] > SHRINKAGE_THRESHOLD:
                 bbox = node.getBoundingBox()
                 if bbox.width >= WARNING_SIZE_XY or bbox.depth >= WARNING_SIZE_XY or bbox.height >= WARNING_SIZE_Z:
                     warning_nodes.append(node)
-        self._nodes_to_check = set()
 
-        # Display warning message
-        if warning_nodes:
-            message_lifetime = MESSAGE_LIFETIME
-            for node in warning_nodes:
-                if node.getName() not in self._warning_model_names:
-                    message_lifetime = 0  # infinite
-                    self._warning_model_names.add(node.getName())
-            caution_message = Message(catalog.i18nc(
-                "@info:warning",
-                "Some models may not be printed optimal due to object size and material chosen [%s].\n" 
-                "Tips that may be useful to improve the print quality:\n" 
-                "1) Use rounded corners\n" 
-                "2) Turn the fan off (only if the are no tiny details on the model)\n" 
-                "3) Use a different material") % ", ".join([n.getName() for n in warning_nodes]),
-                lifetime = message_lifetime,
-                title = catalog.i18nc("@info:title", "Model Warning"))
-            caution_message.show()
+        return warning_nodes
 
-    def _onSceneChanged(self, source):
-        if isinstance(source, CuraSceneNode) and source.callDecoration("isSliceable"):
-            self._nodes_to_check.add(source)
-            self._update_timer.start()
-
-    def _checkAllSliceableNodes(self, *args):
-        # Add all scene nodes
+    def checkAllSliceableNodes(self):
+        # Add all sliceable scene nodes to check
         scene = Application.getInstance().getController().getScene()
+        nodes_to_check = []
         for node in DepthFirstIterator(scene.getRoot()):
             if node.callDecoration("isSliceable"):
-                self._nodes_to_check.add(node)
-        if self._nodes_to_check:
-            self._update_timer.start()
+                nodes_to_check.append(node)
+        return self.checkObjects(nodes_to_check)
+
+    ##  Display warning message
+    def showWarningMessage(self, warning_nodes):
+        caution_message = Message(catalog.i18nc(
+            "@info:status",
+            "Some models may not be printed optimal due to object size and material chosen [%s].\n"
+            "Tips that may be useful to improve the print quality:\n"
+            "1) Use rounded corners\n"
+            "2) Turn the fan off (only if the are no tiny details on the model)\n"
+            "3) Use a different material") % ", ".join([n.getName() for n in warning_nodes]),
+            lifetime = 0,
+            title = catalog.i18nc("@info:title", "Model Checker Warning"))
+        caution_message.show()
+
+    def showHappyMessage(self):
+        happy_message = Message(catalog.i18nc(
+            "@info:status",
+            "The Model Checker did not detect any problems with your model / print setup combination."),
+            lifetime = 5,
+            title = catalog.i18nc("@info:title", "Model Checker"))
+        happy_message.show()
+
+    def _onActiveToolChanged(self):
+        active_tool = self.getController().getActiveTool()
+        if active_tool is None:
+            return
+        active_tool_id = active_tool.getPluginId()
+        if active_tool_id != self.getPluginId():
+            self._last_known_tool_id = active_tool_id
+        if active_tool_id == self.getPluginId():
+            warning_nodes = self.checkAllSliceableNodes()
+            if warning_nodes:
+                self.showWarningMessage(warning_nodes)
+            else:
+                self.showHappyMessage()
+            if self._last_known_tool_id is not None:
+                self.getController().setActiveTool(self._last_known_tool_id)
