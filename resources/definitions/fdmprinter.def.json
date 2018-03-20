@@ -2097,7 +2097,7 @@
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
-                "material_shrinkage_ratio_percentage":
+                "material_shrinkage_percentage":
                 {
                     "label": "Shrinkage Ratio",
                     "description": "Shrinkage ratio in percentage.",

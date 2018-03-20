@@ -36,7 +36,7 @@ class ModelChecker(Tool):
 
         # Get all shrinkage values of materials used
         for extruder_position, extruder in global_container_stack.extruders.items():
-            shrinkage = extruder.material.getProperty("material_shrinkage_ratio_percentage", "value")
+            shrinkage = extruder.material.getProperty("material_shrinkage_percentage", "value")
             if shrinkage is None:
                 shrinkage = 0
             if shrinkage > SHRINKAGE_THRESHOLD:
