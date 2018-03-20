@@ -460,13 +460,13 @@ Item
                     visible: printerModel != null ? printerModel.canSendRawGcode: true
                     enabled: {
                         if (printerModel == null) {
-                            return false // Can't preheat if not connected
+                            return false // Can't send custom commands if not connected.
                         }
                         if (!connectedPrinter.acceptsCommands) {
                             return false // Not allowed to do anything
                         }
                         if (connectedPrinter.jobState == "printing" || connectedPrinter.jobState == "pre_print" || connectedPrinter.jobState == "resuming" || connectedPrinter.jobState == "pausing" || connectedPrinter.jobState == "paused" || connectedPrinter.jobState == "error" || connectedPrinter.jobState == "offline") {
-                            return false // Printer is in a state where it can't react to pre-heating
+                            return false // Printer is in a state where it can't react to custom commands.
                         }
                         return true
                     }
