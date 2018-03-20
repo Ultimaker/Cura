@@ -861,9 +861,10 @@ class MachineManager(QObject):
 
     def updateNumberExtrudersEnabled(self):
         definition_changes_container = self._global_container_stack.definitionChanges
+        machine_extruder_count = self._global_container_stack.getProperty("machine_extruder_count", "value")
         extruder_count = 0
         for position, extruder in self._global_container_stack.extruders.items():
-            if extruder.isEnabled:
+            if extruder.isEnabled and int(position) < machine_extruder_count:
                 extruder_count += 1
         if self.numberExtrudersEnabled != extruder_count:
             definition_changes_container.setProperty("extruders_enabled_count", "value", extruder_count)
