@@ -197,10 +197,6 @@ class StartSliceJob(Job):
                         if getattr(node, "_outside_buildarea", False) and not is_non_printing_mesh:
                             continue
 
-                        #node_position = node.callDecoration("getActiveExtruderPosition")
-                        #if not stack.extruders[str(node_position)].isEnabled:
-                        #    continue
-
                         temp_list.append(node)
                         if not is_non_printing_mesh:
                             has_printing_mesh = True
