@@ -136,6 +136,8 @@ class ExtruderStack(CuraContainerStack):
     @override(CuraContainerStack)
     def deserialize(self, contents: str, file_name: Optional[str] = None) -> None:
         super().deserialize(contents, file_name)
+        if "enabled" not in self.getMetaData():
+            self.addMetaDataEntry("enabled", "True")
         stacks = ContainerRegistry.getInstance().findContainerStacks(id=self.getMetaDataEntry("machine", ""))
         if stacks:
             self.setNextStack(stacks[0])

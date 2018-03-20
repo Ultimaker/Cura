@@ -99,6 +99,7 @@ class MachineInfo:
 class ExtruderInfo:
     def __init__(self):
         self.position = None
+        self.enabled = True
         self.variant_info = None
         self.root_material_id = None
 
@@ -425,6 +426,8 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
 
             extruder_info = ExtruderInfo()
             extruder_info.position = position
+            if parser.has_option("metadata", "enabled"):
+                extruder_info.enabled = parser["metadata"]["enabled"]
             if variant_id not in ("empty", "empty_variant"):
                 extruder_info.variant_info = instance_container_info_dict[variant_id]
             if material_id not in ("empty", "empty_material"):
@@ -945,6 +948,15 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             self._quality_changes_to_apply = self._machine_info.quality_changes_info.name
         else:
             self._quality_type_to_apply = self._machine_info.quality_type
+
+        # Set enabled/disabled for extruders
+        for position, extruder_stack in extruder_stack_dict.items():
+            extruder_info = self._machine_info.extruder_info_dict.get(position)
+            if not extruder_info:
+                continue
+            if "enabled" not in extruder_stack.getMetaData():
+                extruder_stack.addMetaDataEntry("enabled", "True")
+            extruder_stack.setMetaDataEntry("enabled", str(extruder_info.enabled))
 
     def _updateActiveMachine(self, global_stack):
         # Actually change the active machine.
