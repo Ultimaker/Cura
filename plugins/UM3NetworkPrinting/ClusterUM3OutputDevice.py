@@ -1,12 +1,17 @@
-# Copyright (c) 2017 Ultimaker B.V.
+# Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
+from UM.FileHandler.FileWriter import FileWriter #To choose based on the output file mode (text vs. binary).
+from UM.FileHandler.WriteFileJob import WriteFileJob #To call the file writer asynchronously.
 from UM.Logger import Logger
 from UM.Application import Application
 from UM.Settings.ContainerRegistry import ContainerRegistry
 from UM.i18n import i18nCatalog
 from UM.Message import Message
 from UM.Qt.Duration import Duration, DurationFormat
+from UM.OutputDevice import OutputDeviceError #To show that something went wrong when writing.
+from UM.Scene.SceneNode import SceneNode #For typing.
+from UM.Version import Version #To check against firmware versions for support.
 
 from cura.PrinterOutput.NetworkedPrinterOutputDevice import NetworkedPrinterOutputDevice, AuthState
 from cura.PrinterOutput.PrinterOutputModel import PrinterOutputModel
@@ -20,10 +25,11 @@ from PyQt5.QtNetwork import QNetworkRequest, QNetworkReply
 from PyQt5.QtGui import QDesktopServices
 from PyQt5.QtCore import pyqtSlot, QUrl, pyqtSignal, pyqtProperty, QObject
 
-from time import time
+from time import time, sleep
 from datetime import datetime
 from typing import Optional, Dict, List
 
+import io #To create the correct buffers for sending data to the printer.
 import json
 import os
 
@@ -79,24 +85,47 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
 
         self._latest_reply_handler = None
 
-    def requestWrite(self, nodes, file_name=None, filter_by_machine=False, file_handler=None, **kwargs):
+    def requestWrite(self, nodes: List[SceneNode], file_name=None, filter_by_machine=False, file_handler=None, **kwargs):
         self.writeStarted.emit(self)
 
-        gcode_dict = getattr(Application.getInstance().getController().getScene(), "gcode_dict", [])
-        active_build_plate_id = Application.getInstance().getMultiBuildPlateModel().activeBuildPlate
-        gcode_list = gcode_dict[active_build_plate_id]
-
-        if not gcode_list:
-            # Unable to find g-code. Nothing to send
-            return
-
-        self._gcode = gcode_list
-
-        is_job_sent = True
-        if len(self._printers) > 1:
-            self._spawnPrinterSelectionDialog()
+        #Formats supported by this application (file types that we can actually write).
+        if file_handler:
+            file_formats = file_handler.getSupportedFileTypesWrite()
         else:
-            is_job_sent = self.sendPrintJob()
+            file_formats = Application.getInstance().getMeshFileHandler().getSupportedFileTypesWrite()
+
+        #Create a list from the supported file formats string.
+        machine_file_formats = Application.getInstance().getGlobalContainerStack().getMetaDataEntry("file_formats").split(";")
+        machine_file_formats = [file_type.strip() for file_type in machine_file_formats]
+        #Exception for UM3 firmware version >=4.4: UFP is now supported and should be the preferred file format.
+        if "application/x-ufp" not in machine_file_formats and self.printerType == "ultimaker3" and Version(self.firmwareVersion) >= Version("4.4"):
+            machine_file_formats = ["application/x-ufp"] + machine_file_formats
+
+        # Take the intersection between file_formats and machine_file_formats.
+        format_by_mimetype = {format["mime_type"]: format for format in file_formats}
+        file_formats = [format_by_mimetype[mimetype] for mimetype in machine_file_formats] #Keep them ordered according to the preference in machine_file_formats.
+
+        if len(file_formats) == 0:
+            Logger.log("e", "There are no file formats available to write with!")
+            raise OutputDeviceError.WriteRequestFailedError(i18n_catalog.i18nc("@info:status", "There are no file formats available to write with!"))
+        preferred_format = file_formats[0]
+
+        #Just take the first file format available.
+        if file_handler is not None:
+            writer = file_handler.getWriterByMimeType(preferred_format["mime_type"])
+        else:
+            writer = Application.getInstance().getMeshFileHandler().getWriterByMimeType(preferred_format["mime_type"])
+
+        #This function pauses with the yield, waiting on instructions on which printer it needs to print with.
+        self._sending_job = self._sendPrintJob(writer, preferred_format, nodes)
+        self._sending_job.send(None) #Start the generator.
+
+        if len(self._printers) > 1: #We need to ask the user.
+            self._spawnPrinterSelectionDialog()
+            is_job_sent = True
+        else: #Just immediately continue.
+            self._sending_job.send("") #No specifically selected printer.
+            is_job_sent = self._sending_job.send(None)
 
         # Notify the UI that a switch to the print monitor should happen
         if is_job_sent:
@@ -113,29 +142,54 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
     def clusterSize(self):
         return self._cluster_size
 
-    @pyqtSlot()
+    ##  Allows the user to choose a printer to print with from the printer
+    #   selection dialogue.
+    #   \param target_printer The name of the printer to target.
     @pyqtSlot(str)
-    def sendPrintJob(self, target_printer: str = ""):
+    def selectPrinter(self, target_printer: str = "") -> None:
+        self._sending_job.send(target_printer)
+
+    ##  Greenlet to send a job to the printer over the network.
+    #
+    #   This greenlet gets called asynchronously in requestWrite. It is a
+    #   greenlet in order to optionally wait for selectPrinter() to select a
+    #   printer.
+    #   The greenlet yields exactly three times: First time None,
+    #   \param writer The file writer to use to create the data.
+    #   \param preferred_format A dictionary containing some information about
+    #   what format to write to. This is necessary to create the correct buffer
+    #   types and file extension and such.
+    def _sendPrintJob(self, writer: FileWriter, preferred_format: Dict, nodes: List[SceneNode]):
         Logger.log("i", "Sending print job to printer.")
         if self._sending_gcode:
             self._error_message = Message(
                 i18n_catalog.i18nc("@info:status",
                                    "Sending new jobs (temporarily) blocked, still sending the previous print job."))
             self._error_message.show()
-            return False
+            yield #Wait on the user to select a target printer.
+            yield #Wait for the write job to be finished.
+            yield False #Return whether this was a success or not.
+            yield #Prevent StopIteration.
 
         self._sending_gcode = True
 
-        self._progress_message = Message(i18n_catalog.i18nc("@info:status", "Sending data to printer"), 0, False, -1,
-                                         i18n_catalog.i18nc("@info:title", "Sending Data"))
-        self._progress_message.addAction("Abort", i18n_catalog.i18nc("@action:button", "Cancel"), None, "")
+        target_printer = yield #Potentially wait on the user to select a target printer.
+
+        # Using buffering greatly reduces the write time for many lines of gcode
+        if preferred_format["mode"] == FileWriter.OutputMode.TextMode:
+            stream = io.StringIO()
+        else: #Binary mode.
+            stream = io.BytesIO()
+
+        job = WriteFileJob(writer, stream, nodes, preferred_format["mode"])
+
+        self._progress_message = Message(i18n_catalog.i18nc("@info:status", "Sending data to printer"), lifetime = 0, dismissable = False, progress = -1,
+                                         title = i18n_catalog.i18nc("@info:title", "Sending Data"))
+        self._progress_message.addAction("Abort", i18n_catalog.i18nc("@action:button", "Cancel"), icon = None, description = "")
         self._progress_message.actionTriggered.connect(self._progressMessageActionTriggered)
         self._progress_message.show()
 
-        compressed_gcode = self._compressGCode()
-        if compressed_gcode is None:
-            # Abort was called.
-            return False
+        job.start()
 
         parts = []
 
@@ -147,13 +201,20 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
         # Add user name to the print_job
         parts.append(self._createFormPart("name=owner", bytes(self._getUserName(), "utf-8"), "text/plain"))
 
-        file_name = "%s.gcode.gz" % Application.getInstance().getPrintInformation().jobName
+        file_name = Application.getInstance().getPrintInformation().jobName + "." + preferred_format["extension"]
 
-        parts.append(self._createFormPart("name=\"file\"; filename=\"%s\"" % file_name, compressed_gcode))
+        while not job.isFinished():
+            sleep(0.1)
+        output = stream.getvalue() #Either str or bytes depending on the output mode.
+        if isinstance(stream, io.StringIO):
+            output = output.encode("utf-8")
+
+        parts.append(self._createFormPart("name=\"file\"; filename=\"%s\"" % file_name, output))
 
         self._latest_reply_handler = self.postFormWithParts("print_jobs/", parts, onFinished=self._onPostPrintJobFinished, onProgress=self._onUploadPrintJobProgress)
 
-        return True
+        yield True #Return that we had success!
+        yield #To prevent having to catch the StopIteration exception.
 
     @pyqtProperty(QObject, notify=activePrinterChanged)
     def activePrinter(self) -> Optional[PrinterOutputModel]:
