@@ -16,6 +16,7 @@ class PrinterOutputController:
         self.can_abort = True
         self.can_pre_heat_bed = True
         self.can_pre_heat_hotends = True
+        self.can_send_raw_gcode = True
         self.can_control_manually = True
         self._output_device = output_device
 
@@ -46,8 +47,11 @@ class PrinterOutputController:
     def moveHead(self, printer: "PrinterOutputModel", x, y, z, speed):
         Logger.log("w", "Move head not implemented in controller")
 
-    def homeBed(self, printer):
+    def homeBed(self, printer: "PrinterOutputModel"):
         Logger.log("w", "Home bed not implemented in controller")
 
-    def homeHead(self, printer):
+    def homeHead(self, printer: "PrinterOutputModel"):
         Logger.log("w", "Home head not implemented in controller")
+
+    def sendRawCommand(self, printer: "PrinterOutputModel", command: str):
+        Logger.log("w", "Custom command not implemented in controller")

@@ -15,6 +15,7 @@ class ClusterUM3PrinterOutputController(PrinterOutputController):
         self.can_pre_heat_bed = False
         self.can_pre_heat_hotends = False
         self.can_control_manually = False
+        self.can_send_raw_gcode = False
 
     def setJobState(self, job: "PrintJobOutputModel", state: str):
         data = "{\"action\": \"%s\"}" % state
