@@ -4908,7 +4908,7 @@
                     "unit": "mm³",
                     "default_value": 0,
                     "minimum_value": "0",
-                    "maximum_value_warning": "1",
+                    "maximum_value_warning": "2.5",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
