@@ -96,7 +96,7 @@ class ModelChecker(QObject, Extension):
 
         Logger.log("d", "Model checker view created.")
 
-    def _onChanged(self, *args):
+    def _onChanged(self):
         if self._button_view is None:
             self._createView()
         old_need_checks = self._need_checks
