@@ -239,7 +239,7 @@ class StartSliceJob(Job):
 
             for group in filtered_object_groups:
                 group_message = self._slice_message.addRepeatedMessage("object_lists")
-                if group[0].getParent().callDecoration("isGroup"):
+                if group[0].getParent() is not None and group[0].getParent().callDecoration("isGroup"):
                     self._handlePerObjectSettings(group[0].getParent(), group_message)
                 for object in group:
                     mesh_data = object.getMeshData()
