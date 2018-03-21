@@ -43,7 +43,6 @@ Rectangle
                 return catalog.i18nc("@label:status", "Lost connection with the printer");
             case "maintenance":
                 return catalog.i18nc("@label:status", "Unavailable");
-            case "unknown":
             default:
                 return catalog.i18nc("@label:status", "Unknown");
         }
