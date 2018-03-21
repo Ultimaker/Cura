@@ -31,6 +31,15 @@ class ModelChecker(QObject, Extension):
         self._button_view = None
         self._need_checks = False
 
+        self._happy_message = Message(catalog.i18nc(
+            "@info:status",
+            "The Model Checker did not detect any problems with your model / chosen materials combination."),
+            lifetime = 5,
+            title = catalog.i18nc("@info:title", "Model Checker"))
+        self._caution_message = Message("", #Message text gets set when the message gets shown, to display the models in question.
+            lifetime = 0,
+            title = catalog.i18nc("@info:title", "Model Checker Warning"))
+
         Application.getInstance().initializationFinished.connect(self.bindSignals)
 
     def bindSignals(self):
@@ -62,24 +71,17 @@ class ModelChecker(QObject, Extension):
 
     ##  Display warning message
     def showWarningMessage(self, warning_nodes):
-        caution_message = Message(catalog.i18nc(
+        self._caution_message.setText(catalog.i18nc(
             "@info:status",
             "Some models may not be printed optimal due to object size and chosen material for models: {model_names}.\n"
             "Tips that may be useful to improve the print quality:\n"
             "1) Use rounded corners\n"
             "2) Turn the fan off (only if the are no tiny details on the model)\n"
-            "3) Use a different material").format(model_names = ", ".join([n.getName() for n in warning_nodes])),
-            lifetime = 0,
-            title = catalog.i18nc("@info:title", "Model Checker Warning"))
-        caution_message.show()
+            "3) Use a different material").format(model_names = ", ".join([n.getName() for n in warning_nodes])))
+        self._caution_message.show()
 
     def showHappyMessage(self):
-        happy_message = Message(catalog.i18nc(
-            "@info:status",
-            "The Model Checker did not detect any problems with your model / chosen materials combination."),
-            lifetime = 5,
-            title = catalog.i18nc("@info:title", "Model Checker"))
-        happy_message.show()
+        self._happy_message.show()
 
     ##  Creates the view used by show popup. The view is saved because of the fairly aggressive garbage collection.
     def _createView(self):
