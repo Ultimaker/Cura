@@ -64,11 +64,11 @@ class ModelChecker(QObject, Extension):
     def showWarningMessage(self, warning_nodes):
         caution_message = Message(catalog.i18nc(
             "@info:status",
-            "Some models may not be printed optimal due to object size and chosen material [%s].\n"
+            "Some models may not be printed optimal due to object size and chosen material for models: {model_names}.\n"
             "Tips that may be useful to improve the print quality:\n"
             "1) Use rounded corners\n"
             "2) Turn the fan off (only if the are no tiny details on the model)\n"
-            "3) Use a different material") % ", ".join([n.getName() for n in warning_nodes]),
+            "3) Use a different material").format(model_names = ", ".join([n.getName() for n in warning_nodes])),
             lifetime = 0,
             title = catalog.i18nc("@info:title", "Model Checker Warning"))
         caution_message.show()
