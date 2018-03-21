@@ -98,4 +98,10 @@ Button
         target: Cura.MachineManager
         onCurrentConfigurationChanged: updateOnSync()
     }
+
+    Connections
+    {
+        target: Cura.MachineManager
+        onOutputDevicesChanged: updateOnSync()
+    }
 }
