@@ -64,7 +64,7 @@ class ModelChecker(QObject, Extension):
     def showWarningMessage(self, warning_nodes):
         caution_message = Message(catalog.i18nc(
             "@info:status",
-            "Some models may not be printed optimal due to object size and material chosen [%s].\n"
+            "Some models may not be printed optimal due to object size and chosen material [%s].\n"
             "Tips that may be useful to improve the print quality:\n"
             "1) Use rounded corners\n"
             "2) Turn the fan off (only if the are no tiny details on the model)\n"
