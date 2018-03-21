@@ -127,6 +127,9 @@ class VersionUpgrade32to33(VersionUpgrade):
             parser["metadata"]["position"] = str(extruder_position)
             del parser["metadata"]["extruder"]
 
+        quality_type = parser["metadata"]["quality_type"]
+        parser["metadata"]["quality_type"] = quality_type.lower()
+
         #Update version number.
         parser["general"]["version"] = "3"
 
