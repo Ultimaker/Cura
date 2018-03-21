@@ -33,6 +33,7 @@ class MultiplyObjectsJob(Job):
         root = scene.getRoot()
         arranger = Arrange.create(scene_root=root)
         nodes = []
+
         for node in self._objects:
             # If object is part of a group, multiply group
             current_node = node
@@ -49,18 +50,20 @@ class MultiplyObjectsJob(Job):
             for i in range(self._count):
                 # We do place the nodes one by one, as we want to yield in between.
                 if not node_too_big:
-                    node, solution_found = arranger.findNodePlacement(current_node, offset_shape_arr, hull_shape_arr)
+                    new_node, solution_found = arranger.findNodePlacement(current_node, offset_shape_arr, hull_shape_arr)
                 if node_too_big or not solution_found:
                     found_solution_for_all = False
-                    new_location = node.getPosition()
+                    new_location = new_node.getPosition()
                     new_location = new_location.set(z = 100 - i * 20)
-                    node.setPosition(new_location)
+                    new_node.setPosition(new_location)
 
                 # Same build plate
                 build_plate_number = current_node.callDecoration("getBuildPlateNumber")
-                node.callDecoration("setBuildPlateNumber", build_plate_number)
+                new_node.callDecoration("setBuildPlateNumber", build_plate_number)
+                for child in new_node.getChildren():
+                    child.callDecoration("setBuildPlateNumber", build_plate_number)
 
-                nodes.append(node)
+                nodes.append(new_node)
                 current_progress += 1
                 status_message.setProgress((current_progress / total_progress) * 100)
                 Job.yieldThread()

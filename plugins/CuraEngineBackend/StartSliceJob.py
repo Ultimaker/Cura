@@ -129,21 +129,19 @@ class StartSliceJob(Job):
             self.setResult(StartJobResult.MaterialIncompatible)
             return
 
-        for extruder_stack in ExtruderManager.getInstance().getMachineExtruders(stack.getId()):
+        for position, extruder_stack in stack.extruders.items():
             material = extruder_stack.findContainer({"type": "material"})
+            if not extruder_stack.isEnabled:
+                continue
             if material:
                 if material.getMetaDataEntry("compatible") == False:
                     self.setResult(StartJobResult.MaterialIncompatible)
                     return
 
-        # Validate settings per selectable model
-        if Application.getInstance().getObjectsModel().stacksHaveErrors():
-            self.setResult(StartJobResult.ObjectSettingError)
-            return
 
         # Don't slice if there is a per object setting with an error value.
         for node in DepthFirstIterator(self._scene.getRoot()):
-            if node.isSelectable():
+            if not isinstance(node, CuraSceneNode) or not node.isSelectable():
                 continue
 
             if self._checkStackForErrors(node.callDecoration("getStack")):
@@ -193,11 +191,15 @@ class StartSliceJob(Job):
                         if per_object_stack:
                             is_non_printing_mesh = any(per_object_stack.getProperty(key, "value") for key in NON_PRINTING_MESH_SETTINGS)
 
-                        if node.callDecoration("getBuildPlateNumber") == self._build_plate_number:
-                            if not getattr(node, "_outside_buildarea", False) or is_non_printing_mesh:
-                                temp_list.append(node)
-                                if not is_non_printing_mesh:
-                                    has_printing_mesh = True
+                        # Find a reason not to add the node
+                        if node.callDecoration("getBuildPlateNumber") != self._build_plate_number:
+                            continue
+                        if getattr(node, "_outside_buildarea", False) and not is_non_printing_mesh:
+                            continue
+
+                        temp_list.append(node)
+                        if not is_non_printing_mesh:
+                            has_printing_mesh = True
 
                     Job.yieldThread()
 
@@ -209,10 +211,22 @@ class StartSliceJob(Job):
                 if temp_list:
                     object_groups.append(temp_list)
 
+            extruders_enabled = {position: stack.isEnabled for position, stack in Application.getInstance().getGlobalContainerStack().extruders.items()}
+            filtered_object_groups = []
+            for group in object_groups:
+                stack = Application.getInstance().getGlobalContainerStack()
+                skip_group = False
+                for node in group:
+                    if not extruders_enabled[node.callDecoration("getActiveExtruderPosition")]:
+                        skip_group = True
+                        break
+                if not skip_group:
+                    filtered_object_groups.append(group)
+
             # There are cases when there is nothing to slice. This can happen due to one at a time slicing not being
             # able to find a possible sequence or because there are no objects on the build plate (or they are outside
             # the build volume)
-            if not object_groups:
+            if not filtered_object_groups:
                 self.setResult(StartJobResult.NothingToSlice)
                 return
 
@@ -223,9 +237,9 @@ class StartSliceJob(Job):
             for extruder_stack in ExtruderManager.getInstance().getMachineExtruders(stack.getId()):
                 self._buildExtruderMessage(extruder_stack)
 
-            for group in object_groups:
+            for group in filtered_object_groups:
                 group_message = self._slice_message.addRepeatedMessage("object_lists")
-                if group[0].getParent().callDecoration("isGroup"):
+                if group[0].getParent() is not None and group[0].getParent().callDecoration("isGroup"):
                     self._handlePerObjectSettings(group[0].getParent(), group_message)
                 for object in group:
                     mesh_data = object.getMeshData()
@@ -273,9 +287,15 @@ class StartSliceJob(Job):
     #   \return A dictionary of replacement tokens to the values they should be
     #   replaced with.
     def _buildReplacementTokens(self, stack) -> dict:
+        default_extruder_position = int(Application.getInstance().getMachineManager().defaultExtruderPosition)
         result = {}
         for key in stack.getAllKeys():
-            result[key] = stack.getProperty(key, "value")
+            setting_type = stack.definition.getProperty(key, "type")
+            value = stack.getProperty(key, "value")
+            if setting_type == "extruder" and value == -1:
+                # replace with the default value
+                value = default_extruder_position
+            result[key] = value
             Job.yieldThread()
 
         result["print_bed_temperature"] = result["material_bed_temperature"] # Renamed settings.
@@ -381,11 +401,11 @@ class StartSliceJob(Job):
     #   limit_to_extruder property.
     def _buildGlobalInheritsStackMessage(self, stack):
         for key in stack.getAllKeys():
-            extruder = int(round(float(stack.getProperty(key, "limit_to_extruder"))))
-            if extruder >= 0: #Set to a specific extruder.
+            extruder_position = int(round(float(stack.getProperty(key, "limit_to_extruder"))))
+            if extruder_position >= 0:  # Set to a specific extruder.
                 setting_extruder = self._slice_message.addRepeatedMessage("limit_to_extruder")
                 setting_extruder.name = key
-                setting_extruder.extruder = extruder
+                setting_extruder.extruder = extruder_position
             Job.yieldThread()
 
     ##  Check if a node has per object settings and ensure that they are set correctly in the message

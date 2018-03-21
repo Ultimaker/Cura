@@ -244,6 +244,7 @@ Cura.MachineAction
                                 height: childrenRect.height
                                 width: childrenRect.width
                                 text: machineExtruderCountProvider.properties.description
+                                visible: extruderCountModel.count >= 2
 
                                 Row
                                 {
@@ -381,6 +382,11 @@ Cura.MachineAction
                             property string settingKey: "machine_nozzle_size"
                             property string label: catalog.i18nc("@label", "Nozzle size")
                             property string unit: catalog.i18nc("@label", "mm")
+                            function afterOnEditingFinished()
+                            {
+                                // Somehow the machine_nozzle_size dependent settings are not updated otherwise
+                                Cura.MachineManager.forceUpdateAllSettings()
+                            }
                             property bool isExtruderSetting: true
                         }
 

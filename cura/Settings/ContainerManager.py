@@ -334,9 +334,12 @@ class ContainerManager(QObject):
 
         # Go through global and extruder stacks and clear their topmost container (the user settings).
         for stack in ExtruderManager.getInstance().getActiveGlobalAndExtruderStacks():
-            container = stack.getTop()
+            container = stack.userChanges
             container.clear()
             send_emits_containers.append(container)
+
+        # user changes are possibly added to make the current setup match the current enabled extruders
+        Application.getInstance().getMachineManager().correctExtruderSettings()
 
         for container in send_emits_containers:
             container.sendPostponedEmits()
@@ -345,15 +348,18 @@ class ContainerManager(QObject):
     #
     #   \param material_id \type{str} the id of the material for which to get the linked materials.
     #   \return \type{list} a list of names of materials with the same GUID
-    @pyqtSlot("QVariant", result = "QStringList")
-    def getLinkedMaterials(self, material_node):
+    @pyqtSlot("QVariant", bool, result = "QStringList")
+    def getLinkedMaterials(self, material_node, exclude_self = False):
         guid = material_node.metadata["GUID"]
 
+        self_root_material_id = material_node.metadata["base_file"]
         material_group_list = self._material_manager.getMaterialGroupListByGUID(guid)
 
         linked_material_names = []
         if material_group_list:
             for material_group in material_group_list:
+                if exclude_self and material_group.name == self_root_material_id:
+                    continue
                 linked_material_names.append(material_group.root_material_node.metadata["name"])
         return linked_material_names
 
@@ -389,8 +395,6 @@ class ContainerManager(QObject):
         return ContainerManager.getInstance()
 
     def _performMerge(self, merge_into, merge, clear_settings = True):
-        assert isinstance(merge, type(merge_into))
-
         if merge == merge_into:
             return
 

@@ -3,13 +3,15 @@
 
 from typing import Any, TYPE_CHECKING, Optional
 
-from PyQt5.QtCore import pyqtProperty
+from PyQt5.QtCore import pyqtProperty, pyqtSignal
 
+from UM.Application import Application
 from UM.Decorators import override
 from UM.MimeTypeDatabase import MimeType, MimeTypeDatabase
 from UM.Settings.ContainerStack import ContainerStack
 from UM.Settings.ContainerRegistry import ContainerRegistry
 from UM.Settings.Interfaces import ContainerInterface, PropertyEvaluationContext
+from UM.Util import parseBool
 
 from . import Exceptions
 from .CuraContainerStack import CuraContainerStack, _ContainerIndexes
@@ -30,6 +32,8 @@ class ExtruderStack(CuraContainerStack):
 
         self.propertiesChanged.connect(self._onPropertiesChanged)
 
+    enabledChanged = pyqtSignal()
+
     ##  Overridden from ContainerStack
     #
     #   This will set the next stack and ensure that we register this stack as an extruder.
@@ -45,6 +49,16 @@ class ExtruderStack(CuraContainerStack):
     @override(ContainerStack)
     def getNextStack(self) -> Optional["GlobalStack"]:
         return super().getNextStack()
+
+    def setEnabled(self, enabled):
+        if "enabled" not in self._metadata:
+            self.addMetaDataEntry("enabled", "True")
+        self.setMetaDataEntry("enabled", str(enabled))
+        self.enabledChanged.emit()
+
+    @pyqtProperty(bool, notify = enabledChanged)
+    def isEnabled(self):
+        return parseBool(self.getMetaDataEntry("enabled", "True"))
 
     @classmethod
     def getLoadingPriority(cls) -> int:
@@ -98,6 +112,8 @@ class ExtruderStack(CuraContainerStack):
 
         limit_to_extruder = super().getProperty(key, "limit_to_extruder", context)
         if limit_to_extruder is not None:
+            if limit_to_extruder == -1:
+                limit_to_extruder = int(Application.getInstance().getMachineManager().defaultExtruderPosition)
             limit_to_extruder = str(limit_to_extruder)
         if (limit_to_extruder is not None and limit_to_extruder != "-1") and self.getMetaDataEntry("position") != str(limit_to_extruder):
             if str(limit_to_extruder) in self.getNextStack().extruders:
@@ -120,6 +136,8 @@ class ExtruderStack(CuraContainerStack):
     @override(CuraContainerStack)
     def deserialize(self, contents: str, file_name: Optional[str] = None) -> None:
         super().deserialize(contents, file_name)
+        if "enabled" not in self.getMetaData():
+            self.addMetaDataEntry("enabled", "True")
         stacks = ContainerRegistry.getInstance().findContainerStacks(id=self.getMetaDataEntry("machine", ""))
         if stacks:
             self.setNextStack(stacks[0])

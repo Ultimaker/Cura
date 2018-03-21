@@ -101,7 +101,7 @@ UM.Dialog
                 }
                 Label
                 {
-                    text: Cura.MachineManager.activeMachine.definition.name
+                    text: (Cura.MachineManager.activeMachine == null) ? "" : Cura.MachineManager.activeMachine.definition.name
                     width: (parent.width / 3) | 0
                 }
             }
@@ -111,12 +111,12 @@ UM.Dialog
                 height: childrenRect.height
                 Label
                 {
-                    text: catalog.i18nc("@action:label", "Name")
+                    text: catalog.i18nc("@action:label", Cura.MachineManager.activeMachineNetworkGroupName != "" ? "Printer Group" : "Name")
                     width: (parent.width / 3) | 0
                 }
                 Label
                 {
-                    text: Cura.MachineManager.activeMachineName
+                    text: Cura.MachineManager.activeMachineNetworkGroupName != "" ? Cura.MachineManager.activeMachineNetworkGroupName : Cura.MachineManager.activeMachineName
                     width: (parent.width / 3) | 0
                 }
             }
@@ -173,7 +173,7 @@ UM.Dialog
                         }
                         Label
                         {
-                            text: Cura.MachineManager.activeVariantNames[modelData] + ", " + Cura.MachineManager.currentRootMaterialName[modelData]
+                            text: Cura.MachineManager.activeVariantNames[modelData] + ", " + Cura.MachineManager.getExtruder(modelData).material.name
                             width: (parent.width / 3) | 0
                         }
                     }

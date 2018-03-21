@@ -9,7 +9,6 @@ import QtQuick.Layouts 1.1
 import UM 1.2 as UM
 import Cura 1.0 as Cura
 
-
 Item
 {
     property var printerModel
@@ -124,7 +123,6 @@ Item
             }
             return true;
         }
-
 
         MonitorSection
         {
@@ -423,6 +421,120 @@ Item
                                 }
                             }
                             label: Item { }
+                        }
+                    }
+                }
+            }
+        }
+
+        Row
+        {
+            id: customCommandInputRow
+
+            width: base.width - 2 * UM.Theme.getSize("default_margin").width
+            height: childrenRect.height + UM.Theme.getSize("default_margin").width
+            anchors.left: parent.left
+            anchors.leftMargin: UM.Theme.getSize("default_margin").width
+
+            spacing: UM.Theme.getSize("default_margin").width
+
+            Label
+            {
+                text: catalog.i18nc("@label", "Send G-code")
+                color: UM.Theme.getColor("setting_control_text")
+                font: UM.Theme.getFont("default")
+
+                width: Math.floor(parent.width * 0.4) - UM.Theme.getSize("default_margin").width
+                height: UM.Theme.getSize("setting_control").height
+                verticalAlignment: Text.AlignVCenter
+            }
+
+            Row
+            {
+                // Input field for custom G-code commands.
+                Rectangle
+                {
+                    id: customCommandControl
+
+                    // state
+                    visible: printerModel != null ? printerModel.canSendRawGcode: true
+                    enabled: {
+                        if (printerModel == null) {
+                            return false // Can't send custom commands if not connected.
+                        }
+                        if (!connectedPrinter.acceptsCommands) {
+                            return false // Not allowed to do anything
+                        }
+                        if (connectedPrinter.jobState == "printing" || connectedPrinter.jobState == "pre_print" || connectedPrinter.jobState == "resuming" || connectedPrinter.jobState == "pausing" || connectedPrinter.jobState == "paused" || connectedPrinter.jobState == "error" || connectedPrinter.jobState == "offline") {
+                            return false // Printer is in a state where it can't react to custom commands.
+                        }
+                        return true
+                    }
+
+                    // style
+                    color: !enabled ? UM.Theme.getColor("setting_control_disabled") : UM.Theme.getColor("setting_validation_ok")
+                    border.width: UM.Theme.getSize("default_lining").width
+                    border.color: !enabled ? UM.Theme.getColor("setting_control_disabled_border") : customCommandControlMouseArea.containsMouse ? UM.Theme.getColor("setting_control_border_highlight") : UM.Theme.getColor("setting_control_border")
+
+                    // size
+                    width: UM.Theme.getSize("setting_control").width
+                    height: UM.Theme.getSize("setting_control").height
+
+                    // highlight
+                    Rectangle
+                    {
+                        anchors.fill: parent
+                        anchors.margins: UM.Theme.getSize("default_lining").width
+                        color: UM.Theme.getColor("setting_control_highlight")
+                        opacity: customCommandControl.hovered ? 1.0 : 0
+                    }
+
+                    // cursor hover popup
+                    MouseArea
+                    {
+                        id: customCommandControlMouseArea
+                        hoverEnabled: true
+                        anchors.fill: parent
+                        cursorShape: Qt.IBeamCursor
+
+                        onHoveredChanged:
+                        {
+                            if (containsMouse) {
+                                base.showTooltip(
+                                    base,
+                                    { x: 0, y: customCommandControlMouseArea.mapToItem(base, 0, 0).y },
+                                    catalog.i18nc("@tooltip of G-code command input", "Send a custom G-code command to the connected printer. Press 'enter' to send the command.")
+                                )
+                            } else {
+                                base.hideTooltip()
+                            }
+                        }
+                    }
+
+                    TextInput
+                    {
+                        id: customCommandControlInput
+
+                        // style
+                        font: UM.Theme.getFont("default")
+                        color: !enabled ? UM.Theme.getColor("setting_control_disabled_text") : UM.Theme.getColor("setting_control_text")
+                        selectByMouse: true
+                        clip: true
+                        enabled: parent.enabled
+                        renderType: Text.NativeRendering
+
+                        // anchors
+                        anchors.left: parent.left
+                        anchors.leftMargin: UM.Theme.getSize("setting_unit_margin").width
+                        anchors.right: parent.right
+                        anchors.verticalCenter: parent.verticalCenter
+
+                        // send the command when pressing enter
+                        // we also clear the text field
+                        Keys.onReturnPressed:
+                        {
+                            printerModel.sendRawCommand(customCommandControlInput.text)
+                            customCommandControlInput.text = ""
                         }
                     }
                 }

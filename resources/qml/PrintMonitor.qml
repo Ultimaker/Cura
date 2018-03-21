@@ -122,7 +122,7 @@ Column
     {
         label: catalog.i18nc("@label", "Printing Time")
         value: activePrintJob != null ? getPrettyTime(activePrintJob.timeTotal) : ""
-        width:base.width
+        width: base.width
         visible: activePrinter != null
     }
 

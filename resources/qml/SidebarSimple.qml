@@ -19,7 +19,7 @@ Item
     property Action configureSettings;
     property variant minimumPrintTime: PrintInformation.minimumPrintTime;
     property variant maximumPrintTime: PrintInformation.maximumPrintTime;
-    property bool settingsEnabled: Cura.ExtruderManager.activeExtruderStackId || machineExtruderCount.properties.value == 1
+    property bool settingsEnabled: Cura.ExtruderManager.activeExtruderStackId || extrudersEnabledCount.properties.value == 1
 
     Component.onCompleted: PrintInformation.enabled = true
     Component.onDestruction: PrintInformation.enabled = false
@@ -67,10 +67,8 @@ Item
 
                 Connections
                 {
-                    target: Cura.MachineManager
-                    onActiveQualityChanged: qualityModel.update()
-                    onActiveMaterialChanged: qualityModel.update()
-                    onActiveVariantChanged: qualityModel.update()
+                    target: Cura.QualityProfilesDropDownMenuModel
+                    onItemsChanged: qualityModel.update()
                 }
 
                 Connections {
@@ -113,7 +111,6 @@ Item
 
                             // Set selected value
                             if (Cura.MachineManager.activeQualityType == qualityItem.quality_type) {
-
                                 // set to -1 when switching to user created profile so all ticks are clickable
                                 if (Cura.SimpleModeSettingsManager.isProfileUserCreated) {
                                     qualityModel.qualitySliderActiveIndex = -1
@@ -244,6 +241,81 @@ Item
                     anchors.right: parent.right
                     anchors.top: parent.top
                     anchors.topMargin: UM.Theme.getSize("sidebar_margin").height
+
+                    // This Item is used only for tooltip, for slider area which is unavailable
+                    Item
+                    {
+                        function showTooltip (showTooltip)
+                        {
+                            if (showTooltip) {
+                                var content = catalog.i18nc("@tooltip", "This quality profile is not available for you current material and nozzle configuration. Please change these to enable this quality profile")
+                                base.showTooltip(qualityRow, Qt.point(-UM.Theme.getSize("sidebar_margin").width, customisedSettings.height), content)
+                            }
+                            else {
+                                base.hideTooltip()
+                            }
+                        }
+
+                        id: unavailableLineToolTip
+                        height: 20 // hovered area height
+                        z: parent.z + 1 // should be higher, otherwise the area can be hovered
+                        x: 0
+                        anchors.verticalCenter: qualitySlider.verticalCenter
+
+                        Rectangle
+                        {
+                            id: leftArea
+                            width:
+                            {
+                                if (qualityModel.availableTotalTicks == 0) {
+                                    return qualityModel.qualitySliderStepWidth * qualityModel.totalTicks
+                                }
+                                return qualityModel.qualitySliderStepWidth * qualityModel.qualitySliderAvailableMin - 10
+                            }
+                            height: parent.height
+                            color: "transparent"
+
+                            MouseArea
+                            {
+                                anchors.fill: parent
+                                hoverEnabled: true
+                                enabled: Cura.SimpleModeSettingsManager.isProfileUserCreated == false
+                                onEntered: unavailableLineToolTip.showTooltip(true)
+                                onExited: unavailableLineToolTip.showTooltip(false)
+                            }
+                        }
+
+                        Rectangle
+                        {
+                            id: rightArea
+                            width: {
+                                if(qualityModel.availableTotalTicks == 0)
+                                    return 0
+
+                                return qualityModel.qualitySliderMarginRight - 10
+                            }
+                            height: parent.height
+                            color: "transparent"
+                            x: {
+                                if (qualityModel.availableTotalTicks == 0) {
+                                    return 0
+                                }
+
+                                var leftUnavailableArea = qualityModel.qualitySliderStepWidth * qualityModel.qualitySliderAvailableMin
+                                var totalGap = qualityModel.qualitySliderStepWidth * (qualityModel.availableTotalTicks -1) + leftUnavailableArea + 10
+
+                                return totalGap
+                            }
+
+                            MouseArea {
+                                anchors.fill: parent
+                                hoverEnabled: true
+                                enabled: Cura.SimpleModeSettingsManager.isProfileUserCreated == false
+                                onEntered: unavailableLineToolTip.showTooltip(true)
+                                onExited: unavailableLineToolTip.showTooltip(false)
+                            }
+                        }
+                    }
 
                     // Draw Unavailable line
                     Rectangle
@@ -401,18 +473,7 @@ Item
                     onClicked:
                     {
                         // if the current profile is user-created, switch to a built-in quality
-                        if (Cura.SimpleModeSettingsManager.isProfileUserCreated)
-                        {
-                            if (Cura.QualityProfilesDropDownMenuModel.rowCount() > 0)
-                            {
-                                var item = Cura.QualityProfilesDropDownMenuModel.getItem(0);
-                                Cura.MachineManager.activeQualityGroup = item.quality_group;
-                            }
-                        }
-                        if (Cura.SimpleModeSettingsManager.isProfileCustomized)
-                        {
-                            discardOrKeepProfileChangesDialog.show()
-                        }
+                        Cura.MachineManager.resetToUseDefaultQuality()
                     }
                     onEntered:
                     {
@@ -518,7 +579,14 @@ Item
                         // Update the slider value to represent the rounded value
                         infillSlider.value = roundedSliderValue
 
-                        Cura.MachineManager.setSettingForAllExtruders("infill_sparse_density", "value", roundedSliderValue)
+                        // Update value only if the Recomended mode is Active,
+                        // Otherwise if I change the value in the Custom mode the Recomended view will try to repeat
+                        // same operation
+                        var active_mode = UM.Preferences.getValue("cura/active_mode")
+
+                        if (active_mode == 0 || active_mode == "simple") {
+                            Cura.MachineManager.setSettingForAllExtruders("infill_sparse_density", "value", roundedSliderValue)
+                        }
                     }
 
                     style: SliderStyle
@@ -788,25 +856,10 @@ Item
                 }
             }
 
-            Label
-            {
-                id: supportExtruderLabel
-                visible: supportExtruderCombobox.visible
-                anchors.left: parent.left
-                anchors.leftMargin: UM.Theme.getSize("sidebar_margin").width
-                anchors.right: infillCellLeft.right
-                anchors.rightMargin: UM.Theme.getSize("sidebar_margin").width
-                anchors.verticalCenter: supportExtruderCombobox.verticalCenter
-                text: catalog.i18nc("@label", "Support Extruder");
-                font: UM.Theme.getFont("default");
-                color: UM.Theme.getColor("text");
-                elide: Text.ElideRight
-            }
-
             ComboBox
             {
                 id: supportExtruderCombobox
-                visible: enableSupportCheckBox.visible && (supportEnabled.properties.value == "True") && (machineExtruderCount.properties.value > 1)
+                visible: enableSupportCheckBox.visible && (supportEnabled.properties.value == "True") && (extrudersEnabledCount.properties.value > 1)
                 model: extruderModel
 
                 property string color_override: ""  // for manually setting values
@@ -820,11 +873,12 @@ Item
 
                 textRole: "text"  // this solves that the combobox isn't populated in the first time Cura is started
 
-                anchors.top: enableSupportCheckBox.bottom
-                anchors.topMargin: ((supportEnabled.properties.value === "True") && (machineExtruderCount.properties.value > 1)) ? UM.Theme.getSize("sidebar_margin").height : 0
-                anchors.left: infillCellRight.left
+                anchors.top: enableSupportCheckBox.top
+                //anchors.topMargin: ((supportEnabled.properties.value === "True") && (machineExtruderCount.properties.value > 1)) ? UM.Theme.getSize("sidebar_margin").height : 0
+                anchors.left: enableSupportCheckBox.right
+                anchors.leftMargin: Math.round(UM.Theme.getSize("sidebar_margin").width / 2)
 
-                width: Math.round(UM.Theme.getSize("sidebar").width * .55)
+                width: Math.round(UM.Theme.getSize("sidebar").width * .55) - Math.round(UM.Theme.getSize("sidebar_margin").width / 2) - enableSupportCheckBox.width
                 height: ((supportEnabled.properties.value == "True") && (machineExtruderCount.properties.value > 1)) ? UM.Theme.getSize("setting_control").height : 0
 
                 Behavior on height { NumberAnimation { duration: 100 } }
@@ -833,7 +887,23 @@ Item
                 enabled: base.settingsEnabled
                 property alias _hovered: supportExtruderMouseArea.containsMouse
 
-                currentIndex: supportExtruderNr.properties !== null ? parseFloat(supportExtruderNr.properties.value) : 0
+                currentIndex:
+                {
+                    if (supportExtruderNr.properties == null)
+                    {
+                        return Cura.MachineManager.defaultExtruderPosition;
+                    }
+                    else
+                    {
+                        var extruder = parseInt(supportExtruderNr.properties.value);
+                        if ( extruder === -1)
+                        {
+                            return Cura.MachineManager.defaultExtruderPosition;
+                        }
+                        return extruder;
+                    }
+                }
+
                 onActivated:
                 {
                     // Send the extruder nr as a string.
@@ -891,7 +961,7 @@ Item
                 id: adhesionCheckBox
                 property alias _hovered: adhesionMouseArea.containsMouse
 
-                anchors.top: enableSupportCheckBox.visible ? supportExtruderCombobox.bottom : infillCellRight.bottom
+                anchors.top: enableSupportCheckBox.bottom
                 anchors.topMargin: UM.Theme.getSize("sidebar_margin").height
                 anchors.left: infillCellRight.left
 
@@ -1022,9 +1092,9 @@ Item
 
             UM.SettingPropertyProvider
             {
-                id: machineExtruderCount
+                id: extrudersEnabledCount
                 containerStackId: Cura.MachineManager.activeMachineId
-                key: "machine_extruder_count"
+                key: "extruders_enabled_count"
                 watchedProperties: [ "value" ]
                 storeIndex: 0
             }

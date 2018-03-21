@@ -19,7 +19,7 @@ Button
     iconSource: UM.Theme.getIcon("extruder_button")
 
     checked: Cura.ExtruderManager.selectedObjectExtruders.indexOf(extruder.id) != -1
-    enabled: UM.Selection.hasSelection
+    enabled: UM.Selection.hasSelection && extruder.stack.isEnabled
 
     property color customColor: base.hovered ? UM.Theme.getColor("button_hover") : UM.Theme.getColor("button");
 

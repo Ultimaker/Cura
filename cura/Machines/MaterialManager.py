@@ -72,29 +72,28 @@ class MaterialManager(QObject):
 
     def initialize(self):
         # Find all materials and put them in a matrix for quick search.
-        material_metadata_list = self._container_registry.findContainersMetadata(type = "material")
+        material_metadatas = {metadata["id"]: metadata for metadata in self._container_registry.findContainersMetadata(type = "material")}
 
         self._material_group_map = dict()
 
         # Map #1
         #    root_material_id -> MaterialGroup
-        for material_metadata in material_metadata_list:
-            material_id = material_metadata["id"]
+        for material_id, material_metadata in material_metadatas.items():
             # We don't store empty material in the lookup tables
             if material_id == "empty_material":
                 continue
 
             root_material_id = material_metadata.get("base_file")
             if root_material_id not in self._material_group_map:
-                self._material_group_map[root_material_id] = MaterialGroup(root_material_id)
+                self._material_group_map[root_material_id] = MaterialGroup(root_material_id, MaterialNode(material_metadatas[root_material_id]))
+                self._material_group_map[root_material_id].is_read_only = self._container_registry.isReadOnly(root_material_id)
             group = self._material_group_map[root_material_id]
 
-            # We only add root materials here
-            if material_id == root_material_id:
-                group.root_material_node = MaterialNode(material_metadata)
-            else:
+            #Store this material in the group of the appropriate root material.
+            if material_id != root_material_id:
                 new_node = MaterialNode(material_metadata)
                 group.derived_material_node_list.append(new_node)
+
         # Order this map alphabetically so it's easier to navigate in a debugger
         self._material_group_map = OrderedDict(sorted(self._material_group_map.items(), key = lambda x: x[0]))
 
@@ -108,6 +107,7 @@ class MaterialManager(QObject):
         # Map #2
         # Lookup table for material type -> fallback material metadata, only for read-only materials
         grouped_by_type_dict = dict()
+        material_types_without_fallback = set()
         for root_material_id, material_node in self._material_group_map.items():
             if not self._container_registry.isReadOnly(root_material_id):
                 continue
@@ -115,6 +115,7 @@ class MaterialManager(QObject):
             if material_type not in grouped_by_type_dict:
                 grouped_by_type_dict[material_type] = {"generic": None,
                                                        "others": []}
+                material_types_without_fallback.add(material_type)
             brand = material_node.root_material_node.metadata["brand"]
             if brand.lower() == "generic":
                 to_add = True
@@ -124,6 +125,10 @@ class MaterialManager(QObject):
                         to_add = False  # don't add if it's not the default diameter
                 if to_add:
                     grouped_by_type_dict[material_type] = material_node.root_material_node.metadata
+                    material_types_without_fallback.remove(material_type)
+        # Remove the materials that have no fallback materials
+        for material_type in material_types_without_fallback:
+            del grouped_by_type_dict[material_type]
         self._fallback_materials_map = grouped_by_type_dict
 
         # Map #3
@@ -172,7 +177,7 @@ class MaterialManager(QObject):
         #    "machine" -> "variant_name" -> "root material ID" -> specific material InstanceContainer
         # Construct the "machine" -> "variant" -> "root material ID" -> specific material InstanceContainer
         self._diameter_machine_variant_material_map = dict()
-        for material_metadata in material_metadata_list:
+        for material_metadata in material_metadatas.values():
             # We don't store empty material in the lookup tables
             if material_metadata["id"] == "empty_material":
                 continue
@@ -210,6 +215,7 @@ class MaterialManager(QObject):
         self.materialsUpdated.emit()
 
     def _updateMaps(self):
+        Logger.log("i", "Updating material lookup data ...")
         self.initialize()
 
     def _onContainerMetadataChanged(self, container):
@@ -326,6 +332,35 @@ class MaterialManager(QObject):
         return material_node
 
     #
+    # Gets MaterialNode for the given extruder and machine with the given material type.
+    # Returns None if:
+    #  1. the given machine doesn't have materials;
+    #  2. cannot find any material InstanceContainers with the given settings.
+    #
+    def getMaterialNodeByType(self, global_stack: "GlobalStack", extruder_variant_name: str, material_guid: str) -> Optional["MaterialNode"]:
+        node = None
+        machine_definition = global_stack.definition
+        if parseBool(machine_definition.getMetaDataEntry("has_materials", False)):
+            material_diameter = machine_definition.getProperty("material_diameter", "value")
+            if isinstance(material_diameter, SettingFunction):
+                material_diameter = material_diameter(global_stack)
+
+            # Look at the guid to material dictionary
+            root_material_id = None
+            for material_group in self._guid_material_groups_map[material_guid]:
+                if material_group.is_read_only:
+                    root_material_id = material_group.root_material_node.metadata["id"]
+                    break
+
+            if not root_material_id:
+                Logger.log("i", "Cannot find materials with guid [%s] ", material_guid)
+                return None
+
+            node = self.getMaterialNode(machine_definition.getId(), extruder_variant_name,
+                                        material_diameter, root_material_id)
+        return node
+
+    #
     # Used by QualityManager. Built-in quality profiles may be based on generic material IDs such as "generic_pla".
     # For materials such as ultimaker_pla_orange, no quality profiles may be found, so we should fall back to use
     # the generic material IDs to search for qualities.
@@ -349,10 +384,10 @@ class MaterialManager(QObject):
         else:
             return None
 
-    def getDefaultMaterial(self, global_stack: "GlobalStack", extruder_variant_name: str) -> Optional["MaterialNode"]:
+    def getDefaultMaterial(self, global_stack: "GlobalStack", extruder_variant_name: Optional[str]) -> Optional["MaterialNode"]:
         node = None
         machine_definition = global_stack.definition
-        if parseBool(machine_definition.getMetaDataEntry("has_materials", False)):
+        if parseBool(global_stack.getMetaDataEntry("has_materials", False)):
             material_diameter = machine_definition.getProperty("material_diameter", "value")
             if isinstance(material_diameter, SettingFunction):
                 material_diameter = material_diameter(global_stack)
@@ -362,6 +397,16 @@ class MaterialManager(QObject):
             node = self.getMaterialNode(machine_definition.getId(), extruder_variant_name,
                                         material_diameter, root_material_id)
         return node
+
+    def removeMaterialByRootId(self, root_material_id: str):
+        material_group = self.getMaterialGroup(root_material_id)
+        if not material_group:
+            Logger.log("i", "Unable to remove the material with id %s, because it doesn't exist.", root_material_id)
+            return
+
+        nodes_to_remove = [material_group.root_material_node] + material_group.derived_material_node_list
+        for node in nodes_to_remove:
+            self._container_registry.removeContainer(node.metadata["id"])
 
     #
     # Methods for GUI
@@ -386,14 +431,7 @@ class MaterialManager(QObject):
     @pyqtSlot("QVariant")
     def removeMaterial(self, material_node: "MaterialNode"):
         root_material_id = material_node.metadata["base_file"]
-        material_group = self.getMaterialGroup(root_material_id)
-        if not material_group:
-            Logger.log("d", "Unable to remove the material with id %s, because it doesn't exist.", root_material_id)
-            return
-
-        nodes_to_remove = [material_group.root_material_node] + material_group.derived_material_node_list
-        for node in nodes_to_remove:
-            self._container_registry.removeContainer(node.metadata["id"])
+        self.removeMaterialByRootId(root_material_id)
 
     #
     # Creates a duplicate of a material, which has the same GUID and base_file metadata.
@@ -460,8 +498,10 @@ class MaterialManager(QObject):
         # Ensure all settings are saved.
         self._application.saveSettings()
 
-        global_stack = self._application.getGlobalContainerStack()
-        approximate_diameter = str(round(global_stack.getProperty("material_diameter", "value")))
+        machine_manager = self._application.getMachineManager()
+        extruder_stack = machine_manager.activeStack
+
+        approximate_diameter = str(extruder_stack.approximateMaterialDiameter)
         root_material_id = "generic_pla"
         root_material_id = self.getRootMaterialIDForDiameter(root_material_id, approximate_diameter)
         material_group = self.getMaterialGroup(root_material_id)

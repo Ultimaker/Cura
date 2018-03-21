@@ -211,6 +211,18 @@
                     "settable_per_extruder": false,
                     "settable_per_meshgroup": false
                 },
+                "extruders_enabled_count":
+                {
+                    "label": "Number of Extruders that are enabled",
+                    "description": "Number of extruder trains that are enabled; automatically set in software",
+                    "value": "machine_extruder_count",
+                    "minimum_value": "1",
+                    "maximum_value": "16",
+                    "type": "int",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false,
+                    "settable_per_meshgroup": false
+                },
                 "machine_nozzle_tip_outer_diameter":
                 {
                     "label": "Outer nozzle diameter",
@@ -620,6 +632,73 @@
                     "settable_per_extruder": false,
                     "settable_per_meshgroup": false
                 },
+                "machine_steps_per_mm_x":
+                {
+                    "label": "Steps per Millimeter (X)",
+                    "description": "How many steps of the stepper motor will result in one millimeter of movement in the X direction.",
+                    "type": "int",
+                    "default_value": 50,
+                    "minimum_value": "0.0000001",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
+                },
+                "machine_steps_per_mm_y":
+                {
+                    "label": "Steps per Millimeter (Y)",
+                    "description": "How many steps of the stepper motor will result in one millimeter of movement in the Y direction.",
+                    "type": "int",
+                    "default_value": 50,
+                    "minimum_value": "0.0000001",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
+                },
+                "machine_steps_per_mm_z":
+                {
+                    "label": "Steps per Millimeter (Z)",
+                    "description": "How many steps of the stepper motor will result in one millimeter of movement in the Z direction.",
+                    "type": "int",
+                    "default_value": 50,
+                    "minimum_value": "0.0000001",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
+                },
+                "machine_steps_per_mm_e":
+                {
+                    "label": "Steps per Millimeter (E)",
+                    "description": "How many steps of the stepper motors will result in one millimeter of extrusion.",
+                    "type": "int",
+                    "default_value": 1600,
+                    "minimum_value": "0.0000001",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
+                },
+                "machine_endstop_positive_direction_x":
+                {
+                    "label": "X Endstop in Positive Direction",
+                    "description": "Whether the endstop of the X axis is in the positive direction (high X coordinate) or negative (low X coordinate).",
+                    "type": "bool",
+                    "default_value": false,
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
+                },
+                "machine_endstop_positive_direction_y":
+                {
+                    "label": "Y Endstop in Positive Direction",
+                    "description": "Whether the endstop of the Y axis is in the positive direction (high Y coordinate) or negative (low Y coordinate).",
+                    "type": "bool",
+                    "default_value": false,
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
+                },
+                "machine_endstop_positive_direction_z":
+                {
+                    "label": "Z Endstop in Positive Direction",
+                    "description": "Whether the endstop of the Z axis is in the positive direction (high Z coordinate) or negative (low Z coordinate).",
+                    "type": "bool",
+                    "default_value": true,
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
+                },
                 "machine_minimum_feedrate":
                 {
                     "label": "Minimum Feedrate",
@@ -630,6 +709,16 @@
                     "settable_per_mesh": false,
                     "settable_per_extruder": false,
                     "settable_per_meshgroup": false
+                },
+                "machine_feeder_wheel_diameter":
+                {
+                    "label": "Feeder Wheel Diameter",
+                    "description": "The diameter of the wheel that drives the material in the feeder.",
+                    "unit": "mm",
+                    "type": "float",
+                    "default_value": 10.0,
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
                 }
             }
         },
@@ -887,7 +976,7 @@
                     "settable_per_extruder": false,
                     "settable_per_meshgroup": true,
                     "settable_globally": true,
-                    "enabled": "machine_extruder_count > 1",
+                    "enabled": "extruders_enabled_count > 1",
                     "children": {
                         "wall_0_extruder_nr":
                         {
@@ -900,7 +989,7 @@
                             "settable_per_extruder": false,
                             "settable_per_meshgroup": true,
                             "settable_globally": true,
-                            "enabled": "machine_extruder_count > 1"
+                            "enabled": "extruders_enabled_count > 1"
                         },
                         "wall_x_extruder_nr":
                         {
@@ -913,7 +1002,7 @@
                             "settable_per_extruder": false,
                             "settable_per_meshgroup": true,
                             "settable_globally": true,
-                            "enabled": "machine_extruder_count > 1"
+                            "enabled": "extruders_enabled_count > 1"
                         }
                     }
                 },
@@ -970,7 +1059,7 @@
                     "settable_per_extruder": false,
                     "settable_per_meshgroup": true,
                     "settable_globally": true,
-                    "enabled": "machine_extruder_count > 1 and max(extruderValues('roofing_layer_count')) > 0 and max(extruderValues('top_layers')) > 0"
+                    "enabled": "extruders_enabled_count > 1 and max(extruderValues('roofing_layer_count')) > 0 and max(extruderValues('top_layers')) > 0"
                 },
                 "roofing_layer_count":
                 {
@@ -995,7 +1084,7 @@
                     "settable_per_extruder": false,
                     "settable_per_meshgroup": true,
                     "settable_globally": true,
-                    "enabled": "machine_extruder_count > 1"
+                    "enabled": "extruders_enabled_count > 1"
                 },
                 "top_bottom_thickness":
                 {
@@ -1465,7 +1554,7 @@
                     "settable_per_extruder": false,
                     "settable_per_meshgroup": true,
                     "settable_globally": true,
-                    "enabled": "machine_extruder_count > 1"
+                    "enabled": "extruders_enabled_count > 1"
                 },
                 "infill_sparse_density":
                 {
@@ -1916,7 +2005,7 @@
                     "minimum_value": "0",
                     "maximum_value_warning": "10.0",
                     "maximum_value": "machine_nozzle_heat_up_speed",
-                    "enabled": "material_flow_dependent_temperature or (machine_extruder_count > 1 and material_final_print_temperature != material_print_temperature)",
+                    "enabled": "material_flow_dependent_temperature or (extruders_enabled_count > 1 and material_final_print_temperature != material_print_temperature)",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
@@ -2179,7 +2268,7 @@
                     "minimum_value": "-273.15",
                     "minimum_value_warning": "0",
                     "maximum_value_warning": "260",
-                    "enabled": "machine_extruder_count > 1 and machine_nozzle_temp_enabled",
+                    "enabled": "extruders_enabled_count > 1 and machine_nozzle_temp_enabled",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
@@ -3281,7 +3370,7 @@
                     "description": "After the machine switched from one extruder to the other, the build plate is lowered to create clearance between the nozzle and the print. This prevents the nozzle from leaving oozed material on the outside of a print.",
                     "type": "bool",
                     "default_value": true,
-                    "enabled": "retraction_hop_enabled and machine_extruder_count > 1",
+                    "enabled": "retraction_hop_enabled and extruders_enabled_count > 1",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 }
@@ -3459,7 +3548,8 @@
                     "description": "The extruder train to use for printing the support. This is used in multi-extrusion.",
                     "type": "extruder",
                     "default_value": "0",
-                    "enabled": "(support_enable or support_tree_enable) and machine_extruder_count > 1",
+                    "value": "-1",
+                    "enabled": "(support_enable or support_tree_enable) and extruders_enabled_count > 1",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false,
                     "children": {
@@ -3470,7 +3560,7 @@
                             "type": "extruder",
                             "default_value": "0",
                             "value": "support_extruder_nr",
-                            "enabled": "(support_enable or support_tree_enable) and machine_extruder_count > 1",
+                            "enabled": "(support_enable or support_tree_enable) and extruders_enabled_count > 1",
                             "settable_per_mesh": false,
                             "settable_per_extruder": false
                         },
@@ -3481,7 +3571,7 @@
                             "type": "extruder",
                             "default_value": "0",
                             "value": "support_extruder_nr",
-                            "enabled": "(support_enable or support_tree_enable) and machine_extruder_count > 1",
+                            "enabled": "(support_enable or support_tree_enable) and extruders_enabled_count > 1",
                             "settable_per_mesh": false,
                             "settable_per_extruder": false
                         },
@@ -3492,7 +3582,7 @@
                             "type": "extruder",
                             "default_value": "0",
                             "value": "support_extruder_nr",
-                            "enabled": "(support_enable or support_tree_enable) and machine_extruder_count > 1",
+                            "enabled": "(support_enable or support_tree_enable) and extruders_enabled_count > 1",
                             "settable_per_mesh": false,
                             "settable_per_extruder": false,
                             "children":
@@ -3504,7 +3594,7 @@
                                     "type": "extruder",
                                     "default_value": "0",
                                     "value": "support_interface_extruder_nr",
-                                    "enabled": "(support_enable or support_tree_enable) and machine_extruder_count > 1",
+                                    "enabled": "(support_enable or support_tree_enable) and extruders_enabled_count > 1",
                                     "settable_per_mesh": false,
                                     "settable_per_extruder": false
                                 },
@@ -3515,7 +3605,7 @@
                                     "type": "extruder",
                                     "default_value": "0",
                                     "value": "support_interface_extruder_nr",
-                                    "enabled": "(support_enable or support_tree_enable) and machine_extruder_count > 1",
+                                    "enabled": "(support_enable or support_tree_enable) and extruders_enabled_count > 1",
                                     "settable_per_mesh": false,
                                     "settable_per_extruder": false
                                 }
@@ -4185,7 +4275,8 @@
                     "description": "The extruder train to use for printing the skirt/brim/raft. This is used in multi-extrusion.",
                     "type": "extruder",
                     "default_value": "0",
-                    "enabled": "machine_extruder_count > 1 and resolveOrValue('adhesion_type') != 'none'",
+                    "value": "-1",
+                    "enabled": "extruders_enabled_count > 1 and resolveOrValue('adhesion_type') != 'none'",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false
                 },
@@ -4756,7 +4847,7 @@
                     "label": "Enable Prime Tower",
                     "description": "Print a tower next to the print which serves to prime the material after each nozzle switch.",
                     "type": "bool",
-                    "enabled": "machine_extruder_count > 1",
+                    "enabled": "extruders_enabled_count > 1",
                     "default_value": false,
                     "resolve": "any(extruderValues('prime_tower_enable'))",
                     "settable_per_mesh": false,
@@ -4904,7 +4995,7 @@
                     "description": "Enable exterior ooze shield. This will create a shell around the model which is likely to wipe a second nozzle if it's at the same height as the first nozzle.",
                     "type": "bool",
                     "resolve": "any(extruderValues('ooze_shield_enabled'))",
-                    "enabled": "machine_extruder_count > 1",
+                    "enabled": "extruders_enabled_count > 1",
                     "default_value": false,
                     "settable_per_mesh": false,
                     "settable_per_extruder": false
@@ -4997,7 +5088,7 @@
                     "description": "Remove areas where multiple meshes are overlapping with each other. This may be used if merged dual material objects overlap with each other.",
                     "type": "bool",
                     "default_value": true,
-                    "value": "machine_extruder_count > 1",
+                    "value": "extruders_enabled_count > 1",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false,
                     "settable_per_meshgroup": true
@@ -5044,7 +5135,7 @@
                         "one_at_a_time": "One at a Time"
                     },
                     "default_value": "all_at_once",
-                    "enabled": "machine_extruder_count == 1",
+                    "enabled": "extruders_enabled_count == 1",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false,
                     "settable_per_meshgroup": false
@@ -6229,6 +6320,258 @@
                     "settable_per_mesh": false,
                     "settable_per_extruder": false,
                     "settable_per_meshgroup": false
+                },
+                "bridge_settings_enabled":
+                {
+                    "label": "Enable Bridge Settings",
+                    "description": "Detect bridges and modify print speed, flow and fan settings while bridges are printed.",
+                    "type": "bool",
+                    "default_value": false,
+                    "settable_per_mesh": true,
+                    "settable_per_extruder": false,
+                    "settable_per_meshgroup": false
+                },
+                "bridge_wall_min_length":
+                {
+                    "label": "Minimum Bridge Wall Length",
+                    "description": "Unsupported walls shorter than this will be printed using the normal wall settings. Longer unsupported walls will be printed using the bridge wall settings.",
+                    "unit": "mm",
+                    "type": "float",
+                    "minimum_value": "0",
+                    "default_value": 5,
+                    "enabled": "bridge_settings_enabled",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
+                },
+                "bridge_skin_support_threshold":
+                {
+                    "label": "Bridge Skin Support Threshold",
+                    "description": "If a skin region is supported for less than this percentage of its area, print it using the bridge settings. Otherwise it is printed using the normal skin settings.",
+                    "unit": "%",
+                    "default_value": 50,
+                    "type": "float",
+                    "minimum_value": "0",
+                    "maximum_value": "100",
+                    "enabled": "bridge_settings_enabled",
+                    "settable_per_mesh": true
+                },
+                "bridge_wall_max_overhang":
+                {
+                    "label": "Bridge Wall Max Overhang",
+                    "description": "The maximum allowed width of the region of air below a wall line before the wall is printed using bridge settings. Expressed as a percentage of the wall line width. When the air gap is wider than this, the wall line is printed using the bridge settings. Otherwise, the wall line is printed using the normal settings. The lower the value, the more likely it is that overhung wall lines will be printed using bridge settings.",
+                    "unit": "%",
+                    "default_value": 100,
+                    "type": "float",
+                    "minimum_value": "0",
+                    "maximum_value": "100",
+                    "enabled": "bridge_settings_enabled",
+                    "settable_per_mesh": true
+                },
+                "bridge_wall_coast":
+                {
+                    "label": "Bridge Wall Coasting",
+                    "description": "This controls the distance the extruder should coast immediately before a bridge wall begins. Coasting before the bridge starts can reduce the pressure in the nozzle and may produce a flatter bridge.",
+                    "unit": "%",
+                    "default_value": 100,
+                    "type": "float",
+                    "minimum_value": "0",
+                    "maximum_value": "500",
+                    "enabled": "bridge_settings_enabled",
+                    "settable_per_mesh": false
+                },
+                "bridge_wall_speed":
+                {
+                    "label": "Bridge Wall Speed",
+                    "description": "The speed at which the bridge walls are printed.",
+                    "unit": "mm/s",
+                    "type": "float",
+                    "minimum_value": "cool_min_speed",
+                    "maximum_value": "math.sqrt(machine_max_feedrate_x ** 2 + machine_max_feedrate_y ** 2)",
+                    "maximum_value_warning": "300",
+                    "default_value": 15,
+                    "value": "max(cool_min_speed, speed_wall_0 / 2)",
+                    "enabled": "bridge_settings_enabled",
+                    "settable_per_mesh": true
+                },
+                "bridge_wall_material_flow":
+                {
+                    "label": "Bridge Wall Flow",
+                    "description": "When printing bridge walls, the amount of material extruded is multiplied by this value.",
+                    "unit": "%",
+                    "default_value": 50,
+                    "type": "float",
+                    "minimum_value": "5",
+                    "minimum_value_warning": "50",
+                    "maximum_value_warning": "150",
+                    "enabled": "bridge_settings_enabled",
+                    "settable_per_mesh": true
+                },
+                "bridge_skin_speed":
+                {
+                    "label": "Bridge Skin Speed",
+                    "description": "The speed at which bridge skin regions are printed.",
+                    "unit": "mm/s",
+                    "type": "float",
+                    "minimum_value": "cool_min_speed",
+                    "maximum_value": "math.sqrt(machine_max_feedrate_x ** 2 + machine_max_feedrate_y ** 2)",
+                    "maximum_value_warning": "300",
+                    "default_value": 15,
+                    "value": "max(cool_min_speed, speed_topbottom / 2)",
+                    "enabled": "bridge_settings_enabled",
+                    "settable_per_mesh": true
+                },
+                "bridge_skin_material_flow":
+                {
+                    "label": "Bridge Skin Flow",
+                    "description": "When printing bridge skin regions, the amount of material extruded is multiplied by this value.",
+                    "unit": "%",
+                    "default_value": 60,
+                    "type": "float",
+                    "minimum_value": "5",
+                    "minimum_value_warning": "50",
+                    "maximum_value_warning": "150",
+                    "enabled": "bridge_settings_enabled",
+                    "settable_per_mesh": true
+                },
+                "bridge_skin_density":
+                {
+                    "label": "Bridge Skin Density",
+                    "description": "The density of the bridge skin layer. Values less than 100 will increase the gaps between the skin lines.",
+                    "unit": "%",
+                    "default_value": 100,
+                    "type": "float",
+                    "minimum_value": "5",
+                    "maximum_value": "100",
+                    "minimum_value_warning": "20",
+                    "enabled": "bridge_settings_enabled",
+                    "settable_per_mesh": true
+                },
+                "bridge_fan_speed":
+                {
+                    "label": "Bridge Fan Speed",
+                    "description": "Percentage fan speed to use when printing bridge walls and skin.",
+                    "unit": "%",
+                    "minimum_value": "0",
+                    "maximum_value": "100",
+                    "default_value": 100,
+                    "type": "float",
+                    "enabled": "bridge_settings_enabled",
+                    "settable_per_mesh": true
+                },
+                "bridge_enable_more_layers":
+                {
+                    "label": "Bridge Has Multiple Layers",
+                    "description": "If enabled, the second and third layers above the air are printed using the following settings. Otherwise, those layers are printed using the normal settings.",
+                    "type": "bool",
+                    "default_value": true,
+                    "enabled": "bridge_settings_enabled",
+                    "settable_per_mesh": true
+                },
+                "bridge_skin_speed_2":
+                {
+                    "label": "Bridge Second Skin Speed",
+                    "description": "Print speed to use when printing the second bridge skin layer.",
+                    "unit": "mm/s",
+                    "type": "float",
+                    "minimum_value": "cool_min_speed",
+                    "maximum_value": "math.sqrt(machine_max_feedrate_x ** 2 + machine_max_feedrate_y ** 2)",
+                    "maximum_value_warning": "300",
+                    "default_value": 25,
+                    "value": "bridge_skin_speed",
+                    "enabled": "bridge_settings_enabled and bridge_enable_more_layers",
+                    "settable_per_mesh": true
+                },
+                "bridge_skin_material_flow_2":
+                {
+                    "label": "Bridge Second Skin Flow",
+                    "description": "When printing the second bridge skin layer, the amount of material extruded is multiplied by this value.",
+                    "unit": "%",
+                    "default_value": 100,
+                    "type": "float",
+                    "minimum_value": "5",
+                    "maximum_value": "500",
+                    "minimum_value_warning": "50",
+                    "maximum_value_warning": "150",
+                    "enabled": "bridge_settings_enabled and bridge_enable_more_layers",
+                    "settable_per_mesh": true
+                },
+                "bridge_skin_density_2":
+                {
+                    "label": "Bridge Second Skin Density",
+                    "description": "The density of the second bridge skin layer. Values less than 100 will increase the gaps between the skin lines.",
+                    "unit": "%",
+                    "default_value": 75,
+                    "type": "float",
+                    "minimum_value": "5",
+                    "maximum_value": "100",
+                    "minimum_value_warning": "20",
+                    "enabled": "bridge_settings_enabled and bridge_enable_more_layers",
+                    "settable_per_mesh": true
+                },
+                "bridge_fan_speed_2":
+                {
+                    "label": "Bridge Second Skin Fan Speed",
+                    "description": "Percentage fan speed to use when printing the second bridge skin layer.",
+                    "unit": "%",
+                    "minimum_value": "0",
+                    "maximum_value": "100",
+                    "default_value": 0,
+                    "type": "float",
+                    "enabled": "bridge_settings_enabled and bridge_enable_more_layers",
+                    "settable_per_mesh": true
+                },
+                "bridge_skin_speed_3":
+                {
+                    "label": "Bridge Third Skin Speed",
+                    "description": "Print speed to use when printing the third bridge skin layer.",
+                    "unit": "mm/s",
+                    "type": "float",
+                    "minimum_value": "cool_min_speed",
+                    "maximum_value": "math.sqrt(machine_max_feedrate_x ** 2 + machine_max_feedrate_y ** 2)",
+                    "maximum_value_warning": "300",
+                    "default_value": 15,
+                    "value": "bridge_skin_speed",
+                    "enabled": "bridge_settings_enabled and bridge_enable_more_layers",
+                    "settable_per_mesh": true
+                },
+                "bridge_skin_material_flow_3":
+                {
+                    "label": "Bridge Third Skin Flow",
+                    "description": "When printing the third bridge skin layer, the amount of material extruded is multiplied by this value.",
+                    "unit": "%",
+                    "default_value": 110,
+                    "type": "float",
+                    "minimum_value": "5",
+                    "maximum_value": "500",
+                    "minimum_value_warning": "50",
+                    "maximum_value_warning": "150",
+                    "enabled": "bridge_settings_enabled and bridge_enable_more_layers",
+                    "settable_per_mesh": true
+                },
+                "bridge_skin_density_3":
+                {
+                    "label": "Bridge Third Skin Density",
+                    "description": "The density of the third bridge skin layer. Values less than 100 will increase the gaps between the skin lines.",
+                    "unit": "%",
+                    "default_value": 80,
+                    "type": "float",
+                    "minimum_value": "5",
+                    "maximum_value": "100",
+                    "minimum_value_warning": "20",
+                    "enabled": "bridge_settings_enabled and bridge_enable_more_layers",
+                    "settable_per_mesh": true
+                },
+                "bridge_fan_speed_3":
+                {
+                    "label": "Bridge Third Skin Fan Speed",
+                    "description": "Percentage fan speed to use when printing the third bridge skin layer.",
+                    "unit": "%",
+                    "minimum_value": "0",
+                    "maximum_value": "100",
+                    "default_value": 0,
+                    "type": "float",
+                    "enabled": "bridge_settings_enabled and bridge_enable_more_layers",
+                    "settable_per_mesh": true
                 }
             }
         },

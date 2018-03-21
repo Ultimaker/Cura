@@ -1,7 +1,8 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from .BaseMaterialsModel import BaseMaterialsModel
+from UM.Logger import Logger
+from cura.Machines.Models.BaseMaterialsModel import BaseMaterialsModel
 
 
 class GenericMaterialsModel(BaseMaterialsModel):
@@ -14,13 +15,13 @@ class GenericMaterialsModel(BaseMaterialsModel):
         self._extruder_manager = CuraApplication.getInstance().getExtruderManager()
         self._material_manager = CuraApplication.getInstance().getMaterialManager()
 
-        self._machine_manager.globalContainerChanged.connect(self._update)
-        self._extruder_manager.activeExtruderChanged.connect(self._update)
-        self._material_manager.materialsUpdated.connect(self._update)
-
+        self._machine_manager.activeStackChanged.connect(self._update) #Update when switching machines.
+        self._material_manager.materialsUpdated.connect(self._update) #Update when the list of materials changes.
         self._update()
 
     def _update(self):
+        Logger.log("d", "Updating {model_class_name}.".format(model_class_name = self.__class__.__name__))
+
         global_stack = self._machine_manager.activeMachine
         if global_stack is None:
             self.setItems([])
@@ -55,6 +56,6 @@ class GenericMaterialsModel(BaseMaterialsModel):
             item_list.append(item)
 
         # Sort the item list by material name alphabetically
-        item_list = sorted(item_list, key = lambda d: d["name"])
+        item_list = sorted(item_list, key = lambda d: d["name"].upper())
 
         self.setItems(item_list)

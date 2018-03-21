@@ -19,14 +19,17 @@ Item
 
     UM.I18nCatalog { id: catalog; name: "cura"; }
 
-    Cura.MaterialManagementModel {
+    Cura.MaterialManagementModel
+    {
         id: materialsModel
     }
 
-    Label {
+    Label
+    {
         id: titleLabel
 
-        anchors {
+        anchors
+        {
             top: parent.top
             left: parent.left
             right: parent.right
@@ -50,6 +53,24 @@ Item
         const extruder_position = Cura.ExtruderManager.activeExtruderIndex;
         const root_material_id = Cura.MachineManager.currentRootMaterialId[extruder_position];
         return base.currentItem.root_material_id == root_material_id;
+    }
+
+    Component.onCompleted:
+    {
+        // Select the activated material when this page shows up
+        const extruder_position = Cura.ExtruderManager.activeExtruderIndex;
+        const active_root_material_id = Cura.MachineManager.currentRootMaterialId[extruder_position];
+        var itemIndex = -1;
+        for (var i = 0; i < materialsModel.rowCount(); ++i)
+        {
+            var item = materialsModel.getItem(i);
+            if (item.root_material_id == active_root_material_id)
+            {
+                itemIndex = i;
+                break;
+            }
+        }
+        materialListView.currentIndex = itemIndex;
     }
 
     Row  // Button Row
@@ -152,22 +173,27 @@ Item
     Connections
     {
         target: materialsModel
-        onItemsChanged: {
+        onItemsChanged:
+        {
             var currentItemId = base.currentItem == null ? "" : base.currentItem.root_material_id;
             var position = Cura.ExtruderManager.activeExtruderIndex;
 
             // try to pick the currently selected item; it may have been moved
-            if (base.newRootMaterialIdToSwitchTo == "") {
+            if (base.newRootMaterialIdToSwitchTo == "")
+            {
                 base.newRootMaterialIdToSwitchTo = currentItemId;
             }
 
-            for (var idx = 0; idx < materialsModel.rowCount(); ++idx) {
+            for (var idx = 0; idx < materialsModel.rowCount(); ++idx)
+            {
                 var item = materialsModel.getItem(idx);
-                if (item.root_material_id == base.newRootMaterialIdToSwitchTo) {
+                if (item.root_material_id == base.newRootMaterialIdToSwitchTo)
+                {
                     // Switch to the newly created profile if needed
                     materialListView.currentIndex = idx;
                     materialListView.activateDetailsWithIndex(materialListView.currentIndex);
-                    if (base.toActivateNewMaterial) {
+                    if (base.toActivateNewMaterial)
+                    {
                         Cura.MachineManager.setMaterial(position, item.container_node);
                     }
                     base.newRootMaterialIdToSwitchTo = "";
@@ -178,7 +204,8 @@ Item
 
             materialListView.currentIndex = 0;
             materialListView.activateDetailsWithIndex(materialListView.currentIndex);
-            if (base.toActivateNewMaterial) {
+            if (base.toActivateNewMaterial)
+            {
                 Cura.MachineManager.setMaterial(position, materialsModel.getItem(0).container_node);
             }
             base.newRootMaterialIdToSwitchTo = "";
@@ -215,14 +242,17 @@ Item
 
             messageDialog.title = catalog.i18nc("@title:window", "Import Material");
             messageDialog.text = catalog.i18nc("@info:status Don't translate the XML tags <filename> or <message>!", "Could not import material <filename>%1</filename>: <message>%2</message>").arg(fileUrl).arg(result.message);
-            if (result.status == "success") {
+            if (result.status == "success")
+            {
                 messageDialog.icon = StandardIcon.Information;
                 messageDialog.text = catalog.i18nc("@info:status Don't translate the XML tag <filename>!", "Successfully imported material <filename>%1</filename>").arg(fileUrl);
             }
-            else if (result.status == "duplicate") {
+            else if (result.status == "duplicate")
+            {
                 messageDialog.icon = StandardIcon.Warning;
             }
-            else {
+            else
+            {
                 messageDialog.icon = StandardIcon.Critical;
             }
             messageDialog.open();
@@ -242,12 +272,14 @@ Item
             var result = Cura.ContainerManager.exportContainer(base.currentItem.root_material_id, selectedNameFilter, fileUrl);
 
             messageDialog.title = catalog.i18nc("@title:window", "Export Material");
-            if (result.status == "error") {
+            if (result.status == "error")
+            {
                 messageDialog.icon = StandardIcon.Critical;
                 messageDialog.text = catalog.i18nc("@info:status Don't translate the XML tags <filename> and <message>!", "Failed to export material to <filename>%1</filename>: <message>%2</message>").arg(fileUrl).arg(result.message);
                 messageDialog.open();
             }
-            else if (result.status == "success") {
+            else if (result.status == "success")
+            {
                 messageDialog.icon = StandardIcon.Information;
                 messageDialog.text = catalog.i18nc("@info:status Don't translate the XML tag <filename>!", "Successfully exported material to <filename>%1</filename>").arg(result.path);
                 messageDialog.open();
@@ -265,7 +297,8 @@ Item
     Item {
         id: contentsItem
 
-        anchors {
+        anchors
+        {
             top: titleLabel.bottom
             left: parent.left
             right: parent.right
@@ -279,7 +312,8 @@ Item
 
     Item
     {
-        anchors {
+        anchors
+        {
             top: buttonRow.bottom
             topMargin: UM.Theme.getSize("default_margin").height
             left: parent.left
@@ -292,12 +326,14 @@ Item
         Label
         {
             id: captionLabel
-            anchors {
+            anchors
+            {
                 top: parent.top
                 left: parent.left
             }
             visible: text != ""
-            text: {
+            text:
+            {
                 var caption = catalog.i18nc("@action:label", "Printer") + ": " + Cura.MachineManager.activeMachineName;
                 if (Cura.MachineManager.hasVariants)
                 {
@@ -312,20 +348,23 @@ Item
         ScrollView
         {
             id: materialScrollView
-            anchors {
+            anchors
+            {
                 top: captionLabel.visible ? captionLabel.bottom : parent.top
                 topMargin: captionLabel.visible ? UM.Theme.getSize("default_margin").height : 0
                 bottom: parent.bottom
                 left: parent.left
             }
 
-            Rectangle {
+            Rectangle
+            {
                 parent: viewport
                 anchors.fill: parent
                 color: palette.light
             }
 
             width: true ? (parent.width * 0.4) | 0 : parent.width
+            frameVisible: true
 
             ListView
             {
@@ -400,13 +439,15 @@ Item
                     MouseArea
                     {
                         anchors.fill: parent
-                        onClicked: {
+                        onClicked:
+                        {
                             parent.ListView.view.currentIndex = model.index;
                         }
                     }
                 }
 
-                function activateDetailsWithIndex(index) {
+                function activateDetailsWithIndex(index)
+                {
                     var model = materialsModel.getItem(index);
                     base.currentItem = model;
                     materialDetailsView.containerId = model.container_id;
@@ -428,7 +469,8 @@ Item
         {
             id: detailsPanel
 
-            anchors {
+            anchors
+            {
                 left: materialScrollView.right
                 leftMargin: UM.Theme.getSize("default_margin").width
                 top: parent.top

@@ -69,7 +69,7 @@ class FirmwareUpdateCheckerJob(Job):
 
                     # If we do this in a cool way, the download url should be available in the JSON file
                     if self._set_download_url_callback:
-                        self._set_download_url_callback("https://ultimaker.com/en/resources/20500-upgrade-firmware")
+                        self._set_download_url_callback("https://ultimaker.com/en/resources/23129-updating-the-firmware?utm_source=cura&utm_medium=software&utm_campaign=hw-update")
                     message.actionTriggered.connect(self._callback)
                     message.show()
 

@@ -309,16 +309,13 @@ class PrintInformation(QObject):
 
         self.jobNameChanged.emit()
 
-    @pyqtProperty(str)
-    def baseName(self):
-        return self._base_name
-
     @pyqtSlot(str)
     def setProjectName(self, name):
         self.setBaseName(name, is_project_file = True)
 
-    @pyqtSlot(str)
-    def setBaseName(self, base_name, is_project_file = False):
+    baseNameChanged = pyqtSignal()
+
+    def setBaseName(self, base_name: str, is_project_file: bool = False):
         # Ensure that we don't use entire path but only filename
         name = os.path.basename(base_name)
 
@@ -336,6 +333,9 @@ class PrintInformation(QObject):
             self._base_name = name
             self._updateJobName()
 
+    @pyqtProperty(str, fset = setBaseName, notify = baseNameChanged)
+    def baseName(self):
+        return self._base_name
 
     ##  Created an acronymn-like abbreviated machine name from the currently active machine name
     #   Called each time the global stack is switched
@@ -395,7 +395,6 @@ class PrintInformation(QObject):
 
     ##  Listen to scene changes to check if we need to reset the print information
     def _onSceneChanged(self, scene_node):
-
         # Ignore any changes that are not related to sliceable objects
         if not isinstance(scene_node, SceneNode)\
                 or not scene_node.callDecoration("isSliceable")\

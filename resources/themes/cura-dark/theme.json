@@ -84,16 +84,16 @@
         "tab_background": [39, 44, 48, 255],
 
         "action_button": [39, 44, 48, 255],
-        "action_button_text": [255, 255, 255, 101],
+        "action_button_text": [255, 255, 255, 200],
         "action_button_border": [255, 255, 255, 30],
         "action_button_hovered": [39, 44, 48, 255],
         "action_button_hovered_text": [255, 255, 255, 255],
         "action_button_hovered_border": [255, 255, 255, 30],
         "action_button_active": [39, 44, 48, 30],
         "action_button_active_text": [255, 255, 255, 255],
-        "action_button_active_border": [255, 255, 255, 30],
+        "action_button_active_border": [255, 255, 255, 100],
         "action_button_disabled": [39, 44, 48, 255],
-        "action_button_disabled_text": [255, 255, 255, 101],
+        "action_button_disabled_text": [255, 255, 255, 80],
         "action_button_disabled_border": [255, 255, 255, 30],
 
         "scrollbar_background": [39, 44, 48, 0],
@@ -206,6 +206,14 @@
         "layerview_move_retraction": [128,  128,  255, 255],
         "layerview_support_interface": [64, 192, 255, 255],
         "layerview_nozzle": [181, 166, 66, 120],
+
+        "configuration_item": [0, 0, 0, 0],
+        "configuration_item_active": [12, 169, 227, 179],
+        "configuration_item_text": [255, 255, 255, 255],
+        "configuration_item_text_active": [255, 255, 255, 255],
+        "configuration_item_border": [255, 255, 255, 255],
+        "configuration_item_border_active": [12, 169, 227, 179],
+        "configuration_item_border_hover": [12, 169, 227, 179],
 
         "material_compatibility_warning": [255, 255, 255, 255],
 

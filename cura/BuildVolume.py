@@ -111,6 +111,9 @@ class BuildVolume(SceneNode):
         # but it does not update the disallowed areas after material change
         Application.getInstance().getMachineManager().activeStackChanged.connect(self._onStackChanged)
 
+        # Enable and disable extruder
+        Application.getInstance().getMachineManager().extruderChanged.connect(self.updateNodeBoundaryCheck)
+
         # list of settings which were updated
         self._changed_settings_since_last_rebuild = []
 
@@ -133,6 +136,7 @@ class BuildVolume(SceneNode):
                 if active_extruder_changed is not None:
                     node.callDecoration("getActiveExtruderChangedSignal").disconnect(self._updateDisallowedAreasAndRebuild)
                 node.decoratorsChanged.disconnect(self._updateNodeListeners)
+            self._updateDisallowedAreasAndRebuild()  # make sure we didn't miss anything before we updated the node listeners
 
             self._scene_objects = new_scene_objects
             self._onSettingPropertyChanged("print_sequence", "value")  # Create fake event, so right settings are triggered.
@@ -147,7 +151,6 @@ class BuildVolume(SceneNode):
         active_extruder_changed = node.callDecoration("getActiveExtruderChangedSignal")
         if active_extruder_changed is not None:
             active_extruder_changed.connect(self._updateDisallowedAreasAndRebuild)
-            self._updateDisallowedAreasAndRebuild()
 
     def setWidth(self, width):
         if width is not None:
@@ -217,30 +220,35 @@ class BuildVolume(SceneNode):
                 group_nodes.append(node)  # Keep list of affected group_nodes
 
             if node.callDecoration("isSliceable") or node.callDecoration("isGroup"):
-                node._outside_buildarea = False
-                bbox = node.getBoundingBox()
-
-                # Mark the node as outside the build volume if the bounding box test fails.
-                if build_volume_bounding_box.intersectsBox(bbox) != AxisAlignedBox.IntersectionResult.FullIntersection:
-                    node._outside_buildarea = True
+                if node.collidesWithBbox(build_volume_bounding_box):
+                    node.setOutsideBuildArea(True)
                     continue
 
-                convex_hull = node.callDecoration("getConvexHull")
-                if convex_hull:
-                    if not convex_hull.isValid():
-                        return
-                    # Check for collisions between disallowed areas and the object
-                    for area in self.getDisallowedAreas():
-                        overlap = convex_hull.intersectsPolygon(area)
-                        if overlap is None:
-                            continue
-                        node._outside_buildarea = True
-                        continue
+                if node.collidesWithArea(self.getDisallowedAreas()):
+                    node.setOutsideBuildArea(True)
+                    continue
+
+                # Mark the node as outside build volume if the set extruder is disabled
+                extruder_position = node.callDecoration("getActiveExtruderPosition")
+                if not self._global_container_stack.extruders[extruder_position].isEnabled:
+                    node.setOutsideBuildArea(True)
+                    continue
+
+                node.setOutsideBuildArea(False)
 
         # Group nodes should override the _outside_buildarea property of their children.
         for group_node in group_nodes:
-            for child_node in group_node.getAllChildren():
-                child_node._outside_buildarea = group_node._outside_buildarea
+            children = group_node.getAllChildren()
+
+            # Check if one or more children are non-printable and if so, set the parent as non-printable:
+            for child_node in children:
+                if child_node.isOutsideBuildArea():
+                    group_node.setOutsideBuildArea(True)
+                    break
+
+            # Apply results of the check to all children of the group:
+            for child_node in children:
+                child_node.setOutsideBuildArea(group_node.isOutsideBuildArea())
 
     ##  Update the outsideBuildArea of a single node, given bounds or current build volume
     def checkBoundsAndUpdate(self, node: CuraSceneNode, bounds: Optional[AxisAlignedBox] = None):
@@ -260,24 +268,20 @@ class BuildVolume(SceneNode):
             build_volume_bounding_box = bounds
 
         if node.callDecoration("isSliceable") or node.callDecoration("isGroup"):
-            bbox = node.getBoundingBox()
-
-            # Mark the node as outside the build volume if the bounding box test fails.
-            if build_volume_bounding_box.intersectsBox(bbox) != AxisAlignedBox.IntersectionResult.FullIntersection:
+            if node.collidesWithBbox(build_volume_bounding_box):
                 node.setOutsideBuildArea(True)
                 return
 
-            convex_hull = self.callDecoration("getConvexHull")
-            if convex_hull:
-                if not convex_hull.isValid():
-                    return
-                # Check for collisions between disallowed areas and the object
-                for area in self.getDisallowedAreas():
-                    overlap = convex_hull.intersectsPolygon(area)
-                    if overlap is None:
-                        continue
-                    node.setOutsideBuildArea(True)
-                    return
+            if node.collidesWithArea(self.getDisallowedAreas()):
+                node.setOutsideBuildArea(True)
+                return
+
+            # Mark the node as outside build volume if the set extruder is disabled
+            extruder_position = node.callDecoration("getActiveExtruderPosition")
+            if not self._global_container_stack.extruders[extruder_position].isEnabled:
+                node.setOutsideBuildArea(True)
+                return
+
             node.setOutsideBuildArea(False)
 
     ##  Recalculates the build volume & disallowed areas.
