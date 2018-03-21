@@ -197,10 +197,6 @@ class StartSliceJob(Job):
                         if getattr(node, "_outside_buildarea", False) and not is_non_printing_mesh:
                             continue
 
-                        #node_position = node.callDecoration("getActiveExtruderPosition")
-                        #if not stack.extruders[str(node_position)].isEnabled:
-                        #    continue
-
                         temp_list.append(node)
                         if not is_non_printing_mesh:
                             has_printing_mesh = True
@@ -243,7 +239,7 @@ class StartSliceJob(Job):
 
             for group in filtered_object_groups:
                 group_message = self._slice_message.addRepeatedMessage("object_lists")
-                if group[0].getParent().callDecoration("isGroup"):
+                if group[0].getParent() is not None and group[0].getParent().callDecoration("isGroup"):
                     self._handlePerObjectSettings(group[0].getParent(), group_message)
                 for object in group:
                     mesh_data = object.getMeshData()

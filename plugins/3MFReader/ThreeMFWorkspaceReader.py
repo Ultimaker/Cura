@@ -358,8 +358,10 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         machine_name = self._getMachineNameFromSerializedStack(serialized)
         stacks = self._container_registry.findContainerStacks(name = machine_name, type = "machine")
         self._is_same_machine_type = True
+        existing_global_stack = None
         if stacks:
             global_stack = stacks[0]
+            existing_global_stack = global_stack
             containers_found_dict["machine"] = True
             # Check if there are any changes at all in any of the container stacks.
             id_list = self._getContainerIdListFromSerialized(serialized)
@@ -495,8 +497,16 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         if machine_conflict and not self._is_same_machine_type:
             machine_conflict = False
 
+        is_printer_group = False
+        if machine_conflict:
+            group_name = existing_global_stack.getMetaDataEntry("connect_group_name")
+            if group_name is not None:
+                is_printer_group = True
+                machine_name = group_name
+
         # Show the dialog, informing the user what is about to happen.
         self._dialog.setMachineConflict(machine_conflict)
+        self._dialog.setIsPrinterGroup(is_printer_group)
         self._dialog.setQualityChangesConflict(quality_changes_conflict)
         self._dialog.setMaterialConflict(material_conflict)
         self._dialog.setHasVisibleSettingsField(has_visible_settings_string)
