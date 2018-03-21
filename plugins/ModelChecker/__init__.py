@@ -1,21 +1,14 @@
-# Copyright (c) 2017 Ultimaker B.V.
+# Copyright (c) 2018 Ultimaker B.V.
 # This example is released under the terms of the AGPLv3 or higher.
 
 from . import ModelChecker
 
 from UM.i18n import i18nCatalog
-i18n_catalog = i18nCatalog("uranium")
+i18n_catalog = i18nCatalog("cura")
 
 
 def getMetaData():
-    return {
-        "tool": {
-            "name": i18n_catalog.i18nc("@label", "Model Checker"),
-            "description": i18n_catalog.i18nc("@info:tooltip", "Checks models and print configuration for possible printing issues and give suggestions."),
-            "icon": "model_checker.svg",
-            "weight": 10
-        }
-    }
+    return {}
 
 def register(app):
-    return { "tool": ModelChecker.ModelChecker() }
+    return { "extension": ModelChecker.ModelChecker() }
