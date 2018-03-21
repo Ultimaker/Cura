@@ -1304,7 +1304,7 @@ class CuraApplication(QtApplication):
                 job._node = node
                 job.finished.connect(self._reloadMeshFinished)
                 if has_merged_nodes:
-                    job.finished.connect(self.centerMergedMeshes)
+                    job.finished.connect(self.updateOriginOfMergedMeshes)
 
                 job.start()
             else:
@@ -1383,9 +1383,9 @@ class CuraApplication(QtApplication):
         group_node.setName("MergedMesh") # add a specific name to destinguis this node
 
 
-    ##  Updates center position of all merged meshes
+    ##  Updates origin position of all merged meshes
     #   \param jobNode \type{Job} empty object which passed which is required by JobQueue
-    def centerMergedMeshes(self, jobNode):
+    def updateOriginOfMergedMeshes(self, jobNode):
         group_nodes = []
         for node in DepthFirstIterator(self.getController().getScene().getRoot()):
             if isinstance(node, CuraSceneNode) and node.getName() == "MergedMesh":
