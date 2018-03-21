@@ -20,14 +20,6 @@ SHRINKAGE_THRESHOLD = 0.5
 WARNING_SIZE_XY = 150
 WARNING_SIZE_Z = 100
 
-# Use this when actual shrinkage data is not in fdm_materials yet
-MATERIALS_LOOKUP = {
-    "generic_abs": 1,
-    "generic_pc": 1,
-    "generic_pp": 1,
-    "generic_cpe_plus": 1
-}
-
 
 class ModelChecker(QObject, Extension):
 
@@ -118,21 +110,6 @@ class ModelChecker(QObject, Extension):
         else:
             self.showHappyMessage()
 
-    # TODO: use this if branch feature_model_check is merged in fdm_materials to master
-    # def getMaterialShrinkage(self):
-    #     global_container_stack = Application.getInstance().getGlobalContainerStack()
-    #     if global_container_stack is None:
-    #         return {}
-    #
-    #     material_shrinkage = {}
-    #     # Get all shrinkage values of materials used
-    #     for extruder_position, extruder in global_container_stack.extruders.items():
-    #         shrinkage = extruder.material.getProperty("material_shrinkage_percentage", "value")
-    #         if shrinkage is None:
-    #             shrinkage = 0
-    #         material_shrinkage[extruder_position] = shrinkage
-    #     return material_shrinkage
-
     def getMaterialShrinkage(self):
         global_container_stack = Application.getInstance().getGlobalContainerStack()
         if global_container_stack is None:
@@ -141,8 +118,9 @@ class ModelChecker(QObject, Extension):
         material_shrinkage = {}
         # Get all shrinkage values of materials used
         for extruder_position, extruder in global_container_stack.extruders.items():
-            base_file = extruder.material.getMetaDataEntry("base_file")
-            shrinkage = MATERIALS_LOOKUP.get(base_file, 0)
+            shrinkage = extruder.material.getProperty("material_shrinkage_percentage", "value")
+            if shrinkage is None:
+                shrinkage = 0
             material_shrinkage[extruder_position] = shrinkage
         return material_shrinkage
 
