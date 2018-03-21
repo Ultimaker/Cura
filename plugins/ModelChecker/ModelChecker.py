@@ -71,6 +71,7 @@ class ModelChecker(QObject, Extension):
 
     ##  Display warning message
     def showWarningMessage(self, warning_nodes):
+        self._happy_message.hide()
         self._caution_message.setText(catalog.i18nc(
             "@info:status",
             "Some models may not be printed optimal due to object size and chosen material for models: {model_names}.\n"
@@ -81,6 +82,7 @@ class ModelChecker(QObject, Extension):
         self._caution_message.show()
 
     def showHappyMessage(self):
+        self._caution_message.hide()
         self._happy_message.show()
 
     ##  Creates the view used by show popup. The view is saved because of the fairly aggressive garbage collection.
