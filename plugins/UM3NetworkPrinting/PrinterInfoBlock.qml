@@ -41,7 +41,8 @@ Rectangle
                 return catalog.i18nc("@label:status", "Available");
             case "unreachable":
                 return catalog.i18nc("@label:MonitorStatus", "Lost connection with the printer");
-            case "maintenance":  // TODO: new string
+            case "maintenance":
+                return catalog.i18nc("@label:status", "Unavailable");
             case "unknown":
             default:
                 return catalog.i18nc("@label Printer status", "Unknown");
