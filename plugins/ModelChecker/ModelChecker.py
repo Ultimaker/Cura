@@ -16,9 +16,9 @@ from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 catalog = i18nCatalog("cura")
 
 
-SHRINKAGE_THRESHOLD = 0.5
-WARNING_SIZE_XY = 150
-WARNING_SIZE_Z = 100
+SHRINKAGE_THRESHOLD = 0.5 #From what shrinkage percentage a warning will be issued about the model size.
+WARNING_SIZE_XY = 150 #The horizontal size of a model that would be too large when dealing with shrinking materials.
+WARNING_SIZE_Z = 100 #The vertical size of a model that would be too large when dealing with shrinking materials.
 
 
 class ModelChecker(QObject, Extension):
