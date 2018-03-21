@@ -34,17 +34,17 @@ Rectangle
         switch (printer.state)
         {
             case "pre_print":
-                return catalog.i18nc("@label", "Preparing to print")
+                return catalog.i18nc("@label:status", "Preparing to print")
             case "printing":
                 return catalog.i18nc("@label:status", "Printing");
             case "idle":
                 return catalog.i18nc("@label:status", "Available");
             case "unreachable":
-                return catalog.i18nc("@label:MonitorStatus", "Lost connection with the printer");
-            case "maintenance":  // TODO: new string
-            case "unknown":
+                return catalog.i18nc("@label:status", "Lost connection with the printer");
+            case "maintenance":
+                return catalog.i18nc("@label:status", "Unavailable");
             default:
-                return catalog.i18nc("@label Printer status", "Unknown");
+                return catalog.i18nc("@label:status", "Unknown");
         }
     }
 
