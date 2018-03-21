@@ -30,6 +30,7 @@ Column
         text: catalog.i18nc("@label:header configurations", "Available configurations")
         font: UM.Theme.getFont("large")
         width: parent.width - 2 * parent.padding
+        color: UM.Theme.getColor("configuration_item_text")
     }
 
     Component
@@ -42,6 +43,7 @@ Column
             {
                 text: section
                 font: UM.Theme.getFont("default_bold")
+                color: UM.Theme.getColor("configuration_item_text")
             }
         }
     }
