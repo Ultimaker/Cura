@@ -22,10 +22,6 @@ Button
     tooltip: catalog.i18nc("@info:tooltip", "Check current setup for known problems.")
     onClicked: manager.runChecks()
 
-    //anchors.leftMargin: UM.Theme.getSize("default_margin").width
-
-    //anchors.right: parent.right
-    //anchors.verticalCenter: parent.verticalCenter
     width: UM.Theme.getSize("save_button_specs_icons").width
     height: UM.Theme.getSize("save_button_specs_icons").height
 
