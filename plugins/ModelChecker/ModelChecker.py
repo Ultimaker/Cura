@@ -45,13 +45,13 @@ class ModelChecker(QObject, Extension):
     def bindSignals(self):
         Application.getInstance().getMachineManager().rootMaterialChanged.connect(self._onChanged)
 
-    def checkObjectsForShrinkage(self, nodes_to_check):
+    def checkObjectsForShrinkage(self):
         material_shrinkage = self.getMaterialShrinkage()
 
         warning_nodes = []
 
         # Check node material shrinkage and bounding box size
-        for node in nodes_to_check:
+        for node in self.sliceableNodes():
             node_extruder_position = node.callDecoration("getActiveExtruderPosition")
             if material_shrinkage[node_extruder_position] > SHRINKAGE_THRESHOLD:
                 bbox = node.getBoundingBox()
@@ -60,14 +60,12 @@ class ModelChecker(QObject, Extension):
 
         return warning_nodes
 
-    def checkAllSliceableNodes(self):
+    def sliceableNodes(self):
         # Add all sliceable scene nodes to check
         scene = Application.getInstance().getController().getScene()
-        nodes_to_check = []
         for node in DepthFirstIterator(scene.getRoot()):
             if node.callDecoration("isSliceable"):
-                nodes_to_check.append(node)
-        return self.checkObjectsForShrinkage(nodes_to_check)
+                yield node
 
     ##  Display warning message
     def showWarningMessage(self, warning_nodes):
@@ -108,7 +106,7 @@ class ModelChecker(QObject, Extension):
 
     @pyqtSlot()
     def runChecks(self):
-        warning_nodes = self.checkAllSliceableNodes()
+        warning_nodes = self.checkObjectsForShrinkage()
         if warning_nodes:
             self.showWarningMessage(warning_nodes)
         else:
