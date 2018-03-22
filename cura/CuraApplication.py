@@ -1288,7 +1288,7 @@ class CuraApplication(QtApplication):
         has_merged_nodes = False
         for node in DepthFirstIterator(self.getController().getScene().getRoot()):
             if not isinstance(node, CuraSceneNode) or not node.getMeshData() :
-                if node.getName() == 'MergedMesh':
+                if node.getName() == "MergedMesh":
                     has_merged_nodes = True
                 continue
 
@@ -1380,7 +1380,7 @@ class CuraApplication(QtApplication):
 
         # Use the previously found center of the group bounding box as the new location of the group
         group_node.setPosition(group_node.getBoundingBox().center)
-        group_node.setName("MergedMesh") # add a specific name to destinguis this node
+        group_node.setName("MergedMesh")  # add a specific name to distinguish this node
 
 
     ##  Updates origin position of all merged meshes
