@@ -101,7 +101,7 @@ UM.Dialog
                 }
                 Label
                 {
-                    text: Cura.MachineManager.activeDefinitionName
+                    text: (Cura.MachineManager.activeMachine == null) ? "" : Cura.MachineManager.activeMachine.definition.name
                     width: (parent.width / 3) | 0
                 }
             }
@@ -111,19 +111,44 @@ UM.Dialog
                 height: childrenRect.height
                 Label
                 {
-                    text: catalog.i18nc("@action:label", "Name")
+                    text: catalog.i18nc("@action:label", Cura.MachineManager.activeMachineNetworkGroupName != "" ? "Printer Group" : "Name")
                     width: (parent.width / 3) | 0
                 }
                 Label
                 {
-                    text: Cura.MachineManager.activeMachineName
+                    text: Cura.MachineManager.activeMachineNetworkGroupName != "" ? Cura.MachineManager.activeMachineNetworkGroupName : Cura.MachineManager.activeMachineName
                     width: (parent.width / 3) | 0
+                }
+            }
+            Column
+            {
+                width: parent.width
+                visible: Cura.MachineManager.hasVariantBuildplates
+                Item // Spacer
+                {
+                    height: spacerHeight
+                    width: height
+                }
+                Row
+                {
+                    width: parent.width
+                    height: childrenRect.height
+                    Label
+                    {
+                        text: catalog.i18nc("@action:label", "Build plate")
+                        width: (parent.width / 3) | 0
+                    }
+                    Label
+                    {
+                        text: Cura.MachineManager.activeVariantBuildplateName
+                        width: (parent.width / 3) | 0
+                    }
                 }
             }
 
             Repeater
             {
-                model: Cura.MachineManager.activeMaterialNames
+                model: Cura.MachineManager.currentExtruderPositions
                 delegate: Column
                 {
                     Item // Spacer
@@ -133,7 +158,7 @@ UM.Dialog
                     }
                     Label
                     {
-                        text: catalog.i18nc("@action:label", "Extruder %1").arg(index+1)
+                        text: catalog.i18nc("@action:label", "Extruder %1").arg(modelData)
                     }
                     height: childrenRect.height
                     width: parent.width
@@ -148,7 +173,7 @@ UM.Dialog
                         }
                         Label
                         {
-                            text: Cura.MachineManager.activeVariantNames[index] + ", " + modelData
+                            text: Cura.MachineManager.activeVariantNames[modelData] + ", " + Cura.MachineManager.getExtruder(modelData).material.name
                             width: (parent.width / 3) | 0
                         }
                     }
@@ -192,7 +217,7 @@ UM.Dialog
                 }
                 Label
                 {
-                    text: Cura.MachineManager.activeQualityName
+                    text: Cura.MachineManager.activeQualityOrQualityChangesName
                     width: (parent.width / 3) | 0
                 }
 

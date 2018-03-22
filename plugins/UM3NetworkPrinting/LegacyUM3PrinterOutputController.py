@@ -20,6 +20,7 @@ class LegacyUM3PrinterOutputController(PrinterOutputController):
         self._preheat_printer = None
 
         self.can_control_manually = False
+        self.can_send_raw_gcode = False
 
         # Are we still waiting for a response about preheat?
         # We need this so we can already update buttons, so it feels more snappy.

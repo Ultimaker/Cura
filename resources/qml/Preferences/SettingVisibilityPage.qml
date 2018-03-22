@@ -13,6 +13,8 @@ UM.PreferencesPage
 {
     title: catalog.i18nc("@title:tab", "Setting Visibility");
 
+    property QtObject settingVisibilityPresetsModel: CuraApplication.getSettingVisibilityPresetsModel()
+
     property int scrollToIndex: 0
 
     signal scrollToSection( string key )
@@ -24,6 +26,10 @@ UM.PreferencesPage
     function reset()
     {
         UM.Preferences.resetPreference("general/visible_settings")
+
+        // After calling this function update Setting visibility preset combobox.
+        // Reset should set default setting preset ("Basic")
+        visibilityPreset.currentIndex = 1
     }
     resetEnabled: true;
 
@@ -66,11 +72,11 @@ UM.PreferencesPage
                 {
                     if(parent.checkedState == Qt.Unchecked || parent.checkedState == Qt.PartiallyChecked)
                     {
-                        definitionsModel.setAllVisible(true)
+                        definitionsModel.setAllExpandedVisible(true)
                     }
                     else
                     {
-                        definitionsModel.setAllVisible(false)
+                        definitionsModel.setAllExpandedVisible(false)
                     }
                 }
             }
@@ -85,12 +91,45 @@ UM.PreferencesPage
                 top: parent.top
                 left: toggleVisibleSettings.right
                 leftMargin: UM.Theme.getSize("default_margin").width
-                right: parent.right
+                right: visibilityPreset.left
+                rightMargin: UM.Theme.getSize("default_margin").width
             }
 
             placeholderText: catalog.i18nc("@label:textbox", "Filter...")
 
             onTextChanged: definitionsModel.filter = {"i18n_label": "*" + text}
+        }
+
+        ComboBox
+        {
+            id: visibilityPreset
+            width: 150 * screenScaleFactor
+            anchors
+            {
+                top: parent.top
+                right: parent.right
+            }
+
+            model: settingVisibilityPresetsModel
+            textRole: "name"
+
+            currentIndex:
+            {
+                // Load previously selected preset.
+                var index = settingVisibilityPresetsModel.find("id", settingVisibilityPresetsModel.activePreset)
+                if (index == -1)
+                {
+                    return 0
+                }
+
+                return index
+            }
+
+            onActivated:
+            {
+                var preset_id = settingVisibilityPresetsModel.getItem(index).id;
+                settingVisibilityPresetsModel.setActivePreset(preset_id);
+            }
         }
 
         ScrollView
@@ -119,7 +158,7 @@ UM.PreferencesPage
                     exclude: ["machine_settings", "command_line_settings"]
                     showAncestors: true
                     expanded: ["*"]
-                    visibilityHandler: UM.SettingPreferenceVisibilityHandler { }
+                    visibilityHandler: UM.SettingPreferenceVisibilityHandler {}
                 }
 
                 delegate: Loader

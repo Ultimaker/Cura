@@ -32,9 +32,11 @@ class SettingOverrideDecorator(SceneNodeDecorator):
 
     def __init__(self):
         super().__init__()
-        self._stack = PerObjectContainerStack(stack_id = "per_object_stack_" + str(id(self)))
+        self._stack = PerObjectContainerStack(container_id = "per_object_stack_" + str(id(self)))
         self._stack.setDirty(False)  # This stack does not need to be saved.
-        self._stack.addContainer(InstanceContainer(container_id = "SettingOverrideInstanceContainer"))
+        user_container = InstanceContainer(container_id = "SettingOverrideInstanceContainer")
+        user_container.addMetaDataEntry("type", "user")
+        self._stack.userChanges = user_container
         self._extruder_stack = ExtruderManager.getInstance().getExtruderStack(0).getId()
 
         self._is_non_printing_mesh = False
@@ -61,7 +63,7 @@ class SettingOverrideDecorator(SceneNodeDecorator):
 
         # use value from the stack because there can be a delay in signal triggering and "_is_non_printing_mesh"
         # has not been updated yet.
-        deep_copy._is_non_printing_mesh = any(bool(self._stack.getProperty(setting, "value")) for setting in self._non_printing_mesh_settings)
+        deep_copy._is_non_printing_mesh = self.evaluateIsNonPrintingMesh()
 
         return deep_copy
 
@@ -89,10 +91,13 @@ class SettingOverrideDecorator(SceneNodeDecorator):
     def isNonPrintingMesh(self):
         return self._is_non_printing_mesh
 
+    def evaluateIsNonPrintingMesh(self):
+        return any(bool(self._stack.getProperty(setting, "value")) for setting in self._non_printing_mesh_settings)
+
     def _onSettingChanged(self, instance, property_name): # Reminder: 'property' is a built-in function
-        # Trigger slice/need slicing if the value has changed.
         if property_name == "value":
-            self._is_non_printing_mesh = any(bool(self._stack.getProperty(setting, "value")) for setting in self._non_printing_mesh_settings)
+            # Trigger slice/need slicing if the value has changed.
+            self._is_non_printing_mesh = self.evaluateIsNonPrintingMesh()
 
             Application.getInstance().getBackend().needsSlicing()
             Application.getInstance().getBackend().tickle()

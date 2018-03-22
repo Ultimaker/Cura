@@ -164,7 +164,7 @@ Component {
             Button {
                 id: removeButton
                 text: "Uninstall"
-                visible: model.external && model.status == "installed"
+                visible: model.can_uninstall && model.status == "installed"
                 enabled: !manager.isDownloading
                 style: ButtonStyle {
                     background: Rectangle {

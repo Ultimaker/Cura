@@ -74,7 +74,7 @@ class SimulationView(View):
 
         self._global_container_stack = None
         self._proxy = SimulationViewProxy()
-        self._controller.getScene().getRoot().childrenChanged.connect(self._onSceneChanged)
+        self._controller.getScene().sceneChanged.connect(self._onSceneChanged)
 
         self._resetSettings()
         self._legend_items = None
@@ -158,9 +158,12 @@ class SimulationView(View):
         return self._nozzle_node
 
     def _onSceneChanged(self, node):
-        self.setActivity(False)
-        self.calculateMaxLayers()
-        self.calculateMaxPathsOnLayer(self._current_layer_num)
+        if node.getMeshData() is None:
+            self.resetLayerData()
+        else:
+            self.setActivity(False)
+            self.calculateMaxLayers()
+            self.calculateMaxPathsOnLayer(self._current_layer_num)
 
     def isBusy(self):
         return self._busy
@@ -342,6 +345,11 @@ class SimulationView(View):
             min_layer_number = sys.maxsize
             max_layer_number = -sys.maxsize
             for layer_id in layer_data.getLayers():
+
+                # If a layer doesn't contain any polygons, skip it (for infill meshes taller than print objects
+                if len(layer_data.getLayer(layer_id).polygons) < 1:
+                    continue
+
                 # Store the max and min feedrates and thicknesses for display purposes
                 for p in layer_data.getLayer(layer_id).polygons:
                     self._max_feedrate = max(float(p.lineFeedrates.max()), self._max_feedrate)
@@ -634,4 +642,3 @@ class _CreateTopLayersJob(Job):
     def cancel(self):
         self._cancel = True
         super().cancel()
-

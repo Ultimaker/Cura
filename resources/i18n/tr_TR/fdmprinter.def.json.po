@@ -56,9 +56,7 @@ msgctxt "machine_start_gcode description"
 msgid ""
 "Gcode commands to be executed at the very start - separated by \n"
 "."
-msgstr ""
-"​\n"
-" ile ayrılan, başlangıçta yürütülecek G-code komutları."
+msgstr "​\n ile ayrılan, başlangıçta yürütülecek G-code komutları."
 
 #: fdmprinter.def.json
 msgctxt "machine_end_gcode label"
@@ -70,9 +68,7 @@ msgctxt "machine_end_gcode description"
 msgid ""
 "Gcode commands to be executed at the very end - separated by \n"
 "."
-msgstr ""
-"​\n"
-" ile ayrılan, bitişte yürütülecek Gcode komutları."
+msgstr "​\n ile ayrılan, bitişte yürütülecek Gcode komutları."
 
 #: fdmprinter.def.json
 msgctxt "material_guid label"
@@ -352,12 +348,12 @@ msgstr "Repetier"
 #: fdmprinter.def.json
 msgctxt "machine_firmware_retract label"
 msgid "Firmware Retraction"
-msgstr ""
+msgstr "Üretici Yazılımı Geri Çekme"
 
 #: fdmprinter.def.json
 msgctxt "machine_firmware_retract description"
 msgid "Whether to use firmware retract commands (G10/G11) instead of using the E property in G1 commands to retract the material."
-msgstr ""
+msgstr "Malzemeyi geri çekmek için G1 komutlarında E özelliği yerine aygıt yazılımı çekme komutlarının (G10/G11) kullanılıp kullanılmayacağı."
 
 #: fdmprinter.def.json
 msgctxt "machine_disallowed_areas label"
@@ -1052,12 +1048,12 @@ msgstr "Her bölüm"
 #: fdmprinter.def.json
 msgctxt "filter_out_tiny_gaps label"
 msgid "Filter Out Tiny Gaps"
-msgstr ""
+msgstr "Küçük Boşlukların Filtrelenmesi"
 
 #: fdmprinter.def.json
 msgctxt "filter_out_tiny_gaps description"
 msgid "Filter out tiny gaps to reduce blobs on outside of model."
-msgstr ""
+msgstr "Modelin dışındaki damlalarını azaltmak için küçük boşlukları filtreleyin."
 
 #: fdmprinter.def.json
 msgctxt "fill_outline_gaps label"
@@ -1442,7 +1438,7 @@ msgstr "Dolgu X Kayması"
 #: fdmprinter.def.json
 msgctxt "infill_offset_x description"
 msgid "The infill pattern is moved this distance along the X axis."
-msgstr ""
+msgstr "Dolgu şekli X ekseni boyunca bu mesafe kadar kaydırılır."
 
 #: fdmprinter.def.json
 msgctxt "infill_offset_y label"
@@ -1452,7 +1448,7 @@ msgstr "Dolgu Y Kayması"
 #: fdmprinter.def.json
 msgctxt "infill_offset_y description"
 msgid "The infill pattern is moved this distance along the Y axis."
-msgstr ""
+msgstr "Dolgu şekli Y ekseni boyunca bu mesafe kadar kaydırılır."
 
 #: fdmprinter.def.json
 msgctxt "sub_div_rad_add label"
@@ -1472,7 +1468,7 @@ msgstr "Dolgu Çakışma Oranı"
 #: fdmprinter.def.json
 msgctxt "infill_overlap description"
 msgid "The amount of overlap between the infill and the walls as a percentage of the infill line width. A slight overlap allows the walls to connect firmly to the infill."
-msgstr ""
+msgstr "Dolgu hattı genişliğinin yüzdesi olarak dolgu ve duvarların arasındaki çakışma miktarı. Ufak bir çakışma duvarların dolguya sıkıca bağlanmasını sağlar."
 
 #: fdmprinter.def.json
 msgctxt "infill_overlap_mm label"
@@ -1492,7 +1488,7 @@ msgstr "Yüzey Çakışma Oranı"
 #: fdmprinter.def.json
 msgctxt "skin_overlap description"
 msgid "The amount of overlap between the skin and the walls as a percentage of the skin line width. A slight overlap allows the walls to connect firmly to the skin. This is a percentage of the average line widths of the skin lines and the innermost wall."
-msgstr ""
+msgstr "Yüzey hattı genişliğinin yüzdesi olarak yüzey ve duvar çakışmasının miktarı. Ufak bir çakışma duvarların yüzeye sıkıca bağlanmasını sağlar. Bu, yüzey ve en iç duvar hat eninin ortalama yüzdesidir."
 
 #: fdmprinter.def.json
 msgctxt "skin_overlap_mm label"
@@ -1722,7 +1718,7 @@ msgstr "Yapı Levhası Sıcaklığı"
 #: fdmprinter.def.json
 msgctxt "material_bed_temperature description"
 msgid "The temperature used for the heated build plate. If this is 0, the bed temperature will not be adjusted."
-msgstr ""
+msgstr "Isınan yapı levhası için kullanılan sıcaklık. Bu değer 0 ise yatak sıcaklığı değiştirilmez."
 
 #: fdmprinter.def.json
 msgctxt "material_bed_temperature_layer_0 label"
@@ -3504,9 +3500,7 @@ msgctxt "skirt_gap description"
 msgid ""
 "The horizontal distance between the skirt and the first layer of the print.\n"
 "This is the minimum distance. Multiple skirt lines will extend outwards from this distance."
-msgstr ""
-"Baskının eteği ve ilk katmanı arasındaki yatay mesafe.\n"
-"Minimum mesafedir. Bu mesafeden çok sayıda etek hattı dışarı doğru uzanır."
+msgstr "Baskının eteği ve ilk katmanı arasındaki yatay mesafe.\nMinimum mesafedir. Bu mesafeden çok sayıda etek hattı dışarı doğru uzanır."
 
 #: fdmprinter.def.json
 msgctxt "skirt_brim_minimal_length label"
@@ -4266,82 +4260,82 @@ msgstr "deneysel!"
 #: fdmprinter.def.json
 msgctxt "support_tree_enable label"
 msgid "Tree Support"
-msgstr ""
+msgstr "Ağaç Destek"
 
 #: fdmprinter.def.json
 msgctxt "support_tree_enable description"
 msgid "Generate a tree-like support with branches that support your print. This may reduce material usage and print time, but greatly increases slicing time."
-msgstr ""
+msgstr "Baskınızı desteklemesi adına dallarıyla birlikte ağaca benzeyen bir destek oluşturun. Malzeme kullanımı ve baskı süresi düşer ancak dilimleme zamanı da önemli ölçüde artar."
 
 #: fdmprinter.def.json
 msgctxt "support_tree_angle label"
 msgid "Tree Support Branch Angle"
-msgstr ""
+msgstr "Ağaç Destek Dal Açısı"
 
 #: fdmprinter.def.json
 msgctxt "support_tree_angle description"
 msgid "The angle of the branches. Use a lower angle to make them more vertical and more stable. Use a higher angle to be able to have more reach."
-msgstr ""
+msgstr "Dalların açısı. Daha dikey ve daha stabil olmaları için daha düşük bir açı kullanın. Daha fazla erişim için daha yüksek bir açı kullanın."
 
 #: fdmprinter.def.json
 msgctxt "support_tree_branch_distance label"
 msgid "Tree Support Branch Distance"
-msgstr ""
+msgstr "Ağaç Destek Dal Mesafesi"
 
 #: fdmprinter.def.json
 msgctxt "support_tree_branch_distance description"
 msgid "How far apart the branches need to be when they touch the model. Making this distance small will cause the tree support to touch the model at more points, causing better overhang but making support harder to remove."
-msgstr ""
+msgstr "Dalların modele temas ettiklerinde birbirlerine ne kadar uzaklıkta olacakları. Bu mesafenin kısa yapılması ağaç desteğin modele daha fazla noktada temas etmesini sağlayarak daha iyi bir sarkma sunacaktır ancak desteğin sökülmesini de daha güç hale getirecektir."
 
 #: fdmprinter.def.json
 msgctxt "support_tree_branch_diameter label"
 msgid "Tree Support Branch Diameter"
-msgstr ""
+msgstr "Ağaç Destek Dalının Çapı"
 
 #: fdmprinter.def.json
 msgctxt "support_tree_branch_diameter description"
 msgid "The diameter of the thinnest branches of tree support. Thicker branches are more sturdy. Branches towards the base will be thicker than this."
-msgstr ""
+msgstr "Ağaç desteğin en ince dallarının çapı. Daha kalın dallar daha dayanıklı olur. Tabana doğru uzanan dallar bundan daha kalın olacaktır."
 
 #: fdmprinter.def.json
 msgctxt "support_tree_branch_diameter_angle label"
 msgid "Tree Support Branch Diameter Angle"
-msgstr ""
+msgstr "Ağaç Destek Dalının Çap Açısı"
 
 #: fdmprinter.def.json
 msgctxt "support_tree_branch_diameter_angle description"
 msgid "The angle of the branches' diameter as they gradually become thicker towards the bottom. An angle of 0 will cause the branches to have uniform thickness over their length. A bit of an angle can increase stability of the tree support."
-msgstr ""
+msgstr "Alta doğru gidildikçe kademeli olarak kalınlaşan dalların açısı. 0 derecelik bir açı dalların uzunluklarını gözetmeksizin tekdüze bir kalınlığa sahip olmalarını sağlayacaktır. Birazcık açı ağaç desteğin sabitliğini artırabilir."
 
 #: fdmprinter.def.json
 msgctxt "support_tree_collision_resolution label"
 msgid "Tree Support Collision Resolution"
-msgstr ""
+msgstr "Ağaç Destek Çarpışma Çözünürlüğü"
 
 #: fdmprinter.def.json
 msgctxt "support_tree_collision_resolution description"
 msgid "Resolution to compute collisions with to avoid hitting the model. Setting this lower will produce more accurate trees that fail less often, but increases slicing time dramatically."
-msgstr ""
+msgstr "Modele çarpmamak adına çarpışmaları hesaplamak için çözünürlük. Buna düşük bir değerin verilmesi daha az hata çıkaran daha isabetli ağaçların üretilmesini sağlar ancak dilimleme süresini önemli ölçüde artırır."
 
 #: fdmprinter.def.json
 msgctxt "support_tree_wall_thickness label"
 msgid "Tree Support Wall Thickness"
-msgstr ""
+msgstr "Ağaç Destek Duvarının Kalınlığı"
 
 #: fdmprinter.def.json
 msgctxt "support_tree_wall_thickness description"
 msgid "The thickness of the walls of the branches of tree support. Thicker walls take longer to print but don't fall over as easily."
-msgstr ""
+msgstr "Ağaç desteğin dallarında yer alan duvarların kalınlığı. Kalın duvarların basılması daha uzun sürer ancak kalın duvarlar kolay devrilmezler."
 
 #: fdmprinter.def.json
 msgctxt "support_tree_wall_count label"
 msgid "Tree Support Wall Line Count"
-msgstr ""
+msgstr "Ağaç Destek Duvarının Hat Sayısı"
 
 #: fdmprinter.def.json
 msgctxt "support_tree_wall_count description"
 msgid "The number of walls of the branches of tree support. Thicker walls take longer to print but don't fall over as easily."
-msgstr ""
+msgstr "Ağaç desteğin dallarında yer alan duvarların sayısı. Kalın duvarların basılması daha uzun sürer ancak kalın duvarlar kolay devrilmezler."
 
 #: fdmprinter.def.json
 msgctxt "slicing_tolerance label"
@@ -4416,12 +4410,12 @@ msgstr "Üst yüzey katmanları çizgi veya zikzak biçimindeyken kullanılacak 
 #: fdmprinter.def.json
 msgctxt "infill_enable_travel_optimization label"
 msgid "Infill Travel Optimization"
-msgstr ""
+msgstr "Dolgu Hareket Optimizasyonu"
 
 #: fdmprinter.def.json
 msgctxt "infill_enable_travel_optimization description"
 msgid "When enabled, the order in which the infill lines are printed is optimized to reduce the distance travelled. The reduction in travel time achieved very much depends on the model being sliced, infill pattern, density, etc. Note that, for some models that have many small areas of infill, the time to slice the model may be greatly increased."
-msgstr ""
+msgstr "Aktifleştirildiğinde, dolgu hatlarının baskı düzeni, hareketi azaltmak için optimize edilir. Elde edilen hareket zamanındaki azalma dilimlenen modele, dolgu şekline ve yoğunluğuna vs. bağlıdır. Birçok ufak dolgu bölgesine sahip bazı modeller için modelin dilimlenme süresi önemli ölçüde artabilir."
 
 #: fdmprinter.def.json
 msgctxt "material_flow_dependent_temperature label"
@@ -4943,9 +4937,7 @@ msgctxt "wireframe_up_half_speed description"
 msgid ""
 "Distance of an upward move which is extruded with half speed.\n"
 "This can cause better adhesion to previous layers, while not heating the material in those layers too much. Only applies to Wire Printing."
-msgstr ""
-"Yarı hızda sıkıştırılmış yukarı doğru hareket mesafesi.\n"
-"Bu katmanlarda malzemeyi çok fazla ısıtmayarak önceki katmanlarda daha iyi yapışma sağlayabilir. Sadece kablo yazdırmaya uygulanır."
+msgstr "Yarı hızda sıkıştırılmış yukarı doğru hareket mesafesi.\nBu katmanlarda malzemeyi çok fazla ısıtmayarak önceki katmanlarda daha iyi yapışma sağlayabilir. Sadece kablo yazdırmaya uygulanır."
 
 #: fdmprinter.def.json
 msgctxt "wireframe_top_jump label"
@@ -5055,42 +5047,42 @@ msgstr "Nozül ve aşağı yöndeki hatlar arasındaki mesafe. Daha büyük aç�
 #: fdmprinter.def.json
 msgctxt "adaptive_layer_height_enabled label"
 msgid "Use adaptive layers"
-msgstr ""
+msgstr "Uyarlanabilir Katmanların Kullanımı"
 
 #: fdmprinter.def.json
 msgctxt "adaptive_layer_height_enabled description"
 msgid "Adaptive layers computes the layer heights depending on the shape of the model."
-msgstr ""
+msgstr "Uyarlanabilir katmanlar modelin şekline bağlı olarak katman yüksekliğini hesaplar."
 
 #: fdmprinter.def.json
 msgctxt "adaptive_layer_height_variation label"
 msgid "Adaptive layers maximum variation"
-msgstr ""
+msgstr "Uyarlanabilir katmanların azami değişkenliği"
 
 #: fdmprinter.def.json
 msgctxt "adaptive_layer_height_variation description"
 msgid "The maximum allowed height different from the base layer height in mm."
-msgstr ""
+msgstr "Mm bazında taban katmanı yüksekliğine göre izin verilen azami yükseklik."
 
 #: fdmprinter.def.json
 msgctxt "adaptive_layer_height_variation_step label"
 msgid "Adaptive layers variation step size"
-msgstr ""
+msgstr "Uyarlanabilir katmanların değişkenlik adım boyu"
 
 #: fdmprinter.def.json
 msgctxt "adaptive_layer_height_variation_step description"
 msgid "The difference in height of the next layer height compared to the previous one."
-msgstr ""
+msgstr "Bir önceki ve bir sonraki katman yüksekliği arasındaki yükseklik farkı."
 
 #: fdmprinter.def.json
 msgctxt "adaptive_layer_height_threshold label"
 msgid "Adaptive layers threshold"
-msgstr ""
+msgstr "Uyarlanabilir katman eşiği"
 
 #: fdmprinter.def.json
 msgctxt "adaptive_layer_height_threshold description"
 msgid "Threshold whether to use a smaller layer or not. This number is compared to the tan of the steepest slope in a layer."
-msgstr ""
+msgstr "Daha küçük bir katmanın kullanılıp kullanılmayacağını belirleyen eşik. Bu rakam bir katmandaki en dik eğimin tanjantına eşittir."
 
 #: fdmprinter.def.json
 msgctxt "command_line_settings label"

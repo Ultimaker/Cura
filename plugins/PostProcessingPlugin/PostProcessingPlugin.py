@@ -66,7 +66,7 @@ class PostProcessingPlugin(QObject, Extension):
             return
 
         # get gcode list for the active build plate
-        active_build_plate_id = Application.getInstance().getBuildPlateModel().activeBuildPlate
+        active_build_plate_id = Application.getInstance().getMultiBuildPlateModel().activeBuildPlate
         gcode_list = gcode_dict[active_build_plate_id]
         if not gcode_list:
             return
@@ -117,50 +117,39 @@ class PostProcessingPlugin(QObject, Extension):
     ##  Load all scripts from provided path.
     #   This should probably only be done on init.
     #   \param path Path to check for scripts.
-    def loadAllScripts(self):
+    def loadAllScripts(self, path):
         if self._loaded_scripts: #Already loaded.
             return
 
         ## Load all scripts in the scripts folders
-        for root in [PluginRegistry.getInstance().getPluginPath("PostProcessingPlugin"), Resources.getStoragePath(Resources.Preferences)]:
-            try:
-                path = os.path.join(root, "scripts")
-                if not os.path.isdir(path):
+        scripts = pkgutil.iter_modules(path = [path])
+        for loader, script_name, ispkg in scripts:
+            # Iterate over all scripts.
+            if script_name not in sys.modules:
+                try:
+                    spec = importlib.util.spec_from_file_location(__name__ + "." + script_name, os.path.join(path, script_name + ".py"))
+                    loaded_script = importlib.util.module_from_spec(spec)
+                    spec.loader.exec_module(loaded_script)
+                    sys.modules[script_name] = loaded_script #TODO: This could be a security risk. Overwrite any module with a user-provided name?
+
+                    loaded_class = getattr(loaded_script, script_name)
+                    temp_object = loaded_class()
+                    Logger.log("d", "Begin loading of script: %s", script_name)
                     try:
-                        os.makedirs(path)
-                    except OSError:
-                        Logger.log("w", "Unable to create a folder for scripts: " + path)
-                        continue
-
-                scripts = pkgutil.iter_modules(path = [path])
-                for loader, script_name, ispkg in scripts:
-                    # Iterate over all scripts.
-                    if script_name not in sys.modules:
-                        spec = importlib.util.spec_from_file_location(__name__ + "." + script_name, os.path.join(path, script_name + ".py"))
-                        loaded_script = importlib.util.module_from_spec(spec)
-                        spec.loader.exec_module(loaded_script)
-                        sys.modules[script_name] = loaded_script #TODO: This could be a security risk. Overwrite any module with a user-provided name?
-
-                        loaded_class = getattr(loaded_script, script_name)
-                        temp_object = loaded_class()
-                        Logger.log("d", "Begin loading of script: %s", script_name)
-                        try:
-                            setting_data = temp_object.getSettingData()
-                            if "name" in setting_data and "key" in setting_data:
-                                self._script_labels[setting_data["key"]] = setting_data["name"]
-                                self._loaded_scripts[setting_data["key"]] = loaded_class
-                            else:
-                                Logger.log("w", "Script %s.py has no name or key", script_name)
-                                self._script_labels[script_name] = script_name
-                                self._loaded_scripts[script_name] = loaded_class
-                        except AttributeError:
-                            Logger.log("e", "Script %s.py is not a recognised script type. Ensure it inherits Script", script_name)
-                        except NotImplementedError:
-                            Logger.log("e", "Script %s.py has no implemented settings", script_name)
-            except Exception as e:
-                Logger.logException("e", "Exception occurred while loading post processing plugin: {error_msg}".format(error_msg = str(e)))
-
-        self.loadedScriptListChanged.emit()
+                        setting_data = temp_object.getSettingData()
+                        if "name" in setting_data and "key" in setting_data:
+                            self._script_labels[setting_data["key"]] = setting_data["name"]
+                            self._loaded_scripts[setting_data["key"]] = loaded_class
+                        else:
+                            Logger.log("w", "Script %s.py has no name or key", script_name)
+                            self._script_labels[script_name] = script_name
+                            self._loaded_scripts[script_name] = loaded_class
+                    except AttributeError:
+                        Logger.log("e", "Script %s.py is not a recognised script type. Ensure it inherits Script", script_name)
+                    except NotImplementedError:
+                        Logger.log("e", "Script %s.py has no implemented settings", script_name)
+                except Exception as e:
+                    Logger.logException("e", "Exception occurred while loading post processing plugin: {error_msg}".format(error_msg = str(e)))
 
     loadedScriptListChanged = pyqtSignal()
     @pyqtProperty("QVariantList", notify = loadedScriptListChanged)
@@ -189,7 +178,20 @@ class PostProcessingPlugin(QObject, Extension):
     ##  When the global container stack is changed, swap out the list of active
     #   scripts.
     def _onGlobalContainerStackChanged(self):
-        self.loadAllScripts() #Make sure we have all scripts if we didn't have them yet.
+        ## Load all scripts in the scripts folders
+        #  The PostProcessingPlugin path is for built-in scripts.
+        #  The Resources path is where the user should store custom scripts.
+        #  The Preferences path is legacy, where the user may previously have stored scripts.
+        for root in [PluginRegistry.getInstance().getPluginPath("PostProcessingPlugin"), Resources.getStoragePath(Resources.Resources), Resources.getStoragePath(Resources.Preferences)]:
+            path = os.path.join(root, "scripts")
+            if not os.path.isdir(path):
+                try:
+                    os.makedirs(path)
+                except OSError:
+                    Logger.log("w", "Unable to create a folder for scripts: " + path)
+                    continue
+
+            self.loadAllScripts(path)
         new_stack = Application.getInstance().getGlobalContainerStack()
         self._script_list.clear()
         if not new_stack.getMetaDataEntry("post_processing_scripts"): #Missing or empty.
@@ -246,7 +248,20 @@ class PostProcessingPlugin(QObject, Extension):
     def _createView(self):
         Logger.log("d", "Creating post processing plugin view.")
 
-        self.loadAllScripts()
+        ## Load all scripts in the scripts folders
+        #  The PostProcessingPlugin path is for built-in scripts.
+        #  The Resources path is where the user should store custom scripts.
+        #  The Preferences path is legacy, where the user may previously have stored scripts.
+        for root in [PluginRegistry.getInstance().getPluginPath("PostProcessingPlugin"), Resources.getStoragePath(Resources.Resources), Resources.getStoragePath(Resources.Preferences)]:
+            path = os.path.join(root, "scripts")
+            if not os.path.isdir(path):
+                try:
+                    os.makedirs(path)
+                except OSError:
+                    Logger.log("w", "Unable to create a folder for scripts: " + path)
+                    continue
+
+            self.loadAllScripts(path)
 
         # Create the plugin dialog component
         path = os.path.join(PluginRegistry.getInstance().getPluginPath("PostProcessingPlugin"), "PostProcessingPlugin.qml")

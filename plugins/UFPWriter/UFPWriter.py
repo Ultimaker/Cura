@@ -23,7 +23,7 @@ class UFPWriter(MeshWriter):
     def _createSnapshot(self, *args):
         # must be called from the main thread because of OpenGL
         Logger.log("d", "Creating thumbnail image...")
-        self._snapshot = Snapshot.snapshot()
+        self._snapshot = Snapshot.snapshot(width = 300, height = 300)
 
     def write(self, stream, nodes, mode = MeshWriter.OutputMode.BinaryMode):
         archive = VirtualFile()

@@ -101,7 +101,7 @@ UM.Dialog
             enabled: true
             onClicked: {
                 base.visible = false;
-                OutputDevice.sendPrintJob(printerSelectionCombobox.model.get(printerSelectionCombobox.currentIndex).key)
+                OutputDevice.selectPrinter(printerSelectionCombobox.model.get(printerSelectionCombobox.currentIndex).key)
                 // reset to defaults
                 printerSelectionCombobox.currentIndex = 0
             }
