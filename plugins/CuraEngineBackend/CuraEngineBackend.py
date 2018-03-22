@@ -527,9 +527,6 @@ class CuraEngineBackend(QObject, Backend):
 
     ##  Convenient function: mark everything to slice, emit state and clear layer data
     def needsSlicing(self):
-        self.determineAutoSlicing()
-        if self._is_disabled:
-            return
         self.stopSlicing()
         self.markSliceAll()
         self.processingProgress.emit(0.0)
@@ -551,6 +548,10 @@ class CuraEngineBackend(QObject, Backend):
                 self._change_timer.stop()
 
     def _onStackErrorCheckFinished(self):
+        self.determineAutoSlicing()
+        if self._is_disabled:
+            return
+
         if not self._slicing and self._build_plates_to_be_sliced:
             self.needsSlicing()
             self._onChanged()
