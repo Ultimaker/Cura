@@ -85,7 +85,7 @@ class CrashHandler:
         dialog = QDialog()
         dialog.setMinimumWidth(500)
         dialog.setMinimumHeight(170)
-        dialog.setWindowTitle(catalog.i18nc("@title:window", "Cura can't startup"))
+        dialog.setWindowTitle(catalog.i18nc("@title:window", "Cura can't start"))
         dialog.finished.connect(self._closeEarlyCrashDialog)
 
         layout = QVBoxLayout(dialog)

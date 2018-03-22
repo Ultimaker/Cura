@@ -498,8 +498,13 @@ class CuraApplication(QtApplication):
     def getStaticVersion(cls):
         return CuraVersion
 
+    ##  Handle removing the unneeded plugins
+    #   \sa PluginRegistry
+    def _removePlugins(self):
+        self._plugin_registry.removePlugins()
+
     ##  Handle loading of all plugin types (and the backend explicitly)
-    #   \sa PluginRegistery
+    #   \sa PluginRegistry
     def _loadPlugins(self):
         self._plugin_registry.addType("profile_reader", self._addProfileReader)
         self._plugin_registry.addType("profile_writer", self._addProfileWriter)
@@ -1280,8 +1285,11 @@ class CuraApplication(QtApplication):
     def reloadAll(self):
         Logger.log("i", "Reloading all loaded mesh data.")
         nodes = []
+        has_merged_nodes = False
         for node in DepthFirstIterator(self.getController().getScene().getRoot()):
-            if not isinstance(node, CuraSceneNode) or not node.getMeshData():
+            if not isinstance(node, CuraSceneNode) or not node.getMeshData() :
+                if node.getName() == "MergedMesh":
+                    has_merged_nodes = True
                 continue
 
             nodes.append(node)
@@ -1295,9 +1303,13 @@ class CuraApplication(QtApplication):
                 job = ReadMeshJob(file_name)
                 job._node = node
                 job.finished.connect(self._reloadMeshFinished)
+                if has_merged_nodes:
+                    job.finished.connect(self.updateOriginOfMergedMeshes)
+
                 job.start()
             else:
                 Logger.log("w", "Unable to reload data because we don't have a filename.")
+
 
     ##  Get logging data of the backend engine
     #   \returns \type{string} Logging data
@@ -1368,6 +1380,58 @@ class CuraApplication(QtApplication):
 
         # Use the previously found center of the group bounding box as the new location of the group
         group_node.setPosition(group_node.getBoundingBox().center)
+        group_node.setName("MergedMesh")  # add a specific name to distinguish this node
+
+
+    ##  Updates origin position of all merged meshes
+    #   \param jobNode \type{Job} empty object which passed which is required by JobQueue
+    def updateOriginOfMergedMeshes(self, jobNode):
+        group_nodes = []
+        for node in DepthFirstIterator(self.getController().getScene().getRoot()):
+            if isinstance(node, CuraSceneNode) and node.getName() == "MergedMesh":
+
+                #checking by name might be not enough, the merged mesh should has "GroupDecorator" decorator
+                for decorator in node.getDecorators():
+                    if isinstance(decorator, GroupDecorator):
+                        group_nodes.append(node)
+                        break
+
+        for group_node in group_nodes:
+            meshes = [node.getMeshData() for node in group_node.getAllChildren() if node.getMeshData()]
+
+            # Compute the center of the objects
+            object_centers = []
+            # Forget about the translation that the original objects have
+            zero_translation = Matrix(data=numpy.zeros(3))
+            for mesh, node in zip(meshes, group_node.getChildren()):
+                transformation = node.getLocalTransformation()
+                transformation.setTranslation(zero_translation)
+                transformed_mesh = mesh.getTransformed(transformation)
+                center = transformed_mesh.getCenterPosition()
+                if center is not None:
+                    object_centers.append(center)
+
+            if object_centers and len(object_centers) > 0:
+                middle_x = sum([v.x for v in object_centers]) / len(object_centers)
+                middle_y = sum([v.y for v in object_centers]) / len(object_centers)
+                middle_z = sum([v.z for v in object_centers]) / len(object_centers)
+                offset = Vector(middle_x, middle_y, middle_z)
+            else:
+                offset = Vector(0, 0, 0)
+
+            # Move each node to the same position.
+            for mesh, node in zip(meshes, group_node.getChildren()):
+                transformation = node.getLocalTransformation()
+                transformation.setTranslation(zero_translation)
+                transformed_mesh = mesh.getTransformed(transformation)
+
+                # Align the object around its zero position
+                # and also apply the offset to center it inside the group.
+                node.setPosition(-transformed_mesh.getZeroPosition() - offset)
+
+            # Use the previously found center of the group bounding box as the new location of the group
+            group_node.setPosition(group_node.getBoundingBox().center)
+
 
     @pyqtSlot()
     def groupSelected(self):
