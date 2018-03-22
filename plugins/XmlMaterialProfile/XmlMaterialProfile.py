@@ -983,7 +983,8 @@ class XmlMaterialProfile(InstanceContainer):
         "retraction amount": "retraction_amount",
         "retraction speed": "retraction_speed",
         "adhesion tendency": "material_adhesion_tendency",
-        "surface energy": "material_surface_energy"
+        "surface energy": "material_surface_energy",
+        "shrinkage percentage": "material_shrinkage_percentage",
     }
     __unmapped_settings = [
         "hardware compatible",
