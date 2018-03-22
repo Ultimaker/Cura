@@ -49,7 +49,7 @@ class ModelChecker(QObject, Extension):
         warning_size_xy = 150 #The horizontal size of a model that would be too large when dealing with shrinking materials.
         warning_size_z = 100 #The vertical size of a model that would be too large when dealing with shrinking materials.
 
-        material_shrinkage = self.getMaterialShrinkage()
+        material_shrinkage = self._getMaterialShrinkage()
 
         warning_nodes = []
 
@@ -101,7 +101,7 @@ class ModelChecker(QObject, Extension):
     def showWarnings(self):
         self._caution_message.show()
 
-    def getMaterialShrinkage(self):
+    def _getMaterialShrinkage(self):
         global_container_stack = Application.getInstance().getGlobalContainerStack()
         if global_container_stack is None:
             return {}
