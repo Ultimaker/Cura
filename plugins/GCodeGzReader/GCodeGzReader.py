@@ -12,7 +12,7 @@ from UM.Mesh.MeshReader import MeshReader #The class we're extending/implementin
 from UM.PluginRegistry import PluginRegistry
 from UM.Scene.SceneNode import SceneNode #For typing.
 
-##  A file writer that writes gzipped g-code.
+##  A file reader that reads gzipped g-code.
 #
 #   If you're zipping g-code, you might as well use gzip!
 class GCodeGzReader(MeshReader):
