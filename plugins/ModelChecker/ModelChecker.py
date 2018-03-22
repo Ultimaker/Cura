@@ -24,7 +24,6 @@ class ModelChecker(QObject, Extension):
         super().__init__()
 
         self._button_view = None
-        self._has_warnings = False
 
         self._caution_message = Message("", #Message text gets set when the message gets shown, to display the models in question.
             lifetime = 0,
@@ -100,8 +99,7 @@ class ModelChecker(QObject, Extension):
 
     @pyqtSlot()
     def showWarnings(self):
-        if self._has_warnings:
-            self.self._caution_message.show()
+        self._caution_message.show()
 
     def getMaterialShrinkage(self):
         global_container_stack = Application.getInstance().getGlobalContainerStack()
