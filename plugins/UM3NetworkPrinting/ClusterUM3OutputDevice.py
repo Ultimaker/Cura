@@ -127,10 +127,6 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
             self._sending_job.send("") #No specifically selected printer.
             is_job_sent = self._sending_job.send(None)
 
-        # Notify the UI that a switch to the print monitor should happen
-        if is_job_sent:
-            Application.getInstance().getController().setActiveStage("MonitorStage")
-
     def _spawnPrinterSelectionDialog(self):
         if self._printer_selection_dialog is None:
             path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "PrintWindow.qml")
@@ -242,6 +238,19 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
             if new_progress > self._progress_message.getProgress():
                 self._progress_message.show()  # Ensure that the message is visible.
                 self._progress_message.setProgress(bytes_sent / bytes_total * 100)
+
+            # If successfully sent:
+            if bytes_sent == bytes_total:
+                # Show a confirmation to the user so they know the job was sucessful and provide the option to switch to the
+                # monitor tab.
+                self._success_message = Message(
+                    i18n_catalog.i18nc("@info:status", "Print job was successfully sent to the printer."),
+                    lifetime=5, dismissable=True,
+                    title=i18n_catalog.i18nc("@info:title", "Data Sent"))
+                self._success_message.addAction("View", i18n_catalog.i18nc("@action:button", "View in Montior"), icon=None,
+                                                description="")
+                self._success_message.actionTriggered.connect(self._successMessageActionTriggered)
+                self._success_message.show()
         else:
             self._progress_message.setProgress(0)
             self._progress_message.hide()
@@ -260,6 +269,9 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
                 self._latest_reply_handler.disconnect()
                 self._latest_reply_handler = None
 
+    def _successMessageActionTriggered(self, message_id: Optional[str]=None, action_id: Optional[str]=None) -> None:
+        if action_id == "View":
+            Application.getInstance().getController().setActiveStage("MonitorStage")
 
     @pyqtSlot()
     def openPrintJobControlPanel(self) -> None:
