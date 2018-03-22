@@ -18,7 +18,7 @@ from UM.Scene.SceneNode import SceneNode #For typing.
 class GCodeGzReader(MeshReader):
 
     def __init__(self):
-        super(GCodeGzReader, self).__init__()
+        super().__init__()
         self._supported_extensions = [".gcode.gz"]
 
     def read(self, file_name):
