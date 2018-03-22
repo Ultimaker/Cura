@@ -16,11 +16,6 @@ from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 catalog = i18nCatalog("cura")
 
 
-SHRINKAGE_THRESHOLD = 0.5 #From what shrinkage percentage a warning will be issued about the model size.
-WARNING_SIZE_XY = 150 #The horizontal size of a model that would be too large when dealing with shrinking materials.
-WARNING_SIZE_Z = 100 #The vertical size of a model that would be too large when dealing with shrinking materials.
-
-
 class ModelChecker(QObject, Extension):
     ##  Signal that gets emitted when anything changed that we need to check.
     onChanged = pyqtSignal()
@@ -51,6 +46,10 @@ class ModelChecker(QObject, Extension):
         self._createView()
 
     def checkObjectsForShrinkage(self):
+        shrinkage_threshold = 0.5 #From what shrinkage percentage a warning will be issued about the model size.
+        warning_size_xy = 150 #The horizontal size of a model that would be too large when dealing with shrinking materials.
+        warning_size_z = 100 #The vertical size of a model that would be too large when dealing with shrinking materials.
+
         material_shrinkage = self.getMaterialShrinkage()
 
         warning_nodes = []
@@ -58,9 +57,9 @@ class ModelChecker(QObject, Extension):
         # Check node material shrinkage and bounding box size
         for node in self.sliceableNodes():
             node_extruder_position = node.callDecoration("getActiveExtruderPosition")
-            if material_shrinkage[node_extruder_position] > SHRINKAGE_THRESHOLD:
+            if material_shrinkage[node_extruder_position] > shrinkage_threshold:
                 bbox = node.getBoundingBox()
-                if bbox.width >= WARNING_SIZE_XY or bbox.depth >= WARNING_SIZE_XY or bbox.height >= WARNING_SIZE_Z:
+                if bbox.width >= warning_size_xy or bbox.depth >= warning_size_xy or bbox.height >= warning_size_z:
                     warning_nodes.append(node)
 
         return warning_nodes
