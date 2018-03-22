@@ -18,4 +18,5 @@ def getMetaData():
 
 def register(app):
     app.addNonSliceableExtension(".gcode.gz")
+    app.addNonSliceableExtension(".gz")  # in some parts only the last extension is taken. Let's make it a non sliceable extension for now
     return { "mesh_reader": GCodeGzReader.GCodeGzReader() }
