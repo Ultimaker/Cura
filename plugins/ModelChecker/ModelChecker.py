@@ -22,14 +22,14 @@ WARNING_SIZE_Z = 100 #The vertical size of a model that would be too large when 
 
 
 class ModelChecker(QObject, Extension):
-
-    needCheckChanged = pyqtSignal()
+    ##  Signal that gets emitted when anything changed that we need to check.
+    onChanged = pyqtSignal()
 
     def __init__(self):
         super().__init__()
 
         self._button_view = None
-        self._need_checks = False
+        self._has_warnings = False
 
         self._happy_message = Message(catalog.i18nc(
             "@info:status",
@@ -40,10 +40,20 @@ class ModelChecker(QObject, Extension):
             lifetime = 0,
             title = catalog.i18nc("@info:title", "Model Checker Warning"))
 
-        Application.getInstance().initializationFinished.connect(self.bindSignals)
+        Application.getInstance().initializationFinished.connect(self._pluginsInitialized)
+        Application.getInstance().getController().getScene().sceneChanged.connect(self._onChanged)
 
-    def bindSignals(self):
-        Application.getInstance().getMachineManager().rootMaterialChanged.connect(self._onChanged)
+    ##  Pass-through to allow UM.Signal to connect with a pyqtSignal.
+    def _onChanged(self, _):
+        self.onChanged.emit()
+
+    ##  Called when plug-ins are initialized.
+    #
+    #   This makes sure that we listen to changes of the material and that the
+    #   button is created that indicates warnings with the current set-up.
+    def _pluginsInitialized(self):
+        Application.getInstance().getMachineManager().rootMaterialChanged.connect(self.onChanged)
+        self._createView()
 
     def checkObjectsForShrinkage(self):
         material_shrinkage = self.getMaterialShrinkage()
@@ -68,15 +78,8 @@ class ModelChecker(QObject, Extension):
                 yield node
 
     ##  Display warning message
-    def showWarningMessage(self, warning_nodes):
+    def showWarningMessage(self, ):
         self._happy_message.hide()
-        self._caution_message.setText(catalog.i18nc(
-            "@info:status",
-            "Some models may not be printed optimal due to object size and chosen material for models: {model_names}.\n"
-            "Tips that may be useful to improve the print quality:\n"
-            "1) Use rounded corners\n"
-            "2) Turn the fan off (only if the are no tiny details on the model)\n"
-            "3) Use a different material").format(model_names = ", ".join([n.getName() for n in warning_nodes])))
         self._caution_message.show()
 
     def showHappyMessage(self):
@@ -96,19 +99,28 @@ class ModelChecker(QObject, Extension):
 
         Logger.log("d", "Model checker view created.")
 
-    def _onChanged(self):
-        if self._button_view is None:
-            self._createView()
-        old_need_checks = self._need_checks
-        self._need_checks = self.calculateNeedCheck()
-        if old_need_checks != self._need_checks:
-            self.needCheckChanged.emit()
-
-    @pyqtSlot()
+    @pyqtProperty(bool, notify = onChanged)
     def runChecks(self):
         warning_nodes = self.checkObjectsForShrinkage()
         if warning_nodes:
-            self.showWarningMessage(warning_nodes)
+            self._caution_message.setText(catalog.i18nc(
+                "@info:status",
+                "Some models may not be printed optimal due to object size and chosen material for models: {model_names}.\n"
+                "Tips that may be useful to improve the print quality:\n"
+                "1) Use rounded corners\n"
+                "2) Turn the fan off (only if the are no tiny details on the model)\n"
+                "3) Use a different material").format(model_names = ", ".join([n.getName() for n in warning_nodes])))
+            return True
+        else:
+            return False
+
+    @pyqtSlot()
+    def showWarnings(self):
+        if not self._button_view:
+            self._createView()
+
+        if self._has_warnings:
+            self.showWarningMessage()
         else:
             self.showHappyMessage()
 
@@ -125,16 +137,3 @@ class ModelChecker(QObject, Extension):
                 shrinkage = 0
             material_shrinkage[extruder_position] = shrinkage
         return material_shrinkage
-
-    @pyqtProperty(bool, notify = needCheckChanged)
-    def needCheck(self):
-        return self._need_checks
-
-    def calculateNeedCheck(self):
-        need_check = False
-
-        for shrinkage in self.getMaterialShrinkage().values():
-            if shrinkage > SHRINKAGE_THRESHOLD:
-                need_check = True
-
-        return need_check
