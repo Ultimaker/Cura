@@ -62,7 +62,15 @@ class ModelChecker(QObject, Extension):
                 if bbox.width >= warning_size_xy or bbox.depth >= warning_size_xy or bbox.height >= warning_size_z:
                     warning_nodes.append(node)
 
-        return warning_nodes
+        self._caution_message.setText(catalog.i18nc(
+            "@info:status",
+            "Some models may not be printed optimal due to object size and chosen material for models: {model_names}.\n"
+            "Tips that may be useful to improve the print quality:\n"
+            "1) Use rounded corners\n"
+            "2) Turn the fan off (only if the are no tiny details on the model)\n"
+            "3) Use a different material").format(model_names = ", ".join([n.getName() for n in warning_nodes])))
+
+        return len(warning_nodes) > 0
 
     def sliceableNodes(self):
         # Add all sliceable scene nodes to check
@@ -86,18 +94,9 @@ class ModelChecker(QObject, Extension):
 
     @pyqtProperty(bool, notify = onChanged)
     def runChecks(self):
-        warning_nodes = self.checkObjectsForShrinkage()
-        if warning_nodes:
-            self._caution_message.setText(catalog.i18nc(
-                "@info:status",
-                "Some models may not be printed optimal due to object size and chosen material for models: {model_names}.\n"
-                "Tips that may be useful to improve the print quality:\n"
-                "1) Use rounded corners\n"
-                "2) Turn the fan off (only if the are no tiny details on the model)\n"
-                "3) Use a different material").format(model_names = ", ".join([n.getName() for n in warning_nodes])))
-            return True
-        else:
-            return False
+        danger_shrinkage = self.checkObjectsForShrinkage()
+
+        return any((danger_shrinkage, )) #If any of the checks fail, show the warning button.
 
     @pyqtSlot()
     def showWarnings(self):
