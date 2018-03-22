@@ -566,8 +566,13 @@ class XmlMaterialProfile(InstanceContainer):
         # Add namespaced Cura-specific settings
         settings = data.iterfind("./um:settings/cura:setting", self.__namespaces)
         for entry in settings:
+            value = entry.text
+            if value.lower() == "yes":
+                value = True
+            elif value.lower() == "no":
+                value = False
             key = entry.get("key")
-            common_setting_values[key] = entry.text
+            common_setting_values[key] = value
 
         self._cached_values = common_setting_values # from InstanceContainer ancestor
 
@@ -596,8 +601,13 @@ class XmlMaterialProfile(InstanceContainer):
             # Add namespaced Cura-specific settings
             settings = machine.iterfind("./cura:setting", self.__namespaces)
             for entry in settings:
+                value = entry.text
+                if value.lower() == "yes":
+                    value = True
+                elif value.lower() == "no":
+                    value = False
                 key = entry.get("key")
-                machine_setting_values[key] = entry.text
+                machine_setting_values[key] = value
 
             cached_machine_setting_properties = common_setting_values.copy()
             cached_machine_setting_properties.update(machine_setting_values)
@@ -708,8 +718,13 @@ class XmlMaterialProfile(InstanceContainer):
                         # Add namespaced Cura-specific settings
                         settings = hotend.iterfind("./cura:setting", self.__namespaces)
                         for entry in settings:
+                            value = entry.text
+                            if value.lower() == "yes":
+                                value = True
+                            elif value.lower() == "no":
+                                value = False
                             key = entry.get("key")
-                            hotend_setting_values[key] = entry.text
+                            hotend_setting_values[key] = value
 
                         new_hotend_specific_material_id = self.getId() + "_" + machine_id + "_" + hotend_name.replace(" ", "_")
 
@@ -944,8 +959,15 @@ class XmlMaterialProfile(InstanceContainer):
             # Skip material properties (eg diameter) or metadata (eg GUID)
             return
 
+        if instance.value is True:
+            data = "yes"
+        elif instance.value is False:
+            data = "no"
+        else:
+            data = str(instance.value)
+
         builder.start(tag_name, { "key": key })
-        builder.data(str(instance.value))
+        builder.data(data)
         builder.end(tag_name)
 
     @classmethod
