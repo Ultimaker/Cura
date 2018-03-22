@@ -1625,8 +1625,13 @@ class CuraApplication(QtApplication):
             node.setName(os.path.basename(filename))
             self.getBuildVolume().checkBoundsAndUpdate(node)
 
-            extension = os.path.splitext(filename)[1]
-            if extension.lower() in self._non_sliceable_extensions:
+            is_non_sliceable = False
+            filename_lower = filename.lower()
+            for extension in self._non_sliceable_extensions:
+                if filename_lower.endswith(extension):
+                    is_non_sliceable = True
+                    break
+            if is_non_sliceable:
                 self.callLater(lambda: self.getController().setActiveView("SimulationView"))
 
                 block_slicing_decorator = BlockSlicingDecorator()

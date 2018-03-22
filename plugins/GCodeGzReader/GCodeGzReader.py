@@ -19,7 +19,7 @@ class GCodeGzReader(MeshReader):
 
     def __init__(self):
         super(GCodeGzReader, self).__init__()
-        self._supported_extensions = [".gcode.gz", ".gz"]
+        self._supported_extensions = [".gcode.gz"]
 
     def read(self, file_name):
         with open(file_name, "rb") as file:
