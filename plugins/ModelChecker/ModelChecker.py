@@ -31,11 +31,6 @@ class ModelChecker(QObject, Extension):
         self._button_view = None
         self._has_warnings = False
 
-        self._happy_message = Message(catalog.i18nc(
-            "@info:status",
-            "The Model Checker did not detect any problems with your model / chosen materials combination."),
-            lifetime = 5,
-            title = catalog.i18nc("@info:title", "Model Checker"))
         self._caution_message = Message("", #Message text gets set when the message gets shown, to display the models in question.
             lifetime = 0,
             title = catalog.i18nc("@info:title", "Model Checker Warning"))
@@ -77,15 +72,6 @@ class ModelChecker(QObject, Extension):
             if node.callDecoration("isSliceable"):
                 yield node
 
-    ##  Display warning message
-    def showWarningMessage(self, ):
-        self._happy_message.hide()
-        self._caution_message.show()
-
-    def showHappyMessage(self):
-        self._caution_message.hide()
-        self._happy_message.show()
-
     ##  Creates the view used by show popup. The view is saved because of the fairly aggressive garbage collection.
     def _createView(self):
         Logger.log("d", "Creating model checker view.")
@@ -120,9 +106,7 @@ class ModelChecker(QObject, Extension):
             self._createView()
 
         if self._has_warnings:
-            self.showWarningMessage()
-        else:
-            self.showHappyMessage()
+            self.self._caution_message.show()
 
     def getMaterialShrinkage(self):
         global_container_stack = Application.getInstance().getGlobalContainerStack()
