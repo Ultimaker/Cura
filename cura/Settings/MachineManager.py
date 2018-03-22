@@ -550,17 +550,18 @@ class MachineManager(QObject):
             if extruder_stack != self._active_container_stack and extruder_stack.getProperty(key, "value") != new_value:
                 extruder_stack.userChanges.setProperty(key, "value", new_value)  # TODO: nested property access, should be improved
 
-    ## Copy the value of all settings of the current extruder to all other extruders as well as the global container.
+    ## Copy the value of all manually changed settings of the current extruder to all other extruders.
     @pyqtSlot()
     def copyAllValuesToExtruders(self):
-        for key in self._active_container_stack.userChanges.getAllKeys():
-            new_value = self._active_container_stack.getProperty(key, "value")
-            extruder_stacks = [stack for stack in ExtruderManager.getInstance().getMachineExtruders(self._global_container_stack.getId())]
+        extruder_stacks = list(self._global_container_stack.extruders.values())
+        for extruder_stack in extruder_stacks:
+            if extruder_stack != self._active_container_stack:
+                for key in self._active_container_stack.userChanges.getAllKeys():
+                    new_value = self._active_container_stack.getProperty(key, "value")
 
-            # check in which stack the value has to be replaced
-            for extruder_stack in extruder_stacks:
-                if extruder_stack != self._active_container_stack and extruder_stack.getProperty(key, "value") != new_value:
-                    extruder_stack.userChanges.setProperty(key, "value", new_value)  # TODO: nested property access, should be improved
+                    # check if the value has to be replaced
+                    if extruder_stack.getProperty(key, "value") != new_value:
+                        extruder_stack.userChanges.setProperty(key, "value", new_value)
 
     @pyqtProperty(str, notify = activeVariantChanged)
     def activeVariantName(self) -> str:
