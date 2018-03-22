@@ -102,9 +102,6 @@ class ModelChecker(QObject, Extension):
 
     @pyqtSlot()
     def showWarnings(self):
-        if not self._button_view:
-            self._createView()
-
         if self._has_warnings:
             self.self._caution_message.show()
 
