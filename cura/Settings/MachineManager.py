@@ -560,8 +560,7 @@ class MachineManager(QObject):
                     new_value = self._active_container_stack.getProperty(key, "value")
 
                     # check if the value has to be replaced
-                    if extruder_stack.getProperty(key, "value") != new_value:
-                        extruder_stack.userChanges.setProperty(key, "value", new_value)
+                    extruder_stack.userChanges.setProperty(key, "value", new_value)
 
     @pyqtProperty(str, notify = activeVariantChanged)
     def activeVariantName(self) -> str:
