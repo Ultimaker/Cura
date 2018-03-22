@@ -19,7 +19,7 @@ Button
     UM.I18nCatalog{id: catalog; name:"cura"}
 
     visible: manager.runChecks
-    tooltip: catalog.i18nc("@info:tooltip", "Check current setup for known problems.")
+    tooltip: catalog.i18nc("@info:tooltip", "Some things could be problematic in this print. Click to see tips for adjustment.")
     onClicked: manager.showWarnings()
 
     width: UM.Theme.getSize("save_button_specs_icons").width
