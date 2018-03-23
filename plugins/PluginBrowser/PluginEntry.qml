@@ -129,6 +129,28 @@ Component {
                         return catalog.i18nc("@action:button", "Install");
                     }
                 }
+                enabled:
+                {
+                    if ( manager.isDownloading )
+                    {
+                        return pluginList.activePlugin == model ? true : false
+                    }
+                    else
+                    {
+                        return true
+                    }
+                }
+                opacity:
+                {
+                    if ( pluginList.activePlugin == model )
+                    {
+                        return 1.0
+                    }
+                    else
+                    {
+                        manager.isDownloading ? 0.5 : 1.0
+                    }
+                }
                 visible: model.external && ((model.status !== "installed") || model.can_upgrade)
                 style: ButtonStyle {
                     background: Rectangle {
