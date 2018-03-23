@@ -170,6 +170,7 @@ class MachineErrorChecker(QObject):
         self._application.callLater(self._checkStack)
 
     def _setResult(self, result: bool):
+        return
         if result != self._has_errors:
             self._has_errors = result
             self.hasErrorUpdated.emit()
