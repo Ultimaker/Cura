@@ -21,7 +21,10 @@ Column
     {
         // FIXME For now the model should be removed and then created again, otherwise changes in the printer don't automatically update the UI
         configurationList.model = []
-        configurationList.model = outputDevice.uniqueConfigurations
+        if(outputDevice)
+        {
+            configurationList.model = outputDevice.uniqueConfigurations
+        }
     }
 
     Label

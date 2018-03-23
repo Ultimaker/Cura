@@ -119,6 +119,7 @@ class CuraEngineBackend(QObject, Backend):
         self._postponed_scene_change_sources = []  # scene change is postponed (by a tool)
 
         self._slice_start_time = None
+        self._is_disabled = False
 
         Preferences.getInstance().addPreference("general/auto_slice", True)
 
@@ -405,6 +406,7 @@ class CuraEngineBackend(QObject, Backend):
     #   - decorator isBlockSlicing is found (used in g-code reader)
     def determineAutoSlicing(self):
         enable_timer = True
+        self._is_disabled = False
 
         if not Preferences.getInstance().getValue("general/auto_slice"):
             enable_timer = False
@@ -412,6 +414,7 @@ class CuraEngineBackend(QObject, Backend):
             if node.callDecoration("isBlockSlicing"):
                 enable_timer = False
                 self.backendStateChange.emit(BackendState.Disabled)
+                self._is_disabled = True
             gcode_list = node.callDecoration("getGCodeList")
             if gcode_list is not None:
                 self._scene.gcode_dict[node.callDecoration("getBuildPlateNumber")] = gcode_list
@@ -545,6 +548,10 @@ class CuraEngineBackend(QObject, Backend):
                 self._change_timer.stop()
 
     def _onStackErrorCheckFinished(self):
+        self.determineAutoSlicing()
+        if self._is_disabled:
+            return
+
         if not self._slicing and self._build_plates_to_be_sliced:
             self.needsSlicing()
             self._onChanged()
