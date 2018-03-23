@@ -1,4 +1,4 @@
-// Copyright (c) 2017 Ultimaker B.V.
+// Copyright (c) 2018 Ultimaker B.V.
 // PluginBrowser is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.2
@@ -140,17 +140,7 @@ Component {
                         return true
                     }
                 }
-                opacity:
-                {
-                    if ( pluginList.activePlugin == model )
-                    {
-                        return 1.0
-                    }
-                    else
-                    {
-                        manager.isDownloading ? 0.5 : 1.0
-                    }
-                }
+                opacity: enabled ? 1.0 : 0.5
                 visible: model.external && ((model.status !== "installed") || model.can_upgrade)
                 style: ButtonStyle {
                     background: Rectangle {
