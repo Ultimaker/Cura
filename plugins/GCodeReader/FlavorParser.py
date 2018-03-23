@@ -286,7 +286,7 @@ class FlavorParser:
                 extruder.getProperty("machine_nozzle_offset_y", "value")]
         return result
 
-    def processGCodeFile(self, stream):
+    def processGCodeStream(self, stream):
         Logger.log("d", "Preparing to load GCode")
         self._cancelled = False
         # We obtain the filament diameter from the selected printer to calculate line widths

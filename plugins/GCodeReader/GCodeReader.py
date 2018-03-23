@@ -45,7 +45,7 @@ class GCodeReader(MeshReader):
         return self.preReadFromStream(file_data, args, kwargs)
 
     def readFromStream(self, stream):
-        return self._flavor_reader.processGCodeFile(stream)
+        return self._flavor_reader.processGCodeStream(stream)
 
     def read(self, file_name):
         with open(file_name, "r", encoding = "utf-8") as file:
