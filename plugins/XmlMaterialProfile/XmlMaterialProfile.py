@@ -126,6 +126,7 @@ class XmlMaterialProfile(InstanceContainer):
 
         root = builder.start("fdmmaterial",
                              {"xmlns": "http://www.ultimaker.com/material",
+                              "xmlns:cura": "http://www.ultimaker.com/cura",
                               "version": self.CurrentFdmMaterialVersion})
 
         ## Begin Metadata Block
@@ -561,6 +562,18 @@ class XmlMaterialProfile(InstanceContainer):
             elif key in self.__unmapped_settings:
                 if key == "hardware compatible":
                     common_compatibility = self._parseCompatibleValue(entry.text)
+
+        # Add namespaced Cura-specific settings
+        settings = data.iterfind("./um:settings/cura:setting", self.__namespaces)
+        for entry in settings:
+            value = entry.text
+            if value.lower() == "yes":
+                value = True
+            elif value.lower() == "no":
+                value = False
+            key = entry.get("key")
+            common_setting_values[key] = value
+
         self._cached_values = common_setting_values # from InstanceContainer ancestor
 
         meta_data["compatible"] = common_compatibility
@@ -584,6 +597,17 @@ class XmlMaterialProfile(InstanceContainer):
                         machine_compatibility = self._parseCompatibleValue(entry.text)
                 else:
                     Logger.log("d", "Unsupported material setting %s", key)
+
+            # Add namespaced Cura-specific settings
+            settings = machine.iterfind("./cura:setting", self.__namespaces)
+            for entry in settings:
+                value = entry.text
+                if value.lower() == "yes":
+                    value = True
+                elif value.lower() == "no":
+                    value = False
+                key = entry.get("key")
+                machine_setting_values[key] = value
 
             cached_machine_setting_properties = common_setting_values.copy()
             cached_machine_setting_properties.update(machine_setting_values)
@@ -690,6 +714,17 @@ class XmlMaterialProfile(InstanceContainer):
                                     hotend_compatibility = self._parseCompatibleValue(entry.text)
                             else:
                                 Logger.log("d", "Unsupported material setting %s", key)
+
+                        # Add namespaced Cura-specific settings
+                        settings = hotend.iterfind("./cura:setting", self.__namespaces)
+                        for entry in settings:
+                            value = entry.text
+                            if value.lower() == "yes":
+                                value = True
+                            elif value.lower() == "no":
+                                value = False
+                            key = entry.get("key")
+                            hotend_setting_values[key] = value
 
                         new_hotend_specific_material_id = self.getId() + "_" + machine_id + "_" + hotend_name.replace(" ", "_")
 
@@ -912,14 +947,28 @@ class XmlMaterialProfile(InstanceContainer):
         return result_metadata
 
     def _addSettingElement(self, builder, instance):
-        try:
+        key = instance.definition.key
+        if key in self.__material_settings_setting_map.values():
+            # Setting has a key in the stabndard namespace
             key = UM.Dictionary.findKey(self.__material_settings_setting_map, instance.definition.key)
-        except ValueError:
+            tag_name = "setting"
+        elif key not in self.__material_properties_setting_map.values() and key not in self.__material_metadata_setting_map.values():
+            # Setting is not in the standard namespace, and not a material property (eg diameter) or metadata (eg GUID)
+            tag_name = "cura:setting"
+        else:
+            # Skip material properties (eg diameter) or metadata (eg GUID)
             return
 
-        builder.start("setting", { "key": key })
-        builder.data(str(instance.value))
-        builder.end("setting")
+        if instance.value is True:
+            data = "yes"
+        elif instance.value is False:
+            data = "no"
+        else:
+            data = str(instance.value)
+
+        builder.start(tag_name, { "key": key })
+        builder.data(data)
+        builder.end(tag_name)
 
     @classmethod
     def _profile_name(cls, material_name, color_name):
@@ -983,7 +1032,8 @@ class XmlMaterialProfile(InstanceContainer):
         "retraction amount": "retraction_amount",
         "retraction speed": "retraction_speed",
         "adhesion tendency": "material_adhesion_tendency",
-        "surface energy": "material_surface_energy"
+        "surface energy": "material_surface_energy",
+        "shrinkage percentage": "material_shrinkage_percentage",
     }
     __unmapped_settings = [
         "hardware compatible",
@@ -998,7 +1048,8 @@ class XmlMaterialProfile(InstanceContainer):
 
     # Map of recognised namespaces with a proper prefix.
     __namespaces = {
-        "um": "http://www.ultimaker.com/material"
+        "um": "http://www.ultimaker.com/material",
+        "cura": "http://www.ultimaker.com/cura"
     }
 
 ##  Helper function for pretty-printing XML because ETree is stupid

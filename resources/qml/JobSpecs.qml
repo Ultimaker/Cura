@@ -115,15 +115,50 @@ Item {
         }
     }
 
+    Row {
+        id: additionalComponentsRow
+        anchors.top: jobNameRow.bottom
+        anchors.right: parent.right
+    }
+
     Label
     {
         id: boundingSpec
         anchors.top: jobNameRow.bottom
-        anchors.right: parent.right
+        anchors.right: additionalComponentsRow.left
+        anchors.rightMargin:
+        {
+            if (additionalComponentsRow.width > 0)
+            {
+                return UM.Theme.getSize("default_margin").width
+            }
+            else
+            {
+                return 0;
+            }
+        }
         height: UM.Theme.getSize("jobspecs_line").height
         verticalAlignment: Text.AlignVCenter
         font: UM.Theme.getFont("small")
         color: UM.Theme.getColor("text_scene")
         text: CuraApplication.getSceneBoundingBoxString
     }
+
+    Component.onCompleted: {
+        base.addAdditionalComponents("jobSpecsButton")
+    }
+
+    Connections {
+        target: CuraApplication
+        onAdditionalComponentsChanged: base.addAdditionalComponents("jobSpecsButton")
+    }
+
+    function addAdditionalComponents (areaId) {
+        if(areaId == "jobSpecsButton") {
+            for (var component in CuraApplication.additionalComponents["jobSpecsButton"]) {
+                CuraApplication.additionalComponents["jobSpecsButton"][component].parent = additionalComponentsRow
+            }
+        }
+    }
+
 }

@@ -74,7 +74,7 @@ class SimulationView(View):
 
         self._global_container_stack = None
         self._proxy = SimulationViewProxy()
-        self._controller.getScene().sceneChanged.connect(self._onSceneChanged)
+        self._controller.getScene().getRoot().childrenChanged.connect(self._onSceneChanged)
 
         self._resetSettings()
         self._legend_items = None
@@ -160,10 +160,10 @@ class SimulationView(View):
     def _onSceneChanged(self, node):
         if node.getMeshData() is None:
             self.resetLayerData()
-        else:
-            self.setActivity(False)
-            self.calculateMaxLayers()
-            self.calculateMaxPathsOnLayer(self._current_layer_num)
+
+        self.setActivity(False)
+        self.calculateMaxLayers()
+        self.calculateMaxPathsOnLayer(self._current_layer_num)
 
     def isBusy(self):
         return self._busy
