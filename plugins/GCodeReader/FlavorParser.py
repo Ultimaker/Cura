@@ -286,8 +286,8 @@ class FlavorParser:
                 extruder.getProperty("machine_nozzle_offset_y", "value")]
         return result
 
-    def processGCodeFile(self, file_name):
-        Logger.log("d", "Preparing to load %s" % file_name)
+    def processGCodeStream(self, stream):
+        Logger.log("d", "Preparing to load GCode")
         self._cancelled = False
         # We obtain the filament diameter from the selected printer to calculate line widths
         self._filament_diameter = Application.getInstance().getGlobalContainerStack().getProperty("material_diameter", "value")
@@ -300,123 +300,123 @@ class FlavorParser:
         gcode_list = []
         self._is_layers_in_file = False
 
-        Logger.log("d", "Opening file %s" % file_name)
-
         self._extruder_offsets = self._extruderOffsets()  # dict with index the extruder number. can be empty
 
-        with open(file_name, "r") as file:
-            file_lines = 0
-            current_line = 0
-            for line in file:
-                file_lines += 1
-                gcode_list.append(line)
-                if not self._is_layers_in_file and line[:len(self._layer_keyword)] == self._layer_keyword:
-                    self._is_layers_in_file = True
-            file.seek(0)
+        ##############################################################################################
+        ##  This part is where the action starts
+        ##############################################################################################
+        file_lines = 0
+        current_line = 0
+        for line in stream.split("\n"):
+            file_lines += 1
+            gcode_list.append(line)
+            if not self._is_layers_in_file and line[:len(self._layer_keyword)] == self._layer_keyword:
+                self._is_layers_in_file = True
+        # stream.seek(0)
 
-            file_step = max(math.floor(file_lines / 100), 1)
+        file_step = max(math.floor(file_lines / 100), 1)
 
-            self._clearValues()
+        self._clearValues()
 
-            self._message = Message(catalog.i18nc("@info:status", "Parsing G-code"),
-                                    lifetime=0,
-                                    title = catalog.i18nc("@info:title", "G-code Details"))
+        self._message = Message(catalog.i18nc("@info:status", "Parsing G-code"),
+                                lifetime=0,
+                                title = catalog.i18nc("@info:title", "G-code Details"))
 
-            self._message.setProgress(0)
-            self._message.show()
+        self._message.setProgress(0)
+        self._message.show()
 
-            Logger.log("d", "Parsing %s..." % file_name)
+        Logger.log("d", "Parsing Gcode...")
 
-            current_position = self._position(0, 0, 0, 0, [0])
-            current_path = []
-            min_layer_number = 0
-            negative_layers = 0
-            previous_layer = 0
+        current_position = self._position(0, 0, 0, 0, [0])
+        current_path = []
+        min_layer_number = 0
+        negative_layers = 0
+        previous_layer = 0
 
-            for line in file:
-                if self._cancelled:
-                    Logger.log("d", "Parsing %s cancelled" % file_name)
-                    return None
-                current_line += 1
+        for line in stream.split("\n"):
+            if self._cancelled:
+                Logger.log("d", "Parsing Gcode file cancelled")
+                return None
+            current_line += 1
 
-                if current_line % file_step == 0:
-                    self._message.setProgress(math.floor(current_line / file_lines * 100))
-                    Job.yieldThread()
-                if len(line) == 0:
-                    continue
+            if current_line % file_step == 0:
+                self._message.setProgress(math.floor(current_line / file_lines * 100))
+                Job.yieldThread()
+            if len(line) == 0:
+                continue
 
-                if line.find(self._type_keyword) == 0:
-                    type = line[len(self._type_keyword):].strip()
-                    if type == "WALL-INNER":
-                        self._layer_type = LayerPolygon.InsetXType
-                    elif type == "WALL-OUTER":
-                        self._layer_type = LayerPolygon.Inset0Type
-                    elif type == "SKIN":
-                        self._layer_type = LayerPolygon.SkinType
-                    elif type == "SKIRT":
-                        self._layer_type = LayerPolygon.SkirtType
-                    elif type == "SUPPORT":
-                        self._layer_type = LayerPolygon.SupportType
-                    elif type == "FILL":
-                        self._layer_type = LayerPolygon.InfillType
-                    else:
-                        Logger.log("w", "Encountered a unknown type (%s) while parsing g-code.", type)
+            if line.find(self._type_keyword) == 0:
+                type = line[len(self._type_keyword):].strip()
+                if type == "WALL-INNER":
+                    self._layer_type = LayerPolygon.InsetXType
+                elif type == "WALL-OUTER":
+                    self._layer_type = LayerPolygon.Inset0Type
+                elif type == "SKIN":
+                    self._layer_type = LayerPolygon.SkinType
+                elif type == "SKIRT":
+                    self._layer_type = LayerPolygon.SkirtType
+                elif type == "SUPPORT":
+                    self._layer_type = LayerPolygon.SupportType
+                elif type == "FILL":
+                    self._layer_type = LayerPolygon.InfillType
+                else:
+                    Logger.log("w", "Encountered a unknown type (%s) while parsing g-code.", type)
 
-                # When the layer change is reached, the polygon is computed so we have just one layer per layer per extruder
-                if self._is_layers_in_file and line[:len(self._layer_keyword)] == self._layer_keyword:
-                    try:
-                        layer_number = int(line[len(self._layer_keyword):])
-                        self._createPolygon(self._current_layer_thickness, current_path, self._extruder_offsets.get(self._extruder_number, [0, 0]))
-                        current_path.clear()
-
-                        # When using a raft, the raft layers are stored as layers < 0, it mimics the same behavior
-                        # as in ProcessSlicedLayersJob
-                        if layer_number < min_layer_number:
-                            min_layer_number = layer_number
-                        if layer_number < 0:
-                            layer_number += abs(min_layer_number)
-                            negative_layers += 1
-                        else:
-                            layer_number += negative_layers
-
-                        # In case there is a gap in the layer count, empty layers are created
-                        for empty_layer in range(previous_layer + 1, layer_number):
-                            self._createEmptyLayer(empty_layer)
-
-                        self._layer_number = layer_number
-                        previous_layer = layer_number
-                    except:
-                        pass
-
-                # This line is a comment. Ignore it (except for the layer_keyword)
-                if line.startswith(";"):
-                    continue
-
-                G = self._getInt(line, "G")
-                if G is not None:
-                    # When find a movement, the new posistion is calculated and added to the current_path, but
-                    # don't need to create a polygon until the end of the layer
-                    current_position = self.processGCode(G, line, current_position, current_path)
-                    continue
-
-                # When changing the extruder, the polygon with the stored paths is computed
-                if line.startswith("T"):
-                    T = self._getInt(line, "T")
-                    if T is not None:
-                        self._createPolygon(self._current_layer_thickness, current_path, self._extruder_offsets.get(self._extruder_number, [0, 0]))
-                        current_path.clear()
-
-                        current_position = self.processTCode(T, line, current_position, current_path)
-
-                if line.startswith("M"):
-                    M = self._getInt(line, "M")
-                    self.processMCode(M, line, current_position, current_path)
-
-            # "Flush" leftovers. Last layer paths are still stored
-            if len(current_path) > 1:
-                if self._createPolygon(self._current_layer_thickness, current_path, self._extruder_offsets.get(self._extruder_number, [0, 0])):
-                    self._layer_number += 1
+            # When the layer change is reached, the polygon is computed so we have just one layer per layer per extruder
+            if self._is_layers_in_file and line[:len(self._layer_keyword)] == self._layer_keyword:
+                try:
+                    layer_number = int(line[len(self._layer_keyword):])
+                    self._createPolygon(self._current_layer_thickness, current_path, self._extruder_offsets.get(self._extruder_number, [0, 0]))
                     current_path.clear()
+
+                    # When using a raft, the raft layers are stored as layers < 0, it mimics the same behavior
+                    # as in ProcessSlicedLayersJob
+                    if layer_number < min_layer_number:
+                        min_layer_number = layer_number
+                    if layer_number < 0:
+                        layer_number += abs(min_layer_number)
+                        negative_layers += 1
+                    else:
+                        layer_number += negative_layers
+
+                    # In case there is a gap in the layer count, empty layers are created
+                    for empty_layer in range(previous_layer + 1, layer_number):
+                        self._createEmptyLayer(empty_layer)
+
+                    self._layer_number = layer_number
+                    previous_layer = layer_number
+                except:
+                    pass
+
+            # This line is a comment. Ignore it (except for the layer_keyword)
+            if line.startswith(";"):
+                continue
+
+            G = self._getInt(line, "G")
+            if G is not None:
+                # When find a movement, the new posistion is calculated and added to the current_path, but
+                # don't need to create a polygon until the end of the layer
+                current_position = self.processGCode(G, line, current_position, current_path)
+                continue
+
+            # When changing the extruder, the polygon with the stored paths is computed
+            if line.startswith("T"):
+                T = self._getInt(line, "T")
+                if T is not None:
+                    self._createPolygon(self._current_layer_thickness, current_path, self._extruder_offsets.get(self._extruder_number, [0, 0]))
+                    current_path.clear()
+
+                    current_position = self.processTCode(T, line, current_position, current_path)
+
+            if line.startswith("M"):
+                M = self._getInt(line, "M")
+                self.processMCode(M, line, current_position, current_path)
+
+        # "Flush" leftovers. Last layer paths are still stored
+        if len(current_path) > 1:
+            if self._createPolygon(self._current_layer_thickness, current_path, self._extruder_offsets.get(self._extruder_number, [0, 0])):
+                self._layer_number += 1
+                current_path.clear()
 
         material_color_map = numpy.zeros((8, 4), dtype = numpy.float32)
         material_color_map[0, :] = [0.0, 0.7, 0.9, 1.0]
@@ -441,11 +441,11 @@ class FlavorParser:
         gcode_dict = {active_build_plate_id: gcode_list}
         Application.getInstance().getController().getScene().gcode_dict = gcode_dict
 
-        Logger.log("d", "Finished parsing %s" % file_name)
+        Logger.log("d", "Finished parsing Gcode")
         self._message.hide()
 
         if self._layer_number == 0:
-            Logger.log("w", "File %s doesn't contain any valid layers" % file_name)
+            Logger.log("w", "File doesn't contain any valid layers")
 
         settings = Application.getInstance().getGlobalContainerStack()
         machine_width = settings.getProperty("machine_width", "value")
@@ -454,7 +454,7 @@ class FlavorParser:
         if not self._center_is_zero:
             scene_node.setPosition(Vector(-machine_width / 2, 0, machine_depth / 2))
 
-        Logger.log("d", "Loaded %s" % file_name)
+        Logger.log("d", "GCode loading finished")
 
         if Preferences.getInstance().getValue("gcodereader/show_caution"):
             caution_message = Message(catalog.i18nc(

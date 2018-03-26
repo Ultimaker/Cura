@@ -24,21 +24,30 @@ class GCodeReader(MeshReader):
 
         Preferences.getInstance().addPreference("gcodereader/show_caution", True)
 
+    def preReadFromStream(self, stream, *args, **kwargs):
+        for line in stream.split("\n"):
+            if line[:len(self._flavor_keyword)] == self._flavor_keyword:
+                try:
+                    self._flavor_reader = self._flavor_readers_dict[line[len(self._flavor_keyword):].rstrip()]
+                    return FileReader.PreReadResult.accepted
+                except:
+                    # If there is no entry in the dictionary for this flavor, just skip and select the by-default flavor
+                    break
+
+        # If no flavor is found in the GCode, then we use the by-default
+        self._flavor_reader = self._flavor_readers_dict[self._flavor_default]
+        return FileReader.PreReadResult.accepted
+
     # PreRead is used to get the correct flavor. If not, Marlin is set by default
     def preRead(self, file_name, *args, **kwargs):
         with open(file_name, "r", encoding = "utf-8") as file:
-            for line in file:
-                if line[:len(self._flavor_keyword)] == self._flavor_keyword:
-                    try:
-                        self._flavor_reader = self._flavor_readers_dict[line[len(self._flavor_keyword):].rstrip()]
-                        return FileReader.PreReadResult.accepted
-                    except:
-                        # If there is no entry in the dictionary for this flavor, just skip and select the by-default flavor
-                        break
+            file_data = file.read()
+        return self.preReadFromStream(file_data, args, kwargs)
 
-            # If no flavor is found in the GCode, then we use the by-default
-            self._flavor_reader = self._flavor_readers_dict[self._flavor_default]
-            return FileReader.PreReadResult.accepted
+    def readFromStream(self, stream):
+        return self._flavor_reader.processGCodeStream(stream)
 
     def read(self, file_name):
-        return self._flavor_reader.processGCodeFile(file_name)
+        with open(file_name, "r", encoding = "utf-8") as file:
+            file_data = file.read()
+        return self.readFromStream(file_data)
