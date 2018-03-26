@@ -40,14 +40,12 @@ class GenericMaterialsModel(BaseMaterialsModel):
             self.setItems([])
             return
 
-        #special case only for Ultimaker printers, filter the generic list
-        printer_name = global_stack.getMetaDataEntry("name", "empty")
-        filter_ultimaker_printers = False
-        if printer_name and printer_name[:9] == "Ultimaker":
-            filter_ultimaker_printers = True
+        # Check if it's an Ultimaker printer
+        printer_manufacturer = global_stack.getMetaDataEntry("manufacturer", "")
+        is_ultimaker_printer = "ultimaker" in printer_manufacturer.lower()
 
-        # Special case, Ultimaker generic list also should be filtered
-        if filter_ultimaker_printers is False:
+        # For Ultimaker printers, only show the generic materials that are supported.
+        if not is_ultimaker_printer:
             item_list = self._getGenericProfiles(available_material_dict)
         else:
             item_list = self._getUltimakerGenericProfiles(available_material_dict)
