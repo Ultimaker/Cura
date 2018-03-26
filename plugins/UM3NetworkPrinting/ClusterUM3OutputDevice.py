@@ -247,7 +247,7 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
                     i18n_catalog.i18nc("@info:status", "Print job was successfully sent to the printer."),
                     lifetime=5, dismissable=True,
                     title=i18n_catalog.i18nc("@info:title", "Data Sent"))
-                self._success_message.addAction("View", i18n_catalog.i18nc("@action:button", "View in Montior"), icon=None,
+                self._success_message.addAction("View", i18n_catalog.i18nc("@action:button", "View in Monitor"), icon=None,
                                                 description="")
                 self._success_message.actionTriggered.connect(self._successMessageActionTriggered)
                 self._success_message.show()
