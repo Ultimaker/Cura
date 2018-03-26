@@ -114,10 +114,29 @@ class PostProcessingPlugin(QObject, Extension):
         self.selectedIndexChanged.emit()  # Ensure that settings are updated
         self._propertyChanged()
 
+    ##  Load all scripts from all paths where scripts can be found.
+    #
+    #   This should probably only be done on init, but it can be used to update
+    #   the scripts list from files just as well.
+    def loadAllScripts(self):
+        #The PostProcessingPlugin path is for built-in scripts.
+        #The Resources path is where the user should store custom scripts.
+        #The Preferences path is legacy, where the user may previously have stored scripts.
+        for root in [PluginRegistry.getInstance().getPluginPath("PostProcessingPlugin"), Resources.getStoragePath(Resources.Resources), Resources.getStoragePath(Resources.Preferences)]:
+            path = os.path.join(root, "scripts")
+            if not os.path.isdir(path):
+                try:
+                    os.makedirs(path)
+                except OSError:
+                    Logger.log("w", "Unable to create a folder for scripts: " + path)
+                    continue
+
+            self.loadScripts(path)
+
     ##  Load all scripts from provided path.
     #   This should probably only be done on init.
     #   \param path Path to check for scripts.
-    def loadAllScripts(self, path):
+    def loadScripts(self, path):
         if self._loaded_scripts: #Already loaded.
             return
 
@@ -178,20 +197,7 @@ class PostProcessingPlugin(QObject, Extension):
     ##  When the global container stack is changed, swap out the list of active
     #   scripts.
     def _onGlobalContainerStackChanged(self):
-        ## Load all scripts in the scripts folders
-        #  The PostProcessingPlugin path is for built-in scripts.
-        #  The Resources path is where the user should store custom scripts.
-        #  The Preferences path is legacy, where the user may previously have stored scripts.
-        for root in [PluginRegistry.getInstance().getPluginPath("PostProcessingPlugin"), Resources.getStoragePath(Resources.Resources), Resources.getStoragePath(Resources.Preferences)]:
-            path = os.path.join(root, "scripts")
-            if not os.path.isdir(path):
-                try:
-                    os.makedirs(path)
-                except OSError:
-                    Logger.log("w", "Unable to create a folder for scripts: " + path)
-                    continue
-
-            self.loadAllScripts(path)
+        self.loadAllScripts()
         new_stack = Application.getInstance().getGlobalContainerStack()
         self._script_list.clear()
         if not new_stack.getMetaDataEntry("post_processing_scripts"): #Missing or empty.
@@ -248,20 +254,7 @@ class PostProcessingPlugin(QObject, Extension):
     def _createView(self):
         Logger.log("d", "Creating post processing plugin view.")
 
-        ## Load all scripts in the scripts folders
-        #  The PostProcessingPlugin path is for built-in scripts.
-        #  The Resources path is where the user should store custom scripts.
-        #  The Preferences path is legacy, where the user may previously have stored scripts.
-        for root in [PluginRegistry.getInstance().getPluginPath("PostProcessingPlugin"), Resources.getStoragePath(Resources.Resources), Resources.getStoragePath(Resources.Preferences)]:
-            path = os.path.join(root, "scripts")
-            if not os.path.isdir(path):
-                try:
-                    os.makedirs(path)
-                except OSError:
-                    Logger.log("w", "Unable to create a folder for scripts: " + path)
-                    continue
-
-            self.loadAllScripts(path)
+        self.loadAllScripts()
 
         # Create the plugin dialog component
         path = os.path.join(PluginRegistry.getInstance().getPluginPath("PostProcessingPlugin"), "PostProcessingPlugin.qml")
