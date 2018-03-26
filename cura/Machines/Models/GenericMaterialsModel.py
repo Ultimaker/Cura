@@ -81,7 +81,7 @@ class GenericMaterialsModel(BaseMaterialsModel):
     #  \return The filtered list
     def _getUltimakerGenericProfiles(self, available_material_dict: Dict[str, MaterialNode]):
         generic_item_list = []
-        ultimaker_item_set = set()
+        ultimaker_item_list = []
 
         for root_material_id, container_node in available_material_dict.items():
             metadata = container_node.metadata
@@ -104,11 +104,11 @@ class GenericMaterialsModel(BaseMaterialsModel):
                     "container_node": container_node
                     }
             if is_ultimaker_brand:
-                ultimaker_item_set.add(item['material'])
+                ultimaker_item_list.append(item['material'])
             else:
                 generic_item_list.append(item)
 
         # If material is not in ultimaker list then remove it
-        item_list = [material for material in generic_item_list if material['material'] in ultimaker_item_set]
+        item_list = [material for material in generic_item_list if material['material'] in ultimaker_item_list]
 
         return item_list
