@@ -391,14 +391,14 @@ class PluginBrowser(QObject, Extension):
         self._network_manager.finished.connect(self._onRequestFinished)
         self._network_manager.networkAccessibleChanged.connect(self._onNetworkAccesibleChanged)
 
-    @pyqtProperty(bool, notify=restartRequiredChanged)
+    @pyqtProperty(bool, notify = restartRequiredChanged)
     def restartRequired(self):
         return self._restart_required
 
-    @pyqtProperty(str, notify=viewChanged)
+    @pyqtProperty(str, notify = viewChanged)
     def viewing(self):
         return self._view
 
     @pyqtSlot()
     def restart(self):
-        CuraApplication.getInstance().quit()
+        CuraApplication.getInstance().windowClosed()
