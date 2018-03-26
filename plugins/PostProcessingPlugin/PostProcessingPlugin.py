@@ -116,9 +116,11 @@ class PostProcessingPlugin(QObject, Extension):
 
     ##  Load all scripts from all paths where scripts can be found.
     #
-    #   This should probably only be done on init, but it can be used to update
-    #   the scripts list from files just as well.
+    #   This should probably only be done on init.
     def loadAllScripts(self):
+        if self._loaded_scripts: #Already loaded.
+            return
+
         #The PostProcessingPlugin path is for built-in scripts.
         #The Resources path is where the user should store custom scripts.
         #The Preferences path is legacy, where the user may previously have stored scripts.
@@ -137,9 +139,6 @@ class PostProcessingPlugin(QObject, Extension):
     #   This should probably only be done on init.
     #   \param path Path to check for scripts.
     def loadScripts(self, path):
-        if self._loaded_scripts: #Already loaded.
-            return
-
         ## Load all scripts in the scripts folders
         scripts = pkgutil.iter_modules(path = [path])
         for loader, script_name, ispkg in scripts:
