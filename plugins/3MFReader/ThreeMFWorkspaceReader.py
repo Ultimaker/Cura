@@ -895,7 +895,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             variant_type = VariantType.BUILD_PLATE
 
             node = variant_manager.getVariantNode(global_stack.definition.getId(), variant_name, variant_type)
-            if node is not None:
+            if node is not None and node.getContainer() is not None:
                 global_stack.variant = node.getContainer()
 
         for position, extruder_stack in extruder_stack_dict.items():
@@ -911,7 +911,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             variant_type = VariantType.NOZZLE
 
             node = variant_manager.getVariantNode(global_stack.definition.getId(), variant_name, variant_type)
-            if node is not None:
+            if node is not None and node.getContainer() is not None:
                 extruder_stack.variant = node.getContainer()
 
     def _applyMaterials(self, global_stack, extruder_stack_dict):
@@ -937,7 +937,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                                                              extruder_stack.variant.getName(),
                                                              machine_material_diameter,
                                                              root_material_id)
-            if material_node is not None:
+            if material_node is not None and material_node.getContainer() is not None:
                 extruder_stack.material = material_node.getContainer()
 
     def _applyChangesToMachine(self, global_stack, extruder_stack_dict):

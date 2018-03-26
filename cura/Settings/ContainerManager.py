@@ -98,9 +98,10 @@ class ContainerManager(QObject):
             entry_value = root
 
         container = material_group.root_material_node.getContainer()
-        container.setMetaDataEntry(entry_name, entry_value)
-        if sub_item_changed: #If it was only a sub-item that has changed then the setMetaDataEntry won't correctly notice that something changed, and we must manually signal that the metadata changed.
-            container.metaDataChanged.emit(container)
+        if container is not None:
+            container.setMetaDataEntry(entry_name, entry_value)
+            if sub_item_changed: #If it was only a sub-item that has changed then the setMetaDataEntry won't correctly notice that something changed, and we must manually signal that the metadata changed.
+                container.metaDataChanged.emit(container)
 
     ##  Set a setting property of the specified container.
     #
@@ -377,7 +378,8 @@ class ContainerManager(QObject):
         # NOTE: We only need to set the root material container because XmlMaterialProfile.setMetaDataEntry() will
         # take care of the derived containers too
         container = material_group.root_material_node.getContainer()
-        container.setMetaDataEntry("GUID", new_guid)
+        if container is not None:
+            container.setMetaDataEntry("GUID", new_guid)
 
     ##  Get the singleton instance for this class.
     @classmethod
@@ -466,5 +468,5 @@ class ContainerManager(QObject):
         if not path:
             return
 
-        container_list = [n.getContainer() for n in quality_changes_group.getAllNodes()]
+        container_list = [n.getContainer() for n in quality_changes_group.getAllNodes() if n.getContainer() is not None]
         self._container_registry.exportQualityProfile(container_list, path, file_type)

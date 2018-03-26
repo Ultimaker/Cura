@@ -987,6 +987,12 @@ class MachineManager(QObject):
         self.activeQualityChangesGroupChanged.emit()
 
     def _setQualityGroup(self, quality_group, empty_quality_changes = True):
+        if quality_group.node_for_global.getContainer() is None:
+            return
+        for node in quality_group.nodes_for_extruders.values():
+            if node.getContainer() is None:
+                return
+
         self._current_quality_group = quality_group
         if empty_quality_changes:
             self._current_quality_changes_group = None
@@ -1012,9 +1018,9 @@ class MachineManager(QObject):
 
         quality_changes_container = self._empty_quality_changes_container
         quality_container = self._empty_quality_changes_container
-        if quality_changes_group.node_for_global:
+        if quality_changes_group.node_for_global and quality_changes_group.node_for_global.getContainer():
             quality_changes_container = quality_changes_group.node_for_global.getContainer()
-        if quality_group.node_for_global:
+        if quality_group.node_for_global and quality_group.node_for_global.getContainer():
             quality_container = quality_group.node_for_global.getContainer()
 
         self._global_container_stack.quality = quality_container
@@ -1026,9 +1032,9 @@ class MachineManager(QObject):
 
             quality_changes_container = self._empty_quality_changes_container
             quality_container = self._empty_quality_container
-            if quality_changes_node:
+            if quality_changes_node and quality_changes_node.getContainer():
                 quality_changes_container = quality_changes_node.getContainer()
-            if quality_node:
+            if quality_node and quality_node.getContainer():
                 quality_container = quality_node.getContainer()
 
             extruder.quality = quality_container
@@ -1040,14 +1046,18 @@ class MachineManager(QObject):
         self.activeQualityChangesGroupChanged.emit()
 
     def _setVariantNode(self, position, container_node):
+        if container_node.getContainer() is None:
+            return
         self._global_container_stack.extruders[position].variant = container_node.getContainer()
         self.activeVariantChanged.emit()
 
     def _setGlobalVariant(self, container_node):
         self._global_container_stack.variant = container_node.getContainer()
+        if not self._global_container_stack.variant:
+            self._global_container_stack.variant = Application.getInstance().empty_variant_container
 
     def _setMaterial(self, position, container_node = None):
-        if container_node:
+        if container_node and container_node.getContainer():
             self._global_container_stack.extruders[position].material = container_node.getContainer()
             root_material_id = container_node.metadata["base_file"]
         else:
