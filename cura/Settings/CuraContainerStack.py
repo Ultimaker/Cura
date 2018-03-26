@@ -8,6 +8,7 @@ from typing import Any, Optional
 from PyQt5.QtCore import pyqtProperty, pyqtSignal, QObject
 from UM.FlameProfiler import pyqtSlot
 
+from UM.Application import Application
 from UM.Decorators import override
 from UM.Logger import Logger
 from UM.Settings.ContainerStack import ContainerStack, InvalidContainerStackError
@@ -313,6 +314,13 @@ class CuraContainerStack(ContainerStack):
             return machine_definition.id
 
         return cls._findInstanceContainerDefinitionId(definitions[0])
+
+    ##  getProperty for extruder positions, with translation from -1 to default extruder number
+    def getExtruderPositionValueWithDefault(self, key):
+        value = self.getProperty(key, "value")
+        if value == -1:
+            value = int(Application.getInstance().getMachineManager().defaultExtruderPosition)
+        return value
 
 ## private:
 

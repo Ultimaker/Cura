@@ -207,6 +207,14 @@
         "layerview_support_interface": [64, 192, 255, 255],
         "layerview_nozzle": [181, 166, 66, 120],
 
+        "configuration_item": [0, 0, 0, 0],
+        "configuration_item_active": [12, 169, 227, 179],
+        "configuration_item_text": [255, 255, 255, 255],
+        "configuration_item_text_active": [255, 255, 255, 255],
+        "configuration_item_border": [255, 255, 255, 255],
+        "configuration_item_border_active": [12, 169, 227, 179],
+        "configuration_item_border_hover": [12, 169, 227, 179],
+
         "material_compatibility_warning": [255, 255, 255, 255],
 
         "quality_slider_unavailable": [179, 179, 179, 255],

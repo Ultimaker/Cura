@@ -17,12 +17,23 @@ Column
     padding: UM.Theme.getSize("default_margin").width
     spacing: Math.round(UM.Theme.getSize("default_margin").height / 2)
 
+    function forceModelUpdate()
+    {
+        // FIXME For now the model should be removed and then created again, otherwise changes in the printer don't automatically update the UI
+        configurationList.model = []
+        if(outputDevice)
+        {
+            configurationList.model = outputDevice.uniqueConfigurations
+        }
+    }
+
     Label
     {
         id: configurationListHeading
         text: catalog.i18nc("@label:header configurations", "Available configurations")
         font: UM.Theme.getFont("large")
         width: parent.width - 2 * parent.padding
+        color: UM.Theme.getColor("configuration_item_text")
     }
 
     Component
@@ -35,6 +46,7 @@ Column
             {
                 text: section
                 font: UM.Theme.getFont("default_bold")
+                color: UM.Theme.getColor("configuration_item_text")
             }
         }
     }
@@ -78,9 +90,16 @@ Column
         target: outputDevice
         onUniqueConfigurationsChanged:
         {
-            // FIXME For now the model should be removed and then created again, otherwise changes in the printer don't automatically update the UI
-            configurationList.model = []
-            configurationList.model = outputDevice.uniqueConfigurations
+            forceModelUpdate()
+        }
+    }
+
+    Connections
+    {
+        target: Cura.MachineManager
+        onOutputDevicesChanged:
+        {
+            forceModelUpdate()
         }
     }
 }

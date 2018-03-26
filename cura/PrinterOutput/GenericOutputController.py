@@ -64,6 +64,9 @@ class GenericOutputController(PrinterOutputController):
     def homeBed(self, printer):
         self._output_device.sendCommand("G28 Z")
 
+    def sendRawCommand(self, printer: "PrinterOutputModel", command: str):
+        self._output_device.sendCommand(command)
+
     def setJobState(self, job: "PrintJobOutputModel", state: str):
         if state == "pause":
             self._output_device.pausePrint()

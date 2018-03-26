@@ -27,18 +27,18 @@ class FilamentChange(Script):
                 "initial_retract":
                 {
                     "label": "Initial Retraction",
-                    "description": "Initial filament retraction distance",
+                    "description": "Initial filament retraction distance. The filament will be retracted with this amount before moving the nozzle away from the ongoing print.",
                     "unit": "mm",
                     "type": "float",
-                    "default_value": 300.0
+                    "default_value": 30.0
                 },
                 "later_retract":
                 {
                     "label": "Later Retraction Distance",
-                    "description": "Later filament retraction distance for removal",
+                    "description": "Later filament retraction distance for removal. The filament will be retracted all the way out of the printer so that you can change the filament.",
                     "unit": "mm",
                     "type": "float",
-                    "default_value": 30.0
+                    "default_value": 300.0
                 }
             }
         }"""

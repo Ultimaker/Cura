@@ -49,6 +49,7 @@ class WorkspaceDialog(QObject):
         self._material_labels = []
         self._extruders = []
         self._objects_on_plate = False
+        self._is_printer_group = False
 
     machineConflictChanged = pyqtSignal()
     qualityChangesConflictChanged = pyqtSignal()
@@ -66,6 +67,16 @@ class WorkspaceDialog(QObject):
     machineTypeChanged = pyqtSignal()
     variantTypeChanged = pyqtSignal()
     extrudersChanged = pyqtSignal()
+    isPrinterGroupChanged = pyqtSignal()
+
+    @pyqtProperty(bool, notify = isPrinterGroupChanged)
+    def isPrinterGroup(self) -> bool:
+        return self._is_printer_group
+
+    def setIsPrinterGroup(self, value: bool):
+        if value != self._is_printer_group:
+            self._is_printer_group = value
+            self.isPrinterGroupChanged.emit()
 
     @pyqtProperty(str, notify=variantTypeChanged)
     def variantType(self):

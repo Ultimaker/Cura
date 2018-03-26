@@ -196,9 +196,6 @@ class StartSliceJob(Job):
                             continue
                         if getattr(node, "_outside_buildarea", False) and not is_non_printing_mesh:
                             continue
-                        node_position = node.callDecoration("getActiveExtruderPosition")
-                        if not stack.extruders[str(node_position)].isEnabled:
-                            continue
 
                         temp_list.append(node)
                         if not is_non_printing_mesh:
@@ -214,10 +211,22 @@ class StartSliceJob(Job):
                 if temp_list:
                     object_groups.append(temp_list)
 
+            extruders_enabled = {position: stack.isEnabled for position, stack in Application.getInstance().getGlobalContainerStack().extruders.items()}
+            filtered_object_groups = []
+            for group in object_groups:
+                stack = Application.getInstance().getGlobalContainerStack()
+                skip_group = False
+                for node in group:
+                    if not extruders_enabled[node.callDecoration("getActiveExtruderPosition")]:
+                        skip_group = True
+                        break
+                if not skip_group:
+                    filtered_object_groups.append(group)
+
             # There are cases when there is nothing to slice. This can happen due to one at a time slicing not being
             # able to find a possible sequence or because there are no objects on the build plate (or they are outside
             # the build volume)
-            if not object_groups:
+            if not filtered_object_groups:
                 self.setResult(StartJobResult.NothingToSlice)
                 return
 
@@ -228,9 +237,9 @@ class StartSliceJob(Job):
             for extruder_stack in ExtruderManager.getInstance().getMachineExtruders(stack.getId()):
                 self._buildExtruderMessage(extruder_stack)
 
-            for group in object_groups:
+            for group in filtered_object_groups:
                 group_message = self._slice_message.addRepeatedMessage("object_lists")
-                if group[0].getParent().callDecoration("isGroup"):
+                if group[0].getParent() is not None and group[0].getParent().callDecoration("isGroup"):
                     self._handlePerObjectSettings(group[0].getParent(), group_message)
                 for object in group:
                     mesh_data = object.getMeshData()

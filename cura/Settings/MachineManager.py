@@ -597,6 +597,18 @@ class MachineManager(QObject):
             if extruder_stack != self._active_container_stack and extruder_stack.getProperty(key, "value") != new_value:
                 extruder_stack.userChanges.setProperty(key, "value", new_value)  # TODO: nested property access, should be improved
 
+    ## Copy the value of all manually changed settings of the current extruder to all other extruders.
+    @pyqtSlot()
+    def copyAllValuesToExtruders(self):
+        extruder_stacks = list(self._global_container_stack.extruders.values())
+        for extruder_stack in extruder_stacks:
+            if extruder_stack != self._active_container_stack:
+                for key in self._active_container_stack.userChanges.getAllKeys():
+                    new_value = self._active_container_stack.getProperty(key, "value")
+
+                    # check if the value has to be replaced
+                    extruder_stack.userChanges.setProperty(key, "value", new_value)
+
     @pyqtProperty(str, notify = activeVariantChanged)
     def activeVariantName(self) -> str:
         if self._active_container_stack:
@@ -861,9 +873,10 @@ class MachineManager(QObject):
 
     def updateNumberExtrudersEnabled(self):
         definition_changes_container = self._global_container_stack.definitionChanges
+        machine_extruder_count = self._global_container_stack.getProperty("machine_extruder_count", "value")
         extruder_count = 0
         for position, extruder in self._global_container_stack.extruders.items():
-            if extruder.isEnabled:
+            if extruder.isEnabled and int(position) < machine_extruder_count:
                 extruder_count += 1
         if self.numberExtrudersEnabled != extruder_count:
             definition_changes_container.setProperty("extruders_enabled_count", "value", extruder_count)
@@ -1218,6 +1231,16 @@ class MachineManager(QObject):
             self._updateMaterialWithVariant(None)  # Update all materials
             self._updateQualityWithMaterial()
 
+    @pyqtSlot(str, str)
+    def setMaterialById(self, position, root_material_id):
+        machine_definition_id = self._global_container_stack.definition.id
+        position = str(position)
+        extruder_stack = self._global_container_stack.extruders[position]
+        variant_name = extruder_stack.variant.getName()
+        material_diameter = extruder_stack.approximateMaterialDiameter
+        material_node = self._material_manager.getMaterialNode(machine_definition_id, variant_name, material_diameter, root_material_id)
+        self.setMaterial(position, material_node)
+
     @pyqtSlot(str, "QVariant")
     def setMaterial(self, position, container_node):
         position = str(position)
@@ -1226,14 +1249,27 @@ class MachineManager(QObject):
             self._setMaterial(position, container_node)
             self._updateQualityWithMaterial()
 
+    @pyqtSlot(str, str)
+    def setVariantByName(self, position, variant_name):
+        machine_definition_id = self._global_container_stack.definition.id
+        variant_node = self._variant_manager.getVariantNode(machine_definition_id, variant_name)
+        self.setVariant(position, variant_node)
+
     @pyqtSlot(str, "QVariant")
-    def setVariantGroup(self, position, container_node):
+    def setVariant(self, position, container_node):
         position = str(position)
         self.blurSettings.emit()
         with postponeSignals(*self._getContainerChangedSignals(), compress = CompressTechnique.CompressPerParameterValue):
             self._setVariantNode(position, container_node)
             self._updateMaterialWithVariant(position)
             self._updateQualityWithMaterial()
+
+    @pyqtSlot(str)
+    def setQualityGroupByQualityType(self, quality_type):
+        # Get all the quality groups for this global stack and filter out by quality_type
+        quality_group_dict = self._quality_manager.getQualityGroups(self._global_container_stack)
+        quality_group = quality_group_dict[quality_type]
+        self.setQualityGroup(quality_group)
 
     @pyqtSlot(QObject)
     def setQualityGroup(self, quality_group, no_dialog = False):

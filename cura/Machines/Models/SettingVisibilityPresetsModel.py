@@ -165,14 +165,18 @@ class SettingVisibilityPresetsModel(ListModel):
                 matching_preset_item = item
                 break
 
+        item_to_set = self._active_preset_item
         if matching_preset_item is None:
             # The new visibility setup is "custom" should be custom
             if self._active_preset_item["id"] == "custom":
                 # We are already in custom, just save the settings
                 self._preferences.setValue("cura/custom_visible_settings", visibility_string)
             else:
-                self._active_preset_item = self.items[0]  # 0 is custom
-                self.activePresetChanged.emit()
+                item_to_set = self.items[0]  # 0 is custom
         else:
-            self._active_preset_item = matching_preset_item
+            item_to_set = matching_preset_item
+
+        if self._active_preset_item is None or self._active_preset_item["id"] != item_to_set["id"]:
+            self._active_preset_item = item_to_set
+            self._preferences.setValue("cura/active_setting_visibility_preset", self._active_preset_item["id"])
             self.activePresetChanged.emit()

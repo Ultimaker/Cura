@@ -99,6 +99,7 @@ class MachineInfo:
 class ExtruderInfo:
     def __init__(self):
         self.position = None
+        self.enabled = True
         self.variant_info = None
         self.root_material_id = None
 
@@ -357,8 +358,10 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         machine_name = self._getMachineNameFromSerializedStack(serialized)
         stacks = self._container_registry.findContainerStacks(name = machine_name, type = "machine")
         self._is_same_machine_type = True
+        existing_global_stack = None
         if stacks:
             global_stack = stacks[0]
+            existing_global_stack = global_stack
             containers_found_dict["machine"] = True
             # Check if there are any changes at all in any of the container stacks.
             id_list = self._getContainerIdListFromSerialized(serialized)
@@ -425,6 +428,8 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
 
             extruder_info = ExtruderInfo()
             extruder_info.position = position
+            if parser.has_option("metadata", "enabled"):
+                extruder_info.enabled = parser["metadata"]["enabled"]
             if variant_id not in ("empty", "empty_variant"):
                 extruder_info.variant_info = instance_container_info_dict[variant_id]
             if material_id not in ("empty", "empty_material"):
@@ -492,8 +497,16 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         if machine_conflict and not self._is_same_machine_type:
             machine_conflict = False
 
+        is_printer_group = False
+        if machine_conflict:
+            group_name = existing_global_stack.getMetaDataEntry("connect_group_name")
+            if group_name is not None:
+                is_printer_group = True
+                machine_name = group_name
+
         # Show the dialog, informing the user what is about to happen.
         self._dialog.setMachineConflict(machine_conflict)
+        self._dialog.setIsPrinterGroup(is_printer_group)
         self._dialog.setQualityChangesConflict(quality_changes_conflict)
         self._dialog.setMaterialConflict(material_conflict)
         self._dialog.setHasVisibleSettingsField(has_visible_settings_string)
@@ -945,6 +958,15 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             self._quality_changes_to_apply = self._machine_info.quality_changes_info.name
         else:
             self._quality_type_to_apply = self._machine_info.quality_type
+
+        # Set enabled/disabled for extruders
+        for position, extruder_stack in extruder_stack_dict.items():
+            extruder_info = self._machine_info.extruder_info_dict.get(position)
+            if not extruder_info:
+                continue
+            if "enabled" not in extruder_stack.getMetaData():
+                extruder_stack.addMetaDataEntry("enabled", "True")
+            extruder_stack.setMetaDataEntry("enabled", str(extruder_info.enabled))
 
     def _updateActiveMachine(self, global_stack):
         # Actually change the active machine.

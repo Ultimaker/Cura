@@ -32,7 +32,7 @@ Menu
             }
             exclusiveGroup: group
             onTriggered: {
-                Cura.MachineManager.setVariantGroup(menu.extruderIndex, model.container_node);
+                Cura.MachineManager.setVariant(menu.extruderIndex, model.container_node);
             }
         }
 

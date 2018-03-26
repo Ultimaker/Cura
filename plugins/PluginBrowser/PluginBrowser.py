@@ -1,11 +1,10 @@
 # Copyright (c) 2017 Ultimaker B.V.
 # PluginBrowser is released under the terms of the LGPLv3 or higher.
 
-from PyQt5.QtCore import QUrl, QObject, Qt, pyqtProperty, pyqtSignal, pyqtSlot
+from PyQt5.QtCore import QUrl, QObject, pyqtProperty, pyqtSignal, pyqtSlot
 from PyQt5.QtNetwork import QNetworkAccessManager, QNetworkRequest, QNetworkReply
 
 from UM.Application import Application
-from UM.Qt.ListModel import ListModel
 from UM.Logger import Logger
 from UM.PluginRegistry import PluginRegistry
 from UM.Qt.Bindings.PluginsModel import PluginsModel
@@ -20,7 +19,6 @@ import os
 import tempfile
 import platform
 import zipfile
-import shutil
 
 from cura.CuraApplication import CuraApplication
 
@@ -44,7 +42,7 @@ class PluginBrowser(QObject, Extension):
         self._plugins_metadata = []
         self._plugins_model = None
 
-        # Can be 'installed' or 'availble'
+        # Can be 'installed' or 'available'
         self._view = "available"
 
         self._restart_required = False
@@ -393,14 +391,14 @@ class PluginBrowser(QObject, Extension):
         self._network_manager.finished.connect(self._onRequestFinished)
         self._network_manager.networkAccessibleChanged.connect(self._onNetworkAccesibleChanged)
 
-    @pyqtProperty(bool, notify=restartRequiredChanged)
+    @pyqtProperty(bool, notify = restartRequiredChanged)
     def restartRequired(self):
         return self._restart_required
 
-    @pyqtProperty(str, notify=viewChanged)
+    @pyqtProperty(str, notify = viewChanged)
     def viewing(self):
         return self._view
 
     @pyqtSlot()
     def restart(self):
-        CuraApplication.getInstance().quit()
+        CuraApplication.getInstance().windowClosed()

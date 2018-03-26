@@ -1,3 +1,6 @@
+// Copyright (c) 2017 Ultimaker B.V.
+// Cura is released under the terms of the LGPLv3 or higher.
+
 import QtQuick 2.2
 import QtQuick.Controls 1.1
 import QtQuick.Controls.Styles 1.1
@@ -11,6 +14,7 @@ Item
     implicitWidth: parent.width
     height: visible ? UM.Theme.getSize("sidebar_extruder_box").height : 0
     property var printerModel
+
     Rectangle
     {
         color: UM.Theme.getColor("sidebar")
@@ -209,7 +213,7 @@ Item
             }
         }
 
-        Button //The pre-heat button.
+        Button // The pre-heat button.
         {
             id: preheatButton
             height: UM.Theme.getSize("setting_control").height

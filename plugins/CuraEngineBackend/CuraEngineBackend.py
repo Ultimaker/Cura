@@ -119,6 +119,7 @@ class CuraEngineBackend(QObject, Backend):
         self._postponed_scene_change_sources = []  # scene change is postponed (by a tool)
 
         self._slice_start_time = None
+        self._is_disabled = False
 
         Preferences.getInstance().addPreference("general/auto_slice", True)
 
@@ -224,16 +225,17 @@ class CuraEngineBackend(QObject, Backend):
         active_build_plate = Application.getInstance().getMultiBuildPlateModel().activeBuildPlate
         build_plate_to_be_sliced = self._build_plates_to_be_sliced.pop(0)
         Logger.log("d", "Going to slice build plate [%s]!" % build_plate_to_be_sliced)
-        num_objects = self._numObjects()
+        num_objects = self._numObjectsPerBuildPlate()
+
+        self._stored_layer_data = []
+        self._stored_optimized_layer_data[build_plate_to_be_sliced] = []
+
         if build_plate_to_be_sliced not in num_objects or num_objects[build_plate_to_be_sliced] == 0:
             self._scene.gcode_dict[build_plate_to_be_sliced] = []
             Logger.log("d", "Build plate %s has no objects to be sliced, skipping", build_plate_to_be_sliced)
             if self._build_plates_to_be_sliced:
                 self.slice()
             return
-
-        self._stored_layer_data = []
-        self._stored_optimized_layer_data[build_plate_to_be_sliced] = []
 
         if Application.getInstance().getPrintInformation() and build_plate_to_be_sliced == active_build_plate:
             Application.getInstance().getPrintInformation().setToZeroPrintInformation(build_plate_to_be_sliced)
@@ -404,6 +406,7 @@ class CuraEngineBackend(QObject, Backend):
     #   - decorator isBlockSlicing is found (used in g-code reader)
     def determineAutoSlicing(self):
         enable_timer = True
+        self._is_disabled = False
 
         if not Preferences.getInstance().getValue("general/auto_slice"):
             enable_timer = False
@@ -411,6 +414,7 @@ class CuraEngineBackend(QObject, Backend):
             if node.callDecoration("isBlockSlicing"):
                 enable_timer = False
                 self.backendStateChange.emit(BackendState.Disabled)
+                self._is_disabled = True
             gcode_list = node.callDecoration("getGCodeList")
             if gcode_list is not None:
                 self._scene.gcode_dict[node.callDecoration("getBuildPlateNumber")] = gcode_list
@@ -426,7 +430,7 @@ class CuraEngineBackend(QObject, Backend):
             return False
 
     ##  Return a dict with number of objects per build plate
-    def _numObjects(self):
+    def _numObjectsPerBuildPlate(self):
         num_objects = defaultdict(int)
         for node in DepthFirstIterator(self._scene.getRoot()):
             # Only count sliceable objects
@@ -453,7 +457,7 @@ class CuraEngineBackend(QObject, Backend):
         source_build_plate_number = source.callDecoration("getBuildPlateNumber")
         if source == self._scene.getRoot():
             # we got the root node
-            num_objects = self._numObjects()
+            num_objects = self._numObjectsPerBuildPlate()
             for build_plate_number in list(self._last_num_objects.keys()) + list(num_objects.keys()):
                 if build_plate_number not in self._last_num_objects or num_objects[build_plate_number] != self._last_num_objects[build_plate_number]:
                     self._last_num_objects[build_plate_number] = num_objects[build_plate_number]
@@ -544,6 +548,10 @@ class CuraEngineBackend(QObject, Backend):
                 self._change_timer.stop()
 
     def _onStackErrorCheckFinished(self):
+        self.determineAutoSlicing()
+        if self._is_disabled:
+            return
+
         if not self._slicing and self._build_plates_to_be_sliced:
             self.needsSlicing()
             self._onChanged()
@@ -604,7 +612,12 @@ class CuraEngineBackend(QObject, Backend):
 
         # See if we need to process the sliced layers job.
         active_build_plate = Application.getInstance().getMultiBuildPlateModel().activeBuildPlate
-        if self._layer_view_active and (self._process_layers_job is None or not self._process_layers_job.isRunning()) and active_build_plate == self._start_slice_job_build_plate:
+        if (
+            self._layer_view_active and
+            (self._process_layers_job is None or not self._process_layers_job.isRunning()) and
+            active_build_plate == self._start_slice_job_build_plate and
+            active_build_plate not in self._build_plates_to_be_sliced):
+
             self._startProcessSlicedLayersJob(active_build_plate)
         # self._onActiveViewChanged()
         self._start_slice_job_build_plate = None
@@ -733,7 +746,11 @@ class CuraEngineBackend(QObject, Backend):
                 # There is data and we're not slicing at the moment
                 # if we are slicing, there is no need to re-calculate the data as it will be invalid in a moment.
                 # TODO: what build plate I am slicing
-                if active_build_plate in self._stored_optimized_layer_data and not self._slicing and not self._process_layers_job:
+                if (active_build_plate in self._stored_optimized_layer_data and
+                    not self._slicing and
+                    not self._process_layers_job and
+                    active_build_plate not in self._build_plates_to_be_sliced):
+
                     self._startProcessSlicedLayersJob(active_build_plate)
             else:
                 self._layer_view_active = False

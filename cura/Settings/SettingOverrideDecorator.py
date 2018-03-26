@@ -2,8 +2,8 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import copy
+import uuid
 
-from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 from UM.Scene.SceneNodeDecorator import SceneNodeDecorator
 from UM.Signal import Signal, signalemitter
 from UM.Settings.InstanceContainer import InstanceContainer
@@ -33,9 +33,11 @@ class SettingOverrideDecorator(SceneNodeDecorator):
 
     def __init__(self):
         super().__init__()
-        self._stack = PerObjectContainerStack(stack_id = "per_object_stack_" + str(id(self)))
+        self._stack = PerObjectContainerStack(container_id = "per_object_stack_" + str(id(self)))
         self._stack.setDirty(False)  # This stack does not need to be saved.
-        self._stack.addContainer(InstanceContainer(container_id = "SettingOverrideInstanceContainer"))
+        user_container = InstanceContainer(container_id = self._generateUniqueName())
+        user_container.addMetaDataEntry("type", "user")
+        self._stack.userChanges = user_container
         self._extruder_stack = ExtruderManager.getInstance().getExtruderStack(0).getId()
 
         self._is_non_printing_mesh = False
@@ -48,11 +50,18 @@ class SettingOverrideDecorator(SceneNodeDecorator):
         self.activeExtruderChanged.connect(self._updateNextStack)
         self._updateNextStack()
 
+    def _generateUniqueName(self):
+        return "SettingOverrideInstanceContainer-%s" % uuid.uuid1()
+
     def __deepcopy__(self, memo):
         ## Create a fresh decorator object
         deep_copy = SettingOverrideDecorator()
+
         ## Copy the instance
         instance_container = copy.deepcopy(self._stack.getContainer(0), memo)
+
+        # A unique name must be added, or replaceContainer will not replace it
+        instance_container.setMetaDataEntry("id", self._generateUniqueName)
 
         ## Set the copied instance as the first (and only) instance container of the stack.
         deep_copy._stack.replaceContainer(0, instance_container)

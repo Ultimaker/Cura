@@ -887,7 +887,23 @@ Item
                 enabled: base.settingsEnabled
                 property alias _hovered: supportExtruderMouseArea.containsMouse
 
-                currentIndex: supportExtruderNr.properties !== null ? parseFloat(supportExtruderNr.properties.value) : 0
+                currentIndex:
+                {
+                    if (supportExtruderNr.properties == null)
+                    {
+                        return Cura.MachineManager.defaultExtruderPosition;
+                    }
+                    else
+                    {
+                        var extruder = parseInt(supportExtruderNr.properties.value);
+                        if ( extruder === -1)
+                        {
+                            return Cura.MachineManager.defaultExtruderPosition;
+                        }
+                        return extruder;
+                    }
+                }
+
                 onActivated:
                 {
                     // Send the extruder nr as a string.

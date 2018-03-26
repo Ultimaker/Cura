@@ -62,7 +62,7 @@ class SolidView(View):
 
         global_container_stack = Application.getInstance().getGlobalContainerStack()
         if global_container_stack:
-            support_extruder_nr = global_container_stack.getProperty("support_extruder_nr", "value")
+            support_extruder_nr = global_container_stack.getExtruderPositionValueWithDefault("support_extruder_nr")
             support_angle_stack = Application.getInstance().getExtruderManager().getExtruderStack(support_extruder_nr)
 
             if support_angle_stack is not None and Preferences.getInstance().getValue("view/show_overhang"):
@@ -89,7 +89,7 @@ class SolidView(View):
                     # Use the support extruder instead of the active extruder if this is a support_mesh
                     if per_mesh_stack:
                         if per_mesh_stack.getProperty("support_mesh", "value"):
-                            extruder_index = int(global_container_stack.getProperty("support_extruder_nr", "value"))
+                            extruder_index = int(global_container_stack.getExtruderPositionValueWithDefault("support_extruder_nr"))
 
                     try:
                         material_color = self._extruders_model.getItem(extruder_index)["color"]

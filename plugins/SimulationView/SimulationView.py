@@ -160,10 +160,10 @@ class SimulationView(View):
     def _onSceneChanged(self, node):
         if node.getMeshData() is None:
             self.resetLayerData()
-        else:
-            self.setActivity(False)
-            self.calculateMaxLayers()
-            self.calculateMaxPathsOnLayer(self._current_layer_num)
+
+        self.setActivity(False)
+        self.calculateMaxLayers()
+        self.calculateMaxPathsOnLayer(self._current_layer_num)
 
     def isBusy(self):
         return self._busy

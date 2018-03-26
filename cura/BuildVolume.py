@@ -238,7 +238,16 @@ class BuildVolume(SceneNode):
 
         # Group nodes should override the _outside_buildarea property of their children.
         for group_node in group_nodes:
-            for child_node in group_node.getAllChildren():
+            children = group_node.getAllChildren()
+
+            # Check if one or more children are non-printable and if so, set the parent as non-printable:
+            for child_node in children:
+                if child_node.isOutsideBuildArea():
+                    group_node.setOutsideBuildArea(True)
+                    break
+
+            # Apply results of the check to all children of the group:
+            for child_node in children:
                 child_node.setOutsideBuildArea(group_node.isOutsideBuildArea())
 
     ##  Update the outsideBuildArea of a single node, given bounds or current build volume
