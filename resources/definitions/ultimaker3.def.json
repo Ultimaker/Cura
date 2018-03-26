@@ -25,8 +25,7 @@
         },
         "first_start_actions": [ "DiscoverUM3Action" ],
         "supported_actions": [ "DiscoverUM3Action" ],
-        "supports_usb_connection": false,
-        "exclude_materials": [ "generic_hips", "generic_petg" ]
+        "supports_usb_connection": false
     },
 
 
