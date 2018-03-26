@@ -162,7 +162,7 @@ class BlackBeltPlugin(Extension):
         if definition_container.getId() != "blackbelt":
             return
 
-        variant_id = self._application.getMachineManager().activeVariantId
+        variant_id = self._global_container_stack.variant.getId()
         if self._global_container_stack.variant.getId() != variant_id:
             self._global_container_stack.setVariantById(variant_id)
 

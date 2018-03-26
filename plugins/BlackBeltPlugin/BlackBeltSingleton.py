@@ -38,7 +38,7 @@ class BlackBeltSingleton(QObject):
             self.activeMachineChanged.emit()
 
     def _onActiveVariantChanged(self, emit = True):
-        active_variant_id = self._machine_manager.activeVariantId
+        active_variant_id = self._global_container_stack.variant.getId()
 
         result = re.match("^%s$" % self._variants_terms_pattern, active_variant_id)
         if result:
