@@ -1115,6 +1115,8 @@ class MachineManager(QObject):
         self._setQualityGroup(candidate_quality_groups[quality_type], empty_quality_changes = True)
 
     def _updateMaterialWithVariant(self, position: Optional[str]):
+        if self._global_container_stack is None:
+            return
         if position is None:
             position_list = list(self._global_container_stack.extruders.keys())
         else:
