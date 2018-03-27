@@ -3,6 +3,7 @@
 
 from typing import Optional
 
+from UM.ConfigurationErrorMessage import ConfigurationErrorMessage
 from UM.Logger import Logger
 from UM.Settings.Interfaces import DefinitionContainerInterface
 from UM.Settings.InstanceContainer import InstanceContainer
@@ -32,7 +33,7 @@ class CuraStackBuilder:
 
         definitions = registry.findDefinitionContainers(id = definition_id)
         if not definitions:
-
+            ConfigurationErrorMessage.getInstance().addFaultyContainers(definition_id)
             Logger.log("w", "Definition {definition} was not found!", definition = definition_id)
             return None
 
