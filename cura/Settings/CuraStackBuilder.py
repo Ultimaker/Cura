@@ -88,8 +88,8 @@ class CuraStackBuilder:
             extruder_definition = registry.findDefinitionContainers(id = extruder_definition_id)[0]
             position_in_extruder_def = extruder_definition.getMetaDataEntry("position")
             if position_in_extruder_def != position:
-                raise RuntimeError("Extruder position [%s] defined in extruder definition [%s] is not the same as in machine definition [%s] position [%s]" %
-                                   (position_in_extruder_def, extruder_definition_id, definition_id, position))
+                ConfigurationErrorMessage.getInstance().addFaultyContainers(extruder_definition_id)
+                return None #Don't return any container stack then, not the rest of the extruders either.
 
             new_extruder_id = registry.uniqueName(extruder_definition_id)
             new_extruder = cls.createExtruderStack(
@@ -104,6 +104,8 @@ class CuraStackBuilder:
             )
             new_extruder.setNextStack(new_global_stack)
             new_global_stack.addExtruder(new_extruder)
+
+        for new_extruder in new_global_stack.extruders.values(): #Only register the extruders if we're sure that all of them are correct.
             registry.addContainer(new_extruder)
 
         preferred_quality_type = machine_definition.getMetaDataEntry("preferred_quality_type")
