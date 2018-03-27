@@ -60,6 +60,9 @@ Also Alexander Roessler made a new NGC writer plugin so you can export files in 
 *Pre-heat extruders - fieldOfView
 This new feature allows to preheat the extruders in the printer monitor.
 
+*Persistent post-processing scripts
+Scripts are no longer erased after restarting Ultimaker Cura.
+
 *GZ Reader
 By default, G-code for Ultimaker 3 machines is now saved as gzipped G-Code.
 
