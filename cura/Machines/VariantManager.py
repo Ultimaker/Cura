@@ -89,12 +89,8 @@ class VariantManager:
                 if variant_definition not in self._machine_to_buildplate_dict_map:
                     self._machine_to_buildplate_dict_map[variant_definition] = OrderedDict()
 
-                variant_container = self._container_registry.findContainers(type = "variant", id = variant_metadata["id"])
-                if not variant_container:
-                    # ERROR: not variant container. This should never happen
-                    raise RuntimeError("Not variant found [%s], type [%s] for machine [%s]" %
-                                       (variant_name, variant_type, variant_definition))
-                buildplate_type = variant_container[0].getProperty("machine_buildplate_type", "value")
+                variant_container = self._container_registry.findContainers(type = "variant", id = variant_metadata["id"])[0]
+                buildplate_type = variant_container.getProperty("machine_buildplate_type", "value")
                 if buildplate_type not in self._machine_to_buildplate_dict_map[variant_definition]:
                     self._machine_to_variant_dict_map[variant_definition][buildplate_type] = dict()
 
