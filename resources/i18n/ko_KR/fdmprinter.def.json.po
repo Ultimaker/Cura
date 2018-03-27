@@ -1255,7 +1255,7 @@ msgstr "다림질 과정"
 #: fdmprinter.def.json
 msgctxt "ironing_flow description"
 msgid "The amount of material, relative to a normal skin line, to extrude during ironing. Keeping the nozzle filled helps filling some of the crevices of the top surface, but too much results in overextrusion and blips on the side of the surface."
-msgstr "다림질하는 동안 기본 피부 라인을 기준으로 한 재료의 양. 노즐을 가득 채우면 윗면의 틈새가 채워지지만 표면의 과도한 돌출과 틈이 너무 많이 생깁니다. "
+msgstr "다림질하는 동안 기본 스킨 라인을 기준으로 한 재료의 양. 노즐을 가득 채우면 윗면의 틈새가 채워지지만 표면의 과도한 돌출과 틈이 너무 많이 생깁니다. "
 
 #: fdmprinter.def.json
 msgctxt "ironing_inset label"
@@ -1265,7 +1265,7 @@ msgstr "다림질 삽입"
 #: fdmprinter.def.json
 msgctxt "ironing_inset description"
 msgid "A distance to keep from the edges of the model. Ironing all the way to the edge of the mesh may result in a jagged edge on your print."
-msgstr "모델 가장자리에서 떨어지지 않는 거리. 메쉬 가장자리까지 다림질하면 출력물의 가장자리가 고르지 않을 수 있습니다."
+msgstr "모델 브림에서 떨어지지 않는 거리. 메쉬 브림까지 다림질하면 출력물의 브림가 고르지 않을 수 있습니다."
 
 #: fdmprinter.def.json
 msgctxt "speed_ironing label"
@@ -1500,7 +1500,7 @@ msgstr "스킨 겹침"
 #: fdmprinter.def.json
 msgctxt "skin_overlap_mm description"
 msgid "The amount of overlap between the skin and the walls. A slight overlap allows the walls to connect firmly to the skin."
-msgstr "피부와 벽 사이의 겹침 정도. 약간 겹치면 벽이 스킨에 단단히 연결됩니다. "
+msgstr "스킨와 벽 사이의 겹침 정도. 약간 겹치면 벽이 스킨에 단단히 연결됩니다. "
 
 #: fdmprinter.def.json
 msgctxt "infill_wipe_dist label"
@@ -1560,12 +1560,12 @@ msgstr "최소 내부채움 지역"
 #: fdmprinter.def.json
 msgctxt "min_infill_area description"
 msgid "Don't generate areas of infill smaller than this (use skin instead)."
-msgstr "이보다 작은 내부채움물 영역을 생성하지 마십시오 (대신 스킨 사용). "
+msgstr "이보다 작은 내부채움 영역을 생성하지 마십시오 (대신 스킨 사용). "
 
 #: fdmprinter.def.json
 msgctxt "skin_preshrink label"
 msgid "Skin Removal Width"
-msgstr "피부 제거 폭"
+msgstr "스킨 제거 폭"
 
 #: fdmprinter.def.json
 msgctxt "skin_preshrink description"
@@ -1575,17 +1575,17 @@ msgstr "제거 할 외부스킨 영역의 가장 큰 너비. 이 값보다 작�
 #: fdmprinter.def.json
 msgctxt "top_skin_preshrink label"
 msgid "Top Skin Removal Width"
-msgstr "상단 피부 제거 폭"
+msgstr "상단 스킨 제거 폭"
 
 #: fdmprinter.def.json
 msgctxt "top_skin_preshrink description"
 msgid "The largest width of top skin areas which are to be removed. Every skin area smaller than this value will disappear. This can help in limiting the amount of time and material spent on printing top skin at slanted surfaces in the model."
-msgstr "제거 할 상단 스킨 영역의 가장 큰 너비. 이 값보다 작은 모든 스킨 영역은 사라집니다. 이렇게하면 모델의 경사면에서 상단 스킨을 프린팅하는 데 소요되는 시간과 재료의 양을 제한하는 데 도움이됩니다."
+msgstr "제거 할 상단 스킨 영역의 가장 큰 너비. 이 값보다 작은 모든 스킨 영역은 사라집니다. 이렇게 하면 모델의 경사면에서 상단 스킨을 프린팅하는 데 소요되는 시간과 재료의 양을 제한하는 데 도움이됩니다."
 
 #: fdmprinter.def.json
 msgctxt "bottom_skin_preshrink label"
 msgid "Bottom Skin Removal Width"
-msgstr "밑면 피부 제거 폭"
+msgstr "밑면 스킨 제거 폭"
 
 #: fdmprinter.def.json
 msgctxt "bottom_skin_preshrink description"
@@ -1595,47 +1595,47 @@ msgstr "제거 할 바닥 스킨 영역의 최대 너비. 이 값보다 작은 �
 #: fdmprinter.def.json
 msgctxt "expand_skins_expand_distance label"
 msgid "Skin Expand Distance"
-msgstr "피부 확장 거리"
+msgstr "스킨 확장 거리"
 
 #: fdmprinter.def.json
 msgctxt "expand_skins_expand_distance description"
 msgid "The distance the skins are expanded into the infill. Higher values makes the skin attach better to the infill pattern and makes the walls on neighboring layers adhere better to the skin. Lower values save amount of material used."
-msgstr "스킨이 infill로 확장되는 거리입니다. 값이 높을수록 스킨이 충 패턴에 더 잘 부착되고 인접 레이어의 벽이 피부에 잘 밀착됩니다. 값이 낮을수록 사용 된 재료의 양이 절약됩니다. "
+msgstr "스킨이 내부채움으로 확장되는 거리입니다. 값이 높을수록 스킨이 내부채움 패턴에 더 잘 부착되고 인접 레이어의 벽이 스킨에 잘 밀착됩니다. 값이 낮을수록 사용 될 재료의 양이 절약됩니다. "
 
 #: fdmprinter.def.json
 msgctxt "top_skin_expand_distance label"
 msgid "Top Skin Expand Distance"
-msgstr "윗면 피부 확장 거리"
+msgstr "윗면 스킨 확장 거리"
 
 #: fdmprinter.def.json
 msgctxt "top_skin_expand_distance description"
 msgid "The distance the top skins are expanded into the infill. Higher values makes the skin attach better to the infill pattern and makes the walls on the layer above adhere better to the skin. Lower values save amount of material used."
-msgstr "상단 스킨의 거리가 infill로 확장됩니다. 값이 높을수록 스킨이 충 패턴에 더 잘 부착되며 위 레이어의 벽이 피부에 잘 밀착됩니다. 값이 낮을수록 사용 된 재료의 양이 절약됩니다. "
+msgstr "상단 스킨의 거리가 내부채움으로 확장됩니다. 값이 높을수록 스킨이 내부채움 패턴에 더 잘 부착되며 위 레이어의 벽이 스킨에 잘 밀착됩니다. 값이 낮을수록 사용 된 재료의 양이 절약됩니다. "
 
 #: fdmprinter.def.json
 msgctxt "bottom_skin_expand_distance label"
 msgid "Bottom Skin Expand Distance"
-msgstr "밑면 피부 확장 거리"
+msgstr "밑면 스킨 확장 거리"
 
 #: fdmprinter.def.json
 msgctxt "bottom_skin_expand_distance description"
 msgid "The distance the bottom skins are expanded into the infill. Higher values makes the skin attach better to the infill pattern and makes the skin adhere better to the walls on the layer below. Lower values save amount of material used."
-msgstr "바닥 스킨의 거리가 infill로 확장됩니다. 값이 높을수록 피부가 충 패턴에 더 잘 붙어 피부가 아래 층의 벽에 잘 밀착됩니다. 값이 낮을수록 사용 된 재료의 양이 절약됩니다. "
+msgstr "바닥 스킨의 거리가 내부채움으로 확장됩니다. 값이 높을수록 스킨가 내부채움 패턴에 더 잘 붙어 스킨가 아래 층의 벽에 잘 밀착됩니다. 값이 낮을수록 사용 된 재료의 양이 절약됩니다. "
 
 #: fdmprinter.def.json
 msgctxt "max_skin_angle_for_expansion label"
 msgid "Maximum Skin Angle for Expansion"
-msgstr "확장을 위한 최대 피부 각"
+msgstr "확장을 위한 최대 스킨 각"
 
 #: fdmprinter.def.json
 msgctxt "max_skin_angle_for_expansion description"
 msgid "Top and/or bottom surfaces of your object with an angle larger than this setting, won't have their top/bottom skin expanded. This avoids expanding the narrow skin areas that are created when the model surface has a near vertical slope. An angle of 0° is horizontal, while an angle of 90° is vertical."
-msgstr "이 설정보다 큰 각도로 객체의 상단 및 또는 하단 표면은 위쪽 / 아래쪽 스킨이 확장되지 않습니다. 이렇게하면 모델 표면이 수직 경사가 거의 없을 때 생성되는 좁은 스킨 영역을 확장하지 않아도됩니다. \"0\" 도의 각도는 수평이며, 90 도의 각도는 수직입니다. "
+msgstr "이 설정보다 큰 각도로 객체의 상단 및 또는 하단 표면은 위쪽/아래쪽 스킨이 확장되지 않습니다. 이렇게하면 모델 표면이 수직 경사가 거의 없을 때 생성되는 좁은 스킨 영역을 확장하지 않아도됩니다. 0도의 각도는 수평이며, 90도의 각도는 수직입니다. "
 
 #: fdmprinter.def.json
 msgctxt "min_skin_width_for_expansion label"
 msgid "Minimum Skin Width for Expansion"
-msgstr "확장을 위한 최소 피부 폭"
+msgstr "확장을 위한 최소 스킨 폭"
 
 #: fdmprinter.def.json
 msgctxt "min_skin_width_for_expansion description"
@@ -1645,7 +1645,7 @@ msgstr "이보다 좁은 스킨 영역은 확장되지 않습니다. 이렇게�
 #: fdmprinter.def.json
 msgctxt "material label"
 msgid "Material"
-msgstr "자재"
+msgstr "재료"
 
 #: fdmprinter.def.json
 msgctxt "material description"
@@ -1660,7 +1660,7 @@ msgstr "기본 프린팅 온도"
 #: fdmprinter.def.json
 msgctxt "default_material_print_temperature description"
 msgid "The default temperature used for printing. This should be the \"base\" temperature of a material. All other print temperatures should use offsets based on this value"
-msgstr "프린팅에 사용되는 기본 온도입니다. 이것은 재료의 \"기본\"온도 여야합니다. 다른 모든 프린팅 온도는이 값을 기준으로 오프셋을 사용해야합니다. "
+msgstr "프린팅에 사용되는 기본 온도입니다. 이것은 재료의 \"기본\"온도 이여야 합니다. 다른 모든 프린팅 온도는 이 값을 기준으로 오프셋을 사용해야합니다."
 
 #: fdmprinter.def.json
 msgctxt "material_print_temperature label"
@@ -1670,17 +1670,17 @@ msgstr "프린팅 온도"
 #: fdmprinter.def.json
 msgctxt "material_print_temperature description"
 msgid "The temperature used for printing."
-msgstr "프린팅에 사용되는 온도. "
+msgstr "프린팅에 사용되는 온도."
 
 #: fdmprinter.def.json
 msgctxt "material_print_temperature_layer_0 label"
 msgid "Printing Temperature Initial Layer"
-msgstr "프린팅 온도 첫번째 레이어"
+msgstr "첫번째 레이어의 프린팅 온도"
 
 #: fdmprinter.def.json
 msgctxt "material_print_temperature_layer_0 description"
 msgid "The temperature used for printing the first layer. Set at 0 to disable special handling of the initial layer."
-msgstr "첫 번째 레이어 프린팅에 사용되는 온도입니다. 초기 레이어의 특수 처리를 사용하지 않으려면 \"0\"으로 설정합니다. "
+msgstr "첫 번째 레이어에 프린팅에 사용되는 온도입니다. 초기 레이어의 특수 처리를 사용하지 않으려면 0으로 설정합니다. "
 
 #: fdmprinter.def.json
 msgctxt "material_initial_print_temperature label"
@@ -1690,7 +1690,7 @@ msgstr "초기 프린팅 온도"
 #: fdmprinter.def.json
 msgctxt "material_initial_print_temperature description"
 msgid "The minimal temperature while heating up to the Printing Temperature at which printing can already start."
-msgstr "프린팅가 이미 시작될 수있는 프린팅 온도까지 가열하는 동안 최소 온도. "
+msgstr "프린팅이 시작될 수 있는 프린팅 온도까지 가열하는 동안의 최소 온도. "
 
 #: fdmprinter.def.json
 msgctxt "material_final_print_temperature label"
@@ -1700,7 +1700,7 @@ msgstr "최종 프린팅 온도"
 #: fdmprinter.def.json
 msgctxt "material_final_print_temperature description"
 msgid "The temperature to which to already start cooling down just before the end of printing."
-msgstr "프린팅 종료 직전에 이미 냉각이 시작될 온도입니다. "
+msgstr "프린팅 종료 직전에 냉각이 시작될 온도입니다. "
 
 #: fdmprinter.def.json
 msgctxt "material_extrusion_cool_down_speed label"
@@ -1710,7 +1710,7 @@ msgstr "압출 냉각 속도 조절기"
 #: fdmprinter.def.json
 msgctxt "material_extrusion_cool_down_speed description"
 msgid "The extra speed by which the nozzle cools while extruding. The same value is used to signify the heat up speed lost when heating up while extruding."
-msgstr "압출하는 동안 노즐이 냉각되는 추가 속도. 압출하는 동안 가열 될 때 상실되는 열 상승 속도를 나타 내기 위해 동일한 값이 사용됩니다. "
+msgstr "압출하는 동안 노즐이 냉각되는 추가적인 속도. 압출하는 동안 가열 될 때 상실되는 열 상승 속도를 나타 내기 위해 동일한 값이 사용됩니다. "
 
 #: fdmprinter.def.json
 msgctxt "material_bed_temperature label"
@@ -1720,12 +1720,12 @@ msgstr "빌드 플레이트 온도"
 #: fdmprinter.def.json
 msgctxt "material_bed_temperature description"
 msgid "The temperature used for the heated build plate. If this is 0, the bed temperature will not be adjusted."
-msgstr "가열 된 빌드 플레이트에 사용되는 온도. 이것이 0이면, 베드 온도가 조정되지 않습니다."
+msgstr "플레이트를 가열하기 위해 사용되는 온도. 이것이 0이면, 베드 온도가 조정되지 않습니다."
 
 #: fdmprinter.def.json
 msgctxt "material_bed_temperature_layer_0 label"
 msgid "Build Plate Temperature Initial Layer"
-msgstr "빌드 플레이트 온도 초기 레이어"
+msgstr "초기 레이어의 빌드 플레이트 온도 "
 
 #: fdmprinter.def.json
 msgctxt "material_bed_temperature_layer_0 description"
@@ -1740,17 +1740,17 @@ msgstr "직경"
 #: fdmprinter.def.json
 msgctxt "material_diameter description"
 msgid "Adjusts the diameter of the filament used. Match this value with the diameter of the used filament."
-msgstr "사용 된 필라멘트의 직경을 조정합니다. 이 값을 사용 필라멘트의 직경과 일치시킵니다. "
+msgstr "사용 된 필라멘트의 직경을 조정합니다. 이 값을 사용될 필라멘트의 직경과 일치시킵니다. "
 
 #: fdmprinter.def.json
 msgctxt "material_adhesion_tendency label"
 msgid "Adhesion Tendency"
-msgstr "점착 기질"
+msgstr "점착 성항"
 
 #: fdmprinter.def.json
 msgctxt "material_adhesion_tendency description"
 msgid "Surface adhesion tendency."
-msgstr "서피스의 점착 기질입니다."
+msgstr "표면에 점착되는 성항입니다."
 
 #: fdmprinter.def.json
 msgctxt "material_surface_energy label"
@@ -1760,7 +1760,7 @@ msgstr "서피스 에너지"
 #: fdmprinter.def.json
 msgctxt "material_surface_energy description"
 msgid "Surface energy."
-msgstr "서피스의 에너지입니다."
+msgstr "표면의 에너지입니다."
 
 #: fdmprinter.def.json
 msgctxt "material_flow label"
@@ -1770,12 +1770,12 @@ msgstr "공급량"
 #: fdmprinter.def.json
 msgctxt "material_flow description"
 msgid "Flow compensation: the amount of material extruded is multiplied by this value."
-msgstr "유량 보상 : 압출 된 재료의 양에이 값을 곱합니다. "
+msgstr "유량 보상: 압출 된 재료의 양에 이 값을 곱합니다. "
 
 #: fdmprinter.def.json
 msgctxt "retraction_enable label"
 msgid "Enable Retraction"
-msgstr "후퇴 가능"
+msgstr "리트렉션 활성화"
 
 #: fdmprinter.def.json
 msgctxt "retraction_enable description"
@@ -1785,92 +1785,92 @@ msgstr "노즐이 프린팅되지 않은 영역 위로 움직일 때 필라멘�
 #: fdmprinter.def.json
 msgctxt "retract_at_layer_change label"
 msgid "Retract at Layer Change"
-msgstr "레이어 변경시 취소"
+msgstr "레이어 변경시 리트렉션"
 
 #: fdmprinter.def.json
 msgctxt "retract_at_layer_change description"
 msgid "Retract the filament when the nozzle is moving to the next layer."
-msgstr "노즐이 다음 층으로 이동할 때 필라멘트를 후퇴시킵니다. "
+msgstr "노즐이 다음 층으로 이동할 때 필라멘트를 리트렉션 시킵니다. "
 
 #: fdmprinter.def.json
 msgctxt "retraction_amount label"
 msgid "Retraction Distance"
-msgstr "후퇴 거리"
+msgstr "리트렉션 거리"
 
 #: fdmprinter.def.json
 msgctxt "retraction_amount description"
 msgid "The length of material retracted during a retraction move."
-msgstr "후퇴 이동 중에 수축 된 재료의 길이입니다. "
+msgstr "리트렉션 이동 중에 수축 된 재료의 길이입니다. "
 
 #: fdmprinter.def.json
 msgctxt "retraction_speed label"
 msgid "Retraction Speed"
-msgstr "후퇴 속도"
+msgstr "리트렉션 속도"
 
 #: fdmprinter.def.json
 msgctxt "retraction_speed description"
 msgid "The speed at which the filament is retracted and primed during a retraction move."
-msgstr "후퇴 이동 중에 필라멘트가 수축되고 프라이밍되는 속도입니다. "
+msgstr "리트렉션 속도입니다. "
 
 #: fdmprinter.def.json
 msgctxt "retraction_retract_speed label"
 msgid "Retraction Retract Speed"
-msgstr "후퇴 속도"
+msgstr "리트렉션 속도"
 
 #: fdmprinter.def.json
 msgctxt "retraction_retract_speed description"
 msgid "The speed at which the filament is retracted during a retraction move."
-msgstr "후퇴 이동 중에 필라멘트가 후퇴하는 속도입니다. "
+msgstr "리트렉션 속도입니다. "
 
 #: fdmprinter.def.json
 msgctxt "retraction_prime_speed label"
 msgid "Retraction Prime Speed"
-msgstr "후퇴 초기 속도"
+msgstr "리트렉션 초기 속도"
 
 #: fdmprinter.def.json
 msgctxt "retraction_prime_speed description"
 msgid "The speed at which the filament is primed during a retraction move."
-msgstr "후퇴 이동 중에 필라멘트가 프라이밍되는 속도입니다. "
+msgstr "리트렉션 이동 중에 필라멘트가 프라이밍되는 속도입니다. "
 
 #: fdmprinter.def.json
 msgctxt "retraction_extra_prime_amount label"
 msgid "Retraction Extra Prime Amount"
-msgstr "후퇴 Extra 초기 속도"
+msgstr "Retraction Extra Prime Amount"
 
 #: fdmprinter.def.json
 msgctxt "retraction_extra_prime_amount description"
 msgid "Some material can ooze away during a travel move, which can be compensated for here."
-msgstr "여행 중에 이동할 수있는 물질이 있습니다.이 물질은 여기에서 보상받을 수 있습니다. "
+msgstr "이동중에 재료가 새어나올 수 있습니다. 이 재료는 여기에서 보상될 수 있습니다. "
 
 #: fdmprinter.def.json
 msgctxt "retraction_min_travel label"
 msgid "Retraction Minimum Travel"
-msgstr "후퇴 최소 움직임"
+msgstr "리트렉션 최소 움직임"
 
 #: fdmprinter.def.json
 msgctxt "retraction_min_travel description"
 msgid "The minimum distance of travel needed for a retraction to happen at all. This helps to get fewer retractions in a small area."
-msgstr "수축이 일어나기 위해 필요한 최소한의 이동 거리. 이렇게하면 작은 영역에서 더 적은 수축을 얻을 수 있습니다. "
+msgstr "리트렉션이 가능하기 위해 필요한 최소한의 이동 거리. 이것은 작은 영역에서 더 적은 리트렉션이 가능합니다."
 
 #: fdmprinter.def.json
 msgctxt "retraction_count_max label"
 msgid "Maximum Retraction Count"
-msgstr "최대 후퇴 수"
+msgstr "최대 리트렉션 수"
 
 #: fdmprinter.def.json
 msgctxt "retraction_count_max description"
 msgid "This setting limits the number of retractions occurring within the minimum extrusion distance window. Further retractions within this window will be ignored. This avoids retracting repeatedly on the same piece of filament, as that can flatten the filament and cause grinding issues."
-msgstr "이 설정은 최소 돌출 거리 창 내에서 발생하는 후퇴 수를 제한합니다. 이 창 내에서 더 이상의 철회는 무시됩니다. 이렇게하면 필라멘트를 평평하게하고 연삭 문제를 일으킬 수 있으므로 동일한 필라멘트에서 반복적으로 후퇴하지 않습니다. "
+msgstr "이 설정은 최소 압출 거리에서 발생하는 리트렉션 수를 제한합니다. 이 거리내에서 더 이상의 리트렉션은 무시됩니다. 이렇게 하면 필라멘트를 평평하게하고 갈리는  문제를 일으킬 수 있으므로 동일한 필라멘트에서 반복적으로 리트렉션하지 않습니다. "
 
 #: fdmprinter.def.json
 msgctxt "retraction_extrusion_window label"
 msgid "Minimum Extrusion Distance Window"
-msgstr "최소 돌출 거리 창"
+msgstr "최소 압출 영역"
 
 #: fdmprinter.def.json
 msgctxt "retraction_extrusion_window description"
 msgid "The window in which the maximum retraction count is enforced. This value should be approximately the same as the retraction distance, so that effectively the number of times a retraction passes the same patch of material is limited."
-msgstr "최대 후퇴 횟수가 시행되는 창입니다. 이 값은 수축 거리와 거의 같아야하므로 같은 수축 패치가 통과하는 횟수가 효과적으로 제한됩니다. "
+msgstr "최대 리트렉션 횟수가 시행되는 영역 입니다. 이 값은 수축 거리와 거의 같아야 하므로 같은 수축 패치가 통과하는 횟수가 효과적으로 제한됩니다. "
 
 #: fdmprinter.def.json
 msgctxt "material_standby_temperature label"
@@ -1880,47 +1880,47 @@ msgstr "대기 온도"
 #: fdmprinter.def.json
 msgctxt "material_standby_temperature description"
 msgid "The temperature of the nozzle when another nozzle is currently used for printing."
-msgstr "다른 노즐이 현재 프린팅에 사용되는 경우의 노즐 온도. "
+msgstr "다른 노즐이 현재 프린팅에 사용될 경우 노즐 온도. "
 
 #: fdmprinter.def.json
 msgctxt "switch_extruder_retraction_amount label"
 msgid "Nozzle Switch Retraction Distance"
-msgstr "노즐 스위치 후퇴 거리"
+msgstr "노즐 스위치 리트렉션 거리"
 
 #: fdmprinter.def.json
 msgctxt "switch_extruder_retraction_amount description"
 msgid "The amount of retraction: Set at 0 for no retraction at all. This should generally be the same as the length of the heat zone."
-msgstr "수축 양 : 수축이 전혀없는 경우 0으로 설정합니다. 일반적으로 열 영역의 길이와 같아야합니다. "
+msgstr "리트렉션 양 : 리트렉션이 전혀없는 경우 0으로 설정합니다. 일반적으로 히팅 영역의 길이와 같아야합니다. "
 
 #: fdmprinter.def.json
 msgctxt "switch_extruder_retraction_speeds label"
 msgid "Nozzle Switch Retraction Speed"
-msgstr "노즐 스위치 후퇴 속도"
+msgstr "노즐 스위치 리트렉션 속도"
 
 #: fdmprinter.def.json
 msgctxt "switch_extruder_retraction_speeds description"
 msgid "The speed at which the filament is retracted. A higher retraction speed works better, but a very high retraction speed can lead to filament grinding."
-msgstr "필라멘트가 수축되는 속도입니다. 후퇴 속도가 빠르면 빠르지 만 후퇴 속도가 높으면 필라멘트 연삭으로 이어질 수 있습니다. "
+msgstr "필라멘트가 리트렉션 되는 속도입니다. 리트렉션 속도가 빠르면 좋지만 리트렉션 속도가 높으면 필라멘트가 갈릴 수 있습니다. "
 
 #: fdmprinter.def.json
 msgctxt "switch_extruder_retraction_speed label"
 msgid "Nozzle Switch Retract Speed"
-msgstr "노즐 스위치 후퇴 속도"
+msgstr "Nozzle Switch Retract Speed"
 
 #: fdmprinter.def.json
 msgctxt "switch_extruder_retraction_speed description"
 msgid "The speed at which the filament is retracted during a nozzle switch retract."
-msgstr "노즐 스위치가 들어갈 때 필라멘트가 후퇴하는 속도. "
+msgstr "노즐 스위치 리트렉션시 필라멘트가 리트렉션하는 속도. "
 
 #: fdmprinter.def.json
 msgctxt "switch_extruder_prime_speed label"
 msgid "Nozzle Switch Prime Speed"
-msgstr "노즐 스위치 프라임 속도"
+msgstr "Nozzle Switch Prime Speed"
 
 #: fdmprinter.def.json
 msgctxt "switch_extruder_prime_speed description"
 msgid "The speed at which the filament is pushed back after a nozzle switch retraction."
-msgstr "노즐 스위치 수축 후 필라멘트가 뒤로 밀리는 속도. "
+msgstr "노즐 스위치 리트렉션 후 필라멘트가 뒤로 밀리는 속도. "
 
 #: fdmprinter.def.json
 msgctxt "speed label"
@@ -1950,7 +1950,7 @@ msgstr "내부채움 속도"
 #: fdmprinter.def.json
 msgctxt "speed_infill description"
 msgid "The speed at which infill is printed."
-msgstr "내부채움물이 프린팅되는 속도. "
+msgstr "내부채움이 프린팅되는 속도. "
 
 #: fdmprinter.def.json
 msgctxt "speed_wall label"
@@ -1970,7 +1970,7 @@ msgstr "외벽 속도"
 #: fdmprinter.def.json
 msgctxt "speed_wall_0 description"
 msgid "The speed at which the outermost walls are printed. Printing the outer wall at a lower speed improves the final skin quality. However, having a large difference between the inner wall speed and the outer wall speed will affect quality in a negative way."
-msgstr "가장 바깥 쪽 벽이 프린팅되는 속도입니다. 외벽을 더 낮은 속도로 프린팅하면 최종 피부 품질이 향상됩니다. 그러나 내벽 속도와 외벽 속도 사이에 큰 차이가있을 경우 부정적인 방식으로 품질에 영향을 미칩니다. "
+msgstr "가장 바깥 쪽 벽이 프린팅되는 속도입니다. 외벽을 더 낮은 속도로 프린팅하면 최종 스킨 품질이 향상됩니다. 그러나 내벽 속도와 외벽 속도 사이에 큰 차이가있을 경우 부정적인 방식으로 품질에 영향을 미칩니다. "
 
 #: fdmprinter.def.json
 msgctxt "speed_wall_x label"
@@ -1985,7 +1985,7 @@ msgstr "모든 내부 벽이 프린팅되는 속도입니다. 내벽을 외벽�
 #: fdmprinter.def.json
 msgctxt "speed_roofing label"
 msgid "Top Surface Skin Speed"
-msgstr "상단 표면 피부 속도"
+msgstr "상단 표면 스킨 속도"
 
 #: fdmprinter.def.json
 msgctxt "speed_roofing description"
@@ -1995,57 +1995,57 @@ msgstr "상단 표면 스킨 층이 프린팅되는 속도."
 #: fdmprinter.def.json
 msgctxt "speed_topbottom label"
 msgid "Top/Bottom Speed"
-msgstr "상단 / 하단 속도"
+msgstr "상단/하단 속도"
 
 #: fdmprinter.def.json
 msgctxt "speed_topbottom description"
 msgid "The speed at which top/bottom layers are printed."
-msgstr "위쪽 / 아래쪽 레이어가 프린팅되는 속도입니다. "
+msgstr "위쪽/아래쪽 레이어가 프린팅되는 속도입니다. "
 
 #: fdmprinter.def.json
 msgctxt "speed_support label"
 msgid "Support Speed"
-msgstr "지지물 속도"
+msgstr "서포트 속도"
 
 #: fdmprinter.def.json
 msgctxt "speed_support description"
 msgid "The speed at which the support structure is printed. Printing support at higher speeds can greatly reduce printing time. The surface quality of the support structure is not important since it is removed after printing."
-msgstr "지지 구조가 프린팅되는 속도입니다. 고속 프린팅 서포트은 프린팅 시간을 크게 단축시킵니다. 지지 구조체의 표면 품질은 프린팅 후에 제거되므로 중요하지 않습니다. "
+msgstr "서포트 구조가 프린팅되는 속도입니다. 서포트를 고속으로 프린팅하면 프린팅 시간을 크게 단축시킵니다. 서포트 구조체의 표면 품질은 프린팅 후에 제거되므로 중요하지 않습니다. "
 
 #: fdmprinter.def.json
 msgctxt "speed_support_infill label"
 msgid "Support Infill Speed"
-msgstr "지지물 내부채움 속도"
+msgstr "서포트 내부채움 속도"
 
 #: fdmprinter.def.json
 msgctxt "speed_support_infill description"
 msgid "The speed at which the infill of support is printed. Printing the infill at lower speeds improves stability."
-msgstr "서포트의 충전물이 프린팅되는 속도. infill을 저속으로 프린팅하면 안정성이 향상됩니다. "
+msgstr "서포트의 충전물이 프린팅되는 속도. 내부채움을 저속으로 프린팅하면 안정성이 향상됩니다. "
 
 #: fdmprinter.def.json
 msgctxt "speed_support_interface label"
 msgid "Support Interface Speed"
-msgstr "지지물 인터페이스 속도"
+msgstr "서포트 인터페이스 속도"
 
 #: fdmprinter.def.json
 msgctxt "speed_support_interface description"
 msgid "The speed at which the roofs and floors of support are printed. Printing them at lower speeds can improve overhang quality."
-msgstr "서포트의 지붕과 바닥이 프린팅되는 속도. 프린팅 속도를 느리게하면 돌출 품질이 향상 될 수 있습니다. "
+msgstr "서포트의 지붕과 바닥이 프린팅되는 속도. 프린팅 속도를 느리게하면 오버행 품질이 향상 될 수 있습니다. "
 
 #: fdmprinter.def.json
 msgctxt "speed_support_roof label"
 msgid "Support Roof Speed"
-msgstr "지지물 상단 속도"
+msgstr "서포트 상단 속도"
 
 #: fdmprinter.def.json
 msgctxt "speed_support_roof description"
 msgid "The speed at which the roofs of support are printed. Printing them at lower speeds can improve overhang quality."
-msgstr "서포트의 지붕이 프린팅되는 속도입니다. 프린팅 속도를 느리게하면 돌출 품질이 향상 될 수 있습니다. "
+msgstr "서포트의 지붕이 프린팅되는 속도입니다. 프린팅 속도를 느리게하면 오버행 품질이 향상 될 수 있습니다. "
 
 #: fdmprinter.def.json
 msgctxt "speed_support_bottom label"
 msgid "Support Floor Speed"
-msgstr "지지물 바닥 속도"
+msgstr "서포트 바닥 속도"
 
 #: fdmprinter.def.json
 msgctxt "speed_support_bottom description"
@@ -2060,7 +2060,7 @@ msgstr "프라임 타워 속도"
 #: fdmprinter.def.json
 msgctxt "speed_prime_tower description"
 msgid "The speed at which the prime tower is printed. Printing the prime tower slower can make it more stable when the adhesion between the different filaments is suboptimal."
-msgstr "프라임 타워가 프린팅되는 속도. 프라임 타워를 더 천천히 프린팅하면 다른 필라멘트 사이의 접착력이 차선적일 때보다 안정적으로 만들 수 있습니다. "
+msgstr "프라임 타워가 프린팅되는 속도. 프라임 타워를 더 천천히 프린팅하면 다른 필라멘트 사이의 접착을 더 안정적으로 만들 수 있습니다. "
 
 #: fdmprinter.def.json
 msgctxt "speed_travel label"
@@ -2100,7 +2100,7 @@ msgstr "초기 레이어 이동 속도"
 #: fdmprinter.def.json
 msgctxt "speed_travel_layer_0 description"
 msgid "The speed of travel moves in the initial layer. A lower value is advised to prevent pulling previously printed parts away from the build plate. The value of this setting can automatically be calculated from the ratio between the Travel Speed and the Print Speed."
-msgstr "이동 속도는 초기 레이어에서 이동합니다. 이전에 프린팅 된 부품을 빌드 플레이트에서 빼내는 것을 방지하려면 더 낮은 값을 권합니다. 이 설정의 값은 이동 속도와 프린팅 속도 사이의 비율로부터 자동으로 계산 될 수 있습니다. "
+msgstr "이동 속도는 초기 레이어에서 이동합니다. 이전에 프린팅 된 부품을 빌드 플레이트에서 떨어지는 것을 방지하려면 더 낮은 값을 권합니다. 이 설정의 값은 이동 속도와 프린팅 속도 사이의 비율로부터 자동으로 계산 될 수 있습니다. "
 
 #: fdmprinter.def.json
 msgctxt "skirt_brim_speed label"
@@ -2110,7 +2110,7 @@ msgstr "Skirt/Brim 속도"
 #: fdmprinter.def.json
 msgctxt "skirt_brim_speed description"
 msgid "The speed at which the skirt and brim are printed. Normally this is done at the initial layer speed, but sometimes you might want to print the skirt or brim at a different speed."
-msgstr "스커트와 가장자리가 프린팅되는 속도입니다. 일반적으로 이것은 초기 레이어 속도에서 수행되지만 때로는 스커트 나 가장자리를 다른 속도로 프린팅하려고 할 수 있습니다. "
+msgstr "스커트와 브림이 프린팅되는 속도입니다. 일반적으로 이것은 초기 레이어 속도에서 수행되지만 때로는 스커트나 브림을 다른 속도로 프린팅하려고 할 수 있습니다. "
 
 #: fdmprinter.def.json
 msgctxt "max_feedrate_z_override label"
@@ -2125,12 +2125,12 @@ msgstr "빌드 플레이트가 움직이는 최대 속도. 이 값을 0으로 �
 #: fdmprinter.def.json
 msgctxt "speed_slowdown_layers label"
 msgid "Number of Slower Layers"
-msgstr "느린 레이어 수"
+msgstr "느리게 프린팅할 레이어의 수"
 
 #: fdmprinter.def.json
 msgctxt "speed_slowdown_layers description"
 msgid "The first few layers are printed slower than the rest of the model, to get better adhesion to the build plate and improve the overall success rate of prints. The speed is gradually increased over these layers."
-msgstr "처음 몇 개의 레이어는 모델의 나머지 부분보다 느리게 프린팅되어 빌드 플레이트에 대한보다 나은 접착력을 얻고 출력물의 전체 성공률을 향상시킵니다. 속도는이 층 위로 점진적으로 증가합니다. "
+msgstr "처음 몇 개의 레이어는 모델의 나머지 부분보다 느리게 프린팅되어 빌드 플레이트에 대한보다 나은 접착력을 얻고 출력물의 전체 성공률을 향상시킵니다. 속도는 이 층 위로 점진적으로 증가합니다. "
 
 #: fdmprinter.def.json
 msgctxt "speed_equalize_flow_enabled label"
@@ -2140,7 +2140,7 @@ msgstr "필라멘트 흐름 균일화"
 #: fdmprinter.def.json
 msgctxt "speed_equalize_flow_enabled description"
 msgid "Print thinner than normal lines faster so that the amount of material extruded per second remains the same. Thin pieces in your model might require lines printed with smaller line width than provided in the settings. This setting controls the speed changes for such lines."
-msgstr "일반 라인보다 얇게 프린팅하여 초당 압출되는 재료의 양이 동일하게 유지되도록하십시오. 모델의 얇은 부분에는 설정에서 제공 한 것보다 작은 선 너비로 선이 프린팅되어야 할 수 있습니다. 이 설정은 이러한 선의 속도 변경을 제어합니다. "
+msgstr "일반 라인보다 얇게 프린팅하여 초당 압출되는 재료의 양이 동일하게 유지되도록 하십시오. 모델의 얇은 부분에는 설정에서 제공 한 것보다 작은 선 너비로 선이 프린팅되어야 할 수 있습니다. 이 설정은 이러한 선의 속도 변경을 제어합니다. "
 
 #: fdmprinter.def.json
 msgctxt "speed_equalize_flow_max label"
@@ -2150,17 +2150,17 @@ msgstr "유량 균등화를위한 최대 속도"
 #: fdmprinter.def.json
 msgctxt "speed_equalize_flow_max description"
 msgid "Maximum print speed when adjusting the print speed in order to equalize flow."
-msgstr "프린팅 속도를 조정할 때 최대 프린팅 속도로 흐름을 균등하게 유지합니다. "
+msgstr "흐름을 균등하게 유지하기위해 조정되는 최대 프린팅 속도."
 
 #: fdmprinter.def.json
 msgctxt "acceleration_enabled label"
 msgid "Enable Acceleration Control"
-msgstr "가속 제어 사용"
+msgstr "가속 제어 활성화"
 
 #: fdmprinter.def.json
 msgctxt "acceleration_enabled description"
 msgid "Enables adjusting the print head acceleration. Increasing the accelerations can reduce printing time at the cost of print quality."
-msgstr "프린트 헤드 가속도를 조정할 수 있습니다. 가속도를 높이면 프린팅 품질을 저하시키면서 프린팅 시간을 줄일 수 있습니다. "
+msgstr "프린트 헤드 가속도를 활성화 합니다. 가속도를 높이면 프린팅 품질을 저하시키지만 프린팅 시간을 줄일 수 있습니다. "
 
 #: fdmprinter.def.json
 msgctxt "acceleration_print label"
@@ -2190,7 +2190,7 @@ msgstr "벽 가속도"
 #: fdmprinter.def.json
 msgctxt "acceleration_wall description"
 msgid "The acceleration with which the walls are printed."
-msgstr "벽이 가속되는 가속도. "
+msgstr "벽이 프린팅되는 가속도. "
 
 #: fdmprinter.def.json
 msgctxt "acceleration_wall_0 label"
@@ -2215,7 +2215,7 @@ msgstr "모든 내부 벽이 프린팅되는 가속도입니다. "
 #: fdmprinter.def.json
 msgctxt "acceleration_roofing label"
 msgid "Top Surface Skin Acceleration"
-msgstr "상단 표면 피부 가속도"
+msgstr "상단 표면 스킨 가속도"
 
 #: fdmprinter.def.json
 msgctxt "acceleration_roofing description"
@@ -2225,52 +2225,52 @@ msgstr "상단 표면 스킨 층이 프린팅되는 가속도. "
 #: fdmprinter.def.json
 msgctxt "acceleration_topbottom label"
 msgid "Top/Bottom Acceleration"
-msgstr "상단 / 하단 가속도"
+msgstr "상단/하단 가속도"
 
 #: fdmprinter.def.json
 msgctxt "acceleration_topbottom description"
 msgid "The acceleration with which top/bottom layers are printed."
-msgstr "위쪽 / 아래쪽 레이어가 프린팅되는 가속도입니다. "
+msgstr "위쪽/아래쪽 레이어가 프린팅되는 가속도입니다. "
 
 #: fdmprinter.def.json
 msgctxt "acceleration_support label"
 msgid "Support Acceleration"
-msgstr "지지물 가속도"
+msgstr "서포트 가속도"
 
 #: fdmprinter.def.json
 msgctxt "acceleration_support description"
 msgid "The acceleration with which the support structure is printed."
-msgstr "지지 구조가 프린팅되는 가속도. "
+msgstr "서포트 구조가 프린팅되는 가속도. "
 
 #: fdmprinter.def.json
 msgctxt "acceleration_support_infill label"
 msgid "Support Infill Acceleration"
-msgstr "지지물 내부채움 가속도"
+msgstr "서포트 내부채움 가속도"
 
 #: fdmprinter.def.json
 msgctxt "acceleration_support_infill description"
 msgid "The acceleration with which the infill of support is printed."
-msgstr "서포트의 충전물이 프린팅되는 가속도. "
+msgstr "서포트의 내부채움이 프린팅되는 가속도. "
 
 #: fdmprinter.def.json
 msgctxt "acceleration_support_interface label"
 msgid "Support Interface Acceleration"
-msgstr "지지물 인터페이스 가속도"
+msgstr "서포트 인터페이스 가속도"
 
 #: fdmprinter.def.json
 msgctxt "acceleration_support_interface description"
 msgid "The acceleration with which the roofs and floors of support are printed. Printing them at lower acceleration can improve overhang quality."
-msgstr "서포트의 지붕과 바닥이 프린팅되는 가속도. 낮은 가속도로 프린팅하면 돌출 품질이 향상 될 수 있습니다. "
+msgstr "서포트의 지붕과 바닥이 프린팅되는 가속도. 낮은 가속도로 프린팅하면 오버행 품질이 향상 될 수 있습니다. "
 
 #: fdmprinter.def.json
 msgctxt "acceleration_support_roof label"
 msgid "Support Roof Acceleration"
-msgstr "지지물 상단 가속도"
+msgstr "서포트 상단 가속도"
 
 #: fdmprinter.def.json
 msgctxt "acceleration_support_roof description"
 msgid "The acceleration with which the roofs of support are printed. Printing them at lower acceleration can improve overhang quality."
-msgstr "서포트의 지붕이 프린팅되는 가속도. 낮은 가속도로 프린팅하면 돌출 품질이 향상 될 수 있습니다. "
+msgstr "서포트의 지붕이 프린팅되는 가속도. 낮은 가속도로 프린팅하면 오버행 품질이 향상 될 수 있습니다."
 
 #: fdmprinter.def.json
 msgctxt "acceleration_support_bottom label"
@@ -2300,7 +2300,7 @@ msgstr "움직임 가속"
 #: fdmprinter.def.json
 msgctxt "acceleration_travel description"
 msgid "The acceleration with which travel moves are made."
-msgstr "여행이 움직이는 가속도가 만들어집니다. "
+msgstr "헤드가 움직일때의 가속도."
 
 #: fdmprinter.def.json
 msgctxt "acceleration_layer_0 label"
@@ -2310,7 +2310,7 @@ msgstr "초기 레이어 가속"
 #: fdmprinter.def.json
 msgctxt "acceleration_layer_0 description"
 msgid "The acceleration for the initial layer."
-msgstr "초기 레이어의 가속도입니다. "
+msgstr "초기 레이어의 가속도입니다."
 
 #: fdmprinter.def.json
 msgctxt "acceleration_print_layer_0 label"
@@ -2330,7 +2330,7 @@ msgstr "초기 레이어 움직임 가속도"
 #: fdmprinter.def.json
 msgctxt "acceleration_travel_layer_0 description"
 msgid "The acceleration for travel moves in the initial layer."
-msgstr "이동 가속도는 초기 레이어에서 이동합니다. "
+msgstr "헤드가 초기 레이어에서 이동할 때의 가속도."
 
 #: fdmprinter.def.json
 msgctxt "acceleration_skirt_brim label"
@@ -2340,7 +2340,7 @@ msgstr "Skirt/Brim 가속도"
 #: fdmprinter.def.json
 msgctxt "acceleration_skirt_brim description"
 msgid "The acceleration with which the skirt and brim are printed. Normally this is done with the initial layer acceleration, but sometimes you might want to print the skirt or brim at a different acceleration."
-msgstr "치마와 가장자리가 프린팅되는 가속도. 일반적으로 이것은 초기 레이어 가속으로 이루어 지지만 때로는 스커트 나 테두리를 다른 가속으로 프린팅하려고 할 수 있습니다. "
+msgstr "스커트와 브림이 프린팅되는 가속도. 일반적으로 이것은 초기 레이어 가속으로 이루어 지지만 때로는 스커트나 브림을 다른 가속으로 프린팅 할 수 있습니다. "
 
 #: fdmprinter.def.json
 msgctxt "jerk_enabled label"
@@ -2370,7 +2370,7 @@ msgstr "Jerk 내부채움"
 #: fdmprinter.def.json
 msgctxt "jerk_infill description"
 msgid "The maximum instantaneous velocity change with which infill is printed."
-msgstr "내부채움물이 프린팅되는 최대 순간 속도 변화. "
+msgstr "내부채움이 프린팅되는 최대 순간 속도 변화. "
 
 #: fdmprinter.def.json
 msgctxt "jerk_wall label"
@@ -2405,7 +2405,7 @@ msgstr "모든 내부 벽이 프린팅되는 최대 순간 속도 변화. "
 #: fdmprinter.def.json
 msgctxt "jerk_roofing label"
 msgid "Top Surface Skin Jerk"
-msgstr "피부 윗 표면 Jerk"
+msgstr "스킨 표면 Jerk"
 
 #: fdmprinter.def.json
 msgctxt "jerk_roofing description"
@@ -2415,7 +2415,7 @@ msgstr "상단 표면 스킨 층이 프린팅되는 최대 순간 속도 변화.
 #: fdmprinter.def.json
 msgctxt "jerk_topbottom label"
 msgid "Top/Bottom Jerk"
-msgstr "위 / 아래 Jerk"
+msgstr "위/아래 Jerk"
 
 #: fdmprinter.def.json
 msgctxt "jerk_topbottom description"
@@ -2490,7 +2490,7 @@ msgstr "움직임 Jerk"
 #: fdmprinter.def.json
 msgctxt "jerk_travel description"
 msgid "The maximum instantaneous velocity change with which travel moves are made."
-msgstr "이동이 이동하는 최대 순간 속도 변화. "
+msgstr "헤드가 이동하는 최대 순간 속도 변화. "
 
 #: fdmprinter.def.json
 msgctxt "jerk_layer_0 label"
@@ -2520,7 +2520,7 @@ msgstr "초기 레이어 움직임 Jerk"
 #: fdmprinter.def.json
 msgctxt "jerk_travel_layer_0 description"
 msgid "The acceleration for travel moves in the initial layer."
-msgstr "이동 가속도는 초기 레이어에서 이동합니다. "
+msgstr "헤드가 초기 레이어에서 이동할 때의 가속도."
 
 #: fdmprinter.def.json
 msgctxt "jerk_skirt_brim label"
@@ -2530,17 +2530,17 @@ msgstr "Skirt/Brim Jerk"
 #: fdmprinter.def.json
 msgctxt "jerk_skirt_brim description"
 msgid "The maximum instantaneous velocity change with which the skirt and brim are printed."
-msgstr "스커트와 고리가 프린팅되는 최대 순간 속도 변화. "
+msgstr "스커트와 브림이 프린팅되는 최대 순간 속도 변화. "
 
 #: fdmprinter.def.json
 msgctxt "travel label"
 msgid "Travel"
-msgstr "움직임"
+msgstr "Travel"
 
 #: fdmprinter.def.json
 msgctxt "travel description"
 msgid "travel"
-msgstr "이동 "
+msgstr "travel"
 
 #: fdmprinter.def.json
 msgctxt "retraction_combing label"
@@ -2550,12 +2550,12 @@ msgstr "Combing 모드"
 #: fdmprinter.def.json
 msgctxt "retraction_combing description"
 msgid "Combing keeps the nozzle within already printed areas when traveling. This results in slightly longer travel moves but reduces the need for retractions. If combing is off, the material will retract and the nozzle moves in a straight line to the next point. It is also possible to avoid combing over top/bottom skin areas by combing within the infill only."
-msgstr "빗질은 여행 할 때 이미 프린팅 된 영역 내에 노즐을 유지합니다. 이로 인해 여행 이동이 약간 더 길어 지지만 수축의 필요성은 줄어 듭니다. 빗질이 꺼져 있으면 재료가 후퇴하고 노즐이 직선으로 다음 점으로 이동합니다. 또한 infill 내에서만 빗질하여 상 / 하 피부 영역을 빗질하는 것을 피할 수 있습니다. "
+msgstr "Combing keeps the nozzle within already printed areas when traveling. This results in slightly longer travel moves but reduces the need for retractions. If combing is off, the material will retract and the nozzle moves in a straight line to the next point. It is also possible to avoid combing over top/bottom skin areas by combing within the infill only."
 
 #: fdmprinter.def.json
 msgctxt "retraction_combing option off"
 msgid "Off"
-msgstr "끄다"
+msgstr "끔"
 
 #: fdmprinter.def.json
 msgctxt "retraction_combing option all"
@@ -2565,37 +2565,37 @@ msgstr "모두"
 #: fdmprinter.def.json
 msgctxt "retraction_combing option noskin"
 msgid "No Skin"
-msgstr "피부가 없다"
+msgstr "No Skin"
 
 #: fdmprinter.def.json
 msgctxt "travel_retract_before_outer_wall label"
 msgid "Retract Before Outer Wall"
-msgstr "외벽 전에 철회"
+msgstr "외벽 전에 리트렉션"
 
 #: fdmprinter.def.json
 msgctxt "travel_retract_before_outer_wall description"
 msgid "Always retract when moving to start an outer wall."
-msgstr "외벽을 시작하기 위해 이동할 때 항상 후퇴합니다.  "
+msgstr "외벽을 프린팅하기 위해 이동할 때 항상 리트렉션합니다.  "
 
 #: fdmprinter.def.json
 msgctxt "travel_avoid_other_parts label"
 msgid "Avoid Printed Parts When Traveling"
-msgstr "움직일 때 프린팅 부품 피하십시오"
+msgstr "움직일 때 프린팅한 부분을 피하기"
 
 #: fdmprinter.def.json
 msgctxt "travel_avoid_other_parts description"
 msgid "The nozzle avoids already printed parts when traveling. This option is only available when combing is enabled."
-msgstr "노즐은 여행 할 때 이미 프린팅 된 부품을 피합니다. 이 옵션은 빗질이 활성화 된 경우에만 사용할 수 있습니다. "
+msgstr "노즐은 이동 할 때 이미 프린팅 된 부분을 피합니다. 이 옵션은 combing이 활성화 된 경우에만 사용할 수 있습니다. "
 
 #: fdmprinter.def.json
 msgctxt "travel_avoid_distance label"
 msgid "Travel Avoid Distance"
-msgstr "움직일 때 피하기 거리"
+msgstr "Travel Avoid Distance"
 
 #: fdmprinter.def.json
 msgctxt "travel_avoid_distance description"
 msgid "The distance between the nozzle and already printed parts when avoiding during travel moves."
-msgstr "이동 중에 피할 때 노즐과 이미 프린팅 된 부분 사이의 거리. "
+msgstr "이동 중 출력물을 피할 때 노즐과 이미 프린팅 된 부분 사이의 거리. "
 
 #: fdmprinter.def.json
 msgctxt "start_layers_at_same_position label"
@@ -2605,7 +2605,7 @@ msgstr "같은 부분으로 레이어 시작"
 #: fdmprinter.def.json
 msgctxt "start_layers_at_same_position description"
 msgid "In each layer start with printing the object near the same point, so that we don't start a new layer with printing the piece which the previous layer ended with. This makes for better overhangs and small parts, but increases printing time."
-msgstr "각 레이어에서 같은 지점 근처에 개체를 프린팅하는 것으로 시작하여 이전 레이어가 끝난 부분을 프린팅하여 새 레이어를 시작하지 마십시오. 이것은 오버행 (overhangs) 및 작은 부품을 개선하지만 프린팅 시간을 증가시킵니다. "
+msgstr "각 레이어에서 같은 지점 근처에서 개체를 프린팅, 새 레이어는 이전 레이어가 끝난 부분에서 프린팅을 하지 않는다.. 이것은 오버행 및 작은 부분을 개선하지만 프린팅 시간을 증가시킵니다. "
 
 #: fdmprinter.def.json
 msgctxt "layer_start_x label"
@@ -2630,22 +2630,22 @@ msgstr "각 레이어 프린팅를 시작할 부분을 찾을 위치 근처의 �
 #: fdmprinter.def.json
 msgctxt "retraction_hop_enabled label"
 msgid "Z Hop When Retracted"
-msgstr "철회했을 때의 Z 홉"
+msgstr "리트렉션했을 때의 Z Hop"
 
 #: fdmprinter.def.json
 msgctxt "retraction_hop_enabled description"
 msgid "Whenever a retraction is done, the build plate is lowered to create clearance between the nozzle and the print. It prevents the nozzle from hitting the print during travel moves, reducing the chance to knock the print from the build plate."
-msgstr "수축이 완료 될 때마다 빌드 플레이트가 내려져 노즐과 출력물 사이에 여유 공간이 생깁니다. 이동 이동 중에 노즐이 출력물에 부딪치지 않도록하여 프린팅판을 노크 할 기회를 줄입니다. "
+msgstr "리트렉션이 일어날 때마다 빌드 플레이트가 낮아져 노즐과 출력물 사이에 여유 공간이 생깁니다. 이동 중에 노즐이 출력물에 부딪치지 않도록 합니다. "
 
 #: fdmprinter.def.json
 msgctxt "retraction_hop_only_when_collides label"
 msgid "Z Hop Only Over Printed Parts"
-msgstr "프린팅 된 부분에만 Z 홉"
+msgstr "프린팅 된 부분에만 Z Hop"
 
 #: fdmprinter.def.json
 msgctxt "retraction_hop_only_when_collides description"
 msgid "Only perform a Z Hop when moving over printed parts which cannot be avoided by horizontal motion by Avoid Printed Parts when Traveling."
-msgstr "이동 시, 출력물을 피함으로써 수평 이동으로 피할 수없는 출력물 위로 이동할 때만 Z 홉을 수행하십시오."
+msgstr "이동 시, 수평 이동으로 피할 수없는 출력물 위로 이동할 때만 Z 홉을 수행하십시오."
 
 #: fdmprinter.def.json
 msgctxt "retraction_hop label"
@@ -2665,7 +2665,7 @@ msgstr "익스트루더 스위치 후 Z 홉"
 #: fdmprinter.def.json
 msgctxt "retraction_hop_after_extruder_switch description"
 msgid "After the machine switched from one extruder to the other, the build plate is lowered to create clearance between the nozzle and the print. This prevents the nozzle from leaving oozed material on the outside of a print."
-msgstr "기기가 하나의 익스트루더에서 다른 익스트루더로 전환 된 후, 빌드 플레이트가 하강되어 노즐과 출력물 사이에 간극이 생깁니다. 이렇게하면 노즐이 출력물의 외부에 흘러 나올 수 있습니다. "
+msgstr "기기가 하나의 익스트루더에서 다른 익스트루더로 전환 된 후, 빌드 플레이트가 내려가 노즐과 출력물 사이에 간격이 생깁니다. 이렇게 하면 프린트 물 바깥쪽에서 노즐로 부터 필라멘트가 흐르는 것을 방지합니다. "
 
 #: fdmprinter.def.json
 msgctxt "cooling label"
@@ -2805,7 +2805,7 @@ msgstr "서포트 생성"
 #: fdmprinter.def.json
 msgctxt "support_enable description"
 msgid "Generate structures to support parts of the model which have overhangs. Without these structures, such parts would collapse during printing."
-msgstr "돌출부가있는 모델 부분을 서포트하는 구조를 생성합니다. 이러한 구조가 없으면 이러한 부분이 프린팅 중에 붕괴됩니다. "
+msgstr "오버행부가있는 모델 부분을 서포트하는 구조를 생성합니다. 이러한 구조가 없으면 이러한 부분이 프린팅 중에 붕괴됩니다. "
 
 #: fdmprinter.def.json
 msgctxt "support_extruder_nr label"
@@ -3420,7 +3420,7 @@ msgstr "프라임 블롭 활성화"
 #: fdmprinter.def.json
 msgctxt "prime_blob_enable description"
 msgid "Whether to prime the filament with a blob before printing. Turning this setting on will ensure that the extruder will have material ready at the nozzle before printing. Printing Brim or Skirt can act like priming too, in which case turning this setting off saves some time."
-msgstr "프린팅하기 전에 얼룩으로 필라멘트를 프라이밍할지 여부. 이 설정을 켜면 프린팅하기 전에 익스트루더가 노즐에서 재료를 준비 할 수 있습니다. 가장자리 또는 스커트 프린팅는 프라이밍처럼 작동 할 수 있습니다.이 경우이 설정을 해제하면 시간이 절약됩니다. "
+msgstr "프린팅하기 전에 얼룩으로 필라멘트를 프라이밍할지 여부. 이 설정을 켜면 프린팅하기 전에 익스트루더가 노즐에서 재료를 준비 할 수 있습니다. 브림 또는 스커트 프린팅는 프라이밍처럼 작동 할 수 있습니다.이 경우이 설정을 해제하면 시간이 절약됩니다. "
 
 #: fdmprinter.def.json
 msgctxt "extruder_prime_pos_x label"
@@ -3450,7 +3450,7 @@ msgstr "빌드 플레이트 접착 유형"
 #: fdmprinter.def.json
 msgctxt "adhesion_type description"
 msgid "Different options that help to improve both priming your extrusion and adhesion to the build plate. Brim adds a single layer flat area around the base of your model to prevent warping. Raft adds a thick grid with a roof below the model. Skirt is a line printed around the model, but not connected to the model."
-msgstr "귀하의 압출 및 빌드 플레이트에 대한 접착력을 향상시키는 데 도움이되는 다양한 옵션. 브림은 뒤틀림을 방지하기 위해 모델 바닥 주위에 단층 평면 영역을 추가합니다. 래프트는 모델 아래에 지붕이있는 두꺼운 격자를 추가합니다. 치마는 모델 주변에 프린팅 된 선이지만 모델에는 연결되어 있지 않습니다. "
+msgstr "귀하의 압출 및 빌드 플레이트에 대한 접착력을 향상시키는 데 도움이되는 다양한 옵션. 브림은 뒤틀림을 방지하기 위해 모델 바닥 주위에 단층 평면 영역을 추가합니다. 래프트는 모델 아래에 지붕이있는 두꺼운 격자를 추가합니다. 스커트는 모델 주변에 프린팅 된 선이지만 모델에는 연결되어 있지 않습니다. "
 
 #: fdmprinter.def.json
 msgctxt "adhesion_type option skirt"
@@ -3480,7 +3480,7 @@ msgstr "빌드 플레이트 접착 익스트루더"
 #: fdmprinter.def.json
 msgctxt "adhesion_extruder_nr description"
 msgid "The extruder train to use for printing the skirt/brim/raft. This is used in multi-extrusion."
-msgstr "스커트 / 가장자리 / 래프트 프린팅에 사용하는 익스트루더. 이것은 다중 압출에 사용됩니다. "
+msgstr "스커트 / 브림 / 래프트 프린팅에 사용하는 익스트루더. 이것은 다중 압출에 사용됩니다. "
 
 #: fdmprinter.def.json
 msgctxt "skirt_line_count label"
@@ -3524,7 +3524,7 @@ msgstr "브림 너비"
 #: fdmprinter.def.json
 msgctxt "brim_width description"
 msgid "The distance from the model to the outermost brim line. A larger brim enhances adhesion to the build plate, but also reduces the effective print area."
-msgstr "모델에서 가장 바깥 쪽 가장자리까지의 거리입니다. 큰 테두리는 빌드 플레이트에 대한 접착력을 향상 시키지만 효과적인 프린팅 영역도 감소시킵니다. "
+msgstr "모델에서 가장 바깥 쪽 브림까지의 거리입니다. 큰 테두리는 빌드 플레이트에 대한 접착력을 향상 시키지만 효과적인 프린팅 영역도 감소시킵니다. "
 
 #: fdmprinter.def.json
 msgctxt "brim_line_count label"
@@ -3534,7 +3534,7 @@ msgstr "Brim 선 수"
 #: fdmprinter.def.json
 msgctxt "brim_line_count description"
 msgid "The number of lines used for a brim. More brim lines enhance adhesion to the build plate, but also reduces the effective print area."
-msgstr "가장자리에 사용되는 선의 수입니다. 더 많은 브림 선이 빌드 플레이트에 대한 접착력을 향상 시키지만 유효 프린트 영역도 감소시킵니다. "
+msgstr "브림에 사용되는 선의 수입니다. 더 많은 브림 선이 빌드 플레이트에 대한 접착력을 향상 시키지만 유효 프린트 영역도 감소시킵니다. "
 
 #: fdmprinter.def.json
 msgctxt "brim_outside_only label"
@@ -3544,7 +3544,7 @@ msgstr "밖에서 만 Brim"
 #: fdmprinter.def.json
 msgctxt "brim_outside_only description"
 msgid "Only print the brim on the outside of the model. This reduces the amount of brim you need to remove afterwards, while it doesn't reduce the bed adhesion that much."
-msgstr "모델 바깥 쪽 가장자리에만 프린팅하십시오. 이렇게하면 나중에 제거해야하는 가장자리의 양이 줄어들지 만 침대 접착력은 그렇게 많이 줄어들지 않습니다. "
+msgstr "모델 바깥 쪽 브림에만 프린팅하십시오. 이렇게하면 나중에 제거해야하는 브림의 양이 줄어들지 만 침대 접착력은 그렇게 많이 줄어들지 않습니다. "
 
 #: fdmprinter.def.json
 msgctxt "raft_margin label"
@@ -4229,7 +4229,7 @@ msgstr "외부 윤곽선을 나선형으로 만듭니다."
 #: fdmprinter.def.json
 msgctxt "magic_spiralize description"
 msgid "Spiralize smooths out the Z move of the outer edge. This will create a steady Z increase over the whole print. This feature turns a solid model into a single walled print with a solid bottom. This feature should only be enabled when each layer only contains a single part."
-msgstr "스파이럴 라이즈는 바깥 쪽 가장자리의 Z 이동을 부드럽게합니다. 이렇게하면 출력물 전체에 걸쳐 꾸준히 Z가 증가합니다. 이 기능은 솔리드 모델을 단단한 바닥이있는 단일 벽으로 프린팅합니다. 이 기능은 각 레이어에 단일 부품 만 포함되어있을 때만 활성화 해야 합니다. "
+msgstr "스파이럴 라이즈는 바깥 쪽 브림의 Z 이동을 부드럽게합니다. 이렇게하면 출력물 전체에 걸쳐 꾸준히 Z가 증가합니다. 이 기능은 솔리드 모델을 단단한 바닥이있는 단일 벽으로 프린팅합니다. 이 기능은 각 레이어에 단일 부품 만 포함되어있을 때만 활성화 해야 합니다. "
 
 #: fdmprinter.def.json
 msgctxt "smooth_spiralized_contours label"
@@ -4264,17 +4264,17 @@ msgstr "실험적인 "
 #: fdmprinter.def.json
 msgctxt "support_tree_enable label"
 msgid "Tree Support"
-msgstr "트리 지지물"
+msgstr "트리 서포트"
 
 #: fdmprinter.def.json
 msgctxt "support_tree_enable description"
 msgid "Generate a tree-like support with branches that support your print. This may reduce material usage and print time, but greatly increases slicing time."
-msgstr "프린트물을 지지하는 가지가 달린 나무 모양의 지지물을 생성합니다. 이것이 재료 사용과 프린팅 시간을 줄여줄 수 있지만, 슬라이싱 시간이 상당히 늘어납니다."
+msgstr "프린트물을 지지하는 가지가 달린 나무 모양의 서포트을 생성합니다. 이것이 재료 사용과 프린팅 시간을 줄여줄 수 있지만, 슬라이싱 시간이 상당히 늘어납니다."
 
 #: fdmprinter.def.json
 msgctxt "support_tree_angle label"
 msgid "Tree Support Branch Angle"
-msgstr "트리 지지물 브랜치 각도"
+msgstr "트리 서포트 브랜치 각도"
 
 #: fdmprinter.def.json
 msgctxt "support_tree_angle description"
@@ -4284,37 +4284,37 @@ msgstr "브랜치의 각도. 적은 각도를 사용하면 더 수직이 되어 
 #: fdmprinter.def.json
 msgctxt "support_tree_branch_distance label"
 msgid "Tree Support Branch Distance"
-msgstr "트리 지지물 브랜치 거리"
+msgstr "트리 서포트 브랜치 거리"
 
 #: fdmprinter.def.json
 msgctxt "support_tree_branch_distance description"
 msgid "How far apart the branches need to be when they touch the model. Making this distance small will cause the tree support to touch the model at more points, causing better overhang but making support harder to remove."
-msgstr "모델에 접촉할 때 브랜치를 떨어뜨려야 하는 정도 이 거리를 짧게 하면 트리 지지물이 더 많은 접점에서 모델에 접촉하여, 오버행이 더 좋아지지만 지지물을 제거하기가 더 어렵게 됩니다."
+msgstr "모델에 접촉할 때 브랜치를 떨어뜨려야 하는 정도 이 거리를 짧게 하면 트리 서포트이 더 많은 접점에서 모델에 접촉하여, 오버행이 더 좋아지지만 서포트을 제거하기가 더 어렵게 됩니다."
 
 #: fdmprinter.def.json
 msgctxt "support_tree_branch_diameter label"
 msgid "Tree Support Branch Diameter"
-msgstr "트리 지지물 브랜치 직경"
+msgstr "트리 서포트 브랜치 직경"
 
 #: fdmprinter.def.json
 msgctxt "support_tree_branch_diameter description"
 msgid "The diameter of the thinnest branches of tree support. Thicker branches are more sturdy. Branches towards the base will be thicker than this."
-msgstr "트리 지지물의 가장 얇은 브랜치의 직경 브랜치가 두꺼울수록 더 견고해집니다. 베이스를 향한 브랜치는 이보다 더 두꺼워집니다."
+msgstr "트리 서포트의 가장 얇은 브랜치의 직경 브랜치가 두꺼울수록 더 견고해집니다. 베이스를 향한 브랜치는 이보다 더 두꺼워집니다."
 
 #: fdmprinter.def.json
 msgctxt "support_tree_branch_diameter_angle label"
 msgid "Tree Support Branch Diameter Angle"
-msgstr "트리 지지물 브랜치 직경 각도"
+msgstr "트리 서포트 브랜치 직경 각도"
 
 #: fdmprinter.def.json
 msgctxt "support_tree_branch_diameter_angle description"
 msgid "The angle of the branches' diameter as they gradually become thicker towards the bottom. An angle of 0 will cause the branches to have uniform thickness over their length. A bit of an angle can increase stability of the tree support."
-msgstr "하단을 향할수록 점점 더 두꺼워짐에 따른 브랜치의 직경 각도. 이 각도가 0이면 브랜치는 길이 전체에 균일한 두께를 갖게 됩니다. 약간의 각도가 있으면 트리 지지물의 안정성을 높여 줍니다."
+msgstr "하단을 향할수록 점점 더 두꺼워짐에 따른 브랜치의 직경 각도. 이 각도가 0이면 브랜치는 길이 전체에 균일한 두께를 갖게 됩니다. 약간의 각도가 있으면 트리 서포트의 안정성을 높여 줍니다."
 
 #: fdmprinter.def.json
 msgctxt "support_tree_collision_resolution label"
 msgid "Tree Support Collision Resolution"
-msgstr "트리 지지물 충돌 해결"
+msgstr "트리 서포트 충돌 해결"
 
 #: fdmprinter.def.json
 msgctxt "support_tree_collision_resolution description"
@@ -4324,22 +4324,22 @@ msgstr "모델에 부딪히는 것을 피하기 위해 충돌을 계산하는 �
 #: fdmprinter.def.json
 msgctxt "support_tree_wall_thickness label"
 msgid "Tree Support Wall Thickness"
-msgstr "트리 지지물 벽 두께"
+msgstr "트리 서포트 벽 두께"
 
 #: fdmprinter.def.json
 msgctxt "support_tree_wall_thickness description"
 msgid "The thickness of the walls of the branches of tree support. Thicker walls take longer to print but don't fall over as easily."
-msgstr "트리 지지물의 브랜치 벽의 두께 벽이 두꺼울수록 프린팅 시간이 오래 걸리지만 쉽게 넘어지지 않습니다."
+msgstr "트리 서포트의 브랜치 벽의 두께 벽이 두꺼울수록 프린팅 시간이 오래 걸리지만 쉽게 넘어지지 않습니다."
 
 #: fdmprinter.def.json
 msgctxt "support_tree_wall_count label"
 msgid "Tree Support Wall Line Count"
-msgstr "트리 지지물 벽 라인 카운트"
+msgstr "트리 서포트 벽 라인 카운트"
 
 #: fdmprinter.def.json
 msgctxt "support_tree_wall_count description"
 msgid "The number of walls of the branches of tree support. Thicker walls take longer to print but don't fall over as easily."
-msgstr "트리 지지물의 브랜치 벽의 개수 벽이 두꺼울수록 프린팅 시간이 오래 걸리지만 쉽게 넘어지지 않습니다."
+msgstr "트리 서포트의 브랜치 벽의 개수 벽이 두꺼울수록 프린팅 시간이 오래 걸리지만 쉽게 넘어지지 않습니다."
 
 #: fdmprinter.def.json
 msgctxt "slicing_tolerance label"
@@ -4594,7 +4594,7 @@ msgstr "코스팅(Coasting) 시, 이동 속도. 돌출 경로의 속도에 상�
 #: fdmprinter.def.json
 msgctxt "skin_alternate_rotation label"
 msgid "Alternate Skin Rotation"
-msgstr "대체 피부 회전"
+msgstr "대체 스킨 회전"
 
 #: fdmprinter.def.json
 msgctxt "skin_alternate_rotation description"
@@ -4734,7 +4734,7 @@ msgstr "모든 내부채움재를 제거하고 물체의 내부를 지탱할 수
 #: fdmprinter.def.json
 msgctxt "magic_fuzzy_skin_enabled label"
 msgid "Fuzzy Skin"
-msgstr "퍼지 피부"
+msgstr "퍼지 스킨"
 
 #: fdmprinter.def.json
 msgctxt "magic_fuzzy_skin_enabled description"
@@ -4744,7 +4744,7 @@ msgstr "외벽을 프린팅하는 동안 무작위로 지터가 발생하여 표
 #: fdmprinter.def.json
 msgctxt "magic_fuzzy_skin_thickness label"
 msgid "Fuzzy Skin Thickness"
-msgstr "퍼지 피부 두께"
+msgstr "퍼지 스킨 두께"
 
 #: fdmprinter.def.json
 msgctxt "magic_fuzzy_skin_thickness description"
@@ -4754,7 +4754,7 @@ msgstr "지터가 발생할 너비. 내벽이 변경되지 않으므로이를 �
 #: fdmprinter.def.json
 msgctxt "magic_fuzzy_skin_point_density label"
 msgid "Fuzzy Skin Density"
-msgstr "퍼지 피부 밀도"
+msgstr "퍼지 스킨 밀도"
 
 #: fdmprinter.def.json
 msgctxt "magic_fuzzy_skin_point_density description"
@@ -4981,7 +4981,7 @@ msgstr "WP 전략"
 #: fdmprinter.def.json
 msgctxt "wireframe_strategy description"
 msgid "Strategy for making sure two consecutive layers connect at each connection point. Retraction lets the upward lines harden in the right position, but may cause filament grinding. A knot can be made at the end of an upward line to heighten the chance of connecting to it and to let the line cool; however, it may require slow printing speeds. Another strategy is to compensate for the sagging of the top of an upward line; however, the lines won't always fall down as predicted."
-msgstr "각 연결 지점에서 두 개의 연속 된 레이어가 연결되도록하는 전략입니다. 후퇴를하면 상향 선이 올바른 위치에서 경화되지만 필라멘트 연삭이 발생할 수 있습니다. 상향 선의 끝에 매듭을 만들어 연결 기회를 높이고 선을 차게 할 수 있습니다. 그러나 느린 프린팅 속도가 필요할 수 있습니다. 또 다른 전략은 상향 라인의 윗부분의 처짐을 보충하는 것입니다. 그러나 선은 항상 예측대로 떨어지지는 않습니다. "
+msgstr "각 연결 지점에서 두 개의 연속 된 레이어가 연결되도록하는 전략입니다. 리트렉션를하면 상향 선이 올바른 위치에서 경화되지만 필라멘트 연삭이 발생할 수 있습니다. 상향 선의 끝에 매듭을 만들어 연결 기회를 높이고 선을 차게 할 수 있습니다. 그러나 느린 프린팅 속도가 필요할 수 있습니다. 또 다른 전략은 상향 라인의 윗부분의 처짐을 보충하는 것입니다. 그러나 선은 항상 예측대로 떨어지지는 않습니다. "
 
 #: fdmprinter.def.json
 msgctxt "wireframe_strategy option compensate"
@@ -5162,7 +5162,7 @@ msgstr "파일로부터 로드 하는 경유, 모델에 적용될 변환 행렬�
 
 #~ msgctxt "skin_overlap description"
 #~ msgid "The amount of overlap between the skin and the walls as a percentage of the line width. A slight overlap allows the walls to connect firmly to the skin. This is a percentage of the average line widths of the skin lines and the innermost wall."
-#~ msgstr "선 두께의 백분율로 스킨과 벽 사이의 겹치는 정도입니다. 약간 겹치면 벽이 피부에 단단히 연결됩니다. 이것은 스킨 라인과 가장 안쪽 벽의 평균 라인 폭의 백분율입니다. "
+#~ msgstr "선 두께의 백분율로 스킨과 벽 사이의 겹치는 정도입니다. 약간 겹치면 벽이 스킨에 단단히 연결됩니다. 이것은 스킨 라인과 가장 안쪽 벽의 평균 라인 폭의 백분율입니다. "
 
 #~ msgctxt "material_bed_temperature description"
 #~ msgid "The temperature used for the heated build plate. If this is 0, the bed will not heat up for this print."
@@ -5212,15 +5212,15 @@ msgstr "파일로부터 로드 하는 경유, 모델에 적용될 변환 행렬�
 
 #~ msgctxt "expand_skins_into_infill description"
 #~ msgid "Expand skin areas of top and/or bottom skin of flat surfaces. By default, skins stop under the wall lines that surround infill but this can lead to holes appearing when the infill density is low. This setting extends the skins beyond the wall lines so that the infill on the next layer rests on skin."
-#~ msgstr "평면의 상단 및 / 또는 하단 스킨 영역을 확장합니다. 기본적으로 스필은 내부채움을 둘러싸는 벽 선 아래에서 멈 춥니 다. 그러나 이는 내부채움 밀도가 낮을 때 나타나는 구멍으로 이어질 수 있습니다. 이 설정은 스킨을 벽 선 너머로 확장하여 다음 레이어의 필이 피부에 놓 이도록합니다.  "
+#~ msgstr "평면의 상단 및 / 또는 하단 스킨 영역을 확장합니다. 기본적으로 스필은 내부채움을 둘러싸는 벽 선 아래에서 멈 춥니 다. 그러나 이는 내부채움 밀도가 낮을 때 나타나는 구멍으로 이어질 수 있습니다. 이 설정은 스킨을 벽 선 너머로 확장하여 다음 레이어의 필이 스킨에 놓 이도록합니다.  "
 
 #~ msgctxt "expand_upper_skins description"
 #~ msgid "Expand the top skin areas (areas with air above) so that they support infill above."
-#~ msgstr "상단 피부 영역 (위의 공기가있는 영역)을 확장하여 위의 내부채움물을 지탱하도록하십시오. "
+#~ msgstr "상단 스킨 영역 (위의 공기가있는 영역)을 확장하여 위의 내부채움물을 지탱하도록하십시오. "
 
 #~ msgctxt "expand_lower_skins description"
 #~ msgid "Expand the bottom skin areas (areas with air below) so that they are anchored by the infill layers above and below."
-#~ msgstr "아래 피부 영역 (공기가있는 부분)을 확장하여 위와 아래의 내부채움층으로 고정시킵니다. "
+#~ msgstr "아래 스킨 영역 (공기가있는 부분)을 확장하여 위와 아래의 내부채움층으로 고정시킵니다. "
 
 #~ msgctxt "expand_skins_expand_distance description"
 #~ msgid "The distance the skins are expanded into the infill. The default distance is enough to bridge the gap between the infill lines and will stop holes appearing in the skin where it meets the wall when the infill density is low. A smaller distance will often be sufficient."
@@ -5240,4 +5240,4 @@ msgstr "파일로부터 로드 하는 경유, 모델에 적용될 변환 행렬�
 
 #~ msgctxt "skin_overlap description"
 #~ msgid "The amount of overlap between the skin and the walls. A slight overlap allows the walls to connect firmly to the skin."
-#~ msgstr "피부와 벽 사이의 겹침 정도입니다. 약간 겹치면 벽이 피부에 단단히 연결됩니다. "
+#~ msgstr "스킨와 벽 사이의 겹침 정도입니다. 약간 겹치면 벽이 스킨에 단단히 연결됩니다. "
