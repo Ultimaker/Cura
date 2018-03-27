@@ -925,6 +925,8 @@ class MachineManager(QObject):
         self.activeQualityChanged.emit()
 
     def _getContainerChangedSignals(self) -> List[Signal]:
+        if self._global_container_stack is None:
+            return []
         stacks = ExtruderManager.getInstance().getActiveExtruderStacks()
         stacks.append(self._global_container_stack)
         return [ s.containersChanged for s in stacks ]
