@@ -1014,6 +1014,8 @@ class MachineManager(QObject):
         self.activeQualityChangesGroupChanged.emit()
 
     def _setQualityChangesGroup(self, quality_changes_group):
+        if self._global_container_stack is None:
+            return #Can't change that.
         quality_type = quality_changes_group.quality_type
         quality_group_dict = self._quality_manager.getQualityGroups(self._global_container_stack)
         quality_group = quality_group_dict[quality_type]
@@ -1082,6 +1084,8 @@ class MachineManager(QObject):
 
     ## Update current quality type and machine after setting material
     def _updateQualityWithMaterial(self, *args):
+        if self._global_container_stack is None:
+            return
         Logger.log("i", "Updating quality/quality_changes due to material change")
         current_quality_type = None
         if self._current_quality_group:
@@ -1280,6 +1284,8 @@ class MachineManager(QObject):
 
     @pyqtSlot(str)
     def setQualityGroupByQualityType(self, quality_type):
+        if self._global_container_stack is None:
+            return
         # Get all the quality groups for this global stack and filter out by quality_type
         quality_group_dict = self._quality_manager.getQualityGroups(self._global_container_stack)
         quality_group = quality_group_dict[quality_type]
