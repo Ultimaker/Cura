@@ -231,11 +231,13 @@ class MachineManager(QObject):
                 extruder_stack.containersChanged.disconnect(self._onInstanceContainersChanged)
 
         # Update the local global container stack reference
+        old_global_container_stack = self._global_container_stack
         self._global_container_stack = Application.getInstance().getGlobalContainerStack()
         if self._global_container_stack:
             self.updateDefaultExtruder()
             self.updateNumberExtrudersEnabled()
-        self.globalContainerChanged.emit()
+        if old_global_container_stack != self._global_container_stack:
+            self.globalContainerChanged.emit()
 
         # after switching the global stack we reconnect all the signals and set the variant and material references
         if self._global_container_stack:
@@ -1316,6 +1318,8 @@ class MachineManager(QObject):
         return name
 
     def _updateUponMaterialMetadataChange(self):
+        if self._global_container_stack is None:
+            return
         with postponeSignals(*self._getContainerChangedSignals(), compress = CompressTechnique.CompressPerParameterValue):
             self._updateMaterialWithVariant(None)
             self._updateQualityWithMaterial()
