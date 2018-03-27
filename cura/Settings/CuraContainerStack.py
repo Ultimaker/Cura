@@ -228,7 +228,7 @@ class CuraContainerStack(ContainerStack):
     #
     #   \throws Exception.InvalidContainerError Raised when trying to replace a container with a container that has an incorrect type.
     @override(ContainerStack)
-    def replaceContainer(self, index: int, container: ContainerInterface, postpone_emit: bool = False, force_replace: bool = False) -> None:
+    def replaceContainer(self, index: int, container: ContainerInterface, postpone_emit: bool = False) -> None:
         expected_type = _ContainerIndexes.IndexTypeMap[index]
         if expected_type == "definition":
             if not isinstance(container, DefinitionContainer):
@@ -237,7 +237,7 @@ class CuraContainerStack(ContainerStack):
             raise Exceptions.InvalidContainerError("Cannot replace container at index {index} with a container that is not of {type} type, but {actual_type} type.".format(index = index, type = expected_type, actual_type = container.getMetaDataEntry("type")))
 
         current_container = self._containers[index]
-        if current_container.getId() == container.getId() and not force_replace:
+        if current_container.getId() == container.getId():
             return
 
         super().replaceContainer(index, container, postpone_emit)
