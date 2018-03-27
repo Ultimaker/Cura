@@ -555,28 +555,6 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
 
         return WorkspaceReader.PreReadResult.accepted
 
-    ## Overrides an ExtruderStack in the given GlobalStack and returns the new ExtruderStack.
-    def _overrideExtruderStack(self, global_stack, extruder_file_content, extruder_stack_file):
-        # Get extruder position first
-        extruder_config = ConfigParser(interpolation = None)
-        extruder_config.read_string(extruder_file_content)
-        if not extruder_config.has_option("metadata", "position"):
-            msg = "Could not find 'metadata/position' in extruder stack file"
-            Logger.log("e", "Could not find 'metadata/position' in extruder stack file")
-            raise RuntimeError(msg)
-        extruder_position = extruder_config.get("metadata", "position")
-        try:
-            extruder_stack = global_stack.extruders[extruder_position]
-        except KeyError:
-            Logger.log("w", "Could not find the matching extruder stack to override for position %s", extruder_position)
-            return None
-
-        # Override the given extruder stack
-        extruder_stack.deserialize(extruder_file_content, file_name = extruder_stack_file)
-
-        # return the new ExtruderStack
-        return extruder_stack
-
     ##  Read the project file
     #   Add all the definitions / materials / quality changes that do not exist yet. Then it loads
     #   all the stacks into the container registry. In some cases it will reuse the container for the global stack.
