@@ -5,6 +5,7 @@ from enum import Enum
 from collections import OrderedDict
 from typing import Optional, TYPE_CHECKING
 
+from UM.ConfigurationErrorMessage import ConfigurationErrorMessage
 from UM.Logger import Logger
 from UM.Settings.ContainerRegistry import ContainerRegistry
 from UM.Util import parseBool
@@ -78,8 +79,8 @@ class VariantManager:
             variant_dict = self._machine_to_variant_dict_map[variant_definition][variant_type]
             if variant_name in variant_dict:
                 # ERROR: duplicated variant name.
-                raise RuntimeError("Found duplicated variant name [%s], type [%s] for machine [%s]" %
-                                   (variant_name, variant_type, variant_definition))
+                ConfigurationErrorMessage.getInstance().addFaultyContainers(variant_metadata["id"])
+                continue #Then ignore this variant. This now chooses one of the two variants arbitrarily and deletes the other one! No guarantees!
 
             variant_dict[variant_name] = ContainerNode(metadata = variant_metadata)
 
