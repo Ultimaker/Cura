@@ -192,8 +192,12 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                 Logger.log("w", "Unknown container stack type '%s' from %s in %s",
                            stack_type, file_name, project_file_name)
 
-        if len(global_stack_file_list) != 1:
-            raise RuntimeError("More than one global stack file found: [%s]" % str(global_stack_file_list))
+        if len(global_stack_file_list) > 1:
+            Logger.log("e", "More than one global stack file found: [{file_list}]".format(file_list = global_stack_file_list))
+            #But we can recover by just getting the first global stack file.
+        if len(global_stack_file_list) == 0:
+            Logger.log("e", "No global stack file found!")
+            raise FileNotFoundError("No global stack file found!")
 
         return global_stack_file_list[0], extruder_stack_file_list
 
@@ -347,8 +351,11 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             self._machine_info.quality_changes_info = None
 
         # Load ContainerStack files and ExtruderStack files
-        global_stack_file, extruder_stack_files = self._determineGlobalAndExtruderStackFiles(
-            file_name, cura_file_names)
+        try:
+            global_stack_file, extruder_stack_files = self._determineGlobalAndExtruderStackFiles(
+                file_name, cura_file_names)
+        except FileNotFoundError:
+            return WorkspaceReader.PreReadResult.failed
         machine_conflict = False
         # Because there can be cases as follows:
         #  - the global stack exists but some/all of the extruder stacks DON'T exist
