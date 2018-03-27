@@ -661,4 +661,16 @@ Rectangle
         watchedProperties: [ "value" ]
         storeIndex: 0
     }
+
+    // Make the ConfigurationSelector react when the global container changes, otherwise if Cura is not connected to the printer,
+    // switching printers make no reaction
+    Connections
+    {
+        target: Cura.MachineManager
+        onGlobalContainerChanged:
+        {
+            base.isNetworkPrinter = Cura.MachineManager.activeMachineNetworkKey != ""
+            base.printerConnected = Cura.MachineManager.printerOutputDevices.length != 0
+        }
+    }
 }
