@@ -509,12 +509,11 @@ class MachineManager(QObject):
         result = {}
 
         active_stacks = ExtruderManager.getInstance().getActiveExtruderStacks()
-        if active_stacks is not None:  # If we have extruder stacks
-            for stack in active_stacks:
-                material_container = stack.material
-                if not material_container:
-                    continue
-                result[stack.getId()] = material_container.getId()
+        for stack in active_stacks:
+            material_container = stack.material
+            if not material_container:
+                continue
+            result[stack.getId()] = material_container.getId()
 
         return result
 
@@ -961,12 +960,11 @@ class MachineManager(QObject):
         result = {}
 
         active_stacks = ExtruderManager.getInstance().getActiveExtruderStacks()
-        if active_stacks is not None:
-            for stack in active_stacks:
-                variant_container = stack.variant
-                position = stack.getMetaDataEntry("position")
-                if variant_container and variant_container != self._empty_variant_container:
-                    result[position] = variant_container.getName()
+        for stack in active_stacks:
+            variant_container = stack.variant
+            position = stack.getMetaDataEntry("position")
+            if variant_container and variant_container != self._empty_variant_container:
+                result[position] = variant_container.getName()
 
         return result
 
