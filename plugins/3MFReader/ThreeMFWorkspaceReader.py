@@ -1,10 +1,11 @@
-# Copyright (c) 2017 Ultimaker B.V.
+# Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from configparser import ConfigParser
 import zipfile
 import os
 import threading
+from typing import List, Tuple
 
 import xml.etree.ElementTree as ET
 
@@ -160,7 +161,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
     #
     #   In old versions, extruder stack files have the same suffix as container stack files ".stack.cfg".
     #
-    def _determineGlobalAndExtruderStackFiles(self, project_file_name, file_list):
+    def _determineGlobalAndExtruderStackFiles(self, project_file_name: str, file_list: List[str]) -> Tuple[str, List[str]]:
         archive = zipfile.ZipFile(project_file_name, "r")
 
         global_stack_file_list = [name for name in file_list if name.endswith(self._global_stack_suffix)]
