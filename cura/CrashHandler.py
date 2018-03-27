@@ -18,7 +18,6 @@ from PyQt5.QtCore import QT_VERSION_STR, PYQT_VERSION_STR, Qt, QUrl
 from PyQt5.QtWidgets import QDialog, QDialogButtonBox, QVBoxLayout, QLabel, QTextEdit, QGroupBox, QCheckBox, QPushButton
 from PyQt5.QtGui import QDesktopServices
 
-from UM.Resources import Resources
 from UM.Application import Application
 from UM.Logger import Logger
 from UM.View.GL.OpenGL import OpenGL
@@ -131,10 +130,9 @@ class CrashHandler:
             self._sendCrashReport()
         os._exit(1)
 
+    ##  Backup the current resource directories and create clean ones.
     def _backupAndStartClean(self):
-        # backup the current cura directories and create clean ones
         from cura.CuraVersion import CuraVersion
-        from UM.Resources import Resources
         # The early crash may happen before those information is set in Resources, so we need to set them here to
         # make sure that Resources can find the correct place.
         Resources.ApplicationIdentifier = "cura"
