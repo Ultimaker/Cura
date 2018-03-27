@@ -190,7 +190,7 @@ class CrashHandler:
         self.early_crash_dialog.close()
 
     def _showConfigurationFolder(self):
-        path = Resources.getConfigStoragePath();
+        path = Resources.getConfigStoragePath()
         QDesktopServices.openUrl(QUrl.fromLocalFile( path ))
 
     def _showDetailedReport(self):
