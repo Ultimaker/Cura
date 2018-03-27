@@ -1316,6 +1316,8 @@ class MachineManager(QObject):
         return name
 
     def _updateUponMaterialMetadataChange(self):
+        if self._global_container_stack is None:
+            return
         with postponeSignals(*self._getContainerChangedSignals(), compress = CompressTechnique.CompressPerParameterValue):
             self._updateMaterialWithVariant(None)
             self._updateQualityWithMaterial()
