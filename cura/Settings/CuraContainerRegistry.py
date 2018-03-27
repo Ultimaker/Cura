@@ -467,6 +467,8 @@ class CuraContainerRegistry(ContainerRegistry):
     def addExtruderStackForSingleExtrusionMachine(self, machine, extruder_id, new_global_quality_changes = None, create_new_ids = True):
         new_extruder_id = extruder_id
 
+        application = CuraApplication.getInstance()
+
         extruder_definitions = self.findDefinitionContainers(id = new_extruder_id)
         if not extruder_definitions:
             Logger.log("w", "Could not find definition containers for extruder %s", new_extruder_id)
@@ -475,7 +477,7 @@ class CuraContainerRegistry(ContainerRegistry):
         extruder_definition = extruder_definitions[0]
         unique_name = self.uniqueName(machine.getName() + " " + new_extruder_id) if create_new_ids else machine.getName() + " " + new_extruder_id
 
-        extruder_stack = ExtruderStack.ExtruderStack(unique_name)
+        extruder_stack = ExtruderStack.ExtruderStack(unique_name, parent = machine)
         extruder_stack.setName(extruder_definition.getName())
         extruder_stack.setDefinition(extruder_definition)
         extruder_stack.addMetaDataEntry("position", extruder_definition.getMetaDataEntry("position"))
@@ -483,7 +485,7 @@ class CuraContainerRegistry(ContainerRegistry):
         # create a new definition_changes container for the extruder stack
         definition_changes_id = self.uniqueName(extruder_stack.getId() + "_settings") if create_new_ids else extruder_stack.getId() + "_settings"
         definition_changes_name = definition_changes_id
-        definition_changes = InstanceContainer(definition_changes_id)
+        definition_changes = InstanceContainer(definition_changes_id, parent = application)
         definition_changes.setName(definition_changes_name)
         definition_changes.addMetaDataEntry("setting_version", CuraApplication.SettingVersion)
         definition_changes.addMetaDataEntry("type", "definition_changes")
@@ -510,7 +512,7 @@ class CuraContainerRegistry(ContainerRegistry):
         # create empty user changes container otherwise
         user_container_id = self.uniqueName(extruder_stack.getId() + "_user") if create_new_ids else extruder_stack.getId() + "_user"
         user_container_name = user_container_id
-        user_container = InstanceContainer(user_container_id)
+        user_container = InstanceContainer(user_container_id, parent = application)
         user_container.setName(user_container_name)
         user_container.addMetaDataEntry("type", "user")
         user_container.addMetaDataEntry("machine", machine.getId())
@@ -538,7 +540,6 @@ class CuraContainerRegistry(ContainerRegistry):
         self.addContainer(user_container)
         extruder_stack.setUserChanges(user_container)
 
-        application = CuraApplication.getInstance()
         empty_variant = application.empty_variant_container
         empty_material = application.empty_material_container
         empty_quality = application.empty_quality_container
@@ -585,7 +586,7 @@ class CuraContainerRegistry(ContainerRegistry):
                     # if we still cannot find a quality changes container for the extruder, create a new one
                     container_name = machine_quality_changes.getName()
                     container_id = self.uniqueName(extruder_stack.getId() + "_qc_" + container_name)
-                    extruder_quality_changes_container = InstanceContainer(container_id)
+                    extruder_quality_changes_container = InstanceContainer(container_id, parent = application)
                     extruder_quality_changes_container.setName(container_name)
                     extruder_quality_changes_container.addMetaDataEntry("type", "quality_changes")
                     extruder_quality_changes_container.addMetaDataEntry("setting_version", CuraApplication.SettingVersion)
