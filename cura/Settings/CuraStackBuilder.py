@@ -7,8 +7,6 @@ from UM.Logger import Logger
 from UM.Settings.Interfaces import DefinitionContainerInterface
 from UM.Settings.InstanceContainer import InstanceContainer
 from UM.Settings.ContainerRegistry import ContainerRegistry
-from UM.Settings.SettingFunction import SettingFunction
-from UM.Util import parseBool
 
 from cura.Machines.VariantManager import VariantType
 from .GlobalStack import GlobalStack
@@ -34,6 +32,7 @@ class CuraStackBuilder:
 
         definitions = registry.findDefinitionContainers(id = definition_id)
         if not definitions:
+
             Logger.log("w", "Definition {definition} was not found!", definition = definition_id)
             return None
 
