@@ -259,9 +259,8 @@ class ExtruderManager(QObject):
     #
     #   \return A list of extruder stacks.
     def getUsedExtruderStacks(self) -> List["ContainerStack"]:
-        machine_manager = self._application.getMachineManager()
+        global_stack = self._application.getGlobalContainerStack()
         container_registry = ContainerRegistry.getInstance()
-        global_stack = machine_manager.activeMachine
 
         used_extruder_stack_ids = set()
 
@@ -270,7 +269,11 @@ class ExtruderManager(QObject):
         support_bottom_enabled = False
         support_roof_enabled = False
 
-        scene_root = self._application.getController().getScene().getRoot()
+        scene_root = Application.getInstance().getController().getScene().getRoot()
+
+        # If no extruders are registered in the extruder manager yet, return an empty array
+        if len(self.extruderIds) == 0:
+            return []
 
         # Get the extruders of all printable meshes in the scene
         meshes = [node for node in DepthFirstIterator(scene_root) if isinstance(node, SceneNode) and node.isSelectable()]
@@ -278,7 +281,7 @@ class ExtruderManager(QObject):
             extruder_stack_id = mesh.callDecoration("getActiveExtruder")
             if not extruder_stack_id:
                 # No per-object settings for this node
-                extruder_stack_id = global_stack.extruders["0"].getId()
+                extruder_stack_id = self.extruderIds["0"]
             used_extruder_stack_ids.add(extruder_stack_id)
 
             # Get whether any of them use support.
@@ -302,23 +305,23 @@ class ExtruderManager(QObject):
                 extruder_nr = int(global_stack.getProperty(extruder_nr_feature_name, "value"))
                 if extruder_nr == -1:
                     continue
-                used_extruder_stack_ids.add(global_stack.extruders[str(extruder_nr)].getId())
+                used_extruder_stack_ids.add(self.extruderIds[str(extruder_nr)])
 
         # Check support extruders
         if support_enabled:
-            used_extruder_stack_ids.add(global_stack.extruders[self.extruderValueWithDefault(str(global_stack.getProperty("support_infill_extruder_nr", "value")))].getId())
-            used_extruder_stack_ids.add(global_stack.extruders[self.extruderValueWithDefault(str(global_stack.getProperty("support_extruder_nr_layer_0", "value")))].getId())
+            used_extruder_stack_ids.add(self.extruderIds[self.extruderValueWithDefault(str(global_stack.getProperty("support_infill_extruder_nr", "value")))])
+            used_extruder_stack_ids.add(self.extruderIds[self.extruderValueWithDefault(str(global_stack.getProperty("support_extruder_nr_layer_0", "value")))])
             if support_bottom_enabled:
-                used_extruder_stack_ids.add(global_stack.extruders[self.extruderValueWithDefault(str(global_stack.getProperty("support_bottom_extruder_nr", "value")))].getId())
+                used_extruder_stack_ids.add(self.extruderIds[self.extruderValueWithDefault(str(global_stack.getProperty("support_bottom_extruder_nr", "value")))])
             if support_roof_enabled:
-                used_extruder_stack_ids.add(global_stack.extruders[self.extruderValueWithDefault(str(global_stack.getProperty("support_roof_extruder_nr", "value")))].getId())
+                used_extruder_stack_ids.add(self.extruderIds[self.extruderValueWithDefault(str(global_stack.getProperty("support_roof_extruder_nr", "value")))])
 
         # The platform adhesion extruder. Not used if using none.
         if global_stack.getProperty("adhesion_type", "value") != "none":
             extruder_nr = str(global_stack.getProperty("adhesion_extruder_nr", "value"))
             if extruder_nr == "-1":
                 extruder_nr = Application.getInstance().getMachineManager().defaultExtruderPosition
-            used_extruder_stack_ids.add(global_stack.extruders[extruder_nr].getId())
+            used_extruder_stack_ids.add(self.extruderIds[extruder_nr])
 
         try:
             return [container_registry.findContainerStacks(id = stack_id)[0] for stack_id in used_extruder_stack_ids]
