@@ -44,6 +44,7 @@ class PluginBrowser(QObject, Extension):
 
         # Can be 'installed' or 'available'
         self._view = "available"
+        self._detail_view = None
 
         self._restart_required = False
 
@@ -135,7 +136,7 @@ class PluginBrowser(QObject, Extension):
 
     def _createDialog(self, qml_name):
         Logger.log("d", "Creating dialog [%s]", qml_name)
-        path = os.path.join(PluginRegistry.getInstance().getPluginPath(self.getPluginId()), qml_name)
+        path = os.path.join(PluginRegistry.getInstance().getPluginPath(self.getPluginId()), "resources", "qml", qml_name)
         dialog = Application.getInstance().createQmlComponent(path, {"manager": self})
         return dialog
 
@@ -280,6 +281,13 @@ class PluginBrowser(QObject, Extension):
     @pyqtSlot(str)
     def setView(self, view):
         self._view = view
+        self.viewChanged.emit()
+        self.pluginsMetadataChanged.emit()
+
+    @pyqtSlot(str)
+    def setDetailView(self, item):
+        self._detail_view = item if item else None
+        print("Now looking at", self._detail_view)
         self.viewChanged.emit()
         self.pluginsMetadataChanged.emit()
 
