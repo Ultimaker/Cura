@@ -131,6 +131,10 @@ class MachineManager(QObject):
         self._material_manager.materialsUpdated.connect(self._updateUponMaterialMetadataChange)
         self.rootMaterialChanged.connect(self._onRootMaterialChanged)
 
+        # Emit the printerConnectedStatusChanged when either globalContainerChanged or outputDevicesChanged are emitted
+        self.globalContainerChanged.connect(self.printerConnectedStatusChanged)
+        self.outputDevicesChanged.connect(self.printerConnectedStatusChanged)
+
     activeQualityGroupChanged = pyqtSignal()
     activeQualityChangesGroupChanged = pyqtSignal()
 
@@ -151,6 +155,7 @@ class MachineManager(QObject):
 
     outputDevicesChanged = pyqtSignal()
     currentConfigurationChanged = pyqtSignal() # Emitted every time the current configurations of the machine changes
+    printerConnectedStatusChanged = pyqtSignal() # Emitted every time the active machine change or the outputdevices change
 
     rootMaterialChanged = pyqtSignal()
 
@@ -466,13 +471,17 @@ class MachineManager(QObject):
             return self._global_container_stack.getId()
         return ""
 
-    @pyqtProperty(str, notify = outputDevicesChanged)
+    @pyqtProperty(bool, notify = printerConnectedStatusChanged)
+    def printerConnected(self):
+        return bool(self._printer_output_devices)
+
+    @pyqtProperty(str, notify = printerConnectedStatusChanged)
     def activeMachineNetworkKey(self) -> str:
         if self._global_container_stack:
             return self._global_container_stack.getMetaDataEntry("um_network_key", "")
         return ""
 
-    @pyqtProperty(str, notify = outputDevicesChanged)
+    @pyqtProperty(str, notify = printerConnectedStatusChanged)
     def activeMachineNetworkGroupName(self) -> str:
         if self._global_container_stack:
             return self._global_container_stack.getMetaDataEntry("connect_group_name", "")
