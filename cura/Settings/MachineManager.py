@@ -1027,7 +1027,7 @@ class MachineManager(QObject):
         quality_changes_container = self._empty_quality_changes_container
         if quality_changes_group.node_for_global:
             quality_changes_container = quality_changes_group.node_for_global.getContainer()
-        quality_container = self._empty_quality_changes_container
+        quality_container = self._empty_quality_container
         if quality_group is not None:
             if quality_group.node_for_global:
                 quality_container = quality_group.node_for_global.getContainer()
