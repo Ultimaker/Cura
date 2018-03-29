@@ -230,7 +230,7 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
         self._baud_rate = baud_rate
 
     def connect(self):
-        self._firmware_name = None # after each connection ensure that the frimware name is removed
+        self._firmware_name = None # after each connection ensure that the firmware name is removed
 
         if self._baud_rate is None:
             if self._use_auto_detect:
