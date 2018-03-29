@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Cura 3.0\n"
 "Report-Msgid-Bugs-To: r.dulek@ultimaker.com\n"
-"POT-Creation-Date: 2017-08-02 16:53+0000\n"
+"POT-Creation-Date: 2018-03-29 08:36+0200\n"
 "PO-Revision-Date: 2017-11-30 13:05+0100\n"
 "Last-Translator: Ruslan Popov <ruslan.popov@gmail.com>\n"
 "Language-Team: Ruslan Popov\n"
@@ -197,6 +197,26 @@ msgstr "Начальная Y позиция экструдера"
 msgctxt "extruder_prime_pos_y description"
 msgid "The Y coordinate of the position where the nozzle primes at the start of printing."
 msgstr "Y координата позиции, в которой сопло начинает печать."
+
+#: fdmextruder.def.json
+msgctxt "material label"
+msgid "Material"
+msgstr "Материал"
+
+#: fdmextruder.def.json
+msgctxt "material description"
+msgid "Material"
+msgstr ""
+
+#: fdmextruder.def.json
+msgctxt "material_diameter label"
+msgid "Diameter"
+msgstr "Диаметр"
+
+#: fdmextruder.def.json
+msgctxt "material_diameter description"
+msgid "Adjusts the diameter of the filament used. Match this value with the diameter of the used filament."
+msgstr "Укажите диаметр используемой нити."
 
 #~ msgctxt "resolution label"
 #~ msgid "Quality"
@@ -550,10 +570,6 @@ msgstr "Y координата позиции, в которой сопло на
 #~ msgid "Print the infill before printing the walls. Printing the walls first may lead to more accurate walls, but overhangs print worse. Printing the infill first leads to sturdier walls, but the infill pattern might sometimes show through the surface."
 #~ msgstr "Печатать заполнение до печати стенок. Если печатать сначала стенки, то это может сделать их более точными, но нависающие стенки будут напечатаны хуже. Если печатать сначала заполнение, то это сделает стенки более крепкими, но шаблон заполнения может иногда прорываться сквозь поверхность стенки."
 
-#~ msgctxt "material label"
-#~ msgid "Material"
-#~ msgstr "Материал"
-
 #~ msgctxt "material_flow_dependent_temperature label"
 #~ msgid "Auto Temperature"
 #~ msgstr "Автоматическая температура"
@@ -593,14 +609,6 @@ msgstr "Y координата позиции, в которой сопло на
 #~ msgctxt "material_bed_temperature description"
 #~ msgid "The temperature used for the heated bed. Set at 0 to pre-heat the printer manually."
 #~ msgstr "Температура стола при печати. Установите 0 для предварительного разогрева вручную."
-
-#~ msgctxt "material_diameter label"
-#~ msgid "Diameter"
-#~ msgstr "Диаметр"
-
-#~ msgctxt "material_diameter description"
-#~ msgid "Adjusts the diameter of the filament used. Match this value with the diameter of the used filament."
-#~ msgstr "Укажите диаметр используемой нити."
 
 #~ msgctxt "material_flow label"
 #~ msgid "Flow"

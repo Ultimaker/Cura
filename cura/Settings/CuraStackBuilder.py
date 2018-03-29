@@ -3,12 +3,11 @@
 
 from typing import Optional
 
+from UM.ConfigurationErrorMessage import ConfigurationErrorMessage
 from UM.Logger import Logger
 from UM.Settings.Interfaces import DefinitionContainerInterface
 from UM.Settings.InstanceContainer import InstanceContainer
 from UM.Settings.ContainerRegistry import ContainerRegistry
-from UM.Settings.SettingFunction import SettingFunction
-from UM.Util import parseBool
 
 from cura.Machines.VariantManager import VariantType
 from .GlobalStack import GlobalStack
@@ -34,6 +33,7 @@ class CuraStackBuilder:
 
         definitions = registry.findDefinitionContainers(id = definition_id)
         if not definitions:
+            ConfigurationErrorMessage.getInstance().addFaultyContainers(definition_id)
             Logger.log("w", "Definition {definition} was not found!", definition = definition_id)
             return None
 
@@ -44,6 +44,8 @@ class CuraStackBuilder:
         global_variant_node = variant_manager.getDefaultVariantNode(machine_definition, VariantType.BUILD_PLATE)
         if global_variant_node:
             global_variant_container = global_variant_node.getContainer()
+        if not global_variant_container:
+            global_variant_container = application.empty_variant_container
 
         # get variant container for extruders
         extruder_variant_container = application.empty_variant_container
@@ -51,6 +53,8 @@ class CuraStackBuilder:
         extruder_variant_name = None
         if extruder_variant_node:
             extruder_variant_container = extruder_variant_node.getContainer()
+            if not extruder_variant_container:
+                extruder_variant_container = application.empty_variant_container
             extruder_variant_name = extruder_variant_container.getName()
 
         generated_name = registry.createUniqueName("machine", "", name, machine_definition.getName())
@@ -72,7 +76,7 @@ class CuraStackBuilder:
         # get material container for extruders
         material_container = application.empty_material_container
         material_node = material_manager.getDefaultMaterial(new_global_stack, extruder_variant_name)
-        if material_node:
+        if material_node and material_node.getContainer():
             material_container = material_node.getContainer()
 
         # Create ExtruderStacks
@@ -84,8 +88,8 @@ class CuraStackBuilder:
             extruder_definition = registry.findDefinitionContainers(id = extruder_definition_id)[0]
             position_in_extruder_def = extruder_definition.getMetaDataEntry("position")
             if position_in_extruder_def != position:
-                raise RuntimeError("Extruder position [%s] defined in extruder definition [%s] is not the same as in machine definition [%s] position [%s]" %
-                                   (position_in_extruder_def, extruder_definition_id, definition_id, position))
+                ConfigurationErrorMessage.getInstance().addFaultyContainers(extruder_definition_id)
+                return None #Don't return any container stack then, not the rest of the extruders either.
 
             new_extruder_id = registry.uniqueName(extruder_definition_id)
             new_extruder = cls.createExtruderStack(
@@ -100,6 +104,8 @@ class CuraStackBuilder:
             )
             new_extruder.setNextStack(new_global_stack)
             new_global_stack.addExtruder(new_extruder)
+
+        for new_extruder in new_global_stack.extruders.values(): #Only register the extruders if we're sure that all of them are correct.
             registry.addContainer(new_extruder)
 
         preferred_quality_type = machine_definition.getMetaDataEntry("preferred_quality_type")
@@ -107,8 +113,10 @@ class CuraStackBuilder:
         quality_group = quality_group_dict.get(preferred_quality_type)
 
         new_global_stack.quality = quality_group.node_for_global.getContainer()
+        if not new_global_stack.quality:
+            new_global_stack.quality = application.empty_quality_container
         for position, extruder_stack in new_global_stack.extruders.items():
-            if position in quality_group.nodes_for_extruders:
+            if position in quality_group.nodes_for_extruders and quality_group.nodes_for_extruders[position].getContainer():
                 extruder_stack.quality = quality_group.nodes_for_extruders[position].getContainer()
             else:
                 extruder_stack.quality = application.empty_quality_container

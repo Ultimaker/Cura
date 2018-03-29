@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Cura 3.0\n"
 "Report-Msgid-Bugs-To: r.dulek@ultimaker.com\n"
-"POT-Creation-Date: 2017-08-02 16:53+0000\n"
+"POT-Creation-Date: 2018-03-29 08:36+0200\n"
 "PO-Revision-Date: 2017-11-30 13:05+0100\n"
 "Last-Translator: Bothof <info@bothof.nl>\n"
 "Language-Team: Turkish\n"
@@ -195,3 +195,23 @@ msgstr "Extruder İlk Y konumu"
 msgctxt "extruder_prime_pos_y description"
 msgid "The Y coordinate of the position where the nozzle primes at the start of printing."
 msgstr "Nozül yazdırma işlemini başlatmaya hazırlandığında konumun Y koordinatı."
+
+#: fdmextruder.def.json
+msgctxt "material label"
+msgid "Material"
+msgstr ""
+
+#: fdmextruder.def.json
+msgctxt "material description"
+msgid "Material"
+msgstr ""
+
+#: fdmextruder.def.json
+msgctxt "material_diameter label"
+msgid "Diameter"
+msgstr ""
+
+#: fdmextruder.def.json
+msgctxt "material_diameter description"
+msgid "Adjusts the diameter of the filament used. Match this value with the diameter of the used filament."
+msgstr ""
