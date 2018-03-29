@@ -210,6 +210,7 @@ class PostProcessingPlugin(QObject, Extension):
                 continue
             script_str = script_str.replace("\\n", "\n").replace("\\\\", "\\") #Unescape escape sequences.
             script_parser = configparser.ConfigParser(interpolation = None)
+            script_parser.optionxform = str #Don't transform the setting keys as they are case-sensitive.
             script_parser.read_string(script_str)
             for script_name, settings in script_parser.items(): #There should only be one, really! Otherwise we can't guarantee the order or allow multiple uses of the same script.
                 if script_name == "DEFAULT": #ConfigParser always has a DEFAULT section, but we don't fill it. Ignore this one.
@@ -230,6 +231,7 @@ class PostProcessingPlugin(QObject, Extension):
         script_list_strs = []
         for script in self._script_list:
             parser = configparser.ConfigParser(interpolation = None) #We'll encode the script as a config with one section. The section header is the key and its values are the settings.
+            parser.optionxform = str #Don't transform the setting keys as they are case-sensitive.
             script_name = script.getSettingData()["key"]
             parser.add_section(script_name)
             for key in script.getSettingData()["settings"]:
