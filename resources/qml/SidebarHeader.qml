@@ -17,8 +17,17 @@ Column
     property int currentExtruderIndex: Cura.ExtruderManager.activeExtruderIndex;
     property bool currentExtruderVisible: extrudersList.visible;
     property bool printerConnected: Cura.MachineManager.printerConnected
-    property bool hasManyPrinterTypes: printerConnected ? Cura.MachineManager.printerOutputDevices[0].connectedPrintersTypeCount.length > 1 : false
-
+    property bool hasManyPrinterTypes:
+    {
+        if (printerConnected)
+        {
+            if (Cura.MachineManager.printerOutputDevices[0].connectedPrintersTypeCount != null)
+            {
+                return Cura.MachineManager.printerOutputDevices[0].connectedPrintersTypeCount.length > 1;
+            }
+        }
+        return false;
+    }
     spacing: Math.round(UM.Theme.getSize("sidebar_margin").width * 0.9)
 
     signal showTooltip(Item item, point location, string text)
