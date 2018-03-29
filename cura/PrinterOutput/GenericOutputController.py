@@ -58,8 +58,14 @@ class GenericOutputController(PrinterOutputController):
         self._output_device.sendCommand("G90")
 
     def homeHead(self, printer):
-        self._output_device.sendCommand("G28 X")
-        self._output_device.sendCommand("G28 Y")
+        # Ultimaker+ frimware is 'Marlin V1' and UM2 is "Marlin Ultimaker2"
+        # For this reason UM2 should move only X, Y and not Z, otherwise it might brake the build plate
+        name = self._output_device.getFirmwareName()
+        if name and name.find("Ultimaker2") != -1:
+            self._output_device.sendCommand("G28 X")
+            self._output_device.sendCommand("G28 Y")
+        else:
+            self._output_device.sendCommand("G28")  # Move X-, Y- and Z-coordinate
 
     def homeBed(self, printer):
         self._output_device.sendCommand("G28 Z")
