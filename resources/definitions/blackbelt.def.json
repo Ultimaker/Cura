@@ -19,9 +19,7 @@
         },
         "has_machine_materials": true,
         "has_variants": true,
-        "preferred_variant": "*45_0.4*",
-        "preferred_quality": "*Normal*",
-        "preferred_material": "*ngen*",
+        "has_variant_buildplates": true,
         "variants_id_pattern": "{definition_id}_{term}_{term}",
         "variants_name": "Configuration",
         "variants_terms":
