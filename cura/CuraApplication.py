@@ -209,6 +209,7 @@ class CuraApplication(QtApplication):
                 ("preferences", Preferences.Version * 1000000 + self.SettingVersion):              (Resources.Preferences, "application/x-uranium-preferences"),
                 ("user", InstanceContainer.Version * 1000000 + self.SettingVersion):               (self.ResourceTypes.UserInstanceContainer, "application/x-uranium-instancecontainer"),
                 ("definition_changes", InstanceContainer.Version * 1000000 + self.SettingVersion): (self.ResourceTypes.DefinitionChangesContainer, "application/x-uranium-instancecontainer"),
+                ("variant", InstanceContainer.Version * 1000000 + self.SettingVersion):            (self.ResourceTypes.VariantInstanceContainer, "application/x-uranium-instancecontainer"),
             }
         )
 
