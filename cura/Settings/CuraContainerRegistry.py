@@ -25,11 +25,10 @@ from UM.Resources import Resources
 
 from . import ExtruderStack
 from . import GlobalStack
-from .ExtruderManager import ExtruderManager
 
 from cura.CuraApplication import CuraApplication
 from cura.Machines.QualityManager import getMachineDefinitionIDForQualitySearch
-from cura.ProfileReader import NoProfileException
+from cura.ReaderWriters.ProfileReader import NoProfileException
 
 from UM.i18n import i18nCatalog
 catalog = i18nCatalog("cura")

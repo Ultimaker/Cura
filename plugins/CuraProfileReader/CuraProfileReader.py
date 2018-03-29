@@ -5,7 +5,7 @@ import configparser
 from UM.PluginRegistry import PluginRegistry
 from UM.Logger import Logger
 from UM.Settings.InstanceContainer import InstanceContainer  # The new profile to make.
-from cura.ProfileReader import ProfileReader
+from cura.ReaderWriters.ProfileReader import ProfileReader
 
 import zipfile
 
