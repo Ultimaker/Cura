@@ -95,7 +95,7 @@ class PreviewPass(RenderPass):
                         diffuse_color[2] * shade_factor,
                         1.0]
                     uniforms["diffuse_color"] = prettier_color(diffuse_color)
-                    uniforms["diffuse_color_2"] = prettier_color(diffuse_color2)
+                    uniforms["diffuse_color_2"] = diffuse_color2
                     batch_support_mesh.addItem(node.getWorldTransformation(), node.getMeshData(), uniforms = uniforms)
                 else:
                     # Normal scene node
