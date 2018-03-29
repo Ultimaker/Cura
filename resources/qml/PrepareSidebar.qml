@@ -24,8 +24,6 @@ Rectangle
     property bool printerAcceptsCommands: printerConnected && Cura.MachineManager.printerOutputDevices[0].acceptsCommands
     property var connectedPrinter: Cura.MachineManager.printerOutputDevices.length >= 1 ? Cura.MachineManager.printerOutputDevices[0] : null
 
-    property bool monitoringPrint: UM.Controller.activeStage.stageId == "MonitorStage"
-
     property variant printDuration: PrintInformation.currentPrintTime
     property variant printMaterialLengths: PrintInformation.materialLengths
     property variant printMaterialWeights: PrintInformation.materialWeights
@@ -120,7 +118,7 @@ Rectangle
     SidebarHeader {
         id: header
         width: parent.width
-        visible: !hideSettings && (machineExtruderCount.properties.value > 1 || Cura.MachineManager.hasMaterials || Cura.MachineManager.hasVariants) && !monitoringPrint
+        visible: !hideSettings && (machineExtruderCount.properties.value > 1 || Cura.MachineManager.hasMaterials || Cura.MachineManager.hasVariants)
         anchors.top: machineSelection.bottom
 
         onShowTooltip: base.showTooltip(item, location, text)
@@ -158,7 +156,7 @@ Rectangle
         width: Math.round(parent.width * 0.45)
         font: UM.Theme.getFont("large")
         color: UM.Theme.getColor("text")
-        visible: !monitoringPrint && !hideView
+        visible: !hideView
     }
 
     // Settings mode selection toggle
@@ -185,7 +183,7 @@ Rectangle
             }
         }
 
-        visible: !monitoringPrint && !hideSettings && !hideView
+        visible: !hideSettings && !hideView
 
         Component
         {
@@ -282,7 +280,7 @@ Rectangle
         anchors.topMargin: UM.Theme.getSize("sidebar_margin").height
         anchors.left: base.left
         anchors.right: base.right
-        visible: !monitoringPrint && !hideSettings
+        visible: !hideSettings
 
         replaceEnter: Transition {
             PropertyAnimation {
@@ -305,47 +303,11 @@ Rectangle
 
     Loader
     {
-        id: controlItem
         anchors.bottom: footerSeparator.top
-        anchors.top: monitoringPrint ? machineSelection.bottom : headerSeparator.bottom
+        anchors.top: headerSeparator.bottom
         anchors.left: base.left
         anchors.right: base.right
-        sourceComponent:
-        {
-            if(monitoringPrint && connectedPrinter != null)
-            {
-                if(connectedPrinter.controlItem != null)
-                {
-                    return connectedPrinter.controlItem
-                }
-            }
-            return null
-        }
-    }
-
-    Loader
-    {
-        anchors.bottom: footerSeparator.top
-        anchors.top: monitoringPrint ? machineSelection.bottom : headerSeparator.bottom
-        anchors.left: base.left
-        anchors.right: base.right
-        source:
-        {
-            if(controlItem.sourceComponent == null)
-            {
-                if(monitoringPrint)
-                {
-                    return "PrintMonitor.qml"
-                } else
-                {
-                    return "SidebarContents.qml"
-                }
-            }
-            else
-            {
-                return ""
-            }
-        }
+        source: "SidebarContents.qml"
     }
 
     Rectangle
@@ -367,7 +329,6 @@ Rectangle
         anchors.bottomMargin: UM.Theme.getSize("sidebar_margin").height
         height: timeDetails.height + costSpec.height
         width: base.width - (saveButton.buttonRowWidth + UM.Theme.getSize("sidebar_margin").width)
-        visible: !monitoringPrint
         clip: true
 
         Label
@@ -570,8 +531,7 @@ Rectangle
         }
     }
 
-    // SaveButton and MonitorButton are actually the bottom footer panels.
-    // "!monitoringPrint" currently means "show-settings-mode"
+    // SaveButton is actually the bottom footer panel.
     SaveButton
     {
         id: saveButton
@@ -579,17 +539,6 @@ Rectangle
         anchors.top: footerSeparator.bottom
         anchors.topMargin: UM.Theme.getSize("sidebar_margin").height
         anchors.bottom: parent.bottom
-        visible: !monitoringPrint
-    }
-
-    MonitorButton
-    {
-        id: monitorButton
-        implicitWidth: base.width
-        anchors.top: footerSeparator.bottom
-        anchors.topMargin: UM.Theme.getSize("sidebar_margin").height
-        anchors.bottom: parent.bottom
-        visible: monitoringPrint
     }
 
     SidebarTooltip
