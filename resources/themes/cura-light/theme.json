@@ -325,6 +325,7 @@
         "window_minimum_size": [70, 50],
         "window_margin": [1.0, 1.0],
         "default_margin": [1.0, 1.0],
+        "double_margin": [2.0, 2.0],
         "default_lining": [0.08, 0.08],
         "default_arrow": [0.8, 0.8],
         "logo": [7.6, 1.6],
@@ -438,6 +439,10 @@
         "objects_menu_size": [20, 40],
         "objects_menu_size_collapsed": [20, 17],
         "build_plate_selection_size": [15, 5],
-        "objects_menu_button": [0.3, 2.7]
+        "objects_menu_button": [0.3, 2.7],
+
+        "toolbox_thumbnail_small": [6.0, 6.0],
+        "toolbox_thumbnail_medium": [9.0, 9.0],
+        "toolbox_thumbnail_large": [12.0, 12.0]
     }
 }

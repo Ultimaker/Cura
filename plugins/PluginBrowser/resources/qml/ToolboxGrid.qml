@@ -15,7 +15,7 @@ Rectangle
 {
     id: base
     width: parent.width
-    height: 1200
+    height: childrenRect.height + UM.Theme.getSize("double_margin").height * 8
     color: "transparent"
     Label
     {
@@ -38,6 +38,7 @@ Rectangle
         columns: 3
         columnSpacing: UM.Theme.getSize("base_unit").width
         rowSpacing: UM.Theme.getSize("base_unit").height
+
         ToolboxGridTile {}
         ToolboxGridTile {}
         ToolboxGridTile {}

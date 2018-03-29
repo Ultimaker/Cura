@@ -32,7 +32,7 @@ ScrollView
         {
             id: showcase
         }
-        ToolboxItemGrid
+        ToolboxGrid
         {
             id: allPlugins
         }

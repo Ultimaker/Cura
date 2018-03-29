@@ -44,7 +44,7 @@ class PluginBrowser(QObject, Extension):
 
         # Can be 'installed' or 'available'
         self._view = "available"
-        self._detail_view = None
+        self._detail_view = ""
 
         self._restart_required = False
 
@@ -86,6 +86,7 @@ class PluginBrowser(QObject, Extension):
     onIsDownloadingChanged = pyqtSignal()
     restartRequiredChanged = pyqtSignal()
     viewChanged = pyqtSignal()
+    detailViewChanged = pyqtSignal()
 
     @pyqtSlot(result = str)
     def getLicenseDialogPluginName(self):
@@ -279,19 +280,26 @@ class PluginBrowser(QObject, Extension):
         self.setIsDownloading(False)
 
     @pyqtSlot(str)
-    def setView(self, view):
+    def setView(self, view = "available"):
         self._view = view
         self.viewChanged.emit()
         self.pluginsMetadataChanged.emit()
 
+    @pyqtProperty(str, notify = viewChanged)
+    def viewing(self):
+        return self._view
+
     @pyqtSlot(str)
-    def setDetailView(self, item):
-        self._detail_view = item if item else None
-        print("Now looking at", self._detail_view)
-        self.viewChanged.emit()
+    def setDetailView(self, item = ""):
+        self._detail_view = item
+        self.detailViewChanged.emit()
         self.pluginsMetadataChanged.emit()
 
-    @pyqtProperty(QObject, notify=pluginsMetadataChanged)
+    @pyqtProperty(str, notify = detailViewChanged)
+    def detailView(self):
+        return self._detail_view
+
+    @pyqtProperty(QObject, notify = pluginsMetadataChanged)
     def pluginsModel(self):
         self._plugins_model = PluginsModel(None, self._view)
         # self._plugins_model.update()
@@ -402,10 +410,6 @@ class PluginBrowser(QObject, Extension):
     @pyqtProperty(bool, notify = restartRequiredChanged)
     def restartRequired(self):
         return self._restart_required
-
-    @pyqtProperty(str, notify = viewChanged)
-    def viewing(self):
-        return self._view
 
     @pyqtSlot()
     def restart(self):

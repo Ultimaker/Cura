@@ -41,7 +41,13 @@ Window
             ToolboxViewDownloads
             {
                 id: viewDownloads
-                visible: manager.viewing == "available" ? true : false
+                visible: manager.viewing == "available" && manager.detailView == "" ? true : false
+            }
+
+            ToolboxViewDetail
+            {
+                id: viewDetail
+                visible: manager.viewing == "available" && manager.detailView != "" ? true : false
             }
             ToolboxViewInstalled
             {
@@ -49,52 +55,22 @@ Window
                 visible: manager.viewing == "installed" ? true : false
             }
         }
-        Rectangle
+        SectionShadow
         {
             anchors
             {
                 top: topBar.bottom
-            }
-            width: parent.width
-            height: 8
-            gradient: Gradient
-            {
-                GradientStop
-                {
-                    position: 0.0
-                    color: Qt.rgba(0,0,0,0.1)
-                }
-                GradientStop
-                {
-                    position: 1.0
-                    color: Qt.rgba(0,0,0,0)
-                }
             }
         }
         ToolboxFooter
         {
             id: bottomBar
         }
-        Rectangle
+        SectionShadow
         {
             anchors
             {
                 top: bottomBar.top
-            }
-            width: parent.width
-            height: 8
-            gradient: Gradient
-            {
-                GradientStop
-                {
-                    position: 0.0
-                    color: Qt.rgba(0,0,0,0.1)
-                }
-                GradientStop
-                {
-                    position: 1.0
-                    color: Qt.rgba(0,0,0,0)
-                }
             }
         }
 

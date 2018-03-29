@@ -6,13 +6,14 @@ import QtQuick.Dialogs 1.1
 import QtQuick.Window 2.2
 import QtQuick.Controls 1.4
 import QtQuick.Controls.Styles 1.4
+import QtQuick.Layouts 1.3
 import UM 1.1 as UM
 
 Item
 {
     id: base
-    width: parent.columnSize
     height: childrenRect.height
+    Layout.fillWidth: true
     Row
     {
         width: parent.width
@@ -21,8 +22,8 @@ Item
         Rectangle
         {
             id: thumbnail
-            width: UM.Theme.getSize("base_unit").width * 6
-            height: UM.Theme.getSize("base_unit").height * 6
+            width: UM.Theme.getSize("toolbox_thumbnail_small").width
+            height: UM.Theme.getSize("toolbox_thumbnail_small").height
             color: "white"
             border.width: 1
         }

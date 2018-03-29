@@ -16,8 +16,8 @@ theme makers/modfiers. Thus, "base_unit" is used wherever it can be. */
 
 Item
 {
-    width: UM.Theme.getSize("base_unit").width * 12
-    height: UM.Theme.getSize("base_unit").width * 12
+    width: UM.Theme.getSize("toolbox_thumbnail_large").width
+    height: UM.Theme.getSize("toolbox_thumbnail_large").width
     Rectangle
     {
         color: "white"
