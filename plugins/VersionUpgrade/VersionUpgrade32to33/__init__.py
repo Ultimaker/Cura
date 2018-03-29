@@ -13,8 +13,10 @@ def getMetaData():
             ("extruder_train", 3000004):     ("extruder_train", 4000004,     upgrade.upgradeStack),
 
             ("definition_changes", 2000004): ("definition_changes", 3000004, upgrade.upgradeInstanceContainer),
+            ("quality", 2000004):            ("quality", 3000004,            upgrade.upgradeInstanceContainer),
             ("quality_changes", 2000004):    ("quality_changes", 3000004,    upgrade.upgradeQualityChanges),
-            ("user", 2000004):               ("user", 3000004,               upgrade.upgradeInstanceContainer)
+            ("user", 2000004):               ("user", 3000004,               upgrade.upgradeInstanceContainer),
+            ("variant", 2000004):            ("variant", 3000004,            upgrade.upgradeVariants)
         },
         "sources": {
             "machine_stack": {
@@ -29,6 +31,10 @@ def getMetaData():
                 "get_version": upgrade.getCfgVersion,
                 "location": {"./definition_changes"}
             },
+            "quality": {
+                "get_version": upgrade.getCfgVersion,
+                "location": {"./quality"}
+            },
             "quality_changes": {
                 "get_version": upgrade.getCfgVersion,
                 "location": {"./quality"}
@@ -36,6 +42,10 @@ def getMetaData():
             "user": {
                 "get_version": upgrade.getCfgVersion,
                 "location": {"./user"}
+            },
+            "variant": {
+                "get_version": upgrade.getCfgVersion,
+                "location": {"./variants"}
             }
         }
     }
