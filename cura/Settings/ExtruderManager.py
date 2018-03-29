@@ -366,7 +366,7 @@ class ExtruderManager(QObject):
     def getActiveExtruderStacks(self) -> List["ExtruderStack"]:
         global_stack = Application.getInstance().getGlobalContainerStack()
         if not global_stack:
-            return None
+            return []
 
         result = []
         if global_stack.getId() in self._extruder_trains:

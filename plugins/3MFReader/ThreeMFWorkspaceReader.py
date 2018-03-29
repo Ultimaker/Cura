@@ -1,10 +1,11 @@
-# Copyright (c) 2017 Ultimaker B.V.
+# Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from configparser import ConfigParser
 import zipfile
 import os
 import threading
+from typing import List, Tuple
 
 import xml.etree.ElementTree as ET
 
@@ -160,7 +161,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
     #
     #   In old versions, extruder stack files have the same suffix as container stack files ".stack.cfg".
     #
-    def _determineGlobalAndExtruderStackFiles(self, project_file_name, file_list):
+    def _determineGlobalAndExtruderStackFiles(self, project_file_name: str, file_list: List[str]) -> Tuple[str, List[str]]:
         archive = zipfile.ZipFile(project_file_name, "r")
 
         global_stack_file_list = [name for name in file_list if name.endswith(self._global_stack_suffix)]
@@ -191,8 +192,12 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                 Logger.log("w", "Unknown container stack type '%s' from %s in %s",
                            stack_type, file_name, project_file_name)
 
-        if len(global_stack_file_list) != 1:
-            raise RuntimeError("More than one global stack file found: [%s]" % str(global_stack_file_list))
+        if len(global_stack_file_list) > 1:
+            Logger.log("e", "More than one global stack file found: [{file_list}]".format(file_list = global_stack_file_list))
+            #But we can recover by just getting the first global stack file.
+        if len(global_stack_file_list) == 0:
+            Logger.log("e", "No global stack file found!")
+            raise FileNotFoundError("No global stack file found!")
 
         return global_stack_file_list[0], extruder_stack_file_list
 
@@ -346,8 +351,11 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             self._machine_info.quality_changes_info = None
 
         # Load ContainerStack files and ExtruderStack files
-        global_stack_file, extruder_stack_files = self._determineGlobalAndExtruderStackFiles(
-            file_name, cura_file_names)
+        try:
+            global_stack_file, extruder_stack_files = self._determineGlobalAndExtruderStackFiles(
+                file_name, cura_file_names)
+        except FileNotFoundError:
+            return WorkspaceReader.PreReadResult.failed
         machine_conflict = False
         # Because there can be cases as follows:
         #  - the global stack exists but some/all of the extruder stacks DON'T exist
@@ -548,28 +556,6 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             self._resolve_strategies[key] = "override" if containers_found_dict[key] else "new"
 
         return WorkspaceReader.PreReadResult.accepted
-
-    ## Overrides an ExtruderStack in the given GlobalStack and returns the new ExtruderStack.
-    def _overrideExtruderStack(self, global_stack, extruder_file_content, extruder_stack_file):
-        # Get extruder position first
-        extruder_config = ConfigParser(interpolation = None)
-        extruder_config.read_string(extruder_file_content)
-        if not extruder_config.has_option("metadata", "position"):
-            msg = "Could not find 'metadata/position' in extruder stack file"
-            Logger.log("e", "Could not find 'metadata/position' in extruder stack file")
-            raise RuntimeError(msg)
-        extruder_position = extruder_config.get("metadata", "position")
-        try:
-            extruder_stack = global_stack.extruders[extruder_position]
-        except KeyError:
-            Logger.log("w", "Could not find the matching extruder stack to override for position %s", extruder_position)
-            return None
-
-        # Override the given extruder stack
-        extruder_stack.deserialize(extruder_file_content, file_name = extruder_stack_file)
-
-        # return the new ExtruderStack
-        return extruder_stack
 
     ##  Read the project file
     #   Add all the definitions / materials / quality changes that do not exist yet. Then it loads
@@ -897,7 +883,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             variant_type = VariantType.BUILD_PLATE
 
             node = variant_manager.getVariantNode(global_stack.definition.getId(), variant_name, variant_type)
-            if node is not None:
+            if node is not None and node.getContainer() is not None:
                 global_stack.variant = node.getContainer()
 
         for position, extruder_stack in extruder_stack_dict.items():
@@ -913,7 +899,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             variant_type = VariantType.NOZZLE
 
             node = variant_manager.getVariantNode(global_stack.definition.getId(), variant_name, variant_type)
-            if node is not None:
+            if node is not None and node.getContainer() is not None:
                 extruder_stack.variant = node.getContainer()
 
     def _applyMaterials(self, global_stack, extruder_stack_dict):
@@ -939,7 +925,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                                                              extruder_stack.variant.getName(),
                                                              machine_material_diameter,
                                                              root_material_id)
-            if material_node is not None:
+            if material_node is not None and material_node.getContainer() is not None:
                 extruder_stack.material = material_node.getContainer()
 
     def _applyChangesToMachine(self, global_stack, extruder_stack_dict):
