@@ -342,9 +342,6 @@ class MachineManager(QObject):
         self._initMachineState(containers[0])
         self._onGlobalContainerChanged()
 
-            #The signal should update/reset settings of all connected USB devices
-            #self.usbOutputDeviceChanged.emit()
-
         self.__emitChangedSignals()
 
     ##  Given a definition id, return the machine with this id.
