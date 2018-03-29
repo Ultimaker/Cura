@@ -14,8 +14,8 @@ ToolButton
 {
     id: base
     property bool isNetworkPrinter: Cura.MachineManager.activeMachineNetworkKey != ""
-    property bool printerConnected: Cura.MachineManager.printerOutputDevices.length != 0
-    property var printerStatus: Cura.MachineManager.printerOutputDevices.length != 0 ? "connected" : "disconnected"
+    property bool printerConnected: Cura.MachineManager.printerConnected
+    property var printerStatus: Cura.MachineManager.printerConnected ? "connected" : "disconnected"
     text: isNetworkPrinter ? Cura.MachineManager.activeMachineNetworkGroupName : Cura.MachineManager.activeMachineName
 
     tooltip: Cura.MachineManager.activeMachineName
@@ -83,4 +83,16 @@ ToolButton
     }
 
     menu: PrinterMenu { }
+
+    // Make the toolbutton react when the global container changes, otherwise if Cura is not connected to the printer,
+    // switching printers make no reaction
+    Connections
+    {
+        target: Cura.MachineManager
+        onGlobalContainerChanged:
+        {
+            base.isNetworkPrinter = Cura.MachineManager.activeMachineNetworkKey != ""
+            base.printerConnected = Cura.MachineManager.printerOutputDevices.length != 0
+        }
+    }
 }

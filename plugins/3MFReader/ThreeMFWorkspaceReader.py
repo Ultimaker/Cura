@@ -385,7 +385,9 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         parser = ConfigParser(interpolation = None)
         parser.read_string(serialized)
         quality_container_id = parser["containers"][str(_ContainerIndexes.Quality)]
-        quality_type = instance_container_info_dict[quality_container_id].parser["metadata"]["quality_type"]
+        quality_type = "empty_quality"
+        if quality_container_id not in ("empty", "empty_quality"):
+            quality_type = instance_container_info_dict[quality_container_id].parser["metadata"]["quality_type"]
 
         # Get machine info
         serialized = archive.open(global_stack_file).read().decode("utf-8")

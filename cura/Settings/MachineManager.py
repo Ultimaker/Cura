@@ -131,6 +131,10 @@ class MachineManager(QObject):
         self._material_manager.materialsUpdated.connect(self._updateUponMaterialMetadataChange)
         self.rootMaterialChanged.connect(self._onRootMaterialChanged)
 
+        # Emit the printerConnectedStatusChanged when either globalContainerChanged or outputDevicesChanged are emitted
+        self.globalContainerChanged.connect(self.printerConnectedStatusChanged)
+        self.outputDevicesChanged.connect(self.printerConnectedStatusChanged)
+
     activeQualityGroupChanged = pyqtSignal()
     activeQualityChangesGroupChanged = pyqtSignal()
 
@@ -151,6 +155,7 @@ class MachineManager(QObject):
 
     outputDevicesChanged = pyqtSignal()
     currentConfigurationChanged = pyqtSignal() # Emitted every time the current configurations of the machine changes
+    printerConnectedStatusChanged = pyqtSignal() # Emitted every time the active machine change or the outputdevices change
 
     rootMaterialChanged = pyqtSignal()
 
@@ -468,13 +473,17 @@ class MachineManager(QObject):
             return self._global_container_stack.getId()
         return ""
 
-    @pyqtProperty(str, notify = outputDevicesChanged)
+    @pyqtProperty(bool, notify = printerConnectedStatusChanged)
+    def printerConnected(self):
+        return bool(self._printer_output_devices)
+
+    @pyqtProperty(str, notify = printerConnectedStatusChanged)
     def activeMachineNetworkKey(self) -> str:
         if self._global_container_stack:
             return self._global_container_stack.getMetaDataEntry("um_network_key", "")
         return ""
 
-    @pyqtProperty(str, notify = outputDevicesChanged)
+    @pyqtProperty(str, notify = printerConnectedStatusChanged)
     def activeMachineNetworkGroupName(self) -> str:
         if self._global_container_stack:
             return self._global_container_stack.getMetaDataEntry("connect_group_name", "")
@@ -1017,14 +1026,19 @@ class MachineManager(QObject):
         if self._global_container_stack is None:
             return #Can't change that.
         quality_type = quality_changes_group.quality_type
-        quality_group_dict = self._quality_manager.getQualityGroups(self._global_container_stack)
-        quality_group = quality_group_dict[quality_type]
+        # A custom quality can be created based on "not supported".
+        # In that case, do not set quality containers to empty.
+        if quality_type == "not_supported":
+            quality_group = None
+        else:
+            quality_group_dict = self._quality_manager.getQualityGroups(self._global_container_stack)
+            quality_group = quality_group_dict[quality_type]
 
         quality_changes_container = self._empty_quality_changes_container
-        quality_container = self._empty_quality_changes_container
+        quality_container = self._empty_quality_container
         if quality_changes_group.node_for_global and quality_changes_group.node_for_global.getContainer():
             quality_changes_container = quality_changes_group.node_for_global.getContainer()
-        if quality_group.node_for_global and quality_group.node_for_global.getContainer():
+        if quality_group is not None and quality_group.node_for_global and quality_group.node_for_global.getContainer():
             quality_container = quality_group.node_for_global.getContainer()
 
         self._global_container_stack.quality = quality_container
@@ -1032,7 +1046,9 @@ class MachineManager(QObject):
 
         for position, extruder in self._global_container_stack.extruders.items():
             quality_changes_node = quality_changes_group.nodes_for_extruders.get(position)
-            quality_node = quality_group.nodes_for_extruders.get(position)
+            quality_node = None
+            if quality_group is not None:
+                quality_node = quality_group.nodes_for_extruders.get(position)
 
             quality_changes_container = self._empty_quality_changes_container
             quality_container = self._empty_quality_container
@@ -1336,6 +1352,8 @@ class MachineManager(QObject):
         return name
 
     def _updateUponMaterialMetadataChange(self):
+        if self._global_container_stack is None:
+            return
         with postponeSignals(*self._getContainerChangedSignals(), compress = CompressTechnique.CompressPerParameterValue):
             self._updateMaterialWithVariant(None)
             self._updateQualityWithMaterial()

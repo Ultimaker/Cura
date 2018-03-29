@@ -107,6 +107,8 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
                     Logger.log("d", "Attempting to connect with [%s]" % key)
                     self._discovered_devices[key].connect()
                     self._discovered_devices[key].connectionStateChanged.connect(self._onDeviceConnectionStateChanged)
+                else:
+                    self._onDeviceConnectionStateChanged(key)
             else:
                 if self._discovered_devices[key].isConnected():
                     Logger.log("d", "Attempting to close connection with [%s]" % key)
@@ -117,7 +119,10 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
         if key not in self._discovered_devices:
             return
         if self._discovered_devices[key].isConnected():
-            self.getOutputDeviceManager().addOutputDevice(self._discovered_devices[key])
+            # Sometimes the status changes after changing the global container and maybe the device doesn't belong to this machine
+            um_network_key = Application.getInstance().getGlobalContainerStack().getMetaDataEntry("um_network_key")
+            if key == um_network_key:
+                self.getOutputDeviceManager().addOutputDevice(self._discovered_devices[key])
         else:
             self.getOutputDeviceManager().removeOutputDevice(key)
 

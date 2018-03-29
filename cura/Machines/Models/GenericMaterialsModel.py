@@ -31,6 +31,7 @@ class GenericMaterialsModel(BaseMaterialsModel):
             self.setItems([])
             return
         extruder_stack = global_stack.extruders[extruder_position]
+        exclude_materials = set(global_stack.definition.getMetaDataEntry("exclude_materials", []))
 
         available_material_dict = self._material_manager.getAvailableMaterialsForMachineExtruder(global_stack,
                                                                                                  extruder_stack)
@@ -41,6 +42,9 @@ class GenericMaterialsModel(BaseMaterialsModel):
         item_list = []
         for root_material_id, container_node in available_material_dict.items():
             metadata = container_node.metadata
+            # Skip excluded materials
+            if metadata["id"] in exclude_materials:
+                continue
             # Only add results for generic materials
             if metadata["brand"].lower() != "generic":
                 continue
