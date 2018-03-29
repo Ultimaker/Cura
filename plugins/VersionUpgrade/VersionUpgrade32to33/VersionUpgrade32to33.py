@@ -53,6 +53,15 @@ _EXTRUDER_TO_POSITION = {
     "vertex_k8400_dual_2nd": 1
 }
 
+_RENAMED_QUALITY_PROFILES = {
+    "low": "fast",
+    "um2_low": "um2_fast"
+}
+
+_RENAMED_QUALITY_TYPES = {
+    "low": "fast"
+}
+
 ##  Upgrades configurations from the state they were in at version 3.2 to the
 #   state they should be in at version 3.3.
 class VersionUpgrade32to33(VersionUpgrade):
@@ -94,6 +103,10 @@ class VersionUpgrade32to33(VersionUpgrade):
         #Update version number.
         parser["general"]["version"] = "4"
 
+        #Update the name of the quality profile.
+        if parser["containers"]["2"] in _RENAMED_QUALITY_PROFILES:
+            parser["containers"]["2"] = _RENAMED_QUALITY_PROFILES[parser["containers"]["2"]]
+
         result = io.StringIO()
         parser.write(result)
         return [filename], [result.getvalue()]
@@ -128,7 +141,10 @@ class VersionUpgrade32to33(VersionUpgrade):
             del parser["metadata"]["extruder"]
 
         quality_type = parser["metadata"]["quality_type"]
-        parser["metadata"]["quality_type"] = quality_type.lower()
+        quality_type = quality_type.lower()
+        if quality_type in _RENAMED_QUALITY_TYPES:
+            quality_type = _RENAMED_QUALITY_TYPES[quality_type]
+        parser["metadata"]["quality_type"] = quality_type
 
         #Update version number.
         parser["general"]["version"] = "3"
