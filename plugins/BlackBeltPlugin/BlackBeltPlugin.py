@@ -144,9 +144,9 @@ class BlackBeltPlugin(Extension):
 
                     # Make sure the extruder quality is a blackbelt quality profile
                     if extruder_stack.quality.getDefinition().getId() != "blackbelt":
-                        extruder_stack.setQualityById("blackbelt_normal")
-                        self._global_container_stack.setQualityById("normal")
-
+                        blackbelt_normal_quality = ContainerRegistry.getInstance().findContainers(id = "blackbelt_normal")[0]
+                        extruder_stack.setQuality(blackbelt_normal_quality)
+                        self._global_container_stack.setQuality(blackbelt_normal_quality)
 
         self._adjustLayerViewNozzle()
 
@@ -157,14 +157,17 @@ class BlackBeltPlugin(Extension):
         # HOTFIX: copy extruder variant to global stack
         if not self._global_container_stack:
             return
+        extruder_stack = self._application.getMachineManager()._active_container_stack
+        if not extruder_stack:
+            return
 
         definition_container = self._global_container_stack.getBottom()
         if definition_container.getId() != "blackbelt":
             return
 
-        variant_id = self._global_container_stack.variant.getId()
-        if self._global_container_stack.variant.getId() != variant_id:
-            self._global_container_stack.setVariantById(variant_id)
+        if self._global_container_stack.variant != extruder_stack.variant:
+            self._global_container_stack.setVariant(extruder_stack.variant)
+            pass
 
     def _onSettingValueChanged(self, key, property_name):
         if property_name != "value" or not self._global_container_stack.hasProperty("blackbelt_gantry_angle", "value"):
