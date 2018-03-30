@@ -1,5 +1,5 @@
-# Copyright (c) 2017 Ultimaker B.V.
-# PluginBrowser is released under the terms of the LGPLv3 or higher.
+# Copyright (c) 2018 Ultimaker B.V.
+# Toolbox is released under the terms of the LGPLv3 or higher.
 
 from PyQt5.QtCore import QUrl, QObject, pyqtProperty, pyqtSignal, pyqtSlot
 from PyQt5.QtNetwork import QNetworkAccessManager, QNetworkRequest, QNetworkReply
@@ -24,7 +24,7 @@ from cura.CuraApplication import CuraApplication
 
 i18n_catalog = i18nCatalog("cura")
 
-class PluginBrowser(QObject, Extension):
+class Toolbox(QObject, Extension):
     def __init__(self, parent=None):
         super().__init__(parent)
 
@@ -138,6 +138,7 @@ class PluginBrowser(QObject, Extension):
     def _createDialog(self, qml_name):
         Logger.log("d", "Creating dialog [%s]", qml_name)
         path = os.path.join(PluginRegistry.getInstance().getPluginPath(self.getPluginId()), "resources", "qml", qml_name)
+        Logger.log("d", "Creating dialog [%s]", path)
         dialog = Application.getInstance().createQmlComponent(path, {"manager": self})
         return dialog
 

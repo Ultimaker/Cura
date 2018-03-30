@@ -270,7 +270,7 @@ UM.MainWindow
             Menu
             {
                 id: plugin_menu
-                title: catalog.i18nc("@title:menu menubar:toplevel", "P&lugins")
+                title: catalog.i18nc("@title:menu menubar:toplevel", "&Toolbox")
 
                 MenuItem { action: Cura.Actions.browsePlugins }
             }
@@ -670,7 +670,7 @@ UM.MainWindow
     {
         target: Cura.Actions.browsePlugins
         onTriggered: {
-            curaExtensions.callExtensionMethod("Plugin Browser", "browsePlugins")
+            curaExtensions.callExtensionMethod("Toolbox", "browsePlugins")
         }
     }
 

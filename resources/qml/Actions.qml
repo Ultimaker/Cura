@@ -430,7 +430,7 @@ Item
     Action
     {
         id: browsePluginsAction
-        text: catalog.i18nc("@action:menu", "Browse plugins...")
+        text: catalog.i18nc("@action:menu", "Browse packages...")
         iconName: "plugins_browse"
     }
 

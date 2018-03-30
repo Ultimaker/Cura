@@ -261,7 +261,7 @@ class CuraApplication(QtApplication):
             "TranslateTool",
             "FileLogger",
             "XmlMaterialProfile",
-            "PluginBrowser",
+            "Toolbox",
             "PrepareStage",
             "MonitorStage"
         ])
