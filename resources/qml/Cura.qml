@@ -272,7 +272,7 @@ UM.MainWindow
                 id: plugin_menu
                 title: catalog.i18nc("@title:menu menubar:toplevel", "&Toolbox")
 
-                MenuItem { action: Cura.Actions.browsePlugins }
+                MenuItem { action: Cura.Actions.browsePackages }
             }
 
             Menu
@@ -668,9 +668,9 @@ UM.MainWindow
     // show the plugin browser dialog
     Connections
     {
-        target: Cura.Actions.browsePlugins
+        target: Cura.Actions.browsePackages
         onTriggered: {
-            curaExtensions.callExtensionMethod("Toolbox", "browsePlugins")
+            curaExtensions.callExtensionMethod("Toolbox", "browsePackages")
         }
     }
 

@@ -24,12 +24,13 @@ from cura.CuraApplication import CuraApplication
 
 i18n_catalog = i18nCatalog("cura")
 
+##  The Toolbox class is responsible of communicating with the server through the API
 class Toolbox(QObject, Extension):
     def __init__(self, parent=None):
         super().__init__(parent)
 
-        self._api_version = 4
-        self._api_url = "http://software.ultimaker.com/cura/v%s/" % self._api_version
+        self._api_version = 1
+        self._api_url = "https://api-staging.ultimaker.com/cura-packages/v%s/" % self._api_version
 
         self._plugin_list_request = None
         self._download_plugin_request = None
@@ -119,18 +120,18 @@ class Toolbox(QObject, Extension):
         return self._is_downloading
 
     @pyqtSlot()
-    def browsePlugins(self):
+    def browsePackages(self):
         self._createNetworkManager()
-        self.requestPluginList()
+        self.requestPackageList()
 
         if not self._dialog:
             self._dialog = self._createDialog("PluginBrowser.qml")
         self._dialog.show()
 
-    @pyqtSlot()
-    def requestPluginList(self):
-        Logger.log("i", "Requesting plugin list")
-        url = QUrl(self._api_url + "plugins")
+    def requestPackageList(self):
+        cura_version = 4
+        Logger.log("i", "Requesting package list")
+        url = QUrl(self._api_url + "packages?cura_version={version}".format(version = cura_version))
         self._plugin_list_request = QNetworkRequest(url)
         self._plugin_list_request.setRawHeader(*self._request_header)
         self._network_manager.get(self._plugin_list_request)
@@ -138,7 +139,6 @@ class Toolbox(QObject, Extension):
     def _createDialog(self, qml_name):
         Logger.log("d", "Creating dialog [%s]", qml_name)
         path = os.path.join(PluginRegistry.getInstance().getPluginPath(self.getPluginId()), "resources", "qml", qml_name)
-        Logger.log("d", "Creating dialog [%s]", path)
         dialog = Application.getInstance().createQmlComponent(path, {"manager": self})
         return dialog
 
@@ -223,7 +223,6 @@ class Toolbox(QObject, Extension):
         self.openRestartDialog(result["message"])
         self._restart_required = True
         self.restartRequiredChanged.emit()
-        # Application.getInstance().messageBox(i18n_catalog.i18nc("@window:title", "Plugin browser"), result["message"])
 
     @pyqtSlot(str)
     def removePlugin(self, plugin_id):
