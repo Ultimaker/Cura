@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: Cura 3.2\n"
 "Report-Msgid-Bugs-To: r.dulek@ultimaker.com\n"
 "POT-Creation-Date: 2018-03-29 08:36+0200\n"
-"PO-Revision-Date: 2018-02-01 20:58+0800\n"
+"PO-Revision-Date: 2018-03-31 13:04+0800\n"
 "Last-Translator: Zhang Heh Ji <dinowchang@gmail.com>\n"
 "Language-Team: Zhang Heh Ji <dinowchang@gmail.com>\n"
 "Language: zh_TW\n"
@@ -2784,7 +2784,7 @@ msgstr "僅在已列印部分上 Z 抬升"
 #: fdmprinter.def.json
 msgctxt "retraction_hop_only_when_collides description"
 msgid "Only perform a Z Hop when moving over printed parts which cannot be avoided by horizontal motion by Avoid Printed Parts when Traveling."
-msgstr "僅在移動到無法通過“空跑時避開已列印部分”選項的水平操作避開的已列印部分上方時執行 Z 抬升。"
+msgstr "僅在移動到無法通過“空跑時避開已列印部分”選項避開的已列印部分上方時執行 Z 抬升。"
 
 #: fdmprinter.def.json
 msgctxt "retraction_hop label"
