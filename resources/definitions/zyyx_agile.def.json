@@ -10,6 +10,7 @@
         "platform": "zyyx_platform.stl",
         "has_machine_quality": true,
         "quality_definition": "zyyx_agile",
+        "preferred_material": "zyyx_pro_pla",
         "preferred_quality_type": "normal",
         "machine_x3g_variant": "z"
     },
