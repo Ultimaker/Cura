@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: Cura 3.2\n"
 "Report-Msgid-Bugs-To: r.dulek@ultimaker.com\n"
 "POT-Creation-Date: 2018-03-29 08:36+0200\n"
-"PO-Revision-Date: 2018-03-31 13:04+0800\n"
+"PO-Revision-Date: 2018-04-01 13:24+0800\n"
 "Last-Translator: Zhang Heh Ji <dinowchang@gmail.com>\n"
 "Language-Team: Zhang Heh Ji <dinowchang@gmail.com>\n"
 "Language: zh_TW\n"
@@ -50,7 +50,7 @@ msgstr "是否顯示這台印表機在不同的 JSON 檔案中所描述的型號
 #: fdmprinter.def.json
 msgctxt "machine_start_gcode label"
 msgid "Start G-code"
-msgstr ""
+msgstr "起始 G-code"
 
 #: fdmprinter.def.json
 msgctxt "machine_start_gcode description"
@@ -58,11 +58,13 @@ msgid ""
 "G-code commands to be executed at the very start - separated by \n"
 "."
 msgstr ""
+"開始時最先執行的 G-code 命令 - 使用 \n"
+". 隔開"
 
 #: fdmprinter.def.json
 msgctxt "machine_end_gcode label"
 msgid "End G-code"
-msgstr ""
+msgstr "結束 G-code"
 
 #: fdmprinter.def.json
 msgctxt "machine_end_gcode description"
@@ -70,6 +72,8 @@ msgid ""
 "G-code commands to be executed at the very end - separated by \n"
 "."
 msgstr ""
+"結束前最後執行的 G-code 命令 - 使用 \n"
+". 隔開"
 
 #: fdmprinter.def.json
 msgctxt "material_guid label"
@@ -164,22 +168,22 @@ msgstr "類圓形"
 #: fdmprinter.def.json
 msgctxt "machine_buildplate_type label"
 msgid "Build Plate Material"
-msgstr ""
+msgstr "列印平台材質"
 
 #: fdmprinter.def.json
 msgctxt "machine_buildplate_type description"
 msgid "The material of the build plate installed on the printer."
-msgstr ""
+msgstr "印表機上列印平台的材質。"
 
 #: fdmprinter.def.json
 msgctxt "machine_buildplate_type option glass"
 msgid "Glass"
-msgstr ""
+msgstr "玻璃"
 
 #: fdmprinter.def.json
 msgctxt "machine_buildplate_type option aluminum"
 msgid "Aluminum"
-msgstr ""
+msgstr "鋁"
 
 #: fdmprinter.def.json
 msgctxt "machine_height label"
@@ -224,12 +228,12 @@ msgstr "擠出機組數目。擠出機組是指進料裝置、喉管和噴頭的
 #: fdmprinter.def.json
 msgctxt "extruders_enabled_count label"
 msgid "Number of Extruders that are enabled"
-msgstr ""
+msgstr "已啟用擠出機的數量"
 
 #: fdmprinter.def.json
 msgctxt "extruders_enabled_count description"
 msgid "Number of extruder trains that are enabled; automatically set in software"
-msgstr ""
+msgstr "啟用擠出機的數量；軟體自動設定"
 
 #: fdmprinter.def.json
 msgctxt "machine_nozzle_tip_outer_diameter label"
@@ -324,12 +328,12 @@ msgstr "擠出機必須保持不活動以便噴頭冷卻的最短時間。擠出
 #: fdmprinter.def.json
 msgctxt "machine_gcode_flavor label"
 msgid "G-code flavour"
-msgstr ""
+msgstr "G-code 類型"
 
 #: fdmprinter.def.json
 msgctxt "machine_gcode_flavor description"
 msgid "The type of g-code to be generated."
-msgstr ""
+msgstr "產生 G-code 的類型。"
 
 #: fdmprinter.def.json
 msgctxt "machine_gcode_flavor option RepRap (Marlin/Sprinter)"
@@ -609,72 +613,72 @@ msgstr "擠出馬達的預設加加速度。"
 #: fdmprinter.def.json
 msgctxt "machine_steps_per_mm_x label"
 msgid "Steps per Millimeter (X)"
-msgstr ""
+msgstr "每毫米的步數（X）"
 
 #: fdmprinter.def.json
 msgctxt "machine_steps_per_mm_x description"
 msgid "How many steps of the stepper motor will result in one millimeter of movement in the X direction."
-msgstr ""
+msgstr "在 X 方向移動一毫米時，步進馬達所需移動的步數。"
 
 #: fdmprinter.def.json
 msgctxt "machine_steps_per_mm_y label"
 msgid "Steps per Millimeter (Y)"
-msgstr ""
+msgstr "每毫米的步數（Y）"
 
 #: fdmprinter.def.json
 msgctxt "machine_steps_per_mm_y description"
 msgid "How many steps of the stepper motor will result in one millimeter of movement in the Y direction."
-msgstr ""
+msgstr "在 Y 方向移動一毫米時，步進馬達所需移動的步數。"
 
 #: fdmprinter.def.json
 msgctxt "machine_steps_per_mm_z label"
 msgid "Steps per Millimeter (Z)"
-msgstr ""
+msgstr "每毫米的步數（Z）"
 
 #: fdmprinter.def.json
 msgctxt "machine_steps_per_mm_z description"
 msgid "How many steps of the stepper motor will result in one millimeter of movement in the Z direction."
-msgstr ""
+msgstr "在 Z 方向移動一毫米時，步進馬達所需移動的步數。"
 
 #: fdmprinter.def.json
 msgctxt "machine_steps_per_mm_e label"
 msgid "Steps per Millimeter (E)"
-msgstr ""
+msgstr "每毫米的步數（E）"
 
 #: fdmprinter.def.json
 msgctxt "machine_steps_per_mm_e description"
 msgid "How many steps of the stepper motors will result in one millimeter of extrusion."
-msgstr ""
+msgstr "擠出機移動一毫米時，步進馬達所需移動的步數。"
 
 #: fdmprinter.def.json
 msgctxt "machine_endstop_positive_direction_x label"
 msgid "X Endstop in Positive Direction"
-msgstr ""
+msgstr "X 限位開關位於正向"
 
 #: fdmprinter.def.json
 msgctxt "machine_endstop_positive_direction_x description"
 msgid "Whether the endstop of the X axis is in the positive direction (high X coordinate) or negative (low X coordinate)."
-msgstr ""
+msgstr "X 軸的限位開關位於正向（X 座標值大）還是負向（X 座標值小）。"
 
 #: fdmprinter.def.json
 msgctxt "machine_endstop_positive_direction_y label"
 msgid "Y Endstop in Positive Direction"
-msgstr ""
+msgstr "Y 限位開關位於正向"
 
 #: fdmprinter.def.json
 msgctxt "machine_endstop_positive_direction_y description"
 msgid "Whether the endstop of the Y axis is in the positive direction (high Y coordinate) or negative (low Y coordinate)."
-msgstr ""
+msgstr "Y 軸的限位開關位於正向（Y 座標值大）還是負向（Y 座標值小）。"
 
 #: fdmprinter.def.json
 msgctxt "machine_endstop_positive_direction_z label"
 msgid "Z Endstop in Positive Direction"
-msgstr ""
+msgstr "Z 限位開關位於正向"
 
 #: fdmprinter.def.json
 msgctxt "machine_endstop_positive_direction_z description"
 msgid "Whether the endstop of the Z axis is in the positive direction (high Z coordinate) or negative (low Z coordinate)."
-msgstr ""
+msgstr "Z 軸的限位開關位於正向（Z 座標值大）還是負向（Z 座標值小）。"
 
 #: fdmprinter.def.json
 msgctxt "machine_minimum_feedrate label"
@@ -689,12 +693,12 @@ msgstr "列印頭的最低移動速度。"
 #: fdmprinter.def.json
 msgctxt "machine_feeder_wheel_diameter label"
 msgid "Feeder Wheel Diameter"
-msgstr ""
+msgstr "進料輪直徑"
 
 #: fdmprinter.def.json
 msgctxt "machine_feeder_wheel_diameter description"
 msgid "The diameter of the wheel that drives the material in the feeder."
-msgstr ""
+msgstr "帶動進料器中耗材的輪子的直徑。"
 
 #: fdmprinter.def.json
 msgctxt "resolution label"
@@ -1034,7 +1038,7 @@ msgstr "鋸齒狀"
 #: fdmprinter.def.json
 msgctxt "top_bottom_pattern_0 label"
 msgid "Bottom Pattern Initial Layer"
-msgstr "初始層列印樣式"
+msgstr "起始層列印樣式"
 
 #: fdmprinter.def.json
 msgctxt "top_bottom_pattern_0 description"
@@ -1769,7 +1773,7 @@ msgstr "預設列印溫度"
 #: fdmprinter.def.json
 msgctxt "default_material_print_temperature description"
 msgid "The default temperature used for printing. This should be the \"base\" temperature of a material. All other print temperatures should use offsets based on this value"
-msgstr "用於列印的預設溫度。應為耗材的\"基本\"溫度。所有其他列印溫度均應使用基於此值的偏移量"
+msgstr "用於列印的預設溫度。應為耗材的溫度\"基礎值\"。其他列印溫度將以此值為基準計算偏移"
 
 #: fdmprinter.def.json
 msgctxt "material_print_temperature label"
@@ -1824,12 +1828,12 @@ msgstr "解決在擠料的同時因為噴頭冷卻所造成的影響的額外速
 #: fdmprinter.def.json
 msgctxt "default_material_bed_temperature label"
 msgid "Default Build Plate Temperature"
-msgstr ""
+msgstr "列印平台預設溫度"
 
 #: fdmprinter.def.json
 msgctxt "default_material_bed_temperature description"
 msgid "The default temperature used for the heated build plate. This should be the \"base\" temperature of a build plate. All other print temperatures should use offsets based on this value"
-msgstr ""
+msgstr "列印平台加熱的預設溫度。這會是列印平台的溫度\"基礎值\"。其他列印溫度將以此值為基準計算偏移"
 
 #: fdmprinter.def.json
 msgctxt "material_bed_temperature label"
@@ -1884,12 +1888,12 @@ msgstr "表面能量。"
 #: fdmprinter.def.json
 msgctxt "material_shrinkage_percentage label"
 msgid "Shrinkage Ratio"
-msgstr ""
+msgstr "收縮率"
 
 #: fdmprinter.def.json
 msgctxt "material_shrinkage_percentage description"
 msgid "Shrinkage ratio in percentage."
-msgstr ""
+msgstr "收縮率百分比。"
 
 #: fdmprinter.def.json
 msgctxt "material_flow label"
@@ -1904,12 +1908,12 @@ msgstr "流量補償：擠出的耗材量乘以此值。"
 #: fdmprinter.def.json
 msgctxt "material_flow_layer_0 label"
 msgid "Initial Layer Flow"
-msgstr ""
+msgstr "起始層流量"
 
 #: fdmprinter.def.json
 msgctxt "material_flow_layer_0 description"
 msgid "Flow compensation for the first layer: the amount of material extruded on the initial layer is multiplied by this value."
-msgstr ""
+msgstr "第一層的流量補償：在起始層上擠出的耗材量會乘以此值。"
 
 #: fdmprinter.def.json
 msgctxt "retraction_enable label"
@@ -3084,12 +3088,12 @@ msgstr "十字形"
 #: fdmprinter.def.json
 msgctxt "zig_zaggify_support label"
 msgid "Connect Support Lines"
-msgstr ""
+msgstr "連接支撐線條"
 
 #: fdmprinter.def.json
 msgctxt "zig_zaggify_support description"
 msgid "Connect the ends of the support lines together. Enabling this setting can make your support more sturdy and reduce underextrusion, but it will cost more material."
-msgstr ""
+msgstr "將支撐線條的末端連接在一起。啟用此設定能讓支撐更堅固並減少擠出不足的問題，但會花費更多的耗材。"
 
 #: fdmprinter.def.json
 msgctxt "support_connect_zigzags label"
@@ -4018,12 +4022,12 @@ msgstr "在列印件旁邊印一個塔，用在每次切換噴頭後填充耗材
 #: fdmprinter.def.json
 msgctxt "prime_tower_circular label"
 msgid "Circular Prime Tower"
-msgstr ""
+msgstr "圓型換料塔"
 
 #: fdmprinter.def.json
 msgctxt "prime_tower_circular description"
 msgid "Make the prime tower as a circular shape."
-msgstr ""
+msgstr "將換料塔印成圓型。"
 
 #: fdmprinter.def.json
 msgctxt "prime_tower_size label"
@@ -4143,7 +4147,7 @@ msgstr "擦拭牆距離"
 #: fdmprinter.def.json
 msgctxt "ooze_shield_dist description"
 msgid "Distance of the ooze shield from the print, in the X/Y directions."
-msgstr "擦拭牆與模型間的水平 ( X/Y 方向 ) 距離。"
+msgstr "擦拭牆與模型間的水平（X/Y 方向）距離。"
 
 #: fdmprinter.def.json
 msgctxt "meshfix label"
@@ -4163,7 +4167,7 @@ msgstr "合併重疊體積"
 #: fdmprinter.def.json
 msgctxt "meshfix_union_all description"
 msgid "Ignore the internal geometry arising from overlapping volumes within a mesh and print the volumes as one. This may cause unintended internal cavities to disappear."
-msgstr "忽略由網格內的重疊體積產生的內部幾何，並將多個部分作為一個列印。這可能會導致意外的內部孔洞消失。"
+msgstr "忽略因網格內部重疊產生的幾何空間，並將多個重疊體積作為一個列印。這可能會導致意外的內部孔洞消失。"
 
 #: fdmprinter.def.json
 msgctxt "meshfix_union_all_remove_holes label"
@@ -4193,7 +4197,7 @@ msgstr "保持斷開表面"
 #: fdmprinter.def.json
 msgctxt "meshfix_keep_open_polygons description"
 msgid "Normally Cura tries to stitch up small holes in the mesh and remove parts of a layer with big holes. Enabling this option keeps those parts which cannot be stitched. This option should be used as a last resort option when everything else fails to produce proper g-code."
-msgstr ""
+msgstr "通常 Cura 會嘗試縫合網格中的小孔，並移除大的孔洞部分。啟用此選項可保留那些無法縫合的部分。此選項應該做為其他方法都無法產生適當 g-code 時的最後選擇。"
 
 #: fdmprinter.def.json
 msgctxt "multiple_mesh_overlap label"
@@ -4408,7 +4412,7 @@ msgstr "相對模式擠出"
 #: fdmprinter.def.json
 msgctxt "relative_extrusion description"
 msgid "Use relative extrusion rather than absolute extrusion. Using relative E-steps makes for easier post-processing of the g-code. However, it's not supported by all printers and it may produce very slight deviations in the amount of deposited material compared to absolute E-steps. Irrespective of this setting, the extrusion mode will always be set to absolute before any g-code script is output."
-msgstr ""
+msgstr "使用相對模式擠出而非絕對模式擠出。使用相對 E 步數在進行 g-code 後處理時可以更加輕鬆。不過並不是所有的印表機都支援此功能，而且與絕對 E 步數相比，它可能在耗材的使用量上產生輕微的誤差。不管設定為何，在產生 g-code 之前都是使用絕對模式。"
 
 #: fdmprinter.def.json
 msgctxt "experimental label"
