@@ -3324,6 +3324,16 @@
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
+                "travel_avoid_supports":
+                {
+                    "label": "Avoid Supports When Traveling",
+                    "description": "The nozzle avoids already printed supports when traveling. This option is only available when combing is enabled.",
+                    "type": "bool",
+                    "default_value": false,
+                    "enabled": "resolveOrValue('retraction_combing') != 'off' and travel_avoid_other_parts",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
+                },
                 "travel_avoid_distance":
                 {
                     "label": "Travel Avoid Distance",
