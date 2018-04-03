@@ -15,7 +15,7 @@ Item
     anchors.fill: parent
     Item
     {
-        id: backMargin
+        id: sidebar
         height: parent.height
         width: UM.Theme.getSize("base_unit").width * 6
         anchors
@@ -29,46 +29,133 @@ Item
         Button
         {
             text: "Back"
-            onClicked: {
+            UM.RecolorImage
+            {
+                id: backArrow
+                anchors.verticalCenter: parent.verticalCenter
+                anchors.left: parent.left
+                anchors.rightMargin: UM.Theme.getSize("default_margin").width
+                width: UM.Theme.getSize("standard_arrow").width
+                height: UM.Theme.getSize("standard_arrow").height
+                sourceSize.width: width
+                sourceSize.height: height
+                color: UM.Theme.getColor("text")
+                source: UM.Theme.getIcon("arrow_left")
+            }
+            width: UM.Theme.getSize("base_unit").width * 4
+            height: UM.Theme.getSize("base_unit").height * 2
+            onClicked:
+            {
                 manager.setDetailView("")
+            }
+            style: ButtonStyle
+            {
+                background: Rectangle
+                {
+                    color: "transparent"
+                }
+                label: Label
+                {
+                    text: control.text
+                    color: UM.Theme.getColor("text")
+                    font: UM.Theme.getFont("default_bold")
+                    horizontalAlignment: Text.AlignRight
+                    width: control.width
+                }
             }
         }
     }
+
+    Rectangle
+    {
+        id: header
+        anchors
+        {
+            left: sidebar.right
+            right: parent.right
+        }
+        height: UM.Theme.getSize("base_unit").height * 12
+        Rectangle
+        {
+            id: thumbnail
+            width: UM.Theme.getSize("toolbox_thumbnail_medium").width
+            height: UM.Theme.getSize("toolbox_thumbnail_medium").height
+            color: "grey"
+            anchors
+            {
+                top: parent.top
+                left: parent.left
+                leftMargin: UM.Theme.getSize("double_margin").width
+                topMargin: UM.Theme.getSize("double_margin").height
+            }
+        }
+        Column
+        {
+            anchors
+            {
+                top: thumbnail.top
+                left: thumbnail.right
+                leftMargin: UM.Theme.getSize("default_margin").width
+                right: parent.right
+                rightMargin: UM.Theme.getSize("double_margin").width
+            }
+            spacing: Math.floor(UM.Theme.getSize("default_margin").height/2)
+            Label
+            {
+                text: "DSM"
+                font: UM.Theme.getFont("large")
+                wrapMode: Text.WordWrap
+                width: parent.width
+            }
+            Label
+            {
+                text: "Sets the horizontal and vertical alignment of the text within the Text items width and height. By default, the text is vertically aligned to the top."
+                font: UM.Theme.getFont("default")
+                wrapMode: Text.WordWrap
+                width: parent.width
+            }
+            Label
+            {
+                text: "Author: " + "DSM"
+                font: UM.Theme.getFont("small")
+                wrapMode: Text.WordWrap
+                width: parent.width
+                // TODO: Add mail icon.
+            }
+        }
+    }
+
     ScrollView
     {
         id: scroll
-        frameVisible: false
-        anchors.right: base.right
-        anchors.left: backMargin.right
+        frameVisible: true
+        anchors
+        {
+            right: header.right
+            top: header.bottom
+            left: header.left
+            bottom: base.bottom
+        }
         height: parent.height
         style: UM.Theme.styles.scrollview
-        Column
+
+        /*
+        ListView
         {
-            width: scroll.width
+            id: contentColumn
             spacing: UM.Theme.getSize("base_unit").height
             height: childrenRect.height + (UM.Theme.getSize("double_margin").height * 2)
             anchors
             {
-                fill: parent
+                left: scroll.left
+                right: scroll.right
+                top: scroll.top
                 topMargin: UM.Theme.getSize("double_margin").height
                 bottomMargin: UM.Theme.getSize("double_margin").height
                 leftMargin: UM.Theme.getSize("double_margin").width
                 rightMargin: UM.Theme.getSize("double_margin").width
             }
-            Rectangle
-            {
-                width: parent.width
-                height: UM.Theme.getSize("base_unit").height * 12
-                color: "transparent"
-                Rectangle
-                {
-                    id: thumbnail
-                    width: UM.Theme.getSize("toolbox_thumbnail_medium").width
-                    height: UM.Theme.getSize("toolbox_thumbnail_medium").height
-                    color: "white"
-                    border.width: 1
-                }
-            }
+
             ToolboxDetailTile {}
             ToolboxDetailTile {}
             ToolboxDetailTile {}
@@ -81,5 +168,6 @@ Item
             ToolboxDetailTile {}
             ToolboxDetailTile {}
         }
+        */
     }
 }

@@ -442,7 +442,7 @@
         "objects_menu_button": [0.3, 2.7],
 
         "toolbox_thumbnail_small": [6.0, 6.0],
-        "toolbox_thumbnail_medium": [9.0, 9.0],
+        "toolbox_thumbnail_medium": [8.0, 8.0],
         "toolbox_thumbnail_large": [12.0, 12.0]
     }
 }
