@@ -60,7 +60,13 @@ Rectangle {
             }
             base.close();
         }
-        anchors.right: parent.right
+        anchors
+        {
+            top: parent.top
+            topMargin: UM.Theme.getSize("default_margin").height
+            right: parent.right
+            rightMargin: UM.Theme.getSize("default_margin").height
+        }
         style: ButtonStyle {
             background: Rectangle {
                 color: "transparent"

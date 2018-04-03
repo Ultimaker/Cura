@@ -34,7 +34,7 @@ Window
         {
             id: mainView
             width: parent.width
-            color: "red"
+            color: "transparent"
             anchors
             {
                 top: topBar.bottom
