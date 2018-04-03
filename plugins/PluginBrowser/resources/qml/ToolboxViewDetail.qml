@@ -69,17 +69,17 @@ Item
                     border.width: 1
                 }
             }
-            ToolboxDetailBlock {}
-            ToolboxDetailBlock {}
-            ToolboxDetailBlock {}
-            ToolboxDetailBlock {}
-            ToolboxDetailBlock {}
-            ToolboxDetailBlock {}
-            ToolboxDetailBlock {}
-            ToolboxDetailBlock {}
-            ToolboxDetailBlock {}
-            ToolboxDetailBlock {}
-            ToolboxDetailBlock {}
+            ToolboxDetailTile {}
+            ToolboxDetailTile {}
+            ToolboxDetailTile {}
+            ToolboxDetailTile {}
+            ToolboxDetailTile {}
+            ToolboxDetailTile {}
+            ToolboxDetailTile {}
+            ToolboxDetailTile {}
+            ToolboxDetailTile {}
+            ToolboxDetailTile {}
+            ToolboxDetailTile {}
         }
     }
 }
