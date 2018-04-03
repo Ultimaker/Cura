@@ -29,9 +29,7 @@ Item
         Button
         {
             text: "Back"
-            onClicked: {
-                manager.setDetailView("")
-            }
+            onClicked: manager.detailView = false
         }
     }
     ScrollView

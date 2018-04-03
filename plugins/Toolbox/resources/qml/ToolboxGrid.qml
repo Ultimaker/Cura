@@ -39,13 +39,10 @@ Rectangle
         columnSpacing: UM.Theme.getSize("base_unit").width
         rowSpacing: UM.Theme.getSize("base_unit").height
 
-        ToolboxGridTile {}
-        ToolboxGridTile {}
-        ToolboxGridTile {}
-        ToolboxGridTile {}
-        ToolboxGridTile {}
-        ToolboxGridTile {}
-        ToolboxGridTile {}
-        ToolboxGridTile {}
+        Repeater
+        {
+            model: manager.packagesModel
+            delegate: ToolboxGridTile {}
+        }
     }
 }

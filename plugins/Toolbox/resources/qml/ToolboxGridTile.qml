@@ -33,7 +33,7 @@ Item
             Label
             {
                 id: name
-                text: "Auto Orientation"
+                text: model.name
                 width: parent.width
                 wrapMode: Text.WordWrap
                 height: UM.Theme.getSize("base_unit").height * 2
@@ -44,7 +44,7 @@ Item
             Label
             {
                 id: info
-                text: "Automatically orientate your model."
+                text: model.description
                 width: parent.width
                 wrapMode: Text.WordWrap
                 color: UM.Theme.getColor("text_medium")
@@ -55,8 +55,6 @@ Item
     MouseArea
     {
         anchors.fill: parent
-        onClicked: {
-            manager.setDetailView("thingy")
-        }
+        onClicked: manager.detailView = true
     }
 }
