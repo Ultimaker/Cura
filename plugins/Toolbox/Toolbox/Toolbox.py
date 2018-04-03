@@ -291,6 +291,7 @@ class Toolbox(QObject, Extension):
 
     def setCurrentView(self, view = "plugins"):
         self._current_view = view
+        self._detail_view = False
         self.viewChanged.emit()
 
     @pyqtProperty(str, fset = setCurrentView, notify = viewChanged)
