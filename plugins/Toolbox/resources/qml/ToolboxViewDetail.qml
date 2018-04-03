@@ -7,11 +7,13 @@ import QtQuick.Controls 1.4
 import QtQuick.Controls.Styles 1.4
 import UM 1.1 as UM
 
+// TODO: Switch to QtQuick.Controls 2.x and remove QtQuick.Controls.Styles
+
 Item
 {
     id: base
     anchors.fill: parent
-    Rectangle
+    Item
     {
         id: backMargin
         height: parent.height
@@ -31,7 +33,6 @@ Item
                 manager.setDetailView("")
             }
         }
-        color: "transparent"
     }
     ScrollView
     {
@@ -68,17 +69,17 @@ Item
                     border.width: 1
                 }
             }
-            ToolboxDetailBlock {}
-            ToolboxDetailBlock {}
-            ToolboxDetailBlock {}
-            ToolboxDetailBlock {}
-            ToolboxDetailBlock {}
-            ToolboxDetailBlock {}
-            ToolboxDetailBlock {}
-            ToolboxDetailBlock {}
-            ToolboxDetailBlock {}
-            ToolboxDetailBlock {}
-            ToolboxDetailBlock {}
+            ToolboxDetailTile {}
+            ToolboxDetailTile {}
+            ToolboxDetailTile {}
+            ToolboxDetailTile {}
+            ToolboxDetailTile {}
+            ToolboxDetailTile {}
+            ToolboxDetailTile {}
+            ToolboxDetailTile {}
+            ToolboxDetailTile {}
+            ToolboxDetailTile {}
+            ToolboxDetailTile {}
         }
     }
 }

@@ -33,6 +33,7 @@ Window
         {
             id: mainView
             width: parent.width
+            color: "red"
             anchors
             {
                 top: topBar.bottom
