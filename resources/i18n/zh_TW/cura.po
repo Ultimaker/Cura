@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: Cura 3.2\n"
 "Report-Msgid-Bugs-To: r.dulek@ultimaker.com\n"
 "POT-Creation-Date: 2018-03-29 08:36+0200\n"
-"PO-Revision-Date: 2018-04-04 17:41+0800\n"
+"PO-Revision-Date: 2018-04-04 17:43+0800\n"
 "Last-Translator: Zhang Heh Ji <dinowchang@gmail.com>\n"
 "Language-Team: Zhang Heh Ji <dinowchang@gmail.com>\n"
 "Language: zh_TW\n"
@@ -2366,7 +2366,7 @@ msgstr "如何解决耗材的設定衝突？"
 #: /home/ruben/Projects/Cura/resources/qml/WorkspaceSummaryDialog.qml:234
 msgctxt "@action:label"
 msgid "Setting visibility"
-msgstr "參數顯現設定"
+msgstr "參數顯示設定"
 
 #: /home/ruben/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:336
 msgctxt "@action:label"
@@ -2377,7 +2377,7 @@ msgstr "模式"
 #: /home/ruben/Projects/Cura/resources/qml/WorkspaceSummaryDialog.qml:243
 msgctxt "@action:label"
 msgid "Visible settings:"
-msgstr "顯現設定："
+msgstr "顯示設定："
 
 #: /home/ruben/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:357
 #: /home/ruben/Projects/Cura/resources/qml/WorkspaceSummaryDialog.qml:248
@@ -2845,7 +2845,7 @@ msgstr "列印設定"
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/SettingVisibilityPage.qml:14
 msgctxt "@title:tab"
 msgid "Setting Visibility"
-msgstr "參數顯現設定"
+msgstr "參數顯示設定"
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/SettingVisibilityPage.qml:50
 msgctxt "@label:textbox"
@@ -3525,18 +3525,18 @@ msgstr "隱藏此設定"
 #: /home/ruben/Projects/Cura/resources/qml/Settings/SettingView.qml:572
 msgctxt "@action:menu"
 msgid "Don't show this setting"
-msgstr "不再顯現此設定"
+msgstr "不再顯示此設定"
 
 #: /home/ruben/Projects/Cura/resources/qml/Settings/SettingView.qml:576
 msgctxt "@action:menu"
 msgid "Keep this setting visible"
-msgstr "保持此設定顯現"
+msgstr "保持此設定顯示"
 
 #: /home/ruben/Projects/Cura/resources/qml/Settings/SettingView.qml:600
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:426
 msgctxt "@action:menu"
 msgid "Configure setting visibility..."
-msgstr "參數顯現設定..."
+msgstr "參數顯示設定..."
 
 #: /home/ruben/Projects/Cura/resources/qml/Settings/SettingCategory.qml:251
 msgctxt "@label"
@@ -3789,17 +3789,17 @@ msgstr "列印平台（&B）"
 #: /home/ruben/Projects/Cura/resources/qml/Menus/SettingVisibilityPresetsMenu.qml:13
 msgctxt "@action:inmenu"
 msgid "Visible Settings"
-msgstr "顯現設定"
+msgstr "顯示設定"
 
 #: /home/ruben/Projects/Cura/resources/qml/Menus/SettingVisibilityPresetsMenu.qml:43
 msgctxt "@action:inmenu"
 msgid "Show All Settings"
-msgstr "顯現所有設定"
+msgstr "顯示所有設定"
 
 #: /home/ruben/Projects/Cura/resources/qml/Menus/SettingVisibilityPresetsMenu.qml:54
 msgctxt "@action:inmenu"
 msgid "Manage Setting Visibility..."
-msgstr "管理參數顯現..."
+msgstr "管理參數顯示..."
 
 #: /home/ruben/Projects/Cura/resources/qml/Menus/ContextMenu.qml:27
 msgctxt "@label"
