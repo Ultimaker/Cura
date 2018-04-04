@@ -16,7 +16,6 @@ def getMetaData():
 
             ("quality_changes", 2000003):    ("quality_changes", 2000004,    upgrade.upgradeInstanceContainer),
             ("user", 2000003):               ("user", 2000004,               upgrade.upgradeInstanceContainer),
-            ("quality", 2000003):            ("quality", 2000004,            upgrade.upgradeInstanceContainer),
             ("definition_changes", 2000003): ("definition_changes", 2000004, upgrade.upgradeInstanceContainer),
             ("variant", 2000003):            ("variant", 2000004,            upgrade.upgradeInstanceContainer)
         },
@@ -32,10 +31,6 @@ def getMetaData():
             "extruder_train": {
                 "get_version": upgrade.getCfgVersion,
                 "location": {"./extruders"}
-            },
-            "quality": {
-                "get_version": upgrade.getCfgVersion,
-                "location": {"./quality"}
             },
             "quality_changes": {
                 "get_version": upgrade.getCfgVersion,
