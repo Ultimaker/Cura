@@ -17,7 +17,6 @@ def getMetaData():
             #       if any is updated.
             ("quality_changes", 2000000):       ("quality_changes", 2000001,    upgrade.upgradeInstanceContainer),
             ("user", 2000000):                  ("user", 2000001,               upgrade.upgradeInstanceContainer),
-            ("quality", 2000000):               ("quality", 2000001,            upgrade.upgradeInstanceContainer),
             ("definition_changes", 2000000):    ("definition_changes", 2000001, upgrade.upgradeInstanceContainer),
             ("machine_stack", 3000000):         ("machine_stack", 3000001,      upgrade.upgradeMachineStack),
         },
