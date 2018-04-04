@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: Cura 3.2\n"
 "Report-Msgid-Bugs-To: r.dulek@ultimaker.com\n"
 "POT-Creation-Date: 2018-03-29 08:36+0200\n"
-"PO-Revision-Date: 2018-04-01 18:05+0800\n"
+"PO-Revision-Date: 2018-04-04 17:41+0800\n"
 "Last-Translator: Zhang Heh Ji <dinowchang@gmail.com>\n"
 "Language-Team: Zhang Heh Ji <dinowchang@gmail.com>\n"
 "Language: zh_TW\n"
@@ -43,7 +43,7 @@ msgstr "G-code 檔案"
 #: /home/ruben/Projects/Cura/plugins/ModelChecker/ModelChecker.py:30
 msgctxt "@info:title"
 msgid "Model Checker Warning"
-msgstr ""
+msgstr "模型檢查器警告"
 
 #: /home/ruben/Projects/Cura/plugins/ModelChecker/ModelChecker.py:66
 #, python-brace-format
@@ -55,6 +55,11 @@ msgid ""
 "2) Turn the fan off (only if there are no tiny details on the model).\n"
 "3) Use a different material."
 msgstr ""
+"由於物件大小和模型所選用的耗材，某些模型可能無法理想地列印：{model_names}。\n"
+"可能有助於提高列印品質的訣竅：\n"
+"1) 使用圓角。\n"
+"2) 關閉風扇（在模型沒有微小細節的情況下）。\n"
+"3) 使用不同的耗材。"
 
 #: /home/ruben/Projects/Cura/plugins/Doodle3D-cura-plugin/Doodle3D/D3DCloudPrintOutputDevicePlugin.py:65
 msgctxt "@action:button"
@@ -161,7 +166,7 @@ msgstr "X3G 檔案"
 #: /home/ruben/Projects/Cura/plugins/GCodeGzReader/__init__.py:14
 msgctxt "@item:inlistbox"
 msgid "Compressed G-code File"
-msgstr ""
+msgstr "壓縮 G-code 檔案"
 
 #: /home/ruben/Projects/Cura/plugins/UFPWriter/__init__.py:28
 msgctxt "@item:inlistbox"
@@ -188,7 +193,7 @@ msgstr "儲存到行動裝置 {0}"
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/ClusterUM3OutputDevice.py:110
 msgctxt "@info:status"
 msgid "There are no file formats available to write with!"
-msgstr ""
+msgstr "沒有可供寫入的檔案格式！"
 
 #: /home/ruben/Projects/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:94
 #, python-brace-format
@@ -367,12 +372,12 @@ msgstr "向印表機發送存取請求"
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/LegacyUM3OutputDevice.py:198
 msgctxt "@label"
 msgid "Unable to start a new print job."
-msgstr ""
+msgstr "無法開始新的列印作業"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/LegacyUM3OutputDevice.py:200
 msgctxt "@label"
 msgid "There is an issue with the configuration of your Ultimaker, which makes it impossible to start the print. Please resolve this issues before continuing."
-msgstr ""
+msgstr "Ultimaker 的設定有問題導致無法開始列印。請在繼續之前解決這個問題。"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/LegacyUM3OutputDevice.py:206
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/LegacyUM3OutputDevice.py:228
@@ -388,7 +393,7 @@ msgstr "你確定要使用所選設定進行列印嗎？"
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/LegacyUM3OutputDevice.py:222
 msgctxt "@label"
 msgid "There is a mismatch between the configuration or calibration of the printer and Cura. For the best result, always slice for the PrintCores and materials that are inserted in your printer."
-msgstr "印表機的設定或校正與 Cura 之間不匹配。為了獲得最佳列印效果，請使用印表機的列印頭和耗材設定進行切片。"
+msgstr "印表機的設定或校正與 Cura 之間不匹配。為了獲得最佳列印效果，請使用印表機的 PrintCores 和耗材設定進行切片。"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/LegacyUM3OutputDevice.py:249
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/ClusterUM3OutputDevice.py:163
@@ -412,25 +417,25 @@ msgstr "發送資料中"
 #, python-brace-format
 msgctxt "@info:status"
 msgid "No Printcore loaded in slot {slot_number}"
-msgstr ""
+msgstr "Slot {slot_number} 中沒有載入 Printcore"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/LegacyUM3OutputDevice.py:327
 #, python-brace-format
 msgctxt "@info:status"
 msgid "No material loaded in slot {slot_number}"
-msgstr ""
+msgstr "Slot {slot_number} 中沒有載入耗材"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/LegacyUM3OutputDevice.py:350
 #, python-brace-format
 msgctxt "@label"
 msgid "Different PrintCore (Cura: {cura_printcore_name}, Printer: {remote_printcore_name}) selected for extruder {extruder_id}"
-msgstr ""
+msgstr "擠出機 {extruder_id} 選擇了不同的 PrintCore（Cura：{cura_printcore_name}，印表機：{remote_printcore_name}）"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/LegacyUM3OutputDevice.py:359
 #, python-brace-format
 msgctxt "@label"
 msgid "Different material (Cura: {0}, Printer: {1}) selected for extruder {2}"
-msgstr "你為擠出機 {2} 選擇了不同的耗材（Cura：{0}，印表機：{1}）"
+msgstr "擠出機 {2} 選擇了不同的耗材（Cura：{0}，印表機：{1}）"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/LegacyUM3OutputDevice.py:545
 msgctxt "@window:title"
@@ -445,7 +450,7 @@ msgstr "你想在 Cura 中使用目前的印表機設定嗎？"
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/LegacyUM3OutputDevice.py:549
 msgctxt "@label"
 msgid "The PrintCores and/or materials on your printer differ from those within your current project. For the best result, always slice for the PrintCores and materials that are inserted in your printer."
-msgstr "印表機上的列印頭和/或耗材與目前專案中的不同。為獲得最佳列印效果，請使用目前印表機的列印頭和耗材設定進行切片。"
+msgstr "印表機上的 PrintCores 和/或耗材與目前專案中的不同。為獲得最佳列印效果，請使用目前印表機的 PrintCores 和耗材設定進行切片。"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/ClusterUM3OutputDevice.py:78
 msgctxt "@info:status"
@@ -455,12 +460,12 @@ msgstr "透過網路連接"
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/ClusterUM3OutputDevice.py:247
 msgctxt "@info:status"
 msgid "Print job was successfully sent to the printer."
-msgstr ""
+msgstr "列印作業已成功傳送到印表機。"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/ClusterUM3OutputDevice.py:249
 msgctxt "@info:title"
 msgid "Data Sent"
-msgstr ""
+msgstr "資料傳送"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/ClusterUM3OutputDevice.py:250
 msgctxt "@action:button"
@@ -477,7 +482,7 @@ msgstr "印表機 '{printer_name}' 已完成列印 '{job_name}'。"
 #, python-brace-format
 msgctxt "@info:status"
 msgid "The print job '{job_name}' was finished."
-msgstr ""
+msgstr "列印作業 '{job_name}' 已完成。"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/ClusterUM3OutputDevice.py:341
 msgctxt "@info:status"
@@ -519,7 +524,7 @@ msgstr "無法存取更新資訊。"
 #: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/SolidWorksReader.py:579
 msgctxt "@info:status"
 msgid "SolidWorks reported errors while opening your file. We recommend to solve these issues inside SolidWorks itself."
-msgstr ""
+msgstr "SolidWorks 在開啟檔案時回報了錯誤。建議在 SolidWorks 內解決這些問題。"
 
 #: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/SolidWorksReader.py:591
 msgctxt "@info:status"
@@ -528,6 +533,9 @@ msgid ""
 "\n"
 "Thanks!"
 msgstr ""
+"在你的繪圖中找不到模型。請你再次檢查它的內容並確認裡面有一個零件或組件。\n"
+"\n"
+"謝謝！"
 
 #: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/SolidWorksReader.py:595
 msgctxt "@info:status"
@@ -536,6 +544,9 @@ msgid ""
 "\n"
 "Sorry!"
 msgstr ""
+"在你的繪圖中發現了超過一個以上的零件或組件。我們目前只支援只有正好一個零件或組件的繪圖。\n"
+"\n"
+"抱歉！"
 
 #: /home/ruben/Projects/Cura/plugins/CuraSolidWorksPlugin/__init__.py:25
 msgctxt "@item:inlistbox"
@@ -613,12 +624,12 @@ msgstr "修改 G-Code 檔案"
 #: /home/ruben/Projects/Cura/plugins/SupportEraser/__init__.py:12
 msgctxt "@label"
 msgid "Support Blocker"
-msgstr ""
+msgstr "支撐阻斷器"
 
 #: /home/ruben/Projects/Cura/plugins/SupportEraser/__init__.py:13
 msgctxt "@info:tooltip"
 msgid "Create a volume in which supports are not printed."
-msgstr ""
+msgstr "建立一塊不列印支撐的空間。"
 
 #: /home/ruben/Projects/Cura/plugins/SliceInfoPlugin/SliceInfo.py:43
 msgctxt "@info"
@@ -974,12 +985,12 @@ msgstr "不相容的耗材"
 #, python-format
 msgctxt "@info:generic"
 msgid "Settings have been changed to match the current availability of extruders: [%s]"
-msgstr ""
+msgstr "設定已改為與目前擠出機性能相匹配：[%s]"
 
 #: /home/ruben/Projects/Cura/cura/Settings/MachineManager.py:805
 msgctxt "@info:title"
 msgid "Settings updated"
-msgstr ""
+msgstr "設定更新"
 
 #: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:132
 #, python-brace-format
@@ -1016,7 +1027,7 @@ msgstr "無法從 <filename>{0}</filename> 匯入列印參數：<message>{1}</me
 #, python-brace-format
 msgctxt "@info:status Don't translate the XML tags <filename> or <message>!"
 msgid "No custom profile to import in file <filename>{0}</filename>"
-msgstr ""
+msgstr "檔案 <filename>{0}</filename> 內無自訂參數可匯入"
 
 #: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:219
 #: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:229
@@ -1029,7 +1040,7 @@ msgstr "此列印參數 <filename>{0}</filename> 含有錯誤的資料，無法�
 #, python-brace-format
 msgctxt "@info:status Don't translate the XML tags <filename> or <message>!"
 msgid "The machine defined in profile <filename>{0}</filename> ({1}) doesn't match with your current machine ({2}), could not import it."
-msgstr ""
+msgstr "參數檔案 <filename>{0}</filename> ({1}) 中定義的機器與你目前的機器 ({2}) 不匹配，無法匯入。"
 
 #: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:317
 #, python-brace-format
@@ -1074,23 +1085,23 @@ msgstr "群組 #{group_nr}"
 #: /home/ruben/Projects/Cura/cura/Machines/Models/MachineManagementModel.py:65
 msgctxt "@info:title"
 msgid "Network enabled printers"
-msgstr ""
+msgstr "網路印表機"
 
 #: /home/ruben/Projects/Cura/cura/Machines/Models/MachineManagementModel.py:80
 msgctxt "@info:title"
 msgid "Local printers"
-msgstr ""
+msgstr "本機印表機"
 
 #: /home/ruben/Projects/Cura/cura/Machines/Models/QualityManagementModel.py:108
 #, python-brace-format
 msgctxt "@item:inlistbox"
 msgid "All Supported Types ({0})"
-msgstr ""
+msgstr "所有支援的類型 ({0})"
 
 #: /home/ruben/Projects/Cura/cura/Machines/Models/QualityManagementModel.py:109
 msgctxt "@item:inlistbox"
 msgid "All Files (*)"
-msgstr ""
+msgstr "所有檔案 (*)"
 
 #: /home/ruben/Projects/Cura/cura/Machines/MaterialManager.py:511
 msgctxt "@label"
@@ -1151,7 +1162,7 @@ msgstr "無法找到位置"
 #: /home/ruben/Projects/Cura/cura/CrashHandler.py:88
 msgctxt "@title:window"
 msgid "Cura can't start"
-msgstr ""
+msgstr "Cura 無法啟動"
 
 #: /home/ruben/Projects/Cura/cura/CrashHandler.py:94
 msgctxt "@label crash message"
@@ -1162,26 +1173,31 @@ msgid ""
 "                    <p>Please send us this Crash Report to fix the problem.</p>\n"
 "                "
 msgstr ""
+"<p><b>糟糕，Ultimaker Cura 遇到了一些似乎不正常的事情。</p></b>\n"
+"                    <p>我們在啟動過程中遇到了無法修正的錯誤。這可能是由一些不正確的設定檔造成的。我們建議備份並重置您的設定。</p>\n"
+"                    <p>備份檔案可在設定資料夾中找到。</p>\n"
+"                    <p>請將錯誤報告傳送給我們以修正此問題。</p>\n"
+"                "
 
 #: /home/ruben/Projects/Cura/cura/CrashHandler.py:103
 msgctxt "@action:button"
 msgid "Send crash report to Ultimaker"
-msgstr ""
+msgstr "傳送錯誤報告給 Ultimaker"
 
 #: /home/ruben/Projects/Cura/cura/CrashHandler.py:106
 msgctxt "@action:button"
 msgid "Show detailed crash report"
-msgstr ""
+msgstr "顯示詳細的錯誤報告"
 
 #: /home/ruben/Projects/Cura/cura/CrashHandler.py:110
 msgctxt "@action:button"
 msgid "Show configuration folder"
-msgstr ""
+msgstr "顯示設定資料夾"
 
 #: /home/ruben/Projects/Cura/cura/CrashHandler.py:121
 msgctxt "@action:button"
 msgid "Backup and Reset Configuration"
-msgstr ""
+msgstr "備份和重置設定"
 
 #: /home/ruben/Projects/Cura/cura/CrashHandler.py:203
 msgctxt "@title:window"
@@ -1195,6 +1211,9 @@ msgid ""
 "            <p>Please use the \"Send report\" button to post a bug report automatically to our servers</p>\n"
 "        "
 msgstr ""
+"<p><b>Cura 發生了一個嚴重的錯誤。請將錯誤報告傳送給我們以修正此問題</p></b>\n"
+"            <p>請用\"送出報告\"按鈕自動發出一份錯誤報告到我們的伺服器</p>\n"
+"        "
 
 #: /home/ruben/Projects/Cura/cura/CrashHandler.py:231
 msgctxt "@title:groupbox"
@@ -1234,7 +1253,7 @@ msgstr "OpenGL"
 #: /home/ruben/Projects/Cura/cura/CrashHandler.py:262
 msgctxt "@label"
 msgid "Not yet initialized<br/>"
-msgstr ""
+msgstr "尚未初始化<br/>"
 
 #: /home/ruben/Projects/Cura/cura/CrashHandler.py:265
 #, python-brace-format
@@ -1498,7 +1517,7 @@ msgstr "擠出機結束 G-code"
 #: /home/ruben/Projects/Cura/plugins/ModelChecker/ModelChecker.qml:22
 msgctxt "@info:tooltip"
 msgid "Some things could be problematic in this print. Click to see tips for adjustment."
-msgstr ""
+msgstr "此列印可能會有些問題。點擊查看調整提示。"
 
 #: /home/ruben/Projects/Cura/plugins/ChangeLogPlugin/ChangeLog.qml:18
 msgctxt "@label"
@@ -1557,12 +1576,12 @@ msgstr "由於韌體遺失，導致韌體更新失敗。"
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/DiscoverUM3Action.qml:57
 msgctxt "@window:title"
 msgid "Existing Connection"
-msgstr ""
+msgstr "目前連線中"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/DiscoverUM3Action.qml:59
 msgctxt "@message:text"
 msgid "This printer/group is already added to Cura. Please select another printer/group."
-msgstr ""
+msgstr "此印表機/群組已加入 Cura。請選擇另一個印表機/群組。"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/DiscoverUM3Action.qml:76
 msgctxt "@title:window"
@@ -1731,7 +1750,7 @@ msgstr "可用"
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/PrinterInfoBlock.qml:43
 msgctxt "@label:status"
 msgid "Lost connection with the printer"
-msgstr ""
+msgstr "與印表機失去連線"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/PrinterInfoBlock.qml:45
 msgctxt "@label:status"
@@ -3465,7 +3484,7 @@ msgstr "SVG 圖標"
 #: /home/ruben/Projects/Cura/resources/qml/AboutDialog.qml:139
 msgctxt "@label"
 msgid "Linux cross-distribution application deployment"
-msgstr ""
+msgstr "Linux cross-distribution 應用程式部署"
 
 #: /home/ruben/Projects/Cura/resources/qml/Settings/SettingView.qml:42
 msgctxt "@label"
@@ -3496,7 +3515,7 @@ msgstr "將設定值複製到所有擠出機"
 #: /home/ruben/Projects/Cura/resources/qml/Settings/SettingView.qml:539
 msgctxt "@action:menu"
 msgid "Copy all changed values to all extruders"
-msgstr ""
+msgstr "複製所有改變的設定值到所有擠出機"
 
 #: /home/ruben/Projects/Cura/resources/qml/Settings/SettingView.qml:554
 msgctxt "@action:menu"
@@ -3672,17 +3691,17 @@ msgstr "擠出機"
 #: /home/ruben/Projects/Cura/resources/qml/PrinterOutput/ExtruderBox.qml:66
 msgctxt "@tooltip"
 msgid "The target temperature of the hotend. The hotend will heat up or cool down towards this temperature. If this is 0, the hotend heating is turned off."
-msgstr "加熱端的目標溫度。加熱端將加熱或冷卻至此溫度。若設定為 0，則關閉加熱端的加熱。"
+msgstr "加熱頭的目標溫度。加熱頭將加熱或冷卻至此溫度。若設定為 0，則關閉加熱頭的加熱。"
 
 #: /home/ruben/Projects/Cura/resources/qml/PrinterOutput/ExtruderBox.qml:98
 msgctxt "@tooltip"
 msgid "The current temperature of this hotend."
-msgstr ""
+msgstr "此加熱頭的目前溫度。"
 
 #: /home/ruben/Projects/Cura/resources/qml/PrinterOutput/ExtruderBox.qml:172
 msgctxt "@tooltip of temperature input"
 msgid "The temperature to pre-heat the hotend to."
-msgstr ""
+msgstr "加熱頭預熱溫度"
 
 #: /home/ruben/Projects/Cura/resources/qml/PrinterOutput/ExtruderBox.qml:336
 #: /home/ruben/Projects/Cura/resources/qml/PrinterOutput/HeatedBedBox.qml:331
@@ -3699,7 +3718,7 @@ msgstr "預熱"
 #: /home/ruben/Projects/Cura/resources/qml/PrinterOutput/ExtruderBox.qml:365
 msgctxt "@tooltip of pre-heat"
 msgid "Heat the hotend in advance before printing. You can continue adjusting your print while it is heating, and you won't have to wait for the hotend to heat up when you're ready to print."
-msgstr ""
+msgstr "列印前預先加熱。你可以在加熱時繼續調整你的列印，當你準備好列印時就不需等待加熱頭升溫。"
 
 #: /home/ruben/Projects/Cura/resources/qml/PrinterOutput/ExtruderBox.qml:401
 msgctxt "@tooltip"
@@ -3745,12 +3764,12 @@ msgstr "列印前請預熱熱床。你可以在熱床加熱時繼續調整相關
 #: /home/ruben/Projects/Cura/resources/qml/Menus/PrinterMenu.qml:25
 msgctxt "@label:category menu label"
 msgid "Network enabled printers"
-msgstr ""
+msgstr "支援網路的印表機"
 
 #: /home/ruben/Projects/Cura/resources/qml/Menus/PrinterMenu.qml:42
 msgctxt "@label:category menu label"
 msgid "Local printers"
-msgstr ""
+msgstr "本機印表機"
 
 #: /home/ruben/Projects/Cura/resources/qml/Menus/ViewMenu.qml:12
 msgctxt "@title:menu menubar:toplevel"
@@ -3780,7 +3799,7 @@ msgstr "顯現所有設定"
 #: /home/ruben/Projects/Cura/resources/qml/Menus/SettingVisibilityPresetsMenu.qml:54
 msgctxt "@action:inmenu"
 msgid "Manage Setting Visibility..."
-msgstr ""
+msgstr "管理參數顯現..."
 
 #: /home/ruben/Projects/Cura/resources/qml/Menus/ContextMenu.qml:27
 msgctxt "@label"
@@ -3802,7 +3821,7 @@ msgstr "複製個數"
 #: /home/ruben/Projects/Cura/resources/qml/Menus/ConfigurationMenu/ConfigurationListView.qml:33
 msgctxt "@label:header configurations"
 msgid "Available configurations"
-msgstr ""
+msgstr "可用的設定"
 
 #: /home/ruben/Projects/Cura/resources/qml/Menus/ConfigurationMenu/PrintCoreConfiguration.qml:28
 msgctxt "@label:extruder label"
@@ -4269,7 +4288,7 @@ msgstr ""
 #: /home/ruben/Projects/Cura/resources/qml/WorkspaceSummaryDialog.qml:138
 msgctxt "@action:label"
 msgid "Build plate"
-msgstr ""
+msgstr "列印平台"
 
 #: /home/ruben/Projects/Cura/resources/qml/WorkspaceSummaryDialog.qml:161
 msgctxt "@action:label"
@@ -4294,7 +4313,7 @@ msgstr "層高"
 #: /home/ruben/Projects/Cura/resources/qml/SidebarSimple.qml:251
 msgctxt "@tooltip"
 msgid "This quality profile is not available for you current material and nozzle configuration. Please change these to enable this quality profile"
-msgstr ""
+msgstr "品質參數不適用於目前的耗材和噴頭設定。請變更這些設定以啟用此品質參數。"
 
 #: /home/ruben/Projects/Cura/resources/qml/SidebarSimple.qml:412
 msgctxt "@tooltip"
@@ -4405,7 +4424,7 @@ msgstr "引擎日誌"
 #: /home/ruben/Projects/Cura/resources/qml/SidebarHeader.qml:58
 msgctxt "@label"
 msgid "Printer type"
-msgstr ""
+msgstr "印表機類型"
 
 #: /home/ruben/Projects/Cura/resources/qml/SidebarHeader.qml:360
 msgctxt "@label"
@@ -4470,22 +4489,22 @@ msgstr "X3D 讀取器"
 #: GCodeWriter/plugin.json
 msgctxt "description"
 msgid "Writes g-code to a file."
-msgstr ""
+msgstr "將 G-code 寫入檔案。"
 
 #: GCodeWriter/plugin.json
 msgctxt "name"
 msgid "G-code Writer"
-msgstr ""
+msgstr "G-code 寫入器"
 
 #: ModelChecker/plugin.json
 msgctxt "description"
 msgid "Checks models and print configuration for possible printing issues and give suggestions."
-msgstr ""
+msgstr "檢查模型和列印設定以了解可能發生的問題並給出建議。"
 
 #: ModelChecker/plugin.json
 msgctxt "name"
 msgid "Model Checker"
-msgstr ""
+msgstr "模器檢查器"
 
 #: cura-god-mode-plugin/src/GodMode/plugin.json
 msgctxt "description"
@@ -4660,12 +4679,12 @@ msgstr "後處理"
 #: SupportEraser/plugin.json
 msgctxt "description"
 msgid "Creates an eraser mesh to block the printing of support in certain places"
-msgstr ""
+msgstr "建立一個抹除器網格放在某些地方用來防止列印支撐"
 
 #: SupportEraser/plugin.json
 msgctxt "name"
 msgid "Support Eraser"
-msgstr ""
+msgstr "支援抹除器"
 
 #: AutoSave/plugin.json
 msgctxt "description"
