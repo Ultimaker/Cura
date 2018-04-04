@@ -14,6 +14,7 @@ import UM 1.1 as UM
 Window
 {
     id: base
+    property bool dataReady: manager.dataReady
     title: catalog.i18nc("@title:tab", "Toolbox");
     modality: Qt.ApplicationModal
     width: 800 * screenScaleFactor
@@ -40,20 +41,25 @@ Window
                 top: topBar.bottom
                 bottom: bottomBar.top
             }
+            ToolboxLoading
+            {
+                id: loading
+                visible: !dataReady && manager.currentView != "installed"
+            }
             ToolboxDownloadsPage
             {
                 id: viewDownloads
-                visible: manager.currentView != "installed" && manager.detailView == ""
+                visible: dataReady && manager.currentView != "installed" && manager.detailView == ""
             }
             ToolboxDetailsPage
             {
                 id: viewDetail
-                visible: manager.currentView != "installed" && manager.detailView != ""
+                visible: dataReady && manager.currentView != "installed" && manager.detailView != ""
             }
             ToolboxInstalledPage
             {
                 id: installedPluginList
-                visible: manager.currentView == "installed"
+                visible: dataReady && manager.currentView == "installed"
             }
         }
         ToolboxShadow

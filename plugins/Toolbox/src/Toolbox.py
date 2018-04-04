@@ -48,7 +48,7 @@ class Toolbox(QObject, Extension):
 
         # Nowadays can be 'plugins', 'materials' or 'installed'
         self._current_view = "plugins"
-        self._detail_view = False
+        self._detail_view = ""
 
         self._restart_required = False
 
@@ -291,18 +291,17 @@ class Toolbox(QObject, Extension):
 
     def setCurrentView(self, view = "plugins"):
         self._current_view = view
-        self._detail_view = False
         self.viewChanged.emit()
 
     @pyqtProperty(str, fset = setCurrentView, notify = viewChanged)
     def currentView(self):
         return self._current_view
 
-    def setDetailView(self, item = False):
-        self._detail_view = item
+    def setDetailView(self, detail_view = ""):
+        self._detail_view = detail_view
         self.detailViewChanged.emit()
 
-    @pyqtProperty(bool, fset = setDetailView, notify = detailViewChanged)
+    @pyqtProperty(str, fset = setDetailView, notify = detailViewChanged)
     def detailView(self):
         return self._detail_view
 
@@ -327,6 +326,10 @@ class Toolbox(QObject, Extension):
     @pyqtProperty(QObject, notify = packagesMetadataChanged)
     def packagesModel(self):
         return self._packages_model
+
+    @pyqtProperty(bool, notify = packagesMetadataChanged)
+    def dataReady(self):
+        return self._packages_model is not None
 
     def _checkCanUpgrade(self, id, version):
 
@@ -392,7 +395,6 @@ class Toolbox(QObject, Extension):
                     if not self._packages_model:
                         self._packages_model = CuraPackageModel()
                     self._packages_model.setPackagesMetaData(self._packages_metadata)
-                    # self._plugin_registry.addExternalPlugins(self._packages_metadata)
                     self.packagesMetadataChanged.emit()
                 except json.decoder.JSONDecodeError:
                     Logger.log("w", "Received an invalid print job state message: Not valid JSON.")
