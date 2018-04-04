@@ -40,23 +40,23 @@ Window
                 top: topBar.bottom
                 bottom: bottomBar.top
             }
-            ToolboxViewDownloads
+            ToolboxDownloadsPage
             {
                 id: viewDownloads
-                visible: manager.currentView != "installed" && !manager.detailView
+                visible: manager.currentView != "installed" && manager.detailView == ""
             }
-            ToolboxViewDetail
+            ToolboxDetailsPage
             {
                 id: viewDetail
-                visible: manager.currentView != "installed" && manager.detailView
+                visible: manager.currentView != "installed" && manager.detailView != ""
             }
-            ToolboxViewInstalled
+            ToolboxInstalledPage
             {
                 id: installedPluginList
                 visible: manager.currentView == "installed"
             }
         }
-        SectionShadow
+        ToolboxShadow
         {
             anchors
             {
@@ -67,7 +67,7 @@ Window
         {
             id: bottomBar
         }
-        SectionShadow
+        ToolboxShadow
         {
             anchors
             {

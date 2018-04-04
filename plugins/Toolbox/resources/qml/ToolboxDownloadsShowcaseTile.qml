@@ -8,12 +8,6 @@ import QtQuick.Controls 1.4
 import QtQuick.Controls.Styles 1.4
 import UM 1.1 as UM
 
-/* NOTE: This file uses the UM.Theme's "base_unit" size. It's commonly agreed
-that good design is consistent design, and since the UM.Theme's JSON file does
-not provide a method for interiting base units across the interface, adding more
-properties for severy single UI element is undesirable for both developers and
-theme makers/modfiers. Thus, "base_unit" is used wherever it can be. */
-
 Item
 {
     width: UM.Theme.getSize("toolbox_thumbnail_large").width

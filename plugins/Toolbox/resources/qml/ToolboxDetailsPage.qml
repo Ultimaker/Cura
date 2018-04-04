@@ -44,7 +44,7 @@ Item
             }
             width: UM.Theme.getSize("base_unit").width * 4
             height: UM.Theme.getSize("base_unit").height * 2
-            onClicked: manager.detailView = false
+            onClicked: manager.detailView = ""
             style: ButtonStyle
             {
                 background: Rectangle
@@ -153,17 +153,17 @@ Item
                 rightMargin: UM.Theme.getSize("double_margin").width
             }
 
-            ToolboxDetailTile {}
-            ToolboxDetailTile {}
-            ToolboxDetailTile {}
-            ToolboxDetailTile {}
-            ToolboxDetailTile {}
-            ToolboxDetailTile {}
-            ToolboxDetailTile {}
-            ToolboxDetailTile {}
-            ToolboxDetailTile {}
-            ToolboxDetailTile {}
-            ToolboxDetailTile {}
+            ToolboxDetailsTile {}
+            ToolboxDetailsTile {}
+            ToolboxDetailsTile {}
+            ToolboxDetailsTile {}
+            ToolboxDetailsTile {}
+            ToolboxDetailsTile {}
+            ToolboxDetailsTile {}
+            ToolboxDetailsTile {}
+            ToolboxDetailsTile {}
+            ToolboxDetailsTile {}
+            ToolboxDetailsTile {}
         }
         */
     }

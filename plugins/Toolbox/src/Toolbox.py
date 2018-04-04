@@ -129,7 +129,7 @@ class Toolbox(QObject, Extension):
         self.requestPackageList()
 
         if not self._dialog:
-            self._dialog = self._createDialog("PluginBrowser.qml")
+            self._dialog = self._createDialog("Toolbox.qml")
         self._dialog.show()
 
     def requestPackageList(self):

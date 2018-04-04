@@ -17,21 +17,26 @@ Rectangle {
     color: "transparent"
     height: childrenRect.height
 
-    Row {
+    Row
+    {
         spacing: 12
         height: childrenRect.height
         width: childrenRect.width
         anchors.left: parent.left
         anchors.leftMargin: UM.Theme.getSize("default_margin").width
 
-        Button {
+        Button
+        {
             text: "Plugins"
-            style: ButtonStyle {
-                background: Rectangle {
+            style: ButtonStyle
+            {
+                background: Rectangle
+                {
                     color: "transparent"
                     implicitWidth: 96
                     implicitHeight: 48
-                    Rectangle {
+                    Rectangle
+                    {
                         visible: manager.currentView == "plugins"
                         color: UM.Theme.getColor("primary")
                         anchors.bottom: parent.bottom
@@ -39,12 +44,11 @@ Rectangle {
                         height: 3
                     }
                 }
-                label: Text {
+                label: Text
+                {
                     text: control.text
                     color: UM.Theme.getColor("text")
-                    font {
-                        pixelSize: 15
-                    }
+                    font.pixelSize: 15
                     verticalAlignment: Text.AlignVCenter
                     horizontalAlignment: Text.AlignHCenter
                 }
@@ -53,17 +57,22 @@ Rectangle {
             {
                 manager.filterPackagesByType("plugin")
                 manager.currentView = "plugins"
+                manager.detailView = ""
             }
         }
 
-        Button {
+        Button
+        {
             text: "Materials"
-            style: ButtonStyle {
-                background: Rectangle {
+            style: ButtonStyle
+            {
+                background: Rectangle
+                {
                     color: "transparent"
                     implicitWidth: 96
                     implicitHeight: 48
-                    Rectangle {
+                    Rectangle
+                    {
                         visible: manager.currentView == "materials"
                         color: UM.Theme.getColor("primary")
                         anchors.bottom: parent.bottom
@@ -71,12 +80,11 @@ Rectangle {
                         height: 3
                     }
                 }
-                label: Text {
+                label: Text
+                {
                     text: control.text
                     color: UM.Theme.getColor("text")
-                    font {
-                        pixelSize: 15
-                    }
+                    font.pixelSize: 15
                     verticalAlignment: Text.AlignVCenter
                     horizontalAlignment: Text.AlignHCenter
                 }
@@ -85,16 +93,20 @@ Rectangle {
             {
                 manager.filterPackagesByType("material")
                 manager.currentView = "materials"
+                manager.detailView = ""
             }
         }
     }
 
-    Button {
+    Button
+    {
         text: "Installed"
         anchors.right: parent.right
         anchors.rightMargin: UM.Theme.getSize("default_margin").width
-        style: ButtonStyle {
-            background: Rectangle {
+        style: ButtonStyle
+        {
+            background: Rectangle
+            {
                 color: "transparent"
                 implicitWidth: 96
                 implicitHeight: 48
@@ -106,12 +118,11 @@ Rectangle {
                     height: 3
                 }
             }
-            label: Text {
+            label: Text
+            {
                 text: control.text
                 color: UM.Theme.getColor("text")
-                font {
-                    pixelSize: 15
-                }
+                font.pixelSize: 15
                 verticalAlignment: Text.AlignVCenter
                 horizontalAlignment: Text.AlignHCenter
             }

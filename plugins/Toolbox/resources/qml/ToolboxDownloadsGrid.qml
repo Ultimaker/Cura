@@ -35,7 +35,7 @@ Column
         Repeater
         {
             model: manager.packagesModel
-            delegate: ToolboxGridTile
+            delegate: ToolboxDownloadsGridTile
             {
                 Layout.preferredWidth: (grid.width - (grid.columns - 1) * grid.columnSpacing) / grid.columns
             }

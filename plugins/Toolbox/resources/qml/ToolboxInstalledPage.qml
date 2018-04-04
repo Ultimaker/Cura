@@ -28,6 +28,6 @@ ScrollView
             rightMargin: UM.Theme.getSize("default_margin").width
         }
         model: manager.pluginsModel
-        delegate: PluginEntry {}
+        delegate: ToolboxInstalledTile {}
     }
 }

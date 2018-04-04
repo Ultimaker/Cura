@@ -61,6 +61,9 @@ Item
     MouseArea
     {
         anchors.fill: parent
-        onClicked: manager.detailView = true
+        onClicked: {
+            console.log(model.id)
+            manager.detailView = model.id
+        }
     }
 }

@@ -12,7 +12,7 @@ import UM 1.1 as UM
 ScrollView
 {
     id: base
-    frameVisible: true
+    frameVisible: false
     width: parent.width
     height: parent.height
     style: UM.Theme.styles.scrollview
@@ -22,7 +22,7 @@ ScrollView
         spacing: UM.Theme.getSize("base_unit").height
         padding: UM.Theme.getSize("base_unit").height * 2
         height: childrenRect.height + 2 * padding
-        ToolboxShowcase
+        ToolboxDownloadsShowcase
         {
             id: showcase
             width: parent.width - 2 * parent.padding
@@ -33,7 +33,7 @@ ScrollView
             width: parent.width - 2 * parent.padding
             height: UM.Theme.getSize("base_unit").height / 6
         }
-        ToolboxGrid
+        ToolboxDownloadsGrid
         {
             id: allPlugins
             width: parent.width - 2 * parent.padding

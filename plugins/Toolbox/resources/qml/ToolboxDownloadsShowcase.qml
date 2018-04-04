@@ -32,8 +32,8 @@ Column
             horizontalCenter: parent.horizontalCenter
         }
 
-        ToolboxShowcaseTile {}
-        ToolboxShowcaseTile {}
-        ToolboxShowcaseTile {}
+        ToolboxDownloadsShowcaseTile {}
+        ToolboxDownloadsShowcaseTile {}
+        ToolboxDownloadsShowcaseTile {}
     }
 }
