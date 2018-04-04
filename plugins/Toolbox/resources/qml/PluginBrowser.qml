@@ -12,9 +12,10 @@ import QtQuick.Controls.Styles 1.4
 import UM 1.1 as UM
 
 Window
-    {
+{
     id: base
-    title: catalog.i18nc("@title:tab", "Plugins");
+    title: catalog.i18nc("@title:tab", "Toolbox");
+    modality: Qt.ApplicationModal
     width: 800 * screenScaleFactor
     height: 640 * screenScaleFactor
     minimumWidth: 800 * screenScaleFactor
@@ -42,18 +43,17 @@ Window
             ToolboxViewDownloads
             {
                 id: viewDownloads
-                visible: manager.viewing == "available" && manager.detailView == "" ? true : false
+                visible: manager.currentView != "installed" && !manager.detailView
             }
-
             ToolboxViewDetail
             {
                 id: viewDetail
-                visible: manager.viewing == "available" && manager.detailView != "" ? true : false
+                visible: manager.currentView != "installed" && manager.detailView
             }
             ToolboxViewInstalled
             {
                 id: installedPluginList
-                visible: manager.viewing == "installed" ? true : false
+                visible: manager.currentView == "installed"
             }
         }
         SectionShadow
@@ -74,9 +74,6 @@ Window
                 top: bottomBar.top
             }
         }
-
-
-
 
         UM.I18nCatalog { id: catalog; name: "cura" }
 

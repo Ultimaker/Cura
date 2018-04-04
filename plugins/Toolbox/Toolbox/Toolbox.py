@@ -1,5 +1,6 @@
-# Copyright (c) 2017 Ultimaker B.V.
-# PluginBrowser is released under the terms of the LGPLv3 or higher.
+# Copyright (c) 2018 Ultimaker B.V.
+# Toolbox is released under the terms of the LGPLv3 or higher.
+from typing import Dict
 
 from PyQt5.QtCore import QUrl, QObject, pyqtProperty, pyqtSignal, pyqtSlot
 from PyQt5.QtNetwork import QNetworkAccessManager, QNetworkRequest, QNetworkReply
@@ -21,30 +22,33 @@ import platform
 import zipfile
 
 from cura.CuraApplication import CuraApplication
+from .CuraPackageModel import CuraPackageModel
 
 i18n_catalog = i18nCatalog("cura")
 
-class PluginBrowser(QObject, Extension):
+##  The Toolbox class is responsible of communicating with the server through the API
+class Toolbox(QObject, Extension):
     def __init__(self, parent=None):
         super().__init__(parent)
 
-        self._api_version = 4
-        self._api_url = "http://software.ultimaker.com/cura/v%s/" % self._api_version
+        self._api_version = 1
+        self._api_url = "https://api-staging.ultimaker.com/cura-packages/v%s/" % self._api_version
 
-        self._plugin_list_request = None
+        self._package_list_request = None
         self._download_plugin_request = None
 
         self._download_plugin_reply = None
 
         self._network_manager = None
         self._plugin_registry = Application.getInstance().getPluginRegistry()
+        self._packages_version_number = self._plugin_registry.APIVersion
 
-        self._plugins_metadata = []
-        self._plugins_model = None
+        self._packages_metadata = []    # Stores the remote information of the packages
+        self._packages_model = None     # Model that list the remote available packages
 
-        # Can be 'installed' or 'available'
-        self._view = "available"
-        self._detail_view = ""
+        # Nowadays can be 'plugins', 'materials' or 'installed'
+        self._current_view = "plugins"
+        self._detail_view = False
 
         self._restart_required = False
 
@@ -81,12 +85,13 @@ class PluginBrowser(QObject, Extension):
 
     showLicenseDialog = pyqtSignal()
     showRestartDialog = pyqtSignal()
-    pluginsMetadataChanged = pyqtSignal()
+    packagesMetadataChanged = pyqtSignal()
     onDownloadProgressChanged = pyqtSignal()
     onIsDownloadingChanged = pyqtSignal()
     restartRequiredChanged = pyqtSignal()
     viewChanged = pyqtSignal()
     detailViewChanged = pyqtSignal()
+    filterChanged = pyqtSignal()
 
     @pyqtSlot(result = str)
     def getLicenseDialogPluginName(self):
@@ -119,21 +124,20 @@ class PluginBrowser(QObject, Extension):
         return self._is_downloading
 
     @pyqtSlot()
-    def browsePlugins(self):
+    def browsePackages(self):
         self._createNetworkManager()
-        self.requestPluginList()
+        self.requestPackageList()
 
         if not self._dialog:
             self._dialog = self._createDialog("PluginBrowser.qml")
         self._dialog.show()
 
-    @pyqtSlot()
-    def requestPluginList(self):
-        Logger.log("i", "Requesting plugin list")
-        url = QUrl(self._api_url + "plugins")
-        self._plugin_list_request = QNetworkRequest(url)
-        self._plugin_list_request.setRawHeader(*self._request_header)
-        self._network_manager.get(self._plugin_list_request)
+    def requestPackageList(self):
+        Logger.log("i", "Requesting package list")
+        url = QUrl("{base_url}packages?cura_version={version}".format(base_url = self._api_url, version = self._packages_version_number))
+        self._package_list_request = QNetworkRequest(url)
+        self._package_list_request.setRawHeader(*self._request_header)
+        self._network_manager.get(self._package_list_request)
 
     def _createDialog(self, qml_name):
         Logger.log("d", "Creating dialog [%s]", qml_name)
@@ -217,19 +221,18 @@ class PluginBrowser(QObject, Extension):
         result = PluginRegistry.getInstance().installPlugin("file://" + location)
 
         self._newly_installed_plugin_ids.append(result["id"])
-        self.pluginsMetadataChanged.emit()
+        self.packagesMetadataChanged.emit()
 
         self.openRestartDialog(result["message"])
         self._restart_required = True
         self.restartRequiredChanged.emit()
-        # Application.getInstance().messageBox(i18n_catalog.i18nc("@window:title", "Plugin browser"), result["message"])
 
     @pyqtSlot(str)
     def removePlugin(self, plugin_id):
         result = PluginRegistry.getInstance().uninstallPlugin(plugin_id)
 
         self._newly_uninstalled_plugin_ids.append(result["id"])
-        self.pluginsMetadataChanged.emit()
+        self.packagesMetadataChanged.emit()
 
         self._restart_required = True
         self.restartRequiredChanged.emit()
@@ -239,13 +242,13 @@ class PluginBrowser(QObject, Extension):
     @pyqtSlot(str)
     def enablePlugin(self, plugin_id):
         self._plugin_registry.enablePlugin(plugin_id)
-        self.pluginsMetadataChanged.emit()
+        self.packagesMetadataChanged.emit()
         Logger.log("i", "%s was set as 'active'", id)
 
     @pyqtSlot(str)
     def disablePlugin(self, plugin_id):
         self._plugin_registry.disablePlugin(plugin_id)
-        self.pluginsMetadataChanged.emit()
+        self.packagesMetadataChanged.emit()
         Logger.log("i", "%s was set as 'deactive'", id)
 
     @pyqtProperty(int, notify = onDownloadProgressChanged)
@@ -280,28 +283,32 @@ class PluginBrowser(QObject, Extension):
         self.setIsDownloading(False)
 
     @pyqtSlot(str)
-    def setView(self, view = "available"):
-        self._view = view
+    def filterPackagesByType(self, type):
+        if not self._packages_model:
+            return
+        self._packages_model.setFilter({"type": type})
+        self.filterChanged.emit()
+
+    def setCurrentView(self, view = "plugins"):
+        self._current_view = view
+        self._detail_view = False
         self.viewChanged.emit()
-        self.pluginsMetadataChanged.emit()
 
-    @pyqtProperty(str, notify = viewChanged)
-    def viewing(self):
-        return self._view
+    @pyqtProperty(str, fset = setCurrentView, notify = viewChanged)
+    def currentView(self):
+        return self._current_view
 
-    @pyqtSlot(str)
-    def setDetailView(self, item = ""):
+    def setDetailView(self, item = False):
         self._detail_view = item
         self.detailViewChanged.emit()
-        self.pluginsMetadataChanged.emit()
 
-    @pyqtProperty(str, notify = detailViewChanged)
+    @pyqtProperty(bool, fset = setDetailView, notify = detailViewChanged)
     def detailView(self):
         return self._detail_view
 
-    @pyqtProperty(QObject, notify = pluginsMetadataChanged)
+    @pyqtProperty(QObject, notify = packagesMetadataChanged)
     def pluginsModel(self):
-        self._plugins_model = PluginsModel(None, self._view)
+        self._plugins_model = PluginsModel(None, self._current_view)
         # self._plugins_model.update()
 
         # Check each plugin the registry for matching plugin from server
@@ -311,20 +318,22 @@ class PluginBrowser(QObject, Extension):
             if self._checkCanUpgrade(plugin["id"], plugin["version"]):
                 plugin["can_upgrade"] = True
 
-                for item in self._plugins_metadata:
+                for item in self._packages_metadata:
                     if item["id"] == plugin["id"]:
                         plugin["update_url"] = item["file_location"]
 
         return self._plugins_model
 
-
+    @pyqtProperty(QObject, notify = packagesMetadataChanged)
+    def packagesModel(self):
+        return self._packages_model
 
     def _checkCanUpgrade(self, id, version):
 
         # TODO: This could maybe be done more efficiently using a dictionary...
 
         # Scan plugin server data for plugin with the given id:
-        for plugin in self._plugins_metadata:
+        for plugin in self._packages_metadata:
             if id == plugin["id"]:
                 reg_version = Version(version)
                 new_version = Version(plugin["version"])
@@ -374,14 +383,17 @@ class PluginBrowser(QObject, Extension):
             return
 
         if reply.operation() == QNetworkAccessManager.GetOperation:
-            if reply_url == self._api_url + "plugins":
+            if reply_url == "{base_url}packages?cura_version={version}".format(base_url = self._api_url, version = self._packages_version_number):
                 try:
                     json_data = json.loads(bytes(reply.readAll()).decode("utf-8"))
 
                     # Add metadata to the manager:
-                    self._plugins_metadata = json_data
-                    self._plugin_registry.addExternalPlugins(self._plugins_metadata)
-                    self.pluginsMetadataChanged.emit()
+                    self._packages_metadata = json_data["data"]
+                    if not self._packages_model:
+                        self._packages_model = CuraPackageModel()
+                    self._packages_model.setPackagesMetaData(self._packages_metadata)
+                    # self._plugin_registry.addExternalPlugins(self._packages_metadata)
+                    self.packagesMetadataChanged.emit()
                 except json.decoder.JSONDecodeError:
                     Logger.log("w", "Received an invalid print job state message: Not valid JSON.")
                     return

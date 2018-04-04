@@ -13,7 +13,7 @@ Item
 {
     id: base
     height: childrenRect.height
-    Layout.fillWidth: true
+    Layout.alignment: Qt.AlignTop | Qt.AlignLeft
     Row
     {
         width: parent.width
@@ -29,22 +29,28 @@ Item
         }
         Column
         {
-            width: UM.Theme.getSize("base_unit").width * 12
+            width: parent.width - thumbnail.width - parent.spacing
+            spacing: Math.floor(UM.Theme.getSize("base_unit").width / 2)
             Label
             {
                 id: name
-                text: "Auto Orientation"
+                text: model.name
                 width: parent.width
                 wrapMode: Text.WordWrap
-                height: UM.Theme.getSize("base_unit").height * 2
-                verticalAlignment: Text.AlignVCenter
                 color: UM.Theme.getColor("text")
                 font: UM.Theme.getFont("default_bold")
             }
             Label
             {
                 id: info
-                text: "Automatically orientate your model."
+                text:
+                {
+                    if (model.description.length > 50)
+                    {
+                        return model.description.substring(0, 50) + "..."
+                    }
+                    return model.description
+                }
                 width: parent.width
                 wrapMode: Text.WordWrap
                 color: UM.Theme.getColor("text_medium")
@@ -55,8 +61,6 @@ Item
     MouseArea
     {
         anchors.fill: parent
-        onClicked: {
-            manager.setDetailView("thingy")
-        }
+        onClicked: manager.detailView = true
     }
 }

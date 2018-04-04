@@ -32,7 +32,7 @@ Rectangle {
                     implicitWidth: 96
                     implicitHeight: 48
                     Rectangle {
-                        visible: manager.viewing == "available" ? true : false
+                        visible: manager.currentView == "plugins"
                         color: UM.Theme.getColor("primary")
                         anchors.bottom: parent.bottom
                         width: parent.width
@@ -49,7 +49,11 @@ Rectangle {
                     horizontalAlignment: Text.AlignHCenter
                 }
             }
-            onClicked: manager.setView("available")
+            onClicked:
+            {
+                manager.filterPackagesByType("plugin")
+                manager.currentView = "plugins"
+            }
         }
 
         Button {
@@ -60,7 +64,7 @@ Rectangle {
                     implicitWidth: 96
                     implicitHeight: 48
                     Rectangle {
-                        visible: manager.viewing == "available" ? true : false
+                        visible: manager.currentView == "materials"
                         color: UM.Theme.getColor("primary")
                         anchors.bottom: parent.bottom
                         width: parent.width
@@ -77,7 +81,11 @@ Rectangle {
                     horizontalAlignment: Text.AlignHCenter
                 }
             }
-            onClicked: manager.setView("available")
+            onClicked:
+            {
+                manager.filterPackagesByType("material")
+                manager.currentView = "materials"
+            }
         }
     }
 
@@ -91,7 +99,7 @@ Rectangle {
                 implicitWidth: 96
                 implicitHeight: 48
                 Rectangle {
-                    visible: manager.viewing == "installed" ? true : false
+                    visible: manager.currentView == "installed"
                     color: UM.Theme.getColor("primary")
                     anchors.bottom: parent.bottom
                     width: parent.width
@@ -108,6 +116,6 @@ Rectangle {
                 horizontalAlignment: Text.AlignHCenter
             }
         }
-        onClicked: manager.setView("installed")
+        onClicked: manager.currentView = "installed"
     }
 }

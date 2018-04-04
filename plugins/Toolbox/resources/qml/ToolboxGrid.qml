@@ -11,41 +11,34 @@ import UM 1.1 as UM
 
 // TODO: Switch to QtQuick.Controls 2.x and remove QtQuick.Controls.Styles
 
-Rectangle
+Column
 {
     id: base
-    width: parent.width
-    height: childrenRect.height + UM.Theme.getSize("double_margin").height * 8
-    color: "transparent"
+    height: childrenRect.height
+    spacing: UM.Theme.getSize("base_unit").height
     Label
     {
         id: heading
         text: "Community Plugins"
         width: parent.width
-        height: UM.Theme.getSize("base_unit").width * 4
-        verticalAlignment: Text.AlignVCenter
         color: UM.Theme.getColor("text_medium")
         font: UM.Theme.getFont("medium")
     }
     GridLayout
     {
         id: grid
-        width: base.width
-        anchors
-        {
-            top: heading.bottom
-        }
+        width: parent.width
         columns: 3
         columnSpacing: UM.Theme.getSize("base_unit").width
         rowSpacing: UM.Theme.getSize("base_unit").height
 
-        ToolboxGridTile {}
-        ToolboxGridTile {}
-        ToolboxGridTile {}
-        ToolboxGridTile {}
-        ToolboxGridTile {}
-        ToolboxGridTile {}
-        ToolboxGridTile {}
-        ToolboxGridTile {}
+        Repeater
+        {
+            model: manager.packagesModel
+            delegate: ToolboxGridTile
+            {
+                Layout.preferredWidth: (grid.width - (grid.columns - 1) * grid.columnSpacing) / grid.columns
+            }
+        }
     }
 }

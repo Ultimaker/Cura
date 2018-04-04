@@ -10,45 +10,30 @@ import UM 1.1 as UM
 
 // TODO: Switch to QtQuick.Controls 2.x and remove QtQuick.Controls.Styles
 
-Rectangle
+Column
 {
     id: base
-    width: parent.width
     height: childrenRect.height
-    color: "transparent"
+    spacing: UM.Theme.getSize("base_unit").height
     Label
     {
         id: heading
         text: "Top Downloads"
         width: parent.width
-        height: UM.Theme.getSize("base_unit").width * 4
-        verticalAlignment: Text.AlignVCenter
         color: UM.Theme.getColor("text_medium")
         font: UM.Theme.getFont("medium")
     }
     Row
     {
         height: childrenRect.height
-        width: childrenRect.width
         spacing: UM.Theme.getSize("base_unit").width * 2
         anchors
         {
             horizontalCenter: parent.horizontalCenter
-            top: heading.bottom    
         }
 
         ToolboxShowcaseTile {}
         ToolboxShowcaseTile {}
         ToolboxShowcaseTile {}
-    }
-    Rectangle
-    {
-        color: UM.Theme.getColor("text_medium")
-        width: parent.width
-        height: UM.Theme.getSize("base_unit").height / 6
-        anchors
-        {
-            bottom: parent.bottom
-        }
     }
 }
