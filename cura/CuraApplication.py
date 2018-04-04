@@ -132,19 +132,21 @@ class CuraApplication(QtApplication):
         QmlFiles = Resources.UserType + 1
         Firmware = Resources.UserType + 2
         QualityInstanceContainer = Resources.UserType + 3
-        MaterialInstanceContainer = Resources.UserType + 4
-        VariantInstanceContainer = Resources.UserType + 5
-        UserInstanceContainer = Resources.UserType + 6
-        MachineStack = Resources.UserType + 7
-        ExtruderStack = Resources.UserType + 8
-        DefinitionChangesContainer = Resources.UserType + 9
-        SettingVisibilityPreset = Resources.UserType + 10
+        QualityChangesInstanceContainer = Resources.UserType + 4
+        MaterialInstanceContainer = Resources.UserType + 5
+        VariantInstanceContainer = Resources.UserType + 6
+        UserInstanceContainer = Resources.UserType + 7
+        MachineStack = Resources.UserType + 8
+        ExtruderStack = Resources.UserType + 9
+        DefinitionChangesContainer = Resources.UserType + 10
+        SettingVisibilityPreset = Resources.UserType + 11
+        CuraPackages = Resources.UserType + 12
 
     Q_ENUMS(ResourceTypes)
 
     def __init__(self, **kwargs):
         # this list of dir names will be used by UM to detect an old cura directory
-        for dir_name in ["extruders", "machine_instances", "materials", "plugins", "quality", "user", "variants"]:
+        for dir_name in ["extruders", "machine_instances", "materials", "plugins", "quality", "quality_changes", "user", "variants"]:
             Resources.addExpectedDirNameInData(dir_name)
 
         Resources.addSearchPath(os.path.join(QtApplication.getInstallPrefix(), "share", "cura", "resources"))
@@ -180,6 +182,7 @@ class CuraApplication(QtApplication):
 
         ## Add the 4 types of profiles to storage.
         Resources.addStorageType(self.ResourceTypes.QualityInstanceContainer, "quality")
+        Resources.addStorageType(self.ResourceTypes.QualityChangesInstanceContainer, "quality_changes")
         Resources.addStorageType(self.ResourceTypes.VariantInstanceContainer, "variants")
         Resources.addStorageType(self.ResourceTypes.MaterialInstanceContainer, "materials")
         Resources.addStorageType(self.ResourceTypes.UserInstanceContainer, "user")
@@ -187,9 +190,10 @@ class CuraApplication(QtApplication):
         Resources.addStorageType(self.ResourceTypes.MachineStack, "machine_instances")
         Resources.addStorageType(self.ResourceTypes.DefinitionChangesContainer, "definition_changes")
         Resources.addStorageType(self.ResourceTypes.SettingVisibilityPreset, "setting_visibility")
+        Resources.addStorageType(self.ResourceTypes.CuraPackages, "cura_packages")
 
         ContainerRegistry.getInstance().addResourceType(self.ResourceTypes.QualityInstanceContainer, "quality")
-        ContainerRegistry.getInstance().addResourceType(self.ResourceTypes.QualityInstanceContainer, "quality_changes")
+        ContainerRegistry.getInstance().addResourceType(self.ResourceTypes.QualityChangesInstanceContainer, "quality_changes")
         ContainerRegistry.getInstance().addResourceType(self.ResourceTypes.VariantInstanceContainer, "variant")
         ContainerRegistry.getInstance().addResourceType(self.ResourceTypes.MaterialInstanceContainer, "material")
         ContainerRegistry.getInstance().addResourceType(self.ResourceTypes.UserInstanceContainer, "user")
@@ -203,7 +207,7 @@ class CuraApplication(QtApplication):
 
         UM.VersionUpgradeManager.VersionUpgradeManager.getInstance().setCurrentVersions(
             {
-                ("quality_changes", InstanceContainer.Version * 1000000 + self.SettingVersion):    (self.ResourceTypes.QualityInstanceContainer, "application/x-uranium-instancecontainer"),
+                ("quality_changes", InstanceContainer.Version * 1000000 + self.SettingVersion):    (self.ResourceTypes.QualityChangesInstanceContainer, "application/x-uranium-instancecontainer"),
                 ("machine_stack", ContainerStack.Version * 1000000 + self.SettingVersion):         (self.ResourceTypes.MachineStack, "application/x-cura-globalstack"),
                 ("extruder_train", ContainerStack.Version * 1000000 + self.SettingVersion):        (self.ResourceTypes.ExtruderStack, "application/x-cura-extruderstack"),
                 ("preferences", Preferences.Version * 1000000 + self.SettingVersion):              (Resources.Preferences, "application/x-uranium-preferences"),

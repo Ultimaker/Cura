@@ -676,7 +676,7 @@ class CuraContainerRegistry(ContainerRegistry):
         return extruder_stack
 
     def _findQualityChangesContainerInCuraFolder(self, name):
-        quality_changes_dir = Resources.getPath(CuraApplication.ResourceTypes.QualityInstanceContainer)
+        quality_changes_dir = Resources.getPath(CuraApplication.ResourceTypes.QualityChangesInstanceContainer)
 
         instance_container = None
 
