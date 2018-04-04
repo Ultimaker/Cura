@@ -534,7 +534,9 @@ class CuraApplication(QtApplication):
         self._plugins_loaded = True
 
     @classmethod
-    def addCommandLineOptions(self, parser, parsed_command_line = {}):
+    def addCommandLineOptions(cls, parser, parsed_command_line = None):
+        if parsed_command_line is None:
+            parsed_command_line = {}
         super().addCommandLineOptions(parser, parsed_command_line = parsed_command_line)
         parser.add_argument("file", nargs="*", help="Files to load after starting the application.")
         parser.add_argument("--single-instance", action="store_true", default=False)
@@ -591,7 +593,10 @@ class CuraApplication(QtApplication):
     #   This should be called directly before creating an instance of CuraApplication.
     #   \returns \type{bool} True if the whole Cura app should continue running.
     @classmethod
-    def preStartUp(cls, parser = None, parsed_command_line = {}):
+    def preStartUp(cls, parser = None, parsed_command_line = None):
+        if parsed_command_line is None:
+            parsed_command_line = {}
+
         # Peek the arguments and look for the 'single-instance' flag.
         if not parser:
             parser = argparse.ArgumentParser(prog = "cura", add_help = False)  # pylint: disable=bad-whitespace

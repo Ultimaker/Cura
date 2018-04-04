@@ -2,7 +2,6 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import os
-import os.path
 import re
 import configparser
 
