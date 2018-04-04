@@ -12,7 +12,7 @@ import QtQuick.Controls.Styles 1.4
 import UM 1.1 as UM
 
 Window
-    {
+{
     id: base
     title: catalog.i18nc("@title:tab", "Toolbox");
     modality: Qt.ApplicationModal
@@ -74,9 +74,6 @@ Window
                 top: bottomBar.top
             }
         }
-
-
-
 
         UM.I18nCatalog { id: catalog; name: "cura" }
 

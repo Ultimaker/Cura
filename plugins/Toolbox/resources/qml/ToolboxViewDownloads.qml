@@ -1,7 +1,7 @@
 // Copyright (c) 2018 Ultimaker B.V.
 // PluginBrowser is released under the terms of the LGPLv3 or higher.
 
-import QtQuick 2.2
+import QtQuick 2.7
 import QtQuick.Dialogs 1.1
 import QtQuick.Controls 1.4
 import QtQuick.Controls.Styles 1.4
@@ -12,29 +12,31 @@ import UM 1.1 as UM
 ScrollView
 {
     id: base
-    frameVisible: false
-    anchors.fill: parent
+    frameVisible: true
+    width: parent.width
+    height: parent.height
     style: UM.Theme.styles.scrollview
     Column
     {
         width: base.width
         spacing: UM.Theme.getSize("base_unit").height
-        height: childrenRect.height
-        anchors
-        {
-            fill: parent
-            topMargin: UM.Theme.getSize("base_unit").height
-            bottomMargin: UM.Theme.getSize("base_unit").height
-            leftMargin: UM.Theme.getSize("base_unit").width * 2
-            rightMargin: UM.Theme.getSize("base_unit").width * 2
-        }
+        padding: UM.Theme.getSize("base_unit").height * 2
+        height: childrenRect.height + 2 * padding
         ToolboxShowcase
         {
             id: showcase
+            width: parent.width - 2 * parent.padding
+        }
+        Rectangle
+        {
+            color: UM.Theme.getColor("text_medium")
+            width: parent.width - 2 * parent.padding
+            height: UM.Theme.getSize("base_unit").height / 6
         }
         ToolboxGrid
         {
             id: allPlugins
+            width: parent.width - 2 * parent.padding
         }
     }
 }
