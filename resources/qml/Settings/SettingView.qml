@@ -610,7 +610,7 @@ Item
                 MenuItem
                 {
                     text: catalog.i18nc("@action:inmenu", "Expand All")
-                    onTriggered: definitionsModel.expandAll()
+                    onTriggered: definitionsModel.expandRecursive()
                 }
             }
 
