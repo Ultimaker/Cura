@@ -302,7 +302,7 @@ class Toolbox(QObject, Extension):
         self._detail_view = bool
         self.detailViewChanged.emit()
 
-    @pyqtProperty(str, fset = setDetailView, notify = detailViewChanged)
+    @pyqtProperty(bool, fset = setDetailView, notify = detailViewChanged)
     def detailView(self):
         return self._detail_view
 
@@ -311,13 +311,13 @@ class Toolbox(QObject, Extension):
     def setDetailData(self, id):
         if not self._packages_model:
             return
-        for plugin in self._plugins_model.items:
-            if plugin.id is id:
-                print(plugin)
-                self._detail_view = plugin
+        for package in self._packages_model.items:
+            if package["id"] == id:
+                print(package)
+                self._detail_data = package
                 self.detailViewChanged.emit()
 
-    @pyqtProperty(QObject, notify = detailViewChanged)
+    @pyqtProperty("QVariantMap", notify = detailViewChanged)
     def detailData(self):
         return self._detail_data
 
@@ -336,7 +336,10 @@ class Toolbox(QObject, Extension):
                 for item in self._packages_metadata:
                     if item["id"] == plugin["id"]:
                         plugin["update_url"] = item["file_location"]
-
+        if self._current_view == "plugins":
+            self.filterPackagesByType("plugin")
+        elif self._current_view == "materials":
+            self.filterPackagesByType("material")
         return self._plugins_model
 
     @pyqtProperty(QObject, notify = packagesMetadataChanged)

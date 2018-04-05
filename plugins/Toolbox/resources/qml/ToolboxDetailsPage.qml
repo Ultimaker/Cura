@@ -72,12 +72,13 @@ Item
             right: parent.right
         }
         height: UM.Theme.getSize("base_unit").height * 12
-        Rectangle
+        Image
         {
             id: thumbnail
             width: UM.Theme.getSize("toolbox_thumbnail_medium").width
             height: UM.Theme.getSize("toolbox_thumbnail_medium").height
-            color: "grey"
+            fillMode: Image.PreserveAspectFit
+            source: manager.detailData["icon_url"] || "../images/logobot.svg"
             anchors
             {
                 top: parent.top
@@ -99,21 +100,21 @@ Item
             spacing: Math.floor(UM.Theme.getSize("default_margin").height/2)
             Label
             {
-                text: "DSM"
+                text: manager.detailData["type"] == "material" ? manager.detailData["author"] : manager.detailData["name"]
                 font: UM.Theme.getFont("large")
                 wrapMode: Text.WordWrap
                 width: parent.width
             }
             Label
             {
-                text: "Sets the horizontal and vertical alignment of the text within the Text items width and height. By default, the text is vertically aligned to the top."
+                text: manager.detailData["description"]
                 font: UM.Theme.getFont("default")
                 wrapMode: Text.WordWrap
                 width: parent.width
             }
             Label
             {
-                text: "Author: " + "DSM"
+                text: "Author: " + manager.detailData["author"]["name"]
                 font: UM.Theme.getFont("small")
                 wrapMode: Text.WordWrap
                 width: parent.width

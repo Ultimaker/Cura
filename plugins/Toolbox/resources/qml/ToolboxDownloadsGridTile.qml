@@ -26,6 +26,13 @@ Item
             height: UM.Theme.getSize("toolbox_thumbnail_small").height
             color: "white"
             border.width: 1
+            Image {
+                anchors.centerIn: parent
+                width: UM.Theme.getSize("toolbox_thumbnail_small").width - 26
+                height: UM.Theme.getSize("toolbox_thumbnail_small").height - 26
+                fillMode: Image.PreserveAspectFit
+                source: model.icon_url || "../images/logobot.svg"
+            }
         }
         Column
         {

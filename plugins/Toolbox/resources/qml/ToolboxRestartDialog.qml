@@ -6,9 +6,6 @@ import QtQuick.Dialogs 1.1
 import QtQuick.Window 2.2
 import QtQuick.Controls 1.4
 import QtQuick.Controls.Styles 1.4
-
-// TODO: Switch to QtQuick.Controls 2.x and remove QtQuick.Controls.Styles
-
 import UM 1.1 as UM
 
 Window {

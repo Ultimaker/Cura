@@ -17,10 +17,10 @@ Window
     property bool dataReady: manager.dataReady
     title: catalog.i18nc("@title:tab", "Toolbox");
     modality: Qt.ApplicationModal
-    width: 800 * screenScaleFactor
+    width: 960 * screenScaleFactor
     height: 640 * screenScaleFactor
-    minimumWidth: 800 * screenScaleFactor
-    maximumWidth: 800 * screenScaleFactor
+    minimumWidth: 960 * screenScaleFactor
+    maximumWidth: 960 * screenScaleFactor
     minimumHeight: 350 * screenScaleFactor
     color: UM.Theme.getColor("sidebar")
     Item
