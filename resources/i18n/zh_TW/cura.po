@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: Cura 3.2\n"
 "Report-Msgid-Bugs-To: r.dulek@ultimaker.com\n"
 "POT-Creation-Date: 2018-03-29 08:36+0200\n"
-"PO-Revision-Date: 2018-04-04 17:43+0800\n"
+"PO-Revision-Date: 2018-04-05 17:31+0800\n"
 "Last-Translator: Zhang Heh Ji <dinowchang@gmail.com>\n"
 "Language-Team: Zhang Heh Ji <dinowchang@gmail.com>\n"
 "Language: zh_TW\n"
@@ -2931,7 +2931,7 @@ msgstr "以紅色凸顯模型缺少支撐的區域。如果沒有支撐這些區
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:337
 msgctxt "@option:check"
 msgid "Display overhang"
-msgstr "顯示懸垂（Overhang）"
+msgstr "顯示突出部分"
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:344
 msgctxt "@info:tooltip"
@@ -4363,7 +4363,7 @@ msgstr "產生支撐"
 #: /home/ruben/Projects/Cura/resources/qml/SidebarSimple.qml:850
 msgctxt "@label"
 msgid "Generate structures to support parts of the model which have overhangs. Without these structures, such parts would collapse during printing."
-msgstr "在模型的懸垂（Overhangs）部分產生支撐結構。若不這樣做，這些部分在列印時將倒塌。"
+msgstr "在模型的突出部分產生支撐結構。若不這樣做，這些部分在列印時將倒塌。"
 
 #: /home/ruben/Projects/Cura/resources/qml/SidebarSimple.qml:922
 msgctxt "@label"
