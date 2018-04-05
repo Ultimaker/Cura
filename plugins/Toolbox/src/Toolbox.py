@@ -48,7 +48,8 @@ class Toolbox(QObject, Extension):
 
         # Nowadays can be 'plugins', 'materials' or 'installed'
         self._current_view = "plugins"
-        self._detail_view = ""
+        self._detail_view = False
+        self._detail_data = {}
 
         self._restart_required = False
 
@@ -297,13 +298,28 @@ class Toolbox(QObject, Extension):
     def currentView(self):
         return self._current_view
 
-    def setDetailView(self, detail_view = ""):
-        self._detail_view = detail_view
+    def setDetailView(self, bool = False):
+        self._detail_view = bool
         self.detailViewChanged.emit()
 
     @pyqtProperty(str, fset = setDetailView, notify = detailViewChanged)
     def detailView(self):
         return self._detail_view
+
+    # Set the detail data given a plugin ID:
+    @pyqtSlot(str)
+    def setDetailData(self, id):
+        if not self._packages_model:
+            return
+        for plugin in self._plugins_model.items:
+            if plugin.id is id:
+                print(plugin)
+                self._detail_view = plugin
+                self.detailViewChanged.emit()
+
+    @pyqtProperty(QObject, notify = detailViewChanged)
+    def detailData(self):
+        return self._detail_data
 
     @pyqtProperty(QObject, notify = packagesMetadataChanged)
     def pluginsModel(self):

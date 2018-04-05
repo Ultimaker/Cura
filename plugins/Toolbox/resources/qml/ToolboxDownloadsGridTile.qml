@@ -63,7 +63,8 @@ Item
         anchors.fill: parent
         onClicked: {
             console.log(model.id)
-            manager.detailView = model.id
+            manager.detailView = true
+            manager.setDetailData(model.id)
         }
     }
 }

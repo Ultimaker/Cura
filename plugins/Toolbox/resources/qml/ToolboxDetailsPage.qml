@@ -44,7 +44,7 @@ Item
             }
             width: UM.Theme.getSize("base_unit").width * 4
             height: UM.Theme.getSize("base_unit").height * 2
-            onClicked: manager.detailView = ""
+            onClicked: manager.detailView = false
             style: ButtonStyle
             {
                 background: Rectangle

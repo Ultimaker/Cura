@@ -49,12 +49,12 @@ Window
             ToolboxDownloadsPage
             {
                 id: viewDownloads
-                visible: dataReady && manager.currentView != "installed" && manager.detailView == ""
+                visible: manager.currentView != "installed" && !manager.detailView
             }
             ToolboxDetailsPage
             {
                 id: viewDetail
-                visible: dataReady && manager.currentView != "installed" && manager.detailView != ""
+                visible: manager.currentView != "installed" && manager.detailView
             }
             ToolboxInstalledPage
             {

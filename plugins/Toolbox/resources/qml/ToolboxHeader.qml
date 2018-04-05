@@ -57,7 +57,7 @@ Rectangle {
             {
                 manager.filterPackagesByType("plugin")
                 manager.currentView = "plugins"
-                manager.detailView = ""
+                manager.detailView = false
             }
         }
 
@@ -93,7 +93,7 @@ Rectangle {
             {
                 manager.filterPackagesByType("material")
                 manager.currentView = "materials"
-                manager.detailView = ""
+                manager.detailView = false
             }
         }
     }
