@@ -106,6 +106,7 @@ import copy
 import os
 import argparse
 import json
+import time
 
 
 numpy.seterr(all="ignore")
@@ -143,6 +144,7 @@ class CuraApplication(QtApplication):
     Q_ENUMS(ResourceTypes)
 
     def __init__(self, **kwargs):
+        self._boot_loading_time = time.time()
         # this list of dir names will be used by UM to detect an old cura directory
         for dir_name in ["extruders", "machine_instances", "materials", "plugins", "quality", "user", "variants"]:
             Resources.addExpectedDirNameInData(dir_name)
@@ -697,6 +699,7 @@ class CuraApplication(QtApplication):
 
         self.started = True
         self.initializationFinished.emit()
+        Logger.log("d", "Booting Cura took %s seconds", time.time() - self._boot_loading_time)
         self.exec_()
 
     initializationFinished = pyqtSignal()
