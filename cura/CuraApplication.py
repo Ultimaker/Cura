@@ -233,6 +233,7 @@ class CuraApplication(QtApplication):
         self._simple_mode_settings_manager = None
         self._cura_scene_controller = None
         self._machine_error_checker = None
+        self._cura_package_manager = None
 
         self._additional_components = {} # Components to add to certain areas in the interface
 
@@ -649,6 +650,10 @@ class CuraApplication(QtApplication):
 
         container_registry = ContainerRegistry.getInstance()
 
+        from cura.CuraPackageManager import CuraPackageManager
+        self._cura_package_manager = CuraPackageManager(self)
+        self._cura_package_manager.initialize()
+
         Logger.log("i", "Initializing variant manager")
         self._variant_manager = VariantManager(container_registry)
         self._variant_manager.initialize()
@@ -785,6 +790,10 @@ class CuraApplication(QtApplication):
         if self._extruder_manager is None:
             self._extruder_manager = ExtruderManager.createExtruderManager()
         return self._extruder_manager
+
+    @pyqtSlot(result = QObject)
+    def getCuraPackageManager(self, *args):
+        return self._cura_package_manager
 
     def getVariantManager(self, *args):
         return self._variant_manager
