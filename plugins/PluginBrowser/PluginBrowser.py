@@ -301,16 +301,18 @@ class PluginBrowser(QObject, Extension):
 
         return self._plugins_model
 
-    def _checkCanUpgrade(self, id, version):
-        # TODO: This could maybe be done more efficiently using a dictionary...
+    def _checkCanUpgrade(self, plugin_id, version):
+        if plugin_id not in self._plugin_registry.getInstalledPlugins():
+            return False
 
+        plugin_object = self._plugin_registry.getPluginObject(plugin_id)
         # Scan plugin server data for plugin with the given id:
         for plugin in self._plugins_metadata:
-            if id == plugin["id"]:
-                reg_version = Version(version)
+            if plugin_id == plugin["id"]:
+                reg_version = Version(plugin_object.getVersion())
                 new_version = Version(plugin["version"])
                 if new_version > reg_version:
-                    Logger.log("i", "%s has an update availible: %s", plugin["id"], plugin["version"])
+                    Logger.log("i", "%s has an update available: %s", plugin["id"], plugin["version"])
                     return True
         return False
 
