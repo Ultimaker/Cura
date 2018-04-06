@@ -12,9 +12,11 @@ import xml.etree.ElementTree as ET
 from UM.Workspace.WorkspaceReader import WorkspaceReader
 from UM.Application import Application
 
+from UM.ConfigurationErrorMessage import ConfigurationErrorMessage
 from UM.Logger import Logger
 from UM.i18n import i18nCatalog
 from UM.Signal import postponeSignals, CompressTechnique
+from UM.Settings.ContainerFormatError import ContainerFormatError
 from UM.Settings.ContainerStack import ContainerStack
 from UM.Settings.DefinitionContainer import DefinitionContainer
 from UM.Settings.InstanceContainer import InstanceContainer
@@ -332,7 +334,10 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                     containers_found_dict["quality_changes"] = True
                     # Check if there really is a conflict by comparing the values
                     instance_container = InstanceContainer(container_id)
-                    instance_container.deserialize(serialized, file_name = instance_container_file_name)
+                    try:
+                        instance_container.deserialize(serialized, file_name = instance_container_file_name)
+                    except ContainerFormatError:
+                        continue
                     if quality_changes[0] != instance_container:
                         quality_changes_conflict = True
             elif container_type == "quality":
@@ -639,8 +644,11 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             definitions = self._container_registry.findDefinitionContainersMetadata(id = container_id)
             if not definitions:
                 definition_container = DefinitionContainer(container_id)
-                definition_container.deserialize(archive.open(definition_container_file).read().decode("utf-8"),
-                                                 file_name = definition_container_file)
+                try:
+                    definition_container.deserialize(archive.open(definition_container_file).read().decode("utf-8"),
+                                                     file_name = definition_container_file)
+                except ContainerFormatError:
+                    continue #Skip this definition container file. Pretend there is none.
                 self._container_registry.addContainer(definition_container)
             Job.yieldThread()
 
@@ -679,8 +687,11 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
 
                 if to_deserialize_material:
                     material_container = xml_material_profile(container_id)
-                    material_container.deserialize(archive.open(material_container_file).read().decode("utf-8"),
-                                                   file_name = container_id + "." + self._material_container_suffix)
+                    try:
+                        material_container.deserialize(archive.open(material_container_file).read().decode("utf-8"),
+                                                       file_name = container_id + "." + self._material_container_suffix)
+                    except ContainerFormatError:
+                        continue #Pretend that this material didn't exist.
                     if need_new_name:
                         new_name = ContainerRegistry.getInstance().uniqueName(material_container.getName())
                         material_container.setName(new_name)
@@ -704,7 +715,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         # To solve this, we schedule _updateActiveMachine() for later so it will have the latest data.
         self._updateActiveMachine(global_stack)
 
-        # Load all the nodes / meshdata of the workspace
+        # Load all the nodes / mesh data of the workspace
         nodes = self._3mf_mesh_reader.read(file_name)
         if nodes is None:
             nodes = []
