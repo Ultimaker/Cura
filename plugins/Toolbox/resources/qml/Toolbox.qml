@@ -25,11 +25,10 @@ Window
     color: UM.Theme.getColor("sidebar")
     Item
     {
-        id: view
         anchors.fill: parent
         ToolboxHeader
         {
-            id: topBar
+            id: header
         }
         Rectangle
         {
@@ -38,47 +37,49 @@ Window
             color: "transparent"
             anchors
             {
-                top: topBar.bottom
-                bottom: bottomBar.top
+                top: header.bottom
+                bottom: footer.top
             }
-            ToolboxLoading
+            // TODO: This could be improved using viewFilter instead of viewCategory
+            ToolboxLoadingPage
             {
-                id: loading
-                visible: !dataReady && manager.currentView != "installed"
+                id: viewLoading
+                visible: manager.viewCategory != "installed" && !dataReady
+                // TODO: Replace !dataReady with manager.viewPage == "loading"
             }
             ToolboxDownloadsPage
             {
                 id: viewDownloads
-                visible: manager.currentView != "installed" && !manager.detailView
+                visible: manager.viewCategory != "installed" && manager.viewPage == "overview"
             }
-            ToolboxDetailsPage
+            ToolboxDetailPage
             {
                 id: viewDetail
-                visible: manager.currentView != "installed" && manager.detailView
+                visible: manager.viewCategory != "installed" && manager.viewPage == "detail"
+            }
+            ToolboxAuthorPage
+            {
+                id: viewAuthor
+                visible: manager.viewCategory != "installed" && manager.viewPage == "author"
             }
             ToolboxInstalledPage
             {
                 id: installedPluginList
-                visible: dataReady && manager.currentView == "installed"
+                visible: manager.viewCategory == "installed" && dataReady
+                // TODO: Replace !dataReady with manager.viewPage == "loading"
             }
         }
         ToolboxShadow
         {
-            anchors
-            {
-                top: topBar.bottom
-            }
+            anchors.top: header.bottom
         }
         ToolboxFooter
         {
-            id: bottomBar
+            id: footer
         }
         ToolboxShadow
         {
-            anchors
-            {
-                top: bottomBar.top
-            }
+            anchors.top: footer.top
         }
 
         UM.I18nCatalog { id: catalog; name: "cura" }

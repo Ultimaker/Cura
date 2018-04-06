@@ -9,9 +9,9 @@ import UM 1.1 as UM
 
 Rectangle
 {
-    width: parent.width
-    height: childrenRect.height
-    color: "transparent"
+    width: base.width
+    height: UM.Theme.getSize("base_unit").height * 12
+    color: "steelblue"
     Column
     {
         anchors
@@ -27,7 +27,7 @@ Rectangle
         {
             width: parent.width
             height: UM.Theme.getSize("base_unit").height * 2
-            text: "DSM Abrasive"
+            text: model.name
             wrapMode: Text.WordWrap
             color: UM.Theme.getColor("text")
             font: UM.Theme.getFont("default_bold")
@@ -35,10 +35,10 @@ Rectangle
         Label
         {
             width: parent.width
-            text: "DSM abrasive material provides extra stiffness. It’s suitable for printing \"Functional prototypes\" and \"End parts\"."
+            text: model.description
             wrapMode: Text.WordWrap
             color: UM.Theme.getColor("text")
-            font: UM.Theme.getFont("normal")
+            font: UM.Theme.getFont("default")
         }
     }
     Rectangle

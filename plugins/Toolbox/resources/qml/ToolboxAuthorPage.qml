@@ -44,7 +44,11 @@ Item
             }
             width: UM.Theme.getSize("base_unit").width * 4
             height: UM.Theme.getSize("base_unit").height * 2
-            onClicked: manager.detailView = false
+            onClicked:
+            {
+                manager.viewPage = "overview"
+                manager.filterPackages("type", manager.viewCategory)
+            }
             style: ButtonStyle
             {
                 background: Rectangle
@@ -100,14 +104,14 @@ Item
             spacing: Math.floor(UM.Theme.getSize("default_margin").height/2)
             Label
             {
-                text: manager.detailData["type"] == "material" ? manager.detailData["author"] : manager.detailData["name"]
+                text: manager.detailData["name"]
                 font: UM.Theme.getFont("large")
                 wrapMode: Text.WordWrap
                 width: parent.width
             }
             Label
             {
-                text: manager.detailData["description"]
+                text: "HELLO THIS IS AN AUTHOR PAGE"
                 font: UM.Theme.getFont("default")
                 wrapMode: Text.WordWrap
                 width: parent.width
@@ -122,11 +126,7 @@ Item
             }
         }
     }
-
-    ScrollView
-    {
-        id: scroll
-        frameVisible: true
+    ToolboxDetailList {
         anchors
         {
             right: header.right
@@ -134,38 +134,5 @@ Item
             left: header.left
             bottom: base.bottom
         }
-        height: parent.height
-        style: UM.Theme.styles.scrollview
-
-        /*
-        ListView
-        {
-            id: contentColumn
-            spacing: UM.Theme.getSize("base_unit").height
-            height: childrenRect.height + (UM.Theme.getSize("double_margin").height * 2)
-            anchors
-            {
-                left: scroll.left
-                right: scroll.right
-                top: scroll.top
-                topMargin: UM.Theme.getSize("double_margin").height
-                bottomMargin: UM.Theme.getSize("double_margin").height
-                leftMargin: UM.Theme.getSize("double_margin").width
-                rightMargin: UM.Theme.getSize("double_margin").width
-            }
-
-            ToolboxDetailsTile {}
-            ToolboxDetailsTile {}
-            ToolboxDetailsTile {}
-            ToolboxDetailsTile {}
-            ToolboxDetailsTile {}
-            ToolboxDetailsTile {}
-            ToolboxDetailsTile {}
-            ToolboxDetailsTile {}
-            ToolboxDetailsTile {}
-            ToolboxDetailsTile {}
-            ToolboxDetailsTile {}
-        }
-        */
     }
 }

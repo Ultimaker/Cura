@@ -46,10 +46,36 @@ class Toolbox(QObject, Extension):
         self._packages_metadata = []    # Stores the remote information of the packages
         self._packages_model = None     # Model that list the remote available packages
 
+
+        # These properties are for keeping track of the UI state:
+        # ----------------------------------------------------------------------
+
+        # View category defines which filter to use, and therefore effectively
+        # which category is currently being displayed. For example, possible
+        # values include "plugin" or "material", but also "installed".
+        # Formerly self._current_view.
+        self._view_category = "plugin"
+
+        # View page defines which type of page layout to use. For example,
+        # possible values include "overview", "detail" or "author".
+        # Formerly self._detail_view.
+        self._view_page = "overview"
+
+        # View selection defines what is currently selected and should be
+        # used in filtering. This could be an author name (if _view_page is set
+        # to "author" or a plugin name if it is set to "detail").
+        self._view_selection = ""
+
+        # For any view page above, self._packages_model can be filtered.
+        # For example:
+        # self._view_category = "material"
+        #   if self._view_page == "author":
+        #     filter with "author == self._view_selection"
+
         # Nowadays can be 'plugins', 'materials' or 'installed'
         self._current_view = "plugins"
         self._detail_view = False
-        self._detail_data = {}
+        self._detail_data = {} # Extraneous since can just use the data prop of the model.
 
         self._restart_required = False
 
@@ -283,13 +309,6 @@ class Toolbox(QObject, Extension):
         self.setDownloadProgress(0)
         self.setIsDownloading(False)
 
-    @pyqtSlot(str)
-    def filterPackagesByType(self, type):
-        if not self._packages_model:
-            return
-        self._packages_model.setFilter({"type": type})
-        self.filterChanged.emit()
-
     def setCurrentView(self, view = "plugins"):
         self._current_view = view
         self.viewChanged.emit()
@@ -336,10 +355,11 @@ class Toolbox(QObject, Extension):
                 for item in self._packages_metadata:
                     if item["id"] == plugin["id"]:
                         plugin["update_url"] = item["file_location"]
-        if self._current_view == "plugins":
-            self.filterPackagesByType("plugin")
-        elif self._current_view == "materials":
-            self.filterPackagesByType("material")
+
+        # if self._current_view == "plugins":
+        #     self.filterPackagesByType("plugin")
+        # elif self._current_view == "materials":
+        #     self.filterPackagesByType("material")
         return self._plugins_model
 
     @pyqtProperty(QObject, notify = packagesMetadataChanged)
@@ -447,3 +467,51 @@ class Toolbox(QObject, Extension):
     @pyqtSlot()
     def restart(self):
         CuraApplication.getInstance().windowClosed()
+
+
+    # Getter & Setter for self._view_category
+    def setViewCategory(self, category = "plugins"):
+        self._view_category = category
+        self.viewChanged.emit()
+    @pyqtProperty(str, fset = setViewCategory, notify = viewChanged)
+    def viewCategory(self):
+        return self._view_category
+
+    # Getter & Setter for self._view_page
+    def setViewPage(self, page = "overview"):
+        self._view_page = page
+        self.viewChanged.emit()
+    @pyqtProperty(str, fset = setViewPage, notify = viewChanged)
+    def viewPage(self):
+        return self._view_page
+
+    # Getter & Setter for self._view_selection
+    def setViewSelection(self, selection = ""):
+        self._view_selection = selection
+        self.viewChanged.emit()
+    @pyqtProperty(str, fset = setViewSelection, notify = viewChanged)
+    def viewSelection(self):
+        return self._view_selection
+
+
+    # Filtering
+    @pyqtSlot(str)
+    def filterPackagesByType(self, type):
+        if not self._packages_model:
+            return
+        self._packages_model.setFilter({"type": type})
+        self.filterChanged.emit()
+
+    @pyqtSlot(str, str)
+    def filterPackages(self, filterType, parameter):
+        if not self._packages_model:
+            return
+        self._packages_model.setFilter({filterType: parameter})
+        self.filterChanged.emit()
+
+    @pyqtSlot()
+    def unfilterPackages(self):
+        if not self._packages_model:
+            return
+        self._packages_model.setFilter({})
+        self.filterChanged.emit()

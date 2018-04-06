@@ -37,7 +37,7 @@ Rectangle {
                     implicitHeight: 48
                     Rectangle
                     {
-                        visible: manager.currentView == "plugins"
+                        visible: manager.viewCategory == "plugin"
                         color: UM.Theme.getColor("primary")
                         anchors.bottom: parent.bottom
                         width: parent.width
@@ -56,8 +56,8 @@ Rectangle {
             onClicked:
             {
                 manager.filterPackagesByType("plugin")
-                manager.currentView = "plugins"
-                manager.detailView = false
+                manager.viewCategory = "plugin"
+                manager.viewPage = "overview"
             }
         }
 
@@ -73,7 +73,7 @@ Rectangle {
                     implicitHeight: 48
                     Rectangle
                     {
-                        visible: manager.currentView == "materials"
+                        visible: manager.viewCategory == "material"
                         color: UM.Theme.getColor("primary")
                         anchors.bottom: parent.bottom
                         width: parent.width
@@ -92,8 +92,8 @@ Rectangle {
             onClicked:
             {
                 manager.filterPackagesByType("material")
-                manager.currentView = "materials"
-                manager.detailView = false
+                manager.viewCategory = "material"
+                manager.viewPage = "overview"
             }
         }
     }
@@ -111,7 +111,7 @@ Rectangle {
                 implicitWidth: 96
                 implicitHeight: 48
                 Rectangle {
-                    visible: manager.currentView == "installed"
+                    visible: manager.viewCategory == "installed"
                     color: UM.Theme.getColor("primary")
                     anchors.bottom: parent.bottom
                     width: parent.width
@@ -127,6 +127,6 @@ Rectangle {
                 horizontalAlignment: Text.AlignHCenter
             }
         }
-        onClicked: manager.currentView = "installed"
+        onClicked: manager.viewCategory = "installed"
     }
 }

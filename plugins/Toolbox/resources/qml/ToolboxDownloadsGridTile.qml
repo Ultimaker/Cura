@@ -50,8 +50,7 @@ Item
             Label
             {
                 id: info
-                text:
-                {
+                text: {
                     if (model.description.length > 50)
                     {
                         return model.description.substring(0, 50) + "..."
@@ -69,9 +68,19 @@ Item
     {
         anchors.fill: parent
         onClicked: {
-            console.log(model.id)
-            manager.detailView = true
-            manager.setDetailData(model.id)
+            if ( manager.viewCategory == "material" )
+            {
+                console.log("filtering by " + model.author)
+                manager.viewSelection = model.author.name
+                manager.viewPage = "author"
+                manager.filterPackages("author", model.author)
+            }
+            else
+            {
+                manager.viewSelection = model.id
+                manager.viewPage = "detail"
+                manager.filterPackages("id", model.id)
+            }
         }
     }
 }
