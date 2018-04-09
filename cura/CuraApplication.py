@@ -691,16 +691,28 @@ class CuraApplication(QtApplication):
         else:
             self.runWithGUI()
 
-        # Pre-load files if requested
-        for file_name in self.getCommandLineOption("file", []):
-            self._openFile(file_name)
-        for file_name in self._open_file_queue:  # Open all the files that were queued up while plug-ins were loading.
-            self._openFile(file_name)
-
         self.started = True
         self.initializationFinished.emit()
         Logger.log("d", "Booting Cura took %s seconds", time.time() - self._boot_loading_time)
+
+
+        # For now use a timer to postpone some things that need to be done after the application and GUI are
+        # initialized, for example opening files because they may show dialogs which can be closed due to incomplete
+        # GUI initialization.
+        self._post_start_timer = QTimer(self)
+        self._post_start_timer.setInterval(700)
+        self._post_start_timer.setSingleShot(True)
+        self._post_start_timer.timeout.connect(self._onPostStart)
+        self._post_start_timer.start()
+
+
         self.exec_()
+
+    def _onPostStart(self):
+        for file_name in self.getCommandLineOption("file", []):
+            self.callLater(self._openFile, file_name)
+        for file_name in self._open_file_queue:  # Open all the files that were queued up while plug-ins were loading.
+            self.callLater(self._openFile, file_name)
 
     initializationFinished = pyqtSignal()
 
@@ -1548,6 +1560,8 @@ class CuraApplication(QtApplication):
     def log(self, msg):
         Logger.log("d", msg)
 
+    openProjectFile = pyqtSignal(QUrl, arguments = ["project_file"])  # Emitted when a project file is about to open.
+
     @pyqtSlot(QUrl)
     def readLocalFile(self, file):
         if not file.isValid():
@@ -1559,6 +1573,10 @@ class CuraApplication(QtApplication):
             if node.callDecoration("isBlockSlicing"):
                 self.deleteAll()
                 break
+
+        if self.checkIsValidProjectFile(file):
+            self.callLater(self.openProjectFile.emit, file)
+            return
 
         f = file.toLocalFile()
         extension = os.path.splitext(f)[1]
