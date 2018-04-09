@@ -609,6 +609,7 @@ class CuraEngineBackend(QObject, Backend):
 
         self._slicing = False
         Logger.log("d", "Slicing took %s seconds", time() - self._slice_start_time )
+        Logger.log("d", "Number of models per buildplate: %s", dict(self._numObjectsPerBuildPlate()))
 
         # See if we need to process the sliced layers job.
         active_build_plate = Application.getInstance().getMultiBuildPlateModel().activeBuildPlate

@@ -301,44 +301,19 @@ class PluginBrowser(QObject, Extension):
 
         return self._plugins_model
 
+    def _checkCanUpgrade(self, plugin_id, version):
+        if plugin_id not in self._plugin_registry.getInstalledPlugins():
+            return False
 
-
-    def _checkCanUpgrade(self, id, version):
-
-        # TODO: This could maybe be done more efficiently using a dictionary...
-
+        plugin_object = self._plugin_registry.getPluginObject(plugin_id)
         # Scan plugin server data for plugin with the given id:
         for plugin in self._plugins_metadata:
-            if id == plugin["id"]:
-                reg_version = Version(version)
+            if plugin_id == plugin["id"]:
+                reg_version = Version(plugin_object.getVersion())
                 new_version = Version(plugin["version"])
                 if new_version > reg_version:
-                    Logger.log("i", "%s has an update availible: %s", plugin["id"], plugin["version"])
+                    Logger.log("i", "%s has an update available: %s", plugin["id"], plugin["version"])
                     return True
-        return False
-
-    def _checkAlreadyInstalled(self, id):
-        metadata = self._plugin_registry.getMetaData(id)
-        # We already installed this plugin, but the registry just doesn't know it yet.
-        if id in self._newly_installed_plugin_ids:
-            return True
-        # We already uninstalled this plugin, but the registry just doesn't know it yet:
-        elif id in self._newly_uninstalled_plugin_ids:
-            return False
-        elif metadata != {}:
-            return True
-        else:
-            return False
-
-    def _checkInstallStatus(self, plugin_id):
-        if plugin_id in self._plugin_registry.getInstalledPlugins():
-            return "installed"
-        else:
-            return "uninstalled"
-
-    def _checkEnabled(self, id):
-        if id in self._plugin_registry.getActivePlugins():
-            return True
         return False
 
     def _onRequestFinished(self, reply):

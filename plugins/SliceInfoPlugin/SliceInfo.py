@@ -57,7 +57,7 @@ class SliceInfo(Extension):
     def messageActionTriggered(self, message_id, action_id):
         Preferences.getInstance().setValue("info/asked_send_slice_info", True)
         if action_id == "Disable":
-            CuraApplication.getInstance().showPreferences()
+            Preferences.getInstance().addPreference("info/send_slice_info", False)
         self.send_slice_info_message.hide()
 
     def _onWriteStarted(self, output_device):

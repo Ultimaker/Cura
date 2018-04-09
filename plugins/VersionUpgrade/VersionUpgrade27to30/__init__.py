@@ -16,7 +16,6 @@ def getMetaData():
 
             ("quality_changes", 2000002):    ("quality_changes", 2000003,    upgrade.upgradeQualityChangesContainer),
             ("user", 2000002):               ("user", 2000003,               upgrade.upgradeOtherContainer),
-            ("quality", 2000002):            ("quality", 2000003,            upgrade.upgradeOtherContainer),
             ("definition_changes", 2000002): ("definition_changes", 2000003, upgrade.upgradeOtherContainer),
             ("variant", 2000002):            ("variant", 2000003,            upgrade.upgradeOtherContainer)
         },

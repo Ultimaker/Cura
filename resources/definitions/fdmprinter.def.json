@@ -2271,6 +2271,16 @@
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
+                "limit_support_retractions":
+                {
+                    "label": "Limit Support Retractions",
+                    "description": "Omit retraction when moving from support to support in a straight line. Enabling this setting saves print time, but can lead to excesive stringing within the support structure.",
+                    "type": "bool",
+                    "default_value": true,
+                    "enabled": "retraction_enable and support_enable",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
+                },
                 "material_standby_temperature":
                 {
                     "label": "Standby Temperature",
@@ -6584,6 +6594,14 @@
                     "default_value": 0,
                     "type": "float",
                     "enabled": "bridge_settings_enabled and bridge_enable_more_layers",
+                    "settable_per_mesh": true
+                },
+                "wall_try_line_thickness":
+                {
+                    "label": "Try Multiple Line Thicknesses",
+                    "description": "When creating inner walls, try various line thicknesses to fit the wall lines better in narrow spaces. This reduces or increases the inner wall line width by up to 0.01mm.",
+                    "default_value": false,
+                    "type": "bool",
                     "settable_per_mesh": true
                 }
             }
