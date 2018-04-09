@@ -708,6 +708,7 @@ class CuraContainerRegistry(ContainerRegistry):
                 try:
                     instance_container.deserialize(serialized, file_path)
                 except ContainerFormatError:
+                    Logger.logException("e", "Unable to deserialize InstanceContainer %s", file_path)
                     continue
                 self.addContainer(instance_container)
                 break
