@@ -50,7 +50,7 @@
         "infill_before_walls" :                  { "default_value": false },
         "top_bottom_thickness":                  { "default_value": 0.6 },
         "support_z_distance":                    { "value": "layer_height * 2" },
-				"support_bottom_distance":               { "value": "layer_height" },
+        "support_bottom_distance":               { "value": "layer_height" },
         "support_use_towers" :                   { "default_value": false }
     }
 }
