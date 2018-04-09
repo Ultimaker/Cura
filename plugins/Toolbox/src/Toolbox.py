@@ -22,6 +22,7 @@ import platform
 import zipfile
 
 from cura.CuraApplication import CuraApplication
+from .AuthorsModel import AuthorsModel
 from .CuraPackageModel import CuraPackageModel
 
 i18n_catalog = i18nCatalog("cura")
@@ -32,7 +33,7 @@ class Toolbox(QObject, Extension):
         super().__init__(parent)
 
         self._api_version = 1
-        self._api_url = "https://api-staging.ultimaker.com/cura-packages/v%s/" % self._api_version
+        self._api_url = "https://api-staging.ultimaker.com/cura-packages/v%s" % self._api_version
 
         self._package_list_request = None
         self._download_plugin_request = None
@@ -45,6 +46,8 @@ class Toolbox(QObject, Extension):
 
         self._packages_metadata = []    # Stores the remote information of the packages
         self._packages_model = None     # Model that list the remote available packages
+        self._showcase_model = None
+        self._authors_model = None
 
 
         # These properties are for keeping track of the UI state:
@@ -112,10 +115,14 @@ class Toolbox(QObject, Extension):
 
     showLicenseDialog = pyqtSignal()
     showRestartDialog = pyqtSignal()
+
     packagesMetadataChanged = pyqtSignal()
+    authorsMetadataChanged = pyqtSignal()
+
     onDownloadProgressChanged = pyqtSignal()
     onIsDownloadingChanged = pyqtSignal()
     restartRequiredChanged = pyqtSignal()
+
     viewChanged = pyqtSignal()
     detailViewChanged = pyqtSignal()
     filterChanged = pyqtSignal()
@@ -161,7 +168,7 @@ class Toolbox(QObject, Extension):
 
     def requestPackageList(self):
         Logger.log("i", "Requesting package list")
-        url = QUrl("{base_url}packages?cura_version={version}".format(base_url = self._api_url, version = self._packages_version_number))
+        url = QUrl("{base_url}/cura/v{version}/packages".format(base_url = self._api_url, version = self._packages_version_number))
         self._package_list_request = QNetworkRequest(url)
         self._package_list_request.setRawHeader(*self._request_header)
         self._network_manager.get(self._package_list_request)
@@ -355,16 +362,15 @@ class Toolbox(QObject, Extension):
                 for item in self._packages_metadata:
                     if item["id"] == plugin["id"]:
                         plugin["update_url"] = item["file_location"]
-
-        # if self._current_view == "plugins":
-        #     self.filterPackagesByType("plugin")
-        # elif self._current_view == "materials":
-        #     self.filterPackagesByType("material")
         return self._plugins_model
 
     @pyqtProperty(QObject, notify = packagesMetadataChanged)
     def packagesModel(self):
         return self._packages_model
+
+    @pyqtProperty(QObject, notify = authorsMetadataChanged)
+    def authorsModel(self):
+        return self._authors_model
 
     @pyqtProperty(bool, notify = packagesMetadataChanged)
     def dataReady(self):
@@ -425,16 +431,35 @@ class Toolbox(QObject, Extension):
             return
 
         if reply.operation() == QNetworkAccessManager.GetOperation:
-            if reply_url == "{base_url}packages?cura_version={version}".format(base_url = self._api_url, version = self._packages_version_number):
+            if reply_url == "{base_url}/cura/v{version}/packages".format(base_url = self._api_url, version = self._packages_version_number):
                 try:
                     json_data = json.loads(bytes(reply.readAll()).decode("utf-8"))
-
+                    print(json_data)
                     # Add metadata to the manager:
-                    self._packages_metadata = json_data["data"]
+
+
+                    # Create packages model with all packages:
                     if not self._packages_model:
                         self._packages_model = CuraPackageModel()
+                    self._packages_metadata = json_data["data"]
                     self._packages_model.setPackagesMetaData(self._packages_metadata)
                     self.packagesMetadataChanged.emit()
+
+                    # Create authors model with all authors:
+                    if not self._authors_model:
+                        self._authors_model = AuthorsModel()
+                    # In the future, this will be its own API call.
+                    self._authors_metadata = []
+                    for package in self._packages_metadata:
+                        package["author"]["type"] = package["package_type"]
+                        print(package["author"])
+                        if package["author"] not in self._authors_metadata:
+                            self._authors_metadata.append(package["author"])
+                    self._authors_model.setMetaData(self._authors_metadata)
+                    self.authorsMetadataChanged.emit()
+
+
+
                 except json.decoder.JSONDecodeError:
                     Logger.log("w", "Received an invalid print job state message: Not valid JSON.")
                     return
@@ -469,6 +494,7 @@ class Toolbox(QObject, Extension):
         CuraApplication.getInstance().windowClosed()
 
 
+
     # Getter & Setter for self._view_category
     def setViewCategory(self, category = "plugins"):
         self._view_category = category
@@ -494,19 +520,13 @@ class Toolbox(QObject, Extension):
         return self._view_selection
 
 
-    # Filtering
-    @pyqtSlot(str)
-    def filterPackagesByType(self, type):
-        if not self._packages_model:
-            return
-        self._packages_model.setFilter({"type": type})
-        self.filterChanged.emit()
 
+    # Filtering
     @pyqtSlot(str, str)
     def filterPackages(self, filterType, parameter):
         if not self._packages_model:
             return
-        self._packages_model.setFilter({filterType: parameter})
+        self._packages_model.setFilter({ filterType: parameter })
         self.filterChanged.emit()
 
     @pyqtSlot()
@@ -514,4 +534,18 @@ class Toolbox(QObject, Extension):
         if not self._packages_model:
             return
         self._packages_model.setFilter({})
+        self.filterChanged.emit()
+
+    @pyqtSlot(str, str)
+    def filterAuthors(self, filterType, parameter):
+        if not self._authors_model:
+            return
+        self._authors_model.setFilter({ filterType: parameter })
+        self.filterChanged.emit()
+
+    @pyqtSlot()
+    def unfilterAuthors(self):
+        if not self._authors_model:
+            return
+        self._authors_model.setFilter({})
         self.filterChanged.emit()

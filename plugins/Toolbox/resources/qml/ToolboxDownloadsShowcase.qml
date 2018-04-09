@@ -18,7 +18,7 @@ Column
     Label
     {
         id: heading
-        text: "Top Downloads"
+        text: "Showcase"
         width: parent.width
         color: UM.Theme.getColor("text_medium")
         font: UM.Theme.getFont("medium")

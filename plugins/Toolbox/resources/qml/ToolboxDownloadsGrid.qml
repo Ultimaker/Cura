@@ -34,7 +34,7 @@ Column
 
         Repeater
         {
-            model: manager.packagesModel
+            model: manager.viewCategory == "material" ? manager.authorsModel : manager.packagesModel
             delegate: ToolboxDownloadsGridTile
             {
                 Layout.preferredWidth: (grid.width - (grid.columns - 1) * grid.columnSpacing) / grid.columns

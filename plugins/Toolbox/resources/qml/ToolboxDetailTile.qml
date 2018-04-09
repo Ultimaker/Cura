@@ -9,9 +9,9 @@ import UM 1.1 as UM
 
 Rectangle
 {
-    width: base.width
-    height: UM.Theme.getSize("base_unit").height * 12
-    color: "steelblue"
+    width: base.width - UM.Theme.getSize("double_margin").width
+    height: UM.Theme.getSize("base_unit").height * 8
+    color: "transparent"
     Column
     {
         anchors
@@ -20,7 +20,6 @@ Rectangle
             right: controls.left
             rightMargin: UM.Theme.getSize("default_margin").width
             top: parent.top
-            leftMargin: UM.Theme.getSize("default_margin").width
             topMargin: UM.Theme.getSize("default_margin").height
         }
         Label

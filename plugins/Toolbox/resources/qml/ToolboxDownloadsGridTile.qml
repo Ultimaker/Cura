@@ -70,16 +70,16 @@ Item
         onClicked: {
             if ( manager.viewCategory == "material" )
             {
-                console.log("filtering by " + model.author)
-                manager.viewSelection = model.author.name
+                manager.viewSelection = model.name
                 manager.viewPage = "author"
-                manager.filterPackages("author", model.author)
+                manager.filterPackages("author_name", model.name)
             }
             else
             {
                 manager.viewSelection = model.id
                 manager.viewPage = "detail"
                 manager.filterPackages("id", model.id)
+
             }
         }
     }

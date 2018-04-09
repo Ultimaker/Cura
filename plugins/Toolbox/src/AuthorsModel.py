@@ -9,53 +9,38 @@ from PyQt5.QtCore import Qt, pyqtProperty, pyqtSignal
 from UM.Qt.ListModel import ListModel
 
 ##  Model that holds cura packages. By setting the filter property the instances held by this model can be changed.
-class CuraPackageModel(ListModel):
-    IdRole = Qt.UserRole + 1
-    TypeRole = Qt.UserRole + 2
-    NameRole = Qt.UserRole + 3
-    VersionRole = Qt.UserRole + 4
-    AuthorNameRole = Qt.UserRole + 5
-    AuthorEmailRole = Qt.UserRole + 6
-    DescriptionRole = Qt.UserRole + 7
-    IconURLRole = Qt.UserRole + 8
-    ImageURLsRole = Qt.UserRole + 9
+class AuthorsModel(ListModel):
+    NameRole = Qt.UserRole + 1
+    EmailRole = Qt.UserRole + 2
+    WebsiteRole = Qt.UserRole + 3
+    TypeRole = Qt.UserRole + 4
 
     def __init__(self, parent = None):
         super().__init__(parent)
 
-        self._packages_metadata = None
+        self._authors_metadata = None
 
-        self.addRoleName(CuraPackageModel.IdRole, "id")
-        self.addRoleName(CuraPackageModel.TypeRole, "type")
-        self.addRoleName(CuraPackageModel.NameRole, "name")
-        self.addRoleName(CuraPackageModel.VersionRole, "version")
-        self.addRoleName(CuraPackageModel.AuthorNameRole, "author_name")
-        self.addRoleName(CuraPackageModel.AuthorEmailRole, "author_email")
-        self.addRoleName(CuraPackageModel.DescriptionRole, "description")
-        self.addRoleName(CuraPackageModel.IconURLRole, "icon_url")
-        self.addRoleName(CuraPackageModel.ImageURLsRole, "image_urls")
+        self.addRoleName(AuthorsModel.NameRole, "name")
+        self.addRoleName(AuthorsModel.EmailRole, "email")
+        self.addRoleName(AuthorsModel.WebsiteRole, "website")
+        self.addRoleName(AuthorsModel.TypeRole, "type")
 
         # List of filters for queries. The result is the union of the each list of results.
         self._filter = {}  # type: Dict[str,str]
 
-    def setPackagesMetaData(self, data):
-        self._packages_metadata = data
+    def setMetaData(self, data):
+        self._authors_metadata = data
         self._update()
 
     def _update(self):
         items = []
 
-        for package in self._packages_metadata:
+        for author in self._authors_metadata:
             items.append({
-                "id": package["package_id"],
-                "type": package["package_type"],
-                "name": package["display_name"],
-                "version": package["package_version"],
-                "author_name": package["author"]["name"],
-                "author_email": package["author"]["email"],
-                "description": package["description"],
-                "icon_url": package["icon_url"] if "icon_url" in package else None,
-                "image_urls": package["image_urls"]
+                "name": author["name"],
+                "email": author["email"],
+                "website": author["website"],
+                "type": author["type"]
             })
 
         # Filter on all the key-word arguments.

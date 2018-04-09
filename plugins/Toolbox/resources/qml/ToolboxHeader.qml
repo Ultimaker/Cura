@@ -55,7 +55,8 @@ Rectangle {
             }
             onClicked:
             {
-                manager.filterPackagesByType("plugin")
+                manager.filterPackages("type", "plugin")
+                manager.filterAuthors("type", "plugin")
                 manager.viewCategory = "plugin"
                 manager.viewPage = "overview"
             }
@@ -91,7 +92,8 @@ Rectangle {
             }
             onClicked:
             {
-                manager.filterPackagesByType("material")
+                manager.filterPackages("type", "material")
+                manager.filterAuthors("type", "material")
                 manager.viewCategory = "material"
                 manager.viewPage = "overview"
             }

@@ -11,6 +11,7 @@ import UM 1.1 as UM
 
 Item
 {
+    property var details: manager.packagesModel.items[0]
     id: base
     anchors.fill: parent
     Item
@@ -82,7 +83,7 @@ Item
             width: UM.Theme.getSize("toolbox_thumbnail_medium").width
             height: UM.Theme.getSize("toolbox_thumbnail_medium").height
             fillMode: Image.PreserveAspectFit
-            source: manager.detailData["icon_url"] || "../images/logobot.svg"
+            source: details.icon_url || "../images/logobot.svg"
             anchors
             {
                 top: parent.top
@@ -104,21 +105,21 @@ Item
             spacing: Math.floor(UM.Theme.getSize("default_margin").height/2)
             Label
             {
-                text: manager.detailData["name"]
+                text: details.name
                 font: UM.Theme.getFont("large")
                 wrapMode: Text.WordWrap
                 width: parent.width
             }
             Label
             {
-                text: manager.detailData["description"]
+                text: details.description
                 font: UM.Theme.getFont("default")
                 wrapMode: Text.WordWrap
                 width: parent.width
             }
             Label
             {
-                text: "Author: " + manager.detailData["author"]["name"]
+                text: "Author: " + details.author_name
                 font: UM.Theme.getFont("small")
                 wrapMode: Text.WordWrap
                 width: parent.width
@@ -131,8 +132,10 @@ Item
         {
             right: header.right
             top: header.bottom
+
             left: header.left
             bottom: base.bottom
+
         }
     }
 }
