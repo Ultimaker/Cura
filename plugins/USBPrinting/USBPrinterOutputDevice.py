@@ -18,7 +18,7 @@ from .avr_isp import stk500v2, intelHex
 from PyQt5.QtCore import pyqtSlot, pyqtSignal, pyqtProperty
 
 from serial import Serial, SerialException, SerialTimeoutException
-from threading import Thread
+from threading import Thread, Event
 from time import time, sleep
 from queue import Queue
 from enum import IntEnum
@@ -82,8 +82,11 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
 
         self.setConnectionText(catalog.i18nc("@info:status", "Connected via USB"))
 
-        # Queue for commands that need to be send. Used when command is sent when a print is active.
+        # Queue for commands that need to be sent.
         self._command_queue = Queue()
+        # Event to indicate that an "ok" was received from the printer after sending a command.
+        self._command_received = Event()
+        self._command_received.set()
 
     ## Reset USB device settings
     #
@@ -263,23 +266,24 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
 
     ##  Send a command to printer.
     def sendCommand(self, command: Union[str, bytes]):
-        if self._is_printing:
+        if not self._command_received.is_set():
             self._command_queue.put(command)
-        elif self._connection_state == ConnectionState.connected:
+        else:
             self._sendCommand(command)
-
     def _sendCommand(self, command: Union[str, bytes]):
-        if self._serial is None:
+        if self._serial is None or self._connection_state != ConnectionState.connected:
             return
 
         if type(command == str):
-            command = (command + "\n").encode()
+            command = command.encode()
         if not command.endswith(b"\n"):
             command += b"\n"
         try:
+            self._command_received.clear()
             self._serial.write(command)
         except SerialTimeoutException:
             Logger.log("w", "Timeout when sending command to printer via USB.")
+            self._command_received.set()
 
     def _update(self):
         while self._connection_state == ConnectionState.connected and self._serial is not None:
@@ -290,6 +294,8 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
 
             if self._last_temperature_request is None or time() > self._last_temperature_request + self._timeout:
                 # Timeout, or no request has been sent at all.
+                self._command_received.set() # We haven't really received the ok, but we need to send a new command
+
                 self.sendCommand("M105")
                 self._last_temperature_request = time()
 
@@ -316,17 +322,20 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
             if b"FIRMWARE_NAME:" in line:
                 self._setFirmwareName(line)
 
+            if b"ok" in line:
+                self._command_received.set()
+                if not self._command_queue.empty():
+                    self._sendCommand(self._command_queue.get())
+                if self._is_printing:
+                    if self._paused:
+                        pass  # Nothing to do!
+                    else:
+                        self._sendNextGcodeLine()
+
             if self._is_printing:
                 if line.startswith(b'!!'):
                     Logger.log('e', "Printer signals fatal error. Cancelling print. {}".format(line))
                     self.cancelPrint()
-                if b"ok" in line:
-                    if not self._command_queue.empty():
-                        self._sendCommand(self._command_queue.get())
-                    elif self._paused:
-                        pass  # Nothing to do!
-                    else:
-                        self._sendNextGcodeLine()
                 elif b"resend" in line.lower() or b"rs" in line:
                     # A resend can be requested either by Resend, resend or rs.
                     try:
