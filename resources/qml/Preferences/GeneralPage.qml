@@ -649,7 +649,7 @@ UM.PreferencesPage
             UM.TooltipArea {
                 visible: plugins.find("id", "SliceInfoPlugin") > -1
                 width: childrenRect.width
-                height: visible ? childrenRect.height : 0
+                height: visible ? childrenRect.height * 2 : 0
                 text: catalog.i18nc("@info:tooltip","Should anonymous data about your print be sent to Ultimaker? Note, no models, IP addresses or other personally identifiable information is sent or stored.")
 
                 CheckBox
@@ -658,6 +658,22 @@ UM.PreferencesPage
                     text: catalog.i18nc("@option:check","Send (anonymous) print information")
                     checked: boolCheck(UM.Preferences.getValue("info/send_slice_info"))
                     onCheckedChanged: UM.Preferences.setValue("info/send_slice_info", checked)
+                }
+
+                Button
+                {
+                    id: showMoreInfo
+                    anchors
+                    {
+                        top: sendDataCheckbox.bottom
+                        bottom: parent.bottom
+                    }
+
+                    text: catalog.i18nc("@action:button", "Show more information on anonymous data collection")
+                    onClicked:
+                    {
+                        CuraApplication.getCuraAppSignals().showMoreInfoOnAnonymousDataCollection();
+                    }
                 }
             }
 

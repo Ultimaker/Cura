@@ -1,0 +1,101 @@
+{
+    "extruders": [
+        {
+            "material": {
+                "GUID": "506c9f0d-e3aa-4bd4-b2d2-23e2425b1aa9",
+                "brand": "Generic",
+                "type": "PLA"
+            },
+            "active": true,
+            "material_used": 4.82,
+            "nozzle_size": 0.4,
+            "variant": "AA 0.4",
+            "extruder_settings": {
+                "infill_pattern": "triangles",
+                "wall_line_count": 4,
+                "retraction_enable": true,
+                "infill_sparse_density": 0.0,
+                "gradual_infill_steps": 0.0,
+                "default_material_print_temperature": 200,
+                "material_print_temperature": 200
+            }
+        },
+        {
+            "material": {
+                "GUID": "86a89ceb-4159-47f6-ab97-e9953803d70f",
+                "brand": "Generic",
+                "type": "PVA"
+            },
+            "active": false,
+            "material_used": 0.0,
+            "nozzle_size": 0.4,
+            "variant": "BB 0.4",
+            "extruder_settings": {
+                "infill_pattern": "triangles",
+                "wall_line_count": 3,
+                "retraction_enable": true,
+                "infill_sparse_density": 20,
+                "gradual_infill_steps": 0,
+                "default_material_print_temperature": 215,
+                "material_print_temperature": 215
+            }
+        }
+    ],
+    "active_mode": "custom",
+    "schema_version": 0,
+    "print_times": {
+        "support": 0,
+        "infill": 0,
+        "total": 44548,
+        "travel": 5063
+    },
+    "machine_settings_changed_by_user": false,
+    "language": "en",
+    "cura_version": "2.7.0-master.20170721034526",
+    "os": {
+        "version": "10.0.14393",
+        "type": "Windows"
+    },
+    "time_stamp": 1500629879.3985891,
+    "quality_profile": "normal",
+    "print_settings": {
+        "print_sequence": "all_at_once",
+        "infill_pattern": "triangles",
+        "layer_height": 0.1,
+        "infill_sparse_density": 20,
+        "wall_line_count": 3,
+        "retraction_enable": true,
+        "gradual_infill_steps": 0,
+        "adhesion_type": "none",
+        "prime_tower_enable": false,
+        "support_enabled": false,
+        "support_extruder_nr": 0
+    },
+    "models": [
+        {
+            "extruder": 0,
+            "transformation": {
+                "data": "[[  1.00000000e+00   0.00000000e+00   0.00000000e+00   0.00000000e+00] [  0.00000000e+00   8.96267878e-08  -9.99999881e-01   1.00000038e+01] [  0.00000000e+00   9.99999881e-01   8.96267878e-08   1.77869296e-07] [  0.00000000e+00   0.00000000e+00   0.00000000e+00   1.00000000e+00]]"
+            },
+            "bounding_box": {
+                "minimum": {
+                    "x": -80.0,
+                    "y": -4.0903287974458635e-06,
+                    "z": -101.49998861865569
+                },
+                "maximum": {
+                    "x": 80.0,
+                    "y": 20.000011181962602,
+                    "z": 101.49998897439428
+                }
+            },
+            "model_settings": {
+            },
+            "hash": "ca1a12e57ddf990fabc25d9105fc28eea266937c3f907d0e58edf9cc43f28551"
+        }
+    ],
+    "active_machine": {
+        "definition_id": "ultimaker3",
+        "manufacturer": "Ultimaker"
+    }
+}
