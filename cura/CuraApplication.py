@@ -700,7 +700,7 @@ class CuraApplication(QtApplication):
         # initialized, for example opening files because they may show dialogs which can be closed due to incomplete
         # GUI initialization.
         self._post_start_timer = QTimer(self)
-        self._post_start_timer.setInterval(700)
+        self._post_start_timer.setInterval(1000)
         self._post_start_timer.setSingleShot(True)
         self._post_start_timer.timeout.connect(self._onPostStart)
         self._post_start_timer.start()
