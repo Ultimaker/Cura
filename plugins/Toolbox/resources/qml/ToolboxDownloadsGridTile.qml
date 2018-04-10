@@ -14,6 +14,13 @@ Item
     id: base
     height: childrenRect.height
     Layout.alignment: Qt.AlignTop | Qt.AlignLeft
+    Rectangle
+    {
+        id: highlight
+        anchors.fill: parent
+        opacity: 0.0
+        color: UM.Theme.getColor("primary")
+    }
     Row
     {
         width: parent.width
@@ -68,17 +75,31 @@ Item
     MouseArea
     {
         anchors.fill: parent
-        onClicked: {
+        hoverEnabled: true
+        onEntered:
+        {
+            thumbnail.border.color = UM.Theme.getColor("primary")
+            highlight.opacity = 0.1
+        }
+        onExited:
+        {
+            thumbnail.border.color = UM.Theme.getColor("text")
+            highlight.opacity = 0.0
+        }
+        onClicked:
+        {
             if ( manager.viewCategory == "material" )
             {
                 manager.viewSelection = model.name
                 manager.viewPage = "author"
+                manager.filterAuthors("name", model.name)
                 manager.filterPackages("author_name", model.name)
             }
             else
             {
                 manager.viewSelection = model.id
                 manager.viewPage = "detail"
+                manager.filterAuthors("name", model.author_name)
                 manager.filterPackages("id", model.id)
             }
         }

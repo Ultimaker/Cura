@@ -28,7 +28,7 @@ Column
     {
         id: grid
         width: parent.width
-        columns: 3
+        columns: 2
         columnSpacing: UM.Theme.getSize("base_unit").width
         rowSpacing: UM.Theme.getSize("base_unit").height
 

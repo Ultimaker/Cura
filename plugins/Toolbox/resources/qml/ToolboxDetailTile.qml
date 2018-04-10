@@ -20,7 +20,6 @@ Rectangle
             right: controls.left
             rightMargin: UM.Theme.getSize("default_margin").width
             top: parent.top
-            topMargin: UM.Theme.getSize("default_margin").height
         }
         Label
         {
@@ -45,7 +44,6 @@ Rectangle
         id: controls
         anchors.right: parent.right
         anchors.top: parent.top
-        anchors.topMargin: UM.Theme.getSize("default_margin").height
         width: childrenRect.width
         Button {
             id: installButton
@@ -54,7 +52,7 @@ Rectangle
             {
                 if ( manager.isDownloading )
                 {
-                    return pluginList.activePlugin == model ? true : false
+                    return manager.activePackage == model ? true : false
                 }
                 else
                 {
@@ -79,19 +77,20 @@ Rectangle
             }
             onClicked:
             {
-                if ( manager.isDownloading && pluginList.activePlugin == model )
+                console.log( "MODEL", model.download_url )
+                if ( manager.isDownloading && manager.activePackage == model )
                 {
                     manager.cancelDownload();
                 }
                 else
                 {
-                    pluginList.activePlugin = model;
+                    // manager.activePackage = model;
                     if ( model.can_upgrade )
                     {
-                        manager.downloadAndInstallPlugin( model.update_url );
+                        // manager.downloadAndInstallPlugin( model.update_url );
                     }
                     else {
-                        manager.downloadAndInstallPlugin( model.file_location );
+                        manager.startDownload( model.download_url );
                     }
                 }
             }
@@ -102,6 +101,6 @@ Rectangle
         color: UM.Theme.getColor("text_medium")
         width: parent.width
         height: UM.Theme.getSize("default_lining").height
-        anchors.top: parent.top
+        anchors.bottom: parent.bottom
     }
 }

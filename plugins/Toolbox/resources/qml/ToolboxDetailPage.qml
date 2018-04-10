@@ -7,67 +7,15 @@ import QtQuick.Controls 1.4
 import QtQuick.Controls.Styles 1.4
 import UM 1.1 as UM
 
-// TODO: Switch to QtQuick.Controls 2.x and remove QtQuick.Controls.Styles
-
 Item
 {
-    property var details: manager.packagesModel.items[0]
     id: base
+    property var details: manager.packagesModel.items[0]
     anchors.fill: parent
-    Item
+    ToolboxBackColumn
     {
         id: sidebar
-        height: parent.height
-        width: UM.Theme.getSize("base_unit").width * 6
-        anchors
-        {
-            top: parent.top
-            left: parent.left
-            topMargin: UM.Theme.getSize("double_margin").height
-            leftMargin: UM.Theme.getSize("default_margin").width
-            rightMargin: UM.Theme.getSize("default_margin").width
-        }
-        Button
-        {
-            text: "Back"
-            UM.RecolorImage
-            {
-                id: backArrow
-                anchors.verticalCenter: parent.verticalCenter
-                anchors.left: parent.left
-                anchors.rightMargin: UM.Theme.getSize("default_margin").width
-                width: UM.Theme.getSize("standard_arrow").width
-                height: UM.Theme.getSize("standard_arrow").height
-                sourceSize.width: width
-                sourceSize.height: height
-                color: UM.Theme.getColor("text")
-                source: UM.Theme.getIcon("arrow_left")
-            }
-            width: UM.Theme.getSize("base_unit").width * 4
-            height: UM.Theme.getSize("base_unit").height * 2
-            onClicked:
-            {
-                manager.viewPage = "overview"
-                manager.filterPackages("type", manager.viewCategory)
-            }
-            style: ButtonStyle
-            {
-                background: Rectangle
-                {
-                    color: "transparent"
-                }
-                label: Label
-                {
-                    text: control.text
-                    color: UM.Theme.getColor("text")
-                    font: UM.Theme.getFont("default_bold")
-                    horizontalAlignment: Text.AlignRight
-                    width: control.width
-                }
-            }
-        }
     }
-
     Rectangle
     {
         id: header
@@ -75,6 +23,7 @@ Item
         {
             left: sidebar.right
             right: parent.right
+            rightMargin: UM.Theme.getSize("double_margin").width
         }
         height: UM.Theme.getSize("base_unit").height * 12
         Image
@@ -119,6 +68,7 @@ Item
             {
                 top: title.bottom
                 left: title.left
+                topMargin: UM.Theme.getSize("default_margin").height
             }
             spacing: Math.floor(UM.Theme.getSize("default_margin").height / 2)
             width: childrenRect.width
@@ -149,6 +99,7 @@ Item
                 top: title.bottom
                 left: properties.right
                 leftMargin: UM.Theme.getSize("default_margin").width
+                topMargin: UM.Theme.getSize("default_margin").height
             }
             spacing: Math.floor(UM.Theme.getSize("default_margin").height/2)
             width: UM.Theme.getSize("base_unit").width * 12
@@ -160,7 +111,7 @@ Item
             }
             Label
             {
-                text: details.generated_time
+                text: Qt.formatDateTime(details.last_updated, "dd MMM yyyy")
                 font: UM.Theme.getFont("very_small")
                 color: UM.Theme.getColor("text")
             }
@@ -171,16 +122,21 @@ Item
                 color: UM.Theme.getColor("text")
             }
         }
+        Rectangle
+        {
+            color: UM.Theme.getColor("text_medium")
+            width: parent.width
+            height: UM.Theme.getSize("default_lining").height
+            anchors.bottom: parent.bottom
+        }
     }
     ToolboxDetailList {
         anchors
         {
-            right: header.right
             top: header.bottom
-
-            left: header.left
             bottom: base.bottom
-
+            left: header.left
+            right: base.right
         }
     }
 }

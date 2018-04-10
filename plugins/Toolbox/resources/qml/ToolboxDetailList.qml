@@ -10,11 +10,6 @@ import UM 1.1 as UM
 Item
 {
     id: base
-    anchors
-    {
-        topMargin: UM.Theme.getSize("double_margin").height
-        bottomMargin: UM.Theme.getSize("double_margin").height
-    }
     ScrollView
     {
         frameVisible: false
@@ -22,8 +17,13 @@ Item
         style: UM.Theme.styles.scrollview
         Column
         {
-            anchors.right: base.right
-            anchors.rightMargin: UM.Theme.getSize("double_margin").width
+            anchors
+            {
+                right: base.right
+                topMargin: UM.Theme.getSize("double_margin").height
+                bottomMargin: UM.Theme.getSize("double_margin").height
+                top: parent.top
+            }
             height: childrenRect.height
             spacing: UM.Theme.getSize("default_margin").height
             Repeater

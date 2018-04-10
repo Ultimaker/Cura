@@ -23,7 +23,7 @@ import zipfile
 
 from cura.CuraApplication import CuraApplication
 from .AuthorsModel import AuthorsModel
-from .CuraPackageModel import CuraPackageModel
+from .PackagesModel import PackagesModel
 
 i18n_catalog = i18nCatalog("cura")
 
@@ -32,8 +32,10 @@ class Toolbox(QObject, Extension):
     def __init__(self, parent=None):
         super().__init__(parent)
 
+        self._plugin_registry = Application.getInstance().getPluginRegistry()
+        self._packages_version = self._plugin_registry.APIVersion
         self._api_version = 1
-        self._api_url = "https://api-staging.ultimaker.com/cura-packages/v%s" % self._api_version
+        self._api_url = "https://api.ultimaker.com/cura-packages/v{api_version}/cura/v{package_version}".format( api_version = self._api_version, package_version = self._packages_version)
 
         self._package_list_request = None
         self._showcase_request = None
@@ -42,8 +44,7 @@ class Toolbox(QObject, Extension):
         self._download_plugin_reply = None
 
         self._network_manager = None
-        self._plugin_registry = Application.getInstance().getPluginRegistry()
-        self._packages_version_number = self._plugin_registry.APIVersion
+
 
         self._packages_metadata = []    # Stores the remote information of the packages
         self._packages_model = None     # Model that list the remote available packages
@@ -76,10 +77,16 @@ class Toolbox(QObject, Extension):
         #   if self._view_page == "author":
         #     filter with "author == self._view_selection"
 
+        # Active package refers to which package is currently being downloaded,
+        # installed, or otherwise modified.
+        self._active_package = None
+
+
         # Nowadays can be 'plugins', 'materials' or 'installed'
         self._current_view = "plugins"
-        self._detail_view = False
         self._detail_data = {} # Extraneous since can just use the data prop of the model.
+
+
 
         self._restart_required = False
 
@@ -121,6 +128,7 @@ class Toolbox(QObject, Extension):
     authorsMetadataChanged = pyqtSignal()
     showcaseMetadataChanged = pyqtSignal()
 
+    activePackageChanged = pyqtSignal()
     onDownloadProgressChanged = pyqtSignal()
     onIsDownloadingChanged = pyqtSignal()
     restartRequiredChanged = pyqtSignal()
@@ -155,9 +163,7 @@ class Toolbox(QObject, Extension):
         self._restart_dialog_message = message
         self.showRestartDialog.emit()
 
-    @pyqtProperty(bool, notify = onIsDownloadingChanged)
-    def isDownloading(self):
-        return self._is_downloading
+
 
     @pyqtSlot()
     def browsePackages(self):
@@ -171,14 +177,14 @@ class Toolbox(QObject, Extension):
 
     def requestPackageList(self):
         Logger.log("i", "Requesting package list")
-        url = QUrl("{base_url}/cura/v{version}/packages".format(base_url = self._api_url, version = self._packages_version_number))
+        url = QUrl("{base_url}/packages".format(base_url = self._api_url))
         self._package_list_request = QNetworkRequest(url)
         self._package_list_request.setRawHeader(*self._request_header)
         self._network_manager.get(self._package_list_request)
 
     def requestShowcase(self):
         Logger.log("i", "Requesting showcase list")
-        url = QUrl("{base_url}/cura/v{version}/showcase".format(base_url = self._api_url, version = self._packages_version_number))
+        url = QUrl("{base_url}/showcase".format(base_url = self._api_url))
         self._showcase_request = QNetworkRequest(url)
         self._showcase_request.setRawHeader(*self._request_header)
         self._network_manager.get(self._showcase_request)
@@ -307,6 +313,18 @@ class Toolbox(QObject, Extension):
     @pyqtSlot(str)
     def downloadAndInstallPlugin(self, url):
         Logger.log("i", "Attempting to download & install plugin from %s", url)
+        url = QUrl(url)
+        self._download_plugin_request = QNetworkRequest(url)
+        self._download_plugin_request.setRawHeader(*self._request_header)
+        self._download_plugin_reply = self._network_manager.get(self._download_plugin_request)
+        self.setDownloadProgress(0)
+        self.setIsDownloading(True)
+        self._download_plugin_reply.downloadProgress.connect(self._onDownloadPluginProgress)
+
+    # DOWNLOADING BEHAVIOR
+    @pyqtSlot(str)
+    def startDownload(self, url):
+        Logger.log("i", "Attempting to download & install package from %s", url)
         url = QUrl(url)
         self._download_plugin_request = QNetworkRequest(url)
         self._download_plugin_request.setRawHeader(*self._request_header)
@@ -445,13 +463,13 @@ class Toolbox(QObject, Extension):
             return
 
         if reply.operation() == QNetworkAccessManager.GetOperation:
-            if reply_url == "{base_url}/cura/v{version}/packages".format(base_url = self._api_url, version = self._packages_version_number):
+            if reply_url == "{base_url}/packages".format(base_url = self._api_url):
                 try:
                     json_data = json.loads(bytes(reply.readAll()).decode("utf-8"))
-
+                    print(json_data)
                     # Create packages model with all packages:
                     if not self._packages_model:
-                        self._packages_model = CuraPackageModel()
+                        self._packages_model = PackagesModel()
                     self._packages_metadata = json_data["data"]
                     self._packages_model.setPackagesMetaData(self._packages_metadata)
                     self.packagesMetadataChanged.emit()
@@ -472,12 +490,12 @@ class Toolbox(QObject, Extension):
                     return
 
 
-            elif reply_url == "{base_url}/cura/v{version}/showcase".format(base_url = self._api_url, version = self._packages_version_number):
+            elif reply_url == "{base_url}/showcase".format(base_url = self._api_url):
                 try:
                     json_data = json.loads(bytes(reply.readAll()).decode("utf-8"))
                     # Create packages model with all packages:
                     if not self._showcase_model:
-                        self._showcase_model = CuraPackageModel()
+                        self._showcase_model = PackagesModel()
                     self._showcase_metadata = json_data["data"]
                     print(self._showcase_metadata)
                     self._showcase_model.setPackagesMetaData(self._showcase_metadata)
@@ -520,6 +538,18 @@ class Toolbox(QObject, Extension):
 
 
     # Getter & Setter for self._view_category
+
+    @pyqtProperty(bool, notify = onIsDownloadingChanged)
+    def isDownloading(self):
+        return self._is_downloading
+
+    def setActivePackage(self, package):
+        self._active_package = package
+        self.activePackageChanged.emit()
+    @pyqtProperty(QObject, fset = setActivePackage, notify = activePackageChanged)
+    def activePackage(self):
+        return self._active_package
+
     def setViewCategory(self, category = "plugins"):
         self._view_category = category
         self.viewChanged.emit()
@@ -527,7 +557,6 @@ class Toolbox(QObject, Extension):
     def viewCategory(self):
         return self._view_category
 
-    # Getter & Setter for self._view_page
     def setViewPage(self, page = "overview"):
         self._view_page = page
         self.viewChanged.emit()
@@ -535,7 +564,6 @@ class Toolbox(QObject, Extension):
     def viewPage(self):
         return self._view_page
 
-    # Getter & Setter for self._view_selection
     def setViewSelection(self, selection = ""):
         self._view_selection = selection
         self.viewChanged.emit()

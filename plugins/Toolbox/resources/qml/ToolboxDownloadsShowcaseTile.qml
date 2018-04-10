@@ -55,12 +55,14 @@ Item
             {
                 manager.viewSelection = model.name
                 manager.viewPage = "author"
+                manager.filterAuthors("name", model.name)
                 manager.filterPackages("author_name", model.name)
             }
             else
             {
                 manager.viewSelection = model.id
                 manager.viewPage = "detail"
+                manager.filterAuthors("name", model.author_name)
                 manager.filterPackages("id", model.id)
             }
         }
