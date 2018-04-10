@@ -35,13 +35,15 @@ class Toolbox(QObject, Extension):
         self._plugin_registry = Application.getInstance().getPluginRegistry()
         self._packages_version = self._plugin_registry.APIVersion
         self._api_version = 1
-        self._api_url = "https://api.ultimaker.com/cura-packages/v{api_version}/cura/v{package_version}".format( api_version = self._api_version, package_version = self._packages_version)
+        self._api_url = "https://api-staging.ultimaker.com/cura-packages/v{api_version}/cura/v{package_version}".format( api_version = self._api_version, package_version = self._packages_version)
 
-        self._package_list_request = None
-        self._showcase_request = None
+        self._get_packages_request = None
+        self._get_showcase_request = None
 
-        self._download_plugin_request = None
-        self._download_plugin_reply = None
+        self._download_request = None
+        self._download_reply = None
+        self._download_progress = 0
+        self._is_downloading = False
 
         self._network_manager = None
 
@@ -92,9 +94,8 @@ class Toolbox(QObject, Extension):
 
         self._dialog = None
         self._restartDialog = None
-        self._download_progress = 0
 
-        self._is_downloading = False
+
 
         self._request_header = [b"User-Agent",
                                 str.encode("%s/%s (%s %s)" % (Application.getInstance().getApplicationName(),
@@ -109,7 +110,6 @@ class Toolbox(QObject, Extension):
         # prevent the user from downloading the same file over and over again,
         # we keep track of the upgraded plugins.
 
-        # NOTE: This will be depreciated in favor of the 'status' system.
         self._newly_installed_plugin_ids = []
         self._newly_uninstalled_plugin_ids = []
 
@@ -169,55 +169,18 @@ class Toolbox(QObject, Extension):
     def browsePackages(self):
         self._createNetworkManager()
         self.requestShowcase()
-        self.requestPackageList()
-
+        self.requestPackages()
         if not self._dialog:
             self._dialog = self._createDialog("Toolbox.qml")
         self._dialog.show()
 
-    def requestPackageList(self):
-        Logger.log("i", "Requesting package list")
-        url = QUrl("{base_url}/packages".format(base_url = self._api_url))
-        self._package_list_request = QNetworkRequest(url)
-        self._package_list_request.setRawHeader(*self._request_header)
-        self._network_manager.get(self._package_list_request)
 
-    def requestShowcase(self):
-        Logger.log("i", "Requesting showcase list")
-        url = QUrl("{base_url}/showcase".format(base_url = self._api_url))
-        self._showcase_request = QNetworkRequest(url)
-        self._showcase_request.setRawHeader(*self._request_header)
-        self._network_manager.get(self._showcase_request)
 
     def _createDialog(self, qml_name):
-        Logger.log("d", "Creating dialog [%s]", qml_name)
+        Logger.log("d", "Toolbox: Creating dialog [%s].", qml_name)
         path = os.path.join(PluginRegistry.getInstance().getPluginPath(self.getPluginId()), "resources", "qml", qml_name)
         dialog = Application.getInstance().createQmlComponent(path, {"manager": self})
         return dialog
-
-    def setIsDownloading(self, is_downloading):
-        if self._is_downloading != is_downloading:
-            self._is_downloading = is_downloading
-            self.onIsDownloadingChanged.emit()
-
-    def _onDownloadPluginProgress(self, bytes_sent, bytes_total):
-        if bytes_total > 0:
-            new_progress = bytes_sent / bytes_total * 100
-            self.setDownloadProgress(new_progress)
-            if new_progress == 100.0:
-                self.setIsDownloading(False)
-                self._download_plugin_reply.downloadProgress.disconnect(self._onDownloadPluginProgress)
-
-                # must not delete the temporary file on Windows
-                self._temp_plugin_file = tempfile.NamedTemporaryFile(mode = "w+b", suffix = ".curaplugin", delete = False)
-                location = self._temp_plugin_file.name
-
-                # write first and close, otherwise on Windows, it cannot read the file
-                self._temp_plugin_file.write(self._download_plugin_reply.readAll())
-                self._temp_plugin_file.close()
-
-                self._checkPluginLicenseOrInstall(location)
-                return
 
     ##  Checks if the downloaded plugin ZIP file contains a license file or not.
     #   If it does, it will show a popup dialog displaying the license to the user. The plugin will be installed if the
@@ -301,80 +264,6 @@ class Toolbox(QObject, Extension):
         self.packagesMetadataChanged.emit()
         Logger.log("i", "%s was set as 'deactive'", id)
 
-    @pyqtProperty(int, notify = onDownloadProgressChanged)
-    def downloadProgress(self):
-        return self._download_progress
-
-    def setDownloadProgress(self, progress):
-        if progress != self._download_progress:
-            self._download_progress = progress
-            self.onDownloadProgressChanged.emit()
-
-    @pyqtSlot(str)
-    def downloadAndInstallPlugin(self, url):
-        Logger.log("i", "Attempting to download & install plugin from %s", url)
-        url = QUrl(url)
-        self._download_plugin_request = QNetworkRequest(url)
-        self._download_plugin_request.setRawHeader(*self._request_header)
-        self._download_plugin_reply = self._network_manager.get(self._download_plugin_request)
-        self.setDownloadProgress(0)
-        self.setIsDownloading(True)
-        self._download_plugin_reply.downloadProgress.connect(self._onDownloadPluginProgress)
-
-    # DOWNLOADING BEHAVIOR
-    @pyqtSlot(str)
-    def startDownload(self, url):
-        Logger.log("i", "Attempting to download & install package from %s", url)
-        url = QUrl(url)
-        self._download_plugin_request = QNetworkRequest(url)
-        self._download_plugin_request.setRawHeader(*self._request_header)
-        self._download_plugin_reply = self._network_manager.get(self._download_plugin_request)
-        self.setDownloadProgress(0)
-        self.setIsDownloading(True)
-        self._download_plugin_reply.downloadProgress.connect(self._onDownloadPluginProgress)
-
-    @pyqtSlot()
-    def cancelDownload(self):
-        Logger.log("i", "user cancelled the download of a plugin")
-        self._download_plugin_reply.abort()
-        self._download_plugin_reply.downloadProgress.disconnect(self._onDownloadPluginProgress)
-        self._download_plugin_reply = None
-        self._download_plugin_request = None
-
-        self.setDownloadProgress(0)
-        self.setIsDownloading(False)
-
-    def setCurrentView(self, view = "plugins"):
-        self._current_view = view
-        self.viewChanged.emit()
-
-    @pyqtProperty(str, fset = setCurrentView, notify = viewChanged)
-    def currentView(self):
-        return self._current_view
-
-    def setDetailView(self, bool = False):
-        self._detail_view = bool
-        self.detailViewChanged.emit()
-
-    @pyqtProperty(bool, fset = setDetailView, notify = detailViewChanged)
-    def detailView(self):
-        return self._detail_view
-
-    # Set the detail data given a plugin ID:
-    @pyqtSlot(str)
-    def setDetailData(self, id):
-        if not self._packages_model:
-            return
-        for package in self._packages_model.items:
-            if package["id"] == id:
-                print(package)
-                self._detail_data = package
-                self.detailViewChanged.emit()
-
-    @pyqtProperty("QVariantMap", notify = detailViewChanged)
-    def detailData(self):
-        return self._detail_data
-
     @pyqtProperty(QObject, notify = packagesMetadataChanged)
     def pluginsModel(self):
         self._plugins_model = PluginsModel(None, self._current_view)
@@ -445,6 +334,73 @@ class Toolbox(QObject, Extension):
         if id in self._plugin_registry.getActivePlugins():
             return True
         return False
+    def _createNetworkManager(self):
+        if self._network_manager:
+            self._network_manager.finished.disconnect(self._onRequestFinished)
+            self._network_manager.networkAccessibleChanged.disconnect(self._onNetworkAccesibleChanged)
+        self._network_manager = QNetworkAccessManager()
+        self._network_manager.finished.connect(self._onRequestFinished)
+        self._network_manager.networkAccessibleChanged.connect(self._onNetworkAccesibleChanged)
+
+    @pyqtProperty(bool, notify = restartRequiredChanged)
+    def restartRequired(self):
+        return self._restart_required
+
+    @pyqtSlot()
+    def restart(self):
+        CuraApplication.getInstance().windowClosed()
+
+
+
+    # Make API Calls
+    # --------------------------------------------------------------------------
+    def requestPackages(self):
+        Logger.log("i", "Toolbox: Requesting package list from server.")
+        url = QUrl("{base_url}/packages".format(base_url = self._api_url))
+        self._get_packages_request = QNetworkRequest(url)
+        self._get_packages_request.setRawHeader(*self._request_header)
+        self._network_manager.get(self._get_packages_request)
+
+    def requestShowcase(self):
+        Logger.log("i", "Toolbox: Requesting showcase list from server.")
+        url = QUrl("{base_url}/showcase".format(base_url = self._api_url))
+        self._get_showcase_request = QNetworkRequest(url)
+        self._get_showcase_request.setRawHeader(*self._request_header)
+        self._network_manager.get(self._get_showcase_request)
+
+    @pyqtSlot(str)
+    def startDownload(self, url):
+        Logger.log("i", "Toolbox: Attempting to download & install package from %s.", url)
+        url = QUrl(url)
+        self._download_request = QNetworkRequest(url)
+        self._download_request.setRawHeader(*self._request_header)
+        self._download_reply = self._network_manager.get(self._download_request)
+        self.setDownloadProgress(0)
+        self.setIsDownloading(True)
+        self._download_reply.downloadProgress.connect(self._onDownloadProgress)
+
+    @pyqtSlot()
+    def cancelDownload(self):
+        Logger.log("i", "Toolbox: User cancelled the download of a plugin.")
+        self._download_reply.abort()
+        self._download_reply.downloadProgress.disconnect(self._onDownloadProgress)
+        self._download_reply = None
+        self._download_request = None
+        self.setDownloadProgress(0)
+        self.setIsDownloading(False)
+
+
+
+    # Handlers for Download Events
+    # --------------------------------------------------------------------------
+    def _onNetworkAccesibleChanged(self, accessible):
+        if accessible == 0:
+            self.setDownloadProgress(0)
+            self.setIsDownloading(False)
+            if self._download_reply:
+                self._download_reply.downloadProgress.disconnect(self._onDownloadProgress)
+                self._download_reply.abort()
+                self._download_reply = None
 
     def _onRequestFinished(self, reply):
         reply_url = reply.url().toString()
@@ -454,7 +410,7 @@ class Toolbox(QObject, Extension):
             self.setDownloadProgress(0)
             self.setIsDownloading(False)
             if self._download_plugin_reply:
-                self._download_plugin_reply.downloadProgress.disconnect(self._onDownloadPluginProgress)
+                self._download_plugin_reply.downloadProgress.disconnect(self._onDownloadProgress)
                 self._download_plugin_reply.abort()
                 self._download_plugin_reply = None
             return
@@ -509,37 +465,47 @@ class Toolbox(QObject, Extension):
             # Ignore any operation that is not a get operation
             pass
 
-    def _onNetworkAccesibleChanged(self, accessible):
-        if accessible == 0:
-            self.setDownloadProgress(0)
-            self.setIsDownloading(False)
-            if self._download_plugin_reply:
-                self._download_plugin_reply.downloadProgress.disconnect(self._onDownloadPluginProgress)
-                self._download_plugin_reply.abort()
-                self._download_plugin_reply = None
+    def _onDownloadProgress(self, bytes_sent, bytes_total):
+        print("Downloading bytes:", bytes_total)
+        if bytes_total > 0:
+            new_progress = bytes_sent / bytes_total * 100
+            self.setDownloadProgress(new_progress)
+            if new_progress == 100.0:
+                Logger.log("i", "Toolbox: Download complete.")
+                self.setIsDownloading(False)
+                self._download_reply.downloadProgress.disconnect(self._onDownloadProgress)
 
-    def _createNetworkManager(self):
-        if self._network_manager:
-            self._network_manager.finished.disconnect(self._onRequestFinished)
-            self._network_manager.networkAccessibleChanged.disconnect(self._onNetworkAccesibleChanged)
+                # must not delete the temporary file on Windows
+                self._temp_plugin_file = tempfile.NamedTemporaryFile(mode = "w+b", suffix = ".curaplugin", delete = False)
+                location = self._temp_plugin_file.name
 
-        self._network_manager = QNetworkAccessManager()
-        self._network_manager.finished.connect(self._onRequestFinished)
-        self._network_manager.networkAccessibleChanged.connect(self._onNetworkAccesibleChanged)
+                # write first and close, otherwise on Windows, it cannot read the file
+                self._temp_plugin_file.write(self._download_reply.readAll())
+                self._temp_plugin_file.close()
 
-    @pyqtProperty(bool, notify = restartRequiredChanged)
-    def restartRequired(self):
-        return self._restart_required
+                self._checkPluginLicenseOrInstall(location)
+                return
 
-    @pyqtSlot()
-    def restart(self):
-        CuraApplication.getInstance().windowClosed()
+    def _onDownloadComplete(self, location):
+        return
 
 
 
-    # Getter & Setter for self._view_category
+    # Getter & Setters
+    # --------------------------------------------------------------------------
+    def setDownloadProgress(self, progress):
+        if progress != self._download_progress:
+            self._download_progress = progress
+            self.onDownloadProgressChanged.emit()
+    @pyqtProperty(int, fset = setDownloadProgress, notify = onDownloadProgressChanged)
+    def downloadProgress(self):
+        return self._download_progress
 
-    @pyqtProperty(bool, notify = onIsDownloadingChanged)
+    def setIsDownloading(self, is_downloading):
+        if self._is_downloading != is_downloading:
+            self._is_downloading = is_downloading
+            self.onIsDownloadingChanged.emit()
+    @pyqtProperty(bool, fset = setIsDownloading, notify = onIsDownloadingChanged)
     def isDownloading(self):
         return self._is_downloading
 
@@ -573,7 +539,8 @@ class Toolbox(QObject, Extension):
 
 
 
-    # Filtering
+    # Model Filtering
+    # --------------------------------------------------------------------------
     @pyqtSlot(str, str)
     def filterPackages(self, filterType, parameter):
         if not self._packages_model:

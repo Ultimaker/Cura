@@ -47,12 +47,22 @@ Rectangle
         width: childrenRect.width
         Button {
             id: installButton
-            text: catalog.i18nc("@action:button", "Install")
+            text: {
+                if ( manager.isDownloading )
+                {
+                    return catalog.i18nc("@action:button", "Cancel")
+                }
+                else
+                {
+                    return catalog.i18nc("@action:button", "Install")
+                }
+            }
             enabled:
             {
                 if ( manager.isDownloading )
                 {
-                    return manager.activePackage == model ? true : false
+                    return true
+                    // return manager.activePackage == model ? true : false
                 }
                 else
                 {
@@ -78,7 +88,8 @@ Rectangle
             onClicked:
             {
                 console.log( "MODEL", model.download_url )
-                if ( manager.isDownloading && manager.activePackage == model )
+                // if ( manager.isDownloading && manager.activePackage == model )
+                if ( manager.isDownloading )
                 {
                     manager.cancelDownload();
                 }
