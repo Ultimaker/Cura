@@ -6,6 +6,7 @@ from PyQt5.QtNetwork import QNetworkAccessManager, QNetworkRequest, QNetworkRepl
 
 from UM.Application import Application
 from UM.Logger import Logger
+from UM.PluginError import PluginNotFoundError
 from UM.PluginRegistry import PluginRegistry
 from UM.Qt.Bindings.PluginsModel import PluginsModel
 from UM.Extension import Extension
@@ -302,10 +303,15 @@ class PluginBrowser(QObject, Extension):
         return self._plugins_model
 
     def _checkCanUpgrade(self, plugin_id, version):
-        if plugin_id not in self._plugin_registry.getInstalledPlugins():
+        if not self._plugin_registry.isInstalledPlugin(plugin_id):
             return False
 
-        plugin_object = self._plugin_registry.getPluginObject(plugin_id)
+        try:
+            plugin_object = self._plugin_registry.getPluginObject(plugin_id)
+        except PluginNotFoundError:
+            Logger.log("w", "Could not find plugin %s", plugin_id)
+            return False
+
         # Scan plugin server data for plugin with the given id:
         for plugin in self._plugins_metadata:
             if plugin_id == plugin["id"]:
