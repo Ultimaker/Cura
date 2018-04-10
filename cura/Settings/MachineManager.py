@@ -318,7 +318,7 @@ class MachineManager(QObject):
         else:
             quality_groups = self._application._quality_manager.getQualityGroups(global_stack)
             if quality_type not in quality_groups:
-                Logger.log("w", "Quality type [%s] not found in available qualities [%s]", quality_type, str(quality_groups.values()))
+                Logger.log("w", "Quality type [%s] not found in available qualities [%s]", quality_type, ", ".join(quality_groups.keys()))
                 self._setEmptyQuality()
                 return
             new_quality_group = quality_groups[quality_type]
@@ -785,6 +785,8 @@ class MachineManager(QObject):
                 continue
 
             old_value = container.getProperty(setting_key, "value")
+            if int(old_value) < 0:
+                continue
             if int(old_value) >= extruder_count or not self._global_container_stack.extruders[str(old_value)].isEnabled:
                 result.append(setting_key)
                 Logger.log("d", "Reset setting [%s] in [%s] because its old value [%s] is no longer valid", setting_key, container, old_value)
