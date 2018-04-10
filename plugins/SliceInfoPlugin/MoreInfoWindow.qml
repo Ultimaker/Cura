@@ -21,7 +21,7 @@ UM.Dialog
     width: minimumWidth
     height: minimumHeight
 
-    property bool allowSendData: false  // for saving the user's choice
+    property bool allowSendData: true  // for saving the user's choice
 
     onAccepted: manager.setSendSliceInfo(allowSendData)
 
