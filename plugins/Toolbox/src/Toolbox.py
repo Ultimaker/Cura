@@ -163,8 +163,6 @@ class Toolbox(QObject, Extension):
         self._restart_dialog_message = message
         self.showRestartDialog.emit()
 
-
-
     @pyqtSlot()
     def browsePackages(self):
         self._createNetworkManager()
@@ -173,8 +171,6 @@ class Toolbox(QObject, Extension):
         if not self._dialog:
             self._dialog = self._createDialog("Toolbox.qml")
         self._dialog.show()
-
-
 
     def _createDialog(self, qml_name):
         Logger.log("d", "Toolbox: Creating dialog [%s].", qml_name)
@@ -373,6 +369,7 @@ class Toolbox(QObject, Extension):
         Logger.log("i", "Toolbox: Attempting to download & install package from %s.", url)
         url = QUrl(url)
         self._download_request = QNetworkRequest(url)
+        self._download_request.setAttribute(QNetworkRequest.RedirectPolicyAttribute, QNetworkRequest.NoLessSafeRedirectPolicy)
         self._download_request.setRawHeader(*self._request_header)
         self._download_reply = self._network_manager.get(self._download_request)
         self.setDownloadProgress(0)
