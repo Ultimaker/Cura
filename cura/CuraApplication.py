@@ -1557,8 +1557,8 @@ class CuraApplication(QtApplication):
 
     openProjectFile = pyqtSignal(QUrl, arguments = ["project_file"])  # Emitted when a project file is about to open.
 
-    @pyqtSlot(QUrl)
-    def readLocalFile(self, file):
+    @pyqtSlot(QUrl, bool)
+    def readLocalFile(self, file, skip_project_file_check = False):
         if not file.isValid():
             return
 
@@ -1569,7 +1569,7 @@ class CuraApplication(QtApplication):
                 self.deleteAll()
                 break
 
-        if self.checkIsValidProjectFile(file):
+        if not skip_project_file_check and self.checkIsValidProjectFile(file):
             self.callLater(self.openProjectFile.emit, file)
             return
 
