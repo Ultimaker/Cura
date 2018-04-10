@@ -36,8 +36,9 @@ class Toolbox(QObject, Extension):
         self._api_url = "https://api-staging.ultimaker.com/cura-packages/v%s" % self._api_version
 
         self._package_list_request = None
-        self._download_plugin_request = None
+        self._showcase_request = None
 
+        self._download_plugin_request = None
         self._download_plugin_reply = None
 
         self._network_manager = None
@@ -118,6 +119,7 @@ class Toolbox(QObject, Extension):
 
     packagesMetadataChanged = pyqtSignal()
     authorsMetadataChanged = pyqtSignal()
+    showcaseMetadataChanged = pyqtSignal()
 
     onDownloadProgressChanged = pyqtSignal()
     onIsDownloadingChanged = pyqtSignal()
@@ -160,6 +162,7 @@ class Toolbox(QObject, Extension):
     @pyqtSlot()
     def browsePackages(self):
         self._createNetworkManager()
+        self.requestShowcase()
         self.requestPackageList()
 
         if not self._dialog:
@@ -172,6 +175,13 @@ class Toolbox(QObject, Extension):
         self._package_list_request = QNetworkRequest(url)
         self._package_list_request.setRawHeader(*self._request_header)
         self._network_manager.get(self._package_list_request)
+
+    def requestShowcase(self):
+        Logger.log("i", "Requesting showcase list")
+        url = QUrl("{base_url}/cura/v{version}/showcase".format(base_url = self._api_url, version = self._packages_version_number))
+        self._showcase_request = QNetworkRequest(url)
+        self._showcase_request.setRawHeader(*self._request_header)
+        self._network_manager.get(self._showcase_request)
 
     def _createDialog(self, qml_name):
         Logger.log("d", "Creating dialog [%s]", qml_name)
@@ -364,6 +374,10 @@ class Toolbox(QObject, Extension):
                         plugin["update_url"] = item["file_location"]
         return self._plugins_model
 
+    @pyqtProperty(QObject, notify = showcaseMetadataChanged)
+    def materialShowcaseModel(self):
+        return self._showcase_model
+
     @pyqtProperty(QObject, notify = packagesMetadataChanged)
     def packagesModel(self):
         return self._packages_model
@@ -434,9 +448,6 @@ class Toolbox(QObject, Extension):
             if reply_url == "{base_url}/cura/v{version}/packages".format(base_url = self._api_url, version = self._packages_version_number):
                 try:
                     json_data = json.loads(bytes(reply.readAll()).decode("utf-8"))
-                    print(json_data)
-                    # Add metadata to the manager:
-
 
                     # Create packages model with all packages:
                     if not self._packages_model:
@@ -448,20 +459,33 @@ class Toolbox(QObject, Extension):
                     # Create authors model with all authors:
                     if not self._authors_model:
                         self._authors_model = AuthorsModel()
-                    # In the future, this will be its own API call.
+                    # TODO: Remove this hacky code once there's an API call for this.
                     self._authors_metadata = []
                     for package in self._packages_metadata:
                         package["author"]["type"] = package["package_type"]
-                        print(package["author"])
                         if package["author"] not in self._authors_metadata:
                             self._authors_metadata.append(package["author"])
                     self._authors_model.setMetaData(self._authors_metadata)
                     self.authorsMetadataChanged.emit()
-
-
-
                 except json.decoder.JSONDecodeError:
-                    Logger.log("w", "Received an invalid print job state message: Not valid JSON.")
+                    Logger.log("w", "Toolbox: Received invalid JSON for package list.")
+                    return
+
+
+            elif reply_url == "{base_url}/cura/v{version}/showcase".format(base_url = self._api_url, version = self._packages_version_number):
+                try:
+                    json_data = json.loads(bytes(reply.readAll()).decode("utf-8"))
+                    # Create packages model with all packages:
+                    if not self._showcase_model:
+                        self._showcase_model = CuraPackageModel()
+                    self._showcase_metadata = json_data["data"]
+                    print(self._showcase_metadata)
+                    self._showcase_model.setPackagesMetaData(self._showcase_metadata)
+                    for package in self._showcase_model.items:
+                        print(package)
+                    self.showcaseMetadataChanged.emit()
+                except json.decoder.JSONDecodeError:
+                    Logger.log("w", "Toolbox: Received invalid JSON for showcase.")
                     return
         else:
             # Ignore any operation that is not a get operation

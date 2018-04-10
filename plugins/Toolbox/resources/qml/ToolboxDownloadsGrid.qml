@@ -19,7 +19,7 @@ Column
     Label
     {
         id: heading
-        text: "Community Plugins"
+        text: manager.viewCategory == "material" ? "Maker Choices" : "Community Plugins"
         width: parent.width
         color: UM.Theme.getColor("text_medium")
         font: UM.Theme.getFont("medium")

@@ -26,6 +26,7 @@ Item
             height: UM.Theme.getSize("toolbox_thumbnail_small").height
             color: "white"
             border.width: 1
+            border.color: UM.Theme.getColor("text_medium")
             Image {
                 anchors.centerIn: parent
                 width: UM.Theme.getSize("toolbox_thumbnail_small").width - 26
@@ -79,7 +80,6 @@ Item
                 manager.viewSelection = model.id
                 manager.viewPage = "detail"
                 manager.filterPackages("id", model.id)
-
             }
         }
     }

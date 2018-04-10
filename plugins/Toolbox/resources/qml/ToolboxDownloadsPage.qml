@@ -7,8 +7,6 @@ import QtQuick.Controls 1.4
 import QtQuick.Controls.Styles 1.4
 import UM 1.1 as UM
 
-// TODO: Switch to QtQuick.Controls 2.x and remove QtQuick.Controls.Styles
-
 ScrollView
 {
     id: base
@@ -19,8 +17,8 @@ ScrollView
     Column
     {
         width: base.width
-        spacing: UM.Theme.getSize("base_unit").height
-        padding: UM.Theme.getSize("base_unit").height * 2
+        spacing: UM.Theme.getSize("default_margin").height
+        padding: UM.Theme.getSize("double_margin").height
         height: childrenRect.height + 2 * padding
         ToolboxDownloadsShowcase
         {
@@ -31,7 +29,7 @@ ScrollView
         {
             color: UM.Theme.getColor("text_medium")
             width: parent.width - 2 * parent.padding
-            height: UM.Theme.getSize("base_unit").height / 6
+            height: UM.Theme.getSize("default_lining").height
         }
         ToolboxDownloadsGrid
         {

@@ -18,7 +18,7 @@ Column
     Label
     {
         id: heading
-        text: "Showcase"
+        text: "Featured"
         width: parent.width
         color: UM.Theme.getColor("text_medium")
         font: UM.Theme.getFont("medium")
@@ -32,8 +32,10 @@ Column
             horizontalCenter: parent.horizontalCenter
         }
 
-        ToolboxDownloadsShowcaseTile {}
-        ToolboxDownloadsShowcaseTile {}
-        ToolboxDownloadsShowcaseTile {}
+        Repeater
+        {
+            model: manager.materialShowcaseModel
+            delegate: ToolboxDownloadsShowcaseTile {}
+        }
     }
 }
