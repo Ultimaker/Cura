@@ -32,8 +32,8 @@ Item
             width: UM.Theme.getSize("toolbox_thumbnail_small").width
             height: UM.Theme.getSize("toolbox_thumbnail_small").height
             color: "white"
-            border.width: 1
-            border.color: UM.Theme.getColor("text_medium")
+            border.width: UM.Theme.getSize("default_lining").width
+            border.color: UM.Theme.getColor("lining")
             Image {
                 anchors.centerIn: parent
                 width: UM.Theme.getSize("toolbox_thumbnail_small").width - 26

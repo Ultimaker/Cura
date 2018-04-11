@@ -79,9 +79,10 @@ Rectangle
                 label: Label
                 {
                     text: control.text
-                    color: "white"
+                    color: control.hovered ? UM.Theme.getColor("button_text") : UM.Theme.getColor("button_text_hover")
                     verticalAlignment: Text.AlignVCenter
                     horizontalAlignment: Text.AlignHCenter
+                    font: UM.Theme.getFont("default_bold")
                 }
             }
             onClicked:
@@ -109,7 +110,7 @@ Rectangle
     }
     Rectangle
     {
-        color: UM.Theme.getColor("text_medium")
+        color: UM.Theme.getColor("lining")
         width: parent.width
         height: UM.Theme.getSize("default_lining").height
         anchors.bottom: parent.bottom

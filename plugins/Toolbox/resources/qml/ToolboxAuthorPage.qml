@@ -112,7 +112,7 @@ Item
         }
         Rectangle
         {
-            color: UM.Theme.getColor("text_medium")
+            color: UM.Theme.getColor("lining")
             width: parent.width
             height: UM.Theme.getSize("default_lining").height
             anchors.bottom: parent.bottom

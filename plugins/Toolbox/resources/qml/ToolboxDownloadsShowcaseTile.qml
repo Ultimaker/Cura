@@ -18,7 +18,7 @@ Item
         width: UM.Theme.getSize("toolbox_thumbnail_medium").width
         height: UM.Theme.getSize("toolbox_thumbnail_medium").height
         border.width: 1
-        border.color: UM.Theme.getColor("text_medium")
+        border.color: UM.Theme.getColor("lining")
         anchors
         {
             top: parent.top

@@ -11,7 +11,7 @@ import UM 1.1 as UM
 ScrollView
 {
     id: base
-    frameVisible: true
+    frameVisible: false
     width: parent.width
     height: parent.height
     style: UM.Theme.styles.scrollview
@@ -40,7 +40,7 @@ ScrollView
             color: "transparent"
             width: parent.width
             height: childrenRect.height + 1 * UM.Theme.getSize("default_lining").width
-            border.color: UM.Theme.getColor("text_medium")
+            border.color: UM.Theme.getColor("lining")
             border.width: UM.Theme.getSize("default_lining").width
             Column
             {
@@ -75,7 +75,7 @@ ScrollView
             color: "transparent"
             width: parent.width
             height: childrenRect.height + 1 * UM.Theme.getSize("default_lining").width
-            border.color: UM.Theme.getColor("text_medium")
+            border.color: UM.Theme.getColor("lining")
             border.width: UM.Theme.getSize("default_lining").width
             Column
             {

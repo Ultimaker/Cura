@@ -27,7 +27,7 @@ ScrollView
         }
         Rectangle
         {
-            color: UM.Theme.getColor("text_medium")
+            color: UM.Theme.getColor("lining")
             width: parent.width - 2 * parent.padding
             height: UM.Theme.getSize("default_lining").height
         }

@@ -45,7 +45,6 @@ Window
             {
                 id: viewLoading
                 visible: manager.viewCategory != "installed" && manager.viewPage == "loading"
-                // TODO: Replace !dataReady with manager.viewPage == "loading"
             }
             ToolboxDownloadsPage
             {
