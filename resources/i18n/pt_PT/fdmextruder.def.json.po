@@ -1,16 +1,16 @@
-# Cura JSON setting files
-# Copyright (C) 2017 Ultimaker
+# Cura
+# Copyright (C) 2018 Ultimaker
 # This file is distributed under the same license as the Cura package.
-# Ruben Dulek <r.dulek@ultimaker.com>, 2017.
+# Ruben Dulek <r.dulek@ultimaker.com>, 2018.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Cura 3.1\n"
+"Project-Id-Version: Cura 3.3\n"
 "Report-Msgid-Bugs-To: r.dulek@ultimaker.com\n"
 "POT-Creation-Date: 2018-03-29 08:36+0200\n"
-"PO-Revision-Date: 2018-01-23 19:35+0000\n"
-"Last-Translator: Paulo Miranda <av@utopica3d.com>\n"
-"Language-Team: Bothof\n"
+"PO-Revision-Date: 2018-04-11 14:40+0100\n"
+"Last-Translator: Bothof <info@bothof.nl>\n"
+"Language-Team: Portuguese <info@bothof.nl>, Paulo Miranda <av@utopica3d.com>\n"
 "Language: pt_PT\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -161,59 +161,59 @@ msgstr "A coordenada Y da posição final ao desligar o extrusor."
 #: fdmextruder.def.json
 msgctxt "extruder_prime_pos_z label"
 msgid "Extruder Prime Z Position"
-msgstr "Posição Z Preparação do Extrusor"
+msgstr "Posição Z para Preparação Extrusor"
 
 #: fdmextruder.def.json
 msgctxt "extruder_prime_pos_z description"
 msgid "The Z coordinate of the position where the nozzle primes at the start of printing."
-msgstr "A coordenada Z da posição onde o nozzle é preparado ao iniciar a impressão."
+msgstr "A coordenada Z da posição onde fazer a preparação do nozzle no inicio da impressão."
 
 #: fdmextruder.def.json
 msgctxt "platform_adhesion label"
 msgid "Build Plate Adhesion"
-msgstr "Aderência Base Construção"
+msgstr "Aderência"
 
 #: fdmextruder.def.json
 msgctxt "platform_adhesion description"
 msgid "Adhesion"
-msgstr "Aderência"
+msgstr "Aderência à Base de Construção"
 
 #: fdmextruder.def.json
 msgctxt "extruder_prime_pos_x label"
 msgid "Extruder Prime X Position"
-msgstr "Posição X Preparação do Extrusor"
+msgstr "Posição X Preparação Extrusor"
 
 #: fdmextruder.def.json
 msgctxt "extruder_prime_pos_x description"
 msgid "The X coordinate of the position where the nozzle primes at the start of printing."
-msgstr "A coordenada X da posição onde o nozzle é preparado ao iniciar a impressão."
+msgstr "A coordenada X da posição onde o é feita a preparação do nozzle no inicio da impressão."
 
 #: fdmextruder.def.json
 msgctxt "extruder_prime_pos_y label"
 msgid "Extruder Prime Y Position"
-msgstr "Posição Y Preparação do Extrusor"
+msgstr "Posição Y Preparação Extrusor"
 
 #: fdmextruder.def.json
 msgctxt "extruder_prime_pos_y description"
 msgid "The Y coordinate of the position where the nozzle primes at the start of printing."
-msgstr "A coordenada Y da posição onde o nozzle é preparado ao iniciar a impressão."
+msgstr "A coordenada Y da posição onde o é feita a preparação do nozzle no inicio da impressão."
 
 #: fdmextruder.def.json
 msgctxt "material label"
 msgid "Material"
-msgstr ""
+msgstr "Material"
 
 #: fdmextruder.def.json
 msgctxt "material description"
 msgid "Material"
-msgstr ""
+msgstr "Material"
 
 #: fdmextruder.def.json
 msgctxt "material_diameter label"
 msgid "Diameter"
-msgstr ""
+msgstr "Diâmetro"
 
 #: fdmextruder.def.json
 msgctxt "material_diameter description"
 msgid "Adjusts the diameter of the filament used. Match this value with the diameter of the used filament."
-msgstr ""
+msgstr "Ajusta o diâmetro do filamento utilizado. Faça corresponder este valor com o diâmetro do filamento utilizado."
