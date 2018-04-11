@@ -176,13 +176,13 @@ msgstr "Vorbereiten"
 #: /home/ruben/Projects/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:23
 msgctxt "@action:button Preceded by 'Ready to'."
 msgid "Save to Removable Drive"
-msgstr "Speichern auf Wechseldatenträger"
+msgstr "Speichern auf Datenträger"
 
 #: /home/ruben/Projects/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:24
 #, python-brace-format
 msgctxt "@item:inlistbox"
 msgid "Save to Removable Drive {0}"
-msgstr "Auf Wechseldatenträger speichern {0}"
+msgstr "Auf Datenträger speichern {0}"
 
 #: /home/ruben/Projects/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:64
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/ClusterUM3OutputDevice.py:110
@@ -194,7 +194,7 @@ msgstr "Es sind keine Dateiformate zum Schreiben vorhanden!"
 #, python-brace-format
 msgctxt "@info:progress Don't translate the XML tags <filename>!"
 msgid "Saving to Removable Drive <filename>{0}</filename>"
-msgstr "Wird auf Wechseldatenträger gespeichert <filename>{0}</filename>"
+msgstr "Wird auf Datenträger gespeichert <filename>{0}</filename>"
 
 #: /home/ruben/Projects/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:94
 msgctxt "@info:title"
@@ -219,7 +219,7 @@ msgstr "Bei dem Versuch, auf {device} zu schreiben, wurde ein Dateiname nicht ge
 #, python-brace-format
 msgctxt "@info:status"
 msgid "Could not save to removable drive {0}: {1}"
-msgstr "Konnte nicht auf dem Wechseldatenträger gespeichert werden {0}: {1}"
+msgstr "Konnte nicht auf dem Datenträger gespeichert werden {0}: {1}"
 
 #: /home/ruben/Projects/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:137
 #: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:134
@@ -233,7 +233,7 @@ msgstr "Fehler"
 #, python-brace-format
 msgctxt "@info:status"
 msgid "Saved to Removable Drive {0} as {1}"
-msgstr "Auf Wechseldatenträger {0} gespeichert als {1}"
+msgstr "Auf Datenträger {0} gespeichert als {1}"
 
 #: /home/ruben/Projects/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:145
 msgctxt "@info:title"
@@ -249,7 +249,7 @@ msgstr "Auswerfen"
 #, python-brace-format
 msgctxt "@action"
 msgid "Eject removable device {0}"
-msgstr "Wechseldatenträger auswerfen {0}"
+msgstr "Datenträger auswerfen {0}"
 
 #: /home/ruben/Projects/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:151
 #: /home/ruben/Projects/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:163
@@ -279,7 +279,7 @@ msgstr "Auswurf fehlgeschlagen {0}. Möglicherweise wird das Laufwerk von einem 
 #: /home/ruben/Projects/Cura/plugins/RemovableDriveOutputDevice/WindowsRemovableDrivePlugin.py:68
 msgctxt "@item:intext"
 msgid "Removable Drive"
-msgstr "Wechseldatenträger"
+msgstr "Datenträger"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/LegacyUM3OutputDevice.py:70
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/ClusterUM3OutputDevice.py:75
@@ -4549,12 +4549,12 @@ msgstr "Live-Scripting-Tool"
 #: RemovableDriveOutputDevice/plugin.json
 msgctxt "description"
 msgid "Provides removable drive hotplugging and writing support."
-msgstr "Ermöglicht Hotplugging des Wechseldatenträgers und Beschreiben."
+msgstr "Ermöglicht Hotplugging des Datenträgers und Beschreiben."
 
 #: RemovableDriveOutputDevice/plugin.json
 msgctxt "name"
 msgid "Removable Drive Output Device Plugin"
-msgstr "Ausgabegerät-Plugin für Wechseldatenträger"
+msgstr "Ausgabegerät-Plugin für Datenträger"
 
 #: UM3NetworkPrinting/plugin.json
 msgctxt "description"
@@ -5559,7 +5559,7 @@ msgstr "Cura-Profil-Reader"
 
 #~ msgctxt "@info:progress"
 #~ msgid "Saving to Removable Drive <filename>{0}</filename>"
-#~ msgstr "Wird auf Wechseldatenträger gespeichert <filename>{0}</filename>"
+#~ msgstr "Wird auf Datenträger gespeichert <filename>{0}</filename>"
 
 #~ msgctxt "@info:status"
 #~ msgid "Could not save to <filename>{0}</filename>: <message>{1}</message>"
@@ -5766,11 +5766,11 @@ msgstr "Cura-Profil-Reader"
 
 #~ msgctxt "@label"
 #~ msgid "Removable Drive Output Device Plugin"
-#~ msgstr "Ausgabegerät-Plugin für Wechseldatenträger"
+#~ msgstr "Ausgabegerät-Plugin für Datenträger"
 
 #~ msgctxt "@info:whatsthis"
 #~ msgid "Provides removable drive hotplugging and writing support."
-#~ msgstr "Ermöglicht Hotplugging des Wechseldatenträgers und Beschreiben."
+#~ msgstr "Ermöglicht Hotplugging des Datenträgers und Beschreiben."
 
 #~ msgctxt "@info:whatsthis"
 #~ msgid "Manages network connections to Ultimaker 3 printers"
