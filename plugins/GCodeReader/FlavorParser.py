@@ -368,6 +368,7 @@ class FlavorParser:
                     layer_number = int(line[len(self._layer_keyword):])
                     self._createPolygon(self._current_layer_thickness, current_path, self._extruder_offsets.get(self._extruder_number, [0, 0]))
                     current_path.clear()
+                    # start the new layer at the end position of the last layer
                     current_path.append([current_position.x, current_position.y, current_position.z, current_position.f, current_position.e[self._extruder_number], LayerPolygon.MoveCombingType])
 
                     # When using a raft, the raft layers are stored as layers < 0, it mimics the same behavior
