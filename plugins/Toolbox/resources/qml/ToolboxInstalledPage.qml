@@ -1,33 +1,102 @@
 // Copyright (c) 2018 Ultimaker B.V.
 // PluginBrowser is released under the terms of the LGPLv3 or higher.
 
-import QtQuick 2.2
+import QtQuick 2.7
 import QtQuick.Dialogs 1.1
 import QtQuick.Window 2.2
 import QtQuick.Controls 1.4
 import QtQuick.Controls.Styles 1.4
-
-// TODO: Switch to QtQuick.Controls 2.x and remove QtQuick.Controls.Styles
-
 import UM 1.1 as UM
 
 ScrollView
 {
-    anchors.fill: parent
-    ListView
+    id: base
+    frameVisible: true
+    width: parent.width
+    height: parent.height
+    style: UM.Theme.styles.scrollview
+    Column
     {
-        id: pluginList
-        property var activePlugin
-        property var filter: "installed"
+        spacing: UM.Theme.getSize("default_margin").height
         anchors
         {
-            fill: parent
-            topMargin: UM.Theme.getSize("default_margin").height
-            bottomMargin: UM.Theme.getSize("default_margin").height
-            leftMargin: UM.Theme.getSize("default_margin").width
-            rightMargin: UM.Theme.getSize("default_margin").width
+            right: parent.right
+            left: parent.left
+            leftMargin: UM.Theme.getSize("double_margin").width
+            topMargin: UM.Theme.getSize("double_margin").height
+            bottomMargin: UM.Theme.getSize("double_margin").height
+            top: parent.top
         }
-        model: manager.pluginsModel
-        delegate: ToolboxInstalledTile {}
+        height: childrenRect.height + 4 * UM.Theme.getSize("default_margin").height
+        Label
+        {
+            width: parent.width
+            text: "Plugins"
+            color: UM.Theme.getColor("text_medium")
+            font: UM.Theme.getFont("medium")
+        }
+        Rectangle
+        {
+            color: "transparent"
+            width: parent.width
+            height: childrenRect.height + 1 * UM.Theme.getSize("default_lining").width
+            border.color: UM.Theme.getColor("text_medium")
+            border.width: UM.Theme.getSize("default_lining").width
+            Column
+            {
+                height: childrenRect.height
+                anchors
+                {
+                    top: parent.top
+                    right: parent.right
+                    left: parent.left
+                    leftMargin: UM.Theme.getSize("default_margin").width
+                    rightMargin: UM.Theme.getSize("default_margin").width
+                    topMargin: UM.Theme.getSize("default_lining").width
+                    bottomMargin: UM.Theme.getSize("default_lining").width
+                }
+                Repeater
+                {
+                    id: materialList
+                    model: manager.packagesModel
+                    delegate: ToolboxInstalledTile {}
+                }
+            }
+        }
+        Label
+        {
+            width: base.width
+            text: "Materials"
+            color: UM.Theme.getColor("text_medium")
+            font: UM.Theme.getFont("medium")
+        }
+        Rectangle
+        {
+            color: "transparent"
+            width: parent.width
+            height: childrenRect.height + 1 * UM.Theme.getSize("default_lining").width
+            border.color: UM.Theme.getColor("text_medium")
+            border.width: UM.Theme.getSize("default_lining").width
+            Column
+            {
+                height: childrenRect.height
+                anchors
+                {
+                    top: parent.top
+                    right: parent.right
+                    left: parent.left
+                    leftMargin: UM.Theme.getSize("default_margin").width
+                    rightMargin: UM.Theme.getSize("default_margin").width
+                    topMargin: UM.Theme.getSize("default_lining").width
+                    bottomMargin: UM.Theme.getSize("default_lining").width
+                }
+                Repeater
+                {
+                    id: pluginList
+                    model: manager.packagesModel
+                    delegate: ToolboxInstalledTile {}
+                }
+            }
+        }
     }
 }

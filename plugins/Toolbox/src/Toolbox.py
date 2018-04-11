@@ -22,6 +22,7 @@ import platform
 import zipfile
 
 from cura.CuraApplication import CuraApplication
+from cura.CuraPackageManager import CuraPackageManager
 from .AuthorsModel import AuthorsModel
 from .PackagesModel import PackagesModel
 
@@ -33,6 +34,7 @@ class Toolbox(QObject, Extension):
         super().__init__(parent)
 
         self._plugin_registry = Application.getInstance().getPluginRegistry()
+        self._package_manager = None
         self._packages_version = self._plugin_registry.APIVersion
         self._api_version = 1
         self._api_url = "https://api-staging.ultimaker.com/cura-packages/v{api_version}/cura/v{package_version}".format( api_version = self._api_version, package_version = self._packages_version)
@@ -48,11 +50,14 @@ class Toolbox(QObject, Extension):
         self._network_manager = None
 
 
-        self._packages_metadata = []    # Stores the remote information of the packages
-        self._packages_model = None     # Model that list the remote available packages
-        self._showcase_model = None
+        self._packages_metadata = []
+        self._packages_model = None
+        self._plugins_showcase_model = None
+        self._plugins_installed_model = None
+        self._materials_showcase_model = None
+        self._materials_installed_model = None
         self._authors_model = None
-        self._installed_model = None
+
 
         # These properties are for keeping track of the UI state:
         # ----------------------------------------------------------------------
@@ -66,7 +71,7 @@ class Toolbox(QObject, Extension):
         # View page defines which type of page layout to use. For example,
         # possible values include "overview", "detail" or "author".
         # Formerly self._detail_view.
-        self._view_page = "overview"
+        self._view_page = "loading"
 
         # View selection defines what is currently selected and should be
         # used in filtering. This could be an author name (if _view_page is set
@@ -155,9 +160,19 @@ class Toolbox(QObject, Extension):
 
     @pyqtSlot()
     def browsePackages(self):
-        self._createNetworkManager()
-        self.requestShowcase()
-        self.requestPackages()
+        self._package_manager = Application.getInstance().getCuraPackageManager()
+        # Create the network manager:
+        # This was formerly its own function but really had no reason to be as
+        # it was never called more than once ever.
+        if self._network_manager:
+            self._network_manager.finished.disconnect(self._onRequestFinished)
+            self._network_manager.networkAccessibleChanged.disconnect(self._onNetworkAccesibleChanged)
+        self._network_manager = QNetworkAccessManager()
+        self._network_manager.finished.connect(self._onRequestFinished)
+        self._network_manager.networkAccessibleChanged.connect(self._onNetworkAccesibleChanged)
+
+        self._requestShowcase()
+        self._requestPackages()
         if not self._dialog:
             self._dialog = self._createDialog("Toolbox.qml")
         self._dialog.show()
@@ -224,8 +239,8 @@ class Toolbox(QObject, Extension):
         return self._plugins_model
 
     @pyqtProperty(QObject, notify = showcaseMetadataChanged)
-    def materialShowcaseModel(self):
-        return self._showcase_model
+    def pluginsShowcaseModel(self):
+        return self._plugins_showcase_model
 
     @pyqtProperty(QObject, notify = packagesMetadataChanged)
     def packagesModel(self):
@@ -239,6 +254,18 @@ class Toolbox(QObject, Extension):
     def dataReady(self):
         return self._packages_model is not None
 
+    @pyqtProperty(bool, notify = restartRequiredChanged)
+    def restartRequired(self):
+        return self._restart_required
+
+    @pyqtSlot()
+    def restart(self):
+        CuraApplication.getInstance().windowClosed()
+
+
+
+    # Checks
+    # --------------------------------------------------------------------------
     def _checkCanUpgrade(self, id, version):
         # Scan plugin server data for plugin with the given id:
         for plugin in self._packages_metadata:
@@ -250,57 +277,32 @@ class Toolbox(QObject, Extension):
                     return True
         return False
 
-    def _checkAlreadyInstalled(self, id):
-        metadata = self._plugin_registry.getMetaData(id)
-        # We already installed this plugin, but the registry just doesn't know it yet.
-        if id in self._newly_installed_plugin_ids:
-            return True
-        # We already uninstalled this plugin, but the registry just doesn't know it yet:
-        elif id in self._newly_uninstalled_plugin_ids:
+    def _checkInstalled(self, id):
+        if id in self._will_uninstall:
             return False
-        elif metadata != {}:
+        if id in self._package_manager.getInstalledPackages():
             return True
-        else:
-            return False
-
-    def _checkInstallStatus(self, plugin_id):
-        if plugin_id in self._plugin_registry.getInstalledPlugins():
-            return "installed"
-        else:
-            return "uninstalled"
+        if id in self._will_install:
+            return True
+        return False
 
     def _checkEnabled(self, id):
         if id in self._plugin_registry.getActivePlugins():
             return True
         return False
-    def _createNetworkManager(self):
-        if self._network_manager:
-            self._network_manager.finished.disconnect(self._onRequestFinished)
-            self._network_manager.networkAccessibleChanged.disconnect(self._onNetworkAccesibleChanged)
-        self._network_manager = QNetworkAccessManager()
-        self._network_manager.finished.connect(self._onRequestFinished)
-        self._network_manager.networkAccessibleChanged.connect(self._onNetworkAccesibleChanged)
-
-    @pyqtProperty(bool, notify = restartRequiredChanged)
-    def restartRequired(self):
-        return self._restart_required
-
-    @pyqtSlot()
-    def restart(self):
-        CuraApplication.getInstance().windowClosed()
 
 
 
     # Make API Calls
     # --------------------------------------------------------------------------
-    def requestPackages(self):
+    def _requestPackages(self):
         Logger.log("i", "Toolbox: Requesting package list from server.")
         url = QUrl("{base_url}/packages".format(base_url = self._api_url))
         self._get_packages_request = QNetworkRequest(url)
         self._get_packages_request.setRawHeader(*self._request_header)
         self._network_manager.get(self._get_packages_request)
 
-    def requestShowcase(self):
+    def _requestShowcase(self):
         Logger.log("i", "Toolbox: Requesting showcase list from server.")
         url = QUrl("{base_url}/showcase".format(base_url = self._api_url))
         self._get_showcase_request = QNetworkRequest(url)
@@ -381,6 +383,7 @@ class Toolbox(QObject, Extension):
                             self._authors_metadata.append(package["author"])
                     self._authors_model.setMetaData(self._authors_metadata)
                     self.authorsMetadataChanged.emit()
+                    self.setViewPage("overview")
                 except json.decoder.JSONDecodeError:
                     Logger.log("w", "Toolbox: Received invalid JSON for package list.")
                     return
@@ -390,12 +393,12 @@ class Toolbox(QObject, Extension):
                 try:
                     json_data = json.loads(bytes(reply.readAll()).decode("utf-8"))
                     # Create packages model with all packages:
-                    if not self._showcase_model:
-                        self._showcase_model = PackagesModel()
+                    if not self._plugins_showcase_model:
+                        self._plugins_showcase_model = PackagesModel()
                     self._showcase_metadata = json_data["data"]
                     print(self._showcase_metadata)
-                    self._showcase_model.setPackagesMetaData(self._showcase_metadata)
-                    for package in self._showcase_model.items:
+                    self._plugins_showcase_model.setPackagesMetaData(self._showcase_metadata)
+                    for package in self._plugins_showcase_model.items:
                         print(package)
                     self.showcaseMetadataChanged.emit()
                 except json.decoder.JSONDecodeError:
@@ -406,63 +409,66 @@ class Toolbox(QObject, Extension):
             pass
 
     def _onDownloadProgress(self, bytes_sent, bytes_total):
-        print("Downloading bytes:", bytes_total)
         if bytes_total > 0:
             new_progress = bytes_sent / bytes_total * 100
             self.setDownloadProgress(new_progress)
             if new_progress == 100.0:
-                Logger.log("i", "Toolbox: Download complete.")
                 self.setIsDownloading(False)
                 self._download_reply.downloadProgress.disconnect(self._onDownloadProgress)
-
                 # must not delete the temporary file on Windows
-                self._temp_plugin_file = tempfile.NamedTemporaryFile(mode = "w+b", suffix = ".curaplugin", delete = False)
+                self._temp_plugin_file = tempfile.NamedTemporaryFile(mode = "w+b", suffix = ".curapackage", delete = False)
                 file_path = self._temp_plugin_file.name
-
                 # write first and close, otherwise on Windows, it cannot read the file
                 self._temp_plugin_file.write(self._download_reply.readAll())
                 self._temp_plugin_file.close()
-
                 self._onDownloadComplete(file_path)
                 return
 
     def _onDownloadComplete(self, file_path):
-        with zipfile.ZipFile(file_path, "r") as zip_ref:
-            plugin_id = None
-            for file in zip_ref.infolist():
-                if file.filename.endswith("/"):
-                    plugin_id = file.filename.strip("/")
-                    break
+        Logger.log("i", "Toolbox: Download complete.")
+        print(file_path)
+        if self._package_manager.isPackageFile(file_path):
+            self._package_manager.install(file_path)
+            return
+        else:
+            Logger.log("w", "Toolbox: Package was not a valid CuraPackage.")
 
-            if plugin_id is None:
-                msg = i18n_catalog.i18nc("@info:status", "Failed to get plugin ID from <filename>{0}</filename>", file_path)
-                msg_title = i18n_catalog.i18nc("@info:tile", "Warning")
-                self._progress_message = Message(msg, lifetime=0, dismissable=False, title = msg_title)
-                return
-
-            # find a potential license file
-            plugin_root_dir = plugin_id + "/"
-            license_file = None
-            for f in zip_ref.infolist():
-                # skip directories (with file_size = 0) and files not in the plugin directory
-                if f.file_size == 0 or not f.filename.startswith(plugin_root_dir):
-                    continue
-                file_name = os.path.basename(f.filename).lower()
-                file_base_name, file_ext = os.path.splitext(file_name)
-                if file_base_name in ["license", "licence"]:
-                    license_file = f.filename
-                    break
-
-            # show a dialog for user to read and accept/decline the license
-            if license_file is not None:
-                Logger.log("i", "Found license file for plugin [%s], showing the license dialog to the user", plugin_id)
-                license_content = zip_ref.read(license_file).decode('utf-8')
-                self.openLicenseDialog(plugin_id, license_content, file_path)
-                return
-
-        # there is no license file, directly install the plugin
-        self.installPlugin(file_path)
-        return
+        # with zipfile.ZipFile(file_path, "r") as zip_ref:
+        #     plugin_id = None
+        #     for file in zip_ref.infolist():
+        #         if file.filename.endswith("/"):
+        #             plugin_id = file.filename.strip("/")
+        #             break
+        #
+        #     if plugin_id is None:
+        #         msg = i18n_catalog.i18nc("@info:status", "Failed to get plugin ID from <filename>{0}</filename>", file_path)
+        #         msg_title = i18n_catalog.i18nc("@info:tile", "Warning")
+        #         self._progress_message = Message(msg, lifetime=0, dismissable=False, title = msg_title)
+        #         return
+        #
+        #     # find a potential license file
+        #     plugin_root_dir = plugin_id + "/"
+        #     license_file = None
+        #     for f in zip_ref.infolist():
+        #         # skip directories (with file_size = 0) and files not in the plugin directory
+        #         if f.file_size == 0 or not f.filename.startswith(plugin_root_dir):
+        #             continue
+        #         file_name = os.path.basename(f.filename).lower()
+        #         file_base_name, file_ext = os.path.splitext(file_name)
+        #         if file_base_name in ["license", "licence"]:
+        #             license_file = f.filename
+        #             break
+        #
+        #     # show a dialog for user to read and accept/decline the license
+        #     if license_file is not None:
+        #         Logger.log("i", "Found license file for plugin [%s], showing the license dialog to the user", plugin_id)
+        #         license_content = zip_ref.read(license_file).decode('utf-8')
+        #         self.openLicenseDialog(plugin_id, license_content, file_path)
+        #         return
+        #
+        # # there is no license file, directly install the plugin
+        # self.installPlugin(file_path)
+        # return
 
 
 

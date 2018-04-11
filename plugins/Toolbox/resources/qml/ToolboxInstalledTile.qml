@@ -19,7 +19,7 @@ Component {
         // Don't show required plugins as they can't be managed anyway:
         height: !model.required ? 84 : 0
         visible: !model.required ? true : false
-        color: Qt.rgba(1.0, 0.0, 0.0, 0.1)
+        // color: Qt.rgba(1.0, 0.0, 0.0, 0.1)
         anchors {
             left: parent.left
             right: parent.right

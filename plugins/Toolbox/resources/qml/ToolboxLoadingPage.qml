@@ -14,5 +14,13 @@ Rectangle
     id: base
     width: parent.width
     height: parent.height
-    color: "red"
+    color: "transparent"
+    Label
+    {
+        text: "Fetching packages..."
+        anchors
+        {
+            centerIn: parent
+        }
+    }
 }

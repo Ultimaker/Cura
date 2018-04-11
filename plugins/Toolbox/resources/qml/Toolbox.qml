@@ -44,7 +44,7 @@ Window
             ToolboxLoadingPage
             {
                 id: viewLoading
-                visible: manager.viewCategory != "installed" && !dataReady
+                visible: manager.viewCategory != "installed" && manager.viewPage == "loading"
                 // TODO: Replace !dataReady with manager.viewPage == "loading"
             }
             ToolboxDownloadsPage
@@ -65,8 +65,7 @@ Window
             ToolboxInstalledPage
             {
                 id: installedPluginList
-                visible: manager.viewCategory == "installed" && dataReady
-                // TODO: Replace !dataReady with manager.viewPage == "loading"
+                visible: manager.viewCategory == "installed"
             }
         }
         ToolboxShadow

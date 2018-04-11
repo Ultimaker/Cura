@@ -34,7 +34,7 @@ Column
 
         Repeater
         {
-            model: manager.materialShowcaseModel
+            model: manager.pluginsShowcaseModel
             delegate: ToolboxDownloadsShowcaseTile {}
         }
     }
