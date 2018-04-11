@@ -1,6 +1,11 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Toolbox is released under the terms of the LGPLv3 or higher.
+
 from typing import Dict
+import json
+import os
+import tempfile
+import platform
 
 from PyQt5.QtCore import QUrl, QObject, pyqtProperty, pyqtSignal, pyqtSlot
 from PyQt5.QtNetwork import QNetworkAccessManager, QNetworkRequest, QNetworkReply
@@ -11,28 +16,22 @@ from UM.PluginRegistry import PluginRegistry
 from UM.Qt.Bindings.PluginsModel import PluginsModel
 from UM.Extension import Extension
 from UM.i18n import i18nCatalog
-
-from UM.Version import Version
-from UM.Message import Message
-
-import json
-import os
-import tempfile
-import platform
-import zipfile
+from cura.Utils.VersionTools import compareSemanticVersions
 
 from cura.CuraApplication import CuraApplication
-from cura.CuraPackageManager import CuraPackageManager
 from .AuthorsModel import AuthorsModel
 from .PackagesModel import PackagesModel
 
 i18n_catalog = i18nCatalog("cura")
+
 
 ##  The Toolbox class is responsible of communicating with the server through the API
 class Toolbox(QObject, Extension):
     def __init__(self, parent=None):
         super().__init__(parent)
 
+        self._application = Application.getInstance()
+        self._package_manager = None
         self._plugin_registry = Application.getInstance().getPluginRegistry()
         self._package_manager = None
         self._packages_version = self._plugin_registry.APIVersion
@@ -88,6 +87,10 @@ class Toolbox(QObject, Extension):
         # installed, or otherwise modified.
         self._active_package = None
 
+        # Nowadays can be 'plugins', 'materials' or 'installed'
+        self._current_view = "plugins"
+        self._detail_data = {} # Extraneous since can just use the data prop of the model.
+
         self._dialog = None
         self._restartDialog = None
         self._restart_required = False
@@ -97,6 +100,7 @@ class Toolbox(QObject, Extension):
         # we keep track of the upgraded plugins.
         self._newly_installed_plugin_ids = []
         self._newly_uninstalled_plugin_ids = []
+        self._plugin_statuses = {} # type: Dict[str, str]
 
         # variables for the license agreement dialog
         self._license_dialog_plugin_name = ""
@@ -104,7 +108,11 @@ class Toolbox(QObject, Extension):
         self._license_dialog_plugin_file_location = ""
         self._restart_dialog_message = ""
 
-    # Metadata changes
+        Application.getInstance().initializationFinished.connect(self._onAppInitialized)
+
+    def _onAppInitialized(self):
+        self._package_manager = Application.getInstance().getCuraPackageManager()
+
     packagesMetadataChanged = pyqtSignal()
     authorsMetadataChanged = pyqtSignal()
     pluginsShowcaseMetadataChanged = pyqtSignal()
@@ -176,29 +184,24 @@ class Toolbox(QObject, Extension):
 
     @pyqtSlot(str)
     def installPlugin(self, file_path):
-        # Ensure that it starts with a /, as otherwise it doesn't work on windows.
-        if not file_path.startswith("/"):
-            file_path = "/" + file_path
-        result = PluginRegistry.getInstance().installPlugin("file://" + file_path)
+        self._package_manager.installPackage(file_path)
 
-        self._newly_installed_plugin_ids.append(result["id"])
         self.packagesMetadataChanged.emit()
 
-        self.openRestartDialog(result["message"])
+        self.openRestartDialog("TODO")
         self._restart_required = True
         self.restartRequiredChanged.emit()
 
     @pyqtSlot(str)
     def removePlugin(self, plugin_id):
-        result = PluginRegistry.getInstance().uninstallPlugin(plugin_id)
+        self._package_manager.removePackage(plugin_id)
 
-        self._newly_uninstalled_plugin_ids.append(result["id"])
         self.packagesMetadataChanged.emit()
 
         self._restart_required = True
         self.restartRequiredChanged.emit()
 
-        Application.getInstance().messageBox(i18n_catalog.i18nc("@window:title", "Plugin browser"), result["message"])
+        Application.getInstance().messageBox(i18n_catalog.i18nc("@window:title", "Plugin browser"), "TODO")
 
     @pyqtSlot(str)
     def enablePlugin(self, plugin_id):
@@ -261,30 +264,37 @@ class Toolbox(QObject, Extension):
 
     # Checks
     # --------------------------------------------------------------------------
-    def _checkCanUpgrade(self, id, version):
-        # Scan plugin server data for plugin with the given id:
-        for plugin in self._packages_metadata:
-            if id == plugin["id"]:
-                reg_version = Version(version)
-                new_version = Version(plugin["version"])
-                if new_version > reg_version:
-                    Logger.log("i", "%s has an update availible: %s", plugin["id"], plugin["version"])
-                    return True
-        return False
-
-    def _checkInstalled(self, id):
-        if id in self._will_uninstall:
+    def _checkCanUpgrade(self, package_id: str, version: str) -> bool:
+        installed_plugin_data = self._package_manager.getInstalledPackageInfo(package_id)
+        if installed_plugin_data is None:
             return False
-        if id in self._package_manager.getInstalledPackages():
-            return True
-        if id in self._will_install:
-            return True
-        return False
+
+        installed_version = installed_plugin_data["package_version"]
+        return compareSemanticVersions(version, installed_version) > 0
+
+    def _checkInstalled(self, package_id: str):
+        return self._package_manager.isPackageInstalled(package_id)
 
     def _checkEnabled(self, id):
         if id in self._plugin_registry.getActivePlugins():
             return True
         return False
+
+    def _createNetworkManager(self):
+        if self._network_manager:
+            self._network_manager.finished.disconnect(self._onRequestFinished)
+            self._network_manager.networkAccessibleChanged.disconnect(self._onNetworkAccesibleChanged)
+        self._network_manager = QNetworkAccessManager()
+        self._network_manager.finished.connect(self._onRequestFinished)
+        self._network_manager.networkAccessibleChanged.connect(self._onNetworkAccesibleChanged)
+
+    @pyqtProperty(bool, notify = restartRequiredChanged)
+    def restartRequired(self):
+        return self._restart_required
+
+    @pyqtSlot()
+    def restart(self):
+        CuraApplication.getInstance().windowClosed()
 
 
 
@@ -445,12 +455,19 @@ class Toolbox(QObject, Extension):
     def _onDownloadComplete(self, file_path):
         Logger.log("i", "Toolbox: Download complete.")
         print(file_path)
-        if self._package_manager.isPackageFile(file_path):
-            self._package_manager.install(file_path)
+        try:
+            package_info = self._package_manager.getPackageInfo(file_path)
+        except:
+            Logger.logException("w", "Toolbox: Package file [%s] was not a valid CuraPackage.", file_path)
             return
-        else:
-            Logger.log("w", "Toolbox: Package was not a valid CuraPackage.")
 
+        license_content = self._package_manager.getPackageLicense(file_path)
+        if license_content is not None:
+            self.openLicenseDialog(package_info["package_id"], license_content, file_path)
+            return
+
+        self._package_manager.installPlugin(file_path)
+        return
 
 
     # Getter & Setters

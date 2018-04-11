@@ -140,7 +140,6 @@ class CuraApplication(QtApplication):
         ExtruderStack = Resources.UserType + 9
         DefinitionChangesContainer = Resources.UserType + 10
         SettingVisibilityPreset = Resources.UserType + 11
-        CuraPackages = Resources.UserType + 12
 
     Q_ENUMS(ResourceTypes)
 
@@ -190,7 +189,6 @@ class CuraApplication(QtApplication):
         Resources.addStorageType(self.ResourceTypes.MachineStack, "machine_instances")
         Resources.addStorageType(self.ResourceTypes.DefinitionChangesContainer, "definition_changes")
         Resources.addStorageType(self.ResourceTypes.SettingVisibilityPreset, "setting_visibility")
-        Resources.addStorageType(self.ResourceTypes.CuraPackages, "cura_packages")
 
         ContainerRegistry.getInstance().addResourceType(self.ResourceTypes.QualityInstanceContainer, "quality")
         ContainerRegistry.getInstance().addResourceType(self.ResourceTypes.QualityChangesInstanceContainer, "quality_changes")
@@ -233,7 +231,6 @@ class CuraApplication(QtApplication):
         self._simple_mode_settings_manager = None
         self._cura_scene_controller = None
         self._machine_error_checker = None
-        self._cura_package_manager = None
 
         self._additional_components = {} # Components to add to certain areas in the interface
 
@@ -243,6 +240,13 @@ class CuraApplication(QtApplication):
                          is_debug_mode = CuraDebugMode,
                          tray_icon_name = "cura-icon-32.png",
                          **kwargs)
+
+        # Initialize the package manager to remove and install scheduled packages.
+        from cura.CuraPackageManager import CuraPackageManager
+        self._cura_package_manager = CuraPackageManager(self)
+        self._cura_package_manager.initialize()
+
+        self.initialize()
 
         # FOR TESTING ONLY
         if kwargs["parsed_command_line"].get("trigger_early_crash", False):
@@ -654,10 +658,6 @@ class CuraApplication(QtApplication):
         self.preRun()
 
         container_registry = ContainerRegistry.getInstance()
-
-        from cura.CuraPackageManager import CuraPackageManager
-        self._cura_package_manager = CuraPackageManager(self)
-        self._cura_package_manager.initialize()
 
         Logger.log("i", "Initializing variant manager")
         self._variant_manager = VariantManager(container_registry)
