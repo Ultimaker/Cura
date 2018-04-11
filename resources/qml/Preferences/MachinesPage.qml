@@ -138,7 +138,7 @@ UM.ManagementPage
 
             visible: base.currentItem
 
-            property bool printerConnected: Cura.MachineManager.printerOutputDevices.length != 0
+            property bool printerConnected: Cura.MachineManager.printerConnected
             property var connectedPrinter: printerConnected ? Cura.MachineManager.printerOutputDevices[0] : null
             property bool printerAcceptsCommands: printerConnected && Cura.MachineManager.printerOutputDevices[0].acceptsCommands
             property var printJob: connectedPrinter != null ? connectedPrinter.activePrintJob: null

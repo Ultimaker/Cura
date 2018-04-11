@@ -18,7 +18,7 @@ This new feature allows you to easily add small cubic areas which prevent suppor
 A convenient way to select a preset of settings to be visible. These presets guide you to find the most important Cura settings in an incremental way. A small menu is located next to the ‘search bar’ to easily access these new setting visibility presets.
 
 *Model assistant
-This feature provides useful information to the user based on their model. For now, it informs the user when printing models with a footprint larger than 15x15x15cm, printed with ABS, PC, PP or CPE+, that they may want to make changes to the model such as filleting sharp edges.
+This feature provides useful information to the user based on their model. For now, it informs the user when printing models with a footprint larger than 15x15x10cm, printed with ABS, PC, PP or CPE+, that they may want to make changes to the model such as filleting sharp edges.
 
 *Circular prime tower
 The prime tower shape has changed from rectangular to circular. This shape should increase the adhesion to the build plate, overall strength, and prevent delamination of the layers.
@@ -59,6 +59,12 @@ Also Alexander Roessler made a new NGC writer plugin so you can export files in 
 
 *Pre-heat extruders - fieldOfView
 This new feature allows to preheat the extruders in the printer monitor.
+
+*Persistent post-processing scripts
+Scripts are no longer erased after restarting Ultimaker Cura.
+
+*GZ Reader
+By default, G-code for Ultimaker 3 machines is now saved as gzipped G-Code.
 
 *Print preview image
 Adds a preview image of the gcode to the slice information. This can be shown in Cura Connect.

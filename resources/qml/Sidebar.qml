@@ -20,7 +20,7 @@ Rectangle
 
     // Is there an output device for this printer?
     property bool isNetworkPrinter: Cura.MachineManager.activeMachineNetworkKey != ""
-    property bool printerConnected: Cura.MachineManager.printerOutputDevices.length != 0
+    property bool printerConnected: Cura.MachineManager.printerConnected
     property bool printerAcceptsCommands: printerConnected && Cura.MachineManager.printerOutputDevices[0].acceptsCommands
     property var connectedPrinter: Cura.MachineManager.printerOutputDevices.length >= 1 ? Cura.MachineManager.printerOutputDevices[0] : null
 
@@ -660,17 +660,5 @@ Rectangle
         key: "machine_heated_bed"
         watchedProperties: [ "value" ]
         storeIndex: 0
-    }
-
-    // Make the ConfigurationSelector react when the global container changes, otherwise if Cura is not connected to the printer,
-    // switching printers make no reaction
-    Connections
-    {
-        target: Cura.MachineManager
-        onGlobalContainerChanged:
-        {
-            base.isNetworkPrinter = Cura.MachineManager.activeMachineNetworkKey != ""
-            base.printerConnected = Cura.MachineManager.printerOutputDevices.length != 0
-        }
     }
 }

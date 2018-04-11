@@ -6,6 +6,7 @@ from typing import TYPE_CHECKING, Optional
 from PyQt5.QtCore import QObject, QTimer, pyqtSignal, pyqtSlot
 
 from UM.Application import Application
+from UM.ConfigurationErrorMessage import ConfigurationErrorMessage
 from UM.Logger import Logger
 from UM.Util import parseBool
 from UM.Settings.InstanceContainer import InstanceContainer
@@ -84,7 +85,8 @@ class QualityManager(QObject):
 
             # Sanity check: material+variant and is_global_quality cannot be present at the same time
             if is_global_quality and (root_material_id or variant_name):
-                raise RuntimeError("Quality profile [%s] contains invalid data: it is a global quality but contains 'material' and 'nozzle' info." % metadata["id"])
+                ConfigurationErrorMessage.getInstance().addFaultyContainers(metadata["id"])
+                continue
 
             if definition_id not in self._machine_variant_material_quality_type_to_quality_dict:
                 self._machine_variant_material_quality_type_to_quality_dict[definition_id] = QualityNode()
@@ -393,6 +395,8 @@ class QualityManager(QObject):
             new_name = self._container_registry.uniqueName(quality_changes_name)
             for node in quality_changes_group.getAllNodes():
                 container = node.getContainer()
+                if not container:
+                    continue
                 new_id = self._container_registry.uniqueName(container.getId())
                 self._container_registry.addContainer(container.duplicate(new_id, new_name))
 

@@ -601,6 +601,17 @@ Item
 
                     onTriggered: Cura.Actions.configureSettingVisibility.trigger(contextMenu);
                 }
+                MenuSeparator {}
+                MenuItem
+                {
+                    text: catalog.i18nc("@action:inmenu", "Collapse All")
+                    onTriggered: definitionsModel.collapseAll()
+                }
+                MenuItem
+                {
+                    text: catalog.i18nc("@action:inmenu", "Expand All")
+                    onTriggered: definitionsModel.expandRecursive()
+                }
             }
 
             UM.SettingPropertyProvider

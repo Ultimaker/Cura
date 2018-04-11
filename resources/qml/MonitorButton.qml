@@ -15,7 +15,7 @@ Item
     id: base;
     UM.I18nCatalog { id: catalog; name:"cura"}
 
-    property bool printerConnected: Cura.MachineManager.printerOutputDevices.length != 0
+    property bool printerConnected: Cura.MachineManager.printerConnected
     property bool printerAcceptsCommands: printerConnected && Cura.MachineManager.printerOutputDevices[0].acceptsCommands
     property var activePrinter: printerConnected ? Cura.MachineManager.printerOutputDevices[0].activePrinter : null
     property var activePrintJob: activePrinter ? activePrinter.activePrintJob: null

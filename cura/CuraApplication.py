@@ -132,19 +132,21 @@ class CuraApplication(QtApplication):
         QmlFiles = Resources.UserType + 1
         Firmware = Resources.UserType + 2
         QualityInstanceContainer = Resources.UserType + 3
-        MaterialInstanceContainer = Resources.UserType + 4
-        VariantInstanceContainer = Resources.UserType + 5
-        UserInstanceContainer = Resources.UserType + 6
-        MachineStack = Resources.UserType + 7
-        ExtruderStack = Resources.UserType + 8
-        DefinitionChangesContainer = Resources.UserType + 9
-        SettingVisibilityPreset = Resources.UserType + 10
+        QualityChangesInstanceContainer = Resources.UserType + 4
+        MaterialInstanceContainer = Resources.UserType + 5
+        VariantInstanceContainer = Resources.UserType + 6
+        UserInstanceContainer = Resources.UserType + 7
+        MachineStack = Resources.UserType + 8
+        ExtruderStack = Resources.UserType + 9
+        DefinitionChangesContainer = Resources.UserType + 10
+        SettingVisibilityPreset = Resources.UserType + 11
+        CuraPackages = Resources.UserType + 12
 
     Q_ENUMS(ResourceTypes)
 
     def __init__(self, **kwargs):
         # this list of dir names will be used by UM to detect an old cura directory
-        for dir_name in ["extruders", "machine_instances", "materials", "plugins", "quality", "user", "variants"]:
+        for dir_name in ["extruders", "machine_instances", "materials", "plugins", "quality", "quality_changes", "user", "variants"]:
             Resources.addExpectedDirNameInData(dir_name)
 
         Resources.addSearchPath(os.path.join(QtApplication.getInstallPrefix(), "share", "cura", "resources"))
@@ -180,6 +182,7 @@ class CuraApplication(QtApplication):
 
         ## Add the 4 types of profiles to storage.
         Resources.addStorageType(self.ResourceTypes.QualityInstanceContainer, "quality")
+        Resources.addStorageType(self.ResourceTypes.QualityChangesInstanceContainer, "quality_changes")
         Resources.addStorageType(self.ResourceTypes.VariantInstanceContainer, "variants")
         Resources.addStorageType(self.ResourceTypes.MaterialInstanceContainer, "materials")
         Resources.addStorageType(self.ResourceTypes.UserInstanceContainer, "user")
@@ -187,9 +190,10 @@ class CuraApplication(QtApplication):
         Resources.addStorageType(self.ResourceTypes.MachineStack, "machine_instances")
         Resources.addStorageType(self.ResourceTypes.DefinitionChangesContainer, "definition_changes")
         Resources.addStorageType(self.ResourceTypes.SettingVisibilityPreset, "setting_visibility")
+        Resources.addStorageType(self.ResourceTypes.CuraPackages, "cura_packages")
 
         ContainerRegistry.getInstance().addResourceType(self.ResourceTypes.QualityInstanceContainer, "quality")
-        ContainerRegistry.getInstance().addResourceType(self.ResourceTypes.QualityInstanceContainer, "quality_changes")
+        ContainerRegistry.getInstance().addResourceType(self.ResourceTypes.QualityChangesInstanceContainer, "quality_changes")
         ContainerRegistry.getInstance().addResourceType(self.ResourceTypes.VariantInstanceContainer, "variant")
         ContainerRegistry.getInstance().addResourceType(self.ResourceTypes.MaterialInstanceContainer, "material")
         ContainerRegistry.getInstance().addResourceType(self.ResourceTypes.UserInstanceContainer, "user")
@@ -203,12 +207,13 @@ class CuraApplication(QtApplication):
 
         UM.VersionUpgradeManager.VersionUpgradeManager.getInstance().setCurrentVersions(
             {
-                ("quality_changes", InstanceContainer.Version * 1000000 + self.SettingVersion):    (self.ResourceTypes.QualityInstanceContainer, "application/x-uranium-instancecontainer"),
+                ("quality_changes", InstanceContainer.Version * 1000000 + self.SettingVersion):    (self.ResourceTypes.QualityChangesInstanceContainer, "application/x-uranium-instancecontainer"),
                 ("machine_stack", ContainerStack.Version * 1000000 + self.SettingVersion):         (self.ResourceTypes.MachineStack, "application/x-cura-globalstack"),
                 ("extruder_train", ContainerStack.Version * 1000000 + self.SettingVersion):        (self.ResourceTypes.ExtruderStack, "application/x-cura-extruderstack"),
                 ("preferences", Preferences.Version * 1000000 + self.SettingVersion):              (Resources.Preferences, "application/x-uranium-preferences"),
                 ("user", InstanceContainer.Version * 1000000 + self.SettingVersion):               (self.ResourceTypes.UserInstanceContainer, "application/x-uranium-instancecontainer"),
                 ("definition_changes", InstanceContainer.Version * 1000000 + self.SettingVersion): (self.ResourceTypes.DefinitionChangesContainer, "application/x-uranium-instancecontainer"),
+                ("variant", InstanceContainer.Version * 1000000 + self.SettingVersion):            (self.ResourceTypes.VariantInstanceContainer, "application/x-uranium-instancecontainer"),
             }
         )
 
@@ -228,6 +233,7 @@ class CuraApplication(QtApplication):
         self._simple_mode_settings_manager = None
         self._cura_scene_controller = None
         self._machine_error_checker = None
+        self._cura_package_manager = None
 
         self._additional_components = {} # Components to add to certain areas in the interface
 
@@ -528,7 +534,9 @@ class CuraApplication(QtApplication):
         self._plugins_loaded = True
 
     @classmethod
-    def addCommandLineOptions(self, parser, parsed_command_line = {}):
+    def addCommandLineOptions(cls, parser, parsed_command_line = None):
+        if parsed_command_line is None:
+            parsed_command_line = {}
         super().addCommandLineOptions(parser, parsed_command_line = parsed_command_line)
         parser.add_argument("file", nargs="*", help="Files to load after starting the application.")
         parser.add_argument("--single-instance", action="store_true", default=False)
@@ -585,7 +593,10 @@ class CuraApplication(QtApplication):
     #   This should be called directly before creating an instance of CuraApplication.
     #   \returns \type{bool} True if the whole Cura app should continue running.
     @classmethod
-    def preStartUp(cls, parser = None, parsed_command_line = {}):
+    def preStartUp(cls, parser = None, parsed_command_line = None):
+        if parsed_command_line is None:
+            parsed_command_line = {}
+
         # Peek the arguments and look for the 'single-instance' flag.
         if not parser:
             parser = argparse.ArgumentParser(prog = "cura", add_help = False)  # pylint: disable=bad-whitespace
@@ -643,6 +654,10 @@ class CuraApplication(QtApplication):
         self.preRun()
 
         container_registry = ContainerRegistry.getInstance()
+
+        from cura.CuraPackageManager import CuraPackageManager
+        self._cura_package_manager = CuraPackageManager(self)
+        self._cura_package_manager.initialize()
 
         Logger.log("i", "Initializing variant manager")
         self._variant_manager = VariantManager(container_registry)
@@ -742,7 +757,7 @@ class CuraApplication(QtApplication):
         # Initialize camera tool
         camera_tool = controller.getTool("CameraTool")
         camera_tool.setOrigin(Vector(0, 100, 0))
-        camera_tool.setZoomRange(0.1, 200000)
+        camera_tool.setZoomRange(0.1, 2000)
 
         # Initialize camera animations
         self._camera_animation = CameraAnimation.CameraAnimation()
@@ -780,6 +795,10 @@ class CuraApplication(QtApplication):
         if self._extruder_manager is None:
             self._extruder_manager = ExtruderManager.createExtruderManager()
         return self._extruder_manager
+
+    @pyqtSlot(result = QObject)
+    def getCuraPackageManager(self, *args):
+        return self._cura_package_manager
 
     def getVariantManager(self, *args):
         return self._variant_manager

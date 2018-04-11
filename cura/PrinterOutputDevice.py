@@ -71,6 +71,7 @@ class PrinterOutputDevice(QObject, OutputDevice):
 
         self._connection_state = ConnectionState.closed
 
+        self._firmware_name = None
         self._address = ""
         self._connection_text = ""
         self.printersChanged.connect(self._onPrintersChanged)
@@ -197,6 +198,18 @@ class PrinterOutputDevice(QObject, OutputDevice):
 
         # At this point there may be non-updated configurations
         self._updateUniqueConfigurations()
+
+    ##  Set the device firmware name
+    #
+    #   \param name \type{str} The name of the firmware.
+    def _setFirmwareName(self, name):
+        self._firmware_name = name
+
+    ##  Get the name of device firmware
+    #
+    #   This name can be used to define device type
+    def getFirmwareName(self):
+        return self._firmware_name
 
 
 ##  The current processing state of the backend.

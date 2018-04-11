@@ -9,6 +9,7 @@ from typing import Optional, TYPE_CHECKING
 from PyQt5.Qt import QTimer, QObject, pyqtSignal, pyqtSlot
 
 from UM.Application import Application
+from UM.ConfigurationErrorMessage import ConfigurationErrorMessage
 from UM.Logger import Logger
 from UM.Settings.ContainerRegistry import ContainerRegistry
 from UM.Settings.SettingFunction import SettingFunction
@@ -205,12 +206,10 @@ class MaterialManager(QObject):
                     machine_node.children_map[variant_name] = MaterialNode()
 
                 variant_node = machine_node.children_map[variant_name]
-                if root_material_id not in variant_node.material_map:
-                    variant_node.material_map[root_material_id] = MaterialNode(material_metadata)
-                else:
-                    # Sanity check: make sure we don't have duplicated variant-specific materials for the same machine
-                    raise RuntimeError("Found duplicate variant name [%s] for machine [%s] in material [%s]" %
-                                       (variant_name, definition, material_metadata["id"]))
+                if root_material_id in variant_node.material_map: #We shouldn't have duplicated variant-specific materials for the same machine.
+                    ConfigurationErrorMessage.getInstance().addFaultyContainers(root_material_id)
+                    continue
+                variant_node.material_map[root_material_id] = MaterialNode(material_metadata)
 
         self.materialsUpdated.emit()
 
@@ -423,7 +422,8 @@ class MaterialManager(QObject):
             return
 
         material_group = self.getMaterialGroup(root_material_id)
-        material_group.root_material_node.getContainer().setName(name)
+        if material_group:
+            material_group.root_material_node.getContainer().setName(name)
 
     #
     # Removes the given material.
@@ -447,6 +447,8 @@ class MaterialManager(QObject):
             return None
 
         base_container = material_group.root_material_node.getContainer()
+        if not base_container:
+            return None
 
         # Ensure all settings are saved.
         self._application.saveSettings()
@@ -466,6 +468,8 @@ class MaterialManager(QObject):
         # Clone all of them.
         for node in material_group.derived_material_node_list:
             container_to_copy = node.getContainer()
+            if not container_to_copy:
+                continue
             # Create unique IDs for every clone.
             new_id = new_base_id
             if container_to_copy.getMetaDataEntry("definition") != "fdmprinter":

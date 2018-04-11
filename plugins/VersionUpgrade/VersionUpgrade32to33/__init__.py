@@ -14,7 +14,8 @@ def getMetaData():
 
             ("definition_changes", 2000004): ("definition_changes", 3000004, upgrade.upgradeInstanceContainer),
             ("quality_changes", 2000004):    ("quality_changes", 3000004,    upgrade.upgradeQualityChanges),
-            ("user", 2000004):               ("user", 3000004,               upgrade.upgradeInstanceContainer)
+            ("user", 2000004):               ("user", 3000004,               upgrade.upgradeInstanceContainer),
+            ("variant", 2000004):            ("variant", 3000004,            upgrade.upgradeVariants)
         },
         "sources": {
             "machine_stack": {
@@ -36,6 +37,10 @@ def getMetaData():
             "user": {
                 "get_version": upgrade.getCfgVersion,
                 "location": {"./user"}
+            },
+            "variant": {
+                "get_version": upgrade.getCfgVersion,
+                "location": {"./variants"}
             }
         }
     }

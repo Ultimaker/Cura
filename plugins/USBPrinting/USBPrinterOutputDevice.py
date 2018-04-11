@@ -85,6 +85,11 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
         # Queue for commands that need to be send. Used when command is sent when a print is active.
         self._command_queue = Queue()
 
+    ## Reset USB device settings
+    #
+    def resetDeviceSettings(self):
+        self._firmware_name = None
+
     ##  Request the current scene to be sent to a USB-connected printer.
     #
     #   \param nodes A collection of scene nodes to send. This is ignored.
@@ -225,6 +230,8 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
         self._baud_rate = baud_rate
 
     def connect(self):
+        self._firmware_name = None # after each connection ensure that the firmware name is removed
+
         if self._baud_rate is None:
             if self._use_auto_detect:
                 auto_detect_job = AutoDetectBaudJob(self._serial_port)
@@ -286,6 +293,9 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
                 self.sendCommand("M105")
                 self._last_temperature_request = time()
 
+                if self._firmware_name is None:
+                    self.sendCommand("M115")
+
             if b"ok T:" in line or line.startswith(b"T:") or b"ok B:" in line or line.startswith(b"B:"):  # Temperature message. 'T:' for extruder and 'B:' for bed
                 extruder_temperature_matches = re.findall(b"T(\d*): ?([\d\.]+) ?\/?([\d\.]+)?", line)
                 # Update all temperature values
@@ -302,6 +312,9 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
                         self._printers[0].updateBedTemperature(float(match[0]))
                     if match[1]:
                         self._printers[0].updateTargetBedTemperature(float(match[1]))
+
+            if b"FIRMWARE_NAME:" in line:
+                self._setFirmwareName(line)
 
             if self._is_printing:
                 if line.startswith(b'!!'):
@@ -322,6 +335,18 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
                         if b"rs" in line:
                             # In some cases of the RS command it needs to be handled differently.
                             self._gcode_position = int(line.split()[1])
+
+    def _setFirmwareName(self, name):
+        new_name = re.findall(r"FIRMWARE_NAME:(.*);", str(name))
+        if  new_name:
+            self._firmware_name = new_name[0]
+            Logger.log("i", "USB output device Firmware name: %s", self._firmware_name)
+        else:
+            self._firmware_name = "Unknown"
+            Logger.log("i", "Unknown USB output device Firmware name: %s", str(name))
+
+    def getFirmwareName(self):
+        return self._firmware_name
 
     def pausePrint(self):
         self._paused = True
