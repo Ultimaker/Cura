@@ -160,7 +160,8 @@ class FlavorParser:
         # Area of the printed line. This area is a rectangle
         Ae = dVe / dX
         # This area is a rectangle with area equal to layer_thickness * layer_width
-        line_width = Ae / layer_thickness
+        # 11/04/2018 - added divide by 2 to obtain visually correct line widths
+        line_width = Ae / layer_thickness / 2
 
         # A threshold is set to avoid weird paths in the GCode
         if line_width > 1.2:
