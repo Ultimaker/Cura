@@ -11,36 +11,51 @@ import QtQuick.Controls.Styles 1.4
 
 import UM 1.1 as UM
 
-Rectangle {
+Item
+{
     width: parent.width
     height: UM.Theme.getSize("base_unit").height * 4
-    color: "transparent"
     anchors.bottom: parent.bottom
-
-    Label {
+    Label
+    {
         visible: manager.restartRequired
         text: "You will need to restart Cura before changes in plugins have effect."
-        height: 30
+        height: UM.Theme.getSize("base_unit").height * 2
         verticalAlignment: Text.AlignVCenter
+        anchors
+        {
+            top: closeButton.top
+            left: parent.left
+            leftMargin: UM.Theme.getSize("default_margin").width
+        }
     }
-    Button {
-        id: restartChangedButton
+    Button
+    {
+        id: restartButton
         text: "Quit Cura"
-        anchors.right: closeButton.left
-        anchors.rightMargin: UM.Theme.getSize("default_margin").width
+        anchors
+        {
+            top: closeButton.top
+            right: closeButton.left
+            rightMargin: UM.Theme.getSize("default_margin").width
+        }
         visible: manager.restartRequired
         iconName: "dialog-restart"
         onClicked: manager.restart()
-        style: ButtonStyle {
-            background: Rectangle {
+        style: ButtonStyle
+        {
+            background: Rectangle
+            {
                 implicitWidth: 96
-                implicitHeight: 30
-                color: UM.Theme.getColor("primary")
+                implicitHeight: UM.Theme.getSize("base_unit").height * 2
+                color: control.hovered ? UM.Theme.getColor("primary_hover") : UM.Theme.getColor("primary")
             }
-            label: Text {
+            label: Text
+            {
                 verticalAlignment: Text.AlignVCenter
                 color: UM.Theme.getColor("button_text")
-                font {
+                font
+                {
                     pixelSize: 13
                     bold: true
                 }
@@ -50,12 +65,15 @@ Rectangle {
         }
     }
 
-    Button {
+    Button
+    {
         id: closeButton
         text: catalog.i18nc("@action:button", "Close")
         iconName: "dialog-close"
-        onClicked: {
-            if ( manager.isDownloading ) {
+        onClicked:
+        {
+            if ( manager.isDownloading )
+            {
                 manager.cancelDownload()
             }
             base.close();
@@ -65,19 +83,23 @@ Rectangle {
             top: parent.top
             topMargin: UM.Theme.getSize("default_margin").height
             right: parent.right
-            rightMargin: UM.Theme.getSize("default_margin").height
+            rightMargin: UM.Theme.getSize("default_margin").width
         }
-        style: ButtonStyle {
-            background: Rectangle {
+        style: ButtonStyle
+        {
+            background: Rectangle
+            {
                 color: "transparent"
                 implicitWidth: 96
-                implicitHeight: 30
-                border {
+                implicitHeight: UM.Theme.getSize("base_unit").height * 2
+                border
+                {
                     width: 1
                     color: UM.Theme.getColor("lining")
                 }
             }
-            label: Text {
+            label: Text
+            {
                 verticalAlignment: Text.AlignVCenter
                 color: UM.Theme.getColor("text")
                 text: control.text

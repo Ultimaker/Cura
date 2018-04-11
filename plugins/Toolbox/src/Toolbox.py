@@ -52,7 +52,7 @@ class Toolbox(QObject, Extension):
         self._packages_model = None     # Model that list the remote available packages
         self._showcase_model = None
         self._authors_model = None
-
+        self._installed_model = None
 
         # These properties are for keeping track of the UI state:
         # ----------------------------------------------------------------------
@@ -73,12 +73,6 @@ class Toolbox(QObject, Extension):
         # to "author" or a plugin name if it is set to "detail").
         self._view_selection = ""
 
-        # For any view page above, self._packages_model can be filtered.
-        # For example:
-        # self._view_category = "material"
-        #   if self._view_page == "author":
-        #     filter with "author == self._view_selection"
-
         # Active package refers to which package is currently being downloaded,
         # installed, or otherwise modified.
         self._active_package = None
@@ -88,14 +82,10 @@ class Toolbox(QObject, Extension):
         self._current_view = "plugins"
         self._detail_data = {} # Extraneous since can just use the data prop of the model.
 
-
-
         self._restart_required = False
 
         self._dialog = None
         self._restartDialog = None
-
-
 
         self._request_header = [b"User-Agent",
                                 str.encode("%s/%s (%s %s)" % (Application.getInstance().getApplicationName(),
@@ -178,56 +168,12 @@ class Toolbox(QObject, Extension):
         dialog = Application.getInstance().createQmlComponent(path, {"manager": self})
         return dialog
 
-    ##  Checks if the downloaded plugin ZIP file contains a license file or not.
-    #   If it does, it will show a popup dialog displaying the license to the user. The plugin will be installed if the
-    #   user accepts the license.
-    #   If there is no license file, the plugin will be directory installed.
-    def _checkPluginLicenseOrInstall(self, file_path):
-        with zipfile.ZipFile(file_path, "r") as zip_ref:
-            plugin_id = None
-            for file in zip_ref.infolist():
-                if file.filename.endswith("/"):
-                    plugin_id = file.filename.strip("/")
-                    break
-
-            if plugin_id is None:
-                msg = i18n_catalog.i18nc("@info:status", "Failed to get plugin ID from <filename>{0}</filename>", file_path)
-                msg_title = i18n_catalog.i18nc("@info:tile", "Warning")
-                self._progress_message = Message(msg, lifetime=0, dismissable=False, title = msg_title)
-                return
-
-            # find a potential license file
-            plugin_root_dir = plugin_id + "/"
-            license_file = None
-            for f in zip_ref.infolist():
-                # skip directories (with file_size = 0) and files not in the plugin directory
-                if f.file_size == 0 or not f.filename.startswith(plugin_root_dir):
-                    continue
-                file_name = os.path.basename(f.filename).lower()
-                file_base_name, file_ext = os.path.splitext(file_name)
-                if file_base_name in ["license", "licence"]:
-                    license_file = f.filename
-                    break
-
-            # show a dialog for user to read and accept/decline the license
-            if license_file is not None:
-                Logger.log("i", "Found license file for plugin [%s], showing the license dialog to the user", plugin_id)
-                license_content = zip_ref.read(license_file).decode('utf-8')
-                self.openLicenseDialog(plugin_id, license_content, file_path)
-                return
-
-        # there is no license file, directly install the plugin
-        self.installPlugin(file_path)
-
     @pyqtSlot(str)
     def installPlugin(self, file_path):
         # Ensure that it starts with a /, as otherwise it doesn't work on windows.
         if not file_path.startswith("/"):
-            location = "/" + file_path
-        else:
-            location = file_path
-
-        result = PluginRegistry.getInstance().installPlugin("file://" + location)
+            file_path = "/" + file_path
+        result = PluginRegistry.getInstance().installPlugin("file://" + file_path)
 
         self._newly_installed_plugin_ids.append(result["id"])
         self.packagesMetadataChanged.emit()
@@ -294,9 +240,6 @@ class Toolbox(QObject, Extension):
         return self._packages_model is not None
 
     def _checkCanUpgrade(self, id, version):
-
-        # TODO: This could maybe be done more efficiently using a dictionary...
-
         # Scan plugin server data for plugin with the given id:
         for plugin in self._packages_metadata:
             if id == plugin["id"]:
@@ -474,16 +417,51 @@ class Toolbox(QObject, Extension):
 
                 # must not delete the temporary file on Windows
                 self._temp_plugin_file = tempfile.NamedTemporaryFile(mode = "w+b", suffix = ".curaplugin", delete = False)
-                location = self._temp_plugin_file.name
+                file_path = self._temp_plugin_file.name
 
                 # write first and close, otherwise on Windows, it cannot read the file
                 self._temp_plugin_file.write(self._download_reply.readAll())
                 self._temp_plugin_file.close()
 
-                self._checkPluginLicenseOrInstall(location)
+                self._onDownloadComplete(file_path)
                 return
 
-    def _onDownloadComplete(self, location):
+    def _onDownloadComplete(self, file_path):
+        with zipfile.ZipFile(file_path, "r") as zip_ref:
+            plugin_id = None
+            for file in zip_ref.infolist():
+                if file.filename.endswith("/"):
+                    plugin_id = file.filename.strip("/")
+                    break
+
+            if plugin_id is None:
+                msg = i18n_catalog.i18nc("@info:status", "Failed to get plugin ID from <filename>{0}</filename>", file_path)
+                msg_title = i18n_catalog.i18nc("@info:tile", "Warning")
+                self._progress_message = Message(msg, lifetime=0, dismissable=False, title = msg_title)
+                return
+
+            # find a potential license file
+            plugin_root_dir = plugin_id + "/"
+            license_file = None
+            for f in zip_ref.infolist():
+                # skip directories (with file_size = 0) and files not in the plugin directory
+                if f.file_size == 0 or not f.filename.startswith(plugin_root_dir):
+                    continue
+                file_name = os.path.basename(f.filename).lower()
+                file_base_name, file_ext = os.path.splitext(file_name)
+                if file_base_name in ["license", "licence"]:
+                    license_file = f.filename
+                    break
+
+            # show a dialog for user to read and accept/decline the license
+            if license_file is not None:
+                Logger.log("i", "Found license file for plugin [%s], showing the license dialog to the user", plugin_id)
+                license_content = zip_ref.read(license_file).decode('utf-8')
+                self.openLicenseDialog(plugin_id, license_content, file_path)
+                return
+
+        # there is no license file, directly install the plugin
+        self.installPlugin(file_path)
         return
 
 

@@ -48,7 +48,7 @@ Rectangle
         Button {
             id: installButton
             text: {
-                if ( manager.isDownloading )
+                if ( manager.isDownloading && manager.activePackage == model )
                 {
                     return catalog.i18nc("@action:button", "Cancel")
                 }
@@ -61,8 +61,7 @@ Rectangle
             {
                 if ( manager.isDownloading )
                 {
-                    return true
-                    // return manager.activePackage == model ? true : false
+                    return manager.activePackage == model ? true : false
                 }
                 else
                 {
@@ -75,7 +74,7 @@ Rectangle
                 {
                     implicitWidth: 96
                     implicitHeight: 30
-                    color: UM.Theme.getColor("primary")
+                    color: control.hovered ? UM.Theme.getColor("primary_hover") : UM.Theme.getColor("primary")
                 }
                 label: Label
                 {
@@ -87,7 +86,8 @@ Rectangle
             }
             onClicked:
             {
-                console.log( "MODEL", model.download_url )
+                console.log( "MODEL", model.id )
+                manager.activePackage = model
                 // if ( manager.isDownloading && manager.activePackage == model )
                 if ( manager.isDownloading )
                 {
