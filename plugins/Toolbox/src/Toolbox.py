@@ -223,7 +223,6 @@ class Toolbox(QObject, Extension):
                         plugin["update_url"] = item["file_location"]
         return self._plugins_model
 
-<<<<<<< HEAD:plugins/Toolbox/src/Toolbox.py
     @pyqtProperty(QObject, notify = showcaseMetadataChanged)
     def materialShowcaseModel(self):
         return self._showcase_model
@@ -239,10 +238,6 @@ class Toolbox(QObject, Extension):
     @pyqtProperty(bool, notify = packagesMetadataChanged)
     def dataReady(self):
         return self._packages_model is not None
-=======
-    def _checkCanUpgrade(self, id, version):
-        # TODO: This could maybe be done more efficiently using a dictionary...
->>>>>>> CURA-4644-package-reader:plugins/PluginBrowser/PluginBrowser.py
 
     def _checkCanUpgrade(self, id, version):
         # Scan plugin server data for plugin with the given id:
@@ -255,7 +250,6 @@ class Toolbox(QObject, Extension):
                     return True
         return False
 
-<<<<<<< HEAD:plugins/Toolbox/src/Toolbox.py
     def _checkAlreadyInstalled(self, id):
         metadata = self._plugin_registry.getMetaData(id)
         # We already installed this plugin, but the registry just doesn't know it yet.
@@ -348,8 +342,6 @@ class Toolbox(QObject, Extension):
                 self._download_reply.abort()
                 self._download_reply = None
 
-=======
->>>>>>> CURA-4644-package-reader:plugins/PluginBrowser/PluginBrowser.py
     def _onRequestFinished(self, reply):
         reply_url = reply.url().toString()
         if reply.error() == QNetworkReply.TimeoutError:
