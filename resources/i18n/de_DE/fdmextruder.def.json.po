@@ -199,19 +199,19 @@ msgstr "Die Y-Koordinate der Position, an der die Düse am Druckbeginn einzieht.
 #: fdmextruder.def.json
 msgctxt "material label"
 msgid "Material"
-msgstr ""
+msgstr "Material"
 
 #: fdmextruder.def.json
 msgctxt "material description"
 msgid "Material"
-msgstr ""
+msgstr "Material"
 
 #: fdmextruder.def.json
 msgctxt "material_diameter label"
 msgid "Diameter"
-msgstr ""
+msgstr "Durchmesser"
 
 #: fdmextruder.def.json
 msgctxt "material_diameter description"
 msgid "Adjusts the diameter of the filament used. Match this value with the diameter of the used filament."
-msgstr ""
+msgstr "Der Durchmesser des verwendeten Filaments wird angepasst. Stellen Sie hier den Durchmesser des verwendeten Filaments ein."

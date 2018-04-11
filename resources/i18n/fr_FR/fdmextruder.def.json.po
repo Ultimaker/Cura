@@ -199,19 +199,19 @@ msgstr "Les coordonnées Y de la position à laquelle la buse s'amorce au début
 #: fdmextruder.def.json
 msgctxt "material label"
 msgid "Material"
-msgstr ""
+msgstr "Matériau"
 
 #: fdmextruder.def.json
 msgctxt "material description"
 msgid "Material"
-msgstr ""
+msgstr "Matériau"
 
 #: fdmextruder.def.json
 msgctxt "material_diameter label"
 msgid "Diameter"
-msgstr ""
+msgstr "Diamètre"
 
 #: fdmextruder.def.json
 msgctxt "material_diameter description"
 msgid "Adjusts the diameter of the filament used. Match this value with the diameter of the used filament."
-msgstr ""
+msgstr "Ajuste le diamètre du filament utilisé. Faites correspondre cette valeur au diamètre du filament utilisé."

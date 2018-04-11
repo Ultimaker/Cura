@@ -29,7 +29,7 @@ msgstr "Makine özel ayarları"
 #: fdmextruder.def.json
 msgctxt "extruder_nr label"
 msgid "Extruder"
-msgstr "Ekstruder"
+msgstr "Ekstrüder"
 
 #: fdmextruder.def.json
 msgctxt "extruder_nr description"
@@ -54,7 +54,7 @@ msgstr "Nozül Çapı"
 #: fdmextruder.def.json
 msgctxt "machine_nozzle_size description"
 msgid "The inner diameter of the nozzle. Change this setting when using a non-standard nozzle size."
-msgstr "Nozülün iç çapı. Standart olmayan boyutta bir nozül kullanırken bu ayarı değiştirin."
+msgstr "Nozül iç çapı. Standart olmayan nozül boyutu kullanırken bu ayarı değiştirin."
 
 #: fdmextruder.def.json
 msgctxt "machine_nozzle_offset_x label"
@@ -199,19 +199,19 @@ msgstr "Nozül yazdırma işlemini başlatmaya hazırlandığında konumun Y koo
 #: fdmextruder.def.json
 msgctxt "material label"
 msgid "Material"
-msgstr ""
+msgstr "Malzeme"
 
 #: fdmextruder.def.json
 msgctxt "material description"
 msgid "Material"
-msgstr ""
+msgstr "Malzeme"
 
 #: fdmextruder.def.json
 msgctxt "material_diameter label"
 msgid "Diameter"
-msgstr ""
+msgstr "Çap"
 
 #: fdmextruder.def.json
 msgctxt "material_diameter description"
 msgid "Adjusts the diameter of the filament used. Match this value with the diameter of the used filament."
-msgstr ""
+msgstr "Kullanılan filamanın çapını ayarlar. Bu değeri kullanılan filaman çapı ile eşitleyin."

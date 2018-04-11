@@ -194,24 +194,24 @@ msgstr "Posición de preparación del extrusor sobre el eje Y"
 #: fdmextruder.def.json
 msgctxt "extruder_prime_pos_y description"
 msgid "The Y coordinate of the position where the nozzle primes at the start of printing."
-msgstr "Coordenada X de la posición en la que la tobera se coloca al inicio de la impresión."
+msgstr "Coordenada Y de la posición en la que la tobera se coloca al inicio de la impresión."
 
 #: fdmextruder.def.json
 msgctxt "material label"
 msgid "Material"
-msgstr ""
+msgstr "Material"
 
 #: fdmextruder.def.json
 msgctxt "material description"
 msgid "Material"
-msgstr ""
+msgstr "Material"
 
 #: fdmextruder.def.json
 msgctxt "material_diameter label"
 msgid "Diameter"
-msgstr ""
+msgstr "Diámetro"
 
 #: fdmextruder.def.json
 msgctxt "material_diameter description"
 msgid "Adjusts the diameter of the filament used. Match this value with the diameter of the used filament."
-msgstr ""
+msgstr "Ajusta el diámetro del filamento utilizado. Este valor debe coincidir con el diámetro del filamento utilizado."
