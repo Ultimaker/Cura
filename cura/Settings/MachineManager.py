@@ -926,6 +926,8 @@ class MachineManager(QObject):
         ExtruderManager.getInstance().extrudersChanged.emit(self._global_container_stack.getId())
         # Make sure the front end reflects changes
         self.forceUpdateAllSettings()
+        # Also trigger the build plate compatibility to update
+        self.activeMaterialChanged.emit()
 
     def _onMachineNameChanged(self):
         self.globalContainerChanged.emit()
