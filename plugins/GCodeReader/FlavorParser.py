@@ -309,7 +309,7 @@ class FlavorParser:
         current_line = 0
         for line in stream.split("\n"):
             file_lines += 1
-            gcode_list.append(line)
+            gcode_list.append(line + "\n")
             if not self._is_layers_in_file and line[:len(self._layer_keyword)] == self._layer_keyword:
                 self._is_layers_in_file = True
         # stream.seek(0)
