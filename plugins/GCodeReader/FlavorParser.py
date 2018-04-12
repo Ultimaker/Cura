@@ -41,11 +41,11 @@ class FlavorParser:
         self._is_layers_in_file = False  # Does the Gcode have the layers comment?
         self._extruder_offsets = {}  # Offsets for multi extruders. key is index, value is [x-offset, y-offset]
         self._current_layer_thickness = 0.2  # default
+        self._filament_diameter = 2.85       # default
 
         Preferences.getInstance().addPreference("gcodereader/show_caution", True)
 
     def _clearValues(self):
-        self._filament_diameter = 2.85
         self._extruder_number = 0
         self._extrusion_length_offset = [0]
         self._layer_type = LayerPolygon.Inset0Type
@@ -289,8 +289,9 @@ class FlavorParser:
     def processGCodeStream(self, stream):
         Logger.log("d", "Preparing to load GCode")
         self._cancelled = False
-        # We obtain the filament diameter from the selected printer to calculate line widths
-        self._filament_diameter = Application.getInstance().getGlobalContainerStack().getProperty("material_diameter", "value")
+        # We obtain the filament diameter from the selected extruder to calculate line widths
+        global_stack = Application.getInstance().getGlobalContainerStack()
+        self._filament_diameter = global_stack.extruders[str(self._extruder_number)].getProperty("material_diameter", "value")
 
         scene_node = CuraSceneNode()
         # Override getBoundingBox function of the sceneNode, as this node should return a bounding box, but there is no
@@ -312,7 +313,6 @@ class FlavorParser:
             gcode_list.append(line)
             if not self._is_layers_in_file and line[:len(self._layer_keyword)] == self._layer_keyword:
                 self._is_layers_in_file = True
-        # stream.seek(0)
 
         file_step = max(math.floor(file_lines / 100), 1)
 
