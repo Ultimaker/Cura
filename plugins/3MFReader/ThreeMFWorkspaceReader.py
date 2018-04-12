@@ -698,7 +698,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                     except ContainerFormatError:
                         Logger.logException("e", "Failed to deserialize material file %s in project file %s",
                                             material_container_file, file_name)
-                        raise
+                        continue
                     if need_new_name:
                         new_name = ContainerRegistry.getInstance().uniqueName(material_container.getName())
                         material_container.setName(new_name)
