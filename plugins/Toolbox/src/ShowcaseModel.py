@@ -9,21 +9,35 @@ from PyQt5.QtCore import Qt, pyqtProperty, pyqtSignal
 from UM.Qt.ListModel import ListModel
 
 ##  Model that holds cura packages. By setting the filter property the instances held by this model can be changed.
-class AuthorsModel(ListModel):
-    NameRole = Qt.UserRole + 1
-    EmailRole = Qt.UserRole + 2
-    WebsiteRole = Qt.UserRole + 3
-    TypeRole = Qt.UserRole + 4
+class ShowcaseModel(ListModel):
+    IdRole = Qt.UserRole + 1
+    TypeRole = Qt.UserRole + 2
+    NameRole = Qt.UserRole + 3
+    VersionRole = Qt.UserRole + 4
+    AuthorNameRole = Qt.UserRole + 5
+    AuthorEmailRole = Qt.UserRole + 6
+    DescriptionRole = Qt.UserRole + 7
+    IconURLRole = Qt.UserRole + 8
+    ImageURLsRole = Qt.UserRole + 9
+    DownloadURLRole = Qt.UserRole + 10
+    LastUpdatedRole = Qt.UserRole + 11
 
     def __init__(self, parent = None):
         super().__init__(parent)
 
         self._metadata = None
 
-        self.addRoleName(AuthorsModel.NameRole, "name")
-        self.addRoleName(AuthorsModel.EmailRole, "email")
-        self.addRoleName(AuthorsModel.WebsiteRole, "website")
-        self.addRoleName(AuthorsModel.TypeRole, "type")
+        self.addRoleName(ShowcaseModel.IdRole, "id")
+        self.addRoleName(ShowcaseModel.TypeRole, "type")
+        self.addRoleName(ShowcaseModel.NameRole, "name")
+        self.addRoleName(ShowcaseModel.VersionRole, "version")
+        self.addRoleName(ShowcaseModel.AuthorNameRole, "author_name")
+        self.addRoleName(ShowcaseModel.AuthorEmailRole, "author_email")
+        self.addRoleName(ShowcaseModel.DescriptionRole, "description")
+        self.addRoleName(ShowcaseModel.IconURLRole, "icon_url")
+        self.addRoleName(ShowcaseModel.ImageURLsRole, "image_urls")
+        self.addRoleName(ShowcaseModel.DownloadURLRole, "download_url")
+        self.addRoleName(ShowcaseModel.LastUpdatedRole, "last_updated")
 
         # List of filters for queries. The result is the union of the each list of results.
         self._filter = {}  # type: Dict[str,str]
@@ -35,12 +49,20 @@ class AuthorsModel(ListModel):
     def _update(self):
         items = []
 
-        for author in self._metadata:
+        for package in self._metadata:
+            print(package)
             items.append({
-                "name": author["name"],
-                "email": author["email"],
-                "website": author["website"],
-                "type": author["type"]
+                "id": package["id"],
+                "type": package["type"],
+                "name": package["name"],
+                "version": package["package_version"],
+                "author_name": package["author"]["name"],
+                "author_email": package["author"]["email"],
+                "description": package["description"],
+                "icon_url": package["icon_url"] if "icon_url" in package else None,
+                "image_urls": package["image_urls"],
+                "download_url": package["download_url"],
+                "last_updated": package["last_updated"]
             })
 
         # Filter on all the key-word arguments.

@@ -21,6 +21,7 @@ from cura.Utils.VersionTools import compareSemanticVersions
 from cura.CuraApplication import CuraApplication
 from .AuthorsModel import AuthorsModel
 from .PackagesModel import PackagesModel
+from .ShowcaseModel import ShowcaseModel
 
 i18n_catalog = i18nCatalog("cura")
 
@@ -55,13 +56,18 @@ class Toolbox(QObject, Extension):
                 )
             )
         ]
+        self._request_urls = {
+            "authors": None,
+            "packages": QUrl("{base_url}/packages".format(base_url = self._api_url)),
+            "plugins_showcase": QUrl("{base_url}/showcase".format(base_url = self._api_url)),
+            "materials_showcase": None
+        }
 
         # Data:
-        self._authors_metadata = []
-        self._packages_metadata = []
         self._metadata = {
             "authors": [],
             "packages": [],
+            "plugins_showcase": [],
             "materials_showcase": [
                 {
                     "name": "DSM",
@@ -79,19 +85,13 @@ class Toolbox(QObject, Extension):
         }
 
         # Models:
-        self._authors_model = None
-        self._packages_model = None
-        self._plugins_showcase_model = None
-        self._plugins_installed_model = None
-        self._materials_showcase_model = None
-        self._materials_installed_model = None
         self._models = {
-            "authors": None,
-            "packages": None,
-            "plugins_showcase": None,
-            "plugins_installed": None,
-            "materials_showcase": None,
-            "materials_installed": None
+            "authors": AuthorsModel(self),
+            "packages": PackagesModel(self),
+            "plugins_showcase": PackagesModel(self),
+            "plugins_installed": PackagesModel(self),
+            "materials_showcase": AuthorsModel(self),
+            "materials_installed": PackagesModel(self)
         }
 
         # These properties are for keeping track of the UI state:
@@ -185,8 +185,9 @@ class Toolbox(QObject, Extension):
         self._network_manager.finished.connect(self._onRequestFinished)
         self._network_manager.networkAccessibleChanged.connect(self._onNetworkAccesibleChanged)
 
-        self._requestShowcase()
-        self._requestPackages()
+        self.makeRequestByType("packages")
+        self.makeRequestByType("plugins_showcase")
+
         if not self._dialog:
             self._dialog = self._createDialog("Toolbox.qml")
         self._dialog.show()
@@ -239,23 +240,6 @@ class Toolbox(QObject, Extension):
     def restart(self):
         CuraApplication.getInstance().windowClosed()
 
-    # @pyqtProperty(QObject, notify = metadataChanged)
-    # def pluginsModel(self):
-    #     self._plugins_model = PluginsModel(None, self._view_category)
-    #     # self._plugins_model.update()
-    #
-    #     # Check each plugin the registry for matching plugin from server
-    #     # metadata, and if found, compare the versions. Higher version sets
-    #     # 'can_upgrade' to 'True':
-    #     for plugin in self._plugins_model.items:
-    #         if self._checkCanUpgrade(plugin["id"], plugin["version"]):
-    #             plugin["can_upgrade"] = True
-    #
-    #             for item in self._packages_metadata:
-    #                 if item["id"] == plugin["id"]:
-    #                     plugin["update_url"] = item["file_location"]
-    #     return self._plugins_model
-
 
 
     # Checks
@@ -288,17 +272,21 @@ class Toolbox(QObject, Extension):
 
     # Make API Calls
     # --------------------------------------------------------------------------
+    def makeRequestByType(self, type):
+        Logger.log("i", "Toolbox: Requesting %s metadata from server.", type)
+        request = QNetworkRequest(self._request_urls[type])
+        request.setRawHeader(*self._request_header)
+        self._network_manager.get(request)
+
     def _requestPackages(self):
         Logger.log("i", "Toolbox: Requesting package list from server.")
-        url = QUrl("{base_url}/packages".format(base_url = self._api_url))
-        self._get_packages_request = QNetworkRequest(url)
+        self._get_packages_request = QNetworkRequest(self._request_urls["packages"])
         self._get_packages_request.setRawHeader(*self._request_header)
         self._network_manager.get(self._get_packages_request)
 
     def _requestShowcase(self):
         Logger.log("i", "Toolbox: Requesting showcase list from server.")
-        url = QUrl("{base_url}/showcase".format(base_url = self._api_url))
-        self._get_showcase_request = QNetworkRequest(url)
+        self._get_showcase_request = QNetworkRequest(self._request_urls["plugins_showcase"])
         self._get_showcase_request.setRawHeader(*self._request_header)
         self._network_manager.get(self._get_showcase_request)
 
@@ -341,7 +329,7 @@ class Toolbox(QObject, Extension):
 
     # TODO: This function is sooooo ugly. Needs a rework:
     def _onRequestFinished(self, reply):
-        reply_url = reply.url().toString()
+
         if reply.error() == QNetworkReply.TimeoutError:
             Logger.log("w", "Got a timeout.")
             # Reset everything.
@@ -357,7 +345,27 @@ class Toolbox(QObject, Extension):
             return
 
         if reply.operation() == QNetworkAccessManager.GetOperation:
-            if reply_url == "{base_url}/packages".format(base_url = self._api_url):
+
+            # TODO: In the future use the following to build any model from any
+            # request. Right now this doesn't work though as the packages
+            # request is also responsible for populating other models.
+            # for type, url in self._request_urls.items():
+            #     if reply.url() == url:
+            #         try:
+            #             json_data = json.loads(bytes(reply.readAll()).decode("utf-8"))
+            #             if not self._models[type]:
+            #                 Logger.log("e", "Could not find the %s model.", type)
+            #                 break
+            #             self._metadata[type] = json_data["data"]
+            #             self._models[type].setMetadata(self._metadata[type])
+            #             self.metadataChanged.emit()
+            #             self.setViewPage("overview")
+            #             return
+            #         except json.decoder.JSONDecodeError:
+            #             Logger.log("w", "Toolbox: Received invalid JSON for %s.", type)
+            #             break
+
+            if reply.url() == self._request_urls["packages"]:
                 try:
                     json_data = json.loads(bytes(reply.readAll()).decode("utf-8"))
                     print(json_data)
@@ -369,14 +377,14 @@ class Toolbox(QObject, Extension):
                     self.metadataChanged.emit()
 
                     # Create authors model with all authors:
-                    if not self._authors_model:
-                        self._authors_model = AuthorsModel()
+                    if not self._models["authors"]:
+                        self._models["authors"] = AuthorsModel()
                     # TODO: Replace this with a proper API call:
                     for package in self._metadata["packages"]:
                         package["author"]["type"] = package["package_type"]
-                        if package["author"] not in self._authors_metadata:
+                        if package["author"] not in self._metadata["authors"]:
                             self._metadata["authors"].append(package["author"])
-                    self._models["author"].setMetadata(self._metadata["authors"])
+                    self._models["authors"].setMetadata(self._metadata["authors"])
                     self.metadataChanged.emit()
 
                     if not self._models["materials_showcase"]:
@@ -386,24 +394,28 @@ class Toolbox(QObject, Extension):
                     self.metadataChanged.emit()
 
                     self.setViewPage("overview")
+                    return
 
                 except json.decoder.JSONDecodeError:
                     Logger.log("w", "Toolbox: Received invalid JSON for package list.")
                     return
 
 
-            elif reply_url == "{base_url}/showcase".format(base_url = self._api_url):
+            if  reply.url() == self._request_urls["plugins_showcase"]:
                 try:
                     json_data = json.loads(bytes(reply.readAll()).decode("utf-8"))
                     # Create packages model with all packages:
-                    if not self._plugins_showcase_model:
-                        self._plugins_showcase_model = PackagesModel()
-                    self._showcase_metadata = json_data["data"]
-                    print(self._showcase_metadata)
-                    self._plugins_showcase_model.setPackagesMetaData(self._showcase_metadata)
-                    for package in self._plugins_showcase_model.items:
+                    if not self._models["plugins_showcase"]:
+                        self._models["plugins_showcase"] = PackagesModel()
+                    self._metadata["plugins_showcase"] = json_data["data"]
+                    self._models["plugins_showcase"].setMetadata(self._metadata["plugins_showcase"])
+                    for package in self._models["plugins_showcase"].items:
                         print(package)
                     self.metadataChanged.emit()
+
+                    self.setViewPage("overview")
+                    return
+
                 except json.decoder.JSONDecodeError:
                     Logger.log("w", "Toolbox: Received invalid JSON for showcase.")
                     return
@@ -495,6 +507,8 @@ class Toolbox(QObject, Extension):
 
     # Expose Models:
     # --------------------------------------------------------------------------
+    # TODO: Maybe replace this with simply exposing self._models to Qt and then
+    # setting model: toolbox.models.foobar instead of toolbox.foobarModel
     @pyqtProperty(QObject, notify = metadataChanged)
     def authorsModel(self):
         return self._models["authors"]
@@ -523,30 +537,47 @@ class Toolbox(QObject, Extension):
 
     # Filter Models:
     # --------------------------------------------------------------------------
+    @pyqtSlot(str, str, str)
+    def filterModelByProp(self, modelType, filterType, parameter):
+        if not self._models[modelType]:
+            Logger.log("w", "Toolbox: Couldn't filter %s model because it doesn't exist.", modelType)
+            return
+        self._models[modelType].setFilter({ filterType: parameter })
+        self.filterChanged.emit()
+
+    @pyqtSlot()
+    def removeFilters(self, modelType):
+        if not self._models[modelType]:
+            Logger.log("w", "Toolbox: Couldn't remove filters on %s model because it doesn't exist.", modelType)
+            return
+        self._models[modelType].setFilter({})
+        self.filterChanged.emit()
+
+    # TODO: Eventually dump everything below here:
     @pyqtSlot(str, str)
     def filterPackages(self, filterType, parameter):
-        if not self._packages_model:
+        if not self._models["packages"]:
             return
-        self._packages_model.setFilter({ filterType: parameter })
+        self._models["packages"].setFilter({ filterType: parameter })
         self.filterChanged.emit()
 
     @pyqtSlot()
     def unfilterPackages(self):
-        if not self._packages_model:
+        if not self._models["packages"]:
             return
-        self._packages_model.setFilter({})
+        self._models["packages"].setFilter({})
         self.filterChanged.emit()
 
     @pyqtSlot(str, str)
     def filterAuthors(self, filterType, parameter):
-        if not self._authors_model:
+        if not self._models["authors"]:
             return
-        self._authors_model.setFilter({ filterType: parameter })
+        self._models["authors"].setFilter({ filterType: parameter })
         self.filterChanged.emit()
 
     @pyqtSlot()
     def unfilterAuthors(self):
-        if not self._authors_model:
+        if not self._models["authors"]:
             return
-        self._authors_model.setFilter({})
+        self._models["authors"].setFilter({})
         self.filterChanged.emit()

@@ -25,7 +25,7 @@ class PackagesModel(ListModel):
     def __init__(self, parent = None):
         super().__init__(parent)
 
-        self._packages_metadata = None
+        self._metadata = None
 
         self.addRoleName(PackagesModel.IdRole, "id")
         self.addRoleName(PackagesModel.TypeRole, "type")
@@ -43,13 +43,14 @@ class PackagesModel(ListModel):
         self._filter = {}  # type: Dict[str,str]
 
     def setMetadata(self, data):
-        self._packages_metadata = data
+        self._metadata = data
         self._update()
 
     def _update(self):
         items = []
 
-        for package in self._packages_metadata:
+        for package in self._metadata:
+            print(package)
             items.append({
                 "id": package["package_id"],
                 "type": package["package_type"],
