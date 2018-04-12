@@ -117,6 +117,7 @@ class Toolbox(QObject, Extension):
     authorsMetadataChanged = pyqtSignal()
     pluginsShowcaseMetadataChanged = pyqtSignal()
     materialsShowcaseMetadataChanged = pyqtSignal()
+    metadataChanged = pyqtSignal()
 
     # Downloading changes
     activePackageChanged = pyqtSignal()
@@ -185,9 +186,7 @@ class Toolbox(QObject, Extension):
     @pyqtSlot(str)
     def installPlugin(self, file_path):
         self._package_manager.installPackage(file_path)
-
-        self.packagesMetadataChanged.emit()
-
+        self.metadataChanged.emit()
         self.openRestartDialog("TODO")
         self._restart_required = True
         self.restartRequiredChanged.emit()
@@ -195,9 +194,7 @@ class Toolbox(QObject, Extension):
     @pyqtSlot(str)
     def removePlugin(self, plugin_id):
         self._package_manager.removePackage(plugin_id)
-
-        self.packagesMetadataChanged.emit()
-
+        self.metadataChanged.emit()
         self._restart_required = True
         self.restartRequiredChanged.emit()
 
@@ -206,16 +203,16 @@ class Toolbox(QObject, Extension):
     @pyqtSlot(str)
     def enablePlugin(self, plugin_id):
         self._plugin_registry.enablePlugin(plugin_id)
-        self.packagesMetadataChanged.emit()
+        self.metadataChanged.emit()
         Logger.log("i", "%s was set as 'active'", id)
 
     @pyqtSlot(str)
     def disablePlugin(self, plugin_id):
         self._plugin_registry.disablePlugin(plugin_id)
-        self.packagesMetadataChanged.emit()
+        self.metadataChanged.emit()
         Logger.log("i", "%s was set as 'deactive'", id)
 
-    @pyqtProperty(QObject, notify = packagesMetadataChanged)
+    @pyqtProperty(QObject, notify = metadataChanged)
     def pluginsModel(self):
         self._plugins_model = PluginsModel(None, self._view_category)
         # self._plugins_model.update()
@@ -232,23 +229,23 @@ class Toolbox(QObject, Extension):
                         plugin["update_url"] = item["file_location"]
         return self._plugins_model
 
-    @pyqtProperty(QObject, notify = pluginsShowcaseMetadataChanged)
+    @pyqtProperty(QObject, notify = metadataChanged)
     def pluginsShowcaseModel(self):
         return self._plugins_showcase_model
 
-    @pyqtProperty(QObject, notify = materialsShowcaseMetadataChanged)
+    @pyqtProperty(QObject, notify = metadataChanged)
     def materialsShowcaseModel(self):
         return self._materials_showcase_model
 
-    @pyqtProperty(QObject, notify = packagesMetadataChanged)
+    @pyqtProperty(QObject, notify = metadataChanged)
     def packagesModel(self):
         return self._packages_model
 
-    @pyqtProperty(QObject, notify = authorsMetadataChanged)
+    @pyqtProperty(QObject, notify = metadataChanged)
     def authorsModel(self):
         return self._authors_model
 
-    @pyqtProperty(bool, notify = packagesMetadataChanged)
+    @pyqtProperty(bool, notify = metadataChanged)
     def dataReady(self):
         return self._packages_model is not None
 
@@ -376,7 +373,7 @@ class Toolbox(QObject, Extension):
                         self._packages_model = PackagesModel()
                     self._packages_metadata = json_data["data"]
                     self._packages_model.setPackagesMetaData(self._packages_metadata)
-                    self.packagesMetadataChanged.emit()
+                    self.metadataChanged.emit()
 
                     # Create authors model with all authors:
                     if not self._authors_model:
@@ -388,7 +385,7 @@ class Toolbox(QObject, Extension):
                         if package["author"] not in self._authors_metadata:
                             self._authors_metadata.append(package["author"])
                     self._authors_model.setMetaData(self._authors_metadata)
-                    self.authorsMetadataChanged.emit()
+                    self.metadataChanged.emit()
                     self.setViewPage("overview")
 
                     # TODO: Also replace this with a proper API call:
@@ -409,7 +406,7 @@ class Toolbox(QObject, Extension):
                             "type": "material"
                         }
                     ])
-                    self.materialsShowcaseMetadataChanged.emit()
+                    self.metadataChanged.emit()
                     self.setViewPage("overview")
 
                 except json.decoder.JSONDecodeError:
@@ -428,7 +425,7 @@ class Toolbox(QObject, Extension):
                     self._plugins_showcase_model.setPackagesMetaData(self._showcase_metadata)
                     for package in self._plugins_showcase_model.items:
                         print(package)
-                    self.pluginsShowcaseMetadataChanged.emit()
+                    self.metadataChanged.emit()
                 except json.decoder.JSONDecodeError:
                     Logger.log("w", "Toolbox: Received invalid JSON for showcase.")
                     return
