@@ -6314,9 +6314,10 @@
                 "adaptive_layer_height_variation":
                 {
                     "label": "Adaptive layers maximum variation",
-                    "description": "The maximum allowed height different from the base layer height in mm.",
+                    "description": "The maximum allowed height different from the base layer height.",
                     "type": "float",
                     "enabled": "adaptive_layer_height_enabled",
+                    "unit": "mm",
                     "default_value": 0.1,
                     "settable_per_mesh": false,
                     "settable_per_extruder": false,
@@ -6329,6 +6330,7 @@
                     "type": "float",
                     "enabled": "adaptive_layer_height_enabled",
                     "default_value": 0.01,
+                    "unit": "mm",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false,
                     "settable_per_meshgroup": false
