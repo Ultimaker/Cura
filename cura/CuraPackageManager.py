@@ -4,7 +4,6 @@
 from typing import Optional
 import json
 import os
-import re
 import shutil
 import zipfile
 import tempfile
@@ -36,8 +35,6 @@ class CuraPackageManager(QObject):
         self._installed_package_dict = {}  # a dict of all installed packages
         self._to_remove_package_set = set()  # a set of packages that need to be removed at the next start
         self._to_install_package_dict = {}  # a dict of packages that need to be installed at the next start
-
-        self._semantic_version_regex = re.compile(r"^[0-9]+(.[0-9]+)+$")
 
     installedPackagesChanged = pyqtSignal()  # Emitted whenever the installed packages collection have been changed.
 
@@ -83,14 +80,6 @@ class CuraPackageManager(QObject):
             self._installPackage(installation_package_data)
         self._to_install_package_dict.clear()
         self._saveManagementData()
-
-    @pyqtSlot(str, result = bool)
-    def isPackageFile(self, file_name: str):
-        # TODO: remove this
-        extension = os.path.splitext(file_name)[1].strip(".")
-        if extension.lower() in ("curapackage",):
-            return True
-        return False
 
     # Checks the given package is installed. If so, return a dictionary that contains the package's information.
     def getInstalledPackageInfo(self, package_id: str) -> Optional[dict]:
