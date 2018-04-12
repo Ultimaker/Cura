@@ -122,8 +122,16 @@ class CuraPackageManager(QObject):
         if to_install_package:
             Logger.log("i", "Package [%s] version [%s] is scheduled to be installed.",
                        package_id, package_info["package_version"])
+            # Copy the file to cache dir so we don't need to rely on the original file to be present
+            package_cache_dir = os.path.join(os.path.abspath(Resources.getCacheStoragePath()), "cura_packages")
+            if not os.path.exists(package_cache_dir):
+                os.makedirs(package_cache_dir, exist_ok=True)
+
+            target_file_path = os.path.join(package_cache_dir, package_id + ".curapackage")
+            shutil.copy2(filename, target_file_path)
+
             self._to_install_package_dict[package_id] = {"package_info": package_info,
-                                                         "filename": filename}
+                                                         "filename": target_file_path}
             has_changes = True
 
         self._saveManagementData()
@@ -175,6 +183,10 @@ class CuraPackageManager(QObject):
 
         package_id = package_info["package_id"]
 
+        if not os.path.exists(filename):
+            Logger.log("w", "Package [%s] file '%s' is missing, cannot install this package", package_id, filename)
+            return
+
         Logger.log("i", "Installing package [%s] from file [%s]", package_id, filename)
 
         # If it's installed, remove it first and then install
@@ -206,6 +218,9 @@ class CuraPackageManager(QObject):
             self.__installPackageFiles(package_id, src_dir_path, dst_dir_path, need_to_rename_files= to_rename_files)
 
         archive.close()
+
+        # Remove the file
+        os.remove(filename)
 
     def __installPackageFiles(self, package_id: str, src_dir: str, dst_dir: str, need_to_rename_files: bool = True) -> None:
         shutil.move(src_dir, dst_dir)
