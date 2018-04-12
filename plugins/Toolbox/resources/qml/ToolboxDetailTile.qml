@@ -48,7 +48,7 @@ Rectangle
         Button {
             id: installButton
             text: {
-                if ( manager.isDownloading && manager.activePackage == model )
+                if ( toolbox.isDownloading && toolbox.activePackage == model )
                 {
                     return catalog.i18nc("@action:button", "Cancel")
                 }
@@ -59,9 +59,9 @@ Rectangle
             }
             enabled:
             {
-                if ( manager.isDownloading )
+                if ( toolbox.isDownloading )
                 {
-                    return manager.activePackage == model ? true : false
+                    return toolbox.activePackage == model ? true : false
                 }
                 else
                 {
@@ -88,21 +88,21 @@ Rectangle
             onClicked:
             {
                 console.log( "MODEL", model.id )
-                manager.activePackage = model
-                // if ( manager.isDownloading && manager.activePackage == model )
-                if ( manager.isDownloading )
+                toolbox.activePackage = model
+                // if ( toolbox.isDownloading && toolbox.activePackage == model )
+                if ( toolbox.isDownloading )
                 {
-                    manager.cancelDownload();
+                    toolbox.cancelDownload();
                 }
                 else
                 {
-                    // manager.activePackage = model;
+                    // toolbox.activePackage = model;
                     if ( model.can_upgrade )
                     {
-                        // manager.downloadAndInstallPlugin( model.update_url );
+                        // toolbox.downloadAndInstallPlugin( model.update_url );
                     }
                     else {
-                        manager.startDownload( model.download_url );
+                        toolbox.startDownload( model.download_url );
                     }
                 }
             }

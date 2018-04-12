@@ -19,7 +19,7 @@ Column
     Label
     {
         id: heading
-        text: manager.viewCategory == "material" ? "Maker Choices" : "Community Plugins"
+        text: toolbox.viewCategory == "material" ? "Maker Choices" : "Community Plugins"
         width: parent.width
         color: UM.Theme.getColor("text_medium")
         font: UM.Theme.getFont("medium")
@@ -34,7 +34,7 @@ Column
 
         Repeater
         {
-            model: manager.viewCategory == "material" ? manager.authorsModel : manager.packagesModel
+            model: toolbox.viewCategory == "material" ? toolbox.authorsModel : toolbox.packagesModel
             delegate: ToolboxDownloadsGridTile
             {
                 Layout.preferredWidth: (grid.width - (grid.columns - 1) * grid.columnSpacing) / grid.columns

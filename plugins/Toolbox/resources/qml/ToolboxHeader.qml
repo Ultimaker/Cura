@@ -37,7 +37,7 @@ Rectangle {
                     implicitHeight: 48
                     Rectangle
                     {
-                        visible: manager.viewCategory == "plugin"
+                        visible: toolbox.viewCategory == "plugin"
                         color: UM.Theme.getColor("primary")
                         anchors.bottom: parent.bottom
                         width: parent.width
@@ -55,10 +55,10 @@ Rectangle {
             }
             onClicked:
             {
-                manager.filterPackages("type", "plugin")
-                manager.filterAuthors("type", "plugin")
-                manager.viewCategory = "plugin"
-                manager.viewPage = "overview"
+                toolbox.filterPackages("type", "plugin")
+                toolbox.filterAuthors("type", "plugin")
+                toolbox.viewCategory = "plugin"
+                toolbox.viewPage = "overview"
             }
         }
 
@@ -74,7 +74,7 @@ Rectangle {
                     implicitHeight: 48
                     Rectangle
                     {
-                        visible: manager.viewCategory == "material"
+                        visible: toolbox.viewCategory == "material"
                         color: UM.Theme.getColor("primary")
                         anchors.bottom: parent.bottom
                         width: parent.width
@@ -92,10 +92,10 @@ Rectangle {
             }
             onClicked:
             {
-                manager.filterPackages("type", "material")
-                manager.filterAuthors("type", "material")
-                manager.viewCategory = "material"
-                manager.viewPage = "overview"
+                toolbox.filterPackages("type", "material")
+                toolbox.filterAuthors("type", "material")
+                toolbox.viewCategory = "material"
+                toolbox.viewPage = "overview"
             }
         }
     }
@@ -113,7 +113,7 @@ Rectangle {
                 implicitWidth: 96
                 implicitHeight: 48
                 Rectangle {
-                    visible: manager.viewCategory == "installed"
+                    visible: toolbox.viewCategory == "installed"
                     color: UM.Theme.getColor("primary")
                     anchors.bottom: parent.bottom
                     width: parent.width
@@ -129,6 +129,6 @@ Rectangle {
                 horizontalAlignment: Text.AlignHCenter
             }
         }
-        onClicked: manager.viewCategory = "installed"
+        onClicked: toolbox.viewCategory = "installed"
     }
 }

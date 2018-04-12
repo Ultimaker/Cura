@@ -104,7 +104,7 @@ Item
             id: removeButton
             text: "Uninstall"
             visible: model.can_uninstall && model.status == "installed"
-            enabled: !manager.isDownloading
+            enabled: !toolbox.isDownloading
             style: ButtonStyle
             {
                 background: Rectangle
@@ -125,7 +125,7 @@ Item
                     horizontalAlignment: Text.AlignHCenter
                 }
             }
-            onClicked: manager.removePlugin( model.id )
+            onClicked: toolbox.removePlugin( model.id )
         }
 
         Button {
@@ -151,7 +151,7 @@ Item
             }
             onClicked:
             {
-                manager.updatePackage(model.id);
+                toolbox.updatePackage(model.id);
             }
         }
         ProgressBar
@@ -161,8 +161,8 @@ Item
             anchors.right: installButton.right
             anchors.top: installButton.bottom
             anchors.topMargin: 4
-            value: manager.isDownloading ? manager.downloadProgress : 0
-            visible: manager.isDownloading
+            value: toolbox.isDownloading ? toolbox.downloadProgress : 0
+            visible: toolbox.isDownloading
             style: ProgressBarStyle
             {
                 background: Rectangle

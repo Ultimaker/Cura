@@ -28,7 +28,7 @@ class AuthorsModel(ListModel):
         # List of filters for queries. The result is the union of the each list of results.
         self._filter = {}  # type: Dict[str,str]
 
-    def setMetaData(self, data):
+    def setMetadata(self, data):
         self._authors_metadata = data
         self._update()
 

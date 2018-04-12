@@ -28,7 +28,7 @@ Item
             spacing: UM.Theme.getSize("default_margin").height
             Repeater
             {
-                model: manager.packagesModel
+                model: toolbox.packagesModel
                 delegate: ToolboxDetailTile {}
             }
         }

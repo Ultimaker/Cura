@@ -41,9 +41,9 @@ Item
         height: UM.Theme.getSize("base_unit").height * 2
         onClicked:
         {
-            manager.viewPage = "overview"
-            manager.filterPackages("type", manager.viewCategory)
-            manager.filterAuthors("type", manager.viewCategory)
+            toolbox.viewPage = "overview"
+            toolbox.filterPackages("type", toolbox.viewCategory)
+            toolbox.filterAuthors("type", toolbox.viewCategory)
         }
         style: ButtonStyle
         {

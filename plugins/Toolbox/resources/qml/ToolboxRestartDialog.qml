@@ -66,7 +66,7 @@ Window {
             bottom: parent.bottom
             bottomMargin: UM.Theme.getSize("default_margin").height
         }
-        onClicked: manager.restart()
+        onClicked: toolbox.restart()
         style: ButtonStyle {
             background: Rectangle {
                 implicitWidth: 96

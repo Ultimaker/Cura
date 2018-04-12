@@ -18,7 +18,7 @@ Item
     anchors.bottom: parent.bottom
     Label
     {
-        visible: manager.restartRequired
+        visible: toolbox.restartRequired
         text: "You will need to restart Cura before changes in plugins have effect."
         height: UM.Theme.getSize("base_unit").height * 2
         verticalAlignment: Text.AlignVCenter
@@ -39,9 +39,9 @@ Item
             right: closeButton.left
             rightMargin: UM.Theme.getSize("default_margin").width
         }
-        visible: manager.restartRequired
+        visible: toolbox.restartRequired
         iconName: "dialog-restart"
-        onClicked: manager.restart()
+        onClicked: toolbox.restart()
         style: ButtonStyle
         {
             background: Rectangle
@@ -72,9 +72,9 @@ Item
         iconName: "dialog-close"
         onClicked:
         {
-            if ( manager.isDownloading )
+            if ( toolbox.isDownloading )
             {
-                manager.cancelDownload()
+                toolbox.cancelDownload()
             }
             base.close();
         }

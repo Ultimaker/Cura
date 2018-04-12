@@ -51,19 +51,19 @@ Item
     {
         anchors.fill: parent
         onClicked: {
-            switch(manager.viewCategory)
+            switch(toolbox.viewCategory)
             {
                 case "material":
-                    manager.viewSelection = model.name
-                    manager.viewPage = "author"
-                    manager.filterAuthors("name", model.name)
-                    manager.filterPackages("author_name", model.name)
+                    toolbox.viewSelection = model.name
+                    toolbox.viewPage = "author"
+                    toolbox.filterAuthors("name", model.name)
+                    toolbox.filterPackages("author_name", model.name)
                     break
                 default:
-                    manager.viewSelection = model.id
-                    manager.viewPage = "detail"
-                    manager.filterAuthors("name", model.author_name)
-                    manager.filterPackages("id", model.id)
+                    toolbox.viewSelection = model.id
+                    toolbox.viewPage = "detail"
+                    toolbox.filterAuthors("name", model.author_name)
+                    toolbox.filterPackages("id", model.id)
                     break
             }
         }

@@ -35,13 +35,13 @@ Column
         Repeater
         {
             model: {
-                if ( manager.viewCategory == "plugin" )
+                if ( toolbox.viewCategory == "plugin" )
                 {
-                    return manager.pluginsShowcaseModel
+                    return toolbox.pluginsShowcaseModel
                 }
-                if ( manager.viewCategory == "material" )
+                if ( toolbox.viewCategory == "material" )
                 {
-                    return manager.materialsShowcaseModel
+                    return toolbox.materialsShowcaseModel
                 }
             }
             delegate: ToolboxDownloadsShowcaseTile {}

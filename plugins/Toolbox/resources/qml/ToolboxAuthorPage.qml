@@ -10,7 +10,7 @@ import UM 1.1 as UM
 Item
 {
     id: base
-    property var details: manager.authorsModel.items[0]
+    property var details: toolbox.authorsModel.items[0]
     anchors.fill: parent
     ToolboxBackColumn
     {

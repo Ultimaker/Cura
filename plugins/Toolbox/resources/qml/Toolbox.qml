@@ -43,27 +43,27 @@ Window
             ToolboxLoadingPage
             {
                 id: viewLoading
-                visible: manager.viewCategory != "installed" && manager.viewPage == "loading"
+                visible: toolbox.viewCategory != "installed" && toolbox.viewPage == "loading"
             }
             ToolboxDownloadsPage
             {
                 id: viewDownloads
-                visible: manager.viewCategory != "installed" && manager.viewPage == "overview"
+                visible: toolbox.viewCategory != "installed" && toolbox.viewPage == "overview"
             }
             ToolboxDetailPage
             {
                 id: viewDetail
-                visible: manager.viewCategory != "installed" && manager.viewPage == "detail"
+                visible: toolbox.viewCategory != "installed" && toolbox.viewPage == "detail"
             }
             ToolboxAuthorPage
             {
                 id: viewAuthor
-                visible: manager.viewCategory != "installed" && manager.viewPage == "author"
+                visible: toolbox.viewCategory != "installed" && toolbox.viewPage == "author"
             }
             ToolboxInstalledPage
             {
                 id: installedPluginList
-                visible: manager.viewCategory == "installed"
+                visible: toolbox.viewCategory == "installed"
             }
         }
         ToolboxShadow
@@ -83,21 +83,21 @@ Window
 
         Connections
         {
-            target: manager
+            target: toolbox
             onShowLicenseDialog:
             {
-                licenseDialog.pluginName = manager.getLicenseDialogPluginName();
-                licenseDialog.licenseContent = manager.getLicenseDialogLicenseContent();
-                licenseDialog.pluginFileLocation = manager.getLicenseDialogPluginFileLocation();
+                licenseDialog.pluginName = toolbox.getLicenseDialogPluginName();
+                licenseDialog.licenseContent = toolbox.getLicenseDialogLicenseContent();
+                licenseDialog.pluginFileLocation = toolbox.getLicenseDialogPluginFileLocation();
                 licenseDialog.show();
             }
         }
         Connections
         {
-            target: manager
+            target: toolbox
             onShowRestartDialog:
             {
-                restartDialog.message = manager.getRestartDialogMessage();
+                restartDialog.message = toolbox.getRestartDialogMessage();
                 restartDialog.show();
             }
         }

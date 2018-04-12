@@ -24,7 +24,6 @@ from .PackagesModel import PackagesModel
 
 i18n_catalog = i18nCatalog("cura")
 
-
 ##  The Toolbox class is responsible of communicating with the server through the API
 class Toolbox(QObject, Extension):
     def __init__(self, parent=None):
@@ -33,19 +32,17 @@ class Toolbox(QObject, Extension):
         self._application = Application.getInstance()
         self._package_manager = None
         self._plugin_registry = Application.getInstance().getPluginRegistry()
-        self._package_manager = None
         self._packages_version = self._plugin_registry.APIVersion
         self._api_version = 1
         self._api_url = "https://api-staging.ultimaker.com/cura-packages/v{api_version}/cura/v{package_version}".format( api_version = self._api_version, package_version = self._packages_version)
 
+        # Network:
         self._get_packages_request = None
         self._get_showcase_request = None
-
         self._download_request = None
         self._download_reply = None
         self._download_progress = 0
         self._is_downloading = False
-
         self._network_manager = None
         self._request_header = [
             b"User-Agent",
@@ -59,13 +56,43 @@ class Toolbox(QObject, Extension):
             )
         ]
 
+        # Data:
+        self._authors_metadata = []
         self._packages_metadata = []
+        self._metadata = {
+            "authors": [],
+            "packages": [],
+            "materials_showcase": [
+                {
+                    "name": "DSM",
+                    "email": "contact@dsm.nl",
+                    "website": "www.dsm.nl",
+                    "type": "material"
+                },
+                {
+                    "name": "BASF",
+                    "email": "contact@basf.de",
+                    "website": "www.basf.de",
+                    "type": "material"
+                }
+            ]
+        }
+
+        # Models:
+        self._authors_model = None
         self._packages_model = None
         self._plugins_showcase_model = None
         self._plugins_installed_model = None
         self._materials_showcase_model = None
         self._materials_installed_model = None
-        self._authors_model = None
+        self._models = {
+            "authors": None,
+            "packages": None,
+            "plugins_showcase": None,
+            "plugins_installed": None,
+            "materials_showcase": None,
+            "materials_installed": None
+        }
 
         # These properties are for keeping track of the UI state:
         # ----------------------------------------------------------------------
@@ -87,20 +114,9 @@ class Toolbox(QObject, Extension):
         # installed, or otherwise modified.
         self._active_package = None
 
-        # Nowadays can be 'plugins', 'materials' or 'installed'
-        self._current_view = "plugins"
-        self._detail_data = {} # Extraneous since can just use the data prop of the model.
-
         self._dialog = None
         self._restartDialog = None
         self._restart_required = False
-
-        # Installed plugins are really installed after reboot. In order to
-        # prevent the user from downloading the same file over and over again,
-        # we keep track of the upgraded plugins.
-        self._newly_installed_plugin_ids = []
-        self._newly_uninstalled_plugin_ids = []
-        self._plugin_statuses = {} # type: Dict[str, str]
 
         # variables for the license agreement dialog
         self._license_dialog_plugin_name = ""
@@ -110,15 +126,10 @@ class Toolbox(QObject, Extension):
 
         Application.getInstance().initializationFinished.connect(self._onAppInitialized)
 
-    def _onAppInitialized(self):
-        self._package_manager = Application.getInstance().getCuraPackageManager()
 
-    packagesMetadataChanged = pyqtSignal()
-    authorsMetadataChanged = pyqtSignal()
-    pluginsShowcaseMetadataChanged = pyqtSignal()
-    materialsShowcaseMetadataChanged = pyqtSignal()
-    metadataChanged = pyqtSignal()
 
+    # Signals:
+    # --------------------------------------------------------------------------
     # Downloading changes
     activePackageChanged = pyqtSignal()
     onDownloadProgressChanged = pyqtSignal()
@@ -129,6 +140,7 @@ class Toolbox(QObject, Extension):
     viewChanged = pyqtSignal()
     detailViewChanged = pyqtSignal()
     filterChanged = pyqtSignal()
+    metadataChanged = pyqtSignal()
     showLicenseDialog = pyqtSignal()
     showRestartDialog = pyqtSignal()
 
@@ -158,9 +170,11 @@ class Toolbox(QObject, Extension):
         self._restart_dialog_message = message
         self.showRestartDialog.emit()
 
+    def _onAppInitialized(self):
+        self._package_manager = Application.getInstance().getCuraPackageManager()
+
     @pyqtSlot()
     def browsePackages(self):
-        self._package_manager = Application.getInstance().getCuraPackageManager()
         # Create the network manager:
         # This was formerly its own function but really had no reason to be as
         # it was never called more than once ever.
@@ -180,13 +194,14 @@ class Toolbox(QObject, Extension):
     def _createDialog(self, qml_name):
         Logger.log("d", "Toolbox: Creating dialog [%s].", qml_name)
         path = os.path.join(PluginRegistry.getInstance().getPluginPath(self.getPluginId()), "resources", "qml", qml_name)
-        dialog = Application.getInstance().createQmlComponent(path, {"manager": self})
+        dialog = Application.getInstance().createQmlComponent(path, {"toolbox": self})
         return dialog
 
     @pyqtSlot(str)
     def installPlugin(self, file_path):
         self._package_manager.installPackage(file_path)
         self.metadataChanged.emit()
+        # TODO: Stuff
         self.openRestartDialog("TODO")
         self._restart_required = True
         self.restartRequiredChanged.emit()
@@ -197,53 +212,20 @@ class Toolbox(QObject, Extension):
         self.metadataChanged.emit()
         self._restart_required = True
         self.restartRequiredChanged.emit()
-
+        # TODO: Stuff
         Application.getInstance().messageBox(i18n_catalog.i18nc("@window:title", "Plugin browser"), "TODO")
 
     @pyqtSlot(str)
     def enablePlugin(self, plugin_id):
         self._plugin_registry.enablePlugin(plugin_id)
         self.metadataChanged.emit()
-        Logger.log("i", "%s was set as 'active'", id)
+        Logger.log("i", "%s was set as 'active'.", plugin_id)
 
     @pyqtSlot(str)
     def disablePlugin(self, plugin_id):
         self._plugin_registry.disablePlugin(plugin_id)
         self.metadataChanged.emit()
-        Logger.log("i", "%s was set as 'deactive'", id)
-
-    @pyqtProperty(QObject, notify = metadataChanged)
-    def pluginsModel(self):
-        self._plugins_model = PluginsModel(None, self._view_category)
-        # self._plugins_model.update()
-
-        # Check each plugin the registry for matching plugin from server
-        # metadata, and if found, compare the versions. Higher version sets
-        # 'can_upgrade' to 'True':
-        for plugin in self._plugins_model.items:
-            if self._checkCanUpgrade(plugin["id"], plugin["version"]):
-                plugin["can_upgrade"] = True
-
-                for item in self._packages_metadata:
-                    if item["id"] == plugin["id"]:
-                        plugin["update_url"] = item["file_location"]
-        return self._plugins_model
-
-    @pyqtProperty(QObject, notify = metadataChanged)
-    def pluginsShowcaseModel(self):
-        return self._plugins_showcase_model
-
-    @pyqtProperty(QObject, notify = metadataChanged)
-    def materialsShowcaseModel(self):
-        return self._materials_showcase_model
-
-    @pyqtProperty(QObject, notify = metadataChanged)
-    def packagesModel(self):
-        return self._packages_model
-
-    @pyqtProperty(QObject, notify = metadataChanged)
-    def authorsModel(self):
-        return self._authors_model
+        Logger.log("i", "%s was set as 'deactive'.", plugin_id)
 
     @pyqtProperty(bool, notify = metadataChanged)
     def dataReady(self):
@@ -256,6 +238,23 @@ class Toolbox(QObject, Extension):
     @pyqtSlot()
     def restart(self):
         CuraApplication.getInstance().windowClosed()
+
+    # @pyqtProperty(QObject, notify = metadataChanged)
+    # def pluginsModel(self):
+    #     self._plugins_model = PluginsModel(None, self._view_category)
+    #     # self._plugins_model.update()
+    #
+    #     # Check each plugin the registry for matching plugin from server
+    #     # metadata, and if found, compare the versions. Higher version sets
+    #     # 'can_upgrade' to 'True':
+    #     for plugin in self._plugins_model.items:
+    #         if self._checkCanUpgrade(plugin["id"], plugin["version"]):
+    #             plugin["can_upgrade"] = True
+    #
+    #             for item in self._packages_metadata:
+    #                 if item["id"] == plugin["id"]:
+    #                     plugin["update_url"] = item["file_location"]
+    #     return self._plugins_model
 
 
 
@@ -285,14 +284,6 @@ class Toolbox(QObject, Extension):
         self._network_manager.finished.connect(self._onRequestFinished)
         self._network_manager.networkAccessibleChanged.connect(self._onNetworkAccesibleChanged)
 
-    @pyqtProperty(bool, notify = restartRequiredChanged)
-    def restartRequired(self):
-        return self._restart_required
-
-    @pyqtSlot()
-    def restart(self):
-        CuraApplication.getInstance().windowClosed()
-
 
 
     # Make API Calls
@@ -310,6 +301,8 @@ class Toolbox(QObject, Extension):
         self._get_showcase_request = QNetworkRequest(url)
         self._get_showcase_request.setRawHeader(*self._request_header)
         self._network_manager.get(self._get_showcase_request)
+
+    # TODO: Request authors and request material showcase
 
     @pyqtSlot(str)
     def startDownload(self, url):
@@ -335,7 +328,7 @@ class Toolbox(QObject, Extension):
 
 
 
-    # Handlers for Download Events
+    # Handlers for Network Events
     # --------------------------------------------------------------------------
     def _onNetworkAccesibleChanged(self, accessible):
         if accessible == 0:
@@ -369,44 +362,29 @@ class Toolbox(QObject, Extension):
                     json_data = json.loads(bytes(reply.readAll()).decode("utf-8"))
                     print(json_data)
                     # Create packages model with all packages:
-                    if not self._packages_model:
-                        self._packages_model = PackagesModel()
-                    self._packages_metadata = json_data["data"]
-                    self._packages_model.setPackagesMetaData(self._packages_metadata)
+                    if not self._models["packages"]:
+                        self._models["packages"] = PackagesModel()
+                    self._metadata["packages"] = json_data["data"]
+                    self._models["packages"].setMetadata(self._metadata["packages"])
                     self.metadataChanged.emit()
 
                     # Create authors model with all authors:
                     if not self._authors_model:
                         self._authors_model = AuthorsModel()
-                    # TODO: Remove this hacky code once there's an API call for this.
-                    self._authors_metadata = []
-                    for package in self._packages_metadata:
+                    # TODO: Replace this with a proper API call:
+                    for package in self._metadata["packages"]:
                         package["author"]["type"] = package["package_type"]
                         if package["author"] not in self._authors_metadata:
-                            self._authors_metadata.append(package["author"])
-                    self._authors_model.setMetaData(self._authors_metadata)
+                            self._metadata["authors"].append(package["author"])
+                    self._models["author"].setMetadata(self._metadata["authors"])
                     self.metadataChanged.emit()
-                    self.setViewPage("overview")
 
-                    # TODO: Also replace this with a proper API call:
-                    if not self._materials_showcase_model:
-                        self._materials_showcase_model = AuthorsModel()
-                    # TODO: Remove this hacky code once there's an API call for this.
-                    self._materials_showcase_model.setMetaData([
-                        {
-                            "name": "DSM",
-                            "email": "contact@dsm.nl",
-                            "website": "www.dsm.nl",
-                            "type": "material"
-                        },
-                        {
-                            "name": "BASF",
-                            "email": "contact@basf.de",
-                            "website": "www.basf.de",
-                            "type": "material"
-                        }
-                    ])
+                    if not self._models["materials_showcase"]:
+                        self._models["materials_showcase"] = AuthorsModel()
+                    # TODO: Replace this with a proper API call:
+                    self._models["materials_showcase"].setMetadata(self._metadata["materials_showcase"])
                     self.metadataChanged.emit()
+
                     self.setViewPage("overview")
 
                 except json.decoder.JSONDecodeError:
@@ -467,7 +445,7 @@ class Toolbox(QObject, Extension):
         return
 
 
-    # Getter & Setters
+    # Getter & Setters for Properties:
     # --------------------------------------------------------------------------
     def setDownloadProgress(self, progress):
         if progress != self._download_progress:
@@ -515,7 +493,35 @@ class Toolbox(QObject, Extension):
 
 
 
-    # Model Filtering
+    # Expose Models:
+    # --------------------------------------------------------------------------
+    @pyqtProperty(QObject, notify = metadataChanged)
+    def authorsModel(self):
+        return self._models["authors"]
+
+    @pyqtProperty(QObject, notify = metadataChanged)
+    def packagesModel(self):
+        return self._models["packages"]
+
+    @pyqtProperty(QObject, notify = metadataChanged)
+    def pluginsShowcaseModel(self):
+        return self._models["plugins_showcase"]
+
+    @pyqtProperty(QObject, notify = metadataChanged)
+    def pluginsInstalledModel(self):
+        return self._models["plugins_installed"]
+
+    @pyqtProperty(QObject, notify = metadataChanged)
+    def materialsShowcaseModel(self):
+        return self._models["materials_showcase"]
+
+    @pyqtProperty(QObject, notify = metadataChanged)
+    def materialsInstalledModel(self):
+        return self._models["materials_installed"]
+
+
+
+    # Filter Models:
     # --------------------------------------------------------------------------
     @pyqtSlot(str, str)
     def filterPackages(self, filterType, parameter):
