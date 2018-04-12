@@ -4,9 +4,11 @@
 import re
 from typing import Dict
 
-from PyQt5.QtCore import Qt, pyqtProperty, pyqtSignal
+from PyQt5.QtCore import Qt, pyqtProperty
 
+from UM.Application import Application
 from UM.Qt.ListModel import ListModel
+
 
 ##  Model that holds cura packages. By setting the filter property the instances held by this model can be changed.
 class PackagesModel(ListModel):
@@ -40,7 +42,7 @@ class PackagesModel(ListModel):
         self.addRoleName(PackagesModel.LastUpdatedRole, "last_updated")
 
         # List of filters for queries. The result is the union of the each list of results.
-        self._filter = {}  # type: Dict[str,str]
+        self._filter = {}  # type: Dict[str, str]
 
     def setMetadata(self, data):
         self._metadata = data

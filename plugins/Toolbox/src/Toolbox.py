@@ -218,13 +218,13 @@ class Toolbox(QObject, Extension):
 
     @pyqtSlot(str)
     def enablePlugin(self, plugin_id):
-        self._plugin_registry.enablePlugin(plugin_id)
+        self._plugin_registry.setPluginEnabled(plugin_id, True)
         self.metadataChanged.emit()
         Logger.log("i", "%s was set as 'active'.", plugin_id)
 
     @pyqtSlot(str)
     def disablePlugin(self, plugin_id):
-        self._plugin_registry.disablePlugin(plugin_id)
+        self._plugin_registry.setPluginEnabled(plugin_id, False)
         self.metadataChanged.emit()
         Logger.log("i", "%s was set as 'deactive'.", plugin_id)
 
@@ -371,7 +371,7 @@ class Toolbox(QObject, Extension):
                     print(json_data)
                     # Create packages model with all packages:
                     if not self._models["packages"]:
-                        self._models["packages"] = PackagesModel()
+                        self._models["packages"] = PackagesModel(self)
                     self._metadata["packages"] = json_data["data"]
                     self._models["packages"].setMetadata(self._metadata["packages"])
                     self.metadataChanged.emit()
@@ -388,7 +388,7 @@ class Toolbox(QObject, Extension):
                     self.metadataChanged.emit()
 
                     if not self._models["materials_showcase"]:
-                        self._models["materials_showcase"] = AuthorsModel()
+                        self._models["materials_showcase"] = AuthorsModel(self)
                     # TODO: Replace this with a proper API call:
                     self._models["materials_showcase"].setMetadata(self._metadata["materials_showcase"])
                     self.metadataChanged.emit()
@@ -400,8 +400,7 @@ class Toolbox(QObject, Extension):
                     Logger.log("w", "Toolbox: Received invalid JSON for package list.")
                     return
 
-
-            if  reply.url() == self._request_urls["plugins_showcase"]:
+            if reply.url() == self._request_urls["plugins_showcase"]:
                 try:
                     json_data = json.loads(bytes(reply.readAll()).decode("utf-8"))
                     # Create packages model with all packages:

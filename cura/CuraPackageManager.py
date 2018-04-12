@@ -85,10 +85,79 @@ class CuraPackageManager(QObject):
     def getInstalledPackageInfo(self, package_id: str) -> Optional[dict]:
         if package_id in self._to_remove_package_set:
             return None
-        if package_id in self._to_install_package_dict:
-            return self._to_install_package_dict[package_id]["package_info"]
 
-        return self._installed_package_dict.get(package_id)
+        if package_id in self._to_install_package_dict:
+            package_info = self._to_install_package_dict[package_id]["package_info"]
+            package_info["is_bundled"] = False
+            return package_info
+
+        if package_id in self._installed_package_dict:
+            package_info = self._installed_package_dict.get(package_id)
+            package_info["is_bundled"] = False
+            return package_info
+
+        # TODO: get from plugin registry
+        #self._plugin_registry.
+
+        return None
+
+    def getAllInstalledPackagesInfo(self) -> dict:
+        installed_package_id_set = set(self._installed_package_dict.keys()) | set(self._to_install_package_dict.keys())
+        installed_package_id_set = installed_package_id_set.difference(self._to_remove_package_set)
+
+        managed_package_id_set = set(installed_package_id_set) | self._to_remove_package_set
+
+        # map of <package_type> -> <package_id> -> <package_info>
+        installed_packages_dict = {}
+        for package_id in installed_package_id_set:
+            if package_id in self._to_install_package_dict:
+                package_info = self._to_install_package_dict[package_id]["package_info"]
+            else:
+                package_info = self._installed_package_dict[package_id]
+            package_info["is_bundled"] = False
+
+            package_type = package_info["package_type"]
+            if package_type not in installed_packages_dict:
+                installed_packages_dict[package_type] = {}
+            installed_packages_dict[package_type][package_id] = package_info
+
+            # We also need to get information from the plugin registry such as if a plugin is active
+            package_info["is_active"] = self._plugin_registry.isActivePlugin(package_id)
+
+        # Also get all bundled plugins
+        all_metadata = self._plugin_registry.getAllMetaData()
+        for item in all_metadata:
+            plugin_package_info = self.__convertPluginMetadataToPackageMetadata(item)
+            # Only gather the bundled plugins here.
+            package_id = plugin_package_info["package_id"]
+            if package_id in managed_package_id_set:
+                continue
+
+            plugin_package_info["is_bundled"] = True
+            plugin_package_info["is_active"] = self._plugin_registry.isActivePlugin(package_id)
+            package_type = "plugin"
+            if package_type not in installed_packages_dict:
+                installed_packages_dict[package_type] = {}
+            installed_packages_dict[package_type][package_id] = plugin_package_info
+
+        return installed_packages_dict
+
+    def __convertPluginMetadataToPackageMetadata(self, plugin_metadata: dict) -> dict:
+        package_metadata = {"package_id": plugin_metadata["id"],
+                            "package_type": "plugin",
+                            "display_name": plugin_metadata["plugin"]["name"],
+                            "description": plugin_metadata["plugin"].get("description"),
+                            "package_version": plugin_metadata["plugin"]["version"],
+                            "cura_version": int(plugin_metadata["plugin"]["api"]),
+                            "website": "",
+                            "author": {
+                                "name": plugin_metadata["plugin"].get("author", ""),
+                                "email": "",
+                                "website": "",
+                            },
+                            "tags": ["plugin"],
+                            }
+        return package_metadata
 
     # Checks if the given package is installed.
     def isPackageInstalled(self, package_id: str) -> bool:

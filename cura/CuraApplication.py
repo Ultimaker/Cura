@@ -100,7 +100,6 @@ from PyQt5.QtWidgets import QMessageBox
 from PyQt5.QtQml import qmlRegisterUncreatableType, qmlRegisterSingletonType, qmlRegisterType
 
 import sys
-import os.path
 import numpy
 import copy
 import os
@@ -247,6 +246,8 @@ class CuraApplication(QtApplication):
         self._cura_package_manager.initialize()
 
         self.initialize()
+
+        self._cura_package_manager.getAllInstalledPackagesInfo()
 
         # FOR TESTING ONLY
         if kwargs["parsed_command_line"].get("trigger_early_crash", False):
@@ -395,15 +396,12 @@ class CuraApplication(QtApplication):
         self.globalContainerStackChanged.connect(self._onGlobalContainerChanged)
         self._onGlobalContainerChanged()
 
-        self._plugin_registry.addSupportedPluginExtension("curaplugin", "Cura Plugin")
-
         self.getCuraSceneController().setActiveBuildPlate(0)  # Initialize
 
         self._quality_profile_drop_down_menu_model = None
         self._custom_quality_profile_drop_down_menu_model = None
 
         CuraApplication.Created = True
-
 
     def _onEngineCreated(self):
         self._engine.addImageProvider("camera", CameraImageProvider.CameraImageProvider())
@@ -507,11 +505,6 @@ class CuraApplication(QtApplication):
     @classmethod
     def getStaticVersion(cls):
         return CuraVersion
-
-    ##  Handle removing the unneeded plugins
-    #   \sa PluginRegistry
-    def _removePlugins(self):
-        self._plugin_registry.removePlugins()
 
     ##  Handle loading of all plugin types (and the backend explicitly)
     #   \sa PluginRegistry
