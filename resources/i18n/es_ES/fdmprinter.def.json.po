@@ -1,14 +1,14 @@
-# Cura JSON setting files
+# Cura
 # Copyright (C) 2018 Ultimaker
 # This file is distributed under the same license as the Cura package.
 # Ruben Dulek <r.dulek@ultimaker.com>, 2018.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Cura 3.2\n"
+"Project-Id-Version: Cura 3.3\n"
 "Report-Msgid-Bugs-To: r.dulek@ultimaker.com\n"
 "POT-Creation-Date: 2018-03-29 08:36+0200\n"
-"PO-Revision-Date: 2018-02-12 13:40+0100\n"
+"PO-Revision-Date: 2018-04-11 14:40+0100\n"
 "Last-Translator: Bothof <info@bothof.nl>\n"
 "Language-Team: Spanish\n"
 "Language: es_ES\n"
@@ -50,26 +50,26 @@ msgstr "Elija si desea mostrar las diferentes versiones de esta máquina, las cu
 #: fdmprinter.def.json
 msgctxt "machine_start_gcode label"
 msgid "Start G-code"
-msgstr ""
+msgstr "Iniciar GCode"
 
 #: fdmprinter.def.json
 msgctxt "machine_start_gcode description"
 msgid ""
 "G-code commands to be executed at the very start - separated by \n"
 "."
-msgstr ""
+msgstr "Los comandos de GCode que se ejecutarán justo al inicio separados por - \n."
 
 #: fdmprinter.def.json
 msgctxt "machine_end_gcode label"
 msgid "End G-code"
-msgstr ""
+msgstr "Finalizar GCode"
 
 #: fdmprinter.def.json
 msgctxt "machine_end_gcode description"
 msgid ""
 "G-code commands to be executed at the very end - separated by \n"
 "."
-msgstr ""
+msgstr "Los comandos de GCode que se ejecutarán justo al final separados por -\n."
 
 #: fdmprinter.def.json
 msgctxt "material_guid label"
@@ -94,7 +94,7 @@ msgstr "Elija si desea escribir un comando para esperar a que la temperatura de 
 #: fdmprinter.def.json
 msgctxt "material_print_temp_wait label"
 msgid "Wait for Nozzle Heatup"
-msgstr "Esperar a que la tobera se caliente"
+msgstr "Esperar a la que la tobera se caliente"
 
 #: fdmprinter.def.json
 msgctxt "material_print_temp_wait description"
@@ -164,22 +164,22 @@ msgstr "Elíptica"
 #: fdmprinter.def.json
 msgctxt "machine_buildplate_type label"
 msgid "Build Plate Material"
-msgstr ""
+msgstr "Material de placa de impresión"
 
 #: fdmprinter.def.json
 msgctxt "machine_buildplate_type description"
 msgid "The material of the build plate installed on the printer."
-msgstr ""
+msgstr "Material de la placa de impresión colocado en la impresora."
 
 #: fdmprinter.def.json
 msgctxt "machine_buildplate_type option glass"
 msgid "Glass"
-msgstr ""
+msgstr "Vidrio"
 
 #: fdmprinter.def.json
 msgctxt "machine_buildplate_type option aluminum"
 msgid "Aluminum"
-msgstr ""
+msgstr "Aluminio"
 
 #: fdmprinter.def.json
 msgctxt "machine_height label"
@@ -224,12 +224,12 @@ msgstr "Número de trenes extrusores. Un tren extrusor está formado por un alim
 #: fdmprinter.def.json
 msgctxt "extruders_enabled_count label"
 msgid "Number of Extruders that are enabled"
-msgstr ""
+msgstr "Número de extrusores habilitados"
 
 #: fdmprinter.def.json
 msgctxt "extruders_enabled_count description"
 msgid "Number of extruder trains that are enabled; automatically set in software"
-msgstr ""
+msgstr "Número de trenes extrusores habilitados y configurados en el software de forma automática."
 
 #: fdmprinter.def.json
 msgctxt "machine_nozzle_tip_outer_diameter label"
@@ -324,12 +324,12 @@ msgstr "Tiempo mínimo que un extrusor debe permanecer inactivo antes de que la 
 #: fdmprinter.def.json
 msgctxt "machine_gcode_flavor label"
 msgid "G-code flavour"
-msgstr ""
+msgstr "Tipo de GCode"
 
 #: fdmprinter.def.json
 msgctxt "machine_gcode_flavor description"
 msgid "The type of g-code to be generated."
-msgstr ""
+msgstr "Tipo de GCode que se va a generar."
 
 #: fdmprinter.def.json
 msgctxt "machine_gcode_flavor option RepRap (Marlin/Sprinter)"
@@ -429,7 +429,7 @@ msgstr "Silueta 2D del cabezal de impresión (incluidas las tapas del ventilador
 #: fdmprinter.def.json
 msgctxt "gantry_height label"
 msgid "Gantry height"
-msgstr "Altura del puente"
+msgstr "Altura del caballete"
 
 #: fdmprinter.def.json
 msgctxt "gantry_height description"
@@ -439,12 +439,12 @@ msgstr "Diferencia de altura entre la punta de la tobera y el sistema del puente
 #: fdmprinter.def.json
 msgctxt "machine_nozzle_id label"
 msgid "Nozzle ID"
-msgstr "ID de la tobera"
+msgstr "Id. de la tobera"
 
 #: fdmprinter.def.json
 msgctxt "machine_nozzle_id description"
 msgid "The nozzle ID for an extruder train, such as \"AA 0.4\" and \"BB 0.8\"."
-msgstr "ID de la tobera de un tren extrusor, como \"AA 0.4\" y \"BB 0.8\"."
+msgstr "Id. de la tobera de un tren extrusor, como \"AA 0.4\" y \"BB 0.8\"."
 
 #: fdmprinter.def.json
 msgctxt "machine_nozzle_size label"
@@ -609,72 +609,72 @@ msgstr "Impulso predeterminado del motor del filamento."
 #: fdmprinter.def.json
 msgctxt "machine_steps_per_mm_x label"
 msgid "Steps per Millimeter (X)"
-msgstr ""
+msgstr "Pasos por milímetro (X)"
 
 #: fdmprinter.def.json
 msgctxt "machine_steps_per_mm_x description"
 msgid "How many steps of the stepper motor will result in one millimeter of movement in the X direction."
-msgstr ""
+msgstr "Número de pasos que tiene que dar el motor para abarcar un milímetro de movimiento en la dirección X."
 
 #: fdmprinter.def.json
 msgctxt "machine_steps_per_mm_y label"
 msgid "Steps per Millimeter (Y)"
-msgstr ""
+msgstr "Pasos por milímetro (Y)"
 
 #: fdmprinter.def.json
 msgctxt "machine_steps_per_mm_y description"
 msgid "How many steps of the stepper motor will result in one millimeter of movement in the Y direction."
-msgstr ""
+msgstr "Número de pasos que tiene que dar el motor para abarcar un milímetro de movimiento en la dirección Y."
 
 #: fdmprinter.def.json
 msgctxt "machine_steps_per_mm_z label"
 msgid "Steps per Millimeter (Z)"
-msgstr ""
+msgstr "Pasos por milímetro (Z)"
 
 #: fdmprinter.def.json
 msgctxt "machine_steps_per_mm_z description"
 msgid "How many steps of the stepper motor will result in one millimeter of movement in the Z direction."
-msgstr ""
+msgstr "Número de pasos que tiene que dar el motor para abarcar un milímetro de movimiento en la dirección Z."
 
 #: fdmprinter.def.json
 msgctxt "machine_steps_per_mm_e label"
 msgid "Steps per Millimeter (E)"
-msgstr ""
+msgstr "Pasos por milímetro (E)"
 
 #: fdmprinter.def.json
 msgctxt "machine_steps_per_mm_e description"
 msgid "How many steps of the stepper motors will result in one millimeter of extrusion."
-msgstr ""
+msgstr "Número de pasos que tiene que dar el motor para abarcar un milímetro de movimiento en la dirección E."
 
 #: fdmprinter.def.json
 msgctxt "machine_endstop_positive_direction_x label"
 msgid "X Endstop in Positive Direction"
-msgstr ""
+msgstr "Tope de X en dirección positiva"
 
 #: fdmprinter.def.json
 msgctxt "machine_endstop_positive_direction_x description"
 msgid "Whether the endstop of the X axis is in the positive direction (high X coordinate) or negative (low X coordinate)."
-msgstr ""
+msgstr "Si el tope del eje X se encuentra en la dirección positiva (coordenada X hacia arriba) o negativa (coordenada X hacia abajo)."
 
 #: fdmprinter.def.json
 msgctxt "machine_endstop_positive_direction_y label"
 msgid "Y Endstop in Positive Direction"
-msgstr ""
+msgstr "Tope de Y en dirección positiva"
 
 #: fdmprinter.def.json
 msgctxt "machine_endstop_positive_direction_y description"
 msgid "Whether the endstop of the Y axis is in the positive direction (high Y coordinate) or negative (low Y coordinate)."
-msgstr ""
+msgstr "Si el tope del eje Y se encuentra en la dirección positiva (coordenada Y hacia arriba) o negativa (coordenada Y hacia abajo)."
 
 #: fdmprinter.def.json
 msgctxt "machine_endstop_positive_direction_z label"
 msgid "Z Endstop in Positive Direction"
-msgstr ""
+msgstr "Tope de Z en dirección positiva"
 
 #: fdmprinter.def.json
 msgctxt "machine_endstop_positive_direction_z description"
 msgid "Whether the endstop of the Z axis is in the positive direction (high Z coordinate) or negative (low Z coordinate)."
-msgstr ""
+msgstr "Si el tope del eje Z se encuentra en la dirección positiva (coordenada Z hacia arriba) o negativa (coordenada Z hacia abajo)."
 
 #: fdmprinter.def.json
 msgctxt "machine_minimum_feedrate label"
@@ -689,12 +689,12 @@ msgstr "Velocidad mínima de movimiento del cabezal de impresión."
 #: fdmprinter.def.json
 msgctxt "machine_feeder_wheel_diameter label"
 msgid "Feeder Wheel Diameter"
-msgstr ""
+msgstr "Diámetro de la rueda del alimentador"
 
 #: fdmprinter.def.json
 msgctxt "machine_feeder_wheel_diameter description"
 msgid "The diameter of the wheel that drives the material in the feeder."
-msgstr ""
+msgstr "El diámetro de la rueda que dirige el material hacia el alimentador."
 
 #: fdmprinter.def.json
 msgctxt "resolution label"
@@ -1114,7 +1114,7 @@ msgstr "Compensar superposiciones de pared"
 #: fdmprinter.def.json
 msgctxt "travel_compensate_overlapping_walls_enabled description"
 msgid "Compensate the flow for parts of a wall being printed where there is already a wall in place."
-msgstr "Compensa el flujo en partes de una pared que se están imprimiendo donde ya hay una pared."
+msgstr "Compensa el flujo en partes de una pared que se están imprimiendo dónde ya hay una pared."
 
 #: fdmprinter.def.json
 msgctxt "travel_compensate_overlapping_walls_0_enabled label"
@@ -1454,7 +1454,7 @@ msgstr "Patrón de relleno"
 #: fdmprinter.def.json
 msgctxt "infill_pattern description"
 msgid "The pattern of the infill material of the print. The line and zig zag infill swap direction on alternate layers, reducing material cost. The grid, triangle, tri-hexagon, cubic, octet, quarter cubic, cross and concentric patterns are fully printed every layer. Cubic, quarter cubic and octet infill change with every layer to provide a more equal distribution of strength over each direction."
-msgstr "Patrón del material de relleno de la impresión. El relleno de línea y zigzag cambia de dirección en capas alternas, con lo que se reduce el coste del material. Los patrones de rejilla, triángulo, trihexagonal, cúbico, octeto, cúbico bitruncado y transversal y concéntrico se imprimen en todas las capas por completo. El relleno cúbico, cúbico bitruncado y octeto cambian en cada capa para proporcionar una distribución de fuerza equitativa en cada dirección."
+msgstr "Patrón del material de relleno de la impresión. El relleno de línea y zigzag cambia de dirección en capas alternas, con lo que se reduce el coste del material. Los patrones de rejilla, triángulo, trihexagonal, cúbico, de octeto, cúbico bitruncado y transversal y concéntrico se imprimen en todas las capas por completo. El relleno cúbico, cúbico bitruncado y de octeto cambian en cada capa para proporcionar una distribución de fuerza equitativa en cada dirección."
 
 #: fdmprinter.def.json
 msgctxt "infill_pattern option grid"
@@ -1824,12 +1824,12 @@ msgstr "Velocidad adicional a la que se enfría la tobera durante la extrusión.
 #: fdmprinter.def.json
 msgctxt "default_material_bed_temperature label"
 msgid "Default Build Plate Temperature"
-msgstr ""
+msgstr "Temperatura predeterminada de la placa de impresión"
 
 #: fdmprinter.def.json
 msgctxt "default_material_bed_temperature description"
 msgid "The default temperature used for the heated build plate. This should be the \"base\" temperature of a build plate. All other print temperatures should use offsets based on this value"
-msgstr ""
+msgstr "La temperatura predeterminada que se utiliza en placa de impresión caliente. Debería ser la temperatura básica de una placa de impresión. Las demás temperaturas de impresión deberían calcularse a partir de este valor."
 
 #: fdmprinter.def.json
 msgctxt "material_bed_temperature label"
@@ -1884,12 +1884,12 @@ msgstr "Energía de la superficie."
 #: fdmprinter.def.json
 msgctxt "material_shrinkage_percentage label"
 msgid "Shrinkage Ratio"
-msgstr ""
+msgstr "Índice de compresión"
 
 #: fdmprinter.def.json
 msgctxt "material_shrinkage_percentage description"
 msgid "Shrinkage ratio in percentage."
-msgstr ""
+msgstr "Índice de compresión en porcentaje."
 
 #: fdmprinter.def.json
 msgctxt "material_flow label"
@@ -1904,12 +1904,12 @@ msgstr "Compensación de flujo: la cantidad de material extruido se multiplica p
 #: fdmprinter.def.json
 msgctxt "material_flow_layer_0 label"
 msgid "Initial Layer Flow"
-msgstr ""
+msgstr "Flujo de capa inicial"
 
 #: fdmprinter.def.json
 msgctxt "material_flow_layer_0 description"
 msgid "Flow compensation for the first layer: the amount of material extruded on the initial layer is multiplied by this value."
-msgstr ""
+msgstr "Compensación de flujo de la primera capa: la cantidad de material extruido de la capa inicial se multiplica por este valor."
 
 #: fdmprinter.def.json
 msgctxt "retraction_enable label"
@@ -3024,7 +3024,7 @@ msgstr "Tocando la placa de impresión"
 #: fdmprinter.def.json
 msgctxt "support_type option everywhere"
 msgid "Everywhere"
-msgstr "En todos sitios"
+msgstr "En todas partes"
 
 #: fdmprinter.def.json
 msgctxt "support_angle label"
@@ -3084,12 +3084,12 @@ msgstr "Cruz"
 #: fdmprinter.def.json
 msgctxt "zig_zaggify_support label"
 msgid "Connect Support Lines"
-msgstr ""
+msgstr "Conectar líneas del soporte"
 
 #: fdmprinter.def.json
 msgctxt "zig_zaggify_support description"
 msgid "Connect the ends of the support lines together. Enabling this setting can make your support more sturdy and reduce underextrusion, but it will cost more material."
-msgstr ""
+msgstr "Unión de los extremos de las líneas de soporte. Al habilitar este ajuste, puede conseguir que el soporte sea más sólido y reducir la infraextrusión, pero se necesitará más material."
 
 #: fdmprinter.def.json
 msgctxt "support_connect_zigzags label"
@@ -3651,9 +3651,7 @@ msgctxt "skirt_gap description"
 msgid ""
 "The horizontal distance between the skirt and the first layer of the print.\n"
 "This is the minimum distance. Multiple skirt lines will extend outwards from this distance."
-msgstr ""
-"La distancia horizontal entre la falda y la primera capa de la impresión.\n"
-"Se trata de la distancia mínima. Múltiples líneas de falda se extenderán hacia el exterior a partir de esta distancia."
+msgstr "La distancia horizontal entre la falda y la primera capa de la impresión.\nSe trata de la distancia mínima. Múltiples líneas de falda se extenderán hacia el exterior a partir de esta distancia."
 
 #: fdmprinter.def.json
 msgctxt "skirt_brim_minimal_length label"
@@ -4018,12 +4016,12 @@ msgstr "Imprimir una torre junto a la impresión que sirve para preparar el mate
 #: fdmprinter.def.json
 msgctxt "prime_tower_circular label"
 msgid "Circular Prime Tower"
-msgstr ""
+msgstr "Torre auxiliar circular"
 
 #: fdmprinter.def.json
 msgctxt "prime_tower_circular description"
 msgid "Make the prime tower as a circular shape."
-msgstr ""
+msgstr "Hacer que la torre auxiliar sea circular."
 
 #: fdmprinter.def.json
 msgctxt "prime_tower_size label"
@@ -4193,7 +4191,7 @@ msgstr "Mantener caras desconectadas"
 #: fdmprinter.def.json
 msgctxt "meshfix_keep_open_polygons description"
 msgid "Normally Cura tries to stitch up small holes in the mesh and remove parts of a layer with big holes. Enabling this option keeps those parts which cannot be stitched. This option should be used as a last resort option when everything else fails to produce proper g-code."
-msgstr ""
+msgstr "Normalmente, Cura intenta coser los pequeños agujeros de la malla y eliminar las partes de una capa con grandes agujeros. Al habilitar esta opción, se mantienen aquellas partes que no puedan coserse. Esta opción se debe utilizar como una opción de último recurso cuando todo lo demás falla para producir un GCode adecuado."
 
 #: fdmprinter.def.json
 msgctxt "multiple_mesh_overlap label"
@@ -4408,7 +4406,7 @@ msgstr "Extrusión relativa"
 #: fdmprinter.def.json
 msgctxt "relative_extrusion description"
 msgid "Use relative extrusion rather than absolute extrusion. Using relative E-steps makes for easier post-processing of the g-code. However, it's not supported by all printers and it may produce very slight deviations in the amount of deposited material compared to absolute E-steps. Irrespective of this setting, the extrusion mode will always be set to absolute before any g-code script is output."
-msgstr ""
+msgstr "Utilizar la extrusión relativa en lugar de la extrusión absoluta. El uso de pasos de extrusión relativos permite un procesamiento posterior más sencillo del GCode. Sin embargo, no es compatible con todas las impresoras y puede causar ligeras desviaciones en la cantidad de material depositado si se compara con los pasos de extrusión absolutos. Con independencia de este ajuste, el modo de extrusión se ajustará siempre en absoluto antes de la salida de cualquier secuencia GCode."
 
 #: fdmprinter.def.json
 msgctxt "experimental label"
@@ -5100,9 +5098,7 @@ msgctxt "wireframe_up_half_speed description"
 msgid ""
 "Distance of an upward move which is extruded with half speed.\n"
 "This can cause better adhesion to previous layers, while not heating the material in those layers too much. Only applies to Wire Printing."
-msgstr ""
-"Distancia de un movimiento ascendente que se extrude a media velocidad.\n"
-"Esto puede causar una mejor adherencia a las capas anteriores, aunque no calienta demasiado el material en esas capas. Solo se aplica a la impresión de alambre."
+msgstr "Distancia de un movimiento ascendente que se extrude a media velocidad.\nEsto puede causar una mejor adherencia a las capas anteriores, aunque no calienta demasiado el material en esas capas. Solo se aplica a la impresión de alambre."
 
 #: fdmprinter.def.json
 msgctxt "wireframe_top_jump label"
@@ -5252,202 +5248,202 @@ msgstr "Umbral para usar o no una capa más pequeña. Este número se compara co
 #: fdmprinter.def.json
 msgctxt "bridge_settings_enabled label"
 msgid "Enable Bridge Settings"
-msgstr ""
+msgstr "Habilitar ajustes del puente"
 
 #: fdmprinter.def.json
 msgctxt "bridge_settings_enabled description"
 msgid "Detect bridges and modify print speed, flow and fan settings while bridges are printed."
-msgstr ""
+msgstr "Detección de puentes y modificación de los ajustes de velocidad de impresión, flujo y ventilador durante la impresión de puentes."
 
 #: fdmprinter.def.json
 msgctxt "bridge_wall_min_length label"
 msgid "Minimum Bridge Wall Length"
-msgstr ""
+msgstr "Longitud mínima de la pared del puente"
 
 #: fdmprinter.def.json
 msgctxt "bridge_wall_min_length description"
 msgid "Unsupported walls shorter than this will be printed using the normal wall settings. Longer unsupported walls will be printed using the bridge wall settings."
-msgstr ""
+msgstr "Las paredes no compatibles menores que este valor se imprimirán utilizando los ajustes de pared habituales. Las paredes no compatibles mayores se imprimirán utilizando los ajustes de pared de puente."
 
 #: fdmprinter.def.json
 msgctxt "bridge_skin_support_threshold label"
 msgid "Bridge Skin Support Threshold"
-msgstr ""
+msgstr "Umbral del soporte del forro del puente"
 
 #: fdmprinter.def.json
 msgctxt "bridge_skin_support_threshold description"
 msgid "If a skin region is supported for less than this percentage of its area, print it using the bridge settings. Otherwise it is printed using the normal skin settings."
-msgstr ""
+msgstr "Si un área de forro es compatible con un porcentaje inferior de su área, se imprime utilizando los ajustes de puente. De lo contrario, se imprimirá utilizando los ajustes de forro habituales."
 
 #: fdmprinter.def.json
 msgctxt "bridge_wall_max_overhang label"
 msgid "Bridge Wall Max Overhang"
-msgstr ""
+msgstr "Voladizo máximo de pared del puente"
 
 #: fdmprinter.def.json
 msgctxt "bridge_wall_max_overhang description"
 msgid "The maximum allowed width of the region of air below a wall line before the wall is printed using bridge settings. Expressed as a percentage of the wall line width. When the air gap is wider than this, the wall line is printed using the bridge settings. Otherwise, the wall line is printed using the normal settings. The lower the value, the more likely it is that overhung wall lines will be printed using bridge settings."
-msgstr ""
+msgstr "Ancho máximo permitido de la cámara de aire por debajo de una línea de pared antes imprimir la pared utilizando los ajustes de puente. Se expresa como porcentaje del ancho de la línea de la pared. Si la cámara de aire es mayor, la línea de la pared de imprime utilizando los ajustes de puente. De lo contrario, se imprimirá utilizando los ajustes habituales. Cuando menor sea el valor, más probable es que las líneas de pared del voladizo se impriman utilizando ajustes de puente."
 
 #: fdmprinter.def.json
 msgctxt "bridge_wall_coast label"
 msgid "Bridge Wall Coasting"
-msgstr ""
+msgstr "Depósito por inercia de la pared del puente"
 
 #: fdmprinter.def.json
 msgctxt "bridge_wall_coast description"
 msgid "This controls the distance the extruder should coast immediately before a bridge wall begins. Coasting before the bridge starts can reduce the pressure in the nozzle and may produce a flatter bridge."
-msgstr ""
+msgstr "Controla la distancia del depósito por inercia del extrusor justo antes de empezar un puente. Un depósito por inercia antes del inicio del puente puede reducir la presión en la tobera y dar como resultado un puente más horizontal."
 
 #: fdmprinter.def.json
 msgctxt "bridge_wall_speed label"
 msgid "Bridge Wall Speed"
-msgstr ""
+msgstr "Velocidad de pared del puente"
 
 #: fdmprinter.def.json
 msgctxt "bridge_wall_speed description"
 msgid "The speed at which the bridge walls are printed."
-msgstr ""
+msgstr "Velocidad a la que se imprimen las paredes del puente."
 
 #: fdmprinter.def.json
 msgctxt "bridge_wall_material_flow label"
 msgid "Bridge Wall Flow"
-msgstr ""
+msgstr "Flujo de pared del puente"
 
 #: fdmprinter.def.json
 msgctxt "bridge_wall_material_flow description"
 msgid "When printing bridge walls, the amount of material extruded is multiplied by this value."
-msgstr ""
+msgstr "Cuando se imprimen las paredes del puente; la cantidad de material extruido se multiplica por este valor."
 
 #: fdmprinter.def.json
 msgctxt "bridge_skin_speed label"
 msgid "Bridge Skin Speed"
-msgstr ""
+msgstr "Velocidad de forro del puente"
 
 #: fdmprinter.def.json
 msgctxt "bridge_skin_speed description"
 msgid "The speed at which bridge skin regions are printed."
-msgstr ""
+msgstr "Velocidad a la que se imprimen las áreas de forro del puente."
 
 #: fdmprinter.def.json
 msgctxt "bridge_skin_material_flow label"
 msgid "Bridge Skin Flow"
-msgstr ""
+msgstr "Flujo de forro del puente"
 
 #: fdmprinter.def.json
 msgctxt "bridge_skin_material_flow description"
 msgid "When printing bridge skin regions, the amount of material extruded is multiplied by this value."
-msgstr ""
+msgstr "Cuando se imprimen las áreas de forro del puente; la cantidad de material extruido se multiplica por este valor."
 
 #: fdmprinter.def.json
 msgctxt "bridge_skin_density label"
 msgid "Bridge Skin Density"
-msgstr ""
+msgstr "Densidad de forro del puente"
 
 #: fdmprinter.def.json
 msgctxt "bridge_skin_density description"
 msgid "The density of the bridge skin layer. Values less than 100 will increase the gaps between the skin lines."
-msgstr ""
+msgstr "Densidad de la capa de forro del puente. Un valor inferior a 100 aumentará los huecos entre las líneas del forro."
 
 #: fdmprinter.def.json
 msgctxt "bridge_fan_speed label"
 msgid "Bridge Fan Speed"
-msgstr ""
+msgstr "Velocidad del ventilador del puente"
 
 #: fdmprinter.def.json
 msgctxt "bridge_fan_speed description"
 msgid "Percentage fan speed to use when printing bridge walls and skin."
-msgstr ""
+msgstr "Porcentaje de velocidad del ventilador que se emplea en la impresión de las paredes y el forro del puente."
 
 #: fdmprinter.def.json
 msgctxt "bridge_enable_more_layers label"
 msgid "Bridge Has Multiple Layers"
-msgstr ""
+msgstr "Puente con varias capas"
 
 #: fdmprinter.def.json
 msgctxt "bridge_enable_more_layers description"
 msgid "If enabled, the second and third layers above the air are printed using the following settings. Otherwise, those layers are printed using the normal settings."
-msgstr ""
+msgstr "Si esta opción está habilitada, la segunda y tercera capa por encima del aire se imprimen utilizando los siguientes ajustes. De lo contrario, estas capas se imprimen utilizando los ajustes habituales."
 
 #: fdmprinter.def.json
 msgctxt "bridge_skin_speed_2 label"
 msgid "Bridge Second Skin Speed"
-msgstr ""
+msgstr "Velocidad del segundo forro del puente"
 
 #: fdmprinter.def.json
 msgctxt "bridge_skin_speed_2 description"
 msgid "Print speed to use when printing the second bridge skin layer."
-msgstr ""
+msgstr "Velocidad de impresión que se utiliza para imprimir la segunda capa del forro del puente."
 
 #: fdmprinter.def.json
 msgctxt "bridge_skin_material_flow_2 label"
 msgid "Bridge Second Skin Flow"
-msgstr ""
+msgstr "Flujo del segundo forro del puente"
 
 #: fdmprinter.def.json
 msgctxt "bridge_skin_material_flow_2 description"
 msgid "When printing the second bridge skin layer, the amount of material extruded is multiplied by this value."
-msgstr ""
+msgstr "Cuando se imprime la segunda capa del forro del puente; la cantidad de material extruido se multiplica por este valor."
 
 #: fdmprinter.def.json
 msgctxt "bridge_skin_density_2 label"
 msgid "Bridge Second Skin Density"
-msgstr ""
+msgstr "Densidad del segundo forro del puente"
 
 #: fdmprinter.def.json
 msgctxt "bridge_skin_density_2 description"
 msgid "The density of the second bridge skin layer. Values less than 100 will increase the gaps between the skin lines."
-msgstr ""
+msgstr "Densidad de la segunda capa de forro del puente. Un valor inferior a 100 aumentará los huecos entre las líneas del forro."
 
 #: fdmprinter.def.json
 msgctxt "bridge_fan_speed_2 label"
 msgid "Bridge Second Skin Fan Speed"
-msgstr ""
+msgstr "Velocidad del ventilador del segundo forro del puente"
 
 #: fdmprinter.def.json
 msgctxt "bridge_fan_speed_2 description"
 msgid "Percentage fan speed to use when printing the second bridge skin layer."
-msgstr ""
+msgstr "Velocidad del ventilador en porcentaje que se utiliza para imprimir la segunda capa del forro del puente."
 
 #: fdmprinter.def.json
 msgctxt "bridge_skin_speed_3 label"
 msgid "Bridge Third Skin Speed"
-msgstr ""
+msgstr "Velocidad del tercer forro del puente"
 
 #: fdmprinter.def.json
 msgctxt "bridge_skin_speed_3 description"
 msgid "Print speed to use when printing the third bridge skin layer."
-msgstr ""
+msgstr "Velocidad de impresión que se utiliza para imprimir la tercera capa del forro del puente."
 
 #: fdmprinter.def.json
 msgctxt "bridge_skin_material_flow_3 label"
 msgid "Bridge Third Skin Flow"
-msgstr ""
+msgstr "Flujo del tercer forro del puente"
 
 #: fdmprinter.def.json
 msgctxt "bridge_skin_material_flow_3 description"
 msgid "When printing the third bridge skin layer, the amount of material extruded is multiplied by this value."
-msgstr ""
+msgstr "Cuando se imprime la tercera capa del forro del puente; la cantidad de material extruido se multiplica por este valor."
 
 #: fdmprinter.def.json
 msgctxt "bridge_skin_density_3 label"
 msgid "Bridge Third Skin Density"
-msgstr ""
+msgstr "Densidad del tercer forro del puente"
 
 #: fdmprinter.def.json
 msgctxt "bridge_skin_density_3 description"
 msgid "The density of the third bridge skin layer. Values less than 100 will increase the gaps between the skin lines."
-msgstr ""
+msgstr "Densidad de la tercera capa de forro del puente. Un valor inferior a 100 aumentará los huecos entre las líneas del forro."
 
 #: fdmprinter.def.json
 msgctxt "bridge_fan_speed_3 label"
 msgid "Bridge Third Skin Fan Speed"
-msgstr ""
+msgstr "Velocidad del ventilador del tercer forro del puente"
 
 #: fdmprinter.def.json
 msgctxt "bridge_fan_speed_3 description"
 msgid "Percentage fan speed to use when printing the third bridge skin layer."
-msgstr ""
+msgstr "Velocidad del ventilador en porcentaje que se utiliza para imprimir la tercera capa del forro del puente."
 
 #: fdmprinter.def.json
 msgctxt "command_line_settings label"

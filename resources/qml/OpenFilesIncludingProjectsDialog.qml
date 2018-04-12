@@ -42,7 +42,7 @@ UM.Dialog
     {
         for (var i in fileUrls)
         {
-            CuraApplication.readLocalFile(fileUrls[i]);
+            CuraApplication.readLocalFile(fileUrls[i], true);
         }
 
         var meshName = backgroundItem.getMeshName(fileUrls[0].toString());

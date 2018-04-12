@@ -209,6 +209,7 @@ class CuraApplication(QtApplication):
                 ("preferences", Preferences.Version * 1000000 + self.SettingVersion):              (Resources.Preferences, "application/x-uranium-preferences"),
                 ("user", InstanceContainer.Version * 1000000 + self.SettingVersion):               (self.ResourceTypes.UserInstanceContainer, "application/x-uranium-instancecontainer"),
                 ("definition_changes", InstanceContainer.Version * 1000000 + self.SettingVersion): (self.ResourceTypes.DefinitionChangesContainer, "application/x-uranium-instancecontainer"),
+                ("variant", InstanceContainer.Version * 1000000 + self.SettingVersion):            (self.ResourceTypes.VariantInstanceContainer, "application/x-uranium-instancecontainer"),
             }
         )
 
@@ -688,15 +689,25 @@ class CuraApplication(QtApplication):
         else:
             self.runWithGUI()
 
-        # Pre-load files if requested
-        for file_name in self.getCommandLineOption("file", []):
-            self._openFile(file_name)
-        for file_name in self._open_file_queue:  # Open all the files that were queued up while plug-ins were loading.
-            self._openFile(file_name)
-
         self.started = True
         self.initializationFinished.emit()
+
+        # For now use a timer to postpone some things that need to be done after the application and GUI are
+        # initialized, for example opening files because they may show dialogs which can be closed due to incomplete
+        # GUI initialization.
+        self._post_start_timer = QTimer(self)
+        self._post_start_timer.setInterval(1000)
+        self._post_start_timer.setSingleShot(True)
+        self._post_start_timer.timeout.connect(self._onPostStart)
+        self._post_start_timer.start()
+
         self.exec_()
+
+    def _onPostStart(self):
+        for file_name in self.getCommandLineOption("file", []):
+            self.callLater(self._openFile, file_name)
+        for file_name in self._open_file_queue:  # Open all the files that were queued up while plug-ins were loading.
+            self.callLater(self._openFile, file_name)
 
     initializationFinished = pyqtSignal()
 
@@ -742,7 +753,7 @@ class CuraApplication(QtApplication):
         # Initialize camera tool
         camera_tool = controller.getTool("CameraTool")
         camera_tool.setOrigin(Vector(0, 100, 0))
-        camera_tool.setZoomRange(0.1, 200000)
+        camera_tool.setZoomRange(0.1, 2000)
 
         # Initialize camera animations
         self._camera_animation = CameraAnimation.CameraAnimation()
@@ -1544,8 +1555,10 @@ class CuraApplication(QtApplication):
     def log(self, msg):
         Logger.log("d", msg)
 
-    @pyqtSlot(QUrl)
-    def readLocalFile(self, file):
+    openProjectFile = pyqtSignal(QUrl, arguments = ["project_file"])  # Emitted when a project file is about to open.
+
+    @pyqtSlot(QUrl, bool)
+    def readLocalFile(self, file, skip_project_file_check = False):
         if not file.isValid():
             return
 
@@ -1555,6 +1568,10 @@ class CuraApplication(QtApplication):
             if node.callDecoration("isBlockSlicing"):
                 self.deleteAll()
                 break
+
+        if not skip_project_file_check and self.checkIsValidProjectFile(file):
+            self.callLater(self.openProjectFile.emit, file)
+            return
 
         f = file.toLocalFile()
         extension = os.path.splitext(f)[1]

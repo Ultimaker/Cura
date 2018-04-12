@@ -855,6 +855,16 @@ UM.MainWindow
         id: askOpenAsProjectOrModelsDialog
     }
 
+    Connections
+    {
+        target: CuraApplication
+        onOpenProjectFile:
+        {
+            askOpenAsProjectOrModelsDialog.fileUrl = project_file;
+            askOpenAsProjectOrModelsDialog.show();
+        }
+    }
+
     EngineLog
     {
         id: engineLog;

@@ -1,14 +1,14 @@
-# Cura JSON setting files
-# Copyright (C) 2017 Ultimaker
+# Cura
+# Copyright (C) 2018 Ultimaker
 # This file is distributed under the same license as the Cura package.
-# Ruben Dulek <r.dulek@ultimaker.com>, 2017.
+# Ruben Dulek <r.dulek@ultimaker.com>, 2018.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Cura 3.0\n"
+"Project-Id-Version: Cura 3.3\n"
 "Report-Msgid-Bugs-To: r.dulek@ultimaker.com\n"
 "POT-Creation-Date: 2018-03-29 08:36+0200\n"
-"PO-Revision-Date: 2017-11-30 13:05+0100\n"
+"PO-Revision-Date: 2018-04-11 14:40+0100\n"
 "Last-Translator: Bothof <info@bothof.nl>\n"
 "Language-Team: PCDotFan <pc@edu.ax>, Bothof <info@bothof.nl>\n"
 "Language: zh_CN\n"
@@ -51,26 +51,26 @@ msgstr "这台打印机是否需要显示它在不同的 JSON 文件中所描述
 #: fdmprinter.def.json
 msgctxt "machine_start_gcode label"
 msgid "Start G-code"
-msgstr ""
+msgstr "开始 G-code"
 
 #: fdmprinter.def.json
 msgctxt "machine_start_gcode description"
 msgid ""
 "G-code commands to be executed at the very start - separated by \n"
 "."
-msgstr ""
+msgstr "在开始时执行的 G-code 命令 - 以 \n 分行。"
 
 #: fdmprinter.def.json
 msgctxt "machine_end_gcode label"
 msgid "End G-code"
-msgstr ""
+msgstr "结束 G-code"
 
 #: fdmprinter.def.json
 msgctxt "machine_end_gcode description"
 msgid ""
 "G-code commands to be executed at the very end - separated by \n"
 "."
-msgstr ""
+msgstr "在结束前执行的 G-code 命令 - 以 \n 分行。"
 
 #: fdmprinter.def.json
 msgctxt "material_guid label"
@@ -165,22 +165,22 @@ msgstr "类圆形"
 #: fdmprinter.def.json
 msgctxt "machine_buildplate_type label"
 msgid "Build Plate Material"
-msgstr ""
+msgstr "打印平台材料"
 
 #: fdmprinter.def.json
 msgctxt "machine_buildplate_type description"
 msgid "The material of the build plate installed on the printer."
-msgstr ""
+msgstr "打印平台材料已安装在打印机上。"
 
 #: fdmprinter.def.json
 msgctxt "machine_buildplate_type option glass"
 msgid "Glass"
-msgstr ""
+msgstr "玻璃"
 
 #: fdmprinter.def.json
 msgctxt "machine_buildplate_type option aluminum"
 msgid "Aluminum"
-msgstr ""
+msgstr "铝"
 
 #: fdmprinter.def.json
 msgctxt "machine_height label"
@@ -225,12 +225,12 @@ msgstr "挤出机组数目。 挤出机组是指进料装置、鲍登管和喷�
 #: fdmprinter.def.json
 msgctxt "extruders_enabled_count label"
 msgid "Number of Extruders that are enabled"
-msgstr ""
+msgstr "已启用的挤出机数目。"
 
 #: fdmprinter.def.json
 msgctxt "extruders_enabled_count description"
 msgid "Number of extruder trains that are enabled; automatically set in software"
-msgstr ""
+msgstr "已启用的挤出机组数目；软件自动设置"
 
 #: fdmprinter.def.json
 msgctxt "machine_nozzle_tip_outer_diameter label"
@@ -325,12 +325,12 @@ msgstr "挤出机必须保持不活动以便喷嘴冷却的最短时间。 挤�
 #: fdmprinter.def.json
 msgctxt "machine_gcode_flavor label"
 msgid "G-code flavour"
-msgstr ""
+msgstr "G-code 风格"
 
 #: fdmprinter.def.json
 msgctxt "machine_gcode_flavor description"
 msgid "The type of g-code to be generated."
-msgstr ""
+msgstr "需要生成的 G-code 类型。"
 
 #: fdmprinter.def.json
 msgctxt "machine_gcode_flavor option RepRap (Marlin/Sprinter)"
@@ -610,72 +610,72 @@ msgstr "耗材电机的默认抖动速度。"
 #: fdmprinter.def.json
 msgctxt "machine_steps_per_mm_x label"
 msgid "Steps per Millimeter (X)"
-msgstr ""
+msgstr "每毫米步数 (X)"
 
 #: fdmprinter.def.json
 msgctxt "machine_steps_per_mm_x description"
 msgid "How many steps of the stepper motor will result in one millimeter of movement in the X direction."
-msgstr ""
+msgstr "步进电机前进多少步将导致在 X 方向移动一毫米。"
 
 #: fdmprinter.def.json
 msgctxt "machine_steps_per_mm_y label"
 msgid "Steps per Millimeter (Y)"
-msgstr ""
+msgstr "每毫米步数 (Y)"
 
 #: fdmprinter.def.json
 msgctxt "machine_steps_per_mm_y description"
 msgid "How many steps of the stepper motor will result in one millimeter of movement in the Y direction."
-msgstr ""
+msgstr "步进电机前进多少步将导致在 Y 方向移动一毫米。"
 
 #: fdmprinter.def.json
 msgctxt "machine_steps_per_mm_z label"
 msgid "Steps per Millimeter (Z)"
-msgstr ""
+msgstr "每毫米步数 (Z)"
 
 #: fdmprinter.def.json
 msgctxt "machine_steps_per_mm_z description"
 msgid "How many steps of the stepper motor will result in one millimeter of movement in the Z direction."
-msgstr ""
+msgstr "步进电机前进多少步将导致在 Z 方向移动一毫米。"
 
 #: fdmprinter.def.json
 msgctxt "machine_steps_per_mm_e label"
 msgid "Steps per Millimeter (E)"
-msgstr ""
+msgstr "每毫米步数 (E)"
 
 #: fdmprinter.def.json
 msgctxt "machine_steps_per_mm_e description"
 msgid "How many steps of the stepper motors will result in one millimeter of extrusion."
-msgstr ""
+msgstr "步进电机前进多少步将导致挤出一毫米。"
 
 #: fdmprinter.def.json
 msgctxt "machine_endstop_positive_direction_x label"
 msgid "X Endstop in Positive Direction"
-msgstr ""
+msgstr "正向 X 限位开关"
 
 #: fdmprinter.def.json
 msgctxt "machine_endstop_positive_direction_x description"
 msgid "Whether the endstop of the X axis is in the positive direction (high X coordinate) or negative (low X coordinate)."
-msgstr ""
+msgstr "指定 X 轴的限位开关位于正向（高 X 轴坐标）还是负向（低 X 轴坐标）。"
 
 #: fdmprinter.def.json
 msgctxt "machine_endstop_positive_direction_y label"
 msgid "Y Endstop in Positive Direction"
-msgstr ""
+msgstr "正向 Y 限位开关"
 
 #: fdmprinter.def.json
 msgctxt "machine_endstop_positive_direction_y description"
 msgid "Whether the endstop of the Y axis is in the positive direction (high Y coordinate) or negative (low Y coordinate)."
-msgstr ""
+msgstr "指定 Y 轴的限位开关位于正向（高 Y 轴坐标）还是负向（低 Y 轴坐标）。"
 
 #: fdmprinter.def.json
 msgctxt "machine_endstop_positive_direction_z label"
 msgid "Z Endstop in Positive Direction"
-msgstr ""
+msgstr "正向 Z 限位开关"
 
 #: fdmprinter.def.json
 msgctxt "machine_endstop_positive_direction_z description"
 msgid "Whether the endstop of the Z axis is in the positive direction (high Z coordinate) or negative (low Z coordinate)."
-msgstr ""
+msgstr "指定 Z 轴的限位开关位于正向（高 Z 轴坐标）还是负向（低 Z 轴坐标）。"
 
 #: fdmprinter.def.json
 msgctxt "machine_minimum_feedrate label"
@@ -690,12 +690,12 @@ msgstr "打印头的最低移动速度。"
 #: fdmprinter.def.json
 msgctxt "machine_feeder_wheel_diameter label"
 msgid "Feeder Wheel Diameter"
-msgstr ""
+msgstr "进料装置驱动轮的直径"
 
 #: fdmprinter.def.json
 msgctxt "machine_feeder_wheel_diameter description"
 msgid "The diameter of the wheel that drives the material in the feeder."
-msgstr ""
+msgstr "进料装置中材料驱动轮的直径。"
 
 #: fdmprinter.def.json
 msgctxt "resolution label"
@@ -1025,12 +1025,12 @@ msgstr "直线"
 #: fdmprinter.def.json
 msgctxt "top_bottom_pattern option concentric"
 msgid "Concentric"
-msgstr "同心"
+msgstr "同心圆"
 
 #: fdmprinter.def.json
 msgctxt "top_bottom_pattern option zigzag"
 msgid "Zig Zag"
-msgstr "锯齿形"
+msgstr "Zig Zag"
 
 #: fdmprinter.def.json
 msgctxt "top_bottom_pattern_0 label"
@@ -1050,12 +1050,12 @@ msgstr "直线"
 #: fdmprinter.def.json
 msgctxt "top_bottom_pattern_0 option concentric"
 msgid "Concentric"
-msgstr "同心"
+msgstr "同心圆"
 
 #: fdmprinter.def.json
 msgctxt "top_bottom_pattern_0 option zigzag"
 msgid "Zig Zag"
-msgstr "锯齿形"
+msgstr "Zig Zag"
 
 #: fdmprinter.def.json
 msgctxt "skin_angles label"
@@ -1065,7 +1065,7 @@ msgstr "顶层/底层走线方向"
 #: fdmprinter.def.json
 msgctxt "skin_angles description"
 msgid "A list of integer line directions to use when the top/bottom layers use the lines or zig zag pattern. Elements from the list are used sequentially as the layers progress and when the end of the list is reached, it starts at the beginning again. The list items are separated by commas and the whole list is contained in square brackets. Default is an empty list which means use the traditional default angles (45 and 135 degrees)."
-msgstr "当顶层/底层采用线条或锯齿形图案时使用的整数走线方向的列表。 列表中的元素随层的进度依次使用，当达到列表末尾时，它将从头开始。 列表项以逗号分隔，整个列表包含在方括号中。 默认是一个空列表，即意味着使用传统的默认角度（45 和 135 度）。"
+msgstr "当顶层/底层采用线条或锯齿状图案时使用的整数走线方向的列表。 列表中的元素随层的进度依次使用，当达到列表末尾时，它将从头开始。 列表项以逗号分隔，整个列表包含在方括号中。 默认是一个空列表，即意味着使用传统的默认角度（45 和 135 度）。"
 
 #: fdmprinter.def.json
 msgctxt "wall_0_inset label"
@@ -1500,17 +1500,17 @@ msgstr "四面体"
 #: fdmprinter.def.json
 msgctxt "infill_pattern option concentric"
 msgid "Concentric"
-msgstr "同心"
+msgstr "同心圆"
 
 #: fdmprinter.def.json
 msgctxt "infill_pattern option concentric_3d"
 msgid "Concentric 3D"
-msgstr "同心 3D"
+msgstr "立体同心圆"
 
 #: fdmprinter.def.json
 msgctxt "infill_pattern option zigzag"
 msgid "Zig Zag"
-msgstr "锯齿形"
+msgstr "锯齿状"
 
 #: fdmprinter.def.json
 msgctxt "infill_pattern option cross"
@@ -1825,12 +1825,12 @@ msgstr "挤出时喷嘴冷却的额外速度。 使用相同的值表示挤出�
 #: fdmprinter.def.json
 msgctxt "default_material_bed_temperature label"
 msgid "Default Build Plate Temperature"
-msgstr ""
+msgstr "默认打印平台温度"
 
 #: fdmprinter.def.json
 msgctxt "default_material_bed_temperature description"
 msgid "The default temperature used for the heated build plate. This should be the \"base\" temperature of a build plate. All other print temperatures should use offsets based on this value"
-msgstr ""
+msgstr "用于加热打印平台的默认温度。这应该作为打印平台的“基础”温度。所有其他打印温度均应基于此值进行调整"
 
 #: fdmprinter.def.json
 msgctxt "material_bed_temperature label"
@@ -1885,12 +1885,12 @@ msgstr "表面能。"
 #: fdmprinter.def.json
 msgctxt "material_shrinkage_percentage label"
 msgid "Shrinkage Ratio"
-msgstr ""
+msgstr "收缩率"
 
 #: fdmprinter.def.json
 msgctxt "material_shrinkage_percentage description"
 msgid "Shrinkage ratio in percentage."
-msgstr ""
+msgstr "百分比收缩率。"
 
 #: fdmprinter.def.json
 msgctxt "material_flow label"
@@ -1905,12 +1905,12 @@ msgstr "流量补偿：挤出的材料量乘以此值。"
 #: fdmprinter.def.json
 msgctxt "material_flow_layer_0 label"
 msgid "Initial Layer Flow"
-msgstr ""
+msgstr "起始层流量"
 
 #: fdmprinter.def.json
 msgctxt "material_flow_layer_0 description"
 msgid "Flow compensation for the first layer: the amount of material extruded on the initial layer is multiplied by this value."
-msgstr ""
+msgstr "第一层的流量补偿：起始层挤出的材料量乘以此值。"
 
 #: fdmprinter.def.json
 msgctxt "retraction_enable label"
@@ -2675,7 +2675,7 @@ msgstr "打印 skirt 和 brim 时的最大瞬时速度变化。"
 #: fdmprinter.def.json
 msgctxt "travel label"
 msgid "Travel"
-msgstr "空驶"
+msgstr "移动"
 
 #: fdmprinter.def.json
 msgctxt "travel description"
@@ -2905,7 +2905,7 @@ msgstr "最短单层冷却时间"
 #: fdmprinter.def.json
 msgctxt "cool_min_layer_time description"
 msgid "The minimum time spent in a layer. This forces the printer to slow down, to at least spend the time set here in one layer. This allows the printed material to cool down properly before printing the next layer. Layers may still take shorter than the minimal layer time if Lift Head is disabled and if the Minimum Speed would otherwise be violated."
-msgstr "在层中花费的最少时间。 这会迫使打印机减速，以便至少在一层中消耗此处所规定的时间。 这会让已打印材料充分冷却后再打印下一层。 如果提升头被禁用，且如果不这么做会违反“最小速度”，则层所花时间可能仍会少于最小层时间。"
+msgstr "在层中花费的最少时间。 这会迫使打印机减速，以便至少在一层中消耗此处所规定的时间。 这会让已打印材料充分冷却后再打印下一层。 如果提升头被禁用，且如果不这么做会违反“最小速度“，则层所花时间可能仍会少于最小层时间。"
 
 #: fdmprinter.def.json
 msgctxt "cool_min_speed label"
@@ -3085,12 +3085,12 @@ msgstr "交叉"
 #: fdmprinter.def.json
 msgctxt "zig_zaggify_support label"
 msgid "Connect Support Lines"
-msgstr ""
+msgstr "连接支撑线"
 
 #: fdmprinter.def.json
 msgctxt "zig_zaggify_support description"
 msgid "Connect the ends of the support lines together. Enabling this setting can make your support more sturdy and reduce underextrusion, but it will cost more material."
-msgstr ""
+msgstr "将支撑线尾端连接在一起。启用此设置会让支撑更为牢固并减少挤出不足，但需要更多材料。"
 
 #: fdmprinter.def.json
 msgctxt "support_connect_zigzags label"
@@ -3450,17 +3450,17 @@ msgstr "三角形"
 #: fdmprinter.def.json
 msgctxt "support_roof_pattern option concentric"
 msgid "Concentric"
-msgstr "同心"
+msgstr "同心圆"
 
 #: fdmprinter.def.json
 msgctxt "support_roof_pattern option concentric_3d"
 msgid "Concentric 3D"
-msgstr "同心 3D"
+msgstr "立体同心圆"
 
 #: fdmprinter.def.json
 msgctxt "support_roof_pattern option zigzag"
 msgid "Zig Zag"
-msgstr "锯齿形"
+msgstr "锯齿状"
 
 #: fdmprinter.def.json
 msgctxt "support_bottom_pattern label"
@@ -3652,9 +3652,7 @@ msgctxt "skirt_gap description"
 msgid ""
 "The horizontal distance between the skirt and the first layer of the print.\n"
 "This is the minimum distance. Multiple skirt lines will extend outwards from this distance."
-msgstr ""
-"skirt 和打印第一层之间的水平距离。\n"
-"这是最小距离。多个 skirt 走线将从此距离向外延伸。"
+msgstr "skirt  和打印第一层之间的水平距离。\n这是最小距离。多个 skirt 走线将从此距离向外延伸。"
 
 #: fdmprinter.def.json
 msgctxt "skirt_brim_minimal_length label"
@@ -4019,12 +4017,12 @@ msgstr "在打印品相邻处打印一个塔，用于在每个喷嘴切换后装
 #: fdmprinter.def.json
 msgctxt "prime_tower_circular label"
 msgid "Circular Prime Tower"
-msgstr ""
+msgstr "圆形装填塔"
 
 #: fdmprinter.def.json
 msgctxt "prime_tower_circular description"
 msgid "Make the prime tower as a circular shape."
-msgstr ""
+msgstr "使装填塔成圆形。"
 
 #: fdmprinter.def.json
 msgctxt "prime_tower_size label"
@@ -4194,7 +4192,7 @@ msgstr "保留断开连接的面"
 #: fdmprinter.def.json
 msgctxt "meshfix_keep_open_polygons description"
 msgid "Normally Cura tries to stitch up small holes in the mesh and remove parts of a layer with big holes. Enabling this option keeps those parts which cannot be stitched. This option should be used as a last resort option when everything else fails to produce proper g-code."
-msgstr ""
+msgstr "一般情况下，Cura 会尝试缝合网格中的小孔，并移除层中有大孔的部分。启用此选项将保留那些无法缝合的部分。当其他所有方法都无法产生正确的 G-code 时，最后才应考虑该选项。"
 
 #: fdmprinter.def.json
 msgctxt "multiple_mesh_overlap label"
@@ -4409,7 +4407,7 @@ msgstr "相对挤出"
 #: fdmprinter.def.json
 msgctxt "relative_extrusion description"
 msgid "Use relative extrusion rather than absolute extrusion. Using relative E-steps makes for easier post-processing of the g-code. However, it's not supported by all printers and it may produce very slight deviations in the amount of deposited material compared to absolute E-steps. Irrespective of this setting, the extrusion mode will always be set to absolute before any g-code script is output."
-msgstr ""
+msgstr "使用相对挤出而不是绝对挤出。使用相对 E 步阶，以便对 G-code 进行更轻松的后期处理。但是，并非所有打印机均支持此功能，而且与绝对 E 步阶相比，此功能在沉积材料量上会产生非常轻微的偏差。不论是否启用此设置，挤出模式将始终在设置为绝对挤出后才输出任何 G-code 脚本。"
 
 #: fdmprinter.def.json
 msgctxt "experimental label"
@@ -5101,9 +5099,7 @@ msgctxt "wireframe_up_half_speed description"
 msgid ""
 "Distance of an upward move which is extruded with half speed.\n"
 "This can cause better adhesion to previous layers, while not heating the material in those layers too much. Only applies to Wire Printing."
-msgstr ""
-"以半速挤出的上行移动的距离。\n"
-"这会与之前的层产生更好的附着，而不会将这些层中的材料过度加热。 仅应用于单线打印。"
+msgstr "以半速挤出的上行移动的距离。\n这会与之前的层产生更好的附着，而不会将这些层中的材料过度加热。 仅应用于单线打印。"
 
 #: fdmprinter.def.json
 msgctxt "wireframe_top_jump label"
@@ -5253,202 +5249,202 @@ msgstr "决定是否使用较小图层的阈值。该数字相当于一层中最
 #: fdmprinter.def.json
 msgctxt "bridge_settings_enabled label"
 msgid "Enable Bridge Settings"
-msgstr ""
+msgstr "启用连桥设置"
 
 #: fdmprinter.def.json
 msgctxt "bridge_settings_enabled description"
 msgid "Detect bridges and modify print speed, flow and fan settings while bridges are printed."
-msgstr ""
+msgstr "在打印连桥时，检测连桥并修改打印速度、流量和风扇设置。"
 
 #: fdmprinter.def.json
 msgctxt "bridge_wall_min_length label"
 msgid "Minimum Bridge Wall Length"
-msgstr ""
+msgstr "最小桥壁长度"
 
 #: fdmprinter.def.json
 msgctxt "bridge_wall_min_length description"
 msgid "Unsupported walls shorter than this will be printed using the normal wall settings. Longer unsupported walls will be printed using the bridge wall settings."
-msgstr ""
+msgstr "将使用正常壁设置打印短于此长度且没有支撑的壁。将使用桥壁设置打印长于此长度且没有支撑的壁。"
 
 #: fdmprinter.def.json
 msgctxt "bridge_skin_support_threshold label"
 msgid "Bridge Skin Support Threshold"
-msgstr ""
+msgstr "连桥表面支撑阈值"
 
 #: fdmprinter.def.json
 msgctxt "bridge_skin_support_threshold description"
 msgid "If a skin region is supported for less than this percentage of its area, print it using the bridge settings. Otherwise it is printed using the normal skin settings."
-msgstr ""
+msgstr "如果受支撑的表面区域小于整个区域的这一百分比，则使用连桥设置打印。否则，使用正常表面设置打印。"
 
 #: fdmprinter.def.json
 msgctxt "bridge_wall_max_overhang label"
 msgid "Bridge Wall Max Overhang"
-msgstr ""
+msgstr "桥壁最大悬垂"
 
 #: fdmprinter.def.json
 msgctxt "bridge_wall_max_overhang description"
 msgid "The maximum allowed width of the region of air below a wall line before the wall is printed using bridge settings. Expressed as a percentage of the wall line width. When the air gap is wider than this, the wall line is printed using the bridge settings. Otherwise, the wall line is printed using the normal settings. The lower the value, the more likely it is that overhung wall lines will be printed using bridge settings."
-msgstr ""
+msgstr "在使用连桥设置打印壁之前，壁线下净空区域的最大允许宽度。以壁线宽度的百分比表示。如果间隙大于此宽度，则使用连桥设置打印壁线。否则，将使用正常设置打印壁线。此值越小，使用连桥设置打印悬垂壁线的可能性越大。"
 
 #: fdmprinter.def.json
 msgctxt "bridge_wall_coast label"
 msgid "Bridge Wall Coasting"
-msgstr ""
+msgstr "桥壁滑行"
 
 #: fdmprinter.def.json
 msgctxt "bridge_wall_coast description"
 msgid "This controls the distance the extruder should coast immediately before a bridge wall begins. Coasting before the bridge starts can reduce the pressure in the nozzle and may produce a flatter bridge."
-msgstr ""
+msgstr "此参数用于控制挤出机在开始打印桥壁前应该滑行的距离。在开始打印连桥之前滑行，可以降低喷嘴中的压力，并保证打印出平滑的连桥。"
 
 #: fdmprinter.def.json
 msgctxt "bridge_wall_speed label"
 msgid "Bridge Wall Speed"
-msgstr ""
+msgstr "桥壁速度"
 
 #: fdmprinter.def.json
 msgctxt "bridge_wall_speed description"
 msgid "The speed at which the bridge walls are printed."
-msgstr ""
+msgstr "打印桥壁的速度。"
 
 #: fdmprinter.def.json
 msgctxt "bridge_wall_material_flow label"
 msgid "Bridge Wall Flow"
-msgstr ""
+msgstr "桥壁流量"
 
 #: fdmprinter.def.json
 msgctxt "bridge_wall_material_flow description"
 msgid "When printing bridge walls, the amount of material extruded is multiplied by this value."
-msgstr ""
+msgstr "打印桥壁时，将挤出的材料量乘以此值。"
 
 #: fdmprinter.def.json
 msgctxt "bridge_skin_speed label"
 msgid "Bridge Skin Speed"
-msgstr ""
+msgstr "连桥表面速度"
 
 #: fdmprinter.def.json
 msgctxt "bridge_skin_speed description"
 msgid "The speed at which bridge skin regions are printed."
-msgstr ""
+msgstr "打印连桥表面区域的速度。"
 
 #: fdmprinter.def.json
 msgctxt "bridge_skin_material_flow label"
 msgid "Bridge Skin Flow"
-msgstr ""
+msgstr "连桥表面流量"
 
 #: fdmprinter.def.json
 msgctxt "bridge_skin_material_flow description"
 msgid "When printing bridge skin regions, the amount of material extruded is multiplied by this value."
-msgstr ""
+msgstr "打印连桥表面区域时，将挤出的材料量乘以此值。"
 
 #: fdmprinter.def.json
 msgctxt "bridge_skin_density label"
 msgid "Bridge Skin Density"
-msgstr ""
+msgstr "连桥表面密度"
 
 #: fdmprinter.def.json
 msgctxt "bridge_skin_density description"
 msgid "The density of the bridge skin layer. Values less than 100 will increase the gaps between the skin lines."
-msgstr ""
+msgstr "连桥表面层的密度。此值若小于 100 则会增大表面线条的缝隙。"
 
 #: fdmprinter.def.json
 msgctxt "bridge_fan_speed label"
 msgid "Bridge Fan Speed"
-msgstr ""
+msgstr "连桥风扇速度"
 
 #: fdmprinter.def.json
 msgctxt "bridge_fan_speed description"
 msgid "Percentage fan speed to use when printing bridge walls and skin."
-msgstr ""
+msgstr "打印连桥表面和桥壁时使用的风扇百分比速度。"
 
 #: fdmprinter.def.json
 msgctxt "bridge_enable_more_layers label"
 msgid "Bridge Has Multiple Layers"
-msgstr ""
+msgstr "连桥有多层"
 
 #: fdmprinter.def.json
 msgctxt "bridge_enable_more_layers description"
 msgid "If enabled, the second and third layers above the air are printed using the following settings. Otherwise, those layers are printed using the normal settings."
-msgstr ""
+msgstr "如果启用此选项，则使用以下设置打印净空区域上方第二层和第三层。否则，将使用正常设置打印这些层。"
 
 #: fdmprinter.def.json
 msgctxt "bridge_skin_speed_2 label"
 msgid "Bridge Second Skin Speed"
-msgstr ""
+msgstr "连桥第二层表面速度"
 
 #: fdmprinter.def.json
 msgctxt "bridge_skin_speed_2 description"
 msgid "Print speed to use when printing the second bridge skin layer."
-msgstr ""
+msgstr "打印桥梁第二层表面时使用的打印速度。"
 
 #: fdmprinter.def.json
 msgctxt "bridge_skin_material_flow_2 label"
 msgid "Bridge Second Skin Flow"
-msgstr ""
+msgstr "连桥第二层表面流量"
 
 #: fdmprinter.def.json
 msgctxt "bridge_skin_material_flow_2 description"
 msgid "When printing the second bridge skin layer, the amount of material extruded is multiplied by this value."
-msgstr ""
+msgstr "打印连桥第二层表面时，将挤出的材料量乘以此值。"
 
 #: fdmprinter.def.json
 msgctxt "bridge_skin_density_2 label"
 msgid "Bridge Second Skin Density"
-msgstr ""
+msgstr "连桥第二层表面密度"
 
 #: fdmprinter.def.json
 msgctxt "bridge_skin_density_2 description"
 msgid "The density of the second bridge skin layer. Values less than 100 will increase the gaps between the skin lines."
-msgstr ""
+msgstr "连桥第二层表面的密度。此值若小于 100 则会增大表面线条的缝隙。"
 
 #: fdmprinter.def.json
 msgctxt "bridge_fan_speed_2 label"
 msgid "Bridge Second Skin Fan Speed"
-msgstr ""
+msgstr "连桥第二层表面风扇速度"
 
 #: fdmprinter.def.json
 msgctxt "bridge_fan_speed_2 description"
 msgid "Percentage fan speed to use when printing the second bridge skin layer."
-msgstr ""
+msgstr "打印桥梁第二层表面时使用的风扇百分比速度。"
 
 #: fdmprinter.def.json
 msgctxt "bridge_skin_speed_3 label"
 msgid "Bridge Third Skin Speed"
-msgstr ""
+msgstr "连桥第三层表面速度"
 
 #: fdmprinter.def.json
 msgctxt "bridge_skin_speed_3 description"
 msgid "Print speed to use when printing the third bridge skin layer."
-msgstr ""
+msgstr "打印桥梁第三层表面时使用的打印速度。"
 
 #: fdmprinter.def.json
 msgctxt "bridge_skin_material_flow_3 label"
 msgid "Bridge Third Skin Flow"
-msgstr ""
+msgstr "连桥第三层表面流量"
 
 #: fdmprinter.def.json
 msgctxt "bridge_skin_material_flow_3 description"
 msgid "When printing the third bridge skin layer, the amount of material extruded is multiplied by this value."
-msgstr ""
+msgstr "打印连桥第三层表面时，将挤出的材料量乘以此值。"
 
 #: fdmprinter.def.json
 msgctxt "bridge_skin_density_3 label"
 msgid "Bridge Third Skin Density"
-msgstr ""
+msgstr "连桥第三层表面密度"
 
 #: fdmprinter.def.json
 msgctxt "bridge_skin_density_3 description"
 msgid "The density of the third bridge skin layer. Values less than 100 will increase the gaps between the skin lines."
-msgstr ""
+msgstr "连桥第三层表面的密度。此值若小于 100 则会增大表面线条的缝隙。"
 
 #: fdmprinter.def.json
 msgctxt "bridge_fan_speed_3 label"
 msgid "Bridge Third Skin Fan Speed"
-msgstr ""
+msgstr "连桥第三层表面风扇速度"
 
 #: fdmprinter.def.json
 msgctxt "bridge_fan_speed_3 description"
 msgid "Percentage fan speed to use when printing the third bridge skin layer."
-msgstr ""
+msgstr "打印桥梁第三层表面时使用的风扇百分比速度。"
 
 #: fdmprinter.def.json
 msgctxt "command_line_settings label"
