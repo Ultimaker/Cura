@@ -1016,6 +1016,13 @@ class MachineManager(QObject):
         self.activeQualityGroupChanged.emit()
         self.activeQualityChangesGroupChanged.emit()
 
+    def _fixQualityChangesGroupToNotSupported(self, quality_changes_group):
+        nodes = [quality_changes_group.node_for_global] + list(quality_changes_group.nodes_for_extruders.values())
+        containers = [n.getContainer() for n in nodes if n is not None]
+        for container in containers:
+            container.setMetaDataEntry("quality_type", "not_supported")
+        quality_changes_group.quality_type = "not_supported"
+
     def _setQualityChangesGroup(self, quality_changes_group):
         quality_type = quality_changes_group.quality_type
         # A custom quality can be created based on "not supported".
@@ -1024,6 +1031,8 @@ class MachineManager(QObject):
         if quality_type != "not_supported":
             quality_group_dict = self._quality_manager.getQualityGroups(self._global_container_stack)
             quality_group = quality_group_dict.get(quality_type)
+            if quality_group is None:
+                self._fixQualityChangesGroupToNotSupported(quality_changes_group)
 
         quality_changes_container = self._empty_quality_changes_container
         if quality_changes_group.node_for_global:
