@@ -3281,7 +3281,7 @@
                     {
                         "off": "Off",
                         "all": "All",
-                        "noskin": "No Skin"
+                        "noskin": "Not in Skin"
                     },
                     "default_value": "all",
                     "resolve": "'noskin' if 'noskin' in extruderValues('retraction_combing') else ('all' if 'all' in extruderValues('retraction_combing') else 'off')",
