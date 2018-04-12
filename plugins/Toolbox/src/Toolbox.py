@@ -463,7 +463,7 @@ class Toolbox(QObject, Extension):
             self.openLicenseDialog(package_info["package_id"], license_content, file_path)
             return
 
-        self._package_manager.installPlugin(file_path)
+        self.installPlugin(file_path)
         return
 
 

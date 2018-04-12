@@ -345,10 +345,6 @@ UM.MainWindow
                                 pluginInstallDialog.open();
                                 return;
                             }
-                            else if (CuraApplication.getCuraPackageManager().isPackageFile(drop.urls[0]))
-                            {
-                                CuraApplication.getCuraPackageManager().install(drop.urls[0]);
-                            }
                         }
 
                         openDialog.handleOpenFileUrls(drop.urls);
