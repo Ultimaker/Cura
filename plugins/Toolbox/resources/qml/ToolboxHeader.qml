@@ -6,9 +6,6 @@ import QtQuick.Dialogs 1.1
 import QtQuick.Window 2.2
 import QtQuick.Controls 1.4
 import QtQuick.Controls.Styles 1.4
-
-// TODO: Switch to QtQuick.Controls 2.x and remove QtQuick.Controls.Styles
-
 import UM 1.1 as UM
 
 Rectangle {
@@ -55,8 +52,8 @@ Rectangle {
             }
             onClicked:
             {
-                toolbox.filterPackages("type", "plugin")
-                toolbox.filterAuthors("type", "plugin")
+                toolbox.filterModelByProp("packages", "type", "plugin")
+                toolbox.filterModelByProp("authors", "type", "plugin")
                 toolbox.viewCategory = "plugin"
                 toolbox.viewPage = "overview"
             }
@@ -92,8 +89,8 @@ Rectangle {
             }
             onClicked:
             {
-                toolbox.filterPackages("type", "material")
-                toolbox.filterAuthors("type", "material")
+                toolbox.filterModelByProp("packages", "type", "material")
+                toolbox.filterModelByProp("authors", "type", "material")
                 toolbox.viewCategory = "material"
                 toolbox.viewPage = "overview"
             }

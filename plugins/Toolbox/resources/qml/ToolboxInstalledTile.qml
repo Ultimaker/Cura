@@ -103,7 +103,7 @@ Item
         Button {
             id: removeButton
             text: "Uninstall"
-            visible: model.can_uninstall && model.status == "installed"
+            // visible: model.can_uninstall && model.status == "installed"
             enabled: !toolbox.isDownloading
             style: ButtonStyle
             {
@@ -131,7 +131,7 @@ Item
         Button {
             id: updateButton
             text: "Update"
-            enabled: model.can_update
+            // enabled: model.can_update
             style: ButtonStyle
             {
                 background: Rectangle
@@ -157,9 +157,9 @@ Item
         ProgressBar
         {
             id: progressbar
-            anchors.left: installButton.left
-            anchors.right: installButton.right
-            anchors.top: installButton.bottom
+            anchors.left: updateButton.left
+            anchors.right: updateButton.right
+            anchors.top: updateButton.bottom
             anchors.topMargin: 4
             value: toolbox.isDownloading ? toolbox.downloadProgress : 0
             visible: toolbox.isDownloading

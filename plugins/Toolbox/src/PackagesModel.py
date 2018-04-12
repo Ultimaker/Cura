@@ -52,7 +52,6 @@ class PackagesModel(ListModel):
         items = []
 
         for package in self._metadata:
-            print(package)
             items.append({
                 "id": package["package_id"],
                 "type": package["package_type"],
@@ -62,9 +61,9 @@ class PackagesModel(ListModel):
                 "author_email": package["author"]["email"],
                 "description": package["description"],
                 "icon_url": package["icon_url"] if "icon_url" in package else None,
-                "image_urls": package["image_urls"],
-                "download_url": package["download_url"],
-                "last_updated": package["last_updated"]
+                "image_urls": package["image_urls"] if "image_urls" in package else None,
+                "download_url": package["download_url"] if "download_url" in package else None,
+                "last_updated": package["last_updated"] if "last_updated" in package else None
             })
 
         # Filter on all the key-word arguments.

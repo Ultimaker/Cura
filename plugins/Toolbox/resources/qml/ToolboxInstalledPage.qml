@@ -58,7 +58,7 @@ ScrollView
                 Repeater
                 {
                     id: materialList
-                    model: toolbox.packagesModel
+                    model: toolbox.pluginsInstalledModel
                     delegate: ToolboxInstalledTile {}
                 }
             }
@@ -93,7 +93,7 @@ ScrollView
                 Repeater
                 {
                     id: pluginList
-                    model: toolbox.packagesModel
+                    model: toolbox.materialsInstalledModel
                     delegate: ToolboxInstalledTile {}
                 }
             }

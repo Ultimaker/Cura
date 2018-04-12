@@ -56,14 +56,14 @@ Item
                 case "material":
                     toolbox.viewSelection = model.name
                     toolbox.viewPage = "author"
-                    toolbox.filterAuthors("name", model.name)
-                    toolbox.filterPackages("author_name", model.name)
+                    toolbox.filterModelByProp("authors", "name", model.name)
+                    toolbox.filterModelByProp("packages", "author_name", model.name)
                     break
                 default:
                     toolbox.viewSelection = model.id
                     toolbox.viewPage = "detail"
-                    toolbox.filterAuthors("name", model.author_name)
-                    toolbox.filterPackages("id", model.id)
+                    toolbox.filterModelByProp("authors", "name", model.author_name)
+                    toolbox.filterModelByProp("packages", "id", model.id)
                     break
             }
         }

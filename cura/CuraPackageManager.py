@@ -118,8 +118,8 @@ class CuraPackageManager(QObject):
 
             package_type = package_info["package_type"]
             if package_type not in installed_packages_dict:
-                installed_packages_dict[package_type] = {}
-            installed_packages_dict[package_type][package_id] = package_info
+                installed_packages_dict[package_type] = []
+            installed_packages_dict[package_type].append( package_info )
 
             # We also need to get information from the plugin registry such as if a plugin is active
             package_info["is_active"] = self._plugin_registry.isActivePlugin(package_id)
@@ -137,8 +137,8 @@ class CuraPackageManager(QObject):
             plugin_package_info["is_active"] = self._plugin_registry.isActivePlugin(package_id)
             package_type = "plugin"
             if package_type not in installed_packages_dict:
-                installed_packages_dict[package_type] = {}
-            installed_packages_dict[package_type][package_id] = plugin_package_info
+                installed_packages_dict[package_type] = []
+            installed_packages_dict[package_type].append( plugin_package_info )
 
         return installed_packages_dict
 
