@@ -1,5 +1,5 @@
 // Copyright (c) 2018 Ultimaker B.V.
-// PluginBrowser is released under the terms of the LGPLv3 or higher.
+// Toolbox is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.2
 import QtQuick.Dialogs 1.1
@@ -51,19 +51,20 @@ Item
     {
         anchors.fill: parent
         onClicked: {
-            if ( manager.viewCategory == "material" )
+            switch(manager.viewCategory)
             {
-                manager.viewSelection = model.name
-                manager.viewPage = "author"
-                manager.filterAuthors("name", model.name)
-                manager.filterPackages("author_name", model.name)
-            }
-            else
-            {
-                manager.viewSelection = model.id
-                manager.viewPage = "detail"
-                manager.filterAuthors("name", model.author_name)
-                manager.filterPackages("id", model.id)
+                case "material":
+                    manager.viewSelection = model.name
+                    manager.viewPage = "author"
+                    manager.filterAuthors("name", model.name)
+                    manager.filterPackages("author_name", model.name)
+                    break
+                default:
+                    manager.viewSelection = model.id
+                    manager.viewPage = "detail"
+                    manager.filterAuthors("name", model.author_name)
+                    manager.filterPackages("id", model.id)
+                    break
             }
         }
     }

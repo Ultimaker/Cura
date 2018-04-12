@@ -1,5 +1,5 @@
 // Copyright (c) 2018 Ultimaker B.V.
-// PluginBrowser is released under the terms of the LGPLv3 or higher.
+// Toolbox is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.2
 import QtQuick.Dialogs 1.1
@@ -157,20 +157,18 @@ Item
         ProgressBar
         {
             id: progressbar
-            minimumValue: 0;
-            maximumValue: 100
             anchors.left: installButton.left
             anchors.right: installButton.right
             anchors.top: installButton.bottom
             anchors.topMargin: 4
             value: manager.isDownloading ? manager.downloadProgress : 0
-            visible: manager.isDownloading && pluginList.activePlugin == model
+            visible: manager.isDownloading
             style: ProgressBarStyle
             {
                 background: Rectangle
                 {
-                    color: "lightgray"
-                    implicitHeight: 6
+                    color: UM.Theme.getColor("lining")
+                    implicitHeight: Math.floor(UM.Theme.getSize("base_unit").height / 2)
                 }
                 progress: Rectangle
                 {

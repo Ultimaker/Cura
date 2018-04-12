@@ -48,7 +48,17 @@ class Toolbox(QObject, Extension):
         self._is_downloading = False
 
         self._network_manager = None
-
+        self._request_header = [
+            b"User-Agent",
+            str.encode(
+                "%s/%s (%s %s)" % (
+                    Application.getInstance().getApplicationName(),
+                    Application.getInstance().getVersion(),
+                    platform.system(),
+                    platform.machine(),
+                )
+            )
+        ]
 
         self._packages_metadata = []
         self._packages_model = None
@@ -58,19 +68,15 @@ class Toolbox(QObject, Extension):
         self._materials_installed_model = None
         self._authors_model = None
 
-
         # These properties are for keeping track of the UI state:
         # ----------------------------------------------------------------------
-
         # View category defines which filter to use, and therefore effectively
         # which category is currently being displayed. For example, possible
         # values include "plugin" or "material", but also "installed".
-        # Formerly self._current_view.
         self._view_category = "plugin"
 
         # View page defines which type of page layout to use. For example,
         # possible values include "overview", "detail" or "author".
-        # Formerly self._detail_view.
         self._view_page = "loading"
 
         # View selection defines what is currently selected and should be
@@ -82,33 +88,15 @@ class Toolbox(QObject, Extension):
         # installed, or otherwise modified.
         self._active_package = None
 
-
-        # Nowadays can be 'plugins', 'materials' or 'installed'
-        self._current_view = "plugins"
-        self._detail_data = {} # Extraneous since can just use the data prop of the model.
-
-        self._restart_required = False
-
         self._dialog = None
         self._restartDialog = None
-
-        self._request_header = [b"User-Agent",
-                                str.encode("%s/%s (%s %s)" % (Application.getInstance().getApplicationName(),
-                                                              Application.getInstance().getVersion(),
-                                                              platform.system(),
-                                                              platform.machine(),
-                                                             )
-                                          )
-                               ]
+        self._restart_required = False
 
         # Installed plugins are really installed after reboot. In order to
         # prevent the user from downloading the same file over and over again,
         # we keep track of the upgraded plugins.
-
         self._newly_installed_plugin_ids = []
         self._newly_uninstalled_plugin_ids = []
-
-        self._plugin_statuses = {} # type: Dict[str, str]
 
         # variables for the license agreement dialog
         self._license_dialog_plugin_name = ""
@@ -116,21 +104,24 @@ class Toolbox(QObject, Extension):
         self._license_dialog_plugin_file_location = ""
         self._restart_dialog_message = ""
 
-    showLicenseDialog = pyqtSignal()
-    showRestartDialog = pyqtSignal()
-
+    # Metadata changes
     packagesMetadataChanged = pyqtSignal()
     authorsMetadataChanged = pyqtSignal()
-    showcaseMetadataChanged = pyqtSignal()
+    pluginsShowcaseMetadataChanged = pyqtSignal()
+    materialsShowcaseMetadataChanged = pyqtSignal()
 
+    # Downloading changes
     activePackageChanged = pyqtSignal()
     onDownloadProgressChanged = pyqtSignal()
     onIsDownloadingChanged = pyqtSignal()
     restartRequiredChanged = pyqtSignal()
 
+    # UI changes
     viewChanged = pyqtSignal()
     detailViewChanged = pyqtSignal()
     filterChanged = pyqtSignal()
+    showLicenseDialog = pyqtSignal()
+    showRestartDialog = pyqtSignal()
 
     @pyqtSlot(result = str)
     def getLicenseDialogPluginName(self):
@@ -223,7 +214,7 @@ class Toolbox(QObject, Extension):
 
     @pyqtProperty(QObject, notify = packagesMetadataChanged)
     def pluginsModel(self):
-        self._plugins_model = PluginsModel(None, self._current_view)
+        self._plugins_model = PluginsModel(None, self._view_category)
         # self._plugins_model.update()
 
         # Check each plugin the registry for matching plugin from server
@@ -238,9 +229,13 @@ class Toolbox(QObject, Extension):
                         plugin["update_url"] = item["file_location"]
         return self._plugins_model
 
-    @pyqtProperty(QObject, notify = showcaseMetadataChanged)
+    @pyqtProperty(QObject, notify = pluginsShowcaseMetadataChanged)
     def pluginsShowcaseModel(self):
         return self._plugins_showcase_model
+
+    @pyqtProperty(QObject, notify = materialsShowcaseMetadataChanged)
+    def materialsShowcaseModel(self):
+        return self._materials_showcase_model
 
     @pyqtProperty(QObject, notify = packagesMetadataChanged)
     def packagesModel(self):
@@ -344,6 +339,7 @@ class Toolbox(QObject, Extension):
                 self._download_reply.abort()
                 self._download_reply = None
 
+    # TODO: This function is sooooo ugly. Needs a rework:
     def _onRequestFinished(self, reply):
         reply_url = reply.url().toString()
         if reply.error() == QNetworkReply.TimeoutError:
@@ -384,6 +380,28 @@ class Toolbox(QObject, Extension):
                     self._authors_model.setMetaData(self._authors_metadata)
                     self.authorsMetadataChanged.emit()
                     self.setViewPage("overview")
+
+                    # TODO: Also replace this with a proper API call:
+                    if not self._materials_showcase_model:
+                        self._materials_showcase_model = AuthorsModel()
+                    # TODO: Remove this hacky code once there's an API call for this.
+                    self._materials_showcase_model.setMetaData([
+                        {
+                            "name": "DSM",
+                            "email": "contact@dsm.nl",
+                            "website": "www.dsm.nl",
+                            "type": "material"
+                        },
+                        {
+                            "name": "BASF",
+                            "email": "contact@basf.de",
+                            "website": "www.basf.de",
+                            "type": "material"
+                        }
+                    ])
+                    self.materialsShowcaseMetadataChanged.emit()
+                    self.setViewPage("overview")
+
                 except json.decoder.JSONDecodeError:
                     Logger.log("w", "Toolbox: Received invalid JSON for package list.")
                     return
@@ -400,7 +418,7 @@ class Toolbox(QObject, Extension):
                     self._plugins_showcase_model.setPackagesMetaData(self._showcase_metadata)
                     for package in self._plugins_showcase_model.items:
                         print(package)
-                    self.showcaseMetadataChanged.emit()
+                    self.pluginsShowcaseMetadataChanged.emit()
                 except json.decoder.JSONDecodeError:
                     Logger.log("w", "Toolbox: Received invalid JSON for showcase.")
                     return
@@ -432,43 +450,6 @@ class Toolbox(QObject, Extension):
             return
         else:
             Logger.log("w", "Toolbox: Package was not a valid CuraPackage.")
-
-        # with zipfile.ZipFile(file_path, "r") as zip_ref:
-        #     plugin_id = None
-        #     for file in zip_ref.infolist():
-        #         if file.filename.endswith("/"):
-        #             plugin_id = file.filename.strip("/")
-        #             break
-        #
-        #     if plugin_id is None:
-        #         msg = i18n_catalog.i18nc("@info:status", "Failed to get plugin ID from <filename>{0}</filename>", file_path)
-        #         msg_title = i18n_catalog.i18nc("@info:tile", "Warning")
-        #         self._progress_message = Message(msg, lifetime=0, dismissable=False, title = msg_title)
-        #         return
-        #
-        #     # find a potential license file
-        #     plugin_root_dir = plugin_id + "/"
-        #     license_file = None
-        #     for f in zip_ref.infolist():
-        #         # skip directories (with file_size = 0) and files not in the plugin directory
-        #         if f.file_size == 0 or not f.filename.startswith(plugin_root_dir):
-        #             continue
-        #         file_name = os.path.basename(f.filename).lower()
-        #         file_base_name, file_ext = os.path.splitext(file_name)
-        #         if file_base_name in ["license", "licence"]:
-        #             license_file = f.filename
-        #             break
-        #
-        #     # show a dialog for user to read and accept/decline the license
-        #     if license_file is not None:
-        #         Logger.log("i", "Found license file for plugin [%s], showing the license dialog to the user", plugin_id)
-        #         license_content = zip_ref.read(license_file).decode('utf-8')
-        #         self.openLicenseDialog(plugin_id, license_content, file_path)
-        #         return
-        #
-        # # there is no license file, directly install the plugin
-        # self.installPlugin(file_path)
-        # return
 
 
 

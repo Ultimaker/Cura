@@ -1,5 +1,5 @@
 // Copyright (c) 2018 Ultimaker B.V.
-// PluginBrowser is released under the terms of the LGPLv3 or higher.
+// Toolbox is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.2
 import QtQuick.Dialogs 1.1
@@ -14,7 +14,6 @@ import UM 1.1 as UM
 Window
 {
     id: base
-    property bool dataReady: manager.dataReady
     title: catalog.i18nc("@title:tab", "Toolbox");
     modality: Qt.ApplicationModal
     width: 720 * screenScaleFactor

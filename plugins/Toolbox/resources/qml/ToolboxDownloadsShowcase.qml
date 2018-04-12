@@ -1,5 +1,5 @@
 // Copyright (c) 2018 Ultimaker B.V.
-// PluginBrowser is released under the terms of the LGPLv3 or higher.
+// Toolbox is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.2
 import QtQuick.Dialogs 1.1
@@ -34,7 +34,16 @@ Column
 
         Repeater
         {
-            model: manager.pluginsShowcaseModel
+            model: {
+                if ( manager.viewCategory == "plugin" )
+                {
+                    return manager.pluginsShowcaseModel
+                }
+                if ( manager.viewCategory == "material" )
+                {
+                    return manager.materialsShowcaseModel
+                }
+            }
             delegate: ToolboxDownloadsShowcaseTile {}
         }
     }
