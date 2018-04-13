@@ -69,6 +69,7 @@ class CuraPackageManager(QObject):
 
     # (for initialize) Removes all packages that have been scheduled to be removed.
     def _removeAllScheduledPackages(self) -> None:
+        print("Will purge", self._to_remove_package_set)
         for package_id in self._to_remove_package_set:
             self._purgePackage(package_id)
         self._to_remove_package_set.clear()
@@ -223,14 +224,18 @@ class CuraPackageManager(QObject):
             del self._to_install_package_dict[package_id]
 
         # If the package has already been installed, schedule for a delayed removal
-        if package_id in self._installed_package_dict:
-            self._to_remove_package_set.add(package_id)
+        # if package_id in self._installed_package_dict:
+        #     self._to_remove_package_set.add(package_id)
+        # "Or rather don't because sometimes packages are not making it into the
+        # dict I guess." - Ian
+        self._to_remove_package_set.add(package_id)
 
         self._saveManagementData()
         self.installedPackagesChanged.emit()
 
     # Removes everything associated with the given package ID.
     def _purgePackage(self, package_id: str) -> None:
+        print("Purging",package_id)
         # Get all folders that need to be checked for installed packages, including:
         #  - materials
         #  - qualities
@@ -244,6 +249,7 @@ class CuraPackageManager(QObject):
 
         for root_dir in dirs_to_check:
             package_dir = os.path.join(root_dir, package_id)
+            print(package_dir)
             if os.path.exists(package_dir):
                 Logger.log("i", "Removing '%s' for package [%s]", package_dir, package_id)
                 shutil.rmtree(package_dir)

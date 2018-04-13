@@ -12,6 +12,18 @@ Item
 {
     width: UM.Theme.getSize("toolbox_thumbnail_large").width
     height: UM.Theme.getSize("toolbox_thumbnail_large").width
+    visible:
+    {
+        if (toolbox.viewCategory == "material" && model.packages_count)
+        {
+            console.log(model)
+            return model.packages_count > 0
+        }
+        else
+        {
+            return true
+        }
+    }
     Rectangle
     {
         color: "white"

@@ -10,20 +10,16 @@ from UM.Qt.ListModel import ListModel
 
 ##  Model that holds cura packages. By setting the filter property the instances held by this model can be changed.
 class AuthorsModel(ListModel):
-    NameRole = Qt.UserRole + 1
-    EmailRole = Qt.UserRole + 2
-    WebsiteRole = Qt.UserRole + 3
-    TypeRole = Qt.UserRole + 4
-
     def __init__(self, parent = None):
         super().__init__(parent)
 
         self._metadata = None
 
-        self.addRoleName(AuthorsModel.NameRole, "name")
-        self.addRoleName(AuthorsModel.EmailRole, "email")
-        self.addRoleName(AuthorsModel.WebsiteRole, "website")
-        self.addRoleName(AuthorsModel.TypeRole, "type")
+        self.addRoleName(Qt.UserRole + 1, "name")
+        self.addRoleName(Qt.UserRole + 2, "email")
+        self.addRoleName(Qt.UserRole + 3, "website")
+        self.addRoleName(Qt.UserRole + 4, "type")
+        self.addRoleName(Qt.UserRole + 5, "packages_count")
 
         # List of filters for queries. The result is the union of the each list of results.
         self._filter = {}  # type: Dict[str,str]
@@ -40,7 +36,8 @@ class AuthorsModel(ListModel):
                 "name": author["name"],
                 "email": author["email"],
                 "website": author["website"],
-                "type": author["type"]
+                "type": author["type"],
+                "packages_count": author["packages_count"]
             })
 
         # Filter on all the key-word arguments.

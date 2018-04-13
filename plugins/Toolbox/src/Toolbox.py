@@ -74,19 +74,22 @@ class Toolbox(QObject, Extension):
                     "name": "Ultimaker",
                     "email": "ian.paschal@gmail.com",
                     "website": "ultimaker.com",
-                    "type": "material"
+                    "type": "material",
+                    "packages_count": 7
                 },
                 {
                     "name": "DSM",
                     "email": "contact@dsm.nl",
                     "website": "www.dsm.nl",
-                    "type": "material"
+                    "type": "material",
+                    "packages_count": 0
                 },
                 {
                     "name": "BASF",
                     "email": "contact@basf.de",
                     "website": "www.basf.de",
-                    "type": "material"
+                    "type": "material",
+                    "packages_count": 0
                 }
             ],
             "materials_installed": []
@@ -225,19 +228,16 @@ class Toolbox(QObject, Extension):
         self._package_manager.installPackage(file_path)
         self.installChanged.emit()
         self.metadataChanged.emit()
-        # TODO: Stuff
-        self.openRestartDialog("TODO")
         self._restart_required = True
         self.restartRequiredChanged.emit()
 
     @pyqtSlot(str)
     def uninstall(self, plugin_id):
         self._package_manager.removePackage(plugin_id)
+        self.installChanged.emit()
         self.metadataChanged.emit()
         self._restart_required = True
         self.restartRequiredChanged.emit()
-        # TODO: Stuff
-        Application.getInstance().messageBox(i18n_catalog.i18nc("@window:title", "Plugin browser"), "TODO")
 
     @pyqtSlot(str)
     def enable(self, plugin_id):
@@ -261,6 +261,7 @@ class Toolbox(QObject, Extension):
 
     @pyqtSlot()
     def restart(self):
+        self._package_manager._removeAllScheduledPackages()
         CuraApplication.getInstance().windowClosed()
 
 
@@ -394,6 +395,7 @@ class Toolbox(QObject, Extension):
                     # TODO: Replace this with a proper API call:
                     for package in self._metadata["packages"]:
                         package["author"]["type"] = package["package_type"]
+                        package["author"]["packages_count"] = 1
                         if package["author"] not in self._metadata["authors"]:
                             self._metadata["authors"].append(package["author"])
                     self._models["authors"].setMetadata(self._metadata["authors"])
