@@ -155,7 +155,7 @@ msgstr "通过 USB 连接"
 #: /home/ruben/Projects/Cura/plugins/X3GWriter/__init__.py:14
 msgctxt "X3G Writer File Description"
 msgid "X3G File"
-msgstr "X3D 文件"
+msgstr "X3G 文件"
 
 #: /home/ruben/Projects/Cura/plugins/GCodeGzWriter/__init__.py:14
 #: /home/ruben/Projects/Cura/plugins/GCodeGzReader/__init__.py:14

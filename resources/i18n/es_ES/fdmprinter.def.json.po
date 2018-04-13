@@ -5288,7 +5288,7 @@ msgstr "Ancho máximo permitido de la cámara de aire por debajo de una línea d
 #: fdmprinter.def.json
 msgctxt "bridge_wall_coast label"
 msgid "Bridge Wall Coasting"
-msgstr "Depósito por inercia de la pared del puente"
+msgstr "Deslizamiento por la pared del puente"
 
 #: fdmprinter.def.json
 msgctxt "bridge_wall_coast description"

@@ -901,7 +901,7 @@ msgstr "Support"
 #: /home/ruben/Projects/Cura/cura/PrintInformation.py:103
 msgctxt "@tooltip"
 msgid "Skirt"
-msgstr "Jupe"
+msgstr "Contour"
 
 #: /home/ruben/Projects/Cura/cura/PrintInformation.py:104
 msgctxt "@tooltip"
@@ -1699,13 +1699,13 @@ msgstr "Afficher les tâches d'impression"
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/PrinterInfoBlock.qml:37
 msgctxt "@label:status"
 msgid "Preparing to print"
-msgstr "Préparation..."
+msgstr "Préparation de l'impression"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/PrinterInfoBlock.qml:39
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/PrinterInfoBlock.qml:263
 msgctxt "@label:status"
 msgid "Printing"
-msgstr "Impression..."
+msgstr "Impression"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/PrinterInfoBlock.qml:41
 msgctxt "@label:status"
@@ -1746,7 +1746,7 @@ msgstr "Terminé"
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/PrinterInfoBlock.qml:392
 msgctxt "@label"
 msgid "Preparing to print"
-msgstr "Préparation de l'impression..."
+msgstr "Préparation de l'impression"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/PrinterInfoBlock.qml:273
 msgctxt "@label:status"
@@ -3733,7 +3733,7 @@ msgstr "&Plateau"
 #: /home/ruben/Projects/Cura/resources/qml/Menus/SettingVisibilityPresetsMenu.qml:13
 msgctxt "@action:inmenu"
 msgid "Visible Settings"
-msgstr "Paramètres visibles :"
+msgstr "Paramètres visibles"
 
 #: /home/ruben/Projects/Cura/resources/qml/Menus/SettingVisibilityPresetsMenu.qml:43
 msgctxt "@action:inmenu"
@@ -3767,7 +3767,7 @@ msgstr "Nombre de copies"
 #: /home/ruben/Projects/Cura/resources/qml/Menus/ConfigurationMenu/ConfigurationListView.qml:33
 msgctxt "@label:header configurations"
 msgid "Available configurations"
-msgstr "Configurations disponibles :"
+msgstr "Configurations disponibles"
 
 #: /home/ruben/Projects/Cura/resources/qml/Menus/ConfigurationMenu/PrintCoreConfiguration.qml:28
 msgctxt "@label:extruder label"
@@ -4374,7 +4374,7 @@ msgstr "Journal du moteur"
 #: /home/ruben/Projects/Cura/resources/qml/SidebarHeader.qml:58
 msgctxt "@label"
 msgid "Printer type"
-msgstr "Type d'imprimante :"
+msgstr "Type d'imprimante"
 
 #: /home/ruben/Projects/Cura/resources/qml/SidebarHeader.qml:360
 msgctxt "@label"

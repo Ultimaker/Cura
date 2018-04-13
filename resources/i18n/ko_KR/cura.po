@@ -155,7 +155,7 @@ msgstr "USB를 통해 연결"
 #: /home/ruben/Projects/Cura/plugins/X3GWriter/__init__.py:14
 msgctxt "X3G Writer File Description"
 msgid "X3G File"
-msgstr "X3D 파일"
+msgstr "X3G 파일"
 
 #: /home/ruben/Projects/Cura/plugins/GCodeGzWriter/__init__.py:14
 #: /home/ruben/Projects/Cura/plugins/GCodeGzReader/__init__.py:14
@@ -4699,12 +4699,12 @@ msgstr "G 코드 프로필 판독기"
 #: VersionUpgrade/VersionUpgrade32to33/plugin.json
 msgctxt "description"
 msgid "Upgrades configurations from Cura 3.2 to Cura 3.3."
-msgstr "Cura 3.0에서 Cura 3.1로 구성을 업그레이드합니다."
+msgstr "Cura 3.2에서 Cura 3.3로 구성을 업그레이드합니다."
 
 #: VersionUpgrade/VersionUpgrade32to33/plugin.json
 msgctxt "name"
 msgid "Version Upgrade 3.2 to 3.3"
-msgstr "버전 업그레이드 2.7에서 3.3"
+msgstr "버전 업그레이드 3.2에서 3.3"
 
 #: VersionUpgrade/VersionUpgrade25to26/plugin.json
 msgctxt "description"
