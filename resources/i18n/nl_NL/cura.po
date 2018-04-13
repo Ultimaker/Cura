@@ -153,7 +153,7 @@ msgstr "Aangesloten via USB"
 #: /home/ruben/Projects/Cura/plugins/X3GWriter/__init__.py:14
 msgctxt "X3G Writer File Description"
 msgid "X3G File"
-msgstr "X3D-bestand"
+msgstr "X3G-bestand"
 
 #: /home/ruben/Projects/Cura/plugins/GCodeGzWriter/__init__.py:14
 #: /home/ruben/Projects/Cura/plugins/GCodeGzReader/__init__.py:14
@@ -4372,7 +4372,7 @@ msgstr "Engine-logboek"
 #: /home/ruben/Projects/Cura/resources/qml/SidebarHeader.qml:58
 msgctxt "@label"
 msgid "Printer type"
-msgstr "Type printer:"
+msgstr "Type printer"
 
 #: /home/ruben/Projects/Cura/resources/qml/SidebarHeader.qml:360
 msgctxt "@label"
@@ -4627,7 +4627,7 @@ msgstr "Nabewerking"
 #: SupportEraser/plugin.json
 msgctxt "description"
 msgid "Creates an eraser mesh to block the printing of support in certain places"
-msgstr "Hiermee maakt u een wisraster om het printen van een supportstructuur op bepaalde plekken te blokkeren"
+msgstr "Maakt een wissend model om het printen van een supportstructuur op bepaalde plekken te blokkeren"
 
 #: SupportEraser/plugin.json
 msgctxt "name"

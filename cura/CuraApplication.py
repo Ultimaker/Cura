@@ -705,7 +705,7 @@ class CuraApplication(QtApplication):
         self._post_start_timer.timeout.connect(self._onPostStart)
         self._post_start_timer.start()
 
-
+        Logger.log("d", "Booting Cura took %s seconds", time.time() - self._boot_loading_time)
         self.exec_()
 
     def _onPostStart(self):

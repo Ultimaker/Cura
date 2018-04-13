@@ -469,7 +469,7 @@ msgstr "Appliquer le décalage de l'extrudeuse au système de coordonnées."
 #: fdmprinter.def.json
 msgctxt "extruder_prime_pos_z label"
 msgid "Extruder Prime Z Position"
-msgstr "Extrudeuse Position d'amorçage Z"
+msgstr "Extrudeuse position d'amorçage Z"
 
 #: fdmprinter.def.json
 msgctxt "extruder_prime_pos_z description"
@@ -789,12 +789,12 @@ msgstr "Largeur d'une seule ligne de remplissage."
 #: fdmprinter.def.json
 msgctxt "skirt_brim_line_width label"
 msgid "Skirt/Brim Line Width"
-msgstr "Largeur des lignes de jupe/bordure"
+msgstr "Largeur des lignes de contour/bordure"
 
 #: fdmprinter.def.json
 msgctxt "skirt_brim_line_width description"
 msgid "Width of a single skirt or brim line."
-msgstr "Largeur d'une seule ligne de jupe ou de bordure."
+msgstr "Largeur d'une seule ligne de contour ou de bordure."
 
 #: fdmprinter.def.json
 msgctxt "support_line_width label"
@@ -2244,12 +2244,12 @@ msgstr "Vitesse des mouvements de déplacement dans la couche initiale. Une vale
 #: fdmprinter.def.json
 msgctxt "skirt_brim_speed label"
 msgid "Skirt/Brim Speed"
-msgstr "Vitesse d'impression de la jupe/bordure"
+msgstr "Vitesse d'impression du contour/bordure"
 
 #: fdmprinter.def.json
 msgctxt "skirt_brim_speed description"
 msgid "The speed at which the skirt and brim are printed. Normally this is done at the initial layer speed, but sometimes you might want to print the skirt or brim at a different speed."
-msgstr "La vitesse à laquelle la jupe et la bordure sont imprimées. Normalement, cette vitesse est celle de la couche initiale, mais il est parfois nécessaire d’imprimer la jupe ou la bordure à une vitesse différente."
+msgstr "La vitesse à laquelle le contour et la bordure sont imprimées. Normalement, cette vitesse est celle de la couche initiale, mais il est parfois nécessaire d’imprimer le contour ou la bordure à une vitesse différente."
 
 #: fdmprinter.def.json
 msgctxt "max_feedrate_z_override label"
@@ -2474,12 +2474,12 @@ msgstr "L'accélération pour les déplacements dans la couche initiale."
 #: fdmprinter.def.json
 msgctxt "acceleration_skirt_brim label"
 msgid "Skirt/Brim Acceleration"
-msgstr "Accélération de la jupe/bordure"
+msgstr "Accélération du contour/bordure"
 
 #: fdmprinter.def.json
 msgctxt "acceleration_skirt_brim description"
 msgid "The acceleration with which the skirt and brim are printed. Normally this is done with the initial layer acceleration, but sometimes you might want to print the skirt or brim at a different acceleration."
-msgstr "L'accélération selon laquelle la jupe et la bordure sont imprimées. Normalement, cette accélération est celle de la couche initiale, mais il est parfois nécessaire d’imprimer la jupe ou la bordure à une accélération différente."
+msgstr "L'accélération selon laquelle le contour et la bordure sont imprimées. Normalement, cette accélération est celle de la couche initiale, mais il est parfois nécessaire d’imprimer le contour ou la bordure à une accélération différente."
 
 #: fdmprinter.def.json
 msgctxt "jerk_enabled label"
@@ -2664,12 +2664,12 @@ msgstr "L'accélération pour les déplacements dans la couche initiale."
 #: fdmprinter.def.json
 msgctxt "jerk_skirt_brim label"
 msgid "Skirt/Brim Jerk"
-msgstr "Saccade de la jupe/bordure"
+msgstr "Saccade du contour/bordure"
 
 #: fdmprinter.def.json
 msgctxt "jerk_skirt_brim description"
 msgid "The maximum instantaneous velocity change with which the skirt and brim are printed."
-msgstr "Le changement instantané maximal de vitesse selon lequel la jupe et la bordure sont imprimées."
+msgstr "Le changement instantané maximal de vitesse selon lequel le contour et la bordure sont imprimées."
 
 #: fdmprinter.def.json
 msgctxt "travel label"
@@ -3569,7 +3569,7 @@ msgstr "Activer la goutte de préparation"
 #: fdmprinter.def.json
 msgctxt "prime_blob_enable description"
 msgid "Whether to prime the filament with a blob before printing. Turning this setting on will ensure that the extruder will have material ready at the nozzle before printing. Printing Brim or Skirt can act like priming too, in which case turning this setting off saves some time."
-msgstr "Préparer les filaments avec une goutte avant l'impression. Ce paramètre permet d'assurer que l'extrudeuse disposera de matériau prêt au niveau de la buse avant l'impression. La jupe/bordure d'impression peut également servir de préparation, auquel cas le fait de laisser ce paramètre désactivé permet de gagner un peu de temps."
+msgstr "Préparer les filaments avec une goutte avant l'impression. Ce paramètre permet d'assurer que l'extrudeuse disposera de matériau prêt au niveau de la buse avant l'impression. Le contour/bordure d'impression peut également servir de préparation, auquel cas le fait de laisser ce paramètre désactivé permet de gagner un peu de temps."
 
 #: fdmprinter.def.json
 msgctxt "extruder_prime_pos_x label"
@@ -3599,12 +3599,12 @@ msgstr "Type d'adhérence du plateau"
 #: fdmprinter.def.json
 msgctxt "adhesion_type description"
 msgid "Different options that help to improve both priming your extrusion and adhesion to the build plate. Brim adds a single layer flat area around the base of your model to prevent warping. Raft adds a thick grid with a roof below the model. Skirt is a line printed around the model, but not connected to the model."
-msgstr "Différentes options qui permettent d'améliorer la préparation de votre extrusion et l'adhérence au plateau. La bordure ajoute une zone plate d'une seule couche autour de la base de votre modèle, afin de l'empêcher de se redresser. Le radeau ajoute une grille épaisse avec un toit sous le modèle. La jupe est une ligne imprimée autour du modèle mais qui n'est pas rattachée au modèle."
+msgstr "Différentes options qui permettent d'améliorer la préparation de votre extrusion et l'adhérence au plateau. La bordure ajoute une zone plate d'une seule couche autour de la base de votre modèle, afin de l'empêcher de se redresser. Le radeau ajoute une grille épaisse avec un toit sous le modèle. Le contour est une ligne imprimée autour du modèle mais qui n'est pas rattachée au modèle."
 
 #: fdmprinter.def.json
 msgctxt "adhesion_type option skirt"
 msgid "Skirt"
-msgstr "Jupe"
+msgstr "Contour"
 
 #: fdmprinter.def.json
 msgctxt "adhesion_type option brim"
@@ -3629,39 +3629,39 @@ msgstr "Extrudeuse d'adhérence du plateau"
 #: fdmprinter.def.json
 msgctxt "adhesion_extruder_nr description"
 msgid "The extruder train to use for printing the skirt/brim/raft. This is used in multi-extrusion."
-msgstr "Le train d'extrudeuse à utiliser pour l'impression de la jupe/la bordure/du radeau. Cela est utilisé en multi-extrusion."
+msgstr "Le train d'extrudeuse à utiliser pour l'impression du contour/de la bordure/du radeau. Cela est utilisé en multi-extrusion."
 
 #: fdmprinter.def.json
 msgctxt "skirt_line_count label"
 msgid "Skirt Line Count"
-msgstr "Nombre de lignes de la jupe"
+msgstr "Nombre de lignes du contour"
 
 #: fdmprinter.def.json
 msgctxt "skirt_line_count description"
 msgid "Multiple skirt lines help to prime your extrusion better for small models. Setting this to 0 will disable the skirt."
-msgstr "Une jupe à plusieurs lignes vous aide à mieux préparer votre extrusion pour les petits modèles. Définissez celle valeur sur 0 pour désactiver la jupe."
+msgstr "Un contour à plusieurs lignes vous aide à mieux préparer votre extrusion pour les petits modèles. Définissez celle valeur sur 0 pour désactiver le contour."
 
 #: fdmprinter.def.json
 msgctxt "skirt_gap label"
 msgid "Skirt Distance"
-msgstr "Distance de la jupe"
+msgstr "Distance du contour"
 
 #: fdmprinter.def.json
 msgctxt "skirt_gap description"
 msgid ""
 "The horizontal distance between the skirt and the first layer of the print.\n"
 "This is the minimum distance. Multiple skirt lines will extend outwards from this distance."
-msgstr "La distance horizontale entre la jupe et la première couche de l’impression.\nIl s’agit de la distance minimale séparant la jupe de l’objet. Si la jupe a d’autres lignes, celles-ci s’étendront vers l’extérieur."
+msgstr "La distance horizontale entre le contour et la première couche de l’impression.\nIl s’agit de la distance minimale séparant le contour de l’objet. Si le contour a d’autres lignes, celles-ci s’étendront vers l’extérieur."
 
 #: fdmprinter.def.json
 msgctxt "skirt_brim_minimal_length label"
 msgid "Skirt/Brim Minimum Length"
-msgstr "Longueur minimale de la jupe/bordure"
+msgstr "Longueur minimale du contour/bordure"
 
 #: fdmprinter.def.json
 msgctxt "skirt_brim_minimal_length description"
 msgid "The minimum length of the skirt or brim. If this length is not reached by all skirt or brim lines together, more skirt or brim lines will be added until the minimum length is reached. Note: If the line count is set to 0 this is ignored."
-msgstr "La longueur minimale de la jupe ou bordure. Si cette longueur n’est pas atteinte par toutes les lignes de jupe ou de bordure ensemble, d’autres lignes de jupe ou de bordure seront ajoutées afin d’atteindre la longueur minimale. Veuillez noter que si le nombre de lignes est défini sur 0, cette option est ignorée."
+msgstr "La longueur minimale du contour ou bordure. Si cette longueur n’est pas atteinte par toutes les lignes de contour ou de bordure ensemble, d’autres lignes de contour ou de bordure seront ajoutées afin d’atteindre la longueur minimale. Veuillez noter que si le nombre de lignes est défini sur 0, cette option est ignorée."
 
 #: fdmprinter.def.json
 msgctxt "brim_width label"
@@ -5582,8 +5582,8 @@ msgstr "Matrice de transformation à appliquer au modèle lors de son chargement
 #~ "The horizontal distance between the skirt and the first layer of the print.\n"
 #~ "This is the minimum distance, multiple skirt lines will extend outwards from this distance."
 #~ msgstr ""
-#~ "La distance horizontale entre la jupe et la première couche de l’impression.\n"
-#~ "Il s’agit de la distance minimale séparant la jupe de l’objet. Si la jupe a d’autres lignes, celles-ci s’étendront vers l’extérieur."
+#~ "La distance horizontale entre le contour et la première couche de l’impression.\n"
+#~ "Il s’agit de la distance minimale séparant le contour de l’objet. Si le contour a d’autres lignes, celles-ci s’étendront vers l’extérieur."
 
 #~ msgctxt "z_offset_layer_0 label"
 #~ msgid "Initial Layer Z Offset"

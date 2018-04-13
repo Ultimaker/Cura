@@ -3731,7 +3731,7 @@ msgstr "&Piano di stampa"
 #: /home/ruben/Projects/Cura/resources/qml/Menus/SettingVisibilityPresetsMenu.qml:13
 msgctxt "@action:inmenu"
 msgid "Visible Settings"
-msgstr "Impostazioni visibili:"
+msgstr "Impostazioni visibili"
 
 #: /home/ruben/Projects/Cura/resources/qml/Menus/SettingVisibilityPresetsMenu.qml:43
 msgctxt "@action:inmenu"
@@ -4372,7 +4372,7 @@ msgstr "Log motore"
 #: /home/ruben/Projects/Cura/resources/qml/SidebarHeader.qml:58
 msgctxt "@label"
 msgid "Printer type"
-msgstr "Tipo di stampante:"
+msgstr "Tipo di stampante"
 
 #: /home/ruben/Projects/Cura/resources/qml/SidebarHeader.qml:360
 msgctxt "@label"

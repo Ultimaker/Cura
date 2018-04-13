@@ -1170,7 +1170,7 @@ class MachineManager(QObject):
             context.context["evaluate_from_container_index"] = _ContainerIndexes.DefinitionChanges
             material_diameter = extruder.getProperty("material_diameter", "value", context)
             candidate_materials = self._material_manager.getAvailableMaterials(
-                self._global_container_stack.definition.getId(),
+                self._global_container_stack.definition,
                 current_variant_name,
                 material_diameter)
 

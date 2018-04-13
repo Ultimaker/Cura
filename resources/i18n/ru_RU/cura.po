@@ -4382,7 +4382,7 @@ msgstr "Журнал движка"
 #: /home/ruben/Projects/Cura/resources/qml/SidebarHeader.qml:58
 msgctxt "@label"
 msgid "Printer type"
-msgstr "Тип принтера:"
+msgstr "Тип принтера"
 
 #: /home/ruben/Projects/Cura/resources/qml/SidebarHeader.qml:360
 msgctxt "@label"

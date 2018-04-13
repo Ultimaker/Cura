@@ -157,7 +157,7 @@ msgstr "USBにて接続する"
 #: /home/ruben/Projects/Cura/plugins/X3GWriter/__init__.py:14
 msgctxt "X3G Writer File Description"
 msgid "X3G File"
-msgstr "X3Dファイル"
+msgstr "X3Gファイル"
 
 #: /home/ruben/Projects/Cura/plugins/GCodeGzWriter/__init__.py:14
 #: /home/ruben/Projects/Cura/plugins/GCodeGzReader/__init__.py:14
@@ -4708,7 +4708,7 @@ msgstr "Cura 3.2からCura 3.3のコンフィグレーションアップグレ�
 #: VersionUpgrade/VersionUpgrade32to33/plugin.json
 msgctxt "name"
 msgid "Version Upgrade 3.2 to 3.3"
-msgstr "3.2から2.6にバージョンアップグレート"
+msgstr "3.2から3.3にバージョンアップグレート"
 
 #: VersionUpgrade/VersionUpgrade25to26/plugin.json
 msgctxt "description"
