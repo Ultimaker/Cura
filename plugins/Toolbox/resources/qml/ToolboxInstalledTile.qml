@@ -11,6 +11,8 @@ import UM 1.1 as UM
 Item
 {
     id: base
+    property bool canUpdate: false
+    property bool isEnabled: true
     height: UM.Theme.getSize("base_unit").height * 8
     anchors
     {
@@ -27,7 +29,7 @@ Item
     Column
     {
         id: pluginInfo
-        property var color: model.enabled ? UM.Theme.getColor("text") : UM.Theme.getColor("lining")
+        property var color: isEnabled ? UM.Theme.getColor("text") : UM.Theme.getColor("lining")
         height: parent.height
         anchors
         {
@@ -75,7 +77,7 @@ Item
         }
         Label
         {
-            text: "<a href=\"mailto:"+model.author_email+"?Subject=Cura: "+model.name+"\">"+model.author+"</a>"
+            text: "<a href=\"mailto:"+model.author_email+"?Subject=Cura: "+model.name+"\">"+model.author_name+"</a>"
             width: parent.width
             height: 24
             wrapMode: Text.WordWrap
@@ -102,8 +104,17 @@ Item
 
         Button {
             id: removeButton
-            text: "Uninstall"
-            // visible: model.can_uninstall && model.status == "installed"
+            text:
+            {
+                if (model.is_bundled)
+                {
+                    return isEnabled ? catalog.i18nc("@action:button", "Disable") : catalog.i18nc("@action:button", "Enable")
+                }
+                else
+                {
+                    return catalog.i18nc("@action:button", "Uninstall")
+                }
+            }
             enabled: !toolbox.isDownloading
             style: ButtonStyle
             {
@@ -125,13 +136,30 @@ Item
                     horizontalAlignment: Text.AlignHCenter
                 }
             }
-            onClicked: toolbox.removePlugin( model.id )
+            onClicked:
+            {
+                if (model.is_bundled)
+                {
+                    if (toolbox.isEnabled(model.id))
+                    {
+                        toolbox.disable(model.id)
+                    }
+                    else
+                    {
+                        toolbox.enable(model.id)
+                    }
+                }
+                else
+                {
+                    toolbox.uninstall( model.id )
+                }
+            }
         }
 
         Button {
             id: updateButton
-            text: "Update"
-            // enabled: model.can_update
+            text: catalog.i18nc("@action:button", "Update")
+            visible: canUpdate
             style: ButtonStyle
             {
                 background: Rectangle
@@ -151,7 +179,7 @@ Item
             }
             onClicked:
             {
-                toolbox.updatePackage(model.id);
+                toolbox.update(model.id);
             }
         }
         ProgressBar
@@ -176,5 +204,11 @@ Item
                 }
             }
         }
+    }
+    Connections
+    {
+        target: toolbox
+        onEnabledChanged: isEnabled = toolbox.isEnabled(model.id)
+        onMetadataChanged: canUpdate = toolbox.canUpdate(model.id)
     }
 }

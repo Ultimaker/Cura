@@ -59,7 +59,7 @@ UM.Dialog {
             onClicked:
             {
                 licenseDialog.close();
-                toolbox.installPlugin(licenseDialog.pluginFileLocation);
+                toolbox.install(licenseDialog.pluginFileLocation);
             }
         },
         Button

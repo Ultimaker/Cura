@@ -9,6 +9,7 @@ import UM 1.1 as UM
 
 Rectangle
 {
+    property bool installed: toolbox.isInstalled(model.id)
     width: base.width - UM.Theme.getSize("double_margin").width
     height: UM.Theme.getSize("base_unit").height * 8
     color: "transparent"
@@ -48,17 +49,28 @@ Rectangle
         Button {
             id: installButton
             text: {
-                if ( toolbox.isDownloading && toolbox.activePackage == model )
+                if (installed)
                 {
-                    return catalog.i18nc("@action:button", "Cancel")
+                    return catalog.i18nc("@action:button", "Installed")
                 }
                 else
                 {
-                    return catalog.i18nc("@action:button", "Install")
+                    if ( toolbox.isDownloading && toolbox.activePackage == model )
+                    {
+                        return catalog.i18nc("@action:button", "Cancel")
+                    }
+                    else
+                    {
+                        return catalog.i18nc("@action:button", "Install")
+                    }
                 }
             }
             enabled:
             {
+                if (installed)
+                {
+                    return true
+                }
                 if ( toolbox.isDownloading )
                 {
                     return toolbox.activePackage == model ? true : false
@@ -74,12 +86,47 @@ Rectangle
                 {
                     implicitWidth: 96
                     implicitHeight: 30
-                    color: control.hovered ? UM.Theme.getColor("primary_hover") : UM.Theme.getColor("primary")
+                    color:
+                    {
+                        if (installed)
+                        {
+                            return UM.Theme.getColor("action_button_disabled")
+                        }
+                        else
+                        {
+                            if ( control.hovered )
+                            {
+                                return UM.Theme.getColor("primary_hover")
+                            }
+                            else
+                            {
+                                return UM.Theme.getColor("primary")
+                            }
+                        }
+
+                    }
                 }
                 label: Label
                 {
                     text: control.text
-                    color: control.hovered ? UM.Theme.getColor("button_text") : UM.Theme.getColor("button_text_hover")
+                    color:
+                    {
+                        if (installed)
+                        {
+                            return UM.Theme.getColor("action_button_disabled_text")
+                        }
+                        else
+                        {
+                            if ( control.hovered )
+                            {
+                                return UM.Theme.getColor("button_text_hover")
+                            }
+                            else
+                            {
+                                return UM.Theme.getColor("button_text")
+                            }
+                        }
+                    }
                     verticalAlignment: Text.AlignVCenter
                     horizontalAlignment: Text.AlignHCenter
                     font: UM.Theme.getFont("default_bold")
@@ -87,22 +134,29 @@ Rectangle
             }
             onClicked:
             {
-                console.log( "MODEL", model.id )
-                toolbox.activePackage = model
-                // if ( toolbox.isDownloading && toolbox.activePackage == model )
-                if ( toolbox.isDownloading )
+                if (installed)
                 {
-                    toolbox.cancelDownload();
+                    toolbox.viewCategory = "installed"
                 }
                 else
                 {
-                    // toolbox.activePackage = model;
-                    if ( model.can_upgrade )
+                    // if ( toolbox.isDownloading && toolbox.activePackage == model )
+                    if ( toolbox.isDownloading )
                     {
-                        // toolbox.downloadAndInstallPlugin( model.update_url );
+                        toolbox.cancelDownload();
                     }
-                    else {
-                        toolbox.startDownload( model.download_url );
+                    else
+                    {
+                        toolbox.activePackage = model
+                        // toolbox.activePackage = model;
+                        if ( model.can_upgrade )
+                        {
+                            // toolbox.downloadAndInstallPlugin( model.update_url );
+                        }
+                        else
+                        {
+                            toolbox.startDownload( model.download_url );
+                        }
                     }
                 }
             }
@@ -114,5 +168,10 @@ Rectangle
         width: parent.width
         height: UM.Theme.getSize("default_lining").height
         anchors.bottom: parent.bottom
+    }
+    Connections
+    {
+        target: toolbox
+        onInstallChanged: installed = toolbox.isInstalled(model.id)
     }
 }

@@ -71,6 +71,12 @@ class Toolbox(QObject, Extension):
             # TODO: Replace this with a proper API call:
             "materials_showcase": [
                 {
+                    "name": "Ultimaker",
+                    "email": "ian.paschal@gmail.com",
+                    "website": "ultimaker.com",
+                    "type": "material"
+                },
+                {
                     "name": "DSM",
                     "email": "contact@dsm.nl",
                     "website": "www.dsm.nl",
@@ -137,6 +143,8 @@ class Toolbox(QObject, Extension):
     onDownloadProgressChanged = pyqtSignal()
     onIsDownloadingChanged = pyqtSignal()
     restartRequiredChanged = pyqtSignal()
+    installChanged = pyqtSignal()
+    enabledChanged = pyqtSignal()
 
     # UI changes
     viewChanged = pyqtSignal()
@@ -213,8 +221,9 @@ class Toolbox(QObject, Extension):
         return dialog
 
     @pyqtSlot(str)
-    def installPlugin(self, file_path):
+    def install(self, file_path):
         self._package_manager.installPackage(file_path)
+        self.installChanged.emit()
         self.metadataChanged.emit()
         # TODO: Stuff
         self.openRestartDialog("TODO")
@@ -222,7 +231,7 @@ class Toolbox(QObject, Extension):
         self.restartRequiredChanged.emit()
 
     @pyqtSlot(str)
-    def removePlugin(self, plugin_id):
+    def uninstall(self, plugin_id):
         self._package_manager.removePackage(plugin_id)
         self.metadataChanged.emit()
         self._restart_required = True
@@ -231,15 +240,15 @@ class Toolbox(QObject, Extension):
         Application.getInstance().messageBox(i18n_catalog.i18nc("@window:title", "Plugin browser"), "TODO")
 
     @pyqtSlot(str)
-    def enablePlugin(self, plugin_id):
-        self._plugin_registry.setPluginEnabled(plugin_id, True)
-        self.metadataChanged.emit()
+    def enable(self, plugin_id):
+        self._plugin_registry.enablePlugin(plugin_id)
+        self.enabledChanged.emit()
         Logger.log("i", "%s was set as 'active'.", plugin_id)
 
     @pyqtSlot(str)
-    def disablePlugin(self, plugin_id):
-        self._plugin_registry.setPluginEnabled(plugin_id, False)
-        self.metadataChanged.emit()
+    def disable(self, plugin_id):
+        self._plugin_registry.disablePlugin(plugin_id)
+        self.enabledChanged.emit()
         Logger.log("i", "%s was set as 'deactive'.", plugin_id)
 
     @pyqtProperty(bool, notify = metadataChanged)
@@ -258,18 +267,30 @@ class Toolbox(QObject, Extension):
 
     # Checks
     # --------------------------------------------------------------------------
-    def _checkCanUpgrade(self, package_id: str, version: str) -> bool:
-        installed_plugin_data = self._package_manager.getInstalledPackageInfo(package_id)
-        if installed_plugin_data is None:
+    @pyqtSlot(str, result = bool)
+    def canUpdate(self, package_id: str) -> bool:
+        local_package = self._package_manager.getInstalledPackageInfo(package_id)
+        if local_package is None:
             return False
-        installed_version = installed_plugin_data["package_version"]
-        return compareSemanticVersions(version, installed_version) > 0
 
-    def _checkInstalled(self, package_id: str):
+        remote_package = None
+        for package in self._metadata["packages"]:
+            if package["package_id"] == package_id:
+                remote_package = package
+        if remote_package is None:
+            return False
+
+        local_version = local_package["package_version"]
+        remote_version = remote_package["package_version"]
+        return compareSemanticVersions(remote_version, local_version) > 0
+
+    @pyqtSlot(str, result = bool)
+    def isInstalled(self, package_id) -> bool:
         return self._package_manager.isPackageInstalled(package_id)
 
-    def _checkEnabled(self, id):
-        if id in self._plugin_registry.getActivePlugins():
+    @pyqtSlot(str, result = bool)
+    def isEnabled(self, package_id) -> bool:
+        if package_id in self._plugin_registry.getActivePlugins():
             return True
         return False
 
@@ -382,6 +403,12 @@ class Toolbox(QObject, Extension):
                         self._models["materials_showcase"] = AuthorsModel(self)
                     # TODO: Replace this with a proper API call:
                     self._models["materials_showcase"].setMetadata(self._metadata["materials_showcase"])
+
+                    # This part is also needed for comparing downloaded packages to
+                    # installed packages.
+                    self._models["packages"].setMetadata(self._metadata["packages"])
+
+
                     self.metadataChanged.emit()
 
                     self.setViewPage("overview")
@@ -407,6 +434,8 @@ class Toolbox(QObject, Extension):
                 except json.decoder.JSONDecodeError:
                     Logger.log("w", "Toolbox: Received invalid JSON for showcase.")
                     return
+
+
         else:
             # Ignore any operation that is not a get operation
             pass
@@ -440,7 +469,7 @@ class Toolbox(QObject, Extension):
             self.openLicenseDialog(package_info["package_id"], license_content, file_path)
             return
 
-        self.installPlugin(file_path)
+        self.install(file_path)
         return
 
 

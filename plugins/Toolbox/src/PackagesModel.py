@@ -12,34 +12,23 @@ from UM.Qt.ListModel import ListModel
 
 ##  Model that holds cura packages. By setting the filter property the instances held by this model can be changed.
 class PackagesModel(ListModel):
-    IdRole = Qt.UserRole + 1
-    TypeRole = Qt.UserRole + 2
-    NameRole = Qt.UserRole + 3
-    VersionRole = Qt.UserRole + 4
-    AuthorNameRole = Qt.UserRole + 5
-    AuthorEmailRole = Qt.UserRole + 6
-    DescriptionRole = Qt.UserRole + 7
-    IconURLRole = Qt.UserRole + 8
-    ImageURLsRole = Qt.UserRole + 9
-    DownloadURLRole = Qt.UserRole + 10
-    LastUpdatedRole = Qt.UserRole + 11
-
     def __init__(self, parent = None):
         super().__init__(parent)
 
         self._metadata = None
 
-        self.addRoleName(PackagesModel.IdRole, "id")
-        self.addRoleName(PackagesModel.TypeRole, "type")
-        self.addRoleName(PackagesModel.NameRole, "name")
-        self.addRoleName(PackagesModel.VersionRole, "version")
-        self.addRoleName(PackagesModel.AuthorNameRole, "author_name")
-        self.addRoleName(PackagesModel.AuthorEmailRole, "author_email")
-        self.addRoleName(PackagesModel.DescriptionRole, "description")
-        self.addRoleName(PackagesModel.IconURLRole, "icon_url")
-        self.addRoleName(PackagesModel.ImageURLsRole, "image_urls")
-        self.addRoleName(PackagesModel.DownloadURLRole, "download_url")
-        self.addRoleName(PackagesModel.LastUpdatedRole, "last_updated")
+        self.addRoleName(Qt.UserRole + 1, "id")
+        self.addRoleName(Qt.UserRole + 2, "type")
+        self.addRoleName(Qt.UserRole + 3, "name")
+        self.addRoleName(Qt.UserRole + 4, "version")
+        self.addRoleName(Qt.UserRole + 5, "author_name")
+        self.addRoleName(Qt.UserRole + 6, "author_email")
+        self.addRoleName(Qt.UserRole + 7, "description")
+        self.addRoleName(Qt.UserRole + 8, "icon_url")
+        self.addRoleName(Qt.UserRole + 9, "image_urls")
+        self.addRoleName(Qt.UserRole + 10, "download_url")
+        self.addRoleName(Qt.UserRole + 11, "last_updated")
+        self.addRoleName(Qt.UserRole + 12, "is_bundled")
 
         # List of filters for queries. The result is the union of the each list of results.
         self._filter = {}  # type: Dict[str, str]
@@ -63,7 +52,8 @@ class PackagesModel(ListModel):
                 "icon_url": package["icon_url"] if "icon_url" in package else None,
                 "image_urls": package["image_urls"] if "image_urls" in package else None,
                 "download_url": package["download_url"] if "download_url" in package else None,
-                "last_updated": package["last_updated"] if "last_updated" in package else None
+                "last_updated": package["last_updated"] if "last_updated" in package else None,
+                "is_bundled": package["is_bundled"] if "is_bundled" in package else False
             })
 
         # Filter on all the key-word arguments.

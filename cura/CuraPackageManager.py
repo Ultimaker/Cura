@@ -96,8 +96,11 @@ class CuraPackageManager(QObject):
             package_info["is_bundled"] = False
             return package_info
 
-        # TODO: get from plugin registry
-        #self._plugin_registry.
+        for section, packages in self.getAllInstalledPackagesInfo().items():
+            for package in packages:
+                if package["package_id"] == package_id:
+                    package_info = package
+                    return package_info
 
         return None
 
@@ -133,7 +136,7 @@ class CuraPackageManager(QObject):
             if package_id in managed_package_id_set:
                 continue
 
-            plugin_package_info["is_bundled"] = True
+            plugin_package_info["is_bundled"] = True if plugin_package_info["author"]["name"] == "Ultimaker B.V." else False
             plugin_package_info["is_active"] = self._plugin_registry.isActivePlugin(package_id)
             package_type = "plugin"
             if package_type not in installed_packages_dict:
