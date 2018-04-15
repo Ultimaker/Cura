@@ -58,7 +58,7 @@ class SupportEraser(Tool):
         modifiers = QApplication.keyboardModifiers()
         ctrl_is_active = modifiers & Qt.ControlModifier
 
-        if event.type == Event.MousePressEvent and self._controller.getToolsEnabled():
+        if event.type == Event.MousePressEvent and MouseEvent.LeftButton in event.buttons and self._controller.getToolsEnabled():
             if ctrl_is_active:
                 self._controller.setActiveTool("TranslateTool")
                 return
