@@ -6617,28 +6617,28 @@
                 "center_object": {
                     "description": "Whether to center the object on the middle of the build platform (0,0), instead of using the coordinate system in which the object was saved.",
                     "type": "bool",
-                    "label": "Center object",
+                    "label": "Center Object",
                     "default_value": false,
                     "enabled": false
                 },
                 "mesh_position_x": {
                     "description": "Offset applied to the object in the x direction.",
                     "type": "float",
-                    "label": "Mesh position x",
+                    "label": "Mesh Position X",
                     "default_value": 0,
                     "enabled": false
                 },
                 "mesh_position_y": {
                     "description": "Offset applied to the object in the y direction.",
                     "type": "float",
-                    "label": "Mesh position y",
+                    "label": "Mesh Position Y",
                     "default_value": 0,
                     "enabled": false
                 },
                 "mesh_position_z": {
                     "description": "Offset applied to the object in the z direction. With this you can perform what was used to be called 'Object Sink'.",
                     "type": "float",
-                    "label": "Mesh position z",
+                    "label": "Mesh Position Z",
                     "default_value": 0,
                     "enabled": false
                 },
