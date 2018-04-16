@@ -92,9 +92,8 @@ class ModelChecker(QObject, Extension):
         Logger.log("d", "Model checker view created.")
 
     @pyqtProperty(bool, notify = onChanged)
-    def runChecks(self):
+    def hasWarnings(self):
         danger_shrinkage = self.checkObjectsForShrinkage()
-
         return any((danger_shrinkage, )) #If any of the checks fail, show the warning button.
 
     @pyqtSlot()
