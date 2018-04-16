@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: Cura 3.2\n"
 "Report-Msgid-Bugs-To: r.dulek@ultimaker.com\n"
 "POT-Creation-Date: 2018-01-29 09:48+0000\n"
-"PO-Revision-Date: 2018-03-12 19:17+0900\n"
+"PO-Revision-Date: 2018-04-12 18:11+0900\n"
 "Last-Translator: Jinbuhm Kim <jbkim@ateamventures.com>\n"
 "Language-Team: Korean\n"
 "Language: ko_KR\n"
@@ -565,10 +565,10 @@ msgid "Unknown"
 msgstr "알 수 없음"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/NetworkClusterPrinterOutputDevice.py:505
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "@info:status"
 msgid "Printer '{printer_name}' has finished printing '{job_name}'."
-msgstr "'{printer_name} 프린터가 '{job_name}' 프린팅를 완료했습니다."
+msgstr "'{printer_name} 프린터가 '{job_name}' 프린팅을 완료했습니다."
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/NetworkClusterPrinterOutputDevice.py:507
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/NetworkClusterPrinterOutputDevice.py:510
@@ -704,7 +704,7 @@ msgstr "SolidWorks 매크로 설치 가이드"
 #: /home/ruben/Projects/Cura/plugins/SimulationView/__init__.py:14
 msgctxt "@item:inlistbox"
 msgid "Layer view"
-msgstr "레이버 뷰"
+msgstr "레이어 뷰"
 
 #: /home/ruben/Projects/Cura/plugins/SimulationView/SimulationView.py:103
 msgctxt "@info:status"
@@ -1642,9 +1642,9 @@ msgid ""
 "\n"
 "Select your printer from the list below:"
 msgstr ""
-"네트워크를 통해 프린터로 직접 프린팅하려면 네트워크 케이블을 사용하거나 프린터를 WIFI 네트워크에 연결하여 프린터가 네트워크에 연결되어 있는지 확인하십시오. Cura를 프린터에 연결하지 않은 경우에도 USB 드라이브를 사용하여 g-코드 파일을 프린터로 전송할 수 있습니다\n"
+"네트워크를 통해 프린터로 직접 프린팅하려면 네트워크 케이블을 사용하거나 프린터를 WIFI 네트워크에 연결하여 프린터가 네트워크에 연결되어 있는지 확인하십시오. Cura를 프린터에 연결하지 않은 경우에도 USB 드라이브를 사용하여 g 코드 파일을 프린터로 전송할 수 있습니다\n"
 "\n"
-"아래 목록에서 프린터를 선택하십시오"
+"아래 목록에서 프린터를 선택하십시오:"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/DiscoverUM3Action.qml:75
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/MachinesPage.qml:44
@@ -1669,7 +1669,7 @@ msgstr "제거"
 #: /home/ruben/Projects/Cura/plugins/PluginBrowser/PluginBrowser.qml:35
 msgctxt "@action:button"
 msgid "Refresh"
-msgstr "새롭게 하다"
+msgstr "새로고침"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/DiscoverUM3Action.qml:194
 msgctxt "@label"
@@ -2142,12 +2142,12 @@ msgstr "최대"
 #: /home/ruben/Projects/Cura/plugins/PostProcessingPlugin/PostProcessingPlugin.qml:18
 msgctxt "@title:window"
 msgid "Post Processing Plugin"
-msgstr "사후 처리 플러그인"
+msgstr "후처리 플러그인"
 
 #: /home/ruben/Projects/Cura/plugins/PostProcessingPlugin/PostProcessingPlugin.qml:49
 msgctxt "@label"
 msgid "Post Processing Scripts"
-msgstr "사후 처리 스크립트"
+msgstr "후처리 스크립트"
 
 #: /home/ruben/Projects/Cura/plugins/PostProcessingPlugin/PostProcessingPlugin.qml:217
 msgctxt "@action"
@@ -2172,7 +2172,7 @@ msgstr "이미지 변환 ..."
 #: /home/ruben/Projects/Cura/plugins/ImageReader/ConfigUI.qml:33
 msgctxt "@info:tooltip"
 msgid "The maximum distance of each pixel from \"Base.\""
-msgstr "\"Base.\"에서 각 픽셀까지의 최대 거리입니다"
+msgstr "\"Base.\"에서 각 픽셀까지의 최대 거리"
 
 #: /home/ruben/Projects/Cura/plugins/ImageReader/ConfigUI.qml:38
 msgctxt "@action:label"
@@ -2354,7 +2354,7 @@ msgstr "프로파일에 없음"
 msgctxt "@action:label"
 msgid "%1 override"
 msgid_plural "%1 overrides"
-msgstr[0] "무시하다"
+msgstr[0] "%1 무시"
 
 #: /home/ruben/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:232
 msgctxt "@action:label"
@@ -2365,7 +2365,7 @@ msgstr "Derivative from"
 msgctxt "@action:label"
 msgid "%1, %2 override"
 msgid_plural "%1, %2 overrides"
-msgstr[0] "무시하다"
+msgstr[0] "%1, %2 무시"
 
 #: /home/ruben/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:253
 msgctxt "@action:label"
@@ -2980,7 +2980,7 @@ msgstr "모델을 더 이상 교차시키지 않도록 이동해야합니까?"
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:391
 msgctxt "@option:check"
 msgid "Ensure models are kept apart"
-msgstr "모델이 분리되어 있는지 확인하십시오"
+msgstr "모델이 분리되어 있는지 확인"
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:399
 msgctxt "@info:tooltip"
@@ -2995,7 +2995,7 @@ msgstr "모델을 빌드 플레이트에 자동으로 놓기"
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:416
 msgctxt "@info:tooltip"
 msgid "Show caution message in gcode reader."
-msgstr "gcode 리더에 주의 메시지를 표시하기."
+msgstr "g code 리더에 주의 메시지를 표시하기."
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:425
 msgctxt "@option:check"
@@ -3010,7 +3010,7 @@ msgstr "레이어가 호환 모드로 강제 설정되어야합니까?"
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:437
 msgctxt "@option:check"
 msgid "Force layer view compatibility mode (restart required)"
-msgstr "레이버 뷰 호환성 모드로 전환 (다시 시작해야 함)"
+msgstr "레이어 뷰 호환성 모드로 전환 (다시 시작해야 함)"
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:453
 msgctxt "@label"
@@ -3095,7 +3095,7 @@ msgstr "프로파일 덮어쓰기"
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:631
 msgctxt "@label"
 msgid "Privacy"
-msgstr "Privacy"
+msgstr "보안"
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:638
 msgctxt "@info:tooltip"
@@ -3222,13 +3222,13 @@ msgstr "복제"
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/MaterialsPage.qml:182
 msgctxt "@action:button"
 msgid "Import"
-msgstr "가져오다"
+msgstr "가져오기"
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/ProfilesPage.qml:119
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/MaterialsPage.qml:193
 msgctxt "@action:button"
 msgid "Export"
-msgstr "내보내다"
+msgstr "내보내기"
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/ProfilesPage.qml:126
 msgctxt "@label %1 is printer name"
@@ -3377,7 +3377,7 @@ msgstr "버전: %1"
 #: /home/ruben/Projects/Cura/resources/qml/AboutDialog.qml:56
 msgctxt "@label"
 msgid "End-to-end solution for fused filament 3D printing."
-msgstr "3D 프린팅를 위한 End-to-end 솔루션."
+msgstr "End-to-end solution for fused filament 3D printing."
 
 #: /home/ruben/Projects/Cura/resources/qml/AboutDialog.qml:69
 msgctxt "@info:credit"
@@ -3683,12 +3683,12 @@ msgstr[0] "선택된 모델 프린팅 :"
 msgctxt "@title:window"
 msgid "Multiply Selected Model"
 msgid_plural "Multiply Selected Models"
-msgstr[0] "선택한 모델 곱하기"
+msgstr[0] "선택한 모델 복"
 
 #: /home/ruben/Projects/Cura/resources/qml/Menus/ContextMenu.qml:139
 msgctxt "@label"
 msgid "Number of Copies"
-msgstr "복제한 수"
+msgstr "복제할 수"
 
 #: /home/ruben/Projects/Cura/resources/qml/Menus/RecentFilesMenu.qml:13
 msgctxt "@title:menu menubar:file"
@@ -3915,19 +3915,19 @@ msgstr "소개..."
 msgctxt "@action:inmenu menubar:edit"
 msgid "Delete &Selected Model"
 msgid_plural "Delete &Selected Models"
-msgstr[0] "선택한 모델 삭제 및 선택"
+msgstr[0] "선택한 모델 삭제"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:243
 msgctxt "@action:inmenu menubar:edit"
 msgid "Center Selected Model"
 msgid_plural "Center Selected Models"
-msgstr[0] "선택한 모델 중심"
+msgstr[0] "선택한 모델 중심에 놓기"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:252
 msgctxt "@action:inmenu menubar:edit"
 msgid "Multiply Selected Model"
 msgid_plural "Multiply Selected Models"
-msgstr[0] "선택한 모델 곱하기"
+msgstr[0] "선택한 모델 복제"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:261
 msgctxt "@action:inmenu"
@@ -3942,7 +3942,7 @@ msgstr "플랫폼중심에 모델 위치하기"
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:275
 msgctxt "@action:inmenu menubar:edit"
 msgid "&Group Models"
-msgstr "모델 그룹"
+msgstr "모델 그룹화"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:295
 msgctxt "@action:inmenu menubar:edit"
@@ -3957,7 +3957,7 @@ msgstr "모델 합치기"
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:315
 msgctxt "@action:inmenu"
 msgid "&Multiply Model..."
-msgstr "모델 곱하기..."
+msgstr "모델 복제..."
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:322
 msgctxt "@action:inmenu menubar:edit"
@@ -4566,12 +4566,12 @@ msgstr "시뮬레이션 뷰"
 #: PostProcessingPlugin/plugin.json
 msgctxt "description"
 msgid "Extension that allows for user created scripts for post processing"
-msgstr "후 처리를 위해 사용자가 만든 스크립트를 허용하는 확장 프로그램"
+msgstr "후처리를 위해 사용자가 만든 스크립트를 허용하는 확장 프로그램"
 
 #: PostProcessingPlugin/plugin.json
 msgctxt "name"
 msgid "Post Processing"
-msgstr "후 처리"
+msgstr "후처리"
 
 #: AutoSave/plugin.json
 msgctxt "description"
@@ -5005,7 +5005,7 @@ msgstr "Cura 프로파일 리더"
 
 #~ msgctxt "@info:title"
 #~ msgid "Layer View"
-#~ msgstr "레이버 뷰"
+#~ msgstr "레이어 뷰"
 
 #~ msgctxt "@menuitem"
 #~ msgid "Browse plugins"
@@ -5096,7 +5096,7 @@ msgstr "Cura 프로파일 리더"
 
 #~ msgctxt "description"
 #~ msgid "Provides the Layer view."
-#~ msgstr "레이버 뷰를 제공합니다."
+#~ msgstr "레이어 뷰를 제공합니다."
 
 #~ msgctxt "name"
 #~ msgid "Layer View"
