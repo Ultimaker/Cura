@@ -63,11 +63,11 @@ class ModelChecker(QObject, Extension):
 
         self._caution_message.setText(catalog.i18nc(
             "@info:status",
-            "Some models may not be printed optimally due to object size and chosen material for models: {model_names}.\n"
-            "Tips that may be useful to improve the print quality:\n"
-            "1) Use rounded corners.\n"
-            "2) Turn the fan off (only if there are no tiny details on the model).\n"
-            "3) Use a different material.").format(model_names = ", ".join([n.getName() for n in warning_nodes])))
+            "<p>One or more 3D models may not print optimally due to the model size and material configuration:</p>\n"
+            "<p>{model_names}</p>\n"
+            "<p>Find out how to ensure the best possible print quality and reliability.</p>\n"
+            "<p><a href=\"https://ultimaker.com/3D-model-assistant\">View print quality guide</a></p>"
+            ).format(model_names = ", ".join([n.getName() for n in warning_nodes])))
 
         return len(warning_nodes) > 0
 
