@@ -501,11 +501,6 @@ class CuraApplication(QtApplication):
     def getStaticVersion(cls):
         return CuraVersion
 
-    ##  Handle removing the unneeded plugins
-    #   \sa PluginRegistry
-    def _removePlugins(self):
-        self._plugin_registry.removePlugins()
-
     ##  Handle loading of all plugin types (and the backend explicitly)
     #   \sa PluginRegistry
     def _loadPlugins(self):
