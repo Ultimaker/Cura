@@ -49,6 +49,13 @@ class ModelChecker(QObject, Extension):
         warning_size_xy = 150 #The horizontal size of a model that would be too large when dealing with shrinking materials.
         warning_size_z = 100 #The vertical size of a model that would be too large when dealing with shrinking materials.
 
+        # This function can be triggered in the middle of a machine change, so do not proceed if the machine change
+        # has not done yet.
+        global_container_stack = Application.getInstance().getGlobalContainerStack()
+        if global_container_stack is None:
+            Application.getInstance().callLater(lambda: self.onChanged.emit())
+            return False
+
         material_shrinkage = self._getMaterialShrinkage()
 
         warning_nodes = []
@@ -56,6 +63,13 @@ class ModelChecker(QObject, Extension):
         # Check node material shrinkage and bounding box size
         for node in self.sliceableNodes():
             node_extruder_position = node.callDecoration("getActiveExtruderPosition")
+
+            # This function can be triggered in the middle of a machine change, so do not proceed if the machine change
+            # has not done yet.
+            if str(node_extruder_position) not in global_container_stack.extruders:
+                Application.getInstance().callLater(lambda: self.onChanged.emit())
+                return False
+
             if material_shrinkage[node_extruder_position] > shrinkage_threshold:
                 bbox = node.getBoundingBox()
                 if bbox.width >= warning_size_xy or bbox.depth >= warning_size_xy or bbox.height >= warning_size_z:
