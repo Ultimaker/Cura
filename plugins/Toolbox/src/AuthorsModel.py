@@ -19,7 +19,8 @@ class AuthorsModel(ListModel):
         self.addRoleName(Qt.UserRole + 2, "email")
         self.addRoleName(Qt.UserRole + 3, "website")
         self.addRoleName(Qt.UserRole + 4, "type")
-        self.addRoleName(Qt.UserRole + 5, "packages_count")
+        self.addRoleName(Qt.UserRole + 5, "icon_url")
+        self.addRoleName(Qt.UserRole + 6, "packages_count")
 
         # List of filters for queries. The result is the union of the each list of results.
         self._filter = {}  # type: Dict[str,str]
@@ -34,10 +35,11 @@ class AuthorsModel(ListModel):
         for author in self._metadata:
             items.append({
                 "name": author["name"],
-                "email": author["email"],
-                "website": author["website"],
-                "type": author["type"],
-                "packages_count": author["packages_count"]
+                "email": author["email"] if "email" in author else None,
+                "website": author["website"] if "website" in author else None,
+                "type": author["type"] if "type" in author else None,
+                "icon_url": author["icon_url"] if "icon_url" in author else None,
+                "packages_count": author["packages_count"] if "packages_count" in author else 0
             })
 
         # Filter on all the key-word arguments.

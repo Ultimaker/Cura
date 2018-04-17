@@ -75,6 +75,7 @@ class Toolbox(QObject, Extension):
                     "email": "ian.paschal@gmail.com",
                     "website": "ultimaker.com",
                     "type": "material",
+                    "icon": None,
                     "packages_count": 7
                 },
                 {
@@ -82,6 +83,7 @@ class Toolbox(QObject, Extension):
                     "email": "contact@dsm.nl",
                     "website": "www.dsm.nl",
                     "type": "material",
+                    "icon": None,
                     "packages_count": 0
                 },
                 {
@@ -89,6 +91,7 @@ class Toolbox(QObject, Extension):
                     "email": "contact@basf.de",
                     "website": "www.basf.de",
                     "type": "material",
+                    "icon": None,
                     "packages_count": 0
                 }
             ],
@@ -216,6 +219,9 @@ class Toolbox(QObject, Extension):
         if not self._dialog:
             self._dialog = self._createDialog("Toolbox.qml")
         self._dialog.show()
+
+        # Apply enabled/disabled state to installed plugins
+        self.enabledChanged.emit()
 
     def _createDialog(self, qml_name):
         Logger.log("d", "Toolbox: Creating dialog [%s].", qml_name)
@@ -359,7 +365,6 @@ class Toolbox(QObject, Extension):
             return
 
         if reply.operation() == QNetworkAccessManager.GetOperation:
-
             # TODO: In the future use the following to build any model from any
             # request. Right now this doesn't work because the packages request
             # is also responsible for populating other models.
@@ -367,6 +372,14 @@ class Toolbox(QObject, Extension):
             #     if reply.url() == url:
             #         try:
             #             json_data = json.loads(bytes(reply.readAll()).decode("utf-8"))
+            #
+            #             # Check for errors:
+            #             if "errors" in json_data:
+            #                 for error in json_data["errors"]:
+            #                     Logger.log("e", "%s", error["title"])
+            #                 return
+            #
+            #             # Create model and apply metadata:
             #             if not self._models[type]:
             #                 Logger.log("e", "Could not find the %s model.", type)
             #                 break
@@ -382,9 +395,17 @@ class Toolbox(QObject, Extension):
             if reply.url() == self._request_urls["packages"]:
                 try:
                     json_data = json.loads(bytes(reply.readAll()).decode("utf-8"))
+
+                    # Check for errors:
+                    if "errors" in json_data:
+                        for error in json_data["errors"]:
+                            Logger.log("e", "%s", error["title"])
+                        return
+
                     # Create packages model with all packages:
                     if not self._models["packages"]:
                         self._models["packages"] = PackagesModel(self)
+                        print(json_data["data"])
                     self._metadata["packages"] = json_data["data"]
                     self._models["packages"].setMetadata(self._metadata["packages"])
                     self.metadataChanged.emit()
@@ -394,11 +415,23 @@ class Toolbox(QObject, Extension):
                         self._models["authors"] = AuthorsModel()
                     # TODO: Replace this with a proper API call:
                     for package in self._metadata["packages"]:
-                        package["author"]["type"] = package["package_type"]
-                        package["author"]["packages_count"] = 1
                         if package["author"] not in self._metadata["authors"]:
                             self._metadata["authors"].append(package["author"])
+
+                    for author in self._metadata["authors"]:
+                        if "package_count" not in author:
+                            author["package_count"] = 0
+
+                        for package in self._metadata["packages"]:
+                            if package["author"]["name"] == author["name"]:
+                                author["package_count"] += 1
+                                author["type"] = package["package_type"]
+                                if "icon_url" in package:
+                                    author["icon_url"] = package["icon_url"]
+
                     self._models["authors"].setMetadata(self._metadata["authors"])
+                    for author in self._models["authors"].items:
+                        print(author["icon_url"])
                     self.metadataChanged.emit()
 
                     if not self._models["materials_showcase"]:
@@ -409,7 +442,7 @@ class Toolbox(QObject, Extension):
                     # This part is also needed for comparing downloaded packages to
                     # installed packages.
                     self._models["packages"].setMetadata(self._metadata["packages"])
-
+                    self._models["packages"].setFilter({"type": "plugin"})
 
                     self.metadataChanged.emit()
 
@@ -423,6 +456,13 @@ class Toolbox(QObject, Extension):
             if reply.url() == self._request_urls["plugins_showcase"]:
                 try:
                     json_data = json.loads(bytes(reply.readAll()).decode("utf-8"))
+
+                    # Check for errors:
+                    if "errors" in json_data:
+                        for error in json_data["errors"]:
+                            Logger.log("e", "%s", error["title"])
+                        return
+
                     # Create packages model with all packages:
                     if not self._models["plugins_showcase"]:
                         self._models["plugins_showcase"] = PackagesModel()

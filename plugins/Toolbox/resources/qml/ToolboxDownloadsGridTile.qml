@@ -83,24 +83,25 @@ Item
         }
         onExited:
         {
-            thumbnail.border.color = UM.Theme.getColor("text")
+            thumbnail.border.color = UM.Theme.getColor("lining")
             highlight.opacity = 0.0
         }
         onClicked:
         {
+            console.log(model.icon_url)
             if ( toolbox.viewCategory == "material" )
             {
                 toolbox.viewSelection = model.name
                 toolbox.viewPage = "author"
-                toolbox.filterModelByProp("authors", "name", model.name)
                 toolbox.filterModelByProp("packages", "author_name", model.name)
+                toolbox.filterModelByProp("authors", "name", model.name)
             }
             else
             {
                 toolbox.viewSelection = model.id
                 toolbox.viewPage = "detail"
-                toolbox.filterModelByProp("authors", "name", model.author_name)
                 toolbox.filterModelByProp("packages", "id", model.id)
+                toolbox.filterModelByProp("authors", "name", model.author_name)
             }
         }
     }

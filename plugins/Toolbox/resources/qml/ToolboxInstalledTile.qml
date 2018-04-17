@@ -77,7 +77,17 @@ Item
         }
         Label
         {
-            text: "<a href=\"mailto:"+model.author_email+"?Subject=Cura: "+model.name+"\">"+model.author_name+"</a>"
+            text:
+            {
+                if (model.author_email)
+                {
+                    return "<a href=\"mailto:"+model.author_email+"?Subject=Cura: "+model.name+"\">"+model.author_name+"</a>"
+                }
+                else
+                {
+                    return model.author_name
+                }
+            }
             width: parent.width
             height: 24
             wrapMode: Text.WordWrap
