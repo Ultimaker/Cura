@@ -4881,7 +4881,7 @@ msgstr "Largeur minimale à laquelle la base du support conique est réduite. De
 #: fdmprinter.def.json
 msgctxt "infill_hollow label"
 msgid "Hollow Out Objects"
-msgstr "Éviter les objets"
+msgstr "Évider les objets"
 
 #: fdmprinter.def.json
 msgctxt "infill_hollow description"
