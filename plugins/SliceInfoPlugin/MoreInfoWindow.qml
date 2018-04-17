@@ -43,15 +43,6 @@ UM.Dialog
 
     Item
     {
-        Connections
-        {
-            target: CuraApplication.getCuraAppSignals()
-            onShowMoreInfoOnAnonymousDataCollection:
-            {
-                baseDialog.show();
-            }
-        }
-
         id: textRow
         anchors
         {

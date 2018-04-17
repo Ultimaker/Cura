@@ -7,6 +7,7 @@ import QtQuick.Layouts 1.1
 import QtQuick.Controls.Styles 1.1
 
 import UM 1.1 as UM
+import Cura 1.0 as Cura
 
 UM.PreferencesPage
 {
@@ -672,7 +673,7 @@ UM.PreferencesPage
                     text: catalog.i18nc("@action:button", "More information")
                     onClicked:
                     {
-                        CuraApplication.getCuraAppSignals().showMoreInfoOnAnonymousDataCollection();
+                        CuraApplication.showMoreInformationDialogForAnonymousDataCollection();
                     }
                 }
             }

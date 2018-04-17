@@ -74,7 +74,6 @@ from cura.Settings.SimpleModeSettingsManager import SimpleModeSettingsManager
 
 from cura.Machines.VariantManager import VariantManager
 
-from .CuraAppSignals import CuraAppSignals
 from . import PlatformPhysics
 from . import BuildVolume
 from . import CameraAnimation
@@ -646,8 +645,6 @@ class CuraApplication(QtApplication):
     def run(self):
         self.preRun()
 
-        self._app_signals = CuraAppSignals(self)
-
         container_registry = ContainerRegistry.getInstance()
 
         Logger.log("i", "Initializing variant manager")
@@ -782,10 +779,6 @@ class CuraApplication(QtApplication):
 
     def hasGui(self):
         return self._use_gui
-
-    @pyqtSlot(result = QObject)
-    def getCuraAppSignals(self, *args) -> CuraAppSignals:
-        return self._app_signals
 
     @pyqtSlot(result = QObject)
     def getSettingVisibilityPresetsModel(self, *args) -> SettingVisibilityPresetsModel:
@@ -1739,3 +1732,7 @@ class CuraApplication(QtApplication):
                     node = node.getParent()
 
                 Selection.add(node)
+
+    @pyqtSlot()
+    def showMoreInformationDialogForAnonymousDataCollection(self):
+        self._plugin_registry.getPluginObject("SliceInfoPlugin").showMoreInfoDialog()

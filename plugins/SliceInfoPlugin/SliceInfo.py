@@ -64,10 +64,10 @@ class SliceInfo(QObject, Extension):
     def messageActionTriggered(self, message_id, action_id):
         Preferences.getInstance().setValue("info/asked_send_slice_info", True)
         if action_id == "MoreInfo":
-            self._showMoreInfoDialog()
+            self.showMoreInfoDialog()
         self.send_slice_info_message.hide()
 
-    def _showMoreInfoDialog(self):
+    def showMoreInfoDialog(self):
         if self._more_info_dialog is None:
             self._more_info_dialog = self._createDialog("MoreInfoWindow.qml")
         self._more_info_dialog.open()
